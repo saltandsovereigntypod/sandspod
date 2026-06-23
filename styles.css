@@ -244,6 +244,25 @@ input:focus, textarea:focus, select:focus, .button:focus-visible, summary:focus-
   border-radius: 0.5rem;
 }
 
+.portrait-card,
+.featured-card,
+.small-card,
+.book-card,
+.spotlight,
+.support-panel,
+.contact-form,
+.contact-aside,
+.faq {
+  border-radius: 1rem !important;
+  overflow: hidden;
+}
+
+.book-card img,
+.portrait-card img,
+.featured-card iframe {
+  border-radius: 0.75rem;
+}
+
 @media (max-width: 900px) {
   .nav-toggle { display: block; }
   .nav-links {
