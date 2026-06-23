@@ -288,7 +288,6 @@ p {
 .featured-card,
 .small-card,
 .book-card,
-.spotlight,
 .support-panel,
 .contact-form,
 .contact-aside,
@@ -354,7 +353,6 @@ p {
 
 .small-card,
 .book-card,
-.spotlight,
 .faq,
 .contact-aside {
   padding: 1.25rem;
@@ -375,12 +373,11 @@ p {
 }
 
 .book-grid--featured {
-  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
-  align-items: stretch;
+  grid-template-columns: 1.6fr 0.8fr;
 }
 
 .book-card--main {
-  max-width: 440px;
+  max-width: none;
 }
 
 .coming-soon-stack {
@@ -407,11 +404,6 @@ p {
 
 .book-card--coming h3 {
   font-size: clamp(2.4rem, 5vw, 4rem);
-}
-
-.spotlight,
-.support-panel {
-  margin-top: 1rem;
 }
 
 .blog-grid {
