@@ -605,6 +605,20 @@ summary:focus-visible {
   margin-top: 1rem;
 }
 
+.grimoire-home-link {
+  display: inline-flex;
+  margin-bottom: 1.25rem;
+  color: var(--gold);
+  text-decoration: none;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+}
+
+.grimoire-home-link:hover,
+.grimoire-home-link:focus-visible {
+  color: var(--cream);
+}
+
 .grimoire-page {
   position: relative;
   max-width: 920px;
