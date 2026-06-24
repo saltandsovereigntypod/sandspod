@@ -565,17 +565,44 @@ summary:focus-visible {
   padding: 1rem;
   border: 1px solid rgba(185, 160, 93, 0.28);
   border-radius: 1rem;
-  background: rgba(16, 33, 24, 0.72);
+  background: rgba(16, 33, 24, 0.75);
+  backdrop-filter: blur(6px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(185, 160, 93, 0.35) transparent;
 }
 
 .grimoire-sidebar::-webkit-scrollbar {
   width: 6px;
 }
 
+.grimoire-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 .grimoire-sidebar::-webkit-scrollbar-thumb {
   background: rgba(185, 160, 93, 0.35);
   border-radius: 999px;
+}
+
+.grimoire-sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(185, 160, 93, 0.55);
+}
+
+.grimoire-home-link {
+  display: inline-block;
+  margin-bottom: 2rem;
+  color: rgba(244, 236, 216, 0.65);
+  text-decoration: none;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  transition: color 0.2s ease;
+}
+
+.grimoire-home-link:hover,
+.grimoire-home-link:focus-visible {
+  color: var(--gold);
 }
 
 .grimoire-sidebar h2 {
@@ -600,23 +627,18 @@ summary:focus-visible {
 }
 
 .sidebar-section {
-  border-top: 1px solid rgba(185, 160, 93, 0.22);
-  padding-top: 1rem;
-  margin-top: 1rem;
+  border-top: none;
+  position: relative;
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
 }
 
-.grimoire-home-link {
-  display: inline-flex;
-  margin-bottom: 1.25rem;
+.sidebar-section::before {
+  content: "✦";
+  display: block;
+  margin-bottom: 1rem;
   color: var(--gold);
-  text-decoration: none;
-  font-size: 0.95rem;
-  letter-spacing: 0.05em;
-}
-
-.grimoire-home-link:hover,
-.grimoire-home-link:focus-visible {
-  color: var(--cream);
+  opacity: 0.6;
 }
 
 .grimoire-page {
