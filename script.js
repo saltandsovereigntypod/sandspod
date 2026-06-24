@@ -110,7 +110,7 @@ async function loadBlogPosts() {
     const otherPosts = posts.slice(1, 5);
 
     blogPreview.innerHTML = `
-      <a class="featured-card reveal blog-card-link" href="${latestPost.url}">
+      <a class="featured-card blog-card-link is-visible" href="${latestPost.url}">
         <span class="tag">${latestPost.category}</span>
         <h3>${latestPost.title}</h3>
         <p>${latestPost.summary}</p>
@@ -121,7 +121,7 @@ async function loadBlogPosts() {
       ${otherPosts
         .map(
           (post) => `
-            <a class="small-card reveal blog-card-link" href="${post.url}">
+            <a class="small-card blog-card-link is-visible" href="${post.url}">
               <span>${post.category}</span>
               <h3>${post.title}</h3>
               <p>${post.summary}</p>
