@@ -541,9 +541,57 @@ summary:focus-visible {
 }
 
 .blog-post-page {
-  width: min(1120px, calc(100% - 2rem));
+  width: 100%;
   margin: 0 auto;
   padding: clamp(3rem, 7vw, 6rem) 0;
+}
+
+.grimoire-shell {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 920px);
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: start;
+  justify-content: center;
+  width: min(1280px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.grimoire-sidebar {
+  position: sticky;
+  top: 6rem;
+  align-self: start;
+  padding: 1.25rem;
+  border: 1px solid rgba(185, 160, 93, 0.28);
+  border-radius: 1rem;
+  background: rgba(16, 33, 24, 0.72);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.grimoire-sidebar h2 {
+  max-width: none;
+  font-size: 1.6rem;
+}
+
+.grimoire-sidebar h3 {
+  font-size: 1rem;
+  color: var(--gold);
+}
+
+.grimoire-sidebar p,
+.grimoire-sidebar li {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.grimoire-sidebar ul {
+  padding-left: 1.2rem;
+  color: var(--muted);
+}
+
+.sidebar-section {
+  border-top: 1px solid rgba(185, 160, 93, 0.22);
+  padding-top: 1rem;
+  margin-top: 1rem;
 }
 
 .grimoire-page {
@@ -569,32 +617,33 @@ summary:focus-visible {
   pointer-events: none;
 }
 
-.grimoire-page::after {
-  content: "☽ ✦ ☾";
-  display: block;
-  margin: 3rem auto 0;
+.grimoire-header {
   text-align: center;
-  color: var(--gold);
-  letter-spacing: 0.8rem;
-  opacity: 0.75;
+  margin-bottom: 4rem;
 }
 
-.grimoire-page .eyebrow {
-  color: var(--gold);
-}
-
-.grimoire-page h1 {
-  max-width: 12ch;
-  font-size: clamp(4rem, 9vw, 7.5rem);
-  line-height: 0.9;
-  margin-bottom: 1rem;
-}
-
-.grimoire-page h1 + p {
-  color: var(--gold);
-  letter-spacing: 0.08em;
+.entry-type {
   text-transform: uppercase;
-  font-size: 0.95rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  font-size: 0.85rem;
+}
+
+.entry-date {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.grimoire-divider {
+  color: var(--gold);
+  letter-spacing: 0.5rem;
+  opacity: 0.8;
+}
+
+.grimoire-header h1 {
+  max-width: none;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  line-height: 0.95;
 }
 
 .grimoire-page h2 {
@@ -621,6 +670,12 @@ summary:focus-visible {
   font-style: italic;
 }
 
+.opening-quote {
+  max-width: 62ch;
+  margin: 3.5rem auto;
+  text-align: center;
+}
+
 .grimoire-page blockquote p {
   color: var(--cream);
 }
@@ -638,172 +693,14 @@ summary:focus-visible {
   margin-top: 3rem;
 }
 
-.grimoire-header {
-  text-align: center;
-  margin-bottom: 4rem;
-}
-
-.entry-type {
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-  color: var(--gold);
-  font-size: 0.85rem;
-  margin-bottom: 1rem;
-}
-
-.entry-date {
-  color: var(--muted);
-  font-style: italic;
-  margin-top: 0.5rem;
-  margin-bottom: 2rem;
-}
-
-.grimoire-divider {
-  color: var(--gold);
-  letter-spacing: 0.5rem;
-  opacity: 0.8;
-  font-size: 1.1rem;
-}
-
-.grimoire-header h1 {
-  max-width: none;
-  font-size: clamp(3rem, 7vw, 5.5rem);
-  line-height: 0.95;
-  margin-bottom: 0.5rem;
-}
-
-.grimoire-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
-  gap: clamp(2rem, 5vw, 4rem);
-}
-
-.grimoire-layout > .grimoire-header,
-.grimoire-layout > blockquote,
-.grimoire-layout > p,
-.grimoire-layout > h2,
-.grimoire-layout > .button {
-  grid-column: 1;
-}
-
-.grimoire-layout {
-
-  display: grid;
-
-  grid-template-columns: 260px minmax(0, 1fr);
-
-  gap: clamp(2rem, 5vw, 4rem);
-
-}
-
-.grimoire-header {
-
-  grid-column: 1 / -1;
-
-}
-
-.grimoire-layout > :not(.grimoire-header):not(.grimoire-sidebar) {
-
-  grid-column: 2;
-
-}
-
-.grimoire-sidebar {
-
-  grid-column: 1;
-
-  grid-row: 2 / span 999;
-
-  align-self: start;
-
-  position: sticky;
-
-  top: 6rem;
-
-  padding: 1.25rem;
-
-  border: 1px solid rgba(185, 160, 93, 0.28);
-
-  border-radius: 1rem;
-
-  background: rgba(185, 160, 93, 0.06);
-
-}
-
-.grimoire-sidebar h2 {
-
-  max-width: none;
-
-  font-size: 1.6rem;
-
-  margin-bottom: 1rem;
-
-}
-
-.grimoire-sidebar h3 {
-
-  font-size: 1rem;
-
-  color: var(--gold);
-
-  margin-bottom: 0.4rem;
-
-}
-
-.grimoire-sidebar p,
-
-.grimoire-sidebar li {
-
-  font-size: 0.95rem;
-
-  line-height: 1.6;
-
-}
-
-.grimoire-sidebar ul {
-
-  padding-left: 1.2rem;
-
-  color: var(--muted);
-
-}
-
-.sidebar-section {
-
-  border-top: 1px solid rgba(185, 160, 93, 0.22);
-
-  padding-top: 1rem;
-
-  margin-top: 1rem;
-
-}
-
-@media (max-width: 900px) {
-
-  .grimoire-layout {
-
-    display: block;
-
-  }
-
-  .grimoire-sidebar {
-
-    position: static;
-
-    margin: 2rem 0;
-
-  }
-
-}
-
-@media (max-width: 900px) {
-  .grimoire-layout {
-    display: block;
+@media (max-width: 1000px) {
+  .grimoire-shell {
+    grid-template-columns: 1fr;
   }
 
   .grimoire-sidebar {
     position: static;
-    margin: 2rem 0;
+    order: 2;
   }
 }
 
