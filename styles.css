@@ -1214,12 +1214,20 @@ body.threshold-locked {
 
 .altar-stage-wrap {
   position: relative;
-  min-height: 650px;
   border: 1px solid rgba(185, 160, 93, 0.28);
   border-radius: 1.25rem;
   padding: 0;
   box-shadow: var(--shadow);
   overflow: hidden;
+}
+
+.altar-stage {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: url("assets/altar/backgrounds/forest-scene.png")
+    center center / cover no-repeat;
 }
 
 .altar-stage-wrap::before {
@@ -1230,15 +1238,6 @@ body.threshold-locked {
     radial-gradient(circle at 20% 30%, rgba(244, 236, 216, 0.08), transparent 15rem),
     radial-gradient(circle at 90% 70%, rgba(185, 160, 93, 0.1), transparent 18rem);
   pointer-events: none;
-}
-
-.altar-stage {
-  position: relative;
-  min-height: 610px;
-  border-radius: 1rem;
-  overflow: hidden;
-  background: url("assets/altar/backgrounds/forest-scene.png")
-    center center / cover no-repeat;
 }
 
 .altar-empty-message {
@@ -1288,13 +1287,5 @@ body.threshold-locked {
 @media (max-width: 900px) {
   .altar-workspace {
     grid-template-columns: 1fr;
-  }
-
-  .altar-stage-wrap {
-    min-height: 560px;
-  }
-
-  .altar-stage {
-    min-height: 520px;
   }
 }
