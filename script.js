@@ -162,10 +162,13 @@ document.addEventListener("DOMContentLoaded", () => {
   if (hasEnteredThreshold === "true") {
     thresholdGate.classList.add("is-hidden");
     document.body.classList.remove("threshold-locked");
-    
+  
     document.querySelectorAll(".reveal").forEach((item) => {
       item.classList.add("is-visible");
     });
+  
+    return;
+  }
 
   document.body.classList.add("threshold-locked");
 
