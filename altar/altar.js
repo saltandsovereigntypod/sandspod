@@ -68,6 +68,10 @@ function deselectObject() {
 function keepObjectInsideStage(object) {
   if (!altarStage || !object) return;
 
+  if (object.dataset.type === "cloth") {
+    return;
+  }
+
   const scale = Number(object.dataset.scale || 1);
   const baseWidth = object.offsetWidth;
   const baseHeight = object.offsetHeight;
@@ -94,7 +98,7 @@ function resizeObject(object, amount) {
   let scale = Number(object.dataset.scale || 1);
 
   scale += amount;
-  const maxScale = object.dataset.type === "cloth" ? 8 : 3;
+  const maxScale = object.dataset.type === "cloth" ? 18 : 3;
   scale = Math.max(0.35, Math.min(scale, maxScale));
 
   object.dataset.scale = String(scale);
@@ -216,12 +220,24 @@ function makeDraggable(object) {
     let x = event.clientX - stageRect.left - offsetX;
     let y = event.clientY - stageRect.top - offsetY;
 
-    const maxX = altarStage.clientWidth - object.offsetWidth * scale;
-    const maxY = altarStage.clientHeight - object.offsetHeight * scale;
-
-    x = Math.max(0, Math.min(x, Math.max(0, maxX)));
-    y = Math.max(0, Math.min(y, Math.max(0, maxY)));
-
+    if (object.dataset.type === "cloth") {
+      const visualWidth = object.offsetWidth * scale;
+      const visualHeight = object.offsetHeight * scale;
+    
+      const minX = -visualWidth * 0.75;
+      const minY = -visualHeight * 0.75;
+      const maxX = altarStage.clientWidth - visualWidth * 0.25;
+      const maxY = altarStage.clientHeight - visualHeight * 0.25;
+    
+      x = Math.max(minX, Math.min(x, maxX));
+      y = Math.max(minY, Math.min(y, maxY));
+    } else {
+      const maxX = altarStage.clientWidth - object.offsetWidth * scale;
+      const maxY = altarStage.clientHeight - object.offsetHeight * scale;
+    
+      x = Math.max(0, Math.min(x, Math.max(0, maxX)));
+      y = Math.max(0, Math.min(y, Math.max(0, maxY)));
+    }
     object.style.left = `${x}px`;
     object.style.top = `${y}px`;
   });
