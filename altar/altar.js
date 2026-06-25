@@ -94,7 +94,8 @@ function resizeObject(object, amount) {
   let scale = Number(object.dataset.scale || 1);
 
   scale += amount;
-  scale = Math.max(0.35, Math.min(scale, 3));
+  const maxScale = object.dataset.type === "cloth" ? 8 : 3;
+  scale = Math.max(0.35, Math.min(scale, maxScale));
 
   object.dataset.scale = String(scale);
 
