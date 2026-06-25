@@ -1,1 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Altar | Salt & Sovereignty</title>
+    <meta
+      name="description"
+      content="A quiet digital altar space for reflection, ritual, and intentional practice."
+    />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
 
+  <body class="altar-page">
+    <a class="skip-link" href="#altar-main">Skip to content</a>
+
+    <header class="site-header" data-header>
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="../index.html">
+          <span class="brand-mark" aria-hidden="true">S&S</span>
+          <span>Salt & Sovereignty</span>
+        </a>
+
+        <div class="nav-links">
+          <a href="../index.html#about">About</a>
+          <a href="../index.html#podcast">Podcast</a>
+          <a href="../index.html#books">Books</a>
+          <a href="../index.html#blog">Blog</a>
+          <a href="../index.html#contact">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="altar-main" class="altar-main">
+      <section class="altar-hero">
+        <p class="eyebrow">The Sanctuary</p>
+        <h1>The Altar</h1>
+        <p>
+          Build a quiet ritual space that reflects your own practice. Nothing here is required.
+          Everything here is an invitation.
+        </p>
+      </section>
+
+      <section class="altar-workspace" aria-label="Digital altar workspace">
+        <aside class="altar-cabinet">
+          <h2>Cabinet</h2>
+          <p>Choose an object to place it on the altar.</p>
+
+          <div class="altar-tools">
+            <button type="button" class="altar-tool" data-object="🕯️" data-label="White Candle">
+              <span>🕯️</span>
+              White Candle
+            </button>
+
+            <button type="button" class="altar-tool" data-object="🗝️" data-label="Key">
+              <span>🗝️</span>
+              Key
+            </button>
+
+            <button type="button" class="altar-tool" data-object="🌿" data-label="Herbs">
+              <span>🌿</span>
+              Herbs
+            </button>
+
+            <button type="button" class="altar-tool" data-object="🪨" data-label="Stone">
+              <span>🪨</span>
+              Stone
+            </button>
+
+            <button type="button" class="altar-tool" data-object="🌙" data-label="Moon">
+              <span>🌙</span>
+              Moon
+            </button>
+
+            <button type="button" class="altar-tool" data-object="🏺" data-label="Offering Bowl">
+              <span>🏺</span>
+              Offering Bowl
+            </button>
+          </div>
+
+          <p class="altar-note">
+            Click an object on the altar to remove it.
+          </p>
+        </aside>
+
+        <div class="altar-stage-wrap">
+          <div class="altar-stage" data-altar-stage aria-label="Your altar">
+            <p class="altar-empty-message" data-empty-message>
+              The altar is empty. Choose what belongs here.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="../script.js"></script>
+    <script src="altar.js"></script>
+  </body>
+</html>
