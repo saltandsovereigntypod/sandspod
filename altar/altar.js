@@ -250,7 +250,7 @@ function makeDraggable(object) {
   });
 }
 
-function placeObject(imagePath, fallbackSymbol, label) {
+function placeObject(imagePath, fallbackSymbol, label, type) {
   if (!altarStage) return;
 
   const object = document.createElement("button");
@@ -259,7 +259,8 @@ function placeObject(imagePath, fallbackSymbol, label) {
   object.className = "altar-object";
 
   object.dataset.label = label;
-  object.dataset.scale = "1";
+  object.dataset.type = arguments[3] || "";
+  object.dataset.scale = object.dataset.type === "cloth" ? "3" : "1";
   object.dataset.rotation = "0";
   object.dataset.flipped = "false";
   object.dataset.locked = "false";
@@ -331,7 +332,8 @@ altarTools.forEach((tool) => {
     const fallbackSymbol = tool.dataset.object || "";
     const label = tool.dataset.label || "object";
 
-    placeObject(imagePath, fallbackSymbol, label);
+    const type = tool.dataset.type || "";
+    placeObject(imagePath, fallbackSymbol, label, type);
   });
 });
 
