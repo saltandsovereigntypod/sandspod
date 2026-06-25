@@ -98,7 +98,9 @@ function resizeObject(object, amount) {
   let scale = Number(object.dataset.scale || 1);
 
   scale += amount;
+
   const maxScale = object.dataset.type === "cloth" ? 18 : 3;
+
   scale = Math.max(0.35, Math.min(scale, maxScale));
 
   object.dataset.scale = String(scale);
@@ -223,21 +225,22 @@ function makeDraggable(object) {
     if (object.dataset.type === "cloth") {
       const visualWidth = object.offsetWidth * scale;
       const visualHeight = object.offsetHeight * scale;
-    
+
       const minX = -visualWidth * 0.75;
       const minY = -visualHeight * 0.75;
       const maxX = altarStage.clientWidth - visualWidth * 0.25;
       const maxY = altarStage.clientHeight - visualHeight * 0.25;
-    
+
       x = Math.max(minX, Math.min(x, maxX));
       y = Math.max(minY, Math.min(y, maxY));
     } else {
       const maxX = altarStage.clientWidth - object.offsetWidth * scale;
       const maxY = altarStage.clientHeight - object.offsetHeight * scale;
-    
+
       x = Math.max(0, Math.min(x, Math.max(0, maxX)));
       y = Math.max(0, Math.min(y, Math.max(0, maxY)));
     }
+
     object.style.left = `${x}px`;
     object.style.top = `${y}px`;
   });
@@ -266,17 +269,28 @@ function makeDraggable(object) {
   });
 }
 
-function placeObject(imagePath, fallbackSymbol, label, type) {
+function placeObject(options) {
   if (!altarStage) return;
+
+  const {
+    imagePath,
+    fallbackSymbol,
+    label,
+    type,
+    herb,
+    form
+  } = options;
 
   const object = document.createElement("button");
 
   object.type = "button";
   object.className = "altar-object";
 
-  object.dataset.label = label;
-  object.dataset.type = arguments[3] || "";
-  object.dataset.scale = object.dataset.type === "cloth" ? "3" : "1";
+  object.dataset.label = label || "object";
+  object.dataset.type = type || "";
+  object.dataset.herb = herb || "";
+  object.dataset.form = form || "";
+  object.dataset.scale = type === "cloth" ? "3" : "1";
   object.dataset.rotation = "0";
   object.dataset.flipped = "false";
   object.dataset.locked = "false";
@@ -290,17 +304,17 @@ function placeObject(imagePath, fallbackSymbol, label, type) {
     const img = document.createElement("img");
 
     img.src = imagePath;
-    img.alt = label;
+    img.alt = label || "altar object";
     img.draggable = false;
 
     object.appendChild(img);
   } else {
-    object.textContent = fallbackSymbol;
+    object.textContent = fallbackSymbol || "";
   }
 
   object.setAttribute(
     "aria-label",
-    `${label}. Click to select. Drag to move. Double click to remove.`
+    `${label || "Object"}. Click to select. Drag to move. Double click to remove.`
   );
 
   const existingObjects = altarStage.querySelectorAll(".altar-object").length;
@@ -344,12 +358,14 @@ toolbar.addEventListener("click", (event) => {
 
 altarTools.forEach((tool) => {
   tool.addEventListener("click", () => {
-    const imagePath = tool.dataset.image;
-    const fallbackSymbol = tool.dataset.object || "";
-    const label = tool.dataset.label || "object";
-
-    const type = tool.dataset.type || "";
-    placeObject(imagePath, fallbackSymbol, label, type);
+    placeObject({
+      imagePath: tool.dataset.image || "",
+      fallbackSymbol: tool.dataset.object || "",
+      label: tool.dataset.label || "object",
+      type: tool.dataset.type || "",
+      herb: tool.dataset.herb || "",
+      form: tool.dataset.form || ""
+    });
   });
 });
 
