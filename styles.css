@@ -1054,9 +1054,19 @@ body.threshold-locked {
 
 .altar-workspace {
   display: grid;
-  grid-template-columns: 320px minmax(0, 1fr);
+  grid-template-columns: 1fr;
   gap: clamp(1rem, 3vw, 2rem);
   align-items: start;
+}
+
+.altar-stage-wrap {
+  width: min(1500px, 100%);
+  margin: 0 auto;
+}
+
+.altar-cabinet {
+  width: min(1500px, 100%);
+  margin: 0 auto;
 }
 
 .altar-cabinet {
