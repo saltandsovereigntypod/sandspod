@@ -1217,9 +1217,7 @@ body.threshold-locked {
   min-height: 650px;
   border: 1px solid rgba(185, 160, 93, 0.28);
   border-radius: 1.25rem;
-  padding: clamp(1rem, 3vw, 2rem);
-  background: url("assets/altar/backgrounds/forest-scene.png")
-    center center / cover no-repeat;
+  padding: 0;
   box-shadow: var(--shadow);
   overflow: hidden;
 }
@@ -1239,6 +1237,8 @@ body.threshold-locked {
   min-height: 610px;
   border-radius: 1rem;
   overflow: hidden;
+  background: url("assets/altar/backgrounds/forest-scene.png")
+    center center / cover no-repeat;
 }
 
 .altar-empty-message {
