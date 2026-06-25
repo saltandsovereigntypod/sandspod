@@ -1332,21 +1332,22 @@ body.threshold-locked {
 
 .altar-toolbar {
   position: absolute;
+  top: 1rem;
+  right: 1rem;
   z-index: 999;
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
-  max-width: min(330px, calc(100% - 1rem));
+  max-width: min(330px, calc(100% - 2rem));
   padding: 0.45rem;
   border: 1px solid rgba(185, 160, 93, 0.4);
-  border-radius: 999px;
+  border-radius: 1rem;
   background:
     radial-gradient(circle at top, rgba(185, 160, 93, 0.18), transparent 60%),
     rgba(10, 8, 6, 0.92);
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(8px);
 }
-
 .altar-toolbar[hidden] {
   display: none;
 }
