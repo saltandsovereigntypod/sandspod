@@ -1266,29 +1266,39 @@ body.threshold-locked {
   position: absolute;
   top: 14%;
   left: 50%;
-  width: 18%;
-  height: 24%;
+  width: 11%;
+  height: 16%;
   transform: translateX(-50%);
   border-radius: 50% 50% 45% 45%;
   background:
-    radial-gradient(circle at 50% 35%, rgba(255, 245, 190, 0.95), rgba(255, 170, 70, 0.55) 45%, transparent 72%);
+    radial-gradient(circle at 50% 35%, rgba(255, 245, 190, 0.95), rgba(255, 170, 70, 0.48) 45%, transparent 72%);
   filter:
-    blur(0.5px)
-    drop-shadow(0 0 8px rgba(255, 210, 120, 0.85))
-    drop-shadow(0 0 18px rgba(255, 120, 40, 0.45));
-  opacity: 1;
+    blur(0.35px)
+    drop-shadow(0 0 5px rgba(255, 210, 120, 0.75))
+    drop-shadow(0 0 11px rgba(255, 120, 40, 0.38));
+  opacity: 0.95;
   pointer-events: none;
-  animation: candleFlicker 0.18s infinite alternate;
+  animation: candleFlicker 0.85s ease-in-out infinite alternate;
 }
 
 @keyframes candleFlicker {
   0% {
-    transform: translateX(-50%) scale(0.9, 1.05) rotate(-2deg);
-    opacity: 0.75;
+    transform: translateX(-50%) scale(0.92, 1.02) rotate(-1deg);
+    opacity: 0.82;
+  }
+
+  35% {
+    transform: translateX(-48%) scale(1.02, 0.96) rotate(1deg);
+    opacity: 0.95;
+  }
+
+  70% {
+    transform: translateX(-52%) scale(0.96, 1.08) rotate(-0.5deg);
+    opacity: 0.88;
   }
 
   100% {
-    transform: translateX(-50%) scale(1.08, 0.92) rotate(2deg);
+    transform: translateX(-50%) scale(1.04, 0.98) rotate(1.5deg);
     opacity: 1;
   }
 }
