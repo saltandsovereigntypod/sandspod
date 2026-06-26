@@ -1261,87 +1261,85 @@ body.threshold-locked {
     drop-shadow(0 0 38px rgba(255, 140, 66, 0.45));
 }
 
+.altar-object.is-lit[data-type="candle"]::before,
 .altar-object.is-lit[data-type="candle"]::after {
   content: "";
   position: absolute;
-  top: 10%;
   left: 50%;
-  width: 7%;
-  height: 10%;
-  transform-origin: 50% 85%;
+  pointer-events: none;
+  transform-origin: 50% 100%;
+}
+
+.altar-object.is-lit[data-type="candle"]::before {
+  top: 21%;
+  width: 6%;
+  height: 8%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255, 250, 210, 1), rgba(255, 185, 80, 0.7) 55%, transparent 78%);
+  filter:
+    blur(0.2px)
+    drop-shadow(0 0 4px rgba(255, 210, 120, 0.7));
+  opacity: 0.9;
+  animation: candleBaseGlow 2.8s ease-in-out infinite alternate;
+}
+
+.altar-object.is-lit[data-type="candle"]::after {
+  top: 13%;
+  width: 8%;
+  height: 15%;
   border-radius: 50% 50% 45% 45%;
   background:
-    radial-gradient(circle at 50% 30%, rgba(255, 250, 210, 1), rgba(255, 190, 85, 0.62) 42%, rgba(255, 112, 45, 0.28) 62%, transparent 76%);
+    radial-gradient(circle at 50% 30%, rgba(255, 250, 210, 0.96), rgba(255, 190, 85, 0.58) 42%, rgba(255, 112, 45, 0.24) 62%, transparent 76%);
   filter:
     blur(0.3px)
-    drop-shadow(0 0 5px rgba(255, 210, 120, 0.78))
-    drop-shadow(0 0 10px rgba(255, 120, 40, 0.38));
-  opacity: 0.95;
-  pointer-events: none;
+    drop-shadow(0 0 5px rgba(255, 210, 120, 0.7))
+    drop-shadow(0 0 10px rgba(255, 120, 40, 0.32));
+  opacity: 0.92;
   animation:
-    candleFlicker var(--flame-flicker-speed, 1.8s) ease-in-out infinite alternate,
-    candleSway var(--flame-sway-speed, 3.2s) ease-in-out infinite alternate,
+    candleTopDance var(--flame-flicker-speed, 1.8s) ease-in-out infinite alternate,
     candleGlow var(--flame-glow-speed, 4s) ease-in-out infinite alternate;
   animation-delay:
     var(--flame-delay, 0s),
-    calc(var(--flame-delay, 0s) * 0.6),
-    calc(var(--flame-delay, 0s) * 0.3);
+    calc(var(--flame-delay, 0s) * 0.4);
 }
 
-@keyframes candleFlicker {
+@keyframes candleTopDance {
   0% {
-    transform: translateX(-50%) scale(0.95, 1.02);
+    transform: translateX(-50%) scale(0.92, 1.03) skewX(-2deg) rotate(-1deg);
   }
 
   45% {
-    transform: translateX(-50%) scale(1.02, 0.98);
+    transform: translateX(-50%) scale(1.02, 0.98) skewX(2deg) rotate(1deg);
   }
 
   100% {
-    transform: translateX(-50%) scale(0.98, 1.05);
+    transform: translateX(-50%) scale(0.96, 1.12) skewX(-1deg) rotate(-0.4deg);
   }
 }
 
-@keyframes candleSway {
+@keyframes candleBaseGlow {
   0% {
-    margin-left: -1px;
-    rotate: -1.5deg;
-  }
-
-  50% {
-    margin-left: 1px;
-    rotate: 1deg;
+    opacity: 0.78;
   }
 
   100% {
-    margin-left: 0;
-    rotate: -0.5deg;
+    opacity: 0.96;
   }
 }
 
 @keyframes candleGlow {
   0% {
     opacity: 0.78;
-    filter:
-      blur(0.3px)
-      drop-shadow(0 0 4px rgba(255, 210, 120, 0.65))
-      drop-shadow(0 0 8px rgba(255, 120, 40, 0.28));
   }
 
   50% {
     opacity: 1;
-    filter:
-      blur(0.35px)
-      drop-shadow(0 0 6px rgba(255, 220, 130, 0.85))
-      drop-shadow(0 0 13px rgba(255, 120, 40, 0.42));
   }
 
   100% {
-    opacity: 0.88;
-    filter:
-      blur(0.28px)
-      drop-shadow(0 0 5px rgba(255, 210, 120, 0.72))
-      drop-shadow(0 0 10px rgba(255, 120, 40, 0.35));
+    opacity: 0.86;
   }
 }
 
