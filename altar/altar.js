@@ -57,6 +57,7 @@ const globalMenu = altarGlobalControls.querySelector("[data-global-menu]");
 
 function updateEmptyMessage() {
   if (!altarStage || !emptyMessage) return;
+
   emptyMessage.hidden = altarStage.querySelectorAll(".altar-object").length > 0;
 }
 
@@ -66,6 +67,57 @@ function updateObjectTransform(object) {
   const flipped = object.dataset.flipped === "true" ? -1 : 1;
 
   object.style.transform = `scaleX(${flipped}) scale(${scale}) rotate(${rotation}deg)`;
+}
+
+function getDressings(candle) {
+  if (!candle || !candle.dataset.dressings) return [];
+
+  try {
+    return JSON.parse(candle.dataset.dressings);
+  } catch {
+    return [];
+  }
+}
+
+function saveDressings(candle, dressings) {
+  candle.dataset.dressings = JSON.stringify(dressings);
+}
+
+function formatDressingName(dressing) {
+  const herb = dressing.herb || "Unknown";
+  const form = dressing.form || "";
+
+  const prettyHerb = herb.charAt(0).toUpperCase() + herb.slice(1);
+  const prettyForm = form.charAt(0).toUpperCase() + form.slice(1);
+
+  return `${prettyHerb} ${prettyForm}`.trim();
+}
+
+function updateToolbarNotes(object) {
+  let notes = toolbar.querySelector(".altar-toolbar-notes");
+
+  if (!notes) {
+    notes = document.createElement("div");
+    notes.className = "altar-toolbar-notes";
+    toolbar.appendChild(notes);
+  }
+
+  if (!object || object.dataset.type !== "candle") {
+    notes.hidden = true;
+    notes.textContent = "";
+    return;
+  }
+
+  const dressings = getDressings(object);
+
+  if (dressings.length === 0) {
+    notes.hidden = true;
+    notes.textContent = "";
+    return;
+  }
+
+  notes.hidden = false;
+  notes.textContent = `Dressed with: ${dressings.map(formatDressingName).join(", ")}`;
 }
 
 function selectObject(object) {
@@ -78,6 +130,7 @@ function selectObject(object) {
   selectedObject = object;
   selectedObject.classList.add("is-selected");
   toolbar.hidden = false;
+
   updateToolbarNotes(selectedObject);
 }
 
@@ -88,6 +141,7 @@ function deselectObject() {
 
   selectedObject = null;
   toolbar.hidden = true;
+
   updateToolbarNotes(null);
 }
 
@@ -188,87 +242,55 @@ function canDressCandle(object) {
   return isOil || isDressableHerb;
 }
 
-function getDressings(candle) {
-  if (!candle || !candle.dataset.dressings) return [];
-
-  try {
-    return JSON.parse(candle.dataset.dressings);
-  } catch {
-    return [];
-  }
-}
-
-function formatDressingName(dressing) {
-  const herb = dressing.herb || "Unknown";
-  const form = dressing.form || "";
-
-  const prettyHerb = herb.charAt(0).toUpperCase() + herb.slice(1);
-  const prettyForm = form.charAt(0).toUpperCase() + form.slice(1);
-
-  return `${prettyHerb} ${prettyForm}`.trim();
-}
-
-function updateDressingRecord(candle) {
+function ensureCandleDressingLayers(candle) {
   if (!candle || candle.dataset.type !== "candle") return;
 
-  const oldRecord = candle.querySelector(".candle-dressing-record");
-  if (oldRecord) oldRecord.remove();
+  if (!candle.querySelector(".candle-dressing-flecks")) {
+    const flecks = document.createElement("span");
+    flecks.className = "candle-dressing-flecks";
+    candle.appendChild(flecks);
+  }
 
-  const dressings = getDressings(candle);
-  if (dressings.length === 0) return;
-
-  const record = document.createElement("span");
-  record.className = "candle-dressing-record";
-  record.textContent = `Dressed with: ${dressings.map(formatDressingName).join(", ")}`;
-
-  candle.appendChild(record);
+  if (!candle.querySelector(".candle-dressing-sheen")) {
+    const sheen = document.createElement("span");
+    sheen.className = "candle-dressing-sheen";
+    candle.appendChild(sheen);
+  }
 }
 
-function addCandleDressingVisual(candle, dressing) {
+function updateCandleDressingVisuals(candle) {
   if (!candle || candle.dataset.type !== "candle") return;
 
-  if (dressing.type === "oil") {
-    if (!candle.querySelector(".candle-dressing-sheen")) {
-      const sheen = document.createElement("span");
-      sheen.className = "candle-dressing-sheen";
-      candle.appendChild(sheen);
-    }
-  }
-
-  if (dressing.type === "herb") {
-    if (!candle.querySelector(".candle-dressing-flecks")) {
-      const flecks = document.createElement("span");
-      flecks.className = "candle-dressing-flecks";
-      candle.appendChild(flecks);
-    }
-  }
-}
-
-function dressCandle(candle, ingredient) {
-  if (!candle || candle.dataset.type !== "candle" || !ingredient) return;
-
-  const dressing = {
-    type: ingredient.dataset.type || "",
-    herb: ingredient.dataset.herb || "",
-    form: ingredient.dataset.form || "",
-    label: ingredient.dataset.label || ""
-  };
-
   const dressings = getDressings(candle);
-  dressings.push(dressing);
 
-  candle.dataset.dressings = JSON.stringify(dressings);
-  candle.classList.add("is-dressed");
+  const hasOil = dressings.some((dressing) => dressing.type === "oil");
+  const hasHerb = dressings.some(
+    (dressing) =>
+      dressing.type === "herb" &&
+      (dressing.form === "loose" || dressing.form === "powder")
+  );
 
-  addCandleDressingVisual(candle, dressing);
-  updateDressingRecord(candle);
+  candle.classList.toggle("is-dressed", dressings.length > 0);
+  candle.classList.toggle("has-oil-dressing", hasOil);
+  candle.classList.toggle("has-herb-dressing", hasHerb);
+
+  if (dressings.length > 0) {
+    ensureCandleDressingLayers(candle);
+  }
 }
 
 function beginCandleDressing(object) {
-  if (!canDressCandle(object)) return;
+  if (!canDressCandle(object) || !altarStage) return;
 
-  pendingCandleDressing = object;
+  pendingCandleDressing = {
+    type: object.dataset.type || "",
+    herb: object.dataset.herb || "",
+    form: object.dataset.form || "",
+    label: object.dataset.label || "Ingredient"
+  };
+
   altarStage.classList.add("is-dressing-candle");
+  toolbar.classList.add("is-dressing-mode");
 
   altarStage
     .querySelectorAll('.altar-object[data-type="candle"]')
@@ -283,12 +305,35 @@ function clearCandleDressingMode() {
   if (!altarStage) return;
 
   altarStage.classList.remove("is-dressing-candle");
+  toolbar.classList.remove("is-dressing-mode");
 
   altarStage
     .querySelectorAll(".can-receive-dressing")
     .forEach((object) => {
       object.classList.remove("can-receive-dressing");
     });
+}
+
+function dressCandle(candle) {
+  if (!pendingCandleDressing || !candle || candle.dataset.type !== "candle") return;
+
+  const dressings = getDressings(candle);
+
+  const alreadyAdded = dressings.some(
+    (dressing) =>
+      dressing.type === pendingCandleDressing.type &&
+      dressing.herb === pendingCandleDressing.herb &&
+      dressing.form === pendingCandleDressing.form
+  );
+
+  if (!alreadyAdded) {
+    dressings.push(pendingCandleDressing);
+  }
+
+  saveDressings(candle, dressings);
+  updateCandleDressingVisuals(candle);
+  selectObject(candle);
+  clearCandleDressingMode();
 }
 
 function startFlame(object) {
@@ -342,8 +387,8 @@ function deleteObject(object) {
   if (!object) return;
 
   if (object === selectedObject) {
-  cancelCandleDressing();
-}
+    clearCandleDressingMode();
+  }
 
   stopFlame(object);
   object.remove();
@@ -352,7 +397,7 @@ function deleteObject(object) {
 }
 
 function duplicateObject(object) {
-  if (!object) return;
+  if (!object || !altarStage) return;
 
   const clone = object.cloneNode(true);
 
@@ -362,7 +407,8 @@ function duplicateObject(object) {
   clone.style.top = `${(parseFloat(object.style.top) || 0) + 24}px`;
   clone.style.zIndex = highestLayer;
 
-  clone.classList.remove("is-selected", "is-dragging");
+  clone.classList.remove("is-selected", "is-dragging", "can-receive-dressing");
+
   updateCandleDressingVisuals(clone);
 
   if (clone.dataset.lit === "true") {
@@ -384,9 +430,9 @@ function makeDraggable(object) {
       dressCandle(object);
       return;
     }
-    
+
     selectObject(object);
-    
+
     if (object.dataset.locked === "true") return;
 
     activeObject = object;
@@ -491,6 +537,7 @@ function placeObject(options) {
   object.dataset.locked = "false";
   object.dataset.glowing = "false";
   object.dataset.lit = "false";
+  object.dataset.dressings = "[]";
 
   highestLayer += 1;
   object.style.zIndex = highestLayer;
@@ -566,19 +613,21 @@ altarTools.forEach((tool) => {
   });
 });
 
-globalToggle.addEventListener("click", (event) => {
-  event.stopPropagation();
+if (globalToggle && globalMenu) {
+  globalToggle.addEventListener("click", (event) => {
+    event.stopPropagation();
 
-  const isOpen = !globalMenu.hidden;
+    const isOpen = !globalMenu.hidden;
 
-  globalMenu.hidden = isOpen;
-  globalToggle.setAttribute("aria-expanded", String(!isOpen));
-  altarGlobalControls.classList.toggle("is-open", !isOpen);
-});
+    globalMenu.hidden = isOpen;
+    globalToggle.setAttribute("aria-expanded", String(!isOpen));
+    altarGlobalControls.classList.toggle("is-open", !isOpen);
+  });
+}
 
 altarGlobalControls.addEventListener("click", (event) => {
   const button = event.target.closest("[data-global-action]");
-  if (!button) return;
+  if (!button || !altarStage) return;
 
   const action = button.dataset.globalAction;
   const candles = altarStage.querySelectorAll('.altar-object[data-type="candle"]');
@@ -608,6 +657,7 @@ document.addEventListener("pointerdown", (event) => {
 
   if (!clickedObject && !clickedToolbar) {
     deselectObject();
+    clearCandleDressingMode();
   }
 
   if (!clickedGlobalControls && globalMenu) {
