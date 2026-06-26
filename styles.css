@@ -1431,9 +1431,47 @@ body.threshold-locked {
   background: rgba(185, 160, 93, 0.2);
 }
 
+/* =========================================================
+   15. FIXED LIGHT AND EXTINGUISH BUTTONS
+   ========================================================= */
+
+.altar-global-controls {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 998;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.45rem;
+  border: 1px solid rgba(185, 160, 93, 0.4);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at top, rgba(185, 160, 93, 0.16), transparent 60%),
+    rgba(10, 8, 6, 0.88);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(8px);
+}
+
+.altar-global-controls button {
+  border: 1px solid rgba(244, 236, 216, 0.22);
+  border-radius: 999px;
+  padding: 0.45rem 0.7rem;
+  color: var(--cream);
+  background: rgba(244, 236, 216, 0.08);
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.altar-global-controls button:hover,
+.altar-global-controls button:focus-visible {
+  border-color: var(--gold);
+  background: rgba(185, 160, 93, 0.2);
+}
 
 /* =========================================================
-   15. RESPONSIVE STYLES
+   16. RESPONSIVE STYLES
    ========================================================= */
 
 @media (max-width: 1000px) {
