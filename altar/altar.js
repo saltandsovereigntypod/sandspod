@@ -2,6 +2,14 @@ const altarStage = document.querySelector("[data-altar-stage]");
 const altarTools = document.querySelectorAll(".altar-item");
 const emptyMessage = document.querySelector("[data-empty-message]");
 const altarCabinet = document.querySelector(".altar-cabinet");
+const altarMobileBackdrop = document.createElement("button");
+altarMobileBackdrop.type = "button";
+altarMobileBackdrop.className = "altar-mobile-backdrop";
+altarMobileBackdrop.setAttribute("aria-label", "Close altar cabinet");
+
+const altarToast = document.createElement("div");
+altarToast.className = "altar-toast";
+altarToast.hidden = true;
 
 let activeObject = null;
 let selectedObject = null;
@@ -71,7 +79,9 @@ mobileCabinetToggle.textContent = "✦ Add Items";
 mobileCabinetToggle.setAttribute("aria-expanded", "false");
 
 if (altarCabinet) {
+  document.body.appendChild(altarMobileBackdrop);
   document.body.appendChild(mobileCabinetToggle);
+  document.body.appendChild(altarToast);
 }
 
 mobileCabinetToggle.addEventListener("click", () => {
@@ -79,6 +89,32 @@ mobileCabinetToggle.addEventListener("click", () => {
   mobileCabinetToggle.setAttribute("aria-expanded", String(isOpen));
   document.body.classList.toggle("altar-cabinet-open", isOpen);
 });
+
+function closeMobileCabinet() {
+  if (!altarCabinet) return;
+
+  altarCabinet.classList.remove("is-mobile-open");
+  document.body.classList.remove("altar-cabinet-open");
+  mobileCabinetToggle.setAttribute("aria-expanded", "false");
+}
+
+function showAltarToast(message) {
+  altarToast.textContent = message;
+  altarToast.hidden = false;
+  altarToast.classList.add("is-visible");
+
+  window.clearTimeout(showAltarToast.timeout);
+
+  showAltarToast.timeout = window.setTimeout(() => {
+    altarToast.classList.remove("is-visible");
+
+    window.setTimeout(() => {
+      altarToast.hidden = true;
+    }, 250);
+  }, 1600);
+}
+
+altarMobileBackdrop.addEventListener("click", closeMobileCabinet);
 
 const globalToggle = altarGlobalControls.querySelector("[data-global-toggle]");
 const globalMenu = altarGlobalControls.querySelector("[data-global-menu]");
@@ -789,10 +825,8 @@ altarTools.forEach((tool) => {
       color: tool.dataset.color || ""
     });
     
-    if (window.innerWidth <= 700 && altarCabinet) {
-      altarCabinet.classList.remove("is-mobile-open");
-      document.body.classList.remove("altar-cabinet-open");
-      mobileCabinetToggle.setAttribute("aria-expanded", "false");
+    if (window.innerWidth <= 700) {
+      closeMobileCabinet();
     }
   });
 });
@@ -816,16 +850,19 @@ altarGlobalControls.addEventListener("click", (event) => {
   const action = button.dataset.globalAction;
     if (action === "save-altar") {
       saveAltar();
+      showAltarToast("Altar saved");
       return;
     }
     
     if (action === "load-altar") {
       loadAltar();
+      showAltarToast("Altar loaded");
       return;
     }
     
     if (action === "clear-altar") {
       clearAltar();
+      showAltarToast("Altar cleared");
       return;
     }
   const candles = altarStage.querySelectorAll('.altar-object[data-type="candle"]');
