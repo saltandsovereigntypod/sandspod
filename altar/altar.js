@@ -9,6 +9,9 @@ let offsetY = 0;
 let highestLayer = 10;
 let pendingCandleDressing = null;
 
+const CANDLE_DRESSING_OVERLAY_SRC =
+  "../assets/altar/overlays/candle-dressing-overlay.png";
+
 const toolbar = document.createElement("div");
 toolbar.className = "altar-toolbar";
 toolbar.hidden = true;
@@ -57,7 +60,6 @@ const globalMenu = altarGlobalControls.querySelector("[data-global-menu]");
 
 function updateEmptyMessage() {
   if (!altarStage || !emptyMessage) return;
-
   emptyMessage.hidden = altarStage.querySelectorAll(".altar-object").length > 0;
 }
 
@@ -242,40 +244,33 @@ function canDressCandle(object) {
   return isOil || isDressableHerb;
 }
 
-function ensureCandleDressingLayers(candle) {
+function ensureCandleDressingOverlay(candle) {
   if (!candle || candle.dataset.type !== "candle") return;
 
-  if (!candle.querySelector(".candle-dressing-flecks")) {
-    const flecks = document.createElement("span");
-    flecks.className = "candle-dressing-flecks";
-    candle.appendChild(flecks);
-  }
+  if (candle.querySelector(".candle-dressing-overlay")) return;
 
-  if (!candle.querySelector(".candle-dressing-sheen")) {
-    const sheen = document.createElement("span");
-    sheen.className = "candle-dressing-sheen";
-    candle.appendChild(sheen);
-  }
+  const overlay = document.createElement("img");
+  overlay.className = "candle-dressing-overlay";
+  overlay.src = CANDLE_DRESSING_OVERLAY_SRC;
+  overlay.alt = "";
+  overlay.draggable = false;
+  overlay.setAttribute("aria-hidden", "true");
+
+  candle.appendChild(overlay);
 }
 
 function updateCandleDressingVisuals(candle) {
   if (!candle || candle.dataset.type !== "candle") return;
 
   const dressings = getDressings(candle);
-
-  const hasOil = dressings.some((dressing) => dressing.type === "oil");
-  const hasHerb = dressings.some(
-    (dressing) =>
-      dressing.type === "herb" &&
-      (dressing.form === "loose" || dressing.form === "powder")
-  );
+  const overlay = candle.querySelector(".candle-dressing-overlay");
 
   candle.classList.toggle("is-dressed", dressings.length > 0);
-  candle.classList.toggle("has-oil-dressing", hasOil);
-  candle.classList.toggle("has-herb-dressing", hasHerb);
 
   if (dressings.length > 0) {
-    ensureCandleDressingLayers(candle);
+    ensureCandleDressingOverlay(candle);
+  } else if (overlay) {
+    overlay.remove();
   }
 }
 
