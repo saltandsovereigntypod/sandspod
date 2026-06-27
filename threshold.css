@@ -1,0 +1,169 @@
+/* =========================================================
+   10. THRESHOLD GATE
+   ========================================================= */
+
+.threshold-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 1.5rem;
+  color: var(--cream);
+  background:
+    linear-gradient(rgba(8, 10, 8, 0.45), rgba(8, 10, 8, 0.78)),
+    url("https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1800&q=80") center/cover;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1.2s ease, visibility 1.2s ease;
+  overflow-y: auto;
+  align-items: start;
+}
+
+.threshold-gate.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.threshold-mist {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(244, 236, 216, 0.12), transparent 18rem),
+    radial-gradient(circle at 80% 70%, rgba(185, 160, 93, 0.12), transparent 20rem),
+    linear-gradient(120deg, transparent, rgba(244, 236, 216, 0.06), transparent);
+  animation: thresholdMist 12s ease-in-out infinite alternate;
+}
+
+.threshold-card {
+  position: relative;
+  width: min(760px, 100%);
+  padding: clamp(2rem, 6vw, 4rem);
+  text-align: center;
+  border: 1px solid rgba(185, 160, 93, 0.36);
+  border-radius: 1.4rem;
+  background:
+    radial-gradient(circle at top, rgba(185, 160, 93, 0.12), transparent 16rem),
+    linear-gradient(145deg, rgba(16, 33, 24, 0.82), rgba(8, 10, 8, 0.92));
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  margin: 2rem 0;
+}
+
+.threshold-card::before {
+  content: "";
+  position: absolute;
+  inset: 1rem;
+  border: 1px solid rgba(185, 160, 93, 0.22);
+  border-radius: 1rem;
+  pointer-events: none;
+}
+
+.threshold-eyebrow {
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.78rem;
+  margin-bottom: 1rem;
+}
+
+.threshold-card h1 {
+  max-width: none;
+  font-size: clamp(3.4rem, 9vw, 7rem);
+  line-height: 0.9;
+  margin-bottom: 1.25rem;
+}
+
+.threshold-invitation {
+  max-width: 52ch;
+  margin: 0 auto 2rem;
+  color: var(--cream);
+  font-size: 1.1rem;
+}
+
+.threshold-question {
+  max-width: 48ch;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  color: var(--cream);
+  font-style: italic;
+  border-left: 3px solid var(--gold);
+  background: rgba(185, 160, 93, 0.08);
+  border-radius: 0.75rem;
+}
+
+.threshold-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.threshold-button {
+  border: 1px solid rgba(244, 236, 216, 0.28);
+  border-radius: 999px;
+  padding: 0.85rem 1.2rem;
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.threshold-button:hover,
+.threshold-button:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--gold);
+}
+
+.threshold-button-primary {
+  background: var(--cream);
+  color: var(--forest);
+  font-weight: 700;
+}
+
+.threshold-button-quiet {
+  background: rgba(244, 236, 216, 0.06);
+  color: var(--cream);
+}
+
+.threshold-note {
+  margin: 2rem auto 0;
+  max-width: 48ch;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+body.threshold-locked {
+  overflow: hidden;
+}
+
+@keyframes thresholdMist {
+  from {
+    opacity: 0.55;
+    transform: translateX(-1rem);
+  }
+
+  to {
+    opacity: 0.9;
+    transform: translateX(1rem);
+  }
+}
+
+
+
+
+/* =========================================================
+   THRESHOLD RESPONSIVE STYLES
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .threshold-card h1 {
+    font-size: clamp(3rem, 16vw, 5rem);
+  }
+
+  .threshold-actions {
+    display: grid;
+  }
+}
