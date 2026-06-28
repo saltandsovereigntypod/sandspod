@@ -2,14 +2,13 @@
    SUPABASE CONFIGURATION
    ========================================================= */
 
-const SUPABASE_URL = "PASTE YOUR PROJECT URL HERE";
+const SUPABASE_URL = "YOUR PROJECT URL";
+const SUPABASE_ANON_KEY = "YOUR PUBLISHABLE KEY";
 
-const SUPABASE_ANON_KEY = "PASTE YOUR PUBLISHABLE KEY HERE";
-
-
-const supabase = window.supabase.createClient(
+/* Create our project client */
+const db = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_ANON_KEY
 );
 
-console.log("Supabase connected.");
+console.log("✨ Supabase connected!");
