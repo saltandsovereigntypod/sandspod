@@ -503,7 +503,6 @@ async function createPage(sectionId = activeSectionId) {
 
 async function openPage(pageId) {
   const page = pages.find((item) => item.id === pageId);
-
   if (!page) return;
 
   currentPage = page;
@@ -517,14 +516,36 @@ async function openPage(pageId) {
     grimoireEmpty.hidden = true;
   }
 
+  if (entryList) {
+    entryList.innerHTML = `
+      <article class="grimoire-page-editor">
+        <p class="grimoire-autosave-status">Opening page...</p>
+      </article>
+    `;
+  }
+
   renderShelf();
 
   try {
     await loadBlocks(page);
+
+    if (!Array.isArray(currentBlocks)) {
+      currentBlocks = [];
+    }
+
     renderPageEditor(page);
   } catch (error) {
     console.error("Could not open page blocks:", error);
-    setStatus(error.message || "This page could not be opened.");
+
+    if (entryList) {
+      entryList.innerHTML = `
+        <article class="grimoire-page-editor">
+          <p class="grimoire-autosave-status">
+            This page could not be opened: ${escapeHtml(error.message)}
+          </p>
+        </article>
+      `;
+    }
   }
 }
 
