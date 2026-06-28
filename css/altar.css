@@ -1174,3 +1174,69 @@
     font-size: 0.76rem;
   }
 }
+
+/* =========================================================
+   Save Altar Modal
+   ========================================================= */
+
+.altar-save-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.68);
+  backdrop-filter: blur(8px);
+}
+
+.altar-save-modal[hidden] {
+  display: none;
+}
+
+.altar-save-modal-card {
+  position: relative;
+  width: min(640px, 100%);
+  padding: clamp(1.5rem, 5vw, 3rem);
+  border: 1px solid rgba(185, 160, 93, 0.45);
+  border-radius: 1.3rem;
+  background:
+    radial-gradient(circle at top, rgba(185, 160, 93, 0.18), transparent 16rem),
+    linear-gradient(145deg, rgba(31, 24, 17, 0.98), rgba(8, 7, 5, 0.98));
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65);
+}
+
+.altar-save-modal-card::before {
+  content: "";
+  position: absolute;
+  inset: 0.9rem;
+  border: 1px solid rgba(185, 160, 93, 0.22);
+  border-radius: 0.95rem;
+  pointer-events: none;
+}
+
+.altar-save-modal-card h2 {
+  max-width: none;
+  color: var(--cream);
+  font-size: clamp(2.7rem, 7vw, 5rem);
+}
+
+.altar-save-modal-close {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  z-index: 2;
+  width: 2.2rem;
+  aspect-ratio: 1;
+  border: 1px solid rgba(244, 236, 216, 0.25);
+  border-radius: 50%;
+  color: var(--cream);
+  background: rgba(244, 236, 216, 0.08);
+  font: inherit;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+body.altar-modal-open {
+  overflow: hidden;
+}
