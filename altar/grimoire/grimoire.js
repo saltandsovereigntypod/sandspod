@@ -269,7 +269,6 @@ function renderShelf() {
 
   if (!signedIn) {
     grimoireShelf.innerHTML = `
-      <h2>Book</h2>
       <p class="grimoire-sidebar-note">
         Sign in to create sections and pages.
       </p>
@@ -280,16 +279,6 @@ function renderShelf() {
   const unsectionedPages = pages.filter((page) => !page.section_id);
 
   grimoireShelf.innerHTML = `
-    <h2>Book</h2>
-
-    <button class="grimoire-chapter" type="button" data-create-section>
-      ✦ New Section
-    </button>
-
-    <button class="grimoire-chapter" type="button" data-create-page>
-      📄 New Page
-    </button>
-
     <div class="grimoire-section-list">
       ${
         sections.length === 0 && unsectionedPages.length === 0
