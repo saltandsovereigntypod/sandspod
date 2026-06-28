@@ -512,16 +512,15 @@ async function openPage(pageId) {
     grimoireHeading.textContent = page.title;
   }
 
+  // Hide the empty state completely
   if (grimoireEmpty) {
     grimoireEmpty.hidden = true;
+    grimoireEmpty.style.display = "none";
   }
 
+  // Clear whatever was previously displayed
   if (entryList) {
-    entryList.innerHTML = `
-      <article class="grimoire-page-editor">
-        <p class="grimoire-autosave-status">Opening page...</p>
-      </article>
-    `;
+    entryList.innerHTML = "";
   }
 
   renderShelf();
@@ -529,20 +528,26 @@ async function openPage(pageId) {
   try {
     await loadBlocks(page);
 
+    console.log("Blocks loaded:", currentBlocks);
+
     if (!Array.isArray(currentBlocks)) {
       currentBlocks = [];
     }
 
-    console.log("Blocks loaded:", currentBlocks); 
     renderPageEditor(page);
+
+    // Verify something was actually rendered
+    console.log("Entry list after render:", entryList.innerHTML);
+
   } catch (error) {
     console.error("Could not open page blocks:", error);
 
     if (entryList) {
       entryList.innerHTML = `
         <article class="grimoire-page-editor">
+          <h2>Something went wrong</h2>
           <p class="grimoire-autosave-status">
-            This page could not be opened: ${escapeHtml(error.message)}
+            ${escapeHtml(error.message)}
           </p>
         </article>
       `;
@@ -565,13 +570,24 @@ async function loadBlocks(page) {
 
   currentBlocks = data || [];
 
-  if (currentBlocks.length === 0) {
-    const firstBlock = await createBlock("text", "", 0, false);
+  if (currentBlocks.length > 0) return;
 
-    if (firstBlock) {
-      currentBlocks = [firstBlock];
-    }
-  }
+  const { data: firstBlock, error: createError } = await db
+    .from("grimoire_blocks")
+    .insert({
+      user_id: user.id,
+      book_id: currentBook.id,
+      page_id: page.id,
+      block_type: "text",
+      content: "",
+      sort_order: 0
+    })
+    .select()
+    .single();
+
+  if (createError) throw createError;
+
+  currentBlocks = [firstBlock];
 }
 
 
@@ -581,6 +597,10 @@ async function loadBlocks(page) {
 
 function renderPageEditor(page) {
   if (!entryList) return;
+   if (grimoireEmpty) {
+     grimoireEmpty.hidden = true;
+     grimoireEmpty.style.display = "none";
+   }
 
   entryList.innerHTML = `
     <article class="grimoire-page-editor">
