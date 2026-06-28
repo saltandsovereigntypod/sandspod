@@ -519,8 +519,13 @@ async function openPage(pageId) {
 
   renderShelf();
 
-  await loadBlocks(page);
-  renderPageEditor(page);
+  try {
+    await loadBlocks(page);
+    renderPageEditor(page);
+  } catch (error) {
+    console.error("Could not open page blocks:", error);
+    setStatus(error.message || "This page could not be opened.");
+  }
 }
 
 async function loadBlocks(page) {
@@ -538,13 +543,13 @@ async function loadBlocks(page) {
 
   currentBlocks = data || [];
 
-   if (currentBlocks.length === 0) {
-     const firstBlock = await createBlock("text", "", 0, false);
-   
-     if (firstBlock) {
-       currentBlocks = [firstBlock];
-     }
-   }
+  if (currentBlocks.length === 0) {
+    const firstBlock = await createBlock("text", "", 0, false);
+
+    if (firstBlock) {
+      currentBlocks = [firstBlock];
+    }
+  }
 }
 
 
