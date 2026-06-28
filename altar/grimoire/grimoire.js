@@ -533,6 +533,7 @@ async function openPage(pageId) {
       currentBlocks = [];
     }
 
+    console.log("Blocks loaded:", currentBlocks); 
     renderPageEditor(page);
   } catch (error) {
     console.error("Could not open page blocks:", error);
