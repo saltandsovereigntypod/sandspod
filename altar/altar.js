@@ -1052,6 +1052,7 @@ function duplicateObject(object) {
 
 function toggleRitualSelectionMode() {
   altarSelectionMode = !altarSelectionMode;
+  altarStage.classList.toggle("is-selecting-ritual-items", altarSelectionMode);
 
   if (!altarSelectionMode) {
     clearRitualSelection();
@@ -1086,6 +1087,7 @@ function clearRitualSelection() {
 
   selectedRitualItems = [];
   altarSelectionMode = false;
+  altarStage.classList.remove("is-selecting-ritual-items");
 }
 
 function altarObjectToRitualItem(object) {
