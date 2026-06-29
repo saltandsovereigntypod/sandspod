@@ -45,18 +45,14 @@ const toolbar = document.createElement("div");
 toolbar.className = "altar-toolbar";
 toolbar.hidden = true;
 toolbar.innerHTML = `
-  <button type="button" data-action="smaller" title="Make smaller">−</button>
-  <button type="button" data-action="larger" title="Make larger">+</button>
-  <button type="button" data-action="rotate" title="Rotate">↻</button>
-  <button type="button" data-action="delete" title="Delete">🗑</button>
-  <button type="button" data-action="forward" title="Bring forward">⬆</button>
-  <button type="button" data-action="backward" title="Send backward">⬇</button>
-  <button type="button" data-action="flip" title="Flip horizontally">⇋</button>
-  <button type="button" data-action="lock" title="Lock position">🔒</button>
-  <button type="button" data-action="duplicate" title="Duplicate">⧉</button>
-  <button type="button" data-action="glow" title="Glow on/off">✦</button>
-  <button type="button" data-action="light" title="Light candle">🔥</button>
-  <button type="button" data-action="dress-candle" title="Dress candle">🕯️+</button>
+   <button type="button" data-global-action="light-all">🔥 Light All</button>
+   <button type="button" data-global-action="extinguish-all">💨 Extinguish All</button>
+   <button type="button" data-global-action="save-altar">💾 Save Altar</button>
+   <button type="button" data-global-action="load-altar">📜 Load Altar</button>
+   <button type="button" data-global-action="select-ritual-items">◻ Select Items</button>
+   <button type="button" data-global-action="group-ritual-items">🔗 Group Items</button>
+   <button type="button" data-global-action="send-group-to-grimoire">📖 Send to Grimoire</button>
+   <button type="button" data-global-action="clear-altar">🧹 Clear Altar</button>
 `;
 
 
@@ -1223,11 +1219,6 @@ altarGlobalControls.addEventListener("click", (event) => {
    
    if (action === "send-group-to-grimoire") {
      sendCurrentGroupToGrimoire();
-     return;
-   }
-   
-   if (action === "open-book") {
-     window.location.href = "../grimoire/index.html";
      return;
    }
    
