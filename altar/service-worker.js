@@ -6,7 +6,7 @@ const CORE_ASSETS = [
   "/sandspod/css/styles.css",
   "/sandspod/css/threshold.css",
   "/sandspod/css/blog.css",
-  "/sandspod/css/altar.css",
+  "/sandspod/altar/altar.css",
   "/sandspod/script.js",
   "/sandspod/altar/altar.js",
   "/sandspod/posts.json",
