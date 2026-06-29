@@ -1005,3 +1005,45 @@
     radial-gradient(circle at top, rgba(185, 160, 93, 0.1), transparent 16rem),
     rgba(8, 10, 8, 0.3);
 }
+
+.book-section-row,
+.book-page-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.book-toc-move-controls {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.book-toc-move-controls button {
+  display: grid;
+  place-items: center;
+  width: 1.65rem;
+  aspect-ratio: 1;
+  border: 1px solid rgba(244, 236, 216, 0.16);
+  border-radius: 999px;
+  color: rgba(244, 236, 216, 0.58);
+  background: rgba(244, 236, 216, 0.04);
+  font: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.book-toc-move-controls button:hover,
+.book-toc-move-controls button:focus-visible {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.book-toc-move-controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.25;
+}
+
+.book-page-row .book-page-link {
+  min-width: 0;
+}
