@@ -25,6 +25,7 @@ let shouldSaveAfterAuth = false;
 let altarSelectionMode = false;
 let selectedRitualItems = [];
 let currentRitualGroup = null;
+let currentGroupObjects = [];
 
 const ALTAR_GRIMOIRE_HANDOFF_KEY = "saltAndSovereigntyAltarToGrimoire";
 
@@ -109,12 +110,19 @@ const altarToast = document.createElement("div");
 altarToast.className = "altar-toast";
 altarToast.hidden = true;
 
+/* ---------- Current Ritual Group ---------- */
+
+const altarGroupIndicator = document.createElement("div");
+altarGroupIndicator.className = "altar-group-indicator";
+altarGroupIndicator.hidden = true;
+
 const altarInfoCard = document.createElement("aside");
 altarInfoCard.className = "altar-info-card";
 altarInfoCard.hidden = true;
 altarInfoCard.setAttribute("aria-live", "polite");
 
 if (altarStage) {
+  altarStage.appendChild(altarGroupIndicator);
   altarStage.appendChild(altarInfoCard);
 }
 
@@ -922,8 +930,31 @@ function makeDraggable(object) {
       y = Math.max(0, Math.min(y, Math.max(0, maxY)));
     }
 
+     const oldX = parseFloat(object.style.left) || 0;
+     const oldY = parseFloat(object.style.top) || 0;
+     const deltaX = x - oldX;
+     const deltaY = y - oldY;
+
     object.style.left = `${x}px`;
     object.style.top = `${y}px`;
+
+     if (
+        object.dataset.groupId &&
+        currentRitualGroup &&
+        object.dataset.groupId === currentRitualGroup.id
+      ) {
+        currentGroupObjects.forEach((groupObject) => {
+          if (groupObject === object) return;
+      
+          const groupX = parseFloat(groupObject.style.left) || 0;
+          const groupY = parseFloat(groupObject.style.top) || 0;
+      
+          groupObject.style.left = `${groupX + deltaX}px`;
+          groupObject.style.top = `${groupY + deltaY}px`;
+      
+          keepObjectInsideStage(groupObject);
+        });
+      }
   });
 
   object.addEventListener("pointerup", () => {
@@ -1103,28 +1134,46 @@ function groupSelectedRitualItems() {
     return;
   }
 
+  clearCurrentGroup();
+
   const groupName =
-    window.prompt("Name this ritual group:", "Ritual Working") || "Ritual Working";
+    window.prompt("Name this group:", "Ritual Working") || "Ritual Working";
+
+  const groupId = crypto.randomUUID ? crypto.randomUUID() : String(Date.now());
+
+  currentGroupObjects = [...selectedRitualItems];
+
+  currentGroupObjects.forEach((object) => {
+    object.dataset.groupId = groupId;
+    object.classList.add("is-ritual-grouped");
+  });
 
   currentRitualGroup = {
+    id: groupId,
     name: groupName.trim() || "Ritual Working",
     createdAt: new Date().toISOString(),
-    items: selectedRitualItems.map(altarObjectToRitualItem)
+    items: currentGroupObjects.map(altarObjectToRitualItem)
   };
 
   clearRitualSelection();
-  showAltarToast("Ritual group created");
+  updateGroupIndicator();
+  showAltarToast("Group created");
 }
 
 function sendCurrentGroupToGrimoire() {
-  if (!currentRitualGroup || !currentRitualGroup.items.length) {
+  if (!currentRitualGroup || currentGroupObjects.length === 0) {
     showAltarToast("Create a group first");
     return;
   }
 
+  const handoffGroup = {
+    ...currentRitualGroup,
+    items: currentGroupObjects.map(altarObjectToRitualItem)
+  };
+
   localStorage.setItem(
     ALTAR_GRIMOIRE_HANDOFF_KEY,
-    JSON.stringify(currentRitualGroup)
+    JSON.stringify(handoffGroup)
   );
 
   window.location.href = "../grimoire/index.html?import=altar";
