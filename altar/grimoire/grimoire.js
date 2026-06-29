@@ -1867,9 +1867,9 @@ function updateMundaneModeUI() {
     mundaneToggle.checked = mundaneMode;
   }
 
-  const coverEyebrow = document.querySelector(".grimoire-cover .eyebrow");
-  const coverTitle = document.querySelector(".grimoire-cover h1");
-  const coverText = document.querySelector(".grimoire-cover p");
+  const coverEyebrow = document.querySelector("[data-cover-eyebrow]");
+  const coverTitle = document.querySelector("[data-cover-title]");
+  const coverText = document.querySelector("[data-cover-text]");
 
   if (coverEyebrow) {
     coverEyebrow.textContent = mundaneMode ? "Private Journal" : "Private Grimoire";
