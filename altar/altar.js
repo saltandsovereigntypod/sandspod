@@ -24,8 +24,8 @@ let pendingCandleDressing = null;
 let shouldSaveAfterAuth = false;
 let altarSelectionMode = false;
 let selectedRitualItems = [];
-let currentRitualGroup = null;
-let currentGroupObjects = [];
+let altarGroups = [];
+let activeGroupId = null;
 
 const ALTAR_GRIMOIRE_HANDOFF_KEY = "saltAndSovereigntyAltarToGrimoire";
 
@@ -86,6 +86,7 @@ altarGlobalControls.innerHTML = `
      <button type="button" data-global-action="load-altar">📜 Load</button>
      <button type="button" data-global-action="select-ritual-items">◻ Select</button>
      <button type="button" data-global-action="group-ritual-items">🔗 Group</button>
+     <button type="button" data-global-action="ungroup-ritual-items">🔓 Ungroup</button>
      <button type="button" data-global-action="send-group-to-grimoire">📖 Grimoire</button>
      <button type="button" data-global-action="clear-altar">🧹 Clear</button>
    </div>
@@ -941,23 +942,21 @@ function makeDraggable(object) {
     object.style.left = `${x}px`;
     object.style.top = `${y}px`;
 
-     if (
-        object.dataset.groupId &&
-        currentRitualGroup &&
-        object.dataset.groupId === currentRitualGroup.id
-      ) {
-        currentGroupObjects.forEach((groupObject) => {
-          if (groupObject === object) return;
-      
-          const groupX = parseFloat(groupObject.style.left) || 0;
-          const groupY = parseFloat(groupObject.style.top) || 0;
-      
-          groupObject.style.left = `${groupX + deltaX}px`;
-          groupObject.style.top = `${groupY + deltaY}px`;
-      
-          keepObjectInsideStage(groupObject);
-        });
-      }
+    if (object.dataset.groupId) {
+      const groupObjects = getGroupObjects(object.dataset.groupId);
+
+      groupObjects.forEach((groupObject) => {
+        if (groupObject === object) return;
+
+        const groupX = parseFloat(groupObject.style.left) || 0;
+        const groupY = parseFloat(groupObject.style.top) || 0;
+
+        groupObject.style.left = `${groupX + deltaX}px`;
+        groupObject.style.top = `${groupY + deltaY}px`;
+
+        keepObjectInsideStage(groupObject);
+      });
+    }
   });
 
   object.addEventListener("pointerup", () => {
@@ -1092,7 +1091,7 @@ function toggleRitualSelectionMode() {
 
   deselectObject();
   clearCandleDressingMode();
-  showAltarToast("Select ritual items");
+  showAltarToast("Select items");
 }
 
 function toggleRitualItem(object) {
@@ -1122,6 +1121,7 @@ function clearRitualSelection() {
 
 function altarObjectToRitualItem(object) {
   return {
+    id: object.dataset.altarObjectId || "",
     label: object.dataset.label || "Altar Item",
     type: object.dataset.type || "item",
     herb: object.dataset.herb || "",
@@ -1131,29 +1131,73 @@ function altarObjectToRitualItem(object) {
   };
 }
 
+function ensureObjectId(object) {
+  if (!object.dataset.altarObjectId) {
+    object.dataset.altarObjectId =
+      crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random());
+  }
+
+  return object.dataset.altarObjectId;
+}
+
+function getGroupObjects(groupId) {
+  return Array.from(altarStage.querySelectorAll(`.altar-object[data-group-id="${groupId}"]`));
+}
+
+function getActiveGroup() {
+  return altarGroups.find((group) => group.id === activeGroupId) || null;
+}
+
 function updateGroupIndicator() {
   if (!altarGroupIndicator) return;
 
-  if (!currentRitualGroup || currentGroupObjects.length === 0) {
+  const activeGroup = getActiveGroup();
+
+  if (!activeGroup) {
     altarGroupIndicator.hidden = true;
     altarGroupIndicator.textContent = "";
     return;
   }
 
+  const itemCount = getGroupObjects(activeGroup.id).length;
+
   altarGroupIndicator.hidden = false;
   altarGroupIndicator.textContent =
-    `Current group: ${currentRitualGroup.name} · ${currentGroupObjects.length} item${currentGroupObjects.length === 1 ? "" : "s"}`;
+    `Active group: ${activeGroup.name} · ${itemCount} item${itemCount === 1 ? "" : "s"}`;
 }
 
-function clearCurrentGroup() {
-  currentGroupObjects.forEach((object) => {
-    object.classList.remove("is-ritual-grouped");
-    delete object.dataset.groupId;
-  });
+function chooseActiveGroup() {
+  if (altarGroups.length === 0) {
+    showAltarToast("Create a group first");
+    return null;
+  }
 
-  currentGroupObjects = [];
-  currentRitualGroup = null;
+  if (altarGroups.length === 1) {
+    activeGroupId = altarGroups[0].id;
+    updateGroupIndicator();
+    return altarGroups[0];
+  }
+
+  const groupList = altarGroups
+    .map((group, index) => {
+      const itemCount = getGroupObjects(group.id).length;
+      return `${index + 1}. ${group.name} (${itemCount} item${itemCount === 1 ? "" : "s"})`;
+    })
+    .join("\n");
+
+  const choice = window.prompt(`Choose a group:\n\n${groupList}`, "1");
+  const selectedIndex = Number(choice) - 1;
+  const selectedGroup = altarGroups[selectedIndex];
+
+  if (!selectedGroup) {
+    showAltarToast("No group selected");
+    return null;
+  }
+
+  activeGroupId = selectedGroup.id;
   updateGroupIndicator();
+
+  return selectedGroup;
 }
 
 function groupSelectedRitualItems() {
@@ -1162,48 +1206,67 @@ function groupSelectedRitualItems() {
     return;
   }
 
-  clearCurrentGroup();
-
   const groupName =
     window.prompt("Name this group:", "Ritual Working") || "Ritual Working";
 
   const groupId = crypto.randomUUID ? crypto.randomUUID() : String(Date.now());
 
-  currentGroupObjects = [...selectedRitualItems];
-
-  currentGroupObjects.forEach((object) => {
+  selectedRitualItems.forEach((object) => {
+    ensureObjectId(object);
     object.dataset.groupId = groupId;
-    object.classList.add("is-ritual-grouped");
+    object.classList.remove("is-ritual-selected");
   });
 
-  currentRitualGroup = {
+  const newGroup = {
     id: groupId,
     name: groupName.trim() || "Ritual Working",
-    createdAt: new Date().toISOString(),
-    items: currentGroupObjects.map(altarObjectToRitualItem)
+    createdAt: new Date().toISOString()
   };
 
-   selectedRitualItems.forEach((object) => {
-     object.classList.remove("is-ritual-selected");
-   });
-   
-   selectedRitualItems = [];
-   altarSelectionMode = false;
-   altarStage.classList.remove("is-selecting-ritual-items");
-   
-   updateGroupIndicator();
-   showAltarToast("Group created");
+  altarGroups.push(newGroup);
+  activeGroupId = groupId;
+
+  selectedRitualItems = [];
+  altarSelectionMode = false;
+  altarStage.classList.remove("is-selecting-ritual-items");
+
+  updateGroupIndicator();
+  showAltarToast("Group created");
+}
+
+function ungroupCurrentItems() {
+  const activeGroup = chooseActiveGroup();
+  if (!activeGroup) return;
+
+  const groupObjects = getGroupObjects(activeGroup.id);
+
+  groupObjects.forEach((object) => {
+    delete object.dataset.groupId;
+  });
+
+  altarGroups = altarGroups.filter((group) => group.id !== activeGroup.id);
+  activeGroupId = altarGroups.length > 0 ? altarGroups[0].id : null;
+
+  updateGroupIndicator();
+  showAltarToast("Group removed");
 }
 
 function sendCurrentGroupToGrimoire() {
-  if (!currentRitualGroup || currentGroupObjects.length === 0) {
-    showAltarToast("Create a group first");
+  const activeGroup = chooseActiveGroup();
+  if (!activeGroup) return;
+
+  const groupObjects = getGroupObjects(activeGroup.id);
+
+  if (groupObjects.length === 0) {
+    showAltarToast("That group is empty");
     return;
   }
 
   const handoffGroup = {
-    ...currentRitualGroup,
-    items: currentGroupObjects.map(altarObjectToRitualItem)
+    id: activeGroup.id,
+    name: activeGroup.name,
+    createdAt: activeGroup.createdAt,
+    items: groupObjects.map(altarObjectToRitualItem)
   };
 
   localStorage.setItem(
@@ -1299,6 +1362,11 @@ altarGlobalControls.addEventListener("click", (event) => {
    if (action === "group-ritual-items") {
      groupSelectedRitualItems();
      return;
+   }
+
+   if (action === "ungroup-ritual-items") {
+       ungroupCurrentItems();
+       return;
    }
    
    if (action === "send-group-to-grimoire") {
