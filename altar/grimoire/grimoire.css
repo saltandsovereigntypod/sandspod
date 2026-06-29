@@ -602,3 +602,23 @@
     display: grid;
   }
 }
+
+.book-page {
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(185, 160, 93, 0.45) transparent;
+}
+
+.book-page::-webkit-scrollbar {
+  width: 6px;
+}
+
+.book-page::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.book-page::-webkit-scrollbar-thumb {
+  background: rgba(185, 160, 93, 0.45);
+  border-radius: 999px;
+}
