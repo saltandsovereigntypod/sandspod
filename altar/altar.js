@@ -22,6 +22,11 @@ let offsetY = 0;
 let highestLayer = 10;
 let pendingCandleDressing = null;
 let shouldSaveAfterAuth = false;
+let altarSelectionMode = false;
+let selectedRitualItems = [];
+let currentRitualGroup = null;
+
+const ALTAR_GRIMOIRE_HANDOFF_KEY = "saltAndSovereigntyAltarToGrimoire";
 
 const ALTAR_STORAGE_KEY = "saltAndSovereigntySavedAltar";
 
@@ -78,6 +83,9 @@ altarGlobalControls.innerHTML = `
      <button type="button" data-global-action="extinguish-all">💨 All</button>
      <button type="button" data-global-action="save-altar">💾 Save</button>
      <button type="button" data-global-action="load-altar">📜 Load</button>
+     <button type="button" data-global-action="select-ritual-items">◻ Select</button>
+     <button type="button" data-global-action="group-ritual-items">🔗 Group</button>
+     <button type="button" data-global-action="send-group-to-grimoire">📖 Grimoire</button>
      <button type="button" data-global-action="open-book">📖 Book</button>
      <button type="button" data-global-action="clear-altar">🧹 Clear</button>
    </div>
@@ -831,9 +839,14 @@ function makeDraggable(object) {
       return;
     }
 
-    selectObject(object);
-
-    if (object.dataset.locked === "true") return;
+      if (altarSelectionMode) {
+        toggleRitualItem(object);
+        return;
+      }
+      
+      selectObject(object);
+      
+      if (object.dataset.locked === "true") return;
 
     activeObject = object;
 
@@ -998,6 +1011,87 @@ function duplicateObject(object) {
   updateEmptyMessage();
 }
 
+function toggleRitualSelectionMode() {
+  altarSelectionMode = !altarSelectionMode;
+
+  if (!altarSelectionMode) {
+    clearRitualSelection();
+    showAltarToast("Selection cancelled");
+    return;
+  }
+
+  deselectObject();
+  clearCandleDressingMode();
+  showAltarToast("Select ritual items");
+}
+
+function toggleRitualItem(object) {
+  if (!object) return;
+
+  const alreadySelected = selectedRitualItems.includes(object);
+
+  if (alreadySelected) {
+    selectedRitualItems = selectedRitualItems.filter((item) => item !== object);
+    object.classList.remove("is-ritual-selected");
+    return;
+  }
+
+  selectedRitualItems.push(object);
+  object.classList.add("is-ritual-selected");
+}
+
+function clearRitualSelection() {
+  selectedRitualItems.forEach((object) => {
+    object.classList.remove("is-ritual-selected");
+  });
+
+  selectedRitualItems = [];
+  altarSelectionMode = false;
+}
+
+function altarObjectToRitualItem(object) {
+  return {
+    label: object.dataset.label || "Altar Item",
+    type: object.dataset.type || "item",
+    herb: object.dataset.herb || "",
+    form: object.dataset.form || "",
+    color: object.dataset.color || "",
+    dressings: object.dataset.dressings || "[]"
+  };
+}
+
+function groupSelectedRitualItems() {
+  if (selectedRitualItems.length === 0) {
+    showAltarToast("Select items first");
+    return;
+  }
+
+  const groupName =
+    window.prompt("Name this ritual group:", "Ritual Working") || "Ritual Working";
+
+  currentRitualGroup = {
+    name: groupName.trim() || "Ritual Working",
+    createdAt: new Date().toISOString(),
+    items: selectedRitualItems.map(altarObjectToRitualItem)
+  };
+
+  clearRitualSelection();
+  showAltarToast("Ritual group created");
+}
+
+function sendCurrentGroupToGrimoire() {
+  if (!currentRitualGroup || !currentRitualGroup.items.length) {
+    showAltarToast("Create a group first");
+    return;
+  }
+
+  localStorage.setItem(
+    ALTAR_GRIMOIRE_HANDOFF_KEY,
+    JSON.stringify(currentRitualGroup)
+  );
+
+  window.location.href = "../grimoire/index.html?import=altar";
+}
 
 /* =========================================================
    14. EVENT LISTENERS
@@ -1076,6 +1170,21 @@ altarGlobalControls.addEventListener("click", (event) => {
 
   const action = button.dataset.globalAction;
 
+   if (action === "select-ritual-items") {
+     toggleRitualSelectionMode();
+     return;
+   }
+   
+   if (action === "group-ritual-items") {
+     groupSelectedRitualItems();
+     return;
+   }
+   
+   if (action === "send-group-to-grimoire") {
+     sendCurrentGroupToGrimoire();
+     return;
+   }
+   
    if (action === "open-book") {
      window.location.href = "../grimoire/index.html";
      return;
