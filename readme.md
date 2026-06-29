@@ -1,67 +1,89 @@
-Salt & Sovereignty
+<h1>Salt &amp; Sovereignty</h1>
 
-Salt & Sovereignty is a digital platform created by Salt & Sovereignty LLC, designed to support witchcraft, healing, spiritual practice, and self-reclamation through education, storytelling, and interactive tools.
+<p>
+  <strong>Salt &amp; Sovereignty</strong> is a digital platform created by
+  <strong>Salt &amp; Sovereignty LLC</strong>, designed to support witchcraft,
+  healing, spiritual practice, and self-reclamation through education,
+  storytelling, and interactive tools.
+</p>
 
-The platform serves as the home of the Salt & Sovereignty podcast, The Lost Goddess Trilogy, a growing journal and grimoire, and a collection of digital experiences designed to make spiritual practice more accessible for people of all backgrounds and circumstances.
+<p>
+  The platform serves as the home of the <strong>Salt &amp; Sovereignty</strong>
+  podcast, <em>The Lost Goddess Trilogy</em>, a growing journal and grimoire,
+  and a collection of digital experiences designed to make spiritual practice
+  more accessible.
+</p>
 
-Built primarily with HTML, CSS, Vanilla JavaScript, and Supabase, the project intentionally favors simplicity, accessibility, and long-term maintainability over large frameworks.
+<p>
+  Built primarily with HTML, CSS, Vanilla JavaScript, and Supabase, the project
+  intentionally favors simplicity, accessibility, and long-term maintainability
+  over large frameworks.
+</p>
 
-Platform Features
+<h2>Platform Features</h2>
 
-Website
+<h3>Website</h3>
+<ul>
+  <li>Responsive witchcore-inspired design</li>
+  <li>Podcast homepage with embedded player</li>
+  <li>Journal and grimoire-style blog</li>
+  <li>Author platform for <em>The Lost Goddess Trilogy</em></li>
+  <li>Threshold landing experience</li>
+  <li>Accessibility-minded design</li>
+  <li>Responsive navigation across desktop and mobile</li>
+</ul>
 
-* Responsive witchcore-inspired design
-* Podcast homepage with embedded player
-* Journal and grimoire-style blog
-* Author platform for The Lost Goddess Trilogy
-* Threshold (landing) experience
-* Accessibility-minded design
-* Responsive navigation across desktop and mobile
+<h3>Digital Altar</h3>
 
-Digital Altar
+<p>
+  The Digital Altar provides an interactive ritual space for practitioners who
+  may not have access to a physical altar.
+</p>
 
-The Digital Altar provides an interactive ritual space for practitioners who may not have access to a physical altar.
+<ul>
+  <li>Drag-and-drop altar building</li>
+  <li>Resize, rotate, flip, duplicate, and layer altar objects</li>
+  <li>Object locking</li>
+  <li>Animated candle lighting and extinguishing</li>
+  <li>Glow effects</li>
+  <li>Herb and oil dressing with visual overlays</li>
+  <li>Grouping ritual items together</li>
+  <li>Save, load, edit, and delete altar layouts</li>
+  <li>Cloud synchronization through user accounts</li>
+  <li>Mobile-optimized altar interface</li>
+</ul>
 
-Features include:
+<h3>Digital Grimoire</h3>
 
-* Drag-and-drop altar building
-* Resize, rotate, flip, duplicate, and layer altar objects
-* Object locking
-* Animated candle lighting and extinguishing
-* Glow effects
-* Herb and oil dressing with visual overlays
-* Grouping ritual items together
-* Save, load, edit, and delete altar layouts
-* Cloud synchronization through user accounts
-* Mobile-optimized altar interface
+<p>
+  The Digital Grimoire is designed as a customizable personal Book of Shadows.
+</p>
 
-Digital Grimoire
+<ul>
+  <li>Custom pages and sections</li>
+  <li>Reorderable content</li>
+  <li>Multiple content block types</li>
+  <li>Integration with altar rituals</li>
+  <li>Optional discreet mundane journal mode</li>
+  <li>Personal notes and reflections</li>
+  <li>Future search and organization tools</li>
+</ul>
 
-The Digital Grimoire is designed as a customizable personal Book of Shadows.
+<h2>Technologies</h2>
 
-Current and planned functionality includes:
+<ul>
+  <li>HTML5</li>
+  <li>CSS3</li>
+  <li>Vanilla JavaScript</li>
+  <li>Supabase for authentication and database storage</li>
+  <li>GitHub Pages for frontend hosting</li>
+</ul>
 
-* Custom pages and sections
-* Reorderable content
-* Multiple content block types
-* Integration with altar rituals
-* Optional discreet (“mundane journal”) mode
-* Personal notes and reflections
-* Future search and organization tools
+<p>No frontend frameworks or build tools are required.</p>
 
-Technologies
+<h2>Project Structure</h2>
 
-* HTML5
-* CSS3
-* Vanilla JavaScript
-* Supabase (Authentication & Database)
-* GitHub Pages (Frontend Hosting)
-
-No frontend frameworks or build tools are required.
-
-Project Structure
-
-/
+<pre><code>/
 ├── index.html
 ├── styles.css
 ├── script.js
@@ -72,42 +94,70 @@ Project Structure
 ├── posts.json
 ├── README.md
 └── LICENSE
+</code></pre>
 
-Local Development
+<h2>Local Development</h2>
 
-Clone the repository and open index.html, or serve the project using any static web server.
+<p>
+  Clone the repository and open <code>index.html</code>, or serve the project
+  using any static web server.
+</p>
 
-The frontend is completely framework-free. Supabase provides authentication and cloud data storage for platform features that require user accounts.
+<p>
+  The frontend is completely framework-free. Supabase provides authentication
+  and cloud data storage for platform features that require user accounts.
+</p>
 
-Vision
+<h2>Vision</h2>
 
-Salt & Sovereignty is being developed as a long-term platform that combines education, storytelling, spiritual practice, and creative tools into a single, accessible experience.
+<p>
+  Salt &amp; Sovereignty is being developed as a long-term platform that combines
+  education, storytelling, spiritual practice, and creative tools into a single,
+  accessible experience.
+</p>
 
-The goal is to create thoughtful digital spaces where people can explore witchcraft, maintain a personal grimoire, build ritual spaces, learn through podcast episodes and articles, and engage with spiritual practice in ways that honor their individual paths.
+<p>
+  The goal is to create thoughtful digital spaces where people can explore
+  witchcraft, maintain a personal grimoire, build ritual spaces, learn through
+  podcast episodes and articles, and engage with spiritual practice in ways that
+  honor their individual paths.
+</p>
 
-Roadmap
+<h2>Roadmap</h2>
 
-Planned additions include:
+<ul>
+  <li>Expanded herb, crystal, deity, incense, oil, and ritual object libraries</li>
+  <li>Ritual planner and spell builder</li>
+  <li>Enhanced Digital Grimoire features</li>
+  <li>Additional altar customization</li>
+  <li>Import and export tools</li>
+  <li>Cross-device synchronization</li>
+  <li>Educational correspondences database</li>
+  <li>Optional community features</li>
+  <li>Additional accessibility improvements</li>
+  <li>Progressive Web App support</li>
+</ul>
 
-* Expanded herb, crystal, deity, incense, oil, and ritual object libraries
-* Ritual planner and spell builder
-* Enhanced Digital Grimoire features
-* Additional altar customization
-* Import and export tools
-* Cross-device synchronization
-* Educational correspondences database
-* Optional community features
-* Additional accessibility improvements
-* Progressive Web App (PWA) support
+<h2>License</h2>
 
-License
+<p>Copyright &copy; 2026 Salt &amp; Sovereignty LLC.</p>
 
-Copyright © 2026 Salt & Sovereignty LLC.
+<p>
+  This repository is publicly accessible for educational and reference purposes
+  only.
+</p>
 
-This repository is publicly accessible for educational and reference purposes only.
+<p>
+  Unless otherwise stated, all source code, artwork, graphics, written content,
+  branding, user interface design, podcast content, and materials relating to
+  <strong>Salt &amp; Sovereignty</strong> and <em>The Lost Goddess Trilogy</em>
+  are the intellectual property of Salt &amp; Sovereignty LLC.
+</p>
 
-Unless otherwise stated, all source code, artwork, graphics, written content, branding, user interface design, podcast content, and materials relating to Salt & Sovereignty and The Lost Goddess Trilogy are the intellectual property of Salt & Sovereignty LLC.
+<p>
+  No permission is granted to copy, reproduce, redistribute, modify, publish,
+  sublicense, sell, or create derivative works from this project without prior
+  written permission from Salt &amp; Sovereignty LLC.
+</p>
 
-No permission is granted to copy, reproduce, redistribute, modify, publish, sublicense, sell, or create derivative works from this project without prior written permission from Salt & Sovereignty LLC.
-
-See the accompanying LICENSE file for the complete terms.
+<p>See the accompanying <code>LICENSE</code> file for the complete terms.</p>
