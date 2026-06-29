@@ -28,7 +28,7 @@ let currentRitualGroup = null;
 
 const ALTAR_GRIMOIRE_HANDOFF_KEY = "saltAndSovereigntyAltarToGrimoire";
 
-const ALTAR_STORAGE_KEY = "saltAndSovereigntySavedAltar";
+const ALTAR_STORAGE_KEY = "saltAndSovereigntySavedAltars";
 
 const CANDLE_HERB_OVERLAY_SRC =
   "../assets/altar/overlays/candle-herb-overlay.png";
@@ -663,8 +663,24 @@ function dressCandle(candle) {
    12. SAVE, LOAD, AND CLEAR
    ========================================================= */
 
+function getSavedAltars() {
+  const saved = localStorage.getItem(ALTAR_STORAGE_KEY);
+
+  if (!saved) return [];
+
+  try {
+    const parsed = JSON.parse(saved);
+    return Array.isArray(parsed) ? parsed : [parsed];
+  } catch {
+    return [];
+  }
+}
+
 function saveAltar() {
   if (!altarStage) return;
+
+  const altarName =
+    window.prompt("Name this altar save:", "My Altar") || "My Altar";
 
   const objects = Array.from(altarStage.querySelectorAll(".altar-object")).map(
     (object) => {
@@ -692,12 +708,19 @@ function saveAltar() {
   );
 
   const altarData = {
+    id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+    name: altarName.trim() || "My Altar",
+    savedAt: new Date().toISOString(),
     background: altarStage.dataset.background || "",
     backgroundName: altarStage.dataset.backgroundName || "",
     objects
   };
 
-  localStorage.setItem(ALTAR_STORAGE_KEY, JSON.stringify(altarData));
+  const savedAltars = getSavedAltars();
+  savedAltars.unshift(altarData);
+
+  localStorage.setItem(ALTAR_STORAGE_KEY, JSON.stringify(savedAltars));
+  showAltarToast(`Saved: ${altarData.name}`);
 }
 
 function createSavedObject(savedObject) {
@@ -764,22 +787,37 @@ function createSavedObject(savedObject) {
 function loadAltar() {
   if (!altarStage) return;
 
-   const saved = localStorage.getItem(ALTAR_STORAGE_KEY);
-   
-   if (!saved) {
-     showAltarToast("No saved altar found");
-     return;
-   }
+  const savedAltars = getSavedAltars();
 
-  let altarData = null;
-
-  try {
-    altarData = JSON.parse(saved);
-  } catch {
+  if (savedAltars.length === 0) {
+    showAltarToast("No saved altars found");
     return;
   }
 
-  const objects = Array.isArray(altarData) ? altarData : altarData.objects || [];
+  const altarList = savedAltars
+    .map((altar, index) => {
+      const date = altar.savedAt
+        ? new Date(altar.savedAt).toLocaleDateString()
+        : "No date";
+
+      return `${index + 1}. ${altar.name || "Untitled Altar"} (${date})`;
+    })
+    .join("\n");
+
+  const choice = window.prompt(
+    `Which altar would you like to load?\n\n${altarList}`,
+    "1"
+  );
+
+  const selectedIndex = Number(choice) - 1;
+  const altarData = savedAltars[selectedIndex];
+
+  if (!altarData) {
+    showAltarToast("No altar selected");
+    return;
+  }
+
+  const objects = altarData.objects || [];
 
   altarStage.querySelectorAll(".altar-object").forEach((object) => {
     stopFlame(object);
@@ -789,7 +827,7 @@ function loadAltar() {
   deselectObject();
   clearCandleDressingMode();
 
-  if (!Array.isArray(altarData) && altarData.background) {
+  if (altarData.background) {
     altarStage.style.backgroundImage = `url("${altarData.background}")`;
     altarStage.dataset.background = altarData.background;
     altarStage.dataset.backgroundName = altarData.backgroundName || "";
@@ -801,6 +839,7 @@ function loadAltar() {
   });
 
   updateEmptyMessage();
+  showAltarToast(`Loaded: ${altarData.name || "Altar"}`);
 }
 
 function clearAltar() {
