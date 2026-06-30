@@ -422,8 +422,6 @@ function keepObjectInsideStage(object) {
 
   object.style.left = `${x}px`;
   object.style.top = `${y}px`;
-
-  updateObjectPositionPercent(object);
 }
 
 function resizeObject(object, amount) {
@@ -1617,7 +1615,7 @@ document.addEventListener("pointerdown", (event) => {
 });
 
 window.addEventListener("resize", () => {
-  repositionAllObjectsFromPercent();
+  requestAnimationFrame(repositionAllObjectsFromPercent);
 });
 
 if (saveModalClose) {
