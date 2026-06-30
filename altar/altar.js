@@ -673,36 +673,53 @@ function getStagePositionPercent(object) {
   const leftPx = parseFloat(object.style.left) || 0;
   const topPx = parseFloat(object.style.top) || 0;
 
-  const centerX = leftPx + (object.offsetWidth * scale) / 2;
-  const centerY = topPx + (object.offsetHeight * scale) / 2;
+  const visualWidth = object.offsetWidth * scale;
+  const visualHeight = object.offsetHeight * scale;
+
+  const centerX = leftPx + visualWidth / 2;
+  const centerY = topPx + visualHeight / 2;
 
   return {
     leftPercent: altarStage.clientWidth ? centerX / altarStage.clientWidth : 0,
-    topPercent: altarStage.clientHeight ? centerY / altarStage.clientHeight : 0
+    topPercent: altarStage.clientHeight ? centerY / altarStage.clientHeight : 0,
+    sizePercent: altarStage.clientWidth ? visualWidth / altarStage.clientWidth : 0.08
   };
 }
 
 function applyStagePositionPercent(object, savedObject) {
-  const scale = Number(savedObject.scale || object.dataset.scale || 1);
-
   const leftPercent =
-    typeof savedObject.leftPercent === "number"
-      ? savedObject.leftPercent
-      : 0.5;
+    typeof savedObject.leftPercent === "number" ? savedObject.leftPercent : 0.5;
 
   const topPercent =
-    typeof savedObject.topPercent === "number"
-      ? savedObject.topPercent
-      : 0.5;
+    typeof savedObject.topPercent === "number" ? savedObject.topPercent : 0.5;
 
-  object.dataset.leftPercent = String(leftPercent);
-  object.dataset.topPercent = String(topPercent);
+  const sizePercent =
+    typeof savedObject.sizePercent === "number" ? savedObject.sizePercent : null;
+
+  if (sizePercent) {
+    const newVisualWidth = altarStage.clientWidth * sizePercent;
+    const newScale = newVisualWidth / object.offsetWidth;
+
+    object.dataset.scale = String(newScale);
+    updateObjectTransform(object);
+  }
+
+  const scale = Number(object.dataset.scale || 1);
+  const visualWidth = object.offsetWidth * scale;
+  const visualHeight = object.offsetHeight * scale;
 
   const centerX = leftPercent * altarStage.clientWidth;
   const centerY = topPercent * altarStage.clientHeight;
 
-  object.style.left = `${centerX - (object.offsetWidth * scale) / 2}px`;
-  object.style.top = `${centerY - (object.offsetHeight * scale) / 2}px`;
+  object.dataset.leftPercent = String(leftPercent);
+  object.dataset.topPercent = String(topPercent);
+
+  if (sizePercent) {
+    object.dataset.sizePercent = String(sizePercent);
+  }
+
+  object.style.left = `${centerX - visualWidth / 2}px`;
+  object.style.top = `${centerY - visualHeight / 2}px`;
 }
 
 function updateObjectPositionPercent(object) {
@@ -712,6 +729,7 @@ function updateObjectPositionPercent(object) {
 
   object.dataset.leftPercent = String(position.leftPercent);
   object.dataset.topPercent = String(position.topPercent);
+  object.dataset.sizePercent = String(position.sizePercent);
 }
 
 function repositionAllObjectsFromPercent() {
@@ -721,8 +739,10 @@ function repositionAllObjectsFromPercent() {
     applyStagePositionPercent(object, {
       leftPercent: Number(object.dataset.leftPercent),
       topPercent: Number(object.dataset.topPercent),
-      scale: object.dataset.scale || "1"
+      sizePercent: Number(object.dataset.sizePercent)
     });
+
+    keepObjectInsideStage(object);
   });
 }
 
@@ -779,6 +799,7 @@ function saveAltar() {
         topPercent: position.topPercent,
         left: object.style.left || "0px",
         top: object.style.top || "0px",
+        sizePercent: position.sizePercent,
         zIndex: object.style.zIndex || "10"
       };
     }
