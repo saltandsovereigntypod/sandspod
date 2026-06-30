@@ -442,7 +442,7 @@ function renderCabinetItems() {
 
   cabinetContent.innerHTML = items
     .map((item) => {
-      const keywords = (item.keywords || [])
+      const keywords = (item.grimoireKeywords || [])
         .slice(0, 3)
         .map((keyword) => `<span>${keyword}</span>`)
         .join("");
@@ -454,7 +454,7 @@ function renderCabinetItems() {
               <span class="cabinet-card-icon">${item.icon}</span>
               <div>
                 <h3>${item.name}</h3>
-                <div class="cabinet-keywords">${keywords}</div>
+                ${keywords ? `<div class="cabinet-keywords">${keywords}</div>` : ""}
               </div>
             </div>
 
@@ -475,7 +475,7 @@ function renderCabinetItems() {
             <span class="cabinet-card-icon">${item.icon}</span>
             <div>
               <h3>${item.name}</h3>
-              <div class="cabinet-keywords">${keywords}</div>
+              ${keywords ? `<div class="cabinet-keywords">${keywords}</div>` : ""}
             </div>
           </div>
 
