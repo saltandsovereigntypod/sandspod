@@ -1475,3 +1475,48 @@ body.altar-modal-open {
     justify-content: start !important;
   }
 }
+
+.altar-info-card {
+  width: min(18rem, calc(100% - 2rem)) !important;
+  bottom: 0.75rem !important;
+}
+
+.altar-info-card-inner {
+  padding: 0.65rem 0.8rem !important;
+}
+
+.altar-info-card-inner::before {
+  display: none !important;
+}
+
+.altar-info-card-icon,
+.altar-info-card-note {
+  display: none !important;
+}
+
+.altar-info-card h3 {
+  font-size: 1.05rem !important;
+  line-height: 1.1 !important;
+}
+
+.altar-info-card-type {
+  margin-top: 0.15rem !important;
+  font-size: 0.62rem !important;
+}
+
+.altar-info-card-section {
+  margin-top: 0.45rem !important;
+  padding-top: 0.45rem !important;
+}
+
+.altar-info-card-section p {
+  margin: 0.15rem 0 !important;
+  font-size: 0.72rem !important;
+}
+
+@media (max-width: 700px) {
+  .altar-info-card {
+    bottom: 5.8rem !important;
+    width: min(16rem, calc(100% - 1rem)) !important;
+  }
+}
