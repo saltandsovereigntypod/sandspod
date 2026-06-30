@@ -1604,7 +1604,12 @@ document.addEventListener("pointerdown", (event) => {
 
   const clickedObject = event.target.closest(".altar-object");
   const clickedToolbar = event.target.closest(".altar-toolbar");
+  const clickedActionBar = event.target.closest(".altar-action-bar");
 
+  if (!clickedObject && !clickedToolbar && !clickedActionBar) {
+    deselectObject();
+    clearCandleDressingMode();
+  }
 });
 
 window.addEventListener("resize", () => {
