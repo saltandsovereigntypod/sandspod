@@ -244,7 +244,19 @@ function makeDraggable(object) {
 function placeObject(options) {
   if (!altarStage) return;
 
-  const { imagePath, fallbackSymbol, label, type, herb, form, color } = options;
+  const {
+     imagePath,
+     fallbackSymbol,
+     label,
+     type,
+     herb,
+     form,
+     color,
+     crystal,
+     tool,
+     vessel,
+     deity
+   } = options;
   const object = document.createElement("button");
 
   object.type = "button";
@@ -255,6 +267,11 @@ function placeObject(options) {
   object.dataset.herb = herb || "";
   object.dataset.form = form || "";
   object.dataset.color = color || "";
+
+  object.dataset.crystal = crystal || "";
+  object.dataset.tool = tool || "";
+  object.dataset.vessel = vessel || "";
+  object.dataset.deity = deity || "";
 
   const startingScale = type === "cloth"
     ? "3"
