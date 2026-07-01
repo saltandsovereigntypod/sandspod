@@ -9,8 +9,6 @@ const altarCabinet = document.querySelector(".altar-cabinet");
 const cabinetTabs = document.querySelector("[data-cabinet-tabs]");
 const cabinetContent = document.querySelector("[data-cabinet-content]");
 const cabinetSearch = document.querySelector("[data-cabinet-search]");
-const saveModal = document.querySelector("[data-save-modal]");
-const saveModalClose = document.querySelector("[data-save-modal-close]");
 
 let activeObject = null;
 let selectedObject = null;
