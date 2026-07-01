@@ -2,16 +2,6 @@
    8. SELECTION AND TOOLBAR NOTES
    ========================================================= */
 
-function formatDressingName(dressing) {
-  const herb = dressing.herb || "Unknown";
-  const form = dressing.form || "";
-
-  const prettyHerb = herb.charAt(0).toUpperCase() + herb.slice(1);
-  const prettyForm = form.charAt(0).toUpperCase() + form.slice(1);
-
-  return `${prettyHerb} ${prettyForm}`.trim();
-}
-
 function getObjectIcon(object) {
   const type = object.dataset.type;
 
