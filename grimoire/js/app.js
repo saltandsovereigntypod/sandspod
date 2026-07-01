@@ -522,6 +522,10 @@ async function applyTemplateToCurrentPage() {
 updateMundaneModeUI();
 updateAuthState();
 
+document.addEventListener("saltAuthChanged", updateAuthState);
+document.addEventListener("saltAuthSuccess", updateAuthState);
+document.addEventListener("saltAuthSignedOut", updateAuthState);
+
 /* =========================================================
    ALTAR IMPORT
    ========================================================= */
