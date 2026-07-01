@@ -898,7 +898,7 @@ function updateCandleDressingVisuals(candle) {
   const hasHerbDressing = dressings.some(
     (dressing) =>
       dressing.type === "herb" &&
-      (dressing.form === "loose" || dressing.form === "powder")
+      dressing.form === "loose"
   );
 
   const hasOilDressing = dressings.some((dressing) => dressing.type === "oil");
