@@ -1,16 +1,19 @@
 /* =========================================================
    AUTHENTICATION
-   Handles sign up, sign in, sign out, and current user state
+   Shared sanctuary login for altar and grimoire
    ========================================================= */
 
 let currentUser = null;
 
-const authPanel = document.querySelector("[data-auth-panel]");
-const authForm = document.querySelector("[data-auth-form]");
-const authStatus = document.querySelector("[data-auth-status]");
-const signInButton = document.querySelector('[data-auth-action="signin"]');
-const signUpButton = document.querySelector('[data-auth-action="signup"]');
-const signOutButton = document.querySelector('[data-auth-action="signout"]');
+const authForms = document.querySelectorAll("[data-auth-form]");
+const authStatuses = document.querySelectorAll("[data-auth-status]");
+const signOutButtons = document.querySelectorAll('[data-auth-action="signout"]');
+
+function setAuthStatus(message) {
+  authStatuses.forEach((status) => {
+    status.textContent = message;
+  });
+}
 
 function announceAuthSuccess(message) {
   document.dispatchEvent(
@@ -23,19 +26,17 @@ function announceAuthSuccess(message) {
 function updateAuthUI(user) {
   const isSignedIn = Boolean(user);
 
-  if (authPanel) {
-    authPanel.classList.toggle("is-signed-in", isSignedIn);
-  }
+  signOutButtons.forEach((button) => {
+    button.hidden = !isSignedIn;
+  });
 
-  if (signInButton) signInButton.hidden = isSignedIn;
-  if (signUpButton) signUpButton.hidden = isSignedIn;
-  if (signOutButton) signOutButton.hidden = !isSignedIn;
-
-  if (authStatus) {
-    authStatus.textContent = isSignedIn
+  setAuthStatus(
+    isSignedIn
       ? `Signed in as ${user.email}`
-      : "Sign in or create an account to save this altar.";
-  }
+      : "Continue as a guest, or sign in to save across devices."
+  );
+
+  document.body.classList.toggle("is-signed-in", isSignedIn);
 }
 
 async function getCurrentUser() {
@@ -85,9 +86,15 @@ async function signOutUser() {
 
   currentUser = null;
   updateAuthUI(null);
+
+  document.dispatchEvent(
+    new CustomEvent("saltAuthSignedOut", {
+      detail: { message: "Signed out." }
+    })
+  );
 }
 
-if (authForm) {
+authForms.forEach((authForm) => {
   authForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -95,31 +102,30 @@ if (authForm) {
     const email = formData.get("email");
     const password = formData.get("password");
 
-    if (!email || !password) return;
-
-    if (authStatus) {
-      authStatus.textContent = "Opening your grimoire...";
+    if (!email || !password) {
+      setAuthStatus("Enter an email and password first.");
+      return;
     }
+
+    setAuthStatus("Opening your sanctuary...");
 
     try {
       await signInWithEmail(email, password);
-
-      if (authStatus) {
-        authStatus.textContent = "Your grimoire is open.";
-      }
-
       authForm.reset();
-      announceAuthSuccess("Your grimoire is open.");
+      setAuthStatus("Your sanctuary is open.");
+      announceAuthSuccess("Your sanctuary is open.");
     } catch (error) {
-      if (authStatus) {
-        authStatus.textContent = error.message;
-      }
+      setAuthStatus(error.message);
     }
   });
-}
+});
 
-if (signUpButton) {
-  signUpButton.addEventListener("click", async () => {
+document.addEventListener("click", async (event) => {
+  const signUpButton = event.target.closest('[data-auth-action="signup"]');
+  const signOutButton = event.target.closest('[data-auth-action="signout"]');
+
+  if (signUpButton) {
+    const authForm = signUpButton.closest("form");
     if (!authForm) return;
 
     const formData = new FormData(authForm);
@@ -127,55 +133,31 @@ if (signUpButton) {
     const password = formData.get("password");
 
     if (!email || !password) {
-      if (authStatus) {
-        authStatus.textContent = "Enter an email and password first.";
-      }
-
+      setAuthStatus("Enter an email and password first.");
       return;
     }
 
-    if (authStatus) {
-      authStatus.textContent = "Creating your grimoire...";
-    }
+    setAuthStatus("Creating your sanctuary...");
 
     try {
       await signUpWithEmail(email, password);
-
-      if (authStatus) {
-        authStatus.textContent = "Your grimoire has been created.";
-      }
-
       authForm.reset();
-      announceAuthSuccess("Your grimoire has been created.");
+      setAuthStatus("Your sanctuary has been created.");
+      announceAuthSuccess("Your sanctuary has been created.");
     } catch (error) {
-      if (authStatus) {
-        authStatus.textContent = error.message;
-      }
+      setAuthStatus(error.message);
     }
-  });
-}
+  }
 
-if (signOutButton) {
-  signOutButton.addEventListener("click", async () => {
+  if (signOutButton) {
     try {
       await signOutUser();
-
-      if (authStatus) {
-        authStatus.textContent = "Your grimoire has been closed.";
-      }
-
-      document.dispatchEvent(
-        new CustomEvent("saltAuthSignedOut", {
-          detail: { message: "Your grimoire has been closed." }
-        })
-      );
+      setAuthStatus("Signed out.");
     } catch (error) {
-      if (authStatus) {
-        authStatus.textContent = error.message;
-      }
+      setAuthStatus(error.message);
     }
-  });
-}
+  }
+});
 
 db.auth.onAuthStateChange((event, session) => {
   currentUser = session?.user || null;
