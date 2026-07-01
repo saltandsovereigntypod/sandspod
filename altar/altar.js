@@ -1384,8 +1384,8 @@ document.body.appendChild(savedAltarsManager);
 const savedAltarsList = savedAltarsManager.querySelector("[data-saved-altars-list]");
 const savedAltarsClose = savedAltarsManager.querySelector("[data-saved-altars-close]");
 
-function renderSavedAltarsManager() {
-  const savedAltars = getSavedAltars();
+async function renderSavedAltarsManager() {
+  const savedAltars = await getSavedAltars();
 
   if (!savedAltarsList) return;
 
@@ -1424,8 +1424,9 @@ function renderSavedAltarsManager() {
     .join("");
 }
 
-function openSavedAltarsManager() {
-  renderSavedAltarsManager();
+async function openSavedAltarsManager() {
+  await migrateLocalAltarsToCloud();
+  await renderSavedAltarsManager();
   savedAltarsManager.hidden = false;
   document.body.classList.add("altar-modal-open");
 }
@@ -1435,8 +1436,8 @@ function closeSavedAltarsManager() {
   document.body.classList.remove("altar-modal-open");
 }
 
-function loadAltar() {
-  openSavedAltarsManager();
+async function loadAltar() {
+  await openSavedAltarsManager();
 }
 
 function clearAltar() {
@@ -2075,7 +2076,7 @@ altarActionBar.addEventListener("click", async (event) => {
    }
 
   if (action === "load-altar") {
-    loadAltar();
+    await loadAltar();
     showAltarToast("Altar loaded");
     return;
   }
