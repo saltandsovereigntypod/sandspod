@@ -1134,50 +1134,45 @@ async function migrateLocalAltarsToCloud() {
   showAltarToast("Local altars synced");
 }
 
-function saveAltar() {
+async function saveAltar() {
   if (!altarStage) return;
 
   const altarName =
     window.prompt("Name this altar save:", "My Altar") || "My Altar";
 
-  const objects = Array.from(altarStage.querySelectorAll(".altar-object")).map(
-    (object) => {
-      const position = getStagePositionPercent(object);
+  const objects = Array.from(altarStage.querySelectorAll(".altar-object")).map((object) => {
+    const position = getStagePositionPercent(object);
 
-      return {
-        imagePath: getObjectImagePath(object),
-        fallbackSymbol: object.textContent || "",
-        label: object.dataset.label || "object",
-        type: object.dataset.type || "",
-        herb: object.dataset.herb || "",
-        form: object.dataset.form || "",
-        color: object.dataset.color || "",
-        crystal: object.dataset.crystal || "",
-        tool: object.dataset.tool || "",
-        vessel: object.dataset.vessel || "",
-        deity: object.dataset.deity || "",
-        scale: object.dataset.scale || "1",
-        rotation: object.dataset.rotation || "0",
-        flipped: object.dataset.flipped || "false",
-        locked: object.dataset.locked || "false",
-        glowing: object.dataset.glowing || "false",
-        lit: object.dataset.lit || "false",
-        dressings: object.dataset.dressings || "[]",
-        plaqueText: object.dataset.plaqueText || "",
-        altarObjectId: object.dataset.altarObjectId || "",
-        groupId: object.dataset.groupId || "",
-        leftPercent: position.leftPercent,
-        topPercent: position.topPercent,
-        left: object.style.left || "0px",
-        top: object.style.top || "0px",
-        sizePercent: position.sizePercent,
-        zIndex: object.style.zIndex || "10"
-      };
-    }
-  );
+    return {
+      imagePath: getObjectImagePath(object),
+      fallbackSymbol: object.textContent || "",
+      label: object.dataset.label || "object",
+      type: object.dataset.type || "",
+      herb: object.dataset.herb || "",
+      form: object.dataset.form || "",
+      color: object.dataset.color || "",
+      crystal: object.dataset.crystal || "",
+      tool: object.dataset.tool || "",
+      vessel: object.dataset.vessel || "",
+      deity: object.dataset.deity || "",
+      scale: object.dataset.scale || "1",
+      rotation: object.dataset.rotation || "0",
+      flipped: object.dataset.flipped || "false",
+      locked: object.dataset.locked || "false",
+      glowing: object.dataset.glowing || "false",
+      lit: object.dataset.lit || "false",
+      dressings: object.dataset.dressings || "[]",
+      plaqueText: object.dataset.plaqueText || "",
+      altarObjectId: object.dataset.altarObjectId || "",
+      groupId: object.dataset.groupId || "",
+      leftPercent: position.leftPercent,
+      topPercent: position.topPercent,
+      sizePercent: position.sizePercent,
+      zIndex: object.style.zIndex || "10"
+    };
+  });
 
   const altarData = {
-    id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
     name: altarName.trim() || "My Altar",
     savedAt: new Date().toISOString(),
     background: altarStage.dataset.background || "",
@@ -1187,10 +1182,30 @@ function saveAltar() {
     objects
   };
 
-  const savedAltars = getSavedAltars();
-  savedAltars.unshift(altarData);
+  if (!isUserSignedIn()) {
+    const savedAltars = getLocalSavedAltars();
+    savedAltars.unshift({
+      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+      ...altarData
+    });
 
-  storeSavedAltars(savedAltars);
+    storeLocalSavedAltars(savedAltars);
+    showAltarToast(`Saved locally: ${altarData.name}`);
+    return;
+  }
+
+  const { error } = await db.from(ALTAR_CLOUD_TABLE).insert({
+    user_id: currentUser.id,
+    name: altarData.name,
+    altar_data: altarData
+  });
+
+  if (error) {
+    console.error(error);
+    showAltarToast("Cloud save failed");
+    return;
+  }
+
   showAltarToast(`Saved: ${altarData.name}`);
 }
 
@@ -2021,7 +2036,7 @@ if (altarCabinet) {
   });
 }
 
-altarActionBar.addEventListener("click", (event) => {
+altarActionBar.addEventListener("click", async (event) => {
   const button = event.target.closest("[data-global-action]");
   if (!button || !altarStage) return;
 
@@ -2054,7 +2069,7 @@ altarActionBar.addEventListener("click", (event) => {
        return;
      }
    
-     saveAltar();
+     await saveAltar();
      showAltarToast("Altar saved");
      return;
    }
