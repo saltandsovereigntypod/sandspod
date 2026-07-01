@@ -1328,38 +1328,63 @@ async function loadAltarById(altarId) {
   showAltarToast(`Loaded: ${altarData.name || "Altar"}`);
 }
 
-async function renameSavedAltar(altarId)
-  const savedAltars = getSavedAltars();
-  const altar = savedAltars.find((savedAltar) => savedAltar.id === altarId);
-
-  if (!altar) return;
-
-  const newName = window.prompt("Rename this altar:", altar.name || "My Altar");
-
-  if (!newName || !newName.trim()) return;
-
-  altar.name = newName.trim();
-  altar.updatedAt = new Date().toISOString();
-
-  storeSavedAltars(savedAltars);
-  renderSavedAltarsManager();
-  showAltarToast("Altar renamed");
-}
-
-async function deleteSavedAltar(altarId)
+async function renameSavedAltar(altarId) {
   const savedAltars = await getSavedAltars();
   const altar = savedAltars.find((savedAltar) => savedAltar.id === altarId);
 
   if (!altar) return;
 
-  const confirmed = window.confirm(
-    `Delete "${altar.name || "Untitled Altar"}"? This cannot be undone.`
-  );
+  const newName = window.prompt("Rename this altar:", altar.name || "My Altar");
+  if (!newName || !newName.trim()) return;
 
+  if (!isUserSignedIn()) {
+    altar.name = newName.trim();
+    altar.updatedAt = new Date().toISOString();
+    storeLocalSavedAltars(savedAltars);
+  } else {
+    const { error } = await db
+      .from(ALTAR_CLOUD_TABLE)
+      .update({ name: newName.trim(), updated_at: new Date().toISOString() })
+      .eq("id", altarId)
+      .eq("user_id", currentUser.id);
+
+    if (error) {
+      console.error(error);
+      showAltarToast("Rename failed");
+      return;
+    }
+  }
+
+  await renderSavedAltarsManager();
+  showAltarToast("Altar renamed");
+}
+
+async function deleteSavedAltar(altarId) {
+  const savedAltars = await getSavedAltars();
+  const altar = savedAltars.find((savedAltar) => savedAltar.id === altarId);
+
+  if (!altar) return;
+
+  const confirmed = window.confirm(`Delete "${altar.name || "Untitled Altar"}"? This cannot be undone.`);
   if (!confirmed) return;
 
-  storeSavedAltars(savedAltars.filter((savedAltar) => savedAltar.id !== altarId));
-  renderSavedAltarsManager();
+  if (!isUserSignedIn()) {
+    storeLocalSavedAltars(savedAltars.filter((savedAltar) => savedAltar.id !== altarId));
+  } else {
+    const { error } = await db
+      .from(ALTAR_CLOUD_TABLE)
+      .delete()
+      .eq("id", altarId)
+      .eq("user_id", currentUser.id);
+
+    if (error) {
+      console.error(error);
+      showAltarToast("Delete failed");
+      return;
+    }
+  }
+
+  await renderSavedAltarsManager();
   showAltarToast("Altar deleted");
 }
 
