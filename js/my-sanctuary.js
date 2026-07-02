@@ -38,6 +38,7 @@ function createMySanctuaryPanel() {
       </button>
 
       <p class="eyebrow">The Sanctuary</p>
+      <p class="my-sanctuary-notice" data-my-sanctuary-notice hidden></p>
 
       <section class="my-sanctuary-view" data-sanctuary-view="welcome">
         <h2>Welcome Home</h2>
@@ -68,8 +69,6 @@ function createMySanctuaryPanel() {
         <p class="my-sanctuary-intro">
           Open your sanctuary to save your altar, grimoire, rituals, notes, and magical practice across devices.
         </p>
-
-        <p class="my-sanctuary-notice" data-my-sanctuary-notice hidden></p>
 
         <form class="altar-auth-form my-sanctuary-auth-form" data-my-sanctuary-auth-form>
           <label>
@@ -110,13 +109,13 @@ function createMySanctuaryPanel() {
           but cloud syncing needs a Sanctuary account.
         </p>
 
-        <nav class="my-sanctuary-links" aria-label="Sanctuary navigation"><nav class="my-sanctuary-links" aria-label="Sanctuary navigation">
-           <a href="/altar/">🕯 My Digital Altar</a>
-           <a href="/grimoire/index.html">📖 My Book of Shadows</a>
-           <span>🌙 My Saved Rituals <em>Coming soon</em></span>
-           <span>✨ Community Grimoire <em>Coming soon</em></span>
-           <span>⚙ My Settings <em>Coming soon</em></span>
-         </nav>
+        <nav class="my-sanctuary-links" aria-label="Sanctuary navigation">
+          <a href="/altar/">🕯 My Digital Altar</a>
+          <a href="/grimoire/index.html">📖 My Book of Shadows</a>
+          <button type="button" data-my-sanctuary-view-button="rituals">🌙 My Saved Rituals</button>
+          <span>✨ Community Grimoire <em>Coming soon</em></span>
+          <button type="button" data-my-sanctuary-view-button="settings">⚙ My Settings</button>
+        </nav>
 
         <div class="my-sanctuary-actions">
           <button class="button button--ghost" type="button" data-my-sanctuary-show-auth>
@@ -127,6 +126,99 @@ function createMySanctuaryPanel() {
             Sign Out
           </button>
         </div>
+      </section>
+
+      <section class="my-sanctuary-view" data-sanctuary-view="rituals" hidden>
+        <h2>My Rituals</h2>
+
+        <p class="my-sanctuary-intro">
+          Save ritual notes, intentions, moon phases, altar links, and tags.
+        </p>
+
+        <form class="my-sanctuary-form" data-my-ritual-form>
+          <label>
+            Ritual Name
+            <input type="text" name="title" />
+          </label>
+
+          <label>
+            Intention
+            <input type="text" name="intention" />
+          </label>
+
+          <label>
+            Moon Phase
+            <input type="text" name="moon_phase" placeholder="New moon, full moon, dark moon..." />
+          </label>
+
+          <label>
+            Linked Altar
+            <input type="text" name="linked_altar" placeholder="Optional altar name" />
+          </label>
+
+          <label>
+            Ritual Date
+            <input type="date" name="ritual_date" />
+          </label>
+
+          <label>
+            Tags
+            <input type="text" name="tags" placeholder="protection, Hekate, cleansing" />
+          </label>
+
+          <label>
+            Notes
+            <textarea name="notes" rows="5"></textarea>
+          </label>
+
+          <button class="button button--primary" type="submit">
+            Save Ritual
+          </button>
+        </form>
+
+        <div class="my-rituals-list" data-my-rituals-list></div>
+
+        <button class="button button--ghost" type="button" data-my-sanctuary-dashboard>
+          ← Back to Sanctuary
+        </button>
+      </section>
+
+      <section class="my-sanctuary-view" data-sanctuary-view="settings" hidden>
+        <h2>My Settings</h2>
+
+        <p class="my-sanctuary-intro">
+          Shape your sanctuary so it feels more like yours.
+        </p>
+
+        <form class="my-sanctuary-form" data-my-settings-form>
+          <label>
+            Preferred Name
+            <input type="text" name="preferred_name" />
+          </label>
+
+          <label>
+            Magical Name
+            <input type="text" name="magical_name" />
+          </label>
+
+          <label>
+            Default Altar Background
+            <input type="text" name="default_altar_background" placeholder="Optional for now" />
+          </label>
+
+          <label class="my-sanctuary-check">
+            <input type="checkbox" name="default_mundane_mode" />
+            Use mundane mode by default for my Book of Shadows
+          </label>
+
+          <button class="button button--primary" type="submit">
+            Save Settings
+          </button>
+        </form>
+
+        <button class="button button--ghost" type="button" data-my-sanctuary-dashboard>
+          ← Back to Sanctuary
+        </button>
       </section>
     </aside>
   `;
@@ -143,6 +235,14 @@ function setMySanctuaryView(view) {
   panel.querySelectorAll("[data-sanctuary-view]").forEach((section) => {
     section.hidden = section.dataset.sanctuaryView !== view;
   });
+
+  if (view === "rituals" && typeof renderMyRitualsList === "function") {
+    renderMyRitualsList();
+  }
+
+  if (view === "settings" && typeof populateMySettingsForm === "function") {
+    populateMySettingsForm();
+  }
 }
 
 function updateMySanctuaryPanel() {
@@ -152,7 +252,7 @@ function updateMySanctuaryPanel() {
   const userLine = panel.querySelector("[data-my-sanctuary-user]");
   const dashboardTitle = panel.querySelector("[data-my-sanctuary-dashboard-title]");
   const dashboardCopy = panel.querySelector("[data-my-sanctuary-dashboard-copy]");
-  const signInButton = panel.querySelector('[data-my-sanctuary-show-auth]');
+  const signInButtons = panel.querySelectorAll("[data-my-sanctuary-show-auth]");
   const signOutButton = panel.querySelector("[data-my-sanctuary-signout]");
 
   const isSignedIn = Boolean(currentUser);
@@ -173,15 +273,15 @@ function updateMySanctuaryPanel() {
       : "You're exploring as a guest. You can still use the altar and Book of Shadows, but cloud syncing needs a Sanctuary account.";
   }
 
-  if (signInButton) {
-    signInButton.hidden = isSignedIn;
-  }
+  signInButtons.forEach((button) => {
+    button.hidden = isSignedIn;
+  });
 
   if (signOutButton) {
     signOutButton.hidden = !isSignedIn;
   }
 
-  if (isSignedIn && mySanctuaryView !== "auth") {
+  if (isSignedIn && mySanctuaryView !== "auth" && mySanctuaryView !== "rituals" && mySanctuaryView !== "settings") {
     setMySanctuaryView("dashboard");
   }
 }
@@ -193,11 +293,7 @@ function openMySanctuaryPanel() {
   const panel = document.querySelector("[data-my-sanctuary-panel]");
   if (!panel) return;
 
-  if (currentUser) {
-    setMySanctuaryView("dashboard");
-  } else {
-    setMySanctuaryView("welcome");
-  }
+  setMySanctuaryView(currentUser ? "dashboard" : "welcome");
 
   panel.hidden = false;
 
@@ -251,27 +347,20 @@ document.addEventListener("click", async (event) => {
   const showAuthButton = event.target.closest("[data-my-sanctuary-show-auth]");
   const guestButton = event.target.closest("[data-my-sanctuary-guest]");
   const backButton = event.target.closest("[data-my-sanctuary-back]");
+  const dashboardButton = event.target.closest("[data-my-sanctuary-dashboard]");
+  const viewButton = event.target.closest("[data-my-sanctuary-view-button]");
   const signUpButton = event.target.closest("[data-my-sanctuary-signup]");
   const signOutButton = event.target.closest("[data-my-sanctuary-signout]");
 
-  if (openButton) {
-    openMySanctuaryPanel();
-  }
+  if (openButton) openMySanctuaryPanel();
+  if (closeButton) closeMySanctuaryPanel();
+  if (showAuthButton) setMySanctuaryView("auth");
+  if (guestButton) setMySanctuaryView("dashboard");
+  if (backButton) setMySanctuaryView("welcome");
+  if (dashboardButton) setMySanctuaryView("dashboard");
 
-  if (closeButton) {
-    closeMySanctuaryPanel();
-  }
-
-  if (showAuthButton) {
-    setMySanctuaryView("auth");
-  }
-
-  if (guestButton) {
-    setMySanctuaryView("dashboard");
-  }
-
-  if (backButton) {
-    setMySanctuaryView("welcome");
+  if (viewButton) {
+    setMySanctuaryView(viewButton.dataset.mySanctuaryViewButton);
   }
 
   if (signUpButton) {
