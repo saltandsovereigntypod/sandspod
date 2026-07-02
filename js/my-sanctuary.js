@@ -110,12 +110,14 @@ function createMySanctuaryPanel() {
         </p>
 
         <nav class="my-sanctuary-links" aria-label="Sanctuary navigation">
-          <a href="/altar/">🕯 My Digital Altar</a>
-          <a href="/grimoire/index.html">📖 My Book of Shadows</a>
-          <button type="button" data-my-sanctuary-view-button="rituals">🌙 My Saved Rituals</button>
-          <span>✨ Community Grimoire <em>Coming soon</em></span>
-          <button type="button" data-my-sanctuary-view-button="settings">⚙ My Settings</button>
-        </nav>
+           <a href="/altar/">🕯 My Digital Altar</a>
+           <a href="/grimoire/index.html">📖 My Book of Shadows</a>
+           <button type="button" data-my-sanctuary-view-button="rituals">🌙 My Saved Rituals</button>
+           <a href="/submit/">✦ Offer to the Sanctuary</a>
+           <span>✨ Community Grimoire <em>Coming soon</em></span>
+           <button type="button" data-my-sanctuary-view-button="submissions">📬 My Submissions</button>
+           <button type="button" data-my-sanctuary-view-button="settings">⚙ My Settings</button>
+         </nav>
 
         <div class="my-sanctuary-actions">
           <button class="button button--ghost" type="button" data-my-sanctuary-show-auth>
@@ -178,6 +180,20 @@ function createMySanctuaryPanel() {
 
         <div class="my-rituals-list" data-my-rituals-list></div>
 
+        <button class="button button--ghost" type="button" data-my-sanctuary-dashboard>
+          ← Back to Sanctuary
+        </button>
+      </section>
+
+      <section class="my-sanctuary-view" data-sanctuary-view="submissions" hidden>
+        <h2>My Submissions</h2>
+      
+        <p class="my-sanctuary-intro">
+          See what you have offered to Salt & Sovereignty, check review status, and read any responses.
+        </p>
+      
+        <div class="my-submissions-list" data-my-submissions-list></div>
+      
         <button class="button button--ghost" type="button" data-my-sanctuary-dashboard>
           ← Back to Sanctuary
         </button>
@@ -252,6 +268,10 @@ function setMySanctuaryView(view) {
   if (view === "settings" && typeof populateMySettingsForm === "function") {
     populateMySettingsForm();
   }
+
+   if (view === "submissions" && typeof renderMySubmissionsList === "function") {
+     renderMySubmissionsList();
+   }
 }
 
 function updateMySanctuaryPanel() {
