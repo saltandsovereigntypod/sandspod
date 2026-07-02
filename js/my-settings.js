@@ -94,3 +94,33 @@ document.addEventListener("submit", async (event) => {
     showMySanctuaryNotice("Settings could not be saved.");
   }
 });
+
+async function applyDefaultAltarBackgroundSetting() {
+  if (!document.body.classList.contains("altar-page")) return;
+  if (!altarStage) return;
+
+  const settings = await getMySettings();
+  const savedBackground = settings.default_altar_background || "";
+
+  if (!savedBackground) return;
+
+  const matchingBackground = cabinetItems.find((item) => {
+    return (
+      item.category === "backgrounds" &&
+      (
+        item.name.toLowerCase() === savedBackground.toLowerCase() ||
+        item.background === savedBackground
+      )
+    );
+  });
+
+  if (!matchingBackground) return;
+
+  altarStage.style.backgroundImage = `url("${matchingBackground.background}")`;
+  altarStage.dataset.background = matchingBackground.background;
+  altarStage.dataset.backgroundName = matchingBackground.name;
+}
+
+window.addEventListener("load", () => {
+  window.setTimeout(applyDefaultAltarBackgroundSetting, 500);
+});
