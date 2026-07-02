@@ -110,36 +110,13 @@ function createMySanctuaryPanel() {
           but cloud syncing needs a Sanctuary account.
         </p>
 
-        <nav class="my-sanctuary-links" aria-label="Sanctuary navigation">
-          <a href="/altar/">
-            <span>
-              <strong>🕯 My Digital Altar</strong>
-              <small>Build and tend your sacred space.</small>
-            </span>
-          </a>
-
-          <a href="/grimoire/index.html">
-            <span>
-              <strong>📖 My Book of Shadows</strong>
-              <small>Write rituals, dreams, notes, and correspondences.</small>
-            </span>
-          </a>
-
-          <span>
-            <strong>🌙 My Saved Rituals</strong>
-            <small>Coming soon.</small>
-          </span>
-
-          <span>
-            <strong>✨ Community Grimoire</strong>
-            <small>Share your practice when you're ready. Coming soon.</small>
-          </span>
-
-          <span>
-            <strong>⚙ My Settings</strong>
-            <small>Manage your sanctuary. Coming soon.</small>
-          </span>
-        </nav>
+        <nav class="my-sanctuary-links" aria-label="Sanctuary navigation"><nav class="my-sanctuary-links" aria-label="Sanctuary navigation">
+           <a href="/altar/">🕯 My Digital Altar</a>
+           <a href="/grimoire/index.html">📖 My Book of Shadows</a>
+           <span>🌙 My Saved Rituals <em>Coming soon</em></span>
+           <span>✨ Community Grimoire <em>Coming soon</em></span>
+           <span>⚙ My Settings <em>Coming soon</em></span>
+         </nav>
 
         <div class="my-sanctuary-actions">
           <button class="button button--ghost" type="button" data-my-sanctuary-show-auth>
