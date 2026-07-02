@@ -197,6 +197,11 @@ function createMySanctuaryPanel() {
           </label>
 
           <label>
+              Pronouns
+              <input type="text" name="pronouns" placeholder="she/her, they/them, he/him..." />
+            </label>
+
+          <label>
             Magical Name
             <input type="text" name="magical_name" />
           </label>
