@@ -1,220 +1,109 @@
 /* =========================================================
-   MY SANCTUARY PANEL
-   Shared account / sanctuary navigation panel
+   MY SANCTUARY PANEL REFINEMENT
    ========================================================= */
 
-function showMySanctuaryNotice(message) {
-  const panel = document.querySelector("[data-my-sanctuary-panel]");
-  if (!panel) return;
-
-  const notice = panel.querySelector("[data-my-sanctuary-notice]");
-  if (!notice) return;
-
-  notice.textContent = message;
-  notice.hidden = false;
-
-  window.clearTimeout(showMySanctuaryNotice.timeout);
-  showMySanctuaryNotice.timeout = window.setTimeout(() => {
-    notice.hidden = true;
-  }, 2200);
+.my-sanctuary-card {
+  overflow-y: auto;
 }
 
-function createMySanctuaryPanel() {
-  if (document.querySelector("[data-my-sanctuary-panel]")) return;
-
-  const panel = document.createElement("div");
-  panel.className = "my-sanctuary-panel";
-  panel.hidden = true;
-  panel.setAttribute("data-my-sanctuary-panel", "");
-
-  panel.innerHTML = `
-    <div class="my-sanctuary-backdrop" data-my-sanctuary-close></div>
-
-    <aside class="my-sanctuary-card" aria-label="My Sanctuary">
-      <button class="my-sanctuary-close" type="button" data-my-sanctuary-close aria-label="Close">
-        ×
-      </button>
-
-      <p class="eyebrow">The Sanctuary</p>
-      <h2>My Sanctuary</h2>
-
-      <p class="my-sanctuary-user" data-my-sanctuary-user>
-        Guest mode
-      </p>
-
-      <p class="my-sanctuary-notice" data-my-sanctuary-notice hidden></p>
-
-      <form class="altar-auth-form my-sanctuary-auth-form" data-my-sanctuary-auth-form>
-        <label>
-          Email
-          <input type="email" name="email" autocomplete="email" />
-        </label>
-
-        <label>
-          Password
-          <input type="password" name="password" autocomplete="current-password" />
-        </label>
-
-        <div class="my-sanctuary-auth-actions">
-          <button class="button button--primary" type="submit">
-            Open Sanctuary
-          </button>
-
-          <button class="button" type="button" data-my-sanctuary-signup>
-            Create Sanctuary
-          </button>
-        </div>
-      </form>
-
-      <nav class="my-sanctuary-links" aria-label="Sanctuary navigation">
-        <a href="/altar/">🕯 Digital Altar</a>
-        <a href="/grimoire/index.html">📖 Book of Shadows</a>
-        <span>🌙 Saved Rituals <em>Coming soon</em></span>
-        <span>✨ Community Grimoire <em>Coming soon</em></span>
-        <span>⚙ Settings <em>Coming soon</em></span>
-      </nav>
-
-      <div class="my-sanctuary-actions">
-        <button class="button button--ghost" type="button" data-my-sanctuary-signout hidden>
-          Sign Out
-        </button>
-      </div>
-    </aside>
-  `;
-
-  document.body.appendChild(panel);
+.my-sanctuary-card h2 {
+  max-width: 100%;
+  margin: 0 0 0.7rem;
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
+  line-height: 0.95;
 }
 
-function updateMySanctuaryPanel() {
-  const panel = document.querySelector("[data-my-sanctuary-panel]");
-  if (!panel) return;
+.my-sanctuary-intro {
+  max-width: 34rem;
+  margin-bottom: 0.8rem;
+  color: var(--cream);
+  font-size: 1rem;
+  line-height: 1.6;
+}
 
-  const userLine = panel.querySelector("[data-my-sanctuary-user]");
-  const authForm = panel.querySelector("[data-my-sanctuary-auth-form]");
-  const signOutButton = panel.querySelector("[data-my-sanctuary-signout]");
+.my-sanctuary-soft-note {
+  margin-bottom: 1.1rem;
+  color: var(--gold);
+  font-size: 0.95rem;
+}
 
-  const isSignedIn = Boolean(currentUser);
+.my-sanctuary-view {
+  animation: sanctuaryPanelFade 0.22s ease both;
+}
 
-  if (userLine) {
-    userLine.textContent = isSignedIn
-      ? `Signed in as ${currentUser.email}`
-      : "Guest mode";
+@keyframes sanctuaryPanelFade {
+  from {
+    opacity: 0;
+    transform: translateY(0.35rem);
   }
 
-  if (authForm) {
-    authForm.hidden = isSignedIn;
-  }
-
-  if (signOutButton) {
-    signOutButton.hidden = !isSignedIn;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-function openMySanctuaryPanel() {
-  createMySanctuaryPanel();
-  updateMySanctuaryPanel();
-
-  const panel = document.querySelector("[data-my-sanctuary-panel]");
-  if (!panel) return;
-
-  panel.hidden = false;
-
-  requestAnimationFrame(() => {
-    panel.classList.add("is-visible");
-  });
+.my-sanctuary-choice-actions,
+.my-sanctuary-auth-actions,
+.my-sanctuary-actions {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1rem;
 }
 
-function closeMySanctuaryPanel() {
-  const panel = document.querySelector("[data-my-sanctuary-panel]");
-  if (!panel) return;
-
-  panel.classList.remove("is-visible");
-
-  window.setTimeout(() => {
-    panel.hidden = true;
-  }, 250);
+.my-sanctuary-auth-form {
+  margin: 1rem 0 1.15rem;
 }
 
-document.addEventListener("submit", async (event) => {
-  const authForm = event.target.closest("[data-my-sanctuary-auth-form]");
-  if (!authForm) return;
+.my-sanctuary-notice {
+  margin: 0.75rem 0;
+  border: 1px solid rgba(185, 160, 93, 0.3);
+  border-radius: 0.85rem;
+  padding: 0.65rem 0.8rem;
+  color: var(--cream);
+  background: rgba(185, 160, 93, 0.1);
+  font-size: 0.9rem;
+}
 
-  event.preventDefault();
+.my-sanctuary-notice[hidden] {
+  display: none;
+}
 
-  const formData = new FormData(authForm);
-  const email = formData.get("email");
-  const password = formData.get("password");
+.my-sanctuary-user {
+  margin-bottom: 0.65rem;
+}
 
-  if (!email || !password) {
-    showMySanctuaryNotice("Enter an email and password first.");
-    return;
+.my-sanctuary-links {
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.my-sanctuary-links a,
+.my-sanctuary-links span {
+  align-items: flex-start;
+  padding: 0.95rem 1rem;
+}
+
+.my-sanctuary-links strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--cream);
+  font-size: 1.05rem;
+}
+
+.my-sanctuary-links small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 520px) {
+  .my-sanctuary-card h2 {
+    font-size: clamp(2.1rem, 14vw, 3.4rem);
   }
 
-  showMySanctuaryNotice("Opening your sanctuary...");
-
-  try {
-    await signInWithEmail(email, password);
-    authForm.reset();
-    updateMySanctuaryPanel();
-    showMySanctuaryNotice("Your sanctuary is open.");
-  } catch (error) {
-    showMySanctuaryNotice(error.message);
+  .my-sanctuary-card {
+    width: 100%;
   }
-});
-
-document.addEventListener("click", async (event) => {
-  const openButton = event.target.closest("[data-my-sanctuary-open]");
-  const closeButton = event.target.closest("[data-my-sanctuary-close]");
-  const signUpButton = event.target.closest("[data-my-sanctuary-signup]");
-  const signOutButton = event.target.closest("[data-my-sanctuary-signout]");
-
-  if (openButton) {
-    openMySanctuaryPanel();
-  }
-
-  if (closeButton) {
-    closeMySanctuaryPanel();
-  }
-
-  if (signUpButton) {
-    const panel = document.querySelector("[data-my-sanctuary-panel]");
-    const authForm = panel?.querySelector("[data-my-sanctuary-auth-form]");
-    if (!authForm) return;
-
-    const formData = new FormData(authForm);
-    const email = formData.get("email");
-    const password = formData.get("password");
-
-    if (!email || !password) {
-      showMySanctuaryNotice("Enter an email and password first.");
-      return;
-    }
-
-    showMySanctuaryNotice("Creating your sanctuary...");
-
-    try {
-      await signUpWithEmail(email, password);
-      authForm.reset();
-      updateMySanctuaryPanel();
-      showMySanctuaryNotice("Your sanctuary has been created.");
-    } catch (error) {
-      showMySanctuaryNotice(error.message);
-    }
-  }
-
-  if (signOutButton) {
-    try {
-      await signOutUser();
-      updateMySanctuaryPanel();
-      showMySanctuaryNotice("Signed out.");
-    } catch (error) {
-      showMySanctuaryNotice(error.message);
-    }
-  }
-});
-
-document.addEventListener("saltAuthChanged", updateMySanctuaryPanel);
-document.addEventListener("saltAuthSuccess", updateMySanctuaryPanel);
-
-createMySanctuaryPanel();
-updateMySanctuaryPanel();
+}
