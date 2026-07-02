@@ -1,109 +1,343 @@
 /* =========================================================
-   MY SANCTUARY PANEL REFINEMENT
+   MY SANCTUARY PANEL
+   Shared account / sanctuary home panel
    ========================================================= */
 
-.my-sanctuary-card {
-  overflow-y: auto;
+let mySanctuaryView = "welcome";
+
+function showMySanctuaryNotice(message) {
+  const panel = document.querySelector("[data-my-sanctuary-panel]");
+  if (!panel) return;
+
+  const notice = panel.querySelector("[data-my-sanctuary-notice]");
+  if (!notice) return;
+
+  notice.textContent = message;
+  notice.hidden = false;
+
+  window.clearTimeout(showMySanctuaryNotice.timeout);
+  showMySanctuaryNotice.timeout = window.setTimeout(() => {
+    notice.hidden = true;
+  }, 2600);
 }
 
-.my-sanctuary-card h2 {
-  max-width: 100%;
-  margin: 0 0 0.7rem;
-  font-size: clamp(2.4rem, 7vw, 4.2rem);
-  line-height: 0.95;
+function createMySanctuaryPanel() {
+  if (document.querySelector("[data-my-sanctuary-panel]")) return;
+
+  const panel = document.createElement("div");
+  panel.className = "my-sanctuary-panel";
+  panel.hidden = true;
+  panel.setAttribute("data-my-sanctuary-panel", "");
+
+  panel.innerHTML = `
+    <div class="my-sanctuary-backdrop" data-my-sanctuary-close></div>
+
+    <aside class="my-sanctuary-card" aria-label="My Sanctuary">
+      <button class="my-sanctuary-close" type="button" data-my-sanctuary-close aria-label="Close">
+        ×
+      </button>
+
+      <p class="eyebrow">The Sanctuary</p>
+
+      <section class="my-sanctuary-view" data-sanctuary-view="welcome">
+        <h2>Welcome Home</h2>
+
+        <p class="my-sanctuary-intro">
+          Your private home within Salt & Sovereignty. Build an altar, write in your Book of Shadows,
+          keep rituals and notes, and return to your practice in a way that feels like yours.
+        </p>
+
+        <p class="my-sanctuary-soft-note">
+          Continue as a guest, or sign in to keep your sanctuary across devices.
+        </p>
+
+        <div class="my-sanctuary-choice-actions">
+          <button class="button button--primary" type="button" data-my-sanctuary-show-auth>
+            Sign In
+          </button>
+
+          <button class="button button--ghost" type="button" data-my-sanctuary-guest>
+            Continue as Guest
+          </button>
+        </div>
+      </section>
+
+      <section class="my-sanctuary-view" data-sanctuary-view="auth" hidden>
+        <h2>Welcome Back</h2>
+
+        <p class="my-sanctuary-intro">
+          Open your sanctuary to save your altar, grimoire, rituals, notes, and magical practice across devices.
+        </p>
+
+        <p class="my-sanctuary-notice" data-my-sanctuary-notice hidden></p>
+
+        <form class="altar-auth-form my-sanctuary-auth-form" data-my-sanctuary-auth-form>
+          <label>
+            Email
+            <input type="email" name="email" autocomplete="email" />
+          </label>
+
+          <label>
+            Password
+            <input type="password" name="password" autocomplete="current-password" />
+          </label>
+
+          <div class="my-sanctuary-auth-actions">
+            <button class="button button--primary" type="submit">
+              Open Sanctuary
+            </button>
+
+            <button class="button" type="button" data-my-sanctuary-signup>
+              Create Sanctuary
+            </button>
+
+            <button class="button button--ghost" type="button" data-my-sanctuary-back>
+              ← Back
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="my-sanctuary-view" data-sanctuary-view="dashboard" hidden>
+        <h2 data-my-sanctuary-dashboard-title>Guest Sanctuary</h2>
+
+        <p class="my-sanctuary-user" data-my-sanctuary-user>
+          Guest mode
+        </p>
+
+        <p class="my-sanctuary-intro" data-my-sanctuary-dashboard-copy>
+          You're exploring as a guest. You can still use the altar and Book of Shadows,
+          but cloud syncing needs a Sanctuary account.
+        </p>
+
+        <nav class="my-sanctuary-links" aria-label="Sanctuary navigation">
+          <a href="/altar/">
+            <span>
+              <strong>🕯 My Digital Altar</strong>
+              <small>Build and tend your sacred space.</small>
+            </span>
+          </a>
+
+          <a href="/grimoire/index.html">
+            <span>
+              <strong>📖 My Book of Shadows</strong>
+              <small>Write rituals, dreams, notes, and correspondences.</small>
+            </span>
+          </a>
+
+          <span>
+            <strong>🌙 My Saved Rituals</strong>
+            <small>Coming soon.</small>
+          </span>
+
+          <span>
+            <strong>✨ Community Grimoire</strong>
+            <small>Share your practice when you're ready. Coming soon.</small>
+          </span>
+
+          <span>
+            <strong>⚙ My Settings</strong>
+            <small>Manage your sanctuary. Coming soon.</small>
+          </span>
+        </nav>
+
+        <div class="my-sanctuary-actions">
+          <button class="button button--ghost" type="button" data-my-sanctuary-show-auth>
+            Sign In
+          </button>
+
+          <button class="button button--ghost" type="button" data-my-sanctuary-signout hidden>
+            Sign Out
+          </button>
+        </div>
+      </section>
+    </aside>
+  `;
+
+  document.body.appendChild(panel);
 }
 
-.my-sanctuary-intro {
-  max-width: 34rem;
-  margin-bottom: 0.8rem;
-  color: var(--cream);
-  font-size: 1rem;
-  line-height: 1.6;
+function setMySanctuaryView(view) {
+  const panel = document.querySelector("[data-my-sanctuary-panel]");
+  if (!panel) return;
+
+  mySanctuaryView = view;
+
+  panel.querySelectorAll("[data-sanctuary-view]").forEach((section) => {
+    section.hidden = section.dataset.sanctuaryView !== view;
+  });
 }
 
-.my-sanctuary-soft-note {
-  margin-bottom: 1.1rem;
-  color: var(--gold);
-  font-size: 0.95rem;
-}
+function updateMySanctuaryPanel() {
+  const panel = document.querySelector("[data-my-sanctuary-panel]");
+  if (!panel) return;
 
-.my-sanctuary-view {
-  animation: sanctuaryPanelFade 0.22s ease both;
-}
+  const userLine = panel.querySelector("[data-my-sanctuary-user]");
+  const dashboardTitle = panel.querySelector("[data-my-sanctuary-dashboard-title]");
+  const dashboardCopy = panel.querySelector("[data-my-sanctuary-dashboard-copy]");
+  const signInButton = panel.querySelector('[data-my-sanctuary-show-auth]');
+  const signOutButton = panel.querySelector("[data-my-sanctuary-signout]");
 
-@keyframes sanctuaryPanelFade {
-  from {
-    opacity: 0;
-    transform: translateY(0.35rem);
+  const isSignedIn = Boolean(currentUser);
+
+  if (userLine) {
+    userLine.textContent = isSignedIn
+      ? `Signed in as ${currentUser.email}`
+      : "Guest mode";
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  if (dashboardTitle) {
+    dashboardTitle.textContent = isSignedIn ? "Welcome Back" : "Guest Sanctuary";
+  }
+
+  if (dashboardCopy) {
+    dashboardCopy.textContent = isSignedIn
+      ? "Your sanctuary is open. Your altar, grimoire, rituals, notes, and saved practice can follow you across your devices."
+      : "You're exploring as a guest. You can still use the altar and Book of Shadows, but cloud syncing needs a Sanctuary account.";
+  }
+
+  if (signInButton) {
+    signInButton.hidden = isSignedIn;
+  }
+
+  if (signOutButton) {
+    signOutButton.hidden = !isSignedIn;
+  }
+
+  if (isSignedIn && mySanctuaryView !== "auth") {
+    setMySanctuaryView("dashboard");
   }
 }
 
-.my-sanctuary-choice-actions,
-.my-sanctuary-auth-actions,
-.my-sanctuary-actions {
-  display: grid;
-  gap: 0.65rem;
-  margin-top: 1rem;
-}
+function openMySanctuaryPanel() {
+  createMySanctuaryPanel();
+  updateMySanctuaryPanel();
 
-.my-sanctuary-auth-form {
-  margin: 1rem 0 1.15rem;
-}
+  const panel = document.querySelector("[data-my-sanctuary-panel]");
+  if (!panel) return;
 
-.my-sanctuary-notice {
-  margin: 0.75rem 0;
-  border: 1px solid rgba(185, 160, 93, 0.3);
-  border-radius: 0.85rem;
-  padding: 0.65rem 0.8rem;
-  color: var(--cream);
-  background: rgba(185, 160, 93, 0.1);
-  font-size: 0.9rem;
-}
-
-.my-sanctuary-notice[hidden] {
-  display: none;
-}
-
-.my-sanctuary-user {
-  margin-bottom: 0.65rem;
-}
-
-.my-sanctuary-links {
-  gap: 0.8rem;
-  margin-top: 1rem;
-}
-
-.my-sanctuary-links a,
-.my-sanctuary-links span {
-  align-items: flex-start;
-  padding: 0.95rem 1rem;
-}
-
-.my-sanctuary-links strong {
-  display: block;
-  margin-bottom: 0.25rem;
-  color: var(--cream);
-  font-size: 1.05rem;
-}
-
-.my-sanctuary-links small {
-  display: block;
-  color: var(--muted);
-  font-size: 0.82rem;
-  line-height: 1.4;
-}
-
-@media (max-width: 520px) {
-  .my-sanctuary-card h2 {
-    font-size: clamp(2.1rem, 14vw, 3.4rem);
+  if (currentUser) {
+    setMySanctuaryView("dashboard");
+  } else {
+    setMySanctuaryView("welcome");
   }
 
-  .my-sanctuary-card {
-    width: 100%;
-  }
+  panel.hidden = false;
+
+  requestAnimationFrame(() => {
+    panel.classList.add("is-visible");
+  });
 }
+
+function closeMySanctuaryPanel() {
+  const panel = document.querySelector("[data-my-sanctuary-panel]");
+  if (!panel) return;
+
+  panel.classList.remove("is-visible");
+
+  window.setTimeout(() => {
+    panel.hidden = true;
+  }, 250);
+}
+
+document.addEventListener("submit", async (event) => {
+  const authForm = event.target.closest("[data-my-sanctuary-auth-form]");
+  if (!authForm) return;
+
+  event.preventDefault();
+
+  const formData = new FormData(authForm);
+  const email = formData.get("email");
+  const password = formData.get("password");
+
+  if (!email || !password) {
+    showMySanctuaryNotice("Enter an email and password first.");
+    return;
+  }
+
+  showMySanctuaryNotice("Opening your sanctuary...");
+
+  try {
+    await signInWithEmail(email, password);
+    authForm.reset();
+    updateMySanctuaryPanel();
+    setMySanctuaryView("dashboard");
+    showMySanctuaryNotice("Your sanctuary is open.");
+  } catch (error) {
+    showMySanctuaryNotice(error.message);
+  }
+});
+
+document.addEventListener("click", async (event) => {
+  const openButton = event.target.closest("[data-my-sanctuary-open]");
+  const closeButton = event.target.closest("[data-my-sanctuary-close]");
+  const showAuthButton = event.target.closest("[data-my-sanctuary-show-auth]");
+  const guestButton = event.target.closest("[data-my-sanctuary-guest]");
+  const backButton = event.target.closest("[data-my-sanctuary-back]");
+  const signUpButton = event.target.closest("[data-my-sanctuary-signup]");
+  const signOutButton = event.target.closest("[data-my-sanctuary-signout]");
+
+  if (openButton) {
+    openMySanctuaryPanel();
+  }
+
+  if (closeButton) {
+    closeMySanctuaryPanel();
+  }
+
+  if (showAuthButton) {
+    setMySanctuaryView("auth");
+  }
+
+  if (guestButton) {
+    setMySanctuaryView("dashboard");
+  }
+
+  if (backButton) {
+    setMySanctuaryView("welcome");
+  }
+
+  if (signUpButton) {
+    const panel = document.querySelector("[data-my-sanctuary-panel]");
+    const authForm = panel?.querySelector("[data-my-sanctuary-auth-form]");
+    if (!authForm) return;
+
+    const formData = new FormData(authForm);
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    if (!email || !password) {
+      showMySanctuaryNotice("Enter an email and password first.");
+      return;
+    }
+
+    showMySanctuaryNotice("Creating your sanctuary...");
+
+    try {
+      await signUpWithEmail(email, password);
+      authForm.reset();
+      updateMySanctuaryPanel();
+      setMySanctuaryView("dashboard");
+      showMySanctuaryNotice("Your sanctuary has been created.");
+    } catch (error) {
+      showMySanctuaryNotice(error.message);
+    }
+  }
+
+  if (signOutButton) {
+    try {
+      await signOutUser();
+      updateMySanctuaryPanel();
+      setMySanctuaryView("welcome");
+      showMySanctuaryNotice("Signed out.");
+    } catch (error) {
+      showMySanctuaryNotice(error.message);
+    }
+  }
+});
+
+document.addEventListener("saltAuthChanged", updateMySanctuaryPanel);
+document.addEventListener("saltAuthSuccess", updateMySanctuaryPanel);
+
+createMySanctuaryPanel();
+updateMySanctuaryPanel();
