@@ -430,18 +430,24 @@ async function deleteSavedAltar(altarId) {
 }
 
 const savedAltarsManager = document.createElement("div");
+const savedAltarsManager = document.createElement("div");
 savedAltarsManager.className = "saved-altars-modal";
 savedAltarsManager.hidden = true;
 savedAltarsManager.innerHTML = `
-  <div class="saved-altars-card" role="dialog" aria-modal="true" aria-labelledby="saved-altars-title">
+  <div class="saved-altars-card saved-altars-library" role="dialog" aria-modal="true" aria-labelledby="saved-altars-title">
     <button class="saved-altars-close" type="button" data-saved-altars-close aria-label="Close">
       ×
     </button>
 
-    <p class="eyebrow">Saved Sanctuaries</p>
-    <h2 id="saved-altars-title">Saved Altars</h2>
+    <div class="saved-altars-header">
+      <p class="eyebrow">Saved Sanctuaries</p>
+      <h2 id="saved-altars-title">My Altars</h2>
+      <p>
+        Return to a saved altar, rename a working, or clear away what no longer belongs.
+      </p>
+    </div>
 
-    <div class="saved-altars-list" data-saved-altars-list></div>
+    <div class="saved-altars-list saved-altars-grid" data-saved-altars-list></div>
   </div>
 `;
 
@@ -450,6 +456,34 @@ document.body.appendChild(savedAltarsManager);
 const savedAltarsList = savedAltarsManager.querySelector("[data-saved-altars-list]");
 const savedAltarsClose = savedAltarsManager.querySelector("[data-saved-altars-close]");
 
+function formatSavedAltarDate(altar) {
+  const rawDate = altar.updatedAt || altar.savedAt;
+
+  if (!rawDate) return "No date saved";
+
+  return new Date(rawDate).toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  });
+}
+
+function getSavedAltarSummary(altar) {
+  const objects = Array.isArray(altar.objects) ? altar.objects : [];
+  const itemCount = objects.length;
+  const candleCount = objects.filter((object) => object.type === "candle").length;
+  const herbCount = objects.filter((object) => object.type === "herb" || object.type === "oil").length;
+  const crystalCount = objects.filter((object) => object.type === "crystal").length;
+
+  const pieces = [`${itemCount} item${itemCount === 1 ? "" : "s"}`];
+
+  if (candleCount) pieces.push(`${candleCount} candle${candleCount === 1 ? "" : "s"}`);
+  if (herbCount) pieces.push(`${herbCount} herb${herbCount === 1 ? "" : "s"}`);
+  if (crystalCount) pieces.push(`${crystalCount} crystal${crystalCount === 1 ? "" : "s"}`);
+
+  return pieces.join(" · ");
+}
+
 async function renderSavedAltarsManager() {
   const savedAltars = await getSavedAltars();
 
@@ -457,26 +491,32 @@ async function renderSavedAltarsManager() {
 
   if (savedAltars.length === 0) {
     savedAltarsList.innerHTML = `
-      <p class="saved-altars-empty">
-        No saved altars yet. Build one, then use Save Altar to keep it.
-      </p>
+      <div class="saved-altars-empty">
+        <p class="book-divider">✦ ☽ ✦ ☾ ✦</p>
+        <h3>No saved altars yet.</h3>
+        <p>
+          Build an altar, then use Save to keep it in your Sanctuary.
+        </p>
+      </div>
     `;
     return;
   }
 
   savedAltarsList.innerHTML = savedAltars
     .map((altar) => {
-      const date = altar.savedAt
-        ? new Date(altar.savedAt).toLocaleDateString()
-        : "No date";
-
-      const itemCount = Array.isArray(altar.objects) ? altar.objects.length : 0;
+      const date = formatSavedAltarDate(altar);
+      const summary = getSavedAltarSummary(altar);
+      const backgroundName = altar.backgroundName || "Custom altar";
 
       return `
-        <article class="saved-altar-row" data-saved-altar-id="${altar.id}">
-          <div>
+        <article class="saved-altar-row saved-altar-card" data-saved-altar-id="${altar.id}">
+          <div class="saved-altar-symbol" aria-hidden="true">🕯</div>
+
+          <div class="saved-altar-body">
+            <p class="eyebrow">${backgroundName}</p>
             <h3>${altar.name || "Untitled Altar"}</h3>
-            <p>${date} · ${itemCount} item${itemCount === 1 ? "" : "s"}</p>
+            <p>${summary}</p>
+            <p class="saved-altar-date">Saved ${date}</p>
           </div>
 
           <div class="saved-altar-actions">
