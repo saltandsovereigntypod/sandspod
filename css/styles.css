@@ -1071,3 +1071,88 @@ body.sanctuary-modal-open {
   margin: 0;
   font-size: inherit;
 }
+
+/* =========================================================
+   MY SANCTUARY FORMS, RITUALS, SETTINGS
+   ========================================================= */
+
+.my-sanctuary-links button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  border: 0;
+  border-radius: 0.85rem;
+  padding: 0.95rem 1rem;
+  color: var(--cream);
+  background: rgba(244, 236, 216, 0.05);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.my-sanctuary-links button:hover,
+.my-sanctuary-links button:focus-visible {
+  background: rgba(185, 160, 93, 0.14);
+}
+
+.my-sanctuary-form {
+  display: grid;
+  gap: 0.85rem;
+  margin: 1rem 0;
+}
+
+.my-sanctuary-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+
+.my-sanctuary-check input {
+  width: auto;
+  margin-top: 0.45rem;
+}
+
+.my-rituals-list {
+  display: grid;
+  gap: 0.8rem;
+  margin: 1rem 0;
+}
+
+.my-ritual-card {
+  border: 1px solid rgba(185, 160, 93, 0.24);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(244, 236, 216, 0.045);
+}
+
+.my-ritual-card h3 {
+  max-width: none;
+  margin-bottom: 0.4rem;
+  color: var(--cream);
+}
+
+.my-ritual-card p {
+  margin-bottom: 0.4rem;
+}
+
+.my-ritual-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.my-ritual-tags span {
+  border: 1px solid rgba(185, 160, 93, 0.24);
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  color: var(--gold);
+  font-size: 0.78rem;
+}
+
+.my-sanctuary-empty {
+  border: 1px solid rgba(185, 160, 93, 0.24);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(244, 236, 216, 0.045);
+}
