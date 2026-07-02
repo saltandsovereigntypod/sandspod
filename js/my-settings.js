@@ -45,6 +45,7 @@ async function saveMySettings(settings) {
   const row = {
     user_id: currentUser.id,
     preferred_name: settings.preferred_name || "",
+    pronouns: settings.pronouns || "",
     magical_name: settings.magical_name || "",
     default_mundane_mode: Boolean(settings.default_mundane_mode),
     default_altar_background: settings.default_altar_background || "",
@@ -68,6 +69,7 @@ async function populateMySettingsForm() {
   const settings = await getMySettings();
 
   form.preferred_name.value = settings.preferred_name || "";
+  form.pronouns.value = settings.pronouns || "";
   form.magical_name.value = settings.magical_name || "";
   form.default_altar_background.value = settings.default_altar_background || "";
   form.default_mundane_mode.checked = Boolean(settings.default_mundane_mode);
@@ -81,6 +83,7 @@ document.addEventListener("submit", async (event) => {
 
   const settings = {
     preferred_name: form.preferred_name.value.trim(),
+    pronouns: form.pronouns.value.trim(),
     magical_name: form.magical_name.value.trim(),
     default_altar_background: form.default_altar_background.value.trim(),
     default_mundane_mode: form.default_mundane_mode.checked
