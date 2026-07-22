@@ -27,7 +27,9 @@ jobs:
         env:
           DEPLOY_TOKEN: ${{ secrets.DEV_REPO_DEPLOY_TOKEN }}
         run: |
-          git clone "https://x-access-token:${DEPLOY_TOKEN}@github.com/saltandsovereigntypod/sandspod-dev.git" /tmp/sandspod-dev
+          git clone --branch main --single-branch \
+            "https://x-access-token:${DEPLOY_TOKEN}@github.com/saltandsovereigntypod/sandspod-dev.git" \
+            /tmp/sandspod-dev
 
       - name: Copy dev site files
         run: |
@@ -38,6 +40,8 @@ jobs:
 
       - name: Commit and push deployment
         working-directory: /tmp/sandspod-dev
+        env:
+          SOURCE_SHA: ${{ github.sha }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -48,5 +52,6 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Deploy sandspod dev branch"
-          git push origin main
+          SHORT_SHA="${SOURCE_SHA:0:7}"
+          git commit -m "Deploy dev (${SHORT_SHA})"
+          git push origin HEAD:main
