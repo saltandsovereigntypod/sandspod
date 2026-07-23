@@ -183,3 +183,95 @@ body.altar-companion-minimized .altar-workspace-panel {
     grid-column: 2;
   }
 }
+
+/* =========================================================
+   COMPANION V2 — TRUE FULL-HEIGHT READABLE AREA
+   Header uses its natural height; content receives everything else.
+   ========================================================= */
+
+.altar-workspace-panel,
+.altar-workspace-panel-inner,
+.altar-workspace-panel-inner > .altar-companion-panel {
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+/* Use an explicit two-row grid instead of competing flex heights. */
+
+.altar-workspace-panel-inner
+  > .altar-companion-panel
+  > .altar-companion-inner {
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Header occupies only the space it actually needs. */
+
+.altar-workspace-panel-inner
+  > .altar-companion-panel
+  > .altar-companion-inner
+  > .altar-companion-header {
+  grid-row: 1 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+}
+
+/* This is the actual readable and scrollable area.
+   It now fills every remaining pixel beneath the header. */
+
+.altar-workspace-panel-inner
+  > .altar-companion-panel
+  > .altar-companion-inner
+  > .altar-companion-content {
+  grid-row: 2 !important;
+  align-self: stretch !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+/* Prevent the rendered journal page from creating its own
+   smaller constrained viewing box. */
+
+.altar-workspace-panel
+  .altar-companion-content
+  > .altar-info-card-inner.is-panel-view {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 100% !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Living State must flow inside the same scroll document,
+   not calculate a second internal height. */
+
+.altar-workspace-panel
+  .altar-companion-content
+  > .altar-living-state-panel,
+.altar-workspace-panel
+  .altar-companion-content
+  > .altar-living-state-panel
+  > .altar-companion-inner,
+.altar-workspace-panel
+  .altar-companion-content
+  > .altar-living-state-panel
+  .altar-companion-content {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
