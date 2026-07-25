@@ -1,0 +1,770 @@
+/* =========================================================
+   COMPANION PANEL
+   Single rendering authority for altar objects, lifecycle state,
+   activity history, actions, and Living Library knowledge.
+   ========================================================= */
+
+(function initializeCompanion() {
+  if (typeof altarCompanionPanel === "undefined" || !altarCompanionPanel) return;
+
+  const companionHeader = altarCompanionPanel.querySelector(".altar-companion-header");
+  const companionContent = altarCompanionPanel.querySelector("[data-companion-content]");
+
+  let currentCompanionObject = null;
+  let currentCompanionEntity = null;
+  let currentCompanionInstance = null;
+  let currentCompanionEvents = [];
+  let renderRequestId = 0;
+
+  function escapeCompanionHtml(value = "") {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function humanizeCompanionKey(value = "") {
+    return String(value || "")
+      .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+      .replaceAll("_", " ")
+      .replace(/\b\w/g, (letter) => letter.toUpperCase());
+  }
+
+  function formatCompanionDate(value, short = false) {
+    if (!value) return "";
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "";
+
+    return date.toLocaleDateString(undefined, {
+      month: short ? "short" : "long",
+      day: "numeric",
+      year: "numeric"
+    });
+  }
+
+  function formatRelativeDate(value) {
+    if (!value) return "";
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "";
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const target = new Date(date);
+    target.setHours(0, 0, 0, 0);
+
+    const days = Math.round((target.getTime() - today.getTime()) / 86400000);
+
+    if (days < 0) {
+      const overdue = Math.abs(days);
+      return `${overdue} day${overdue === 1 ? "" : "s"} overdue`;
+    }
+
+    if (days === 0) return "due today";
+    if (days === 1) return "due tomorrow";
+    return `in ${days} days`;
+  }
+
+  function getSectionStateKey(title) {
+    return `saltAndSovereigntyCompanion:${String(title || "section").toLowerCase()}`;
+  }
+
+  function getSavedSectionState(title, defaultOpen = false) {
+    const saved = localStorage.getItem(getSectionStateKey(title));
+    return saved === null ? defaultOpen : saved === "true";
+  }
+
+  function saveSectionState(title, isOpen) {
+    localStorage.setItem(getSectionStateKey(title), String(isOpen));
+  }
+
+  function getSettings() {
+    return typeof getCompanionDisplaySettings === "function"
+      ? getCompanionDisplaySettings()
+      : {};
+  }
+
+  function getEntityForObject(object) {
+    return typeof getLibraryEntityForObject === "function"
+      ? getLibraryEntityForObject(object)
+      : null;
+  }
+
+  function getObjectIdentity(object, entity = null) {
+    const rawType = String(
+      object?.dataset.apothecaryType ||
+      object?.dataset.type ||
+      entity?.type ||
+      "entry"
+    ).toLowerCase();
+
+    if (rawType.includes("spell jar") || rawType.includes("spell-jar")) return "spell-jar";
+    if (rawType.includes("candle")) return "candle";
+    if (rawType.includes("crystal")) return "crystal";
+    if (rawType.includes("herb")) return "herb";
+    if (rawType.includes("oil")) return "oil";
+    if (rawType.includes("incense")) return "incense";
+    if (rawType.includes("sachet")) return "sachet";
+    if (rawType.includes("spray")) return "spray";
+    if (rawType.includes("poppet")) return "poppet";
+    if (rawType.includes("deity")) return "deity";
+    return rawType.replace(/[^a-z0-9]+/g, "-") || "entry";
+  }
+
+  function getHeaderDescriptor(object, entity, identity) {
+    const label = object?.dataset.label || entity?.name || "Companion";
+    const icon = object && typeof getObjectIcon === "function" ? getObjectIcon(object) : "✦";
+    const typeLabel = object && typeof getObjectTypeLabel === "function"
+      ? getObjectTypeLabel(object)
+      : entity?.type || "entry";
+    const form = object?.dataset.form && object.dataset.form !== "standard"
+      ? object.dataset.form
+      : "";
+
+    const base = { label, icon, typeLabel, secondaryLabel: form, identity, emphasis: [] };
+
+    const hooks = {
+      herb: renderHerbHeader,
+      crystal: renderCrystalHeader,
+      "spell-jar": renderSpellJarHeader,
+      candle: renderCandleHeader,
+      oil: renderOilHeader
+    };
+
+    return hooks[identity] ? hooks[identity](base) : base;
+  }
+
+  function renderHerbHeader(header) {
+    return { ...header, divider: "botanical", emphasis: ["Correspondences", "Planet", "Element", "Best Uses"] };
+  }
+
+  function renderCrystalHeader(header) {
+    return { ...header, divider: "crystal", emphasis: ["Correspondences", "Charging", "Cleansing", "Uses"] };
+  }
+
+  function renderSpellJarHeader(header) {
+    return { ...header, divider: "alchemy", emphasis: ["Ingredients", "Intention", "Creation Date", "Activation History"] };
+  }
+
+  function renderCandleHeader(header) {
+    return { ...header, divider: "candle", emphasis: ["Color", "Burn State", "Remaining Burn", "Flame History"] };
+  }
+
+  function renderOilHeader(header) {
+    return { ...header, divider: "alchemy", emphasis: ["Ingredients", "Recipe", "Shelf Life"] };
+  }
+
+  function renderLifecycleMarkup(instance) {
+    if (!instance) return "";
+
+    const status = String(instance.status || "active").toLowerCase();
+    const created = formatCompanionDate(instance.started_at, true);
+    const nextTending = instance.tending_enabled && instance.tending_due_at
+      ? formatCompanionDate(instance.tending_due_at, true)
+      : "";
+    const tendingRelative = nextTending ? formatRelativeDate(instance.tending_due_at) : "";
+    const expires = instance.expiration_enabled && instance.expires_at
+      ? formatCompanionDate(instance.expires_at, true)
+      : "";
+    const expiresRelative = expires ? formatRelativeDate(instance.expires_at) : "";
+
+    const measures = [];
+
+    if (instance.remaining_amount !== null && instance.remaining_amount !== undefined) {
+      measures.push(`${instance.remaining_amount}${instance.amount_unit ? ` ${instance.amount_unit}` : ""} remaining`);
+    }
+
+    if (instance.remaining_burn_seconds !== null && instance.remaining_burn_seconds !== undefined) {
+      const totalMinutes = Math.max(0, Math.round(Number(instance.remaining_burn_seconds) / 60));
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
+      measures.push(`${hours ? `${hours}h ` : ""}${minutes}m burn remaining`);
+    }
+
+    return `
+      <div class="companion-v3-lifecycle" data-companion-lifecycle>
+        <div class="companion-v3-lifecycle-primary">
+          <span class="companion-v3-status-chip is-${escapeCompanionHtml(status)}">${escapeCompanionHtml(status)}</span>
+          ${created ? `<span>Created ${escapeCompanionHtml(created)}</span>` : ""}
+        </div>
+
+        ${nextTending ? `
+          <p>
+            <strong>Next tending</strong>
+            <span>${escapeCompanionHtml(nextTending)}${tendingRelative ? ` · ${escapeCompanionHtml(tendingRelative)}` : ""}</span>
+          </p>
+        ` : ""}
+
+        ${expires ? `
+          <p>
+            <strong>Review or replace</strong>
+            <span>${escapeCompanionHtml(expires)}${expiresRelative ? ` · ${escapeCompanionHtml(expiresRelative)}` : ""}</span>
+          </p>
+        ` : ""}
+
+        ${measures.map((measure) => `<p><strong>Current state</strong><span>${escapeCompanionHtml(measure)}</span></p>`).join("")}
+      </div>
+    `;
+  }
+
+  function renderHeader(object, entity, instance = null) {
+    if (!companionHeader) return;
+
+    const identity = getObjectIdentity(object, entity);
+    const descriptor = getHeaderDescriptor(object, entity, identity);
+    const heading = companionHeader.querySelector("h2");
+    const headerHost = companionHeader.querySelector("div") || companionHeader;
+
+    altarCompanionPanel.dataset.companionIdentity = identity;
+    altarCompanionPanel.dataset.companionDivider = descriptor.divider || "standard";
+
+    if (heading) heading.textContent = `${descriptor.icon} ${descriptor.label}`.trim();
+
+    let tags = companionHeader.querySelector("[data-companion-header-tags]");
+    if (!tags) {
+      tags = document.createElement("div");
+      tags.className = "companion-v3-header-tags";
+      tags.setAttribute("data-companion-header-tags", "");
+      headerHost.appendChild(tags);
+    }
+
+    tags.innerHTML = [descriptor.typeLabel, descriptor.secondaryLabel]
+      .filter(Boolean)
+      .filter((label, index, labels) => labels.indexOf(label) === index)
+      .map((label) => `<span>${escapeCompanionHtml(label)}</span>`)
+      .join("");
+    tags.hidden = !tags.innerHTML;
+
+    let emphasis = companionHeader.querySelector("[data-companion-emphasis]");
+    if (!emphasis) {
+      emphasis = document.createElement("div");
+      emphasis.className = "companion-v3-emphasis";
+      emphasis.setAttribute("data-companion-emphasis", "");
+      headerHost.appendChild(emphasis);
+    }
+
+    emphasis.innerHTML = descriptor.emphasis
+      .map((label) => `<span>${escapeCompanionHtml(label)}</span>`)
+      .join("");
+    emphasis.hidden = !descriptor.emphasis.length;
+
+    companionHeader.querySelector("[data-companion-lifecycle]")?.remove();
+
+    if (instance) {
+      const template = document.createElement("template");
+      template.innerHTML = renderLifecycleMarkup(instance);
+      if (template.content.firstElementChild) {
+        headerHost.appendChild(template.content.firstElementChild);
+      }
+    }
+  }
+
+  function createDetailsMarkup(title, html, defaultOpen = false, extraClass = "") {
+    if (!html || !String(html).trim()) return "";
+
+    return `
+      <details
+        class="companion-v3-section ${extraClass}"
+        data-companion-v3-section="${escapeCompanionHtml(title)}"
+        ${getSavedSectionState(title, defaultOpen) ? "open" : ""}>
+        <summary>${escapeCompanionHtml(title)}</summary>
+        <div class="companion-v3-section-body">${html}</div>
+      </details>
+    `;
+  }
+
+  function formatCompanionValue(value) {
+    if (Array.isArray(value)) {
+      return value
+        .map((item) => {
+          if (item && typeof item === "object") {
+            const amount = item.amount ? `${item.amount} ` : "";
+            return `${amount}${item.libraryName || item.label || item.name || "Item"}`.trim();
+          }
+          return item;
+        })
+        .filter(Boolean)
+        .join(", ");
+    }
+
+    if (value && typeof value === "object") {
+      return value.label || value.name || JSON.stringify(value);
+    }
+
+    return String(value ?? "");
+  }
+
+  function getFieldCategory(key = "") {
+    const normalized = String(key).replaceAll("_", "").toLowerCase();
+    const categories = {
+      meaning: "meanings",
+      meanings: "meanings",
+      uses: "uses",
+      bestuses: "uses",
+      domains: "uses",
+      purpose: "uses",
+      element: "correspondences",
+      planet: "correspondences",
+      chakra: "correspondences",
+      pantheon: "correspondences",
+      correspondences: "correspondences",
+      ingredients: "ingredients",
+      recipe: "ingredients",
+      intention: "intentions",
+      intentions: "intentions",
+      pairswith: "pairings",
+      bestwith: "pairings",
+      substitutions: "substitutions",
+      traditionalwarnings: "warnings",
+      warnings: "warnings",
+      grimoirestatus: "grimoire",
+      candledressings: "dressings",
+      groups: "groups",
+      notes: "notes",
+      sources: "sources",
+      source: "sources"
+    };
+    return categories[normalized] || "notes";
+  }
+
+  function shouldShowLayer(settings, layer) {
+    return settings[`library_${layer}_enabled`] !== false;
+  }
+
+  function shouldShowField(settings, layer, key) {
+    return settings[`library_${layer}_${getFieldCategory(key)}`] !== false;
+  }
+
+  function renderJournalFields(data = {}, layer, settings) {
+    const entries = Object.entries(data).filter(([key, value]) => {
+      if (key === "tags" || value === "" || value === null || value === undefined) return false;
+      if (Array.isArray(value) && !value.length) return false;
+      return shouldShowField(settings, layer, key);
+    });
+
+    if (!entries.length) return "";
+
+    return `<div class="companion-v3-journal-fields">
+      ${entries.map(([key, value]) => `
+        <section class="companion-v3-journal-field" data-companion-field="${escapeCompanionHtml(key)}">
+          <h4>${escapeCompanionHtml(humanizeCompanionKey(key))}</h4>
+          <div>${escapeCompanionHtml(formatCompanionValue(value))}</div>
+        </section>
+      `).join("")}
+    </div>`;
+  }
+
+  function renderTraditional(entity, settings) {
+    if (!entity || !shouldShowLayer(settings, "traditional")) return "";
+    const fields = renderJournalFields(entity.traditional || {}, "traditional", settings);
+    return fields ? createDetailsMarkup("Traditional", fields, true, "companion-v3-traditional") : "";
+  }
+
+  function renderMyPractice(entity, settings) {
+    if (!entity || !shouldShowLayer(settings, "myPractice")) return "";
+    const fields = renderJournalFields(entity.myPractice || {}, "myPractice", settings);
+    return fields ? createDetailsMarkup("My Practice", fields, true, "companion-v3-my-practice") : "";
+  }
+
+  function renderCommunity(entity, settings) {
+    if (!entity || !shouldShowLayer(settings, "community")) return "";
+    const fields = renderJournalFields(entity.community || {}, "community", settings);
+    return fields ? createDetailsMarkup("Community", fields, false, "companion-v3-community") : "";
+  }
+
+  function formatIngredient(ingredient = {}) {
+    const name = ingredient.libraryName || ingredient.label || ingredient.name || "Ingredient";
+    const amount = String(ingredient.amount || "").trim();
+    return amount ? `${name}: ${amount}` : name;
+  }
+
+  function renderObjectSummary(object, settings) {
+    if (!object) return "";
+    const groups = [];
+    const apothecary = typeof getApothecaryDetailsForObject === "function"
+      ? getApothecaryDetailsForObject(object)
+      : null;
+
+    if (apothecary?.intention && settings.companion_my_intentions !== false) {
+      groups.push(`<div class="companion-v3-glance-group"><h3>Intention</h3><p>${escapeCompanionHtml(apothecary.intention)}</p></div>`);
+    }
+
+    if (Array.isArray(apothecary?.ingredients) && apothecary.ingredients.length && settings.companion_my_ingredients !== false) {
+      groups.push(`
+        <div class="companion-v3-glance-group">
+          <h3>Ingredients</h3>
+          <ul>${apothecary.ingredients.map((item) => `<li>${escapeCompanionHtml(formatIngredient(item))}</li>`).join("")}</ul>
+        </div>
+      `);
+    }
+
+    const dressings = typeof getDressings === "function" ? getDressings(object) : [];
+    if (dressings.length && settings.companion_my_dressings !== false) {
+      groups.push(`
+        <div class="companion-v3-glance-group">
+          <h3>Dressed With</h3>
+          <ul>${dressings.map((dressing) => {
+            const label = typeof formatDressingName === "function"
+              ? formatDressingName(dressing)
+              : dressing.herb || dressing.label || dressing.type || "Dressing";
+            return `<li>${escapeCompanionHtml(label)}</li>`;
+          }).join("")}</ul>
+        </div>
+      `);
+    }
+
+    const group = object.dataset.groupId && typeof altarGroups !== "undefined"
+      ? altarGroups.find((item) => item.id === object.dataset.groupId)
+      : null;
+
+    if (group && settings.companion_my_groups !== false) {
+      const members = typeof getGroupObjects === "function"
+        ? getGroupObjects(group.id).map((item) => item.dataset.label || "Item")
+        : [];
+      groups.push(`
+        <div class="companion-v3-glance-group">
+          <h3>Ritual Group</h3>
+          <p>${escapeCompanionHtml(group.name || "Group")}</p>
+          ${members.length ? `<p>${members.map(escapeCompanionHtml).join(", ")}</p>` : ""}
+        </div>
+      `);
+    }
+
+    return groups.join("");
+  }
+
+  function renderStatus(object, settings) {
+    const objectSummary = renderObjectSummary(object, settings);
+    if (!objectSummary) return "";
+
+    return `
+      <section class="companion-v3-glance" aria-label="Object details">
+        ${objectSummary}
+      </section>
+    `;
+  }
+
+  function getRelationshipLabel(connection, entityId) {
+    if (typeof getReadableRelationLabel === "function") {
+      const label = getReadableRelationLabel(connection, entityId);
+      return label === "Pairs With" ? "Pairs Well With" : label;
+    }
+    return humanizeCompanionKey(connection.relation || "Related To");
+  }
+
+  function renderRelationships(entity) {
+    if (!entity?.id || typeof Library === "undefined" || typeof Library.getConnections !== "function") return "";
+
+    const connections = Library.getConnections(entity.id) || [];
+    const groups = new Map();
+    const seen = new Set();
+
+    connections.forEach((connection) => {
+      const outgoing = connection.from === entity.id;
+      const otherId = outgoing ? connection.to : connection.from;
+      const otherEntity = Library.getEntity(otherId);
+      if (!otherEntity) return;
+
+      const label = getRelationshipLabel(connection, entity.id);
+      const uniqueKey = `${label}|${otherId}`;
+      if (seen.has(uniqueKey)) return;
+      seen.add(uniqueKey);
+
+      if (!groups.has(label)) groups.set(label, []);
+      groups.get(label).push(otherEntity);
+    });
+
+    const body = groups.size
+      ? Array.from(groups.entries()).map(([label, entities]) => `
+          <section class="companion-v3-relationship-group">
+            <h4>${escapeCompanionHtml(label)}</h4>
+            <div class="companion-v3-relationship-chips">
+              ${entities.map((related) => `
+                <button
+                  type="button"
+                  class="living-library-inline-link companion-v3-relationship-chip"
+                  data-open-library-entity="${escapeCompanionHtml(related.id)}">
+                  ${escapeCompanionHtml(related.name || "Untitled")}
+                </button>
+              `).join("")}
+            </div>
+          </section>
+        `).join("")
+      : `<p class="altar-info-empty">No relationships recorded yet.</p>`;
+
+    return createDetailsMarkup("Relationships", body, false, "companion-v3-relationships");
+  }
+
+  function renderInstanceEvents(events = []) {
+    if (!Array.isArray(events) || !events.length) {
+      return `<p class="altar-info-empty">No activity recorded yet.</p>`;
+    }
+
+    return `
+      <div class="companion-v3-event-list">
+        ${events.map((event) => `
+          <article class="companion-v3-event">
+            <strong>${escapeCompanionHtml(event.event_label || humanizeCompanionKey(event.event_type || "Activity"))}</strong>
+            <time datetime="${escapeCompanionHtml(event.occurred_at || "")}">${escapeCompanionHtml(formatCompanionDate(event.occurred_at, true))}</time>
+            ${event.event_notes ? `<p>${escapeCompanionHtml(event.event_notes)}</p>` : ""}
+          </article>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderHistory(entity, instance, events = []) {
+    const instanceHistory = instance ? renderInstanceEvents(events) : "";
+    const libraryHistory = entity?.id
+      ? `<div class="companion-v3-library-history" data-library-activity-timeline="${escapeCompanionHtml(entity.id)}"><p class="altar-info-empty">Loading library history...</p></div>`
+      : "";
+
+    const timeline = [instanceHistory, libraryHistory].filter(Boolean).join("");
+    return timeline ? createDetailsMarkup("History & Activity", timeline, false, "companion-v3-history") : "";
+  }
+
+  function renderActions(object, entity, instance) {
+    const primaryActions = [];
+    const secondaryActions = [];
+
+    if (object?.dataset.instanceId && instance && !["retired", "archived"].includes(instance.status)) {
+      primaryActions.push(`
+        <button type="button" class="companion-v3-primary-action" data-living-state-practice>
+          <span aria-hidden="true">✦</span> Begin Today’s Practice
+        </button>
+      `);
+    }
+
+    const apothecary = object && typeof getApothecaryDetailsForObject === "function"
+      ? getApothecaryDetailsForObject(object)
+      : null;
+
+    if (apothecary?.itemId) {
+      secondaryActions.push(`<button type="button" data-apothecary-edit="${escapeCompanionHtml(apothecary.itemId)}">Edit Selected Item</button>`);
+    }
+
+    if (entity?.id) {
+      secondaryActions.push(`
+        <button type="button" class="altar-companion-edit-button" data-library-edit-section="myPractice" data-library-entity-id="${escapeCompanionHtml(entity.id)}">
+          Edit My Practice Entry
+        </button>
+      `);
+      secondaryActions.push(`<button type="button" data-manage-library-relationships="${escapeCompanionHtml(entity.id)}">Manage Relationships</button>`);
+      secondaryActions.push(`<button type="button" data-open-living-history="${escapeCompanionHtml(entity.id)}">View Full History</button>`);
+    }
+
+    if (!primaryActions.length && !secondaryActions.length) return "";
+
+    return `
+      <footer class="companion-v3-actions">
+        ${primaryActions.join("")}
+        ${secondaryActions.length ? `<div class="companion-v3-secondary-actions">${secondaryActions.join("")}</div>` : ""}
+      </footer>
+    `;
+  }
+
+  function renderKnowledge(entity, settings) {
+    if (!entity) return "";
+
+    const layerOrder = String(settings.library_layer_order || "myPractice,traditional,community")
+      .split(",")
+      .map((layer) => layer.trim())
+      .filter(Boolean);
+
+    const renderers = {
+      myPractice: renderMyPractice,
+      traditional: renderTraditional,
+      community: renderCommunity
+    };
+
+    return layerOrder
+      .map((layer) => renderers[layer]?.(entity, settings) || "")
+      .join("");
+  }
+
+  function bindSectionStateListeners() {
+    companionContent?.querySelectorAll("details[data-companion-v3-section]").forEach((details) => {
+      details.addEventListener("toggle", () => {
+        saveSectionState(details.dataset.companionV3Section, details.open);
+      });
+    });
+  }
+
+  function hydrateHistory(entityId) {
+    if (!entityId || typeof hydrateCompanionLibraryExtras !== "function") return;
+
+    hydrateCompanionLibraryExtras(entityId).then(() => {
+      const target = companionContent?.querySelector(
+        `[data-library-activity-timeline="${CSS.escape(entityId)}"]`
+      );
+      const nestedSection = target?.querySelector(".altar-info-card-section");
+      if (!target || !nestedSection) return;
+
+      nestedSection.querySelector(":scope > p:first-child")?.remove();
+      target.innerHTML = nestedSection.innerHTML;
+    });
+  }
+
+  async function resolveObjectInstance(object) {
+    if (!object || typeof getObjectInstance !== "function") return null;
+
+    let instance = object.dataset.instanceId
+      ? await getObjectInstance(object.dataset.instanceId)
+      : null;
+
+    if (instance) return instance;
+
+    const apothecaryItemId = object.dataset.apothecaryItemId || "";
+    const apothecaryItem =
+      apothecaryItemId && typeof getApothecaryItemById === "function"
+        ? getApothecaryItemById(apothecaryItemId)
+        : null;
+
+    if (apothecaryItem?.instanceId) {
+      instance = await getObjectInstance(apothecaryItem.instanceId);
+    }
+
+    const entityId = object.dataset.entityId || apothecaryItem?.entityId || "";
+
+    if (!instance && entityId && typeof getObjectInstancesByEntity === "function") {
+      const instances = await getObjectInstancesByEntity(entityId);
+      instance =
+        (apothecaryItemId
+          ? instances.find((candidate) => candidate.apothecary_item_id === apothecaryItemId)
+          : null) ||
+        instances.find((candidate) => candidate.status === "active") ||
+        instances[0] ||
+        null;
+    }
+
+    if (instance?.id) {
+      object.dataset.instanceId = instance.id;
+      object.dataset.entityId = object.dataset.entityId || instance.entity_id || entityId;
+      if (typeof saveWorkingAltarDraft === "function") saveWorkingAltarDraft();
+    }
+
+    return instance;
+  }
+
+  async function getInstanceEvents(instance) {
+    if (!instance?.id || typeof getObjectInstanceEvents !== "function") return [];
+    return getObjectInstanceEvents(instance.id);
+  }
+
+  function renderCompanionPage({ object = null, entity = null, instance = null, events = [] } = {}) {
+    if (!companionContent || (!object && !entity)) return;
+
+    const settings = getSettings();
+
+    currentCompanionObject = object;
+    currentCompanionEntity = entity;
+    currentCompanionInstance = instance;
+    currentCompanionEvents = events;
+
+    renderHeader(object, entity, instance);
+
+    companionContent.innerHTML = `
+      <div class="companion-v3-page">
+        ${renderStatus(object, settings)}
+        <div class="companion-v3-knowledge">
+          ${renderKnowledge(entity, settings)}
+          ${renderRelationships(entity)}
+          ${renderHistory(entity, instance, events)}
+        </div>
+        ${renderActions(object, entity, instance)}
+      </div>
+    `;
+
+    bindSectionStateListeners();
+    if (entity?.id) hydrateHistory(entity.id);
+
+    altarCompanionPanel.classList.add("is-visible");
+    altarCompanionPanel.classList.remove("is-minimized");
+  }
+
+  async function renderSelectedObject(object) {
+    if (!object) return;
+
+    const requestId = ++renderRequestId;
+    const entity = getEntityForObject(object);
+
+    renderCompanionPage({ object, entity });
+
+    const instance = await resolveObjectInstance(object);
+    if (requestId !== renderRequestId) return;
+    if (typeof selectedObject !== "undefined" && selectedObject !== object) return;
+
+    const events = await getInstanceEvents(instance);
+    if (requestId !== renderRequestId) return;
+    if (typeof selectedObject !== "undefined" && selectedObject !== object) return;
+
+    renderCompanionPage({ object, entity, instance, events });
+  }
+
+  function renderLibraryEntity(entityId) {
+    if (!entityId || typeof Library === "undefined") return;
+    const entity = Library.getEntity(entityId);
+    if (!entity) return;
+    ++renderRequestId;
+    renderCompanionPage({ entity });
+  }
+
+  window.showAltarCompanionPanel = function showUnifiedAltarCompanionPanel(object) {
+    renderSelectedObject(object);
+  };
+
+  window.showLibraryEntityInCompanion = function showUnifiedLibraryEntityInCompanion(entityId) {
+    renderLibraryEntity(entityId);
+  };
+
+  window.hideAltarCompanionPanel = function hideUnifiedAltarCompanionPanel() {
+    ++renderRequestId;
+    currentCompanionObject = null;
+    currentCompanionEntity = null;
+    currentCompanionInstance = null;
+    currentCompanionEvents = [];
+
+    altarCompanionPanel.dataset.companionIdentity = "empty";
+    altarCompanionPanel.dataset.companionDivider = "standard";
+
+    const heading = companionHeader?.querySelector("h2");
+    if (heading) heading.textContent = "Companion";
+    companionHeader?.querySelector("[data-companion-header-tags]")?.replaceChildren();
+    companionHeader?.querySelector("[data-companion-emphasis]")?.replaceChildren();
+    companionHeader?.querySelector("[data-companion-lifecycle]")?.remove();
+
+    if (companionContent) {
+      companionContent.innerHTML = `
+        <div class="companion-v3-empty-state">
+          <p class="book-divider">✦ ☽ ✦ ☾ ✦</p>
+          <p>Select an object to open its living page.</p>
+        </div>
+      `;
+    }
+  };
+
+  window.addEventListener("saltSettingsChanged", () => {
+    if (currentCompanionObject) {
+      renderCompanionPage({
+        object: currentCompanionObject,
+        entity: currentCompanionEntity,
+        instance: currentCompanionInstance,
+        events: currentCompanionEvents
+      });
+    } else if (currentCompanionEntity?.id) {
+      renderLibraryEntity(currentCompanionEntity.id);
+    }
+  });
+
+  if (typeof altarLivingStatePanel !== "undefined" && altarLivingStatePanel) {
+    altarLivingStatePanel.hidden = true;
+    altarLivingStatePanel.setAttribute("aria-hidden", "true");
+    altarLivingStatePanel.remove();
+  }
+
+  window.hideAltarCompanionPanel();
+})();

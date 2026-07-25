@@ -1,0 +1,194 @@
+/* ==========================================================
+   COMPANION PANEL LAYOUT
+   Layout only: sizing, placement, scrolling, responsiveness
+   ========================================================== */
+
+/* The old Living State panel is no longer part of the visible workspace. */
+.altar-living-state-panel {
+  display: none !important;
+}
+
+.altar-workspace-panel,
+.altar-workspace-panel-inner,
+.altar-companion-panel,
+.altar-companion-inner,
+.altar-companion-content {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+}
+
+.altar-workspace-panel-inner {
+  height: 100%;
+}
+
+.altar-companion-panel:not(.altar-living-state-panel) {
+  height: 100%;
+  overflow: hidden;
+}
+
+.altar-companion-panel:not(.altar-living-state-panel) .altar-companion-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid rgba(185, 160, 93, 0.28);
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at top, rgba(185, 160, 93, 0.12), transparent 16rem),
+    rgba(10, 8, 6, 0.82);
+  backdrop-filter: blur(8px);
+}
+
+.altar-companion-header {
+  flex: 0 0 auto;
+}
+
+.altar-companion-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 901px) {
+  .altar-workspace {
+    display: grid;
+    grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+    grid-template-areas:
+      "tools tools"
+      "companion stage";
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .altar-workspace-tools {
+    grid-area: tools;
+  }
+
+  .altar-workspace-panel {
+    grid-area: companion;
+    align-self: start;
+    overflow: hidden;
+  }
+
+  .altar-stage-wrap {
+    grid-area: stage;
+    min-width: 0;
+  }
+
+  body.altar-companion-minimized .altar-workspace {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "tools"
+      "stage";
+  }
+
+  body.altar-companion-minimized .altar-workspace-panel {
+    display: none;
+  }
+}
+
+/* Portrait phones and narrow tablets: altar first, readable Companion below. */
+@media (max-width: 900px) and (orientation: portrait) {
+  .altar-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "tools"
+      "stage"
+      "companion";
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .altar-workspace-tools {
+    grid-area: tools;
+  }
+
+  .altar-stage-wrap {
+    grid-area: stage;
+    min-width: 0;
+  }
+
+  .altar-workspace-panel {
+    grid-area: companion;
+    width: 100%;
+    height: auto !important;
+  }
+
+  .altar-workspace-panel-inner,
+  .altar-companion-panel:not(.altar-living-state-panel) {
+    height: auto;
+  }
+
+  .altar-companion-panel:not(.altar-living-state-panel) .altar-companion-inner {
+    height: auto;
+    max-height: min(72dvh, 44rem);
+  }
+
+  .altar-companion-content {
+    flex: 0 1 auto;
+    max-height: calc(min(72dvh, 44rem) - 7rem);
+  }
+
+  body.altar-companion-minimized .altar-workspace-panel {
+    display: none;
+  }
+}
+
+/* Landscape phones/tablets: Companion and altar sit beside each other. */
+@media (max-width: 900px) and (orientation: landscape) {
+  .altar-workspace {
+    display: grid;
+    grid-template-columns: minmax(250px, 34vw) minmax(0, 1fr);
+    grid-template-areas:
+      "tools tools"
+      "companion stage";
+    gap: 0.9rem;
+    align-items: start;
+  }
+
+  .altar-workspace-tools {
+    grid-area: tools;
+  }
+
+  .altar-workspace-panel {
+    grid-area: companion;
+    align-self: start;
+    overflow: hidden;
+  }
+
+  .altar-stage-wrap {
+    grid-area: stage;
+    min-width: 0;
+  }
+
+  .altar-companion-panel:not(.altar-living-state-panel) .altar-companion-inner {
+    max-height: none;
+  }
+
+  body.altar-companion-minimized .altar-workspace {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "tools"
+      "stage";
+  }
+
+  body.altar-companion-minimized .altar-workspace-panel {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) and (orientation: portrait) {
+  .altar-companion-panel:not(.altar-living-state-panel) .altar-companion-inner {
+    max-height: 78dvh;
+  }
+
+  .altar-companion-content {
+    max-height: calc(78dvh - 6.5rem);
+  }
+}

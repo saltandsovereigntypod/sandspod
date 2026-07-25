@@ -3,6 +3,11 @@
    Empty state, toast, modals, mobile cabinet, toolbar shell
    ========================================================= */
 
+const workspacePanelStyles = document.createElement("link");
+workspacePanelStyles.rel = "stylesheet";
+workspacePanelStyles.href = "workspace-panel.css";
+document.head.appendChild(workspacePanelStyles);
+
 const toolbar = document.createElement("div");
 toolbar.className = "altar-toolbar";
 toolbar.hidden = true;
@@ -68,8 +73,8 @@ altarInfoCard.className = "altar-info-card";
 altarInfoCard.hidden = true;
 altarInfoCard.setAttribute("aria-live", "polite");
 
-const altarCompanionPanel = document.createElement("aside");
-altarCompanionPanel.className = "altar-companion-panel is-visible";
+const altarCompanionPanel = document.createElement("section");
+altarCompanionPanel.className = "altar-companion-panel altar-workspace-module is-visible";
 altarCompanionPanel.setAttribute("aria-live", "polite");
 altarCompanionPanel.innerHTML = `
   <div class="altar-companion-inner">
@@ -77,10 +82,6 @@ altarCompanionPanel.innerHTML = `
       <div>
         <p class="eyebrow">Companion</p>
         <h2>Selected Object</h2>
-      </div>
-
-      <div class="altar-companion-actions">
-        <button type="button" data-companion-minimize aria-label="Minimize companion panel">−</button>
       </div>
     </div>
 
@@ -90,33 +91,45 @@ altarCompanionPanel.innerHTML = `
   </div>
 `;
 
-const altarLivingStatePanel = document.createElement("aside");
-altarLivingStatePanel.className = "altar-companion-panel altar-living-state-panel is-visible";
-altarLivingStatePanel.setAttribute("aria-live", "polite");
-altarLivingStatePanel.innerHTML = `
-  <div class="altar-companion-inner">
-    <div class="altar-companion-header">
-      <div>
-        <p class="eyebrow">Living State</p>
-        <h2>Current Manifestation</h2>
-      </div>
-
-      <div class="altar-companion-actions">
-        <button type="button" data-living-state-minimize aria-label="Minimize living state panel">−</button>
-      </div>
-    </div>
-
-    <div class="altar-companion-content" data-living-state-content>
-      <p>Select an object with a living state.</p>
-    </div>
-  </div>
-`;
+const altarWorkspacePanel = document.createElement("aside");
+altarWorkspacePanel.className = "altar-workspace-panel";
+altarWorkspacePanel.setAttribute("aria-label", "Altar companion panel");
+altarWorkspacePanel.innerHTML = `<div class="altar-workspace-panel-inner"></div>`;
+altarWorkspacePanel.querySelector(".altar-workspace-panel-inner").append(
+  altarCompanionPanel
+);
 
 const mobileCabinetToggle = document.createElement("button");
 mobileCabinetToggle.type = "button";
 mobileCabinetToggle.className = "altar-mobile-cabinet-toggle";
 mobileCabinetToggle.textContent = "✦ Add Items";
 mobileCabinetToggle.setAttribute("aria-expanded", "false");
+
+function syncAltarWorkspacePanelHeight() {
+  if (!altarWorkspacePanel) return;
+
+  if (window.innerWidth <= 900) {
+    altarWorkspacePanel.style.removeProperty("height");
+    return;
+  }
+
+  const altarStageWrap = document.querySelector(".altar-stage-wrap");
+  const altarActionBar = document.querySelector(".altar-action-bar");
+
+  if (!altarStageWrap) return;
+
+  const stageTop = altarStageWrap.getBoundingClientRect().top;
+
+  const workspaceBottom = altarActionBar
+    ? altarActionBar.getBoundingClientRect().bottom
+    : altarStageWrap.getBoundingClientRect().bottom;
+
+  const fullWorkspaceHeight = Math.round(workspaceBottom - stageTop);
+
+  if (fullWorkspaceHeight > 0) {
+    altarWorkspacePanel.style.height = `${fullWorkspaceHeight}px`;
+  }
+}
 
 if (altarStage) {
 
@@ -128,7 +141,8 @@ if (altarStage) {
   companionToggle.className = "altar-companion-toggle";
   companionToggle.setAttribute("data-companion-toggle", "");
   companionToggle.setAttribute("aria-label", "Minimize companion panel");
-  companionToggle.textContent = "☰";
+  companionToggle.setAttribute("aria-expanded", "true");
+  companionToggle.textContent = "−";
 
   const altarWorkspaceTools = document.querySelector(".altar-workspace-tools");
 
@@ -137,8 +151,7 @@ if (altarStage) {
   }
 
   if (altarWorkspace && altarStageWrap) {
-    altarWorkspace.insertBefore(altarCompanionPanel, altarStageWrap);
-    altarWorkspace.insertBefore(altarLivingStatePanel, altarStageWrap);
+    altarWorkspace.insertBefore(altarWorkspacePanel, altarStageWrap);
   }
 
   const lightingCanvas = document.createElement("canvas");
@@ -151,13 +164,67 @@ if (altarStage) {
   altarStage.appendChild(toolbar);
   altarStage.appendChild(altarGroupIndicator);
   altarStage.appendChild(altarInfoCard);
+
+  const altarStageResizeObserver = new ResizeObserver(syncAltarWorkspacePanelHeight);
+  altarStageResizeObserver.observe(altarStage);
+  window.addEventListener("resize", syncAltarWorkspacePanelHeight);
+  window.requestAnimationFrame(syncAltarWorkspacePanelHeight);
 }
 
- if (altarCabinet) {
+if (altarCabinet) {
   document.body.appendChild(altarMobileBackdrop);
   document.body.appendChild(mobileCabinetToggle);
   document.body.appendChild(altarToast);
 }
+
+function setAltarWorkspacePanelMinimized(isMinimized) {
+  document.body.classList.toggle("altar-companion-minimized", isMinimized);
+  altarWorkspacePanel.classList.toggle("is-minimized", isMinimized);
+
+  document.querySelectorAll("[data-companion-toggle]").forEach((button) => {
+    button.textContent = isMinimized ? "☰" : "−";
+    button.setAttribute("aria-expanded", String(!isMinimized));
+    button.setAttribute(
+      "aria-label",
+      isMinimized ? "Open companion panel" : "Minimize companion panel"
+    );
+  });
+
+  window.requestAnimationFrame(() => {
+    syncAltarWorkspacePanelHeight();
+
+    if (typeof repositionAllObjectsFromPercent === "function") {
+      repositionAllObjectsFromPercent();
+    }
+
+    if (typeof resizeLightingCanvas === "function") {
+      resizeLightingCanvas();
+    }
+
+    if (typeof renderLighting === "function") {
+      renderLighting();
+    }
+  });
+}
+
+document.addEventListener(
+  "click",
+  (event) => {
+    const toggle = event.target.closest("[data-companion-toggle]");
+    if (!toggle) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    const isCurrentlyMinimized = document.body.classList.contains("altar-companion-minimized");
+    setAltarWorkspacePanelMinimized(!isCurrentlyMinimized);
+
+    if (typeof showAltarToast === "function") {
+      showAltarToast(isCurrentlyMinimized ? "Panel opened" : "Panel minimized");
+    }
+  },
+  true
+);
 
 function updateEmptyMessage() {
   if (!altarStage || !emptyMessage) return;

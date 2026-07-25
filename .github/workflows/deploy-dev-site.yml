@@ -1,0 +1,57 @@
+name: Deploy dev branch to dev site
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-dev-site
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out dev branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Clone dev hosting repository
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEV_REPO_DEPLOY_TOKEN }}
+        run: |
+          git clone --branch main --single-branch \
+            "https://x-access-token:${DEPLOY_TOKEN}@github.com/saltandsovereigntypod/sandspod-dev.git" \
+            /tmp/sandspod-dev
+
+      - name: Copy dev site files
+        run: |
+          rsync -av --delete \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            ./ /tmp/sandspod-dev/
+
+      - name: Commit and push deployment
+        working-directory: /tmp/sandspod-dev
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No deployment changes to commit."
+            exit 0
+          fi
+
+          SHORT_SHA="${SOURCE_SHA:0:7}"
+          git commit -m "Deploy dev (${SHORT_SHA})"
+          git push origin HEAD:main
