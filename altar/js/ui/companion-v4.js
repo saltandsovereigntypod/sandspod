@@ -1,20 +1,14 @@
 /* =========================================================
    COMPANION V4
    Compact identity-aware Companion presentation layer.
+   Current State data is supplied by companion-current-state.js.
    ========================================================= */
 
 (function initializeCompanionV4() {
   const STYLE_ID = "companion-v4-runtime-styles";
   const CRAFTED_IDENTITIES = new Set([
-    "spell-jar",
-    "oil",
-    "incense",
-    "sachet",
-    "spray",
-    "poppet",
-    "powder",
-    "tea",
-    "herb-blend"
+    "spell-jar", "oil", "incense", "sachet", "spray",
+    "poppet", "powder", "tea", "herb-blend"
   ]);
 
   function escapeHtml(value = "") {
@@ -46,11 +40,15 @@
         display: contents;
       }
 
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-current-state,
       .altar-companion-panel[data-companion-version="4"] .companion-v3-section,
       .altar-companion-panel[data-companion-version="4"] .companion-v4-recipe,
       .altar-companion-panel[data-companion-version="4"] .companion-v4-actions {
         margin: 0;
+        border: 1px solid rgba(190, 157, 92, 0.34);
         border-radius: 0.8rem;
+        background: rgba(18, 17, 14, 0.72);
+        box-shadow: none;
         overflow: hidden;
       }
 
@@ -64,8 +62,13 @@
         justify-content: space-between;
         cursor: pointer;
         list-style: none;
+        color: var(--gold, #c8a96b);
+        font-family: Georgia, serif;
         font-size: 0.95rem;
+        font-weight: 700;
         line-height: 1.15;
+        background: transparent;
+        border: 0;
       }
 
       .altar-companion-panel[data-companion-version="4"] .companion-v3-section > summary::-webkit-details-marker,
@@ -88,75 +91,69 @@
         content: "−";
       }
 
+      .altar-companion-panel[data-companion-version="4"] .companion-v3-section[open] > summary,
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-recipe[open] > summary,
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-actions[open] > summary {
+        border-bottom: 1px solid rgba(190, 157, 92, 0.18);
+      }
+
       .altar-companion-panel[data-companion-version="4"] .companion-v3-section-body,
       .altar-companion-panel[data-companion-version="4"] .companion-v4-recipe-body,
       .altar-companion-panel[data-companion-version="4"] .companion-v4-actions-body {
-        padding: 0 0.85rem 0.75rem;
+        padding: 0.7rem 0.85rem 0.8rem;
+        color: rgba(245, 237, 220, 0.94);
       }
 
-      .companion-v4-current-state,
-      .companion-v4-recipe,
-      .companion-v4-actions {
-        border: 1px solid rgba(190, 157, 92, 0.34);
-        background: rgba(18, 17, 14, 0.72);
-      }
-
-      .companion-v4-current-state {
-        margin: 0;
-        border-radius: 0.8rem;
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-current-state {
         padding: 0.7rem 0.85rem;
-        max-height: min(20vh, 10.5rem);
-        overflow: hidden;
+        max-height: min(24vh, 13rem);
       }
 
-      .companion-v4-current-state-title,
-      .companion-v4-recipe > summary,
-      .companion-v4-actions > summary {
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-current-state-title {
+        margin: 0 0 0.45rem;
         color: var(--gold, #c8a96b);
         font-family: Georgia, serif;
+        font-size: 0.95rem;
         font-weight: 700;
-      }
-
-      .companion-v4-current-state-title {
-        margin: 0 0 0.45rem;
-        font-size: 0.92rem;
         line-height: 1.1;
       }
 
-      .companion-v4-current-state-body {
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-current-state-body {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.35rem 0.65rem;
-        max-height: calc(min(20vh, 10.5rem) - 2.2rem);
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.5rem;
+        max-height: calc(min(24vh, 13rem) - 2.2rem);
         overflow-y: auto;
         padding-right: 0.15rem;
+        color: rgba(245, 237, 220, 0.94);
       }
 
-      .companion-v4-state-row {
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-state-row {
         display: grid;
-        grid-template-columns: minmax(4.7rem, auto) minmax(0, 1fr);
-        gap: 0.4rem;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.2rem;
         align-items: start;
         padding-top: 0.35rem;
         border-top: 1px solid rgba(190, 157, 92, 0.12);
         min-width: 0;
       }
 
-      .companion-v4-state-row strong,
-      .companion-v4-recipe-label {
-        color: rgba(238, 224, 194, 0.8);
-        font-size: 0.66rem;
-        letter-spacing: 0.04em;
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-state-row strong,
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-recipe-label,
+      .altar-companion-panel[data-companion-version="4"] .companion-v3-section-body h4 {
+        color: rgba(238, 224, 194, 0.84);
+        font-size: 0.68rem;
+        letter-spacing: 0.05em;
         text-transform: uppercase;
       }
 
-      .companion-v4-state-row span {
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-state-row span {
         color: rgba(245, 237, 220, 0.94);
         line-height: 1.25;
         overflow-wrap: anywhere;
       }
 
-      .companion-v4-current-state .companion-v3-lifecycle {
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-current-state .companion-v3-lifecycle {
         grid-column: 1 / -1;
         margin: 0;
         padding: 0.4rem 0 0;
@@ -164,26 +161,25 @@
         background: transparent;
       }
 
-      .companion-v4-current-state .companion-v3-lifecycle p {
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-current-state .companion-v3-lifecycle p {
         margin: 0.2rem 0 0;
       }
 
-      .companion-v4-recipe-body {
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-recipe-body,
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-recipe-group,
+      .altar-companion-panel[data-companion-version="4"] .companion-v3-journal-fields,
+      .altar-companion-panel[data-companion-version="4"] .companion-v3-event-list,
+      .altar-companion-panel[data-companion-version="4"] .companion-v3-relationship-group {
         display: grid;
-        gap: 0.7rem;
+        gap: 0.6rem;
       }
 
-      .companion-v4-recipe-group {
-        display: grid;
-        gap: 0.35rem;
-      }
-
-      .companion-v4-recipe-group p {
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-recipe-group p {
         margin: 0;
         line-height: 1.4;
       }
 
-      .companion-v4-ingredient-list {
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-ingredient-list {
         display: grid;
         gap: 0.35rem;
         margin: 0;
@@ -191,36 +187,82 @@
         list-style: none;
       }
 
-      .companion-v4-ingredient-list li {
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-ingredient-list li {
         padding: 0.5rem 0.65rem;
         border: 1px solid rgba(190, 157, 92, 0.2);
         border-radius: 0.65rem;
         background: rgba(255, 255, 255, 0.025);
       }
 
-      .companion-v4-actions-body {
+      .altar-companion-panel[data-companion-version="4"] .companion-v3-journal-field,
+      .altar-companion-panel[data-companion-version="4"] .companion-v3-event {
+        padding: 0.6rem 0;
+        border-bottom: 1px solid rgba(190, 157, 92, 0.14);
+      }
+
+      .altar-companion-panel[data-companion-version="4"] .companion-v3-journal-field:last-child,
+      .altar-companion-panel[data-companion-version="4"] .companion-v3-event:last-child {
+        border-bottom: 0;
+      }
+
+      .altar-companion-panel[data-companion-version="4"] .companion-v3-relationship-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem 0.55rem;
+      }
+
+      .altar-companion-panel[data-companion-version="4"] .companion-v3-relationship-chip {
+        width: auto;
+        min-height: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        color: var(--gold, #c8a96b);
+        text-decoration: underline;
+        text-underline-offset: 0.18em;
+      }
+
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-actions-body {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.45rem;
       }
 
-      .companion-v4-actions-body button {
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-actions-body > button {
+        appearance: none;
         min-height: 34px;
         width: 100%;
         margin: 0;
-        padding: 0.45rem 0.6rem;
+        padding: 0.45rem 0.65rem;
+        border: 1px solid rgba(190, 157, 92, 0.34);
         border-radius: 0.65rem;
+        background: rgba(255, 255, 255, 0.035);
+        color: rgba(245, 237, 220, 0.96);
+        font: inherit;
         font-size: 0.78rem;
         line-height: 1.15;
+        text-align: center;
+        box-shadow: none;
+      }
+
+      .altar-companion-panel[data-companion-version="4"] .companion-v4-actions-body > button:hover {
+        border-color: rgba(200, 169, 107, 0.62);
+        background: rgba(200, 169, 107, 0.08);
+      }
+
+      .altar-companion-panel[data-companion-version="4"] .companion-v3-actions,
+      .altar-companion-panel[data-companion-version="4"] .companion-v3-secondary-actions:empty {
+        display: none !important;
       }
 
       @media (max-width: 560px) {
-        .companion-v4-current-state-body,
-        .companion-v4-actions-body {
+        .altar-companion-panel[data-companion-version="4"] .companion-v4-actions-body {
           grid-template-columns: 1fr;
         }
       }
     `;
+
     document.head.appendChild(style);
   }
 
@@ -233,8 +275,8 @@
     if (preset && preset !== "empty") return preset;
 
     const raw = String(object?.dataset.apothecaryType || object?.dataset.type || "entry").toLowerCase();
-
     if (raw.includes("spell jar") || raw.includes("spell-jar")) return "spell-jar";
+    if (raw.includes("herb mix") || raw.includes("herb-mix")) return "herb-blend";
     if (raw.includes("herb blend") || raw.includes("herb-blend")) return "herb-blend";
     if (raw.includes("candle")) return "candle";
     if (raw.includes("crystal")) return "crystal";
@@ -262,7 +304,7 @@
     return amount ? `${name}: ${amount}` : name;
   }
 
-  function getStateRows(identity, object) {
+  function getFallbackStateRows(identity, object) {
     const rows = [];
     const add = (label, value) => {
       if (value === "" || value === null || value === undefined) return;
@@ -271,20 +313,24 @@
     };
 
     if (identity === "candle") {
-      add("Flame", object?.classList.contains("is-lit") ? "Lit" : "Unlit");
       add("Color", object?.dataset.color || "");
       add("Dressed", object?.dataset.dressed === "true" ? "Yes" : "");
     } else if (identity === "herb") {
       add("Form", object?.dataset.form || "");
     } else if (identity === "crystal") {
       add("Form", object?.dataset.form || object?.dataset.crystalForm || "");
-    } else if (identity === "deity") {
-      add("Presence", "Placed on the altar");
     } else if (CRAFTED_IDENTITIES.has(identity)) {
-      add("Status", object?.dataset.status || object?.dataset.activationState || "Active");
+      add("Status", object?.dataset.status || "Active");
     }
 
     return rows;
+  }
+
+  function getStateRows(identity, object) {
+    if (typeof window.getCompanionCurrentStateRows === "function") {
+      return window.getCompanionCurrentStateRows(identity, object);
+    }
+    return getFallbackStateRows(identity, object);
   }
 
   function renderRow(row) {
@@ -328,6 +374,7 @@
     }
 
     const body = section.querySelector("[data-companion-v4-current-state-body]");
+    if (!body) return;
     body.innerHTML = rows.map(renderRow).join("");
     if (lifecycle) body.appendChild(lifecycle);
   }
@@ -350,11 +397,8 @@
       ? apothecary.ingredients.filter(Boolean)
       : [];
     const preparation = String(
-      apothecary?.preparation ||
-      apothecary?.instructions ||
-      apothecary?.recipe ||
-      apothecary?.method ||
-      ""
+      apothecary?.preparation || apothecary?.instructions ||
+      apothecary?.recipe || apothecary?.method || ""
     ).trim();
 
     if (!intention && !ingredients.length && !preparation) {
@@ -398,33 +442,6 @@
     }
   }
 
-  function normalizeActions(panel) {
-    const apothecaryEdit = panel.querySelector("[data-apothecary-edit]");
-    if (apothecaryEdit) apothecaryEdit.textContent = "Edit Apothecary Item";
-
-    const libraryEdit = panel.querySelector('[data-library-edit-section="myPractice"]');
-    if (libraryEdit) libraryEdit.textContent = "Edit Library Entry";
-  }
-
-  function ensureActionsDropdown(panel) {
-    const page = panel.querySelector("[data-companion-content] .companion-v3-page");
-    const footer = page?.querySelector(".companion-v3-actions");
-    if (!page || !footer) return;
-
-    const details = document.createElement("details");
-    details.className = "companion-v4-actions";
-    details.setAttribute("data-companion-v4-actions", "");
-    details.innerHTML = `
-      <summary>Actions</summary>
-      <div class="companion-v4-actions-body" data-companion-v4-actions-body></div>
-    `;
-
-    const body = details.querySelector("[data-companion-v4-actions-body]");
-    const buttons = Array.from(footer.querySelectorAll("button"));
-    body.replaceChildren(...buttons);
-    footer.replaceWith(details);
-  }
-
   function applyCompanionV4(object = null) {
     installStyles();
 
@@ -434,28 +451,31 @@
     panel.dataset.companionVersion = "4";
     panel.querySelector("[data-companion-emphasis]")?.remove();
 
-    const target = object || (typeof selectedObject !== "undefined" ? selectedObject : null);
-    normalizeActions(panel);
+    const target = object === false
+      ? null
+      : object || (typeof selectedObject !== "undefined" ? selectedObject : null);
     ensureCurrentState(panel, target);
     ensureRecipeSection(panel, target);
-    ensureActionsDropdown(panel);
     return true;
   }
 
   function scheduleCompanionV4(object = null) {
-    queueMicrotask(() => applyCompanionV4(object));
-    requestAnimationFrame(() => applyCompanionV4(object));
-    window.setTimeout(() => applyCompanionV4(object), 120);
-    window.setTimeout(() => applyCompanionV4(object), 500);
+    scheduleCompanionV4.pendingObject = object;
+    if (scheduleCompanionV4.frame) return;
+    scheduleCompanionV4.frame = requestAnimationFrame(() => {
+      scheduleCompanionV4.frame = null;
+      const target = scheduleCompanionV4.pendingObject;
+      scheduleCompanionV4.pendingObject = null;
+      applyCompanionV4(target);
+    });
   }
 
   window.applyCompanionV4 = applyCompanionV4;
   window.scheduleCompanionV4 = scheduleCompanionV4;
 
   document.addEventListener("companion:refreshed", (event) => {
-    scheduleCompanionV4(event.detail?.object || null);
+    scheduleCompanionV4(event.detail?.entityOnly ? false : event.detail?.object || null);
   });
 
-  window.addEventListener("saltSettingsChanged", () => scheduleCompanionV4());
   scheduleCompanionV4();
 })();

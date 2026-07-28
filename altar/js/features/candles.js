@@ -4,17 +4,22 @@
    ========================================================= */
 
 function getDressings(candle) {
-  if (!candle || !candle.dataset.dressings) return [];
-
-  try {
-    return JSON.parse(candle.dataset.dressings);
-  } catch {
-    return [];
-  }
+  const state = typeof getLivingObjectState === "function"
+    ? getLivingObjectState(candle)
+    : null;
+  return Array.isArray(state?.candle?.dressings) ? state.candle.dressings : [];
 }
 
 function saveDressings(candle, dressings) {
-  candle.dataset.dressings = JSON.stringify(dressings);
+  if (typeof syncLivingCandleDressings !== "function") return;
+  syncLivingCandleDressings(candle, dressings);
+}
+
+function clearCandleDressings(candle) {
+  if (!candle || candle.dataset.type !== "candle") return;
+  saveDressings(candle, []);
+  updateCandleDressingVisuals(candle);
+  if (typeof updateToolbarNotes === "function") updateToolbarNotes(candle);
 }
 
 function formatDressingName(dressing) {
@@ -67,13 +72,17 @@ function toggleLight(object) {
     object.classList.remove("is-lit");
     stopFlame(object);
     extinguishFlame(object);
+
+    stopLivingCandleBurn(object);
   } else {
     object.dataset.lit = "true";
     object.classList.add("is-lit");
     startFlame(object);
+
+    startLivingCandleBurn(object);
   }
 
-   renderLighting();
+  renderLighting();
 }
 
 function canDressCandle(object) {
@@ -270,5 +279,4 @@ function renderLighting() {
       lightingContext.fill();
 
     });
-
 }

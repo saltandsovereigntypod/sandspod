@@ -1,61 +1,11 @@
 /* =========================================================
    COMPANION ACTION REFRESH BRIDGE
-   Keeps lifecycle actions focused on the unified Companion page.
+   Keeps lifecycle actions focused on the unified Companion page and
+   hands each completed render to the single V4 presentation layer.
    ========================================================= */
 
 (function initializeCompanionActionRefreshBridge() {
   let queuedRefresh = null;
-
-  function getCompanionPanel() {
-    return (
-      (typeof altarCompanionPanel !== "undefined" ? altarCompanionPanel : null) ||
-      document.querySelector(".altar-companion-panel")
-    );
-  }
-
-  function polishCompanionMarkup() {
-    const panel = getCompanionPanel();
-    if (!panel) return;
-
-    panel.querySelector("[data-companion-emphasis]")?.remove();
-
-    const apothecaryEdit = panel.querySelector("[data-apothecary-edit]");
-    if (apothecaryEdit && apothecaryEdit.textContent !== "Edit Apothecary Item") {
-      apothecaryEdit.textContent = "Edit Apothecary Item";
-    }
-
-    const libraryEdit = panel.querySelector(
-      '[data-library-edit-section="myPractice"]'
-    );
-    if (libraryEdit && libraryEdit.textContent !== "Edit Library Entry") {
-      libraryEdit.textContent = "Edit Library Entry";
-    }
-  }
-
-  function applyActiveCompanionLayer(object = null) {
-    polishCompanionMarkup();
-
-    if (typeof window.scheduleCompanionV4 === "function") {
-      window.scheduleCompanionV4(object);
-    }
-  }
-
-  function wrapCompanionRenderer(functionName) {
-    const originalRenderer = window[functionName];
-
-    if (typeof originalRenderer !== "function" || originalRenderer.__companionPolishWrapped) {
-      return;
-    }
-
-    function companionAwareRenderer(...args) {
-      const result = originalRenderer.apply(this, args);
-      queueMicrotask(() => applyActiveCompanionLayer(args[0] || null));
-      return result;
-    }
-
-    companionAwareRenderer.__companionPolishWrapped = true;
-    window[functionName] = companionAwareRenderer;
-  }
 
   function getSelectedCompanionTarget(object = null) {
     return (
@@ -72,15 +22,7 @@
     }
 
     return Promise.resolve(window.showAltarCompanionPanel(target))
-      .then(() => {
-        applyActiveCompanionLayer(target);
-        document.dispatchEvent(
-          new CustomEvent("companion:refreshed", {
-            detail: { object: target }
-          })
-        );
-        return true;
-      })
+      .then(() => true)
       .catch((error) => {
         console.error("Unable to refresh the Altar Companion.", error);
         return false;
@@ -108,14 +50,29 @@
   function wrapLifecycleSubmitHandler(functionName) {
     const originalHandler = window[functionName];
 
-    if (typeof originalHandler !== "function" || originalHandler.__companionRefreshWrapped) {
+    if (
+      typeof originalHandler !== "function" ||
+      originalHandler.__companionRefreshWrapped
+    ) {
       return;
     }
 
     async function companionAwareSubmitHandler(...args) {
-      const result = await originalHandler.apply(this, args);
-      await refreshSelectedCompanion();
-      return result;
+      const form = args[0];
+      if (form?.dataset.companionSubmitting === "true") return false;
+
+      if (form?.dataset) form.dataset.companionSubmitting = "true";
+      const submitButtons = Array.from(form?.querySelectorAll?.('[type="submit"]') || []);
+      submitButtons.forEach((button) => { button.disabled = true; });
+
+      try {
+        const result = await originalHandler.apply(this, args);
+        await refreshSelectedCompanion();
+        return result;
+      } finally {
+        if (form?.dataset) delete form.dataset.companionSubmitting;
+        submitButtons.forEach((button) => { button.disabled = false; });
+      }
     }
 
     companionAwareSubmitHandler.__companionRefreshWrapped = true;
@@ -124,11 +81,8 @@
 
   window.refreshAltarCompanion = refreshSelectedCompanion;
 
-  wrapCompanionRenderer("showAltarCompanionPanel");
-  wrapCompanionRenderer("showLibraryEntityInCompanion");
   wrapLifecycleSubmitHandler("submitLivingStateTendForm");
   wrapLifecycleSubmitHandler("submitLivingStateActivityForm");
-  applyActiveCompanionLayer();
 
   document.addEventListener("companion:refresh", (event) => {
     refreshSelectedCompanion(event.detail?.object || null);
