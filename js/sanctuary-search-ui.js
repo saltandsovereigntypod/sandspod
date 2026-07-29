@@ -48,17 +48,7 @@
 
   function recipeRecords() {
     const recipes = typeof global.getApothecaryItems === "function" ? global.getApothecaryItems() : [];
-    return recipes.map((item) => {
-      const ingredients = item.ingredients || [];
-      const names = ingredients.map((ingredient) => ingredient.label || ingredient.name).filter(Boolean);
-      return {
-        id: item.id, group: "apothecary", type: item.type || "recipe", title: item.name || "Untitled Recipe",
-        subtitle: "Apothecary Recipe", aliases: item.type === "oil" ? ["oil", "essential oil"] : [], fields: [item.intention, item.notes, names], relationshipText: names,
-        relationshipContext: names.length ? `Contains ${names.slice(0, 3).join(", ")}` : "",
-        action: typeof global.openApothecaryItemEditor === "function" ? { kind: "apothecary", id: item.id } : null,
-        timestamp: item.updatedAt || item.updated_at || item.createdAt || item.created_at
-      };
-    });
+    return recipes.map((item) => global.SanctuarySearch.createApothecaryResult({ ...item, action: typeof global.openApothecaryItemEditor === "function" ? { kind: "apothecary", id: item.id } : null })).filter(Boolean);
   }
 
   function objectRecords() {
@@ -69,13 +59,25 @@
         id: object.dataset.altarObjectId || object.dataset.instanceId || `placed:${index}:${object.dataset.label || object.dataset.type}`,
         group: "currentAltar", type: object.dataset.type || "object", entityId: canonicalId,
         title: object.dataset.label || global.Library?.getEntity?.(canonicalId)?.name || "Altar Object",
-        subtitle: "Current Altar", aliases: [object.dataset.type, object.dataset.form].filter(Boolean), fields: [object.dataset.type, object.dataset.form]
+        subtitle: "Current Altar", aliases: [object.dataset.type, object.dataset.form].filter(Boolean), fields: [object.dataset.type, object.dataset.form],
+        destination: { kind: "current-altar", instanceId: object.dataset.altarObjectId || object.dataset.instanceId || "", href: `/altar/?selectObject=${encodeURIComponent(object.dataset.altarObjectId || object.dataset.instanceId || "")}` }
       };
     });
   }
 
   function cabinetRecords() {
-    return global.AltarCabinet?.getSearchRecords?.() || [];
+    const builtIn = global.AltarCabinet?.getSearchRecords?.() || [];
+    const custom = (global.getCustomCabinetItems?.() || []).flatMap((item) => (item.forms || []).map((form, index) => {
+      const canonicalId = global.Library?.resolveCanonicalEntityId?.(form.entityId || item.entityId);
+      const canonicalName = canonicalId ? global.Library?.getEntity?.(canonicalId)?.name : "";
+      return {
+        id: `custom-form:${item.id}:${form.form || form.label || index}`, group: "cabinet", source: "custom-form", type: form.type || item.category,
+        entityId: canonicalId || null, title: item.name || form.label || "Custom Form",
+        subtitle: `Custom ${form.type || item.category || "Object"} Form${canonicalName ? ` · ${canonicalName}` : ""}`,
+        aliases: [...(item.keywords || []), form.label, form.form, canonicalName].filter(Boolean), fields: [item.category, canonicalName, form.label, form.form]
+      };
+    }));
+    return [...builtIn, ...custom];
   }
 
   function rebuildLocalIndex() {
@@ -84,6 +86,7 @@
 
   async function enrichIndex(token) {
     const tasks = [];
+    if (typeof global.loadApothecaryItems === "function") tasks.push(global.loadApothecaryItems().then((records) => ["apothecary", records.map((item) => global.SanctuarySearch.createApothecaryResult(item)).filter(Boolean)]));
     if (typeof global.getMyRituals === "function") tasks.push(global.getMyRituals().then((records) => ["rituals", records.map((ritual) => ({
       id: ritual.id, group: "rituals", type: ritual.ritual_type || "ritual", title: ritual.title || ritual.name || "Untitled Ritual",
       subtitle: "Ritual", fields: [ritual.intention, ritual.notes, ritual.tags, ritual.altar_snapshot],
@@ -102,10 +105,10 @@
   }
 
   function resultMarkup(result, index) {
-    const href = global.SanctuarySearch.resolveDestination(result, global.Library);
-    const body = `<strong>${escapeHtml(result.title)}</strong><span>${escapeHtml(result.subtitle)}</span>${result.relationshipContext || result.matchContext ? `<small>${escapeHtml(result.relationshipContext || result.matchContext)}</small>` : ""}`;
-    if (href) return `<a href="${escapeHtml(href)}" data-sanctuary-result data-result-index="${index}">${body}</a>`;
-    if (result.action) return `<button type="button" data-sanctuary-result data-result-index="${index}" data-result-action="${escapeHtml(result.action.kind)}" data-result-id="${escapeHtml(result.action.id)}">${body}</button>`;
+    const destination = global.SanctuarySearchNavigation?.destinationFor?.(result, global.Library);
+    const actionLabel = destination?.kind === "place-cabinet-item" || destination?.kind === "place-apothecary-item" ? "Place on Altar" : destination?.kind === "current-altar" ? "Select on Altar" : "";
+    const body = `<strong>${escapeHtml(result.title)}</strong><span>${escapeHtml(result.subtitle)}</span>${result.relationshipContext || result.matchContext ? `<small>${escapeHtml(result.relationshipContext || result.matchContext)}</small>` : ""}${actionLabel ? `<small class="sanctuary-search-action">${actionLabel}</small>` : ""}`;
+    if (destination) return `<button type="button" data-sanctuary-result data-result-index="${index}" data-result-id="${escapeHtml(result.id)}" data-result-group="${escapeHtml(result.group)}">${body}</button>`;
     return `<div class="sanctuary-search-result is-context">${body}</div>`;
   }
 
@@ -133,6 +136,7 @@
     requestId += 1;
     modal.remove();
     modal = null;
+    document.body.classList.remove("sanctuary-search-open");
     trigger?.focus();
   }
 
@@ -154,6 +158,7 @@
     modal.className = "sanctuary-search-backdrop";
     modal.innerHTML = `<div class="sanctuary-search-dialog" role="dialog" aria-modal="true" aria-labelledby="sanctuary-search-title"><header><div><p class="eyebrow">A Living Index</p><h2 id="sanctuary-search-title">Search the Sanctuary</h2></div><button type="button" data-sanctuary-search-close aria-label="Close search">×</button></header><label class="sanctuary-search-input"><span class="sr-only">Search the Sanctuary</span><input type="search" data-sanctuary-search-input placeholder="Search names, purposes, rituals, or ingredients…" autocomplete="off" /></label><div class="sanctuary-search-filters" role="group" aria-label="Filter search results">${[["all", "All"], ...supportedGroups].map(([key, label], index) => `<button type="button" data-sanctuary-search-filter="${key}" class="${index === 0 ? "is-active" : ""}" aria-pressed="${index === 0}">${label}</button>`).join("")}</div><p class="sr-only" role="status" aria-live="polite" data-sanctuary-search-status></p><div class="sanctuary-search-results" data-sanctuary-search-results></div></div>`;
     document.body.append(modal);
+    document.body.classList.add("sanctuary-search-open");
     renderResults();
     modal.querySelector("input").focus();
     const token = ++requestId;
@@ -170,10 +175,10 @@
       modal.querySelectorAll("[data-sanctuary-search-filter]").forEach((item) => { item.classList.toggle("is-active", item === filter); item.setAttribute("aria-pressed", item === filter ? "true" : "false"); });
       return renderResults();
     }
-    const action = event.target.closest("[data-result-action]");
-    if (action?.dataset.resultAction === "apothecary" && typeof global.openApothecaryItemEditor === "function") {
-      closeSearch();
-      global.openApothecaryItemEditor(action.dataset.resultId);
+    const resultButton = event.target.closest("[data-sanctuary-result][data-result-id]");
+    if (resultButton) {
+      const result = global.SanctuarySearch.getIndex().find((item) => item.id === resultButton.dataset.resultId && item.group === resultButton.dataset.resultGroup);
+      global.SanctuarySearchNavigation?.open?.(result, { library: global.Library, close: closeSearch, placeCabinet: global.AltarPlacement?.placeCabinetItem, placeApothecary: global.AltarPlacement?.placeApothecaryItem, openApothecary: global.openApothecaryItemEditor, selectObject: global.AltarPlacement?.selectInstance || ((instanceId) => { const object = document.querySelector(`[data-altar-object-id="${CSS.escape(instanceId)}"], [data-instance-id="${CSS.escape(instanceId)}"]`); if (object && typeof global.selectObject === "function") global.selectObject(object); }) });
     }
   });
   document.addEventListener("input", (event) => { if (modal && event.target.matches("[data-sanctuary-search-input]")) renderResults(); });
@@ -197,6 +202,7 @@
   });
   document.addEventListener("living-library:hydrated", () => { if (modal) { rebuildLocalIndex(); renderResults(); } });
   document.addEventListener("sanctuary-search:sources-changed", () => { if (modal) { rebuildLocalIndex(); renderResults(); } });
+  window.addEventListener("apothecary:hydrated", () => { if (modal) { rebuildLocalIndex(); renderResults(); } });
   window.addEventListener("altarCabinetReady", () => { if (modal) { rebuildLocalIndex(); renderResults(); } });
   global.SanctuarySearchUI = { rebuildLocalIndex };
 })(typeof window !== "undefined" ? window : globalThis);

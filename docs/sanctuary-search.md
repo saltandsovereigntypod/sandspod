@@ -4,7 +4,7 @@
 
 ## Sources
 
-The shared UI adapter derives records from the already-loaded canonical Living Library, Book of Shadows pages and sections, My Rituals, Ritual Templates, Apothecary items, objects currently on the Altar, and the existing Altar Cabinet catalogue. Current Altar and Altar Cabinet are deliberately separate result groups. Cabinet results open the Altar with its existing cabinet focused on the matching category. Local sources are indexed when the modal opens; cloud-backed ritual and template collections update the same index progressively when their existing loaders resolve.
+The shared UI adapter derives records from the already-loaded canonical Living Library, Book of Shadows pages and sections, My Rituals, Ritual Templates, Apothecary items, objects currently on the Altar, and the existing Altar Cabinet catalogue. Current Altar and Altar Cabinet are deliberately separate result groups. Cabinet and Apothecary results place a new instance through the Altar's authoritative placement functions, while Current Altar results select an existing instance. Local sources are indexed when the modal opens; cloud-backed ritual and template collections update the same index progressively when their existing loaders resolve.
 
 Knowledge-layer visibility follows the existing local Sanctuary settings. Traditional, My Practice, or Community fields hidden by those settings are not placed in searchable text. No index is persisted.
 
@@ -23,3 +23,5 @@ Relationship labels on Living Library results are derived through `LivingConnect
 ## Progressive and stale-safe behavior
 
 Opening search builds the local index synchronously. Existing cloud loaders may add sources afterward through `updateSource()`. A request token prevents late enrichment from rendering after the search closes or a newer search session opens. Searches themselves only scan the current in-memory index and never issue per-keystroke database requests.
+
+Apothecary enrichment explicitly hydrates persisted items when Search opens. Legacy and current records are normalized to the same authored-name, type, ingredient, intention, tag, entity-link, image, and timestamp shape before indexing. Hydration revisions prevent stale empty responses from clearing newer results, and updates rerender without moving focus from the active search field or result.

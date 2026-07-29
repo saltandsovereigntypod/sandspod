@@ -15,9 +15,15 @@
   function populateBackgroundSelect(select, saved = "") {
     if (!select) return;
     const selected = select.value || saved;
-    const definitions = global.AltarBackgrounds?.getAll?.() || [];
+    const definitions = global.SanctuaryAssetCatalog?.getBackgrounds?.() || global.AltarBackgrounds?.getAll?.() || [];
     select.innerHTML = '<option value="">No default</option>' + backgroundOptions(definitions, selected).map((name) => `<option value="${name.replaceAll('"', '&quot;')}">${name}</option>`).join("");
     select.value = selected;
+    let picker = select.parentElement.querySelector("[data-background-picker]");
+    if (!picker) { picker = document.createElement("div"); picker.className = "sanctuary-background-picker"; picker.dataset.backgroundPicker = ""; picker.setAttribute("role", "radiogroup"); picker.setAttribute("aria-label", "Default Altar background"); select.after(picker); select.classList.add("sr-only"); }
+    const choices = [{ name: "", thumbnailPath: "", label: "No default" }, ...definitions.map((item) => ({ name: item.name, thumbnailPath: item.thumbnailPath || item.thumbnail || item.assetPath || item.background, label: item.name }))];
+    if (selected && !choices.some((item) => item.name === selected)) choices.push({ name: selected, thumbnailPath: "", label: `${selected} (currently unavailable)` });
+    picker.innerHTML = choices.map((item) => `<label class="sanctuary-background-option"><input type="radio" name="background_picker" value="${item.name.replaceAll('"', '&quot;')}" ${item.name === selected ? "checked" : ""}>${item.thumbnailPath ? `<img src="${item.thumbnailPath}" alt="">` : '<span class="sanctuary-background-placeholder" aria-hidden="true">✦</span>'}<span>${item.label}</span></label>`).join("");
+    picker.querySelectorAll('input[name="background_picker"]').forEach((radio) => radio.addEventListener("change", () => { select.value = radio.value; select.dispatchEvent(new Event("input", { bubbles: true })); }));
   }
   function render(panel) {
     const form = panel?.querySelector("[data-my-settings-form]");
@@ -36,7 +42,7 @@
     const buckets = Object.fromEntries(CATEGORIES.map((category) => { const fieldset = document.createElement("fieldset"); fieldset.className = "settings-category"; fieldset.dataset.settingsPanel = category; fieldset.hidden = category !== "identity"; fieldset.innerHTML = `<legend>${labels[category]}</legend>`; form.insertBefore(fieldset, form.querySelector('button[type="submit"]')); return [category, fieldset]; }));
     [...form.querySelectorAll(":scope > label, :scope > fieldset:not(.settings-category)")].forEach((node) => { const name = node.querySelector("[name]")?.name || ""; buckets[categoryForName(name)]?.append(node); });
     const user = global.getCurrentSaltUser?.() || null;
-    buckets.account.innerHTML += `<p>${user ? `Signed in as <strong>${user.email || "your account"}</strong>.` : "Guest Sanctuary · settings are stored in this browser."}</p><div class="my-sanctuary-actions"><button type="button" class="button button--ghost" data-my-sanctuary-show-auth ${user ? "hidden" : ""}>Sign In</button><button type="button" class="button button--ghost" data-my-sanctuary-signout ${user ? "" : "hidden"}>Sign Out</button></div>`;
+    buckets.account.innerHTML += `<p>${user ? `Signed in as <strong>${user.email || "your account"}</strong>.` : "Guest Sanctuary · settings are stored in this browser."}</p><div class="my-sanctuary-actions">${user ? '<button type="button" class="button button--ghost" data-my-sanctuary-signout>Sign Out</button>' : '<button type="button" class="button button--ghost" data-my-sanctuary-show-auth>Sign In</button>'}</div>`;
     form.querySelectorAll("[name]").forEach((input) => { const value = saved[input.name]; if (input.type === "checkbox") input.checked = Boolean(value); else if (value != null) input.value = value; });
     const save = form.querySelector('button[type="submit"]'); save.textContent = "Save Changes"; save.disabled = true;
     const status = document.createElement("p"); status.className = "settings-save-status"; status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite"); status.textContent = "All changes saved."; form.append(status);
