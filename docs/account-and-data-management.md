@@ -1,5 +1,7 @@
 # Account and data management
 
+Accessibility preferences use a separate explicit guest or per-user device key. They are not authored Sanctuary records, are not included in guest clearing, and do not migrate automatically between guest and account scopes. See `docs/accessibility-controls.md` for the validated model and current cloud-persistence limitation.
+
 ## Architecture audit
 
 `js/auth.js` remains the single shared browser authentication entry point for email/password, Google OAuth, sign-out, and auth-state announcements. `js/environment.js` remains the only authority for deployment paths and redirect origins. Account controls are mounted inside **Sanctuary Settings → Account & Data** by `js/account-data-ui.js`; pure validation, provider detection, safe error mapping, guest clearing, and sync state live in `js/account-data.js`. No token, provider secret, password, or privileged credential is rendered or persisted by these modules.
@@ -42,4 +44,8 @@ Known Supabase errors map to calm messages for invalid credentials, confirmation
 
 ## Manual verification and limitations
 
-Verify password recovery and redirects on each supported deployment, reset with fresh/expired links, password updates for email identities, Google-only messaging, email confirmation, per-user sync state, offline state, backup-gated guest clearing, sign-out state reset, and all Account & Data layouts at 320, 375, 430, and 768 pixels. Account deletion remains unavailable until the Edge Function, storage paths, table inventory, CORS origins, retention policy, and recent-auth flow are deployed and tested. Guest-to-account migration and unsafe local-cache clearing remain out of scope.
+Verify password recovery and redirects on each supported deployment, reset with fresh/expired links, password updates for email identities, Google-only messaging, email confirmation, per-user sync state, offline state, backup-gated guest clearing, sign-out state reset, and all Account & Data layouts at 320, 375, 430, and 768 pixels. Account deletion remains unavailable until the Edge Function, storage paths, table inventory, CORS origins, retention policy, and recent-auth flow are deployed and tested. Automatic guest transfer and unsafe local-cache clearing remain out of scope; explicit migration is documented below.
+
+## Guest-to-account migration
+
+Signing in never transfers local guest work. If allow-listed guest data remains, Account & Data offers an explicit preview, category selection, version 1 safety backup, keep-cloud conflict plan, staged RLS-protected inserts, verification, and retry checkpoints. Guest data remains after success; selective cleanup is intentionally unavailable. See [guest-to-account-migration.md](guest-to-account-migration.md).
