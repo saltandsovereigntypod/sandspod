@@ -38,7 +38,13 @@
         }
       ],
       "expo-web-browser",
-      "expo-sharing"
+      "expo-sharing",
+      [
+        "expo-calendar",
+        {
+          "calendarPermission": "Allow $(PRODUCT_NAME) to add your planned rituals, moon phases and sabbats to your calendar."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

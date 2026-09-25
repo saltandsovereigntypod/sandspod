@@ -11,7 +11,7 @@ type Row = { key: string; label: string; detail: string; icon: MoreIconName; hre
 // ─── MERGE POINTS ────────────────────────────────────────────────────────
 // Rows other milestones will fill in. A row stays hidden while its href is
 // null; point it at the new route when merging, e.g. '/rituals/reminders'.
-const MOON_REMINDERS_HREF: Href | null = null; // Milestone 4: moon reminder settings (Rituals)
+const MOON_REMINDERS_HREF: Href | null = '/rituals/reminders';
 const ALTAR_HREF: Href | null = '/altar';
 // ─────────────────────────────────────────────────────────────────────────
 

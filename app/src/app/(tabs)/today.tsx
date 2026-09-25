@@ -1,11 +1,18 @@
 import { router } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../components/Button';
 import { Icon } from '../../components/Icon';
 import { MoonDisc } from '../../components/MoonDisc';
 import { Screen } from '../../components/Screen';
+import { useReminderTaps } from '../../lib/reminders/notifier';
+import { PHASE_ORDER } from '../../lib/reminders/schedule';
+import { useReminders } from '../../lib/reminders/store';
+import { planSky, planWhen } from '../../lib/rituals/format';
+import { currentStep } from '../../lib/rituals/lifecycle';
+import { nextPlan } from '../../lib/rituals/plans';
+import { useRituals } from '../../lib/rituals/store';
 import { buildToday, type HorizonItem } from '../../lib/today';
 import { colors, fonts, radius, type } from '../../theme';
 
@@ -24,6 +31,13 @@ function useToday(): Date {
 export default function Today() {
   const now = useToday();
   const today = useMemo(() => buildToday(now), [now]);
+  const rituals = useRituals();
+  const reminders = useReminders();
+  useReminderTaps();
+  const next = nextPlan(rituals.plans, new Date());
+  const active = rituals.active;
+  const step = active ? currentStep(active) : null;
+  const moonReminders = PHASE_ORDER.some((p) => reminders.settings.phases[p]);
 
   return (
     <Screen>
@@ -41,18 +55,44 @@ export default function Today() {
       </View>
       <Button
         variant="pill"
-        label="Remind me at moonrise"
+        label={moonReminders ? 'Moon reminders on' : 'Remind me of the moon'}
+        accessibilityHint="Choose which moon phases to be reminded of"
         icon={<Icon name="bell" size={16} color={colors.gold} />}
-        onPress={() => Alert.alert('Moon reminders', 'Reminders arrive in the next build of the app.')}
+        onPress={() => router.navigate('/rituals/reminders')}
       />
 
       <View style={styles.working}>
-        <View style={styles.workingText}>
-          <Text style={[type.eyebrow, styles.gold]}>Your next working</Text>
-          <Text style={type.cardTitle}>Nothing planned yet</Text>
-          <Text style={type.caption}>Choose an intention and we'll find the right night.</Text>
-        </View>
-        <Button label="Plan a ritual" onPress={() => router.navigate('/rituals')} />
+        {active ? (
+          <>
+            <View style={styles.workingText}>
+              <Text style={[type.eyebrow, styles.gold]}>{active.status === 'paused' ? 'Paused' : 'Under way'}</Text>
+              <Text style={type.cardTitle}>{active.title || 'Your ritual'}</Text>
+              <Text style={type.caption}>{step ? step.title : 'Finish and journal it when you are ready.'}</Text>
+            </View>
+            <Button label="Continue the ritual" onPress={() => router.navigate('/rituals/run')} />
+          </>
+        ) : next ? (
+          <>
+            <View style={styles.workingText}>
+              <Text style={[type.eyebrow, styles.gold]}>Your next working</Text>
+              <Text style={type.cardTitle}>{next.title}</Text>
+              <Text style={type.caption}>{`${planWhen(next, now)} · ${planSky(next)}`}</Text>
+            </View>
+            <Button
+              label="Open the plan"
+              onPress={() => router.navigate({ pathname: '/rituals/plan/[id]', params: { id: next.id } })}
+            />
+          </>
+        ) : (
+          <>
+            <View style={styles.workingText}>
+              <Text style={[type.eyebrow, styles.gold]}>Your next working</Text>
+              <Text style={type.cardTitle}>Nothing planned yet</Text>
+              <Text style={type.caption}>Choose an intention and we'll find the right night.</Text>
+            </View>
+            <Button label="Plan a ritual" onPress={() => router.navigate('/rituals/planner')} />
+          </>
+        )}
       </View>
 
       <View style={styles.horizon}>
