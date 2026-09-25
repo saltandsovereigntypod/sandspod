@@ -78,6 +78,26 @@ the tabs. Guests keep everything on the device; signing in syncs it.
 5. **Altar** — the full drag, rotate, layer, light and dress experience from
    `saved_altars`, `custom_cabinet_items`, `custom_altar_backgrounds`, reusing
    the website's artwork in `assets/altar/`. The biggest single piece.
+   - *5a, done:* Altar tab lists saved altars (signed in: `saved_altars`,
+     with an offline copy; guests: the website's own localStorage keys and
+     shapes) and opens them on a 16:9 canvas that matches the website to the
+     pixel (same `leftPercent` / `topPercent` / `sizePercent` maths, same
+     box heights, tested against positions measured on the website). Drag,
+     pinch to resize, twist to rotate (buttons for all of it too, so it works
+     with a mouse on the web), flip, lock, glow, duplicate, remove, layer
+     order, undo/redo, zoom and look around. Light and snuff candles (burn
+     history kept in Living Object State), dress candles with loose herbs and
+     oils (the website's overlays), change background (built-in plus your
+     uploads), and add from the cabinet (built-in artwork, your custom
+     cabinet items and your image overrides). Save updates the altar you
+     opened or saves a new one; unsaved work is kept as the working draft.
+     Artwork is bundled as small WebP copies (`app/assets/altar`, ~3 MB,
+     rebuilt by `scripts/build-altar-assets.py`); anything else loads from
+     saltandsovereignty.com.
+   - *5b, next:* uploading custom cabinet images and backgrounds from the
+     phone (needs expo-image-picker), creating custom cabinet items, groups
+     (existing groups are kept and move together, but can't be made yet),
+     crystal / deity / apothecary tending actions, and plaques.
 6. **More** — Community Grimoire, offerings and replies
    (`community_submissions`, `community_submission_messages`), Library,
    settings (`user_settings`), backup and restore, account deletion (the
