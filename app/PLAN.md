@@ -54,7 +54,20 @@ the tabs. Guests keep everything on the device; signing in syncs it.
    - *2a, done:* table of contents and parchment page reader for every block
      type the website writes, ritual-journal details (date, moon, length,
      altar items), linked pages, offline copy on the phone, pull to refresh.
-   - *2b, next:* writing and editing pages, adding pages and sections.
+   - *2b, done:* writing and editing pages the way the website does. Edit a
+     page's title and every element the website edits (paragraph, heading,
+     note, lists, ingredients, correspondence, image, page link, divider);
+     add, reorder and remove elements; start pages from the website's
+     templates in any section; link pages; return pages to ashes; add,
+     rename and delete sections. Rows match the website's columns,
+     `block_type`s, `rich_content` HTML and `sort_order`. Rich text is edited
+     as light markup (`**bold**`, `*italic*`, `__underline__`, `[link](url)`)
+     and saved as the website's HTML. Changes show at once, are kept on the
+     phone, and are sent in order when online; anything the server refuses is
+     kept until retried or discarded. Guests still need to sign in, as on the
+     website.
+   - *Later:* reorder pages and sections, move a page to another section,
+     add a template to an existing page, a guest book that syncs on sign-in.
 3. **Rituals** — journal from `ritual_sessions` / `ritual_session_steps`,
    templates from `ritual_templates` / `ritual_template_steps` /
    `user_rituals`, links via `ritual_links`. Then the planner and spell
@@ -91,6 +104,6 @@ the tabs. Guests keep everything on the device; signing in syncs it.
 cd app
 npm install
 npm start          # scan the QR code with Expo Go, or press w for web
-npm test           # moon and calendar tests
+npm test           # moon, calendar and grimoire tests
 npm run typecheck
 ```
