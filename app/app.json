@@ -40,6 +40,17 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "471363f9-07e8-452a-a759-08e390c44936"
+      }
+    },
+    "owner": "salt-and-sovereignty-llc",
+    "runtimeVersion": "exposdk:57.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/471363f9-07e8-452a-a759-08e390c44936"
     }
   }
 }
