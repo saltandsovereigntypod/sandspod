@@ -102,6 +102,50 @@ the tabs. Guests keep everything on the device; signing in syncs it.
    (`community_submissions`, `community_submission_messages`), Library,
    settings (`user_settings`), backup and restore, account deletion (the
    existing `delete-account` function; Apple requires it in-app).
+   - *Done:* More is a menu (`src/app/(tabs)/more/`) leading to:
+     - **Community**: published pages with search and type filters, Field
+       Notes and offering a Field Note; making an offering (guests too, as on
+       the website) with the Submission Terms; My submissions with the
+       reviewer's response and the reply thread. Same queries and row shapes
+       as `js/community-grimoire.js` / `js/submissions.js`.
+     - **Living Library**: the website's Traditional Library (copied by
+       `scripts/sync-traditional-library.mjs`), with your My Practice notes
+       from `living_library_entries` laid over it; search, type filters,
+       pages that follow your Living Library settings, and pairing chips that
+       open the paired entry. Other features use `src/lib/library` (see its
+       `index.ts`), e.g. for ingredient suggestions.
+     - **Settings**: identity, Book of Shadows and Living Library settings,
+       read from and upserted to `user_settings` exactly as the website does
+       (guests keep them on the device). Altar, Companion and Living Object
+       settings are kept untouched for the Altar milestone.
+     - **Backup and restore**: format `salt-and-sovereignty-sanctuary-backup`
+       v1, ported from `js/sanctuary-backup.js` and tested against the
+       website's own module in both directions. Merge-only restore after a
+       required safety backup, with resumable stages. Phones use the share
+       sheet and document picker; the web build downloads and uploads.
+     - **Account**: sign in or out, and deletion with a fresh backup, a
+       recent sign-in and the typed phrase, calling `delete-account`.
+     - Marked slots in `more/index.tsx` for **Moon reminders** and the
+       **Altar**; set their `href` when those milestones merge.
+   - *Needs the owner / server before release:*
+     - `delete-account` isn't deployed on sandspod-dev, and it only accepts
+       requests with an allowed `Origin`. Phones send none, and
+       `https://app.saltandsovereignty.com` isn't on its list. Deploy it,
+       allow those requests (e.g. through `ACCOUNT_DELETE_ALLOWED_ORIGINS` plus
+       a rule for no-Origin requests that still carry a bearer token), test
+       it with a throwaway account, then build with
+       `EXPO_PUBLIC_ACCOUNT_DELETION=on`. Until then the app explains that
+       deletion isn't switched on and deletes nothing.
+     - Website bug: its backup validator requires an `id` on every
+       `user_settings` row, but that table is keyed by `user_id` (which
+       backups strip), so the website refuses its own signed-in backups. The
+       app accepts them. One-line fix in `validateIds` in
+       `js/sanctuary-backup.js`: skip `user_settings`. Its account restore
+       also can't tell that a settings row already exists; the app keeps the
+       existing settings instead.
+     - Guest restore writes the website's guest storage keys. The Altar and
+       Rituals guest stores should read the same keys so restored guest work
+       shows up there.
 7. **Store release** — app icon, screenshots, privacy details, TestFlight and
    Play internal testing, then paid listings on both stores.
 
