@@ -60,8 +60,39 @@ the tabs. Guests keep everything on the device; signing in syncs it.
    `user_rituals`, links via `ritual_links`. Then the planner and spell
    builder, which suggest nights from moon phase and weekday and ingredients
    from the Library. Today's "next working" card fills in here.
+   - *Done:* the Rituals tab (`src/app/(tabs)/rituals/`) with the journal
+     (`user_rituals`, read, write, edit, delete, as the website's ritual
+     journal), templates (view, write, edit, archive; saved like the altar's
+     template editor, including its Book of Shadows page), stepping through a
+     ritual (timers, pause, skip, timed steps; saved to `ritual_sessions` /
+     `ritual_session_steps` so a ritual begun here shows at the website's
+     altar and the other way round), the planner (best nights from moon tide
+     and weekday ruler for 11 intentions; Library ingredients), the spell
+     builder (intention + Library ingredients + your words become steps to
+     begin, plan, or keep as a template), and one-tap links from every ritual
+     to its grimoire page, altar, template, date and ingredients. Offline copy
+     and pull to refresh like the grimoire; sessions that can't sync wait on
+     the phone and are sent later.
+   - Guests keep sessions and journal entries on the phone, as on the website;
+     templates need an account there, so here too. After signing in, the app
+     offers to bring the phone's guest rituals into the account.
+   - Today's "next working" card shows the next plan or the ritual under way.
+   - Plans are kept on the phone: the ritual tables have no "planned" record
+     yet (a `ritual_plans` table would let them sync).
 4. **Moon reminders** — local notifications (expo-notifications) for chosen
    phases and planned rituals; works without an account.
+   - *Done:* settings at **`/rituals/reminders`** (from the Rituals tab and
+     Today's moon button; More can link there too). Choose phases, the hour,
+     the evening before, and how long before a planned ritual. The next two
+     months are scheduled on the phone (at most 60, under iOS's 64 limit) and
+     topped up each time the app opens. The web app explains that reminders
+     ring in the phone app.
+   - *Add to calendar* (optional, off unless chosen): a planned ritual, and
+     optionally the chosen moon phases and the sabbats, go into a phone
+     calendar with expo-calendar; editing or removing the plan updates or
+     removes the event. expo-calendar isn't in Expo Go on SDK 57, so Expo Go
+     opens Google Calendar instead; development and store builds write to the
+     calendar. The web app offers an `.ics` download and a Google Calendar link.
 5. **Altar** — the full drag, rotate, layer, light and dress experience from
    `saved_altars`, `custom_cabinet_items`, `custom_altar_backgrounds`, reusing
    the website's artwork in `assets/altar/`. The biggest single piece.
@@ -91,6 +122,6 @@ the tabs. Guests keep everything on the device; signing in syncs it.
 cd app
 npm install
 npm start          # scan the QR code with Expo Go, or press w for web
-npm test           # moon and calendar tests
+npm test           # moon, calendar, grimoire, ritual and reminder tests
 npm run typecheck
 ```
