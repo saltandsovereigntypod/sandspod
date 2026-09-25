@@ -116,3 +116,11 @@ test("Account and Data UI requires validation and a safety backup before merge",
   assert.match(ui, /safetyBackupDownloaded = true; restore\.disabled = false/);
   assert.match(settings, /SanctuaryBackupUI\?\.mount/);
 });
+
+test("signed-in backups with a settings row validate even though user_settings has no id", async () => {
+  const backup = await Backup.createBackup({ settings: { user_settings: [{ display_name: "Ash", settings: {} }] } }, { createdAt: "2026-01-01T00:00:00Z", scope: "cloud-account" });
+  const result = await Backup.validateBackup(backup);
+  assert.equal(result.valid, true, result.errors.join(" "));
+  const duplicate = await Backup.createBackup({ settings: { user_settings: [] }, grimoire: { grimoire_pages: [{ id: "p1" }, { id: "p1" }] } }, { createdAt: "2026-01-01T00:00:00Z" });
+  assert.match((await Backup.validateBackup(duplicate)).errors.join(" "), /duplicate top-level ID/);
+});

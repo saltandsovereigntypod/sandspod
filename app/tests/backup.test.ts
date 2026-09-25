@@ -71,13 +71,11 @@ test('a backup made in the app validates on the website', async () => {
   assert.equal(result.valid, true);
 });
 
-test('account backups with settings restore in the app (the website refuses its own)', async () => {
+test('account backups with settings validate on the website and in the app', async () => {
   const options = { scope: 'authenticated-user' };
   const fromWebsite = await website.createBackup(accountData(), options);
-  // Known website issue: user_settings rows have no id, so its validator blocks them.
-  assert.deepEqual((await website.validateBackup(JSON.stringify(fromWebsite))).errors, [
-    'data.settings.user_settings[0] has an empty top-level ID.',
-  ]);
+  // user_settings rows have no id (the table is keyed by user_id); both sides accept that.
+  assert.deepEqual((await website.validateBackup(JSON.stringify(fromWebsite))).errors, []);
   const inApp = await validateBackup(JSON.stringify(fromWebsite));
   assert.deepEqual(inApp.errors, []);
 });
