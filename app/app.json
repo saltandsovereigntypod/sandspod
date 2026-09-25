@@ -36,6 +36,12 @@
           "imageWidth": 160,
           "backgroundColor": "#0c1510"
         }
+      ],
+      [
+        "expo-calendar",
+        {
+          "calendarPermission": "Allow $(PRODUCT_NAME) to add your planned rituals, moon phases and sabbats to your calendar."
+        }
       ]
     ],
     "experiments": {
