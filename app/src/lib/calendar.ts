@@ -93,3 +93,22 @@ export function shortDate(date: Date): string {
 export function longDate(date: Date): string {
   return `${WEEKDAYS[date.getDay()]} · ${MONTHS_LONG[date.getMonth()]} ${date.getDate()}`;
 }
+
+/**
+ * A Date from a Date or ISO string. Plain "YYYY-MM-DD" strings are calendar
+ * dates (the altar stores ritual dates that way), so they become local
+ * midnight rather than UTC midnight, which would show the day before in the Americas.
+ */
+export function parseCalendarDate(value: Date | string | null | undefined): Date | null {
+  if (!value) return null;
+  const plain = typeof value === 'string' ? /^(\d{4})-(\d{2})-(\d{2})$/.exec(value) : null;
+  const date = plain ? new Date(+plain[1], +plain[2] - 1, +plain[3]) : new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+/** "September 22, 2026"; null when unparseable. */
+export function fullDate(value: Date | string | null | undefined): string | null {
+  const date = parseCalendarDate(value);
+  if (!date) return null;
+  return `${MONTHS_LONG[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+}

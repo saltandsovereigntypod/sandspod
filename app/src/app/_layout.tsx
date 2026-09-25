@@ -10,6 +10,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 
+import { GrimoireProvider } from '../lib/grimoire/store';
 import { SessionProvider, useSession } from '../lib/session';
 import { colors } from '../theme';
 
@@ -18,7 +19,9 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   return (
     <SessionProvider>
-      <RootStack />
+      <GrimoireProvider>
+        <RootStack />
+      </GrimoireProvider>
     </SessionProvider>
   );
 }

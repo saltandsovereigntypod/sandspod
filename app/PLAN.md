@@ -48,9 +48,13 @@ the tabs. Guests keep everything on the device; signing in syncs it.
 1. **Foundation** *(this PR)* — project, theme, fonts, tab bar, Welcome,
    Sign in, guest mode, Today with the live moon, weekday meaning and
    the next moon phase and sabbat. Other tabs are placeholders.
-2. **Grimoire** — read and edit books, sections, pages and blocks
-   (`grimoire_books`, `grimoire_sections`, `grimoire_pages`, `grimoire_blocks`,
-   `grimoire_page_links`). Offline cache, sync when signed in.
+2. **Grimoire** — books, sections, pages and blocks (`grimoire_books`,
+   `grimoire_sections`, `grimoire_pages`, `grimoire_blocks`,
+   `grimoire_page_links`).
+   - *2a, done:* table of contents and parchment page reader for every block
+     type the website writes, ritual-journal details (date, moon, length,
+     altar items), linked pages, offline copy on the phone, pull to refresh.
+   - *2b, next:* writing and editing pages, adding pages and sections.
 3. **Rituals** — journal from `ritual_sessions` / `ritual_session_steps`,
    templates from `ritual_templates` / `ritual_template_steps` /
    `user_rituals`, links via `ritual_links`. Then the planner and spell
@@ -75,9 +79,9 @@ the tabs. Guests keep everything on the device; signing in syncs it.
   ($25 once), both enrolled as the organization.
 - **An app icon**: a 1024×1024 square PNG with no text. The website's icon
   says "Podcast" and is circular, so it can't be reused as-is.
-- **Supabase access** before milestone 2, to confirm table permissions for the
-  app, and the **production publishable key** (it isn't in this repository;
-  `js/environment.js` leaves it blank).
+- ~~Supabase access~~ (connected). Real data lives in **sandspod-dev**; the
+  "main" project is empty. Decide before launch whether to move to the main
+  project; if so it needs the schema and its publishable key.
 - A **privacy policy URL** and **support email** for the store listings.
 - A price for the app.
 
