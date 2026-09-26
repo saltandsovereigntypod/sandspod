@@ -10,12 +10,11 @@ import { interpretDeleteResponse, type DeleteResult } from './accountRules';
 export * from './accountRules';
 
 /**
- * The website keeps its delete button disabled until the function is
- * deployed and verified, and the function is not deployed on sandspod-dev
- * yet. Release builds turn this on with EXPO_PUBLIC_ACCOUNT_DELETION=on once
- * it is (it also has to accept requests from the app; see PLAN.md).
+ * On now that `delete-account` is deployed on sandspod-dev and accepts the app
+ * (phones send no Origin; the web app's address is allowed). A build can still
+ * switch it off with EXPO_PUBLIC_ACCOUNT_DELETION=off.
  */
-export const ACCOUNT_DELETION_ENABLED = process.env.EXPO_PUBLIC_ACCOUNT_DELETION === 'on';
+export const ACCOUNT_DELETION_ENABLED = process.env.EXPO_PUBLIC_ACCOUNT_DELETION !== 'off';
 
 export async function requestAccountDeletion(): Promise<DeleteResult> {
   const { data: sessionData } = await supabase.auth.getSession();
