@@ -158,8 +158,8 @@ export type RitualLinkRow = {
 export type Ingredient = { ref: string; name: string; type: string };
 
 /**
- * A planned working. The ritual tables have no "planned" record, so plans
- * stay on the device (like reminders); they point at synced templates by id.
+ * A planned working. Signed in, plans sync to `ritual_plans` (lib/rituals/planSync.ts);
+ * guests keep them on the device. They point at synced templates by id.
  */
 export type RitualPlan = {
   id: string;
@@ -182,6 +182,8 @@ export type RitualPlan = {
   calendarId?: string | null;
   /** Set once the ritual has begun; the plan then leaves "upcoming" and reminders. */
   doneAt?: string | null;
+  /** The account this plan is saved to in `ritual_plans`; unset until it reaches the server. */
+  syncedTo?: string | null;
 };
 
 /** What the template editor and spell builder produce before saving. */

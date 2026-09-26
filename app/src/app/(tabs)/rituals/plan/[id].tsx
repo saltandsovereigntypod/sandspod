@@ -111,7 +111,7 @@ export default function PlanView() {
           {template
             ? `${template.title} · ${steps} ${steps === 1 ? 'step' : 'steps'}`
             : plan.draft
-              ? `${plan.draft.title} · a spell with ${steps} steps, kept on this phone`
+              ? `${plan.draft.title} · a spell with ${steps} steps${plan.syncedTo ? '' : ', kept on this phone'}`
               : 'Not chosen yet. Begin as a working of your own, or change the plan to pick a template.'}
         </Body>
         {!!plan.draft && session && <Button label="Keep this spell as a template" variant="outline" disabled={busy} onPress={keepAsTemplate} />}
