@@ -2,6 +2,7 @@
 // same values the website writes, so a ritual saved here opens on the website.
 
 import { minutesToSeconds } from './lifecycle.ts';
+import { isCustom } from './ingredients.ts';
 import type {
   Ingredient,
   JournalRow,
@@ -157,7 +158,7 @@ export function uniqueLinks(links: RitualLinkRow[], existing: Partial<RitualLink
 
 /** Links for a journal entry: its altar and the Library ingredients used. */
 export function journalLinks(journal: JournalRow, userId: string, ingredients: Ingredient[]): RitualLinkRow[] {
-  const links: RitualLinkRow[] = ingredients.map((item) => ({
+  const links: RitualLinkRow[] = ingredients.filter((item) => !isCustom(item)).map((item) => ({
     user_id: userId,
     ritual_id: journal.id,
     link_type: 'used_entity',
@@ -181,7 +182,7 @@ export function journalLinks(journal: JournalRow, userId: string, ingredients: I
 /** Links for a template: the Library ingredients the spell calls for. */
 export function templateLinks(templateId: string, userId: string, ingredients: Ingredient[]): RitualLinkRow[] {
   return uniqueLinks(
-    ingredients.map((item) => ({
+    ingredients.filter((item) => !isCustom(item)).map((item) => ({
       user_id: userId,
       template_id: templateId,
       link_type: 'suggested_entity',

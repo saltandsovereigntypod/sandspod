@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
 import { MoonDisc } from '../../../components/MoonDisc';
+import { IngredientPicker } from '../../../components/rituals/IngredientPicker';
 import { Body, Card, Chip, Chips, Field, Notice, RitualScreen, SectionLabel, Title, Toggle, tell, ui } from '../../../components/rituals/ui';
 import { dayRuler, dayRulerLabel, fullDate } from '../../../lib/calendar';
 import { moonState } from '../../../lib/moon';
@@ -11,7 +12,6 @@ import { clockTime, dayLabel } from '../../../lib/rituals/format';
 import { clearDraft, peekDraft } from '../../../lib/rituals/handoff';
 import { dateFromKey, localDateKey, uuid } from '../../../lib/rituals/lifecycle';
 import { EVENING_HOUR, INTENTIONS, intentionByKey, nightFits, suggestIngredients, suggestNights, type NightSuggestion } from '../../../lib/rituals/planner';
-import { toIngredient } from '../../../lib/rituals/spell';
 import { planStart } from '../../../lib/rituals/plans';
 import { useRituals } from '../../../lib/rituals/store';
 import { calendarMode, savePlanWithCalendar, useCalendar } from '../../../lib/reminders/calendarStore';
@@ -69,8 +69,6 @@ export default function Planner() {
   const defaultName =
     (attach.kind === 'draft' && draft?.title) || template?.title || (intention ? `${intention.label} working` : 'A working');
 
-  const toggle = (item: Ingredient) =>
-    setPicked((list) => (list.some((i) => i.ref === item.ref) ? list.filter((i) => i.ref !== item.ref) : [...list, item]));
 
   const save = async () => {
     if (!night) return;
@@ -190,23 +188,12 @@ export default function Planner() {
         </Card>
       )}
 
-      {ingredients && (
-        <View style={ui.gapSmall}>
-          <SectionLabel>From the Library</SectionLabel>
-          <Body muted>Tap to add to what you'll gather.</Body>
-          <Chips>
-            {[...ingredients.candle, ...ingredients.herb, ...ingredients.crystal].map((item) => (
-              <Chip
-                key={item.ref}
-                label={item.name}
-                selected={picked.some((p) => p.ref === item.ref)}
-                a11yLabel={`${item.name}: ${item.uses}`}
-                onPress={() => toggle(toIngredient(item))}
-              />
-            ))}
-          </Chips>
-        </View>
-      )}
+      <IngredientPicker
+        picked={picked}
+        onChange={setPicked}
+        suggested={ingredients ? [...ingredients.candle, ...ingredients.herb, ...ingredients.crystal] : undefined}
+        suggestedNote={ingredients ? 'Suggested from the Library. Add anything else you like.' : undefined}
+      />
 
       {night ? (
         <Button
