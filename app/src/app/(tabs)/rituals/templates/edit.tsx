@@ -1,15 +1,17 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
+import { IngredientPicker } from '../../../../components/rituals/IngredientPicker';
+import { StepsEditor } from '../../../../components/rituals/StepsEditor';
 import { Card, Chip, Chips, Field, Notice, RitualScreen, SectionLabel, SignInCard, Title, confirmAction, tell, ui } from '../../../../components/rituals/ui';
 import { useGrimoire } from '../../../../lib/grimoire/store';
-import { blankStep, draftFromTemplate, validateDraft } from '../../../../lib/rituals/lifecycle';
+import { draftFromTemplate, validateDraft } from '../../../../lib/rituals/lifecycle';
 import { archiveTemplate, saveTemplate, useRituals } from '../../../../lib/rituals/store';
-import type { StepDraft, TemplateDraft } from '../../../../lib/rituals/types';
+import type { TemplateDraft } from '../../../../lib/rituals/types';
 import { useSession } from '../../../../lib/session';
-import { colors, radius, type } from '../../../../theme';
+import { type } from '../../../../theme';
 
 export default function TemplateEditor() {
   const { id } = useLocalSearchParams<{ id?: string }>();
@@ -36,16 +38,6 @@ export default function TemplateEditor() {
   }
 
   const change = (patch: Partial<TemplateDraft>) => setDraft((d) => ({ ...d, ...patch }));
-  const changeStep = (index: number, patch: Partial<StepDraft>) =>
-    setDraft((d) => ({ ...d, steps: d.steps.map((s, i) => (i === index ? { ...s, ...patch } : s)) }));
-  const move = (index: number, by: number) =>
-    setDraft((d) => {
-      const steps = [...d.steps];
-      const [step] = steps.splice(index, 1);
-      steps.splice(index + by, 0, step);
-      return { ...d, steps };
-    });
-
   const save = async () => {
     const invalid = validateDraft(draft);
     setProblem(invalid);
@@ -108,49 +100,11 @@ export default function TemplateEditor() {
         )}
       </Card>
 
+      <IngredientPicker picked={draft.ingredients} onChange={(ingredients) => change({ ingredients })} />
+
       <View style={ui.gap}>
         <SectionLabel>Steps</SectionLabel>
-        {draft.steps.map((step, index) => (
-          <View key={index} style={styles.step}>
-            <Text style={type.cardTitle}>{`Step ${index + 1}`}</Text>
-            <Field label="Step title" value={step.title} onChange={(title) => changeStep(index, { title })} placeholder="Open the space" />
-            <Field
-              label="Guidance"
-              value={step.instructions}
-              onChange={(instructions) => changeStep(index, { instructions })}
-              placeholder="What to do during this step"
-              multiline
-            />
-            <Field
-              label="Words to read or speak"
-              value={step.spoken_text}
-              onChange={(spoken_text) => changeStep(index, { spoken_text })}
-              placeholder="Optional prayer, invocation or petition"
-              multiline
-            />
-            <Field label="Timer in minutes" value={step.minutes} onChange={(minutes) => changeStep(index, { minutes })} placeholder="Optional" keyboardType="decimal-pad" />
-            {!!step.minutes.trim() && (
-              <Chips>
-                <Chip label="I'll move on myself" selected={step.completion_mode !== 'timed'} onPress={() => changeStep(index, { completion_mode: 'manual' })} />
-                <Chip label="Move on when the timer ends" selected={step.completion_mode === 'timed'} onPress={() => changeStep(index, { completion_mode: 'timed' })} />
-              </Chips>
-            )}
-            <Chips>
-              {index > 0 && <Chip label="Move up" a11yLabel={`Move step ${index + 1} up`} onPress={() => move(index, -1)} />}
-              {index < draft.steps.length - 1 && (
-                <Chip label="Move down" a11yLabel={`Move step ${index + 1} down`} onPress={() => move(index, 1)} />
-              )}
-              {draft.steps.length > 1 && (
-                <Chip
-                  label="Remove"
-                  a11yLabel={`Remove step ${index + 1}`}
-                  onPress={() => setDraft((d) => ({ ...d, steps: d.steps.filter((_, i) => i !== index) }))}
-                />
-              )}
-            </Chips>
-          </View>
-        ))}
-        <Button label="Add another step" variant="outline" onPress={() => change({ steps: [...draft.steps, blankStep()] })} />
+        <StepsEditor steps={draft.steps} onChange={(steps) => change({ steps })} />
       </View>
 
       <Card>
@@ -173,6 +127,3 @@ export default function TemplateEditor() {
   );
 }
 
-const styles = StyleSheet.create({
-  step: { backgroundColor: colors.surface, borderRadius: radius.card, borderWidth: 1, borderColor: colors.hairline, padding: 16, gap: 12 },
-});

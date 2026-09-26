@@ -6,6 +6,7 @@ import { View } from 'react-native';
 
 import { fullDate } from '../../lib/calendar';
 import { refToParam } from '../../lib/rituals/format';
+import { isCustom } from '../../lib/rituals/ingredients';
 import type { AltarSummary } from '../../lib/rituals/store';
 import { Chip, Chips, SectionLabel, ui } from './ui';
 
@@ -57,14 +58,18 @@ export function Connections({ grimoirePageId, altarId, altars = [], templateId, 
             onPress={() => router.push({ pathname: '/rituals/planner', params: { date } })}
           />
         )}
-        {ingredients.map((item) => (
-          <Chip
-            key={item.ref}
-            label={item.name}
-            a11yLabel={`${item.name}, from the Library`}
-            onPress={() => router.push({ pathname: '/rituals/ingredient/[ref]', params: { ref: refToParam(item.ref) } })}
-          />
-        ))}
+        {ingredients.map((item) =>
+          isCustom(item) ? (
+            <Chip key={item.ref} label={item.name} a11yLabel={`${item.name}, your own`} />
+          ) : (
+            <Chip
+              key={item.ref}
+              label={item.name}
+              a11yLabel={`${item.name}, from the Library`}
+              onPress={() => router.push({ pathname: '/rituals/ingredient/[ref]', params: { ref: refToParam(item.ref) } })}
+            />
+          ),
+        )}
       </Chips>
     </View>
   );

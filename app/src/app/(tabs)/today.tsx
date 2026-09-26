@@ -58,7 +58,7 @@ export default function Today() {
         label={moonReminders ? 'Moon reminders on' : 'Remind me of the moon'}
         accessibilityHint="Choose which moon phases to be reminded of"
         icon={<Icon name="bell" size={16} color={colors.gold} />}
-        onPress={() => router.navigate('/rituals/reminders')}
+        onPress={() => router.navigate('/rituals/reminders', { withAnchor: true })}
       />
 
       <View style={styles.working}>

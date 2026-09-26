@@ -4,7 +4,6 @@
 import { router } from 'expo-router';
 import { useState, type ReactNode } from 'react';
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -247,6 +246,8 @@ export function Toggle({ label, detail, value, onChange }: { label: string; deta
           value={value}
           trackColor={{ false: colors.surfaceRaised, true: colors.goldDeep }}
           thumbColor={value ? colors.gold : colors.parchment}
+          // react-native-web colours the "on" thumb with its own prop (teal otherwise).
+          {...({ activeThumbColor: colors.gold } as object)}
         />
       </View>
     </Pressable>
@@ -290,28 +291,9 @@ export function Expander({ title, children, initiallyOpen }: { title: string; ch
   );
 }
 
-/** Confirm a destructive step. Alert buttons don't exist on the web, so use the browser's. */
-export function confirmAction(title: string, message: string, action: string): Promise<boolean> {
-  if (Platform.OS === 'web') {
-    const confirm = (globalThis as { confirm?: (text: string) => boolean }).confirm;
-    return Promise.resolve(confirm ? confirm(`${title}\n\n${message}`) : true);
-  }
-  return new Promise((resolve) =>
-    Alert.alert(title, message, [
-      { text: 'Cancel', style: 'cancel', onPress: () => resolve(false) },
-      { text: action, style: 'destructive', onPress: () => resolve(true) },
-    ]),
-  );
-}
-
-export function tell(title: string, message: string) {
-  if (Platform.OS === 'web') {
-    const alert = (globalThis as { alert?: (text: string) => void }).alert;
-    alert?.(`${title}\n\n${message}`);
-    return;
-  }
-  Alert.alert(title, message);
-}
+// Confirmations and notices use the app's own dialog on the web, because the
+// browser's confirm() and alert() can be blocked (see lib/dialog.ts).
+export { confirmAction, tell } from '../../lib/dialog';
 
 export const ui = StyleSheet.create({
   gap: { gap: 12 },

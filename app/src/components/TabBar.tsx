@@ -35,7 +35,18 @@ export function TabBar({ state, navigation, insets }: TabBarProps) {
             style={styles.tab}
             onPress={() => {
               const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
-              if (!focused && !event.defaultPrevented) navigation.navigate(route.name, route.params);
+              if (event.defaultPrevented) return;
+              // A tab always opens on its home screen. Links from other tabs (the moon
+              // on Today opens Moon reminders) would otherwise leave that screen in
+              // the tab, so pressing the tab showed it instead of the tab's home.
+              // Navigating to the tab's `index` goes back to it if it's in the tab's
+              // stack and opens it if it isn't; after a page reload the tab's stored
+              // state can't be relied on, so this doesn't try to read it.
+              if (route.name === 'today') {
+                if (!focused) navigation.navigate(route.name, route.params);
+              } else {
+                navigation.navigate(route.name, { screen: 'index' });
+              }
             }}
           >
             <Icon name={tab.icon} color={color} />

@@ -3,14 +3,28 @@ import { View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
 import { Body, Card, Chip, Chips, RitualScreen, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
-import { paramToRef } from '../../../../lib/rituals/format';
+import { LibraryEntryScreen } from '../../../../components/library/LibraryEntryScreen';
+import { useLibrary, type LibraryEntry } from '../../../../lib/library';
+import { paramToRef, refToParam } from '../../../../lib/rituals/format';
+import { entryForIngredient, ingredientFromEntry } from '../../../../lib/rituals/ingredients';
 import { INTENTIONS, libraryItem, suggestIngredients } from '../../../../lib/rituals/planner';
 
 // A short Library card for an ingredient. The full Living Library lives under
 // More → Library; this keeps the ritual screens one tap from what they use.
+// Paired entries open here too, so they stay in the Rituals tab.
+const ingredientHref = (entry: LibraryEntry) =>
+  ({ pathname: '/rituals/ingredient/[ref]', params: { ref: refToParam(ingredientFromEntry(entry).ref) } }) as const;
+
 export default function Ingredient() {
   const { ref } = useLocalSearchParams<{ ref: string }>();
+  const { entries } = useLibrary();
   const item = ref ? libraryItem(paramToRef(ref)) : null;
+  // Oils, tools, deities, your own entries: the full Living Library page.
+  const entry = !item && ref ? entryForIngredient(entries, paramToRef(ref)) : null;
+
+  if (entry) {
+    return <LibraryEntryScreen entryId={entry.id} back="/rituals" backLabel="Back" hrefFor={ingredientHref} />;
+  }
 
   if (!item) {
     return (
