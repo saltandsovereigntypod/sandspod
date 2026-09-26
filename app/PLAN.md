@@ -5,6 +5,13 @@ version of **My Sanctuary** from the website. The website stays free and
 unchanged. Both use the same Supabase projects, so one account works in both
 and nothing saved on the website is lost.
 
+The same app also runs free in the browser at **app.saltandsovereignty.com**
+(an installable web app, built by `saltandsovereigntypod/sandspod_application`).
+On phones, the website's My Sanctuary button opens it (`js/app-handoff.js`),
+unless a guest has work saved only in that browser or has chosen to keep the
+website version. Computers keep the website's My Sanctuary with an "Open the
+app" choice. Decided 2026-09-26: the web app is free.
+
 Approved design: the "Salt & Sovereignty App" design canvas (Welcome, Today,
 Altar, Grimoire page, Rituals, Planner, More).
 
@@ -188,8 +195,9 @@ the tabs. Guests keep everything on the device; signing in syncs it.
 - **An app icon**: a 1024×1024 square PNG with no text. The website's icon
   says "Podcast" and is circular, so it can't be reused as-is.
 - ~~Supabase access~~ (connected). Real data lives in **sandspod-dev**; the
-  "main" project is empty. Decide before launch whether to move to the main
-  project; if so it needs the schema and its publishable key.
+  "main" project is empty. Decided 2026-09-26: the live site uses sandspod-dev
+  too (`LIVE_PROJECT` in `js/environment.js`). Moving to the main project later
+  needs the schema, its publishable key, and a data move.
 - A **privacy policy URL** and **support email** for the store listings.
 - A price for the app.
 
