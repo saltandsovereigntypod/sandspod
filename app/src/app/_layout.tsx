@@ -10,6 +10,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 
+import { DialogHost } from '../components/DialogHost';
 import { GrimoireProvider } from '../lib/grimoire/store';
 import { SessionProvider, useSession } from '../lib/session';
 import { colors } from '../theme';
@@ -53,6 +54,7 @@ function RootStack() {
           animation: 'fade',
         }}
       />
+      <DialogHost />
     </>
   );
 }
