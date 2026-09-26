@@ -35,7 +35,16 @@ export function TabBar({ state, navigation, insets }: TabBarProps) {
             style={styles.tab}
             onPress={() => {
               const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
-              if (!focused && !event.defaultPrevented) navigation.navigate(route.name, route.params);
+              if (event.defaultPrevented) return;
+              // A tab always opens on its home screen. Links from other tabs (the moon
+              // on Today opens Moon reminders) would otherwise leave that screen in
+              // the tab, so pressing the tab showed it instead of the tab's home.
+              const nested = route.state as { key?: string; routes?: { name: string }[] } | undefined;
+              const atHome = !nested?.routes || (nested.routes.length === 1 && nested.routes[0].name === 'index');
+              if (nested?.key && !atHome) {
+                navigation.dispatch({ type: 'RESET', payload: { index: 0, routes: [{ name: 'index' }] }, target: nested.key });
+              }
+              if (!focused) navigation.navigate(route.name, route.params);
             }}
           >
             <Icon name={tab.icon} color={color} />
