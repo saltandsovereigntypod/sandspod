@@ -3,6 +3,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BlockView, ink, Ornament, PageLinkButton } from '../../../components/grimoire/BlockView';
+import { Button } from '../../../components/Button';
 import { Icon } from '../../../components/Icon';
 import { fullDate } from '../../../lib/calendar';
 import { plainText } from '../../../lib/grimoire/richText';
@@ -12,7 +13,7 @@ import { colors, fonts, touch, type } from '../../../theme';
 
 export default function GrimoirePage() {
   const { pageId } = useLocalSearchParams<{ pageId: string }>();
-  const { snapshot } = useGrimoire();
+  const { snapshot, canEdit } = useGrimoire();
   const page = snapshot?.pages.find((p) => p.id === pageId) ?? null;
   const book = page ? snapshot?.books.find((b) => b.id === page.book_id) : null;
   const section = page?.section_id ? snapshot?.sections.find((s) => s.id === page.section_id) : null;
@@ -40,6 +41,14 @@ export default function GrimoirePage() {
         <Text style={[type.caption, styles.crumb]} numberOfLines={1}>
           {[book?.title, section?.title].filter(Boolean).join(' · ')}
         </Text>
+        {page && canEdit && (
+          <Button
+            label="Edit"
+            variant="pill"
+            accessibilityHint="Opens this page for writing"
+            onPress={() => router.push({ pathname: '/grimoire/edit/[pageId]', params: { pageId: page.id } })}
+          />
+        )}
       </View>
 
       <ScrollView contentContainerStyle={styles.scroll} alwaysBounceHorizontal={false}>

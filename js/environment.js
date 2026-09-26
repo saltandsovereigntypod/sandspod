@@ -21,6 +21,11 @@
     })
   });
 
+  // The live site shares the development project, which holds the real accounts and
+  // is also what the app uses, so one account works on the website and in the app.
+  // The production project stays listed for a future move; nothing selects it today.
+  const LIVE_PROJECT = PROJECTS.development;
+
   function normalizeBasePath(value) {
     const path = `/${String(value || "").replace(/^\/+|\/+$/g, "")}/`;
     return path === "//" ? "/" : path;
@@ -36,7 +41,7 @@
     const local = hostname === "localhost" || hostname === "127.0.0.1" || hostname === "[::1]";
     const recognized = production || developmentDomain || githubPages || local;
     const name = production ? "production" : recognized ? (local ? "local-development" : "development") : "unrecognized";
-    const project = production ? PROJECTS.production : recognized ? PROJECTS.development : null;
+    const project = production ? LIVE_PROJECT : recognized ? PROJECTS.development : null;
     const basePath = githubPages ? "/sandspod-dev/" : "/";
     const origin = String(location.origin || `${location.protocol || "https:"}//${location.host || hostname}`);
 
@@ -77,7 +82,7 @@
       }
     };
 
-    if (production && environment.supabaseProjectRef !== PROJECTS.production.projectRef) throw new Error("Production is not configured for the production Supabase project.");
+    if (production && environment.supabaseProjectRef !== LIVE_PROJECT.projectRef) throw new Error("Production is not configured for the live Supabase project.");
     if (environment.isDevelopment && environment.supabaseProjectRef !== PROJECTS.development.projectRef) throw new Error("Development is not configured for the development Supabase project.");
     return Object.freeze(environment);
   }

@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient } from '@supabase/supabase-js';
+import { Platform } from 'react-native';
 
 // The app shares the website's Supabase projects so one account works in both.
 // Only browser-safe publishable keys belong here; never a service-role key.
@@ -14,6 +15,9 @@ export const supabase = createClient(url, key, {
     storage: AsyncStorage,
     autoRefreshToken: true,
     persistSession: true,
-    detectSessionInUrl: false,
+    // PKCE lets Google sign-in hand back a one-time code instead of tokens in
+    // the URL. On the web the client exchanges that code when the page loads.
+    flowType: 'pkce',
+    detectSessionInUrl: Platform.OS === 'web',
   },
 });

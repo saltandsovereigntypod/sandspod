@@ -482,6 +482,7 @@ function createMySanctuaryPanel() {
           ← Back to Sanctuary
         </button>
       </section>
+      <div class="my-sanctuary-app-choice" data-my-sanctuary-app-choice hidden></div>
     </aside>
   `;
 
@@ -562,11 +563,19 @@ function updateMySanctuaryPanel() {
 }
 
 function openMySanctuaryPanel() {
+  const handoff = window.SaltAppHandoff;
+  const signedIn = typeof currentUser !== "undefined" && Boolean(currentUser);
+  if (handoff?.shouldOpenApp({ win: window, storage: window.localStorage, signedIn })) {
+    window.location.assign(handoff.APP_URL);
+    return;
+  }
+
   createMySanctuaryPanel();
   updateMySanctuaryPanel();
 
   const panel = document.querySelector("[data-my-sanctuary-panel]");
   if (!panel) return;
+  renderMySanctuaryAppChoice(panel, signedIn);
 
   setMySanctuaryView(currentUser ? "dashboard" : "welcome");
 
@@ -575,6 +584,30 @@ function openMySanctuaryPanel() {
   requestAnimationFrame(() => {
     panel.classList.add("is-visible");
   });
+}
+
+// The app lives at its own address, so its link and the phone preference are drawn
+// fresh each time the panel opens.
+function renderMySanctuaryAppChoice(panel, signedIn) {
+  const handoff = window.SaltAppHandoff;
+  const slot = panel.querySelector("[data-my-sanctuary-app-choice]");
+  if (!handoff || !slot) return;
+
+  const storage = window.localStorage;
+  const phone = handoff.isPhone(window);
+  const keptHere = !signedIn && handoff.hasGuestWork(storage);
+  const note = phone && keptHere
+    ? "Your guest work is saved in this browser. Sign in first and it comes with you to the app."
+    : "My Sanctuary is also an app, with the same account and everything you've saved.";
+
+  slot.innerHTML = `
+    <p class="my-sanctuary-soft-note">${note}</p>
+    <div class="my-sanctuary-choice-actions">
+      <a class="button button--ghost" href="${handoff.APP_URL}" data-my-sanctuary-open-app>Open the app</a>
+      ${phone ? `<button class="button button--ghost" type="button" data-my-sanctuary-website-choice>${handoff.prefersWebsite(storage) ? "Use the app on this phone" : "Keep the website version on this phone"}</button>` : ""}
+    </div>
+  `;
+  slot.hidden = false;
 }
 
 function closeMySanctuaryPanel() {
@@ -630,6 +663,18 @@ document.addEventListener("click", async (event) => {
   const googleButton = event.target.closest("[data-my-sanctuary-google]");
   const signOutButton = event.target.closest("[data-my-sanctuary-signout]");
 
+  const websiteChoiceButton = event.target.closest("[data-my-sanctuary-website-choice]");
+  const openAppLink = event.target.closest("[data-my-sanctuary-open-app]");
+
+  if (openAppLink) window.SaltAppHandoff?.setPrefersWebsite(window.localStorage, false);
+  if (websiteChoiceButton) {
+    const handoff = window.SaltAppHandoff;
+    const keepWebsite = !handoff?.prefersWebsite(window.localStorage);
+    handoff?.setPrefersWebsite(window.localStorage, keepWebsite);
+    showMySanctuaryNotice(keepWebsite ? "My Sanctuary will open here on this phone." : "My Sanctuary will open the app on this phone.");
+    const panel = document.querySelector("[data-my-sanctuary-panel]");
+    if (panel) renderMySanctuaryAppChoice(panel, typeof currentUser !== "undefined" && Boolean(currentUser));
+  }
   if (openButton) openMySanctuaryPanel();
   if (closeButton) closeMySanctuaryPanel();
   if (showAuthButton) setMySanctuaryView("auth");

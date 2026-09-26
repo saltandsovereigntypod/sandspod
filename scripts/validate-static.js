@@ -88,7 +88,7 @@ const { createEnvironment } = require(path.join(root, "js/environment.js"));
 if (mode === "production") {
   for (const hostname of ["saltandsovereignty.com", "www.saltandsovereignty.com"]) {
     const deployment = createEnvironment(new URL(`https://${hostname}/`));
-    if (deployment.supabaseProjectRef !== "outksqvhusvvtjgiveoh") failures.push(`${hostname} does not select the production project`);
+    if (deployment.supabaseProjectRef !== "aiiqyesczxrrujznwoke") failures.push(`${hostname} does not select the live (development) project`);
     if (deployment.basePath !== "/" || deployment.oauthReturnUrl("/") !== `https://${hostname}/`) failures.push(`${hostname} has invalid production paths`);
   }
 } else {

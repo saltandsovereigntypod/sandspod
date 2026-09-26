@@ -1399,6 +1399,12 @@ body.tool-guide-open {
   font-size: 0.95rem;
 }
 
+.my-sanctuary-app-choice {
+  margin-top: 1.6rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid rgba(244, 236, 216, 0.14);
+}
+
 .my-sanctuary-view {
   animation: sanctuaryPanelFade 0.22s ease both;
 }
