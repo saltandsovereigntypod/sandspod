@@ -247,6 +247,8 @@ export function Toggle({ label, detail, value, onChange }: { label: string; deta
           value={value}
           trackColor={{ false: colors.surfaceRaised, true: colors.goldDeep }}
           thumbColor={value ? colors.gold : colors.parchment}
+          // react-native-web colours the "on" thumb with its own prop (teal otherwise).
+          {...({ activeThumbColor: colors.gold } as object)}
         />
       </View>
     </Pressable>
