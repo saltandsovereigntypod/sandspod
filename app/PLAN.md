@@ -97,8 +97,9 @@ the tabs. Guests keep everything on the device; signing in syncs it.
      templates need an account there, so here too. After signing in, the app
      offers to bring the phone's guest rituals into the account.
    - Today's "next working" card shows the next plan or the ritual under way.
-   - Plans are kept on the phone: the ritual tables have no "planned" record
-     yet (a `ritual_plans` table would let them sync).
+   - Signed in, plans sync to `ritual_plans` (added 2026-09-26, own rows only;
+     `lib/rituals/planSync.ts`). Calendar event ids stay on the phone that
+     wrote them. Guests keep plans on the phone; they're sent up on sign-in.
 4. **Moon reminders** — local notifications (expo-notifications) for chosen
    phases and planned rituals; works without an account.
    - *Done:* settings at **`/rituals/reminders`** (from the Rituals tab and

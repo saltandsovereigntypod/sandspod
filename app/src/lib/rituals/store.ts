@@ -16,6 +16,7 @@ import { useEffect, useMemo, useSyncExternalStore } from 'react';
 import { useSession } from '../session';
 import { supabase } from '../supabase';
 import { applyAnswers, createSession, finishSession, journalPayload, uuid, type StartSource } from './lifecycle';
+import { isSyncable, mergePlans, planRow, unsyncedPlans, type PlanRow } from './planSync';
 import {
   journalLibraryEntry,
   journalLinks,
@@ -67,6 +68,8 @@ type Snapshot = Pick<RitualsState, 'templates' | 'journal' | 'links' | 'altars' 
 // The same key the website uses for guest rituals, so the shape is familiar.
 const DEVICE_KEY = 'saltAndSovereigntyRitualLifecycle:guest';
 const PLANS_KEY = 'rituals.plans.v1';
+// Plans removed while offline, deleted from ritual_plans on the next sync.
+const PLAN_DELETES_KEY = 'rituals.plans.deleted.v1';
 const snapshotKey = (userId: string) => `rituals.snapshot.${userId}`;
 const activeKey = (userId: string) => `rituals.active.${userId}`;
 const outboxKey = (userId: string) => `rituals.outbox.${userId}`;
@@ -242,6 +245,7 @@ export async function refresh() {
     set({ ...snapshot, active, status: 'ready' });
     await writeJson(snapshotKey(userId), snapshot);
     if (active && !state.active) await writeJson(activeKey(userId), active);
+    await syncPlans(userId);
   } catch (e) {
     if (state.userId !== userId) return;
     set({ error: e instanceof Error ? e.message : String(e), status: 'offline' });
@@ -521,12 +525,53 @@ async function writePlans(plans: RitualPlan[]) {
   await writeJson(PLANS_KEY, plans);
 }
 
+/**
+ * Bring this account's plans and this phone's together: send removals and plans
+ * not saved yet, then show what the account holds. Failing quietly is fine here;
+ * the plans stay on the phone and the next refresh tries again.
+ */
+async function syncPlans(userId: string) {
+  try {
+    const deletes = await readJson<string[]>(PLAN_DELETES_KEY, []);
+    if (deletes.length) {
+      throwIf(await supabase.from('ritual_plans').delete().in('id', deletes));
+      await writeJson(PLAN_DELETES_KEY, null);
+    }
+    const pending = unsyncedPlans(state.plans);
+    if (pending.length) throwIf(await supabase.from('ritual_plans').upsert(pending.map((plan) => planRow(plan, userId))));
+    const remote = await supabase.from('ritual_plans').select('*');
+    throwIf(remote);
+    if (state.userId !== userId) return;
+    await writePlans(mergePlans(state.plans.map((plan) => (pending.includes(plan) ? { ...plan, syncedTo: userId } : plan)), (remote.data ?? []) as PlanRow[], userId));
+  } catch {
+    // Offline or refused: keep the phone's plans as they are.
+  }
+}
+
 export async function savePlan(plan: RitualPlan) {
-  await writePlans([...state.plans.filter((p) => p.id !== plan.id), plan]);
+  const userId = state.userId;
+  let saved: RitualPlan = { ...plan, syncedTo: null };
+  if (userId && isSyncable(plan)) {
+    try {
+      throwIf(await supabase.from('ritual_plans').upsert(planRow(plan, userId)));
+      saved = { ...plan, syncedTo: userId };
+    } catch {
+      // Kept on the phone unsynced; the next refresh sends it.
+    }
+  }
+  await writePlans([...state.plans.filter((p) => p.id !== plan.id), saved]);
 }
 
 export async function removePlan(id: string) {
+  const plan = state.plans.find((p) => p.id === id);
   await writePlans(state.plans.filter((p) => p.id !== id));
+  if (!plan?.syncedTo || !state.userId) return;
+  try {
+    throwIf(await supabase.from('ritual_plans').delete().eq('id', id));
+  } catch {
+    const deletes = await readJson<string[]>(PLAN_DELETES_KEY, []);
+    await writeJson(PLAN_DELETES_KEY, [...new Set([...deletes, id])]);
+  }
 }
 
 /** Plans are device-wide, so reminders keep working signed in or out. */
