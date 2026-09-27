@@ -185,6 +185,8 @@
 
   function validateIds(data, errors) {
     for (const { path, records } of restorableCollections(data)) {
+      // user_settings is keyed by user_id, which backups strip, so its rows carry no id.
+      if (path.endsWith(".user_settings")) continue;
       const ids = new Set();
       records.forEach((record, index) => {
         if (!record || typeof record !== "object") return;

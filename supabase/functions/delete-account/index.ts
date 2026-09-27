@@ -4,19 +4,23 @@ const defaultOrigins = [
   "https://saltandsovereignty.com",
   "https://www.saltandsovereignty.com",
   "https://dev.saltandsovereignty.com",
+  "https://app.saltandsovereignty.com",
   "https://saltandsovereigntypod.github.io"
 ];
 const allowedOrigins = new Set([...(Deno.env.get("ACCOUNT_DELETE_ALLOWED_ORIGINS") || "").split(",").map((value) => value.trim()).filter(Boolean), ...defaultOrigins]);
 const childTables = ["ritual_links", "ritual_session_steps", "ritual_template_steps", "grimoire_page_links", "grimoire_blocks", "library_relations", "object_instance_events", "community_submission_messages"];
-const parentTables = ["user_rituals", "ritual_sessions", "ritual_templates", "grimoire_pages", "grimoire_sections", "grimoire_books", "object_instances", "living_library_entries", "apothecary_items", "saved_altars", "custom_altar_backgrounds", "custom_cabinet_items", "custom_cabinet_image_overrides", "user_settings"];
+const parentTables = ["ritual_plans", "user_rituals", "ritual_sessions", "ritual_templates", "grimoire_pages", "grimoire_sections", "grimoire_books", "object_instances", "living_library_entries", "apothecary_items", "saved_altars", "custom_altar_backgrounds", "custom_cabinet_items", "custom_cabinet_image_overrides", "user_settings"];
 
 function response(origin: string, status: number, body: Record<string, unknown>) {
-  return new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", "access-control-allow-origin": origin, "access-control-allow-headers": "authorization, content-type", "access-control-allow-methods": "POST, OPTIONS", "vary": "Origin" } });
+  const cors: Record<string, string> = origin ? { "access-control-allow-origin": origin, "access-control-allow-headers": "authorization, content-type, apikey, x-client-info", "access-control-allow-methods": "POST, OPTIONS", "vary": "Origin" } : {};
+  return new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", ...cors } });
 }
 
 Deno.serve(async (request) => {
   const origin = request.headers.get("origin") || "";
-  if (!allowedOrigins.has(origin)) return new Response("Origin not allowed", { status: 403 });
+  // Browsers always send Origin here, so websites must be on the list. The phone
+  // app sends none; it still needs a valid sign-in token below.
+  if (origin && !allowedOrigins.has(origin)) return new Response("Origin not allowed", { status: 403 });
   if (request.method === "OPTIONS") return response(origin, 204, {});
   if (request.method !== "POST") return response(origin, 405, { error: "method_not_allowed" });
 

@@ -6,11 +6,12 @@ function environment(url) {
   return createEnvironment(new URL(url));
 }
 
-test("production apex and www select the production project and root", () => {
+test("production apex and www share the development project, where accounts live, at the root", () => {
   for (const host of ["saltandsovereignty.com", "www.saltandsovereignty.com"]) {
     const value = environment(`https://${host}/altar/`);
     assert.equal(value.name, "production");
-    assert.equal(value.supabaseProjectRef, "outksqvhusvvtjgiveoh");
+    assert.equal(value.supabaseProjectRef, "aiiqyesczxrrujznwoke");
+    assert.doesNotThrow(() => value.getSupabaseConfig());
     assert.equal(value.basePath, "/");
     assert.equal(value.oauthReturnUrl("/"), `https://${host}/`);
   }
@@ -47,9 +48,9 @@ test("unknown public hosts fail closed without project configuration", () => {
   assert.throws(() => value.oauthReturnUrl("/"), /disabled/);
 });
 
-test("moderator identities remain project-scoped", () => {
+test("moderator identities follow the project each host uses", () => {
   const production = environment("https://saltandsovereignty.com/");
   const development = environment("https://dev.saltandsovereignty.com/");
-  assert.deepEqual(production.moderatorIds, ["ddc5463e-1551-498b-b5af-79ce52ac591c", "5c63e3ac-920c-4980-9aa7-f6f322a67a2e"]);
-  assert.equal(development.moderatorIds.some((id) => production.moderatorIds.includes(id)), false);
+  assert.deepEqual(production.moderatorIds, ["a0bd79fd-ad6d-472a-b38b-69526651e76b"]);
+  assert.deepEqual(production.moderatorIds, development.moderatorIds);
 });

@@ -4,6 +4,7 @@ import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, View } fro
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '../components/Button';
+import { signInWithGoogle } from '../lib/googleSignIn';
 import { supabase } from '../lib/supabase';
 import { colors, fonts, radius, touch, type } from '../theme';
 
@@ -14,6 +15,20 @@ export default function SignIn() {
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+
+  async function continueWithGoogle() {
+    setBusy(true);
+    setMessage(null);
+    try {
+      const result = await signInWithGoogle();
+      if (result === 'signed-in') router.replace('/today');
+      // 'redirecting' means the web page is leaving for Google, so stay busy.
+      if (result !== 'redirecting') setBusy(false);
+    } catch (error) {
+      setBusy(false);
+      setMessage(error instanceof Error ? error.message : 'Google sign-in did not finish. Please try again.');
+    }
+  }
 
   async function submit() {
     setBusy(true);
@@ -42,8 +57,11 @@ export default function SignIn() {
         <Text style={type.body}>
           {creating
             ? 'Your altar, grimoire and rituals will be saved to your account and kept in sync.'
-            : 'Use the same email and password as the Salt & Sovereignty website.'}
+            : 'Use the same account as the Salt & Sovereignty website.'}
         </Text>
+
+        <Button label="Continue with Google" variant="outline" disabled={busy} onPress={continueWithGoogle} style={styles.submit} />
+        <Text style={styles.or}>or use your email</Text>
 
         <View style={styles.field}>
           <Text style={type.caption} nativeID="email-label">
@@ -110,5 +128,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
   },
   message: { ...type.body, color: colors.gold },
+  or: { ...type.caption, textAlign: 'center' },
   submit: { minHeight: 52, marginTop: 8 },
 });

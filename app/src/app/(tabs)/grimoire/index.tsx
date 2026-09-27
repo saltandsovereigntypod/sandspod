@@ -4,6 +4,7 @@ import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, T
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '../../../components/Button';
+import { FailedChanges } from '../../../components/grimoire/SaveStatus';
 import { Icon } from '../../../components/Icon';
 import { parseCalendarDate, shortDate } from '../../../lib/calendar';
 import { useGrimoire } from '../../../lib/grimoire/store';
@@ -14,7 +15,7 @@ import { colors, fonts, radius, space, type } from '../../../theme';
 
 export default function Grimoire() {
   const { session } = useSession();
-  const { snapshot, status, refresh } = useGrimoire();
+  const { snapshot, status, refresh, canEdit, sync, pendingCount } = useGrimoire();
   const [pulling, setPulling] = useState(false);
 
   if (!session) {
@@ -61,8 +62,27 @@ export default function Grimoire() {
         </View>
       </View>
 
+      {canEdit && (
+        <View style={styles.actions}>
+          <Button
+            label="New page"
+            onPress={() => router.push('/grimoire/new-page')}
+            style={styles.action}
+          />
+          <Button label="Sections" variant="outline" onPress={() => router.push('/grimoire/sections')} style={styles.action} />
+        </View>
+      )}
+
+      <FailedChanges />
+
       {status === 'offline' && snapshot && (
         <Text style={[type.caption, styles.notice]}>Offline · showing the copy saved on this phone</Text>
+      )}
+
+      {sync === 'offline' && pendingCount > 0 && (
+        <Text style={[type.caption, styles.notice]}>
+          {pendingCount === 1 ? '1 change' : `${pendingCount} changes`} kept on this phone, saving when you're back online
+        </Text>
       )}
 
       {!snapshot && (status === 'loading' || status === 'idle') && (
@@ -81,6 +101,7 @@ export default function Grimoire() {
         <View style={styles.card}>
           <Text style={type.cardTitle}>Your book is waiting</Text>
           <Text style={type.body}>Pages you write, and rituals you finish at the altar, will appear here.</Text>
+          <Button label="Write your first page" onPress={() => router.push('/grimoire/new-page')} />
         </View>
       )}
 
@@ -91,14 +112,28 @@ export default function Grimoire() {
       )}
 
       {groups.map((group) =>
-        group.pages.length === 0 ? null : (
+        group.pages.length === 0 && !(canEdit && group.section) ? null : (
           <View key={group.section?.id ?? 'loose'} style={styles.section}>
             {group.section && <Text style={type.eyebrow}>{group.section.title}</Text>}
-            <View style={styles.list}>
-              {group.pages.map((page, i) => (
-                <PageRowView key={page.id} page={page} last={i === group.pages.length - 1} />
-              ))}
-            </View>
+            {group.pages.length > 0 ? (
+              <View style={styles.list}>
+                {group.pages.map((page, i) => (
+                  <PageRowView key={page.id} page={page} last={i === group.pages.length - 1} />
+                ))}
+              </View>
+            ) : (
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={`Add a page to ${group.section?.title}`}
+                onPress={() =>
+                  router.push({ pathname: '/grimoire/new-page', params: { sectionId: group.section?.id ?? '' } })
+                }
+                style={({ pressed }) => [styles.emptySection, pressed && styles.pressed]}
+              >
+                <Text style={type.caption}>No pages yet · </Text>
+                <Text style={[type.caption, styles.notice]}>Add one</Text>
+              </Pressable>
+            )}
           </View>
         ),
       )}
@@ -152,6 +187,18 @@ const styles = StyleSheet.create({
   titleRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 10 },
   titleText: { flex: 1, gap: 4 },
   notice: { color: colors.gold },
+  actions: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  action: { flexGrow: 1, flexBasis: 140 },
+  emptySection: {
+    minHeight: 48,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: colors.hairline,
+    borderStyle: 'dashed',
+  },
   loading: { marginTop: 40 },
   card: {
     backgroundColor: colors.surface,
