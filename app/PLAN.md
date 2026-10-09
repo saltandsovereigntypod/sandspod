@@ -10,7 +10,9 @@ The same app also runs free in the browser at **app.saltandsovereignty.com**
 On phones, the website's My Sanctuary button opens it (`js/app-handoff.js`),
 unless a guest has work saved only in that browser or has chosen to keep the
 website version. Computers keep the website's My Sanctuary with an "Open the
-app" choice. Decided 2026-09-26: the web app is free.
+app" choice. Decided 2026-09-26: the web app is free. After one visit online
+it also opens offline: `public/sw.js` keeps the app, its fonts and all altar
+artwork on the device (`src/lib/offline/serviceWorker.web.ts` registers it).
 
 Approved design: the "Salt & Sovereignty App" design canvas (Welcome, Today,
 Altar, Grimoire page, Rituals, Planner, More).
