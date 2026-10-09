@@ -164,7 +164,7 @@ export default function AltarEditor() {
 
   const save = async (altarName: string, asNew: boolean) => {
     if (!doc) return;
-    const id = await store.save({ id: asNew ? null : sourceId, name: altarName, doc });
+    const { id, outcome } = await store.save({ id: asNew ? null : sourceId, name: altarName, doc });
     await store.clearDraft();
     setBaseline(doc);
     setSourceId(id);
@@ -172,7 +172,10 @@ export default function AltarEditor() {
     loadedFor.current = id;
     router.setParams({ altarId: id });
     setSheet(null);
-    setNotice(signedIn ? 'Saved to your Sanctuary.' : 'Saved on this device.');
+    if (!signedIn) setNotice('Saved on this device.');
+    else if (outcome === 'saved') setNotice('Saved to your Sanctuary.');
+    else if (outcome === 'pending') setNotice('Saved on this device. It will reach your Sanctuary when you’re back online.');
+    else setNotice('Saved on this device, but your account didn’t accept it. See your altar list to try again.');
   };
 
   const removeAltar = async () => {

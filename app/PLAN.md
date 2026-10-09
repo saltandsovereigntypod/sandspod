@@ -10,7 +10,9 @@ The same app also runs free in the browser at **app.saltandsovereignty.com**
 On phones, the website's My Sanctuary button opens it (`js/app-handoff.js`),
 unless a guest has work saved only in that browser or has chosen to keep the
 website version. Computers keep the website's My Sanctuary with an "Open the
-app" choice. Decided 2026-09-26: the web app is free.
+app" choice. Decided 2026-09-26: the web app is free. After one visit online
+it also opens offline: `public/sw.js` keeps the app, its fonts and all altar
+artwork on the device (`src/lib/offline/serviceWorker.web.ts` registers it).
 
 Approved design: the "Salt & Sovereignty App" design canvas (Welcome, Today,
 Altar, Grimoire page, Rituals, Planner, More).
@@ -118,7 +120,9 @@ the tabs. Guests keep everything on the device; signing in syncs it.
    `saved_altars`, `custom_cabinet_items`, `custom_altar_backgrounds`, reusing
    the website's artwork in `assets/altar/`. The biggest single piece.
    - *5a, done:* Altar tab lists saved altars (signed in: `saved_altars`,
-     with an offline copy; guests: the website's own localStorage keys and
+     with an offline copy, and saves and deletions queued on the device until
+     there is a connection, as the grimoire does (`src/lib/altar/outbox.ts`);
+     guests: the website's own localStorage keys and
      shapes) and opens them on a 16:9 canvas that matches the website to the
      pixel (same `leftPercent` / `topPercent` / `sizePercent` maths, same
      box heights, tested against positions measured on the website). Drag,

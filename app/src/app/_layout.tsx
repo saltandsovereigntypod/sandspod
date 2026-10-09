@@ -11,12 +11,17 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 
 import { GrimoireProvider } from '../lib/grimoire/store';
+import { registerServiceWorker } from '../lib/offline/serviceWorker';
 import { SessionProvider, useSession } from '../lib/session';
 import { colors } from '../theme';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  useEffect(() => {
+    registerServiceWorker();
+  }, []);
+
   return (
     <SessionProvider>
       <GrimoireProvider>
