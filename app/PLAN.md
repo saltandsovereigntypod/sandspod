@@ -120,7 +120,9 @@ the tabs. Guests keep everything on the device; signing in syncs it.
    `saved_altars`, `custom_cabinet_items`, `custom_altar_backgrounds`, reusing
    the website's artwork in `assets/altar/`. The biggest single piece.
    - *5a, done:* Altar tab lists saved altars (signed in: `saved_altars`,
-     with an offline copy; guests: the website's own localStorage keys and
+     with an offline copy, and saves and deletions queued on the device until
+     there is a connection, as the grimoire does (`src/lib/altar/outbox.ts`);
+     guests: the website's own localStorage keys and
      shapes) and opens them on a 16:9 canvas that matches the website to the
      pixel (same `leftPercent` / `topPercent` / `sizePercent` maths, same
      box heights, tested against positions measured on the website). Drag,

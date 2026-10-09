@@ -7,6 +7,7 @@ import { Button } from '../../../components/Button';
 import { Icon } from '../../../components/Icon';
 import { altarImageSource } from '../../../lib/altar/assets';
 import { DEFAULT_BACKGROUND } from '../../../lib/altar/cabinet';
+import { confirmAction } from '../../../lib/grimoire/confirm';
 import { altarSummary } from '../../../lib/altar/snapshot';
 import { useAltars } from '../../../lib/altar/store';
 import type { SavedAltar } from '../../../lib/altar/types';
@@ -22,7 +23,7 @@ function savedDate(altar: SavedAltar): string {
 
 export default function AltarList() {
   const { session } = useSession();
-  const { altars, draft, draftSourceId, status, refresh, signedIn } = useAltars();
+  const { altars, draft, draftSourceId, status, refresh, signedIn, sync, pendingCount } = useAltars();
   const [pulling, setPulling] = useState(false);
   const open = (altarId: string) => router.push({ pathname: '/altar/[altarId]', params: { altarId } });
   const draftSource = draftSourceId ? altars.find((a) => a.id === draftSourceId) : null;
@@ -72,6 +73,15 @@ export default function AltarList() {
           <Text style={[type.caption, styles.notice]}>Offline · showing the copy saved on this phone</Text>
         )}
 
+        {signedIn && pendingCount > 0 && sync === 'offline' && (
+          <Text style={[type.caption, styles.notice]} accessibilityLiveRegion="polite">
+            {pendingCount === 1 ? 'One change is' : `${pendingCount} changes are`} kept on this device until you’re back
+            online
+          </Text>
+        )}
+
+        <RefusedChanges />
+
         {altars.length === 0 && (status === 'loading' || status === 'idle') && (
           <ActivityIndicator color={colors.gold} style={{ marginTop: 24 }} />
         )}
@@ -102,6 +112,38 @@ export default function AltarList() {
         )}
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+/** Saves or deletions the account refused, kept on the device so they're never lost silently. */
+function RefusedChanges() {
+  const { failed, retryFailed, discardFailed } = useAltars();
+  if (!failed.length) return null;
+  const count = failed.length;
+  const names = failed.map((f) => (f.op.kind === 'save' ? f.op.name : 'a deleted altar')).join(', ');
+  return (
+    <View style={[styles.card, styles.refused]} accessibilityRole="alert">
+      <Text style={type.cardTitle}>{count === 1 ? 'A change wasn’t saved' : `${count} changes weren’t saved`}</Text>
+      <Text style={type.body}>
+        Your account didn’t accept changes to {names}. They’re kept on this device, so you can try again.
+      </Text>
+      <Text style={type.caption} numberOfLines={3}>
+        {failed[0].message}
+      </Text>
+      <Button label="Try again" onPress={retryFailed} />
+      <Button
+        label="Discard these changes"
+        variant="text"
+        onPress={async () => {
+          const ok = await confirmAction(
+            'Discard these changes?',
+            'They\u2019ll be removed from this device and your altars will show what your account has saved.',
+            'Discard',
+          );
+          if (ok) discardFailed();
+        }}
+      />
+    </View>
   );
 }
 
@@ -140,6 +182,7 @@ const styles = StyleSheet.create({
   titleRow: { flexDirection: 'row', alignItems: 'flex-end' },
   notice: { textAlign: 'center' },
   card: { backgroundColor: colors.surface, borderRadius: radius.card, padding: 20, gap: 12 },
+  refused: { borderWidth: 1, borderColor: colors.goldLine },
   draft: {
     backgroundColor: colors.surface,
     borderRadius: radius.card,
