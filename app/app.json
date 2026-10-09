@@ -10,7 +10,10 @@
     "backgroundColor": "#0c1510",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.saltandsovereignty.app"
+      "bundleIdentifier": "com.saltandsovereignty.app",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.saltandsovereignty.app",
@@ -56,7 +59,9 @@
       }
     },
     "owner": "salt-and-sovereignty-llc",
-    "runtimeVersion": "exposdk:57.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "updates": {
       "url": "https://u.expo.dev/471363f9-07e8-452a-a759-08e390c44936"
     }
