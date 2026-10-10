@@ -3,7 +3,8 @@ import { Text } from 'react-native';
 
 import { MenuList, MenuRow, MoreScreen } from '../../../../components/more/ui';
 import { useSession } from '../../../../lib/session';
-import { layerOrderLabel } from '../../../../lib/settings/defaults';
+import { holidayChoice, TRADITIONS } from '../../../../lib/holidays';
+import { layerOrderLabel, type Settings } from '../../../../lib/settings/defaults';
 import { useMySettings } from '../../../../lib/settings/store';
 import { type } from '../../../../theme';
 
@@ -32,6 +33,12 @@ export default function SettingsIndex() {
           label="Living Library"
           detail={settings ? layerOrderLabel(settings.library_layer_order) : 'Layers and what they show'}
           onPress={() => router.push('/more/settings/library')}
+        />
+        <MenuRow
+          icon="moon"
+          label="Calendar & holidays"
+          detail={calendarSummary(settings)}
+          onPress={() => router.push('/more/settings/calendar')}
           last
         />
       </MenuList>
@@ -42,4 +49,11 @@ export default function SettingsIndex() {
       </Text>
     </MoreScreen>
   );
+}
+
+function calendarSummary(settings: Settings | null): string {
+  if (!settings) return 'Holidays and what Today shows';
+  const { traditions } = holidayChoice(settings);
+  const names = traditions.map((id) => (id === 'custom' ? 'Your own calendar' : TRADITIONS.find((t) => t.id === id)?.name ?? id));
+  return names.length ? names.join(', ') : 'No calendars chosen';
 }

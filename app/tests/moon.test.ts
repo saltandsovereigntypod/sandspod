@@ -54,3 +54,37 @@ test('a week after new moon is waxing, a week after full is waning', () => {
   assert.equal(waning.name, 'Waning Gibbous');
   assert.equal(waning.waxing, false);
 });
+
+test('the Moon’s own sign, from its position (Meeus ch. 47)', async () => {
+  const { moonLongitude, moonSign, nextMoonIngress, nextPhase, signAtSyzygy } = await import('../src/lib/moon.ts');
+  // Meeus example 47.a: 1992 April 12, 0h → 133.1627°.
+  const example = new Date((2448724.5 - 2440587.5) * 86_400_000);
+  assert.ok(Math.abs(moonLongitude(example) - 133.1627) < 0.02);
+  // At new and full moon its sign agrees with the Sun-based shortcut.
+  for (const from of [new Date('2026-01-01T00:00:00Z'), new Date('2026-07-01T00:00:00Z'), new Date('2031-03-01T00:00:00Z')]) {
+    for (const phase of ['new', 'full'] as const) {
+      const at = nextPhase(from, phase);
+      assert.equal(moonSign(at), signAtSyzygy(at, phase));
+    }
+  }
+  // It moves on to the next sign within a few days, and stays there.
+  const now = new Date('2026-10-11T01:19:00Z');
+  assert.equal(moonSign(now), 'Libra');
+  const ingress = nextMoonIngress(now);
+  assert.equal(ingress.sign, 'Scorpio');
+  assert.ok(ingress.date.getTime() > now.getTime() && ingress.date.getTime() - now.getTime() < 3 * 86_400_000);
+  assert.equal(moonSign(new Date(ingress.date.getTime() + 60_000)), 'Scorpio');
+  assert.equal(moonSign(new Date(ingress.date.getTime() - 60_000)), 'Libra');
+});
+
+test('solstices and equinoxes come from the Sun’s position, every year', async () => {
+  const { sunReaches } = await import('../src/lib/moon.ts');
+  // Published times (UTC); within 15 minutes.
+  const near = (date: Date, iso: string) => assert.ok(Math.abs(date.getTime() - Date.parse(iso)) < 15 * 60_000, `${date.toISOString()} vs ${iso}`);
+  near(sunReaches(2026, 0), '2026-03-20T14:46:00Z');
+  near(sunReaches(2026, 90), '2026-06-21T08:24:00Z');
+  near(sunReaches(2026, 180), '2026-09-23T00:05:00Z');
+  near(sunReaches(2026, 270), '2026-12-21T20:50:00Z');
+  near(sunReaches(2027, 0), '2027-03-20T20:24:00Z');
+  near(sunReaches(2030, 90), '2030-06-21T07:31:00Z');
+});

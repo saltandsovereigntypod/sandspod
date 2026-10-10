@@ -236,3 +236,96 @@ export function signAtSyzygy(date: Date, phase: 'new' | 'full'): ZodiacSign {
   const longitude = (sunLongitude(date) + (phase === 'full' ? 180 : 0)) % 360;
   return SIGNS[Math.floor(longitude / 30)];
 }
+
+// ─── The Moon's own position ─────────────────────────────────────────────
+// Meeus chapter 47 with the larger periodic terms of table 47.A (those of
+// 0.0005° and up) and the A1/A2 additive terms. Good to about 0.01°, so the
+// sign is right except within a minute or so of the Moon changing sign.
+
+// [D, M, M', F, coefficient in 0.000001°]
+const MOON_LONGITUDE_TERMS: [number, number, number, number, number][] = [
+  [0, 0, 1, 0, 6288774], [2, 0, -1, 0, 1274027], [2, 0, 0, 0, 658314], [0, 0, 2, 0, 213618],
+  [0, 1, 0, 0, -185116], [0, 0, 0, 2, -114332], [2, 0, -2, 0, 58793], [2, -1, -1, 0, 57066],
+  [2, 0, 1, 0, 53322], [2, -1, 0, 0, 45758], [0, 1, -1, 0, -40923], [1, 0, 0, 0, -34720],
+  [0, 1, 1, 0, -30383], [2, 0, 0, -2, 15327], [0, 0, 1, 2, -12528], [0, 0, 1, -2, 10980],
+  [4, 0, -1, 0, 10675], [0, 0, 3, 0, 10034], [4, 0, -2, 0, 8548], [2, 1, -1, 0, -7888],
+  [2, 1, 0, 0, -6766], [1, 0, -1, 0, -5163], [1, 1, 0, 0, 4987], [2, -1, 1, 0, 4036],
+  [2, 0, 2, 0, 3994], [4, 0, 0, 0, 3861], [2, 0, -3, 0, 3665], [0, 1, -2, 0, -2689],
+  [2, 0, -1, 2, -2602], [2, -1, -2, 0, 2390], [1, 0, 1, 0, -2348], [2, -2, 0, 0, 2236],
+  [0, 1, 2, 0, -2120], [0, 2, 0, 0, -2069], [2, -2, -1, 0, 2048], [2, 0, 1, -2, -1773],
+  [2, 0, 0, 2, -1595], [4, -1, -1, 0, 1215], [0, 0, 2, 2, -1110], [3, 0, -1, 0, -892],
+  [2, 1, 1, 0, -810], [4, -1, -2, 0, 759], [0, 2, -1, 0, -713], [2, 2, -1, 0, -700],
+  [2, 1, -2, 0, 691], [2, -1, 0, -2, 596], [4, 0, 1, 0, 549], [0, 0, 4, 0, 537],
+  [4, -1, 0, 0, 520], [1, 0, -2, 0, -487],
+];
+
+/** Apparent geocentric tropical longitude of the Moon in degrees. */
+export function moonLongitude(date: Date): number {
+  const T = (dateToJulianDay(date) - 2451545.0) / 36525;
+  const T2 = T * T;
+  const T3 = T2 * T;
+  const T4 = T3 * T;
+  const Lp = 218.3164477 + 481267.88123421 * T - 0.0015786 * T2 + T3 / 538841 - T4 / 65194000;
+  const D = 297.8501921 + 445267.1114034 * T - 0.0018819 * T2 + T3 / 545868 - T4 / 113065000;
+  const M = 357.5291092 + 35999.0502909 * T - 0.0001536 * T2 + T3 / 24490000;
+  const Mp = 134.9633964 + 477198.8675055 * T + 0.0087414 * T2 + T3 / 69699 - T4 / 14712000;
+  const F = 93.272095 + 483202.0175233 * T - 0.0036539 * T2 - T3 / 3526000 + T4 / 863310000;
+  const A1 = 119.75 + 131.849 * T;
+  const A2 = 53.09 + 479264.29 * T;
+  const E = 1 - 0.002516 * T - 0.0000074 * T2;
+
+  let sum = 0;
+  for (const [d, m, mp, f, coefficient] of MOON_LONGITUDE_TERMS) {
+    const eccentricity = Math.abs(m) === 2 ? E * E : Math.abs(m) === 1 ? E : 1;
+    sum += coefficient * eccentricity * Math.sin((d * D + m * M + mp * Mp + f * F) * RAD);
+  }
+  sum += 3958 * Math.sin(A1 * RAD) + 1962 * Math.sin((Lp - F) * RAD) + 318 * Math.sin(A2 * RAD);
+
+  const omega = (125.04452 - 1934.136261 * T) * RAD;
+  const nutation = -0.00478 * Math.sin(omega);
+  const longitude = Lp + sum / 1_000_000 + nutation;
+  return ((longitude % 360) + 360) % 360;
+}
+
+export function moonSign(date: Date): ZodiacSign {
+  return SIGNS[Math.floor(moonLongitude(date) / 30) % 12];
+}
+
+/** When the Moon next enters a new sign (it spends about two and a half days in each). */
+export function nextMoonIngress(from: Date): { sign: ZodiacSign; date: Date } {
+  const start = moonSign(from);
+  const stepMs = 2 * 3_600_000;
+  let low = from.getTime();
+  let high = low + stepMs;
+  // The Moon never stays in one sign as long as four days.
+  while (moonSign(new Date(high)) === start && high - from.getTime() < 4 * DAY_MS) {
+    low = high;
+    high += stepMs;
+  }
+  while (high - low > 30_000) {
+    const mid = (low + high) / 2;
+    if (moonSign(new Date(mid)) === start) low = mid;
+    else high = mid;
+  }
+  return { sign: moonSign(new Date(high)), date: new Date(high) };
+}
+
+/**
+ * The moment the Sun reaches `longitude` (0 = March equinox, 90 = June
+ * solstice, 180 = September equinox, 270 = December solstice) in `year`.
+ */
+export function sunReaches(year: number, longitude: 0 | 90 | 180 | 270): Date {
+  const month = { 0: 2, 90: 5, 180: 8, 270: 11 }[longitude];
+  let low = Date.UTC(year, month, 15);
+  let high = Date.UTC(year, month, 27);
+  const past = (time: number) => {
+    const delta = (((sunLongitude(new Date(time)) - longitude) % 360) + 540) % 360 - 180;
+    return delta >= 0;
+  };
+  while (high - low > 60_000) {
+    const mid = (low + high) / 2;
+    if (past(mid)) high = mid;
+    else low = mid;
+  }
+  return new Date(high);
+}

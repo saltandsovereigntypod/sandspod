@@ -155,3 +155,50 @@ test('labels, authors, notes and dates', () => {
   assert.equal(communityDate('2026-09-01T12:00:00Z'), 'September 1, 2026');
   assert.equal(communityDate('nope'), '');
 });
+
+test('hidden pages and people are filtered, and reports go to the moderators', async () => {
+  const { isHidden, reportUrl, SUPPORT_EMAIL } = await import('../src/lib/community/model.ts');
+  const none = { posts: [], authors: [] };
+  assert.equal(isHidden(entry('a', { user_id: 'u1' }), none), false);
+  assert.equal(isHidden(entry('a'), { posts: ['a'], authors: [] }), true);
+  assert.equal(isHidden(entry('b', { user_id: 'u1' }), { posts: [], authors: ['u1'] }), true);
+  // Rows without an author can't be caught by a blocked person.
+  assert.equal(isHidden(entry('c'), { posts: [], authors: ['u1'] }), false);
+
+  const url = reportUrl(entry('xyz', { title: 'Moon water & salt' }));
+  assert.ok(url.startsWith(`mailto:${SUPPORT_EMAIL}?subject=`));
+  const body = decodeURIComponent(url.split('&body=')[1]);
+  assert.match(body, /Reference: xyz/);
+  assert.match(decodeURIComponent(url.split('subject=')[1].split('&')[0]), /Report: Moon water & salt/);
+});
+
+test('review actions write what the website’s admin page writes', async () => {
+  const { reviewPatch, notesPatch, adminMessagePayload, unreadCounts, inReviewFolder } = await import('../src/lib/community/model.ts');
+  const now = new Date('2026-10-10T12:00:00Z');
+  const at = now.toISOString();
+  assert.deepEqual(reviewPatch('published', 'lovely', now), {
+    moderator_notes: 'lovely', updated_at: at, last_activity_at: at,
+    status: 'published', admin_folder: 'active', archived_at: null, published_at: at, reviewed_at: at,
+  });
+  assert.deepEqual(reviewPatch('needs_revision', '', now), {
+    moderator_notes: '', updated_at: at, last_activity_at: at,
+    status: 'needs_revision', admin_folder: 'active', archived_at: null, reviewed_at: at,
+  });
+  // Archiving keeps the status and only moves the folder.
+  assert.deepEqual(reviewPatch('archived', 'n', now), {
+    moderator_notes: 'n', updated_at: at, last_activity_at: at, admin_folder: 'archived', archived_at: at,
+  });
+  assert.deepEqual(notesPatch('x', now), { moderator_notes: 'x', admin_folder: 'active', archived_at: null, last_activity_at: at, updated_at: at });
+  assert.equal(adminMessagePayload('s', 'u', '   '), null);
+  assert.deepEqual(adminMessagePayload('s', 'u', ' Thank you '), { submission_id: 's', user_id: 'u', sender_role: 'admin', message: 'Thank you', read_by_admin: true });
+
+  const counts = unreadCounts([{ submission_id: 'a', status: 'pending' }, { submission_id: 'a', status: 'pending' }, { submission_id: 'b', status: null }]);
+  assert.deepEqual(counts, { byFolder: { all: 3, pending: 3 }, bySubmission: { a: 2, b: 1 } });
+
+  assert.equal(inReviewFolder({ status: 'pending', admin_folder: 'active' }, 'pending'), true);
+  assert.equal(inReviewFolder({ status: 'pending', admin_folder: null }, 'pending'), true);
+  assert.equal(inReviewFolder({ status: 'published', admin_folder: 'archived' }, 'published'), false);
+  assert.equal(inReviewFolder({ status: 'published', admin_folder: 'archived' }, 'archived'), true);
+  assert.equal(inReviewFolder({ status: 'rejected', admin_folder: 'active' }, 'all'), true);
+  assert.equal(inReviewFolder({ status: 'rejected', admin_folder: 'archived' }, 'all'), false);
+});

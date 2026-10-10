@@ -7,7 +7,17 @@ import { useCallback } from 'react';
 import { useCachedQuery } from '../more/useCachedQuery';
 import { useSession } from '../session';
 import { supabase } from '../supabase';
-import { replyActivity, replyPayload, type MessageRow, type SubmissionRow } from './model';
+import {
+  adminMessagePayload,
+  notesPatch,
+  replyActivity,
+  replyPayload,
+  reviewPatch,
+  unreadCounts,
+  type MessageRow,
+  type ReviewAction,
+  type SubmissionRow,
+} from './model';
 
 export type PublishedSnapshot = { entries: SubmissionRow[]; notes: SubmissionRow[] };
 
@@ -89,4 +99,90 @@ export function useMessages(submissionId: string | undefined) {
   const userId = session?.user.id ?? null;
   const fetcher = useCallback(() => fetchMessages(submissionId as string), [submissionId]);
   return useCachedQuery(userId && submissionId ? `community.messages.${userId}.${submissionId}` : null, fetcher);
+}
+
+// ─── Review (admins only), as js/admin-submissions.js does it ─────────────
+
+/** Whether this account may review submissions (user_roles.role = 'admin'). */
+export async function fetchIsReviewer(userId: string): Promise<boolean> {
+  const { data, error } = await supabase
+    .from('user_roles')
+    .select('role')
+    .eq('user_id', userId)
+    .eq('role', 'admin')
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return !!data;
+}
+
+export function useIsReviewer() {
+  const { session } = useSession();
+  const userId = session?.user.id ?? null;
+  const fetcher = useCallback(() => fetchIsReviewer(userId as string), [userId]);
+  const { data } = useCachedQuery(userId ? `community.reviewer.${userId}` : null, fetcher);
+  return data === true;
+}
+
+export type ReviewSnapshot = { submissions: SubmissionRow[]; unread: ReturnType<typeof unreadCounts> };
+
+/**
+ * Every submission (newest first) plus unread replies. Like the website,
+ * finished work quiet for 90 days moves to Archived first.
+ */
+export async function fetchReview(): Promise<ReviewSnapshot> {
+  const now = new Date();
+  const cutoff = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+  await supabase
+    .from('community_submissions')
+    .update({ admin_folder: 'archived', archived_at: now.toISOString(), updated_at: now.toISOString() })
+    .in('status', ['published', 'rejected', 'needs_revision'])
+    .eq('admin_folder', 'active')
+    .lt('last_activity_at', cutoff.toISOString());
+
+  const [submissions, unread] = await Promise.all([
+    supabase.from('community_submissions').select('*').order('created_at', { ascending: false }).limit(500),
+    supabase
+      .from('community_submission_messages')
+      .select('submission_id, community_submissions(status)')
+      .eq('sender_role', 'user')
+      .eq('read_by_admin', false),
+  ]);
+  if (submissions.error) throw new Error(submissions.error.message);
+  const unreadRows = ((unread.data ?? []) as unknown as { submission_id: string; community_submissions: { status: string | null } | null }[]).map(
+    (row) => ({ submission_id: row.submission_id, status: row.community_submissions?.status ?? null }),
+  );
+  return { submissions: (submissions.data ?? []) as SubmissionRow[], unread: unreadCounts(unreadRows) };
+}
+
+export function useReview() {
+  const isReviewer = useIsReviewer();
+  const { session } = useSession();
+  return useCachedQuery(isReviewer && session ? `community.review.${session.user.id}` : null, fetchReview);
+}
+
+export async function setReviewStatus(submissionId: string, action: ReviewAction, notes: string): Promise<void> {
+  const { error } = await supabase.from('community_submissions').update(reviewPatch(action, notes)).eq('id', submissionId);
+  if (error) throw new Error(error.message);
+}
+
+export async function saveModeratorNotes(submissionId: string, notes: string): Promise<void> {
+  const { error } = await supabase.from('community_submissions').update(notesPatch(notes)).eq('id', submissionId);
+  if (error) throw new Error(error.message);
+}
+
+export async function sendAdminMessage(submissionId: string, userId: string, message: string): Promise<void> {
+  const payload = adminMessagePayload(submissionId, userId, message);
+  if (!payload) throw new Error('Write a message first.');
+  const { error } = await supabase.from('community_submission_messages').insert(payload);
+  if (error) throw new Error(error.message);
+  await supabase.from('community_submissions').update(replyActivity()).eq('id', submissionId);
+}
+
+export async function markRepliesRead(submissionId: string): Promise<void> {
+  await supabase
+    .from('community_submission_messages')
+    .update({ read_by_admin: true })
+    .eq('submission_id', submissionId)
+    .eq('sender_role', 'user')
+    .eq('read_by_admin', false);
 }

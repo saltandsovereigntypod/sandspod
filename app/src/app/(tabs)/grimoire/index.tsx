@@ -1,13 +1,16 @@
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '../../../components/Button';
 import { FailedChanges } from '../../../components/grimoire/SaveStatus';
+import { Field } from '../../../components/more/ui';
 import { Icon } from '../../../components/Icon';
 import { parseCalendarDate, shortDate } from '../../../lib/calendar';
 import { useGrimoire } from '../../../lib/grimoire/store';
+import { grimoireLibraryHref, grimoireShelves, useLibrary, type GrimoireShelf } from '../../../lib/library';
+import { useMySettings } from '../../../lib/settings/store';
 import { pageFacts, pageTypeLabel, tableOfContents } from '../../../lib/grimoire/structure';
 import type { PageRow } from '../../../lib/grimoire/types';
 import { useSession } from '../../../lib/session';
@@ -15,7 +18,7 @@ import { colors, fonts, radius, space, type } from '../../../theme';
 
 export default function Grimoire() {
   const { session } = useSession();
-  const { snapshot, status, refresh, canEdit, sync, pendingCount } = useGrimoire();
+  const { snapshot, status, refresh, sync, pendingCount } = useGrimoire();
   const [pulling, setPulling] = useState(false);
 
   if (!session) {
@@ -36,8 +39,9 @@ export default function Grimoire() {
   }
 
   const book = snapshot?.books[0] ?? null;
-  const groups = snapshot && book ? tableOfContents(snapshot, book.id) : [];
-  const pageCount = groups.reduce((sum, g) => sum + g.pages.length, 0);
+  // Written pages (and ritual journals) still open here, but empty sections
+  // stay out of the way: the book is My Practice and Traditional Information.
+  const groups = (snapshot && book ? tableOfContents(snapshot, book.id) : []).filter((group) => group.pages.length > 0);
 
   return (
     <Shell
@@ -55,23 +59,14 @@ export default function Grimoire() {
     >
       <View style={styles.titleRow}>
         <View style={styles.titleText}>
-          <Text style={type.eyebrow}>{book ? `${pageCount} ${pageCount === 1 ? 'page' : 'pages'}` : 'Book of Shadows'}</Text>
+          <Text style={type.eyebrow}>Grimoire</Text>
           <Text accessibilityRole="header" style={type.title}>
-            {book?.title ?? 'Grimoire'}
+            {book?.title ?? 'Book of Shadows'}
           </Text>
         </View>
       </View>
 
-      {canEdit && (
-        <View style={styles.actions}>
-          <Button
-            label="New page"
-            onPress={() => router.push('/grimoire/new-page')}
-            style={styles.action}
-          />
-          <Button label="Sections" variant="outline" onPress={() => router.push('/grimoire/sections')} style={styles.action} />
-        </View>
-      )}
+      <Button label="New entry" onPress={() => router.push('/grimoire/practice')} />
 
       <FailedChanges />
 
@@ -97,47 +92,114 @@ export default function Grimoire() {
         </View>
       )}
 
-      {snapshot && !book && (
-        <View style={styles.card}>
-          <Text style={type.cardTitle}>Your book is waiting</Text>
-          <Text style={type.body}>Pages you write, and rituals you finish at the altar, will appear here.</Text>
-          <Button label="Write your first page" onPress={() => router.push('/grimoire/new-page')} />
-        </View>
-      )}
+      <LibraryShelves />
 
-      {snapshot && book && pageCount === 0 && (
-        <View style={styles.card}>
-          <Text style={type.body}>This book has no pages yet.</Text>
-        </View>
-      )}
-
-      {groups.map((group) =>
-        group.pages.length === 0 && !(canEdit && group.section) ? null : (
-          <View key={group.section?.id ?? 'loose'} style={styles.section}>
-            {group.section && <Text style={type.eyebrow}>{group.section.title}</Text>}
-            {group.pages.length > 0 ? (
+      {groups.length > 0 && (
+        <View style={styles.section}>
+          <Text style={type.eyebrow}>Pages</Text>
+          {groups.map((group) => (
+            <View key={group.section?.id ?? 'loose'} style={styles.section}>
+              {group.section && <Text style={type.caption}>{group.section.title}</Text>}
               <View style={styles.list}>
                 {group.pages.map((page, i) => (
                   <PageRowView key={page.id} page={page} last={i === group.pages.length - 1} />
                 ))}
               </View>
-            ) : (
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={`Add a page to ${group.section?.title}`}
-                onPress={() =>
-                  router.push({ pathname: '/grimoire/new-page', params: { sectionId: group.section?.id ?? '' } })
-                }
-                style={({ pressed }) => [styles.emptySection, pressed && styles.pressed]}
-              >
-                <Text style={type.caption}>No pages yet · </Text>
-                <Text style={[type.caption, styles.notice]}>Add one</Text>
-              </Pressable>
-            )}
-          </View>
-        ),
+            </View>
+          ))}
+        </View>
       )}
     </Shell>
+  );
+}
+
+/** My Practice and Traditional Information, as on the website's Book of Shadows. */
+function LibraryShelves() {
+  const { entries } = useLibrary();
+  const { settings } = useMySettings();
+  const [query, setQuery] = useState('');
+  const [closed, setClosed] = useState<Set<string>>(new Set());
+  const [opened, setOpened] = useState<Set<string>>(new Set());
+  const shelves = useMemo(() => grimoireShelves(entries, settings, query), [entries, settings, query]);
+  const searching = query.trim().length > 0;
+
+  if (shelves.length === 0 && !searching) return null;
+
+  const toggle = (set: Set<string>, update: (next: Set<string>) => void, key: string) => {
+    const next = new Set(set);
+    if (next.has(key)) next.delete(key);
+    else next.add(key);
+    update(next);
+  };
+
+  return (
+    <View style={styles.shelves}>
+      <Field label="Search your Grimoire" value={query} onChangeText={setQuery} placeholder="Rosemary, protection, moonstone…" />
+      {searching && shelves.length === 0 && <Text style={type.caption}>Nothing in your library matches that search.</Text>}
+      {shelves.map((shelf: GrimoireShelf) => {
+        const shelfOpen = !closed.has(shelf.key);
+        return (
+          <View key={shelf.key} style={styles.section}>
+            <Disclosure
+              label={shelf.title}
+              count={shelf.groups.reduce((sum, g) => sum + g.entries.length, 0)}
+              open={shelfOpen}
+              heading
+              onPress={() => toggle(closed, setClosed, shelf.key)}
+            />
+            {shelfOpen &&
+              shelf.groups.map((group) => {
+                const key = `${shelf.key}:${group.type}`;
+                // Type groups start closed (the Traditional shelf is long) but open while searching.
+                const groupOpen = searching || opened.has(key);
+                return (
+                  <View key={key} style={styles.list}>
+                    <Disclosure
+                      label={group.label}
+                      count={group.entries.length}
+                      open={groupOpen}
+                      onPress={() => toggle(opened, setOpened, key)}
+                    />
+                    {groupOpen &&
+                      group.entries.map((entry) => (
+                        <Pressable
+                          key={entry.id}
+                          accessibilityRole="button"
+                          accessibilityLabel={`${entry.name}, ${entry.category}`}
+                          onPress={() => router.push(grimoireLibraryHref(entry))}
+                          style={({ pressed }) => [styles.shelfEntry, pressed && styles.pressed]}
+                        >
+                          <Text style={[styles.rowTitle, styles.grow]} numberOfLines={1}>
+                            {entry.name}
+                          </Text>
+                          <Icon name="chevron" size={14} color={colors.tabInactive} />
+                        </Pressable>
+                      ))}
+                  </View>
+                );
+              })}
+          </View>
+        );
+      })}
+    </View>
+  );
+}
+
+function Disclosure({ label, count, open, heading, onPress }: { label: string; count: number; open: boolean; heading?: boolean; onPress: () => void }) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ expanded: open }}
+      accessibilityLabel={`${label}, ${count} ${count === 1 ? 'entry' : 'entries'}`}
+      onPress={onPress}
+      style={({ pressed }) => [styles.disclosure, pressed && styles.pressed]}
+    >
+      <Text style={heading ? [type.eyebrow, styles.grow] : styles.groupTitle}>{label}</Text>
+      <Text style={type.caption}>{count}</Text>
+      <View style={open ? styles.chevronOpen : undefined}>
+        <Icon name="chevron" size={14} color={colors.tabInactive} />
+      </View>
+    </Pressable>
   );
 }
 
@@ -209,6 +271,19 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   section: { gap: 8 },
+  shelves: { gap: space.section },
+  grow: { flex: 1 },
+  disclosure: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 8 },
+  groupTitle: { flex: 1, fontFamily: fonts.bodySemi, fontSize: 16, color: colors.cream },
+  chevronOpen: { transform: [{ rotate: '90deg' }] },
+  shelfEntry: {
+    minHeight: 44,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: 'rgba(244,236,216,0.14)',
+  },
   list: { backgroundColor: colors.surface, borderRadius: 18, paddingHorizontal: 16 },
   row: { minHeight: 64, flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 10 },
   rowRule: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'rgba(244,236,216,0.14)' },
