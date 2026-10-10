@@ -1,10 +1,12 @@
 import { router, type Href } from 'expo-router';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
+import { Button } from '../Button';
 import { Card, MoreScreen, Paragraphs, Section, Tags } from '../more/ui';
 import { correspondences, entryIntro, findByName, useLibrary, type LibraryEntry } from '../../lib/library';
 import { layerFields, visibleLayers } from '../../lib/library/model';
 import { LAYER_LABELS, type Layer } from '../../lib/settings/defaults';
+import { useSession } from '../../lib/session';
 import { useMySettings } from '../../lib/settings/store';
 import { colors, fonts, radius, type } from '../../theme';
 
@@ -14,10 +16,13 @@ type Props = {
   backLabel: string;
   /** Where another entry opens when a pairing chip is tapped. */
   hrefFor: (entry: LibraryEntry) => Href;
+  /** Where Add / Edit My Practice opens. */
+  editHref: (entry: LibraryEntry) => Href;
 };
 
 /** One Living Library entry: its My Practice, Traditional and Community layers. */
-export function LibraryEntryView({ entryId, back, backLabel, hrefFor }: Props) {
+export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }: Props) {
+  const { session } = useSession();
   const { entries, getEntry } = useLibrary();
   const { settings } = useMySettings();
   const entry = getEntry(entryId);
@@ -54,6 +59,14 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor }: Props) {
             </View>
           ))}
         </View>
+      )}
+
+      {!!session && (
+        <Button
+          label={entry.myPractice ? 'Edit My Practice' : 'Add to My Practice'}
+          variant={entry.myPractice ? 'outline' : 'primary'}
+          onPress={() => router.push(editHref(entry))}
+        />
       )}
 
       {shown.length === 0 && (

@@ -309,6 +309,7 @@ export function buildLibrary(practice: PracticeRow[] = []): LibraryEntry[] {
     const target = byTypeAndName.get(matchKey) ?? standalone.get(matchKey);
     if (target) {
       target.practiceEntityIds.push(row.entity_id);
+      if (!target.myPractice && myPractice) target.practiceSourceId = row.entity_id;
       target.myPractice = target.myPractice ?? myPractice;
       target.community = target.community ?? community;
       target.image = target.image ?? (row.image || null);
@@ -328,6 +329,7 @@ export function buildLibrary(practice: PracticeRow[] = []): LibraryEntry[] {
       image: row.image || null,
       tags: [],
       practiceEntityIds: [row.entity_id],
+      practiceSourceId: myPractice ? row.entity_id : null,
     };
     standalone.set(matchKey, entry);
   }

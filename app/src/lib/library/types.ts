@@ -30,6 +30,8 @@ export type LibraryEntry = {
   tags: string[];
   /** living_library_entries.entity_id values folded into this entry. */
   practiceEntityIds: string[];
+  /** The row whose My Practice is shown (the most recently saved one). Edits go here. */
+  practiceSourceId?: string | null;
 };
 
 export type LibraryField = { key: string; label: string; text: string; chips: string[] | null };

@@ -145,3 +145,53 @@ test('grimoire shelves: My Practice and Traditional Information, as on the websi
   const noPractice = { ...defaultSettings(), library_myPractice_enabled: false };
   assert.deepEqual(grimoireShelves(mine, noPractice).map((s) => s.key), ['traditional']);
 });
+
+test('My Practice entries are written like the website’s New and Edit Entry forms', async () => {
+  const { emptyPracticeInput, hasPracticeText, mergePractice, newPracticeRow, PRACTICE_FIELDS } = await import(
+    '../src/lib/library/practiceModel.ts'
+  );
+  assert.deepEqual(
+    PRACTICE_FIELDS.map((f) => f.key),
+    ['Meaning', 'Uses', 'PairsWith', 'Substitutions', 'Notes'],
+  );
+  const input = { ...emptyPracticeInput(), Uses: '  Calm, sleep  ', Notes: 'Under my pillow' };
+  assert.equal(hasPracticeText(emptyPracticeInput()), false);
+  assert.equal(hasPracticeText(input), true);
+  // Other keys survive, form fields are overwritten, empty ones are dropped.
+  assert.deepEqual(mergePractice({ Meaning: 'old', ApothecaryItemId: 'a1', Tags: [] }, input), {
+    ApothecaryItemId: 'a1',
+    Uses: 'Calm, sleep',
+    Notes: 'Under my pillow',
+  });
+  assert.deepEqual(emptyPracticeInput({ Uses: 'x', Other: 1 }).Uses, 'x');
+
+  const row = newPracticeRow({ userId: 'u', entityId: 'e', name: ' Amethyst ', type: 'crystal', myPractice: { Uses: 'Calm' }, now: new Date('2026-10-10T00:00:00Z') });
+  assert.deepEqual(row, {
+    user_id: 'u',
+    entity_id: 'e',
+    name: 'Amethyst',
+    type: 'crystal',
+    image: null,
+    my_practice: { Uses: 'Calm' },
+    community: {},
+    layout: {},
+    updated_at: '2026-10-10T00:00:00.000Z',
+  });
+});
+
+test('edits go to the row whose My Practice is shown (the newest)', async () => {
+  const { buildLibrary } = await import('../src/lib/library/model.ts');
+  const row = (entity_id: string, my_practice: Record<string, unknown>) => ({
+    entity_id, name: 'Clear Quartz', type: 'crystal', image: null, my_practice, community: null, updated_at: null,
+  });
+  // Rows arrive newest first; an empty row in front doesn't take over.
+  const quartz = buildLibrary([row('empty', {}), row('newest', { Uses: 'Amplify' }), row('older', { Uses: 'Old' })]).find(
+    (e) => e.name === 'Clear Quartz' && e.traditional,
+  )!;
+  assert.equal(quartz.practiceSourceId, 'newest');
+  assert.deepEqual(quartz.myPractice, { Uses: 'Amplify' });
+  assert.deepEqual(quartz.practiceEntityIds, ['empty', 'newest', 'older']);
+
+  const custom = buildLibrary([{ entity_id: 'c1', name: 'Grandma’s Salve', type: 'apothecary', image: null, my_practice: { Notes: 'n' }, community: null, updated_at: null }]);
+  assert.equal(custom.find((e) => e.id === 'practice:c1')?.practiceSourceId, 'c1');
+});

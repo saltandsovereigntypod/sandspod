@@ -8,9 +8,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useSyncExternalStore } from 'react';
 
+import { newId } from '../altar/uid';
 import { useSession } from '../session';
 import { supabase } from '../supabase';
 import { buildLibrary, guestPracticeRows, traditionalEntries } from './model';
+import { mergePractice, newPracticeRow, type PracticeInput } from './practiceModel';
 import type { LibraryEntry, PracticeRow } from './types';
 
 type Status = 'ready' | 'loading' | 'offline';
@@ -32,7 +34,9 @@ async function fetchPractice(userId: string): Promise<PracticeRow[]> {
   const { data, error } = await supabase
     .from('living_library_entries')
     .select('entity_id,name,type,image,my_practice,community,updated_at')
-    .eq('user_id', userId);
+    .eq('user_id', userId)
+    // Newest first, so a page shows the My Practice saved most recently.
+    .order('updated_at', { ascending: false });
   if (error) throw new Error(error.message);
   return (data ?? []) as PracticeRow[];
 }
@@ -93,4 +97,61 @@ export function useLibrary() {
     refresh: () => load(userId, true),
     getEntry: (id: string) => entries.find((entry) => entry.id === id) ?? null,
   };
+}
+
+/**
+ * Saves My Practice for a Library entry (or a new custom one) the way the
+ * website does, then reloads the Library. Returns the entry's app id.
+ * Edits only touch my_practice, so Community notes, images and layouts stay.
+ */
+export async function savePractice(args: {
+  userId: string;
+  entry: LibraryEntry | null;
+  type: string;
+  name: string;
+  input: PracticeInput;
+}): Promise<string> {
+  const { userId, entry, input } = args;
+  const now = new Date().toISOString();
+  const existingId = entry?.practiceSourceId ?? entry?.practiceEntityIds[0] ?? null;
+
+  if (entry && existingId) {
+    const { error } = await supabase
+      .from('living_library_entries')
+      .update({ my_practice: mergePractice(entry.myPractice, input), updated_at: now })
+      .eq('user_id', userId)
+      .eq('entity_id', existingId);
+    if (error) throw new Error(error.message);
+  } else {
+    const entityId = newId();
+    const row = newPracticeRow({
+      userId,
+      entityId,
+      name: entry?.name ?? args.name,
+      type: entry?.type ?? args.type,
+      myPractice: mergePractice(null, input),
+    });
+    const { error } = await supabase.from('living_library_entries').insert(row);
+    if (error) throw new Error(error.message);
+    if (!entry) {
+      await load(userId, true);
+      // A custom name that matches a Traditional entry joins that entry's page.
+      const joined = state.entries.find((candidate) => candidate.practiceEntityIds.includes(entityId));
+      return joined?.id ?? `practice:${entityId}`;
+    }
+  }
+  await load(userId, true);
+  return entry?.id ?? '';
+}
+
+/** "Remove from My Practice": empties My Practice on every row behind the entry, as the website does. */
+export async function clearPractice(userId: string, entry: LibraryEntry): Promise<void> {
+  if (entry.practiceEntityIds.length === 0) return;
+  const { error } = await supabase
+    .from('living_library_entries')
+    .update({ my_practice: {}, updated_at: new Date().toISOString() })
+    .eq('user_id', userId)
+    .in('entity_id', entry.practiceEntityIds);
+  if (error) throw new Error(error.message);
+  await load(userId, true);
 }
