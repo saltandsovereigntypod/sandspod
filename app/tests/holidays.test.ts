@@ -105,3 +105,37 @@ test('a running festival counts its days; Today shows the next moon phase and ho
   assert.equal(none.holiday, null);
   assert.equal(none.horizon.length, 1);
 });
+
+test('your own calendar: one-time events and single holidays picked from any calendar', () => {
+  const choice = holidayChoice({
+    calendar_traditions: 'wheel,custom',
+    calendar_custom_holidays: JSON.stringify([
+      { id: 'a', name: 'Coven gathering', month: 10, day: 7, meaning: '', year: 2026 },
+      { id: 'b', name: 'My dedication', month: 2, day: 14, meaning: 'The day I began.' },
+    ]),
+    calendar_picked_holidays: 'norse/thorrablot,hellenic/eleusinia,wheel/samhain,nonsense/x',
+  });
+  assert.deepEqual(choice.picked, ['norse/thorrablot', 'hellenic/eleusinia', 'wheel/samhain', 'nonsense/x']);
+
+  const list = holidaysBetween(new Date(2026, 9, 1), new Date(2027, 9, 30), choice);
+  const names = list.map((h) => h.name);
+  // One-time events show only in their year; yearly ones every year.
+  assert.equal(names.filter((n) => n === 'Coven gathering').length, 1);
+  assert.equal(list.find((h) => h.name === 'Coven gathering')!.date.getTime(), day(2026, 10, 7));
+  assert.ok(names.includes('My dedication'));
+  // Picked holidays appear with the calendar they come from…
+  const thorrablot = list.find((h) => h.name === 'Þorrablót')!;
+  assert.deepEqual(thorrablot.traditions, ['Norse & Heathen']);
+  assert.ok(list.some((h) => h.name === 'Eleusinian Mysteries' && h.days === 9));
+  // …but only those: the rest of those calendars stays off.
+  assert.ok(!names.includes('Winter Nights (Vetrnætur)'));
+  assert.ok(!names.includes('Panathenaia'));
+  // A pick from a calendar already on whole doesn't double up.
+  assert.equal(names.filter((n) => n === 'Samhain').length, 1);
+  const next2027 = holidaysBetween(new Date(2027, 10, 1), new Date(2027, 10, 30), choice);
+  assert.ok(!next2027.some((h) => h.name === 'Coven gathering'));
+
+  // Picks only count while your own calendar is on.
+  const off = holidaysBetween(new Date(2027, 0, 1), new Date(2027, 1, 1), { ...choice, traditions: ['wheel'] });
+  assert.ok(!off.some((h) => h.name === 'Þorrablót'));
+});

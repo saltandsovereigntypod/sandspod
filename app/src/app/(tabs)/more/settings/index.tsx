@@ -54,6 +54,6 @@ export default function SettingsIndex() {
 function calendarSummary(settings: Settings | null): string {
   if (!settings) return 'Holidays and what Today shows';
   const { traditions } = holidayChoice(settings);
-  const names = traditions.map((id) => (id === 'custom' ? 'Your own' : TRADITIONS.find((t) => t.id === id)?.name ?? id));
+  const names = traditions.map((id) => (id === 'custom' ? 'Your own calendar' : TRADITIONS.find((t) => t.id === id)?.name ?? id));
   return names.length ? names.join(', ') : 'No calendars chosen';
 }

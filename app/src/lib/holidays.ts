@@ -34,8 +34,16 @@ export type Holiday = {
   traditions: string[];
 };
 
-export type CustomHoliday = { id: string; name: string; month: number; day: number; meaning: string };
-export type HolidayChoice = { traditions: string[]; custom: CustomHoliday[] };
+/** One of your own events: every year, or once when `year` is set. */
+export type CustomHoliday = { id: string; name: string; month: number; day: number; meaning: string; year?: number | null };
+/**
+ * Whole calendars, your own events, and single holidays picked from any
+ * calendar (`picked`, as "<tradition>/<holiday>" ids) for your own calendar.
+ */
+export type HolidayChoice = { traditions: string[]; custom: CustomHoliday[]; picked?: string[] };
+
+/** The id used to pick a single holiday into your own calendar. */
+export const pickId = (traditionId: string, holidayId: string) => `${traditionId}/${holidayId}`;
 
 const ATTIC_MONTHS = [
   'Hekatombaion',
@@ -306,7 +314,11 @@ export function holidayChoice(settings: Record<string, unknown> | null | undefin
           .map((id) => id.trim())
           .filter((id) => id === 'custom' || TRADITIONS.some((t) => t.id === id))
       : DEFAULT_TRADITIONS;
-  return { traditions, custom: parseCustomHolidays(settings?.calendar_custom_holidays) };
+  const picked =
+    typeof settings?.calendar_picked_holidays === 'string'
+      ? settings.calendar_picked_holidays.split(',').map((id) => id.trim()).filter(Boolean)
+      : [];
+  return { traditions, custom: parseCustomHolidays(settings?.calendar_custom_holidays), picked };
 }
 
 export function parseCustomHolidays(raw: unknown): CustomHoliday[] {
@@ -321,6 +333,7 @@ export function parseCustomHolidays(raw: unknown): CustomHoliday[] {
         month: Math.min(11, Math.max(0, Number(item.month) || 0)),
         day: Math.min(31, Math.max(1, Number(item.day) || 1)),
         meaning: String(item.meaning || '').trim(),
+        year: Number.isInteger(item.year) ? item.year : null,
       }));
   } catch {
     return [];
@@ -356,7 +369,17 @@ export function holidaysBetween(from: Date, to: Date, choice: HolidayChoice): Ho
     }
     if (choice.traditions.includes('custom')) {
       for (const custom of choice.custom) {
+        if (custom.year && custom.year !== year) continue;
         add(custom, `custom-${custom.id}`, new Date(year, custom.month, custom.day), 'Your calendar');
+      }
+      // Single holidays picked from calendars that aren't chosen whole.
+      for (const id of choice.picked ?? []) {
+        const [traditionId, holidayId] = id.split('/');
+        if (choice.traditions.includes(traditionId)) continue;
+        const tradition = TRADITIONS.find((t) => t.id === traditionId);
+        const def = tradition?.holidays.find((h) => h.id === holidayId);
+        if (!tradition || !def) continue;
+        for (const date of occurrences(def.rule, year)) add(def, `${traditionId}-${def.id}`, date, tradition.name);
       }
     }
   }

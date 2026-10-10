@@ -34,8 +34,8 @@ function useToday(): Date {
 export default function Today() {
   const now = useToday();
   const { settings } = useMySettings();
-  const choiceKey = `${settings?.calendar_traditions ?? ''}|${settings?.calendar_custom_holidays ?? ''}`;
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- choiceKey stands in for the two settings it reads
+  const choiceKey = `${settings?.calendar_traditions ?? ''}|${settings?.calendar_custom_holidays ?? ''}|${settings?.calendar_picked_holidays ?? ''}`;
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- choiceKey stands in for the calendar settings it reads
   const today = useMemo(() => buildToday(now, holidayChoice(settings)), [now, choiceKey]);
   const show = (settings?.today_show as string) || 'both';
 
