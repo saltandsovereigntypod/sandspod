@@ -46,11 +46,12 @@ export default function Today() {
         <Text style={styles.ruler}>{today.rulerLine}</Text>
       </View>
 
-      <View style={styles.moon} accessible accessibilityLabel={`${today.moon.name}. ${today.moonLine}`}>
+      <View style={styles.moon} accessible accessibilityLabel={`${today.moon.name}. ${today.signLine}. ${today.moonLine}`}>
         <MoonDisc size={136} illumination={today.moon.illumination} waxing={today.moon.waxing} />
         <Text accessibilityRole="header" style={styles.phase}>
           {today.moon.name}
         </Text>
+        <Text style={[styles.sign, styles.center]}>{today.signLine}</Text>
         <Text style={[type.caption, styles.center]}>{today.moonLine}</Text>
       </View>
       <Button
@@ -130,6 +131,7 @@ const styles = StyleSheet.create({
   moon: { alignItems: 'center', gap: 6 },
   phase: { fontFamily: fonts.display, fontSize: 34, lineHeight: 38, color: colors.cream, textAlign: 'center', marginTop: 4 },
   center: { textAlign: 'center' },
+  sign: { fontFamily: fonts.displayItalic, fontSize: 19, lineHeight: 24, color: colors.gold },
   gold: { color: colors.gold },
   working: {
     backgroundColor: colors.surface,

@@ -1,5 +1,5 @@
-import { daysBetween, dayRuler, dayRulerLabel, longDate, nextSabbat, relativeDay, shortDate } from './calendar';
-import { moonState, nextPhase, PRINCIPAL_NAMES, signAtSyzygy, type MoonState } from './moon';
+import { daysBetween, dayRuler, dayRulerLabel, longDate, nextSabbat, relativeDay, shortDate, timeOfDay } from './calendar';
+import { moonSign, moonState, nextMoonIngress, nextPhase, PRINCIPAL_NAMES, signAtSyzygy, type MoonState } from './moon';
 
 export type HorizonItem = {
   kind: 'new' | 'full' | 'sabbat';
@@ -11,6 +11,8 @@ export type TodayModel = {
   dateLine: string;
   rulerLine: string;
   moon: MoonState;
+  /** e.g. "Moon in Libra · enters Scorpio tomorrow at 10:22 AM" */
+  signLine: string;
   /** e.g. "97% · Full Moon in Aries tomorrow" */
   moonLine: string;
   horizon: [HorizonItem, HorizonItem];
@@ -33,6 +35,9 @@ export function buildToday(now: Date): TodayModel {
   const headline = `${PRINCIPAL_NAMES[headlinePhase]} in ${signAtSyzygy(headlineDate, headlinePhase)} ${relativeDay(now, headlineDate)}`;
   const moonLine = `${percent}% · ${headline}`;
 
+  const ingress = nextMoonIngress(now);
+  const signLine = `Moon in ${moonSign(now)} · enters ${ingress.sign} ${relativeDay(now, ingress.date)} at ${timeOfDay(ingress.date)}`;
+
   const sabbat = nextSabbat(now);
   const sabbatDays = daysBetween(now, sabbat.date);
   const { themes } = dayRuler(now);
@@ -41,6 +46,7 @@ export function buildToday(now: Date): TodayModel {
     dateLine: longDate(now),
     rulerLine: `${dayRulerLabel(now)} · ${themes}`,
     moon,
+    signLine,
     moonLine,
     horizon: [
       {

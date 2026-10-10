@@ -1,3 +1,5 @@
+import { sunReaches } from './moon.ts';
+
 // Traditional planetary rulers of the weekdays, and the Wheel of the Year.
 
 export type DayRuler = { planet: string; themes: string };
@@ -25,18 +27,18 @@ export function dayRulerLabel(date: Date): string {
 
 export type Sabbat = { name: string; date: Date };
 
-// Cross-quarter days use their traditional fixed dates. Solstices and
-// equinoxes move between the 19th and 23rd; these are the usual dates and
-// are close enough for a "coming up" reminder.
-const SABBATS: { name: string; month: number; day: number }[] = [
+// Cross-quarter days use their traditional fixed dates. The solstices and
+// equinoxes are worked out from the Sun's position each year, so they land
+// on the right day (anywhere from the 19th to the 23rd) in local time.
+const SABBATS: ({ name: string; month: number; day: number } | { name: string; sun: 0 | 90 | 180 | 270 })[] = [
   { name: 'Imbolc', month: 1, day: 1 },
-  { name: 'Ostara', month: 2, day: 20 },
+  { name: 'Ostara', sun: 0 },
   { name: 'Beltane', month: 4, day: 1 },
-  { name: 'Litha', month: 5, day: 21 },
+  { name: 'Litha', sun: 90 },
   { name: 'Lammas', month: 7, day: 1 },
-  { name: 'Mabon', month: 8, day: 22 },
+  { name: 'Mabon', sun: 180 },
   { name: 'Samhain', month: 9, day: 31 },
-  { name: 'Yule', month: 11, day: 21 },
+  { name: 'Yule', sun: 270 },
 ];
 
 /** The next sabbat on or after the start of `from`'s day, in local time. */
@@ -44,7 +46,7 @@ export function nextSabbat(from: Date): Sabbat {
   const today = startOfDay(from);
   for (const year of [from.getFullYear(), from.getFullYear() + 1]) {
     for (const s of SABBATS) {
-      const date = new Date(year, s.month, s.day);
+      const date = 'sun' in s ? startOfDay(sunReaches(year, s.sun)) : new Date(year, s.month, s.day);
       if (date.getTime() >= today.getTime()) return { name: s.name, date };
     }
   }
@@ -111,4 +113,11 @@ export function fullDate(value: Date | string | null | undefined): string | null
   const date = parseCalendarDate(value);
   if (!date) return null;
   return `${MONTHS_LONG[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+}
+
+/** "3:05 PM" in local time. */
+export function timeOfDay(date: Date): string {
+  const hours = date.getHours();
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${hours % 12 || 12}:${minutes} ${hours < 12 ? 'AM' : 'PM'}`;
 }
