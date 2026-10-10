@@ -1,13 +1,16 @@
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '../../../components/Button';
 import { FailedChanges } from '../../../components/grimoire/SaveStatus';
+import { Field } from '../../../components/more/ui';
 import { Icon } from '../../../components/Icon';
 import { parseCalendarDate, shortDate } from '../../../lib/calendar';
 import { useGrimoire } from '../../../lib/grimoire/store';
+import { grimoireLibraryHref, grimoireShelves, useLibrary, type GrimoireShelf } from '../../../lib/library';
+import { useMySettings } from '../../../lib/settings/store';
 import { pageFacts, pageTypeLabel, tableOfContents } from '../../../lib/grimoire/structure';
 import type { PageRow } from '../../../lib/grimoire/types';
 import { useSession } from '../../../lib/session';
@@ -137,7 +140,99 @@ export default function Grimoire() {
           </View>
         ),
       )}
+
+      <LibraryShelves />
     </Shell>
+  );
+}
+
+/** My Practice and Traditional Information, as on the website's Book of Shadows. */
+function LibraryShelves() {
+  const { entries } = useLibrary();
+  const { settings } = useMySettings();
+  const [query, setQuery] = useState('');
+  const [closed, setClosed] = useState<Set<string>>(new Set());
+  const [opened, setOpened] = useState<Set<string>>(new Set());
+  const shelves = useMemo(() => grimoireShelves(entries, settings, query), [entries, settings, query]);
+  const searching = query.trim().length > 0;
+
+  if (shelves.length === 0 && !searching) return null;
+
+  const toggle = (set: Set<string>, update: (next: Set<string>) => void, key: string) => {
+    const next = new Set(set);
+    if (next.has(key)) next.delete(key);
+    else next.add(key);
+    update(next);
+  };
+
+  return (
+    <View style={styles.shelves}>
+      <Field label="Search My Practice and Traditional Information" value={query} onChangeText={setQuery} placeholder="Rosemary, protection, moonstone…" />
+      {searching && shelves.length === 0 && <Text style={type.caption}>Nothing in your library matches that search.</Text>}
+      {shelves.map((shelf: GrimoireShelf) => {
+        const shelfOpen = !closed.has(shelf.key);
+        return (
+          <View key={shelf.key} style={styles.section}>
+            <Disclosure
+              label={shelf.title}
+              count={shelf.groups.reduce((sum, g) => sum + g.entries.length, 0)}
+              open={shelfOpen}
+              heading
+              onPress={() => toggle(closed, setClosed, shelf.key)}
+            />
+            {shelfOpen &&
+              shelf.groups.map((group) => {
+                const key = `${shelf.key}:${group.type}`;
+                // Type groups start closed (the Traditional shelf is long) but open while searching.
+                const groupOpen = searching || opened.has(key);
+                return (
+                  <View key={key} style={styles.list}>
+                    <Disclosure
+                      label={group.label}
+                      count={group.entries.length}
+                      open={groupOpen}
+                      onPress={() => toggle(opened, setOpened, key)}
+                    />
+                    {groupOpen &&
+                      group.entries.map((entry) => (
+                        <Pressable
+                          key={entry.id}
+                          accessibilityRole="button"
+                          accessibilityLabel={`${entry.name}, ${entry.category}`}
+                          onPress={() => router.push(grimoireLibraryHref(entry))}
+                          style={({ pressed }) => [styles.shelfEntry, pressed && styles.pressed]}
+                        >
+                          <Text style={[styles.rowTitle, styles.grow]} numberOfLines={1}>
+                            {entry.name}
+                          </Text>
+                          <Icon name="chevron" size={14} color={colors.tabInactive} />
+                        </Pressable>
+                      ))}
+                  </View>
+                );
+              })}
+          </View>
+        );
+      })}
+    </View>
+  );
+}
+
+function Disclosure({ label, count, open, heading, onPress }: { label: string; count: number; open: boolean; heading?: boolean; onPress: () => void }) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ expanded: open }}
+      accessibilityLabel={`${label}, ${count} ${count === 1 ? 'entry' : 'entries'}`}
+      onPress={onPress}
+      style={({ pressed }) => [styles.disclosure, pressed && styles.pressed]}
+    >
+      <Text style={heading ? [type.eyebrow, styles.grow] : styles.groupTitle}>{label}</Text>
+      <Text style={type.caption}>{count}</Text>
+      <View style={open ? styles.chevronOpen : undefined}>
+        <Icon name="chevron" size={14} color={colors.tabInactive} />
+      </View>
+    </Pressable>
   );
 }
 
@@ -209,6 +304,19 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   section: { gap: 8 },
+  shelves: { gap: space.section },
+  grow: { flex: 1 },
+  disclosure: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 8 },
+  groupTitle: { flex: 1, fontFamily: fonts.bodySemi, fontSize: 16, color: colors.cream },
+  chevronOpen: { transform: [{ rotate: '90deg' }] },
+  shelfEntry: {
+    minHeight: 44,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: 'rgba(244,236,216,0.14)',
+  },
   list: { backgroundColor: colors.surface, borderRadius: 18, paddingHorizontal: 16 },
   row: { minHeight: 64, flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 10 },
   rowRule: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'rgba(244,236,216,0.14)' },

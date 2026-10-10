@@ -436,3 +436,34 @@ export function correspondences(entry: LibraryEntry): { label: string; value: st
 }
 
 export const hasMyPractice = (entry: LibraryEntry) => hasContent(entry.myPractice);
+
+export type ShelfGroup = { type: string; label: string; entries: LibraryEntry[] };
+export type GrimoireShelf = { key: 'myPractice' | 'traditional'; title: string; groups: ShelfGroup[] };
+
+/**
+ * The Living Library shelves the website's Book of Shadows shows beside your
+ * written pages: My Practice (entries you've added to) and Traditional
+ * Information, each grouped by type. Settings → Living Library can switch
+ * either off; empty groups are left out.
+ */
+export function grimoireShelves(entries: LibraryEntry[], settings?: Settings | null, query = ''): GrimoireShelf[] {
+  const matches = new Set(searchLibrary(entries, query).map((entry) => entry.id));
+  const byName = (a: LibraryEntry, b: LibraryEntry) => a.name.localeCompare(b.name);
+  const group = (types: readonly string[], keep: (entry: LibraryEntry) => boolean): ShelfGroup[] =>
+    types
+      .map((type) => ({
+        type,
+        label: typeLabel(type),
+        entries: entries.filter((entry) => entry.type === type && keep(entry) && matches.has(entry.id)).sort(byName),
+      }))
+      .filter((shelfGroup) => shelfGroup.entries.length > 0);
+
+  const shelves: GrimoireShelf[] = [];
+  if (!settings || settings.library_myPractice_enabled !== false) {
+    shelves.push({ key: 'myPractice', title: 'My Practice', groups: group(PRACTICE_TYPES, hasMyPractice) });
+  }
+  if (!settings || settings.library_traditional_enabled !== false) {
+    shelves.push({ key: 'traditional', title: 'Traditional Information', groups: group(LIBRARY_TYPES, (entry) => hasContent(entry.traditional)) });
+  }
+  return shelves.filter((shelf) => shelf.groups.length > 0);
+}

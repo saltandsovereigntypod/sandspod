@@ -116,3 +116,32 @@ test('intro and correspondences read from the traditional layer', () => {
     { label: 'Planet', value: 'Mars' },
   ]);
 });
+
+test('grimoire shelves: My Practice and Traditional Information, as on the website', async () => {
+  const { grimoireShelves, traditionalEntries, buildLibrary } = await import('../src/lib/library/model.ts');
+  const { defaultSettings } = await import('../src/lib/settings/defaults.ts');
+  const all = traditionalEntries();
+  const shelves = grimoireShelves(all, defaultSettings());
+  // No practice notes yet: only the Traditional shelf.
+  assert.deepEqual(shelves.map((s) => s.key), ['traditional']);
+  const types = shelves[0].groups.map((g) => g.type);
+  assert.ok(types.includes('herb') && types.includes('crystal'));
+  const herbs = shelves[0].groups.find((g) => g.type === 'herb')!.entries.map((e) => e.name);
+  assert.deepEqual(herbs, [...herbs].sort((a, b) => a.localeCompare(b)));
+
+  const off = { ...defaultSettings(), library_traditional_enabled: false };
+  assert.deepEqual(grimoireShelves(all, off), []);
+
+  const searched = grimoireShelves(all, defaultSettings(), 'rosemary');
+  assert.ok(searched[0].groups.every((g) => g.entries.length > 0));
+  assert.ok(searched[0].groups.flatMap((g) => g.entries).some((e) => /rosemary/i.test(e.name)));
+
+  const mine = buildLibrary([
+    { entity_id: 'herb_rosemary', name: 'Rosemary', type: 'herb', image: null, my_practice: { Notes: 'Smoke cleansing before rituals' }, community: null, updated_at: null },
+  ]);
+  const withPractice = grimoireShelves(mine, defaultSettings());
+  assert.equal(withPractice[0].key, 'myPractice');
+  assert.deepEqual(withPractice[0].groups.map((g) => [g.type, g.entries.map((e) => e.name)]), [['herb', ['Rosemary']]]);
+  const noPractice = { ...defaultSettings(), library_myPractice_enabled: false };
+  assert.deepEqual(grimoireShelves(mine, noPractice).map((s) => s.key), ['traditional']);
+});
