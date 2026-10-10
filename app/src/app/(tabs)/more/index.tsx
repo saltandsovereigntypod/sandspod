@@ -1,7 +1,10 @@
 import { router, type Href } from 'expo-router';
+import * as WebBrowser from 'expo-web-browser';
+import { Linking } from 'react-native';
 
 import type { MoreIconName } from '../../../components/more/MoreIcon';
 import { MenuList, MenuRow, MoreScreen, Section } from '../../../components/more/ui';
+import { SUPPORT_EMAIL } from '../../../lib/community/model';
 import { useSession } from '../../../lib/session';
 import { greetingName } from '../../../lib/settings/defaults';
 import { useMySettings } from '../../../lib/settings/store';
@@ -14,6 +17,9 @@ type Row = { key: string; label: string; detail: string; icon: MoreIconName; hre
 const MOON_REMINDERS_HREF: Href | null = '/rituals/reminders';
 const ALTAR_HREF: Href | null = '/altar';
 // ─────────────────────────────────────────────────────────────────────────
+
+const PRIVACY_URL = 'https://saltandsovereignty.com/privacy.html';
+const TERMS_URL = 'https://saltandsovereignty.com/submission-terms.html';
 
 const GROUPS: { label: string; rows: Row[] }[] = [
   {
@@ -80,6 +86,13 @@ export default function More() {
           </Section>
         );
       })}
+      <Section label="Help">
+        <MenuList>
+          <MenuRow label="Contact us" detail={SUPPORT_EMAIL} onPress={() => void Linking.openURL(`mailto:${SUPPORT_EMAIL}`)} />
+          <MenuRow label="Privacy Policy" onPress={() => void WebBrowser.openBrowserAsync(PRIVACY_URL)} />
+          <MenuRow label="Submission Terms" last onPress={() => void WebBrowser.openBrowserAsync(TERMS_URL)} />
+        </MenuList>
+      </Section>
     </MoreScreen>
   );
 }
