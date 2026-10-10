@@ -4,7 +4,8 @@ import { Linking } from 'react-native';
 
 import type { MoreIconName } from '../../../components/more/MoreIcon';
 import { MenuList, MenuRow, MoreScreen, Section } from '../../../components/more/ui';
-import { SUPPORT_EMAIL } from '../../../lib/community/model';
+import { useIsReviewer, useReview } from '../../../lib/community/api';
+import { inReviewFolder, SUPPORT_EMAIL } from '../../../lib/community/model';
 import { useSession } from '../../../lib/session';
 import { greetingName } from '../../../lib/settings/defaults';
 import { useMySettings } from '../../../lib/settings/store';
@@ -58,11 +59,20 @@ export default function More() {
   const { session } = useSession();
   const { settings } = useMySettings();
   const name = settings ? greetingName(settings) : '';
+  const isReviewer = useIsReviewer();
+  const { data: review } = useReview();
+  const pending = review?.submissions.filter((row) => inReviewFolder(row, 'pending')).length ?? 0;
+  const unread = review?.unread.byFolder.all ?? 0;
 
   return (
     <MoreScreen title="Your Sanctuary" eyebrow={name ? `Welcome, ${name}` : 'More'}>
       {GROUPS.map((group) => {
-        const rows = group.rows.filter((row) => row.href);
+        const rows = [
+          ...group.rows,
+          ...(group.label === 'Community' && isReviewer
+            ? [{ key: 'review', label: 'Review submissions', detail: '', icon: 'letters' as const, href: '/more/community/review' as Href }]
+            : []),
+        ].filter((row) => row.href);
         return (
           <Section key={group.label} label={group.label}>
             <MenuList>
@@ -71,7 +81,9 @@ export default function More() {
                   key={row.key}
                   label={row.label}
                   detail={
-                    row.key === 'account'
+                    row.key === 'review'
+                      ? [`${pending} pending`, unread ? `${unread} new ${unread === 1 ? 'reply' : 'replies'}` : null].filter(Boolean).join(' · ')
+                      : row.key === 'account'
                       ? session
                         ? `Signed in as ${session.user.email ?? 'your account'}`
                         : 'Guest · saved on this device'
