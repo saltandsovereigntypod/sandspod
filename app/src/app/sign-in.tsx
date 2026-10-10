@@ -1,9 +1,11 @@
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '../components/Button';
+import { appleSignInAvailable, signInWithApple } from '../lib/appleSignIn';
 import { signInWithGoogle } from '../lib/googleSignIn';
 import { supabase } from '../lib/supabase';
 import { colors, fonts, radius, touch, type } from '../theme';
@@ -15,6 +17,24 @@ export default function SignIn() {
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [appleAvailable, setAppleAvailable] = useState(false);
+
+  useEffect(() => {
+    appleSignInAvailable().then(setAppleAvailable);
+  }, []);
+
+  async function continueWithApple() {
+    setBusy(true);
+    setMessage(null);
+    try {
+      const result = await signInWithApple();
+      setBusy(false);
+      if (result === 'signed-in') router.replace('/today');
+    } catch (error) {
+      setBusy(false);
+      setMessage(error instanceof Error ? error.message : 'Apple sign-in did not finish. Please try again.');
+    }
+  }
 
   async function continueWithGoogle() {
     setBusy(true);
@@ -60,6 +80,19 @@ export default function SignIn() {
             : 'Use the same account as the Salt & Sovereignty website.'}
         </Text>
 
+        {appleAvailable && (
+          <AppleAuthentication.AppleAuthenticationButton
+            buttonType={
+              creating
+                ? AppleAuthentication.AppleAuthenticationButtonType.SIGN_UP
+                : AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+            }
+            buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
+            cornerRadius={radius.button}
+            onPress={busy ? () => {} : continueWithApple}
+            style={styles.apple}
+          />
+        )}
         <Button label="Continue with Google" variant="outline" disabled={busy} onPress={continueWithGoogle} style={styles.submit} />
         <Text style={styles.or}>or use your email</Text>
 
@@ -130,4 +163,5 @@ const styles = StyleSheet.create({
   message: { ...type.body, color: colors.gold },
   or: { ...type.caption, textAlign: 'center' },
   submit: { minHeight: 52, marginTop: 8 },
+  apple: { height: 52, marginTop: 8 },
 });

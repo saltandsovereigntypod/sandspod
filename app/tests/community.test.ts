@@ -155,3 +155,19 @@ test('labels, authors, notes and dates', () => {
   assert.equal(communityDate('2026-09-01T12:00:00Z'), 'September 1, 2026');
   assert.equal(communityDate('nope'), '');
 });
+
+test('hidden pages and people are filtered, and reports go to the moderators', async () => {
+  const { isHidden, reportUrl, SUPPORT_EMAIL } = await import('../src/lib/community/model.ts');
+  const none = { posts: [], authors: [] };
+  assert.equal(isHidden(entry('a', { user_id: 'u1' }), none), false);
+  assert.equal(isHidden(entry('a'), { posts: ['a'], authors: [] }), true);
+  assert.equal(isHidden(entry('b', { user_id: 'u1' }), { posts: [], authors: ['u1'] }), true);
+  // Rows without an author can't be caught by a blocked person.
+  assert.equal(isHidden(entry('c'), { posts: [], authors: ['u1'] }), false);
+
+  const url = reportUrl(entry('xyz', { title: 'Moon water & salt' }));
+  assert.ok(url.startsWith(`mailto:${SUPPORT_EMAIL}?subject=`));
+  const body = decodeURIComponent(url.split('&body=')[1]);
+  assert.match(body, /Reference: xyz/);
+  assert.match(decodeURIComponent(url.split('subject=')[1].split('&')[0]), /Report: Moon water & salt/);
+});

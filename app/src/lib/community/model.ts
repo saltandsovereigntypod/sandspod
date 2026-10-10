@@ -256,3 +256,28 @@ export const SUBMISSION_TERMS = [
   'Published content may remain part of previously released podcasts, articles, videos, newsletters, archives, or other media, even if you later request removal.',
   'Salt & Sovereignty may decline, edit, remove, or choose not to publish any submission for any reason.',
 ];
+
+/** Posts and people someone has chosen not to see, kept on their device. */
+export type HiddenCommunity = { posts: string[]; authors: string[] };
+
+export const SUPPORT_EMAIL = 'ashley.p@saltandsovereignty.com';
+
+export function isHidden(row: SubmissionRow, hidden: HiddenCommunity): boolean {
+  return hidden.posts.includes(row.id) || (!!row.user_id && hidden.authors.includes(row.user_id));
+}
+
+/** A pre-filled email to the moderators about one published page or Field Note. */
+export function reportUrl(row: SubmissionRow): string {
+  const what = row.submission_type === 'community_note' ? 'Field Note' : 'Community Grimoire page';
+  const subject = `Report: ${row.title || what}`;
+  const body = [
+    `I'd like to report this ${what}.`,
+    '',
+    `Title: ${row.title || '(none)'}`,
+    `Reference: ${row.id}`,
+    '',
+    'What concerns you about it?',
+    '',
+  ].join('\n');
+  return `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
