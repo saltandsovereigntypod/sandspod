@@ -5,10 +5,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useSyncExternalStore } from 'react';
 
+import { startOfDay } from '../calendar';
+import { DEFAULT_TRADITIONS, type HolidayChoice } from '../holidays';
 import type { PrincipalPhase } from '../moon';
 import { getRituals, removePlan, savePlan } from '../rituals/store';
 import type { RitualPlan, TemplateRow } from '../rituals/types';
-import { moonEvents, planEvent, sabbatEvents, toIcs, type CalendarEventSpec } from './calendarEvent';
+import { holidayEvents, holidayKeyDate, moonEvents, planEvent, toIcs, type CalendarEventSpec } from './calendarEvent';
 import {
   calendarAccess,
   calendarMode,
@@ -162,8 +164,18 @@ function slug(text: string) {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'ritual';
 }
 
+// The calendars chosen in Settings → Calendar & holidays (set by the Today screen).
+let holidaySelection: HolidayChoice = { traditions: DEFAULT_TRADITIONS, custom: [] };
+
+/** Use these calendars for holiday events. Returns true when the choice changed. */
+export function setHolidaySelection(choice: HolidayChoice): boolean {
+  if (JSON.stringify(choice) === JSON.stringify(holidaySelection)) return false;
+  holidaySelection = choice;
+  return true;
+}
+
 function skySpecs(phases: Record<PrincipalPhase, boolean>, now: Date): CalendarEventSpec[] {
-  return [...(state.phases ? moonEvents(phases, now) : []), ...(state.sabbats ? sabbatEvents(now) : [])];
+  return [...(state.phases ? moonEvents(phases, now) : []), ...(state.sabbats ? holidayEvents(now, 365, holidaySelection) : [])];
 }
 
 /** Bring the phone calendar's moon and sabbat events in line with the choices. */
@@ -177,7 +189,10 @@ export async function syncSkyCalendar(phases: Record<PrincipalPhase, boolean>) {
     if (!wanted.has(key)) {
       // Remove what is no longer chosen; events that have simply passed stay in the calendar.
       const phase = key.startsWith('moon-') ? (key.split('-')[1] as PrincipalPhase) : null;
-      const stillChosen = phase ? state.phases && phases[phase] : state.sabbats;
+      // A holiday still to come that isn't wanted belongs to a calendar no longer chosen.
+      const holidayDate = holidayKeyDate(key);
+      const deselected = !!holidayDate && holidayDate.getTime() >= startOfDay(now).getTime();
+      const stillChosen = phase ? state.phases && phases[phase] : state.sabbats && !deselected;
       if (!stillChosen) await deleteEvent(id);
       delete skyEvents[key];
     }
@@ -206,8 +221,8 @@ export async function setSkyChoices(change: Partial<Pick<CalendarSettings, 'phas
 /** The chosen moon phases and sabbats as one .ics file (web). */
 export function downloadSky(phases: Record<PrincipalPhase, boolean>): boolean {
   const now = new Date();
-  const specs = [...moonEvents(phases, now), ...sabbatEvents(now)];
-  return specs.length > 0 && downloadIcs(toIcs(specs, now), 'moon-and-sabbats.ics');
+  const specs = [...moonEvents(phases, now), ...holidayEvents(now, 365, holidaySelection)];
+  return specs.length > 0 && downloadIcs(toIcs(specs, now), 'moon-and-holidays.ics');
 }
 
 export function useCalendar(): CalendarState {

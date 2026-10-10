@@ -2,7 +2,8 @@
 // two ways to hand them to a calendar without device access: an .ics file and
 // a Google Calendar link. Pure, so the output can be tested.
 
-import { nextSabbat, startOfDay } from '../calendar.ts';
+import { startOfDay } from '../calendar.ts';
+import { DEFAULT_TRADITIONS, holidaysBetween, type HolidayChoice } from '../holidays.ts';
 import { moonState, PRINCIPAL_NAMES, signAtSyzygy, upcomingPhases, type PrincipalPhase } from '../moon.ts';
 import { minutesToSeconds } from '../rituals/lifecycle.ts';
 import { planStart } from '../rituals/plans.ts';
@@ -91,24 +92,45 @@ export function moonEvents(phases: Record<PrincipalPhase, boolean>, from: Date, 
     });
 }
 
-/** All-day events for the sabbats of the Wheel of the Year in the coming months. */
-export function sabbatEvents(from: Date, days = 365): CalendarEventSpec[] {
-  const until = from.getTime() + days * 86_400_000;
-  const events: CalendarEventSpec[] = [];
-  let cursor = from;
-  for (;;) {
-    const sabbat = nextSabbat(cursor);
-    if (sabbat.date.getTime() > until) break;
-    events.push({
-      key: `sabbat-${sabbat.name.toLowerCase()}-${sabbat.date.getFullYear()}`,
-      title: sabbat.name,
-      ...allDay(sabbat.date),
-      allDay: true,
-      notes: 'A sabbat of the Wheel of the Year.\nFrom the Salt & Sovereignty app.',
+const isoDay = (date: Date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+const slugName = (name: string) =>
+  name
+    .replace(/æ/gi, 'ae')
+    .replace(/þ/gi, 'th')
+    .replace(/ð/gi, 'd')
+    .replace(/ø/gi, 'o')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+
+/**
+ * All-day events for the holidays of the chosen calendars in the coming
+ * months, with their meanings. Keys end in the date, so a holiday that is no
+ * longer chosen can be told apart from one that has simply passed.
+ */
+export function holidayEvents(from: Date, days = 365, choice: HolidayChoice = { traditions: DEFAULT_TRADITIONS, custom: [] }): CalendarEventSpec[] {
+  const until = new Date(from.getTime() + days * 86_400_000);
+  return holidaysBetween(from, until, choice)
+    .filter((holiday) => holiday.date.getTime() >= startOfDay(from).getTime())
+    .map((holiday) => {
+      const start = startOfDay(holiday.date);
+      return {
+        key: `holiday-${slugName(holiday.name)}-${isoDay(start)}`,
+        title: holiday.name,
+        start,
+        end: new Date(start.getFullYear(), start.getMonth(), start.getDate() + holiday.days),
+        allDay: true,
+        notes: `${holiday.meaning}\n${holiday.traditions.join(' · ')}.\nFrom the Salt & Sovereignty app.`,
+      };
     });
-    cursor = new Date(sabbat.date.getFullYear(), sabbat.date.getMonth(), sabbat.date.getDate() + 1);
-  }
-  return events;
+}
+
+/** The date a holiday event key ends in (holiday-<name>-YYYY-MM-DD), if it has one. */
+export function holidayKeyDate(key: string): Date | null {
+  const match = /^holiday-.*-(\d{4})-(\d{2})-(\d{2})$/.exec(key);
+  return match ? new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3])) : null;
 }
 
 // ---------------------------------------------------------------- .ics

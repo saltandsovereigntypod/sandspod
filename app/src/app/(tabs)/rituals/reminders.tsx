@@ -116,8 +116,8 @@ export default function Reminders() {
                 onChange={(on) => void setCalendarChoice({ phases: on })}
               />
               <Toggle
-                label="Sabbats"
-                detail="The Wheel of the Year, for the next twelve months"
+                label="Holidays"
+                detail="From your calendars in Settings → Calendar & holidays, for the next twelve months"
                 value={calendar.sabbats}
                 onChange={(on) => void setCalendarChoice({ sabbats: on })}
               />
@@ -134,7 +134,7 @@ export default function Reminders() {
             </>
           ) : calendarMode === 'file' ? (
             <Button
-              label="Download sabbats and chosen moon phases (.ics)"
+              label="Download holidays and chosen moon phases (.ics)"
               variant="outline"
               onPress={() => {
                 if (!downloadSky(settings.phases)) tell("Couldn't download", 'Your browser blocked the file. Please try again.');
