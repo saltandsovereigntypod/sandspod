@@ -232,7 +232,6 @@ export default function Reminders() {
       )}
 
       <EventStyleSheet
-        key={styling ?? 'closed'}
         kind={styling}
         style={styling ? calendar.styles[styling] : null}
         phases={settings.phases}

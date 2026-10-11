@@ -30,7 +30,8 @@ type Props = {
 export function AboutSheet({ visible, object, label, entry, onClose }: Props) {
   const { settings } = useMySettings();
   const [more, setMore] = useState(false);
-  if (!object) return null;
+  // Never unmount a presented Modal on iOS (it can leave a layer that swallows taps): close it instead.
+  if (!object) return <Sheet visible={false} title={label} onClose={onClose}>{null}</Sheet>;
 
   const layers = visibleLayers(settings);
   const showTraditional = !!entry?.traditional && layers.includes('traditional');

@@ -28,12 +28,34 @@ type Props = {
 
 /**
  * Set up one event the way you like it; every event of that kind follows.
- * The parent keys this by kind, so each opening starts from the saved settings.
+ * The sheet stays mounted and only its `visible` changes: on iOS, removing a
+ * Modal while it is still presented can leave an invisible layer that
+ * swallows every tap.
  */
 export function EventStyleSheet({ kind, style, phases, onClose, onSave }: Props) {
-  const [draft, setDraft] = useState<EventStyle | null>(style);
-  if (!kind || !draft) return null;
+  // Keep the last kind so the title doesn't vanish while the sheet slides away.
+  const [shown, setShown] = useState<SkyKind>(kind ?? 'moon');
+  if (kind && kind !== shown) setShown(kind);
+  const names = KIND_NAMES[kind ?? shown];
+  return (
+    <Sheet visible={!!kind && !!style} eyebrow="Your calendar" title={names.title} onClose={onClose}>
+      {kind && style && <StyleForm key={kind} kind={kind} style={style} phases={phases} onSave={onSave} />}
+    </Sheet>
+  );
+}
 
+function StyleForm({
+  kind,
+  style,
+  phases,
+  onSave,
+}: {
+  kind: SkyKind;
+  style: EventStyle;
+  phases: Record<PrincipalPhase, boolean>;
+  onSave: (kind: SkyKind, style: EventStyle) => void;
+}) {
+  const [draft, setDraft] = useState<EventStyle>(style);
   const names = KIND_NAMES[kind];
   const change = (patch: Partial<EventStyle>) => {
     const next = { ...draft, ...patch };
@@ -45,7 +67,7 @@ export function EventStyleSheet({ kind, style, phases, onClose, onSave }: Props)
   const alertLabel = alertChoices(draft.timing).find((choice) => choice.offset === draft.alert)?.label;
 
   return (
-    <Sheet visible eyebrow="Your calendar" title={names.title} onClose={onClose}>
+    <>
       <Text style={type.caption}>Set it up once and every {names.plural} event goes into your calendar the same way.</Text>
 
       <View style={styles.group}>
@@ -103,7 +125,7 @@ export function EventStyleSheet({ kind, style, phases, onClose, onSave }: Props)
       )}
 
       <Button label={`Use for every ${names.plural} event`} onPress={() => onSave(kind, draft)} />
-    </Sheet>
+    </>
   );
 }
 
