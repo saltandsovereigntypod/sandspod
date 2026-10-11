@@ -155,3 +155,76 @@ export async function clearPractice(userId: string, entry: LibraryEntry): Promis
   if (error) throw new Error(error.message);
   await load(userId, true);
 }
+
+/**
+ * Create or update a Library entry made alongside something else (a custom
+ * cabinet item, an apothecary working): signed in it's a
+ * `living_library_entries` row; for guests it goes into the website-format
+ * guest Library on the device. Returns the entity id.
+ */
+export async function putLibraryEntry(args: {
+  userId: string | null;
+  entityId?: string | null;
+  name: string;
+  type: string;
+  myPractice: Record<string, unknown>;
+}): Promise<string> {
+  const entityId = args.entityId || newId();
+  const now = new Date().toISOString();
+  if (args.userId) {
+    const updated = await supabase
+      .from('living_library_entries')
+      .update({ name: args.name.trim() || 'Untitled', my_practice: args.myPractice, updated_at: now })
+      .eq('user_id', args.userId)
+      .eq('entity_id', entityId)
+      .select('entity_id');
+    if (updated.error) throw new Error(updated.error.message);
+    if (!updated.data?.length) {
+      const row = newPracticeRow({ userId: args.userId, entityId, name: args.name, type: args.type, myPractice: args.myPractice });
+      const { error } = await supabase.from('living_library_entries').insert(row);
+      if (error) throw new Error(error.message);
+    }
+  } else {
+    const raw = await AsyncStorage.getItem(GUEST_LIBRARY_KEY);
+    let stored: { entities?: Record<string, Record<string, unknown>> } & Record<string, unknown> = {};
+    try {
+      stored = raw ? JSON.parse(raw) : {};
+    } catch {
+      stored = {};
+    }
+    const entities = { ...(stored.entities ?? {}) };
+    const previous = entities[entityId] ?? {};
+    entities[entityId] = {
+      ...previous,
+      id: entityId,
+      name: args.name.trim() || 'Untitled',
+      type: args.type,
+      myPractice: args.myPractice,
+      createdAt: previous.createdAt ?? now,
+      updatedAt: now,
+    };
+    await AsyncStorage.setItem(GUEST_LIBRARY_KEY, JSON.stringify({ ...stored, entities }));
+  }
+  await load(args.userId, true);
+  return entityId;
+}
+
+/** Remove a Library entry made alongside something that's been deleted. */
+export async function removeLibraryEntry(userId: string | null, entityId: string): Promise<void> {
+  if (!entityId) return;
+  if (userId) {
+    await supabase.from('living_library_entries').delete().eq('user_id', userId).eq('entity_id', entityId);
+  } else {
+    try {
+      const raw = await AsyncStorage.getItem(GUEST_LIBRARY_KEY);
+      const stored = raw ? JSON.parse(raw) : {};
+      if (stored?.entities?.[entityId]) {
+        delete stored.entities[entityId];
+        await AsyncStorage.setItem(GUEST_LIBRARY_KEY, JSON.stringify(stored));
+      }
+    } catch {
+      // Nothing to remove.
+    }
+  }
+  await load(userId, true);
+}

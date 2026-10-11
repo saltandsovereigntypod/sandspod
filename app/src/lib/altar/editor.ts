@@ -4,7 +4,8 @@
 
 import { displayBox, objectSize, rotationOf, withCenter, withRotation, withSize } from './geometry.ts';
 import { moveLayer, nextLayer, type LayerMove } from './layers.ts';
-import { carveCandle, dressCandle, ensureLivingState, toggleLit, uncarveCandle, undressCandle } from './livingState.ts';
+import { apothecaryObject, refreshPlaced, type ApothecaryItem } from './apothecary.ts';
+import { carveCandle, dressCandle, ensureLivingState, setApothecaryState, toggleLit, uncarveCandle, undressCandle, type ApothecaryState } from './livingState.ts';
 import type { AltarDocument } from './snapshot.ts';
 import type { SavedObject } from './types.ts';
 import { newId } from './uid.ts';
@@ -170,4 +171,47 @@ export function duplicateObject(doc: AltarDocument, index: number, now: string):
 
 export function setBackground(doc: AltarDocument, background: string, backgroundName: string): AltarDocument {
   return { ...doc, background, backgroundName };
+}
+
+// ---------------------------------------------------------------- apothecary
+
+/** Place a working from My Apothecary, in the middle of the altar's surface. */
+export function placeApothecary(doc: AltarDocument, item: ApothecaryItem, now: string): AltarDocument {
+  return addObject(doc, apothecaryObject(item, doc.objects, now));
+}
+
+/**
+ * A working made from things on the altar takes their place: they're taken
+ * off and the finished working is set where they stood (as the website does).
+ */
+export function replaceWithApothecary(doc: AltarDocument, indices: number[], item: ApothecaryItem, now: string): AltarDocument {
+  const used = indices.filter((i) => doc.objects[i]);
+  if (!used.length) return placeApothecary(doc, item, now);
+  const boxes = used.map((i) => displayBox(doc.objects[i]));
+  const center = { cx: boxes.reduce((s, b) => s + b.cx, 0) / boxes.length, cy: boxes.reduce((s, b) => s + b.cy, 0) / boxes.length };
+  const remaining = doc.objects.filter((_, i) => !used.includes(i));
+  return { ...doc, objects: [...remaining, apothecaryObject(item, remaining, now, center)] };
+}
+
+/** After a recipe changes, every placed copy shows the new name, picture and recipe. */
+export function refreshApothecary(doc: AltarDocument, item: ApothecaryItem): AltarDocument {
+  const updates = new Map<number, SavedObject>();
+  doc.objects.forEach((object, i) => {
+    const next = refreshPlaced(object, item);
+    if (next !== object) updates.set(i, next);
+  });
+  return replace(doc, updates);
+}
+
+/** A deleted working leaves the altar too. */
+export function removeApothecary(doc: AltarDocument, itemId: string): AltarDocument {
+  const objects = doc.objects.filter((o) => o.apothecaryItemId !== itemId);
+  return objects.length === doc.objects.length ? doc : { ...doc, objects };
+}
+
+/** Tend a placed working: activation, what's left, and its tending and review dates. */
+export function tendApothecary(doc: AltarDocument, index: number, change: Partial<ApothecaryState>, now: string): AltarDocument {
+  const object = doc.objects[index];
+  if (!object) return doc;
+  return replace(doc, new Map([[index, setApothecaryState(object, change, now)]]));
 }

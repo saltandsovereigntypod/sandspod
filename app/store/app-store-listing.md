@@ -71,6 +71,7 @@ Answer "None" to everything except:
 | User Content → Other User Content (altars, grimoire, rituals, notes) | Yes | Yes | App Functionality |
 | User Content → Customer Support (emails, community reports) | Yes | Yes | Customer Support |
 | Identifiers → User ID | Yes | Yes | App Functionality |
+| User Content → Photos or Videos (pictures chosen for your own altar items and apothecary workings, signed in only) | Yes | Yes | App Functionality |
 
 Location is used only on the device (for sunrise and planetary hours) and never leaves it, so it is **not collected**. Everything else (contacts, health, financial, browsing history, search history, usage data, diagnostics, purchases): **Not collected** by the app. Calendar events are written to the device only and are not collected.
 

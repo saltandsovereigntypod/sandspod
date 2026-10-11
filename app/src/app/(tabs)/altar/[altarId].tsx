@@ -1,12 +1,16 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
+import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AboutSheet } from '../../../components/altar/AboutSheet';
 import { AltarStage, clampViewport, type Viewport } from '../../../components/altar/AltarStage';
 import { CabinetSheet } from '../../../components/altar/CabinetSheet';
 import { CarveSheet } from '../../../components/altar/CarveSheet';
+import { CustomItemSheet } from '../../../components/altar/CustomItemSheet';
+import { ApothecaryEditor, ApothecarySheet, type ApothecaryTarget, type SavedWorking } from '../../../components/altar/Apothecary';
+import { TendSheet } from '../../../components/altar/TendSheet';
+import { useWorkshop } from '../../../lib/altar/workshop';
 import { Chip, ChipRow } from '../../../components/altar/Chip';
 import { BackgroundSheet, DressSheet, LayersSheet, SaveSheet } from '../../../components/altar/OptionSheets';
 import { Button } from '../../../components/Button';
@@ -14,6 +18,11 @@ import { glanceLine, resolveAltarEntry } from '../../../lib/altar/companion';
 import { builtInCabinet, objectFromForm, shortLabel } from '../../../lib/altar/cabinet';
 import {
   addObject,
+  placeApothecary,
+  refreshApothecary,
+  removeApothecary,
+  replaceWithApothecary,
+  tendApothecary,
   carveObject,
   changeLayer,
   dressObject,
@@ -35,7 +44,7 @@ import {
 } from '../../../lib/altar/editor';
 import { displayBox, STAGE_ASPECT } from '../../../lib/altar/geometry';
 import { stackOrder } from '../../../lib/altar/layers';
-import { carvingsOf, dressingsOf, isCandle, isLit, readLivingState } from '../../../lib/altar/livingState';
+import { apothecaryStateOf, carvingsOf, dressingsOf, isCandle, isLit, readLivingState } from '../../../lib/altar/livingState';
 import { altarSummary, documentFromAltar, emptyDocument, type AltarDocument } from '../../../lib/altar/snapshot';
 import { useAltars } from '../../../lib/altar/store';
 import type { CabinetForm, CabinetItem } from '../../../lib/altar/types';
@@ -46,9 +55,12 @@ import { holidayChoice, holidaysToday } from '../../../lib/holidays';
 import { moonState } from '../../../lib/moon';
 import { colors, fonts, space, touch, type } from '../../../theme';
 
-type SheetName = 'about' | 'carve' | 'cabinet' | 'background' | 'layers' | 'dress' | 'save' | null;
+type SheetName = 'about' | 'carve' | 'apothecary' | 'tend' | 'cabinet' | 'background' | 'layers' | 'dress' | 'save' | null;
 
 const nowIso = () => new Date().toISOString();
+
+// iOS won't present one sheet while another is still sliding away, so the next waits for it.
+const afterSheetCloses = (open: () => void) => setTimeout(open, Platform.OS === 'ios' ? 450 : 0);
 const MAX_STAGE_WIDTH = 960;
 
 function burnTime(ms: number): string {
@@ -62,7 +74,7 @@ export default function AltarEditor() {
   const { altarId, from } = useLocalSearchParams<{ altarId: string; from?: string }>();
   const store = useAltars();
   const { settings } = useMySettings();
-  const { altars, draft, draftSourceId, status, customItems, backgrounds, overrides, signedIn } = store;
+  const { altars, draft, draftSourceId, status, backgrounds, overrides, signedIn } = store;
 
   const [doc, setDoc] = useState<AltarDocument | null>(null);
   const [baseline, setBaseline] = useState<AltarDocument | null>(null);
@@ -221,8 +233,28 @@ export default function AltarEditor() {
       );
     });
 
-  const allItems = useMemo(() => [...customItems, ...builtInCabinet], [customItems]);
+  // Your own items come from the workshop store, so the spell builder and apothecary see the same list.
+  const workshop = useWorkshop();
+  const allItems = useMemo(() => [...workshop.customItems, ...builtInCabinet], [workshop.customItems]);
+  const [ownItem, setOwnItem] = useState<{ category: string; item: CabinetItem | null } | null>(null);
+  const [working, setWorking] = useState<ApothecaryTarget | null>(null);
+
+  const workingSaved = ({ item, isNew, fromAltar, replace }: SavedWorking) => {
+    setWorking(null);
+    if (replace) {
+      commit((d) => replaceWithApothecary(d, fromAltar, item, nowIso()));
+      setSelected(null);
+      setNotice(`${item.name} is on your altar, in place of what went into it.`);
+    } else if (isNew) {
+      commit((d) => placeApothecary(d, item, nowIso()));
+      setNotice(`${item.name} is saved to My Apothecary and on your altar.`);
+    } else {
+      commit((d) => refreshApothecary(d, item));
+      setNotice(`${item.name} is updated.`);
+    }
+  };
   const selectedObject = doc && selected != null ? doc.objects[selected] ?? null : null;
+  const selectedRecipe = selectedObject?.apothecaryItemId ? workshop.apothecary.find((a) => a.id === selectedObject.apothecaryItemId) ?? null : null;
   const { entries: libraryEntries } = useLibrary();
   const selectedEntry = useMemo(
     () => (selectedObject ? resolveAltarEntry(libraryEntries, selectedObject) : null),
@@ -304,6 +336,8 @@ export default function AltarEditor() {
               light: () => commit((d) => toggleLight(d, selected, nowIso())),
               dress: () => setSheet('dress'),
               carve: () => setSheet('carve'),
+              tend: () => setSheet('tend'),
+              recipe: () => setWorking(selectedRecipe ? { item: selectedRecipe } : null),
               undress: () => commit((d) => undressObject(d, selected, nowIso())),
               rotate: (deg) => commit((d) => rotateObject(d, selected, deg)),
               resize: (f) => commit((d) => resizeObject(d, selected, f)),
@@ -331,6 +365,7 @@ export default function AltarEditor() {
             <ChipRow>
               <Chip label="Background" symbol="❖" onPress={() => setSheet('background')} />
               <Chip label="Layers" symbol="☰" onPress={() => setSheet('layers')} disabled={doc.objects.length === 0} />
+              <Chip label="Apothecary" symbol="⚗" accessibilityLabel="My Apothecary" onPress={() => setSheet('apothecary')} />
               <Chip label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} disabled={undo.current.length === 0} />
               <Chip label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} disabled={redo.current.length === 0} />
               <Chip label="Zoom in" symbol="+" onPress={() => zoomBy(1.5)} disabled={viewport.zoom >= 4} />
@@ -367,6 +402,51 @@ export default function AltarEditor() {
             entry={selectedEntry}
             onClose={() => setSheet(null)}
           />
+          <ApothecarySheet
+            visible={sheet === 'apothecary'}
+            onClose={() => setSheet(null)}
+            onMake={() => {
+              setSheet(null);
+              afterSheetCloses(() => setWorking({ item: null }));
+            }}
+            onEdit={(item) => {
+              setSheet(null);
+              afterSheetCloses(() => setWorking({ item }));
+            }}
+            onPlace={(item) => {
+              commit((d) => placeApothecary(d, item, nowIso()));
+              setSheet(null);
+            }}
+          />
+          <ApothecaryEditor
+            target={working}
+            altarObjects={doc.objects}
+            onClose={() => setWorking(null)}
+            onSaved={workingSaved}
+            onDeleted={(item) => {
+              setWorking(null);
+              setSelected(null);
+              commit((d) => removeApothecary(d, item.id));
+              setNotice(`${item.name} is deleted from My Apothecary.`);
+            }}
+          />
+          <TendSheet
+            visible={sheet === 'tend'}
+            name={shortLabel(selectedObject?.label, 'Working')}
+            state={selectedObject?.type === 'apothecary' ? apothecaryStateOf(selectedObject) : null}
+            intervalDays={selectedRecipe?.livingState.tending_interval_days ?? 30}
+            onClose={() => setSheet(null)}
+            onSave={(change) => {
+              if (selected != null) commit((d) => tendApothecary(d, selected, change, nowIso()));
+            }}
+          />
+          <CustomItemSheet
+            target={ownItem}
+            onClose={() => {
+              setOwnItem(null);
+              afterSheetCloses(() => setSheet('cabinet'));
+            }}
+          />
           <CarveSheet
             visible={sheet === 'carve'}
             candle={shortLabel(selectedObject?.label, 'Candle')}
@@ -384,6 +464,14 @@ export default function AltarEditor() {
             items={allItems}
             overrides={overrides}
             library={libraryEntries}
+            onMakeOwn={(category) => {
+              setSheet(null);
+              afterSheetCloses(() => setOwnItem({ category, item: null }));
+            }}
+            onEditOwn={(item) => {
+              setSheet(null);
+              afterSheetCloses(() => setOwnItem({ category: item.category, item }));
+            }}
             onClose={() => setSheet(null)}
             onPlace={place}
           />
@@ -436,6 +524,8 @@ type Actions = {
   light: () => void;
   dress: () => void;
   carve: () => void;
+  tend: () => void;
+  recipe: () => void;
   undress: () => void;
   rotate: (degrees: number) => void;
   resize: (factor: number) => void;
@@ -495,6 +585,10 @@ function ObjectPanel({
 
       <ChipRow>
         <Chip label="About" symbol="☽" accessibilityLabel={`About ${objectLabel}`} onPress={onAbout} />
+        {object.type === 'apothecary' && <Chip label="Tend" symbol="✓" accessibilityLabel={`Tend ${objectLabel}`} onPress={act.tend} />}
+        {object.type === 'apothecary' && !!object.apothecaryItemId && (
+          <Chip label="Recipe" symbol="✎" accessibilityLabel={`Open the recipe for ${objectLabel}`} onPress={act.recipe} />
+        )}
       </ChipRow>
 
       {candle && (

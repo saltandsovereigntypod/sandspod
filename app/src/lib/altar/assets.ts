@@ -23,7 +23,8 @@ export function altarImageSource(path: string | undefined | null): ImageSourcePr
   const { key, entry } = bundled(path);
   if (entry) return entry.source;
   if (key) return { uri: websiteAssetUrl(key) };
-  if (/^https?:\/\//i.test(path)) return { uri: path };
+  // Your own pictures: uploaded (https), kept on this device (file://), or a guest's data URL.
+  if (/^(https?|file|data|content|blob):/i.test(path)) return { uri: path };
   return null;
 }
 
@@ -31,7 +32,7 @@ function remoteUri(path: string): string | null {
   const { key, entry } = bundled(path);
   if (entry) return null;
   if (key) return websiteAssetUrl(key);
-  return /^https?:\/\//i.test(path) ? path : null;
+  return /^(https?|file|data|content|blob):/i.test(path) ? path : null;
 }
 
 // Natural height / width of each image. The website sizes object boxes from

@@ -9,7 +9,7 @@
 
 import type { LibraryEntry } from './types';
 
-export { clearPractice, savePractice, useLibrary } from './store';
+export { clearPractice, putLibraryEntry, removeLibraryEntry, savePractice, useLibrary } from './store';
 export {
   buildLibrary,
   correspondences,

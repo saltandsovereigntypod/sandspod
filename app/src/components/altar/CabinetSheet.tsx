@@ -18,9 +18,12 @@ type Props = {
   library: LibraryEntry[];
   onClose: () => void;
   onPlace: (item: CabinetItem, form: CabinetForm) => void;
+  /** Make your own item for a drawer, or change one you made. */
+  onMakeOwn?: (category: string) => void;
+  onEditOwn?: (item: CabinetItem) => void;
 };
 
-export function CabinetSheet({ visible, items, overrides, library, onClose, onPlace }: Props) {
+export function CabinetSheet({ visible, items, overrides, library, onClose, onPlace, onMakeOwn, onEditOwn }: Props) {
   const [category, setCategory] = useState<string>('candles');
   const [search, setSearch] = useState('');
 
@@ -60,15 +63,36 @@ export function CabinetSheet({ visible, items, overrides, library, onClose, onPl
       }
     >
       {shown.length === 0 && <Text style={type.body}>Nothing in this drawer{search ? ' matches that search' : ''}.</Text>}
+      {!!onMakeOwn && (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Make your own item for this drawer"
+          onPress={() => onMakeOwn(category)}
+          style={({ pressed }) => [styles.makeOwn, pressed && { opacity: 0.7 }]}
+        >
+          <Text style={styles.makeOwnPlus}>＋</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.makeOwnTitle}>Make your own</Text>
+            <Text style={type.caption}>Add something from your own shelf with a photo of it.</Text>
+          </View>
+        </Pressable>
+      )}
       {shown.map(({ item, forms, uses }) =>
-        forms.length === 1 ? null : (
+        forms.length === 1 && !item.customCabinetItemId ? null : (
           <View key={item.id} style={styles.group}>
-            <View>
-              <Text style={styles.groupTitle}>
-                {item.name}
-                {item.customCabinetItemId ? '  ·  yours' : ''}
-              </Text>
-              {!!uses && <Text style={[styles.uses, styles.usesLeft]}>{uses}</Text>}
+            <View style={styles.groupHead}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.groupTitle}>
+                  {item.name}
+                  {item.customCabinetItemId ? '  ·  yours' : ''}
+                </Text>
+                {!!uses && <Text style={[styles.uses, styles.usesLeft]}>{uses}</Text>}
+              </View>
+              {!!item.customCabinetItemId && !!onEditOwn && (
+                <Pressable accessibilityRole="button" accessibilityLabel={`Edit ${item.name}`} onPress={() => onEditOwn(item)} hitSlop={8} style={styles.edit}>
+                  <Text style={styles.editText}>Edit</Text>
+                </Pressable>
+              )}
             </View>
             <View style={styles.grid}>
               {forms.map((form) => (
@@ -84,10 +108,10 @@ export function CabinetSheet({ visible, items, overrides, library, onClose, onPl
           </View>
         ),
       )}
-      {shown.some(({ forms }) => forms.length === 1) && (
+      {shown.some(({ item, forms }) => forms.length === 1 && !item.customCabinetItemId) && (
         <View style={styles.grid}>
           {shown
-            .filter(({ forms }) => forms.length === 1)
+            .filter(({ item, forms }) => forms.length === 1 && !item.customCabinetItemId)
             .map(({ item, forms, uses }) => (
               <Tile
                 key={item.id}
@@ -101,7 +125,7 @@ export function CabinetSheet({ visible, items, overrides, library, onClose, onPl
         </View>
       )}
       <Text style={type.caption}>
-        Tap to place it in the middle of the altar. Custom items you make on the website appear here too.
+        Tap to place it in the middle of the altar. Items you make here or on the website are kept in your cabinet in both places.
       </Text>
     </Sheet>
   );
@@ -143,6 +167,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
   },
   group: { gap: 8 },
+  groupHead: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
+  edit: { minHeight: touch, justifyContent: 'center', paddingHorizontal: 6 },
+  editText: { fontFamily: fonts.bodySemi, fontSize: 15, color: colors.gold },
+  makeOwn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    minHeight: touch + 12,
+    borderRadius: radius.tile,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderColor: colors.goldLine,
+    padding: 12,
+  },
+  makeOwnPlus: { fontSize: 26, color: colors.gold },
+  makeOwnTitle: { fontFamily: fonts.bodySemi, fontSize: 16, color: colors.cream },
   groupTitle: { fontFamily: fonts.display, fontSize: 20, color: colors.cream },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   tile: {

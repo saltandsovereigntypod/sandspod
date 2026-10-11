@@ -248,3 +248,24 @@ export function uncarveCandle(candle: SavedObject, now: string, index?: number):
   const state = readLivingState(candle, now);
   return writeLivingState(candle, { ...state, lastUsedAt: now, candle: { ...state.candle, carvings } }, now);
 }
+
+export type ApothecaryState = { activationState: string; remainingAmount: string; reviewAt: string; status: string; nextTendingAt: string };
+
+/** A crafted item's own state: activation, what's left, and its tending and review dates. */
+export function apothecaryStateOf(object: SavedObject): ApothecaryState {
+  const raw = (parseLivingState(object)?.apothecary ?? {}) as Partial<ApothecaryState>;
+  return {
+    activationState: String(raw.activationState ?? ''),
+    remainingAmount: String(raw.remainingAmount ?? ''),
+    reviewAt: String(raw.reviewAt ?? ''),
+    status: String(raw.status ?? 'active'),
+    nextTendingAt: String(raw.nextTendingAt ?? ''),
+  };
+}
+
+/** Change a crafted item's state (setLivingApothecaryState); everything else in its state is kept. */
+export function setApothecaryState(object: SavedObject, change: Partial<ApothecaryState>, now: string): SavedObject {
+  const state = readLivingState(object, now);
+  const apothecary = { ...apothecaryStateOf(object), ...change };
+  return writeLivingState(object, { ...state, lastUsedAt: now, apothecary }, now);
+}
