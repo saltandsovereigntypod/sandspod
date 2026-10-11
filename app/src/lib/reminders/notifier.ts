@@ -83,12 +83,31 @@ export async function applySchedule(reminders: Reminder[]): Promise<number> {
   return set;
 }
 
+const STEP_SOURCE = 'sanctuary-ritual-step';
+const STEP_ID = 'ritual-step-alarm';
+
+/** Ring when the ritual step's timer ends (or cancel the ring). Only one is ever waiting. */
+export async function setStepAlarm(alarm: { at: Date; title: string; body: string } | null): Promise<void> {
+  try {
+    await Notifications.cancelScheduledNotificationAsync(STEP_ID);
+    if (!alarm || (await permissionState()) !== 'granted') return;
+    await ensureChannel();
+    await Notifications.scheduleNotificationAsync({
+      identifier: STEP_ID,
+      content: { title: alarm.title, body: alarm.body, sound: true, data: { source: STEP_SOURCE, url: '/rituals/run' } },
+      trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: alarm.at, channelId: CHANNEL },
+    });
+  } catch {
+    // The on-screen timer still runs.
+  }
+}
+
 /** Open the screen a tapped reminder points at. */
 export function useReminderTaps() {
   useEffect(() => {
     const open = (notification: Notifications.Notification) => {
       const data = notification.request.content.data;
-      if (data?.source === SOURCE && typeof data.url === 'string') router.push(data.url as Href);
+      if ((data?.source === SOURCE || data?.source === STEP_SOURCE) && typeof data.url === 'string') router.push(data.url as Href);
     };
     try {
       const last = Notifications.getLastNotificationResponse();

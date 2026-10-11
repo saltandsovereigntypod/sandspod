@@ -353,6 +353,30 @@ export function timedStepDue(session: RitualSession, now: Date): boolean {
   return duration > 0 && stepElapsed(step, session, now) >= duration;
 }
 
+export type StepAlarm = { at: Date; title: string; body: string };
+
+/**
+ * When the current step's timer runs out, and what to say then: a nudge that
+ * arrives even with the phone locked. None while paused or for untimed steps.
+ */
+export function stepAlarm(session: RitualSession | null, now: Date): StepAlarm | null {
+  if (!session || session.status !== 'active') return null;
+  const step = currentStep(session);
+  const duration = Number(step?.duration_seconds || 0);
+  if (!step || duration <= 0) return null;
+  const remaining = duration - stepElapsed(step, session, now);
+  if (remaining <= 0) return null;
+  const index = session.session_steps.findIndex((s) => s.id === step.id);
+  const next = session.session_steps.slice(index + 1).find((s) => s.status === 'pending');
+  const body =
+    step.completion_mode === 'timed'
+      ? next
+        ? `Moving on to “${next.title}”.`
+        : 'That was the last step. Close the circle when you’re ready.'
+      : 'Complete the step when you’re ready.';
+  return { at: new Date(now.getTime() + remaining * 1000), title: `${step.title}: time is up`, body };
+}
+
 /** "04:05" or "1:02:03". */
 export function formatClock(totalSeconds: number): string {
   const safe = Math.max(0, Math.floor(totalSeconds));

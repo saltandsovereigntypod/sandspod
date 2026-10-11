@@ -15,6 +15,7 @@ import {
   stepElapsed,
   timedStepDue,
 } from '../../../lib/rituals/lifecycle';
+import { remindersSupported } from '../../../lib/reminders/notifier';
 import { finishActive, updateActive, useRituals } from '../../../lib/rituals/store';
 import { colors, fonts, radius, type } from '../../../theme';
 
@@ -107,7 +108,16 @@ export default function RunRitual() {
           >
             {stepClock}
           </Text>
-          {duration > 0 && step.completion_mode === 'timed' && <Body muted>Moves on by itself when the timer ends.</Body>}
+          {duration > 0 && (
+            <Body muted>
+              {[
+                step.completion_mode === 'timed' ? 'Moves on by itself when the timer ends.' : null,
+                remindersSupported ? 'Your phone rings softly when it’s time, even if it’s locked.' : null,
+              ]
+                .filter(Boolean)
+                .join(' ')}
+            </Body>
+          )}
           <View style={ui.actions}>
             <Button
               label={last ? 'Complete the last step' : 'Complete step'}
