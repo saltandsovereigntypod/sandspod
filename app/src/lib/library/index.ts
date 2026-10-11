@@ -42,3 +42,11 @@ export function grimoirePracticeHref(entry: Pick<LibraryEntry, 'id'>) {
 export function libraryPracticeHref(entry: Pick<LibraryEntry, 'id'>) {
   return { pathname: '/more/library/practice' as const, params: { entryId: entry.id } };
 }
+
+/** The same pages, opened inside the Today tab (from the day's correspondences). */
+export function todayLibraryHref(entry: Pick<LibraryEntry, 'id'>) {
+  return { pathname: '/today/library/[entryId]' as const, params: { entryId: entry.id } };
+}
+export function todayPracticeHref(entry: Pick<LibraryEntry, 'id'>) {
+  return { pathname: '/today/practice' as const, params: { entryId: entry.id } };
+}

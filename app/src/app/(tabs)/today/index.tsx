@@ -2,28 +2,28 @@ import { router } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
-import { Button } from '../../components/Button';
-import { Icon } from '../../components/Icon';
-import { MoonDisc } from '../../components/MoonDisc';
-import { Screen } from '../../components/Screen';
-import { useReminderTaps } from '../../lib/reminders/notifier';
-import { PHASE_ORDER } from '../../lib/reminders/schedule';
-import { setHolidaySelection, syncSkyCalendar } from '../../lib/reminders/calendarStore';
-import { useReminders } from '../../lib/reminders/store';
-import { planSky, planWhen } from '../../lib/rituals/format';
-import { currentStep } from '../../lib/rituals/lifecycle';
-import { nextPlan } from '../../lib/rituals/plans';
-import { useRituals } from '../../lib/rituals/store';
-import { Tags } from '../../components/more/ui';
-import { dateFrom, daysBetween, shortDate, timeOfDay } from '../../lib/calendar';
-import { holidayChoice } from '../../lib/holidays';
-import { findByName, libraryHref, useLibrary } from '../../lib/library';
-import { usePlace } from '../../lib/location';
-import { placeSky, skyNow, type PlaceSky, type Sky } from '../../lib/sky';
-import { primaryTradition } from '../../lib/traditionDay';
-import { useMySettings } from '../../lib/settings/store';
-import { buildToday, type HorizonItem, type TodayModel } from '../../lib/today';
-import { colors, fonts, radius, space, type } from '../../theme';
+import { Button } from '../../../components/Button';
+import { Icon } from '../../../components/Icon';
+import { MoonDisc } from '../../../components/MoonDisc';
+import { Screen } from '../../../components/Screen';
+import { useReminderTaps } from '../../../lib/reminders/notifier';
+import { PHASE_ORDER } from '../../../lib/reminders/schedule';
+import { setHolidaySelection, syncSkyCalendar } from '../../../lib/reminders/calendarStore';
+import { useReminders } from '../../../lib/reminders/store';
+import { planSky, planWhen } from '../../../lib/rituals/format';
+import { currentStep } from '../../../lib/rituals/lifecycle';
+import { nextPlan } from '../../../lib/rituals/plans';
+import { useRituals } from '../../../lib/rituals/store';
+import { Tags } from '../../../components/more/ui';
+import { dateFrom, daysBetween, shortDate, timeOfDay } from '../../../lib/calendar';
+import { holidayChoice } from '../../../lib/holidays';
+import { findByName, todayLibraryHref, useLibrary } from '../../../lib/library';
+import { usePlace } from '../../../lib/location';
+import { placeSky, skyNow, type PlaceSky, type Sky } from '../../../lib/sky';
+import { primaryTradition } from '../../../lib/traditionDay';
+import { useMySettings } from '../../../lib/settings/store';
+import { buildToday, type HorizonItem, type TodayModel } from '../../../lib/today';
+import { colors, fonts, radius, space, type } from '../../../theme';
 
 /** A clock that ticks every quarter hour, for the void-of-course Moon and planetary hours. */
 function useClock(): Date {
@@ -193,7 +193,7 @@ function HolidayPanel({ today, compact }: { today: TodayModel; compact: boolean 
     <Pressable
       accessibilityRole="button"
       accessibilityHint="Opens your calendars and the holidays ahead"
-      onPress={() => router.navigate('/more/settings/calendar')}
+      onPress={() => router.navigate('/today/calendar')}
       style={({ pressed }) => [styles.holiday, compact && styles.holidayCompact, pressed && styles.pressed]}
     >
       {today.holidaysToday.map((holiday, i) => (
@@ -255,7 +255,7 @@ function DaySky({ today, sky, here, now }: { today: TodayModel; sky: Sky; here: 
       ) : (
         <Text style={type.caption}>Add your location on the Sky screen for sunrise, moonrise and planetary hours.</Text>
       )}
-      <Button label="The sky today" variant="outline" onPress={() => router.navigate('/more/sky')} />
+      <Button label="The sky today" variant="outline" onPress={() => router.navigate('/today/sky')} />
     </View>
   );
 }
@@ -272,7 +272,7 @@ function CorrespondencesCard({ today }: { today: TodayModel }) {
   const c = today.correspondences;
   const open = (name: string) => {
     const entry = findByName(entries, name);
-    return entry ? () => router.navigate(libraryHref(entry)) : undefined;
+    return entry ? () => router.navigate(todayLibraryHref(entry)) : undefined;
   };
   return (
     <View style={styles.card}>

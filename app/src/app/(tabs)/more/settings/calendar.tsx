@@ -1,3 +1,4 @@
+import type { Href } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -53,8 +54,13 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 }));
 
 export default function CalendarSettings() {
+  return <CalendarSettingsScreen />;
+}
+
+/** Also opened from Today's holiday card, inside the Today tab (then Back returns to Today). */
+export function CalendarSettingsScreen({ back }: { back?: Href }) {
   return (
-    <SettingsForm title="Calendar & holidays" after={(draft) => <YearAhead draft={draft} />}>
+    <SettingsForm title="Calendar & holidays" back={back} after={(draft) => <YearAhead draft={draft} />}>
       {(draft, set) => <CalendarForm draft={draft} set={set} />}
     </SettingsForm>
   );
