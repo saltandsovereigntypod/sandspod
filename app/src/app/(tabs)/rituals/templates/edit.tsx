@@ -54,7 +54,9 @@ export default function TemplateEditor() {
     try {
       const saved = await saveTemplate(draft);
       void grimoire.refresh();
-      router.replace({ pathname: '/rituals/templates/[id]', params: { id: saved.id } });
+      // Editing was opened from the template itself: go back to it rather than opening it twice.
+      if (existing && router.canGoBack()) router.back();
+      else router.replace({ pathname: '/rituals/templates/[id]', params: { id: saved.id } });
     } catch (e) {
       setProblem(e instanceof Error ? `Couldn't save: ${e.message}` : "Couldn't save. Please try again.");
     } finally {

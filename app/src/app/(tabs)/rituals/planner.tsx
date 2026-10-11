@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
 import { MoonDisc } from '../../../components/MoonDisc';
+import { TimeStepper } from '../../../components/rituals/TimeStepper';
 import { Body, Card, Chip, Chips, Field, Notice, RitualScreen, SectionLabel, Title, Toggle, tell, ui } from '../../../components/rituals/ui';
 import { dayRuler, dayRulerLabel, fullDate } from '../../../lib/calendar';
 import { moonState } from '../../../lib/moon';
@@ -149,7 +150,14 @@ export default function Planner() {
         </View>
       )}
 
-      {!intention && !fixedDay && <Body muted>Choose an intention to see the nights whose moon and weekday suit it.</Body>}
+      {!intention && !fixedDay && <Body muted>Choose an intention to see the nights whose moon and weekday suit it, or choose a night yourself.</Body>}
+
+      {!fixedDay && (
+        <View style={ui.gapSmall}>
+          <SectionLabel>{intention ? 'Or choose your own night' : 'Choose a night'}</SectionLabel>
+          <NightStepper night={night} now={now} intentionKey={intention?.key ?? null} onChange={setNight} />
+        </View>
+      )}
 
       {night && (
         <Card>
@@ -160,6 +168,7 @@ export default function Planner() {
               return <Chip key={t} label={clockTime(new Date(2000, 0, 1, h, m))} selected={time === t} onPress={() => setTime(t)} />;
             })}
           </Chips>
+          <TimeStepper minutes={timeMinutes(time)} onChange={(minutes) => setTime(timeKey(minutes))} />
 
           <SectionLabel>Which ritual?</SectionLabel>
           <Chips>
@@ -215,9 +224,64 @@ export default function Planner() {
           onPress={save}
         />
       ) : (
-        intention && !fixedDay && <Notice>Choose one of the nights above.</Notice>
+        intention && !fixedDay && <Notice>Choose one of the nights above, or a night of your own.</Notice>
       )}
     </RitualScreen>
+  );
+}
+
+const timeMinutes = (time: string) => {
+  const [h, m] = time.split(':').map(Number);
+  return (h || 0) * 60 + (m || 0);
+};
+const timeKey = (minutes: number) => `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
+
+const eveningOf = (day: Date) => new Date(day.getFullYear(), day.getMonth(), day.getDate(), EVENING_HOUR);
+
+/** Any night from today on, a day or a week at a time, with its moon and weekday. */
+function NightStepper({
+  night,
+  now,
+  intentionKey,
+  onChange,
+}: {
+  night: Date | null;
+  now: Date;
+  intentionKey: string | null;
+  onChange: (night: Date) => void;
+}) {
+  const today = eveningOf(now);
+  if (!night) {
+    return <Button label="Pick a night on the calendar" variant="outline" onPress={() => onChange(today)} />;
+  }
+  const move = (days: number) => {
+    const next = eveningOf(new Date(night.getFullYear(), night.getMonth(), night.getDate() + days));
+    onChange(next.getTime() < today.getTime() ? today : next);
+  };
+  const moon = moonState(night);
+  const fits = intentionKey ? nightFits(night).some((fit) => fit.intention.key === intentionKey) : false;
+  const atStart = localDateKey(night) === localDateKey(today);
+  return (
+    <Card>
+      <View style={styles.stepper}>
+        <Chip label="−7" a11yLabel="A week earlier" onPress={atStart ? undefined : () => move(-7)} />
+        <Chip label="‹" a11yLabel="The night before" onPress={atStart ? undefined : () => move(-1)} />
+        <View style={styles.flexCenter}>
+          <Text style={styles.stepperDay} numberOfLines={1} adjustsFontSizeToFit>
+            {dayLabel(night, now)}
+          </Text>
+        </View>
+        <Chip label="›" a11yLabel="The next night" onPress={() => move(1)} />
+        <Chip label="+7" a11yLabel="A week later" onPress={() => move(7)} />
+      </View>
+      <View style={styles.nightHead}>
+        <MoonDisc size={32} illumination={moon.illumination} waxing={moon.waxing} halo={false} />
+        <View style={styles.flex}>
+          <Text style={type.caption}>{`${moon.name} · ${dayRulerLabel(night)}`}</Text>
+          {intentionKey && <Text style={type.caption}>{fits ? 'A good night for it' : 'Not one of the best nights for it, but yours to choose'}</Text>}
+        </View>
+      </View>
+    </Card>
   );
 }
 
@@ -243,6 +307,9 @@ function NightRow({ night, now, selected, onPress }: { night: NightSuggestion; n
 
 const styles = StyleSheet.create({
   flex: { flex: 1, gap: 2 },
+  flexCenter: { flex: 1, alignItems: 'center' },
+  stepper: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  stepperDay: { fontFamily: fonts.display, fontSize: 17, color: colors.cream },
   nightHead: { flexDirection: 'row', alignItems: 'center', gap: 14 },
   night: {
     minHeight: touch + 16,
