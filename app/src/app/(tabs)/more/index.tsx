@@ -68,6 +68,15 @@ export default function More() {
 
   return (
     <MoreScreen title="Your Sanctuary" eyebrow={name ? `Welcome, ${name}` : 'More'}>
+      <MenuList>
+        <MenuRow
+          label="Search your practice"
+          detail="Library, grimoire, journal and templates"
+          icon="search"
+          last
+          onPress={() => router.push('/more/search')}
+        />
+      </MenuList>
       {GROUPS.map((group) => {
         const rows = [
           ...group.rows,

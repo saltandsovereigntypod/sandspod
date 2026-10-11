@@ -1,6 +1,6 @@
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 
-export type MoreIconName = 'community' | 'offer' | 'letters' | 'library' | 'settings' | 'backup' | 'account' | 'moon' | 'altar';
+export type MoreIconName = 'community' | 'offer' | 'letters' | 'library' | 'settings' | 'backup' | 'account' | 'moon' | 'altar' | 'search';
 
 // Stroke icons on the same 24px grid as components/Icon.tsx.
 export function MoreIcon({ name, size = 20, color }: { name: MoreIconName; size?: number; color: string }) {
@@ -24,6 +24,12 @@ export function MoreIcon({ name, size = 20, color }: { name: MoreIconName; size?
         <>
           <Rect x={3} y={5} width={18} height={14} rx={2} {...stroke} />
           <Path d="M3.5 6.5L12 13l8.5-6.5" {...stroke} />
+        </>
+      )}
+      {name === 'search' && (
+        <>
+          <Circle cx={11} cy={11} r={6.5} {...stroke} />
+          <Path d="M16 16l4.5 4.5" {...stroke} />
         </>
       )}
       {name === 'library' && (
