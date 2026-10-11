@@ -16,11 +16,14 @@ export function SettingsForm({
   eyebrow = 'Settings',
   back = '/more/settings',
   children,
+  after,
 }: {
   title: string;
   eyebrow?: string;
   back?: Href;
   children: (draft: Settings, set: <K extends keyof Settings>(key: K, value: Settings[K]) => void) => ReactNode;
+  /** Shown below Save changes, for previews that aren't settings themselves. */
+  after?: (draft: Settings) => ReactNode;
 }) {
   const { settings, status, save, signedIn } = useMySettings();
   const [draft, setDraft] = useState<Settings | null>(settings);
@@ -65,6 +68,7 @@ export function SettingsForm({
           {!signedIn && (
             <Text style={type.caption}>You're a guest, so these stay on this device. Sign in to use them everywhere.</Text>
           )}
+          {after?.(draft)}
         </>
       )}
     </MoreScreen>

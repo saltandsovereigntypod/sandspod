@@ -28,7 +28,7 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 
 export default function CalendarSettings() {
   return (
-    <SettingsForm title="Calendar & holidays">
+    <SettingsForm title="Calendar & holidays" after={(draft) => <YearAhead draft={draft} />}>
       {(draft, set) => <CalendarForm draft={draft} set={set} />}
     </SettingsForm>
   );
@@ -46,17 +46,11 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
   const setCustom = (list: CustomHoliday[]) => set('calendar_custom_holidays', JSON.stringify(list));
   const setPicked = (ids: string[]) => set('calendar_picked_holidays', ids.join(','));
 
-  const year = useMemo(() => {
-    const now = new Date();
-    return holidaysBetween(now, new Date(now.getFullYear() + 1, now.getMonth(), now.getDate()), choice);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- recompute when the saved choice changes
-  }, [draft.calendar_traditions, draft.calendar_custom_holidays, draft.calendar_picked_holidays]);
-
   const show = (draft.today_show as string) || 'both';
 
   return (
     <>
-      <Text style={type.body}>Choose the calendars you keep. Today shows the next holiday from them, with its meaning.</Text>
+      <Text style={type.body}>Choose the calendars you keep. Their holidays show on Today on the day, with what they mean, and On the horizon shows the next one.</Text>
 
       <Section label="Your calendars">
         <MenuList>
@@ -99,26 +93,38 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
         </>
       )}
 
-      <Section label="The year ahead">
-        {year.length === 0 ? (
-          <Text style={type.caption}>Choose a calendar above to see its holidays.</Text>
-        ) : (
-          <View style={styles.year}>
-            {year.map((holiday) => (
-              <View key={holiday.id} style={styles.yearRow} accessible accessibilityLabel={`${shortDate(holiday.date)}: ${holiday.name}. ${holiday.meaning}`}>
-                <Text style={styles.yearDate}>
-                  {shortDate(holiday.date)}
-                  {holiday.days > 1 ? ` · ${holiday.days} days` : ''}
-                </Text>
-                <Text style={styles.yearName}>{holiday.name}</Text>
-                <Text style={type.caption}>{holiday.traditions.join(' · ')}</Text>
-                {!!holiday.meaning && <Text style={styles.yearMeaning}>{holiday.meaning}</Text>}
-              </View>
-            ))}
-          </View>
-        )}
-      </Section>
     </>
+  );
+}
+
+/** Every holiday from the chosen calendars for the next twelve months (below Save). */
+function YearAhead({ draft }: { draft: Settings }) {
+  const year = useMemo(() => {
+    const now = new Date();
+    return holidaysBetween(now, new Date(now.getFullYear() + 1, now.getMonth(), now.getDate()), holidayChoice(draft));
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- recompute when the calendar choice changes
+  }, [draft.calendar_traditions, draft.calendar_custom_holidays, draft.calendar_picked_holidays]);
+
+  return (
+    <Section label="The year ahead">
+      {year.length === 0 ? (
+        <Text style={type.caption}>Choose a calendar above to see its holidays.</Text>
+      ) : (
+        <View style={styles.year}>
+          {year.map((holiday) => (
+            <View key={holiday.id} style={styles.yearRow} accessible accessibilityLabel={`${shortDate(holiday.date)}: ${holiday.name}. ${holiday.meaning}`}>
+              <Text style={styles.yearDate}>
+                {shortDate(holiday.date)}
+                {holiday.days > 1 ? ` · ${holiday.days} days` : ''}
+              </Text>
+              <Text style={styles.yearName}>{holiday.name}</Text>
+              <Text style={type.caption}>{holiday.traditions.join(' · ')}</Text>
+              {!!holiday.meaning && <Text style={styles.yearMeaning}>{holiday.meaning}</Text>}
+            </View>
+          ))}
+        </View>
+      )}
+    </Section>
   );
 }
 

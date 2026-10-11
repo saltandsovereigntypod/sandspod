@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import { Button } from '../../components/Button';
 import { Icon } from '../../components/Icon';
@@ -17,7 +17,7 @@ import { useRituals } from '../../lib/rituals/store';
 import { holidayChoice } from '../../lib/holidays';
 import { useMySettings } from '../../lib/settings/store';
 import { buildToday, type HorizonItem, type TodayModel } from '../../lib/today';
-import { colors, fonts, radius, type } from '../../theme';
+import { colors, fonts, radius, space, type } from '../../theme';
 
 /** Re-render when the clock passes midnight so the date and moon stay current. */
 function useToday(): Date {
@@ -40,6 +40,11 @@ export default function Today() {
   const show = (settings?.today_show as string) || 'both';
 
   const side = show === 'both' && settings?.today_layout === 'side';
+  // Side by side: each half gets an exact width from the screen, so neither
+  // can grow over the other on any phone.
+  const { width: screenWidth } = useWindowDimensions();
+  const halfWidth = Math.floor((screenWidth - space.gutter * 2 - SIDE_GAP) / 2);
+  const half = { width: halfWidth };
   const rituals = useRituals();
   const reminders = useReminders();
   useReminderTaps();
@@ -73,7 +78,7 @@ export default function Today() {
 
       <View style={side ? styles.sideBySide : styles.stacked}>
         {show !== 'holiday' && (
-          <View style={side ? styles.half : styles.stacked}>
+          <View style={side ? half : styles.stacked}>
             <MoonPanel today={today} compact={side} />
             {!side && reminderButton}
           </View>
@@ -81,7 +86,7 @@ export default function Today() {
         {show !== 'moon' &&
           (side ? (
             // Only a holiday happening today shows here; otherwise this half stays empty.
-            <View style={styles.half}>{today.holidaysToday.length > 0 && <HolidayPanel today={today} compact />}</View>
+            <View style={half}>{today.holidaysToday.length > 0 && <HolidayPanel today={today} compact />}</View>
           ) : today.holidaysToday.length > 0 ? (
             <HolidayPanel today={today} compact={false} />
           ) : show === 'holiday' ? (
@@ -171,6 +176,8 @@ function HolidayPanel({ today, compact }: { today: TodayModel; compact: boolean 
   );
 }
 
+const SIDE_GAP = 10;
+
 const PHASE_DISC: Record<string, { illumination: number; waxing: boolean }> = {
   new: { illumination: 0, waxing: true },
   firstQuarter: { illumination: 0.5, waxing: true },
@@ -206,10 +213,7 @@ const styles = StyleSheet.create({
   phaseCompact: { fontSize: 24, lineHeight: 28 },
   wide: { alignSelf: 'stretch', textAlign: 'center' },
   stacked: { gap: 18 },
-  sideBySide: { flexDirection: 'row', gap: 10, alignItems: 'flex-start' },
-  // flexBasis 0 and minWidth 0 make the halves share the width and wrap
-  // their text, instead of growing to the longest line.
-  half: { flex: 1, flexBasis: 0, minWidth: 0 },
+  sideBySide: { flexDirection: 'row', gap: SIDE_GAP, alignItems: 'flex-start' },
   holiday: {
     backgroundColor: colors.surface,
     borderRadius: radius.card,
