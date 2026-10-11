@@ -132,20 +132,18 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
             last
           />
         </MenuList>
-        {hidden.map((id) => (
-          <View key={id} style={styles.hiddenRow}>
-            <Text style={[type.caption, styles.grow]}>{`${TRADITIONS.find((t) => t.id === id)?.name ?? id} calendar hidden`}</Text>
+        {hidden.length > 0 && (
+          <View style={styles.hiddenRow}>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel={`Show the ${TRADITIONS.find((t) => t.id === id)?.name ?? id} calendar again`}
-              onPress={() => setHidden(id, false)}
+              onPress={() => set('calendar_hidden_traditions', '')}
               hitSlop={8}
               style={({ pressed }) => [styles.hide, pressed && { opacity: 0.6 }]}
             >
-              <Text style={styles.hideLabel}>Show again</Text>
+              <Text style={styles.hideLabel}>{hidden.length > 1 ? 'Show hidden calendars' : 'Show hidden calendar'}</Text>
             </Pressable>
           </View>
-        ))}
+        )}
       </Section>
 
       {mainOptions.length > 1 && (
