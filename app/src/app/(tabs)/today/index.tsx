@@ -167,6 +167,12 @@ export default function Today() {
 
       <DaySky today={today} sky={sky} here={here} now={clock} />
       <CorrespondencesCard today={today} />
+      <Button
+        label="Set tonight’s altar"
+        variant="outline"
+        accessibilityHint="Opens a starter altar for today's planet, moon or holiday"
+        onPress={() => router.navigate({ pathname: '/altar/[altarId]', params: { altarId: 'tonight', from: 'today' } })}
+      />
       <View style={styles.prompt}>
         <Text style={[type.eyebrow, styles.gold]}>Reflect</Text>
         <Text style={styles.promptText}>{today.prompt}</Text>

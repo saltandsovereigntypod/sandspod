@@ -3,7 +3,7 @@ import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-nativ
 
 import { altarImageSource } from '../../lib/altar/assets';
 import { cabinetEntry, topUses } from '../../lib/altar/companion';
-import { cabinetCategories, cabinetItemsFor, formImage, formObjectLabel, placeableForms } from '../../lib/altar/cabinet';
+import { cabinetCategories, cabinetItemsFor, formImage, formObjectLabel, placeableForms, shortLabel } from '../../lib/altar/cabinet';
 import type { CabinetForm, CabinetItem } from '../../lib/altar/types';
 import type { LibraryEntry } from '../../lib/library';
 import { colors, fonts, radius, space, touch, type } from '../../theme';
@@ -75,7 +75,7 @@ export function CabinetSheet({ visible, items, overrides, library, onClose, onPl
                 <Tile
                   key={`${form.form}-${form.label}`}
                   label={form.label}
-                  spoken={`Place ${formObjectLabel(item, form)}${uses ? `. For ${uses.replace(' · ', ' and ')}` : ''}`}
+                  spoken={`Place ${shortLabel(formObjectLabel(item, form))}${uses ? `. For ${uses.replace(' · ', ' and ')}` : ''}`}
                   image={formImage(item, form, overrides)}
                   onPress={() => onPlace(item, form)}
                 />
@@ -93,7 +93,7 @@ export function CabinetSheet({ visible, items, overrides, library, onClose, onPl
                 key={item.id}
                 label={item.name}
                 uses={uses}
-                spoken={`Place ${formObjectLabel(item, forms[0])}${uses ? `. For ${uses.replace(' · ', ' and ')}` : ''}`}
+                spoken={`Place ${shortLabel(formObjectLabel(item, forms[0]))}${uses ? `. For ${uses.replace(' · ', ' and ')}` : ''}`}
                 image={formImage(item, forms[0], overrides)}
                 onPress={() => onPlace(item, forms[0])}
               />

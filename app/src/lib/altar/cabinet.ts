@@ -174,6 +174,18 @@ export const builtInCabinet: CabinetItem[] = [
 ];
 
 /** Label of an object placed from a form (cabinet.js renderCabinetTile). */
+/**
+ * How an object's name is shown in the app. Saved labels stay exactly as the
+ * website writes them ("Red Candle Vigil Candle"); on screen the doubled word
+ * is dropped ("Red Vigil Candle", "Red Tea Light").
+ */
+export function shortLabel(label: string | null | undefined, fallback = 'Object'): string {
+  const name = (label ?? '').trim();
+  if (!name) return fallback;
+  const doubled = /^(.+?) Candle (.+)$/.exec(name);
+  return doubled ? `${doubled[1]} ${doubled[2]}` : name;
+}
+
 export function formObjectLabel(item: CabinetItem, form: CabinetForm): string {
   return item.forms.length > 1 ? `${item.name} ${form.label}` : item.name;
 }

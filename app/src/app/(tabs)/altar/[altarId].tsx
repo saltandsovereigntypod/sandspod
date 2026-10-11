@@ -11,7 +11,7 @@ import { Chip, ChipRow } from '../../../components/altar/Chip';
 import { BackgroundSheet, DressSheet, LayersSheet, SaveSheet } from '../../../components/altar/OptionSheets';
 import { Button } from '../../../components/Button';
 import { glanceLine, resolveAltarEntry } from '../../../lib/altar/companion';
-import { builtInCabinet, objectFromForm } from '../../../lib/altar/cabinet';
+import { builtInCabinet, objectFromForm, shortLabel } from '../../../lib/altar/cabinet';
 import {
   addObject,
   carveObject,
@@ -41,6 +41,9 @@ import { useAltars } from '../../../lib/altar/store';
 import type { CabinetForm, CabinetItem } from '../../../lib/altar/types';
 import { useLibrary } from '../../../lib/library';
 import { useMySettings } from '../../../lib/settings/store';
+import { tonightAltar } from '../../../lib/altar/tonight';
+import { holidayChoice, holidaysToday } from '../../../lib/holidays';
+import { moonState } from '../../../lib/moon';
 import { colors, fonts, space, touch, type } from '../../../theme';
 
 type SheetName = 'about' | 'carve' | 'cabinet' | 'background' | 'layers' | 'dress' | 'save' | null;
@@ -56,8 +59,9 @@ function burnTime(ms: number): string {
 }
 
 export default function AltarEditor() {
-  const { altarId } = useLocalSearchParams<{ altarId: string }>();
+  const { altarId, from } = useLocalSearchParams<{ altarId: string; from?: string }>();
   const store = useAltars();
+  const { settings } = useMySettings();
   const { altars, draft, draftSourceId, status, customItems, backgrounds, overrides, signedIn } = store;
 
   const [doc, setDoc] = useState<AltarDocument | null>(null);
@@ -91,6 +95,14 @@ export default function AltarEditor() {
       redo.current = [];
     };
     if (altarId === 'new') return start(emptyDocument(), null, 'My Altar');
+    if (altarId === 'tonight') {
+      const night = new Date();
+      const tonight = tonightAltar(night, holidaysToday(night, holidayChoice(settings)), moonState(night).name);
+      // Not marked unsaved, so a working draft you already have isn't replaced until you change something here.
+      start(tonight.doc, null, 'Tonight’s Altar');
+      setNotice(`Set for ${tonight.reason}. Move, swap or add anything, then Save to keep it.`);
+      return;
+    }
     if (altarId === 'draft') {
       if (!draft) return;
       const source = draftSourceId ? altars.find((a) => a.id === draftSourceId) : null;
@@ -103,7 +115,7 @@ export default function AltarEditor() {
     const altar = altars.find((a) => a.id === altarId);
     if (altar) return start(documentFromAltar(altar), altar.id, altar.name || 'My Altar');
     if (status === 'ready' || status === 'offline' || status === 'error') setMissing(true);
-  }, [altarId, altars, draft, draftSourceId, status]);
+  }, [altarId, altars, draft, draftSourceId, status, settings]);
 
   const dirty = !!doc && doc !== baseline;
 
@@ -212,7 +224,6 @@ export default function AltarEditor() {
   const allItems = useMemo(() => [...customItems, ...builtInCabinet], [customItems]);
   const selectedObject = doc && selected != null ? doc.objects[selected] ?? null : null;
   const { entries: libraryEntries } = useLibrary();
-  const { settings } = useMySettings();
   const selectedEntry = useMemo(
     () => (selectedObject ? resolveAltarEntry(libraryEntries, selectedObject) : null),
     [libraryEntries, selectedObject],
@@ -234,7 +245,7 @@ export default function AltarEditor() {
     <SafeAreaView edges={['top']} style={styles.safe}>
       <View style={styles.header}>
         <Pressable
-          onPress={() => (router.canGoBack() ? router.back() : router.replace('/altar'))}
+          onPress={() => (from === 'today' ? router.navigate('/today') : router.canGoBack() ? router.back() : router.replace('/altar'))}
           accessibilityRole="button"
           accessibilityLabel="Back to your altars"
           style={styles.headerButton}
@@ -284,7 +295,7 @@ export default function AltarEditor() {
         {doc && selectedObject && selected != null ? (
           <ObjectPanel
             key={selected}
-            objectLabel={selectedObject.label || 'Object'}
+            objectLabel={shortLabel(selectedObject.label)}
             object={selectedObject}
             glance={selectedEntry ? glanceLine(selectedEntry, settings) : ''}
             onAbout={() => setSheet('about')}
@@ -352,13 +363,13 @@ export default function AltarEditor() {
           <AboutSheet
             visible={sheet === 'about'}
             object={selectedObject}
-            label={selectedObject?.label || 'Object'}
+            label={shortLabel(selectedObject?.label)}
             entry={selectedEntry}
             onClose={() => setSheet(null)}
           />
           <CarveSheet
             visible={sheet === 'carve'}
-            candle={selectedObject?.label || 'Candle'}
+            candle={shortLabel(selectedObject?.label, 'Candle')}
             carvings={selectedObject ? carvingsOf(selectedObject) : []}
             onClose={() => setSheet(null)}
             onCarve={(text) => {

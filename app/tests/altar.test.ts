@@ -376,3 +376,12 @@ test('rotation accumulates in degrees and resize respects locks', () => {
   assert.equal(resizeObject(doc, 1, 2), doc);
   assert.equal(changeLayer(doc, 0, 'front').objects[0].zIndex, '11');
 });
+
+test('candle names are shown without the doubled word, and saved as the website writes them', async () => {
+  const { shortLabel } = await import('../src/lib/altar/cabinet.ts');
+  assert.equal(shortLabel('Red Candle Vigil Candle'), 'Red Vigil Candle');
+  assert.equal(shortLabel('White Candle Tea Light'), 'White Tea Light');
+  assert.equal(shortLabel('Lavender Sprig'), 'Lavender Sprig');
+  assert.equal(shortLabel(''), 'Object');
+  assert.equal(shortLabel(undefined, 'Candle'), 'Candle');
+});

@@ -3,7 +3,7 @@ import { ActivityIndicator, Image, Pressable, StyleSheet, Text, TextInput, View 
 
 import { Button } from '../Button';
 import { altarImageSource } from '../../lib/altar/assets';
-import { builtInBackgrounds, DEFAULT_BACKGROUND } from '../../lib/altar/cabinet';
+import { builtInBackgrounds, DEFAULT_BACKGROUND, shortLabel } from '../../lib/altar/cabinet';
 import { stackOrder } from '../../lib/altar/layers';
 import { canDressWith, isCandle, isLit } from '../../lib/altar/livingState';
 import type { AltarDocument } from '../../lib/altar/snapshot';
@@ -81,7 +81,7 @@ export function LayersSheet({
         {order.map((index, position) => {
           const object = doc.objects[index];
           const source = altarImageSource(object.imagePath);
-          const name = object.label || 'Object';
+          const name = shortLabel(object.label);
           const state = [isCandle(object) && isLit(object) ? 'lit' : null, object.locked === 'true' ? 'locked' : null]
             .filter(Boolean)
             .join(', ');
@@ -160,14 +160,14 @@ export function DressSheet({
                   key={`${o.altarObjectId}-${i}`}
                   onPress={() => onDress(i)}
                   accessibilityRole="button"
-                  accessibilityLabel={`Dress with ${o.label || 'ingredient'}`}
+                  accessibilityLabel={`Dress with ${shortLabel(o.label, 'ingredient')}`}
                   style={({ pressed }) => [styles.layer, pressed && { opacity: 0.7 }]}
                 >
                   <View style={styles.layerMain}>
                     <View style={styles.layerThumb}>
                       {source && <Image source={source} style={styles.layerThumbImage} resizeMode="contain" />}
                     </View>
-                    <Text style={styles.layerName}>{o.label || 'Ingredient'}</Text>
+                    <Text style={styles.layerName}>{shortLabel(o.label, 'Ingredient')}</Text>
                   </View>
                 </Pressable>
               );
