@@ -1,8 +1,10 @@
 import { router, type Href } from 'expo-router';
+import Constants from 'expo-constants';
 import * as WebBrowser from 'expo-web-browser';
 import { Linking } from 'react-native';
 
 import type { MoreIconName } from '../../../components/more/MoreIcon';
+import { runningUpdateLabel } from '../../../components/UpdateBanner';
 import { MenuList, MenuRow, MoreScreen, Section } from '../../../components/more/ui';
 import { useIsReviewer, useReview } from '../../../lib/community/api';
 import { inReviewFolder, SUPPORT_EMAIL } from '../../../lib/community/model';
@@ -102,7 +104,8 @@ export default function More() {
         <MenuList>
           <MenuRow label="Contact us" detail={SUPPORT_EMAIL} onPress={() => void Linking.openURL(`mailto:${SUPPORT_EMAIL}`)} />
           <MenuRow label="Privacy Policy" onPress={() => void WebBrowser.openBrowserAsync(PRIVACY_URL)} />
-          <MenuRow label="Submission Terms" last onPress={() => void WebBrowser.openBrowserAsync(TERMS_URL)} />
+          <MenuRow label="Submission Terms" onPress={() => void WebBrowser.openBrowserAsync(TERMS_URL)} />
+          <MenuRow label={`Version ${Constants.expoConfig?.version ?? ''}`.trim()} detail={runningUpdateLabel() ?? undefined} last />
         </MenuList>
       </Section>
     </MoreScreen>
