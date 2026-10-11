@@ -18,7 +18,7 @@ export default function Reminders() {
   const calendar = useCalendar();
   const now = new Date();
 
-  const setCalendarChoice = async (change: { phases?: boolean; sabbats?: boolean }) => {
+  const setCalendarChoice = async (change: { phases?: boolean; sabbats?: boolean; astro?: boolean }) => {
     const result = await setSkyChoices(change, settings.phases);
     if (result === 'denied') tell('Calendar access is off', 'Allow calendar access in Settings to add events to your calendar.');
   };
@@ -121,6 +121,12 @@ export default function Reminders() {
                 value={calendar.sabbats}
                 onChange={(on) => void setCalendarChoice({ sabbats: on })}
               />
+              <Toggle
+                label="Eclipses & retrogrades"
+                detail="Eclipses, and when Mercury through Saturn turn retrograde or direct"
+                value={calendar.astro}
+                onChange={(on) => void setCalendarChoice({ astro: on })}
+              />
               {calendar.access === 'granted' && calendar.calendars.length > 1 && (
                 <View style={ui.gapSmall}>
                   <Body muted>Add events to</Body>
@@ -134,7 +140,7 @@ export default function Reminders() {
             </>
           ) : calendarMode === 'file' ? (
             <Button
-              label="Download holidays and chosen moon phases (.ics)"
+              label="Download holidays, eclipses and moon phases (.ics)"
               variant="outline"
               onPress={() => {
                 if (!downloadSky(settings.phases)) tell("Couldn't download", 'Your browser blocked the file. Please try again.');

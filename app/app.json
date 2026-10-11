@@ -49,6 +49,12 @@
         {
           "calendarPermission": "Allow $(PRODUCT_NAME) to add your planned rituals, moon phases and sabbats to your calendar."
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location to work out sunrise, sunset, moonrise and planetary hours where you are. It stays on your phone."
+        }
       ]
     ],
     "experiments": {

@@ -39,16 +39,16 @@ const PHASE_ORDER: PrincipalPhase[] = ['new', 'firstQuarter', 'full', 'lastQuart
 const SYNODIC_DAYS = 29.530588861;
 const DAY_MS = 86_400_000;
 
-function julianDayToDate(jd: number): Date {
+export function julianDayToDate(jd: number): Date {
   return new Date((jd - 2440587.5) * DAY_MS);
 }
 
-function dateToJulianDay(date: Date): number {
+export function dateToJulianDay(date: Date): number {
   return date.getTime() / DAY_MS + 2440587.5;
 }
 
 /** Julian Ephemeris Day of lunation `k` (k integer = new moon, +0.25 steps for other phases). */
-function phaseJde(k: number, phase: PrincipalPhase): number {
+export function phaseJde(k: number, phase: PrincipalPhase): number {
   const T = k / 1236.85;
   const T2 = T * T;
   const T3 = T2 * T;
@@ -114,7 +114,7 @@ function phaseJde(k: number, phase: PrincipalPhase): number {
   return jde;
 }
 
-function lunationNear(date: Date): number {
+export function lunationNear(date: Date): number {
   return Math.floor((dateToJulianDay(date) - 2451550.09766) / SYNODIC_DAYS);
 }
 
@@ -197,7 +197,7 @@ export const PRINCIPAL_NAMES: Record<PrincipalPhase, PhaseName> = {
   lastQuarter: 'Last Quarter',
 };
 
-const SIGNS = [
+export const SIGNS = [
   'Aries',
   'Taurus',
   'Gemini',
@@ -215,7 +215,7 @@ const SIGNS = [
 export type ZodiacSign = (typeof SIGNS)[number];
 
 /** Apparent tropical longitude of the Sun in degrees (Meeus ch. 25, low precision). */
-function sunLongitude(date: Date): number {
+export function sunLongitude(date: Date): number {
   const T = (dateToJulianDay(date) - 2451545.0) / 36525;
   const L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
   const M = (357.52911 + 35999.05029 * T - 0.0001537 * T * T) * RAD;

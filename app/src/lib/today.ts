@@ -1,5 +1,8 @@
 import { daysBetween, dayRuler, dayRulerLabel, longDate, relativeDay, shortDate, timeOfDay } from './calendar.ts';
+import { eclipseLabel, eclipsesBetween, type Eclipse } from './astro/eclipses.ts';
+import { correspondencesFor, goodForToday, journalPrompt, type Correspondences } from './dayInfo.ts';
 import { holidayDay, holidaysToday, nextHolidayAfterToday, type Holiday, type HolidayChoice } from './holidays.ts';
+import { fullMoonName, HOLIDAY_TERM, traditionDay, usesFolkMoonNames, type TraditionDay } from './traditionDay.ts';
 import { moonSign, moonState, nextMoonIngress, nextPhase, PRINCIPAL_NAMES, signAtSyzygy, upcomingPhases, type MoonState, type PrincipalPhase } from './moon.ts';
 
 export type HorizonItem =
@@ -22,6 +25,17 @@ export type TodayModel = {
   holidayWhen: string[];
   /** The next moon phase, then the next holiday after today. */
   horizon: HorizonItem[];
+  /** The day as the main calendar names it (Athenian date, Norse weekday god, …). */
+  tradition: TraditionDay | null;
+  /** The word for a holy day in each of holidaysToday ("Sabbat", "Blót & feast", …). */
+  holidayTerms: string[];
+  /** "The New Moon in Libra is good for …" */
+  goodFor: string;
+  correspondences: Correspondences;
+  prompt: string;
+  /** The next eclipse if it falls within 60 days, e.g. "Total solar eclipse in Leo · Aug 12". */
+  eclipseLine: string | null;
+  nextEclipse: Eclipse | null;
 };
 
 function whenLabel(now: Date, date: Date): string {
@@ -32,7 +46,7 @@ function whenLabel(now: Date, date: Date): string {
 }
 
 /** Everything the Today screen shows that can be computed from the date alone. */
-export function buildToday(now: Date, choice: HolidayChoice = { traditions: ['wheel'], custom: [] }): TodayModel {
+export function buildToday(now: Date, choice: HolidayChoice = { traditions: ['wheel'], custom: [] }, primary = 'wheel'): TodayModel {
   const moon = moonState(now);
   const nextFull = nextPhase(now, 'full');
   const nextNew = nextPhase(now, 'new');
@@ -42,7 +56,8 @@ export function buildToday(now: Date, choice: HolidayChoice = { traditions: ['wh
   const syzygyPhase = fullFirst ? 'full' : 'new';
   const syzygyDate = fullFirst ? nextFull : nextNew;
   const syzygyWhen = relativeDay(now, syzygyDate);
-  const nextSyzygyLine = `${PRINCIPAL_NAMES[syzygyPhase]} in ${signAtSyzygy(syzygyDate, syzygyPhase)} · ${syzygyWhen.charAt(0).toUpperCase()}${syzygyWhen.slice(1)}`;
+  const folk = syzygyPhase === 'full' && usesFolkMoonNames(primary) ? ` · ${fullMoonName(syzygyDate)}` : '';
+  const nextSyzygyLine = `${PRINCIPAL_NAMES[syzygyPhase]} in ${signAtSyzygy(syzygyDate, syzygyPhase)}${folk} · ${syzygyWhen.charAt(0).toUpperCase()}${syzygyWhen.slice(1)}`;
 
   const ingress = nextMoonIngress(now);
   const signLine = `Moon in ${moonSign(now)} · enters ${ingress.sign} ${relativeDay(now, ingress.date)} at ${timeOfDay(ingress.date)}`;
@@ -61,7 +76,17 @@ export function buildToday(now: Date, choice: HolidayChoice = { traditions: ['wh
   const horizon: HorizonItem[] = [{ kind: 'moon', phase: phase.phase, title: phaseTitle, detail: whenLabel(now, phase.date) }];
   if (upcoming) horizon.push({ kind: 'holiday', title: upcoming.name, detail: whenLabel(now, upcoming.date) });
 
+  const sign = moonSign(now);
+  const nextEclipse = eclipsesBetween(now, new Date(now.getTime() + 60 * 86_400_000))[0] ?? null;
+
   return {
+    tradition: traditionDay(now, primary),
+    holidayTerms: running.map((holiday) => HOLIDAY_TERM[holiday.traditionIds[0]] ?? 'Holy day'),
+    goodFor: goodForToday(moon.name, sign),
+    correspondences: correspondencesFor(now),
+    prompt: journalPrompt(now, moon.name, running),
+    eclipseLine: nextEclipse ? `${eclipseLabel(nextEclipse)} · ${whenLabel(now, nextEclipse.date)}` : null,
+    nextEclipse,
     dateLine: longDate(now),
     rulerLine: `${dayRulerLabel(now)} · ${themes}`,
     moon,

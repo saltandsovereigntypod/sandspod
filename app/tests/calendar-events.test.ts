@@ -113,3 +113,18 @@ test('the Google Calendar link carries the title, times and notes', () => {
   const allDay = new URL(googleCalendarUrl(holidayEvents(new Date(2026, 9, 1), 40)[0]));
   assert.equal(allDay.searchParams.get('dates'), '20261031/20261101');
 });
+
+test('eclipse and retrograde-station events, dated like holidays', async () => {
+  const { astroEvents, datedKeyDate } = await import('../src/lib/reminders/calendarEvent.ts');
+  const events = astroEvents(new Date(2026, 9, 1), 60);
+  const keys = events.map((e) => e.key);
+  // Mercury turns retrograde Oct 24 and direct Nov 13; Venus direct Nov 14 (2026).
+  assert.ok(keys.some((k) => /^astro-station-mercury-retrograde-2026-10-2[34]$/.test(k)), keys.join(' '));
+  assert.ok(keys.some((k) => /^astro-station-mercury-direct-2026-11-1[34]$/.test(k)));
+  assert.ok(keys.some((k) => /^astro-station-venus-direct-2026-11-1[345]$/.test(k)));
+  assert.ok(events.every((e) => e.allDay && e.notes?.includes('Salt & Sovereignty')));
+  const eclipses = astroEvents(new Date(2026, 7, 1), 40).filter((e) => e.key.startsWith('astro-eclipse'));
+  assert.deepEqual(eclipses.map((e) => e.title), ['Total solar eclipse in Leo', 'Partial lunar eclipse in Pisces']);
+  assert.equal(datedKeyDate('astro-eclipse-solar-2026-08-12')?.getTime(), new Date(2026, 7, 12).getTime());
+  assert.equal(datedKeyDate('moon-full-2026-08-28'), null);
+});

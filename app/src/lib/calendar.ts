@@ -121,3 +121,8 @@ export function timeOfDay(date: Date): string {
   const minutes = String(date.getMinutes()).padStart(2, '0');
   return `${hours % 12 || 12}:${minutes} ${hours < 12 ? 'AM' : 'PM'}`;
 }
+
+/** "Oct 26", or "Apr 12, 2028" when it isn't in `now`'s year. */
+export function dateFrom(now: Date, date: Date): string {
+  return date.getFullYear() === now.getFullYear() ? shortDate(date) : `${shortDate(date)}, ${date.getFullYear()}`;
+}

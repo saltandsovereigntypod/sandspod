@@ -10,7 +10,7 @@ import { DEFAULT_TRADITIONS, type HolidayChoice } from '../holidays';
 import type { PrincipalPhase } from '../moon';
 import { getRituals, removePlan, savePlan } from '../rituals/store';
 import type { RitualPlan, TemplateRow } from '../rituals/types';
-import { holidayEvents, holidayKeyDate, moonEvents, planEvent, toIcs, type CalendarEventSpec } from './calendarEvent';
+import { astroEvents, datedKeyDate, holidayEvents, moonEvents, planEvent, toIcs, type CalendarEventSpec } from './calendarEvent';
 import {
   calendarAccess,
   calendarMode,
@@ -30,6 +30,8 @@ type CalendarSettings = {
   /** Put the moon phases chosen for reminders in the calendar too. */
   phases: boolean;
   sabbats: boolean;
+  /** Eclipses and retrograde stations. */
+  astro: boolean;
   /** Sky event key → calendar event id, for the phases and sabbats written. */
   skyEvents: Record<string, string>;
 };
@@ -43,6 +45,7 @@ let state: CalendarState = {
   calendarId: null,
   phases: false,
   sabbats: false,
+  astro: false,
   skyEvents: {},
 };
 const listeners = new Set<() => void>();
@@ -54,9 +57,9 @@ function set(patch: Partial<CalendarState>) {
 }
 
 async function persist() {
-  const { calendarId, phases, sabbats, skyEvents } = state;
+  const { calendarId, phases, sabbats, astro, skyEvents } = state;
   try {
-    await AsyncStorage.setItem(KEY, JSON.stringify({ calendarId, phases, sabbats, skyEvents }));
+    await AsyncStorage.setItem(KEY, JSON.stringify({ calendarId, phases, sabbats, astro, skyEvents }));
   } catch {
     // Kept in memory for this session.
   }
@@ -71,6 +74,7 @@ function load(): Promise<void> {
         calendarId: saved.calendarId ?? null,
         phases: saved.phases === true,
         sabbats: saved.sabbats === true,
+        astro: saved.astro === true,
         skyEvents: saved.skyEvents && typeof saved.skyEvents === 'object' ? saved.skyEvents : {},
       });
     } catch {
@@ -175,7 +179,11 @@ export function setHolidaySelection(choice: HolidayChoice): boolean {
 }
 
 function skySpecs(phases: Record<PrincipalPhase, boolean>, now: Date): CalendarEventSpec[] {
-  return [...(state.phases ? moonEvents(phases, now) : []), ...(state.sabbats ? holidayEvents(now, 365, holidaySelection) : [])];
+  return [
+    ...(state.phases ? moonEvents(phases, now) : []),
+    ...(state.sabbats ? holidayEvents(now, 365, holidaySelection) : []),
+    ...(state.astro ? astroEvents(now, 365) : []),
+  ];
 }
 
 /** Bring the phone calendar's moon and sabbat events in line with the choices. */
@@ -190,9 +198,13 @@ export async function syncSkyCalendar(phases: Record<PrincipalPhase, boolean>) {
       // Remove what is no longer chosen; events that have simply passed stay in the calendar.
       const phase = key.startsWith('moon-') ? (key.split('-')[1] as PrincipalPhase) : null;
       // A holiday still to come that isn't wanted belongs to a calendar no longer chosen.
-      const holidayDate = holidayKeyDate(key);
-      const deselected = !!holidayDate && holidayDate.getTime() >= startOfDay(now).getTime();
-      const stillChosen = phase ? state.phases && phases[phase] : state.sabbats && !deselected;
+      const keyDate = datedKeyDate(key);
+      const deselected = !!keyDate && keyDate.getTime() >= startOfDay(now).getTime();
+      const stillChosen = phase
+        ? state.phases && phases[phase]
+        : key.startsWith('astro-')
+          ? state.astro && !deselected
+          : state.sabbats && !deselected;
       if (!stillChosen) await deleteEvent(id);
       delete skyEvents[key];
     }
@@ -209,8 +221,8 @@ export async function syncSkyCalendar(phases: Record<PrincipalPhase, boolean>) {
   await persist();
 }
 
-export async function setSkyChoices(change: Partial<Pick<CalendarSettings, 'phases' | 'sabbats'>>, phases: Record<PrincipalPhase, boolean>) {
-  const turningOn = change.phases || change.sabbats;
+export async function setSkyChoices(change: Partial<Pick<CalendarSettings, 'phases' | 'sabbats' | 'astro'>>, phases: Record<PrincipalPhase, boolean>) {
+  const turningOn = change.phases || change.sabbats || change.astro;
   if (turningOn && calendarMode === 'device' && !(await ensureCalendar())) return 'denied' as const;
   set(change);
   await persist();
@@ -221,8 +233,8 @@ export async function setSkyChoices(change: Partial<Pick<CalendarSettings, 'phas
 /** The chosen moon phases and sabbats as one .ics file (web). */
 export function downloadSky(phases: Record<PrincipalPhase, boolean>): boolean {
   const now = new Date();
-  const specs = [...moonEvents(phases, now), ...holidayEvents(now, 365, holidaySelection)];
-  return specs.length > 0 && downloadIcs(toIcs(specs, now), 'moon-and-holidays.ics');
+  const specs = [...moonEvents(phases, now), ...holidayEvents(now, 365, holidaySelection), ...astroEvents(now, 365)];
+  return specs.length > 0 && downloadIcs(toIcs(specs, now), 'moon-holidays-and-sky.ics');
 }
 
 export function useCalendar(): CalendarState {

@@ -26,7 +26,7 @@ test('every holiday in every calendar has a name and a meaning', () => {
 test('Wheel of the Year, north and south', () => {
   const north = holidaysBetween(new Date(2026, 0, 1), new Date(2026, 11, 31), only('wheel'));
   assert.deepEqual(north.map((h) => h.name), ['Imbolc', 'Ostara', 'Beltane', 'Litha', 'Lammas', 'Mabon', 'Samhain', 'Yule']);
-  assert.equal(north[1].date.getDate(), 20); // the 2026 equinox
+  assert.ok([20, 21].includes(north[1].date.getDate())); // the 2026 equinox (Mar 21 in New Zealand)
   const south = holidaysBetween(new Date(2026, 0, 1), new Date(2026, 11, 31), only('wheel_south'));
   assert.equal(south.find((h) => h.name === 'Samhain')!.date.getMonth(), 3);
   assert.equal(south.find((h) => h.name === 'Yule')!.date.getMonth(), 5);
@@ -60,12 +60,16 @@ test('the Attic calendar starts at the first new moon after the summer solstice'
   }
   // 2026–27: Pyanepsion begins Oct 11, so the Thesmophoria (11th) is Oct 21.
   const fall = holidaysBetween(new Date(2026, 9, 1), new Date(2026, 9, 31), only('hellenic'));
-  assert.equal(fall.find((h) => h.name === 'Thesmophoria')!.date.getTime(), day(2026, 9, 21));
+  // (A day later where the new moon falls after local midnight, as in East Asia.)
+  const thesmophoria = fall.find((h) => h.name === 'Thesmophoria')!.date.getTime();
+  assert.ok(thesmophoria === day(2026, 9, 21) || thesmophoria === day(2026, 9, 22));
   // Hekate's Deipnon on the new moon (Oct 10, 2026), Noumenia the next day.
-  const monthly = holidaysBetween(new Date(2026, 9, 9), new Date(2026, 9, 12), only('hellenic_monthly'));
+  const monthly = holidaysBetween(new Date(2026, 9, 9), new Date(2026, 9, 13), only('hellenic_monthly'));
+  const deipnon = monthly.find((h) => h.name === 'Hekate’s Deipnon')!.date.getDate();
+  assert.ok(deipnon === 10 || deipnon === 11);
   assert.deepEqual(
-    monthly.map((h) => [h.name, h.date.getDate()]),
-    [['Hekate’s Deipnon', 10], ['Noumenia', 11], ['Agathos Daimon', 12]],
+    monthly.slice(0, 3).map((h) => [h.name, h.date.getDate() - deipnon]),
+    [['Hekate’s Deipnon', 0], ['Noumenia', 1], ['Agathos Daimon', 2]],
   );
 });
 
@@ -108,7 +112,7 @@ test('a running festival counts its days; Today shows the next moon phase and ho
   assert.deepEqual(ordinary.holidaysToday, []);
   assert.equal(ordinary.horizon[1].title, 'Samhain');
   // Exact at 04:13 UTC on Oct 26, so Oct 25 in the Americas.
-  assert.match(ordinary.nextSyzygyLine, /^Full Moon in Taurus · Oct 2[56]$/);
+  assert.match(ordinary.nextSyzygyLine, /^Full Moon in Taurus · Hunter’s Moon · Oct 2[56]$/);
   assert.match(ordinary.illuminationLine, /^\d+% illuminated$/);
 
   // On the day itself the holiday is today's, and the horizon moves on to the next.

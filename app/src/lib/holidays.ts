@@ -32,6 +32,8 @@ export type Holiday = {
   /** How many days it runs (1 for a single day). */
   days: number;
   traditions: string[];
+  /** Ids of those traditions ('custom' for your own events). */
+  traditionIds: string[];
 };
 
 /** One of your own events: every year, or once when `year` is set. */
@@ -348,29 +350,38 @@ export function parseCustomHolidays(raw: unknown): CustomHoliday[] {
 export function holidaysBetween(from: Date, to: Date, choice: HolidayChoice): Holiday[] {
   const today = startOfDay(from).getTime();
   const out = new Map<string, Holiday>();
-  const add = (def: { name: string; meaning: string; days?: number }, id: string, date: Date, tradition: string) => {
+  const add = (def: { name: string; meaning: string; days?: number }, id: string, date: Date, tradition: string, traditionId: string) => {
     const days = def.days ?? 1;
     if (addDays(date, days - 1).getTime() < today || date.getTime() > to.getTime()) return;
     const key = `${def.name.split(' ')[0].toLowerCase()}|${date.getTime()}`;
     const existing = out.get(key);
     if (existing) {
       if (!existing.traditions.includes(tradition)) existing.traditions.push(tradition);
+      if (!existing.traditionIds.includes(traditionId)) existing.traditionIds.push(traditionId);
       return;
     }
-    out.set(key, { id: `${id}-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`, name: def.name, meaning: def.meaning, date, days, traditions: [tradition] });
+    out.set(key, {
+      id: `${id}-${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`,
+      name: def.name,
+      meaning: def.meaning,
+      date,
+      days,
+      traditions: [tradition],
+      traditionIds: [traditionId],
+    });
   };
 
   for (let year = from.getFullYear() - 1; year <= to.getFullYear() + 1; year++) {
     for (const tradition of TRADITIONS) {
       if (!choice.traditions.includes(tradition.id)) continue;
       for (const def of tradition.holidays) {
-        for (const date of occurrences(def.rule, year)) add(def, `${tradition.id}-${def.id}`, date, tradition.name);
+        for (const date of occurrences(def.rule, year)) add(def, `${tradition.id}-${def.id}`, date, tradition.name, tradition.id);
       }
     }
     if (choice.traditions.includes('custom')) {
       for (const custom of choice.custom) {
         if (custom.year && custom.year !== year) continue;
-        add(custom, `custom-${custom.id}`, new Date(year, custom.month, custom.day), 'Your calendar');
+        add(custom, `custom-${custom.id}`, new Date(year, custom.month, custom.day), 'Your calendar', 'custom');
       }
       // Single holidays picked from calendars that aren't chosen whole.
       for (const id of choice.picked ?? []) {
@@ -379,7 +390,7 @@ export function holidaysBetween(from: Date, to: Date, choice: HolidayChoice): Ho
         const tradition = TRADITIONS.find((t) => t.id === traditionId);
         const def = tradition?.holidays.find((h) => h.id === holidayId);
         if (!tradition || !def) continue;
-        for (const date of occurrences(def.rule, year)) add(def, `${traditionId}-${def.id}`, date, tradition.name);
+        for (const date of occurrences(def.rule, year)) add(def, `${traditionId}-${def.id}`, date, tradition.name, traditionId);
       }
     }
   }

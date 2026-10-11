@@ -6,6 +6,7 @@ import { Card, Chips, Field, MenuList, Notice, Section, SwitchRow } from '../../
 import { SettingsForm } from '../../../../components/more/SettingsForm';
 import { shortDate } from '../../../../lib/calendar';
 import { holidayChoice, holidaysBetween, pickId, TRADITIONS, type CustomHoliday } from '../../../../lib/holidays';
+import { primaryTradition } from '../../../../lib/traditionDay';
 import { newId } from '../../../../lib/altar/uid';
 import type { Settings } from '../../../../lib/settings/defaults';
 import { colors, fonts, type } from '../../../../theme';
@@ -47,6 +48,7 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
   const setPicked = (ids: string[]) => set('calendar_picked_holidays', ids.join(','));
 
   const show = (draft.today_show as string) || 'both';
+  const mainOptions = TRADITIONS.filter((t) => chosen.has(t.id)).map((t) => ({ value: t.id, label: t.name }));
 
   return (
     <>
@@ -72,6 +74,18 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
           />
         </MenuList>
       </Section>
+
+      {mainOptions.length > 1 && (
+        <Section label="Main calendar">
+          <Text style={type.caption}>Names the day at the top of Today: the Athenian date, the Norse weekday gods, the Roman date and so on.</Text>
+          <Chips
+            label="Main calendar"
+            options={mainOptions}
+            value={primaryTradition(draft, choice)}
+            onChange={(v) => set('calendar_primary', v)}
+          />
+        </Section>
+      )}
 
       <Section label="On Today">
         <Chips label="Show on Today" options={SHOW_OPTIONS} value={show as (typeof SHOW_OPTIONS)[number]['value']} onChange={(v) => set('today_show', v)} />

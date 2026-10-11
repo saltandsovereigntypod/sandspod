@@ -14,10 +14,26 @@ import { planSky, planWhen } from '../../lib/rituals/format';
 import { currentStep } from '../../lib/rituals/lifecycle';
 import { nextPlan } from '../../lib/rituals/plans';
 import { useRituals } from '../../lib/rituals/store';
+import { Tags } from '../../components/more/ui';
+import { dateFrom, daysBetween, shortDate, timeOfDay } from '../../lib/calendar';
 import { holidayChoice } from '../../lib/holidays';
+import { findByName, libraryHref, useLibrary } from '../../lib/library';
+import { usePlace } from '../../lib/location';
+import { placeSky, skyNow, type PlaceSky, type Sky } from '../../lib/sky';
+import { primaryTradition } from '../../lib/traditionDay';
 import { useMySettings } from '../../lib/settings/store';
 import { buildToday, type HorizonItem, type TodayModel } from '../../lib/today';
 import { colors, fonts, radius, space, type } from '../../theme';
+
+/** A clock that ticks every quarter hour, for the void-of-course Moon and planetary hours. */
+function useClock(): Date {
+  const [clock, setClock] = useState(() => new Date());
+  useEffect(() => {
+    const timer = setInterval(() => setClock(new Date()), 15 * 60_000);
+    return () => clearInterval(timer);
+  }, []);
+  return clock;
+}
 
 /** Re-render when the clock passes midnight so the date and moon stay current. */
 function useToday(): Date {
@@ -35,8 +51,13 @@ export default function Today() {
   const now = useToday();
   const { settings } = useMySettings();
   const choiceKey = `${settings?.calendar_traditions ?? ''}|${settings?.calendar_custom_holidays ?? ''}|${settings?.calendar_picked_holidays ?? ''}`;
+  const primary = primaryTradition(settings, holidayChoice(settings));
   // eslint-disable-next-line react-hooks/exhaustive-deps -- choiceKey stands in for the calendar settings it reads
-  const today = useMemo(() => buildToday(now, holidayChoice(settings)), [now, choiceKey]);
+  const today = useMemo(() => buildToday(now, holidayChoice(settings), primary), [now, choiceKey, primary]);
+  const clock = useClock();
+  const sky = useMemo(() => skyNow(clock, { planets: false }), [clock]);
+  const place = usePlace();
+  const here = useMemo(() => (place ? placeSky(clock, place) : null), [clock, place]);
   const show = (settings?.today_show as string) || 'both';
 
   const side = show === 'both' && settings?.today_layout === 'side';
@@ -74,6 +95,8 @@ export default function Today() {
       <View style={styles.header}>
         <Text style={[type.eyebrow, styles.date]}>{today.dateLine}</Text>
         <Text style={styles.ruler}>{today.rulerLine}</Text>
+        {today.tradition && <Text style={[type.caption, styles.center]}>{today.tradition.line}</Text>}
+        {today.tradition?.detail && <Text style={[type.caption, styles.center, styles.muted]}>{today.tradition.detail}</Text>}
       </View>
 
       <View style={side ? styles.sideBySide : styles.stacked}>
@@ -94,6 +117,7 @@ export default function Today() {
           ) : null)}
       </View>
       {side && reminderButton}
+
 
       <View style={styles.working}>
         {active ? (
@@ -137,6 +161,14 @@ export default function Today() {
           ))}
         </View>
         <Text style={[type.caption, styles.center]}>{today.nextSyzygyLine}</Text>
+        {today.eclipseLine && <Text style={[type.caption, styles.center, styles.gold]}>{today.eclipseLine}</Text>}
+      </View>
+
+      <DaySky today={today} sky={sky} here={here} now={clock} />
+      <CorrespondencesCard today={today} />
+      <View style={styles.prompt}>
+        <Text style={[type.eyebrow, styles.gold]}>Reflect</Text>
+        <Text style={styles.promptText}>{today.prompt}</Text>
       </View>
     </Screen>
   );
@@ -166,13 +198,107 @@ function HolidayPanel({ today, compact }: { today: TodayModel; compact: boolean 
     >
       {today.holidaysToday.map((holiday, i) => (
         <View key={holiday.id} style={styles.holidayItem} accessible accessibilityLabel={`${today.holidayWhen[i]}: ${holiday.name}. ${holiday.meaning}`}>
-          <Text style={[type.eyebrow, styles.gold]}>{today.holidayWhen[i]}</Text>
+          <Text style={[type.eyebrow, styles.gold]}>{`${today.holidayWhen[i]} · ${today.holidayTerms[i]}`}</Text>
           <Text style={[styles.holidayName, compact && styles.holidayNameCompact]}>{holiday.name}</Text>
           <Text style={[type.caption, compact && styles.small]}>{holiday.traditions.join(' · ')}</Text>
           <Text style={[styles.meaning, compact && styles.meaningCompact]}>{holiday.meaning}</Text>
         </View>
       ))}
     </Pressable>
+  );
+}
+
+const PERSONAL = ['Mercury', 'Venus', 'Mars'];
+
+/** What today is good for, and what the sky is doing that matters for it. */
+function DaySky({ today, sky, here, now }: { today: TodayModel; sky: Sky; here: PlaceSky | null; now: Date }) {
+  const lines: string[] = [];
+  if (sky.vocNow) {
+    lines.push(`Moon void of course until ${relativeTime(now, sky.voc.end)}: rest and finish things rather than begin.`);
+  } else if (daysBetween(now, sky.voc.start) === 0) {
+    lines.push(`Moon void of course from ${timeOfDay(sky.voc.start)} until ${relativeTime(now, sky.voc.end)}.`);
+  }
+  for (const r of sky.retrogrades.filter((r) => PERSONAL.includes(r.planet))) {
+    lines.push(
+      r.when === 'now'
+        ? `${r.planet} retrograde until ${dateFrom(now, r.date)}.`
+        : `${r.planet} turns retrograde ${daysBetween(now, r.date) <= 1 ? relativeTime(now, r.date) : `in ${daysBetween(now, r.date)} days (${shortDate(r.date)})`}.`,
+    );
+  }
+  lines.push(`${sky.sunSign} season${sky.sunSignEnds ? ` until ${dateFrom(now, sky.sunSignEnds)}` : ''}: ${sky.sunSeason}.`);
+
+  return (
+    <View style={styles.card}>
+      <Text style={[type.eyebrow, styles.gold]}>Today’s sky</Text>
+      <Text style={styles.goodFor}>{today.goodFor}</Text>
+      {lines.map((line) => (
+        <Text key={line} style={type.caption}>
+          {line}
+        </Text>
+      ))}
+      {here ? (
+        <>
+          <Text style={type.caption}>
+            {[
+              here.sun.rise && `Sunrise ${timeOfDay(here.sun.rise)}`,
+              here.sun.set && `sunset ${timeOfDay(here.sun.set)}`,
+              here.moon.rise && `moonrise ${timeOfDay(here.moon.rise)}`,
+              here.moon.set && `moonset ${timeOfDay(here.moon.set)}`,
+            ]
+              .filter(Boolean)
+              .join(' · ')}
+          </Text>
+          {here.hour && (
+            <Text style={[type.caption, styles.gold]}>{`Planetary hour of ${here.hour.planet} until ${timeOfDay(here.hour.end)}`}</Text>
+          )}
+        </>
+      ) : (
+        <Text style={type.caption}>Add your location on the Sky screen for sunrise, moonrise and planetary hours.</Text>
+      )}
+      <Button label="The sky today" variant="outline" onPress={() => router.navigate('/more/sky')} />
+    </View>
+  );
+}
+
+function relativeTime(now: Date, date: Date): string {
+  const days = daysBetween(now, date);
+  const day = days === 0 ? 'today' : days === 1 ? 'tomorrow' : shortDate(date);
+  return `${day} at ${timeOfDay(date)}`;
+}
+
+/** The weekday's traditional correspondences, linked to the Living Library where it has them. */
+function CorrespondencesCard({ today }: { today: TodayModel }) {
+  const { entries } = useLibrary();
+  const c = today.correspondences;
+  const open = (name: string) => {
+    const entry = findByName(entries, name);
+    return entry ? () => router.navigate(libraryHref(entry)) : undefined;
+  };
+  return (
+    <View style={styles.card}>
+      <Text style={[type.eyebrow, styles.gold]}>{`Correspondences · ${c.planet === 'Sun' || c.planet === 'Moon' ? `the ${c.planet}` : c.planet}`}</Text>
+      <CorrRow label="Colors" text={c.colors.join(', ')} />
+      <View style={styles.corrRow}>
+        <Text style={styles.corrLabel}>Crystals</Text>
+        <Tags items={c.crystals} onPress={open} />
+      </View>
+      <View style={styles.corrRow}>
+        <Text style={styles.corrLabel}>Herbs</Text>
+        <Tags items={c.herbs} onPress={open} />
+      </View>
+      <CorrRow label="Metal" text={c.metal} />
+      <CorrRow label="Incense" text={c.incense} />
+      <CorrRow label="Candle" text={c.candle} />
+    </View>
+  );
+}
+
+function CorrRow({ label, text }: { label: string; text: string }) {
+  return (
+    <View style={styles.corrRow}>
+      <Text style={styles.corrLabel}>{label}</Text>
+      <Text style={styles.corrText}>{text}</Text>
+    </View>
   );
 }
 
@@ -230,6 +356,21 @@ const styles = StyleSheet.create({
   meaningCompact: { fontSize: 13, lineHeight: 18 },
   small: { fontSize: 12, lineHeight: 16 },
   pressed: { opacity: 0.75 },
+  muted: { color: colors.tabInactive },
+  card: {
+    backgroundColor: colors.surface,
+    borderRadius: radius.card,
+    borderWidth: 1,
+    borderColor: colors.hairline,
+    padding: 16,
+    gap: 8,
+  },
+  goodFor: { ...type.body, color: colors.parchment },
+  corrRow: { gap: 4 },
+  corrLabel: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.gold },
+  corrText: { ...type.body, color: colors.cream },
+  prompt: { borderLeftWidth: 2, borderLeftColor: colors.goldLine, paddingLeft: 14, gap: 4 },
+  promptText: { fontFamily: fonts.displayItalic, fontSize: 21, lineHeight: 27, color: colors.cream },
   gold: { color: colors.gold },
   working: {
     backgroundColor: colors.surface,

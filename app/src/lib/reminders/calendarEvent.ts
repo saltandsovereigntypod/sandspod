@@ -2,6 +2,9 @@
 // two ways to hand them to a calendar without device access: an .ics file and
 // a Google Calendar link. Pure, so the output can be tested.
 
+import { eclipseLabel, eclipsesBetween } from '../astro/eclipses.ts';
+import { eclipseMeaning, RETROGRADE_MEANING } from '../astro/meanings.ts';
+import { nextStation } from '../astro/planets.ts';
 import { startOfDay } from '../calendar.ts';
 import { DEFAULT_TRADITIONS, holidaysBetween, type HolidayChoice } from '../holidays.ts';
 import { moonState, PRINCIPAL_NAMES, signAtSyzygy, upcomingPhases, type PrincipalPhase } from '../moon.ts';
@@ -202,4 +205,48 @@ export function googleCalendarUrl(event: CalendarEventSpec): string {
     .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
     .join('&');
   return `https://calendar.google.com/calendar/render?${params}`;
+}
+
+/**
+ * All-day events for eclipses and for retrograde stations of Mercury
+ * through Saturn, with what they mean. Keys end in the date, like holidays.
+ */
+export function astroEvents(from: Date, days = 365): CalendarEventSpec[] {
+  const until = new Date(from.getTime() + days * 86_400_000);
+  const specs: CalendarEventSpec[] = [];
+  for (const e of eclipsesBetween(from, until)) {
+    const start = startOfDay(e.date);
+    specs.push({
+      key: `astro-eclipse-${e.type}-${isoDay(start)}`,
+      title: eclipseLabel(e),
+      start,
+      end: new Date(start.getFullYear(), start.getMonth(), start.getDate() + 1),
+      allDay: true,
+      notes: `Exact at ${clock(e.date)}.\n${eclipseMeaning(e.type, e.kind)}\nFrom the Salt & Sovereignty app.`,
+    });
+  }
+  for (const planet of ['Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn'] as const) {
+    let cursor = from;
+    for (let guard = 0; guard < 12; guard++) {
+      const station = nextStation(planet, cursor, days);
+      if (!station || station.date.getTime() > until.getTime()) break;
+      const start = startOfDay(station.date);
+      specs.push({
+        key: `astro-station-${planet.toLowerCase()}-${station.turning}-${isoDay(start)}`,
+        title: `${planet} ${station.turning === 'retrograde' ? 'turns retrograde' : 'turns direct'}`,
+        start,
+        end: new Date(start.getFullYear(), start.getMonth(), start.getDate() + 1),
+        allDay: true,
+        notes: `${station.turning === 'retrograde' ? RETROGRADE_MEANING[planet] ?? '' : `${planet} moves forward again.`}\nFrom the Salt & Sovereignty app.`,
+      });
+      cursor = new Date(station.date.getTime() + 86_400_000);
+    }
+  }
+  return specs.sort((a, b) => a.start.getTime() - b.start.getTime());
+}
+
+/** The date an astro or holiday event key ends in, if it has one. */
+export function datedKeyDate(key: string): Date | null {
+  const match = /^(?:holiday|astro)-.*-(\d{4})-(\d{2})-(\d{2})$/.exec(key);
+  return match ? new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3])) : null;
 }
