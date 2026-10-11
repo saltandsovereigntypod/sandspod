@@ -95,14 +95,30 @@ test('a running festival counts its days; Today shows the next moon phase and ho
   assert.equal(saturnalia.name, 'Saturnalia');
   assert.equal(holidayDay(saturnalia, new Date(2026, 11, 19, 15)), 3);
 
+  // During Saturnalia: it shows today (with its day count); the horizon shows the next one.
   const today = buildToday(new Date(2026, 11, 19, 15), only('roman'));
-  assert.equal(today.holidayWhen, 'Day 3 of 7');
+  assert.deepEqual(today.holidaysToday.map((h) => h.name), ['Saturnalia']);
+  assert.deepEqual(today.holidayWhen, ['Day 3 of 7']);
   assert.equal(today.horizon[0].kind, 'moon');
   assert.equal(today.horizon[1].kind, 'holiday');
-  assert.equal(today.horizon[1].title, 'Saturnalia');
+  assert.equal(today.horizon[1].title, 'Dies Natalis Solis Invicti');
+
+  // On an ordinary day nothing shows for today, but the horizon still has the next holiday.
+  const ordinary = buildToday(new Date(2026, 9, 12, 12), only('wheel'));
+  assert.deepEqual(ordinary.holidaysToday, []);
+  assert.equal(ordinary.horizon[1].title, 'Samhain');
+  // Exact at 04:13 UTC on Oct 26, so Oct 25 in the Americas.
+  assert.match(ordinary.nextSyzygyLine, /^Full Moon in Taurus · Oct 2[56]$/);
+  assert.match(ordinary.illuminationLine, /^\d+% illuminated$/);
+
+  // On the day itself the holiday is today's, and the horizon moves on to the next.
+  const samhain = buildToday(new Date(2026, 9, 31, 9), only('wheel'));
+  assert.deepEqual(samhain.holidaysToday.map((h) => h.name), ['Samhain']);
+  assert.deepEqual(samhain.holidayWhen, ['Today']);
+  assert.equal(samhain.horizon[1].title, 'Yule');
 
   const none = buildToday(new Date(2026, 11, 19, 15), only());
-  assert.equal(none.holiday, null);
+  assert.deepEqual(none.holidaysToday, []);
   assert.equal(none.horizon.length, 1);
 });
 

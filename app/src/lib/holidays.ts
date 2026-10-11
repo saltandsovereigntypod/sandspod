@@ -396,3 +396,14 @@ export function holidayDay(holiday: Holiday, now: Date): number {
   const offset = Math.round((startOfDay(now).getTime() - holiday.date.getTime()) / 86_400_000);
   return offset >= 0 && offset < holiday.days ? offset + 1 : 0;
 }
+
+/** Holidays running on `now`'s day (a several-day festival counts on each of its days). */
+export function holidaysToday(now: Date, choice: HolidayChoice): Holiday[] {
+  return holidaysBetween(now, startOfDay(now), choice).filter((holiday) => holidayDay(holiday, now) > 0);
+}
+
+/** The next holiday that starts after today (looking up to 13 months ahead). */
+export function nextHolidayAfterToday(now: Date, choice: HolidayChoice): Holiday | null {
+  const tomorrow = addDays(startOfDay(now), 1);
+  return holidaysBetween(tomorrow, addDays(now, 400), choice).find((holiday) => holiday.date.getTime() >= tomorrow.getTime()) ?? null;
+}

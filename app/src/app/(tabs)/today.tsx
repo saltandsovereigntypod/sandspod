@@ -53,6 +53,17 @@ export default function Today() {
   const step = active ? currentStep(active) : null;
   const moonReminders = PHASE_ORDER.some((p) => reminders.settings.phases[p]);
 
+  // Under the moon when stacked; below the row when side by side, where a half is too narrow.
+  const reminderButton = (
+    <Button
+      variant="pill"
+      label={moonReminders ? 'Moon reminders on' : 'Remind me of the moon'}
+      accessibilityHint="Choose which moon phases to be reminded of"
+      icon={<Icon name="bell" size={16} color={colors.gold} />}
+      onPress={() => router.navigate('/rituals/reminders')}
+    />
+  );
+
   return (
     <Screen>
       <View style={styles.header}>
@@ -62,23 +73,22 @@ export default function Today() {
 
       <View style={side ? styles.sideBySide : styles.stacked}>
         {show !== 'holiday' && (
-          <View style={side ? styles.half : undefined}>
+          <View style={side ? styles.half : styles.stacked}>
             <MoonPanel today={today} compact={side} />
-            <Button
-              variant="pill"
-              label={moonReminders ? (side ? 'Reminders on' : 'Moon reminders on') : side ? 'Remind me' : 'Remind me of the moon'}
-              accessibilityHint="Choose which moon phases to be reminded of"
-              icon={<Icon name="bell" size={16} color={colors.gold} />}
-              onPress={() => router.navigate('/rituals/reminders')}
-            />
+            {!side && reminderButton}
           </View>
         )}
-        {show !== 'moon' && (
-          <View style={side ? styles.half : undefined}>
-            <HolidayPanel today={today} compact={side} />
-          </View>
-        )}
+        {show !== 'moon' &&
+          (side ? (
+            // Only a holiday happening today shows here; otherwise this half stays empty.
+            <View style={styles.half}>{today.holidaysToday.length > 0 && <HolidayPanel today={today} compact />}</View>
+          ) : today.holidaysToday.length > 0 ? (
+            <HolidayPanel today={today} compact={false} />
+          ) : show === 'holiday' ? (
+            <Text style={[type.caption, styles.center]}>No holiday today</Text>
+          ) : null)}
       </View>
+      {side && reminderButton}
 
       <View style={styles.working}>
         {active ? (
@@ -121,6 +131,7 @@ export default function Today() {
             <HorizonTile key={item.title} item={item} />
           ))}
         </View>
+        <Text style={[type.caption, styles.center]}>{today.nextSyzygyLine}</Text>
       </View>
     </Screen>
   );
@@ -128,44 +139,34 @@ export default function Today() {
 
 function MoonPanel({ today, compact }: { today: TodayModel; compact: boolean }) {
   return (
-    <View style={styles.moon} accessible accessibilityLabel={`${today.moon.name}. ${today.signLine}. ${today.moonLine}`}>
-      <MoonDisc size={compact ? 96 : 136} illumination={today.moon.illumination} waxing={today.moon.waxing} />
-      <Text accessibilityRole="header" style={[styles.phase, compact && styles.phaseCompact]}>
+    <View style={styles.moon} accessible accessibilityLabel={`${today.moon.name}. ${today.signLine}. ${today.illuminationLine}`}>
+      <MoonDisc size={compact ? 80 : 136} illumination={today.moon.illumination} waxing={today.moon.waxing} />
+      <Text accessibilityRole="header" style={[styles.phase, compact && styles.phaseCompact, styles.wide]}>
         {today.moon.name}
       </Text>
-      <Text style={[styles.sign, compact && styles.signCompact, styles.center]}>{today.signLine}</Text>
-      <Text style={[type.caption, styles.center]}>{today.moonLine}</Text>
+      <Text style={[styles.sign, compact && styles.signCompact, styles.wide]}>{today.signLine}</Text>
+      <Text style={[type.caption, styles.wide]}>{today.illuminationLine}</Text>
     </View>
   );
 }
 
+/** Holidays happening today, from the chosen calendars, with what they mean. */
 function HolidayPanel({ today, compact }: { today: TodayModel; compact: boolean }) {
-  const holiday = today.holiday;
-  const open = () => router.navigate('/more/settings/calendar');
-  if (!holiday) {
-    return (
-      <Pressable accessibilityRole="button" onPress={open} style={styles.holiday}>
-        <Text style={[type.eyebrow, styles.gold]}>Holidays</Text>
-        <Text style={type.cardTitle}>Choose your calendars</Text>
-        <Text style={type.caption}>Pick the Wheel of the Year, Celtic, Norse, Hellenic, Roman, Slavic or your own holidays.</Text>
-      </Pressable>
-    );
-  }
-  const happening = today.holidayWhen === 'Today' || today.holidayWhen.startsWith('Day ');
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`${happening ? 'Today' : 'Next holiday'}: ${holiday.name}, ${today.holidayWhen}. ${holiday.meaning}`}
       accessibilityHint="Opens your calendars and the holidays ahead"
-      onPress={open}
-      style={({ pressed }) => [styles.holiday, happening && styles.holidayNow, pressed && styles.pressed]}
+      onPress={() => router.navigate('/more/settings/calendar')}
+      style={({ pressed }) => [styles.holiday, compact && styles.holidayCompact, pressed && styles.pressed]}
     >
-      <Text style={[type.eyebrow, styles.gold]}>{happening ? today.holidayWhen : `Next holiday · ${today.holidayWhen}`}</Text>
-      <Text style={[styles.holidayName, compact && styles.holidayNameCompact]}>{holiday.name}</Text>
-      <Text style={type.caption}>{holiday.traditions.join(' · ')}</Text>
-      <Text style={styles.meaning} numberOfLines={compact ? 7 : undefined}>
-        {holiday.meaning}
-      </Text>
+      {today.holidaysToday.map((holiday, i) => (
+        <View key={holiday.id} style={styles.holidayItem} accessible accessibilityLabel={`${today.holidayWhen[i]}: ${holiday.name}. ${holiday.meaning}`}>
+          <Text style={[type.eyebrow, styles.gold]}>{today.holidayWhen[i]}</Text>
+          <Text style={[styles.holidayName, compact && styles.holidayNameCompact]}>{holiday.name}</Text>
+          <Text style={[type.caption, compact && styles.small]}>{holiday.traditions.join(' · ')}</Text>
+          <Text style={[styles.meaning, compact && styles.meaningCompact]}>{holiday.meaning}</Text>
+        </View>
+      ))}
     </Pressable>
   );
 }
@@ -201,23 +202,29 @@ const styles = StyleSheet.create({
   phase: { fontFamily: fonts.display, fontSize: 34, lineHeight: 38, color: colors.cream, textAlign: 'center', marginTop: 4 },
   center: { textAlign: 'center' },
   sign: { fontFamily: fonts.displayItalic, fontSize: 19, lineHeight: 24, color: colors.gold },
-  signCompact: { fontSize: 16, lineHeight: 20 },
-  phaseCompact: { fontSize: 26, lineHeight: 30 },
+  signCompact: { fontSize: 14, lineHeight: 18 },
+  phaseCompact: { fontSize: 24, lineHeight: 28 },
+  wide: { alignSelf: 'stretch', textAlign: 'center' },
   stacked: { gap: 18 },
-  sideBySide: { flexDirection: 'row', gap: 12, alignItems: 'flex-start' },
-  half: { flex: 1, gap: 12 },
+  sideBySide: { flexDirection: 'row', gap: 10, alignItems: 'flex-start' },
+  // flexBasis 0 and minWidth 0 make the halves share the width and wrap
+  // their text, instead of growing to the longest line.
+  half: { flex: 1, flexBasis: 0, minWidth: 0 },
   holiday: {
     backgroundColor: colors.surface,
     borderRadius: radius.card,
     borderWidth: 1,
-    borderColor: colors.hairline,
+    borderColor: 'rgba(226,195,109,0.5)',
     padding: 16,
-    gap: 6,
+    gap: 14,
   },
-  holidayNow: { borderColor: 'rgba(226,195,109,0.5)' },
+  holidayCompact: { padding: 12, gap: 10 },
+  holidayItem: { gap: 4 },
   holidayName: { fontFamily: fonts.display, fontSize: 28, lineHeight: 32, color: colors.cream },
-  holidayNameCompact: { fontSize: 22, lineHeight: 26 },
+  holidayNameCompact: { fontSize: 19, lineHeight: 23 },
   meaning: { ...type.body, color: colors.parchment },
+  meaningCompact: { fontSize: 13, lineHeight: 18 },
+  small: { fontSize: 12, lineHeight: 16 },
   pressed: { opacity: 0.75 },
   gold: { color: colors.gold },
   working: {

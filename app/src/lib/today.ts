@@ -1,5 +1,5 @@
 import { daysBetween, dayRuler, dayRulerLabel, longDate, relativeDay, shortDate, timeOfDay } from './calendar.ts';
-import { holidayDay, nextHoliday, type Holiday, type HolidayChoice } from './holidays.ts';
+import { holidayDay, holidaysToday, nextHolidayAfterToday, type Holiday, type HolidayChoice } from './holidays.ts';
 import { moonSign, moonState, nextMoonIngress, nextPhase, PRINCIPAL_NAMES, signAtSyzygy, upcomingPhases, type MoonState, type PrincipalPhase } from './moon.ts';
 
 export type HorizonItem =
@@ -12,13 +12,15 @@ export type TodayModel = {
   moon: MoonState;
   /** e.g. "Moon in Libra · enters Scorpio tomorrow at 10:22 AM" */
   signLine: string;
-  /** e.g. "97% · Full Moon in Aries tomorrow" */
-  moonLine: string;
-  /** The holiday running today, or else the next one, from the chosen calendars. */
-  holiday: Holiday | null;
-  /** e.g. "Today", "Day 3 of 7", "Oct 31 · 21 days" */
-  holidayWhen: string;
-  /** Always the next moon phase, then the next holiday. */
+  /** e.g. "97% illuminated" */
+  illuminationLine: string;
+  /** The next new or full moon, e.g. "Full Moon in Taurus · Oct 26" (shown under On the horizon). */
+  nextSyzygyLine: string;
+  /** Holidays running today only; empty on ordinary days. */
+  holidaysToday: Holiday[];
+  /** e.g. "Today", "Day 3 of 7" for each of holidaysToday. */
+  holidayWhen: string[];
+  /** The next moon phase, then the next holiday after today. */
   horizon: HorizonItem[];
 };
 
@@ -35,25 +37,19 @@ export function buildToday(now: Date, choice: HolidayChoice = { traditions: ['wh
   const nextFull = nextPhase(now, 'full');
   const nextNew = nextPhase(now, 'new');
 
-  // The moon line names whichever of new/full comes first.
+  // Under the horizon: whichever of new/full comes first.
   const fullFirst = nextFull.getTime() < nextNew.getTime();
-  const headlinePhase = fullFirst ? 'full' : 'new';
-  const headlineDate = fullFirst ? nextFull : nextNew;
-
-  const percent = Math.round(moon.illumination * 100);
-  const headline = `${PRINCIPAL_NAMES[headlinePhase]} in ${signAtSyzygy(headlineDate, headlinePhase)} ${relativeDay(now, headlineDate)}`;
-  const moonLine = `${percent}% · ${headline}`;
+  const syzygyPhase = fullFirst ? 'full' : 'new';
+  const syzygyDate = fullFirst ? nextFull : nextNew;
+  const syzygyWhen = relativeDay(now, syzygyDate);
+  const nextSyzygyLine = `${PRINCIPAL_NAMES[syzygyPhase]} in ${signAtSyzygy(syzygyDate, syzygyPhase)} · ${syzygyWhen.charAt(0).toUpperCase()}${syzygyWhen.slice(1)}`;
 
   const ingress = nextMoonIngress(now);
   const signLine = `Moon in ${moonSign(now)} · enters ${ingress.sign} ${relativeDay(now, ingress.date)} at ${timeOfDay(ingress.date)}`;
 
-  const holiday = nextHoliday(now, choice);
-  const running = holiday ? holidayDay(holiday, now) : 0;
-  const holidayWhen = !holiday
-    ? ''
-    : running > 0 && holiday.days > 1
-      ? `Day ${running} of ${holiday.days}`
-      : whenLabel(now, holiday.date);
+  const running = holidaysToday(now, choice);
+  const holidayWhen = running.map((holiday) => (holiday.days > 1 ? `Day ${holidayDay(holiday, now)} of ${holiday.days}` : 'Today'));
+  const upcoming = nextHolidayAfterToday(now, choice);
 
   const phase = upcomingPhases(now, 1)[0];
   const phaseTitle =
@@ -63,15 +59,16 @@ export function buildToday(now: Date, choice: HolidayChoice = { traditions: ['wh
   const { themes } = dayRuler(now);
 
   const horizon: HorizonItem[] = [{ kind: 'moon', phase: phase.phase, title: phaseTitle, detail: whenLabel(now, phase.date) }];
-  if (holiday) horizon.push({ kind: 'holiday', title: holiday.name, detail: holidayWhen });
+  if (upcoming) horizon.push({ kind: 'holiday', title: upcoming.name, detail: whenLabel(now, upcoming.date) });
 
   return {
     dateLine: longDate(now),
     rulerLine: `${dayRulerLabel(now)} · ${themes}`,
     moon,
     signLine,
-    moonLine,
-    holiday,
+    illuminationLine: `${Math.round(moon.illumination * 100)}% illuminated`,
+    nextSyzygyLine,
+    holidaysToday: running,
     holidayWhen,
     horizon,
   };
