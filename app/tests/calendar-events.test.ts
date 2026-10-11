@@ -128,3 +128,32 @@ test('eclipse and retrograde-station events, dated like holidays', async () => {
   assert.equal(datedKeyDate('astro-eclipse-solar-2026-08-12')?.getTime(), new Date(2026, 7, 12).getTime());
   assert.equal(datedKeyDate('moon-full-2026-08-28'), null);
 });
+
+test('one event setting shapes every event of its kind', async () => {
+  const { styleEvent, normalizeStyle, DEFAULT_STYLE } = await import('../src/lib/reminders/calendarEvent.ts');
+  const [full] = moonEvents({ new: false, firstQuarter: false, full: true, lastQuarter: false }, new Date(2026, 8, 20));
+  assert.ok(full.exact);
+
+  const allDay = styleEvent(full, DEFAULT_STYLE);
+  assert.equal(allDay.allDay, true);
+  assert.equal(allDay.alarms, undefined);
+
+  const exact = styleEvent(full, normalizeStyle({ timing: 'exact', duration: 30, alert: -60, details: false }));
+  assert.equal(exact.allDay, false);
+  assert.equal(exact.start.getTime(), full.exact!.getTime());
+  assert.equal(exact.end.getTime() - exact.start.getTime(), 30 * 60_000);
+  assert.deepEqual(exact.alarms, [-60]);
+  assert.equal(exact.notes, 'From the Salt & Sovereignty app.');
+
+  const evening = styleEvent(full, normalizeStyle({ timing: 'time', minutes: 21 * 60 + 15 }));
+  assert.equal(evening.start.getDate(), full.start.getDate());
+  assert.equal(evening.start.getHours(), 21);
+  assert.equal(evening.start.getMinutes(), 15);
+
+  const ics = toIcs([exact], new Date(2026, 8, 20));
+  assert.match(ics, /BEGIN:VALARM\r\nACTION:DISPLAY\r\n.*\r\nTRIGGER:-PT60M\r\nEND:VALARM/);
+
+  // An all-day alert never sticks to a timed event, or the other way round.
+  assert.equal(normalizeStyle({ timing: 'time', alert: 540 }).alert, null);
+  assert.equal(normalizeStyle({ timing: 'allDay', alert: 540 }).alert, 540);
+});

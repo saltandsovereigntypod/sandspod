@@ -21,7 +21,91 @@ export type CalendarEventSpec = {
   end: Date;
   allDay: boolean;
   notes: string;
+  /** The exact moment of a sky event (phase, eclipse, station), when it has one. */
+  exact?: Date;
+  /** Calendar alerts, in minutes from the start (negative is before). */
+  alarms?: number[];
 };
+
+// ---------------------------------------------------------------- event settings
+
+/** The three kinds of sky event someone can add to their calendar. */
+export type SkyKind = 'moon' | 'holiday' | 'astro';
+export const SKY_KINDS: SkyKind[] = ['moon', 'holiday', 'astro'];
+
+/** How every event of one kind goes into the calendar. */
+export type EventStyle = {
+  /** All day, at the exact moment (moon and sky events), or at a set time of day. */
+  timing: 'allDay' | 'exact' | 'time';
+  /** Time of day for 'time', in minutes after midnight. */
+  minutes: number;
+  /** Length of a timed event, in minutes. */
+  duration: number;
+  /** One alert, in minutes from the start (all-day events start at midnight), or none. */
+  alert: number | null;
+  /** Include what the event means in its notes. */
+  details: boolean;
+};
+
+export const DEFAULT_STYLE: EventStyle = { timing: 'allDay', minutes: 19 * 60, duration: 60, alert: null, details: true };
+export const DURATION_CHOICES = [30, 60, 120] as const;
+
+/** The alerts that make sense for a timing, with how they read. */
+export function alertChoices(timing: EventStyle['timing']): { offset: number; label: string }[] {
+  return timing === 'allDay'
+    ? [
+        { offset: 9 * 60, label: 'Morning of, 9 am' },
+        { offset: -15 * 60, label: 'Day before, 9 am' },
+        { offset: -5 * 60, label: 'Day before, 7 pm' },
+      ]
+    : [
+        { offset: 0, label: 'At the time' },
+        { offset: -15, label: '15 minutes before' },
+        { offset: -60, label: 'An hour before' },
+        { offset: -1440, label: 'A day before' },
+      ];
+}
+
+/** Stored settings from any shape, with defaults filled in. */
+export function normalizeStyle(raw: unknown): EventStyle {
+  const value = raw && typeof raw === 'object' ? (raw as Partial<EventStyle>) : {};
+  const timing = value.timing === 'exact' || value.timing === 'time' ? value.timing : 'allDay';
+  const minutes = Number(value.minutes);
+  const duration = Number(value.duration);
+  const alert = value.alert == null ? null : Number(value.alert);
+  return {
+    timing,
+    minutes: Number.isInteger(minutes) && minutes >= 0 && minutes < 1440 ? minutes : DEFAULT_STYLE.minutes,
+    duration: (DURATION_CHOICES as readonly number[]).includes(duration) ? duration : DEFAULT_STYLE.duration,
+    alert: alert != null && alertChoices(timing).some((choice) => choice.offset === alert) ? alert : null,
+    details: value.details !== false,
+  };
+}
+
+export const skyKindOf = (key: string): SkyKind | null =>
+  key.startsWith('moon-') ? 'moon' : key.startsWith('holiday-') ? 'holiday' : key.startsWith('astro-') ? 'astro' : null;
+
+const FOOTER = 'From the Salt & Sovereignty app.';
+
+/** One sky event laid out the way its kind is set to go into the calendar. */
+export function styleEvent(spec: CalendarEventSpec, style: EventStyle): CalendarEventSpec {
+  const notes = style.details ? spec.notes : FOOTER;
+  const alarms = style.alert == null ? undefined : [style.alert];
+  const timed = (start: Date): CalendarEventSpec => ({
+    ...spec,
+    start,
+    end: new Date(start.getTime() + style.duration * 60_000),
+    allDay: false,
+    notes,
+    alarms,
+  });
+  if (style.timing === 'exact' && spec.exact) return timed(spec.exact);
+  if (style.timing === 'time' || style.timing === 'exact') {
+    const day = spec.start;
+    return timed(new Date(day.getFullYear(), day.getMonth(), day.getDate(), Math.floor(style.minutes / 60), style.minutes % 60));
+  }
+  return { ...spec, notes, alarms };
+}
 
 const DEFAULT_MINUTES = 60;
 
@@ -90,6 +174,7 @@ export function moonEvents(phases: Record<PrincipalPhase, boolean>, from: Date, 
         title,
         ...allDay(e.date),
         allDay: true,
+        exact: e.date,
         notes: `Exact at ${clock(e.date)}.\nFrom the Salt & Sovereignty app.`,
       };
     });
@@ -186,6 +271,13 @@ export function toIcs(events: CalendarEventSpec[], now: Date): string {
         : [`DTSTART:${icsUtc(event.start)}`, `DTEND:${icsUtc(event.end)}`]),
       `SUMMARY:${icsText(event.title)}`,
       `DESCRIPTION:${icsText(event.notes)}`,
+      ...(event.alarms ?? []).flatMap((offset) => [
+        'BEGIN:VALARM',
+        'ACTION:DISPLAY',
+        `DESCRIPTION:${icsText(event.title)}`,
+        `TRIGGER:${offset < 0 ? '-' : ''}PT${Math.abs(offset)}M`,
+        'END:VALARM',
+      ]),
       'END:VEVENT',
     );
   }
@@ -222,6 +314,7 @@ export function astroEvents(from: Date, days = 365): CalendarEventSpec[] {
       start,
       end: new Date(start.getFullYear(), start.getMonth(), start.getDate() + 1),
       allDay: true,
+      exact: e.date,
       notes: `Exact at ${clock(e.date)}.\n${eclipseMeaning(e.type, e.kind)}\nFrom the Salt & Sovereignty app.`,
     });
   }
@@ -237,6 +330,7 @@ export function astroEvents(from: Date, days = 365): CalendarEventSpec[] {
         start,
         end: new Date(start.getFullYear(), start.getMonth(), start.getDate() + 1),
         allDay: true,
+        exact: station.date,
         notes: `${station.turning === 'retrograde' ? RETROGRADE_MEANING[planet] ?? '' : `${planet} moves forward again.`}\nFrom the Salt & Sovereignty app.`,
       });
       cursor = new Date(station.date.getTime() + 86_400_000);

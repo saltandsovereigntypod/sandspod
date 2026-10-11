@@ -10,7 +10,22 @@ import { DEFAULT_TRADITIONS, type HolidayChoice } from '../holidays';
 import type { PrincipalPhase } from '../moon';
 import { getRituals, removePlan, savePlan } from '../rituals/store';
 import type { RitualPlan, TemplateRow } from '../rituals/types';
-import { astroEvents, datedKeyDate, holidayEvents, moonEvents, planEvent, toIcs, type CalendarEventSpec } from './calendarEvent';
+import {
+  astroEvents,
+  datedKeyDate,
+  DEFAULT_STYLE,
+  holidayEvents,
+  moonEvents,
+  normalizeStyle,
+  planEvent,
+  SKY_KINDS,
+  skyKindOf,
+  styleEvent,
+  toIcs,
+  type CalendarEventSpec,
+  type EventStyle,
+  type SkyKind,
+} from './calendarEvent';
 import {
   calendarAccess,
   calendarMode,
@@ -34,7 +49,13 @@ type CalendarSettings = {
   astro: boolean;
   /** Sky event key → calendar event id, for the phases and sabbats written. */
   skyEvents: Record<string, string>;
+  /** How each kind of sky event goes into the calendar. */
+  styles: Record<SkyKind, EventStyle>;
+  /** The styles the events now in the calendar were written with, to tell when they need rewriting. */
+  appliedStyles: Partial<Record<SkyKind, string>>;
 };
+
+const defaultStyles = (): Record<SkyKind, EventStyle> => ({ moon: DEFAULT_STYLE, holiday: DEFAULT_STYLE, astro: DEFAULT_STYLE });
 
 type CalendarState = CalendarSettings & { loaded: boolean; access: CalendarAccess; calendars: CalendarChoice[] };
 
@@ -47,6 +68,8 @@ let state: CalendarState = {
   sabbats: false,
   astro: false,
   skyEvents: {},
+  styles: defaultStyles(),
+  appliedStyles: {},
 };
 const listeners = new Set<() => void>();
 let loading: Promise<void> | null = null;
@@ -57,9 +80,9 @@ function set(patch: Partial<CalendarState>) {
 }
 
 async function persist() {
-  const { calendarId, phases, sabbats, astro, skyEvents } = state;
+  const { calendarId, phases, sabbats, astro, skyEvents, styles, appliedStyles } = state;
   try {
-    await AsyncStorage.setItem(KEY, JSON.stringify({ calendarId, phases, sabbats, astro, skyEvents }));
+    await AsyncStorage.setItem(KEY, JSON.stringify({ calendarId, phases, sabbats, astro, skyEvents, styles, appliedStyles }));
   } catch {
     // Kept in memory for this session.
   }
@@ -76,6 +99,12 @@ function load(): Promise<void> {
         sabbats: saved.sabbats === true,
         astro: saved.astro === true,
         skyEvents: saved.skyEvents && typeof saved.skyEvents === 'object' ? saved.skyEvents : {},
+        styles: Object.fromEntries(SKY_KINDS.map((kind) => [kind, normalizeStyle(saved.styles?.[kind])])) as Record<SkyKind, EventStyle>,
+        // Saves from before event settings were written all day with no alert.
+        appliedStyles:
+          saved.appliedStyles && typeof saved.appliedStyles === 'object'
+            ? saved.appliedStyles
+            : Object.fromEntries(SKY_KINDS.map((kind) => [kind, JSON.stringify(DEFAULT_STYLE)])),
       });
     } catch {
       // Defaults.
@@ -178,16 +207,34 @@ export function setHolidaySelection(choice: HolidayChoice): boolean {
   return true;
 }
 
+const styled = (kind: SkyKind, specs: CalendarEventSpec[]) => specs.map((spec) => styleEvent(spec, state.styles[kind]));
+
 function skySpecs(phases: Record<PrincipalPhase, boolean>, now: Date): CalendarEventSpec[] {
   return [
-    ...(state.phases ? moonEvents(phases, now) : []),
-    ...(state.sabbats ? holidayEvents(now, 365, holidaySelection) : []),
-    ...(state.astro ? astroEvents(now, 365) : []),
+    ...(state.phases ? styled('moon', moonEvents(phases, now)) : []),
+    ...(state.sabbats ? styled('holiday', holidayEvents(now, 365, holidaySelection)) : []),
+    ...(state.astro ? styled('astro', astroEvents(now, 365)) : []),
   ];
 }
 
-/** Bring the phone calendar's moon and sabbat events in line with the choices. */
-export async function syncSkyCalendar(phases: Record<PrincipalPhase, boolean>) {
+/** The next event of a kind as it would go into the calendar, for the settings preview. */
+export function sampleEvent(kind: SkyKind, phases: Record<PrincipalPhase, boolean>, style: EventStyle): CalendarEventSpec | null {
+  const now = new Date();
+  const anyPhase = Object.values(phases).some(Boolean) ? phases : { new: true, firstQuarter: true, full: true, lastQuarter: true };
+  const specs =
+    kind === 'moon' ? moonEvents(anyPhase, now, 40) : kind === 'holiday' ? holidayEvents(now, 365, holidaySelection) : astroEvents(now, 365);
+  return specs[0] ? styleEvent(specs[0], style) : null;
+}
+
+let skySync: Promise<void> = Promise.resolve();
+
+/** Bring the phone calendar's moon and sabbat events in line with the choices. Serialized, so quick changes never add an event twice. */
+export function syncSkyCalendar(phases: Record<PrincipalPhase, boolean>): Promise<void> {
+  skySync = skySync.then(() => syncSkyNow(phases)).catch(() => undefined);
+  return skySync;
+}
+
+async function syncSkyNow(phases: Record<PrincipalPhase, boolean>) {
   await load();
   if (calendarMode !== 'device' || state.access !== 'granted' || !state.calendarId) return;
   const now = new Date();
@@ -209,15 +256,23 @@ export async function syncSkyCalendar(phases: Record<PrincipalPhase, boolean>) {
       delete skyEvents[key];
     }
   }
+  // A kind whose settings changed since its events were written gets them rewritten.
+  const restyled = new Set(SKY_KINDS.filter((kind) => state.appliedStyles[kind] !== JSON.stringify(state.styles[kind])));
+  const appliedStyles = { ...state.appliedStyles };
+  let complete = true;
   for (const [key, spec] of wanted) {
-    if (skyEvents[key]) continue;
+    const kind = skyKindOf(key);
+    const existing = skyEvents[key];
+    if (existing && !(kind && restyled.has(kind))) continue;
     try {
-      skyEvents[key] = await writeEvent(state.calendarId, spec, null);
+      skyEvents[key] = await writeEvent(state.calendarId, spec, existing ?? null);
     } catch {
       // Try again next time.
+      complete = false;
     }
   }
-  set({ skyEvents });
+  if (complete) for (const kind of SKY_KINDS) appliedStyles[kind] = JSON.stringify(state.styles[kind]);
+  set({ skyEvents, appliedStyles });
   await persist();
 }
 
@@ -230,10 +285,22 @@ export async function setSkyChoices(change: Partial<Pick<CalendarSettings, 'phas
   return 'ok' as const;
 }
 
+/** Change how one kind of sky event goes into the calendar; events already there are updated to match. */
+export async function setEventStyle(kind: SkyKind, style: EventStyle, phases: Record<PrincipalPhase, boolean>) {
+  await load();
+  set({ styles: { ...state.styles, [kind]: normalizeStyle(style) } });
+  await persist();
+  await syncSkyCalendar(phases);
+}
+
 /** The chosen moon phases and sabbats as one .ics file (web). */
 export function downloadSky(phases: Record<PrincipalPhase, boolean>): boolean {
   const now = new Date();
-  const specs = [...moonEvents(phases, now), ...holidayEvents(now, 365, holidaySelection), ...astroEvents(now, 365)];
+  const specs = [
+    ...styled('moon', moonEvents(phases, now)),
+    ...styled('holiday', holidayEvents(now, 365, holidaySelection)),
+    ...styled('astro', astroEvents(now, 365)),
+  ];
   return specs.length > 0 && downloadIcs(toIcs(specs, now), 'moon-holidays-and-sky.ics');
 }
 

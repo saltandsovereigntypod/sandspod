@@ -92,3 +92,40 @@ test('a plan that has begun gets no reminder', () => {
   const done = { ...plan('d', '2026-09-25', '21:00'), doneAt: now.toISOString() };
   assert.equal(buildSchedule(settings({}), [done], now).length, 0);
 });
+
+test('custom moon reminders: a set minute, earlier heads-ups, the exact moment and your own note', () => {
+  const now = new Date(2026, 8, 20, 12);
+  // The full moon after next, so even the week-before reminder is still to come.
+  const full = nextPhase(new Date(nextPhase(now, 'full').getTime() + 86_400_000), 'full');
+  const list = buildSchedule(
+    settings({
+      phases: onlyFull,
+      phaseHour: 20,
+      phaseMinute: 30,
+      daysAhead: [7, 3],
+      atExact: true,
+      notes: { new: '', firstQuarter: '', full: 'Charge the crystals', lastQuarter: '' },
+      rituals: false,
+    }),
+    [],
+    now,
+  ).filter((r) => r.key.endsWith(full.toISOString().slice(0, 10)));
+  const byKind = Object.fromEntries(list.map((r) => [r.key.split(':')[0], r]));
+  assert.deepEqual(Object.keys(byKind).sort(), ['moon', 'moon-ahead3', 'moon-ahead7', 'moon-exact']);
+  assert.equal(byKind.moon.at.getHours(), 20);
+  assert.equal(byKind.moon.at.getMinutes(), 30);
+  assert.match(byKind.moon.body, /Charge the crystals$/);
+  assert.match(byKind['moon-ahead7'].title, /in a week$/);
+  const weekBefore = new Date(full.getFullYear(), full.getMonth(), full.getDate() - 7, 20, 30);
+  assert.equal(byKind['moon-ahead7'].at.getTime(), weekBefore.getTime());
+  assert.equal(byKind['moon-exact'].at.getTime(), full.getTime());
+  assert.equal(byKind['moon-exact'].body, 'Charge the crystals');
+});
+
+test('odd custom settings are cleaned up', () => {
+  const odd = normalizeSettings({ phaseMinute: 7, daysAhead: [3, 5, '7'], notes: { full: 'x'.repeat(500), new: 4 } });
+  assert.equal(odd.phaseMinute, 0);
+  assert.deepEqual(odd.daysAhead, [3, 7]);
+  assert.equal(odd.notes.full.length, 120);
+  assert.equal(odd.notes.new, '');
+});
