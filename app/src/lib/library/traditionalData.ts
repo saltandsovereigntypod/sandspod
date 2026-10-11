@@ -2381,6 +2381,70 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "burning",
         "creation"
       ]
+    },
+    "key": {
+      "Purpose": "Opening the way, closing doors, thresholds, crossroads work",
+      "Element": "Earth",
+      "TraditionallyMadeFrom": "Iron, brass, bronze, or silver; old skeleton keys are especially favoured",
+      "UsedFor": "Opening new paths, locking away what is finished, devotion to Hekate, threshold and protection charms",
+      "BestWith": "Hekate, black candle, bay, rosemary",
+      "TraditionalWarnings": "Use a key set aside for ritual rather than one you need every day, so the working isn't tied to ordinary comings and goings.",
+      "tags": [
+        "opening",
+        "thresholds",
+        "crossroads",
+        "hekate",
+        "protection",
+        "access"
+      ]
+    },
+    "raven_skull": {
+      "Purpose": "Messages, memory, ancestor work, the threshold between worlds",
+      "Element": "Air",
+      "TraditionallyMadeFrom": "Resin, ceramic or carved replicas; ethically sourced bone where the law allows",
+      "UsedFor": "Ancestor altars, Samhain, divination, honouring death and change, carrying messages",
+      "BestWith": "Black candle, mugwort, obsidian, offerings",
+      "TraditionalWarnings": "Ravens and crows are protected in many places (in the US under the Migratory Bird Treaty Act), so keeping real remains is often illegal. A replica carries the same meaning.",
+      "tags": [
+        "messages",
+        "ancestors",
+        "death",
+        "divination",
+        "samhain",
+        "liminal"
+      ]
+    },
+    "black_salt": {
+      "Purpose": "Protection, banishing, warding, absorbing negativity",
+      "Element": "Earth",
+      "TraditionallyMadeFrom": "Salt mixed with ash, charcoal, black pepper, or scrapings from a cast-iron pan",
+      "UsedFor": "Lining doorways and windowsills, banishing, uncrossing, breaking unwanted ties",
+      "BestWith": "Black candle, rosemary, obsidian, cauldron",
+      "TraditionalWarnings": "Ritual black salt is not the culinary black salt (kala namak) and should not be eaten. Salt harms plants and soil, so sweep it up afterwards and keep it from pets.",
+      "tags": [
+        "protection",
+        "banishing",
+        "warding",
+        "uncrossing",
+        "earth",
+        "boundaries"
+      ]
+    },
+    "salt_circle": {
+      "Purpose": "Protection, sacred space, boundaries, holding energy",
+      "Element": "Earth",
+      "TraditionallyMadeFrom": "Plain sea salt or rock salt, sometimes mixed with dried herbs",
+      "UsedFor": "Casting a circle for ritual, marking sacred space, protection during spell work",
+      "BestWith": "White candle, rosemary, quarter candles, athame",
+      "TraditionalWarnings": "Salt kills plants and harms soil. Cast salt circles indoors or on a cloth, and sweep them up when the ritual is closed.",
+      "tags": [
+        "protection",
+        "sacred space",
+        "circle casting",
+        "boundaries",
+        "earth",
+        "purification"
+      ]
     }
   },
   "vessel": {
