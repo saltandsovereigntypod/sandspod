@@ -159,3 +159,44 @@ test('your own calendar: one-time events and single holidays picked from any cal
   const off = holidaysBetween(new Date(2027, 0, 1), new Date(2027, 1, 1), { ...choice, traditions: ['wheel'] });
   assert.ok(!off.some((h) => h.name === 'Þorrablót'));
 });
+
+test('prompts are worded for how often a holiday comes round', async () => {
+  const { journalPrompt } = await import('../src/lib/dayInfo.ts');
+  const at = (y: number, m: number, d: number) => new Date(y, m, d, 12);
+  const noumenia = holidaysBetween(at(2026, 9, 9), at(2026, 9, 13), only('hellenic_monthly')).find((h) => h.name === 'Noumenia')!;
+  assert.equal(noumenia.recurs, 'monthly');
+  const monthly = journalPrompt(noumenia.date, 'Waxing Crescent', [noumenia]);
+  assert.match(monthly, /this month/);
+  assert.doesNotMatch(monthly, /year/);
+
+  const samhain = holidaysBetween(at(2026, 9, 31), at(2026, 9, 31), only('wheel'))[0];
+  assert.equal(samhain.recurs, 'yearly');
+  assert.match(journalPrompt(samhain.date, 'Waning Gibbous', [samhain]), /this year/);
+
+  const saturnalia = holidaysBetween(at(2026, 11, 19), at(2026, 11, 19), only('roman'))[0];
+  assert.equal(journalPrompt(at(2026, 11, 19), 'Full Moon', [saturnalia]), 'It’s day 3 of Saturnalia. How will you keep it today?');
+
+  // A yearly holiday speaks for the day over a monthly one on the same day.
+  assert.match(journalPrompt(noumenia.date, 'Waxing Crescent', [noumenia, samhain]), /Samhain/);
+});
+
+test('your own events can repeat every week, month or year, or happen once', async () => {
+  const events = [
+    { id: 'w', name: 'Coven night', month: 9, day: 2, meaning: '', year: 2026, repeat: 'weekly' },
+    { id: 'm', name: 'Full-month offering', month: 0, day: 31, meaning: '', repeat: 'monthly' },
+    { id: 'o', name: 'Handfasting', month: 10, day: 7, meaning: '', year: 2026, repeat: 'once' },
+    { id: 'y', name: 'Dedication', month: 2, day: 14, meaning: '' },
+  ];
+  const choice = holidayChoice({ calendar_traditions: 'custom', calendar_custom_holidays: JSON.stringify(events) });
+  const list = holidaysBetween(new Date(2026, 9, 1), new Date(2026, 11, 31), choice);
+  const coven = list.filter((h) => h.name === 'Coven night');
+  assert.ok(coven.length >= 12 && coven.every((h) => h.date.getDay() === 5 && h.recurs === 'weekly')); // Fridays from Oct 2
+  assert.equal(coven[0].date.getTime(), day(2026, 9, 2));
+  const monthly = list.filter((h) => h.name === 'Full-month offering');
+  assert.deepEqual(monthly.map((h) => h.date.getMonth()), [9, 11]); // no Nov 31
+  assert.equal(list.filter((h) => h.name === 'Handfasting').length, 1);
+  assert.equal(list.find((h) => h.name === 'Handfasting')!.recurs, 'once');
+  // Older saved events: a year means once, no year means yearly.
+  const legacy = holidayChoice({ calendar_traditions: 'custom', calendar_custom_holidays: JSON.stringify([{ name: 'Old', month: 1, day: 2, year: 2027 }]) });
+  assert.equal(holidaysBetween(new Date(2027, 0, 1), new Date(2027, 11, 31), legacy)[0].recurs, 'once');
+});

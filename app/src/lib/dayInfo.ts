@@ -56,9 +56,29 @@ const PROMPTS: Record<'growing' | 'full' | 'waning' | 'dark', string[]> = {
   ],
 };
 
+/** A prompt for a holiday, worded for how often it comes round. */
+export function holidayPrompt(holiday: Holiday, date: Date): string {
+  const day = Math.round((new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime() - holiday.date.getTime()) / 86_400_000) + 1;
+  if (holiday.days > 1 && day > 1) return `It’s day ${day} of ${holiday.name}. How will you keep it today?`;
+  switch (holiday.recurs) {
+    case 'monthly':
+      return `How will you mark ${holiday.name} today, and what does this month ask of you?`;
+    case 'weekly':
+      return `How will you keep ${holiday.name} today, and what do you need from this week?`;
+    case 'once':
+      return `How will you mark ${holiday.name} today, and what do you hope it brings?`;
+    default:
+      return `How will you mark ${holiday.name} today, and what does it ask of you this year?`;
+  }
+}
+
 /** A reflection prompt for the day, from the Moon's phase (or today's holiday). */
 export function journalPrompt(date: Date, phase: PhaseName, holidays: Holiday[] = []): string {
-  if (holidays.length) return `How will you mark ${holidays[0].name} today, and what does it ask of you this year?`;
+  if (holidays.length) {
+    // A yearly or once-only holiday says more about the day than a monthly one.
+    const pick = holidays.find((h) => h.recurs === 'yearly' || h.recurs === 'once') ?? holidays[0];
+    return holidayPrompt(pick, date);
+  }
   const group =
     phase === 'New Moon' || phase === 'Waning Crescent'
       ? 'dark'

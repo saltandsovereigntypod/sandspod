@@ -34,10 +34,29 @@ export type Holiday = {
   traditions: string[];
   /** Ids of those traditions ('custom' for your own events). */
   traditionIds: string[];
+  /** How often it comes round, so prompts can speak of this month, this year, … */
+  recurs: Recurrence;
 };
 
 /** One of your own events: every year, or once when `year` is set. */
-export type CustomHoliday = { id: string; name: string; month: number; day: number; meaning: string; year?: number | null };
+export type Recurrence = 'yearly' | 'monthly' | 'weekly' | 'once';
+
+/**
+ * One of your own events. `year` is the year it happens (once) or begins
+ * (weekly); weekly events fall on the weekday of month/day/year.
+ */
+export type CustomHoliday = {
+  id: string;
+  name: string;
+  month: number;
+  day: number;
+  meaning: string;
+  year?: number | null;
+  repeat?: Recurrence;
+};
+
+/** How often a custom event comes round (older saved events: a year means once). */
+export const customRepeat = (custom: CustomHoliday): Recurrence => custom.repeat ?? (custom.year ? 'once' : 'yearly');
 /**
  * Whole calendars, your own events, and single holidays picked from any
  * calendar (`picked`, as "<tradition>/<holiday>" ids) for your own calendar.
@@ -306,6 +325,29 @@ function occurrences(rule: Rule, year: number): Date[] {
   }
 }
 
+const recurrenceOf = (rule: Rule): Recurrence => (rule.kind === 'atticMonthly' ? 'monthly' : 'yearly');
+
+/** The dates in `year` on which a custom event falls. */
+function customDates(custom: CustomHoliday, repeat: Recurrence, year: number): Date[] {
+  switch (repeat) {
+    case 'once':
+      return custom.year === year ? [new Date(year, custom.month, custom.day)] : [];
+    case 'yearly':
+      return [new Date(year, custom.month, custom.day)].filter((d) => d.getDate() === custom.day);
+    case 'monthly':
+      // Months too short for the day are skipped (a 31st only in 31-day months).
+      return Array.from({ length: 12 }, (_, m) => new Date(year, m, custom.day)).filter((d) => d.getDate() === custom.day);
+    case 'weekly': {
+      const start = new Date(custom.year ?? year, custom.month, custom.day);
+      const dates: Date[] = [];
+      let d = new Date(year, 0, 1);
+      d = addDays(d, (start.getDay() - d.getDay() + 7) % 7);
+      for (; d.getFullYear() === year; d = addDays(d, 7)) if (d.getTime() >= start.getTime()) dates.push(d);
+      return dates;
+    }
+  }
+}
+
 /** Reads the choice saved in settings (comma-separated traditions, custom holidays as JSON). */
 export function holidayChoice(settings: Record<string, unknown> | null | undefined): HolidayChoice {
   const raw = settings?.calendar_traditions;
@@ -336,6 +378,7 @@ export function parseCustomHolidays(raw: unknown): CustomHoliday[] {
         day: Math.min(31, Math.max(1, Number(item.day) || 1)),
         meaning: String(item.meaning || '').trim(),
         year: Number.isInteger(item.year) ? item.year : null,
+        repeat: ['yearly', 'monthly', 'weekly', 'once'].includes(item.repeat) ? item.repeat : undefined,
       }));
   } catch {
     return [];
@@ -350,7 +393,14 @@ export function parseCustomHolidays(raw: unknown): CustomHoliday[] {
 export function holidaysBetween(from: Date, to: Date, choice: HolidayChoice): Holiday[] {
   const today = startOfDay(from).getTime();
   const out = new Map<string, Holiday>();
-  const add = (def: { name: string; meaning: string; days?: number }, id: string, date: Date, tradition: string, traditionId: string) => {
+  const add = (
+    def: { name: string; meaning: string; days?: number },
+    id: string,
+    date: Date,
+    tradition: string,
+    traditionId: string,
+    recurs: Recurrence = 'yearly',
+  ) => {
     const days = def.days ?? 1;
     if (addDays(date, days - 1).getTime() < today || date.getTime() > to.getTime()) return;
     const key = `${def.name.split(' ')[0].toLowerCase()}|${date.getTime()}`;
@@ -368,6 +418,7 @@ export function holidaysBetween(from: Date, to: Date, choice: HolidayChoice): Ho
       days,
       traditions: [tradition],
       traditionIds: [traditionId],
+      recurs,
     });
   };
 
@@ -375,13 +426,13 @@ export function holidaysBetween(from: Date, to: Date, choice: HolidayChoice): Ho
     for (const tradition of TRADITIONS) {
       if (!choice.traditions.includes(tradition.id)) continue;
       for (const def of tradition.holidays) {
-        for (const date of occurrences(def.rule, year)) add(def, `${tradition.id}-${def.id}`, date, tradition.name, tradition.id);
+        for (const date of occurrences(def.rule, year)) add(def, `${tradition.id}-${def.id}`, date, tradition.name, tradition.id, recurrenceOf(def.rule));
       }
     }
     if (choice.traditions.includes('custom')) {
       for (const custom of choice.custom) {
-        if (custom.year && custom.year !== year) continue;
-        add(custom, `custom-${custom.id}`, new Date(year, custom.month, custom.day), 'Your calendar', 'custom');
+        const repeat = customRepeat(custom);
+        for (const date of customDates(custom, repeat, year)) add(custom, `custom-${custom.id}`, date, 'Your calendar', 'custom', repeat);
       }
       // Single holidays picked from calendars that aren't chosen whole.
       for (const id of choice.picked ?? []) {
@@ -390,7 +441,7 @@ export function holidaysBetween(from: Date, to: Date, choice: HolidayChoice): Ho
         const tradition = TRADITIONS.find((t) => t.id === traditionId);
         const def = tradition?.holidays.find((h) => h.id === holidayId);
         if (!tradition || !def) continue;
-        for (const date of occurrences(def.rule, year)) add(def, `${traditionId}-${def.id}`, date, tradition.name, traditionId);
+        for (const date of occurrences(def.rule, year)) add(def, `${traditionId}-${def.id}`, date, tradition.name, traditionId, recurrenceOf(def.rule));
       }
     }
   }

@@ -5,7 +5,7 @@ import { Button } from '../../../../components/Button';
 import { Card, Chips, Field, MenuList, Notice, Section, SwitchRow } from '../../../../components/more/ui';
 import { SettingsForm } from '../../../../components/more/SettingsForm';
 import { shortDate } from '../../../../lib/calendar';
-import { holidayChoice, holidaysBetween, pickId, TRADITIONS, type CustomHoliday } from '../../../../lib/holidays';
+import { customRepeat, holidayChoice, holidaysBetween, pickId, TRADITIONS, type CustomHoliday, type Recurrence } from '../../../../lib/holidays';
 import { primaryTradition } from '../../../../lib/traditionDay';
 import { newId } from '../../../../lib/altar/uid';
 import type { Settings } from '../../../../lib/settings/defaults';
@@ -21,6 +21,31 @@ const LAYOUT_OPTIONS = [
   { value: 'stacked', label: 'One above the other' },
   { value: 'side', label: 'Side by side' },
 ] as const;
+
+const REPEAT_OPTIONS = [
+  { value: 'yearly', label: 'Every year' },
+  { value: 'monthly', label: 'Every month' },
+  { value: 'weekly', label: 'Every week' },
+  { value: 'once', label: 'Once' },
+] as const;
+
+const WEEKDAYS = ['Sundays', 'Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays'];
+
+function repeatLabel(holiday: CustomHoliday): string {
+  const date = `${MONTHS[holiday.month].label} ${holiday.day}`;
+  switch (customRepeat(holiday)) {
+    case 'once':
+      return `${date}, ${holiday.year}`;
+    case 'monthly':
+      return `the ${holiday.day}${ordinal(holiday.day)} of every month`;
+    case 'weekly':
+      return `${WEEKDAYS[new Date(holiday.year ?? new Date().getFullYear(), holiday.month, holiday.day).getDay()]}, from ${date}${holiday.year ? `, ${holiday.year}` : ''}`;
+    default:
+      return `${date} · every year`;
+  }
+}
+
+const ordinal = (n: number) => (n % 100 >= 11 && n % 100 <= 13 ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] ?? 'th');
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((label, i) => ({
   value: String(i) as `${number}`,
@@ -147,7 +172,7 @@ function CustomHolidays({ list, onChange }: { list: CustomHoliday[]; onChange: (
   const [month, setMonth] = useState<`${number}`>(String(new Date().getMonth()) as `${number}`);
   const [day, setDay] = useState('');
   const [meaning, setMeaning] = useState('');
-  const [yearly, setYearly] = useState(true);
+  const [repeat, setRepeat] = useState<Recurrence>('yearly');
   const [year, setYear] = useState(String(new Date().getFullYear()));
   const [message, setMessage] = useState<string | null>(null);
 
@@ -155,13 +180,15 @@ function CustomHolidays({ list, onChange }: { list: CustomHoliday[]; onChange: (
     const dayNumber = Number(day);
     const yearNumber = Number(year);
     if (!name.trim()) return setMessage('Give the event a name.');
-    if (!yearly && (!Number.isInteger(yearNumber) || yearNumber < 1900 || yearNumber > 2200)) return setMessage('Enter the year it happens, such as 2027.');
+    const needsYear = repeat === 'once' || repeat === 'weekly';
+    if (needsYear && (!Number.isInteger(yearNumber) || yearNumber < 1900 || yearNumber > 2200)) return setMessage('Enter the year, such as 2027.');
     // Yearly events may fall on Feb 29 (shown on leap years); one-time ones must exist that year.
-    const daysInMonth = new Date(yearly ? 2024 : yearNumber, Number(month) + 1, 0).getDate();
+    // Yearly events may fall on Feb 29 (leap years); monthly ones on any day up to 31.
+    const daysInMonth = repeat === 'monthly' ? 31 : new Date(needsYear ? yearNumber : 2024, Number(month) + 1, 0).getDate();
     if (!Number.isInteger(dayNumber) || dayNumber < 1 || dayNumber > daysInMonth) return setMessage(`Choose a day from 1 to ${daysInMonth}.`);
     onChange([
       ...list,
-      { id: newId(), name: name.trim(), month: Number(month), day: dayNumber, meaning: meaning.trim(), year: yearly ? null : yearNumber },
+      { id: newId(), name: name.trim(), month: Number(month), day: dayNumber, meaning: meaning.trim(), year: needsYear ? yearNumber : null, repeat },
     ]);
     setName('');
     setDay('');
@@ -178,7 +205,7 @@ function CustomHolidays({ list, onChange }: { list: CustomHoliday[]; onChange: (
               <View style={styles.grow}>
                 <Text style={styles.yearName}>{holiday.name}</Text>
                 <Text style={type.caption}>
-                  {`${MONTHS[holiday.month].label} ${holiday.day}${holiday.year ? `, ${holiday.year}` : ' · every year'}${holiday.meaning ? ` · ${holiday.meaning}` : ''}`}
+                  {`${repeatLabel(holiday)}${holiday.meaning ? ` · ${holiday.meaning}` : ''}`}
                 </Text>
               </View>
               <Pressable
@@ -196,12 +223,21 @@ function CustomHolidays({ list, onChange }: { list: CustomHoliday[]; onChange: (
       <Card>
         <Text style={type.cardTitle}>Add an event</Text>
         <Field label="Name" value={name} onChangeText={setName} placeholder="My dedication day, a coven gathering…" />
-        <Chips label="Month" options={MONTHS} value={month} onChange={setMonth} />
+        <Chips label="Repeats" options={REPEAT_OPTIONS} value={repeat} onChange={setRepeat} />
+        {repeat !== 'monthly' && <Chips label="Month" options={MONTHS} value={month} onChange={setMonth} />}
         <Field label="Day of the month" value={day} onChangeText={setDay} keyboardType="number-pad" maxLength={2} placeholder="1–31" />
-        <MenuList>
-          <SwitchRow label="Every year" detail={yearly ? 'Repeats on this date each year.' : 'Happens once, in the year below.'} value={yearly} onChange={setYearly} last />
-        </MenuList>
-        {!yearly && <Field label="Year" value={year} onChangeText={setYear} keyboardType="number-pad" maxLength={4} />}
+        {(repeat === 'once' || repeat === 'weekly') && (
+          <Field label={repeat === 'weekly' ? 'Year it starts' : 'Year'} value={year} onChangeText={setYear} keyboardType="number-pad" maxLength={4} />
+        )}
+        <Text style={type.caption}>
+          {repeat === 'yearly'
+            ? 'Comes round on this date every year.'
+            : repeat === 'monthly'
+              ? 'Comes round on this day of every month (skipping months too short for it).'
+              : repeat === 'weekly'
+                ? 'Comes round every week on the weekday of this date, starting from it.'
+                : 'Happens once, on this date.'}
+        </Text>
         <Field label="What it means to you (optional)" value={meaning} onChangeText={setMeaning} multiline />
         {!!message && <Notice>{message}</Notice>}
         <Button label="Add event" variant="outline" onPress={add} />
