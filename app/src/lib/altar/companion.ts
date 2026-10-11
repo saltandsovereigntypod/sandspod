@@ -6,8 +6,8 @@
 import { correspondences, layerFields, normalizeName, splitList } from '../library/model.ts';
 import type { LibraryEntry, LibraryField } from '../library/types.ts';
 import type { Settings } from '../settings/defaults.ts';
-import { readLivingState } from './livingState.ts';
-import type { SavedObject } from './types.ts';
+import { carvingsOf, readLivingState } from './livingState.ts';
+import type { CabinetForm, CabinetItem, SavedObject } from './types.ts';
 
 type Identity = [type: string, value: string | undefined];
 
@@ -147,6 +147,7 @@ export function stateRows(object: SavedObject, now: Date): StateRow[] {
     if (total > 0) add('Burned in all', duration(total));
     add('Last lit', when(candle.lastLitAt, now));
     add('Dressed with', (candle.dressings ?? []).map((d) => d.label).filter(Boolean).join(', '));
+    add('Carved with', carvingsOf(object).map((c) => `“${c.text}”`).join(', '));
   }
 
   const crystal = state.crystal as Record<string, unknown> | undefined;
@@ -180,4 +181,34 @@ export function stateRows(object: SavedObject, now: Date): StateRow[] {
   add('Part of', text(state.currentRitualName));
   add('Notes', text(state.notes));
   return rows;
+}
+
+const USE_KEYS = ['Uses', 'Domains', 'Purpose', 'UsedFor', 'TraditionallyUsedFor', 'BestFor'];
+
+/** The first two traditional uses of an entry, lower case: "passion · courage". */
+export function topUses(entry: LibraryEntry | null, count = 2): string {
+  if (!entry) return '';
+  const source = { ...(entry.traditional ?? {}), ...(entry.myPractice ?? {}) } as Record<string, unknown>;
+  for (const key of USE_KEYS) {
+    const raw = source[key];
+    const list = Array.isArray(raw) ? raw.map(String) : typeof raw === 'string' ? splitList(raw) : [];
+    const uses = list.map((use) => use.trim().toLowerCase()).filter((use) => use && use.length <= 28);
+    if (uses.length) return uses.slice(0, count).join(' · ');
+  }
+  return '';
+}
+
+/** What a cabinet item would be on the altar, for finding its Living Library entry before it's placed. */
+export function cabinetEntry(entries: LibraryEntry[], item: CabinetItem, form: CabinetForm): LibraryEntry | null {
+  return resolveAltarEntry(entries, {
+    type: form.type,
+    herb: form.herb,
+    color: form.color,
+    crystal: form.crystal,
+    tool: form.tool,
+    vessel: form.vessel,
+    deity: form.deity,
+    entityId: form.entityId || item.entityId,
+    label: item.name,
+  });
 }

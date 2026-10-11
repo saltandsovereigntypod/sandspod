@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { AboutSheet } from '../../../components/altar/AboutSheet';
 import { AltarStage, clampViewport, type Viewport } from '../../../components/altar/AltarStage';
 import { CabinetSheet } from '../../../components/altar/CabinetSheet';
+import { CarveSheet } from '../../../components/altar/CarveSheet';
 import { Chip, ChipRow } from '../../../components/altar/Chip';
 import { BackgroundSheet, DressSheet, LayersSheet, SaveSheet } from '../../../components/altar/OptionSheets';
 import { Button } from '../../../components/Button';
@@ -13,6 +14,7 @@ import { glanceLine, resolveAltarEntry } from '../../../lib/altar/companion';
 import { builtInCabinet, objectFromForm } from '../../../lib/altar/cabinet';
 import {
   addObject,
+  carveObject,
   changeLayer,
   dressObject,
   duplicateObject,
@@ -28,11 +30,12 @@ import {
   toggleGlow,
   toggleLight,
   toggleLock,
+  uncarveObject,
   undressObject,
 } from '../../../lib/altar/editor';
 import { displayBox, STAGE_ASPECT } from '../../../lib/altar/geometry';
 import { stackOrder } from '../../../lib/altar/layers';
-import { dressingsOf, isCandle, isLit, readLivingState } from '../../../lib/altar/livingState';
+import { carvingsOf, dressingsOf, isCandle, isLit, readLivingState } from '../../../lib/altar/livingState';
 import { altarSummary, documentFromAltar, emptyDocument, type AltarDocument } from '../../../lib/altar/snapshot';
 import { useAltars } from '../../../lib/altar/store';
 import type { CabinetForm, CabinetItem } from '../../../lib/altar/types';
@@ -40,7 +43,7 @@ import { useLibrary } from '../../../lib/library';
 import { useMySettings } from '../../../lib/settings/store';
 import { colors, fonts, space, touch, type } from '../../../theme';
 
-type SheetName = 'about' | 'cabinet' | 'background' | 'layers' | 'dress' | 'save' | null;
+type SheetName = 'about' | 'carve' | 'cabinet' | 'background' | 'layers' | 'dress' | 'save' | null;
 
 const nowIso = () => new Date().toISOString();
 const MAX_STAGE_WIDTH = 960;
@@ -289,6 +292,7 @@ export default function AltarEditor() {
             act={{
               light: () => commit((d) => toggleLight(d, selected, nowIso())),
               dress: () => setSheet('dress'),
+              carve: () => setSheet('carve'),
               undress: () => commit((d) => undressObject(d, selected, nowIso())),
               rotate: (deg) => commit((d) => rotateObject(d, selected, deg)),
               resize: (f) => commit((d) => resizeObject(d, selected, f)),
@@ -352,10 +356,23 @@ export default function AltarEditor() {
             entry={selectedEntry}
             onClose={() => setSheet(null)}
           />
+          <CarveSheet
+            visible={sheet === 'carve'}
+            candle={selectedObject?.label || 'Candle'}
+            carvings={selectedObject ? carvingsOf(selectedObject) : []}
+            onClose={() => setSheet(null)}
+            onCarve={(text) => {
+              if (selected != null) commit((d) => carveObject(d, selected, text, nowIso()));
+            }}
+            onSmooth={(index) => {
+              if (selected != null) commit((d) => uncarveObject(d, selected, nowIso(), index));
+            }}
+          />
           <CabinetSheet
             visible={sheet === 'cabinet'}
             items={allItems}
             overrides={overrides}
+            library={libraryEntries}
             onClose={() => setSheet(null)}
             onPlace={place}
           />
@@ -407,6 +424,7 @@ export default function AltarEditor() {
 type Actions = {
   light: () => void;
   dress: () => void;
+  carve: () => void;
   undress: () => void;
   rotate: (degrees: number) => void;
   resize: (factor: number) => void;
@@ -438,6 +456,7 @@ function ObjectPanel({
   const locked = object.locked === 'true';
   const glowing = object.glowing === 'true';
   const dressings = candle ? dressingsOf(object) : [];
+  const carvings = candle ? carvingsOf(object) : [];
   const burned = candle ? Number(readLivingState(object, nowIso()).candle?.totalBurnMs) || 0 : 0;
   const [confirmRemove, setConfirmRemove] = useState(false);
 
@@ -448,11 +467,12 @@ function ObjectPanel({
           <Text style={type.eyebrow}>{locked ? 'Locked in place' : lit ? 'Burning' : 'Selected'}</Text>
           <Text style={type.cardTitle}>{objectLabel}</Text>
           {!!glance && <Text style={styles.glance}>{glance}</Text>}
-          {candle && (burned > 0 || dressings.length > 0) && (
+          {candle && (burned > 0 || dressings.length > 0 || carvings.length > 0) && (
             <Text style={type.caption}>
               {[
                 burned > 0 ? `Burned ${burnTime(burned)} in all` : null,
                 dressings.length ? `Dressed with ${dressings.map((d) => d.label).join(', ')}` : null,
+                carvings.length ? `Carved with ${carvings.map((c) => `“${c.text}”`).join(', ')}` : null,
               ]
                 .filter(Boolean)
                 .join(' · ')}
@@ -471,6 +491,7 @@ function ObjectPanel({
           <Button label={lit ? 'Snuff the candle' : 'Light the candle'} onPress={act.light} />
           <ChipRow>
             <Chip label="Dress" symbol="❦" onPress={act.dress} />
+            <Chip label="Carve" symbol="✎" onPress={act.carve} />
             {dressings.length > 0 && <Chip label="Undress" symbol="⌫" onPress={act.undress} />}
           </ChipRow>
         </>

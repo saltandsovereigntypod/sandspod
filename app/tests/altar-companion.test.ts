@@ -52,3 +52,29 @@ test('state rows describe a candle and a jar', () => {
     { label: 'Inside', value: 'Salt, Rosemary' },
   ]);
 });
+
+test('the cabinet shows each item’s two best-known uses', async () => {
+  const { cabinetEntry, topUses } = await import('../src/lib/altar/companion.ts');
+  const { builtInCabinet } = await import('../src/lib/altar/cabinet.ts');
+  const red = builtInCabinet.find((item) => item.name === 'Red Candle')!;
+  assert.equal(topUses(cabinetEntry(entries, red, red.forms[0])), 'passion · courage');
+  const lavender = builtInCabinet.find((item) => item.name === 'Lavender')!;
+  assert.equal(topUses(cabinetEntry(entries, lavender, lavender.forms[0])), 'peace · sleep');
+  assert.equal(topUses(null), '');
+});
+
+test('a candle can be carved, shows it, and the carving can be smoothed away', async () => {
+  const { carveCandle, carvingsOf, uncarveCandle } = await import('../src/lib/altar/livingState.ts');
+  const now = new Date(2026, 9, 11, 12).toISOString();
+  let candle = { type: 'candle', label: 'Green Candle' };
+  candle = carveCandle(candle, '  Abundance ', now);
+  candle = carveCandle(candle, 'abundance', now);
+  candle = carveCandle(candle, 'Ash', now);
+  assert.deepEqual(carvingsOf(candle).map((c) => c.text), ['Abundance', 'Ash']);
+  assert.ok(stateRows(candle, new Date(now)).some((r) => r.label === 'Carved with' && r.value === '“Abundance”, “Ash”'));
+  assert.deepEqual(carvingsOf(uncarveCandle(candle, now, 0)).map((c) => c.text), ['Ash']);
+  assert.equal(carvingsOf(uncarveCandle(candle, now)).length, 0);
+  // Only candles take carvings, and nothing blank is carved.
+  assert.equal(carveCandle({ type: 'crystal' }, 'Calm', now).livingState, undefined);
+  assert.equal(carveCandle(candle, '   ', now), candle);
+});

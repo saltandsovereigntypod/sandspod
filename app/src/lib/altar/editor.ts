@@ -4,7 +4,7 @@
 
 import { displayBox, objectSize, rotationOf, withCenter, withRotation, withSize } from './geometry.ts';
 import { moveLayer, nextLayer, type LayerMove } from './layers.ts';
-import { dressCandle, ensureLivingState, toggleLit, undressCandle } from './livingState.ts';
+import { carveCandle, dressCandle, ensureLivingState, toggleLit, uncarveCandle, undressCandle } from './livingState.ts';
 import type { AltarDocument } from './snapshot.ts';
 import type { SavedObject } from './types.ts';
 import { newId } from './uid.ts';
@@ -110,6 +110,20 @@ export function undressObject(doc: AltarDocument, index: number, now: string): A
   const object = doc.objects[index];
   if (!object) return doc;
   const next = undressCandle(object, now);
+  return next === object ? doc : replace(doc, new Map([[index, next]]));
+}
+
+export function carveObject(doc: AltarDocument, index: number, text: string, now: string): AltarDocument {
+  const object = doc.objects[index];
+  if (!object) return doc;
+  const next = carveCandle(object, text, now);
+  return next === object ? doc : replace(doc, new Map([[index, next]]));
+}
+
+export function uncarveObject(doc: AltarDocument, index: number, now: string, carving?: number): AltarDocument {
+  const object = doc.objects[index];
+  if (!object) return doc;
+  const next = uncarveCandle(object, now, carving);
   return next === object ? doc : replace(doc, new Map([[index, next]]));
 }
 

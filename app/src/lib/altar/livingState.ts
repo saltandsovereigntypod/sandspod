@@ -9,12 +9,18 @@ import { newId } from './uid.ts';
 
 export type Dressing = { type: string; herb: string; form: string; label: string; [key: string]: unknown };
 
+/** A word, name or sigil carved into a candle. The app's own addition; the website keeps it untouched. */
+export type Carving = { text: string; carvedAt: string };
+
+export const CARVING_MAX = 40;
+
 type CandleState = {
   totalBurnMs?: number;
   currentBurnStartedAt?: string;
   lastLitAt?: string;
   burnHistory?: { startedAt: string; endedAt: string; durationMs: number }[];
   dressings?: Dressing[];
+  carvings?: Carving[];
   [key: string]: unknown;
 };
 
@@ -213,4 +219,32 @@ export function ensureLivingState(object: SavedObject, now: string): SavedObject
     next = { ...next, livingState: JSON.stringify(stamped) };
   }
   return next;
+}
+
+export function carvingsOf(object: SavedObject): Carving[] {
+  const carvings = parseLivingState(object)?.candle?.carvings;
+  return Array.isArray(carvings) ? carvings.filter((c) => c && typeof c.text === 'string' && c.text.trim()) : [];
+}
+
+/** Carve a word into a candle. Blank or repeated words change nothing. */
+export function carveCandle(candle: SavedObject, text: string, now: string): SavedObject {
+  const word = text.replace(/\s+/g, ' ').trim().slice(0, CARVING_MAX);
+  if (!isCandle(candle) || !word) return candle;
+  const current = carvingsOf(candle);
+  if (current.some((c) => c.text.toLowerCase() === word.toLowerCase())) return candle;
+  const state = readLivingState(candle, now);
+  return writeLivingState(
+    candle,
+    { ...state, lastUsedAt: now, candle: { ...state.candle, carvings: [...current, { text: word, carvedAt: now }] } },
+    now,
+  );
+}
+
+/** Smooth one carving away, or all of them when no index is given. */
+export function uncarveCandle(candle: SavedObject, now: string, index?: number): SavedObject {
+  const current = carvingsOf(candle);
+  if (!isCandle(candle) || current.length === 0) return candle;
+  const carvings = index == null ? [] : current.filter((_, i) => i !== index);
+  const state = readLivingState(candle, now);
+  return writeLivingState(candle, { ...state, lastUsedAt: now, candle: { ...state.candle, carvings } }, now);
 }

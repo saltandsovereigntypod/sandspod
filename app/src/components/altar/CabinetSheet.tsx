@@ -2,8 +2,10 @@ import { useMemo, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { altarImageSource } from '../../lib/altar/assets';
+import { cabinetEntry, topUses } from '../../lib/altar/companion';
 import { cabinetCategories, cabinetItemsFor, formImage, formObjectLabel, placeableForms } from '../../lib/altar/cabinet';
 import type { CabinetForm, CabinetItem } from '../../lib/altar/types';
+import type { LibraryEntry } from '../../lib/library';
 import { colors, fonts, radius, space, touch, type } from '../../theme';
 import { Chip, ChipRow } from './Chip';
 import { Sheet } from './Sheet';
@@ -12,11 +14,13 @@ type Props = {
   visible: boolean;
   items: CabinetItem[];
   overrides: Record<string, string>;
+  /** The Living Library, for each item's two best-known uses. */
+  library: LibraryEntry[];
   onClose: () => void;
   onPlace: (item: CabinetItem, form: CabinetForm) => void;
 };
 
-export function CabinetSheet({ visible, items, overrides, onClose, onPlace }: Props) {
+export function CabinetSheet({ visible, items, overrides, library, onClose, onPlace }: Props) {
   const [category, setCategory] = useState<string>('candles');
   const [search, setSearch] = useState('');
 
@@ -24,8 +28,9 @@ export function CabinetSheet({ visible, items, overrides, onClose, onPlace }: Pr
     () =>
       cabinetItemsFor(items, category, search)
         .map((item) => ({ item, forms: placeableForms(item, overrides) }))
-        .filter((entry) => entry.forms.length > 0),
-    [items, category, search, overrides],
+        .filter((entry) => entry.forms.length > 0)
+        .map((entry) => ({ ...entry, uses: topUses(cabinetEntry(library, entry.item, entry.forms[0])) })),
+    [items, category, search, overrides, library],
   );
 
   return (
@@ -55,19 +60,22 @@ export function CabinetSheet({ visible, items, overrides, onClose, onPlace }: Pr
       }
     >
       {shown.length === 0 && <Text style={type.body}>Nothing in this drawer{search ? ' matches that search' : ''}.</Text>}
-      {shown.map(({ item, forms }) =>
+      {shown.map(({ item, forms, uses }) =>
         forms.length === 1 ? null : (
           <View key={item.id} style={styles.group}>
-            <Text style={styles.groupTitle}>
-              {item.name}
-              {item.customCabinetItemId ? '  ·  yours' : ''}
-            </Text>
+            <View>
+              <Text style={styles.groupTitle}>
+                {item.name}
+                {item.customCabinetItemId ? '  ·  yours' : ''}
+              </Text>
+              {!!uses && <Text style={[styles.uses, styles.usesLeft]}>{uses}</Text>}
+            </View>
             <View style={styles.grid}>
               {forms.map((form) => (
                 <Tile
                   key={`${form.form}-${form.label}`}
                   label={form.label}
-                  spoken={`Place ${formObjectLabel(item, form)}`}
+                  spoken={`Place ${formObjectLabel(item, form)}${uses ? `. For ${uses.replace(' · ', ' and ')}` : ''}`}
                   image={formImage(item, form, overrides)}
                   onPress={() => onPlace(item, form)}
                 />
@@ -80,11 +88,12 @@ export function CabinetSheet({ visible, items, overrides, onClose, onPlace }: Pr
         <View style={styles.grid}>
           {shown
             .filter(({ forms }) => forms.length === 1)
-            .map(({ item, forms }) => (
+            .map(({ item, forms, uses }) => (
               <Tile
                 key={item.id}
                 label={item.name}
-                spoken={`Place ${formObjectLabel(item, forms[0])}`}
+                uses={uses}
+                spoken={`Place ${formObjectLabel(item, forms[0])}${uses ? `. For ${uses.replace(' · ', ' and ')}` : ''}`}
                 image={formImage(item, forms[0], overrides)}
                 onPress={() => onPlace(item, forms[0])}
               />
@@ -98,7 +107,7 @@ export function CabinetSheet({ visible, items, overrides, onClose, onPlace }: Pr
   );
 }
 
-function Tile({ label, spoken, image, onPress }: { label: string; spoken: string; image: string; onPress: () => void }) {
+function Tile({ label, uses, spoken, image, onPress }: { label: string; uses?: string; spoken: string; image: string; onPress: () => void }) {
   const source = altarImageSource(image);
   return (
     <Pressable
@@ -111,6 +120,11 @@ function Tile({ label, spoken, image, onPress }: { label: string; spoken: string
       <Text style={styles.tileLabel} numberOfLines={2}>
         {label}
       </Text>
+      {!!uses && (
+        <Text style={styles.uses} numberOfLines={2}>
+          {uses}
+        </Text>
+      )}
     </Pressable>
   );
 }
@@ -147,4 +161,6 @@ const styles = StyleSheet.create({
   thumb: { width: '100%', aspectRatio: 1, alignItems: 'center', justifyContent: 'center' },
   thumbImage: { width: '90%', height: '90%' },
   tileLabel: { color: colors.parchment, fontFamily: fonts.body, fontSize: 13, textAlign: 'center' },
+  usesLeft: { textAlign: 'left' },
+  uses: { color: colors.gold, opacity: 0.8, fontFamily: fonts.body, fontSize: 11, lineHeight: 14, textAlign: 'center' },
 });
