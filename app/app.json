@@ -3,7 +3,7 @@
     "name": "Salt & Sovereignty",
     "slug": "ashley19175",
     "scheme": "saltandsovereignty",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -54,6 +54,29 @@
         "expo-location",
         {
           "locationWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location to work out sunrise, sunset, moonrise and planetary hours where you are. It stays on your phone."
+        }
+      ],
+      [
+        "expo-widgets",
+        {
+          "bundleIdentifier": "com.saltandsovereignty.app.widgets",
+          "groupIdentifier": "group.com.saltandsovereignty.app",
+          "widgets": [
+            {
+              "name": "MoonWidget",
+              "displayName": "Tonight's Moon",
+              "description": "The moon tonight, today's holiday and your next ritual.",
+              "ios": {
+                "supportedFamilies": [
+                  "systemSmall",
+                  "systemMedium",
+                  "accessoryCircular",
+                  "accessoryRectangular",
+                  "accessoryInline"
+                ]
+              }
+            }
+          ]
         }
       ]
     ],
