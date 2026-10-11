@@ -11,6 +11,7 @@ import { PHASE_ORDER } from '../../../lib/reminders/schedule';
 import { setHolidaySelection, syncSkyCalendar } from '../../../lib/reminders/calendarStore';
 import { useReminders } from '../../../lib/reminders/store';
 import { planSky, planWhen } from '../../../lib/rituals/format';
+import { journalInsights } from '../../../lib/rituals/insights';
 import { currentStep } from '../../../lib/rituals/lifecycle';
 import { nextPlan } from '../../../lib/rituals/plans';
 import { useRituals } from '../../../lib/rituals/store';
@@ -170,7 +171,30 @@ export default function Today() {
         <Text style={[type.eyebrow, styles.gold]}>Reflect</Text>
         <Text style={styles.promptText}>{today.prompt}</Text>
       </View>
+      <LastTimeLine journal={rituals.journal} now={clock} />
     </Screen>
+  );
+}
+
+const PRINCIPAL = ['New Moon', 'First Quarter', 'Full Moon', 'Last Quarter'];
+
+/** On a new, quarter or full moon: what you did last time the moon looked like this. */
+function LastTimeLine({ journal, now }: { journal: Parameters<typeof journalInsights>[0]; now: Date }) {
+  const last = useMemo(() => journalInsights(journal, now).lastThisPhase, [journal, now]);
+  if (!last || !PRINCIPAL.includes(last.phase)) return null;
+  return (
+    <Pressable
+      accessibilityRole="link"
+      accessibilityLabel={`Last ${last.phase} you kept ${last.entry.title || 'a ritual'}. Opens your journal.`}
+      onPress={() => router.navigate({ pathname: '/today/journal/[id]', params: { id: last.entry.id } })}
+      style={({ pressed }) => [styles.lastTime, pressed && { opacity: 0.7 }]}
+    >
+      <Text style={type.caption}>
+        {`Last ${last.phase} you kept `}
+        <Text style={styles.gold}>{`“${last.entry.title || 'a ritual'}”`}</Text>
+        {' ›'}
+      </Text>
+    </Pressable>
   );
 }
 
@@ -369,6 +393,7 @@ const styles = StyleSheet.create({
   corrRow: { gap: 4 },
   corrLabel: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.gold },
   corrText: { ...type.body, color: colors.cream },
+  lastTime: { alignItems: 'center', minHeight: 44, justifyContent: 'center' },
   prompt: { borderLeftWidth: 2, borderLeftColor: colors.goldLine, paddingLeft: 14, gap: 4 },
   promptText: { fontFamily: fonts.displayItalic, fontSize: 21, lineHeight: 27, color: colors.cream },
   gold: { color: colors.gold },

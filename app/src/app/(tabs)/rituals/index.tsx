@@ -9,6 +9,7 @@ import { useReminders } from '../../../lib/reminders/store';
 import { PHASE_ORDER } from '../../../lib/reminders/schedule';
 import { currentStep } from '../../../lib/rituals/lifecycle';
 import { journalDetail, planSky, planWhen } from '../../../lib/rituals/format';
+import { journalInsights } from '../../../lib/rituals/insights';
 import { sortJournal, upcomingPlans } from '../../../lib/rituals/plans';
 import { bringDeviceRitualsToAccount, refresh, useRituals } from '../../../lib/rituals/store';
 import { useSession } from '../../../lib/session';
@@ -23,6 +24,7 @@ export default function RitualsHome() {
   const moon = moonState(now);
 
   const journal = useMemo(() => sortJournal(rituals.journal), [rituals.journal]);
+  const insight = useMemo(() => journalInsights(rituals.journal, new Date()), [rituals.journal]);
   const plans = upcomingPlans(rituals.plans, now);
   const [next, ...laterPlans] = plans;
   const active = rituals.active;
@@ -129,6 +131,16 @@ export default function RitualsHome() {
           </List>
         )}
         {journal.length > 5 && <Button label={`See all ${journal.length} rituals`} variant="outline" onPress={() => router.push('/rituals/journal')} />}
+        {journal.length > 0 && (
+          <List>
+            <Row
+              title="Your moon"
+              detail={insight.lines[0] ?? 'Which moons you work under, and what for'}
+              last
+              onPress={() => router.push('/rituals/journal/insights')}
+            />
+          </List>
+        )}
       </View>
 
       {!session && (

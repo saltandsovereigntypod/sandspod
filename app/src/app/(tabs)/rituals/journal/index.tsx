@@ -33,6 +33,7 @@ export default function Journal() {
           ))}
         </List>
       )}
+      {entries.length > 0 && <Button label="Your moon: patterns in your practice" onPress={() => router.push('/rituals/journal/insights')} />}
       <Button label="Record a ritual" variant="outline" onPress={() => router.push('/rituals/journal/new')} />
     </RitualScreen>
   );
