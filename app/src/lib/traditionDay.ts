@@ -1,11 +1,11 @@
 // The day as your main calendar names it: the Athenian lunar date and its
 // god, the Norse weekday gods and old Icelandic months, the Roman Kalends,
-// Nones and Ides, the Irish day and month, the old Slavic months, or your
-// place on the Wheel of the Year. Plus folk full moon names and the word each
+// Nones and Ides, the Irish day and month, the old Slavic months, the
+// season of the Christian year, or your place on the Wheel of the Year. Plus folk full moon names and the word each
 // tradition uses for its holy days.
 
 import { startOfDay } from './calendar.ts';
-import { atticYear, holidaysBetween, nextHolidayAfterToday, type HolidayChoice } from './holidays.ts';
+import { atticYear, easterSunday, holidaysBetween, nextHolidayAfterToday, type HolidayChoice } from './holidays.ts';
 import { nextPhase, sunReaches } from './moon.ts';
 
 export type TraditionDay = { line: string; detail?: string };
@@ -213,6 +213,38 @@ function wheel(date: Date, south: boolean): TraditionDay | null {
   };
 }
 
+// ─── Christian ───────────────────────────────────────────────────────────
+
+/** The season of the Western Christian year. */
+export function liturgicalSeason(date: Date): string {
+  const day = startOfDay(date).getTime();
+  const y = date.getFullYear();
+  const easter = easterSunday(y).getTime();
+  const at = (d: Date) => d.getTime();
+  const advent = at(firstWeekday(y, 10, 27, 0));
+  if (day >= at(new Date(y, 11, 25)) || day < at(new Date(y, 0, 6))) return 'Christmastide';
+  if (day >= advent) return 'Advent';
+  if (day >= at(addDays(new Date(easter), -46)) && day < at(addDays(new Date(easter), -7))) return 'Lent';
+  if (day >= at(addDays(new Date(easter), -7)) && day < easter) return 'Holy Week';
+  if (day >= easter && day <= at(addDays(new Date(easter), 49))) return 'Eastertide';
+  return 'Ordinary Time';
+}
+
+const SEASON_NOTE: Record<string, string> = {
+  Advent: 'Waiting for the light',
+  Christmastide: 'The twelve days of Christmas',
+  Lent: 'Forty days of prayer, fasting and letting go',
+  'Holy Week': 'The last days before Easter',
+  Eastertide: 'The fifty days of Easter',
+  'Ordinary Time': 'The green, growing season of the year',
+};
+
+function christian(date: Date): TraditionDay {
+  const season = liturgicalSeason(date);
+  const feast = holidaysBetween(date, startOfDay(date), { traditions: ['christian'], custom: [] })[0];
+  return feast ? { line: `${feast.name} · ${season}`, detail: SEASON_NOTE[season] } : { line: season, detail: SEASON_NOTE[season] };
+}
+
 // ─── Main calendar ───────────────────────────────────────────────────────
 
 /** The calendar that names the day: the one chosen, else the first whole calendar on. */
@@ -235,6 +267,8 @@ export function traditionDay(date: Date, tradition: string): TraditionDay | null
       return celtic(date);
     case 'slavic':
       return slavic(date);
+    case 'christian':
+      return christian(date);
     case 'wheel':
       return wheel(date, false);
     case 'wheel_south':
@@ -254,6 +288,7 @@ export const HOLIDAY_TERM: Record<string, string> = {
   hellenic_monthly: 'Sacred day',
   roman: 'Feriae',
   slavic: 'Festival',
+  christian: 'Feast day',
   custom: 'Your holy day',
 };
 

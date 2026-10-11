@@ -226,12 +226,15 @@ export function SwitchRow({
   value,
   onChange,
   last,
+  accessory,
 }: {
   label: string;
   detail?: string;
   value: boolean;
   onChange: (value: boolean) => void;
   last?: boolean;
+  /** Something else to press, beside the switch (a Hide button). */
+  accessory?: ReactNode;
 }) {
   return (
     <Pressable
@@ -246,6 +249,7 @@ export function SwitchRow({
         <Text style={styles.switchLabel}>{label}</Text>
         {!!detail && <Text style={type.caption}>{detail}</Text>}
       </View>
+      {accessory}
       <Switch
         value={value}
         onValueChange={onChange}

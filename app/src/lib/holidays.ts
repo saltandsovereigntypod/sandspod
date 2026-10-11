@@ -1,8 +1,8 @@
 // Holidays from the calendars people follow: the Wheel of the Year (northern
-// and southern), Celtic, Norse, Hellenic, Roman and Slavic, plus their own.
-// Every date is worked out from the year (fixed dates, the Sun's position,
-// old Icelandic weekday rules, or the Moon for the Attic calendar), so
-// nothing needs updating as years pass.
+// and southern), Celtic, Norse, Hellenic, Roman, Slavic and Christian, plus
+// their own. Every date is worked out from the year (fixed dates, the Sun's
+// position, old Icelandic weekday rules, the Moon for the Attic calendar, or
+// Easter for the moveable feasts), so nothing needs updating as years pass.
 
 import { startOfDay } from './calendar.ts';
 import { nextPhase, sunReaches } from './moon.ts';
@@ -17,7 +17,9 @@ type Rule =
   /** A day of a month of the Athenian (Attic) lunar calendar. */
   | { kind: 'attic'; month: AtticMonth; day: number }
   /** Days of every Attic month: 1 (Noumenia), 2, or the last day. */
-  | { kind: 'atticMonthly'; day: 1 | 2 | 'last' };
+  | { kind: 'atticMonthly'; day: 1 | 2 | 'last' }
+  /** Days before (negative) or after Western Easter Sunday. */
+  | { kind: 'easter'; offset: number };
 
 type HolidayDef = { id: string; name: string; meaning: string; rule: Rule; days?: number };
 
@@ -260,9 +262,64 @@ export const TRADITIONS: Tradition[] = [
       { id: 'koliada', name: 'Koliada', meaning: 'Midwinter festival of the newborn sun, with carols (koliadki) sung from house to house for blessings in the year ahead.', rule: { kind: 'sun', at: 270 } },
     ],
   },
+  {
+    id: 'christian',
+    name: 'Christian',
+    description: 'The Christian year (Western dates): feasts, holy days and saints’ days, with the folk customs many Christian witches keep.',
+    holidays: [
+      { id: 'epiphany', name: 'Epiphany', meaning: 'The Magi come to the Christ child; Twelfth Night ends the Christmas season. Doors are chalked with the year and the Magi’s initials (20 + C + M + B + 27) to bless the house for the year ahead.', rule: { kind: 'fixed', month: 0, day: 6 } },
+      { id: 'st_brigid', name: 'St Brigid’s Day', meaning: 'Feast of Brigid of Kildare, saint of hearth, healing and holy wells. Rush crosses are woven and hung over doors for protection, and a cloth (brat Bríde) is left out overnight to take her blessing.', rule: { kind: 'fixed', month: 1, day: 1 } },
+      { id: 'candlemas', name: 'Candlemas', meaning: 'The Presentation of Christ in the Temple, the light of the world. Candles for the year are blessed today, and the weather is watched for what’s left of winter.', rule: { kind: 'fixed', month: 1, day: 2 } },
+      { id: 'ash_wednesday', name: 'Ash Wednesday', meaning: 'The first day of Lent, marked with ashes: “remember that you are dust.” Forty days of prayer, fasting and letting go begin.', rule: { kind: 'easter', offset: -46 } },
+      { id: 'lady_day', name: 'Lady Day (Annunciation)', meaning: 'Gabriel’s message to Mary, nine months before Christmas. A feast of Mary, of yes-saying and new life, and an old quarter day when the year turned.', rule: { kind: 'fixed', month: 2, day: 25 } },
+      { id: 'palm_sunday', name: 'Palm Sunday', meaning: 'Christ’s entry into Jerusalem; Holy Week begins. Blessed palms are kept, often folded into crosses, as protection for the home through the year.', rule: { kind: 'easter', offset: -7 } },
+      { id: 'good_friday', name: 'Good Friday', meaning: 'The crucifixion, the most solemn day of the year: a day of fasting, silence and keeping vigil. Bread baked today was kept for healing.', rule: { kind: 'easter', offset: -2 } },
+      { id: 'easter', name: 'Easter', meaning: 'The resurrection, the heart of the Christian year: new life out of death, kept with sunrise services, eggs, lilies and blessed water.', rule: { kind: 'easter', offset: 0 } },
+      { id: 'pentecost', name: 'Pentecost', meaning: 'The Holy Spirit comes as wind and tongues of fire. A feast of gifts, inspiration and speaking with power, fifty days after Easter.', rule: { kind: 'easter', offset: 49 } },
+      { id: 'st_john', name: 'St John’s Eve and Day', meaning: 'The birth of John the Baptist at midsummer. Bonfires are lit on the eve, and St John’s wort, gathered now, is hung for protection.', rule: { kind: 'fixed', month: 5, day: 23 }, days: 2 },
+      { id: 'lammas', name: 'Lammas (Loaf Mass)', meaning: 'The first loaf from the new wheat is baked and blessed in thanks for the harvest. Pieces were kept to bless the barn and hearth.', rule: { kind: 'fixed', month: 7, day: 1 } },
+      { id: 'assumption', name: 'The Assumption of Mary', meaning: 'Mary taken up into heaven. In many places bundles of healing herbs are blessed today and hung in the house through the year.', rule: { kind: 'fixed', month: 7, day: 15 } },
+      { id: 'michaelmas', name: 'Michaelmas', meaning: 'Feast of St Michael the Archangel, protector against evil, as autumn darkens. Blackberries were not picked after today, and protection is asked for the winter.', rule: { kind: 'fixed', month: 8, day: 29 } },
+      { id: 'all_hallows_eve', name: 'All Hallows’ Eve', meaning: 'The eve of All Saints, when the boundary with the dead feels thin: candles in windows, prayers for the departed, and the souls remembered.', rule: { kind: 'fixed', month: 9, day: 31 } },
+      { id: 'all_saints', name: 'All Saints’ Day', meaning: 'Honoring all the saints, known and unknown, the great company of the faithful who have gone before.', rule: { kind: 'fixed', month: 10, day: 1 } },
+      { id: 'all_souls', name: 'All Souls’ Day', meaning: 'Prayers for all the faithful departed. Graves are visited and tended, candles lit, and the beloved dead named and remembered.', rule: { kind: 'fixed', month: 10, day: 2 } },
+      { id: 'advent', name: 'Advent Sunday', meaning: 'The Christian year begins in waiting for the light. The first candle of the Advent wreath is lit, and one more each Sunday until Christmas.', rule: { kind: 'weekday', month: 10, from: 27, weekday: 0 } },
+      { id: 'st_lucy', name: 'St Lucy’s Day', meaning: 'Lucy, whose name means light, kept on what was once the longest night: candles, crowns of light and saffron buns carry the light into midwinter.', rule: { kind: 'fixed', month: 11, day: 13 } },
+      { id: 'christmas_eve', name: 'Christmas Eve', meaning: 'The holy night of waiting, kept with candles, midnight services, and the old belief that animals speak at midnight.', rule: { kind: 'fixed', month: 11, day: 24 } },
+      { id: 'christmas', name: 'Christmas', meaning: 'The birth of Christ, the light coming into the world at midwinter. The twelve days of Christmas run from today to Epiphany.', rule: { kind: 'fixed', month: 11, day: 25 } },
+    ],
+  },
 ];
 
 export const DEFAULT_TRADITIONS = ['wheel'];
+
+/** Calendars someone can hide from view entirely (the Christian calendar, for those with religious hurt). */
+export const HIDEABLE_TRADITIONS = ['christian'];
+
+/** Calendars hidden in settings (comma-separated `calendar_hidden_traditions`). */
+export function hiddenTraditions(settings: Record<string, unknown> | null | undefined): string[] {
+  const raw = settings?.calendar_hidden_traditions;
+  return typeof raw === 'string' ? raw.split(',').map((id) => id.trim()).filter((id) => HIDEABLE_TRADITIONS.includes(id)) : [];
+}
+
+/** Western (Gregorian) Easter Sunday: the anonymous Gregorian computus (Meeus). */
+export function easterSunday(year: number): Date {
+  const a = year % 19;
+  const b = Math.floor(year / 100);
+  const c = year % 100;
+  const d = Math.floor(b / 4);
+  const e = b % 4;
+  const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4);
+  const k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(year, month - 1, day);
+}
 
 const addDays = (date: Date, days: number) => new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
 
@@ -322,6 +379,8 @@ function occurrences(rule: Rule, year: number): Date[] {
       return [...atticYear(year - 1), ...atticYear(year)]
         .map((span) => (rule.day === 'last' ? addDays(span.next, -1) : addDays(span.start, rule.day - 1)))
         .filter((date) => date.getFullYear() === year);
+    case 'easter':
+      return [addDays(easterSunday(year), rule.offset)];
   }
 }
 
@@ -358,11 +417,16 @@ export function holidayChoice(settings: Record<string, unknown> | null | undefin
           .map((id) => id.trim())
           .filter((id) => id === 'custom' || TRADITIONS.some((t) => t.id === id))
       : DEFAULT_TRADITIONS;
+  // A hidden calendar is gone everywhere: its holidays, and any picked from it.
+  const hidden = hiddenTraditions(settings);
   const picked =
     typeof settings?.calendar_picked_holidays === 'string'
-      ? settings.calendar_picked_holidays.split(',').map((id) => id.trim()).filter(Boolean)
+      ? settings.calendar_picked_holidays
+          .split(',')
+          .map((id) => id.trim())
+          .filter((id) => id && !hidden.includes(id.split('/')[0]))
       : [];
-  return { traditions, custom: parseCustomHolidays(settings?.calendar_custom_holidays), picked };
+  return { traditions: traditions.filter((id) => !hidden.includes(id)), custom: parseCustomHolidays(settings?.calendar_custom_holidays), picked };
 }
 
 export function parseCustomHolidays(raw: unknown): CustomHoliday[] {

@@ -200,3 +200,41 @@ test('your own events can repeat every week, month or year, or happen once', asy
   const legacy = holidayChoice({ calendar_traditions: 'custom', calendar_custom_holidays: JSON.stringify([{ name: 'Old', month: 1, day: 2, year: 2027 }]) });
   assert.equal(holidaysBetween(new Date(2027, 0, 1), new Date(2027, 11, 31), legacy)[0].recurs, 'once');
 });
+
+test('Christian calendar: Easter and the moveable feasts', async () => {
+  const { easterSunday } = await import('../src/lib/holidays.ts');
+  const { liturgicalSeason, traditionDay } = await import('../src/lib/traditionDay.ts');
+  const ymd = (d: Date) => `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  assert.equal(ymd(easterSunday(2024)), '2024-3-31');
+  assert.equal(ymd(easterSunday(2026)), '2026-4-5');
+  assert.equal(ymd(easterSunday(2027)), '2027-3-28');
+  assert.equal(ymd(easterSunday(2038)), '2038-4-25');
+
+  const choice = { traditions: ['christian'], custom: [] };
+  const names = (from: Date, to: Date) => holidaysBetween(from, to, choice).map((h) => h.name);
+  assert.deepEqual(names(new Date(2026, 1, 18), new Date(2026, 1, 18)), ['Ash Wednesday']);
+  assert.deepEqual(names(new Date(2026, 4, 24), new Date(2026, 4, 24)), ['Pentecost']);
+  assert.deepEqual(names(new Date(2026, 10, 29), new Date(2026, 10, 29)), ['Advent Sunday']);
+  assert.ok(TRADITIONS.some((t) => t.id === 'christian') && !holidayChoice({}).traditions.includes('christian'), 'listed, but off by default');
+
+  assert.equal(liturgicalSeason(new Date(2026, 2, 1)), 'Lent');
+  assert.equal(liturgicalSeason(new Date(2026, 3, 2)), 'Holy Week');
+  assert.equal(liturgicalSeason(new Date(2026, 3, 20)), 'Eastertide');
+  assert.equal(liturgicalSeason(new Date(2026, 6, 1)), 'Ordinary Time');
+  assert.equal(liturgicalSeason(new Date(2026, 11, 5)), 'Advent');
+  assert.equal(liturgicalSeason(new Date(2027, 0, 2)), 'Christmastide');
+  assert.equal(traditionDay(new Date(2026, 11, 25), 'christian')?.line, 'Christmas · Christmastide');
+});
+
+test('a hidden calendar is gone everywhere', () => {
+  const shown = holidayChoice({ calendar_traditions: 'wheel,christian,custom', calendar_picked_holidays: 'christian/easter,norse/yule' });
+  assert.deepEqual(shown.traditions, ['wheel', 'christian', 'custom']);
+  const hidden = holidayChoice({
+    calendar_traditions: 'wheel,christian,custom',
+    calendar_picked_holidays: 'christian/easter,norse/yule',
+    calendar_hidden_traditions: 'christian',
+  });
+  assert.deepEqual(hidden.traditions, ['wheel', 'custom']);
+  assert.deepEqual(hidden.picked, ['norse/yule']);
+  assert.equal(holidaysBetween(new Date(2026, 11, 25), new Date(2026, 11, 25), hidden).filter((h) => h.name === 'Christmas').length, 0);
+});

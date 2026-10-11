@@ -6,7 +6,7 @@ import { Button } from '../../../../components/Button';
 import { Card, Chips, Field, MenuList, Notice, Section, SwitchRow } from '../../../../components/more/ui';
 import { SettingsForm } from '../../../../components/more/SettingsForm';
 import { shortDate } from '../../../../lib/calendar';
-import { customRepeat, holidayChoice, holidaysBetween, pickId, TRADITIONS, type CustomHoliday, type Recurrence } from '../../../../lib/holidays';
+import { customRepeat, HIDEABLE_TRADITIONS, hiddenTraditions, holidayChoice, holidaysBetween, pickId, TRADITIONS, type CustomHoliday, type Recurrence } from '../../../../lib/holidays';
 import { primaryTradition } from '../../../../lib/traditionDay';
 import { newId } from '../../../../lib/altar/uid';
 import type { Settings } from '../../../../lib/settings/defaults';
@@ -78,8 +78,22 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
   const setCustom = (list: CustomHoliday[]) => set('calendar_custom_holidays', JSON.stringify(list));
   const setPicked = (ids: string[]) => set('calendar_picked_holidays', ids.join(','));
 
+  const hidden = hiddenTraditions(draft);
+  const shown = TRADITIONS.filter((t) => !hidden.includes(t.id));
+  // Hiding a calendar turns it off too, and drops any holidays picked from it.
+  const setHidden = (id: string, hide: boolean) => {
+    const next = hide ? [...new Set([...hidden, id])] : hidden.filter((h) => h !== id);
+    set('calendar_hidden_traditions', next.join(','));
+    if (!hide) return;
+    const kept = typeof draft.calendar_traditions === 'string' ? draft.calendar_traditions.split(',').filter((t) => t.trim() !== id) : null;
+    if (kept) set('calendar_traditions', kept.join(','));
+    if (typeof draft.calendar_picked_holidays === 'string')
+      set('calendar_picked_holidays', draft.calendar_picked_holidays.split(',').filter((p) => p.split('/')[0] !== id).join(','));
+    if (draft.calendar_primary === id) set('calendar_primary', '');
+  };
+
   const show = (draft.today_show as string) || 'both';
-  const mainOptions = TRADITIONS.filter((t) => chosen.has(t.id)).map((t) => ({ value: t.id, label: t.name }));
+  const mainOptions = shown.filter((t) => chosen.has(t.id)).map((t) => ({ value: t.id, label: t.name }));
 
   return (
     <>
@@ -87,13 +101,27 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
 
       <Section label="Your calendars">
         <MenuList>
-          {TRADITIONS.map((tradition) => (
+          {shown.map((tradition) => (
             <SwitchRow
               key={tradition.id}
               label={tradition.name}
               detail={tradition.description}
               value={chosen.has(tradition.id)}
               onChange={(on) => toggle(tradition.id, on)}
+              accessory={
+                HIDEABLE_TRADITIONS.includes(tradition.id) ? (
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel={`Hide the ${tradition.name} calendar`}
+                    accessibilityHint="Removes it from view everywhere in the app. You can show it again here."
+                    onPress={() => setHidden(tradition.id, true)}
+                    hitSlop={8}
+                    style={({ pressed }) => [styles.hide, pressed && { opacity: 0.6 }]}
+                  >
+                    <Text style={styles.hideLabel}>Hide</Text>
+                  </Pressable>
+                ) : undefined
+              }
             />
           ))}
           <SwitchRow
@@ -104,6 +132,20 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
             last
           />
         </MenuList>
+        {hidden.map((id) => (
+          <View key={id} style={styles.hiddenRow}>
+            <Text style={[type.caption, styles.grow]}>{`${TRADITIONS.find((t) => t.id === id)?.name ?? id} calendar hidden`}</Text>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={`Show the ${TRADITIONS.find((t) => t.id === id)?.name ?? id} calendar again`}
+              onPress={() => setHidden(id, false)}
+              hitSlop={8}
+              style={({ pressed }) => [styles.hide, pressed && { opacity: 0.6 }]}
+            >
+              <Text style={styles.hideLabel}>Show again</Text>
+            </Pressable>
+          </View>
+        ))}
       </Section>
 
       {mainOptions.length > 1 && (
@@ -134,7 +176,7 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
       {chosen.has('custom') && (
         <>
           <CustomHolidays list={choice.custom} onChange={setCustom} />
-          <PickHolidays picked={choice.picked ?? []} whole={chosen} onChange={setPicked} />
+          <PickHolidays picked={choice.picked ?? []} whole={chosen} hidden={hidden} onChange={setPicked} />
         </>
       )}
 
@@ -253,7 +295,7 @@ function CustomHolidays({ list, onChange }: { list: CustomHoliday[]; onChange: (
 }
 
 /** Single holidays from any calendar, added to your own calendar one by one. */
-function PickHolidays({ picked, whole, onChange }: { picked: string[]; whole: Set<string>; onChange: (ids: string[]) => void }) {
+function PickHolidays({ picked, whole, hidden, onChange }: { picked: string[]; whole: Set<string>; hidden: string[]; onChange: (ids: string[]) => void }) {
   const [open, setOpen] = useState<string | null>(null);
   const chosen = new Set(picked);
   const toggle = (id: string, on: boolean) => {
@@ -266,7 +308,7 @@ function PickHolidays({ picked, whole, onChange }: { picked: string[]; whole: Se
   return (
     <Section label="Holidays from other calendars">
       <Text style={type.caption}>Add single holidays to your own calendar without turning on the whole calendar.</Text>
-      {TRADITIONS.map((tradition) => {
+      {TRADITIONS.filter((t) => !hidden.includes(t.id)).map((tradition) => {
         const count = tradition.holidays.filter((h) => chosen.has(pickId(tradition.id, h.id))).length;
         const all = whole.has(tradition.id);
         const expanded = open === tradition.id;
@@ -307,6 +349,9 @@ function PickHolidays({ picked, whole, onChange }: { picked: string[]; whole: Se
 }
 
 const styles = StyleSheet.create({
+  hide: { minHeight: 32, paddingHorizontal: 12, borderRadius: 16, borderWidth: 1, borderColor: colors.goldLine, alignItems: 'center', justifyContent: 'center' },
+  hideLabel: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.gold },
+  hiddenRow: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingTop: 10 },
   year: { gap: 14 },
   yearRow: { gap: 2, paddingBottom: 12, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.hairline },
   yearDate: { ...type.eyebrow, color: colors.gold },
