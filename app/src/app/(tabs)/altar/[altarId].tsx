@@ -3,11 +3,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { AboutSheet } from '../../../components/altar/AboutSheet';
 import { AltarStage, clampViewport, type Viewport } from '../../../components/altar/AltarStage';
 import { CabinetSheet } from '../../../components/altar/CabinetSheet';
 import { Chip, ChipRow } from '../../../components/altar/Chip';
 import { BackgroundSheet, DressSheet, LayersSheet, SaveSheet } from '../../../components/altar/OptionSheets';
 import { Button } from '../../../components/Button';
+import { glanceLine, resolveAltarEntry } from '../../../lib/altar/companion';
 import { builtInCabinet, objectFromForm } from '../../../lib/altar/cabinet';
 import {
   addObject,
@@ -34,9 +36,11 @@ import { dressingsOf, isCandle, isLit, readLivingState } from '../../../lib/alta
 import { altarSummary, documentFromAltar, emptyDocument, type AltarDocument } from '../../../lib/altar/snapshot';
 import { useAltars } from '../../../lib/altar/store';
 import type { CabinetForm, CabinetItem } from '../../../lib/altar/types';
+import { useLibrary } from '../../../lib/library';
+import { useMySettings } from '../../../lib/settings/store';
 import { colors, fonts, space, touch, type } from '../../../theme';
 
-type SheetName = 'cabinet' | 'background' | 'layers' | 'dress' | 'save' | null;
+type SheetName = 'about' | 'cabinet' | 'background' | 'layers' | 'dress' | 'save' | null;
 
 const nowIso = () => new Date().toISOString();
 const MAX_STAGE_WIDTH = 960;
@@ -204,6 +208,12 @@ export default function AltarEditor() {
 
   const allItems = useMemo(() => [...customItems, ...builtInCabinet], [customItems]);
   const selectedObject = doc && selected != null ? doc.objects[selected] ?? null : null;
+  const { entries: libraryEntries } = useLibrary();
+  const { settings } = useMySettings();
+  const selectedEntry = useMemo(
+    () => (selectedObject ? resolveAltarEntry(libraryEntries, selectedObject) : null),
+    [libraryEntries, selectedObject],
+  );
 
   if (missing) {
     return (
@@ -273,6 +283,8 @@ export default function AltarEditor() {
             key={selected}
             objectLabel={selectedObject.label || 'Object'}
             object={selectedObject}
+            glance={selectedEntry ? glanceLine(selectedEntry, settings) : ''}
+            onAbout={() => setSheet('about')}
             onDone={() => setSelected(null)}
             act={{
               light: () => commit((d) => toggleLight(d, selected, nowIso())),
@@ -333,6 +345,13 @@ export default function AltarEditor() {
 
       {doc && (
         <>
+          <AboutSheet
+            visible={sheet === 'about'}
+            object={selectedObject}
+            label={selectedObject?.label || 'Object'}
+            entry={selectedEntry}
+            onClose={() => setSheet(null)}
+          />
           <CabinetSheet
             visible={sheet === 'cabinet'}
             items={allItems}
@@ -402,12 +421,16 @@ type Actions = {
 function ObjectPanel({
   object,
   objectLabel,
+  glance,
   act,
+  onAbout,
   onDone,
 }: {
   object: import('../../../lib/altar/types').SavedObject;
   objectLabel: string;
+  glance: string;
   act: Actions;
+  onAbout: () => void;
   onDone: () => void;
 }) {
   const candle = isCandle(object);
@@ -424,6 +447,7 @@ function ObjectPanel({
         <View style={{ flex: 1 }}>
           <Text style={type.eyebrow}>{locked ? 'Locked in place' : lit ? 'Burning' : 'Selected'}</Text>
           <Text style={type.cardTitle}>{objectLabel}</Text>
+          {!!glance && <Text style={styles.glance}>{glance}</Text>}
           {candle && (burned > 0 || dressings.length > 0) && (
             <Text style={type.caption}>
               {[
@@ -437,6 +461,10 @@ function ObjectPanel({
         </View>
         <Button label="Done" variant="text" onPress={onDone} accessibilityHint="Deselects this object" />
       </View>
+
+      <ChipRow>
+        <Chip label="About" symbol="☽" accessibilityLabel={`About ${objectLabel}`} onPress={onAbout} />
+      </ChipRow>
 
       {candle && (
         <>
@@ -495,6 +523,7 @@ const styles = StyleSheet.create({
   panelContent: { paddingHorizontal: space.gutter, paddingTop: 16, paddingBottom: 32, gap: 14 },
   section: { gap: 14 },
   objectHead: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
+  glance: { fontFamily: fonts.displayItalic, fontSize: 17, lineHeight: 22, color: colors.parchment },
   notice: { color: colors.gold, textAlign: 'center' },
   danger: { marginTop: 8 },
   centered: { flex: 1, justifyContent: 'center', padding: space.gutter, gap: 14 },

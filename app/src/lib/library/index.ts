@@ -50,3 +50,11 @@ export function todayLibraryHref(entry: Pick<LibraryEntry, 'id'>) {
 export function todayPracticeHref(entry: Pick<LibraryEntry, 'id'>) {
   return { pathname: '/today/practice' as const, params: { entryId: entry.id } };
 }
+
+/** The same pages, opened inside the Altar tab (from a selected object's About sheet). */
+export function altarLibraryHref(entry: Pick<LibraryEntry, 'id'>) {
+  return { pathname: '/altar/library/[entryId]' as const, params: { entryId: entry.id } };
+}
+export function altarPracticeHref(entry: Pick<LibraryEntry, 'id'>) {
+  return { pathname: '/altar/practice' as const, params: { entryId: entry.id } };
+}
