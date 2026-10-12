@@ -25,7 +25,7 @@ import {
 } from './custom';
 import { keepImageOnDevice, removeUploaded, uploadImage, type PickedImage } from './images';
 import { addObjectInstanceEvent, createObjectInstance } from './instanceStore';
-import { apothecaryInstanceInput, createdEvent, recipeUpdatedEvent } from './instances';
+import { apothecaryInstanceInput, createdEvent, recipeUpdatedEvent, TENDING_BLEND_LIVING } from './instances';
 import { LOCAL_CUSTOM_CABINET_KEY } from './snapshot';
 import type { CabinetItem } from './types';
 import { newId } from './uid';
@@ -211,18 +211,7 @@ export async function saveApothecary(userId: string | null, item: ApothecaryItem
       ? (await uploadImage(userId, picked, 'apothecary')).url
       : await keepImageOnDevice(picked, 'apothecary');
   }
-  // Each ingredient is tied to its Library entry, and the working "contains"
-  // it, as the website's createOrUpdateApothecaryLibraryEntity does.
-  const refs = next.ingredients.map((i) => ({ entityId: i.entityId, ...ingredientLibraryRef(i) }));
-  const ingredientIds = await ingredientEntityIds(userId, refs).catch(() => refs.map((r) => r.entityId || ''));
-  next.ingredients = next.ingredients.map((i, index) => ({ ...i, ...refs[index], entityId: ingredientIds[index] || i.entityId || '' }));
-  next.entityId = await putLibraryEntry({ userId, entityId: next.entityId || null, name: next.name, type: 'apothecary', myPractice: (existing) => apothecaryPractice(next, existing) });
-  try {
-    await connectRelations(userId, ingredientRelationRows(next.entityId, ingredientIds));
-  } catch (e) {
-    // A connection that can't be saved doesn't undo the working, as on the website.
-    console.warn('Apothecary connections were not saved', e);
-  }
+  next = await withLibraryEntry(userId, next);
   const existed = !!item.id && state.apothecary.some((a) => a.id === item.id);
 
   if (userId) {
@@ -244,6 +233,44 @@ export async function saveApothecary(userId: string | null, item: ApothecaryItem
   }
   await loadWorkshop(userId, true);
   return state.apothecary.find((a) => a.id === next.id) ?? next;
+}
+
+/**
+ * Each ingredient tied to its Library entry, and the working's own entry that
+ * "contains" them, as the website's createOrUpdateApothecaryLibraryEntity does.
+ */
+async function withLibraryEntry(userId: string | null, item: ApothecaryItem): Promise<ApothecaryItem> {
+  const next = { ...item };
+  const refs = next.ingredients.map((i) => ({ entityId: i.entityId, ...ingredientLibraryRef(i) }));
+  const ingredientIds = await ingredientEntityIds(userId, refs).catch(() => refs.map((r) => r.entityId || ''));
+  next.ingredients = next.ingredients.map((i, index) => ({ ...i, ...refs[index], entityId: ingredientIds[index] || i.entityId || '' }));
+  next.entityId = await putLibraryEntry({ userId, entityId: next.entityId || null, name: next.name, type: 'apothecary', myPractice: (existing) => apothecaryPractice(next, existing) });
+  try {
+    await connectRelations(userId, ingredientRelationRows(next.entityId, ingredientIds));
+  } catch (e) {
+    // A connection that can't be saved doesn't undo the working, as on the website.
+    console.warn('Apothecary connections were not saved', e);
+  }
+  return next;
+}
+
+/**
+ * Save a tending as a reusable blend (createApothecaryItemFromTending): into My
+ * Apothecary with its Living Library entry, but, as on the website, with no
+ * object instance of its own and a living_state that never asks for tending.
+ */
+export async function saveTendingBlend(userId: string | null, blend: ApothecaryItem): Promise<ApothecaryItem> {
+  const next = await withLibraryEntry(userId, blend);
+  if (userId) {
+    const row = { ...apothecaryRow(userId, next, next.updatedAt), living_state: TENDING_BLEND_LIVING };
+    const { error } = await supabase.from('apothecary_items').upsert(row, { onConflict: 'id' });
+    if (error) throw new Error(error.message);
+  } else {
+    const list = parseList(await AsyncStorage.getItem(LOCAL_APOTHECARY_KEY));
+    await AsyncStorage.setItem(LOCAL_APOTHECARY_KEY, JSON.stringify([{ ...next, livingState: TENDING_BLEND_LIVING }, ...list.filter((x) => x.id !== next.id)]));
+  }
+  await loadWorkshop(userId, true);
+  return next;
 }
 
 export async function deleteApothecary(userId: string | null, item: ApothecaryItem): Promise<void> {

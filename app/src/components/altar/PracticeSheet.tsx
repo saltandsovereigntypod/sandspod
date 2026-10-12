@@ -80,6 +80,8 @@ function TendForm({ choices, onBack, onSave }: { choices: TendChoice[]; onBack: 
   const [notes, setNotes] = useState('');
   const [resetReminder, setResetReminder] = useState(true);
   const [nextDays, setNextDays] = useState('');
+  const [saveAsBlend, setSaveAsBlend] = useState(false);
+  const [blendName, setBlendName] = useState('');
   const [busy, setBusy] = useState(false);
   const shown = useMemo(() => filterTendChoices(choices, methods, search), [choices, methods, search]);
   const toggleMethod = (id: string) => setMethods((prev) => (prev.includes(id) ? prev.filter((m) => m !== id) : [...prev, id]));
@@ -90,7 +92,7 @@ function TendForm({ choices, onBack, onSave }: { choices: TendChoice[]; onBack: 
   const save = async () => {
     setBusy(true);
     try {
-      await onSave({ choices: picked, methods, notes, resetReminder, nextDays: Math.max(0, Math.round(Number(nextDays) || 0)) });
+      await onSave({ choices: picked, methods, notes, resetReminder, nextDays: Math.max(0, Math.round(Number(nextDays) || 0)), saveAsBlend, blendName });
     } finally {
       setBusy(false);
     }
@@ -154,7 +156,23 @@ function TendForm({ choices, onBack, onSave }: { choices: TendChoice[]; onBack: 
         style={[styles.input, styles.multiline]}
       />
 
-      <Text style={type.eyebrow}>4. Future tending</Text>
+      <Text style={type.eyebrow}>4. Create a reusable blend</Text>
+      <SwitchRow label="Create this combination as a reusable Apothecary item" value={saveAsBlend} onChange={setSaveAsBlend} />
+      {saveAsBlend && (
+        <>
+          <TextInput
+            value={blendName}
+            onChangeText={setBlendName}
+            placeholder="Dream Sachet Tending Blend, Protection Jar Feeding Oil..."
+            placeholderTextColor={colors.tabInactive}
+            accessibilityLabel="Apothecary item name"
+            style={styles.input}
+          />
+          {!picked.length && <Text style={type.caption}>Choose at least one support above to save it as a blend.</Text>}
+        </>
+      )}
+
+      <Text style={type.eyebrow}>5. Future tending</Text>
       <SwitchRow label="Begin the next tending cycle today" value={resetReminder} onChange={setResetReminder} />
       {resetReminder && (
         <TextInput

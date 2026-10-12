@@ -50,6 +50,7 @@ const GROUPS: { label: string; rows: Row[] }[] = [
   {
     label: 'Your Sanctuary',
     rows: [
+      { key: 'journey', label: 'My Journey', detail: 'A chronicle of your practice', icon: 'journey', href: '/more/journey' },
       { key: 'settings', label: 'Settings', detail: 'Names, Book of Shadows, Library', icon: 'settings', href: '/more/settings' },
       { key: 'accessibility', label: 'Accessibility', detail: 'Text size, spacing, contrast, motion', icon: 'settings', href: '/more/accessibility' },
       { key: 'backup', label: 'Backup and restore', detail: 'Keep a copy of your Sanctuary', icon: 'backup', href: '/more/backup' },

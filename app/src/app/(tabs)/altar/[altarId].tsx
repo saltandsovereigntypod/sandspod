@@ -14,7 +14,8 @@ import { careForCrystal, dedicateCrystal, recordOffering, setPresenceReason, upd
 import { CustomItemSheet } from '../../../components/altar/CustomItemSheet';
 import { ApothecaryEditor, ApothecarySheet, type ApothecaryTarget, type SavedWorking } from '../../../components/altar/Apothecary';
 import { TendSheet } from '../../../components/altar/TendSheet';
-import { useWorkshop } from '../../../lib/altar/workshop';
+import { saveTendingBlend, useWorkshop } from '../../../lib/altar/workshop';
+import { newId } from '../../../lib/altar/uid';
 import { Chip, ChipRow } from '../../../components/altar/Chip';
 import { BackgroundSheet, DressSheet, LayersSheet, SaveSheet } from '../../../components/altar/OptionSheets';
 import { Button } from '../../../components/Button';
@@ -65,6 +66,7 @@ import {
   instanceTendUpdates,
   isCrafted,
   tendChoices,
+  tendingBlendItem,
   tendRecord,
   type PracticeActivity,
   type TendInput,
@@ -337,11 +339,31 @@ export default function AltarEditor() {
       setNotice('Living State could not be loaded.');
       return false;
     }
-    const { event, updates } = tendRecord(current, input, new Date());
+    const now = new Date();
+    // "Create a reusable blend": saved to My Apothecary first, so the tending can name it.
+    const blend = tendingBlendItem(current, input, newId(), now);
+    let savedBlend: Awaited<ReturnType<typeof saveTendingBlend>> | null = null;
+    let blendFailed = false;
+    if (blend) {
+      try {
+        savedBlend = await saveTendingBlend(userId, blend);
+      } catch {
+        blendFailed = true;
+      }
+    }
+    const { event, updates } = tendRecord(current, input, now, savedBlend);
     const saved = await addObjectInstanceEvent(userId, current, event);
     await updateObjectInstance(userId, current.id, updates);
     reloadInstance();
-    setNotice(saved ? 'Living State updated.' : 'Couldn’t record that tending. Please try again.');
+    setNotice(
+      !saved
+        ? 'Couldn’t record that tending. Please try again.'
+        : blendFailed
+        ? 'Living State updated, but the blend couldn’t be saved to My Apothecary.'
+        : savedBlend
+        ? `Living State updated. ${savedBlend.name} is in My Apothecary.`
+        : 'Living State updated.',
+    );
     return !!saved;
   };
 

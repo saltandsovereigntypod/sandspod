@@ -20,7 +20,9 @@ import {
   recipeUpdatedEvent,
   relativeDue,
   tendChoices,
+  tendingBlendItem,
   tendRecord,
+  TENDING_BLEND_LIVING,
 } from '../src/lib/altar/instances.ts';
 import { altarRitualBlocks, altarRitualItem, altarRitualOps, groupAltarItems } from '../src/lib/grimoire/altarImport.ts';
 import { openSectionIn } from '../src/lib/grimoire/structure.ts';
@@ -256,4 +258,39 @@ test('an altar ritual page is filed under the open Grimoire section, or the top 
   assert.equal(page('s1').sort_order, 2);
   assert.equal(page(null).section_id, null);
   assert.equal(page(null).sort_order, 1);
+});
+
+test('a tending saved as a reusable blend is the website tending-blend item, and the tending names it', () => {
+  const basil = { source: 'cabinet', label: 'Basil Oil', type: 'oil', form: 'oil', entityId: '', instanceId: '', itemId: '' };
+  const input = { choices: [basil], methods: ['oil', 'moon-charge'], notes: '', resetReminder: false, nextDays: 0, saveAsBlend: true, blendName: '  ' };
+  const blend = tendingBlendItem({ name: 'Protection Jar' }, input, 'b1', now)!;
+  assert.equal(blend.name, 'Protection Jar Tending Blend');
+  assert.equal(blend.type, 'tending-blend');
+  assert.equal(blend.typeLabel, 'Tending Blend');
+  assert.equal(blend.imagePath, '../assets/altar/objects/vessels/spell-jar/spell-jar.png');
+  assert.equal(blend.intention, 'Tending for Protection Jar');
+  assert.equal(blend.notes, 'Methods: Oil, Moon Charge');
+  assert.equal(blend.logToGrimoire, true);
+  assert.equal(blend.grimoireStatus, 'linked to Living Library');
+  assert.deepEqual(blend.ingredients, [{ label: 'Basil Oil', type: 'oil', form: 'oil', entityId: '', libraryName: 'Basil Oil', libraryType: 'oil', amount: '' }]);
+  assert.equal(blend.createdAt, now.toISOString());
+  assert.deepEqual(TENDING_BLEND_LIVING, { tending_enabled: false, tending_interval_days: null, expiration_enabled: false, expiration_days: null });
+
+  assert.equal(tendingBlendItem(null, { ...input, blendName: 'Feeding Oil' }, 'b1', now)!.name, 'Feeding Oil');
+  assert.equal(tendingBlendItem(null, input, 'b1', now)!.intention, 'Tending for manifestation');
+  assert.equal(tendingBlendItem(null, { ...input, saveAsBlend: false }, 'b1', now), null);
+  assert.equal(tendingBlendItem(null, { ...input, choices: [] }, 'b1', now), null);
+
+  const { event, updates } = tendRecord({ id: 'i1', metadata: { saved_tending_apothecary_item_id: 'old' } }, input, now, blend);
+  assert.equal(event.notes, 'Methods: Oil, Moon Charge. Supports: Basil Oil\n\nSaved for future tending as Protection Jar Tending Blend.');
+  assert.equal((event.metadata as Record<string, unknown>).savedApothecaryItemId, 'b1');
+  assert.equal((updates.metadata as Record<string, unknown>).saved_tending_apothecary_item_id, 'b1');
+  const kept = tendRecord({ id: 'i1', metadata: { saved_tending_apothecary_item_id: 'old' } }, input, now);
+  assert.equal((kept.updates.metadata as Record<string, unknown>).saved_tending_apothecary_item_id, 'old');
+
+  // Read back, it stays a tending blend rather than becoming a spell jar.
+  const back = normalizeApothecary({ ...blend, living_state: TENDING_BLEND_LIVING });
+  assert.equal(back.type, 'tending-blend');
+  assert.equal(back.typeLabel, 'Tending Blend');
+  assert.equal(back.livingState.tending_enabled, false);
 });

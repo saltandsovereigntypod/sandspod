@@ -6,7 +6,7 @@
 // altar/js/features/living-state-actions.js. Pure, so it can be tested; the
 // Supabase calls are in instanceStore.ts.
 
-import type { ApothecaryItem } from './apothecary.ts';
+import { TENDING_BLEND, type ApothecaryItem } from './apothecary.ts';
 import type { ApothecaryState } from './livingState.ts';
 import type { CabinetItem, SavedObject } from './types.ts';
 
@@ -437,12 +437,74 @@ export function tendSummary(choices: TendChoice[], methods: string[]): string {
   return parts.join('. ');
 }
 
-export type TendInput = { choices: TendChoice[]; methods: string[]; notes: string; resetReminder: boolean; nextDays: number };
+export type TendInput = {
+  choices: TendChoice[];
+  methods: string[];
+  notes: string;
+  resetReminder: boolean;
+  nextDays: number;
+  /** "Create this combination as a reusable Apothecary item", and its name (blank: "<name> Tending Blend"). */
+  saveAsBlend?: boolean;
+  blendName?: string;
+};
+
+/** How a tending blend's living_state is stored: it is never tended or reviewed itself. */
+export const TENDING_BLEND_LIVING = { tending_enabled: false, tending_interval_days: null, expiration_enabled: false, expiration_days: null };
+
+/**
+ * The reusable Apothecary item a tending can be saved as
+ * (createApothecaryItemFromTending), before it is tied to the Living Library.
+ * Null when it wasn't asked for or nothing was used.
+ */
+export function tendingBlendItem(
+  instance: Pick<ObjectInstance, 'name'> | null,
+  input: TendInput,
+  id: string,
+  now: Date,
+): ApothecaryItem | null {
+  if (!input.saveAsBlend || !input.choices.length) return null;
+  const nowIso = now.toISOString();
+  const methodLabels = input.methods.map((m) => TEND_METHODS.find((method) => method.id === m)?.label || m).filter(Boolean);
+  return {
+    id,
+    name: (input.blendName ?? '').trim() || `${instance?.name || 'Manifestation'} Tending Blend`,
+    type: TENDING_BLEND.id,
+    typeLabel: TENDING_BLEND.label,
+    imagePath: TENDING_BLEND.image,
+    intention: `Tending for ${instance?.name || 'manifestation'}`,
+    notes: methodLabels.length ? `Methods: ${methodLabels.join(', ')}` : '',
+    details: {},
+    logToGrimoire: true,
+    grimoireStatus: 'linked to Living Library',
+    grimoireEntryId: '',
+    entityId: '',
+    instanceId: '',
+    // In memory as normalizeApothecary reads TENDING_BLEND_LIVING back; stored as that.
+    livingState: { tending_enabled: false, tending_interval_days: 30, expiration_enabled: false, expiration_days: 180 },
+    ingredients: input.choices.map((choice) => ({
+      label: choice.label,
+      type: choice.type,
+      form: choice.form,
+      entityId: choice.entityId || '',
+      libraryName: choice.label,
+      libraryType: choice.type,
+      amount: '',
+    })),
+    createdAt: nowIso,
+    updatedAt: nowIso,
+  };
+}
 
 /** The "tended" event and the instance changes submitLivingStateTendForm writes. */
-export function tendRecord(instance: ObjectInstance, input: TendInput, now: Date): { event: EventInput; updates: Record<string, unknown> } {
+export function tendRecord(
+  instance: ObjectInstance,
+  input: TendInput,
+  now: Date,
+  savedBlend: Pick<ApothecaryItem, 'id' | 'name'> | null = null,
+): { event: EventInput; updates: Record<string, unknown> } {
   const notes = input.notes.trim();
-  const eventNotes = [tendSummary(input.choices, input.methods), notes].filter(Boolean).join('\n\n') || 'Manifestation tended.';
+  const savedNote = savedBlend ? `Saved for future tending as ${savedBlend.name}.` : '';
+  const eventNotes = [tendSummary(input.choices, input.methods), notes, savedNote].filter(Boolean).join('\n\n') || 'Manifestation tended.';
   const nowIso = now.toISOString();
   const existing = (instance.metadata && typeof instance.metadata === 'object' ? instance.metadata : {}) as Record<string, unknown>;
   const nextInterval = input.nextDays || Number(instance.tending_interval_days) || Number(existing.tending_interval_days) || 30;
@@ -453,7 +515,7 @@ export function tendRecord(instance: ObjectInstance, input: TendInput, now: Date
       last_tending_summary: eventNotes,
       last_tending_choices: input.choices,
       last_tending_methods: input.methods,
-      saved_tending_apothecary_item_id: existing.saved_tending_apothecary_item_id || '',
+      saved_tending_apothecary_item_id: savedBlend?.id || existing.saved_tending_apothecary_item_id || '',
     },
   };
   if (input.resetReminder && instance.tending_enabled !== false) {
@@ -465,7 +527,7 @@ export function tendRecord(instance: ObjectInstance, input: TendInput, now: Date
       type: 'tended',
       label: 'Manifestation Tended',
       notes: eventNotes,
-      metadata: { choices: input.choices, methods: input.methods, notes, savedApothecaryItemId: '' },
+      metadata: { choices: input.choices, methods: input.methods, notes, savedApothecaryItemId: savedBlend?.id || '' },
     },
     updates,
   };

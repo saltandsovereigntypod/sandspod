@@ -379,6 +379,9 @@ const hasContent = (value: Record<string, unknown> | null | undefined) =>
  * Library. A row joins the traditional entry of the same type and name (as
  * the website's canonical matching does); others become their own entries.
  */
+const latest = (a: string | null | undefined, b: string | null | undefined) =>
+  !a ? b || null : !b ? a : Date.parse(b) > Date.parse(a) ? b : a;
+
 export function buildLibrary(practice: PracticeRow[] = []): LibraryEntry[] {
   const entries = traditionalEntries().map((entry) => ({ ...entry, practiceEntityIds: [] as string[] }));
   const byTypeAndName = new Map<string, LibraryEntry>();
@@ -403,6 +406,7 @@ export function buildLibrary(practice: PracticeRow[] = []): LibraryEntry[] {
       target.community = target.community ?? community;
       target.image = target.image ?? (row.image || null);
       target.layout = target.layout ?? layout;
+      target.updatedAt = latest(target.updatedAt, row.updated_at);
       continue;
     }
     // Only entries that carry the person's own writing get a page of their own.
@@ -421,6 +425,7 @@ export function buildLibrary(practice: PracticeRow[] = []): LibraryEntry[] {
       practiceEntityIds: [row.entity_id],
       practiceSourceId: myPractice ? row.entity_id : null,
       layout,
+      updatedAt: row.updated_at || null,
     };
     standalone.set(matchKey, entry);
   }

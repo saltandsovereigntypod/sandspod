@@ -46,6 +46,8 @@ export type LibraryEntry = {
   practiceSourceId?: string | null;
   /** The website's page layout for this entry, if one was saved. */
   layout?: PageLayout | null;
+  /** When its living_library_entries rows were last saved (the latest), if it has any. */
+  updatedAt?: string | null;
 };
 
 export type LibraryField = {

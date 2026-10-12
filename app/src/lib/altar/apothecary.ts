@@ -8,7 +8,7 @@
 import { objectFromForm } from './cabinet.ts';
 import type { CabinetForm, CabinetItem, SavedObject } from './types.ts';
 
-export type ApothecaryTypeId = 'spell-jar' | 'oil-tincture' | 'herb-mix' | 'incense' | 'sachet' | 'poppet' | 'spray';
+export type ApothecaryTypeId = 'spell-jar' | 'oil-tincture' | 'herb-mix' | 'incense' | 'sachet' | 'poppet' | 'spray' | 'tending-blend';
 
 export const APOTHECARY_TYPES: { id: ApothecaryTypeId; label: string; image: string }[] = [
   { id: 'spell-jar', label: 'Spell Jar', image: '../assets/altar/objects/apothecary/spell-jar-two/spell-jar-two.png' },
@@ -21,6 +21,9 @@ export const APOTHECARY_TYPES: { id: ApothecaryTypeId; label: string; image: str
 ];
 
 export const apothecaryType = (id: string) => APOTHECARY_TYPES.find((t) => t.id === id) ?? APOTHECARY_TYPES[0];
+
+/** What a tending saved as a reusable item is (living-state-actions.js); not offered when making one. */
+export const TENDING_BLEND = { id: 'tending-blend' as const, label: 'Tending Blend', image: '../assets/altar/objects/vessels/spell-jar/spell-jar.png' };
 
 /** The extra questions some kinds ask (renderApothecaryTypeFields), keyed as the website stores them in `details`. */
 export type DetailField = { key: string; label: string; choices?: string[]; multiline?: boolean };
@@ -114,7 +117,7 @@ function safeParse(value: string): unknown {
 
 /** Any stored shape (a row from `apothecary_items`, or the website's in-memory item) as an item. */
 export function normalizeApothecary(raw: Record<string, unknown>): ApothecaryItem {
-  const type = apothecaryType(text(raw.type));
+  const type = text(raw.type) === TENDING_BLEND.id ? TENDING_BLEND : apothecaryType(text(raw.type));
   const living = (raw.livingState ?? raw.living_state ?? {}) as Record<string, unknown>;
   const details = (raw.details && typeof raw.details === 'object' ? raw.details : {}) as Record<string, unknown>;
   return {
