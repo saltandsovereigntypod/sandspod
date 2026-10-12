@@ -759,7 +759,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/dragons-blood/dragons-blood-oil.png",
               "type": "oil",
               "herb": "dragons_blood",
               "form": "oil"

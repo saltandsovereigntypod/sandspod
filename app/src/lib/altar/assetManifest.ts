@@ -192,6 +192,7 @@ export const bundledAltarAssets: Record<string, { source: number; width: number;
   'assets/altar/objects/herbs/cypress/cypress-loose.png': { source: require('../../../assets/altar/objects/herbs/cypress/cypress-loose.webp'), width: 1776, height: 896 },
   'assets/altar/objects/herbs/cypress/cypress-sprig.png': { source: require('../../../assets/altar/objects/herbs/cypress/cypress-sprig.webp'), width: 1024, height: 1536 },
   'assets/altar/objects/herbs/dragons-blood/dragons-blood-loose.png': { source: require('../../../assets/altar/objects/herbs/dragons-blood/dragons-blood-loose.webp'), width: 1776, height: 896 },
+  'assets/altar/objects/herbs/dragons-blood/dragons-blood-oil.png': { source: require('../../../assets/altar/objects/herbs/dragons-blood/dragons-blood-oil.webp'), width: 1024, height: 1536 },
   'assets/altar/objects/herbs/elder/elder-loose.png': { source: require('../../../assets/altar/objects/herbs/elder/elder-loose.webp'), width: 1776, height: 896 },
   'assets/altar/objects/herbs/elder/elder-oil.png': { source: require('../../../assets/altar/objects/herbs/elder/elder-oil.webp'), width: 1024, height: 1536 },
   'assets/altar/objects/herbs/elder/elder-sprig.png': { source: require('../../../assets/altar/objects/herbs/elder/elder-sprig.webp'), width: 1024, height: 1536 },
