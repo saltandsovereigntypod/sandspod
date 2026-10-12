@@ -789,7 +789,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/elder/elder-oil.png",
             "type": "oil",
             "herb": "elder",
             "form": "oil"
@@ -949,7 +949,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/hawthorn/hawthorn-oil.png",
             "type": "oil",
             "herb": "hawthorn",
             "form": "oil"
@@ -1434,7 +1434,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Loose",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/peppermint/peppermint-loose.png",
             "type": "herb",
             "herb": "peppermint",
             "form": "loose"
@@ -1482,7 +1482,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/rowan/rowan-oil.png",
             "type": "oil",
             "herb": "rowan",
             "form": "oil"
@@ -1557,7 +1557,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Loose",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/saffron/saffron-loose.png",
             "type": "herb",
             "herb": "saffron",
             "form": "loose"
@@ -1605,7 +1605,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/st-johns-wort/st-johns-wort-oil.png",
             "type": "oil",
             "herb": "st_johns_wort",
             "form": "oil"
@@ -1803,7 +1803,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Loose",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/wormwood/wormwood-loose.png",
             "type": "herb",
             "herb": "wormwood",
             "form": "loose"
@@ -1844,7 +1844,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Loose",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/yew/yew-loose.png",
             "type": "herb",
             "herb": "yew",
             "form": "loose"
@@ -2124,6 +2124,40 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Carnelian",
+        "keywords": [
+          "creativity",
+          "courage",
+          "vitality",
+          "motivation",
+          "confidence"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "carnelian",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/carnelian/carnelian-chips.png",
+            "type": "crystal",
+            "crystal": "carnelian",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "carnelian",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Chrysocolla",
         "keywords": [
           "gentle communication",
@@ -2160,6 +2194,210 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "chrysocolla",
             "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Citrine",
+        "keywords": [
+          "prosperity",
+          "abundance",
+          "joy",
+          "confidence",
+          "success"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "citrine",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/citrine/citrine-chips.png",
+            "type": "crystal",
+            "crystal": "citrine",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "citrine",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Emerald",
+        "keywords": [
+          "love",
+          "loyalty",
+          "abundance",
+          "wisdom",
+          "growth"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "emerald",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/emerald/emerald-chips.png",
+            "type": "crystal",
+            "crystal": "emerald",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "../assets/altar/objects/crystals/emerald/emerald-cluster.png",
+            "type": "crystal",
+            "crystal": "emerald",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Fluorite",
+        "keywords": [
+          "focus",
+          "discernment",
+          "learning",
+          "organization",
+          "mental clarity"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "fluorite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/fluorite/fluorite-chips.png",
+            "type": "crystal",
+            "crystal": "fluorite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "fluorite",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Garnet",
+        "keywords": [
+          "strength",
+          "devotion",
+          "passion",
+          "grounding",
+          "courage"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "garnet",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/garnet/garnet-chips.png",
+            "type": "crystal",
+            "crystal": "garnet",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "garnet",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Green Aventurine",
+        "keywords": [
+          "luck",
+          "prosperity",
+          "growth",
+          "opportunity",
+          "optimism"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "green_aventurine",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/green-aventurine/green-aventurine-chips.png",
+            "type": "crystal",
+            "crystal": "green_aventurine",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "green_aventurine",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Hematite",
+        "keywords": [
+          "grounding",
+          "stability",
+          "protection",
+          "focus",
+          "resilience"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "hematite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/hematite/hematite-chips.png",
+            "type": "crystal",
+            "crystal": "hematite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "hematite",
+            "form": "cluster"
           }
         ]
       },
@@ -2281,6 +2519,74 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Labradorite",
+        "keywords": [
+          "transformation",
+          "intuition",
+          "protection",
+          "liminal work",
+          "magic"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "labradorite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/labradorite/labradorite-chips.png",
+            "type": "crystal",
+            "crystal": "labradorite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "labradorite",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Lapis Lazuli",
+        "keywords": [
+          "truth",
+          "wisdom",
+          "communication",
+          "insight",
+          "learning"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "lapis_lazuli",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/lapis-lazuli/lapis-lazuli-chips.png",
+            "type": "crystal",
+            "crystal": "lapis_lazuli",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "lapis_lazuli",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Lepidolite",
         "keywords": [
           "calm",
@@ -2317,6 +2623,107 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "lepidolite",
             "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Malachite",
+        "keywords": [
+          "transformation",
+          "protection",
+          "emotional healing",
+          "growth"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "malachite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/malachite/malachite-chips.png",
+            "type": "crystal",
+            "crystal": "malachite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "malachite",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Moonstone",
+        "keywords": [
+          "intuition",
+          "dreams",
+          "cycles",
+          "emotional balance",
+          "lunar magic"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "moonstone",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/moonstone/moonstone-chips.png",
+            "type": "crystal",
+            "crystal": "moonstone",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "moonstone",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Moss Agate",
+        "keywords": [
+          "nature",
+          "abundance",
+          "gardening",
+          "grounding",
+          "new beginnings"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "moss_agate",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/moss-agate/moss-agate-chips.png",
+            "type": "crystal",
+            "crystal": "moss_agate",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "moss_agate",
+            "form": "cluster"
           }
         ]
       },
