@@ -1613,7 +1613,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/rose/rose-oil.png",
               "type": "oil",
               "herb": "rose",
               "form": "oil"
@@ -1839,6 +1839,48 @@
         },
         {
           "category": "herbs",
+          "name": "Thyme",
+          "icon": "🌿",
+          "keywords": [
+            "courage",
+            "healing",
+            "purification",
+            "sleep",
+            "psychic strength"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/thyme/thyme-sprig.png",
+              "type": "herb",
+              "herb": "thyme",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/thyme/thyme-loose.png",
+              "type": "herb",
+              "herb": "thyme",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/thyme/thyme-oil.png",
+              "type": "oil",
+              "herb": "thyme",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "thyme",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Valerian",
           "icon": "🌿",
           "keywords": [
@@ -2001,6 +2043,48 @@
               "image": "../assets/altar/objects/herbs/incense/incense.png",
               "type": "herb",
               "herb": "wormwood",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
+          "name": "Yarrow",
+          "icon": "🌿",
+          "keywords": [
+            "protection",
+            "love",
+            "boundaries",
+            "divination",
+            "emotional healing"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/yarrow/yarrow-sprig.png",
+              "type": "herb",
+              "herb": "yarrow",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/yarrow/yarrow-loose.png",
+              "type": "herb",
+              "herb": "yarrow",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/yarrow/yarrow-oil.png",
+              "type": "oil",
+              "herb": "yarrow",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "yarrow",
               "form": "incense"
             }
           ]
@@ -3601,6 +3685,48 @@
         },
         {
           "category": "deities",
+          "name": "Athena Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "wisdom",
+            "strategy",
+            "crafts",
+            "weaving",
+            "defence of the city"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/athena/athena-statue.png",
+              "type": "deity",
+              "deity": "athena",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Baldur Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "light",
+            "beauty",
+            "goodness",
+            "innocence",
+            "grief"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/baldur/baldur-statue.png",
+              "type": "deity",
+              "deity": "baldur",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
           "name": "Bastet Statue",
           "icon": "🗝️",
           "keywords": [
@@ -3727,6 +3853,27 @@
         },
         {
           "category": "deities",
+          "name": "Demeter Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "grain",
+            "harvest",
+            "agriculture",
+            "motherhood",
+            "the cycle of seasons"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/demeter/demeter-statue.png",
+              "type": "deity",
+              "deity": "demeter",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
           "name": "Diana Statue",
           "icon": "🗝️",
           "keywords": [
@@ -3742,6 +3889,27 @@
               "image": "../assets/altar/objects/tools/deities/diana/diana-statue.png",
               "type": "deity",
               "deity": "diana",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Dionysus Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "wine",
+            "theatre",
+            "ecstasy",
+            "liberation",
+            "madness"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/dionysus/dionysus-statue.png",
+              "type": "deity",
+              "deity": "dionysus",
               "form": "statue"
             }
           ]
@@ -3811,6 +3979,48 @@
         },
         {
           "category": "deities",
+          "name": "Freyr Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "fertility of the land",
+            "harvest",
+            "peace",
+            "prosperity",
+            "good seasons"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/freyr/freyr-statue.png",
+              "type": "deity",
+              "deity": "freyr",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Frigg Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "marriage",
+            "household",
+            "motherhood",
+            "foreknowledge",
+            "spinning"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/frigg/frigg-statue.png",
+              "type": "deity",
+              "deity": "frigg",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
           "name": "Ganesha Statue",
           "icon": "🗝️",
           "keywords": [
@@ -3832,6 +4042,69 @@
         },
         {
           "category": "deities",
+          "name": "Hades Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "the underworld",
+            "the dead",
+            "wealth beneath the earth",
+            "justice after death",
+            "endings"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/hades/hades-statue.png",
+              "type": "deity",
+              "deity": "hades",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Hathor Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "love",
+            "joy",
+            "music",
+            "dance",
+            "beauty"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/hathor/hathor-statue.png",
+              "type": "deity",
+              "deity": "hathor",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Hel Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "the dead",
+            "the underworld",
+            "ancestors",
+            "endings",
+            "keeping of souls"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/hel/hel-statue.png",
+              "type": "deity",
+              "deity": "hel",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
           "name": "Hermes Statue",
           "icon": "🗝️",
           "keywords": [
@@ -3847,6 +4120,48 @@
               "image": "../assets/altar/objects/tools/deities/hermes/hermes-statue.png",
               "type": "deity",
               "deity": "hermes",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Hestia Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "hearth",
+            "home",
+            "family",
+            "sacred fire",
+            "hospitality"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/hestia/hestia-statue.png",
+              "type": "deity",
+              "deity": "hestia",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Idunn Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "youth",
+            "renewal",
+            "vitality",
+            "rejuvenation",
+            "spring"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/idunn/idunn-statue.png",
+              "type": "deity",
+              "deity": "idunn",
               "form": "statue"
             }
           ]
@@ -4125,6 +4440,26 @@
         },
         {
           "category": "deities",
+          "name": "Nyx Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "night",
+            "darkness",
+            "mystery",
+            "sleep"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/nyx/nyx-statue.png",
+              "type": "deity",
+              "deity": "nyx",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
           "name": "Odin Statue",
           "icon": "🗝️",
           "keywords": [
@@ -4140,6 +4475,27 @@
               "image": "../assets/altar/objects/tools/deities/odin/odin-statue.png",
               "type": "deity",
               "deity": "odin",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Osiris Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "the dead",
+            "the afterlife",
+            "resurrection",
+            "fertility",
+            "grain"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/osiris/osiris-statue.png",
+              "type": "deity",
+              "deity": "osiris",
               "form": "statue"
             }
           ]
@@ -4188,6 +4544,27 @@
         },
         {
           "category": "deities",
+          "name": "Ra Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "the sun",
+            "creation",
+            "kingship",
+            "order",
+            "light"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/ra/ra-statue.png",
+              "type": "deity",
+              "deity": "ra",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
           "name": "Rhiannon Statue",
           "icon": "🗝️",
           "keywords": [
@@ -4203,6 +4580,69 @@
               "image": "../assets/altar/objects/tools/deities/rhiannon/rhiannon-statue.png",
               "type": "deity",
               "deity": "rhiannon",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Sekhmet Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "healing",
+            "plague and its averting",
+            "war",
+            "protection",
+            "fierce justice"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/sekhmet/sekhmet-statue.png",
+              "type": "deity",
+              "deity": "sekhmet",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Selene Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "the moon",
+            "night",
+            "lunar cycles",
+            "dreams",
+            "longing"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/selene/selene-statue.png",
+              "type": "deity",
+              "deity": "selene",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Skadi Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "winter",
+            "mountains",
+            "hunting",
+            "skiing",
+            "wilderness"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/skadi/skadi-statue.png",
+              "type": "deity",
+              "deity": "skadi",
               "form": "statue"
             }
           ]
@@ -4266,6 +4706,48 @@
               "image": "../assets/altar/objects/tools/deities/thor/thor-statue.png",
               "type": "deity",
               "deity": "thor",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Thoth Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "writing",
+            "wisdom",
+            "knowledge",
+            "magic",
+            "the moon"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/thoth/thoth-statue.png",
+              "type": "deity",
+              "deity": "thoth",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Tyr Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "justice",
+            "law",
+            "oaths",
+            "courage",
+            "honourable war"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/tyr/tyr-statue.png",
+              "type": "deity",
+              "deity": "tyr",
               "form": "statue"
             }
           ]
