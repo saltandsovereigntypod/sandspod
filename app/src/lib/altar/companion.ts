@@ -6,7 +6,9 @@
 import { correspondences, layerFields, normalizeName, splitList } from '../library/model.ts';
 import type { LibraryEntry, LibraryField } from '../library/types.ts';
 import type { Settings } from '../settings/defaults.ts';
+import { crystalHistory, crystalIntention, humanize as humanizeValue, offeringsOf } from './devotion.ts';
 import { carvingsOf, readLivingState } from './livingState.ts';
+import { TRADITIONAL_LIBRARY } from '../library/traditionalData.ts';
 import type { CabinetForm, CabinetItem, SavedObject } from './types.ts';
 
 type Identity = [type: string, value: string | undefined];
@@ -107,10 +109,97 @@ function when(iso: unknown, now: Date): string {
   });
 }
 
-function duration(ms: number): string {
-  const minutes = Math.round(ms / 60000);
+/** How long a candle has burned, as the website words it (companion-current-state.js formatBurnDuration). */
+export function burnDuration(ms: number): string {
+  const minutes = Math.floor(Math.max(0, ms) / 60000);
+  if (minutes < 1) return 'Less than 1 minute';
   if (minutes < 60) return `${minutes} min`;
-  return `${Math.floor(minutes / 60)} h ${minutes % 60} min`;
+  return `${Math.floor(minutes / 60)} hr ${minutes % 60} min`;
+}
+const duration = burnDuration;
+
+/** Every minute a candle has burned, counting the burn going on now. */
+export function burnedSoFar(object: SavedObject, now: Date): number {
+  const candle = readLivingState(object, now.toISOString()).candle;
+  const total = Math.max(0, Number(candle?.totalBurnMs) || 0);
+  const started = Date.parse(candle?.currentBurnStartedAt || '');
+  return object.lit === 'true' && Number.isFinite(started) ? total + Math.max(0, now.getTime() - started) : total;
+}
+
+/** A date with its time: "Today, 9:14 PM", "Oct 12, 9:14 PM". */
+export function whenWithTime(value: unknown, now: Date): string {
+  const date = typeof value === 'string' && value ? new Date(value) : null;
+  if (!date || Number.isNaN(date.getTime())) return '';
+  const time = date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+  return `${when(value, now)}, ${time}`;
+}
+
+// The Library candle style for each cabinet candle form.
+const STYLE_OF_FORM: Record<string, string> = { 'chime-spell': 'chime', taper: 'taper', 'tea-light': 'tea_light', pillar: 'pillar', vigil: 'seven_day', votive: 'votive' };
+
+/** How long this kind of candle usually burns, from the Library's candle styles. */
+export function typicalBurn(object: SavedObject): string {
+  const style = STYLE_OF_FORM[String(object.form || '')];
+  const record = style ? (TRADITIONAL_LIBRARY.candle?.styles as Record<string, Record<string, unknown>> | undefined)?.[style] : undefined;
+  return typeof record?.TypicalBurnTime === 'string' ? record.TypicalBurnTime : '';
+}
+
+const FORM_WORDS = ['loose', 'powder', 'powdered', 'oil', 'whole', 'dried', 'fresh', 'leaf', 'leaves', 'root', 'bark', 'flower', 'flowers', 'petal', 'petals', 'resin', 'seed', 'seeds', 'crushed', 'sprig'];
+const humanize = (value: string) => value.replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim().replace(/\b[a-z]/g, (c) => c.toUpperCase());
+
+/** What a candle is dressed with, by plant rather than form: "Basil", not "Basil Loose" (formatCandleDressingIdentity). */
+export function dressingNames(dressings: { type?: string; herb?: string; form?: string; label?: string; name?: string }[]): string[] {
+  const seen = new Set<string>();
+  const names: string[] = [];
+  for (const d of dressings) {
+    let name = String(d.herb || d.name || '').trim();
+    if (!name) {
+      let label = String(d.label || '').trim();
+      const form = String(d.form || d.type || '').trim().toLowerCase();
+      const suffixes = [...new Set([form, ...FORM_WORDS].filter(Boolean))].sort((a, b) => b.length - a.length);
+      for (const suffix of suffixes) {
+        const pattern = new RegExp(`(?:\\s+|\\s*[·—–-]\\s*)${suffix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i');
+        if (pattern.test(label)) {
+          label = label.replace(pattern, '').trim();
+          break;
+        }
+      }
+      name = label || String(d.type || '');
+    }
+    name = humanize(name);
+    if (name && !seen.has(name.toLowerCase())) {
+      seen.add(name.toLowerCase());
+      names.push(name);
+    }
+  }
+  return names;
+}
+
+/** Cleansings, charges and offerings, newest first, for the About sheet's history. */
+export function careHistory(object: SavedObject, now: Date): { label: string; detail: string }[] {
+  const iso = now.toISOString();
+  const rows = [
+    ...crystalHistory(object, iso).map((r) => ({ at: r.at, label: r.label, detail: [r.detail, whenWithTime(r.at, now)].filter(Boolean).join(' · ') })),
+    ...(object.type === 'deity'
+      ? offeringsOf(object, iso).map((o) => ({
+          at: String(o.occurredAt || ''),
+          label: 'Offering',
+          detail: [(o.items ?? []).map((i) => (typeof i === 'string' ? i : i.label)).join(', ') || (o.types ?? []).map(humanizeValue).join(', '), humanizeValue(o.status), whenWithTime(o.occurredAt, now)]
+            .filter(Boolean)
+            .join(' · '),
+        }))
+      : []),
+  ];
+  return rows.sort((a, b) => b.at.localeCompare(a.at)).map(({ label, detail }) => ({ label, detail }));
+}
+
+/** Each burn, newest first (companion-v2.js flame history). */
+export function burnHistory(object: SavedObject, now: Date): { label: string; detail: string }[] {
+  const history = readLivingState(object, now.toISOString()).candle?.burnHistory ?? [];
+  return [...history]
+    .filter((burn) => burn && burn.startedAt)
+    .reverse()
+    .map((burn) => ({ label: `Burned ${burnDuration(Number(burn.durationMs) || 0)}`, detail: whenWithTime(burn.startedAt, now) }));
 }
 
 /** The website saves ingredients as a JSON list ("[]" on every object); plain text is kept as is. */
@@ -142,26 +231,29 @@ export function stateRows(object: SavedObject, now: Date): StateRow[] {
 
   const candle = state.candle;
   if (object.type === 'candle' && candle) {
-    if (object.lit === 'true') add('Burning since', when(candle.currentBurnStartedAt, now) || 'Now');
-    const total = Number(candle.totalBurnMs) || 0;
-    if (total > 0) add('Burned in all', duration(total));
-    add('Last lit', when(candle.lastLitAt, now));
-    add('Dressed with', (candle.dressings ?? []).map((d) => d.label).filter(Boolean).join(', '));
+    if (object.lit === 'true') add('Burning since', whenWithTime(candle.currentBurnStartedAt, now) || 'Now');
+    const total = burnedSoFar(object, now);
+    if (total > 0 || object.lit === 'true') add('Burning time', duration(total));
+    add('Last burned', whenWithTime(candle.lastLitAt, now));
+    add('Typical burn', typicalBurn(object));
+    add('Dressed with', dressingNames(candle.dressings ?? []).join(', '));
     add('Carved with', carvingsOf(object).map((c) => `“${c.text}”`).join(', '));
   }
 
   const crystal = state.crystal as Record<string, unknown> | undefined;
   if (object.type === 'crystal' && crystal) {
-    add('Dedication', text(crystal.dedication));
-    add('Last cleansed', when(crystal.lastCleansedAt, now));
-    add('Last charged', when(crystal.lastChargedAt, now));
+    const details = (crystal.dedicationDetails ?? {}) as Record<string, unknown>;
+    add('Current intention', crystalIntention(object, now.toISOString()) || 'No recorded intention');
+    add('Dedicated to', text(details.dedicatedTo));
+    add('Last cleansed', whenWithTime(crystal.lastCleansedAt, now));
+    add('Last charged', whenWithTime(crystal.lastChargedAt, now));
   }
 
   const deity = state.deity as Record<string, unknown> | undefined;
   if (object.type === 'deity' && deity) {
     add('Here because', text(deity.reasonForPresence));
-    add('Offerings', text(deity.offeringStatus));
-    add('Last offering', when(deity.lastOfferingAt, now));
+    add('Offering status', humanizeValue(text(deity.offeringStatus)));
+    add('Last offering', whenWithTime(deity.lastOfferingAt, now));
   }
 
   const ingredients = ingredientList(object.apothecaryIngredients);

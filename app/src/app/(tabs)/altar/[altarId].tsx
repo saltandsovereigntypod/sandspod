@@ -7,6 +7,9 @@ import { AboutSheet } from '../../../components/altar/AboutSheet';
 import { AltarStage, clampViewport, type Viewport } from '../../../components/altar/AltarStage';
 import { CabinetSheet } from '../../../components/altar/CabinetSheet';
 import { CarveSheet } from '../../../components/altar/CarveSheet';
+import { GroupSheet, RenameSheet } from '../../../components/altar/ArrangeSheets';
+import { CrystalSheet, DeitySheet, type CrystalMode, type DeityMode } from '../../../components/altar/DevotionSheets';
+import { careForCrystal, dedicateCrystal, recordOffering, setPresenceReason, updateOffering } from '../../../lib/altar/devotion';
 import { CustomItemSheet } from '../../../components/altar/CustomItemSheet';
 import { ApothecaryEditor, ApothecarySheet, type ApothecaryTarget, type SavedWorking } from '../../../components/altar/Apothecary';
 import { TendSheet } from '../../../components/altar/TendSheet';
@@ -14,7 +17,7 @@ import { useWorkshop } from '../../../lib/altar/workshop';
 import { Chip, ChipRow } from '../../../components/altar/Chip';
 import { BackgroundSheet, DressSheet, LayersSheet, SaveSheet } from '../../../components/altar/OptionSheets';
 import { Button } from '../../../components/Button';
-import { glanceLine, resolveAltarEntry } from '../../../lib/altar/companion';
+import { burnDuration, burnedSoFar, dressingNames, glanceLine, resolveAltarEntry } from '../../../lib/altar/companion';
 import { builtInCabinet, objectFromForm, shortLabel } from '../../../lib/altar/cabinet';
 import {
   addObject,
@@ -38,13 +41,21 @@ import {
   setRotation,
   toggleGlow,
   toggleLight,
+  updateObjects,
+  clearAltar,
+  groupName,
+  groupObjects,
+  lightAll,
+  renameObject,
+  snuffAll,
+  ungroup,
   toggleLock,
   uncarveObject,
   undressObject,
 } from '../../../lib/altar/editor';
 import { displayBox, STAGE_ASPECT } from '../../../lib/altar/geometry';
 import { stackOrder } from '../../../lib/altar/layers';
-import { apothecaryStateOf, carvingsOf, dressingsOf, isCandle, isLit, readLivingState } from '../../../lib/altar/livingState';
+import { apothecaryStateOf, carvingsOf, dressingsOf, isCandle, isLit } from '../../../lib/altar/livingState';
 import { altarSummary, documentFromAltar, emptyDocument, type AltarDocument } from '../../../lib/altar/snapshot';
 import { useAltars } from '../../../lib/altar/store';
 import type { CabinetForm, CabinetItem } from '../../../lib/altar/types';
@@ -55,20 +66,13 @@ import { holidayChoice, holidaysToday } from '../../../lib/holidays';
 import { moonState } from '../../../lib/moon';
 import { colors, fonts, space, touch, type } from '../../../theme';
 
-type SheetName = 'about' | 'carve' | 'apothecary' | 'tend' | 'cabinet' | 'background' | 'layers' | 'dress' | 'save' | null;
+type SheetName = 'about' | 'carve' | 'rename' | 'group' | 'apothecary' | 'tend' | 'cabinet' | 'background' | 'layers' | 'dress' | 'save' | null;
 
 const nowIso = () => new Date().toISOString();
 
 // iOS won't present one sheet while another is still sliding away, so the next waits for it.
 const afterSheetCloses = (open: () => void) => setTimeout(open, Platform.OS === 'ios' ? 450 : 0);
 const MAX_STAGE_WIDTH = 960;
-
-function burnTime(ms: number): string {
-  const minutes = Math.round(ms / 60000);
-  if (minutes < 60) return `${minutes} min`;
-  const hours = Math.floor(minutes / 60);
-  return `${hours} h ${minutes % 60} min`;
-}
 
 export default function AltarEditor() {
   const { altarId, from } = useLocalSearchParams<{ altarId: string; from?: string }>();
@@ -86,6 +90,9 @@ export default function AltarEditor() {
   const [containerWidth, setContainerWidth] = useState(0);
   const [viewport, setViewport] = useState<Viewport>({ zoom: 1, offsetX: 0, offsetY: 0 });
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(false);
+  const [crystalMode, setCrystalMode] = useState<CrystalMode | null>(null);
+  const [deityMode, setDeityMode] = useState<DeityMode | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const undo = useRef<AltarDocument[]>([]);
   const redo = useRef<AltarDocument[]>([]);
@@ -330,10 +337,17 @@ export default function AltarEditor() {
             objectLabel={shortLabel(selectedObject.label)}
             object={selectedObject}
             glance={selectedEntry ? glanceLine(selectedEntry, settings) : ''}
+            group={groupName(doc, selectedObject)}
             onAbout={() => setSheet('about')}
             onDone={() => setSelected(null)}
             act={{
               light: () => commit((d) => toggleLight(d, selected, nowIso())),
+              rename: () => setSheet('rename'),
+              crystal: (mode) => setCrystalMode(mode),
+              deity: (mode) => setDeityMode(mode),
+              ungroup: () => {
+                if (selectedObject.groupId) commit((d) => ungroup(d, selectedObject.groupId!));
+              },
               dress: () => setSheet('dress'),
               carve: () => setSheet('carve'),
               tend: () => setSheet('tend'),
@@ -371,10 +385,38 @@ export default function AltarEditor() {
               <Chip label="Zoom in" symbol="+" onPress={() => zoomBy(1.5)} disabled={viewport.zoom >= 4} />
               <Chip label="Zoom out" symbol="−" onPress={() => zoomBy(1 / 1.5)} disabled={viewport.zoom <= 1} />
             </ChipRow>
+            {(doc.objects.some(isCandle) || doc.objects.length > 1) && (
+              <ChipRow>
+                {doc.objects.some((o) => isCandle(o) && !isLit(o)) && (
+                  <Chip label="Light all candles" symbol="✺" onPress={() => commit((d) => lightAll(d, nowIso()))} />
+                )}
+                {doc.objects.some(isLit) && <Chip label="Snuff all" symbol="◌" onPress={() => commit((d) => snuffAll(d, nowIso()))} />}
+                {doc.objects.length > 1 && <Chip label="Group" symbol="⊕" onPress={() => setSheet('group')} />}
+              </ChipRow>
+            )}
             <Text style={type.caption}>
               {altarSummary(doc)}. Tap something on the altar to tend it. Drag to move it, pinch to resize and twist to
               turn it.{viewport.zoom > 1 ? ' Drag an empty spot to look around.' : ''}
             </Text>
+            {doc.objects.length > 0 && (
+              <ChipRow>
+                {confirmClear ? (
+                  <>
+                    <Chip
+                      label="Take everything off"
+                      tone="danger"
+                      onPress={() => {
+                        commit((d) => clearAltar(d));
+                        setConfirmClear(false);
+                      }}
+                    />
+                    <Chip label="Keep it" onPress={() => setConfirmClear(false)} />
+                  </>
+                ) : (
+                  <Chip label="Clear altar" tone="danger" onPress={() => setConfirmClear(true)} />
+                )}
+              </ChipRow>
+            )}
             {sourceId && (
               <View style={styles.danger}>
                 {confirmDelete ? (
@@ -445,6 +487,61 @@ export default function AltarEditor() {
             onClose={() => {
               setOwnItem(null);
               afterSheetCloses(() => setSheet('cabinet'));
+            }}
+          />
+          <CrystalSheet
+            mode={crystalMode}
+            index={selected}
+            objects={doc.objects}
+            onClose={() => setCrystalMode(null)}
+            onCare={(indices, kind, input) => {
+              commit((d) => updateObjects(d, indices, (o) => careForCrystal(o, kind, input, nowIso())));
+              setCrystalMode(null);
+              setNotice(`${kind === 'cleanse' ? 'Cleansed' : 'Charged'}${indices.length > 1 ? ` ${indices.length} crystals` : ''}.`);
+            }}
+            onDedicate={(index, input) => {
+              commit((d) => updateObjects(d, [index], (o) => dedicateCrystal(o, input, nowIso())));
+              setCrystalMode(null);
+              setNotice('Dedication saved.');
+            }}
+          />
+          <DeitySheet
+            mode={deityMode}
+            index={selected}
+            objects={doc.objects}
+            onClose={() => setDeityMode(null)}
+            onOffer={(index, input) => {
+              commit((d) => updateObjects(d, [index], (o) => recordOffering(o, input, nowIso())));
+              setDeityMode(null);
+              setNotice('Offering recorded.');
+            }}
+            onUpdate={(index, id, input) => {
+              commit((d) => updateObjects(d, [index], (o) => updateOffering(o, id, input, nowIso())));
+              setDeityMode(null);
+              setNotice('Offering updated.');
+            }}
+            onReason={(index, reason, notes) => {
+              commit((d) => updateObjects(d, [index], (o) => setPresenceReason(o, reason, notes, nowIso())));
+              setDeityMode(null);
+            }}
+          />
+          <RenameSheet
+            visible={sheet === 'rename'}
+            label={shortLabel(selectedObject?.label)}
+            onClose={() => setSheet(null)}
+            onRename={(label) => {
+              if (selected != null) commit((d) => renameObject(d, selected, label));
+              setSheet(null);
+            }}
+          />
+          <GroupSheet
+            visible={sheet === 'group'}
+            objects={doc.objects}
+            onClose={() => setSheet(null)}
+            onGroup={(indices, name) => {
+              commit((d) => groupObjects(d, indices, name, nowIso()));
+              setSheet(null);
+              setNotice('Grouped. They move together now.');
             }}
           />
           <CarveSheet
@@ -522,6 +619,10 @@ export default function AltarEditor() {
 
 type Actions = {
   light: () => void;
+  rename: () => void;
+  ungroup: () => void;
+  crystal: (mode: CrystalMode) => void;
+  deity: (mode: DeityMode) => void;
   dress: () => void;
   carve: () => void;
   tend: () => void;
@@ -541,10 +642,12 @@ function ObjectPanel({
   object,
   objectLabel,
   glance,
+  group,
   act,
   onAbout,
   onDone,
 }: {
+  group: string;
   object: import('../../../lib/altar/types').SavedObject;
   objectLabel: string;
   glance: string;
@@ -558,7 +661,14 @@ function ObjectPanel({
   const glowing = object.glowing === 'true';
   const dressings = candle ? dressingsOf(object) : [];
   const carvings = candle ? carvingsOf(object) : [];
-  const burned = candle ? Number(readLivingState(object, nowIso()).candle?.totalBurnMs) || 0 : 0;
+  const [now, setNow] = useState(() => new Date());
+  // A lit candle's burning time counts up, as on the website.
+  useEffect(() => {
+    if (!lit) return;
+    const timer = setInterval(() => setNow(new Date()), 10_000);
+    return () => clearInterval(timer);
+  }, [lit]);
+  const burned = candle ? burnedSoFar(object, now) : 0;
   const [confirmRemove, setConfirmRemove] = useState(false);
 
   return (
@@ -568,11 +678,12 @@ function ObjectPanel({
           <Text style={type.eyebrow}>{locked ? 'Locked in place' : lit ? 'Burning' : 'Selected'}</Text>
           <Text style={type.cardTitle}>{objectLabel}</Text>
           {!!glance && <Text style={styles.glance}>{glance}</Text>}
-          {candle && (burned > 0 || dressings.length > 0 || carvings.length > 0) && (
+          {!!group && <Text style={type.caption}>{`In the group “${group}”`}</Text>}
+          {candle && (burned > 0 || lit || dressings.length > 0 || carvings.length > 0) && (
             <Text style={type.caption}>
               {[
-                burned > 0 ? `Burned ${burnTime(burned)} in all` : null,
-                dressings.length ? `Dressed with ${dressings.map((d) => d.label).join(', ')}` : null,
+                lit ? `Burning time ${burnDuration(burned)}` : burned > 0 ? `Burned ${burnDuration(burned)} in all` : null,
+                dressings.length ? `Dressed with ${dressingNames(dressings).join(', ')}` : null,
                 carvings.length ? `Carved with ${carvings.map((c) => `“${c.text}”`).join(', ')}` : null,
               ]
                 .filter(Boolean)
@@ -590,6 +701,20 @@ function ObjectPanel({
           <Chip label="Recipe" symbol="✎" accessibilityLabel={`Open the recipe for ${objectLabel}`} onPress={act.recipe} />
         )}
       </ChipRow>
+
+      {object.type === 'crystal' && (
+        <ChipRow>
+          <Chip label="Cleanse" symbol="☾" onPress={() => act.crystal('cleanse')} />
+          <Chip label="Charge" symbol="✦" onPress={() => act.crystal('charge')} />
+          <Chip label="Dedicate" symbol="♡" onPress={() => act.crystal('dedicate')} />
+        </ChipRow>
+      )}
+      {object.type === 'deity' && (
+        <ChipRow>
+          <Chip label="Offering" symbol="❀" onPress={() => act.deity('offering')} />
+          <Chip label="Reason for presence" symbol="☉" onPress={() => act.deity('reason')} />
+        </ChipRow>
+      )}
 
       {candle && (
         <>
@@ -624,6 +749,8 @@ function ObjectPanel({
         <Chip label={locked ? 'Unlock' : 'Lock'} symbol="⚿" onPress={act.lock} active={locked} />
         <Chip label="Glow" symbol="✦" onPress={act.glow} active={glowing} />
         <Chip label="Duplicate" symbol="⧉" onPress={act.duplicate} />
+        <Chip label="Rename" symbol="✎" onPress={act.rename} />
+        {!!group && <Chip label="Ungroup" symbol="⊘" onPress={act.ungroup} />}
         {confirmRemove ? (
           <>
             <Chip label="Remove from altar" tone="danger" onPress={act.remove} />

@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../Button';
 import { Paragraphs, Tags } from '../more/ui';
-import { stateRows, traditionalSplit } from '../../lib/altar/companion';
+import { burnHistory, careHistory, stateRows, traditionalSplit } from '../../lib/altar/companion';
 import type { SavedObject } from '../../lib/altar/types';
 import { altarLibraryHref, correspondences, type LibraryEntry } from '../../lib/library';
 import { layerFields, visibleLayers } from '../../lib/library/model';
@@ -40,7 +40,8 @@ export function AboutSheet({ visible, object, label, entry, onClose }: Props) {
   const mine = entry && layers.includes('myPractice') ? layerFields(entry.myPractice, 'myPractice', settings) : [];
   const community = entry && layers.includes('community') ? layerFields(entry.community, 'community', settings) : [];
   const state = stateRows(object, new Date());
-  const hasMore = traditional.rest.length > 0 || community.length > 0;
+  const burns = [...burnHistory(object, new Date()), ...careHistory(object, new Date())];
+  const hasMore = traditional.rest.length > 0 || community.length > 0 || burns.length > 5;
   const nothing = !facts.length && !traditional.lead.length && !traditional.warnings.length && !mine.length && !state.length;
 
   const close = () => {
@@ -69,6 +70,18 @@ export function AboutSheet({ visible, object, label, entry, onClose }: Props) {
               <Text style={styles.rowValue}>{row.value}</Text>
             </View>
           ))}
+        </Block>
+      )}
+
+      {burns.length > 0 && (
+        <Block title="History">
+          {burns.slice(0, more ? burns.length : 5).map((burn, index) => (
+            <View key={`${burn.detail}-${index}`} style={styles.row} accessible accessibilityLabel={`${burn.label}, ${burn.detail}`}>
+              <Text style={styles.rowLabel}>{burn.label}</Text>
+              <Text style={styles.rowValue}>{burn.detail}</Text>
+            </View>
+          ))}
+          {!more && burns.length > 5 && <Text style={type.caption}>{`${burns.length - 5} earlier under More`}</Text>}
         </Block>
       )}
 

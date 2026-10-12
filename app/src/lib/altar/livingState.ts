@@ -112,7 +112,7 @@ export function readLivingState(object: SavedObject, now: string): LivingState {
 }
 
 /** Write state back, stamped like the website's saveLivingState(). */
-function writeLivingState(object: SavedObject, state: LivingState, now: string): SavedObject {
+export function writeLivingState(object: SavedObject, state: LivingState, now: string): SavedObject {
   const next: SavedObject = { ...object, livingState: JSON.stringify({ ...state, updatedAt: now }) };
   // Once livingState exists it is the only authority; drop the legacy copies.
   delete next.dressings;
