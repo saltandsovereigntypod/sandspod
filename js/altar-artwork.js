@@ -736,7 +736,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/angelica/angelica-oil.png",
               "type": "oil",
               "herb": "angelica",
               "form": "oil"
@@ -819,7 +819,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/birch/birch-oil.png",
               "type": "oil",
               "herb": "birch",
               "form": "oil"
@@ -1528,7 +1528,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/holly/holly-oil.png",
               "type": "oil",
               "herb": "holly",
               "form": "oil"
@@ -1822,7 +1822,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/meadowsweet/meadowsweet-oil.png",
               "type": "oil",
               "herb": "meadowsweet",
               "form": "oil"
@@ -1906,7 +1906,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/mistletoe/mistletoe-oil.png",
               "type": "oil",
               "herb": "mistletoe",
               "form": "oil"
@@ -2032,7 +2032,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/oak/oak-oil.png",
               "type": "oil",
               "herb": "oak",
               "form": "oil"
@@ -2158,7 +2158,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/peppermint/peppermint-oil.png",
               "type": "oil",
               "herb": "peppermint",
               "form": "oil"
@@ -2326,7 +2326,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/saffron/saffron-oil.png",
               "type": "oil",
               "herb": "saffron",
               "form": "oil"
@@ -2452,7 +2452,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/star-anise/star-anise-oil.png",
               "type": "oil",
               "herb": "star_anise",
               "form": "oil"
@@ -2662,7 +2662,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/willow/willow-oil.png",
               "type": "oil",
               "herb": "willow",
               "form": "oil"
@@ -2704,7 +2704,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/wormwood/wormwood-oil.png",
               "type": "oil",
               "herb": "wormwood",
               "form": "oil"
@@ -2788,7 +2788,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/yew/yew-oil.png",
               "type": "oil",
               "herb": "yew",
               "form": "oil"
