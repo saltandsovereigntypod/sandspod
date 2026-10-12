@@ -238,6 +238,20 @@ test('My path: follows the calendars, can be chosen, and puts your traditions fi
   const hidden = withoutHidden({ Traditions: 'Celtic, Christian', TraditionNotes: 'Woven at Imbolc in Celtic lands. Blessed in church on Christmas Eve.' }, ['christian']);
   assert.equal(hidden.Traditions, 'Celtic');
   assert.equal(hidden.TraditionNotes, 'Woven at Imbolc in Celtic lands.');
+
+  // Notes written a paragraph per tradition lose just the hidden tradition's paragraph.
+  const perTradition = withoutHidden(
+    { Traditions: 'Norse, Christian, Slavic', TraditionNotes: 'Norse: Chewed as kvann.\n\nChristian: Named for St Michael.\n\nSlavic: Hung over doorways.\n\nFolk & wider practice: Candied in cakes.' },
+    ['christian'],
+  );
+  assert.equal(perTradition.Traditions, 'Norse, Slavic');
+  assert.equal(perTradition.TraditionNotes, 'Norse: Chewed as kvann.\n\nSlavic: Hung over doorways.\n\nFolk & wider practice: Candied in cakes.');
+
+  // A herb tagged only with a hidden tradition still shows; a deity tagged only with it does not.
+  const noChristian = myPath({ calendar_hidden_traditions: 'christian' });
+  const onlyChristian = (type: string) => ({ ...find('Rosemary'), type, traditional: { Traditions: 'Christian' } }) as never;
+  assert.equal(entryVisible(onlyChristian('herb'), noChristian), true);
+  assert.equal(entryVisible(onlyChristian('deity'), noChristian), false);
 });
 
 test('a deity you work with from outside your path gets its own section with what goes with them', async () => {

@@ -90,14 +90,17 @@ export const inPath = (entry: LibraryEntry, path: MyPath) =>
   entryTraditions(entry.traditional, entry.type).some((id) => path.traditions.includes(id));
 
 /**
- * Whether an entry shows at all: a deity whose traditions are all hidden is
+ * Whether an entry shows at all. Herbs, crystals, candles and the rest
+ * belong to many traditions and always show (a hidden tradition only takes
+ * its part out of their notes). A deity whose traditions are all hidden is
  * gone, and with "hide other deities" on, so is any deity outside the path
  * (deities with no listed tradition stay, as do your own My Practice entries).
  */
 export function entryVisible(entry: LibraryEntry, path: MyPath): boolean {
+  if (entry.type !== 'deity') return true;
   const traditions = entryTraditions(entry.traditional, entry.type);
   if (traditions.length && traditions.every((id) => path.hidden.includes(id)) && !hasOwn(entry)) return false;
-  if (entry.type !== 'deity' || !path.hideOtherDeities || !path.traditions.length) return true;
+  if (!path.hideOtherDeities || !path.traditions.length) return true;
   if (!traditions.length || hasOwn(entry)) return true;
   return traditions.some((id) => path.traditions.includes(id));
 }
@@ -110,7 +113,9 @@ const HIDDEN_WORDS: Record<string, RegExp> = {
 
 /**
  * A Traditional record with hidden traditions taken out: dropped from
- * `Traditions`, and the sentences about them removed from `TraditionNotes`.
+ * `Traditions`, and their parts removed from `TraditionNotes`. Notes are a
+ * paragraph per tradition ("Norse: …"), so a hidden tradition's paragraph
+ * goes; older single-paragraph notes lose the sentences that name it.
  */
 export function withoutHidden(record: TraditionalRecord, hidden: string[]): TraditionalRecord {
   if (!hidden.length) return record;
@@ -121,7 +126,15 @@ export function withoutHidden(record: TraditionalRecord, hidden: string[]): Trad
       .filter((name) => name && !hidden.includes(byName.get(name.toLowerCase()) ?? ''))
       .join(', ');
   }
-  if (typeof record.TraditionNotes === 'string') {
+  if (typeof record.TraditionNotes === 'string' && /^[A-Z][^:\n]{1,40}: /m.test(record.TraditionNotes) && record.TraditionNotes.includes('\n\n')) {
+    next.TraditionNotes = record.TraditionNotes.split(/\n\s*\n/)
+      .filter((paragraph) => {
+        const label = /^([^:\n]{1,40}):/.exec(paragraph.trim())?.[1]?.trim().toLowerCase() ?? '';
+        return !hidden.includes(byName.get(label) ?? '');
+      })
+      .join('\n\n')
+      .trim();
+  } else if (typeof record.TraditionNotes === 'string') {
     const words = hidden.map((id) => HIDDEN_WORDS[id]).filter((re): re is RegExp => !!re);
     next.TraditionNotes = (record.TraditionNotes.match(/[^.!?]+[.!?]+["”’)]*\s*|[^.!?]+$/g) ?? [])
       .filter((sentence) => !words.some((re) => re.test(sentence)))
