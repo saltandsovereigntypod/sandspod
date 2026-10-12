@@ -46,8 +46,9 @@ test("missing built-in forms use compact add actions instead of placeholder tile
   assert.match(sharedCss, /\.button--tiny[\s\S]*?font-size:\s*0\.76rem/);
 });
 
-test("Sage missing assets become actions while its valid shared incense remains available", () => {
-  const presentation = cabinetApi().getFormPresentation("herbs:sage");
-  assert.deepEqual(Array.from(presentation.availableForms), ["incense"]);
-  assert.deepEqual(Array.from(presentation.missingForms), ["sprig", "loose", "oil"]);
+test("A form with no picture becomes an action while the painted forms and shared incense stay available", () => {
+  // Frankincense is a resin, so it is never painted as a sprig.
+  const presentation = cabinetApi().getFormPresentation("herbs:frankincense");
+  assert.deepEqual(Array.from(presentation.availableForms), ["loose", "oil", "incense"]);
+  assert.deepEqual(Array.from(presentation.missingForms), ["sprig"]);
 });
