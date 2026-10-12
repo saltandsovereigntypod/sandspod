@@ -382,7 +382,7 @@ function renderCabinetItems() {
     ].join(" ").toLowerCase();
 
     return matchesCategory && searchable.includes(search);
-  });
+  }).sort((a, b) => String(a.name).localeCompare(String(b.name)));
 
   if (items.length === 0 && activeCabinetCategory !== "backgrounds") {
     cabinetContent.innerHTML = `<p class="cabinet-empty">No cabinet items found.</p>`;

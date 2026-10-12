@@ -227,13 +227,13 @@ export const ALTAR_ARTWORK: {
     ]
   },
   "pantheonGroups": [
-    "Greek",
-    "Roman",
-    "Norse",
     "Celtic",
-    "Slavic",
     "Egyptian",
+    "Greek",
     "Hindu",
+    "Norse",
+    "Roman",
+    "Slavic",
     "Other"
   ],
   "deityPantheons": {
