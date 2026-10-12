@@ -318,6 +318,45 @@ function renderCabinetBackgroundTile(item) {
   `;
 }
 
+// Pantheons folded away in the deity drawer (kept while the page is open).
+const closedCabinetPantheons = new Set();
+
+/* The deity drawer groups statues by pantheon in sections that fold away;
+   every other drawer is one grid. A search opens every section. */
+function renderCabinetItemList(items, renderItem) {
+  if (activeCabinetCategory !== "deities") return items.map(renderItem).join("");
+
+  const artwork = window.AltarArtwork || {};
+  const order = [...(artwork.pantheonGroups || []), "Your own"];
+  const pantheonOf = (item) => {
+    if (item.customCabinetItemId) return "Your own";
+    const key = (item.forms || []).find((form) => form.deity)?.deity || "";
+    return (artwork.deityPantheons || {})[key] || "Other";
+  };
+  const searching = Boolean(cabinetSearchTerm.trim());
+
+  return order
+    .map((pantheon) => {
+      const group = items.filter((item) => pantheonOf(item) === pantheon);
+      if (!group.length) return "";
+      const open = searching || !closedCabinetPantheons.has(pantheon);
+      return `
+        <details class="cabinet-pantheon" data-cabinet-pantheon="${pantheon}"${open ? " open" : ""}>
+          <summary><span>${pantheon}</span><span class="cabinet-pantheon-count">${group.length}</span></summary>
+          <div class="cabinet-pantheon-grid">${group.map(renderItem).join("")}</div>
+        </details>
+      `;
+    })
+    .join("");
+}
+
+if (typeof document !== "undefined") document.addEventListener("toggle", (event) => {
+  const section = event.target;
+  if (!section?.matches?.("[data-cabinet-pantheon]") || cabinetSearchTerm.trim()) return;
+  if (section.open) closedCabinetPantheons.delete(section.dataset.cabinetPantheon);
+  else closedCabinetPantheons.add(section.dataset.cabinetPantheon);
+}, true);
+
 function renderCabinetItems() {
   if (!cabinetContent) return;
 
@@ -373,8 +412,7 @@ function renderCabinetItems() {
   cabinetContent.innerHTML =
     addBackgroundTile +
     addCustomItemTile +
-    items
-      .map((item) => {
+    renderCabinetItemList(items, (item) => {
         if (item.background) {
           return renderCabinetBackgroundTile(item);
         }
@@ -494,8 +532,7 @@ function renderCabinetItems() {
           }
         </article>
       `;
-      })
-      .join("");
+      });
 
   const requestedItem = cabinetSearchParams.get("item");
   const requestedForm = cabinetSearchParams.get("form");

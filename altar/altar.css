@@ -3310,3 +3310,58 @@ body.mundane-mode [data-mundane-label="ritual"]::after {
   color: var(--cream);
   background: rgba(185, 160, 93, .1);
 }
+
+/* Deity drawer: one foldable section per pantheon, spanning the drawer. */
+.altar-cabinet-content > .cabinet-pantheon {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.cabinet-pantheon > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.75rem;
+  cursor: pointer;
+  list-style: none;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.25rem;
+  color: var(--cream, #f4ecd8);
+}
+
+.cabinet-pantheon > summary::-webkit-details-marker {
+  display: none;
+}
+
+.cabinet-pantheon > summary > span:first-child {
+  flex: 1;
+}
+
+.cabinet-pantheon > summary::after {
+  content: "›";
+  transition: transform 0.2s ease;
+  color: rgba(244, 236, 216, 0.55);
+}
+
+.cabinet-pantheon[open] > summary::after {
+  transform: rotate(90deg);
+}
+
+.cabinet-pantheon-count {
+  font-size: 0.85rem;
+  color: rgba(244, 236, 216, 0.6);
+}
+
+.cabinet-pantheon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 1rem;
+  padding-bottom: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .cabinet-pantheon-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+}
