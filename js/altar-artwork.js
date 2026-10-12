@@ -288,7 +288,68 @@
       "ra": "Egyptian",
       "osiris": "Egyptian"
     },
-    "backgrounds": [],
+    "backgrounds": [
+      {
+        "id": "ocean",
+        "name": "Moonlit Shore",
+        "assetPath": "/assets/altar/backgrounds/ocean.png"
+      },
+      {
+        "id": "river",
+        "name": "Forest River",
+        "assetPath": "/assets/altar/backgrounds/river.png"
+      },
+      {
+        "id": "witch-cabin",
+        "name": "Witch’s Cabin",
+        "assetPath": "/assets/altar/backgrounds/witch-cabin.png"
+      },
+      {
+        "id": "dark-academia",
+        "name": "Dark Academia Study",
+        "assetPath": "/assets/altar/backgrounds/dark-academia.png"
+      },
+      {
+        "id": "gothic",
+        "name": "Gothic Crypt",
+        "assetPath": "/assets/altar/backgrounds/gothic.png"
+      },
+      {
+        "id": "cottagecore",
+        "name": "Cottagecore Garden",
+        "assetPath": "/assets/altar/backgrounds/cottagecore.png"
+      },
+      {
+        "id": "celestial",
+        "name": "Celestial Hilltop",
+        "assetPath": "/assets/altar/backgrounds/celestial.png"
+      },
+      {
+        "id": "winter-yule",
+        "name": "Yule Hearth",
+        "assetPath": "/assets/altar/backgrounds/winter-yule.png"
+      },
+      {
+        "id": "spring-meadow",
+        "name": "Spring Meadow",
+        "assetPath": "/assets/altar/backgrounds/spring-meadow.png"
+      },
+      {
+        "id": "autumn-harvest",
+        "name": "Autumn Harvest",
+        "assetPath": "/assets/altar/backgrounds/autumn-harvest.png"
+      },
+      {
+        "id": "desert-temple",
+        "name": "Desert Temple",
+        "assetPath": "/assets/altar/backgrounds/desert-temple.png"
+      },
+      {
+        "id": "candlelit-cave",
+        "name": "Candlelit Crystal Cave",
+        "assetPath": "/assets/altar/backgrounds/candlelit-cave.png"
+      }
+    ],
     "items": {
       "herbs": [
         {
@@ -770,14 +831,14 @@
             },
             {
               "label": "Loose",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/belladonna/belladonna-loose.png",
               "type": "herb",
               "herb": "belladonna",
               "form": "loose"
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/belladonna/belladonna-oil.png",
               "type": "oil",
               "herb": "belladonna",
               "form": "oil"
@@ -1196,7 +1257,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/dittany-of-crete/dittany-of-crete-oil.png",
               "type": "oil",
               "herb": "dittany_of_crete",
               "form": "oil"
@@ -1773,14 +1834,14 @@
             },
             {
               "label": "Loose",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/mandrake/mandrake-loose.png",
               "type": "herb",
               "herb": "mandrake",
               "form": "loose"
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/mandrake/mandrake-oil.png",
               "type": "oil",
               "herb": "mandrake",
               "form": "oil"
@@ -2277,14 +2338,14 @@
             },
             {
               "label": "Loose",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/rue/rue-loose.png",
               "type": "herb",
               "herb": "rue",
               "form": "loose"
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/rue/rue-oil.png",
               "type": "oil",
               "herb": "rue",
               "form": "oil"
@@ -2613,14 +2674,14 @@
             },
             {
               "label": "Loose",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/vervain/vervain-loose.png",
               "type": "herb",
               "herb": "vervain",
               "form": "loose"
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/vervain/vervain-oil.png",
               "type": "oil",
               "herb": "vervain",
               "form": "oil"
@@ -2916,6 +2977,90 @@
         },
         {
           "category": "crystals",
+          "name": "Angelite",
+          "icon": "💎",
+          "keywords": [
+            "peace",
+            "gentle communication",
+            "angelic connection",
+            "calm",
+            "compassion"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "angelite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/angelite/angelite-chips.png",
+              "type": "crystal",
+              "crystal": "angelite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "angelite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/angelite/angelite-tumbled.png",
+              "type": "crystal",
+              "crystal": "angelite",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
+          "name": "Apache Tear",
+          "icon": "💎",
+          "keywords": [
+            "grief",
+            "comfort",
+            "protection",
+            "grounding",
+            "emotional release"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "apache_tear",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/apache-tear/apache-tear-chips.png",
+              "type": "crystal",
+              "crystal": "apache_tear",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "apache_tear",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/apache-tear/apache-tear-tumbled.png",
+              "type": "crystal",
+              "crystal": "apache_tear",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Aquamarine",
           "icon": "💎",
           "keywords": [
@@ -3103,6 +3248,41 @@
         },
         {
           "category": "crystals",
+          "name": "Celestite",
+          "icon": "💎",
+          "keywords": [
+            "peace",
+            "angelic connection",
+            "calm",
+            "dreams",
+            "gentle communication"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "celestite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/celestite/celestite-chips.png",
+              "type": "crystal",
+              "crystal": "celestite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "../assets/altar/objects/crystals/celestite/celestite-cluster.png",
+              "type": "crystal",
+              "crystal": "celestite",
+              "form": "cluster"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Chrysocolla",
           "icon": "💎",
           "keywords": [
@@ -3139,6 +3319,48 @@
               "image": "../assets/altar/objects/crystals/chrysocolla/chrysocolla-tumbled.png",
               "type": "crystal",
               "crystal": "chrysocolla",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
+          "name": "Chrysoprase",
+          "icon": "💎",
+          "keywords": [
+            "joy",
+            "hope",
+            "emotional renewal",
+            "forgiveness",
+            "prosperity"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "chrysoprase",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/chrysoprase/chrysoprase-chips.png",
+              "type": "crystal",
+              "crystal": "chrysoprase",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "chrysoprase",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/chrysoprase/chrysoprase-tumbled.png",
+              "type": "crystal",
+              "crystal": "chrysoprase",
               "form": "tumbled"
             }
           ]
@@ -3349,6 +3571,41 @@
               "image": "",
               "type": "crystal",
               "crystal": "hematite",
+              "form": "cluster"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
+          "name": "Herkimer Diamond",
+          "icon": "💎",
+          "keywords": [
+            "amplification",
+            "clarity",
+            "dreams",
+            "attunement",
+            "spiritual vision"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "../assets/altar/objects/crystals/herkimer-diamond/herkimer-diamond-point.png",
+              "type": "crystal",
+              "crystal": "herkimer_diamond",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/herkimer-diamond/herkimer-diamond-chips.png",
+              "type": "crystal",
+              "crystal": "herkimer_diamond",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "herkimer_diamond",
               "form": "cluster"
             }
           ]
