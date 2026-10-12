@@ -1,13 +1,15 @@
 import { useMemo, useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { altarImageSource, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
 import { imageRatio } from '../../lib/altar/geometry';
 import { cabinetEntry, topUses } from '../../lib/altar/companion';
-import { cabinetCategories, cabinetItemsFor, formImage, formObjectLabel, placeableForms, shortLabel } from '../../lib/altar/cabinet';
+import { cabinetCategories, cabinetItemsFor, formImage, formObjectLabel, overrideKey, placeableForms, shortLabel } from '../../lib/altar/cabinet';
+import { pickImage, type PickedImage } from '../../lib/altar/images';
 import type { CabinetForm, CabinetItem } from '../../lib/altar/types';
 import type { LibraryEntry } from '../../lib/library';
 import { colors, fonts, radius, space, touch, type } from '../../theme';
+import { Button } from '../Button';
 import { Chip, ChipRow } from './Chip';
 import { Sheet } from './Sheet';
 
@@ -22,11 +24,79 @@ type Props = {
   /** Make your own item for a drawer, or change one you made. */
   onMakeOwn?: (category: string) => void;
   onEditOwn?: (item: CabinetItem) => void;
+  /** Signed in: your own picture for a built-in form, or back to the original (custom-images.js). */
+  signedIn?: boolean;
+  onSetImage?: (item: CabinetItem, form: CabinetForm, picked: PickedImage) => Promise<void>;
+  onRemoveImage?: (item: CabinetItem, form: CabinetForm) => Promise<void>;
 };
 
-export function CabinetSheet({ visible, items, overrides, library, onClose, onPlace, onMakeOwn, onEditOwn }: Props) {
+export function CabinetSheet({
+  visible,
+  items,
+  overrides,
+  library,
+  onClose,
+  onPlace,
+  onMakeOwn,
+  onEditOwn,
+  signedIn,
+  onSetImage,
+  onRemoveImage,
+}: Props) {
   const [category, setCategory] = useState<string>('candles');
   const [search, setSearch] = useState('');
+  // The form whose picture is being changed (press and hold a built-in tile).
+  const [picture, setPicture] = useState<{ item: CabinetItem; form: CabinetForm } | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+
+  const changesPictures = !!onSetImage && !!onRemoveImage;
+  const placeIt = (item: CabinetItem, form: CabinetForm) => {
+    setPicture(null);
+    setMessage(null);
+    onPlace(item, form);
+  };
+  const choosePicture = (item: CabinetItem, form: CabinetForm) => {
+    if (item.customCabinetItemId || !changesPictures) return undefined;
+    return () => {
+      setMessage(signedIn ? null : 'Please sign in to use your own pictures.');
+      setPicture(signedIn ? { item, form } : null);
+    };
+  };
+  const pictureLabel = picture ? shortLabel(formObjectLabel(picture.item, picture.form)) : '';
+  const hasOwn = !!picture && !!overrides[overrideKey(picture.item, picture.form)];
+
+  const replace = async () => {
+    if (!picture || !onSetImage) return;
+    setMessage(null);
+    try {
+      const picked = await pickImage();
+      if (!picked) return;
+      setBusy(true);
+      await onSetImage(picture.item, picture.form, picked);
+      setPicture(null);
+      setMessage(`Your picture for ${pictureLabel} is saved.`);
+    } catch (e) {
+      setMessage(e instanceof Error ? e.message : 'Image upload failed.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const restore = async () => {
+    if (!picture || !onRemoveImage) return;
+    setBusy(true);
+    setMessage(null);
+    try {
+      await onRemoveImage(picture.item, picture.form);
+      setPicture(null);
+      setMessage('Default image restored.');
+    } catch (e) {
+      setMessage(e instanceof Error ? e.message : 'Custom image could not be removed.');
+    } finally {
+      setBusy(false);
+    }
+  };
 
   const shown = useMemo(
     () =>
@@ -40,7 +110,11 @@ export function CabinetSheet({ visible, items, overrides, library, onClose, onPl
   return (
     <Sheet
       visible={visible}
-      onClose={onClose}
+      onClose={() => {
+        setPicture(null);
+        setMessage(null);
+        onClose();
+      }}
       eyebrow="The Cabinet"
       title="Choose what belongs"
       header={
@@ -60,6 +134,26 @@ export function CabinetSheet({ visible, items, overrides, library, onClose, onPl
               <Chip key={c.id} label={c.label} active={c.id === category} onPress={() => setCategory(c.id)} />
             ))}
           </ChipRow>
+          {!!picture && (
+            <View style={styles.picture}>
+              <Text style={styles.makeOwnTitle}>Your picture for {pictureLabel}</Text>
+              <Text style={type.caption}>It replaces the painted one wherever you place this, here and on the website.</Text>
+              {busy ? (
+                <ActivityIndicator color={colors.gold} accessibilityLabel="Saving your picture" />
+              ) : (
+                <View style={styles.pictureButtons}>
+                  <Button label={hasOwn ? 'Replace picture' : 'Choose a picture'} onPress={replace} />
+                  {hasOwn && <Button label="Use the original" variant="outline" onPress={restore} />}
+                  <Button label="Cancel" variant="text" onPress={() => setPicture(null)} />
+                </View>
+              )}
+            </View>
+          )}
+          {!!message && (
+            <Text style={type.caption} accessibilityLiveRegion="polite">
+              {message}
+            </Text>
+          )}
         </View>
       }
     >
@@ -102,7 +196,8 @@ export function CabinetSheet({ visible, items, overrides, library, onClose, onPl
                   label={form.label}
                   spoken={`Place ${shortLabel(formObjectLabel(item, form))}${uses ? `. For ${uses.replace(' · ', ' and ')}` : ''}`}
                   image={formImage(item, form, overrides)}
-                  onPress={() => onPlace(item, form)}
+                  onPress={() => placeIt(item, form)}
+                  onLongPress={choosePicture(item, form)}
                 />
               ))}
             </View>
@@ -120,19 +215,35 @@ export function CabinetSheet({ visible, items, overrides, library, onClose, onPl
                 uses={uses}
                 spoken={`Place ${shortLabel(formObjectLabel(item, forms[0]))}${uses ? `. For ${uses.replace(' · ', ' and ')}` : ''}`}
                 image={formImage(item, forms[0], overrides)}
-                onPress={() => onPlace(item, forms[0])}
+                onPress={() => placeIt(item, forms[0])}
+                onLongPress={choosePicture(item, forms[0])}
               />
             ))}
         </View>
       )}
       <Text style={type.caption}>
         Tap to place it in the middle of the altar. Items you make here or on the website are kept in your cabinet in both places.
+        {changesPictures ? ' Press and hold a picture to use a photo of your own for it.' : ''}
       </Text>
     </Sheet>
   );
 }
 
-function Tile({ label, uses, spoken, image, onPress }: { label: string; uses?: string; spoken: string; image: string; onPress: () => void }) {
+function Tile({
+  label,
+  uses,
+  spoken,
+  image,
+  onPress,
+  onLongPress,
+}: {
+  label: string;
+  uses?: string;
+  spoken: string;
+  image: string;
+  onPress: () => void;
+  onLongPress?: () => void;
+}) {
   const source = altarImageSource(image);
   // Heaps of chips and loose herbs are wide and flat: give them a wide frame
   // so they fill the tile instead of sitting small in a square of empty space.
@@ -143,8 +254,13 @@ function Tile({ label, uses, spoken, image, onPress }: { label: string; uses?: s
   return (
     <Pressable
       onPress={onPress}
+      onLongPress={onLongPress}
       accessibilityRole="button"
       accessibilityLabel={spoken}
+      accessibilityActions={onLongPress ? [{ name: 'longpress', label: 'Use your own picture' }] : undefined}
+      onAccessibilityAction={(event) => {
+        if (event.nativeEvent.actionName === 'longpress') onLongPress?.();
+      }}
       style={({ pressed }) => [styles.tile, pressed && { opacity: 0.7 }]}
     >
       <View style={[styles.thumb, wide && styles.thumbWide]}>
@@ -191,6 +307,8 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   makeOwnPlus: { fontSize: 26, color: colors.gold },
+  picture: { gap: 8, borderRadius: radius.tile, borderWidth: 1, borderColor: colors.goldLine, padding: 12 },
+  pictureButtons: { gap: 8 },
   makeOwnTitle: { fontFamily: fonts.bodySemi, fontSize: 16, color: colors.cream },
   groupTitle: { fontFamily: fonts.display, fontSize: 20, color: colors.cream },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },

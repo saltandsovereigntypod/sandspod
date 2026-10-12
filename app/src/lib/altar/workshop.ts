@@ -11,6 +11,7 @@ import { ingredientRelationRows } from '../library/connections';
 import { connectRelations, ingredientEntityIds, putLibraryEntry, removeLibraryEntry } from '../library/store';
 import { useSession } from '../session';
 import { supabase } from '../supabase';
+import { trackSave } from '../sync/store';
 import { apothecaryPractice, apothecaryRow, ingredientLibraryRef, normalizeApothecary, type ApothecaryItem } from './apothecary';
 import { customItemFromLocal, customItemFromRow, type CustomCabinetRow } from './cabinet';
 import {
@@ -131,7 +132,11 @@ export type CustomItemDraft = {
   forms: FormDraft[];
 };
 
-export async function saveCustomItem(userId: string | null, draft: CustomItemDraft): Promise<CabinetItem> {
+export function saveCustomItem(userId: string | null, draft: CustomItemDraft): Promise<CabinetItem> {
+  return trackSave(userId, () => saveCustomItemNow(userId, draft));
+}
+
+async function saveCustomItemNow(userId: string | null, draft: CustomItemDraft): Promise<CabinetItem> {
   const now = new Date().toISOString();
   const wanted = draft.forms.filter((f) => f.enabled && (f.picked || f.image));
   if (!draft.name.trim()) throw new Error('Add a name first.');
@@ -203,7 +208,11 @@ export async function deleteCustomItem(userId: string | null, item: CabinetItem)
 // ---------------------------------------------------------------- apothecary
 
 /** Save a working (new or edited) with its Living Library entry. Returns it as saved. */
-export async function saveApothecary(userId: string | null, item: ApothecaryItem, picked: PickedImage | null): Promise<ApothecaryItem> {
+export function saveApothecary(userId: string | null, item: ApothecaryItem, picked: PickedImage | null): Promise<ApothecaryItem> {
+  return trackSave(userId, () => saveApothecaryNow(userId, item, picked));
+}
+
+async function saveApothecaryNow(userId: string | null, item: ApothecaryItem, picked: PickedImage | null): Promise<ApothecaryItem> {
   const now = new Date().toISOString();
   let next: ApothecaryItem = { ...item, id: item.id || newId(), createdAt: item.createdAt || now, updatedAt: now };
   if (picked) {

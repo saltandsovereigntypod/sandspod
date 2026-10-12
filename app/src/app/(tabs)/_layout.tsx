@@ -1,5 +1,6 @@
 import { Tabs } from 'expo-router/js-tabs';
 
+import { GuestMigrationPrompt } from '../../components/account/GuestMigrationPrompt';
 import { TabBar } from '../../components/TabBar';
 import { WelcomeTour } from '../../components/WelcomeTour';
 import { useWidgetSync } from '../../lib/widgetSync';
@@ -20,6 +21,7 @@ export default function TabsLayout() {
         <Tabs.Screen name="more" />
       </Tabs>
       <WelcomeTour />
+      <GuestMigrationPrompt />
     </>
   );
 }

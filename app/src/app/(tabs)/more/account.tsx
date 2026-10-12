@@ -1,9 +1,11 @@
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
 import { Card, Field, MenuList, MenuRow, MoreScreen, Notice, Section } from '../../../components/more/ui';
+import { guestPreview } from '../../../lib/backup/migrate';
+import { movingSummary, worthMoving } from '../../../lib/backup/migration';
 import { useSession } from '../../../lib/session';
 import {
   hasPasswordIdentity,
@@ -13,11 +15,27 @@ import {
   requestRecovery,
   updatePassword,
 } from '../../../lib/settings/account';
+import { formatLastSync, statusDetail, statusLabel } from '../../../lib/sync/status';
+import { useCloudSync } from '../../../lib/sync/store';
 import { colors, fonts, type } from '../../../theme';
 
 export default function Account() {
   const { session, signOut } = useSession();
   const user = session?.user ?? null;
+  const cloud = useCloudSync();
+  const [guestWork, setGuestWork] = useState<string | null>(null);
+
+  // Guest work still on this device, ready to bring into the account.
+  useEffect(() => {
+    let active = true;
+    if (user)
+      guestPreview().then((preview) => {
+        if (active) setGuestWork(preview && worthMoving(preview.counts) ? movingSummary(preview.counts).join(' · ') : null);
+      });
+    return () => {
+      active = false;
+    };
+  }, [user]);
 
   if (!user) {
     return (
@@ -39,8 +57,12 @@ export default function Account() {
       <Card>
         <Fact label="Signed in as" value={user.email ?? 'Current account'} />
         <Fact label="Sign-in method" value={providerSummary(user)} />
+        <View accessibilityLiveRegion="polite">
+          <Fact label="Cloud status" value={statusLabel(cloud.status)} />
+        </View>
+        <Fact label="Last successful sync" value={formatLastSync(cloud.lastSuccess)} />
         <Text style={type.caption}>
-          Your Sanctuary is saved to your account. Signing out doesn't delete anything; sign back in to see it again.
+          {statusDetail(cloud.status)} Signing out doesn't delete anything; sign back in to see it again.
         </Text>
         <Button
           label="Sign out"
@@ -51,6 +73,14 @@ export default function Account() {
           }}
         />
       </Card>
+
+      {!!guestWork && (
+        <Section label="Guest work on this device">
+          <MenuList>
+            <MenuRow label="Bring it into your account" detail={guestWork} onPress={() => router.push('/more/guest-data')} last />
+          </MenuList>
+        </Section>
+      )}
 
       <Section label="Security">
         {hasPasswordIdentity(user) ? (

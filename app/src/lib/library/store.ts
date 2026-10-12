@@ -13,6 +13,7 @@ import { useEffect, useSyncExternalStore } from 'react';
 import { newId } from '../altar/uid';
 import { useSession } from '../session';
 import { supabase } from '../supabase';
+import { trackSave } from '../sync/store';
 import {
   entityIdOf,
   entryResolver,
@@ -104,6 +105,11 @@ async function load(userId: string | null, force = false) {
   }
 }
 
+/** Read the Library again, e.g. after guest entries moved into the account. */
+export function reloadLibrary(userId: string | null): Promise<void> {
+  return load(userId, true);
+}
+
 function subscribe(listener: () => void) {
   listeners.add(listener);
   return () => {
@@ -135,7 +141,11 @@ export function useLibrary() {
  * website does, then reloads the Library. Returns the entry's app id.
  * Edits only touch my_practice, so Community notes, images and layouts stay.
  */
-export async function savePractice(args: {
+export function savePractice(args: Parameters<typeof savePracticeNow>[0]): Promise<string> {
+  return trackSave(args.userId, () => savePracticeNow(args));
+}
+
+async function savePracticeNow(args: {
   userId: string;
   entry: LibraryEntry | null;
   type: string;
@@ -229,7 +239,11 @@ export async function clearPractice(userId: string, entry: LibraryEntry): Promis
  * `living_library_entries` row; for guests it goes into the website-format
  * guest Library on the device. Returns the entity id.
  */
-export async function putLibraryEntry(args: {
+export function putLibraryEntry(args: Parameters<typeof putLibraryEntryNow>[0]): Promise<string> {
+  return trackSave(args.userId, () => putLibraryEntryNow(args));
+}
+
+async function putLibraryEntryNow(args: {
   userId: string | null;
   entityId?: string | null;
   name: string;

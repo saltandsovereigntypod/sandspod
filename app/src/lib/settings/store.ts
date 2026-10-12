@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useSession } from '../session';
 import { supabase } from '../supabase';
+import { trackSave } from '../sync/store';
 import { normalizeSettings, settingsRow, SETTINGS_LOCAL_KEY, type Settings } from './defaults';
 
 async function readLocal(): Promise<Settings> {
@@ -38,8 +39,10 @@ export async function saveMySettings(settings: Settings, userId: string | null):
   const normalized = normalizeSettings(settings);
   await writeLocal(normalized);
   if (!userId) return normalized;
-  const { error } = await supabase.from('user_settings').upsert(settingsRow(normalized, userId), { onConflict: 'user_id' });
-  if (error) throw new Error(error.message);
+  await trackSave(userId, async () => {
+    const { error } = await supabase.from('user_settings').upsert(settingsRow(normalized, userId), { onConflict: 'user_id' });
+    if (error) throw new Error(error.message);
+  });
   return normalized;
 }
 

@@ -3,6 +3,9 @@ import { ActivityIndicator, Image, Pressable, StyleSheet, Text, TextInput, View 
 
 import { Button } from '../Button';
 import { altarImageSource } from '../../lib/altar/assets';
+import { DEFAULT_BACKGROUND_NAME } from '../../lib/altar/customImages';
+import { pickImage, type PickedImage } from '../../lib/altar/images';
+import { confirmAction } from '../../lib/grimoire/confirm';
 import { builtInBackgrounds, DEFAULT_BACKGROUND, shortLabel } from '../../lib/altar/cabinet';
 import { stackOrder } from '../../lib/altar/layers';
 import { canDressWith, isCandle, isLit } from '../../lib/altar/livingState';
@@ -17,40 +20,131 @@ export function BackgroundSheet({
   visible,
   current,
   custom,
+  signedIn,
   onClose,
   onChoose,
+  onUpload,
+  onDelete,
 }: {
   visible: boolean;
   current: string;
   custom: AltarBackground[];
+  signedIn: boolean;
   onClose: () => void;
   onChoose: (background: AltarBackground) => void;
+  /** Upload a picture of your own as a named background (signed in). */
+  onUpload: (name: string, picked: PickedImage) => Promise<unknown>;
+  onDelete: (background: AltarBackground) => Promise<void>;
 }) {
   const all = [...custom, ...builtInBackgrounds];
   const active = current || DEFAULT_BACKGROUND;
+  const [name, setName] = useState(DEFAULT_BACKGROUND_NAME);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+
+  const upload = async () => {
+    setMessage(null);
+    if (!name.trim()) {
+      setMessage('Name this altar background first.');
+      return;
+    }
+    try {
+      const picked = await pickImage();
+      if (!picked) return;
+      setBusy('Uploading your background…');
+      await onUpload(name, picked);
+      setName(DEFAULT_BACKGROUND_NAME);
+      setMessage('Custom altar background saved.');
+    } catch (e) {
+      setMessage(e instanceof Error ? e.message : 'Image upload failed.');
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const remove = async (bg: AltarBackground) => {
+    if (!(await confirmAction('Delete this custom background?', `“${bg.name}” will be removed from your account.`, 'Delete'))) return;
+    setBusy('Deleting…');
+    setMessage(null);
+    try {
+      await onDelete(bg);
+      setMessage('Custom background deleted.');
+    } catch (e) {
+      setMessage(e instanceof Error ? e.message : 'Custom background could not be deleted.');
+    } finally {
+      setBusy(null);
+    }
+  };
+
   return (
-    <Sheet visible={visible} onClose={onClose} eyebrow="Backgrounds" title="Set the scene">
+    <Sheet
+      visible={visible}
+      onClose={() => {
+        setMessage(null);
+        onClose();
+      }}
+      eyebrow="Backgrounds"
+      title="Set the scene"
+    >
+      {signedIn ? (
+        <View style={styles.uploadBox}>
+          <Text style={styles.uploadTitle}>Upload a background</Text>
+          <TextInput
+            value={name}
+            onChangeText={setName}
+            placeholder={DEFAULT_BACKGROUND_NAME}
+            placeholderTextColor={colors.tabInactive}
+            accessibilityLabel="Name for the new background"
+            style={styles.input}
+            returnKeyType="done"
+          />
+          {busy ? <ActivityIndicator color={colors.gold} accessibilityLabel={busy} /> : <Button label="Choose a picture" variant="outline" onPress={upload} />}
+        </View>
+      ) : (
+        <Text style={type.caption}>Sign in to upload backgrounds of your own.</Text>
+      )}
+      {!!message && (
+        <Text style={type.caption} accessibilityLiveRegion="polite">
+          {message}
+        </Text>
+      )}
       {all.map((bg) => {
         const source = altarImageSource(bg.background);
         const selected = bg.background === active;
         return (
-          <Pressable
-            key={bg.id}
-            onPress={() => onChoose(bg)}
-            accessibilityRole="button"
-            accessibilityLabel={`${bg.name}${bg.custom ? ', your upload' : ''}`}
-            accessibilityState={{ selected }}
-            style={({ pressed }) => [styles.bg, selected && styles.bgSelected, pressed && { opacity: 0.8 }]}
-          >
-            {source && <Image source={source} style={styles.bgImage} resizeMode="cover" />}
-            <View style={styles.bgLabel}>
-              <Text style={styles.bgName}>{bg.name}</Text>
-              {selected && <Text style={styles.bgTick}>On your altar</Text>}
-            </View>
-          </Pressable>
+          <View key={bg.id} style={styles.bgWrap}>
+            <Pressable
+              onPress={() => {
+                setMessage(null);
+                onChoose(bg);
+              }}
+              accessibilityRole="button"
+              accessibilityLabel={`${bg.name}${bg.custom ? ', your upload' : ''}`}
+              accessibilityState={{ selected }}
+              style={({ pressed }) => [styles.bg, selected && styles.bgSelected, pressed && { opacity: 0.8 }]}
+            >
+              {source && <Image source={source} style={styles.bgImage} resizeMode="cover" />}
+              <View style={styles.bgLabel}>
+                <Text style={styles.bgName}>{bg.name}</Text>
+                {selected && <Text style={styles.bgTick}>On your altar</Text>}
+              </View>
+            </Pressable>
+            {bg.custom && signedIn && (
+              <Pressable
+                onPress={() => void remove(bg)}
+                disabled={!!busy}
+                accessibilityRole="button"
+                accessibilityLabel={`Delete ${bg.name}`}
+                hitSlop={8}
+                style={styles.bgDelete}
+              >
+                <Text style={styles.bgDeleteText}>Delete</Text>
+              </Pressable>
+            )}
+          </View>
         );
       })}
-      <Text style={type.caption}>Backgrounds you upload on the website appear here when you're signed in.</Text>
+      <Text style={type.caption}>Backgrounds you upload here or on the website are kept in your account and appear in both places.</Text>
     </Sheet>
   );
 }
@@ -266,6 +360,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bgName: { fontFamily: fonts.display, fontSize: 20, color: colors.cream },
+  bgWrap: { gap: 4 },
+  bgDelete: { alignSelf: 'flex-end', minHeight: touch, justifyContent: 'center', paddingHorizontal: 6 },
+  bgDeleteText: { fontFamily: fonts.bodySemi, fontSize: 15, color: colors.gold },
+  uploadBox: {
+    gap: 10,
+    borderRadius: radius.tile,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderColor: colors.goldLine,
+    padding: 12,
+  },
+  uploadTitle: { fontFamily: fonts.bodySemi, fontSize: 16, color: colors.cream },
   bgTick: { fontFamily: fonts.body, fontSize: 13, color: colors.gold },
   list: { gap: 8 },
   layer: {

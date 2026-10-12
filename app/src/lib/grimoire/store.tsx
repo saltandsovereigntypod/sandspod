@@ -4,6 +4,7 @@ import { AppState } from 'react-native';
 
 import { useSession } from '../session';
 import { supabase } from '../supabase';
+import { reportSync } from '../sync/store';
 import {
   alreadyApplied,
   applyOps,
@@ -314,6 +315,9 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, [userId, refresh, publish]);
+
+  // More → Account shows whether changes are reaching the account.
+  useEffect(() => reportSync('grimoire', userId, sync), [userId, sync]);
 
   // Try again as soon as the app comes back to the foreground.
   useEffect(() => {

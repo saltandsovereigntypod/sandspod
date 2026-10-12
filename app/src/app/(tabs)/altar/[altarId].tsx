@@ -718,6 +718,9 @@ export default function AltarEditor() {
               setSheet(null);
               afterSheetCloses(() => setOwnItem({ category: item.category, item }));
             }}
+            signedIn={signedIn}
+            onSetImage={store.setFormImage}
+            onRemoveImage={store.removeFormImage}
             onClose={() => setSheet(null)}
             onPlace={place}
           />
@@ -725,6 +728,9 @@ export default function AltarEditor() {
             visible={sheet === 'background'}
             current={doc.background}
             custom={backgrounds}
+            signedIn={signedIn}
+            onUpload={store.addBackground}
+            onDelete={store.removeBackground}
             onClose={() => setSheet(null)}
             onChoose={(bg) => {
               commit((d) => setBackground(d, bg.background, bg.name));
