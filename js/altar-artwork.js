@@ -20,6 +20,24 @@
       "magenta"
     ],
     "candleStyleForms": [],
+    "candleWicks": {
+      "chime": [
+        0.5038,
+        0.0805
+      ],
+      "pillar": [
+        0.5108,
+        0.1394
+      ],
+      "taper": [
+        0.4984,
+        0.0552
+      ],
+      "tea-light": [
+        0.5021,
+        0.2366
+      ]
+    },
     "items": {
       "herbs": [
         {

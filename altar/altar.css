@@ -372,10 +372,10 @@
 .altar-object.is-lit[data-type="candle"]::before {
   content: "";
   position: absolute;
-  left: 50%;
-  top: -3%;
+  left: var(--flame-x, 50%);
+  top: var(--halo-top, -3%);
   width: 8%;
-  height: 10%;
+  height: var(--halo-h, 10%);
   transform: translateX(-50%);
   border-radius: 50%;
 
@@ -397,11 +397,11 @@
 
   position: absolute;
 
-  left:50%;
-  top:-5%;
+  left:var(--flame-x, 50%);
+  top:var(--flame-top, -5%);
 
   width:10%;
-  height:18%;
+  height:var(--flame-h, 18%);
 
   transform:translateX(-50%);
 
@@ -428,10 +428,10 @@
 .altar-object.is-extinguishing[data-type="candle"]::after {
   content: "";
   position: absolute;
-  top: -10%;
-  left: 50%;
+  top: var(--smoke-top, -10%);
+  left: var(--flame-x, 50%);
   width: 10%;
-  height: 22%;
+  height: var(--smoke-h, 22%);
   transform: translateX(-50%);
   border-radius: 50%;
   background:

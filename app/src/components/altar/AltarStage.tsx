@@ -6,7 +6,8 @@ import Svg, { Circle, Defs, Ellipse, RadialGradient, Stop } from 'react-native-s
 import { useReducedMotion } from '../../lib/accessibility/store';
 import { altarImageSource, candleHerbOverlay, candleOilOverlay, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
 import { DEFAULT_BACKGROUND } from '../../lib/altar/cabinet';
-import { boxToPixels, candleLightRadius, displayBox, hitTest, IMAGE_INSET, rotationOf, STAGE_ASPECT } from '../../lib/altar/geometry';
+import { flameLayout, type FlameLayout } from '../../lib/altar/flame';
+import { boxToPixels, candleLightRadius, displayBox, hitTest, IMAGE_INSET, imageRatio, rotationOf, STAGE_ASPECT } from '../../lib/altar/geometry';
 import { stackOrder } from '../../lib/altar/layers';
 import { dressingOverlays, isCandle, isLit } from '../../lib/altar/livingState';
 import type { AltarDocument } from '../../lib/altar/snapshot';
@@ -276,6 +277,8 @@ const AltarObjectView = memo(function AltarObjectView({
   const glowing = object.glowing === 'true';
   const lit = isCandle(object) && isLit(object);
   const smoke = useSnuffSmoke(lit);
+  // The flame sits on this picture's wick (the vigil candles keep the website's spot).
+  const flame = lit || smoke != null ? flameLayout(object.imagePath, object.imagePath ? imageRatio(object.imagePath) : null) : null;
 
   return (
     <View
@@ -302,8 +305,8 @@ const AltarObjectView = memo(function AltarObjectView({
       )}
       {overlays.herb && <Image source={candleHerbOverlay} style={styles.herbOverlay} resizeMode="contain" />}
       {overlays.oil && <Image source={candleOilOverlay} style={styles.oilOverlay} resizeMode="contain" />}
-      {lit && <Flame />}
-      {smoke != null && <Smoke key={smoke} />}
+      {lit && flame && <Flame layout={flame} />}
+      {smoke != null && flame && <Smoke key={smoke} layout={flame} />}
       {(selected || highlighted) && <View style={[styles.outline, highlighted && !selected && styles.outlineSoft]} />}
     </View>
   );
@@ -352,7 +355,7 @@ function useSnuffSmoke(lit: boolean): number | null {
 }
 
 /** The puff of smoke over a candle just put out (altar.css .is-extinguishing::after). */
-function Smoke() {
+function Smoke({ layout }: { layout: FlameLayout }) {
   const [rise] = useState(() => new Animated.Value(0));
   const [height, setHeight] = useState(0);
   useEffect(() => {
@@ -369,7 +372,7 @@ function Smoke() {
 
   return (
     <Animated.View
-      style={[styles.smoke, { opacity, transform: [{ translateX }, { translateY }, { scale }] }]}
+      style={[styles.smoke, { left: `${layout.centerX - 5}%`, top: `${layout.smokeTop}%`, height: `${layout.smokeHeight}%` }, { opacity, transform: [{ translateX }, { translateY }, { scale }] }]}
       onLayout={(e) => setHeight(e.nativeEvent.layout.height)}
     >
       <Svg width="100%" height="100%" viewBox="0 0 10 22">
@@ -396,7 +399,7 @@ function Smoke() {
 }
 
 /** The flame drawn above a lit candle's wick (altar.css .is-lit::before/::after). */
-function Flame() {
+function Flame({ layout }: { layout: FlameLayout }) {
   const flicker = useRef(new Animated.Value(0)).current;
   // Reduce motion: a steady flame instead of a flickering one.
   const still = useReducedMotion();
@@ -421,7 +424,7 @@ function Flame() {
 
   return (
     <>
-      <View style={styles.flameHalo}>
+      <View style={[styles.flameHalo, { left: `${layout.centerX - 4}%`, top: `${layout.haloTop}%`, height: `${layout.haloHeight}%` }]}>
         <Svg width="100%" height="100%" viewBox="0 0 10 10">
           <Defs>
             <RadialGradient id="halo" cx="50%" cy="50%" r="50%">
@@ -434,7 +437,9 @@ function Flame() {
           <Circle cx={5} cy={5} r={5} fill="url(#halo)" />
         </Svg>
       </View>
-      <Animated.View style={[styles.flame, { opacity, transform: [{ scaleY }] }]}>
+      <Animated.View
+        style={[styles.flame, { left: `${layout.centerX - 5}%`, top: `${layout.flameTop}%`, height: `${layout.flameHeight}%` }, { opacity, transform: [{ scaleY }] }]}
+      >
         <Svg width="100%" height="100%" viewBox="0 0 10 18">
           <Defs>
             <RadialGradient id="flame" cx="50%" cy="18%" r="80%">
