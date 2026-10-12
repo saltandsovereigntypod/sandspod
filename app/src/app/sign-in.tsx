@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '../components/Button';
 import { appleSignInAvailable, signInWithApple } from '../lib/appleSignIn';
 import { signInWithGoogle } from '../lib/googleSignIn';
+import { requestRecovery } from '../lib/settings/account';
 import { supabase } from '../lib/supabase';
 import { colors, fonts, radius, touch, type } from '../theme';
 
@@ -48,6 +49,21 @@ export default function SignIn() {
       setBusy(false);
       setMessage(error instanceof Error ? error.message : 'Google sign-in did not finish. Please try again.');
     }
+  }
+
+  async function forgotPassword() {
+    if (!email.trim()) {
+      setMessage('Enter your email address first.');
+      return;
+    }
+    setBusy(true);
+    setMessage('Sending a recovery link…');
+    try {
+      setMessage(await requestRecovery(email));
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'The recovery request could not be completed. Please try again.');
+    }
+    setBusy(false);
   }
 
   async function submit() {
@@ -139,6 +155,15 @@ export default function SignIn() {
           onPress={submit}
           style={styles.submit}
         />
+        {!creating && (
+          <Button
+            label="Forgot your password?"
+            variant="text"
+            disabled={busy}
+            onPress={forgotPassword}
+            accessibilityHint="Emails a link for choosing a new password"
+          />
+        )}
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

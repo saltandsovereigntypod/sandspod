@@ -11,6 +11,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 
 import { UpdateBanner } from '../components/UpdateBanner';
+import { PasswordRecovery } from '../components/PasswordRecovery';
 import { GrimoireProvider } from '../lib/grimoire/store';
 import { registerServiceWorker } from '../lib/offline/serviceWorker';
 import { SessionProvider, useSession } from '../lib/session';
@@ -33,7 +34,7 @@ export default function RootLayout() {
 }
 
 function RootStack() {
-  const { ready } = useSession();
+  const { ready, passwordRecovery } = useSession();
   const [fontsLoaded, fontError] = useFonts({
     CormorantGaramond_500Medium_Italic,
     CormorantGaramond_600SemiBold,
@@ -60,6 +61,7 @@ function RootStack() {
         }}
       />
       <UpdateBanner />
+      {passwordRecovery && <PasswordRecovery />}
     </>
   );
 }
