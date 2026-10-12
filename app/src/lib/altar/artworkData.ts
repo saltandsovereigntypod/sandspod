@@ -3332,6 +3332,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Jade",
+        "keywords": [
+          "luck",
+          "prosperity",
+          "harmony",
+          "protection",
+          "longevity"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "jade",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/jade/jade-chips.png",
+            "type": "crystal",
+            "crystal": "jade",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "jade",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/jade/jade-tumbled.png",
+            "type": "crystal",
+            "crystal": "jade",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Jet",
         "keywords": [
           "protection",
@@ -3726,6 +3767,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Peridot",
+        "keywords": [
+          "renewal",
+          "prosperity",
+          "release of jealousy",
+          "growth",
+          "warmth"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "peridot",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/peridot/peridot-chips.png",
+            "type": "crystal",
+            "crystal": "peridot",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "peridot",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/peridot/peridot-tumbled.png",
+            "type": "crystal",
+            "crystal": "peridot",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Pyrite",
         "keywords": [
           "prosperity",
@@ -3904,6 +3986,74 @@ export const ALTAR_ARTWORK: {
             "image": "",
             "type": "crystal",
             "crystal": "rose_quartz",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Ruby",
+        "keywords": [
+          "passion",
+          "vitality",
+          "courage",
+          "devotion",
+          "protection"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "ruby",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/ruby/ruby-chips.png",
+            "type": "crystal",
+            "crystal": "ruby",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "../assets/altar/objects/crystals/ruby/ruby-cluster.png",
+            "type": "crystal",
+            "crystal": "ruby",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Sapphire",
+        "keywords": [
+          "wisdom",
+          "truth",
+          "discipline",
+          "devotion",
+          "protection"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "sapphire",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/sapphire/sapphire-chips.png",
+            "type": "crystal",
+            "crystal": "sapphire",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "../assets/altar/objects/crystals/sapphire/sapphire-cluster.png",
+            "type": "crystal",
+            "crystal": "sapphire",
             "form": "cluster"
           }
         ]
@@ -4115,6 +4265,47 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "tiger_eye",
             "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Turquoise",
+        "keywords": [
+          "protection",
+          "travel",
+          "healing",
+          "friendship",
+          "communication"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "turquoise",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/turquoise/turquoise-chips.png",
+            "type": "crystal",
+            "crystal": "turquoise",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "turquoise",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/turquoise/turquoise-tumbled.png",
+            "type": "crystal",
+            "crystal": "turquoise",
+            "form": "tumbled"
           }
         ]
       },
