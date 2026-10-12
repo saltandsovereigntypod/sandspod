@@ -386,21 +386,21 @@ export const ALTAR_ARTWORK: {
         "forms": [
           {
             "label": "Sprig",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/sage/sage-sprig.png",
             "type": "herb",
             "herb": "sage",
             "form": "sprig"
           },
           {
             "label": "Loose",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/sage/sage-loose.png",
             "type": "herb",
             "herb": "sage",
             "form": "loose"
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/sage/sage-oil.png",
             "type": "oil",
             "herb": "sage",
             "form": "oil"
@@ -1394,6 +1394,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Nettle",
+        "keywords": [
+          "protection",
+          "boundaries",
+          "courage",
+          "uncrossing",
+          "strength"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/nettle/nettle-sprig.png",
+            "type": "herb",
+            "herb": "nettle",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/nettle/nettle-loose.png",
+            "type": "herb",
+            "herb": "nettle",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/nettle/nettle-oil.png",
+            "type": "oil",
+            "herb": "nettle",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "nettle",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Oak",
         "keywords": [
           "strength",
@@ -1435,6 +1476,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Patchouli",
+        "keywords": [
+          "prosperity",
+          "grounding",
+          "attraction",
+          "sensuality",
+          "stability"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/patchouli/patchouli-sprig.png",
+            "type": "herb",
+            "herb": "patchouli",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/patchouli/patchouli-loose.png",
+            "type": "herb",
+            "herb": "patchouli",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "../assets/altar/objects/herbs/patchouli/patchouli-oil.png",
+            "type": "oil",
+            "herb": "patchouli",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "patchouli",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Peppermint",
         "keywords": [
           "clarity",
@@ -1470,6 +1552,47 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/herbs/incense/incense.png",
             "type": "herb",
             "herb": "peppermint",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
+        "name": "Rose",
+        "keywords": [
+          "love",
+          "compassion",
+          "beauty",
+          "healing",
+          "grief support"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/rose/rose-sprig.png",
+            "type": "herb",
+            "herb": "rose",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "../assets/altar/objects/herbs/rose/rose-loose.png",
+            "type": "herb",
+            "herb": "rose",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "",
+            "type": "oil",
+            "herb": "rose",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "rose",
             "form": "incense"
           }
         ]
@@ -3294,6 +3417,26 @@ export const ALTAR_ARTWORK: {
     "deities": [
       {
         "category": "deities",
+        "name": "Anubis Statue",
+        "keywords": [
+          "death",
+          "embalming",
+          "protection",
+          "the dead",
+          "funerary rites"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/anubis/anubis-statue.png",
+            "type": "deity",
+            "deity": "anubis",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Aphrodite Statue",
         "keywords": [
           "love",
@@ -3414,6 +3557,26 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Ceres Statue",
+        "keywords": [
+          "grain",
+          "agriculture",
+          "fertility",
+          "harvest",
+          "motherhood"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/ceres/ceres-statue.png",
+            "type": "deity",
+            "deity": "ceres",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Cernunnos Statue",
         "keywords": [
           "nature",
@@ -3474,6 +3637,46 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Diana Statue",
+        "keywords": [
+          "wild places",
+          "the hunt",
+          "the moon",
+          "women",
+          "childbirth"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/diana/diana-statue.png",
+            "type": "deity",
+            "deity": "diana",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Durga Statue",
+        "keywords": [
+          "protection",
+          "courage",
+          "righteous action",
+          "strength",
+          "motherhood"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/durga/durga-statue.png",
+            "type": "deity",
+            "deity": "durga",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Epona Statue",
         "keywords": [
           "horses",
@@ -3514,6 +3717,26 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Ganesha Statue",
+        "keywords": [
+          "new beginnings",
+          "wisdom",
+          "learning",
+          "prosperity",
+          "removing obstacles"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/ganesha/ganesha-statue.png",
+            "type": "deity",
+            "deity": "ganesha",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Hermes Statue",
         "keywords": [
           "travel",
@@ -3528,6 +3751,86 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/hermes/hermes-statue.png",
             "type": "deity",
             "deity": "hermes",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Isis Statue",
+        "keywords": [
+          "magic",
+          "healing",
+          "motherhood",
+          "protection",
+          "wisdom"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/isis/isis-statue.png",
+            "type": "deity",
+            "deity": "isis",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Janus Statue",
+        "keywords": [
+          "beginnings",
+          "endings",
+          "doorways",
+          "gates",
+          "transitions"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/janus/janus-statue.png",
+            "type": "deity",
+            "deity": "janus",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Juno Statue",
+        "keywords": [
+          "marriage",
+          "women",
+          "childbirth",
+          "the kalends",
+          "protection of the state"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/juno/juno-statue.png",
+            "type": "deity",
+            "deity": "juno",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Jupiter Statue",
+        "keywords": [
+          "sky",
+          "thunder",
+          "sovereignty",
+          "oaths",
+          "justice"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/jupiter/jupiter-statue.png",
+            "type": "deity",
+            "deity": "jupiter",
             "form": "statue"
           }
         ]
@@ -3613,6 +3916,86 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Mars Statue",
+        "keywords": [
+          "war",
+          "protection",
+          "agriculture",
+          "boundaries",
+          "young men"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/mars/mars-statue.png",
+            "type": "deity",
+            "deity": "mars",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Mercury Statue",
+        "keywords": [
+          "commerce",
+          "trade",
+          "travel",
+          "messages",
+          "communication"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/mercury/mercury-statue.png",
+            "type": "deity",
+            "deity": "mercury",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Minerva Statue",
+        "keywords": [
+          "wisdom",
+          "crafts",
+          "skill",
+          "medicine",
+          "strategy"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/minerva/minerva-statue.png",
+            "type": "deity",
+            "deity": "minerva",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Mokosh Statue",
+        "keywords": [
+          "spinning",
+          "weaving",
+          "women",
+          "fate",
+          "moisture"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/mokosh/mokosh-statue.png",
+            "type": "deity",
+            "deity": "mokosh",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Morana Statue",
         "keywords": [
           "winter",
@@ -3647,6 +4030,46 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/odin/odin-statue.png",
             "type": "deity",
             "deity": "odin",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Persephone Statue",
+        "keywords": [
+          "the underworld",
+          "spring",
+          "transformation",
+          "death",
+          "rebirth"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/persephone/persephone-statue.png",
+            "type": "deity",
+            "deity": "persephone",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Perun Statue",
+        "keywords": [
+          "thunder",
+          "lightning",
+          "sky",
+          "war",
+          "justice"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/perun/perun-statue.png",
+            "type": "deity",
+            "deity": "perun",
             "form": "statue"
           }
         ]
@@ -3693,6 +4116,46 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "The Morrigan Statue",
+        "keywords": [
+          "war",
+          "sovereignty",
+          "prophecy",
+          "death",
+          "fate"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/morrigan/morrigan-statue.png",
+            "type": "deity",
+            "deity": "morrigan",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Thor Statue",
+        "keywords": [
+          "protection",
+          "strength",
+          "storms",
+          "fertility",
+          "courage"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/thor/thor-statue.png",
+            "type": "deity",
+            "deity": "thor",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Veles Statue",
         "keywords": [
           "cattle",
@@ -3707,6 +4170,46 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/veles/veles-statue.png",
             "type": "deity",
             "deity": "veles",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Venus Statue",
+        "keywords": [
+          "love",
+          "beauty",
+          "desire",
+          "fertility",
+          "gardens"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/venus/venus-statue.png",
+            "type": "deity",
+            "deity": "venus",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Vesta Statue",
+        "keywords": [
+          "hearth",
+          "sacred fire",
+          "home",
+          "family",
+          "continuity"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/vesta/vesta-statue.png",
+            "type": "deity",
+            "deity": "vesta",
             "form": "statue"
           }
         ]
