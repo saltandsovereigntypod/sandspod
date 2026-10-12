@@ -7,7 +7,10 @@ import { Button } from '../../../components/Button';
 import { FailedChanges } from '../../../components/grimoire/SaveStatus';
 import { Icon } from '../../../components/Icon';
 import { parseCalendarDate, shortDate } from '../../../lib/calendar';
+import { grimoireLibraryHref, libraryShelves, type LibraryShelf, type ShelfGroup } from '../../../lib/grimoire/libraryShelves';
 import { useGrimoire } from '../../../lib/grimoire/store';
+import { useLibrary } from '../../../lib/library';
+import { useMySettings } from '../../../lib/settings/store';
 import { pageFacts, pageTypeLabel, tableOfContents } from '../../../lib/grimoire/structure';
 import type { PageRow } from '../../../lib/grimoire/types';
 import { useSession } from '../../../lib/session';
@@ -17,6 +20,8 @@ export default function Grimoire() {
   const { session } = useSession();
   const { snapshot, status, refresh, canEdit, sync, pendingCount } = useGrimoire();
   const [pulling, setPulling] = useState(false);
+  const library = useLibrary();
+  const { settings } = useMySettings();
 
   if (!session) {
     return (
@@ -38,6 +43,7 @@ export default function Grimoire() {
   const book = snapshot?.books[0] ?? null;
   const groups = snapshot && book ? tableOfContents(snapshot, book.id) : [];
   const pageCount = groups.reduce((sum, g) => sum + g.pages.length, 0);
+  const shelves = libraryShelves(library.entries, settings);
 
   return (
     <Shell
@@ -47,7 +53,7 @@ export default function Grimoire() {
           tintColor={colors.gold}
           onRefresh={async () => {
             setPulling(true);
-            await refresh();
+            await Promise.all([refresh(), library.refresh()]);
             setPulling(false);
           }}
         />
@@ -137,7 +143,82 @@ export default function Grimoire() {
           </View>
         ),
       )}
+
+      {shelves.map((shelf) => (
+        <ShelfView key={shelf.key} shelf={shelf} />
+      ))}
     </Shell>
+  );
+}
+
+// The Living Library shelves, as at the end of the book on the website. Closed
+// at first: the Traditional shelf alone holds hundreds of entries.
+function ShelfView({ shelf }: { shelf: LibraryShelf }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <View style={styles.section}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityState={{ expanded: open }}
+        accessibilityLabel={`${shelf.title}, ${shelf.count} ${shelf.count === 1 ? 'entry' : 'entries'}`}
+        onPress={() => setOpen(!open)}
+        style={({ pressed }) => [styles.shelfHead, pressed && styles.pressed]}
+      >
+        <View style={styles.rowIcon}>
+          <Icon name="grimoire" size={18} color={colors.gold} />
+        </View>
+        <View style={styles.rowText}>
+          <Text style={type.eyebrow}>Living Library</Text>
+          <Text style={styles.rowTitle}>{shelf.title}</Text>
+          <Text style={type.caption}>{shelf.count === 1 ? '1 entry' : `${shelf.count} entries`}</Text>
+        </View>
+        <View style={open && styles.chevronOpen}>
+          <Icon name="chevron" size={16} color={colors.tabInactive} />
+        </View>
+      </Pressable>
+      {open && (
+        <View style={styles.list}>
+          {shelf.groups.map((group, i) => (
+            <ShelfGroupView key={group.type} group={group} last={i === shelf.groups.length - 1} />
+          ))}
+        </View>
+      )}
+    </View>
+  );
+}
+
+function ShelfGroupView({ group, last }: { group: ShelfGroup; last: boolean }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <View style={!last && styles.rowRule}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityState={{ expanded: open }}
+        accessibilityLabel={`${group.label}, ${group.entries.length}`}
+        onPress={() => setOpen(!open)}
+        style={({ pressed }) => [styles.groupHead, pressed && styles.pressed]}
+      >
+        <Text style={[styles.groupTitle, styles.rowText]}>{group.label}</Text>
+        <Text style={type.caption}>{group.entries.length}</Text>
+        <View style={open && styles.chevronOpen}>
+          <Icon name="chevron" size={14} color={colors.tabInactive} />
+        </View>
+      </Pressable>
+      {open &&
+        group.entries.map((entry) => (
+          <Pressable
+            key={entry.id}
+            accessibilityRole="button"
+            onPress={() => router.push(grimoireLibraryHref(entry))}
+            style={({ pressed }) => [styles.entry, pressed && styles.pressed]}
+          >
+            <Text style={[type.body, styles.rowText]} numberOfLines={1}>
+              {entry.name}
+            </Text>
+            <Icon name="chevron" size={14} color={colors.tabInactive} />
+          </Pressable>
+        ))}
+    </View>
   );
 }
 
@@ -223,4 +304,19 @@ const styles = StyleSheet.create({
   },
   rowText: { flex: 1, gap: 2 },
   rowTitle: { fontFamily: fonts.display, fontSize: 20, lineHeight: 24, color: colors.cream },
+  shelfHead: {
+    minHeight: 64,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    padding: 14,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: colors.goldLine,
+    backgroundColor: colors.surface,
+  },
+  chevronOpen: { transform: [{ rotate: '90deg' }] },
+  groupHead: { minHeight: 52, flexDirection: 'row', alignItems: 'center', gap: 10 },
+  groupTitle: { fontFamily: fonts.display, fontSize: 18, lineHeight: 22, color: colors.cream },
+  entry: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 10, paddingLeft: 12 },
 });

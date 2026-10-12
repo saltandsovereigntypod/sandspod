@@ -3,19 +3,20 @@ import { useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
+import { IngredientPicker } from '../../../components/rituals/IngredientPicker';
+import { StepsEditor } from '../../../components/rituals/StepsEditor';
 import { Body, Card, Chip, Chips, Expander, Field, Notice, RitualScreen, SectionLabel, Title, tell, ui } from '../../../components/rituals/ui';
 import { useGrimoire } from '../../../lib/grimoire/store';
 import { refToParam } from '../../../lib/rituals/format';
 import { handOffDraft } from '../../../lib/rituals/handoff';
-import { LIBRARY_ITEMS, type LibraryItem, type LibraryItemType } from '../../../lib/rituals/libraryData';
+import { isCustom, samePick } from '../../../lib/rituals/ingredients';
 import { INTENTIONS, intentionByKey, suggestIngredients } from '../../../lib/rituals/planner';
 import { buildSpell, defaultSpellName, toIngredient } from '../../../lib/rituals/spell';
 import { saveTemplate, startRitual, useRituals } from '../../../lib/rituals/store';
-import type { Ingredient } from '../../../lib/rituals/types';
+import type { Ingredient, StepDraft } from '../../../lib/rituals/types';
 import { useSession } from '../../../lib/session';
 import { type } from '../../../theme';
 
-const TYPE_LABELS: Record<LibraryItemType, string> = { candle: 'Candles', herb: 'Herbs', crystal: 'Crystals' };
 const FOCUS = ['', '5', '10', '15'];
 
 function starters(key: string | null): Ingredient[] {
@@ -41,18 +42,23 @@ export default function SpellBuilder() {
 
   const intention = intentionByKey(intentionKey);
   const suggested = useMemo(() => (intention ? suggestIngredients(intention) : null), [intention]);
-  const draft = useMemo(
-    () => buildSpell({ name, intention, purpose, petition, ingredients: picked, focusMinutes: focus }),
-    [name, intention, purpose, petition, picked, focus],
-  );
+  const [customSteps, setCustomSteps] = useState<StepDraft[] | null>(null);
+  const draft = useMemo(() => {
+    const built = buildSpell({ name, intention, purpose, petition, ingredients: picked, focusMinutes: focus });
+    return customSteps ? { ...built, steps: customSteps } : built;
+  }, [name, intention, purpose, petition, picked, focus, customSteps]);
+  const readable = picked.filter((item) => !isCustom(item));
 
   const choose = (key: string) => {
     const next = intentionKey === key ? null : key;
     setIntentionKey(next);
-    setPicked(starters(next));
+    // Swap the old intention's starters for the new one's; keep what you added.
+    const previous = starters(intentionKey);
+    setPicked((list) => {
+      const kept = list.filter((item) => !previous.some((s) => samePick(s, item)));
+      return [...kept, ...starters(next).filter((s) => !kept.some((item) => samePick(item, s)))];
+    });
   };
-  const toggle = (item: LibraryItem) =>
-    setPicked((list) => (list.some((i) => i.ref === item.ref) ? list.filter((i) => i.ref !== item.ref) : [...list, toIngredient(item)]));
 
   const begin = async () => {
     setBusy(true);
@@ -100,45 +106,21 @@ export default function SpellBuilder() {
       <Field label="In your own words" value={purpose} onChange={setPurpose} placeholder="Steady work that pays the rent" multiline />
 
       <View style={ui.gap}>
-        <SectionLabel>What you'll gather</SectionLabel>
-        {suggested ? (
-          <>
-            <Body muted>{`Suggested from the Library for ${intention?.label.toLowerCase()}. Tap to add or remove.`}</Body>
-            <Chips>
-              {[...suggested.candle, ...suggested.herb, ...suggested.crystal].map((item) => (
-                <Chip
-                  key={item.ref}
-                  label={item.name}
-                  selected={picked.some((p) => p.ref === item.ref)}
-                  a11yLabel={`${item.name}: ${item.uses}`}
-                  onPress={() => toggle(item)}
-                />
-              ))}
-            </Chips>
-          </>
-        ) : (
-          <Body muted>Choose an intention and the Library will suggest candles, herbs and crystals.</Body>
-        )}
-        {(Object.keys(TYPE_LABELS) as LibraryItemType[]).map((kind) => (
-          <Expander key={kind} title={`All ${TYPE_LABELS[kind].toLowerCase()}`}>
-            <Chips>
-              {LIBRARY_ITEMS.filter((i) => i.type === kind).map((item) => (
-                <Chip
-                  key={item.ref}
-                  label={item.name}
-                  selected={picked.some((p) => p.ref === item.ref)}
-                  a11yLabel={`${item.name}: ${item.uses}`}
-                  onPress={() => toggle(item)}
-                />
-              ))}
-            </Chips>
-          </Expander>
-        ))}
-        {picked.length > 0 && (
+        <IngredientPicker
+          picked={picked}
+          onChange={setPicked}
+          suggested={suggested ? [...suggested.candle, ...suggested.herb, ...suggested.crystal] : undefined}
+          suggestedNote={
+            intention
+              ? `Suggested from the Library for ${intention.label.toLowerCase()}. They're only suggestions: add anything you like.`
+              : undefined
+          }
+        />
+        {readable.length > 0 && (
           <View style={ui.gapSmall}>
             <Body muted>Read about them in the Library</Body>
             <Chips>
-              {picked.map((item) => (
+              {readable.map((item) => (
                 <Chip
                   key={item.ref}
                   label={`${item.name} ›`}
@@ -170,15 +152,25 @@ export default function SpellBuilder() {
 
       <Field label="Name" value={name} onChange={setName} placeholder={defaultSpellName(intention)} />
 
-      <Expander title={`The steps (${draft.steps.length})`}>
-        {draft.steps.map((step, i) => (
-          <View key={i} style={ui.gapSmall}>
-            <Text style={type.cardTitle}>{`${i + 1}. ${step.title}`}</Text>
-            {!!step.instructions && <Body>{step.instructions}</Body>}
-            {!!step.spoken_text && <Body muted>{`“${step.spoken_text}”`}</Body>}
-          </View>
-        ))}
-      </Expander>
+      {customSteps ? (
+        <View style={ui.gap}>
+          <SectionLabel>{`Your steps (${customSteps.length})`}</SectionLabel>
+          <Body muted>These are yours to change. Ingredients you add now won't rewrite them.</Body>
+          <StepsEditor steps={customSteps} onChange={setCustomSteps} />
+          <Button label="Go back to the suggested steps" variant="text" onPress={() => setCustomSteps(null)} />
+        </View>
+      ) : (
+        <Expander title={`The steps (${draft.steps.length})`}>
+          {draft.steps.map((step, i) => (
+            <View key={i} style={ui.gapSmall}>
+              <Text style={type.cardTitle}>{`${i + 1}. ${step.title}`}</Text>
+              {!!step.instructions && <Body>{step.instructions}</Body>}
+              {!!step.spoken_text && <Body muted>{`“${step.spoken_text}”`}</Body>}
+            </View>
+          ))}
+          <Button label="Change the steps" variant="outline" onPress={() => setCustomSteps(draft.steps)} />
+        </Expander>
+      )}
 
       <Card>
         <View style={ui.actions}>

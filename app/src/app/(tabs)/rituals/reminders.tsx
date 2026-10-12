@@ -25,7 +25,7 @@ export default function Reminders() {
 
   return (
     <RitualScreen back="Back">
-      <Title eyebrow="Kept on this phone">Moon reminders</Title>
+      <Title eyebrow={Platform.OS === 'web' ? 'Kept in this browser' : 'Kept on this phone'}>Moon reminders</Title>
       <Body muted>No account needed. Choose the phases you want to hear about, and we'll remind you before planned rituals.</Body>
 
       {!remindersSupported && (
