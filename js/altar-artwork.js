@@ -888,7 +888,7 @@
           "forms": [
             {
               "label": "Sprig",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/calendula/calendula-sprig.png",
               "type": "herb",
               "herb": "calendula",
               "form": "sprig"
@@ -902,7 +902,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/calendula/calendula-oil.png",
               "type": "oil",
               "herb": "calendula",
               "form": "oil"
@@ -1043,6 +1043,48 @@
         },
         {
           "category": "herbs",
+          "name": "Copal",
+          "icon": "🌿",
+          "keywords": [
+            "purification",
+            "offering",
+            "protection",
+            "consecration",
+            "spirit work"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "",
+              "type": "herb",
+              "herb": "copal",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/copal/copal-loose.png",
+              "type": "herb",
+              "herb": "copal",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/copal/copal-oil.png",
+              "type": "oil",
+              "herb": "copal",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "copal",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Cypress",
           "icon": "🌿",
           "keywords": [
@@ -1069,7 +1111,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/cypress/cypress-oil.png",
               "type": "oil",
               "herb": "cypress",
               "form": "oil"
@@ -1079,6 +1121,48 @@
               "image": "../assets/altar/objects/herbs/incense/incense.png",
               "type": "herb",
               "herb": "cypress",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
+          "name": "Dandelion",
+          "icon": "🌿",
+          "keywords": [
+            "wishes",
+            "divination",
+            "resilience",
+            "communication",
+            "spirit messages"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/dandelion/dandelion-sprig.png",
+              "type": "herb",
+              "herb": "dandelion",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/dandelion/dandelion-loose.png",
+              "type": "herb",
+              "herb": "dandelion",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/dandelion/dandelion-oil.png",
+              "type": "oil",
+              "herb": "dandelion",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "dandelion",
               "form": "incense"
             }
           ]
@@ -1317,7 +1401,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/garlic/garlic-oil.png",
               "type": "oil",
               "herb": "garlic",
               "form": "oil"
@@ -1485,7 +1569,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/hyssop/hyssop-oil.png",
               "type": "oil",
               "herb": "hyssop",
               "form": "oil"
@@ -1569,7 +1653,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/juniper/juniper-oil.png",
               "type": "oil",
               "herb": "juniper",
               "form": "oil"
@@ -1863,7 +1947,7 @@
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/myrrh/myrrh-oil.png",
               "type": "oil",
               "herb": "myrrh",
               "form": "oil"
@@ -2251,6 +2335,48 @@
               "image": "../assets/altar/objects/herbs/incense/incense.png",
               "type": "herb",
               "herb": "saffron",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
+          "name": "Sandalwood",
+          "icon": "🌿",
+          "keywords": [
+            "meditation",
+            "spirituality",
+            "purification",
+            "protection",
+            "wishes"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "",
+              "type": "herb",
+              "herb": "sandalwood",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/sandalwood/sandalwood-loose.png",
+              "type": "herb",
+              "herb": "sandalwood",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/sandalwood/sandalwood-oil.png",
+              "type": "oil",
+              "herb": "sandalwood",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "sandalwood",
               "form": "incense"
             }
           ]
