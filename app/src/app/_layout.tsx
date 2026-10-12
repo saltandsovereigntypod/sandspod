@@ -8,10 +8,11 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { UpdateBanner } from '../components/UpdateBanner';
 import { PasswordRecovery } from '../components/PasswordRecovery';
+import { useAccessibilityLoaded, useReducedMotion } from '../lib/accessibility/store';
 import { AltarProvider } from '../lib/altar/store';
 import { GrimoireProvider } from '../lib/grimoire/store';
 import { registerServiceWorker } from '../lib/offline/serviceWorker';
@@ -39,6 +40,9 @@ export default function RootLayout() {
 
 function RootStack() {
   const { ready, passwordRecovery } = useSession();
+  // This device's accessibility choices for the guest or account, read before the first screen shows.
+  const accessibilityLoaded = useAccessibilityLoaded();
+  const reduceMotion = useReducedMotion();
   const [fontsLoaded, fontError] = useFonts({
     CormorantGaramond_500Medium_Italic,
     CormorantGaramond_600SemiBold,
@@ -46,7 +50,10 @@ function RootStack() {
     SourceSerif4_400Regular,
     SourceSerif4_600SemiBold,
   });
-  const loaded = ready && (fontsLoaded || !!fontError);
+  // Only the first opening waits on them: a later sign-in switches choices without closing every screen.
+  const [opened, setOpened] = useState(false);
+  const loaded = opened || (ready && (fontsLoaded || !!fontError) && accessibilityLoaded);
+  if (loaded && !opened) setOpened(true);
 
   useEffect(() => {
     if (loaded) SplashScreen.hideAsync();
@@ -61,7 +68,7 @@ function RootStack() {
         screenOptions={{
           headerShown: false,
           contentStyle: { backgroundColor: colors.ground },
-          animation: 'fade',
+          animation: reduceMotion ? 'none' : 'fade',
         }}
       />
       <UpdateBanner />

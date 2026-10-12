@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { useAccessibleText, useReducedMotion } from '../../lib/accessibility/store';
 import { colors, fonts, radius, space, touch, type } from '../../theme';
 
 type Props = {
@@ -19,8 +20,10 @@ type Props = {
 /** A bottom sheet that scrolls vertically; the altar's cabinet, backgrounds and layers live in these. */
 export function Sheet({ visible, title, eyebrow, onClose, children, header, size = 'full' }: Props) {
   const insets = useSafeAreaInsets();
+  const reduceMotion = useReducedMotion();
+  const t = useAccessibleText();
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
+    <Modal visible={visible} transparent animationType={reduceMotion ? 'none' : 'slide'} onRequestClose={onClose}>
       <View style={styles.root}>
         <Pressable style={[styles.backdrop, size === 'half' && styles.backdropLight]} onPress={onClose} accessibilityRole="button" accessibilityLabel="Close" />
         <View style={[styles.card, size === 'half' && styles.cardHalf, { paddingBottom: Math.max(insets.bottom, 16) }]} accessibilityViewIsModal>
@@ -37,7 +40,7 @@ export function Sheet({ visible, title, eyebrow, onClose, children, header, size
               accessibilityLabel={`Close ${title}`}
               style={({ pressed }) => [styles.close, pressed && { opacity: 0.6 }]}
             >
-              <Text style={styles.closeText}>Done</Text>
+              <Text style={t(styles.closeText)}>Done</Text>
             </Pressable>
           </View>
           {header}

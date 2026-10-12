@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../Button';
 import { RichText, Tags } from '../more/ui';
-import { burnHistory, careHistory, stateRows, traditionalSplit } from '../../lib/altar/companion';
+import { burnHistory, careHistory, companionSettings, livingStateDisplay, stateRows, traditionalSplit } from '../../lib/altar/companion';
 import type { SavedObject } from '../../lib/altar/types';
 import { altarLibraryHref, correspondences, type LibraryEntry } from '../../lib/library';
 import { layerFields, visibleLayers } from '../../lib/library/model';
@@ -28,7 +28,9 @@ type Props = {
  * full Living Library page one tap away.
  */
 export function AboutSheet({ visible, object, label, entry, onClose }: Props) {
-  const { settings } = useMySettings();
+  const { settings: saved } = useMySettings();
+  // Settings → Companion panel: the Living Library page settings, or its own when "Copy" is off.
+  const settings = companionSettings(saved);
   const [more, setMore] = useState(false);
   // Never unmount a presented Modal on iOS (it can leave a layer that swallows taps): close it instead.
   if (!object) return <Sheet visible={false} title={label} onClose={onClose}>{null}</Sheet>;
@@ -39,8 +41,8 @@ export function AboutSheet({ visible, object, label, entry, onClose }: Props) {
   const traditional = entry && showTraditional ? traditionalSplit(entry, settings) : { lead: [], warnings: [], rest: [] };
   const mine = entry && layers.includes('myPractice') ? layerFields(entry.myPractice, 'myPractice', settings, entry.layout) : [];
   const community = entry && layers.includes('community') ? layerFields(entry.community, 'community', settings, entry.layout) : [];
-  const state = stateRows(object, new Date());
-  const burns = [...burnHistory(object, new Date()), ...careHistory(object, new Date())];
+  const state = stateRows(object, new Date(), saved);
+  const burns = livingStateDisplay(saved).recentActivity ? [...burnHistory(object, new Date()), ...careHistory(object, new Date())] : [];
   const hasMore = traditional.rest.length > 0 || community.length > 0 || burns.length > 5;
   const nothing = !facts.length && !traditional.lead.length && !traditional.warnings.length && !mine.length && !state.length;
 

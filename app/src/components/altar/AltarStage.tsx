@@ -3,6 +3,7 @@ import { Animated, Image, Platform, StyleSheet, Text, View } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Svg, { Circle, Defs, Ellipse, RadialGradient, Stop } from 'react-native-svg';
 
+import { useReducedMotion } from '../../lib/accessibility/store';
 import { altarImageSource, candleHerbOverlay, candleOilOverlay, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
 import { DEFAULT_BACKGROUND } from '../../lib/altar/cabinet';
 import { boxToPixels, candleLightRadius, displayBox, hitTest, IMAGE_INSET, rotationOf, STAGE_ASPECT } from '../../lib/altar/geometry';
@@ -311,7 +312,13 @@ const useNative = Platform.OS !== 'web';
 /** The flame drawn above a lit candle's wick (altar.css .is-lit::before/::after). */
 function Flame() {
   const flicker = useRef(new Animated.Value(0)).current;
+  // Reduce motion: a steady flame instead of a flickering one.
+  const still = useReducedMotion();
   useEffect(() => {
+    if (still) {
+      flicker.setValue(0.5);
+      return;
+    }
     const speed = 700 + Math.random() * 450;
     const loop = Animated.loop(
       Animated.sequence([
@@ -321,7 +328,7 @@ function Flame() {
     );
     loop.start();
     return () => loop.stop();
-  }, [flicker]);
+  }, [flicker, still]);
 
   const scaleY = flicker.interpolate({ inputRange: [0, 1], outputRange: [0.9, 1.12] });
   const opacity = flicker.interpolate({ inputRange: [0, 1], outputRange: [0.85, 1] });

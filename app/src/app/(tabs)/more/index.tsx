@@ -51,6 +51,7 @@ const GROUPS: { label: string; rows: Row[] }[] = [
     label: 'Your Sanctuary',
     rows: [
       { key: 'settings', label: 'Settings', detail: 'Names, Book of Shadows, Library', icon: 'settings', href: '/more/settings' },
+      { key: 'accessibility', label: 'Accessibility', detail: 'Text size, spacing, contrast, motion', icon: 'settings', href: '/more/accessibility' },
       { key: 'backup', label: 'Backup and restore', detail: 'Keep a copy of your Sanctuary', icon: 'backup', href: '/more/backup' },
       { key: 'account', label: 'Account', detail: '', icon: 'account', href: '/more/account' },
     ],

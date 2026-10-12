@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 
+import { useAccessibleText } from '../lib/accessibility/store';
 import { colors, fonts, radius, touch } from '../theme';
 
 type Variant = 'primary' | 'outline' | 'pill' | 'text';
@@ -16,6 +17,7 @@ type Props = {
 };
 
 export function Button({ label, onPress, variant = 'primary', icon, disabled, style, accessibilityHint }: Props) {
+  const t = useAccessibleText();
   return (
     <Pressable
       accessibilityRole="button"
@@ -32,7 +34,7 @@ export function Button({ label, onPress, variant = 'primary', icon, disabled, st
     >
       <View style={styles.row}>
         {icon}
-        <Text style={[styles.label, labelStyles[variant]]}>{label}</Text>
+        <Text style={[t(styles.label), t(labelStyles[variant])]}>{label}</Text>
       </View>
     </Pressable>
   );

@@ -27,6 +27,19 @@ export const builtInBackgrounds: AltarBackground[] = [
 /** What the stage shows when a save has no background (altar.css default). */
 export const DEFAULT_BACKGROUND = '/assets/altar/backgrounds/forest-scene.png';
 
+/**
+ * The background Settings → Default altar background names, matched as the
+ * website's applyDefaultAltarBackgroundSetting does: by name (any case) or by
+ * asset path. Null when nothing is chosen or it's no longer available.
+ */
+export function defaultAltarBackground(saved: unknown, custom: AltarBackground[] = []): AltarBackground | null {
+  const wanted = typeof saved === 'string' ? saved.trim() : '';
+  if (!wanted) return null;
+  return (
+    [...builtInBackgrounds, ...custom].find((bg) => bg.name.toLowerCase() === wanted.toLowerCase() || bg.background === wanted) ?? null
+  );
+}
+
 const candleForms = [
   { id: 'chime-spell', label: 'Chime / Spell Candle' },
   { id: 'taper', label: 'Taper Candle' },

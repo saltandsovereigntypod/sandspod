@@ -23,6 +23,12 @@ export default function SettingsIndex() {
           onPress={() => router.push('/more/settings/identity')}
         />
         <MenuRow
+          icon="altar"
+          label="Appearance"
+          detail={settings?.default_altar_background ? `New altars: ${settings.default_altar_background}` : 'Default altar background'}
+          onPress={() => router.push('/more/settings/appearance')}
+        />
+        <MenuRow
           icon="community"
           label="Book of Shadows"
           detail="Mundane mode, page font"
@@ -33,6 +39,22 @@ export default function SettingsIndex() {
           label="Living Library"
           detail={settings ? layerOrderLabel(settings.library_layer_order) : 'Layers and what they show'}
           onPress={() => router.push('/more/settings/library')}
+        />
+        <MenuRow
+          icon="altar"
+          label="Companion panel"
+          detail={
+            settings?.companion_copy_grimoire_settings === false
+              ? layerOrderLabel(String(settings.companion_layer_order || 'myPractice,traditional,community'))
+              : 'Same as Living Library pages'
+          }
+          onPress={() => router.push('/more/settings/companion')}
+        />
+        <MenuRow
+          icon="moon"
+          label="Living Objects"
+          detail="What an object’s living state shows"
+          onPress={() => router.push('/more/settings/objects')}
         />
         <MenuRow
           icon="moon"

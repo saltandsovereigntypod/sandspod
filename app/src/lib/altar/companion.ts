@@ -5,7 +5,7 @@
 
 import { correspondences, layerFields, normalizeName, splitList } from '../library/model.ts';
 import type { LibraryEntry, LibraryField } from '../library/types.ts';
-import type { Settings } from '../settings/defaults.ts';
+import { LIBRARY_CATEGORIES, type Settings } from '../settings/defaults.ts';
 import { crystalHistory, crystalIntention, humanize as humanizeValue, offeringsOf } from './devotion.ts';
 import { carvingsOf, readLivingState } from './livingState.ts';
 import { TRADITIONAL_LIBRARY } from '../library/traditionalData.ts';
@@ -50,17 +50,63 @@ export function resolveAltarEntry(entries: LibraryEntry[], object: SavedObject):
   return explicit;
 }
 
+const COMPANION_LAYERS = [
+  ['my', 'myPractice'],
+  ['traditional', 'traditional'],
+  ['community', 'community'],
+] as const;
+
+/**
+ * The settings the Companion panel reads, as the website's
+ * getCompanionDisplaySettings (altar/js/ui/selection.js) builds them: the
+ * Living Library page settings when "Copy my Living Library page settings"
+ * is on, otherwise the companion_* choices written over the library_* keys,
+ * so layerFields and visibleLayers read them unchanged. A key the website
+ * never set (companion_traditional_notes, say) reads as off, as it does there.
+ */
+export function companionSettings<T extends Settings | null | undefined>(settings: T): T {
+  // Only an explicit "off" maps; saved settings always carry the flag, so this matches the website's truthiness check.
+  if (!settings || settings.companion_copy_grimoire_settings !== false) return settings;
+  const mapped: Record<string, unknown> = { ...settings };
+  mapped.library_layer_order = settings.companion_layer_order || 'myPractice,traditional,community';
+  for (const [companion, library] of COMPANION_LAYERS) {
+    mapped[`library_${library}_enabled`] = Boolean(settings[`companion_${companion}_enabled`]);
+    for (const category of LIBRARY_CATEGORIES) {
+      mapped[`library_${library}_${category}`] = Boolean(settings[`companion_${companion}_${category}`]);
+    }
+  }
+  return mapped as T;
+}
+
+/** Which Living State rows to show (getLivingStateDisplaySettings): everything unless switched off. */
+export function livingStateDisplay(settings?: Settings | null) {
+  const on = (key: string) => settings?.[`living_state_show_${key}`] !== false;
+  return {
+    status: on('status'),
+    created: on('created'),
+    source: on('source'),
+    lastTended: on('last_tended'),
+    expiration: on('expiration'),
+    futureTending: on('future_tending'),
+    remaining: on('remaining'),
+    recentActivity: on('recent_activity'),
+  };
+}
+
 /** e.g. "Fire · Mars · Courage, protection, passion". Empty when nothing is known. */
-export function glanceLine(entry: LibraryEntry, settings?: Settings | null): string {
+export function glanceLine(entry: LibraryEntry, librarySettings?: Settings | null): string {
+  const settings = companionSettings(librarySettings);
   const parts: string[] = [];
-  if (settings?.library_traditional_correspondences !== false) {
+  // The glance reads the Traditional layer (as the About sheet's facts do), so it follows that layer being shown.
+  const traditional = settings?.library_traditional_enabled !== false;
+  if (traditional && settings?.library_traditional_correspondences !== false) {
     parts.push(
       ...correspondences(entry)
         .filter((fact) => fact.label === 'Element' || fact.label === 'Planet')
         .map((fact) => fact.value),
     );
   }
-  if (settings?.library_traditional_uses !== false) {
+  if (traditional && settings?.library_traditional_uses !== false) {
     const source = { ...(entry.traditional ?? {}), ...(entry.myPractice ?? {}) } as Record<string, unknown>;
     const raw = source.Uses ?? source.Domains ?? source.Purpose;
     const uses = Array.isArray(raw) ? raw.map(String) : typeof raw === 'string' ? splitList(raw) : [];
@@ -84,7 +130,7 @@ export function traditionalSplit(
   entry: LibraryEntry,
   settings?: Settings | null,
 ): { lead: LibraryField[]; warnings: LibraryField[]; rest: LibraryField[] } {
-  const fields = layerFields(entry.traditional, 'traditional', settings, entry.layout).filter((field) => !CORRESPONDENCE_KEYS.has(field.key));
+  const fields = layerFields(entry.traditional, 'traditional', companionSettings(settings), entry.layout).filter((field) => !CORRESPONDENCE_KEYS.has(field.key));
   const warnings = fields.filter((field) => WARNING_KEYS.has(field.key));
   const others = fields.filter((field) => !WARNING_KEYS.has(field.key));
   return { lead: others.slice(0, LEAD_FIELDS), warnings, rest: others.slice(LEAD_FIELDS) };
@@ -221,20 +267,25 @@ function ingredientList(value: unknown): string {
 
 const text = (value: unknown) => (typeof value === 'string' ? value.trim() : '');
 
-/** The object's own story so far: burns, dressings, cleansing, offerings, what's in a jar. */
-export function stateRows(object: SavedObject, now: Date): StateRow[] {
+/**
+ * The object's own story so far: burns, dressings, cleansing, offerings, what's in a jar.
+ * With settings, rows follow the Living State panel switches (living_state_show_*):
+ * status, last tended, remaining, future tending and expiration each hide their rows.
+ */
+export function stateRows(object: SavedObject, now: Date, settings?: Settings | null): StateRow[] {
   const state = readLivingState(object, now.toISOString());
+  const show = livingStateDisplay(settings);
   const rows: StateRow[] = [];
-  const add = (label: string, value: string) => {
-    if (value) rows.push({ label, value });
+  const add = (label: string, value: string, shown = true) => {
+    if (value && shown) rows.push({ label, value });
   };
 
   const candle = state.candle;
   if (object.type === 'candle' && candle) {
-    if (object.lit === 'true') add('Burning since', whenWithTime(candle.currentBurnStartedAt, now) || 'Now');
+    if (object.lit === 'true') add('Burning since', whenWithTime(candle.currentBurnStartedAt, now) || 'Now', show.status);
     const total = burnedSoFar(object, now);
-    if (total > 0 || object.lit === 'true') add('Burning time', duration(total));
-    add('Last burned', whenWithTime(candle.lastLitAt, now));
+    if (total > 0 || object.lit === 'true') add('Burning time', duration(total), show.remaining);
+    add('Last burned', whenWithTime(candle.lastLitAt, now), show.lastTended);
     add('Typical burn', typicalBurn(object));
     add('Dressed with', dressingNames(candle.dressings ?? []).join(', '));
     add('Carved with', carvingsOf(object).map((c) => `“${c.text}”`).join(', '));
@@ -245,15 +296,15 @@ export function stateRows(object: SavedObject, now: Date): StateRow[] {
     const details = (crystal.dedicationDetails ?? {}) as Record<string, unknown>;
     add('Current intention', crystalIntention(object, now.toISOString()) || 'No recorded intention');
     add('Dedicated to', text(details.dedicatedTo));
-    add('Last cleansed', whenWithTime(crystal.lastCleansedAt, now));
-    add('Last charged', whenWithTime(crystal.lastChargedAt, now));
+    add('Last cleansed', whenWithTime(crystal.lastCleansedAt, now), show.lastTended);
+    add('Last charged', whenWithTime(crystal.lastChargedAt, now), show.lastTended);
   }
 
   const deity = state.deity as Record<string, unknown> | undefined;
   if (object.type === 'deity' && deity) {
     add('Here because', text(deity.reasonForPresence));
-    add('Offering status', humanizeValue(text(deity.offeringStatus)));
-    add('Last offering', whenWithTime(deity.lastOfferingAt, now));
+    add('Offering status', humanizeValue(text(deity.offeringStatus)), show.status);
+    add('Last offering', whenWithTime(deity.lastOfferingAt, now), show.lastTended);
   }
 
   const ingredients = ingredientList(object.apothecaryIngredients);
@@ -264,9 +315,9 @@ export function stateRows(object: SavedObject, now: Date): StateRow[] {
     add('Notes', text(object.apothecaryNotes));
     const apothecary = state.apothecary as Record<string, unknown> | undefined;
     if (apothecary) {
-      add('Remaining', text(apothecary.remainingAmount));
-      add('Next tending', when(apothecary.nextTendingAt, now));
-      add('Review by', when(apothecary.reviewAt, now));
+      add('Remaining', text(apothecary.remainingAmount), show.remaining);
+      add('Next tending', when(apothecary.nextTendingAt, now), show.futureTending);
+      add('Review by', when(apothecary.reviewAt, now), show.expiration);
     }
   }
 

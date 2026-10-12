@@ -18,7 +18,7 @@ import { Chip, ChipRow } from '../../../components/altar/Chip';
 import { BackgroundSheet, DressSheet, LayersSheet, SaveSheet } from '../../../components/altar/OptionSheets';
 import { Button } from '../../../components/Button';
 import { burnDuration, burnedSoFar, dressingNames, glanceLine, resolveAltarEntry } from '../../../lib/altar/companion';
-import { builtInCabinet, objectFromForm, shortLabel } from '../../../lib/altar/cabinet';
+import { builtInCabinet, defaultAltarBackground, objectFromForm, shortLabel } from '../../../lib/altar/cabinet';
 import {
   addObject,
   placeApothecary,
@@ -113,7 +113,13 @@ export default function AltarEditor() {
       undo.current = [];
       redo.current = [];
     };
-    if (altarId === 'new') return start(emptyDocument(), null, 'My Altar');
+    if (altarId === 'new') {
+      // Settings → Default altar background, as the website sets the stage on a fresh altar page.
+      if (!settings) return;
+      const preset = defaultAltarBackground(settings.default_altar_background, backgrounds);
+      const fresh = emptyDocument();
+      return start(preset ? setBackground(fresh, preset.background, preset.name) : fresh, null, 'My Altar');
+    }
     if (altarId === 'tonight') {
       const night = new Date();
       const tonight = tonightAltar(night, holidaysToday(night, holidayChoice(settings)), moonState(night).name);
@@ -134,7 +140,7 @@ export default function AltarEditor() {
     const altar = altars.find((a) => a.id === altarId);
     if (altar) return start(documentFromAltar(altar), altar.id, altar.name || 'My Altar');
     if (status === 'ready' || status === 'offline' || status === 'error') setMissing(true);
-  }, [altarId, altars, draft, draftSourceId, status, settings]);
+  }, [altarId, altars, backgrounds, draft, draftSourceId, status, settings]);
 
   const dirty = !!doc && doc !== baseline;
 
