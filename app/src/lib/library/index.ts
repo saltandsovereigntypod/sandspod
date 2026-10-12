@@ -10,6 +10,8 @@
 import type { LibraryEntry } from './types';
 
 export { clearPractice, putLibraryEntry, removeLibraryEntry, savePractice, useLibrary } from './store';
+export { connectionGroups, relationLabel, RELATION_TYPES } from './connections';
+export type { ConnectionGroup, RelationRow, RelationType } from './connections';
 export {
   buildLibrary,
   correspondences,

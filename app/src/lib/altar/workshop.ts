@@ -7,10 +7,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useSyncExternalStore } from 'react';
 
-import { putLibraryEntry, removeLibraryEntry } from '../library/store';
+import { ingredientRelationRows } from '../library/connections';
+import { connectRelations, ingredientEntityIds, putLibraryEntry, removeLibraryEntry } from '../library/store';
 import { useSession } from '../session';
 import { supabase } from '../supabase';
-import { apothecaryPractice, apothecaryRow, normalizeApothecary, type ApothecaryItem } from './apothecary';
+import { apothecaryPractice, apothecaryRow, ingredientLibraryRef, normalizeApothecary, type ApothecaryItem } from './apothecary';
 import { customItemFromLocal, customItemFromRow, type CustomCabinetRow } from './cabinet';
 import {
   customForms,
@@ -208,7 +209,18 @@ export async function saveApothecary(userId: string | null, item: ApothecaryItem
       ? (await uploadImage(userId, picked, 'apothecary')).url
       : await keepImageOnDevice(picked, 'apothecary');
   }
+  // Each ingredient is tied to its Library entry, and the working "contains"
+  // it, as the website's createOrUpdateApothecaryLibraryEntity does.
+  const refs = next.ingredients.map((i) => ({ entityId: i.entityId, ...ingredientLibraryRef(i) }));
+  const ingredientIds = await ingredientEntityIds(userId, refs).catch(() => refs.map((r) => r.entityId || ''));
+  next.ingredients = next.ingredients.map((i, index) => ({ ...i, ...refs[index], entityId: ingredientIds[index] || i.entityId || '' }));
   next.entityId = await putLibraryEntry({ userId, entityId: next.entityId || null, name: next.name, type: 'apothecary', myPractice: (existing) => apothecaryPractice(next, existing) });
+  try {
+    await connectRelations(userId, ingredientRelationRows(next.entityId, ingredientIds));
+  } catch (e) {
+    // A connection that can't be saved doesn't undo the working, as on the website.
+    console.warn('Apothecary connections were not saved', e);
+  }
 
   if (userId) {
     const { error } = await supabase.from('apothecary_items').upsert(apothecaryRow(userId, next, now), { onConflict: 'id' });

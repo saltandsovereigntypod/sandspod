@@ -1,4 +1,5 @@
 import { router, type Href } from 'expo-router';
+import { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../Button';
@@ -11,6 +12,7 @@ import { LAYER_LABELS, type Layer } from '../../lib/settings/defaults';
 import { useSession } from '../../lib/session';
 import { useMySettings } from '../../lib/settings/store';
 import { colors, fonts, radius, type } from '../../theme';
+import { ConnectedTo, LibraryJourney, RelationshipManager } from './LibraryConnections';
 
 type Props = {
   entryId: string;
@@ -25,8 +27,9 @@ type Props = {
 /** One Living Library entry: its My Practice, Traditional and Community layers. */
 export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }: Props) {
   const { session } = useSession();
-  const { entries, getEntry } = useLibrary();
+  const { entries, relations, getEntry } = useLibrary();
   const { settings } = useMySettings();
+  const [managing, setManaging] = useState(false);
   const entry = getEntry(entryId);
 
   if (!entry) {
@@ -123,10 +126,31 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
           </Section>
         ))}
 
+      <ConnectedTo
+        entry={entry}
+        entries={entries}
+        relations={relations}
+        hrefFor={hrefFor}
+        onManage={session ? () => setManaging(true) : undefined}
+      />
+
+      <LibraryJourney entry={entry} entries={entries} relations={relations} hrefFor={hrefFor} />
+
       {entry.tags.length > 0 && (
         <Section label="Tags">
           <Tags items={entry.tags} />
         </Section>
+      )}
+
+      {!!session && (
+        <RelationshipManager
+          visible={managing}
+          entry={entry}
+          entries={entries}
+          relations={relations}
+          userId={session.user.id}
+          onClose={() => setManaging(false)}
+        />
       )}
     </MoreScreen>
   );
