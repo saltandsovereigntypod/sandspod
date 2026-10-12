@@ -19,15 +19,188 @@
       "rainbow",
       "magenta"
     ],
-    "candleStyleForms": [],
+    "candleStyleForms": [
+      {
+        "id": "votive",
+        "label": "Votive Candle",
+        "aliases": [
+          "votive"
+        ],
+        "supportedAsset": true
+      },
+      {
+        "id": "jar",
+        "label": "Jar Candle",
+        "aliases": [
+          "jar candle",
+          "container candle"
+        ],
+        "supportedAsset": true
+      },
+      {
+        "id": "novena",
+        "label": "Novena Candle",
+        "aliases": [
+          "novena",
+          "glass candle"
+        ],
+        "supportedAsset": true
+      },
+      {
+        "id": "floating",
+        "label": "Floating Candle",
+        "aliases": [
+          "floating"
+        ],
+        "supportedAsset": true
+      },
+      {
+        "id": "birthday",
+        "label": "Birthday Candle",
+        "aliases": [
+          "birthday",
+          "spiral"
+        ],
+        "supportedAsset": true
+      },
+      {
+        "id": "figure",
+        "label": "Figure Candle",
+        "aliases": [
+          "figure",
+          "figural",
+          "image candle"
+        ],
+        "supportedAsset": true
+      },
+      {
+        "id": "figure-male",
+        "label": "Male Figure Candle",
+        "aliases": [
+          "figure",
+          "man",
+          "male",
+          "image candle"
+        ],
+        "supportedAsset": true
+      },
+      {
+        "id": "figure-female",
+        "label": "Female Figure Candle",
+        "aliases": [
+          "figure",
+          "woman",
+          "female",
+          "image candle"
+        ],
+        "supportedAsset": true
+      },
+      {
+        "id": "figure-couple",
+        "label": "Lovers Candle",
+        "aliases": [
+          "lovers",
+          "couple",
+          "embracing",
+          "marriage"
+        ],
+        "supportedAsset": true
+      },
+      {
+        "id": "beeswax-rolled",
+        "label": "Rolled Beeswax Candle",
+        "aliases": [
+          "beeswax",
+          "rolled",
+          "honeycomb"
+        ],
+        "supportedAsset": true
+      },
+      {
+        "id": "seven-knob",
+        "label": "Seven-Knob Candle",
+        "aliases": [
+          "seven knob",
+          "knob candle",
+          "wishing candle"
+        ],
+        "supportedAsset": true
+      },
+      {
+        "id": "double-action",
+        "label": "Double-Action Candle",
+        "aliases": [
+          "double action",
+          "two colour"
+        ],
+        "supportedAsset": true
+      },
+      {
+        "id": "reversible",
+        "label": "Reversible Candle",
+        "aliases": [
+          "reversible",
+          "reversing"
+        ],
+        "supportedAsset": true
+      }
+    ],
     "candleWicks": {
+      "beeswax-rolled": [
+        0.5025,
+        0.0473
+      ],
+      "birthday": [
+        0.507,
+        0.0428
+      ],
       "chime": [
         0.5038,
         0.0805
       ],
+      "double-action": [
+        0.493,
+        0.0293
+      ],
+      "figure": [
+        0.493,
+        0.043
+      ],
+      "figure-couple": [
+        0.5558,
+        0.1393
+      ],
+      "figure-female": [
+        0.5006,
+        0.0434
+      ],
+      "figure-male": [
+        0.5046,
+        0.0417
+      ],
+      "floating": [
+        0.502,
+        0.2969
+      ],
+      "jar": [
+        0.4987,
+        0.3173
+      ],
+      "novena": [
+        0.5022,
+        0.112
+      ],
       "pillar": [
         0.5108,
         0.1394
+      ],
+      "reversible": [
+        0.5006,
+        0.0449
+      ],
+      "seven-knob": [
+        0.4976,
+        0.0507
       ],
       "taper": [
         0.4984,
@@ -36,6 +209,10 @@
       "tea-light": [
         0.5021,
         0.2366
+      ],
+      "votive": [
+        0.5008,
+        0.2627
       ]
     },
     "pantheonGroups": [
@@ -490,6 +667,48 @@
         },
         {
           "category": "herbs",
+          "name": "Allspice",
+          "icon": "🌿",
+          "keywords": [
+            "money",
+            "luck",
+            "healing",
+            "determination",
+            "energy"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/allspice/allspice-sprig.png",
+              "type": "herb",
+              "herb": "allspice",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/allspice/allspice-loose.png",
+              "type": "herb",
+              "herb": "allspice",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/allspice/allspice-oil.png",
+              "type": "oil",
+              "herb": "allspice",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "allspice",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Angelica",
           "icon": "🌿",
           "keywords": [
@@ -609,6 +828,48 @@
               "image": "../assets/altar/objects/herbs/incense/incense.png",
               "type": "herb",
               "herb": "birch",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
+          "name": "Black Pepper",
+          "icon": "🌿",
+          "keywords": [
+            "protection",
+            "banishing",
+            "courage",
+            "jealousy-breaking",
+            "boundaries"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/black-pepper/black-pepper-sprig.png",
+              "type": "herb",
+              "herb": "black_pepper",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/black-pepper/black-pepper-loose.png",
+              "type": "herb",
+              "herb": "black_pepper",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/black-pepper/black-pepper-oil.png",
+              "type": "oil",
+              "herb": "black_pepper",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "black_pepper",
               "form": "incense"
             }
           ]
@@ -824,6 +1085,48 @@
         },
         {
           "category": "herbs",
+          "name": "Dittany of Crete",
+          "icon": "🌿",
+          "keywords": [
+            "astral work",
+            "manifestation",
+            "love",
+            "healing",
+            "spirit work"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/dittany-of-crete/dittany-of-crete-sprig.png",
+              "type": "herb",
+              "herb": "dittany_of_crete",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/dittany-of-crete/dittany-of-crete-loose.png",
+              "type": "herb",
+              "herb": "dittany_of_crete",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "",
+              "type": "oil",
+              "herb": "dittany_of_crete",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "dittany_of_crete",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Dragon’s Blood",
           "icon": "🌿",
           "keywords": [
@@ -1024,6 +1327,48 @@
               "image": "../assets/altar/objects/herbs/incense/incense.png",
               "type": "herb",
               "herb": "garlic",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
+          "name": "Ginger",
+          "icon": "🌿",
+          "keywords": [
+            "power",
+            "success",
+            "speed",
+            "love",
+            "money"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/ginger/ginger-sprig.png",
+              "type": "herb",
+              "herb": "ginger",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/ginger/ginger-loose.png",
+              "type": "herb",
+              "herb": "ginger",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/ginger/ginger-oil.png",
+              "type": "oil",
+              "herb": "ginger",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "ginger",
               "form": "incense"
             }
           ]
@@ -1276,6 +1621,48 @@
               "image": "../assets/altar/objects/herbs/incense/incense.png",
               "type": "herb",
               "herb": "lemon_balm",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
+          "name": "Lemongrass",
+          "icon": "🌿",
+          "keywords": [
+            "cleansing",
+            "clearing obstacles",
+            "communication",
+            "psychic awareness",
+            "uplift"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/lemongrass/lemongrass-sprig.png",
+              "type": "herb",
+              "herb": "lemongrass",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/lemongrass/lemongrass-loose.png",
+              "type": "herb",
+              "herb": "lemongrass",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/lemongrass/lemongrass-oil.png",
+              "type": "oil",
+              "herb": "lemongrass",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "lemongrass",
               "form": "incense"
             }
           ]
@@ -1570,6 +1957,48 @@
               "image": "../assets/altar/objects/herbs/incense/incense.png",
               "type": "herb",
               "herb": "oak",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
+          "name": "Orris Root",
+          "icon": "🌿",
+          "keywords": [
+            "love",
+            "attraction",
+            "persuasion",
+            "wisdom",
+            "divination"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/orris-root/orris-root-sprig.png",
+              "type": "herb",
+              "herb": "orris_root",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/orris-root/orris-root-loose.png",
+              "type": "herb",
+              "herb": "orris_root",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/orris-root/orris-root-oil.png",
+              "type": "oil",
+              "herb": "orris_root",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "orris_root",
               "form": "incense"
             }
           ]
@@ -1990,6 +2419,48 @@
               "image": "../assets/altar/objects/herbs/incense/incense.png",
               "type": "herb",
               "herb": "valerian",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
+          "name": "Vanilla",
+          "icon": "🌿",
+          "keywords": [
+            "love",
+            "attraction",
+            "comfort",
+            "mental clarity",
+            "sweetening"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/vanilla/vanilla-sprig.png",
+              "type": "herb",
+              "herb": "vanilla",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/vanilla/vanilla-loose.png",
+              "type": "herb",
+              "herb": "vanilla",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "../assets/altar/objects/herbs/vanilla/vanilla-oil.png",
+              "type": "oil",
+              "herb": "vanilla",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "vanilla",
               "form": "incense"
             }
           ]

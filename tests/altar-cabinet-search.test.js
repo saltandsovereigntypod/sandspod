@@ -26,11 +26,12 @@ test("real cabinet definitions provide candle, herb, tool, and vessel search rec
 test("built-in candles expose immutable form choices without duplicate entities", () => {
   const records = cabinetRecords();
   const whiteForms = records.filter((record) => record.subtitle?.endsWith("· White Candle"));
-  assert.deepEqual([...new Set(whiteForms.map((record) => record.title))], ["Chime / Spell Candle", "Taper Candle", "Tea Light", "Pillar Candle", "Vigil Candle"]);
+  const styleLabels = Artwork.candleStyleForms.map((form) => form.label);
+  assert.deepEqual([...new Set(whiteForms.map((record) => record.title))], ["Chime / Spell Candle", "Taper Candle", "Tea Light", "Pillar Candle", "Vigil Candle", ...styleLabels]);
   assert.ok(whiteForms.every((record) => record.href.includes("placeCabinetItem=candles%3Awhite-candle") && record.href.includes("form=")));
   const presentation = cabinetApi().getFormPresentation("candles:white-candle");
   // Every candle form has artwork now, in every colour.
-  assert.deepEqual(Array.from(presentation.availableForms), ["chime-spell", "taper", "tea-light", "pillar", "vigil"]);
+  assert.deepEqual(Array.from(presentation.availableForms), ["chime-spell", "taper", "tea-light", "pillar", "vigil", ...Artwork.candleStyleForms.map((form) => form.id)]);
   assert.deepEqual(Array.from(presentation.missingForms), []);
 });
 

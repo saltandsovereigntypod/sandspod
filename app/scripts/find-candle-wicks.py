@@ -41,7 +41,17 @@ def wick_tip(path):
     if not n:
         return None
     sizes = ndimage.sum(dark, labels, range(1, n + 1))
-    best = int(np.argmax(sizes)) + 1
+    # The wick is an upright dark stroke: a cup's rim or a two-tone candle's black
+    # half is dark too, but wider than it is tall. Take the largest upright mark.
+    boxes = ndimage.find_objects(labels)
+    upright = [i for i, (ys, xs) in enumerate(boxes) if (ys.stop - ys.start) >= 0.8 * (xs.stop - xs.start)]
+    # A wick standing clear of the wax has open background just above its tip;
+    # prefer those (a two-tone candle's black half sits under wax instead).
+    def clear_above(i):
+        ys, xs = boxes[i]
+        return ys.start > 2 and (alpha[max(ys.start - 4, 0) : ys.start - 1, xs] < 50).any()
+    candidates = [i for i in upright if clear_above(i)] or upright or list(range(n))
+    best = max(candidates, key=lambda i: sizes[i]) + 1
     wy, wx = np.where(labels == best)
     tip = wy.min()
     x = wx[wy <= tip + max(3, (wy.max() - tip) * 0.15)].mean()

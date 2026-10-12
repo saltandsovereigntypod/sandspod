@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { websiteAssetKey, websiteAssetUrl } from '../src/lib/altar/assetPaths.ts';
+import { ALTAR_ARTWORK } from '../src/lib/altar/artworkData.ts';
 import { builtInCabinet, deityPantheon, formObjectLabel, objectFromForm, overrideKey, PANTHEON_GROUPS, placeableForms } from '../src/lib/altar/cabinet.ts';
 import { changeLayer, moveObject, resizeObject, rotateObject, toggleLight } from '../src/lib/altar/editor.ts';
 import {
@@ -317,7 +318,7 @@ test('the cabinet offers only forms the website has artwork for', () => {
   const red = builtInCabinet.find((item) => item.id === 'candles:red-candle')!;
   const forms = placeableForms(red);
   // Every candle form is painted in every colour.
-  assert.deepEqual(forms.map((f) => f.form), ['chime-spell', 'taper', 'tea-light', 'pillar', 'vigil']);
+  assert.deepEqual(forms.map((f) => f.form), ['chime-spell', 'taper', 'tea-light', 'pillar', 'vigil', ...ALTAR_ARTWORK.candleStyleForms.map((f) => f.id)]);
   assert.equal(forms[2].image, '../assets/altar/objects/candles/tea-light/red-tea-light.png');
   assert.equal(formObjectLabel(red, forms[4]), 'Red Candle Vigil Candle');
   // Herbs offer the forms that have been painted, and incense always.
