@@ -441,6 +441,47 @@
         },
         {
           "category": "herbs",
+          "name": "Belladonna",
+          "icon": "🌿",
+          "keywords": [
+            "lore and history",
+            "shadow work symbolism",
+            "astral folklore",
+            "protection symbolism"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/belladonna/belladonna-sprig.png",
+              "type": "herb",
+              "herb": "belladonna",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "",
+              "type": "herb",
+              "herb": "belladonna",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "",
+              "type": "oil",
+              "herb": "belladonna",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "belladonna",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Birch",
           "icon": "🌿",
           "keywords": [
@@ -650,6 +691,48 @@
         },
         {
           "category": "herbs",
+          "name": "Cypress",
+          "icon": "🌿",
+          "keywords": [
+            "grief",
+            "mourning",
+            "endurance",
+            "protection",
+            "ancestral work"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/cypress/cypress-sprig.png",
+              "type": "herb",
+              "herb": "cypress",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/cypress/cypress-loose.png",
+              "type": "herb",
+              "herb": "cypress",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "",
+              "type": "oil",
+              "herb": "cypress",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "cypress",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Dragon’s Blood",
           "icon": "🌿",
           "keywords": [
@@ -775,6 +858,48 @@
         },
         {
           "category": "herbs",
+          "name": "Garlic",
+          "icon": "🌿",
+          "keywords": [
+            "protection",
+            "banishing",
+            "healing",
+            "warding",
+            "strength"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/garlic/garlic-sprig.png",
+              "type": "herb",
+              "herb": "garlic",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/garlic/garlic-loose.png",
+              "type": "herb",
+              "herb": "garlic",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "",
+              "type": "oil",
+              "herb": "garlic",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "garlic",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Hawthorn",
           "icon": "🌿",
           "keywords": [
@@ -859,6 +984,48 @@
         },
         {
           "category": "herbs",
+          "name": "Hyssop",
+          "icon": "🌿",
+          "keywords": [
+            "purification",
+            "spiritual cleansing",
+            "forgiveness",
+            "protection",
+            "consecration"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/hyssop/hyssop-sprig.png",
+              "type": "herb",
+              "herb": "hyssop",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "../assets/altar/objects/herbs/hyssop/hyssop-loose.png",
+              "type": "herb",
+              "herb": "hyssop",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "",
+              "type": "oil",
+              "herb": "hyssop",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "hyssop",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Jasmine",
           "icon": "🌿",
           "keywords": [
@@ -920,7 +1087,7 @@
             },
             {
               "label": "Loose",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/juniper/juniper-loose.png",
               "type": "herb",
               "herb": "juniper",
               "form": "loose"
@@ -979,6 +1146,48 @@
               "image": "../assets/altar/objects/herbs/incense/incense.png",
               "type": "herb",
               "herb": "lemon_balm",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
+          "name": "Mandrake",
+          "icon": "🌿",
+          "keywords": [
+            "protection",
+            "power",
+            "fertility symbolism",
+            "prosperity",
+            "legend and lore"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/mandrake/mandrake-sprig.png",
+              "type": "herb",
+              "herb": "mandrake",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "",
+              "type": "herb",
+              "herb": "mandrake",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "",
+              "type": "oil",
+              "herb": "mandrake",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "mandrake",
               "form": "incense"
             }
           ]
@@ -1195,6 +1404,48 @@
         },
         {
           "category": "herbs",
+          "name": "Peppermint",
+          "icon": "🌿",
+          "keywords": [
+            "clarity",
+            "purification",
+            "energy",
+            "communication",
+            "prosperity"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/peppermint/peppermint-sprig.png",
+              "type": "herb",
+              "herb": "peppermint",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "",
+              "type": "herb",
+              "herb": "peppermint",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "",
+              "type": "oil",
+              "herb": "peppermint",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "peppermint",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Rowan",
           "icon": "🌿",
           "keywords": [
@@ -1231,6 +1482,90 @@
               "image": "../assets/altar/objects/herbs/incense/incense.png",
               "type": "herb",
               "herb": "rowan",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
+          "name": "Rue",
+          "icon": "🌿",
+          "keywords": [
+            "protection",
+            "evil eye",
+            "banishing",
+            "cleansing",
+            "breaking hexes"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/rue/rue-sprig.png",
+              "type": "herb",
+              "herb": "rue",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "",
+              "type": "herb",
+              "herb": "rue",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "",
+              "type": "oil",
+              "herb": "rue",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "rue",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
+          "name": "Saffron",
+          "icon": "🌿",
+          "keywords": [
+            "happiness",
+            "abundance",
+            "devotion",
+            "healing",
+            "psychic awareness"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/saffron/saffron-sprig.png",
+              "type": "herb",
+              "herb": "saffron",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "",
+              "type": "herb",
+              "herb": "saffron",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "",
+              "type": "oil",
+              "herb": "saffron",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "saffron",
               "form": "incense"
             }
           ]
@@ -1363,6 +1698,48 @@
         },
         {
           "category": "herbs",
+          "name": "Vervain",
+          "icon": "🌿",
+          "keywords": [
+            "purification",
+            "protection",
+            "love",
+            "peace",
+            "divination"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/vervain/vervain-sprig.png",
+              "type": "herb",
+              "herb": "vervain",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "",
+              "type": "herb",
+              "herb": "vervain",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "",
+              "type": "oil",
+              "herb": "vervain",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "vervain",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
           "name": "Willow",
           "icon": "🌿",
           "keywords": [
@@ -1399,6 +1776,90 @@
               "image": "../assets/altar/objects/herbs/incense/incense.png",
               "type": "herb",
               "herb": "willow",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
+          "name": "Wormwood",
+          "icon": "🌿",
+          "keywords": [
+            "spirit work",
+            "protection",
+            "banishing",
+            "divination",
+            "thresholds"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/wormwood/wormwood-sprig.png",
+              "type": "herb",
+              "herb": "wormwood",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "",
+              "type": "herb",
+              "herb": "wormwood",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "",
+              "type": "oil",
+              "herb": "wormwood",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "wormwood",
+              "form": "incense"
+            }
+          ]
+        },
+        {
+          "category": "herbs",
+          "name": "Yew",
+          "icon": "🌿",
+          "keywords": [
+            "death and rebirth",
+            "ancestors",
+            "endurance",
+            "transformation",
+            "the otherworld"
+          ],
+          "forms": [
+            {
+              "label": "Sprig",
+              "image": "../assets/altar/objects/herbs/yew/yew-sprig.png",
+              "type": "herb",
+              "herb": "yew",
+              "form": "sprig"
+            },
+            {
+              "label": "Loose",
+              "image": "",
+              "type": "herb",
+              "herb": "yew",
+              "form": "loose"
+            },
+            {
+              "label": "Oil",
+              "image": "",
+              "type": "oil",
+              "herb": "yew",
+              "form": "oil"
+            },
+            {
+              "label": "Incense",
+              "image": "../assets/altar/objects/herbs/incense/incense.png",
+              "type": "herb",
+              "herb": "yew",
               "form": "incense"
             }
           ]
