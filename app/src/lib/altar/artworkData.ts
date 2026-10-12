@@ -2925,6 +2925,40 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Ametrine",
+        "keywords": [
+          "balance",
+          "clarity",
+          "confidence",
+          "intuition",
+          "decision-making"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "../assets/altar/objects/crystals/ametrine/ametrine-point.png",
+            "type": "crystal",
+            "crystal": "ametrine",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/ametrine/ametrine-chips.png",
+            "type": "crystal",
+            "crystal": "ametrine",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "ametrine",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Angelite",
         "keywords": [
           "peace",
@@ -3076,6 +3110,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "black_tourmaline",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/black-tourmaline/black-tourmaline-tumbled.png",
+            "type": "crystal",
+            "crystal": "black_tourmaline",
+            "form": "tumbled"
           }
         ]
       },
@@ -3110,6 +3151,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "bloodstone",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/bloodstone/bloodstone-tumbled.png",
+            "type": "crystal",
+            "crystal": "bloodstone",
+            "form": "tumbled"
           }
         ]
       },
@@ -3184,6 +3232,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "carnelian",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/carnelian/carnelian-tumbled.png",
+            "type": "crystal",
+            "crystal": "carnelian",
+            "form": "tumbled"
           }
         ]
       },
@@ -3334,6 +3389,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "citrine",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/citrine/citrine-tumbled.png",
+            "type": "crystal",
+            "crystal": "citrine",
+            "form": "tumbled"
           }
         ]
       },
@@ -6134,6 +6196,42 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/vessels/spray-bottle/spray-bottle.png",
             "type": "vessel",
             "vessel": "spray-bottle",
+            "form": "standard"
+          }
+        ]
+      },
+      {
+        "category": "vessels",
+        "name": "Vial",
+        "keywords": [
+          "travel altars",
+          "jewelry",
+          "pocket charms"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/vessels/vial/vial.png",
+            "type": "vessel",
+            "vessel": "vial",
+            "form": "standard"
+          }
+        ]
+      },
+      {
+        "category": "vessels",
+        "name": "Witch Bottle",
+        "keywords": [
+          "home wards",
+          "protection rituals",
+          "threshold magic"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/vessels/witch-bottle/witch-bottle.png",
+            "type": "vessel",
+            "vessel": "witch-bottle",
             "form": "standard"
           }
         ]
