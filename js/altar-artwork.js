@@ -3530,6 +3530,13 @@
               "type": "crystal",
               "crystal": "fluorite",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/fluorite/fluorite-tumbled.png",
+              "type": "crystal",
+              "crystal": "fluorite",
+              "form": "tumbled"
             }
           ]
         },
@@ -3565,6 +3572,13 @@
               "type": "crystal",
               "crystal": "garnet",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/garnet/garnet-tumbled.png",
+              "type": "crystal",
+              "crystal": "garnet",
+              "form": "tumbled"
             }
           ]
         },
@@ -3600,6 +3614,13 @@
               "type": "crystal",
               "crystal": "green_aventurine",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/green-aventurine/green-aventurine-tumbled.png",
+              "type": "crystal",
+              "crystal": "green_aventurine",
+              "form": "tumbled"
             }
           ]
         },
@@ -3635,6 +3656,13 @@
               "type": "crystal",
               "crystal": "hematite",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/hematite/hematite-tumbled.png",
+              "type": "crystal",
+              "crystal": "hematite",
+              "form": "tumbled"
             }
           ]
         },
@@ -3789,6 +3817,13 @@
               "type": "crystal",
               "crystal": "jet",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/jet/jet-tumbled.png",
+              "type": "crystal",
+              "crystal": "jet",
+              "form": "tumbled"
             }
           ]
         },
@@ -3866,6 +3901,13 @@
               "type": "crystal",
               "crystal": "labradorite",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/labradorite/labradorite-tumbled.png",
+              "type": "crystal",
+              "crystal": "labradorite",
+              "form": "tumbled"
             }
           ]
         },
@@ -3901,6 +3943,13 @@
               "type": "crystal",
               "crystal": "lapis_lazuli",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/lapis-lazuli/lapis-lazuli-tumbled.png",
+              "type": "crystal",
+              "crystal": "lapis_lazuli",
+              "form": "tumbled"
             }
           ]
         },
@@ -3977,6 +4026,13 @@
               "type": "crystal",
               "crystal": "malachite",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/malachite/malachite-tumbled.png",
+              "type": "crystal",
+              "crystal": "malachite",
+              "form": "tumbled"
             }
           ]
         },
@@ -4012,6 +4068,13 @@
               "type": "crystal",
               "crystal": "moonstone",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/moonstone/moonstone-tumbled.png",
+              "type": "crystal",
+              "crystal": "moonstone",
+              "form": "tumbled"
             }
           ]
         },
@@ -4047,6 +4110,13 @@
               "type": "crystal",
               "crystal": "moss_agate",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/moss-agate/moss-agate-tumbled.png",
+              "type": "crystal",
+              "crystal": "moss_agate",
+              "form": "tumbled"
             }
           ]
         },
@@ -4117,6 +4187,13 @@
               "type": "crystal",
               "crystal": "onyx",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/onyx/onyx-tumbled.png",
+              "type": "crystal",
+              "crystal": "onyx",
+              "form": "tumbled"
             }
           ]
         },
@@ -4271,6 +4348,13 @@
               "type": "crystal",
               "crystal": "red_jasper",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/red-jasper/red-jasper-tumbled.png",
+              "type": "crystal",
+              "crystal": "red_jasper",
+              "form": "tumbled"
             }
           ]
         },
@@ -4529,6 +4613,13 @@
               "type": "crystal",
               "crystal": "shungite",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/shungite/shungite-tumbled.png",
+              "type": "crystal",
+              "crystal": "shungite",
+              "form": "tumbled"
             }
           ]
         },
@@ -4641,6 +4732,13 @@
               "type": "crystal",
               "crystal": "sunstone",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/sunstone/sunstone-tumbled.png",
+              "type": "crystal",
+              "crystal": "sunstone",
+              "form": "tumbled"
             }
           ]
         },
@@ -4676,6 +4774,13 @@
               "type": "crystal",
               "crystal": "tiger_eye",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/tiger-eye/tiger-eye-tumbled.png",
+              "type": "crystal",
+              "crystal": "tiger_eye",
+              "form": "tumbled"
             }
           ]
         },
