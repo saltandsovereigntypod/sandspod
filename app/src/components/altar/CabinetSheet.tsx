@@ -4,12 +4,13 @@ import { ActivityIndicator, Image, Pressable, StyleSheet, Text, TextInput, View 
 import { altarImageSource, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
 import { imageRatio } from '../../lib/altar/geometry';
 import { cabinetEntry, topUses } from '../../lib/altar/companion';
-import { cabinetCategories, cabinetItemsFor, formImage, formObjectLabel, overrideKey, placeableForms, shortLabel } from '../../lib/altar/cabinet';
+import { cabinetCategories, cabinetItemsFor, deityPantheon, formImage, formObjectLabel, overrideKey, PANTHEON_GROUPS, placeableForms, shortLabel } from '../../lib/altar/cabinet';
 import { pickImage, type PickedImage } from '../../lib/altar/images';
 import type { CabinetForm, CabinetItem } from '../../lib/altar/types';
 import type { LibraryEntry } from '../../lib/library';
 import { colors, fonts, radius, space, touch, type } from '../../theme';
 import { Button } from '../Button';
+import { Icon } from '../Icon';
 import { Chip, ChipRow } from './Chip';
 import { Sheet } from './Sheet';
 
@@ -49,6 +50,8 @@ export function CabinetSheet({
   const [picture, setPicture] = useState<{ item: CabinetItem; form: CabinetForm } | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  // Deity pantheons folded away (the drawer remembers them while the altar is open).
+  const [closedPantheons, setClosedPantheons] = useState<Set<string>>(() => new Set());
 
   const changesPictures = !!onSetImage && !!onRemoveImage;
   const placeIt = (item: CabinetItem, form: CabinetForm) => {
@@ -105,6 +108,20 @@ export function CabinetSheet({
         .filter((entry) => entry.forms.length > 0)
         .map((entry) => ({ ...entry, uses: topUses(cabinetEntry(library, entry.item, entry.forms[0])) })),
     [items, category, search, overrides, library],
+  );
+
+  // Items with just one form share a grid of tiles (deities are grouped by pantheon).
+  const singles = shown.filter(({ item, forms }) => forms.length === 1 && !item.customCabinetItemId);
+  const singleTile = ({ item, forms, uses }: (typeof shown)[number]) => (
+    <Tile
+      key={item.id}
+      label={item.name}
+      uses={uses}
+      spoken={`Place ${shortLabel(formObjectLabel(item, forms[0]))}${uses ? `. For ${uses.replace(' · ', ' and ')}` : ''}`}
+      image={formImage(item, forms[0], overrides)}
+      onPress={() => placeIt(item, forms[0])}
+      onLongPress={choosePicture(item, forms[0])}
+    />
   );
 
   return (
@@ -204,23 +221,40 @@ export function CabinetSheet({
           </View>
         ),
       )}
-      {shown.some(({ item, forms }) => forms.length === 1 && !item.customCabinetItemId) && (
-        <View style={styles.grid}>
-          {shown
-            .filter(({ item, forms }) => forms.length === 1 && !item.customCabinetItemId)
-            .map(({ item, forms, uses }) => (
-              <Tile
-                key={item.id}
-                label={item.name}
-                uses={uses}
-                spoken={`Place ${shortLabel(formObjectLabel(item, forms[0]))}${uses ? `. For ${uses.replace(' · ', ' and ')}` : ''}`}
-                image={formImage(item, forms[0], overrides)}
-                onPress={() => placeIt(item, forms[0])}
-                onLongPress={choosePicture(item, forms[0])}
-              />
-            ))}
-        </View>
-      )}
+      {category === 'deities'
+        ? [...PANTHEON_GROUPS, 'Your own']
+            .map((pantheon) => ({ pantheon, list: singles.filter(({ item }) => deityPantheon(item) === pantheon) }))
+            .filter(({ list }) => list.length > 0)
+            .map(({ pantheon, list }) => {
+              // A search shows every match, so no pantheon stays folded while searching.
+              const open = !!search.trim() || !closedPantheons.has(pantheon);
+              return (
+                <View key={pantheon} style={styles.pantheon}>
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityState={{ expanded: open }}
+                    accessibilityLabel={`${pantheon}, ${list.length} ${list.length === 1 ? 'statue' : 'statues'}`}
+                    onPress={() =>
+                      setClosedPantheons((current) => {
+                        const next = new Set(current);
+                        if (next.has(pantheon)) next.delete(pantheon);
+                        else next.add(pantheon);
+                        return next;
+                      })
+                    }
+                    style={({ pressed }) => [styles.pantheonHead, pressed && { opacity: 0.7 }]}
+                  >
+                    <Text style={[styles.groupTitle, { flex: 1 }]}>{pantheon}</Text>
+                    <Text style={type.caption}>{list.length}</Text>
+                    <View style={open ? styles.chevronOpen : undefined}>
+                      <Icon name="chevron" size={14} color={colors.tabInactive} />
+                    </View>
+                  </Pressable>
+                  {open && <View style={styles.grid}>{list.map(singleTile)}</View>}
+                </View>
+              );
+            })
+        : singles.length > 0 && <View style={styles.grid}>{singles.map(singleTile)}</View>}
       <Text style={type.caption}>
         Tap to place it in the middle of the altar. Items you make here or on the website are kept in your cabinet in both places.
         {changesPictures ? ' Press and hold a picture to use a photo of your own for it.' : ''}
@@ -292,6 +326,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
   },
   group: { gap: 8 },
+  pantheon: { gap: 8 },
+  pantheonHead: { minHeight: touch, flexDirection: 'row', alignItems: 'center', gap: 8 },
+  chevronOpen: { transform: [{ rotate: '90deg' }] },
   groupHead: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
   edit: { minHeight: touch, justifyContent: 'center', paddingHorizontal: 6 },
   editText: { fontFamily: fonts.bodySemi, fontSize: 15, color: colors.gold },

@@ -7,6 +7,8 @@ export const ALTAR_ARTWORK: {
   candleColors: string[];
   candleStyleForms: { id: string; label: string; aliases: string[]; supportedAsset: boolean }[];
   candleWicks: Record<string, [number, number]>;
+  pantheonGroups: string[];
+  deityPantheons: Record<string, string>;
   items: Record<'herbs' | 'crystals' | 'deities' | 'tools' | 'vessels', ArtworkItem[]>;
 } = {
   "candleColors": [
@@ -45,6 +47,79 @@ export const ALTAR_ARTWORK: {
       0.5021,
       0.2366
     ]
+  },
+  "pantheonGroups": [
+    "Greek",
+    "Roman",
+    "Norse",
+    "Celtic",
+    "Slavic",
+    "Egyptian",
+    "Hindu",
+    "Other"
+  ],
+  "deityPantheons": {
+    "aphrodite": "Greek",
+    "apollo": "Greek",
+    "artemis": "Greek",
+    "bastet": "Egyptian",
+    "brigid": "Celtic",
+    "cernunnos": "Celtic",
+    "cerridwen": "Celtic",
+    "durga": "Hindu",
+    "freyja": "Norse",
+    "ganesha": "Hindu",
+    "hekate": "Greek",
+    "hermes": "Greek",
+    "isis": "Egyptian",
+    "lilith": "Other",
+    "loki": "Norse",
+    "morrigan": "Celtic",
+    "odin": "Norse",
+    "persephone": "Greek",
+    "thor": "Norse",
+    "anubis": "Egyptian",
+    "jupiter": "Roman",
+    "juno": "Roman",
+    "minerva": "Roman",
+    "vesta": "Roman",
+    "diana": "Roman",
+    "janus": "Roman",
+    "mars": "Roman",
+    "venus": "Roman",
+    "mercury": "Roman",
+    "ceres": "Roman",
+    "perun": "Slavic",
+    "mokosh": "Slavic",
+    "veles": "Slavic",
+    "lada": "Slavic",
+    "dazhbog": "Slavic",
+    "morana": "Slavic",
+    "lugh": "Celtic",
+    "dagda": "Celtic",
+    "epona": "Celtic",
+    "arianrhod": "Celtic",
+    "rhiannon": "Celtic",
+    "manannan": "Celtic",
+    "frigg": "Norse",
+    "freyr": "Norse",
+    "hel": "Norse",
+    "tyr": "Norse",
+    "skadi": "Norse",
+    "baldur": "Norse",
+    "idunn": "Norse",
+    "demeter": "Greek",
+    "dionysus": "Greek",
+    "hestia": "Greek",
+    "hades": "Greek",
+    "athena": "Greek",
+    "selene": "Greek",
+    "nyx": "Greek",
+    "thoth": "Egyptian",
+    "hathor": "Egyptian",
+    "sekhmet": "Egyptian",
+    "ra": "Egyptian",
+    "osiris": "Egyptian"
   },
   "items": {
     "herbs": [

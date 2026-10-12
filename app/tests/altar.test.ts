@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { websiteAssetKey, websiteAssetUrl } from '../src/lib/altar/assetPaths.ts';
-import { builtInCabinet, formObjectLabel, objectFromForm, overrideKey, placeableForms } from '../src/lib/altar/cabinet.ts';
+import { builtInCabinet, deityPantheon, formObjectLabel, objectFromForm, overrideKey, PANTHEON_GROUPS, placeableForms } from '../src/lib/altar/cabinet.ts';
 import { changeLayer, moveObject, resizeObject, rotateObject, toggleLight } from '../src/lib/altar/editor.ts';
 import {
   boxAspect,
@@ -397,4 +397,14 @@ test('candle names are shown without the doubled word, and saved as the website 
   assert.equal(shortLabel('Lavender Sprig'), 'Lavender Sprig');
   assert.equal(shortLabel(''), 'Object');
   assert.equal(shortLabel(undefined, 'Candle'), 'Candle');
+});
+
+test('the deity drawer groups every statue by pantheon', () => {
+  const deities = builtInCabinet.filter((item) => item.category === 'deities');
+  const byName = (name: string) => deities.find((item) => item.name === name)!;
+  assert.equal(deityPantheon(byName('Hekate Statue')), 'Greek');
+  assert.equal(deityPantheon(byName('Lugh Statue')), 'Celtic', 'Irish, Welsh and Gaulish gods are Celtic');
+  assert.equal(deityPantheon(byName('Lilith Statue')), 'Other');
+  assert.deepEqual(PANTHEON_GROUPS, ['Greek', 'Roman', 'Norse', 'Celtic', 'Slavic', 'Egyptian', 'Hindu', 'Other']);
+  for (const item of deities) assert.ok(PANTHEON_GROUPS.includes(deityPantheon(item)), item.name);
 });

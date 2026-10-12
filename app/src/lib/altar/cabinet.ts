@@ -264,6 +264,16 @@ export function customBackgroundFromRow(row: CustomBackgroundRow): AltarBackgrou
  * labels, types, ids and aliases ("seven day", "tealight") and the plural
  * category words (cabinet.js cabinetSearchAliases).
  */
+/** The deity drawer's pantheon groups, in order. */
+export const PANTHEON_GROUPS: string[] = ALTAR_ARTWORK.pantheonGroups;
+
+/** Which pantheon group a deity statue belongs to (people's own statues are "Your own"). */
+export function deityPantheon(item: CabinetItem): string {
+  if (item.customCabinetItemId) return 'Your own';
+  const key = item.forms.find((form) => form.deity)?.deity ?? '';
+  return ALTAR_ARTWORK.deityPantheons[key] ?? 'Other';
+}
+
 export function cabinetSearchAliases(item: CabinetItem): string[] {
   const formWords = item.forms.flatMap((form) => [form.label, form.type, form.form, ...(form.aliases ?? [])]);
   const variants =
