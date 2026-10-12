@@ -266,6 +266,7 @@ export function apothecaryObject(
   return {
     ...base,
     label: item.name,
+    instanceId: item.instanceId || '',
     apothecaryItemId: item.id,
     apothecaryType: item.typeLabel,
     apothecaryIngredients: JSON.stringify(item.ingredients),
@@ -284,6 +285,7 @@ export function refreshPlaced(object: SavedObject, item: ApothecaryItem): SavedO
     ...object,
     label: item.name,
     imagePath: item.imagePath,
+    instanceId: item.instanceId || object.instanceId || '',
     apothecaryType: item.typeLabel,
     apothecaryIngredients: JSON.stringify(item.ingredients),
     apothecaryIntention: item.intention,

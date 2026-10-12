@@ -24,6 +24,8 @@ import {
   type CustomCategory,
 } from './custom';
 import { keepImageOnDevice, removeUploaded, uploadImage, type PickedImage } from './images';
+import { addObjectInstanceEvent, createObjectInstance } from './instanceStore';
+import { apothecaryInstanceInput, createdEvent, recipeUpdatedEvent } from './instances';
 import { LOCAL_CUSTOM_CABINET_KEY } from './snapshot';
 import type { CabinetItem } from './types';
 import { newId } from './uid';
@@ -221,10 +223,20 @@ export async function saveApothecary(userId: string | null, item: ApothecaryItem
     // A connection that can't be saved doesn't undo the working, as on the website.
     console.warn('Apothecary connections were not saved', e);
   }
+  const existed = !!item.id && state.apothecary.some((a) => a.id === item.id);
 
   if (userId) {
+    // A new working is tracked as an object instance from the start, with a "created" event (apothecary.js).
+    if (!existed && !next.instanceId) {
+      const instance = await createObjectInstance(userId, apothecaryInstanceInput(next));
+      if (instance?.id) {
+        next.instanceId = instance.id;
+        await addObjectInstanceEvent(userId, instance, createdEvent(next));
+      }
+    }
     const { error } = await supabase.from('apothecary_items').upsert(apothecaryRow(userId, next, now), { onConflict: 'id' });
     if (error) throw new Error(error.message);
+    if (existed && next.instanceId) await addObjectInstanceEvent(userId, next.instanceId, recipeUpdatedEvent(next));
   } else {
     const list = parseList(await AsyncStorage.getItem(LOCAL_APOTHECARY_KEY));
     const rest = list.filter((x) => x.id !== next.id);

@@ -27,6 +27,7 @@ import {
   type Op,
   type SendError,
 } from './edits';
+import { altarRitualOps, ritualDateText, type AltarRitualItem } from './altarImport';
 import { newId } from './ids';
 import { pageBlocks } from './structure';
 import type { BlockRow, BlockType, BookRow, GrimoireSnapshot, PageLinkRow, PageRow, SectionRow } from './types';
@@ -45,6 +46,8 @@ export type GrimoireActions = {
   renameSection: (sectionId: string, title: string) => void;
   deleteSection: (sectionId: string) => void;
   createPage: (input: { title: string; sectionId: string | null; templateKey: string }) => string | null;
+  /** A ritual page from a group on the altar (the website's altar import). */
+  createRitualFromAltar: (input: { title: string; purpose: string; items: AltarRitualItem[] }) => string | null;
   renamePage: (pageId: string, title: string) => void;
   deletePage: (pageId: string) => void;
   addBlock: (pageId: string, type: BlockType) => string | null;
@@ -331,6 +334,15 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
         const { bookId, ops } = ensureBook(s, ctx(), newId);
         const id = newId();
         commit([...ops, ...pageInsert(applyOps(s, ops), ctx(), { id, bookId, sectionId, title, templateKey }, newId)]);
+        return id;
+      },
+      createRitualFromAltar({ title, purpose, items }) {
+        const s = snap();
+        if (!s || !userRef.current) return null;
+        const { bookId, ops } = ensureBook(s, ctx(), newId);
+        const id = newId();
+        const page = altarRitualOps(applyOps(s, ops), ctx(), { id, bookId, title, purpose, items, dateText: ritualDateText(new Date()) }, newId);
+        commit([...ops, ...page]);
         return id;
       },
       renamePage(pageId, title) {

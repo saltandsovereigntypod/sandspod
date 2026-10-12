@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { Button } from '../Button';
+import { dateFromInput, dateToInput } from '../../lib/altar/instances';
 import type { ApothecaryState } from '../../lib/altar/livingState';
 import { colors, fonts, radius, touch, type } from '../../theme';
 import { Chip, ChipRow } from './Chip';
@@ -39,6 +40,8 @@ function TendForm({ state, intervalDays, onSave }: { state: ApothecaryState; int
   const [remaining, setRemaining] = useState(state.remainingAmount);
   const [openedAt] = useState(() => Date.now());
   const due = state.nextTendingAt && Date.parse(state.nextTendingAt) <= openedAt;
+  const [tendOn, setTendOn] = useState(() => dateToInput(state.nextTendingAt));
+  const [reviewOn, setReviewOn] = useState(() => dateToInput(state.reviewAt));
 
   return (
     <View style={styles.form}>
@@ -50,6 +53,13 @@ function TendForm({ state, intervalDays, onSave }: { state: ApothecaryState; int
         <Chip label="I tended it today" symbol="✓" onPress={() => onSave({ nextTendingAt: addDays(intervalDays) })} />
         {!!state.nextTendingAt && <Chip label="No reminder" onPress={() => onSave({ nextTendingAt: '' })} />}
       </ChipRow>
+      <ExactDate
+        label="Next tending"
+        value={tendOn}
+        onChange={setTendOn}
+        current={state.nextTendingAt}
+        onSet={(iso) => onSave({ nextTendingAt: iso })}
+      />
 
       <View style={styles.row}>
         <Text style={styles.label}>Review or replace by</Text>
@@ -61,6 +71,7 @@ function TendForm({ state, intervalDays, onSave }: { state: ApothecaryState; int
         <Chip label="In 6 months" onPress={() => onSave({ reviewAt: addDays(180) })} />
         {!!state.reviewAt && <Chip label="None" onPress={() => onSave({ reviewAt: '' })} />}
       </ChipRow>
+      <ExactDate label="Review or replace by" value={reviewOn} onChange={setReviewOn} current={state.reviewAt} onSet={(iso) => onSave({ reviewAt: iso })} />
 
       <Text style={type.eyebrow}>Activation</Text>
       <TextInput
@@ -90,7 +101,43 @@ function TendForm({ state, intervalDays, onSave }: { state: ApothecaryState; int
   );
 }
 
+/** A typed date for when the presets don't fit (the website's date fields under Review). */
+function ExactDate({
+  label,
+  value,
+  current,
+  onChange,
+  onSet,
+}: {
+  label: string;
+  value: string;
+  current: string;
+  onChange: (value: string) => void;
+  onSet: (iso: string) => void;
+}) {
+  const iso = dateFromInput(value);
+  const changed = !!iso && value.trim() !== dateToInput(current);
+  return (
+    <View style={styles.exact}>
+      <TextInput
+        value={value}
+        onChangeText={onChange}
+        placeholder="Or a date: YYYY-MM-DD"
+        placeholderTextColor={colors.tabInactive}
+        accessibilityLabel={`${label}, exact date, year-month-day`}
+        autoCapitalize="none"
+        autoCorrect={false}
+        keyboardType="numbers-and-punctuation"
+        style={[styles.input, styles.exactInput]}
+      />
+      <Chip label="Set date" onPress={() => iso && onSet(iso)} disabled={!changed} />
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
+  exact: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  exactInput: { flex: 1 },
   form: { gap: 12 },
   row: { flexDirection: 'row', justifyContent: 'space-between', gap: 12 },
   label: { fontFamily: fonts.body, fontSize: 15, color: colors.parchment },

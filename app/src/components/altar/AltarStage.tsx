@@ -1,5 +1,5 @@
-import { memo, useEffect, useMemo, useRef } from 'react';
-import { Animated, Image, Platform, StyleSheet, Text, View } from 'react-native';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { AccessibilityInfo, Animated, Easing, Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Svg, { Circle, Defs, Ellipse, RadialGradient, Stop } from 'react-native-svg';
 
@@ -275,6 +275,7 @@ const AltarObjectView = memo(function AltarObjectView({
   const flipped = object.flipped === 'true';
   const glowing = object.glowing === 'true';
   const lit = isCandle(object) && isLit(object);
+  const smoke = useSnuffSmoke(lit);
 
   return (
     <View
@@ -302,12 +303,97 @@ const AltarObjectView = memo(function AltarObjectView({
       {overlays.herb && <Image source={candleHerbOverlay} style={styles.herbOverlay} resizeMode="contain" />}
       {overlays.oil && <Image source={candleOilOverlay} style={styles.oilOverlay} resizeMode="contain" />}
       {lit && <Flame />}
+      {smoke != null && <Smoke key={smoke} />}
       {(selected || highlighted) && <View style={[styles.outline, highlighted && !selected && styles.outlineSoft]} />}
     </View>
   );
 });
 
 const useNative = Platform.OS !== 'web';
+
+/** How long the snuffed-candle smoke lasts (candles.js extinguishFlame). */
+const SMOKE_MS = 1400;
+
+/** Whether the person has asked for less motion (kept current while the altar is open). */
+function useReduceMotion(): boolean {
+  const [reduce, setReduce] = useState(false);
+  useEffect(() => {
+    let active = true;
+    AccessibilityInfo.isReduceMotionEnabled()
+      .then((value) => active && setReduce(value))
+      .catch(() => {});
+    const sub = AccessibilityInfo.addEventListener('reduceMotionChanged', setReduce);
+    return () => {
+      active = false;
+      sub.remove();
+    };
+  }, []);
+  return reduce;
+}
+
+/**
+ * A fresh key while a candle that was lit has just been put out, so the
+ * smoke puff plays once; null otherwise, and always null with Reduce Motion.
+ */
+function useSnuffSmoke(lit: boolean): number | null {
+  const reduce = useReduceMotion();
+  const [wasLit, setWasLit] = useState(lit);
+  const [smoke, setSmoke] = useState<number | null>(null);
+  if (wasLit !== lit) {
+    setWasLit(lit);
+    setSmoke(!lit && !reduce ? (smoke ?? 0) + 1 : null);
+  }
+  useEffect(() => {
+    if (smoke == null) return;
+    const timer = setTimeout(() => setSmoke(null), SMOKE_MS);
+    return () => clearTimeout(timer);
+  }, [smoke]);
+  return smoke;
+}
+
+/** The puff of smoke over a candle just put out (altar.css .is-extinguishing::after). */
+function Smoke() {
+  const [rise] = useState(() => new Animated.Value(0));
+  const [height, setHeight] = useState(0);
+  useEffect(() => {
+    const run = Animated.timing(rise, { toValue: 1, duration: SMOKE_MS, easing: Easing.out(Easing.ease), useNativeDriver: useNative });
+    run.start();
+    return () => run.stop();
+  }, [rise]);
+
+  const opacity = rise.interpolate({ inputRange: [0, 0.2, 1], outputRange: [0, 0.65, 0] });
+  const scale = rise.interpolate({ inputRange: [0, 1], outputRange: [0.6, 1.45] });
+  // The website drifts 22px up from a puff about 18px tall; follow the puff's own size.
+  const translateY = rise.interpolate({ inputRange: [0, 1], outputRange: [0, -height * 1.2] });
+  const translateX = rise.interpolate({ inputRange: [0, 1], outputRange: [0, -height * 0.04] });
+
+  return (
+    <Animated.View
+      style={[styles.smoke, { opacity, transform: [{ translateX }, { translateY }, { scale }] }]}
+      onLayout={(e) => setHeight(e.nativeEvent.layout.height)}
+    >
+      <Svg width="100%" height="100%" viewBox="0 0 10 22">
+        <Defs>
+          <RadialGradient id="smoke-low" cx="50%" cy="80%" r="38%">
+            <Stop offset="0" stopColor="rgb(210,210,200)" stopOpacity={0.55} />
+            <Stop offset="1" stopColor="rgb(210,210,200)" stopOpacity={0} />
+          </RadialGradient>
+          <RadialGradient id="smoke-mid" cx="45%" cy="45%" r="42%">
+            <Stop offset="0" stopColor="rgb(210,210,200)" stopOpacity={0.35} />
+            <Stop offset="1" stopColor="rgb(210,210,200)" stopOpacity={0} />
+          </RadialGradient>
+          <RadialGradient id="smoke-high" cx="58%" cy="18%" r="46%">
+            <Stop offset="0" stopColor="rgb(210,210,200)" stopOpacity={0.22} />
+            <Stop offset="1" stopColor="rgb(210,210,200)" stopOpacity={0} />
+          </RadialGradient>
+        </Defs>
+        <Ellipse cx={5} cy={11} rx={5} ry={11} fill="url(#smoke-low)" />
+        <Ellipse cx={5} cy={11} rx={5} ry={11} fill="url(#smoke-mid)" />
+        <Ellipse cx={5} cy={11} rx={5} ry={11} fill="url(#smoke-high)" />
+      </Svg>
+    </Animated.View>
+  );
+}
 
 /** The flame drawn above a lit candle's wick (altar.css .is-lit::before/::after). */
 function Flame() {
@@ -392,6 +478,7 @@ const styles = StyleSheet.create({
   oilOverlay: { position: 'absolute', top: '11%', left: '0%', width: '94%', height: '70%', opacity: 0.55 },
   flameHalo: { position: 'absolute', left: '46%', top: '-3%', width: '8%', height: '10%' },
   flame: { position: 'absolute', left: '45%', top: '-5%', width: '10%', height: '18%', transformOrigin: '50% 100%' },
+  smoke: { position: 'absolute', left: '45%', top: '-10%', width: '10%', height: '22%' },
   outline: {
     position: 'absolute',
     left: -3,

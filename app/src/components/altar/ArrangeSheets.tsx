@@ -96,8 +96,62 @@ function GroupForm({ objects, onGroup }: { objects: SavedObject[]; onGroup: (ind
   );
 }
 
+/**
+ * Record a group as a ritual page in the Grimoire (the website's Send to
+ * Grimoire, then its Record Ritual step): the items, a purpose, and create.
+ */
+export function GroupGrimoireSheet({
+  visible,
+  name,
+  items,
+  signedIn,
+  onClose,
+  onCreate,
+}: {
+  visible: boolean;
+  name: string;
+  items: { groupLabel: string; content: string }[];
+  signedIn: boolean;
+  onClose: () => void;
+  onCreate: (purpose: string) => void;
+}) {
+  return (
+    <Sheet visible={visible} eyebrow="Record Ritual" title={name || 'Ritual Working'} onClose={onClose}>
+      {visible && <GroupGrimoireForm items={items} signedIn={signedIn} onCreate={onCreate} />}
+    </Sheet>
+  );
+}
+
+function GroupGrimoireForm({ items, signedIn, onCreate }: { items: { groupLabel: string; content: string }[]; signedIn: boolean; onCreate: (purpose: string) => void }) {
+  const [purpose, setPurpose] = useState('');
+  if (!signedIn) return <Text style={type.body}>Sign in to create a ritual page in your Grimoire.</Text>;
+  return (
+    <View style={styles.form}>
+      <Text style={type.caption}>A new ritual page in your Grimoire, with these items from the altar and room for your steps, results and reflection.</Text>
+      <TextInput
+        value={purpose}
+        onChangeText={setPurpose}
+        placeholder="What was this working for?"
+        placeholderTextColor={colors.tabInactive}
+        accessibilityLabel="Ritual purpose"
+        multiline
+        style={[styles.input, styles.multiline]}
+      />
+      {items.map((group) => (
+        <View key={group.groupLabel} style={styles.summary}>
+          <Text style={type.eyebrow}>{group.groupLabel}</Text>
+          <Text style={type.body}>{group.content}</Text>
+        </View>
+      ))}
+      <Button label="Create Ritual Page" onPress={() => onCreate(purpose)} />
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   form: { gap: 12 },
+  summary: { gap: 4 },
+  multiline: { minHeight: 96, paddingTop: 12, textAlignVertical: 'top' },
   input: {
     minHeight: touch,
     borderRadius: radius.button,

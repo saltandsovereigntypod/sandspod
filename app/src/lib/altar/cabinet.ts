@@ -40,12 +40,13 @@ export function defaultAltarBackground(saved: unknown, custom: AltarBackground[]
   );
 }
 
+/** SanctuaryAssetCatalog.getForms('candle'), aliases included. */
 const candleForms = [
-  { id: 'chime-spell', label: 'Chime / Spell Candle' },
-  { id: 'taper', label: 'Taper Candle' },
-  { id: 'tea-light', label: 'Tea Light' },
-  { id: 'pillar', label: 'Pillar Candle' },
-  { id: 'vigil', label: 'Vigil Candle' },
+  { id: 'chime-spell', label: 'Chime / Spell Candle', aliases: ['chime', 'spell candle'] },
+  { id: 'taper', label: 'Taper Candle', aliases: ['taper'] },
+  { id: 'tea-light', label: 'Tea Light', aliases: ['tealight', 'tea light'] },
+  { id: 'pillar', label: 'Pillar Candle', aliases: ['pillar'] },
+  { id: 'vigil', label: 'Vigil Candle', aliases: ['seven day', 'vigil'] },
 ];
 
 const candleColors = ['white', 'black', 'green', 'purple', 'red', 'orange', 'yellow', 'blue', 'brown', 'pink', 'gold', 'silver'];
@@ -95,6 +96,7 @@ export const builtInCabinet: CabinetItem[] = [
       type: 'candle',
       color,
       form: form.id,
+      aliases: [...form.aliases],
     })),
   })),
   ...herbs.map(([id, name, keywords, folder = id, fileBase = folder]) => {
@@ -284,13 +286,33 @@ export function customBackgroundFromRow(row: CustomBackgroundRow): AltarBackgrou
   return { id: row.id, name: row.name, background: row.image_url, custom: true };
 }
 
+/**
+ * Words a cabinet item is found by beyond its name and keywords: its forms'
+ * labels, types, ids and aliases ("seven day", "tealight") and the plural
+ * category words (cabinet.js cabinetSearchAliases).
+ */
+export function cabinetSearchAliases(item: CabinetItem): string[] {
+  const formWords = item.forms.flatMap((form) => [form.label, form.type, form.form, ...(form.aliases ?? [])]);
+  const variants =
+    item.category === 'candles'
+      ? ['candle', 'candles']
+      : item.category === 'herbs'
+        ? ['herb', 'herbs']
+        : item.category === 'crystals'
+          ? ['crystal', 'crystals']
+          : item.name === 'Spell Jar'
+            ? ['jar', 'spell jar', 'spell jars']
+            : [];
+  return [...new Set([...item.keywords, ...formWords, ...variants].filter((word): word is string => !!word))];
+}
+
 /** Items in one category matching a search, custom items first (renderCabinetItems). */
 export function cabinetItemsFor(items: CabinetItem[], category: string, search: string): CabinetItem[] {
   const needle = search.trim().toLowerCase();
   return items.filter((item) => {
     if (item.category !== category) return false;
     if (!needle) return true;
-    return [item.name, item.category, ...item.keywords].join(' ').toLowerCase().includes(needle);
+    return [item.name, item.category, ...cabinetSearchAliases(item)].join(' ').toLowerCase().includes(needle);
   });
 }
 

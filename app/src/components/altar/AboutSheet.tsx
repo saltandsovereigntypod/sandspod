@@ -5,8 +5,9 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../Button';
 import { RichText, Tags } from '../more/ui';
 import { burnHistory, careHistory, companionSettings, livingStateDisplay, stateRows, traditionalSplit } from '../../lib/altar/companion';
+import { eventHistory, lifecycleRows, type InstanceEvent, type ObjectInstance } from '../../lib/altar/instances';
 import type { SavedObject } from '../../lib/altar/types';
-import { altarLibraryHref, correspondences, type LibraryEntry } from '../../lib/library';
+import { altarLibraryHref, altarPracticeHref, correspondences, type LibraryEntry } from '../../lib/library';
 import { layerFields, visibleLayers } from '../../lib/library/model';
 import type { LibraryField } from '../../lib/library/types';
 import { LAYER_LABELS } from '../../lib/settings/defaults';
@@ -20,6 +21,9 @@ type Props = {
   label: string;
   entry: LibraryEntry | null;
   onClose: () => void;
+  /** The object's tracked instance, when it has one (signed in): lifecycle rows and its events. */
+  instance?: ObjectInstance | null;
+  instanceEvents?: InstanceEvent[];
 };
 
 /**
@@ -27,7 +31,7 @@ type Props = {
  * object's own state up front, everything else folded under "More", and the
  * full Living Library page one tap away.
  */
-export function AboutSheet({ visible, object, label, entry, onClose }: Props) {
+export function AboutSheet({ visible, object, label, entry, onClose, instance, instanceEvents }: Props) {
   const { settings: saved } = useMySettings();
   // Settings → Companion panel: the Living Library page settings, or its own when "Copy" is off.
   const settings = companionSettings(saved);
@@ -41,8 +45,13 @@ export function AboutSheet({ visible, object, label, entry, onClose }: Props) {
   const traditional = entry && showTraditional ? traditionalSplit(entry, settings) : { lead: [], warnings: [], rest: [] };
   const mine = entry && layers.includes('myPractice') ? layerFields(entry.myPractice, 'myPractice', settings, entry.layout) : [];
   const community = entry && layers.includes('community') ? layerFields(entry.community, 'community', settings, entry.layout) : [];
-  const state = stateRows(object, new Date(), saved);
-  const burns = livingStateDisplay(saved).recentActivity ? [...burnHistory(object, new Date()), ...careHistory(object, new Date())] : [];
+  // With an instance, its dates and amount are the ones that count (the Companion's lifecycle block).
+  const lifecycle = lifecycleRows(instance, new Date());
+  const own = stateRows(object, new Date(), saved);
+  const state = lifecycle.length ? [...lifecycle, ...own.filter((row) => !['Next tending', 'Review by', 'Remaining'].includes(row.label))] : own;
+  const burns = livingStateDisplay(saved).recentActivity
+    ? [...burnHistory(object, new Date()), ...careHistory(object, new Date()), ...eventHistory(instanceEvents ?? [], new Date())]
+    : [];
   const hasMore = traditional.rest.length > 0 || community.length > 0 || burns.length > 5;
   const nothing = !facts.length && !traditional.lead.length && !traditional.warnings.length && !mine.length && !state.length;
 
@@ -139,6 +148,17 @@ export function AboutSheet({ visible, object, label, entry, onClose }: Props) {
           onPress={() => {
             close();
             router.push(altarLibraryHref(entry));
+          }}
+        />
+      )}
+      {entry && (
+        <Button
+          label="Edit My Practice"
+          variant="text"
+          accessibilityHint="Opens your own notes for this in the Living Library"
+          onPress={() => {
+            close();
+            router.push(altarPracticeHref(entry));
           }}
         />
       )}

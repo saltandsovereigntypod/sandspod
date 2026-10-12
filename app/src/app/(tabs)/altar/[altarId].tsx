@@ -7,7 +7,8 @@ import { AboutSheet } from '../../../components/altar/AboutSheet';
 import { AltarStage, clampViewport, type Viewport } from '../../../components/altar/AltarStage';
 import { CabinetSheet } from '../../../components/altar/CabinetSheet';
 import { CarveSheet } from '../../../components/altar/CarveSheet';
-import { GroupSheet, RenameSheet } from '../../../components/altar/ArrangeSheets';
+import { GroupGrimoireSheet, GroupSheet, RenameSheet } from '../../../components/altar/ArrangeSheets';
+import { PracticeSheet } from '../../../components/altar/PracticeSheet';
 import { CrystalSheet, DeitySheet, type CrystalMode, type DeityMode } from '../../../components/altar/DevotionSheets';
 import { careForCrystal, dedicateCrystal, recordOffering, setPresenceReason, updateOffering } from '../../../lib/altar/devotion';
 import { CustomItemSheet } from '../../../components/altar/CustomItemSheet';
@@ -55,7 +56,21 @@ import {
 } from '../../../lib/altar/editor';
 import { displayBox, STAGE_ASPECT } from '../../../lib/altar/geometry';
 import { stackOrder } from '../../../lib/altar/layers';
-import { apothecaryStateOf, carvingsOf, dressingsOf, isCandle, isLit } from '../../../lib/altar/livingState';
+import { apothecaryStateOf, carvingsOf, dressingsOf, isCandle, isLit, type ApothecaryState } from '../../../lib/altar/livingState';
+import { addObjectInstanceEvent, getObjectInstance, updateObjectInstance, useObjectInstance } from '../../../lib/altar/instanceStore';
+import {
+  ACTIVITY_TYPES,
+  activityRecord,
+  instanceTendState,
+  instanceTendUpdates,
+  isCrafted,
+  tendChoices,
+  tendRecord,
+  type PracticeActivity,
+  type TendInput,
+} from '../../../lib/altar/instances';
+import { altarRitualItem, groupAltarItems } from '../../../lib/grimoire/altarImport';
+import { useGrimoire } from '../../../lib/grimoire/store';
 import { altarSummary, documentFromAltar, emptyDocument, type AltarDocument } from '../../../lib/altar/snapshot';
 import { useAltars } from '../../../lib/altar/store';
 import type { CabinetForm, CabinetItem } from '../../../lib/altar/types';
@@ -66,7 +81,21 @@ import { holidayChoice, holidaysToday } from '../../../lib/holidays';
 import { moonState } from '../../../lib/moon';
 import { colors, fonts, space, touch, type } from '../../../theme';
 
-type SheetName = 'about' | 'carve' | 'rename' | 'group' | 'apothecary' | 'tend' | 'cabinet' | 'background' | 'layers' | 'dress' | 'save' | null;
+type SheetName =
+  | 'about'
+  | 'carve'
+  | 'rename'
+  | 'group'
+  | 'apothecary'
+  | 'tend'
+  | 'practice'
+  | 'grimoire'
+  | 'cabinet'
+  | 'background'
+  | 'layers'
+  | 'dress'
+  | 'save'
+  | null;
 
 const nowIso = () => new Date().toISOString();
 
@@ -274,6 +303,77 @@ export default function AltarEditor() {
     [libraryEntries, selectedObject],
   );
 
+  // A made thing's tracked instance (signed in): its own, or its recipe's, as the Companion finds it.
+  const selectedInstanceId = (signedIn && (selectedObject?.instanceId || selectedRecipe?.instanceId)) || '';
+  const { instance: selectedInstance, events: instanceEvents, reload: reloadInstance } = useObjectInstance(workshop.userId, selectedInstanceId);
+  const practiceChoices = useMemo(() => tendChoices(builtInCabinet, workshop.apothecary), [workshop.apothecary]);
+  const crafted = isCrafted(selectedObject);
+  const tendState = selectedObject && crafted ? (selectedInstance ? instanceTendState(apothecaryStateOf(selectedObject), selectedInstance) : apothecaryStateOf(selectedObject)) : null;
+
+  /**
+   * Activation, Remaining and Review (object-actions.js openCraftedAction):
+   * with an instance, what's left and the dates are written to it; activation,
+   * and everything for an object without one, stays in the object's own state.
+   */
+  const saveTending = async (change: Partial<ApothecaryState>) => {
+    const index = selected;
+    if (index == null) return;
+    const userId = workshop.userId;
+    const updates = selectedInstance && userId ? instanceTendUpdates(change) : null;
+    const own: Partial<ApothecaryState> = updates ? ('activationState' in change ? { activationState: change.activationState } : {}) : change;
+    if (Object.keys(own).length) commit((d) => tendApothecary(d, index, own, nowIso()));
+    if (updates && selectedInstance && userId) {
+      const updated = await updateObjectInstance(userId, selectedInstance.id, updates);
+      if (!updated) setNotice('Couldn’t update this object’s tending dates. Please try again.');
+      reloadInstance();
+    }
+  };
+
+  /** Today's Tending (submitLivingStateTendForm): a "tended" event and the next tending date. */
+  const recordTending = async (input: TendInput) => {
+    const userId = workshop.userId;
+    const current = userId && selectedInstanceId ? await getObjectInstance(userId, selectedInstanceId) : null;
+    if (!userId || !current) {
+      setNotice('Living State could not be loaded.');
+      return false;
+    }
+    const { event, updates } = tendRecord(current, input, new Date());
+    const saved = await addObjectInstanceEvent(userId, current, event);
+    await updateObjectInstance(userId, current.id, updates);
+    reloadInstance();
+    setNotice(saved ? 'Living State updated.' : 'Couldn’t record that tending. Please try again.');
+    return !!saved;
+  };
+
+  /** Charge, Perform Ritual or Journal (submitLivingStateActivityForm). */
+  const recordActivity = async (kind: Exclude<PracticeActivity, 'tend'>, options: string[], notes: string) => {
+    const userId = workshop.userId;
+    const saved = userId && selectedInstanceId ? await addObjectInstanceEvent(userId, selectedInstanceId, activityRecord(kind, options, notes)) : null;
+    reloadInstance();
+    setNotice(saved ? `${ACTIVITY_TYPES[kind].title} saved.` : 'Couldn’t save that. Please try again.');
+    return !!saved;
+  };
+
+  // Send a group to the Grimoire as a ritual page (groups.js sendCurrentGroupToGrimoire).
+  const grimoire = useGrimoire();
+  const groupItems = useMemo(
+    () =>
+      doc && selectedObject?.groupId
+        ? doc.objects.filter((o) => o.groupId === selectedObject.groupId).map((o) => altarRitualItem(o, dressingsOf(o)))
+        : [],
+    [doc, selectedObject],
+  );
+  const createRitualPage = (purpose: string) => {
+    if (!doc || !groupItems.length) return;
+    const pageId = grimoire.actions.createRitualFromAltar({ title: groupName(doc, selectedObject), purpose, items: groupItems });
+    setSheet(null);
+    if (!pageId) {
+      setNotice('Your Grimoire hasn’t loaded yet. Open it once while online, then try again.');
+      return;
+    }
+    router.push({ pathname: '/grimoire/edit/[pageId]', params: { pageId } });
+  };
+
   if (missing) {
     return (
       <SafeAreaView edges={['top']} style={styles.safe}>
@@ -344,6 +444,8 @@ export default function AltarEditor() {
             object={selectedObject}
             glance={selectedEntry ? glanceLine(selectedEntry, settings) : ''}
             group={groupName(doc, selectedObject)}
+            crafted={crafted}
+            canPractice={!!selectedInstanceId}
             onAbout={() => setSheet('about')}
             onDone={() => setSelected(null)}
             act={{
@@ -357,6 +459,8 @@ export default function AltarEditor() {
               dress: () => setSheet('dress'),
               carve: () => setSheet('carve'),
               tend: () => setSheet('tend'),
+              practice: () => setSheet('practice'),
+              grimoire: () => setSheet('grimoire'),
               recipe: () => setWorking(selectedRecipe ? { item: selectedRecipe } : null),
               undress: () => commit((d) => undressObject(d, selected, nowIso())),
               rotate: (deg) => commit((d) => rotateObject(d, selected, deg)),
@@ -448,6 +552,8 @@ export default function AltarEditor() {
             object={selectedObject}
             label={shortLabel(selectedObject?.label)}
             entry={selectedEntry}
+            instance={selectedInstance}
+            instanceEvents={instanceEvents}
             onClose={() => setSheet(null)}
           />
           <ApothecarySheet
@@ -481,12 +587,26 @@ export default function AltarEditor() {
           <TendSheet
             visible={sheet === 'tend'}
             name={shortLabel(selectedObject?.label, 'Working')}
-            state={selectedObject?.type === 'apothecary' ? apothecaryStateOf(selectedObject) : null}
-            intervalDays={selectedRecipe?.livingState.tending_interval_days ?? 30}
+            state={tendState}
+            intervalDays={Number(selectedInstance?.tending_interval_days) || selectedRecipe?.livingState.tending_interval_days || 30}
             onClose={() => setSheet(null)}
-            onSave={(change) => {
-              if (selected != null) commit((d) => tendApothecary(d, selected, change, nowIso()));
-            }}
+            onSave={(change) => void saveTending(change)}
+          />
+          <PracticeSheet
+            visible={sheet === 'practice' && !!selectedInstanceId}
+            name={shortLabel(selectedObject?.label, 'Manifestation')}
+            choices={practiceChoices}
+            onClose={() => setSheet(null)}
+            onTend={recordTending}
+            onActivity={recordActivity}
+          />
+          <GroupGrimoireSheet
+            visible={sheet === 'grimoire' && groupItems.length > 0}
+            name={groupName(doc, selectedObject)}
+            items={groupAltarItems(groupItems)}
+            signedIn={signedIn}
+            onClose={() => setSheet(null)}
+            onCreate={createRitualPage}
           />
           <CustomItemSheet
             target={ownItem}
@@ -632,6 +752,8 @@ type Actions = {
   dress: () => void;
   carve: () => void;
   tend: () => void;
+  practice: () => void;
+  grimoire: () => void;
   recipe: () => void;
   undress: () => void;
   rotate: (degrees: number) => void;
@@ -649,11 +771,15 @@ function ObjectPanel({
   objectLabel,
   glance,
   group,
+  crafted,
+  canPractice,
   act,
   onAbout,
   onDone,
 }: {
   group: string;
+  crafted: boolean;
+  canPractice: boolean;
   object: import('../../../lib/altar/types').SavedObject;
   objectLabel: string;
   glance: string;
@@ -702,7 +828,8 @@ function ObjectPanel({
 
       <ChipRow>
         <Chip label="About" symbol="☽" accessibilityLabel={`About ${objectLabel}`} onPress={onAbout} />
-        {object.type === 'apothecary' && <Chip label="Tend" symbol="✓" accessibilityLabel={`Tend ${objectLabel}`} onPress={act.tend} />}
+        {crafted && <Chip label="Tend" symbol="✓" accessibilityLabel={`Tend ${objectLabel}`} onPress={act.tend} />}
+        {canPractice && <Chip label="Begin Practice" symbol="✧" accessibilityLabel={`Begin today’s practice with ${objectLabel}`} onPress={act.practice} />}
         {object.type === 'apothecary' && !!object.apothecaryItemId && (
           <Chip label="Recipe" symbol="✎" accessibilityLabel={`Open the recipe for ${objectLabel}`} onPress={act.recipe} />
         )}
@@ -756,6 +883,7 @@ function ObjectPanel({
         <Chip label="Glow" symbol="✦" onPress={act.glow} active={glowing} />
         <Chip label="Duplicate" symbol="⧉" onPress={act.duplicate} />
         <Chip label="Rename" symbol="✎" onPress={act.rename} />
+        {!!group && <Chip label="Send group to Grimoire" symbol="❧" onPress={act.grimoire} />}
         {!!group && <Chip label="Ungroup" symbol="⊘" onPress={act.ungroup} />}
         {confirmRemove ? (
           <>
