@@ -28,7 +28,8 @@ const row = (extra: Partial<PracticeRow>): PracticeRow => ({
 
 test('every Traditional Library entry is present, including candle styles and the guide', () => {
   const entries = traditionalEntries();
-  assert.equal(entries.filter((e) => e.type === 'herb').length, 20);
+  assert.equal(entries.filter((e) => e.type === 'herb').length, 60);
+  assert.ok(entries.some((e) => e.name === 'Jupiter') && entries.some((e) => e.name === 'Birthday Candle'));
   const names = entries.map((e) => e.name);
   assert.ok(names.includes('Basil'));
   assert.ok(names.includes('Candle Magic Guide'));
@@ -194,4 +195,35 @@ test('edits go to the row whose My Practice is shown (the newest)', async () => 
 
   const custom = buildLibrary([{ entity_id: 'c1', name: 'Grandma’s Salve', type: 'apothecary', image: null, my_practice: { Notes: 'n' }, community: null, updated_at: null }]);
   assert.equal(custom.find((e) => e.id === 'practice:c1')?.practiceSourceId, 'c1');
+});
+
+test('My path: follows the calendars, can be chosen, and puts your traditions first', async () => {
+  const { myPath, entryTraditions, entryVisible, withoutHidden } = await import('../src/lib/library/traditions.ts');
+  const { grimoireShelves } = await import('../src/lib/library/model.ts');
+  const entries = traditionalEntries();
+  const find = (name: string) => entries.find((e) => e.name === name)!;
+
+  assert.deepEqual(myPath({ calendar_traditions: 'wheel_south,celtic,hellenic_monthly,custom' }).traditions, ['wheel', 'celtic', 'hellenic']);
+  assert.deepEqual(myPath({ library_path_mode: 'custom', library_path: 'roman,norse' }).traditions, ['norse', 'roman']);
+  assert.deepEqual(myPath({ library_path_mode: 'off', calendar_traditions: 'celtic' }).traditions, []);
+  // A hidden calendar is never part of the path.
+  assert.deepEqual(myPath({ calendar_traditions: 'christian,celtic', calendar_hidden_traditions: 'christian' }).traditions, ['celtic']);
+
+  assert.deepEqual(entryTraditions(find('Jupiter').traditional, 'deity'), ['roman']);
+  assert.ok(entryTraditions(find('Rowan').traditional, 'herb').includes('celtic'));
+
+  const celtic = myPath({ calendar_traditions: 'celtic', library_path_other_deities: 'hide' });
+  assert.equal(entryVisible(find('Jupiter'), celtic), false);
+  assert.equal(entryVisible(find('Lugh'), celtic), true);
+  assert.equal(entryVisible(find('Rosemary'), celtic), true, 'herbs are never hidden');
+
+  const shelf = grimoireShelves(entries, { calendar_traditions: 'celtic' } as never).find((s) => s.key === 'traditional')!;
+  const deities = shelf.groups.filter((g) => g.type === 'deity');
+  assert.equal(deities[0].part, 'path');
+  assert.ok(deities[0].entries.some((e) => e.name === 'Brigid'));
+  assert.equal(deities[1].part, 'other');
+
+  const hidden = withoutHidden({ Traditions: 'Celtic, Christian', TraditionNotes: 'Woven at Imbolc in Celtic lands. Blessed in church on Christmas Eve.' }, ['christian']);
+  assert.equal(hidden.Traditions, 'Celtic');
+  assert.equal(hidden.TraditionNotes, 'Woven at Imbolc in Celtic lands.');
 });

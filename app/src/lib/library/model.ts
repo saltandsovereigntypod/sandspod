@@ -5,6 +5,8 @@
 import type { Settings } from '../settings/defaults.ts';
 import { layerOrder, type Layer } from '../settings/defaults.ts';
 import { TRADITIONAL_LIBRARY } from './traditionalData.ts';
+import { entryVisible, inPath, myPath, pathName, withoutHidden } from './traditions.ts';
+import { hiddenTraditions } from '../holidays.ts';
 import type { LibraryEntry, LibraryField, PracticeRow, TraditionalRecord } from './types.ts';
 
 export const LIBRARY_TYPES = ['herb', 'crystal', 'candle', 'deity', 'tool', 'vessel'] as const;
@@ -97,6 +99,10 @@ const FIELD_LABELS: Record<string, string> = {
   AltarIdeas: 'Altar Ideas',
   GrimoireStatus: 'Grimoire Status',
   CandleDressings: 'Candle Dressings',
+  TraditionNotes: 'In the Traditions',
+  TypicalBurnTime: 'Typical Burn Time',
+  BurnStyle: 'Burn Style',
+  TraditionalUse: 'Traditional Use',
 };
 
 export const fieldLabel = (key: string) => FIELD_LABELS[key] ?? formatName(key);
@@ -132,6 +138,7 @@ export function fieldCategory(key: string): string {
 }
 
 const CHIP_FIELDS = new Set([
+  'Traditions',
   'Uses',
   'Domains',
   'PairsWith',
@@ -163,6 +170,7 @@ const FIELD_ORDER = [
   'Planet',
   'Chakra',
   'Pantheon',
+  'Traditions',
   'PairsWith',
   'Substitutions',
   'BestWith',
@@ -172,6 +180,9 @@ const FIELD_ORDER = [
   'Intentions',
   'CommonUses',
   'HowToUse',
+  'TraditionNotes',
+  'BurnStyle',
+  'TypicalBurnTime',
   'SacredSymbols',
   'SacredAnimals',
   'SacredPlants',
@@ -211,6 +222,8 @@ export function layerFields(
   settings?: Pick<Settings, string> | null,
 ): LibraryField[] {
   if (!data) return [];
+  // Hidden calendars (Settings → Calendar → Hide) are taken out of Traditional notes too.
+  if (layer === 'traditional') data = withoutHidden(data as TraditionalRecord, hiddenTraditions(settings as Record<string, unknown> | null));
   const keys = Object.keys(data);
   const ordered = [...FIELD_ORDER.filter((key) => keys.includes(key)), ...keys.filter((key) => !FIELD_ORDER.includes(key))];
   const fields: LibraryField[] = [];
@@ -439,7 +452,13 @@ export function correspondences(entry: LibraryEntry): { label: string; value: st
 
 export const hasMyPractice = (entry: LibraryEntry) => hasContent(entry.myPractice);
 
-export type ShelfGroup = { type: string; label: string; entries: LibraryEntry[] };
+export type ShelfGroup = {
+  type: string;
+  label: string;
+  entries: LibraryEntry[];
+  /** For the Traditional shelf with My path on: the traditions you keep, or everything else. */
+  part?: 'path' | 'other';
+};
 export type GrimoireShelf = { key: 'myPractice' | 'traditional'; title: string; groups: ShelfGroup[] };
 
 /**
@@ -451,6 +470,7 @@ export type GrimoireShelf = { key: 'myPractice' | 'traditional'; title: string; 
 export function grimoireShelves(entries: LibraryEntry[], settings?: Settings | null, query = ''): GrimoireShelf[] {
   const matches = new Set(searchLibrary(entries, query).map((entry) => entry.id));
   const byName = (a: LibraryEntry, b: LibraryEntry) => a.name.localeCompare(b.name);
+  const path = myPath(settings as Record<string, unknown> | null);
   const group = (types: readonly string[], keep: (entry: LibraryEntry) => boolean): ShelfGroup[] =>
     types
       .map((type) => ({
@@ -465,7 +485,27 @@ export function grimoireShelves(entries: LibraryEntry[], settings?: Settings | n
     shelves.push({ key: 'myPractice', title: 'My Practice', groups: group(PRACTICE_TYPES, hasMyPractice) });
   }
   if (!settings || settings.library_traditional_enabled !== false) {
-    shelves.push({ key: 'traditional', title: 'Traditional Information', groups: group(LIBRARY_TYPES, (entry) => hasContent(entry.traditional)) });
+    const traditional = (entry: LibraryEntry) => hasContent(entry.traditional) && entryVisible(entry, path);
+    shelves.push({ key: 'traditional', title: 'Traditional Information', groups: pathGroups(group(LIBRARY_TYPES, traditional), path) });
   }
   return shelves.filter((shelf) => shelf.groups.length > 0);
+}
+
+/**
+ * With My path on, each type is split in two: the entries from your own
+ * traditions first ("Deities · Celtic, Norse"), then the rest ("Deities ·
+ * other traditions"). Types with nothing from your path stay whole.
+ */
+function pathGroups(groups: ShelfGroup[], path: ReturnType<typeof myPath>): ShelfGroup[] {
+  if (!path.traditions.length) return groups;
+  const names = path.traditions.map(pathName).join(', ');
+  return groups.flatMap((g) => {
+    const mine = g.entries.filter((entry) => inPath(entry, path));
+    if (!mine.length) return [g];
+    const rest = g.entries.filter((entry) => !inPath(entry, path));
+    return [
+      { ...g, label: `${g.label} · ${names}`, entries: mine, part: 'path' as const },
+      ...(rest.length ? [{ ...g, label: `${g.label} · other traditions`, entries: rest, part: 'other' as const }] : []),
+    ];
+  });
 }
