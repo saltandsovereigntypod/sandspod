@@ -3317,6 +3317,101 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
           "habit change",
           "goals"
         ]
+      },
+      "figure_male": {
+        "DisplayName": "Male Figure Candle",
+        "Category": "Candle Style",
+        "Overview": "A candle moulded in the shape of a standing man. Figure candles are one of the oldest kinds of image magic: the candle stands in for a specific person, so the working is directed to them.",
+        "TraditionalUse": "In hoodoo, conjure and many folk traditions a male figure candle represents a particular man (or the practitioner himself) in work for love, attraction, healing, protection, reconciliation, success or banishing. It is usually named, carved with the person’s name or birth date, and dressed with an oil chosen for the goal.",
+        "BestFor": "Working for or on behalf of a specific person, self-work, healing, attraction, reconciliation, protection.",
+        "BurnStyle": "Often burned in short sessions over several days, with the figure moved or turned as the work progresses; some practitioners read the way the figure melts.",
+        "TypicalBurnTime": "About 2–6 hours, depending on size",
+        "SafetyAndRespect": "Figure candles burn unevenly and drip heavily; set them on a fire-safe plate. Working on another person without their knowledge raises real questions of consent — many practitioners keep figure work to healing, blessing, protection or their own life.",
+        "BeginnerTip": "Start with a figure that represents yourself — for confidence, healing or self-love — before working for anyone else.",
+        "tags": [
+          "figure candle",
+          "image magic",
+          "hoodoo",
+          "love",
+          "healing",
+          "self work"
+        ]
+      },
+      "figure_female": {
+        "DisplayName": "Female Figure Candle",
+        "Category": "Candle Style",
+        "Overview": "A candle moulded in the shape of a standing woman. Like all figure candles it represents a specific person, giving the working a clear focus.",
+        "TraditionalUse": "In hoodoo, conjure and folk practice a female figure candle stands for a particular woman (or the practitioner herself) in work for love, attraction, fertility, healing, protection, success or release. It is commonly named, carved and dressed with an oil suited to the goal.",
+        "BestFor": "Working for or on behalf of a specific person, self-love, healing, attraction, protection, release.",
+        "BurnStyle": "Usually burned over several short sessions; the figure may be moved toward or away from another candle as the work unfolds.",
+        "TypicalBurnTime": "About 2–6 hours, depending on size",
+        "SafetyAndRespect": "Use a fire-safe plate — figures drip and can tip. Consider consent carefully before working on another person; healing, blessing and protective work are the gentlest uses.",
+        "BeginnerTip": "A female figure dressed with rose or lavender oil and carved with your own name makes a simple, powerful self-love candle.",
+        "tags": [
+          "figure candle",
+          "image magic",
+          "hoodoo",
+          "love",
+          "self-love",
+          "healing"
+        ]
+      },
+      "lovers": {
+        "DisplayName": "Lovers Candle (Embracing Couple)",
+        "Category": "Candle Style",
+        "Overview": "A figure candle of two people embracing, moulded as one. It represents a relationship as a whole rather than one person in it.",
+        "TraditionalUse": "Used in conjure and folk love magic to strengthen an existing bond, heal a rift, renew passion, or bless a marriage or partnership. The figures are often carved with both names, dressed with a love or reconciliation oil, and burned with both partners’ knowledge.",
+        "BestFor": "Blessing a relationship, reconciliation, renewing affection, marriage and anniversary blessings.",
+        "BurnStyle": "Commonly burned a little each day over seven days, or all at once at a significant date.",
+        "TypicalBurnTime": "About 3–8 hours, depending on size",
+        "SafetyAndRespect": "Best used for relationships where both people want what the working asks for. Burn on a fire-safe dish; double figures carry a lot of wax.",
+        "BeginnerTip": "Light it together on an anniversary with a shared intention spoken aloud.",
+        "tags": [
+          "figure candle",
+          "lovers",
+          "relationship",
+          "reconciliation",
+          "marriage",
+          "love"
+        ]
+      },
+      "phallus": {
+        "DisplayName": "Phallus Candle",
+        "Category": "Candle Style",
+        "Overview": "A candle shaped as a stylised phallus, a symbol of male fertility, virility and life force that appears in folk magic across many cultures, from ancient Roman fascinum amulets to modern botanica candles.",
+        "TraditionalUse": "In hoodoo and folk practice the male genital candle is used for male sexual health and confidence, passion and attraction, fertility and conception work, and sometimes to bind or redirect a partner’s desire. Ancient Roman practice also used the phallus as a protective charm against the evil eye.",
+        "BestFor": "Passion, virility, fertility, sexual confidence, protection (in the Roman sense).",
+        "BurnStyle": "Usually burned in one sitting or over a few short sessions, dressed with an oil for passion or fertility.",
+        "TypicalBurnTime": "About 2–4 hours",
+        "SafetyAndRespect": "An adult working: keep it private and respectful. Magic is never a substitute for medical care for fertility or sexual-health concerns, and work on another person’s desire raises serious questions of consent.",
+        "BeginnerTip": "Pair it with a red candle and an intention focused on your own confidence and vitality rather than on another person.",
+        "tags": [
+          "figure candle",
+          "fertility",
+          "virility",
+          "passion",
+          "sex magic",
+          "protection"
+        ]
+      },
+      "yoni": {
+        "DisplayName": "Yoni Candle",
+        "Category": "Candle Style",
+        "Overview": "A candle shaped as a stylised yoni (vulva), a symbol of the creative, life-giving feminine honoured in many traditions, from Hindu and Tantric reverence for the yoni to folk fertility magic.",
+        "TraditionalUse": "In hoodoo and folk practice the female genital candle is used for women’s sexual health and confidence, passion and attraction, fertility and conception, and reclaiming one’s body. In goddess-centred practice it honours creative and sexual power as sacred.",
+        "BestFor": "Fertility, sensuality, sexual confidence, body reclamation, honouring the sacred feminine.",
+        "BurnStyle": "Usually burned in one sitting or a few short sessions, often dressed with rose, jasmine or a fertility oil.",
+        "TypicalBurnTime": "About 2–4 hours",
+        "SafetyAndRespect": "An adult working: keep it private and respectful. The yoni is a sacred symbol in living traditions such as Hinduism; treat it with care. Magic does not replace medical care for fertility or sexual health.",
+        "BeginnerTip": "Use it in self-love and body-blessing work: dress it with rose oil and speak words of gratitude for your body.",
+        "tags": [
+          "figure candle",
+          "fertility",
+          "sensuality",
+          "sacred feminine",
+          "self-love",
+          "sex magic"
+        ]
       }
     },
     "black": {
