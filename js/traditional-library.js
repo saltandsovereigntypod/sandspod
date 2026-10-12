@@ -3771,9 +3771,9 @@ const TraditionalLibrary = {
             DisplayName: "Tea Light Candle",
             Category: "Candle Style",
 
-            Overview: "Tea lights are small candles in shallow cups, usually designed to burn for a short period of time. They are accessible, inexpensive, and easy to use for simple spells, meditation, offerings, and daily devotional work.",
+            Overview: "A small, flat disc of wax set in a shallow metal or plastic cup. Tea lights are inexpensive and usually sold in bags or boxes of dozens.",
 
-            TraditionalUse: "Tea lights are commonly used for quick rituals, one-sitting spells, ancestor offerings, deity offerings, meditation, and small altar setups. Because they burn quickly compared to larger candles, they are useful when the practitioner wants the working to begin and end in the same session.",
+            TraditionalUse: "Tea lights carry quick rituals, one-sitting spells, ancestor and deity offerings, meditation and small altar setups, so a working can begin and end in the same session.",
 
             BestFor: "Quick spells, daily devotion, meditation, offerings, simple cleansing, travel altars, and small-space practice.",
 
@@ -3783,7 +3783,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Tea light cups can become hot. Place them on heat-safe surfaces and avoid putting loose herbs directly into the melted wax.",
 
-            BeginnerTip: "Tea lights are perfect when you want candle magic without committing to a long burn time.",
+            HowToUse: "Start here: reach for a tea light when you want candle magic without committing to a long burn. Set it on a saucer or in a small glass holder, and if you want to dress it, add a single drop of oil to the wax surface away from the wick. Stay with it until it goes out, or snuff it and relight it another day.",
 
             tags: ["tea light", "quick spell", "devotion", "offering", "small altar"]
             },
@@ -3792,9 +3792,9 @@ const TraditionalLibrary = {
             DisplayName: "Chime Candle",
             Category: "Candle Style",
 
-            Overview: "Chime candles are small, narrow spell candles that usually burn faster than tapers but longer than many tiny birthday-style candles. They are popular in modern witchcraft because they come in many colors and are easy to use for focused spell work.",
+            Overview: "A small, narrow candle about four inches tall and half an inch wide, also called a spell candle. Chimes are sold singly or in packs in a wide range of colours.",
 
-            TraditionalUse: "Chime candles are commonly used for intention spells, color magic, petition work, deity offerings, and rituals that need a complete candle burn in a manageable amount of time.",
+            TraditionalUse: "Chime candles are used for intention spells, colour magic, petition work and deity offerings, wherever a complete burn is wanted in a manageable amount of time.",
 
             BestFor: "Focused spell work, color magic, carved intentions, beginner candle spells, and rituals that need a full burn without lasting all day.",
 
@@ -3804,7 +3804,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Use a properly sized holder because chime candles can tip if placed loosely. Avoid overloading them with oil or herbs.",
 
-            BeginnerTip: "Chime candles are one of the best choices for learning candle magic because they are small, affordable, and intention-focused.",
+            HowToUse: "Start here: chimes are small, affordable and one of the best candles for learning candle magic, so begin with one in the colour of your intention. Fit it snugly in a chime holder, carve a word or symbol with a pin, and dress it with a thin film of oil, rubbing toward you to draw in or away from you to send off. Let it burn down, and snuff rather than blow it out if you must stop early.",
 
             tags: ["chime candle", "spell candle", "color magic", "petition", "beginner"]
             },
@@ -3813,9 +3813,9 @@ const TraditionalLibrary = {
             DisplayName: "Taper Candle",
             Category: "Candle Style",
 
-            Overview: "Taper candles are tall, narrow candles often used in ritual, formal altar settings, spell work, and devotional practice. They create a strong visual focus and are useful when a working needs elegance, presence, or a longer flame.",
+            Overview: "A tall, slender candle, commonly 6 to 12 inches high, that tapers toward the top. Tapers are sold singly or in pairs and stand in candlesticks.",
 
-            TraditionalUse: "Tapers are commonly used for altar candles, deity candles, paired candle spells, attraction work, banishing work, and rituals involving movement, direction, or relationship between two symbolic candles.",
+            TraditionalUse: "Tapers serve as altar and deity candles and in paired candle spells, attraction and banishing work, and rituals built on movement, direction or the relationship between two symbolic candles.",
 
             BestFor: "Formal ritual, altar symmetry, paired candle spells, longer workings, and visible devotional flames.",
 
@@ -3825,7 +3825,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Tapers need stable holders and should not be placed where they can lean or drip onto flammable surfaces.",
 
-            BeginnerTip: "Use tapers when you want the candle itself to be a central ritual object rather than just a small support tool.",
+            HowToUse: "Start here: choose a taper when you want the candle itself to be the centre of the ritual rather than a small support. Seat it firmly in a candlestick that grips the base, then carve and dress it along its length. For paired or moving work, shift the candles a set distance each session, and snuff the flame between sittings.",
 
             tags: ["taper", "altar candle", "formal ritual", "devotion", "paired spell"]
             },
@@ -3834,9 +3834,9 @@ const TraditionalLibrary = {
             DisplayName: "Pillar Candle",
             Category: "Candle Style",
 
-            Overview: "Pillar candles are thick freestanding candles often used for longer workings, devotional altars, seasonal rituals, and spells that unfold over time. They have a strong physical presence and can act as a central anchor for an altar.",
+            Overview: "A thick, freestanding cylinder of wax, usually 2 to 4 inches across and 3 to 9 inches tall. Pillars stand without a holder and are sold plain, scented or decorated.",
 
-            TraditionalUse: "Pillars are commonly used for protection, healing, prosperity, ancestor work, deity devotion, and repeated ritual lighting over multiple days.",
+            TraditionalUse: "Pillars hold protection, healing, prosperity, ancestor and deity work, often relit over many days as an altar's anchor or a seasonal flame.",
 
             BestFor: "Long-term workings, devotional flames, altar anchors, seasonal rituals, protection work, and repeated spell sessions.",
 
@@ -3846,7 +3846,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Place pillars on heat-safe plates or holders. Freestanding candles can leak wax or burn unevenly if placed in drafts.",
 
-            BeginnerTip: "If using a pillar for multiple days, light it with the same intention each time to keep the working consistent.",
+            HowToUse: "Start here: if you use a pillar over several days, light it with the same intention each time to keep the working consistent. Stand it on a plate or pillar tray, carve symbols into the side, and dress lightly so oil does not run into the wick. On the first lighting let the melt pool reach the edges, trim the wick to about a quarter inch before each relight, and snuff it at the end of each session.",
 
             tags: ["pillar", "long-term spell", "devotion", "altar anchor", "protection"]
             },
@@ -3855,9 +3855,9 @@ const TraditionalLibrary = {
             DisplayName: "Votive Candle",
             Category: "Candle Style",
 
-            Overview: "Votive candles are small but usually larger than tea lights. They are often used for prayers, offerings, healing work, devotion, and spells that need a steady contained flame.",
+            Overview: "A small, squat cylinder of wax, about 2 inches tall, larger than a tea light but smaller than a pillar. Votives are sold loose, without a cup, to be set into a holder.",
 
-            TraditionalUse: "Votives are commonly used in devotional spaces, prayer rituals, healing altars, ancestor work, and simple intention spells.",
+            TraditionalUse: "Votives are lit in prayer rituals, devotional spaces, healing altars, ancestor work and simple intention spells, wherever a steady contained flame is wanted.",
 
             BestFor: "Devotion, prayer, healing, offerings, ancestor work, and medium-length rituals.",
 
@@ -3867,7 +3867,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Votives liquefy as they burn and should always be placed in a proper holder.",
 
-            BeginnerTip: "Votives are a good middle ground between a tea light and a pillar.",
+            HowToUse: "Start here: treat a votive as the middle ground between a tea light and a pillar when you need a few hours of flame. Drop it into a glass votive cup only slightly wider than the candle, and dress the top with a drop of oil or carve a small sign before setting it in. Snuff it if you leave, and relight it later to finish.",
 
             tags: ["votive", "prayer", "healing", "offering", "devotion"]
             },
@@ -3876,9 +3876,9 @@ const TraditionalLibrary = {
             DisplayName: "Jar Candle",
             Category: "Candle Style",
 
-            Overview: "Jar candles are candles poured into glass or heat-safe containers. They are commonly used for longer workings, devotional practice, fixed candles, and spells where the candle needs to safely contain wax as it burns.",
+            Overview: "A candle poured into a glass or other heat-safe container, so the wax stays contained as it melts. Jar candles come in many sizes, plain or scented.",
 
-            TraditionalUse: "Jar candles are often used for ongoing protection, prosperity, healing, road opening, devotional offerings, and household blessing work.",
+            TraditionalUse: "Jar candles carry ongoing protection, prosperity, healing, road opening, devotional offerings and household blessings, and serve as fixed candles.",
 
             BestFor: "Longer burn times, fixed candles, devotional work, home protection, prosperity work, and repeated lighting.",
 
@@ -3888,7 +3888,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Stop using a jar candle if the glass cracks, overheats, or has very little wax left. Do not burn all the way to the bottom if the container becomes unsafe.",
 
-            BeginnerTip: "Jar candles are useful for ongoing workings because you can relight them daily with the same intention.",
+            HowToUse: "Start here: jar candles suit ongoing work because you can relight them daily with the same intention. To fix one, poke a few shallow holes in the top with a skewer, add a few drops of oil and a light pinch of finely ground herb, and keep both away from the wick. Set the jar on a coaster or trivet, trim the wick before each lighting, and snuff it between sessions.",
 
             tags: ["jar candle", "fixed candle", "long-term", "protection", "devotion"]
             },
@@ -3897,9 +3897,9 @@ const TraditionalLibrary = {
             DisplayName: "Seven-Day Candle",
             Category: "Candle Style",
 
-            Overview: "Seven-day candles are tall glass jar candles often used in folk magic, devotional work, prayer, protection, healing, prosperity, road opening, and ongoing petitions. They are designed to burn for an extended period, though actual burn time varies.",
+            Overview: "A tall glass cylinder, about 8 inches high, filled with wax. Seven-day candles are sold plain, in solid colours, or printed with prayers and images, often in botanicas and grocery stores.",
 
-            TraditionalUse: "Seven-day candles are commonly used for sustained prayer, deity devotion, ancestor work, protection, cleansing, uncrossing, love, money, and spiritual assistance.",
+            TraditionalUse: "Seven-day candles hold sustained prayer, deity devotion, ancestor work, protection, cleansing, uncrossing, love, money, road opening and spiritual assistance.",
 
             BestFor: "Long-term petitions, devotional work, protection, healing, prosperity, road opening, and repeated daily prayer.",
 
@@ -3909,7 +3909,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Never leave a seven-day candle unattended unless it is in a truly fire-safe setup. Glass can crack, overheat, or break.",
 
-            BeginnerTip: "You do not have to burn a seven-day candle nonstop. Lighting it daily with a clear petition is a safer and still meaningful option.",
+            HowToUse: "Start here: you do not have to burn a seven-day candle nonstop; lighting it daily with a clear petition is safer and still meaningful. Dress it by poking three holes in the top, adding a few drops of oil and a tiny pinch of herb, or by taping a written petition to the glass. Stand it in a sink, deep dish or metal tray, and snuff it whenever you leave the room.",
 
             tags: ["seven-day candle", "petition", "devotion", "prayer", "long-term"]
             },
@@ -3918,9 +3918,9 @@ const TraditionalLibrary = {
             DisplayName: "Novena Candle",
             Category: "Candle Style",
 
-            Overview: "Novena candles are devotional candles often associated with nine-day prayer cycles, saints, spirits, deities, or specific spiritual petitions. In magical and devotional practice, they are used when an intention is meant to be tended over time.",
+            Overview: "A tall glass-encased candle, similar to a seven-day candle, often printed with the image and prayer of a saint or holy figure. Novenas are sold in religious shops, botanicas and grocery stores.",
 
-            TraditionalUse: "Novena candles are commonly used for prayer, devotion, healing, protection, gratitude, intercession, and repeated petition work.",
+            TraditionalUse: "Novena candles carry prayer, devotion, healing, protection, gratitude, intercession and repeated petitions to saints, spirits, deities or ancestors over a nine-day cycle.",
 
             BestFor: "Nine-day workings, devotional practice, prayer cycles, spirit work, ancestor work, and focused petitions.",
 
@@ -3930,7 +3930,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Novena traditions often come from specific religious contexts. Use respectfully and avoid stripping sacred imagery from its meaning.",
 
-            BeginnerTip: "If using a novena format, write one clear petition and return to it daily rather than changing the intention each time.",
+            HowToUse: "Start here: write one clear petition and return to it each day rather than changing the intention. Keep the paper under the glass, set the candle on a heat-safe dish, and light it at the same time each day while you say your prayer. Snuff it when you finish if you are not staying nearby.",
 
             tags: ["novena", "prayer", "devotion", "petition", "nine days"]
             },
@@ -3939,9 +3939,9 @@ const TraditionalLibrary = {
             DisplayName: "Floating Candle",
             Category: "Candle Style",
 
-            Overview: "Floating candles are designed to burn while floating on water. They combine fire and water symbolism, making them useful for emotional healing, release, love, lunar work, and gentle transformation.",
+            Overview: "A shallow, wide candle shaped to float on water, often as a disc, flower or star. Floating candles are usually sold in small sets.",
 
-            TraditionalUse: "Floating candles are often used in water rituals, love spells, grief work, moon rituals, emotional release, and blessing ceremonies.",
+            TraditionalUse: "Floating candles join fire and water in water rituals, love spells, grief work, moon rituals, emotional release, gentle transformation and blessing ceremonies.",
 
             BestFor: "Water magic, emotional healing, lunar rituals, release work, love, grief support, and ceremonial beauty.",
 
@@ -3951,7 +3951,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Use a wide heat-safe bowl and keep flammable decorations away from the flame. Water reduces some risks but does not remove fire danger.",
 
-            BeginnerTip: "Floating candles are beautiful for release rituals. Speak what you are releasing, light the candle, and let the water hold the emotional weight.",
+            HowToUse: "Start here: for a simple release, speak what you are letting go, light the candle and let the water hold it. Fill a wide bowl with water, add a few flower petals or a pinch of salt if you like, and set the candle down gently with dry hands so the wick stays dry. Snuff it with a snuffer rather than pushing it under.",
 
             tags: ["floating candle", "water magic", "release", "love", "moon"]
             },
@@ -3960,9 +3960,9 @@ const TraditionalLibrary = {
             DisplayName: "Birthday Candle",
             Category: "Candle Style",
 
-            Overview: "Birthday candles are tiny, thin candles made for cakes and celebrations. Their short burn time makes them useful for quick wishes, tiny spells, and moments when a practitioner needs a flame that will finish almost immediately.",
+            Overview: "A tiny, thin candle a few inches long, made for cakes and celebrations. Birthday candles are sold in boxes of many colours.",
 
-            TraditionalUse: "Birthday candles are commonly used for wish magic, quick petitions, birthday blessings, small offerings, and spells that need to be completed in minutes. The familiar act of making a wish and blowing out a birthday candle is itself a widely shared folk ritual.",
+            TraditionalUse: "Birthday candles carry wish magic, quick petitions, birthday blessings and small offerings, and any spell that needs to be finished in minutes; making a wish and blowing out the flame is itself a widely shared folk ritual.",
 
             BestFor: "Quick wishes, tiny spells, birthday blessings, celebration rituals, and practice when time is short.",
 
@@ -3972,7 +3972,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Birthday candles burn fast and drip quickly. Keep them upright in a stable base and away from paper, ribbons, and loose herbs.",
 
-            BeginnerTip: "If you only have a few minutes, a birthday candle in the color of your intention can carry a simple, focused wish.",
+            HowToUse: "Start here: if you only have a few minutes, pick a birthday candle in the colour of your intention and make one focused wish. Push it into a cake, a cupcake or a small dish of sand, hold the wish in mind as you light it, and say it aloud or silently while it burns. Blow it out at the end if it is a wish, or let it finish if it is a petition.",
 
             tags: ["birthday candle", "wish magic", "quick spell", "celebration", "tiny candle"]
             },
@@ -3981,9 +3981,9 @@ const TraditionalLibrary = {
             DisplayName: "Figure Candle",
             Category: "Candle Style",
 
-            Overview: "Figure candles are molded into specific shapes, such as human figures, couples, cats, skulls, hearts, and other symbolic forms. The shape itself becomes part of the working, giving a clear visual representation of a person, relationship, or intention.",
+            Overview: "A candle moulded into a recognisable shape, such as a human figure, couple, cat, skull or heart. Figure candles are sold singly in many colours, often in botanicas and occult shops.",
 
-            TraditionalUse: "Figure candles are often used in folk magic for love and relationship work, self-blessing, healing, luck, protection, and removing obstacles. Human figures may represent a person, couples may represent a relationship, cats are often used for luck, and skulls are commonly used for the mind, ancestors, or ending a situation.",
+            TraditionalUse: "Figure candles are used for love and relationship work, self-blessing, healing, luck, protection and removing obstacles. A human figure stands for a person, a couple for a relationship, a cat for luck, and a skull for the mind, the ancestors or ending a situation.",
 
             BestFor: "Representing a specific person or relationship, self-love and self-empowerment, luck work, ancestor work, and strongly symbolic spells.",
 
@@ -3993,7 +3993,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Figure candles burn unevenly and can collapse, pool wax, or flare. Burn them on a large heat-safe plate. Representing another person in a spell carries ethical weight, so be clear about consent and intention.",
 
-            BeginnerTip: "Start with a figure that represents you. A self-blessing or self-love working with a figure candle is a meaningful and ethically simple first use.",
+            HowToUse: "Start here: begin with a figure that represents you, since a self-blessing or self-love working is a meaningful and ethically simple first use. Set it on a large plate, carve your name or birth date into it, and dress it with an oil chosen for the goal. Burn a portion each session and snuff it in between.",
 
             tags: ["figure candle", "image magic", "representation", "love", "folk magic"]
             },
@@ -4002,9 +4002,9 @@ const TraditionalLibrary = {
             DisplayName: "Rolled Beeswax Candle",
             Category: "Candle Style",
 
-            Overview: "Rolled beeswax candles are made by rolling sheets of honeycomb-textured beeswax around a wick. They are easy to make at home, which allows herbs, written petitions, or small symbols to be rolled inside the candle as part of the spell.",
+            Overview: "A candle made by rolling a sheet of honeycomb-textured beeswax tightly around a wick. Sheets and wick are sold in craft kits, and the candles are easy to make at home.",
 
-            TraditionalUse: "Beeswax candles have long been valued in devotional and church use for their clean burn and natural origin. In modern magical practice, rolled beeswax candles are commonly used for handmade spell candles, blessings, sweetening work, prosperity, and offerings.",
+            TraditionalUse: "Rolled beeswax candles are used as handmade spell candles for blessings, sweetening and attraction work, prosperity and offerings, with herbs, written petitions or small symbols rolled inside.",
 
             BestFor: "Handmade spell candles, sweetening and attraction work, blessings, offerings, and crafting a candle with its own petition inside.",
 
@@ -4014,7 +4014,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Keep anything rolled inside very small and sparse, because paper and plant matter can flare. Beeswax is an animal product, so vegan practitioners may prefer plant-based waxes.",
 
-            BeginnerTip: "Roll a small written intention into a beeswax sheet as you make the candle. The act of making it becomes the first part of the spell.",
+            HowToUse: "Start here: roll a small written intention into the sheet as you make the candle, so the making becomes the first part of the spell. Warm the sheet slightly with your hands or a hairdryer so it does not crack, lay the wick along one edge, and roll firmly and evenly. Stand it in a snug holder and snuff it if you stop early.",
 
             tags: ["beeswax", "handmade", "rolled candle", "sweetening", "offering"]
             },
@@ -4023,9 +4023,9 @@ const TraditionalLibrary = {
             DisplayName: "Double-Action Candle",
             Category: "Candle Style",
 
-            Overview: "Double-action candles are made in two colors, usually one color for the top half and another for the bottom half. They are designed for workings that both remove something and bring something in, such as clearing negativity and then drawing in blessings.",
+            Overview: "A candle made in two colours, one for the top half and another for the bottom, most often as a taper. Common pairs are black over red, black over green and black over white.",
 
-            TraditionalUse: "Double-action candles are often used in folk magic for paired intentions, such as black and red for removing harm and restoring love, or black and green for clearing money blocks and drawing in prosperity. The first color burned is usually the one being removed, and the second is the one being invited in.",
+            TraditionalUse: "Double-action candles carry paired intentions that remove something and bring something in: black and red for removing harm and restoring love, black and green for clearing money blocks and drawing in prosperity. The first colour burned is the one being removed, the second the one being invited in.",
 
             BestFor: "Clear-then-draw workings, uncrossing followed by blessing, and any spell with two linked steps.",
 
@@ -4035,7 +4035,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Use a stable holder and catch drips, since two-colored candles are often tall tapers. Keep the two parts of the intention clear rather than mixing them.",
 
-            BeginnerTip: "Write two short lines before you light it: what you are releasing, and what you are welcoming. Read the second line when the flame reaches the second color.",
+            HowToUse: "Start here: write two short lines before you light it, what you are releasing and what you are welcoming, and read the second line when the flame reaches the second colour. Fit it in a sturdy taper holder over a drip plate, and dress each half separately, rubbing the release half away from you and the welcome half toward you. Snuff it between sessions.",
 
             tags: ["double action", "two colors", "uncrossing", "clear and draw", "folk magic"]
             },
@@ -4044,9 +4044,9 @@ const TraditionalLibrary = {
             DisplayName: "Reversible Candle",
             Category: "Candle Style",
 
-            Overview: "Reversible candles usually have a red core covered by an outer layer of black wax. They are used in folk magic to send back or reverse harmful energy, symbolically burning away the black covering to reveal and restore what is underneath.",
+            Overview: "A candle, usually a taper or pillar, with a red core covered by an outer layer of black wax. As it burns, the black melts away to reveal the red beneath.",
 
-            TraditionalUse: "Reversible candles are traditionally used for uncrossing, returning harm to its source, breaking curses, and protection work. Some practitioners use them to restore vitality and love after a period of conflict or bad luck.",
+            TraditionalUse: "Reversible candles are used for uncrossing, returning harm to its source, breaking curses and protection work, and to restore vitality and love after conflict or bad luck.",
 
             BestFor: "Uncrossing, reversing harm, protection, and restoring strength after a difficult period.",
 
@@ -4056,7 +4056,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Reversal work should focus on protecting yourself rather than harming others. Mirrors under candles can crack from heat, so use heat-safe surfaces and never leave the candle unattended.",
 
-            BeginnerTip: "If you are new to reversal work, frame it as 'what is not mine returns to its source' rather than as an attack.",
+            HowToUse: "Start here: if you are new to reversal work, frame it as 'what is not mine returns to its source' rather than as an attack. Carve your name into the black layer, dress it with a protection or uncrossing oil, and stand it on a heat-safe plate. Snuff it at the end of each session.",
 
             tags: ["reversible", "uncrossing", "protection", "return to sender", "folk magic"]
             },
@@ -4065,9 +4065,9 @@ const TraditionalLibrary = {
             DisplayName: "Seven-Knob Candle",
             Category: "Candle Style",
 
-            Overview: "Seven-knob candles are made of seven rounded sections stacked on top of each other. Each knob is usually burned on a separate day, making them a structured tool for workings that build over a week.",
+            Overview: "A candle made of seven rounded sections stacked one on top of another, about 8 inches tall. Seven-knob candles are sold singly in several colours.",
 
-            TraditionalUse: "Seven-knob candles are commonly used in folk magic for wishes, goals, prosperity, love, protection, and breaking bad habits. Many practitioners burn one knob per day while repeating the same petition.",
+            TraditionalUse: "Seven-knob candles carry wishes, goals, prosperity, love, protection and breaking bad habits, with the same petition repeated as each knob burns.",
 
             BestFor: "Seven-day wishes, habit change, step-by-step goals, and workings that need daily repetition.",
 
@@ -4077,7 +4077,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Knob candles can drip and lean as the shape melts. Use a wide heat-safe plate and stay present while each knob burns.",
 
-            BeginnerTip: "Write one goal and one small action for each of the seven days. Burn a knob each day as you complete the action.",
+            HowToUse: "Start here: write one goal and one small action for each of the seven days, and burn a knob each day as you complete that day's action. Stand it on a wide plate, carve a word or the day's step into each knob, and dress lightly with oil. Snuff it when the flame reaches the narrow join between knobs.",
 
             tags: ["seven knob", "wish candle", "daily practice", "habit change", "goals"]
             },
@@ -4086,9 +4086,9 @@ const TraditionalLibrary = {
             DisplayName: "Male Figure Candle",
             Category: "Candle Style",
 
-            Overview: "A candle moulded in the shape of a standing man. Figure candles are one of the oldest kinds of image magic: the candle stands in for a specific person, so the working is directed to them.",
+            Overview: "A candle moulded in the shape of a standing man, usually 6 to 7 inches tall. It is sold singly in colours such as red, white, black, green and pink.",
 
-            TraditionalUse: "In hoodoo, conjure and many folk traditions a male figure candle represents a particular man (or the practitioner himself) in work for love, attraction, healing, protection, reconciliation, success or banishing. It is usually named, carved with the person’s name or birth date, and dressed with an oil chosen for the goal.",
+            TraditionalUse: "A male figure candle stands for a particular man, or the practitioner himself, in hoodoo, conjure and folk work for love, attraction, healing, protection, reconciliation, success or banishing, directing the working to that person.",
 
             BestFor: "Working for or on behalf of a specific person, self-work, healing, attraction, reconciliation, protection.",
 
@@ -4098,7 +4098,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Figure candles burn unevenly and drip heavily; set them on a fire-safe plate. Working on another person without their knowledge raises real questions of consent — many practitioners keep figure work to healing, blessing, protection or their own life.",
 
-            BeginnerTip: "Start with a figure that represents yourself — for confidence, healing or self-love — before working for anyone else.",
+            HowToUse: "Start here: begin with a figure that represents yourself, for confidence, healing or self-love, before working for anyone else. Name it aloud, carve the name or birth date into it with a pin, and dress it with an oil chosen for the goal. Set it on a plate and snuff it between sessions.",
 
             tags: ["figure candle", "image magic", "hoodoo", "love", "healing", "self work"]
             },
@@ -4107,9 +4107,9 @@ const TraditionalLibrary = {
             DisplayName: "Female Figure Candle",
             Category: "Candle Style",
 
-            Overview: "A candle moulded in the shape of a standing woman. Like all figure candles it represents a specific person, giving the working a clear focus.",
+            Overview: "A candle moulded in the shape of a standing woman, usually 6 to 7 inches tall. It is sold singly in colours such as red, white, black, green and pink.",
 
-            TraditionalUse: "In hoodoo, conjure and folk practice a female figure candle stands for a particular woman (or the practitioner herself) in work for love, attraction, fertility, healing, protection, success or release. It is commonly named, carved and dressed with an oil suited to the goal.",
+            TraditionalUse: "A female figure candle stands for a particular woman, or the practitioner herself, in hoodoo, conjure and folk work for love, attraction, fertility, healing, protection, success or release.",
 
             BestFor: "Working for or on behalf of a specific person, self-love, healing, attraction, protection, release.",
 
@@ -4119,7 +4119,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Use a fire-safe plate — figures drip and can tip. Consider consent carefully before working on another person; healing, blessing and protective work are the gentlest uses.",
 
-            BeginnerTip: "A female figure dressed with rose or lavender oil and carved with your own name makes a simple, powerful self-love candle.",
+            HowToUse: "Start here: for a simple self-love candle, carve your own name into a female figure and dress it with rose or lavender oil. Name it aloud as you carve, rub the oil in from the feet up, and set it on a plate. Snuff it between sessions.",
 
             tags: ["figure candle", "image magic", "hoodoo", "love", "self-love", "healing"]
             },
@@ -4128,9 +4128,9 @@ const TraditionalLibrary = {
             DisplayName: "Lovers Candle (Embracing Couple)",
             Category: "Candle Style",
 
-            Overview: "A figure candle of two people embracing, moulded as one. It represents a relationship as a whole rather than one person in it.",
+            Overview: "A figure candle of two people embracing, moulded as one piece. It represents a relationship as a whole rather than one person in it, and is usually sold in red, pink or white.",
 
-            TraditionalUse: "Used in conjure and folk love magic to strengthen an existing bond, heal a rift, renew passion, or bless a marriage or partnership. The figures are often carved with both names, dressed with a love or reconciliation oil, and burned with both partners’ knowledge.",
+            TraditionalUse: "Lovers candles are used in conjure and folk love magic to strengthen an existing bond, heal a rift, renew passion, or bless a marriage or partnership, burned with both partners' knowledge.",
 
             BestFor: "Blessing a relationship, reconciliation, renewing affection, marriage and anniversary blessings.",
 
@@ -4140,7 +4140,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "Best used for relationships where both people want what the working asks for. Burn on a fire-safe dish; double figures carry a lot of wax.",
 
-            BeginnerTip: "Light it together on an anniversary with a shared intention spoken aloud.",
+            HowToUse: "Start here: light it together on an anniversary with a shared intention spoken aloud. Carve both names into the figures, dress them with a love or reconciliation oil, and set the candle on a wide dish. Snuff it between sessions if you are spreading the burn over several days.",
 
             tags: ["figure candle", "lovers", "relationship", "reconciliation", "marriage", "love"]
             },
@@ -4149,9 +4149,9 @@ const TraditionalLibrary = {
             DisplayName: "Phallus Candle",
             Category: "Candle Style",
 
-            Overview: "A candle shaped as a stylised phallus, a symbol of male fertility, virility and life force that appears in folk magic across many cultures, from ancient Roman fascinum amulets to modern botanica candles.",
+            Overview: "A candle moulded as a stylised phallus, a symbol of male fertility, virility and life force. It is sold in botanicas and occult shops, most often in red, black or white.",
 
-            TraditionalUse: "In hoodoo and folk practice the male genital candle is used for male sexual health and confidence, passion and attraction, fertility and conception work, and sometimes to bind or redirect a partner’s desire. Ancient Roman practice also used the phallus as a protective charm against the evil eye.",
+            TraditionalUse: "In hoodoo and folk practice the phallus candle is used for male sexual health and confidence, passion and attraction, and fertility and conception, and sometimes to bind or redirect a partner's desire. In the Roman sense it also serves as protection against the evil eye.",
 
             BestFor: "Passion, virility, fertility, sexual confidence, protection (in the Roman sense).",
 
@@ -4159,9 +4159,9 @@ const TraditionalLibrary = {
 
             TypicalBurnTime: "About 2–4 hours",
 
-            SafetyAndRespect: "An adult working: keep it private and respectful. Magic is never a substitute for medical care for fertility or sexual-health concerns, and work on another person’s desire raises serious questions of consent.",
+            SafetyAndRespect: "An adult working: keep it private and respectful. Magic is never a substitute for medical care for fertility or sexual-health concerns, and work on another person's desire raises serious questions of consent.",
 
-            BeginnerTip: "Pair it with a red candle and an intention focused on your own confidence and vitality rather than on another person.",
+            HowToUse: "Start here: pair it with a red candle and an intention focused on your own confidence and vitality rather than on another person. Stand it on a heat-safe plate, carve your name or a word for your goal into the base, and dress it with a passion or fertility oil. Snuff it between sessions.",
 
             tags: ["figure candle", "fertility", "virility", "passion", "sex magic", "protection"]
             },
@@ -4170,9 +4170,9 @@ const TraditionalLibrary = {
             DisplayName: "Yoni Candle",
             Category: "Candle Style",
 
-            Overview: "A candle shaped as a stylised yoni (vulva), a symbol of the creative, life-giving feminine honoured in many traditions, from Hindu and Tantric reverence for the yoni to folk fertility magic.",
+            Overview: "A candle moulded as a stylised yoni (vulva), a symbol of the creative, life-giving feminine. It is sold in botanicas and occult shops, most often in red, pink or white.",
 
-            TraditionalUse: "In hoodoo and folk practice the female genital candle is used for women’s sexual health and confidence, passion and attraction, fertility and conception, and reclaiming one’s body. In goddess-centred practice it honours creative and sexual power as sacred.",
+            TraditionalUse: "In hoodoo and folk practice the yoni candle is used for women's sexual health and confidence, passion and attraction, fertility and conception, and reclaiming one's body. In goddess-centred practice it honours creative and sexual power as sacred.",
 
             BestFor: "Fertility, sensuality, sexual confidence, body reclamation, honouring the sacred feminine.",
 
@@ -4182,7 +4182,7 @@ const TraditionalLibrary = {
 
             SafetyAndRespect: "An adult working: keep it private and respectful. The yoni is a sacred symbol in living traditions such as Hinduism; treat it with care. Magic does not replace medical care for fertility or sexual health.",
 
-            BeginnerTip: "Use it in self-love and body-blessing work: dress it with rose oil and speak words of gratitude for your body.",
+            HowToUse: "Start here: use it for self-love and body blessing, speaking words of gratitude for your body as it burns. Stand it on a heat-safe plate, carve your name into the base, and dress it with oil, rubbing upward from the base. Snuff it between sessions.",
 
             tags: ["figure candle", "fertility", "sensuality", "sacred feminine", "self-love", "sex magic"]
             }
