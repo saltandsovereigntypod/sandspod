@@ -58,13 +58,24 @@ export function calendarPath(settings: SettingsLike): string[] {
   return PATH_TRADITIONS.map((t) => t.id).filter((id) => ids.includes(id));
 }
 
+/**
+ * Traditions that never sort the Library into a My Path section: modern
+ * Pagan practice (the Wheel of the Year) uses nearly every herb, stone and
+ * candle, so a section for it would just hold everything. Entries still say
+ * how it uses them under In the Traditions.
+ */
+export const UNSECTIONED_TRADITIONS = ['wheel'];
+
+/** The traditions someone can put on their path in Settings → Living Library. */
+export const PATH_CHOICES = PATH_TRADITIONS.filter((t) => !UNSECTIONED_TRADITIONS.includes(t.id));
+
 export function myPath(settings: SettingsLike): MyPath {
   const mode = pathMode(settings);
   const hidden = hiddenTraditions(settings);
   const chosen = mode === 'off' ? [] : mode === 'custom' ? csv(settings?.library_path) : calendarPath(settings);
   return {
     mode,
-    traditions: PATH_TRADITIONS.map((t) => t.id).filter((id) => chosen.includes(id) && !hidden.includes(id)),
+    traditions: PATH_CHOICES.map((t) => t.id).filter((id) => chosen.includes(id) && !hidden.includes(id)),
     hideOtherDeities: mode !== 'off' && settings?.library_path_other_deities === 'hide',
     hidden,
   };

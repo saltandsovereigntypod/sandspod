@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import { Chips, MenuList, MenuRow, Section, SwitchRow } from '../../../../components/more/ui';
 import { SettingsForm } from '../../../../components/more/SettingsForm';
-import { calendarPath, myPath, PATH_TRADITIONS, pathMode, pathName, type PathMode } from '../../../../lib/library/traditions';
+import { calendarPath, myPath, PATH_CHOICES, pathMode, pathName, type PathMode } from '../../../../lib/library/traditions';
 import { type } from '../../../../theme';
 import { LAYER_LABELS, LAYER_ORDER_OPTIONS, LAYERS, layerOrderLabel } from '../../../../lib/settings/defaults';
 
@@ -22,13 +22,13 @@ export default function LibrarySettings() {
       {(draft, set) => {
         const mode = pathMode(draft);
         const path = myPath(draft);
-        const fromCalendars = calendarPath(draft).filter((id) => !path.hidden.includes(id));
-        const choices = PATH_TRADITIONS.filter((t) => !path.hidden.includes(t.id));
+        const fromCalendars = calendarPath(draft).filter((id) => !path.hidden.includes(id) && PATH_CHOICES.some((t) => t.id === id));
+        const choices = PATH_CHOICES.filter((t) => !path.hidden.includes(t.id));
         const toggle = (id: string, on: boolean) => {
           const next = new Set(path.traditions);
           if (on) next.add(id);
           else next.delete(id);
-          set('library_path', PATH_TRADITIONS.map((t) => t.id).filter((t) => next.has(t)).join(','));
+          set('library_path', PATH_CHOICES.map((t) => t.id).filter((t) => next.has(t)).join(','));
         };
         return (
         <>

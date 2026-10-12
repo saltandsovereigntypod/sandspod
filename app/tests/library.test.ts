@@ -204,7 +204,10 @@ test('My path: follows the calendars, can be chosen, and puts your traditions fi
   const entries = traditionalEntries();
   const find = (name: string) => entries.find((e) => e.name === name)!;
 
-  assert.deepEqual(myPath({ calendar_traditions: 'wheel_south,celtic,hellenic_monthly,custom' }).traditions, ['wheel', 'celtic', 'hellenic']);
+  // The Wheel of the Year never makes a section: modern Pagan practice uses nearly everything.
+  assert.deepEqual(myPath({ calendar_traditions: 'wheel_south,celtic,hellenic_monthly,custom' }).traditions, ['celtic', 'hellenic']);
+  assert.deepEqual(myPath({ library_path_mode: 'custom', library_path: 'wheel,norse' }).traditions, ['norse']);
+  assert.equal(grimoireShelves(entries, { calendar_traditions: 'wheel' } as never).some((s) => s.key === 'myPath'), false);
   assert.deepEqual(myPath({ library_path_mode: 'custom', library_path: 'roman,norse' }).traditions, ['norse', 'roman']);
   assert.deepEqual(myPath({ library_path_mode: 'off', calendar_traditions: 'celtic' }).traditions, []);
   // A hidden calendar is never part of the path.
