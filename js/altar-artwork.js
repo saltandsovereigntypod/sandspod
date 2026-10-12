@@ -288,6 +288,7 @@
       "ra": "Egyptian",
       "osiris": "Egyptian"
     },
+    "backgrounds": [],
     "items": {
       "herbs": [
         {

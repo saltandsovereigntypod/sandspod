@@ -23,6 +23,8 @@ export const cabinetCategories: { id: CabinetCategoryId; label: string }[] = [
 export const builtInBackgrounds: AltarBackground[] = [
   { id: 'forest-altar', name: 'Forest Altar', background: '/assets/altar/backgrounds/forest-scene.png' },
   { id: 'deity-shelf-altar', name: 'Deity Shelf Altar', background: '/assets/altar/backgrounds/shelf-deity-altar.png' },
+  // The painted backgrounds (scripts/build-altar-artwork.mjs), as the website lists them.
+  ...ALTAR_ARTWORK.backgrounds.map((b) => ({ id: b.id, name: b.name, background: b.assetPath })),
 ];
 
 /** What the stage shows when a save has no background (altar.css default). */

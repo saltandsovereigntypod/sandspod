@@ -28,7 +28,11 @@
   });
   const unique = (records) => [...new Map(records.map((record) => [record.id, record])).values()];
   const api = {
-    getBackgrounds: () => unique(catalogue.backgrounds).map((item) => ({ ...item })),
+    // The originals, then the painted backgrounds listed in js/altar-artwork.js.
+    getBackgrounds: () => unique([
+      ...catalogue.backgrounds,
+      ...((typeof window !== "undefined" ? window.AltarArtwork : globalThis.AltarArtwork)?.backgrounds || []).map((item) => ({ ...item, thumbnailPath: item.assetPath }))
+    ]).map((item) => ({ ...item })),
     getForms: (category) => unique(catalogue.forms[category] || []).map((item) => ({ ...item, aliases: [...(item.aliases || [])] }))
   };
   global.SanctuaryAssetCatalog = api;

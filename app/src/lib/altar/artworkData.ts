@@ -9,6 +9,7 @@ export const ALTAR_ARTWORK: {
   candleWicks: Record<string, [number, number]>;
   pantheonGroups: string[];
   deityPantheons: Record<string, string>;
+  backgrounds: { id: string; name: string; assetPath: string }[];
   items: Record<'herbs' | 'crystals' | 'deities' | 'tools' | 'vessels', ArtworkItem[]>;
 } = {
   "candleColors": [
@@ -298,6 +299,7 @@ export const ALTAR_ARTWORK: {
     "ra": "Egyptian",
     "osiris": "Egyptian"
   },
+  "backgrounds": [],
   "items": {
     "herbs": [
       {
