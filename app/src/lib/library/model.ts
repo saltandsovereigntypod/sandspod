@@ -79,7 +79,7 @@ export const normalizeName = (value: unknown) =>
 const FIELD_LABELS: Record<string, string> = {
   PairsWith: 'Pairs Well With',
   TraditionalWarnings: 'Warnings',
-  TraditionalMeaning: 'Traditional Meaning',
+  TraditionalMeaning: 'Meaning',
   SacredSymbols: 'Sacred Symbols',
   SacredAnimals: 'Sacred Animals',
   SacredPlants: 'Sacred Plants',
