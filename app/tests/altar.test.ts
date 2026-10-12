@@ -316,14 +316,18 @@ test('candles take loose herb and oil dressings once each, shown as overlays', (
 test('the cabinet offers only forms the website has artwork for', () => {
   const red = builtInCabinet.find((item) => item.id === 'candles:red-candle')!;
   const forms = placeableForms(red);
-  assert.deepEqual(forms.map((f) => f.form), ['vigil']);
-  assert.equal(formObjectLabel(red, forms[0]), 'Red Candle Vigil Candle');
+  // Every candle form is painted in every colour.
+  assert.deepEqual(forms.map((f) => f.form), ['chime-spell', 'taper', 'tea-light', 'pillar', 'vigil']);
+  assert.equal(forms[2].image, '../assets/altar/objects/candles/tea-light/red-tea-light.png');
+  assert.equal(formObjectLabel(red, forms[4]), 'Red Candle Vigil Candle');
   const sage = builtInCabinet.find((item) => item.id === 'herbs:sage')!;
   assert.deepEqual(placeableForms(sage).map((f) => f.form), ['incense']);
+  const juniper = builtInCabinet.find((item) => item.id === 'herbs:juniper')!;
+  assert.deepEqual(placeableForms(juniper).map((f) => f.form), ['sprig', 'incense']);
   // A person's own image for a form makes it placeable, keyed like the website.
-  const key = overrideKey(red, red.forms[0]);
-  assert.equal(key, 'candle||chime-spell|red|||||Red Candle Chime / Spell Candle');
-  assert.equal(placeableForms(red, { [key]: 'https://x/y.png' }).length, 2);
+  const key = overrideKey(sage, sage.forms[0]);
+  assert.equal(key, 'herb|sage|sprig||||||Sage Sprig');
+  assert.equal(placeableForms(sage, { [key]: 'https://x/y.png' }).length, 2);
 });
 
 test('a placed object has the website’s fields, size and layer', () => {

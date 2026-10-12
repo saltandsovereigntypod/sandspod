@@ -13,6 +13,22 @@ const cabinetCategories = [
   { id: "vessels", label: "Vessels", icon: "🏺" }
 ];
 
+// Candle artwork by form: the vigil candles, and the chime, taper, tea light and pillar painted for each colour.
+const candleFormFiles = { "chime-spell": "chime", taper: "taper", "tea-light": "tea-light", pillar: "pillar" };
+function candleFormImage(color, formId) {
+  if (formId === "vigil") return `../assets/altar/objects/candles/${color}-candle.${color === "white" || color === "black" ? "PNG" : "png"}`;
+  const file = candleFormFiles[formId];
+  return file ? `../assets/altar/objects/candles/${file}/${color}-${file}.png` : "";
+}
+
+// Which herb and crystal forms have artwork; a form without it can't be placed.
+const herbArtwork = {
+  basil: ["sprig", "loose", "oil"], bay: ["sprig", "loose", "oil"], cedar: ["sprig", "loose", "oil"], chamomile: ["sprig", "loose", "oil"],
+  cinnamon: ["sprig", "loose", "oil"], lavender: ["sprig", "loose", "oil"], mugwort: ["sprig", "loose", "oil"], rosemary: ["sprig", "loose", "oil"],
+  calendula: ["loose"], juniper: ["sprig"]
+};
+const crystalArtwork = { amethyst: ["point", "chips", "cluster"], clear_quartz: ["point", "chips", "cluster"], black_tourmaline: ["chips"] };
+
 const cabinetItems = [
   ...(window.SanctuaryAssetCatalog?.getBackgrounds?.() || []).map((background) => ({ category: "backgrounds", name: background.name, icon: "🌲", keywords: [], background: background.assetPath })),
 
@@ -23,7 +39,7 @@ const cabinetItems = [
     keywords: [color, "candle", "fire"],
     forms: (window.SanctuaryAssetCatalog?.getForms?.("candle") || []).map((form) => ({
       label: form.label,
-      image: form.id === "vigil" ? `../assets/altar/objects/candles/${color}-candle.${color === "white" || color === "black" ? "PNG" : "png"}` : "",
+      image: candleFormImage(color, form.id),
       type: "candle", color, form: form.id, aliases: form.aliases || []
     }))
   })),
@@ -38,9 +54,10 @@ const cabinetItems = [
     ["mugwort", "Mugwort", ["dreams", "divination", "intuition", "thresholds"]],
     ["rosemary", "Rosemary", ["protection", "purification", "remembrance", "healing"]],
     ["sage", "Sage", ["cleansing", "wisdom", "protection", "purification"]],
+    ["calendula", "Calendula", ["healing", "protection", "the sun", "dreams", "joy"]],
+    ["juniper", "Juniper", ["protection", "purification", "cleansing", "warding"]],
   ].map(([id, name, keywords, folder = id.replaceAll("_", "-"), fileBase = folder]) => {
-    const hasBuiltInImages = new Set(["basil", "bay", "cedar", "chamomile", "cinnamon", "lavender", "mugwort", "rosemary"]).has(id);
-    const herbImage = (form) => hasBuiltInImages ? `../assets/altar/objects/herbs/${folder}/${fileBase}-${form}.png` : "";
+    const herbImage = (form) => (herbArtwork[id] || []).includes(form) ? `../assets/altar/objects/herbs/${folder}/${fileBase}-${form}.png` : "";
     return {
     category: "herbs",
     name,
@@ -57,15 +74,16 @@ const cabinetItems = [
   ...[
     ["amethyst", "Amethyst", ["intuition", "dreams", "meditation", "protection"]],
     ["clear_quartz", "Clear Quartz", ["amplification", "clarity", "healing", "cleansing"], "clear-quartz"],
+    ["black_tourmaline", "Black Tourmaline", ["protection", "grounding", "shielding", "absorbing negativity"], "black-tourmaline"],
   ].map(([id, name, keywords, folder = id.replaceAll("_", "-")]) => ({
     category: "crystals",
     name,
     icon: "💎",
     keywords,
     forms: [
-      { label: "Point", image: `../assets/altar/objects/crystals/${folder}/${folder}-point.png`, type: "crystal", crystal: id, form: "point" },
-      { label: "Chips", image: `../assets/altar/objects/crystals/${folder}/${folder}-chips.png`, type: "crystal", crystal: id, form: "chips" },
-      { label: "Cluster", image: `../assets/altar/objects/crystals/${folder}/${folder}-cluster.png`, type: "crystal", crystal: id, form: "cluster" }
+      { label: "Point", image: (crystalArtwork[id] || []).includes("point") ? `../assets/altar/objects/crystals/${folder}/${folder}-point.png` : "", type: "crystal", crystal: id, form: "point" },
+      { label: "Chips", image: (crystalArtwork[id] || []).includes("chips") ? `../assets/altar/objects/crystals/${folder}/${folder}-chips.png` : "", type: "crystal", crystal: id, form: "chips" },
+      { label: "Cluster", image: (crystalArtwork[id] || []).includes("cluster") ? `../assets/altar/objects/crystals/${folder}/${folder}-cluster.png` : "", type: "crystal", crystal: id, form: "cluster" }
     ]
   })),
 

@@ -28,8 +28,9 @@ test("built-in candles expose immutable form choices without duplicate entities"
   assert.deepEqual([...new Set(whiteForms.map((record) => record.title))], ["Chime / Spell Candle", "Taper Candle", "Tea Light", "Pillar Candle", "Vigil Candle"]);
   assert.ok(whiteForms.every((record) => record.href.includes("placeCabinetItem=candles%3Awhite-candle") && record.href.includes("form=")));
   const presentation = cabinetApi().getFormPresentation("candles:white-candle");
-  assert.deepEqual(Array.from(presentation.availableForms), ["vigil"]);
-  assert.deepEqual(Array.from(presentation.missingForms), ["chime-spell", "taper", "tea-light", "pillar"]);
+  // Every candle form has artwork now, in every colour.
+  assert.deepEqual(Array.from(presentation.availableForms), ["chime-spell", "taper", "tea-light", "pillar", "vigil"]);
+  assert.deepEqual(Array.from(presentation.missingForms), []);
 });
 
 test("missing built-in forms use compact add actions instead of placeholder tiles", () => {

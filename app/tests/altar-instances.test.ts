@@ -32,7 +32,7 @@ test('cabinet search finds candles by form names and catalogue aliases', () => {
     assert.equal(names(word).length, 12, word);
   }
   assert.deepEqual(cabinetItemsFor(builtInCabinet, 'vessels', 'spell jar').map((i) => i.name), ['Spell Jar']);
-  assert.deepEqual(cabinetItemsFor(builtInCabinet, 'herbs', 'incense').length, 9);
+  assert.deepEqual(cabinetItemsFor(builtInCabinet, 'herbs', 'incense').length, 11);
   assert.deepEqual(names('nothing like this'), []);
 });
 

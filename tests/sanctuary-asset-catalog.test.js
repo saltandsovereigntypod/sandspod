@@ -23,7 +23,8 @@ test("catalogue describes candle, herb, and crystal forms without false images",
   assert.deepEqual(Catalog.getForms("candle").map((item) => item.id), ["chime-spell", "taper", "tea-light", "pillar", "vigil"]);
   assert.ok(Catalog.getForms("herb").some((item) => item.id === "bundle"));
   assert.ok(Catalog.getForms("crystal").some((item) => item.id === "tumbled"));
-  assert.equal(Catalog.getForms("candle").find((item) => item.id === "taper").supportedAsset, false);
+  assert.equal(Catalog.getForms("candle").find((item) => item.id === "taper").supportedAsset, true);
+  assert.equal(Catalog.getForms("herb").find((item) => item.id === "bundle").supportedAsset, false);
 });
 
 test("forms and instances preserve one canonical entity identity", () => {

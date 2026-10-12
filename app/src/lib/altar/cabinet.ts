@@ -64,8 +64,25 @@ const herbs: [string, string, string[], string?, string?][] = [
   ['mugwort', 'Mugwort', ['dreams', 'divination', 'intuition', 'thresholds']],
   ['rosemary', 'Rosemary', ['protection', 'purification', 'remembrance', 'healing']],
   ['sage', 'Sage', ['cleansing', 'wisdom', 'protection', 'purification']],
+  ['calendula', 'Calendula', ['healing', 'protection', 'the sun', 'dreams', 'joy']],
+  ['juniper', 'Juniper', ['protection', 'purification', 'cleansing', 'warding']],
 ];
-const herbsWithImages = new Set(['basil', 'bay', 'cedar', 'chamomile', 'cinnamon', 'lavender', 'mugwort', 'rosemary']);
+
+// Which forms have artwork (altar/js/features/cabinet.js); a form without it can't be placed.
+const full = ['sprig', 'loose', 'oil'];
+const herbArtwork: Record<string, string[]> = {
+  basil: full, bay: full, cedar: full, chamomile: full, cinnamon: full, lavender: full, mugwort: full, rosemary: full,
+  calendula: ['loose'], juniper: ['sprig'],
+};
+const crystalArtwork: Record<string, string[]> = { amethyst: ['point', 'chips', 'cluster'], clear_quartz: ['point', 'chips', 'cluster'], black_tourmaline: ['chips'] };
+
+// Candle artwork by form: the vigil candles, and the chime, taper, tea light and pillar painted for each colour.
+const candleFormFiles: Record<string, string> = { 'chime-spell': 'chime', taper: 'taper', 'tea-light': 'tea-light', pillar: 'pillar' };
+function candleFormImage(color: string, formId: string): string {
+  if (formId === 'vigil') return `../assets/altar/objects/candles/${color}-candle.${color === 'white' || color === 'black' ? 'PNG' : 'png'}`;
+  const file = candleFormFiles[formId];
+  return file ? `../assets/altar/objects/candles/${file}/${color}-${file}.png` : '';
+}
 
 const single = (
   category: CabinetCategoryId,
@@ -89,10 +106,7 @@ export const builtInCabinet: CabinetItem[] = [
     keywords: [color, 'candle', 'fire'],
     forms: candleForms.map((form) => ({
       label: form.label,
-      image:
-        form.id === 'vigil'
-          ? `../assets/altar/objects/candles/${color}-candle.${color === 'white' || color === 'black' ? 'PNG' : 'png'}`
-          : '',
+      image: candleFormImage(color, form.id),
       type: 'candle',
       color,
       form: form.id,
@@ -100,7 +114,7 @@ export const builtInCabinet: CabinetItem[] = [
     })),
   })),
   ...herbs.map(([id, name, keywords, folder = id, fileBase = folder]) => {
-    const image = (form: string) => (herbsWithImages.has(id) ? `../assets/altar/objects/herbs/${folder}/${fileBase}-${form}.png` : '');
+    const image = (form: string) => ((herbArtwork[id] ?? []).includes(form) ? `../assets/altar/objects/herbs/${folder}/${fileBase}-${form}.png` : '');
     return {
       id: `herbs:${slug(name)}`,
       category: 'herbs' as const,
@@ -118,6 +132,7 @@ export const builtInCabinet: CabinetItem[] = [
     [
       ['amethyst', 'Amethyst', ['intuition', 'dreams', 'meditation', 'protection'], 'amethyst'],
       ['clear_quartz', 'Clear Quartz', ['amplification', 'clarity', 'healing', 'cleansing'], 'clear-quartz'],
+      ['black_tourmaline', 'Black Tourmaline', ['protection', 'grounding', 'shielding', 'absorbing negativity'], 'black-tourmaline'],
     ] as const
   ).map(([id, name, keywords, folder]) => ({
     id: `crystals:${slug(name)}`,
@@ -126,7 +141,7 @@ export const builtInCabinet: CabinetItem[] = [
     keywords: [...keywords],
     forms: (['point', 'chips', 'cluster'] as const).map((form) => ({
       label: capitalize(form),
-      image: `../assets/altar/objects/crystals/${folder}/${folder}-${form}.png`,
+      image: (crystalArtwork[id] ?? []).includes(form) ? `../assets/altar/objects/crystals/${folder}/${folder}-${form}.png` : '',
       type: 'crystal',
       crystal: id,
       form,
