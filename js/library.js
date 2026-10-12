@@ -663,6 +663,13 @@ function mergeTraditionalDuplicates(canonicalEntity, entry) {
     return structuredClone(library);
   }
 
+  /* Empties this browser's copy of the Living Library (used when the account's
+     Library was cleared, so old local entries are not uploaded again). */
+  function resetLibrary() {
+    library = { entities: {}, relations: [], indexes: {} };
+    save();
+  }
+
   function splitConnectionList(value) {
   return String(value || "")
     .split(",")
@@ -898,6 +905,7 @@ return {
   mergeEntities,
 
   removeEntity,
+  resetLibrary,
 
   exportLibrary
 

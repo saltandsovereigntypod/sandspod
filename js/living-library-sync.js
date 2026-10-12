@@ -578,6 +578,48 @@ async function saveAllLivingLibraryLayoutsToSupabase() {
   }
 }
 
+/*
+  When an account's Living Library is cleared (user_settings.settings
+  .library_cleared_at), each browser empties its own copy once, so entries
+  cached here before the clear are not uploaded again.
+*/
+async function applyLivingLibraryClearFromSupabase(user) {
+  const { data, error } = await db
+    .from("user_settings")
+    .select("settings")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (error) return;
+
+  const clearedAt = data?.settings?.library_cleared_at;
+  const seenKey = `saltAndSovereigntyLibraryClearedAt:${user.id}`;
+  if (!clearedAt || localStorage.getItem(seenKey) === String(clearedAt)) return;
+
+  Library.resetLibrary?.();
+  localStorage.removeItem("saltAndSovereigntyLibraryPageLayouts");
+  localStorage.setItem(seenKey, String(clearedAt));
+}
+
+/* Removes a merged-away duplicate and its links from Supabase, so the next
+   browser does not load it and merge it all over again. */
+async function deleteMergedLivingLibraryEntityFromSupabase(entityId) {
+  const user = getLivingLibraryUser();
+  if (!user || !entityId || typeof db === "undefined") return;
+
+  await deleteLivingLibraryEntityFromSupabase(entityId);
+
+  const { error } = await db
+    .from(LIVING_LIBRARY_RELATIONS_TABLE)
+    .delete()
+    .eq("user_id", user.id)
+    .or(`from_entity_id.eq.${entityId},to_entity_id.eq.${entityId}`);
+
+  if (error) {
+    console.error("Living Library merged relations delete failed:", error);
+  }
+}
+
 async function initLivingLibrarySupabaseSync() {
   const user = getLivingLibraryUser();
 
@@ -586,6 +628,11 @@ async function initLivingLibrarySupabaseSync() {
   const startedAt = typeof performance !== "undefined" ? performance.now() : Date.now();
   wrapLivingLibraryMethodsForSupabase();
 
+  try {
+    await applyLivingLibraryClearFromSupabase(user);
+  } catch (error) {
+    console.warn("Living Library clear check failed:", error);
+  }
   await migrateLocalLivingLibraryToSupabaseOnce();
   let stageStartedAt = livingLibraryTiming("local migration", startedAt);
   await loadLivingLibraryFromSupabase();
@@ -619,9 +666,10 @@ async function initLivingLibrarySupabaseSync() {
     for (const connection of connections) {
       await saveLivingLibraryRelationToSupabase(connection.from, connection.relation, connection.to, connection.metadata || {});
     }
-    sourceEntityIds.forEach((sourceId) => {
+    for (const sourceId of sourceEntityIds) {
       localStorage.setItem(getCanonicalMergeKey(user.id, sourceId), canonicalEntityId);
-    });
+      await deleteMergedLivingLibraryEntityFromSupabase(sourceId);
+    }
   }
   stageStartedAt = livingLibraryTiming("canonical cloud save", stageStartedAt);
 
