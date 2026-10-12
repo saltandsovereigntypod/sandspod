@@ -124,7 +124,14 @@
     global.setMySanctuaryView = function livingSanctuaryView(view) {
       originalSetView(view);
       if (view === "dashboard") renderHome(panel, sanctuaryState);
-      if (view === "journey") renderJourney(panel, {});
+      if (view === "journey") {
+        renderJourney(panel, {});
+        // Rituals and templates come from the account; show them once they arrive.
+        global.SanctuarySearchUI?.loadRemoteSources?.().then(() => {
+          const journey = panel.querySelector('[data-sanctuary-view="journey"]');
+          if (journey && !journey.hidden) renderJourney(panel, {});
+        });
+      }
       if (view === "settings") global.LivingSettingsView?.render?.(panel);
     };
     sanctuaryState = authoritativeState(createViewState({ settings: global.getLocalMySettings?.() || {} }));
