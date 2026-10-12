@@ -20,21 +20,17 @@ const TraditionalLibrary = {
             Substitutions: "Mint, rosemary",
             TraditionalWarnings: "Generally considered gentle in folk practice, though essential oils and concentrated preparations should be used with care.",
 
-            Overview: "Basil is one of the most versatile herbs in traditional folk magic, especially for protection, prosperity, courage, and household blessing. It is often treated as a bright, active herb that brings movement, warmth, and vitality into a working. Because it is common in kitchens and gardens, basil is especially useful for everyday witchcraft and practical spell work.",
+            Overview: "Basil is a leafy green kitchen herb with soft, glossy leaves and a sweet, peppery, clove-like scent. The leaves are the part used, sold fresh in pots or bunches and dried as crumbled leaf.",
 
-            TraditionalMeaning: "Traditionally, basil is associated with blessing, luck, love, and the protection of the home. Its fiery quality makes it useful when a working needs energy, confidence, attraction, or forward motion. In many folk traditions, basil is also connected with money drawing and peaceful household protection.",
+            TraditionalMeaning: "Warmth, luck and a blessed, loving home; a bright, active herb that brings courage and forward motion.",
 
-            CommonUses: "Basil is commonly used in money bowls, prosperity jars, protection sachets, love workings, floor washes, and home blessing rituals. It can be added to spell jars for courage, burned or sprinkled in cleansing work, placed near doors for household protection, or used in kitchen magic when cooking with intention.",
-
-            HowToUse: "Use dried basil in spell jars, sachets, charm bags, money bowls, or protection blends. Fresh basil can be placed on an altar, added to ritual baths if skin-safe for the user, or used in intentional cooking. Basil oil may be used for anointing candles or objects, but it should be diluted and handled carefully.",
+            HowToUse: "Start here: keep a pinch of dried basil in a small cloth pouch. Dried leaf is best for jars, sachets and powders and keeps for months in a sealed jar away from light; fresh sprigs suit an altar vase or the cooking pot and should be swapped out once they wilt. Crumble the leaves between your fingers as you add them, and use basil oil only well diluted for dressing candles or objects.",
 
             PairingNotes: "Basil pairs well with rosemary when protection and cleansing are needed, with cinnamon when prosperity or speed is desired, and with bay when success or manifestation is the focus. Citrine and green aventurine strengthen basil’s prosperity associations, while red or green candles can shape its energy toward courage or abundance.",
 
             SubstitutionNotes: "Mint can substitute for basil in prosperity, clarity, and uplifting work. Rosemary can substitute when the focus is protection, cleansing, or general-purpose blessing. If basil is being used for love, rose or lavender may be better substitutions depending on the tone of the working.",
 
-            SafetyAndRespect: "Culinary basil is generally gentle, but concentrated oils can irritate skin or overwhelm sensitive people. Keep essential oils away from pets unless you have confirmed they are safe in your specific household. As always, magical use should not replace medical, financial, or legal support.",
-
-            BeginnerTip: "Basil is a wonderful beginner herb because it is easy to find and works well in many types of spells. A simple money bowl with basil, cinnamon, bay, and coins is a strong starting point.",
+            SafetyAndRespect: "Culinary basil is generally gentle, but concentrated oils can irritate skin or overwhelm sensitive people. Keep essential oils away from pets unless you have confirmed they are safe in your specific household. Magical use should not replace medical, financial, or legal support.",
 
             Traditions: "Christian, Hindu, Wheel of the Year",
 
@@ -54,21 +50,17 @@ const TraditionalLibrary = {
             Substitutions: "Rosemary, basil",
             TraditionalWarnings: "Bay leaves are often burned for wishes, but they should only be burned in a fire-safe container with ventilation.",
 
-            Overview: "Bay is a classic herb of success, protection, prophecy, and manifestation. In modern witchcraft, it is especially known for wish magic, where an intention is written on a leaf and burned, buried, or placed in a spell. Its solar and fiery associations make it strong for victory, confidence, clarity, and blessing.",
+            Overview: "Bay is the stiff, glossy, oval leaf of the bay laurel tree, with a resinous, faintly sweet scent. It is sold whole and dried, and the whole leaf is the part used.",
 
-            TraditionalMeaning: "Bay has long-standing associations with honor, achievement, purification, and prophetic insight. Laurel wreaths are connected with victory and sacred recognition, which is why bay carries a strong symbolic link to success and accomplishment. Magically, it often acts as a bridge between desire and declaration.",
+            TraditionalMeaning: "Victory, honour and success; a solar herb that turns a desire into a declaration.",
 
-            CommonUses: "Bay is commonly used in manifestation spells, success workings, protection charms, divination blends, and purification rites. Practitioners often write a wish, name, sigil, or goal on a bay leaf, then burn it in a safe container or place it in a jar or charm bag.",
-
-            HowToUse: "Use whole bay leaves for written petitions, spell jars, charm bags, altar offerings, and protective bundles. Crushed bay can be added to incense or powders. When burning bay, use a fire-safe bowl or cauldron, keep water nearby, and avoid breathing in heavy smoke.",
+            HowToUse: "Start here: write one short, clear sentence on a dried bay leaf with a pen or fine marker. Whole leaves hold writing best, so store them flat in a sealed jar where they will not crack; crush leaves when you want them blended into incense or powders. To burn a leaf, hold it with tongs over a fire-safe bowl or cauldron, keep water nearby, and let it burn out completely.",
 
             PairingNotes: "Bay pairs beautifully with cinnamon for fast success, rosemary for protection and purification, clove for luck and banishing negativity, and frankincense for consecration. Gold or yellow candles strengthen bay’s solar associations, while citrine and pyrite support success and prosperity workings.",
 
             SubstitutionNotes: "Rosemary can substitute for bay in protection, purification, and general spell work. Basil can substitute in prosperity or success spells. For divination, mugwort or yarrow may be more appropriate substitutes depending on the intention.",
 
-            SafetyAndRespect: "Bay leaves are stiff and can be a choking hazard if left whole in food, so magical and culinary use should be handled differently. Burning leaves should be done with ventilation, especially around pets, asthma, or sensitive lungs.",
-
-            BeginnerTip: "Write one clear sentence on a bay leaf instead of trying to fit a whole paragraph. Simple intentions tend to work better than crowded ones.",
+            SafetyAndRespect: "Bay leaves are stiff and can be a choking hazard if left whole in food, so keep magical and culinary leaves separate. Burn leaves with ventilation, especially around pets, asthma, or sensitive lungs.",
 
             Traditions: "Hellenic, Roman, Wheel of the Year",
 
@@ -88,21 +80,17 @@ const TraditionalLibrary = {
             Substitutions: "Pine, rosemary",
             TraditionalWarnings: "Smoke cleansing should be done with ventilation and care around pets, asthma, or sensitive lungs.",
 
-            Overview: "Cedar is a strong protective and purifying plant ally often used for blessing spaces, grounding spiritual work, and honoring ancestral presence. It carries a steady, resinous, tree-based energy that feels both cleansing and stabilizing. In magical practice, cedar is especially useful when a space needs to feel protected, rooted, and spiritually clear.",
+            Overview: "Cedar is a fragrant evergreen conifer with a warm, woody, resinous scent. It is sold as wood chips, shavings, small branch tips, needles and essential oil.",
 
-            TraditionalMeaning: "Cedar is traditionally associated with sacredness, endurance, protection, and purification. Because cedar trees are long-lived and aromatic, they often symbolize strength, continuity, and spiritual preservation. In many traditions, cedar is treated as a plant of blessing and respectful cleansing.",
+            TraditionalMeaning: "Steadfast protection and sacred endurance; a rooted, cleansing presence that holds a space secure.",
 
-            CommonUses: "Cedar is commonly used in smoke cleansing, protection blends, home wards, ancestor altars, blessing rituals, and grounding work. It may be placed near thresholds, added to sachets, used in incense blends, or kept on an altar to represent protection and sacred space.",
-
-            HowToUse: "Use cedar chips, needles, or small pieces in spell jars, incense blends, charm bags, or altar bowls. Cedar smoke may be used to cleanse a room or ritual object, but only with ventilation and fire safety. Cedar can also be added to protective floor washes or placed near doors as a ward.",
+            HowToUse: "Start here: set a small bowl of cedar chips somewhere you will smell them each day. Chips and needles go into jars, sachets and loose incense; crumble needles finely before burning them. To burn cedar, use a heat-safe dish, small amounts and an open window. Refresh old chips by lightly crushing or sanding them to release the scent.",
 
             PairingNotes: "Cedar pairs well with rosemary and sage for cleansing, frankincense for consecration, and smoky quartz for grounding. It works well with brown, white, or gold candles depending on whether the intention is stability, purification, or blessing.",
 
             SubstitutionNotes: "Pine can substitute for cedar in purification, protection, and tree-based blessing work. Rosemary can substitute when the focus is general cleansing or protection. Frankincense can substitute when the working is more devotional or ceremonial.",
 
             SafetyAndRespect: "Use cedar respectfully, especially because some cedar traditions are culturally specific. Avoid heavy smoke around pets and sensitive lungs, and do not assume every type of cedar is safe for every use. Some woods and oils can be irritating or toxic when burned or applied improperly.",
-
-            BeginnerTip: "Cedar is excellent for making a simple home protection bowl. Combine cedar, rosemary, salt, and a small piece of smoky quartz near the entryway.",
 
             Traditions: "Egyptian, Christian, Hindu, Roman, Wheel of the Year",
 
@@ -122,21 +110,17 @@ const TraditionalLibrary = {
             Substitutions: "Lavender, lemon balm",
             TraditionalWarnings: "May cause reactions for people sensitive to ragweed or related plants.",
 
-            Overview: "Chamomile is a gentle herb of peace, sleep, luck, purification, and soft healing. It is often used when a working needs to calm the nervous system, soothe emotional tension, or bring a kinder, quieter energy into a space. Despite its softness, chamomile also has traditional links to luck and money magic.",
+            Overview: "Chamomile is a small daisy-like flower with white petals around a domed yellow centre and a sweet, apple-like scent. The dried flower heads are the part used, sold loose or in tea bags.",
 
-            TraditionalMeaning: "Traditionally, chamomile is associated with calm, blessing, prosperity, and purification. Its sunny planetary association brings warmth and optimism, while its watery element softens and soothes. This makes chamomile useful for workings that need healing without intensity.",
+            TraditionalMeaning: "Calm, gentle blessing and quiet good luck; soft, sunny healing without intensity.",
 
-            CommonUses: "Chamomile is commonly used in sleep sachets, dream pillows, calming baths, money bowls, luck spells, gentle cleansing washes, and emotional healing rituals. It can also be placed on altars for peace, added to tea rituals, or used in spells for restful sleep.",
-
-            HowToUse: "Use dried chamomile flowers in sachets, spell jars, bath blends, charm bags, or offering bowls. Chamomile tea can be used as a ritual drink, a floor wash ingredient, or a symbolic cleansing water if appropriate. It also works well in candle magic for peace, rest, and gentle prosperity.",
+            HowToUse: "Start here: keep a small jar of dried chamomile flowers on your altar or bedside table. Use the heads whole in sachets and jars, or open tea bags if loose flowers are hard to find. For a wash or bath, steep a handful in hot water for ten minutes, strain and let it cool. Store flowers in a dark, sealed jar, as the scent fades within a year.",
 
             PairingNotes: "Chamomile pairs beautifully with lavender for sleep, lemon balm for emotional ease, rose for heart healing, and amethyst for dreams and calm. Yellow candles bring out chamomile’s luck and prosperity qualities, while blue or white candles emphasize peace and healing.",
 
             SubstitutionNotes: "Lavender can substitute for chamomile in sleep, peace, and healing work. Lemon balm can substitute when the focus is emotional soothing or happiness. Rose can substitute when the working centers on grief, compassion, or heart healing.",
 
             SafetyAndRespect: "Chamomile may not be suitable for people with ragweed allergies or sensitivities to related plants. Use caution with pets, pregnancy, medications, and medicinal use. Magical use should remain separate from medical advice.",
-
-            BeginnerTip: "For an easy sleep charm, combine chamomile, lavender, and amethyst in a small sachet and keep it near your bed.",
 
             Traditions: "Christian, Wheel of the Year",
 
@@ -156,21 +140,17 @@ const TraditionalLibrary = {
             Substitutions: "Clove, ginger",
             TraditionalWarnings: "Can irritate skin in concentrated forms and should be used carefully in oils, powders, and bath blends.",
 
-            Overview: "Cinnamon is a hot, fast, fiery herb used for prosperity, passion, success, attraction, and energetic acceleration. It is one of the most popular ingredients in modern folk magic because it is easy to find and brings strong momentum to spells. Cinnamon is especially useful when a working needs speed, warmth, or power.",
+            Overview: "Cinnamon is the dried inner bark of cinnamon trees, sold as rolled sticks (quills) or ground powder, with a sweet, hot scent. Ceylon cinnamon is paler and softer; cassia is darker and stronger.",
 
-            TraditionalMeaning: "Traditionally, cinnamon is associated with wealth, desire, success, fire, and solar energy. Its heat makes it a catalyst, meaning it can intensify or speed up the intention of a spell. Because of this, it is often added to blends that need extra force or attraction.",
+            TraditionalMeaning: "Heat, speed and attraction; a catalyst that warms and quickens whatever it joins.",
 
-            CommonUses: "Cinnamon is commonly used in money bowls, prosperity jars, love spells, passion workings, success rituals, protection blends, and candle dressing. It may be sprinkled near doors for abundance, added to charm bags, or used in manifestation work with bay leaves.",
-
-            HowToUse: "Use powdered cinnamon in small amounts in spell jars, powders, sachets, and money bowls. Cinnamon sticks can be tied into bundles, placed on altars, or used as symbolic wands in prosperity work. Cinnamon oil should be heavily diluted and used with caution.",
+            HowToUse: "Start here: add one small pinch of ground cinnamon to a jar or sachet. Powder blends easily but clumps in damp air, so keep it sealed; sticks last longer and can be tied into bundles or laid on an altar. To dress a candle, coat it thinly with oil, roll it lightly in powder and tap off the excess so it does not flare. Dilute cinnamon oil heavily before it touches anything.",
 
             PairingNotes: "Cinnamon pairs strongly with bay for success, clove for luck and protection, orange for joy and attraction, and citrine for prosperity. Gold, green, red, and orange candles all work well with cinnamon depending on the intention.",
 
             SubstitutionNotes: "Clove can substitute for cinnamon in protection, prosperity, and warming blends. Ginger can substitute when speed, heat, and action are the main goals. For gentler prosperity work, basil or mint may be better substitutes.",
 
-            SafetyAndRespect: "Cinnamon can irritate skin and should be used carefully in baths, oils, and body products. Avoid blowing cinnamon powder around pets or people with respiratory sensitivity. More cinnamon does not always mean a stronger spell.",
-
-            BeginnerTip: "Use cinnamon sparingly. A small pinch in a money bowl or spell jar is usually enough to add heat and momentum.",
+            SafetyAndRespect: "Cinnamon can irritate skin, so take care with baths, oils, and body products. Avoid blowing cinnamon powder around pets or people with respiratory sensitivity.",
 
             Traditions: "Egyptian, Roman, Hellenic, Christian, Hindu, Wheel of the Year",
 
@@ -190,21 +170,17 @@ const TraditionalLibrary = {
             Substitutions: "Cinnamon, allspice",
             TraditionalWarnings: "Clove oil is very strong and can irritate skin or mucous membranes if not diluted properly.",
 
-            Overview: "Clove is a warm, protective, luck-bringing herb often used for prosperity, friendship, banishing negativity, and strengthening magical boundaries. It has a sharp, spicy quality that makes it excellent for cutting through stagnant or unwanted energy while still supporting abundance and connection.",
+            Overview: "Cloves are the dried, unopened flower buds of the clove tree: small, hard, nail-shaped and dark brown, with a sharp, warming, spicy scent. They are sold whole or ground.",
 
-            TraditionalMeaning: "Traditionally, clove is linked with protection, luck, friendship, and the removal of harmful influence. Its Jupiter association connects it with expansion, blessing, and good fortune, while its fiery nature gives it strength and action.",
+            TraditionalMeaning: "Protection, friendship and good fortune; a sharp warmth that cuts through stagnation and seals a boundary.",
 
-            CommonUses: "Clove is commonly used in protection jars, money spells, luck charms, friendship workings, banishing blends, and simmer pots. It can be added to incense, placed in charm bags, pressed into candles, or combined with orange and cinnamon for prosperity work.",
-
-            HowToUse: "Use whole cloves in spell jars, sachets, simmer pots, and protective charms. Powdered clove can be added to incense or powders, but it should be used lightly. Clove oil is potent and should not be used directly on skin without proper dilution.",
+            HowToUse: "Start here: drop three whole cloves into a small pouch. Whole cloves are the easiest form to handle and keep their scent for years; to set them into a candle, pierce the wax first with a pin. Use ground clove only lightly in incense, and add whole cloves to simmer pots for scent.",
 
             PairingNotes: "Clove pairs well with cinnamon for prosperity and heat, orange for luck and joy, rosemary for protection, and black tourmaline for energetic shielding. Green, gold, or black candles can shift clove toward abundance, success, or banishing.",
 
             SubstitutionNotes: "Cinnamon can substitute for clove when warmth, prosperity, or speed is needed. Allspice can substitute in money and luck workings. Rosemary may be a better substitute when the focus is protection rather than prosperity.",
 
-            SafetyAndRespect: "Clove oil is very concentrated and can burn or irritate skin. Avoid using strong clove preparations around pets, children, or sensitive lungs. Whole cloves are generally easier and safer for beginner spell work.",
-
-            BeginnerTip: "For a simple protection charm, place three whole cloves with rosemary and black salt in a small pouch near your door.",
+            SafetyAndRespect: "Clove oil is very concentrated and can burn or irritate skin, so never apply it undiluted. Avoid strong clove preparations around pets, children, or sensitive lungs.",
 
             Traditions: "Hindu, Wheel of the Year",
 
@@ -224,21 +200,17 @@ const TraditionalLibrary = {
             Substitutions: "Copal, cedar",
             TraditionalWarnings: "Burn resins only on heat-safe surfaces with proper ventilation.",
 
-            Overview: "Frankincense is a sacred resin widely used for purification, consecration, protection, and spiritual elevation. It carries a ceremonial quality and is often used when a ritual space needs to feel clear, blessed, and connected to the divine. In magical practice, frankincense is often treated as a powerful purifier and amplifier.",
+            Overview: "Frankincense is the hardened, pale-golden resin of Boswellia trees, sold as translucent ‘tears’, incense sticks and cones, and essential oil. Burned, it gives a bright, lemony, balsamic smoke.",
 
-            TraditionalMeaning: "Traditionally, frankincense is associated with sacred rites, solar blessing, spiritual authority, and purification. Its long history in religious and ceremonial contexts gives it a strong association with devotion, prayer, and consecrated space.",
+            TraditionalMeaning: "Holiness, consecration and spiritual elevation; a bright resin that blesses and amplifies.",
 
-            CommonUses: "Frankincense is commonly used in incense blends, altar consecration, deity offerings, protection rituals, meditation, and cleansing rites. It may be burned before spell work, used to cleanse tools, or included in blends for spiritual connection and blessing.",
-
-            HowToUse: "Burn frankincense resin on charcoal in a heat-safe incense burner with sand, or use prepared incense sticks or cones. It can also be kept unburned in offering bowls, spell jars, or charm bags. Smoke can be wafted around tools or spaces for symbolic consecration.",
+            HowToUse: "Start here: light one frankincense incense stick or cone. When you are ready for loose resin, light a charcoal disk in a burner filled with sand, wait until it ashes over, then add one or two small tears at a time. Waft the smoke over tools or around a room with your hand or a feather. Unburned tears can sit in an offering bowl or charm bag.",
 
             PairingNotes: "Frankincense pairs especially well with myrrh for sacred rites, rosemary for purification, bay for success and blessing, and clear quartz for amplification. White, gold, or purple candles support its spiritual and solar qualities.",
 
             SubstitutionNotes: "Copal can substitute for frankincense in purification and spiritual offering work. Cedar can substitute when the focus is cleansing, blessing, or grounding a sacred space. Rosemary can stand in for many general purification uses.",
 
             SafetyAndRespect: "Resins become extremely hot when burned on charcoal and should never be left unattended. Use ventilation and caution around smoke-sensitive people and pets. Some traditions treat frankincense as sacred, so use it with intention rather than casually.",
-
-            BeginnerTip: "If charcoal feels intimidating, start with frankincense incense sticks or cones before working with loose resin.",
 
             Traditions: "Egyptian, Hellenic, Roman, Christian, Hindu, Wheel of the Year",
 
@@ -258,21 +230,17 @@ const TraditionalLibrary = {
             Substitutions: "Rose, lavender",
             TraditionalWarnings: "Jasmine fragrance and essential oil can be intense, so use lightly around sensitive people or pets.",
 
-            Overview: "Jasmine is a sensual, lunar herb associated with love, dreams, intuition, beauty, and spiritual receptivity. It is often used in workings that involve attraction, psychic dreaming, emotional openness, or sacred pleasure. Its energy is softer than cinnamon or rose, but deeply atmospheric and intuitive.",
+            Overview: "Jasmine is a climbing shrub with small, white, star-shaped flowers that release a heavy, sweet scent, strongest at night. The flowers are the part used, sold dried, as tea, and as absolute or fragrance oil.",
 
-            TraditionalMeaning: "Traditionally, jasmine is linked with the moon, romance, prophetic dreams, and spiritual sensitivity. It often appears in love magic, dream work, and rituals meant to open the heart and intuitive senses. Jasmine’s night-blooming quality strengthens its connection to mystery and lunar magic.",
+            TraditionalMeaning: "Romance, intuition and moonlit dreams; a soft, receptive, sensual energy.",
 
-            CommonUses: "Jasmine is commonly used in love sachets, dream pillows, lunar rituals, attraction spells, bath blends, and devotional offerings. It can be added to spell jars for sensuality, placed on an altar for beauty and intuition, or used in sleep work for dream recall.",
-
-            HowToUse: "Use dried jasmine flowers in sachets, spell jars, bath blends, or altar offerings. Jasmine oil or fragrance may be used to anoint candles or ritual objects, but should be used lightly. Jasmine pairs well with moon rituals, dream journaling, and soft candle magic.",
+            HowToUse: "Start here: keep a few dried jasmine flowers in a small dish by your bed. Dried flowers go into sachets, jars and bath blends, and jasmine tea is an easy, affordable source of them. True jasmine absolute is costly, so check whether an oil is natural or a fragrance blend, and use only a drop or two to dress a candle or object.",
 
             PairingNotes: "Jasmine pairs beautifully with rose for love, lavender for peace, moonstone for intuition, and silver candles for lunar work. It can also be combined with amethyst for dreams or with pink candles for gentle attraction.",
 
             SubstitutionNotes: "Rose can substitute for jasmine in love, beauty, and heart-centered magic. Lavender can substitute when the focus is peace, sleep, or gentle emotional healing. Mugwort may be a better substitute for purely psychic or dream-focused work.",
 
             SafetyAndRespect: "Jasmine fragrance can be strong and may trigger headaches or sensitivities. Use essential oils carefully and avoid assuming they are safe for pets or direct skin use. Choose food-grade or body-safe forms when needed.",
-
-            BeginnerTip: "For dream work, place a small amount of jasmine with lavender and amethyst near your bed, then write down whatever you remember when you wake.",
 
             Traditions: "Hindu, Wheel of the Year",
 
@@ -292,21 +260,17 @@ const TraditionalLibrary = {
             Substitutions: "Chamomile, lemon balm",
             TraditionalWarnings: "Usually considered gentle, though concentrated oils can irritate skin and should be diluted.",
 
-            Overview: "Lavender is one of the most beloved herbs in modern witchcraft because it is calming, protective, cleansing, and emotionally gentle. It is often used when a working needs peace, sleep, healing, or soft purification. Lavender is especially helpful in rituals that support emotional regulation and spiritual quiet.",
+            Overview: "Lavender is a shrubby herb with grey-green leaves and spikes of small purple flowers, with a clean, floral, slightly camphor scent. The flower buds are the part used, sold dried loose, in bundles, and as essential oil.",
 
-            TraditionalMeaning: "Traditionally, lavender is associated with peace, purity, love, sleep, and mental clarity. Its Mercury association connects it to communication and the mind, while its calming scent makes it useful for easing tension and creating sacred calm.",
+            TraditionalMeaning: "Peace, purity and a clear, quiet mind; gentle love and restful calm.",
 
-            CommonUses: "Lavender is commonly used in sleep sachets, cleansing baths, love spells, healing rituals, dream pillows, peace workings, and protection charms. It is also frequently used in altar work, devotional offerings, and spell jars for calm or emotional healing.",
-
-            HowToUse: "Use dried lavender flowers in sachets, jars, incense blends, bath blends, or offering bowls. Lavender oil may be used to anoint candles or tools when properly diluted. It can also be placed under a pillow, near a bed, or on an altar for peace and rest.",
+            HowToUse: "Start here: rub a dried lavender spike between your fingers and breathe in the scent before you begin. Strip buds from dried stems by rolling them between your palms over a bowl, and keep the stems for bundles. Buds work in sachets, jars, incense and bath blends. Dilute lavender oil before dressing candles or tools.",
 
             PairingNotes: "Lavender pairs well with mugwort for dream work, chamomile for sleep, rose for love and grief support, and amethyst for intuition and peace. White, blue, pink, purple, or silver candles can each shift lavender toward cleansing, healing, love, psychic work, or lunar rest.",
 
             SubstitutionNotes: "Chamomile can substitute for lavender in sleep and peace work. Lemon balm can substitute in emotional healing and calming spells. Rose may substitute when the working is focused on love or compassion.",
 
             SafetyAndRespect: "Lavender is generally gentle, but essential oil can irritate skin and may not be suitable for all pets. Use body-safe preparations for baths or skin contact, and keep strong scents away from sensitive people.",
-
-            BeginnerTip: "Lavender is one of the easiest herbs to start with. A tiny sachet of lavender, chamomile, and amethyst makes a simple peace and sleep charm.",
 
             Traditions: "Christian, Wheel of the Year",
 
@@ -326,21 +290,17 @@ const TraditionalLibrary = {
             Substitutions: "Chamomile, lavender",
             TraditionalWarnings: "Generally gentle in folk practice, though medicinal use may not be appropriate for everyone.",
 
-            Overview: "Lemon balm is a gentle herb of emotional healing, calm, happiness, love, and soothing protection. It is especially useful when a working is meant to soften distress, invite joy, or bring a sense of emotional safety. Its energy is lighter than many protective herbs, making it ideal for tender healing work.",
+            Overview: "Lemon balm is a soft, leafy member of the mint family with crinkled, heart-shaped leaves that smell of fresh lemon when crushed. The leaves are used fresh or dried, and are often sold as tea.",
 
-            TraditionalMeaning: "Traditionally, lemon balm is connected with comfort, uplifted spirits, love, and gentle restoration. Its lunar and watery associations make it emotionally receptive, while its bright lemon scent brings a sense of hope and renewal.",
+            TraditionalMeaning: "Comfort, cheer and gentle restoration; a soft, hopeful energy that eases a heavy heart.",
 
-            CommonUses: "Lemon balm is commonly used in calming spells, happiness charms, emotional healing rituals, self-love work, gentle protection sachets, and sleep blends. It can also be used in tea rituals, bath magic, or altar work focused on softness and recovery.",
-
-            HowToUse: "Use dried lemon balm in sachets, jars, bath blends, dream pillows, or charm bags. Fresh lemon balm can be placed on an altar or used in kitchen witchcraft. Lemon balm tea may be used ritually if it is safe for the person drinking it.",
+            HowToUse: "Start here: crush a fresh or dried leaf between your fingers and breathe in its scent. Dried leaves go into sachets, jars, bath blends and dream pillows, but they lose their scent quickly, so dry small batches and store them sealed. Fresh sprigs keep a few days in a glass of water on the altar, and the plant grows easily in a pot.",
 
             PairingNotes: "Lemon balm pairs well with chamomile for peace, lavender for rest, rose quartz for self-love, and moonstone for emotional balance. Pink, blue, white, or silver candles can shape lemon balm toward love, healing, cleansing, or lunar comfort.",
 
             SubstitutionNotes: "Chamomile can substitute for lemon balm in calm, sleep, and gentle healing work. Lavender can substitute for peace, protection, and emotional soothing. Rose may substitute when love or heart healing is the main focus.",
 
             SafetyAndRespect: "Lemon balm is gentle for many people, but medicinal use can interact with certain conditions or medications. Keep magical use practical and avoid presenting it as a cure. Use caution around pets and sensitive individuals.",
-
-            BeginnerTip: "Use lemon balm when a spell feels like it needs kindness instead of force. It is excellent for softening the emotional tone of a working.",
 
             Traditions: "Christian, Hellenic, Wheel of the Year",
 
@@ -360,21 +320,17 @@ const TraditionalLibrary = {
             Substitutions: "Peppermint, spearmint",
             TraditionalWarnings: "Strong mint oils can irritate skin and may be overwhelming for pets or sensitive people.",
 
-            Overview: "Mint is a bright, quick-moving herb associated with prosperity, clarity, communication, healing, and fresh energy. It is often used when a spell needs mental sharpness, movement, or a clean energetic lift. Mint is especially useful in money magic and workings that clear stagnation.",
+            Overview: "Mint is a fast-spreading leafy herb with square stems and a cool, fresh scent; garden mint and spearmint are the most common kinds. The leaves are used fresh or dried.",
 
-            TraditionalMeaning: "Traditionally, mint is linked with abundance, vitality, purification, and mental clarity. Its Mercury association connects it to communication, thought, trade, and movement. Because it grows vigorously, it is also a natural symbol of increase and renewal.",
+            TraditionalMeaning: "Increase, freshness and quick thinking; a bright, moving energy that clears stagnation.",
 
-            CommonUses: "Mint is commonly used in prosperity spells, money bowls, communication workings, clarity rituals, healing charms, and cleansing blends. It can be added to wallets, jars, floor washes, bath blends, or tea rituals when safe.",
-
-            HowToUse: "Use dried mint in charm bags, spell jars, money bowls, sachets, or loose incense blends. Fresh mint can be placed on an altar, used in kitchen magic, or added to water-based cleansing rituals. Mint oil should be diluted and used carefully.",
+            HowToUse: "Start here: keep a pot of mint on a windowsill and pinch off a leaf when you need it. Dried leaf crumbles easily into jars, sachets and incense; fresh leaves suit an altar or water-based washes and are best used within a few days. Grow mint in a pot, since it spreads aggressively in a bed. Dilute mint oil before use.",
 
             PairingNotes: "Mint pairs well with basil for prosperity, rosemary for clarity and cleansing, lemon balm for emotional freshness, and citrine for success. Green, yellow, or white candles work especially well depending on whether the goal is money, communication, or cleansing.",
 
             SubstitutionNotes: "Peppermint and spearmint can substitute for general mint in most workings. Basil can substitute in prosperity spells. Rosemary can substitute in cleansing or clarity work.",
 
-            SafetyAndRespect: "Mint oils are strong and can irritate skin, eyes, and mucous membranes. They can also be unsafe around some pets. Use dried or fresh mint for beginner spell work before working with concentrated oils.",
-
-            BeginnerTip: "For a simple prosperity charm, place mint, basil, cinnamon, and a coin in a small jar or pouch.",
+            SafetyAndRespect: "Mint oils are strong and can irritate skin, eyes, and mucous membranes. They can also be unsafe around some pets.",
 
             Traditions: "Hellenic, Roman, Christian, Wheel of the Year",
 
@@ -394,21 +350,17 @@ const TraditionalLibrary = {
             Substitutions: "Wormwood, yarrow",
             TraditionalWarnings: "Traditionally avoided during pregnancy and used with care by people sensitive to ragweed-family plants.",
 
-            Overview: "Mugwort is a classic herb of dreams, divination, intuition, and threshold work. It is often used when a practitioner wants to deepen psychic awareness, support dream recall, or work with liminal spaces. Mugwort has a strong reputation in witchcraft and should be treated with respect rather than casual overuse.",
+            Overview: "Mugwort is a tall, common wayside plant with deeply cut leaves that are dark green above and silvery-white beneath, and a bitter, sage-like scent. The dried leaves and tops are used, sold loose or in bundles.",
 
-            TraditionalMeaning: "Traditionally, mugwort is associated with the moon, prophecy, dream states, spirit contact, and magical sight. It is a threshold herb, meaning it symbolically supports movement between waking and dreaming, ordinary and sacred, known and unknown.",
+            TraditionalMeaning: "The threshold between waking and dreaming; intuition, prophecy and magical sight.",
 
-            CommonUses: "Mugwort is commonly used in dream pillows, divination incense, psychic sachets, threshold rituals, protection blends, and altar work for intuition. It may be placed near tarot decks, pendulums, mirrors, or dream journals.",
-
-            HowToUse: "Use dried mugwort in sachets, dream pillows, spell jars, or incense blends. It can be kept near divination tools or placed on an altar during lunar work. Some practitioners drink mugwort tea, but internal use is not appropriate for everyone and should be approached with caution.",
+            HowToUse: "Start here: set a small pinch of dried mugwort in a dish beside you while you journal or meditate. A little goes a long way, so begin with small amounts and blend it with milder herbs if the scent feels too strong. Store it sealed and dry. If you burn it, use a heat-safe dish and brief, light smoke.",
 
             PairingNotes: "Mugwort pairs well with lavender for calmer dream work, amethyst for intuition, rosemary for protection, and moonstone for lunar awareness. Purple, silver, black, or white candles can shape mugwort toward psychic work, dream work, protection, or cleansing.",
 
             SubstitutionNotes: "Wormwood can substitute in some spirit or threshold workings, though it is often considered more intense. Yarrow can substitute for divination and protection. Lavender may substitute when the focus is dreams but a gentler herb is needed.",
 
             SafetyAndRespect: "Mugwort is traditionally avoided during pregnancy and may cause reactions in people sensitive to ragweed-family plants. Avoid casual internal use, especially with medical conditions or medications. Use smoke carefully around pets and sensitive lungs.",
-
-            BeginnerTip: "Start with a small amount of mugwort. Pair it with lavender or chamomile if you want dream work to feel gentler and more restful.",
 
             Traditions: "Christian, Slavic, Wheel of the Year, Celtic, Roman",
 
@@ -428,21 +380,17 @@ const TraditionalLibrary = {
             Substitutions: "Frankincense, copal",
             TraditionalWarnings: "Burn resin with ventilation and avoid using concentrated preparations during pregnancy unless guided by a qualified professional.",
 
-            Overview: "Myrrh is a sacred resin associated with protection, purification, healing, mourning, spirit work, and devotional rites. It has a deep, solemn quality that makes it especially useful for ancestor work, funerary symbolism, emotional depth, and sacred space. Where frankincense often feels bright and elevating, myrrh feels grounding, ancient, and inward.",
+            Overview: "Myrrh is the reddish-brown, hardened resin of Commiphora trees, sold as irregular pieces, powder and essential oil. It burns with a bitter, earthy, medicinal smoke.",
 
-            TraditionalMeaning: "Traditionally, myrrh is connected with sacred rites, preservation, healing, death, devotion, and spiritual protection. Its lunar and watery associations give it a receptive, mystical quality, while its resin form connects it with endurance and offering.",
+            TraditionalMeaning: "Reverence, mourning and preservation; a deep, solemn resin of protection and spirit.",
 
-            CommonUses: "Myrrh is commonly used in incense blends, protection rites, ancestor offerings, healing rituals, spirit work, and altar consecration. It may be burned with frankincense, kept in offering bowls, or added to spell jars for sacred protection.",
-
-            HowToUse: "Burn myrrh resin on charcoal in a heat-safe burner with sand, or use prepared incense. It can also be placed unburned on an altar, used in charm bags, or included in devotional blends. Because it is strong, a small amount is usually enough.",
+            HowToUse: "Start here: place one small, unburned piece of myrrh on your altar. To burn it, light a charcoal disk in a sand-filled burner, let it ash over, and add a piece about the size of a lentil; myrrh is strong, so that is usually enough. Powdered myrrh blends into loose incense, and whole pieces can go into charm bags.",
 
             PairingNotes: "Myrrh pairs strongly with frankincense for sacred rites, sandalwood for spiritual depth, rosemary for protection, and moonstone for lunar healing. Black, white, silver, or purple candles work well depending on the ritual context.",
 
             SubstitutionNotes: "Frankincense can substitute for myrrh in consecration and purification, though it has a brighter tone. Copal can substitute in cleansing and offering work. Rosemary can substitute in general protective rituals.",
 
             SafetyAndRespect: "Burn resin carefully, with ventilation and a proper fire-safe setup. Avoid concentrated myrrh preparations during pregnancy unless guided by a qualified professional. Smoke may be irritating to pets or sensitive lungs.",
-
-            BeginnerTip: "Use myrrh when a ritual needs depth, reverence, or ancestral gravity. Pair it with frankincense for a classic sacred incense blend.",
 
             Traditions: "Egyptian, Hellenic, Christian, Roman, Wheel of the Year",
 
@@ -462,21 +410,17 @@ const TraditionalLibrary = {
             Substitutions: "Thistle, yarrow",
             TraditionalWarnings: "Fresh nettle can sting skin. Use gloves when handling unprocessed plant material.",
 
-            Overview: "Nettle is a fierce protective herb associated with boundaries, courage, strength, and uncrossing. Its sting gives it a natural magical symbolism of defense and energetic consequences. Nettle is useful when a working needs firm protection rather than gentle cleansing.",
+            Overview: "Nettle is a common wild plant with toothed, heart-shaped leaves covered in fine stinging hairs. The leaves are used, usually dried, which removes the sting; it is widely sold as tea.",
 
-            TraditionalMeaning: "Traditionally, nettle is linked with Mars, fire, protection, resilience, and the ability to repel harm. It is often used in magic that strengthens boundaries, breaks unwanted influence, or helps a person stand their ground.",
+            TraditionalMeaning: "Firm boundaries, courage and resilience; a fierce protector that repels harm.",
 
-            CommonUses: "Nettle is commonly used in protection jars, boundary spells, uncrossing work, courage charms, banishing blends, and home wards. It may be added to spell powders, charm bags, or protective floor washes depending on the tradition and safety needs.",
-
-            HowToUse: "Use dried nettle in jars, sachets, powders, or protection blends. Fresh nettle should be handled with gloves. Nettle can be placed near thresholds, combined with black salt, or used symbolically in workings that push away harmful influence.",
+            HowToUse: "Start here: buy dried nettle leaf (sold as tea) and put a spoonful in a small jar. Dried leaf crumbles easily for powders and sachets. To gather your own, pick the top few leaves in spring and dry them in a single layer before use.",
 
             PairingNotes: "Nettle pairs well with rosemary for cleansing and protection, black salt for warding, obsidian for shadow and banishing work, and basil for courage. Black or red candles strengthen nettle’s protective and Mars-like qualities.",
 
             SubstitutionNotes: "Thistle can substitute for nettle in strong protection and boundary work. Yarrow can substitute when protection needs to be gentler or more emotionally focused. Rosemary can substitute for broader protection and cleansing.",
 
-            SafetyAndRespect: "Fresh nettle can sting and irritate skin. Use gloves and avoid touching your eyes after handling. Do not use medicinally without checking whether it is appropriate for your body, medications, or health conditions.",
-
-            BeginnerTip: "Nettle is best for firm boundaries. Use it when the intention is, 'No, this does not get to enter my space.'",
+            SafetyAndRespect: "Fresh nettle stings and irritates skin, so wear gloves when handling it and avoid touching your eyes afterward. Do not use medicinally without checking whether it is appropriate for your body, medications, or health conditions.",
 
             Traditions: "Celtic, Christian, Wheel of the Year",
 
@@ -496,21 +440,17 @@ const TraditionalLibrary = {
             Substitutions: "Vetiver, basil",
             TraditionalWarnings: "Patchouli has a strong scent and may overwhelm sensitive people in oils, incense, or enclosed spaces.",
 
-            Overview: "Patchouli is an earthy herb associated with prosperity, attraction, sensuality, grounding, and stability. It is often used when a working needs to become embodied, magnetic, or rooted in material reality. Patchouli is especially common in money magic, love magic, and grounding blends.",
+            Overview: "Patchouli is a bushy tropical plant of the mint family whose dried leaves have a deep, earthy, musky scent. It is sold as dried leaf and, most often, as a dark, thick essential oil.",
 
-            TraditionalMeaning: "Traditionally, patchouli is linked with earth, wealth, fertility, sensuality, and physical manifestation. Its Saturn association gives it grounding and staying power, while its earthy scent connects it to the body and material world.",
+            TraditionalMeaning: "Grounded attraction and material abundance; an earthy, embodied energy that helps things take root.",
 
-            CommonUses: "Patchouli is commonly used in prosperity spells, attraction work, love charms, grounding rituals, money oils, and spell jars for stability. It can be added to incense, oils, powders, or sachets where the goal is to draw something in and help it take root.",
-
-            HowToUse: "Use dried patchouli in jars, sachets, incense blends, or money bowls. Patchouli oil can be used to dress candles, charm bags, or ritual objects, but it should be diluted for skin contact. A little goes a long way.",
+            HowToUse: "Start here: add a small pinch of dried patchouli leaf to a jar or sachet. Start small, since its scent overpowers other herbs. Dress candles or objects with a single drop of oil, and dilute it before any skin contact. The oil deepens with age and keeps well in a dark bottle.",
 
             PairingNotes: "Patchouli pairs well with cinnamon for prosperity, rose for sensual love, vetiver for deep grounding, and smoky quartz for stability. Green, brown, red, or pink candles can shift patchouli toward money, grounding, passion, or affection.",
 
             SubstitutionNotes: "Vetiver can substitute for patchouli in grounding and earthy attraction work. Basil can substitute in prosperity spells. Rose may substitute when the focus is love rather than money or stability.",
 
-            SafetyAndRespect: "Patchouli has a very strong scent and may be too much for shared spaces. Use lightly around people with scent sensitivity, headaches, asthma, or sensory overwhelm. Essential oil should be diluted before skin contact.",
-
-            BeginnerTip: "Patchouli is excellent in money bowls, but start small. Too much patchouli can overpower the whole blend.",
+            SafetyAndRespect: "Patchouli has a very strong scent and may be too much for shared spaces. Use it lightly around people with scent sensitivity, headaches, asthma, or sensory overwhelm.",
 
             TraditionNotes: "Wheel of the Year: Patchouli is used for money and grounding: its oil anoints green candles, wallets and money jars at the waxing moon, and it is added to love and earth-element blends.\n\nFolk & wider practice: Patchouli leaves are packed with silk and wool shawls in South Asia to keep moths away. In hoodoo and modern folk magic patchouli oil is used to anoint money, candles and the body for prosperity, love and grounding.",
 
@@ -530,21 +470,17 @@ const TraditionalLibrary = {
             Substitutions: "Hibiscus, jasmine",
             TraditionalWarnings: "Commercial roses may be treated with pesticides, so use food-grade or ritual-safe petals when possible.",
 
-            Overview: "Rose is one of the most cherished magical plants for love, compassion, beauty, grief support, emotional healing, and heart-centered work. While it is often associated with romance, rose is much broader than romantic love. It can support self-love, friendship, forgiveness, tenderness, and devotion.",
+            Overview: "Rose is a thorny flowering shrub with fragrant, layered petals in many colours. Petals and buds are used, sold dried, and the flowers are distilled into rose water and costly rose oil.",
 
-            TraditionalMeaning: "Traditionally, rose is connected with Venus, love, beauty, the heart, sensuality, and sacred affection. Its thorns also give it a protective quality, reminding practitioners that love and boundaries can exist together.",
+            TraditionalMeaning: "Love in all its forms, beauty and compassion; the thorn is a reminder that love and boundaries belong together.",
 
-            CommonUses: "Rose is commonly used in love spells, self-love rituals, grief work, beauty magic, friendship charms, devotional offerings, and emotional healing jars. Rose petals can be added to baths, sachets, candle spells, spell jars, and altar bowls.",
-
-            HowToUse: "Use dried rose petals in jars, sachets, baths, charm bags, or offering dishes. Rose water can be used for blessing, cleansing, or devotional work if it is body-safe. Rose oil may be used to dress candles or tools when properly diluted.",
+            HowToUse: "Start here: keep a small bowl of dried rose petals on your altar. Dried petals and buds go into jars, sachets, baths and charm bags; to dry your own, spread petals flat on paper away from direct sun. Rose water can be sprinkled or added to a bath. Dilute rose oil before dressing candles or tools.",
 
             PairingNotes: "Rose pairs well with lavender for peaceful love, chamomile for gentle healing, patchouli for sensual attraction, and rose quartz for self-love. Pink, red, green, or white candles can shape rose toward affection, passion, heart healing, or blessing.",
 
             SubstitutionNotes: "Hibiscus can substitute for rose in passion, love, and attraction work. Jasmine can substitute in sensuality, romance, and lunar love magic. Lavender can substitute for gentler love, peace, and healing.",
 
             SafetyAndRespect: "Use food-grade or pesticide-free petals when placing rose in baths, teas, or anything touching the body. Commercial florist roses may be chemically treated. Be mindful of thorns when using fresh stems.",
-
-            BeginnerTip: "Rose is not just for romance. Use it for self-kindness, grief support, and softening the heart after difficult experiences.",
 
             Traditions: "Hellenic, Roman, Christian, Wheel of the Year",
 
@@ -564,21 +500,17 @@ const TraditionalLibrary = {
             Substitutions: "Pine, bay",
             TraditionalWarnings: "Rosemary is commonly used in cleansing, but smoke and essential oils should be used with care around pets and sensitive lungs.",
 
-            Overview: "Rosemary is one of the most widely used herbs in witchcraft because it is protective, purifying, clarifying, and highly adaptable. It is often considered a strong general-purpose substitute and is especially useful for cleansing, remembrance, protection, and healing work. Rosemary belongs in almost every beginner apothecary.",
+            Overview: "Rosemary is a woody evergreen shrub with needle-like leaves and a strong, resinous, piney scent. Fresh sprigs and dried leaves are used, and it is sold in almost every grocery store.",
 
-            TraditionalMeaning: "Traditionally, rosemary is connected with memory, purification, protection, healing, and the sun. It has long associations with remembrance and blessing, making it useful in both protective magic and ancestral or devotional contexts.",
+            TraditionalMeaning: "Remembrance, purification and protection; a clear, steady, all-purpose blessing.",
 
-            CommonUses: "Rosemary is commonly used in cleansing bundles, protection jars, healing spells, remembrance rituals, home wards, bath blends, incense, and spell oils. It can be placed near doors, added to floor washes, burned as incense, or used in kitchen witchcraft.",
-
-            HowToUse: "Use dried rosemary in jars, sachets, incense blends, powders, or floor washes. Fresh rosemary can be placed on an altar or tied into small bundles. Rosemary oil can be used for candle dressing or anointing objects when properly diluted.",
+            HowToUse: "Start here: keep a fresh sprig of rosemary in a glass of water on your altar. Dried needles go into jars, sachets, powders and floor washes; crush them first to release the oil. Fresh sprigs can be tied with string into small bundles and hung to dry. Dilute rosemary oil before dressing candles or objects.",
 
             PairingNotes: "Rosemary pairs well with lavender for gentle protection, bay for success, cinnamon for powerful prosperity and movement, and clear quartz for amplification. White, black, gold, or yellow candles can direct rosemary toward cleansing, protection, blessing, or clarity.",
 
             SubstitutionNotes: "Pine can substitute for rosemary in cleansing and protection. Bay can substitute when success, blessing, or purification is involved. Sage or cedar may substitute when the focus is smoke cleansing or sacred space.",
 
             SafetyAndRespect: "Rosemary smoke and essential oil can irritate sensitive lungs or skin. Use caution around pets, pregnancy, epilepsy, and medical conditions when using concentrated preparations. Culinary use and magical use are not the same as medical treatment.",
-
-            BeginnerTip: "When in doubt, rosemary is often the safest magical starting point. It is especially helpful when you need protection, cleansing, or a substitute for another herb.",
 
             Traditions: "Hellenic, Roman, Christian, Wheel of the Year",
 
@@ -598,21 +530,17 @@ const TraditionalLibrary = {
             Substitutions: "Rosemary, cedar",
             TraditionalWarnings: "Different sages have different cultural contexts. White sage in particular should be approached with respect for Indigenous traditions and sustainability concerns.",
 
-            Overview: "Sage is strongly associated with cleansing, wisdom, purification, protection, and blessing. In modern witchcraft, it is often used to clear stagnant energy and prepare a space for ritual. However, sage is not one single tradition, and different varieties carry different cultural, ecological, and spiritual contexts.",
+            Overview: "Garden sage is a shrubby herb with soft, velvety, grey-green leaves and a savoury, camphor-like scent. The leaves are used, sold dried loose or tied in bundles; other sages, such as white sage, are different plants.",
 
-            TraditionalMeaning: "Traditionally, sage is associated with wisdom, longevity, purification, and sacred speech. Its airy quality connects it with clearing, breath, prayer, and mental clarity. In many practices, sage marks a transition from ordinary space into sacred space.",
+            TraditionalMeaning: "Wisdom and purification; the step from ordinary space into sacred space.",
 
-            CommonUses: "Sage is commonly used in smoke cleansing, protection rituals, blessing work, wisdom spells, altar preparation, and tool cleansing. It can be burned, placed in sachets, added to spell jars, or used symbolically in rituals for clarity and purification.",
-
-            HowToUse: "Use garden sage or other appropriate sage varieties in dried bundles, loose incense, spell jars, or cleansing bowls. If burning, use a heat-safe dish, good ventilation, and brief intentional smoke rather than filling the room heavily.",
+            HowToUse: "Start here: crumble a pinch of dried garden sage into a heat-safe dish. To burn it, light the tip of a small bundle or a pinch of loose leaf, blow out the flame, and let it smoulder briefly with a window open, then press out every ember. Loose leaf also goes into jars and bowls.",
 
             PairingNotes: "Sage pairs well with rosemary and cedar for cleansing, frankincense for consecration, and clear quartz for amplification. White, blue, yellow, or purple candles can shift sage toward purification, wisdom, clarity, or spiritual study.",
 
             SubstitutionNotes: "Rosemary is one of the best substitutes for sage in cleansing and protection. Cedar can substitute for smoke cleansing and blessing. Lavender can substitute when gentler purification is needed.",
 
             SafetyAndRespect: "White sage has important Indigenous cultural contexts and sustainability concerns, so consider using garden sage, rosemary, cedar, or other alternatives when appropriate. Smoke can irritate pets and sensitive lungs, and cleansing practices should be used respectfully.",
-
-            BeginnerTip: "You do not need white sage to cleanse. Rosemary, sound, salt, water, or visualization can all be effective depending on your practice.",
 
             Traditions: "Christian, Wheel of the Year",
 
@@ -632,21 +560,17 @@ const TraditionalLibrary = {
             Substitutions: "Rosemary, basil",
             TraditionalWarnings: "Concentrated thyme oil can be irritating and should be diluted before topical use.",
 
-            Overview: "Thyme is a small but powerful herb associated with courage, healing, purification, sleep, and psychic strength. It is often used when a working needs quiet bravery, spiritual cleansing, or resilience. Thyme’s energy is less forceful than nettle or cinnamon, but still strengthening.",
+            Overview: "Thyme is a low, woody herb with tiny grey-green leaves and a warm, savoury scent. The leafy sprigs are used fresh or dried, and it is sold in almost every grocery store.",
 
-            TraditionalMeaning: "Traditionally, thyme is linked with courage, purification, vitality, and protection. It has historical associations with bravery and cleansing, while its Venus connection gives it a softer healing and restorative quality.",
+            TraditionalMeaning: "Quiet courage and purification; a gentle strength that helps you keep going.",
 
-            CommonUses: "Thyme is commonly used in courage charms, healing spells, purification blends, sleep sachets, protection jars, and psychic strengthening work. It can be added to baths, incense, spell jars, or kitchen magic when appropriate.",
-
-            HowToUse: "Use dried thyme in jars, sachets, powders, incense blends, or ritual baths if skin-safe. Fresh thyme can be placed on an altar or used in cooking with intention. Thyme oil should be diluted and handled carefully.",
+            HowToUse: "Start here: place a sprig of fresh or dried thyme on your altar or desk. Strip dried leaves by running your fingers down the stem, then use them in jars, sachets, powders and incense. Fresh sprigs can be tied into small bundles. Dilute thyme oil before any use.",
 
             PairingNotes: "Thyme pairs well with rosemary for cleansing, lavender for rest, chamomile for gentle healing, and amethyst for psychic strength. Blue, white, purple, or red candles can direct thyme toward healing, purification, intuition, or courage.",
 
             SubstitutionNotes: "Rosemary can substitute for thyme in cleansing, healing, and protection. Basil can substitute when courage or vitality is the focus. Chamomile may substitute in sleep and gentle healing work.",
 
-            SafetyAndRespect: "Thyme essential oil can be irritating and should not be used directly on skin without dilution. Use caution with baths, pets, children, pregnancy, or medical conditions. Culinary thyme is generally easier for beginners to work with.",
-
-            BeginnerTip: "Use thyme when you need gentle courage, the kind that helps you keep going without forcing yourself into intensity.",
+            SafetyAndRespect: "Thyme essential oil can be irritating and should never touch skin undiluted. Use caution with baths, pets, children, pregnancy, or medical conditions.",
 
             Traditions: "Hellenic, Roman, Christian, Wheel of the Year",
 
@@ -666,21 +590,17 @@ const TraditionalLibrary = {
             Substitutions: "Nettle, mugwort",
             TraditionalWarnings: "May cause reactions in people sensitive to ragweed-family plants and is traditionally avoided during pregnancy.",
 
-            Overview: "Yarrow is an herb of protection, boundaries, love, divination, and emotional healing. It is especially useful when protection needs to be relational or emotional rather than purely defensive. Yarrow can help symbolize the ability to remain open-hearted while still maintaining boundaries.",
+            Overview: "Yarrow is a hardy meadow plant with feathery, finely divided leaves and flat clusters of tiny white or pink flowers, with a sharp, herbal scent. The flower heads and leaves are used, usually dried.",
 
-            TraditionalMeaning: "Traditionally, yarrow is associated with courage, healing, divination, love, and protection. Its Venus and water associations give it a softer protective quality, while its folklore often connects it with wounds, resilience, and spiritual insight.",
+            TraditionalMeaning: "Open-hearted protection; courage and healing that keep the heart soft while holding a boundary.",
 
-            CommonUses: "Yarrow is commonly used in protection sachets, love divination, emotional healing spells, boundary rituals, dream work, and psychic blends. It can be added to charm bags, placed near divination tools, or combined with rose and lavender for heart-centered healing.",
-
-            HowToUse: "Use dried yarrow in sachets, spell jars, incense blends, dream pillows, or altar bowls. It works well in rituals focused on emotional protection, relationship boundaries, and intuitive clarity. Use caution with baths or body contact if sensitive.",
+            HowToUse: "Start here: hang a small bunch of yarrow upside down to dry somewhere you can see it. Once it is dry, crumble the flowers and leaves into sachets, jars and incense, and store them sealed. Dried stems can be kept whole and bundled.",
 
             PairingNotes: "Yarrow pairs well with mugwort for divination, lavender for peace, rose for emotional healing, and amethyst for intuition. Pink, purple, blue, or white candles can shape yarrow toward love, psychic work, healing, or purification.",
 
             SubstitutionNotes: "Nettle can substitute for yarrow when stronger boundary protection is needed. Mugwort can substitute when the focus is divination or psychic work. Rose or lavender may substitute when the focus is emotional healing.",
 
             SafetyAndRespect: "Yarrow may cause reactions in people sensitive to ragweed-family plants and is traditionally avoided during pregnancy. Use caution with medicinal claims or internal use. Choose body-safe preparations for bath or skin contact.",
-
-            BeginnerTip: "Yarrow is a beautiful choice for boundary work that still wants to keep the heart soft. Use it when the spell is about protection without shutting down.",
 
             Traditions: "Celtic, Christian, Wheel of the Year",
 
@@ -705,21 +625,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Calendula is in the daisy family and may irritate people sensitive to ragweed-family plants. Traditionally avoided internally during pregnancy.",
 
-            Overview: "Calendula, often called pot marigold, is a bright solar flower associated with joy, success, blessing, and warm protection. Its golden petals are often used when a working needs optimism, visibility, or a gentle lift of the spirits. Calendula is easy to grow and dry, which makes it a lovely herb for everyday and kitchen witchcraft.",
+            Overview: "Calendula, or pot marigold, is a garden flower with bright orange or golden-yellow daisy-like petals and sticky, resinous flower heads. The petals and whole heads are used, mostly dried.",
 
-            TraditionalMeaning: "Traditionally, calendula is linked with the sun, happiness, respect, and the brightening of what has felt heavy. English folk names such as Mary’s gold connect it to blessing, and in modern practice it is used to help a person be seen kindly, especially in matters of reputation or fairness.",
+            TraditionalMeaning: "Joy, warmth and being seen kindly; a sunny lift that brightens what has felt heavy.",
 
-            CommonUses: "Calendula is commonly used in happiness jars, success charms, dream pillows, legal and justice workings, blessing bowls, and summer altar decorations. Petals may be scattered around candles, added to ritual baths, or strung into small garlands for celebration.",
-
-            HowToUse: "Use dried petals in sachets, spell jars, dream pillows, or bath blends. Fresh flowers can be placed on an altar or by a doorway to welcome warmth and good fortune. A few petals sprinkled around a yellow or gold candle make a simple working for confidence and recognition.",
+            HowToUse: "Start here: set a few dried petals around a yellow or gold candle. Pick flower heads when fully open, dry them on paper away from sun, and pull off the petals once dry. Petals go into sachets, jars and bath blends, and fresh flowers can sit in a small vase on the altar. It flowers freely in a pot and self-seeds, so growing your own is easy.",
 
             PairingNotes: "Calendula pairs well with chamomile for gentle luck and calm, rose for warm affection, citrine for joy and success, and bay for victory. Yellow, gold, or orange candles strengthen its solar qualities.",
 
-            SubstitutionNotes: "Chamomile can substitute for calendula in luck, peace, and gentle solar work. Sunflower petals can substitute for joy, success, and visibility. Marigolds of the Tagetes genus are often swapped in, but they are a different plant and should not be treated as interchangeable for skin or culinary use.",
+            SubstitutionNotes: "Chamomile can substitute for calendula in luck, peace, and gentle solar work. Sunflower petals can substitute for joy, success, and visibility.",
 
             SafetyAndRespect: "Calendula is generally considered gentle, but it can cause allergic reactions in people sensitive to daisy-family plants. Avoid internal use during pregnancy and patch-test any infused oil before using it on skin. Calendula is not the same plant as Tagetes marigolds, so check what you are buying.",
-
-            BeginnerTip: "Grow a pot of calendula if you can. Picking and drying your own petals turns a simple sunny flower into a personal ingredient for joy and blessing work.",
 
             Traditions: "Christian, Wheel of the Year",
 
@@ -744,21 +660,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Cypress essential oil should be diluted and kept away from pets and sensitive lungs. Use smoke with care.",
 
-            Overview: "Cypress is a solemn evergreen associated with grief, remembrance, endurance, and the boundary between life and death. It is often used when a working involves mourning, honoring the dead, or finding the strength to continue through loss. Cypress has a steady, quiet energy that holds space rather than rushing healing.",
+            Overview: "Cypress is a tall, narrow evergreen conifer with dark, scale-like foliage and small round cones. Sprigs, cones and essential oil are used, with a clean, woody, resinous scent.",
 
-            TraditionalMeaning: "Traditionally, cypress is linked with Saturn, death, the underworld, longevity, and steadfastness. Its tall evergreen form symbolizes continuity and endurance, while its long association with cemeteries and funerals makes it a tree of remembrance and respectful farewell.",
+            TraditionalMeaning: "Remembrance and steadfastness through loss; endurance at the boundary between life and death.",
 
-            CommonUses: "Cypress is commonly used in grief rituals, ancestor altars, funeral and memorial work, protection blends, and workings for endurance during hard seasons. Sprigs or cones may be placed on an altar, near photographs of the dead, or in charms meant to bring comfort and resilience.",
-
-            HowToUse: "Use dried cypress sprigs or cones on ancestor altars, in memorial sachets, or in protective bundles. Diluted cypress oil can be used to dress candles for grief, remembrance, or steadfastness. A cypress sprig beside a white or black candle makes a simple remembrance working.",
+            HowToUse: "Start here: set a cypress sprig or cone beside a photo of someone you have lost. Sprigs dry well hung in a bundle and keep their scent for months; cones need no preparation. Dilute cypress oil before dressing a candle, and replace sprigs once they turn brittle and brown.",
 
             PairingNotes: "Cypress pairs well with myrrh for mourning and the sacred dead, rosemary for remembrance, obsidian for grief and protection, and cedar for strength and sanctity. Black, white, or purple candles suit its solemn qualities.",
 
             SubstitutionNotes: "Cedar can substitute for cypress in protection, endurance, and sacred space work. Juniper can substitute for protective evergreen energy. Rosemary can substitute when the focus is remembrance rather than grief.",
 
             SafetyAndRespect: "Cypress oil can irritate skin and should be properly diluted and used with care around pets, children, and pregnancy. Burning evergreen material produces heavy smoke, so ventilate well. Grief rituals can support mourning, but they do not replace grief counselling or mental-health support when loss feels overwhelming.",
-
-            BeginnerTip: "Cypress is a good herb to keep for remembrance days. Place a sprig beside a photo of someone you have lost and simply speak their name.",
 
             Traditions: "Hellenic, Roman, Christian, Wheel of the Year",
 
@@ -783,21 +695,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Dandelion is generally safe, but avoid gathering it from roadsides or treated lawns. It may cause reactions in people sensitive to daisy-family plants.",
 
-            Overview: "Dandelion is a humble, resilient herb associated with wishes, divination, communication, and persistence. Its golden flower is linked with the sun, while its seed head is linked with wishing and sending messages on the wind. Dandelion is especially useful for practical, accessible magic because it grows almost everywhere.",
+            Overview: "Dandelion is a common wild plant with jagged leaves, a bright yellow flower that turns into a round white seed head, and a long taproot. Flowers, leaves and roots are used, sold dried or as roasted root tea.",
 
-            TraditionalMeaning: "Traditionally, dandelion symbolizes resilience, hope, and the ability to thrive in difficult places. Folk practice uses its seed clocks for wishing and simple divination, and in modern witchcraft the root is associated with psychic insight and calling on helpful spirits.",
+            TraditionalMeaning: "Resilience and hope; thriving in hard places and sending wishes out into the world.",
 
-            CommonUses: "Dandelion is commonly used in wish magic, simple divination, communication spells, resilience charms, and workings for hope. The seed head is blown to carry wishes or messages, while dried leaves and roots may be added to sachets, jars, or dream work.",
-
-            HowToUse: "Blow a dandelion seed head while speaking a wish or message, letting the wind carry it away. Dried leaves, flowers, or roots can be added to jars or sachets for resilience and communication. Gather only from clean areas and leave plenty behind for bees and other pollinators.",
+            HowToUse: "Start here: pick one dandelion flower and set it in a small glass of water on your table. Dry leaves and flowers flat on paper; dig roots after rain, then scrub, slice and dry them. Store dried parts in sealed jars, and bring seed heads indoors before they fully open if you want to keep them whole.",
 
             PairingNotes: "Dandelion pairs well with mint for clear communication, citrine for optimism and success, chamomile for gentle luck, and clear quartz for amplifying wishes. Yellow candles bring out its solar brightness, while white or light blue candles suit wishing and messages.",
 
             SubstitutionNotes: "Mint can substitute for dandelion in communication and clarity work. Chamomile can substitute for luck and gentle solar energy. A feather can stand in symbolically for wishes carried on the air.",
 
             SafetyAndRespect: "Dandelion is widely eaten, but people with daisy-family allergies, gallbladder problems, or who take diuretics or other medications should check before using it internally. Never harvest from sprayed lawns, roadsides, or polluted ground. Leave early spring flowers for pollinators where you can.",
-
-            BeginnerTip: "Dandelion is a perfect first wild herb. Blowing a seed head with a clear wish is one of the oldest and simplest pieces of folk magic.",
 
             TraditionNotes: "Wheel of the Year: Dandelion seed heads are blown to make wishes and carry messages, dandelion root tea is drunk before divination, and the flowers are used in Ostara and Beltane sun rites.\n\nFolk & wider practice: Children and adults blow the seed head to make a wish or send a message, and the leaves and roots are gathered in spring as a cleansing food and tea.",
 
@@ -822,21 +730,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Garlic is toxic to cats, dogs, and many other pets. Raw garlic can irritate skin and should not be applied directly.",
 
-            Overview: "Garlic is one of the most famous protective herbs in folk magic, associated with warding, banishing, healing, and strength. It is often used when a working needs strong, earthy defense against harmful influences. Because it is found in nearly every kitchen, garlic is a practical and powerful ingredient for household protection.",
+            Overview: "Garlic is a pungent bulb made of papery-skinned cloves, with a sharp, sulphurous smell. Whole bulbs, cloves, skins and braids are used, all easy to find in any kitchen.",
 
-            TraditionalMeaning: "Traditionally, garlic is linked with Mars, fire, protection, and the repelling of evil. Across many cultures it was hung in homes, carried on the body, or placed at thresholds to keep away harm, illness, and malevolent spirits.",
+            TraditionalMeaning: "Strong, earthy defence; a ward that repels harm and malevolent influence.",
 
-            CommonUses: "Garlic is commonly used in protection braids, threshold wards, banishing jars, healing work, and kitchen witchcraft. Whole bulbs may be hung near doors or windows, while cloves or papery skins can be added to jars, powders, or protective charms.",
-
-            HowToUse: "Hang a braid or whole bulb of garlic near a doorway or in the kitchen for protection. Garlic skins can be added to protective powders, and peeled cloves can be used in jars that are later buried or disposed of. Cooking with garlic while focusing on protection is a simple form of kitchen magic.",
+            HowToUse: "Start here: set a single garlic bulb on a kitchen windowsill and replace it when it sprouts, softens or starts to look tired. Save the dry papery skins for powders and jars. Peeled cloves spoil quickly, so use them only in jars you will bury or discard within days.",
 
             PairingNotes: "Garlic pairs well with black salt for warding, rosemary for cleansing protection, onion for absorbing negativity, and obsidian for banishing. Black or red candles strengthen its protective and Mars-like qualities.",
 
             SubstitutionNotes: "Onion can substitute for garlic in protection, absorption, and banishing work. Rosemary can substitute for gentler protection and cleansing. Black salt can substitute when the main purpose is warding a threshold.",
 
             SafetyAndRespect: "Garlic is toxic to cats, dogs, and other animals, so keep bulbs, braids, and spell jars out of reach of pets. Raw garlic can burn or blister skin and should never be taped or tied directly onto the body. Garlic in oil can grow dangerous bacteria if stored at room temperature. Folk remedies do not replace medical care.",
-
-            BeginnerTip: "A single garlic bulb on a kitchen windowsill is a classic beginner ward. Replace it when it sprouts, softens, or starts to look tired.",
 
             Traditions: "Hellenic, Slavic, Egyptian, Roman, Norse, Hindu, Wheel of the Year",
 
@@ -861,21 +765,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Hyssop and its essential oil are traditionally avoided during pregnancy and by people with epilepsy or seizure disorders.",
 
-            Overview: "Hyssop is a deeply purifying herb associated with spiritual cleansing, forgiveness, consecration, and protection. It is often used when a working needs a thorough reset, especially after guilt, conflict, or a heavy spiritual atmosphere. Hyssop has a serious, sacred quality and is especially common in cleansing baths and washes.",
+            Overview: "Hyssop is a small, shrubby herb with narrow dark-green leaves and spikes of blue-violet flowers, with a sharp, minty, camphor-like scent. The leafy flowering tops are used, mostly dried.",
 
-            TraditionalMeaning: "Traditionally, hyssop is linked with purification, atonement, and making a person or place clean again. Its strong association with biblical cleansing gives it a sense of sacred renewal, and in modern folk practice it is used to wash away spiritual burdens and restore a clean start.",
+            TraditionalMeaning: "Purification and a clean start; washing away spiritual burdens and restoring what feels heavy.",
 
-            CommonUses: "Hyssop is commonly used in cleansing baths, floor washes, consecration rites, forgiveness rituals, and protective sprinkling. It may be bundled as a small brush for asperging water, added to purification sachets, or used to cleanse altars and tools.",
-
-            HowToUse: "Use dried hyssop in a cooled infusion for a cleansing floor wash or for sprinkling around a space. A small bundle of fresh or dried hyssop can be dipped in water and used to asperge an altar or doorway. Hyssop can also be added to sachets for purification and renewal.",
+            HowToUse: "Start here: steep a tablespoon of dried hyssop in a cup of hot water for ten minutes, strain, and let it cool. Use the cooled water within a day, sprinkling it with your fingertips or adding it to a bucket for a floor wash. Dried hyssop also goes into sachets.",
 
             PairingNotes: "Hyssop pairs well with rue for strong cleansing, rosemary for protective purification, frankincense for consecration, and clear quartz for clarity. White or light blue candles suit its cleansing and peaceful qualities.",
 
             SubstitutionNotes: "Rosemary can substitute for hyssop in cleansing and protection. Sage can substitute for purification work. Lavender can substitute when the cleansing needs to be gentle and emotionally soothing.",
 
             SafetyAndRespect: "Hyssop contains compounds that can trigger seizures in concentrated forms, so avoid the essential oil if you are pregnant, have epilepsy, or are caring for young children. Patch-test washes on skin. Spiritual cleansing after guilt or conflict can be meaningful, but it does not replace repair, apology, or support when needed.",
-
-            BeginnerTip: "Hyssop is a powerful cleansing herb. Start with a simple doorway sprinkle of cooled hyssop water when your home feels heavy after an argument.",
 
             Traditions: "Christian, Wheel of the Year",
 
@@ -900,21 +800,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Juniper berries and oil are traditionally avoided during pregnancy and with kidney conditions. Some juniper species are poisonous.",
 
-            Overview: "Juniper is a sharp, protective evergreen associated with purification, safeguarding, health, and fresh starts. It is often used when a working needs to clear a space and seal it against harm in a single step. Its clean, resinous scent makes juniper especially popular in smoke cleansing and New Year rituals.",
+            Overview: "Juniper is a prickly evergreen shrub with needle-like foliage and small, blue-black, berry-like cones that smell sharp and gin-like. Dried berries, sprigs and essential oil are used.",
 
-            TraditionalMeaning: "Traditionally, juniper is connected with protection, cleansing smoke, and keeping illness and harm away from the home. It has long been burned to purify houses and livestock, and in modern practice its berries are carried for protection, health, and to guard against theft.",
+            TraditionalMeaning: "Protection and a fresh, clean start; clearing a space and sealing it against harm.",
 
-            CommonUses: "Juniper is commonly used in cleansing smoke, protection bundles, threshold charms, anti-theft workings, and New Year rites. Dried berries may be strung over doors or carried in sachets, while branches can be hung or burned with care.",
-
-            HowToUse: "Use dried juniper berries in sachets, jars, or protective strings hung near doorways. Small sprigs can be burned with excellent ventilation or simmered in water to scent a space. Juniper can also be placed in a car or bag as a travel protection charm.",
+            HowToUse: "Start here: simmer a few dried juniper berries and a sprig in a pot of water and let the scent fill the room. Berries can be threaded on a needle and string or added whole to sachets and jars. Sprigs dry well hung in a bundle; if you burn them, use only small pieces.",
 
             PairingNotes: "Juniper pairs well with cedar for strong evergreen protection, rosemary for cleansing, frankincense for consecration, and black tourmaline for warding. White, black, or green candles suit its protective and purifying qualities.",
 
             SubstitutionNotes: "Cedar can substitute for juniper in protection and cleansing smoke. Rosemary can substitute for broader purification. Pine can substitute for evergreen renewal and fresh starts.",
 
             SafetyAndRespect: "Juniper berries and oil are traditionally avoided during pregnancy and by people with kidney problems, and some species such as savin juniper are poisonous. Only use common juniper from a trusted source if you are using it in food. Burning juniper creates strong smoke that can irritate lungs, pets, and smoke alarms, so use it outdoors or in a well-ventilated room.",
-
-            BeginnerTip: "Juniper is excellent for a New Year house cleansing. A few dried berries in a small pouch by the front door make an easy protective charm.",
 
             Traditions: "Celtic, Egyptian, Christian, Hellenic, Wheel of the Year",
 
@@ -939,21 +835,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Peppermint essential oil is very strong and is toxic to cats and other pets. Keep it away from the faces of infants and young children.",
 
-            Overview: "Peppermint is a sharp, cooling hybrid mint associated with mental clarity, purification, energy, and quick communication. It has a stronger, more piercing character than spearmint or garden mint, which makes it useful when a working needs to wake something up. Peppermint is especially helpful for focus, study, and clearing stale energy.",
+            Overview: "Peppermint is a vigorous hybrid mint with dark-green, purple-tinged leaves and a sharp, cooling menthol scent, stronger than spearmint. The leaves are used fresh or dried, and it is sold widely as tea and essential oil.",
 
-            TraditionalMeaning: "Traditionally, peppermint shares the wider mint associations of prosperity, healing, and freshness, but in modern practice its intensity links it especially with Mercury, alertness, and cutting through mental fog. Its cooling sensation is often read as energetic cleansing that refreshes rather than soothes.",
+            TraditionalMeaning: "Alertness and mental clarity; a cool, piercing freshness that wakes things up and cuts through fog.",
 
-            CommonUses: "Peppermint is commonly used in study charms, clarity sprays, purification washes, money bowls, travel charms, and workings to lift stagnant energy. Dried leaves may be added to sachets, while a cup of peppermint tea can be drunk with focus as a simple kitchen ritual.",
-
-            HowToUse: "Use dried peppermint in sachets, jars, or desk charms for concentration. A few leaves in a cooled infusion make a refreshing cleansing wash for surfaces. Peppermint tea can be sipped mindfully before study or divination, if it agrees with your body.",
+            HowToUse: "Start here: keep a small sachet of dried peppermint on your desk and breathe in its scent before you begin work. Crush dried leaves just before use to release the menthol. For a cleansing wash, steep a handful in hot water, strain and let it cool before wiping surfaces. Dilute the oil well before any use.",
 
             PairingNotes: "Peppermint pairs well with rosemary for memory and clarity, lemon balm for calm focus, citrine for success, and clear quartz for amplification. Yellow, green, or white candles shape it toward clarity, prosperity, or cleansing.",
 
             SubstitutionNotes: "Spearmint can substitute for peppermint in gentler clarity and prosperity work. Rosemary can substitute for memory, focus, and purification. Basil can substitute when the focus is money and movement.",
 
             SafetyAndRespect: "Peppermint essential oil must be diluted, can irritate skin and eyes, and should never be applied near the face or nose of infants and young children. The oil and diffused vapour are toxic to cats and can harm dogs and birds. Peppermint tea can worsen reflux for some people and is not a substitute for medical care for headaches or digestion.",
-
-            BeginnerTip: "Keep a small sachet of dried peppermint on your desk. Breathing in its scent at the start of study or work is a simple ritual for focus.",
 
             TraditionNotes: "Wheel of the Year: Peppermint is used for cleansing and clarity: it is brewed as tea, added to floor washes, burned in purifying incense and placed in money spells.",
 
@@ -978,21 +870,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Saffron is toxic in large amounts and traditionally avoided in more than culinary amounts during pregnancy. Deadly autumn crocus can be mistaken for saffron crocus.",
 
-            Overview: "Saffron is a precious golden spice associated with happiness, abundance, devotion, healing, and spiritual radiance. Each thread is the hand-picked stigma of a crocus flower, which gives saffron a strong sense of value, patience, and sacredness. Because it is costly, a very small amount is used with great intention.",
+            Overview: "Saffron is the dried, deep red-orange stigmas of the saffron crocus, sold by the gram as fine threads. It has a honeyed, hay-like scent and turns liquid a bright gold.",
 
-            TraditionalMeaning: "Traditionally, saffron is linked with the sun, royalty, joy, and the divine. Its colour has been used for sacred dyes and offerings for thousands of years, and in modern practice it is used to bring brightness, generosity, and a sense of the sacred into a working.",
+            TraditionalMeaning: "Radiance, joy and sacred abundance; a precious golden blessing that honours what is valued.",
 
-            CommonUses: "Saffron is commonly used in devotional offerings, abundance spells, happiness charms, sacred inks, and solar rituals. A few threads may be infused in water to make a golden ink for writing intentions, or added to celebratory food as kitchen magic.",
-
-            HowToUse: "Infuse a few threads in warm water and use the golden liquid to write an intention or anoint a petition. A single thread can be placed in an abundance jar or on a solar altar. When cooking with saffron, stir in gratitude or a blessing for those who will eat the meal.",
+            HowToUse: "Start here: place a single saffron thread in a jar or on your altar. To release its colour, steep a few threads in a spoonful of warm water for twenty minutes; the gold liquid can be applied with a fine brush. Store threads in an airtight, dark container.",
 
             PairingNotes: "Saffron pairs well with rose for love and devotion, frankincense for sacred offerings, citrine for abundance, and sunstone for joy. Gold, yellow, or orange candles strengthen its solar qualities.",
 
-            SubstitutionNotes: "Calendula can substitute for saffron in joy and solar work. Turmeric can substitute for golden colour and blessing in kitchen magic. Safflower is sometimes sold as saffron, so check labels for honesty.",
+            SubstitutionNotes: "Calendula can substitute for saffron in joy and solar work. Turmeric can substitute for golden colour and blessing in kitchen magic.",
 
             SafetyAndRespect: "Saffron is safe in normal culinary amounts but toxic in large doses, and is traditionally avoided beyond food use during pregnancy. Never forage crocus flowers yourself, as the poisonous autumn crocus can look similar. Buy from a reputable source, since saffron is often adulterated or faked.",
-
-            BeginnerTip: "One thread is enough. Saffron teaches that a small, carefully chosen ingredient can carry a whole working.",
 
             Traditions: "Hindu, Hellenic, Roman, Wheel of the Year",
 
@@ -1017,21 +905,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "TOXIC. Wormwood contains thujone, which can cause seizures and organ damage. Do not ingest, avoid during pregnancy and breastfeeding, and keep away from pets and children.",
 
-            Overview: "Wormwood is a bitter, intense herb associated with spirit work, protection, banishing, and dark threshold magic. It is often considered a stronger, harsher relative of mugwort and is used when a working needs to drive away unwanted spirits or open serious divination. Wormwood should be approached with caution and respect.",
+            Overview: "Wormwood is a silvery-grey, aromatic perennial with finely divided, downy leaves and an intensely bitter smell. The dried leaves and flowering tops are used, sold loose.",
 
-            TraditionalMeaning: "Traditionally, wormwood is linked with Mars, bitterness, protection, and contact with the dead. Its name and sharp taste connect it with sorrow and purging, and in modern practice it is used in spirit summoning, banishing, and protection against harmful influences.",
+            TraditionalMeaning: "Bitterness, banishing and the boundary with the dead; a harsh, serious protector.",
 
-            CommonUses: "Wormwood is commonly used in protection sachets, banishing jars, spirit work, Samhain altars, and divination incense used outdoors. Dried sprigs may be hung as wards or placed on an ancestor altar as a symbol of the boundary between worlds.",
-
-            HowToUse: "Use small amounts of dried wormwood in sealed sachets, jars, or hanging bundles rather than in anything consumed or applied to skin. Handle it with gloves if your skin is sensitive. If you burn it in an incense blend, do so outdoors in very small amounts, and never leave it where pets or children can reach it.",
+            HowToUse: "Start here: seal a small pinch of dried wormwood in a pouch or jar. Handle it with gloves if your skin is sensitive, label it clearly and keep it apart from kitchen herbs. If you burn it in an incense blend, do so outdoors in very small amounts, and store it where pets and children cannot reach it.",
 
             PairingNotes: "Wormwood pairs well with mugwort for spirit and dream work, black salt for banishing, obsidian for protection and shadow work, and myrrh for honoring the dead. Black or purple candles suit its intense and liminal qualities.",
 
             SubstitutionNotes: "Mugwort can substitute for wormwood in threshold and divination work and is gentler. Rue can substitute in protection and banishing. Rosemary can substitute when you want protection without wormwood’s toxicity.",
 
             SafetyAndRespect: "Wormwood is toxic. Its thujone content can cause seizures, kidney damage, and other serious harm, so never drink, eat, or make tinctures of it for magical purposes, and avoid it entirely during pregnancy and breastfeeding. It is toxic to cats, dogs, and horses. It may cause reactions in people sensitive to daisy-family plants, and its smoke should be kept to a minimum.",
-
-            BeginnerTip: "Treat wormwood as an advanced herb. If you are new to spirit work, start with mugwort and come back to wormwood when you understand why it needs care.",
 
             Traditions: "Slavic, Christian, Roman, Wheel of the Year",
 
@@ -1056,21 +940,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "DEADLY POISONOUS. Every part of the yew except the fleshy red aril is highly toxic, including the seed inside it. Know it, don’t handle it. Never burn, ingest, or use yew in anything that touches the body.",
 
-            Overview: "Yew is an ancient evergreen tree of death, rebirth, endurance, and ancestral memory. Some yews are many hundreds of years old, and the tree’s ability to regrow from its own hollowed trunk has made it a powerful symbol of continuity across lifetimes. Yew is a tree to honor and visit rather than an ingredient to use.",
+            Overview: "Yew is a slow-growing, dark evergreen tree with flat, glossy needles, reddish flaking bark and bright red, cup-shaped berries. Old yews can live for many centuries and regrow from their own hollow trunks.",
 
-            TraditionalMeaning: "Traditionally, yew is linked with Saturn, the underworld, longevity, and the cycle of death and renewal. Its long lifespan and frequent presence in old burial grounds give it strong associations with ancestors, the otherworld, and the passage between life and death.",
+            TraditionalMeaning: "Death, rebirth and continuity across lifetimes; ancestral memory and endurance.",
 
-            CommonUses: "In modern practice yew is most often honored rather than used. Practitioners may meditate beneath an old yew, leave a respectful offering of water at its roots, or use a photograph, drawing, or carved image of a yew on an ancestor altar.",
-
-            HowToUse: "Work with yew symbolically. Visit a yew tree, sit near it for ancestral meditation, or use its image or name in rituals for endurance and transformation. Do not bring yew clippings indoors, burn them, or add them to sachets, jars, baths, or incense.",
+            HowToUse: "Start here: visit an old yew and sit quietly near it for a few minutes. Work with it through its image or name instead of the plant, such as a photograph, drawing or written name on an altar. Do not bring clippings indoors or add any part to sachets, jars, baths or incense.",
 
             PairingNotes: "Yew’s symbolism pairs well with cypress for mourning, myrrh for the sacred dead, obsidian for protection during shadow work, and smoky quartz for grounding. Black, white, or deep green candles suit rituals inspired by the yew.",
 
-            SubstitutionNotes: "Cypress is a safer substitute for yew in mourning and ancestral work. Cedar can substitute for evergreen endurance and protection. A drawing or written name of the yew is often the best substitute for the plant itself.",
+            SubstitutionNotes: "Cypress is a safer substitute for yew in mourning and ancestral work. Cedar can substitute for evergreen endurance and protection.",
 
             SafetyAndRespect: "Yew is one of the most poisonous plants in Europe. Its needles, bark, wood, and seeds contain taxine alkaloids that can stop the heart, and even small amounts can kill people, dogs, horses, and livestock. Never burn yew, because the smoke and dust are also hazardous. Wash your hands if you touch the tree, and supervise children and animals around it.",
-
-            BeginnerTip: "Yew is a tree to visit, not an ingredient to use. A quiet visit to an old churchyard yew can be a deeply moving ancestral ritual on its own.",
 
             Traditions: "Celtic, Christian, Norse, Wheel of the Year",
 
@@ -1095,21 +975,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "DEADLY POISONOUS. True mandrake contains tropane alkaloids that can cause hallucinations, heart problems, coma, and death. Know it, don’t handle it. Never ingest, burn, or apply mandrake to the body.",
 
-            Overview: "Mandrake is one of the most legendary plants in European magic, famous for its forked, human-shaped root and the tales of its scream when pulled from the earth. It is associated with power, protection, fertility, and prosperity, and is often treated as a guardian spirit of the household. Because true mandrake is highly poisonous, most modern practitioners work with its lore and with symbolic substitutes.",
+            Overview: "Mandrake (Mandragora) is a low Mediterranean plant with a rosette of broad, wrinkled leaves, purple or pale flowers, yellow-orange fruit and a thick, often forked root that can resemble a human figure.",
 
-            TraditionalMeaning: "Traditionally, mandrake is linked with power, sorcery, fertility, sleep, and the uncanny. Its humanlike root made it a figure of guardianship and luck in medieval and early modern European folklore, while also earning it a reputation as dangerous and best gathered with ritual care.",
+            TraditionalMeaning: "Hidden power, guardianship and the uncanny; potent strength that must be approached with care.",
 
-            CommonUses: "In modern practice mandrake is mostly used symbolically. A carved substitute root may be kept as a household guardian, its image may be placed on an altar for protection or power, or the stories of the mandrake may be used in workings about hidden strength and transformation.",
-
-            HowToUse: "Use a safe substitute such as angelica or ginger root carved or chosen to resemble a small figure, and dedicate it as a protective household guardian. If you own a true mandrake root, keep it sealed in a labelled box out of reach of children and pets, handle it with gloves, and never powder, burn, or add it to anything that touches skin or food.",
+            HowToUse: "Start here: choose a ginger or angelica root with a figure-like shape and name it as a household guardian. Keep it on a shelf or altar in a small box or cloth. If you own a true mandrake root, keep it sealed in a labelled box out of reach of children and pets, handle it only with gloves, and never powder, burn, or add it to anything that touches skin or food.",
 
             PairingNotes: "Mandrake symbolism pairs well with angelica for protection, black salt for warding, obsidian for power and shadow work, and bay for success. Black, red, or deep green candles suit its potent and earthy lore.",
 
-            SubstitutionNotes: "Angelica root is a common safer substitute for mandrake in protection and guardian work. Ginger root can substitute for power and prosperity, and its shape often suits poppet-style figures. Be aware that American mandrake (mayapple) and bryony are also sold as mandrake, and both are poisonous too.",
+            SubstitutionNotes: "Angelica root is a common safer substitute for mandrake in protection and guardian work. Ginger root can substitute for power and prosperity, and its shape often suits poppet-style figures.",
 
-            SafetyAndRespect: "True mandrake (Mandragora) is highly toxic and has caused deaths. It can cause hallucinations, delirium, racing heart, and coma, and should never be eaten, smoked, burned, or used in oils or baths. Products sold as mandrake may actually be mayapple or bryony, which are also poisonous. Keep any root away from children and pets and wash your hands after touching it.",
-
-            BeginnerTip: "You do not need a real mandrake to work with mandrake lore. A carefully chosen ginger or angelica root, named and treated as a guardian, honors the tradition safely.",
+            SafetyAndRespect: "True mandrake (Mandragora) is highly toxic and has caused deaths. It can cause hallucinations, delirium, racing heart, and coma, and should never be eaten, smoked, burned, or used in oils or baths. Products sold as mandrake may actually be mayapple (American mandrake) or bryony, which are also poisonous. Wash your hands after touching any root.",
 
             Traditions: "Hellenic, Christian, Roman, Wheel of the Year",
 
@@ -1134,21 +1010,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Vervain is traditionally avoided during pregnancy. It may interact with some medications and should not be used internally without advice.",
 
-            Overview: "Vervain is an ancient sacred herb associated with purification, protection, love, peace, and prophecy. It has long been treated as a holy plant suitable for blessing altars, consecrating tools, and protecting the home. Vervain has a calm but serious energy, making it useful for both gentle love work and strong spiritual cleansing.",
+            Overview: "Vervain is a slender, wiry plant with lobed leaves and long, thin spikes of tiny pale-lilac flowers, with little scent. The dried leafy tops are used, sold loose.",
 
-            TraditionalMeaning: "Traditionally, vervain is linked with Venus, sacred purification, and divine favor. It was used to sweep and cleanse altars, carried by envoys as a sign of sacred protection, and gathered with ritual care, and in modern practice it is considered one of the most versatile herbs of blessing.",
+            TraditionalMeaning: "Sacred purification and divine favour; a calm, serious blessing of peace and love.",
 
-            CommonUses: "Vervain is commonly used in consecration rites, cleansing waters, protection sachets, love charms, peace workings, and divination incense. It may be hung over doorways, sprinkled as an infusion, or placed on an altar as a sacred herb.",
-
-            HowToUse: "Use dried vervain in sachets, jars, or cooled infusions for sprinkling and floor washes. A small bundle can be used to sweep or asperge an altar during consecration. Vervain can also be added to incense blends for divination and peace.",
+            HowToUse: "Start here: steep a teaspoon of dried vervain in a cup of hot water, strain, and let it cool. Use it within a day, sprinkling it with your fingertips or adding it to a floor-wash bucket. Dried vervain also goes into sachets, jars and incense blends.",
 
             PairingNotes: "Vervain pairs well with rose for love and peace, rosemary for protection, rue for powerful cleansing, and moonstone for divination. White, green, or pink candles shape vervain toward purification, harmony, or love.",
 
             SubstitutionNotes: "Yarrow can substitute for vervain in protection, love, and divination. Rosemary can substitute for purification and blessing. Hyssop can substitute when the focus is sacred cleansing.",
 
             SafetyAndRespect: "Vervain is traditionally avoided during pregnancy and should not be taken internally without professional advice, especially alongside blood pressure or other medications. Patch-test washes on skin. Gather it responsibly and only where it is plentiful.",
-
-            BeginnerTip: "Vervain is an excellent herb for blessing a new altar. Sprinkle a little cooled vervain water over the surface before you set out your tools.",
 
             Traditions: "Celtic, Roman, Christian, Wheel of the Year",
 
@@ -1173,21 +1045,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "TOXIC. Rue is poisonous if ingested, can cause miscarriage, and its sap causes serious blistering burns on skin exposed to sunlight. Wear gloves and never ingest it.",
 
-            Overview: "Rue is a powerful protective herb associated with warding off the evil eye, breaking curses, banishing harm, and spiritual cleansing. It has a sharp, bitter scent and a reputation as one of the strongest protective plants in European folk magic. Rue is potent and should be handled with care.",
+            Overview: "Rue is a small, shrubby herb with blue-grey, rounded, lobed leaves, small yellow flowers and a sharp, bitter, unpleasant smell. It is grown as a garden plant and sold dried.",
 
-            TraditionalMeaning: "Traditionally, rue is linked with Mars, protection, grace, and defense against envy and malicious magic. It was hung in homes, carried in charms, and used to sprinkle holy water, and in modern practice it remains a key herb for evil eye protection and cleansing.",
+            TraditionalMeaning: "Defence against envy and the evil eye; a fierce, bitter guardian that breaks harm.",
 
-            CommonUses: "Rue is commonly used in evil eye charms, protection sachets, banishing jars, threshold wards, and cleansing rituals. A potted rue plant may be kept by the door, or dried sprigs may be hung or sealed into protective charm bags.",
-
-            HowToUse: "Keep a potted rue plant outside a doorway as a living ward, or place dried rue in sealed sachets and jars. Always handle fresh rue with gloves and avoid getting the sap on your skin, especially before going into sunlight. Do not use rue in baths, oils, teas, or anything consumed.",
+            HowToUse: "Start here: keep a potted rue plant outside a doorway and simply let it grow. Dried rue goes only into sealed sachets and jars. Do not use rue in baths, oils, teas or anything consumed, and clean your tools after cutting it.",
 
             PairingNotes: "Rue pairs well with hyssop for deep cleansing, rosemary for protection, black salt for warding, and obsidian for banishing. Black, red, or white candles suit its protective and cleansing qualities.",
 
             SubstitutionNotes: "Rosemary can substitute for rue in protection and cleansing, and is far safer. Hyssop can substitute for purification. Garlic or black salt can substitute when the main focus is warding off harm.",
 
             SafetyAndRespect: "Rue is toxic if eaten and has historically been used as an abortifacient, so it must be avoided entirely during pregnancy and kept away from children and pets. Its sap is phototoxic and can cause painful blisters and lasting skin marks after sun exposure. Wear gloves when handling fresh plants and wash your hands thoroughly afterward.",
-
-            BeginnerTip: "If you want rue for protection, grow it in a pot by the door and admire it rather than handling it. Its presence alone is the traditional ward.",
 
             Traditions: "Christian, Roman, Wheel of the Year",
 
@@ -1212,21 +1080,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "DEADLY POISONOUS. Belladonna (deadly nightshade) can kill in small amounts, and its sweet-looking berries are especially dangerous to children. Know it, don’t handle it. Never ingest, burn, smoke, or apply it to skin.",
 
-            Overview: "Belladonna, or deadly nightshade, is one of the most notorious poisonous plants in European folklore. It is associated with witchcraft legends, the so-called flying ointments described in early modern texts, and the dark beauty suggested by its name. In modern practice belladonna is a plant to learn about and respect, not one to use.",
+            Overview: "Belladonna, or deadly nightshade, is a bushy plant with dull green leaves, bell-shaped purple-brown flowers and glossy black berries about the size of a cherry. It grows wild in parts of Europe and is kept in poison gardens.",
 
-            TraditionalMeaning: "Traditionally, belladonna is linked with Saturn, death, illusion, and the dangerous edge of power. Its name, “beautiful lady,” is said to come from its use to widen the pupils, and its place in witch-trial era accusations has made it a lasting symbol of forbidden knowledge.",
+            TraditionalMeaning: "Forbidden knowledge, illusion and the dangerous edge of power; a reminder that some power is respected rather than used.",
 
-            CommonUses: "In modern practice belladonna is used only symbolically. Practitioners may study its history, keep an illustration of it in a grimoire, or use its image in shadow work about danger, temptation, and boundaries. It should never be included in sachets, jars, oils, ointments, or incense.",
+            HowToUse: "Start here: learn to recognise belladonna from photographs so you can avoid it. Work with it only through its image, name and story: draw it in your book, keep an illustration on a study altar, or research it. Never put it in sachets, jars, oils, ointments or incense.",
 
-            HowToUse: "Work with belladonna only through its image, name, and story. Draw it in your book of shadows, research its history, or use mugwort or wormwood for the dream and spirit work it is associated with in legend. If belladonna grows near you, learn to recognize it so you can avoid it and keep children and pets away.",
+            PairingNotes: "Belladonna’s symbolism pairs with obsidian for shadow work, myrrh for honoring the dead, mugwort as a safer dream herb, and black candles for boundaries and banishing.",
 
-            PairingNotes: "Belladonna’s symbolism pairs with obsidian for shadow work, myrrh for honoring the dead, mugwort as a safer dream herb, and black candles for boundaries and banishing. Its image can be used on a study altar dedicated to plant lore.",
-
-            SubstitutionNotes: "Mugwort is the usual safe substitute for the dream and visionary associations of belladonna. Wormwood can substitute for spirit work, though it is also toxic and needs care. An image or written name of belladonna is the best substitute for the plant itself.",
+            SubstitutionNotes: "Mugwort is the usual safe substitute for the dream and visionary associations of belladonna. Wormwood can substitute for spirit work, though it is also toxic and needs care.",
 
             SafetyAndRespect: "Every part of belladonna is highly toxic, and a few berries can kill a child. Its alkaloids can be absorbed through the skin and cause hallucinations, racing heart, seizures, and death. Do not grow it where children or pets play, do not handle it bare-handed, and never attempt to recreate historical flying ointments. If someone may have eaten any part of it, seek emergency medical help immediately.",
-
-            BeginnerTip: "The most powerful thing a beginner can do with belladonna is learn to recognize it and leave it alone. Knowing your poisonous plants is part of real herbal craft.",
 
             TraditionNotes: "Folk & wider practice: Belladonna has no established ritual use in the nine traditions. In European folk belief it belongs among the witches’ nightshades and is grown in poison gardens rather than used. It is highly poisonous and should never be handled casually or ingested.",
 
@@ -1249,21 +1113,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "TOXIC WHEN RAW. Elder leaves, stems, bark, roots, and unripe or raw berries contain compounds that can cause severe vomiting and illness. Only cooked ripe berries and flowers are used as food. Keep away from pets.",
 
-            Overview: "Elder is a powerful hedgerow tree associated with protection, healing, blessing, and the world of spirits and faery folk. Its creamy flowers and dark berries have long been part of both household remedy and household lore. Elder is treated with special respect in European folklore, and many traditions ask permission before cutting it.",
+            Overview: "Elder is a hedgerow shrub or small tree with flat, creamy, sweet-scented flower clusters in early summer and drooping bunches of tiny dark-purple berries in autumn. The flowers and berries are used, sold dried.",
 
-            TraditionalMeaning: "Traditionally, elder is linked with Venus, water, protection, and the threshold between the human world and the otherworld. In European folklore the tree was believed to be guarded by a spirit, and planting elder near the home was thought to keep away harm while cutting it carelessly invited bad luck.",
+            TraditionalMeaning: "Protection and blessing at the threshold of the otherworld; a guarded tree that rewards respect.",
 
-            CommonUses: "Elder is commonly used in protection charms, blessing rituals, healing work, faery offerings, and threshold magic. Dried flowers may be added to sachets, while fallen twigs can be hung over doors or used to make simple charms.",
-
-            HowToUse: "Use dried elderflowers in sachets, blessing jars, or cooled infusions for washes. Collect only fallen twigs and ask permission of the tree before taking anything. Elderflower cordial or cooked elderberry syrup made from a trusted recipe can be shared as kitchen magic, but never eat any part of the plant raw.",
+            HowToUse: "Start here: put a spoonful of dried elderflowers in a small sachet. For a gentle wash, steep dried flowers in hot water, strain and let it cool. Take only fallen twigs, and make cordial or syrup only from a trusted recipe, cooking berries thoroughly.",
 
             PairingNotes: "Elder pairs well with rowan and hawthorn for traditional hedgerow protection, rosemary for cleansing, and moonstone for otherworldly and lunar work. White, green, or purple candles suit elder’s blessing and threshold qualities.",
 
             SubstitutionNotes: "Rowan can substitute for elder in protection and threshold work. Rosemary can substitute for broad protection and healing. Hawthorn can substitute when the focus is faery lore and boundaries.",
 
             SafetyAndRespect: "Raw elder leaves, stems, bark, roots, seeds, and unripe berries can cause nausea, vomiting, and more serious illness, so only well-cooked ripe berries and flowers are used as food. Many lookalike white-flowered plants are deadly, so never forage elder unless you are certain of identification. Keep elder material away from pets and livestock.",
-
-            BeginnerTip: "Begin with elder by simply greeting the tree. Folk tradition asks you to speak to the Elder Mother and ask permission before taking even a fallen twig.",
 
             Traditions: "Christian, Celtic, Wheel of the Year",
 
@@ -1288,21 +1148,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Hawthorn has sharp thorns, and its seeds contain cyanogenic compounds. It may interact with heart medications, so do not use it internally without medical advice.",
 
-            Overview: "Hawthorn is a sacred hedgerow tree associated with protection, love, fertility, hope, and the faery world. Its white May blossoms mark the turn toward summer, while its thorns give it a strong protective symbolism. Hawthorn is one of the most important trees in British and Irish folklore and is treated with deep respect.",
+            Overview: "Hawthorn is a thorny hedgerow tree with small lobed leaves, clusters of white or pink blossom in May and dark-red berries (haws) in autumn. Berries, leaves, blossom and fallen thorns are used.",
 
-            TraditionalMeaning: "Traditionally, hawthorn is linked with Mars, Beltane, the heart, and the threshold between worlds. Lone hawthorns were believed to belong to the fair folk, its blossom was gathered for May celebrations, and its thorny branches were used as protective barriers and boundary markers.",
+            TraditionalMeaning: "Hope, love and protection at the boundary between worlds; the turn toward summer.",
 
-            CommonUses: "Hawthorn is commonly used in Beltane rituals, love and fertility charms, protection workings, faery offerings, and heart healing. Blossoms may be used to decorate a May altar, while dried berries or fallen thorns can be added to sachets and boundary charms.",
-
-            HowToUse: "Use dried hawthorn berries or leaves in sachets and jars for protection and love. Fallen thorns can be added to boundary charms or witch bottles. Decorate outdoors with May blossom rather than bringing it inside, as many British and Irish traditions consider indoor blossom unlucky.",
+            HowToUse: "Start here: collect a few fallen haws on an autumn walk and let them dry in a bowl. Dried berries and leaves go into sachets and jars, and fallen thorns into boundary charms or witch bottles. Store dried haws in a sealed jar once they are hard.",
 
             PairingNotes: "Hawthorn pairs well with rowan for traditional protection, rose for love and heart healing, elder for faery and threshold work, and rose quartz for emotional healing. White, pink, or green candles suit its Beltane and heart-centered qualities.",
 
             SubstitutionNotes: "Rowan can substitute for hawthorn in protection and faery lore. Rose can substitute for love and heart healing. Blackthorn can substitute for strong thorny protection.",
 
             SafetyAndRespect: "Hawthorn thorns can cause painful wounds and infections, so handle branches with gloves. The seeds contain compounds that release cyanide when crushed. Hawthorn can affect blood pressure and interacts with heart medications, so never use it as a heart remedy without medical advice.",
-
-            BeginnerTip: "Hawthorn is a tree of hope. If you see one in bloom, take a moment to make a wish for the coming summer, and remember not to cut a lone thorn.",
 
             Traditions: "Celtic, Wheel of the Year, Christian, Slavic, Roman",
 
@@ -1327,21 +1183,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Raw rowan berries contain parasorbic acid and can cause stomach upset. They should only be eaten cooked.",
 
-            Overview: "Rowan, also called mountain ash, is one of the most celebrated protective trees in northern European folklore. Its bright red berries, each marked with a tiny five-pointed star, have made it a symbol of protection and spiritual insight. Rowan is especially associated with guarding homes, livestock, and travellers from harm.",
+            Overview: "Rowan, or mountain ash, is a slender tree with feathery, toothed leaves and heavy clusters of bright red berries, each marked underneath with a tiny five-pointed star.",
 
-            TraditionalMeaning: "Traditionally, rowan is linked with the sun, fire, protection, and the ability to see clearly through enchantment. Its red berries were believed to repel malevolent magic, and rowan wood was used for protective charms, tool handles, and divining rods.",
+            TraditionalMeaning: "Protection and clear sight through enchantment; a bright guardian of home and traveller.",
 
-            CommonUses: "Rowan is commonly used in protection charms, threshold wards, travel charms, red-thread crosses, and insight or divination work. Sprigs may be hung above doors, berries may be strung into necklaces or garlands, and twigs can be bound into small equal-armed crosses.",
-
-            HowToUse: "Tie two small rowan twigs into an equal-armed cross with red thread and hang it over a door or keep it in a bag. Dried berries can be strung into garlands or added to protection jars. Collect only what you need from abundant trees and leave plenty of berries for birds.",
+            HowToUse: "Start here: turn a rowan berry over to find its star, then lay a few berries on your altar to dry. Dried berries can be threaded onto cotton with a needle for garlands or added to jars. Cut twigs with clean secateurs, and let them dry before binding them with thread.",
 
             PairingNotes: "Rowan pairs well with hawthorn for hedgerow protection, elder for threshold work, red thread for traditional binding, and garnet for strength and protection. Red, black, or gold candles strengthen its protective and solar qualities.",
 
             SubstitutionNotes: "Hawthorn can substitute for rowan in protection and threshold magic. Rosemary can substitute for broad protection. A simple red thread charm can stand in for rowan’s red, protective symbolism.",
 
             SafetyAndRespect: "Raw rowan berries can cause stomach upset and should only be eaten after cooking. Keep berry garlands away from small children and pets. Gather sustainably, as the berries are an important food for birds in autumn and winter.",
-
-            BeginnerTip: "A rowan cross tied with red thread is one of the simplest and oldest protection charms. It makes a perfect first piece of traditional craft.",
 
             Traditions: "Celtic, Norse, Slavic, Wheel of the Year",
 
@@ -1366,21 +1218,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "St John’s wort interacts dangerously with many medications, including antidepressants and hormonal contraception. It can cause photosensitivity and is toxic to grazing animals.",
 
-            Overview: "St John’s wort is a bright solar herb associated with protection, banishing, courage, and midsummer magic. Its yellow star-like flowers bloom around the summer solstice, and its petals release a red pigment when crushed. St John’s wort is especially useful when a working needs to drive away darkness and invite light.",
+            Overview: "St John’s wort is an upright wild plant with bright yellow, five-petalled, star-like flowers and leaves dotted with tiny translucent glands. Crushed flowers release a red pigment; the flowering tops are used, fresh or dried.",
 
-            TraditionalMeaning: "Traditionally, St John’s wort is linked with the sun, fire, protection, and the feast of St John at midsummer. It was hung over doors and windows to repel evil spirits, storms, and harmful magic, and its red-staining oil was seen as a sign of its potent, almost sacred life force.",
+            TraditionalMeaning: "Light driving out darkness; protection, courage and the strength of the midsummer sun.",
 
-            CommonUses: "St John’s wort is commonly used in midsummer rituals, protection charms, banishing workings, courage sachets, and solar altar decorations. Flowers may be gathered on Midsummer’s Eve, dried for hanging, or added to protective bundles and wreaths.",
-
-            HowToUse: "Use dried flowers in sachets and jars for protection and courage, or hang small bundles over doors and windows. Gather fresh flowers on or near Midsummer for solstice wreaths and solar altars. Treat it as an external, symbolic herb unless a qualified practitioner has advised otherwise.",
+            HowToUse: "Start here: set a small bundle of dried flowering tops on a sunny windowsill or altar. Pick flowering tops in dry weather, tie them in small bundles and hang them upside down to dry. Dried flowers go into sachets and jars; use it externally and symbolically only.",
 
             PairingNotes: "St John’s wort pairs well with calendula for solar blessing, rowan for protection, sunstone for courage, and citrine for light and joy. Gold, yellow, or red candles strengthen its midsummer and protective qualities.",
 
             SubstitutionNotes: "Calendula can substitute for St John’s wort in solar and blessing work. Yarrow can substitute for protection and midsummer magic. Sunflower petals can substitute for courage and light.",
 
             SafetyAndRespect: "St John’s wort interacts with many medications, including antidepressants, hormonal contraceptives, blood thinners, and HIV and transplant drugs, and can make them less effective or dangerous. It can cause sun sensitivity on skin. Its use as a folk remedy for low mood does not replace professional mental-health care, and it is toxic to grazing livestock.",
-
-            BeginnerTip: "Gather or buy a small bundle of St John’s wort for midsummer and hang it by your door. It is a simple way to welcome the strongest light of the year.",
 
             Traditions: "Christian, Slavic, Celtic, Wheel of the Year",
 
@@ -1405,21 +1253,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Many commercial dragon’s blood products are dyed, synthetic, or mislabeled. The resin smoke can irritate lungs and the red dye stains skin and fabric.",
 
-            Overview: "Dragon’s blood is a deep red resin associated with power, protection, amplification, and passionate energy. It is often added to a working to strengthen it, much like a magical booster. Its dramatic colour and warm, sweet smoke make it one of the most popular resins in modern witchcraft.",
+            Overview: "Dragon’s blood is a deep-red resin from several trees and palms, sold as lumps, powder, sticks and incense. It burns with a warm, sweet, slightly spicy smoke.",
 
-            TraditionalMeaning: "Traditionally, dragon’s blood is linked with Mars, fire, strength, and protection. Its blood-red colour gave it a long history as a prized dye, varnish, and medicine, and in modern practice it is believed to add potency and protection to any spell it joins.",
+            TraditionalMeaning: "Power, protection and amplification; a passionate force that strengthens any working.",
 
-            CommonUses: "Dragon’s blood is commonly used in protection incense, banishing rituals, love spells, power workings, and as an amplifier in mixed incense blends. It can also be made into an ink for writing sigils, petitions, or names of things to protect.",
-
-            HowToUse: "Burn small pieces of resin on charcoal in a heatproof dish, or add a little to incense blends to strengthen them. Powdered resin can be dissolved in alcohol to make a red ink for petitions and sigils. Place a piece in a protection jar or charm bag as an amplifier.",
+            HowToUse: "Start here: add a small crumb of resin to an incense blend. To burn it alone, place a pea-sized piece on a lit charcoal disk in a sand-filled, heatproof dish. Grind lumps with a mortar and pestle for powder, and keep a whole piece for jars and charm bags.",
 
             PairingNotes: "Dragon’s blood pairs well with frankincense for powerful consecration, cinnamon for fast fiery energy, garnet for passion and strength, and red jasper for courage. Red, black, or gold candles strengthen its power and protection.",
 
             SubstitutionNotes: "Cinnamon can substitute for dragon’s blood in fiery, empowering work. Frankincense can substitute for consecration and spiritual protection. A drop of red ink or red candle wax can symbolically stand in for its colour.",
 
             SafetyAndRespect: "Dragon’s blood comes from several plants, including Daemonorops palms and Dracaena trees, and Socotra’s dragon blood tree is vulnerable to extinction, so buy from ethical sources where you can. Many sticks and incenses are synthetic or dyed. Burn resin with ventilation and away from pets, and expect the red colour to stain hands, cloth, and surfaces.",
-
-            BeginnerTip: "A tiny piece of dragon’s blood in an incense blend goes a long way. Use it when you want your working to feel stronger and more focused.",
 
             Traditions: "Wheel of the Year",
 
@@ -1444,21 +1288,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Japanese star anise looks almost identical but is highly toxic. Only buy food-grade Chinese star anise, and never give star anise tea to infants.",
 
-            Overview: "Star anise is a beautiful star-shaped spice associated with psychic awareness, luck, purification, and dream work. Its eight-pointed pods make it a natural symbol of guidance and wishes. Star anise is especially popular for divination altars, lucky charms, and winter celebration magic.",
+            Overview: "Star anise is the dried, woody, eight-pointed fruit of an evergreen tree, rich brown with a shiny seed in each point and a sweet, liquorice-like scent. It is sold whole and ground.",
 
-            TraditionalMeaning: "Traditionally, star anise is linked with Jupiter, air, good fortune, and heightened intuition. Its star shape has made it a charm for luck and wishes in modern practice, and its warm, sweet scent is often used to create a dreamy, receptive atmosphere for psychic work.",
+            TraditionalMeaning: "Guidance, good fortune and heightened intuition; a little star for wishes and psychic sight.",
 
-            CommonUses: "Star anise is commonly used in divination altars, dream pillows, luck charms, protection sachets, and winter solstice decorations. Whole pods may be carried in a pocket, placed near tarot cards, or added to simmer pots and garlands.",
-
-            HowToUse: "Carry a whole star anise pod as a luck or psychic charm, or place one on a divination altar. Add pods to simmer pots with cinnamon and orange to fill a home with warmth and blessing. A single pod can also be placed at each corner of a space as a gentle protection ritual.",
+            HowToUse: "Start here: choose one unbroken pod and keep it somewhere you will see it every day. Whole pods last for years in a sealed jar; broken points can be ground for incense. Add pods to simmer pots with other spices, and take them out before the water boils dry.",
 
             PairingNotes: "Star anise pairs well with mugwort for dreams and divination, cinnamon for luck and warmth, amethyst for intuition, and moonstone for lunar awareness. Purple, blue, or gold candles suit its psychic and lucky qualities.",
 
             SubstitutionNotes: "Anise seed can substitute for star anise in psychic and purification work, though it is a different plant. Mugwort can substitute for dream and divination work. Bay can substitute for wish and luck magic.",
 
             SafetyAndRespect: "Japanese star anise (Illicium anisatum) is toxic and can cause seizures, and it has been found mixed into herbal teas sold as Chinese star anise. Never give star anise tea to babies or young children, and buy only clearly labelled food-grade spice. Keep pods away from pets, and use the essential oil with care and dilution.",
-
-            BeginnerTip: "Star anise makes a lovely first luck charm. Keep a single pod in your wallet or tarot bag as a little star to guide your way.",
 
             TraditionNotes: "Wheel of the Year: Star anise is burned or placed on the altar for psychic power and divination, carried for luck, and used at Yule as a sun-shaped decoration.\n\nFolk & wider practice: Star anise is used in Chinese and Vietnamese cooking. Its poisonous relative Japanese star anise (shikimi) is placed at Buddhist temples and graves in Japan and should not be confused with it.",
 
@@ -1483,21 +1323,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Raw acorns and green oak leaves are high in tannins and can harm dogs, horses, and cattle. Gather fallen material respectfully rather than cutting living trees.",
 
-            Overview: "Oak is one of the great sacred trees of Europe, associated with strength, endurance, protection, wisdom, and steady prosperity. Its leaves, bark, wood, and acorns are all used in folk magic, usually as symbols of patient growth and deep-rooted power. Oak is a natural choice when a working needs stability and staying power rather than speed.",
+            Overview: "Oak is a broad, long-lived tree with lobed leaves, rugged bark and acorns held in small cups. Leaves, fallen bark, twigs, acorns and wood are used.",
 
-            TraditionalMeaning: "Traditionally, oak is linked with sky and thunder gods, kingship, oaths, and the strength that comes from long, slow growth. The acorn carries a small-to-mighty symbolism, representing potential that becomes something lasting. Because oaks were often struck by lightning, they also came to represent divine power and protection.",
+            TraditionalMeaning: "Strength, endurance and steady growth; small potential that becomes something lasting.",
 
-            CommonUses: "Oak is commonly used in strength charms, protection talismans, prosperity work, healing rituals, and oath or commitment ceremonies. Acorns are carried for luck and longevity or placed on windowsills for protection, while oak leaves and bark appear in charm bags and altar decorations. Oak wood is a traditional choice for wands, staffs, and ritual fires.",
-
-            HowToUse: "Carry a single acorn as a charm for growth, luck, or resilience. Use dried oak leaves or a small piece of fallen bark in protection sachets, prosperity jars, or altar arrangements. Oak can also be honoured simply by visiting an oak tree, sitting with it, and leaving a biodegradable offering such as clean water.",
+            HowToUse: "Start here: pick up one acorn on a walk and keep it on your desk or altar. Dry acorns for a week in a warm spot so they do not mould, and press leaves flat in a book. Add leaves and bark pieces to sachets and jars, and if you sit with an oak, leave only clean water at its roots.",
 
             PairingNotes: "Oak pairs well with mistletoe for midsummer or midwinter blessing, holly for seasonal balance, bay for success, and tiger’s eye for courage and grounded confidence. Gold, green, or brown candles strengthen oak’s solar, prosperous, and earthy qualities.",
 
             SubstitutionNotes: "Ash can substitute for oak in strength and world-tree symbolism. Cedar can substitute in protection and endurance work. Rosemary can serve as a general-purpose substitute when no tree material is available.",
 
             SafetyAndRespect: "Acorns and young oak leaves are toxic to several animals, so keep them away from dogs, horses, and livestock. Never strip bark from a living tree, which can damage or kill it; fallen twigs, leaves, and acorns are a respectful alternative. Magical work for strength should never replace medical, legal, or financial support.",
-
-            BeginnerTip: "Collect one acorn on a walk and keep it on your altar or desk as a reminder that lasting things grow slowly.",
 
             Traditions: "Celtic, Norse, Hellenic, Roman, Slavic, Christian, Wheel of the Year",
 
@@ -1522,21 +1358,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Birch essential oil and sweet birch oil contain high levels of methyl salicylate, which is toxic if swallowed and dangerous for children and pets.",
 
-            Overview: "Birch is a tree of beginnings, cleansing, renewal, and protection. As one of the first trees to colonise cleared ground, it carries a strong symbolism of fresh starts and clearing the way. Birch is especially useful for workings at the start of a cycle, after loss, or when a space needs to feel new again.",
+            Overview: "Birch is a slender, fast-growing tree with papery white bark that peels in thin sheets, small toothed leaves and catkins in spring.",
 
-            TraditionalMeaning: "Traditionally, birch is associated with purification, fertility, youthful energy, and protection from harm. Its pale bark gives it a luminous, lunar feel, and birch twigs were widely used to sweep out the old and drive away misfortune. It represents gentle but persistent renewal.",
+            TraditionalMeaning: "New beginnings and gentle, persistent renewal; clearing the way for a fresh start.",
 
-            CommonUses: "Birch is commonly used in cleansing rituals, besom brooms, new-beginning spells, protection charms, and spring celebrations. Shed bark can be used as a natural surface for writing intentions, and twigs are bundled for sweeping or sauna-style cleansing in some folk customs.",
-
-            HowToUse: "Gather naturally shed birch bark and write a new intention on it, then keep it on your altar or bury it in spring. Use a small bundle of fallen birch twigs to symbolically sweep a doorway or altar. Birch leaves can be added to cleansing sachets or spring blessing jars.",
+            HowToUse: "Start here: write one word on a piece of birch bark in pen. Flatten curled bark under a heavy book for a day before writing. Bundle fallen twigs with string into a small sweeping brush, and dry leaves flat for sachets and jars.",
 
             PairingNotes: "Birch pairs well with rowan and hawthorn for protective seasonal work, rosemary for purification, and moonstone for new beginnings and lunar renewal. White or pale green candles strengthen birch’s fresh, cleansing energy.",
 
             SubstitutionNotes: "Willow can substitute for birch in water-associated and gentle cleansing work. Rosemary can substitute when the focus is purification or protection. Any fresh green sprig can stand in symbolically for a new-beginnings working.",
 
             SafetyAndRespect: "Never peel bark from a living birch, as this can permanently scar or kill the tree; use only bark that has fallen naturally. Birch and wintergreen-type oils are highly concentrated salicylates and should never be ingested or used around children or pets. People allergic to aspirin or birch pollen should take extra care.",
-
-            BeginnerTip: "Birch is ideal for the first ritual of a new year, a new home, or a new chapter. Write one word for what you are beginning on a piece of fallen bark.",
 
             Traditions: "Celtic, Norse, Slavic, Christian, Wheel of the Year",
 
@@ -1561,21 +1393,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Willow bark contains salicin, a compound related to aspirin. Avoid internal use if allergic to aspirin, pregnant, on blood thinners, or giving it to children.",
 
-            Overview: "Willow is a tree of water, the moon, grief, flexibility, and intuition. It grows by rivers and bends without breaking, which makes it a natural symbol of resilience through emotional change. Willow is especially useful for mourning rituals, healing work, and lunar or dream-centred practice.",
+            Overview: "Willow is a waterside tree with long, narrow leaves and supple, flexible stems called withies; the weeping willow has long, trailing branches.",
 
-            TraditionalMeaning: "Traditionally, willow is associated with sorrow, remembrance, the moon, and enchantment. The weeping willow became a common emblem of mourning, while its supple branches symbolise the ability to bend with life rather than snap. Willow also has a reputation for wish magic and binding, because its flexible withies can be tied into knots.",
+            TraditionalMeaning: "Grief, flexibility and intuition; bending with life without breaking.",
 
-            CommonUses: "Willow is commonly used in grief and remembrance rituals, healing spells, moon magic, knot and wish work, and dream sachets. Flexible willow withies are woven into wreaths, circles, and small charms, and willow wood is a traditional choice for lunar wands.",
-
-            HowToUse: "Tie a gentle knot in a thin willow withy while speaking a wish, then keep it until the wish is fulfilled and return it to the earth. Use willow leaves in moon sachets or grief rituals, or place a willow branch on an ancestor altar. A willow circle can be woven as a simple lunar wreath.",
+            HowToUse: "Start here: float a willow leaf in a bowl of water on your altar. Soak dried withies in water for a few hours so they bend again before weaving them into a circle or knot. Dry leaves flat for sachets, and return old willow pieces to the earth when you are done.",
 
             PairingNotes: "Willow pairs well with moonstone for lunar intuition, myrrh for mourning and ancestor work, lavender for emotional calm, and rose for heart healing. Silver, white, or blue candles strengthen willow’s watery, lunar character.",
 
             SubstitutionNotes: "Birch can substitute for willow in gentle cleansing and renewal. Lemon balm can substitute in emotional healing work. A small bowl of water can symbolically represent willow’s element when the plant is not available.",
 
             SafetyAndRespect: "Willow bark is not a safe substitute for medication, and its salicin can cause problems for people with aspirin sensitivity, bleeding disorders, or certain medications; it is also unsafe for cats. Cut withies only with permission and from healthy coppiced trees. Grief rituals can be meaningful, but they never replace bereavement or mental-health support.",
-
-            BeginnerTip: "Use willow when you need permission to feel something fully. A willow leaf placed in water under the full moon makes a quiet ritual of release.",
 
             Traditions: "Celtic, Christian, Slavic, Wheel of the Year",
 
@@ -1600,21 +1428,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Holly berries are toxic and can cause vomiting and diarrhoea, especially in children and pets. Never eat them, and keep decorations out of reach.",
 
-            Overview: "Holly is an evergreen of protection, endurance, courage, and midwinter blessing. Its glossy, spiky leaves stay green through the darkest season, making it a symbol of life that persists through hardship. Holly is especially useful for household protection and winter rituals.",
+            Overview: "Holly is an evergreen shrub or tree with glossy, dark-green, spiny leaves and, on female plants, bright red berries in winter.",
 
-            TraditionalMeaning: "Traditionally, holly is associated with protection against harmful spirits, lightning, and misfortune. Its prickles symbolise defence, while its red berries and evergreen leaves represent vitality in the cold season. Bringing holly indoors at midwinter was widely believed to welcome luck and good spirits into the home.",
+            TraditionalMeaning: "Endurance and protection through the dark season; life that persists through hardship.",
 
-            CommonUses: "Holly is commonly used in midwinter decorations, protection charms, doorway wreaths, courage workings, and household warding. Single leaves can be placed over thresholds or in protection sachets, and sprigs are often included on Yule altars.",
-
-            HowToUse: "Hang a sprig of holly over a doorway or include it in a winter wreath for household protection. Use a single dried leaf, without berries, in protection sachets or boundary charms. Remove and compost holly decorations after the season rather than leaving them to dry out indefinitely.",
+            HowToUse: "Start here: stand a berry-free sprig of holly in a small vase during winter. Use a single dried leaf in sachets or boundary charms. Compost holly after the season rather than leaving it to dry out indefinitely.",
 
             PairingNotes: "Holly pairs well with oak for seasonal balance, ivy for loyalty and endurance, mistletoe for midwinter blessing, and pine for protection and renewal. Red, green, and white candles strengthen holly’s winter and protective energy.",
 
             SubstitutionNotes: "Rosemary can substitute for holly in protection work. Juniper and pine can substitute in evergreen, winter, and warding workings. Any evergreen sprig can symbolically represent enduring life through winter.",
 
             SafetyAndRespect: "Holly berries and leaves are toxic if eaten and are a known risk to children, dogs, and cats; use berry-free sprigs indoors where possible. The spiny leaves can scratch skin and eyes, so handle with gloves. Harvest lightly and leave berries on wild trees, where they are important winter food for birds.",
-
-            BeginnerTip: "A berry-free sprig of holly over the front door is one of the simplest, most traditional winter protection charms.",
 
             Traditions: "Celtic, Christian, Wheel of the Year",
 
@@ -1639,21 +1463,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "POISONOUS. Mistletoe berries and leaves are toxic to people and pets and must never be eaten or brewed. Keep it well out of reach of children, cats, and dogs, and do not use it in food, drinks, baths, or anything that touches the mouth.",
 
-            Overview: "Mistletoe is a sacred plant of blessing, peace, protection, and midwinter magic. Growing high in trees without touching the ground, it was long seen as a plant between worlds and a gift from the sky. In modern practice it is used symbolically, as a hung decoration or altar piece, never as something to consume.",
+            Overview: "Mistletoe is a semi-parasitic evergreen that grows in round clumps high on tree branches, with paired yellow-green leaves and sticky white berries.",
 
-            TraditionalMeaning: "Traditionally, mistletoe is associated with peace, reconciliation, fertility, healing, and divine favour. Because it stays green in winter and grows on oaks and other trees, it symbolised life continuing through the dark of the year. The custom of kissing beneath it reflects its long association with goodwill and harmony.",
+            TraditionalMeaning: "Peace, goodwill and reconciliation; life that continues through the dark of the year.",
 
-            CommonUses: "Mistletoe is commonly used as a hung midwinter decoration, a doorway charm for peace and goodwill, an altar piece at Yule or Midsummer, and a symbol of reconciliation. Some practitioners place a sprig, sealed or out of reach, above the household altar for protection through the year.",
-
-            HowToUse: "Hang a sprig of mistletoe high above a doorway or altar where children and pets cannot reach it, and replace it each year. Use it only as a visual, symbolic presence rather than adding it to jars, teas, baths, or loose blends. Wash your hands after handling, and dispose of old sprigs where animals cannot eat fallen berries.",
+            HowToUse: "Start here: place a picture or carved image of mistletoe on your altar. If you hang a real sprig, put it high above a doorway or altar where children and pets cannot reach it, and replace it each year. Use it only as a visual presence, never in jars, teas, baths or blends; wash your hands after handling and dispose of old sprigs where animals cannot eat fallen berries.",
 
             PairingNotes: "Mistletoe pairs well with oak for its traditional sacred host tree, holly for midwinter balance, frankincense for consecration, and gold candles for solar blessing. Green and white candles support its themes of peace and continuing life.",
 
             SubstitutionNotes: "An oak leaf can substitute symbolically for mistletoe in sacred-tree and blessing work. Holly can substitute in midwinter protection. Bay can substitute for blessing and success while remaining far safer to handle.",
 
             SafetyAndRespect: "All parts of mistletoe should be treated as poisonous: berries and leaves can cause serious illness in humans and are dangerous to pets. Never ingest it or make home preparations, and seek urgent medical or veterinary help if any is swallowed. Medical mistletoe extracts exist but are only used under professional supervision, which is entirely different from folk handling.",
-
-            BeginnerTip: "Treat mistletoe as a hanging symbol only. If you have children or pets, a picture or carved image of mistletoe on the altar carries the same meaning safely.",
 
             Traditions: "Celtic, Norse, Christian, Wheel of the Year",
 
@@ -1678,21 +1498,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Meadowsweet contains salicylates. Avoid internal use if allergic to aspirin, pregnant, on blood thinners, or for children.",
 
-            Overview: "Meadowsweet is a fragrant herb of love, peace, joy, and harmony. Its creamy, honey-scented flowers made it a favourite strewing herb, and it was traditionally used in bridal garlands. Meadowsweet is especially lovely for handfastings, home blessings, and workings to soften tension in a household.",
+            Overview: "Meadowsweet is a tall wetland plant with frothy clusters of tiny creamy flowers and a sweet, honey-almond scent; its leaves smell of wintergreen when crushed. The dried flowers are the part used.",
 
-            TraditionalMeaning: "Traditionally, meadowsweet is associated with marriage, gladness, peace, and the sweetening of a space. As a strewing herb it was scattered on floors to freshen rooms, giving it a symbolic role in household harmony. Its gentle airy nature lends itself to love that is joyful rather than intense.",
+            TraditionalMeaning: "Gladness, harmony and joyful love; a sweetening presence in a home.",
 
-            CommonUses: "Meadowsweet is commonly used in love sachets, handfasting and wedding garlands, peace and harmony workings, home blessings, and altar decorations for summer rites. Dried flowers can be added to bath sachets or scattered lightly around a ritual space.",
-
-            HowToUse: "Add dried meadowsweet flowers to love or peace sachets, bridal bouquets, or home blessing jars. Place fresh flowers on the altar for summer celebrations, or scatter a small amount of the dried herb to sweeten a space before a ritual. Keep blends simple so its delicate scent can come through.",
+            HowToUse: "Start here: tuck a little dried meadowsweet into a sachet with rose petals and keep it in a shared room. Keep blends simple so its delicate scent comes through. Fresh flowers last only a day or two in water, so dry the rest promptly before the scent fades.",
 
             PairingNotes: "Meadowsweet pairs well with rose for love, lavender for peace, lemon balm for joy and emotional healing, and rose quartz for gentle heart work. Pink, white, or pale yellow candles strengthen its loving and harmonious qualities.",
 
             SubstitutionNotes: "Chamomile can substitute for meadowsweet in peace and gentle blessing work. Lavender can substitute for harmony and calm. Rose can substitute when the focus is love or marriage.",
 
             SafetyAndRespect: "Because meadowsweet contains salicylates similar to aspirin, it is not appropriate for internal use by people with aspirin allergy, asthma triggered by aspirin, bleeding disorders, or during pregnancy. Its pollen and scent can bother sensitive people. Love and harmony spells should never be used to override another person’s free will.",
-
-            BeginnerTip: "Meadowsweet is a beautiful herb for blessing a relationship you already have. Tuck a little into a sachet with rose petals and keep it in a shared space.",
 
             Traditions: "Celtic, Wheel of the Year",
 
@@ -1717,21 +1533,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Never forage angelica: it closely resembles deadly water hemlock and poison hemlock. Angelica can also make skin photosensitive and is traditionally avoided during pregnancy.",
 
-            Overview: "Angelica is a powerful herb of protection, blessing, healing, and spiritual strength. Its name reflects its long reputation as an angelic, heavenly plant that guards against harm. It is especially valued for strong household protection and for workings that call in benevolent spiritual help.",
+            Overview: "Angelica is a tall plant with hollow stems, broad divided leaves and large, rounded heads of greenish-white flowers; its root is sweet and musky. Dried root, seeds and leaves are used, sold by herbal suppliers.",
 
-            TraditionalMeaning: "Traditionally, angelica is associated with angels, divine protection, warding off evil, and protection against illness. Its root was carried as a charm in European folk practice, and it was treated as a plant that brought heavenly guardianship to a home. Its solar, fiery nature gives it a bright, uplifting protective quality.",
+            TraditionalMeaning: "Guardianship and heavenly protection; a bright, uplifting ward.",
 
-            CommonUses: "Angelica is commonly used in protection sachets, house blessings, uncrossing work, healing rituals, and incense blends for spiritual cleansing. The dried root is often carried as a talisman, while the leaves and seeds are added to protection jars and ritual baths in some traditions.",
-
-            HowToUse: "Buy dried angelica root from a reputable supplier and carry a small piece in a charm bag for protection and strength. Add crushed dried angelica to protection jars, house blessing powders, or incense blends with frankincense. Keep it near the front door or on the altar when you want a guarded, blessed atmosphere.",
+            HowToUse: "Start here: set a piece of dried angelica root on your altar or near the front door. Crush dried root or leaf with a mortar and pestle for powders and incense. Whole root keeps for years in a sealed jar.",
 
             PairingNotes: "Angelica pairs well with rosemary for protection and cleansing, frankincense for sacred blessing, bay for strength and victory, and clear quartz for amplification. White or gold candles strengthen its heavenly, solar qualities.",
 
             SubstitutionNotes: "Rosemary can substitute for angelica in general protection and cleansing. Bay can substitute for strength and blessing. Basil can substitute for household protection when angelica is unavailable.",
 
             SafetyAndRespect: "Wild angelica is easily confused with water hemlock and poison hemlock, which can kill, so only use material from trusted commercial sources. Angelica contains furanocoumarins that can cause skin reactions in sunlight, and it is traditionally avoided in pregnancy and with some medical conditions. Spiritual protection never replaces medical or safety help.",
-
-            BeginnerTip: "Angelica root is a classic carry charm. A single piece in a small white bag kept in your pocket is a simple, traditional protection talisman.",
 
             Traditions: "Norse, Christian, Wheel of the Year",
 
@@ -1756,21 +1568,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Valerian root has a strong, unpleasant odour and is a sedative herb. Avoid internal use with alcohol, sleep medication, during pregnancy, or before driving, unless guided by a qualified professional.",
 
-            Overview: "Valerian is a herb of sleep, calm, love, and quiet protection. Best known as a soothing root, it is used in magic to settle restless energy, encourage rest, and soften conflict. Its strong earthy smell has also given it a reputation for driving away unwanted influences.",
+            Overview: "Valerian is a tall plant with clusters of small pale-pink flowers whose dried root has a strong, earthy, musky smell that many find unpleasant. The root is the part used, sold dried and chopped.",
 
-            TraditionalMeaning: "Traditionally, valerian is associated with rest, peace, reconciliation, and love. In folk magic it was used both to draw harmony and, because of its pungent scent, to repel unwanted presences. It carries a heavy, grounding, deeply relaxing energy.",
+            TraditionalMeaning: "Deep rest and reconciliation; a heavy, grounding calm that settles restless energy.",
 
-            CommonUses: "Valerian is commonly used in sleep sachets, dream pillows, calming spell jars, reconciliation charms, and protection blends. Small amounts may be added to love sachets for steady, comfortable affection rather than passion.",
-
-            HowToUse: "Add a small amount of dried valerian root to a sleep sachet with lavender and chamomile to soften its smell. Use it in calming jars, keep it under a pillow in a sealed bag, or include a pinch in protective powders. Because the odour is strong, sealed sachets work better than open bowls.",
+            HowToUse: "Start here: mix a pinch of valerian root with plenty of lavender in a sealed sachet. Sealed bags and jars work better than open bowls, because the smell spreads. Keep it in an airtight container between uses.",
 
             PairingNotes: "Valerian pairs well with lavender and chamomile for sleep, hops for deeper rest, and amethyst for calm intuition. Pale blue, lavender, or white candles strengthen its peaceful, restful energy.",
 
             SubstitutionNotes: "Chamomile can substitute for valerian in sleep and calm work with a much gentler scent. Lavender can substitute for peace and rest. Lemon balm can substitute where emotional soothing is the focus.",
 
             SafetyAndRespect: "Valerian can cause drowsiness and may interact with alcohol, sedatives, and other medications, so do not take it internally without professional advice. It is not recommended during pregnancy or breastfeeding. Cats are often strongly attracted to it, so store it securely, and remember that ongoing sleep problems deserve medical support.",
-
-            BeginnerTip: "Mix valerian with plenty of lavender in a sealed sachet. You get its sleepy symbolism without the full force of its smell.",
 
             Traditions: "Wheel of the Year",
 
@@ -1795,21 +1603,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Catnip is generally gentle, but it is traditionally avoided during pregnancy. Some cats become overstimulated, so offer it in moderation.",
 
-            Overview: "Catnip is a playful herb of love, friendship, happiness, and beauty. It is a member of the mint family and is especially associated with cats, making it a favourite for pet blessings and cat-related magic. Its energy is light, affectionate, and joyful.",
+            Overview: "Catnip is a soft, grey-green plant of the mint family with heart-shaped, toothed leaves, small white flowers and a minty, musky scent that many cats love. The leaves and flowering tops are used, fresh or dried.",
 
-            TraditionalMeaning: "Traditionally, catnip is associated with love, attraction, friendship, and good spirits in the home. In folk practice it was used to encourage affection and happiness and to bond with cats. Its Venusian, watery character gives it a sweet and gentle quality.",
+            TraditionalMeaning: "Affection, friendship and happiness; a light, playful, Venusian warmth.",
 
-            CommonUses: "Catnip is commonly used in love and friendship sachets, happiness jars, beauty workings, pet blessings, and charms to strengthen the bond with a cat. It may also be included in calming blends for a gentle, soothing effect.",
-
-            HowToUse: "Add dried catnip to friendship or love sachets, or place a little in a cat-safe toy as part of a pet blessing. Use it in happiness jars with rose petals or lemon balm. Grow a pot of catnip as a living household charm for warmth and affection.",
+            HowToUse: "Start here: grow a pot of catnip on a windowsill. Dry cut stems by hanging them upside down, then crumble the leaves into sachets and jars. If you share your home with a cat, store dried catnip in a sealed jar and use it only in cat-safe toys.",
 
             PairingNotes: "Catnip pairs well with rose for love, lavender for peace, rose quartz for affection, and valerian for calm and companion-animal magic. Pink, green, or pale blue candles strengthen its loving and playful energy.",
 
             SubstitutionNotes: "Mint can substitute for catnip in brightening and happiness work. Lemon balm can substitute for joy and emotional comfort. Rose can substitute when the focus is love.",
 
             SafetyAndRespect: "Catnip is considered safe for most cats, though some become overexcited or have mild stomach upset if they eat a lot. It is traditionally avoided internally during pregnancy. Pet magic is never a substitute for proper veterinary care.",
-
-            BeginnerTip: "Grow a pot of catnip and dedicate it as a friendship plant. If you share your home with a cat, it will likely join in.",
 
             TraditionNotes: "Wheel of the Year: Catnip is used in love spells and charms, offered to cat goddesses such as Bast, and given to cats as familiars; it is also brewed for calm.\n\nFolk & wider practice: Catnip is brewed as a calming tea in English cottage practice, and in hoodoo it is used to attract love and good spirits.",
 
@@ -1834,21 +1638,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "DO NOT TAKE INTERNALLY. Comfrey contains pyrrolizidine alkaloids that can cause serious liver damage. Never make comfrey tea or eat the leaves, and do not apply it to broken skin or open wounds.",
 
-            Overview: "Comfrey is an earthy herb of protection, safe travel, grounding, and healing symbolism. Its old folk names, such as knitbone, reflect a long history as an external remedy for bruises and sprains. In magic it is used mainly in charms and sachets, never as something to consume.",
+            Overview: "Comfrey is a large, bristly-leaved plant with drooping clusters of bell-shaped purple, pink or cream flowers and a thick, black-skinned root. The leaves and root are used dried.",
 
-            TraditionalMeaning: "Traditionally, comfrey is associated with mending, protection on journeys, stability, and keeping one’s belongings safe. Its deep roots and Saturnine nature give it a serious, steadying quality. It symbolises the slow work of repair and holding things together.",
+            TraditionalMeaning: "Mending, stability and safe return; the slow work of holding things together.",
 
-            CommonUses: "Comfrey is commonly used in travel protection charms, luggage sachets, grounding spells, healing poppets, and money-keeping workings. Some practitioners tuck a leaf into a suitcase or wallet to keep belongings safe and returning home.",
-
-            HowToUse: "Place a dried comfrey leaf or a pinch of root in a small sealed bag and pack it in luggage or a car for safe travel. Use it in healing poppets or grounding sachets rather than in anything taken internally. Wash your hands after handling, and keep it labelled and separate from culinary herbs.",
+            HowToUse: "Start here: seal one dried comfrey leaf in a labelled bag. Use leaf or a pinch of root only in sachets and charms. Wash your hands after handling, and store it apart from culinary herbs.",
 
             PairingNotes: "Comfrey pairs well with rosemary for protection, mugwort for travel and threshold work, hematite for grounding, and black tourmaline for shielding. Brown, black, or deep green candles strengthen its earthy, protective energy.",
 
             SubstitutionNotes: "Rosemary can substitute for comfrey in protection and healing workings. Mugwort can substitute for travel protection. Yarrow can substitute where emotional mending or protective healing is the aim.",
 
             SafetyAndRespect: "Comfrey must never be eaten or drunk as tea: its pyrrolizidine alkaloids can cause serious, sometimes fatal liver disease, and many countries restrict internal products. Do not apply it to broken skin, and avoid use in pregnancy, breastfeeding, and with children; keep it away from grazing pets. Charm work for healing never replaces medical care for injuries.",
-
-            BeginnerTip: "Use comfrey as a travel charm only. A dried leaf in a sealed, labelled bag in your suitcase is all you need.",
 
             Traditions: "Wheel of the Year",
 
@@ -1873,21 +1673,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "DEADLY POISONOUS. All parts of foxglove contain cardiac glycosides that can cause fatal heart problems. Know it, don’t handle it: never ingest, burn, brew, or add it to jars, baths, or sachets. Keep children and pets away and wear gloves if you garden with it.",
 
-            Overview: "Foxglove is a tall, striking woodland flower closely tied to fairy folklore and the boundaries between worlds. It is also one of the most dangerous plants in the garden, as the source of compounds that affect the heart. In magical practice it is honoured by growing or observing it, or through images, never by handling it as a working ingredient.",
+            Overview: "Foxglove is a tall woodland plant with a rosette of soft, downy leaves and a single spire of drooping, bell-shaped purple, pink or white flowers, speckled inside.",
 
-            TraditionalMeaning: "Traditionally, foxglove is associated with fairies, enchantment, and the hidden power of the wild. Many folk names, such as fairy gloves and fairy thimbles, reflect the belief that the fair folk favoured it. Its beauty paired with deadliness also made it a symbol of respect, caution, and power that must not be misused.",
+            TraditionalMeaning: "Enchantment and the hidden power of the wild; respect for a beauty that must not be misused.",
 
-            CommonUses: "In modern practice foxglove is used as a living garden guardian, a symbol on fairy and nature altars, and a subject for drawing, meditation, and seasonal observation. It is honoured from a respectful distance rather than incorporated into spells.",
-
-            HowToUse: "If you want foxglove in your practice, grow it in a part of the garden away from children, pets, and edible plants, and simply visit it in meditation. Use a photograph, drawing, or embroidered image of foxglove on your altar instead of the plant itself. Never cut it for indoor arrangements where it could be mistaken for anything else.",
+            HowToUse: "Start here: draw or photograph a foxglove and place the image on your altar. If you grow it, choose a spot away from children, pets and edible plants, and visit it there rather than cutting it.",
 
             PairingNotes: "Foxglove imagery pairs well with hawthorn and rowan for fairy and threshold symbolism and with moonstone for enchantment and intuition. Purple, pink, or green candles can represent it on a fairy or garden altar without using the plant.",
 
             SubstitutionNotes: "Rose can substitute for foxglove’s beauty and Venusian symbolism. Yarrow can substitute for protective plant magic. Hawthorn can substitute for fairy and threshold lore with far less risk.",
 
             SafetyAndRespect: "Foxglove is deadly: even small amounts of leaf, flower, or seed can cause serious poisoning in people and animals, and its leaves have been confused with comfrey and borage with fatal results. Do not ingest, burn, or handle it bare-handed; wash hands thoroughly after gardening and seek emergency help immediately if any is swallowed. Medicines derived from it are prescription drugs dosed by doctors, never home remedies.",
-
-            BeginnerTip: "Foxglove is a plant to admire, not to work with. Draw it, photograph it, or grow it safely, and let it teach you that respecting a plant sometimes means not using it.",
 
             Traditions: "Celtic, Wheel of the Year",
 
@@ -1912,21 +1708,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Wild dittany is protected and rare in Crete; buy only cultivated material. Avoid internal use during pregnancy.",
 
-            Overview: "Dittany of Crete is a soft, silvery herb of healing, manifestation, love, and spirit work. It grows wild only on the cliffs and gorges of Crete, and its rarity has given it an almost legendary reputation. In modern witchcraft it is especially valued in incense for spirit manifestation and astral travel.",
+            Overview: "Dittany of Crete is a small, trailing relative of oregano with round leaves covered in soft white down and pinkish-purple flowers in hop-like heads. Dried leaves and flowers are used, sold in small, costly amounts.",
 
-            TraditionalMeaning: "Traditionally, dittany is associated with healing wounds, love, and the goddess-haunted mountains of Crete. Ancient writers praised its healing power, and Cretan custom linked gathering it from dangerous cliffs with devotion and love. In modern practice it is linked to spirit manifestation, visions, and bridging the seen and unseen.",
+            TraditionalMeaning: "Healing, love and the bridge between seen and unseen; a rare, precious herb of manifestation.",
 
-            CommonUses: "Dittany of Crete is commonly used in incense for spirit work and divination, astral travel blends, love sachets, healing rituals, and manifestation spells. Its smoke is traditionally said to help spirits take visible form, a modern occult belief rather than an ancient one.",
-
-            HowToUse: "Burn a small pinch of cultivated dittany on charcoal with frankincense or myrrh during divination or ancestor work. Add it to love or healing sachets, or keep a small amount on the altar during spirit-focused rituals. Because it is expensive and precious, a little is used at a time.",
+            HowToUse: "Start here: place a small pinch of dried dittany in a dish on your altar. To burn it, add a pinch to a lit charcoal disk in a sand-filled burner, alongside frankincense or myrrh. Use a little at a time and store the rest sealed.",
 
             PairingNotes: "Dittany pairs well with mugwort for visionary and dream work, frankincense for sacred space, myrrh for spirit and ancestor work, and amethyst for intuition. White, purple, or silver candles strengthen its mystical character.",
 
             SubstitutionNotes: "Oregano and marjoram, close relatives, are traditional substitutes for dittany in healing and love work. Mugwort can substitute in divination and astral work. Many sellers label other plants as dittany, so check the botanical name Origanum dictamnus.",
 
             SafetyAndRespect: "Dittany of Crete is legally protected in the wild and should never be gathered from Cretan cliffs; choose cultivated sources. It is traditionally avoided internally during pregnancy, and the smoke should be used with ventilation around pets and sensitive lungs. Healing rituals never replace medical care.",
-
-            BeginnerTip: "Dittany is a precious herb. Start with oregano for practice, and save true dittany for a special divination or ancestor rite.",
 
             Traditions: "Hellenic, Roman, Wheel of the Year",
 
@@ -1951,21 +1743,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Allspice oil is a strong skin and mucous-membrane irritant. Dilute well and keep away from pets.",
 
-            Overview: "Allspice is a warm, energising spice of money, luck, healing, and determination. Named because its scent recalls cinnamon, clove, and nutmeg combined, it brings a rounded, generous warmth to spellwork. Allspice is especially useful in prosperity and success magic.",
+            Overview: "Allspice is the dried, round, brown berry of a tropical evergreen tree, a little larger than a peppercorn, with a scent like cinnamon, clove and nutmeg combined. It is sold whole and ground.",
 
-            TraditionalMeaning: "Traditionally, allspice is associated with abundance, good fortune, vitality, and steady drive. Its fiery Mars energy adds determination to a working, while its rich, combined scent symbolises gathering many blessings together. In modern folk magic it is a classic money and luck spice.",
+            TraditionalMeaning: "Abundance, luck and determination; a generous warmth that gathers many blessings together.",
 
-            CommonUses: "Allspice is commonly used in money jars, luck charms, prosperity incense, healing blends, and candle dressing for success. Whole berries are often carried in charm bags or placed in money bowls.",
-
-            HowToUse: "Add whole allspice berries to money bowls, luck sachets, or prosperity jars. Grind a pinch into incense blends or roll a dressed candle in a light dusting of the powder. Allspice also works well in kitchen magic, simmered in a pot of water with cinnamon and orange peel to bless a home.",
+            HowToUse: "Start here: drop a few whole allspice berries into a small dish on your altar. Grind berries fresh with a mortar and pestle for incense. To dress a candle, roll it in a light dusting of powder, and add whole berries to simmer pots with other spices.",
 
             PairingNotes: "Allspice pairs well with cinnamon for speed and prosperity, clove for luck, bay for success, and pyrite for financial drive. Green, gold, or orange candles strengthen its money-drawing, energetic qualities.",
 
             SubstitutionNotes: "Clove can substitute for allspice in luck and money work. Cinnamon can substitute for speed and prosperity. Nutmeg can substitute in luck charms, though it should not be used internally in large amounts.",
 
             SafetyAndRespect: "Ground allspice is a common food spice, but the essential oil can irritate skin, eyes, and lungs and is not safe around pets. Use only small amounts of powder on candles to avoid flare-ups. Money magic is not a replacement for financial advice or support.",
-
-            BeginnerTip: "Keep a few allspice berries in your wallet or purse as a simple luck and prosperity charm.",
 
             TraditionNotes: "Wheel of the Year: Allspice berries are burned or carried for money, luck and healing, and added to Yule incense and simmer pots.\n\nFolk & wider practice: In hoodoo and Caribbean folk practice allspice berries are burned, carried or added to oils for money, luck and healing.",
 
@@ -1990,21 +1778,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Ginger is generally gentle as a food, but concentrated oil can irritate skin. People on blood thinners should check with a professional before taking large amounts internally.",
 
-            Overview: "Ginger is a hot, energising root of power, success, passion, and speed. It is often added to a working to ‘heat it up’, making other ingredients act more quickly and strongly. Ginger is especially useful for money, love, and courage spells that need momentum.",
+            Overview: "Ginger is a knobbly, pale-brown underground stem (rhizome) with a hot, spicy-sweet scent and flavour. It is sold fresh, as dried slices, ground, and as essential oil.",
 
-            TraditionalMeaning: "Traditionally, ginger is associated with vitality, strength, success, and the fire of the body and will. As a warming root it carries both grounding and energising qualities, symbolising power that comes up from deep roots. In modern folk magic it is widely used as a spell accelerator.",
+            TraditionalMeaning: "Vitality, heat and momentum; power that rises from deep roots.",
 
-            CommonUses: "Ginger is commonly used in money spells, love and passion workings, success charms, healing rituals, and courage sachets. It is often added to spell jars or candle dressings to speed results, and ginger tea is a popular choice for intentional kitchen magic.",
-
-            HowToUse: "Add a slice of dried ginger root or a pinch of ground ginger to money, love, or success jars. Carve a small piece of fresh root with a symbol and carry it as a charm. Brew ginger tea with intention for courage or vitality, if it suits your body.",
+            HowToUse: "Start here: add a pinch of ground ginger to a jar or sachet. Dried slices keep for months; fresh root can be carved with a small symbol and left to dry on a windowsill. Brew it as tea only if it suits your body.",
 
             PairingNotes: "Ginger pairs well with cinnamon for prosperity and speed, orange peel for joy and success, carnelian for courage, and black pepper for protective heat. Red, orange, or gold candles strengthen its fiery qualities.",
 
             SubstitutionNotes: "Cinnamon can substitute for ginger in fast money and love work. Black pepper can substitute where heat and protection are needed. Galangal is a close relative and a traditional substitute in success and court-case work.",
 
             SafetyAndRespect: "Ginger is a common food and generally safe, but large internal amounts may not suit people on blood thinners, with gallstones, or in pregnancy without advice. Ginger oil can irritate skin and should be diluted. Magic for courage and vitality supports, but never replaces, medical care.",
-
-            BeginnerTip: "Add a pinch of ginger to any spell that feels slow to start. It is one of the easiest ways to bring heat and movement into a working.",
 
             Traditions: "Hindu, Wheel of the Year",
 
@@ -2029,21 +1813,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Pepper dust and smoke irritate eyes, nose, and lungs. Never burn large amounts, and keep it away from pets’ faces.",
 
-            Overview: "Black pepper is a sharp, fiery spice of protection, banishing, courage, and firm boundaries. Its heat and bite make it a classic ingredient for pushing away negativity and unwanted influence. Black pepper is especially useful when a working needs force and clear consequences.",
+            Overview: "Black pepper is the dried, wrinkled, black fruit (peppercorn) of a tropical vine, with a sharp, hot bite. It is sold whole and ground.",
 
-            TraditionalMeaning: "Traditionally, black pepper is associated with protection, exorcism of negativity, breaking jealousy, and courage. Its Mars energy makes it a defensive, assertive spice. Once more valuable than gold in the spice trade, it also carries a quieter association with value and worth.",
+            TraditionalMeaning: "Defence, courage and firm consequences; an assertive heat that pushes negativity away.",
 
-            CommonUses: "Black pepper is commonly used in protection powders, banishing jars, black salt blends, uncrossing work, and boundary spells. It may be sprinkled lightly at thresholds, mixed into protection jars, or added to candle dressings for banishing.",
-
-            HowToUse: "Mix ground black pepper with salt to create a simple protective powder for jars or thresholds. Add whole peppercorns to protection sachets or banishing jars. Use it sparingly on candles, since spice powders can flare and create irritating smoke.",
+            HowToUse: "Start here: mix a pinch of ground black pepper with salt in a small dish. Grind peppercorns fresh for the strongest scent, and keep whole corns for sachets and jars. Use only a little on candles, as spice powders can flare and smoke.",
 
             PairingNotes: "Black pepper pairs well with black salt for warding, cayenne for intensified banishing, obsidian for shadow protection, and rosemary for cleansing. Black or red candles strengthen its protective and Mars-like qualities.",
 
             SubstitutionNotes: "Cayenne can substitute for black pepper in strong banishing work. Ginger can substitute where heat is needed with less aggression. Nettle can substitute in boundary and protection spells.",
 
             SafetyAndRespect: "Black pepper is a safe food in culinary amounts, but powder and smoke can irritate airways and eyes, especially for people with asthma and for pets. Avoid sprinkling it where animals walk or sniff. Protection spells are no substitute for practical safety measures or legal help.",
-
-            BeginnerTip: "A jar of salt, black pepper, and rosemary by the front door is a simple, classic protection charm.",
 
             Traditions: "Hindu, Wheel of the Year",
 
@@ -2068,21 +1848,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Lemongrass essential oil can irritate skin and is toxic to cats and dogs. Do not diffuse it around pets.",
 
-            Overview: "Lemongrass is a bright, clean herb of cleansing, clearing, communication, and uplift. Its fresh citrus scent makes it ideal for opening the way and sweeping out stale energy. Lemongrass is especially useful for floor washes, road-opening work, and mental clarity.",
+            Overview: "Lemongrass is a tall tropical grass with long, pale stalks and a fresh, sharp citrus scent. It is sold fresh, dried and chopped, and as essential oil.",
 
-            TraditionalMeaning: "Traditionally, lemongrass is associated with cleansing, removing obstacles, and sharpening the mind and psychic senses. Its airy, Mercurial nature links it to communication and clear thinking. In modern folk magic it is often used to brighten a space and clear the path ahead.",
+            TraditionalMeaning: "Clearing and opening the way; bright, fresh energy that sharpens the mind.",
 
-            CommonUses: "Lemongrass is commonly used in floor washes, cleansing sprays, road-opening spells, communication charms, and psychic awareness blends. It is also used in kitchen magic and teas to bring freshness and clarity to everyday life.",
-
-            HowToUse: "Simmer dried or fresh lemongrass in water, strain it, and use the cooled water to wipe doorways, windowsills, or floors for cleansing. Add dried lemongrass to sachets for clarity and communication. Use it in tea or food with intention if it suits your body.",
+            HowToUse: "Start here: simmer a few pieces of lemongrass in water, strain, and let it cool. Bruise fresh stalks with the back of a knife first to release the scent. Use the cooled water within a day, wiping from the back of the home toward the front door. Dried lemongrass also goes into sachets.",
 
             PairingNotes: "Lemongrass pairs well with lemon balm for emotional brightness, mint for clarity and movement, citrine for success and optimism, and rosemary for protection and cleansing. Yellow, white, or light green candles strengthen its fresh, clearing energy.",
 
             SubstitutionNotes: "Lemon balm can substitute for lemongrass in gentle uplifting work. Lemon peel can substitute for cleansing and clearing. Mint can substitute for clarity and fresh energy.",
 
             SafetyAndRespect: "Culinary lemongrass is generally safe, but the essential oil can irritate skin and is toxic to cats and dogs, including when diffused. Avoid strong concentrations during pregnancy. Clarity rituals never replace professional help for mental-health concerns.",
-
-            BeginnerTip: "A simple lemongrass floor wash is a lovely spring-cleaning ritual. Wipe from the back of the home toward the front door to move stale energy out.",
 
             TraditionNotes: "Wheel of the Year: Lemongrass is used in cleansing and road-opening washes, brewed to aid psychic awareness, and added to oils to draw luck.\n\nFolk & wider practice: Lemongrass is used in Thai, Vietnamese and Indian cooking and medicine, and in hoodoo it is the base of Van Van oil, used to clear bad luck and open the way.",
 
@@ -2107,21 +1883,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Orris root powder is a known allergen that can trigger sneezing, asthma, and skin reactions. Handle it gently and avoid inhaling the dust.",
 
-            Overview: "Orris root is the dried root of certain iris plants, prized for its soft violet scent and long use as a fixative in perfumes. In magic it is used for love, attraction, persuasion, and drawing favour. Orris is especially useful for making a working ‘stick’ and hold together.",
+            Overview: "Orris root is the dried rhizome of certain irises, aged until it develops a soft, powdery violet scent. It is sold as whole pieces and as fine powder.",
 
-            TraditionalMeaning: "Traditionally, orris root is associated with love, attraction, charm, and influence. Because perfumers use it to fix scent so it lasts, in magic it symbolises binding a blend together and helping an intention endure. Whole roots, sometimes called Queen Elizabeth root, were carried as love and favour charms in folk practice.",
+            TraditionalMeaning: "Charm, attraction and endurance; the binding that helps an intention last.",
 
-            CommonUses: "Orris root is commonly used in love sachets, attraction powders, persuasion and favour workings, perfume and sachet blends, and divination charms. Powdered orris is a classic base for sachet powders and helps other herbs keep their scent.",
-
-            HowToUse: "Add a pinch of orris root powder to love or attraction sachets to help the blend hold together. Carry a small whole root as a charm for charm and favour. Mix a little into potpourri-style blends with rose and lavender to lengthen their fragrance.",
+            HowToUse: "Start here: add a small pinch of orris powder to a sachet. Mix it thoroughly with the other dried herbs so it coats them and holds their scent. Whole pieces keep for years in a sealed jar.",
 
             PairingNotes: "Orris root pairs well with rose for love, jasmine for sensual attraction, lavender for gentle harmony, and rose quartz for heart opening. Pink, red, or purple candles strengthen its loving, persuasive qualities.",
 
             SubstitutionNotes: "Rose can substitute for orris in love and attraction work. Lavender can substitute for gentle harmony blends. Sandalwood can substitute as a fixative-like, binding base in incense.",
 
             SafetyAndRespect: "Orris powder is a common cause of allergy and asthma reactions, so avoid inhaling it and patch-test before skin contact. Iris roots are not for eating, and garden irises are toxic to pets. Love and persuasion magic should respect free will and never be used to control another person.",
-
-            BeginnerTip: "Think of orris root as magical glue. A small pinch helps a sachet hold its scent and its intention for longer.",
 
             Traditions: "Hellenic, Roman, Christian, Wheel of the Year",
 
@@ -2146,21 +1918,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Indian sandalwood has been heavily overharvested and is classed as vulnerable. Choose sustainably and legally sourced or plantation sandalwood, and burn with ventilation.",
 
-            Overview: "Sandalwood is a sacred, softly fragrant wood of meditation, spirituality, purification, and protection. Its calm, creamy scent is widely used to quiet the mind and consecrate space. Sandalwood is especially useful in devotional work, meditation, and healing rituals.",
+            Overview: "Sandalwood is the fragrant heartwood of slow-growing Santalum trees, pale and fine-grained, with a soft, creamy, woody scent. It is sold as chips, powder, incense and essential oil.",
 
-            TraditionalMeaning: "Traditionally, sandalwood is associated with holiness, peace, purity, and spiritual elevation. Its lasting fragrance symbolises devotion that endures. In modern Western witchcraft it is linked to the moon, wishes, and protection, and is often used as a gentle base in incense blends.",
+            TraditionalMeaning: "Holiness, peace and enduring devotion; a calm presence that quiets the mind.",
 
-            CommonUses: "Sandalwood is commonly used in meditation incense, purification and consecration rites, wish spells, protection charms, and healing work. Sandalwood chips may be burned on charcoal, and a few drops of properly diluted oil can be used to anoint candles or tools.",
-
-            HowToUse: "Burn a small amount of ethically sourced sandalwood incense before meditation or ritual to settle the space. Write a wish on a sandalwood chip and burn it in a fire-safe dish. Use diluted sandalwood oil sparingly for anointing, since a little goes a long way.",
+            HowToUse: "Start here: light a single stick of sandalwood incense before you begin. Chips can be burned on charcoal in a sand-filled dish, and powder blends into loose incense as a gentle base. Use the oil sparingly and diluted for anointing.",
 
             PairingNotes: "Sandalwood pairs well with frankincense for consecration, myrrh for depth and ancestor work, rose for love and devotion, and amethyst for meditation. White, silver, or purple candles strengthen its calm, spiritual energy.",
 
             SubstitutionNotes: "Cedar can substitute for sandalwood in protection and purification. Frankincense can substitute for consecration and meditation. Copal can substitute in cleansing and offering incense.",
 
             SafetyAndRespect: "Wild Indian sandalwood (Santalum album) has been severely depleted by overharvesting and illegal logging, and much cheap ‘sandalwood’ is adulterated or synthetic. Buy from suppliers who can show legal, sustainable, or plantation sourcing, or use a substitute; Australian sandalwood is a more sustainable alternative. Smoke and oil can irritate sensitive lungs, skin, and pets.",
-
-            BeginnerTip: "A single stick of ethically sourced sandalwood incense is one of the simplest ways to signal to yourself that ritual or meditation has begun.",
 
             Traditions: "Hindu, Wheel of the Year",
 
@@ -2185,21 +1953,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Burn resin only on charcoal in a heat-safe burner with ventilation. Copal smoke is heavy and can irritate sensitive lungs and pets.",
 
-            Overview: "Copal is a fragrant tree resin of purification, offering, protection, and sacred space. It comes from the Americas, where it has been burned as sacred incense for thousands of years. Its bright, piney, citrus-like smoke is especially valued for cleansing and for making offerings.",
+            Overview: "Copal is a pale-yellow to white tree resin from the Americas, sold as lumps or crumbles. It burns with a bright, piney, citrus-like smoke.",
 
-            TraditionalMeaning: "Copal originates in Mesoamerica, where the Maya, Aztec (Mexica), and many other Indigenous peoples burned it as an offering to the divine, often described as food for the gods. Archaeologists have found copal offerings at sites such as the Templo Mayor and in Maya sacred cenotes. In modern Western practice it is used for purification, consecration, and spirit work, but its roots belong to living Indigenous traditions.",
+            TraditionalMeaning: "Offering and purification; sacred smoke that honours the divine and clears a space.",
 
-            CommonUses: "Copal is commonly used in purification incense, offering rituals, house cleansings, altar consecration, ancestor work, and protection rites. It is also burned during Día de Muertos observances in Mexico and in ongoing Indigenous ceremonies.",
-
-            HowToUse: "Burn a small piece of copal on a lit charcoal disk in a burner filled with sand, and carry the smoke gently through a room for cleansing. Place unburned copal on an altar as an offering. Use only a little at a time, as it produces thick, fragrant smoke.",
+            HowToUse: "Start here: place a small, unburned piece of copal on your altar. To burn it, light a charcoal disk in a burner filled with sand, let it ash over, and add a pea-sized piece. Open a window afterward, as the smoke is thick.",
 
             PairingNotes: "Copal pairs well with frankincense for consecration, myrrh for depth and ancestor work, sage for cleansing, and rosemary for protection. White, gold, or orange candles strengthen its bright, purifying energy.",
 
             SubstitutionNotes: "Frankincense can substitute for copal in purification and offering. Myrrh can substitute where a deeper, more solemn tone is wanted. Pine resin can substitute as a locally sourced cleansing resin.",
 
             SafetyAndRespect: "Copal is sacred in living Mesoamerican Indigenous traditions, so use it with respect, avoid presenting non-Indigenous practice as traditional ceremony, and buy from sources that support harvesting communities where possible. Burn it with good ventilation away from pets, children, and anyone with asthma. Never leave burning charcoal unattended.",
-
-            BeginnerTip: "A pea-sized piece of copal is plenty. Let the room fill with its smoke, then open a window to let the old energy leave with it.",
 
             TraditionNotes: "Wheel of the Year: Copal resin is burned as a purifying and consecrating incense, especially at Samhain and in ancestor rites; sustainably sourced resin is preferred.\n\nFolk & wider practice: Copal is burned in Maya and Nahua ceremonies as an offering to the gods and ancestors and on Día de Muertos altars. These are living Indigenous and Mexican practices, best approached with respect and with copal sourced from sustainable harvesters.",
 
@@ -2224,21 +1988,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Some cheap ‘Mexican vanilla’ extracts contain coumarin from tonka bean, which can harm the liver. Buy pure vanilla from reputable sources, and keep alcohol-based extracts away from children and pets.",
 
-            Overview: "Vanilla is a sweet, comforting spice of love, attraction, warmth, and gentle clarity. Its scent is soothing and familiar, making it ideal for sweetening spells and creating a cosy, welcoming atmosphere. Vanilla is especially useful in love and friendship workings and in kitchen magic.",
+            Overview: "Vanilla is the long, dark, cured seed pod of a climbing orchid, soft and oily with a sweet, warm scent. It is sold as whole pods, pure extract and paste.",
 
-            TraditionalMeaning: "Vanilla comes from the seed pods of a climbing orchid native to Mexico and Central America, first cultivated by the Totonac people and later used by the Aztecs to flavour chocolate drinks. In modern Western practice it is associated with love, attraction, comfort, and sweetening relationships. Its rich, rounded scent symbolises warmth and kindness.",
+            TraditionalMeaning: "Sweetness, comfort and warm attraction; kindness that softens a relationship.",
 
-            CommonUses: "Vanilla is commonly used in love and attraction spells, sweetening jars, friendship charms, comfort rituals, and kitchen magic. A vanilla pod may be added to a sugar or honey jar, and vanilla extract is often used to anoint candles or add warmth to baking with intention.",
-
-            HowToUse: "Place a vanilla pod in a honey or sugar jar to sweeten a relationship or situation. Add a few drops of pure vanilla extract to baking or warm drinks while focusing on love and comfort. Use a split pod in love sachets or on an altar for warmth and attraction.",
+            HowToUse: "Start here: bury a vanilla pod in a jar of sugar and keep it in your kitchen. Split a pod lengthwise with a knife to release its seeds and scent. Use pure extract, not imitation, for dressing candles or baking.",
 
             PairingNotes: "Vanilla pairs well with cinnamon for warm attraction, rose for love, honey for sweetening, and rose quartz for heart opening. Pink, red, or cream candles strengthen its loving, comforting qualities.",
 
             SubstitutionNotes: "Rose can substitute for vanilla in love and attraction work. Cinnamon can substitute where warmth and speed are needed. Honey or sugar can substitute for sweetening spells.",
 
             SafetyAndRespect: "Pure vanilla is a safe food flavouring, but avoid products containing coumarin and keep alcohol-based extracts away from children and pets. Vanilla is labour-intensive to grow and pollinate by hand, so choose fairly traded sources where you can. Sweetening magic should respect other people’s free will.",
-
-            BeginnerTip: "Add a vanilla pod to a jar of sugar and keep it in your kitchen as a simple, edible sweetening charm for the household.",
 
             TraditionNotes: "Wheel of the Year: Vanilla is used for love, attraction and comfort: beans are carried, its oil anoints candles and the body, and it is added to sweet offerings and love sachets at Beltane.\n\nFolk & wider practice: Vanilla is a Mexican orchid cultivated by the Totonac people, and is used in chocolate and sweets for festive offerings.",
 
@@ -2261,21 +2021,17 @@ const TraditionalLibrary = {
             Cleansing: "Moonlight, smoke, sound",
             TraditionalWarnings: "Traditionally associated with deep spiritual and dream work. Avoid prolonged sunlight, which may fade its color.",
 
-            Overview: "Amethyst is one of the most widely used crystals in modern witchcraft and spiritual practice. It is often associated with intuition, calm, dream work, meditation, and spiritual protection. Its energy is usually considered peaceful but spiritually active, making it useful for practitioners who want to deepen awareness without feeling overstimulated.",
+            Overview: "Amethyst is purple quartz, ranging from pale lilac to deep violet, and forms as crystal points that line geodes. It is sold as clusters, geode halves, single points, tumbled stones and small chips.",
 
-            TraditionalMeaning: "Traditionally, amethyst has been associated with clear thought, spiritual discipline, protection, and freedom from excess. In modern magical practice, it is strongly connected with the third eye and crown chakras, making it a common choice for divination, dream work, meditation, and psychic development.",
+            TraditionalMeaning: "Calm intuition and clear thought; a peaceful but spiritually awake stone of sobriety, dreams and inner sight.",
 
-            CommonUses: "Amethyst is commonly used near beds for dreams, on altars for intuition, with tarot or oracle decks for divination, and in meditation spaces for calm spiritual focus. It can also be used in protection work when the protection needed is spiritual, mental, or energetic rather than forceful.",
+            HowToUse: "Start here: keep one tumbled amethyst where you sit to meditate or journal, and hold it for a few breaths before you begin. A point can be held to direct your focus, a cluster can sit on an altar to hold the space, and chips can go into small jars or sachets. Keep it out of bright windowsills so the colour stays rich.",
 
-            HowToUse: "Place amethyst near divination tools, under or near the bed for dream work, on an altar during meditation, or in a charm bag for spiritual protection. Amethyst points can be used to direct intention, clusters can hold space on an altar, and chips can be added to spell jars or small vessels.",
-
-            PairingNotes: "Amethyst pairs beautifully with mugwort for divination and dream work, lavender for peace and sleep, moonstone for lunar intuition, and purple candles for psychic awareness. It also works well with clear quartz when amplification is desired.",
+            PairingNotes: "Amethyst pairs beautifully with mugwort for dream work, lavender for peace and sleep, moonstone for lunar intuition, and purple candles for psychic awareness. Clear quartz adds amplification.",
 
             CleansingNotes: "Amethyst can be cleansed with moonlight, smoke, sound, or visualization. Avoid leaving it in strong sunlight for long periods because the color may fade over time.",
 
-            SafetyAndRespect: "Amethyst is generally safe to handle, but like all crystals, it should not be used as a replacement for mental health care, medical treatment, or practical support. Use care with small chips around children and pets.",
-
-            BeginnerTip: "Amethyst is a great first crystal for intuition and calm. Keep one with your tarot deck or dream journal to build a simple association over time.",
+            SafetyAndRespect: "Amethyst should not be used as a replacement for mental health care, medical treatment, or practical support. Use care with small chips around children and pets.",
 
             Traditions: "Hellenic, Christian, Egyptian, Roman, Wheel of the Year",
 
@@ -2296,21 +2052,17 @@ const TraditionalLibrary = {
             Cleansing: "Smoke, sound, earth",
             TraditionalWarnings: "Often cleansed regularly in magical traditions because it is believed to absorb unwanted energy.",
 
-            Overview: "Black tourmaline is one of the most common crystals for protection, grounding, and energetic shielding. It is often used when a practitioner wants to feel steadier, safer, and less affected by unwanted energy. Its energy is usually described as firm, earthy, and stabilizing.",
+            Overview: "Black tourmaline (schorl) is an opaque black stone that grows in long, deeply striated columns. It is sold as raw rods, rough chunks, tumbled stones and chips.",
 
-            TraditionalMeaning: "In modern crystal magic, black tourmaline is strongly associated with the root chakra, boundaries, protection, and the absorption or deflection of negativity. Its Saturn association gives it a feeling of structure, discipline, and containment.",
+            TraditionalMeaning: "Grounded protection and firm boundaries; a steady, earthy shield that absorbs or turns away what is unwanted.",
 
-            CommonUses: "Black tourmaline is commonly placed near doors, windows, desks, beds, and altar spaces for protection. It is also used in warding grids, protection jars, grounding rituals, and charm bags for energetic boundaries.",
-
-            HowToUse: "Place black tourmaline at entry points, carry it in a pouch, keep it near electronics, or pair it with black candles for protection work. Chips can be added to spell jars, while larger pieces are useful for altar placement or room protection.",
+            HowToUse: "Start here: set one raw piece by your front door or on your desk and leave it there as a steady anchor. Larger rough pieces suit fixed spots in a room, a tumbled stone fits a pocket or pouch, and chips can go into jars. Handle raw rods gently, as they splinter along their lines.",
 
             PairingNotes: "Black tourmaline pairs well with rosemary for cleansing protection, obsidian for deeper shadow and banishing work, black candles for warding, and nettle for firm boundaries. Smoky quartz can soften and ground its protective quality.",
 
             CleansingNotes: "Many practitioners cleanse black tourmaline regularly because it is traditionally believed to absorb or hold unwanted energy. Smoke, sound, earth burial, or visualization are common methods.",
 
-            SafetyAndRespect: "Black tourmaline is generally safe to handle, but fragile pieces can splinter or chip. Avoid relying on crystals alone for safety, boundaries, or protection in situations that require real-world action.",
-
-            BeginnerTip: "Place black tourmaline near your front door or on your desk when you want a simple, steady protection anchor.",
+            SafetyAndRespect: "Fragile pieces can splinter or chip. Avoid relying on crystals alone for safety, boundaries, or protection in situations that require real-world action.",
 
             Traditions: "Wheel of the Year",
 
@@ -2331,21 +2083,17 @@ const TraditionalLibrary = {
             Cleansing: "Sunlight, smoke, sound",
             TraditionalWarnings: "Traditionally associated with action and motivation. Some practitioners avoid it before sleep because of its energizing symbolism.",
 
-            Overview: "Carnelian is a fiery, energizing crystal associated with creativity, courage, vitality, sensuality, and motivation. It is often used when a practitioner needs movement, confidence, or a spark of inspiration. Carnelian is especially helpful for creative projects, embodiment, and taking action.",
+            Overview: "Carnelian is a translucent orange to red-brown chalcedony that glows like an ember when held to the light. It is sold mostly as tumbled stones, palm stones, beads and carved pieces.",
 
-            TraditionalMeaning: "Traditionally, carnelian has been associated with life force, courage, protection, and personal power. In modern practice, it is connected with the sacral chakra and the ability to create, desire, move, and express oneself with confidence.",
+            TraditionalMeaning: "Life force, courage and creative fire; a warm, motivating stone for desire, action and confident self-expression.",
 
-            CommonUses: "Carnelian is commonly used in creativity spells, confidence charms, motivation work, passion rituals, and courage spells. It may be kept near a workspace, carried during performances or difficult conversations, or placed on an altar for creative fire.",
+            HowToUse: "Start here: carry a tumbled carnelian in your pocket on a day you need to act, and touch it before you start the task. Keep it near your creative tools or workspace, or add chips to a jar. Because it can feel stirring, many people keep it out of the bedroom.",
 
-            HowToUse: "Carry carnelian when you need confidence, place it near creative tools, use it with orange or red candles, or add carnelian chips to spell jars for courage and action. It works especially well in rituals that involve movement, voice, art, or embodiment.",
-
-            PairingNotes: "Carnelian pairs well with orange candles for creativity, cinnamon for speed and heat, basil for courage and success, and garnet for strength and passion. Citrine can add prosperity and confidence to carnelian workings.",
+            PairingNotes: "Carnelian pairs well with orange candles for creativity, cinnamon for speed and heat, basil for courage and success, and garnet for strength and passion. Citrine can add prosperity and confidence.",
 
             CleansingNotes: "Carnelian can be cleansed with smoke, sound, sunlight, or visualization. Brief sunlight is commonly used, though long exposure may affect some stones over time.",
 
-            SafetyAndRespect: "Carnelian is generally safe to handle. Its magical symbolism can feel activating, so some practitioners prefer not to keep it near the bed if they are trying to rest deeply.",
-
-            BeginnerTip: "Use carnelian when you need to actually do the thing, not just think about doing the thing.",
+            SafetyAndRespect: "Carnelian is generally safe to handle. Its symbolism can feel activating, so some practitioners prefer not to keep it near the bed if they are trying to rest deeply.",
 
             Traditions: "Egyptian, Roman, Wheel of the Year",
 
@@ -2366,21 +2114,17 @@ const TraditionalLibrary = {
             Cleansing: "Smoke, sound, sunlight",
             TraditionalWarnings: "Much commercially available citrine is heat-treated amethyst. Both are commonly used in modern practice.",
 
-            Overview: "Citrine is a bright crystal associated with prosperity, joy, confidence, abundance, and success. It is especially popular in money magic and workings that support self-worth, visibility, and personal power. Citrine carries a sunny quality that makes it feel optimistic and energizing.",
+            Overview: "Citrine is yellow to golden-orange quartz. Natural citrine is pale and smoky-gold, while most bright orange citrine on the market is heat-treated amethyst; it is sold as points, clusters and tumbled stones.",
 
-            TraditionalMeaning: "In modern crystal magic, citrine is strongly tied to the solar plexus chakra, abundance, confidence, and manifestation. It is often treated as a stone of wealth and success, helping intentions move from desire into action.",
+            TraditionalMeaning: "Sunny abundance and confidence; a joyful stone of success, self-worth and wishes turning into action.",
 
-            CommonUses: "Citrine is commonly used in money bowls, prosperity jars, business altars, confidence spells, success rituals, and manifestation work. It can be kept in a wallet, cash box, workspace, or altar area focused on growth and achievement.",
-
-            HowToUse: "Place citrine in a money bowl, use it with gold or green candles, carry it for confidence, or add chips to spell jars for abundance and success. It pairs well with written goals, bay leaves, coins, and solar rituals.",
+            HowToUse: "Start here: put one citrine in a small bowl with a few coins and a written goal, and keep the bowl where you handle money or work. A tumbled stone can be carried in a wallet or pocket, and chips suit jars. Pair the stone with one practical step toward the goal so the working has somewhere to land.",
 
             PairingNotes: "Citrine pairs well with bay for success, basil for prosperity, cinnamon for speed and attraction, and gold candles for wealth and achievement. Pyrite and green aventurine can strengthen its abundance associations.",
 
             CleansingNotes: "Citrine can be cleansed with smoke, sound, sunlight, or visualization. If using sunlight, brief exposure is enough.",
 
             SafetyAndRespect: "Many citrine pieces sold commercially are heat-treated amethyst. This does not make them unusable, but it is helpful context for practitioners who care about natural formations.",
-
-            BeginnerTip: "Citrine is great for money bowls, but pair it with practical action. Prosperity magic works best when it has somewhere to land.",
 
             Traditions: "Wheel of the Year",
 
@@ -2401,21 +2145,17 @@ const TraditionalLibrary = {
             Cleansing: "Moonlight, smoke, sound, water",
             TraditionalWarnings: "Often considered a universal substitute in crystal work, though traditions differ.",
 
-            Overview: "Clear quartz is one of the most versatile crystals in magical practice. It is commonly used for amplification, clarity, cleansing, healing, and intention setting. Because it is adaptable, clear quartz can support nearly any kind of working and is often treated as a universal crystal ally.",
+            Overview: "Clear quartz (rock crystal) is colourless, glassy quartz that grows as six-sided points, alone or in clusters. It is sold as points, clusters, spheres, wands, tumbled stones and chips.",
 
-            TraditionalMeaning: "In modern crystal traditions, clear quartz is associated with clarity, spiritual light, amplification, and the ability to hold intention. Its connection to spirit and all chakras makes it useful for general-purpose magic, meditation, and energy work.",
+            TraditionalMeaning: "Clarity, light and amplification; a stone that holds intention and strengthens whatever it is placed with.",
 
-            CommonUses: "Clear quartz is commonly used in crystal grids, spell jars, altar work, healing rituals, cleansing practices, meditation, and amplification of other stones or herbs. It is often placed in the center of an altar or grid to strengthen the whole working.",
+            HowToUse: "Start here: hold one clear quartz point, state a single intention aloud, and keep the stone where you will see it each day. Points direct focus, clusters hold and radiate intention, and chips can be added to jars or sachets. Keep spheres and points out of direct sun, where they can focus heat.",
 
-            HowToUse: "Use clear quartz points to direct energy, clusters to hold and radiate intention, and chips in jars or sachets to amplify a spell. It can be paired with candles, herbs, tools, deity work, and nearly any other crystal.",
-
-            PairingNotes: "Clear quartz pairs with almost everything. It strengthens rosemary for cleansing, amethyst for intuition, citrine for prosperity, rose quartz for love, and black tourmaline for protection. It can also act as a substitute when a specific crystal is unavailable.",
+            PairingNotes: "Clear quartz pairs with almost everything. It strengthens rosemary for cleansing, amethyst for intuition, citrine for prosperity, rose quartz for love, and black tourmaline for protection.",
 
             CleansingNotes: "Clear quartz can be cleansed with moonlight, smoke, sound, visualization, or brief water rinsing if the piece is safe and untreated. It is often used to cleanse or charge other crystals, though methods vary by tradition.",
 
             SafetyAndRespect: "Clear quartz can focus sunlight and potentially create heat or fire risk if placed in direct sun near flammable materials. Small chips can be choking hazards for pets or children.",
-
-            BeginnerTip: "If you only have one crystal, clear quartz is one of the best choices. It can amplify almost any intention.",
 
             Traditions: "Celtic, Roman, Christian, Hindu, Wheel of the Year",
 
@@ -2436,21 +2176,17 @@ const TraditionalLibrary = {
             Cleansing: "Smoke, moonlight, sound",
             TraditionalWarnings: "Fluorite is relatively soft and can scratch or chip more easily than harder stones.",
 
-            Overview: "Fluorite is a crystal of focus, discernment, learning, organization, and mental clarity. It is especially useful for study, planning, decision-making, and sorting through confusion. Its energy is often described as clean, ordered, and mentally clarifying.",
+            Overview: "Fluorite is a glassy, often banded stone in purple, green, blue and clear, which forms as cubes and octahedrons and splits cleanly along flat planes. It is sold as tumbled stones, octahedrons, towers and raw clusters.",
 
-            TraditionalMeaning: "In modern crystal magic, fluorite is associated with the mind, pattern recognition, energetic organization, and clearer perception. Its Mercury correspondence connects it with learning, communication, thought, and analysis.",
+            TraditionalMeaning: "Order, focus and discernment; a clean, clarifying stone for learning, sorting thoughts and making decisions.",
 
-            CommonUses: "Fluorite is commonly used for study spells, focus rituals, decision-making work, divination clarity, desk altars, and mental organization. It can be kept near notebooks, computers, calendars, or planning tools.",
-
-            HowToUse: "Place fluorite on a desk, use it during study or planning, meditate with it before making decisions, or add it to a clarity spell jar. It works well with yellow candles, written intentions, and tools related to learning or communication.",
+            HowToUse: "Start here: set one fluorite on your desk before you study or plan, and glance at it when your attention drifts. Hold a tumbled piece while you think through a decision, or add a small piece to a jar. Carry it in a separate soft pouch, away from harder stones.",
 
             PairingNotes: "Fluorite pairs well with yellow candles for focus, mint or peppermint for clarity, sage for wisdom, and clear quartz for amplification. Amethyst can add intuition when the issue is both mental and spiritual.",
 
-            CleansingNotes: "Fluorite can be cleansed with smoke, sound, moonlight, or visualization. Avoid rough handling, salt, or long water exposure because fluorite is relatively soft.",
+            CleansingNotes: "Fluorite can be cleansed with smoke, sound, moonlight, or visualization. Avoid salt or long water exposure because fluorite is relatively soft.",
 
-            SafetyAndRespect: "Fluorite can chip or scratch more easily than harder stones. Treat polished pieces and points gently, especially if carrying them in a bag with harder crystals.",
-
-            BeginnerTip: "Keep fluorite near your workspace when you need help focusing, organizing, or making sense of too many thoughts.",
+            SafetyAndRespect: "Fluorite can chip or scratch more easily than harder stones. Treat polished pieces and points gently.",
 
             Traditions: "Wheel of the Year",
 
@@ -2471,21 +2207,17 @@ const TraditionalLibrary = {
             Cleansing: "Smoke, sound",
             TraditionalWarnings: "Traditionally associated with commitment and determination rather than quick or impulsive action.",
 
-            Overview: "Garnet is a deep, strengthening crystal associated with devotion, passion, courage, grounding, and endurance. It has a more serious and committed energy than some other fire stones. Garnet is useful when a working needs loyalty, resilience, and sustained strength.",
+            Overview: "Garnet is a family of deep red to wine-coloured glassy minerals that often form as small, many-faced rounded crystals in rock. It is sold as tumbled stones, raw crystals, beads and faceted gems.",
 
-            TraditionalMeaning: "Traditionally, garnet has been associated with protection, vitality, blood, commitment, and passion. In modern practice, it is often connected with the root chakra and the ability to remain grounded while moving through intense emotion or desire.",
+            TraditionalMeaning: "Steady fire, devotion and endurance; a committed, strengthening stone for courage, loyalty and passion that lasts.",
 
-            CommonUses: "Garnet is commonly used in devotion spells, passion workings, courage charms, strength rituals, protection magic, and grounding practices. It is also used in love magic when the focus is commitment, depth, or long-lasting connection.",
-
-            HowToUse: "Carry garnet for courage, place it on an altar for devotion, use it with red candles in passion or strength workings, or add chips to jars focused on commitment and resilience. Garnet can also support rituals around personal vows or dedication.",
+            HowToUse: "Start here: carry a small tumbled garnet for a week when you are trying to keep a commitment, and hold it when your resolve wavers. Raw crystals can sit on an altar, beads can be worn, and chips can be added to jars for steady strength.",
 
             PairingNotes: "Garnet pairs well with red candles for passion and courage, cinnamon for heat and momentum, rose for devoted love, and carnelian for vitality. Obsidian can ground garnet’s intensity when working through shadow or deep emotion.",
 
             CleansingNotes: "Garnet can be cleansed with smoke, sound, visualization, or brief moonlight. It generally does not need complicated cleansing methods.",
 
-            SafetyAndRespect: "Garnet is usually safe to handle, but small pieces should be kept away from children and pets. Its magical symbolism can feel intense, so use it thoughtfully in emotional workings.",
-
-            BeginnerTip: "Use garnet when you want steady fire, not a quick spark. It is excellent for commitment, courage, and devotion.",
+            SafetyAndRespect: "Small pieces should be kept away from children and pets. Its symbolism can feel intense, so use it thoughtfully in emotional workings.",
 
             Traditions: "Roman, Hindu, Egyptian, Christian, Wheel of the Year",
 
@@ -2506,21 +2238,17 @@ const TraditionalLibrary = {
             Cleansing: "Smoke, moonlight, sound",
             TraditionalWarnings: "Often called the Stone of Opportunity in modern crystal traditions, though historical sources vary.",
 
-            Overview: "Green aventurine is a gentle prosperity and luck crystal associated with opportunity, growth, optimism, and heart-centered abundance. It is often used when a practitioner wants to invite better chances, financial growth, or a more hopeful relationship with possibility.",
+            Overview: "Green aventurine is a green quartz with a soft shimmer from tiny flakes of mica inside it. It is sold mostly as tumbled stones, palm stones, beads and chips.",
 
-            TraditionalMeaning: "In modern crystal magic, green aventurine is linked with luck, money, growth, renewal, and the heart chakra. Its Venus association connects it with ease, attraction, harmony, and natural abundance.",
+            TraditionalMeaning: "Gentle luck and growth; an optimistic, heart-centred stone of opportunity and easy abundance.",
 
-            CommonUses: "Green aventurine is commonly used in money bowls, luck charms, job spells, growth rituals, heart healing, and opportunity work. It can be carried during interviews, placed in a cash box, or added to prosperity spell jars.",
+            HowToUse: "Start here: slip a tumbled green aventurine into your pocket or bag before an interview or new venture. A piece can live in a money bowl or cash box, and chips suit jars and charm bags. Its gentle feel makes it an easy stone to carry every day.",
 
-            HowToUse: "Use green aventurine with green candles, basil, mint, coins, or written prosperity goals. Carry it when seeking opportunity, place it near plants or money bowls, or use it in spells for growth and renewal.",
-
-            PairingNotes: "Green aventurine pairs well with green candles for prosperity, basil for money and courage, mint for movement and increase, and citrine for success. Rose quartz can soften it toward emotional healing and heart growth.",
+            PairingNotes: "Green aventurine pairs well with green candles for prosperity, basil for money and courage, mint for movement and increase, and citrine for success. It is softer than pyrite or citrine, and rose quartz can turn it toward emotional healing.",
 
             CleansingNotes: "Green aventurine can be cleansed with smoke, moonlight, sound, or visualization. It is generally easy to work with and does not require intense cleansing.",
 
-            SafetyAndRespect: "Green aventurine is generally safe to handle. Remember that luck and prosperity magic should support practical action, not replace it.",
-
-            BeginnerTip: "Green aventurine is a lovely money bowl crystal because it feels less intense than pyrite or citrine and brings a softer kind of abundance.",
+            SafetyAndRespect: "Green aventurine is generally safe to handle. Luck and prosperity magic should support practical action, not replace it.",
 
             Traditions: "Wheel of the Year",
 
@@ -2541,21 +2269,17 @@ const TraditionalLibrary = {
             Cleansing: "Smoke, sound",
             TraditionalWarnings: "Avoid prolonged soaking in water, as some hematite pieces may rust.",
 
-            Overview: "Hematite is a grounding and stabilizing crystal associated with focus, resilience, protection, and practical strength. It is often used when a practitioner needs to come back into the body, steady the mind, or feel more anchored in reality.",
+            Overview: "Hematite is an iron oxide that polishes to a heavy, metallic silver-grey mirror finish, though its raw form is red-brown. It is sold as tumbled stones, palm stones, rings and beads.",
 
-            TraditionalMeaning: "Hematite’s connection with iron gives it strong associations with Mars, blood, strength, protection, and embodiment. In modern crystal work, it is often connected with the root chakra and practical grounding.",
+            TraditionalMeaning: "Grounding and practical strength; a heavy, anchoring stone of focus, resilience and coming back into the body.",
 
-            CommonUses: "Hematite is commonly used for grounding after ritual, focus during work, protection charms, resilience spells, and stabilizing energy after emotional or spiritual intensity. It can be kept near a desk, carried in a pocket, or placed at the base of an altar.",
-
-            HowToUse: "Hold hematite during grounding exercises, place it near your feet during meditation, carry it during stressful tasks, or use it with brown or black candles for stability and protection. Hematite beads or palm stones are especially practical.",
+            HowToUse: "Start here: after ritual or a draining day, hold a hematite palm stone in both hands and notice its weight until you feel settled. Beads and palm stones are the most practical forms to carry, and a piece can rest near your feet during meditation. Keep it dry and store it apart from softer stones.",
 
             PairingNotes: "Hematite pairs well with brown candles for grounding, black candles for protection, nettle for strength and boundaries, and smoky quartz for stabilizing heavy energy. Black tourmaline can deepen its protective quality.",
 
-            CleansingNotes: "Hematite can be cleansed with smoke, sound, visualization, or placing it near other cleansing stones. Avoid prolonged water exposure.",
+            CleansingNotes: "Hematite can be cleansed with smoke, sound, visualization, or placing it near other cleansing stones.",
 
-            SafetyAndRespect: "Some hematite may rust if soaked or exposed to moisture. Magnetic hematite products may not be true hematite and should be kept away from people or devices sensitive to magnets.",
-
-            BeginnerTip: "Hematite is perfect after divination, ritual, or emotional processing when you need to come back to earth.",
+            SafetyAndRespect: "Hematite may rust if soaked or exposed to moisture. Magnetic hematite products may not be true hematite and should be kept away from people or devices sensitive to magnets.",
 
             Traditions: "Egyptian, Roman, Wheel of the Year",
 
@@ -2576,21 +2300,17 @@ const TraditionalLibrary = {
             Cleansing: "Moonlight, smoke, sound",
             TraditionalWarnings: "Frequently associated with periods of change and deep spiritual exploration.",
 
-            Overview: "Labradorite is a mystical crystal associated with transformation, intuition, protection, magic, and liminal spaces. Its shifting flash makes it a natural symbol of hidden truth, mystery, and spiritual change. It is especially useful for threshold work and magical self-discovery.",
+            Overview: "Labradorite is a grey-green feldspar that flashes blue, gold and green when light strikes it at the right angle. It is sold mostly as polished palm stones, freeforms, tumbled stones and jewellery.",
 
-            TraditionalMeaning: "In modern crystal magic, labradorite is associated with psychic awareness, liminality, protection, and transformation. Its lunar and watery qualities connect it with intuition, dreams, and the unseen, while its dark base gives it a protective undertone.",
+            TraditionalMeaning: "Mystery, transformation and the threshold; a stone of hidden truth and intuition, with a protective dark base.",
 
-            CommonUses: "Labradorite is commonly used in divination, deity work, dream work, protection spells, transformation rituals, and threshold magic. It may be kept on an altar for Hekate or other liminal deities, carried during spiritual transitions, or placed near tarot decks.",
-
-            HowToUse: "Use labradorite during meditation, divination, shadow work, or rituals focused on change. Place it on an altar, carry it during transition periods, or pair it with purple, black, or silver candles. Labradorite palm stones are especially good for reflective work.",
+            HowToUse: "Start here: tilt a labradorite palm stone slowly in the light and watch the colour appear and vanish as a short meditation on change. Palm stones and freeforms suit reflective work, and a tumbled piece can be carried during a transition. Store it so its polished face is not scratched.",
 
             PairingNotes: "Labradorite pairs well with mugwort for psychic work, moonstone for lunar intuition, Hekate for threshold magic, and purple candles for spiritual sight. Obsidian can add grounding and protection when transformation feels intense.",
 
             CleansingNotes: "Labradorite can be cleansed with moonlight, smoke, sound, or visualization. Avoid rough handling, as some pieces can chip along natural layers.",
 
-            SafetyAndRespect: "Labradorite is generally safe to handle, but emotionally deep spiritual work can stir up unexpected material. Ground after intense rituals and use practical support when needed.",
-
-            BeginnerTip: "Use labradorite when you are in a transition and need help trusting the hidden process.",
+            SafetyAndRespect: "Deep spiritual work can stir up unexpected material. Ground after intense rituals and use practical support when needed.",
 
             Traditions: "Wheel of the Year",
 
@@ -2611,21 +2331,17 @@ const TraditionalLibrary = {
             Cleansing: "Smoke, sound",
             TraditionalWarnings: "Avoid prolonged soaking because pyrite and calcite inclusions can be affected.",
 
-            Overview: "Lapis lazuli is a crystal of wisdom, truth, communication, insight, and spiritual learning. It has an ancient, regal feeling and is often used when a practitioner wants to speak clearly, understand deeply, or connect with sacred knowledge.",
+            Overview: "Lapis lazuli is an opaque, deep royal-blue rock flecked with gold pyrite and streaks of white calcite. It is sold as tumbled stones, cabochons, beads and carvings.",
 
-            TraditionalMeaning: "Historically, lapis lazuli has been valued as a sacred and royal stone in several ancient cultures. In modern magical practice, it is associated with the throat and third eye chakras, linking truthful speech with inner vision and wisdom.",
+            TraditionalMeaning: "Truth, wisdom and inner vision; a regal stone linking honest speech with sacred knowledge.",
 
-            CommonUses: "Lapis lazuli is commonly used for communication spells, wisdom work, study rituals, divination, truth-telling, and spiritual insight. It can be placed on an altar for learning, carried during important conversations, or used with journaling and study.",
-
-            HowToUse: "Use lapis lazuli with blue candles for communication, with sage for wisdom and clarity, or with Hermes-related work for messages and speech. Hold it during meditation, place it near books or journals, or carry it when you need honest expression.",
+            HowToUse: "Start here: hold lapis for a minute before you write or speak about something important, then set it beside your journal or books. A tumbled piece can be carried in a pouch, and beads can be worn. Keep it dry and away from oils and cleaning products.",
 
             PairingNotes: "Lapis lazuli pairs well with blue candles for truth, sage for wisdom, Hermes for communication, and clear quartz for amplification. Amethyst can add spiritual insight, while fluorite can sharpen mental focus.",
 
-            CleansingNotes: "Cleanse lapis lazuli with smoke, sound, visualization, or moonlight. Avoid soaking it in water or using harsh cleansing methods.",
+            CleansingNotes: "Cleanse lapis lazuli with smoke, sound, visualization, or moonlight. Avoid harsh cleansing methods.",
 
             SafetyAndRespect: "Lapis lazuli may contain pyrite and calcite inclusions, which can be affected by water or chemicals. It is best treated gently and kept dry.",
-
-            BeginnerTip: "Use lapis lazuli when you need to say the true thing clearly, not just loudly.",
 
             Traditions: "Egyptian, Christian, Wheel of the Year",
 
@@ -2646,21 +2362,17 @@ const TraditionalLibrary = {
             Cleansing: "Smoke, sound",
             TraditionalWarnings: "Raw malachite should not be used in crystal elixirs or allowed prolonged contact with acidic liquids because it contains copper.",
 
-            Overview: "Malachite is a powerful crystal of transformation, protection, emotional healing, and growth. It is often treated as an intense heart-centered stone, one that can bring hidden feelings or patterns to the surface so they can be changed. Malachite is beautiful, but it is not always considered gentle.",
+            Overview: "Malachite is an opaque copper mineral banded in light and dark green swirls and rings. It is sold polished as tumbled stones, palm stones, beads and carvings, and raw as rough or botryoidal clusters.",
 
-            TraditionalMeaning: "In modern crystal magic, malachite is associated with deep transformation, the heart chakra, emotional truth, and protective growth. Its green color connects it with Venus, healing, nature, and renewal, while its copper content links it with energetic conductivity.",
+            TraditionalMeaning: "Deep transformation and emotional truth; a powerful heart stone that brings hidden patterns up so they can change.",
 
-            CommonUses: "Malachite is commonly used in transformation rituals, emotional healing work, protection spells, heart-centered shadow work, and growth magic. It may be placed on an altar during periods of change or used in rituals focused on breaking old patterns.",
-
-            HowToUse: "Use polished malachite on an altar, carry it during intentional transformation, or pair it with green candles for growth and healing. It can be used near a journal or mirror for emotional reflection, but should not be used in water-based elixirs.",
+            HowToUse: "Start here: set a polished malachite beside your journal when you are ready to look at a pattern you want to change, and handle it only while you write. Use polished pieces for carrying or altar work rather than raw ones. For softer emotional comfort, choose rose quartz or lepidolite instead.",
 
             PairingNotes: "Malachite pairs well with green candles for growth, rose for heart healing, patchouli for grounding and embodiment, and smoky quartz for stability. Rose quartz can soften malachite’s intensity.",
 
             CleansingNotes: "Cleanse malachite with smoke, sound, or visualization. Avoid water, salt, acids, and harsh cleansing methods.",
 
             SafetyAndRespect: "Raw or damaged malachite can be unsafe because it contains copper. Do not place malachite in drinking water or crystal elixirs. Wash hands after handling raw pieces and use polished stones from reputable sources.",
-
-            BeginnerTip: "Malachite is not the crystal I’d use for casual emotional comfort. Use rose quartz or lepidolite for softness, and malachite when you are ready for deeper change.",
 
             Traditions: "Egyptian, Roman, Wheel of the Year",
 
@@ -2681,21 +2393,17 @@ const TraditionalLibrary = {
             Cleansing: "Moonlight, smoke, sound",
             TraditionalWarnings: "Traditionally associated with lunar cycles and emotional reflection.",
 
-            Overview: "Moonstone is a lunar crystal associated with intuition, dreams, emotional balance, cycles, and receptive magic. It is commonly used in moon rituals, dream work, and practices centered on emotional rhythm and inner knowing.",
+            Overview: "Moonstone is a feldspar with a soft, milky glow (adularescence) that seems to float across its surface; it comes in white, peach, grey and rainbow varieties. It is sold as tumbled stones, cabochons, beads and jewellery.",
 
-            TraditionalMeaning: "In modern crystal magic, moonstone is deeply connected with the moon, water, cycles, reflection, and spiritual receptivity. It is often used to support intuition, emotional awareness, and trust in natural timing.",
+            TraditionalMeaning: "Cycles, receptivity and inner knowing; a gentle lunar stone of intuition, emotional rhythm and trust in timing.",
 
-            CommonUses: "Moonstone is commonly used in full moon rituals, new moon intention setting, dream work, emotional healing, lunar altars, and intuition spells. It may be placed with moon water, used near a dream journal, or worn during rituals connected to cycles.",
-
-            HowToUse: "Place moonstone on a lunar altar, carry it during emotional transitions, use it with silver candles, or keep it near dream tools. Moonstone can also be used in spell jars for intuition, emotional balance, and cycle awareness.",
+            HowToUse: "Start here: keep moonstone beside a notebook and jot one line about your mood or dreams each evening, noting the moon phase. A tumbled piece can be carried during emotional changes, and jewellery keeps it close. Store it in a soft pouch, as it scratches easily.",
 
             PairingNotes: "Moonstone pairs well with silver candles for lunar magic, mugwort for dream work, jasmine for intuition and sensuality, and amethyst for spiritual awareness. Labradorite can deepen its liminal quality.",
 
             CleansingNotes: "Moonstone is commonly cleansed and charged in moonlight, especially during full moons. Smoke, sound, and visualization also work well.",
 
-            SafetyAndRespect: "Moonstone is generally safe to handle but can be scratched or damaged if treated roughly. Its emotional symbolism may feel tender, so use grounding if lunar work brings up strong feelings.",
-
-            BeginnerTip: "Moonstone is beautiful for tracking patterns. Use it with journaling around dreams, moods, cycles, or moon phases.",
+            SafetyAndRespect: "Moonstone can be scratched or damaged if treated roughly. Its emotional symbolism may feel tender, so use grounding if lunar work brings up strong feelings.",
 
             Traditions: "Hindu, Wheel of the Year",
 
@@ -2716,21 +2424,17 @@ const TraditionalLibrary = {
             Cleansing: "Smoke, moonlight",
             TraditionalWarnings: "Despite its name, moss agate does not actually contain moss.",
 
-            Overview: "Moss agate is an earthy crystal associated with nature, abundance, grounding, growth, gardening, and new beginnings. It has a steady, gentle energy that is often used for connecting with plants, land, and slow natural cycles.",
+            Overview: "Moss agate is a clear to milky chalcedony with green, branching mineral inclusions that look like moss or tiny plants, though it contains no plant matter. It is sold as tumbled stones, slices, palm stones and chips.",
 
-            TraditionalMeaning: "In modern crystal magic, moss agate is linked with earth energy, fertility, renewal, and the living world. Its plant-like appearance makes it a natural symbol of growth, even though it does not actually contain moss.",
+            TraditionalMeaning: "Growth, fertility and patient abundance; an earthy stone of the living world and slow, real progress.",
 
-            CommonUses: "Moss agate is commonly used in garden magic, plant spells, abundance work, grounding rituals, new beginning spells, and nature altars. It can be placed near plants, in money bowls, or on altars dedicated to land spirits or seasonal cycles.",
-
-            HowToUse: "Place moss agate near houseplants, carry it during nature walks, use it with green candles, or add chips to spell jars for growth and grounding. It works beautifully in rituals that honor slow progress and natural timing.",
+            HowToUse: "Start here: set a tumbled moss agate in the pot of a houseplant you care for and notice the plant each time you water it. Carry a piece on walks outdoors, or add chips to a jar for growth. Place stones on top of the soil so they do not crowd roots or block drainage.",
 
             PairingNotes: "Moss agate pairs well with green candles for growth, cedar for grounding and protection, basil for prosperity, and green aventurine for opportunity. Smoky quartz can add deeper grounding.",
 
             CleansingNotes: "Moss agate can be cleansed with smoke, moonlight, sound, or visualization. Some practitioners also place it near healthy plants for symbolic renewal.",
 
-            SafetyAndRespect: "Moss agate is generally safe to handle. If placing stones in plant soil, make sure they will not interfere with watering, roots, pets, or children.",
-
-            BeginnerTip: "Use moss agate when you need a reminder that growth can be slow and still be real.",
+            SafetyAndRespect: "If placing stones in plant soil, make sure they will not interfere with watering, roots, pets, or children.",
 
             Traditions: "Wheel of the Year",
 
@@ -2751,21 +2455,17 @@ const TraditionalLibrary = {
             Cleansing: "Smoke, sound",
             TraditionalWarnings: "Traditionally associated with intense shadow work and emotional processing.",
 
-            Overview: "Obsidian is a volcanic glass associated with protection, banishing, grounding, truth, and shadow work. It is often considered a powerful and direct stone that can reveal what has been hidden or avoided. Obsidian is protective, but not always gentle.",
+            Overview: "Obsidian is natural volcanic glass, formed when lava cools too fast to crystallise, usually glossy black and sometimes with snowflake, rainbow or golden sheen. It is sold as tumbled stones, spheres, mirrors, arrowheads and raw chunks.",
 
-            TraditionalMeaning: "Obsidian’s volcanic origin gives it strong associations with fire, earth, transformation, and truth. In modern magical practice, it is often used for cutting through illusion, confronting shadow, and creating strong energetic boundaries.",
+            TraditionalMeaning: "Truth, protection and the shadow; a direct, cutting stone that reveals what is hidden and draws firm boundaries.",
 
-            CommonUses: "Obsidian is commonly used in protection spells, banishing rituals, shadow work, scrying, grounding, cord-cutting symbolism, and truth-focused rituals. It can be placed on altars, used with black candles, or kept near protective wards.",
+            HowToUse: "Start here: hold a tumbled obsidian for a few minutes at the end of shadow work or journaling, then put it away. Use it deliberately rather than carrying it all the time, and choose polished pieces for handling. For gentler protection, start with black tourmaline or smoky quartz.",
 
-            HowToUse: "Use obsidian with black candles for protection, hold it during grounding after shadow work, place it near a mirror for scrying, or add chips to banishing or protection jars. Use it intentionally rather than casually if emotional material is likely to arise.",
-
-            PairingNotes: "Obsidian pairs well with black candles for protection, rosemary for cleansing, black tourmaline for shielding, and nettle for boundaries. Rose quartz or smoky quartz can soften and stabilize obsidian’s intensity.",
+            PairingNotes: "Obsidian pairs well with black candles for protection, rosemary for cleansing, black tourmaline for shielding, and nettle for boundaries. Rose quartz or smoky quartz can soften and stabilize its intensity.",
 
             CleansingNotes: "Obsidian can be cleansed with smoke, sound, visualization, or placing it near grounding stones. It does not need water cleansing.",
 
-            SafetyAndRespect: "Obsidian can have sharp edges, especially raw or broken pieces. Emotionally, it is often associated with intense truth and shadow work, so ground afterward and seek support when needed.",
-
-            BeginnerTip: "Use obsidian when you are ready for honesty. For gentler protection, start with black tourmaline or smoky quartz.",
+            SafetyAndRespect: "Obsidian can have sharp edges, especially raw or broken pieces. It is often linked with intense truth and shadow work, so ground afterward and seek support when needed.",
 
             Traditions: "Egyptian, Wheel of the Year",
 
@@ -2786,21 +2486,17 @@ const TraditionalLibrary = {
             Cleansing: "Smoke, sound",
             TraditionalWarnings: "Avoid prolonged contact with water, which can contribute to oxidation over time.",
 
-            Overview: "Pyrite is a bold crystal associated with prosperity, confidence, success, protection, and determination. Its metallic gold appearance gives it strong links to wealth and solar power. Pyrite is excellent for work involving ambition, business, money, and self-belief.",
+            Overview: "Pyrite is a brassy, metallic gold iron mineral, nicknamed ‘fool’s gold’, that forms as sharp cubes and glittering clusters. It is sold as cubes, raw clusters, tumbled stones and chunks.",
 
-            TraditionalMeaning: "In modern crystal magic, pyrite is connected with the solar plexus, abundance, willpower, and the ability to take up space. It is also associated with protection, especially protection of resources, confidence, and personal energy.",
+            TraditionalMeaning: "Willpower, wealth and confidence; a bold, solar stone of ambition and protecting what you have built.",
 
-            CommonUses: "Pyrite is commonly used in money bowls, business altars, confidence spells, success rituals, manifestation work, and protective prosperity grids. It can be kept near a workspace, cash box, or goal list.",
-
-            HowToUse: "Place pyrite with coins, bay leaves, cinnamon, or citrine in a prosperity bowl. Use it with gold candles for success, carry it for confidence, or keep it on a desk to support ambition and focus.",
+            HowToUse: "Start here: write one clear money or work goal, place a pyrite cube on top of it, and keep it on your desk. Clusters sit well in a bowl with coins and bay leaves, and a tumbled piece can be carried. Handle clusters by the base so the crystals do not snap.",
 
             PairingNotes: "Pyrite pairs well with gold candles for success, citrine for abundance, bay for victory, and cinnamon for speed. Green aventurine can add luck, while black tourmaline can protect prosperity work.",
 
-            CleansingNotes: "Cleanse pyrite with smoke, sound, or visualization. Avoid soaking it in water or using salt water.",
+            CleansingNotes: "Cleanse pyrite with smoke, sound, or visualization. Avoid water and salt water.",
 
             SafetyAndRespect: "Pyrite can oxidize or degrade with prolonged water exposure. Do not use pyrite in crystal elixirs. Handle fragile clusters gently.",
-
-            BeginnerTip: "Pyrite is a strong money bowl stone. Pair it with a clear goal, not just a vague wish for more.",
 
             Traditions: "Wheel of the Year",
 
@@ -2821,21 +2517,17 @@ const TraditionalLibrary = {
             Cleansing: "Moonlight, smoke, sound",
             TraditionalWarnings: "Often associated with gentle emotional work rather than intense transformational practices.",
 
-            Overview: "Rose quartz is one of the most beloved crystals for love, compassion, self-love, emotional healing, and forgiveness. It is gentle, heart-centered, and supportive, making it a common beginner crystal for emotional and relational work.",
+            Overview: "Rose quartz is a soft pink, milky quartz that usually forms in large masses rather than points. It is sold as tumbled stones, hearts, palm stones, spheres and raw chunks.",
 
-            TraditionalMeaning: "In modern crystal magic, rose quartz is connected with Venus, the heart chakra, tenderness, affection, and emotional restoration. It is often used to soften the heart, invite compassion, and support loving connection with self and others.",
+            TraditionalMeaning: "Tenderness and compassion; a gentle heart stone of self-love, forgiveness and loving connection, not only romance.",
 
-            CommonUses: "Rose quartz is commonly used in self-love rituals, friendship spells, emotional healing jars, grief support, love altars, beauty magic, and relationship work. It can be kept near a bed, mirror, journal, or heart-centered altar.",
-
-            HowToUse: "Use rose quartz with pink candles, rose petals, lavender, or chamomile. Carry it for self-kindness, place it near a mirror for self-love work, or add chips to jars focused on compassion, forgiveness, or emotional healing.",
+            HowToUse: "Start here: keep a rose quartz by your mirror and hold it while you say one kind sentence to yourself each morning. Carry a tumbled piece or heart for self-kindness, and add chips to jars or sachets. Keep it away from sunny windows so its colour lasts.",
 
             PairingNotes: "Rose quartz pairs well with pink candles for love, rose for heart work, lavender for peace, and chamomile for gentle healing. Amethyst can add emotional calm, while green aventurine can support heart growth.",
 
             CleansingNotes: "Rose quartz can be cleansed with moonlight, smoke, sound, or visualization. Avoid long sunlight exposure, which may fade some pieces over time.",
 
-            SafetyAndRespect: "Rose quartz is generally safe to handle. Emotional healing takes time, so use it as a supportive symbol rather than expecting it to fix pain instantly.",
-
-            BeginnerTip: "Rose quartz is not only for romantic love. It is one of the best stones for self-compassion.",
+            SafetyAndRespect: "Emotional healing takes time, so use rose quartz as a supportive symbol rather than expecting it to fix pain instantly.",
 
             Traditions: "Wheel of the Year",
 
@@ -2856,21 +2548,17 @@ const TraditionalLibrary = {
             Cleansing: "Smoke, sound, moonlight",
             TraditionalWarnings: "Avoid prolonged exposure to water because selenite is water-soluble and relatively soft.",
 
-            Overview: "Selenite is a soft, luminous crystal associated with cleansing, charging, peace, clarity, and spiritual connection. It is often used to clear energy, create calm, and support a sense of sacred stillness. Many practitioners use selenite as a cleansing tool for other crystals.",
+            Overview: "Selenite is a soft, white to clear form of gypsum with a silky, fibrous lustre that glows when light passes through it. It is sold as wands, slabs, plates, bowls, towers and lamps.",
 
-            TraditionalMeaning: "In modern crystal magic, selenite is connected with the moon, the crown chakra, spiritual light, and energetic purification. It is often treated as a high-vibration stone that brings clarity and calm to a space or object.",
+            TraditionalMeaning: "Purity, stillness and spiritual light; a calm lunar stone of clarity and cleansing.",
 
-            CommonUses: "Selenite is commonly used for cleansing crystals, clearing altar tools, meditation, moon work, spiritual connection, and peaceful spaces. Wands, slabs, bowls, and towers are all common forms.",
+            HowToUse: "Start here: lay a selenite plate on your altar or shelf and rest small crystals or jewellery on it overnight. A wand can be passed slowly over an object to clear it symbolically. Keep it completely dry, handle flaking pieces gently, and dust it with a dry cloth.",
 
-            HowToUse: "Place crystals on a selenite slab, use a selenite wand to symbolically clear an object, keep it on an altar, or pair it with white candles for purification. It can also be placed near divination tools for clarity.",
-
-            PairingNotes: "Selenite pairs well with white candles for cleansing, clear quartz for amplification, amethyst for spiritual awareness, and moonstone for lunar work. It can support nearly any ritual where clarity or purification is needed.",
+            PairingNotes: "Selenite pairs well with white candles for cleansing, clear quartz for amplification, amethyst for spiritual awareness, and moonstone for lunar work.",
 
             CleansingNotes: "Selenite is often considered self-cleansing in modern practice, but it can still be refreshed with smoke, sound, moonlight, or intention. Do not cleanse it with water.",
 
             SafetyAndRespect: "Selenite is soft and water-soluble, so it can scratch, flake, or dissolve with moisture. Wash hands after handling flaky pieces and keep it away from pets, children, and water bowls.",
-
-            BeginnerTip: "A selenite slab or wand is a useful beginner tool for cleansing small crystals or altar objects.",
 
             Traditions: "Wheel of the Year",
 
@@ -2891,21 +2579,17 @@ const TraditionalLibrary = {
             Cleansing: "Smoke, sound",
             TraditionalWarnings: "Traditionally associated with releasing unwanted energy and grounding after intense ritual work.",
 
-            Overview: "Smoky quartz is a grounding and stabilizing crystal associated with protection, stress relief, transmutation, and energetic release. It is often used after emotional, spiritual, or magical intensity to help bring energy back into the body and the present moment.",
+            Overview: "Smoky quartz is quartz in shades from pale grey-brown to near black, coloured by natural radiation in the earth, and often found as long points. It is sold as points, clusters, tumbled stones and chips.",
 
-            TraditionalMeaning: "In modern crystal magic, smoky quartz is linked with the root chakra, earth energy, and the transformation of heavy or unwanted energy. Its Saturn association gives it a steady, protective, and grounding quality.",
+            TraditionalMeaning: "Grounding and release; a steady, protective stone that turns heavy or chaotic energy into calm.",
 
-            CommonUses: "Smoky quartz is commonly used for grounding after ritual, protection grids, stress relief spells, shadow work support, home wards, and stability rituals. It can be placed near beds, desks, altars, or thresholds.",
-
-            HowToUse: "Hold smoky quartz during grounding exercises, use it after divination or shadow work, place it with brown candles for stability, or add chips to protection and grounding jars. It is also useful in spaces where energy feels heavy or chaotic.",
+            HowToUse: "Start here: keep a smoky quartz on your altar and hold it for a few slow breaths after any ritual, reading or hard conversation. Points and clusters suit fixed places in a room, tumbled pieces can be carried, and chips can go into jars. Very dark, uniform black ‘smoky quartz’ is often artificially irradiated.",
 
             PairingNotes: "Smoky quartz pairs well with brown candles for grounding, patchouli for embodiment, cedar for protection and blessing, and black tourmaline for shielding. Rose quartz can soften it for emotional grounding.",
 
             CleansingNotes: "Smoky quartz can be cleansed with smoke, sound, earth, visualization, or moonlight. It does not require water cleansing.",
 
-            SafetyAndRespect: "Smoky quartz is generally safe to handle. If using it for stress relief, remember that it is a supportive spiritual tool, not a replacement for rest, care, or professional help.",
-
-            BeginnerTip: "Keep smoky quartz near your altar for grounding after intense rituals, divination, or emotional work.",
+            SafetyAndRespect: "If using smoky quartz for stress relief, remember that it is a supportive spiritual tool, not a replacement for rest, care, or professional help.",
 
             Traditions: "Celtic, Wheel of the Year",
 
@@ -2926,21 +2610,17 @@ const TraditionalLibrary = {
             Cleansing: "Smoke, sunlight, sound",
             TraditionalWarnings: "Traditionally linked to confidence and practical action rather than impulsive risk-taking.",
 
-            Overview: "Tiger eye is a crystal of confidence, courage, focus, determination, and practical protection. It has a steady solar quality that supports action without the chaotic intensity of some fiery stones. Tiger eye is especially useful for confidence, decision-making, and staying focused under pressure.",
+            Overview: "Tiger eye is a golden-brown banded quartz with a silky stripe of light (chatoyancy) that moves as the stone turns. It is sold as tumbled stones, palm stones, beads and spheres.",
 
-            TraditionalMeaning: "In modern crystal magic, tiger eye is associated with the solar plexus chakra, personal power, courage, and clear action. Its banded appearance gives it a watchful protective symbolism, while its golden tones connect it with solar strength.",
+            TraditionalMeaning: "Watchful confidence and clear action; a steady solar stone of courage, focus and personal power.",
 
-            CommonUses: "Tiger eye is commonly used in confidence spells, courage charms, protection work, focus rituals, career magic, and practical action spells. It can be carried during interviews, difficult conversations, study sessions, or new challenges.",
+            HowToUse: "Start here: carry a tumbled tiger eye to an interview, appointment or phone call you are dreading, and hold it just before you begin. Keep a palm stone on your desk for focus, or wear beads. Use polished pieces only.",
 
-            HowToUse: "Carry tiger eye when you need confidence, place it on a desk for focus, use it with yellow or gold candles, or add chips to spell jars for courage and determination. It works well with written goals and action-based rituals.",
-
-            PairingNotes: "Tiger eye pairs well with yellow candles for focus, cinnamon for momentum, pyrite for confidence and success, and carnelian for courage. Hematite can ground tiger eye when steady discipline is needed.",
+            PairingNotes: "Tiger eye pairs well with yellow candles for focus, cinnamon for momentum, pyrite for confidence and success, and carnelian for courage. Hematite can ground it when steady discipline is needed.",
 
             CleansingNotes: "Tiger eye can be cleansed with smoke, sound, sunlight, or visualization. Brief sunlight is often used symbolically to strengthen its solar associations.",
 
-            SafetyAndRespect: "Tiger eye is generally safe when polished, but some tiger eye contains asbestos fibers naturally locked within the stone structure. Polished stones are commonly handled, but do not grind, crush, or inhale dust from tiger eye.",
-
-            BeginnerTip: "Tiger eye is a great stone for doing scary practical things, interviews, phone calls, appointments, applications, and boundaries.",
+            SafetyAndRespect: "Some tiger eye contains asbestos fibers naturally locked within the stone structure. Polished stones are commonly handled, but do not grind, crush, or inhale dust from tiger eye.",
 
             Traditions: "Wheel of the Year",
 
@@ -2967,21 +2647,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Jet is not a crystal but fossilized wood, an organic gemstone. It is soft, light, and easily scratched, and black glass, plastic, and dyed stones are often sold as jet.",
 
-            Overview: "Jet is a black, lightweight organic gemstone formed from ancient wood compressed over millions of years. Strictly speaking it is not a crystal at all, but it has been carved into amulets, beads, and jewelry for thousands of years and is kept with crystals in most modern practice. Its energy is usually described as quiet, absorbing, and protective.",
+            Overview: "Jet is a black, lightweight organic gemstone formed from ancient wood compressed over millions of years; strictly speaking it is not a crystal. It is sold as polished beads, pendants, carvings and small rough pieces, and feels warm and light in the hand.",
 
-            TraditionalMeaning: "Jet has a long documented history as a protective material. It was worn in Bronze Age Britain, carved into Roman amulets, and later became the stone of Victorian mourning jewelry after Queen Victoria wore it for Prince Albert. In modern practice it is associated with protection, grief, the root chakra, and the gentle drawing away of heavy energy.",
+            TraditionalMeaning: "Quiet protection and the holding of grief; an absorbing stone that gently draws heavy energy away.",
 
-            CommonUses: "Jet is commonly carried or worn for protection, kept on ancestor altars, used in grief and mourning rituals, and placed in charm bags for warding. Some practitioners keep a piece near the bed during times of loss or when they feel energetically raw.",
+            HowToUse: "Start here: set a small piece of jet on a memorial altar with a photo and a white candle, and sit with it for a few minutes when grief rises. Jet can be worn as beads or a pendant, or kept in a pouch with protective herbs. Wipe it with a soft dry cloth and keep it away from heat.",
 
-            HowToUse: "Wear jet as a pendant or bead, keep a small piece on an ancestor or memorial altar, or hold it while you sit with grief. It can be paired with black or white candles in protection work, and small pieces can go in a pouch with protective herbs.",
+            PairingNotes: "Jet pairs well with black candles for protection, obsidian for deeper shadow work, rosemary for remembrance and cleansing, and cypress for mourning and honoring the dead. White candles can soften its heaviness in grief work.",
 
-            PairingNotes: "Jet pairs well with black candles for protection, obsidian for deeper shadow work, rosemary for remembrance and cleansing, and cypress for mourning and the honoring of the dead. White candles can soften its heaviness when it is used for grief.",
+            CleansingNotes: "Cleanse jet with smoke, sound, or visualization. Avoid water soaks, salt, and harsh cleaners.",
 
-            CleansingNotes: "Cleanse jet with smoke, sound, or visualization. Avoid water soaks, salt, and harsh cleaners, and wipe it with a soft dry cloth because it scratches easily.",
-
-            SafetyAndRespect: "Jet is generally safe to handle but it is soft and can chip or crack if dropped or exposed to sudden heat. To spot fakes, real jet feels warm and light in the hand, while glass (‘French jet’) feels cold and heavy. Jet can hold space for grief, but it is not a substitute for grief support, counseling, or mental health care.",
-
-            BeginnerTip: "If you are working through a loss, keep a small piece of jet on a memorial altar with a photo and a white candle as a simple, steady focus.",
+            SafetyAndRespect: "Jet is soft and can scratch, chip or crack if dropped or exposed to sudden heat. To spot fakes, real jet feels warm and light in the hand, while glass (‘French jet’) feels cold and heavy. Jet is not a substitute for grief support, counseling, or mental health care.",
 
             Traditions: "Roman, Christian, Celtic, Wheel of the Year",
 
@@ -3008,21 +2684,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Traditionally associated with courage and the blood. Some bloodstone sold today is dyed or is a different green jasper with red spots added.",
 
-            Overview: "Bloodstone, also called heliotrope, is a dark green chalcedony speckled with red spots of iron oxide. It is associated with courage, strength, vitality, and steady endurance. Its energy is often described as grounded and fortifying rather than fiery.",
+            Overview: "Bloodstone, also called heliotrope, is a dark green chalcedony speckled with red spots of iron oxide. It is sold as tumbled stones, palm stones, beads and carvings.",
 
-            TraditionalMeaning: "Bloodstone has one of the longer recorded histories of any crystal in this library. Roman writers described heliotrope as a stone of the sun and of the magi, and medieval Christian legend held that its red spots were drops of Christ’s blood falling on green jasper at the crucifixion. In modern practice it is tied to Mars, courage, the root and heart chakras, and resilience.",
+            TraditionalMeaning: "Courage and endurance; a grounded, fortifying stone of strength, vitality and resilience rather than fiery rush.",
 
-            CommonUses: "Bloodstone is commonly carried for courage, used in strength and endurance spells, placed on altars during challenging seasons, and kept by people who want to feel steadier in their bodies. It is also used in protection charms and athletic or competition luck work.",
-
-            HowToUse: "Carry bloodstone in a pocket or pouch during difficult tasks, hold it during meditation for steadiness, or place it beside a red candle for courage work. It works well tucked into charm bags with strengthening herbs.",
+            HowToUse: "Start here: keep bloodstone in your pocket on a day you know will test you, and each time you touch it, take one slow breath before you act. A palm stone can be held in meditation for steadiness, and small pieces tuck easily into charm bags.",
 
             PairingNotes: "Bloodstone pairs well with red candles for courage, garnet for vitality and devotion, basil for bravery and success, and nettle for firm boundaries. Hematite can deepen its grounding quality.",
 
             CleansingNotes: "Cleanse bloodstone with smoke, sound, earth, or visualization. It is a hard, stable stone, so a brief rinse in plain water is usually fine, but avoid harsh chemicals that may affect dyed pieces.",
 
-            SafetyAndRespect: "Bloodstone is generally safe to handle. Its traditional links to the blood are symbolic, and it should never replace medical care for any blood, heart, or circulatory condition.",
-
-            BeginnerTip: "Keep bloodstone in your pocket on a day you know will test you. Each time you touch it, take one slow breath before you act.",
+            SafetyAndRespect: "Bloodstone’s links to the blood are symbolic, and it should never replace medical care for any blood, heart, or circulatory condition.",
 
             Traditions: "Roman, Christian, Wheel of the Year",
 
@@ -3049,21 +2721,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Most black onyx sold today is chalcedony that has been dyed black. True onyx is banded, and sardonyx carries red-brown and white bands.",
 
-            Overview: "Onyx is a banded variety of chalcedony, traditionally black and white, though most of the solid black onyx sold today has been dyed. It is associated with protection, discipline, self-control, and staying power. Its energy is usually described as serious, steady, and contained.",
+            Overview: "Onyx is a banded chalcedony, traditionally layered black and white; most solid black onyx sold today has been dyed. It is sold as tumbled stones, beads, cabochons and carvings.",
 
-            TraditionalMeaning: "Banded onyx and sardonyx were prized in the ancient world for seals, cameos, and carved amulets, because the layered colors could be carved in relief. In modern crystal magic, black onyx is associated with Saturn, the root chakra, boundaries, and the strength to see a hard task through.",
+            TraditionalMeaning: "Discipline and staying power; a serious, contained stone of protection, self-control and holding boundaries.",
 
-            CommonUses: "Onyx is commonly used in protection jars, banishing and boundary work, discipline and habit-breaking rituals, and grounding practices. It is often carried during periods that require focus, restraint, or emotional steadiness.",
-
-            HowToUse: "Carry onyx when you need to hold a boundary or keep a commitment, place it on a desk for discipline, or set it beside a black candle in protection or banishing work. Tumbled pieces can be added to jars and charm bags.",
+            HowToUse: "Start here: pick one habit you want to change and keep a piece of onyx where that habit happens, as a quiet physical reminder. Carry a tumbled piece when you need to hold a boundary, or add one to a jar or charm bag. Rub a new black stone on a damp cloth to check for dye.",
 
             PairingNotes: "Onyx pairs well with black candles for protection, obsidian for shadow work, patchouli for grounding, and cypress for endings and endurance. Clear quartz can brighten its heavier energy if it feels too dense.",
 
             CleansingNotes: "Cleanse onyx with smoke, sound, earth, or visualization. Avoid long water soaks and salt with dyed pieces, which can lose color over time.",
 
-            SafetyAndRespect: "Onyx is generally safe to handle. If a black stone leaves color on a damp cloth, it has been dyed and should be kept away from water and from children who might mouth it. Discipline magic works best alongside real support, not as a substitute for it.",
-
-            BeginnerTip: "Pick one habit you want to change, and keep onyx where that habit happens. Let it be a quiet, physical reminder of your commitment.",
+            SafetyAndRespect: "If a black stone leaves color on a damp cloth, it has been dyed and should be kept away from water and from children who might mouth it. Discipline magic works best alongside real support, not as a substitute for it.",
 
             Traditions: "Roman, Wheel of the Year",
 
@@ -3090,21 +2758,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Traditionally associated with slow, steady strength rather than sudden energy. Some red jasper sold is dyed or reconstituted.",
 
-            Overview: "Red jasper is an opaque, earthy red stone associated with grounding, stamina, courage, and steady vitality. It is often called a stone of endurance, used when a practitioner needs to keep going rather than burst into action. Its energy is usually described as warm, slow, and reliable.",
+            Overview: "Red jasper is an opaque, brick-red chalcedony coloured by iron, sometimes with darker veins or patches. It is sold as tumbled stones, palm stones, beads and chips.",
 
-            TraditionalMeaning: "Red jasper has been carved into amulets since ancient times, most famously in Egypt. In modern crystal magic, it is linked to Mars, the root chakra, physical stamina, courage, and protection, and it is often treated as a gentler, more sustained cousin of carnelian.",
+            TraditionalMeaning: "Endurance and steady vitality; a warm, slow, reliable stone of stamina, grounding and protection, gentler than carnelian.",
 
-            CommonUses: "Red jasper is commonly carried for stamina, placed on altars for grounding, used in protection spells, and kept nearby during long projects, exams, or physically demanding seasons. It is also popular in home protection and hearth work.",
-
-            HowToUse: "Carry red jasper in a pocket, hold it during grounding meditation, place it near the hearth or front door for protection, or set it beside a red candle when you need endurance. Chips work well in jars for steady strength.",
+            HowToUse: "Start here: keep red jasper on your desk for the length of one project and touch it each time you sit down to work. Carry a tumbled piece through long or demanding days, hold a palm stone in grounding meditation, or add chips to a jar for steady strength.",
 
             PairingNotes: "Red jasper pairs well with red candles for courage, hematite for grounding, ginger for warmth and motivation, and garnet for vitality. Carnelian can add creative fire to its steadier energy.",
 
             CleansingNotes: "Cleanse red jasper with smoke, sound, earth, brief sunlight, or visualization. It is a hard, stable stone, so a short rinse in plain water is usually safe for natural pieces.",
 
-            SafetyAndRespect: "Red jasper is generally safe to handle. Use it as support for stamina and grounding, but listen to your body, rest when you need to, and see a medical professional for ongoing fatigue.",
-
-            BeginnerTip: "If you struggle to finish things, keep red jasper on your desk for the length of one project and touch it each time you sit down to work.",
+            SafetyAndRespect: "Use red jasper as support for stamina, but listen to your body, rest when you need to, and see a medical professional for ongoing fatigue.",
 
             Traditions: "Egyptian, Roman, Wheel of the Year",
 
@@ -3131,21 +2795,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "The ‘sunstone’ of Norse sagas was most likely Iceland spar calcite, not the feldspar sold as sunstone today. Glass with copper flecks (‘goldstone’) is sometimes sold as sunstone.",
 
-            Overview: "Sunstone is a feldspar with a warm glitter caused by tiny inclusions of copper or hematite. It is associated with joy, confidence, vitality, leadership, and optimism. Its energy is usually described as warm, uplifting, and bright without being harsh.",
+            Overview: "Sunstone is a feldspar with a warm orange to peach glitter caused by tiny inclusions of copper or hematite. It is sold as tumbled stones, cabochons, beads and small rough pieces.",
 
-            TraditionalMeaning: "In modern crystal magic, sunstone is tied to the Sun, the sacral and solar plexus chakras, personal power, and the return of light. It is sometimes linked with Norse sun-stones, but the saga sólarsteinn was most likely a clear calcite used to locate the sun on cloudy days, not this feldspar. Its meaning today comes mostly from modern practice.",
+            TraditionalMeaning: "Joy and the return of light; a bright, uplifting stone of confidence, vitality and leadership.",
 
-            CommonUses: "Sunstone is commonly used in confidence spells, joy and optimism work, leadership and visibility rituals, and solar celebrations such as the summer solstice. It is often carried during seasons of low mood or dark winter months as a reminder of light.",
+            HowToUse: "Start here: keep sunstone where morning light reaches it, and hold it for a moment each morning while you name one thing you are looking forward to. Carry a tumbled piece on days you need to be seen, or add one to a jar for joy.",
 
-            HowToUse: "Carry sunstone when you need to be seen, place it on a sunny windowsill altar, or set it beside an orange or gold candle for confidence work. It works well in jars for joy and success.",
-
-            PairingNotes: "Sunstone pairs well with orange candles for vitality, citrine for success and confidence, carnelian for courage and creativity, and calendula for warmth and solar blessings. Moonstone is often paired with it to balance solar and lunar energy.",
+            PairingNotes: "Sunstone pairs well with orange candles for vitality, citrine for success and confidence, carnelian for courage and creativity, and calendula for warmth. Moonstone balances solar and lunar energy.",
 
             CleansingNotes: "Cleanse sunstone with brief sunlight, smoke, sound, or visualization. It is fairly hard, but avoid harsh chemicals and long soaks.",
 
-            SafetyAndRespect: "Sunstone is generally safe to handle. It can be a lovely companion during dark seasons, but persistent low mood deserves real care, so please reach out to a doctor or mental health professional if winter or anything else weighs heavily on you.",
-
-            BeginnerTip: "Keep sunstone where morning light reaches it, and hold it for a moment each morning while you name one thing you are looking forward to.",
+            SafetyAndRespect: "Sunstone can be a lovely companion during dark seasons, but persistent low mood deserves real care, so please reach out to a doctor or mental health professional if winter or anything else weighs heavily on you.",
 
             Traditions: "Wheel of the Year",
 
@@ -3172,21 +2832,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Claims that shungite blocks EMF or purifies drinking water are not supported by good evidence. Some black stones sold as shungite are fakes, and raw pieces shed black dust.",
 
-            Overview: "Shungite is a black, carbon-rich rock found mainly in Karelia in northwestern Russia. It is not a crystal in the mineralogical sense, but it has become popular in modern practice for grounding, protection, and the absorption of unwanted energy. Its energy is usually described as dense, earthy, and quieting.",
+            Overview: "Shungite is a black, carbon-rich rock found mainly in Karelia in northwestern Russia; it is not a crystal in the mineralogical sense. It is sold polished as tumbled stones, pyramids, spheres and plates, and raw as matte black chunks that mark the fingers.",
 
-            TraditionalMeaning: "Shungite’s magical reputation is very recent, largely built since the late twentieth century, and much of what is said about it online comes from marketing rather than tradition. In modern crystal magic, it is associated with Saturn, the root chakra, purification, and protection. Approaching it honestly means treating it as a modern grounding stone rather than an ancient one.",
+            TraditionalMeaning: "Dense, quiet grounding; a modern protective stone of purification and absorbing what feels like too much.",
 
-            CommonUses: "Shungite is commonly placed near computers, phones, and beds, used in protection grids, carried for grounding, and kept in spaces that feel energetically busy. Many practitioners use it as a symbolic anchor during stressful periods.",
-
-            HowToUse: "Place polished shungite on a desk or bedside table, carry a tumbled piece for grounding, or add it to a protection grid with black tourmaline. Use polished pieces for handling, since raw shungite leaves black marks.",
+            HowToUse: "Start here: place a polished piece of shungite beside your screen as a reminder to pause, breathe, and look away every so often. Carry a tumbled piece for grounding or set it in a grid. Choose polished pieces for handling, since raw shungite leaves black marks.",
 
             PairingNotes: "Shungite pairs well with black tourmaline for protection, smoky quartz for grounding, black candles for warding, and rosemary for cleansing. Clear quartz can bring lightness to its heavy energy.",
 
-            CleansingNotes: "Cleanse shungite with smoke, sound, earth, or visualization. A quick wipe with a damp cloth is fine for polished pieces, but do not rely on it to purify water for drinking.",
+            CleansingNotes: "Cleanse shungite with smoke, sound, earth, or visualization. A quick wipe with a damp cloth is fine for polished pieces.",
 
-            SafetyAndRespect: "Do not use shungite as a water filter or health treatment, and do not drink water that has had raw shungite in it. Real shungite is electrically conductive and light, which can help spot fakes. Wash hands after handling raw pieces.",
-
-            BeginnerTip: "If your workspace feels overwhelming, place a polished piece of shungite beside your screen as a reminder to pause, breathe, and look away every so often.",
+            SafetyAndRespect: "Much of what is said about shungite online is marketing rather than tradition. Do not use shungite as a water filter or health treatment, and do not drink water that has had raw shungite in it. Real shungite is electrically conductive and light, which can help spot fakes. Wash hands after handling raw pieces.",
 
             Traditions: "Wheel of the Year",
 
@@ -3213,21 +2869,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Kyanite is brittle and splits easily along its blades. Avoid water soaks, salt, and dropping it.",
 
-            Overview: "Kyanite is a bladed, often blue mineral with a streaky, fibrous look. It is associated with communication, alignment, clarity, and honest speech. Its energy is usually described as clean, cool, and clearing.",
+            Overview: "Kyanite is a bladed, often blue mineral with a streaky, fibrous look; it also comes in black, green and orange. It is sold mainly as raw blades and fans, and occasionally as tumbled stones.",
 
-            TraditionalMeaning: "Kyanite’s magical associations come almost entirely from modern crystal practice. It is linked with the throat chakra, Mercury, alignment of the energy body, and clear expression, and it is often described as a stone that does not need cleansing, though many practitioners still cleanse it.",
+            TraditionalMeaning: "Alignment and honest speech; a cool, clean stone of clarity and clear expression.",
 
-            CommonUses: "Kyanite is commonly used before difficult conversations, during public speaking, in meditation for alignment, and on altars to cleanse other stones. Blades are sometimes laid along the body in modern energy work.",
-
-            HowToUse: "Hold kyanite before speaking your truth, place a blade on your altar to clear other stones, or set it near a blue candle in communication work. Keep it in a padded pouch if you carry it, since it is fragile.",
+            HowToUse: "Start here: before a hard conversation, hold kyanite and say your first sentence out loud once; practising the words often matters more than the stone. A blade can rest flat on your altar beneath other stones. Carry it in a padded pouch, since blades are fragile.",
 
             PairingNotes: "Kyanite pairs well with blue candles for communication, blue lace agate for gentle speech, sodalite for logic and truth, and peppermint for mental clarity. Clear quartz can amplify its clearing quality.",
 
-            CleansingNotes: "Cleanse kyanite with sound, moonlight, or visualization. Avoid water and salt, which can damage its fibrous blades.",
+            CleansingNotes: "Kyanite is often said not to need cleansing, but it can be cleansed with sound, moonlight, or visualization. Avoid water and salt, which can damage its fibrous blades.",
 
-            SafetyAndRespect: "Kyanite is generally safe to handle, but its blades can split into thin, sharp slivers, so keep it away from small children and pets. Clear communication magic works best alongside real-world honesty and boundaries.",
-
-            BeginnerTip: "Before a hard conversation, hold kyanite and say the first sentence out loud once. Practicing the words often matters more than the stone.",
+            SafetyAndRespect: "Kyanite’s blades can split into thin, sharp slivers, so keep it away from small children and pets. Clear communication magic works best alongside real-world honesty and boundaries.",
 
             Traditions: "Wheel of the Year",
 
@@ -3254,21 +2906,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Traditionally associated with emotional wounds and forgiveness. The black veins are manganese oxide and may be dusty on raw pieces.",
 
-            Overview: "Rhodonite is a pink to rose-red stone with black veins, a manganese mineral often found in Russia, Australia, and the Americas. It is associated with emotional healing, forgiveness, compassion, and grounded self-worth. Its energy is usually described as caring but practical.",
+            Overview: "Rhodonite is an opaque pink to rose-red manganese stone laced with black veins, found in Russia, Australia and the Americas. It is sold as tumbled stones, palm stones, beads and carvings.",
 
-            TraditionalMeaning: "In modern crystal magic, rhodonite is tied to Venus, the heart chakra, and the work of healing old wounds without bypassing them. Its black veins are often read as grounding the heart, making it a stone for love that stays rooted in reality. In Russia, rhodonite was prized as a decorative stone in imperial-era carvings and architecture.",
+            TraditionalMeaning: "Forgiveness that stays rooted; a caring but practical heart stone of healing old wounds and grounded self-worth.",
 
-            CommonUses: "Rhodonite is commonly used in forgiveness rituals, heartbreak recovery, self-worth work, and reconciliation spells. It is often carried during periods of emotional repair or placed on altars dedicated to self-love.",
-
-            HowToUse: "Hold rhodonite while journaling about an old hurt, carry it during emotional recovery, or set it beside a pink candle in forgiveness work. It can be placed in a sachet with rose petals for heart healing.",
+            HowToUse: "Start here: write one thing you are ready to forgive yourself for, and leave a piece of rhodonite on top of the paper overnight. Hold a palm stone while you journal about an old hurt, or tuck a tumbled piece into a sachet with dried rose petals.",
 
             PairingNotes: "Rhodonite pairs well with pink candles for tenderness, rose quartz for self-love, rose for heart healing, and yarrow for emotional boundaries. Smoky quartz can help ground it further.",
 
             CleansingNotes: "Cleanse rhodonite with smoke, sound, moonlight, or visualization. Brief water contact is usually fine for polished pieces, but avoid long soaks and salt.",
 
-            SafetyAndRespect: "Rhodonite is generally safe to handle. Forgiveness is not the same as reconciliation, and no stone should pressure you to reconnect with someone who harmed you. Emotional healing deserves real support where needed.",
-
-            BeginnerTip: "Use rhodonite to forgive yourself first. Write one thing you are ready to let go of, and leave the stone on top of the paper overnight.",
+            SafetyAndRespect: "Forgiveness is not the same as reconciliation, and no stone should pressure you to reconnect with someone who harmed you. Emotional healing deserves real support where needed.",
 
             Traditions: "Wheel of the Year",
 
@@ -3295,21 +2943,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Rhodochrosite is soft and water-sensitive. Avoid water, salt, acids, and sunlight, which can dull or damage it.",
 
-            Overview: "Rhodochrosite is a soft, rose-pink to raspberry mineral, often banded in pink and white, and sometimes called ‘Inca rose’ after Argentine deposits. It is associated with self-love, emotional healing, inner child work, and joy. Its energy is usually described as tender, warm, and nurturing.",
+            Overview: "Rhodochrosite is a soft, rose-pink to raspberry mineral, often banded in pink and white, and sometimes called ‘Inca rose’ after Argentine deposits. It is sold as polished slices, tumbled stones, cabochons and, rarely, as clear red crystals.",
 
-            TraditionalMeaning: "In modern crystal magic, rhodochrosite is tied to Venus, the heart chakra, compassion, and the healing of childhood or early emotional wounds. It is often used when self-love feels difficult and gentleness is needed more than force.",
+            TraditionalMeaning: "Tender self-love and the inner child; a warm, nurturing stone of joy and gentle healing.",
 
-            CommonUses: "Rhodochrosite is commonly used in inner child work, self-love rituals, heartbreak recovery, and joy spells. It is often placed on bedside tables or self-care altars during emotionally tender seasons.",
-
-            HowToUse: "Hold rhodochrosite during gentle meditation, keep it beside a photo of yourself as a child for inner child work, or set it next to a pink candle for self-love. Keep it wrapped when carried because it scratches easily.",
+            HowToUse: "Start here: hold rhodochrosite and speak one sentence to yourself the way you would speak to a child you love. Keep it beside a childhood photo or on a bedside table during tender seasons. Wrap it in cloth when carried, because it scratches easily.",
 
             PairingNotes: "Rhodochrosite pairs well with pink candles for tenderness, rose quartz for self-love, rose for heart healing, and chamomile for calm comfort. Rhodonite can add grounding to its softness.",
 
             CleansingNotes: "Cleanse rhodochrosite with smoke, sound, or visualization only. Do not soak it in water or salt, and keep it out of direct sunlight to protect its color.",
 
             SafetyAndRespect: "Rhodochrosite is soft and should be kept away from water, acids, and rough handling. Do not use it in elixirs. Inner child work can bring up a lot, so please reach out to a therapist or trusted support if it stirs difficult memories.",
-
-            BeginnerTip: "Treat rhodochrosite as a reminder to speak to yourself the way you would speak to a child you love.",
 
             Traditions: "Wheel of the Year",
 
@@ -3336,21 +2980,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Amber is not a crystal but fossilized tree resin, an organic gem. It is soft, burns, melts, and dissolves in some solvents, and plastic, glass, and copal are commonly sold as amber.",
 
-            Overview: "Amber is fossilized tree resin, golden to honey-brown, warm and very light in the hand. It is not a crystal at all, but it has been worn as a protective and lucky material for thousands of years and is kept alongside crystals in modern practice. Its energy is usually described as warm, sunny, and comforting.",
+            Overview: "Amber is fossilized tree resin, golden to honey-brown, warm and very light in the hand; it is not a crystal at all. It is sold as beads, pendants, polished nuggets and raw pieces, sometimes with tiny trapped insects or plant matter.",
 
-            TraditionalMeaning: "Amber is one of the oldest amulet materials in Europe, traded from the Baltic coast since prehistoric times. Greek myth told that amber formed from the tears of the Heliades, the sisters of Phaethon, and Romans wore it as a protective charm. In modern practice it is tied to the Sun, the solar plexus chakra, vitality, and the drawing out of heavy energy.",
+            TraditionalMeaning: "Warmth, vitality and ancient protection; a sunny, comforting stone that draws out heaviness.",
 
-            CommonUses: "Amber is commonly worn for protection, used in joy and vitality spells, placed on solar and summer altars, and kept as a warming stone during dark months. Some practitioners use it in ancestral work because of its great age.",
-
-            HowToUse: "Wear amber as beads or a pendant, keep a piece on a sunny altar, or hold it beside a gold candle for warmth and joy. Because it is so light and soft, it is best kept separate from harder stones.",
+            HowToUse: "Start here: hold a piece of amber in your palm on a grey day and notice how quickly it warms. Wear it as beads or a pendant, or keep a nugget on a sunny shelf. Store it separately from harder stones, which can scratch it.",
 
             PairingNotes: "Amber pairs well with gold candles for solar blessing, citrine for joy and success, frankincense, another tree resin, for sacred warmth, and sunstone for confidence. Jet is traditionally paired with it as a light and dark protective pair.",
 
             CleansingNotes: "Cleanse amber with gentle smoke at a distance, sound, or visualization. Avoid water soaks, salt, heat, sunlight for long periods, perfumes, and alcohol, which can cloud or damage it.",
 
             SafetyAndRespect: "Amber is soft, flammable, and can be damaged by heat and chemicals. Amber teething necklaces are a choking and strangulation risk and are advised against by health authorities, so never put amber beads on babies. To test, real amber floats in salt water, while plastic and glass usually sink.",
-
-            BeginnerTip: "Hold a piece of amber in your palm on a grey day and notice how quickly it warms. Let that be a small reminder of the sun.",
 
             Traditions: "Norse, Hellenic, Roman, Slavic, Christian, Celtic, Wheel of the Year",
 
@@ -3377,21 +3017,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Traditionally associated with the sea and travelers. Much aquamarine is heat-treated to deepen its blue, and blue glass or topaz is sometimes sold as aquamarine.",
 
-            Overview: "Aquamarine is the pale blue to blue-green variety of beryl, the same mineral family as emerald. It is associated with calm, gentle courage, clear communication, and protection while traveling, especially over water. Its energy is usually described as cool, soothing, and clarifying.",
+            Overview: "Aquamarine is the pale blue to blue-green variety of beryl, the same mineral family as emerald, forming as clear six-sided crystals. It is sold as raw crystals, tumbled stones, beads and faceted jewellery.",
 
-            TraditionalMeaning: "Aquamarine’s name means ‘sea water’, and folk tradition has long tied it to sailors, the sea, and safe passage. In modern crystal magic, it is linked with the Moon, the throat chakra, emotional flow, and calm, honest speech.",
+            TraditionalMeaning: "Calm, gentle courage and safe passage; a cool, soothing stone of the sea, emotional flow and honest speech.",
 
-            CommonUses: "Aquamarine is commonly carried while traveling, used in calm and anxiety-easing rituals, worn for clear communication, and placed on sea or water altars. It is also popular in rituals at the shore and during water-focused moon work.",
-
-            HowToUse: "Carry aquamarine when you travel, hold it before a difficult conversation, or place it on a water altar with shells and a blue candle. It can be worn as jewelry for steady, gentle courage.",
+            HowToUse: "Start here: keep a small aquamarine in your travel bag and hold it for a breath before you set off. Hold it before a difficult conversation, or wear it as jewellery for steady, gentle courage.",
 
             PairingNotes: "Aquamarine pairs well with blue candles for calm, moonstone for lunar and emotional work, seashells for sea magic, and lavender for peace. Blue lace agate can soften it further for gentle communication.",
 
             CleansingNotes: "Cleanse aquamarine with moonlight, smoke, sound, or a brief rinse in clean water. It is a hard stone, but avoid long sunlight exposure, which may fade paler pieces over time.",
 
-            SafetyAndRespect: "Aquamarine is generally safe to handle. Travel protection magic is a companion to, not a replacement for, practical safety such as life jackets, weather checks, and telling someone your plans.",
-
-            BeginnerTip: "Keep a small aquamarine in your travel bag and hold it for a breath before you set off.",
+            SafetyAndRespect: "Travel protection magic is a companion to, not a replacement for, practical safety such as life jackets, weather checks, and telling someone your plans.",
 
             Traditions: "Wheel of the Year",
 
@@ -3418,21 +3054,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Traditionally associated with soft speech and calm. Some bright blue agate is dyed, and its color can fade in strong sun.",
 
-            Overview: "Blue lace agate is a soft blue banded chalcedony with delicate white lace-like lines. It is associated with gentle communication, calm, soothing, and peaceful expression. Its energy is usually described as light, cool, and quietly reassuring.",
+            Overview: "Blue lace agate is a soft blue banded chalcedony with delicate white lace-like lines. It is sold as tumbled stones, palm stones, beads and slices.",
 
-            TraditionalMeaning: "Blue lace agate’s magical meaning comes from modern crystal practice. It is tied to the throat chakra, Mercury, and the ability to speak kindly and clearly, especially in tense or emotional situations.",
+            TraditionalMeaning: "Gentle, peaceful expression; a light, quietly reassuring stone for speaking kindly and clearly when things are tense.",
 
-            CommonUses: "Blue lace agate is commonly used for calm communication, conflict resolution, nervous speaking, and peaceful home spells. It is often carried by people who find it hard to speak up or who want to soften how they speak.",
-
-            HowToUse: "Carry blue lace agate in a pocket before conversations, keep it near the phone or desk, or place it beside a light blue candle for peaceful speech. It is gentle enough for a bedside table.",
+            HowToUse: "Start here: if you tend to say too much when nervous, hold blue lace agate and take one breath before each answer. Keep a tumbled piece in your pocket, by the phone or on your desk; it is gentle enough for a bedside table.",
 
             PairingNotes: "Blue lace agate pairs well with light blue candles for calm, chamomile for soothing, aquamarine for clear expression, and lavender for peace. Rose quartz can bring warmth to its cool energy.",
 
             CleansingNotes: "Cleanse blue lace agate with moonlight, smoke, sound, or visualization. Keep it out of prolonged sunlight, which may fade its color.",
 
-            SafetyAndRespect: "Blue lace agate is generally safe to handle. If a stone looks unusually bright or saturated, it may be dyed and should be kept out of water. Calm communication magic does not replace support in situations of conflict or abuse.",
-
-            BeginnerTip: "If you tend to say too much when you are nervous, hold blue lace agate and take one breath before each answer.",
+            SafetyAndRespect: "If a stone looks unusually bright or saturated, it may be dyed and should be kept out of water. Calm communication magic does not replace support in situations of conflict or abuse.",
 
             Traditions: "Wheel of the Year",
 
@@ -3459,21 +3091,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Chrysocolla is a copper mineral. Do not use it in water or elixirs. It is soft, often stabilized with resin, and is sometimes dyed or imitated.",
 
-            Overview: "Chrysocolla is a blue-green copper mineral, often mixed with quartz, malachite, or turquoise. It is associated with gentle communication, calm, teaching, and emotional expression. Its energy is usually described as cool, flowing, and nurturing.",
+            Overview: "Chrysocolla is a soft, opaque blue-green copper mineral, often mixed with quartz, malachite or turquoise. It is sold as tumbled stones, cabochons, slices and stabilized or quartz-hardened pieces.",
 
-            TraditionalMeaning: "In modern crystal magic, chrysocolla is linked with Venus, the throat and heart chakras, and what many practitioners call feminine wisdom or the voice of the heart. Its copper content ties it to Venus and to the idea of energy moving gently through the body.",
+            TraditionalMeaning: "The voice of the heart; a cool, flowing, nurturing stone of calm expression, teaching and gentle communication.",
 
-            CommonUses: "Chrysocolla is commonly used by teachers, speakers, and caregivers, in rituals for calm expression, and in heart-centered communication work. It is also used in peace and reconciliation spells.",
-
-            HowToUse: "Keep polished chrysocolla near where you teach or speak, hold it during heart-centered journaling, or place it beside a blue candle for calm expression. Use polished or quartz-hardened pieces for carrying.",
+            HowToUse: "Start here: keep a polished chrysocolla on your desk if your work involves explaining, teaching or caring for others, as a reminder to speak gently and listen well. Hold it during heart-centred journaling. Use polished or quartz-hardened pieces for carrying.",
 
             PairingNotes: "Chrysocolla pairs well with blue candles for calm, turquoise for protective communication, rose for heart work, and lavender for peace. Malachite is often found with it but is more intense.",
 
             CleansingNotes: "Cleanse chrysocolla with smoke, sound, or visualization only. Avoid water, salt, and acids, which can damage it and release copper.",
 
             SafetyAndRespect: "Do not place chrysocolla in drinking water or elixirs, and wash hands after handling raw pieces. Keep it away from children and pets who might mouth it. Stabilized pieces are sturdier but still should not be soaked.",
-
-            BeginnerTip: "Keep chrysocolla on your desk if your work involves explaining, teaching, or caring for others. It can remind you to speak gently and listen well.",
 
             Traditions: "Wheel of the Year",
 
@@ -3500,21 +3128,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Most emeralds are treated with oil or resin to fill cracks, so avoid heat, soaking, and ultrasonic cleaners. Green glass, dyed quartz, and lab-grown stones are often sold as emerald.",
 
-            Overview: "Emerald is the green variety of beryl and one of the oldest prized gemstones in the world. It is associated with love, loyalty, abundance, wisdom, and growth. Its energy is usually described as rich, lush, and heart-opening.",
+            Overview: "Emerald is the rich green variety of beryl, usually included and internally fractured. It is sold as faceted gems, cabochons and, far more affordably, as rough opaque crystals.",
 
-            TraditionalMeaning: "Emerald has been treasured since antiquity, mined in Egypt’s Eastern Desert in Greek and Roman times and celebrated by Roman writers for its restful color. In Hindu Jyotish astrology, emerald is the gemstone of Mercury in the Navaratna, while modern Western crystal magic usually ties it to Venus, the heart chakra, faithful love, and abundance.",
+            TraditionalMeaning: "Faithful love, wisdom and lush abundance; a heart-opening stone of loyalty and growth.",
 
-            CommonUses: "Emerald is commonly worn for love and loyalty, used in prosperity and growth spells, and placed on altars for heart healing. Rough or low-grade emerald is often used in magic instead of expensive gem-quality stones.",
-
-            HowToUse: "Wear emerald as jewelry, place a rough piece on a heart or love altar, or set it beside a green candle in prosperity or growth work. Rough emerald works just as well in spellwork as polished gems.",
+            HowToUse: "Start here: place a small piece of rough emerald on a love or money altar; it carries the same symbolism as an expensive gem. Wear cut emerald as jewellery if you have it, and store it where it will not be knocked.",
 
             PairingNotes: "Emerald pairs well with green candles for growth and money, rose for love, rose quartz for tender heart work, and basil for prosperity and loyalty. Green aventurine is a common, gentler substitute.",
 
             CleansingNotes: "Cleanse emerald with moonlight, smoke, sound, or visualization. Avoid heat, long soaks, and harsh cleaners, which can damage the oils used to treat most stones.",
 
-            SafetyAndRespect: "Emerald is generally safe to handle but often brittle and fractured inside, so avoid knocks. Love and prosperity magic should support, not replace, healthy relationships and sound financial choices.",
-
-            BeginnerTip: "You do not need an expensive gem. A small piece of rough emerald on a love or money altar carries the same symbolism.",
+            SafetyAndRespect: "Emerald is often brittle and fractured inside, so avoid knocks. Love and prosperity magic should support, not replace, healthy relationships and sound financial choices.",
 
             Traditions: "Roman, Hindu, Wheel of the Year",
 
@@ -3541,21 +3165,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Traditionally associated with light and renewal. Peridot is somewhat soft for a gem and can be damaged by acids and sudden temperature changes.",
 
-            Overview: "Peridot is the gem form of olivine, a bright yellow-green mineral that sometimes reaches Earth’s surface in volcanic rock and even in meteorites. It is associated with renewal, prosperity, growth, and the release of jealousy and resentment. Its energy is usually described as fresh, bright, and warm.",
+            Overview: "Peridot is the gem form of olivine, a bright yellow-green mineral that reaches the surface in volcanic rock and is even found in meteorites. It is sold as small tumbled stones, raw grains, beads and faceted jewellery.",
 
-            TraditionalMeaning: "Peridot has been mined since antiquity on the Red Sea island of Zabargad, and many medieval church gems once thought to be emeralds have turned out to be peridot. In modern crystal magic, it is tied to Venus, the heart and solar plexus chakras, abundance, and letting go of envy so growth can happen.",
+            TraditionalMeaning: "Fresh renewal and warm growth; a bright stone of prosperity and of letting go of envy so good things can grow.",
 
-            CommonUses: "Peridot is commonly used in prosperity and growth spells, renewal rituals in spring, and work focused on releasing jealousy or resentment. It is also worn for confidence and warmth.",
-
-            HowToUse: "Wear peridot as jewelry, place it on a spring or growth altar, or set it beside a green candle in prosperity work. It can be carried when you want to stop comparing yourself to others.",
+            HowToUse: "Start here: when you catch yourself comparing your life to someone else’s, touch your peridot and name one thing that is growing in your own life. Wear it as jewellery or carry a small tumbled piece. Because pieces are often tiny, keep them in a small pouch so they are not lost.",
 
             PairingNotes: "Peridot pairs well with green candles for growth, citrine for prosperity and joy, mint for fresh money energy, and basil for success. Green aventurine can add gentle luck.",
 
             CleansingNotes: "Cleanse peridot with brief sunlight, smoke, sound, or visualization. Avoid acids and sudden heat or cold.",
 
-            SafetyAndRespect: "Peridot is generally safe to handle. Releasing jealousy is emotional work, and magic can support it, but honest reflection and support matter more than any stone.",
-
-            BeginnerTip: "When you catch yourself comparing your life to someone else’s, touch your peridot and name one thing that is growing in your own life.",
+            SafetyAndRespect: "Releasing jealousy is emotional work, and magic can support it, but honest reflection and support matter more than any stone.",
 
             Traditions: "Christian, Wheel of the Year",
 
@@ -3582,21 +3202,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Turquoise is porous and water-sensitive, and its color can change with oils, cosmetics, sunlight, and heat. Much of what is sold as turquoise is dyed howlite, dyed magnesite, plastic, or stabilized reconstituted stone.",
 
-            Overview: "Turquoise is a sky-blue to green phosphate mineral of copper and aluminum, one of the oldest gemstones used by people. It is associated with protection, travel, friendship, healing, and clear communication. Its energy is usually described as calm, protective, and steadying.",
+            Overview: "Turquoise is an opaque sky-blue to green copper and aluminium phosphate, often veined with brown or black matrix. It is sold as beads, cabochons, nuggets and set jewellery, and much of it on the market is stabilized, reconstituted or imitation.",
 
-            TraditionalMeaning: "Turquoise has deep sacred meanings in many cultures, including ancient Egypt, Persia, and Indigenous nations of the American Southwest such as the Diné (Navajo) and Pueblo peoples. In modern crystal magic, it is tied to Venus, the throat chakra, protection, and safe travel. Many of these cultural meanings belong to living traditions and should be approached with respect.",
+            TraditionalMeaning: "Protection, friendship and safe journeys; a calm, steadying stone of blessing and clear communication.",
 
-            CommonUses: "Turquoise is commonly worn for protection, carried while traveling, given as a gift of friendship, and used in communication and healing spells. It is also placed on altars for blessing and protection.",
+            HowToUse: "Start here: before you buy, ask the seller where the turquoise was mined and whether it is natural, stabilized or dyed. Wear it as jewellery or carry it in a pouch, and take it off before washing hands, swimming or applying lotion. When buying Indigenous-made jewellery, support Native artists directly.",
 
-            HowToUse: "Wear turquoise as jewelry, carry it while traveling, or place it beside a blue candle in protection or communication work. Buy from reputable sellers, and when buying Indigenous-made jewelry, support Native artists directly.",
-
-            PairingNotes: "Turquoise pairs well with blue candles for protection, silver settings for lunar balance, chrysocolla for gentle communication, and cleansing herbs for clearing. Garden sage is a good choice where white sage is not appropriate to use.",
+            PairingNotes: "Turquoise pairs well with blue candles for protection, silver settings for lunar balance, and chrysocolla for gentle communication. Garden sage is a good cleansing herb where white sage is not appropriate to use.",
 
             CleansingNotes: "Cleanse turquoise with smoke, sound, or visualization. Avoid water, salt, sunlight, oils, and perfumes, which can discolor or damage it.",
 
-            SafetyAndRespect: "Turquoise is porous and contains copper, so do not use it in elixirs or soak it. To spot dyed howlite, look for grey veining and color that rubs off on an acetone-dampened swab. Treat turquoise from Indigenous cultures with respect rather than as a generic aesthetic.",
-
-            BeginnerTip: "If you buy turquoise, ask the seller where it was mined and whether it is natural, stabilized, or dyed. A good seller will be happy to tell you.",
+            SafetyAndRespect: "Turquoise is porous and contains copper, so do not use it in elixirs or soak it. To spot dyed howlite, look for grey veining and color that rubs off on an acetone-dampened swab. Its cultural meanings belong to living traditions, so treat turquoise from Indigenous cultures with respect rather than as a generic aesthetic.",
 
             Traditions: "Egyptian, Wheel of the Year",
 
@@ -3623,21 +3239,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Most rubies are heat-treated, and many are glass-filled, which makes them fragile around heat and chemicals. Red glass, garnet, and spinel are often sold as ruby.",
 
-            Overview: "Ruby is the red variety of corundum, one of the hardest natural gems. It is associated with passion, vitality, courage, devotion, and protection. Its energy is usually described as intense, warm, and life-affirming.",
+            Overview: "Ruby is the red variety of corundum, one of the hardest natural gems, ranging from pink-red to deep blood red. It is sold as faceted gems, cabochons and, more affordably, as rough opaque crystals or ruby in green zoisite or fuchsite.",
 
-            TraditionalMeaning: "Ruby has been called the ‘king of gems’ in many cultures. In Hindu Jyotish astrology, ruby (manik) is the Navaratna gem of the Sun, worn for vitality, confidence, and leadership. In modern Western crystal magic, it is tied to the Sun or Mars, the root and heart chakras, passion, and courageous love.",
+            TraditionalMeaning: "Passion and courageous love; an intense, life-affirming stone of vitality, devotion and protection.",
 
-            CommonUses: "Ruby is commonly worn for vitality and courage, used in passion and devotion spells, and placed on altars for protection and strength. Rough ruby in zoisite or fuchsite is a popular, affordable choice for magical work.",
-
-            HowToUse: "Wear ruby as jewelry, place a rough piece on a love or courage altar, or set it beside a red candle for passion work. Ruby in zoisite can be carried for steady, heart-centered strength.",
+            HowToUse: "Start here: if gem ruby is out of reach, use a piece of ruby in zoisite or a red garnet instead and carry it for steady courage. Wear cut ruby as jewellery, or set a rough piece on a love or courage altar. Ruby is hard enough for everyday wear.",
 
             PairingNotes: "Ruby pairs well with red candles for passion, garnet for vitality and devotion, cinnamon for heat and speed, and rose for love. Clear quartz can amplify its fire.",
 
             CleansingNotes: "Cleanse ruby with brief sunlight, smoke, sound, or visualization. Avoid harsh cleaners and heat with glass-filled stones.",
 
-            SafetyAndRespect: "Ruby is generally safe to handle. In Jyotish, gemstones are traditionally recommended by an astrologer for a person’s specific chart rather than worn casually, so be respectful of that living practice.",
-
-            BeginnerTip: "If gem ruby is out of reach, ruby in zoisite or a red garnet is a perfectly good choice for passion and courage work.",
+            SafetyAndRespect: "In Jyotish, gemstones are traditionally recommended by an astrologer for a person’s specific chart rather than worn casually, so be respectful of that living practice.",
 
             Traditions: "Hindu, Wheel of the Year",
 
@@ -3664,21 +3276,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Most sapphires are heat-treated, and many are lab-grown or glass. In Jyotish, blue sapphire is considered powerful and is traditionally worn only after careful advice.",
 
-            Overview: "Sapphire is the blue variety of corundum, though corundum comes in many colors, all called sapphire except red, which is ruby. It is associated with wisdom, truth, discipline, devotion, and protection. Its energy is usually described as deep, serious, and focused.",
+            Overview: "Sapphire is corundum in any colour but red, best known in deep blue; it is extremely hard and durable. It is sold as faceted gems, cabochons, and rough or opaque crystals for a fraction of gem prices.",
 
-            TraditionalMeaning: "Sapphire has long been tied to wisdom and holiness. Medieval Christian tradition set sapphires in bishops’ rings, and in Hindu Jyotish, blue sapphire (neelam) is the gem of Saturn, said to act quickly for good or ill. In modern crystal magic, it is linked with the throat and third eye chakras, truth, and disciplined spiritual focus.",
+            TraditionalMeaning: "Wisdom, truth and faithfulness; a deep, serious stone of devotion and disciplined spiritual focus.",
 
-            CommonUses: "Sapphire is commonly worn for wisdom and devotion, used in truth and justice spells, and placed on altars for spiritual discipline. It is also given as a symbol of faithfulness.",
-
-            HowToUse: "Wear sapphire as jewelry, place it on a study or meditation altar, or set it beside a blue candle in truth or wisdom work. It is hard and durable, making it a good stone for daily wear.",
+            HowToUse: "Start here: wear or carry sapphire as a reminder of a long-term commitment, and touch it when you are tempted to drift from it. A rough piece works as well as a gem on a study or meditation altar. Its hardness makes it a good stone for daily wear.",
 
             PairingNotes: "Sapphire pairs well with blue candles for wisdom, lapis lazuli for truth, frankincense for spiritual focus, and garden sage for clarity. Clear quartz can help amplify its focus.",
 
             CleansingNotes: "Cleanse sapphire with moonlight, smoke, sound, or visualization. It is very hard, so a brief rinse in plain water is usually fine.",
 
-            SafetyAndRespect: "Sapphire is generally safe to handle. Jyotish is a living Hindu practice, and blue sapphire in particular is traditionally prescribed rather than worn casually, so approach it with respect.",
-
-            BeginnerTip: "Use sapphire when you need to stay true to a long-term commitment. Let it remind you of the person you promised yourself you would become.",
+            SafetyAndRespect: "Jyotish is a living Hindu practice, and blue sapphire in particular is traditionally prescribed rather than worn casually, so approach it with respect.",
 
             Traditions: "Hindu, Christian, Wheel of the Year",
 
@@ -3705,21 +3313,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Opal contains water and can crack from heat, drying, or sudden temperature change. Do not soak opal doublets or triplets, which are glued layers. Synthetic and imitation opals are common.",
 
-            Overview: "Opal is a hydrated silica gem known for its shifting play of color. It is associated with inspiration, creativity, emotional expression, beauty, and intuition. Its energy is usually described as shimmering, changeable, and expressive.",
+            Overview: "Opal is a hydrated silica gem; precious opal flashes with a shifting play of colour, while common opal is a single milky or pastel hue. It is sold as cabochons, set jewellery, rough pieces in matrix, and thin doublets or triplets glued to a backing.",
 
-            TraditionalMeaning: "Roman writers prized opal highly, and Pliny wrote that it combined the fire of the ruby, the purple of amethyst, and the green of emerald. A nineteenth-century novel helped spread the idea that opal is unlucky, but this is a late superstition rather than an ancient one. In modern crystal magic, opal is tied to the Moon, the crown chakra, creativity, and emotional openness.",
+            TraditionalMeaning: "Inspiration and expressive change; a shimmering, changeable stone of creativity, beauty and emotional openness.",
 
-            CommonUses: "Opal is commonly used in creativity and inspiration spells, beauty and glamour magic, emotional expression work, and intuition practices. It is often worn by artists, performers, and people working through emotional change.",
-
-            HowToUse: "Wear opal as jewelry, place it near creative tools, or set it beside a white or rainbow candle for inspiration. Store it apart from harder stones that can scratch it.",
+            HowToUse: "Start here: keep opal near your art supplies or journal and look at its colours for a moment before you begin creative work. Wear it as jewellery, taking it off for washing, cleaning and sleep. Store it in a soft pouch apart from harder stones that can scratch it.",
 
             PairingNotes: "Opal pairs well with white candles for clarity, moonstone for lunar intuition, rose for beauty and love, and jasmine for dreams and inspiration. Labradorite can add mystery to its shimmer.",
 
             CleansingNotes: "Cleanse opal with moonlight, sound, or visualization. Avoid sunlight, heat, salt, and soaking, which can dry it out or damage glued layers.",
 
-            SafetyAndRespect: "Opal is delicate and should be handled with care. Its traditional reputation as ‘unlucky’ comes from a nineteenth-century novel rather than ancient lore, so feel free to set that superstition aside.",
-
-            BeginnerTip: "Keep opal near your art supplies or journal and look at its colors for a moment before you begin creative work.",
+            SafetyAndRespect: "Opal is delicate and should be handled with care. Its reputation as ‘unlucky’ comes from a nineteenth-century novel rather than ancient lore, so feel free to set that superstition aside.",
 
             Traditions: "Wheel of the Year",
 
@@ -3746,21 +3350,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Howlite is porous and widely dyed to imitate turquoise and other stones. It is soft and scratches easily.",
 
-            Overview: "Howlite is a soft white to grey mineral with grey or black web-like veins. It is associated with calm, sleep, patience, and soothing anger or stress. Its energy is usually described as quiet, gentle, and settling.",
+            Overview: "Howlite is a soft, porous white to grey mineral with grey or black web-like veins. It is sold as tumbled stones, beads and carvings, and is very often dyed bright colours or sold as imitation turquoise.",
 
-            TraditionalMeaning: "Howlite’s magical meaning comes from modern crystal practice. It is tied to the Moon, the crown chakra, patience, and the calming of an overactive mind. It is also well known as the stone most commonly dyed blue and sold as turquoise.",
+            TraditionalMeaning: "Patience and settling; a quiet, gentle stone of calm, sleep and soothing anger or stress.",
 
-            CommonUses: "Howlite is commonly placed under pillows or beside beds for sleep, used in calming and anger-soothing spells, and carried during stressful days. It is also used in meditation for patience and stillness.",
-
-            HowToUse: "Keep howlite on a bedside table, hold it during evening wind-down, or place it beside a white candle in calming work. It can be added to sleep sachets with lavender.",
+            HowToUse: "Start here: keep a piece of howlite on your bedside table and hold it for a few slow breaths as you wind down. It can be tucked into a sleep sachet with dried lavender. If you buy cheap ‘turquoise’, check for grey howlite veining and dye that rubs off.",
 
             PairingNotes: "Howlite pairs well with white candles for peace, lavender and chamomile for sleep, and amethyst for calm intuition. Selenite can add a sense of lightness to its stillness.",
 
             CleansingNotes: "Cleanse howlite with moonlight, smoke, sound, or visualization. Avoid water and salt, since it is porous and soft.",
 
-            SafetyAndRespect: "Natural howlite is generally safe to handle. Brightly colored howlite has been dyed, and dye may rub off, so keep it out of water and away from children who might mouth it. Ongoing sleep problems or anger deserve real support, not just stones.",
-
-            BeginnerTip: "If you buy ‘turquoise’ cheaply, check for grey howlite veining and dye that rubs off. Natural white howlite is lovely in its own right.",
+            SafetyAndRespect: "Brightly colored howlite has been dyed, and dye may rub off, so keep it out of water and away from children who might mouth it. Ongoing sleep problems or anger deserve real support, not just stones.",
 
             Traditions: "Wheel of the Year",
 
@@ -3787,21 +3387,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Lepidolite is a soft, flaky mica that contains lithium. Avoid water, elixirs, and rough handling, which can make it shed flakes.",
 
-            Overview: "Lepidolite is a lilac to purple mica, often found in glittering flaky layers or polished into tumbled stones. It is associated with calm, emotional balance, restful sleep, and easing through transitions. Its energy is usually described as soft, soothing, and quietly reassuring.",
+            Overview: "Lepidolite is a lilac to purple lithium-bearing mica, often found in glittering flaky layers. It is sold as tumbled and polished stones, palm stones and raw ‘books’ of stacked flakes.",
 
-            TraditionalMeaning: "Lepidolite’s magical associations are modern. Because it contains lithium, it is often linked in crystal practice with emotional balance, though the trace lithium in a stone has no medical effect and is not absorbed by holding it. It is tied to Jupiter, the heart and third eye chakras, peace, and gentle change.",
+            TraditionalMeaning: "Soft emotional balance; a soothing, quietly reassuring stone of peace, rest and easing through change.",
 
-            CommonUses: "Lepidolite is commonly kept by beds for sleep, carried during anxious or transitional seasons, and used in calming rituals and emotional balance spells. It is one of the most popular stones for gentle comfort.",
-
-            HowToUse: "Keep lepidolite on a bedside table, carry a polished piece for comfort, or place it beside a purple candle in calming work. Choose polished or tumbled pieces for handling, since raw mica flakes apart.",
+            HowToUse: "Start here: hold lepidolite during a slow breathing exercise before bed and let it become part of your wind-down routine. Keep it on a bedside table or carry a polished piece for comfort. Choose polished or tumbled pieces for handling, since raw mica flakes apart.",
 
             PairingNotes: "Lepidolite pairs well with lavender for sleep, amethyst for calm intuition, chamomile for soothing, and purple candles for spiritual peace. Rose quartz can add warmth to its stillness.",
 
             CleansingNotes: "Cleanse lepidolite with moonlight, smoke, sound, or visualization. Avoid water and salt, which can damage its layers.",
 
-            SafetyAndRespect: "Do not use lepidolite in water or elixirs, and wash hands after handling raw pieces. The lithium in lepidolite is not medicine, and it must never replace prescribed medication or mental health care for anxiety, depression, or mood conditions.",
-
-            BeginnerTip: "Lepidolite is one of the gentlest comfort stones. Hold it during a slow breathing exercise before bed and let it become part of your wind-down routine.",
+            SafetyAndRespect: "Do not use lepidolite in water or elixirs, and wash hands after handling raw pieces. The trace lithium in lepidolite has no medical effect and is not absorbed by holding it; it must never replace prescribed medication or mental health care for anxiety, depression, or mood conditions.",
 
             Traditions: "Wheel of the Year",
 
@@ -3828,21 +3424,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Traditionally associated with the mind and truth. Sodalite is often confused with lapis lazuli, and some blue stones sold as sodalite are dyed.",
 
-            Overview: "Sodalite is a deep royal blue stone with white veins, sometimes mistaken for lapis lazuli. It is associated with logic, truth, clear thinking, intuition, and calm communication. Its energy is usually described as cool, rational, and steadying.",
+            Overview: "Sodalite is a deep royal-blue stone with white veins, sometimes mistaken for lapis lazuli. It is sold as tumbled stones, palm stones, beads, spheres and raw chunks.",
 
-            TraditionalMeaning: "In modern crystal magic, sodalite is tied to Mercury, the throat and third eye chakras, and the meeting of intuition and reason. It is often used when a practitioner wants clarity without losing their head, balancing insight with practical thinking.",
+            TraditionalMeaning: "Reason meeting intuition; a cool, steadying stone of logic, truth and calm, clear thinking.",
 
-            CommonUses: "Sodalite is commonly used for study, writing, problem-solving, honest communication, and calming racing thoughts. It is often kept near desks, books, and divination tools.",
-
-            HowToUse: "Keep sodalite on a desk while studying, hold it during journaling, or place it beside a blue candle in truth or clarity work. It can be carried when you need to stay calm and logical.",
+            HowToUse: "Start here: when you are overthinking, write the worry down, place sodalite on top, and come back to it after a walk. Keep a piece on your desk while studying or hold it while journaling. To tell it from lapis lazuli, look for white veining instead of gold pyrite flecks.",
 
             PairingNotes: "Sodalite pairs well with blue candles for truth, lapis lazuli for wisdom, rosemary for memory, and peppermint for mental clarity. Fluorite can add focus.",
 
             CleansingNotes: "Cleanse sodalite with moonlight, smoke, sound, or visualization. Avoid long water soaks and harsh cleaners, as it is moderately soft.",
 
-            SafetyAndRespect: "Sodalite is generally safe to handle. To tell it from lapis lazuli, look for white veining instead of gold pyrite flecks. Clarity spells are a companion to good study habits and rest, not a substitute.",
-
-            BeginnerTip: "If you overthink, write your worry down, place sodalite on top, and come back to it after a walk.",
+            SafetyAndRespect: "Clarity spells are a companion to good study habits and rest, not a substitute.",
 
             Traditions: "Wheel of the Year",
 
@@ -3869,21 +3461,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Traditionally associated with slow, steady growth. Unakite is a rock made of several minerals rather than a single crystal.",
 
-            Overview: "Unakite is a mottled pink and green rock made of pink feldspar, green epidote, and quartz. It is associated with balance, emotional healing, patience, fertility, and growth. Its energy is usually described as gentle, earthy, and harmonizing.",
+            Overview: "Unakite is a mottled pink and green rock made of pink feldspar, green epidote and quartz, named for the Unaka Mountains of North Carolina. It is sold as tumbled stones, palm stones, beads and chips.",
 
-            TraditionalMeaning: "Unakite’s magical meaning comes from modern crystal practice. Its blend of pink and green is often read as heart and growth working together, tying it to Venus, the heart chakra, and patient emotional healing. It is named for the Unaka Mountains of North Carolina where it was first described.",
+            TraditionalMeaning: "Patient healing and balance; a gentle, earthy stone where heart and growth work together.",
 
-            CommonUses: "Unakite is commonly used in emotional healing rituals, fertility and growth spells, patience work, and garden blessings. It is often carried during long recoveries or slow seasons of change.",
-
-            HowToUse: "Carry unakite during slow seasons, place it in a garden or plant pot for growth, or set it beside a green candle in healing work. It works well in charm bags for patience.",
+            HowToUse: "Start here: place unakite in the soil of a houseplant you are tending, and let the plant’s growth remind you that healing takes time. Carry a tumbled piece through slow seasons, or tuck one into a charm bag for patience.",
 
             PairingNotes: "Unakite pairs well with green candles for growth, rose quartz for heart healing, rose for love, and moss agate for garden and growth magic. Smoky quartz can add grounding.",
 
             CleansingNotes: "Cleanse unakite with smoke, sound, earth, moonlight, or visualization. It is fairly durable, and a brief rinse in plain water is usually fine.",
 
-            SafetyAndRespect: "Unakite is generally safe to handle. Fertility magic is deeply personal and should support, not replace, medical guidance and care.",
-
-            BeginnerTip: "Place unakite in the soil of a houseplant you are tending, and let the plant’s growth remind you that healing takes time.",
+            SafetyAndRespect: "Fertility magic is deeply personal and should support, not replace, medical guidance and care.",
 
             Traditions: "Wheel of the Year",
 
@@ -3910,21 +3498,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "‘Jade’ covers two different minerals, nephrite and jadeite. Much jade is dyed, bleached, or polymer-filled, and serpentine, aventurine, and glass are often sold as jade.",
 
-            Overview: "Jade is the name given to two different minerals, nephrite and jadeite, both tough, smooth, and often green, though they also come in white, lavender, and other colors. It is associated with luck, prosperity, harmony, protection, and long life. Its energy is usually described as calm, balanced, and enduring.",
+            Overview: "Jade is the name for two different minerals, nephrite and jadeite, both tough, smooth and often green, though they also come in white, lavender and other colours. It is sold as carvings, bangles, pendants, beads and tumbled stones.",
 
-            TraditionalMeaning: "Jade holds deep cultural meaning in China, where it has been carved for thousands of years and is associated with virtue, longevity, and protection, and in Mesoamerica and among the Māori, who treasure pounamu greenstone as taonga. In modern Western crystal magic, it is tied to Venus, the heart chakra, prosperity, and harmony. These are living cultural traditions that deserve respect.",
+            TraditionalMeaning: "Harmony, good fortune and long life; a calm, balanced and enduring stone of protection and prosperity.",
 
-            CommonUses: "Jade is commonly worn for luck and protection, used in prosperity and harmony spells, and kept as a lifelong keepsake. It is often given as a gift to mark new beginnings or to wish someone long life.",
-
-            HowToUse: "Wear jade as jewelry, place it near a money jar, or set it beside a green candle for prosperity and harmony. Carved jade pieces are often treated as heirlooms rather than spell supplies.",
+            HowToUse: "Start here: if you are given or inherit jade, treat it as a keepsake first and a spell tool second, and simply wear or keep it close. Carved pieces are best kept as heirlooms rather than used up in spells. Store it apart from heat and solvents.",
 
             PairingNotes: "Jade pairs well with green candles for prosperity, basil for wealth and harmony, green aventurine for luck, and mint for fresh financial energy. Rose quartz can add warmth to harmony work.",
 
             CleansingNotes: "Cleanse jade with moonlight, smoke, sound, or visualization. Natural jade is tough, but treated jade can be damaged by heat, solvents, and long soaks.",
 
-            SafetyAndRespect: "Jade is generally safe to handle. Be cautious of very cheap ‘jade’, which may be treated or not jade at all. When working with pounamu or Chinese carved jade, learn about and honor the cultures they come from rather than using their symbols carelessly.",
-
-            BeginnerTip: "If you inherit or are given jade, treat it as a keepsake first and a spell tool second. Its meaning often lies in the relationship.",
+            SafetyAndRespect: "Be cautious of very cheap ‘jade’, which may be treated or not jade at all. Jade holds living cultural meaning in China, Mesoamerica and among the Māori, so when working with pounamu or Chinese carved jade, learn about and honor the cultures they come from rather than using their symbols carelessly.",
 
             TraditionNotes: "Wheel of the Year: Carried or kept in a wallet as a luck and prosperity stone, set in money and garden charms with green candles, and used in spells for long life and harmony.\n\nFolk & wider practice: In Chinese tradition jade (yu) is worn as pendants and bangles for protection, health and virtue and carved into ritual discs (bi) for Heaven; pounamu (greenstone) is a treasured taonga for Māori, gifted and handed down through families.",
 
@@ -3951,21 +3535,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Chrysoprase can fade in strong sunlight and heat. Dyed green chalcedony and green glass are sometimes sold as chrysoprase.",
 
-            Overview: "Chrysoprase is an apple-green chalcedony colored by nickel. It is associated with joy, hope, emotional renewal, forgiveness, and prosperity. Its energy is usually described as fresh, bright, and quietly uplifting.",
+            Overview: "Chrysoprase is a translucent apple-green chalcedony coloured by nickel. It is sold as tumbled stones, cabochons, beads and small rough pieces.",
 
-            TraditionalMeaning: "Chrysoprase was used in carved gems in the ancient Mediterranean and is named in the Book of Revelation as the tenth foundation stone of the New Jerusalem, though ancient gem names do not always match modern minerals. In modern crystal magic, it is tied to Venus, the heart chakra, hope, and the renewal of joy after hard seasons.",
+            TraditionalMeaning: "Hope and renewed joy; a fresh, quietly uplifting heart stone of forgiveness and coming back to life after hard seasons.",
 
-            CommonUses: "Chrysoprase is commonly used in joy and hope spells, forgiveness rituals, prosperity work, and heart-centered renewal. It is often carried by people coming out of grief, burnout, or heartbreak.",
-
-            HowToUse: "Carry chrysoprase as a reminder of hope, place it on a spring or renewal altar, or set it beside a green candle in prosperity or joy work. It can be added to sachets with uplifting herbs.",
+            HowToUse: "Start here: when you finally feel a little lighter after a hard season, place chrysoprase on your altar as a marker of that moment. Carry a tumbled piece as a reminder of hope, or add one to a sachet with uplifting herbs. Keep it away from sunny windows and heat.",
 
             PairingNotes: "Chrysoprase pairs well with green candles for growth, rose quartz for self-love, mint for freshness and prosperity, and lemon balm for joy. Citrine can add sunshine to its hopeful energy.",
 
             CleansingNotes: "Cleanse chrysoprase with moonlight, smoke, sound, or visualization. Keep it out of strong sunlight and heat, which can fade it.",
 
-            SafetyAndRespect: "Chrysoprase is generally safe to handle. Hope magic is a gentle support, but if you feel hopeless for a long time, please reach out to someone you trust or a mental health professional.",
-
-            BeginnerTip: "When you finally feel a little lighter after a hard season, place chrysoprase on your altar as a marker of that moment.",
+            SafetyAndRespect: "Hope magic is a gentle support, but if you feel hopeless for a long time, please reach out to someone you trust or a mental health professional.",
 
             Traditions: "Wheel of the Year",
 
@@ -3992,21 +3572,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Apache tears are small nodules of obsidian, a natural volcanic glass rather than a crystal. The name comes from a popular legend whose origin is uncertain.",
 
-            Overview: "Apache tears are small, rounded nodules of obsidian that look black but glow smoky brown when held to the light. They are associated with grief, comfort, protection, grounding, and emotional release. Their energy is usually described as softer and more consoling than larger obsidian.",
+            Overview: "Apache tears are small, rounded nodules of obsidian that look black but glow smoky brown when held to the light. They are sold mainly as tumbled or raw pebbles.",
 
-            TraditionalMeaning: "The name comes from a widely retold story about Apache warriors and the women who mourned them, but the legend’s origin is uncertain and it is not a documented Apache teaching. In modern crystal magic, Apache tears are tied to Saturn, the root chakra, grief, and the safe release of sorrow. The Apache are living Indigenous nations, so the story should be shared carefully if at all.",
+            TraditionalMeaning: "Comfort in grief; a soft, consoling stone of emotional release and gentle protection, kinder than larger obsidian.",
 
-            CommonUses: "Apache tears are commonly carried during grief, used in mourning rituals, placed on ancestor altars, and held in protection or grounding work. They are often given to people who have recently lost someone.",
+            HowToUse: "Start here: hold an Apache tear and simply let yourself feel sad; comfort does not always need a spell attached. Keep one in a pocket during grief, or hold it while crying or journaling. Hold it up to the light to see its translucence when you need a reminder of hope.",
 
-            HowToUse: "Carry an Apache tear in a pocket during grief, hold it while crying or journaling, or place it on an ancestor altar beside a black or white candle. Hold it up to the light to see its translucence when you need a reminder of hope.",
+            PairingNotes: "Apache tears pair well with black candles for protection, rosemary for remembrance, smoky quartz for gentle grounding, and cypress for mourning. Jet can be paired with them for grief work.",
 
-            PairingNotes: "Apache tears pair well with black candles for protection, rosemary for remembrance, smoky quartz for gentle grounding, and cypress for mourning. Jet can be paired with it for grief work.",
+            CleansingNotes: "Cleanse Apache tears with smoke, sound, earth, or visualization.",
 
-            CleansingNotes: "Cleanse Apache tears with smoke, sound, earth, or visualization. They are fairly hard, but avoid drops that may chip them.",
-
-            SafetyAndRespect: "Apache tears are generally safe to handle, though obsidian can chip into sharp edges. Grief work with stones can be comforting, but it is not a substitute for grief support or counseling.",
-
-            BeginnerTip: "Give yourself permission to hold an Apache tear and simply feel sad. Comfort does not always need a spell attached.",
+            SafetyAndRespect: "Apache tears are fairly hard, but obsidian can chip into sharp edges if dropped. The story behind the name is not a documented Apache teaching, and the Apache are living Indigenous nations, so share it carefully if at all. Grief work with stones can be comforting, but it is not a substitute for grief support or counseling.",
 
             Traditions: "Wheel of the Year",
 
@@ -4033,21 +3609,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Celestite is soft, fragile, and water-sensitive. Its pale blue color fades in sunlight, and it should not be used in elixirs.",
 
-            Overview: "Celestite, also called celestine, is a pale sky-blue strontium sulfate mineral often found as clusters of delicate crystals. It is associated with peace, angelic connection, calm, dreams, and gentle communication. Its energy is usually described as airy, serene, and soft.",
+            Overview: "Celestite, also called celestine, is a pale sky-blue strontium sulfate mineral that forms as clusters of delicate, glassy crystals, often inside geodes. It is sold mostly as clusters and geodes, and occasionally as single points.",
 
-            TraditionalMeaning: "Celestite’s magical meanings come from modern crystal practice. Its sky-blue color and name, from the Latin for ‘heavenly’, tie it to angels, the higher chakras, peace, and dream work. It is often used by practitioners who want calm spiritual connection without heaviness.",
+            TraditionalMeaning: "Serene peace and heavenly connection; an airy, soft stone of calm, dreams and gentle communication.",
 
-            CommonUses: "Celestite is commonly placed in bedrooms for peaceful sleep, used in meditation for calm connection, and kept on altars for angelic or spirit work. Clusters are often used as a centerpiece for peaceful spaces.",
-
-            HowToUse: "Place a celestite cluster on a bedside table or meditation altar, set it beside a white candle in peace work, or keep it where you journal dreams. Leave it in place rather than carrying it, since it is fragile.",
+            HowToUse: "Start here: choose one quiet place for celestite, such as a bedside table or meditation corner, and leave it there. Keep it in place rather than carrying it, since clusters are fragile. Dust it with a soft dry brush rather than handling the crystals.",
 
             PairingNotes: "Celestite pairs well with white candles for peace, lavender for sleep, angelite for gentle spiritual connection, and selenite for cleansing light. Amethyst can deepen its dream work.",
 
-            CleansingNotes: "Cleanse celestite with moonlight, sound, or visualization only. Avoid water, salt, smoke residue on delicate clusters, and sunlight, which fades its color.",
+            CleansingNotes: "Cleanse celestite with moonlight, sound, or visualization only. Avoid water, salt, and smoke residue on delicate clusters.",
 
-            SafetyAndRespect: "Celestite is soft and fragile, so keep it away from children and pets and do not use it in water or elixirs. It should never be handled roughly or left in a sunny window.",
-
-            BeginnerTip: "Choose one quiet place for celestite and leave it there. Its peace comes partly from staying still.",
+            SafetyAndRespect: "Celestite is soft and fragile, so keep it away from children and pets and do not use it in water or elixirs. It should never be handled roughly or left in a sunny window, which fades its color.",
 
             Traditions: "Wheel of the Year",
 
@@ -4074,21 +3646,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Herkimer diamonds are not diamonds. They are naturally double-terminated quartz crystals from Herkimer County, New York, and similar quartz from elsewhere or cut glass is sometimes sold under the name.",
 
-            Overview: "Herkimer diamonds are small, exceptionally clear, double-terminated quartz crystals found in Herkimer County, New York. Despite the name, they are quartz, not diamond, and the ‘diamond’ refers only to their natural sparkle and faceted look. They are associated with amplification, clarity, dream work, and spiritual vision.",
+            Overview: "Herkimer diamonds are small, exceptionally clear, double-terminated quartz crystals found in Herkimer County, New York; despite the name they are quartz, not diamond. They are sold as loose single crystals, often only a few millimetres across, and set in jewellery.",
 
-            TraditionalMeaning: "Herkimer diamonds’ magical meanings come from modern crystal practice. They are treated as a high-clarity form of clear quartz, tied to the crown and third eye chakras, dreams, and attunement between people, places, or intentions. Their double points are often read as sending and receiving energy in both directions.",
+            TraditionalMeaning: "Brilliant clarity and attunement; a high-clarity quartz of amplification, dreams and spiritual vision, sending and receiving in both directions.",
 
-            CommonUses: "Herkimer diamonds are commonly used in dream work, meditation, amplification grids, and attunement rituals. They are also worn as jewelry because their natural facets sparkle without cutting.",
+            HowToUse: "Start here: hold one Herkimer diamond in each hand during a short meditation and notice the sparkle when you open your eyes. Small crystals can be worn in jewellery or set at the centre of a grid. Store them in a labelled pouch so they are not lost.",
 
-            HowToUse: "Place a Herkimer diamond under your pillow for dream work, use it at the center of a grid to amplify intention, or hold one in each hand during meditation. They are small, so store them in a labeled pouch.",
-
-            PairingNotes: "Herkimer diamonds pair well with clear quartz for amplification, amethyst for dreams and intuition, white candles for clarity, and mugwort for dream work. They can strengthen almost any crystal working.",
+            PairingNotes: "Herkimer diamonds pair well with clear quartz for amplification, amethyst for dreams and intuition, white candles for clarity, and mugwort for dream work.",
 
             CleansingNotes: "Cleanse Herkimer diamonds with moonlight, smoke, sound, or a brief rinse in clean water. Like other quartz, they are hard and stable.",
 
-            SafetyAndRespect: "Herkimer diamonds are generally safe to handle, but they are small and should be kept away from young children and pets. Buy from reputable sellers who state the origin, since ‘Herkimer-type’ quartz and glass are common.",
-
-            BeginnerTip: "If a seller calls a Herkimer diamond a real diamond, walk away. A good seller will tell you it is quartz from New York.",
+            SafetyAndRespect: "Herkimer diamonds are small and should be kept away from young children and pets. If a seller calls one a real diamond, walk away; buy from reputable sellers who state the origin, since ‘Herkimer-type’ quartz and glass are common.",
 
             Traditions: "Wheel of the Year",
 
@@ -4115,21 +3683,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Angelite is a trade name for blue anhydrite, which absorbs water and can slowly turn into gypsum. It is soft and should never be soaked or used in elixirs.",
 
-            Overview: "Angelite is the trade name for a soft blue anhydrite, first marketed under that name in the late twentieth century. It is associated with peace, gentle communication, angelic connection, and compassion. Its energy is usually described as calm, tender, and soothing.",
+            Overview: "Angelite is the trade name for a soft, opaque pale-blue anhydrite, first marketed under that name in the late twentieth century. It is sold as tumbled stones, palm stones, spheres and carved angels or hearts.",
 
-            TraditionalMeaning: "Angelite’s magical meanings are modern and closely linked to its marketed name. It is tied to the throat and crown chakras, peaceful speech, and connection with angels or guides. It is often treated as a companion stone to celestite, which forms from a similar environment.",
+            TraditionalMeaning: "Tender peace and compassion; a calm, soothing stone of gentle communication and connection with guides.",
 
-            CommonUses: "Angelite is commonly used for gentle communication, calm meditation, spirit or angel work, and peaceful bedroom spaces. It is also used in grief rituals as a soft, comforting stone.",
-
-            HowToUse: "Keep angelite on a bedside table or meditation altar, hold it before speaking with compassion, or set it beside a light blue candle in peace work. Keep it dry and handle it gently.",
+            HowToUse: "Start here: when you need to say something kind but difficult, hold angelite, breathe, and let gentleness lead. Keep it on a bedside table or meditation altar. Keep it dry, away from bathrooms and humid rooms, and handle it gently.",
 
             PairingNotes: "Angelite pairs well with light blue candles for calm, celestite for spiritual peace, lavender for rest, and chamomile for comfort. Amethyst can deepen its spiritual quality.",
 
             CleansingNotes: "Cleanse angelite with moonlight, sound, or visualization only. Avoid water, salt, and humidity, which can damage it.",
 
             SafetyAndRespect: "Angelite is soft and water-sensitive, so do not use it in water, elixirs, or baths, and keep it away from small children who might mouth it. Spiritual comfort is valuable, but it does not replace grief support or professional care.",
-
-            BeginnerTip: "Use angelite when you need to say something kind but difficult. Hold it, breathe, and let gentleness lead.",
 
             Traditions: "Wheel of the Year",
 
@@ -4156,21 +3720,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Much ametrine on the market is lab-grown or heat-treated amethyst. Its colors can fade in strong sunlight.",
 
-            Overview: "Ametrine is a natural blend of amethyst and citrine in a single quartz crystal, showing purple and golden zones side by side. Natural ametrine comes mainly from the Anahí mine in Bolivia. It is associated with balance, clarity, confidence, intuition, and decision-making.",
+            Overview: "Ametrine is a natural blend of amethyst and citrine in a single quartz crystal, showing purple and golden zones side by side; natural ametrine comes mainly from the Anahí mine in Bolivia. It is sold as tumbled stones, polished points and faceted gems.",
 
-            TraditionalMeaning: "Ametrine’s magical meanings come from modern crystal practice, combining the intuition of amethyst with the confidence of citrine. It is tied to Jupiter, the solar plexus and crown chakras, and the balance between spiritual insight and practical action. A romantic legend about a princess named Anahí is often told about the Bolivian mine, but it is modern rather than historical.",
+            TraditionalMeaning: "Balance between insight and action; a clear stone of intuition and confidence working together.",
 
-            CommonUses: "Ametrine is commonly used for decision-making, balance between spiritual and material life, confidence with intuition, and clarity in planning. It is often kept near desks, journals, and divination tools.",
-
-            HowToUse: "Hold ametrine while weighing a decision, keep it near your planner or tarot deck, or place it beside a purple and gold candle for balance work. It can be carried when you need both confidence and calm.",
+            HowToUse: "Start here: when you are torn between your gut and your head, hold ametrine and write one sentence from each before you decide. Keep it near your planner or journal, or carry a tumbled piece when you need both confidence and calm. Store it away from bright windows.",
 
             PairingNotes: "Ametrine pairs well with purple candles for intuition, gold candles for confidence, amethyst for spiritual insight, and citrine for success. Clear quartz can amplify both sides of its energy.",
 
             CleansingNotes: "Cleanse ametrine with moonlight, smoke, sound, or visualization. Keep it out of strong sunlight, which can fade both colors.",
 
-            SafetyAndRespect: "Ametrine is generally safe to handle. Magic can support clear decisions, but big decisions still deserve research, advice, and time.",
-
-            BeginnerTip: "When you are torn between your gut and your head, hold ametrine and write one sentence from each before you decide.",
+            SafetyAndRespect: "Magic can support clear decisions, but big decisions still deserve research, advice, and time.",
 
             Traditions: "Wheel of the Year",
 
@@ -4639,21 +4199,17 @@ const TraditionalLibrary = {
             PairsWith: "Obsidian, black tourmaline, rosemary, Hekate",
             TraditionalWarnings: "Black candles are not negative by default. They are commonly used for protection, absorption, boundaries, banishing, and deep spiritual work.",
 
-            Overview: "Black candles are among the most misunderstood tools in candle magic. They are often associated with protection, banishing, shadow work, uncrossing, absorbing negativity, and creating strong energetic boundaries. In many traditions, black is not evil or harmful. It is protective, serious, containing, and powerful.",
+            Overview: "Black is the deepest and most serious candle colour: dark, still and absorbing, holding the eye the way night does. Despite its reputation it is not evil or harmful, only weighty and contained.",
 
-            TraditionalMeaning: "Black is traditionally associated with night, mystery, Saturn, endings, containment, protection, and the unseen. In magical practice, black candles often represent the ability to absorb, block, release, or transform unwanted energy.",
+            TraditionalMeaning: "Containment and strong boundaries: the power to absorb, block and close off what is unwanted, and to sit honestly with endings and the unseen.",
 
-            CommonUses: "Black candles are commonly used in protection spells, banishing rituals, cord-cutting symbolism, ancestor work, shadow work, uncrossing, warding, and boundary setting. They can also be used for grief, underworld work, and rituals involving endings.",
-
-            HowToUse: "Use a black candle when you want to remove, block, protect, absorb, or create a boundary. It can be dressed with rosemary, nettle, black salt, or protective oils. For shadow work, pair it with obsidian or smoky quartz and give yourself grounding time afterward.",
+            HowToUse: "Start here: light a plain black candle and say one clear boundary aloud, such as 'what harms me does not enter.' To dress it, rub a little oil from the middle outward to both ends, then roll it lightly in a pinch of dried herb or salt, keeping loose material away from the wick. Burn it on a fireproof dish, never leave it unattended, and snuff rather than blow it out if you plan to relight it.",
 
             PairingNotes: "Black candles pair well with obsidian for truth and shadow work, black tourmaline for shielding, rosemary for cleansing protection, and Hekate for crossroads or liminal work. They also work well with salt, iron, keys, and protective sigils.",
 
             AlternativeColors: "White can substitute for black in general protection or cleansing. Brown can substitute when grounding and home protection are the focus. Purple can substitute when the working is spiritual protection or psychic shielding.",
 
             SafetyAndRespect: "Black candles can bring a ritual into a serious emotional tone, especially when used for grief, banishing, or shadow work. Ground afterward and avoid using fear-based interpretations.",
-
-            BeginnerTip: "Use black candles for boundaries. A simple black candle with rosemary and clear words like 'what harms me does not enter' is a strong beginner protection spell.",
 
             Traditions: "Wheel of the Year, Hindu",
 
@@ -4673,21 +4229,17 @@ const TraditionalLibrary = {
             PairsWith: "Lapis lazuli, turquoise, lavender, sage",
             TraditionalWarnings: "Blue candle meanings vary by shade. Light blue is often used for peace and healing, while dark blue may lean toward wisdom, truth, and spiritual authority.",
 
-            Overview: "Blue candles are commonly associated with healing, peace, truth, wisdom, communication, emotional balance, and spiritual calm. They are useful when a working needs soothing, honesty, reconciliation, or clearer expression.",
+            Overview: "Blue is a cool, quiet colour, like clear sky or still water; its flame feels soothing and steady rather than stirring.",
 
-            TraditionalMeaning: "Blue is traditionally linked with water, the sky, calm, blessing, truth, and spiritual protection. Its Jupiter association connects it with wisdom, expansion, justice, and benevolent guidance.",
+            TraditionalMeaning: "Peace, truth and healing: calm honesty, emotional balance and gentle, wise guidance.",
 
-            CommonUses: "Blue candles are used in healing spells, peace rituals, communication work, emotional balance, truth spells, meditation, and blessing rites. They are also helpful in rituals for sleep, forgiveness, and calming conflict.",
-
-            HowToUse: "Use blue candles when the intention is peace, healing, truth, or communication. Pair them with lavender for calm, sage for wisdom, lapis lazuli for truth, or moonstone for emotional healing.",
+            HowToUse: "Start here: light a blue candle, take three slow breaths, and say the calm, honest words you need to say. Hold the candle at its base while you speak your intention, then set it in a stable holder away from drafts and curtains. Small chime candles or tea lights burn out in an hour or two, which suits a single conversation or evening; snuff any candle before you sleep.",
 
             PairingNotes: "Blue candles pair well with lapis lazuli for truth, lavender for peace, sage for wisdom, and clear quartz for healing amplification. For emotional work, combine blue with chamomile or rose quartz.",
 
             AlternativeColors: "White can substitute for blue in healing or blessing. Pink can substitute when emotional healing involves compassion or forgiveness. Purple can substitute when wisdom or spiritual insight is the focus.",
 
             SafetyAndRespect: "Healing candle work should support care, not replace medical or mental health support. Use blue candles as symbolic and spiritual tools alongside practical action.",
-
-            BeginnerTip: "Use blue candles for calming communication, especially when you need truth without aggression.",
 
             Traditions: "Christian, Wheel of the Year, Hindu",
 
@@ -4707,21 +4259,17 @@ const TraditionalLibrary = {
             PairsWith: "Patchouli, smoky quartz, hematite, cedar",
             TraditionalWarnings: "Brown candles are often overlooked, but they are excellent for practical, earthy, home-based magic.",
 
-            Overview: "Brown candles are associated with grounding, stability, home, animals, land, practical matters, and material support. They are useful when a working needs to feel rooted, realistic, and connected to everyday life.",
+            Overview: "Brown is an earthy, unshowy colour, the shade of soil, bark and wood; its candle feels solid, warm and down-to-earth.",
 
-            TraditionalMeaning: "Brown is traditionally connected with soil, wood, roots, animals, shelter, and physical stability. Its Saturn association gives it patience, structure, responsibility, and endurance.",
+            TraditionalMeaning: "Stability and rootedness: patience, endurance, shelter and the steady security of home and land.",
 
-            CommonUses: "Brown candles are used for home protection, grounding, pet blessings, land spirit offerings, stability spells, practical problem solving, and rituals involving work, property, or household matters.",
-
-            HowToUse: "Use brown candles when the spell is about grounding, home, stability, animals, or practical support. Pair with cedar, patchouli, smoky quartz, hematite, or moss agate depending on the intention.",
+            HowToUse: "Start here: light a brown candle in the heart of your home and name one practical thing you want to feel steadier. Before lighting, carve a short word or the name of the place into the wax with a pin. Set it on a heatproof plate and burn it a little each day over several days, snuffing it between sessions, for matters that need slow, steady support.",
 
             PairingNotes: "Brown candles pair well with smoky quartz for grounding, hematite for focus, cedar for home protection, and patchouli for material stability. They also work well with bowls of soil, stones, keys, or household symbols.",
 
             AlternativeColors: "Green can substitute when growth or money is involved. Black can substitute for strong home protection. White can substitute for general blessing or grounding if no brown candle is available.",
 
             SafetyAndRespect: "When working magic for animals, avoid smoke, essential oils, and herbs that may be unsafe for pets. Symbolic candle work is usually safer than exposing animals to ritual materials.",
-
-            BeginnerTip: "Brown candles are perfect for 'let my life feel stable and manageable' spells.",
 
             Traditions: "Wheel of the Year",
 
@@ -4741,21 +4289,17 @@ const TraditionalLibrary = {
             PairsWith: "Citrine, pyrite, cinnamon, bay",
             TraditionalWarnings: "Gold is often associated with solar power, success, and blessing, but prosperity magic still benefits from practical action.",
 
-            Overview: "Gold candles are associated with success, abundance, honor, divine blessing, solar power, confidence, and achievement. They are often used when a working needs radiance, visibility, prosperity, or celebration.",
+            Overview: "Gold is the warmest and most radiant candle colour, rich and festive; many gold candles have a metallic sheen that catches the light.",
 
-            TraditionalMeaning: "Gold traditionally symbolizes the sun, royalty, wealth, sacred power, victory, and illumination. In candle magic, it is often used to draw success, confidence, recognition, and high-level blessing.",
+            TraditionalMeaning: "Success and radiance: solar power, honour, abundance and divine blessing, the glow of being seen and celebrated.",
 
-            CommonUses: "Gold candles are used in prosperity spells, success rituals, solar magic, confidence work, deity offerings, celebration rites, and rituals for recognition or achievement.",
-
-            HowToUse: "Use gold candles when the intention involves success, money, confidence, blessing, or visibility. Pair with citrine, pyrite, cinnamon, bay, frankincense, or sun imagery.",
+            HowToUse: "Start here: light a gold candle and state one success you are working toward as though it is already welcome. Write the goal on paper and tuck it under the holder, or carve a single word into the wax. Burn it in full view rather than tucked away; let a small candle burn down in one sitting, or snuff a larger one and relight it on following days.",
 
             PairingNotes: "Gold candles pair well with citrine and pyrite for prosperity, cinnamon for speed, bay for victory, and frankincense for sacred blessing. They also work well for Apollo, Brigid, Ganesha, and solar-aligned devotional work.",
 
             AlternativeColors: "Yellow can substitute for confidence, learning, and solar clarity. Green can substitute for money and growth. White can substitute for blessing if gold is unavailable.",
 
             SafetyAndRespect: "Some gold candles have metallic coatings that may burn differently or release unusual smells. Use proper ventilation and never leave them unattended.",
-
-            BeginnerTip: "Use gold candles for success magic when you want to be seen, recognized, supported, or celebrated.",
 
             Traditions: "Wheel of the Year, Christian, Hindu",
 
@@ -4775,21 +4319,17 @@ const TraditionalLibrary = {
             PairsWith: "Basil, mint, patchouli, green aventurine",
             TraditionalWarnings: "Green candles are often used for money, but they also represent growth, fertility, healing, and the living world.",
 
-            Overview: "Green candles are strongly associated with prosperity, growth, fertility, abundance, luck, renewal, and the natural world. They are common in money magic, but their meaning is broader than financial gain.",
+            Overview: "Green is a fresh, living colour, the shade of leaves and new growth; its candle feels calm, hopeful and alive.",
 
-            TraditionalMeaning: "Green traditionally symbolizes plants, growth, the earth, renewal, the heart, and material increase. Its Venus association connects it with attraction, beauty, fertility, harmony, and abundance.",
+            TraditionalMeaning: "Growth and abundance: increase, luck, renewal and the steady flourishing of the natural world and the heart.",
 
-            CommonUses: "Green candles are used in money bowls, prosperity spells, career growth rituals, health and renewal work, garden magic, fertility symbolism, and luck spells.",
-
-            HowToUse: "Use green candles when you want something to grow, stabilize, or become abundant. Pair with basil, mint, patchouli, green aventurine, moss agate, coins, or written financial goals.",
+            HowToUse: "Start here: write one specific goal, such as 'bring me aligned income opportunities', and set the paper under a green candle as you light it. To draw something toward you, dress the candle with a little oil stroked from the base upward, then roll it in a pinch of dried herb. You can set it in a bowl of coins or soil, keeping anything flammable clear of the flame, and relight it for a few minutes each day.",
 
             PairingNotes: "Green candles pair well with basil and mint for money, patchouli for material grounding, green aventurine for luck, and moss agate for natural growth. Rose quartz can shift green toward heart healing.",
 
             AlternativeColors: "Gold can substitute for wealth and success. Brown can substitute for earth, home, and stability. Pink can substitute when the working is heart-centered rather than financial.",
 
             SafetyAndRespect: "Prosperity magic works best when paired with real-world action, budgeting, applying, asking, building, saving, or creating opportunities.",
-
-            BeginnerTip: "Green is the classic money candle, but write a specific goal. 'Bring me aligned income opportunities' is stronger than just 'money.'",
 
             Traditions: "Wheel of the Year, Christian, Hindu",
 
@@ -4809,21 +4349,17 @@ const TraditionalLibrary = {
             PairsWith: "Carnelian, cinnamon, orange peel, basil",
             TraditionalWarnings: "Orange candles are energizing, so they may not be ideal for rituals meant to calm, settle, or slow energy down.",
 
-            Overview: "Orange candles are associated with creativity, opportunity, motivation, joy, confidence, and movement. They are useful when a working needs momentum, fresh energy, enthusiasm, or a creative spark.",
+            Overview: "Orange is a bright, cheerful colour that combines the warmth of red with the lightness of yellow; its candle feels lively, sunny and energising.",
 
-            TraditionalMeaning: "Orange combines the warmth of red with the brightness of yellow, making it a color of action, attraction, optimism, and creative vitality. Its solar connection brings confidence and forward motion.",
+            TraditionalMeaning: "Momentum and creative vitality: opportunity, optimism, confidence and the breaking of stagnation.",
 
-            CommonUses: "Orange candles are used in creativity spells, motivation rituals, road-opening work, opportunity spells, confidence magic, success work, and rituals meant to break stagnation.",
-
-            HowToUse: "Use orange candles when you need movement, inspiration, or creative energy. Pair with carnelian, cinnamon, basil, citrine, or orange peel. Carve project names, opportunity words, or action-focused sigils into the wax.",
+            HowToUse: "Start here: light an orange candle when you sit down to work and let it burn while you take the first small step. Before lighting, carve a project name, an opportunity word or an action-focused sigil into the wax. A little dried orange peel scattered around the base, never on the wick, adds scent and focus.",
 
             PairingNotes: "Orange candles pair well with carnelian for creativity, cinnamon for speed, basil for success, and citrine for confidence and abundance. Yellow can add focus, while red can intensify courage or passion.",
 
             AlternativeColors: "Yellow can substitute for clarity and inspiration. Red can substitute for courage and action. Gold can substitute for success and confidence.",
 
             SafetyAndRespect: "Orange candle magic can feel activating. If you are already overwhelmed, pair it with grounding tools like smoky quartz or brown candles.",
-
-            BeginnerTip: "Use orange candles for creative blocks. They are excellent for 'get the energy moving again' spells.",
 
             Traditions: "Wheel of the Year, Hindu",
 
@@ -4843,21 +4379,17 @@ const TraditionalLibrary = {
             PairsWith: "Rose quartz, rose, lavender, chamomile",
             TraditionalWarnings: "Pink is often better than red for gentle love, friendship, healing, and self-compassion work.",
 
-            Overview: "Pink candles are associated with friendship, affection, self-love, compassion, forgiveness, emotional healing, and gentle relationship work. They are softer than red candles and are often used when the intention needs tenderness rather than intensity.",
+            Overview: "Pink is a soft, gentle colour, lighter and sweeter than red; its candle feels tender, friendly and calming.",
 
-            TraditionalMeaning: "Pink is traditionally connected with Venus, the heart, sweetness, affection, beauty, and emotional softness. It represents love that is kind, healing, friendly, and compassionate.",
+            TraditionalMeaning: "Kind, compassionate love: affection, friendship, self-worth and the gentle healing of the heart.",
 
-            CommonUses: "Pink candles are used in self-love rituals, friendship spells, forgiveness work, emotional healing, beauty magic, gentle love spells, and relationship harmony rituals.",
-
-            HowToUse: "Use pink candles when the intention involves kindness, affection, self-worth, or soft healing. Pair with rose quartz, rose petals, lavender, chamomile, or lemon balm.",
+            HowToUse: "Start here: light a pink candle for yourself first and say one kind thing you need to hear. Before lighting, you can dress it with a drop of oil and press a few dried petals lightly into the wax, well clear of the wick. Burn it somewhere you can relax beside it, such as during a quiet evening, and never leave it alone.",
 
             PairingNotes: "Pink candles pair well with rose quartz for self-love, rose for affection, lavender for peace, and chamomile for gentle emotional healing. Green can add heart growth, while white can add blessing.",
 
             AlternativeColors: "White can substitute for healing and blessing. Green can substitute for heart healing. Red can substitute for passion, but it changes the tone significantly.",
 
             SafetyAndRespect: "Love magic should respect consent, autonomy, and emotional reality. Pink candles are especially well suited to self-love and relational healing that does not attempt to control another person.",
-
-            BeginnerTip: "Use pink candles for self-love before using them for romance. A strong relationship with yourself changes the whole spell.",
 
             Traditions: "Christian, Wheel of the Year",
 
@@ -4877,21 +4409,17 @@ const TraditionalLibrary = {
             PairsWith: "Amethyst, mugwort, lavender, labradorite",
             TraditionalWarnings: "Purple candles are often used for spiritual power and psychic work, so grounding afterward can be helpful.",
 
-            Overview: "Purple candles are associated with intuition, psychic awareness, spiritual wisdom, divination, magical study, and spiritual authority. They are often used when the intention involves inner vision, spirit work, or deepening magical knowledge.",
+            Overview: "Purple is a deep, rich colour with a regal, mysterious feel; its candle draws the mind inward and quiets a room.",
 
-            TraditionalMeaning: "Purple traditionally symbolizes mystery, royalty, spiritual power, wisdom, and higher awareness. Its Jupiter association connects it with expansion, learning, spiritual authority, and sacred knowledge.",
+            TraditionalMeaning: "Intuition and spiritual wisdom: inner vision, higher awareness, sacred knowledge and spiritual authority.",
 
-            CommonUses: "Purple candles are used in divination, dream work, psychic development, meditation, deity work, magical study, spiritual protection, and rituals for wisdom or insight.",
-
-            HowToUse: "Use purple candles when you want to deepen intuition, study magic, connect with spirit, or support divination. Pair with amethyst, mugwort, lavender, labradorite, or clear quartz.",
+            HowToUse: "Start here: light a purple candle before tarot or journaling and ask for insight, not just answers. Dim other lights so the flame becomes your focus, and keep the candle in front of you, clear of cards and pages. Snuff it when the session ends so it marks a clear beginning and close.",
 
             PairingNotes: "Purple candles pair well with amethyst for intuition, mugwort for divination, lavender for peaceful psychic work, and labradorite for liminal magic. Silver candles can add lunar influence, while black can add protection.",
 
             AlternativeColors: "Silver can substitute for lunar intuition. Blue can substitute for wisdom and spiritual calm. White can substitute for general spiritual work.",
 
             SafetyAndRespect: "Psychic and spirit work can feel intense. Use grounding tools and avoid treating every impression as absolute truth.",
-
-            BeginnerTip: "Light a purple candle before tarot or journaling when you want insight, not just answers.",
 
             Traditions: "Christian, Wheel of the Year",
 
@@ -4911,21 +4439,17 @@ const TraditionalLibrary = {
             PairsWith: "Carnelian, garnet, cinnamon, rose",
             TraditionalWarnings: "Red is intense and active. For gentle love or emotional healing, pink may be more appropriate.",
 
-            Overview: "Red candles are associated with passion, courage, strength, vitality, physical energy, desire, and protection. They bring heat and intensity to a working, which makes them powerful but not always subtle.",
+            Overview: "Red is the hottest, boldest candle colour, vivid and impossible to ignore; its flame feels intense rather than subtle.",
 
-            TraditionalMeaning: "Red traditionally symbolizes blood, fire, life force, desire, war, courage, and action. Its Mars association gives it strength, assertiveness, protection, and determination.",
+            TraditionalMeaning: "Life force and courage: passion, strength, vitality, desire and determined protection.",
 
-            CommonUses: "Red candles are used in passion spells, courage rituals, vitality workings, protection spells, strength magic, attraction work, and action-based intentions.",
-
-            HowToUse: "Use red candles when the intention needs fire, courage, desire, or physical energy. Pair with carnelian, garnet, cinnamon, rose, or nettle depending on whether the focus is passion, strength, love, or protection.",
+            HowToUse: "Start here: light a red candle when you need courage or energy, and say aloud the one bold thing you are about to do. Carve your name or a single word such as 'courage' into the wax, and dress it lightly with oil if you like. Small red candles burn quickly, so let a short one burn down in one sitting, on a fireproof dish and in sight the whole time.",
 
             PairingNotes: "Red candles pair well with carnelian for courage, garnet for devotion and passion, cinnamon for heat, and rose for romantic love. Black can add protection, while orange can shift red toward creativity and motivation.",
 
             AlternativeColors: "Pink can substitute for gentle love. Orange can substitute for creativity and motivation. Black can substitute when the focus is protection rather than passion.",
 
             SafetyAndRespect: "Red candle magic can intensify emotions. Use it carefully in conflict, obsession, or relationship work. Love and attraction magic should respect consent and autonomy.",
-
-            BeginnerTip: "Use red when you need courage or energy. Use pink when you need tenderness.",
 
             Traditions: "Christian, Slavic, Hindu, Celtic, Wheel of the Year",
 
@@ -4945,21 +4469,17 @@ const TraditionalLibrary = {
             PairsWith: "Moonstone, selenite, mugwort, jasmine",
             TraditionalWarnings: "Silver candles are strongly lunar and reflective, making them better for receptivity than forceful action.",
 
-            Overview: "Silver candles are associated with the moon, intuition, dreams, reflection, psychic awareness, cycles, and sacred mystery. They are often used in lunar rituals, dream work, and practices that require receptivity or inner listening.",
+            Overview: "Silver is a cool, shimmering colour like moonlight on water; its candle feels quiet, reflective and soft.",
 
-            TraditionalMeaning: "Silver traditionally symbolizes moonlight, water, reflection, mystery, and spiritual receptivity. Its lunar association connects it with dreams, cycles, emotions, intuition, and the unseen.",
+            TraditionalMeaning: "Receptivity and the moon: intuition, dreams, reflection, cycles and sacred mystery.",
 
-            CommonUses: "Silver candles are used in full moon rituals, dream work, psychic development, lunar deity devotion, emotional reflection, mirror work, and cycle-based magic.",
-
-            HowToUse: "Use silver candles during moon rituals, dream journaling, divination, emotional reflection, or devotional work with lunar deities. Pair with moonstone, selenite, mugwort, jasmine, or amethyst.",
+            HowToUse: "Start here: light a silver candle, sit quietly, and simply listen inward for a few minutes. It works well before writing in a dream journal; snuff it before you sleep and never leave it burning while you rest. A bowl of water set nearby to catch the reflected flame gives you a gentle focus for reflection.",
 
             PairingNotes: "Silver candles pair well with moonstone for lunar magic, selenite for clarity, mugwort for dreams, and jasmine for intuition. Purple can add psychic depth, while white can add purification.",
 
             AlternativeColors: "White can substitute for lunar blessing, dreams, or purification. Purple can substitute for psychic work. Blue can substitute for emotional healing and peace.",
 
             SafetyAndRespect: "Some silver candles have metallic coatings or glitter that may burn unpredictably. Use ventilation and avoid candles with loose glitter when possible.",
-
-            BeginnerTip: "Use silver candles when you want to receive, reflect, dream, or listen inward.",
 
             Traditions: "Wheel of the Year, Hindu",
 
@@ -4979,21 +4499,17 @@ const TraditionalLibrary = {
             PairsWith: "Clear quartz, frankincense, rosemary, sage",
             TraditionalWarnings: "White candles are often treated as universal substitutes, but some traditions still prefer specific colors for specific workings.",
 
-            Overview: "White candles are among the most versatile candles in magical practice. They are associated with purification, blessing, peace, healing, clarity, protection, and spiritual light. White is often used as a universal substitute when another candle color is unavailable.",
+            Overview: "White is the plainest and most versatile candle colour, clean and bright, often said to hold the full spectrum of colour within one flame.",
 
-            TraditionalMeaning: "White traditionally symbolizes purity, moonlight, spirit, blessing, peace, and sacred presence. In candle magic, it can represent a clean slate, divine light, spiritual protection, or the full spectrum of color held in one flame.",
+            TraditionalMeaning: "Purity and spiritual light: a clean slate, blessing, peace, healing and sacred presence.",
 
-            CommonUses: "White candles are used in cleansing rituals, healing spells, protection work, blessing rites, devotional offerings, ancestor work, meditation, and general spell work. They are also used when the practitioner does not have the exact color called for.",
-
-            HowToUse: "Use white candles for almost any intention, especially cleansing, blessing, healing, or spiritual clarity. Pair with clear quartz, rosemary, sage, frankincense, selenite, or moonstone.",
+            HowToUse: "Start here: light a white candle, take a breath, and state your intention aloud in one clear sentence. To charge it first, hold it between your palms for a moment while you focus on that intention, then set it in a steady holder. Plain unscented household candles work perfectly well; trim the wick to about half a centimetre before each burn.",
 
             PairingNotes: "White candles pair well with clear quartz for amplification, rosemary and sage for cleansing, frankincense for consecration, and selenite for spiritual clarity. They can support almost any herb or crystal combination.",
 
             AlternativeColors: "White can substitute for any candle color in many modern practices. For stronger specificity, choose a color that directly matches the intention when available.",
 
             SafetyAndRespect: "White candles are simple and powerful, but simplicity does not mean carelessness. Use the same fire safety and intentional focus you would use with any other candle.",
-
-            BeginnerTip: "When you do not know which color to use, choose white and state your intention clearly.",
 
             Traditions: "Christian, Wheel of the Year, Slavic, Hindu",
 
@@ -5013,21 +4529,17 @@ const TraditionalLibrary = {
             PairsWith: "Fluorite, mint, bay, lemon balm",
             TraditionalWarnings: "Yellow is mentally active and may feel too stimulating for workings focused on deep rest or emotional quiet.",
 
-            Overview: "Yellow candles are associated with learning, communication, focus, inspiration, confidence, clarity, and mental energy. They are useful for study, writing, speaking, planning, and any working that needs brightness of mind.",
+            Overview: "Yellow is a bright, sunny, airy colour; its candle feels light, alert and cheerful.",
 
-            TraditionalMeaning: "Yellow traditionally symbolizes sunlight, intellect, speech, air, curiosity, and mental clarity. Its Mercury association connects it with communication, learning, messages, trade, writing, and quick thinking.",
+            TraditionalMeaning: "Mental clarity: intellect, communication, learning, inspiration and quick, confident thought.",
 
-            CommonUses: "Yellow candles are used for study spells, writing rituals, public speaking, confidence, clarity, communication, inspiration, and success in learning or planning.",
-
-            HowToUse: "Use yellow candles before studying, writing, recording, speaking, or making decisions. Pair with fluorite, mint, bay, lemon balm, citrine, or lapis lazuli depending on whether the focus is clarity, success, communication, or wisdom.",
+            HowToUse: "Start here: light a yellow candle before you write, study or plan, and name the one thing you want to get clear. Keep it on your desk in a stable holder, well away from papers and books. Snuff it when you take a break and relight it when you return, so the flame marks your focused time.",
 
             PairingNotes: "Yellow candles pair well with fluorite for focus, mint for mental freshness, bay for success, and lemon balm for calmer clarity. Citrine adds confidence, while lapis lazuli adds truth and wisdom.",
 
             AlternativeColors: "Orange can substitute for creativity and motivation. Gold can substitute for confidence and success. Blue can substitute when the focus is truthful communication.",
 
             SafetyAndRespect: "Mental clarity spells should not be used to push through exhaustion indefinitely. Sometimes the most magical thing is rest.",
-
-            BeginnerTip: "Light a yellow candle before writing, studying, or planning when you need your thoughts to line up and behave themselves.",
 
             Traditions: "Wheel of the Year, Hindu, Christian",
 
@@ -5052,21 +4564,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Grey candle meanings are less standardized than black or white. In modern practice they are usually treated as neutral and balancing rather than as a dark or light color.",
 
-            Overview: "Grey candles are associated with neutrality, balance, calm detachment, and the space between extremes. They are often chosen when a working should soften, cancel out, or quiet an energy rather than attack or attract it. Many practitioners use grey for staying unnoticed, cooling tense situations, and making clear-headed decisions.",
+            Overview: "Grey is a muted colour that sits between black and white, like fog or twilight; its candle feels quiet, cool and understated.",
 
-            TraditionalMeaning: "Grey sits between black and white, so it is traditionally read as the color of neutrality, compromise, fog, twilight, and stillness. Its Saturn association connects it with patience, limits, and sober judgment, while its Air association links it with thought and perspective.",
+            TraditionalMeaning: "Neutrality and balance: stillness, compromise, patience and sober, clear-headed judgement.",
 
-            CommonUses: "Grey candles are commonly used in neutralizing spells, glamour and invisibility work, peace-making, decision-making rituals, and workings to calm an overheated situation. They can also be used when a practitioner wants to cancel or reset a previous working without adding strong energy of its own.",
-
-            HowToUse: "Use a grey candle when the goal is to quiet, cancel, balance, or blend in. Carve a simple word such as 'still' or 'unseen' and pair it with smoky quartz for grounding or lavender for calm. For decisions, light it while writing out both options and let the flame hold the space while you think.",
+            HowToUse: "Start here: light a grey candle when a situation feels overheated and simply sit with it for a few calm minutes. Before lighting, carve a simple word such as 'still' or 'unseen' into the wax. For a decision, write out both options while the candle burns and let the flame hold the space while you think.",
 
             PairingNotes: "Grey candles pair well with smoky quartz for grounding and gentle protection, hematite for steadiness, sage for clear thinking, and lavender for calm. Pair a grey candle between a black and a white candle for balance work.",
 
             AlternativeColors: "White can substitute for grey in neutralizing or reset work. Silver can substitute when the focus is reflection, glamour, or lunar quiet. Black can substitute when the working leans more toward blocking than neutralizing.",
 
             SafetyAndRespect: "Invisibility and neutralizing work should not be used to avoid responsibilities, legal obligations, or people who need to reach you for your safety. Use grey to create calm space, not to disappear from real support.",
-
-            BeginnerTip: "If you are not sure whether a situation needs banishing or attraction, a grey candle for calm and clarity is a gentle first step.",
 
             TraditionNotes: "Wheel of the Year: Burned in modern witchcraft to neutralise or cancel a working, to calm conflict, and for quiet reflection and shadow work, often at the waning or dark moon.\n\nFolk & wider practice: In modern candle magic grey candles are burned for neutrality, cancelling or balancing influences, and quiet reflection.",
 
@@ -5091,21 +4599,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Indigo is a relatively modern candle color in magical correspondence lists, often tied to the chakra system as popularized in Western New Age practice. Its meanings overlap heavily with dark blue and purple.",
 
-            Overview: "Indigo candles are associated with intuition, inner sight, meditation, dreams, and deep spiritual reflection. They sit between blue and purple, combining blue’s calm and truth with purple’s spiritual focus. Many practitioners reach for indigo when a working is quiet, inward, and centered on insight rather than outward action.",
+            Overview: "Indigo is a deep blue-violet, the colour of the night sky, sitting between blue and purple; its candle feels hushed, deep and inward.",
 
-            TraditionalMeaning: "Indigo is traditionally linked with the night sky, deep water, stillness, and the inner world. In modern correspondence it is often connected with the third eye, psychic perception, and Saturn’s themes of depth, patience, and hidden knowledge.",
+            TraditionalMeaning: "Inner sight: intuition, deep reflection, patience and the hidden knowledge of the inner world.",
 
-            CommonUses: "Indigo candles are commonly used in meditation, dream work, divination, psychic development, reflection on patterns, and rituals for inner wisdom. They are also used to slow a busy mind before tarot, journaling, or scrying.",
-
-            HowToUse: "Light an indigo candle before divination or meditation and keep the space dim and quiet. Pair it with lapis lazuli for truth, amethyst for calm intuition, or a small dish of mugwort nearby for dream work. Let the candle mark the start and end of your inner work.",
+            HowToUse: "Start here: light an indigo candle in a dim, quiet room and sit with it for five minutes before meditation or divination. Keep the rest of the space dark and still so the flame is your only focus. Let lighting and snuffing it mark the start and end of your inner work.",
 
             PairingNotes: "Indigo candles pair well with lapis lazuli for insight and truth, amethyst for calm intuition, labradorite for mystery and psychic focus, and mugwort for dreams. Silver or white candles can be added when the working is lunar or cleansing.",
 
             AlternativeColors: "Purple can substitute for indigo in psychic and spiritual work. Dark blue can substitute for meditation and truth. Silver can substitute for dream and lunar intuition work.",
 
             SafetyAndRespect: "Deep introspection can bring up difficult feelings. Ground afterward with food, water, or time outside, and remember that intuition work does not replace mental health support.",
-
-            BeginnerTip: "If you do not have indigo, a dark blue candle with an amethyst beside it covers almost the same ground.",
 
             TraditionNotes: "Wheel of the Year: Burned for meditation, trance, dreamwork and divination, often at the full moon or before scrying and tarot readings.\n\nFolk & wider practice: In modern energy work indigo candles are burned for meditation, intuition and the 'third eye' chakra. The rainbow chakra colours are a modern Western system, not part of traditional Hindu practice.",
 
@@ -5130,21 +4634,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Multicolored candles are used in several different ways, and some seven-color candles come from specific religious traditions with their own meanings. Check the context of a candle before treating it as a generic rainbow candle.",
 
-            Overview: "Rainbow or multicolored candles combine several colors in one candle, usually in layers or swirls. In modern practice they are often used for all-purpose blessings, harmony, celebration, hope, and workings that touch many areas of life at once. They are also a popular choice for community, inclusion, and Pride rituals.",
+            Overview: "Rainbow or multicoloured candles combine several colours in one candle, usually in layers or swirls; they feel festive, playful and bright.",
 
-            TraditionalMeaning: "The rainbow is widely read as a bridge, a promise, and a sign of hope after a storm. In candle magic, a multicolored candle is traditionally understood as holding the combined meanings of its colors, so it can support broad, balanced, or celebratory intentions.",
+            TraditionalMeaning: "Hope and harmony: a bridge and a promise after the storm, holding the combined meanings of its colours in one broad, joyful blessing.",
 
-            CommonUses: "Rainbow candles are commonly used for general blessings, birthdays and celebrations, wish spells, harmony within a group or household, rituals for hope and renewal, and Pride or community gatherings. Some practitioners use them when they want one candle to cover several intentions.",
-
-            HowToUse: "Use a rainbow candle when the intention is broad, joyful, or shared. Write a single clear wish or blessing, then light the candle and let each color represent a different part of the life you are blessing. For group work, invite each person to name one hope as the candle burns.",
+            HowToUse: "Start here: write a single clear wish or blessing, then light the candle and let each colour stand for a different part of the life you are blessing. For group work, invite each person to name one hope as the candle burns. Layered candles change colour as they melt, so burn it over several sessions, snuffing and relighting, until the flame has reached each band.",
 
             PairingNotes: "Rainbow candles pair well with clear quartz for amplification, fluorite for harmony and clarity, labradorite for its play of color, and rose for warmth and love. They also suit celebratory altars with flowers, fruit, and ribbons.",
 
             AlternativeColors: "White can substitute for a rainbow candle because it is traditionally seen as containing all colors. Gold can substitute for celebration and success. Several small candles in different colors can substitute for one multicolored candle.",
 
             SafetyAndRespect: "Seven-color candles sold in botanicas may be devotional candles connected to Lucumí, Santería, and related traditions, some of which are initiatory and closed. Treat their imagery and prayers with respect rather than using them as decoration.",
-
-            BeginnerTip: "A rainbow candle is a lovely choice for a birthday or new-beginnings ritual where you want to bless every part of the year ahead.",
 
             TraditionNotes: "Wheel of the Year: Used as an all-purpose candle when no single colour fits, for celebration and blessing, and at Beltane or Litha festivities.\n\nFolk & wider practice: Multicoloured candles are burned in modern practice for all-purpose work, celebration and LGBTQ+ pride.",
 
@@ -5169,21 +4669,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Magenta is a modern addition to candle color lists, and its meanings vary between authors. It is often described as fast-acting and intense, so some practitioners use it only alongside another color.",
 
-            Overview: "Magenta candles blend the passion of red with the spiritual focus of purple. In modern practice they are often used to speed up a working, add intensity, and support spiritual and emotional healing. Many practitioners treat magenta as a booster color that strengthens the candles around it.",
+            Overview: "Magenta is a vivid pink-purple that blends the heat of red with the depth of purple; its candle feels striking, intense and energetic.",
 
-            TraditionalMeaning: "Magenta is traditionally read as a high-energy color that bridges the physical and the spiritual. Its Venus association connects it with love, beauty, and emotional healing, while its intensity links it with quick results and powerful change.",
+            TraditionalMeaning: "Acceleration and healing: high energy that bridges body and spirit, love and emotional renewal, and quick, powerful change.",
 
-            CommonUses: "Magenta candles are commonly used for speeding up spells, emotional and spiritual healing, self-love work with real fire behind it, renewed passion, and adding energy to a long-running working. Some practitioners burn a small magenta candle beside a main spell candle to give it momentum.",
-
-            HowToUse: "Use a magenta candle when a working needs energy and movement. Burn it beside your main spell candle, or carve it with a single word for the change you want to see. Pair it with rose quartz for heart healing or a pinch of cinnamon for speed.",
+            HowToUse: "Start here: place a small magenta candle beside your main spell candle and light it to give that working an extra push. Alternatively, carve a single word for the change you want into the wax and burn it on its own. When using it as a helper, light both from the same match and keep them on one fireproof tray.",
 
             PairingNotes: "Magenta candles pair well with garnet for passion and commitment, rose quartz for self-love and healing, rose for love, and cinnamon for speed and warmth. They also pair well alongside pink, red, or purple candles.",
 
             AlternativeColors: "Red can substitute when passion or speed is the focus. Purple can substitute for spiritual healing. Pink can substitute for gentler emotional and self-love work.",
 
             SafetyAndRespect: "Fast-acting workings can feel rushed. Make sure the change you are asking for is one you are ready for, and pair any healing work with practical care.",
-
-            BeginnerTip: "Try using magenta as a helper candle: place a small one beside your main candle when you want to give a working an extra push.",
 
             TraditionNotes: "Wheel of the Year: Burned to speed a working, for spiritual healing and high-energy rites, sometimes alongside other candles to boost them.\n\nFolk & wider practice: In modern candle magic magenta is burned to speed results, for spiritual healing and for high-energy work.",
 
@@ -5209,19 +4705,17 @@ const TraditionalLibrary = {
             Offerings: "Honey, wine, roses, perfumes, jewelry, apples, chocolate",
             TraditionalWarnings: "Traditions honoring Aphrodite vary between ancient Greek religion and modern devotional practice.",
 
-            Overview: "Aphrodite is the Greek goddess of love, beauty, desire, pleasure, attraction, and relational power. In modern witchcraft and devotional practice, she is often approached for self-love, romantic love, sensuality, confidence, beauty, healing shame around desire, and reconnecting with the body. Aphrodite is not only a goddess of romance. She also represents magnetism, embodiment, worthiness, softness, and the power of being fully alive in one’s own skin.",
+            Overview: "Aphrodite is the Greek goddess of love, beauty, desire and pleasure, born from the sea foam. She is pictured as a radiant woman rising from the sea on a scallop shell, often with a mirror, sparrows or swans.",
 
-            TraditionalMeaning: "Traditionally, Aphrodite is associated with love, beauty, sexuality, fertility, the sea, flowers, adornment, and the irresistible force of desire. Her myths can be tender, playful, complicated, and disruptive, reflecting the many ways love and desire shape human life. In magical practice, she is often invoked for attraction, emotional healing, pleasure, confidence, and the restoration of self-worth.",
+            TraditionalMeaning: "Love as a living force: magnetism, embodiment, worthiness and the power of being fully at home in one's own skin.",
 
-            DevotionalApproach: "Devotion to Aphrodite often centers on beauty, pleasure, softness, self-respect, and honoring the body. This can include tending an altar with flowers, lighting pink or red candles, wearing perfume, creating art, caring for the skin, speaking kindly to oneself, or making choices that affirm love rather than shame. Devotion to Aphrodite does not have to be sexual or romantic. It can be deeply personal, healing, and self-restorative.",
+            DevotionalApproach: "Start here: light a pink candle and ask Aphrodite to help you treat yourself as someone worthy of tenderness. Approach her with warmth and appreciation, and give before you ask. She asks devotees to honour their bodies and choose love over shame; devotion to her need not be sexual or romantic.",
 
-            OfferingNotes: "Traditional and modern offerings may include roses, honey, wine, apples, seashells, perfume, jewelry, chocolate, poetry, music, and acts of self-care. Offerings should be given with respect and not as a transaction. A simple offering of clean water, a rose, or a heartfelt prayer can be meaningful.",
+            OfferingNotes: "Offer chocolate, seashells, sweet wine, jewellery or a handmade beauty product, set out on a pretty dish. Poetry, music and acts of self-care can be offered too. Give with respect rather than as a trade; a single flower or a glass of clean water is enough.",
 
-            AltarIdeas: "An Aphrodite altar may include pink, red, green, or white candles, rose quartz, seashells, rose petals, mirrors, perfume bottles, apples, pearls, copper, ocean imagery, and symbols of beauty or love. The altar can feel soft, sensual, elegant, romantic, or emotionally healing depending on the practitioner’s relationship with her.",
+            AltarIdeas: "Pink, red, green or white candles, rose quartz, pearls, copper, a mirror, perfume bottles and ocean imagery. Arrange it to feel soft and beautiful.",
 
-            CulturalContext: "Aphrodite comes from ancient Greek religion, but modern devotion often blends historical references, personal gnosis, witchcraft, and contemporary spiritual practice. Her worship was not limited to gentle romance. Ancient cults and myths show her as powerful, complex, and capable of influencing desire, fertility, war, sovereignty, and social bonds.",
-
-            BeginnerTip: "Start with self-love before attraction magic. Light a pink candle, offer rose petals or water, and ask Aphrodite to help you treat yourself as someone worthy of tenderness.",
+            CulturalContext: "Aphrodite is honoured today in Hellenic polytheism, a living religion. Respect her full complexity, including her power over sovereignty and social bonds, rather than reducing her to romance.",
 
             Traditions: "Hellenic, Roman",
 
@@ -5245,19 +4739,17 @@ const TraditionalLibrary = {
             Offerings: "Music, poetry, honey, wine, olive oil, bay leaves",
             TraditionalWarnings: "Apollo is traditionally associated with both healing and plague, reflecting balance rather than purely benevolent power.",
 
-            Overview: "Apollo is the Greek god of healing, prophecy, music, poetry, truth, light, order, and the sun. In modern practice, he is often approached for clarity, creative inspiration, healing support, discipline, artistic expression, divination, and the courage to face truth. Apollo’s energy is often described as bright, precise, illuminating, and demanding of honesty.",
+            Overview: "Apollo is the Greek god of healing, prophecy, music, poetry, archery and light. He is pictured as a beardless young man holding a lyre or a silver bow, often with a raven or the Delphic python.",
 
-            TraditionalMeaning: "Traditionally, Apollo is connected with the Delphic oracle, sacred music, poetic inspiration, medicine, archery, purification, and radiant divine order. He is a god of both healing and harm, capable of bringing disease as well as remedy. This duality makes him a deity of responsibility, truth, and the consequences of imbalance.",
+            TraditionalMeaning: "Clear, ordered light: truth, harmony and the responsibility that comes with the power to heal or to harm.",
 
-            DevotionalApproach: "Devotion to Apollo can include music, singing, poetry, study, disciplined creativity, divination, physical care, sunlight rituals, and acts of truth-telling. He may be honored through learning an instrument, writing honestly, practicing a healing art, tending physical health, or dedicating time to creative discipline.",
+            DevotionalApproach: "Start here: bring him something practised, not perfect, such as a song, a poem or an honest journal entry. Approach him cleanly and honestly; he values discipline, learning and truth-telling over flattery. Tending your health, practising an instrument or facing a truth you have avoided can all be devotion.",
 
-            OfferingNotes: "Offerings may include bay leaves, honey, wine, olive oil, incense, music, poetry, sunlight, clean water, and acts of artistic devotion. Playing or writing music can be a meaningful offering. So can studying, practicing, or speaking truth where avoidance has taken root.",
+            OfferingNotes: "Pour olive oil or wine as a libation, or place fresh bay leaves on the altar. Playing or reciting your own work aloud is an offering in itself.",
 
-            AltarIdeas: "An Apollo altar may include yellow, gold, or white candles, bay leaves, citrine, clear quartz, sun imagery, a small lyre or instrument symbol, poetry, medical symbols, or divination tools. The altar often feels bright, clean, ordered, and intentional.",
+            AltarIdeas: "Yellow, gold or white candles, citrine, clear quartz, sun imagery, a small lyre and divination tools. Keep it bright, clean and ordered.",
 
-            CulturalContext: "Apollo comes from ancient Greek religion and was widely honored across the Greek world. Modern devotional approaches may draw from mythology, reconstructionist practice, Hellenic polytheism, witchcraft, or personal spiritual experience. His solar associations are strong in modern practice, though ancient associations are more complex than simply being a sun god.",
-
-            BeginnerTip: "If you are working with Apollo, bring him something practiced, not perfect. A song, poem, study session, or honest journal entry can be a stronger offering than something polished but empty.",
+            CulturalContext: "Apollo is honoured today in Hellenic polytheism, a living religion; learn from its practitioners and hymns. Let his healing, prophetic and musical sides stand alongside the solar one rather than treating him as only a sun god.",
 
             Traditions: "Hellenic, Roman",
 
@@ -5281,19 +4773,17 @@ const TraditionalLibrary = {
             Offerings: "Fresh water, flowers, honey, handmade crafts, arrows, incense",
             TraditionalWarnings: "Ancient traditions often emphasize respect for nature and personal integrity when honoring Artemis.",
 
-            Overview: "Artemis is the Greek goddess of the wilderness, wild animals, hunting, independence, childbirth, young people, and the moon in many modern associations. She is often approached for protection, autonomy, courage, nature connection, bodily sovereignty, and the preservation of wildness. Artemis is especially meaningful to practitioners who value independence, boundaries, and sacred solitude.",
+            Overview: "Artemis is the Greek goddess of the wilderness, wild animals, the hunt, childbirth and young people. She is pictured as a young huntress in a short tunic with bow and quiver, a deer or hounds at her side.",
 
-            TraditionalMeaning: "Traditionally, Artemis is connected with the hunt, wild places, animals, chastity, transition, protection of children, and the fierce defense of her own freedom. She is not simply gentle moonlight. She is wild, precise, protective, and unwilling to be possessed.",
+            TraditionalMeaning: "Untamed freedom: fierce independence, protective boundaries and the sacred wildness that will not be possessed.",
 
-            DevotionalApproach: "Devotion to Artemis may include spending time in nature, protecting animals, supporting children or vulnerable people, practicing archery or outdoor skills, honoring bodily autonomy, and creating rituals around independence and protection. She may be approached as a guardian of boundaries and wild spaces.",
+            DevotionalApproach: "Start here: take a walk outside, set fresh water on the altar, and promise not to abandon yourself. Approach her with respect for boundaries, hers and your own, and without trying to tame her. She asks devotees to protect animals, children and wild places, and to honour bodily autonomy.",
 
-            OfferingNotes: "Offerings may include fresh water, honey, flowers, incense, handmade crafts, images of deer or bears, moonlit prayers, acts of environmental care, or donations to animal protection causes. Ethical action can be an especially meaningful offering.",
+            OfferingNotes: "Offer fresh water, honey, wildflowers or handmade crafts. Ethical action counts strongly: a donation to animal protection or a day of environmental care can be dedicated to her.",
 
-            AltarIdeas: "An Artemis altar may include silver, white, or green candles, moonstone, moss agate, antlers or deer imagery, a bow symbol, wildflowers, cypress, mugwort, and natural objects gathered respectfully. The altar may feel wild, clean, moonlit, and untamed.",
+            AltarIdeas: "Silver, white or green candles, moonstone, moss agate, antlers, a bow symbol, cypress, mugwort and natural objects gathered respectfully.",
 
-            CulturalContext: "Artemis comes from ancient Greek religion and has many local forms and cults. Modern witchcraft often emphasizes her lunar and independence associations, while ancient worship also focused heavily on hunting, childbirth, protection of youth, and wild nature.",
-
-            BeginnerTip: "Approach Artemis through respect for your own boundaries. A simple devotion could be a walk outside, fresh water on the altar, and a promise not to abandon yourself.",
+            CulturalContext: "Artemis is honoured today in Hellenic polytheism, a living religion. Let her hunting, childbirth and protective roles stand alongside the lunar image modern witchcraft favours.",
 
             Traditions: "Hellenic, Roman",
 
@@ -5317,19 +4807,17 @@ const TraditionalLibrary = {
             Offerings: "Milk, perfume, flowers, music, bread, honey",
             TraditionalWarnings: "Modern offerings involving milk are symbolic and not universally practiced in reconstructed Egyptian traditions.",
 
-            Overview: "Bastet is an Egyptian goddess associated with cats, protection, home, joy, fertility, music, pleasure, and household blessing. In modern practice, she is often approached as a guardian of the home, a protector of cats, a deity of sensual joy, and a warm but fierce presence who defends what is beloved.",
+            Overview: "Bastet is the Egyptian goddess of cats, home, joy, music, perfume and protection. She is pictured as a cat or a cat-headed woman, and in earlier forms as a lioness.",
 
-            TraditionalMeaning: "Traditionally, Bastet has both gentle and fierce aspects. She is strongly linked with cats, but her earlier associations also connect her with lioness power and protective force. She represents joy, domestic blessing, music, fertility, perfume, and the protective power of pleasure and home.",
+            TraditionalMeaning: "Protective joy: household blessing, pleasure and delight, guarded by a warm but fierce defence of what is beloved.",
 
-            DevotionalApproach: "Devotion to Bastet can include caring for cats, protecting the home, making space for joy, playing music, wearing perfume, dancing, tending beauty, and creating a peaceful household. She may be honored through acts of protection and acts of delight.",
+            DevotionalApproach: "Start here: care for the living cats in your life, with play, comfort and respect for their boundaries, as a first act of devotion. Approach her with gladness; beauty, dance and a peaceful home all honour her. She asks devotees to protect what they love and to make room for delight.",
 
-            OfferingNotes: "Offerings may include fresh water, bread, honey, perfume, flowers, music, dance, cat-safe offerings, or donations to cat shelters. Milk is common in modern symbolism, but it is not always appropriate for actual cats and is not universal across traditions.",
+            OfferingNotes: "Offer fresh water, bread, honey, flowers or a donation to a cat shelter. Milk is a common modern offering, but never give it to real cats, and keep all offerings safe for animals in the house.",
 
-            AltarIdeas: "A Bastet altar may include cat imagery, gold or green candles, tiger eye, carnelian, perfume bottles, bells, music symbols, flowers, and offerings of water or bread. It may feel warm, graceful, sensual, protective, and joyful.",
+            AltarIdeas: "Cat imagery, gold or green candles, tiger eye, carnelian, perfume bottles, bells and music symbols. Let it feel warm and joyful.",
 
-            CulturalContext: "Bastet comes from ancient Egyptian religion. Modern devotional work may draw from Kemetic reconstruction, witchcraft, personal devotion, and popular symbolism. Because ancient Egyptian religious practice has specific cultural and ritual context, it is worth approaching her with respect rather than treating her only as a cat aesthetic.",
-
-            BeginnerTip: "A beautiful way to honor Bastet is to care for the living cats in your life, including play, protection, comfort, and respect for their boundaries.",
+            CulturalContext: "Bastet belongs to ancient Egyptian religion, honoured today in Kemetic practice. Approach her as a goddess with real ritual context, not only a cat aesthetic.",
 
             Traditions: "Egyptian",
 
@@ -5353,19 +4841,17 @@ const TraditionalLibrary = {
             Offerings: "Milk, butter, bread, poetry, handmade crafts, fresh water",
             TraditionalWarnings: "Brigid is honored in both pre-Christian and Christian traditions, each with distinct customs.",
 
-            Overview: "Brigid is a beloved Celtic goddess associated with healing, poetry, inspiration, smithcraft, sacred fire, hearth, wells, protection, and renewal. She is also honored as Saint Brigid in Christian traditions, making her a deeply layered figure across religious history. In modern witchcraft, she is often approached for creativity, healing, household blessing, courage, and sacred inspiration.",
+            Overview: "Brigid is an Irish goddess of healing, poetry, smithcraft, the hearth and holy wells, also honoured as Saint Brigid. She is pictured with a flame, a well, a mantle or a white cow.",
 
-            TraditionalMeaning: "Brigid’s traditional associations include flame, healing waters, poetry, craftsmanship, fertility, protection, and the return of light. She is strongly connected with Imbolc, inspiration, the hearth, and the sacred transformation of raw material into beauty or usefulness.",
+            TraditionalMeaning: "Sacred fire and inspiration: healing, creative making, renewal and the return of light.",
 
-            DevotionalApproach: "Devotion to Brigid may include tending a flame, writing poetry, making crafts, caring for the sick, blessing the home, visiting wells or water sources, and honoring the seasonal shift toward spring. She is often approached through practical devotion, making, healing, and tending.",
+            DevotionalApproach: "Start here: light one candle and write four honest lines of poetry; she responds to sincere making, not perfection. Approach her through practical devotion: tending a flame safely, crafting, caring for the sick and blessing the home. She asks for service and creativity offered with an open heart.",
 
-            OfferingNotes: "Offerings may include milk, butter, bread, fresh water, poetry, candles, handmade crafts, woven crosses, flowers, or acts of healing and service. A poem written sincerely can be a powerful offering.",
+            OfferingNotes: "Offer fresh water, flowers, wool, handmade crafts or a sincere poem read aloud. Acts of healing and service can be dedicated to her.",
 
-            AltarIdeas: "A Brigid altar may include white, red, or gold candles, a Brigid’s Cross, a bowl of water, poetry, tools of craft, wool, flowers, carnelian, clear quartz, and symbols of flame or wells. The altar often feels warm, clean, healing, and hearth-centered.",
+            AltarIdeas: "White, red or gold candles, a small hammer or anvil, tools of your craft, carnelian, clear quartz and flame symbols.",
 
-            CulturalContext: "Brigid exists in both pre-Christian Celtic and Christian devotional contexts. Modern practitioners may approach her as a goddess, saint, ancestor of tradition, or syncretic figure. It is important to recognize that different communities honor her in different ways.",
-
-            BeginnerTip: "Light one candle and write four honest lines of poetry. Brigid does not require perfection. She responds beautifully to sincere making.",
+            CulturalContext: "Brigid is honoured by Christians as a saint and by pagans as a goddess, and both communities are living. Respect that each honours her in its own way, and avoid claiming the saint is only a disguised goddess.",
 
             Traditions: "Celtic, Christian, Wheel of the Year",
 
@@ -5389,19 +4875,17 @@ const TraditionalLibrary = {
             Offerings: "Acorns, apples, nuts, bread, ale, fresh spring water",
             TraditionalWarnings: "Little survives from ancient Celtic practice. Many modern correspondences are reconstructed from historical evidence and contemporary traditions.",
 
-            Overview: "Cernunnos is a horned figure commonly associated in modern paganism with wild nature, animals, fertility, prosperity, the forest, and the balance between human and animal life. He is often approached as a lord of the wild, a guardian of nature, and a deity of embodied, earthly abundance.",
+            Overview: "Cernunnos is a horned god of wild nature, animals, fertility and abundance. He is pictured seated cross-legged with stag antlers, wearing or holding a torc, often with a ram-horned serpent and wild animals around him.",
 
-            TraditionalMeaning: "The historical evidence for Cernunnos is limited, but imagery often shows an antlered figure with animals, a torc, and sometimes a serpent. Modern traditions have built on these symbols to connect him with wildness, fertility, prosperity, the hunt, and the sacred relationship between humans and the natural world.",
+            TraditionalMeaning: "The wild and the abundant: the sacred balance between human and animal life, and earthy, embodied plenty.",
 
-            DevotionalApproach: "Devotion to Cernunnos may include spending time in forests, caring for animals, honoring seasonal cycles, practicing ecological responsibility, grounding into the body, and respecting the land. He is often approached through quiet presence in nature rather than elaborate ritual.",
+            DevotionalApproach: "Start here: go outside without asking for anything, and listen and watch until the land feels like more than scenery. Approach him through quiet presence in nature rather than elaborate ritual. He asks for ecological responsibility and respect for animals and the land.",
 
-            OfferingNotes: "Offerings may include acorns, apples, nuts, bread, ale, fresh water, herbs, ethically gathered natural objects, or acts of environmental care. Leaving offerings outdoors should be done responsibly so they do not harm wildlife or the land.",
+            OfferingNotes: "Offer apples, nuts or ale, or an act of environmental care. Leave outdoor offerings only if they are biodegradable and safe for wildlife, and take everything else home.",
 
-            AltarIdeas: "A Cernunnos altar may include antlers, oak leaves, moss agate, green aventurine, smoky quartz, brown or green candles, animal imagery, acorns, seeds, and forest symbols. The altar may feel earthy, wild, grounded, and alive.",
+            AltarIdeas: "Brown or green candles, oak leaves, moss agate, green aventurine, smoky quartz, animal imagery, seeds and ethically gathered forest objects.",
 
-            CulturalContext: "Cernunnos is known primarily through limited ancient inscriptions and imagery, so much of his modern identity comes from reconstruction, interpretation, and contemporary pagan practice. It is best to present his correspondences as traditional-modern rather than fully documented ancient doctrine.",
-
-            BeginnerTip: "Honor Cernunnos by going outside without asking for anything. Listen, observe, and let the land be more than scenery.",
+            CulturalContext: "Little is known of Cernunnos from ancient times, so much of his modern identity is reconstruction and contemporary pagan practice. Present his correspondences honestly as modern rather than as documented ancient doctrine.",
 
             Traditions: "Celtic, Wheel of the Year",
 
@@ -5425,19 +4909,17 @@ const TraditionalLibrary = {
             Offerings: "Poetry, milk, oats, bread, herbal tea, spring water",
             TraditionalWarnings: "Most modern magical associations come from Welsh mythology rather than evidence of historical worship.",
 
-            Overview: "Cerridwen is a Welsh figure associated in modern witchcraft with the cauldron, transformation, inspiration, wisdom, poetry, magic, and rebirth. She is often approached as a goddess of deep change, creative initiation, and the difficult process of becoming wise.",
+            Overview: "Cerridwen is a Welsh figure honoured in modern witchcraft as keeper of the cauldron of inspiration, wisdom and rebirth. She is pictured stirring a great cauldron, and is linked with the white sow and the moon.",
 
-            TraditionalMeaning: "Cerridwen is best known from Welsh myth involving her cauldron of inspiration and the transformation story connected with Taliesin. In modern practice, the cauldron becomes a symbol of brewing, transformation, death and rebirth, poetic inspiration, and the mystery of change.",
+            TraditionalMeaning: "Transformation: the hard-won wisdom of being changed, death and rebirth, and poetic inspiration.",
 
-            DevotionalApproach: "Devotion to Cerridwen may include writing poetry, working with a cauldron, studying myth, embracing transformation, practicing divination, and honoring the creative process even when it is uncomfortable. She is often approached during times of identity change or spiritual initiation.",
+            DevotionalApproach: "Start here: write down one truth you have been avoiding, and approach her only when you are ready to be changed by what you learn. Come to her honestly and patiently, honouring the creative process even when it is uncomfortable. Many turn to her during identity change or spiritual initiation.",
 
-            OfferingNotes: "Offerings may include poetry, oats, bread, milk, herbal tea, spring water, mugwort, incense, or creative work. A poem, chant, or written truth can be especially fitting.",
+            OfferingNotes: "Offer oats, milk, herbal tea, spring water or mugwort, or a chant or written truth read aloud.",
 
-            AltarIdeas: "A Cerridwen altar may include a cauldron, silver or purple candles, mugwort, amethyst, moonstone, labradorite, water, poetry, and symbols of the moon or sow. The altar may feel mysterious, lunar, creative, and transformational.",
+            AltarIdeas: "A cauldron, silver or purple candles, amethyst, moonstone, labradorite and moon or sow symbols.",
 
-            CulturalContext: "Cerridwen is rooted in Welsh mythology, but clear evidence of ancient worship is limited. Many modern associations come from contemporary witchcraft, Druidry, and poetic interpretation. This does not make them invalid, but it is important to distinguish mythology from documented cult practice.",
-
-            BeginnerTip: "Work with Cerridwen when you are ready to be changed by what you learn. Her cauldron is not just inspiration, it is transformation.",
+            CulturalContext: "Cerridwen comes from Welsh tradition, and Welsh culture is living heritage. Be clear which of her associations come from the tales and which from modern witchcraft and Druidry; both can be honoured honestly.",
 
             Traditions: "Celtic, Wheel of the Year",
 
@@ -5461,19 +4943,17 @@ const TraditionalLibrary = {
             Offerings: "Fresh fruit, sweets, flowers, incense, coconuts, rice",
             TraditionalWarnings: "Durga is a living deity in Hindu religious practice. Traditional worship follows customs that may differ significantly from modern witchcraft.",
 
-            Overview: "Durga is a powerful Hindu goddess associated with protection, courage, righteous action, motherhood, strength, and victory over evil. She is often depicted riding a lion or tiger and carrying weapons, representing divine power that confronts chaos and protects the world. In modern spiritual contexts, she may be approached for courage, protection, and the strength to face what is harmful.",
+            Overview: "Durga is a Hindu goddess of protection, strength, courage and victory over evil, a fierce and compassionate divine mother. She is pictured with many arms holding weapons, riding a lion or tiger.",
 
-            TraditionalMeaning: "Durga is not merely a symbolic archetype. She is a living and actively worshipped deity within Hindu traditions. Her myths often emphasize the defeat of destructive forces, the protection of cosmic order, and the power of the divine feminine as fierce, compassionate, and sovereign.",
+            TraditionalMeaning: "Divine power that confronts chaos: sovereign, fierce and compassionate protection of the world and its order.",
 
-            DevotionalApproach: "Devotion to Durga traditionally may involve mantra, prayer, ritual purity, offerings, festivals such as Navaratri, and culturally specific forms of worship. Practitioners outside Hindu traditions should approach her with humility, respect, and willingness to learn from Hindu sources rather than flattening her into a generic warrior goddess.",
+            DevotionalApproach: "Start here: learn about her from Hindu sources and Hindu devotees before anything else; respect comes before correspondence. Approach her with humility, cleanliness and reverence, following Hindu guidance on prayer and mantra rather than improvising. She asks for sincerity, not a generic warrior-goddess aesthetic.",
 
-            OfferingNotes: "Offerings may include flowers, fruit, sweets, rice, coconuts, incense, lamps, and devotional song. If honoring Durga, it is wise to learn from Hindu devotional context and avoid casual or aesthetic use detached from respect.",
+            OfferingNotes: "Offer flowers, fruit, sweets, rice, coconut or incense, placed cleanly and respectfully. Learn which offerings Hindu devotees consider appropriate before improvising.",
 
-            AltarIdeas: "A Durga altar may include red, gold, or white candles, flowers, fruit, incense, images of Durga, lion or tiger symbolism, carnelian, garnet, and offerings placed cleanly and respectfully. The altar should feel intentional and reverent rather than decorative alone.",
+            AltarIdeas: "Red, gold or white candles, an image of Durga treated with reverence, lion or tiger symbolism, carnelian and garnet. Keep it clean and intentional rather than decorative.",
 
-            CulturalContext: "Durga belongs to living Hindu religious traditions with established practices, festivals, theology, and devotional forms. Any witchcraft-based use should be framed carefully and respectfully, especially for practitioners outside that culture or religion.",
-
-            BeginnerTip: "If you feel called to Durga, begin by learning about her from Hindu sources. Respect comes before correspondence.",
+            CulturalContext: "Durga belongs to living Hindu religion with established practices, festivals and theology. Outsiders should approach her carefully, ideally learning from a Hindu teacher or temple.",
 
             Traditions: "Hindu",
 
@@ -5497,19 +4977,17 @@ const TraditionalLibrary = {
             Offerings: "Honey, mead, flowers, jewelry, bread, berries",
             TraditionalWarnings: "Modern Norse Pagan traditions vary widely, and historical sources describing Freyja are limited.",
 
-            Overview: "Freyja is a Norse goddess associated with love, beauty, sexuality, fertility, magic, wealth, war, death, and sovereignty. She is complex and powerful, combining sensuality with battle, desire with magic, and beauty with independence. In modern practice, she is often approached for self-worth, love, seidr, abundance, courage, and personal sovereignty.",
+            Overview: "Freyja is a Norse goddess of the Vanir, ruling love, beauty, sexuality, fertility, magic, wealth, war and death. She is pictured wearing the necklace Brísingamen and a falcon-feather cloak, riding in a chariot drawn by cats or on her boar.",
 
-            TraditionalMeaning: "Traditionally, Freyja is connected with the Vanir, fertility, love, magic, the necklace Brísingamen, cats, falcons, boars, and the receiving of some of the battle-dead. She is not only a love goddess. She is also a magical, wealthy, independent, and formidable figure.",
+            TraditionalMeaning: "Sovereign power: love and desire joined with magic, wealth, courage and fierce independence.",
 
-            DevotionalApproach: "Devotion to Freyja may include offerings of beauty, acts of self-worth, magical study, honoring desire, working with cats or falcon imagery, practicing divination, and claiming personal sovereignty. She may be approached with warmth, admiration, honesty, and respect for her complexity.",
+            DevotionalApproach: "Start here: light a candle and name one way you will honour your own worth today, remembering she is far more than a love goddess. Approach her with warmth, admiration and honesty, respecting her complexity. She asks devotees to claim their sovereignty, study magic and honour desire without shame.",
 
-            OfferingNotes: "Offerings may include honey, mead, flowers, berries, jewelry, amber, bread, perfume, poetry, or acts of pleasure and self-honor. Because she is associated with wealth and beauty, offerings chosen with care may feel especially appropriate.",
+            OfferingNotes: "Offer berries, bread, jewellery, perfume or poetry, or an act of pleasure and self-honour. Offerings chosen with care and a touch of beauty suit her.",
 
-            AltarIdeas: "A Freyja altar may include pink, green, or gold candles, rose quartz, amber, citrine, cat imagery, falcon feathers or symbols, flowers, jewelry, and symbols of sensuality, magic, or sovereignty. The altar may feel lush, warm, beautiful, and powerful.",
+            AltarIdeas: "Pink, green or gold candles, rose quartz, citrine, cat imagery, falcon feathers or symbols, and tokens of magic or sovereignty.",
 
-            CulturalContext: "Freyja comes from Norse mythology and is honored in many forms of modern Heathenry, Norse Paganism, and witchcraft. Surviving sources are limited and filtered through later manuscripts, so modern devotional practice often includes reconstruction and personal experience.",
-
-            BeginnerTip: "Do not reduce Freyja to romance. She is love, yes, but also magic, wealth, battle, grief, pleasure, and power.",
+            CulturalContext: "Freyja is honoured today in Heathenry, a living religion, and in Norse Paganism and witchcraft. Much modern practice is reconstruction and personal experience, so present it as such.",
 
             Traditions: "Norse",
 
@@ -5533,19 +5011,17 @@ const TraditionalLibrary = {
             Offerings: "Modak sweets, fruit, coconuts, incense, flowers",
             TraditionalWarnings: "Ganesha is widely worshipped in Hinduism. Traditional devotional practices should be approached with cultural respect.",
 
-            Overview: "Ganesha is a beloved Hindu deity associated with wisdom, learning, new beginnings, prosperity, and the removal of obstacles. He is often invoked before major undertakings, travel, study, business, ritual, and life transitions. In modern spiritual practice, many people approach Ganesha when they need help beginning well or clearing the path ahead.",
+            Overview: "Ganesha is a Hindu deity of wisdom, learning, new beginnings, prosperity and the removal of obstacles. He is pictured with an elephant's head, a round belly and a broken tusk, holding sweets and riding a mouse.",
 
-            TraditionalMeaning: "Ganesha is a living deity in Hindu traditions, not simply a symbol of luck. His elephant head, broken tusk, mouse vehicle, and sweets all carry layers of religious meaning. He is associated with intelligence, humility, discernment, abundance, and the ability to navigate obstacles wisely.",
+            TraditionalMeaning: "Wise beginnings: intelligence, humility, discernment and the skill to navigate obstacles well.",
 
-            DevotionalApproach: "Traditional devotion to Ganesha may include mantra, prayer, offerings, festival observance, and ritual forms rooted in Hindu practice. Practitioners outside Hindu traditions should approach him respectfully and learn from Hindu sources rather than treating him as a generic good luck charm.",
+            DevotionalApproach: "Start here: learn about him from Hindu sources, then set a clear intention and ask for wisdom with your obstacles, not just their instant removal. Approach him with respect and cleanliness, following Hindu guidance on prayer and mantra. He is not a generic good-luck charm.",
 
-            OfferingNotes: "Offerings may include modak sweets, fruit, coconuts, flowers, incense, rice, and clean water. When possible, learn which offerings are traditional and appropriate rather than improvising without context.",
+            OfferingNotes: "Offer fruit, flowers, rice, incense or clean water, placed neatly. Learn which offerings are traditional before improvising.",
 
-            AltarIdeas: "A Ganesha altar may include yellow, orange, or gold candles, flowers, fruit, incense, citrine, clear quartz, written goals, study materials, and an image or murti treated respectfully. The altar should be clean, intentional, and approached with reverence.",
+            AltarIdeas: "Yellow, orange or gold candles, an image or murti treated respectfully, citrine, clear quartz, written goals and study materials. Keep it clean and reverent.",
 
-            CulturalContext: "Ganesha is widely and actively worshipped within Hinduism. His presence in witchcraft or eclectic spirituality should be framed with care, especially by practitioners outside the religion. Respectful learning matters more than collecting correspondences.",
-
-            BeginnerTip: "If you are drawn to Ganesha, begin with respect, learning, and a clear intention. Ask for wisdom with obstacles, not just their instant removal.",
+            CulturalContext: "Ganesha is widely and actively worshipped within Hinduism. Outsiders should approach him with care; respectful learning from Hindu communities matters more than collecting correspondences.",
 
             Traditions: "Hindu",
 
@@ -5569,19 +5045,17 @@ const TraditionalLibrary = {
             Offerings: "Garlic, eggs, honey, wine, bread, incense, olive oil",
             TraditionalWarnings: "Ancient, reconstructed, and modern Hekatean traditions differ considerably. Practices surrounding Deipnon and offerings vary between traditions.",
 
-            Overview: "Hekate is a Greek goddess associated with magic, witchcraft, crossroads, liminal spaces, spirits, protection, night, and thresholds. In modern witchcraft, she is one of the most widely honored deities connected with magical practice, shadow work, spirit work, and personal transformation. She is often approached as a guide through transitions, a guardian at the crossroads, and a torch-bearing presence in dark or uncertain places.",
+            Overview: "Hekate is a Greek goddess of magic, crossroads, thresholds, spirits and the night. She is pictured carrying twin torches, often in triple form facing three ways, with keys and dogs.",
 
-            TraditionalMeaning: "Traditionally, Hekate is connected with crossroads, torches, keys, spirits, boundaries, household protection, and liminal places. Ancient sources show her as complex and powerful, not limited to witchcraft alone. She appears in protective, chthonic, lunar, civic, and household contexts, and modern Hekatean practice often expands these associations into devotion, magic, sovereignty, and spiritual initiation.",
+            TraditionalMeaning: "Liminal guidance: a torch in dark and uncertain places, guardianship at the threshold and sovereign magical power.",
 
-            DevotionalApproach: "Devotion to Hekate may include crossroads prayers, Deipnon observance, lighting torches or candles, keeping keys on the altar, studying magic, tending boundaries, honoring the dead, and working through thresholds with courage. Many devotees approach her with respect, honesty, and consistency rather than performance or fear.",
+            DevotionalApproach: "Start here: light a candle, offer clean water or incense, and ask her to help you see clearly the threshold you are standing at. Approach her with respect, honesty and consistency rather than performance or fear. She asks devotees to tend their boundaries, study their craft and cross life's thresholds with courage.",
 
-            OfferingNotes: "Offerings may include garlic, eggs, honey, wine, bread, incense, olive oil, keys, candles, and acts of service or protection. Deipnon traditions often include offerings at a threshold or crossroads, though modern practitioners adapt this in many ways depending on safety, location, and tradition.",
+            OfferingNotes: "Offer wine, olive oil or acts of service and protection. If you leave food outside, choose a safe spot and only biodegradable offerings.",
 
-            AltarIdeas: "A Hekate altar may include black, purple, or silver candles, keys, torches, obsidian, labradorite, moonstone, mugwort, rosemary, garlic, dog imagery, crossroads symbols, and a bowl for offerings. The altar may feel liminal, protective, dark, luminous, and deeply intentional.",
+            AltarIdeas: "Black, purple or silver candles, keys, obsidian, labradorite, moonstone, mugwort, rosemary, dog imagery, crossroads symbols and a bowl for offerings.",
 
-            CulturalContext: "Hekate comes from ancient Greek and broader Mediterranean religious contexts, and modern Hekatean practice includes reconstructionist, devotional, witchcraft, occult, and personal approaches. Her traditions vary widely, so it is helpful to avoid claiming that one modern method is the only authentic way to honor her.",
-
-            BeginnerTip: "Start simply. Light a candle, offer clean water or incense, and ask Hekate to help you see the threshold you are standing at clearly.",
+            CulturalContext: "Hekate is honoured in reconstructionist, devotional and witchcraft traditions that vary widely. Avoid claiming that any one modern method is the only authentic way to honour her.",
 
             Traditions: "Hellenic, Roman, Wheel of the Year",
 
@@ -5605,19 +5079,17 @@ const TraditionalLibrary = {
             Offerings: "Coins, olive oil, bread, honey, wine, written prayers",
             TraditionalWarnings: "Hermes is traditionally associated with boundaries and travel between worlds, not solely commerce or luck.",
 
-            Overview: "Hermes is the Greek god of travel, communication, messages, trade, luck, boundaries, language, cunning, and movement between worlds. He is a guide, messenger, trickster, and psychopomp, meaning he can guide souls and move across thresholds. In modern practice, Hermes is often approached for communication, travel protection, business, writing, divination, luck, and navigating change.",
+            Overview: "Hermes is the Greek god of travel, messages, trade, luck, language, cunning and boundaries, and guide of souls. He is pictured with a winged hat and sandals, carrying the caduceus, a staff twined with two snakes.",
 
-            TraditionalMeaning: "Traditionally, Hermes is associated with roads, travelers, merchants, thieves, messengers, heralds, boundaries, and transitions. His presence at thresholds makes him both practical and mystical. He governs movement, exchange, cleverness, and the ability to cross from one state or place into another.",
+            TraditionalMeaning: "Movement and exchange: clever communication, luck and the crossing of thresholds between places and worlds.",
 
-            DevotionalApproach: "Devotion to Hermes may include writing, speaking honestly, studying language, traveling with awareness, leaving offerings at crossroads or thresholds, carrying coins, practicing divination, or honoring him before business or communication. He often appreciates wit, movement, cleverness, and directness.",
+            DevotionalApproach: "Start here: ask for his help before a difficult conversation, then do your part by speaking clearly and listening well. Approach him with wit, directness and a light touch. He values cleverness and honest exchange.",
 
-            OfferingNotes: "Offerings may include coins, olive oil, bread, honey, wine, coffee, travel tokens, written prayers, jokes, messages, or acts of generosity to travelers. Because Hermes is associated with exchange, offerings can feel conversational and active.",
+            OfferingNotes: "Offer olive oil, bread, wine, coffee, a travel token, a written prayer or a joke. Generosity to travellers can be dedicated to him.",
 
-            AltarIdeas: "A Hermes altar may include yellow, orange, or gold candles, coins, dice, keys, pens, letters, maps, wing imagery, citrine, fluorite, tiger eye, mint, and symbols of roads or messages. The altar may feel lively, clever, mobile, and bright.",
+            AltarIdeas: "Yellow, orange or gold candles, dice, keys, pens, letters, maps, wing imagery, citrine, fluorite, tiger eye and mint.",
 
-            CulturalContext: "Hermes comes from ancient Greek religion and appears in many roles across myth and cult practice. Modern practitioners often emphasize communication, luck, travel, and trickster wisdom, but his psychopomp and boundary-crossing roles are equally important.",
-
-            BeginnerTip: "Ask Hermes for help before a difficult conversation, then do your part by speaking clearly and listening well.",
+            CulturalContext: "Hermes is honoured today in Hellenic polytheism, a living religion. Give his role as guide of souls the same respect as his luck and trickery.",
 
             Traditions: "Hellenic, Roman",
 
@@ -5641,19 +5113,17 @@ const TraditionalLibrary = {
             Offerings: "Milk, bread, beer, wine, incense, flowers",
             TraditionalWarnings: "Modern magical associations often blend Egyptian religion with later Western esoteric traditions.",
 
-            Overview: "Isis is an Egyptian goddess associated with magic, healing, protection, motherhood, wisdom, kingship, and restoration. She is one of the most enduring and widely recognized goddesses of the ancient world, honored in Egypt and beyond. In modern practice, she is often approached for magical wisdom, healing, maternal protection, spiritual authority, and the power to restore what has been broken.",
+            Overview: "Isis is the Egyptian goddess of magic, healing, protection, motherhood and kingship. She is pictured as a woman with outstretched wings or a throne-shaped crown, often nursing her son Horus.",
 
-            TraditionalMeaning: "Traditionally, Isis is deeply connected with magic, mourning, resurrection, protection, divine motherhood, and royal power. Her role in the Osiris myth links her with grief, devotion, sacred speech, and the ability to gather scattered pieces into wholeness. She is a goddess of powerful, skillful magic, not passive nurturing alone.",
+            TraditionalMeaning: "Restoring power: skilful magic, protective motherhood and the gathering of scattered pieces into wholeness.",
 
-            DevotionalApproach: "Devotion to Isis may include prayer, incense, offerings of water or bread, protective rituals, study of Egyptian religion, acts of healing, and honoring the power of sacred words. She may be approached as a teacher of magic, a protector, and a restorer of life and meaning.",
+            DevotionalApproach: "Start here: say a short prayer to her, choosing each word with care, since she honours the power of sacred speech. Approach her with reverence and skill; healing, protective work and study of Egyptian religion all honour her. She is a teacher of magic, not only a gentle mother.",
 
-            OfferingNotes: "Offerings may include fresh water, bread, milk, beer, wine, incense, myrrh, frankincense, flowers, and devotional prayers. Offerings should be clean and intentional. When possible, learning from Egyptian and Kemetic sources can deepen respect.",
+            OfferingNotes: "Offer beer, wine, myrrh or frankincense, set out clean and with intention.",
 
-            AltarIdeas: "An Isis altar may include blue, white, or gold candles, ankh symbols, wings, lapis lazuli, moonstone, myrrh, frankincense, lotus imagery, a bowl of water, and symbols of protection or restoration. The altar may feel regal, protective, healing, and sacred.",
+            AltarIdeas: "Blue, white or gold candles, an ankh, wing imagery, lapis lazuli, moonstone, lotus imagery and symbols of protection.",
 
-            CulturalContext: "Isis comes from ancient Egyptian religion and later became important in broader Mediterranean religious life. Modern magical practice sometimes blends her with Western occult symbolism, so it is useful to distinguish ancient Egyptian context from later esoteric interpretation.",
-
-            BeginnerTip: "When working with Isis, focus on reverence and skill. She is a goddess of powerful magic, careful words, and devoted restoration.",
+            CulturalContext: "Isis is honoured today in Kemetic practice. Distinguish ancient Egyptian religion from later Western occult readings of her, and learn from Egyptian sources.",
 
             Traditions: "Egyptian, Roman, Wheel of the Year",
 
@@ -5677,19 +5147,17 @@ const TraditionalLibrary = {
             Offerings: "Red wine, dark chocolate, roses, incense, pomegranates",
             TraditionalWarnings: "Lilith's role differs dramatically across Jewish folklore, medieval texts, and modern occult traditions. Not all traditions regard her as a deity.",
 
-            Overview: "Lilith is a complex figure whose meaning changes dramatically depending on the source. In Jewish folklore and medieval texts, she is often portrayed as a dangerous or demonic figure. In modern occultism and feminist spirituality, she is frequently reimagined as a symbol of independence, sexual autonomy, shadow work, refusal, and personal sovereignty. Because these interpretations differ so widely, Lilith should be approached with nuance.",
+            Overview: "Lilith is a figure from Jewish folklore, a dangerous night spirit in older texts and a symbol of independence and sexual autonomy in modern occultism. She is pictured as a winged woman of the night, often with owls and serpents.",
 
-            TraditionalMeaning: "Traditionally, Lilith is not simply a goddess of empowerment. Her older appearances are often connected with danger, night, sexuality, childbirth fears, and protective folklore. Modern traditions have transformed her into a figure of autonomy, rage, taboo, erotic power, and liberation from control. Both layers matter when presenting her respectfully.",
+            TraditionalMeaning: "Self-possession: autonomy, refusal of domination, taboo and erotic power, layered over older associations with night and danger.",
 
-            DevotionalApproach: "Modern devotion to Lilith often centers on autonomy, shadow work, reclaiming the body, confronting shame, and refusing domination. Practitioners may work with her through journaling, dark moon rituals, boundary work, mirror work, sexuality healing, or rituals of self-possession. This work can be intense and should be approached with emotional honesty.",
+            DevotionalApproach: "Start here: begin with research and honest shadow work, asking what you are reclaiming and what you might be projecting onto her. Approach her with emotional honesty, through journaling, boundary work or mirror work. This work can be intense, so go slowly and look after yourself.",
 
-            OfferingNotes: "Offerings in modern practice may include red wine, dark chocolate, roses, pomegranates, incense, black or red candles, poetry, or acts of self-liberation. Because Lilith is not universally treated as a deity, offerings are highly tradition-specific and often personal.",
+            OfferingNotes: "Offer dark chocolate, roses, pomegranates, incense or poetry, or an act of self-liberation. Offerings are personal, since not everyone treats her as a deity.",
 
-            AltarIdeas: "A Lilith altar may include black, red, or purple candles, obsidian, garnet, labradorite, roses, pomegranate imagery, owls, serpents, mirrors, and symbols of autonomy. The altar may feel dark, sensual, fierce, and self-possessed.",
+            AltarIdeas: "Black, red or purple candles, obsidian, garnet, labradorite, a mirror and symbols of autonomy.",
 
-            CulturalContext: "Lilith is rooted in Jewish folklore and later occult interpretation. Modern uses can be empowering for some practitioners, but they may also flatten or remove her from Jewish textual and cultural context. It is important to avoid presenting one modern version of Lilith as the whole tradition.",
-
-            BeginnerTip: "If you work with Lilith, begin with research and shadow honesty. Ask what you are reclaiming, and what you might be projecting onto her.",
+            CulturalContext: "Lilith comes from Jewish texts and folklore; learn that context before working with her. Avoid presenting one modern version as the whole tradition.",
 
             TraditionNotes: "Folk & wider practice: In Jewish folk custom amulets naming protective angels are hung by the beds of mothers and newborns to guard them from Lilith. In modern occult and feminist practice she is invoked for independence, sexuality and reclaimed power, with red or black candles and offerings of wine. Jewish communities may view these modern uses differently.",
 
@@ -5711,19 +5179,17 @@ const TraditionalLibrary = {
             Offerings: "Coffee, spicy foods, whiskey, candy, handmade crafts",
             TraditionalWarnings: "Historical sources describing Loki are limited and interpretations vary widely among modern Norse Pagan traditions.",
 
-            Overview: "Loki is a Norse figure associated with change, cleverness, trickery, disruption, transformation, chaos, and uncomfortable truth. In modern practice, he is often approached by those navigating identity shifts, shadow work, humor, taboo, or necessary upheaval. Loki is not simple to categorize. He can be helper, troublemaker, catalyst, boundary-breaker, and revealer of hidden problems.",
+            Overview: "Loki is a Norse trickster of change, cleverness, disruption and transformation. He is pictured as a sly shapeshifter, often with flames or in animal forms such as a fox, a salmon or a mare.",
 
-            TraditionalMeaning: "Traditionally, Loki appears in Norse myth as a complicated figure whose actions create both solutions and disasters. He is connected with shapeshifting, cunning, mischief, consequences, and the unraveling of false stability. Modern practitioners often understand him as a force of transformation and necessary disruption.",
+            TraditionalMeaning: "Necessary disruption: transformation, uncomfortable truth, humour and the unravelling of false stability.",
 
-            DevotionalApproach: "Devotion to Loki may include honesty, humor, creative problem-solving, accepting change, confronting hypocrisy, and working with the parts of life that do not fit neat categories. Offerings and devotional styles vary widely, and many modern devotees emphasize direct relationship over rigid formality.",
+            DevotionalApproach: "Start here: be specific and honest about what you want to change, and only ask if you are willing for things to actually change. Approach him with humour, honesty and directness rather than rigid formality. He asks devotees to confront hypocrisy and accept the parts of life that do not fit neat categories.",
 
-            OfferingNotes: "Modern offerings may include coffee, spicy foods, candy, alcohol, handmade crafts, jokes, written reflections, or acts of bold honesty. Historical offering evidence is limited, so many offerings come from contemporary devotional practice rather than documented ancient tradition.",
+            OfferingNotes: "Offer coffee, spicy food, handmade crafts, jokes or written reflections, or an act of bold honesty.",
 
-            AltarIdeas: "A Loki altar may include orange, red, or black candles, carnelian, labradorite, obsidian, cinnamon, fox imagery, knots, flames, masks, or handmade objects. The altar may feel playful, chaotic, sharp, creative, and alive.",
+            AltarIdeas: "Orange, red or black candles, carnelian, labradorite, obsidian, knots and masks. Let it feel playful and alive.",
 
-            CulturalContext: "Loki comes from Norse mythology, but modern devotional approaches vary significantly. Some Heathen traditions are cautious about honoring Loki, while others actively venerate him. It is best to acknowledge that his role is debated and highly tradition-dependent.",
-
-            BeginnerTip: "Do not ask Loki for change unless you are willing for things to actually change. Be specific, be honest, and keep your sense of humor nearby.",
+            CulturalContext: "Loki's role in modern Heathenry is debated and highly tradition-dependent. Respect each community's choice and learn its customs before bringing him into its spaces.",
 
             Traditions: "Norse",
 
@@ -5747,19 +5213,17 @@ const TraditionalLibrary = {
             Offerings: "Red wine, blackberries, bread, incense, poetry, acts of courage",
             TraditionalWarnings: "The Morrigan is complex and sometimes appears as a singular goddess, a title, or a group of figures depending on the source and tradition.",
 
-            Overview: "The Morrigan is a complex Irish figure associated with sovereignty, war, prophecy, fate, death, transformation, and the power of the battlefield. In modern practice, she is often approached for courage, sovereignty, shadow work, protection, truth, and the strength to face conflict or transformation. She is not a soft or simple goddess, but she can be deeply empowering.",
+            Overview: "The Morrigan is an Irish goddess of war, sovereignty, prophecy, fate and death. She is pictured as a raven or crow over the battlefield, or as a shape-shifting woman who appears sometimes as one figure and sometimes as three.",
 
-            TraditionalMeaning: "Traditionally, the Morrigan is connected with battle, kingship, prophecy, ravens or crows, death omens, and sovereignty. She appears in Irish myth in complex forms, sometimes as one figure and sometimes in relation to multiple goddesses. Her presence often marks power, consequence, and the demand to stand fully in one’s fate.",
+            TraditionalMeaning: "She stands for sovereignty and fate faced with open eyes: courage, consequence, and the demand to stand fully in your own life.",
 
-            DevotionalApproach: "Devotion to the Morrigan may include sovereignty work, ancestor work, martial discipline, truth-telling, activism, protection, shadow work, and acts of courage. Many devotees approach her through commitment and action rather than aesthetic alone. She is often honored by doing the hard thing that aligns with truth.",
+            DevotionalApproach: "Start here: approach her with honesty, without posturing, and ask where you need courage, then be ready to act. Commitment and action count for more with her than words or aesthetics. She asks devotees to tell the truth, keep their word and do the hard thing that is right.",
 
-            OfferingNotes: "Offerings may include red wine, blackberries, bread, incense, poetry, iron symbols, battlefield or warrior imagery, and acts of courage or justice. Some practitioners also offer training, discipline, or direct action as living devotion.",
+            OfferingNotes: "Offer blackberries, bread, incense or poetry, or dedicate training, discipline or an act of justice to her as living devotion. Give what you promise, and give it in full.",
 
-            AltarIdeas: "A Morrigan altar may include black, red, or purple candles, raven or crow symbols, obsidian, garnet, bloodstone, nettle, mugwort, iron, a blade symbol, and offerings of dark fruit or wine. The altar may feel fierce, prophetic, ancestral, and sovereign.",
+            AltarIdeas: "Black, red or purple candles, raven or crow symbols, obsidian, garnet or bloodstone, nettle and mugwort, iron, and a blade symbol suit her altar.",
 
-            CulturalContext: "The Morrigan comes from Irish mythology, and her identity is complex. Modern witchcraft often emphasizes sovereignty and battle goddess themes, but surviving sources require careful interpretation. It is respectful to avoid oversimplifying her into only empowerment or only war.",
-
-            BeginnerTip: "Approach the Morrigan with honesty. Do not posture. Ask where you need courage, then be prepared to act.",
+            CulturalContext: "The Morrigan belongs to Irish tradition and is honoured today by Celtic polytheists. It is respectful to avoid flattening her into only empowerment or only war, and to learn from Irish sources and communities.",
 
             Traditions: "Celtic, Wheel of the Year",
 
@@ -5783,19 +5247,17 @@ const TraditionalLibrary = {
             Offerings: "Mead, wine, poetry, tobacco, bread, acts of study or sacrifice",
             TraditionalWarnings: "Odin is often associated with ordeal, sacrifice, and ecstatic magic. Modern devotional approaches vary widely.",
 
-            Overview: "Odin is a Norse god associated with wisdom, war, death, poetry, prophecy, runes, magic, kingship, and ecstatic knowledge. He is a seeker of wisdom who sacrifices for knowledge and moves between worlds. In modern practice, he is often approached for runes, poetry, magical study, ancestral work, discipline, and difficult wisdom.",
+            Overview: "Odin is the Norse god of wisdom, poetry, magic, runes, prophecy, war and the dead. He is pictured as a one-eyed wanderer in a wide hat and cloak, holding the spear Gungnir, with the ravens Huginn and Muninn and two wolves at his side.",
 
-            TraditionalMeaning: "Traditionally, Odin is connected with ravens, wolves, the spear Gungnir, the runes, the gallows, the dead, battle, poetic inspiration, and the pursuit of hidden knowledge. He is not simply a wise grandfather figure. His wisdom is costly, strange, ecstatic, and sometimes dangerous.",
+            TraditionalMeaning: "He stands for hard-won wisdom: knowledge gained through sacrifice, ordeal and inspiration, which is costly, strange and sometimes dangerous.",
 
-            DevotionalApproach: "Devotion to Odin may include study, rune work, poetry, offerings of mead or wine, ancestor work, disciplined magical practice, and the pursuit of wisdom through sacrifice or ordeal. Some practitioners approach him cautiously because his lessons may involve challenge, loss, or uncomfortable truth.",
+            DevotionalApproach: "Start here: be clear about what you are asking to learn, because his wisdom may arrive through discipline, discomfort or sacrifice. Approach him with respect and some caution, and keep any promise you make. He asks for study, rune work, poetry and steady effort.",
 
-            OfferingNotes: "Offerings may include mead, wine, poetry, tobacco, bread, incense, runic study, and acts of disciplined learning. In modern practice, time spent studying, writing, or practicing divination can be an offering in itself.",
+            OfferingNotes: "Offer bread, incense, a poem you wrote, or time spent studying, writing or practising divination. Pour drink offerings outdoors on the earth afterwards rather than drinking them.",
 
-            AltarIdeas: "An Odin altar may include black, purple, or blue candles, runes, raven imagery, wolf imagery, a spear symbol, amethyst, obsidian, lapis lazuli, mugwort, poetry, and ancestral symbols. The altar may feel solemn, wise, intense, and otherworldly.",
+            AltarIdeas: "Black, purple or blue candles, runes, raven and wolf imagery, a spear symbol, amethyst, obsidian or lapis lazuli, mugwort, and ancestral symbols suit his altar.",
 
-            CulturalContext: "Odin comes from Norse mythology and is honored in modern Heathen and Norse Pagan traditions in many different ways. Surviving sources are limited and shaped by later recording, so devotional approaches often combine reconstruction, scholarship, and personal experience.",
-
-            BeginnerTip: "If you ask Odin for wisdom, understand that wisdom may arrive through discipline, discomfort, or sacrifice. Be clear about what you are asking to learn.",
+            CulturalContext: "Heathenry is a living religion with many communities. Some groups misuse Norse symbols for racist ends, so choose inclusive communities and learn from them.",
 
             Traditions: "Norse",
 
@@ -5819,19 +5281,17 @@ const TraditionalLibrary = {
             Offerings: "Pomegranate, flowers, honey, wine, spring water, dark chocolate",
             TraditionalWarnings: "Persephone’s traditions include both spring renewal and underworld sovereignty, so modern associations can vary by season and context.",
 
-            Overview: "Persephone is the Greek goddess associated with spring, flowers, the underworld, death, rebirth, transformation, and threshold states. She is both Kore, the maiden of spring, and Queen of the Underworld. In modern practice, she is often approached for grief, seasonal change, personal transformation, trauma recovery, sovereignty, and the ability to move between light and darkness.",
+            Overview: "Persephone is the Greek goddess of spring, flowers, the underworld and rebirth, both Kore the maiden and Queen of the Dead. She is pictured crowned, holding a pomegranate, a sheaf of grain or a torch.",
 
-            TraditionalMeaning: "Traditionally, Persephone is central to myths of descent and return, especially in connection with Demeter and the Eleusinian Mysteries. She represents not only innocence or springtime, but also underworld authority, cyclical transformation, and the mysteries of life, death, and return.",
+            TraditionalMeaning: "She stands for cycles of descent and return: transformation through hardship, and the authority that comes from passing through the dark and coming back changed.",
 
-            DevotionalApproach: "Devotion to Persephone may include seasonal rituals, underworld meditation, grief work, flower offerings, pomegranate symbolism, shadow work, and honoring personal cycles of descent and renewal. She may be approached gently or regally depending on whether the focus is spring, grief, or underworld sovereignty.",
+            DevotionalApproach: "Start here: ask what part of you is descending and what part is preparing to return changed, and write the answer down. Approach her gently for spring and growth, or regally as underworld queen. She asks for honesty about grief and change.",
 
-            OfferingNotes: "Offerings may include pomegranate, flowers, honey, wine, spring water, dark chocolate, mint, candles, or poetry. Seasonal offerings can shift, with flowers and fresh water in spring, and darker fruits, wine, or underworld symbols in autumn and winter.",
+            OfferingNotes: "Let offerings follow the seasons: fresh flowers and spring water in spring, darker fruit, wine or dark chocolate in autumn and winter. Mint, honey and poetry suit her all year.",
 
-            AltarIdeas: "A Persephone altar may include black, white, or green candles, pomegranate imagery, flowers, garnet, obsidian, moonstone, rose quartz, mint, rose, bones or underworld symbols, and seasonal decorations. The altar may change throughout the year.",
+            AltarIdeas: "Black, white or green candles, pomegranate imagery, garnet, obsidian, moonstone or rose quartz, mint and rose, and seasonal decorations suit her altar; let it change through the year.",
 
-            CulturalContext: "Persephone comes from ancient Greek religion and mystery traditions. Modern interpretations often emphasize personal transformation and underworld sovereignty, but ancient contexts include agricultural cycles, death mysteries, and ritual secrecy that cannot be fully reconstructed.",
-
-            BeginnerTip: "Persephone is a powerful companion for life transitions. Ask what part of you is descending, and what part is preparing to return changed.",
+            CulturalContext: "Hellenic polytheism is a living religion, and parts of her ancient mysteries were secret and cannot be fully recovered. Treat modern interpretations as modern, and learn from practising Hellenic polytheists.",
 
             Traditions: "Hellenic, Roman, Wheel of the Year",
 
@@ -5855,19 +5315,17 @@ const TraditionalLibrary = {
             Offerings: "Mead, beer, bread, hearty food, acts of protection, physical effort",
             TraditionalWarnings: "Thor is often honored as a protective deity, but traditions differ between historical sources and modern Heathen practice.",
 
-            Overview: "Thor is a Norse god associated with thunder, storms, strength, protection, fertility, courage, and sacred defense. He is often understood as a protector of humanity and a force against chaos. In modern practice, he is approached for strength, resilience, household protection, courage, and practical support.",
+            Overview: "Thor is the Norse god of thunder, storms, strength, protection and fertility. He is pictured as a red-bearded giant of a man wielding the hammer Mjölnir, riding a chariot drawn by two goats.",
 
-            TraditionalMeaning: "Traditionally, Thor is connected with the hammer Mjolnir, thunder, lightning, oak, goats, strength, blessing, and protection. He is a defender, but also a deity of fertility, weather, and sacred power. His hammer is both weapon and blessing tool.",
+            TraditionalMeaning: "He stands for sacred defence and practical strength: protecting people and home against chaos, and blessing the land and its harvest.",
 
-            DevotionalApproach: "Devotion to Thor may include acts of protection, physical effort, caring for the household, honoring storms, lifting weights, doing difficult chores, feeding others, or standing up for people who need defense. His devotion can be practical, embodied, and direct.",
+            DevotionalApproach: "Start here: fix something, protect someone, move your body or do the hard practical task, and dedicate it to him. Approach him plainly and warmly. He asks devotees to stand up for people who need defence, care for their household and feed others.",
 
-            OfferingNotes: "Offerings may include mead, beer, bread, hearty food, oats, physical labor, protective acts, or words spoken during storms. In modern practice, practical service can be a meaningful offering.",
+            OfferingNotes: "Offer bread, oats or hearty home-cooked food, or practical service and physical labour. Pour drink outdoors on the earth afterwards and clear away food before it spoils.",
 
-            AltarIdeas: "A Thor altar may include red, brown, or gold candles, hammer symbols, oak leaves, hematite, tiger eye, garnet, smoky quartz, nettle, rosemary, and storm imagery. The altar may feel strong, protective, earthy, and active.",
+            AltarIdeas: "Red, brown or gold candles, hammer symbols, oak leaves, hematite, tiger eye, garnet or smoky quartz, nettle, rosemary and storm imagery suit his altar.",
 
-            CulturalContext: "Thor comes from Norse mythology and is honored in many modern Heathen and Norse Pagan traditions. His role is often more protective and community-centered than purely aggressive, though modern interpretations vary.",
-
-            BeginnerTip: "Thor is a good deity to approach through action. Fix something, protect someone, move your body, or do the hard practical task.",
+            CulturalContext: "Heathenry is a living religion with many communities. Some groups misuse his hammer and other Norse symbols for racist ends, so choose inclusive communities.",
 
             Traditions: "Norse",
 
@@ -5891,19 +5349,17 @@ const TraditionalLibrary = {
             Offerings: "Fresh water, bread, incense, myrrh, black cloth, acts of remembrance",
             TraditionalWarnings: "Anubis is rooted in ancient Egyptian religion. Modern magical practice may differ from reconstructionist devotional customs.",
 
-            Overview: "Anubis is an Egyptian god associated with death, embalming, funerary rites, protection of the dead, safe passage, and the sacred care of transition. In modern practice, he is often approached for ancestor work, grief, protection, end-of-life symbolism, spirit work, and guidance through thresholds involving death or change.",
+            Overview: "Anubis is the Egyptian god of embalming, the dead and safe passage, guardian of tombs and of those in transition. He is pictured as a black jackal or a man with a jackal's head, black being the colour of fertile earth and renewal.",
 
-            TraditionalMeaning: "Traditionally, Anubis is connected with mummification, tomb protection, funerary rites, the weighing of the heart, jackals, and the care of the dead. He is not merely a death figure. He is a guardian, guide, and sacred attendant who protects the vulnerable during transition.",
+            TraditionalMeaning: "Sacred care in transition: a solemn, steady guardian who protects the vulnerable as they pass from one state to another.",
 
-            DevotionalApproach: "Devotion to Anubis may include ancestor remembrance, lighting candles for the dead, tending graves or memorials, studying Egyptian funerary traditions, offering water, and practicing respectful grief rituals. His energy is often experienced as quiet, protective, solemn, and steady.",
+            DevotionalApproach: "Start here: light a candle and speak the names of your dead with respect. Approach him quietly and steadily, without drama or fear, and keep his space clean. He asks for reverence toward the dead and honest grief rather than sensational spirit work.",
 
-            OfferingNotes: "Offerings may include fresh water, bread, incense, myrrh, black cloth, candles, prayers for the dead, and acts of remembrance. When doing ancestor work, offerings should be respectful and grounded rather than sensationalized.",
+            OfferingNotes: "Offer myrrh resin burned on charcoal, a small dish of fresh food, or a length of black cloth laid out for him. Replace any water daily and remove food before it spoils. Tending a grave or memorial counts as an offering too.",
 
-            AltarIdeas: "An Anubis altar may include black, gold, or white candles, jackal or dog imagery, obsidian, smoky quartz, lapis lazuli, myrrh, frankincense, ankh symbols, memorial objects, and a clean bowl of water. The altar may feel quiet, protective, solemn, and sacred.",
+            AltarIdeas: "Black, gold or white candles, a jackal figure, obsidian, smoky quartz, lapis lazuli, an ankh and memorial photographs or keepsakes. Keep it quiet and uncluttered.",
 
-            CulturalContext: "Anubis comes from ancient Egyptian religion and funerary practice. Modern devotional or magical approaches may draw from Kemetic reconstruction, witchcraft, grief work, or personal spiritual experience. Respect for the dead and for Egyptian religious context is essential.",
-
-            BeginnerTip: "Begin with remembrance. Light a candle, offer water, and speak the names of the dead with respect.",
+            CulturalContext: "Anubis belongs to ancient Egyptian religion, which Kemetic practitioners keep alive today. Learn from Egyptian sources and treat funerary symbolism with respect rather than as gothic decoration.",
 
             Traditions: "Egyptian",
 
@@ -5936,19 +5392,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Jupiter was the god of the Roman state and its oaths. Approach him with seriousness and do not swear by him lightly.",
 
-            Overview: "Jupiter Optimus Maximus, “Best and Greatest,” was the chief god of Rome, honoured in the great temple on the Capitoline Hill alongside Juno and Minerva. He was the god of the sky, thunder, sovereignty, justice, and binding oaths, and the Roman state understood its success as resting on his favour. In modern practice he is approached for leadership, integrity, justice, and keeping one’s word.",
+            Overview: "Jupiter Optimus Maximus, 'Best and Greatest', is the chief god of Rome, god of the sky, thunder, sovereignty, justice and binding oaths. He is pictured as a bearded, enthroned king holding a thunderbolt and sceptre, with an eagle beside him.",
 
-            TraditionalMeaning: "Traditionally Jupiter was served by his own high priest, the flamen Dialis, and the Ides of every month were sacred to him. Victorious generals ended their triumphal processions at his Capitoline temple, and Romans swore solemn oaths by Jupiter Lapis, holding a sacred flint stone. He is often compared with the Greek Zeus, but his Roman cult was bound tightly to law, treaties, and the life of the community.",
+            TraditionalMeaning: "Right order: integrity, just leadership and the binding power of a promise kept.",
 
-            DevotionalApproach: "Devotion to Jupiter may include keeping promises, acting with fairness, taking responsibility in leadership, and offering a short prayer at the Ides. Some practitioners honour him outdoors under an open sky or an oak tree. His devotion tends to be formal, dignified, and grounded in right conduct rather than private emotional intimacy.",
+            DevotionalApproach: "Start here: make one promise you can realistically keep this month and dedicate it to him; keeping it is the offering. Approach him formally and with dignity, outdoors under open sky or an oak if you can. He asks for fairness, responsibility and right conduct rather than private emotional intimacy.",
 
-            OfferingNotes: "Offerings may include wine, frankincense, spelt bread, oak leaves, and sincere vows that you then keep. Ancient Rome offered him white oxen, but in modern practice food, incense, libations, and honest action are appropriate. A fulfilled promise is one of the most fitting gifts.",
+            OfferingNotes: "Offer frankincense, spelt bread, oak leaves or a sincere vow that you then keep. Pour wine as a libation into a dish or onto the ground.",
 
-            AltarIdeas: "A Jupiter altar may include an eagle image, a lightning bolt symbol, oak leaves, white or gold candles, lapis lazuli, a small bowl for wine libations, and a written oath or statement of values. It often feels orderly, elevated, and stately.",
+            AltarIdeas: "White or gold candles, an eagle image, a lightning-bolt symbol, lapis lazuli and a written oath or statement of values.",
 
-            CulturalContext: "Jupiter comes from ancient Roman religion and was closely tied to the Roman state, its calendar, and public cult. Modern Roman polytheists and reconstructionists (sometimes called Religio Romana) honour him today, often following ancient prayer forms and festival dates. Treating him simply as “Zeus with a Latin name” overlooks his distinct Roman character.",
-
-            BeginnerTip: "Make one promise you can realistically keep this month and dedicate it to Jupiter. Keeping it is the offering.",
+            CulturalContext: "Jupiter is honoured today by Roman polytheists, often through ancient prayer forms. Respect his distinct Roman character rather than treating him as Zeus with a Latin name.",
 
             Traditions: "Roman, Hellenic",
 
@@ -5981,19 +5435,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Juno has many distinct Roman titles with different concerns, from childbirth to the mint. Know which aspect you are addressing.",
 
-            Overview: "Juno was the queen of the Roman gods, honoured on the Capitoline with Jupiter and Minerva, and a powerful protector of women, marriage, childbirth, and the Roman people. The Kalends, the first day of every Roman month, were sacred to her. In modern practice she is approached for partnership, protection, women’s life transitions, dignity, and authority.",
+            Overview: "Juno is the queen of the Roman gods and a protector of women, marriage, childbirth and the Roman people. She is pictured as a dignified, crowned woman, sometimes armed with spear and goatskin cloak, with peacocks and geese sacred to her.",
 
-            TraditionalMeaning: "Juno had many Roman aspects: Juno Lucina, who brought children into the light; Juno Regina, the queen; Juno Sospita, the armed saviour of Lanuvium; and Juno Moneta, whose temple housed the Roman mint, the origin of the word “money.” Her sacred geese are said to have warned Rome of a night attack by the Gauls. She is often compared with the Greek Hera, but her Roman cult was broad, civic, and protective.",
+            TraditionalMeaning: "Dignified protection: authority, partnership and care for women through life's transitions.",
 
-            DevotionalApproach: "Devotion to Juno may include honouring the Kalends with a short prayer, supporting women through pregnancy, birth, and marriage, and celebrating the Matronalia on 1 March. The ancient Romans also spoke of each woman’s personal “juno,” a protective spirit paralleling a man’s genius, which some modern practitioners honour as well. Her devotion is often dignified, warm, and protective.",
+            DevotionalApproach: "Start here: light a candle and name one way you will protect your own dignity or someone else's. Approach her with respect and grace. She asks devotees to support women through pregnancy, birth and partnership; some also honour each woman's personal protective spirit, her 'juno'.",
 
-            OfferingNotes: "Offerings may include flowers, incense, milk, honey cakes, wine, and lilies. At the Matronalia, Roman women brought flowers to her temple on the Esquiline and husbands gave gifts to their wives. Acts of support for mothers, women, and families are fitting modern offerings.",
+            OfferingNotes: "Offer lilies, milk, honey cakes or wine. Support for mothers, women and families is a fitting offering.",
 
-            AltarIdeas: "A Juno altar may include peacock feathers, a pomegranate, lilies, royal blue or white candles, moonstone, a small crown or diadem, and a dish for offerings. It may feel regal, gracious, and protective.",
+            AltarIdeas: "Peacock feathers, a pomegranate, royal blue or white candles, moonstone, a small crown or diadem and a dish for offerings.",
 
-            CulturalContext: "Juno belongs to ancient Roman religion and remained central to public and household worship for centuries. Modern Roman polytheists honour her on the Kalends and at festivals such as the Matronalia. Her many epithets reflect real local cults, so it is respectful to learn them rather than flatten her into a jealous wife from Greek myth.",
-
-            BeginnerTip: "On the first day of the month, light a candle for Juno and name one way you will protect your own dignity or someone else’s.",
+            CulturalContext: "Juno is honoured today by Roman polytheists. Learn her many Roman titles rather than flattening her into the jealous wife of Greek myth.",
 
             Traditions: "Roman, Hellenic",
 
@@ -6026,19 +5478,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Minerva honours skill earned through effort. She is not usually approached for shortcuts.",
 
-            Overview: "Minerva was the Roman goddess of wisdom, crafts, skilled work, medicine, and strategy, and the third member of the Capitoline Triad with Jupiter and Juno. She was patron of artisans, weavers, teachers, physicians, musicians, and schoolchildren. In modern practice she is approached for study, creative mastery, problem-solving, and thoughtful strategy.",
+            Overview: "Minerva is the Roman goddess of wisdom, crafts, skilled work, medicine and strategy, patron of artisans, teachers, physicians and students. She is pictured helmeted and armed, often with an owl and an olive branch.",
 
-            TraditionalMeaning: "Minerva’s roots lie partly in the Etruscan goddess Menrva, and her Roman cult was strongly connected with guilds of craftspeople. Her great festival, the Quinquatrus, ran from 19 to 23 March, and schoolchildren traditionally brought fees to their teachers then. As Minerva Medica she was honoured for healing, and in Roman Britain she was joined with the local goddess Sulis at the sacred springs of Bath.",
+            TraditionalMeaning: "She stands for skill and wisdom put to work: careful thought, patient practice and mastery built one piece at a time.",
 
-            DevotionalApproach: "Devotion to Minerva may include study, practising a craft, teaching, mending, writing, or solving a problem carefully and patiently. Many practitioners dedicate a project or a period of learning to her. She is often approached through the steady work of the hands and mind.",
+            DevotionalApproach: "Start here: choose one skill you want to improve and give her fifteen focused minutes of practice. Approach her with tidy, attentive work rather than grand words, and dedicate a project or period of learning to her. She asks for diligence, care and a willingness to keep learning.",
 
-            OfferingNotes: "Offerings may include olive oil, incense, honey cakes, a finished piece of craftwork, notes from study, or time spent teaching someone else. Dedicating your best work, even if humble, suits her well.",
+            OfferingNotes: "Offer olive oil, honey cakes, a finished piece of craftwork, notes from your study, or time spent teaching someone else. Dedicate your best work, even if humble.",
 
-            AltarIdeas: "A Minerva altar may include an owl figure, olive branch, blue or silver candles, sodalite or fluorite, tools of your craft, books, and a small lamp. The altar often feels focused, tidy, and studious.",
+            AltarIdeas: "An owl figure, an olive branch, blue or silver candles, sodalite or fluorite, the tools of your craft, books and a small lamp suit her altar.",
 
-            CulturalContext: "Minerva comes from ancient Roman religion with Etruscan roots and was honoured across the Empire, including Britain. She is often compared with the Greek Athena, but her Roman identity as patron of guilds, schools, and healing is distinctive. Modern Roman polytheists continue to honour her, especially at the Quinquatrus.",
-
-            BeginnerTip: "Choose one skill you want to improve and give Minerva fifteen focused minutes of practice. Mastery is built in small pieces.",
+            CulturalContext: "Roman polytheism is a living, if small, religion today. She is often equated with Athena, but she has her own Roman character, so it is respectful to honour each in her own setting.",
 
             Traditions: "Roman, Hellenic",
 
@@ -6071,19 +5521,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Never leave a devotional flame unattended. Vesta’s fire was sacred because it was tended carefully, not because it was left to chance.",
 
-            Overview: "Vesta was the Roman goddess of the hearth and its sacred fire, the living centre of both every home and the Roman state. Her round temple in the Forum held an eternal flame tended by the Vestal Virgins, and Romans believed the safety of the city depended on that fire never going out. In modern practice she is approached for home blessing, family continuity, warmth, and steady devotion.",
+            Overview: "Vesta is the Roman goddess of the hearth and its sacred fire, the living centre of the home. She is pictured not as a statue but as the flame itself, sometimes as a veiled woman beside a lamp.",
 
-            TraditionalMeaning: "Vesta had no cult statue in her temple; she was present in the flame itself. The Vestals prepared mola salsa, a salted spelt flour used in public sacrifices, and the fire was ritually renewed each 1 March. Her festival, the Vestalia, ran from 7 to 15 June, when the inner storehouse of her temple was opened to women who came barefoot with offerings, and millers and bakers rested their donkeys and garlanded them with flowers. She is often compared with the Greek Hestia.",
+            TraditionalMeaning: "She stands for the steady warmth that holds a household together: continuity, safety and quiet daily devotion.",
 
-            DevotionalApproach: "Devotion to Vesta may include lighting a candle or lamp at the start of the day, cooking with intention, keeping a clean hearth or kitchen, and offering the first or last portion of a meal. Romans often addressed her at the end of prayers, as Janus was addressed at the beginning. Her devotion is simple, daily, and domestic.",
+            DevotionalApproach: "Start here: before you cook your next meal, light a candle (safely, in view) and say one sentence of thanks to her for the warmth of your home. Keep a clean kitchen or hearth, cook with intention, and address her briefly at the end of your prayers. She asks for simple, daily care rather than grand ritual.",
 
-            OfferingNotes: "Offerings may include salted flour cakes, olive oil, clean water, a small portion of food, and the act of tending a flame safely. Many households made small offerings at the hearth or the lararium, the household shrine where Vesta was honoured alongside the Lares and Penates.",
+            OfferingNotes: "Offer olive oil, clean water, a small portion of food or salted flour cakes. Tending a flame safely is itself an offering; never leave a candle or lamp burning unattended.",
 
-            AltarIdeas: "A Vesta altar may be placed near the kitchen or hearth and include a lamp or white candle, a small dish of salt and flour, carnelian or sunstone, bay leaves, and a bowl of clean water. It often feels simple, warm, and quietly constant.",
+            AltarIdeas: "Place her altar near the kitchen or hearth, with a lamp or white candle, a small dish of salt and flour, carnelian or sunstone, bay leaves and a bowl of clean water.",
 
-            CulturalContext: "Vesta belongs to ancient Roman religion, where her public fire burned for over a thousand years until the cult was suppressed under Theodosius in the late fourth century. Modern Roman polytheists honour her in daily household practice and at the Vestalia. She is a deeply Roman goddess whose worship centred on ritual care rather than myth.",
-
-            BeginnerTip: "Before you cook your next meal, light a candle (safely, in view) and say a single sentence of thanks to Vesta for the warmth of your home.",
+            CulturalContext: "Roman polytheism is a small living religion today. Her worship centres on household care rather than myth, so learn its forms from practising Roman polytheists.",
 
             Traditions: "Roman, Hellenic",
 
@@ -6116,19 +5564,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Diana guards her own boundaries fiercely. Approach her with respect for privacy, consent, and the wild rather than as a decorative moon symbol.",
 
-            Overview: "Diana was the Roman goddess of woodland, the hunt, the moon, women, and childbirth, and a protector of the vulnerable. Her temple on the Aventine Hill was traditionally founded by King Servius Tullius and was especially honoured by plebeians and enslaved people. In modern practice she is approached for independence, protection, wild nature, and lunar magic.",
+            Overview: "Diana is the Roman goddess of woodland, the hunt, the moon, women and childbirth, and a protector of the vulnerable. She is pictured as a huntress with bow and quiver and a crescent moon on her brow, with a deer or hounds.",
 
-            TraditionalMeaning: "One of her most important sanctuaries was the sacred grove at Lake Nemi, where she was honoured as Diana Nemorensis, “Diana of the Grove.” Her festival on the Ides of August was a holiday for enslaved people, women washed their hair, and worshippers carried torches to Nemi. As Diana Trivia she was associated with crossroads, and she is often compared with the Greek Artemis.",
+            TraditionalMeaning: "Free, protective wildness: independence, lunar mystery and shelter for those who lack protection.",
 
-            DevotionalApproach: "Devotion to Diana may include walking in woods or wild places, honouring the moon, supporting women and those who lack protection, and caring for animals and habitats. Many practitioners keep a candle for her on the night of the full moon or on 13 August. Her devotion often feels free, independent, and protective.",
+            DevotionalApproach: "Start here: step outside at night for five quiet minutes and thank her for one wild thing that still exists near you. Approach her with respect for freedom and the wild. She asks devotees to protect women, the vulnerable, animals and habitats.",
 
-            OfferingNotes: "Offerings may include fresh water, bread, fruit, honey, torches or candles, and acts of conservation or animal care. Ancient votive offerings at Nemi included small figures of mothers and babies, reflecting her role in childbirth.",
+            OfferingNotes: "Offer fresh water, bread or honey, or an act of conservation or animal care.",
 
-            AltarIdeas: "A Diana altar may include a crescent moon, deer or hound imagery, a small bow, silver or white candles, moonstone, mugwort, cypress, and a bowl of water to catch moonlight. It may feel wild, cool, clear, and protected.",
+            AltarIdeas: "Silver or white candles, a crescent moon, deer or hound imagery, a small bow, moonstone, mugwort, cypress and a bowl of water to catch moonlight.",
 
-            CulturalContext: "Diana comes from ancient Roman and Latin religion, with major sanctuaries at Rome and Nemi. In the modern era she became central to some witchcraft traditions through Charles Leland’s Aradia (1899), Dianic Wicca, and the use of her name in Wicca’s Charge of the Goddess, though these are modern developments rather than ancient practice. Modern Roman polytheists also honour her in a reconstructed form.",
-
-            BeginnerTip: "On the next full moon, step outside for five quiet minutes and thank Diana for one wild thing that still exists near you.",
+            CulturalContext: "Diana is honoured today by Roman polytheists in a reconstructed form and by modern witches in their own way. Be clear which practices are ancient and which, like Dianic Wicca, are modern developments.",
 
             Traditions: "Roman, Hellenic, Wheel of the Year",
 
@@ -6161,19 +5607,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Janus is a god of thresholds, so devotion works best at real beginnings and transitions rather than as general wish-making.",
 
-            Overview: "Janus is the two-faced Roman god of doorways, gates, beginnings, endings, and transitions, looking both backward and forward at once. He has no real Greek counterpart and is one of the most distinctively Roman deities. In modern practice he is approached at new beginnings, house moves, the new year, decisions, and life thresholds.",
+            Overview: "Janus is the Roman god of doorways, gates, beginnings, endings and transitions. He is pictured with two faces looking backward and forward, often holding a key and a staff.",
 
-            TraditionalMeaning: "Romans addressed Janus first in prayers and sacrifices, before any other god, because every act begins at a threshold. The month of January takes its name from him, and on New Year’s Day Romans exchanged gifts of figs, dates, honey, and coins so the year would begin sweetly. The doors of the Janus Geminus shrine in the Forum stood open in time of war and were closed only in rare periods of peace.",
+            TraditionalMeaning: "Thresholds: wise beginnings, honest endings and clear sight that looks both back and ahead.",
 
-            DevotionalApproach: "Devotion to Janus may include a short prayer before beginning any ritual, blessing a doorway, marking the first day of the year or month, and reflecting on what you are leaving and entering. Some practitioners name him first and Vesta last in their prayers, following Roman custom. His devotion is practical and well suited to daily life.",
+            DevotionalApproach: "Start here: before starting anything new, pause at the doorway, name what you are leaving behind, and greet him before you step through. Approach him practically, as part of daily life. He asks devotees to begin things mindfully.",
 
-            OfferingNotes: "Offerings may include a cake of spelt and salt, wine, incense, honey, figs, dates, or a coin placed at the threshold. On New Year’s Day, sweet foods offered to him express hope that the year ahead will be sweet as well.",
+            OfferingNotes: "Offer wine, figs, dates or a coin placed at the threshold.",
 
-            AltarIdeas: "A Janus altar may be set near the front door and include a key, a two-faced image or coin, white or gold candles, labradorite, bay leaves, and a small dish of honey or figs. It may feel transitional, clear, and watchful.",
+            AltarIdeas: "Set it near the front door, with a key, a two-faced image or coin, white or gold candles, labradorite and bay leaves.",
 
-            CulturalContext: "Janus belongs to ancient Roman religion and was honoured in both state and household cult. Modern Roman polytheists honour him at the start of ceremonies, on the Kalends, and at the Agonalia on 9 January. Because he has no clear Greek parallel, learning about him is a good way to understand Roman religion on its own terms.",
-
-            BeginnerTip: "Before starting anything new, pause at the doorway, name what you are leaving behind, and greet Janus before you step through.",
+            CulturalContext: "Janus is honoured today by Roman polytheists. He has no clear Greek parallel, so learn him on Roman terms rather than through Greek myth.",
 
             Traditions: "Roman",
 
@@ -6206,19 +5650,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Mars is a protector, not a license for aggression. Do not use his devotion to justify harming others.",
 
-            Overview: "Mars was one of the most important Roman gods, honoured as a god of war, protection, and the defence of the community, and also as a guardian of fields and boundaries. As the father of Romulus and Remus, he was regarded as an ancestor of the Roman people. In modern practice he is approached for courage, protection, discipline, physical strength, and guarding what matters.",
+            Overview: "Mars is the Roman god of war, protection and the defence of the community, and a guardian of fields and boundaries. He is pictured as a helmeted warrior with spear and shield, with the wolf and the woodpecker as his creatures.",
 
-            TraditionalMeaning: "March, the original first month of the Roman year, was his month, filled with festivals: the Salii priests danced through the city with sacred shields, and horse races were held at the Equirria. In October the Armilustrium purified weapons at the end of the campaigning season. Cato the Elder preserves a Roman farmer’s prayer to Mars for protecting fields, crops, and livestock, showing that his role was agricultural as well as military. He is often compared with the Greek Ares, but Roman Mars was far more respected and central.",
+            TraditionalMeaning: "He stands for disciplined courage and protection: guarding the land, the household and the community rather than conflict for its own sake.",
 
-            DevotionalApproach: "Devotion to Mars may include physical training, protecting your household, walking property boundaries, practising courage in difficult situations, and supporting veterans or first responders. Many practitioners honour him in March. His devotion often emphasises discipline, duty, and protection rather than conflict for its own sake.",
+            DevotionalApproach: "Start here: pick one boundary in your life that needs protecting and take one concrete step to defend it this week. Address him plainly and respectfully, and keep promises made in his name. He asks for discipline, physical effort and duty, such as training your body or supporting veterans and first responders.",
 
-            OfferingNotes: "Offerings may include wine, spelt bread, grain, olive oil, incense, and the dedication of training or protective work. Ancient public sacrifices are not recreated in modern practice; disciplined effort is a fitting offering.",
+            OfferingNotes: "Offer spelt bread, grain or olive oil, or dedicate a training session or piece of protective work to him. Disciplined effort is the most fitting gift; animal sacrifice is not part of modern practice.",
 
-            AltarIdeas: "A Mars altar may include a spear or shield image, red candles, bloodstone, hematite, carnelian, wolf or woodpecker imagery, and a dish of grain. It may feel strong, focused, and protective.",
+            AltarIdeas: "A spear or shield image, red candles, bloodstone, hematite or carnelian, wolf or woodpecker imagery, and a dish of grain suit his altar.",
 
-            CulturalContext: "Mars belongs to ancient Roman religion, where he was honoured as both a war god and an agricultural guardian. Modern Roman polytheists honour him in March and at the Armilustrium. Because war gods can be romanticised, it is respectful to focus on protection, duty, and the real cost of conflict.",
-
-            BeginnerTip: "Pick one boundary in your life that needs protecting and take one concrete step to defend it this week.",
+            CulturalContext: "Roman polytheism is practised today by a small living community. Because war gods are easily romanticised, keep the focus on protection, duty and the real cost of conflict.",
 
             Traditions: "Roman, Hellenic",
 
@@ -6251,19 +5693,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Venus is approached for honest love and self-respect, not for manipulating another person’s will.",
 
-            Overview: "Venus was the Roman goddess of love, beauty, desire, fertility, and harmony, and also of victory and good fortune. Through her son Aeneas she was honoured as the divine ancestor of the Roman people, and Julius Caesar dedicated a temple to her as Venus Genetrix, “Venus the Mother.” In modern practice she is approached for self-love, relationships, beauty, creativity, and reconciliation.",
+            Overview: "Venus is the Roman goddess of love, beauty, desire, fertility, gardens and harmony, and of victory and good fortune. She is pictured as a graceful woman with myrtle and roses, with doves and a scallop shell, sometimes with her son Cupid.",
 
-            TraditionalMeaning: "Venus may originally have been an Italian goddess of gardens and growing things before taking on much of the Greek Aphrodite’s mythology. Roman titles show her range: Venus Verticordia, “turner of hearts,” Venus Victrix, bringer of victory, and Venus Erycina, honoured from Sicily. At the Veneralia on 1 April, women washed and adorned her statue and bathed wearing myrtle.",
+            TraditionalMeaning: "She stands for love in all its forms: beauty worth tending, reconciliation, and the harmony that holds a family and a community together.",
 
-            DevotionalApproach: "Devotion to Venus may include self-care, tending a garden, creating something beautiful, mending relationships, and honouring love in all its forms. Many practitioners keep fresh flowers for her or honour her on Fridays (dies Veneris). Her devotion often feels warm, generous, and joyful.",
+            DevotionalApproach: "Start here: place one fresh flower somewhere you will see it every day this week as a reminder that beauty is worth tending. Approach her warmly and generously. She asks devotees to practise kindness toward themselves and others, mend relationships and create beauty.",
 
-            OfferingNotes: "Offerings may include roses, myrtle, wine, honey, perfume, sweets, flowers, and beautiful handmade objects. Acts of kindness toward yourself and others can also be offerings.",
+            OfferingNotes: "Offer honey, perfume, sweets or a beautiful handmade object. Acts of kindness toward yourself and others are also offerings.",
 
-            AltarIdeas: "A Venus altar may include roses or myrtle, a mirror, scallop shells, dove imagery, pink or green candles, rose quartz, pearls, and a small dish of honey. It may feel lovely, soft, and abundant.",
+            AltarIdeas: "A mirror, scallop shells, dove imagery, pink or green candles, rose quartz, pearls and a small dish of honey suit her altar.",
 
-            CulturalContext: "Venus comes from ancient Roman religion and held a central place in Roman identity through the Aeneas legend and the Julian family. She is often compared with the Greek Aphrodite, but her Roman cults of motherhood, victory, and civic harmony give her a distinct character. Modern Roman polytheists honour her at the Veneralia and Vinalia.",
-
-            BeginnerTip: "Place one fresh flower somewhere you will see it every day this week, and let it remind you that beauty is worth tending.",
+            CulturalContext: "Roman polytheism is a small living religion today. She is often equated with Aphrodite, but her Roman character is distinct, so it is respectful to honour each in her own setting.",
 
             Traditions: "Roman, Hellenic",
 
@@ -6296,19 +5736,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Mercury governs fair trade as well as clever trade. Dishonest dealings sit poorly with devotion to a god of contracts and commerce.",
 
-            Overview: "Mercury was the Roman god of commerce, merchants, travel, messages, and luck, and the guide of souls to the underworld. His temple near the Circus Maximus was dedicated in 495 BCE, and Roman merchants formed associations under his protection. In modern practice he is approached for business, communication, travel safety, learning, and timely opportunities.",
+            Overview: "Mercury is the Roman god of commerce, travel, messages, communication and luck, and the guide of souls. He is pictured as a swift young man in a winged hat and sandals, carrying the caduceus and a purse.",
 
-            TraditionalMeaning: "His festival, the Mercuralia, fell on 15 May, when merchants drew water from his sacred spring near the Porta Capena and sprinkled it on their heads and goods with a sprig of laurel. His name is often linked with merx, “merchandise.” Julius Caesar wrote that Mercury was the god most honoured in Gaul, though this reflects the Roman habit of naming foreign gods after their own. He is often compared with the Greek Hermes.",
+            TraditionalMeaning: "He stands for exchange in all its forms: honest trade, clear words, safe roads and the quick wit to seize an opportunity.",
 
-            DevotionalApproach: "Devotion to Mercury may include blessing your work or business, offering a coin before travel, writing clearly and honestly, and practising communication skills. Many practitioners honour him on Wednesdays (dies Mercurii). His devotion is often quick, practical, and playful.",
+            DevotionalApproach: "Start here: before your next important email or business call, take a breath and ask Mercury for clear, honest words. Speak to him briefly and lightly, and keep your dealings fair, since he is god of the marketplace. He rewards attention to clear writing, good communication and keeping your bargains.",
 
-            OfferingNotes: "Offerings may include coins, wine, milk, incense, honey cakes, and the first earnings of a new venture. A clear, honest piece of writing or a fair business deal can also be dedicated to him.",
+            OfferingNotes: "Set aside the first earnings of a new venture, or dedicate a fair deal or a clear, honest piece of writing to him. Honey cakes and wine suit him; a coin can be placed on the altar and later given to someone who needs it.",
 
-            AltarIdeas: "A Mercury altar may include a caduceus, a winged sandal or hat image, a coin purse, orange or yellow candles, agate or citrine, a small bowl of water with a laurel sprig, and travel tokens. It may feel lively, quick, and practical.",
+            AltarIdeas: "A caduceus, a winged sandal or hat image, a coin purse, orange or yellow candles, agate or citrine, a small bowl of water with a laurel sprig, and travel tokens suit his altar.",
 
-            CulturalContext: "Mercury belongs to ancient Roman religion and was popular across the Empire, including in Gaul and Britain. Modern Roman polytheists honour him at the Mercuralia and before travel or business. His Roman cult was especially tied to merchants and the marketplace.",
-
-            BeginnerTip: "Before your next important email or business call, take a breath and ask Mercury for clear, honest words.",
+            CulturalContext: "Roman polytheism is a small living religion today. Learn its forms from practising Roman polytheists, and remember that Roman names were often laid over other peoples’ gods, so Gaulish and Greek traditions deserve to be understood on their own terms.",
 
             Traditions: "Roman, Hellenic, Celtic",
 
@@ -6341,19 +5779,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Ceres is honoured through gratitude for food. Wasting or dishonouring food sits poorly with her devotion.",
 
-            Overview: "Ceres was the Roman goddess of grain, agriculture, fertility, and the harvest, and her name lives on in the word “cereal.” She was honoured in a temple on the Aventine Hill alongside Liber and Libera, a cult closely connected with the plebeians and their rights. In modern practice she is approached for nourishment, abundance, motherhood, and gratitude for the earth’s gifts.",
+            Overview: "Ceres is the Roman goddess of grain, agriculture, fertility and the harvest, whose name lives on in the word 'cereal'. She is pictured as a mature woman crowned with wheat ears, holding a torch, a sheaf or a cornucopia.",
 
-            TraditionalMeaning: "Her festival, the Cerealia, ran from 12 to 19 April and included games and a striking rite in which foxes with torches were released in the Circus Maximus. The poet Ovid wrote that Ceres was content with simple offerings of spelt, salt, and incense. Her Aventine temple housed plebeian magistrates and their archives, linking her with law and the common people. She is often compared with the Greek Demeter.",
+            TraditionalMeaning: "Nourishment and plenty: the earth's gifts, motherly care, gratitude and the right of ordinary people to be fed.",
 
-            DevotionalApproach: "Devotion to Ceres may include baking bread, gardening, thanking farmers, reducing food waste, and offering the first portion of a harvest. Many practitioners honour her at planting and harvest times or during April. Her devotion is grounded, grateful, and nourishing.",
+            DevotionalApproach: "Start here: bake or buy a simple loaf, set the first slice aside for Ceres, and thank every hand that helped it reach you. Approach her with gratitude and plain, grounded sincerity. She asks devotees to respect food and those who grow it, and to waste little.",
 
-            OfferingNotes: "Offerings may include bread, spelt or wheat, salt, honey, milk, first fruits, and incense. Supporting food banks or local growers can be a meaningful modern offering.",
+            OfferingNotes: "Simple gifts suit her best: spelt, a pinch of salt or a little incense. Supporting a food bank or local growers can be dedicated to her.",
 
-            AltarIdeas: "A Ceres altar may include a sheaf of wheat, a small loaf of bread, a bowl of grain, gold or green candles, citrine or moss agate, poppy seed heads, and a torch or lamp. It may feel warm, abundant, and earthy.",
+            AltarIdeas: "Gold or green candles, a bowl of grain, citrine or moss agate, and poppy seed heads. Let it feel warm and abundant.",
 
-            CulturalContext: "Ceres comes from ancient Roman religion and was one of Rome’s oldest deities, served by her own flamen. Her cult blended native Italian traditions with Greek mysteries of Demeter, but her role as protector of plebeian rights is distinctly Roman. Modern Roman polytheists honour her at the Cerealia.",
-
-            BeginnerTip: "Bake or buy a simple loaf of bread, set the first slice aside for Ceres, and give thanks for every hand that helped it reach you.",
+            CulturalContext: "Ceres is honoured today by Roman polytheists in a reconstructed living practice. Learn her Roman character on its own terms rather than treating her as a copy of a Greek goddess.",
 
             Traditions: "Roman, Hellenic, Wheel of the Year",
 
@@ -6386,19 +5822,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Sources for Perun are limited, and much of his mythology is reconstructed. He was invoked in oaths, so do not swear by him lightly.",
 
-            Overview: "Perun is the Slavic god of thunder and lightning, widely regarded as the chief god of the early East Slavs. He is associated with the sky, war, justice, oaths, the oak, and the rain that brings fertility. In modern practice he is approached for courage, protection, justice, and strength.",
+            Overview: "Perun is the Slavic god of thunder and lightning, the sky, war, justice and oaths. He is pictured as a mighty, bearded warrior with an axe or thunderbolt, tied to the oak tree.",
 
-            TraditionalMeaning: "The Russian Primary Chronicle names Perun first among the idols Prince Vladimir set up in Kyiv around 980, and records that Rus warriors swore treaty oaths by Perun and by Veles. In the sixth century the Byzantine historian Procopius described the Slavs worshipping a single god of lightning as lord of all. After the Christianisation of Kyiv in 988, his idol was thrown into the Dnieper, and in folk tradition many of his attributes passed to the Prophet Elijah.",
+            TraditionalMeaning: "He stands for upright strength: justice, keeping your word, protection, and the storm that brings life-giving rain.",
 
-            DevotionalApproach: "Devotion to Perun may include spending time near oak trees, honouring thunderstorms safely from indoors, acting with justice, and keeping one’s word. Some practitioners honour him on Thursdays, a day traditionally linked with thunder gods. His devotion is often direct, strong, and upright.",
+            DevotionalApproach: "Start here: during the next thunderstorm, stay safely indoors, listen to the thunder, and name one thing you will stand up for. Approach him directly and honestly, and never make a promise to him lightly. He asks devotees to act justly and keep their word.",
 
-            OfferingNotes: "Offerings may include bread, kvass, mead, beer, oak leaves, and acts of justice or protection. Many modern practitioners pour a libation outdoors near an oak.",
+            OfferingNotes: "Pour a libation of kvass, mead or beer outdoors at the foot of an oak, or offer an act of justice or protection.",
 
-            AltarIdeas: "A Perun altar may include an oak branch or acorns, a small axe symbol, the thunder mark, red or gold candles, garnet or pyrite, and a cup for mead. It may feel strong, bright, and charged.",
+            AltarIdeas: "An oak branch or acorns, a small axe symbol, the thunder mark, red or gold candles, garnet or pyrite, and a cup for mead suit his altar.",
 
-            CulturalContext: "Perun comes from pre-Christian Slavic religion, but written sources are few, brief, and mostly recorded by Christian chroniclers, so much of his mythology is modern scholarly reconstruction. He is honoured today in Rodnovery, the living Slavic Native Faith practised across Eastern Europe and beyond. Rodnover communities vary widely, and some currents carry nationalist politics, so it is worth choosing inclusive groups carefully.",
-
-            BeginnerTip: "During the next thunderstorm, stay safely indoors, listen to the thunder, and name one thing you will stand up for.",
+            CulturalContext: "Perun is honoured today in Rodnovery, the living Slavic Native Faith. Communities vary widely and some carry nationalist politics, so choose inclusive groups carefully.",
 
             Traditions: "Slavic, Christian",
 
@@ -6431,19 +5865,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Very little is recorded about Mokosh. Most of her modern portrait is built from folklore and reconstruction.",
 
-            Overview: "Mokosh is a Slavic goddess associated with spinning, weaving, women’s work, fate, moisture, and the fertile earth. She is the only goddess named among the deities Prince Vladimir set up in Kyiv around 980. In modern practice she is approached for women’s concerns, protection, domestic skill, fertility, and fate.",
+            Overview: "Mokosh is the Slavic goddess of spinning, weaving, women’s work, fate, moisture and the fertile earth. She is pictured as a woman with spindle and distaff, tied to damp, rich soil and to the thread of fate.",
 
-            TraditionalMeaning: "Her name is often linked with Slavic words for wetness or moisture, connecting her with the damp, fertile earth. Medieval church writings warned against women continuing to honour Mokosh, and East Slavic folklore preserves taboos against spinning or washing on Fridays. Much of this lore later attached to the Christian Saint Paraskeva Pyatnitsa, “Friday,” whose feast kept older customs alive.",
+            TraditionalMeaning: "She stands for the quiet, steady work that holds life together: the fertile earth, women’s strength and the spinning of fate.",
 
-            DevotionalApproach: "Devotion to Mokosh may include spinning, knitting, weaving, sewing, embroidery, caring for the earth, and supporting women. Many practitioners honour her on Fridays. Her devotion is often quiet, practical, and hands-on.",
+            DevotionalApproach: "Start here: mend something worn out with needle and thread, and dedicate that quiet care to her. Approach her through handwork and practical care rather than elaborate ritual. She asks devotees to tend the earth, support women and do their work with patience.",
 
-            OfferingNotes: "Offerings may include bread, grain, water, wool, thread, embroidered cloth, and finished handwork. Some modern practitioners leave a small skein of wool or a length of thread on her altar.",
+            OfferingNotes: "Leave a small skein of wool or a length of thread on her altar, or offer a finished piece of handwork. Keep offerings humble and homemade.",
 
-            AltarIdeas: "A Mokosh altar may include a spindle or distaff, wool or thread, embroidered cloth, a bowl of earth or water, brown or green candles, and moss agate. It may feel homely, earthy, and protective.",
+            AltarIdeas: "A spindle or distaff, wool or thread, a bowl of earth or water, brown or green candles, and moss agate suit her altar.",
 
-            CulturalContext: "Mokosh comes from pre-Christian Slavic religion, but direct evidence is extremely thin: a name in a chronicle list, a few church warnings, and later folklore. Her modern role is substantially reconstructed. She is honoured today in Rodnovery, the living Slavic Native Faith, and in Slavic folk and pagan practice.",
-
-            BeginnerTip: "Mend something worn out with needle and thread, and dedicate the quiet care of that work to Mokosh.",
+            CulturalContext: "Mokosh is honoured today in Rodnovery, the living Slavic Native Faith, and in Slavic folk practice. Much of her modern picture is reconstructed, so learn from Slavic communities and be honest about what is documented and what is newer.",
 
             Traditions: "Slavic, Christian",
 
@@ -6476,19 +5908,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Veles is associated with the underworld and with trickery as well as wealth. Approach him with respect and honest intentions.",
 
-            Overview: "Veles, also called Volos, is a Slavic god associated with cattle, wealth, the underworld, waters, magic, and poetry. The Primary Chronicle calls him “the god of cattle,” and Rus treaties with Byzantium were sworn by both Perun and Veles. In modern practice he is approached for prosperity, magic, ancestor work, and wisdom from the depths.",
+            Overview: "Veles, also called Volos, is the Slavic god of cattle, wealth, the underworld, waters, magic and poetry. He is pictured with horns, linked with the bear and the serpent, dwelling in damp, dark places at the roots of the world.",
 
-            TraditionalMeaning: "The twelfth-century Tale of Igor’s Campaign calls the legendary poet Boyan “Veles’s grandson,” linking him with poetic inspiration. In some regions the last sheaf of grain was left in the field as “Volos’s beard,” and many of his cattle-protecting functions later passed to Saint Blaise (Vlasiy). The well-known myth of Veles as a serpent stealing cattle and fighting Perun is largely a modern scholarly reconstruction by Ivanov and Toporov, built from folklore across many Slavic and Baltic sources.",
+            TraditionalMeaning: "He stands for wealth from the depths: abundance, cunning wisdom, magic and the care of ancestors and animals.",
 
-            DevotionalApproach: "Devotion to Veles may include ancestor work, caring for animals, magic and divination, storytelling, honest money management, and quiet time near water or in dark places. Many practitioners approach him at harvest and in winter. His devotion often feels deep, earthy, and cunning.",
+            DevotionalApproach: "Start here: leave the last bite of a meal as a small offering and thank him for the wealth you already have. Approach him with respect and a little caution, as a clever and earthy power. He asks devotees to care for animals, handle money honestly and honour their ancestors.",
 
-            OfferingNotes: "Offerings may include bread, milk, honey, beer, wool, and a sheaf or handful of grain left unharvested. Feeding animals or supporting farmers can also be fitting.",
+            OfferingNotes: "Offer bread, milk, beer or wool. Feeding animals or supporting farmers is also a fitting gift.",
 
-            AltarIdeas: "A Veles altar may include horns or cattle imagery, a bear or serpent symbol, black or dark green candles, smoky quartz, wool, a small sheaf of grain, and a bowl of water. It may feel shadowed, rich, and grounded.",
+            AltarIdeas: "Horns or cattle imagery, a bear or serpent symbol, black or dark green candles, smoky quartz, wool, a small sheaf of grain and a bowl of water suit his altar.",
 
-            CulturalContext: "Veles comes from pre-Christian Slavic religion, but surviving sources are brief and his popular modern mythology is heavily reconstructed. He is widely honoured in Rodnovery, the living Slavic Native Faith. It is respectful to distinguish what is documented from what scholars and modern communities have reconstructed.",
-
-            BeginnerTip: "Leave the last bite of a meal or the last slice of bread as a small offering for Veles, and thank him for the wealth you already have.",
+            CulturalContext: "Veles is widely honoured in Rodnovery, the living Slavic Native Faith. Much of his popular mythology is reconstructed, so be honest about what is documented and what is modern, and learn from Slavic communities.",
 
             Traditions: "Slavic, Christian",
 
@@ -6521,19 +5951,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Whether Lada was an ancient Slavic goddess is strongly debated. Present her as a modern devotional figure built on uncertain sources.",
 
-            Overview: "Lada is honoured in modern Slavic paganism as a goddess of love, spring, beauty, marriage, and harmony. She is a popular figure in contemporary practice, often paired with a daughter, Lelya. In modern practice she is approached for loving relationships, family harmony, and the joy of spring.",
+            Overview: "Lada is honoured in modern Slavic paganism as a goddess of love, spring, beauty, marriage and harmony, often paired with her daughter Lelya. She is pictured as a young woman crowned with flowers, with swans and doves.",
 
-            TraditionalMeaning: "Lada does not appear in the earliest sources on Slavic religion. She is first named in later writings, such as the seventeenth-century Gustynskaya Chronicle, and in folk song refrains like “lado, lado.” Many scholars think “lado” and “lada” were affectionate words for a spouse or sweetheart, or simply song refrains, that later writers mistook for a deity’s name. Romantic-era scholars and modern Rodnovery developed her into the goddess known today.",
+            TraditionalMeaning: "Harmonious love: affection, family peace and the joy of spring renewal.",
 
-            DevotionalApproach: "Devotion to Lada may include celebrating spring, singing, weaving flower wreaths, nurturing loving relationships, and making peace within the family. Many practitioners honour her at spring festivals. Her devotion is often joyful, social, and musical.",
+            DevotionalApproach: "Start here: weave or buy a small flower wreath, hang it at home, and dedicate it to harmony in your household. Approach her joyfully, with song and affection. She asks devotees to nurture loving relationships and make peace within the family.",
 
-            OfferingNotes: "Offerings may include flowers, honey, bread, milk, songs, and woven wreaths. Simple acts of reconciliation or affection can also be offered.",
+            OfferingNotes: "Offer a simple act of reconciliation or affection, or set out a little cake and fresh flowers.",
 
-            AltarIdeas: "A Lada altar may include a flower wreath, birch branches, pink or white candles, rose quartz or amber, a dish of honey, and swan or dove imagery. It may feel bright, gentle, and springlike.",
+            AltarIdeas: "Pink or white candles, birch branches, rose quartz or amber, and swan or dove imagery.",
 
-            CulturalContext: "Lada is a debated figure: some scholars consider her an invention of later writers, while others think she may preserve a genuine folk memory. She is widely honoured in Rodnovery, the living Slavic Native Faith, where modern devotion is valid on its own terms. It is honest to present her as largely reconstructed rather than as a fully documented ancient goddess.",
-
-            BeginnerTip: "Weave or buy a small flower wreath in spring, hang it in your home, and dedicate it to harmony in your household.",
+            CulturalContext: "Lada is widely honoured in Rodnovery, the living Slavic Native Faith, where modern devotion is valid on its own terms. Be honest that her ancient origins are debated and present her as largely reconstructed.",
 
             Traditions: "Slavic",
 
@@ -6566,19 +5994,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Sources for Dazhbog are few and brief, and his modern mythology is mostly reconstructed.",
 
-            Overview: "Dazhbog is a Slavic sun god associated with light, warmth, generosity, and prosperity. He is one of the deities whose idols Prince Vladimir set up in Kyiv around 980. In modern practice he is approached for vitality, blessing, abundance, and a sense of ancestral belonging.",
+            Overview: "Dazhbog is a Slavic sun god of light, warmth, generosity and prosperity, called the son of Svarog. His name is usually understood as 'the giving god', and he is pictured through sun discs and solar wheels.",
 
-            TraditionalMeaning: "His name is usually understood as “the giving god,” linking him to wealth and good fortune. A twelfth-century Rus gloss on a Byzantine chronicle calls him the sun and the son of Svarog, and the Tale of Igor’s Campaign refers to the Rus people as “Dazhbog’s grandsons.” A figure called Dabog appears in later Serbian folklore, though his relation to Dazhbog is uncertain.",
+            TraditionalMeaning: "Generous light: warmth, vitality, good fortune and a sense of ancestral belonging.",
 
-            DevotionalApproach: "Devotion to Dazhbog may include greeting the sunrise, spending time in sunlight, giving generously, and honouring your ancestors. Many practitioners honour him at the solstices. His devotion often feels warm, open, and celebratory.",
+            DevotionalApproach: "Start here: watch one sunrise this month and give something away the same day in his honour. Approach him warmly and openly. He asks for generosity and respect for one's ancestors.",
 
-            OfferingNotes: "Offerings may include bread, honey, mead, grain, sunflowers, and acts of generosity. Sharing food with others can be a fitting offering to a god whose name means giving.",
+            OfferingNotes: "Offer mead, grain or sunflowers, or share food with others in his name.",
 
-            AltarIdeas: "A Dazhbog altar may include a sun disc or solar wheel, gold or yellow candles, sunstone or amber, sunflowers, a loaf of bread, and a cup of mead. It may feel bright, generous, and warm.",
+            AltarIdeas: "Gold or yellow candles, sunstone or amber, and a gold or bright cloth. Let it feel bright and generous.",
 
-            CulturalContext: "Dazhbog comes from pre-Christian Slavic religion, but he is known from only a handful of short references, so most of his modern portrait is reconstructed. He is honoured in Rodnovery, the living Slavic Native Faith. It is respectful to acknowledge how little is known while honouring how meaningful he is to modern practitioners.",
-
-            BeginnerTip: "Watch one sunrise this month and give something away the same day in Dazhbog’s honour.",
+            CulturalContext: "Dazhbog is honoured in Rodnovery, the living Slavic Native Faith. Acknowledge how little is known of him from ancient times while respecting how meaningful he is to practitioners today.",
 
             Traditions: "Slavic",
 
@@ -6611,19 +6037,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Morana is linked with death and winter. Approach her with respect, and remember that grief and despair are best met with human support as well as ritual.",
 
-            Overview: "Morana, also known as Marzanna, Morena, or Mara, is a Slavic figure associated with winter, death, and seasonal change. She is best known through the spring custom of carrying a straw effigy out of the village and drowning or burning it to send winter away. In modern practice she is approached for endings, release, transformation, and honouring death as part of the cycle of life.",
+            Overview: "Morana, also called Marzanna, Morena or Mara, is the Slavic figure of winter, death and seasonal change. She is pictured as a straw effigy dressed in white or rags, the image of winter itself.",
 
-            TraditionalMeaning: "The effigy custom is well documented in Poland, the Czech lands, Slovakia, and neighbouring regions, and the fifteenth-century Polish chronicler Jan Długosz mentions a goddess named Marzanna. The rite was often performed in late Lent, sometimes called Death Sunday, and is still practised as a folk custom by schoolchildren and communities today. Whether Morana was an ancient goddess or a personification of winter and death that grew up around the custom is debated.",
+            TraditionalMeaning: "She stands for necessary endings: release, honest grief, and the death of winter that makes room for spring.",
 
-            DevotionalApproach: "Devotion to Morana may include seasonal rituals of release, honouring the dead, sitting with grief, and welcoming spring after a hard winter. Many practitioners make a small straw figure in late winter and ritually let it go. Her devotion is often solemn, honest, and cleansing.",
+            DevotionalApproach: "Start here: at winter’s end, write down one thing you are ready to release, wrap it in straw or paper, and let it go safely. Approach her with honesty and solemnity rather than fear. She asks devotees to accept endings and to sit with grief instead of avoiding it.",
 
-            OfferingNotes: "Offerings may include straw dolls, bread, water, candles, and written lists of what you are ready to let go. If you release an effigy into water or fire, use natural materials and follow local safety and environmental rules.",
+            OfferingNotes: "Offer a small straw doll, bread, water, or a written list of what you are ready to let go. If you release anything into water or fire, use only natural materials and follow local safety and environmental rules.",
 
-            AltarIdeas: "A Morana altar may include a small straw effigy, black and white candles, obsidian or jet, bare branches, and a bowl of water. It may feel stark, quiet, and transformative.",
+            AltarIdeas: "Black and white candles, obsidian or jet, bare branches and a bowl of water suit her altar.",
 
-            CulturalContext: "Morana is known mainly from folk custom and a few late written sources, and scholars debate how much of an ancient goddess lies behind her. She is honoured today in Rodnovery, the living Slavic Native Faith, and in folk celebrations of spring. Spiritual work with endings never replaces support for grief or mental health when it is needed.",
-
-            BeginnerTip: "At winter’s end, write down one thing you are ready to release, wrap it in straw or paper, and let it go safely.",
+            CulturalContext: "Morana belongs to Slavic folk custom still kept by communities today and to Rodnovery, the living Slavic Native Faith; respect those customs as living tradition. Spiritual work with endings never replaces support for grief or mental health when it is needed.",
 
             Traditions: "Slavic, Christian",
 
@@ -6656,19 +6080,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Lugh is a god of many skills. He is honoured by effort and excellence, not empty boasting.",
 
-            Overview: "Lugh is an Irish god of the Tuatha Dé Danann associated with skill, craftsmanship, kingship, light, and the harvest. He is called Samildánach, “skilled in all the arts,” and Lámhfhada, “of the long arm.” In modern practice he is approached for talent, creativity, leadership, and the harvest festival of Lughnasadh.",
+            Overview: "Lugh is an Irish god of skill, craftsmanship, kingship, light and the harvest, called Lámhfhada, 'of the long arm', and master of every art. He is pictured as a bright young warrior with a spear and a sling.",
 
-            TraditionalMeaning: "In the Irish tale of the Second Battle of Mag Tuired, Lugh gains entry to Tara by proving he masters every art, then leads the Tuatha Dé to victory and kills his grandfather Balor with a sling-stone. The festival of Lughnasadh on 1 August was said to have been founded by Lugh in honour of his foster-mother Tailtiu, who died clearing the plains of Ireland for farming. He is related to the Gaulish Lugus and the Welsh Lleu Llaw Gyffes.",
+            TraditionalMeaning: "Bright mastery: talent, versatility, capable leadership and the rewards of honest effort.",
 
-            DevotionalApproach: "Devotion to Lugh may include practising many skills, competing fairly, finishing projects, celebrating the first harvest, and honouring those who taught you. Many practitioners hold games, contests, or craft showcases at Lughnasadh. His devotion is often bright, energetic, and skilful.",
+            DevotionalApproach: "Start here: learn one small new skill this month and dedicate the effort of learning it to him. Approach him with energy and a spirit of fair play; finishing projects and honouring those who taught you both suit him. He asks devotees to keep their word and practise their crafts well.",
 
-            OfferingNotes: "Offerings may include bread baked from the first harvest, ale, berries, craftwork, poetry, and the results of practice. Honouring a teacher or foster-parent fits the story of Tailtiu.",
+            OfferingNotes: "Offer ale, craftwork, poetry or the results of practice. Honouring a teacher or foster-parent fits his story.",
 
-            AltarIdeas: "A Lugh altar may include a spear symbol, a harvest sheaf, gold or yellow candles, sunstone or citrine, tools of your crafts, and a loaf of bread. It may feel bright, capable, and celebratory.",
+            AltarIdeas: "Gold or yellow candles, a spear symbol, a harvest sheaf, sunstone or citrine, and tools of your crafts.",
 
-            CulturalContext: "Lugh comes from Irish mythology, preserved in medieval manuscripts written by Christian scribes, so the texts reflect both older tradition and later literary shaping. Lughnasadh survives in Irish folk customs such as hilltop gatherings and Reek Sunday, and is part of the modern Wheel of the Year. Gaelic Polytheists and Celtic Reconstructionists honour him today alongside many other pagans.",
-
-            BeginnerTip: "Learn one small new skill this month and dedicate the effort of learning it to Lugh.",
+            CulturalContext: "Lugh is honoured today by Gaelic Polytheists, Celtic Reconstructionists and other pagans, and Lughnasadh customs survive in Irish folk life. Learn from Irish sources and living Irish custom where you can.",
 
             Traditions: "Celtic, Wheel of the Year",
 
@@ -6701,19 +6123,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "The Dagda is both comic and mighty in the Irish tales. Respect his complexity rather than reducing him to a jolly father figure.",
 
-            Overview: "The Dagda, “the good god,” is a chief figure of the Irish Tuatha Dé Danann associated with abundance, fatherhood, strength, wisdom, and the turning of the seasons. His title means good at everything, rather than morally good. In modern practice he is approached for provision, protection, hospitality, and fatherly strength.",
+            Overview: "The Dagda, 'the good god', is an Irish father-god of abundance, strength, wisdom and the seasons; the title means good at everything, not morally good. He is pictured as a huge, rough figure with a cauldron that never empties, a great club that kills and restores, and a harp that calls the seasons.",
 
-            TraditionalMeaning: "The Dagda owned a cauldron from which no company ever went away unsatisfied, a huge club that could kill with one end and restore life with the other, and a harp that called forth the seasons. He is also called Eochaid Ollathair, “great father.” In the tale of the Second Battle of Mag Tuired he meets the Morrígan at Samhain beside a river, and he is named as the father of Brigid in Irish tradition.",
+            TraditionalMeaning: "Generous provision: fatherly strength, hospitality, protection and the steady turning of the year.",
 
-            DevotionalApproach: "Devotion to the Dagda may include cooking for others, offering hospitality, playing or listening to music, caring for family, and honouring the cycle of the seasons. Many practitioners honour him at Samhain or at shared meals. His devotion often feels generous, hearty, and grounded.",
+            DevotionalApproach: "Start here: cook a simple pot of porridge or soup, share it with someone, and set aside the first spoonful for the Dagda. Approach him heartily and generously; hospitality and care for family honour him. He asks devotees to feed and protect those in their care.",
 
-            OfferingNotes: "Offerings may include porridge, bread, ale, music, and shared meals. Feeding guests generously echoes the abundance of his cauldron.",
+            OfferingNotes: "Offer a portion of a shared meal or oatcakes, set out at the table with a word of welcome. Feeding guests generously is itself an offering.",
 
-            AltarIdeas: "A Dagda altar may include a cauldron or pot, a small harp or musical instrument, a club or staff, brown or green candles, moss agate, oak leaves, and a bowl of oats. It may feel warm, plentiful, and strong.",
+            AltarIdeas: "A cauldron or pot, a small harp, a staff, brown or green candles, moss agate, oak leaves and a bowl of oats.",
 
-            CulturalContext: "The Dagda comes from Irish mythology, recorded by Christian scribes in medieval manuscripts that sometimes portray him with humour. Later tales associate him with Brú na Bóinne (Newgrange), though the monument is far older than the stories. He is honoured today by Gaelic Polytheists, Celtic Reconstructionists, and other modern pagans.",
-
-            BeginnerTip: "Cook a simple pot of porridge or soup, share it with someone, and offer the first spoonful to the Dagda.",
+            CulturalContext: "The Dagda is honoured today by Gaelic Polytheists, Celtic Reconstructionists and other pagans. Learn from Irish sources and Irish-speaking communities where you can, remembering the stories belong to a living culture.",
 
             Traditions: "Celtic",
 
@@ -6746,19 +6166,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Epona is honoured through real care for animals. Never put horses or other animals at risk for ritual.",
 
-            Overview: "Epona is a Gaulish goddess of horses, mules, and donkeys, associated with travel, fertility, abundance, and protection. Her name comes from the Gaulish word for horse. In modern practice she is approached for animal care, safe journeys, abundance, and steady strength.",
+            Overview: "Epona is a Gaulish goddess of horses, mules and donkeys, linked with travel, fertility and abundance; her name means horse. She is pictured seated sidesaddle on a horse or between horses, often holding a cornucopia, a dish, or fruit and grain.",
 
-            TraditionalMeaning: "Epona is usually shown seated sidesaddle on a horse or sitting between horses, often holding a cornucopia, a patera, or fruit and grain. Her worship spread across the Roman Empire through the cavalry, especially auxiliary horsemen recruited from Gaul, and her images have been found from Britain to the Danube. She is unusual among Celtic deities in receiving a festival in a Roman calendar, on 18 December, and the Roman writer Apuleius describes a small shrine to her in a stable.",
+            TraditionalMeaning: "Steady, nurturing strength: protection on the journey, care for animals and abundant provision.",
 
-            DevotionalApproach: "Devotion to Epona may include caring for horses and other animals, supporting rescues or sanctuaries, blessing a journey, and honouring the strength of working animals. Some practitioners keep a small image of her in a stable or near the door. Her devotion is often gentle, practical, and protective.",
+            DevotionalApproach: "Start here: donate a little time or money to a horse or animal rescue and dedicate it to her. Approach her gently and practically. She asks devotees to care well for animals, especially working animals, and to travel safely.",
 
-            OfferingNotes: "Offerings may include oats, apples, hay, fresh water, and donations to animal rescues. If you feed horses, always ask their owner first, since unsuitable food can make them ill.",
+            OfferingNotes: "Offer oats, hay, fresh water or a donation to an animal rescue. If you feed real horses, always ask their owner first, since unsuitable food can make them ill.",
 
-            AltarIdeas: "An Epona altar may include a horse figure, a horseshoe, oats or apples, white or brown candles, moss agate or jasper, and a small cornucopia. It may feel calm, steady, and nurturing.",
+            AltarIdeas: "A horse figure, a horseshoe, white or brown candles, moss agate or jasper, and a small cornucopia.",
 
-            CulturalContext: "Epona comes from Gaulish religion and became one of the most widely honoured Celtic deities in the Roman world, worshipped by soldiers and stable workers far from Gaul. Almost no myths about her survive; she is known mostly from inscriptions and images. Modern comparisons with the Welsh Rhiannon or the Irish Macha are interpretive and debated.",
-
-            BeginnerTip: "Donate a little time or money to a horse or animal rescue, and dedicate it to Epona.",
+            CulturalContext: "Epona is honoured today by Celtic and Roman polytheists, though almost no myths about her survive. Be honest that links to Rhiannon or Macha are modern interpretation.",
 
             Traditions: "Celtic, Roman",
 
@@ -6791,19 +6209,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "In the Mabinogi Arianrhod is a proud and difficult figure. Many popular moon-goddess correspondences for her are modern rather than medieval.",
 
-            Overview: "Arianrhod is a figure from Welsh medieval literature, daughter of Dôn and mother of Lleu Llaw Gyffes and Dylan. In modern paganism she is honoured as a goddess of the stars, destiny, initiation, and the turning wheel of time. Her name is often translated “silver wheel,” though the etymology is debated.",
+            Overview: "Arianrhod is a Welsh figure honoured in modern paganism as a goddess of the stars, destiny, initiation and the turning wheel of time; her name is often read as 'silver wheel'. She is pictured with a silver wheel or among the stars, her court placed in the Corona Borealis.",
 
-            TraditionalMeaning: "In the Fourth Branch of the Mabinogi, Arianrhod gives birth to two sons when stepping over the wand of Math, then lays three destinies (tynghedau) on Lleu: he will have no name, no arms, and no human wife unless she grants them. Her trickster brother Gwydion outwits each of these. Caer Arianrhod is a Welsh name for the Corona Borealis and also for a rocky reef off the coast of Gwynedd, said in folklore to be her sunken court.",
+            TraditionalMeaning: "Fate and self-naming: the proud power to set destinies, and the cycles that turn every life.",
 
-            DevotionalApproach: "Devotion to Arianrhod may include stargazing, reflecting on fate and personal choice, naming yourself or your goals honestly, and sitting by the sea. Many practitioners approach her at times of initiation or major life change. Her devotion often feels cool, proud, and mysterious.",
+            DevotionalApproach: "Start here: on a clear night, look at the stars and name one destiny you are choosing for yourself. Approach her with self-respect and honesty about who you are; she is cool and proud rather than cosy. Many turn to her at initiations or major life changes.",
 
-            OfferingNotes: "Offerings may include silver objects, sea water, starlight-charged water, poetry, and honest declarations of who you are. Modern practitioners often honour her outdoors at night.",
+            OfferingNotes: "Offer a silver trinket, a little sea water, water left out under starlight, a poem, or an honest spoken declaration of who you are. Leave them outdoors at night where you can.",
 
-            AltarIdeas: "An Arianrhod altar may include a silver wheel or circle, star imagery, silver or white candles, moonstone or labradorite, shells, and a bowl of sea water. It may feel distant, starry, and solemn.",
+            AltarIdeas: "A silver wheel or circle, star imagery, silver or white candles, moonstone or labradorite, and shells. Keep it spare and solemn.",
 
-            CulturalContext: "Arianrhod appears in the Four Branches of the Mabinogi, medieval Welsh tales written down by Christian authors that may preserve older mythic figures. The texts never explicitly call her a goddess, and much of her modern lunar and stellar identity comes from twentieth-century paganism. Welsh language and culture are living heritage, and it is respectful to read the tales themselves.",
-
-            BeginnerTip: "On a clear night, find the Corona Borealis or simply look at the stars, and name one destiny you are choosing for yourself.",
+            CulturalContext: "Arianrhod comes from Welsh tradition, and Welsh language and culture are living heritage. Read the Mabinogi itself, and be honest that much of her lunar and stellar identity is modern.",
 
             Traditions: "Celtic, Wheel of the Year",
 
@@ -6836,19 +6252,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Rhiannon’s story includes false accusation and unjust punishment. Her devotion is not a substitute for real support for anyone facing abuse or injustice.",
 
-            Overview: "Rhiannon is a figure from Welsh medieval literature associated with sovereignty, horses, the Otherworld, patience, and birdsong. She appears in the First and Third Branches of the Mabinogi as a queen of great wisdom and dignity. In modern practice she is approached for endurance, justice, grace under pressure, and motherhood.",
+            Overview: "Rhiannon is a Welsh queen of sovereignty, horses, the Otherworld and birdsong. She is pictured riding a white horse that can never be caught, accompanied by magical birds whose song can wake the dead and lull the living to sleep.",
 
-            TraditionalMeaning: "In the First Branch she rides a white horse that no rider can catch, however slowly she seems to move, until Pwyll asks her to stop. Later she is falsely accused of killing her infant son Pryderi and forced to sit by the gate and offer to carry visitors on her back like a horse, until her son is returned. The Birds of Rhiannon, whose song can wake the dead and lull the living to sleep, appear in the Second Branch and in Culhwch and Olwen.",
+            TraditionalMeaning: "She stands for patience and dignity under unfair treatment: endurance, sovereignty and a mother’s steadfast love.",
 
-            DevotionalApproach: "Devotion to Rhiannon may include practising patience, standing by people who are wrongly accused, caring for horses, listening to birdsong, and supporting parents through hard times. Many practitioners turn to her when enduring something unfair. Her devotion often feels dignified, gentle, and resilient.",
+            DevotionalApproach: "Start here: sit outdoors at dawn or dusk, listen to the birds for five minutes, and ask her for patience with one difficult situation. Approach her with courtesy and grace. She asks devotees to stand by those who are wrongly accused and to support parents through hard times.",
 
-            OfferingNotes: "Offerings may include songs, apples, honey, oats, birdseed, and acts of justice or support for those treated unfairly. Singing to her, however simply, echoes the Birds of Rhiannon.",
+            OfferingNotes: "Sing to her, however simply, or offer oats, honey, birdseed set out for wild birds, or an act of support for someone treated unfairly.",
 
-            AltarIdeas: "A Rhiannon altar may include a white horse figure, bird imagery, white or gold candles, moonstone or pearl, apples, and a small bell. It may feel graceful, patient, and otherworldly.",
+            AltarIdeas: "A white horse figure, bird imagery, white or gold candles, moonstone or pearl, apples and a small bell suit her altar.",
 
-            CulturalContext: "Rhiannon appears in the Mabinogi, medieval Welsh tales written by Christian authors. Her name may come from a reconstructed British title meaning “great queen,” and scholars have compared her to the Gaulish Epona, though both links are debated. Welsh language and culture are living heritage, and it is respectful to read the tales themselves.",
-
-            BeginnerTip: "Sit outdoors at dawn or dusk, listen to the birds for five minutes, and ask Rhiannon for patience with one difficult situation.",
+            CulturalContext: "Rhiannon comes from Welsh literature, and Welsh language and culture are living heritage. It is respectful to read the tales themselves, ideally in a good translation, and to learn from Welsh voices.",
 
             Traditions: "Celtic",
 
@@ -6881,19 +6295,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Manannán is a powerful and sometimes tricky figure of illusion. Respect the sea’s real dangers and never take risks near water for ritual.",
 
-            Overview: "Manannán mac Lir, “son of the sea,” is an Irish god of the sea and the Otherworld associated with mist, illusion, protection, and passage between worlds. He is linked with the Isle of Man and is said to protect it by wrapping it in mist. In modern practice he is approached for safe travel, protection, otherworldly journeys, and the mysteries of the sea.",
+            Overview: "Manannán mac Lir, “son of the sea,” is the Irish god of the sea, mist and the Otherworld. He is pictured as a cloaked rider on the horse Enbarr galloping over the waves, or at the helm of a boat that steers itself.",
 
-            TraditionalMeaning: "In Irish tales Manannán rides his horse Enbarr over the waves, sails a self-guiding boat called Wave-Sweeper, and rules Otherworld lands such as Emain Ablach, the Isle of Apples. He shakes his cloak between Cú Chulainn and Fand so that they will never meet again, causing forgetting. Manx folklore says rushes were offered to him at midsummer, and his Welsh counterpart is Manawydan fab Llŷr.",
+            TraditionalMeaning: "He stands for the sea’s protection and its mystery: safe passage, the veil of mist between worlds, and the guardian who decides what is seen and what is hidden.",
 
-            DevotionalApproach: "Devotion to Manannán may include walking the shore, protecting coasts and seas, blessing journeys, and meditating on mist, thresholds, and the Otherworld. Many practitioners honour him at midsummer. His devotion often feels vast, mysterious, and protective.",
+            DevotionalApproach: "Start here: visit a shore or a body of water, pick up a little litter, and dedicate that care to him. Greet him quietly at the water’s edge before a journey, and ask plainly for safe passage. He asks devotees to respect the sea’s power and to protect coasts and waters.",
 
-            OfferingNotes: "Offerings may include sea water, rushes, apples, mead, music, and beach clean-ups. Do not leave food or non-natural items on the shore where they could harm wildlife.",
+            OfferingNotes: "Pour liquid offerings straight into the water rather than leaving them on the sand, and keep them small and natural. Never leave food, plastic or other non-natural items on the shore where they could harm wildlife; a beach clean-up is an offering in itself.",
 
-            AltarIdeas: "A Manannán altar may include a bowl of sea water, shells, a small boat, blue or silver candles, aquamarine or labradorite, an apple branch, and a grey cloth for mist. It may feel deep, misty, and expansive.",
+            AltarIdeas: "A bowl of sea water, shells, a small boat, a grey cloth for mist, blue or silver candles, aquamarine or labradorite, and an apple branch suit his altar.",
 
-            CulturalContext: "Manannán comes from Irish mythology and is also central to Manx tradition, preserved in medieval manuscripts and later folklore. He is honoured today by Gaelic Polytheists, Celtic Reconstructionists, and Manx people celebrating their heritage. The Isle of Man’s name is often popularly linked with him, though the etymology is uncertain.",
-
-            BeginnerTip: "Visit a shore or a body of water, collect a little rubbish, and dedicate that care to Manannán.",
+            CulturalContext: "Manannán belongs to Irish and Manx heritage and is honoured today by Gaelic polytheists and by Manx people celebrating their culture. Learn from those communities and from the tales themselves, and treat Manx custom as living local tradition.",
 
             Traditions: "Celtic, Christian",
 
@@ -6926,19 +6338,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Frigg is often blended with Freyja in modern books, but the Eddas treat them as distinct goddesses. Much of what is said about her household keys and spinning is modern practice built on thin sources.",
 
-            Overview: "Frigg is the Norse goddess of the household, marriage and motherhood, wife of Odin and mother of Baldur. In the Eddas she is said to know the fates of all beings even though she does not speak of them. In modern Heathen practice she is often approached for protection of the home and family, for steady counsel, and for the quiet strength of those who keep a household running.",
+            Overview: "Frigg is the Norse goddess of the household, marriage and motherhood, wife of Odin and mother of Baldur, who knows the fates of all beings but does not speak of them. She is pictured spinning at her distaff, with keys at her belt.",
 
-            TraditionalMeaning: "In Snorri’s Prose Edda, Frigg holds the highest rank among the goddesses, lives in the hall Fensalir, and is attended by goddesses such as Fulla, Hlín and Gná. Her most famous story is her attempt to protect Baldur by taking oaths from every living thing not to harm him, overlooking only the young mistletoe. Her grief after his death shows her as a mother whose foreknowledge could not change fate.",
+            TraditionalMeaning: "Quiet, watchful strength: protection of home and family, steady counsel and foreknowledge held with grace.",
 
-            DevotionalApproach: "Devotion to Frigg may include tending the home with care, cooking for others, spinning, knitting or weaving, keeping promises, and offering a quiet prayer at the threshold. Many Heathens honour her as a protector of children and families and as a counsellor who listens more than she speaks. Practical acts of care are often felt to be the heart of her worship.",
+            DevotionalApproach: "Start here: light a candle when you sit down with your household and ask for patience and protection for everyone under your roof. Approach her calmly and practically; tending the home, keeping promises and caring for family are the heart of her worship. She listens more than she speaks, so bring her honest worries rather than grand requests.",
 
-            OfferingNotes: "Offerings may include bread, mead, milk, a portion of a family meal, or handmade yarn and cloth. In modern practice, tending a sick family member, organising a household or keeping a hard promise can be offered to her as devotion in itself.",
+            OfferingNotes: "Offer milk or a portion of a family meal. Tending a sick family member, organising a household or keeping a hard promise can be dedicated to her.",
 
-            AltarIdeas: "A Frigg altar may include white, blue or silver candles, a distaff, spindle or ball of yarn, a ring of keys, a bowl of flax or grain, moonstone, amber, and family photographs. The altar may feel calm, orderly, warm and quietly watchful.",
+            AltarIdeas: "White, blue or silver candles, a spindle or ball of yarn, a bowl of flax, moonstone, amber and family photographs.",
 
-            CulturalContext: "Frigg comes from the religion of the pre-Christian Norse and wider Germanic peoples, and Heathenry is a living religion that honours her today. Almost everything we know of her comes from the Eddas and sagas, written down in Christian Iceland in the 13th century, so modern practice combines those sources with scholarship and reconstruction. The Swedish folk name Friggerock, Frigg’s distaff, for the stars of Orion’s Belt is one of the few traces of her outside the literary sources.",
-
-            BeginnerTip: "Light a candle for Frigg when you sit down with your household, and ask for patience and protection for the people under your roof.",
+            CulturalContext: "Frigg is honoured today in Heathenry, a living religion, through the old sources combined with reconstruction. Learn from Heathen communities and be honest about what is modern practice.",
 
             Traditions: "Norse",
 
@@ -6971,19 +6381,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Freyr was historically honoured for peace and plenty. Modern books sometimes reduce him to a fertility figure only, missing his roles in kingship, peace and the well-being of the whole community.",
 
-            Overview: "Freyr is a Norse god of the Vanir, son of Njord and brother of Freyja, associated with fertile land, rain and sunshine, good harvests, peace and prosperity. Snorri calls him the most renowned of the gods and says he rules the rain and the growth of the earth. In modern Heathen practice he is honoured for abundance, healthy land, honest work and a peaceful, thriving community.",
+            Overview: "Freyr is a Norse god of the Vanir, brother of Freyja, ruling fertile land, rain and sunshine, harvest, peace and prosperity. He is pictured with the golden boar Gullinbursti and the folding ship Skíðblaðnir, fighting with an antler after giving away his sword.",
 
-            TraditionalMeaning: "Traditionally, Freyr owns the golden boar Gullinbursti and the ship Skíðblaðnir, which can be folded into a pouch. In the poem Skírnismál he gives away his sword to win the giantess Gerd, which is why he fights with an antler at Ragnarök. The Swedish royal line of the Ynglings claimed descent from him, and sagas such as Hrafnkels saga mention horses dedicated to him.",
+            TraditionalMeaning: "Peaceful abundance: healthy land, honest work and a thriving community.",
 
-            DevotionalApproach: "Devotion to Freyr may include gardening, farming, baking bread, brewing, caring for animals, and giving thanks for food and seasonal plenty. Many Heathens honour him at harvest and at Yule, often with a toast of ale or mead. Sharing food and keeping peace within a community are natural ways to honour him.",
+            DevotionalApproach: "Start here: set aside the first bite or sip of a meal and thank the people and land that made it possible. Approach him with gratitude and good cheer; gardening, brewing, baking and caring for animals all honour him. He asks devotees to keep peace in their community and to share plenty.",
 
-            OfferingNotes: "Offerings may include ale, mead, bread, grain, garden produce and the first fruits of a harvest. In modern practice, a portion of a shared meal or a donation to a food bank can be offered in his name.",
+            OfferingNotes: "Offer garden produce or the first fruits of a harvest, returned to the earth afterward. A donation to a food bank can be dedicated to him.",
 
-            AltarIdeas: "A Freyr altar may include green, gold or brown candles, a sheaf of barley or wheat, boar or stag imagery, a small ship, moss agate, amber, fresh produce, and a horn or cup for ale. The altar may feel earthy, generous, sunny and abundant.",
+            AltarIdeas: "Green, gold or brown candles, a sheaf of barley, boar or stag imagery, a small ship, moss agate, amber and a horn or cup.",
 
-            CulturalContext: "Freyr comes from pre-Christian Norse religion and is honoured today in Heathenry, a living religion. Our main sources, the Eddas and sagas, were written down in Christian Iceland, alongside outside accounts such as Adam of Bremen’s description of the temple at Uppsala, which must be read critically. Modern Yule customs involving a boar draw partly on the oath-boar mentioned in the sagas and partly on later folk tradition.",
-
-            BeginnerTip: "Set aside the first bite or the first sip of a meal for Freyr and give thanks for the people and land that made it possible.",
+            CulturalContext: "Freyr is honoured today in Heathenry, a living religion. Learn from Heathen communities and be clear which customs are reconstructed and which come from later folk tradition.",
 
             Traditions: "Norse",
 
@@ -7016,19 +6424,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Hel is not a Norse Satan, and her realm is not a place of punishment in the Christian sense. Very little evidence survives for any ancient worship of her as a goddess, so most devotional practice is modern.",
 
-            Overview: "Hel is the Norse ruler of the realm of the same name, where many of the dead go. Snorri describes her as the daughter of Loki and the giantess Angrboda, half dark and half flesh-coloured, given rule over the dead by Odin. In modern practice she is approached with respect for ancestor work, grief, acceptance of death, and the honest facing of endings.",
+            Overview: "Hel is the Norse ruler of the realm of the dead that shares her name, daughter of Loki and the giantess Angrboda. She is pictured as half dark and half flesh-coloured, stern and solemn.",
 
-            TraditionalMeaning: "In the Prose Edda, Hel receives Baldur after his death and agrees to release him only if every being in the world weeps for him. When one giantess refuses, Baldur remains with her until after Ragnarök. Her realm is a place of the dead in general, not only of the wicked, and older poetry uses Hel mainly as the name of that place.",
+            TraditionalMeaning: "Honest endings: the dignified keeping of the dead and acceptance of mortality.",
 
-            DevotionalApproach: "Devotion to Hel may include ancestor remembrance, tending graves, sitting with grief, studying Norse funerary customs, and making peace with mortality. Many who honour her describe her as stern, fair and quietly protective of the dead. Approach her slowly, with sincerity rather than dramatics.",
+            DevotionalApproach: "Start here: begin with your own dead; speak their names and tend their memory. Approach her slowly, with sincerity rather than dramatics; many describe her as stern, fair and quietly protective of the dead. If grief becomes overwhelming, reach out to a counsellor or grief-support service as well.",
 
-            OfferingNotes: "Offerings may include bread, water, dark beer, a candle for the dead, and acts of remembrance such as cleaning a grave or speaking a name aloud. In modern practice, offerings for Hel are often left outdoors or on an ancestor shelf rather than mixed with offerings for other gods.",
+            OfferingNotes: "Offer water, dark beer or a candle for the dead, or acts of remembrance such as cleaning a grave. Keep her offerings on an ancestor shelf or outdoors, separate from those for other gods.",
 
-            AltarIdeas: "A Hel altar may include black and white candles, obsidian, jet, a small bowl of soil, bones or antlers found naturally, photographs of the dead, and a cup of water. The altar may feel solemn, still and balanced between light and dark.",
+            AltarIdeas: "Black and white candles, obsidian, jet, naturally found bones or antlers, and photographs of the dead. Let it feel still and balanced between light and dark.",
 
-            CulturalContext: "Hel appears in the Eddas and skaldic poetry, written down in Christian Iceland, and scholars debate how far she was a goddess of worship rather than a literary personification of the realm of the dead. Heathenry is a living religion, and some Heathens honour her today while others do not; modern devotion to her is largely reconstruction and personal practice. Ancestor veneration, by contrast, is well attested in Norse culture.",
-
-            BeginnerTip: "If you feel drawn to Hel, begin with your own dead. Speak their names, tend their memory, and let that be your first offering. If grief becomes overwhelming, reach out to a counsellor or grief-support service as well.",
+            CulturalContext: "Heathenry is a living religion, and some Heathens honour Hel while others do not. Respect those differences, and present devotion to her as largely reconstruction and personal practice.",
 
             Traditions: "Norse",
 
@@ -7061,19 +6467,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Tyr is honoured for justice and keeping one’s word. Oaths sworn in his name are traditionally taken very seriously, so do not swear lightly.",
 
-            Overview: "Tyr is the Norse god of law, justice, oaths and courage in war, best known for losing his hand in the binding of the wolf Fenrir. He knowingly placed his hand in the wolf’s mouth as a pledge, accepting the loss so that the gods could be protected. In modern Heathen practice he is honoured for integrity, fair dealing, courage and the willingness to sacrifice for the common good.",
+            Overview: "Tyr is the Norse god of law, justice, oaths and courage. He is pictured as a one-handed warrior, having given his hand to the wolf Fenrir as a pledge so the gods could be protected.",
 
-            TraditionalMeaning: "Snorri calls Tyr the boldest of the gods and says he decides victory in battle. The poem Sigrdrífumál advises carving victory runes on a sword and naming Tyr twice, and the rune named for him, Tiwaz, appears in the rune poems. Older Germanic evidence, including the god *Tīwaz behind the English name Tuesday and a Roman-era altar to Mars Thingsus, links him with war and with the legal assembly called the Thing.",
+            TraditionalMeaning: "He stands for integrity at personal cost: fair dealing, keeping your word and the courage to sacrifice for the common good.",
 
-            DevotionalApproach: "Devotion to Tyr may include keeping your word, speaking truthfully, standing up for fairness, studying law or ethics, and doing difficult right things at personal cost. Some Heathens call on him before legal matters, hard conversations or acts of courage. He is often approached in a plain, direct and serious manner.",
+            DevotionalApproach: "Start here: make one small, specific promise in his name and keep it completely. Approach him plainly, directly and seriously, and never swear lightly. He asks devotees to speak truthfully and stand up for fairness. Devotion never replaces proper legal advice, but it can strengthen your resolve to act honestly.",
 
-            OfferingNotes: "Offerings may include mead, ale, a carved Tiwaz rune, or a solemn promise that you then keep. In modern practice, an act of integrity, such as owning a mistake or defending someone treated unfairly, is a fitting offering.",
+            OfferingNotes: "Offer a carved Tiwaz rune or a solemn promise that you then keep. An act of integrity, such as owning a mistake or defending someone treated unfairly, is a fitting offering.",
 
-            AltarIdeas: "A Tyr altar may include red, white or steel-grey candles, a Tiwaz rune, a sword or spear symbol, a set of scales, hematite, bloodstone, oak leaves, and a written oath or code of conduct. The altar may feel upright, simple, disciplined and honest.",
+            AltarIdeas: "Red, white or steel-grey candles, a sword or spear symbol, a set of scales, hematite or bloodstone, oak leaves, and a written oath or code of conduct suit his altar.",
 
-            CulturalContext: "Tyr is one of the oldest Germanic gods, with traces across the Germanic world, though by the time the Eddas and sagas were written down in Christian Iceland his myths had become few. Heathenry is a living religion, and modern devotion to Tyr combines these sources with scholarship and reconstruction. His association with justice in legal settings is partly modern, built on the Mars Thingsus evidence.",
-
-            BeginnerTip: "Make one small, specific promise in Tyr’s name and keep it completely. Magic and devotion never replace proper legal advice, but they can strengthen your resolve to act honestly.",
+            CulturalContext: "Heathenry is a living religion with many communities. Learn from inclusive Heathen groups and be honest about which parts of devotion to him are modern.",
 
             Traditions: "Norse",
 
@@ -7106,19 +6510,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Skadi is a giantess who joined the gods. She is honoured for strength and independence, and many devotees feel she dislikes being softened or prettified.",
 
-            Overview: "Skadi is a Norse giantess and goddess of winter, mountains, skiing and hunting with the bow. After the gods killed her father Thjazi, she came to Asgard armed for revenge and accepted compensation instead: a husband and laughter. In modern Heathen practice she is honoured for self-reliance, endurance, wild places and the courage to demand what is owed.",
+            Overview: "Skadi is a Norse giantess and goddess of winter, mountains, skiing and hunting with the bow. She is pictured on skis in the snowy mountains, bow in hand, with wolves nearby.",
 
-            TraditionalMeaning: "In the Prose Edda, Skadi chooses a husband by looking only at feet, hoping for Baldur but choosing the sea god Njord. Their marriage fails because she cannot bear the noise of gulls by the sea and he cannot bear the howling of wolves in the mountains, so they live apart. In Lokasenna she speaks of her own sanctuaries and fields, and she places the venomous serpent above the bound Loki.",
+            TraditionalMeaning: "She stands for self-reliance and just redress: endurance in hard places, independence, and the courage to demand what is owed.",
 
-            DevotionalApproach: "Devotion to Skadi may include walking, skiing or hiking in cold and wild places, learning outdoor skills, practising archery, and honouring hard-won independence. Some people turn to her when they need to stand up for themselves or to seek fair redress after a wrong. She is often approached with honesty and plainness rather than ornament.",
+            DevotionalApproach: "Start here: spend a little time outside in cold weather, safely dressed, notice your own endurance, and offer that awareness to her. Approach her with honesty and plainness rather than ornament. She asks devotees to stand up for themselves and respect wild places.",
 
-            OfferingNotes: "Offerings may include clean water or snowmelt, venison or other game, aquavit, or a winter walk dedicated to her. In modern practice, caring for wild places, such as picking up litter on a trail, can be an offering as well.",
+            OfferingNotes: "Offer clean water or snowmelt, aquavit, or a winter walk dedicated to her. Caring for wild places, such as picking up litter on a trail, is also an offering; take any food left outdoors away again.",
 
-            AltarIdeas: "A Skadi altar may include white, silver or pale-blue candles, a small bow or arrow, pine and juniper sprigs, a stone from a mountain, wolf imagery, clear quartz and labradorite. The altar may feel cold, clean, spare and wild.",
+            AltarIdeas: "White, silver or pale-blue candles, a small bow or arrow, pine and juniper sprigs, a mountain stone, wolf imagery, clear quartz and labradorite suit her altar.",
 
-            CulturalContext: "Skadi appears in the Eddas and in skaldic poetry, written down in Christian Iceland, and Ynglinga saga says she later lived with Odin. Some scholars have linked her name with Scandinavia itself, but this is debated. Heathenry is a living religion, and modern devotion to her draws on these sources together with reconstruction and personal practice.",
-
-            BeginnerTip: "Spend a little time outside in cold weather, safely dressed, and notice your own endurance. Offer that awareness to Skadi.",
+            CulturalContext: "Heathenry is a living religion with many communities. Learn from inclusive Heathen groups, and be honest about what comes from the sources and what is personal practice.",
 
             Traditions: "Norse",
 
@@ -7151,19 +6553,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Mistletoe is toxic to people and pets and should never be ingested. Little evidence survives for any ancient cult of Baldur, so most devotional practice is modern.",
 
-            Overview: "Baldur, or Baldr, is the Norse god of light, beauty and goodness, son of Odin and Frigg. Snorri describes him as so fair that light shines from him and says the whitest of plants is named Baldr’s brow after him. His death, caused by a mistletoe dart, is one of the great sorrows of Norse myth, and in modern Heathen practice he is honoured for kindness, innocence, grief and the hope of renewal.",
+            Overview: "Baldur is the Norse god of light, beauty and goodness, son of Odin and Frigg. He is pictured as so fair that light shines from him, and the whitest of flowers is called his brow.",
 
-            TraditionalMeaning: "In the Prose Edda, Baldur dreams of his death, and Frigg takes oaths from all things not to harm him, except the young mistletoe. Loki guides the blind god Höd to throw a mistletoe dart, and Baldur is killed and sent to Hel on a burning ship with his wife Nanna. He is said to return after Ragnarök to rule the renewed world, making his story one of loss and of eventual return.",
+            TraditionalMeaning: "Innocent goodness and hope: kindness, light, and the promise that what is lost may return renewed.",
 
-            DevotionalApproach: "Devotion to Baldur may include acts of kindness, peacemaking, honest praise of others, spending time in sunlight, and holding space for grief. Some Heathens honour him around midsummer or during mourning, as a god who knows loss and promises renewal. He is often approached gently and warmly.",
+            DevotionalApproach: "Start here: do one kind, unglamorous thing for someone today and dedicate it to Baldur. Approach him gently and warmly; peacemaking, honest praise of others and time in sunlight all honour him. He also knows loss, so you can bring him your grief, and lean on friends or a grief counsellor too.",
 
-            OfferingNotes: "Offerings may include mead, bread, white or yellow flowers, and candles lit in sunlight. In modern practice, comforting someone who is grieving or making peace in a quarrel can be offered to him.",
+            OfferingNotes: "Offer bread, white or yellow flowers, or a candle lit in a sunny window. Comforting someone who is grieving or making peace in a quarrel can be dedicated to him.",
 
-            AltarIdeas: "A Baldur altar may include white, gold or pale-yellow candles, daisy-like flowers, sunstone, citrine, amber, a small ring, ship imagery, and a cloth in bright, clean colours. The altar may feel luminous, gentle and hopeful, with a quiet note of mourning.",
+            AltarIdeas: "White, gold or pale-yellow candles, sunstone, citrine, amber, a small ring, ship imagery and a bright, clean cloth.",
 
-            CulturalContext: "Baldur’s myths come mainly from the Eddas and sagas, written down in Christian Iceland, and Saxo Grammaticus tells a very different Danish version of his story. Heathenry is a living religion, and devotion to Baldur today relies heavily on reconstruction. His popular link with the summer solstice comes largely from 19th-century scholars such as Frazer rather than from medieval sources, so it is modern practice.",
-
-            BeginnerTip: "Do one kind, unglamorous thing for someone today and dedicate it to Baldur. If you are grieving deeply, lean on friends or a grief counsellor as well as on prayer.",
+            CulturalContext: "Heathenry is a living religion, and devotion to Baldur today relies heavily on reconstruction. Learn from Heathen communities and be honest about which customs are modern.",
 
             Traditions: "Norse, Wheel of the Year",
 
@@ -7196,19 +6596,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "No evidence survives for any ancient cult of Idunn. She is known only from poetry, and devotion to her is modern practice.",
 
-            Overview: "Idunn is the Norse goddess who keeps the fruit the gods eat to stay young, and she is the wife of the poet god Bragi. Without her apples the gods grow grey and old, which makes her quietly essential to the survival of Asgard. In modern Heathen practice she is honoured for renewal, vitality, healthy ageing and the restoring of strength after hardship.",
+            Overview: "Idunn is the Norse goddess who keeps the fruit the gods eat to stay young, and wife of the poet god Bragi. She is pictured as a young woman carrying a box or basket of apples.",
 
-            TraditionalMeaning: "In the skaldic poem Haustlöng and Snorri’s retelling, Loki is forced by the giant Thjazi to lure Idunn out of Asgard, and Thjazi carries her off. As the gods age, they force Loki to rescue her, and he flies her home in falcon form, changed into a nut, while the pursuing Thjazi is killed. The Old Norse word epli can mean apples or fruit more generally, so the golden apples of later art are one reading of her treasure.",
+            TraditionalMeaning: "Renewal: vitality, healthy ageing and strength restored after hardship.",
 
-            DevotionalApproach: "Devotion to Idunn may include caring for your body, eating fresh fruit, tending an apple tree or garden, resting when tired, and celebrating the return of spring. Some Heathens honour her when recovering from illness or exhaustion, as a goddess of returning vitality. She is often approached with gratitude and gentle care.",
+            DevotionalApproach: "Start here: share an apple with her; eat half mindfully and leave the other half outside. Approach her with gratitude and gentle care; caring for your body, resting when tired and welcoming spring all honour her. Prayers for vitality support, but never replace, proper medical care.",
 
-            OfferingNotes: "Offerings may include fresh apples, apple cider or juice, apple cake, blossom and early spring flowers. In modern practice, building a healthy habit or caring for an elder can be offered to her.",
+            OfferingNotes: "Offer apple cake, blossom or early spring flowers. Building a healthy habit or caring for an elder can be dedicated to her.",
 
-            AltarIdeas: "An Idunn altar may include green, gold or rosy-pink candles, a bowl of apples, a small wooden box, apple blossom, green aventurine, rose quartz, and fresh greenery. The altar may feel fresh, bright, nourishing and youthful.",
+            AltarIdeas: "Green, gold or rosy-pink candles, a small wooden box, green aventurine, rose quartz and fresh greenery.",
 
-            CulturalContext: "Idunn appears in the skaldic poem Haustlöng, the Eddas and Snorri’s Edda, all of which were preserved or written down in Christian Iceland. Heathenry is a living religion, and her place in it today is built on these stories rather than on any known ancient rites. Prayers for vitality are a support to, never a replacement for, proper medical care.",
-
-            BeginnerTip: "Share an apple with Idunn: eat half mindfully and leave the other half outside as an offering.",
+            CulturalContext: "Idunn is honoured today in Heathenry, a living religion, through her stories rather than any known ancient rites. Be honest about that, and learn from Heathen communities.",
 
             Traditions: "Norse",
 
@@ -7241,19 +6639,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "The Eleusinian Mysteries were secret and initiatory, and their rites are not known. The ancient kykeon drink included pennyroyal, which is toxic and dangerous in pregnancy, so it should not be recreated.",
 
-            Overview: "Demeter is the Greek goddess of grain, agriculture and the harvest, and the mother of Persephone. Her grief when Persephone was taken to the underworld brought famine to the earth until a return was arranged, giving the seasons their rhythm. In modern practice she is honoured for harvest, food, motherhood, grief and the bond between parent and child.",
+            Overview: "Demeter is the Greek goddess of grain, agriculture and the harvest, and mother of Persephone. She is pictured as a mature woman crowned with wheat, holding ears of grain and a torch.",
 
-            TraditionalMeaning: "The Homeric Hymn to Demeter tells how she searched for her daughter by torchlight, refused wine in her grief, and stayed at Eleusis disguised as an old woman. Her worship centred on the Eleusinian Mysteries, which promised initiates a better lot after death, and on the Thesmophoria, a festival held only by women. Pigs were her characteristic sacrificial animal.",
+            TraditionalMeaning: "Nourishing care and grief: the harvest, the bond between parent and child, and the seasons' turn from loss to return.",
 
-            DevotionalApproach: "Devotion to Demeter may include baking bread, gardening, giving thanks for meals, supporting farmers, and honouring the turning of the seasons. Many people turn to her during grief, separation from a child, or caring for family. She is often approached with gratitude, steadiness and respect for hard work.",
+            DevotionalApproach: "Start here: before a meal, set aside a small piece of bread and thank everyone whose work brought the food to your table. Approach her with gratitude, steadiness and respect for hard work. Many turn to her in grief, in separation from a child, or in the work of caring for family.",
 
-            OfferingNotes: "Offerings may include bread, barley, wheat, honey, fruit and milk, or a portion of a home-cooked meal. In modern practice, donating food or supporting a local farm can be offered in her name.",
+            OfferingNotes: "Offer barley, wheat, fruit or milk, or a portion of a home-cooked meal. Donating food or supporting a local farm can be dedicated to her.",
 
-            AltarIdeas: "A Demeter altar may include gold, green or brown candles, a sheaf of wheat, a loaf of bread, a torch or lamp, dried poppy heads, citrine, moss agate, and seasonal produce. The altar may feel warm, abundant, earthy and nurturing.",
+            AltarIdeas: "Gold, green or brown candles, a sheaf of wheat, a lamp, citrine, moss agate and seasonal produce. Let it feel warm and nurturing.",
 
-            CulturalContext: "Demeter was one of the most important goddesses of ancient Greek religion, and Hellenic polytheism, or Hellenismos, is practised today as a living religion. Reconstructionist practitioners draw on ancient festival calendars and hymns, while the inner rites of the Mysteries remain unknown. Modern Pagans often connect her with the autumn equinox, but that is a modern association.",
-
-            BeginnerTip: "Before a meal, set aside a small piece of bread for Demeter and thank everyone whose work brought the food to your table.",
+            CulturalContext: "Demeter is honoured today in Hellenic polytheism, a living religion. The inner rites of the Eleusinian Mysteries are unknown, so be wary of anyone claiming to teach them.",
 
             Traditions: "Hellenic, Roman, Wheel of the Year",
 
@@ -7286,19 +6682,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Drinking alcohol is never required to honour Dionysus; grape juice, music and dance are fitting offerings. Ivy is mildly toxic if eaten. Anyone struggling with alcohol should prioritise their recovery and support services.",
 
-            Overview: "Dionysus is the Greek god of wine, theatre, ecstasy, madness and liberation, and of the vegetation that dies and returns. He is the twice-born son of Zeus and Semele, a god who arrives from outside and breaks down social boundaries. In modern practice he is honoured for joy, creativity, performance, freedom, transformation and the release of what has been held too tightly.",
+            Overview: "Dionysus is the Greek god of wine, theatre, ecstasy, madness, liberation and returning vegetation, the twice-born son of Zeus and Semele. He is pictured crowned with ivy and carrying the pine-tipped thyrsus, often with leopards, satyrs and maenads.",
 
-            TraditionalMeaning: "Traditionally, Dionysus was honoured with festivals such as the Anthesteria and the City Dionysia in Athens, where tragedy and comedy were performed in his honour. His followers, the maenads and satyrs, carried the ivy-topped thyrsus, and Euripides’ Bacchae shows both the joy and the terrible danger of resisting him. Orphic traditions told of his death and rebirth, linking him with mystery cults and life after death.",
+            TraditionalMeaning: "Liberation: joyful release, transformation and the breaking of rigid patterns, with the warning that denied wildness turns to madness.",
 
-            DevotionalApproach: "Devotion to Dionysus may include dance, theatre, music, creative work, celebration with others, and moments of joyful release. He is also honoured for helping people break free from rigid patterns, which can be serious and demanding work. He is often approached with openness, play and respect for his wild side.",
+            DevotionalApproach: "Start here: put on music you love and dance for a few minutes in his honour; ecstasy does not need a drink. Approach him with openness and play, but respect his wild side. He asks devotees to loosen what is held too tightly, which can be serious, demanding work.",
 
-            OfferingNotes: "Offerings may include wine or grape juice, figs, grapes, honey, bread, music, poetry and performance. In modern practice, attending or taking part in theatre is a traditional and very fitting way to honour him.",
+            OfferingNotes: "Offer figs, honey, bread or grape juice, set out or poured with a word of thanks. If you offer wine, never treat him as a reason to drink beyond your limits.",
 
-            AltarIdeas: "A Dionysus altar may include purple, deep-red or green candles, grape and ivy imagery, a mask, a cup or kantharos, a pine cone, amethyst, garnet, and leopard imagery. The altar may feel lively, lush, theatrical and free.",
+            AltarIdeas: "Purple, deep-red or green candles, a mask, a cup or kantharos, a pine cone, amethyst, garnet and leopard imagery.",
 
-            CulturalContext: "Dionysus was a major god of ancient Greek religion and is honoured today in Hellenic polytheism, or Hellenismos, a living religion. His mystery cults were initiatory, and much about their inner rites is unknown. Modern practitioners balance his celebratory side with the old understanding that he also brings madness to those who deny him.",
-
-            BeginnerTip: "Put on music you love and dance for a few minutes in honour of Dionysus. Ecstasy does not need a drink.",
+            CulturalContext: "Dionysus is honoured today in Hellenic polytheism, a living religion. His ancient mystery cults were initiatory and their inner rites are unknown, so be wary of claims to restore them.",
 
             Traditions: "Hellenic, Roman",
 
@@ -7331,19 +6725,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Never leave a hearth fire, candle or oil lamp unattended. Keeping a flame for Hestia should always follow basic fire safety; an electric light is a respectful substitute.",
 
-            Overview: "Hestia is the Greek goddess of the hearth, the sacred fire at the centre of every home and city. She plays almost no part in myth, yet she received the first and the last offering at sacrifices and feasts. In modern practice she is honoured for home, family, hospitality, stability and the quiet presence that holds everything together.",
+            Overview: "Hestia is the Greek goddess of the hearth, the sacred fire at the centre of every home and city. She is pictured as a modestly veiled woman seated by the fire, or simply as the flame itself.",
 
-            TraditionalMeaning: "The Homeric Hymn to Hestia says that no feast is held without wine being poured for her first and last. Each city kept a common hearth in its prytaneion, and colonists carried fire from their mother city’s hearth to light the new one. She refused both Poseidon and Apollo and chose to remain a virgin, at the heart of the household rather than out in the world.",
+            TraditionalMeaning: "The steady centre: home, hospitality, stability and the quiet presence that holds everything together.",
 
-            DevotionalApproach: "Devotion to Hestia may include lighting a candle or lamp at the start and end of the day, keeping a clean and welcoming home, offering hospitality, and beginning and ending every ritual with her. Many Hellenic polytheists honour her first and last whatever other gods they are worshipping. She is often approached simply and daily.",
+            DevotionalApproach: "Start here: light a candle or lamp at the start and end of your day and greet her by name. Approach her simply and daily; a clean, welcoming home and generous hospitality honour her. She asks for steadiness and care rather than grand ceremony.",
 
-            OfferingNotes: "Offerings may include olive oil, bread, wine, water, incense, and a portion of the household meal. Following ancient custom, give Hestia the first and the last offering of any ritual.",
+            OfferingNotes: "Offer olive oil, bread, wine, water, incense or a portion of the household meal.",
 
-            AltarIdeas: "A Hestia altar may sit in the kitchen or at the centre of the home and include warm-white, orange or red candles or an oil lamp, a bowl of olive oil, bay leaves, bread, carnelian, and a simple clean cloth. The altar may feel warm, steady, humble and welcoming.",
+            AltarIdeas: "Place it in the kitchen or at the centre of the home, with warm-white, orange or red candles or an oil lamp, bay leaves, carnelian and a simple clean cloth.",
 
-            CulturalContext: "Hestia was honoured in every household and city of ancient Greece, and Hellenic polytheism, or Hellenismos, keeps that practice alive as a living religion today. The Roman Vesta is related but is a distinct goddess with her own cult and priestesses. Modern devotion to Hestia is closely tied to daily household worship.",
-
-            BeginnerTip: "Start and end your next ritual by offering a little oil, water or incense to Hestia, first and last.",
+            CulturalContext: "Hestia is honoured today in Hellenic polytheism, a living religion where daily household worship remains central. Treat the Roman Vesta as related but distinct.",
 
             Traditions: "Hellenic, Roman",
 
@@ -7376,19 +6768,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Hades is not a devil or an evil god; he is a stern and just ruler of the dead. Ancient Greeks often avoided naming him and called him Plouton, the Wealthy One, instead.",
 
-            Overview: "Hades is the Greek god of the underworld and ruler of the dead, brother of Zeus and Poseidon and husband of Persephone. He received the underworld when the brothers divided the cosmos, and he keeps the dead in his realm with strict fairness. In modern practice he is honoured for ancestor work, grief, endings, hidden wealth and the acceptance of mortality.",
+            Overview: "Hades is the Greek god of the underworld and ruler of the dead, brother of Zeus and husband of Persephone; as Plouton he holds the riches of the earth. He is pictured as a stern, bearded king with a sceptre or key, the helmet of invisibility and the many-headed hound Cerberus.",
 
-            TraditionalMeaning: "Traditionally, Hades owns a helmet of invisibility, rules beside Persephone and is guarded by the many-headed hound Cerberus. As Plouton he was linked with the riches of the earth, including fertile soil and minerals. Offerings to him and other chthonic powers were often poured into the earth or burned whole rather than shared as a feast.",
+            TraditionalMeaning: "Fair and inevitable endings: the dignity of the dead, acceptance of mortality and hidden wealth.",
 
-            DevotionalApproach: "Devotion to Hades may include ancestor remembrance, honouring the dead, studying ancient funerary customs, and sitting honestly with grief and endings. Some practitioners honour him alongside Persephone. He is usually approached with solemnity, respect and patience rather than fear.",
+            DevotionalApproach: "Start here: pour a little water into the earth and speak the name of someone you have lost. Approach him with solemnity, respect and patience rather than fear; many honour him alongside Persephone. He asks devotees to sit honestly with grief and endings.",
 
-            OfferingNotes: "Offerings may include wine, water or honey poured into the ground, pomegranate, coins, and the burning of incense. Following chthonic custom, many practitioners do not eat or reuse food offered to Hades.",
+            OfferingNotes: "Offer pomegranate, coins or incense. Following underworld custom, do not eat or reuse food offered to him; bury it or leave it outside.",
 
-            AltarIdeas: "A Hades altar may include black, deep-red or dark-purple candles, a pomegranate, cypress sprigs, a key, a small bowl of earth, obsidian, onyx and garnet, and images of the dead. The altar may feel quiet, rich, dark and dignified.",
+            AltarIdeas: "Black, deep-red or dark-purple candles, cypress sprigs, a key, a small bowl of earth, obsidian, onyx, garnet and images of the dead.",
 
-            CulturalContext: "Hades had very little temple worship in ancient Greece; Pausanias says the people of Elis were unusual in keeping a temple to him, opened once a year. He is honoured today within Hellenic polytheism, or Hellenismos, a living religion that keeps chthonic and Olympian offerings distinct. Popular culture often wrongly portrays him as a villain.",
-
-            BeginnerTip: "Pour a small libation of water into the earth for Hades and the dead, and speak the name of someone you have lost.",
+            CulturalContext: "Hades is honoured today in Hellenic polytheism, a living religion that keeps offerings to underworld gods distinct from those to the Olympians. Set aside the pop-culture villain and learn him as he is honoured.",
 
             Traditions: "Hellenic, Roman",
 
@@ -7421,19 +6811,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Athena is a goddess of disciplined wisdom and justice, not only of intellect. She is also a war goddess, honoured for strategy and defence rather than bloodshed.",
 
-            Overview: "Athena is the Greek goddess of wisdom, strategy, crafts and the protection of the city, born fully armed from the head of Zeus. She was the patron goddess of Athens, which took its name from her after she gave the city the olive tree. In modern practice she is honoured for study, clear thinking, skilled work, justice and courageous defence of what is right.",
+            Overview: "Athena is the Greek goddess of wisdom, strategy, crafts and the protection of cities. She is pictured armed with helmet, spear and the aegis bearing the Gorgon's head, often with an owl and an olive tree.",
 
-            TraditionalMeaning: "Traditionally, Athena is connected with the owl, the olive, the aegis and the Gorgon’s head, and she guides heroes such as Odysseus and Perseus. In Athens the Panathenaia festival presented her ancient statue with a newly woven robe, the peplos, and Herodotus describes a sacred snake on the Acropolis fed honey cakes each month. As Ergane she was patron of weavers and craftspeople.",
+            TraditionalMeaning: "Clear, disciplined wisdom: skilled work, sound judgement, justice and courageous defence of what is right.",
 
-            DevotionalApproach: "Devotion to Athena may include study, careful planning, weaving or other crafts, learning a skill well, seeking justice, and giving wise counsel. Many people call on her before exams, difficult decisions or creative projects. She is often approached with clarity, discipline and respect.",
+            DevotionalApproach: "Start here: before you study or plan, light a candle and ask Athena for a clear mind, then do the careful work yourself. Approach her with clarity, discipline and respect. She asks for skill honestly earned, fair counsel and work done well.",
 
-            OfferingNotes: "Offerings may include olive oil, olives, honey cakes, incense, and handmade or woven items. In modern practice, focused study, a finished piece of craftwork, or wise and fair advice given to someone can be an offering.",
+            OfferingNotes: "Offer honey cakes or a finished piece of craftwork. Focused study, or wise and fair advice given to someone, can be dedicated to her.",
 
-            AltarIdeas: "An Athena altar may include blue, grey, silver or gold candles, owl imagery, an olive branch, a small bowl of olive oil, books, weaving or craft tools, lapis lazuli and sodalite. The altar may feel orderly, clear, focused and dignified.",
+            AltarIdeas: "Blue, grey, silver or gold candles, owl imagery, an olive branch, books, craft tools, lapis lazuli and sodalite. Keep it orderly and dignified.",
 
-            CulturalContext: "Athena was among the most widely worshipped goddesses of ancient Greece, with great temples such as the Parthenon and the Erechtheion. Hellenic polytheism, or Hellenismos, honours her today as a living religion, drawing on ancient festival calendars and hymns. Her Roman counterpart, Minerva, has her own distinct cult history.",
-
-            BeginnerTip: "Before you study or plan, light a candle for Athena and ask for a clear mind. Then do the careful work yourself.",
+            CulturalContext: "Athena is honoured today in Hellenic polytheism, a living religion; learn from its practitioners and festival calendar. Approach her as a goddess with real worshippers, not only a symbol of cleverness.",
 
             Traditions: "Hellenic, Roman",
 
@@ -7466,19 +6854,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Selene is often merged with Artemis and Hekate in modern books, but that blending is late and mostly post-classical. She was rarely worshipped with temples in ancient Greece.",
 
-            Overview: "Selene is the Greek goddess who is the moon itself, sister of Helios the sun and Eos the dawn. She drives her silver chariot across the night sky and lights the darkness. In modern practice she is honoured for lunar rhythms, moon rituals, dreams, rest and quiet beauty.",
+            Overview: "Selene is the Greek goddess who is the moon itself, sister of Helios the sun and Eos the dawn. She is pictured with a crescent on her brow, driving a silver chariot across the night sky.",
 
-            TraditionalMeaning: "The Homeric Hymn to Selene describes her bathing in the ocean, putting on shining garments and driving her horses across the sky. Her best-known myth is her love for the shepherd Endymion, who sleeps forever so that she may visit him. She was invoked in poetry and in later magical texts more often than in temple cult.",
+            TraditionalMeaning: "She stands for the moon’s gentle rhythm: rest, dreams, longing and quiet beauty in the dark.",
 
-            DevotionalApproach: "Devotion to Selene may include watching the moon, tracking lunar phases, keeping a dream journal, resting deliberately, and offering prayers at the new and full moon. Many practitioners find her gentle and reflective. She is often approached simply, by standing under the night sky.",
+            DevotionalApproach: "Start here: step outside on a clear night, find the moon, and simply greet her by name. Approach her gently and reflectively, and track the moon’s phases as a way of staying close. She asks for attention to rest, rhythm and dreams.",
 
-            OfferingNotes: "Offerings may include water, milk, honey, white flowers and quiet prayers spoken under the moon. In modern practice, setting out a bowl of water in the moonlight is a popular devotional act.",
+            OfferingNotes: "Set out a bowl of water in the moonlight, or offer milk or white flowers with a quiet prayer spoken under the moon.",
 
-            AltarIdeas: "A Selene altar may include white, silver or pale-blue candles, crescent moon imagery, moonstone, selenite, a bowl of water, white flowers and a lunar calendar. The altar may feel calm, soft, silvery and dreamy.",
+            AltarIdeas: "White, silver or pale-blue candles, crescent moon imagery, moonstone or selenite, a bowl of water, white flowers and a lunar calendar suit her altar.",
 
-            CulturalContext: "Selene comes from ancient Greek religion and poetry, though the evidence for organised worship of her is thin. Hellenic polytheism, or Hellenismos, is a living religion in which some practitioners honour her at the new moon (Noumenia). Much of the moon-goddess imagery in modern witchcraft comes from later blending rather than from ancient Greek practice.",
-
-            BeginnerTip: "Step outside on a clear night, find the moon, and simply greet Selene by name.",
+            CulturalContext: "Hellenic polytheism is a living religion. Much modern moon-goddess imagery comes from later blending, so it is respectful to honour Selene as herself rather than as a stand-in for every lunar deity.",
 
             Traditions: "Hellenic",
 
@@ -7511,19 +6897,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Nyx is a primordial power, older than the Olympians, and ancient sources treat her with awe. Evidence for her actual worship is limited, so most devotional practice is modern.",
 
-            Overview: "Nyx is the Greek goddess of night, one of the first beings to emerge from Chaos at the beginning of the world. Hesiod names her as the mother of Sleep, Death, the Fates, Strife, Nemesis, Day and many other powers. In modern practice she is honoured for mystery, rest, darkness as a place of renewal, and deep inner work.",
+            Overview: "Nyx is the Greek goddess of night, one of the first beings to emerge from Chaos and mother of Sleep, Death and the Fates. She is pictured as a vast winged or veiled figure robed in darkness and stars.",
 
-            TraditionalMeaning: "In Homer’s Iliad, even Zeus is afraid to anger Nyx, showing her as a power of great age and authority. Orphic theogonies gave her a central role in the creation of the world, and an Orphic hymn is addressed to her. Pausanias mentions an oracle of Night at Megara, one of the few traces of her cult.",
+            TraditionalMeaning: "She stands for the deep, ancient power of darkness as a place of mystery, rest and renewal.",
 
-            DevotionalApproach: "Devotion to Nyx may include night-time meditation, stargazing, keeping a dream journal, respecting rest, and sitting quietly in the dark. Some practitioners honour her in shadow work and in times of uncertainty. She is often approached with stillness, awe and humility.",
+            DevotionalApproach: "Start here: turn off the lights, sit in the dark for five minutes, and let the quiet itself be your prayer. Approach her with stillness, awe and humility, ideally in silence after dark. She asks for respect for rest and for the unknown, through stargazing, dream journals and night-time meditation.",
 
-            OfferingNotes: "Offerings may include incense, dark wine or juice, honey and water, made after dark and in silence. In modern practice, getting a good night’s sleep or switching off screens to rest in darkness can be a simple offering.",
+            OfferingNotes: "Make offerings after dark and in silence: dark wine or juice, honey and water. Getting a good night’s sleep or switching off screens to rest in darkness is a simple offering.",
 
-            AltarIdeas: "A Nyx altar may include black, deep-blue or dark-purple candles, a dark cloth scattered with stars, obsidian, black tourmaline, labradorite, a small bowl of water, and night-sky imagery. The altar may feel vast, quiet, mysterious and restful.",
+            AltarIdeas: "Black, deep-blue or dark-purple candles, a dark cloth scattered with stars, obsidian, black tourmaline or labradorite, a small bowl of water and night-sky imagery suit her altar.",
 
-            CulturalContext: "Nyx appears in Hesiod’s Theogony, Homer and Orphic texts, but evidence for her worship in ancient Greece is sparse. Hellenic polytheism, or Hellenismos, is a living religion, and devotion to Nyx within it, and in wider Pagan practice, is largely a modern development built on these texts. Night practices are about mystery and rest, never a substitute for help with persistent insomnia or low mood.",
-
-            BeginnerTip: "Turn off the lights, sit in the dark for five minutes, and let the quiet itself be your prayer to Nyx.",
+            CulturalContext: "Hellenic polytheism, or Hellenismos, is a living religion, and devotion to Nyx within it and in wider Pagan practice is largely modern. Night practices are about mystery and rest, never a substitute for help with persistent insomnia or low mood.",
 
             Traditions: "Hellenic",
 
@@ -7556,19 +6940,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "The Greek figure Hermes Trismegistus and later Hermetic and Thelemic ideas grew partly from Thoth, but they are distinct from ancient Egyptian worship of Djehuty.",
 
-            Overview: "Thoth, called Djehuty in Egyptian, is the Egyptian god of writing, wisdom, knowledge, magic and the moon. He was said to have invented hieroglyphs and to keep the records of the gods. In modern practice he is honoured for study, writing, learning, careful judgement, and magic rooted in knowledge.",
+            Overview: "Thoth, called Djehuty in Egyptian, is the god of writing, wisdom, knowledge, magic and the moon. He is pictured as an ibis-headed man holding a scribe’s palette, or as a baboon crowned with the moon.",
 
-            TraditionalMeaning: "Traditionally, Thoth is shown as an ibis-headed man or as a baboon, and his chief cult centre was Hermopolis, called Khmun. In the judgement of the dead he records the result as the heart is weighed against the feather of Maat, and in the Osiris myths he heals the eye of Horus and helps Isis with powerful words. Countless mummified ibises were dedicated to him at sites such as Tuna el-Gebel and Saqqara.",
+            TraditionalMeaning: "He stands for knowledge kept with care: truthful records, fair judgement, learning and the power of the written word.",
 
-            DevotionalApproach: "Devotion to Thoth may include study, writing, journaling, learning a language, careful record-keeping, and honest judgement. Many scribes, students and writers turn to him before tests, research or creative writing. He is often approached with diligence, precision and respect for knowledge.",
+            DevotionalApproach: "Start here: write a short prayer to him by hand, slowly and neatly, and keep it on your desk while you study. Approach him with diligence, precision and respect for knowledge. He asks devotees to learn honestly, keep careful records and judge fairly.",
 
-            OfferingNotes: "Offerings may include ink and paper, written prayers, fresh water, bread and incense. In modern practice, handwriting a hymn, finishing a course of study or carefully keeping records can be offered to him.",
+            OfferingNotes: "Offer a handwritten hymn, a finished course of study or a well-kept record. Fresh water and bread suit him too; refresh them rather than leaving them to spoil.",
 
-            AltarIdeas: "A Thoth altar may include silver, white, blue or yellow candles, an ibis or baboon image, a pen and ink, a notebook, papyrus, lapis lazuli, fluorite, and a crescent moon symbol. The altar may feel quiet, scholarly, ordered and wise.",
+            AltarIdeas: "Silver, white, blue or yellow candles, an ibis or baboon image, a pen and ink, a notebook, lapis lazuli or fluorite, and a crescent moon symbol suit his altar.",
 
-            CulturalContext: "Thoth comes from ancient Egyptian religion and was worshipped for thousands of years. Kemetic practice, including Kemetic Orthodoxy and reconstructionist paths, is a living tradition that honours him today. Because Western occultism reworked his image so heavily, it is worth separating Egyptian evidence from later Hermetic tradition.",
-
-            BeginnerTip: "Write a short prayer to Thoth by hand, slowly and neatly, and keep it on your desk while you study.",
+            CulturalContext: "Kemetic practice, including Kemetic Orthodoxy and reconstructionist paths, is a living religion that honours him today. It is worth separating Egyptian Thoth from the much later Western occult figure built on his name.",
 
             Traditions: "Egyptian",
 
@@ -7601,19 +6983,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Hathor is both a gentle and a dangerous goddess; she is one of the Eyes of Ra. Malachite contains copper and should not be used in water or elixirs.",
 
-            Overview: "Hathor is the Egyptian goddess of love, joy, music, dance, beauty and motherhood, and a great sky goddess. She is often shown as a cow, as a woman with cow’s ears, or wearing cow horns around a sun disc. In modern practice she is honoured for joy, music, self-love, beauty, friendship and celebration.",
+            Overview: "Hathor is the Egyptian goddess of love, joy, music, dance, beauty and motherhood, and a great sky goddess. She is pictured as a cow, as a woman with cow's ears, or wearing cow horns around a sun disc.",
 
-            TraditionalMeaning: "Traditionally, Hathor was worshipped at Dendera and was called Lady of the Sycamore and Lady of Turquoise, linked with the mines of Sinai and with foreign lands. In one myth she is sent as the Eye of Ra to punish humanity and becomes the raging Sekhmet, until she is calmed with beer dyed red. Her sistrum and menat were used in music and ritual to delight and soothe the gods.",
+            TraditionalMeaning: "Joyful abundance: delight, beauty, self-worth and the healing power of celebration.",
 
-            DevotionalApproach: "Devotion to Hathor may include music, dance, singing, care of the body, celebrating friends, and enjoying beauty without guilt. Many people turn to her for joy, self-worth and healing after hardship. She is often approached warmly and with celebration.",
+            DevotionalApproach: "Start here: play a song that makes you happy and dance for her; joy is one of her oldest offerings. Approach her warmly and with celebration, enjoying beauty without guilt. Many turn to her for self-worth and healing after hardship.",
 
-            OfferingNotes: "Offerings may include music, dance, beer, milk, flowers, mirrors and perfume. In modern practice, singing for her or celebrating someone you love can be a heartfelt offering.",
+            OfferingNotes: "Offer fresh flowers, a song you sing for her, or a celebration of someone you love. Present offerings neatly, in your best dishes.",
 
-            AltarIdeas: "A Hathor altar may include red, gold, turquoise or pink candles, a mirror, a sistrum or rattle, cow imagery, turquoise, rose quartz, carnelian, fresh flowers and perfume. The altar may feel warm, joyful, beautiful and musical.",
+            AltarIdeas: "Red, gold, turquoise or pink candles, cow imagery, turquoise, rose quartz and carnelian. Let it feel warm and joyful.",
 
-            CulturalContext: "Hathor was one of the most widely worshipped goddesses of ancient Egypt, with temples as far away as Byblos. Kemetic practice is a living tradition that honours her today, drawing on temple texts and reconstruction. Her Eye of Ra myth links her with Sekhmet, but the two had separate cults and are generally treated as distinct goddesses.",
-
-            BeginnerTip: "Play a song that makes you happy and dance for Hathor. Joy is one of her oldest offerings.",
+            CulturalContext: "Hathor is honoured today in Kemetic practice, a living tradition. Treat her and Sekhmet as distinct goddesses with separate cults, even though one myth links them.",
 
             Traditions: "Egyptian",
 
@@ -7646,19 +7026,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Sekhmet is a powerful and fierce goddess and is traditionally approached with care and pacification. She is often confused with Bastet; they share a lioness heritage but are distinct goddesses with separate cults. Never use red ochre or other pigments in drinks.",
 
-            Overview: "Sekhmet is the Egyptian lioness goddess of war, plague and healing, whose name means ‘The Powerful One’. She is the fiery Eye of Ra, able to send disease and also to drive it away. In modern practice she is honoured for healing, protection, courage, righteous anger and the strength to fight illness.",
+            Overview: "Sekhmet is the Egyptian lioness goddess of war, plague and healing, whose name means ‘The Powerful One’. She is pictured as a lion-headed woman crowned with the sun disc, the fiery Eye of Ra.",
 
-            TraditionalMeaning: "In the myth of the Destruction of Mankind, Ra sends his Eye as Sekhmet to punish humanity, and she is only stopped when the gods pour out beer dyed red to look like blood. Her priests were also physicians, and she was worshipped at Memphis with Ptah and Nefertem. Amenhotep III set up hundreds of statues of her, probably to protect against disease.",
+            TraditionalMeaning: "She stands for fierce protection: the power to send or drive away illness, righteous anger, and the strength to fight for life and health.",
 
-            DevotionalApproach: "Devotion to Sekhmet may include healing work, protective rituals, physical training, advocating for the sick, and channelling anger into just action. Many people turn to her during illness or when they need courage. She is often approached respectfully, with offerings meant to calm and please her.",
+            DevotionalApproach: "Start here: light a red candle when you or someone you love is unwell, and pair it with practical care and proper medical treatment. Approach her with respect, aiming to calm and please her rather than to provoke. She asks devotees to channel anger into just action and care for the sick.",
 
-            OfferingNotes: "Offerings may include beer tinted red with pomegranate juice, plain pomegranate juice, bread, incense and red cloth. In modern practice, supporting healthcare workers or caring for the sick is a fitting offering. Prayer to her never replaces seeing a doctor.",
+            OfferingNotes: "Offer pomegranate juice or beer tinted red with it, bread and red cloth. Supporting healthcare workers or caring for the sick is a fitting offering. Prayer to her never replaces seeing a doctor.",
 
-            AltarIdeas: "A Sekhmet altar may include red, orange or gold candles, lioness imagery, a sun disc, red cloth, carnelian, red jasper, garnet, and a cup for red offerings. The altar may feel fierce, protective, bright and powerful.",
+            AltarIdeas: "Red, orange or gold candles, lioness imagery, a sun disc, red cloth, carnelian, red jasper or garnet, and a cup for red offerings suit her altar.",
 
-            CulturalContext: "Sekhmet comes from ancient Egyptian religion, and Kemetic practice is a living tradition that honours her today. Late Egyptian theology sometimes paired her with Bastet as the fierce and gentle sides of a related divine nature, but they had different cult centres, Memphis for Sekhmet and Bubastis for Bastet, and should not be treated as simply interchangeable. Respect for her fierceness is part of honouring her accurately.",
-
-            BeginnerTip: "Light a red candle for Sekhmet when you or someone you love is unwell, and pair it with practical care and proper medical treatment.",
+            CulturalContext: "Kemetic practice is a living religion that honours Sekhmet today. She should not be treated as interchangeable with Bastet, and respect for her fierceness is part of honouring her accurately.",
 
             Traditions: "Egyptian",
 
@@ -7691,19 +7069,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Ra was often merged with other gods, such as Amun-Ra and Ra-Horakhty, and these combined forms had their own theology. Never look directly at the sun during devotion.",
 
-            Overview: "Ra is the great Egyptian sun god, creator and king of the gods. Each day he sails his barque across the sky, and each night he travels through the underworld, the Duat, to be reborn at dawn. In modern practice he is honoured for light, vitality, order, leadership and the daily renewal of life.",
+            Overview: "Ra is the Egyptian sun god, creator and king of the gods. He is pictured falcon-headed and crowned with the sun disc, sailing his barque across the sky by day and through the underworld by night.",
 
-            TraditionalMeaning: "Traditionally, Ra was worshipped above all at Heliopolis, called Iunu, and the pharaoh bore the title Son of Ra. He takes different forms through the day, with Khepri the scarab at dawn and Atum in the evening, and every night he must defeat the chaos serpent Apep. Obelisks and the benben stone symbolised the first rays of the sun.",
+            TraditionalMeaning: "He stands for light, order and daily renewal: the sun’s return after every dark night and the steady order of creation.",
 
-            DevotionalApproach: "Devotion to Ra may include greeting the sunrise, praying at dawn, noon and sunset, keeping order in daily life, and acting with responsibility and leadership. Many people turn to him for vitality, confidence and renewal after a dark time. He is often approached with reverence and joy.",
+            DevotionalApproach: "Start here: step outside at sunrise, face east, and greet Ra by name as the light returns. Approach him with reverence and joy, and with order in your own daily life. He asks devotees to act with responsibility and fairness.",
 
-            OfferingNotes: "Offerings may include bread, beer, water, incense and flowers, especially at sunrise. In modern practice, getting up to greet the dawn is itself a meaningful offering.",
+            OfferingNotes: "Offer bread, beer, water and flowers at sunrise, and refresh them daily rather than leaving them to spoil. Getting up to greet the dawn is itself a meaningful offering.",
 
-            AltarIdeas: "A Ra altar may face east and include gold, yellow, orange or white candles, a sun disc, falcon or scarab imagery, sunstone, citrine, amber and frankincense. The altar may feel radiant, ordered, warm and regal.",
+            AltarIdeas: "Face the altar east and include gold, yellow, orange or white candles, a sun disc, falcon or scarab imagery, sunstone, citrine or amber, and frankincense.",
 
-            CulturalContext: "Ra was central to ancient Egyptian religion for thousands of years, and Kemetic practice is a living tradition that honours him today. Egyptian solar theology changed over time and was often merged with other gods, so reconstructionists pay close attention to period and place. Modern Western sun-god imagery is much simpler than the Egyptian sources.",
-
-            BeginnerTip: "Step outside at sunrise, face east, and greet Ra by name as the light returns.",
+            CulturalContext: "Kemetic practice is a living religion that honours Ra today. Learn from Kemetic communities, and remember that Egyptian ideas about the sun are much richer than modern Western sun-god imagery.",
 
             Traditions: "Egyptian",
 
@@ -7736,19 +7112,17 @@ const TraditionalLibrary = {
 
             TraditionalWarnings: "Osiris’s mysteries at Abydos had their own sacred rites, and modern retellings often simplify his myth. Malachite contains copper and should not be used in water or elixirs.",
 
-            Overview: "Osiris is the Egyptian god of the dead, the afterlife and resurrection, and also of grain, fertility and the yearly flooding of the Nile. Murdered by his brother Set and restored by his wife Isis, he became king and judge of the dead. In modern practice he is honoured for ancestor work, grief, renewal after loss, and the promise that life returns.",
+            Overview: "Osiris is the Egyptian god of the dead, the afterlife and resurrection, and of grain, fertility and the Nile flood. He is pictured wrapped as a mummy with green or black skin, holding the crook and flail and wearing the tall atef crown.",
 
-            TraditionalMeaning: "Traditionally, Osiris is shown wrapped as a mummy with green or black skin, holding the crook and flail and wearing the atef crown. His death, restoration by Isis, and the birth of their son Horus formed one of Egypt’s central myths, and his great mysteries were held at Abydos. Grain sown in Osiris-shaped beds and allowed to sprout showed his link with the rebirth of crops.",
+            TraditionalMeaning: "He stands for the promise that life returns: renewal after loss, care for the dead, and the steady cycle of seed, death and growth.",
 
-            DevotionalApproach: "Devotion to Osiris may include ancestor remembrance, honouring the dead, gardening and sprouting grain, and seeking renewal after loss. Many people turn to him in grief or when rebuilding a life. He is often approached with solemnity, patience and hope.",
+            DevotionalApproach: "Start here: plant a few grains of barley in a pot and watch them sprout as a sign that life returns. Approach him with solemnity, patience and hope, especially in grief or when rebuilding a life. He asks devotees to remember and honour their dead.",
 
-            OfferingNotes: "Offerings may include bread, beer, water, grain, incense and spoken prayers for the dead. In modern practice, sprouting a small tray of barley as a ‘corn Osiris’ is a popular devotional act.",
+            OfferingNotes: "Offer bread, beer, water and spoken prayers for the dead, and refresh liquid offerings rather than letting them stand. Grief work with Osiris can sit alongside, never replace, support from a grief counsellor.",
 
-            AltarIdeas: "An Osiris altar may include green, black or white candles, a crook and flail symbol, a djed pillar, a tray of sprouting grain, green aventurine, obsidian, lapis lazuli, and photographs of the dead. The altar may feel solemn, fertile, hopeful and steady.",
+            AltarIdeas: "Green, black or white candles, a crook and flail symbol, a djed pillar, green aventurine, obsidian or lapis lazuli, and photographs of the dead suit his altar.",
 
-            CulturalContext: "Osiris was one of the most important gods of ancient Egyptian religion, and Kemetic practice is a living tradition that honours him today. Much of the familiar version of his myth comes from Plutarch, a Greek writer of the Roman era, so reconstructionists compare it with Egyptian sources. Respect for the dead and for Egyptian religious context is essential.",
-
-            BeginnerTip: "Plant a few grains of barley in a pot for Osiris and watch them sprout as a sign that life returns. Grief work with Osiris can sit alongside, never replace, support from a grief counsellor.",
+            CulturalContext: "Kemetic practice is a living religion that honours Osiris today. Learn from Kemetic communities and treat Egyptian religious context and the dead with respect.",
 
             Traditions: "Egyptian",
 
