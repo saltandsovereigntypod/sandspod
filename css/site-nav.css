@@ -1,0 +1,180 @@
+/* =========================================================
+   MAIN BAR (js/site-nav.js)
+   Computers and iPads: tabs in the top header.
+   Phones: five tabs along the bottom, like the app.
+   ========================================================= */
+
+body.has-site-nav .site-header .nav-toggle,
+body.has-site-nav .site-header .nav-links {
+  display: none;
+}
+
+body.has-site-nav .site-header {
+  z-index: 9500;
+}
+
+.site-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+
+.site-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.6rem;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.95rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+.site-tab:hover,
+.site-tab:focus-visible {
+  color: var(--cream);
+  background: rgba(244, 236, 216, 0.06);
+}
+
+.site-tab[aria-current="page"] {
+  color: var(--cream);
+  border-color: rgba(185, 160, 93, 0.45);
+  background: rgba(185, 160, 93, 0.12);
+}
+
+.site-tab-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+  color: var(--gold);
+}
+
+/* The podcast page's own sections, under the bar. */
+.site-subnav {
+  display: flex;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0 1rem 0.6rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.site-subnav::-webkit-scrollbar {
+  display: none;
+}
+
+.site-subnav a {
+  flex: none;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.site-subnav a:hover,
+.site-subnav a:focus-visible {
+  color: var(--cream);
+  border-color: rgba(185, 160, 93, 0.45);
+}
+
+.my-sanctuary-subheading {
+  margin: 1.4rem 0 0.4rem;
+  color: var(--gold);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Smaller computers and iPads in portrait: icons over labels to fit six. */
+@media (max-width: 1020px) and (min-width: 701px) {
+  .site-tab {
+    flex-direction: column;
+    gap: 0.15rem;
+    min-height: 3.2rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 14px;
+    font-size: 0.78rem;
+  }
+
+  body.has-site-nav .brand > span:not(.brand-mark) {
+    display: none;
+  }
+}
+
+/* Phones: the tabs move to the bottom of the screen. */
+@media (max-width: 700px) {
+  body.has-site-nav {
+    padding-bottom: calc(4.4rem + env(safe-area-inset-bottom));
+  }
+
+  body.has-site-nav .nav {
+    min-height: 3.6rem;
+  }
+
+  .site-tabs {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10005;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    margin: 0;
+    padding: 0.35rem max(0.4rem, env(safe-area-inset-left)) max(0.45rem, env(safe-area-inset-bottom)) max(0.4rem, env(safe-area-inset-right));
+    border-top: 1px solid var(--line);
+    background: rgba(13, 17, 14, 0.96);
+    backdrop-filter: blur(18px);
+  }
+
+  .site-tab[data-site-tab="podcast"] {
+    display: none;
+  }
+
+  .site-tab {
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.2rem;
+    min-height: 3.3rem;
+    padding: 0.25rem 0;
+    border-radius: 12px;
+    font-size: 0.72rem;
+  }
+
+  .site-tab[aria-current="page"] {
+    border-color: transparent;
+  }
+
+  .site-tab-icon {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .site-subnav {
+    justify-content: flex-start;
+  }
+
+  /* Accessibility Options lives in More here, so it doesn't cover the page. */
+  body.has-site-nav .accessibility-trigger {
+    display: none;
+  }
+
+  /* The Sanctuary panel stops above the tabs, so they stay usable. */
+  body.has-site-nav .my-sanctuary-card {
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* Older phone rules stretch every .button across the screen; this one floats. */
+body.has-site-nav .accessibility-trigger {
+  width: auto;
+}

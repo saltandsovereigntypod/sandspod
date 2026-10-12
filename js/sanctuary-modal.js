@@ -6,8 +6,10 @@
 const SANCTUARY_CHOICE_KEY = "saltAndSovereigntySanctuaryChoice";
 let sanctuaryModalOpener = null;
 
+// Choosing guest mode in the Sanctuary panel counts too.
 function hasMadeSanctuaryChoice() {
-  return localStorage.getItem(SANCTUARY_CHOICE_KEY) === "true";
+  return localStorage.getItem(SANCTUARY_CHOICE_KEY) === "true"
+    || localStorage.getItem("saltAndSovereigntyGuestScope") === "true";
 }
 
 function rememberSanctuaryChoice() {

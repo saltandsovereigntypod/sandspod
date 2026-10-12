@@ -61,7 +61,7 @@
 
   function isPhone(win) {
     try {
-      return Boolean(win?.matchMedia?.("(max-width: 820px)").matches && win.matchMedia("(pointer: coarse)").matches);
+      return Boolean(win?.matchMedia?.("(max-width: 600px)").matches && win.matchMedia("(pointer: coarse)").matches);
     } catch {
       return false;
     }
