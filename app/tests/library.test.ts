@@ -122,28 +122,29 @@ test('grimoire shelves: My Practice and Traditional Information, as on the websi
   const { grimoireShelves, traditionalEntries, buildLibrary } = await import('../src/lib/library/model.ts');
   const { defaultSettings } = await import('../src/lib/settings/defaults.ts');
   const all = traditionalEntries();
-  const shelves = grimoireShelves(all, defaultSettings());
-  // No practice notes yet: only the Traditional shelf.
+  const plain = { ...defaultSettings(), library_path_mode: 'off' };
+  const shelves = grimoireShelves(all, plain);
+  // No practice notes yet and My path off: only the Traditional shelf.
   assert.deepEqual(shelves.map((s) => s.key), ['traditional']);
-  const types = shelves[0].groups.map((g) => g.type);
+  const types = shelves[0].sections[0].groups.map((g) => g.type);
   assert.ok(types.includes('herb') && types.includes('crystal'));
-  const herbs = shelves[0].groups.find((g) => g.type === 'herb')!.entries.map((e) => e.name);
+  const herbs = shelves[0].sections[0].groups.find((g) => g.type === 'herb')!.entries.map((e) => e.name);
   assert.deepEqual(herbs, [...herbs].sort((a, b) => a.localeCompare(b)));
 
   const off = { ...defaultSettings(), library_traditional_enabled: false };
   assert.deepEqual(grimoireShelves(all, off), []);
 
-  const searched = grimoireShelves(all, defaultSettings(), 'rosemary');
-  assert.ok(searched[0].groups.every((g) => g.entries.length > 0));
-  assert.ok(searched[0].groups.flatMap((g) => g.entries).some((e) => /rosemary/i.test(e.name)));
+  const searched = grimoireShelves(all, plain, 'rosemary');
+  assert.ok(searched[0].sections[0].groups.every((g) => g.entries.length > 0));
+  assert.ok(searched[0].sections[0].groups.flatMap((g) => g.entries).some((e) => /rosemary/i.test(e.name)));
 
   const mine = buildLibrary([
     { entity_id: 'herb_rosemary', name: 'Rosemary', type: 'herb', image: null, my_practice: { Notes: 'Smoke cleansing before rituals' }, community: null, updated_at: null },
   ]);
-  const withPractice = grimoireShelves(mine, defaultSettings());
+  const withPractice = grimoireShelves(mine, plain);
   assert.equal(withPractice[0].key, 'myPractice');
-  assert.deepEqual(withPractice[0].groups.map((g) => [g.type, g.entries.map((e) => e.name)]), [['herb', ['Rosemary']]]);
-  const noPractice = { ...defaultSettings(), library_myPractice_enabled: false };
+  assert.deepEqual(withPractice[0].sections[0].groups.map((g) => [g.type, g.entries.map((e) => e.name)]), [['herb', ['Rosemary']]]);
+  const noPractice = { ...plain, library_myPractice_enabled: false };
   assert.deepEqual(grimoireShelves(mine, noPractice).map((s) => s.key), ['traditional']);
 });
 
@@ -217,13 +218,41 @@ test('My path: follows the calendars, can be chosen, and puts your traditions fi
   assert.equal(entryVisible(find('Lugh'), celtic), true);
   assert.equal(entryVisible(find('Rosemary'), celtic), true, 'herbs are never hidden');
 
-  const shelf = grimoireShelves(entries, { calendar_traditions: 'celtic' } as never).find((s) => s.key === 'traditional')!;
-  const deities = shelf.groups.filter((g) => g.type === 'deity');
-  assert.equal(deities[0].part, 'path');
-  assert.ok(deities[0].entries.some((e) => e.name === 'Brigid'));
-  assert.equal(deities[1].part, 'other');
+  const shelves = grimoireShelves(entries, { calendar_traditions: 'celtic' } as never);
+  const path = shelves.find((s) => s.key === 'myPath')!;
+  const celticSection = path.sections.find((s) => s.key === 'path:celtic')!;
+  const celticNames = celticSection.groups.flatMap((g) => g.entries.map((e) => e.name));
+  // The tradition's deities, what's tagged with it, and what its deities name (Brigid → white candle, rowan…).
+  assert.ok(celticNames.includes('Brigid') && celticNames.includes('Rowan'));
+  assert.ok(celticNames.includes('White Candle'));
+  assert.ok(!celticNames.includes('Jupiter'));
+  // Everything else holds what My Path doesn't.
+  const rest = shelves.find((s) => s.key === 'traditional')!;
+  assert.equal(rest.title, 'Everything Else');
+  const restNames = rest.sections[0].groups.flatMap((g) => g.entries.map((e) => e.name));
+  assert.ok(restNames.includes('Jupiter') && !restNames.includes('Brigid'));
+  // Every group has its own key, so opening one never opens another.
+  const keys = shelves.flatMap((s) => s.sections.flatMap((section) => section.groups.map((g) => `${s.key}:${g.key}`)));
+  assert.equal(new Set(keys).size, keys.length);
 
   const hidden = withoutHidden({ Traditions: 'Celtic, Christian', TraditionNotes: 'Woven at Imbolc in Celtic lands. Blessed in church on Christmas Eve.' }, ['christian']);
   assert.equal(hidden.Traditions, 'Celtic');
   assert.equal(hidden.TraditionNotes, 'Woven at Imbolc in Celtic lands.');
+});
+
+test('a deity you work with from outside your path gets its own section with what goes with them', async () => {
+  const { grimoireShelves, buildLibrary } = await import('../src/lib/library/model.ts');
+  const entries = buildLibrary([
+    { entity_id: 'deity_freyja', name: 'Freyja', type: 'deity', image: null, my_practice: { Notes: 'Saturday offerings' }, community: null, updated_at: null },
+  ]);
+  const shelves = grimoireShelves(entries, { calendar_traditions: 'celtic' } as never);
+  const piece = shelves.find((s) => s.key === 'myPath')!.sections.find((s) => s.key.startsWith('piece:'))!;
+  assert.equal(piece.title, 'Freyja');
+  assert.match(piece.note!, /Norse/);
+  const names = piece.groups.flatMap((g) => g.entries.map((e) => e.name));
+  assert.ok(names.includes('Freyja'));
+  assert.ok(names.length > 1, 'brings her herbs, crystals and candles');
+  // The rest of Norse stays under Everything Else.
+  const rest = shelves.find((s) => s.key === 'traditional')!.sections[0].groups.flatMap((g) => g.entries.map((e) => e.name));
+  assert.ok(rest.includes('Thor'));
 });

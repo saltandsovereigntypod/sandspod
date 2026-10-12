@@ -11,7 +11,7 @@ import { Icon } from '../../../components/Icon';
 import { parseCalendarDate, shortDate } from '../../../lib/calendar';
 import { bookTitle, displayPageTitle, mundaneWords } from '../../../lib/grimoire/presentation';
 import { useGrimoire } from '../../../lib/grimoire/store';
-import { grimoireLibraryHref, grimoireShelves, useLibrary, type GrimoireShelf } from '../../../lib/library';
+import { grimoireLibraryHref, grimoireShelves, useLibrary, type GrimoireShelf, type ShelfGroup } from '../../../lib/library';
 import { useMySettings } from '../../../lib/settings/store';
 import { pageFacts, pageTypeLabel, tableOfContents } from '../../../lib/grimoire/structure';
 import type { PageRow } from '../../../lib/grimoire/types';
@@ -142,43 +142,58 @@ function LibraryShelves() {
       {searching && shelves.length === 0 && <Text style={type.caption}>Nothing in your library matches that search.</Text>}
       {shelves.map((shelf: GrimoireShelf) => {
         const shelfOpen = !closed.has(shelf.key);
+        const count = (groups: ShelfGroup[]) => groups.reduce((sum, g) => sum + g.entries.length, 0);
         return (
           <View key={shelf.key} style={styles.section}>
             <Disclosure
               label={shelf.title}
-              count={shelf.groups.reduce((sum, g) => sum + g.entries.length, 0)}
+              count={shelf.sections.reduce((sum, section) => sum + count(section.groups), 0)}
               open={shelfOpen}
               heading
               onPress={() => toggle(closed, setClosed, shelf.key)}
             />
             {shelfOpen &&
-              shelf.groups.map((group) => {
-                const key = `${shelf.key}:${group.type}`;
-                // Type groups start closed (the Traditional shelf is long) but open while searching.
-                const groupOpen = searching || opened.has(key);
+              shelf.sections.map((section) => {
+                const sectionKey = `${shelf.key}:${section.key}`;
+                // A tradition or piece starts closed and opens on its own; untitled sections are just their groups.
+                const sectionOpen = !section.title || searching || opened.has(sectionKey);
                 return (
-                  <View key={key} style={styles.list}>
-                    <Disclosure
-                      label={group.label}
-                      count={group.entries.length}
-                      open={groupOpen}
-                      onPress={() => toggle(opened, setOpened, key)}
-                    />
-                    {groupOpen &&
-                      group.entries.map((entry) => (
-                        <Pressable
-                          key={entry.id}
-                          accessibilityRole="button"
-                          accessibilityLabel={`${entry.name}, ${entry.category}`}
-                          onPress={() => router.push(grimoireLibraryHref(entry))}
-                          style={({ pressed }) => [styles.shelfEntry, pressed && styles.pressed]}
-                        >
-                          <Text style={[styles.rowTitle, styles.grow]} numberOfLines={1}>
-                            {entry.name}
-                          </Text>
-                          <Icon name="chevron" size={14} color={colors.tabInactive} />
-                        </Pressable>
-                      ))}
+                  <View key={sectionKey} style={section.title ? styles.pathSection : undefined}>
+                    {!!section.title && (
+                      <Disclosure
+                        label={section.title}
+                        note={section.note}
+                        count={count(section.groups)}
+                        open={sectionOpen}
+                        onPress={() => toggle(opened, setOpened, sectionKey)}
+                      />
+                    )}
+                    {sectionOpen &&
+                      section.groups.map((group) => {
+                        // Each group has its own key (shelf, section and type), so opening one never opens another.
+                        const key = `${shelf.key}:${group.key}`;
+                        const groupOpen = searching || opened.has(key);
+                        return (
+                          <View key={key} style={[styles.list, section.title ? styles.nested : undefined]}>
+                            <Disclosure label={group.label} count={group.entries.length} open={groupOpen} onPress={() => toggle(opened, setOpened, key)} />
+                            {groupOpen &&
+                              group.entries.map((entry) => (
+                                <Pressable
+                                  key={entry.id}
+                                  accessibilityRole="button"
+                                  accessibilityLabel={`${entry.name}, ${entry.category}`}
+                                  onPress={() => router.push(grimoireLibraryHref(entry))}
+                                  style={({ pressed }) => [styles.shelfEntry, pressed && styles.pressed]}
+                                >
+                                  <Text style={[styles.rowTitle, styles.grow]} numberOfLines={1}>
+                                    {entry.name}
+                                  </Text>
+                                  <Icon name="chevron" size={14} color={colors.tabInactive} />
+                                </Pressable>
+                              ))}
+                          </View>
+                        );
+                      })}
                   </View>
                 );
               })}
@@ -189,7 +204,7 @@ function LibraryShelves() {
   );
 }
 
-function Disclosure({ label, count, open, heading, onPress }: { label: string; count: number; open: boolean; heading?: boolean; onPress: () => void }) {
+function Disclosure({ label, note, count, open, heading, onPress }: { label: string; note?: string; count: number; open: boolean; heading?: boolean; onPress: () => void }) {
   return (
     <Pressable
       accessibilityRole="button"
@@ -198,7 +213,10 @@ function Disclosure({ label, count, open, heading, onPress }: { label: string; c
       onPress={onPress}
       style={({ pressed }) => [styles.disclosure, pressed && styles.pressed]}
     >
-      <Text style={heading ? [type.eyebrow, styles.grow] : styles.groupTitle}>{label}</Text>
+      <View style={styles.grow}>
+        <Text style={heading ? type.eyebrow : styles.groupTitle}>{label}</Text>
+        {!!note && <Text style={type.caption}>{note}</Text>}
+      </View>
       <Text style={type.caption}>{count}</Text>
       <View style={open ? styles.chevronOpen : undefined}>
         <Icon name="chevron" size={14} color={colors.tabInactive} />
@@ -292,6 +310,8 @@ const styles = StyleSheet.create({
     borderTopColor: 'rgba(244,236,216,0.14)',
   },
   list: { backgroundColor: colors.surface, borderRadius: 18, paddingHorizontal: 16 },
+  pathSection: { gap: 6, borderLeftWidth: 2, borderLeftColor: colors.goldLine, paddingLeft: 10 },
+  nested: { marginLeft: 4 },
   row: { minHeight: 64, flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 10 },
   rowRule: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'rgba(244,236,216,0.14)' },
   pressed: { opacity: 0.7 },

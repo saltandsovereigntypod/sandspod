@@ -18,6 +18,7 @@ export {
   entryIntro,
   findByName,
   grimoireShelves,
+  pathEntryIds,
   hasMyPractice,
   LIBRARY_TYPES,
   searchLibrary,
@@ -25,7 +26,7 @@ export {
   typeLabel,
   typeSingular,
 } from './model';
-export type { GrimoireShelf, ShelfGroup } from './model';
+export type { GrimoireShelf, ShelfGroup, ShelfSection } from './model';
 export type { LibraryEntry, PracticeRow } from './types';
 
 export function libraryHref(entry: Pick<LibraryEntry, 'id'>) {

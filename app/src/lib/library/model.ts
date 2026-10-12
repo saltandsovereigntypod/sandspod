@@ -5,7 +5,7 @@
 import type { Settings } from '../settings/defaults.ts';
 import { layerOrder, type Layer } from '../settings/defaults.ts';
 import { TRADITIONAL_LIBRARY } from './traditionalData.ts';
-import { entryVisible, inPath, myPath, pathName, withoutHidden } from './traditions.ts';
+import { entryTraditions, entryVisible, myPath, pathName, withoutHidden } from './traditions.ts';
 import { hiddenTraditions } from '../holidays.ts';
 import { looksLikeHtml, richTextToPlain } from './richText.ts';
 import type { LibraryEntry, LibraryField, PageLayout, PracticeRow, TraditionalRecord } from './types.ts';
@@ -530,60 +530,114 @@ export function correspondences(entry: LibraryEntry): { label: string; value: st
 
 export const hasMyPractice = (entry: LibraryEntry) => hasContent(entry.myPractice);
 
-export type ShelfGroup = {
-  type: string;
-  label: string;
-  entries: LibraryEntry[];
-  /** For the Traditional shelf with My path on: the traditions you keep, or everything else. */
-  part?: 'path' | 'other';
-};
-export type GrimoireShelf = { key: 'myPractice' | 'traditional'; title: string; groups: ShelfGroup[] };
+export type ShelfGroup = { key: string; type: string; label: string; entries: LibraryEntry[] };
+/** A part of a shelf: one tradition of your path, one piece from another tradition, or the rest. */
+export type ShelfSection = { key: string; title: string; note?: string; groups: ShelfGroup[] };
+export type GrimoireShelf = { key: 'myPractice' | 'myPath' | 'traditional'; title: string; sections: ShelfSection[] };
+
+// The fields of a deity that name what goes with them, and the types they name.
+const COMPANION_FIELDS: [string, string][] = [
+  ['Herbs', 'herb'],
+  ['SacredPlants', 'herb'],
+  ['Crystals', 'crystal'],
+  ['CandleColors', 'candle'],
+];
+
+/** The herbs, crystals and candles a deity's entry names (Herbs, Sacred Plants, Crystals, Candle Colors). */
+export function companionsOf(deity: LibraryEntry, entries: LibraryEntry[]): LibraryEntry[] {
+  const found = new Map<string, LibraryEntry>();
+  for (const [field, type] of COMPANION_FIELDS) {
+    const raw = deity.traditional?.[field];
+    for (const name of typeof raw === 'string' ? splitList(raw) : []) {
+      const entry = findByName(entries, name.replace(/\(.*?\)/g, '').trim(), type);
+      if (entry) found.set(entry.id, entry);
+    }
+  }
+  return [...found.values()];
+}
+
+const groupByType = (entries: LibraryEntry[], types: readonly string[], keyPrefix: string): ShelfGroup[] =>
+  types
+    .map((type) => ({
+      key: `${keyPrefix}:${type}`,
+      type,
+      label: typeLabel(type),
+      entries: entries.filter((entry) => entry.type === type).sort((a, b) => a.name.localeCompare(b.name)),
+    }))
+    .filter((g) => g.entries.length > 0);
 
 /**
- * The Living Library shelves the website's Book of Shadows shows beside your
- * written pages: My Practice (entries you've added to) and Traditional
- * Information, each grouped by type. Settings → Living Library can switch
- * either off; empty groups are left out.
+ * The Living Library shelves beside your written pages:
+ * - My Practice: entries you've added your own notes to.
+ * - My Path: a section for each tradition you keep, holding its deities and
+ *   everything that goes with them (entries tagged with the tradition, and the
+ *   herbs, crystals and candles its deities name), then a section for each
+ *   deity you work with from outside your path, with only what goes with them.
+ * - Everything else (Traditional Information), by type.
+ * Every section and group has its own key, so each opens and closes on its own.
  */
 export function grimoireShelves(entries: LibraryEntry[], settings?: Settings | null, query = ''): GrimoireShelf[] {
   const matches = new Set(searchLibrary(entries, query).map((entry) => entry.id));
-  const byName = (a: LibraryEntry, b: LibraryEntry) => a.name.localeCompare(b.name);
   const path = myPath(settings as Record<string, unknown> | null);
-  const group = (types: readonly string[], keep: (entry: LibraryEntry) => boolean): ShelfGroup[] =>
-    types
-      .map((type) => ({
-        type,
-        label: typeLabel(type),
-        entries: entries.filter((entry) => entry.type === type && keep(entry) && matches.has(entry.id)).sort(byName),
-      }))
-      .filter((shelfGroup) => shelfGroup.entries.length > 0);
-
   const shelves: GrimoireShelf[] = [];
+
   if (!settings || settings.library_myPractice_enabled !== false) {
-    shelves.push({ key: 'myPractice', title: 'My Practice', groups: group(PRACTICE_TYPES, hasMyPractice) });
+    const mine = entries.filter((entry) => hasMyPractice(entry) && matches.has(entry.id));
+    shelves.push({ key: 'myPractice', title: 'My Practice', sections: [{ key: 'all', title: '', groups: groupByType(mine, PRACTICE_TYPES, 'myPractice') }] });
   }
+
   if (!settings || settings.library_traditional_enabled !== false) {
-    const traditional = (entry: LibraryEntry) => hasContent(entry.traditional) && entryVisible(entry, path);
-    shelves.push({ key: 'traditional', title: 'Traditional Information', groups: pathGroups(group(LIBRARY_TYPES, traditional), path) });
+    const traditional = entries.filter((entry) => hasContent(entry.traditional) && entryVisible(entry, path));
+    const shown = new Set<string>();
+    const sections: ShelfSection[] = [];
+
+    for (const tradition of path.traditions) {
+      const deities = traditional.filter((e) => e.type === 'deity' && entryTraditions(e.traditional, e.type).includes(tradition));
+      const tagged = traditional.filter((e) => e.type !== 'deity' && entryTraditions(e.traditional, e.type).includes(tradition));
+      const companions = deities.flatMap((d) => companionsOf(d, traditional));
+      const all = [...new Map([...deities, ...tagged, ...companions].map((e) => [e.id, e])).values()];
+      all.forEach((e) => shown.add(e.id));
+      const visible = all.filter((e) => matches.has(e.id));
+      if (visible.length) sections.push({ key: `path:${tradition}`, title: pathName(tradition), groups: groupByType(visible, LIBRARY_TYPES, `myPath:${tradition}`) });
+    }
+
+    // Deities you've written your own notes for, from traditions outside your path.
+    const pieces = entries.filter(
+      (e) =>
+        e.type === 'deity' &&
+        hasMyPractice(e) &&
+        e.traditional &&
+        !entryTraditions(e.traditional, e.type).some((t) => path.traditions.includes(t) || path.hidden.includes(t)),
+    );
+    for (const deity of pieces) {
+      const all = [deity, ...companionsOf(deity, traditional)];
+      all.forEach((e) => shown.add(e.id));
+      const visible = all.filter((e) => matches.has(e.id));
+      const from = entryTraditions(deity.traditional, deity.type).map(pathName).join(', ');
+      if (visible.length) {
+        sections.push({
+          key: `piece:${deity.id}`,
+          title: deity.name,
+          note: from ? `From ${from}, outside your path` : 'Outside your path',
+          groups: groupByType(visible, LIBRARY_TYPES, `piece:${deity.id}`),
+        });
+      }
+    }
+    if (sections.length) shelves.push({ key: 'myPath', title: 'My Path', sections });
+
+    const rest = traditional.filter((e) => !shown.has(e.id) && matches.has(e.id));
+    shelves.push({
+      key: 'traditional',
+      title: sections.length ? 'Everything Else' : 'Traditional Information',
+      sections: [{ key: 'all', title: '', groups: groupByType(rest, LIBRARY_TYPES, 'traditional') }],
+    });
   }
-  return shelves.filter((shelf) => shelf.groups.length > 0);
+
+  return shelves.filter((shelf) => shelf.sections.some((section) => section.groups.length > 0));
 }
 
-/**
- * With My path on, each type is split in two: the entries from your own
- * traditions first ("Deities · Celtic, Norse"), then the rest ("Deities ·
- * other traditions"). Types with nothing from your path stay whole.
- */
-function pathGroups(groups: ShelfGroup[], path: ReturnType<typeof myPath>): ShelfGroup[] {
-  if (!path.traditions.length) return groups;
-  const names = path.traditions.map(pathName).join(', ');
-  return groups.flatMap((g) => {
-    const mine = g.entries.filter((entry) => inPath(entry, path));
-    if (!mine.length) return [g];
-    const rest = g.entries.filter((entry) => !inPath(entry, path));
-    return [
-      { ...g, label: `${g.label} · ${names}`, entries: mine, part: 'path' as const },
-      ...(rest.length ? [{ ...g, label: `${g.label} · other traditions`, entries: rest, part: 'other' as const }] : []),
-    ];
-  });
+/** Every entry the My Path shelf shows (for the Library list's "My path" filter). */
+export function pathEntryIds(entries: LibraryEntry[], settings?: Settings | null): Set<string> {
+  const shelf = grimoireShelves(entries, settings).find((s) => s.key === 'myPath');
+  return new Set(shelf ? shelf.sections.flatMap((section) => section.groups.flatMap((g) => g.entries.map((e) => e.id))) : []);
 }

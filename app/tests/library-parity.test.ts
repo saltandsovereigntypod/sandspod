@@ -95,7 +95,7 @@ test('ritual templates have their own My Practice shelf, "Templates"', () => {
   assert.equal(typeLabel('ritual_template'), 'Templates');
   const entries = buildLibrary([row({ entity_id: 'ritual-template:t1', name: 'Full Moon', type: 'ritual_template', my_practice: { Purpose: 'Release' } })]);
   const mine = grimoireShelves(entries).find((s) => s.key === 'myPractice')!;
-  assert.deepEqual(mine.groups.map((g) => g.label), ['Templates']);
+  assert.deepEqual(mine.sections[0].groups.map((g) => g.label), ['Templates']);
 });
 
 test('ritual entries read as a record, as on the website', () => {
