@@ -59,7 +59,52 @@ test('apothecary items read website rows and write them back the same way', () =
   assert.equal(row.type_label, 'Spell Jar');
   assert.deepEqual(row.metadata, { source: 'altar-apothecary' });
   assert.equal(apothecaryProblem({ name: 'x', ingredients: [] }), 'Add at least one ingredient.');
-  assert.deepEqual(apothecaryPractice(item).Ingredients, ['Rosemary (1 pinch)', 'Salt']);
+});
+
+test('an apothecary working writes My Practice in the website’s shape, over what the entry had', () => {
+  const item = normalizeApothecary({
+    id: 'a1',
+    name: 'Calm Spray',
+    type: 'spray',
+    intention: '',
+    notes: 'Shake first',
+    details: { spray_use: 'Room spray', use_notes: 'Mist the doorway' },
+    ingredients: [
+      { label: 'Lavender Loose', type: 'herb', herb: 'lavender', form: 'loose', entityId: 'ent-lav', amount: '5 drops' },
+      { label: 'White Candle', type: 'candle', color: 'white' },
+      'Moon water',
+    ],
+    log_to_grimoire: true,
+  });
+  const practice = apothecaryPractice(item, { Meaning: 'Peace', Notes: 'old', Intention: 'old' });
+  assert.deepEqual(Object.keys(practice), [
+    'Meaning',
+    'Notes',
+    'Intention',
+    'Subtype',
+    'Ingredients',
+    'Spray Use',
+    'Use Notes',
+    'GrimoireStatus',
+    'CreatedFrom',
+  ]);
+  assert.equal(practice.Meaning, 'Peace', 'the entry’s own My Practice is kept');
+  assert.equal(practice.Subtype, 'Spray');
+  assert.equal(practice.Intention, '', 'an empty intention is written, as on the website');
+  assert.equal(practice.Notes, 'Shake first');
+  assert.equal(practice['Spray Use'], 'Room spray');
+  assert.equal(practice['Use Notes'], 'Mist the doorway');
+  assert.equal(practice.GrimoireStatus, 'Linked to Living Library');
+  assert.equal(practice.CreatedFrom, 'Altar Apothecary');
+  const [lavender, candle, water] = practice.Ingredients as Record<string, unknown>[];
+  assert.deepEqual(
+    { label: lavender.label, type: lavender.type, form: lavender.form, entityId: lavender.entityId, libraryName: lavender.libraryName, libraryType: lavender.libraryType, amount: lavender.amount },
+    { label: 'Lavender Loose', type: 'herb', form: 'loose', entityId: 'ent-lav', libraryName: 'lavender', libraryType: 'herb', amount: '5 drops' },
+  );
+  assert.equal(candle.libraryName, 'white candle');
+  assert.equal(candle.libraryType, 'candle');
+  assert.deepEqual(water, { label: 'Moon water', entityId: '', libraryType: 'note', libraryName: 'Moon water', amount: '' });
+  assert.equal(apothecaryPractice({ ...item, logToGrimoire: false }).GrimoireStatus, '');
 });
 
 test('placing a working carries its recipe and starts its tending date', () => {

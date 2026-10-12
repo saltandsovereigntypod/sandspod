@@ -3,6 +3,7 @@
 // js/living-library-sync.js into living_library_entries).
 
 import { PRACTICE_TYPES, typeSingular } from './model.ts';
+import { looksLikeHtml, richTextToPlain } from './richText.ts';
 
 /** The fields the website's New and Edit Entry forms ask for, in its order. */
 export const PRACTICE_FIELDS = [
@@ -18,19 +19,25 @@ export type PracticeInput = Record<PracticeFieldKey, string>;
 
 export const PRACTICE_TYPE_OPTIONS = PRACTICE_TYPES.map((value) => ({ value, label: typeSingular(value) }));
 
+/** The form's starting text; rich text written on the website is shown as plain lines. */
 export function emptyPracticeInput(existing?: Record<string, unknown> | null): PracticeInput {
   return Object.fromEntries(
-    PRACTICE_FIELDS.map(({ key }) => [key, typeof existing?.[key] === 'string' ? (existing[key] as string) : '']),
+    PRACTICE_FIELDS.map(({ key }) => [key, typeof existing?.[key] === 'string' ? richTextToPlain(existing[key] as string) : '']),
   ) as PracticeInput;
 }
 
 /**
  * Like the website: keep any other My Practice keys the entry already has,
- * overwrite the five form fields, and drop whatever is left empty.
+ * overwrite the five form fields, and drop whatever is left empty. A field
+ * with website rich text that wasn't changed here keeps its formatting.
  */
 export function mergePractice(existing: Record<string, unknown> | null | undefined, input: PracticeInput) {
   const merged: Record<string, unknown> = { ...(existing ?? {}) };
-  for (const { key } of PRACTICE_FIELDS) merged[key] = input[key].trim();
+  for (const { key } of PRACTICE_FIELDS) {
+    const before = merged[key];
+    const unchanged = typeof before === 'string' && looksLikeHtml(before) && richTextToPlain(before).trim() === input[key].trim();
+    if (!unchanged) merged[key] = input[key].trim();
+  }
   for (const key of Object.keys(merged)) {
     const value = merged[key];
     if (value == null || value === '' || (Array.isArray(value) && value.length === 0)) delete merged[key];

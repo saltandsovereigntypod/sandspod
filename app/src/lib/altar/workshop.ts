@@ -208,7 +208,7 @@ export async function saveApothecary(userId: string | null, item: ApothecaryItem
       ? (await uploadImage(userId, picked, 'apothecary')).url
       : await keepImageOnDevice(picked, 'apothecary');
   }
-  next.entityId = await putLibraryEntry({ userId, entityId: next.entityId || null, name: next.name, type: 'apothecary', myPractice: apothecaryPractice(next) });
+  next.entityId = await putLibraryEntry({ userId, entityId: next.entityId || null, name: next.name, type: 'apothecary', myPractice: (existing) => apothecaryPractice(next, existing) });
 
   if (userId) {
     const { error } = await supabase.from('apothecary_items').upsert(apothecaryRow(userId, next, now), { onConflict: 'id' });

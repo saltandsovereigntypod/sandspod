@@ -7,7 +7,8 @@ import { layerOrder, type Layer } from '../settings/defaults.ts';
 import { TRADITIONAL_LIBRARY } from './traditionalData.ts';
 import { entryVisible, inPath, myPath, pathName, withoutHidden } from './traditions.ts';
 import { hiddenTraditions } from '../holidays.ts';
-import type { LibraryEntry, LibraryField, PracticeRow, TraditionalRecord } from './types.ts';
+import { looksLikeHtml, richTextToPlain } from './richText.ts';
+import type { LibraryEntry, LibraryField, PageLayout, PracticeRow, TraditionalRecord } from './types.ts';
 
 export const LIBRARY_TYPES = ['herb', 'crystal', 'candle', 'deity', 'tool', 'vessel'] as const;
 export const PRACTICE_TYPES = [
@@ -19,6 +20,8 @@ export const PRACTICE_TYPES = [
   'vessel',
   'apothecary',
   'ritual',
+  // The website adds this shelf in grimoire/js/ritual-living-library-bridge.js.
+  'ritual_template',
   'spell',
   'note',
   'section',
@@ -33,6 +36,7 @@ const TYPE_LABELS: Record<string, string> = {
   vessel: 'Vessels',
   apothecary: 'Apothecary',
   ritual: 'Rituals',
+  ritual_template: 'Templates',
   spell: 'Spells',
   note: 'Notes',
   section: 'Sections',
@@ -47,6 +51,7 @@ const SINGULAR: Record<string, string> = {
   vessel: 'Vessel',
   apothecary: 'Apothecary',
   ritual: 'Ritual',
+  ritual_template: 'Ritual Template',
   spell: 'Spell',
   note: 'Note',
   section: 'Section',
@@ -208,37 +213,106 @@ export function splitList(value: string): string[] {
     .filter(Boolean);
 }
 
+/**
+ * What the website shows for an object stored in a field, e.g. an apothecary
+ * ingredient: its Library name (renderLibraryPlainValue).
+ */
+function objectName(value: Record<string, unknown>): string {
+  const name = ['libraryName', 'label', 'name', 'herb', 'crystal', 'tool', 'vessel', 'deity', 'type']
+    .map((key) => value[key])
+    .find((item) => typeof item === 'string' && item.trim());
+  return typeof name === 'string' ? name.trim() : '';
+}
+
+const isObject = (value: unknown): value is Record<string, unknown> =>
+  !!value && typeof value === 'object' && !Array.isArray(value);
+
+/** One item of a list field; an ingredient's amount goes first ("1 pinch Rosemary"). */
+function listItemText(value: unknown): string {
+  if (!isObject(value)) return valueText(value);
+  const amount = typeof value.amount === 'string' || typeof value.amount === 'number' ? String(value.amount).trim() : '';
+  return `${amount ? `${amount} ` : ''}${objectName(value) || 'Ingredient'}`;
+}
+
 function valueText(value: unknown): string {
   if (value == null) return '';
-  if (Array.isArray(value)) return value.map(valueText).filter(Boolean).join(', ');
-  if (typeof value === 'object') return '';
+  if (Array.isArray(value)) return value.map(listItemText).filter(Boolean).join(', ');
+  if (typeof value === 'object') return objectName(value as Record<string, unknown>) || JSON.stringify(value);
   return String(value).trim();
 }
 
-/** A layer's visible fields, in reading order, with list fields as chips. */
+/** A field's value as readable plain text (rich-text HTML read as lines). */
+export const plainValue = (value: unknown) => richTextToPlain(valueText(value));
+
+/** A page layout saved on the website (living_library_entries.layout), with anything malformed left out. */
+export function normalizeLayout(raw: unknown): PageLayout | null {
+  if (!isObject(raw)) return null;
+  const strings = (value: unknown) => (Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []);
+  const perLayer = (value: unknown) => {
+    const out: Partial<Record<Layer, string[]>> = {};
+    if (!isObject(value)) return out;
+    for (const layer of ['myPractice', 'traditional', 'community'] as const) {
+      const keys = strings(value[layer]);
+      if (keys.length) out[layer] = keys;
+    }
+    return out;
+  };
+  const customFields = (Array.isArray(raw.customFields) ? raw.customFields : [])
+    .filter((field): field is { key: string; label?: unknown } => isObject(field) && typeof field.key === 'string')
+    .map((field) => ({ key: field.key, label: typeof field.label === 'string' && field.label.trim() ? field.label : formatName(field.key) }));
+  const layout: PageLayout = {
+    sectionOrder: strings(raw.sectionOrder),
+    hiddenFields: perLayer(raw.hiddenFields),
+    fieldOrder: perLayer(raw.fieldOrder),
+    customFields,
+  };
+  const empty =
+    !Object.keys(layout.hiddenFields).length && !Object.keys(layout.fieldOrder).length && !layout.customFields.length;
+  return empty ? null : layout;
+}
+
+/**
+ * A layer's visible fields, in reading order, with list fields as chips. A
+ * page layout from the website hides the fields it hides there and puts the
+ * fields it has ordered first, in its order.
+ */
 export function layerFields(
   data: Record<string, unknown> | null,
   layer: Layer,
   settings?: Pick<Settings, string> | null,
+  layout?: PageLayout | null,
 ): LibraryField[] {
   if (!data) return [];
   // Hidden calendars (Settings → Calendar → Hide) are taken out of Traditional notes too.
   if (layer === 'traditional') data = withoutHidden(data as TraditionalRecord, hiddenTraditions(settings as Record<string, unknown> | null));
   const keys = Object.keys(data);
-  const ordered = [...FIELD_ORDER.filter((key) => keys.includes(key)), ...keys.filter((key) => !FIELD_ORDER.includes(key))];
+  const pageOrder = (layout?.fieldOrder[layer] ?? []).filter((key) => keys.includes(key));
+  const hidden = new Set(layout?.hiddenFields[layer] ?? []);
+  const ordered = [
+    ...pageOrder,
+    ...[...FIELD_ORDER.filter((key) => keys.includes(key)), ...keys.filter((key) => !FIELD_ORDER.includes(key))].filter(
+      (key) => !pageOrder.includes(key),
+    ),
+  ];
+  const customLabels = new Map(layer === 'myPractice' ? (layout?.customFields ?? []).map((field) => [field.key, field.label]) : []);
   const fields: LibraryField[] = [];
   for (const key of ordered) {
-    if (HIDDEN_FIELDS.has(key)) continue;
+    if (HIDDEN_FIELDS.has(key) || hidden.has(key)) continue;
     if (settings && settings[`library_${layer}_${fieldCategory(key)}`] === false) continue;
     const raw = data[key];
     const text = valueText(raw);
     if (!text) continue;
-    const chips = Array.isArray(raw)
-      ? raw.map(valueText).filter(Boolean)
-      : CHIP_FIELDS.has(key) && !/<\/?[a-z][\s\S]*>/i.test(text)
-        ? splitList(text)
-        : null;
-    fields.push({ key, label: fieldLabel(key), text, chips });
+    let chips: string[] | null = null;
+    let chipNames: string[] | null = null;
+    if (Array.isArray(raw)) {
+      const items = raw.filter((item) => listItemText(item));
+      chips = items.map(listItemText);
+      // An ingredient chip opens the entry it names, without its amount.
+      chipNames = items.map((item) => (isObject(item) ? objectName(item) || listItemText(item) : listItemText(item)));
+    } else if (CHIP_FIELDS.has(key) && !looksLikeHtml(text)) {
+      chips = splitList(text);
+    }
+    fields.push({ key, label: customLabels.get(key) ?? fieldLabel(key), text, chips, chipNames: chipNames ?? chips });
   }
   return fields;
 }
@@ -268,6 +342,7 @@ function traditionalEntry(type: string, key: string, record: TraditionalRecord):
     image: null,
     tags,
     practiceEntityIds: [],
+    layout: null,
   };
 }
 
@@ -318,6 +393,7 @@ export function buildLibrary(practice: PracticeRow[] = []): LibraryEntry[] {
     if (!row?.entity_id || !row.type) continue;
     const myPractice = hasContent(row.my_practice) ? row.my_practice : null;
     const community = hasContent(row.community) ? row.community : null;
+    const layout = normalizeLayout(row.layout);
     const matchKey = `${row.type}|${normalizeName(row.name)}`;
     const target = byTypeAndName.get(matchKey) ?? standalone.get(matchKey);
     if (target) {
@@ -326,6 +402,7 @@ export function buildLibrary(practice: PracticeRow[] = []): LibraryEntry[] {
       target.myPractice = target.myPractice ?? myPractice;
       target.community = target.community ?? community;
       target.image = target.image ?? (row.image || null);
+      target.layout = target.layout ?? layout;
       continue;
     }
     // Only entries that carry the person's own writing get a page of their own.
@@ -343,6 +420,7 @@ export function buildLibrary(practice: PracticeRow[] = []): LibraryEntry[] {
       tags: [],
       practiceEntityIds: [row.entity_id],
       practiceSourceId: myPractice ? row.entity_id : null,
+      layout,
     };
     standalone.set(matchKey, entry);
   }
@@ -436,7 +514,7 @@ export function findByName(entries: LibraryEntry[], name: string, type?: string)
 
 /** A one-line introduction, like the website's library page lede. */
 export function entryIntro(entry: LibraryEntry): string {
-  const uses = valueText(entry.traditional?.Uses || entry.traditional?.Domains || entry.traditional?.Purpose);
+  const uses = plainValue(entry.traditional?.Uses || entry.traditional?.Domains || entry.traditional?.Purpose);
   if (uses) return `Traditionally associated with ${uses.toLowerCase()}.`;
   if (hasContent(entry.myPractice)) return `${entry.name} is part of My Practice.`;
   return `${entry.name} is part of the Living Library.`;
@@ -446,7 +524,7 @@ export function entryIntro(entry: LibraryEntry): string {
 export function correspondences(entry: LibraryEntry): { label: string; value: string }[] {
   const source = { ...(entry.traditional ?? {}), ...(entry.myPractice ?? {}) } as Record<string, unknown>;
   return ['Element', 'Planet', 'Chakra', 'Pantheon']
-    .map((key) => ({ label: key, value: valueText(source[key]) }))
+    .map((key) => ({ label: key, value: plainValue(source[key]) }))
     .filter((item) => item.value);
 }
 

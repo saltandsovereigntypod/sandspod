@@ -2,9 +2,11 @@ import { router, type Href } from 'expo-router';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../Button';
-import { Card, MoreScreen, Paragraphs, Section, Tags } from '../more/ui';
+import { Card, MoreScreen, RichText, Section, Tags } from '../more/ui';
 import { correspondences, entryIntro, findByName, useLibrary, type LibraryEntry } from '../../lib/library';
 import { layerFields, visibleLayers } from '../../lib/library/model';
+import { ritualRecord } from '../../lib/library/records';
+import type { LibraryField } from '../../lib/library/types';
 import { LAYER_LABELS, type Layer } from '../../lib/settings/defaults';
 import { useSession } from '../../lib/session';
 import { useMySettings } from '../../lib/settings/store';
@@ -36,12 +38,20 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
   }
 
   const facts = settings?.library_traditional_correspondences === false ? [] : correspondences(entry);
-  const layers = visibleLayers(settings).map((layer) => ({ layer, data: layerData(entry, layer) }));
-  const shown = layers.filter(({ layer, data }) => layerFields(data, layer, settings).length > 0);
+  const shown = visibleLayers(settings)
+    .map((layer) => ({ layer, fields: layerFields(layerData(entry, layer), layer, settings, entry.layout) }))
+    .filter(({ fields }) => fields.length > 0);
+  // Rituals and ritual templates read as a record of the working, as on the website.
+  const record = entry.myPractice ? ritualRecord(entry.type, entry.myPractice) : null;
 
   const openByName = (name: string) => {
     const target = findByName(entries, name);
     return target && target.id !== entry.id ? () => router.push(hrefFor(target)) : undefined;
+  };
+  // A chip opens the entry it names (an ingredient's, without its amount).
+  const openChip = (field: LibraryField) => (chip: string) => {
+    const index = field.chips?.indexOf(chip) ?? -1;
+    return openByName(field.chipNames?.[index] ?? chip);
   };
 
   return (
@@ -69,30 +79,49 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
         />
       )}
 
-      {shown.length === 0 && (
+      {record && (
+        <>
+          {record.facts.length > 0 && (
+            <View style={styles.facts}>
+              {record.facts.map((fact) => (
+                <View key={fact.label} style={styles.fact} accessible accessibilityLabel={`${fact.label}: ${fact.value}`}>
+                  <Text style={type.eyebrow}>{fact.label}</Text>
+                  <Text style={styles.recordFact}>{fact.value}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+          {record.sections.map((section) => (
+            <Section key={section.title} label={section.title}>
+              <Card tone="gold">
+                {section.chips ? <Tags items={section.chips} onPress={openByName} /> : <RichText text={section.text} />}
+              </Card>
+            </Section>
+          ))}
+        </>
+      )}
+
+      {!record && shown.length === 0 && (
         <Card>
           <Text style={type.body}>Nothing to show here with your current Living Library settings.</Text>
         </Card>
       )}
 
-      {shown.map(({ layer, data }) => (
-        <Section key={layer} label={LAYER_LABELS[layer]}>
-          <Card tone={layer === 'myPractice' ? 'gold' : undefined}>
-            {layerFields(data, layer, settings)
-              .filter((field) => !(layer === 'traditional' && ['Element', 'Planet', 'Chakra', 'Pantheon'].includes(field.key)))
-              .map((field) => (
-                <View key={field.key} style={styles.field}>
-                  <Text style={styles.fieldLabel}>{field.label}</Text>
-                  {field.chips ? (
-                    <Tags items={field.chips} onPress={openByName} />
-                  ) : (
-                    <Paragraphs items={field.text.split('\n').filter(Boolean)} />
-                  )}
-                </View>
-              ))}
-          </Card>
-        </Section>
-      ))}
+      {!record &&
+        shown.map(({ layer, fields }) => (
+          <Section key={layer} label={LAYER_LABELS[layer]}>
+            <Card tone={layer === 'myPractice' ? 'gold' : undefined}>
+              {fields
+                .filter((field) => !(layer === 'traditional' && ['Element', 'Planet', 'Chakra', 'Pantheon'].includes(field.key)))
+                .map((field) => (
+                  <View key={field.key} style={styles.field}>
+                    <Text style={styles.fieldLabel}>{field.label}</Text>
+                    {field.chips ? <Tags items={field.chips} onPress={openChip(field)} /> : <RichText text={field.text} />}
+                  </View>
+                ))}
+            </Card>
+          </Section>
+        ))}
 
       {entry.tags.length > 0 && (
         <Section label="Tags">
@@ -125,6 +154,7 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   factValue: { fontFamily: fonts.display, fontSize: 20, color: colors.cream },
+  recordFact: { fontFamily: fonts.display, fontSize: 18, lineHeight: 22, color: colors.cream },
   field: { gap: 8 },
   fieldLabel: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.gold },
 });

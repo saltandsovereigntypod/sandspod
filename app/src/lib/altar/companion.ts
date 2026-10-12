@@ -84,7 +84,7 @@ export function traditionalSplit(
   entry: LibraryEntry,
   settings?: Settings | null,
 ): { lead: LibraryField[]; warnings: LibraryField[]; rest: LibraryField[] } {
-  const fields = layerFields(entry.traditional, 'traditional', settings).filter((field) => !CORRESPONDENCE_KEYS.has(field.key));
+  const fields = layerFields(entry.traditional, 'traditional', settings, entry.layout).filter((field) => !CORRESPONDENCE_KEYS.has(field.key));
   const warnings = fields.filter((field) => WARNING_KEYS.has(field.key));
   const others = fields.filter((field) => !WARNING_KEYS.has(field.key));
   return { lead: others.slice(0, LEAD_FIELDS), warnings, rest: others.slice(LEAD_FIELDS) };

@@ -3,7 +3,7 @@ import { useState, type ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../Button';
-import { Paragraphs, Tags } from '../more/ui';
+import { RichText, Tags } from '../more/ui';
 import { burnHistory, careHistory, stateRows, traditionalSplit } from '../../lib/altar/companion';
 import type { SavedObject } from '../../lib/altar/types';
 import { altarLibraryHref, correspondences, type LibraryEntry } from '../../lib/library';
@@ -37,8 +37,8 @@ export function AboutSheet({ visible, object, label, entry, onClose }: Props) {
   const showTraditional = !!entry?.traditional && layers.includes('traditional');
   const facts = entry && showTraditional && settings?.library_traditional_correspondences !== false ? correspondences(entry) : [];
   const traditional = entry && showTraditional ? traditionalSplit(entry, settings) : { lead: [], warnings: [], rest: [] };
-  const mine = entry && layers.includes('myPractice') ? layerFields(entry.myPractice, 'myPractice', settings) : [];
-  const community = entry && layers.includes('community') ? layerFields(entry.community, 'community', settings) : [];
+  const mine = entry && layers.includes('myPractice') ? layerFields(entry.myPractice, 'myPractice', settings, entry.layout) : [];
+  const community = entry && layers.includes('community') ? layerFields(entry.community, 'community', settings, entry.layout) : [];
   const state = stateRows(object, new Date());
   const burns = [...burnHistory(object, new Date()), ...careHistory(object, new Date())];
   const hasMore = traditional.rest.length > 0 || community.length > 0 || burns.length > 5;
@@ -159,7 +159,7 @@ function Fields({ fields }: { fields: LibraryField[] }) {
       {fields.map((field) => (
         <View key={field.key} style={styles.field}>
           <Text style={styles.fieldLabel}>{field.label}</Text>
-          {field.chips ? <Tags items={field.chips} /> : <Paragraphs items={field.text.split('\n').filter(Boolean)} />}
+          {field.chips ? <Tags items={field.chips} /> : <RichText text={field.text} />}
         </View>
       ))}
     </>

@@ -194,18 +194,48 @@ export function ingredientFromObject(object: SavedObject): Ingredient {
 /** The same thing twice (by type, Library entry, apothecary item and name). */
 export const ingredientKey = (i: Ingredient) => [i.type ?? '', i.entityId ?? '', i.apothecaryItemId ?? '', i.label.toLowerCase()].join('|');
 
-/** My Practice for the item's Living Library entry (syncApothecaryItemToLibrary). */
-export function apothecaryPractice(item: ApothecaryItem): Record<string, unknown> {
-  const detailFields = DETAIL_FIELDS[item.type] ?? [];
-  const details = Object.fromEntries(
-    detailFields.filter((f) => item.details[f.key]?.trim()).map((f) => [f.label, item.details[f.key].trim()]),
-  );
+/** The My Practice keys the website writes for each detail (renderApothecaryDetailsForLibrary). */
+const DETAIL_PRACTICE_KEYS: Record<string, string> = {
+  incense_form: 'Incense Form',
+  sachet_purpose: 'Sachet Purpose',
+  kept_location: 'Kept Location',
+  poppet_focus: 'Poppet Focus',
+  representation_notes: 'Representation Notes',
+  spray_use: 'Spray Use',
+  use_notes: 'Use Notes',
+};
+
+/** What an ingredient is in the Living Library (getApothecaryIngredientLibraryType / …Name). */
+export function ingredientLibraryRef(i: Ingredient): { libraryType: string; libraryName: string } {
+  const str = (value: unknown) => (typeof value === 'string' ? value : '');
+  const unslug = (value: unknown) => str(value).replaceAll('-', ' ');
+  if (str(i.herb)) return { libraryType: 'herb', libraryName: unslug(i.herb) };
+  if (str(i.crystal)) return { libraryType: 'crystal', libraryName: unslug(i.crystal) };
+  if (str(i.color)) return { libraryType: 'candle', libraryName: `${str(i.color)} candle` };
+  if (str(i.tool)) return { libraryType: 'tool', libraryName: unslug(i.tool) };
+  if (str(i.vessel)) return { libraryType: 'vessel', libraryName: unslug(i.vessel) };
+  if (str(i.deity)) return { libraryType: 'deity', libraryName: unslug(i.deity) };
+  return { libraryType: str(i.type) || 'note', libraryName: i.label || 'Ingredient' };
+}
+
+/**
+ * My Practice for the item's Living Library entry, in the website's shape
+ * (createOrUpdateApothecaryLibraryEntity): the entry's other My Practice is
+ * kept, ingredients are stored as objects, and details use its labels.
+ */
+export function apothecaryPractice(item: ApothecaryItem, existing?: Record<string, unknown> | null): Record<string, unknown> {
+  const details: Record<string, string> = {};
+  for (const [key, value] of Object.entries(item.details)) {
+    if (value) details[DETAIL_PRACTICE_KEYS[key] ?? key] = value;
+  }
   return {
-    Subtype: item.typeLabel,
-    ...(item.intention.trim() ? { Intention: item.intention.trim() } : {}),
-    Ingredients: item.ingredients.map((i) => (i.amount?.trim() ? `${i.label} (${i.amount.trim()})` : i.label)),
-    ...(item.notes.trim() ? { Notes: item.notes.trim() } : {}),
+    ...(existing ?? {}),
+    Subtype: item.typeLabel || item.type || 'Apothecary Item',
+    Intention: item.intention || '',
+    Ingredients: item.ingredients.map((i) => ({ ...i, entityId: i.entityId || '', ...ingredientLibraryRef(i), amount: i.amount || '' })),
+    Notes: item.notes || '',
     ...details,
+    GrimoireStatus: item.logToGrimoire ? 'Linked to Living Library' : '',
     CreatedFrom: 'Altar Apothecary',
   };
 }

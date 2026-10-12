@@ -33,7 +33,7 @@ function set(next: Partial<State>) {
 async function fetchPractice(userId: string): Promise<PracticeRow[]> {
   const { data, error } = await supabase
     .from('living_library_entries')
-    .select('entity_id,name,type,image,my_practice,community,updated_at')
+    .select('entity_id,name,type,image,my_practice,community,layout,updated_at')
     .eq('user_id', userId)
     // Newest first, so a page shows the My Practice saved most recently.
     .order('updated_at', { ascending: false });
@@ -167,20 +167,37 @@ export async function putLibraryEntry(args: {
   entityId?: string | null;
   name: string;
   type: string;
-  myPractice: Record<string, unknown>;
+  /** The new My Practice, or a function of the entry's current one to build on it (as the website does). */
+  myPractice: Record<string, unknown> | ((existing: Record<string, unknown> | null) => Record<string, unknown>);
 }): Promise<string> {
   const entityId = args.entityId || newId();
   const now = new Date().toISOString();
+  const build = (existing: unknown) =>
+    typeof args.myPractice === 'function'
+      ? args.myPractice(existing && typeof existing === 'object' ? (existing as Record<string, unknown>) : null)
+      : args.myPractice;
   if (args.userId) {
+    let existing: unknown = null;
+    if (args.entityId && typeof args.myPractice === 'function') {
+      const current = await supabase
+        .from('living_library_entries')
+        .select('my_practice')
+        .eq('user_id', args.userId)
+        .eq('entity_id', entityId)
+        .maybeSingle();
+      if (current.error) throw new Error(current.error.message);
+      existing = current.data?.my_practice ?? null;
+    }
+    const myPractice = build(existing);
     const updated = await supabase
       .from('living_library_entries')
-      .update({ name: args.name.trim() || 'Untitled', my_practice: args.myPractice, updated_at: now })
+      .update({ name: args.name.trim() || 'Untitled', my_practice: myPractice, updated_at: now })
       .eq('user_id', args.userId)
       .eq('entity_id', entityId)
       .select('entity_id');
     if (updated.error) throw new Error(updated.error.message);
     if (!updated.data?.length) {
-      const row = newPracticeRow({ userId: args.userId, entityId, name: args.name, type: args.type, myPractice: args.myPractice });
+      const row = newPracticeRow({ userId: args.userId, entityId, name: args.name, type: args.type, myPractice });
       const { error } = await supabase.from('living_library_entries').insert(row);
       if (error) throw new Error(error.message);
     }
@@ -199,7 +216,7 @@ export async function putLibraryEntry(args: {
       id: entityId,
       name: args.name.trim() || 'Untitled',
       type: args.type,
-      myPractice: args.myPractice,
+      myPractice: build(previous.myPractice),
       createdAt: previous.createdAt ?? now,
       updatedAt: now,
     };
