@@ -36,9 +36,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Basil is a wonderful beginner herb because it is easy to find and works well in many types of spells. A simple money bowl with basil, cinnamon, bay, and coins is a strong starting point.",
 
-            Traditions: "Christian, Hindu",
+            Traditions: "Christian, Hindu, Roman",
 
-            TraditionNotes: "In Greek Orthodox Christian practice, basil (vasilikos, ‘royal’) is linked with the Feast of the Exaltation of the Cross and is used to sprinkle holy water. In Hindu devotion the closely related holy basil, tulsi, is a sacred plant tended in household shrines and associated with Vishnu and Lakshmi; tulsi is a different species from culinary sweet basil.",
+            TraditionNotes: "Christian: In Greek Orthodox tradition basil (vasilikos, ‘royal’) is linked with the True Cross, which St Helena is said to have found where basil grew, and it is blessed on the Feast of the Exaltation of the Cross (14 September). Priests use sprigs of basil to sprinkle holy water, and households keep blessed basil for protection.\n\nHindu: In Hindu devotion the closely related holy basil, tulsi, is a sacred plant tended in a household shrine and worshipped as a form of the goddess Tulsi, beloved of Vishnu and Krishna. Tulsi leaves are offered in puja and the plant is ritually married to Vishnu at Tulsi Vivah; it is a different species from culinary sweet basil.\n\nRoman: Pliny the Elder records the curious Roman belief that ocimum (basil) should be sown with curses and abuse if it was to grow well, a saying later echoed across Mediterranean folklore.\n\nFolk & wider practice: In Italian folk custom a pot of basil on the windowsill signalled love, a theme Boccaccio used in the tale of Lisabetta and the pot of basil, and in hoodoo and rootwork basil is a staple of money and household-luck washes.",
 
             tags: ["protection", "prosperity", "love", "courage", "cleansing", "fire"]
         },
@@ -72,7 +72,7 @@ const TraditionalLibrary = {
 
             Traditions: "Hellenic, Roman",
 
-            TraditionNotes: "In Hellenic religion laurel was sacred to Apollo, and Pythian victors at Delphi were crowned with it. In Roman tradition laurel crowned triumphant generals and was a symbol of victory and honour.",
+            TraditionNotes: "Hellenic: In Hellenic religion laurel (daphne) was sacred to Apollo, whose myth tells of the nymph Daphne becoming the laurel tree; victors at the Pythian Games at Delphi were crowned with it, and laurel was associated with the Pythia’s prophecy.\n\nRoman: In Roman tradition laurel crowned triumphant generals and emperors as a sign of victory, and laurels flanked the door of the emperor’s house. Pliny the Elder writes that laurel was never struck by lightning, and Suetonius says Tiberius wore a laurel wreath during thunderstorms.\n\nFolk & wider practice: Culpeper repeated the English belief that neither witch nor devil, thunder nor lightning would harm a man where a bay tree stood, and writing a wish on a bay leaf is a widespread modern folk practice.",
 
             tags: ["wishes", "protection", "success", "victory", "divination", "solar"]
         },
@@ -104,9 +104,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Cedar is excellent for making a simple home protection bowl. Combine cedar, rosemary, salt, and a small piece of smoky quartz near the entryway.",
 
-            Traditions: "Egyptian",
+            Traditions: "Egyptian, Christian, Hindu, Roman",
 
-            TraditionNotes: "In ancient Egypt, imported cedar wood was prized for coffins, shrines and sacred boats, and cedar resin and oil were among the materials used in embalming.",
+            TraditionNotes: "Egyptian: In ancient Egypt cedar of Lebanon was imported for coffins, shrines, temple doors and sacred boats such as Khufu’s great ship, and cedar resin and oil were among the materials used in embalming.\n\nChristian: In the Bible the cedars of Lebanon furnished Solomon’s Temple, the Psalms say the righteous shall grow like a cedar in Lebanon, and cedar wood is named in the purification rites of Leviticus, giving the tree a lasting place in Christian imagery of strength and incorruptibility.\n\nHindu: The Himalayan deodar (Cedrus deodara, from deva-daru, ‘wood of the gods’) is a sacred tree in Hindu tradition, linked with Shiva and the Daruvana forest of the Puranas, and its wood was used for temples.\n\nRoman: Pliny the Elder praises cedar for its durability and notes that images of the gods were carved from it, and cedar oil was used by Romans to protect books and precious wood from decay.\n\nFolk & wider practice: Many Indigenous North American nations hold ‘cedar’ (often Thuja or Juniperus, not true cedar) as a sacred medicine; these are living practices to be respected rather than copied.",
 
             tags: ["protection", "purification", "blessing", "grounding", "ancestors", "solar"]
         },
@@ -138,6 +138,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "For an easy sleep charm, combine chamomile, lavender, and amethyst in a small sachet and keep it near your bed.",
 
+            Traditions: "Egyptian, Christian",
+
+            TraditionNotes: "Egyptian: Later herbalists such as Maud Grieve report that the Egyptians honoured chamomile and dedicated it to the sun because of its golden, sun-like flower, though direct ancient evidence for this is limited.\n\nChristian: In Catholic central Europe chamomile is one of the herbs gathered into the bundles blessed in church on the Feast of the Assumption (15 August), and it was a fixture of monastic and cottage gardens.\n\nFolk & wider practice: ‘Maythe’, usually identified as chamomile, is one of the herbs named in the Anglo-Saxon Nine Herbs Charm. In hoodoo, chamomile is used as a lucky hand-wash for gamblers and in peace-bringing baths.",
+
             tags: ["calm", "sleep", "luck", "money", "healing", "purification"]
         },
 
@@ -168,9 +172,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Use cinnamon sparingly. A small pinch in a money bowl or spell jar is usually enough to add heat and momentum.",
 
-            Traditions: "Egyptian",
+            Traditions: "Egyptian, Roman, Hellenic, Christian, Hindu",
 
-            TraditionNotes: "Ancient Egyptians imported cinnamon and cassia, and classical writers such as Herodotus describe related spices being used in embalming. Some later recipes for kyphi temple incense also include cinnamon-type barks.",
+            TraditionNotes: "Egyptian: Ancient Egyptians imported cinnamon and cassia, and Herodotus describes related spices being used in embalming. Recipes for kyphi temple incense preserved by Plutarch and in temple inscriptions include cinnamon-type barks.\n\nRoman: Romans valued cinnamon as a costly sacred aromatic: Pliny the Elder records that Nero burned more than a year’s supply at the funeral of his wife Poppaea, and that wreaths of cinnamon were dedicated in temples on the Capitol.\n\nHellenic: Herodotus tells the fabulous story of cinnamon gathered from the nests of great birds in Arabia, and Greek temples received cinnamon and cassia among their offerings of incense.\n\nChristian: In Exodus sweet cinnamon and cassia are ingredients of the holy anointing oil, and that recipe has shaped Christian tradition of fragrant oils such as chrism.\n\nHindu: Cinnamon bark (tvak) appears in classical Ayurvedic texts and is used in Indian sacred and festive cooking.\n\nFolk & wider practice: In hoodoo and modern folk magic cinnamon is one of the best-known ingredients for money, luck and quick results.",
 
             tags: ["prosperity", "passion", "speed", "success", "protection", "fire"]
         },
@@ -202,6 +206,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "For a simple protection charm, place three whole cloves with rosemary and black salt in a small pouch near your door.",
 
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: In Hindu practice cloves (laung) are a common offering on the puja tray, added to paan and havan offerings, and used in Ayurveda (lavanga) as a warming spice.\n\nFolk & wider practice: In Han dynasty China, courtiers held cloves in their mouths to sweeten the breath before addressing the emperor. In medieval and early modern Europe clove-studded oranges and pomanders were carried against foul air and plague, and in hoodoo cloves are used for friendship, luck and stopping gossip.",
+
             tags: ["protection", "prosperity", "friendship", "banishing", "luck", "fire"]
         },
 
@@ -232,9 +240,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "If charcoal feels intimidating, start with frankincense incense sticks or cones before working with loose resin.",
 
-            Traditions: "Egyptian, Hellenic, Roman, Christian",
+            Traditions: "Egyptian, Hellenic, Roman, Christian, Hindu",
 
-            TraditionNotes: "In ancient Egypt frankincense was burned in temples and fetched from the land of Punt, famously recorded in Hatshepsut’s temple reliefs. Greeks and Romans burned it as an offering to the gods, and in Christian tradition it is one of the gifts of the Magi and remains central to church incense.",
+            TraditionNotes: "Egyptian: In ancient Egypt frankincense was burned in temples and fetched from the land of Punt, famously recorded in Hatshepsut’s temple reliefs at Deir el-Bahari, and it was one of the ingredients of kyphi.\n\nHellenic: Greeks burned frankincense (libanos) on altars as an offering to the gods, and Herodotus describes the incense trade from Arabia.\n\nRoman: Romans burned frankincense (tus) in household and state sacrifices, and in times of persecution Christians were ordered to offer a pinch of incense before the emperor’s image.\n\nChristian: In Christian tradition frankincense is one of the gifts of the Magi, signifying Christ’s divinity, and it remains the central ingredient of church incense in Catholic, Orthodox and Anglican worship.\n\nHindu: Indian frankincense (Boswellia serrata, shallaki or salai) is used in Ayurveda and in dhoop incense burned in Hindu worship.\n\nFolk & wider practice: Frankincense was part of the ketoret incense of the Jerusalem Temple, and in Oman, Yemen and across the Islamic world it is burned as bakhoor to welcome guests and perfume homes.",
 
             tags: ["purification", "consecration", "protection", "spirituality", "solar", "fire"]
         },
@@ -268,7 +276,7 @@ const TraditionalLibrary = {
 
             Traditions: "Hindu",
 
-            TraditionNotes: "In Hindu devotion, fragrant jasmine flowers are widely strung into garlands and offered in puja at home and temple shrines, and are worn in the hair at festivals and weddings.",
+            TraditionNotes: "Hindu: In Hindu devotion fragrant jasmine (mallika) flowers are strung into garlands and offered in puja at home and temple shrines, worn in the hair at festivals and weddings, and named among the five flower-arrows of Kama, god of love.\n\nFolk & wider practice: Jasmine is the national flower of the Philippines (sampaguita) and Pakistan, is used in Chinese jasmine tea, and was prized in Persian and Arab perfumery and poetry.",
 
             tags: ["love", "dreams", "intuition", "sensuality", "lunar", "water"]
         },
@@ -300,6 +308,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Lavender is one of the easiest herbs to start with. A tiny sachet of lavender, chamomile, and amethyst makes a simple peace and sleep charm.",
 
+            Traditions: "Christian, Wheel of the Year",
+
+            TraditionNotes: "Christian: A European Christian legend says lavender received its scent when the Virgin Mary dried the infant Jesus’s clothes on the bush, and the abbess Hildegard of Bingen wrote about its uses in the twelfth century. It was grown widely in monastery gardens.\n\nWheel of the Year: In modern Pagan practice lavender is a favourite midsummer herb, burned or strewn at Litha and used in cleansing and blessing blends.\n\nFolk & wider practice: Lavender was a strewing herb and linen scent in England, appears in later recipes for Four Thieves Vinegar, and is used in hoodoo for love, peace and reconciliation work. Its Latin name is often derived from lavare (to wash), though that etymology is uncertain.",
+
             tags: ["peace", "sleep", "love", "healing", "purification", "air"]
         },
 
@@ -329,6 +341,10 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Lemon balm is gentle for many people, but medicinal use can interact with certain conditions or medications. Keep magical use practical and avoid presenting it as a cure. Use caution around pets and sensitive individuals.",
 
             BeginnerTip: "Use lemon balm when a spell feels like it needs kindness instead of force. It is excellent for softening the emotional tone of a working.",
+
+            Traditions: "Christian, Hellenic, Roman",
+
+            TraditionNotes: "Christian: Lemon balm was a monastic herb: Carmelite water, an alcoholic cordial of balm and spices, was first made by Carmelite nuns in Paris in the fourteenth century, and Hildegard of Bingen praised the plant.\n\nHellenic: Its botanical name Melissa is Greek for ‘honeybee’; Greek writers such as Dioscorides recommend rubbing it on hives so bees stay together, and bees were sacred to goddesses such as Demeter and Artemis, whose priestesses were sometimes called Melissai.\n\nRoman: Pliny the Elder notes that bees delight in balm (apiastrum) and that it was planted near hives to keep swarms at home.\n\nFolk & wider practice: Arab physicians including Avicenna said balm made the heart merry, and in English folklore it was traditional to ‘tell the bees’ of family news near the hives where balm grew.",
 
             tags: ["calm", "healing", "love", "happiness", "protection", "water"]
         },
@@ -360,9 +376,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "For a simple prosperity charm, place mint, basil, cinnamon, and a coin in a small jar or pouch.",
 
-            Traditions: "Hellenic",
+            Traditions: "Hellenic, Roman, Christian",
 
-            TraditionNotes: "In Greek myth the nymph Minthe was transformed into the mint plant, a story linked with Hades and Persephone. Mint was also among the herbs used in Greek funerary rites to soften the smell of death.",
+            TraditionNotes: "Hellenic: In Greek myth the nymph Minthe was transformed into the mint plant by Persephone, a story linked with Hades. Mint was also among the herbs used in Greek funerary rites, and the kykeon drink of the Eleusinian Mysteries was flavoured with pennyroyal (glechon), a kind of mint.\n\nRoman: In Ovid’s Metamorphoses the old couple Baucis and Philemon scrub their table with fresh mint before serving the disguised gods Jupiter and Mercury, and Pliny says wearing a mint wreath refreshes the mind.\n\nChristian: In the Gospels Jesus speaks of tithes of mint, dill and cumin, and mint was a standard plant of monastic gardens, praised by the ninth-century monk Walafrid Strabo in his poem Hortulus.\n\nFolk & wider practice: Across North Africa and the Middle East mint tea is a central sign of hospitality, and in hoodoo mint is used in money and cleansing work.",
 
             tags: ["prosperity", "clarity", "healing", "energy", "communication", "air"]
         },
@@ -394,9 +410,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Start with a small amount of mugwort. Pair it with lavender or chamomile if you want dream work to feel gentler and more restful.",
 
-            Traditions: "Christian, Slavic, Wheel of the Year",
+            Traditions: "Christian, Slavic, Wheel of the Year, Celtic, Roman, Hellenic",
 
-            TraditionNotes: "Across Christian Europe mugwort was known as St John’s plant and worn as a girdle or hung over doors on St John’s Eve at midsummer. In Slavic folk practice it is one of the herbs gathered on Kupala Night, and in the modern Wheel of the Year it is closely associated with Litha.",
+            TraditionNotes: "Christian: Across Christian Europe mugwort was known as St John’s plant (Johannisgürtel in German) and was worn as a girdle, thrown into the bonfire or hung over doors on St John’s Eve at midsummer to ward off evil.\n\nSlavic: In Slavic folk practice mugwort (chernobyl or bylica) is one of the herbs gathered on Kupala Night, woven into wreaths and belts and hung in homes for protection.\n\nWheel of the Year: In the modern Wheel of the Year mugwort is closely associated with Litha and with dream and divination work at Samhain.\n\nCeltic: On the Isle of Man mugwort (bollan bane) is worn on Tynwald Day, 5 July, the old Midsummer, a custom that continues at the open-air parliament today.\n\nRoman: Pliny the Elder writes that travellers who carry artemisia do not feel weariness, a belief that persisted into medieval European herbals.\n\nHellenic: The genus Artemisia takes its name from Artemis, and classical writers tied these plants to the goddess who watched over women and childbirth.\n\nFolk & wider practice: The Anglo-Saxon Nine Herbs Charm calls mugwort (mucgwyrt) the eldest of herbs. In Chinese and Japanese medicine dried mugwort is burned as moxa, and in Korea and Japan it is eaten in spring rice cakes.",
 
             tags: ["dream work", "divination", "intuition", "thresholds", "psychic", "lunar"]
         },
@@ -428,9 +444,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Use myrrh when a ritual needs depth, reverence, or ancestral gravity. Pair it with frankincense for a classic sacred incense blend.",
 
-            Traditions: "Egyptian, Hellenic, Christian",
+            Traditions: "Egyptian, Hellenic, Christian, Roman",
 
-            TraditionNotes: "In ancient Egypt myrrh was used in temple incense and in embalming. Greek myth tells of Myrrha, mother of Adonis, transformed into the myrrh tree, and in Christian tradition myrrh is one of the gifts of the Magi and was used in Jesus’s burial.",
+            TraditionNotes: "Egyptian: In ancient Egypt myrrh (antyw) was brought from Punt, burned in temple incense, used in kyphi and in embalming, and was among the oils and unguents presented to the gods.\n\nHellenic: Greek myth tells of Myrrha, mother of Adonis, transformed into the myrrh tree, her tears becoming the fragrant resin; Sappho names myrrh among the scents at a wedding.\n\nChristian: In Christian tradition myrrh is one of the gifts of the Magi, foreshadowing Christ’s death, it was offered to him on the cross, and Nicodemus brought myrrh and aloes for his burial. Orthodox churches call the women at the tomb the Myrrh-bearers.\n\nRoman: Romans burned myrrh at funerals and blended it into costly perfumes and wines, and Pliny the Elder describes its harvest and grades in detail.\n\nFolk & wider practice: Myrrh was an ingredient of the holy anointing oil of Exodus and of the Temple incense in Jewish tradition, and it is used in Chinese medicine as mo yao.",
 
             tags: ["protection", "purification", "healing", "spirit work", "sacred", "water"]
         },
@@ -462,6 +478,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Nettle is best for firm boundaries. Use it when the intention is, 'No, this does not get to enter my space.'",
 
+            Traditions: "Celtic, Christian",
+
+            TraditionNotes: "Celtic: In Irish and Scottish folk custom nettles were eaten in spring, with the saying that three meals of nettles in May would keep illness away for the year, and nettle cloth was woven in Scotland into the eighteenth century.\n\nChristian: Gaelic Christian legend tells that St Columba lived on nettle broth, and nettles were a traditional Lenten food in parts of Christian Europe.\n\nFolk & wider practice: Nettle fibre was used for textiles from the Bronze Age, and Hans Christian Andersen’s tale The Wild Swans has a sister weaving nettle shirts to break a curse. Tibetan Buddhist tradition says the yogi Milarepa lived on nettles until his skin turned green.",
+
             tags: ["protection", "boundaries", "courage", "uncrossing", "strength", "mars"]
         },
 
@@ -491,6 +511,8 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Patchouli has a very strong scent and may be too much for shared spaces. Use lightly around people with scent sensitivity, headaches, asthma, or sensory overwhelm. Essential oil should be diluted before skin contact.",
 
             BeginnerTip: "Patchouli is excellent in money bowls, but start small. Too much patchouli can overpower the whole blend.",
+
+            TraditionNotes: "Folk & wider practice: Patchouli comes from tropical South and Southeast Asia, where its leaves were packed with silk and cashmere shawls to deter moths, giving the scent its association with Indian textiles in nineteenth-century Europe. In hoodoo and modern folk magic it is used for money, love and grounding.",
 
             tags: ["prosperity", "grounding", "attraction", "sensuality", "stability", "earth"]
         },
@@ -522,9 +544,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Rose is not just for romance. Use it for self-kindness, grief support, and softening the heart after difficult experiences.",
 
-            Traditions: "Hellenic, Roman, Christian",
+            Traditions: "Hellenic, Roman, Christian, Egyptian",
 
-            TraditionNotes: "In Hellenic tradition the rose was linked with Aphrodite and the death of Adonis, and Romans associated it with Venus and decorated tombs with roses during the Rosalia festival. In Christian tradition the rose became a symbol of the Virgin Mary, and the rosary takes its name from it.",
+            TraditionNotes: "Hellenic: In Hellenic tradition the rose was linked with Aphrodite, and myth says red roses sprang from the blood of Adonis or of the goddess herself as she ran to him; Sappho called the rose the queen of flowers.\n\nRoman: Romans associated the rose with Venus, decorated tombs with roses during the Rosalia festival, and strewed rose petals at banquets. In Apuleius’s Golden Ass, Lucius regains his human form by eating roses offered by a priest of Isis.\n\nChristian: In Christian tradition the rose became a symbol of the Virgin Mary, the Rosa Mystica; the rosary takes its name from a rose garland of prayers, and roses feature in the legends of St Elizabeth of Hungary and Our Lady of Guadalupe.\n\nEgyptian: In Greco-Roman Egypt roses were grown for garlands and perfume, and wreaths of roses have been found in burials at Hawara, made to adorn the dead.\n\nFolk & wider practice: Rosewater is central to Persian and Islamic perfumery and hospitality, and the rose is a key image of divine love in Sufi poetry such as that of Rumi and Hafez.",
 
             tags: ["love", "compassion", "beauty", "healing", "grief", "venus"]
         },
@@ -558,7 +580,7 @@ const TraditionalLibrary = {
 
             Traditions: "Hellenic, Roman, Christian",
 
-            TraditionNotes: "Greek and Roman writers linked rosemary with memory, and it was used in garlands and funeral rites. In later Christian folklore rosemary was said to have taken its blue flowers from the Virgin Mary’s cloak, and it was carried at weddings and funerals for remembrance.",
+            TraditionNotes: "Hellenic: Greek writers associated rosemary with memory, and because its scent resembled frankincense it was called libanotis and burned as a humbler incense.\n\nRoman: Romans named it ros marinus, ‘dew of the sea’, used it in garlands and household offerings, and placed it in funeral rites as a sign of remembrance.\n\nChristian: European Christian folklore says rosemary’s flowers turned blue when the Virgin Mary spread her cloak over the bush during the flight into Egypt. It was used to deck churches at Christmas and carried at weddings and funerals for faithfulness and remembrance.\n\nFolk & wider practice: Ophelia’s line in Hamlet, ‘There’s rosemary, that’s for remembrance’, records an English custom, and sprigs are still worn on Anzac Day in Australia and New Zealand.",
 
             tags: ["protection", "purification", "remembrance", "healing", "clarity", "solar"]
         },
@@ -590,6 +612,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "You do not need white sage to cleanse. Rosemary, sound, salt, water, or visualization can all be effective depending on your practice.",
 
+            Traditions: "Christian, Roman",
+
+            TraditionNotes: "Christian: European Christian legend tells that sage sheltered the Virgin Mary and the child Jesus from Herod’s soldiers and was blessed by her in return. The medieval Salerno school asked, ‘Why should a man die while sage grows in his garden?’, and Charlemagne’s Capitulare de villis listed sage among the plants every estate should grow.\n\nRoman: The Latin name salvia comes from salvere, ‘to be well’, and Roman writers such as Pliny the Elder recorded it as a valued healing herb.\n\nFolk & wider practice: White sage (Salvia apiana) is a different plant, sacred in several Native American traditions; it is now over-harvested, and many Indigenous people ask outsiders not to buy wild-picked white sage or imitate their ceremonies. Garden sage, rosemary or other locally grown herbs are respectful alternatives for cleansing.",
+
             tags: ["cleansing", "wisdom", "protection", "purification", "blessing", "air"]
         },
 
@@ -620,9 +646,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Use thyme when you need gentle courage, the kind that helps you keep going without forcing yourself into intensity.",
 
-            Traditions: "Hellenic, Roman",
+            Traditions: "Hellenic, Roman, Christian",
 
-            TraditionNotes: "Ancient Greeks burned thyme as a fragrant offering and associated it with courage and vigour. Roman writers continued to value it for its scent and use it in purification and honouring rites.",
+            TraditionNotes: "Hellenic: Greeks burned thyme on altars, and its name (thymon) is often linked with thyein, ‘to make a burnt offering’. Thyme from Mount Hymettus gave Athens its famous honey, and ‘to smell of thyme’ was praise for elegant Attic style.\n\nRoman: Roman writers such as Virgil and Pliny prized thyme for bees and honey, and Pliny says that burning it drives away venomous creatures.\n\nChristian: A European Christian legend counts thyme among the herbs in the straw of the manger at Bethlehem, along with lady’s bedstraw.\n\nFolk & wider practice: English folklore links wild thyme with the fairies, as in Shakespeare’s ‘I know a bank where the wild thyme blows’, where Titania sleeps.",
 
             tags: ["courage", "healing", "purification", "sleep", "psychic", "water"]
         },
@@ -654,9 +680,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Yarrow is a beautiful choice for boundary work that still wants to keep the heart soft. Use it when the spell is about protection without shutting down.",
 
-            Traditions: "Hellenic, Celtic",
+            Traditions: "Hellenic, Celtic, Christian",
 
-            TraditionNotes: "The plant’s Latin name Achillea reflects the classical story, recorded by Pliny, that Achilles used it to treat soldiers’ wounds. In Scottish and Irish Gaelic folk practice yarrow was gathered with charms for protection and love divination, including placing it under the pillow to dream of a future partner.",
+            TraditionNotes: "Hellenic: The plant’s Latin name Achillea reflects the classical story, recorded by Pliny, that Achilles used it to treat soldiers’ wounds, having learned of it from the centaur Chiron.\n\nCeltic: In Scottish and Irish Gaelic folk practice yarrow was gathered with charms for protection and love divination, and the Carmina Gadelica preserves a yarrow charm said while plucking it; it was placed under the pillow to dream of a future partner.\n\nChristian: In Catholic central Europe yarrow is one of the herbs bound into bundles blessed on the Feast of the Assumption, and it was gathered among the St John’s herbs at midsummer.\n\nFolk & wider practice: In China dried yarrow stalks were the traditional means of casting the I Ching. In the Anglo-Saxon world yarrow appears in charms and herbals for wounds and protection.",
 
             tags: ["protection", "love", "boundaries", "divination", "healing", "venus"]
         },
@@ -693,6 +719,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Grow a pot of calendula if you can. Picking and drying your own petals turns a simple sunny flower into a personal ingredient for joy and blessing work.",
 
+            Traditions: "Christian, Roman",
+
+            TraditionNotes: "Christian: In English Christian tradition the pot marigold was called Mary’s gold, worn and placed in churches in honour of the Virgin Mary, especially on her feast days.\n\nRoman: The name calendula comes from the Latin calendae, the first day of the month, because the plant was said to bloom through nearly every month of the year.\n\nFolk & wider practice: The orange marigold garlands of Hindu worship and Mexico’s Día de Muertos altars are mostly Tagetes, a different genus, so their lore should not be transferred directly to calendula.",
+
             tags: ["joy", "success", "solar", "blessing", "dreams", "justice"]
         },
 
@@ -728,9 +758,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Cypress is a good herb to keep for remembrance days. Place a sprig beside a photo of someone you have lost and simply speak their name.",
 
-            Traditions: "Hellenic, Roman",
+            Traditions: "Hellenic, Roman, Christian",
 
-            TraditionNotes: "In Greek and Roman tradition the cypress was a tree of mourning and the underworld, and Ovid tells of the youth Cyparissus being turned into a cypress by Apollo to grieve forever. Roman writers such as Pliny note that cypress branches were placed at the doors of houses in mourning and used at funerals.",
+            TraditionNotes: "Hellenic: In Greek tradition the cypress was a tree of mourning and the underworld; Ovid tells of the youth Cyparissus, beloved of Apollo, turned into a cypress to grieve forever.\n\nRoman: Roman writers such as Pliny the Elder note that cypress branches were placed at the doors of houses in mourning and that the tree was sacred to Dis, god of the dead.\n\nChristian: Cypresses line Christian cemeteries across the Mediterranean as emblems of mourning and eternal life, and medieval legend named cypress as one of the woods of the cross.\n\nFolk & wider practice: In Persian and Zoroastrian tradition the cypress is a sacred evergreen; legend says Zoroaster planted the great Cypress of Kashmar.",
 
             tags: ["grief", "remembrance", "ancestors", "endurance", "protection", "saturn"]
         },
@@ -767,6 +797,8 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Dandelion is a perfect first wild herb. Blowing a seed head with a clear wish is one of the oldest and simplest pieces of folk magic.",
 
+            TraditionNotes: "Folk & wider practice: Dandelion lore is mostly folk rather than religious: across Europe children blow the seed ‘clock’ to tell the time or send a wish, and an old English name, priest’s crown, came from the bald head left after the seeds fly. The name taraxacum comes through medieval Arabic and Persian medical writers, and the plant is a long-standing spring food and tonic in European and Chinese herbalism.",
+
             tags: ["wishes", "divination", "resilience", "communication", "solar", "folk magic"]
         },
 
@@ -802,9 +834,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "A single garlic bulb on a kitchen windowsill is a classic beginner ward. Replace it when it sprouts, softens, or starts to look tired.",
 
-            Traditions: "Hellenic, Slavic",
+            Traditions: "Hellenic, Slavic, Egyptian, Roman, Norse, Hindu",
 
-            TraditionNotes: "In ancient Greece, garlic was among the foods left at crossroads as offerings to Hekate in the monthly suppers described by classical writers. In Slavic and wider Balkan folk practice, garlic was rubbed on doors, windows, and livestock or worn as a charm to guard against vampires, witches, and the evil eye.",
+            TraditionNotes: "Hellenic: In ancient Greece garlic was among the foods left at crossroads as offerings to Hekate in the monthly suppers described by classical writers, and Greek soldiers and athletes ate it for strength.\n\nSlavic: In Slavic and wider Balkan folk practice garlic was rubbed on doors, windows and livestock or worn as a charm to guard against vampires, witches and the evil eye.\n\nEgyptian: Herodotus reports that an inscription on the Great Pyramid recorded the garlic, onions and radishes given to its builders, and garlic bulbs were placed in tombs, including Tutankhamun’s.\n\nRoman: Roman soldiers and labourers ate garlic for vigour, and Pliny the Elder lists dozens of uses, including its power to drive away serpents and scorpions.\n\nNorse: In Old Norse, garlic is geirlaukr, ‘spear-leek’; laukr (leek or allium) was a protective plant in Norse lore, and the Sigrdrífumál advises casting leek into one’s drink as a guard against harm.\n\nHindu: In Hindu tradition garlic is often avoided by devout households, temple kitchens and on fast days because it is classed as rajasic or tamasic, stirring the passions, even while Ayurveda (as lasuna) values it as a medicine.\n\nFolk & wider practice: Islamic folk legend says garlic sprang from the left footprint of Satan as he left Eden, and garlic is a common protective charm in Italian, Greek and Latin American folk practice.",
 
             tags: ["protection", "banishing", "warding", "healing", "kitchen witchcraft", "mars"]
         },
@@ -843,7 +875,7 @@ const TraditionalLibrary = {
 
             Traditions: "Christian",
 
-            TraditionNotes: "In Christian tradition hyssop is remembered from Psalm 51, “purge me with hyssop, and I shall be clean,” and from its use in Hebrew Bible purification rites and at the crucifixion. The biblical plant was likely a Middle Eastern oregano relative rather than the garden hyssop sold today, but European Christian folk practice adopted Hyssopus officinalis for sprinkling holy water and cleansing.",
+            TraditionNotes: "Christian: In Christian tradition hyssop is remembered from Psalm 51, ‘purge me with hyssop, and I shall be clean’, sung in the Asperges at Mass, and from the sponge raised to Christ on the cross. The biblical plant was likely a Middle Eastern oregano relative rather than garden hyssop, but European Christian practice adopted Hyssopus officinalis for sprinkling holy water and cleansing.\n\nFolk & wider practice: In Jewish tradition a bunch of hyssop (ezov) was used to mark the doorposts with blood at the first Passover and in the purification rites of the red heifer. In hoodoo hyssop is a classic cleansing herb for washing away sin and bad luck.",
 
             tags: ["purification", "cleansing", "forgiveness", "consecration", "protection", "renewal"]
         },
@@ -880,9 +912,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Juniper is excellent for a New Year house cleansing. A few dried berries in a small pouch by the front door make an easy protective charm.",
 
-            Traditions: "Celtic",
+            Traditions: "Celtic, Egyptian, Christian, Hellenic",
 
-            TraditionNotes: "In Scottish Gaelic folk practice juniper was burned in the saining rites of Hogmanay, when its smoke was used to purify the house and the livestock for the year ahead. Gaelic tradition also gathered juniper as a protective plant against harm and misfortune.",
+            TraditionNotes: "Celtic: In Scottish Gaelic folk practice juniper was burned in the saining rites of Hogmanay, when its smoke was used to purify the house and livestock for the year ahead, and it was gathered as a protective plant against harm.\n\nEgyptian: Juniper berries have been found in Egyptian tombs, including Tutankhamun’s, and juniper appears in the medical papyri and in embalming materials.\n\nChristian: An Italian Christian legend says a juniper bush hid the Holy Family from Herod’s soldiers during the flight into Egypt, and juniper was hung at doors and burned in homes to ward off evil.\n\nHellenic: In Apollonius’s Argonautica, Medea uses a freshly cut sprig of juniper dipped in her potion to lull the dragon guarding the Golden Fleece to sleep.\n\nFolk & wider practice: Juniper smoke is used for purification in Tibetan and Himalayan traditions and by several Indigenous North American nations, which are living practices to respect rather than imitate.",
 
             tags: ["protection", "purification", "saining", "health", "evergreen", "new year"]
         },
@@ -919,6 +951,8 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Keep a small sachet of dried peppermint on your desk. Breathing in its scent at the start of study or work is a simple ritual for focus.",
 
+            TraditionNotes: "Folk & wider practice: Peppermint is a natural hybrid of water mint and spearmint first described in England in the late seventeenth century, so it has no ancient religious history of its own; its folk uses for cleansing, clarity and money are borrowed from the older lore of mint.",
+
             tags: ["clarity", "focus", "purification", "energy", "communication", "mercury"]
         },
 
@@ -954,9 +988,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "One thread is enough. Saffron teaches that a small, carefully chosen ingredient can carry a whole working.",
 
-            Traditions: "Hellenic, Hindu",
+            Traditions: "Hindu, Hellenic, Roman",
 
-            TraditionNotes: "In Greek tradition saffron was a prestigious dye and offering, and Homer calls the dawn goddess Eos “saffron-robed.” In Hindu practice saffron (kesar) is offered in puja, used in sacred sweets and tilak marks, and its colour is closely tied to renunciation and holiness.",
+            TraditionNotes: "Hindu: In Hindu practice saffron (kesar) is offered in puja, used in sacred sweets, temple food and tilak marks, and its colour (bhagwa) is closely tied to renunciation, holiness and the robes of sadhus.\n\nHellenic: In Greek tradition saffron was a prestigious dye and offering: Homer calls the dawn goddess Eos ‘saffron-robed’, girls serving Artemis at Brauron wore saffron robes, and the Bronze Age frescoes of Akrotiri on Thera show women gathering crocus for a goddess.\n\nRoman: Romans strewed saffron in theatres and banquet halls and sprayed saffron water to perfume public spaces, as Pliny and other writers describe.\n\nFolk & wider practice: Saffron colours Persian and Spanish festive food, and in Buddhist lands the ochre robes of monks are popularly called saffron, though they were usually dyed with cheaper plants.",
 
             tags: ["happiness", "abundance", "devotion", "solar", "offerings", "healing"]
         },
@@ -993,9 +1027,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Treat wormwood as an advanced herb. If you are new to spirit work, start with mugwort and come back to wormwood when you understand why it needs care.",
 
-            Traditions: "Slavic",
+            Traditions: "Slavic, Christian, Roman",
 
-            TraditionNotes: "In Russian and wider East Slavic folklore wormwood (polyn) was carried during Rusalka Week to protect against the rusalki, water spirits who were said to fear its bitter smell. Folk tales describe the rusalka asking whether a traveller carries wormwood or parsley, with wormwood driving her away.",
+            TraditionNotes: "Slavic: In Russian and wider East Slavic folklore wormwood (polyn) was carried during Rusalka Week to protect against the rusalki, water spirits said to fear its bitter smell; folk tales tell of a rusalka asking a traveller whether he carries wormwood or parsley.\n\nChristian: In the Book of Revelation a star called Wormwood falls and makes the waters bitter, and medieval legend said wormwood sprang up in the track of the serpent as it left Eden, making the plant a Christian emblem of bitterness and judgment.\n\nRoman: Pliny the Elder records that the victor of the chariot race at the Latin Festival on the Capitol was given a drink of wormwood (absinthium), as health was thought the best prize.\n\nFolk & wider practice: Wormwood gave its name to absinthe and vermouth (from German Wermut), and in European folk practice it was laid among clothes and bedding against moths and fleas.",
 
             tags: ["spirit work", "banishing", "protection", "divination", "toxic", "thresholds"]
         },
@@ -1032,9 +1066,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Yew is a tree to visit, not an ingredient to use. A quiet visit to an old churchyard yew can be a deeply moving ancestral ritual on its own.",
 
-            Traditions: "Celtic, Norse",
+            Traditions: "Celtic, Christian, Norse",
 
-            TraditionNotes: "In Irish tradition the Eó Rossa was one of the five great sacred trees of Ireland, and yews appear in early Irish place names and lore. In Norse myth the god Ullr dwells at Ýdalir, “Yew Dales,” and some scholars have suggested that the world tree Yggdrasil may have been imagined as an evergreen yew rather than an ash.",
+            TraditionNotes: "Celtic: In Irish tradition the Eó Rossa was one of the five great sacred trees of Ireland, and yews appear in early Irish place names and lore. Julius Caesar records that the Gaulish chieftain Catuvolcus poisoned himself with yew.\n\nChristian: Ancient yews grow in hundreds of churchyards in Britain, Ireland and Normandy, and in Britain and Ireland yew branches were carried as ‘palms’ on Palm Sunday, making the tree a Christian emblem of everlasting life.\n\nNorse: In Norse myth the god Ullr dwells at Ýdalir, ‘Yew Dales’; the eihwaz rune is named for the yew, and some scholars suggest the world tree Yggdrasil may have been imagined as an evergreen yew rather than an ash.",
 
             tags: ["death and rebirth", "ancestors", "endurance", "otherworld", "toxic", "saturn"]
         },
@@ -1071,9 +1105,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "You do not need a real mandrake to work with mandrake lore. A carefully chosen ginger or angelica root, named and treated as a guardian, honors the tradition safely.",
 
-            Traditions: "Hellenic",
+            Traditions: "Hellenic, Christian, Egyptian, Roman",
 
-            TraditionNotes: "In ancient Greece Theophrastus records that root-cutters gathered mandrake with special rites, drawing circles around it with a sword and facing west while cutting. Greek physicians such as Dioscorides described it as a powerful and dangerous sleep-inducing drug.",
+            TraditionNotes: "Hellenic: In ancient Greece Theophrastus records that root-cutters gathered mandrake with special rites, drawing circles around it with a sword and facing west while cutting. Aphrodite was called Mandragoritis, and physicians such as Dioscorides described it as a powerful and dangerous sleeping drug.\n\nChristian: In Genesis, Rachel trades with Leah for mandrakes (dudaim) in the hope of conceiving, and medieval Christian bestiaries and herbals spread the legend that the root shrieked when pulled and killed whoever heard it.\n\nEgyptian: Mandrake fruits appear in Egyptian New Kingdom art, including an ivory panel from Tutankhamun’s tomb showing Queen Ankhesenamun holding them, and they are often read as symbols of love.\n\nRoman: Pliny the Elder repeats the cautious rites for digging mandrake, standing upwind and drawing circles around the root, and Roman physicians used it as an anaesthetic.\n\nFolk & wider practice: Josephus describes a dog being used to uproot a magical root (baaras), a motif later attached to mandrake, and in German folk practice the root became the Alraune, a household charm dressed and kept for luck.",
 
             tags: ["protection", "power", "folklore", "guardian", "toxic", "legend"]
         },
@@ -1112,7 +1146,7 @@ const TraditionalLibrary = {
 
             Traditions: "Celtic, Roman, Christian",
 
-            TraditionNotes: "Roman writers describe verbenae, sacred boughs carried by envoys and used to sweep the altars of Jupiter, and Pliny reports that the Gauls used vervain for divination and gathered it with ceremony. In medieval Christian folklore vervain was called the herb of the cross, said to have staunched Christ’s wounds, and was gathered with charms beginning “Hallowed be thou, Vervain.”",
+            TraditionNotes: "Celtic: Pliny the Elder reports that the Gauls used vervain in casting lots and foretelling the future, and later writers made it one of the plants most associated with the druids.\n\nRoman: Roman writers describe verbenae, sacred boughs carried by envoys (fetiales) and used to sweep the altars of Jupiter, and Pliny describes vervain being gathered with ceremony at the rising of the Dog Star, when neither sun nor moon was in the sky.\n\nChristian: In medieval Christian folklore vervain was called the herb of the cross, said to have staunched Christ’s wounds on Calvary, and was gathered with charms beginning ‘Hallowed be thou, Vervain’.\n\nFolk & wider practice: In hoodoo vervain is used for protection, peace and attraction, and in English folklore it was carried against witchcraft.",
 
             tags: ["purification", "protection", "love", "peace", "consecration", "divination"]
         },
@@ -1149,9 +1183,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "If you want rue for protection, grow it in a pot by the door and admire it rather than handling it. Its presence alone is the traditional ward.",
 
-            Traditions: "Christian",
+            Traditions: "Christian, Roman",
 
-            TraditionNotes: "In Christian European tradition rue was called the herb of grace, a name Shakespeare uses in Hamlet, and folk accounts describe branches of rue being used to sprinkle holy water. Catholic Mediterranean folk practice, especially in Italy and Spain, kept rue as a protection against the evil eye and witchcraft.",
+            TraditionNotes: "Christian: In Christian European tradition rue was called the herb of grace, a name Shakespeare uses in Hamlet, and folk accounts describe branches of rue being used to sprinkle holy water. Catholic Mediterranean folk practice, especially in Italy and Spain, kept rue as a protection against the evil eye and witchcraft.\n\nRoman: Pliny the Elder ranks rue among the most important medicinal plants and repeats the story that the weasel eats rue to protect itself before fighting a serpent, a tale first told by Aristotle.\n\nFolk & wider practice: The Italian cimaruta, a silver charm shaped like a sprig of rue, was worn against the evil eye. In Lithuania (a Baltic tradition) rue (rūta) is the national plant, worn in bridal wreaths, and in Latin America ruda is a key herb of limpias and protection.",
 
             tags: ["protection", "evil eye", "banishing", "cleansing", "toxic", "mars"]
         },
@@ -1188,6 +1222,8 @@ const TraditionalLibrary = {
 
             BeginnerTip: "The most powerful thing a beginner can do with belladonna is learn to recognize it and leave it alone. Knowing your poisonous plants is part of real herbal craft.",
 
+            TraditionNotes: "Folk & wider practice: Belladonna has no clear ritual role in the nine traditions; its names are later. Bella donna, ‘beautiful lady’, recalls Renaissance Italian women using it to dilate their pupils, and Linnaeus named the genus Atropa after Atropos, the Fate who cuts the thread of life, only in the eighteenth century. Early modern writers such as Giambattista della Porta linked nightshades with the ‘flying ointments’ attributed to witches. It is highly poisonous and should never be handled casually or ingested.",
+
             tags: ["poison lore", "folklore", "shadow work", "saturn", "toxic", "history"]
         },
 
@@ -1223,9 +1259,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Begin with elder by simply greeting the tree. Folk tradition asks you to speak to the Elder Mother and ask permission before taking even a fallen twig.",
 
-            Traditions: "Christian",
+            Traditions: "Christian, Celtic",
 
-            TraditionNotes: "In medieval Christian legend elder was said to be the tree on which Judas hanged himself, and sometimes the wood of the cross, which added to the belief that cutting or burning it was unlucky. Many European Christian households nevertheless hung elder at doors and windows as a protection against witchcraft.",
+            TraditionNotes: "Christian: In medieval Christian legend elder was said to be the tree on which Judas hanged himself, and sometimes the wood of the cross, so cutting or burning it was thought unlucky. Many European Christian households nevertheless hung elder at doors and windows against witchcraft.\n\nCeltic: Elder (ruis) is one of the letters of the Irish ogham alphabet in the medieval tree lists, and in Scottish and Irish folk practice elder was planted near homes for protection.\n\nFolk & wider practice: Danish and wider Scandinavian folklore tells of the Elder Mother (Hyldemor) who lives in the tree, and English custom required asking the ‘Old Lady’ of the elder for permission before cutting it. Elderflower and elderberry remain beloved in European folk remedies and drinks.",
 
             tags: ["protection", "healing", "blessing", "faery lore", "thresholds", "toxic"]
         },
@@ -1262,9 +1298,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Hawthorn is a tree of hope. If you see one in bloom, take a moment to make a wish for the coming summer, and remember not to cut a lone thorn.",
 
-            Traditions: "Celtic, Slavic, Christian, Wheel of the Year",
+            Traditions: "Celtic, Wheel of the Year, Christian, Slavic, Roman",
 
-            TraditionNotes: "In Irish and Scottish folklore lone hawthorns are fairy thorns that must not be cut, and the tree’s May blossom is central to Beltane and May Day, which modern Wheel of the Year practice continues. In Christian legend the Glastonbury Thorn grew from Joseph of Arimathea’s staff, while South Slavic folklore names the hawthorn stake as a weapon against vampires.",
+            TraditionNotes: "Celtic: In Irish and Scottish folklore lone hawthorns are fairy thorns that must not be cut, and hawthorn by holy wells is hung with rags and ribbons. Its May blossom is central to Beltane and May Day.\n\nWheel of the Year: Modern Wheel of the Year practice keeps hawthorn as the tree of Beltane, gathering its blossom for May garlands and crowns.\n\nChristian: In Christian legend the Glastonbury Thorn grew from Joseph of Arimathea’s staff and flowers at Christmas; a sprig is still sent to the British monarch for the Christmas table, and the thorns were said to have formed Christ’s crown.\n\nSlavic: South Slavic folklore names a hawthorn stake as the weapon against vampires, and hawthorn branches were placed on doors and graves for protection.\n\nRoman: Ovid’s Fasti tells that the goddess Cardea guarded infants from the night-flying striges with a branch of whitethorn, and Pliny records hawthorn wood for wedding torches.",
 
             tags: ["protection", "faery lore", "love", "beltane", "hope", "fertility"]
         },
@@ -1303,7 +1339,7 @@ const TraditionalLibrary = {
 
             Traditions: "Celtic, Norse, Slavic",
 
-            TraditionNotes: "In Norse lore, Snorri’s Skáldskaparmál says the rowan saved Thor from a flooding river, earning the saying that rowan is Thor’s salvation. In Scottish, Irish, and Slavic folk practice, rowan crosses tied with red thread guarded byres, doorways, and dairies from witchcraft.",
+            TraditionNotes: "Celtic: In Scottish and Irish folk practice rowan crosses tied with red thread guarded byres, doorways and dairies from witchcraft, especially at Beltane, and rowan was planted beside houses for protection.\n\nNorse: In Norse lore Snorri’s Skáldskaparmál says a rowan saved Thor from a flooding river, earning the saying that rowan is Thor’s salvation.\n\nSlavic: In Slavic folk practice rowan branches were placed in windows, granaries and the bridal couple’s shoes to keep away evil and witchcraft.",
 
             tags: ["protection", "warding", "insight", "travel", "solar", "red thread"]
         },
@@ -1340,9 +1376,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Gather or buy a small bundle of St John’s wort for midsummer and hang it by your door. It is a simple way to welcome the strongest light of the year.",
 
-            Traditions: "Christian, Slavic, Wheel of the Year",
+            Traditions: "Christian, Slavic, Celtic, Wheel of the Year",
 
-            TraditionNotes: "In Christian Europe the herb was gathered on St John’s Eve (23 June) and hung over doors to drive away evil, and its red sap was associated with the blood of John the Baptist. In Slavic tradition it is one of the herbs of Kupala Night, gathered at midsummer for wreaths and protection, and modern Wheel of the Year practice keeps it as a Litha herb.",
+            TraditionNotes: "Christian: In Christian Europe the herb was gathered on St John’s Eve (23 June) and hung over doors to drive away evil, its old name fuga daemonum meant ‘flight of demons’, and its red sap was associated with the blood of John the Baptist.\n\nSlavic: In Slavic tradition it is one of the herbs of Kupala Night, gathered at midsummer for wreaths and protection.\n\nCeltic: In Scottish Gaelic tradition it was called achlasan Chaluim Chille, St Columba’s armpit-package, and the Carmina Gadelica records charms for finding it unsought and carrying it for protection.\n\nWheel of the Year: Modern Wheel of the Year practice keeps St John’s wort as a solar Litha herb, burned or hung at Midsummer.",
 
             tags: ["protection", "banishing", "courage", "midsummer", "solar", "litha"]
         },
@@ -1379,6 +1415,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "A tiny piece of dragon’s blood in an incense blend goes a long way. Use it when you want your working to feel stronger and more focused.",
 
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Pliny the Elder writes of cinnabaris, a red resin said to be the mingled blood of dragon and elephant, and Roman traders obtained such resins from the island of Socotra for pigment, medicine and incense.\n\nFolk & wider practice: Dragon’s blood comes from several plants, chiefly Dracaena cinnabari of Socotra and Daemonorops palms of Southeast Asia. It became a staple of medieval European pigment and alchemy and of modern hoodoo, where it is used for power, protection and amplifying other works.",
+
             tags: ["power", "protection", "amplification", "banishing", "resin", "mars"]
         },
 
@@ -1413,6 +1453,8 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Japanese star anise (Illicium anisatum) is toxic and can cause seizures, and it has been found mixed into herbal teas sold as Chinese star anise. Never give star anise tea to babies or young children, and buy only clearly labelled food-grade spice. Keep pods away from pets, and use the essential oil with care and dilution.",
 
             BeginnerTip: "Star anise makes a lovely first luck charm. Keep a single pod in your wallet or tarot bag as a little star to guide your way.",
+
+            TraditionNotes: "Folk & wider practice: Star anise is native to southern China and Vietnam and is a key spice of Chinese five-spice and Vietnamese pho. Its close and poisonous relative Japanese star anise (shikimi) is planted at Buddhist temples and placed on graves in Japan; the two should not be confused.",
 
             tags: ["psychic", "luck", "dreams", "divination", "purification", "jupiter"]
         },
@@ -1449,9 +1491,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Collect one acorn on a walk and keep it on your altar or desk as a reminder that lasting things grow slowly.",
 
-            Traditions: "Celtic, Norse, Hellenic, Roman, Slavic, Wheel of the Year",
+            Traditions: "Celtic, Norse, Hellenic, Roman, Slavic, Christian, Wheel of the Year",
 
-            TraditionNotes: "Pliny the Elder described Gaulish druids gathering mistletoe from oaks, and in Norse and Germanic practice oaks were sacred to Thor (Donar), as in the oak felled at Geismar. Zeus’s oracle at Dodona spoke through a sacred oak, the oak was sacred to Jupiter in Rome, and Slavic tradition linked oaks with the thunder god Perun. In modern Wheel of the Year practice the Oak King rules the waxing half of the year.",
+            TraditionNotes: "Celtic: Pliny the Elder described Gaulish druids gathering mistletoe from oaks with a golden sickle, and the word druid is often linked with the Celtic word for oak. Irish tradition counted oak (dair) among the noble trees of the ogham.\n\nNorse: In Norse and Germanic practice oaks were sacred to Thor (Donar), as in Donar’s oak felled at Geismar by St Boniface.\n\nHellenic: Zeus’s oracle at Dodona spoke through the rustling of a sacred oak, and the oak was Zeus’s tree.\n\nRoman: The oak was sacred to Jupiter, and the corona civica of oak leaves was awarded to a Roman who saved a citizen’s life.\n\nSlavic: Slavic tradition linked oaks with the thunder god Perun, and sacred oak groves were sites of worship before Christianisation.\n\nChristian: Irish Christian tradition names churches after oaks, such as St Brigid’s Kildare (Cill Dara, ‘church of the oak’) and Columba’s Derry, and Boniface built a chapel from the wood of the oak he felled.\n\nWheel of the Year: In modern Wheel of the Year practice the Oak King rules the waxing half of the year, from Yule to Midsummer.",
 
             tags: ["strength", "protection", "endurance", "prosperity", "wisdom", "tree", "solar"]
         },
@@ -1488,9 +1530,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Birch is ideal for the first ritual of a new year, a new home, or a new chapter. Write one word for what you are beginning on a piece of fallen bark.",
 
-            Traditions: "Celtic, Norse, Slavic, Wheel of the Year",
+            Traditions: "Celtic, Norse, Slavic, Christian, Roman, Wheel of the Year",
 
-            TraditionNotes: "Birch (beith) is the first letter of the Irish ogham alphabet, and the Norse berkanan rune is named for it. In Slavic folk custom birches were decorated and honoured at the early-summer Semik and Green Week festivities. In modern Wheel of the Year practice birch is linked with Imbolc and Beltane, and is a traditional wood for besoms and maypoles.",
+            TraditionNotes: "Celtic: Birch (beith) is the first letter of the Irish ogham alphabet, and ogham lore says the first message ever written was on birch.\n\nNorse: The Norse berkanan rune is named for the birch, a tree of spring renewal and new beginnings.\n\nSlavic: In Slavic folk custom birches were decorated, ‘curled’ and honoured at the early-summer Semik and Green Week (Rusalia) festivities.\n\nChristian: In Polish, German and Russian Christian custom, birch branches decorate churches and homes at Pentecost (Whitsun, the Green Holidays).\n\nRoman: Pliny the Elder notes that birch was used for the rods carried by Roman magistrates’ attendants, the fasces.\n\nWheel of the Year: In modern Wheel of the Year practice birch is linked with Imbolc and Beltane, and is a traditional wood for besoms and maypoles.",
 
             tags: ["new beginnings", "purification", "protection", "renewal", "tree", "cleansing"]
         },
@@ -1529,7 +1571,7 @@ const TraditionalLibrary = {
 
             Traditions: "Celtic, Hellenic, Christian, Slavic",
 
-            TraditionNotes: "Willow (saille) is a letter of the Irish ogham alphabet. In the Odyssey, Persephone’s grove at the edge of the underworld is described with black poplars and willows. In Christian and Slavic folk practice, blessed willow branches replaced palms on Palm Sunday, known in Slavic lands as Willow Sunday, and were kept in the home for protection.",
+            TraditionNotes: "Celtic: Willow (saille) is a letter of the Irish ogham alphabet, and willow rods were used in Irish and Scottish folk charms and wattle-work.\n\nHellenic: In the Odyssey, Persephone’s grove at the edge of the underworld is described with black poplars and willows, and Pausanias describes Polygnotus’s painting of the underworld at Delphi in which Orpheus touches the branches of a willow.\n\nChristian: In Christian folk practice blessed willow branches replaced palms on Palm Sunday in northern Europe, and were kept in the home for protection.\n\nSlavic: In Slavic lands Palm Sunday is known as Willow Sunday (Verbnoe), when pussy-willow branches are blessed, and children are lightly tapped with them for health.\n\nFolk & wider practice: In Jewish tradition willow (aravah) is one of the four species carried at Sukkot.",
 
             tags: ["grief", "healing", "intuition", "wishes", "lunar", "tree"]
         },
@@ -1568,7 +1610,7 @@ const TraditionalLibrary = {
 
             Traditions: "Celtic, Christian, Wheel of the Year",
 
-            TraditionNotes: "Holly (tinne in later ogham tree lists) was valued in Irish and British folklore as a protective evergreen. In Christian tradition holly became a Christmas emblem, its prickles and berries read as the crown of thorns and blood of Christ. In modern Wheel of the Year practice the Holly King rules the waning half of the year, from Midsummer to Yule.",
+            TraditionNotes: "Celtic: Holly (tinne in later ogham tree lists) was valued in Irish and British folklore as a protective evergreen, hung in homes in winter and never cut down lightly.\n\nChristian: In Christian tradition holly became a Christmas emblem, its prickles and red berries read as the crown of thorns and blood of Christ, as in the carol The Holly and the Ivy.\n\nWheel of the Year: In modern Wheel of the Year practice the Holly King rules the waning half of the year, from Midsummer to Yule.",
 
             tags: ["protection", "midwinter", "yule", "courage", "warding", "evergreen"]
         },
@@ -1605,9 +1647,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Treat mistletoe as a hanging symbol only. If you have children or pets, a picture or carved image of mistletoe on the altar carries the same meaning safely.",
 
-            Traditions: "Celtic, Norse, Wheel of the Year",
+            Traditions: "Celtic, Norse, Roman, Christian, Wheel of the Year",
 
-            TraditionNotes: "Pliny the Elder records Gaulish druids cutting mistletoe from an oak with a golden sickle and sacrificing two white bulls, the main ancient source for Celtic use. In Norse myth, as told by Snorri Sturluson, the god Baldr was killed by a dart of mistletoe, the one plant that had not sworn not to harm him. In modern Wheel of the Year practice mistletoe is gathered and hung at Midsummer and Yule.",
+            TraditionNotes: "Celtic: Pliny the Elder records Gaulish druids cutting mistletoe from an oak with a golden sickle and sacrificing two white bulls, calling it ‘all-heal’; this is the main ancient source for Celtic use.\n\nNorse: In Norse myth, as told by Snorri Sturluson, the god Baldr was killed by a dart of mistletoe, the one plant that had not sworn not to harm him.\n\nRoman: In Virgil’s Aeneid the golden bough that lets Aeneas enter the underworld is compared to mistletoe, a link Frazer made famous in The Golden Bough.\n\nChristian: In English Christmas custom kissing under the mistletoe became popular by the eighteenth century, though many churches kept it out of their decorations because of its pagan reputation.\n\nWheel of the Year: In modern Wheel of the Year practice mistletoe is gathered and hung at Midsummer and Yule.",
 
             tags: ["blessing", "peace", "midwinter", "yule", "protection", "toxic", "solar"]
         },
@@ -1646,7 +1688,7 @@ const TraditionalLibrary = {
 
             Traditions: "Celtic",
 
-            TraditionNotes: "In the Welsh Mabinogion, the magicians Math and Gwydion create Blodeuwedd, a woman made of flowers, from the blossoms of oak, broom, and meadowsweet. This story gives meadowsweet a lasting place in Welsh and wider Celtic-inspired love and flower lore.",
+            TraditionNotes: "Celtic: In the Welsh Mabinogion, the magicians Math and Gwydion create Blodeuwedd, a woman made of flowers, from the blossoms of oak, broom and meadowsweet, giving it a lasting place in Welsh flower and love lore.\n\nFolk & wider practice: Meadowsweet pollen has been found with Bronze Age burials in Scotland, possibly from mead or offerings. Gerard says it was a favourite strewing herb of Elizabeth I, and its old names bridewort and meadwort recall bridal garlands and flavouring mead.",
 
             tags: ["love", "peace", "happiness", "handfasting", "harmony", "air"]
         },
@@ -1683,9 +1725,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Angelica root is a classic carry charm. A single piece in a small white bag kept in your pocket is a simple, traditional protection talisman.",
 
-            Traditions: "Christian",
+            Traditions: "Norse, Christian, Wheel of the Year",
 
-            TraditionNotes: "In Christian European folklore, angelica was said to have been revealed by the Archangel Michael as a remedy against plague, which gave it its name and its folk association with Michaelmas. It was widely grown in monastery and cottage gardens as a holy protective herb.",
+            TraditionNotes: "Norse: Garden angelica (hvönn) was valued in Norway and Iceland: Old Norwegian law protected angelica gardens, and Snorri’s Heimskringla tells of King Olaf Tryggvason bringing his queen a stalk of angelica as a gift.\n\nChristian: In Christian European folklore angelica was said to have been revealed by the Archangel Michael as a remedy against plague, giving it its name and its link with Michaelmas, and it was grown in monastery and cottage gardens as a holy protective herb.\n\nWheel of the Year: In modern Pagan and Wiccan practice angelica root is one of the classic herbs of protection and purification, added to incense, sachets and house wards, and often worked at Midsummer and in autumn for blessing and banishing.\n\nFolk & wider practice: Sámi herders gathered wild angelica as a food and medicine and traded it widely across the north. In hoodoo and rootwork the root is carried as a protective and luck-keeping charm (known as Holy Ghost or Archangel root), and a related species, dong quai, is a major herb of Chinese medicine.",
 
             tags: ["protection", "exorcism", "healing", "blessing", "spiritual strength", "solar"]
         },
@@ -1722,6 +1764,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Mix valerian with plenty of lavender in a sealed sachet. You get its sleepy symbolism without the full force of its smell.",
 
+            Traditions: "Hellenic",
+
+            TraditionNotes: "Hellenic: Greek physicians knew valerian as phu, a name Dioscorides and Galen used and which is often linked with its strong, unpleasant smell.\n\nFolk & wider practice: Medieval Europe called valerian all-heal, it was used as a scent and spice in the sixteenth century despite its odour, and cats are as drawn to it as to catnip. In hoodoo it is sometimes used in place of graveyard dirt and in spells for quarrelsome households.",
+
             tags: ["sleep", "calm", "love", "protection", "reconciliation", "water"]
         },
 
@@ -1757,6 +1803,8 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Grow a pot of catnip and dedicate it as a friendship plant. If you share your home with a cat, it will likely join in.",
 
+            TraditionNotes: "Folk & wider practice: Catnip’s genus name Nepeta is usually traced to Nepete, an Etruscan town in Italy, but the plant has little documented ritual history. English cottage herbalism used it as a soothing tea before Chinese tea became common, and in hoodoo it is used to draw love and attract good spirits, partly because of its effect on cats.",
+
             tags: ["love", "friendship", "happiness", "cat magic", "beauty", "venus"]
         },
 
@@ -1791,6 +1839,10 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Comfrey must never be eaten or drunk as tea: its pyrrolizidine alkaloids can cause serious, sometimes fatal liver disease, and many countries restrict internal products. Do not apply it to broken skin, and avoid use in pregnancy, breastfeeding, and with children; keep it away from grazing pets. Charm work for healing never replaces medical care for injuries.",
 
             BeginnerTip: "Use comfrey as a travel charm only. A dried leaf in a sealed, labelled bag in your suitcase is all you need.",
+
+            Traditions: "Hellenic",
+
+            TraditionNotes: "Hellenic: Dioscorides named the plant symphyton, from the Greek for ‘to grow together’, reflecting its ancient reputation for knitting broken bones.\n\nFolk & wider practice: Its old English names knitbone and boneset carry the same idea, and it was a standard plant of monastic infirmary gardens. In modern folk magic comfrey is carried for safe travel. It contains liver-toxic alkaloids, so it should not be taken internally.",
 
             tags: ["safe travel", "protection", "healing", "grounding", "saturn", "toxic"]
         },
@@ -1829,7 +1881,7 @@ const TraditionalLibrary = {
 
             Traditions: "Celtic",
 
-            TraditionNotes: "In Irish and Welsh folklore foxglove is strongly tied to the fair folk, with Irish names such as lus mór (great herb) and méirín sí (fairy thimble). It was believed to belong to the fairies and was treated with caution in rural custom.",
+            TraditionNotes: "Celtic: In Irish and Welsh folklore foxglove is strongly tied to the fair folk, with Irish names such as lus mór (great herb) and méirín sí (fairy thimble). It was believed to belong to the fairies and was treated with caution in rural custom.\n\nFolk & wider practice: In 1785 the English physician William Withering published his study of foxglove, drawn from a Shropshire folk remedy, which led to the heart drug digitalis. Every part of the plant is highly poisonous.",
 
             tags: ["fairy lore", "garden", "thresholds", "toxic", "venus", "respect"]
         },
@@ -1868,7 +1920,7 @@ const TraditionalLibrary = {
 
             Traditions: "Hellenic, Roman",
 
-            TraditionNotes: "Aristotle and Theophrastus record the Greek belief that wild goats wounded by arrows ate dittany to expel them, and it was prized as a wound herb. In Virgil’s Aeneid, Venus brings dittany from Mount Ida in Crete to heal Aeneas’s wound.",
+            TraditionNotes: "Hellenic: Aristotle and Theophrastus record the Greek belief that wild goats wounded by arrows ate dittany to expel them, and it was prized as a wound herb gathered on the cliffs of Crete.\n\nRoman: In Virgil’s Aeneid Venus brings dittany from Mount Ida in Crete to heal Aeneas’s wound, and Cicero and Pliny repeat the story of the wounded goats.\n\nFolk & wider practice: Dittany is still gathered in Crete for tea, where young men once risked climbing cliffs to collect it as a token of love.",
 
             tags: ["astral", "manifestation", "love", "healing", "spirit work", "divination"]
         },
@@ -1905,6 +1957,8 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Keep a few allspice berries in your wallet or purse as a simple luck and prosperity charm.",
 
+            TraditionNotes: "Folk & wider practice: Allspice is the dried berry of a tree native to Jamaica and Central America, used by the Maya and Taíno; Columbus’s voyages brought it to Europe. In hoodoo and Caribbean folk practice it is used for money, luck and healing.",
+
             tags: ["money", "luck", "healing", "determination", "prosperity", "fire"]
         },
 
@@ -1939,6 +1993,10 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Ginger is a common food and generally safe, but large internal amounts may not suit people on blood thinners, with gallstones, or in pregnancy without advice. Ginger oil can irritate skin and should be diluted. Magic for courage and vitality supports, but never replaces, medical care.",
 
             BeginnerTip: "Add a pinch of ginger to any spell that feels slow to start. It is one of the easiest ways to bring heat and movement into a working.",
+
+            Traditions: "Hindu, Roman",
+
+            TraditionNotes: "Hindu: Ayurveda calls ginger vishvabheshaja, ‘the universal medicine’, and dried ginger (shunthi) appears throughout classical Ayurvedic texts and in sacred and festive cooking.\n\nRoman: Ginger (zingiberi) was a costly import in the Roman world, described by Dioscorides and Pliny and taxed in the spice trade from India.\n\nFolk & wider practice: Confucius is recorded in the Analects as never being without ginger at meals, and ginger is central to Chinese medicine. In medieval Europe gingerbread was made at fairs and holy days, and in hoodoo ginger adds heat and speed to a work.",
 
             tags: ["power", "success", "speed", "love", "money", "fire"]
         },
@@ -1975,6 +2033,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "A jar of salt, black pepper, and rosemary by the front door is a simple, classic protection charm.",
 
+            Traditions: "Hindu, Roman, Egyptian",
+
+            TraditionNotes: "Hindu: Black pepper (maricha) is native to the Malabar coast of India and is one of the three pungents (trikatu) of Ayurveda, valued in sacred cooking and medicine.\n\nRoman: Pepper was the great luxury spice of Rome: the Horrea Piperataria warehouses stored it, Apicius used it in most recipes, and Alaric the Goth demanded pepper as part of the ransom of Rome in 408 CE.\n\nEgyptian: Peppercorns were placed in the nostrils of the mummy of Ramesses II as part of his embalming, the earliest known evidence of pepper outside India.\n\nFolk & wider practice: In hoodoo and European folk magic black pepper is used in protective and banishing mixtures and in ‘hot foot’ powders.",
+
             tags: ["protection", "banishing", "courage", "boundaries", "jealousy", "mars"]
         },
 
@@ -2010,6 +2072,8 @@ const TraditionalLibrary = {
 
             BeginnerTip: "A simple lemongrass floor wash is a lovely spring-cleaning ritual. Wipe from the back of the home toward the front door to move stale energy out.",
 
+            TraditionNotes: "Folk & wider practice: Lemongrass is a tropical grass of South and Southeast Asia, important in Thai, Vietnamese and Indian cooking and medicine. In hoodoo it is a key ingredient of Van Van oil, used to clear away bad luck and open the way.",
+
             tags: ["cleansing", "road opening", "communication", "clarity", "psychic", "air"]
         },
 
@@ -2044,6 +2108,10 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Orris powder is a common cause of allergy and asthma reactions, so avoid inhaling it and patch-test before skin contact. Iris roots are not for eating, and garden irises are toxic to pets. Love and persuasion magic should respect free will and never be used to control another person.",
 
             BeginnerTip: "Think of orris root as magical glue. A small pinch helps a sachet hold its scent and its intention for longer.",
+
+            Traditions: "Hellenic, Roman, Christian, Egyptian",
+
+            TraditionNotes: "Hellenic: The iris is named for Iris, the Greek goddess of the rainbow and messenger of the gods, and Theophrastus and later writers praise the iris-root perfumes of Elis and Corinth.\n\nRoman: Pliny the Elder and Dioscorides prized the Illyrian iris for its fragrant root, which was used in perfumes and unguents.\n\nChristian: In Christian art the iris became a flower of the Virgin Mary, its sword-shaped leaves recalling the sorrows that pierced her heart, and the stylised fleur-de-lis was a Marian emblem; Florence, the centre of orris production, took the iris as its symbol.\n\nEgyptian: Irises are carved among the plants of Thutmose III’s ‘botanical garden’ reliefs at Karnak, and the flower appears in Egyptian art as a symbol of renewal.\n\nFolk & wider practice: In hoodoo orris root is known as Queen Elizabeth root and is carried or powdered to attract love and favour.",
 
             tags: ["love", "attraction", "persuasion", "binding", "favour", "venus"]
         },
@@ -2082,7 +2150,7 @@ const TraditionalLibrary = {
 
             Traditions: "Hindu",
 
-            TraditionNotes: "In Hindu practice sandalwood paste (chandan) is offered to deities in puja, used to anoint images, and worn as tilak on the forehead. This is a living, sacred use, and the paste is especially associated with cooling, purity, and devotion to Vishnu and Shiva.",
+            TraditionNotes: "Hindu: In Hindu practice sandalwood paste (chandan) is offered to deities in puja, used to anoint images and worn as tilak on the forehead; it is associated with cooling, purity and devotion to Vishnu and Shiva.\n\nFolk & wider practice: Sandalwood incense is widely used in Buddhist, Jain and Chinese temple worship. Wild Indian sandalwood (Santalum album) is now threatened by over-harvesting, so sustainably sourced wood or alternatives are preferable.",
 
             tags: ["meditation", "spirituality", "purification", "protection", "wishes", "lunar"]
         },
@@ -2119,6 +2187,8 @@ const TraditionalLibrary = {
 
             BeginnerTip: "A pea-sized piece of copal is plenty. Let the room fill with its smoke, then open a window to let the old energy leave with it.",
 
+            TraditionNotes: "Folk & wider practice: Copal (Maya pom, Nahuatl copalli) has been burned for thousands of years in Mesoamerica as an offering to the gods and ancestors and is still used by Maya and Nahua communities and on Día de Muertos altars. These are living Indigenous and Mexican practices; it is best approached with respect and sourced from producers who harvest it sustainably.",
+
             tags: ["purification", "offering", "protection", "consecration", "resin", "solar"]
         },
 
@@ -2154,6 +2224,8 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Add a vanilla pod to a jar of sugar and keep it in your kitchen as a simple, edible sweetening charm for the household.",
 
+            TraditionNotes: "Folk & wider practice: Vanilla is a Mexican orchid first cultivated by the Totonac people, whose legend tells of a princess from whose blood the vine grew; the Aztecs used it to flavour chocolate. In modern folk magic it is used for love, sweetness and comfort.",
+
             tags: ["love", "attraction", "comfort", "sweetening", "kitchen magic", "venus"]
         },
     },
@@ -2187,9 +2259,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Amethyst is a great first crystal for intuition and calm. Keep one with your tarot deck or dream journal to build a simple association over time.",
 
-            Traditions: "Hellenic, Christian",
+            Traditions: "Hellenic, Christian, Egyptian, Roman",
 
-            TraditionNotes: "The name comes from the Greek amethystos, ‘not intoxicated’, reflecting an ancient belief that the stone guarded against drunkenness; the popular myth of the maiden Amethyst and Dionysus is a Renaissance invention. In Christian tradition amethyst became the stone of bishops’ rings, symbolising sobriety and spiritual devotion.",
+            TraditionNotes: "Hellenic: The Greek name amethystos means ‘not intoxicated’, from the belief that the stone guarded against drunkenness, and Greeks carved it into seals and drinking-party gems. The popular tale of the maiden Amethyst and Dionysus is a Renaissance invention, not an ancient myth.\n\nChristian: Amethyst is the twelfth foundation stone of the heavenly Jerusalem in Revelation 21, and medieval churchmen read its purple as humility and sobriety. It became the traditional stone of bishops’ rings, sometimes called the ‘bishop’s stone’.\n\nEgyptian: Egyptians mined amethyst at Wadi el-Hudi near Aswan, and Middle Kingdom jewellery used it widely for beads, scarabs and amulets.\n\nRoman: Romans carved amethyst intaglios and cameos; Pliny the Elder discussed the stone at length but dismissed the Magi’s claim that it prevented drunkenness as a falsehood.\n\nFolk & wider practice: Amethyst (ahlamah) is traditionally counted among the twelve stones of the Israelite high priest’s breastplate in Exodus 28.",
 
             tags: ["intuition", "dreams", "meditation", "protection", "peace", "third eye"]
         },
@@ -2253,9 +2325,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Use carnelian when you need to actually do the thing, not just think about doing the thing.",
 
-            Traditions: "Egyptian",
+            Traditions: "Egyptian, Roman, Hellenic, Christian",
 
-            TraditionNotes: "In ancient Egypt carnelian was one of the most widely used amulet stones, carved into protective forms such as the tyet knot of Isis and set in funerary jewellery.",
+            TraditionNotes: "Egyptian: Carnelian was one of the most important amulet stones of ancient Egypt, its red linked with life and the blood of Isis; it was carved into tyet knots, heart amulets and scarabs and set in funerary jewellery.\n\nRoman: Under the name sard, carnelian was the favourite stone for Roman signet rings and engraved intaglios, because hot sealing wax does not stick to it, and Pliny describes it as a common and useful gem.\n\nHellenic: Greek gem cutters used carnelian for seal stones and scarabs from the Archaic period onward, and Theophrastus names the sard among the notable stones.\n\nChristian: The sardius is the sixth foundation stone of the heavenly Jerusalem in Revelation 21 and the first stone of the high priest’s breastplate, and medieval lapidaries gave it a place in gem symbolism on that basis.\n\nFolk & wider practice: In Islamic tradition the carnelian (aqeeq) ring is a valued custom associated with the Prophet Muhammad, and carnelian beads were already traded from the Indus Valley in the third millennium BCE.",
 
             tags: ["creativity", "courage", "vitality", "confidence", "motivation", "fire"]
         },
@@ -2319,9 +2391,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "If you only have one crystal, clear quartz is one of the best choices. It can amplify almost any intention.",
 
-            Traditions: "Celtic",
+            Traditions: "Celtic, Roman, Hellenic, Christian, Hindu",
 
-            TraditionNotes: "In Scottish Highland and Irish folk practice, rock crystal charm stones were dipped in water to make healing water for people and livestock, and some were kept as treasured family heirlooms.",
+            TraditionNotes: "Celtic: In Scottish Highland and Irish folk practice, rock crystal charm stones such as the Clach Dearg and the Stone of Ardvorlich were dipped in water to make healing water for people and livestock, and were kept as treasured clan heirlooms.\n\nRoman: Pliny the Elder repeated the old belief that rock crystal was ice frozen so hard it could never melt; Roman ladies held crystal balls to cool their hands, and physicians used crystal spheres to focus sunlight for cautery.\n\nHellenic: The word crystal comes from the Greek krystallos, ‘ice’, reflecting the Greek belief that the stone was permanently frozen water, and Theophrastus lists it among transparent stones used for seals.\n\nChristian: Medieval Christian craftsmen carved rock crystal into reliquaries, crosses and monstrances, valuing its clarity as a symbol of purity and of Christ’s light; the Carolingian Lothair Crystal is a famous example.\n\nHindu: In Hindu practice clear quartz (sphatika) is carved into lingams for Shiva worship and strung into japa malas, and is valued for its purity and coolness.\n\nFolk & wider practice: Quartz crystals hold important places in many other cultures, including Japanese, Aboriginal Australian and Indigenous American traditions, each with their own living meanings.",
 
             tags: ["amplification", "clarity", "healing", "cleansing", "all purpose", "spirit"]
         },
@@ -2354,6 +2426,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Keep fluorite near your workspace when you need help focusing, organizing, or making sense of too many thoughts.",
 
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Many scholars identify the precious murrhine vessels that Romans paid fortunes for, described by Pliny the Elder, with carved fluorite (fluorspar) from Persia; Nero is said to have paid a million sesterces for one such cup.",
+
             tags: ["focus", "clarity", "study", "organization", "learning", "mercury"]
         },
 
@@ -2384,6 +2460,10 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Garnet is usually safe to handle, but small pieces should be kept away from children and pets. Its magical symbolism can feel intense, so use it thoughtfully in emotional workings.",
 
             BeginnerTip: "Use garnet when you want steady fire, not a quick spark. It is excellent for commitment, courage, and devotion.",
+
+            Traditions: "Roman, Hellenic, Hindu, Egyptian, Christian, Norse",
+
+            TraditionNotes: "Roman: Romans knew red garnet as carbunculus, a ‘little glowing coal’, and Pliny describes several kinds; garnet was carved into intaglios and set in rings and jewellery across the empire.\n\nHellenic: Theophrastus describes a red stone, anthrax, that glowed like a coal and is usually identified with garnet, and Hellenistic goldsmiths set garnets into fine jewellery and portrait gems.\n\nHindu: In Hindu Jyotish astrology, hessonite garnet (gomed) is one of the nine Navaratna gems, worn for Rahu, usually after consulting an astrologer.\n\nEgyptian: Garnet beads and inlays appear in Egyptian jewellery from Predynastic times onward, and garnet was used in amulets and necklaces of the Middle Kingdom.\n\nChristian: The carbuncle stands in the high priest’s breastplate in many Bible translations, and garnets were set into reliquaries, book covers and crosses in early medieval Christian goldwork.\n\nNorse: In Migration and Vendel-period Scandinavia, before and into the Viking Age, garnet cloisonné, thin slices of garnet set in gold cells, adorned high-status sword fittings, brooches and helmets.\n\nFolk & wider practice: Garnet cloisonné reached a high point in Anglo-Saxon England, as in the Sutton Hoo ship burial and the Staffordshire Hoard.",
 
             tags: ["strength", "passion", "devotion", "grounding", "courage", "mars"]
         },
@@ -2447,6 +2527,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Hematite is perfect after divination, ritual, or emotional processing when you need to come back to earth.",
 
+            Traditions: "Egyptian, Roman, Hellenic",
+
+            TraditionNotes: "Egyptian: Egyptians carved hematite into amulets, including headrest, carpenter’s square and plummet amulets for the dead, and ground it as a red pigment.\n\nRoman: Pliny the Elder named haematites, the ‘blood stone’, for the red streak it leaves and records its use against bleeding; Graeco-Roman magical gems, including uterine amulets showing the serpent Chnoubis, were often cut in hematite.\n\nHellenic: The name comes from the Greek haima, ‘blood’, and Theophrastus describes haimatitis as a dense, blood-coloured stone.\n\nFolk & wider practice: Hematite was a favourite material for Mesopotamian cylinder seals.",
+
             tags: ["grounding", "stability", "protection", "focus", "root", "mars"]
         },
 
@@ -2509,9 +2593,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Use lapis lazuli when you need to say the true thing clearly, not just loudly.",
 
-            Traditions: "Egyptian",
+            Traditions: "Egyptian, Christian, Roman",
 
-            TraditionNotes: "In ancient Egypt lapis lazuli, imported from what is now Afghanistan, was associated with the heavens and the divine. It was carved into scarabs and amulets and used in royal funerary objects such as Tutankhamun’s mask.",
+            TraditionNotes: "Egyptian: In ancient Egypt lapis lazuli, imported from what is now Afghanistan, was associated with the heavens and the divine, and the gods’ hair was said to be lapis. It was carved into scarabs and amulets and inlaid in royal funerary objects such as Tutankhamun’s mask.\n\nChristian: Ground lapis made ultramarine, the costliest pigment of medieval and Renaissance painting, and it was reserved above all for the blue robes of the Virgin Mary.\n\nRoman: Pliny the Elder’s ‘sapphirus’, a blue stone flecked with gold, is generally identified as lapis lazuli, and Romans used it for intaglios and inlay.\n\nFolk & wider practice: Lapis was treasured in Mesopotamia, where Inanna carries a lapis measuring rod and necklace in the myth of her descent to the underworld.",
 
             tags: ["truth", "wisdom", "communication", "insight", "learning", "jupiter"]
         },
@@ -2544,9 +2628,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Malachite is not the crystal I’d use for casual emotional comfort. Use rose quartz or lepidolite for softness, and malachite when you are ready for deeper change.",
 
-            Traditions: "Egyptian",
+            Traditions: "Egyptian, Roman, Slavic",
 
-            TraditionNotes: "Ancient Egyptians mined malachite in Sinai and ground it into green eye paint, which had both cosmetic and protective meaning. Its green colour was linked with fertility, renewal and the afterlife.",
+            TraditionNotes: "Egyptian: Ancient Egyptians mined malachite in Sinai and ground it into green eye paint, which had both cosmetic and protective meaning. Its green was linked with fertility, renewal and the afterlife, and Hathor bore the title ‘Lady of Malachite’.\n\nRoman: Pliny the Elder describes molochitis, a green stone whose name is linked to the mallow, and says it was worn to protect infants from harm.\n\nSlavic: In the Ural mining lore of Russia, gathered by Pavel Bazhov in The Malachite Casket, malachite belongs to the Mistress of the Copper Mountain, a spirit who guards the stone and rewards or tests miners.",
 
             tags: ["transformation", "healing", "growth", "heart", "protection", "venus"]
         },
@@ -2579,6 +2663,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Moonstone is beautiful for tracking patterns. Use it with journaling around dreams, moods, cycles, or moon phases.",
 
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: In Indian tradition moonstone is linked with the chandrakanta, the ‘moon-loved’ gem of Sanskrit literature said to be formed from or to answer moonlight, and it is regarded as an auspicious, lunar stone associated with Chandra.",
+
             tags: ["moon", "dreams", "intuition", "cycles", "balance", "water"]
         },
 
@@ -2609,6 +2697,10 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Moss agate is generally safe to handle. If placing stones in plant soil, make sure they will not interfere with watering, roots, pets, or children.",
 
             BeginnerTip: "Use moss agate when you need a reminder that growth can be slow and still be real.",
+
+            Traditions: "Roman, Hellenic",
+
+            TraditionNotes: "Roman: Pliny the Elder describes dendrachates, ‘tree agate’, marked with tiny shrub-like patterns, a close match for moss and dendritic agate.\n\nHellenic: Theophrastus first named achates after the river Achates in Sicily where it was found, and Greeks used agates widely for seals.",
 
             tags: ["nature", "abundance", "growth", "grounding", "garden", "earth"]
         },
@@ -2641,6 +2733,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Use obsidian when you are ready for honesty. For gentler protection, start with black tourmaline or smoky quartz.",
 
+            Traditions: "Roman, Egyptian",
+
+            TraditionNotes: "Roman: Pliny the Elder says obsidian was named after Obsius, who found it in Ethiopia, and records that Augustus dedicated four obsidian elephants in the Temple of Concord; it was polished for mirrors and gems.\n\nEgyptian: Egyptians imported obsidian from the Red Sea region and used it for amulets, scarab inlays and the gleaming eyes of statues and coffins.\n\nFolk & wider practice: Obsidian mirrors were sacred to the Aztec god Tezcatlipoca, ‘Smoking Mirror’, and an Aztec obsidian mirror later belonged to the Elizabethan magician John Dee.",
+
             tags: ["protection", "shadow work", "grounding", "banishing", "truth", "saturn"]
         },
 
@@ -2671,6 +2767,10 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Pyrite can oxidize or degrade with prolonged water exposure. Do not use pyrite in crystal elixirs. Handle fragile clusters gently.",
 
             BeginnerTip: "Pyrite is a strong money bowl stone. Pair it with a clear goal, not just a vague wish for more.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Pliny the Elder describes pyrites as the ‘fire stone’, prized because it throws sparks when struck, and it was used for lighting fires.\n\nFolk & wider practice: Polished pyrite mirrors were made in ancient Mesoamerica and the Andes.",
 
             tags: ["prosperity", "success", "confidence", "abundance", "solar", "wealth"]
         },
@@ -2734,6 +2834,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "A selenite slab or wand is a useful beginner tool for cleansing small crystals or altar objects.",
 
+            Traditions: "Roman, Hellenic",
+
+            TraditionNotes: "Roman: Romans mined clear gypsum, lapis specularis, in Hispania and split it into panes for windows and greenhouses; Pliny records that it was scattered over the Circus Maximus to make the arena glitter.\n\nHellenic: The name comes from Selene, the Greek moon goddess, and Greek writers such as Dioscorides described a moon-stone, selenites, said to wax and wane with the moon.",
+
             tags: ["cleansing", "charging", "clarity", "peace", "spiritual", "crown"]
         },
 
@@ -2764,6 +2868,10 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Smoky quartz is generally safe to handle. If using it for stress relief, remember that it is a supportive spiritual tool, not a replacement for rest, care, or professional help.",
 
             BeginnerTip: "Keep smoky quartz near your altar for grounding after intense rituals, divination, or emotional work.",
+
+            Traditions: "Celtic",
+
+            TraditionNotes: "Celtic: As the cairngorm, named after the Cairngorm mountains, smoky quartz became Scotland’s national gemstone, set in Highland brooches, kilt pins and the hilts of the sgian-dubh.",
 
             tags: ["grounding", "stability", "protection", "stress relief", "earth", "saturn"]
         },
@@ -2833,9 +2941,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "If you are working through a loss, keep a small piece of jet on a memorial altar with a photo and a white candle as a simple, steady focus.",
 
-            Traditions: "Roman, Christian",
+            Traditions: "Roman, Christian, Celtic",
 
-            TraditionNotes: "In Roman Britain, jet from the Yorkshire coast was carved into protective pendants, including Medusa-head amulets. In Christian Europe, jet was made into rosaries and pilgrim charms, notably the azabache souvenirs of Santiago de Compostela and the Whitby jet of Victorian mourning.",
+            TraditionNotes: "Roman: In Roman Britain, jet from the Yorkshire coast was carved into protective pendants, including Medusa-head amulets, and Pliny records that burning gagates drove away snakes.\n\nChristian: In Christian Europe, jet was made into rosaries and pilgrim charms, notably the azabache souvenirs of Santiago de Compostela, and Whitby jet became the stone of Victorian mourning. In Spanish folk Christianity, a jet higa was hung on babies against the evil eye.\n\nCeltic: In Bronze Age Britain, Whitby jet was made into elaborate spacer-plate necklaces and buttons placed in graves, and jet remained a prized material in Iron Age Britain.",
 
             tags: ["protection", "grief", "ancestors", "grounding", "organic", "saturn"]
         },
@@ -2876,7 +2984,7 @@ const TraditionalLibrary = {
 
             Traditions: "Roman, Christian",
 
-            TraditionNotes: "Roman writers such as Pliny described heliotrope as a stone of the sun and repeated magical claims about it, including that it could make the wearer unseen. In medieval Christian tradition it became the ‘martyr’s stone’, carved with scenes of the crucifixion because its red spots were read as drops of Christ’s blood.",
+            TraditionNotes: "Roman: Roman writers such as Pliny described heliotrope as a stone of the sun and repeated magical claims about it, including that it could make the wearer unseen.\n\nChristian: In medieval Christian tradition it became the ‘martyr’s stone’, carved with scenes of the crucifixion because its red spots were read as drops of Christ’s blood.",
 
             tags: ["courage", "strength", "vitality", "protection", "endurance", "mars"]
         },
@@ -2915,9 +3023,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Pick one habit you want to change, and keep onyx where that habit happens. Let it be a quiet, physical reminder of your commitment.",
 
-            Traditions: "Roman",
+            Traditions: "Roman, Hellenic, Christian",
 
-            TraditionNotes: "Roman gem engravers carved sardonyx and onyx into seals, cameos, and protective intaglios, and Pliny records sardonyx as a stone highly prized in Rome.",
+            TraditionNotes: "Roman: Roman gem engravers carved sardonyx and onyx into seals, cameos and protective intaglios, and Pliny records sardonyx as a stone highly prized in Rome.\n\nHellenic: The name comes from the Greek onyx, ‘fingernail’, and Hellenistic cutters, especially at the Ptolemaic court, carved layered onyx into celebrated cameos.\n\nChristian: Onyx (shoham) stones engraved with the names of the twelve tribes sat on the shoulders of the high priest’s ephod, and sardonyx is the fifth foundation stone of the heavenly Jerusalem in Revelation.",
 
             tags: ["protection", "discipline", "grounding", "boundaries", "root", "saturn"]
         },
@@ -2956,9 +3064,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "If you struggle to finish things, keep red jasper on your desk for the length of one project and touch it each time you sit down to work.",
 
-            Traditions: "Egyptian",
+            Traditions: "Egyptian, Christian, Roman",
 
-            TraditionNotes: "In ancient Egypt, red jasper was a favored material for the tyet amulet, the ‘knot of Isis’, which was placed with the dead for protection, and the Book of the Dead specifies a red stone for it.",
+            TraditionNotes: "Egyptian: In ancient Egypt, red jasper was a favoured material for the tyet amulet, the ‘knot of Isis’, which was placed with the dead for protection, and the Book of the Dead specifies a red stone for it.\n\nChristian: Jasper is the first foundation stone of the heavenly Jerusalem in Revelation, and the one on the throne is described as ‘like a jasper’, so medieval lapidaries gave it high honour.\n\nRoman: Jasper of many colours was a common material for Roman intaglios and magical gems, and Pliny describes its varieties.",
 
             tags: ["grounding", "stamina", "courage", "protection", "root", "mars"]
         },
@@ -2996,6 +3104,10 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Sunstone is generally safe to handle. It can be a lovely companion during dark seasons, but persistent low mood deserves real care, so please reach out to a doctor or mental health professional if winter or anything else weighs heavily on you.",
 
             BeginnerTip: "Keep sunstone where morning light reaches it, and hold it for a moment each morning while you name one thing you are looking forward to.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Icelandic sources such as the saga of St Olaf mention a sólarsteinn, ‘sunstone’, used to find the sun in overcast skies. That stone was most likely Iceland spar (calcite) rather than the feldspar now sold as sunstone, so the link is through the name.",
 
             tags: ["joy", "confidence", "vitality", "solar", "leadership", "sun"]
         },
@@ -3108,6 +3220,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Use rhodonite to forgive yourself first. Write one thing you are ready to let go of, and leave the stone on top of the paper overnight.",
 
+            Traditions: "Slavic",
+
+            TraditionNotes: "Slavic: Rhodonite, called orlets (‘eagle stone’) in Russian, is a beloved Ural stone in Russian lore and craft, and the sarcophagus of Empress Maria Alexandrovna in St Petersburg’s Peter and Paul Cathedral was carved from it.",
+
             tags: ["forgiveness", "healing", "compassion", "self-worth", "heart", "venus"]
         },
 
@@ -3182,9 +3298,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Hold a piece of amber in your palm on a grey day and notice how quickly it warms. Let that be a small reminder of the sun.",
 
-            Traditions: "Hellenic, Roman, Norse",
+            Traditions: "Norse, Hellenic, Roman, Slavic, Christian, Celtic",
 
-            TraditionNotes: "In Greek myth, amber was the hardened tears of the Heliades mourning their brother Phaethon. Romans prized it and wore it as a protective amulet, and in Iron Age and Viking-era Scandinavia amber beads and carved amulets were common grave goods. The modern idea that amber is Freyja’s tears is a later attribution rather than a recorded Norse myth.",
+            TraditionNotes: "Norse: In Iron Age and Viking-era Scandinavia amber beads and carved amulets, including small animal and hammer figures, were common grave goods. The modern idea that amber is Freyja’s tears is a later attribution rather than a recorded Norse myth.\n\nHellenic: In Greek myth, amber was the hardened tears of the Heliades mourning their brother Phaethon, and the Greek name elektron gave us the word electricity.\n\nRoman: Romans prized amber, bringing it from the Baltic along the Amber Road, and Pliny records that it was hung on children as a protective amulet.\n\nSlavic: Amber was worn in amulets and necklaces by early Slavic and neighbouring Baltic peoples, and Lithuanian folklore tells of the sea goddess Jūratė whose amber palace was shattered by Perkūnas, its fragments washing ashore.\n\nChristian: Amber paternoster beads were among the most prized rosaries of medieval Europe; the Teutonic Order controlled the Baltic amber trade and supplied the paternoster makers’ guilds of Bruges and Lübeck.\n\nCeltic: Baltic amber was widely traded into the Hallstatt and La Tène Celtic world, where it was worn as beads and set into brooches.\n\nFolk & wider practice: In Chinese tradition amber, hupo, was poetically called ‘tiger’s soul’.",
 
             tags: ["warmth", "protection", "joy", "vitality", "organic", "sun"]
         },
@@ -3222,6 +3338,10 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Aquamarine is generally safe to handle. Travel protection magic is a companion to, not a replacement for, practical safety such as life jackets, weather checks, and telling someone your plans.",
 
             BeginnerTip: "Keep a small aquamarine in your travel bag and hold it for a breath before you set off.",
+
+            Traditions: "Roman, Christian",
+
+            TraditionNotes: "Roman: Pliny the Elder writes that the most prized beryls were those matching the pure green-blue of the sea, which is the colour we now call aquamarine.\n\nChristian: Beryl is the eighth foundation stone of the heavenly Jerusalem in Revelation, and medieval and early modern scryers used beryl crystal for seeing visions.",
 
             tags: ["calm", "communication", "travel", "sea", "throat", "moon"]
         },
@@ -3334,9 +3454,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "You do not need an expensive gem. A small piece of rough emerald on a love or money altar carries the same symbolism.",
 
-            Traditions: "Roman, Hindu",
+            Traditions: "Roman, Hindu, Egyptian, Christian",
 
-            TraditionNotes: "Roman writers such as Pliny praised emerald for resting the eyes, and Roman-era mines in Egypt’s Eastern Desert supplied much of the ancient world. In Hindu Jyotish tradition, emerald (panna) is one of the nine Navaratna gems and is worn for the planet Mercury, often after consulting an astrologer.",
+            TraditionNotes: "Roman: Roman writers such as Pliny praised emerald for resting the eyes, and Roman-era mines in Egypt’s Eastern Desert supplied much of the ancient world.\n\nHindu: In Hindu Jyotish tradition, emerald (panna) is one of the nine Navaratna gems and is worn for the planet Mercury (Budha), often after consulting an astrologer.\n\nEgyptian: The emerald mines of Mons Smaragdus in Egypt’s Eastern Desert were worked from the Ptolemaic period, and later legend tied them to Cleopatra.\n\nChristian: Revelation describes a rainbow ‘like an emerald’ around God’s throne and lists emerald as the fourth foundation stone; the Sacro Catino in Genoa was long venerated as an emerald Grail.",
 
             tags: ["love", "loyalty", "abundance", "wisdom", "heart", "venus"]
         },
@@ -3374,6 +3494,10 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Peridot is generally safe to handle. Releasing jealousy is emotional work, and magic can support it, but honest reflection and support matter more than any stone.",
 
             BeginnerTip: "When you catch yourself comparing your life to someone else’s, touch your peridot and name one thing that is growing in your own life.",
+
+            Traditions: "Egyptian, Roman, Christian",
+
+            TraditionNotes: "Egyptian: Peridot was mined on the Red Sea island of Zabargad, known to Greeks as Topazios, from the Ptolemaic period onward.\n\nRoman: Pliny the Elder’s ‘topazos’, a green stone from that Red Sea island, is generally identified as peridot rather than modern topaz.\n\nChristian: Peridot reached medieval Europe and was set into church treasures; the large green stones on the Shrine of the Three Kings in Cologne Cathedral have long been described as peridots.",
 
             tags: ["renewal", "prosperity", "growth", "release", "heart", "venus"]
         },
@@ -3414,7 +3538,7 @@ const TraditionalLibrary = {
 
             Traditions: "Egyptian",
 
-            TraditionNotes: "Ancient Egyptians mined turquoise in the Sinai at Serabit el-Khadim, where a temple honored Hathor as ‘Lady of Turquoise’, and used it in jewelry and amulets from the earliest dynasties.",
+            TraditionNotes: "Egyptian: Ancient Egyptians mined turquoise in the Sinai at Serabit el-Khadim, where a temple honoured Hathor as ‘Lady of Turquoise’, and used it in jewellery and amulets from the earliest dynasties.\n\nFolk & wider practice: Turquoise is deeply important in Persian, Tibetan and Ancestral Puebloan, Navajo and other Southwest Native American cultures; these are living traditions to admire rather than imitate.",
 
             tags: ["protection", "travel", "friendship", "communication", "throat", "venus"]
         },
@@ -3455,7 +3579,7 @@ const TraditionalLibrary = {
 
             Traditions: "Hindu",
 
-            TraditionNotes: "In Hindu Jyotish astrology, ruby is the Navaratna gem of Surya, the Sun, and it traditionally sits at the center of the nine-gem arrangement, worn after consulting an astrologer.",
+            TraditionNotes: "Hindu: In Hindu Jyotish astrology, ruby (manik) is the Navaratna gem of Surya, the Sun, and it traditionally sits at the centre of the nine-gem arrangement, worn after consulting an astrologer.",
 
             tags: ["passion", "vitality", "courage", "devotion", "heart", "sun"]
         },
@@ -3496,7 +3620,7 @@ const TraditionalLibrary = {
 
             Traditions: "Hindu, Christian",
 
-            TraditionNotes: "In Hindu Jyotish astrology, blue sapphire is the Navaratna gem of Shani (Saturn) and is traditionally tested before being worn because of its reputed strength. In medieval Christian tradition, sapphire was set in bishops’ rings as a symbol of heaven and faithfulness.",
+            TraditionNotes: "Hindu: In Hindu Jyotish astrology, blue sapphire (neelam) is the Navaratna gem of Shani (Saturn) and is traditionally tested before being worn because of its reputed strength; yellow sapphire (pukhraj) is worn for Jupiter.\n\nChristian: In medieval Christian tradition, sapphire was set in bishops’ rings as a symbol of heaven and faithfulness.",
 
             tags: ["wisdom", "truth", "discipline", "devotion", "throat", "saturn"]
         },
@@ -3537,7 +3661,7 @@ const TraditionalLibrary = {
 
             Traditions: "Roman",
 
-            TraditionNotes: "Pliny the Elder described opal as among the most precious gems in Rome, and tells of a senator, Nonius, who chose exile rather than surrender his opal to Mark Antony.",
+            TraditionNotes: "Roman: Pliny the Elder described opal as among the most precious gems in Rome, and tells of a senator, Nonius, who chose exile rather than surrender his opal to Mark Antony.",
 
             tags: ["creativity", "inspiration", "beauty", "emotion", "crown", "moon"]
         },
@@ -3724,6 +3848,8 @@ const TraditionalLibrary = {
 
             BeginnerTip: "If you inherit or are given jade, treat it as a keepsake first and a spell tool second. Its meaning often lies in the relationship.",
 
+            TraditionNotes: "Folk & wider practice: Jade (yu) is the most revered stone of Chinese tradition, linked by Confucius with virtue; pounamu (greenstone) is a treasured taonga for Māori; and Mesoamerican peoples valued jadeite above gold. Neolithic Europeans also traded polished jadeitite axes from the Alps as far as Britain and Ireland.",
+
             tags: ["luck", "prosperity", "harmony", "protection", "longevity", "venus"]
         },
 
@@ -3763,7 +3889,7 @@ const TraditionalLibrary = {
 
             Traditions: "Christian",
 
-            TraditionNotes: "In Christian scripture, chrysoprase is named in the Book of Revelation as the tenth foundation stone of the heavenly Jerusalem, and medieval lapidaries drew on this list when writing about gem symbolism.",
+            TraditionNotes: "Christian: In Christian scripture, chrysoprase is named in the Book of Revelation as the tenth foundation stone of the heavenly Jerusalem, and medieval lapidaries drew on this list when writing about gem symbolism.",
 
             tags: ["joy", "hope", "renewal", "forgiveness", "heart", "venus"]
         },
@@ -4429,6 +4555,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Use black candles for boundaries. A simple black candle with rosemary and clear words like 'what harms me does not enter' is a strong beginner protection spell.",
 
+            Traditions: "Wheel of the Year, Hindu",
+
+            TraditionNotes: "Wheel of the Year: In modern Pagan and Wiccan practice black candles are a common choice at Samhain, the festival of the dead and the thinning veil, and for protection, banishing and endings. These colour correspondences are largely twentieth-century and vary between traditions.\n\nHindu: In Hindu astrology (Jyotish) black and very dark blue belong to Shani (Saturn), and devotees often light sesame-oil lamps and offer black sesame or black cloth on Saturdays to ease his influence. Black is also the colour of Kali, though Hindu worship uses oil and ghee lamps (diyas) rather than coloured candles.\n\nFolk & wider practice: In hoodoo and rootwork black candles are used for uncrossing, protection and returning harm to its sender, and in European folk custom black was the colour of mourning rather than of candles themselves.",
+
             tags: ["protection", "banishing", "shadow work", "ancestor work", "boundaries", "saturn"]
         },
 
@@ -4458,6 +4588,10 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Healing candle work should support care, not replace medical or mental health support. Use blue candles as symbolic and spiritual tools alongside practical action.",
 
             BeginnerTip: "Use blue candles for calming communication, especially when you need truth without aggression.",
+
+            Traditions: "Christian, Wheel of the Year, Hindu",
+
+            TraditionNotes: "Christian: Blue is the colour of the Virgin Mary in Christian art, and blue candles are lit at Marian shrines and altars. Some churches, following the medieval Sarum use of England, use blue rather than purple Advent candles to mark hopeful waiting.\n\nWheel of the Year: In many modern Wiccan circles a blue candle marks the West and the element of Water when the quarters are called, and blue is used for peace, healing and calm. The exact quarter colours vary between traditions.\n\nHindu: In Jyotish dark blue is linked with Shani (Saturn), whose gem is the blue sapphire (neelam), and blue is the colour of Krishna, Vishnu and Shiva's throat. Worship itself uses ghee or oil lamps rather than blue candles.",
 
             tags: ["healing", "peace", "communication", "wisdom", "truth", "water"]
         },
@@ -4489,6 +4623,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Brown candles are perfect for 'let my life feel stable and manageable' spells.",
 
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: In modern Pagan practice brown candles are associated with the earth and the harvest, and are often used at Lughnasadh and Mabon alongside other autumn colours. They are also lit for home, hearth, animals and grounding; these correspondences are modern.\n\nFolk & wider practice: In some hoodoo and modern candle-magic traditions brown is used for court cases, justice and steady, practical matters.",
+
             tags: ["grounding", "stability", "home", "animals", "earth", "saturn"]
         },
 
@@ -4519,9 +4657,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Use gold candles for success magic when you want to be seen, recognized, supported, or celebrated.",
 
-            Traditions: "Wheel of the Year",
+            Traditions: "Wheel of the Year, Christian, Hindu",
 
-            TraditionNotes: "In the modern Wheel of the Year, gold candles are widely used at Yule and Litha to honour the returning and peak sun.",
+            TraditionNotes: "Wheel of the Year: In the modern Wheel of the Year, gold candles are widely used at Yule and Litha to honour the returning and peak sun, and gold often represents the God or solar deities on Wiccan altars.\n\nChristian: Gold may be used in place of white on great feasts such as Christmas and Easter in the Western liturgical calendar, and gilded candles and candlesticks have long adorned churches. Gold is one of the gifts of the Magi, so it carries strong Christmas symbolism.\n\nHindu: Gold is linked with Lakshmi, goddess of prosperity, and at Diwali homes are filled with lamps and golden decoration to welcome her. The lamps themselves are traditionally clay or brass diyas filled with ghee or oil.",
 
             tags: ["success", "prosperity", "abundance", "solar", "confidence", "wealth"]
         },
@@ -4553,6 +4691,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Green is the classic money candle, but write a specific goal. 'Bring me aligned income opportunities' is stronger than just 'money.'",
 
+            Traditions: "Wheel of the Year, Christian, Hindu",
+
+            TraditionNotes: "Wheel of the Year: In the modern Wheel of the Year green candles and evergreens mark Yule, when holly, ivy and fir promise returning life, and green is also used at Ostara and Beltane for growth. Many Wiccan circles place a green candle at the North for Earth, and green is widely used for prosperity and fertility.\n\nChristian: Green is the liturgical colour of Ordinary Time in Western churches, symbolising growth and hope. The Advent wreath, which grew from German Lutheran custom in the nineteenth century, is made of evergreens to signify eternal life.\n\nHindu: In Jyotish green belongs to Budha (Mercury), the planet of speech and intellect, and green is worn or offered on Wednesdays. Green also appears in the leaves, such as tulsi and betel, that are central to puja.\n\nFolk & wider practice: Green is a sacred colour in Islam, and in hoodoo green candles are burned for money and luck.",
+
             tags: ["prosperity", "money", "growth", "luck", "fertility", "earth"]
         },
 
@@ -4583,9 +4725,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Use orange candles for creative blocks. They are excellent for 'get the energy moving again' spells.",
 
-            Traditions: "Wheel of the Year",
+            Traditions: "Wheel of the Year, Hindu",
 
-            TraditionNotes: "In the modern Wheel of the Year, orange candles are a common choice for the autumn festivals of Mabon and Samhain, reflecting harvest and the turning season.",
+            TraditionNotes: "Wheel of the Year: In the modern Wheel of the Year, orange candles are a common choice for the autumn festivals of Mabon and Samhain, reflecting harvest and the turning season.\n\nHindu: Saffron-orange (bhagwa) is one of the holiest colours in Hinduism, worn by renunciants and associated with fire and purity. Orange marigold garlands surround the diyas at festivals, and orange sindoor is offered to Hanuman.",
 
             tags: ["creativity", "motivation", "confidence", "opportunity", "joy", "fire"]
         },
@@ -4619,7 +4761,7 @@ const TraditionalLibrary = {
 
             Traditions: "Christian",
 
-            TraditionNotes: "In Western Christian tradition the third candle of the Advent wreath is often rose or pink, lit on Gaudete Sunday as a sign of joy.",
+            TraditionNotes: "Christian: In Western Christian tradition the third candle of the Advent wreath is often rose or pink, lit on Gaudete Sunday as a sign of joy. Rose vestments are also worn on Laetare Sunday in Lent.\n\nFolk & wider practice: In modern candle magic pink is widely used for self-love, friendship, gentle romance and emotional healing; these correspondences are recent rather than ancient.",
 
             tags: ["love", "friendship", "self-love", "compassion", "healing", "venus"]
         },
@@ -4653,7 +4795,7 @@ const TraditionalLibrary = {
 
             Traditions: "Christian",
 
-            TraditionNotes: "In Western Christian tradition purple is the liturgical colour of Advent and Lent, and most candles on the Advent wreath are purple, symbolising preparation and penitence.",
+            TraditionNotes: "Christian: In Western Christian tradition purple is the liturgical colour of Advent and Lent, and most candles on the Advent wreath are purple, symbolising preparation and penitence. Purple's royal meaning comes from the costly Tyrian dye of the ancient Mediterranean, worn by emperors and kings.\n\nFolk & wider practice: In modern candle magic purple is used for psychic work, spiritual power and wisdom, a correspondence that grew from nineteenth- and twentieth-century occultism.",
 
             tags: ["intuition", "psychic", "divination", "wisdom", "spirituality", "jupiter"]
         },
@@ -4685,6 +4827,10 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Use red when you need courage or energy. Use pink when you need tenderness.",
 
+            Traditions: "Christian, Slavic, Hindu, Celtic, Wheel of the Year",
+
+            TraditionNotes: "Christian: Red is the liturgical colour of Pentecost, Palm Sunday and the feasts of martyrs, recalling the fire of the Holy Spirit and the blood of witnesses. A red-glassed sanctuary lamp burns before the reserved Sacrament in Catholic and Anglican churches, and red candles are a Christmas staple in Northern European homes.\n\nSlavic: In Slavic folk custom red is the colour of life, beauty and protection: red embroidery on ritual towels (rushnyky) and shirts, red thread against the evil eye, and red-dyed eggs at Orthodox Easter. Old Slavic krasnyi meant both 'red' and 'beautiful'.\n\nHindu: Red is the colour of Shakti, of the goddess Durga and of married women's sindoor and kumkum, and red flowers are offered to Durga and Kali. In Jyotish red belongs to Mangal (Mars) and to Surya, the Sun.\n\nCeltic: In Scottish and Irish folk charm red thread was a classic protection, remembered in the rhyme 'Rowan tree and red thread / Hold the witches all in dread'.\n\nWheel of the Year: In modern Pagan practice red candles are used at Yule and Beltane, for passion, courage and vitality, and many Wiccan circles place a red candle at the South for Fire.",
+
             tags: ["passion", "love", "courage", "strength", "energy", "mars"]
         },
 
@@ -4714,6 +4860,10 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Some silver candles have metallic coatings or glitter that may burn unpredictably. Use ventilation and avoid candles with loose glitter when possible.",
 
             BeginnerTip: "Use silver candles when you want to receive, reflect, dream, or listen inward.",
+
+            Traditions: "Wheel of the Year, Hindu",
+
+            TraditionNotes: "Wheel of the Year: In modern Pagan and Wiccan practice silver candles represent the Moon and the Goddess, and are lit at esbats (full-moon rites) and alongside gold for the God at Yule.\n\nHindu: In Jyotish silver is the metal of Chandra, the Moon, and silver lamps and vessels are used in puja, especially for Lakshmi at Diwali. Worship uses lamps of ghee or oil rather than silver-coloured candles.",
 
             tags: ["moon", "intuition", "dreams", "psychic", "reflection", "lunar"]
         },
@@ -4745,9 +4895,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "When you do not know which color to use, choose white and state your intention clearly.",
 
-            Traditions: "Christian, Wheel of the Year",
+            Traditions: "Christian, Wheel of the Year, Slavic, Hindu",
 
-            TraditionNotes: "In Christian tradition candles are blessed at Candlemas on 2 February, and white candles are central to baptism, Easter and devotion. In the modern Wheel of the Year, white candles are closely associated with Imbolc, the festival of returning light.",
+            TraditionNotes: "Christian: In Christian tradition candles are blessed at Candlemas on 2 February, and white candles are central to baptism, Easter and devotion. White is the liturgical colour of Christmas and Easter, and the Paschal candle lit at the Easter Vigil is white beeswax.\n\nWheel of the Year: In the modern Wheel of the Year, white candles are closely associated with Imbolc, the festival of returning light, and are an all-purpose colour for purification and the Goddess.\n\nSlavic: In Poland the beeswax gromnica candle is blessed on Candlemas (Matka Boża Gromniczna, 'Our Lady of the Thunder Candle') and kept at home; it is lit during thunderstorms and placed in the hands of the dying. Similar storm-candle customs are found across Slavic Christian Europe.\n\nHindu: White is linked with Saraswati, goddess of learning, and in Jyotish with Chandra (Moon) and Shukra (Venus). Ghee lamps, whose flame is offered in aarti, are the Hindu equivalent of the candle.",
 
             tags: ["purification", "healing", "peace", "blessing", "substitute", "spirit"]
         },
@@ -4778,6 +4928,10 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Mental clarity spells should not be used to push through exhaustion indefinitely. Sometimes the most magical thing is rest.",
 
             BeginnerTip: "Light a yellow candle before writing, studying, or planning when you need your thoughts to line up and behave themselves.",
+
+            Traditions: "Wheel of the Year, Hindu, Christian",
+
+            TraditionNotes: "Wheel of the Year: In modern Pagan practice yellow candles mark the sun and new growth at Ostara and Litha, and many Wiccan circles place a yellow candle at the East for Air. It is used for clarity, study and joy.\n\nHindu: Yellow is the colour of Basant Panchami, when Saraswati is worshipped and people wear yellow, and of Brihaspati (Jupiter), honoured on Thursdays in Jyotish. Turmeric yellow is sacred in weddings and puja.\n\nChristian: Unbleached, yellowish beeswax candles were traditionally prescribed in the Roman rite for Requiem Masses and the Tenebrae services of Holy Week, as a sign of mourning, while bright pure beeswax was reserved for feasts.",
 
             tags: ["communication", "learning", "focus", "clarity", "inspiration", "mercury"]
         },
@@ -4814,6 +4968,8 @@ const TraditionalLibrary = {
 
             BeginnerTip: "If you are not sure whether a situation needs banishing or attraction, a grey candle for calm and clarity is a gentle first step.",
 
+            TraditionNotes: "Folk & wider practice: Grey candles are a modern candle-magic choice for neutrality, cancelling or balancing influences, and quiet reflection. They have no well-attested place in the nine traditions in this library.",
+
             tags: ["neutrality", "balance", "invisibility", "calm", "saturn", "air"]
         },
 
@@ -4848,6 +5004,8 @@ const TraditionalLibrary = {
             SafetyAndRespect: "Deep introspection can bring up difficult feelings. Ground afterward with food, water, or time outside, and remember that intuition work does not replace mental health support.",
 
             BeginnerTip: "If you do not have indigo, a dark blue candle with an amethyst beside it covers almost the same ground.",
+
+            TraditionNotes: "Folk & wider practice: Indigo candles are used in modern practice for intuition and the 'third eye' chakra. The rainbow colour scheme for the chakras is a twentieth-century Western addition rather than part of traditional Hindu or Tantric teaching, where chakras are described with different colours and symbols.",
 
             tags: ["intuition", "meditation", "dreams", "divination", "third eye", "water"]
         },
@@ -4884,6 +5042,8 @@ const TraditionalLibrary = {
 
             BeginnerTip: "A rainbow candle is a lovely choice for a birthday or new-beginnings ritual where you want to bless every part of the year ahead.",
 
+            TraditionNotes: "Folk & wider practice: Multicoloured and rainbow candles are a modern choice for all-purpose work, celebration and LGBTQ+ pride; they have no historic place in the nine traditions in this library.",
+
             tags: ["all-purpose", "harmony", "celebration", "community", "hope", "wishes"]
         },
 
@@ -4919,6 +5079,8 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Try using magenta as a helper candle: place a small one beside your main candle when you want to give a working an extra push.",
 
+            TraditionNotes: "Folk & wider practice: Magenta is a modern colour (the dye was first made in 1859) and is used in contemporary candle magic for fast results, spiritual healing and high-energy work. It has no historic place in the nine traditions in this library.",
+
             tags: ["speed", "spiritual healing", "intensity", "passion", "booster", "venus"]
         },
     },
@@ -4953,7 +5115,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Start with self-love before attraction magic. Light a pink candle, offer rose petals or water, and ask Aphrodite to help you treat yourself as someone worthy of tenderness.",
 
-            Traditions: "Hellenic",
+            Traditions: "Hellenic, Roman",
+
+            TraditionNotes: "Hellenic: Aphrodite, goddess of love, beauty and desire, was born from the sea foam off Cyprus according to Hesiod, and her great sanctuaries were at Paphos, Kythera and Corinth. The Aphrodisia festival honoured her in many cities.\n\nRoman: Romans identified her with Venus, and the cult of Venus Erycina, brought from Aphrodite's temple at Eryx in Sicily in 217 BC, shows the close blending of the two goddesses.",
 
             tags: ["love", "beauty", "relationships", "self-love", "desire", "venus"]
         },
@@ -4987,7 +5151,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "If you are working with Apollo, bring him something practiced, not perfect. A song, poem, study session, or honest journal entry can be a stronger offering than something polished but empty.",
 
-            Traditions: "Hellenic",
+            Traditions: "Hellenic, Roman",
+
+            TraditionNotes: "Hellenic: Apollo, god of prophecy, music, healing and light, spoke through the Pythia at Delphi and was born on Delos; the Pythian Games and the Karneia were held in his honour.\n\nRoman: Apollo was one of the few Greek gods Rome adopted under his own name, with a temple from 431 BC as a healer; Augustus made him a personal patron and built his temple on the Palatine, and the Ludi Apollinares were held each July.",
 
             tags: ["healing", "music", "truth", "prophecy", "sun", "knowledge"]
         },
@@ -5021,7 +5187,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Approach Artemis through respect for your own boundaries. A simple devotion could be a walk outside, fresh water on the altar, and a promise not to abandon yourself.",
 
-            Traditions: "Hellenic",
+            Traditions: "Hellenic, Roman",
+
+            TraditionNotes: "Hellenic: Artemis, twin of Apollo, was goddess of the hunt, wild places, childbirth and young women; her great sanctuaries included Brauron, where girls served as 'little bears', and the Temple of Artemis at Ephesus, one of the Seven Wonders.\n\nRoman: Romans identified her with Diana, and the Aventine temple of Diana was said to be modelled on the cult of Artemis at Ephesus.",
 
             tags: ["moon", "nature", "wildlife", "independence", "protection", "hunt"]
         },
@@ -5055,7 +5223,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "A beautiful way to honor Bastet is to care for the living cats in your life, including play, protection, comfort, and respect for their boundaries.",
 
-            Traditions: "Egyptian",
+            Traditions: "Egyptian, Hellenic",
+
+            TraditionNotes: "Egyptian: Bastet, at first a lioness and later a cat goddess, protected the home, women and children; her cult centre was Bubastis in the Delta, where huge numbers of mummified cats were dedicated to her.\n\nHellenic: Herodotus describes the Bubastis festival as one of Egypt's greatest, with boats of singing pilgrims and much wine, and Greeks identified Bastet with Artemis.",
 
             tags: ["cats", "home", "joy", "fertility", "protection", "family"]
         },
@@ -5089,7 +5259,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Light one candle and write four honest lines of poetry. Brigid does not require perfection. She responds beautifully to sincere making.",
 
-            Traditions: "Celtic, Christian",
+            Traditions: "Celtic, Christian, Wheel of the Year",
+
+            TraditionNotes: "Celtic: In Irish tradition Brigid is a daughter of the Dagda, linked with poetry, healing and smithcraft, and Cormac's Glossary describes her as three sisters with these arts. Her festival was Imbolc on 1 February.\n\nChristian: St Brigid of Kildare (died c. 525) shares her name and feast day, and her perpetual flame at Kildare was tended by nuns until the Reformation. Brigid's crosses, the Brídeóg doll and the bed of Brigid were kept on St Brigid's Eve, and Candlemas follows on 2 February.\n\nWheel of the Year: In the modern Wheel of the Year Brigid is the goddess most associated with Imbolc, honoured with candles, flame and the return of light; 'Bride' is named in Doreen Valiente's Charge of the Goddess.",
 
             tags: ["healing", "fire", "poetry", "craftsmanship", "inspiration", "imbolc"]
         },
@@ -5123,7 +5295,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Honor Cernunnos by going outside without asking for anything. Listen, observe, and let the land be more than scenery.",
 
-            Traditions: "Celtic",
+            Traditions: "Celtic, Roman, Wheel of the Year",
+
+            TraditionNotes: "Celtic: Cernunnos, 'the horned one', is the name given to the antlered god seen across Gaul and beyond, most famously on the Gundestrup cauldron, seated cross-legged with a torc and a ram-horned serpent.\n\nRoman: His name survives only on the Pillar of the Boatmen, a Gallo-Roman monument dedicated in Paris under the emperor Tiberius alongside Jupiter and other Roman gods, showing Celtic and Roman religion side by side.\n\nWheel of the Year: In Wicca and modern Paganism Cernunnos is one of the main faces of the Horned God, honoured especially at Beltane and Samhain.",
 
             tags: ["nature", "forest", "animals", "fertility", "prosperity", "balance"]
         },
@@ -5157,7 +5331,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Work with Cerridwen when you are ready to be changed by what you learn. Her cauldron is not just inspiration, it is transformation.",
 
-            Traditions: "Celtic",
+            Traditions: "Celtic, Wheel of the Year",
+
+            TraditionNotes: "Celtic: In the Welsh Tale of Taliesin, Cerridwen brews a cauldron of wisdom for a year and a day for her son; the servant Gwion Bach tastes three drops, is pursued through many shape-changes, and is reborn as the poet Taliesin.\n\nWheel of the Year: Modern Wicca honours Cerridwen as a Crone goddess of the cauldron, transformation and rebirth, often at Samhain; she is named in Doreen Valiente's Charge of the Goddess.",
 
             tags: ["wisdom", "transformation", "rebirth", "cauldron", "magic", "inspiration"]
         },
@@ -5193,6 +5369,8 @@ const TraditionalLibrary = {
 
             Traditions: "Hindu",
 
+            TraditionNotes: "Hindu: Durga, the warrior form of the Goddess, defeats the buffalo-demon Mahishasura in the Devi Mahatmya; she is worshipped above all at Navaratri and Durga Puja in autumn, when her images are immersed in rivers at the close.",
+
             tags: ["protection", "strength", "courage", "justice", "mother", "victory"]
         },
 
@@ -5226,6 +5404,8 @@ const TraditionalLibrary = {
             BeginnerTip: "Do not reduce Freyja to romance. She is love, yes, but also magic, wealth, battle, grief, pleasure, and power.",
 
             Traditions: "Norse",
+
+            TraditionNotes: "Norse: Freyja of the Vanir, goddess of love, fertility, war and seiðr magic, receives half of the battle-slain at Fólkvangr, rides a cat-drawn chariot and owns the Brísingamen necklace, according to the Eddas.",
 
             tags: ["love", "magic", "fertility", "wealth", "beauty", "seidr"]
         },
@@ -5261,6 +5441,8 @@ const TraditionalLibrary = {
 
             Traditions: "Hindu",
 
+            TraditionNotes: "Hindu: Ganesha, the elephant-headed son of Shiva and Parvati, is the remover of obstacles and lord of beginnings, invoked first in almost every Hindu rite; his great festival is Ganesh Chaturthi, when clay images are worshipped and then immersed.",
+
             tags: ["beginnings", "wisdom", "learning", "prosperity", "obstacles", "success"]
         },
 
@@ -5293,7 +5475,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Start simply. Light a candle, offer clean water or incense, and ask Hekate to help you see the threshold you are standing at clearly.",
 
-            Traditions: "Hellenic",
+            Traditions: "Hellenic, Roman, Wheel of the Year",
+
+            TraditionNotes: "Hellenic: Hekate appears in Hesiod's Theogony honoured by Zeus above all, and later as goddess of crossroads, torches, ghosts and witchcraft; Hekate's Supper was left at crossroads at the new moon, and she guided Demeter with torches in search of Persephone.\n\nRoman: Romans honoured her as Hecate or Trivia, goddess of the three ways, and Latin poets such as Virgil and Ovid show Medea and Dido calling on her; the late antique Chaldean Oracles made her a cosmic World Soul.\n\nWheel of the Year: In modern Paganism Hekate is widely honoured as a goddess of witchcraft and crossroads, especially at Samhain and the dark moon.",
 
             tags: ["witchcraft", "magic", "crossroads", "spirits", "protection", "liminal", "night", "necromancy"]
         },
@@ -5327,7 +5511,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Ask Hermes for help before a difficult conversation, then do your part by speaking clearly and listening well.",
 
-            Traditions: "Hellenic",
+            Traditions: "Hellenic, Roman, Egyptian",
+
+            TraditionNotes: "Hellenic: Hermes, messenger of the gods, guided souls to the underworld and protected travellers, merchants and thieves; roadside herms stood at boundaries and doors across Greece.\n\nRoman: Romans identified him with Mercury, sharing his caduceus, winged sandals and patronage of trade.\n\nEgyptian: In Ptolemaic and Roman Egypt Greeks identified Hermes with Thoth, and the blended figure Hermes Trismegistus became the source of the Hermetic writings.",
 
             tags: ["travel", "communication", "luck", "commerce", "boundaries", "messages"]
         },
@@ -5361,7 +5547,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "When working with Isis, focus on reverence and skill. She is a goddess of powerful magic, careful words, and devoted restoration.",
 
-            Traditions: "Egyptian, Hellenic, Roman",
+            Traditions: "Egyptian, Roman, Hellenic, Wheel of the Year",
+
+            TraditionNotes: "Egyptian: Isis, wife of Osiris and mother of Horus, gathered and restored her murdered husband's body and protected her son; she was a great magician and her temple at Philae remained active into the sixth century AD.\n\nRoman: Her mysteries spread across the Roman Empire, from the Iseum Campense in Rome to Britain; Apuleius's Golden Ass describes initiation into her cult and the spring festival of the Navigium Isidis.\n\nHellenic: Under the Ptolemies, Isis was worshipped across the Greek world, and Greek hymns (aretalogies) praised her as queen of all; Herodotus identified her with Demeter.\n\nWheel of the Year: Isis is widely honoured in modern Paganism and is named in Doreen Valiente's Charge of the Goddess.",
 
             tags: ["magic", "motherhood", "healing", "wisdom", "protection", "divine feminine"]
         },
@@ -5394,6 +5582,8 @@ const TraditionalLibrary = {
             CulturalContext: "Lilith is rooted in Jewish folklore and later occult interpretation. Modern uses can be empowering for some practitioners, but they may also flatten or remove her from Jewish textual and cultural context. It is important to avoid presenting one modern version of Lilith as the whole tradition.",
 
             BeginnerTip: "If you work with Lilith, begin with research and shadow honesty. Ask what you are reclaiming, and what you might be projecting onto her.",
+
+            TraditionNotes: "Folk & wider practice: Lilith comes from Jewish folklore, building on Mesopotamian lilitu demons and the single mention of lilit in Isaiah 34:14; the medieval Alphabet of Ben Sira makes her Adam's first wife, and protective amulets against her were used for mothers and newborns. She was later reinterpreted in Western occultism and feminist thought. She has no genuine place in the nine traditions in this library.",
 
             tags: ["independence", "shadow work", "empowerment", "freedom", "autonomy", "night"]
         },
@@ -5429,6 +5619,8 @@ const TraditionalLibrary = {
 
             Traditions: "Norse",
 
+            TraditionNotes: "Norse: Loki, the shape-shifting trickster of the Eddas, both helps and harms the gods; he causes Baldr's death, is bound beneath a serpent's venom, and will fight against the gods at Ragnarök. There is no evidence that he was worshipped in the Viking Age.",
+
             tags: ["transformation", "change", "chaos", "creativity", "fire", "trickster"]
         },
 
@@ -5461,7 +5653,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Approach the Morrigan with honesty. Do not posture. Ask where you need courage, then be prepared to act.",
 
-            Traditions: "Celtic",
+            Traditions: "Celtic, Wheel of the Year",
+
+            TraditionNotes: "Celtic: The Morrígan, 'great queen' or 'phantom queen', is an Irish goddess of war, fate and sovereignty who appears as a crow over battlefields; in the Cath Maige Tuired she unites with the Dagda at Samhain and prophesies after the battle.\n\nWheel of the Year: Modern Pagans often honour the Morrígan at Samhain, drawing on her meeting with the Dagda at that festival.",
 
             tags: ["sovereignty", "war", "prophecy", "fate", "death", "transformation"]
         },
@@ -5495,7 +5689,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "If you ask Odin for wisdom, understand that wisdom may arrive through discipline, discomfort, or sacrifice. Be clear about what you are asking to learn.",
 
-            Traditions: "Norse",
+            Traditions: "Norse, Christian",
+
+            TraditionNotes: "Norse: Odin, chief of the Æsir, god of wisdom, poetry, war and the dead, hung nine nights on the world tree to win the runes and gave an eye at Mímir's well; Yule (jól) was linked with him, one of whose names was Jólnir.\n\nChristian: In Germanic Christian folk belief, recorded by Jacob Grimm, Wodan or 'Wode' led the Wild Hunt through winter skies, and harvest customs in northern Germany left the last sheaf for Wodan's horse.",
 
             tags: ["wisdom", "runes", "magic", "prophecy", "poetry", "death"]
         },
@@ -5529,7 +5725,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Persephone is a powerful companion for life transitions. Ask what part of you is descending, and what part is preparing to return changed.",
 
-            Traditions: "Hellenic",
+            Traditions: "Hellenic, Roman, Wheel of the Year",
+
+            TraditionNotes: "Hellenic: Persephone, daughter of Demeter, was carried off by Hades and returns from the underworld each year, as told in the Homeric Hymn to Demeter; she and her mother were the goddesses of the Eleusinian Mysteries.\n\nRoman: Romans knew her as Proserpina, wife of Dis Pater, and Ovid and Claudian retold her abduction.\n\nWheel of the Year: In the modern Wheel of the Year her descent and return are linked with the autumn equinox (Mabon) and spring (Ostara).",
 
             tags: ["underworld", "spring", "rebirth", "transformation", "thresholds", "sovereignty"]
         },
@@ -5565,6 +5763,8 @@ const TraditionalLibrary = {
 
             Traditions: "Norse",
 
+            TraditionNotes: "Norse: Thor, god of thunder, wielder of the hammer Mjölnir and protector of gods and people, was the most widely worshipped Norse god in the Viking Age; small hammer pendants were worn as amulets, and Thursday is named after him.",
+
             tags: ["protection", "strength", "storms", "courage", "defense", "fertility"]
         },
 
@@ -5597,7 +5797,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Begin with remembrance. Light a candle, offer water, and speak the names of the dead with respect.",
 
-            Traditions: "Egyptian",
+            Traditions: "Egyptian, Roman, Hellenic",
+
+            TraditionNotes: "Egyptian: Anubis, the jackal-headed god of embalming and cemeteries, protected the dead, presided over mummification and guided souls to the weighing of the heart.\n\nRoman: Anubis travelled with the cult of Isis across the Roman world, and Apuleius describes a priest in a dog-headed mask leading the procession of Isis.\n\nHellenic: Greeks in Egypt combined him with Hermes as Hermanubis, both being guides of souls.",
 
             tags: ["death", "protection", "ancestors", "safe passage", "funerary", "underworld"]
         },
@@ -5640,7 +5842,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Make one promise you can realistically keep this month and dedicate it to Jupiter. Keeping it is the offering.",
 
-            Traditions: "Roman",
+            Traditions: "Roman, Hellenic, Celtic",
+
+            TraditionNotes: "Roman: Jupiter Optimus Maximus, king of the gods and god of sky and oaths, had his chief temple on the Capitoline Hill, where generals ended their triumphs with sacrifice.\n\nHellenic: Romans identified Jupiter with the Greek Zeus, and Greek myths of Zeus were told of him.\n\nCeltic: In Roman Gaul and the Rhineland Jupiter was blended with a Celtic sky god, shown on 'Jupiter-giant columns' riding down a serpent-footed giant, and sometimes holding a wheel as Jupiter Taranis.",
 
             tags: ["sovereignty", "justice", "oaths", "leadership", "sky", "thunder"]
         },
@@ -5683,7 +5887,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "On the first day of the month, light a candle for Juno and name one way you will protect your own dignity or someone else’s.",
 
-            Traditions: "Roman",
+            Traditions: "Roman, Hellenic",
+
+            TraditionNotes: "Roman: Juno, queen of the gods, protected women, marriage and childbirth; her festival was the Matronalia on 1 March, and as Juno Moneta her temple housed Rome's mint.\n\nHellenic: Romans identified Juno with Hera, wife of Zeus and goddess of marriage.",
 
             tags: ["marriage", "women", "childbirth", "protection", "queenship", "kalends"]
         },
@@ -5726,7 +5932,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Choose one skill you want to improve and give Minerva fifteen focused minutes of practice. Mastery is built in small pieces.",
 
-            Traditions: "Roman",
+            Traditions: "Roman, Hellenic, Celtic",
+
+            TraditionNotes: "Roman: Minerva, goddess of wisdom, crafts and strategy, was part of the Capitoline Triad with Jupiter and Juno, and her festival, the Quinquatria, began on 19 March.\n\nHellenic: Romans identified her with Athena, sharing the owl, the aegis and patronage of crafts.\n\nCeltic: At Bath in Roman Britain she was merged with the local spring goddess as Sulis Minerva, and hundreds of curse tablets were thrown into her sacred spring.",
 
             tags: ["wisdom", "crafts", "learning", "strategy", "healing", "skill"]
         },
@@ -5769,7 +5977,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Before you cook your next meal, light a candle (safely, in view) and say a single sentence of thanks to Vesta for the warmth of your home.",
 
-            Traditions: "Roman",
+            Traditions: "Roman, Hellenic",
+
+            TraditionNotes: "Roman: Vesta, goddess of the hearth, had her eternal flame tended by the Vestal Virgins in her round temple in the Forum; her festival, the Vestalia, was held in June.\n\nHellenic: Romans identified her with Hestia, the Greek hearth goddess.",
 
             tags: ["hearth", "home", "fire", "family", "devotion", "continuity"]
         },
@@ -5812,7 +6022,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "On the next full moon, step outside for five quiet minutes and thank Diana for one wild thing that still exists near you.",
 
-            Traditions: "Roman",
+            Traditions: "Roman, Hellenic, Christian, Wheel of the Year",
+
+            TraditionNotes: "Roman: Diana, goddess of the hunt, the moon and childbirth, had a famous sacred grove at Nemi, the setting that opens Frazer's The Golden Bough, and an Aventine temple founded for the Latin League.\n\nHellenic: Romans identified Diana with Artemis, and her statues and myths followed the Greek goddess.\n\nChristian: The tenth-century Canon Episcopi condemned women who believed they rode at night with Diana, showing that her name lived on in Christian-era folk belief.\n\nWheel of the Year: Charles Leland's Aradia (1899) presented Diana as queen of the witches, and she is named in Doreen Valiente's Charge of the Goddess and widely honoured in modern Paganism.",
 
             tags: ["moon", "wild", "hunt", "protection", "women", "independence"]
         },
@@ -5857,6 +6069,8 @@ const TraditionalLibrary = {
 
             Traditions: "Roman",
 
+            TraditionNotes: "Roman: Janus, two-faced god of doors, gates and beginnings, was invoked first in prayers; the doors of his shrine in the Forum stood open in war and closed in peace, and January is named after him.",
+
             tags: ["beginnings", "transitions", "doorways", "new year", "time", "thresholds"]
         },
 
@@ -5898,7 +6112,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Pick one boundary in your life that needs protecting and take one concrete step to defend it this week.",
 
-            Traditions: "Roman",
+            Traditions: "Roman, Hellenic, Celtic",
+
+            TraditionNotes: "Roman: Mars, god of war and originally of agriculture, was father of Romulus and Remus; his priests, the Salii, danced with sacred shields in March, the month named after him.\n\nHellenic: Romans identified Mars with the Greek Ares, though Mars was far more honoured in Rome than Ares in Greece.\n\nCeltic: In Gaul and Britain Mars was paired with many local gods, such as Lenus Mars at Trier, Mars Nodens at Lydney and Mars Camulus, often as a healer and protector.",
 
             tags: ["protection", "courage", "discipline", "boundaries", "strength", "agriculture"]
         },
@@ -5941,7 +6157,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Place one fresh flower somewhere you will see it every day this week, and let it remind you that beauty is worth tending.",
 
-            Traditions: "Roman",
+            Traditions: "Roman, Hellenic",
+
+            TraditionNotes: "Roman: Venus, goddess of love, beauty and fertility, was honoured as ancestress of the Roman people through Aeneas; Julius Caesar built a temple to Venus Genetrix, and the Veneralia was held on 1 April.\n\nHellenic: Romans identified her with Aphrodite, and the cult of Venus Erycina came from Aphrodite's sanctuary at Eryx.",
 
             tags: ["love", "beauty", "harmony", "self-love", "fertility", "gardens"]
         },
@@ -5984,7 +6202,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Before your next important email or business call, take a breath and ask Mercury for clear, honest words.",
 
-            Traditions: "Roman",
+            Traditions: "Roman, Hellenic, Celtic, Norse",
+
+            TraditionNotes: "Roman: Mercury, god of trade, messages and travellers, had a temple near the Circus Maximus from 495 BC, and merchants honoured him at the Mercuralia on 15 May.\n\nHellenic: Romans identified him with Hermes, with the caduceus, winged hat and sandals.\n\nCeltic: Julius Caesar wrote that the Gauls honoured Mercury above all gods, probably meaning Lugus, and many Gallo-Roman inscriptions pair Mercury with the goddess Rosmerta.\n\nNorse: Tacitus says the Germanic peoples worshipped Mercury most, meaning Wodan (Odin), and Wednesday translates the Latin dies Mercurii.",
 
             tags: ["commerce", "communication", "travel", "luck", "messages", "business"]
         },
@@ -6027,7 +6247,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Bake or buy a simple loaf of bread, set the first slice aside for Ceres, and give thanks for every hand that helped it reach you.",
 
-            Traditions: "Roman",
+            Traditions: "Roman, Hellenic, Wheel of the Year",
+
+            TraditionNotes: "Roman: Ceres, goddess of grain and fertility, was worshipped with Liber and Libera on the Aventine, and her festival, the Cerealia, was held in April; the word 'cereal' comes from her name.\n\nHellenic: Romans identified her with Demeter, and her cult in Rome used Greek priestesses and Greek rites, including the mysteries of Ceres and Proserpina.\n\nWheel of the Year: In modern Paganism Ceres is often honoured as a harvest goddess at Lughnasadh and Mabon.",
 
             tags: ["harvest", "grain", "abundance", "agriculture", "nourishment", "gratitude"]
         },
@@ -6070,7 +6292,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "During the next thunderstorm, stay safely indoors, listen to the thunder, and name one thing you will stand up for.",
 
-            Traditions: "Slavic",
+            Traditions: "Slavic, Christian",
+
+            TraditionNotes: "Slavic: Perun, god of thunder and lightning, headed the pantheon set up by Prince Vladimir in Kyiv in 980, and the Rus' swore treaties in his name; the oak and the axe were his.\n\nChristian: After Christianisation many of his thunder functions passed to the prophet St Elijah (Ilya), whose feast on 2 August was linked with storms in Slavic folk belief.",
 
             tags: ["thunder", "justice", "protection", "oaths", "strength", "oak"]
         },
@@ -6113,7 +6337,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Mend something worn out with needle and thread, and dedicate the quiet care of that work to Mokosh.",
 
-            Traditions: "Slavic",
+            Traditions: "Slavic, Christian",
+
+            TraditionNotes: "Slavic: Mokosh, the only goddess in Vladimir's Kyiv pantheon of 980, was linked with spinning, moist earth, women and fate, and church writings condemning offerings to her continue into the sixteenth century.\n\nChristian: In Slavic Orthodox folk practice many of her traditions passed to St Paraskeva Pyatnitsa, patron of spinning and women, with Friday taboos on spinning and washing.",
 
             tags: ["weaving", "women", "fate", "earth", "fertility", "home"]
         },
@@ -6156,7 +6382,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Leave the last bite of a meal or the last slice of bread as a small offering for Veles, and thank him for the wealth you already have.",
 
-            Traditions: "Slavic",
+            Traditions: "Slavic, Christian",
+
+            TraditionNotes: "Slavic: Veles, god of cattle, wealth, the underworld and possibly magic, was invoked alongside Perun in the treaties of the Rus', and scholars reconstruct a mythic battle between the two.\n\nChristian: In Slavic Christian folk custom St Blaise (Vlasiy), protector of cattle, absorbed much of his role, and St Nicholas also took on some of his features.",
 
             tags: ["wealth", "underworld", "magic", "cattle", "ancestors", "poetry"]
         },
@@ -6201,6 +6429,8 @@ const TraditionalLibrary = {
 
             Traditions: "Slavic",
 
+            TraditionNotes: "Slavic: Lada appears in sixteenth- and seventeenth-century sources and folk songs as a goddess of love, spring and marriage, though scholars debate whether she was an ancient goddess or a later creation from song refrains. She is honoured today in Rodnovery.",
+
             tags: ["love", "spring", "harmony", "marriage", "beauty", "family"]
         },
 
@@ -6244,6 +6474,8 @@ const TraditionalLibrary = {
 
             Traditions: "Slavic",
 
+            TraditionNotes: "Slavic: Dazhbog, 'the giving god', is a sun god of Vladimir's Kyiv pantheon, and the Tale of Igor's Campaign calls the Rus' people his grandchildren.",
+
             tags: ["sun", "light", "generosity", "prosperity", "ancestors", "warmth"]
         },
 
@@ -6285,7 +6517,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "At winter’s end, write down one thing you are ready to release, wrap it in straw or paper, and let it go safely.",
 
-            Traditions: "Slavic",
+            Traditions: "Slavic, Christian",
+
+            TraditionNotes: "Slavic: Morana (Marzanna, Morena) is a goddess of winter and death whose straw effigy is carried out of the village and burned or drowned to welcome spring, as described by Jan Długosz in the fifteenth century.\n\nChristian: In Czech, Slovak and Polish Christian folk custom the effigy was traditionally drowned on a Sunday in mid-Lent (in Czech Smrtná neděle, 'Death Sunday'), even though the Church often tried to suppress the custom.",
 
             tags: ["winter", "death", "release", "endings", "seasons", "transformation"]
         },
@@ -6328,7 +6562,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Learn one small new skill this month and dedicate the effort of learning it to Lugh.",
 
-            Traditions: "Celtic, Wheel of the Year",
+            Traditions: "Celtic, Christian, Wheel of the Year",
+
+            TraditionNotes: "Celtic: Lugh Lámhfhada, 'of the long arm', master of all arts, defeats Balor at the Second Battle of Mag Tuired; he founded the festival of Lughnasadh on 1 August in memory of his foster-mother Tailtiu.\n\nChristian: Lughnasadh survived as Christian folk gatherings such as Garland Sunday, Bilberry Sunday and the Reek Sunday pilgrimage up Croagh Patrick, studied by Máire MacNeill in The Festival of Lughnasa.\n\nWheel of the Year: In the modern Wheel of the Year Lughnasadh or Lammas, the first harvest on 1 August, is his festival, honoured with bread, games and gratitude.",
 
             tags: ["skill", "craftsmanship", "harvest", "lughnasadh", "light", "kingship"]
         },
@@ -6373,6 +6609,8 @@ const TraditionalLibrary = {
 
             Traditions: "Celtic",
 
+            TraditionNotes: "Celtic: The Dagda, 'the good god', is a father-figure of the Tuatha Dé Danann, owner of a cauldron that never empties, a club that kills and revives, and a harp that commands the seasons; in the Cath Maige Tuired he unites with the Morrígan at Samhain.",
+
             tags: ["abundance", "fatherhood", "strength", "hospitality", "seasons", "music"]
         },
 
@@ -6416,6 +6654,8 @@ const TraditionalLibrary = {
 
             Traditions: "Celtic, Roman",
 
+            TraditionNotes: "Celtic: Epona, the Gaulish horse goddess, is shown riding side-saddle or seated between horses, often with fruit or grain as a sign of plenty; she protected horses, riders and travellers.\n\nRoman: She is the only Celtic goddess known to have been honoured in Rome itself, adopted by the cavalry across the empire, with a feast on 18 December recorded in an Italian calendar and shrines in stables described by Juvenal and Apuleius.",
+
             tags: ["horses", "animals", "travel", "abundance", "protection", "fertility"]
         },
 
@@ -6457,7 +6697,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "On a clear night, find the Corona Borealis or simply look at the stars, and name one destiny you are choosing for yourself.",
 
-            Traditions: "Celtic",
+            Traditions: "Celtic, Wheel of the Year",
+
+            TraditionNotes: "Celtic: In the fourth branch of the Mabinogi, Arianrhod, daughter of Dôn, lays destinies (tynghedau) on her son Lleu; her name means 'silver wheel', and Caer Arianrhod is the Welsh name for the constellation Corona Borealis.\n\nWheel of the Year: Modern Pagans honour her as a goddess of the moon, stars and fate, and she is named in Doreen Valiente's Charge of the Goddess.",
 
             tags: ["destiny", "stars", "initiation", "fate", "sea", "sovereignty"]
         },
@@ -6502,6 +6744,8 @@ const TraditionalLibrary = {
 
             Traditions: "Celtic",
 
+            TraditionNotes: "Celtic: Rhiannon appears in the first and third branches of the Mabinogi, riding a white horse that cannot be overtaken, wrongly accused of killing her son Pryderi and made to carry visitors on her back; her birds sing the dead awake and the living asleep.",
+
             tags: ["sovereignty", "horses", "patience", "endurance", "otherworld", "birdsong"]
         },
 
@@ -6543,7 +6787,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Visit a shore or a body of water, collect a little rubbish, and dedicate that care to Manannán.",
 
-            Traditions: "Celtic",
+            Traditions: "Celtic, Christian",
+
+            TraditionNotes: "Celtic: Manannán mac Lir is the Irish and Manx sea god, who rides the waves in his chariot, owns a cloak of mist and rules the Otherworld island of Emain Ablach; the Isle of Man is named after him.\n\nChristian: Manx folk custom long continued to pay him a 'rent' of rushes or meadow grass on Midsummer Eve, and his memory is part of Tynwald Day ceremonies today.",
 
             tags: ["sea", "otherworld", "mist", "protection", "travel", "illusion"]
         },
@@ -6588,6 +6834,8 @@ const TraditionalLibrary = {
 
             Traditions: "Norse",
 
+            TraditionNotes: "Norse: Frigg, wife of Odin and queen of Asgard, knows all fates but does not speak them; she takes oaths from all things to protect her son Baldr and is linked with spinning, marriage and the home. Friday may be named after her.",
+
             tags: ["household", "marriage", "motherhood", "foreknowledge", "protection", "spinning"]
         },
 
@@ -6630,6 +6878,8 @@ const TraditionalLibrary = {
             BeginnerTip: "Set aside the first bite or the first sip of a meal for Freyr and give thanks for the people and land that made it possible.",
 
             Traditions: "Norse",
+
+            TraditionNotes: "Norse: Freyr of the Vanir, god of fertility, peace, sunshine and harvest, owns the ship Skíðblaðnir and the boar Gullinbursti; Adam of Bremen describes his phallic image (as Fricco) at the temple of Uppsala.",
 
             tags: ["harvest", "fertility", "prosperity", "peace", "abundance", "land"]
         },
@@ -6674,6 +6924,8 @@ const TraditionalLibrary = {
 
             Traditions: "Norse",
 
+            TraditionNotes: "Norse: Hel, daughter of Loki, rules the realm of the dead also called Hel, half living and half corpse-like, according to Snorri; she agrees to release Baldr only if all things weep for him.",
+
             tags: ["death", "underworld", "ancestors", "grief", "endings", "shadow"]
         },
 
@@ -6715,7 +6967,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Make one small, specific promise in Tyr’s name and keep it completely. Magic and devotion never replace proper legal advice, but they can strengthen your resolve to act honestly.",
 
-            Traditions: "Norse",
+            Traditions: "Norse, Roman",
+
+            TraditionNotes: "Norse: Týr, god of law, war and oaths, gave his hand to the wolf Fenrir as a pledge of good faith; the T-rune bears his name and Tuesday is named after him.\n\nRoman: Germanic soldiers at Housesteads on Hadrian's Wall dedicated an altar to 'Mars Thincsus', usually understood as Týr as god of the assembly, and Tuesday translates the Latin dies Martis.",
 
             tags: ["justice", "law", "oaths", "courage", "sacrifice", "integrity"]
         },
@@ -6760,6 +7014,8 @@ const TraditionalLibrary = {
 
             Traditions: "Norse",
 
+            TraditionNotes: "Norse: Skaði, a giantess of the mountains, hunting, skiing and winter, came to Asgard to avenge her father Thjazi and chose Njörðr as husband by his feet; place names in Scandinavia suggest she was worshipped.",
+
             tags: ["winter", "mountains", "hunting", "independence", "wilderness", "justice"]
         },
 
@@ -6801,7 +7057,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Do one kind, unglamorous thing for someone today and dedicate it to Baldur. If you are grieving deeply, lean on friends or a grief counsellor as well as on prayer.",
 
-            Traditions: "Norse",
+            Traditions: "Norse, Wheel of the Year",
+
+            TraditionNotes: "Norse: Baldr, the shining son of Odin and Frigg, was killed by a mistletoe dart through Loki's trickery; his death foreshadows Ragnarök and he is to return in the renewed world.\n\nWheel of the Year: Frazer's The Golden Bough linked Baldr with midsummer bonfires and the mistletoe, and modern Pagans often remember him at Litha, when the sun begins to wane.",
 
             tags: ["light", "beauty", "kindness", "grief", "renewal", "innocence"]
         },
@@ -6846,6 +7104,8 @@ const TraditionalLibrary = {
 
             Traditions: "Norse",
 
+            TraditionNotes: "Norse: Iðunn keeps the apples that keep the gods young; when the giant Thjazi carries her off the gods grow old, until Loki rescues her in the form of a falcon.",
+
             tags: ["youth", "renewal", "vitality", "apples", "spring", "healing"]
         },
 
@@ -6887,7 +7147,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Before a meal, set aside a small piece of bread for Demeter and thank everyone whose work brought the food to your table.",
 
-            Traditions: "Hellenic",
+            Traditions: "Hellenic, Roman, Egyptian, Wheel of the Year",
+
+            TraditionNotes: "Hellenic: Demeter, goddess of grain and harvest, searched for her daughter Persephone and in her grief withheld the crops, as told in the Homeric Hymn to Demeter; she was honoured in the Eleusinian Mysteries and the women's festival of the Thesmophoria.\n\nRoman: Romans identified her with Ceres, and Greek priestesses led the rites of Ceres in Rome.\n\nEgyptian: Herodotus identified Demeter with Isis, and under the Ptolemies the two goddesses were closely linked in Egypt.\n\nWheel of the Year: In the modern Wheel of the Year Demeter is honoured as a harvest mother at Lughnasadh and Mabon, when her grief begins.",
 
             tags: ["harvest", "grain", "motherhood", "seasons", "grief", "abundance"]
         },
@@ -6930,7 +7192,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Put on music you love and dance for a few minutes in honour of Dionysus. Ecstasy does not need a drink.",
 
-            Traditions: "Hellenic",
+            Traditions: "Hellenic, Roman, Egyptian",
+
+            TraditionNotes: "Hellenic: Dionysus, god of wine, ecstasy and theatre, was honoured with the Anthesteria and the City Dionysia, where Greek tragedy and comedy were performed; his maenads appear in Euripides' Bacchae.\n\nRoman: Romans honoured him as Bacchus and blended him with the Italian god Liber; the Senate restricted the Bacchanalia in 186 BC, but his cult and imagery remained everywhere.\n\nEgyptian: Herodotus identified Dionysus with Osiris, and the Ptolemaic kings of Egypt, especially Ptolemy IV, made him a royal patron.",
 
             tags: ["wine", "theatre", "ecstasy", "liberation", "creativity", "rebirth"]
         },
@@ -6973,7 +7237,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Start and end your next ritual by offering a little oil, water or incense to Hestia, first and last.",
 
-            Traditions: "Hellenic",
+            Traditions: "Hellenic, Roman",
+
+            TraditionNotes: "Hellenic: Hestia, goddess of the hearth, received the first and last offering at every sacrifice; each city kept a public hearth in her name, from which colonists carried fire to new settlements.\n\nRoman: Romans identified her with Vesta, whose flame was tended by the Vestal Virgins.",
 
             tags: ["hearth", "home", "family", "hospitality", "fire", "stability"]
         },
@@ -7016,7 +7282,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Pour a small libation of water into the earth for Hades and the dead, and speak the name of someone you have lost.",
 
-            Traditions: "Hellenic",
+            Traditions: "Hellenic, Roman",
+
+            TraditionNotes: "Hellenic: Hades, brother of Zeus and Poseidon, rules the underworld with Persephone; he was often called by gentler names such as Plouton, 'the wealthy one', and had few temples, though he was honoured at Eleusis and Pylos.\n\nRoman: Romans honoured him as Pluto and Dis Pater, to whom the Ludi Saeculares made night offerings.",
 
             tags: ["underworld", "death", "ancestors", "wealth", "justice", "grief"]
         },
@@ -7059,7 +7327,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Before you study or plan, light a candle for Athena and ask for a clear mind. Then do the careful work yourself.",
 
-            Traditions: "Hellenic",
+            Traditions: "Hellenic, Roman, Egyptian",
+
+            TraditionNotes: "Hellenic: Athena, goddess of wisdom, crafts and war strategy, was patron of Athens, where the Parthenon was built for her and the Panathenaia presented her with a new robe (peplos).\n\nRoman: Romans identified her with Minerva.\n\nEgyptian: Herodotus and Plato's Timaeus identified her with Neith, the goddess of Sais in the Delta.",
 
             tags: ["wisdom", "strategy", "crafts", "justice", "study", "protection"]
         },
@@ -7102,7 +7372,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Step outside on a clear night, find the moon, and simply greet Selene by name.",
 
-            Traditions: "Hellenic",
+            Traditions: "Hellenic, Roman",
+
+            TraditionNotes: "Hellenic: Selene, the Moon, drives her chariot across the night sky; the Homeric Hymn to Selene praises her, and her love for the sleeping shepherd Endymion was a favourite myth.\n\nRoman: Romans knew her as Luna, who had a temple on the Aventine, though many of her roles were later absorbed by Diana.",
 
             tags: ["moon", "night", "dreams", "lunar cycles", "beauty", "rest"]
         },
@@ -7147,6 +7419,8 @@ const TraditionalLibrary = {
 
             Traditions: "Hellenic",
 
+            TraditionNotes: "Hellenic: Nyx, primordial Night, appears in Hesiod's Theogony as mother of Sleep, Death, Dreams and the Fates; in the Iliad even Zeus fears to anger her, and an Orphic hymn is addressed to her.",
+
             tags: ["night", "darkness", "mystery", "sleep", "primordial", "rest"]
         },
 
@@ -7188,7 +7462,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Write a short prayer to Thoth by hand, slowly and neatly, and keep it on your desk while you study.",
 
-            Traditions: "Egyptian",
+            Traditions: "Egyptian, Hellenic",
+
+            TraditionNotes: "Egyptian: Thoth, ibis- or baboon-headed god of writing, wisdom, the moon and magic, recorded the verdict at the weighing of the heart; his cult centre was Hermopolis, where many mummified ibises were dedicated.\n\nHellenic: Greeks in Egypt identified Thoth with Hermes, giving rise to Hermes Trismegistus, 'thrice-great', the legendary author of the Hermetic texts.",
 
             tags: ["writing", "wisdom", "knowledge", "magic", "moon", "study"]
         },
@@ -7231,7 +7507,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Play a song that makes you happy and dance for Hathor. Joy is one of her oldest offerings.",
 
-            Traditions: "Egyptian",
+            Traditions: "Egyptian, Hellenic",
+
+            TraditionNotes: "Egyptian: Hathor, cow goddess of love, music, joy and motherhood, was worshipped at Dendera; the sistrum was hers, and in the myth of the Destruction of Mankind her fury becomes Sekhmet.\n\nHellenic: Greeks identified Hathor with Aphrodite, and several towns sacred to her were named Aphroditopolis.",
 
             tags: ["love", "joy", "music", "beauty", "motherhood", "celebration"]
         },
@@ -7276,6 +7554,8 @@ const TraditionalLibrary = {
 
             Traditions: "Egyptian",
 
+            TraditionNotes: "Egyptian: Sekhmet, lion-headed goddess of war, plague and healing, was the fiery Eye of Ra; her priests were physicians, and Amenhotep III set up hundreds of her statues to appease her.",
+
             tags: ["healing", "protection", "strength", "lioness", "justice", "courage"]
         },
 
@@ -7317,7 +7597,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Step outside at sunrise, face east, and greet Ra by name as the light returns.",
 
-            Traditions: "Egyptian",
+            Traditions: "Egyptian, Hellenic",
+
+            TraditionNotes: "Egyptian: Ra, the sun god, sails the sky by day and the underworld by night, defeating the serpent Apophis; his cult centre was Heliopolis, and kings from the Fifth Dynasty called themselves 'Son of Ra'.\n\nHellenic: Greeks identified Ra with Helios, giving his city the name Heliopolis, 'city of the sun'.",
 
             tags: ["sun", "creation", "kingship", "light", "renewal", "order"]
         },
@@ -7360,7 +7642,9 @@ const TraditionalLibrary = {
 
             BeginnerTip: "Plant a few grains of barley in a pot for Osiris and watch them sprout as a sign that life returns. Grief work with Osiris can sit alongside, never replace, support from a grief counsellor.",
 
-            Traditions: "Egyptian",
+            Traditions: "Egyptian, Hellenic, Roman",
+
+            TraditionNotes: "Egyptian: Osiris, murdered by his brother Set and restored by Isis, became king of the dead and a symbol of renewal like the Nile flood and the grain; his mysteries were held at Abydos.\n\nHellenic: Herodotus identified Osiris with Dionysus, and under the Ptolemies he was blended with Greek gods as Serapis.\n\nRoman: Osiris was honoured with Isis across the Roman world, and Plutarch's On Isis and Osiris, written in the Roman era, is the fullest ancient account of his myth.",
 
             tags: ["afterlife", "resurrection", "ancestors", "fertility", "grief", "renewal"]
         },
@@ -7374,6 +7658,10 @@ const TraditionalLibrary = {
             UsedFor: "Holding tools, candles, offerings, symbols, spell materials, and devotional objects",
             BestWith: "Candles, crystals, incense, offering bowls, deity icons",
             TraditionalWarnings: "Altars vary widely between traditions and do not need to be elaborate to be meaningful.",
+            Traditions: "Christian, Hindu, Hellenic, Roman, Egyptian, Norse, Celtic, Slavic, Wheel of the Year",
+
+            TraditionNotes: "Christian: The altar is the heart of every Christian church, the table of the Eucharist, and in the early centuries it was often built over the relics of martyrs. Home altars and prayer corners with candles and icons are common in Catholic and Orthodox households.\n\nHindu: Almost every Hindu home has a shrine (puja ghar or mandir) where images of the deities receive daily worship with lamps, flowers, incense and food, and temples centre on the sanctum (garbhagriha).\n\nHellenic: Greek worship centred on the outdoor altar (bomos), placed before the temple, where animal sacrifices were burned and libations poured; small household altars honoured Zeus Herkeios and Hestia.\n\nRoman: Romans sacrificed at the ara before temples, and every household kept a lararium shrine for the Lares and Penates, receiving daily offerings of incense, wine and food.\n\nEgyptian: Egyptian temples and tombs had stone offering tables (hotep), carved with images of bread, beer and meat, on which food and libations were laid for gods and the dead.\n\nNorse: The sagas and Eddic poems mention the hörgr, a stone altar or cairn, and the stallr on which a sacred ring lay in the temple; Hyndluljóð has Freyja's devotee Óttarr reddening a hörgr with blood.\n\nCeltic: In Roman Britain and Gaul many inscribed stone altars were dedicated to local Celtic gods, such as Coventina at Carrawburgh and Sulis at Bath.\n\nSlavic: In Eastern Slavic homes the 'beautiful corner' (krasnyi ugol) holds the family icons, a lamp and blessed items, acting as the household altar; it carries on older ideas of the sacred place in the home.\n\nWheel of the Year: In Wicca and modern Paganism the altar holds the working tools, candles and seasonal decorations, and is dressed afresh for each sabbat.",
+
             tags: ["ritual", "devotion", "offerings", "spell work", "sacred space", "spirit"]
         },
 
@@ -7384,6 +7672,10 @@ const TraditionalLibrary = {
             UsedFor: "Casting circles, directing intention, symbolic cutting, energetic boundary work",
             BestWith: "Black candle, obsidian, rosemary, altar",
             TraditionalWarnings: "Traditionally symbolic rather than used for physical cutting. Handle safely and follow local laws.",
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: The athame, a black-handled double-edged knife, is a defining tool of Gardnerian Wicca from the 1950s onward, used to cast the circle and direct energy rather than to cut. Its name and form derive from the 'arthame' of some manuscripts of the Key of Solomon.\n\nFolk & wider practice: Ritual knives appear throughout the Renaissance grimoire tradition, and the athame is now used across many forms of modern witchcraft.",
+
             tags: ["energy", "circle casting", "boundaries", "protection", "fire", "ritual"]
         },
 
@@ -7394,6 +7686,10 @@ const TraditionalLibrary = {
             UsedFor: "Opening ritual, clearing stagnant energy, calling attention, marking transitions",
             BestWith: "Incense, altar, white candle, clear quartz",
             TraditionalWarnings: "Sound-based cleansing practices vary widely and may not be appropriate in all living situations.",
+            Traditions: "Hindu, Christian, Roman, Wheel of the Year",
+
+            TraditionNotes: "Hindu: A hand-bell (ghanta) is rung during puja and aarti to invite the deity's presence and drive off negative forces, and temple bells are rung on entering.\n\nChristian: Church bells call people to prayer and were traditionally rung against storms, and a sanctus bell marks the consecration at Mass. Early Irish and Welsh saints such as Patrick were known for handbells, some of which survive in ornate shrines.\n\nRoman: Romans hung tintinnabula, bronze wind chimes and bells, by doorways and on animals and children as protection against the evil eye.\n\nWheel of the Year: In modern Wiccan and Pagan ritual a bell may be rung to open and close rites, mark stages of the ceremony or clear a space.",
+
             tags: ["cleansing", "sound", "air", "ritual opening", "blessing", "transition"]
         },
 
@@ -7404,6 +7700,10 @@ const TraditionalLibrary = {
             UsedFor: "Sweeping sacred space, clearing energy, threshold work, home protection",
             BestWith: "Rosemary, sage, salt, black candle",
             TraditionalWarnings: "Traditionally used symbolically for energetic cleansing, not always for physical cleaning.",
+            Traditions: "Wheel of the Year, Roman, Celtic, Christian",
+
+            TraditionNotes: "Wheel of the Year: In modern Paganism the besom is used to sweep a ritual space clean before casting a circle, and couples often jump a broom at handfastings.\n\nRoman: Varro, quoted by Augustine, says that after a birth three men struck the threshold with an axe, a pestle and a broom, guided by the deities Intercidona, Pilumnus and Deverra, to keep the wild god Silvanus away from mother and child.\n\nCeltic: Welsh folk custom recorded 'broomstick weddings' (priodas coes ysgub), in which a couple stepping over a broom set in the doorway were considered married.\n\nChristian: In European Christian folk custom brooms laid across thresholds were thought to bar witches, while fifteenth-century demonological writings and art gave the world the image of witches flying on broomsticks.",
+
             tags: ["cleansing", "home", "thresholds", "protection", "air", "purification"]
         },
 
@@ -7414,6 +7714,10 @@ const TraditionalLibrary = {
             UsedFor: "Cutting herbs, carving candles, preparing cords, gathering ritual materials",
             BestWith: "Herbs, candles, cords, spell jars",
             TraditionalWarnings: "Use safely and only harvest plants with permission and proper identification.",
+            Traditions: "Wheel of the Year, Celtic",
+
+            TraditionNotes: "Wheel of the Year: In Gardnerian Wicca and later Paganism the boline is a white-handled practical knife, often crescent-shaped, used to harvest herbs, cut cords and inscribe candles, in contrast to the ceremonial athame.\n\nCeltic: Pliny the Elder describes druids cutting mistletoe from an oak with a golden sickle on the sixth day of the moon, an image that inspired the boline's sickle shape.\n\nFolk & wider practice: Its name and white handle echo the working knives of the Key of Solomon and other grimoires.",
+
             tags: ["harvesting", "herbs", "candles", "preparation", "earth", "crafting"]
         },
 
@@ -7424,6 +7728,10 @@ const TraditionalLibrary = {
             UsedFor: "Recording spells, rituals, dreams, correspondences, divination, and personal reflections",
             BestWith: "Pen, altar, divination tools, moon rituals",
             TraditionalWarnings: "A Book of Shadows is deeply personal and does not need to follow any single tradition or format.",
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: The Book of Shadows comes from Gardnerian Wicca, where Gerald Gardner's handwritten book of rituals was copied by each initiate; it is now a personal journal of spells, rites and sabbat notes for many Pagans.\n\nFolk & wider practice: It draws on older traditions of grimoires and of cunning folk's handwritten charm books in early modern Europe.",
+
             tags: ["grimoire", "record keeping", "spells", "rituals", "reflection", "air"]
         },
 
@@ -7434,6 +7742,10 @@ const TraditionalLibrary = {
             UsedFor: "Calling quarters, directing energy, blessing objects, invoking deities or spirits",
             BestWith: "Clear quartz, incense, altar, yellow candle",
             TraditionalWarnings: "Wood associations vary by tradition. Found materials should be gathered respectfully.",
+            Traditions: "Wheel of the Year, Egyptian, Hellenic, Norse, Celtic",
+
+            TraditionNotes: "Wheel of the Year: In Wicca and modern Paganism the wand is used to invoke, bless and direct energy, and is often cut from a sacred tree such as hazel, willow or oak.\n\nEgyptian: Middle Kingdom Egyptians used curved ivory 'apotropaic wands' carved with protective beings such as Taweret and Bes to guard mothers and newborns, and magicians in tales such as the Westcar Papyrus work wonders with a staff.\n\nHellenic: Greek myth is full of wands: Hermes carries the kerykeion (caduceus) that leads souls and brings sleep, and in the Odyssey Circe transforms Odysseus's men with her rhabdos.\n\nNorse: Eiríks saga rauða describes a seeress (völva) carrying a staff of brass and stones, and the seiðstafr or distaff-like staff is found in several women's graves of the Viking Age.\n\nCeltic: Irish tales tell of druids using wands of yew or hazel, as when the druid Dalán carves ogham on yew wands to find Étaín in Tochmarc Étaíne.",
+
             tags: ["energy", "intention", "invocation", "air", "blessing", "ritual"]
         },
 
@@ -7444,6 +7756,10 @@ const TraditionalLibrary = {
             UsedFor: "Offerings, libations, ritual drinking, water blessings, moon work",
             BestWith: "Moonstone, silver candle, rose, offering bowl",
             TraditionalWarnings: "Use food-safe materials if drinking from it. Some metals are decorative only.",
+            Traditions: "Christian, Wheel of the Year",
+
+            TraditionNotes: "Christian: The chalice holds the wine of the Eucharist, consecrated as the Blood of Christ, and is among the most sacred objects of the Church; medieval romance made the Holy Grail its most famous form.\n\nWheel of the Year: In Wicca the chalice represents the feminine and the element of Water, and the symbolic Great Rite, in which the athame is lowered into the chalice, is performed at sabbats such as Beltane.",
+
             tags: ["water", "offerings", "libations", "moon", "blessing", "ritual"]
         },
 
@@ -7454,6 +7770,10 @@ const TraditionalLibrary = {
             UsedFor: "Burning incense, cleansing space, carrying prayers, making offerings",
             BestWith: "Frankincense, myrrh, sage, charcoal discs",
             TraditionalWarnings: "Always use heat-safe surfaces and ventilation. Some herbs and resins are unsafe for pets or sensitive lungs.",
+            Traditions: "Egyptian, Hindu, Christian, Roman, Hellenic, Wheel of the Year",
+
+            TraditionNotes: "Egyptian: Egyptian priests offered incense from long arm-shaped censers, and temple texts and the Ebers papyrus preserve recipes such as kyphi, burned at evening to the sun god.\n\nHindu: Incense (dhoop and agarbatti) is offered at every puja, and aarti includes waving a burning lamp and incense before the deity.\n\nChristian: The swinging censer (thurible) carries incense in Catholic, Orthodox and Anglican worship, recalling Psalm 141, 'Let my prayer be set forth before thee as incense'.\n\nRoman: Romans burned frankincense on altars and in portable incense boxes (acerrae), and a pinch of incense to the emperor's image became the test of loyalty that early Christians refused.\n\nHellenic: Greeks burned frankincense and myrrh in thymiateria, standing censers, in temples and at home, as described in the Orphic Hymns, each of which names a fitting incense.\n\nWheel of the Year: In modern Paganism the incense burner often represents Air on the altar, and seasonal blends are burned at each sabbat.",
+
             tags: ["incense", "cleansing", "offerings", "air", "spirit work", "purification"]
         },
 
@@ -7464,6 +7784,10 @@ const TraditionalLibrary = {
             UsedFor: "Consecrating tools, grounding ritual energy, protection, altar focus",
             BestWith: "Salt, green candle, smoky quartz, altar",
             TraditionalWarnings: "Symbol meanings differ across traditions and should be used with awareness of context.",
+            Traditions: "Wheel of the Year, Christian, Hellenic",
+
+            TraditionNotes: "Wheel of the Year: In Wicca the pentacle, a disc inscribed with a five-pointed star, is the altar tool of Earth on which items are consecrated, and the pentagram is the best-known symbol of modern Paganism.\n\nChristian: Medieval Christians read the pentagram as the five wounds of Christ or the five joys of Mary; in Sir Gawain and the Green Knight it is painted on Gawain's shield.\n\nHellenic: The Pythagoreans used the pentagram as a sign of health and recognition, sometimes labelling its points with the letters of hygieia.\n\nFolk & wider practice: In the Key of Solomon and other grimoires, 'pentacles' are protective talismans drawn with names and seals, which is where the tool's name comes from.",
+
             tags: ["protection", "earth", "elements", "grounding", "consecration", "altar"]
         },
 
@@ -7474,6 +7798,10 @@ const TraditionalLibrary = {
             UsedFor: "Crushing herbs, blending powders, preparing incense, making spell mixtures",
             BestWith: "Herbs, resins, black salt, spell jars",
             TraditionalWarnings: "Do not use the same mortar and pestle for food and toxic ritual ingredients.",
+            Traditions: "Hindu, Egyptian, Roman, Slavic, Wheel of the Year",
+
+            TraditionNotes: "Hindu: Stone mortars and grinders are used to prepare Ayurvedic medicines and the turmeric, sandalwood and kumkum pastes of puja; grinding turmeric is part of pre-wedding rituals in many regions.\n\nEgyptian: Egyptian medical papyri such as the Ebers papyrus repeatedly instruct that ingredients be ground, and kyphi incense was pounded and mixed in stages.\n\nRoman: The Vestal Virgins ground roasted spelt and salt to make mola salsa, sprinkled on sacrificial animals, and the pestle (pilum) belonged to the protective god Pilumnus.\n\nSlavic: In Slavic folk tales Baba Yaga flies through the air in a mortar, steering with the pestle and sweeping away her tracks with a broom.\n\nWheel of the Year: In modern Pagan practice the mortar and pestle is used to grind herbs and resins for incense, sachets and sabbat blends.",
+
             tags: ["herbs", "preparation", "earth", "spell crafting", "incense", "mixing"]
         },
 
@@ -7484,6 +7812,10 @@ const TraditionalLibrary = {
             UsedFor: "Readings, meditation, shadow work, decision support, ritual guidance",
             BestWith: "Amethyst, mugwort, purple candle, journal",
             TraditionalWarnings: "Tarot is traditionally used for insight rather than fixed prediction. Interpretations vary by reader and deck.",
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Tarot is widely used for divination and reflection in modern Pagan practice, sometimes with spreads for each sabbat.\n\nFolk & wider practice: Tarot began as a card game in fifteenth-century Italy, with imagery drawn from Renaissance Christian Europe; its use for divination grew in eighteenth-century France. Antoine Court de Gébelin's 1781 claim that tarot came from ancient Egypt has no historical basis.",
+
             tags: ["divination", "reflection", "intuition", "air", "shadow work", "guidance"]
         },
 
@@ -7494,6 +7826,8 @@ const TraditionalLibrary = {
             UsedFor: "Daily guidance, ritual prompts, meditation, emotional reflection",
             BestWith: "Clear quartz, lavender, white candle, journal",
             TraditionalWarnings: "Oracle decks do not follow one traditional system, so meanings depend heavily on the creator and reader.",
+            TraditionNotes: "Folk & wider practice: Oracle decks are modern, mostly from the late twentieth century onward, though they follow older cartomancy such as the nineteenth-century Lenormand cards. They have no historic place in the nine traditions in this library.",
+
             tags: ["divination", "intuition", "guidance", "reflection", "air", "messages"]
         },
 
@@ -7504,6 +7838,10 @@ const TraditionalLibrary = {
             UsedFor: "Simple divination, checking energetic alignment, choosing ingredients, locating focus points",
             BestWith: "Amethyst, clear quartz, divination mat, white candle",
             TraditionalWarnings: "Pendulum work is highly interpretive and can be influenced by expectation or subtle body movement.",
+            Traditions: "Roman, Wheel of the Year",
+
+            TraditionNotes: "Roman: Ammianus Marcellinus records a treason trial of AD 371 in which conspirators suspended a ring over a bowl rimmed with letters to spell out the name of the next emperor, an early form of pendulum divination.\n\nWheel of the Year: In modern Pagan practice the pendulum is a common divination tool for yes-or-no questions.\n\nFolk & wider practice: European folk custom swung a wedding ring on a thread over a pregnant woman to guess the baby's sex, and dowsing with rods and pendulums to find water and metals is described from the sixteenth century, as in Agricola's De re metallica.",
+
             tags: ["divination", "yes no", "intuition", "air", "energy", "questions"]
         },
 
@@ -7514,6 +7852,10 @@ const TraditionalLibrary = {
             UsedFor: "Burning petitions, holding water, mixing spell ingredients, symbolic transformation",
             BestWith: "Black candle, mugwort, frankincense, spell papers",
             TraditionalWarnings: "Only burn materials in a fire-safe cauldron with ventilation and supervision.",
+            Traditions: "Celtic, Norse, Wheel of the Year, Hellenic",
+
+            TraditionNotes: "Celtic: The cauldron is central in Celtic myth: the Dagda's cauldron that never empties, Cerridwen's cauldron of inspiration in the Tale of Taliesin, and Bran's cauldron of rebirth in the Mabinogi. The silver Gundestrup cauldron shows how prized such vessels were.\n\nNorse: In Norse myth the mead of poetry is kept in the cauldron Óðrerir, Thor wins a giant brewing-cauldron from Hymir in Hymiskviða, and the sea-giant Ægir brews ale for the gods.\n\nWheel of the Year: In Wicca the cauldron represents the womb of the Goddess and rebirth, and it is especially used at Samhain and Yule for fires, scrying and wishes.\n\nHellenic: Greek myth tells how Medea restored the old ram, and later Aeson, to youth in her cauldron of herbs, and three-legged bronze cauldrons (tripods) were prestigious offerings at Delphi and Olympia.",
+
             tags: ["transformation", "water", "fire-safe", "spell work", "burning", "creation"]
         },
 
@@ -7524,6 +7866,10 @@ const TraditionalLibrary = {
             UsedFor: "Opening new paths, locking away what is finished, devotion to Hekate, threshold and protection charms",
             BestWith: "Hekate, black candle, bay, rosemary",
             TraditionalWarnings: "Use a key set aside for ritual rather than one you need every day, so the working isn't tied to ordinary comings and goings.",
+            Traditions: "Hellenic, Roman, Christian, Norse",
+
+            TraditionNotes: "Hellenic: Hekate was called Kleidouchos, the key-holder, guardian of thresholds and the gates of the underworld, and senior priestesses were known as kleidouchoi, keepers of the temple keys.\n\nRoman: Janus, god of doors and beginnings, was shown holding a key, and Portunus, god of keys and harbours, was honoured at the Portunalia by throwing keys into the fire.\n\nChristian: Christ gave Peter 'the keys of the kingdom of heaven' (Matthew 16:19), and crossed keys are the emblem of St Peter and the papacy.\n\nNorse: Keys hung from a Norse housewife's belt as a sign of authority over the home; in Þrymskviða Thor is disguised as a bride with keys jingling at his waist.",
+
             tags: ["opening", "thresholds", "crossroads", "hekate", "protection", "access"]
         },
 
@@ -7534,6 +7880,10 @@ const TraditionalLibrary = {
             UsedFor: "Ancestor altars, Samhain, divination, honouring death and change, carrying messages",
             BestWith: "Black candle, mugwort, obsidian, offerings",
             TraditionalWarnings: "Ravens and crows are protected in many places (in the US under the Migratory Bird Treaty Act), so keeping real remains is often illegal. A replica carries the same meaning.",
+            Traditions: "Norse, Celtic, Hellenic",
+
+            TraditionNotes: "Norse: Odin's ravens Huginn (thought) and Muninn (memory) fly over the world and bring him news, and the raven banner was carried by Viking-Age armies.\n\nCeltic: In Irish myth the war goddesses the Morrígan and Badb take raven or crow form over battlefields, and the Welsh name Bran, of the giant king of the Mabinogi, means raven.\n\nHellenic: The raven was sacred to Apollo, and myth explains its black plumage as his punishment for bringing bad news about Coronis.\n\nFolk & wider practice: The use of a raven skull itself as a ritual object is a modern practice. In many countries possessing wild bird parts is restricted by law (for example the US Migratory Bird Treaty Act), so ethically sourced replicas are a respectful choice.",
+
             tags: ["messages", "ancestors", "death", "divination", "samhain", "liminal"]
         },
 
@@ -7544,6 +7894,10 @@ const TraditionalLibrary = {
             UsedFor: "Lining doorways and windowsills, banishing, uncrossing, breaking unwanted ties",
             BestWith: "Black candle, rosemary, obsidian, cauldron",
             TraditionalWarnings: "Ritual black salt is not the culinary black salt (kala namak) and should not be eaten. Salt harms plants and soil, so sweep it up afterwards and keep it from pets.",
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: In modern witchcraft black salt, usually salt mixed with ash, charcoal or scrapings from a cauldron, is sprinkled at doorways and boundaries for protection and banishing.\n\nFolk & wider practice: Black salt is common in hoodoo and modern folk magic. It is not the same as Indian kala namak, a sulphurous rock salt used in cooking and Ayurveda.",
+
             tags: ["protection", "banishing", "warding", "uncrossing", "earth", "boundaries"]
         },
 
@@ -7554,6 +7908,10 @@ const TraditionalLibrary = {
             UsedFor: "Casting a circle for ritual, marking sacred space, protection during spell work",
             BestWith: "White candle, rosemary, quarter candles, athame",
             TraditionalWarnings: "Salt kills plants and harms soil. Cast salt circles indoors or on a cloth, and sweep them up when the ritual is closed.",
+            Traditions: "Wheel of the Year, Christian, Roman, Slavic, Celtic",
+
+            TraditionNotes: "Wheel of the Year: In modern Paganism salt mixed with water is used to purify the circle, and a ring of salt is sometimes poured to mark sacred space.\n\nChristian: The Roman Ritual includes an exorcism and blessing of salt, which is mixed into holy water, following Elisha's healing of the waters with salt (2 Kings 2).\n\nRoman: Salt was part of Roman sacrifice through mola salsa, the salted meal prepared by the Vestal Virgins and sprinkled on offerings.\n\nSlavic: Across the Slavic world guests are welcomed with bread and salt, and salt was used in folk protection of the home and at weddings.\n\nCeltic: In Scottish, Irish and Welsh folk custom a plate of salt was placed on the chest of a corpse during the wake to keep spirits away.",
+
             tags: ["protection", "sacred space", "circle casting", "boundaries", "earth", "purification"]
         }
     },
@@ -7566,6 +7924,10 @@ const TraditionalLibrary = {
             BestFor: "Essential oils, moon water, ritual waters, herbal infusions",
             BestWith: "Labels, herbs, oils, cabinet storage",
             TraditionalWarnings: "Store light-sensitive oils in amber or dark glass when possible.",
+            Traditions: "Roman, Egyptian, Christian, Wheel of the Year",
+
+            TraditionNotes: "Roman: Glass-blowing spread through the Roman world in the first century BC, and small glass unguentaria held perfumes and oils and were placed in graves.\n\nEgyptian: Egyptians stored perfumes, oils and kohl in stone, faience and glass vessels, many placed in tombs for the afterlife.\n\nChristian: Pilgrims carried home bottles of holy water and oil from shrines, from the early St Menas flasks to Lourdes water today.\n\nWheel of the Year: In modern Paganism bottles store moon water, oils, herbs and powders, often labelled by sabbat or purpose.",
+
             tags: ["storage", "oils", "waters", "herbs", "organization"]
         },
 
@@ -7576,6 +7938,10 @@ const TraditionalLibrary = {
             BestFor: "Offerings, salt, herbs, crystal charging",
             BestWith: "Altar, candles, incense, crystals",
             TraditionalWarnings: "Some materials are not suitable for prolonged contact with salt or liquids.",
+            Traditions: "Hellenic, Roman, Hindu, Norse, Egyptian, Wheel of the Year",
+
+            TraditionNotes: "Hellenic: Greeks poured libations to the gods from the shallow phiale, a bowl shown in countless vase paintings of offering.\n\nRoman: The Roman equivalent, the patera, was used to pour wine onto the altar, and appears in the hands of gods and emperors on coins.\n\nHindu: Bowls of water, rice, flowers, kumkum and sweets are part of every puja, often arranged on a thali.\n\nNorse: Hákonar saga góða describes the hlautbolli, the bowl that caught the blood of sacrifice at a blót, which was then sprinkled with twigs.\n\nEgyptian: Offering bowls of bread, beer, water and incense were presented in temples and at tombs.\n\nWheel of the Year: In modern Pagan practice bowls hold water, salt and offerings on the altar and are used for scrying.",
+
             tags: ["offerings", "altar", "ingredients", "cleansing", "ritual"]
         },
 
@@ -7586,6 +7952,10 @@ const TraditionalLibrary = {
             BestFor: "Food offerings, deity devotion, crystals",
             BestWith: "Candles, chalice, altar",
             TraditionalWarnings: "Use separate dishes for ritual if desired by your tradition.",
+            Traditions: "Christian, Hindu, Egyptian, Slavic, Wheel of the Year",
+
+            TraditionNotes: "Christian: The paten is the small plate that holds the Eucharistic bread, paired with the chalice.\n\nHindu: The thali or aarti plate holds the lamp, incense, flowers and sweets offered to the deity, and is waved before the image during aarti.\n\nEgyptian: Food offerings for the gods and the dead were set on dishes and on stone offering tables carved with images of food.\n\nSlavic: Slavic hospitality presents bread and salt on a dish over an embroidered towel, and dishes of food are set out for the dead at Dziady and other ancestor feasts.\n\nWheel of the Year: In modern Paganism small dishes hold salt, offerings and seasonal items such as Lammas bread or Samhain food for the ancestors.",
+
             tags: ["offerings", "devotion", "altar", "presentation"]
         },
 
@@ -7596,6 +7966,10 @@ const TraditionalLibrary = {
             BestFor: "Frankincense, myrrh, herbal incense",
             BestWith: "Charcoal discs, sand, tongs",
             TraditionalWarnings: "Use heat-safe materials and never leave burning charcoal unattended.",
+            Traditions: "Egyptian, Hindu, Christian, Hellenic, Roman, Wheel of the Year",
+
+            TraditionNotes: "Egyptian: Egyptian priests burned incense such as kyphi, myrrh and frankincense on charcoal in censers and bowls throughout the temple day.\n\nHindu: Loose resins such as guggul and benzoin (sambrani) are burned on charcoal in bowls and dhoop holders during puja.\n\nChristian: In church, grains of incense are kept in a 'boat' and burned on charcoal in the thurible during Mass and Vespers.\n\nHellenic: Greek thymiateria, bowls set on stands, burned frankincense and other resins in temples and homes.\n\nRoman: Romans burned incense on charcoal in braziers and altars, taking the grains from an acerra.\n\nWheel of the Year: In modern Paganism a heatproof bowl of sand is used to burn charcoal and loose sabbat blends.",
+
             tags: ["incense", "charcoal", "fire safety", "offerings"]
         },
 
@@ -7606,6 +7980,10 @@ const TraditionalLibrary = {
             BestFor: "Anointing oils, essential oils, spell oils",
             BestWith: "Herbs, labels, altar cabinet",
             TraditionalWarnings: "Many essential oils should be diluted before skin contact.",
+            Traditions: "Christian, Hindu, Egyptian, Hellenic, Roman, Wheel of the Year",
+
+            TraditionNotes: "Christian: Holy oils (chrism, oil of catechumens and oil of the sick) are blessed by the bishop on Maundy Thursday and kept in small vessels called oil stocks for baptism, confirmation and anointing.\n\nHindu: Ghee and sesame oil fill the lamps of puja, and oils, milk and honey are poured over images in abhishekam; Ayurveda uses many medicated oils.\n\nEgyptian: Egyptians anointed statues of the gods and the dead with precious oils, and the 'seven sacred oils' were kept in stone vessels and listed on tomb tablets.\n\nHellenic: Greeks kept oil in small lekythoi and aryballoi, and white-ground lekythoi filled with oil were left at graves.\n\nRoman: Roman unguentaria held perfumed oils used in baths, worship and funerals.\n\nWheel of the Year: In modern Paganism oils blended for each sabbat or purpose are used to anoint candles, tools and people.\n\nFolk & wider practice: In hoodoo, condition oils such as Van Van are central to candle dressing.",
+
             tags: ["oil", "anointing", "storage", "apothecary"]
         },
 
@@ -7616,6 +7994,10 @@ const TraditionalLibrary = {
             BestFor: "Daily devotion, ancestor work, deity offerings",
             BestWith: "Candles, incense, altar",
             TraditionalWarnings: "Offerings are traditionally disposed of according to personal or religious practice.",
+            Traditions: "Hindu, Hellenic, Roman, Egyptian, Slavic, Norse, Celtic, Wheel of the Year",
+
+            TraditionNotes: "Hindu: Food offered to the deity (naivedya) and returned as blessed prasad is placed in bowls and on plates before the shrine every day.\n\nHellenic: Greeks offered first fruits, honey cakes, wine and libations to the gods, the dead and household spirits; the monthly Hekate's Supper left food at crossroads.\n\nRoman: Romans offered food, wine and incense to the Lares at the household shrine, and portions of each meal were set aside for them.\n\nEgyptian: The offering formula (hotep di nesu) asked the gods to provide bread, beer, oxen and fowl for the dead, and actual offerings were placed in bowls at tombs and temples.\n\nSlavic: Slavic folk custom left a bowl of porridge or milk for the domovoi, the household spirit, and food for the ancestors at Dziady and Radonitsa.\n\nNorse: Norse religion made offerings at blót feasts and to the land spirits and elves, and Scandinavian folk custom long continued to leave porridge for the tomte or nisse at Christmas.\n\nCeltic: In the Scottish Highlands Martin Martin (1703) recorded milk poured into hollow stones for the Gruagach, and offerings were left at holy wells across Celtic lands.\n\nWheel of the Year: In modern Paganism an offering bowl holds food, drink and flowers for deities and ancestors, especially at Samhain.",
+
             tags: ["offerings", "deities", "ancestors", "devotion"]
         },
 
@@ -7626,6 +8008,10 @@ const TraditionalLibrary = {
             BestFor: "Protection, abundance, love, confidence, healing",
             BestWith: "Herbs, crystals, wax seals, labels",
             TraditionalWarnings: "Traditionally treated as complete workings and often left sealed unless intentionally dismantled.",
+            Traditions: "Wheel of the Year",
+
+            TraditionNotes: "Wheel of the Year: Spell jars filled with herbs, salt, crystals and written intentions are a popular modern Pagan and witchcraft practice.\n\nFolk & wider practice: They draw on hoodoo honey and sugar jars for sweetening and on the older English witch bottle.",
+
             tags: ["spell jar", "protection", "prosperity", "love", "healing"]
         },
 
@@ -7636,6 +8022,8 @@ const TraditionalLibrary = {
             BestFor: "Space cleansing, aura sprays, blessing rituals",
             BestWith: "Moon water, rosemary, lavender",
             TraditionalWarnings: "Some essential oils can damage finishes or irritate pets and people.",
+            TraditionNotes: "Folk & wider practice: Spray bottles are a modern convenience for applying ritual waters, moon water and room sprays. They echo older practices such as sprinkling holy water with an aspergillum or splashing Florida Water, but have no historic place in the nine traditions themselves.",
+
             tags: ["cleansing", "water", "spray", "blessing"]
         },
 
@@ -7646,6 +8034,10 @@ const TraditionalLibrary = {
             BestFor: "Travel altars, jewelry, pocket charms",
             BestWith: "Mini crystals, herbs, cord necklaces",
             TraditionalWarnings: "Small corks can loosen over time. Check periodically if carrying.",
+            Traditions: "Christian, Wheel of the Year",
+
+            TraditionNotes: "Christian: Medieval pilgrims carried small ampullae of holy oil or water from shrines, such as the lead flasks from Canterbury holding water tinged with St Thomas Becket's blood and the Monza ampullae from the Holy Land.\n\nWheel of the Year: In modern Paganism vials hold small amounts of oil, herbs or soil, often worn as charms or kept from sacred places.",
+
             tags: ["travel", "storage", "charms", "portable"]
         },
 
@@ -7656,6 +8048,10 @@ const TraditionalLibrary = {
             BestFor: "Home wards, protection rituals, threshold magic",
             BestWith: "Iron nails, rosemary, black salt, protective herbs",
             TraditionalWarnings: "Historical witch bottles varied greatly by region and often included materials that modern practitioners choose not to use.",
+            Traditions: "Christian, Wheel of the Year",
+
+            TraditionNotes: "Christian: Witch bottles were a counter-witchcraft charm in Protestant England from the seventeenth century: stoneware Bellarmine jugs filled with urine, pins, nails and hair were buried under hearths or thresholds to turn a witch's harm back on her. Hundreds have been found, mostly in eastern and southern England.\n\nWheel of the Year: Modern Pagans and witches have revived the witch bottle, often with salt, herbs and sharp objects, as a protective charm for the home.",
+
             tags: ["protection", "warding", "home", "traditional magic"]
         }
     }

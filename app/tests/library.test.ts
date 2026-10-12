@@ -210,11 +210,12 @@ test('My path: follows the calendars, can be chosen, and puts your traditions fi
   // A hidden calendar is never part of the path.
   assert.deepEqual(myPath({ calendar_traditions: 'christian,celtic', calendar_hidden_traditions: 'christian' }).traditions, ['celtic']);
 
-  assert.deepEqual(entryTraditions(find('Jupiter').traditional, 'deity'), ['roman']);
+  assert.deepEqual(entryTraditions(find('Janus').traditional, 'deity'), ['roman']);
+  assert.ok(entryTraditions(find('Jupiter').traditional, 'deity').includes('hellenic'), 'a god belongs to every tradition that honoured them');
   assert.ok(entryTraditions(find('Rowan').traditional, 'herb').includes('celtic'));
 
   const celtic = myPath({ calendar_traditions: 'celtic', library_path_other_deities: 'hide' });
-  assert.equal(entryVisible(find('Jupiter'), celtic), false);
+  assert.equal(entryVisible(find('Janus'), celtic), false);
   assert.equal(entryVisible(find('Lugh'), celtic), true);
   assert.equal(entryVisible(find('Rosemary'), celtic), true, 'herbs are never hidden');
 
@@ -225,12 +226,12 @@ test('My path: follows the calendars, can be chosen, and puts your traditions fi
   // The tradition's deities, what's tagged with it, and what its deities name (Brigid → white candle, rowan…).
   assert.ok(celticNames.includes('Brigid') && celticNames.includes('Rowan'));
   assert.ok(celticNames.includes('White Candle'));
-  assert.ok(!celticNames.includes('Jupiter'));
+  assert.ok(!celticNames.includes('Janus'));
   // Everything else holds what My Path doesn't.
   const rest = shelves.find((s) => s.key === 'traditional')!;
   assert.equal(rest.title, 'Everything Else');
   const restNames = rest.sections[0].groups.flatMap((g) => g.entries.map((e) => e.name));
-  assert.ok(restNames.includes('Jupiter') && !restNames.includes('Brigid'));
+  assert.ok(restNames.includes('Janus') && !restNames.includes('Brigid'));
   // Every group has its own key, so opening one never opens another.
   const keys = shelves.flatMap((s) => s.sections.flatMap((section) => section.groups.map((g) => `${s.key}:${g.key}`)));
   assert.equal(new Set(keys).size, keys.length);
