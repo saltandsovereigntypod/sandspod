@@ -22,6 +22,7 @@ import {
   sectionInsert,
   sectionRename,
   sortOrderOps,
+  templateAppend,
   type FailedOp,
   type Op,
   type SendError,
@@ -47,6 +48,8 @@ export type GrimoireActions = {
   renamePage: (pageId: string, title: string) => void;
   deletePage: (pageId: string) => void;
   addBlock: (pageId: string, type: BlockType) => string | null;
+  /** Appends a template's blocks to an existing page without removing anything. */
+  addTemplate: (pageId: string, templateKey: string) => boolean;
   saveBlockText: (blockId: string, value: string) => void;
   saveBlockMetadata: (blockId: string, fields: Record<string, unknown>) => void;
   moveBlock: (blockId: string, direction: 'up' | 'down') => void;
@@ -345,6 +348,15 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
         const id = newId();
         commit([blockInsert(s, ctx(), { id, page, type })]);
         return id;
+      },
+      addTemplate(pageId, templateKey) {
+        const s = snap();
+        const page = findPage(pageId);
+        if (!s || !page) return false;
+        const ops = templateAppend(s, ctx(), { page, templateKey }, newId);
+        if (!ops.length) return false;
+        commit(ops);
+        return true;
       },
       saveBlockText(blockId, value) {
         const block = findBlock(blockId);

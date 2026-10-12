@@ -1,9 +1,13 @@
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
 import { Body, Card, RitualScreen, Title, confirmAction, tell, ui } from '../../../components/rituals/ui';
+import { applyCandleAction } from '../../../lib/altar/editor';
+import { documentFromAltar, ritualAltarSnapshot, type AltarDocument } from '../../../lib/altar/snapshot';
+import { useAltars } from '../../../lib/altar/store';
+import { candleActionLabel, completionActions, firstStepActionsDue, markStepActionsStarted, stepActions } from '../../../lib/rituals/automation';
 import {
   completeStep,
   currentStep,
@@ -14,9 +18,11 @@ import {
   skipStep,
   stepElapsed,
   timedStepDue,
+  withAltarSnapshot,
 } from '../../../lib/rituals/lifecycle';
 import { remindersSupported } from '../../../lib/reminders/notifier';
 import { finishActive, updateActive, useRituals } from '../../../lib/rituals/store';
+import type { SessionStepRow } from '../../../lib/rituals/types';
 import { colors, fonts, radius, type } from '../../../theme';
 
 function useClock(running: boolean): Date {
@@ -34,11 +40,34 @@ export default function RunRitual() {
   const session = rituals.active;
   const now = useClock(session?.status === 'active');
   const [finishing, setFinishing] = useState(false);
+  const { altarReady, snapshotAltar, runActions } = useLinkedAltar(session?.linked_altar_id ?? null);
+
+  const complete = useCallback(async () => {
+    const result = await updateActive((s) => completeStep(s, new Date()));
+    if (result) runActions(completionActions(result.before, result.after));
+  }, [runActions]);
 
   // Timed steps move on by themselves, as at the website's altar.
   useEffect(() => {
-    if (session && timedStepDue(session, now)) void updateActive((s) => completeStep(s, new Date()));
-  }, [session, now]);
+    if (session && timedStepDue(session, now)) void complete();
+  }, [session, now, complete]);
+
+  // A ritual linked to an altar keeps the altar as it stood when it began,
+  // then the first step's candle actions run (website: createAltarSnapshot,
+  // then executeRitualStepActions(firstStep, "start")). Both wait for the altar to load.
+  useEffect(() => {
+    if (!session?.linked_altar_id || !altarReady) return;
+    const needsSnapshot = !Object.keys(session.altar_snapshot ?? {}).length;
+    const first = firstStepActionsDue(session);
+    if (!needsSnapshot && !first) return;
+    const snapshot = needsSnapshot ? snapshotAltar(session.title) : null;
+    void updateActive((s) => {
+      const at = new Date();
+      const next = snapshot ? withAltarSnapshot(s, snapshot, at) : s;
+      return first ? markStepActionsStarted(next, first, at) : next;
+    });
+    if (first) runActions(stepActions(first, 'start'));
+  }, [session, altarReady, snapshotAltar, runActions]);
 
   if (!session) {
     return (
@@ -66,7 +95,8 @@ export default function RunRitual() {
     }
     setFinishing(true);
     try {
-      const done = await finishActive(status);
+      // As on the website, the altar is captured again at the end, candles as they now stand.
+      const done = await finishActive(status, session.linked_altar_id && altarReady ? snapshotAltar(session.title) : null);
       if (status === 'completed' && done) router.replace({ pathname: '/rituals/journal/new', params: { sessionId: done.id } });
       else router.replace('/rituals');
     } catch (e) {
@@ -118,12 +148,9 @@ export default function RunRitual() {
                 .join(' ')}
             </Body>
           )}
+          <CandleNotes step={step} linked={!!session.linked_altar_id} />
           <View style={ui.actions}>
-            <Button
-              label={last ? 'Complete the last step' : 'Complete step'}
-              disabled={paused}
-              onPress={() => void updateActive((s) => completeStep(s, new Date()))}
-            />
+            <Button label={last ? 'Complete the last step' : 'Complete step'} disabled={paused} onPress={() => void complete()} />
             <Button label="Skip this step" variant="outline" disabled={paused} onPress={() => void updateActive((s) => skipStep(s, new Date()))} />
           </View>
         </Card>
@@ -169,6 +196,77 @@ export default function RunRitual() {
   );
 }
 
+/**
+ * The ritual's linked altar. Candle actions are saved to it through the altar
+ * store, one after another so each builds on the last.
+ */
+function useLinkedAltar(altarId: string | null) {
+  const { altars, save } = useAltars();
+  const altar = altarId ? altars.find((a) => a.id === altarId) ?? null : null;
+  // The altar as this screen last saved it; the store's list can lag a save behind.
+  const latest = useRef<{ id: string; name: string; doc: AltarDocument } | null>(null);
+  const queue = useRef<Promise<void>>(Promise.resolve());
+  const altarRef = useRef(altar);
+  useEffect(() => {
+    altarRef.current = altar;
+  }, [altar]);
+
+  const current = useCallback(() => {
+    const found = altarRef.current;
+    if (!found) return null;
+    if (latest.current?.id === found.id) return latest.current;
+    return { id: found.id, name: found.name || 'My Altar', doc: documentFromAltar(found) };
+  }, []);
+
+  const runActions = useCallback(
+    (types: string[]) => {
+      if (!types.length) return;
+      queue.current = queue.current.then(async () => {
+        const base = current();
+        if (!base) return;
+        const now = new Date().toISOString();
+        const doc = types.reduce((d, type) => applyCandleAction(d, type, now), base.doc);
+        if (doc === base.doc) return;
+        latest.current = { ...base, doc };
+        const result = await save({ id: base.id, name: base.name, doc });
+        if (result.outcome === 'failed') tell("Couldn't update the altar", 'Your account didn’t accept the candle change. It is kept on this phone in the Altar tab.');
+      }).catch(() => {
+        // A guest altar that couldn't be written; the ritual carries on, and later actions still run.
+      });
+    },
+    [current, save],
+  );
+
+  const snapshotAltar = useCallback(
+    (title: string | null) => {
+      const base = current();
+      return base ? ritualAltarSnapshot(base.doc, title || 'Ritual Session', new Date().toISOString()) : null;
+    },
+    [current],
+  );
+
+  return { altarReady: !!altar, snapshotAltar, runActions };
+}
+
+/** What a step does to the altar's candles, so it is clear before it happens. */
+function CandleNotes({ step, linked }: { step: SessionStepRow; linked: boolean }) {
+  const lines = [
+    ...stepActions(step, 'start').map((t) => `When this step begins: ${candleActionLabel(t).toLowerCase()}`),
+    ...stepActions(step, 'end').map((t) => `When this step ends: ${candleActionLabel(t).toLowerCase()}`),
+  ];
+  if (!lines.length) return null;
+  return (
+    <View style={styles.candles}>
+      {lines.map((line) => (
+        <Text key={line} style={type.caption}>
+          {line}
+        </Text>
+      ))}
+      {!linked && <Text style={type.caption}>Link this ritual’s template to an altar for its candles to follow.</Text>}
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   head: { gap: 4 },
   words: { backgroundColor: colors.night, borderRadius: radius.tile, padding: 16, borderLeftWidth: 2, borderLeftColor: colors.gold },
@@ -181,4 +279,5 @@ const styles = StyleSheet.create({
   dotNow: { backgroundColor: colors.gold, borderColor: colors.gold },
   dotSkipped: { borderStyle: 'dashed' },
   nowText: { color: colors.cream },
+  candles: { gap: 2 },
 });

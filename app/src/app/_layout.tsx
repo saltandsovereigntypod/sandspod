@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 
 import { UpdateBanner } from '../components/UpdateBanner';
 import { PasswordRecovery } from '../components/PasswordRecovery';
+import { AltarProvider } from '../lib/altar/store';
 import { GrimoireProvider } from '../lib/grimoire/store';
 import { registerServiceWorker } from '../lib/offline/serviceWorker';
 import { SessionProvider, useSession } from '../lib/session';
@@ -27,7 +28,10 @@ export default function RootLayout() {
   return (
     <SessionProvider>
       <GrimoireProvider>
-        <RootStack />
+        {/* App-wide so a running ritual can work the candles on its linked altar. */}
+        <AltarProvider>
+          <RootStack />
+        </AltarProvider>
       </GrimoireProvider>
     </SessionProvider>
   );

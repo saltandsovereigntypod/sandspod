@@ -20,6 +20,7 @@ import type { BlockRow, PageRow } from '../../lib/grimoire/types';
 import { fonts, touch } from '../../theme';
 import { Icon } from '../Icon';
 import { BlockView, ink, Ornament } from './BlockView';
+import { faceText, usePageFace } from './presentation';
 import { useDraft } from './useDraft';
 
 type Props = {
@@ -257,6 +258,7 @@ type FieldProps = TextInputProps & { textStyle?: StyleProp<TextStyle>; minHeight
 
 export function Field({ textStyle, minHeight, multiline, style, ref, ...rest }: FieldProps) {
   const [height, setHeight] = useState<number | undefined>(undefined);
+  const face = usePageFace();
   const base = minHeight ?? (multiline ? 88 : touch);
   return (
     <TextInput
@@ -276,7 +278,7 @@ export function Field({ textStyle, minHeight, multiline, style, ref, ...rest }: 
             }
           : undefined
       }
-      style={[styles.field, { minHeight: base }, multiline && height ? { height: Math.max(base, height) } : null, textStyle, style]}
+      style={[styles.field, faceText(face, 16, 24), { minHeight: base }, multiline && height ? { height: Math.max(base, height) } : null, textStyle, style]}
       {...rest}
     />
   );

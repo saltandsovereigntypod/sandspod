@@ -4,10 +4,12 @@ import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, T
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '../../../components/Button';
+import { MundaneToggle, useMundaneMode } from '../../../components/grimoire/presentation';
 import { FailedChanges } from '../../../components/grimoire/SaveStatus';
 import { Field } from '../../../components/more/ui';
 import { Icon } from '../../../components/Icon';
 import { parseCalendarDate, shortDate } from '../../../lib/calendar';
+import { bookTitle, displayPageTitle, mundaneWords } from '../../../lib/grimoire/presentation';
 import { useGrimoire } from '../../../lib/grimoire/store';
 import { grimoireLibraryHref, grimoireShelves, useLibrary, type GrimoireShelf } from '../../../lib/library';
 import { useMySettings } from '../../../lib/settings/store';
@@ -20,6 +22,7 @@ export default function Grimoire() {
   const { session } = useSession();
   const { snapshot, status, refresh, sync, pendingCount } = useGrimoire();
   const [pulling, setPulling] = useState(false);
+  const { mundane, setMundane } = useMundaneMode();
 
   if (!session) {
     return (
@@ -61,9 +64,10 @@ export default function Grimoire() {
         <View style={styles.titleText}>
           <Text style={type.eyebrow}>Grimoire</Text>
           <Text accessibilityRole="header" style={type.title}>
-            {book?.title ?? 'Book of Shadows'}
+            {bookTitle(book?.title, mundane)}
           </Text>
         </View>
+        <MundaneToggle mundane={mundane} onChange={setMundane} />
       </View>
 
       <Button label="New entry" onPress={() => router.push('/grimoire/practice')} />
@@ -102,7 +106,7 @@ export default function Grimoire() {
               {group.section && <Text style={type.caption}>{group.section.title}</Text>}
               <View style={styles.list}>
                 {group.pages.map((page, i) => (
-                  <PageRowView key={page.id} page={page} last={i === group.pages.length - 1} />
+                  <PageRowView key={page.id} page={page} mundane={mundane} last={i === group.pages.length - 1} />
                 ))}
               </View>
             </View>
@@ -203,17 +207,20 @@ function Disclosure({ label, count, open, heading, onPress }: { label: string; c
   );
 }
 
-function PageRowView({ page, last }: { page: PageRow; last: boolean }) {
+function PageRowView({ page, mundane, last }: { page: PageRow; mundane: boolean; last: boolean }) {
   const facts = pageFacts(page);
   const date = parseCalendarDate(facts.date);
-  const detail = [pageTypeLabel(page), date ? shortDate(date) : null, facts.moonPhase]
+  const label = mundane ? mundaneWords(pageTypeLabel(page)) : pageTypeLabel(page);
+  // A mundane title is already the date, so the detail line leaves it out.
+  const detail = [label, date && !mundane ? shortDate(date) : null, facts.moonPhase]
     .filter(Boolean)
     .join(' · ');
+  const title = displayPageTitle(page, mundane);
 
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`${page.title}. ${detail}`}
+      accessibilityLabel={`${title}. ${detail}`}
       onPress={() => router.push({ pathname: '/grimoire/[pageId]', params: { pageId: page.id } })}
       style={({ pressed }) => [styles.row, !last && styles.rowRule, pressed && styles.pressed]}
     >
@@ -222,7 +229,7 @@ function PageRowView({ page, last }: { page: PageRow; last: boolean }) {
       </View>
       <View style={styles.rowText}>
         <Text style={styles.rowTitle} numberOfLines={2}>
-          {page.title || 'Untitled page'}
+          {title}
         </Text>
         <Text style={type.caption} numberOfLines={1}>
           {detail}

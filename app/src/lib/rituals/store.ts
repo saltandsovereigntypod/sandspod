@@ -16,7 +16,7 @@ import { useEffect, useMemo, useSyncExternalStore } from 'react';
 import { useSession } from '../session';
 import { supabase } from '../supabase';
 import { permissionState, requestPermission, setStepAlarm } from '../reminders/notifier';
-import { applyAnswers, createSession, finishSession, journalPayload, stepAlarm, uuid, type StartSource } from './lifecycle';
+import { applyAnswers, createSession, finishSession, journalPayload, stepAlarm, uuid, withAltarSnapshot, type StartSource } from './lifecycle';
 import { isSyncable, mergePlans, planRow, unsyncedPlans, type PlanRow } from './planSync';
 import {
   journalLibraryEntry,
@@ -323,15 +323,26 @@ export async function startRitual(source: StartSource): Promise<RitualSession> {
   return session;
 }
 
-export async function updateActive(change: (session: RitualSession) => RitualSession) {
-  if (!state.active) return;
-  const next = change(state.active);
-  if (next !== state.active) await persist(next);
+/** Change the running session. Returns the session before and after, for what the change sets off. */
+export async function updateActive(
+  change: (session: RitualSession) => RitualSession,
+): Promise<{ before: RitualSession; after: RitualSession } | null> {
+  if (!state.active) return null;
+  const before = state.active;
+  const next = change(before);
+  if (next !== before) await persist(next);
+  return { before, after: next };
 }
 
-export async function finishActive(status: 'completed' | 'abandoned'): Promise<RitualSession | null> {
+/** Close the running session. With altarSnapshot, the linked altar as it stands at the end is kept, as on the website. */
+export async function finishActive(
+  status: 'completed' | 'abandoned',
+  altarSnapshot?: Record<string, unknown> | null,
+): Promise<RitualSession | null> {
   if (!state.active) return null;
-  const finished = finishSession(state.active, status, new Date());
+  const now = new Date();
+  const closing = altarSnapshot ? withAltarSnapshot(state.active, altarSnapshot, now) : state.active;
+  const finished = finishSession(closing, status, now);
   lastFinished = finished;
   await persist(finished, true);
   return finished;

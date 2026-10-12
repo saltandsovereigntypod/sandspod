@@ -232,6 +232,14 @@ export function createSession(
   };
 }
 
+/**
+ * Keep the linked altar as it stood (the website's createAltarSnapshot), when
+ * the ritual began and again when it ends.
+ */
+export function withAltarSnapshot(session: RitualSession, snapshot: Record<string, unknown>, now: Date): RitualSession {
+  return { ...session, altar_snapshot: snapshot, updated_at: now.toISOString() };
+}
+
 export function currentStep(session: RitualSession): SessionStepRow | null {
   return (
     session.session_steps.find((s) => s.status === 'active') ??

@@ -99,6 +99,22 @@ export function toggleLight(doc: AltarDocument, index: number, now: string): Alt
   return next === object ? doc : replace(doc, new Map([[index, next]]));
 }
 
+/**
+ * A ritual step's candle action (ritual-automation.js executeRitualStepActions):
+ * light_all lights every unlit candle, extinguish_all snuffs every lit one,
+ * recording the burn. Unknown actions change nothing.
+ */
+export function applyCandleAction(doc: AltarDocument, action: string, now: string): AltarDocument {
+  const change = action === 'light_all' ? lightCandle : action === 'extinguish_all' ? snuffCandle : null;
+  if (!change) return doc;
+  const updates = new Map<number, SavedObject>();
+  doc.objects.forEach((object, index) => {
+    const next = change(object, now);
+    if (next !== object) updates.set(index, next);
+  });
+  return replace(doc, updates);
+}
+
 export function dressObject(doc: AltarDocument, candleIndex: number, ingredientIndex: number, now: string): AltarDocument {
   const candle = doc.objects[candleIndex];
   const ingredient = doc.objects[ingredientIndex];

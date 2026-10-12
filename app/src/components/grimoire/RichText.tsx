@@ -1,20 +1,21 @@
 import { Linking, Text, type StyleProp, type TextStyle } from 'react-native';
 
 import { parseRichText } from '../../lib/grimoire/richText';
-import { fonts } from '../../theme';
+import { usePageFace } from './presentation';
 
 type Props = { source: string; style?: StyleProp<TextStyle>; linkColor: string };
 
 /** Renders the website's stored block text (plain or sanitized HTML). */
 export function RichText({ source, style, linkColor }: Props) {
   const runs = parseRichText(source);
+  const face = usePageFace();
   return (
     <Text style={style}>
       {runs.map((run, i) => (
         <Text
           key={i}
           style={[
-            run.bold && { fontFamily: fonts.bodySemi },
+            run.bold && { fontFamily: face.strong },
             run.italic && { fontStyle: 'italic' },
             (run.underline || run.href) && { textDecorationLine: 'underline' },
             run.href && { color: linkColor },

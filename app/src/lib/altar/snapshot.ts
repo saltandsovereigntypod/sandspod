@@ -80,6 +80,15 @@ export function altarDataFromDocument(doc: AltarDocument, name: string, savedAt:
   };
 }
 
+/**
+ * The altar_snapshot a ritual session keeps: the linked altar as
+ * createAltarSnapshot(title || "Ritual Session") captures it on the website.
+ */
+export function ritualAltarSnapshot(doc: AltarDocument, name: string, savedAt: string): AltarData {
+  // Only the seven fields the website captures; a saved altar's extra fields stay with the altar.
+  return altarDataFromDocument({ ...doc, extra: {} }, name || 'Ritual Session', savedAt);
+}
+
 /** A new guest save, as saveAltar() unshifts it into localStorage. */
 export function localSave(data: AltarData, id: string = newId()): SavedAltar {
   return { id, ...data, name: data.name || 'My Altar' };
