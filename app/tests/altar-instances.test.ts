@@ -23,6 +23,8 @@ import {
   tendRecord,
 } from '../src/lib/altar/instances.ts';
 import { altarRitualBlocks, altarRitualItem, altarRitualOps, groupAltarItems } from '../src/lib/grimoire/altarImport.ts';
+import { openSectionIn } from '../src/lib/grimoire/structure.ts';
+import type { GrimoireSnapshot } from '../src/lib/grimoire/types.ts';
 
 const now = new Date('2026-10-12T15:00:00.000Z');
 
@@ -228,4 +230,30 @@ test('a group sent to the Grimoire becomes the website ritual page', () => {
     sort_order: 0,
   });
   assert.equal(ops.length, 1 + 5 + 8 + 6);
+});
+
+test('an altar ritual page is filed under the open Grimoire section, or the top level once it is gone', () => {
+  const snapshot: GrimoireSnapshot = {
+    fetchedAt: '',
+    books: [{ id: 'b1', title: 'Book', created_at: null, updated_at: null }],
+    sections: [{ id: 's1', book_id: 'b1', title: 'Spells', sort_order: 0, created_at: null }],
+    pages: [
+      { id: 'top', book_id: 'b1', section_id: null, title: 'Top', page_type: 'blank', sort_order: 0, metadata: null, created_at: null, updated_at: null },
+      { id: 'in1', book_id: 'b1', section_id: 's1', title: 'A', page_type: 'blank', sort_order: 0, metadata: null, created_at: null, updated_at: null },
+      { id: 'in2', book_id: 'b1', section_id: 's1', title: 'B', page_type: 'blank', sort_order: 1, metadata: null, created_at: null, updated_at: null },
+    ],
+    blocks: [],
+    links: [],
+  };
+  assert.equal(openSectionIn(snapshot, 'b1', 's1')?.title, 'Spells');
+  assert.equal(openSectionIn(snapshot, 'b1', 'deleted'), null);
+  assert.equal(openSectionIn(snapshot, 'b1', null), null);
+  assert.equal(openSectionIn(snapshot, 'other-book', 's1'), null);
+
+  const page = (sectionId: string | null) =>
+    altarRitualOps(snapshot, { userId: 'u1', now: now.toISOString() }, { id: 'p', bookId: 'b1', sectionId, title: 'Working', purpose: '', items: [], dateText: '' }, () => 'x')[0].row;
+  assert.equal(page('s1').section_id, 's1');
+  assert.equal(page('s1').sort_order, 2);
+  assert.equal(page(null).section_id, null);
+  assert.equal(page(null).sort_order, 1);
 });

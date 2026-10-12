@@ -10,6 +10,7 @@ import {
   hasConnection,
   ingredientRelationRows,
   nameMatcher,
+  practiceRelationPlan,
   practiceRelationRows,
   practiceTargets,
   storedConnections,
@@ -87,6 +88,7 @@ test('a My Practice save makes the website rows, with reverses', () => {
     rows.map((r) => `${r.from_entity_id} ${r.relation} ${r.to_entity_id}`),
     ['a pairs_with b', 'b pairs_with a', 'a substitutes c', 'c substitute_for a'],
   );
+  assert.ok(rows.every((r) => r.metadata?.source === 'my-practice'));
   assert.deepEqual(
     ingredientRelationRows('jar', ['x', 'x', 'jar']).map((r) => `${r.from_entity_id} ${r.relation} ${r.to_entity_id}`),
     ['jar contains x', 'x ingredient_in jar'],
@@ -97,6 +99,31 @@ test('guest relations are read from the website guest Library', () => {
   const rows = guestRelationRows({ relations: [{ id: 'r1', from: 'a', relation: 'pairs_with', to: 'b' }, { from: 'a' }, null] });
   assert.deepEqual(rows, [{ id: 'r1', from_entity_id: 'a', relation: 'pairs_with', to_entity_id: 'b', metadata: {} }]);
   assert.deepEqual(guestRelationRows(null), []);
+  assert.deepEqual(guestRelationRows({ relations: [{ from: 'a', relation: 'pairs_with', to: 'b', metadata: { source: 'my-practice' } }] })[0].metadata, {
+    source: 'my-practice',
+  });
+});
+
+test('a My Practice save replaces only the rows it generated, never hand-added ones', () => {
+  const generated = practiceRelationRows('a', ['b', 'm'], []);
+  const existing: RelationRow[] = [
+    { from_entity_id: 'a', relation: 'pairs_with', to_entity_id: 'old', metadata: { source: 'my-practice' } },
+    { from_entity_id: 'a', relation: 'pairs_with', to_entity_id: 'b', metadata: { source: 'my-practice' } },
+    { from_entity_id: 'a', relation: 'pairs_with', to_entity_id: 'hand', metadata: { source: 'manual' } },
+    { from_entity_id: 'a', relation: 'substitutes', to_entity_id: 'legacy', metadata: {} },
+    { from_entity_id: 'a', relation: 'pairs_with', to_entity_id: 'm', metadata: { source: 'manual' } },
+    { from_entity_id: 'a', relation: 'related_to', to_entity_id: 'x', metadata: { source: 'my-practice' } },
+  ];
+  const { stale, add } = practiceRelationPlan('a', generated, existing);
+  assert.deepEqual(
+    stale.map((r) => `${r.from_entity_id} ${r.relation} ${r.to_entity_id}`),
+    ['a pairs_with old'],
+  );
+  // The hand-added a→m keeps its metadata; its reverse is still generated.
+  assert.deepEqual(
+    add.map((r) => `${r.from_entity_id} ${r.relation} ${r.to_entity_id}`),
+    ['a pairs_with b', 'b pairs_with a', 'm pairs_with a'],
+  );
 });
 
 test('the relationship manager lists stored rows, collapses duplicates and keeps the entry on its end when edited', () => {
@@ -112,7 +139,13 @@ test('the relationship manager lists stored rows, collapses duplicates and keeps
   assert.equal(list[0].outgoing, false);
   assert.ok(hasConnection(basil, 'related_to', byId('practice:moon-id'), rows, resolve));
   assert.ok(!hasConnection(basil, 'related_to', byId('practice:moon-id'), rows, resolve, list[1].key));
-  assert.deepEqual(editedRow(list[0], 'used_in', 'other'), { from_entity_id: 'other', relation: 'used_in', to_entity_id: 'basil-id', id: undefined });
+  assert.deepEqual(editedRow(list[0], 'used_in', 'other'), {
+    from_entity_id: 'other',
+    relation: 'used_in',
+    to_entity_id: 'basil-id',
+    id: undefined,
+    metadata: { source: 'manual' },
+  });
   assert.equal(editedRow(list[1], 'pairs_with', 'other').to_entity_id, 'other');
 });
 

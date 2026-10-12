@@ -18,8 +18,10 @@ import {
   entryResolver,
   guestRelationRows,
   nameMatcher,
+  practiceRelationPlan,
   practiceRelationRows,
   practiceTargets,
+  RELATION_SOURCES,
   relationKey,
   uniqueRelations,
   type RelationRow,
@@ -178,9 +180,11 @@ export async function savePractice(args: {
 
 /**
  * Like the website's syncMyPracticeConnections after a My Practice save: the
- * entry's own "pairs_with" and "substitutes" rows are replaced by the ones its
- * Pairs With and Substitutions name, each with its reverse. A connection that
- * can't be saved doesn't undo the save, as on the website.
+ * "pairs_with" and "substitutes" rows an earlier save generated for the entry
+ * (metadata.source "my-practice") are replaced by the ones its Pairs With and
+ * Substitutions name, each with its reverse. Rows added by hand in the
+ * relationship manager are left alone. A connection that can't be saved
+ * doesn't undo the save, as on the website.
  */
 async function syncPracticeRelations(userId: string, entityId: string, myPractice: Record<string, unknown>) {
   try {
@@ -188,14 +192,19 @@ async function syncPracticeRelations(userId: string, entityId: string, myPractic
     const { pairs, substitutes } = practiceTargets(myPractice, self, nameMatcher(state.entries));
     const ids = await ensureEntityIds(userId, [...pairs, ...substitutes]);
     const idsOf = (list: LibraryEntry[]) => list.map((target) => ids.get(target.id) ?? '').filter(Boolean);
-    const { error } = await supabase
-      .from('library_relations')
-      .delete()
-      .eq('user_id', userId)
-      .eq('from_entity_id', entityId)
-      .in('relation', ['pairs_with', 'substitutes']);
-    if (error) throw new Error(error.message);
-    await connectRelations(userId, practiceRelationRows(entityId, idsOf(pairs), idsOf(substitutes)), false);
+    const existing = await fetchRelations(userId);
+    const { stale, add } = practiceRelationPlan(entityId, practiceRelationRows(entityId, idsOf(pairs), idsOf(substitutes)), existing);
+    for (const relation of new Set(stale.map((row) => row.relation))) {
+      const { error } = await supabase
+        .from('library_relations')
+        .delete()
+        .eq('user_id', userId)
+        .eq('from_entity_id', entityId)
+        .eq('relation', relation)
+        .in('to_entity_id', stale.filter((row) => row.relation === relation).map((row) => row.to_entity_id));
+      if (error) throw new Error(error.message);
+    }
+    await connectRelations(userId, add, false);
   } catch (e) {
     console.warn('Living Library connections were not saved', e);
   }
@@ -308,7 +317,7 @@ export async function removeLibraryEntry(userId: string | null, entityId: string
 
 type GuestLibrary = {
   entities?: Record<string, Record<string, unknown>>;
-  relations?: { id?: string; from: string; relation: string; to: string }[];
+  relations?: { id?: string; from: string; relation: string; to: string; metadata?: Record<string, unknown> }[];
 } & Record<string, unknown>;
 
 async function readGuestLibrary(): Promise<GuestLibrary> {
@@ -397,7 +406,9 @@ export async function connectRelations(userId: string | null, rows: RelationRow[
     const have = new Set(relations.map(guestKey));
     for (const row of unique) {
       if (have.has(relationKey(row))) continue;
-      relations.push({ id: newId(), from: row.from_entity_id, relation: row.relation, to: row.to_entity_id });
+      // The website's connectUnique shape: metadata only when there is some.
+      const metadata = row.metadata && Object.keys(row.metadata).length ? { metadata: { ...row.metadata } } : {};
+      relations.push({ id: newId(), from: row.from_entity_id, relation: row.relation, to: row.to_entity_id, ...metadata });
     }
     await AsyncStorage.setItem(GUEST_LIBRARY_KEY, JSON.stringify({ ...stored, relations }));
   }
@@ -426,7 +437,9 @@ export async function disconnectRelation(userId: string | null, row: RelationRow
 /** The relationship manager's Add: the entry is the "from" end (addLibraryRelationshipFromForm). */
 export async function addRelation(userId: string | null, entry: LibraryEntry, relation: string, target: LibraryEntry): Promise<void> {
   const ids = await ensureEntityIds(userId, [entry, target]);
-  await connectRelations(userId, [{ from_entity_id: ids.get(entry.id)!, relation, to_entity_id: ids.get(target.id)!, metadata: {} }]);
+  await connectRelations(userId, [
+    { from_entity_id: ids.get(entry.id)!, relation, to_entity_id: ids.get(target.id)!, metadata: { source: RELATION_SOURCES.manual } },
+  ]);
 }
 
 /**

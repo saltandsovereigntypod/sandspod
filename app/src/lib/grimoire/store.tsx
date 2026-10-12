@@ -29,11 +29,13 @@ import {
 } from './edits';
 import { altarRitualOps, ritualDateText, type AltarRitualItem } from './altarImport';
 import { newId } from './ids';
-import { pageBlocks } from './structure';
+import { openSectionIn, pageBlocks } from './structure';
 import type { BlockRow, BlockType, BookRow, GrimoireSnapshot, PageLinkRow, PageRow, SectionRow } from './types';
 
 const cacheKey = (userId: string) => `grimoire.snapshot.${userId}`;
 const pendingKey = (userId: string) => `grimoire.pending.${userId}`;
+/** The section last open in the Grimoire, kept on this device. */
+const openSectionKey = (userId: string) => `grimoire.openSection.${userId}`;
 
 type Status = 'idle' | 'loading' | 'ready' | 'offline' | 'error';
 
@@ -46,8 +48,10 @@ export type GrimoireActions = {
   renameSection: (sectionId: string, title: string) => void;
   deleteSection: (sectionId: string) => void;
   createPage: (input: { title: string; sectionId: string | null; templateKey: string }) => string | null;
-  /** A ritual page from a group on the altar (the website's altar import). */
+  /** A ritual page from a group on the altar (the website's altar import), filed under the open section. */
   createRitualFromAltar: (input: { title: string; purpose: string; items: AltarRitualItem[] }) => string | null;
+  /** The section being viewed (a page's section, or null for the top level), as the website's activeSectionId. */
+  setOpenSection: (sectionId: string | null) => void;
   renamePage: (pageId: string, title: string) => void;
   deletePage: (pageId: string) => void;
   addBlock: (pageId: string, type: BlockType) => string | null;
@@ -71,6 +75,8 @@ type GrimoireState = {
   refresh: () => Promise<void>;
   /** Signed in with a copy of the book on hand. */
   canEdit: boolean;
+  /** The section last open in the Grimoire, if it still exists; null is the top level. */
+  openSection: SectionRow | null;
   sync: SyncState;
   pendingCount: number;
   failed: FailedOp[];
@@ -132,6 +138,7 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
   const [sync, setSync] = useState<SyncState>('idle');
   const [pendingCount, setPendingCount] = useState(0);
   const [failed, setFailed] = useState<FailedOp[]>([]);
+  const [openSectionId, setOpenSectionId] = useState<string | null>(null);
 
   // The source of truth lives in refs so quick successive edits never read a
   // stale render; state mirrors it for the screens.
@@ -142,6 +149,7 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
   const flushRef = useRef<Promise<void> | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const attemptRef = useRef(0);
+  const openSectionRef = useRef<string | null | undefined>(undefined); // undefined until read or chosen
 
   const publish = useCallback(() => {
     setSnapshot(snapRef.current);
@@ -270,12 +278,22 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
     queueRef.current = [];
     failedRef.current = [];
     attemptRef.current = 0;
+    openSectionRef.current = undefined;
+    setOpenSectionId(null);
     if (timerRef.current) clearTimeout(timerRef.current);
     publish();
     setStatus('idle');
     setSync('idle');
     if (!userId) return;
     let active = true;
+    AsyncStorage.getItem(openSectionKey(userId))
+      .then((saved) => {
+        // Unless a section was opened while this was being read.
+        if (!active || openSectionRef.current !== undefined || !saved) return;
+        openSectionRef.current = saved;
+        setOpenSectionId(saved);
+      })
+      .catch(() => {});
     Promise.all([AsyncStorage.getItem(cacheKey(userId)), AsyncStorage.getItem(pendingKey(userId))])
       .then(([cached, pending]) => {
         if (!active) return;
@@ -310,6 +328,14 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
     const snap = () => snapRef.current;
     const findBlock = (id: string) => snap()?.blocks.find((b) => b.id === id) ?? null;
     const findPage = (id: string) => snap()?.pages.find((p) => p.id === id) ?? null;
+    const openSection = (sectionId: string | null) => {
+      const id = userRef.current;
+      if (!id || openSectionRef.current === sectionId) return;
+      openSectionRef.current = sectionId;
+      setOpenSectionId(sectionId);
+      const key = openSectionKey(id);
+      (sectionId ? AsyncStorage.setItem(key, sectionId) : AsyncStorage.removeItem(key)).catch(() => {});
+    };
 
     return {
       createSection(title) {
@@ -318,6 +344,7 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
         const { bookId, ops } = ensureBook(s, ctx(), newId);
         const id = newId();
         commit([...ops, sectionInsert(applyOps(s, ops), ctx(), { id, bookId, title })]);
+        openSection(id);
         return id;
       },
       renameSection(sectionId, title) {
@@ -334,6 +361,7 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
         const { bookId, ops } = ensureBook(s, ctx(), newId);
         const id = newId();
         commit([...ops, ...pageInsert(applyOps(s, ops), ctx(), { id, bookId, sectionId, title, templateKey }, newId)]);
+        openSection(sectionId);
         return id;
       },
       createRitualFromAltar({ title, purpose, items }) {
@@ -341,10 +369,18 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
         if (!s || !userRef.current) return null;
         const { bookId, ops } = ensureBook(s, ctx(), newId);
         const id = newId();
-        const page = altarRitualOps(applyOps(s, ops), ctx(), { id, bookId, title, purpose, items, dateText: ritualDateText(new Date()) }, newId);
+        // Under the open section, or the top level if it has since been deleted.
+        const sectionId = openSectionIn(s, bookId, openSectionRef.current ?? null)?.id ?? null;
+        const page = altarRitualOps(
+          applyOps(s, ops),
+          ctx(),
+          { id, bookId, sectionId, title, purpose, items, dateText: ritualDateText(new Date()) },
+          newId,
+        );
         commit([...ops, ...page]);
         return id;
       },
+      setOpenSection: openSection,
       renamePage(pageId, title) {
         const page = findPage(pageId);
         const op = page ? pageTitlePatch(ctx(), page, title) : null;
@@ -424,6 +460,7 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
     };
   }, [commit, persist, publish, refresh, scheduleFlush]);
 
+  const openSection = useMemo(() => openSectionIn(snapshot, snapshot?.books[0]?.id ?? null, openSectionId), [snapshot, openSectionId]);
   const value = useMemo(
     () => ({
       snapshot,
@@ -431,12 +468,13 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
       error,
       refresh,
       canEdit: !!userId && !!snapshot,
+      openSection,
       sync,
       pendingCount,
       failed,
       actions,
     }),
-    [snapshot, status, error, refresh, userId, sync, pendingCount, failed, actions],
+    [snapshot, status, error, refresh, userId, sync, pendingCount, failed, actions, openSection],
   );
   return <GrimoireContext.Provider value={value}>{children}</GrimoireContext.Provider>;
 }

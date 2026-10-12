@@ -1,4 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -15,12 +16,19 @@ import { colors, fonts, touch, type } from '../../../theme';
 
 export default function GrimoirePage() {
   const { pageId } = useLocalSearchParams<{ pageId: string }>();
-  const { snapshot, canEdit } = useGrimoire();
+  const { snapshot, canEdit, actions } = useGrimoire();
   const { mundane, setMundane, settings } = useMundaneMode();
   const face = pageFace(settings?.grimoire_page_font);
   const page = snapshot?.pages.find((p) => p.id === pageId) ?? null;
   const book = page ? snapshot?.books.find((b) => b.id === page.book_id) : null;
   const section = page?.section_id ? snapshot?.sections.find((s) => s.id === page.section_id) : null;
+
+  // Reading a page opens its section, as on the website (activeSectionId).
+  const pageFound = !!page;
+  const pageSectionId = page?.section_id ?? null;
+  useEffect(() => {
+    if (pageFound) actions.setOpenSection(pageSectionId);
+  }, [actions, pageFound, pageSectionId]);
 
   const blocks = snapshot && page ? pageBlocks(snapshot, page.id) : [];
   const visible = blocks.filter((b) => b.block_type === 'divider' || plainText(blockSource(b)).trim());

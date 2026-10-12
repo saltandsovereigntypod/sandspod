@@ -113,7 +113,7 @@
   function libraryRows(library, userId, warnings) {
     const entities = Object.values(library?.entities || {}).filter(isPersonalEntity).map((entity) => ({ user_id: userId, entity_id: entity.id, name: entity.name || "Untitled", type: entity.type || "note", image: /^https?:\/\//i.test(entity.image || "") ? entity.image : null, my_practice: stripBrowserAssets(entity.myPractice || {}, warnings), community: stripBrowserAssets(entity.community || {}, warnings), layout: {} }));
     const migratedIds = new Set(entities.map((entity) => entity.entity_id));
-    const relations = (library?.relations || []).filter((relation) => relation.from && relation.to && relation.relation && (migratedIds.has(relation.from) || migratedIds.has(relation.to))).map((relation) => ({ user_id: userId, from_entity_id: relation.from, relation: relation.relation, to_entity_id: relation.to, metadata: {} }));
+    const relations = (library?.relations || []).filter((relation) => relation.from && relation.to && relation.relation && (migratedIds.has(relation.from) || migratedIds.has(relation.to))).map((relation) => ({ user_id: userId, from_entity_id: relation.from, relation: relation.relation, to_entity_id: relation.to, metadata: relation.metadata && typeof relation.metadata === "object" ? relation.metadata : {} }));
     return { entities, relations };
   }
 

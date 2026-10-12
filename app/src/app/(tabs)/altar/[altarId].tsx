@@ -604,6 +604,7 @@ export default function AltarEditor() {
             visible={sheet === 'grimoire' && groupItems.length > 0}
             name={groupName(doc, selectedObject)}
             items={groupAltarItems(groupItems)}
+            sectionTitle={grimoire.openSection?.title ?? null}
             signedIn={signedIn}
             onClose={() => setSheet(null)}
             onCreate={createRitualPage}
@@ -828,7 +829,7 @@ function ObjectPanel({
 
       <ChipRow>
         <Chip label="About" symbol="☽" accessibilityLabel={`About ${objectLabel}`} onPress={onAbout} />
-        {crafted && <Chip label="Tend" symbol="✓" accessibilityLabel={`Tend ${objectLabel}`} onPress={act.tend} />}
+        {crafted && <Chip label="Status" symbol="✓" accessibilityLabel={`Status of ${objectLabel}: activation, remaining and review`} onPress={act.tend} />}
         {canPractice && <Chip label="Begin Practice" symbol="✧" accessibilityLabel={`Begin today’s practice with ${objectLabel}`} onPress={act.practice} />}
         {object.type === 'apothecary' && !!object.apothecaryItemId && (
           <Chip label="Recipe" symbol="✎" accessibilityLabel={`Open the recipe for ${objectLabel}`} onPress={act.recipe} />

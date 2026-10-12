@@ -104,6 +104,7 @@ export function GroupGrimoireSheet({
   visible,
   name,
   items,
+  sectionTitle,
   signedIn,
   onClose,
   onCreate,
@@ -111,23 +112,39 @@ export function GroupGrimoireSheet({
   visible: boolean;
   name: string;
   items: { groupLabel: string; content: string }[];
+  /** The Grimoire section the page is filed under; null for the top level. */
+  sectionTitle: string | null;
   signedIn: boolean;
   onClose: () => void;
   onCreate: (purpose: string) => void;
 }) {
   return (
     <Sheet visible={visible} eyebrow="Record Ritual" title={name || 'Ritual Working'} onClose={onClose}>
-      {visible && <GroupGrimoireForm items={items} signedIn={signedIn} onCreate={onCreate} />}
+      {visible && <GroupGrimoireForm items={items} sectionTitle={sectionTitle} signedIn={signedIn} onCreate={onCreate} />}
     </Sheet>
   );
 }
 
-function GroupGrimoireForm({ items, signedIn, onCreate }: { items: { groupLabel: string; content: string }[]; signedIn: boolean; onCreate: (purpose: string) => void }) {
+function GroupGrimoireForm({
+  items,
+  sectionTitle,
+  signedIn,
+  onCreate,
+}: {
+  items: { groupLabel: string; content: string }[];
+  sectionTitle: string | null;
+  signedIn: boolean;
+  onCreate: (purpose: string) => void;
+}) {
   const [purpose, setPurpose] = useState('');
   if (!signedIn) return <Text style={type.body}>Sign in to create a ritual page in your Grimoire.</Text>;
   return (
     <View style={styles.form}>
       <Text style={type.caption}>A new ritual page in your Grimoire, with these items from the altar and room for your steps, results and reflection.</Text>
+      <View style={styles.summary}>
+        <Text style={type.eyebrow}>Section</Text>
+        <Text style={type.body}>{sectionTitle || 'Top level (no section)'}</Text>
+      </View>
       <TextInput
         value={purpose}
         onChangeText={setPurpose}

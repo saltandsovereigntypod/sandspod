@@ -67,6 +67,15 @@ export type RelationRow = {
 export const relationKey = (row: Pick<RelationRow, 'from_entity_id' | 'relation' | 'to_entity_id'>) =>
   `${row.from_entity_id}|${row.relation}|${row.to_entity_id}`;
 
+/**
+ * Where a row came from, in its metadata (js/library.js LIBRARY_RELATION_SOURCES):
+ * rows drawn from My Practice notes are replaced on each My Practice save;
+ * rows added by hand in the relationship manager, or with no source, never are.
+ */
+export const RELATION_SOURCES = { myPractice: 'my-practice', manual: 'manual' } as const;
+
+export const isPracticeRow = (row: Pick<RelationRow, 'metadata'>) => row.metadata?.source === RELATION_SOURCES.myPractice;
+
 /** Relations from the website's guest Library (localStorage "saltAndSovereigntyLibrary".relations). */
 export function guestRelationRows(stored: unknown): RelationRow[] {
   const relations = (stored as { relations?: unknown })?.relations;
@@ -79,7 +88,7 @@ export function guestRelationRows(stored: unknown): RelationRow[] {
       from_entity_id: link.from as string,
       relation: link.relation as string,
       to_entity_id: link.to as string,
-      metadata: {},
+      metadata: link.metadata && typeof link.metadata === 'object' ? { ...(link.metadata as Record<string, unknown>) } : {},
     }));
 }
 
@@ -172,17 +181,44 @@ export function practiceTargets(
  */
 export function practiceRelationRows(fromId: string, pairIds: string[], substituteIds: string[]): RelationRow[] {
   const rows: RelationRow[] = [];
+  const metadata = () => ({ source: RELATION_SOURCES.myPractice });
   for (const to of pairIds) {
     if (!to || to === fromId) continue;
-    rows.push({ from_entity_id: fromId, relation: 'pairs_with', to_entity_id: to, metadata: {} });
-    rows.push({ from_entity_id: to, relation: 'pairs_with', to_entity_id: fromId, metadata: {} });
+    rows.push({ from_entity_id: fromId, relation: 'pairs_with', to_entity_id: to, metadata: metadata() });
+    rows.push({ from_entity_id: to, relation: 'pairs_with', to_entity_id: fromId, metadata: metadata() });
   }
   for (const to of substituteIds) {
     if (!to || to === fromId) continue;
-    rows.push({ from_entity_id: fromId, relation: 'substitutes', to_entity_id: to, metadata: {} });
-    rows.push({ from_entity_id: to, relation: 'substitute_for', to_entity_id: fromId, metadata: {} });
+    rows.push({ from_entity_id: fromId, relation: 'substitutes', to_entity_id: to, metadata: metadata() });
+    rows.push({ from_entity_id: to, relation: 'substitute_for', to_entity_id: fromId, metadata: metadata() });
   }
   return uniqueRelations(rows);
+}
+
+/**
+ * What a My Practice save changes (syncMyPracticeConnections): `stale` are
+ * the entry's own "pairs_with" / "substitutes" rows an earlier save generated
+ * that its notes no longer name; `add` are the generated rows to upsert,
+ * leaving out any that already exist from somewhere else (added by hand, or
+ * with no source) so those keep their metadata and are never replaced later.
+ */
+export function practiceRelationPlan(
+  entityId: string,
+  generated: RelationRow[],
+  existing: RelationRow[],
+): { stale: RelationRow[]; add: RelationRow[] } {
+  const wanted = new Set(generated.map(relationKey));
+  const stale = uniqueRelations(
+    existing.filter(
+      (row) =>
+        row.from_entity_id === entityId &&
+        (row.relation === 'pairs_with' || row.relation === 'substitutes') &&
+        isPracticeRow(row) &&
+        !wanted.has(relationKey(row)),
+    ),
+  );
+  const elsewhere = new Set(existing.filter((row) => !isPracticeRow(row)).map(relationKey));
+  return { stale, add: uniqueRelations(generated).filter((row) => !elsewhere.has(relationKey(row))) };
 }
 
 /** An apothecary working "contains" each ingredient, which is an "ingredient_in" it (connectApothecaryIngredientsToLibraryEntity). */
@@ -310,7 +346,9 @@ export function hasConnection(
  * on the end it was on; the relation and the other end change.
  */
 export function editedRow(connection: StoredConnection, relation: string, targetEntityId: string): RelationRow {
+  // Edited by hand, so a My Practice save no longer replaces it.
+  const metadata = { ...(connection.row.metadata ?? {}), source: RELATION_SOURCES.manual };
   return connection.outgoing
-    ? { ...connection.row, id: undefined, relation, to_entity_id: targetEntityId }
-    : { ...connection.row, id: undefined, relation, from_entity_id: targetEntityId };
+    ? { ...connection.row, id: undefined, relation, to_entity_id: targetEntityId, metadata }
+    : { ...connection.row, id: undefined, relation, from_entity_id: targetEntityId, metadata };
 }

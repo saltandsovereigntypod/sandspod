@@ -82,10 +82,20 @@ export const ritualDateText = (now: Date) => now.toLocaleDateString(undefined, {
 export function altarRitualOps(
   snapshot: GrimoireSnapshot,
   ctx: { userId: string; now: string },
-  input: { id: string; bookId: string; title: string; purpose: string; items: AltarRitualItem[]; dateText: string },
+  input: {
+    id: string;
+    bookId: string;
+    /** The section open in the Grimoire (activeSectionId); top level when null. */
+    sectionId?: string | null;
+    title: string;
+    purpose: string;
+    items: AltarRitualItem[];
+    dateText: string;
+  },
   makeId: () => string,
 ): InsertOp[] {
-  const siblings = snapshot.pages.filter((p) => p.book_id === input.bookId && (p.section_id ?? null) === null);
+  const sectionId = input.sectionId ?? null;
+  const siblings = snapshot.pages.filter((p) => p.book_id === input.bookId && (p.section_id ?? null) === sectionId);
   const page: InsertOp = {
     kind: 'insert',
     table: 'grimoire_pages',
@@ -94,7 +104,7 @@ export function altarRitualOps(
       id: input.id,
       user_id: ctx.userId,
       book_id: input.bookId,
-      section_id: null,
+      section_id: sectionId,
       title: input.title || 'Ritual Working',
       icon: '',
       page_type: 'ritual',

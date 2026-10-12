@@ -26,10 +26,10 @@ const day = (iso: string) => {
     : 'Not set';
 };
 
-/** Tend a working on the altar (the website's crafted actions: Activation, Remaining, Review, Tend). */
+/** A working's Status on the altar (the website's crafted actions: Activation, Remaining, Review, Tend); opened from the "Status" chip. */
 export function TendSheet({ visible, name, state, intervalDays, onClose, onSave }: Props) {
   return (
-    <Sheet visible={visible && !!state} size="half" eyebrow="Tend" title={name} onClose={onClose}>
+    <Sheet visible={visible && !!state} size="half" eyebrow="Status" title={name} onClose={onClose}>
       {state && <TendForm key={`${name}-${state.nextTendingAt}-${state.reviewAt}`} state={state} intervalDays={intervalDays} onSave={onSave} />}
     </Sheet>
   );
