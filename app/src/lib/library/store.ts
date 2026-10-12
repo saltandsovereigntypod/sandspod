@@ -8,11 +8,13 @@
 // No provider needed: any screen can call useLibrary().
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useSyncExternalStore } from 'react';
+import { useEffect, useMemo, useSyncExternalStore } from 'react';
 
 import { newId } from '../altar/uid';
 import { useSession } from '../session';
 import { supabase } from '../supabase';
+import { hiddenTraditions } from '../holidays';
+import { useMySettings } from '../settings/store';
 import { trackSave } from '../sync/store';
 import {
   entityIdOf,
@@ -29,6 +31,7 @@ import {
 } from './connections';
 import { buildLibrary, guestPracticeRows, traditionalEntries } from './model';
 import { mergePractice, newPracticeRow, type PracticeInput } from './practiceModel';
+import { hideTraditions } from './traditions';
 import type { LibraryEntry, PracticeRow } from './types';
 
 type Status = 'ready' | 'loading' | 'offline';
@@ -126,7 +129,14 @@ export function useLibrary() {
     load(userId);
   }, [userId]);
 
-  const entries = snapshot.owner === userId ? snapshot.entries : traditionalEntries();
+  const { settings } = useMySettings();
+  // A hidden tradition (Settings → Calendar → Hide) is gone from the whole Library, on every screen.
+  const hiddenKey = hiddenTraditions(settings as Record<string, unknown> | null).join(',');
+  const loaded = snapshot.owner === userId ? snapshot.entries : null;
+  const entries = useMemo(
+    () => hideTraditions(loaded ?? traditionalEntries(), hiddenKey ? hiddenKey.split(',') : []),
+    [loaded, hiddenKey],
+  );
   return {
     entries,
     relations: snapshot.owner === userId ? snapshot.relations : [],

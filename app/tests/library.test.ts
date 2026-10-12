@@ -254,6 +254,37 @@ test('My path: follows the calendars, can be chosen, and puts your traditions fi
   assert.equal(entryVisible(onlyChristian('deity'), noChristian), false);
 });
 
+test('a hidden tradition is gone from the whole Library: its deities, labels and every mention', async () => {
+  const { hideTraditions } = await import('../src/lib/library/traditions.ts');
+  const base = traditionalEntries().find((e) => e.name === 'Rosemary')!;
+  const herb = {
+    ...base,
+    traditional: {
+      Traditions: 'Norse, Christian',
+      TraditionNotes: 'Norse: Hung at doorways.\n\nChristian: Laid on the altar at Christmas.',
+      Overview: 'A hardy herb that lent its scent to every room. Carried in church processions on Palm Sunday. Its oil soothes.',
+      Uses: 'protection, Christmas garlands, cleansing',
+      Folklore: ['Burned at Candlemas', 'Kept in the hearth'],
+      Related: "Often paired with St John's wort. Blessed on St Michael's day.",
+    },
+  };
+  const saint = { ...base, id: 'traditional:deity:saint', name: 'A Saint', type: 'deity', traditional: { Traditions: 'Christian' } };
+  const brigid = { ...base, id: 'traditional:deity:brigid', name: 'Brigid', type: 'deity', traditional: { Traditions: 'Celtic, Christian', TraditionNotes: 'Celtic: Goddess of the hearth.\n\nChristian: Honoured as St Brigid.' } };
+
+  const shown = hideTraditions([herb, saint, brigid] as never[], ['christian']) as typeof herb[];
+  assert.deepEqual(shown.map((e) => e.name), ['Rosemary', 'Brigid'], 'a Christian-only figure is gone, a goddess with a Christian side stays');
+  const t = shown[0].traditional;
+  assert.equal(t.Traditions, 'Norse');
+  assert.equal(t.TraditionNotes, 'Norse: Hung at doorways.');
+  assert.equal(t.Overview, 'A hardy herb that lent its scent to every room. Its oil soothes.', '"lent" the verb stays');
+  assert.equal(t.Uses, 'protection, cleansing');
+  assert.deepEqual(t.Folklore, ['Kept in the hearth']);
+  assert.equal(t.Related, "Often paired with St John's wort.", 'the plant St John’s wort is not a saint');
+  assert.equal((shown[1].traditional as unknown as Record<string, string>).TraditionNotes, 'Celtic: Goddess of the hearth.');
+  // Nothing hidden: the Library is untouched.
+  assert.equal(hideTraditions([herb] as never[], [])[0], herb);
+});
+
 test('a deity you work with from outside your path gets its own section with what goes with them', async () => {
   const { grimoireShelves, buildLibrary } = await import('../src/lib/library/model.ts');
   const entries = buildLibrary([

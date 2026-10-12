@@ -107,8 +107,12 @@ export function entryVisible(entry: LibraryEntry, path: MyPath): boolean {
 
 const hasOwn = (entry: LibraryEntry) => !!entry.myPractice && Object.values(entry.myPractice).some((v) => String(v ?? '').trim());
 
+// Words that name a hidden tradition, for text outside the per-tradition notes.
+// Capitalised where the lower-case word means something else (lent, advent);
+// "pre-Christian" is about the older religion and stays; St John's wort is a plant.
 const HIDDEN_WORDS: Record<string, RegExp> = {
-  christian: /\b(christians?|christianity|christ|christmas|church(es)?|saints?|easter|advent|candlemas|lent|lenten|marian|mary|jesus|gospels?|bible|biblical|michaelmas|liturg\w*|priests?|monks?|monaster\w*)\b/i,
+  christian:
+    /\b(?<![Pp]re-)(?:[Cc]hristians?|[Cc]hristianity|[Cc]hrist|[Cc]hristmas\w*|[Cc]hurch(?:es|yards?)?|[Ss]aints?|[Ee]aster(?:tide)?|[Cc]andlemas|[Mm]ichaelmas|[Ll]enten|[Mm]arian|[Jj]esus|[Gg]ospels?|[Bb]ibles?|[Bb]iblical|[Ll]iturg\w*|[Mm]onaster(?:y|ies)|[Pp]opes?|[Aa]postles?|[Aa]rchangels?|[Cc]rucifix\w*|[Rr]osar(?:y|ies)|[Pp]entecost|[Ww]hitsun\w*|[Mm]adonna|Lent|Mary|Advent|Epiphany|Annunciation|Assumption|Holy Week|Good Friday|Palm Sunday|All Saints|All Souls)\b|\bS(?:ain)?t\.? (?!John['’]?s[- ][Ww]ort)[A-Z]/,
 };
 
 /**
@@ -142,6 +146,58 @@ export function withoutHidden(record: TraditionalRecord, hidden: string[]): Trad
       .trim();
   }
   return next;
+}
+
+/** Whether a piece of text names a hidden tradition. */
+function namesHidden(text: string, words: RegExp[]): boolean {
+  return words.some((re) => re.test(text));
+}
+
+/** Text with the sentences (or, for a plain list, the items) that name a hidden tradition taken out. */
+function scrubText(text: string, words: RegExp[]): string {
+  if (!words.length || !namesHidden(text, words)) return text;
+  const isList = !/[.!?](\s|$)/.test(text.trim()) && text.includes(',');
+  if (isList) return text.split(',').map((item) => item.trim()).filter((item) => item && !namesHidden(item, words)).join(', ');
+  return text
+    .split(/(\n\s*\n)/)
+    .map((part) =>
+      /^\n/.test(part)
+        ? part
+        : (part.match(/[^.!?]+[.!?]+["”’)]*\s*|[^.!?]+$/g) ?? []).filter((sentence) => !namesHidden(sentence, words)).join('').trim(),
+    )
+    .join('')
+    .replace(/(\n\s*\n){2,}/g, '\n\n')
+    .trim();
+}
+
+function scrubValue(value: unknown, words: RegExp[]): unknown {
+  if (typeof value === 'string') return scrubText(value, words);
+  if (Array.isArray(value)) return value.filter((item) => typeof item !== 'string' || !namesHidden(item, words)).map((item) => scrubValue(item, words));
+  if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, scrubValue(v, words)]));
+  return value;
+}
+
+/**
+ * The Library as someone with hidden traditions sees it, everywhere in the
+ * app: deities that belong only to hidden traditions are gone, and every
+ * Traditional field loses what names a hidden tradition (its paragraph in
+ * TraditionNotes, its sentences or list items elsewhere). Their own My
+ * Practice notes are never changed.
+ */
+export function hideTraditions<T extends LibraryEntry>(entries: T[], hidden: string[]): T[] {
+  if (!hidden.length) return entries;
+  const path: MyPath = { mode: 'off', traditions: [], hideOtherDeities: false, hidden };
+  const words = hidden.map((id) => HIDDEN_WORDS[id]).filter((re): re is RegExp => !!re);
+  return entries
+    .filter((entry) => entryVisible(entry, path))
+    .map((entry) => {
+      if (!entry.traditional) return entry;
+      const record = withoutHidden(entry.traditional, hidden);
+      const scrubbed = Object.fromEntries(
+        Object.entries(record).map(([key, value]) => [key, key === 'Traditions' || key === 'TraditionNotes' ? value : scrubValue(value, words)]),
+      ) as TraditionalRecord;
+      return { ...entry, traditional: scrubbed };
+    });
 }
 
 export const isPathTradition = (id: string) => known.has(id);
