@@ -167,7 +167,7 @@ export default function Journey() {
           <Text style={type.body}>Your recorded journey begins with the first thing you choose to keep.</Text>
           <MenuList>
             <MenuRow label="Open Book of Shadows" onPress={() => router.push('/grimoire')} />
-            <MenuRow label="Visit the Altar" icon="altar" onPress={() => router.push('/altar')} />
+            <MenuRow label="Visit the Altar" onPress={() => router.push('/altar')} />
             <MenuRow label="Create or Open a Ritual" last onPress={() => router.push('/rituals')} />
           </MenuList>
         </Section>
