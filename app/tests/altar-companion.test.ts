@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
+import type { AltarDocument } from '../src/lib/altar/snapshot.ts';
+
 import { glanceLine, resolveAltarEntry, stateRows, traditionalSplit } from '../src/lib/altar/companion.ts';
 import { buildLibrary } from '../src/lib/library/model.ts';
 
@@ -130,17 +132,16 @@ test('altar-wide edits: light all, snuff all, group, ungroup, rename, clear', as
   const { lightAll, snuffAll, groupObjects, ungroup, renameObject, clearAltar, groupIndices } = await import('../src/lib/altar/editor.ts');
   const now = '2026-10-11T20:00:00.000Z';
   const later = '2026-10-11T21:00:00.000Z';
-  let doc = { background: '', backgroundName: '', groups: [], activeGroupId: null, extra: {}, objects: [{ type: 'candle', label: 'Red' }, { type: 'candle', label: 'White' }, { type: 'crystal', label: 'Jet' }] } as never;
+  let doc: AltarDocument = { background: '', backgroundName: '', groups: [], activeGroupId: null, extra: {}, objects: [{ type: 'candle', label: 'Red' }, { type: 'candle', label: 'White' }, { type: 'crystal', label: 'Jet' }] };
   doc = lightAll(doc, now);
-  assert.ok((doc as { objects: { lit?: string }[] }).objects.slice(0, 2).every((o) => o.lit === 'true'));
+  assert.ok(doc.objects.slice(0, 2).every((o) => o.lit === 'true'));
   doc = snuffAll(doc, later);
-  assert.equal(JSON.parse(String((doc as { objects: { livingState: string }[] }).objects[0].livingState)).candle.totalBurnMs, 3_600_000);
+  assert.equal(JSON.parse(String(doc.objects[0].livingState)).candle.totalBurnMs, 3_600_000);
   doc = groupObjects(doc, [0, 2], 'Protection', now);
   assert.deepEqual(groupIndices(doc, 0), [0, 2]);
-  const id = (doc as { groups: { id: string }[] }).groups[0].id;
-  doc = ungroup(doc, id);
+  doc = ungroup(doc, doc.groups[0].id);
   assert.deepEqual(groupIndices(doc, 0), [0]);
   doc = renameObject(doc, 2, 'Grandmother’s jet');
-  assert.equal((doc as { objects: { label: string }[] }).objects[2].label, 'Grandmother’s jet');
-  assert.equal((clearAltar(doc) as { objects: unknown[] }).objects.length, 0);
+  assert.equal(doc.objects[2].label, 'Grandmother’s jet');
+  assert.equal(clearAltar(doc).objects.length, 0);
 });
