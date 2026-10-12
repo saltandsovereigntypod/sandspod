@@ -4,8 +4,16 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { authReturnUrl } from '../googleSignIn';
 import { supabase } from '../supabase';
-import { interpretDeleteResponse, type DeleteResult } from './accountRules';
+import {
+  authMessage,
+  interpretDeleteResponse,
+  isEmailAddress,
+  validateEmailChange,
+  validatePasswordPair,
+  type DeleteResult,
+} from './accountRules';
 
 export * from './accountRules';
 
@@ -53,4 +61,33 @@ export async function forgetAccountOnDevice(userId: string): Promise<void> {
   } catch {
     // The server session is gone with the account.
   }
+}
+
+// Password and email changes, matching the website's js/account-data.js.
+// Each throws an Error whose message is ready to show.
+
+export async function requestRecovery(email: string): Promise<string> {
+  const address = email.trim();
+  if (!isEmailAddress(address)) throw new Error('Enter a complete email address.');
+  const { error } = await supabase.auth.resetPasswordForEmail(address, { redirectTo: authReturnUrl() });
+  if (error) throw new Error(authMessage(error, 'recovery'));
+  return 'If an account exists for that email, a recovery link has been sent.';
+}
+
+export async function updatePassword(password: string, confirmation: string): Promise<void> {
+  const validation = validatePasswordPair(password, confirmation);
+  if (!validation.valid) throw new Error(validation.message);
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) throw new Error(authMessage(error));
+}
+
+export async function requestEmailChange(
+  currentEmail: string | null | undefined,
+  email: string,
+  confirmation: string,
+): Promise<void> {
+  const validation = validateEmailChange(currentEmail, email, confirmation);
+  if (!validation.valid) throw new Error(validation.message);
+  const { error } = await supabase.auth.updateUser({ email: validation.email }, { emailRedirectTo: authReturnUrl() });
+  if (error) throw new Error(authMessage(error));
 }

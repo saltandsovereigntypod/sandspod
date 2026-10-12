@@ -3,7 +3,8 @@ import { Text } from 'react-native';
 
 import { MenuList, MenuRow, MoreScreen } from '../../../../components/more/ui';
 import { useSession } from '../../../../lib/session';
-import { layerOrderLabel } from '../../../../lib/settings/defaults';
+import { holidayChoice, TRADITIONS } from '../../../../lib/holidays';
+import { layerOrderLabel, type Settings } from '../../../../lib/settings/defaults';
 import { useMySettings } from '../../../../lib/settings/store';
 import { type } from '../../../../theme';
 
@@ -22,6 +23,12 @@ export default function SettingsIndex() {
           onPress={() => router.push('/more/settings/identity')}
         />
         <MenuRow
+          icon="altar"
+          label="Appearance"
+          detail={settings?.default_altar_background ? `New altars: ${settings.default_altar_background}` : 'Default altar background'}
+          onPress={() => router.push('/more/settings/appearance')}
+        />
+        <MenuRow
           icon="community"
           label="Book of Shadows"
           detail="Mundane mode, page font"
@@ -32,6 +39,28 @@ export default function SettingsIndex() {
           label="Living Library"
           detail={settings ? layerOrderLabel(settings.library_layer_order) : 'Layers and what they show'}
           onPress={() => router.push('/more/settings/library')}
+        />
+        <MenuRow
+          icon="altar"
+          label="Companion panel"
+          detail={
+            settings?.companion_copy_grimoire_settings === false
+              ? layerOrderLabel(String(settings.companion_layer_order || 'myPractice,traditional,community'))
+              : 'Same as Living Library pages'
+          }
+          onPress={() => router.push('/more/settings/companion')}
+        />
+        <MenuRow
+          icon="moon"
+          label="Living Objects"
+          detail="What an object’s living state shows"
+          onPress={() => router.push('/more/settings/objects')}
+        />
+        <MenuRow
+          icon="moon"
+          label="Calendar & holidays"
+          detail={calendarSummary(settings)}
+          onPress={() => router.push('/more/settings/calendar')}
           last
         />
       </MenuList>
@@ -42,4 +71,11 @@ export default function SettingsIndex() {
       </Text>
     </MoreScreen>
   );
+}
+
+function calendarSummary(settings: Settings | null): string {
+  if (!settings) return 'Holidays and what Today shows';
+  const { traditions } = holidayChoice(settings);
+  const names = traditions.map((id) => (id === 'custom' ? 'Your own calendar' : TRADITIONS.find((t) => t.id === id)?.name ?? id));
+  return names.length ? names.join(', ') : 'No calendars chosen';
 }

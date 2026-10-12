@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { foldLine, googleCalendarUrl, icsText, moonEvents, planEvent, sabbatEvents, toIcs } from '../src/lib/reminders/calendarEvent.ts';
+import { foldLine, googleCalendarUrl, icsText, moonEvents, planEvent, holidayEvents, holidayKeyDate, toIcs } from '../src/lib/reminders/calendarEvent.ts';
 import type { RitualPlan, TemplateRow } from '../src/lib/rituals/types.ts';
 
 const plan: RitualPlan = {
@@ -55,16 +55,27 @@ test('moon phase and sabbat events are all-day, stable and chosen', () => {
   assert.equal(fulls[0].end.getTime() - fulls[0].start.getTime() >= 23 * 3_600_000, true);
   assert.equal(moonEvents({ new: false, firstQuarter: false, full: false, lastQuarter: false }, from).length, 0);
 
-  const sabbats = sabbatEvents(from, 365);
+  const sabbats = holidayEvents(from, 365);
   assert.deepEqual(sabbats.map((s) => s.title), ['Mabon', 'Samhain', 'Yule', 'Imbolc', 'Ostara', 'Beltane', 'Litha', 'Lammas']);
-  assert.equal(sabbats[1].key, 'sabbat-samhain-2026');
+  assert.equal(sabbats[1].key, 'holiday-samhain-2026-10-31');
   assert.equal(sabbats[1].start.getMonth(), 9);
   assert.equal(sabbats[1].start.getDate(), 31);
+  assert.match(sabbats[1].notes ?? '', /veil between the worlds[\s\S]*Wheel of the Year/);
+  assert.equal(holidayKeyDate(sabbats[1].key)?.getTime(), new Date(2026, 9, 31).getTime());
+  assert.equal(holidayKeyDate('sabbat-samhain-2026'), null);
+
+  // Other calendars, and several-day festivals spanning their days.
+  const roman = holidayEvents(new Date(2026, 11, 1), 30, { traditions: ['roman'], custom: [] });
+  const saturnalia = roman.find((e) => e.title === 'Saturnalia')!;
+  assert.equal(saturnalia.key, 'holiday-saturnalia-2026-12-17');
+  assert.equal(Math.round((saturnalia.end.getTime() - saturnalia.start.getTime()) / 86_400_000), 7);
+  const norse = holidayEvents(new Date(2026, 9, 1), 60, { traditions: ['norse'], custom: [] });
+  assert.equal(norse[0].key, 'holiday-winter-nights-vetrnaetur-2026-10-24');
 });
 
 test('.ics output follows RFC 5545', () => {
   const now = new Date(Date.UTC(2026, 8, 25, 12, 0, 0));
-  const ics = toIcs([planEvent(plan)!, ...sabbatEvents(new Date(2026, 9, 1), 40)], now);
+  const ics = toIcs([planEvent(plan)!, ...holidayEvents(new Date(2026, 9, 1), 40)], now);
   const lines = ics.split('\r\n');
   assert.equal(lines[0], 'BEGIN:VCALENDAR');
   assert.equal(lines.at(-2), 'END:VCALENDAR');
@@ -99,6 +110,50 @@ test('the Google Calendar link carries the title, times and notes', () => {
   assert.equal(url.searchParams.get('text'), 'Love working');
   assert.match(url.searchParams.get('dates') ?? '', /^\d{8}T\d{6}Z\/\d{8}T\d{6}Z$/);
   assert.match(url.searchParams.get('details') ?? '', /Bring: Pink Candle, Rose/);
-  const allDay = new URL(googleCalendarUrl(sabbatEvents(new Date(2026, 9, 1), 40)[0]));
+  const allDay = new URL(googleCalendarUrl(holidayEvents(new Date(2026, 9, 1), 40)[0]));
   assert.equal(allDay.searchParams.get('dates'), '20261031/20261101');
+});
+
+test('eclipse and retrograde-station events, dated like holidays', async () => {
+  const { astroEvents, datedKeyDate } = await import('../src/lib/reminders/calendarEvent.ts');
+  const events = astroEvents(new Date(2026, 9, 1), 60);
+  const keys = events.map((e) => e.key);
+  // Mercury turns retrograde Oct 24 and direct Nov 13; Venus direct Nov 14 (2026).
+  assert.ok(keys.some((k) => /^astro-station-mercury-retrograde-2026-10-2[34]$/.test(k)), keys.join(' '));
+  assert.ok(keys.some((k) => /^astro-station-mercury-direct-2026-11-1[34]$/.test(k)));
+  assert.ok(keys.some((k) => /^astro-station-venus-direct-2026-11-1[345]$/.test(k)));
+  assert.ok(events.every((e) => e.allDay && e.notes?.includes('Salt & Sovereignty')));
+  const eclipses = astroEvents(new Date(2026, 7, 1), 40).filter((e) => e.key.startsWith('astro-eclipse'));
+  assert.deepEqual(eclipses.map((e) => e.title), ['Total solar eclipse in Leo', 'Partial lunar eclipse in Pisces']);
+  assert.equal(datedKeyDate('astro-eclipse-solar-2026-08-12')?.getTime(), new Date(2026, 7, 12).getTime());
+  assert.equal(datedKeyDate('moon-full-2026-08-28'), null);
+});
+
+test('one event setting shapes every event of its kind', async () => {
+  const { styleEvent, normalizeStyle, DEFAULT_STYLE } = await import('../src/lib/reminders/calendarEvent.ts');
+  const [full] = moonEvents({ new: false, firstQuarter: false, full: true, lastQuarter: false }, new Date(2026, 8, 20));
+  assert.ok(full.exact);
+
+  const allDay = styleEvent(full, DEFAULT_STYLE);
+  assert.equal(allDay.allDay, true);
+  assert.equal(allDay.alarms, undefined);
+
+  const exact = styleEvent(full, normalizeStyle({ timing: 'exact', duration: 30, alert: -60, details: false }));
+  assert.equal(exact.allDay, false);
+  assert.equal(exact.start.getTime(), full.exact!.getTime());
+  assert.equal(exact.end.getTime() - exact.start.getTime(), 30 * 60_000);
+  assert.deepEqual(exact.alarms, [-60]);
+  assert.equal(exact.notes, 'From the Salt & Sovereignty app.');
+
+  const evening = styleEvent(full, normalizeStyle({ timing: 'time', minutes: 21 * 60 + 15 }));
+  assert.equal(evening.start.getDate(), full.start.getDate());
+  assert.equal(evening.start.getHours(), 21);
+  assert.equal(evening.start.getMinutes(), 15);
+
+  const ics = toIcs([exact], new Date(2026, 8, 20));
+  assert.match(ics, /BEGIN:VALARM\r\nACTION:DISPLAY\r\n.*\r\nTRIGGER:-PT60M\r\nEND:VALARM/);
+
+  // An all-day alert never sticks to a timed event, or the other way round.
+  assert.equal(normalizeStyle({ timing: 'time', alert: 540 }).alert, null);
+  assert.equal(normalizeStyle({ timing: 'allDay', alert: 540 }).alert, 540);
 });

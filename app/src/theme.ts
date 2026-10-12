@@ -1,6 +1,8 @@
 // Design tokens carried over from the website's witchcore palette
 // (css/styles.css) and the approved app mockups.
 
+import { accessibleTextStyle, currentAccessibility, type AccessibilityPrefs } from './lib/accessibility/prefs.ts';
+
 export const colors = {
   night: '#070a08', // tab bar, deepest background
   ground: '#0c1510', // screen background
@@ -41,7 +43,7 @@ export const space = {
 // Minimum touch target on every tappable element.
 export const touch = 44;
 
-export const type = {
+const baseType = {
   eyebrow: {
     fontFamily: fonts.body,
     fontSize: 12,
@@ -74,3 +76,37 @@ export const type = {
     color: colors.muted,
   },
 } as const;
+
+type TypeStyles = typeof baseType;
+let shaped: { prefs: AccessibilityPrefs; styles: TypeStyles } | null = null;
+
+/** The text styles with More → Accessibility applied (text size, spacing, font, contrast). */
+function typeStyles(): TypeStyles {
+  const prefs = currentAccessibility();
+  if (shaped?.prefs !== prefs) {
+    const styles = Object.fromEntries(
+      Object.entries(baseType).map(([key, style]) => [key, accessibleTextStyle(style, prefs)]),
+    ) as unknown as TypeStyles;
+    shaped = { prefs, styles };
+  }
+  return shaped.styles;
+}
+
+// Read when a screen renders, so its next render picks up a change in Accessibility.
+export const type = {
+  get eyebrow() {
+    return typeStyles().eyebrow;
+  },
+  get title() {
+    return typeStyles().title;
+  },
+  get cardTitle() {
+    return typeStyles().cardTitle;
+  },
+  get body() {
+    return typeStyles().body;
+  },
+  get caption() {
+    return typeStyles().caption;
+  },
+};

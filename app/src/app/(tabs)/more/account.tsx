@@ -1,15 +1,41 @@
 import { router } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
-import { Card, MenuList, MenuRow, MoreScreen, Section } from '../../../components/more/ui';
+import { Card, Field, MenuList, MenuRow, MoreScreen, Notice, Section } from '../../../components/more/ui';
+import { guestPreview } from '../../../lib/backup/migrate';
+import { movingSummary, worthMoving } from '../../../lib/backup/migration';
 import { useSession } from '../../../lib/session';
-import { providerSummary } from '../../../lib/settings/accountRules';
+import {
+  hasPasswordIdentity,
+  MIN_PASSWORD_LENGTH,
+  providerSummary,
+  requestEmailChange,
+  requestRecovery,
+  updatePassword,
+} from '../../../lib/settings/account';
+import { formatLastSync, statusDetail, statusLabel } from '../../../lib/sync/status';
+import { useCloudSync } from '../../../lib/sync/store';
 import { colors, fonts, type } from '../../../theme';
 
 export default function Account() {
   const { session, signOut } = useSession();
   const user = session?.user ?? null;
+  const cloud = useCloudSync();
+  const [guestWork, setGuestWork] = useState<string | null>(null);
+
+  // Guest work still on this device, ready to bring into the account.
+  useEffect(() => {
+    let active = true;
+    if (user)
+      guestPreview().then((preview) => {
+        if (active) setGuestWork(preview && worthMoving(preview.counts) ? movingSummary(preview.counts).join(' · ') : null);
+      });
+    return () => {
+      active = false;
+    };
+  }, [user]);
 
   if (!user) {
     return (
@@ -31,8 +57,12 @@ export default function Account() {
       <Card>
         <Fact label="Signed in as" value={user.email ?? 'Current account'} />
         <Fact label="Sign-in method" value={providerSummary(user)} />
+        <View accessibilityLiveRegion="polite">
+          <Fact label="Cloud status" value={statusLabel(cloud.status)} />
+        </View>
+        <Fact label="Last successful sync" value={formatLastSync(cloud.lastSuccess)} />
         <Text style={type.caption}>
-          Your Sanctuary is saved to your account. Signing out doesn't delete anything; sign back in to see it again.
+          {statusDetail(cloud.status)} Signing out doesn't delete anything; sign back in to see it again.
         </Text>
         <Button
           label="Sign out"
@@ -43,6 +73,33 @@ export default function Account() {
           }}
         />
       </Card>
+
+      {!!guestWork && (
+        <Section label="Guest work on this device">
+          <MenuList>
+            <MenuRow label="Bring it into your account" detail={guestWork} onPress={() => router.push('/more/guest-data')} last />
+          </MenuList>
+        </Section>
+      )}
+
+      <Section label="Security">
+        {hasPasswordIdentity(user) ? (
+          <ChangePassword />
+        ) : (
+          <Card>
+            <Text style={type.body}>
+              This account uses Google sign-in. No email and password sign-in is linked, so there is no password to
+              change here.
+            </Text>
+          </Card>
+        )}
+        <ChangeEmail currentEmail={user.email} />
+        <Card>
+          <Text style={type.cardTitle}>Password recovery link</Text>
+          <Text style={type.caption}>We’ll email {user.email ?? 'your account address'} a link for choosing a new password.</Text>
+          <RecoveryLink email={user.email ?? ''} />
+        </Card>
+      </Section>
 
       <Section label="Danger zone">
         <MenuList>
@@ -55,6 +112,136 @@ export default function Account() {
         </MenuList>
       </Section>
     </MoreScreen>
+  );
+}
+
+/** Runs an account request, showing its progress and outcome underneath. */
+function useRequest() {
+  const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
+  const run = async (pending: string, request: () => Promise<string>, onError?: () => void) => {
+    setBusy(true);
+    setStatus(pending);
+    try {
+      setStatus(await request());
+    } catch (error) {
+      onError?.();
+      setStatus(error instanceof Error ? error.message : 'That account change could not be completed. Please try again.');
+    }
+    setBusy(false);
+  };
+  return { busy, status, run };
+}
+
+function ChangePassword() {
+  const [password, setPassword] = useState('');
+  const [confirmation, setConfirmation] = useState('');
+  const { busy, status, run } = useRequest();
+  const clear = () => {
+    setPassword('');
+    setConfirmation('');
+  };
+
+  return (
+    <Card>
+      <Text style={type.cardTitle}>Change password</Text>
+      <Field
+        label="New password"
+        hint={`At least ${MIN_PASSWORD_LENGTH} characters.`}
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        autoComplete="new-password"
+        textContentType="newPassword"
+      />
+      <Field
+        label="Confirm new password"
+        value={confirmation}
+        onChangeText={setConfirmation}
+        secureTextEntry
+        autoComplete="new-password"
+        textContentType="newPassword"
+      />
+      {!!status && <Notice>{status}</Notice>}
+      <Button
+        label={busy ? 'One moment…' : 'Change password'}
+        disabled={busy || !password}
+        onPress={() =>
+          run(
+            'Updating your password…',
+            async () => {
+              await updatePassword(password, confirmation);
+              clear();
+              return 'Your password has been changed.';
+            },
+            clear,
+          )
+        }
+      />
+    </Card>
+  );
+}
+
+function ChangeEmail({ currentEmail }: { currentEmail?: string | null }) {
+  const [email, setEmail] = useState('');
+  const [confirmation, setConfirmation] = useState('');
+  const { busy, status, run } = useRequest();
+
+  return (
+    <Card>
+      <Text style={type.cardTitle}>Change email</Text>
+      <Text style={type.caption}>Current email: {currentEmail ?? 'Unavailable'}</Text>
+      <Field
+        label="New email"
+        value={email}
+        onChangeText={setEmail}
+        autoCapitalize="none"
+        autoComplete="email"
+        keyboardType="email-address"
+        textContentType="emailAddress"
+      />
+      <Field
+        label="Confirm new email"
+        value={confirmation}
+        onChangeText={setConfirmation}
+        autoCapitalize="none"
+        autoComplete="email"
+        keyboardType="email-address"
+        textContentType="emailAddress"
+      />
+      <Text style={type.caption}>
+        We’ll send a confirmation email, and you may need to confirm at both your old and new addresses. Your account
+        email changes only once that’s done.
+      </Text>
+      {!!status && <Notice>{status}</Notice>}
+      <Button
+        label={busy ? 'One moment…' : 'Request email change'}
+        disabled={busy || !email}
+        onPress={() =>
+          run('Requesting your email change…', async () => {
+            await requestEmailChange(currentEmail, email, confirmation);
+            setEmail('');
+            setConfirmation('');
+            return 'Your request was sent. Check your email: the account email will update after the required confirmations.';
+          })
+        }
+      />
+    </Card>
+  );
+}
+
+function RecoveryLink({ email }: { email: string }) {
+  const { busy, status, run } = useRequest();
+  return (
+    <>
+      {!!status && <Notice>{status}</Notice>}
+      <Button
+        label={busy ? 'One moment…' : 'Send recovery link'}
+        variant="outline"
+        disabled={busy || !email}
+        onPress={() => run('Sending a recovery link…', () => requestRecovery(email))}
+      />
+    </>
   );
 }
 

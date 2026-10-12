@@ -9,12 +9,18 @@ import { newId } from './uid.ts';
 
 export type Dressing = { type: string; herb: string; form: string; label: string; [key: string]: unknown };
 
+/** A word, name or sigil carved into a candle. The app's own addition; the website keeps it untouched. */
+export type Carving = { text: string; carvedAt: string };
+
+export const CARVING_MAX = 40;
+
 type CandleState = {
   totalBurnMs?: number;
   currentBurnStartedAt?: string;
   lastLitAt?: string;
   burnHistory?: { startedAt: string; endedAt: string; durationMs: number }[];
   dressings?: Dressing[];
+  carvings?: Carving[];
   [key: string]: unknown;
 };
 
@@ -106,7 +112,7 @@ export function readLivingState(object: SavedObject, now: string): LivingState {
 }
 
 /** Write state back, stamped like the website's saveLivingState(). */
-function writeLivingState(object: SavedObject, state: LivingState, now: string): SavedObject {
+export function writeLivingState(object: SavedObject, state: LivingState, now: string): SavedObject {
   const next: SavedObject = { ...object, livingState: JSON.stringify({ ...state, updatedAt: now }) };
   // Once livingState exists it is the only authority; drop the legacy copies.
   delete next.dressings;
@@ -213,4 +219,53 @@ export function ensureLivingState(object: SavedObject, now: string): SavedObject
     next = { ...next, livingState: JSON.stringify(stamped) };
   }
   return next;
+}
+
+export function carvingsOf(object: SavedObject): Carving[] {
+  const carvings = parseLivingState(object)?.candle?.carvings;
+  return Array.isArray(carvings) ? carvings.filter((c) => c && typeof c.text === 'string' && c.text.trim()) : [];
+}
+
+/** Carve a word into a candle. Blank or repeated words change nothing. */
+export function carveCandle(candle: SavedObject, text: string, now: string): SavedObject {
+  const word = text.replace(/\s+/g, ' ').trim().slice(0, CARVING_MAX);
+  if (!isCandle(candle) || !word) return candle;
+  const current = carvingsOf(candle);
+  if (current.some((c) => c.text.toLowerCase() === word.toLowerCase())) return candle;
+  const state = readLivingState(candle, now);
+  return writeLivingState(
+    candle,
+    { ...state, lastUsedAt: now, candle: { ...state.candle, carvings: [...current, { text: word, carvedAt: now }] } },
+    now,
+  );
+}
+
+/** Smooth one carving away, or all of them when no index is given. */
+export function uncarveCandle(candle: SavedObject, now: string, index?: number): SavedObject {
+  const current = carvingsOf(candle);
+  if (!isCandle(candle) || current.length === 0) return candle;
+  const carvings = index == null ? [] : current.filter((_, i) => i !== index);
+  const state = readLivingState(candle, now);
+  return writeLivingState(candle, { ...state, lastUsedAt: now, candle: { ...state.candle, carvings } }, now);
+}
+
+export type ApothecaryState = { activationState: string; remainingAmount: string; reviewAt: string; status: string; nextTendingAt: string };
+
+/** A crafted item's own state: activation, what's left, and its tending and review dates. */
+export function apothecaryStateOf(object: SavedObject): ApothecaryState {
+  const raw = (parseLivingState(object)?.apothecary ?? {}) as Partial<ApothecaryState>;
+  return {
+    activationState: String(raw.activationState ?? ''),
+    remainingAmount: String(raw.remainingAmount ?? ''),
+    reviewAt: String(raw.reviewAt ?? ''),
+    status: String(raw.status ?? 'active'),
+    nextTendingAt: String(raw.nextTendingAt ?? ''),
+  };
+}
+
+/** Change a crafted item's state (setLivingApothecaryState); everything else in its state is kept. */
+export function setApothecaryState(object: SavedObject, change: Partial<ApothecaryState>, now: string): SavedObject {
+  const state = readLivingState(object, now);
+  const apothecary = { ...apothecaryStateOf(object), ...change };
+  return writeLivingState(object, { ...state, lastUsedAt: now, apothecary }, now);
 }

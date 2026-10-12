@@ -1,11 +1,14 @@
 import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BlockView, ink, Ornament, PageLinkButton } from '../../../components/grimoire/BlockView';
+import { MundaneToggle, PageFaceContext, useMundaneMode } from '../../../components/grimoire/presentation';
 import { Button } from '../../../components/Button';
 import { Icon } from '../../../components/Icon';
 import { fullDate } from '../../../lib/calendar';
+import { bookTitle, displayPageTitle, mundaneWords, pageFace } from '../../../lib/grimoire/presentation';
 import { plainText } from '../../../lib/grimoire/richText';
 import { useGrimoire } from '../../../lib/grimoire/store';
 import { blockSource, pageBlocks, pageFacts, pageTypeLabel } from '../../../lib/grimoire/structure';
@@ -13,10 +16,19 @@ import { colors, fonts, touch, type } from '../../../theme';
 
 export default function GrimoirePage() {
   const { pageId } = useLocalSearchParams<{ pageId: string }>();
-  const { snapshot, canEdit } = useGrimoire();
+  const { snapshot, canEdit, actions } = useGrimoire();
+  const { mundane, setMundane, settings } = useMundaneMode();
+  const face = pageFace(settings?.grimoire_page_font);
   const page = snapshot?.pages.find((p) => p.id === pageId) ?? null;
   const book = page ? snapshot?.books.find((b) => b.id === page.book_id) : null;
   const section = page?.section_id ? snapshot?.sections.find((s) => s.id === page.section_id) : null;
+
+  // Reading a page opens its section, as on the website (activeSectionId).
+  const pageFound = !!page;
+  const pageSectionId = page?.section_id ?? null;
+  useEffect(() => {
+    if (pageFound) actions.setOpenSection(pageSectionId);
+  }, [actions, pageFound, pageSectionId]);
 
   const blocks = snapshot && page ? pageBlocks(snapshot, page.id) : [];
   const visible = blocks.filter((b) => b.block_type === 'divider' || plainText(blockSource(b)).trim());
@@ -39,8 +51,9 @@ export default function GrimoirePage() {
           </View>
         </Pressable>
         <Text style={[type.caption, styles.crumb]} numberOfLines={1}>
-          {[book?.title, section?.title].filter(Boolean).join(' · ')}
+          {[book ? bookTitle(book.title, mundane) : null, section?.title].filter(Boolean).join(' · ')}
         </Text>
+        {page && <MundaneToggle mundane={mundane} onChange={setMundane} />}
         {page && canEdit && (
           <Button
             label="Edit"
@@ -55,45 +68,47 @@ export default function GrimoirePage() {
         {!page ? (
           <Text style={[type.body, styles.missing]}>This page couldn't be found. It may have been removed on the website.</Text>
         ) : (
-          <View style={styles.paper}>
-            <View style={styles.titleBlock}>
-              <Text style={styles.eyebrow}>{pageTypeLabel(page)}</Text>
-              <Text accessibilityRole="header" style={styles.title}>
-                {page.title || 'Untitled page'}
-              </Text>
-              {!!details && <Text style={styles.details}>{details}</Text>}
-            </View>
-            <Ornament />
+          <PageFaceContext.Provider value={face}>
+            <View style={styles.paper}>
+              <View style={styles.titleBlock}>
+                <Text style={styles.eyebrow}>{mundane ? mundaneWords(pageTypeLabel(page)) : pageTypeLabel(page)}</Text>
+                <Text accessibilityRole="header" style={styles.title}>
+                  {displayPageTitle(page, mundane)}
+                </Text>
+                {!!details && <Text style={styles.details}>{details}</Text>}
+              </View>
+              <Ornament />
 
-            {facts && facts.altarItems.length > 0 && (
-              <View style={styles.group}>
-                <Text style={styles.subheading}>On the altar</Text>
-                <View style={styles.chips}>
-                  {facts.altarItems.map((label) => (
-                    <View key={label} style={styles.chip}>
-                      <Text style={styles.chipText}>{label}</Text>
-                    </View>
-                  ))}
+              {facts && facts.altarItems.length > 0 && (
+                <View style={styles.group}>
+                  <Text style={styles.subheading}>On the altar</Text>
+                  <View style={styles.chips}>
+                    {facts.altarItems.map((label) => (
+                      <View key={label} style={styles.chip}>
+                        <Text style={styles.chipText}>{label}</Text>
+                      </View>
+                    ))}
+                  </View>
                 </View>
-              </View>
-            )}
+              )}
 
-            {visible.length === 0 ? (
-              <Text style={styles.placeholder}>This page is waiting for your words.</Text>
-            ) : (
-              visible.map((block) => <BlockView key={block.id} block={block} pages={snapshot?.pages ?? []} />)
-            )}
+              {visible.length === 0 ? (
+                <Text style={styles.placeholder}>This page is waiting for your words.</Text>
+              ) : (
+                visible.map((block) => <BlockView key={block.id} block={block} pages={snapshot?.pages ?? []} />)
+              )}
 
-            {links.length > 0 && (
-              <View style={styles.group}>
-                <Text style={styles.subheading}>Linked pages</Text>
-                {links.map((link) => {
-                  const target = snapshot?.pages.find((p) => p.id === link.target_page_id);
-                  return target ? <PageLinkButton key={link.id} page={target} label={link.link_label || target.title} /> : null;
-                })}
-              </View>
-            )}
-          </View>
+              {links.length > 0 && (
+                <View style={styles.group}>
+                  <Text style={styles.subheading}>Linked pages</Text>
+                  {links.map((link) => {
+                    const target = snapshot?.pages.find((p) => p.id === link.target_page_id);
+                    return target ? <PageLinkButton key={link.id} page={target} label={link.link_label || target.title} /> : null;
+                  })}
+                </View>
+              )}
+            </View>
+          </PageFaceContext.Provider>
         )}
       </ScrollView>
     </SafeAreaView>

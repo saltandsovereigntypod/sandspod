@@ -4,7 +4,6 @@
    ========================================================= */
 
 const APOTHECARY_STORAGE_KEY = "saltAndSovereigntyApothecaryItems";
-const APOTHECARY_GRIMOIRE_HANDOFF_KEY = "saltAndSovereigntyApothecaryToGrimoire";
 
 const apothecaryTypes = [
   {
@@ -136,12 +135,26 @@ async function loadApothecaryItems() {
 async function saveApothecaryItems(items) {
   const previousItems = apothecaryItemsCache;
 
-  const user = await ensureAltarUser();
+  const user =
+    typeof getCurrentAssetUser === "function"
+      ? await getCurrentAssetUser()
+      : await ensureAltarUser();
 
   if (!user) {
-    console.error("[Apothecary] No authenticated user was available during save.");
-    showAltarToast("Please sign in again before saving to My Apothecary");
-    return false;
+    // Guests keep My Apothecary in this browser, under the key loadApothecaryItems reads.
+    const localItems = items.map(normalizeApothecaryItem).filter((item) => item.id);
+    try {
+      localStorage.setItem(APOTHECARY_STORAGE_KEY, JSON.stringify(localItems));
+    } catch (error) {
+      apothecaryItemsCache = previousItems;
+      console.error("[Apothecary] Local save failed", error);
+      showAltarToast("My Apothecary could not be saved in this browser. A smaller picture may help.");
+      return false;
+    }
+    apothecaryItemsCache = localItems;
+    window.SaltAccountData?.markGuestDataChanged?.(localStorage);
+    announceApothecarySearchChange();
+    return true;
   }
 
   const rows = items.map(normalizeApothecaryItem).map((item) => mapApothecaryItemToRow(item, user.id));
@@ -742,31 +755,6 @@ function readUploadedImage(file) {
   });
 }
 
-function createGrimoireHandoffForApothecaryItem(item) {
-  if (!item.logToGrimoire) return item;
-
-  const handoff = {
-    source: "apothecary",
-    itemId: item.id,
-    title: item.name,
-    type: item.type,
-    typeLabel: item.typeLabel,
-    intention: item.intention || "",
-    notes: item.notes || "",
-    details: item.details || {},
-    ingredients: item.ingredients || [],
-    createdAt: item.createdAt,
-    updatedAt: item.updatedAt
-  };
-
-  localStorage.setItem(APOTHECARY_GRIMOIRE_HANDOFF_KEY, JSON.stringify(handoff));
-
-  return {
-    ...item,
-    grimoireStatus: item.grimoireEntryId ? "linked" : "ready to log"
-  };
-}
-
 function replaceSelectedIngredientsWithApothecaryObject(item) {
   const ingredients = getSelectedApothecaryIngredients();
 
@@ -824,7 +812,8 @@ async function saveCreatedApothecaryItem(form, modal) {
   const intention = String(formData.get("intention") || "").trim();
   const notes = String(formData.get("notes") || "").trim();
   const details = collectApothecaryTypeSpecificDetails(formData);
-  const logToGrimoire = formData.get("log_to_grimoire") === "on";
+  // Workings are kept in the Living Library's My Practice (and so the grimoire); there is no separate log.
+  const logToGrimoire = false;
   const tendingEnabled = formData.get("tending_enabled") === "on";
   const tendingIntervalDays = Number(formData.get("tending_interval_days") || 30);
   const expirationEnabled = formData.get("expiration_enabled") === "on";
@@ -915,8 +904,6 @@ async function saveCreatedApothecaryItem(form, modal) {
         });
     }
   }
-
-  item = createGrimoireHandoffForApothecaryItem(item);
 
   const updatedItems = existingItem
     ? items.map((savedItem) => (savedItem.id === item.id ? item : savedItem))
@@ -1097,20 +1084,21 @@ async function deleteApothecaryItem(itemId) {
 
     apothecaryItemsCache = apothecaryItemsCache.filter((savedItem) => savedItem.id !== itemId);
     announceApothecarySearchChange();
-    } else {
+  } else {
     const items = getApothecaryItems().filter(
       (savedItem) => savedItem.id !== itemId
     );
 
-    await saveApothecaryItems(items);
-
-    await deleteLinkedApothecaryLibraryEntity(itemId);
-
-    removePlacedApothecaryObjects(itemId);
-    renderApothecaryItems();
-
-    showAltarToast("Apothecary item deleted");
+    const saved = await saveApothecaryItems(items);
+    if (!saved) return;
   }
+
+  // Signed in or not: its Library entry and every placed copy go with it, and the panel updates.
+  await deleteLinkedApothecaryLibraryEntity(itemId);
+  removePlacedApothecaryObjects(itemId);
+  renderApothecaryItems();
+
+  showAltarToast("Apothecary item deleted");
 }
 
 document.addEventListener("click", (event) => {

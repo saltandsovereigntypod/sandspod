@@ -9,6 +9,15 @@ function byOrder<T extends { sort_order: number | null; created_at: string | nul
 
 export type SectionGroup = { section: SectionRow | null; pages: PageRow[] };
 
+/**
+ * The section open in the Grimoire (the website's activeSectionId), if it
+ * still exists in the book; otherwise null, the top level.
+ */
+export function openSectionIn(snapshot: GrimoireSnapshot | null, bookId: string | null, sectionId: string | null): SectionRow | null {
+  if (!snapshot || !sectionId) return null;
+  return snapshot.sections.find((s) => s.id === sectionId && (!bookId || s.book_id === bookId)) ?? null;
+}
+
 /** A book's pages grouped by section, in reading order. Unsectioned pages come first. */
 export function tableOfContents(snapshot: GrimoireSnapshot, bookId: string): SectionGroup[] {
   const sections = snapshot.sections.filter((s) => s.book_id === bookId).sort(byOrder);

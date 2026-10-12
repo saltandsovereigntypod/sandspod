@@ -10,8 +10,16 @@ export type ReminderSettings = {
   phases: Record<PrincipalPhase, boolean>;
   /** Local hour (0–23) for moon reminders. */
   phaseHour: number;
+  /** Minutes past the hour (0, 15, 30 or 45). */
+  phaseMinute: number;
   /** Also remind the evening before a chosen phase. */
   dayBefore: boolean;
+  /** Earlier heads-ups, in days before the phase (3 or 7), at the same time of day. */
+  daysAhead: number[];
+  /** Also remind at the exact moment of the phase. */
+  atExact: boolean;
+  /** Your own words for each phase's reminder ("Charge the crystals"). */
+  notes: Record<PrincipalPhase, string>;
   /** Remind before planned rituals. */
   rituals: boolean;
   /** How long before a planned ritual. */
@@ -22,7 +30,11 @@ export const DEFAULT_SETTINGS: ReminderSettings = {
   version: 1,
   phases: { new: false, firstQuarter: false, full: false, lastQuarter: false },
   phaseHour: 19,
+  phaseMinute: 0,
   dayBefore: false,
+  daysAhead: [],
+  atExact: false,
+  notes: { new: '', firstQuarter: '', full: '', lastQuarter: '' },
   rituals: true,
   ritualLeadMinutes: 60,
 };
@@ -30,6 +42,9 @@ export const DEFAULT_SETTINGS: ReminderSettings = {
 export const PHASE_ORDER: PrincipalPhase[] = ['new', 'firstQuarter', 'full', 'lastQuarter'];
 export const LEAD_CHOICES = [15, 60, 180] as const;
 export const HOUR_CHOICES = [7, 12, 17, 19, 21] as const;
+export const MINUTE_CHOICES = [0, 15, 30, 45] as const;
+export const DAYS_AHEAD_CHOICES = [3, 7] as const;
+export const NOTE_MAX = 120;
 
 /** Stored settings from any older or partial shape, with defaults filled in. */
 export function normalizeSettings(raw: unknown): ReminderSettings {
@@ -38,11 +53,22 @@ export function normalizeSettings(raw: unknown): ReminderSettings {
   for (const phase of PHASE_ORDER) phases[phase] = value.phases?.[phase] === true;
   const hour = Number(value.phaseHour);
   const lead = Number(value.ritualLeadMinutes);
+  const minute = Number(value.phaseMinute);
+  const notes = { ...DEFAULT_SETTINGS.notes };
+  for (const phase of PHASE_ORDER) {
+    const note = value.notes?.[phase];
+    notes[phase] = typeof note === 'string' ? note.slice(0, NOTE_MAX) : '';
+  }
+  const ahead = Array.isArray(value.daysAhead) ? value.daysAhead.map(Number) : [];
   return {
     version: 1,
     phases,
     phaseHour: Number.isInteger(hour) && hour >= 0 && hour <= 23 ? hour : DEFAULT_SETTINGS.phaseHour,
+    phaseMinute: (MINUTE_CHOICES as readonly number[]).includes(minute) ? minute : 0,
     dayBefore: value.dayBefore === true,
+    daysAhead: DAYS_AHEAD_CHOICES.filter((days) => ahead.includes(days)),
+    atExact: value.atExact === true,
+    notes,
     rituals: value.rituals !== false,
     ritualLeadMinutes: Number.isFinite(lead) && lead >= 0 && lead <= 24 * 60 ? lead : DEFAULT_SETTINGS.ritualLeadMinutes,
   };
@@ -67,8 +93,8 @@ export type Reminder = {
 export const MAX_REMINDERS = 60;
 export const HORIZON_DAYS = 60;
 
-function atHour(day: Date, hour: number): Date {
-  return new Date(day.getFullYear(), day.getMonth(), day.getDate(), hour, 0, 0, 0);
+function atTime(day: Date, hour: number, minute: number, daysEarlier = 0): Date {
+  return new Date(day.getFullYear(), day.getMonth(), day.getDate() - daysEarlier, hour, minute, 0, 0);
 }
 
 function clockTime(date: Date): string {
@@ -101,26 +127,48 @@ export function buildSchedule(settings: ReminderSettings, plans: RitualPlan[], n
     for (const event of upcomingPhases(now, count)) {
       if (!settings.phases[event.phase]) continue;
       const title = phaseTitle(event.phase, event.date);
-      const day = atHour(event.date, settings.phaseHour);
+      const { phaseHour: hour, phaseMinute: minute } = settings;
+      const day = atTime(event.date, hour, minute);
       const key = `${event.phase}:${event.date.toISOString().slice(0, 10)}`;
       const exact = `Exact at ${clockTime(event.date)}.`;
+      const note = settings.notes[event.phase].trim();
+      const body = (fallback: string) => `${exact} ${note || fallback}`;
       reminders.push({
         key: `moon:${key}`,
         kind: 'moon',
         at: day,
         title: `${title} ${event.date.getTime() < day.getTime() ? 'today' : 'tonight'}`,
-        body: `${exact} A good time to plan or begin a working.`,
+        body: body('A good time to plan or begin a working.'),
         url: '/today',
       });
       if (settings.dayBefore) {
-        const before = new Date(day.getFullYear(), day.getMonth(), day.getDate() - 1, settings.phaseHour);
         reminders.push({
           key: `moon-eve:${key}`,
           kind: 'moon',
-          at: before,
+          at: atTime(event.date, hour, minute, 1),
           title: `${title} tomorrow`,
-          body: `${exact} Gather what you need tonight.`,
+          body: body('Gather what you need tonight.'),
           url: '/rituals/planner',
+        });
+      }
+      for (const days of settings.daysAhead) {
+        reminders.push({
+          key: `moon-ahead${days}:${key}`,
+          kind: 'moon',
+          at: atTime(event.date, hour, minute, days),
+          title: `${title} ${days === 7 ? 'in a week' : `in ${days} days`}`,
+          body: body('Time to plan your working.'),
+          url: '/rituals/planner',
+        });
+      }
+      if (settings.atExact) {
+        reminders.push({
+          key: `moon-exact:${key}`,
+          kind: 'moon',
+          at: event.date,
+          title: `${title} now`,
+          body: note || 'The moon is exact.',
+          url: '/today',
         });
       }
     }

@@ -7,10 +7,12 @@ import { Button } from '../../../../components/Button';
 import { BlockEditor, Field, InkButton } from '../../../../components/grimoire/BlockEditor';
 import { ink, Ornament } from '../../../../components/grimoire/BlockView';
 import { PagePicker } from '../../../../components/grimoire/PagePicker';
+import { PageFaceContext, useMundaneMode } from '../../../../components/grimoire/presentation';
 import { FailedChanges, SaveStatus } from '../../../../components/grimoire/SaveStatus';
 import { useDraft } from '../../../../components/grimoire/useDraft';
 import { confirmAction } from '../../../../lib/grimoire/confirm';
-import { ELEMENT_GROUPS, ELEMENT_TYPES, elementLabel } from '../../../../lib/grimoire/elements';
+import { ELEMENT_GROUPS, ELEMENT_TYPES, elementLabel, PAGE_TEMPLATES, type PageTemplate } from '../../../../lib/grimoire/elements';
+import { mundaneWords, pageFace } from '../../../../lib/grimoire/presentation';
 import { useGrimoire } from '../../../../lib/grimoire/store';
 import { pageBlocks, pageTypeLabel } from '../../../../lib/grimoire/structure';
 import type { BlockType, PageRow } from '../../../../lib/grimoire/types';
@@ -19,6 +21,7 @@ import { colors, fonts, space, touch, type } from '../../../../theme';
 export default function EditGrimoirePage() {
   const { pageId } = useLocalSearchParams<{ pageId: string }>();
   const { snapshot, canEdit } = useGrimoire();
+  const { mundane, settings } = useMundaneMode();
   const page = snapshot?.pages.find((p) => p.id === pageId) ?? null;
 
   return (
@@ -43,22 +46,27 @@ export default function EditGrimoirePage() {
           <Text style={type.body}>This page couldn't be found. It may have been removed.</Text>
         </View>
       ) : (
-        <Editor key={page.id} page={page} />
+        <PageFaceContext.Provider value={pageFace(settings?.grimoire_page_font)}>
+          <Editor key={page.id} page={page} mundane={mundane} />
+        </PageFaceContext.Provider>
       )}
     </SafeAreaView>
   );
 }
 
+// A blank page template would only add an empty paragraph.
+const TEMPLATES = PAGE_TEMPLATES.filter((t) => t.key !== 'blank');
+
 type Picking = { for: 'block'; blockId: string } | { for: 'link' } | null;
 
-function Editor({ page }: { page: PageRow }) {
+function Editor({ page, mundane }: { page: PageRow; mundane: boolean }) {
   const { snapshot, actions } = useGrimoire();
   const blocks = snapshot ? pageBlocks(snapshot, page.id) : [];
   const pages = snapshot?.pages ?? [];
   const links = snapshot?.links.filter((l) => l.source_page_id === page.id) ?? [];
   const title = useDraft(page.title, (value) => actions.renamePage(page.id, value));
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [adding, setAdding] = useState(false);
+  const [adding, setAdding] = useState<'element' | 'template' | null>(null);
   const [picking, setPicking] = useState<Picking>(null);
   const scroll = useRef<ScrollView>(null);
 
@@ -73,11 +81,25 @@ function Editor({ page }: { page: PageRow }) {
 
   const add = (blockType: BlockType) => {
     const id = actions.addBlock(page.id, blockType);
-    setAdding(false);
+    setAdding(null);
     if (!id) return;
     setActiveId(id);
     if (blockType === 'page_link') setPicking({ for: 'block', blockId: id });
     setTimeout(() => scroll.current?.scrollToEnd({ animated: true }), 50);
+  };
+
+  // As on the website, a template on an existing page only adds; nothing is deleted.
+  const addTemplate = async (template: PageTemplate) => {
+    const ok = await confirmAction(
+      `Add the ${template.label} template?`,
+      'Its sections will be added to the end of this page. Nothing already here is removed.',
+      'Add template',
+    );
+    if (!ok) return;
+    if (actions.addTemplate(page.id, template.key)) {
+      setAdding(null);
+      setTimeout(() => scroll.current?.scrollToEnd({ animated: true }), 50);
+    }
   };
 
   const remove = async (blockId: string, label: string) => {
@@ -109,7 +131,7 @@ function Editor({ page }: { page: PageRow }) {
         <FailedChanges />
         <View style={styles.paper}>
           <View style={styles.group}>
-            <Text style={styles.eyebrow}>{pageTypeLabel(page)}</Text>
+            <Text style={styles.eyebrow}>{mundane ? mundaneWords(pageTypeLabel(page)) : pageTypeLabel(page)}</Text>
             <Field
               accessibilityLabel="Page title"
               value={title.value}
@@ -139,11 +161,11 @@ function Editor({ page }: { page: PageRow }) {
             />
           ))}
 
-          {adding ? (
+          {adding === 'element' ? (
             <View style={styles.group}>
               <View style={styles.addHeader}>
                 <Text style={styles.subheading}>Add to the page</Text>
-                <InkButton label="Close" quiet onPress={() => setAdding(false)} />
+                <InkButton label="Close" quiet onPress={() => setAdding(null)} />
               </View>
               {ELEMENT_GROUPS.map((group) => (
                 <View key={group} style={styles.group}>
@@ -156,15 +178,31 @@ function Editor({ page }: { page: PageRow }) {
                 </View>
               ))}
             </View>
+          ) : adding === 'template' ? (
+            <View style={styles.group}>
+              <View style={styles.addHeader}>
+                <Text style={styles.subheading}>Add a template</Text>
+                <InkButton label="Close" quiet onPress={() => setAdding(null)} />
+              </View>
+              <Text style={styles.hint}>Adds the template’s sections after what’s already on this page.</Text>
+              <View style={styles.chips}>
+                {TEMPLATES.map((t) => (
+                  <InkButton key={t.key} label={`+ ${t.label}`} onPress={() => addTemplate(t)} />
+                ))}
+              </View>
+            </View>
           ) : (
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Add a page element"
-              onPress={() => setAdding(true)}
-              style={({ pressed }) => [styles.addButton, pressed && styles.pressed]}
-            >
-              <Text style={styles.addText}>✦ Add page element</Text>
-            </Pressable>
+            <View style={styles.group}>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Add a page element"
+                onPress={() => setAdding('element')}
+                style={({ pressed }) => [styles.addButton, pressed && styles.pressed]}
+              >
+                <Text style={styles.addText}>✦ Add page element</Text>
+              </Pressable>
+              <InkButton label="Add a template" onPress={() => setAdding('template')} />
+            </View>
           )}
 
           <View style={styles.group}>

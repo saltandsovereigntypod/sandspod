@@ -3,9 +3,10 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const vm = require("node:vm");
 const Catalog = require("../js/sanctuary-asset-catalog.js");
+const Artwork = require("../js/altar-artwork.js");
 
 function cabinetApi() {
-  const sandbox = { location: { search: "" }, dispatchEvent() {}, CustomEvent: class {}, URLSearchParams, console, SanctuaryAssetCatalog: Catalog };
+  const sandbox = { location: { search: "" }, dispatchEvent() {}, CustomEvent: class {}, URLSearchParams, console, SanctuaryAssetCatalog: Catalog, AltarArtwork: Artwork };
   sandbox.window = sandbox;
   vm.runInNewContext(fs.readFileSync("altar/js/features/cabinet.js", "utf8"), sandbox);
   return sandbox.AltarCabinet;
@@ -25,11 +26,13 @@ test("real cabinet definitions provide candle, herb, tool, and vessel search rec
 test("built-in candles expose immutable form choices without duplicate entities", () => {
   const records = cabinetRecords();
   const whiteForms = records.filter((record) => record.subtitle?.endsWith("· White Candle"));
-  assert.deepEqual([...new Set(whiteForms.map((record) => record.title))], ["Chime / Spell Candle", "Taper Candle", "Tea Light", "Pillar Candle", "Vigil Candle"]);
+  const styleLabels = Artwork.candleStyleForms.map((form) => form.label);
+  assert.deepEqual([...new Set(whiteForms.map((record) => record.title))], ["Chime / Spell Candle", "Taper Candle", "Tea Light", "Pillar Candle", "Vigil Candle", ...styleLabels]);
   assert.ok(whiteForms.every((record) => record.href.includes("placeCabinetItem=candles%3Awhite-candle") && record.href.includes("form=")));
   const presentation = cabinetApi().getFormPresentation("candles:white-candle");
-  assert.deepEqual(Array.from(presentation.availableForms), ["vigil"]);
-  assert.deepEqual(Array.from(presentation.missingForms), ["chime-spell", "taper", "tea-light", "pillar"]);
+  // Every candle form has artwork now, in every colour.
+  assert.deepEqual(Array.from(presentation.availableForms), ["chime-spell", "taper", "tea-light", "pillar", "vigil", ...Artwork.candleStyleForms.map((form) => form.id)]);
+  assert.deepEqual(Array.from(presentation.missingForms), []);
 });
 
 test("missing built-in forms use compact add actions instead of placeholder tiles", () => {
@@ -44,8 +47,9 @@ test("missing built-in forms use compact add actions instead of placeholder tile
   assert.match(sharedCss, /\.button--tiny[\s\S]*?font-size:\s*0\.76rem/);
 });
 
-test("Sage missing assets become actions while its valid shared incense remains available", () => {
-  const presentation = cabinetApi().getFormPresentation("herbs:sage");
-  assert.deepEqual(Array.from(presentation.availableForms), ["incense"]);
-  assert.deepEqual(Array.from(presentation.missingForms), ["sprig", "loose", "oil"]);
+test("A form with no picture becomes an action while the painted forms and shared incense stay available", () => {
+  // Frankincense is a resin, so it is never painted as a sprig.
+  const presentation = cabinetApi().getFormPresentation("herbs:frankincense");
+  assert.deepEqual(Array.from(presentation.availableForms), ["loose", "oil", "incense"]);
+  assert.deepEqual(Array.from(presentation.missingForms), ["sprig"]);
 });

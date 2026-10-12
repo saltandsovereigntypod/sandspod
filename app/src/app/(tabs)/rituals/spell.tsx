@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
 import { Body, Card, Chip, Chips, Expander, Field, Notice, RitualScreen, SectionLabel, Title, tell, ui } from '../../../components/rituals/ui';
+import { useWorkshop } from '../../../lib/altar/workshop';
 import { useGrimoire } from '../../../lib/grimoire/store';
 import { refToParam } from '../../../lib/rituals/format';
 import { handOffDraft } from '../../../lib/rituals/handoff';
@@ -16,6 +17,7 @@ import { useSession } from '../../../lib/session';
 import { type } from '../../../theme';
 
 const TYPE_LABELS: Record<LibraryItemType, string> = { candle: 'Candles', herb: 'Herbs', crystal: 'Crystals' };
+const OWN_CATEGORY: Record<string, LibraryItemType> = { candles: 'candle', herbs: 'herb', crystals: 'crystal' };
 const FOCUS = ['', '5', '10', '15'];
 
 function starters(key: string | null): Ingredient[] {
@@ -30,6 +32,25 @@ export default function SpellBuilder() {
   const { session } = useSession();
   const rituals = useRituals();
   const grimoire = useGrimoire();
+  // Your own candles, herbs and crystals from the cabinet sit beside the Library's.
+  const { customItems } = useWorkshop();
+  const ownItems = useMemo<LibraryItem[]>(
+    () =>
+      customItems
+        .filter((item) => OWN_CATEGORY[item.category])
+        .map((item) => ({
+          ref: `custom/${item.customCabinetItemId ?? item.id}`,
+          type: OWN_CATEGORY[item.category],
+          name: item.name,
+          element: null,
+          planet: null,
+          uses: item.keywords.length ? item.keywords.join(', ') : 'From your own cabinet',
+          tags: item.keywords,
+          tip: '',
+          caution: '',
+        })),
+    [customItems],
+  );
 
   const [intentionKey, setIntentionKey] = useState<string | null>(params.intention ?? null);
   const [picked, setPicked] = useState<Ingredient[]>(() => starters(params.intention ?? null));
@@ -122,7 +143,7 @@ export default function SpellBuilder() {
         {(Object.keys(TYPE_LABELS) as LibraryItemType[]).map((kind) => (
           <Expander key={kind} title={`All ${TYPE_LABELS[kind].toLowerCase()}`}>
             <Chips>
-              {LIBRARY_ITEMS.filter((i) => i.type === kind).map((item) => (
+              {[...ownItems, ...LIBRARY_ITEMS].filter((i) => i.type === kind).map((item) => (
                 <Chip
                   key={item.ref}
                   label={item.name}
@@ -134,11 +155,11 @@ export default function SpellBuilder() {
             </Chips>
           </Expander>
         ))}
-        {picked.length > 0 && (
+        {picked.some((item) => !item.ref.startsWith('custom/')) && (
           <View style={ui.gapSmall}>
             <Body muted>Read about them in the Library</Body>
             <Chips>
-              {picked.map((item) => (
+              {picked.filter((item) => !item.ref.startsWith('custom/')).map((item) => (
                 <Chip
                   key={item.ref}
                   label={`${item.name} ›`}

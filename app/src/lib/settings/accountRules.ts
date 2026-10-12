@@ -5,7 +5,10 @@ export const DELETE_CONFIRMATION = 'DELETE MY SALT AND SOVEREIGNTY ACCOUNT';
 /** How recently someone must have signed in before deleting their account. */
 export const RECENT_SIGN_IN_MINUTES = 30;
 
+export const MIN_PASSWORD_LENGTH = 8;
+
 type UserLike = {
+  email?: string | null;
   identities?: { provider?: string }[] | null;
   app_metadata?: { provider?: string } | null;
   last_sign_in_at?: string | null;
@@ -20,6 +23,59 @@ export function providerSummary(user: UserLike | null | undefined): string {
   if (providers.has('google')) labels.push('Google');
   if (providers.has('apple')) labels.push('Apple');
   return labels.length ? labels.join(' and ') : 'Account sign-in';
+}
+
+/** Google-only accounts have no password to change. */
+export function hasPasswordIdentity(user: UserLike | null | undefined): boolean {
+  const providers = new Set((user?.identities || []).map((identity) => identity.provider));
+  if (!providers.size && user?.app_metadata?.provider === 'email') return true;
+  return providers.has('email');
+}
+
+export function isEmailAddress(value: string): boolean {
+  return /^\S+@\S+\.\S+$/.test(value.trim());
+}
+
+export type Validation = { valid: true; message: '' } | { valid: false; message: string };
+
+export function validatePasswordPair(password: string, confirmation: string): Validation {
+  if (password.length < MIN_PASSWORD_LENGTH)
+    return { valid: false, message: `Use at least ${MIN_PASSWORD_LENGTH} characters for your password.` };
+  if (password !== confirmation) return { valid: false, message: 'The two passwords do not match.' };
+  return { valid: true, message: '' };
+}
+
+export function validateEmailChange(
+  currentEmail: string | null | undefined,
+  email: string,
+  confirmation: string,
+): { valid: false; message: string } | { valid: true; email: string; message: '' } {
+  const next = email.trim().toLowerCase();
+  if (!isEmailAddress(next)) return { valid: false, message: 'Enter a complete email address.' };
+  if (next !== confirmation.trim().toLowerCase()) return { valid: false, message: 'The two email addresses do not match.' };
+  if (next === (currentEmail ?? '').trim().toLowerCase())
+    return { valid: false, message: 'That is already the email for this account.' };
+  return { valid: true, email: next, message: '' };
+}
+
+/** Friendly wording for Supabase auth errors, the same as the website's. */
+export function authMessage(error: unknown, context: 'account' | 'recovery' = 'account'): string {
+  const raw = error && typeof error === 'object' && 'message' in error ? (error as { message?: unknown }).message : error;
+  const value = String(raw || '').toLowerCase();
+  if (/invalid login|invalid credential/.test(value)) return 'That email and password did not match.';
+  if (/email not confirmed/.test(value)) return 'Please confirm your email before signing in.';
+  if (/expired|otp_expired/.test(value)) return 'This recovery link has expired. Please request a new one.';
+  if (/invalid.*(?:token|link)|otp_disabled/.test(value)) return 'This recovery link is invalid or has already been used.';
+  if (/password.*(?:short|least)|weak password/.test(value))
+    return `Use at least ${MIN_PASSWORD_LENGTH} characters for your password.`;
+  if (/same password|different from the old/.test(value)) return 'Choose a password you have not used for this account.';
+  if (/already.*(?:registered|exists)|email.*use/.test(value)) return 'That email is already connected to an account.';
+  if (/rate|too many|over_email_send_rate_limit/.test(value)) return 'Please wait a little while before trying again.';
+  if (/session|jwt|signed out|not authenticated/.test(value)) return 'Your session has ended. Please sign in again.';
+  if (/network|fetch|offline/.test(value)) return 'The cloud could not be reached. Check your connection and try again.';
+  return context === 'recovery'
+    ? 'The recovery request could not be completed. Please try again.'
+    : 'That account change could not be completed. Please try again.';
 }
 
 export function isRecentSignIn(user: UserLike | null | undefined, now: Date = new Date()): boolean {

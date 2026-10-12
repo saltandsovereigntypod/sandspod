@@ -335,3 +335,20 @@ test('journal order and one-tap connections', () => {
   assert.equal(c.templateId, 'tpl-1');
   assert.deepEqual(c.ingredients, [{ ref: 'traditional/herb/bay', name: 'Bay' }]);
 });
+
+test('a timed step rings when its time is up, moves with pauses, and not for untimed steps', async () => {
+  const { stepAlarm } = await import('../src/lib/rituals/lifecycle.ts');
+  let s = createSession({ kind: 'template', template }, { userId: 'u1', now: T0, idFactory: ids() });
+  assert.equal(stepAlarm(s, T0), null, 'the first step has no timer');
+  s = completeStep(s, at(60));
+  const alarm = stepAlarm(s, at(60))!;
+  assert.equal(alarm.at.getTime(), at(180).getTime(), 'two minutes after the step began');
+  assert.match(alarm.title, /^Speak: time is up$/);
+  assert.match(alarm.body, /Moving on to “Close”/);
+  s = pauseSession(s, at(90));
+  assert.equal(stepAlarm(s, at(90)), null, 'no ring while paused');
+  s = resumeSession(s, at(150));
+  assert.equal(stepAlarm(s, at(150))!.at.getTime(), at(240).getTime(), 'the pause pushes the ring back');
+  assert.equal(stepAlarm(s, at(300)), null, 'nothing once the time has passed');
+  assert.equal(stepAlarm(null, T0), null);
+});

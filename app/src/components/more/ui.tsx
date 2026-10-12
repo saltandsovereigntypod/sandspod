@@ -17,6 +17,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useAccessibility, useAccessibleText } from '../../lib/accessibility/store';
+import { richTextBlocks } from '../../lib/library/richText';
 import { colors, fonts, radius, space, touch, type } from '../../theme';
 import { Icon } from '../Icon';
 import { MoreIcon, type MoreIconName } from './MoreIcon';
@@ -37,6 +39,8 @@ export function MoreScreen({
   children: ReactNode;
   refreshControl?: ReactElement<React.ComponentProps<typeof RefreshControl>>;
 }) {
+  // Redraws the title when More → Accessibility changes.
+  useAccessibility();
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
       {back && (
@@ -119,6 +123,7 @@ export function MenuRow({
   accessibilityLabel?: string;
   disabled?: boolean;
 }) {
+  const t = useAccessibleText();
   return (
     <Pressable
       accessibilityRole="button"
@@ -134,7 +139,7 @@ export function MenuRow({
         </View>
       )}
       <View style={styles.rowText}>
-        <Text style={styles.rowTitle}>{label}</Text>
+        <Text style={t(styles.rowTitle)}>{label}</Text>
         {!!detail && <Text style={type.caption}>{detail}</Text>}
       </View>
       {!!onPress && <Icon name="chevron" size={16} color={colors.tabInactive} />}
@@ -153,6 +158,7 @@ export function Chips<T extends string>({
   onChange: (value: T) => void;
   label: string;
 }) {
+  const t = useAccessibleText();
   return (
     <View accessibilityRole="radiogroup" accessibilityLabel={label} style={styles.chips}>
       {options.map((option) => {
@@ -166,7 +172,7 @@ export function Chips<T extends string>({
             onPress={() => onChange(option.value)}
             style={({ pressed }) => [styles.chip, selected && styles.chipOn, pressed && styles.pressed]}
           >
-            <Text style={[styles.chipText, selected && styles.chipTextOn]}>{option.label}</Text>
+            <Text style={[t(styles.chipText), selected && t(styles.chipTextOn)]}>{option.label}</Text>
           </Pressable>
         );
       })}
@@ -176,6 +182,7 @@ export function Chips<T extends string>({
 
 /** Read-only chips; tappable when onPress is given (e.g. a pairing that has a page). */
 export function Tags({ items, onPress }: { items: string[]; onPress?: (item: string) => (() => void) | undefined }) {
+  const t = useAccessibleText();
   return (
     <View style={styles.chips}>
       {items.map((item, index) => {
@@ -188,11 +195,11 @@ export function Tags({ items, onPress }: { items: string[]; onPress?: (item: str
             onPress={action}
             style={({ pressed }) => [styles.chip, styles.chipLink, pressed && styles.pressed]}
           >
-            <Text style={[styles.chipText, styles.chipTextLink]}>{item}</Text>
+            <Text style={[t(styles.chipText), t(styles.chipTextLink)]}>{item}</Text>
           </Pressable>
         ) : (
           <View key={`${item}-${index}`} style={[styles.chip, styles.tag]}>
-            <Text style={styles.chipText}>{item}</Text>
+            <Text style={t(styles.chipText)}>{item}</Text>
           </View>
         );
       })}
@@ -205,15 +212,16 @@ export function Field({
   hint,
   ...input
 }: TextInputProps & { label: string; hint?: string }) {
+  const t = useAccessibleText();
   return (
     <View style={styles.field}>
-      <Text style={styles.fieldLabel}>{label}</Text>
+      <Text style={t(styles.fieldLabel)}>{label}</Text>
       <TextInput
         accessibilityLabel={label}
         accessibilityHint={hint}
         placeholderTextColor="rgba(202,191,157,0.6)"
         {...input}
-        style={[styles.input, input.multiline && styles.inputMulti, input.style]}
+        style={[t(styles.input), input.multiline && styles.inputMulti, input.style]}
       />
       {!!hint && <Text style={type.caption}>{hint}</Text>}
     </View>
@@ -226,13 +234,17 @@ export function SwitchRow({
   value,
   onChange,
   last,
+  accessory,
 }: {
   label: string;
   detail?: string;
   value: boolean;
   onChange: (value: boolean) => void;
   last?: boolean;
+  /** Something else to press, beside the switch (a Hide button). */
+  accessory?: ReactNode;
 }) {
+  const t = useAccessibleText();
   return (
     <Pressable
       accessibilityRole="switch"
@@ -243,9 +255,10 @@ export function SwitchRow({
       style={[styles.row, !last && styles.rowRule]}
     >
       <View style={styles.rowText}>
-        <Text style={styles.switchLabel}>{label}</Text>
+        <Text style={t(styles.switchLabel)}>{label}</Text>
         {!!detail && <Text style={type.caption}>{detail}</Text>}
       </View>
+      {accessory}
       <Switch
         value={value}
         onValueChange={onChange}
@@ -286,6 +299,38 @@ export function Paragraphs({ items, style }: { items: string[]; style?: object }
           {text}
         </Text>
       ))}
+    </View>
+  );
+}
+
+/**
+ * Text that may be rich-text HTML from the website (My Practice): bold,
+ * italic and underline, bullet and numbered lists, and quotes. Plain text
+ * shows one paragraph per line, as Paragraphs does.
+ */
+export function RichText({ text, style }: { text: string; style?: object }) {
+  const t = useAccessibleText();
+  const blocks = richTextBlocks(text);
+  return (
+    <View style={styles.paragraphs}>
+      {blocks.map((block, index) => {
+        const marker = block.kind === 'bullet' ? '•' : block.kind === 'number' ? `${block.number}.` : null;
+        return (
+          <View key={index} style={[marker ? styles.richItem : null, block.kind === 'quote' && styles.richQuote]}>
+            {marker && <Text style={[type.body, style, styles.richMarker]}>{marker}</Text>}
+            <Text style={[type.body, style, marker ? styles.richItemText : null, block.kind === 'quote' && styles.richQuoteText]}>
+              {block.runs.map((run, runIndex) => (
+                <Text
+                  key={runIndex}
+                  style={[run.bold && t(styles.richBold), run.italic && t(styles.richItalic), run.underline && styles.richUnderline]}
+                >
+                  {run.text}
+                </Text>
+              ))}
+            </Text>
+          </View>
+        );
+      })}
     </View>
   );
 }
@@ -382,4 +427,12 @@ const styles = StyleSheet.create({
   boxOn: { backgroundColor: colors.gold, borderColor: colors.gold },
   tick: { color: colors.forestInk, fontSize: 15, lineHeight: 18, fontFamily: fonts.bodySemi },
   paragraphs: { gap: 12 },
+  richItem: { flexDirection: 'row', gap: 8 },
+  richMarker: { minWidth: 16, color: colors.gold },
+  richItemText: { flex: 1 },
+  richQuote: { borderLeftWidth: 2, borderLeftColor: colors.goldLine, paddingLeft: 12 },
+  richQuoteText: { fontStyle: 'italic' },
+  richBold: { fontFamily: fonts.bodySemi },
+  richItalic: { fontStyle: 'italic' },
+  richUnderline: { textDecorationLine: 'underline' },
 });

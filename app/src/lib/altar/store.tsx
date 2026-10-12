@@ -5,15 +5,20 @@ import { AppState } from 'react-native';
 import { isTransient, retryDelay, type SendError } from '../grimoire/edits';
 import { useSession } from '../session';
 import { supabase } from '../supabase';
+import { reportSync, trackSave } from '../sync/store';
 // Registers the artwork sizes the geometry needs.
 import './assets';
 import {
   customBackgroundFromRow,
+  overrideKey,
   customItemFromLocal,
   customItemFromRow,
   type CustomBackgroundRow,
   type CustomCabinetRow,
 } from './cabinet';
+import { storagePathFromUrl } from './custom';
+import { BACKGROUND_FOLDER, backgroundRow, CABINET_IMAGE_FOLDER, overrideRow } from './customImages';
+import { removeUploaded, uploadImage, type PickedImage } from './images';
 import { applyOps, enqueue, parsePending, type AltarOp, type FailedAltarOp } from './outbox';
 import {
   altarDataFromDocument,
@@ -27,7 +32,7 @@ import {
   WORKING_DRAFT_KEY,
   type AltarDocument,
 } from './snapshot';
-import type { AltarBackground, CabinetItem, SavedAltar, SavedAltarRow } from './types';
+import type { AltarBackground, CabinetForm, CabinetItem, SavedAltar, SavedAltarRow } from './types';
 import { newId } from './uid';
 
 // Signed in: saved_altars, custom_cabinet_items, custom_altar_backgrounds and
@@ -74,6 +79,12 @@ type AltarState = {
   saveDraft: (doc: AltarDocument, sourceId: string | null) => void;
   clearDraft: () => Promise<void>;
   draftSourceId: string | null;
+  /** Signed in: upload a background of your own (custom_altar_backgrounds). */
+  addBackground: (name: string, picked: PickedImage) => Promise<AltarBackground>;
+  removeBackground: (background: AltarBackground) => Promise<void>;
+  /** Signed in: your own picture for a built-in cabinet form (custom_cabinet_image_overrides). */
+  setFormImage: (item: CabinetItem, form: CabinetForm, picked: PickedImage) => Promise<void>;
+  removeFormImage: (item: CabinetItem, form: CabinetForm) => Promise<void>;
 };
 
 const AltarContext = createContext<AltarState | null>(null);
@@ -316,6 +327,9 @@ export function AltarProvider({ children }: { children: ReactNode }) {
     };
   }, [userId, refresh, publish]);
 
+  // More → Account shows whether changes are reaching the account.
+  useEffect(() => reportSync('altar', userId, sync), [userId, sync]);
+
   // Coming back to the app is a good moment to try the queue again.
   useEffect(() => {
     const sub = AppState.addEventListener('change', (state) => {
@@ -430,6 +444,97 @@ export function AltarProvider({ children }: { children: ReactNode }) {
     await AsyncStorage.multiRemove([WORKING_DRAFT_KEY, DRAFT_SOURCE_KEY]);
   }, []);
 
+  /** Changes the account's backgrounds or picture overrides here and in the offline copy. */
+  const patchSnapshot = useCallback((id: string, change: (base: AltarSnapshot) => AltarSnapshot) => {
+    setSnapshot((prev) => {
+      const next = change(prev ?? { fetchedAt: '', altars: [], customItems: [], backgrounds: [], overrides: {} });
+      AsyncStorage.setItem(cacheKey(id), JSON.stringify(next)).catch(() => {});
+      return next;
+    });
+  }, []);
+
+  // The website's custom-images.js: upload to user-assets, then write the row;
+  // a replaced or deleted picture is removed from storage afterwards.
+  const addBackground = useCallback(
+    (name: string, picked: PickedImage) => {
+      if (!userId) return Promise.reject(new Error('Please sign in to upload backgrounds.'));
+      const clean = name.trim();
+      if (!clean) return Promise.reject(new Error('Name this altar background first.'));
+      return trackSave(userId, async () => {
+        const { url, storagePath } = await uploadImage(userId, picked, BACKGROUND_FOLDER);
+        const { data, error } = await supabase
+          .from('custom_altar_backgrounds')
+          .insert(backgroundRow(userId, clean, url, storagePath))
+          .select('id,name,image_url')
+          .single();
+        if (error || !data) {
+          await removeUploaded([storagePath]);
+          throw new Error(error?.message || 'Custom background could not be saved.');
+        }
+        const background = customBackgroundFromRow(data as CustomBackgroundRow);
+        patchSnapshot(userId, (base) => ({ ...base, backgrounds: [background, ...base.backgrounds.filter((b) => b.id !== background.id)] }));
+        return background;
+      });
+    },
+    [userId, patchSnapshot],
+  );
+
+  const removeBackground = useCallback(
+    async (background: AltarBackground) => {
+      if (!userId) return;
+      await trackSave(userId, async () => {
+        const { error } = await supabase.from('custom_altar_backgrounds').delete().eq('user_id', userId).eq('id', background.id);
+        if (error) throw new Error(error.message);
+      });
+      const path = storagePathFromUrl(background.background);
+      if (path) await removeUploaded([path]);
+      patchSnapshot(userId, (base) => ({ ...base, backgrounds: base.backgrounds.filter((b) => b.id !== background.id) }));
+    },
+    [userId, patchSnapshot],
+  );
+
+  const setFormImage = useCallback(
+    (item: CabinetItem, form: CabinetForm, picked: PickedImage) => {
+      if (!userId) return Promise.reject(new Error('Please sign in to save custom images.'));
+      const key = overrideKey(item, form);
+      const previous = snapshot?.overrides[key];
+      return trackSave(userId, async () => {
+        const { url, storagePath } = await uploadImage(userId, picked, CABINET_IMAGE_FOLDER);
+        const { error } = await supabase
+          .from('custom_cabinet_image_overrides')
+          .upsert(overrideRow(userId, item, form, url, storagePath, new Date().toISOString()), { onConflict: 'user_id,override_key' });
+        if (error) {
+          await removeUploaded([storagePath]);
+          throw new Error(error.message);
+        }
+        const old = previous ? storagePathFromUrl(previous) : null;
+        if (old && old !== storagePath) await removeUploaded([old]);
+        patchSnapshot(userId, (base) => ({ ...base, overrides: { ...base.overrides, [key]: url } }));
+      });
+    },
+    [userId, snapshot, patchSnapshot],
+  );
+
+  const removeFormImage = useCallback(
+    async (item: CabinetItem, form: CabinetForm) => {
+      if (!userId) return;
+      const key = overrideKey(item, form);
+      const previous = snapshot?.overrides[key];
+      await trackSave(userId, async () => {
+        const { error } = await supabase.from('custom_cabinet_image_overrides').delete().eq('user_id', userId).eq('override_key', key);
+        if (error) throw new Error(error.message);
+      });
+      const old = previous ? storagePathFromUrl(previous) : null;
+      if (old) await removeUploaded([old]);
+      patchSnapshot(userId, (base) => {
+        const overrides = { ...base.overrides };
+        delete overrides[key];
+        return { ...base, overrides };
+      });
+    },
+    [userId, snapshot, patchSnapshot],
+  );
+
   const value = useMemo<AltarState>(
     () => ({
       signedIn: !!userId,
@@ -451,8 +556,34 @@ export function AltarProvider({ children }: { children: ReactNode }) {
       remove,
       saveDraft,
       clearDraft,
+      addBackground,
+      removeBackground,
+      setFormImage,
+      removeFormImage,
     }),
-    [userId, status, error, snapshot, altars, draft, draftSourceId, sync, queued, failed, retryFailed, discardFailed, refresh, save, remove, saveDraft, clearDraft],
+    [
+      userId,
+      status,
+      error,
+      snapshot,
+      altars,
+      draft,
+      draftSourceId,
+      sync,
+      queued,
+      failed,
+      retryFailed,
+      discardFailed,
+      refresh,
+      save,
+      remove,
+      saveDraft,
+      clearDraft,
+      addBackground,
+      removeBackground,
+      setFormImage,
+      removeFormImage,
+    ],
   );
 
   return <AltarContext.Provider value={value}>{children}</AltarContext.Provider>;

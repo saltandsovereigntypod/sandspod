@@ -5,7 +5,8 @@ import { ActivityIndicator, Pressable, RefreshControl, StyleSheet, Text, View } 
 import { Button } from '../../../../components/Button';
 import { Card, Chips, Field, MoreScreen, Notice, Tags } from '../../../../components/more/ui';
 import { usePublished } from '../../../../lib/community/api';
-import { authorName, communityDate, filterEntries, TYPE_FILTERS, typeLabel, type SubmissionRow } from '../../../../lib/community/model';
+import { showEverything, useHiddenCommunity } from '../../../../lib/community/hidden';
+import { authorName, communityDate, filterEntries, isHidden, TYPE_FILTERS, typeLabel, type SubmissionRow } from '../../../../lib/community/model';
 import { colors, fonts, radius, type } from '../../../../theme';
 
 type Filter = (typeof TYPE_FILTERS)[number]['value'];
@@ -16,7 +17,9 @@ export default function CommunityGrimoire() {
   const [filter, setFilter] = useState<Filter>('all');
   const [pulling, setPulling] = useState(false);
 
-  const entries = data?.entries ?? [];
+  const hidden = useHiddenCommunity();
+  const entries = (data?.entries ?? []).filter((entry) => !isHidden(entry, hidden));
+  const hiding = hidden.posts.length + hidden.authors.length > 0;
   const shown = filterEntries(entries, search, filter);
 
   return (
@@ -86,6 +89,10 @@ export default function CommunityGrimoire() {
           <EntryCard key={entry.id} entry={entry} />
         ))}
       </View>
+
+      {hiding && (
+        <Button label="Show pages and people you've hidden" variant="text" onPress={showEverything} />
+      )}
 
       <Card tone="gold">
         <Text style={type.eyebrow}>Offer a page</Text>

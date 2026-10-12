@@ -11,6 +11,9 @@ type SessionState = {
   session: Session | null;
   /** True once someone chose "Continue as a guest" on this device. */
   guest: boolean;
+  /** True after a password recovery link signed someone in, until they set a new password. */
+  passwordRecovery: boolean;
+  finishPasswordRecovery: () => void;
   continueAsGuest: () => Promise<void>;
   signOut: () => Promise<void>;
 };
@@ -21,6 +24,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [guest, setGuest] = useState(false);
+  const [passwordRecovery, setPasswordRecovery] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -35,7 +39,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       })
       .finally(() => active && setReady(true));
 
-    const { data } = supabase.auth.onAuthStateChange((_event, next) => setSession(next));
+    const { data } = supabase.auth.onAuthStateChange((event, next) => {
+      setSession(next);
+      if (event === 'PASSWORD_RECOVERY') setPasswordRecovery(true);
+      if (event === 'SIGNED_OUT') setPasswordRecovery(false);
+    });
     return () => {
       active = false;
       data.subscription.unsubscribe();
@@ -47,6 +55,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       ready,
       session,
       guest,
+      passwordRecovery,
+      finishPasswordRecovery: () => setPasswordRecovery(false),
       continueAsGuest: async () => {
         setGuest(true);
         await AsyncStorage.setItem(GUEST_KEY, 'true');
@@ -57,7 +67,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         await AsyncStorage.removeItem(GUEST_KEY);
       },
     }),
-    [ready, session, guest],
+    [ready, session, guest, passwordRecovery],
   );
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;

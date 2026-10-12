@@ -59,7 +59,7 @@ export type ExportResult = { ok: true; backup: Backup } | { ok: false; message: 
 export async function exportBackup(
   userId: string | null,
   onProgress: Progress,
-  kind: 'complete' | 'book' | 'safety' = 'complete',
+  kind: 'complete' | 'book' | 'safety' | 'guest' = 'complete',
 ): Promise<ExportResult> {
   try {
     onProgress(kind === 'book' ? 'Gathering Book of Shadows pages…' : 'Gathering your Sanctuary…');
@@ -71,7 +71,9 @@ export async function exportBackup(
         ? 'salt-and-sovereignty-book-of-shadows'
         : kind === 'safety'
           ? 'salt-and-sovereignty-before-restore'
-          : 'salt-and-sovereignty-backup';
+          : kind === 'guest'
+            ? 'salt-and-sovereignty-before-guest-migration'
+            : 'salt-and-sovereignty-backup';
     onProgress('Saving the file…');
     await saveBackupFile(JSON.stringify(backup, null, 2), backupFileName(prefix));
     AsyncStorage.setItem(LAST_EXPORT_KEY, backup.createdAt).catch(() => {});

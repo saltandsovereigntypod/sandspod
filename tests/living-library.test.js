@@ -196,3 +196,134 @@ test("an older legacy cloud duplicate cannot restore deleted canonical practice"
   assert.equal(library.resolveCanonicalEntityId("old-quartz-row"), canonical.id);
   assert.ok(merges.some((merge) => merge.canonicalEntityId === canonical.id));
 });
+
+test("a My Practice save replaces only the relations it generated", () => {
+  const context = createLibraryContext();
+  const library = context.__Library;
+  library.importTraditionalLibrary();
+  const entity = library.createEntity({ name: "Dream Herb", type: "herb" });
+  const basil = library.findEntityByTraditionalReference("traditional/herb/basil");
+  const quartz = library.findEntityByTraditionalReference("traditional/crystal/clear_quartz");
+  const white = library.findEntityByTraditionalReference("traditional/candle/white");
+
+  library.connect(entity.id, "pairs_with", white.id, { source: "manual" });
+  library.connect(entity.id, "substitutes", quartz.id);
+
+  library.updateEntitySection(entity.id, "myPractice", { PairsWith: "Basil, White Candle", Substitutions: "Clear Quartz" });
+  const first = library.syncMyPracticeConnections(entity.id);
+  const links = () => library.exportLibrary().relations.filter((link) => link.from === entity.id || link.to === entity.id);
+  const find = (from, relation, to) => links().find((link) => link.from === from && link.relation === relation && link.to === to);
+
+  assert.equal(find(entity.id, "pairs_with", basil.id).metadata.source, "my-practice");
+  assert.equal(find(basil.id, "pairs_with", entity.id).metadata.source, "my-practice");
+  assert.equal(find(quartz.id, "substitute_for", entity.id).metadata.source, "my-practice");
+  // Hand-added rows keep their source and are not taken over by the generated ones.
+  assert.equal(find(entity.id, "pairs_with", white.id).metadata.source, "manual");
+  assert.equal(find(entity.id, "substitutes", quartz.id).metadata, undefined);
+  assert.equal(first.removed.length, 0);
+  assert.ok(first.generated.every((link) => link.metadata.source === "my-practice"));
+  assert.ok(!first.generated.some((link) => link.from === entity.id && link.to === white.id));
+
+  library.updateEntitySection(entity.id, "myPractice", { PairsWith: "", Substitutions: "" });
+  const second = library.syncMyPracticeConnections(entity.id);
+
+  assert.equal(find(entity.id, "pairs_with", basil.id), undefined);
+  assert.deepEqual([...second.removed.map((link) => link.to)], [basil.id]);
+  assert.ok(find(entity.id, "pairs_with", white.id));
+  assert.ok(find(entity.id, "substitutes", quartz.id));
+  assert.equal(second.generated.length, 0);
+});
+
+function createSyncedLibraryContext() {
+  const context = createLibraryContext();
+  const calls = [];
+  context.window = context;
+  context.performance = { now: () => 0 };
+  context.document = { dispatchEvent() {} };
+  context.CustomEvent = class { constructor(type, init) { this.type = type; this.detail = init?.detail; } };
+  context.setTimeout = () => 0;
+  context.clearTimeout = () => {};
+  context.getUser = () => ({ id: "user-1" });
+  context.db = {
+    from(table) {
+      const call = { table, ops: [] };
+      calls.push(call);
+      const builder = {
+        then(resolve, reject) {
+          return Promise.resolve({ data: [], error: null }).then(resolve, reject);
+        }
+      };
+      ["select", "eq", "in", "order", "upsert", "delete", "insert", "update"].forEach((method) => {
+        builder[method] = (...args) => {
+          call.ops.push([method, ...args]);
+          return builder;
+        };
+      });
+      return builder;
+    }
+  };
+  const source = fs.readFileSync(path.join(__dirname, "../js/living-library-sync.js"), "utf8");
+  vm.runInContext(source, context);
+  return { context, calls };
+}
+
+async function settle() {
+  for (let index = 0; index < 10; index += 1) await new Promise((resolve) => setImmediate(resolve));
+}
+
+test("signed in, My Practice relations are saved to library_relations as the app saves them", async () => {
+  const { context, calls } = createSyncedLibraryContext();
+  await context.initLivingLibrarySupabaseSync();
+  const library = context.__Library;
+  const entity = library.createEntity({ name: "Dream Herb", type: "herb" });
+  const basil = library.findEntityByTraditionalReference("traditional/herb/basil");
+  calls.length = 0;
+
+  library.updateEntitySection(entity.id, "myPractice", { PairsWith: "Basil" });
+  library.syncMyPracticeConnections(entity.id);
+  await settle();
+
+  const upserts = calls.filter((call) => call.table === "library_relations" && call.ops[0][0] === "upsert");
+  assert.equal(upserts.length, 1);
+  const [, rows, options] = upserts[0].ops[0];
+  assert.equal(options.onConflict, "user_id,from_entity_id,relation,to_entity_id");
+  assert.deepEqual(
+    JSON.parse(JSON.stringify(rows.map(({ user_id, from_entity_id, relation, to_entity_id, metadata }) => ({ user_id, from_entity_id, relation, to_entity_id, metadata })))),
+    [
+      { user_id: "user-1", from_entity_id: entity.id, relation: "pairs_with", to_entity_id: basil.id, metadata: { source: "my-practice" } },
+      { user_id: "user-1", from_entity_id: basil.id, relation: "pairs_with", to_entity_id: entity.id, metadata: { source: "my-practice" } }
+    ]
+  );
+  assert.ok(rows.every((row) => typeof row.updated_at === "string"));
+
+  calls.length = 0;
+  library.updateEntitySection(entity.id, "myPractice", { PairsWith: "" });
+  library.syncMyPracticeConnections(entity.id);
+  await settle();
+
+  const deletes = calls.filter((call) => call.table === "library_relations" && call.ops[0][0] === "delete");
+  assert.equal(deletes.length, 1);
+  assert.deepEqual(JSON.parse(JSON.stringify(deletes[0].ops.slice(1))), [
+    ["eq", "user_id", "user-1"],
+    ["eq", "from_entity_id", entity.id],
+    ["eq", "relation", "pairs_with"],
+    ["eq", "to_entity_id", basil.id]
+  ]);
+  assert.equal(calls.filter((call) => call.table === "library_relations" && call.ops[0][0] === "upsert").length, 0);
+});
+
+test("for guests, My Practice relations stay on the device", async () => {
+  const { context, calls } = createSyncedLibraryContext();
+  context.getUser = () => null;
+  await context.initLivingLibrarySupabaseSync();
+  const library = context.__Library;
+  library.importTraditionalLibrary();
+  const entity = library.createEntity({ name: "Dream Herb", type: "herb" });
+
+  library.updateEntitySection(entity.id, "myPractice", { PairsWith: "Basil" });
+  library.syncMyPracticeConnections(entity.id);
+  await settle();
+
+  assert.equal(calls.length, 0);
+  assert.ok(library.exportLibrary().relations.some((link) => link.from === entity.id && link.metadata?.source === "my-practice"));
+});

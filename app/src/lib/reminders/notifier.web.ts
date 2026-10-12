@@ -19,4 +19,6 @@ export async function applySchedule(_reminders: Reminder[]): Promise<number> {
   return 0;
 }
 
+export async function setStepAlarm(_alarm: { at: Date; title: string; body: string } | null): Promise<void> {}
+
 export function useReminderTaps() {}

@@ -34,8 +34,9 @@
   }
 
   function pageRecords() {
-    return (global.SanctuarySearchPageSource || []).filter((page) => page.type !== "ritual_journal").map((page) => ({
-      id: page.id, group: "pages", type: page.type || "page", title: page.title || "Untitled Page",
+    // Saved pages name their kind in page_type; ritual journals are listed as rituals instead.
+    return (global.SanctuarySearchPageSource || []).filter((page) => (page.page_type || page.type) !== "ritual_journal").map((page) => ({
+      id: page.id, group: "pages", type: page.page_type || page.type || "page", title: page.title || "Untitled Page",
       aliases: ["journal", "Book of Shadows"],
       subtitle: "Book of Shadows Page",
       fields: [page.metadata, page._searchBlocks, page.blocks, page.content], href: `/grimoire/?page=${encodeURIComponent(page.id)}`,
@@ -80,11 +81,14 @@
     return [...builtIn, ...custom];
   }
 
+  // Refreshes the sources kept in this browser, leaving the ones loaded from the
+  // account (rituals, templates) in place so My Journey and search keep them.
   function rebuildLocalIndex() {
-    global.SanctuarySearch.buildIndex({ library: libraryRecords(), pages: pageRecords(), apothecary: recipeRecords(), currentAltar: objectRecords(), cabinet: cabinetRecords() });
+    const local = { library: libraryRecords(), pages: pageRecords(), apothecary: recipeRecords(), currentAltar: objectRecords(), cabinet: cabinetRecords() };
+    Object.entries(local).forEach(([name, records]) => global.SanctuarySearch.updateSource(name, records));
   }
 
-  async function enrichIndex(token) {
+  function remoteSourceTasks() {
     const tasks = [];
     if (typeof global.loadApothecaryItems === "function") tasks.push(global.loadApothecaryItems().then((records) => ["apothecary", records.map((item) => global.SanctuarySearch.createApothecaryResult(item)).filter(Boolean)]));
     if (typeof global.getMyRituals === "function") tasks.push(global.getMyRituals().then((records) => ["rituals", records.map((ritual) => ({
@@ -104,7 +108,17 @@
       subtitle: "Active Ritual Session", fields: [activeSession.id],
       href: `/altar/?ritualSession=${encodeURIComponent(activeSession.id)}`, timestamp: activeSession.startedAt || activeSession.started_at
     }]]));
-    const settled = await Promise.allSettled(tasks);
+    return tasks;
+  }
+
+  /* Loads the rituals, templates and recipes saved to the account into the index (My Journey uses this). */
+  async function loadRemoteSources() {
+    const settled = await Promise.allSettled(remoteSourceTasks());
+    settled.forEach((result) => { if (result.status === "fulfilled") global.SanctuarySearch.updateSource(result.value[0], result.value[1]); });
+  }
+
+  async function enrichIndex(token) {
+    const settled = await Promise.allSettled(remoteSourceTasks());
     if (!global.SanctuarySearch.isCurrentRequest(token, requestId, Boolean(modal))) return;
     settled.forEach((result) => { if (result.status === "fulfilled") global.SanctuarySearch.updateSource(result.value[0], result.value[1]); });
     renderResults();
@@ -210,5 +224,5 @@
   document.addEventListener("sanctuary-search:sources-changed", () => { if (modal) { rebuildLocalIndex(); renderResults(); } });
   window.addEventListener("apothecary:hydrated", () => { if (modal) { rebuildLocalIndex(); renderResults(); } });
   window.addEventListener("altarCabinetReady", () => { if (modal) { rebuildLocalIndex(); renderResults(); } });
-  global.SanctuarySearchUI = { rebuildLocalIndex };
+  global.SanctuarySearchUI = { rebuildLocalIndex, loadRemoteSources };
 })(typeof window !== "undefined" ? window : globalThis);

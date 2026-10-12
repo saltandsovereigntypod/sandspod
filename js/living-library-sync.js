@@ -184,6 +184,44 @@ async function replaceLivingLibraryRelationsInSupabase(fromEntityId, relation, t
   }
 }
 
+// Mirrors Library.syncMyPracticeConnections: the generated rows it dropped are
+// deleted, and the entry's generated rows are upserted with their
+// { source: "my-practice" } metadata, the shape the app writes too. Rows added
+// by hand are never in either list, so they're left alone.
+async function syncMyPracticeRelationsToSupabase(changes = {}) {
+  const user = getLivingLibraryUser();
+
+  if (!user || typeof db === "undefined") return;
+
+  for (const link of changes.removed || []) {
+    await deleteLivingLibraryRelationFromSupabase(link.from, link.relation, link.to);
+  }
+
+  const generated = (changes.generated || []).filter((link) => link.from && link.relation && link.to);
+  if (!generated.length) return;
+
+  const now = new Date().toISOString();
+  const { error } = await db
+    .from(LIVING_LIBRARY_RELATIONS_TABLE)
+    .upsert(
+      generated.map((link) => ({
+        user_id: user.id,
+        from_entity_id: link.from,
+        relation: link.relation,
+        to_entity_id: link.to,
+        metadata: link.metadata || {},
+        updated_at: now
+      })),
+      {
+        onConflict: "user_id,from_entity_id,relation,to_entity_id"
+      }
+    );
+
+  if (error) {
+    console.error("Living Library My Practice relation save failed:", error);
+  }
+}
+
 async function deleteLivingLibraryRelationFromSupabase(fromEntityId, relation, toEntityId) {
   const user = getLivingLibraryUser();
 
@@ -220,7 +258,8 @@ async function updateLivingLibraryRelationInSupabase(oldConnection = {}, newConn
     await saveLivingLibraryRelationToSupabase(
       newConnection.from,
       newConnection.relation,
-      newConnection.to
+      newConnection.to,
+      newConnection.metadata || {}
     );
   }
 }
@@ -334,7 +373,7 @@ async function loadLivingLibraryRelationsFromSupabase() {
   const existingRelations = Library.exportLibrary?.().relations || [];
 
   (data || []).forEach((row) => {
-    const alreadyExists = existingRelations.some((link) => {
+    const existing = existingRelations.find((link) => {
       return (
         link.from === row.from_entity_id &&
         link.relation === row.relation &&
@@ -342,9 +381,15 @@ async function loadLivingLibraryRelationsFromSupabase() {
       );
     });
 
-    if (alreadyExists) return;
+    if (existing) {
+      // Keep where the cloud row came from (My Practice or by hand) on the local copy.
+      if (!existing.metadata?.source && row.metadata?.source) {
+        Library.updateConnection?.(existing.id, { metadata: { ...(existing.metadata || {}), ...row.metadata } });
+      }
+      return;
+    }
 
-    Library.connect(row.from_entity_id, row.relation, row.to_entity_id);
+    Library.connect(row.from_entity_id, row.relation, row.to_entity_id, row.metadata || null);
   });
 }
 
@@ -362,6 +407,7 @@ function wrapLivingLibraryMethodsForSupabase() {
   const originalConnect = Library.connect?.bind(Library);
   const originalDisconnect = Library.disconnect?.bind(Library);
   const originalReplaceConnections = Library.replaceConnections?.bind(Library);
+  const originalSyncMyPracticeConnections = Library.syncMyPracticeConnections?.bind(Library);
 
   const originalUpdateConnection =
     typeof Library.updateConnection === "function"
@@ -409,11 +455,11 @@ function wrapLivingLibraryMethodsForSupabase() {
   }
 
   if (originalConnect) {
-    Library.connect = function(fromEntityId, relation, toEntityId) {
-      const result = originalConnect(fromEntityId, relation, toEntityId);
+    Library.connect = function(fromEntityId, relation, toEntityId, metadata = null) {
+      const result = originalConnect(fromEntityId, relation, toEntityId, metadata);
 
       if (livingLibrarySyncReady) {
-        saveLivingLibraryRelationToSupabase(fromEntityId, relation, toEntityId);
+        saveLivingLibraryRelationToSupabase(fromEntityId, relation, toEntityId, metadata || {});
       }
 
       return result;
@@ -444,6 +490,20 @@ function wrapLivingLibraryMethodsForSupabase() {
     };
   }
 
+  if (originalSyncMyPracticeConnections) {
+    // The Library's own sync works on its inner relations, so it's mirrored here
+    // as a whole rather than through the wrapped connect/replaceConnections.
+    Library.syncMyPracticeConnections = function(entityId) {
+      const result = originalSyncMyPracticeConnections(entityId);
+
+      if (livingLibrarySyncReady && result) {
+        syncMyPracticeRelationsToSupabase(result);
+      }
+
+      return result;
+    };
+  }
+
   if (originalUpdateConnection) {
     Library.updateConnection = function(connectionId, changes = {}) {
       const before = (Library.exportLibrary?.().relations || []).find((link) => {
@@ -468,7 +528,8 @@ function wrapLivingLibraryMethodsForSupabase() {
         ? {
             from: after.from,
             relation: after.relation,
-            to: after.to
+            to: after.to,
+            metadata: after.metadata || {}
           }
         : {};
 
@@ -517,6 +578,48 @@ async function saveAllLivingLibraryLayoutsToSupabase() {
   }
 }
 
+/*
+  When an account's Living Library is cleared (user_settings.settings
+  .library_cleared_at), each browser empties its own copy once, so entries
+  cached here before the clear are not uploaded again.
+*/
+async function applyLivingLibraryClearFromSupabase(user) {
+  const { data, error } = await db
+    .from("user_settings")
+    .select("settings")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (error) return;
+
+  const clearedAt = data?.settings?.library_cleared_at;
+  const seenKey = `saltAndSovereigntyLibraryClearedAt:${user.id}`;
+  if (!clearedAt || localStorage.getItem(seenKey) === String(clearedAt)) return;
+
+  Library.resetLibrary?.();
+  localStorage.removeItem("saltAndSovereigntyLibraryPageLayouts");
+  localStorage.setItem(seenKey, String(clearedAt));
+}
+
+/* Removes a merged-away duplicate and its links from Supabase, so the next
+   browser does not load it and merge it all over again. */
+async function deleteMergedLivingLibraryEntityFromSupabase(entityId) {
+  const user = getLivingLibraryUser();
+  if (!user || !entityId || typeof db === "undefined") return;
+
+  await deleteLivingLibraryEntityFromSupabase(entityId);
+
+  const { error } = await db
+    .from(LIVING_LIBRARY_RELATIONS_TABLE)
+    .delete()
+    .eq("user_id", user.id)
+    .or(`from_entity_id.eq.${entityId},to_entity_id.eq.${entityId}`);
+
+  if (error) {
+    console.error("Living Library merged relations delete failed:", error);
+  }
+}
+
 async function initLivingLibrarySupabaseSync() {
   const user = getLivingLibraryUser();
 
@@ -525,6 +628,11 @@ async function initLivingLibrarySupabaseSync() {
   const startedAt = typeof performance !== "undefined" ? performance.now() : Date.now();
   wrapLivingLibraryMethodsForSupabase();
 
+  try {
+    await applyLivingLibraryClearFromSupabase(user);
+  } catch (error) {
+    console.warn("Living Library clear check failed:", error);
+  }
   await migrateLocalLivingLibraryToSupabaseOnce();
   let stageStartedAt = livingLibraryTiming("local migration", startedAt);
   await loadLivingLibraryFromSupabase();
@@ -556,11 +664,12 @@ async function initLivingLibrarySupabaseSync() {
     if (!saveResult?.saved) continue;
     const connections = Library.getConnections(canonicalEntityId) || [];
     for (const connection of connections) {
-      await saveLivingLibraryRelationToSupabase(connection.from, connection.relation, connection.to);
+      await saveLivingLibraryRelationToSupabase(connection.from, connection.relation, connection.to, connection.metadata || {});
     }
-    sourceEntityIds.forEach((sourceId) => {
+    for (const sourceId of sourceEntityIds) {
       localStorage.setItem(getCanonicalMergeKey(user.id, sourceId), canonicalEntityId);
-    });
+      await deleteMergedLivingLibraryEntityFromSupabase(sourceId);
+    }
   }
   stageStartedAt = livingLibraryTiming("canonical cloud save", stageStartedAt);
 
@@ -589,4 +698,5 @@ window.initLivingLibrarySupabaseSync = initLivingLibrarySupabaseSync;
 window.saveLivingLibraryEntityToSupabase = saveLivingLibraryEntityToSupabase;
 window.deleteLivingLibraryEntityFromSupabase = deleteLivingLibraryEntityFromSupabase;
 window.saveLivingLibraryRelationToSupabase = saveLivingLibraryRelationToSupabase;
+window.syncMyPracticeRelationsToSupabase = syncMyPracticeRelationsToSupabase;
 window.loadLivingLibraryRelationsFromSupabase = loadLivingLibraryRelationsFromSupabase;

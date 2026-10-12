@@ -91,6 +91,8 @@ export type CabinetForm = {
   deity?: string;
   entityId?: string;
   custom?: boolean;
+  /** Extra search words for the form (catalogue aliases like "seven day"). */
+  aliases?: string[];
 };
 
 export type CabinetItem = {

@@ -47,6 +47,11 @@ export async function writableCalendars(): Promise<CalendarChoice[]> {
 }
 
 function details(spec: CalendarEventSpec) {
+  const alarms = (spec.alarms ?? []).map((relativeOffset) => ({ relativeOffset }));
+  return { ...timing(spec), alarms };
+}
+
+function timing(spec: CalendarEventSpec) {
   if (spec.allDay && Platform.OS === 'android') {
     // Android stores all-day events at UTC midnight.
     const utc = (d: Date) => new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));

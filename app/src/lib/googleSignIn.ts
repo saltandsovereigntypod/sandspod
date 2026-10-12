@@ -7,6 +7,14 @@ import { supabase } from './supabase';
 export type GoogleSignInResult = 'signed-in' | 'redirecting' | 'cancelled';
 
 /**
+ * Where Supabase sends people back to after Google, a recovery link or an
+ * email change: the site root on the web, the app's auth-callback link on a phone.
+ */
+export function authReturnUrl(): string {
+  return Platform.OS === 'web' ? `${window.location.origin}/` : Linking.createURL('auth-callback');
+}
+
+/**
  * Signs in with the same Google account as the website.
  * On the web the page leaves for Google and comes back with a code, which the
  * Supabase client exchanges on load. On a phone Google opens in an in-app
@@ -17,13 +25,13 @@ export async function signInWithGoogle(): Promise<GoogleSignInResult> {
   if (Platform.OS === 'web') {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/` },
+      options: { redirectTo: authReturnUrl() },
     });
     if (error) throw error;
     return 'redirecting';
   }
 
-  const redirectTo = Linking.createURL('auth-callback');
+  const redirectTo = authReturnUrl();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: { redirectTo, skipBrowserRedirect: true },
@@ -40,6 +48,10 @@ export async function signInWithGoogle(): Promise<GoogleSignInResult> {
   if (typeof code !== 'string') throw new Error('Google did not return a sign-in code.');
 
   const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
-  if (exchangeError) throw exchangeError;
+  if (exchangeError) {
+    // The auth-callback screen may have opened the same link and used the code first.
+    const { data: current } = await supabase.auth.getSession();
+    if (!current.session) throw exchangeError;
+  }
   return 'signed-in';
 }

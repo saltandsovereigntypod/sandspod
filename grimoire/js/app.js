@@ -962,7 +962,10 @@ function formatLibraryFieldName(name = "") {
     CommonMaterials: "Common Materials",
     BestFor: "Best For",
     BestWith: "Best With",
-    UsedFor: "Used For"
+    UsedFor: "Used For",
+    TraditionalMeaning: "Meaning",
+    TraditionNotes: "In the Traditions",
+    HowToUse: "How to Use"
   };
 
   return labels[name] || formatLibraryEntityName(name);

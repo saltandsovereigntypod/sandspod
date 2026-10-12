@@ -19,6 +19,11 @@ export type SubmissionRow = {
   updated_at: string | null;
   published_at?: string | null;
   last_activity_at?: string | null;
+  // Moderator-only columns (the admin review page reads and writes these).
+  moderator_notes?: string | null;
+  admin_folder?: string | null;
+  archived_at?: string | null;
+  reviewed_at?: string | null;
 };
 
 export type MessageRow = {
@@ -28,6 +33,7 @@ export type MessageRow = {
   sender_role: string;
   message: string;
   created_at: string | null;
+  read_by_admin?: boolean | null;
 };
 
 /** What people can offer (the website's submit form, in its order). */
@@ -256,3 +262,101 @@ export const SUBMISSION_TERMS = [
   'Published content may remain part of previously released podcasts, articles, videos, newsletters, archives, or other media, even if you later request removal.',
   'Salt & Sovereignty may decline, edit, remove, or choose not to publish any submission for any reason.',
 ];
+
+/** Posts and people someone has chosen not to see, kept on their device. */
+export type HiddenCommunity = { posts: string[]; authors: string[] };
+
+export const SUPPORT_EMAIL = 'ashley.p@saltandsovereignty.com';
+
+export function isHidden(row: SubmissionRow, hidden: HiddenCommunity): boolean {
+  return hidden.posts.includes(row.id) || (!!row.user_id && hidden.authors.includes(row.user_id));
+}
+
+/** A pre-filled email to the moderators about one published page or Field Note. */
+export function reportUrl(row: SubmissionRow): string {
+  const what = row.submission_type === 'community_note' ? 'Field Note' : 'Community Grimoire page';
+  const subject = `Report: ${row.title || what}`;
+  const body = [
+    `I'd like to report this ${what}.`,
+    '',
+    `Title: ${row.title || '(none)'}`,
+    `Reference: ${row.id}`,
+    '',
+    'What concerns you about it?',
+    '',
+  ].join('\n');
+  return `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+// ─── Review (admins only), matching js/admin-submissions.js ───────────────
+
+/** The website's review folders, in its order. */
+export const REVIEW_FILTERS = [
+  { value: 'pending', label: 'Pending' },
+  { value: 'needs_revision', label: 'Needs revision' },
+  { value: 'approved', label: 'Approved' },
+  { value: 'published', label: 'Published' },
+  { value: 'rejected', label: 'Rejected' },
+  { value: 'archived', label: 'Archived' },
+  { value: 'all', label: 'All' },
+] as const;
+export type ReviewFilter = (typeof REVIEW_FILTERS)[number]['value'];
+
+/** The buttons on each submission, in the website's order. */
+export const REVIEW_ACTIONS = [
+  { value: 'approved', label: 'Approve' },
+  { value: 'needs_revision', label: 'Needs revision' },
+  { value: 'published', label: 'Publish' },
+  { value: 'rejected', label: 'Reject' },
+  { value: 'archived', label: 'Archive' },
+] as const;
+export type ReviewAction = (typeof REVIEW_ACTIONS)[number]['value'];
+
+/** What one of those buttons writes, exactly as the website's updateAdminSubmissionStatus. */
+export function reviewPatch(action: ReviewAction, notes: string, now: Date = new Date()) {
+  const at = now.toISOString();
+  const patch: Record<string, unknown> = { moderator_notes: notes, updated_at: at, last_activity_at: at };
+  if (action === 'archived') {
+    patch.admin_folder = 'archived';
+    patch.archived_at = at;
+  } else {
+    patch.status = action;
+    patch.admin_folder = 'active';
+    patch.archived_at = null;
+    if (action === 'published') patch.published_at = at;
+    patch.reviewed_at = at;
+  }
+  return patch;
+}
+
+export function notesPatch(notes: string, now: Date = new Date()) {
+  return { moderator_notes: notes, ...replyActivity(now) };
+}
+
+/** A Salt & Sovereignty message to the person who made the submission. */
+export function adminMessagePayload(submissionId: string, userId: string, message: string) {
+  const text = message.trim();
+  if (!text) return null;
+  return { submission_id: submissionId, user_id: userId, sender_role: 'admin', message: text, read_by_admin: true };
+}
+
+/** Unread replies from submitters, counted per folder and per submission. */
+export function unreadCounts(rows: { submission_id: string; status: string | null }[]) {
+  const byFolder: Record<string, number> = {};
+  const bySubmission: Record<string, number> = {};
+  for (const row of rows) {
+    const status = row.status || 'pending';
+    byFolder.all = (byFolder.all ?? 0) + 1;
+    byFolder[status] = (byFolder[status] ?? 0) + 1;
+    bySubmission[row.submission_id] = (bySubmission[row.submission_id] ?? 0) + 1;
+  }
+  return { byFolder, bySubmission };
+}
+
+/** Submissions shown in a folder: archived lives apart; everything else is the active folder. */
+export function inReviewFolder(row: Pick<SubmissionRow, 'status' | 'admin_folder'>, filter: ReviewFilter): boolean {
+  const folder = row.admin_folder || 'active';
+  if (filter === 'archived') return folder === 'archived';
+  if (folder !== 'active') return false;
+  return filter === 'all' || (row.status || 'pending') === filter;
+}

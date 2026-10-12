@@ -899,7 +899,7 @@ function addLibraryRelationshipFromForm(form) {
     return;
   }
 
-  Library.connect(entityId, relation, targetEntityId);
+  Library.connect(entityId, relation, targetEntityId, { source: "manual" });
 
   showLibraryEntityInCompanion(entityId);
   refreshRelationshipManagerModal(entityId);
@@ -930,10 +930,12 @@ function updateLibraryRelationshipFromForm(form) {
     return;
   }
 
+  // Edited by hand, so a My Practice save no longer replaces it.
+  const metadata = { ...(connection.metadata || {}), source: "manual" };
   const changes =
     connection.from === entityId
-      ? { relation, to: targetEntityId }
-      : { relation, from: targetEntityId };
+      ? { relation, to: targetEntityId, metadata }
+      : { relation, from: targetEntityId, metadata };
 
   if (typeof Library.updateConnection === "function") {
     Library.updateConnection(connectionId, changes);

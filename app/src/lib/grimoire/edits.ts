@@ -122,7 +122,15 @@ export function pageInsert(
       sort_order: nextOrder(siblings),
     },
   };
-  const blocks: Op[] = template.blocks.map((block, index) => {
+  return [page, ...templateBlockRows(ctx, { bookId: input.bookId, pageId: input.id, templateKey: template.key, offset: 0 }, makeId)];
+}
+
+function templateBlockRows(
+  ctx: Ctx,
+  input: { bookId: string; pageId: string; templateKey: string; offset: number },
+  makeId: () => string,
+): InsertOp[] {
+  return findTemplate(input.templateKey).blocks.map((block, index) => {
     const id = makeId();
     return {
       kind: 'insert',
@@ -132,16 +140,28 @@ export function pageInsert(
         id,
         user_id: ctx.userId,
         book_id: input.bookId,
-        page_id: input.id,
+        page_id: input.pageId,
         block_type: block.type,
         content: block.content || '',
         metadata: {},
         rich_content: null,
-        sort_order: index,
+        sort_order: input.offset + index,
       },
     };
   });
-  return [page, ...blocks];
+}
+
+/** Adding a template to a page that already exists (website:
+ *  applyTemplateToCurrentPage): its blocks go after everything already on
+ *  the page, and nothing is deleted. */
+export function templateAppend(
+  snapshot: GrimoireSnapshot,
+  ctx: Ctx,
+  input: { page: PageRow; templateKey: string },
+  makeId: () => string,
+): InsertOp[] {
+  const offset = nextOrder(pageBlocks(snapshot, input.page.id));
+  return templateBlockRows(ctx, { bookId: input.page.book_id, pageId: input.page.id, templateKey: input.templateKey, offset }, makeId);
 }
 
 export function pageTitlePatch(ctx: Ctx, page: PageRow, title: string): UpdateOp | null {

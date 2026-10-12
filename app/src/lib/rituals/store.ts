@@ -15,7 +15,8 @@ import { useEffect, useMemo, useSyncExternalStore } from 'react';
 
 import { useSession } from '../session';
 import { supabase } from '../supabase';
-import { applyAnswers, createSession, finishSession, journalPayload, uuid, type StartSource } from './lifecycle';
+import { permissionState, requestPermission, setStepAlarm } from '../reminders/notifier';
+import { applyAnswers, createSession, finishSession, journalPayload, stepAlarm, uuid, withAltarSnapshot, type StartSource } from './lifecycle';
 import { isSyncable, mergePlans, planRow, unsyncedPlans, type PlanRow } from './planSync';
 import {
   journalLibraryEntry,
@@ -298,6 +299,8 @@ async function storeActive(session: RitualSession | null) {
 /** Save the running session locally, then send it to the account in the background. */
 async function persist(session: RitualSession, mustSync = false) {
   set({ active: session.status === 'active' || session.status === 'paused' ? session : null });
+  // Any change (a step done, a pause, the end) moves or cancels the step's ring.
+  void setStepAlarm(stepAlarm(session, new Date()));
   await storeActive(session);
   const userId = state.userId;
   if (!userId) return;
@@ -308,19 +311,38 @@ async function persist(session: RitualSession, mustSync = false) {
 export async function startRitual(source: StartSource): Promise<RitualSession> {
   if (state.active) throw new Error('A ritual is already under way. Finish it before beginning another.');
   const session = createSession(source, { userId: state.userId, now: new Date() });
+  // A ritual with timers is the moment to ask, so the end of a step can ring.
+  if (session.session_steps.some((step) => Number(step.duration_seconds) > 0)) {
+    try {
+      if ((await permissionState()) === 'undetermined') await requestPermission();
+    } catch {
+      // The on-screen timer still runs.
+    }
+  }
   await persist(session);
   return session;
 }
 
-export async function updateActive(change: (session: RitualSession) => RitualSession) {
-  if (!state.active) return;
-  const next = change(state.active);
-  if (next !== state.active) await persist(next);
+/** Change the running session. Returns the session before and after, for what the change sets off. */
+export async function updateActive(
+  change: (session: RitualSession) => RitualSession,
+): Promise<{ before: RitualSession; after: RitualSession } | null> {
+  if (!state.active) return null;
+  const before = state.active;
+  const next = change(before);
+  if (next !== before) await persist(next);
+  return { before, after: next };
 }
 
-export async function finishActive(status: 'completed' | 'abandoned'): Promise<RitualSession | null> {
+/** Close the running session. With altarSnapshot, the linked altar as it stands at the end is kept, as on the website. */
+export async function finishActive(
+  status: 'completed' | 'abandoned',
+  altarSnapshot?: Record<string, unknown> | null,
+): Promise<RitualSession | null> {
   if (!state.active) return null;
-  const finished = finishSession(state.active, status, new Date());
+  const now = new Date();
+  const closing = altarSnapshot ? withAltarSnapshot(state.active, altarSnapshot, now) : state.active;
+  const finished = finishSession(closing, status, now);
   lastFinished = finished;
   await persist(finished, true);
   return finished;

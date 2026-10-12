@@ -155,7 +155,42 @@ export function uniqueLinks(links: RitualLinkRow[], existing: Partial<RitualLink
   });
 }
 
-/** Links for a journal entry: its altar and the Library ingredients used. */
+type SnapshotObject = {
+  label?: string;
+  herb?: string;
+  crystal?: string;
+  tool?: string;
+  vessel?: string;
+  deity?: string;
+  type?: string;
+  entityId?: string;
+};
+
+/**
+ * used_entity links for the Library entities on the ritual's altar, one per
+ * entity, shaped like the website's createRitualJournalLinks rows.
+ */
+export function altarEntityLinks(journal: Pick<JournalRow, 'id' | 'altar_snapshot'>, userId: string): RitualLinkRow[] {
+  const objects = (journal.altar_snapshot as { objects?: unknown })?.objects;
+  const seen = new Set<string>();
+  const links: RitualLinkRow[] = [];
+  for (const object of Array.isArray(objects) ? (objects as SnapshotObject[]) : []) {
+    if (!object || typeof object !== 'object' || !object.entityId || seen.has(object.entityId)) continue;
+    seen.add(object.entityId);
+    links.push({
+      user_id: userId,
+      ritual_id: journal.id,
+      link_type: 'used_entity',
+      entity_id: object.entityId,
+      // getRitualJournalObjects: the first name the object has.
+      label: object.label || object.herb || object.crystal || object.tool || object.vessel || object.deity || 'Altar item',
+      metadata: { type: object.type || 'item' },
+    });
+  }
+  return links;
+}
+
+/** Links for a journal entry: the Library ingredients used, the altar's entities, and its altar. */
 export function journalLinks(journal: JournalRow, userId: string, ingredients: Ingredient[]): RitualLinkRow[] {
   const links: RitualLinkRow[] = ingredients.map((item) => ({
     user_id: userId,
@@ -165,6 +200,7 @@ export function journalLinks(journal: JournalRow, userId: string, ingredients: I
     label: item.name,
     metadata: { type: item.type, source: 'app' },
   }));
+  links.push(...altarEntityLinks(journal, userId));
   if (journal.linked_altar_id) {
     links.push({
       user_id: userId,

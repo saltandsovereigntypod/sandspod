@@ -1,9 +1,9 @@
 {
   "expo": {
     "name": "Salt & Sovereignty",
-    "slug": "salt-and-sovereignty",
+    "slug": "ashley19175",
     "scheme": "saltandsovereignty",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -13,7 +13,8 @@
       "bundleIdentifier": "com.saltandsovereignty.app",
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "usesAppleSignIn": true
     },
     "android": {
       "package": "com.saltandsovereignty.app",
@@ -32,6 +33,7 @@
     "plugins": [
       "expo-router",
       "expo-font",
+      "expo-apple-authentication",
       [
         "expo-splash-screen",
         {
@@ -47,6 +49,43 @@
         {
           "calendarPermission": "Allow $(PRODUCT_NAME) to add your planned rituals, moon phases and sabbats to your calendar."
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location to work out sunrise, sunset, moonrise and planetary hours where you are. It stays on your phone."
+        }
+      ],
+      [
+        "expo-widgets",
+        {
+          "bundleIdentifier": "com.saltandsovereignty.app.widgets",
+          "groupIdentifier": "group.com.saltandsovereignty.app",
+          "widgets": [
+            {
+              "name": "MoonWidget",
+              "displayName": "Tonight's Moon",
+              "description": "The moon tonight, today's holiday and your next ritual.",
+              "ios": {
+                "supportedFamilies": [
+                  "systemSmall",
+                  "systemMedium",
+                  "accessoryCircular",
+                  "accessoryRectangular",
+                  "accessoryInline"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow $(PRODUCT_NAME) to use photos you choose for your own altar items and apothecary workings.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
       ]
     ],
     "experiments": {
@@ -55,15 +94,15 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "471363f9-07e8-452a-a759-08e390c44936"
+        "projectId": "08131a0f-a981-4de5-9def-e19761ca46ae"
       }
     },
-    "owner": "salt-and-sovereignty-llc",
+    "owner": "ashley19175s-team",
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/471363f9-07e8-452a-a759-08e390c44936"
+      "url": "https://u.expo.dev/08131a0f-a981-4de5-9def-e19761ca46ae"
     }
   }
 }

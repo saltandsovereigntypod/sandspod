@@ -8,6 +8,7 @@ import { NEW_CLOTH_SIZE, NEW_OBJECT_SIZE, objectAspect, savedFromBox, type Box }
 import { nextLayer } from './layers.ts';
 import { ensureLivingState } from './livingState.ts';
 import type { AltarBackground, CabinetCategoryId, CabinetForm, CabinetItem, SavedObject } from './types.ts';
+import { ALTAR_ARTWORK } from './artworkData.ts';
 
 export const cabinetCategories: { id: CabinetCategoryId; label: string }[] = [
   { id: 'candles', label: 'Candles' },
@@ -22,36 +23,55 @@ export const cabinetCategories: { id: CabinetCategoryId; label: string }[] = [
 export const builtInBackgrounds: AltarBackground[] = [
   { id: 'forest-altar', name: 'Forest Altar', background: '/assets/altar/backgrounds/forest-scene.png' },
   { id: 'deity-shelf-altar', name: 'Deity Shelf Altar', background: '/assets/altar/backgrounds/shelf-deity-altar.png' },
+  // The painted backgrounds (scripts/build-altar-artwork.mjs), as the website lists them.
+  ...ALTAR_ARTWORK.backgrounds.map((b) => ({ id: b.id, name: b.name, background: b.assetPath })),
 ];
 
 /** What the stage shows when a save has no background (altar.css default). */
 export const DEFAULT_BACKGROUND = '/assets/altar/backgrounds/forest-scene.png';
 
+/**
+ * The background Settings → Default altar background names, matched as the
+ * website's applyDefaultAltarBackgroundSetting does: by name (any case) or by
+ * asset path. Null when nothing is chosen or it's no longer available.
+ */
+export function defaultAltarBackground(saved: unknown, custom: AltarBackground[] = []): AltarBackground | null {
+  const wanted = typeof saved === 'string' ? saved.trim() : '';
+  if (!wanted) return null;
+  return (
+    [...builtInBackgrounds, ...custom].find((bg) => bg.name.toLowerCase() === wanted.toLowerCase() || bg.background === wanted) ?? null
+  );
+}
+
+/** SanctuaryAssetCatalog.getForms('candle'), aliases included. */
 const candleForms = [
-  { id: 'chime-spell', label: 'Chime / Spell Candle' },
-  { id: 'taper', label: 'Taper Candle' },
-  { id: 'tea-light', label: 'Tea Light' },
-  { id: 'pillar', label: 'Pillar Candle' },
-  { id: 'vigil', label: 'Vigil Candle' },
+  { id: 'chime-spell', label: 'Chime / Spell Candle', aliases: ['chime', 'spell candle'] },
+  { id: 'taper', label: 'Taper Candle', aliases: ['taper'] },
+  { id: 'tea-light', label: 'Tea Light', aliases: ['tealight', 'tea light'] },
+  { id: 'pillar', label: 'Pillar Candle', aliases: ['pillar'] },
+  { id: 'vigil', label: 'Vigil Candle', aliases: ['seven day', 'vigil'] },
 ];
 
-const candleColors = ['white', 'black', 'green', 'purple', 'red', 'orange', 'yellow', 'blue', 'brown', 'pink', 'gold', 'silver'];
+// Candle colours, extra candle forms, and the herbs, crystals, deities, tools and
+// vessels with pictures: generated from assets/altar/objects (scripts/build-altar-artwork.mjs),
+// the same list the website's cabinet reads (js/altar-artwork.js).
+const candleColors = ALTAR_ARTWORK.candleColors;
+const allCandleForms = [...candleForms, ...ALTAR_ARTWORK.candleStyleForms.map(({ id, label, aliases }) => ({ id, label, aliases }))];
 
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
-const herbs: [string, string, string[], string?, string?][] = [
-  ['basil', 'Basil', ['protection', 'prosperity', 'love', 'courage', 'cleansing']],
-  ['bay', 'Bay', ['wishes', 'protection', 'victory', 'divination', 'success'], 'bay-leaf', 'bay'],
-  ['cedar', 'Cedar', ['protection', 'purification', 'blessing', 'grounding', 'ancestors']],
-  ['chamomile', 'Chamomile', ['calm', 'sleep', 'luck', 'money', 'healing']],
-  ['cinnamon', 'Cinnamon', ['prosperity', 'passion', 'speed', 'success', 'protection']],
-  ['lavender', 'Lavender', ['peace', 'sleep', 'love', 'healing', 'purification']],
-  ['mugwort', 'Mugwort', ['dreams', 'divination', 'intuition', 'thresholds']],
-  ['rosemary', 'Rosemary', ['protection', 'purification', 'remembrance', 'healing']],
-  ['sage', 'Sage', ['cleansing', 'wisdom', 'protection', 'purification']],
-];
-const herbsWithImages = new Set(['basil', 'bay', 'cedar', 'chamomile', 'cinnamon', 'lavender', 'mugwort', 'rosemary']);
+// Candle artwork by form: the vigil candles, and each other form painted in every colour.
+const candleFormFiles: Record<string, string> = { 'chime-spell': 'chime', taper: 'taper', 'tea-light': 'tea-light', pillar: 'pillar' };
+const styleIds = new Set(ALTAR_ARTWORK.candleStyleForms.map((form) => form.id));
+function candleFormImage(color: string, formId: string): string {
+  if (formId === 'vigil') return `../assets/altar/objects/candles/${color}-candle.${color === 'white' || color === 'black' ? 'PNG' : 'png'}`;
+  const file = candleFormFiles[formId] ?? (styleIds.has(formId) ? formId : '');
+  return file ? `../assets/altar/objects/candles/${file}/${color}-${file}.png` : '';
+}
+
+const fromArtwork = (list: (typeof ALTAR_ARTWORK.items)[keyof typeof ALTAR_ARTWORK.items]): CabinetItem[] =>
+  list.map((item) => ({ ...item, id: `${item.category}:${slug(item.name)}`, keywords: [...item.keywords], forms: item.forms.map((f) => ({ ...f })) }));
 
 const single = (
   category: CabinetCategoryId,
@@ -73,50 +93,17 @@ export const builtInCabinet: CabinetItem[] = [
     category: 'candles' as const,
     name: `${capitalize(color)} Candle`,
     keywords: [color, 'candle', 'fire'],
-    forms: candleForms.map((form) => ({
+    forms: allCandleForms.map((form) => ({
       label: form.label,
-      image:
-        form.id === 'vigil'
-          ? `../assets/altar/objects/candles/${color}-candle.${color === 'white' || color === 'black' ? 'PNG' : 'png'}`
-          : '',
+      image: candleFormImage(color, form.id),
       type: 'candle',
       color,
       form: form.id,
+      aliases: [...form.aliases],
     })),
   })),
-  ...herbs.map(([id, name, keywords, folder = id, fileBase = folder]) => {
-    const image = (form: string) => (herbsWithImages.has(id) ? `../assets/altar/objects/herbs/${folder}/${fileBase}-${form}.png` : '');
-    return {
-      id: `herbs:${slug(name)}`,
-      category: 'herbs' as const,
-      name,
-      keywords,
-      forms: [
-        { label: 'Sprig', image: image('sprig'), type: 'herb', herb: id, form: 'sprig' },
-        { label: 'Loose', image: image('loose'), type: 'herb', herb: id, form: 'loose' },
-        { label: 'Oil', image: image('oil'), type: 'oil', herb: id, form: 'oil' },
-        { label: 'Incense', image: '../assets/altar/objects/herbs/incense/incense.png', type: 'herb', herb: id, form: 'incense' },
-      ],
-    };
-  }),
-  ...(
-    [
-      ['amethyst', 'Amethyst', ['intuition', 'dreams', 'meditation', 'protection'], 'amethyst'],
-      ['clear_quartz', 'Clear Quartz', ['amplification', 'clarity', 'healing', 'cleansing'], 'clear-quartz'],
-    ] as const
-  ).map(([id, name, keywords, folder]) => ({
-    id: `crystals:${slug(name)}`,
-    category: 'crystals' as const,
-    name,
-    keywords: [...keywords],
-    forms: (['point', 'chips', 'cluster'] as const).map((form) => ({
-      label: capitalize(form),
-      image: `../assets/altar/objects/crystals/${folder}/${folder}-${form}.png`,
-      type: 'crystal',
-      crystal: id,
-      form,
-    })),
-  })),
+  ...fromArtwork(ALTAR_ARTWORK.items.herbs),
+  ...fromArtwork(ALTAR_ARTWORK.items.crystals),
   single('tools', 'Key', ['thresholds', 'unlocking', 'Hekate'], {
     image: '../assets/altar/objects/tools/key/key.png',
     type: 'tool',
@@ -159,6 +146,8 @@ export const builtInCabinet: CabinetItem[] = [
     deity: 'lilith',
     form: 'statue',
   }),
+  ...fromArtwork(ALTAR_ARTWORK.items.deities),
+  ...fromArtwork(ALTAR_ARTWORK.items.tools),
   single('vessels', 'Cauldron', ['transformation', 'fire', 'spellwork'], {
     image: '../assets/altar/objects/vessels/cauldron/cauldron.png',
     type: 'vessel',
@@ -171,9 +160,22 @@ export const builtInCabinet: CabinetItem[] = [
     vessel: 'spell-jar',
     form: 'standard',
   }),
+  ...fromArtwork(ALTAR_ARTWORK.items.vessels),
 ];
 
 /** Label of an object placed from a form (cabinet.js renderCabinetTile). */
+/**
+ * How an object's name is shown in the app. Saved labels stay exactly as the
+ * website writes them ("Red Candle Vigil Candle"); on screen the doubled word
+ * is dropped ("Red Vigil Candle", "Red Tea Light").
+ */
+export function shortLabel(label: string | null | undefined, fallback = 'Object'): string {
+  const name = (label ?? '').trim();
+  if (!name) return fallback;
+  const doubled = /^(.+?) Candle (.+)$/.exec(name);
+  return doubled ? `${doubled[1]} ${doubled[2]}` : name;
+}
+
 export function formObjectLabel(item: CabinetItem, form: CabinetForm): string {
   return item.forms.length > 1 ? `${item.name} ${form.label}` : item.name;
 }
@@ -259,13 +261,43 @@ export function customBackgroundFromRow(row: CustomBackgroundRow): AltarBackgrou
   return { id: row.id, name: row.name, background: row.image_url, custom: true };
 }
 
+/**
+ * Words a cabinet item is found by beyond its name and keywords: its forms'
+ * labels, types, ids and aliases ("seven day", "tealight") and the plural
+ * category words (cabinet.js cabinetSearchAliases).
+ */
+/** The deity drawer's pantheon groups, in order. */
+export const PANTHEON_GROUPS: string[] = ALTAR_ARTWORK.pantheonGroups;
+
+/** Which pantheon group a deity statue belongs to (people's own statues are "Your own"). */
+export function deityPantheon(item: CabinetItem): string {
+  if (item.customCabinetItemId) return 'Your own';
+  const key = item.forms.find((form) => form.deity)?.deity ?? '';
+  return ALTAR_ARTWORK.deityPantheons[key] ?? 'Other';
+}
+
+export function cabinetSearchAliases(item: CabinetItem): string[] {
+  const formWords = item.forms.flatMap((form) => [form.label, form.type, form.form, ...(form.aliases ?? [])]);
+  const variants =
+    item.category === 'candles'
+      ? ['candle', 'candles']
+      : item.category === 'herbs'
+        ? ['herb', 'herbs']
+        : item.category === 'crystals'
+          ? ['crystal', 'crystals']
+          : item.name === 'Spell Jar'
+            ? ['jar', 'spell jar', 'spell jars']
+            : [];
+  return [...new Set([...item.keywords, ...formWords, ...variants].filter((word): word is string => !!word))];
+}
+
 /** Items in one category matching a search, custom items first (renderCabinetItems). */
 export function cabinetItemsFor(items: CabinetItem[], category: string, search: string): CabinetItem[] {
   const needle = search.trim().toLowerCase();
   return items.filter((item) => {
     if (item.category !== category) return false;
     if (!needle) return true;
-    return [item.name, item.category, ...item.keywords].join(' ').toLowerCase().includes(needle);
+    return [item.name, item.category, ...cabinetSearchAliases(item)].join(' ').toLowerCase().includes(needle);
   });
 }
 

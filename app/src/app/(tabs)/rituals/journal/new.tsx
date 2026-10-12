@@ -66,7 +66,9 @@ export default function JournalForm() {
     setProblem(null);
     try {
       const entry = await saveJournal({ session: ritual, answers, existingId: existing?.id ?? null });
-      router.replace({ pathname: '/rituals/journal/[id]', params: { id: entry.id } });
+      // Editing was opened from the entry itself: go back to it rather than opening it twice.
+      if (existing && router.canGoBack()) router.back();
+      else router.replace({ pathname: '/rituals/journal/[id]', params: { id: entry.id } });
     } catch (e) {
       setProblem(
         `Your journal couldn't be saved${e instanceof Error ? ` (${e.message})` : ''}. Your reflection is still here so you can try again.`,

@@ -1,7 +1,13 @@
 import { router, type Href } from 'expo-router';
+import Constants from 'expo-constants';
+import * as WebBrowser from 'expo-web-browser';
+import { Linking } from 'react-native';
 
 import type { MoreIconName } from '../../../components/more/MoreIcon';
+import { runningUpdateLabel } from '../../../components/UpdateBanner';
 import { MenuList, MenuRow, MoreScreen, Section } from '../../../components/more/ui';
+import { useIsReviewer, useReview } from '../../../lib/community/api';
+import { inReviewFolder, SUPPORT_EMAIL } from '../../../lib/community/model';
 import { useSession } from '../../../lib/session';
 import { greetingName } from '../../../lib/settings/defaults';
 import { useMySettings } from '../../../lib/settings/store';
@@ -11,9 +17,12 @@ type Row = { key: string; label: string; detail: string; icon: MoreIconName; hre
 // ─── MERGE POINTS ────────────────────────────────────────────────────────
 // Rows other milestones will fill in. A row stays hidden while its href is
 // null; point it at the new route when merging, e.g. '/rituals/reminders'.
-const MOON_REMINDERS_HREF: Href | null = '/rituals/reminders';
+const MOON_REMINDERS_HREF: Href | null = '/more/reminders';
 const ALTAR_HREF: Href | null = '/altar';
 // ─────────────────────────────────────────────────────────────────────────
+
+const PRIVACY_URL = 'https://saltandsovereignty.com/privacy.html';
+const TERMS_URL = 'https://saltandsovereignty.com/submission-terms.html';
 
 const GROUPS: { label: string; rows: Row[] }[] = [
   {
@@ -41,7 +50,9 @@ const GROUPS: { label: string; rows: Row[] }[] = [
   {
     label: 'Your Sanctuary',
     rows: [
+      { key: 'journey', label: 'My Journey', detail: 'A chronicle of your practice', icon: 'journey', href: '/more/journey' },
       { key: 'settings', label: 'Settings', detail: 'Names, Book of Shadows, Library', icon: 'settings', href: '/more/settings' },
+      { key: 'accessibility', label: 'Accessibility', detail: 'Text size, spacing, contrast, motion', icon: 'settings', href: '/more/accessibility' },
       { key: 'backup', label: 'Backup and restore', detail: 'Keep a copy of your Sanctuary', icon: 'backup', href: '/more/backup' },
       { key: 'account', label: 'Account', detail: '', icon: 'account', href: '/more/account' },
     ],
@@ -52,11 +63,29 @@ export default function More() {
   const { session } = useSession();
   const { settings } = useMySettings();
   const name = settings ? greetingName(settings) : '';
+  const isReviewer = useIsReviewer();
+  const { data: review } = useReview();
+  const pending = review?.submissions.filter((row) => inReviewFolder(row, 'pending')).length ?? 0;
+  const unread = review?.unread.byFolder.all ?? 0;
 
   return (
     <MoreScreen title="Your Sanctuary" eyebrow={name ? `Welcome, ${name}` : 'More'}>
+      <MenuList>
+        <MenuRow
+          label="Search your practice"
+          detail="Library, grimoire, journal and templates"
+          icon="search"
+          last
+          onPress={() => router.push('/more/search')}
+        />
+      </MenuList>
       {GROUPS.map((group) => {
-        const rows = group.rows.filter((row) => row.href);
+        const rows = [
+          ...group.rows,
+          ...(group.label === 'Community' && isReviewer
+            ? [{ key: 'review', label: 'Review submissions', detail: '', icon: 'letters' as const, href: '/more/community/review' as Href }]
+            : []),
+        ].filter((row) => row.href);
         return (
           <Section key={group.label} label={group.label}>
             <MenuList>
@@ -65,7 +94,9 @@ export default function More() {
                   key={row.key}
                   label={row.label}
                   detail={
-                    row.key === 'account'
+                    row.key === 'review'
+                      ? [`${pending} pending`, unread ? `${unread} new ${unread === 1 ? 'reply' : 'replies'}` : null].filter(Boolean).join(' · ')
+                      : row.key === 'account'
                       ? session
                         ? `Signed in as ${session.user.email ?? 'your account'}`
                         : 'Guest · saved on this device'
@@ -80,6 +111,14 @@ export default function More() {
           </Section>
         );
       })}
+      <Section label="Help">
+        <MenuList>
+          <MenuRow label="Contact us" detail={SUPPORT_EMAIL} onPress={() => void Linking.openURL(`mailto:${SUPPORT_EMAIL}`)} />
+          <MenuRow label="Privacy Policy" onPress={() => void WebBrowser.openBrowserAsync(PRIVACY_URL)} />
+          <MenuRow label="Submission Terms" onPress={() => void WebBrowser.openBrowserAsync(TERMS_URL)} />
+          <MenuRow label={`Version ${Constants.expoConfig?.version ?? ''}`.trim()} detail={runningUpdateLabel() ?? undefined} last />
+        </MenuList>
+      </Section>
     </MoreScreen>
   );
 }

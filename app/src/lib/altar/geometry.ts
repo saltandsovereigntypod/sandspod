@@ -92,6 +92,11 @@ export function setImageRatioLookup(lookup: RatioLookup) {
   ratioLookup = lookup;
 }
 
+/** An image's natural height / width, or null while it is unknown. */
+export function imageRatio(path: string): number | null {
+  return ratioLookup(path);
+}
+
 /** Height / width of an object's box on the website. */
 export function objectAspect(object: SavedObject): number {
   if (!object.imagePath) return 1;

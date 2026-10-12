@@ -13,61 +13,36 @@ const cabinetCategories = [
   { id: "vessels", label: "Vessels", icon: "🏺" }
 ];
 
+// Candle artwork by form: the vigil candles, and the chime, taper, tea light and pillar painted for each colour.
+const candleFormFiles = { "chime-spell": "chime", taper: "taper", "tea-light": "tea-light", pillar: "pillar" };
+const altarArtwork = window.AltarArtwork || { candleColors: [], candleStyleForms: [], items: {} };
+const candleStyleIds = new Set((altarArtwork.candleStyleForms || []).map((form) => form.id));
+function candleFormImage(color, formId) {
+  if (formId === "vigil") return `../assets/altar/objects/candles/${color}-candle.${color === "white" || color === "black" ? "PNG" : "png"}`;
+  const file = candleFormFiles[formId] || (candleStyleIds.has(formId) ? formId : "");
+  return file ? `../assets/altar/objects/candles/${file}/${color}-${file}.png` : "";
+}
+
+
 const cabinetItems = [
   ...(window.SanctuaryAssetCatalog?.getBackgrounds?.() || []).map((background) => ({ category: "backgrounds", name: background.name, icon: "🌲", keywords: [], background: background.assetPath })),
 
-  ...["white", "black", "green", "purple", "red", "orange", "yellow", "blue", "brown", "pink", "gold", "silver"].map((color) => ({
+  ...(altarArtwork.candleColors?.length ? altarArtwork.candleColors : ["white", "black", "green", "purple", "red", "orange", "yellow", "blue", "brown", "pink", "gold", "silver"]).map((color) => ({
     category: "candles",
     name: `${color.charAt(0).toUpperCase() + color.slice(1)} Candle`,
     icon: "🕯️",
     keywords: [color, "candle", "fire"],
-    forms: (window.SanctuaryAssetCatalog?.getForms?.("candle") || []).map((form) => ({
+    forms: [...(window.SanctuaryAssetCatalog?.getForms?.("candle") || []), ...(altarArtwork.candleStyleForms || [])].map((form) => ({
       label: form.label,
-      image: form.id === "vigil" ? `../assets/altar/objects/candles/${color}-candle.${color === "white" || color === "black" ? "PNG" : "png"}` : "",
+      image: candleFormImage(color, form.id),
       type: "candle", color, form: form.id, aliases: form.aliases || []
     }))
   })),
 
-  ...[
-    ["basil", "Basil", ["protection", "prosperity", "love", "courage", "cleansing"]],
-    ["bay", "Bay", ["wishes", "protection", "victory", "divination", "success"], "bay-leaf", "bay"],
-    ["cedar", "Cedar", ["protection", "purification", "blessing", "grounding", "ancestors"]],
-    ["chamomile", "Chamomile", ["calm", "sleep", "luck", "money", "healing"]],
-    ["cinnamon", "Cinnamon", ["prosperity", "passion", "speed", "success", "protection"]],
-    ["lavender", "Lavender", ["peace", "sleep", "love", "healing", "purification"]],
-    ["mugwort", "Mugwort", ["dreams", "divination", "intuition", "thresholds"]],
-    ["rosemary", "Rosemary", ["protection", "purification", "remembrance", "healing"]],
-    ["sage", "Sage", ["cleansing", "wisdom", "protection", "purification"]],
-  ].map(([id, name, keywords, folder = id.replaceAll("_", "-"), fileBase = folder]) => {
-    const hasBuiltInImages = new Set(["basil", "bay", "cedar", "chamomile", "cinnamon", "lavender", "mugwort", "rosemary"]).has(id);
-    const herbImage = (form) => hasBuiltInImages ? `../assets/altar/objects/herbs/${folder}/${fileBase}-${form}.png` : "";
-    return {
-    category: "herbs",
-    name,
-    icon: "🌿",
-    keywords,
-    forms: [
-      { label: "Sprig", image: herbImage("sprig"), type: "herb", herb: id, form: "sprig" },
-      { label: "Loose", image: herbImage("loose"), type: "herb", herb: id, form: "loose" },
-      { label: "Oil", image: herbImage("oil"), type: "oil", herb: id, form: "oil" },
-      { label: "Incense", image: "../assets/altar/objects/herbs/incense/incense.png", type: "herb", herb: id, form: "incense" }
-    ]
-  }; }),
+  // Herbs and crystals with pictures: js/altar-artwork.js (built from assets/altar/objects).
+  ...(altarArtwork.items?.herbs || []),
 
-  ...[
-    ["amethyst", "Amethyst", ["intuition", "dreams", "meditation", "protection"]],
-    ["clear_quartz", "Clear Quartz", ["amplification", "clarity", "healing", "cleansing"], "clear-quartz"],
-  ].map(([id, name, keywords, folder = id.replaceAll("_", "-")]) => ({
-    category: "crystals",
-    name,
-    icon: "💎",
-    keywords,
-    forms: [
-      { label: "Point", image: `../assets/altar/objects/crystals/${folder}/${folder}-point.png`, type: "crystal", crystal: id, form: "point" },
-      { label: "Chips", image: `../assets/altar/objects/crystals/${folder}/${folder}-chips.png`, type: "crystal", crystal: id, form: "chips" },
-      { label: "Cluster", image: `../assets/altar/objects/crystals/${folder}/${folder}-cluster.png`, type: "crystal", crystal: id, form: "cluster" }
-    ]
-  })),
+  ...(altarArtwork.items?.crystals || []),
 
   {
     category: "tools",
@@ -118,6 +93,8 @@ const cabinetItems = [
     keywords: [],
     forms: [{ label: "Place", image: "../assets/altar/objects/tools/deities/lilith/lilith-statue.png", type: "deity", deity: "lilith", form: "statue" }]
   },
+  ...(altarArtwork.items?.deities || []),
+  ...(altarArtwork.items?.tools || []),
   {
     category: "vessels",
     name: "Cauldron",
@@ -131,7 +108,8 @@ const cabinetItems = [
     icon: "🫙",
     keywords: ["container", "spell", "intention"],
     forms: [{ label: "Place", image: "../assets/altar/objects/vessels/spell-jar/spell-jar.png", type: "vessel", vessel: "spell-jar", form: "standard" }]
-  }
+  },
+  ...(altarArtwork.items?.vessels || [])
 ];
 
 // Narrow public catalogue for shared Settings. Keep cabinet internals private.
@@ -340,6 +318,45 @@ function renderCabinetBackgroundTile(item) {
   `;
 }
 
+// Pantheons folded away in the deity drawer (kept while the page is open).
+const closedCabinetPantheons = new Set();
+
+/* The deity drawer groups statues by pantheon in sections that fold away;
+   every other drawer is one grid. A search opens every section. */
+function renderCabinetItemList(items, renderItem) {
+  if (activeCabinetCategory !== "deities") return items.map(renderItem).join("");
+
+  const artwork = window.AltarArtwork || {};
+  const order = [...(artwork.pantheonGroups || []), "Your own"];
+  const pantheonOf = (item) => {
+    if (item.customCabinetItemId) return "Your own";
+    const key = (item.forms || []).find((form) => form.deity)?.deity || "";
+    return (artwork.deityPantheons || {})[key] || "Other";
+  };
+  const searching = Boolean(cabinetSearchTerm.trim());
+
+  return order
+    .map((pantheon) => {
+      const group = items.filter((item) => pantheonOf(item) === pantheon);
+      if (!group.length) return "";
+      const open = searching || !closedCabinetPantheons.has(pantheon);
+      return `
+        <details class="cabinet-pantheon" data-cabinet-pantheon="${pantheon}"${open ? " open" : ""}>
+          <summary><span>${pantheon}</span><span class="cabinet-pantheon-count">${group.length}</span></summary>
+          <div class="cabinet-pantheon-grid">${group.map(renderItem).join("")}</div>
+        </details>
+      `;
+    })
+    .join("");
+}
+
+if (typeof document !== "undefined") document.addEventListener("toggle", (event) => {
+  const section = event.target;
+  if (!section?.matches?.("[data-cabinet-pantheon]") || cabinetSearchTerm.trim()) return;
+  if (section.open) closedCabinetPantheons.delete(section.dataset.cabinetPantheon);
+  else closedCabinetPantheons.add(section.dataset.cabinetPantheon);
+}, true);
+
 function renderCabinetItems() {
   if (!cabinetContent) return;
 
@@ -395,8 +412,7 @@ function renderCabinetItems() {
   cabinetContent.innerHTML =
     addBackgroundTile +
     addCustomItemTile +
-    items
-      .map((item) => {
+    renderCabinetItemList(items, (item) => {
         if (item.background) {
           return renderCabinetBackgroundTile(item);
         }
@@ -516,8 +532,7 @@ function renderCabinetItems() {
           }
         </article>
       `;
-      })
-      .join("");
+      });
 
   const requestedItem = cabinetSearchParams.get("item");
   const requestedForm = cabinetSearchParams.get("form");

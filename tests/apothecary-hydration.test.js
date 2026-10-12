@@ -22,3 +22,14 @@ test("Apothecary hydration has stale-response and completion-event guards", () =
   assert.match(source, /apothecary:hydrated/);
   assert.match(source, /\.map\(normalizeApothecaryItem\)/);
 });
+
+test("guests can save My Apothecary in this browser, and deleting cleans up everywhere", () => {
+  const source = fs.readFileSync("altar/js/features/apothecary.js", "utf8");
+  const save = source.slice(source.indexOf("async function saveApothecaryItems"), source.indexOf("async function migrateLocalApothecaryToCloud"));
+  assert.match(save, /localStorage\.setItem\(APOTHECARY_STORAGE_KEY/, "guests write the key the loader reads");
+  assert.doesNotMatch(save, /Please sign in again/);
+  const remove = source.slice(source.indexOf("async function deleteApothecaryItem"));
+  const cleanup = remove.slice(remove.indexOf("} else {"));
+  assert.match(cleanup, /deleteLinkedApothecaryLibraryEntity[\s\S]*removePlacedApothecaryObjects[\s\S]*renderApothecaryItems/, "cleanup runs after both branches");
+  assert.doesNotMatch(source, /createGrimoireHandoffForApothecaryItem/, "the handoff that could never run is gone");
+});

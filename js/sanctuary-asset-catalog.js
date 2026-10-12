@@ -6,10 +6,10 @@
     ]),
     forms: Object.freeze({
       candle: Object.freeze([
-        { id: "chime-spell", label: "Chime / Spell Candle", aliases: ["chime", "spell candle"], supportedAsset: false },
-        { id: "taper", label: "Taper Candle", aliases: ["taper"], supportedAsset: false },
-        { id: "tea-light", label: "Tea Light", aliases: ["tealight", "tea light"], supportedAsset: false },
-        { id: "pillar", label: "Pillar Candle", aliases: ["pillar"], supportedAsset: false },
+        { id: "chime-spell", label: "Chime / Spell Candle", aliases: ["chime", "spell candle"], supportedAsset: true },
+        { id: "taper", label: "Taper Candle", aliases: ["taper"], supportedAsset: true },
+        { id: "tea-light", label: "Tea Light", aliases: ["tealight", "tea light"], supportedAsset: true },
+        { id: "pillar", label: "Pillar Candle", aliases: ["pillar"], supportedAsset: true },
         { id: "vigil", label: "Vigil Candle", aliases: ["seven day", "vigil"], supportedAsset: true }
       ]),
       herb: Object.freeze([
@@ -28,7 +28,11 @@
   });
   const unique = (records) => [...new Map(records.map((record) => [record.id, record])).values()];
   const api = {
-    getBackgrounds: () => unique(catalogue.backgrounds).map((item) => ({ ...item })),
+    // The originals, then the painted backgrounds listed in js/altar-artwork.js.
+    getBackgrounds: () => unique([
+      ...catalogue.backgrounds,
+      ...((typeof window !== "undefined" ? window.AltarArtwork : globalThis.AltarArtwork)?.backgrounds || []).map((item) => ({ ...item, thumbnailPath: item.assetPath }))
+    ]).map((item) => ({ ...item })),
     getForms: (category) => unique(catalogue.forms[category] || []).map((item) => ({ ...item, aliases: [...(item.aliases || [])] }))
   };
   global.SanctuaryAssetCatalog = api;

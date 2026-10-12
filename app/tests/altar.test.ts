@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { websiteAssetKey, websiteAssetUrl } from '../src/lib/altar/assetPaths.ts';
-import { builtInCabinet, formObjectLabel, objectFromForm, overrideKey, placeableForms } from '../src/lib/altar/cabinet.ts';
+import { ALTAR_ARTWORK } from '../src/lib/altar/artworkData.ts';
+import { builtInCabinet, deityPantheon, formObjectLabel, objectFromForm, overrideKey, PANTHEON_GROUPS, placeableForms } from '../src/lib/altar/cabinet.ts';
 import { changeLayer, moveObject, resizeObject, rotateObject, toggleLight } from '../src/lib/altar/editor.ts';
 import {
   boxAspect,
@@ -316,14 +317,27 @@ test('candles take loose herb and oil dressings once each, shown as overlays', (
 test('the cabinet offers only forms the website has artwork for', () => {
   const red = builtInCabinet.find((item) => item.id === 'candles:red-candle')!;
   const forms = placeableForms(red);
-  assert.deepEqual(forms.map((f) => f.form), ['vigil']);
-  assert.equal(formObjectLabel(red, forms[0]), 'Red Candle Vigil Candle');
-  const sage = builtInCabinet.find((item) => item.id === 'herbs:sage')!;
-  assert.deepEqual(placeableForms(sage).map((f) => f.form), ['incense']);
+  // Every candle form is painted in every colour.
+  assert.deepEqual(forms.map((f) => f.form), ['chime-spell', 'taper', 'tea-light', 'pillar', 'vigil', ...ALTAR_ARTWORK.candleStyleForms.map((f) => f.id)]);
+  assert.equal(forms[2].image, '../assets/altar/objects/candles/tea-light/red-tea-light.png');
+  assert.equal(formObjectLabel(red, forms[4]), 'Red Candle Vigil Candle');
+  // Herbs offer the forms that have been painted, and incense always.
+  for (const id of ['herbs:sage', 'herbs:juniper']) {
+    const herb = builtInCabinet.find((item) => item.id === id)!;
+    const offered = placeableForms(herb);
+    assert.ok(offered.every((f) => !!f.image));
+    assert.ok(offered.some((f) => f.form === 'incense'));
+    assert.deepEqual(offered, herb.forms.filter((f) => !!f.image));
+  }
+  const juniper = builtInCabinet.find((item) => item.id === 'herbs:juniper')!;
+  assert.ok(placeableForms(juniper).some((f) => f.form === 'sprig'));
   // A person's own image for a form makes it placeable, keyed like the website.
-  const key = overrideKey(red, red.forms[0]);
-  assert.equal(key, 'candle||chime-spell|red|||||Red Candle Chime / Spell Candle');
-  assert.equal(placeableForms(red, { [key]: 'https://x/y.png' }).length, 2);
+  const sage = builtInCabinet.find((item) => item.id === 'herbs:sage')!;
+  const key = overrideKey(sage, sage.forms[0]);
+  assert.equal(key, 'herb|sage|sprig||||||Sage Sprig');
+  const unpainted = { ...sage, forms: sage.forms.map((f) => (f.form === 'sprig' ? { ...f, image: '' } : f)) };
+  const before = placeableForms(unpainted).length;
+  assert.equal(placeableForms(unpainted, { [key]: 'https://x/y.png' }).length, before + 1);
 });
 
 test('a placed object has the website’s fields, size and layer', () => {
@@ -375,4 +389,23 @@ test('rotation accumulates in degrees and resize respects locks', () => {
   assert.equal(rotateObject(rotateObject(doc, 0, 15), 0, 15).objects[0].rotation, '30');
   assert.equal(resizeObject(doc, 1, 2), doc);
   assert.equal(changeLayer(doc, 0, 'front').objects[0].zIndex, '11');
+});
+
+test('candle names are shown without the doubled word, and saved as the website writes them', async () => {
+  const { shortLabel } = await import('../src/lib/altar/cabinet.ts');
+  assert.equal(shortLabel('Red Candle Vigil Candle'), 'Red Vigil Candle');
+  assert.equal(shortLabel('White Candle Tea Light'), 'White Tea Light');
+  assert.equal(shortLabel('Lavender Sprig'), 'Lavender Sprig');
+  assert.equal(shortLabel(''), 'Object');
+  assert.equal(shortLabel(undefined, 'Candle'), 'Candle');
+});
+
+test('the deity drawer groups every statue by pantheon', () => {
+  const deities = builtInCabinet.filter((item) => item.category === 'deities');
+  const byName = (name: string) => deities.find((item) => item.name === name)!;
+  assert.equal(deityPantheon(byName('Hekate Statue')), 'Greek');
+  assert.equal(deityPantheon(byName('Lugh Statue')), 'Celtic', 'Irish, Welsh and Gaulish gods are Celtic');
+  assert.equal(deityPantheon(byName('Lilith Statue')), 'Other');
+  assert.deepEqual(PANTHEON_GROUPS, ['Greek', 'Roman', 'Norse', 'Celtic', 'Slavic', 'Egyptian', 'Hindu', 'Other']);
+  for (const item of deities) assert.ok(PANTHEON_GROUPS.includes(deityPantheon(item)), item.name);
 });

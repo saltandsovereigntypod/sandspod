@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../../../components/Button';
 import { Card, Chip, Chips, Field, Notice, RitualScreen, SectionLabel, SignInCard, Title, confirmAction, tell, ui } from '../../../../components/rituals/ui';
 import { useGrimoire } from '../../../../lib/grimoire/store';
+import { CANDLE_ACTIONS, candleAction, withCandleAction } from '../../../../lib/rituals/automation';
 import { blankStep, draftFromTemplate, validateDraft } from '../../../../lib/rituals/lifecycle';
 import { archiveTemplate, saveTemplate, useRituals } from '../../../../lib/rituals/store';
 import type { StepDraft, TemplateDraft } from '../../../../lib/rituals/types';
@@ -54,7 +55,9 @@ export default function TemplateEditor() {
     try {
       const saved = await saveTemplate(draft);
       void grimoire.refresh();
-      router.replace({ pathname: '/rituals/templates/[id]', params: { id: saved.id } });
+      // Editing was opened from the template itself: go back to it rather than opening it twice.
+      if (existing && router.canGoBack()) router.back();
+      else router.replace({ pathname: '/rituals/templates/[id]', params: { id: saved.id } });
     } catch (e) {
       setProblem(e instanceof Error ? `Couldn't save: ${e.message}` : "Couldn't save. Please try again.");
     } finally {
@@ -135,6 +138,22 @@ export default function TemplateEditor() {
                 <Chip label="Move on when the timer ends" selected={step.completion_mode === 'timed'} onPress={() => changeStep(index, { completion_mode: 'timed' })} />
               </Chips>
             )}
+            {(['start', 'end'] as const).map((when) => (
+              <View key={when} style={ui.gapSmall}>
+                <Text style={type.caption}>{when === 'start' ? 'When this step begins' : 'When this step ends'}</Text>
+                <Chips>
+                  {CANDLE_ACTIONS.map((action) => (
+                    <Chip
+                      key={action.value}
+                      label={action.label}
+                      a11yLabel={`Step ${index + 1}, ${when === 'start' ? 'when it begins' : 'when it ends'}: ${action.label}`}
+                      selected={candleAction(step.actions, when) === action.value}
+                      onPress={() => changeStep(index, { actions: withCandleAction(step.actions, when, action.value) })}
+                    />
+                  ))}
+                </Chips>
+              </View>
+            ))}
             <Chips>
               {index > 0 && <Chip label="Move up" a11yLabel={`Move step ${index + 1} up`} onPress={() => move(index, -1)} />}
               {index < draft.steps.length - 1 && (

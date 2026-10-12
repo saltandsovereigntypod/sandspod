@@ -303,7 +303,7 @@ function validateIds(data: Record<string, unknown>, errors: string[]) {
   }
 }
 
-function scanForbidden(value: unknown, errors: string[], path = '') {
+export function scanForbidden(value: unknown, errors: string[], path = '') {
   if (typeof value === 'string') {
     if (/<(?:script|iframe|object|embed)\b|javascript:/i.test(value)) errors.push(`Unsafe active content at ${path}.`);
     return;

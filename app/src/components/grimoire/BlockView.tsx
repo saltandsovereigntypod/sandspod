@@ -5,6 +5,7 @@ import { listItems, plainText } from '../../lib/grimoire/richText';
 import { blockMetadata, blockSource } from '../../lib/grimoire/structure';
 import type { BlockRow, PageRow } from '../../lib/grimoire/types';
 import { fonts } from '../../theme';
+import { faceText, usePageFace } from './presentation';
 import { RichText } from './RichText';
 
 // Ink colors for text printed on the parchment page.
@@ -23,6 +24,8 @@ type Props = { block: BlockRow; pages: PageRow[] };
 export function BlockView({ block, pages }: Props) {
   const source = blockSource(block);
   const meta = blockMetadata(block);
+  const face = usePageFace();
+  const body = [styles.body, faceText(face, 16, 25)];
 
   switch (block.block_type) {
     case 'heading':
@@ -40,7 +43,7 @@ export function BlockView({ block, pages }: Props) {
     case 'callout':
       return (
         <View style={styles.callout}>
-          <RichText source={source || 'Callout'} style={styles.body} linkColor={ink.link} />
+          <RichText source={source || 'Callout'} style={body} linkColor={ink.link} />
         </View>
       );
     case 'divider':
@@ -59,7 +62,7 @@ export function BlockView({ block, pages }: Props) {
     case 'correspondence':
       return (
         <View style={styles.callout}>
-          <Text style={styles.body}>{plainText(source)}</Text>
+          <Text style={body}>{plainText(source)}</Text>
         </View>
       );
     case 'image': {
@@ -86,19 +89,21 @@ export function BlockView({ block, pages }: Props) {
     }
     default: {
       if (!plainText(source).trim()) return null;
-      return <RichText source={source} style={styles.body} linkColor={ink.link} />;
+      return <RichText source={source} style={body} linkColor={ink.link} />;
     }
   }
 }
 
 function List({ items, numbered }: { items: string[]; numbered?: boolean }) {
+  const face = usePageFace();
   if (!items.length) return null;
+  const text = faceText(face, 16, 25);
   return (
     <View style={styles.list}>
       {items.map((item, i) => (
         <View key={i} style={styles.listRow}>
-          <Text style={styles.marker}>{numbered ? `${i + 1}.` : '•'}</Text>
-          <Text style={[styles.body, styles.listText]}>{item}</Text>
+          <Text style={[styles.marker, { fontFamily: face.strong, lineHeight: text.lineHeight }]}>{numbered ? `${i + 1}.` : '•'}</Text>
+          <Text style={[styles.body, text, styles.listText]}>{item}</Text>
         </View>
       ))}
     </View>
