@@ -1898,7 +1898,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/obsidian/obsidian-cluster.png",
               "type": "crystal",
               "crystal": "obsidian",
               "form": "cluster"
@@ -2199,7 +2199,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/selenite/selenite-cluster.png",
               "type": "crystal",
               "crystal": "selenite",
               "form": "cluster"
@@ -2268,7 +2268,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/smoky-quartz/smoky-quartz-cluster.png",
               "type": "crystal",
               "crystal": "smoky_quartz",
               "form": "cluster"
