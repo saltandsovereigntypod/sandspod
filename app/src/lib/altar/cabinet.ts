@@ -8,6 +8,7 @@ import { NEW_CLOTH_SIZE, NEW_OBJECT_SIZE, objectAspect, savedFromBox, type Box }
 import { nextLayer } from './layers.ts';
 import { ensureLivingState } from './livingState.ts';
 import type { AltarBackground, CabinetCategoryId, CabinetForm, CabinetItem, SavedObject } from './types.ts';
+import { ALTAR_ARTWORK } from './artworkData.ts';
 
 export const cabinetCategories: { id: CabinetCategoryId; label: string }[] = [
   { id: 'candles', label: 'Candles' },
@@ -49,40 +50,26 @@ const candleForms = [
   { id: 'vigil', label: 'Vigil Candle', aliases: ['seven day', 'vigil'] },
 ];
 
-const candleColors = ['white', 'black', 'green', 'purple', 'red', 'orange', 'yellow', 'blue', 'brown', 'pink', 'gold', 'silver'];
+// Candle colours, extra candle forms, and the herbs, crystals, deities, tools and
+// vessels with pictures: generated from assets/altar/objects (scripts/build-altar-artwork.mjs),
+// the same list the website's cabinet reads (js/altar-artwork.js).
+const candleColors = ALTAR_ARTWORK.candleColors;
+const allCandleForms = [...candleForms, ...ALTAR_ARTWORK.candleStyleForms.map(({ id, label, aliases }) => ({ id, label, aliases }))];
 
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
-const herbs: [string, string, string[], string?, string?][] = [
-  ['basil', 'Basil', ['protection', 'prosperity', 'love', 'courage', 'cleansing']],
-  ['bay', 'Bay', ['wishes', 'protection', 'victory', 'divination', 'success'], 'bay-leaf', 'bay'],
-  ['cedar', 'Cedar', ['protection', 'purification', 'blessing', 'grounding', 'ancestors']],
-  ['chamomile', 'Chamomile', ['calm', 'sleep', 'luck', 'money', 'healing']],
-  ['cinnamon', 'Cinnamon', ['prosperity', 'passion', 'speed', 'success', 'protection']],
-  ['lavender', 'Lavender', ['peace', 'sleep', 'love', 'healing', 'purification']],
-  ['mugwort', 'Mugwort', ['dreams', 'divination', 'intuition', 'thresholds']],
-  ['rosemary', 'Rosemary', ['protection', 'purification', 'remembrance', 'healing']],
-  ['sage', 'Sage', ['cleansing', 'wisdom', 'protection', 'purification']],
-  ['calendula', 'Calendula', ['healing', 'protection', 'the sun', 'dreams', 'joy']],
-  ['juniper', 'Juniper', ['protection', 'purification', 'cleansing', 'warding']],
-];
-
-// Which forms have artwork (altar/js/features/cabinet.js); a form without it can't be placed.
-const full = ['sprig', 'loose', 'oil'];
-const herbArtwork: Record<string, string[]> = {
-  basil: full, bay: full, cedar: full, chamomile: full, cinnamon: full, lavender: full, mugwort: full, rosemary: full,
-  calendula: ['loose'], juniper: ['sprig'],
-};
-const crystalArtwork: Record<string, string[]> = { amethyst: ['point', 'chips', 'cluster'], clear_quartz: ['point', 'chips', 'cluster'], black_tourmaline: ['chips'] };
-
-// Candle artwork by form: the vigil candles, and the chime, taper, tea light and pillar painted for each colour.
+// Candle artwork by form: the vigil candles, and each other form painted in every colour.
 const candleFormFiles: Record<string, string> = { 'chime-spell': 'chime', taper: 'taper', 'tea-light': 'tea-light', pillar: 'pillar' };
+const styleIds = new Set(ALTAR_ARTWORK.candleStyleForms.map((form) => form.id));
 function candleFormImage(color: string, formId: string): string {
   if (formId === 'vigil') return `../assets/altar/objects/candles/${color}-candle.${color === 'white' || color === 'black' ? 'PNG' : 'png'}`;
-  const file = candleFormFiles[formId];
+  const file = candleFormFiles[formId] ?? (styleIds.has(formId) ? formId : '');
   return file ? `../assets/altar/objects/candles/${file}/${color}-${file}.png` : '';
 }
+
+const fromArtwork = (list: (typeof ALTAR_ARTWORK.items)[keyof typeof ALTAR_ARTWORK.items]): CabinetItem[] =>
+  list.map((item) => ({ ...item, id: `${item.category}:${slug(item.name)}`, keywords: [...item.keywords], forms: item.forms.map((f) => ({ ...f })) }));
 
 const single = (
   category: CabinetCategoryId,
@@ -104,7 +91,7 @@ export const builtInCabinet: CabinetItem[] = [
     category: 'candles' as const,
     name: `${capitalize(color)} Candle`,
     keywords: [color, 'candle', 'fire'],
-    forms: candleForms.map((form) => ({
+    forms: allCandleForms.map((form) => ({
       label: form.label,
       image: candleFormImage(color, form.id),
       type: 'candle',
@@ -113,40 +100,8 @@ export const builtInCabinet: CabinetItem[] = [
       aliases: [...form.aliases],
     })),
   })),
-  ...herbs.map(([id, name, keywords, folder = id, fileBase = folder]) => {
-    const image = (form: string) => ((herbArtwork[id] ?? []).includes(form) ? `../assets/altar/objects/herbs/${folder}/${fileBase}-${form}.png` : '');
-    return {
-      id: `herbs:${slug(name)}`,
-      category: 'herbs' as const,
-      name,
-      keywords,
-      forms: [
-        { label: 'Sprig', image: image('sprig'), type: 'herb', herb: id, form: 'sprig' },
-        { label: 'Loose', image: image('loose'), type: 'herb', herb: id, form: 'loose' },
-        { label: 'Oil', image: image('oil'), type: 'oil', herb: id, form: 'oil' },
-        { label: 'Incense', image: '../assets/altar/objects/herbs/incense/incense.png', type: 'herb', herb: id, form: 'incense' },
-      ],
-    };
-  }),
-  ...(
-    [
-      ['amethyst', 'Amethyst', ['intuition', 'dreams', 'meditation', 'protection'], 'amethyst'],
-      ['clear_quartz', 'Clear Quartz', ['amplification', 'clarity', 'healing', 'cleansing'], 'clear-quartz'],
-      ['black_tourmaline', 'Black Tourmaline', ['protection', 'grounding', 'shielding', 'absorbing negativity'], 'black-tourmaline'],
-    ] as const
-  ).map(([id, name, keywords, folder]) => ({
-    id: `crystals:${slug(name)}`,
-    category: 'crystals' as const,
-    name,
-    keywords: [...keywords],
-    forms: (['point', 'chips', 'cluster'] as const).map((form) => ({
-      label: capitalize(form),
-      image: (crystalArtwork[id] ?? []).includes(form) ? `../assets/altar/objects/crystals/${folder}/${folder}-${form}.png` : '',
-      type: 'crystal',
-      crystal: id,
-      form,
-    })),
-  })),
+  ...fromArtwork(ALTAR_ARTWORK.items.herbs),
+  ...fromArtwork(ALTAR_ARTWORK.items.crystals),
   single('tools', 'Key', ['thresholds', 'unlocking', 'Hekate'], {
     image: '../assets/altar/objects/tools/key/key.png',
     type: 'tool',
@@ -189,6 +144,8 @@ export const builtInCabinet: CabinetItem[] = [
     deity: 'lilith',
     form: 'statue',
   }),
+  ...fromArtwork(ALTAR_ARTWORK.items.deities),
+  ...fromArtwork(ALTAR_ARTWORK.items.tools),
   single('vessels', 'Cauldron', ['transformation', 'fire', 'spellwork'], {
     image: '../assets/altar/objects/vessels/cauldron/cauldron.png',
     type: 'vessel',
@@ -201,6 +158,7 @@ export const builtInCabinet: CabinetItem[] = [
     vessel: 'spell-jar',
     form: 'standard',
   }),
+  ...fromArtwork(ALTAR_ARTWORK.items.vessels),
 ];
 
 /** Label of an object placed from a form (cabinet.js renderCabinetTile). */

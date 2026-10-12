@@ -29,10 +29,10 @@ const now = new Date('2026-10-12T15:00:00.000Z');
 test('cabinet search finds candles by form names and catalogue aliases', () => {
   const names = (search: string) => cabinetItemsFor(builtInCabinet, 'candles', search).map((item) => item.name);
   for (const word of ['seven day', 'vigil', 'tealight', 'tea light', 'chime', 'spell candle', 'pillar', 'taper']) {
-    assert.equal(names(word).length, 12, word);
+    assert.equal(names(word).length, builtInCabinet.filter((i) => i.category === 'candles').length, word);
   }
   assert.deepEqual(cabinetItemsFor(builtInCabinet, 'vessels', 'spell jar').map((i) => i.name), ['Spell Jar']);
-  assert.deepEqual(cabinetItemsFor(builtInCabinet, 'herbs', 'incense').length, 11);
+  assert.deepEqual(cabinetItemsFor(builtInCabinet, 'herbs', 'incense').length, builtInCabinet.filter((i) => i.category === 'herbs').length);
   assert.deepEqual(names('nothing like this'), []);
 });
 

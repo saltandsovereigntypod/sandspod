@@ -15,77 +15,34 @@ const cabinetCategories = [
 
 // Candle artwork by form: the vigil candles, and the chime, taper, tea light and pillar painted for each colour.
 const candleFormFiles = { "chime-spell": "chime", taper: "taper", "tea-light": "tea-light", pillar: "pillar" };
+const altarArtwork = window.AltarArtwork || { candleColors: [], candleStyleForms: [], items: {} };
+const candleStyleIds = new Set((altarArtwork.candleStyleForms || []).map((form) => form.id));
 function candleFormImage(color, formId) {
   if (formId === "vigil") return `../assets/altar/objects/candles/${color}-candle.${color === "white" || color === "black" ? "PNG" : "png"}`;
-  const file = candleFormFiles[formId];
+  const file = candleFormFiles[formId] || (candleStyleIds.has(formId) ? formId : "");
   return file ? `../assets/altar/objects/candles/${file}/${color}-${file}.png` : "";
 }
 
-// Which herb and crystal forms have artwork; a form without it can't be placed.
-const herbArtwork = {
-  basil: ["sprig", "loose", "oil"], bay: ["sprig", "loose", "oil"], cedar: ["sprig", "loose", "oil"], chamomile: ["sprig", "loose", "oil"],
-  cinnamon: ["sprig", "loose", "oil"], lavender: ["sprig", "loose", "oil"], mugwort: ["sprig", "loose", "oil"], rosemary: ["sprig", "loose", "oil"],
-  calendula: ["loose"], juniper: ["sprig"]
-};
-const crystalArtwork = { amethyst: ["point", "chips", "cluster"], clear_quartz: ["point", "chips", "cluster"], black_tourmaline: ["chips"] };
 
 const cabinetItems = [
   ...(window.SanctuaryAssetCatalog?.getBackgrounds?.() || []).map((background) => ({ category: "backgrounds", name: background.name, icon: "🌲", keywords: [], background: background.assetPath })),
 
-  ...["white", "black", "green", "purple", "red", "orange", "yellow", "blue", "brown", "pink", "gold", "silver"].map((color) => ({
+  ...(altarArtwork.candleColors?.length ? altarArtwork.candleColors : ["white", "black", "green", "purple", "red", "orange", "yellow", "blue", "brown", "pink", "gold", "silver"]).map((color) => ({
     category: "candles",
     name: `${color.charAt(0).toUpperCase() + color.slice(1)} Candle`,
     icon: "🕯️",
     keywords: [color, "candle", "fire"],
-    forms: (window.SanctuaryAssetCatalog?.getForms?.("candle") || []).map((form) => ({
+    forms: [...(window.SanctuaryAssetCatalog?.getForms?.("candle") || []), ...(altarArtwork.candleStyleForms || [])].map((form) => ({
       label: form.label,
       image: candleFormImage(color, form.id),
       type: "candle", color, form: form.id, aliases: form.aliases || []
     }))
   })),
 
-  ...[
-    ["basil", "Basil", ["protection", "prosperity", "love", "courage", "cleansing"]],
-    ["bay", "Bay", ["wishes", "protection", "victory", "divination", "success"], "bay-leaf", "bay"],
-    ["cedar", "Cedar", ["protection", "purification", "blessing", "grounding", "ancestors"]],
-    ["chamomile", "Chamomile", ["calm", "sleep", "luck", "money", "healing"]],
-    ["cinnamon", "Cinnamon", ["prosperity", "passion", "speed", "success", "protection"]],
-    ["lavender", "Lavender", ["peace", "sleep", "love", "healing", "purification"]],
-    ["mugwort", "Mugwort", ["dreams", "divination", "intuition", "thresholds"]],
-    ["rosemary", "Rosemary", ["protection", "purification", "remembrance", "healing"]],
-    ["sage", "Sage", ["cleansing", "wisdom", "protection", "purification"]],
-    ["calendula", "Calendula", ["healing", "protection", "the sun", "dreams", "joy"]],
-    ["juniper", "Juniper", ["protection", "purification", "cleansing", "warding"]],
-  ].map(([id, name, keywords, folder = id.replaceAll("_", "-"), fileBase = folder]) => {
-    const herbImage = (form) => (herbArtwork[id] || []).includes(form) ? `../assets/altar/objects/herbs/${folder}/${fileBase}-${form}.png` : "";
-    return {
-    category: "herbs",
-    name,
-    icon: "🌿",
-    keywords,
-    forms: [
-      { label: "Sprig", image: herbImage("sprig"), type: "herb", herb: id, form: "sprig" },
-      { label: "Loose", image: herbImage("loose"), type: "herb", herb: id, form: "loose" },
-      { label: "Oil", image: herbImage("oil"), type: "oil", herb: id, form: "oil" },
-      { label: "Incense", image: "../assets/altar/objects/herbs/incense/incense.png", type: "herb", herb: id, form: "incense" }
-    ]
-  }; }),
+  // Herbs and crystals with pictures: js/altar-artwork.js (built from assets/altar/objects).
+  ...(altarArtwork.items?.herbs || []),
 
-  ...[
-    ["amethyst", "Amethyst", ["intuition", "dreams", "meditation", "protection"]],
-    ["clear_quartz", "Clear Quartz", ["amplification", "clarity", "healing", "cleansing"], "clear-quartz"],
-    ["black_tourmaline", "Black Tourmaline", ["protection", "grounding", "shielding", "absorbing negativity"], "black-tourmaline"],
-  ].map(([id, name, keywords, folder = id.replaceAll("_", "-")]) => ({
-    category: "crystals",
-    name,
-    icon: "💎",
-    keywords,
-    forms: [
-      { label: "Point", image: (crystalArtwork[id] || []).includes("point") ? `../assets/altar/objects/crystals/${folder}/${folder}-point.png` : "", type: "crystal", crystal: id, form: "point" },
-      { label: "Chips", image: (crystalArtwork[id] || []).includes("chips") ? `../assets/altar/objects/crystals/${folder}/${folder}-chips.png` : "", type: "crystal", crystal: id, form: "chips" },
-      { label: "Cluster", image: (crystalArtwork[id] || []).includes("cluster") ? `../assets/altar/objects/crystals/${folder}/${folder}-cluster.png` : "", type: "crystal", crystal: id, form: "cluster" }
-    ]
-  })),
+  ...(altarArtwork.items?.crystals || []),
 
   {
     category: "tools",
@@ -136,6 +93,8 @@ const cabinetItems = [
     keywords: [],
     forms: [{ label: "Place", image: "../assets/altar/objects/tools/deities/lilith/lilith-statue.png", type: "deity", deity: "lilith", form: "statue" }]
   },
+  ...(altarArtwork.items?.deities || []),
+  ...(altarArtwork.items?.tools || []),
   {
     category: "vessels",
     name: "Cauldron",
@@ -149,7 +108,8 @@ const cabinetItems = [
     icon: "🫙",
     keywords: ["container", "spell", "intention"],
     forms: [{ label: "Place", image: "../assets/altar/objects/vessels/spell-jar/spell-jar.png", type: "vessel", vessel: "spell-jar", form: "standard" }]
-  }
+  },
+  ...(altarArtwork.items?.vessels || [])
 ];
 
 // Narrow public catalogue for shared Settings. Keep cabinet internals private.
