@@ -418,7 +418,7 @@
             },
             {
               "label": "Loose",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/angelica/angelica-loose.png",
               "type": "herb",
               "herb": "angelica",
               "form": "loose"
@@ -1252,7 +1252,7 @@
             },
             {
               "label": "Loose",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/meadowsweet/meadowsweet-loose.png",
               "type": "herb",
               "herb": "meadowsweet",
               "form": "loose"
@@ -1336,7 +1336,7 @@
             },
             {
               "label": "Loose",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/mistletoe/mistletoe-loose.png",
               "type": "herb",
               "herb": "mistletoe",
               "form": "loose"
