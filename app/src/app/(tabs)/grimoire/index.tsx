@@ -158,7 +158,7 @@ function LibraryShelves() {
                 // A tradition or piece starts closed and opens on its own; untitled sections are just their groups.
                 const sectionOpen = !section.title || searching || opened.has(sectionKey);
                 return (
-                  <View key={sectionKey} style={section.title ? styles.pathSection : undefined}>
+                  <View key={sectionKey} style={section.title ? styles.pathSection : styles.section}>
                     {!!section.title && (
                       <Disclosure
                         label={section.title}
@@ -213,7 +213,7 @@ function Disclosure({ label, note, count, open, heading, onPress }: { label: str
       onPress={onPress}
       style={({ pressed }) => [styles.disclosure, pressed && styles.pressed]}
     >
-      <View style={styles.grow}>
+      <View style={styles.disclosureText}>
         <Text style={heading ? type.eyebrow : styles.groupTitle}>{label}</Text>
         {!!note && <Text style={type.caption}>{note}</Text>}
       </View>
@@ -298,8 +298,9 @@ const styles = StyleSheet.create({
   section: { gap: 8 },
   shelves: { gap: space.section },
   grow: { flex: 1 },
+  disclosureText: { flex: 1, gap: 2 },
   disclosure: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 8 },
-  groupTitle: { flex: 1, fontFamily: fonts.bodySemi, fontSize: 16, color: colors.cream },
+  groupTitle: { fontFamily: fonts.bodySemi, fontSize: 16, color: colors.cream },
   chevronOpen: { transform: [{ rotate: '90deg' }] },
   shelfEntry: {
     minHeight: 44,
@@ -310,7 +311,7 @@ const styles = StyleSheet.create({
     borderTopColor: 'rgba(244,236,216,0.14)',
   },
   list: { backgroundColor: colors.surface, borderRadius: 18, paddingHorizontal: 16 },
-  pathSection: { gap: 6, borderLeftWidth: 2, borderLeftColor: colors.goldLine, paddingLeft: 10 },
+  pathSection: { gap: 8, borderLeftWidth: 2, borderLeftColor: colors.goldLine, paddingLeft: 10 },
   nested: { marginLeft: 4 },
   row: { minHeight: 64, flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 10 },
   rowRule: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'rgba(244,236,216,0.14)' },

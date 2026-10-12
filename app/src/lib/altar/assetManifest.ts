@@ -180,6 +180,7 @@ export const bundledAltarAssets: Record<string, { source: number; width: number;
   'assets/altar/objects/herbs/dragons-blood/dragons-blood-loose.png': { source: require('../../../assets/altar/objects/herbs/dragons-blood/dragons-blood-loose.webp'), width: 1776, height: 896 },
   'assets/altar/objects/herbs/elder/elder-loose.png': { source: require('../../../assets/altar/objects/herbs/elder/elder-loose.webp'), width: 1776, height: 896 },
   'assets/altar/objects/herbs/elder/elder-sprig.png': { source: require('../../../assets/altar/objects/herbs/elder/elder-sprig.webp'), width: 1024, height: 1536 },
+  'assets/altar/objects/herbs/foxglove/foxglove-sprig.png': { source: require('../../../assets/altar/objects/herbs/foxglove/foxglove-sprig.webp'), width: 896, height: 1776 },
   'assets/altar/objects/herbs/frankincense/frankincense-loose.png': { source: require('../../../assets/altar/objects/herbs/frankincense/frankincense-loose.webp'), width: 1776, height: 896 },
   'assets/altar/objects/herbs/frankincense/frankincense-oil.png': { source: require('../../../assets/altar/objects/herbs/frankincense/frankincense-oil.webp'), width: 1024, height: 1536 },
   'assets/altar/objects/herbs/garlic/garlic-loose.png': { source: require('../../../assets/altar/objects/herbs/garlic/garlic-loose.webp'), width: 1776, height: 896 },

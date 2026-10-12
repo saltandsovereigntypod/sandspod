@@ -805,6 +805,44 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "herbs",
+        "name": "Foxglove",
+        "keywords": [
+          "fairy lore",
+          "garden protection"
+        ],
+        "forms": [
+          {
+            "label": "Sprig",
+            "image": "../assets/altar/objects/herbs/foxglove/foxglove-sprig.png",
+            "type": "herb",
+            "herb": "foxglove",
+            "form": "sprig"
+          },
+          {
+            "label": "Loose",
+            "image": "",
+            "type": "herb",
+            "herb": "foxglove",
+            "form": "loose"
+          },
+          {
+            "label": "Oil",
+            "image": "",
+            "type": "oil",
+            "herb": "foxglove",
+            "form": "oil"
+          },
+          {
+            "label": "Incense",
+            "image": "../assets/altar/objects/herbs/incense/incense.png",
+            "type": "herb",
+            "herb": "foxglove",
+            "form": "incense"
+          }
+        ]
+      },
+      {
+        "category": "herbs",
         "name": "Frankincense",
         "keywords": [
           "purification",

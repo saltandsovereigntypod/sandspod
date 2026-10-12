@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
-import { altarImageSource } from '../../lib/altar/assets';
+import { altarImageSource, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
+import { imageRatio } from '../../lib/altar/geometry';
 import { cabinetEntry, topUses } from '../../lib/altar/companion';
 import { cabinetCategories, cabinetItemsFor, formImage, formObjectLabel, placeableForms, shortLabel } from '../../lib/altar/cabinet';
 import type { CabinetForm, CabinetItem } from '../../lib/altar/types';
@@ -133,6 +134,12 @@ export function CabinetSheet({ visible, items, overrides, library, onClose, onPl
 
 function Tile({ label, uses, spoken, image, onPress }: { label: string; uses?: string; spoken: string; image: string; onPress: () => void }) {
   const source = altarImageSource(image);
+  // Heaps of chips and loose herbs are wide and flat: give them a wide frame
+  // so they fill the tile instead of sitting small in a square of empty space.
+  useImageRatio(image);
+  useImageRatioVersion();
+  const ratio = image ? imageRatio(image) : null;
+  const wide = ratio != null && ratio < 0.75;
   return (
     <Pressable
       onPress={onPress}
@@ -140,7 +147,9 @@ function Tile({ label, uses, spoken, image, onPress }: { label: string; uses?: s
       accessibilityLabel={spoken}
       style={({ pressed }) => [styles.tile, pressed && { opacity: 0.7 }]}
     >
-      <View style={styles.thumb}>{source && <Image source={source} style={styles.thumbImage} resizeMode="contain" />}</View>
+      <View style={[styles.thumb, wide && styles.thumbWide]}>
+        {source && <Image source={source} style={wide ? styles.thumbImageWide : styles.thumbImage} resizeMode="contain" />}
+      </View>
       <Text style={styles.tileLabel} numberOfLines={2}>
         {label}
       </Text>
@@ -199,7 +208,9 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   thumb: { width: '100%', aspectRatio: 1, alignItems: 'center', justifyContent: 'center' },
+  thumbWide: { aspectRatio: 1.5, flexGrow: 1 },
   thumbImage: { width: '90%', height: '90%' },
+  thumbImageWide: { width: '100%', height: '100%' },
   tileLabel: { color: colors.parchment, fontFamily: fonts.body, fontSize: 13, textAlign: 'center' },
   usesLeft: { textAlign: 'left' },
   uses: { color: colors.gold, opacity: 0.8, fontFamily: fonts.body, fontSize: 11, lineHeight: 14, textAlign: 'center' },
