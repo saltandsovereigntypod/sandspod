@@ -107,6 +107,30 @@
     if (!phone && tabs.parentElement !== nav) nav.append(tabs);
   }
 
+  // While the Sanctuary panel is open, the tab for its view is the lit one.
+  const PANEL_TABS = { welcome: "today", auth: "today", dashboard: "today", rituals: "today", more: "more", journey: "more", submissions: "more", settings: "more" };
+
+  function panelState(doc = document) {
+    const panel = doc.querySelector("[data-my-sanctuary-panel]");
+    const open = Boolean(panel && !panel.hidden && panel.classList.contains("is-visible"));
+    const view = panel?.querySelector("[data-sanctuary-view]:not([hidden])")?.dataset.sanctuaryView || "";
+    return { panel, open, tab: open ? PANEL_TABS[view] || "more" : null };
+  }
+
+  function markCurrent(doc = document, loc = global.location) {
+    const current = panelState(doc).tab || activeTab(loc.pathname, loc.search);
+    doc.querySelectorAll(".site-tab").forEach((tab) => {
+      if (tab.dataset.siteTab === current) tab.setAttribute("aria-current", "page");
+      else tab.removeAttribute("aria-current");
+    });
+  }
+
+  // The panel opens below the header, so the logo and the tabs stay in reach.
+  function measureHeader(doc = document) {
+    const header = doc.querySelector(".site-header");
+    if (header) doc.documentElement.style.setProperty("--site-header-h", `${header.offsetHeight}px`);
+  }
+
   function openView(view) {
     if (typeof global.openMySanctuaryPanel !== "function") return false;
     global.openMySanctuaryPanel(view);
@@ -125,11 +149,37 @@
   function install() {
     render();
     global.matchMedia?.(PHONE_QUERY).addEventListener?.("change", () => placeTabs());
+    measureHeader();
+    global.addEventListener("resize", () => measureHeader());
+    const { panel } = panelState();
+    if (panel && typeof MutationObserver !== "undefined") {
+      new MutationObserver(() => markCurrent()).observe(panel, { subtree: true, attributes: true, attributeFilter: ["hidden", "class"] });
+    }
+
     document.addEventListener("click", (event) => {
+      const state = panelState();
       const viewTab = event.target.closest("[data-site-tab-view]");
-      if (viewTab && openView(viewTab.dataset.siteTabView)) {
-        event.preventDefault();
-        return;
+      if (viewTab) {
+        // Tapping the open view's tab again closes the panel.
+        if (state.open && state.tab === viewTab.dataset.siteTab) {
+          event.preventDefault();
+          global.closeMySanctuaryPanel?.();
+          return;
+        }
+        if (openView(viewTab.dataset.siteTabView)) {
+          event.preventDefault();
+          return;
+        }
+      }
+      // With the panel open, a link back to this same page just closes it.
+      const link = state.open && event.target.closest(".site-tab[href], .site-header .brand");
+      if (link) {
+        const target = new URL(link.getAttribute("href"), location.href);
+        if (normalPath(target.pathname) === normalPath(location.pathname) && target.search === location.search) {
+          event.preventDefault();
+          global.closeMySanctuaryPanel?.();
+          return;
+        }
       }
       const ritualTab = event.target.closest('[data-site-tab="rituals"]');
       if (ritualTab && activeTab(location.pathname) === "altar" && openRitualCompanion()) {
@@ -157,7 +207,7 @@
     }
   }
 
-  const api = { TABS, activeTab, isHome, render, install };
+  const api = { TABS, PANEL_TABS, activeTab, isHome, render, install };
   global.SiteNav = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (typeof document !== "undefined") {
