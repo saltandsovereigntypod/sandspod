@@ -225,15 +225,6 @@
       if (button) openGuide(kind, { manual: true, opener: button });
     });
 
-    function openAutomaticGuideWhenReady() {
-      if (document.body.classList.contains("sanctuary-modal-open")) {
-        window.setTimeout(openAutomaticGuideWhenReady, 400);
-        return;
-      }
-      openGuide(kind);
-    }
-
-    window.setTimeout(openAutomaticGuideWhenReady, 500);
   }
 
   const api = {

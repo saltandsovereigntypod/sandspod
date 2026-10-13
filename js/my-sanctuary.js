@@ -595,16 +595,12 @@ function updateMySanctuaryPanel() {
   }
 }
 
-// Opens the panel on `view` (the dashboard by default). People who have not
-// signed in or chosen guest mode see the welcome first, except for More, which
-// is only links.
+// Opens the panel on `view` (the dashboard by default), on phones too: the
+// panel offers the app but never leaves for it. People who have not signed in
+// or chosen guest mode see the welcome first, except for More, which is only
+// links.
 function openMySanctuaryPanel(view = "dashboard") {
-  const handoff = window.SaltAppHandoff;
   const signedIn = typeof currentUser !== "undefined" && Boolean(currentUser);
-  if (view !== "more" && handoff?.shouldOpenApp({ win: window, storage: window.localStorage, signedIn })) {
-    window.location.assign(handoff.APP_URL);
-    return;
-  }
 
   createMySanctuaryPanel();
   updateMySanctuaryPanel();
@@ -641,7 +637,6 @@ function renderMySanctuaryAppChoice(panel, signedIn) {
     <p class="my-sanctuary-soft-note">${note}</p>
     <div class="my-sanctuary-choice-actions">
       <a class="button button--ghost" href="${handoff.APP_URL}" data-my-sanctuary-open-app>Open the app</a>
-      ${phone ? `<button class="button button--ghost" type="button" data-my-sanctuary-website-choice>${handoff.prefersWebsite(storage) ? "Use the app on this phone" : "Keep the website version on this phone"}</button>` : ""}
     </div>
   `;
   slot.hidden = false;
@@ -700,18 +695,6 @@ document.addEventListener("click", async (event) => {
   const googleButton = event.target.closest("[data-my-sanctuary-google]");
   const signOutButton = event.target.closest("[data-my-sanctuary-signout]");
 
-  const websiteChoiceButton = event.target.closest("[data-my-sanctuary-website-choice]");
-  const openAppLink = event.target.closest("[data-my-sanctuary-open-app]");
-
-  if (openAppLink) window.SaltAppHandoff?.setPrefersWebsite(window.localStorage, false);
-  if (websiteChoiceButton) {
-    const handoff = window.SaltAppHandoff;
-    const keepWebsite = !handoff?.prefersWebsite(window.localStorage);
-    handoff?.setPrefersWebsite(window.localStorage, keepWebsite);
-    showMySanctuaryNotice(keepWebsite ? "My Sanctuary will open here on this phone." : "My Sanctuary will open the app on this phone.");
-    const panel = document.querySelector("[data-my-sanctuary-panel]");
-    if (panel) renderMySanctuaryAppChoice(panel, typeof currentUser !== "undefined" && Boolean(currentUser));
-  }
   if (openButton) openMySanctuaryPanel(openButton.dataset.mySanctuaryView || "dashboard");
   if (closeButton) closeMySanctuaryPanel();
   if (showAuthButton) setMySanctuaryView("auth");
