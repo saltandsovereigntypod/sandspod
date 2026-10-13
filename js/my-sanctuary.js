@@ -137,6 +137,39 @@ function createMySanctuaryPanel() {
         </div>
       </section>
 
+      <section class="my-sanctuary-view" data-sanctuary-view="more" hidden>
+        <h2>More</h2>
+
+        <nav class="my-sanctuary-links" aria-label="More from your Sanctuary">
+          <button type="button" data-my-sanctuary-view-button="journey">🧭 My Journey</button>
+          <a href="/grimoire/community-grimoire.html">✨ Community Grimoire</a>
+          <a href="/submit/">✦ Offer to the Sanctuary</a>
+          <button type="button" data-my-sanctuary-view-button="submissions">📬 My Submissions</button>
+          <button type="button" data-my-sanctuary-view-button="settings">⚙ Settings</button>
+          <button type="button" data-site-accessibility>♿ Accessibility Options</button>
+        </nav>
+
+        <h3 class="my-sanctuary-subheading">Salt &amp; Sovereignty</h3>
+        <nav class="my-sanctuary-links" aria-label="Salt &amp; Sovereignty">
+          <a href="/#podcast">🎙 Podcast</a>
+          <a href="/#about">About</a>
+          <a href="/#books">Books</a>
+          <a href="/#blog">Blog</a>
+          <a href="/#contact">Contact</a>
+          <a href="/privacy.html">Privacy</a>
+        </nav>
+
+        <div class="my-sanctuary-actions">
+          <button class="button button--ghost" type="button" data-my-sanctuary-show-auth>
+            Sign In
+          </button>
+
+          <button class="button button--ghost" type="button" data-my-sanctuary-signout hidden>
+            Sign Out
+          </button>
+        </div>
+      </section>
+
       <section class="my-sanctuary-view" data-sanctuary-view="rituals" hidden>
         <h2>Completed Rituals</h2>
 
@@ -527,7 +560,7 @@ function updateMySanctuaryPanel() {
   const dashboardTitle = panel.querySelector("[data-my-sanctuary-dashboard-title]");
   const dashboardCopy = panel.querySelector("[data-my-sanctuary-dashboard-copy]");
   const signInButtons = panel.querySelectorAll("[data-my-sanctuary-show-auth]");
-  const signOutButton = panel.querySelector("[data-my-sanctuary-signout]");
+  const signOutButtons = panel.querySelectorAll("[data-my-sanctuary-signout]");
 
   const isSignedIn = Boolean(currentUser);
 
@@ -551,24 +584,23 @@ function updateMySanctuaryPanel() {
     button.hidden = isSignedIn;
   });
 
-  if (signOutButton) {
-    signOutButton.hidden = !isSignedIn;
-  }
+  signOutButtons.forEach((button) => {
+    button.hidden = !isSignedIn;
+  });
 
    updateSanctuaryAdminLink();
 
-  if (isSignedIn && mySanctuaryView !== "auth" && mySanctuaryView !== "rituals" && mySanctuaryView !== "settings") {
+  if (isSignedIn && mySanctuaryView === "welcome") {
     setMySanctuaryView("dashboard");
   }
 }
 
-function openMySanctuaryPanel() {
-  const handoff = window.SaltAppHandoff;
+// Opens the panel on `view` (the dashboard by default), on phones too: the
+// panel offers the app but never leaves for it. People who have not signed in
+// or chosen guest mode see the welcome first, except for More, which is only
+// links.
+function openMySanctuaryPanel(view = "dashboard") {
   const signedIn = typeof currentUser !== "undefined" && Boolean(currentUser);
-  if (handoff?.shouldOpenApp({ win: window, storage: window.localStorage, signedIn })) {
-    window.location.assign(handoff.APP_URL);
-    return;
-  }
 
   createMySanctuaryPanel();
   updateMySanctuaryPanel();
@@ -577,7 +609,8 @@ function openMySanctuaryPanel() {
   if (!panel) return;
   renderMySanctuaryAppChoice(panel, signedIn);
 
-  setMySanctuaryView(currentUser ? "dashboard" : "welcome");
+  const choseGuest = window.localStorage.getItem("saltAndSovereigntyGuestScope") === "true";
+  setMySanctuaryView(view === "more" || signedIn || choseGuest ? view : "welcome");
 
   panel.hidden = false;
 
@@ -604,7 +637,6 @@ function renderMySanctuaryAppChoice(panel, signedIn) {
     <p class="my-sanctuary-soft-note">${note}</p>
     <div class="my-sanctuary-choice-actions">
       <a class="button button--ghost" href="${handoff.APP_URL}" data-my-sanctuary-open-app>Open the app</a>
-      ${phone ? `<button class="button button--ghost" type="button" data-my-sanctuary-website-choice>${handoff.prefersWebsite(storage) ? "Use the app on this phone" : "Keep the website version on this phone"}</button>` : ""}
     </div>
   `;
   slot.hidden = false;
@@ -663,19 +695,7 @@ document.addEventListener("click", async (event) => {
   const googleButton = event.target.closest("[data-my-sanctuary-google]");
   const signOutButton = event.target.closest("[data-my-sanctuary-signout]");
 
-  const websiteChoiceButton = event.target.closest("[data-my-sanctuary-website-choice]");
-  const openAppLink = event.target.closest("[data-my-sanctuary-open-app]");
-
-  if (openAppLink) window.SaltAppHandoff?.setPrefersWebsite(window.localStorage, false);
-  if (websiteChoiceButton) {
-    const handoff = window.SaltAppHandoff;
-    const keepWebsite = !handoff?.prefersWebsite(window.localStorage);
-    handoff?.setPrefersWebsite(window.localStorage, keepWebsite);
-    showMySanctuaryNotice(keepWebsite ? "My Sanctuary will open here on this phone." : "My Sanctuary will open the app on this phone.");
-    const panel = document.querySelector("[data-my-sanctuary-panel]");
-    if (panel) renderMySanctuaryAppChoice(panel, typeof currentUser !== "undefined" && Boolean(currentUser));
-  }
-  if (openButton) openMySanctuaryPanel();
+  if (openButton) openMySanctuaryPanel(openButton.dataset.mySanctuaryView || "dashboard");
   if (closeButton) closeMySanctuaryPanel();
   if (showAuthButton) setMySanctuaryView("auth");
   if (guestButton) {

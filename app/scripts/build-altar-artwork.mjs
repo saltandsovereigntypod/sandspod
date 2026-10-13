@@ -163,7 +163,7 @@ const candleWicks = fs.existsSync(wicksPath) ? JSON.parse(fs.readFileSync(wicksP
 
 // Each deity's pantheon, for grouping the cabinet's deity drawer (Irish, Welsh and
 // Gaulish gods are all Celtic; anything else outside the main pantheons is Other).
-const PANTHEON_GROUPS = ['Greek', 'Roman', 'Norse', 'Celtic', 'Slavic', 'Egyptian', 'Hindu'];
+const PANTHEON_GROUPS = ['Celtic', 'Egyptian', 'Greek', 'Hindu', 'Norse', 'Roman', 'Slavic'];
 const deityPantheons = Object.fromEntries(
   Object.entries(library.deity).map(([key, record]) => {
     const pantheon = String(record.Pantheon || '');

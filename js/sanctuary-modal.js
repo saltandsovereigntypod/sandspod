@@ -6,8 +6,10 @@
 const SANCTUARY_CHOICE_KEY = "saltAndSovereigntySanctuaryChoice";
 let sanctuaryModalOpener = null;
 
+// Choosing guest mode in the Sanctuary panel counts too.
 function hasMadeSanctuaryChoice() {
-  return localStorage.getItem(SANCTUARY_CHOICE_KEY) === "true";
+  return localStorage.getItem(SANCTUARY_CHOICE_KEY) === "true"
+    || localStorage.getItem("saltAndSovereigntyGuestScope") === "true";
 }
 
 function rememberSanctuaryChoice() {
@@ -92,26 +94,9 @@ function shouldShowSanctuaryModal() {
 }
 
 document.addEventListener("click", async (event) => {
-  const destinationLink = event.target.closest("[data-sanctuary-destination]");
   const guestButton = event.target.closest("[data-sanctuary-guest]");
   const closeButton = event.target.closest("[data-sanctuary-close]");
   const continueButton = event.target.closest("[data-sanctuary-continue]");
-
-  if (destinationLink) {
-    event.preventDefault();
-    const destination = typeof WelcomeDiscovery !== "undefined"
-      ? WelcomeDiscovery.rememberDestination(sessionStorage, destinationLink.dataset.sanctuaryDestination)
-      : destinationLink.getAttribute("href");
-    if (!destination) return;
-
-    const user = currentUser || (typeof getCurrentUser === "function" ? await getCurrentUser() : null);
-    if (user) {
-      continueToSanctuaryDestination();
-    } else {
-      openSanctuaryModal(destinationLink);
-    }
-    return;
-  }
 
   if (guestButton) {
     rememberSanctuaryChoice();
@@ -170,8 +155,11 @@ window.addEventListener("load", () => {
   window.setTimeout(() => {
     updateSanctuaryModalForUser();
 
+    // No sign-in box on arrival: visitors start as guests, and can sign in from
+    // Today or More. Marking them keeps their guest work for when they do.
     if (shouldShowSanctuaryModal()) {
-      openSanctuaryModal();
+      localStorage.setItem(SANCTUARY_CHOICE_KEY, "true");
+      localStorage.setItem("saltAndSovereigntyGuestScope", "true");
     }
   }, 350);
 });

@@ -47,13 +47,13 @@ test("local development never leaves for the app, and blocked storage is safe", 
   assert.doesNotThrow(() => Handoff.setPrefersWebsite(blocked, true));
 });
 
-test("every page with My Sanctuary loads the hand-off first, and the panel keeps an Open the app choice", () => {
+test("every page with My Sanctuary loads the hand-off first, and the panel offers the app without leaving for it", () => {
   for (const page of ["index.html", "altar/index.html", "grimoire/index.html", "grimoire/community-grimoire.html", "submit/index.html"]) {
     const html = fs.readFileSync(page, "utf8");
     const handoff = html.indexOf("js/app-handoff.js");
     assert.ok(handoff > -1 && handoff < html.indexOf("js/my-sanctuary.js"), `${page} loads app-handoff.js before my-sanctuary.js`);
   }
   const source = fs.readFileSync("js/my-sanctuary.js", "utf8");
-  assert.match(source, /shouldOpenApp/);
+  assert.doesNotMatch(source, /shouldOpenApp/, "the panel stays on the website on phones");
   assert.match(source, /data-my-sanctuary-open-app/);
 });

@@ -294,11 +294,13 @@ export function cabinetSearchAliases(item: CabinetItem): string[] {
 /** Items in one category matching a search, custom items first (renderCabinetItems). */
 export function cabinetItemsFor(items: CabinetItem[], category: string, search: string): CabinetItem[] {
   const needle = search.trim().toLowerCase();
-  return items.filter((item) => {
-    if (item.category !== category) return false;
-    if (!needle) return true;
-    return [item.name, item.category, ...cabinetSearchAliases(item)].join(' ').toLowerCase().includes(needle);
-  });
+  return items
+    .filter((item) => {
+      if (item.category !== category) return false;
+      if (!needle) return true;
+      return [item.name, item.category, ...cabinetSearchAliases(item)].join(' ').toLowerCase().includes(needle);
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 // ---------- placing ----------

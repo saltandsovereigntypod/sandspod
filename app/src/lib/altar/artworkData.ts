@@ -227,13 +227,13 @@ export const ALTAR_ARTWORK: {
     ]
   },
   "pantheonGroups": [
-    "Greek",
-    "Roman",
-    "Norse",
     "Celtic",
-    "Slavic",
     "Egyptian",
+    "Greek",
     "Hindu",
+    "Norse",
+    "Roman",
+    "Slavic",
     "Other"
   ],
   "deityPantheons": {
@@ -299,7 +299,68 @@ export const ALTAR_ARTWORK: {
     "ra": "Egyptian",
     "osiris": "Egyptian"
   },
-  "backgrounds": [],
+  "backgrounds": [
+    {
+      "id": "ocean",
+      "name": "Moonlit Shore",
+      "assetPath": "/assets/altar/backgrounds/ocean.png"
+    },
+    {
+      "id": "river",
+      "name": "Forest River",
+      "assetPath": "/assets/altar/backgrounds/river.png"
+    },
+    {
+      "id": "witch-cabin",
+      "name": "Witch’s Cabin",
+      "assetPath": "/assets/altar/backgrounds/witch-cabin.png"
+    },
+    {
+      "id": "dark-academia",
+      "name": "Dark Academia Study",
+      "assetPath": "/assets/altar/backgrounds/dark-academia.png"
+    },
+    {
+      "id": "gothic",
+      "name": "Gothic Crypt",
+      "assetPath": "/assets/altar/backgrounds/gothic.png"
+    },
+    {
+      "id": "cottagecore",
+      "name": "Cottagecore Garden",
+      "assetPath": "/assets/altar/backgrounds/cottagecore.png"
+    },
+    {
+      "id": "celestial",
+      "name": "Celestial Hilltop",
+      "assetPath": "/assets/altar/backgrounds/celestial.png"
+    },
+    {
+      "id": "winter-yule",
+      "name": "Yule Hearth",
+      "assetPath": "/assets/altar/backgrounds/winter-yule.png"
+    },
+    {
+      "id": "spring-meadow",
+      "name": "Spring Meadow",
+      "assetPath": "/assets/altar/backgrounds/spring-meadow.png"
+    },
+    {
+      "id": "autumn-harvest",
+      "name": "Autumn Harvest",
+      "assetPath": "/assets/altar/backgrounds/autumn-harvest.png"
+    },
+    {
+      "id": "desert-temple",
+      "name": "Desert Temple",
+      "assetPath": "/assets/altar/backgrounds/desert-temple.png"
+    },
+    {
+      "id": "candlelit-cave",
+      "name": "Candlelit Crystal Cave",
+      "assetPath": "/assets/altar/backgrounds/candlelit-cave.png"
+    }
+  ],
   "items": {
     "herbs": [
       {
@@ -736,7 +797,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/angelica/angelica-oil.png",
             "type": "oil",
             "herb": "angelica",
             "form": "oil"
@@ -769,14 +830,14 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Loose",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/belladonna/belladonna-loose.png",
             "type": "herb",
             "herb": "belladonna",
             "form": "loose"
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/belladonna/belladonna-oil.png",
             "type": "oil",
             "herb": "belladonna",
             "form": "oil"
@@ -817,7 +878,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/birch/birch-oil.png",
             "type": "oil",
             "herb": "birch",
             "form": "oil"
@@ -1185,7 +1246,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/dittany-of-crete/dittany-of-crete-oil.png",
             "type": "oil",
             "herb": "dittany_of_crete",
             "form": "oil"
@@ -1509,7 +1570,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/holly/holly-oil.png",
             "type": "oil",
             "herb": "holly",
             "form": "oil"
@@ -1748,14 +1809,14 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Loose",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/mandrake/mandrake-loose.png",
             "type": "herb",
             "herb": "mandrake",
             "form": "loose"
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/mandrake/mandrake-oil.png",
             "type": "oil",
             "herb": "mandrake",
             "form": "oil"
@@ -1796,7 +1857,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/meadowsweet/meadowsweet-oil.png",
             "type": "oil",
             "herb": "meadowsweet",
             "form": "oil"
@@ -1878,7 +1939,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/mistletoe/mistletoe-oil.png",
             "type": "oil",
             "herb": "mistletoe",
             "form": "oil"
@@ -2001,7 +2062,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/oak/oak-oil.png",
             "type": "oil",
             "herb": "oak",
             "form": "oil"
@@ -2124,7 +2185,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/peppermint/peppermint-oil.png",
             "type": "oil",
             "herb": "peppermint",
             "form": "oil"
@@ -2240,14 +2301,14 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Loose",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/rue/rue-loose.png",
             "type": "herb",
             "herb": "rue",
             "form": "loose"
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/rue/rue-oil.png",
             "type": "oil",
             "herb": "rue",
             "form": "oil"
@@ -2288,7 +2349,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/saffron/saffron-oil.png",
             "type": "oil",
             "herb": "saffron",
             "form": "oil"
@@ -2411,7 +2472,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/star-anise/star-anise-oil.png",
             "type": "oil",
             "herb": "star_anise",
             "form": "oil"
@@ -2568,14 +2629,14 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Loose",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/vervain/vervain-loose.png",
             "type": "herb",
             "herb": "vervain",
             "form": "loose"
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/vervain/vervain-oil.png",
             "type": "oil",
             "herb": "vervain",
             "form": "oil"
@@ -2616,7 +2677,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/willow/willow-oil.png",
             "type": "oil",
             "herb": "willow",
             "form": "oil"
@@ -2657,7 +2718,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/wormwood/wormwood-oil.png",
             "type": "oil",
             "herb": "wormwood",
             "form": "oil"
@@ -2739,7 +2800,7 @@ export const ALTAR_ARTWORK: {
           },
           {
             "label": "Oil",
-            "image": "",
+            "image": "../assets/altar/objects/herbs/yew/yew-oil.png",
             "type": "oil",
             "herb": "yew",
             "form": "oil"
@@ -2864,6 +2925,122 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Ametrine",
+        "keywords": [
+          "balance",
+          "clarity",
+          "confidence",
+          "intuition",
+          "decision-making"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "../assets/altar/objects/crystals/ametrine/ametrine-point.png",
+            "type": "crystal",
+            "crystal": "ametrine",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/ametrine/ametrine-chips.png",
+            "type": "crystal",
+            "crystal": "ametrine",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "ametrine",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Angelite",
+        "keywords": [
+          "peace",
+          "gentle communication",
+          "angelic connection",
+          "calm",
+          "compassion"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "angelite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/angelite/angelite-chips.png",
+            "type": "crystal",
+            "crystal": "angelite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "angelite",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/angelite/angelite-tumbled.png",
+            "type": "crystal",
+            "crystal": "angelite",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Apache Tear",
+        "keywords": [
+          "grief",
+          "comfort",
+          "protection",
+          "grounding",
+          "emotional release"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "apache_tear",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/apache-tear/apache-tear-chips.png",
+            "type": "crystal",
+            "crystal": "apache_tear",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "apache_tear",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/apache-tear/apache-tear-tumbled.png",
+            "type": "crystal",
+            "crystal": "apache_tear",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Aquamarine",
         "keywords": [
           "calm",
@@ -2933,6 +3110,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "black_tourmaline",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/black-tourmaline/black-tourmaline-tumbled.png",
+            "type": "crystal",
+            "crystal": "black_tourmaline",
+            "form": "tumbled"
           }
         ]
       },
@@ -2967,6 +3151,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "bloodstone",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/bloodstone/bloodstone-tumbled.png",
+            "type": "crystal",
+            "crystal": "bloodstone",
+            "form": "tumbled"
           }
         ]
       },
@@ -3041,6 +3232,47 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "carnelian",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/carnelian/carnelian-tumbled.png",
+            "type": "crystal",
+            "crystal": "carnelian",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Celestite",
+        "keywords": [
+          "peace",
+          "angelic connection",
+          "calm",
+          "dreams",
+          "gentle communication"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "celestite",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/celestite/celestite-chips.png",
+            "type": "crystal",
+            "crystal": "celestite",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "../assets/altar/objects/crystals/celestite/celestite-cluster.png",
+            "type": "crystal",
+            "crystal": "celestite",
+            "form": "cluster"
           }
         ]
       },
@@ -3087,6 +3319,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Chrysoprase",
+        "keywords": [
+          "joy",
+          "hope",
+          "emotional renewal",
+          "forgiveness",
+          "prosperity"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "chrysoprase",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/chrysoprase/chrysoprase-chips.png",
+            "type": "crystal",
+            "crystal": "chrysoprase",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "chrysoprase",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/chrysoprase/chrysoprase-tumbled.png",
+            "type": "crystal",
+            "crystal": "chrysoprase",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Citrine",
         "keywords": [
           "prosperity",
@@ -3116,6 +3389,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "citrine",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/citrine/citrine-tumbled.png",
+            "type": "crystal",
+            "crystal": "citrine",
+            "form": "tumbled"
           }
         ]
       },
@@ -3184,6 +3464,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "fluorite",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/fluorite/fluorite-tumbled.png",
+            "type": "crystal",
+            "crystal": "fluorite",
+            "form": "tumbled"
           }
         ]
       },
@@ -3218,6 +3505,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "garnet",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/garnet/garnet-tumbled.png",
+            "type": "crystal",
+            "crystal": "garnet",
+            "form": "tumbled"
           }
         ]
       },
@@ -3252,6 +3546,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "green_aventurine",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/green-aventurine/green-aventurine-tumbled.png",
+            "type": "crystal",
+            "crystal": "green_aventurine",
+            "form": "tumbled"
           }
         ]
       },
@@ -3285,6 +3586,47 @@ export const ALTAR_ARTWORK: {
             "image": "",
             "type": "crystal",
             "crystal": "hematite",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/hematite/hematite-tumbled.png",
+            "type": "crystal",
+            "crystal": "hematite",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Herkimer Diamond",
+        "keywords": [
+          "amplification",
+          "clarity",
+          "dreams",
+          "attunement",
+          "spiritual vision"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "../assets/altar/objects/crystals/herkimer-diamond/herkimer-diamond-point.png",
+            "type": "crystal",
+            "crystal": "herkimer_diamond",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/herkimer-diamond/herkimer-diamond-chips.png",
+            "type": "crystal",
+            "crystal": "herkimer_diamond",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "herkimer_diamond",
             "form": "cluster"
           }
         ]
@@ -3332,6 +3674,47 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Jade",
+        "keywords": [
+          "luck",
+          "prosperity",
+          "harmony",
+          "protection",
+          "longevity"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "jade",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/jade/jade-chips.png",
+            "type": "crystal",
+            "crystal": "jade",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "jade",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/jade/jade-tumbled.png",
+            "type": "crystal",
+            "crystal": "jade",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Jet",
         "keywords": [
           "protection",
@@ -3361,6 +3744,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "jet",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/jet/jet-tumbled.png",
+            "type": "crystal",
+            "crystal": "jet",
+            "form": "tumbled"
           }
         ]
       },
@@ -3436,6 +3826,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "labradorite",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/labradorite/labradorite-tumbled.png",
+            "type": "crystal",
+            "crystal": "labradorite",
+            "form": "tumbled"
           }
         ]
       },
@@ -3470,6 +3867,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "lapis_lazuli",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/lapis-lazuli/lapis-lazuli-tumbled.png",
+            "type": "crystal",
+            "crystal": "lapis_lazuli",
+            "form": "tumbled"
           }
         ]
       },
@@ -3544,6 +3948,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "malachite",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/malachite/malachite-tumbled.png",
+            "type": "crystal",
+            "crystal": "malachite",
+            "form": "tumbled"
           }
         ]
       },
@@ -3578,6 +3989,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "moonstone",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/moonstone/moonstone-tumbled.png",
+            "type": "crystal",
+            "crystal": "moonstone",
+            "form": "tumbled"
           }
         ]
       },
@@ -3612,6 +4030,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "moss_agate",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/moss-agate/moss-agate-tumbled.png",
+            "type": "crystal",
+            "crystal": "moss_agate",
+            "form": "tumbled"
           }
         ]
       },
@@ -3680,6 +4105,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "onyx",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/onyx/onyx-tumbled.png",
+            "type": "crystal",
+            "crystal": "onyx",
+            "form": "tumbled"
           }
         ]
       },
@@ -3720,6 +4152,47 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/crystals/opal/opal-tumbled.png",
             "type": "crystal",
             "crystal": "opal",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Peridot",
+        "keywords": [
+          "renewal",
+          "prosperity",
+          "release of jealousy",
+          "growth",
+          "warmth"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "peridot",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/peridot/peridot-chips.png",
+            "type": "crystal",
+            "crystal": "peridot",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "peridot",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/peridot/peridot-tumbled.png",
+            "type": "crystal",
+            "crystal": "peridot",
             "form": "tumbled"
           }
         ]
@@ -3789,6 +4262,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "red_jasper",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/red-jasper/red-jasper-tumbled.png",
+            "type": "crystal",
+            "crystal": "red_jasper",
+            "form": "tumbled"
           }
         ]
       },
@@ -3910,6 +4390,74 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "crystals",
+        "name": "Ruby",
+        "keywords": [
+          "passion",
+          "vitality",
+          "courage",
+          "devotion",
+          "protection"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "ruby",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/ruby/ruby-chips.png",
+            "type": "crystal",
+            "crystal": "ruby",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "../assets/altar/objects/crystals/ruby/ruby-cluster.png",
+            "type": "crystal",
+            "crystal": "ruby",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Sapphire",
+        "keywords": [
+          "wisdom",
+          "truth",
+          "discipline",
+          "devotion",
+          "protection"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "sapphire",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/sapphire/sapphire-chips.png",
+            "type": "crystal",
+            "crystal": "sapphire",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "../assets/altar/objects/crystals/sapphire/sapphire-cluster.png",
+            "type": "crystal",
+            "crystal": "sapphire",
+            "form": "cluster"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
         "name": "Selenite",
         "keywords": [
           "cleansing",
@@ -3972,6 +4520,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "shungite",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/shungite/shungite-tumbled.png",
+            "type": "crystal",
+            "crystal": "shungite",
+            "form": "tumbled"
           }
         ]
       },
@@ -4081,6 +4636,13 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "sunstone",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/sunstone/sunstone-tumbled.png",
+            "type": "crystal",
+            "crystal": "sunstone",
+            "form": "tumbled"
           }
         ]
       },
@@ -4115,6 +4677,54 @@ export const ALTAR_ARTWORK: {
             "type": "crystal",
             "crystal": "tiger_eye",
             "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/tiger-eye/tiger-eye-tumbled.png",
+            "type": "crystal",
+            "crystal": "tiger_eye",
+            "form": "tumbled"
+          }
+        ]
+      },
+      {
+        "category": "crystals",
+        "name": "Turquoise",
+        "keywords": [
+          "protection",
+          "travel",
+          "healing",
+          "friendship",
+          "communication"
+        ],
+        "forms": [
+          {
+            "label": "Point",
+            "image": "",
+            "type": "crystal",
+            "crystal": "turquoise",
+            "form": "point"
+          },
+          {
+            "label": "Chips",
+            "image": "../assets/altar/objects/crystals/turquoise/turquoise-chips.png",
+            "type": "crystal",
+            "crystal": "turquoise",
+            "form": "chips"
+          },
+          {
+            "label": "Cluster",
+            "image": "",
+            "type": "crystal",
+            "crystal": "turquoise",
+            "form": "cluster"
+          },
+          {
+            "label": "Tumbled",
+            "image": "../assets/altar/objects/crystals/turquoise/turquoise-tumbled.png",
+            "type": "crystal",
+            "crystal": "turquoise",
+            "form": "tumbled"
           }
         ]
       },
@@ -5691,6 +6301,42 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/vessels/spray-bottle/spray-bottle.png",
             "type": "vessel",
             "vessel": "spray-bottle",
+            "form": "standard"
+          }
+        ]
+      },
+      {
+        "category": "vessels",
+        "name": "Vial",
+        "keywords": [
+          "travel altars",
+          "jewelry",
+          "pocket charms"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/vessels/vial/vial.png",
+            "type": "vessel",
+            "vessel": "vial",
+            "form": "standard"
+          }
+        ]
+      },
+      {
+        "category": "vessels",
+        "name": "Witch Bottle",
+        "keywords": [
+          "home wards",
+          "protection rituals",
+          "threshold magic"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/vessels/witch-bottle/witch-bottle.png",
+            "type": "vessel",
+            "vessel": "witch-bottle",
             "form": "standard"
           }
         ]
