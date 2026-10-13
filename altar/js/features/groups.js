@@ -241,6 +241,27 @@ function sendCurrentGroupToGrimoire() {
   window.location.href = "../grimoire/index.html?import=altar";
 }
 
+// Record everything on the altar as a page in the Grimoire, for a spell or
+// working done without the ritual builder (the group version, for the whole altar).
+function sendAltarToGrimoire() {
+  const objects = Array.from(altarStage.querySelectorAll(".altar-object"));
+
+  if (objects.length === 0) {
+    showAltarToast("Place something on the altar first");
+    return;
+  }
+
+  const handoff = {
+    id: `altar-${Date.now()}`,
+    name: "Altar Working",
+    createdAt: new Date().toISOString(),
+    items: objects.map(altarObjectToRitualItem)
+  };
+
+  localStorage.setItem(ALTAR_GRIMOIRE_HANDOFF_KEY, JSON.stringify(handoff));
+  window.location.href = "../grimoire/index.html?import=altar";
+}
+
 /* =========================================================
    GROUP CREATION CHOICES
    Group or create Apothecary item from selected ingredients

@@ -97,8 +97,8 @@ function GroupForm({ objects, onGroup }: { objects: SavedObject[]; onGroup: (ind
 }
 
 /**
- * Record a group as a ritual page in the Grimoire (the website's Send to
- * Grimoire, then its Record Ritual step): the items, a purpose, and create.
+ * Record a group, or the whole altar, as a page in the Grimoire (the website's
+ * Record in Grimoire): the items, a purpose, and create.
  */
 export function GroupGrimoireSheet({
   visible,
@@ -116,35 +116,46 @@ export function GroupGrimoireSheet({
   sectionTitle: string | null;
   signedIn: boolean;
   onClose: () => void;
-  onCreate: (purpose: string) => void;
+  onCreate: (purpose: string, title: string) => void;
 }) {
   return (
-    <Sheet visible={visible} eyebrow="Record Ritual" title={name || 'Ritual Working'} onClose={onClose}>
-      {visible && <GroupGrimoireForm items={items} sectionTitle={sectionTitle} signedIn={signedIn} onCreate={onCreate} />}
+    <Sheet visible={visible} eyebrow="Record in Grimoire" title={name || 'Ritual Working'} onClose={onClose}>
+      {visible && <GroupGrimoireForm name={name} items={items} sectionTitle={sectionTitle} signedIn={signedIn} onCreate={onCreate} />}
     </Sheet>
   );
 }
 
 function GroupGrimoireForm({
+  name,
   items,
   sectionTitle,
   signedIn,
   onCreate,
 }: {
+  name: string;
   items: { groupLabel: string; content: string }[];
   sectionTitle: string | null;
   signedIn: boolean;
-  onCreate: (purpose: string) => void;
+  onCreate: (purpose: string, title: string) => void;
 }) {
+  const [title, setTitle] = useState(name);
   const [purpose, setPurpose] = useState('');
-  if (!signedIn) return <Text style={type.body}>Sign in to create a ritual page in your Grimoire.</Text>;
+  if (!signedIn) return <Text style={type.body}>Sign in to record this in your Grimoire.</Text>;
   return (
     <View style={styles.form}>
-      <Text style={type.caption}>A new ritual page in your Grimoire, with these items from the altar and room for your steps, results and reflection.</Text>
+      <Text style={type.caption}>A new page in your Grimoire for this spell or working, with these items from the altar and room for what you did, your results and reflection.</Text>
       <View style={styles.summary}>
         <Text style={type.eyebrow}>Section</Text>
         <Text style={type.body}>{sectionTitle || 'Top level (no section)'}</Text>
       </View>
+      <TextInput
+        value={title}
+        onChangeText={setTitle}
+        placeholder="Name this spell or working"
+        placeholderTextColor={colors.tabInactive}
+        accessibilityLabel="Page name"
+        style={styles.input}
+      />
       <TextInput
         value={purpose}
         onChangeText={setPurpose}
@@ -160,7 +171,7 @@ function GroupGrimoireForm({
           <Text style={type.body}>{group.content}</Text>
         </View>
       ))}
-      <Button label="Create Ritual Page" onPress={() => onCreate(purpose)} />
+      <Button label="Create Page" onPress={() => onCreate(purpose, title.trim())} />
     </View>
   );
 }

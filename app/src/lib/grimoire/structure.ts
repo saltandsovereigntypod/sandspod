@@ -59,6 +59,7 @@ export function blockSource(block: BlockRow): string {
 const PAGE_TYPE_LABELS: Record<string, string> = {
   ritual_journal: 'Ritual journal',
   ritual: 'Ritual',
+  spell: 'Spell',
   apothecary: 'Apothecary',
 };
 

@@ -30,6 +30,7 @@ altarActionBar.innerHTML = `
     <button type="button" data-global-action="group-ritual-items">🗂 Group</button>
     <button type="button" data-global-action="start-ritual">🌙 Start Ritual</button>
     <button type="button" data-global-action="save-as-ritual">📖 Save Ritual</button>
+    <button type="button" data-global-action="record-in-grimoire">📜 Record in Grimoire</button>
   </div>
 
   <div class="altar-action-divider"></div>

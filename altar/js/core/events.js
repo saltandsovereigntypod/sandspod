@@ -484,6 +484,10 @@ altarActionBar.addEventListener("click", (event) => {
       sendCurrentGroupToGrimoire();
       return;
 
+    case "record-in-grimoire":
+      sendAltarToGrimoire();
+      return;
+
     case "save-altar":
       if (!isUserSignedIn()) {
         shouldSaveAfterAuth = true;

@@ -101,3 +101,16 @@ test('a template added to an existing page goes after what is there', () => {
     [5, 6, 7, 8, 9, 10],
   );
 });
+
+test('a Spell or Working page matches the website template, for logging a working without the ritual builder', async () => {
+  const { PAGE_TEMPLATES } = await import('../src/lib/grimoire/elements.ts');
+  const { readFileSync } = await import('node:fs');
+  const spell = PAGE_TEMPLATES.find((template) => template.key === 'spell');
+  assert.ok(spell);
+  assert.equal(spell.label, 'Spell or Working');
+  const headings = spell.blocks.filter((block) => block.type === 'heading').map((block) => block.content);
+  assert.deepEqual(headings, ['Date', 'Intention', 'Timing', 'Ingredients and Tools', 'What I Did', 'Words Spoken', 'Results', 'Reflection']);
+  const website = readFileSync(new URL('../../grimoire/js/config.js', import.meta.url), 'utf8');
+  const block = website.slice(website.indexOf('  spell: {'), website.indexOf('  ritual: {'));
+  for (const heading of headings) assert.ok(block.includes(`content: "${heading}"`), heading);
+});

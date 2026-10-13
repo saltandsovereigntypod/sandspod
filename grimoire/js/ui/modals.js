@@ -125,17 +125,23 @@ function renderAltarImportSummary(ritual) {
 function openAltarImportModal(ritual) {
   const bodyHtml = `
     <div class="book-import-modal">
-      <p class="eyebrow">Record Ritual</p>
+      <p class="eyebrow">Record in Grimoire</p>
 
       <h2>${escapeHtml(ritual.name || "Ritual Working")}</h2>
 
       <p>
-        A ritual group was brought over from your altar. Review the items below,
-        then create a new ritual page in your Grimoire.
+        These items were brought over from your altar. Name this spell or working,
+        then create a page for it in your Grimoire, with room for what you did,
+        your results and reflection.
       </p>
 
       <label class="book-import-field">
-        Ritual Purpose
+        Name
+        <input type="text" data-import-title value="${escapeHtml(ritual.name || "Ritual Working")}" />
+      </label>
+
+      <label class="book-import-field">
+        Purpose
         <textarea
           rows="4"
           data-import-purpose
@@ -153,13 +159,13 @@ function openAltarImportModal(ritual) {
         </button>
 
         <button class="button button--primary" type="button" data-create-altar-ritual>
-          Create Ritual Page
+          Create Page
         </button>
       </div>
     </div>
   `;
 
-  openModal("Record Ritual", bodyHtml);
+  openModal("Record in Grimoire", bodyHtml);
 
   const root = document.querySelector("[data-book-modal-root]");
   if (!root) return;
@@ -167,6 +173,7 @@ function openAltarImportModal(ritual) {
   const cancelButton = root.querySelector("[data-cancel-altar-import]");
   const createButton = root.querySelector("[data-create-altar-ritual]");
   const purposeInput = root.querySelector("[data-import-purpose]");
+  const titleInput = root.querySelector("[data-import-title]");
 
   if (cancelButton) {
     cancelButton.addEventListener("click", () => {
@@ -177,8 +184,9 @@ function openAltarImportModal(ritual) {
 
   if (createButton) {
     createButton.addEventListener("click", async () => {
+      const name = titleInput ? titleInput.value.trim() : "";
       await createRitualPageFromAltarImport(
-        ritual,
+        name ? { ...ritual, name } : ritual,
         purposeInput ? purposeInput.value : ""
       );
 

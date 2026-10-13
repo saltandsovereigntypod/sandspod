@@ -243,7 +243,7 @@ function PageRowView({ page, mundane, last }: { page: PageRow; mundane: boolean;
       style={({ pressed }) => [styles.row, !last && styles.rowRule, pressed && styles.pressed]}
     >
       <View style={styles.rowIcon}>
-        <Icon name={page.page_type === 'ritual_journal' || page.page_type === 'ritual' ? 'rituals' : 'grimoire'} size={18} color={colors.gold} />
+        <Icon name={['ritual_journal', 'ritual', 'spell'].includes(page.page_type ?? '') ? 'rituals' : 'grimoire'} size={18} color={colors.gold} />
       </View>
       <View style={styles.rowText}>
         <Text style={styles.rowTitle} numberOfLines={2}>
