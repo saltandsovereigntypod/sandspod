@@ -88,6 +88,28 @@ const PAGE_TEMPLATES = {
     ]
   },
 
+  spell: {
+    label: "Spell or Working",
+    blocks: [
+      { type: "heading", content: "Date" },
+      { type: "text", content: "" },
+      { type: "heading", content: "Intention" },
+      { type: "text", content: "" },
+      { type: "heading", content: "Timing" },
+      { type: "correspondence", content: "Moon phase:\nDay:\nPlanetary hour:" },
+      { type: "heading", content: "Ingredients and Tools" },
+      { type: "ingredient_list", content: "" },
+      { type: "heading", content: "What I Did" },
+      { type: "numbered_list", content: "" },
+      { type: "heading", content: "Words Spoken" },
+      { type: "quote", content: "" },
+      { type: "heading", content: "Results" },
+      { type: "text", content: "" },
+      { type: "heading", content: "Reflection" },
+      { type: "text", content: "" }
+    ]
+  },
+
   ritual: {
     label: "Ritual",
     blocks: [

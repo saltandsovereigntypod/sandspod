@@ -376,18 +376,24 @@ export default function AltarEditor() {
     return !!saved;
   };
 
-  // Send a group to the Grimoire as a ritual page (groups.js sendCurrentGroupToGrimoire).
+  // Record a group, or with nothing selected the whole altar, in the Grimoire
+  // as a ritual page (groups.js sendCurrentGroupToGrimoire / sendAltarToGrimoire).
   const grimoire = useGrimoire();
   const groupItems = useMemo(
     () =>
-      doc && selectedObject?.groupId
-        ? doc.objects.filter((o) => o.groupId === selectedObject.groupId).map((o) => altarRitualItem(o, dressingsOf(o)))
-        : [],
+      !doc
+        ? []
+        : selectedObject?.groupId
+          ? doc.objects.filter((o) => o.groupId === selectedObject.groupId).map((o) => altarRitualItem(o, dressingsOf(o)))
+          : selectedObject
+            ? []
+            : doc.objects.map((o) => altarRitualItem(o, dressingsOf(o))),
     [doc, selectedObject],
   );
-  const createRitualPage = (purpose: string) => {
+  const grimoireTitle = doc && selectedObject ? groupName(doc, selectedObject) : name;
+  const createRitualPage = (purpose: string, title: string) => {
     if (!doc || !groupItems.length) return;
-    const pageId = grimoire.actions.createRitualFromAltar({ title: groupName(doc, selectedObject), purpose, items: groupItems });
+    const pageId = grimoire.actions.createRitualFromAltar({ title: title || grimoireTitle, purpose, items: groupItems });
     setSheet(null);
     if (!pageId) {
       setNotice('Your Grimoire hasn’t loaded yet. Open it once while online, then try again.');
@@ -512,6 +518,13 @@ export default function AltarEditor() {
               <Chip label="Background" symbol="❖" onPress={() => setSheet('background')} />
               <Chip label="Layers" symbol="☰" onPress={() => setSheet('layers')} disabled={doc.objects.length === 0} />
               <Chip label="Apothecary" symbol="⚗" accessibilityLabel="My Apothecary" onPress={() => setSheet('apothecary')} />
+              <Chip
+                label="Record in Grimoire"
+                symbol="❧"
+                accessibilityLabel="Record this altar in your Grimoire"
+                onPress={() => setSheet('grimoire')}
+                disabled={doc.objects.length === 0}
+              />
               <Chip label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} disabled={undo.current.length === 0} />
               <Chip label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} disabled={redo.current.length === 0} />
               <Chip label="Zoom in" symbol="+" onPress={() => zoomBy(1.5)} disabled={viewport.zoom >= 4} />
@@ -624,7 +637,7 @@ export default function AltarEditor() {
           />
           <GroupGrimoireSheet
             visible={sheet === 'grimoire' && groupItems.length > 0}
-            name={groupName(doc, selectedObject)}
+            name={grimoireTitle}
             items={groupAltarItems(groupItems)}
             sectionTitle={grimoire.openSection?.title ?? null}
             signedIn={signedIn}

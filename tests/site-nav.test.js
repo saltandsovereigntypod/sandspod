@@ -24,3 +24,10 @@ test("only the home page shows the podcast sections", () => {
   assert.equal(SiteNav.isHome("/index.html"), true);
   assert.equal(SiteNav.isHome("/altar/"), false);
 });
+
+test("the altar can record everything on it in the Grimoire, not only a group", () => {
+  const fs = require("node:fs");
+  assert.match(fs.readFileSync("altar/js/ui/ui.js", "utf8"), /data-global-action="record-in-grimoire"/);
+  assert.match(fs.readFileSync("altar/js/core/events.js", "utf8"), /case "record-in-grimoire":\s*sendAltarToGrimoire\(\)/);
+  assert.match(fs.readFileSync("altar/js/features/groups.js", "utf8"), /function sendAltarToGrimoire\(\)/);
+});
