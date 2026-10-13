@@ -9,8 +9,14 @@ body.has-site-nav .site-header .nav-links {
   display: none;
 }
 
+/* The bar stays above the Sanctuary panel, which opens below it. */
 body.has-site-nav .site-header {
-  z-index: 9500;
+  z-index: 10010;
+}
+
+body.has-site-nav .my-sanctuary-card {
+  top: var(--site-header-h, 0px);
+  height: calc(100% - var(--site-header-h, 0px));
 }
 
 .site-tabs {
