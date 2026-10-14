@@ -15,6 +15,9 @@ export function Screen({ children, centered }: { children: ReactNode; centered?:
         contentContainerStyle={[styles.content, centered && styles.centered]}
         showsVerticalScrollIndicator={false}
         alwaysBounceHorizontal={false}
+        automaticallyAdjustKeyboardInsets
+        keyboardDismissMode="interactive"
+        keyboardShouldPersistTaps="handled"
       >
         {children}
       </ScrollView>

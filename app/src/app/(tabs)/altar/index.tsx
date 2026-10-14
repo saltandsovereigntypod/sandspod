@@ -33,6 +33,9 @@ export default function AltarList() {
       <ScrollView
         contentContainerStyle={styles.content}
         alwaysBounceHorizontal={false}
+        automaticallyAdjustKeyboardInsets
+        keyboardDismissMode="interactive"
+        keyboardShouldPersistTaps="handled"
         refreshControl={
           <RefreshControl
             refreshing={pulling}

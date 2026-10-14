@@ -176,7 +176,13 @@ export function RelationshipManager({
           </View>
           <Button label="Done" variant="text" onPress={close} />
         </View>
-        <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" alwaysBounceHorizontal={false}>
+        <ScrollView
+          contentContainerStyle={styles.content}
+          keyboardShouldPersistTaps="handled"
+          automaticallyAdjustKeyboardInsets
+          keyboardDismissMode="interactive"
+          alwaysBounceHorizontal={false}
+        >
           <Section label={editing ? `Edit relationship with ${editing.other.name}` : 'Add Relationship'}>
             <Card>
               <Chips label="Relationship" options={RELATION_OPTIONS} value={relation} onChange={setRelation} />

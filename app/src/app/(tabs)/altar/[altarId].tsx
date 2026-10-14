@@ -458,7 +458,14 @@ export default function AltarEditor() {
         )}
       </View>
 
-      <ScrollView style={styles.panel} contentContainerStyle={styles.panelContent} alwaysBounceHorizontal={false}>
+      <ScrollView
+        style={styles.panel}
+        contentContainerStyle={styles.panelContent}
+        alwaysBounceHorizontal={false}
+        automaticallyAdjustKeyboardInsets
+        keyboardDismissMode="interactive"
+        keyboardShouldPersistTaps="handled"
+      >
         {notice && (
           <Text style={[type.caption, styles.notice]} accessibilityLiveRegion="polite" onPress={() => setNotice(null)}>
             {notice}
