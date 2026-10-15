@@ -59,6 +59,32 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
     );
   }
 
+  // TEMPORARY test card: each line uses one feature of the real widget, so a
+  // screenshot shows which one iOS can't draw.
+  if (environment.widgetFamily === 'systemLarge' || environment.widgetFamily === 'systemMedium' || environment.widgetFamily === 'systemSmall') {
+    const row = (n: string, child: React.ReactNode) => (
+      <HStack spacing={6}>
+        <Text modifiers={[font({ size: 11 }), foregroundStyle(gold)]}>{n}</Text>
+        {child}
+      </HStack>
+    );
+    const firstImage = altar.candles.find((c) => c.image)?.image || altar.presences.find((p) => p.image)?.image || '';
+    return (
+      <VStack alignment="leading" spacing={4} modifiers={[containerBackground(night, 'widget'), fill, padding({ all: 12 })]}>
+        <Text modifiers={[font({ size: 12, weight: 'semibold' }), foregroundStyle(cream)]}>{`TEST · ${altars.length} altars · place ${place} · ${altar.name}`}</Text>
+        {row('1 text', <Text modifiers={[foregroundStyle(cream)]}>plain text</Text>)}
+        {row('2 date', <Text date={new Date(Date.now() - 3600000)} dateStyle="relative" modifiers={[foregroundStyle(cream)]} />)}
+        {row('3 bg', altar.background ? <Image uiImage={altar.background} modifiers={[resizable(), aspectRatio({ contentMode: 'fill' }), frame({ width: 40, height: 20 }), clipped()]} /> : <Text modifiers={[foregroundStyle(muted)]}>no background file</Text>)}
+        {row('4 thumb', firstImage ? <Image uiImage={firstImage} modifiers={[resizable(), aspectRatio({ contentMode: 'fit' }), frame({ width: 20, height: 20 })]} /> : <Text modifiers={[foregroundStyle(muted)]}>no thumbnail file</Text>)}
+        {row('5 gradient', <Rectangle modifiers={[foregroundStyle({ type: 'linearGradient', colors: ['#e2c36d88', '#0f1a14f5'], startPoint: { x: 0, y: 0 }, endPoint: { x: 1, y: 0 } }), frame({ width: 60, height: 10 })]} />)}
+        {row('6 zstack', <ZStack><Text modifiers={[foregroundStyle(cream)]}>in a ZStack</Text></ZStack>)}
+        {row('7 pill', <Text modifiers={[foregroundStyle(cream), padding({ horizontal: 8, vertical: 2 }), background('#e2c36d33'), clipShape('capsule')]}>pill</Text>)}
+        {row('8 button', <Button target="diag" onPress={() => ({ altars, actions })} modifiers={[buttonStyle('plain')]}><Text modifiers={[foregroundStyle(cream)]}>a button</Text></Button>)}
+        {row('9 link', <Text modifiers={[foregroundStyle(cream), widgetURL('saltandsovereignty://altar')]}>with link</Text>)}
+      </VStack>
+    );
+  }
+
   const link = widgetURL(`saltandsovereignty://altar/${altar.id}`);
   const lit = altar.candles.filter((c) => c.lit);
   const total = altar.candles.length + altar.moreCandles;
