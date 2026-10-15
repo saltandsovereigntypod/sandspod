@@ -46,6 +46,9 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
   const fill = frame({ maxWidth: 10000, maxHeight: 10000, alignment: 'topLeading' });
   const wide = frame({ maxWidth: 10000, alignment: 'leading' });
   const lock = family === 'accessoryCircular' || family === 'accessoryRectangular' || family === 'accessoryInline';
+  // Tinted and clear home screens repaint every picture as a flat white shape,
+  // so there the widget uses the system background and symbols instead.
+  const tinted = !!environment.widgetRenderingMode && environment.widgetRenderingMode !== 'fullColor';
 
   if (!altar) {
     if (lock) return <Text modifiers={[widgetURL('saltandsovereignty://altar'), containerBackground('clear', 'widget')]}>No altar yet</Text>;
@@ -55,32 +58,6 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
         <Spacer />
         <Text modifiers={[font({ size: 16, weight: 'semibold', design: 'serif' }), foregroundStyle(cream)]}>No altar yet</Text>
         <Text modifiers={[font({ size: 12 }), foregroundStyle(muted)]}>Build and save one in the app to tend it here.</Text>
-      </VStack>
-    );
-  }
-
-  // TEMPORARY test card: each line uses one feature of the real widget, so a
-  // screenshot shows which one iOS can't draw.
-  if (environment.widgetFamily === 'systemLarge' || environment.widgetFamily === 'systemMedium' || environment.widgetFamily === 'systemSmall') {
-    const row = (n: string, child: React.ReactNode) => (
-      <HStack spacing={6}>
-        <Text modifiers={[font({ size: 11 }), foregroundStyle(gold)]}>{n}</Text>
-        {child}
-      </HStack>
-    );
-    const firstImage = altar.candles.find((c) => c.image)?.image || altar.presences.find((p) => p.image)?.image || '';
-    return (
-      <VStack alignment="leading" spacing={4} modifiers={[containerBackground(night, 'widget'), fill, padding({ all: 12 })]}>
-        <Text modifiers={[font({ size: 12, weight: 'semibold' }), foregroundStyle(cream)]}>{`TEST · ${altars.length} altars · place ${place} · ${altar.name}`}</Text>
-        {row('1 text', <Text modifiers={[foregroundStyle(cream)]}>plain text</Text>)}
-        {row('2 date', <Text date={new Date(Date.now() - 3600000)} dateStyle="relative" modifiers={[foregroundStyle(cream)]} />)}
-        {row('3 bg', altar.background ? <Image uiImage={altar.background} modifiers={[resizable(), aspectRatio({ contentMode: 'fill' }), frame({ width: 40, height: 20 }), clipped()]} /> : <Text modifiers={[foregroundStyle(muted)]}>no background file</Text>)}
-        {row('4 thumb', firstImage ? <Image uiImage={firstImage} modifiers={[resizable(), aspectRatio({ contentMode: 'fit' }), frame({ width: 20, height: 20 })]} /> : <Text modifiers={[foregroundStyle(muted)]}>no thumbnail file</Text>)}
-        {row('5 gradient', <Rectangle modifiers={[foregroundStyle({ type: 'linearGradient', colors: ['#e2c36d88', '#0f1a14f5'], startPoint: { x: 0, y: 0 }, endPoint: { x: 1, y: 0 } }), frame({ width: 60, height: 10 })]} />)}
-        {row('6 zstack', <ZStack><Text modifiers={[foregroundStyle(cream)]}>in a ZStack</Text></ZStack>)}
-        {row('7 pill', <Text modifiers={[foregroundStyle(cream), padding({ horizontal: 8, vertical: 2 }), background('#e2c36d33'), clipShape('capsule')]}>pill</Text>)}
-        {row('8 button', <Button target="diag" onPress={() => ({ altars, actions })} modifiers={[buttonStyle('plain')]}><Text modifiers={[foregroundStyle(cream)]}>a button</Text></Button>)}
-        {row('9 link', <Text modifiers={[foregroundStyle(cream), widgetURL('saltandsovereignty://altar')]}>with link</Text>)}
       </VStack>
     );
   }
@@ -147,7 +124,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
   }
 
   // ── Home screen pieces ─────────────────────────────────────────────────
-  const backdrop = (
+  const backdrop = tinted ? null : (
     <ZStack modifiers={[fill]}>
       {altar.background ? (
         <Image uiImage={altar.background} modifiers={[resizable(), aspectRatio({ contentMode: 'fill' }), frame({ maxWidth: 10000, maxHeight: 10000 }), clipped()]} />
@@ -165,14 +142,18 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
     </ZStack>
   );
 
-  const pill = (target: string, onPress: () => AltarWidgetProps, symbol: string, text: string, strong: boolean) => (
+  const pill = (target: string, onPress: () => AltarWidgetProps, symbol: string, text: string, filled: boolean) => {
+    // A solid gold pill reads as one blank shape once tinted.
+    const strong = filled && !tinted;
+    return (
     <Button key={target} target={target} onPress={onPress} modifiers={[buttonStyle('plain')]}>
       <HStack spacing={5} modifiers={[padding({ horizontal: 10, vertical: 6 }), wide, background(strong ? '#e2c36d' : '#f4ecd826'), clipShape('capsule')]}>
         <Image systemName={symbol as never} size={12} color={strong ? night : gold} />
         <Text modifiers={[font({ size: 12, weight: 'semibold' }), foregroundStyle(strong ? night : cream), lineLimit(1)]}>{text}</Text>
       </HStack>
     </Button>
-  );
+    );
+  };
   const candleButton = pill('toggle-all', toggleAll, anyLit ? 'wind' : 'flame.fill', anyLit ? 'Snuff all' : 'Light all', !anyLit);
   const offerButton = pill('offer-all', act('offer', ''), 'hands.sparkles.fill', 'Tend offerings', false);
   const cleanseButton = pill('cleanse-all', act('cleanse', ''), 'sparkles', 'Cleanse crystals', false);
@@ -259,7 +240,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
     <Text modifiers={[font({ size: 10, weight: 'semibold' }), foregroundStyle(gold), lineLimit(1)]}>{text}</Text>
   );
   const thumb = (image: string, symbol: string, color: string, size: number) =>
-    image ? (
+    image && !tinted ? (
       <Image uiImage={image} modifiers={[resizable(), aspectRatio({ contentMode: 'fit' }), frame({ width: size, height: size })]} />
     ) : (
       <Image systemName={symbol as never} size={size * 0.6} color={color} modifiers={[frame({ width: size, height: size })]} />
