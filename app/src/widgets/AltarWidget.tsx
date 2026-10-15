@@ -251,6 +251,44 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
       </VStack>
     ) : null;
 
+  // TEMPORARY test card: each line draws one piece of the design from your real
+  // altar, so a screenshot shows which piece iOS can't draw.
+  if (String(family).startsWith('system')) {
+    const rows: [string, () => unknown][] = [
+      ['1 title', () => title(12)],
+      ['2 art button', () => (art ? <Image uiImage={art.button} modifiers={[resizable(), frame({ width: 20, height: 20 }), own]} /> : <Text>no art</Text>)],
+      ['3 symbol', () => <Image systemName="flame.fill" size={14} color={gold} modifiers={[own]} />],
+      ['4 date', () => ago(earliest || new Date(Date.now() - 600000).toISOString(), 'lit', 'none', 11, cream)],
+      ['5 bg cut', () => (altar.frames?.small?.background ? picture(altar.frames.small.background, 0, 0, 50, 24, 'stretch') : <Text>no bg cut</Text>)],
+      ['6 object', () => (altar.scene[0] ? <ZStack modifiers={[frame({ width: 40, height: 30 }), clipped()]}>{objectView(altar.scene[0], 170)}</ZStack> : <Text>no objects</Text>)],
+      ['7 scene', () => <ZStack modifiers={[frame({ width: 60, height: 30 }), clipped()]}><ZStack modifiers={[scaleEffect(0.3)]}>{scene('small', 170, 170)}</ZStack></ZStack>],
+      ['8 scrims', () => <ZStack modifiers={[frame({ width: 50, height: 24 })]}>{scrims(10, 10)}</ZStack>],
+      ['9 pill', () => (art ? <Image uiImage={art.pill} modifiers={[resizable({ leading: 20, trailing: 20 }), frame({ width: 60, height: 20 }), own]} /> : <Text>no art</Text>)],
+      ['10 round', () => round('dbg-round', toggleAll, 'flame.fill', true, 24)],
+    ];
+    return (
+      <VStack alignment="leading" spacing={2} modifiers={[containerBackground(night, 'widget'), fill, padding({ all: 10 })]}>
+        <Text modifiers={[font({ size: 10, weight: 'semibold' }), foregroundStyle(cream)]}>
+          {`TEST v4 · ${altars.length} altars · art ${art ? 'yes' : 'no'} · ${altar.scene?.length ?? 'no'} objects · frames ${altar.frames ? 'yes' : 'no'}`}
+        </Text>
+        {rows.map(([name, make]) => {
+          let view: unknown;
+          try {
+            view = make();
+          } catch (e) {
+            view = <Text modifiers={[font({ size: 9 }), foregroundStyle('#ff8080')]}>{`ERROR ${String(e)}`}</Text>;
+          }
+          return (
+            <HStack key={name} spacing={6}>
+              <Text modifiers={[font({ size: 9 }), foregroundStyle(gold)]}>{name}</Text>
+              {view as never}
+            </HStack>
+          );
+        })}
+      </VStack>
+    );
+  }
+
   // ── Small: the altar, its name and one button ─────────────────────────
   if (family === 'systemSmall') {
     return (
