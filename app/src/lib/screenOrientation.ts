@@ -25,3 +25,18 @@ export async function turnScreen(landscape: boolean): Promise<void> {
     // Some iPads in split view can't be locked; the altar still fills the screen.
   }
 }
+
+/**
+ * Lets go of the upright lock just before the app restarts itself into an
+ * update. The old copy's lock would otherwise linger beside the new one's and
+ * keep the full-screen altar from turning sideways until the app is closed.
+ */
+export async function releaseScreen(): Promise<void> {
+  const o = orientation();
+  if (!o) return;
+  try {
+    await o.lockAsync(o.OrientationLock.DEFAULT);
+  } catch {
+    // Nothing to let go of.
+  }
+}
