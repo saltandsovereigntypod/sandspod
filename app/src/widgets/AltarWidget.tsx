@@ -50,9 +50,25 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
   const family = environment.widgetFamily;
   const altars = props?.altars ?? [];
   const actions = props?.actions ?? [];
-  const art = props?.art ?? null;
+  const art = props?.art && props.art.flame !== undefined ? props.art : null;
   const place = Math.max(1, Number(String(environment.configuration?.altar ?? 'altar1').replace('altar', '')) || 1);
-  const altar: WidgetAltar | undefined = altars[place - 1] ?? altars[0];
+  const chosen: WidgetAltar | undefined = altars[place - 1] ?? altars[0];
+  // Data saved by an older version of the app may lack newer fields.
+  const altar: WidgetAltar | undefined = chosen
+    ? {
+        ...chosen,
+        name: chosen.name ?? 'My altar',
+        background: chosen.background ?? '',
+        candles: chosen.candles ?? [],
+        presences: chosen.presences ?? [],
+        crystals: chosen.crystals ?? [],
+        scene: chosen.scene ?? [],
+        moreCandles: chosen.moreCandles ?? 0,
+        workingsDue: chosen.workingsDue ?? 0,
+        workings: chosen.workings ?? 0,
+        items: chosen.items ?? 0,
+      }
+    : undefined;
   const fill = frame({ maxWidth: 10000, maxHeight: 10000 });
   const lock = family === 'accessoryCircular' || family === 'accessoryRectangular' || family === 'accessoryInline';
   // Pictures keep their own colours on tinted and clear home screens.
@@ -89,13 +105,14 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
         return {
           ...a,
           candles: a.candles.map((c) => (hit(c.key) && c.lit !== on ? { ...c, lit: on, since: on ? at : '' } : c)),
-          scene: a.scene.map((s) => (s.candle && hit(s.key) ? { ...s, lit: on } : s)),
+          scene: (a.scene ?? []).map((s) => (s.candle && hit(s.key) ? { ...s, lit: on } : s)),
         };
       }
       if (kind === 'offer') return { ...a, presences: a.presences.map((p) => (hit(p.key) ? { ...p, lastOffering: at } : p)) };
       return { ...a, crystals: a.crystals.map((c) => (hit(c.key) ? { ...c, lastCleansed: at } : c)) };
     });
-    return { altars: next, art, actions: [...actions, { id: `${at}-${kind}-${key}`, altarId: altar.id, kind, key, at }] };
+    // Never store null: the widget's storage can't hold it.
+    return { altars: next, ...(art ? { art } : {}), actions: [...actions, { id: `${at}-${kind}-${key}`, altarId: altar.id, kind, key, at }] };
   };
   const toggleAll = anyLit ? act('snuff', '') : act('light', '');
 
@@ -250,44 +267,6 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
         <Image uiImage={art.scrimBottom} modifiers={[resizable(), frame({ maxWidth: 10000, minHeight: bottom, maxHeight: bottom }), own]} />
       </VStack>
     ) : null;
-
-  // TEMPORARY test card: each line draws one piece of the design from your real
-  // altar, so a screenshot shows which piece iOS can't draw.
-  if (String(family).startsWith('system')) {
-    const rows: [string, () => unknown][] = [
-      ['1 title', () => title(12)],
-      ['2 art button', () => (art ? <Image uiImage={art.button} modifiers={[resizable(), frame({ width: 20, height: 20 }), own]} /> : <Text>no art</Text>)],
-      ['3 symbol', () => <Image systemName="flame.fill" size={14} color={gold} modifiers={[own]} />],
-      ['4 date', () => ago(earliest || new Date(Date.now() - 600000).toISOString(), 'lit', 'none', 11, cream)],
-      ['5 bg cut', () => (altar.frames?.small?.background ? picture(altar.frames.small.background, 0, 0, 50, 24, 'stretch') : <Text>no bg cut</Text>)],
-      ['6 object', () => (altar.scene[0] ? <ZStack modifiers={[frame({ width: 40, height: 30 }), clipped()]}>{objectView(altar.scene[0], 170)}</ZStack> : <Text>no objects</Text>)],
-      ['7 scene', () => <ZStack modifiers={[frame({ width: 60, height: 30 }), clipped()]}><ZStack modifiers={[scaleEffect(0.3)]}>{scene('small', 170, 170)}</ZStack></ZStack>],
-      ['8 scrims', () => <ZStack modifiers={[frame({ width: 50, height: 24 })]}>{scrims(10, 10)}</ZStack>],
-      ['9 pill', () => (art ? <Image uiImage={art.pill} modifiers={[resizable({ leading: 20, trailing: 20 }), frame({ width: 60, height: 20 }), own]} /> : <Text>no art</Text>)],
-      ['10 round', () => round('dbg-round', toggleAll, 'flame.fill', true, 24)],
-    ];
-    return (
-      <VStack alignment="leading" spacing={2} modifiers={[containerBackground(night, 'widget'), fill, padding({ all: 10 })]}>
-        <Text modifiers={[font({ size: 10, weight: 'semibold' }), foregroundStyle(cream)]}>
-          {`TEST v4 · ${altars.length} altars · art ${art ? 'yes' : 'no'} · ${altar.scene?.length ?? 'no'} objects · frames ${altar.frames ? 'yes' : 'no'}`}
-        </Text>
-        {rows.map(([name, make]) => {
-          let view: unknown;
-          try {
-            view = make();
-          } catch (e) {
-            view = <Text modifiers={[font({ size: 9 }), foregroundStyle('#ff8080')]}>{`ERROR ${String(e)}`}</Text>;
-          }
-          return (
-            <HStack key={name} spacing={6}>
-              <Text modifiers={[font({ size: 9 }), foregroundStyle(gold)]}>{name}</Text>
-              {view as never}
-            </HStack>
-          );
-        })}
-      </VStack>
-    );
-  }
 
   // ── Small: the altar, its name and one button ─────────────────────────
   if (family === 'systemSmall') {

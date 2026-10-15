@@ -143,6 +143,19 @@ async function preparePictures(root: string, altars: SavedAltar[]): Promise<{ pi
   return { pictures, art };
 }
 
+/** The widget's storage only holds plain values: drop nulls and undefined anywhere in the props. */
+function withoutEmpties<T>(value: T): T {
+  if (Array.isArray(value)) return value.filter((v) => v != null).map(withoutEmpties) as T;
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>)
+        .filter(([, v]) => v != null && !(typeof v === 'number' && !Number.isFinite(v)))
+        .map(([k, v]) => [k, withoutEmpties(v)]),
+    ) as T;
+  }
+  return value;
+}
+
 async function pendingActions(widget: AltarWidgetModule['default']): Promise<WidgetAction[]> {
   try {
     const timeline = await widget.getTimeline();
@@ -194,27 +207,32 @@ export function useAltarWidgetSync() {
 
       const placed = slotAltars(shown, chosen);
       const done = new Set(actions.map((a) => a.id));
-      const send = async (pictures: Map<string, string>, art: AltarWidgetArt | null) => {
+      const send = async (pictures: Map<string, string>, art?: AltarWidgetArt) => {
         const props: AltarWidgetProps = {
-          art,
           altars: placed.map((altar) => widgetAltar(altar, (path) => pictures.get(path) ?? '', new Date())),
           // Keep anything tapped while this was running, for next time.
           actions: (await pendingActions(widget)).filter((a) => !done.has(a.id)),
         };
-        widget.updateSnapshot(props);
+        if (art) props.art = art;
+        widget.updateSnapshot(withoutEmpties(props));
       };
 
       // The altars go to the widget straight away; pictures follow, so a picture
       // that can't be made never leaves the widget empty.
-      await send(new Map(), null);
-      report(0, null, placed.length);
+      let firstError: string | null = null;
+      try {
+        await send(new Map());
+      } catch (e) {
+        firstError = e instanceof Error ? e.message : String(e);
+      }
+      report(0, firstError, placed.length);
       try {
         if (!widgets.widgetsDirectory) throw new Error('the shared widget folder is unavailable');
         const { pictures, art } = await preparePictures(widgets.widgetsDirectory, placed);
         await send(pictures, art);
         report(pictures.size, null, placed.length);
       } catch (e) {
-        report(0, `Pictures: ${e instanceof Error ? e.message : String(e)}`, placed.length);
+        report(0, `${firstError ? `${firstError}; ` : ''}Pictures: ${e instanceof Error ? e.message : String(e)}`, placed.length);
       }
     };
 

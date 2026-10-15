@@ -132,8 +132,12 @@ export type AltarWidgetArt = {
 export type AltarWidgetProps = {
   /** In slot order: the first is "Altar 1" in the widget's settings. */
   altars: WidgetAltar[];
-  /** Null until the pictures are ready; the widget then draws a plain scene. */
-  art: AltarWidgetArt | null;
+  /**
+   * Left out until the pictures are ready (the widget then draws a plain scene).
+   * Never null: the widget's storage can't hold an empty value, and a single one
+   * stops the whole update being saved.
+   */
+  art?: AltarWidgetArt;
   actions: WidgetAction[];
 };
 
@@ -187,7 +191,7 @@ export const WIDGET_VIEWS: Record<WidgetSize, { w: number; h: number; focus: num
  * one that uses too much, leaving it blank), and every picture is held in full
  * while it's drawn, so they're kept small.
  */
-const SCALE = 1.25;
+const SCALE = 2;
 /** Most objects drawn on a widget; the rest (the smallest) are left out. */
 const MAX_SCENE_ITEMS = 40;
 export const HERB_OVERLAY = '../assets/altar/overlays/candle-herb-overlay.png';
@@ -263,7 +267,7 @@ export function altarPictures(altar: SavedAltar): WidgetPicture[] {
     if (overlays.herb) sizes.set(HERB_OVERLAY, Math.max(sizes.get(HERB_OVERLAY) ?? 0, displayBox(object).size * widest * SCALE));
     if (overlays.oil) sizes.set(OIL_OVERLAY, Math.max(sizes.get(OIL_OVERLAY) ?? 0, displayBox(object).size * widest * SCALE));
   }
-  for (const [path, width] of sizes) out.push({ id: path, path, width: Math.min(200, Math.max(40, Math.ceil(width))) });
+  for (const [path, width] of sizes) out.push({ id: path, path, width: Math.min(300, Math.max(48, Math.ceil(width * 1.25))) });
   return out;
 }
 
