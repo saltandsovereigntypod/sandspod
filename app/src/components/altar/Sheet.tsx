@@ -1,9 +1,12 @@
 import type { ReactNode } from 'react';
-import { KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Modal, type ModalProps, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAccessibleText, useReducedMotion } from '../../lib/accessibility/store';
 import { colors, fonts, radius, space, touch, type } from '../../theme';
+
+// Sheets open over the sideways full-screen altar too.
+const ORIENTATIONS: ModalProps['supportedOrientations'] = ['portrait', 'landscape-left', 'landscape-right'];
 
 type Props = {
   visible: boolean;
@@ -23,7 +26,7 @@ export function Sheet({ visible, title, eyebrow, onClose, children, header, size
   const reduceMotion = useReducedMotion();
   const t = useAccessibleText();
   return (
-    <Modal visible={visible} transparent animationType={reduceMotion ? 'none' : 'slide'} onRequestClose={onClose}>
+    <Modal visible={visible} transparent animationType={reduceMotion ? 'none' : 'slide'} onRequestClose={onClose} supportedOrientations={ORIENTATIONS}>
       {/* The sheet rises with the keyboard, so the field being typed in stays in view. */}
       <KeyboardAvoidingView style={styles.root} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <Pressable style={[styles.backdrop, size === 'half' && styles.backdropLight]} onPress={onClose} accessibilityRole="button" accessibilityLabel="Close" />

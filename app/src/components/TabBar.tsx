@@ -2,6 +2,7 @@ import type { ComponentProps } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { Tabs } from 'expo-router/js-tabs';
 
+import { useAltarFullScreen } from '../lib/altarFullScreen';
 import { colors, fonts } from '../theme';
 import { Icon, type IconName } from './Icon';
 
@@ -16,6 +17,8 @@ const TABS: Record<string, { label: string; icon: IconName }> = {
 };
 
 export function TabBar({ state, navigation, insets }: TabBarProps) {
+  // The full-screen altar uses the whole screen.
+  if (useAltarFullScreen()) return null;
   return (
     <View
       accessibilityRole="tablist"

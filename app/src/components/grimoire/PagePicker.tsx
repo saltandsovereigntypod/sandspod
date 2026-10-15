@@ -17,7 +17,7 @@ type Props = {
 export function PagePicker({ visible, title, pages, onChoose, onClose }: Props) {
   const sorted = [...pages].sort((a, b) => (a.title || '').localeCompare(b.title || ''));
   return (
-    <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
+    <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" supportedOrientations={['portrait', 'landscape-left', 'landscape-right']} onRequestClose={onClose}>
       <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
         <View style={styles.header}>
           <Text accessibilityRole="header" style={[type.cardTitle, styles.title]}>

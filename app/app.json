@@ -4,7 +4,7 @@
     "slug": "ashley19175",
     "scheme": "saltandsovereignty",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0c1510",
@@ -14,7 +14,8 @@
       "config": {
         "usesNonExemptEncryption": false
       },
-      "usesAppleSignIn": true
+      "usesAppleSignIn": true,
+      "requireFullScreen": true
     },
     "android": {
       "package": "com.saltandsovereignty.app",
@@ -190,7 +191,13 @@
           "microphonePermission": false
         }
       ],
-      "expo-asset"
+      "expo-asset",
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "PORTRAIT_UP"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

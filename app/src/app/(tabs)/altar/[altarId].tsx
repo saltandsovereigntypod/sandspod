@@ -1,7 +1,19 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  ActivityIndicator,
+  BackHandler,
+  Platform,
+  Pressable,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+  type LayoutChangeEvent,
+} from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AboutSheet } from '../../../components/altar/AboutSheet';
 import { AltarStage, clampViewport, type Viewport } from '../../../components/altar/AltarStage';
@@ -78,6 +90,8 @@ import { altarSummary, documentFromAltar, emptyDocument, type AltarDocument } fr
 import { useAltars } from '../../../lib/altar/store';
 import type { CabinetForm, CabinetItem } from '../../../lib/altar/types';
 import { useLibrary } from '../../../lib/library';
+import { setAltarFullScreen } from '../../../lib/altarFullScreen';
+import { canTurnScreen, turnScreen } from '../../../lib/screenOrientation';
 import { useMySettings } from '../../../lib/settings/store';
 import { tonightAltar } from '../../../lib/altar/tonight';
 import { holidayChoice, holidaysToday } from '../../../lib/holidays';
@@ -127,6 +141,11 @@ export default function AltarEditor() {
   const [crystalMode, setCrystalMode] = useState<CrystalMode | null>(null);
   const [deityMode, setDeityMode] = useState<DeityMode | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  // Full screen: the altar turned sideways to fill the phone, its tools in a drawer.
+  const [full, setFull] = useState(false);
+  const [tools, setTools] = useState(false);
+  const win = useWindowDimensions();
+  const insets = useSafeAreaInsets();
   const undo = useRef<AltarDocument[]>([]);
   const redo = useRef<AltarDocument[]>([]);
   const loadedFor = useRef<string | null>(null);
@@ -199,7 +218,30 @@ export default function AltarEditor() {
     if (doc && dirty) saveDraft(doc, sourceId);
   }, [doc, dirty, sourceId, saveDraft]);
 
-  const stageWidth = Math.min(containerWidth, MAX_STAGE_WIDTH);
+  const fullWidth = Math.floor(Math.min(win.width - insets.left - insets.right, win.height * STAGE_ASPECT));
+  const stageWidth = full ? fullWidth : Math.min(containerWidth, MAX_STAGE_WIDTH);
+
+  const enterFullScreen = (next: boolean) => {
+    setViewport({ zoom: 1, offsetX: 0, offsetY: 0 });
+    setTools(false);
+    setFull(next);
+  };
+  useEffect(() => {
+    if (!full) return;
+    setAltarFullScreen(true);
+    void turnScreen(true);
+    const back = BackHandler.addEventListener('hardwareBackPress', () => {
+      enterFullScreen(false);
+      return true;
+    });
+    return () => {
+      back.remove();
+      setAltarFullScreen(false);
+      void turnScreen(false);
+    };
+  }, [full]);
+  // Leaving the altar (another tab, or back) always comes out of full screen.
+  useFocusEffect(useCallback(() => () => setFull(false), []));
 
   // Edits go through a ref so several in one gesture frame build on each other.
   const docRef = useRef<AltarDocument | null>(null);
@@ -420,42 +462,8 @@ export default function AltarEditor() {
     router.push({ pathname: '/grimoire/edit/[pageId]', params: { pageId } });
   };
 
-  if (missing) {
-    return (
-      <SafeAreaView edges={['top']} style={styles.safe}>
-        <View style={styles.centered}>
-          <Text style={type.cardTitle}>This altar isn't here</Text>
-          <Text style={type.body}>It may have been deleted, or it's saved to another account.</Text>
-          <Button label="Back to your altars" variant="outline" onPress={() => router.back()} />
-        </View>
-      </SafeAreaView>
-    );
-  }
-
-  return (
-    <SafeAreaView edges={['top']} style={styles.safe}>
-      <View style={styles.header}>
-        <Pressable
-          onPress={() => (from === 'today' ? router.navigate('/today') : router.canGoBack() ? router.back() : router.replace('/altar'))}
-          accessibilityRole="button"
-          accessibilityLabel="Back to your altars"
-          style={styles.headerButton}
-        >
-          <Text style={styles.back}>‹</Text>
-        </Pressable>
-        <View style={styles.headerText}>
-          <Text style={type.eyebrow} numberOfLines={1}>
-            {dirty ? 'Unsaved changes' : doc?.backgroundName || 'Altar'}
-          </Text>
-          <Text accessibilityRole="header" style={styles.title} numberOfLines={1}>
-            {name}
-          </Text>
-        </View>
-        <Button label="Save" variant={dirty ? 'primary' : 'outline'} onPress={() => setSheet('save')} disabled={!doc} />
-      </View>
-
-      <View style={styles.stageWrap} onLayout={onLayout}>
-        {doc && stageWidth > 0 ? (
+  const stage =
+    doc && stageWidth > 0 ? (
           <AltarStage
             doc={doc}
             width={stageWidth}
@@ -469,21 +477,10 @@ export default function AltarEditor() {
             onGestureEnd={() => {}}
             onViewportChange={setViewport}
           />
-        ) : (
-          <View style={{ height: (containerWidth || 320) / STAGE_ASPECT, justifyContent: 'center' }}>
-            <ActivityIndicator color={colors.gold} />
-          </View>
-        )}
-      </View>
+    ) : null;
 
-      <ScrollView
-        style={styles.panel}
-        contentContainerStyle={styles.panelContent}
-        alwaysBounceHorizontal={false}
-        automaticallyAdjustKeyboardInsets
-        keyboardDismissMode="interactive"
-        keyboardShouldPersistTaps="handled"
-      >
+  const panelBody = (
+    <>
         {notice && (
           <Text style={[type.caption, styles.notice]} accessibilityLiveRegion="polite" onPress={() => setNotice(null)}>
             {notice}
@@ -565,6 +562,7 @@ export default function AltarEditor() {
               ) : null}
               <Chip label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} disabled={undo.current.length === 0} />
               <Chip label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} disabled={redo.current.length === 0} />
+              {canTurnScreen && !full ? <Chip label="Full screen" symbol="⤢" accessibilityLabel="Turn the altar sideways to fill the screen" onPress={() => enterFullScreen(true)} /> : null}
               <Chip label="Zoom in" symbol="+" onPress={() => zoomBy(1.5)} disabled={viewport.zoom >= 4} />
               <Chip label="Zoom out" symbol="−" onPress={() => zoomBy(1 / 1.5)} disabled={viewport.zoom <= 1} />
             </ChipRow>
@@ -616,10 +614,11 @@ export default function AltarEditor() {
         ) : (
           <ActivityIndicator color={colors.gold} />
         )}
-      </ScrollView>
+    </>
+  );
 
-      {doc && (
-        <>
+  const sheets = doc ? (
+    <>
           {sourceId ? (
             <WidgetSheet visible={sheet === 'widget'} altarId={sourceId} altarName={name} altars={altars} onClose={() => setSheet(null)} />
           ) : null}
@@ -831,8 +830,117 @@ export default function AltarEditor() {
             onClose={() => setSheet(null)}
             onSave={save}
           />
-        </>
-      )}
+    </>
+  ) : null;
+
+  if (full && doc) {
+    const drawerOpen = tools || selected != null;
+    const drawerWidth = Math.min(380, Math.round(win.width * 0.42)) + insets.right;
+    return (
+      <View style={styles.full}>
+        <StatusBar hidden />
+        {stage}
+        <View style={[styles.fullBar, { left: insets.left + 10, top: Math.max(insets.top, 10) }]}>
+          <Chip label="Done" symbol="✕" accessibilityLabel="Leave full screen" onPress={() => enterFullScreen(false)} />
+          <Chip label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} />
+          <Chip label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} />
+        </View>
+        {!drawerOpen ? (
+          <View style={[styles.fullBar, { right: insets.right + 10, top: Math.max(insets.top, 10) }]}>
+            <Chip label={dirty ? 'Save' : 'Saved'} symbol="✓" onPress={() => setSheet('save')} />
+            <Chip label="Cabinet" symbol="❖" accessibilityLabel="Open the cabinet" onPress={() => setSheet('cabinet')} />
+            <Chip label="Tools" symbol="☰" accessibilityLabel="Show the altar's tools" onPress={() => setTools(true)} />
+          </View>
+        ) : (
+          <View style={[styles.drawer, { width: drawerWidth, paddingRight: insets.right }]}>
+            <View style={styles.drawerHead}>
+              <Text style={type.eyebrow} numberOfLines={1}>
+                {dirty ? 'Unsaved changes' : name}
+              </Text>
+              <Pressable
+                onPress={() => {
+                  setTools(false);
+                  setSelected(null);
+                }}
+                accessibilityRole="button"
+                accessibilityLabel="Hide the tools"
+                style={styles.drawerClose}
+              >
+                <Text style={styles.drawerCloseText}>Close</Text>
+              </Pressable>
+            </View>
+            <ScrollView
+              contentContainerStyle={styles.drawerContent}
+              alwaysBounceHorizontal={false}
+              automaticallyAdjustKeyboardInsets
+              keyboardDismissMode="interactive"
+              keyboardShouldPersistTaps="handled"
+            >
+              {panelBody}
+            </ScrollView>
+          </View>
+        )}
+        {sheets}
+      </View>
+    );
+  }
+
+  if (missing) {
+    return (
+      <SafeAreaView edges={['top']} style={styles.safe}>
+        <View style={styles.centered}>
+          <Text style={type.cardTitle}>This altar isn't here</Text>
+          <Text style={type.body}>It may have been deleted, or it's saved to another account.</Text>
+          <Button label="Back to your altars" variant="outline" onPress={() => router.back()} />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <SafeAreaView edges={['top']} style={styles.safe}>
+      <View style={styles.header}>
+        <Pressable
+          onPress={() => (from === 'today' ? router.navigate('/today') : router.canGoBack() ? router.back() : router.replace('/altar'))}
+          accessibilityRole="button"
+          accessibilityLabel="Back to your altars"
+          style={styles.headerButton}
+        >
+          <Text style={styles.back}>‹</Text>
+        </Pressable>
+        <View style={styles.headerText}>
+          <Text style={type.eyebrow} numberOfLines={1}>
+            {dirty ? 'Unsaved changes' : doc?.backgroundName || 'Altar'}
+          </Text>
+          <Text accessibilityRole="header" style={styles.title} numberOfLines={1}>
+            {name}
+          </Text>
+        </View>
+        <Button label="Save" variant={dirty ? 'primary' : 'outline'} onPress={() => setSheet('save')} disabled={!doc} />
+      </View>
+
+      <View style={styles.stageWrap} onLayout={onLayout}>
+        {stage ? (
+          stage
+        ) : (
+          <View style={{ height: (containerWidth || 320) / STAGE_ASPECT, justifyContent: 'center' }}>
+            <ActivityIndicator color={colors.gold} />
+          </View>
+        )}
+      </View>
+
+      <ScrollView
+        style={styles.panel}
+        contentContainerStyle={styles.panelContent}
+        alwaysBounceHorizontal={false}
+        automaticallyAdjustKeyboardInsets
+        keyboardDismissMode="interactive"
+        keyboardShouldPersistTaps="handled"
+      >
+        {panelBody}
+      </ScrollView>
+
+      {sheets}
     </SafeAreaView>
   );
 }
@@ -1016,4 +1124,19 @@ const styles = StyleSheet.create({
   notice: { color: colors.gold, textAlign: 'center' },
   danger: { marginTop: 8 },
   centered: { flex: 1, justifyContent: 'center', padding: space.gutter, gap: 14 },
+  full: { flex: 1, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' },
+  fullBar: { position: 'absolute', flexDirection: 'row', gap: 8 },
+  drawer: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'rgba(12, 21, 16, 0.94)',
+    borderLeftWidth: 1,
+    borderLeftColor: colors.goldLine,
+  },
+  drawerHead: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingLeft: 16, paddingRight: 8, paddingTop: 6 },
+  drawerClose: { marginLeft: 'auto', minHeight: touch, minWidth: touch, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 8 },
+  drawerCloseText: { color: colors.gold, fontFamily: fonts.bodySemi, fontSize: 15 },
+  drawerContent: { paddingHorizontal: 16, paddingBottom: 24, gap: 14 },
 });
