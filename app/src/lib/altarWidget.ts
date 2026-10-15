@@ -6,8 +6,12 @@
 // real altar, which then saves and syncs as usual. Pure, so it can be tested.
 
 import { careForCrystal, crystalDecisions, crystalIntention, crystalState, deityState, recordOffering } from './altar/devotion.ts';
+import { DEFAULT_BACKGROUND } from './altar/cabinet.ts';
 import { lightAll, snuffAll } from './altar/editor.ts';
-import { apothecaryStateOf, isCandle, isLit, lightCandle, readLivingState, snuffCandle } from './altar/livingState.ts';
+import { flameLayout } from './altar/flame.ts';
+import { boxToPixels, candleLightRadius, displayBox, IMAGE_INSET, imageRatio, rotationOf, STAGE_ASPECT } from './altar/geometry.ts';
+import { stackOrder } from './altar/layers.ts';
+import { apothecaryStateOf, dressingOverlays, isCandle, isLit, lightCandle, readLivingState, snuffCandle } from './altar/livingState.ts';
 import { documentFromAltar, type AltarDocument } from './altar/snapshot.ts';
 import type { SavedAltar, SavedObject } from './altar/types.ts';
 
@@ -46,9 +50,48 @@ export type WidgetCrystal = {
   intention: string;
 };
 
+/** A rectangle in stage widths (the stage is 1 wide and 9/16 tall). */
+export type StageRect = { x: number; y: number; w: number; h: number };
+
+/** One object on the altar, drawn where the app draws it. */
+export type SceneItem = {
+  key: string;
+  /** file:// picture, or "" when it can't be shown. */
+  image: string;
+  /** The object's box (the website's 80px button), in stage widths. */
+  box: StageRect;
+  /** The picture's area inside the box, as fractions of the box. */
+  inset: { x: number; y: number };
+  rotation: number;
+  flipped: boolean;
+  candle: boolean;
+  lit: boolean;
+  /** Flame and halo, as fractions of the box (only for candles). */
+  flame?: StageRect;
+  halo?: StageRect;
+  /** The warm pool of light a lit candle casts, in stage widths (centre and radius). */
+  pool?: { x: number; y: number; r: number };
+  /** Herb and oil dressings drawn over a candle, as fractions of the box. */
+  overlays: { image: string; rect: StageRect; opacity: number }[];
+};
+
+export type WidgetSize = 'small' | 'medium' | 'large';
+
+/** How the altar fills one widget size: the stage W points wide, slid by (ox, oy). */
+export type SceneFrame = {
+  W: number;
+  ox: number;
+  oy: number;
+  /** file:// cut of the background showing just what this widget size shows, or "". */
+  background: string;
+};
+
 export type WidgetAltar = {
   id: string;
   name: string;
+  /** The altar as the app shows it, back to front. */
+  scene: SceneItem[];
+  frames: Record<WidgetSize, SceneFrame>;
   /** file:// picture of the altar's background, or "". */
   background: string;
   candles: WidgetCandle[];
@@ -73,9 +116,24 @@ export type WidgetAction = {
   at: string;
 };
 
+/** file:// pictures of the widget's own artwork (lib/altarWidgetSync). */
+export type AltarWidgetArt = {
+  flame: string;
+  halo: string;
+  pool: string;
+  scrimTop: string;
+  scrimBottom: string;
+  panel: string;
+  button: string;
+  buttonGold: string;
+  pill: string;
+};
+
 export type AltarWidgetProps = {
   /** In slot order: the first is "Altar 1" in the widget's settings. */
   altars: WidgetAltar[];
+  /** Null until the pictures are ready; the widget then draws a plain scene. */
+  art: AltarWidgetArt | null;
   actions: WidgetAction[];
 };
 
@@ -112,20 +170,144 @@ const isPresence = (object: SavedObject) => object.type === 'deity';
 const isCrystal = (object: SavedObject) => object.type === 'crystal';
 const isWorking = (object: SavedObject) => object.type === 'apothecary' || !!object.apothecaryItemId;
 
-/** The pictures the widget will want for an altar: its background and each listed object. */
-export function altarImagePaths(altar: SavedAltar): string[] {
-  const doc = documentFromAltar(altar);
-  const listed = [
-    ...doc.objects.filter(isCandle).slice(0, MAX_CANDLES),
-    ...doc.objects.filter(isPresence).slice(0, MAX_PRESENCES),
-    ...doc.objects.filter(isCrystal).slice(0, MAX_CRYSTALS),
-  ];
-  return [doc.background, ...listed.map((o) => String(o.imagePath || ''))].filter(Boolean);
+/** The stage's height in stage widths. */
+export const STAGE_HEIGHT = 1 / STAGE_ASPECT;
+
+/**
+ * The widget sizes, in points (the largest iPhones; smaller phones show a little
+ * less at the edges), and where the objects' middle sits in each, as a fraction of its height.
+ */
+export const WIDGET_VIEWS: Record<WidgetSize, { w: number; h: number; focus: number }> = {
+  small: { w: 170, h: 170, focus: 0.48 },
+  medium: { w: 364, h: 170, focus: 0.5 },
+  large: { w: 364, h: 382, focus: 0.36 },
+};
+/** Pixels a point on the widget. */
+const SCALE = 3;
+/** Most objects drawn on a widget; the rest (the smallest) are left out. */
+const MAX_SCENE_ITEMS = 40;
+export const HERB_OVERLAY = '../assets/altar/overlays/candle-herb-overlay.png';
+export const OIL_OVERLAY = '../assets/altar/overlays/candle-oil-overlay.png';
+
+const backgroundOf = (altarBackground: string | undefined) => altarBackground || DEFAULT_BACKGROUND;
+
+/** The objects the widget draws, back to front. */
+function sceneObjects(objects: SavedObject[]): { object: SavedObject; index: number }[] {
+  const ordered = stackOrder(objects).map((index) => ({ object: objects[index], index })).filter(({ object }) => !!object.imagePath);
+  if (ordered.length <= MAX_SCENE_ITEMS) return ordered;
+  const keep = new Set([...ordered].sort((a, b) => displayBox(b.object).size - displayBox(a.object).size).slice(0, MAX_SCENE_ITEMS).map((o) => o.index));
+  return ordered.filter((o) => keep.has(o.index));
 }
+
+/**
+ * How the altar fills a widget: the stage covers it, then zooms (up to twice)
+ * until the arrangement fills most of it, slid so the objects sit at `focus`.
+ */
+export function sceneFrame(boxes: StageRect[], view: { w: number; h: number; focus: number }): { W: number; ox: number; oy: number } {
+  const minX = boxes.length ? Math.min(...boxes.map((b) => b.x)) : 0;
+  const maxX = boxes.length ? Math.max(...boxes.map((b) => b.x + b.w)) : 1;
+  const minY = boxes.length ? Math.min(...boxes.map((b) => b.y)) : 0;
+  const maxY = boxes.length ? Math.max(...boxes.map((b) => b.y + b.h)) : STAGE_HEIGHT;
+  const cover = Math.max(view.w, view.h * STAGE_ASPECT);
+  const fit = Math.min((view.w * 0.72) / Math.max(0.05, maxX - minX), (view.h * 0.55) / Math.max(0.03, maxY - minY));
+  const W = Math.max(cover, Math.min(fit, cover * 2));
+  const clamp = (v: number, hi: number) => Math.max(0, Math.min(hi, v));
+  return {
+    W,
+    ox: clamp(((minX + maxX) / 2) * W - view.w / 2, W - view.w),
+    oy: clamp(((minY + maxY) / 2) * W - view.h * view.focus, W * STAGE_HEIGHT - view.h),
+  };
+}
+
+/** A picture the widget needs: a saved path, the width to make it, and for backgrounds the part to cut out (fractions of the image). */
+export type WidgetPicture = { id: string; path: string; width: number; crop?: StageRect };
+
+const backgroundId = (size: WidgetSize, path: string) => `bg-${size}:${path}`;
+
+/** The cut of the background (as the stage draws it, covering 16:9) that a widget size shows. */
+function backgroundCrop(path: string, frame: { W: number; ox: number; oy: number }, view: { w: number; h: number }): StageRect {
+  const ratio = imageRatio(path) ?? 1 / STAGE_ASPECT; // height / width
+  const H = frame.W * STAGE_HEIGHT;
+  // Drawn to cover W × H, centred.
+  const scale = Math.max(frame.W, H / ratio);
+  const drawnW = scale;
+  const drawnH = scale * ratio;
+  const left = (drawnW - frame.W) / 2 + frame.ox;
+  const top = (drawnH - H) / 2 + frame.oy;
+  return { x: left / drawnW, y: top / drawnH, w: view.w / drawnW, h: view.h / drawnH };
+}
+
+/** Every picture the widget needs for an altar, each made just big enough to stay sharp. */
+export function altarPictures(altar: SavedAltar): WidgetPicture[] {
+  const doc = documentFromAltar(altar);
+  const objects = sceneObjects(doc.objects);
+  const boxes = objects.map(({ object }) => boxRect(object));
+  const background = backgroundOf(doc.background);
+  const out: WidgetPicture[] = [];
+  let widest = 0;
+  for (const size of Object.keys(WIDGET_VIEWS) as WidgetSize[]) {
+    const view = WIDGET_VIEWS[size];
+    const frame = sceneFrame(boxes, view);
+    widest = Math.max(widest, frame.W);
+    out.push({ id: backgroundId(size, background), path: background, width: view.w * SCALE, crop: backgroundCrop(background, frame, view) });
+  }
+  const sizes = new Map<string, number>();
+  for (const { object } of objects) {
+    const path = String(object.imagePath);
+    sizes.set(path, Math.max(sizes.get(path) ?? 0, displayBox(object).size * widest * SCALE));
+    const overlays = dressingOverlays(object);
+    if (overlays.herb) sizes.set(HERB_OVERLAY, Math.max(sizes.get(HERB_OVERLAY) ?? 0, displayBox(object).size * widest * SCALE));
+    if (overlays.oil) sizes.set(OIL_OVERLAY, Math.max(sizes.get(OIL_OVERLAY) ?? 0, displayBox(object).size * widest * SCALE));
+  }
+  for (const [path, width] of sizes) out.push({ id: path, path, width: Math.min(480, Math.max(48, Math.ceil(width))) });
+  return out;
+}
+
+function boxRect(object: SavedObject): StageRect {
+  const px = boxToPixels(displayBox(object), 1);
+  return { x: px.left, y: px.top, w: px.width, h: px.height };
+}
+
+/** Where each object sits, as the app's altar stage draws it (AltarStage). */
+export function altarScene(objects: SavedObject[], image: (path: string) => string): SceneItem[] {
+  return sceneObjects(objects).map(({ object, index }) => {
+    const box = displayBox(object);
+    const px = boxToPixels(box, 1);
+    const candle = isCandle(object);
+    const lit = candle && isLit(object);
+    const item: SceneItem = {
+      key: objectKey(object, index),
+      image: image(String(object.imagePath)),
+      box: { x: px.left, y: px.top, w: px.width, h: px.height },
+      inset: { x: IMAGE_INSET.x, y: (IMAGE_INSET.y * px.width) / px.height },
+      rotation: rotationOf(object),
+      flipped: object.flipped === 'true',
+      candle,
+      lit,
+      overlays: [],
+    };
+    if (candle) {
+      const flame = flameLayout(object.imagePath, imageRatio(String(object.imagePath)));
+      item.flame = { x: (flame.centerX - 5) / 100, y: flame.flameTop / 100, w: 0.1, h: flame.flameHeight / 100 };
+      item.halo = { x: (flame.centerX - 4) / 100, y: flame.haloTop / 100, w: 0.08, h: flame.haloHeight / 100 };
+      // As LightPools: a little below the top of the (rotated) candle's bounds.
+      const angle = (item.rotation * Math.PI) / 180;
+      const boundsHeight = px.width * Math.abs(Math.sin(angle)) + px.height * Math.abs(Math.cos(angle));
+      item.pool = { x: px.centerX, y: px.centerY - boundsHeight / 2 + boundsHeight * 0.1, r: candleLightRadius(box.size) };
+      const dressed = dressingOverlays(object);
+      if (dressed.herb) item.overlays.push({ image: image(HERB_OVERLAY), rect: { x: -0.01, y: 0.08, w: 1, h: 0.8 }, opacity: 1 });
+      if (dressed.oil) item.overlays.push({ image: image(OIL_OVERLAY), rect: { x: 0, y: 0.11, w: 0.94, h: 0.7 }, opacity: 0.55 });
+    }
+    return item;
+  });
+}
+
+
 
 /** What the widget shows for one altar. `image` turns a saved picture path into a file the widget can read. */
 export function widgetAltar(altar: SavedAltar, image: (path: string) => string, now: Date): WidgetAltar {
   const doc = documentFromAltar(altar);
+  const scene = altarScene(doc.objects, image);
   const iso = now.toISOString();
   const keyed = doc.objects.map((object, index) => ({ object, key: objectKey(object, index) }));
   const candles = keyed.filter(({ object }) => isCandle(object));
@@ -134,7 +316,14 @@ export function widgetAltar(altar: SavedAltar, image: (path: string) => string, 
   return {
     id: altar.id,
     name: altar.name || 'My altar',
-    background: doc.background ? image(doc.background) : '',
+    background: image(backgroundOf(doc.background)),
+    scene,
+    frames: Object.fromEntries(
+      (Object.keys(WIDGET_VIEWS) as WidgetSize[]).map((size) => [
+        size,
+        { ...sceneFrame(scene.map((item) => item.box), WIDGET_VIEWS[size]), background: image(backgroundId(size, backgroundOf(doc.background))) },
+      ]),
+    ) as Record<WidgetSize, SceneFrame>,
     candles: candles.slice(0, MAX_CANDLES).map(({ object, key }) => ({
       key,
       label: label(object, 'Candle'),

@@ -5,7 +5,8 @@ import { offeringsOf } from '../src/lib/altar/devotion.ts';
 import { isLit, readLivingState } from '../src/lib/altar/livingState.ts';
 import { documentFromAltar } from '../src/lib/altar/snapshot.ts';
 import type { SavedAltar } from '../src/lib/altar/types.ts';
-import { applyWidgetActions, chooseSlot, slotAltars, widgetAltar, type WidgetAction } from '../src/lib/altarWidget.ts';
+import { boxToPixels, displayBox } from '../src/lib/altar/geometry.ts';
+import { altarPictures, applyWidgetActions, chooseSlot, slotAltars, WIDGET_VIEWS, widgetAltar, type WidgetAction } from '../src/lib/altarWidget.ts';
 
 const altar = (id: string, updatedAt: string, objects: SavedAltar['objects'] = []): SavedAltar => ({
   id,
@@ -83,4 +84,34 @@ test('snuffing one candle records its burn and leaves the other alone', () => {
   assert.equal(red, documentFromAltar(hearth).objects[0]);
   // Snuffing what's already out changes nothing at all.
   assert.deepEqual(applyWidgetActions([hearth], [{ id: '2', altarId: 'hearth', kind: 'snuff', key: 'c1', at }], at), []);
+});
+
+test('the scene draws each object where the app does, back to front', () => {
+  const shown = widgetAltar(hearth, (path) => `file:///w/${path.split('/').pop()}`, new Date('2026-10-15T20:00:00Z'));
+  // Only objects with a picture are drawn.
+  assert.deepEqual(shown.scene.map((s) => s.key), ['c1']);
+  const red = shown.scene[0];
+  assert.equal(red.candle, true);
+  assert.equal(red.lit, false);
+  assert.ok(red.flame && red.halo && red.pool);
+  assert.equal(red.image, 'file:///w/red-candle.png');
+  const box = boxToPixels(displayBox(hearth.objects![0]), 1);
+  assert.deepEqual(red.box, { x: box.left, y: box.top, w: box.width, h: box.height });
+  for (const size of ['small', 'medium', 'large'] as const) {
+    const frame = shown.frames[size];
+    assert.ok(frame.W >= WIDGET_VIEWS[size].w, size);
+    assert.ok(frame.ox >= 0 && frame.oy >= 0, size);
+    assert.match(frame.background, /^file:\/\/\/w\//);
+  }
+});
+
+test('pictures: a cut of the background per widget size, objects sized to show sharply', () => {
+  const pictures = altarPictures(hearth);
+  const cuts = pictures.filter((p) => p.crop);
+  assert.equal(cuts.length, 3);
+  for (const cut of cuts) {
+    assert.ok(cut.crop!.x >= 0 && cut.crop!.y >= 0 && cut.crop!.x + cut.crop!.w <= 1.0001 && cut.crop!.y + cut.crop!.h <= 1.0001, JSON.stringify(cut.crop));
+  }
+  assert.ok(pictures.every((p) => p.width >= 48 && p.width <= 1092));
+  assert.ok(pictures.some((p) => p.path.endsWith('red-candle.png')));
 });

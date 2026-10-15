@@ -6,7 +6,7 @@
 
 import { Asset } from 'expo-asset';
 import { Directory, File, Paths } from 'expo-file-system';
-import { ImageManipulator, SaveFormat } from 'expo-image-manipulator';
+import { ImageManipulator, SaveFormat, type ImageRef } from 'expo-image-manipulator';
 import { useEffect, useRef } from 'react';
 import { AppState } from 'react-native';
 
@@ -14,7 +14,7 @@ import { altarImageSource } from './altar/assets';
 import { altarDataFromDocument } from './altar/snapshot';
 import { useAltars } from './altar/store';
 import type { SavedAltar } from './altar/types';
-import { altarImagePaths, applyWidgetActions, slotAltars, widgetAltar, type AltarWidgetProps, type WidgetAction } from './altarWidget';
+import { altarPictures, applyWidgetActions, slotAltars, widgetAltar, type AltarWidgetArt, type AltarWidgetProps, type WidgetAction } from './altarWidget';
 import { reportAltarWidgetSync, useAltarWidgetSlots } from './altarWidgetSlots';
 
 type WidgetsModule = typeof import('expo-widgets');
@@ -60,40 +60,77 @@ async function localUri(path: string): Promise<string | null> {
   return uri;
 }
 
+/** The widget's own artwork: flames, light and the shading behind its words and buttons. */
+const WIDGET_ART: Record<keyof AltarWidgetArt, number> = {
+  flame: require('../../assets/widget/flame.png'),
+  halo: require('../../assets/widget/halo.png'),
+  pool: require('../../assets/widget/pool.png'),
+  scrimTop: require('../../assets/widget/scrim-top.png'),
+  scrimBottom: require('../../assets/widget/scrim-bottom.png'),
+  panel: require('../../assets/widget/panel.png'),
+  button: require('../../assets/widget/button.png'),
+  buttonGold: require('../../assets/widget/button-gold.png'),
+  pill: require('../../assets/widget/pill.png'),
+};
+
 /**
- * Small copies of the pictures in the folder the widget can read. iOS leaves a
- * widget blank if any picture in it has more pixels than the widget itself, so
- * the background stays well under a small widget's size and objects are thumbnails.
- * Made once and kept; ones no longer shown are cleared away.
+ * Copies of the pictures in the folder the widget can read, each made just big
+ * enough for its size on the widget (iOS refuses pictures far bigger than the
+ * widget). Made once and kept; ones no longer shown are cleared away.
  */
-async function preparePictures(root: string, altars: SavedAltar[]): Promise<Map<string, string>> {
+async function preparePictures(root: string, altars: SavedAltar[]): Promise<{ pictures: Map<string, string>; art: AltarWidgetArt }> {
   const dir = new Directory(root, 'altar');
   if (!dir.exists) dir.create({ intermediates: true, idempotent: true });
-  const out = new Map<string, string>();
+  const pictures = new Map<string, string>();
+  const keep = new Set<string>();
+
+  const art = {} as AltarWidgetArt;
+  for (const [name, module] of Object.entries(WIDGET_ART) as [keyof AltarWidgetArt, number][]) {
+    const file = new File(dir, `art-${name}.png`);
+    keep.add(file.name);
+    try {
+      if (!file.exists) {
+        const asset = Asset.fromModule(module);
+        await asset.downloadAsync();
+        new File(asset.localUri ?? asset.uri).copy(file);
+      }
+      art[name] = file.uri;
+    } catch {
+      art[name] = '';
+    }
+  }
+
   for (const altar of altars) {
-    const paths = altarImagePaths(altar);
-    for (const [i, path] of paths.entries()) {
-      if (out.has(path)) continue;
-      const isBackground = i === 0 && path === altar.background;
-      const name = `${hash(path)}${isBackground ? '-bg480.jpg' : '-96.png'}`;
+    for (const { id, path, width, crop } of altarPictures(altar)) {
+      if (pictures.has(id)) continue;
+      const isBackground = !!crop;
+      const name = `${hash(`${id}|${crop ? [crop.x, crop.y, crop.w, crop.h].map((v) => v.toFixed(4)).join(',') : ''}`)}-${width}${isBackground ? '.jpg' : '.png'}`;
       const file = new File(dir, name);
       try {
         if (!file.exists) {
           const uri = await localUri(path);
           if (!uri) continue;
-          const image = await ImageManipulator.manipulate(uri)
-            .resize({ width: isBackground ? 480 : 96 })
-            .renderAsync();
-          const saved = await image.saveAsync(isBackground ? { format: SaveFormat.JPEG, compress: 0.8 } : { format: SaveFormat.PNG });
+          let source: string | ImageRef = uri;
+          if (crop) {
+            // Cut out just what this widget size shows (in the picture's own pixels).
+            const full = await ImageManipulator.manipulate(uri).renderAsync();
+            const x = Math.max(0, Math.round(crop.x * full.width));
+            const y = Math.max(0, Math.round(crop.y * full.height));
+            const w = Math.min(full.width - x, Math.round(crop.w * full.width));
+            const h = Math.min(full.height - y, Math.round(crop.h * full.height));
+            source = await ImageManipulator.manipulate(full).crop({ originX: x, originY: y, width: w, height: h }).renderAsync();
+          }
+          const image = await ImageManipulator.manipulate(source).resize({ width }).renderAsync();
+          const saved = await image.saveAsync(isBackground ? { format: SaveFormat.JPEG, compress: 0.85 } : { format: SaveFormat.PNG });
           new File(saved.uri).move(file);
         }
-        out.set(path, file.uri);
+        pictures.set(id, file.uri);
+        keep.add(file.name);
       } catch {
-        // A picture that can't be made just leaves its symbol in the widget.
+        // A picture that can't be made is simply left out of the scene.
       }
     }
   }
-  const keep = new Set([...out.values()].map((uri) => uri.split('/').pop()));
   for (const entry of dir.list()) {
     if (entry instanceof File && !keep.has(entry.name)) {
       try {
@@ -103,7 +140,7 @@ async function preparePictures(root: string, altars: SavedAltar[]): Promise<Map<
       }
     }
   }
-  return out;
+  return { pictures, art };
 }
 
 async function pendingActions(widget: AltarWidgetModule['default']): Promise<WidgetAction[]> {
@@ -157,8 +194,9 @@ export function useAltarWidgetSync() {
 
       const placed = slotAltars(shown, chosen);
       const done = new Set(actions.map((a) => a.id));
-      const send = async (pictures: Map<string, string>) => {
+      const send = async (pictures: Map<string, string>, art: AltarWidgetArt | null) => {
         const props: AltarWidgetProps = {
+          art,
           altars: placed.map((altar) => widgetAltar(altar, (path) => pictures.get(path) ?? '', new Date())),
           // Keep anything tapped while this was running, for next time.
           actions: (await pendingActions(widget)).filter((a) => !done.has(a.id)),
@@ -168,12 +206,12 @@ export function useAltarWidgetSync() {
 
       // The altars go to the widget straight away; pictures follow, so a picture
       // that can't be made never leaves the widget empty.
-      await send(new Map());
+      await send(new Map(), null);
       report(0, null, placed.length);
       try {
         if (!widgets.widgetsDirectory) throw new Error('the shared widget folder is unavailable');
-        const pictures = await preparePictures(widgets.widgetsDirectory, placed);
-        await send(pictures);
+        const { pictures, art } = await preparePictures(widgets.widgetsDirectory, placed);
+        await send(pictures, art);
         report(pictures.size, null, placed.length);
       } catch (e) {
         report(0, `Pictures: ${e instanceof Error ? e.message : String(e)}`, placed.length);
