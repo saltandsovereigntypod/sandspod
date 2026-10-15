@@ -240,3 +240,62 @@ export function setPresenceReason(object: SavedObject, reason: string, notes: st
   };
   return writeLivingState(object, { ...state, lastUsedAt: now, deity }, now);
 }
+
+// ─── What the home screen widget does ────────────────────────────────────
+// Each presence can keep the offering its widget button makes, and each
+// crystal the cleansing; set in the app, stored with the object's state (the
+// app's own addition; the website keeps it untouched).
+
+/** The offering the widget's Offer button records for this presence. */
+export type DefaultOffering = { types: string[]; supports: Support[]; customItems: string; intention: string; message: string };
+
+/** The cleansing the widget's Cleanse button records for this crystal. */
+export type DefaultCleansing = { purpose: string; methods: string[]; supports: Support[]; notes: string };
+
+const asDefaultOffering = (raw: unknown): DefaultOffering | null => {
+  if (!raw || typeof raw !== 'object') return null;
+  const r = raw as Rec;
+  const value: DefaultOffering = {
+    types: Array.isArray(r.types) ? (r.types as unknown[]).filter((t): t is string => typeof t === 'string') : [],
+    supports: list(r.supports).filter((s) => typeof s.label === 'string') as unknown as Support[],
+    customItems: str(r.customItems),
+    intention: str(r.intention),
+    message: str(r.message),
+  };
+  return value.types.length || value.supports.length || value.customItems || value.intention || value.message ? value : null;
+};
+
+export const defaultOfferingOf = (object: SavedObject, now: string) => asDefaultOffering(deityState(object, now).widgetOffering);
+
+export function setDefaultOffering(object: SavedObject, value: DefaultOffering | null, now: string): SavedObject {
+  const state = readLivingState(object, now);
+  const deity = { ...(state.deity as Rec), widgetOffering: value ? asDefaultOffering(value) : null };
+  return writeLivingState(object, { ...state, deity }, now);
+}
+
+const asDefaultCleansing = (raw: unknown): DefaultCleansing | null => {
+  if (!raw || typeof raw !== 'object') return null;
+  const r = raw as Rec;
+  const methods = Array.isArray(r.methods) ? (r.methods as unknown[]).filter((m): m is string => typeof m === 'string') : [];
+  if (!methods.length) return null;
+  return { purpose: str(r.purpose) || 'Routine care', methods, supports: list(r.supports).filter((s) => typeof s.label === 'string') as unknown as Support[], notes: str(r.notes) };
+};
+
+export const defaultCleansingOf = (object: SavedObject, now: string) => asDefaultCleansing(crystalState(object, now).widgetCleansing);
+
+export function setDefaultCleansing(object: SavedObject, value: DefaultCleansing | null, now: string): SavedObject {
+  const state = readLivingState(object, now);
+  const crystal = { ...(state.crystal as Rec), widgetCleansing: value ? asDefaultCleansing(value) : null };
+  return writeLivingState(object, { ...state, crystal }, now);
+}
+
+/** "Wine, rosemary" or "Incense · gratitude": a few words for what the default is. */
+export function defaultOfferingSummary(value: DefaultOffering | null): string {
+  if (!value) return '';
+  const items = [...value.supports.map((s) => s.label), ...value.customItems.split(',').map((v) => v.trim()).filter(Boolean)];
+  return (items.length ? items : value.types).join(', ') || value.intention;
+}
+
+export function defaultCleansingSummary(value: DefaultCleansing | null): string {
+  return value ? value.methods.join(', ') : '';
+}

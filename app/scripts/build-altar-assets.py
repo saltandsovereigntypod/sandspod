@@ -29,7 +29,8 @@ for path in sorted(SRC.rglob("*")):
     if rel in SKIP:
         continue
     is_background = rel.startswith("backgrounds/")
-    limit = 1600 if is_background else 512
+    # Objects at 1024px stay sharp on 3x screens, even zoomed in on the altar.
+    limit = 1600 if is_background else 1024
     image = Image.open(path)
     original_size = image.size
     image.thumbnail((limit, limit), Image.LANCZOS)
@@ -38,7 +39,7 @@ for path in sorted(SRC.rglob("*")):
     if is_background:
         image.convert("RGB").save(target, "WEBP", quality=78, method=4)
     else:
-        image.save(target, "WEBP", quality=82, method=4)
+        image.save(target, "WEBP", quality=85, method=4)
     entries.append((f"assets/altar/{rel}", target.relative_to(APP).as_posix(), original_size))
 
 lines = [

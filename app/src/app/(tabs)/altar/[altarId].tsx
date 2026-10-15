@@ -10,13 +10,14 @@ import { CarveSheet } from '../../../components/altar/CarveSheet';
 import { GroupGrimoireSheet, GroupSheet, RenameSheet } from '../../../components/altar/ArrangeSheets';
 import { PracticeSheet } from '../../../components/altar/PracticeSheet';
 import { CrystalSheet, DeitySheet, type CrystalMode, type DeityMode } from '../../../components/altar/DevotionSheets';
-import { careForCrystal, dedicateCrystal, recordOffering, setPresenceReason, updateOffering } from '../../../lib/altar/devotion';
+import { careForCrystal, dedicateCrystal, recordOffering, setDefaultCleansing, setDefaultOffering, setPresenceReason, updateOffering } from '../../../lib/altar/devotion';
 import { CustomItemSheet } from '../../../components/altar/CustomItemSheet';
 import { ApothecaryEditor, ApothecarySheet, type ApothecaryTarget, type SavedWorking } from '../../../components/altar/Apothecary';
 import { TendSheet } from '../../../components/altar/TendSheet';
 import { saveTendingBlend, useWorkshop } from '../../../lib/altar/workshop';
 import { newId } from '../../../lib/altar/uid';
 import { Chip, ChipRow } from '../../../components/altar/Chip';
+import { WidgetSheet } from '../../../components/altar/WidgetSheet';
 import { BackgroundSheet, DressSheet, LayersSheet, SaveSheet } from '../../../components/altar/OptionSheets';
 import { Button } from '../../../components/Button';
 import { burnDuration, burnedSoFar, dressingNames, glanceLine, resolveAltarEntry } from '../../../lib/altar/companion';
@@ -71,7 +72,7 @@ import {
   type PracticeActivity,
   type TendInput,
 } from '../../../lib/altar/instances';
-import { altarRitualItem, groupAltarItems } from '../../../lib/grimoire/altarImport';
+import { altarRitualItem, groupAltarItems, type WorkingDetails } from '../../../lib/grimoire/altarImport';
 import { useGrimoire } from '../../../lib/grimoire/store';
 import { altarSummary, documentFromAltar, emptyDocument, type AltarDocument } from '../../../lib/altar/snapshot';
 import { useAltars } from '../../../lib/altar/store';
@@ -97,6 +98,7 @@ type SheetName =
   | 'layers'
   | 'dress'
   | 'save'
+  | 'widget'
   | null;
 
 const nowIso = () => new Date().toISOString();
@@ -174,6 +176,22 @@ export default function AltarEditor() {
   }, [altarId, altars, backgrounds, draft, draftSourceId, status, settings]);
 
   const dirty = !!doc && doc !== baseline;
+
+  // Candles lit and offerings made from the home screen widget reach an open
+  // altar that has no unsaved changes of its own.
+  const saved = sourceId && altarId !== 'draft' ? altars.find((a) => a.id === sourceId) : undefined;
+  const seenSaved = useRef(saved);
+  useEffect(() => {
+    if (!saved || saved === seenSaved.current) return;
+    seenSaved.current = saved;
+    if (dirty) return;
+    const fresh = prepareDocument(documentFromAltar(saved), nowIso());
+    if (JSON.stringify(fresh.objects) === JSON.stringify(doc?.objects)) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the saved altar is outside state; this follows it
+    setDoc(fresh);
+    setBaseline(fresh);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only when the saved altar itself changes
+  }, [saved]);
 
   // Keep a working draft like the website, so nothing is lost if you leave.
   const { saveDraft } = store;
@@ -391,9 +409,9 @@ export default function AltarEditor() {
     [doc, selectedObject],
   );
   const grimoireTitle = doc && selectedObject ? groupName(doc, selectedObject) : name;
-  const createRitualPage = (purpose: string, title: string) => {
+  const createRitualPage = (details: WorkingDetails, title: string) => {
     if (!doc || !groupItems.length) return;
-    const pageId = grimoire.actions.createRitualFromAltar({ title: title || grimoireTitle, purpose, items: groupItems });
+    const pageId = grimoire.actions.createRitualFromAltar({ title: title || grimoireTitle, purpose: details, items: groupItems });
     setSheet(null);
     if (!pageId) {
       setNotice('Your Grimoire hasn’t loaded yet. Open it once while online, then try again.');
@@ -458,7 +476,14 @@ export default function AltarEditor() {
         )}
       </View>
 
-      <ScrollView style={styles.panel} contentContainerStyle={styles.panelContent} alwaysBounceHorizontal={false}>
+      <ScrollView
+        style={styles.panel}
+        contentContainerStyle={styles.panelContent}
+        alwaysBounceHorizontal={false}
+        automaticallyAdjustKeyboardInsets
+        keyboardDismissMode="interactive"
+        keyboardShouldPersistTaps="handled"
+      >
         {notice && (
           <Text style={[type.caption, styles.notice]} accessibilityLiveRegion="polite" onPress={() => setNotice(null)}>
             {notice}
@@ -525,6 +550,19 @@ export default function AltarEditor() {
                 onPress={() => setSheet('grimoire')}
                 disabled={doc.objects.length === 0}
               />
+              {Platform.OS === 'ios' ? (
+                <Chip
+                  label="Home screen"
+                  symbol="▣"
+                  accessibilityLabel="Put this altar on your home screen"
+                  onPress={() => {
+                    if (sourceId) return setSheet('widget');
+                    // Only saved altars can go on the home screen.
+                    setNotice('Save this altar first, then tap Home screen again to choose its place on your home screen.');
+                    setSheet('save');
+                  }}
+                />
+              ) : null}
               <Chip label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} disabled={undo.current.length === 0} />
               <Chip label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} disabled={redo.current.length === 0} />
               <Chip label="Zoom in" symbol="+" onPress={() => zoomBy(1.5)} disabled={viewport.zoom >= 4} />
@@ -582,6 +620,9 @@ export default function AltarEditor() {
 
       {doc && (
         <>
+          {sourceId ? (
+            <WidgetSheet visible={sheet === 'widget'} altarId={sourceId} altarName={name} altars={altars} onClose={() => setSheet(null)} />
+          ) : null}
           <AboutSheet
             visible={sheet === 'about'}
             object={selectedObject}
@@ -641,6 +682,7 @@ export default function AltarEditor() {
             items={groupAltarItems(groupItems)}
             sectionTitle={grimoire.openSection?.title ?? null}
             signedIn={signedIn}
+            defaults={workingDefaults()}
             onClose={() => setSheet(null)}
             onCreate={createRitualPage}
           />
@@ -666,6 +708,11 @@ export default function AltarEditor() {
               setCrystalMode(null);
               setNotice('Dedication saved.');
             }}
+            onDefaultCleansing={(index, value) => {
+              commit((d) => updateObjects(d, [index], (o) => setDefaultCleansing(o, value, nowIso())));
+              setCrystalMode(null);
+              setNotice(value ? 'Widget cleansing saved. Save the altar to use it on your home screen.' : 'Widget cleansing cleared.');
+            }}
           />
           <DeitySheet
             mode={deityMode}
@@ -685,6 +732,11 @@ export default function AltarEditor() {
             onReason={(index, reason, notes) => {
               commit((d) => updateObjects(d, [index], (o) => setPresenceReason(o, reason, notes, nowIso())));
               setDeityMode(null);
+            }}
+            onDefaultOffering={(index, value) => {
+              commit((d) => updateObjects(d, [index], (o) => setDefaultOffering(o, value, nowIso())));
+              setDeityMode(null);
+              setNotice(value ? 'Widget offering saved. Save the altar to use it on your home screen.' : 'Widget offering cleared.');
             }}
           />
           <RenameSheet
@@ -882,12 +934,14 @@ function ObjectPanel({
           <Chip label="Cleanse" symbol="☾" onPress={() => act.crystal('cleanse')} />
           <Chip label="Charge" symbol="✦" onPress={() => act.crystal('charge')} />
           <Chip label="Dedicate" symbol="♡" onPress={() => act.crystal('dedicate')} />
+          {Platform.OS === 'ios' && <Chip label="Widget cleansing" symbol="▣" onPress={() => act.crystal('widget')} />}
         </ChipRow>
       )}
       {object.type === 'deity' && (
         <ChipRow>
           <Chip label="Offering" symbol="❀" onPress={() => act.deity('offering')} />
           <Chip label="Reason for presence" symbol="☉" onPress={() => act.deity('reason')} />
+          {Platform.OS === 'ios' && <Chip label="Widget offering" symbol="▣" onPress={() => act.deity('widget')} />}
         </ChipRow>
       )}
 
@@ -938,6 +992,12 @@ function ObjectPanel({
       </ChipRow>
     </View>
   );
+}
+
+
+/** A recorded working starts with tonight's moon phase and the day filled in. */
+function workingDefaults(now = new Date()): WorkingDetails {
+  return { moonPhase: moonState(now).name, day: now.toLocaleDateString(undefined, { weekday: 'long' }) };
 }
 
 const styles = StyleSheet.create({

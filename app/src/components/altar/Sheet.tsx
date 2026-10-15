@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAccessibleText, useReducedMotion } from '../../lib/accessibility/store';
@@ -24,7 +24,8 @@ export function Sheet({ visible, title, eyebrow, onClose, children, header, size
   const t = useAccessibleText();
   return (
     <Modal visible={visible} transparent animationType={reduceMotion ? 'none' : 'slide'} onRequestClose={onClose}>
-      <View style={styles.root}>
+      {/* The sheet rises with the keyboard, so the field being typed in stays in view. */}
+      <KeyboardAvoidingView style={styles.root} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <Pressable style={[styles.backdrop, size === 'half' && styles.backdropLight]} onPress={onClose} accessibilityRole="button" accessibilityLabel="Close" />
         <View style={[styles.card, size === 'half' && styles.cardHalf, { paddingBottom: Math.max(insets.bottom, 16) }]} accessibilityViewIsModal>
           <View style={styles.head}>
@@ -49,11 +50,12 @@ export function Sheet({ visible, title, eyebrow, onClose, children, header, size
             contentContainerStyle={styles.content}
             alwaysBounceHorizontal={false}
             keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="interactive"
           >
             {children}
           </ScrollView>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }

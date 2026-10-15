@@ -63,6 +63,8 @@ export function MoreScreen({
         refreshControl={refreshControl}
         alwaysBounceHorizontal={false}
         keyboardShouldPersistTaps="handled"
+        automaticallyAdjustKeyboardInsets
+        keyboardDismissMode="interactive"
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.titleBlock}>

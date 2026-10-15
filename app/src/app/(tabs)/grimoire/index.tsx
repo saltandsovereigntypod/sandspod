@@ -261,7 +261,14 @@ function PageRowView({ page, mundane, last }: { page: PageRow; mundane: boolean;
 function Shell({ children, refreshControl }: { children: React.ReactNode; refreshControl?: React.ReactElement<React.ComponentProps<typeof RefreshControl>> }) {
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
-      <ScrollView contentContainerStyle={styles.content} refreshControl={refreshControl} alwaysBounceHorizontal={false}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        refreshControl={refreshControl}
+        alwaysBounceHorizontal={false}
+        automaticallyAdjustKeyboardInsets
+        keyboardDismissMode="interactive"
+        keyboardShouldPersistTaps="handled"
+      >
         {children}
       </ScrollView>
     </SafeAreaView>

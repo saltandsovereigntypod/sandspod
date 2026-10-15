@@ -44,7 +44,7 @@ export default function DeleteAccount() {
   }
 
   const recent = isRecentSignIn(user);
-  const ready = ACCOUNT_DELETION_ENABLED && backedUp && recent && deletePhraseMatches(phrase);
+  const ready = ACCOUNT_DELETION_ENABLED && recent && deletePhraseMatches(phrase);
 
   const backup = async () => {
     setBusy(true);
@@ -94,7 +94,8 @@ export default function DeleteAccount() {
         </Card>
       )}
 
-      <Section label="1 · Save a complete backup">
+      <Section label="1 · Save a backup (optional)">
+        <Text style={type.caption}>Everything below is deleted for good. If you might want it later, save a copy first.</Text>
         <Button
           label={backedUp ? 'Backup saved ✓' : 'Save complete backup'}
           variant={backedUp ? 'outline' : 'primary'}
