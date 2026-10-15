@@ -182,8 +182,12 @@ export const WIDGET_VIEWS: Record<WidgetSize, { w: number; h: number; focus: num
   medium: { w: 364, h: 170, focus: 0.5 },
   large: { w: 364, h: 382, focus: 0.36 },
 };
-/** Pixels a point on the widget. */
-const SCALE = 3;
+/**
+ * Pixels a point for the pictures. iOS refuses (leaving the widget blank) any
+ * picture with more pixels than the widget itself, so this stays well under a
+ * 3× screen's widget size, which keeps them inside the limit on smaller iPhones too.
+ */
+const SCALE = 2;
 /** Most objects drawn on a widget; the rest (the smallest) are left out. */
 const MAX_SCENE_ITEMS = 40;
 export const HERB_OVERLAY = '../assets/altar/overlays/candle-herb-overlay.png';
@@ -259,7 +263,7 @@ export function altarPictures(altar: SavedAltar): WidgetPicture[] {
     if (overlays.herb) sizes.set(HERB_OVERLAY, Math.max(sizes.get(HERB_OVERLAY) ?? 0, displayBox(object).size * widest * SCALE));
     if (overlays.oil) sizes.set(OIL_OVERLAY, Math.max(sizes.get(OIL_OVERLAY) ?? 0, displayBox(object).size * widest * SCALE));
   }
-  for (const [path, width] of sizes) out.push({ id: path, path, width: Math.min(480, Math.max(48, Math.ceil(width))) });
+  for (const [path, width] of sizes) out.push({ id: path, path, width: Math.min(360, Math.max(48, Math.ceil(width * 1.25))) });
   return out;
 }
 
