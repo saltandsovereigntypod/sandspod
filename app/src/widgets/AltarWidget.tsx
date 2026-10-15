@@ -272,14 +272,15 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
   );
 
   // The altar's name, small and quiet so the altar itself leads.
-  const title = (size: number) => (
+  // Over the picture it gets a soft shadow to read; on the panel it needs none.
+  const title = (size: number, onPanel = false) => (
     <Text
       modifiers={[
         font({ size, weight: 'medium', design: 'serif' }),
         foregroundStyle(cream),
         opacity(0.85),
         lineLimit(1),
-        shadow({ radius: 3, x: 0, y: 1, color: '#000000' }),
+        onPanel ? padding({ bottom: 4 }) : shadow({ radius: 3, x: 0, y: 1, color: '#000000' }),
       ]}
     >
       {altar.name}
@@ -356,10 +357,11 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
         {/* A dark panel under everything, a picture so it's the same on tinted home screens. */}
         {art ? <Image uiImage={art.panel} modifiers={[resizable(), fill, own]} /> : null}
       {scene('large', 364, 382)}
-      {scrims(52, 150)}
+      {scrims(0, 150)}
       <VStack alignment="leading" spacing={4} modifiers={[fill, padding({ horizontal: 20, vertical: 16 })]}>
-        {title(13)}
         <Spacer />
+        {/* The name sits with the words below the altar, so nothing covers it. */}
+        {title(10, true)}
         {total ? (
           <HStack spacing={6}>
             {status(10)}
