@@ -117,16 +117,16 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
   };
   const toggleAll = anyLit ? act('snuff', '') : act('light', '');
 
-  // "Lit for 2 hr, 3 min", "Last offering 2 days, 3 hr": a live time after a few words.
-  // The live time is given the rest of the line and starts at its left, so it
-  // neither spreads out nor pushes anything past the widget's edge.
+  // "Lit since 2:08 PM", "Last offering Oct 13, 2026": the time it happened
+  // (today) or the date, which never needs refreshing and has no seconds.
+  const today = new Date(environment.date ?? Date.now()).toDateString();
   const ago = (iso: string, prefix: string, none: string, size = 11, color = muted) =>
     iso ? (
       <HStack spacing={3}>
         <Text modifiers={[font({ size }), foregroundStyle(color), lineLimit(1)]}>{prefix}</Text>
         <Text
           date={new Date(iso)}
-          dateStyle="relative"
+          dateStyle={new Date(iso).toDateString() === today ? 'time' : 'date'}
           modifiers={[font({ size }), foregroundStyle(color), lineLimit(1), frame({ maxWidth: 10000, alignment: 'leading' })]}
         />
       </HStack>
@@ -242,9 +242,9 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
     <Button key={target} target={target} onPress={onPress} modifiers={[buttonStyle('plain')]}>
       <ZStack>
         {art ? (
-          <Image uiImage={main && art.pillGold ? art.pillGold : art.pill} modifiers={[resizable({ leading: 20, trailing: 20 }), frame({ width: 78, height: 28 }), own]} />
+          <Image uiImage={main && art.pillGold ? art.pillGold : art.pill} modifiers={[resizable({ leading: 12, trailing: 12 }), frame({ width: 62, height: 21 }), own]} />
         ) : null}
-        <Text modifiers={[font({ size: 11, weight: 'semibold' }), foregroundStyle(main ? night : gold)]}>{text}</Text>
+        <Text modifiers={[font({ size: 9.5, weight: 'semibold' }), foregroundStyle(main ? night : gold)]}>{text}</Text>
       </ZStack>
     </Button>
   );
@@ -304,12 +304,12 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
     return (
       <ZStack modifiers={[link, containerBackground(night, 'widget'), fill]}>
         {scene('small', 170, 170)}
-        {scrims(56, 64)}
+        {scrims(48, 50)}
         <VStack alignment="leading" spacing={2} modifiers={[fill, padding({ all: 14 })]}>
           {title(11)}
           <Spacer />
           <HStack alignment="bottom">
-            {status(11)}
+            {status(9.5)}
             <Spacer />
             {total ? pill('toggle-all', toggleAll, toggleText, !anyLit) : null}
           </HStack>
@@ -323,17 +323,17 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
     return (
       <ZStack modifiers={[link, containerBackground(night, 'widget'), fill]}>
         {scene('medium', 364, 170)}
-        {scrims(52, 60)}
+        {scrims(44, 48)}
         <VStack alignment="leading" spacing={2} modifiers={[fill, padding({ horizontal: 18, vertical: 14 })]}>
           {title(12)}
           <Spacer />
           <HStack alignment="bottom">
             <VStack alignment="leading" spacing={1}>
-              {status(11)}
-              {altar.presences.length ? ago(lastOffering, 'Last offering', 'No offerings yet', 10, cream) : null}
+              {status(9.5)}
+              {altar.presences.length ? ago(lastOffering, 'Last offering', 'No offerings yet', 9, cream) : null}
             </VStack>
             <Spacer />
-            {buttons(34)}
+            {buttons(26)}
           </HStack>
         </VStack>
       </ZStack>
@@ -346,24 +346,24 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
   return (
     <ZStack modifiers={[link, containerBackground(night, 'widget'), fill]}>
       {scene('large', 364, 382)}
-      {scrims(64, 210)}
-      <VStack alignment="leading" spacing={7} modifiers={[fill, padding({ horizontal: 20, vertical: 18 })]}>
+      {scrims(52, 128)}
+      <VStack alignment="leading" spacing={4} modifiers={[fill, padding({ horizontal: 20, vertical: 16 })]}>
         {title(13)}
         <Spacer />
         {total ? (
           <HStack spacing={6}>
-            {status(12)}
-            {earliest ? ago(earliest, '· lit for', '', 11, cream) : null}
+            {status(10)}
+            {earliest ? ago(earliest, '· lit since', '', 9.5, cream) : null}
             <Spacer />
             {pill('toggle-all-pill', toggleAll, toggleText, !anyLit)}
           </HStack>
         ) : null}
         {altar.presences.slice(0, 2).map((p) => (
           <HStack key={p.key} spacing={6}>
-            <Image systemName="sparkles" size={12} color={gold} modifiers={[own]} />
+            <Image systemName="sparkles" size={10} color={gold} modifiers={[own]} />
             <VStack alignment="leading" spacing={0}>
-              <Text modifiers={[font({ size: 13, design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>{p.offering ? `${p.label} · ${p.offering}` : p.label}</Text>
-              {ago(p.lastOffering, 'Last offering', 'No offerings yet', 10, cream)}
+              <Text modifiers={[font({ size: 11, design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>{p.offering ? `${p.label} · ${p.offering}` : p.label}</Text>
+              {ago(p.lastOffering, 'Last offering', 'No offerings yet', 9, cream)}
             </VStack>
             <Spacer />
             {pill(`offer-${p.key}`, act('offer', p.key), 'Offer')}
@@ -371,14 +371,14 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
         ))}
         {altar.crystals.length ? (
           <HStack spacing={6}>
-            <Image systemName="diamond.fill" size={11} color={gold} modifiers={[own]} />
+            <Image systemName="diamond.fill" size={9} color={gold} modifiers={[own]} />
             <VStack alignment="leading" spacing={0}>
-              <Text modifiers={[font({ size: 13, design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>
+              <Text modifiers={[font({ size: 11, design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>
                 {altar.crystals.length === 1
                   ? `${altar.crystals[0].label}${altar.crystals[0].cleansing ? ` · ${altar.crystals[0].cleansing}` : ''}`
                   : `${altar.crystals.length} crystals`}
               </Text>
-              {ago(lastCleansed, 'Last cleansed', 'Not cleansed yet', 10, cream)}
+              {ago(lastCleansed, 'Last cleansed', 'Not cleansed yet', 9, cream)}
             </VStack>
             <Spacer />
             {pill('cleanse-all', act('cleanse', ''), 'Cleanse')}

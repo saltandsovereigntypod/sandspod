@@ -201,7 +201,7 @@ export const WIDGET_VIEWS: Record<WidgetSize, { w: number; h: number; focus: num
   small: { w: 170, h: 170, focus: 0.48, zoom: 2 },
   medium: { w: 364, h: 170, focus: 0.5, zoom: 2 },
   // The large widget shows the altar as it is, only as big as it needs to be to fill it.
-  large: { w: 364, h: 382, focus: 0.42, zoom: 1 },
+  large: { w: 364, h: 382, focus: 0.4, zoom: 1 },
 };
 /**
  * Pixels a point for the pictures. A widget has very little memory (iOS stops
@@ -228,19 +228,28 @@ function sceneObjects(objects: SavedObject[]): { object: SavedObject; index: num
  * How the altar fills a widget: the stage covers it, then zooms (up to `zoom`
  * times) until the arrangement fills most of it, slid so the objects sit at `focus`.
  */
-export function sceneFrame(boxes: StageRect[], view: { w: number; h: number; focus: number; zoom: number }): { W: number; ox: number; oy: number } {
+export function sceneFrame(
+  boxes: StageRect[],
+  view: { w: number; h: number; focus: number; zoom: number },
+  /** The background picture's height / width; pictures taller than 16:9 let the widget show more above and below the stage. */
+  backgroundRatio: number = STAGE_HEIGHT,
+): { W: number; ox: number; oy: number } {
   const minX = boxes.length ? Math.min(...boxes.map((b) => b.x)) : 0;
   const maxX = boxes.length ? Math.max(...boxes.map((b) => b.x + b.w)) : 1;
   const minY = boxes.length ? Math.min(...boxes.map((b) => b.y)) : 0;
   const maxY = boxes.length ? Math.max(...boxes.map((b) => b.y + b.h)) : STAGE_HEIGHT;
-  const cover = Math.max(view.w, view.h * STAGE_ASPECT);
+  const ratio = Math.max(STAGE_HEIGHT, backgroundRatio || STAGE_HEIGHT);
+  // The smallest the altar can be while its background still covers the widget.
+  const cover = Math.max(view.w, view.h / ratio);
   const fit = Math.min((view.w * 0.72) / Math.max(0.05, maxX - minX), (view.h * 0.55) / Math.max(0.03, maxY - minY));
   const W = Math.max(cover, Math.min(fit, cover * view.zoom));
-  const clamp = (v: number, hi: number) => Math.max(0, Math.min(hi, v));
+  // The background reaches this far above and below the stage.
+  const extra = (W * ratio - W * STAGE_HEIGHT) / 2;
+  const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
   return {
     W,
-    ox: clamp(((minX + maxX) / 2) * W - view.w / 2, W - view.w),
-    oy: clamp(((minY + maxY) / 2) * W - view.h * view.focus, W * STAGE_HEIGHT - view.h),
+    ox: clamp(((minX + maxX) / 2) * W - view.w / 2, 0, W - view.w),
+    oy: clamp(((minY + maxY) / 2) * W - view.h * view.focus, -extra, W * STAGE_HEIGHT + extra - view.h),
   };
 }
 
@@ -259,7 +268,9 @@ function backgroundCrop(path: string, frame: { W: number; ox: number; oy: number
   const drawnH = scale * ratio;
   const left = (drawnW - frame.W) / 2 + frame.ox;
   const top = (drawnH - H) / 2 + frame.oy;
-  return { x: left / drawnW, y: top / drawnH, w: view.w / drawnW, h: view.h / drawnH };
+  const w = Math.min(1, view.w / drawnW);
+  const h = Math.min(1, view.h / drawnH);
+  return { x: Math.max(0, Math.min(1 - w, left / drawnW)), y: Math.max(0, Math.min(1 - h, top / drawnH)), w, h };
 }
 
 /** Every picture the widget needs for an altar, each made just big enough to stay sharp. */
@@ -272,7 +283,7 @@ export function altarPictures(altar: SavedAltar): WidgetPicture[] {
   let widest = 0;
   for (const size of Object.keys(WIDGET_VIEWS) as WidgetSize[]) {
     const view = WIDGET_VIEWS[size];
-    const frame = sceneFrame(boxes, view);
+    const frame = sceneFrame(boxes, view, imageRatio(background) ?? STAGE_HEIGHT);
     widest = Math.max(widest, frame.W);
     out.push({ id: backgroundId(size, background), path: background, width: view.w * SCALE, crop: backgroundCrop(background, frame, view) });
   }
@@ -346,7 +357,7 @@ export function widgetAltar(altar: SavedAltar, image: (path: string) => string, 
     frames: Object.fromEntries(
       (Object.keys(WIDGET_VIEWS) as WidgetSize[]).map((size) => [
         size,
-        { ...sceneFrame(scene.map((item) => item.box), WIDGET_VIEWS[size]), background: image(backgroundId(size, backgroundOf(doc.background))) },
+        { ...sceneFrame(scene.map((item) => item.box), WIDGET_VIEWS[size], imageRatio(backgroundOf(doc.background)) ?? STAGE_HEIGHT), background: image(backgroundId(size, backgroundOf(doc.background))) },
       ]),
     ) as Record<WidgetSize, SceneFrame>,
     candles: candles.slice(0, MAX_CANDLES).map(({ object, key }) => ({
