@@ -356,10 +356,11 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
         {/* A dark panel under everything, a picture so it's the same on tinted home screens. */}
         {art ? <Image uiImage={art.panel} modifiers={[resizable(), fill, own]} /> : null}
       {scene('large', 364, 382)}
-      {scrims(52, 150)}
+      {scrims(0, 150)}
       <VStack alignment="leading" spacing={4} modifiers={[fill, padding({ horizontal: 20, vertical: 16 })]}>
-        {title(13)}
         <Spacer />
+        {/* The name sits with the words below the altar, so nothing covers it. */}
+        {title(10)}
         {total ? (
           <HStack spacing={6}>
             {status(10)}
