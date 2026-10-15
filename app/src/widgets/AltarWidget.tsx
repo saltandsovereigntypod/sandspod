@@ -20,8 +20,7 @@ import {
   buttonStyle,
   clipped,
   containerBackground,
-  fixedSize,
-  font,
+    font,
   foregroundStyle,
   frame,
   lineLimit,
@@ -118,12 +117,18 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
   };
   const toggleAll = anyLit ? act('snuff', '') : act('light', '');
 
+  // "Lit for 2 hr, 3 min", "Last offering 2 days, 3 hr": a live time after a few words.
+  // The live time is given the rest of the line and starts at its left, so it
+  // neither spreads out nor pushes anything past the widget's edge.
   const ago = (iso: string, prefix: string, none: string, size = 11, color = muted) =>
     iso ? (
       <HStack spacing={3}>
         <Text modifiers={[font({ size }), foregroundStyle(color), lineLimit(1)]}>{prefix}</Text>
-        <Text date={new Date(iso)} dateStyle="relative" modifiers={[font({ size }), foregroundStyle(color), lineLimit(1), fixedSize({ horizontal: true })]} />
-        <Text modifiers={[font({ size }), foregroundStyle(color), lineLimit(1)]}>ago</Text>
+        <Text
+          date={new Date(iso)}
+          dateStyle="relative"
+          modifiers={[font({ size }), foregroundStyle(color), lineLimit(1), frame({ maxWidth: 10000, alignment: 'leading' })]}
+        />
       </HStack>
     ) : (
       <Text modifiers={[font({ size }), foregroundStyle(color), lineLimit(1)]}>{none}</Text>
@@ -151,7 +156,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
           <Image systemName={anyLit ? 'flame.fill' : 'flame'} size={11} />
           <Text modifiers={[font({ size: 12 }), lineLimit(1)]}>{total ? `${lit.length} of ${total} lit` : 'No candles'}</Text>
         </HStack>
-        {altar.presences.length ? ago(lastOffering, 'Offered', 'No offerings yet', 12, 'primary') : null}
+        {altar.presences.length ? ago(lastOffering, 'Last offering', 'No offerings yet', 12, 'primary') : null}
       </VStack>
     );
   }
@@ -316,7 +321,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
           <HStack alignment="bottom">
             <VStack alignment="leading" spacing={1}>
               {status(11)}
-              {altar.presences.length ? ago(lastOffering, 'Offered', 'No offerings yet', 10, cream) : null}
+              {altar.presences.length ? ago(lastOffering, 'Last offering', 'No offerings yet', 10, cream) : null}
             </VStack>
             <Spacer />
             {buttons(34)}
@@ -339,7 +344,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
         {total ? (
           <HStack spacing={6}>
             {status(12)}
-            {earliest ? ago(earliest, '· lit', '', 11, cream) : null}
+            {earliest ? ago(earliest, '· lit for', '', 11, cream) : null}
             <Spacer />
             {pill('toggle-all-pill', toggleAll, toggleText, !anyLit)}
           </HStack>
@@ -349,7 +354,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
             <Image systemName="sparkles" size={12} color={gold} modifiers={[own]} />
             <VStack alignment="leading" spacing={0}>
               <Text modifiers={[font({ size: 13, design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>{p.label}</Text>
-              {ago(p.lastOffering, 'Offered', 'No offerings yet', 10, cream)}
+              {ago(p.lastOffering, 'Last offering', 'No offerings yet', 10, cream)}
             </VStack>
             <Spacer />
             {pill(`offer-${p.key}`, act('offer', p.key), 'Offer')}
@@ -362,7 +367,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
               <Text modifiers={[font({ size: 13, design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>
                 {altar.crystals.length === 1 ? altar.crystals[0].label : `${altar.crystals.length} crystals`}
               </Text>
-              {ago(lastCleansed, 'Cleansed', 'Not cleansed yet', 10, cream)}
+              {ago(lastCleansed, 'Last cleansed', 'Not cleansed yet', 10, cream)}
             </VStack>
             <Spacer />
             {pill('cleanse-all', act('cleanse', ''), 'Cleanse')}

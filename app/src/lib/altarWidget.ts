@@ -182,10 +182,11 @@ export const STAGE_HEIGHT = 1 / STAGE_ASPECT;
  * The widget sizes, in points (the largest iPhones; smaller phones show a little
  * less at the edges), and where the objects' middle sits in each, as a fraction of its height.
  */
-export const WIDGET_VIEWS: Record<WidgetSize, { w: number; h: number; focus: number }> = {
-  small: { w: 170, h: 170, focus: 0.48 },
-  medium: { w: 364, h: 170, focus: 0.5 },
-  large: { w: 364, h: 382, focus: 0.36 },
+export const WIDGET_VIEWS: Record<WidgetSize, { w: number; h: number; focus: number; zoom: number }> = {
+  small: { w: 170, h: 170, focus: 0.48, zoom: 2 },
+  medium: { w: 364, h: 170, focus: 0.5, zoom: 2 },
+  // The large widget shows the altar as it is, only as big as it needs to be to fill it.
+  large: { w: 364, h: 382, focus: 0.42, zoom: 1 },
 };
 /**
  * Pixels a point for the pictures. A widget has very little memory (iOS stops
@@ -209,17 +210,17 @@ function sceneObjects(objects: SavedObject[]): { object: SavedObject; index: num
 }
 
 /**
- * How the altar fills a widget: the stage covers it, then zooms (up to twice)
- * until the arrangement fills most of it, slid so the objects sit at `focus`.
+ * How the altar fills a widget: the stage covers it, then zooms (up to `zoom`
+ * times) until the arrangement fills most of it, slid so the objects sit at `focus`.
  */
-export function sceneFrame(boxes: StageRect[], view: { w: number; h: number; focus: number }): { W: number; ox: number; oy: number } {
+export function sceneFrame(boxes: StageRect[], view: { w: number; h: number; focus: number; zoom: number }): { W: number; ox: number; oy: number } {
   const minX = boxes.length ? Math.min(...boxes.map((b) => b.x)) : 0;
   const maxX = boxes.length ? Math.max(...boxes.map((b) => b.x + b.w)) : 1;
   const minY = boxes.length ? Math.min(...boxes.map((b) => b.y)) : 0;
   const maxY = boxes.length ? Math.max(...boxes.map((b) => b.y + b.h)) : STAGE_HEIGHT;
   const cover = Math.max(view.w, view.h * STAGE_ASPECT);
   const fit = Math.min((view.w * 0.72) / Math.max(0.05, maxX - minX), (view.h * 0.55) / Math.max(0.03, maxY - minY));
-  const W = Math.max(cover, Math.min(fit, cover * 2));
+  const W = Math.max(cover, Math.min(fit, cover * view.zoom));
   const clamp = (v: number, hi: number) => Math.max(0, Math.min(hi, v));
   return {
     W,
