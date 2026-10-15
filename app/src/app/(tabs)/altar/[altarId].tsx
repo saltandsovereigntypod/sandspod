@@ -834,7 +834,8 @@ export default function AltarEditor() {
   ) : null;
 
   if (full && doc) {
-    const drawerOpen = tools || selected != null;
+    // The drawer opens only when asked, so tapping things to arrange them keeps the whole altar in view.
+    const drawerOpen = tools;
     const drawerWidth = Math.min(380, Math.round(win.width * 0.42)) + insets.right;
     return (
       <View style={styles.full}>
@@ -849,7 +850,11 @@ export default function AltarEditor() {
           <View style={[styles.fullBar, { right: insets.right + 10, top: Math.max(insets.top, 10) }]}>
             <Chip label={dirty ? 'Save' : 'Saved'} symbol="✓" onPress={() => setSheet('save')} />
             <Chip label="Cabinet" symbol="❖" accessibilityLabel="Open the cabinet" onPress={() => setSheet('cabinet')} />
-            <Chip label="Tools" symbol="☰" accessibilityLabel="Show the altar's tools" onPress={() => setTools(true)} />
+            {selectedObject ? (
+              <Chip label="Show details" symbol="☰" accessibilityLabel={`Show details for ${shortLabel(selectedObject.label)}`} onPress={() => setTools(true)} />
+            ) : (
+              <Chip label="Tools" symbol="☰" accessibilityLabel="Show the altar's tools" onPress={() => setTools(true)} />
+            )}
           </View>
         ) : (
           <View style={[styles.drawer, { width: drawerWidth, paddingRight: insets.right }]}>
@@ -858,10 +863,7 @@ export default function AltarEditor() {
                 {dirty ? 'Unsaved changes' : name}
               </Text>
               <Pressable
-                onPress={() => {
-                  setTools(false);
-                  setSelected(null);
-                }}
+                onPress={() => setTools(false)}
                 accessibilityRole="button"
                 accessibilityLabel="Hide the tools"
                 style={styles.drawerClose}
