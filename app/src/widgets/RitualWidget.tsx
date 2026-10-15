@@ -2,7 +2,7 @@
 // intention, the moon that night and what you need to gather. Runs in the
 // widget extension's own runtime (see MoonWidget).
 
-import { HStack, Spacer, Text, VStack } from '@expo/ui/swift-ui';
+import { HStack, Image, Spacer, Text, VStack } from '@expo/ui/swift-ui';
 import { containerBackground, font, foregroundStyle, frame, lineLimit, widgetURL } from '@expo/ui/swift-ui/modifiers';
 import { createWidget, type WidgetEnvironment } from 'expo-widgets';
 
@@ -10,7 +10,7 @@ import type { WidgetDayProps } from '../lib/widgetTimeline';
 
 const RitualWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => {
   'widget';
-  const night = '#0f1a14';
+  const sky = { type: 'linearGradient' as const, colors: ['#1a2c21', '#0f1a14', '#0a120d'], startPoint: { x: 0, y: 0 }, endPoint: { x: 1, y: 1 } };
   const cream = '#f4ecd8';
   const gold = '#e2c36d';
   const muted = '#cabf9d';
@@ -33,7 +33,7 @@ const RitualWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => 
 
   if (!has) {
     return (
-      <VStack alignment="leading" spacing={4} modifiers={[link, containerBackground(night, 'widget'), fill]}>
+      <VStack alignment="leading" spacing={4} modifiers={[link, containerBackground(sky, 'widget'), fill]}>
         {label('NEXT RITUAL')}
         <Spacer />
         <Text modifiers={[font({ size: 16, weight: 'semibold', design: 'serif' }), foregroundStyle(cream)]}>Nothing planned</Text>
@@ -47,12 +47,19 @@ const RitualWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => 
       {label('NEXT RITUAL')}
       <Text modifiers={[font({ size, weight: 'semibold', design: 'serif' }), foregroundStyle(cream), lineLimit(2)]}>{props.ritualTitle}</Text>
       <Text modifiers={[font({ size: 12, weight: 'semibold' }), foregroundStyle(gold), lineLimit(1)]}>{props.ritualWhen}</Text>
+      {props.ritualStart && size > 16 ? (
+        <HStack spacing={3}>
+          <Image systemName="hourglass" size={10} color={muted} />
+          <Text modifiers={[font({ size: 11 }), foregroundStyle(muted)]}>in</Text>
+          <Text date={new Date(props.ritualStart)} dateStyle="relative" modifiers={[font({ size: 11 }), foregroundStyle(muted), lineLimit(1)]} />
+        </HStack>
+      ) : null}
     </VStack>
   );
 
   if (family === 'systemLarge') {
     return (
-      <VStack alignment="leading" spacing={10} modifiers={[link, containerBackground(night, 'widget'), fill]}>
+      <VStack alignment="leading" spacing={10} modifiers={[link, containerBackground(sky, 'widget'), fill]}>
         {heading(22)}
         {small(props.ritualMoon, 1)}
         {props.ritualIntention ? (
@@ -65,7 +72,10 @@ const RitualWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => 
           <VStack alignment="leading" spacing={3}>
             {label("YOU'LL NEED")}
             {props.ritualNeeds.map((name) => (
-              <Text key={name} modifiers={[font({ size: 13 }), foregroundStyle(cream), lineLimit(1)]}>{`· ${name}`}</Text>
+              <HStack key={name} spacing={6}>
+                <Image systemName="circle" size={9} color={gold} />
+                <Text modifiers={[font({ size: 13 }), foregroundStyle(cream), lineLimit(1)]}>{name}</Text>
+              </HStack>
             ))}
           </VStack>
         ) : props.ritualPrep ? (
@@ -82,7 +92,7 @@ const RitualWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => 
   if (family === 'systemMedium') {
     const needs = props.ritualNeeds.join(', ');
     return (
-      <HStack alignment="top" spacing={14} modifiers={[link, containerBackground(night, 'widget'), fill]}>
+      <HStack alignment="top" spacing={14} modifiers={[link, containerBackground(sky, 'widget'), fill]}>
         <VStack alignment="leading" spacing={4} modifiers={[frame({ maxWidth: 10000, alignment: 'leading' })]}>
           {heading(17)}
           <Spacer />
@@ -98,7 +108,7 @@ const RitualWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => 
 
   // systemSmall
   return (
-    <VStack alignment="leading" spacing={3} modifiers={[link, containerBackground(night, 'widget'), fill]}>
+    <VStack alignment="leading" spacing={3} modifiers={[link, containerBackground(sky, 'widget'), fill]}>
       {heading(16)}
       <Spacer />
       {small(props.ritualNeeds.length ? `${props.ritualNeeds.length} thing${props.ritualNeeds.length === 1 ? '' : 's'} to gather` : props.ritualMoon, 2)}

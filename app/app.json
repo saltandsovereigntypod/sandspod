@@ -63,11 +63,71 @@
         }
       ],
       [
+        "./plugins/withWidgetDeploymentTarget",
+        {
+          "bundleIdentifier": "com.saltandsovereignty.app.widgets",
+          "deploymentTarget": "17.0"
+        }
+      ],
+      [
         "expo-widgets",
         {
           "bundleIdentifier": "com.saltandsovereignty.app.widgets",
           "groupIdentifier": "group.com.saltandsovereignty.app",
           "widgets": [
+            {
+              "name": "AltarWidget",
+              "displayName": "Altar",
+              "description": "One of your altars: light its candles, tend offerings and cleanse crystals from here.",
+              "ios": {
+                "supportedFamilies": [
+                  "systemSmall",
+                  "systemMedium",
+                  "systemLarge",
+                  "accessoryCircular",
+                  "accessoryRectangular",
+                  "accessoryInline"
+                ],
+                "contentMarginsDisabled": true,
+                "configuration": {
+                  "title": "Which altar",
+                  "description": "Choose which altar to show. In the app, open an altar and tap Home screen to choose its place.",
+                  "parameters": {
+                    "altar": {
+                      "title": "Altar",
+                      "type": "enum",
+                      "default": "altar1",
+                      "values": [
+                        {
+                          "name": "Altar 1",
+                          "value": "altar1"
+                        },
+                        {
+                          "name": "Altar 2",
+                          "value": "altar2"
+                        },
+                        {
+                          "name": "Altar 3",
+                          "value": "altar3"
+                        },
+                        {
+                          "name": "Altar 4",
+                          "value": "altar4"
+                        },
+                        {
+                          "name": "Altar 5",
+                          "value": "altar5"
+                        },
+                        {
+                          "name": "Altar 6",
+                          "value": "altar6"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
             {
               "name": "MoonWidget",
               "displayName": "Tonight's Moon",
@@ -129,7 +189,8 @@
           "cameraPermission": false,
           "microphonePermission": false
         }
-      ]
+      ],
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true

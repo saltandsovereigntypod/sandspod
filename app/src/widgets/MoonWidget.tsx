@@ -12,7 +12,7 @@ import type { WidgetDayProps } from '../lib/widgetTimeline';
 
 const MoonWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => {
   'widget';
-  const night = '#0f1a14';
+  const sky = { type: 'linearGradient' as const, colors: ['#1a2c21', '#0f1a14', '#0a120d'], startPoint: { x: 0, y: 0 }, endPoint: { x: 1, y: 1 } };
   const cream = '#f4ecd8';
   const gold = '#e2c36d';
   const muted = '#cabf9d';
@@ -73,7 +73,7 @@ const MoonWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => {
 
   if (family === 'systemLarge') {
     return (
-      <VStack alignment="leading" spacing={14} modifiers={[link, containerBackground(night, 'widget'), fill]}>
+      <VStack alignment="leading" spacing={14} modifiers={[link, containerBackground(sky, 'widget'), fill]}>
         {label("TONIGHT'S MOON")}
         <HStack alignment="center" spacing={16}>
           <Image systemName={props.symbol as never} size={64} color={cream} />
@@ -83,8 +83,17 @@ const MoonWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => {
             <Text modifiers={[font({ size: 13 }), foregroundStyle(gold), lineLimit(1)]}>{`Next: ${props.next}`}</Text>
           </VStack>
         </HStack>
-        {today(6)}
+        {today(4)}
         <Spacer />
+        <HStack spacing={0} modifiers={[frame({ maxWidth: 10000 })]}>
+          {props.phases.slice(0, 4).map((p) => (
+            <VStack key={p.date} spacing={3} modifiers={[frame({ maxWidth: 10000 })]}>
+              <Image systemName={p.symbol as never} size={20} color={cream} />
+              <Text modifiers={[font({ size: 10, weight: 'semibold' }), foregroundStyle(cream), lineLimit(1)]}>{p.name.split(' in ')[0]}</Text>
+              <Text modifiers={[font({ size: 10 }), foregroundStyle(muted), lineLimit(1)]}>{p.date.replace(/^\w+, /, '')}</Text>
+            </VStack>
+          ))}
+        </HStack>
       </VStack>
     );
   }
@@ -100,7 +109,7 @@ const MoonWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => {
 
   if (family === 'systemMedium') {
     return (
-      <HStack alignment="top" spacing={14} modifiers={[link, containerBackground(night, 'widget'), fill]}>
+      <HStack alignment="top" spacing={14} modifiers={[link, containerBackground(sky, 'widget'), fill]}>
         {moonColumn}
         <VStack alignment="leading" spacing={8} modifiers={[frame({ maxWidth: 10000, alignment: 'leading' })]}>
           {today(3)}
@@ -111,7 +120,7 @@ const MoonWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => {
 
   // systemSmall: the moon on its own.
   return (
-    <VStack alignment="leading" spacing={3} modifiers={[link, containerBackground(night, 'widget'), fill]}>
+    <VStack alignment="leading" spacing={3} modifiers={[link, containerBackground(sky, 'widget'), fill]}>
       {moonColumn}
       <Text modifiers={[font({ size: 11 }), foregroundStyle(gold), lineLimit(1)]}>{`Next: ${props.next}`}</Text>
     </VStack>

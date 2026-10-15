@@ -17,6 +17,7 @@ import { TendSheet } from '../../../components/altar/TendSheet';
 import { saveTendingBlend, useWorkshop } from '../../../lib/altar/workshop';
 import { newId } from '../../../lib/altar/uid';
 import { Chip, ChipRow } from '../../../components/altar/Chip';
+import { WidgetSheet } from '../../../components/altar/WidgetSheet';
 import { BackgroundSheet, DressSheet, LayersSheet, SaveSheet } from '../../../components/altar/OptionSheets';
 import { Button } from '../../../components/Button';
 import { burnDuration, burnedSoFar, dressingNames, glanceLine, resolveAltarEntry } from '../../../lib/altar/companion';
@@ -97,6 +98,7 @@ type SheetName =
   | 'layers'
   | 'dress'
   | 'save'
+  | 'widget'
   | null;
 
 const nowIso = () => new Date().toISOString();
@@ -174,6 +176,22 @@ export default function AltarEditor() {
   }, [altarId, altars, backgrounds, draft, draftSourceId, status, settings]);
 
   const dirty = !!doc && doc !== baseline;
+
+  // Candles lit and offerings made from the home screen widget reach an open
+  // altar that has no unsaved changes of its own.
+  const saved = sourceId && altarId !== 'draft' ? altars.find((a) => a.id === sourceId) : undefined;
+  const seenSaved = useRef(saved);
+  useEffect(() => {
+    if (!saved || saved === seenSaved.current) return;
+    seenSaved.current = saved;
+    if (dirty) return;
+    const fresh = prepareDocument(documentFromAltar(saved), nowIso());
+    if (JSON.stringify(fresh.objects) === JSON.stringify(doc?.objects)) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the saved altar is outside state; this follows it
+    setDoc(fresh);
+    setBaseline(fresh);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only when the saved altar itself changes
+  }, [saved]);
 
   // Keep a working draft like the website, so nothing is lost if you leave.
   const { saveDraft } = store;
@@ -532,6 +550,9 @@ export default function AltarEditor() {
                 onPress={() => setSheet('grimoire')}
                 disabled={doc.objects.length === 0}
               />
+              {Platform.OS === 'ios' && sourceId ? (
+                <Chip label="Home screen" symbol="▣" accessibilityLabel="Put this altar on your home screen" onPress={() => setSheet('widget')} />
+              ) : null}
               <Chip label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} disabled={undo.current.length === 0} />
               <Chip label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} disabled={redo.current.length === 0} />
               <Chip label="Zoom in" symbol="+" onPress={() => zoomBy(1.5)} disabled={viewport.zoom >= 4} />
@@ -589,6 +610,9 @@ export default function AltarEditor() {
 
       {doc && (
         <>
+          {sourceId ? (
+            <WidgetSheet visible={sheet === 'widget'} altarId={sourceId} altarName={name} altars={altars} onClose={() => setSheet(null)} />
+          ) : null}
           <AboutSheet
             visible={sheet === 'about'}
             object={selectedObject}

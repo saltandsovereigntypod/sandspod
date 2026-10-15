@@ -10,7 +10,7 @@ import type { WidgetDayProps } from '../lib/widgetTimeline';
 
 const ComingUpWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => {
   'widget';
-  const night = '#0f1a14';
+  const sky = { type: 'linearGradient' as const, colors: ['#1a2c21', '#0f1a14', '#0a120d'], startPoint: { x: 0, y: 0 }, endPoint: { x: 1, y: 1 } };
   const cream = '#f4ecd8';
   const gold = '#e2c36d';
   const muted = '#cabf9d';
@@ -35,7 +35,7 @@ const ComingUpWidget = (props: WidgetDayProps, environment: WidgetEnvironment) =
       <VStack
         alignment="leading"
         spacing={8}
-        modifiers={[link, containerBackground(night, 'widget'), frame({ maxWidth: 10000, maxHeight: 10000, alignment: 'topLeading' })]}
+        modifiers={[link, containerBackground(sky, 'widget'), frame({ maxWidth: 10000, maxHeight: 10000, alignment: 'topLeading' })]}
       >
         {label('MOON PHASES')}
         {props.phases.slice(0, 4).map((p) => row(`m${p.date}`, p.symbol, p.name, p.date, p.when))}
@@ -61,7 +61,7 @@ const ComingUpWidget = (props: WidgetDayProps, environment: WidgetEnvironment) =
     <HStack
       alignment="top"
       spacing={12}
-      modifiers={[link, containerBackground(night, 'widget'), frame({ maxWidth: 10000, maxHeight: 10000, alignment: 'topLeading' })]}
+      modifiers={[link, containerBackground(sky, 'widget'), frame({ maxWidth: 10000, maxHeight: 10000, alignment: 'topLeading' })]}
     >
       <VStack alignment="leading" spacing={5} modifiers={[wide]}>
         {label('MOON')}

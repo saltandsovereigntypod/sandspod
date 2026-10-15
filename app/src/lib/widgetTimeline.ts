@@ -53,6 +53,8 @@ export type WidgetDayProps = {
   ritualTitle: string;
   /** "Tomorrow · 9:00 pm". */
   ritualWhen: string;
+  /** When it begins (ISO), for a live countdown; "" when unknown. */
+  ritualStart: string;
   ritualIntention: string;
   /** The moon on the ritual's night: "Waxing Gibbous in Pisces". */
   ritualMoon: string;
@@ -113,7 +115,7 @@ function phaseName(phase: keyof typeof PRINCIPAL_NAMES, date: Date): string {
 }
 
 function ritualDetails(plan: RitualPlan | null, day: Date, templates: TemplateRow[]) {
-  const empty = { ritual: '', ritualId: '', ritualTitle: '', ritualWhen: '', ritualIntention: '', ritualMoon: '', ritualNeeds: [], ritualPrep: '' };
+  const empty = { ritual: '', ritualId: '', ritualTitle: '', ritualWhen: '', ritualStart: '', ritualIntention: '', ritualMoon: '', ritualNeeds: [], ritualPrep: '' };
   if (!plan) return empty;
   const start = planStart(plan);
   const title = plan.title || 'Ritual';
@@ -132,6 +134,7 @@ function ritualDetails(plan: RitualPlan | null, day: Date, templates: TemplateRo
     ritualId: plan.id,
     ritualTitle: title,
     ritualWhen: when,
+    ritualStart: start.toISOString(),
     ritualIntention: plan.intention ?? template?.intention ?? plan.draft?.intention ?? '',
     ritualMoon: `${moonState(start).name} in ${moonSign(start)}`,
     ritualNeeds: names.slice(0, NEEDS_LENGTH),

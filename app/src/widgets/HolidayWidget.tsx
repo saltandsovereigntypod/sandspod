@@ -9,7 +9,7 @@ import type { WidgetDayProps } from '../lib/widgetTimeline';
 
 const HolidayWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => {
   'widget';
-  const night = '#0f1a14';
+  const sky = { type: 'linearGradient' as const, colors: ['#1a2c21', '#0f1a14', '#0a120d'], startPoint: { x: 0, y: 0 }, endPoint: { x: 1, y: 1 } };
   const cream = '#f4ecd8';
   const gold = '#e2c36d';
   const muted = '#cabf9d';
@@ -36,7 +36,7 @@ const HolidayWidget = (props: WidgetDayProps, environment: WidgetEnvironment) =>
     <VStack
       alignment="leading"
       spacing={2}
-      modifiers={[link, containerBackground(night, 'widget'), frame({ maxWidth: 10000, maxHeight: 10000, alignment: 'topLeading' })]}
+      modifiers={[link, containerBackground(sky, 'widget'), frame({ maxWidth: 10000, maxHeight: 10000, alignment: 'topLeading' })]}
     >
       <Text modifiers={[font({ size: 10, weight: 'semibold' }), foregroundStyle(gold), lineLimit(1)]}>
         {props.holidayToday ? `TODAY: ${props.holiday.toUpperCase()}` : 'NEXT HOLIDAY'}
