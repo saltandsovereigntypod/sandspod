@@ -550,8 +550,18 @@ export default function AltarEditor() {
                 onPress={() => setSheet('grimoire')}
                 disabled={doc.objects.length === 0}
               />
-              {Platform.OS === 'ios' && sourceId ? (
-                <Chip label="Home screen" symbol="▣" accessibilityLabel="Put this altar on your home screen" onPress={() => setSheet('widget')} />
+              {Platform.OS === 'ios' ? (
+                <Chip
+                  label="Home screen"
+                  symbol="▣"
+                  accessibilityLabel="Put this altar on your home screen"
+                  onPress={() => {
+                    if (sourceId) return setSheet('widget');
+                    // Only saved altars can go on the home screen.
+                    setNotice('Save this altar first, then tap Home screen again to choose its place on your home screen.');
+                    setSheet('save');
+                  }}
+                />
               ) : null}
               <Chip label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} disabled={undo.current.length === 0} />
               <Chip label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} disabled={redo.current.length === 0} />
