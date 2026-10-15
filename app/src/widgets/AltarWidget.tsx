@@ -209,7 +209,11 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
       <ZStack modifiers={[fill, clipped()]}>
       <ZStack alignment="topLeading" modifiers={[frame({ width: viewW, height: viewH, alignment: 'topLeading' })]}>
         <ZStack alignment="topLeading" modifiers={[frame({ width: W, height: H, alignment: 'topLeading' }), offset({ x: -ox, y: -oy })]}>
-          {f?.background ? picture(f.background, ox, oy, viewW, viewH, 'stretch') : picture(altar.background, 0, 0, W, H, 'fill')}
+          {f?.background ? picture(f.background, ox, f.bgY ?? oy, viewW, f.bgH ?? viewH, 'stretch') : picture(altar.background, 0, 0, W, H, 'fill')}
+          {/* Where the background ends above the panel, it fades out rather than stopping. */}
+          {f?.background && art && f.bgY + f.bgH < oy + viewH - 1
+            ? picture(art.scrimBottom, ox, f.bgY + f.bgH - 36, viewW, 37, 'stretch')
+            : null}
           {art
             ? altar.scene
                 .filter((s) => s.lit && s.pool)
@@ -303,6 +307,8 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
   if (family === 'systemSmall') {
     return (
       <ZStack modifiers={[link, containerBackground(night, 'widget'), fill]}>
+        {/* A dark panel under everything, a picture so it's the same on tinted home screens. */}
+        {art ? <Image uiImage={art.panel} modifiers={[resizable(), fill, own]} /> : null}
         {scene('small', 170, 170)}
         {scrims(48, 50)}
         <VStack alignment="leading" spacing={2} modifiers={[fill, padding({ all: 14 })]}>
@@ -322,6 +328,8 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
   if (family === 'systemMedium') {
     return (
       <ZStack modifiers={[link, containerBackground(night, 'widget'), fill]}>
+        {/* A dark panel under everything, a picture so it's the same on tinted home screens. */}
+        {art ? <Image uiImage={art.panel} modifiers={[resizable(), fill, own]} /> : null}
         {scene('medium', 364, 170)}
         {scrims(44, 48)}
         <VStack alignment="leading" spacing={2} modifiers={[fill, padding({ horizontal: 18, vertical: 14 })]}>
@@ -345,8 +353,10 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
 
   return (
     <ZStack modifiers={[link, containerBackground(night, 'widget'), fill]}>
+        {/* A dark panel under everything, a picture so it's the same on tinted home screens. */}
+        {art ? <Image uiImage={art.panel} modifiers={[resizable(), fill, own]} /> : null}
       {scene('large', 364, 382)}
-      {scrims(52, 128)}
+      {scrims(52, 150)}
       <VStack alignment="leading" spacing={4} modifiers={[fill, padding({ horizontal: 20, vertical: 16 })]}>
         {title(13)}
         <Spacer />

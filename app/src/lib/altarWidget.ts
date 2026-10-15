@@ -97,6 +97,9 @@ export type SceneFrame = {
   W: number;
   ox: number;
   oy: number;
+  /** Where the background cut sits (stage points) and how tall it is; below it is the dark panel. */
+  bgY: number;
+  bgH: number;
   /** file:// cut of the background showing just what this widget size shows, or "". */
   background: string;
 };
@@ -197,11 +200,12 @@ export const STAGE_HEIGHT = 1 / STAGE_ASPECT;
  * The widget sizes, in points (the largest iPhones; smaller phones show a little
  * less at the edges), and where the objects' middle sits in each, as a fraction of its height.
  */
-export const WIDGET_VIEWS: Record<WidgetSize, { w: number; h: number; focus: number; zoom: number }> = {
+export const WIDGET_VIEWS: Record<WidgetSize, { w: number; h: number; focus: number; zoom: number; area?: number }> = {
   small: { w: 170, h: 170, focus: 0.48, zoom: 2 },
   medium: { w: 364, h: 170, focus: 0.5, zoom: 2 },
-  // The large widget shows the altar as it is, only as big as it needs to be to fill it.
-  large: { w: 364, h: 382, focus: 0.4, zoom: 1 },
+  // The large widget keeps the altar in its top `area` points, zoomed out, with
+  // the words and buttons below it on a dark panel instead of over the altar.
+  large: { w: 364, h: 382, focus: 0.5, zoom: 1, area: 250 },
 };
 /**
  * Pixels a point for the pictures. A widget has very little memory (iOS stops
@@ -258,19 +262,30 @@ export type WidgetPicture = { id: string; path: string; width: number; crop?: St
 
 const backgroundId = (size: WidgetSize, path: string) => `bg-${size}:${path}`;
 
-/** The cut of the background (as the stage draws it, covering 16:9) that a widget size shows. */
-function backgroundCrop(path: string, frame: { W: number; ox: number; oy: number }, view: { w: number; h: number }): StageRect {
-  const ratio = imageRatio(path) ?? 1 / STAGE_ASPECT; // height / width
-  const H = frame.W * STAGE_HEIGHT;
-  // Drawn to cover W × H, centred.
-  const scale = Math.max(frame.W, H / ratio);
-  const drawnW = scale;
-  const drawnH = scale * ratio;
-  const left = (drawnW - frame.W) / 2 + frame.ox;
-  const top = (drawnH - H) / 2 + frame.oy;
-  const w = Math.min(1, view.w / drawnW);
-  const h = Math.min(1, view.h / drawnH);
-  return { x: Math.max(0, Math.min(1 - w, left / drawnW)), y: Math.max(0, Math.min(1 - h, top / drawnH)), w, h };
+/**
+ * How the altar fills one widget size, and the cut of its background that
+ * shows (fractions of the picture) with where that cut sits.
+ */
+function sizeFrame(boxes: StageRect[], size: WidgetSize, background: string): SceneFrame & { crop: StageRect } {
+  const view = WIDGET_VIEWS[size];
+  const ratio = imageRatio(background) ?? STAGE_HEIGHT; // height / width
+  const area = view.area ?? view.h;
+  const { W, ox, oy } = sceneFrame(boxes, { ...view, h: area }, ratio);
+  const H = W * STAGE_HEIGHT;
+  // The background is drawn to cover the stage, centred.
+  const drawnW = Math.max(W, H / ratio);
+  const drawnH = drawnW * ratio;
+  const left = (drawnW - W) / 2;
+  const above = (drawnH - H) / 2;
+  const top = Math.max(oy, -above);
+  const bottom = Math.min(oy + view.h, H + above);
+  const crop = {
+    x: Math.max(0, Math.min(1, (ox + left) / drawnW)),
+    y: Math.max(0, Math.min(1, (top + above) / drawnH)),
+    w: Math.min(1, view.w / drawnW),
+    h: Math.max(0.01, Math.min(1, (bottom - top) / drawnH)),
+  };
+  return { W, ox, oy, bgY: top, bgH: Math.max(1, bottom - top), background: '', crop };
 }
 
 /** Every picture the widget needs for an altar, each made just big enough to stay sharp. */
@@ -282,10 +297,9 @@ export function altarPictures(altar: SavedAltar): WidgetPicture[] {
   const out: WidgetPicture[] = [];
   let widest = 0;
   for (const size of Object.keys(WIDGET_VIEWS) as WidgetSize[]) {
-    const view = WIDGET_VIEWS[size];
-    const frame = sceneFrame(boxes, view, imageRatio(background) ?? STAGE_HEIGHT);
+    const frame = sizeFrame(boxes, size, background);
     widest = Math.max(widest, frame.W);
-    out.push({ id: backgroundId(size, background), path: background, width: view.w * SCALE, crop: backgroundCrop(background, frame, view) });
+    out.push({ id: backgroundId(size, background), path: background, width: WIDGET_VIEWS[size].w * SCALE, crop: frame.crop });
   }
   const sizes = new Map<string, number>();
   for (const { object } of objects) {
@@ -357,7 +371,9 @@ export function widgetAltar(altar: SavedAltar, image: (path: string) => string, 
     frames: Object.fromEntries(
       (Object.keys(WIDGET_VIEWS) as WidgetSize[]).map((size) => [
         size,
-        { ...sceneFrame(scene.map((item) => item.box), WIDGET_VIEWS[size], imageRatio(backgroundOf(doc.background)) ?? STAGE_HEIGHT), background: image(backgroundId(size, backgroundOf(doc.background))) },
+        (({ crop: _crop, ...frame }) => ({ ...frame, background: image(backgroundId(size, backgroundOf(doc.background))) }))(
+          sizeFrame(scene.map((item) => item.box), size, backgroundOf(doc.background)),
+        ),
       ]),
     ) as Record<WidgetSize, SceneFrame>,
     candles: candles.slice(0, MAX_CANDLES).map(({ object, key }) => ({
