@@ -5,7 +5,18 @@
 // (an action); the next time the app opens it carries each action out on the
 // real altar, which then saves and syncs as usual. Pure, so it can be tested.
 
-import { careForCrystal, crystalDecisions, crystalIntention, crystalState, deityState, recordOffering } from './altar/devotion.ts';
+import {
+  careForCrystal,
+  crystalDecisions,
+  crystalIntention,
+  crystalState,
+  defaultCleansingOf,
+  defaultCleansingSummary,
+  defaultOfferingOf,
+  defaultOfferingSummary,
+  deityState,
+  recordOffering,
+} from './altar/devotion.ts';
 import { DEFAULT_BACKGROUND } from './altar/cabinet.ts';
 import { lightAll, snuffAll } from './altar/editor.ts';
 import { flameLayout } from './altar/flame.ts';
@@ -39,6 +50,8 @@ export type WidgetPresence = {
   image: string;
   /** Last offering (ISO), or "". */
   lastOffering: string;
+  /** What its Offer button offers ("Wine, rosemary"), or "" when not chosen yet. */
+  offering: string;
 };
 
 export type WidgetCrystal = {
@@ -48,6 +61,8 @@ export type WidgetCrystal = {
   lastCleansed: string;
   lastCharged: string;
   intention: string;
+  /** How its Cleanse button cleanses ("Moonlight, Smoke"), or "" when not chosen yet. */
+  cleansing: string;
 };
 
 /** A rectangle in stage widths (the stage is 1 wide and 9/16 tall). */
@@ -346,7 +361,13 @@ export function widgetAltar(altar: SavedAltar, image: (path: string) => string, 
     presences: keyed
       .filter(({ object }) => isPresence(object))
       .slice(0, MAX_PRESENCES)
-      .map(({ object, key }) => ({ key, label: label(object, 'Presence'), image: picture(object), lastOffering: String(deityState(object, iso).lastOfferingAt || '') })),
+      .map(({ object, key }) => ({
+        key,
+        label: label(object, 'Presence'),
+        image: picture(object),
+        lastOffering: String(deityState(object, iso).lastOfferingAt || ''),
+        offering: defaultOfferingSummary(defaultOfferingOf(object, iso)),
+      })),
     crystals: keyed
       .filter(({ object }) => isCrystal(object))
       .slice(0, MAX_CRYSTALS)
@@ -359,6 +380,7 @@ export function widgetAltar(altar: SavedAltar, image: (path: string) => string, 
           lastCleansed: String(state.lastCleansedAt || ''),
           lastCharged: String(state.lastChargedAt || ''),
           intention: crystalIntention(object, iso),
+          cleansing: defaultCleansingSummary(defaultCleansingOf(object, iso)),
         };
       }),
     workingsDue: workings.filter((o) => {
@@ -411,15 +433,17 @@ export function applyWidgetAction(doc: AltarDocument, action: WidgetAction, now:
     case 'snuff':
       return action.key ? changeObjects(doc, action.key, isCandle, (o) => snuffCandle(o, at)) : snuffAll(doc, at);
     case 'offer':
-      return changeObjects(doc, action.key, isPresence, (o) =>
-        recordOffering(
+      // The offering you chose for this presence in the app, or a simple devotional act.
+      return changeObjects(doc, action.key, isPresence, (o) => {
+        const chosen = defaultOfferingOf(o, now);
+        return recordOffering(
           o,
           {
-            types: ['Devotional act'],
-            supports: [],
-            customItems: '',
-            intention: '',
-            message: 'Offerings tended from the home screen.',
+            types: chosen?.types.length ? chosen.types : chosen ? [] : ['Devotional act'],
+            supports: chosen?.supports ?? [],
+            customItems: chosen?.customItems ?? '',
+            intention: chosen?.intention ?? '',
+            message: chosen?.message || 'Offered from the home screen.',
             status: 'Offered',
             customStatus: '',
             response: '',
@@ -427,24 +451,26 @@ export function applyWidgetAction(doc: AltarDocument, action: WidgetAction, now:
             occurredAt: at,
           },
           now,
-        ),
-      );
+        );
+      });
     case 'cleanse':
-      return changeObjects(doc, action.key, isCrystal, (o) =>
-        careForCrystal(
+      // The cleansing you chose for this crystal in the app, or a routine cleansing by intention.
+      return changeObjects(doc, action.key, isCrystal, (o) => {
+        const chosen = defaultCleansingOf(o, now);
+        return careForCrystal(
           o,
           'cleanse',
           {
             decision: crystalDecisions('cleanse', !!crystalIntention(o, now))[0],
-            purpose: 'Routine care',
-            methods: ['Intention'],
-            supports: [],
-            notes: 'Cleansed from the home screen.',
+            purpose: chosen?.purpose ?? 'Routine care',
+            methods: chosen?.methods ?? ['Intention'],
+            supports: chosen?.supports ?? [],
+            notes: chosen?.notes || 'Cleansed from the home screen.',
             occurredAt: at,
           },
           now,
-        ),
-      );
+        );
+      });
     default:
       return doc;
   }

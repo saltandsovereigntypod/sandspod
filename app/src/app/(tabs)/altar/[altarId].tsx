@@ -10,7 +10,7 @@ import { CarveSheet } from '../../../components/altar/CarveSheet';
 import { GroupGrimoireSheet, GroupSheet, RenameSheet } from '../../../components/altar/ArrangeSheets';
 import { PracticeSheet } from '../../../components/altar/PracticeSheet';
 import { CrystalSheet, DeitySheet, type CrystalMode, type DeityMode } from '../../../components/altar/DevotionSheets';
-import { careForCrystal, dedicateCrystal, recordOffering, setPresenceReason, updateOffering } from '../../../lib/altar/devotion';
+import { careForCrystal, dedicateCrystal, recordOffering, setDefaultCleansing, setDefaultOffering, setPresenceReason, updateOffering } from '../../../lib/altar/devotion';
 import { CustomItemSheet } from '../../../components/altar/CustomItemSheet';
 import { ApothecaryEditor, ApothecarySheet, type ApothecaryTarget, type SavedWorking } from '../../../components/altar/Apothecary';
 import { TendSheet } from '../../../components/altar/TendSheet';
@@ -708,6 +708,11 @@ export default function AltarEditor() {
               setCrystalMode(null);
               setNotice('Dedication saved.');
             }}
+            onDefaultCleansing={(index, value) => {
+              commit((d) => updateObjects(d, [index], (o) => setDefaultCleansing(o, value, nowIso())));
+              setCrystalMode(null);
+              setNotice(value ? 'Widget cleansing saved. Save the altar to use it on your home screen.' : 'Widget cleansing cleared.');
+            }}
           />
           <DeitySheet
             mode={deityMode}
@@ -727,6 +732,11 @@ export default function AltarEditor() {
             onReason={(index, reason, notes) => {
               commit((d) => updateObjects(d, [index], (o) => setPresenceReason(o, reason, notes, nowIso())));
               setDeityMode(null);
+            }}
+            onDefaultOffering={(index, value) => {
+              commit((d) => updateObjects(d, [index], (o) => setDefaultOffering(o, value, nowIso())));
+              setDeityMode(null);
+              setNotice(value ? 'Widget offering saved. Save the altar to use it on your home screen.' : 'Widget offering cleared.');
             }}
           />
           <RenameSheet
@@ -924,12 +934,14 @@ function ObjectPanel({
           <Chip label="Cleanse" symbol="☾" onPress={() => act.crystal('cleanse')} />
           <Chip label="Charge" symbol="✦" onPress={() => act.crystal('charge')} />
           <Chip label="Dedicate" symbol="♡" onPress={() => act.crystal('dedicate')} />
+          {Platform.OS === 'ios' && <Chip label="Widget cleansing" symbol="▣" onPress={() => act.crystal('widget')} />}
         </ChipRow>
       )}
       {object.type === 'deity' && (
         <ChipRow>
           <Chip label="Offering" symbol="❀" onPress={() => act.deity('offering')} />
           <Chip label="Reason for presence" symbol="☉" onPress={() => act.deity('reason')} />
+          {Platform.OS === 'ios' && <Chip label="Widget offering" symbol="▣" onPress={() => act.deity('widget')} />}
         </ChipRow>
       )}
 

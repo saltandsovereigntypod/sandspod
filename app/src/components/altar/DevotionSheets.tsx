@@ -20,9 +20,13 @@ import {
   PRESENCE_REASONS,
   RESPONSES,
   deityState,
+  defaultCleansingOf,
+  defaultOfferingOf,
   slug,
   supportsOn,
   type CareInput,
+  type DefaultCleansing,
+  type DefaultOffering,
   type Dedication,
   type Offering,
   type OfferingInput,
@@ -40,7 +44,7 @@ const shortDay = (iso: unknown) => {
   return date && !Number.isNaN(date.getTime()) ? date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '';
 };
 
-export type CrystalMode = 'cleanse' | 'charge' | 'dedicate';
+export type CrystalMode = 'cleanse' | 'charge' | 'dedicate' | 'widget';
 
 type CrystalProps = {
   mode: CrystalMode | null;
@@ -50,16 +54,20 @@ type CrystalProps = {
   onClose: () => void;
   onCare: (indices: number[], kind: 'cleanse' | 'charge', input: CareInput) => void;
   onDedicate: (index: number, input: Dedication) => void;
+  /** Save (or clear, with null) the cleansing the home screen widget records for this crystal. */
+  onDefaultCleansing: (index: number, value: DefaultCleansing | null) => void;
 };
 
 /** Cleanse, charge or dedicate a crystal, as the website's guided workflows do. */
-export function CrystalSheet({ mode, index, objects, onClose, onCare, onDedicate }: CrystalProps) {
+export function CrystalSheet({ mode, index, objects, onClose, onCare, onDedicate, onDefaultCleansing }: CrystalProps) {
   const object = index != null ? objects[index] : null;
-  const title = mode === 'cleanse' ? 'Cleanse' : mode === 'charge' ? 'Charge' : 'Dedicate';
+  const title = mode === 'cleanse' ? 'Cleanse' : mode === 'charge' ? 'Charge' : mode === 'widget' ? 'Widget cleansing' : 'Dedicate';
   return (
     <Sheet visible={!!mode && !!object} eyebrow={title} title={shortLabel(object?.label, 'Crystal')} onClose={onClose}>
       {mode && object && index != null && (
-        mode === 'dedicate' ? (
+        mode === 'widget' ? (
+          <DefaultCleansingForm key={`w-${index}`} object={object} objects={objects} onSave={(value) => onDefaultCleansing(index, value)} />
+        ) : mode === 'dedicate' ? (
           <DedicateForm key={`d-${index}`} object={object} onSave={(input) => onDedicate(index, input)} />
         ) : (
           <CareForm key={`${mode}-${index}`} kind={mode} index={index} objects={objects} onCare={onCare} />
@@ -214,7 +222,7 @@ function DedicateForm({ object, onSave }: { object: SavedObject; onSave: (input:
   );
 }
 
-export type DeityMode = 'offering' | 'reason';
+export type DeityMode = 'offering' | 'reason' | 'widget';
 
 type DeityProps = {
   mode: DeityMode | null;
@@ -224,15 +232,24 @@ type DeityProps = {
   onOffer: (index: number, input: OfferingInput) => void;
   onUpdate: (index: number, offeringId: string, input: OfferingUpdate) => void;
   onReason: (index: number, reason: string, notes: string) => void;
+  /** Save (or clear, with null) the offering the home screen widget records for this presence. */
+  onDefaultOffering: (index: number, value: DefaultOffering | null) => void;
 };
 
 /** Record offerings and the reason for a presence on the altar. */
-export function DeitySheet({ mode, index, objects, onClose, onOffer, onUpdate, onReason }: DeityProps) {
+export function DeitySheet({ mode, index, objects, onClose, onOffer, onUpdate, onReason, onDefaultOffering }: DeityProps) {
   const object = index != null ? objects[index] : null;
   return (
-    <Sheet visible={!!mode && !!object} eyebrow={mode === 'reason' ? 'Reason for presence' : 'Offerings'} title={shortLabel(object?.label, 'Presence')} onClose={onClose}>
+    <Sheet
+      visible={!!mode && !!object}
+      eyebrow={mode === 'reason' ? 'Reason for presence' : mode === 'widget' ? 'Widget offering' : 'Offerings'}
+      title={shortLabel(object?.label, 'Presence')}
+      onClose={onClose}
+    >
       {mode && object && index != null && (
-        mode === 'reason' ? (
+        mode === 'widget' ? (
+          <DefaultOfferingForm key={`w-${index}`} object={object} objects={objects} onSave={(value) => onDefaultOffering(index, value)} />
+        ) : mode === 'reason' ? (
           <ReasonForm key={`r-${index}`} object={object} onSave={(reason, notes) => onReason(index, reason, notes)} />
         ) : (
           <OfferingManager key={`o-${index}`} object={object} objects={objects} onOffer={(input) => onOffer(index, input)} onUpdate={(id, input) => onUpdate(index, id, input)} />
@@ -362,6 +379,74 @@ function ReasonForm({ object, onSave }: { object: SavedObject; onSave: (reason: 
 }
 
 // ─── Pieces ──────────────────────────────────────────────────────────────
+
+/** What the home screen widget's Offer button offers to this presence. */
+function DefaultOfferingForm({ object, objects, onSave }: { object: SavedObject; objects: SavedObject[]; onSave: (value: DefaultOffering | null) => void }) {
+  const current = defaultOfferingOf(object, nowIso());
+  const supports = supportsOn(objects, object);
+  const [types, setTypes] = useState<string[]>(current?.types ?? []);
+  const [picked, setPicked] = useState<string[]>((current?.supports ?? []).map((s) => s.id).filter((id) => supports.some((s) => s.id === id)));
+  const [customItems, setCustomItems] = useState(current?.customItems ?? '');
+  const [intention, setIntention] = useState(current?.intention ?? '');
+  const [message, setMessage] = useState(current?.message ?? '');
+  const chosenSupports = supports.filter((s) => picked.includes(s.id));
+  const ready = types.length > 0 || chosenSupports.length > 0 || !!customItems.trim() || !!intention.trim();
+  return (
+    <View style={styles.form}>
+      <Text style={type.caption}>
+        Each tap of Offer on your home screen records this offering to {shortLabel(object.label, 'this presence')}, at the moment you tap.
+      </Text>
+      <Group label="1. Offering types">
+        <Options options={OFFERING_TYPES} values={types} onToggle={(t) => setTypes((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]))} />
+      </Group>
+      <Group label="2. What you offer">
+        <Supports supports={supports} picked={picked} onChange={setPicked} />
+        <Input value={customItems} onChange={setCustomItems} placeholder="Other offerings, separated by commas (wine, bread, honey…)" />
+      </Group>
+      <Group label="3. Intention">
+        <Input value={intention} onChange={setIntention} placeholder="Gratitude, devotion, protection…" />
+        <Input value={message} onChange={setMessage} placeholder="Optional prayer or words, recorded with each offering" multiline />
+      </Group>
+      <Button label="Save widget offering" disabled={!ready} onPress={() => onSave({ types, supports: chosenSupports, customItems, intention, message })} />
+      {current && <Button label="Clear it" variant="outline" onPress={() => onSave(null)} />}
+    </View>
+  );
+}
+
+/** How the home screen widget's Cleanse button cleanses this crystal. */
+function DefaultCleansingForm({ object, objects, onSave }: { object: SavedObject; objects: SavedObject[]; onSave: (value: DefaultCleansing | null) => void }) {
+  const current = defaultCleansingOf(object, nowIso());
+  const supports = supportsOn(objects, object);
+  const [purpose, setPurpose] = useState(current?.purpose ?? 'Routine care');
+  const [methods, setMethods] = useState<string[]>(current?.methods ?? []);
+  const [picked, setPicked] = useState<string[]>((current?.supports ?? []).map((s) => s.id).filter((id) => supports.some((s) => s.id === id)));
+  const [notes, setNotes] = useState(current?.notes ?? '');
+  return (
+    <View style={styles.form}>
+      <Text style={type.caption}>
+        Each tap of Cleanse on your home screen records this cleansing for {shortLabel(object.label, 'this crystal')}, at the moment you tap. Its intentions are kept.
+      </Text>
+      <Group label="1. Reason for cleansing">
+        <Options options={CLEANSE_REASONS} value={purpose} onChange={setPurpose} />
+      </Group>
+      <Group label="2. Cleansing methods">
+        <Options options={CLEANSE_METHODS} values={methods} onToggle={(m) => setMethods((prev) => (prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m]))} />
+      </Group>
+      <Group label="3. Supports used">
+        <Supports supports={supports} picked={picked} onChange={setPicked} />
+      </Group>
+      <Group label="Notes">
+        <Input value={notes} onChange={setNotes} placeholder="Optional, recorded with each cleansing" multiline />
+      </Group>
+      <Button
+        label="Save widget cleansing"
+        disabled={!methods.length}
+        onPress={() => onSave({ purpose, methods, supports: supports.filter((s) => picked.includes(s.id)), notes })}
+      />
+      {current && <Button label="Clear it" variant="outline" onPress={() => onSave(null)} />}
+    </View>
+  );
+}
 
 function Group({ label, children }: { label: string; children: ReactNode }) {
   return (

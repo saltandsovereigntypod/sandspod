@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { offeringsOf } from '../src/lib/altar/devotion.ts';
+import { offeringsOf, setDefaultCleansing, setDefaultOffering } from '../src/lib/altar/devotion.ts';
 import { isLit, readLivingState } from '../src/lib/altar/livingState.ts';
 import { documentFromAltar } from '../src/lib/altar/snapshot.ts';
 import type { SavedAltar } from '../src/lib/altar/types.ts';
@@ -114,4 +114,34 @@ test('pictures: a cut of the background per widget size, objects sized to show s
   }
   assert.ok(pictures.every((p) => p.width >= 48 && p.width <= 1092));
   assert.ok(pictures.some((p) => p.path.endsWith('red-candle.png')));
+});
+
+test('Offer and Cleanse record what was chosen in the app', () => {
+  const at = '2026-10-15T21:00:00.000Z';
+  const base = documentFromAltar(hearth).objects;
+  const deity = setDefaultOffering(base[2], { types: ['Drink', 'Herbs'], supports: [], customItems: 'Red wine, rosemary', intention: 'Gratitude', message: 'Hail Hekate' }, at);
+  const crystal = setDefaultCleansing(base[3], { purpose: 'After ritual use', methods: ['Moonlight', 'Smoke'], supports: [], notes: 'Under the full moon' }, at);
+  const altar = { ...hearth, objects: [base[0], base[1], deity, crystal, base[4]] };
+  const changed = applyWidgetActions(
+    [altar],
+    [
+      { id: '1', altarId: 'hearth', kind: 'offer', key: 'd1', at },
+      { id: '2', altarId: 'hearth', kind: 'cleanse', key: 'x1', at },
+    ],
+    at,
+  );
+  const objects = changed[0].doc.objects;
+  const offering = offeringsOf(objects[2], at)[0];
+  assert.deepEqual(offering.types, ['drink', 'herbs']);
+  assert.deepEqual(offering.items.map((i) => i.label), ['Red wine', 'rosemary']);
+  assert.equal(offering.intention, 'Gratitude');
+  assert.equal(offering.message, 'Hail Hekate');
+  const care = (readLivingState(objects[3], at).crystal as { cleansingHistory: Record<string, unknown>[] }).cleansingHistory.at(-1)!;
+  assert.deepEqual(care.methods, ['moonlight', 'smoke']);
+  assert.equal(care.purpose, 'after-ritual-use');
+  assert.equal(care.notes, 'Under the full moon');
+  // The widget shows what each button does.
+  const shown = widgetAltar(altar, () => '', new Date(at));
+  assert.equal(shown.presences[0].offering, 'Red wine, rosemary');
+  assert.equal(shown.crystals[0].cleansing, 'Moonlight, Smoke');
 });

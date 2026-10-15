@@ -267,8 +267,17 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
     </HStack>
   );
 
+  // The altar's name, small and quiet so the altar itself leads.
   const title = (size: number) => (
-    <Text modifiers={[font({ size, weight: 'semibold', design: 'serif' }), foregroundStyle(cream), lineLimit(1), shadow({ radius: 3, x: 0, y: 1, color: '#000000' })]}>
+    <Text
+      modifiers={[
+        font({ size, weight: 'medium', design: 'serif' }),
+        foregroundStyle(cream),
+        opacity(0.85),
+        lineLimit(1),
+        shadow({ radius: 3, x: 0, y: 1, color: '#000000' }),
+      ]}
+    >
       {altar.name}
     </Text>
   );
@@ -297,7 +306,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
         {scene('small', 170, 170)}
         {scrims(56, 64)}
         <VStack alignment="leading" spacing={2} modifiers={[fill, padding({ all: 14 })]}>
-          {title(14)}
+          {title(11)}
           <Spacer />
           <HStack alignment="bottom">
             {status(11)}
@@ -316,7 +325,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
         {scene('medium', 364, 170)}
         {scrims(52, 60)}
         <VStack alignment="leading" spacing={2} modifiers={[fill, padding({ horizontal: 18, vertical: 14 })]}>
-          {title(15)}
+          {title(12)}
           <Spacer />
           <HStack alignment="bottom">
             <VStack alignment="leading" spacing={1}>
@@ -339,7 +348,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
       {scene('large', 364, 382)}
       {scrims(64, 210)}
       <VStack alignment="leading" spacing={7} modifiers={[fill, padding({ horizontal: 20, vertical: 18 })]}>
-        {title(19)}
+        {title(13)}
         <Spacer />
         {total ? (
           <HStack spacing={6}>
@@ -353,7 +362,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
           <HStack key={p.key} spacing={6}>
             <Image systemName="sparkles" size={12} color={gold} modifiers={[own]} />
             <VStack alignment="leading" spacing={0}>
-              <Text modifiers={[font({ size: 13, design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>{p.label}</Text>
+              <Text modifiers={[font({ size: 13, design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>{p.offering ? `${p.label} · ${p.offering}` : p.label}</Text>
               {ago(p.lastOffering, 'Last offering', 'No offerings yet', 10, cream)}
             </VStack>
             <Spacer />
@@ -365,7 +374,9 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
             <Image systemName="diamond.fill" size={11} color={gold} modifiers={[own]} />
             <VStack alignment="leading" spacing={0}>
               <Text modifiers={[font({ size: 13, design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>
-                {altar.crystals.length === 1 ? altar.crystals[0].label : `${altar.crystals.length} crystals`}
+                {altar.crystals.length === 1
+                  ? `${altar.crystals[0].label}${altar.crystals[0].cleansing ? ` · ${altar.crystals[0].cleansing}` : ''}`
+                  : `${altar.crystals.length} crystals`}
               </Text>
               {ago(lastCleansed, 'Last cleansed', 'Not cleansed yet', 10, cream)}
             </VStack>
