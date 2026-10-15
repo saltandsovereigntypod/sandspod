@@ -42,3 +42,24 @@ export function setAltarWidgetSlot(altarId: string, slot: number) {
   emit();
   AsyncStorage.setItem(KEY, JSON.stringify(slots)).catch(() => {});
 }
+
+/** What happened the last time the app updated the Altar widget, shown in the Home screen sheet. */
+export type AltarWidgetSyncStatus = { at: string; altars: number; pictures: number; error: string | null };
+
+let syncStatus: AltarWidgetSyncStatus | null = null;
+const syncListeners = new Set<() => void>();
+
+export function reportAltarWidgetSync(status: AltarWidgetSyncStatus) {
+  syncStatus = status;
+  syncListeners.forEach((l) => l());
+}
+
+export function useAltarWidgetSyncStatus(): AltarWidgetSyncStatus | null {
+  return useSyncExternalStore(
+    (listener) => {
+      syncListeners.add(listener);
+      return () => syncListeners.delete(listener);
+    },
+    () => syncStatus,
+  );
+}

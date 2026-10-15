@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import type { SavedAltar } from '../../lib/altar/types';
 import { ALTAR_WIDGET_SLOTS, slotAltars } from '../../lib/altarWidget';
-import { setAltarWidgetSlot, useAltarWidgetSlots } from '../../lib/altarWidgetSlots';
+import { setAltarWidgetSlot, useAltarWidgetSlots, useAltarWidgetSyncStatus } from '../../lib/altarWidgetSlots';
 import { colors, fonts, type } from '../../theme';
 import { Chip, ChipRow } from './Chip';
 import { Sheet } from './Sheet';
@@ -20,6 +20,7 @@ export function WidgetSheet({ visible, altarId, altarName, altars, onClose }: Pr
   const chosen = useAltarWidgetSlots();
   const placed = slotAltars(altars, chosen);
   const mine = chosen.indexOf(altarId);
+  const sync = useAltarWidgetSyncStatus();
   return (
     <Sheet visible={visible} size="half" eyebrow="Home screen widget" title={altarName} onClose={onClose}>
       <Text style={type.body}>
@@ -46,6 +47,14 @@ export function WidgetSheet({ visible, altarId, altarName, altars, onClose }: Pr
           </Text>
         ))}
       </View>
+      <Text style={[type.eyebrow, styles.heading]}>Widget status</Text>
+      <Text style={[type.caption, sync?.error ? styles.problem : null]} selectable>
+        {!sync
+          ? 'Not sent to the widget yet. It updates whenever the app opens.'
+          : sync.error
+            ? `Couldn’t update the widget: ${sync.error}`
+            : `Sent ${sync.altars} altar${sync.altars === 1 ? '' : 's'} and ${sync.pictures} picture${sync.pictures === 1 ? '' : 's'} at ${new Date(sync.at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}.`}
+      </Text>
       <Text style={[type.eyebrow, styles.heading]}>Adding it</Text>
       <Text style={type.caption}>
         Press and hold an empty spot on your home screen, tap Edit, then Add Widget, and find Salt & Sovereignty. Choose
@@ -61,4 +70,5 @@ const styles = StyleSheet.create({
   places: { gap: 2, marginTop: 10 },
   place: { color: colors.muted },
   here: { color: colors.cream, fontFamily: fonts.bodySemi },
+  problem: { color: '#e09a86' },
 });

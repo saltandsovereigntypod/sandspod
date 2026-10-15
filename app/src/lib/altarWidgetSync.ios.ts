@@ -15,21 +15,21 @@ import { altarDataFromDocument } from './altar/snapshot';
 import { useAltars } from './altar/store';
 import type { SavedAltar } from './altar/types';
 import { altarImagePaths, applyWidgetActions, slotAltars, widgetAltar, type AltarWidgetProps, type WidgetAction } from './altarWidget';
-import { useAltarWidgetSlots } from './altarWidgetSlots';
+import { reportAltarWidgetSync, useAltarWidgetSlots } from './altarWidgetSlots';
 
 type WidgetsModule = typeof import('expo-widgets');
 type AltarWidgetModule = typeof import('../widgets/AltarWidget');
 
 // Builds without the widget extension don't have the native module.
-function native(): { widget: AltarWidgetModule['default']; widgets: WidgetsModule } | null {
+function native(): { widget: AltarWidgetModule['default']; widgets: WidgetsModule } | string {
   try {
     /* eslint-disable @typescript-eslint/no-require-imports -- loaded lazily on purpose (see above) */
     const widget = (require('../widgets/AltarWidget') as AltarWidgetModule).default;
     const widgets = require('expo-widgets') as WidgetsModule;
     /* eslint-enable @typescript-eslint/no-require-imports */
-    return widgets.widgetsDirectory ? { widget, widgets } : null;
-  } catch {
-    return null;
+    return { widget, widgets };
+  } catch (e) {
+    return `This version of the app has no widgets (${e instanceof Error ? e.message : String(e)}).`;
   }
 }
 
@@ -128,13 +128,19 @@ export function useAltarWidgetSync() {
 
   useEffect(() => {
     const parts = native();
-    if (!parts) return;
+    if (typeof parts === 'string') {
+      reportAltarWidgetSync({ at: new Date().toISOString(), altars: 0, pictures: 0, error: parts });
+      return;
+    }
     const { widget, widgets } = parts;
 
     const run = async () => {
       const { altars: current, save: saveAltar, slots: chosen, ready } = latest.current;
-      if (!ready) return;
+      // Cached altars are good enough to show; wait only while nothing has loaded yet.
+      if (!ready && current.length === 0) return;
       const now = new Date().toISOString();
+      const report = (pictures: number, error: string | null, count: number) =>
+        reportAltarWidgetSync({ at: new Date().toISOString(), altars: count, pictures, error });
 
       // First, what was done from the widget since last time.
       const actions = await pendingActions(widget);
@@ -150,15 +156,28 @@ export function useAltarWidgetSync() {
       }
 
       const placed = slotAltars(shown, chosen);
-      const pictures = await preparePictures(widgets.widgetsDirectory, placed);
-      const props: AltarWidgetProps = {
-        altars: placed.map((altar) => widgetAltar(altar, (path) => pictures.get(path) ?? '', new Date())),
-        // Keep anything tapped while this was running, for next time.
-        actions: [],
-      };
       const done = new Set(actions.map((a) => a.id));
-      props.actions = (await pendingActions(widget)).filter((a) => !done.has(a.id));
-      widget.updateSnapshot(props);
+      const send = async (pictures: Map<string, string>) => {
+        const props: AltarWidgetProps = {
+          altars: placed.map((altar) => widgetAltar(altar, (path) => pictures.get(path) ?? '', new Date())),
+          // Keep anything tapped while this was running, for next time.
+          actions: (await pendingActions(widget)).filter((a) => !done.has(a.id)),
+        };
+        widget.updateSnapshot(props);
+      };
+
+      // The altars go to the widget straight away; pictures follow, so a picture
+      // that can't be made never leaves the widget empty.
+      await send(new Map());
+      report(0, null, placed.length);
+      try {
+        if (!widgets.widgetsDirectory) throw new Error('the shared widget folder is unavailable');
+        const pictures = await preparePictures(widgets.widgetsDirectory, placed);
+        await send(pictures);
+        report(pictures.size, null, placed.length);
+      } catch (e) {
+        report(0, `Pictures: ${e instanceof Error ? e.message : String(e)}`, placed.length);
+      }
     };
 
     const sync = () => {
@@ -167,8 +186,9 @@ export function useAltarWidgetSync() {
         return;
       }
       running.current = run()
-        .catch(() => {
-          // The widget is a nicety; never let it disturb the app.
+        .catch((e) => {
+          // The widget is a nicety; never let it disturb the app, but say what went wrong.
+          reportAltarWidgetSync({ at: new Date().toISOString(), altars: 0, pictures: 0, error: e instanceof Error ? e.message : String(e) });
         })
         .finally(() => {
           running.current = null;
