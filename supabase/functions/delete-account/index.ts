@@ -62,12 +62,25 @@ Deno.serve(async (request) => {
 
     const { data: buckets, error: bucketError } = await admin.storage.listBuckets();
     if (bucketError) throw new Error("storage_inventory_failed");
+    // Pictures live in folders under the person's id (userId/altar-items/…), so
+    // walk every folder: listing only the top level would leave them behind.
+    const filesUnder = async (bucket: string, prefix: string): Promise<string[]> => {
+      const found: string[] = [];
+      for (let offset = 0; ; offset += 1000) {
+        const { data, error: listError } = await admin.storage.from(bucket).list(prefix, { limit: 1000, offset });
+        if (listError) throw new Error("storage_list_failed");
+        for (const entry of data || []) {
+          const path = `${prefix}/${entry.name}`;
+          if (entry.id === null) found.push(...await filesUnder(bucket, path));
+          else found.push(path);
+        }
+        if (!data || data.length < 1000) return found;
+      }
+    };
     for (const bucket of buckets || []) {
-      const { data: objects, error: listError } = await admin.storage.from(bucket.name).list(userId, { limit: 1000 });
-      if (listError) throw new Error("storage_list_failed");
-      const paths = (objects || []).map((object) => `${userId}/${object.name}`);
-      if (paths.length) {
-        const { error: removeError } = await admin.storage.from(bucket.name).remove(paths);
+      const paths = await filesUnder(bucket.name, userId);
+      for (let i = 0; i < paths.length; i += 1000) {
+        const { error: removeError } = await admin.storage.from(bucket.name).remove(paths.slice(i, i + 1000));
         if (removeError) throw new Error("storage_remove_failed");
       }
     }
