@@ -69,7 +69,9 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
         items: chosen.items ?? 0,
       }
     : undefined;
-  const fill = frame({ maxWidth: 10000, maxHeight: 10000 });
+  // Takes exactly the widget's size: never grows to fit wider content (the scene is
+  // made for the largest iPhones), which would push words past the widget's edges.
+  const fill = frame({ minWidth: 0, maxWidth: 10000, minHeight: 0, maxHeight: 10000 });
   const lock = family === 'accessoryCircular' || family === 'accessoryRectangular' || family === 'accessoryInline';
   // Pictures keep their own colours on tinted and clear home screens.
   const own = widgetAccentedRenderingMode('fullColor');
@@ -199,7 +201,8 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
     const ox = f?.ox ?? 0;
     const oy = f?.oy ?? 0;
     return (
-      <ZStack alignment="topLeading" modifiers={[frame({ width: viewW, height: viewH, alignment: 'topLeading' }), clipped()]}>
+      <ZStack modifiers={[fill, clipped()]}>
+      <ZStack alignment="topLeading" modifiers={[frame({ width: viewW, height: viewH, alignment: 'topLeading' })]}>
         <ZStack alignment="topLeading" modifiers={[frame({ width: W, height: H, alignment: 'topLeading' }), offset({ x: -ox, y: -oy })]}>
           {f?.background ? picture(f.background, ox, oy, viewW, viewH, 'stretch') : picture(altar.background, 0, 0, W, H, 'fill')}
           {art
@@ -225,8 +228,22 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
           })}
         </ZStack>
       </ZStack>
+      </ZStack>
     );
   };
+
+  // A pill button with words; gold for the main action.
+  const pill = (target: string, onPress: () => AltarWidgetProps, text: string, main = false) => (
+    <Button key={target} target={target} onPress={onPress} modifiers={[buttonStyle('plain')]}>
+      <ZStack>
+        {art ? (
+          <Image uiImage={main && art.pillGold ? art.pillGold : art.pill} modifiers={[resizable({ leading: 20, trailing: 20 }), frame({ width: 78, height: 28 }), own]} />
+        ) : null}
+        <Text modifiers={[font({ size: 11, weight: 'semibold' }), foregroundStyle(main ? night : gold)]}>{text}</Text>
+      </ZStack>
+    </Button>
+  );
+  const toggleText = anyLit ? 'Snuff all' : 'Light all';
 
   // A round button: a dark glass disc (gold when it's the main action) with a symbol.
   const round = (target: string, onPress: () => AltarWidgetProps, symbol: string, main: boolean, size: number) => (
@@ -241,7 +258,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
     <HStack spacing={8}>
       {altar.presences.length ? round('offer-all', act('offer', ''), 'hands.sparkles.fill', false, size) : null}
       {altar.crystals.length ? round('cleanse-all', act('cleanse', ''), 'sparkles', false, size) : null}
-      {total ? round('toggle-all', toggleAll, anyLit ? 'wind' : 'flame.fill', !anyLit, size) : null}
+      {total ? pill('toggle-all', toggleAll, toggleText, !anyLit) : null}
     </HStack>
   );
 
@@ -274,13 +291,13 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
       <ZStack modifiers={[link, containerBackground(night, 'widget'), fill]}>
         {scene('small', 170, 170)}
         {scrims(56, 64)}
-        <VStack alignment="leading" spacing={2} modifiers={[fill, padding({ all: 12 })]}>
+        <VStack alignment="leading" spacing={2} modifiers={[fill, padding({ all: 14 })]}>
           {title(14)}
           <Spacer />
           <HStack alignment="bottom">
             {status(11)}
             <Spacer />
-            {total ? round('toggle-all', toggleAll, anyLit ? 'wind' : 'flame.fill', !anyLit, 36) : null}
+            {total ? pill('toggle-all', toggleAll, toggleText, !anyLit) : null}
           </HStack>
         </VStack>
       </ZStack>
@@ -293,7 +310,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
       <ZStack modifiers={[link, containerBackground(night, 'widget'), fill]}>
         {scene('medium', 364, 170)}
         {scrims(52, 60)}
-        <VStack alignment="leading" spacing={2} modifiers={[fill, padding({ horizontal: 14, vertical: 12 })]}>
+        <VStack alignment="leading" spacing={2} modifiers={[fill, padding({ horizontal: 18, vertical: 14 })]}>
           {title(15)}
           <Spacer />
           <HStack alignment="bottom">
@@ -311,20 +328,12 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
 
   // ── Large: the altar above, and below it everything on it to tend ─────
   const label = (text: string) => <Text modifiers={[font({ size: 10, weight: 'semibold' }), foregroundStyle(gold), lineLimit(1)]}>{text}</Text>;
-  const pill = (target: string, onPress: () => AltarWidgetProps, text: string) => (
-    <Button key={target} target={target} onPress={onPress} modifiers={[buttonStyle('plain')]}>
-      <ZStack>
-        {art ? <Image uiImage={art.pill} modifiers={[resizable({ leading: 20, trailing: 20 }), frame({ width: 76, height: 26 }), own]} /> : null}
-        <Text modifiers={[font({ size: 11, weight: 'semibold' }), foregroundStyle(gold)]}>{text}</Text>
-      </ZStack>
-    </Button>
-  );
 
   return (
     <ZStack modifiers={[link, containerBackground(night, 'widget'), fill]}>
       {scene('large', 364, 382)}
       {scrims(64, 210)}
-      <VStack alignment="leading" spacing={7} modifiers={[fill, padding({ horizontal: 16, vertical: 14 })]}>
+      <VStack alignment="leading" spacing={7} modifiers={[fill, padding({ horizontal: 20, vertical: 18 })]}>
         {title(19)}
         <Spacer />
         {total ? (
@@ -332,7 +341,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
             {status(12)}
             {earliest ? ago(earliest, '· lit', '', 11, cream) : null}
             <Spacer />
-            {pill('toggle-all-pill', toggleAll, anyLit ? 'Snuff all' : 'Light all')}
+            {pill('toggle-all-pill', toggleAll, toggleText, !anyLit)}
           </HStack>
         ) : null}
         {altar.presences.slice(0, 2).map((p) => (

@@ -127,6 +127,7 @@ export type AltarWidgetArt = {
   button: string;
   buttonGold: string;
   pill: string;
+  pillGold?: string;
 };
 
 export type AltarWidgetProps = {

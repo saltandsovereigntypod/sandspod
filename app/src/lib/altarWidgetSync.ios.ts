@@ -61,7 +61,7 @@ async function localUri(path: string): Promise<string | null> {
 }
 
 /** The widget's own artwork: flames, light and the shading behind its words and buttons. */
-const WIDGET_ART: Record<keyof AltarWidgetArt, number> = {
+const WIDGET_ART: Record<Required<keyof AltarWidgetArt>, number> = {
   flame: require('../../assets/widget/flame.png'),
   halo: require('../../assets/widget/halo.png'),
   pool: require('../../assets/widget/pool.png'),
@@ -71,6 +71,7 @@ const WIDGET_ART: Record<keyof AltarWidgetArt, number> = {
   button: require('../../assets/widget/button.png'),
   buttonGold: require('../../assets/widget/button-gold.png'),
   pill: require('../../assets/widget/pill.png'),
+  pillGold: require('../../assets/widget/pill-gold.png'),
 };
 
 /**
@@ -142,6 +143,10 @@ async function preparePictures(root: string, altars: SavedAltar[]): Promise<{ pi
   }
   return { pictures, art };
 }
+
+/** The pictures made last time, kept while the app runs. */
+let lastPictures = new Map<string, string>();
+let lastArt: AltarWidgetArt | undefined;
 
 /** The widget's storage only holds plain values: drop nulls and undefined anywhere in the props. */
 function withoutEmpties<T>(value: T): T {
@@ -217,11 +222,12 @@ export function useAltarWidgetSync() {
         widget.updateSnapshot(withoutEmpties(props));
       };
 
-      // The altars go to the widget straight away; pictures follow, so a picture
-      // that can't be made never leaves the widget empty.
+      // The altars go to the widget straight away with the pictures made last time
+      // (so a tap on the widget never leaves it without its buttons and shading);
+      // any new pictures follow.
       let firstError: string | null = null;
       try {
-        await send(new Map());
+        await send(lastPictures, lastArt);
       } catch (e) {
         firstError = e instanceof Error ? e.message : String(e);
       }
@@ -229,6 +235,8 @@ export function useAltarWidgetSync() {
       try {
         if (!widgets.widgetsDirectory) throw new Error('the shared widget folder is unavailable');
         const { pictures, art } = await preparePictures(widgets.widgetsDirectory, placed);
+        lastPictures = pictures;
+        lastArt = art;
         await send(pictures, art);
         report(pictures.size, null, placed.length);
       } catch (e) {
