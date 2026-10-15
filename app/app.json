@@ -71,14 +71,51 @@
             {
               "name": "MoonWidget",
               "displayName": "Tonight's Moon",
-              "description": "The moon tonight, today's holiday and your next ritual.",
+              "description": "The moon tonight; larger, with today's holiday and what it means.",
               "ios": {
                 "supportedFamilies": [
                   "systemSmall",
                   "systemMedium",
+                  "systemLarge",
                   "accessoryCircular",
                   "accessoryRectangular",
                   "accessoryInline"
+                ]
+              }
+            },
+            {
+              "name": "HolidayWidget",
+              "displayName": "Next Holiday",
+              "description": "A countdown to the next holiday in your calendars.",
+              "ios": {
+                "supportedFamilies": [
+                  "systemSmall",
+                  "accessoryRectangular",
+                  "accessoryInline"
+                ]
+              }
+            },
+            {
+              "name": "ComingUpWidget",
+              "displayName": "Coming Up",
+              "description": "The next moon phases and holidays.",
+              "ios": {
+                "supportedFamilies": [
+                  "systemMedium",
+                  "systemLarge"
+                ]
+              }
+            },
+            {
+              "name": "RitualWidget",
+              "displayName": "Next Ritual",
+              "description": "Your next planned ritual; larger, with its intention and what you'll need.",
+              "ios": {
+                "supportedFamilies": [
+                  "systemSmall",
+                  "systemMedium",
+                  "systemLarge",
+                  "accessoryRectangular"
                 ]
               }
             }

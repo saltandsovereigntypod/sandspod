@@ -1,22 +1,26 @@
-// The home and lock screen widget. It runs inside iOS's widget extension, in
-// its own JavaScript runtime: no hooks, no imports at run time, nothing from
-// outside the function. The app sends it a month of days (lib/widgetTimeline).
+// "Tonight's Moon": the moon on its own when small; with today's holiday and
+// what it means when medium or large; and on the lock screen. It runs inside
+// iOS's widget extension, in its own JavaScript runtime: no hooks, no imports at
+// run time, nothing from outside the function. The app sends it a month of
+// days (lib/widgetTimeline).
 
 import { HStack, Image, Spacer, Text, VStack } from '@expo/ui/swift-ui';
-import { containerBackground, font, foregroundStyle, frame, lineLimit, padding, widgetURL } from '@expo/ui/swift-ui/modifiers';
+import { containerBackground, font, foregroundStyle, frame, lineLimit, widgetURL } from '@expo/ui/swift-ui/modifiers';
 import { createWidget, type WidgetEnvironment } from 'expo-widgets';
 
-import type { MoonWidgetProps } from '../lib/widgetTimeline';
+import type { WidgetDayProps } from '../lib/widgetTimeline';
 
-const MoonWidget = (props: MoonWidgetProps, environment: WidgetEnvironment) => {
+const MoonWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => {
   'widget';
   const night = '#0f1a14';
   const cream = '#f4ecd8';
   const gold = '#e2c36d';
   const muted = '#cabf9d';
+  const fill = frame({ maxWidth: 10000, maxHeight: 10000, alignment: 'topLeading' });
   const family = environment.widgetFamily;
   const link = widgetURL('saltandsovereignty://today');
   const lit = `${props.percent}%`;
+  const label = (text: string) => <Text modifiers={[font({ size: 10, weight: 'semibold' }), foregroundStyle(gold)]}>{text}</Text>;
 
   if (family === 'accessoryInline') {
     return <Text modifiers={[link]}>{`${props.phase} · ${lit}`}</Text>;
@@ -44,6 +48,47 @@ const MoonWidget = (props: MoonWidgetProps, environment: WidgetEnvironment) => {
     );
   }
 
+  // Today's holiday, or a quiet note and the next one.
+  const today = (lines: number) =>
+    props.holidayToday ? (
+      <VStack alignment="leading" spacing={2}>
+        {label('TODAY')}
+        <Text modifiers={[font({ size: lines > 3 ? 20 : 15, weight: 'semibold', design: 'serif' }), foregroundStyle(cream), lineLimit(2)]}>{props.holiday}</Text>
+        <Text modifiers={[font({ size: 12 }), foregroundStyle(muted), lineLimit(lines)]}>{props.holidayMeaning}</Text>
+      </VStack>
+    ) : (
+      <VStack alignment="leading" spacing={2}>
+        {label('TODAY')}
+        <Text modifiers={[font({ size: 13 }), foregroundStyle(muted)]}>No holiday today</Text>
+        {props.nextHoliday ? (
+          <VStack alignment="leading" spacing={1}>
+            {label('NEXT HOLIDAY')}
+            <Text modifiers={[font({ size: lines > 3 ? 17 : 14, weight: 'semibold', design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>{props.nextHoliday.name}</Text>
+            <Text modifiers={[font({ size: 12 }), foregroundStyle(muted), lineLimit(1)]}>{`${props.nextHoliday.date} · ${props.nextHoliday.when}`}</Text>
+            {lines > 3 ? <Text modifiers={[font({ size: 12 }), foregroundStyle(muted), lineLimit(lines)]}>{props.holidayMeaning}</Text> : null}
+          </VStack>
+        ) : null}
+      </VStack>
+    );
+
+  if (family === 'systemLarge') {
+    return (
+      <VStack alignment="leading" spacing={14} modifiers={[link, containerBackground(night, 'widget'), fill]}>
+        {label("TONIGHT'S MOON")}
+        <HStack alignment="center" spacing={16}>
+          <Image systemName={props.symbol as never} size={64} color={cream} />
+          <VStack alignment="leading" spacing={3}>
+            <Text modifiers={[font({ size: 24, weight: 'semibold', design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>{props.phase}</Text>
+            <Text modifiers={[font({ size: 13 }), foregroundStyle(muted)]}>{`in ${props.sign} · ${lit} lit`}</Text>
+            <Text modifiers={[font({ size: 13 }), foregroundStyle(gold), lineLimit(1)]}>{`Next: ${props.next}`}</Text>
+          </VStack>
+        </HStack>
+        {today(6)}
+        <Spacer />
+      </VStack>
+    );
+  }
+
   const moonColumn = (
     <VStack alignment="leading" spacing={3}>
       <Image systemName={props.symbol as never} size={32} color={cream} />
@@ -55,41 +100,20 @@ const MoonWidget = (props: MoonWidgetProps, environment: WidgetEnvironment) => {
 
   if (family === 'systemMedium') {
     return (
-      <HStack
-        alignment="top"
-        spacing={14}
-        modifiers={[link, containerBackground(night, 'widget'), frame({ maxWidth: 10000, maxHeight: 10000, alignment: 'topLeading' })]}
-      >
+      <HStack alignment="top" spacing={14} modifiers={[link, containerBackground(night, 'widget'), fill]}>
         {moonColumn}
         <VStack alignment="leading" spacing={8} modifiers={[frame({ maxWidth: 10000, alignment: 'leading' })]}>
-          <VStack alignment="leading" spacing={1}>
-            <Text modifiers={[font({ size: 10, weight: 'semibold' }), foregroundStyle(gold)]}>{props.holidayToday ? 'TODAY' : 'NEXT HOLIDAY'}</Text>
-            <Text modifiers={[font({ size: 13 }), foregroundStyle(cream), lineLimit(2)]}>{props.holiday || 'None in your calendars'}</Text>
-          </VStack>
-          <VStack alignment="leading" spacing={1}>
-            <Text modifiers={[font({ size: 10, weight: 'semibold' }), foregroundStyle(gold)]}>NEXT MOON</Text>
-            <Text modifiers={[font({ size: 13 }), foregroundStyle(cream), lineLimit(1)]}>{props.next}</Text>
-          </VStack>
-          {props.ritual ? (
-            <VStack alignment="leading" spacing={1}>
-              <Text modifiers={[font({ size: 10, weight: 'semibold' }), foregroundStyle(gold)]}>YOUR NEXT RITUAL</Text>
-              <Text modifiers={[font({ size: 13 }), foregroundStyle(cream), lineLimit(2)]}>{props.ritual}</Text>
-            </VStack>
-          ) : null}
+          {today(3)}
         </VStack>
       </HStack>
     );
   }
 
-  // systemSmall
+  // systemSmall: the moon on its own.
   return (
-    <VStack
-      alignment="leading"
-      spacing={3}
-      modifiers={[link, containerBackground(night, 'widget'), frame({ maxWidth: 10000, maxHeight: 10000, alignment: 'topLeading' }), padding({ all: 0 })]}
-    >
+    <VStack alignment="leading" spacing={3} modifiers={[link, containerBackground(night, 'widget'), fill]}>
       {moonColumn}
-      <Text modifiers={[font({ size: 11 }), foregroundStyle(gold), lineLimit(1)]}>{props.holidayToday ? props.holiday : props.next}</Text>
+      <Text modifiers={[font({ size: 11 }), foregroundStyle(gold), lineLimit(1)]}>{`Next: ${props.next}`}</Text>
     </VStack>
   );
 };
