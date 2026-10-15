@@ -28,7 +28,7 @@ import {
   type Op,
   type SendError,
 } from './edits';
-import { altarRitualOps, ritualDateText, type AltarRitualItem } from './altarImport';
+import { altarRitualOps, ritualDateText, type AltarRitualItem, type WorkingDetails } from './altarImport';
 import { newId } from './ids';
 import { openSectionIn, pageBlocks } from './structure';
 import type { BlockRow, BlockType, BookRow, GrimoireSnapshot, PageLinkRow, PageRow, SectionRow } from './types';
@@ -50,7 +50,7 @@ export type GrimoireActions = {
   deleteSection: (sectionId: string) => void;
   createPage: (input: { title: string; sectionId: string | null; templateKey: string }) => string | null;
   /** A ritual page from a group on the altar (the website's altar import), filed under the open section. */
-  createRitualFromAltar: (input: { title: string; purpose: string; items: AltarRitualItem[] }) => string | null;
+  createRitualFromAltar: (input: { title: string; purpose: string | WorkingDetails; items: AltarRitualItem[] }) => string | null;
   /** The section being viewed (a page's section, or null for the top level), as the website's activeSectionId. */
   setOpenSection: (sectionId: string | null) => void;
   renamePage: (pageId: string, title: string) => void;

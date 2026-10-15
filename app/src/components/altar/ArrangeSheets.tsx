@@ -5,6 +5,8 @@ import { Button } from '../Button';
 import { shortLabel } from '../../lib/altar/cabinet';
 import type { SavedObject } from '../../lib/altar/types';
 import { colors, fonts, radius, touch, type } from '../../theme';
+import { WORKING_KINDS, type WorkingDetails } from '../../lib/grimoire/altarImport';
+import { Chip } from './Chip';
 import { Sheet } from './Sheet';
 
 /** Rename an object on this altar (the website's Edit action). */
@@ -106,6 +108,7 @@ export function GroupGrimoireSheet({
   items,
   sectionTitle,
   signedIn,
+  defaults,
   onClose,
   onCreate,
 }: {
@@ -116,68 +119,125 @@ export function GroupGrimoireSheet({
   sectionTitle: string | null;
   signedIn: boolean;
   onClose: () => void;
-  onCreate: (purpose: string, title: string) => void;
+  /** Pre-filled from tonight: the moon phase and the day. */
+  defaults: WorkingDetails;
+  onCreate: (details: WorkingDetails, title: string) => void;
 }) {
   return (
     <Sheet visible={visible} eyebrow="Record in Grimoire" title={name || 'Ritual Working'} onClose={onClose}>
-      {visible && <GroupGrimoireForm name={name} items={items} sectionTitle={sectionTitle} signedIn={signedIn} onCreate={onCreate} />}
+      {visible && <GroupGrimoireForm name={name} items={items} sectionTitle={sectionTitle} signedIn={signedIn} defaults={defaults} onCreate={onCreate} />}
     </Sheet>
   );
 }
+
+/** One optional field of a recorded working. */
+const WORKING_FIELDS: { key: keyof WorkingDetails; label: string; placeholder: string; lines?: boolean }[] = [
+  { key: 'intention', label: 'Intention', placeholder: 'What was this working for?', lines: true },
+  { key: 'time', label: 'Time', placeholder: 'Dusk, 9pm, the witching hour…' },
+  { key: 'moonPhase', label: 'Moon phase', placeholder: 'Waxing crescent' },
+  { key: 'day', label: 'Day', placeholder: 'Friday' },
+  { key: 'weather', label: 'Weather and season', placeholder: 'Rain, first frost…' },
+  { key: 'deities', label: 'Deities, spirits and ancestors', placeholder: 'Who you called on or honoured', lines: true },
+  { key: 'extraItems', label: 'Also used', placeholder: 'Anything not on the altar, one per line', lines: true },
+  { key: 'preparation', label: 'Preparation', placeholder: 'Cleansing, grounding, casting a circle…', lines: true },
+  { key: 'steps', label: 'What I did', placeholder: 'One step per line', lines: true },
+  { key: 'words', label: 'Words spoken', placeholder: 'Chants, petitions, prayers', lines: true },
+  { key: 'feelings', label: 'What I felt', placeholder: 'Energy, sensations, emotions', lines: true },
+  { key: 'signs', label: 'Signs and omens', placeholder: 'Anything you noticed', lines: true },
+  { key: 'results', label: 'Results', placeholder: 'You can add this later', lines: true },
+  { key: 'reflection', label: 'Reflection', placeholder: 'What you would keep or change', lines: true },
+  { key: 'followUp', label: 'Follow-up', placeholder: 'When to check back, what to do next', lines: true },
+];
 
 function GroupGrimoireForm({
   name,
   items,
   sectionTitle,
   signedIn,
+  defaults,
   onCreate,
 }: {
   name: string;
   items: { groupLabel: string; content: string }[];
   sectionTitle: string | null;
   signedIn: boolean;
-  onCreate: (purpose: string, title: string) => void;
+  defaults: WorkingDetails;
+  onCreate: (details: WorkingDetails, title: string) => void;
 }) {
   const [title, setTitle] = useState(name);
-  const [purpose, setPurpose] = useState('');
+  const [details, setDetails] = useState<WorkingDetails>(defaults);
+  const set = (key: keyof WorkingDetails, value: string) => setDetails((d) => ({ ...d, [key]: value }));
   if (!signedIn) return <Text style={type.body}>Sign in to record this in your Grimoire.</Text>;
   return (
     <View style={styles.form}>
-      <Text style={type.caption}>A new page in your Grimoire for this spell or working, with these items from the altar and room for what you did, your results and reflection.</Text>
+      <Text style={type.caption}>
+        A page in your Grimoire for this spell or working. Fill in as much or as little as you like; you can keep adding to it in the Grimoire.
+      </Text>
       <View style={styles.summary}>
         <Text style={type.eyebrow}>Section</Text>
         <Text style={type.body}>{sectionTitle || 'Top level (no section)'}</Text>
       </View>
-      <TextInput
-        value={title}
-        onChangeText={setTitle}
-        placeholder="Name this spell or working"
-        placeholderTextColor={colors.tabInactive}
-        accessibilityLabel="Page name"
-        style={styles.input}
-      />
-      <TextInput
-        value={purpose}
-        onChangeText={setPurpose}
-        placeholder="What was this working for?"
-        placeholderTextColor={colors.tabInactive}
-        accessibilityLabel="Ritual purpose"
-        multiline
-        style={[styles.input, styles.multiline]}
-      />
-      {items.map((group) => (
-        <View key={group.groupLabel} style={styles.summary}>
-          <Text style={type.eyebrow}>{group.groupLabel}</Text>
-          <Text style={type.body}>{group.content}</Text>
+      <View style={styles.field}>
+        <Text style={type.eyebrow}>Name</Text>
+        <TextInput
+          value={title}
+          onChangeText={setTitle}
+          placeholder="Name this spell or working"
+          placeholderTextColor={colors.tabInactive}
+          accessibilityLabel="Name"
+          style={styles.input}
+        />
+      </View>
+      <View style={styles.field}>
+        <Text style={type.eyebrow}>Type of working</Text>
+        <View style={styles.kinds}>
+          {WORKING_KINDS.map((kind) => (
+            <Chip key={kind} label={kind} active={details.kind === kind} onPress={() => set('kind', details.kind === kind ? '' : kind)} />
+          ))}
         </View>
+      </View>
+      {WORKING_FIELDS.slice(0, 6).map((field) => (
+        <WorkingField key={field.key} field={field} value={details[field.key] ?? ''} onChange={(value) => set(field.key, value)} />
       ))}
-      <Button label="Create Page" onPress={() => onCreate(purpose, title.trim())} />
+      {items.length > 0 && (
+        <View style={styles.summary}>
+          <Text style={type.eyebrow}>From the altar</Text>
+          {items.map((group) => (
+            <Text key={group.groupLabel} style={type.body}>
+              {group.groupLabel}: {group.content.split('\n').join(', ')}
+            </Text>
+          ))}
+        </View>
+      )}
+      {WORKING_FIELDS.slice(6).map((field) => (
+        <WorkingField key={field.key} field={field} value={details[field.key] ?? ''} onChange={(value) => set(field.key, value)} />
+      ))}
+      <Button label="Create Page" onPress={() => onCreate(details, title.trim())} />
+    </View>
+  );
+}
+
+function WorkingField({ field, value, onChange }: { field: (typeof WORKING_FIELDS)[number]; value: string; onChange: (value: string) => void }) {
+  return (
+    <View style={styles.field}>
+      <Text style={type.eyebrow}>{field.label}</Text>
+      <TextInput
+        value={value}
+        onChangeText={onChange}
+        placeholder={field.placeholder}
+        placeholderTextColor={colors.tabInactive}
+        accessibilityLabel={field.label}
+        multiline={field.lines}
+        style={[styles.input, field.lines && styles.multiline]}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   form: { gap: 12 },
+  field: { gap: 6 },
+  kinds: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   summary: { gap: 4 },
   multiline: { minHeight: 96, paddingTop: 12, textAlignVertical: 'top' },
   input: {

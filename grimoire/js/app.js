@@ -602,12 +602,87 @@ function formatAltarImportItems(items = []) {
     .filter((group) => group.content.trim());
 }
 
-async function createRitualPageFromAltarImport(ritual, purpose = "") {
+const WORKING_KINDS = ["Spell", "Ritual", "Devotion", "Offering", "Divination", "Cleansing", "Protection", "Manifestation", "Banishing", "Healing", "Shadow Work", "Other"];
+
+// The moon's phase by its age in the synodic month, named as the app names it
+// (lib/moon.ts). Close enough to pre-fill a field the person can change.
+function approximateMoonPhase(date = new Date()) {
+  const synodic = 29.530588853;
+  const knownNewMoon = Date.UTC(2000, 0, 6, 18, 14);
+  const age = ((((date.getTime() - knownNewMoon) / 86400000) % synodic) + synodic) % synodic;
+  if (age < 1) return "New Moon";
+  if (age < 6.4) return "Waxing Crescent";
+  if (age < 8.4) return "First Quarter";
+  if (age < 13.8) return "Waxing Gibbous";
+  if (age < 15.8) return "Full Moon";
+  if (age < 21.1) return "Waning Gibbous";
+  if (age < 23.1) return "Last Quarter";
+  if (age < 28.5) return "Waning Crescent";
+  return "New Moon";
+}
+
+// A recorded working as page blocks: only what was filled in, except What I
+// Did, Results and Reflection, kept for writing later. (app lib/grimoire/altarImport.ts)
+function buildWorkingBlocks(groupedItems, details, dateText) {
+  const d = typeof details === "string" ? { intention: details } : details || {};
+  const v = (value) => String(value || "").trim();
+  const blocks = [
+    { type: "heading", content: "Date" },
+    { type: "text", content: [dateText, v(d.time)].filter(Boolean).join(" · ") }
+  ];
+  const section = (heading, type, value) => {
+    if (v(value)) blocks.push({ type: "heading", content: heading }, { type, content: v(value) });
+  };
+  section("Type of Working", "text", d.kind);
+  blocks.push({ type: "heading", content: "Intention" }, { type: "text", content: v(d.intention) });
+  const timing = [
+    v(d.moonPhase) && `Moon phase: ${v(d.moonPhase)}`,
+    v(d.day) && `Day: ${v(d.day)}`,
+    v(d.weather) && `Weather: ${v(d.weather)}`
+  ].filter(Boolean);
+  if (timing.length) blocks.push({ type: "heading", content: "Timing" }, { type: "correspondence", content: timing.join("\n") });
+  section("Deities and Spirits", "text", d.deities);
+  if (groupedItems.length) {
+    blocks.push({ type: "heading", content: "Items from the Altar" });
+    groupedItems.forEach((group) => {
+      blocks.push({ type: "heading", content: group.groupLabel }, { type: "ingredient_list", content: group.content });
+    });
+  }
+  section("Also Used", "ingredient_list", d.extraItems);
+  section("Preparation", "text", d.preparation);
+  blocks.push({ type: "heading", content: "What I Did" }, { type: "numbered_list", content: v(d.steps) });
+  section("Words Spoken", "quote", d.words);
+  section("What I Felt", "text", d.feelings);
+  section("Signs and Omens", "text", d.signs);
+  blocks.push(
+    { type: "heading", content: "Results" },
+    { type: "text", content: v(d.results) },
+    { type: "heading", content: "Reflection" },
+    { type: "text", content: v(d.reflection) }
+  );
+  section("Follow-up", "text", d.followUp);
+  return blocks;
+}
+
+// The Grimoire opens the altar's handoff as soon as the page loads, before
+// sign-in and the book have finished loading; wait for them.
+async function waitForBook(timeoutMs = 15000) {
+  const startedAt = Date.now();
+  while (!currentBook && Date.now() - startedAt < timeoutMs) {
+    await new Promise((resolve) => setTimeout(resolve, 200));
+  }
+  return currentBook;
+}
+
+// Returns true once the page is saved, so the altar's handoff is only cleared then.
+async function createRitualPageFromAltarImport(ritual, details = "") {
+  setStatus("Opening your Book of Shadows...");
+  await waitForBook();
   const user = requireUser();
 
   if (!user || !currentBook) {
-    setStatus("Sign in to create a ritual page.");
-    return;
+    setStatus("Sign in to record this in your Grimoire. Your altar items are kept until you do.");
+    return false;
   }
 
   const title = ritual.name || "Ritual Working";
@@ -629,42 +704,13 @@ async function createRitualPageFromAltarImport(ritual, purpose = "") {
 
   if (error) {
     setStatus(error.message);
-    return;
+    return false;
   }
 
   pages.push(page);
   currentPage = page;
 
-  const ritualBlocks = [
-    { type: "heading", content: "Date" },
-    { type: "text", content: formatDate(new Date().toISOString()) },
-
-    { type: "heading", content: "Purpose" },
-    { type: "text", content: purpose || "" },
-
-    { type: "heading", content: "Items from the Altar" }
-  ];
-
-  groupedItems.forEach((group) => {
-    ritualBlocks.push({
-      type: "heading",
-      content: group.groupLabel
-    });
-
-    ritualBlocks.push({
-      type: "ingredient_list",
-      content: group.content
-    });
-  });
-
-  ritualBlocks.push(
-    { type: "heading", content: "Ritual Steps" },
-    { type: "numbered_list", content: "" },
-    { type: "heading", content: "Results" },
-    { type: "text", content: "" },
-    { type: "heading", content: "Reflection" },
-    { type: "text", content: "" }
-  );
+  const ritualBlocks = buildWorkingBlocks(groupedItems, details, formatDate(new Date().toISOString()));
 
   const rows = ritualBlocks.map((block, index) => ({
     user_id: user.id,
@@ -684,7 +730,7 @@ async function createRitualPageFromAltarImport(ritual, purpose = "") {
 
   if (blockError) {
     setStatus(blockError.message);
-    return;
+    return true;
   }
 
   currentBlocks = blocks || [];
@@ -693,7 +739,8 @@ async function createRitualPageFromAltarImport(ritual, purpose = "") {
   renderShelf();
   await openPage(page.id, "edit");
 
-  flashStatus("Ritual page created.");
+  flashStatus("Working recorded in your Grimoire.");
+  return true;
 }
 
 /* =========================================================

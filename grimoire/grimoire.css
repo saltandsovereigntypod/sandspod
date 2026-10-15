@@ -3337,3 +3337,56 @@ body.library-page-open .book-toc .book-toc-section:not(.my-practice-shelf):not(.
 .ritual-record-chips { display: flex; flex-wrap: wrap; gap: .45rem; }
 .ritual-record-chips span { padding: .35rem .65rem; border: 1px solid rgba(196, 165, 96, .35); border-radius: 999px; }
 .ritual-record-details { overflow-wrap: anywhere; color: var(--muted); }
+
+/* Record in Grimoire: the optional fields of a working. */
+.book-import-modal .book-import-field {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 0.9rem;
+}
+
+.book-import-modal .book-import-field textarea {
+  min-height: 4.5rem;
+}
+
+.book-import-modal .book-import-kinds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  border: 0;
+  padding: 0;
+}
+
+.book-import-kinds legend {
+  width: 100%;
+  margin-bottom: 0.4rem;
+}
+
+.book-import-modal .book-import-kind {
+  flex: 0 0 auto;
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid rgba(194, 200, 196, 0.24);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.book-import-kind:has(input:checked) {
+  border-color: rgba(185, 160, 93, 0.7);
+  background: rgba(185, 160, 93, 0.14);
+}
+
+.book-import-modal .book-import-kind input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.book-import-kind:has(input:focus-visible) {
+  outline: 2px solid #b9a05d;
+  outline-offset: 2px;
+}

@@ -52,26 +52,86 @@ export function groupAltarItems(items: AltarRitualItem[]): { groupLabel: string;
     .filter((group) => group.content.trim());
 }
 
-/** The page's blocks in order, as { type, content }. */
-export function altarRitualBlocks(items: AltarRitualItem[], purpose: string, dateText: string): { type: string; content: string }[] {
-  const blocks = [
+/** Kinds of working offered when recording one (any of them, or none). */
+export const WORKING_KINDS = [
+  'Spell',
+  'Ritual',
+  'Devotion',
+  'Offering',
+  'Divination',
+  'Cleansing',
+  'Protection',
+  'Manifestation',
+  'Banishing',
+  'Healing',
+  'Shadow Work',
+  'Other',
+] as const;
+
+/** Everything a recorded working can hold; every field is optional. */
+export type WorkingDetails = {
+  intention?: string;
+  kind?: string;
+  time?: string;
+  moonPhase?: string;
+  day?: string;
+  weather?: string;
+  deities?: string;
+  extraItems?: string;
+  preparation?: string;
+  steps?: string;
+  words?: string;
+  feelings?: string;
+  signs?: string;
+  results?: string;
+  reflection?: string;
+  followUp?: string;
+};
+
+/**
+ * The page's blocks in order, as { type, content }. Only the parts that were
+ * filled in appear, except What I Did, Results and Reflection, which are kept
+ * so they can be written later. (grimoire/js/app.js buildWorkingBlocks)
+ */
+export function altarRitualBlocks(items: AltarRitualItem[], details: WorkingDetails | string, dateText: string): { type: string; content: string }[] {
+  const d: WorkingDetails = typeof details === 'string' ? { intention: details } : details;
+  const v = (value: string | undefined) => (value ?? '').trim();
+  const blocks: { type: string; content: string }[] = [
     { type: 'heading', content: 'Date' },
-    { type: 'text', content: dateText },
-    { type: 'heading', content: 'Purpose' },
-    { type: 'text', content: purpose || '' },
-    { type: 'heading', content: 'Items from the Altar' },
+    { type: 'text', content: [dateText, v(d.time)].filter(Boolean).join(' · ') },
   ];
-  for (const group of groupAltarItems(items)) {
-    blocks.push({ type: 'heading', content: group.groupLabel }, { type: 'ingredient_list', content: group.content });
+  const section = (heading: string, type: string, value: string | undefined) => {
+    if (v(value)) blocks.push({ type: 'heading', content: heading }, { type, content: v(value) });
+  };
+  section('Type of Working', 'text', d.kind);
+  blocks.push({ type: 'heading', content: 'Intention' }, { type: 'text', content: v(d.intention) });
+  const timing = [
+    v(d.moonPhase) && `Moon phase: ${v(d.moonPhase)}`,
+    v(d.day) && `Day: ${v(d.day)}`,
+    v(d.weather) && `Weather: ${v(d.weather)}`,
+  ].filter(Boolean);
+  if (timing.length) blocks.push({ type: 'heading', content: 'Timing' }, { type: 'correspondence', content: timing.join('\n') });
+  section('Deities and Spirits', 'text', d.deities);
+  const groups = groupAltarItems(items);
+  if (groups.length) {
+    blocks.push({ type: 'heading', content: 'Items from the Altar' });
+    for (const group of groups) {
+      blocks.push({ type: 'heading', content: group.groupLabel }, { type: 'ingredient_list', content: group.content });
+    }
   }
+  section('Also Used', 'ingredient_list', d.extraItems);
+  section('Preparation', 'text', d.preparation);
+  blocks.push({ type: 'heading', content: 'What I Did' }, { type: 'numbered_list', content: v(d.steps) });
+  section('Words Spoken', 'quote', d.words);
+  section('What I Felt', 'text', d.feelings);
+  section('Signs and Omens', 'text', d.signs);
   blocks.push(
-    { type: 'heading', content: 'Ritual Steps' },
-    { type: 'numbered_list', content: '' },
     { type: 'heading', content: 'Results' },
-    { type: 'text', content: '' },
+    { type: 'text', content: v(d.results) },
     { type: 'heading', content: 'Reflection' },
-    { type: 'text', content: '' },
+    { type: 'text', content: v(d.reflection) },
   );
+  section('Follow-up', 'text', d.followUp);
   return blocks;
 }
 
@@ -88,7 +148,8 @@ export function altarRitualOps(
     /** The section open in the Grimoire (activeSectionId); top level when null. */
     sectionId?: string | null;
     title: string;
-    purpose: string;
+    /** The intention alone, or the whole working. */
+    purpose: string | WorkingDetails;
     items: AltarRitualItem[];
     dateText: string;
   },

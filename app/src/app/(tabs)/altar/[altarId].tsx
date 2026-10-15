@@ -71,7 +71,7 @@ import {
   type PracticeActivity,
   type TendInput,
 } from '../../../lib/altar/instances';
-import { altarRitualItem, groupAltarItems } from '../../../lib/grimoire/altarImport';
+import { altarRitualItem, groupAltarItems, type WorkingDetails } from '../../../lib/grimoire/altarImport';
 import { useGrimoire } from '../../../lib/grimoire/store';
 import { altarSummary, documentFromAltar, emptyDocument, type AltarDocument } from '../../../lib/altar/snapshot';
 import { useAltars } from '../../../lib/altar/store';
@@ -391,9 +391,9 @@ export default function AltarEditor() {
     [doc, selectedObject],
   );
   const grimoireTitle = doc && selectedObject ? groupName(doc, selectedObject) : name;
-  const createRitualPage = (purpose: string, title: string) => {
+  const createRitualPage = (details: WorkingDetails, title: string) => {
     if (!doc || !groupItems.length) return;
-    const pageId = grimoire.actions.createRitualFromAltar({ title: title || grimoireTitle, purpose, items: groupItems });
+    const pageId = grimoire.actions.createRitualFromAltar({ title: title || grimoireTitle, purpose: details, items: groupItems });
     setSheet(null);
     if (!pageId) {
       setNotice('Your Grimoire hasn’t loaded yet. Open it once while online, then try again.');
@@ -648,6 +648,7 @@ export default function AltarEditor() {
             items={groupAltarItems(groupItems)}
             sectionTitle={grimoire.openSection?.title ?? null}
             signedIn={signedIn}
+            defaults={workingDefaults()}
             onClose={() => setSheet(null)}
             onCreate={createRitualPage}
           />
@@ -945,6 +946,12 @@ function ObjectPanel({
       </ChipRow>
     </View>
   );
+}
+
+
+/** A recorded working starts with tonight's moon phase and the day filled in. */
+function workingDefaults(now = new Date()): WorkingDetails {
+  return { moonPhase: moonState(now).name, day: now.toLocaleDateString(undefined, { weekday: 'long' }) };
 }
 
 const styles = StyleSheet.create({

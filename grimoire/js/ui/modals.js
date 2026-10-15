@@ -122,7 +122,38 @@ function renderAltarImportSummary(ritual) {
     .join("");
 }
 
+// The optional fields of a recorded working (app components/altar/ArrangeSheets.tsx).
+const WORKING_FIELDS = [
+  ["intention", "Intention", "What was this working for?", true],
+  ["time", "Time", "Dusk, 9pm, the witching hour…", false],
+  ["moonPhase", "Moon phase", "Waxing crescent", false],
+  ["day", "Day", "Friday", false],
+  ["weather", "Weather and season", "Rain, first frost…", false],
+  ["deities", "Deities, spirits and ancestors", "Who you called on or honoured", true],
+  ["extraItems", "Also used", "Anything not on the altar, one per line", true],
+  ["preparation", "Preparation", "Cleansing, grounding, casting a circle…", true],
+  ["steps", "What I did", "One step per line", true],
+  ["words", "Words spoken", "Chants, petitions, prayers", true],
+  ["feelings", "What I felt", "Energy, sensations, emotions", true],
+  ["signs", "Signs and omens", "Anything you noticed", true],
+  ["results", "Results", "You can add this later", true],
+  ["reflection", "Reflection", "What you would keep or change", true],
+  ["followUp", "Follow-up", "When to check back, what to do next", true]
+];
+
+function renderWorkingField([key, label, placeholder, lines], value = "") {
+  const control = lines
+    ? `<textarea rows="3" data-working-field="${key}" placeholder="${escapeHtml(placeholder)}">${escapeHtml(value)}</textarea>`
+    : `<input type="text" data-working-field="${key}" placeholder="${escapeHtml(placeholder)}" value="${escapeHtml(value)}" />`;
+  return `<label class="book-import-field">${escapeHtml(label)}${control}</label>`;
+}
+
 function openAltarImportModal(ritual) {
+  const now = new Date();
+  const defaults = {
+    moonPhase: typeof approximateMoonPhase === "function" ? approximateMoonPhase(now) : "",
+    day: now.toLocaleDateString(undefined, { weekday: "long" })
+  };
   const bodyHtml = `
     <div class="book-import-modal">
       <p class="eyebrow">Record in Grimoire</p>
@@ -130,9 +161,8 @@ function openAltarImportModal(ritual) {
       <h2>${escapeHtml(ritual.name || "Ritual Working")}</h2>
 
       <p>
-        These items were brought over from your altar. Name this spell or working,
-        then create a page for it in your Grimoire, with room for what you did,
-        your results and reflection.
+        A page in your Grimoire for this spell or working. Fill in as much or as little
+        as you like; you can keep adding to it in the Grimoire.
       </p>
 
       <label class="book-import-field">
@@ -140,18 +170,18 @@ function openAltarImportModal(ritual) {
         <input type="text" data-import-title value="${escapeHtml(ritual.name || "Ritual Working")}" />
       </label>
 
-      <label class="book-import-field">
-        Purpose
-        <textarea
-          rows="4"
-          data-import-purpose
-          placeholder="What was this working for?"
-        ></textarea>
-      </label>
+      <fieldset class="book-import-field book-import-kinds">
+        <legend>Type of working</legend>
+        ${WORKING_KINDS.map((kind) => `<label class="book-import-kind"><input type="radio" name="working-kind" value="${escapeHtml(kind)}" /> ${escapeHtml(kind)}</label>`).join("")}
+      </fieldset>
+
+      ${WORKING_FIELDS.slice(0, 6).map((field) => renderWorkingField(field, defaults[field[0]] || "")).join("")}
 
       <div class="book-import-summary">
         ${renderAltarImportSummary(ritual)}
       </div>
+
+      ${WORKING_FIELDS.slice(6).map((field) => renderWorkingField(field)).join("")}
 
       <div class="book-import-actions">
         <button class="button" type="button" data-cancel-altar-import>
@@ -172,7 +202,6 @@ function openAltarImportModal(ritual) {
 
   const cancelButton = root.querySelector("[data-cancel-altar-import]");
   const createButton = root.querySelector("[data-create-altar-ritual]");
-  const purposeInput = root.querySelector("[data-import-purpose]");
   const titleInput = root.querySelector("[data-import-title]");
 
   if (cancelButton) {
@@ -184,11 +213,22 @@ function openAltarImportModal(ritual) {
 
   if (createButton) {
     createButton.addEventListener("click", async () => {
+      const details = {};
+      root.querySelectorAll("[data-working-field]").forEach((field) => {
+        details[field.dataset.workingField] = field.value;
+      });
+      details.kind = root.querySelector('input[name="working-kind"]:checked')?.value || "";
       const name = titleInput ? titleInput.value.trim() : "";
-      await createRitualPageFromAltarImport(
-        name ? { ...ritual, name } : ritual,
-        purposeInput ? purposeInput.value : ""
-      );
+
+      createButton.disabled = true;
+      createButton.textContent = "Saving…";
+      const saved = await createRitualPageFromAltarImport(name ? { ...ritual, name } : ritual, details);
+      if (!saved) {
+        // Keep what was written and the altar items, so nothing is lost.
+        createButton.disabled = false;
+        createButton.textContent = "Create Page";
+        return;
+      }
 
       localStorage.removeItem(ALTAR_GRIMOIRE_HANDOFF_KEY);
       closeBookModal(null);
