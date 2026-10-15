@@ -40,7 +40,8 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
   const family = environment.widgetFamily;
   const altars = props?.altars ?? [];
   const actions = props?.actions ?? [];
-  const place = Math.max(1, Number(String(environment.configuration?.altar ?? 'altar1').replace(/\D/g, '')) || 1);
+  // The widget is bundled as a string, which drops backslashes: no regex escapes in here.
+  const place = Math.max(1, Number(String(environment.configuration?.altar ?? 'altar1').replace('altar', '')) || 1);
   const altar: WidgetAltar | undefined = altars[place - 1] ?? altars[0];
   const fill = frame({ maxWidth: 10000, maxHeight: 10000, alignment: 'topLeading' });
   const wide = frame({ maxWidth: 10000, alignment: 'leading' });

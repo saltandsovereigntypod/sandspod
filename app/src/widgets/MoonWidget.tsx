@@ -90,7 +90,7 @@ const MoonWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => {
             <VStack key={p.date} spacing={3} modifiers={[frame({ maxWidth: 10000 })]}>
               <Image systemName={p.symbol as never} size={20} color={cream} />
               <Text modifiers={[font({ size: 10, weight: 'semibold' }), foregroundStyle(cream), lineLimit(1)]}>{p.name.split(' in ')[0]}</Text>
-              <Text modifiers={[font({ size: 10 }), foregroundStyle(muted), lineLimit(1)]}>{p.date.replace(/^\w+, /, '')}</Text>
+              <Text modifiers={[font({ size: 10 }), foregroundStyle(muted), lineLimit(1)]}>{p.date.split(', ').slice(1).join(', ')}</Text>
             </VStack>
           ))}
         </HStack>

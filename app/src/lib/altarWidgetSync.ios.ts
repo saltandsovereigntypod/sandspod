@@ -61,8 +61,9 @@ async function localUri(path: string): Promise<string | null> {
 }
 
 /**
- * Small copies of the pictures in the folder the widget can read: the
- * background wide enough for a large widget, objects as little thumbnails.
+ * Small copies of the pictures in the folder the widget can read. iOS leaves a
+ * widget blank if any picture in it has more pixels than the widget itself, so
+ * the background stays well under a small widget's size and objects are thumbnails.
  * Made once and kept; ones no longer shown are cleared away.
  */
 async function preparePictures(root: string, altars: SavedAltar[]): Promise<Map<string, string>> {
@@ -74,14 +75,14 @@ async function preparePictures(root: string, altars: SavedAltar[]): Promise<Map<
     for (const [i, path] of paths.entries()) {
       if (out.has(path)) continue;
       const isBackground = i === 0 && path === altar.background;
-      const name = `${hash(path)}${isBackground ? '-bg.jpg' : '.png'}`;
+      const name = `${hash(path)}${isBackground ? '-bg480.jpg' : '-96.png'}`;
       const file = new File(dir, name);
       try {
         if (!file.exists) {
           const uri = await localUri(path);
           if (!uri) continue;
           const image = await ImageManipulator.manipulate(uri)
-            .resize({ width: isBackground ? 900 : 120 })
+            .resize({ width: isBackground ? 480 : 96 })
             .renderAsync();
           const saved = await image.saveAsync(isBackground ? { format: SaveFormat.JPEG, compress: 0.8 } : { format: SaveFormat.PNG });
           new File(saved.uri).move(file);
