@@ -129,7 +129,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Family',
               body:
-                'The Dagda’s family is large. Cormac’s Glossary makes Brigit, the goddess of poets, his daughter, with her sisters Brigit of healing and Brigit of smithcraft. With Boann, the goddess of the river Boyne, he fathered Aengus (Óengus), the young god of love; in the Wooing of Étaín he holds the sun still for nine months so that Aengus is conceived and born in what seems a single day. Other children include Bodb Derg, later king of the Tuatha Dé, Cermait Honey-Mouth, and in some sources Ériu, Banba and Fódla, the three goddesses whose names became names for Ireland.\n\nHe is also bound to the Morrígan, the great queen of battle and sovereignty, whom he meets at Samhain before the second battle. None of these relationships is tidy, and the texts do not agree on every detail. They agree that he is a father in the fullest sense: the source of many lines.',
+                'The Dagda’s family is large. Cormac’s Glossary makes Brigit, the goddess of poets, his daughter, with her sisters Brigit of healing and Brigit of smithcraft. With Boann, the goddess of the river Boyne, he fathered Aengus (Óengus), the young god of love; in the Wooing of Étaín he holds the sun still for nine months so that Aengus is conceived and born in what seems a single day. Other children include Bodb Derg, later king of the Tuatha Dé, and Cermait Honey-Mouth; Lady Gregory, following some medieval sources, also makes Ériu, Banba and Fódla, the three goddesses whose names became names for Ireland, his daughters, though other texts give them a different father.\n\nHe is also bound to the Morrígan, the great queen of battle and sovereignty, whom he meets at Samhain before the second battle. None of these relationships is tidy, and the texts do not agree on every detail. They agree that he is a father in the fullest sense: the source of many lines.',
             },
             {
               heading: 'The house on the Boyne',
@@ -197,7 +197,7 @@ export const JOURNEY: Journey = {
           ],
           further: [
             'Cath Maige Tuired: The Second Battle of Mag Tuired, ed. and trans. Elizabeth A. Gray (Irish Texts Society, 1982); also online at CELT, University College Cork.',
-            'Lady Gregory, Gods and Fighting Men (1904), Part I Book III, “The Great Battle of Magh Tuireadh” (public domain).',
+            'Lady Gregory, Gods and Fighting Men (1904), Part I Book II ch. III, “The Great Battle of Magh Tuireadh” (public domain).',
             'Whitley Stokes, “The Second Battle of Moytura”, Revue Celtique 12 (1891) (public domain).',
           ],
           library: ['traditional/deity/dagda', 'traditional/deity/morrigan', 'traditional/deity/lugh'],
@@ -242,7 +242,7 @@ export const JOURNEY: Journey = {
             'Who could you feed this month, and what would it cost you?',
           ],
           further: [
-            'Lady Gregory, Gods and Fighting Men (1904), Part I Book I and Book III (public domain).',
+            'Lady Gregory, Gods and Fighting Men (1904), Part I Book I ch. I (the four treasures) and Book II ch. III (the club and the harp) (public domain).',
             'Fergus Kelly, A Guide to Early Irish Law (1988), on the briugu and hospitality.',
             'Ann Buckley, “Music in Ireland to c. 1500”, in A New History of Ireland vol. I (2005).',
           ],
@@ -529,7 +529,7 @@ export const JOURNEY: Journey = {
     },
   ],
   sources: [
-    'Lady Augusta Gregory, Gods and Fighting Men (1904), Part I Book I (the four treasures), Book III (the battle, the porridge pit, the harp) and Book IV ch. II (“The Dagda”), Project Gutenberg: https://www.gutenberg.org/ebooks/14465 (quoted: “It is you are the good god!”; the porridge; “a wheeled fork it would take eight men to carry”; “deep enough for the boundary ditch of a province”; “the Cauldron that no company ever went away from unsatisfied”; the harp’s names, its call and the three tunes).',
+    'Lady Augusta Gregory, Gods and Fighting Men (1904), Part I Book I ch. I (the four treasures), Book II ch. III (the boast, the battle, the porridge pit, the harp) and Book IV ch. II (“The Dagda”, the house at the Brú), Project Gutenberg: https://www.gutenberg.org/ebooks/14465 (quoted: “It is you are the good god!”; the porridge; “a wheeled fork it would take eight men to carry”; “deep enough for the boundary ditch of a province”; “the Cauldron that no company ever went away from unsatisfied”; the harp’s names, its call and the three tunes).',
     'Cormac’s Glossary, trans. John O’Donovan, ed. Whitley Stokes (Calcutta, 1868), s.v. Ruad-rofhessa, archive.org: https://archive.org/details/cu31924071173474',
     'Cath Maige Tuired: The Second Battle of Mag Tuired, ed. and trans. Elizabeth A. Gray (Irish Texts Society, 1982).',
     'Fergus Kelly, A Guide to Early Irish Law (Dublin Institute for Advanced Studies, 1988).',

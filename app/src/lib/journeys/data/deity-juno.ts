@@ -296,7 +296,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Birth, loss and not giving birth',
               body:
-                'A goddess of childbirth touches tender places: infertility, miscarriage, difficult births, choices about having children, and the fact that not every woman wants or can have a baby. Juno\'s Roman forms are broader than motherhood: she is queen, warner, saviour, guardian of the month and of each woman\'s life. You can honour any of them.\n\nIf you pray to Lucina for a pregnancy, do it alongside proper medical care, never instead of it. If you are grieving, a candle to Juno for the child or the hope you have lost is a gentle and fitting act. No offering earns or loses a child.',
+                'A goddess of childbirth touches tender places: infertility, miscarriage, difficult births, choices about having children, and the fact that not every woman wants or can have a baby. Juno\'s Roman forms are broader than motherhood: she is queen, warner, saviour, guardian of the month and of each woman\'s life. You can honour any of them.\n\nIf you pray to Lucina for a pregnancy, do it alongside proper medical care, never instead of it. If you are grieving, a candle to Juno for the child or the hope you have lost is a gentle and fitting act. No offering earns or loses a child. Grief after pregnancy loss or infertility is real grief, and support exists for it: your doctor or midwife, or a specialist charity (in the UK, the Miscarriage Association or Sands; in the US, Share Pregnancy and Infant Loss Support).',
             },
             {
               heading: 'What not to do',

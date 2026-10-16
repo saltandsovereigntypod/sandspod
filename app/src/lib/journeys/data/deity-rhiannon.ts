@@ -194,7 +194,7 @@ export const JOURNEY: Journey = {
           ],
           further: [
             'Sioned Davies, The Four Branches of the Mabinogi (1993).',
-            'Catherine McKenna, “The Theme of Sovereignty in Pwyll”, Bulletin of the Board of Celtic Studies 29 (1980).',
+            'Catherine McKenna, “The Theme of Sovereignty in Pwyll”, Bulletin of the Board of Celtic Studies 29 (1980), 35–52; reprinted in C. W. Sullivan III, ed., The Mabinogi: A Book of Essays (1996).',
           ],
           library: ['traditional/deity/rhiannon', 'traditional/herb/chamomile'],
         },
@@ -263,7 +263,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'The sovereignty reading',
               body:
-                'A related theory sees Rhiannon as a sovereignty figure: an otherworld woman who chooses a mortal king, and through marriage to her he gains a prosperous rule. In Irish tradition, sovereignty is often a woman who offers a drink or a union to the rightful king. Rhiannon chooses Pwyll, gives gifts that make the land prosper, and when she and her son are taken away the land of Dyfed itself is laid waste, and returns only when she does.\n\nThe Welsh scholar Catherine McKenna and others have explored this reading carefully. It fits the tale well, and many devotees honour her as a lady of sovereignty: rule over oneself as well as over land. Again, it is an interpretation, though a strong one.',
+                'A related theory sees Rhiannon as a sovereignty figure: an otherworld woman who chooses a mortal king, and through marriage to her he gains a prosperous rule. In Irish tradition, sovereignty is often a woman who offers a drink or a union to the rightful king. Rhiannon chooses Pwyll, gives gifts that make the land prosper, and when she and her son are taken away the land of Dyfed itself is laid waste, and returns only when she does.\n\nThe Celticist Catherine McKenna, in a 1980 article, and others have explored this reading carefully. It fits the tale well, and many devotees honour her as a lady of sovereignty: rule over oneself as well as over land. Again, it is an interpretation, though a strong one.',
             },
             {
               heading: 'Honouring her today, and what to avoid',
@@ -530,7 +530,7 @@ export const JOURNEY: Journey = {
     'Lady Charlotte Guest, trans., The Mabinogion, “Pwyll Prince of Dyved”, “Branwen the daughter of Llyr” and “Manawyddan the son of Llyr”, Project Gutenberg: https://www.gutenberg.org/ebooks/5160 (quoted: the lady on the white horse; “O maiden, for the sake of him whom thou best lovest, stay for me”; “I will stay gladly…”; “I am Rhiannon, the daughter of Heveydd Hên”; “Never did man make worse use of his wits…”; “Enough has been put therein”; her gifts; “For pity’s sake…”; the penance at the horseblock; “This is the night of the first of May”; “there is indeed an end to my trouble”; the birds of Rhiannon at Harlech; “An evil companion hast thou been…”; “She was nothing daunted, and she went in”; the collars of the asses).',
     'Sioned Davies, trans., The Mabinogion (Oxford World’s Classics, 2007).',
     'W. J. Gruffydd, Rhiannon (University of Wales Press, 1953).',
-    'Catherine McKenna, “The Theme of Sovereignty in Pwyll”, Bulletin of the Board of Celtic Studies 29 (1980).',
+    'Catherine McKenna, “The Theme of Sovereignty in Pwyll”, Bulletin of the Board of Celtic Studies 29 (1980), 35–52; reprinted in C. W. Sullivan III, ed., The Mabinogi: A Book of Essays (1996).',
     'Trefor M. Owen, Welsh Folk Customs (1959).',
     'Proinsias Mac Cana, Celtic Mythology (1970).',
   ],

@@ -207,7 +207,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'The working women\'s Vinalia',
               body:
-                'On 23 April, the Vinalia, the new wine was opened and the first of it offered, Ovid says, to Jupiter. But the day also belonged to Venus Erycina outside the Colline Gate, and Ovid speaks to the women who worked the streets: "numina, volgares, Veneris celebrate, puellae: / multa professarum quaestibus apta Venus", "common girls, celebrate Venus\'s divinity: Venus suits the earnings of women who profess her trade" (4.865–866). "poscite ture dato formam populique favorem", "give incense and ask for beauty and the people\'s favour." And give the goddess her mint, with myrtle and rushes bound with roses (4.869–870).\n\nSex workers in Rome were legally and socially lowly, but they had a festival, a temple and a goddess who did not turn them away. That is part of Venus\'s story.',
+                'On 23 April, the Vinalia, the new wine was opened and the first of it offered, Ovid says, to Jupiter; Varro insists the day is Jupiter\'s, not Venus\'s. But it was also the birthday of the temple of Venus Erycina outside the Colline Gate, and Ovid speaks to the women who worked the streets: "numina, volgares, Veneris celebrate, puellae: / multa professarum quaestibus apta Venus", "common girls, celebrate Venus\'s divinity: Venus suits the earnings of women who profess her trade" (4.865–866). "poscite ture dato formam populique favorem", "give incense and ask for beauty and the people\'s favour." And give the goddess her mint, with myrtle and rushes bound with roses (4.869–870).\n\nSex workers in Rome were legally and socially lowly, but they had a festival, a temple and a goddess who did not turn them away. That is part of Venus\'s story.',
             },
             {
               heading: 'The country Vinalia',
@@ -518,7 +518,8 @@ export const JOURNEY: Journey = {
     'Lucretius, On the Nature of Things 1.1–2 (Latin, The Latin Library: https://www.thelatinlibrary.com/lucretius/lucretius1.shtml); translation original',
     'Ovid, Fasti 4.133–136, 4.138, 4.155–156, 4.159–160 and 4.865–870 (Latin, The Latin Library: https://www.thelatinlibrary.com/ovid/ovid.fasti4.shtml); translations original',
     'Ovid, Fasti 6.303–304, Vesta addressed first; Cicero, On the Nature of the Gods 2.67, Vesta last (paraphrased)',
-    'Livy 10.31, 22.9–10, 23.31, 40.34; Valerius Maximus 8.15.12; Pliny, Natural History 15.119–120 and 28.10–11; Varro, On the Latin Language 6.16, 6.20 (paraphrased)',
+    'Livy 10.31, 22.9–10, 23.31, 40.34; Valerius Maximus 8.15.12; Pliny, Natural History 15.119–120 and 28.10–11 (paraphrased)',
+    'Varro, On the Latin Language 6.16 ("hic dies Iovis, non Veneris") and 6.20 (Latin, The Latin Library: https://www.thelatinlibrary.com/varro.ll6.html; section numbers checked against Kent\'s 1938 Loeb on archive.org)',
     'Robert Schilling, La religion romaine de Vénus (1954)',
     'H. H. Scullard, Festivals and Ceremonies of the Roman Republic (1981)',
     'Mary Beard, John North and Simon Price, Religions of Rome (1998)',

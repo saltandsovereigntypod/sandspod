@@ -227,7 +227,7 @@ export const JOURNEY: Journey = {
               'Which native god or gods Caesar meant by "Mercury" in Gaul is unknown; Lugus is a common guess. Rosmerta\'s meaning and myths are lost. Tacitus\'s German Mercury is usually taken as Woden, but the identification is Roman, not German.',
           },
           inPractice:
-            'If someone close to you has died, ask Mercury to guide them gently, with a little incense and their name spoken aloud. If you follow a Celtic path, read about Rosmerta before deciding how to honour the pair.',
+            'If someone close to you has died, ask Mercury to guide them gently, with a little incense and their name spoken aloud. If grief is heavy, do not carry it alone: talk to someone you trust, your doctor, or a bereavement service (in the UK, Cruse Bereavement Support; elsewhere, your local hospice or GP can point you to one). If you follow a Celtic path, read about Rosmerta before deciding how to honour the pair.',
           reflect: [
             'What do I make of a god who is both a dealer and a guide of the dead?',
             'What did I lose that I would like returned, and can I ask for it without wishing harm?',
@@ -327,7 +327,8 @@ export const JOURNEY: Journey = {
           ],
           further: [
             'Brian Copenhaver, Hermetica (1992), on Hermes Trismegistus',
-            'Roger Tomlin, Tabellae Sulis (1988), on British prayers for justice',
+            'H. S. Versnel, "Beyond Cursing: The Appeal to Justice in Judicial Prayers", in C. A. Faraone and D. Obbink (eds), Magika Hiera (1991), where the term "prayers for justice" comes from',
+            'R. S. O. Tomlin, "The Inscribed Lead Tablets", in A. Woodward and P. Leach, The Uley Shrines (1993), the Mercury tablets themselves',
           ],
           library: ['traditional/deity/mercury', 'traditional/deity/thoth', 'traditional/deity/hermes'],
           premade: ['cosmic-mercury-retrograde-steadying'],

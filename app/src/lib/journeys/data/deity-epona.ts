@@ -9,7 +9,7 @@ export const JOURNEY: Journey = {
   summary:
     'A month with Epona, the Gaulish goddess of horses, mules and donkeys who rode with the Roman cavalry from Britain to the Danube: her images and inscriptions, her stable shrines garlanded with roses, her feast on 18 December, and a self-dedication made through real care for animals.',
   welcome:
-    'This journey takes about a lunar month. You will read five lessons, set up a small shrine in the old stable style, keep nine days of offering and practical care for animals, and decide whether to dedicate yourself to Epona.\n\nIt is a self-dedication, not an initiation, and it does not make you a member of any group or order. Epona is one of the best-attested goddesses of the Celtic world: hundreds of carvings and dozens of inscriptions survive. But not a single myth about her does. This journey is honest about both. You do not need to own or ride a horse to honour her. You can pause whenever you need to.',
+    'This journey takes about a lunar month. You will read five lessons, set up a small shrine in the old stable style, keep nine days of offering and practical care for animals, and decide whether to dedicate yourself to Epona.\n\nIt is a self-dedication, not an initiation, and it does not make you a member of any group or order. Epona is one of the best-attested goddesses of the Celtic world: several hundred carvings and dozens of inscriptions survive. But not a single myth about her does. This journey is honest about both. You do not need to own or ride a horse to honour her. You can pause whenever you need to.',
   about:
     'Epona is a goddess of horses, mules and donkeys from Gaul, roughly modern France, Belgium and the Rhineland. Her name is Gaulish: epos, “horse”, with the ending -ona often used for divine names, so “the horse goddess” or “she of the horses”. Between the first and fourth centuries AD she was carved, painted and named in inscriptions across the Roman Empire, from the Antonine Wall in Scotland to the Danube, North Africa and Rome itself, where the emperor’s horse guards made dedications to her. She is usually shown seated sideways on a mare, sometimes with a foal, or enthroned between two horses or ponies, often holding a dish, a cornucopia, a basket of fruit or grain, or a key. Her images stood in niches in stables, where the Roman writer Apuleius describes one “garnished and decked round about with faire and fresh roses”, and a Roman calendar from northern Italy gives her a feast on 18 December. She was a goddess of the working animals that carried an empire, of the grooms and soldiers who cared for them, and of plenty. No story of her survives. Celtic and Roman polytheists honour her today, as do many horse people, with oats, apples, water, roses and, above all, good care of animals.',
   notes: [
@@ -123,7 +123,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'How she was pictured',
               body:
-                'More than three hundred images of Epona are known, most of them small stone reliefs and statuettes. There are two main types. In the first, she rides a mare, sitting sideways with both feet on one side, calm and upright, sometimes with a foal beneath the mare or walking beside her. This type is most common in Gaul itself. In the second, she sits enthroned between two horses or ponies, or among several, who turn towards her. This type is more common along the Rhine and the Danube frontier.\n\nShe often holds something. A patera, the shallow dish used for pouring offerings. A cornucopia, the horn of plenty. A basket or lap full of fruit, grain or bread, sometimes being fed to the horses. In some carvings she holds a key, which may stand for the stable door, or for something more, such as the gate of the otherworld; no one knows. She is never shown as a horse herself. She is a woman, a mistress of horses.',
+                'Several hundred images of Epona are known, most of them small stone reliefs and statuettes; the main catalogues are by Salomon Reinach (1895), René Magnen and Émile Thevenot (1953) and Marion Euskirchen (1993). There are two main types. In the first, she rides a mare, sitting sideways with both feet on one side, calm and upright, sometimes with a foal beneath the mare or walking beside her. This type is most common in Gaul itself. In the second, she sits enthroned between two horses or ponies, or among several, who turn towards her. This type is more common along the Rhine and the Danube frontier.\n\nShe often holds something. A patera, the shallow dish used for pouring offerings. A cornucopia, the horn of plenty. A basket or lap full of fruit, grain or bread, sometimes being fed to the horses. In some carvings she holds a key, which may stand for the stable door, or for something more, such as the gate of the otherworld; no one knows. She is never shown as a horse herself. She is a woman, a mistress of horses.',
             },
             {
               heading: 'Where she is found',
@@ -138,7 +138,7 @@ export const JOURNEY: Journey = {
           ],
           knowAndDont: {
             known:
-              'The name comes from Gaulish epos, “horse”. Several hundred images and dozens of inscriptions survive, mostly from the first to fourth centuries AD, showing her riding sidesaddle or enthroned between horses with dish, cornucopia, fruit, grain or key. Her heartland was eastern Gaul and the Rhineland. Inscriptions call her Augusta and Regina.',
+              'The name comes from Gaulish epos, “horse”. Several hundred images and dozens of inscriptions (all in Latin or Greek, none in Gaulish) survive, mostly from the first to fourth centuries AD, showing her riding sidesaddle or enthroned between horses with dish, cornucopia, fruit, grain or key. Her heartland was eastern Gaul and the Rhineland. Inscriptions call her Augusta and Regina.',
             unknown:
               'No myth survives. We do not know what her worshippers believed about her beyond what the images show, how she was worshipped before Roman times, what the key means, or whether she had a role with the dead. The Pseudo-Plutarch birth story is late and of doubtful value.',
           },
@@ -149,9 +149,9 @@ export const JOURNEY: Journey = {
             'How do you feel about honouring a goddess whose stories are lost? Is that freeing or difficult?',
           ],
           further: [
-            'Katheryn M. Linduff, “Epona: A Celt among the Romans”, Latomus 38 (1979).',
+            'Katheryn M. Linduff, “Epona: A Celt among the Romans”, Latomus 38 (1979), 817–837.',
             'Miranda Green, Celtic Goddesses: Warriors, Virgins and Mothers (1995).',
-            'Epona.net, a scholarly resource cataloguing her inscriptions and images.',
+            'EPONA.net, a scholarly resource with a selection of her inscriptions, a survey of her images and an annotated bibliography.',
           ],
           library: ['traditional/deity/epona', 'traditional/deity/rhiannon'],
         },
@@ -169,7 +169,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'In Britain and in Rome',
               body:
-                'The most northerly dedication to Epona comes from Auchendavy, a fort on the Antonine Wall in central Scotland. A centurion of the Second Legion, Marcus Cocceius Firmus, set up an altar there in the second century AD to a group of gods including Mars, Minerva, Hercules, Victory and Epona. It is now in the Hunterian Museum in Glasgow. A handful of other images and dedications are known from Roman Britain.\n\nIn Rome itself, the equites singulares Augusti, the emperor’s mounted bodyguard, recruited largely from the Rhineland and Pannonia, made a series of dedications in the 130s AD to their gods, Epona among them. She is one of very few Celtic deities known to have been worshipped in the city of Rome.',
+                'The most northerly dedication to Epona comes from Auchendavy, a fort on the Antonine Wall in central Scotland. A centurion of the Second Legion, Marcus Cocceius Firmus, set up an altar there in the second century AD to a group of gods: Mars, Minerva, the Campestres (goddesses of the parade ground), Hercules, Epona and Victory. It is now in the Hunterian Museum in Glasgow. A handful of other images and dedications are known from Roman Britain.\n\nIn Rome itself, the equites singulares Augusti, the emperor’s mounted bodyguard, recruited largely from the Rhineland and Pannonia, set up a series of altars in the second and third centuries AD, many of them by troopers on their honourable discharge, to a long list of their gods, Epona among them. She is one of very few Celtic deities known to have been worshipped in the city of Rome.',
             },
             {
               heading: 'What Romans wrote',
@@ -184,7 +184,7 @@ export const JOURNEY: Journey = {
           ],
           knowAndDont: {
             known:
-              'Dedications by cavalry, legionaries and the equites singulares Augusti survive from Britain, the Rhine and Danube frontiers and Rome. The Auchendavy altar names her with Mars, Minerva, Hercules and Victory. Juvenal (Satire 8) and Apuleius (Metamorphoses 3.27) mention her images in stables. Tertullian and Minucius Felix mock her worship.',
+              'Dedications by cavalry, legionaries and the equites singulares Augusti survive from Britain, the Rhine and Danube frontiers and Rome. The Auchendavy altar names her with Mars, Minerva, the Campestres, Hercules and Victory. Juvenal (Satire 8) and Apuleius (Metamorphoses 3.27) mention her images in stables. Tertullian and Minucius Felix mock her worship.',
             unknown:
               'We do not know what rites the soldiers performed for her, or whether her army cult differed much from her worship in Gaul. The meaning of her link with the emperor (Augusta) is debated.',
           },
@@ -242,7 +242,7 @@ export const JOURNEY: Journey = {
           ],
           further: [
             'Apuleius, The Golden Ass, book 3 (public domain).',
-            'Gian Luca Gregori and Ilaria Melmeluzzi, on the Guidizzolo calendar and the cult of Epona (2021).',
+            'G. L. Gregori, H. De Megille and E. Melmeluzzi, “Il lungo viaggio di Epona. Dalle Gallie a Roma”, Scienze dell’Antichità 27.2 (2021), 229–242, in Italian, on the Guidizzolo calendar and her cult in Rome.',
             'Simone Deyts, Images des dieux de la Gaule (1992).',
           ],
           library: ['traditional/deity/epona', 'traditional/herb/rose'],
@@ -289,7 +289,7 @@ export const JOURNEY: Journey = {
           ],
           further: [
             'The Brooke and The Donkey Sanctuary publish information on working animal welfare worldwide.',
-            'Miranda Aldhouse-Green, Dictionary of Celtic Myth and Legend (1992), s.v. Epona.',
+            'Miranda J. Green (now Aldhouse-Green), Dictionary of Celtic Myth and Legend (1992), s.v. Epona.',
           ],
           library: ['traditional/deity/epona', 'traditional/crystal/moss_agate', 'traditional/crystal/red_jasper'],
           premade: ['sea-safe-passage-blessing', 'folk-iron-threshold'],
@@ -323,7 +323,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'What to offer',
               body:
-                'Her own images tell you: grain, fruit, bread, and the horn of plenty. Oats and barley are the classic horse grains. Apples, carrots and pears are what horse people still give as treats. Fresh, clean water is the most important thing any animal needs, and many devotees treat it as her first offering. Roses and garlands come straight from Apuleius.\n\nIn Roman style, add a little incense (frankincense is the classic Roman choice) and a splash of wine poured from a dish. In Celtic style, a little milk, mead or ale. And as always, care for animals counts as an offering: an hour volunteering or a donation to a rescue is worth more than a bag of oats on a shelf.',
+                'Her own images tell you: grain, fruit, bread, and the horn of plenty. Oats and barley are the classic horse grains. Apples, carrots and pears are what horse people still give as treats. Fresh, clean water is the most important thing any animal needs, and many devotees treat it as her first offering. Roses and garlands come straight from Apuleius.\n\nIn Roman style, add a little incense (frankincense is the classic Roman choice) and a splash of wine poured from a dish; water or milk is a fine sober alternative. In Celtic style, a little milk, mead or ale. And as always, care for animals counts as an offering: an hour volunteering or a donation to a rescue is worth more than a bag of oats on a shelf.',
             },
             {
               heading: 'Feeding real animals safely',
@@ -475,7 +475,7 @@ export const JOURNEY: Journey = {
         closing:
           'Leave the offerings for a day. Scatter the grain thinly for birds, compost the fruit, and give the water to a plant. Within three days, do the first act of care in your promise.',
         safety:
-          'Keep the candle and incense on a heatproof dish away from the garland, and never leave them unattended. Use a battery candle and skip incense if pets, especially birds, share the room, since smoke harms their lungs. Keep lilies, grapes, chocolate, onion and garlic away from pets, and pour wine away from them and from children.',
+          'Keep the candle and incense on a heatproof dish away from the garland, and never leave them unattended. Use a battery candle and skip incense if pets, especially birds, share the room, since smoke harms their lungs; skip it too if you or anyone in the house has asthma, and open a window whenever you burn it. Keep lilies, grapes, chocolate, onion and garlic away from pets, and pour wine away from them and from children.',
       },
     },
     {
@@ -529,8 +529,8 @@ export const JOURNEY: Journey = {
     'Apuleius, The Golden Asse, trans. William Adlington (1566), book 3, Project Gutenberg: https://www.gutenberg.org/ebooks/1666 (quoted: “in the middle of a pillar sustaining the rafters of the stable the image of the goddesse Hippone, which was garnished and decked round about with faire and fresh roses”).',
     'Juvenal, Satire 8, lines 155–157, on swearing by Epona and the painted stable gods (paraphrased).',
     'Epona.net, a scholarly catalogue of her inscriptions and images, including the Auchendavy altar, the equites singulares dedications and the Guidizzolo calendar: https://epona.net/inscriptions.html',
-    'G. L. Gregori and I. Melmeluzzi, on the Guidizzolo calendar and the feast of Epona (Sapienza University of Rome, 2021): https://iris.uniroma1.it/handle/11573/1608806',
-    'Katheryn M. Linduff, “Epona: A Celt among the Romans”, Latomus 38 (1979).',
+    'G. L. Gregori, H. De Megille and E. Melmeluzzi, “Il lungo viaggio di Epona. Dalle Gallie a Roma”, Scienze dell’Antichità 27.2 (2021), 229–242: https://iris.uniroma1.it/handle/11573/1608806',
+    'Katheryn M. Linduff, “Epona: A Celt among the Romans”, Latomus 38 (1979), 817–837.',
     'Miranda Green, Celtic Goddesses (1995).',
     'Michael P. Speidel, Riding for Caesar (1994).',
   ],

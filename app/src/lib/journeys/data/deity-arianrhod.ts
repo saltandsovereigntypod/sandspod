@@ -126,7 +126,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Saying her name',
               body:
-                'It is worth learning to say her name properly. Ar-YAN-hrod: the stress falls on the middle syllable, and the Welsh rh is a breathy r, as if you breathed out an h through it. Don is said “dawn”, Gwydion “GWID-yon”, Lleu with the Welsh ll, made by putting your tongue where you would for an l and blowing past its sides.\n\nThese are small courtesies, but Arianrhod is a figure for whom names matter more than almost anything. Taking the trouble to say hers well is a fitting first offering.',
+                'It is worth learning to say her name properly. Ar-YAN-hrod: the stress falls on the middle syllable, and the Welsh rh is a breathy r, as if you breathed out an h through it. Dôn rhymes roughly with “lone”, Gwydion “GWID-yon”, Lleu with the Welsh ll, made by putting your tongue where you would for an l and blowing past its sides.\n\nThese are small courtesies, but Arianrhod is a figure for whom names matter more than almost anything. Taking the trouble to say hers well is a fitting first offering.',
             },
           ],
           knowAndDont: {
@@ -208,22 +208,22 @@ export const JOURNEY: Journey = {
             {
               heading: 'The castle in the stars',
               body:
-                'In Welsh, Corona Borealis, the Northern Crown, a small semicircle of stars between the bright stars Arcturus and Vega, is also called Caer Arianrhod. It is a beautiful name, and it is the main reason she is called a star goddess today.\n\nHow old the star name is, nobody knows for sure. It is recorded from the early modern period, and some Welsh star names first appear in the work of eighteenth- and early-nineteenth-century antiquarians, including the circle of Iolo Morganwg, who is known to have invented a great deal of supposedly ancient Welsh lore. So the name may be a genuine folk name, or a learned one, or something in between. In the northern hemisphere the Northern Crown is best seen on spring and summer evenings, high overhead in June and July; in the southern hemisphere it is low in the northern sky in winter.',
+                'In Welsh, Corona Borealis, the Northern Crown, a small semicircle of stars between the bright stars Arcturus and Vega, is also called Caer Arianrhod. It is a beautiful name, and it is the main reason she is called a star goddess today.\n\nHow old the star name is, nobody knows. No medieval source is known to use it. Its best-known early appearance is in Barddas, a collection of the papers of Iolo Morganwg published in 1862, which lists “Caer Arianrod” first among a set of Welsh constellation names alongside Caer Gwydion and Llys Dôn. Iolo is known to have invented a great deal of supposedly ancient Welsh lore, so the name may be a genuine folk name he recorded, a learned coinage, or something in between. In the northern hemisphere the Northern Crown is best seen on spring and summer evenings, high overhead in June and July; in the southern hemisphere it is low in the northern sky in winter.',
             },
             {
               heading: 'The prison of Arianrhod',
               body:
-                'In the late medieval tale of Taliesin, the young poet boasts of his many lives to a king. Among them, in Guest’s translation, he says: “I have been three periods in the prison of Arianrod.” Another poem speaks of “the fetter of Arianrod”.\n\nNo one knows quite what this means. Some read the prison as a place of trial or initiation, or as the circling stars, or as her castle. The poems are deliberately riddling and late, so it is wise not to build too much on them. But they show that Arianrhod was remembered in Welsh poetry as a figure of mystery and confinement, not only as a character in the Mabinogi.',
+                'In the late medieval tale of Taliesin, the young poet boasts of his many lives to a king. Among them, in Guest’s translation, he says: “I have been three periods in the prison of Arianrod.” Another of his songs in the same tale speaks of “the fetter of Arianrod”.\n\nNo one knows quite what this means. Some read the prison as a place of trial or initiation, or as the circling stars, or as her castle. The poems are deliberately riddling and late, so it is wise not to build too much on them. But they show that Arianrhod was remembered in Welsh poetry as a figure of mystery and confinement, not only as a character in the Mabinogi.',
             },
             {
               heading: 'How the modern goddess grew',
               body:
-                'From these pieces, twentieth-century writers built a goddess. Robert Graves, in The White Goddess (1948), made Arianrhod a form of his great moon goddess, the lady of the silver wheel and the castle of the stars to which dead poets go. Wiccan and Goddess writers took this up, adding the spinning wheel, the wheel of the year, the full moon, fate and rebirth. Many popular books now list moonstone, silver and the full moon as hers as if they were ancient.\n\nThey are not ancient, and the moon is nowhere in the Welsh sources. But a modern goddess is not a fake one. Millions of people have prayed to her this way, and their experience is real. The honest path is to know which layer you are standing on: the medieval tale, the Welsh place-names and star-name, or the twentieth-century goddess. You can honour all three, as long as you do not pass the last off as the first.',
+                'From these pieces, twentieth-century writers built a goddess. Robert Graves, in The White Goddess (1948), made Arianrhod a form of his great moon goddess, the lady of the silver wheel and the castle of the stars to which dead poets go. Wiccan and Goddess writers took this up, adding the spinning wheel, the wheel of the year, the full moon, fate and rebirth. Many popular books now list moonstone, silver and the full moon as hers as if they were ancient.\n\nThey are not ancient, and the moon is nowhere in the Welsh sources. But a modern goddess is not a fake one. Many people have prayed to her this way, and their experience is real. The honest path is to know which layer you are standing on: the medieval tale, the Welsh place-names and star-name, or the twentieth-century goddess. You can honour all three, as long as you do not pass the last off as the first.',
             },
           ],
           knowAndDont: {
             known:
-              'A reef off Dinas Dinlle is called Caer Arianrhod, with a nineteenth-century legend of a drowned court. Corona Borealis is called Caer Arianrhod in Welsh. The Taliesin tradition mentions her prison and fetter. Robert Graves’s The White Goddess (1948) cast her as a moon goddess.',
+              'A reef off Dinas Dinlle is called Caer Arianrhod, with a nineteenth-century legend of a drowned court. Corona Borealis is called Caer Arianrhod in Welsh, a name best known from the Iolo Morganwg papers published as Barddas (1862). The Taliesin tradition mentions her prison and fetter. Robert Graves’s The White Goddess (1948) cast her as a moon goddess.',
             unknown:
               'We do not know how old the star name or the reef legend is, or what the Taliesin poems mean by her prison. There is no medieval evidence linking her to the moon, spinning, the wheel of the year or initiation; these are modern.',
           },
@@ -505,10 +505,11 @@ export const JOURNEY: Journey = {
     },
   ],
   sources: [
-    'Lady Charlotte Guest, trans., The Mabinogion, “Math the son of Mathonwy” and “Taliesin”, Project Gutenberg: https://www.gutenberg.org/ebooks/5160 (quoted: “I know not, lord, other than that I am”; Dylan “took its nature, and swam as well as the best fish…”; the three destinies; “with a steady hand did the lion aim at it”; “I have been three periods in the prison of Arianrod”; the note that Caer Arianrod should not be rendered “Camp of the silver circle”).',
+    'Lady Charlotte Guest, trans., The Mabinogion, “Math the son of Mathonwy” and “Taliesin”, Project Gutenberg: https://www.gutenberg.org/ebooks/5160 (quoted: “I know not, lord, other than that I am”; Dylan “took its nature, and swam as well as the best fish…”; the three destinies; “with a steady hand did the lion aim at it”; “I have been three periods in the prison of Arianrod”; “the fetter of Arianrod”; the note that Caer Arianrod should not be rendered “Camp of the silver circle”).',
     'Sioned Davies, trans., The Mabinogion (Oxford World’s Classics, 2007).',
     'Rachel Bromwich, ed., Trioedd Ynys Prydein: The Triads of the Island of Britain (University of Wales Press, 4th ed., 2014).',
     'John Rhŷs, Celtic Folklore: Welsh and Manx (1901).',
+    'J. Williams ab Ithel, ed., Barddas (1862), vol. I, “Astronomy”, the list of constellations beginning with Caer Arianrod (Iolo Morganwg material), sacred-texts.com: https://sacred-texts.com/neu/celt/bim1/bim1149.htm',
     'Robert Graves, The White Goddess (1948), as the source of much modern imagery.',
     'Ronald Hutton, Pagan Britain (Yale, 2013).',
   ],
