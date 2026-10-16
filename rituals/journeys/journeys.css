@@ -43,3 +43,5 @@
 .dy-badge { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
 /* The app reads left to right, as a page does. */
 .sp-page.jr-page, .jr-page h1, .jr-page h2, .jr-page h3, .jr-page .jr-label { text-align: left; }
+/* The site's display headings are narrow (9–11ch); a reading page's aren't. */
+.jr-page h1, .jr-page h2, .jr-page h3 { max-width: none; }

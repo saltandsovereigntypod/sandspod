@@ -49,3 +49,10 @@ export { TRADITIONAL_LIBRARY } from '../../app/src/lib/library/traditionalData.t
 export { traditionalEntries, searchLibrary } from '../../app/src/lib/library/model.ts';
 export * as ritualLifecycle from '../../app/src/lib/rituals/lifecycle.ts';
 export * as ritualRows from '../../app/src/lib/rituals/rows.ts';
+export * as practice from '../../app/src/lib/altar/connect/practice.ts';
+export * as history from '../../app/src/lib/altar/connect/history.ts';
+export * as ancestors from '../../app/src/lib/craft/hedge/ancestors.ts';
+export * as readings from '../../app/src/lib/craft/hedge/readings.ts';
+export * as stones from '../../app/src/lib/craft/crystal/stones.ts';
+export * as stoneCollections from '../../app/src/lib/craft/crystal/collections.ts';
+export * as garden from '../../app/src/lib/craft/green/garden.ts';
