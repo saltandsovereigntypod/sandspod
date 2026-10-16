@@ -870,9 +870,13 @@
       right.innerHTML = B().chips([{ label: "Save", symbol: "✓", action: "save" }, { label: "Cabinet", symbol: "❖", action: "cabinet", hint: "Open the cabinet" }, { label: "Tools", symbol: "☰", action: "drawer", hint: "Show the altar's tools" }]);
       document.body.append(left, right);
       fullBars = [left, right];
-      document.documentElement.requestFullscreen?.().catch(() => {});
+      // Turned sideways where the browser allows it (phones, in full screen); elsewhere it simply fills the window.
+      Promise.resolve(document.documentElement.requestFullscreen?.())
+        .then(() => global.screen?.orientation?.lock?.("landscape"))
+        .catch(() => {});
       left.querySelector("button")?.focus();
     } else {
+      try { global.screen?.orientation?.unlock?.(); } catch { /* not locked */ }
       if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
       closeDrawer();
     }

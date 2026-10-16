@@ -170,7 +170,7 @@
 .app-sheet::backdrop { background: rgba(5, 8, 6, .7); }
 .app-sheet__head { display: flex; align-items: flex-start; gap: 12px; padding: 18px 18px 10px; border-bottom: 1px solid var(--line); }
 .app-sheet__head > div { flex: 1; min-width: 0; }
-.app-sheet__title { margin: 2px 0 0; font-family: "Cormorant Garamond", serif; font-size: 1.6rem; font-weight: 600; line-height: 1.15; }
+.app-sheet__title { max-width: none; margin: 2px 0 0; font-family: "Cormorant Garamond", serif; font-size: 1.6rem; font-weight: 600; line-height: 1.15; }
 .app-sheet__close {
   flex: none; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line);
   background: transparent; color: var(--cream); font-size: 1.4rem; line-height: 1; cursor: pointer;
@@ -204,18 +204,25 @@
 
 /* Full screen: the stage fills the screen, its tools in a drawer. */
 body.altar-full-screen { overflow: hidden; }
+body.altar-full-screen .site-header,
+body.altar-full-screen .accessibility-trigger { display: none !important; }
 body.altar-full-screen .altar-stage-wrap {
-  position: fixed; inset: 0; z-index: 900; background: #000; display: grid; place-items: center; margin: 0; padding: 0;
+  position: fixed; inset: 0; z-index: 20000; background: #000; display: grid; place-items: center;
+  margin: 0; padding: 0; border: 0; border-radius: 0; max-width: none; width: 100vw; height: 100vh;
 }
-body.altar-full-screen .altar-stage { width: min(100vw, calc(100vh * 16 / 9)); max-width: none; }
-.altar-full-bar { position: fixed; top: 10px; z-index: 950; display: flex; gap: 8px; }
+body.altar-full-screen .altar-stage-wrap > :not([data-altar-stage]) { display: none !important; }
+body.altar-full-screen .altar-stage { width: min(100vw, calc(100vh * 16 / 9)); max-width: none; margin: 0; }
+.altar-full-bar { position: fixed; top: 10px; z-index: 20050; display: flex; gap: 8px; }
+.altar-full-bar .app-chips { flex-wrap: nowrap; }
 .altar-full-bar--left { left: 10px; }
 .altar-full-bar--right { right: 10px; }
+@media (max-width: 640px) { .altar-full-bar--right { top: 60px; } }
 .altar-full-drawer {
-  position: fixed; top: 0; right: 0; bottom: 0; z-index: 960; width: min(380px, 92vw); overflow-y: auto;
-  background: rgba(12, 21, 16, .95); border-left: 1px solid rgba(226, 195, 109, .35); padding: 12px 14px 24px;
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 20100; width: min(380px, 92vw); overflow-y: auto;
+  background: rgba(12, 21, 16, .95); border-left: 1px solid rgba(226, 195, 109, .35); padding: 12px 14px 24px; box-sizing: border-box;
 }
 .altar-full-drawer__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+
 
 @media (max-width: 520px) {
   .app-sheet { width: 100vw; max-width: 100vw; max-height: 92vh; margin: auto 0 0; border-radius: 18px 18px 0 0; }

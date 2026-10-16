@@ -617,7 +617,7 @@
   function startLoop() {
     if (!frame) frame = requestAnimationFrame(tick);
   }
-  document.addEventListener("visibilitychange", () => {
+  if (typeof document !== "undefined") document.addEventListener("visibilitychange", () => {
     if (!document.hidden) startLoop();
   });
   reduceQuery?.addEventListener?.("change", () => {
@@ -690,8 +690,10 @@
     }, 15000);
     renderAll();
   }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", watch, { once: true });
+  if (typeof document === "undefined") { /* tests */ }
+  else if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", watch, { once: true });
   else watch();
 
-  global.LivingArt = { render, renderAll, playMoment, candleGeometry, marksSvg, drawsBurnedDown };
+  global.LivingArt = { render, renderAll, playMoment, candleGeometry, marksSvg, drawsBurnedDown, burnedPictureHtml };
+  if (typeof module !== "undefined" && module.exports) module.exports = global.LivingArt;
 })(typeof window !== "undefined" ? window : globalThis);

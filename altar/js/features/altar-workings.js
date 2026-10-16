@@ -127,7 +127,11 @@
   async function keepInApothecary(item) {
     try {
       if (typeof global.saveApothecaryItems === "function" && typeof global.getApothecaryItems === "function") {
-        return await global.saveApothecaryItems([item, ...global.getApothecaryItems().filter((i) => i.id !== item.id)]);
+        // Never hold the jar back waiting on the account: it saves with the altar either way.
+        return await Promise.race([
+          global.saveApothecaryItems([item, ...global.getApothecaryItems().filter((i) => i.id !== item.id)]),
+          new Promise((resolve) => setTimeout(() => resolve(false), 5000))
+        ]);
       }
     } catch { /* still placed; it saves with the altar */ }
     return false;
