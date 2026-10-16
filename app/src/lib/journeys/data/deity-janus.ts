@@ -121,7 +121,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'His signs',
               body:
-                'His symbols are the key, which opens and locks, and the staff or rod of a doorkeeper. Coins of the early Republic, the bronze as, showed a two-faced Janus on one side and the prow of a ship on the other; Romans tossed them and called "heads or ships!" Ovid explains the ship by the story of Saturn arriving by boat (Fasti 1.229–240). His tree associations are weak; bay was hung at doors at the new year, and Ovid mentions incense and wine as his gifts. No animal is closely his, though a ram was sacrificed to him on the Agonium of 9 January.',
+                'His symbols are the key, which opens and locks, and the staff or rod of a doorkeeper. Coins of the early Republic, the bronze as, showed a two-faced Janus on one side and the prow of a ship on the other; Romans tossed them and called "heads or ships!" Ovid explains the ship by the story of Saturn arriving by boat (Fasti 1.229–240). His tree associations are weak; fresh bay was hung at the doors of the old public buildings at the old new year on 1 March (Ovid, Fasti 3.137–140), and Ovid names incense and wine as Janus\'s own gifts. No animal is closely his, though a ram was sacrificed to him on the Agonium of 9 January.',
             },
           ],
           knowAndDont: {
@@ -171,7 +171,7 @@ export const JOURNEY: Journey = {
           ],
           knowAndDont: {
             known:
-              'Livy (1.19) and Augustus\'s Res Gestae (13) describe the gates of Janus Geminus. Ovid tells the Saturn and Sabine stories, and Macrobius repeats and expands them. Augustine (City of God 4.8, 6.9) lists the door deities.',
+              'Livy (1.19) and Augustus\'s Res Gestae (13) describe the gates of Janus Geminus. Ovid tells the Saturn and Sabine stories, and Macrobius repeats and expands them. Augustine (City of God 4.8, 6.7) lists the door deities.',
             unknown:
               'The stories of Janus as king and host of Saturn are probably antiquarian invention rather than ancient myth. How many times the gates were really closed, and how the custom began, are uncertain. The door deities may have been more priestly lists than popular gods.',
           },
@@ -248,7 +248,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Sweet gifts',
               body:
-                'On the Kalends of January Romans gave each other strenae: dates, dried figs, honey, sometimes coins and sprigs of bay. Ovid asks Janus why, and the god explains that it is an omen, "ut res sapor ille sequatur et peragat coeptum dulcis ut annus iter", "so that the sweetness may follow events, and the year may complete its journey sweetly as it began" (Fasti 1.187–188). Ovid adds that people now like coins best, and the god laughs at how much the age loves money.\n\nPeople dressed in white, spoke good words, burned incense, and the new consuls went up to the Capitol in procession to sacrifice to Jupiter. And everyone did a little of their ordinary work, so that the year would not begin idle: each "tastes his own craft by doing it" (1.169).',
+                'On the Kalends of January Romans gave each other strenae: dates, dried figs, honey, and often coins. The word itself was said to come from the grove of an old goddess, Strenia, whose green sprigs were the first new-year gifts. Ovid asks Janus why, and the god explains that it is an omen, "ut res sapor ille sequatur et peragat coeptum dulcis ut annus iter", "so that the sweetness may follow events, and the year may complete its journey sweetly as it began" (Fasti 1.187–188). Ovid adds that people now like coins best, and the god laughs at how much the age loves money.\n\nPeople dressed in white, spoke good words, burned incense, and the new consuls went up to the Capitol in procession to sacrifice to Jupiter. And everyone did a little of their ordinary work, so that the year would not begin idle: each "tastes his own craft by doing it" (1.169).',
             },
             {
               heading: 'The Agonium',
@@ -506,7 +506,7 @@ export const JOURNEY: Journey = {
     'Cato, On Agriculture 134 and 141 (Latin, The Latin Library: https://www.thelatinlibrary.com/cato/cato.agri.html)',
     'Livy, History of Rome 8.9, the order of gods in prayer (Latin, The Latin Library: https://www.thelatinlibrary.com/livy/liv.8.shtml); 1.19 (paraphrased)',
     'Macrobius, Saturnalia 1.7 and 1.9 (paraphrased)',
-    'Augustus, Res Gestae 13; Augustine, City of God 4.8 (paraphrased)',
+    'Augustus, Res Gestae 13; Augustine, City of God 4.8 and 6.7 (Latin, The Latin Library: https://www.thelatinlibrary.com/augustine/civ4.shtml); Symmachus, Letters book 10, on Strenia (paraphrased)',
     'Ovid, Fasti 6.101–130, the story of Crane (paraphrased)',
     'Mary Beard, John North and Simon Price, Religions of Rome (Cambridge, 1998)',
     'John Scheid, An Introduction to Roman Religion (Edinburgh, 2003)',

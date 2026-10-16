@@ -156,12 +156,12 @@ export const JOURNEY: Journey = {
             {
               heading: 'Diana\'s mirror',
               body:
-                'In the Alban Hills south-east of Rome lies a small round lake in an old volcanic crater, Lake Nemi. The Romans called it Diana\'s mirror (speculum Dianae), and the woods around it her grove, nemus, which gives the place its modern name. Her sanctuary stood on the lake shore below the town of Aricia. It was a shared shrine of the Latin peoples, and an old inscription recorded its dedication by a Latin dictator from Tusculum on behalf of several towns.\n\nOvid describes it in the Fasti (3.263–272): "vallis Aricinae silva praecinctus opaca / est lacus, antiqua religione sacer", "girt by the shady wood of the Arician valley is a lake, holy with ancient religion." Threads hang down covering the long fences, he says, and many a tablet is set up for the goddess who deserved it. "saepe potens voti, frontem redimita coronis, / femina lucentes portat ab Urbe faces": "often a woman whose prayer was granted, her brow crowned with garlands, carries shining torches from the City."',
+                'In the Alban Hills south-east of Rome lies a small round lake in an old volcanic crater, Lake Nemi. It came to be called Diana\'s mirror (speculum Dianae), and the woods around it were her grove, nemus, which gives the place its modern name. Her sanctuary stood on the lake shore below the town of Aricia. It was a shared shrine of the Latin peoples: Cato the Elder recorded that the grove was dedicated by Egerius Baebius of Tusculum, a "Latin dictator", on behalf of several towns.\n\nOvid describes it in the Fasti (3.263–272): "vallis Aricinae silva praecinctus opaca / est lacus, antiqua religione sacer", "girt by the shady wood of the Arician valley is a lake, holy with ancient religion." Threads hang down covering the long fences, he says, and many a tablet is set up for the goddess who deserved it. "saepe potens voti, frontem redimita coronis, / femina lucentes portat ab Urbe faces": "often a woman whose prayer was granted, her brow crowned with garlands, carries shining torches from the City."',
             },
             {
               heading: 'What people left',
               body:
-                'Excavations at Nemi have found thousands of gifts: small clay models of wombs, breasts, feet, eyes and hands, figures of mothers with babies, and statuettes of the goddess. These are thank-offerings and requests for healing and safe childbirth. Women walked the twenty-odd kilometres from Rome with torches; Ovid\'s line is a scene people would have known.\n\nTwo other powers lived in the grove. Egeria, a water nymph whose spring fed the lake, was said to have advised King Numa and to help women in childbirth. Virbius was a minor god identified with Hippolytus, the chaste Greek hero killed when his horses bolted, whom Diana had restored to life and hidden here; for that reason, Ovid says, no horses were allowed in the grove.',
+                'Excavations at Nemi have found thousands of gifts: small clay models of wombs, breasts, feet, eyes and hands, figures of mothers with babies, and statuettes of the goddess. These are thank-offerings and requests for healing and safe childbirth. Women walked the thirty-odd kilometres from Rome with torches; Ovid\'s line is a scene people would have known.\n\nTwo other powers lived in the grove. Egeria, a water nymph whose spring fed the lake, was said to have advised King Numa and to help women in childbirth. Virbius was a minor god identified with Hippolytus, the chaste Greek hero killed when his horses bolted, whom Diana had restored to life and hidden here; for that reason, Ovid says, no horses were allowed in the grove.',
             },
             {
               heading: 'The King of the Wood',
@@ -183,7 +183,7 @@ export const JOURNEY: Journey = {
           inPractice:
             'Make a small votive for Diana in the Nemi manner: write on a card exactly what you thank her for or ask of her, plainly, and leave it on her shrine. If you are thanking her for healing, you can draw the part of you that was healed, as the women of Nemi modelled theirs in clay.',
           reflect: [
-            'What would I carry a torch twenty kilometres to give thanks for?',
+            'What would I carry a torch thirty kilometres to give thanks for?',
             'How do I feel about the violence of the King of the Wood sitting beside the gentle gifts of the women?',
           ],
           further: [
@@ -327,7 +327,7 @@ export const JOURNEY: Journey = {
           further: [
             'Charles Godfrey Leland, Aradia, or the Gospel of the Witches (1899; public domain)',
             'Ronald Hutton, The Triumph of the Moon (1999), on Leland and early Wicca',
-            'Carlo Ginzburg, Ecstasies (1989), on the night-riding goddess',
+            'Carlo Ginzburg, Ecstasies: Deciphering the Witches\' Sabbath (Italian 1989; English 1991), on the night-riding goddess',
           ],
           library: ['traditional/deity/diana', 'traditional/deity/hekate', 'traditional/herb/mugwort'],
         },

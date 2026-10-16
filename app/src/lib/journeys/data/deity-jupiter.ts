@@ -502,6 +502,7 @@ export const JOURNEY: Journey = {
     'Pliny the Elder, Natural History 28.10–11, on the reading and checking of prayers (paraphrased)',
     'Cicero, On the Nature of the Gods 2.67, Vesta last in prayer (paraphrased)',
     'Aulus Gellius, Attic Nights 10.15, the rules of the Flamen Dialis (paraphrased)',
+    'Varro, On the Latin Language 6.16, the Vinalia and the Flamen Dialis\'s vintage rite (Latin, The Latin Library: https://www.thelatinlibrary.com/varro.ll6.html; section numbers checked against Kent\'s 1938 Loeb on archive.org)',
     'Mary Beard, John North and Simon Price, Religions of Rome (Cambridge, 1998)',
     'John Scheid, An Introduction to Roman Religion (Edinburgh, 2003)',
     'Harriet I. Flower, The Dancing Lares and the Serpent in the Garden (Princeton, 2017)',
