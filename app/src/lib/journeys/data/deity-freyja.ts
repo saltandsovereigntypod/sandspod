@@ -1,0 +1,557 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-freyja',
+  kind: 'deity',
+  paths: ['norse'],
+  deityRef: 'traditional/deity/freyja',
+  title: 'Freyja, the Lady',
+  summary:
+    'A lunar month with the Vanir goddess of love, magic, gold and the chosen dead: her myths, the honest question of Freyja and Frigg, how she was worshipped and how to honour her today.',
+  welcome: `This journey spends about a month with Freyja. You will read what the sources say about her, look at what they leave out, learn how Heathens offer to her, set up a shrine, keep nine nights of offering, and decide at the end whether to dedicate yourself.
+
+It is a self-dedication, not an initiation, and it does not replace the rites of a Heathen group or a seiðr circle if you join one later. Freyja is often sold as a soft love goddess. She is that, and also a sorceress, a chooser of the slain, a goddess who answers to no one about her body. Come with admiration and honesty, and leave room for her to surprise you.`,
+  about: `Freyja (Old Norse “Lady”) is a goddess of the Vanir, the second family of Norse gods, daughter of the sea god Njörðr and twin sister of Freyr. The Eddas make her the foremost of the goddesses: mistress of love and desire, owner of the necklace Brísingamen and a falcon-feather cloak, driver of a chariot drawn by two cats, rider of the boar Hildisvíni, and keeper of the field Fólkvangr, where half of those who die in battle go. Snorri says she taught the Æsir seiðr, a trance magic of seeing and shaping fate. She weeps tears of red gold for her lost husband Óðr. Her worship is attested in place names and in the dísablót, though less directly than her brother’s, and much of what we know comes from Christian Icelandic writers of the 1200s. Whether she was once the same goddess as Frigg is an open question. Today she is one of the most loved deities in Heathenry and in witchcraft, honoured with mead, honey, amber, flowers and gold, especially on Fridays and at the winter Dísablót.`,
+  notes: [
+    'Freyja and Frigg may share an origin. The evidence is genuinely mixed, and this journey sets it out rather than deciding for you.',
+    'The sources show Freyja as sexually free, and some poems insult her for it. This journey treats her sexuality as part of her, not something to apologise for or to exploit. Love magic here is about attraction and self-worth, never about binding or overriding another person’s will.',
+    'Seiðr is a living, contested practice. Reconstructed oracular seiðr is taught by groups and teachers; it is not taught here as a trance technique, and trance work should not be begun alone if you are vulnerable.',
+    'This app is inclusive. Freyja is honoured by people of every ancestry, gender and orientation, and many queer and trans Heathens feel especially close to her. Groups that tie her to race are not the tradition taught here.',
+    'Common modern offerings like chocolate, grapes and lilies are toxic to cats and dogs. Since Freyja is the cat goddess, keep her offerings out of your cat’s reach.',
+  ],
+  holyDays: ['disablot', 'vetrnaetur', 'midsummer', 'jol', 'sigrblot'],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'Into Her Hall',
+      intro:
+        'Freyja’s hall is Sessrúmnir, “roomy-seated”, with space for many. These first days are about making a beautiful place for her, small but cared for, and greeting her honestly.',
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'freyja-shrine',
+          title: 'Set up a shrine',
+          instructions: `Choose a spot where you will see it daily: a dressing table, a bedroom shelf, a windowsill with light. Lay a soft cloth, green, gold or rose if you have one. Add a small cup for mead or juice, a dish for honey or fruit, and one candle in a holder.
+
+For an image: a cat, a falcon or feather, a boar, a necklace laid in a circle, or a picture of the small gold-foil figures (guldgubber) found in Scandinavian halls. Amber is her stone in modern practice; a single bead is enough. Fresh flowers in a small vase suit her, changed before they wilt.
+
+Beauty matters here, but money does not. A clean, cared-for shelf with a wildflower is more Freyja than an expensive statue left dusty.`,
+          times: 1,
+          prompt: 'What did you choose for her shrine, and what made each thing feel right?',
+        },
+        {
+          id: 'freyja-names',
+          title: 'Learn her names',
+          instructions: `Snorri says Freyja has many names because she travelled among many peoples searching for her husband. Learn them and say them once a day: Mardöll (perhaps “sea-brightness”), Hörn (perhaps “flax”), Gefn (the Giver), Sýr (the Sow), Vanadís (the Dís of the Vanir), and Valfreyja (Lady of the Slain).`,
+          times: 3,
+          every: 'day',
+          prompt: 'Which of her names surprised you? Which felt like her face toward you?',
+        },
+      ],
+      rite: {
+        title: 'Greeting the Lady',
+        summary:
+          'A short first greeting: hallow the space, pour mead and offer honey and a flower, tell Freyja why you have come, and share the cup.',
+        minutes: 20,
+        ingredients: [
+          { name: 'A cup of mead, cider or apple juice' },
+          { name: 'A spoonful of honey on a small dish' },
+          { name: 'A fresh flower (not a lily if you have cats)' },
+          { name: 'A candle in a safe holder', ref: 'traditional/candle/gold', optional: true },
+          { name: 'A piece of amber', ref: 'traditional/crystal/amber', optional: true },
+          { name: 'An offering bowl', ref: 'traditional/vessel/offering_bowl' },
+        ],
+        preparation:
+          'Bathe or wash, and wear something you feel good in; a little scent or jewellery is fitting. Tidy the shrine. Pour the mead, set out the honey and the flower.',
+        steps: [
+          {
+            title: 'Hallow the space',
+            instructions:
+              'Light the candle. Walk once around the room sunwise and name it holy.',
+            spoken: 'I make this a hall of welcome. Let what is unkind wait outside while the cup is poured.',
+            light: true,
+          },
+          {
+            title: 'Greet her',
+            instructions: 'Stand before the shrine and lift the cup.',
+            spoken:
+              'Freyja, Lady of the Vanir, Njörðr’s daughter, Freyr’s sister. Mardöll, Gefn, Vanadís. Owner of Brísingamen, rider of the boar, mistress of Fólkvangr. I bring you mead and honey and a flower. Hear me.',
+          },
+          {
+            title: 'Say why you have come',
+            instructions:
+              'Tell her, aloud and honestly, what drew you to her: love, magic, beauty, grief, courage, something you cannot name. Say what you hope for, and what you are afraid of.',
+            minutes: 5,
+          },
+          {
+            title: 'Share the cup',
+            instructions: 'Drink a sip. Taste the honey. Lay the flower on the shrine.',
+            spoken: 'I share this with you, Lady. Hail Freyja!',
+          },
+          {
+            title: 'Sit with her',
+            instructions: 'Sit a few minutes. Let yourself feel whatever you feel. There is no wrong answer.',
+            minutes: 5,
+            timed: true,
+          },
+          {
+            title: 'Close',
+            instructions:
+              'Thank her. Snuff the candle. Later the same day, pour the mead and honey onto the earth outside, at a tree or in a flower bed.',
+            spoken: 'Thank you, Lady. I will come back.',
+            snuff: true,
+          },
+        ],
+        closing: 'Write down what you said and what you felt. Keep it for the dedication.',
+        safety:
+          'Never leave a candle burning unattended. Lilies (all parts, even pollen and vase water) are deadly to cats; choose roses, primroses, sunflowers or herbs instead. Keep honey and mead away from pets, and do not pour alcohol into houseplants. Clear offerings the same day.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'Gold and Tears',
+      intro:
+        'Twelve days of reading: who Freyja is in the sources, the stories about her and what they reveal, and the honest question of whether she and Frigg were once one goddess.',
+      days: 12,
+      lessons: [
+        {
+          id: 'freyja-who',
+          title: 'Lady of the Vanir',
+          summary: 'Freyja’s family, names, treasures and halls as the sources give them.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'A goddess of the Vanir',
+              body: `Norse myth has two families of gods. The Æsir include Odin, Thor and Frigg. The Vanir, linked with fertility, wealth, the sea and magic, include Njörðr and his children Freyr and Freyja. Völuspá and Snorri tell of a war between the families that ended in a truce and an exchange of hostages: Njörðr, Freyr and Freyja came to live among the Æsir.
+
+Her name means simply “Lady,” as Freyr means “Lord.” This may be a title rather than a personal name, which is part of why her identity is debated. Snorri says that from her name “the title has come that women of birth and wealth are called frur” (Rasmus Anderson’s 1880 translation). Modern Scandinavian fru and German Frau come from the same root.`,
+            },
+            {
+              heading: 'Her halls and her share of the dead',
+              body: `Freyja’s home is Fólkvangr, the field of the host. In Grímnismál, Odin lists the halls of the gods:
+
+“The ninth is Folkvang, where Freyja decrees / Who shall have seats in the hall; / The half of the dead each day does she choose, / And half does Othin have.” (Henry Adams Bellows’ 1923 translation, stanza 14)
+
+So Freyja has first choice of the slain, and Odin takes the rest. Her hall is Sessrúmnir. In Egils saga, the grieving Þorgerðr says she will not eat until she dines with Freyja, which suggests women too expected to go to her after death. Freyja is a goddess of the dead as much as of love.`,
+            },
+            {
+              heading: 'Her treasures and animals',
+              body: `Her best-known treasure is Brísingamen, the necklace (or perhaps belt) of the Brísings. She owns a cloak of falcon feathers that lets the wearer fly; Loki borrows it twice in the myths. Snorri says, “When she goes abroad, she drives in a car drawn by two cats” (Anderson). In Hyndluljóð she rides the boar Hildisvíni, “battle-swine,” who turns out to be her human favourite Óttarr in disguise. The sow is one of her names, Sýr, and boars belong to both Vanir twins.
+
+Snorri adds that “she is fond of love ditties, and it is good to call on her in love affairs.” That one line has shaped her modern image more than any other.`,
+            },
+            {
+              heading: 'The weeping goddess',
+              body: `Freyja’s husband is Óðr, a shadowy figure who went away on long journeys. Snorri writes: “Oder went far away. Freyja weeps for him, but her tears are red gold” (Anderson). Poets called gold “Freyja’s tears.” She travelled far to find him, taking new names among the peoples she met. Their daughter is Hnoss, “treasure,” and Snorri gives her a sister, Gersemi.
+
+This is a goddess of longing as well as having. Many devotees come to her in grief, in loneliness, or after loss, and find that she knows what it is to search and weep.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Freyja appears in the Poetic Edda (Grímnismál, Þrymskviða, Lokasenna, Hyndluljóð) and in Snorri’s Edda and Ynglinga saga. Her animals, necklace, falcon cloak, hall and share of the slain are all attested. Gold as “Freyja’s tears” is a skaldic kenning.',
+            unknown:
+              'Almost everything comes from Christian Icelandic writers of the 1200s. Óðr is almost unknown; some scholars think he is a doublet of Odin (Óðinn), which feeds the Frigg question. The meanings of her names Mardöll and Hörn are uncertain.',
+          },
+          inPractice:
+            'Heathens often call on Freyja by the name that fits the need: Gefn for generosity and gifts, Vanadís at the Dísablót, Valfreyja when remembering the dead, Mardöll for beauty. Many keep a cat in her honour, which seems fitting.',
+          reflect: [
+            'Freyja is a goddess of love and of the slain. What do you think connects them?',
+            'What have you searched for, as Freyja searched for Óðr?',
+          ],
+          further: [
+            'Grímnismál and Hyndluljóð in Henry Adams Bellows, The Poetic Edda (1923), public domain.',
+            'Gylfaginning ch. 24 and 35 in Rasmus B. Anderson, The Younger Edda (1880), public domain.',
+            'Britt-Mari Näsström, Freyja: The Great Goddess of the North (1995).',
+          ],
+          library: ['traditional/deity/freyja', 'traditional/deity/freyr', 'traditional/crystal/amber'],
+        },
+        {
+          id: 'freyja-myths',
+          title: 'Necklace, Wall and Shrine of Stones',
+          summary: 'The main Freyja stories and what they tell us about her power, her anger and her worshippers.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'She will not be traded',
+              body: `Freyja is the prize the giants always want. A giant builder offers to wall Asgard if he can have Freyja, the sun and the moon; Loki’s trickery cheats him. The giant Þrymr steals Thor’s hammer and will give it back only for Freyja’s hand. When Loki asks her to dress for the wedding, Þrymskviða says:
+
+“Wrathful was Freyja, and fiercely she snorted, / And the dwelling great of the gods was shaken, / And burst was the mighty Brisings’ necklace” (Bellows, stanza 12).
+
+She refuses to be married off, and the gods have to find another way. Her anger shakes Asgard. Devotees often read these stories as being about sovereignty: Freyja’s body and choices are hers.`,
+            },
+            {
+              heading: 'The necklace and the dwarves',
+              body: `A late Icelandic tale, Sörla þáttr from the 1300s, tells that Freyja saw four dwarves forging a golden necklace and wanted it more than anything. They would give it only if she spent a night with each of them, and she did. Odin, learning of it, had Loki steal the necklace, and she could get it back only by stirring up an endless war between two kings.
+
+This story is late, Christian and plainly meant to show the old gods badly. It is also the source of many modern ideas about Brísingamen. Heathens are divided: some find it a story of a goddess who pays her own price for what she wants, others reject it as slander. It is fair to know it and fair to set it aside.`,
+            },
+            {
+              heading: 'Óttarr’s shrine of stones',
+              body: `Hyndluljóð gives us the most direct picture of devotion to Freyja. Freyja rides to the giantess Hyndla with her favourite, Óttarr, disguised as her boar, so Hyndla can recite his ancestry before an inheritance contest. Freyja explains why she helps him:
+
+“For me a shrine of stones he made,— / And now to glass the rock has grown;— / Oft with the blood of beasts was it red; / In the goddesses ever did Ottar trust.” (Bellows, stanza 10)
+
+The Old Norse word is hörgr, a stone heap or outdoor altar. Óttarr reddened it so often with sacrifice that the stones turned glassy. He trusted the goddesses, and Freyja rewards him. It is the gift-for-gift relationship in miniature.`,
+            },
+            {
+              heading: 'Insults and what they show',
+              body: `In Lokasenna, Loki accuses Freyja of having slept with every god and elf in the hall, including her own brother; Hyndla also mocks her for running about at night. These insults were meant to shame, and in the poems everyone is insulted. They also confirm that Freyja’s sexual freedom was part of how people saw her.
+
+The Ynglinga saga adds that Freyja was a priestess (blótgyðja) of the sacrifices, and that she first taught the Æsir seiðr, which had been the custom among the Vanir. Seiðr was a trance magic of seeing and shaping fate, done mostly by women, and associated in the sources with shame for men who practised it. Freyja is its mistress.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Þrymskviða, Lokasenna and Hyndluljóð are Eddic poems; the builder story is in Snorri’s Gylfaginning; the seiðr teaching in Ynglinga saga ch. 4. Sörla þáttr survives in the late-1300s Flateyjarbók.',
+            unknown:
+              'Some scholars identify Freyja with Gullveig, the woman the Æsir burn three times in Völuspá, who then practises seiðr as Heiðr; others think this is too speculative. We do not know how old the Sörla þáttr story is or whether it draws on anything pagan. Óttarr’s hörgr may be literary rather than a description of real practice.',
+          },
+          inPractice:
+            'Some Heathens build a small stone cairn in a garden or on a balcony for Freyja, after Óttarr, and pour mead or honey onto it. Others keep a necklace on her shrine that they wear only for her rites.',
+          reflect: [
+            'Freyja refuses to be traded. Where in your life are you being asked to trade yourself?',
+            'Óttarr kept faith until the stones turned to glass. What would steady devotion over years look like for you?',
+          ],
+          further: [
+            'Þrymskviða, Lokasenna and Hyndluljóð in Bellows (1923).',
+            'Jenny Blain, Nine Worlds of Seid-Magic: Ecstasy and Neo-Shamanism in North European Paganism (2002).',
+          ],
+          library: ['traditional/deity/freyja', 'traditional/deity/thor', 'traditional/deity/loki'],
+        },
+        {
+          id: 'freyja-frigg',
+          title: 'Freyja and Frigg: One Goddess or Two?',
+          summary: 'The honest state of a long scholarly argument, and what it means for your practice.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'Why people ask',
+              body: `Frigg is Odin’s wife, a goddess of the household, marriage and foreknowledge. Freyja is a Vanir goddess of love and magic. In the Eddas they are clearly two people: they speak to each other in Lokasenna, they have different families, and Snorri lists them separately. And yet they share a surprising amount.
+
+Both own a falcon-feather cloak. Both weep: Frigg for her son Baldr, Freyja for her husband. Freyja’s husband is Óðr, and Frigg’s is Óðinn; the names are built on the same root. Both are linked with Friday, and both with seeresses and fate. Freyja gets half the slain, which might fit Odin’s wife better than Freyr’s sister.`,
+            },
+            {
+              heading: 'The case for one origin',
+              body: `Outside Scandinavia there is no Freyja. The continental Germans and Anglo-Saxons knew only a Frija or Frīg, Wodan’s wife; Friday is named for her. The Lombards told a story of Frea, Godan’s wife, who tricked him into giving her people victory. Some scholars argue that there was once a single Germanic goddess, *Frijjō, who in the north split into two figures: a wife-and-queen Frigg and a love-and-magic Freyja. On this view Óðr is Odin under an older name.
+
+Bellows, in a note to his 1923 translation of Grímnismál, already said that Freyja here “represents a confusion between two originally distinct divinities: the wife of Othin (Frigg) and the northern goddess of love.” Notice that even he thought the confusion was there to explain.`,
+            },
+            {
+              heading: 'The case for two',
+              body: `Other scholars point out that the Norse sources consistently keep them apart, and that Freyja has a strong identity of her own: her Vanir family, her twin brother, her cats and boar, her seiðr. Her name may be a title, “Lady,” attached to a goddess who once had another name. Place names in Norway and Sweden distinguish Frigg sites from Freyja sites. Separate cults may have existed side by side for a long time, whatever their deep origins.
+
+The honest answer is that nobody knows. The evidence allows both readings, and serious scholars hold each.`,
+            },
+            {
+              heading: 'What to do with not knowing',
+              body: `Most modern Heathens honour them as two goddesses, because that is how the Norse sources and the living tradition present them. Some feel they are faces of one, and treat them as sisters or as two aspects. A few do not care much either way.
+
+What matters in practice is to be clear about which goddess you are addressing in a given rite, and not to borrow one’s customs for the other without saying so. Many modern books blend them carelessly, giving Frigg’s spinning to Freyja or Freyja’s love magic to Frigg. Your shrine can say “I don’t know” and still be faithful.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The Norse sources treat Freyja and Frigg as distinct. Continental and Anglo-Saxon sources know only Frija/Frīg/Frea, Wodan’s wife. The shared falcon cloak, weeping and Óðr/Óðinn parallel are in the sources. Bellows’ note on Grímnismál 14 is in his 1923 translation.',
+            unknown:
+              'Whether the two share one origin, and if so when they diverged, is unresolved. Whether Óðr is Odin is unknown. Which goddess Friday was originally named for in the north is unclear; Old Norse Frjádagr could come from either, and was probably borrowed from West Germanic.',
+          },
+          inPractice:
+            'Many Heathens give each goddess her own day or tide: Frigg at Mothers’ Night and in household rites, Freyja at the Dísablót and in rites of love and magic, both on Fridays. Some keep a single shrine to both, side by side.',
+          reflect: [
+            'Does it matter to you whether Freyja and Frigg were once one? Why?',
+            'What does it feel like to keep a practice with an honest “we don’t know” at its centre?',
+          ],
+          further: [
+            'Stephan Grundy, “Freyja and Frigg,” in The Concept of the Goddess, ed. Billington and Green (1996).',
+            'Britt-Mari Näsström, Freyja: The Great Goddess of the North (1995).',
+            'Rudolf Simek, A Dictionary of Northern Mythology (1993), entries on Frigg and Freyja.',
+          ],
+          library: ['traditional/deity/freyja', 'traditional/deity/frigg', 'traditional/deity/odin'],
+        },
+      ],
+      practices: [
+        {
+          id: 'freyja-beauty',
+          title: 'A daily beauty',
+          instructions:
+            'Each day, notice one beautiful thing and tell her about it at the shrine, or make one small thing beautiful: a tidy table, a braid, a song sung in the shower. Freyja is honoured by attention to beauty, not by perfection.',
+          times: 12,
+          every: 'day',
+          prompt: 'What beauty did you notice or make today?',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Nine Nights of Gifts',
+      intro:
+        'In this stage you learn how Freyja was worshipped and how Heathens honour her now, which days and gifts are hers, and keep nine nights of offering.',
+      days: 9,
+      lessons: [
+        {
+          id: 'freyja-worship',
+          title: 'Dísablót, Seiðr and the Living Tradition',
+          summary: 'The evidence for Freyja’s cult, the seeress tradition, and how Heathens and witches honour her today.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Traces of her cult',
+              body: `Freyja’s worship is harder to see than Thor’s or Freyr’s, but it is there. Place names in Norway and Sweden such as Frøihov (“Freyja’s temple”) and several Härnevi and Hørnes (from Hörn, one of her names) mark places where she was honoured. Snorri, in Ynglinga saga, says that when the other gods died Freyja alone remained to keep up the sacrifices, and that she was honoured far and wide.
+
+One name links her to a festival. As Vanadís, the dís of the Vanir, she is connected with the dísir, female guardian spirits and ancestral mothers, who were honoured at the dísablót. At Uppsala the Dísablót was held in late winter alongside a great assembly and market, the Dísting; Ynglinga saga tells of a king who rode around the hall of the dísir at a dísablót and was thrown from his horse.`,
+            },
+            {
+              heading: 'The seeress',
+              body: `The fullest description of a seiðr-woman is in the Saga of Erik the Red, set in Greenland around 1000. The seeress Þorbjörg, called the Little Völva, arrives in a blue cloak hung with stones, a hood of black lambskin lined with white catskin, and gloves of catskin. She eats a porridge of goat’s milk and a meal of animal hearts, sits on a high platform on a cushion of hen feathers, and the women sing a special song, the varðlokkur, while she goes into trance. Then she answers the community’s questions about the coming season and their own fates.
+
+The saga does not name Freyja, but the catskins and the seiðr tradition point to her. Since the 1990s, groups such as Hrafnar in California, led by Diana Paxson, have reconstructed an oracular seiðr based on this account, and it is now practised by Heathens in many countries.`,
+            },
+            {
+              heading: 'Freyja today',
+              body: `In modern Heathenry, Freyja is honoured at blót with mead and honey, called on for love, fertility, prosperity, courage and help with magic, and remembered at the Dísablót with the ancestral mothers. In Iceland and Scandinavia she is part of public rites; in English-speaking countries she is one of the most popular goddesses in both Heathenry and eclectic witchcraft.
+
+Many queer and trans Heathens feel especially close to her, as a goddess whose desire and magic the sources treat as hers to command. Inclusive Heathen groups welcome this. Folkish groups, which tie the gods to ancestry, are not the tradition taught here.`,
+            },
+            {
+              heading: 'Love, magic and consent',
+              body: `“It is good to call on her in love affairs,” Snorri says. Good ways to do that: ask her to help you love yourself, to make you brave enough to speak to someone, to bring a good partner into your life, to bless a relationship you already have, or to heal after a heartbreak.
+
+Don’t ask her to make a particular person love you or to bind someone. That is not love, and it runs against what the Þrymskviða Freyja showed: she would not be given to anyone against her will, and she does not ask that of others. Magic that respects other people’s choices is magic she can bless.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Freyja place names are found in Norway and Sweden. The Dísablót and Dísting at Uppsala are attested in Ynglinga saga and later Swedish records; the market at Uppsala continued into modern times. The Little Völva episode is in the Saga of Erik the Red. Hrafnar’s oracular seiðr began in the late 1980s and 1990s.',
+            unknown:
+              'Whether Freyja was the goddess honoured at the dísablót, or whether the dísir were honoured on their own, is not clear; the link through her name Vanadís is suggestive, not proven. The Erik saga was written two centuries after its setting and may be literary. Modern seiðr is a reconstruction.',
+          },
+          inPractice:
+            'Many Heathens keep the Dísablót in February for Freyja and the dísir together, with a candle for each ancestral woman they remember. Those drawn to seiðr usually seek out an experienced group rather than learning trance alone.',
+          reflect: [
+            'Who are the women in your line, by blood or by choice, whom you could honour at the Dísablót?',
+            'What would love magic look like that you would be glad to have done to you?',
+          ],
+          further: [
+            'The Saga of Erik the Red, trans. J. Sephton (1880), public domain, ch. 4.',
+            'Diana L. Paxson, The Essential Guide to Possession, Divination, and Prophecy (2015), on oracular seiðr.',
+            'Patricia M. Lafayllve, Freyja, Lady, Vanadis: An Introduction to the Goddess (2006).',
+          ],
+          library: ['traditional/deity/freyja', 'traditional/deity/frigg', 'traditional/crystal/rose_quartz'],
+          premade: ['folk-simple-blot', 'hedge-ancestor-candle-evening'],
+        },
+        {
+          id: 'freyja-days',
+          title: 'Fridays, Honey and Gold',
+          summary: 'Freyja’s days and tides, her offerings and how to give them, and what to avoid.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'Her day and her tides',
+              body: `Friday is a day many Heathens keep for Freyja (and many for Frigg; see the previous lesson). A short Friday offering of mead or honey, a candle and a few words is a common rhythm.
+
+In the year, the Dísablót around the February full moon is her great tide in modern practice. Winter Nights in late October, when the dísir and the álfar (elves) are honoured, is another. Midsummer, with its flowers and long light, suits her as goddess of love and growth, and many Heathens honour the Vanir twins together at Yule.`,
+            },
+            {
+              heading: 'What to offer',
+              body: `Mead and honey are the most common offerings, for a goddess of sweetness and plenty. Strawberries and other berries, good bread, milk and butter, and flowers fresh from a garden are all fitting. Amber, which was traded across the north and worn as beads, is given to her, as are other jewellery and gold; some devotees offer a small piece of gold jewellery and wear it only in her honour. Perfume, a song, a dance, a love poem, a well-made thing: beauty is an offering.
+
+Chocolate is a modern favourite, popular among American Heathens since the 1990s. It is fine, but it is toxic to cats and dogs, so keep it out of reach. Some devotees offer time spent caring for cats, at a shelter or for a neighbour.`,
+            },
+            {
+              heading: 'Gift for a gift',
+              body: `Heathen worship rests on gift exchange. The Hávamál, speaking of friends, says: “To his friend a man a friend shall prove, / And gifts with gifts requite” (Bellows, stanza 42). Freyja gave Óttarr her help because he had given her faithful offerings for years. That is the relationship to aim for: steady, mutual, generous on both sides.
+
+Don’t treat her like a vending machine, and don’t give more than you can afford. A spoonful of honey given gladly every Friday for a year builds more than one lavish gift.`,
+            },
+            {
+              heading: 'How to offer, and what to avoid',
+              body: `Stand before the shrine, lift the cup or dish, name her and what you give. Share a sip or a taste, then leave her portion. Take drink offerings outside and pour them onto earth; lay fruit or flowers under a tree or in a garden, or compost them. Do not eat what you have given her.
+
+Avoid treating her only as a love goddess; she is also a goddess of war, death, wealth and magic, and devotees who never see those sides miss most of her. Avoid buying feathers from wild-caught birds of prey, which are protected in most countries. And be careful with the “goddess of sex” marketing that turns up around her: her sexuality is hers, not a product, and nobody needs to perform anything to honour her.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Honey and mead were valued gifts in the Norse world, and amber was traded and worn widely. The Dísablót is attested. The gift-for-gift principle is in the Hávamál.',
+            unknown:
+              'There is no historical record of specific offerings to Freyja apart from Óttarr’s blood sacrifices. Friday as Freyja’s day, chocolate, strawberries and most colour and stone associations are modern practice.',
+          },
+          inPractice:
+            'A common pattern: honey or mead on Fridays, flowers through the summer, a candle for the ancestral mothers at the Dísablót, and amber worn as a token of devotion.',
+          reflect: [
+            'Which of Freyja’s sides, love, magic, war, death or wealth, do you find hardest to approach? Why?',
+            'What could you offer her every week that would cost you a little care rather than a lot of money?',
+          ],
+          further: ['Hávamál in Bellows (1923).', 'Lafayllve, Freyja, Lady, Vanadis (2006).'],
+          library: ['traditional/deity/freyja', 'traditional/herb/rose', 'traditional/crystal/amber', 'traditional/candle/pink'],
+          premade: ['folk-simple-blot'],
+        },
+      ],
+      practices: [
+        {
+          id: 'freyja-nine-nights',
+          title: 'Nine nights of gifts',
+          instructions: `For nine nights, at the shrine, light the candle and give a small gift: a spoonful of honey, a little mead or juice, a flower, a song, a line of poetry, a moment of real care for your body (oil on your hands, your hair brushed slowly). Name her and say what you give.
+
+Sit for five minutes and listen. Snuff the candle. Give food and drink to the earth outside the next morning.
+
+On the ninth night, give something you have made or something precious to you: a piece of jewellery to keep on her shrine, a poem, a drawing.`,
+          times: 9,
+          every: 'day',
+          prompt: 'What did you give her tonight, and what did you notice afterwards: a feeling, a dream, a change in how you saw yourself?',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'The Mirror',
+      intro:
+        'Look back over your journal with honesty and kindness. Pausing, stopping, honouring Freyja without a vow, or turning toward another goddess, including Frigg, are all good outcomes.',
+      days: 4,
+      lessons: [],
+      practices: [
+        {
+          id: 'freyja-reread',
+          title: 'Read your record',
+          instructions: 'Read everything you have written since the first rite. Mark what felt true and what felt like wishful thinking.',
+          times: 1,
+          prompt: 'What does your record tell you?',
+        },
+      ],
+      questions: [
+        'Did the offerings feel like a meeting with Freyja, or with an idea of her?',
+        'Are you drawn to the whole goddess, love, magic, gold, war and the dead, or only to one side?',
+        'Is something in your life, a breakup, a longing, a crisis, making a vow feel urgent? Would it be wiser to wait?',
+        'Have you been addressing Freyja, or Frigg, or a blend? Does it matter to you?',
+        'What weekly offering can you keep for a year?',
+        'Would it be better to stay a guest at her blót without a personal vow, for now?',
+        'If you stop here, what will you keep from this month?',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'The Necklace',
+      intro: `If you have chosen to go on, this is the dedication: a blót, a vow written in advance, and a token to wear. It is a self-dedication between you and Freyja. It is not an initiation into any group or seiðr circle, and it does not replace a group’s own rites. Keep the vow modest and real.`,
+      days: 1,
+      lessons: [],
+      practices: [
+        {
+          id: 'freyja-write-vow',
+          title: 'Write the vow',
+          instructions:
+            'A day before, write your vow: what you will offer (for example, honey or mead on Fridays), what you will practise (for example, honouring your own worth, keeping her Dísablót), how long (a year and a day is common), and what you ask.',
+          times: 1,
+          prompt: 'Write the final vow here.',
+        },
+      ],
+      rite: {
+        title: 'Dedication to Freyja',
+        summary:
+          'A blót of mead and honey in which you hallow the space, hail Freyja by her names, share the cup, speak a written vow, and hallow a necklace or amber token to wear.',
+        minutes: 40,
+        ingredients: [
+          { name: 'A horn or cup of mead (or non-alcoholic mead or apple juice)' },
+          { name: 'A dish of honey' },
+          { name: 'Fresh flowers (no lilies if you have cats)' },
+          { name: 'A candle in a safe holder', ref: 'traditional/candle/gold' },
+          { name: 'A necklace, amber bead or other token', ref: 'traditional/crystal/amber' },
+          { name: 'An offering bowl', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'Your written vow' },
+        ],
+        preparation:
+          'Bathe and dress in something that makes you feel beautiful. Clean the shrine and set the flowers. Pour the mead, set out the honey and lay the token on the shrine. A Friday, the Dísablót, Midsummer or the day after your ninth night are good times.',
+        steps: [
+          {
+            title: 'Hallow',
+            instructions: 'Light the candle. Walk sunwise around the room and name it holy.',
+            spoken: 'I hallow this as a hall for Freyja, with seats for every friend of hers. Let it be a place of peace while the cup is full.',
+            light: true,
+          },
+          {
+            title: 'Hail her',
+            instructions: 'Lift the cup and call her by her names.',
+            spoken:
+              'Freyja, Lady, Vanadís. Mardöll, Hörn, Gefn, Sýr. Njörðr’s daughter, Freyr’s sister, Óðr’s beloved, who weeps red gold. Mistress of seiðr, chooser in Fólkvangr, owner of Brísingamen. I have brought you gifts for nine nights. I come again now, to give myself to your friendship.',
+          },
+          {
+            title: 'Share the cup',
+            instructions: 'Drink a sip and taste the honey.',
+            spoken: 'I share this with you, Lady. Hail Freyja!',
+          },
+          {
+            title: 'Speak the vow',
+            instructions:
+              'Hold the cup and read your vow aloud, once, clearly. Take a sip to seal it. Speak only what you mean.',
+            spoken: 'These words I give you, Freyja. Witness them, and hold me to them.',
+          },
+          {
+            title: 'Hallow the token',
+            instructions:
+              'Take the necklace or amber in your hands. Warm it between your palms. Pass it over the candle at a safe height. Put it on.',
+            spoken: 'Let this be a sign of my troth to you, Lady. When I wear it, let me remember my worth and my vow.',
+          },
+          {
+            title: 'Give her share',
+            instructions:
+              'Pour the rest of the mead into the bowl and spoon the honey in after it. Lay one flower beside it.',
+            spoken: 'Gift for gift. This is yours, given gladly. Give me in your turn a brave heart, an open hand and love that is true.',
+          },
+          {
+            title: 'Close',
+            instructions:
+              'Thank her. Sit a few minutes. Snuff the candle. Take the bowl outside and pour it onto the earth among flowers or at a tree.',
+            spoken: 'Hail Freyja, and thanks. The vow is made.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Write the date and your vow in your journal, and keep the paper copy for your rededication. Do something kind for your body afterwards: eat well, rest.',
+        safety:
+          'Keep the candle away from hair, scarves, flowers and the necklace cord, and never leave it burning. Lilies are deadly to cats; honey, chocolate and alcohol are bad for pets. Pour offerings outside or down a drain, not into houseplants. If you choose to drink alcohol, a sip is enough.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'Keeping Her Hall',
+      intro: `Keep the Friday offering you vowed. Honour Freyja and the ancestral mothers at the Dísablót, the dísir and álfar at Winter Nights, the green world at Midsummer, and the Vanir at Yule and at the first day of summer. Each year, read your vow aloud, say honestly how you kept it, and renew it.`,
+      days: 365,
+      lessons: [],
+      practices: [
+        {
+          id: 'freyja-weekly',
+          title: 'Friday offering',
+          instructions: 'Each Friday, light a candle and give a small gift: honey, mead, a flower, a song. Tell her about your week.',
+          times: 52,
+          every: 'week',
+          prompt: 'What did you give her this week, and what did you ask?',
+        },
+        {
+          id: 'freyja-tides',
+          title: 'Keep the holy tides',
+          instructions:
+            'At the Dísablót, hold a blót for Freyja and the dísir with a candle for each woman of your line you remember. At Winter Nights, Midsummer and Yule, hail her with the other gods.',
+          times: 4,
+          every: 'holy-day',
+          prompt: 'Who did you remember at this tide, and what did you ask for the year?',
+          premade: 'folk-simple-blot',
+        },
+        {
+          id: 'freyja-rededicate',
+          title: 'Yearly rededication',
+          instructions:
+            'On the anniversary of your dedication, or at the Dísablót, repeat the rite. Read last year’s vow first and say how you kept it. Make the new vow fit the life you have now.',
+          times: 1,
+          prompt: 'How did last year’s vow go, and what will this year’s be?',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'Henry Adams Bellows, trans., The Poetic Edda (1923), public domain: Grímnismál 14, Þrymskviða 12, Hyndluljóð 10, Hávamál 42 and the note on Grímnismál 14 quoted from Project Gutenberg ebook #73533 (https://www.gutenberg.org/ebooks/73533).',
+    'Rasmus B. Anderson, trans., The Younger Edda (1880), public domain: Gylfaginning ch. 24 (“she drives in a car drawn by two cats”, “fond of love ditties”, “women of birth and wealth are called frur”) and ch. 35 (“her tears are red gold”) quoted from Project Gutenberg ebook #18947 (https://www.gutenberg.org/ebooks/18947).',
+    'Ynglinga saga ch. 4, 10 and 29; Egils saga ch. 78; Sörla þáttr (Flateyjarbók); Saga of Erik the Red ch. 4 (paraphrased).',
+    'Britt-Mari Näsström, Freyja: The Great Goddess of the North (1995); Stephan Grundy, “Freyja and Frigg” (1996); Jenny Blain, Nine Worlds of Seid-Magic (2002); Rudolf Simek, A Dictionary of Northern Mythology (1993).',
+  ],
+};

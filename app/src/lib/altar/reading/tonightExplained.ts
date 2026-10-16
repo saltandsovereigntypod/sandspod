@@ -9,7 +9,7 @@ import { boxHeightFraction, displayBox, objectSize, withCenter, withSize } from 
 import type { TonightAltar } from '../tonight.ts';
 import type { CabinetForm, CabinetItem, SavedObject } from '../types.ts';
 import { resolveAltarEntry } from '../companion.ts';
-import { correspondenceOf, libraryOr, listing, planetName, planetOfWeekday, planetPossessive, type Planet } from './correspondence.ts';
+import { correspondenceOf, handleSafe, libraryOr, listing, planetName, planetOfWeekday, planetPossessive, type Planet } from './correspondence.ts';
 
 export type TonightTheme = { planet: Planet | null; holiday: string | null; moon: 'full' | 'new' | null };
 
@@ -124,6 +124,7 @@ export function swapsFor(
       (object.vessel && probe.vessel === object.vessel);
     if (same) continue;
     const entry = resolveAltarEntry(pool, probe);
+    if (!handleSafe(entry)) continue;
     const c = correspondenceOf(entry);
     const key = entry?.id ?? item.id;
     if (seen.has(key)) continue;

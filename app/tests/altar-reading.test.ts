@@ -107,3 +107,10 @@ test('gentle clash notes where traditional opposites meet', () => {
   assert.ok(reading.clashes.some((c) => /opposite/.test(c)));
   assert.equal(readAltar({ objects: [] }).sentences.length, 1);
 });
+
+test('deadly plants are never suggested to handle, and a lopsided altar isn’t called close', async () => {
+  const { handleSafe } = await import('../src/lib/altar/reading/correspondence.ts');
+  assert.equal(handleSafe({ traditional: { TraditionalWarnings: 'DEADLY POISONOUS. All parts of foxglove…' } } as never), false);
+  assert.equal(handleSafe({ traditional: { TraditionalWarnings: 'Garlic is toxic to cats.' } } as never), true);
+  assert.equal(handleSafe(null), true);
+});

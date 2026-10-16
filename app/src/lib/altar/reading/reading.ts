@@ -11,6 +11,7 @@ import type { CabinetItem, SavedObject } from '../types.ts';
 import {
   correspondenceOf,
   ELEMENTS,
+  handleSafe,
   libraryOr,
   listing,
   objectCorrespondences,
@@ -117,7 +118,7 @@ function suggest(
   // The quietest element, in the traditional order when tied.
   const gap = [...ELEMENTS].sort((a, b) => counts[a] - counts[b])[0];
   const candidates = pool
-    .filter((e) => (e.type === 'herb' || e.type === 'crystal') && !present.has(norm(e.name)))
+    .filter((e) => (e.type === 'herb' || e.type === 'crystal') && handleSafe(e) && !present.has(norm(e.name)))
     .map((e) => ({ e, c: correspondenceOf(e) }))
     .filter(({ c }) => c.element === gap);
   if (!candidates.length) return null;
@@ -173,7 +174,14 @@ export function readAltar(input: ReadingInput): AltarReading {
     sentences.push(`Your altar holds ${objects.length} piece${objects.length === 1 ? '' : 's'}, none the Library ties to an element yet.`);
   } else {
     const lead = ranked[0];
-    const second = ranked[1] && elements[ranked[1]] === elements[lead] ? ` and ${ranked[1]} together` : ranked[1] ? `, with ${ranked[1]} close behind` : '';
+    const runnerUp = ranked[1];
+    const second = runnerUp && elements[runnerUp] === elements[lead]
+      ? ` and ${runnerUp} together`
+      : runnerUp && elements[runnerUp] >= elements[lead] * 0.6
+        ? `, with ${runnerUp} close behind`
+        : runnerUp
+          ? `; ${listing(ranked.slice(1))} ${ranked.length > 2 ? 'are' : 'is'} only lightly there`
+          : '';
     const leads = ranked[1] && elements[ranked[1]] === elements[lead] ? `${lead}${second} lead` : `${lead} leads${second}`;
     const quietLine = quiet.length === 4 ? '' : quiet.length ? ` ${listing(quiet)} ${quiet.length === 1 ? 'is' : 'are'} quiet.` : ' All four elements are here.';
     sentences.push(`Your altar holds ${objects.length} piece${objects.length === 1 ? '' : 's'}. ${leads}.${quietLine}`);

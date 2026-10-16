@@ -540,9 +540,9 @@ You probably don't have a hearth. Most modern Hellenists use a lamp or candle as
             },
             {
               heading: `Zeus Ktesios and the kadiskos`,
-              body: `Zeus Ktesios, "of the property", guarded the household's stores. He was often imagined as a snake living among the jars in the storeroom. An ancient religious handbook quoted by Athenaeus describes how to set up his kadiskos: a jar with two handles, its handles wreathed with white wool and a strand of saffron-coloured wool, filled with pure water, olive oil and "ambrosia", which the text describes as a mixture of grains and fruits. It was placed in the storeroom and given offerings.
+              body: `Zeus Ktesios, "of the property", guarded the household's stores. He was often imagined as a snake living among the jars in the storeroom. An ancient religious handbook quoted by Athenaeus describes how to set up his kadiskos: a jar with two handles, its handles wreathed with white wool and a strand of saffron-coloured wool, filled with whatever you have, and then "ambrosia" poured in, which the text defines as pure water, olive oil and all kinds of fruits. It was placed in the storeroom and given offerings.
 
-Modern Hellenists make kadiskoi from a lidded jar: a mix of seeds and grains, water and oil (or the dry ingredients only, which keep better), wool tied round the neck. It sits in the kitchen or pantry and is topped up each Noumenia. Be practical: water, oil and grain together will go mouldy, so many use the dry form and add a few drops of oil, or empty and refresh it often.`,
+Modern Hellenists make kadiskoi from a lidded jar: a mix of seeds and grains, water and oil (or the dry ingredients only, which keep better), wool tied round the neck. It sits in the kitchen or pantry and is topped up each Noumenia. Be practical: water, oil and fruit or grain together will go mouldy, so many use the dry form and add a few drops of oil, or empty and refresh it often.`,
             },
             {
               heading: `At the door`,
@@ -730,7 +730,7 @@ Treat signs as conversation, not commands. Greeks argued with oracles, reinterpr
           sections: [
             {
               heading: `In Greece`,
-              body: `Revival of the old religion in Greece began quietly in the twentieth century and grew from the 1990s. YSEE, the Supreme Council of Ethnikoi Hellenes, was founded in 1997. It calls the religion the ethnic Hellenic religion, holds public rites, including ceremonies at ancient sites, and campaigns for legal recognition; in 2017 a Greek court granted the religion legal status as a "known religion", allowing public places of worship. YSEE is a member of the European Congress of Ethnic Religions.
+              body: `Revival of the old religion in Greece began quietly in the twentieth century and grew from the 1990s. YSEE, the Supreme Council of Ethnikoi Hellenes, was founded in 1997. It calls the religion the ethnic Hellenic religion, holds public rites, including ceremonies at ancient sites, and campaigns for legal recognition; in 2017 Greek authorities granted the religion legal status as a "known religion", allowing public places of worship. YSEE is a member of the European Congress of Ethnic Religions.
 
 Labrys, a religious community founded in Athens in the 2000s, focuses on household worship, philosophy and festivals, and has published a well-regarded practical book in English. Other Greek groups exist, some more nationalistic than others. Many Greek practitioners face social pressure in a country where the Orthodox Church is part of national identity.`,
             },

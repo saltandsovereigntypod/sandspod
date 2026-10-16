@@ -6,6 +6,7 @@ import { useMemo, useState } from 'react';
 import { StyleSheet, Text, TextInput, View, type TextInputProps } from 'react-native';
 
 import { builtInCabinet, placeableForms } from '../../../lib/altar/cabinet';
+import { handleSafe } from '../../../lib/altar/reading/correspondence';
 import type { SavedObject } from '../../../lib/altar/types';
 import { useWorkshop } from '../../../lib/altar/workshop';
 import { JAR_SALTS, type LayerSource } from '../../../lib/altar/workings/spellJar';
@@ -79,6 +80,7 @@ export function IngredientPicker({ onPick, kinds = ['herb', 'crystal', 'salt', '
     for (const t of libraryTypes) {
       const found = q ? searchLibrary(entries, q, { type: t, limit: 6 }) : suggestFor ? searchLibrary(entries, suggestFor, { type: t, limit: 4 }) : [];
       for (const e of found) {
+        if (!handleSafe(e)) continue;
         const key = keyOf(e.id);
         out.push({ label: e.name, source: 'library', type: t, ...(t === 'herb' ? { herb: key || undefined } : { crystal: key || undefined }) });
       }

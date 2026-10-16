@@ -1,0 +1,924 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'path-roman',
+  kind: 'path',
+  paths: ['roman'],
+  title: `The Roman Way`,
+  summary: `Thirteen weeks of Roman household religion: the lararium, the exact words of prayer with the head covered, the Kalends, Nones and Ides, and the pietas that keeps the peace of the gods.`,
+  welcome: `This journey is for anyone who wants to honour the Roman gods as Romans did at home: at a small shrine to the Lares and Penates, with incense, wine and salted grain, the head covered and the words said carefully. It runs about thirteen weeks, long enough to keep three rounds of Kalends, Nones and Ides and to see whether Religio Romana is your path.
+
+It is a self-dedication, not an initiation. Roman religion had public priesthoods, and some modern Roman groups appoint priests or have their own rites of membership; nothing here replaces those. What it gives you is the oldest and most durable layer of Roman worship, the household cult, and an honest sense of what we know.
+
+You need a shelf, a small dish and cup, incense, some wine or juice, a little flour and salt, and a scarf or shawl you can draw over your head.`,
+  about: `Religio Romana, also called the Cultus Deorum Romanorum or Roman polytheism, is the worship of the gods of ancient Rome, revived by modern practitioners from Latin literature, inscriptions, calendars and archaeology. Roman religion was a religion of practice rather than belief: what mattered was doing the rites correctly, at the right times, with the right words, to keep the pax deorum, the peace between the gods and the community. Its heart was the household as much as the state. Every Roman home had its Lares, its Penates, its Genius and the hearth of Vesta, honoured daily and on the Kalends, Nones and Ides. The great state cult of temples, priests and public sacrifice ended in the fourth century and cannot simply be restarted, but the household cult can be kept by anyone with a shelf and a careful tongue. Modern practitioners range from strict reconstructionists to people who honour Roman gods within a broader pagan practice.`,
+  notes: [
+    `This journey follows a reconstructionist approach, based mainly on the religion of the late Republic and early Empire, where the evidence is richest. Roman religion changed over a thousand years and across a vast empire; there is no single "correct" version.`,
+    `Roman and Greek gods are related but not the same. Jupiter is not simply Zeus with a Latin name, and Roman ritual differs from Greek ritual in important ways, starting with covering the head.`,
+    `No animal sacrifice is taught here. It was central to ancient public cult. Modern practitioners use bloodless offerings, which Romans also gave constantly.`,
+    `The app is inclusive. Some modern Italian traditionalist circles have drawn on far-right writers; the Roman gods were worshipped across an empire of many peoples, and you need no ancestry or politics to honour them.`,
+    `Wine, grapes and many foods offered to the gods are toxic to pets, including grapes and raisins, onion, garlic and chocolate. Lilies are deadly to cats. Keep offerings out of reach and dispose of them safely.`,
+  ],
+  holyDays: [
+    'parentalia',
+    'lupercalia',
+    'matronalia',
+    'floralia',
+    'lemuria',
+    'vestalia',
+    'neptunalia',
+    'saturnalia',
+    'sol_invictus',
+  ],
+  stages: [
+    // ───────────────────────────── THRESHOLD ─────────────────────────────
+    {
+      kind: 'threshold',
+      title: `At the Lararium`,
+      intro: `A Roman's religion began at home, at the little shrine of the household gods. Before this rite, choose a place for your lararium, a shelf or small cabinet, ideally near the kitchen or the main room, and clean it. Find a scarf, shawl or the hood of a cloak to cover your head. Choose a day that is not one of the "black days" right after the Kalends, Nones or Ides; the Kalends themselves are ideal.`,
+      days: 5,
+      lessons: [],
+      practices: [
+        {
+          id: 'r-threshold-greet',
+          title: `Greet the Lares`,
+          instructions: `For five days, each morning, stop at your lararium, raise your right hand to your lips and say a simple greeting: "Lares of this house, be well-disposed to me." This small daily salute (salutatio) is how many Romans began the day.`,
+          times: 5,
+          every: 'day',
+          prompt: `What changed in the day when you began it with a greeting to the household gods?`,
+        },
+      ],
+      rite: {
+        title: `Opening Rite: First Offering at the Lararium`,
+        summary: `A short rite in Roman form: head covered, wash, incense and wine to Janus first, an offering to the Lares and Penates with a plain statement of intention, Vesta last.`,
+        minutes: 20,
+        ingredients: [
+          { name: `A scarf or shawl to cover your head` },
+          { name: `A bowl of fresh water and a towel`, ref: 'traditional/vessel/bowl' },
+          { name: `A candle or small oil lamp`, ref: 'traditional/candle/white' },
+          { name: `Incense, ideally frankincense`, ref: 'traditional/herb/frankincense' },
+          { name: `A small cup of wine (or grape juice)` },
+          { name: `A pinch of flour mixed with a little salt (simple mola salsa)` },
+          { name: `A small dish for offerings`, ref: 'traditional/vessel/offering_bowl' },
+          { name: `A sprig of rosemary or a few flowers`, ref: 'traditional/herb/rosemary', optional: true },
+        ],
+        preparation: `Set your lararium with the lamp at the back, the dish in front and the incense to one side. Mix your flour and salt in a small bowl. Wash your hands. Know the words before you begin: Romans prized exactness, and if you stumble, the custom is to start the prayer again.`,
+        steps: [
+          {
+            title: `Wash and cover`,
+            instructions: `Wash your hands in clean water and dry them. Draw your scarf over the back of your head, so it covers your hair, as Romans did when praying by the Roman rite (capite velato).`,
+          },
+          {
+            title: `Light the lamp`,
+            instructions: `Light the lamp or candle. This is Vesta's flame, the hearth of the house.`,
+            light: true,
+          },
+          {
+            title: `Janus first`,
+            instructions: `Place a few grains of incense on a charcoal, or light a stick, and pour a drop of wine into the dish, for Janus, who opens every rite.`,
+            spoken: `Father Janus, god of beginnings and of doorways, I offer you this incense and this wine, so that you open the way for my prayer.`,
+          },
+          {
+            title: `The Lares and Penates`,
+            instructions: `Sprinkle the salted flour into the dish and pour a little wine. Speak to the gods of the house. Then say, in your own words, why you have come: to learn the old Roman way of honouring the gods, and to find out over these weeks whether it is yours.`,
+            spoken: `Lares of this house, Penates who guard its store, Genius of this place: I give you this salted grain and this wine. I pray that you be willing and favourable to me and to my household. I come to learn your worship. Receive me as one who is beginning.`,
+          },
+          {
+            title: `Vesta last`,
+            instructions: `Pour a final drop of wine near the lamp, for Vesta, with whom every Roman rite ended.`,
+            spoken: `Vesta, keeper of the hearth, the last offering is yours. Guard this fire and this home.`,
+          },
+          {
+            title: `Turn and close`,
+            instructions: `Touch your right hand to your lips, then turn your whole body to the right, a full turn, as Romans did after prayer. Uncover your head. Let the incense burn down while you sit, then put out the lamp.`,
+            snuff: true,
+          },
+        ],
+        closing: `Leave the offering until the next day, then place it on earth outside or dispose of it respectfully. Write in your journal what you said and how it felt.`,
+        safety: `Never leave a flame or burning charcoal unattended; use a heat-proof dish and ventilate the room. Skip incense if anyone at home has asthma or you keep birds. Use grape juice if you avoid alcohol. Keep wine and offerings away from pets; grapes and wine are toxic to dogs and cats.`,
+      },
+    },
+
+    // ─────────────────────────────── STUDY ───────────────────────────────
+    {
+      kind: 'study',
+      title: `Learning Religio`,
+      intro: `Six weeks of reading and steady practice. You will learn where our knowledge comes from, who the Roman gods are, the values of pax deorum and pietas, the household gods, the exact form of Roman prayer, the offerings and the calendar. Keep greeting the Lares every morning, and make an offering at each Kalends, Nones and Ides.`,
+      days: 42,
+      lessons: [
+        {
+          id: 'r-sources',
+          title: `What Survives: Stones, Calendars and Farmers' Prayers`,
+          summary: `Where knowledge of Roman religion comes from, and how modern practitioners use it.`,
+          minutes: 6,
+          sections: [
+            {
+              heading: `A religion written in rules`,
+              body: `Romans did not have a scripture, but they wrote down rules, calendars and exact words. The oldest substantial guide to private worship is Cato the Elder's On Agriculture, written in the second century BCE. Between advice on olive presses and vines, Cato gives the precise prayers a farmer should say to Janus, Jupiter, Mars and Ceres, and tells the farm's housekeeper to put a garland on the hearth on holy days and pray to the Lar of the household. These are among the oldest Latin prayers we have, and they show how careful and legal the language of Roman prayer was.
+
+Varro, the great scholar of the first century BCE, wrote a vast work on Roman religion. It is lost, but Augustine quoted it at length in The City of God, mostly to argue against it, so we know a surprising amount of what it said.`,
+            },
+            {
+              heading: `Poets, historians and philosophers`,
+              body: `Ovid's Fasti is a poem on the Roman calendar, month by month, explaining festivals and their origins. It covers only January to June (he never finished, or the rest is lost), and Ovid loved a good story more than a strict fact, but he describes rites like the Parentalia and Lemuria in detail. Livy's history of Rome is full of vows, prodigies and expiations. Cicero's On the Nature of the Gods and On Divination give educated Romans' arguments about the gods and about augury. Later writers like Macrobius (around 400 CE) gathered a great deal of antiquarian lore, especially about the Saturnalia.`,
+            },
+            {
+              heading: `Stones, paintings and calendars`,
+              body: `Thousands of Latin inscriptions record vows fulfilled to gods, often ending with the formula V.S.L.M., votum solvit libens merito, "paid the vow willingly, as deserved". Painted and carved calendars, called fasti, survive in fragments; the Fasti Antiates Maiores, painted on a wall in the 60s BCE, is the only largely complete calendar from before Julius Caesar's reform. Pompeii and Herculaneum, buried in 79 CE, preserve dozens of household shrines (lararia) with their paintings of dancing Lares, snakes and the Genius of the house pouring an offering. These are the best evidence we have for how ordinary Romans actually worshipped at home.`,
+            },
+            {
+              heading: `Reconstruction today`,
+              body: `Modern Religio Romana is built from these pieces. Reconstructionists aim to practise as closely to the evidence as they can, adapting what can't be done (public sacrifice, priesthoods appointed by the state) and saying where they fill gaps. Others honour Roman gods within a more eclectic pagan practice. Both are valid, but they are different projects. This journey leans reconstructionist and flags modern solutions as modern.`,
+            },
+          ],
+          knowAndDont: {
+            known: `Cato's prayers, the inscribed calendars, Ovid's Fasti, the lararia of Pompeii and thousands of votive inscriptions give a detailed picture of Roman ritual form and the calendar, especially for the late Republic and early Empire.`,
+            unknown: `Much is lost, including Varro's great work and Ovid's second six months. Writers were mostly elite men; the religion of women, the poor and the enslaved survives mainly in fragments and archaeology. What Romans believed about the gods varied enormously and is less well known than what they did.`,
+          },
+          inPractice: `Read Cato's On Agriculture, chapters 132 to 143 (short, and free online in Latin and in translation). Start a journal page headed "ancient / modern" and note which parts of your practice come from which as you go.`,
+          reflect: [
+            `What appeals to you about a religion focused on doing rather than believing?`,
+            `What do you make of practising a religion largely reconstructed from rules and fragments?`,
+          ],
+          further: [
+            `Cato, On Agriculture (De Agri Cultura), chapters 132 to 143`,
+            `Ovid, Fasti`,
+            `Mary Beard, John North and Simon Price, Religions of Rome`,
+            `John Scheid, An Introduction to Roman Religion`,
+          ],
+        },
+        {
+          id: 'r-gods',
+          title: `The Gods of Rome`,
+          summary: `The great gods, the gods of particular actions, and the powers of house and land; why Roman gods are not just Greek gods renamed.`,
+          minutes: 7,
+          sections: [
+            {
+              heading: `The great gods`,
+              body: `At the head of the Roman state stood the Capitoline Triad: Jupiter Optimus Maximus, "best and greatest", with Juno Regina and Minerva, in their temple on the Capitoline Hill. Older still was a triad of Jupiter, Mars and Quirinus. Other major gods included Janus, god of beginnings and doorways; Vesta, the hearth; Ceres, grain; Venus, love and the ancestress of Rome through Aeneas; Mercury, trade; Neptune, waters; Diana, wild places and women; Apollo, healing and prophecy; Vulcan, fire; Saturn, sowing and the golden age; and many more.
+
+Under Greek influence, Romans matched their gods with Greek ones and borrowed Greek myths. But the matches were rough. Mars was a guardian of fields and boundaries as well as war; Janus had no Greek equivalent at all; Vesta's cult, with its Vestal Virgins and eternal flame, was distinctively Roman.`,
+            },
+            {
+              heading: `Gods of particular things`,
+              body: `Romans also recognised many specific powers. Old priestly lists called indigitamenta named gods for single moments: a god of the first ploughing, of the harrowing, of the child's first word. Some scholars use the word numen for this sense of divine power present in a place or act, though the idea that early Romans had only vague "numina" and no personal gods is now rejected.
+
+Abstract qualities were worshipped as goddesses and gods: Fides (good faith), Concordia (harmony), Pax (peace), Salus (safety), Fortuna (luck), Spes (hope), Victoria (victory). Many had temples. A modern practitioner can honour these as easily as Jupiter.`,
+            },
+            {
+              heading: `Gods of house, land and dead`,
+              body: `Closer to home were the Lares, guardians of household and place; the Penates, gods of the food store; the Genius, the life-spirit of the head of the family and of places; and the Di Manes, the spirits of the dead. Each spring, river, grove and crossroads had its spirit or god. Silvanus watched over woods and field edges; Terminus lived in boundary stones; Faunus in wild pastures. Cato tells the farmer clearing a grove to pray to "whichever god or goddess" it belongs to, because you couldn't always know.
+
+That habit of humility, naming carefully and admitting what you don't know, is very Roman.`,
+            },
+            {
+              heading: `Sacred things`,
+              body: `Jupiter has the eagle, the oak and lightning; Juno the peacock and goose (the geese of Juno saved the Capitol from the Gauls); Minerva the owl and olive; Mars the wolf, woodpecker and spear; Venus the myrtle, rose and dove; Diana the deer and the grove at Nemi; Vesta the hearth, the donkey and fire; Ceres wheat and the poppy; Janus keys and doorways; Mercury the purse and caduceus; Saturn the sickle. These give you ways to decorate the lararium and choose offerings for each god.`,
+            },
+          ],
+          knowAndDont: {
+            known: `The major gods, their temples, festivals and priesthoods are well documented. Divine qualities like Fides and Concordia had attested temples. The indigitamenta are known through Varro, as preserved by Augustine and others.`,
+            unknown: `The earliest Roman religion, before Greek influence, is very hard to recover, and old theories about it have been revised. How individual Romans pictured their gods varied, and the line between Roman and Greek gods was blurred by Romans themselves.`,
+          },
+          inPractice: `Choose one or two gods, as well as the household gods, to get to know through this journey. Look them up in the Living Library and note their sacred animals, plants and main festival days.`,
+          reflect: [
+            `Which god or goddess are you drawn to, and is it a Roman god or a Greek god in Roman dress?`,
+            `Which divine quality, like Fides or Concordia, does your life most need?`,
+          ],
+          further: [
+            `Robert Turcan, The Gods of Ancient Rome`,
+            `Jörg Rüpke, Religion of the Romans`,
+          ],
+          library: [
+            'traditional/deity/jupiter',
+            'traditional/deity/juno',
+            'traditional/deity/minerva',
+            'traditional/deity/janus',
+            'traditional/deity/vesta',
+            'traditional/deity/mars',
+            'traditional/deity/venus',
+            'traditional/deity/ceres',
+            'traditional/deity/diana',
+            'traditional/deity/mercury',
+          ],
+        },
+        {
+          id: 'r-pax',
+          title: `Pax Deorum, Pietas and the Vow`,
+          summary: `The peace of the gods, the duty of pietas, the give-and-take often summed up as do ut des, and how a Roman vow works.`,
+          minutes: 6,
+          sections: [
+            {
+              heading: `The peace of the gods`,
+              body: `Romans believed their community flourished when it was at peace with the gods: the pax deorum. That peace was kept by doing the rites properly and on time. When something went wrong, such as a plague, a defeat or a strange event (a talking ox, a rain of stones, lightning striking a temple), it was taken as a sign the peace had been disturbed. The Senate consulted priests, who prescribed expiations, extra sacrifices and prayers to restore it.
+
+At home, the same logic applied in small. A household kept its peace with its gods through regular offerings, and repaired it when something went wrong.`,
+            },
+            {
+              heading: `Do ut des`,
+              body: `"I give so that you may give" (do ut des) is a phrase from Roman law about contracts, which modern scholars borrowed to sum up Roman offering. It describes the reciprocity well: you offer, and you ask. Cato's prayers often say "for the sake of this, be honoured by this offering". But it can make the religion sound cold. Romans also thanked the gods, honoured them on their days whether or not they needed anything, and felt real affection for their household gods. Think of do ut des as the frame, not the whole picture.`,
+            },
+            {
+              heading: `Pietas and religio`,
+              body: `Pietas is the great Roman virtue: dutiful devotion to the gods, to your family and ancestors, and to your country. Aeneas, who carried his father and the household gods out of burning Troy, is "pious Aeneas". Pietas is about keeping obligations, not about feelings, though feelings often grow from it.
+
+Religio meant the careful, scrupulous attention to what is owed to the gods. Cicero derives it from relegere, to go over again, as someone who carefully retraces everything to do with the worship of the gods. He contrasts it with superstitio, an excessive, fearful religiosity. A good Roman was religiosus, not superstitiosus: careful but not anxious.`,
+            },
+            {
+              heading: `The vow`,
+              body: `The votum, or vow, was a contract with a god. You promised a specific offering if the god granted a specific thing: "if I recover, I will give you an altar". Once the god delivered, you were bound (voti reus) until you paid. Thousands of inscriptions record paid vows. Vows were made publicly by generals and magistrates, and privately by everyone.
+
+If you make a vow, make it exactly: state what you ask, what you will give and by when. Keep it to the letter, and promise only what you can really give. The dedication at the end of this journey is a vow of this kind.`,
+            },
+          ],
+          knowAndDont: {
+            known: `Pax deorum, pietas, religio, expiation of prodigies and the votum are well attested in Livy, Cicero, inscriptions and many other sources.`,
+            unknown: `"Do ut des" is not an ancient summary of Roman religion; it is a modern scholarly tag drawn from legal language. How individual Romans felt about the gods, beyond the forms, is harder to know, and varied.`,
+          },
+          inPractice: `Write a short private statement of what pietas means for you: to the gods, to your family and ancestors, to your community. Keep it at your lararium.`,
+          reflect: [
+            `What obligations do you already keep faithfully, and which do you neglect?`,
+            `Is there a difference, for you, between careful practice and anxious practice?`,
+          ],
+          further: [
+            `Cicero, On the Nature of the Gods, book 2.71 to 72`,
+            `Virgil, Aeneid, book 2 (Aeneas leaves Troy)`,
+          ],
+        },
+        {
+          id: 'r-lararium',
+          title: `Lares, Penates, Genius and Vesta: the Lararium`,
+          summary: `Who the household gods are, what the shrines at Pompeii show, and how to set up your own lararium.`,
+          minutes: 8,
+          sections: [
+            {
+              heading: `The Lares`,
+              body: `The Lar familiaris was the guardian of the household. In Plautus's comedy The Pot of Gold, the play opens with the Lar himself speaking: he has guarded the family for generations and rewards the daughter who honours him daily with incense, wine or garlands. Lares also guarded crossroads (Lares Compitales), fields and the city. In the paintings of Pompeii, the Lares appear as two dancing young men in short tunics, each holding a drinking horn (rhyton) and a bucket or bowl, pouring wine.
+
+Cato tells the farm's housekeeper what to do: "Kal., Idibus, Nonis, festus dies cum erit, coronam in focum indat, per eosdemque dies lari familiari pro copia supplicet." In plain English: on the Kalends, the Ides, the Nones and whenever there is a holy day, she should put a garland on the hearth, and on those same days pray to the household Lar as her means allow.`,
+            },
+            {
+              heading: `The Penates, Vesta and the Genius`,
+              body: `The Penates were the gods of the penus, the food store. Cicero links their name to penus, "everything people eat", or to penitus, "deep within". They were honoured with a share of meals; a salt cellar and a dish of food were kept on the table for them. Vesta was the hearth fire itself, at home and in the round temple in the Forum where the Vestal Virgins kept the city's eternal flame. Cicero notes that prayer and sacrifice ended with her, as they began with Janus.
+
+The Genius was the divine life-spirit of the head of the household, and of places and groups. At Pompeii he appears as a man in a toga, his head covered, pouring a libation from a dish (patera) over an altar. Below him are often painted snakes, guardians of the place and its fertility. A woman's equivalent was her Juno. The Genius was honoured especially on the householder's birthday.`,
+            },
+            {
+              heading: `What a lararium looked like`,
+              body: `Lararia came in several forms: a painted wall with a small altar in front, a niche in the wall, or a small temple-shaped cabinet (aedicula) with bronze statuettes of the Lares, the Penates and favourite gods. They were usually in the kitchen or atrium, at the heart of daily life. Statuettes found in them include Mercury, Venus, Minerva, Hercules, Fortuna, Isis and others: households chose their own gods.
+
+Offerings found in and around lararia include burnt fruit, nuts, eggs, grain and small bones, and pottery cups for libations.`,
+            },
+            {
+              heading: `Setting up your own`,
+              body: `Choose a shelf, niche or small cabinet, ideally in or near the kitchen. You need: images of the Lares (a print of a Pompeian painting, two small figures, or simply two candles), something for the Penates (a small jar of grain, salt or a figure of a god you honour), a lamp or candle for Vesta, a small dish for offerings, a cup for wine, and an incense holder. A small image or symbol of a snake for the Genius is traditional. Add statuettes of any other gods you honour.
+
+Keep it clean. Put a fresh garland or a sprig of rosemary or myrtle on it at the Kalends, Nones and Ides. Many modern practitioners also keep a separate small space for the family dead, away from the lararium.`,
+            },
+          ],
+          knowAndDont: {
+            known: `Hundreds of lararia survive in Pompeii and Herculaneum, with paintings and statuettes. Plautus's Aulularia and Cato's instructions show the household cult in action, and inscriptions name Lares, Penates and Genii.`,
+            unknown: `Exactly who the Lares were (ancestral spirits, gods of place, or both) was debated by Romans themselves and still is. How daily offerings were made in most homes is not recorded in detail. The pairing of a woman's Juno with the Genius is attested but less common; giving equal place to both is a modern balance.`,
+          },
+          inPractice: `Set up your lararium fully this week. Find an image of Pompeian Lares, place two figures or candles for them, a jar or bowl for the Penates, a lamp for Vesta, and a dish and cup for offerings.`,
+          reflect: [
+            `What gods and spirits do you want in your household shrine?`,
+            `Who is the Genius of your house, and how will you honour your own Genius or Juno on your birthday?`,
+          ],
+          further: [
+            `Harriet I. Flower, The Dancing Lares and the Serpent in the Garden`,
+            `Plautus, The Pot of Gold (Aulularia), prologue`,
+            `Cato, On Agriculture 143`,
+          ],
+          library: ['traditional/deity/vesta', 'traditional/tool/altar', 'traditional/herb/rosemary'],
+          premade: ['folk-lararium-offering'],
+        },
+        {
+          id: 'r-prayer',
+          title: `The Exact Form of Roman Prayer`,
+          summary: `Covering the head, the order of gods, the structure of a prayer, the words "be honoured by this", and what to do if you make a mistake.`,
+          minutes: 8,
+          sections: [
+            {
+              heading: `Words matter`,
+              body: `Roman prayer was precise, almost legal. Pliny the Elder records that magistrates prayed from a written text: one person read the words ahead (praeire), another watched to make sure nothing was skipped or said in the wrong order, another commanded silence, and a flute-player played to drown out any ill-omened sound. If a word was wrong, the prayer could fail. Mistakes were dealt with by instauratio: starting the rite over from the beginning.
+
+This is not because Roman gods were pedantic, but because prayer was a formal agreement. Names, titles and requests needed to be clear, and nothing promised could be vague.`,
+            },
+            {
+              heading: `Head covered, right hand, right turn`,
+              body: `When praying by the Roman rite (ritus Romanus), the person offering drew a fold of the toga over the back of the head: capite velato, "with head veiled". Virgil has the seer Helenus tell Aeneas to cover his head with a purple cloth while sacrificing, so that no hostile sight would break the rite. Both men and women prayed with covered heads. A few cults were done by the Greek rite (ritus Graecus), with the head bare: the worship of Saturn, of Hercules at the Ara Maxima, and some others.
+
+Pliny also describes the end of prayer: "in adorando dextram ad osculum referimus totumque corpus circumagimus". In plain English: when we worship, we bring the right hand to the lips and turn the whole body round, to the right.`,
+            },
+            {
+              heading: `The structure`,
+              body: `A Roman prayer usually ran like this. First a preface (praefatio) with incense and wine to Janus, the god of beginnings, and often Jupiter. Then the invocation: the god's name and title, carefully. If unsure, Romans added "or by whatever name you wish to be called" or, as Cato does, "Si deus, si dea es": "whether you are god or goddess". Then the reason and the request, often in pairs and triplets of words to cover every case. Then the offering, with the words "macte ... esto": "be honoured", "be increased", by this. Last, Vesta.
+
+Cato's prayer to Janus before the harvest begins: "Iane pater, te hac strue commovenda bonas preces precor, uti sies volens propitius mihi liberisque meis domo familiaeque meae." In plain English: Father Janus, by offering this heap of cakes I pray you good prayers, that you be willing and favourable to me and my children, my house and my household. And for the wine: "macte vino inferio esto", "be honoured by this wine that is offered".`,
+            },
+            {
+              heading: `Writing your own`,
+              body: `Write prayers out and read them from the page: that is authentically Roman. Use the pattern: to Janus, a short opening; to your god, name and title, a phrase like "whether you are god or goddess, or by whatever name you wish to be called" if you are unsure; the reason ("for the sake of this...") and the request, with pairs of words; the offering ("be honoured by this incense, be honoured by this wine"); then Vesta. Make the request specific. If you stumble, stop, and begin the prayer again from the start.
+
+You can use the Latin formulas, which are public domain, alongside your own English. Many practitioners say "uti sies volens propitius" ("that you be willing and favourable") in Latin even when the rest is English.`,
+            },
+          ],
+          knowAndDont: {
+            known: `Cato preserves the exact words of several Roman prayers; Pliny (Natural History 28.10 to 11 and 28.25) describes procedures for public prayer and gesture; capite velato is described in Virgil, Plutarch and shown in countless statues and reliefs; instauratio is recorded in Livy and elsewhere.`,
+            unknown: `Most surviving prayers are public or agricultural; how informal household prayer sounded is largely unknown. Exact pronunciation of Latin, and how far individuals followed these procedures in private, are uncertain. The modern habit of mixing English and Latin is a practical compromise.`,
+          },
+          inPractice: `Write a prayer to your household gods in the Roman pattern: Janus, the Lares and Penates by name, a clear request, the offering, Vesta. Read it from the page with your head covered at the next Kalends, Nones or Ides, and turn to the right at the end.`,
+          reflect: [
+            `How does it feel to read a prayer from a page rather than speak spontaneously?`,
+            `What do you notice when you cover your head?`,
+          ],
+          further: [
+            `Cato, On Agriculture 132 to 141`,
+            `Pliny the Elder, Natural History 28.10 to 11`,
+            `Virgil, Aeneid 3.403 to 409`,
+          ],
+          library: ['traditional/deity/janus', 'traditional/deity/vesta'],
+          premade: ['folk-lararium-offering'],
+        },
+        {
+          id: 'r-offerings',
+          title: `Incense, Wine, Salted Grain and Cakes`,
+          summary: `What Romans offered at home, how to make mola salsa and a libum, how to pour a libation, and what to do with offerings afterwards.`,
+          minutes: 7,
+          sections: [
+            {
+              heading: `The small gifts`,
+              body: `Romans made blood sacrifices at public altars, but at home the everyday gifts were small: incense (tus, frankincense), wine (merum, unmixed wine), salted grain, cakes, fruit, flowers and garlands, milk and honey, and a portion of each meal. Horace has a lovely poem to a country woman named Phidyle, who prays with her palms raised to the sky at the new moon. He tells her she need not sacrifice great animals: it is enough to crown her small gods "marino rore ... fragilique myrto", with rosemary and brittle myrtle, and that a clean hand on the altar softens the Penates "farre pio et saliente mica", with holy grain and crackling salt.`,
+            },
+            {
+              heading: `Mola salsa and libum`,
+              body: `Mola salsa was toasted, ground spelt (far) mixed with salt, made by the Vestal Virgins for public sacrifices and sprinkled on the victim's head and the altar. The word immolare, to sacrifice, comes from it. At home, a simple version is a little spelt or wheat flour, lightly toasted in a dry pan, mixed with salt. It keeps well in a jar beside the lararium.
+
+Libum was a sacred cake. Cato's recipe: two pounds of cheese pounded well, a pound of wheat flour, one egg, mixed and shaped into a loaf, baked on leaves under a cover on a hot hearth. You can make it in an oven with ricotta, flour and an egg, on a bay leaf, and drizzle it with honey. Libum was offered especially for birthdays to the Genius, and at festivals.`,
+            },
+            {
+              heading: `Libation and incense`,
+              body: `Pour wine from a small shallow dish (a patera) or cup, onto the flame, into the offering dish or onto the ground, saying the god's name and "be honoured by this wine". Unlike Greek libations, Roman wine was usually poured unmixed. Incense was placed on a small portable altar or burner (an acerra was the incense box); frankincense was the standard, though Romans also used cheaper local resins and herbs.
+
+Cato prescribes incense and wine to Janus, Jupiter and Juno before a sacrifice. The order is part of the gift: Janus first, then the god you are addressing, then Vesta.`,
+            },
+            {
+              heading: `Afterwards`,
+              body: `In public sacrifice, the gods' portion was burnt and the rest of the meat was eaten by the worshippers: a shared meal. Offerings to the dead and to underworld powers were not shared, and were often burnt or buried entirely. At home, many modern practitioners leave food offerings on the lararium for a few hours or overnight, then dispose of them: burnt in a fire if you have one, placed on earth outside, composted, or wrapped and thrown away with a word of respect. Some eat food offered to the household gods, treating it as a shared meal, which fits Roman custom; food given to the dead is never eaten.
+
+Blood sacrifice is not part of modern household practice, and the app doesn't include it.`,
+            },
+          ],
+          knowAndDont: {
+            known: `Incense, wine, mola salsa, cakes and garlands as offerings are well attested in Cato, Horace, Ovid and other writers and in archaeological finds from lararia. Cato's libum recipe (chapter 75) survives exactly.`,
+            unknown: `How often households offered, and how they disposed of offerings, is not well recorded. Rules about eating or not eating household offerings are mostly modern reasoning by analogy with public sacrifice.`,
+          },
+          inPractice: `Make a jar of mola salsa this week, and bake a libum before the next Kalends. Offer a piece of it at your lararium with incense and wine, using your written prayer.`,
+          reflect: [
+            `What does it mean to you to give small things carefully, rather than large things rarely?`,
+            `Which offering feels most natural to give from your own kitchen?`,
+          ],
+          further: [
+            `Horace, Odes 3.23 (to Phidyle)`,
+            `Cato, On Agriculture 75 (the libum)`,
+          ],
+          library: ['traditional/herb/frankincense', 'traditional/herb/rosemary', 'traditional/vessel/offering_bowl', 'traditional/tool/incense_burner'],
+          premade: ['folk-lararium-offering', 'kitchen-honey-sweetening-cake'],
+        },
+        {
+          id: 'r-calendar',
+          title: `Kalends, Nones and Ides`,
+          summary: `How Roman months and days worked, which days are lucky or unlucky, and how to plan your household year.`,
+          minutes: 7,
+          sections: [
+            {
+              heading: `Three fixed points`,
+              body: `Romans counted days backwards from three fixed points in each month. The Kalends (Kalendae) was the first day. Originally it marked the new moon, when a priest watched for the crescent and "called out" (calare) the days to the Nones. The Nones (Nonae) fell on the fifth, and the Ides (Idus) on the thirteenth, except in March, May, July and October, when the Nones fell on the seventh and the Ides on the fifteenth. The Ides were sacred to Jupiter, originally at the full moon, and the Kalends to Juno.
+
+These were the household holy days: Cato's housekeeper garlanded the hearth and prayed to the Lar on each. Most modern practitioners make an offering at the lararium on all three.`,
+            },
+            {
+              heading: `Fasti, nefasti and black days`,
+              body: `Each day on the calendar carried a letter. F (fastus) days were open for legal business; N (nefastus) days were not, because they belonged to the gods; C (comitialis) days were open for assemblies. NP marked many festival days; scholars still debate what it meant exactly. EN days were split, closed in the morning and evening but open in the middle.
+
+The days right after each Kalends, Nones and Ides were dies atri, "black days" (also called dies religiosi): unlucky for beginning anything, starting a journey or making a new start. Modern practitioners often avoid starting new projects, rites or dedications on those days.`,
+            },
+            {
+              heading: `The year`,
+              body: `The early Roman year began in March, which is why September, October, November and December are "the seventh, eighth, ninth and tenth months". By the Republic, the year began on the Kalends of January, with Janus. Julius Caesar reformed the calendar in 46 BCE, giving the solar year of 365 days with a leap day, the Julian calendar, which is still the base of ours. Most modern practitioners keep the festivals on their Julian dates as they fall in our modern Gregorian calendar.
+
+The calendar's cycle of market days, the nundinae, every eighth day, was also important for country people.`,
+            },
+            {
+              heading: `Planning your year`,
+              body: `Mark in your diary, for each month: Kalends (1st), Nones (5th or 7th), Ides (13th or 15th), and the black days after each. Add the main festivals of your gods. Plan household rites for the three monthly days, and big festivals around them. The app's calendar gives the major Roman festivals; you can add others, like the Terminalia (23 February) or the Parilia (21 April, Rome's birthday).`,
+            },
+          ],
+          knowAndDont: {
+            known: `The structure of Kalends, Nones and Ides, the day-letters on the inscribed fasti, the black days, Caesar's reform and the main festivals are well documented in calendars, Varro, Ovid, Macrobius and Gellius.`,
+            unknown: `The exact meaning of some calendar markings, such as NP, is uncertain. How strictly ordinary Romans avoided black days is unknown. Early lunar origins of the calendar are reconstructed from later Roman explanations.`,
+          },
+          inPractice: `Mark every Kalends, Nones and Ides for the next three months in your diary or the app's planner, with the black days after each. Plan a household offering for each.`,
+          reflect: [
+            `What changes when your month has three fixed holy days?`,
+            `Which black days fall at awkward times in your life, and how will you handle them?`,
+          ],
+          further: [
+            `H. H. Scullard, Festivals and Ceremonies of the Roman Republic`,
+            `Macrobius, Saturnalia, book 1`,
+          ],
+          library: ['traditional/deity/juno', 'traditional/deity/jupiter', 'traditional/deity/janus'],
+        },
+      ],
+      practices: [
+        {
+          id: 'r-study-morning',
+          title: `Morning salute`,
+          instructions: `Each morning, greet the Lares with your right hand at your lips. Once a week, light the lamp and offer a little incense with the greeting.`,
+          times: 42,
+          every: 'day',
+          prompt: `What did you notice about the household and the day?`,
+        },
+        {
+          id: 'r-study-kni',
+          title: `Kalends, Nones and Ides`,
+          instructions: `On each Kalends, Nones and Ides, with your head covered, put a fresh garland or sprig on the lararium, offer incense and wine to Janus, the Lares and Penates, and Vesta last. Use the premade Offering at the Lararium.`,
+          times: 6,
+          every: 'holy-day',
+          prompt: `What did you pray for, and did you speak it correctly?`,
+          premade: 'folk-lararium-offering',
+        },
+      ],
+    },
+
+    // ───────────────────────────── PRACTICE ──────────────────────────────
+    {
+      kind: 'practice',
+      title: `The House, the Dead and the Year`,
+      intro: `Now you live the Roman household year: the daily and monthly rites, birthdays and rites of passage, the care of the dead at Parentalia and Lemuria, the festivals, the place of household religion beside the lost state cult, divination, and the modern communities that keep the Roman gods.`,
+      days: 30,
+      lessons: [
+        {
+          id: 'r-household-year',
+          title: `Daily Life with the Household Gods`,
+          summary: `Meals, birthdays, comings and goings, rites of passage and the crossroads Lares: the rhythm of a Roman religious household.`,
+          minutes: 7,
+          sections: [
+            {
+              heading: `Meals and the table`,
+              body: `The household gods shared in meals. A salt cellar and a dish were kept on the table for the Penates. Before eating, a small portion of food was set aside or thrown into the fire as an offering, and after the main course, with the meal paused, offerings were made at the lararium. Pliny records that a morsel dropped during the meal was put back on the table, or burnt before the Lar as an expiation.
+
+You can keep this simply: a pinch of food set aside at the start of dinner, a moment at the lararium afterwards, and a salt dish on your table.`,
+            },
+            {
+              heading: `Comings and goings`,
+              body: `Romans greeted the household gods on leaving and arriving home, and after a journey they gave thanks to the Lares for a safe return. A bride, entering her new home, was carried over the threshold and offered coins to the Lares of her new home and of the neighbourhood crossroads. A boy dedicated his bulla, the protective amulet worn since childhood, to the Lares when he came of age and put on the man's toga; a girl dedicated her toys before marriage.
+
+Modern practitioners mark new jobs, homes, journeys and life stages at the lararium in the same spirit.`,
+            },
+            {
+              heading: `Birthdays and the Genius`,
+              body: `A birthday was the feast of a person's Genius (or Juno, for a woman). The family offered wine, incense, flowers and a libum cake to the Genius of the one whose birthday it was. No blood was shed on a birthday, Censorinus says, so that the day of birth would not be a day of death. People swore oaths by their Genius, and by the Genius of the emperor.
+
+Mark your own birthday with an offering to your Genius or Juno: incense, wine, flowers and a libum.`,
+            },
+            {
+              heading: `The crossroads Lares`,
+              body: `At every crossroads in Rome stood a small shrine to the Lares Compitales, gods of the neighbourhood. At the Compitalia, a midwinter festival with a movable date, households hung woollen figures at the crossroads shrines, a doll for each free person and a ball for each enslaved one, to protect them. Augustus reorganised the neighbourhood cult and added his own Genius to the shrines.
+
+Neighbourhood religion is easy to forget in a modern flat. A small offering at a corner near your home, or a word of greeting, reconnects with this tradition.`,
+            },
+          ],
+          knowAndDont: {
+            known: `The salt cellar for the Penates, offerings at meals, the bulla dedicated at coming of age, birthday offerings to the Genius, and the Compitalia are attested in Plautus, Horace, Persius, Festus, Macrobius, Censorinus and other sources.`,
+            unknown: `How regularly ordinary families did these things, and how they varied across the empire, is not well known. The exact date and form of the Compitalia changed over time.`,
+          },
+          inPractice: `This month, keep the salt dish on your table and set aside a pinch of each dinner for the Lares. Greet the Lares as you leave and come home. If a birthday falls in the household, honour that person's Genius or Juno.`,
+          reflect: [
+            `Which moments in your daily life could become small acts of pietas?`,
+            `What life passages have you had that were never marked?`,
+          ],
+          further: [
+            `Harriet I. Flower, The Dancing Lares and the Serpent in the Garden`,
+            `Celia E. Schultz, Women's Religious Activity in the Roman Republic`,
+          ],
+          library: ['traditional/deity/vesta'],
+          premade: ['kitchen-family-meal-blessing', 'kitchen-housewarming-blessing'],
+        },
+        {
+          id: 'r-dead',
+          title: `The Dead: Parentalia, Feralia and Lemuria`,
+          summary: `How Romans honoured the family dead in February and appeased the restless dead in May, and how to keep both at home.`,
+          minutes: 8,
+          sections: [
+            {
+              heading: `The Di Manes`,
+              body: `The dead were the Di Manes, the "good gods", a respectful name. Tombstones began D.M., Dis Manibus, "to the spirits of the dead". They were honoured at the tomb on anniversaries and at festivals with food, wine, flowers and lamps. Some tombs had pipes through which wine could be poured down to the dead.
+
+Offerings to the dead were not shared: they were given away completely, like the chthonic offerings of the Greeks. They also belonged at the tomb or in a separate place, not on the lararium of the living household gods.`,
+            },
+            {
+              heading: `Parentalia and Feralia`,
+              body: `The Parentalia ran for nine days, from 13 to 21 February, when families visited the tombs of their parents and ancestors. Temples were closed and marriages postponed. The last day, the Feralia, was a public festival of the dead. Ovid says the dead ask little:
+
+"parva petunt manes: pietas pro divite grata est munere."
+
+In plain English: the dead ask small things; devotion pleases them more than a costly gift. He lists the traditional offerings: a tile wreathed with garlands, a scattering of grain, a few grains of salt, bread softened in wine, and violets. The next day, 22 February, was the Caristia, or Cara Cognatio, when the family gathered for a reconciliation meal and gave offerings to the Lares.`,
+            },
+            {
+              heading: `Lemuria`,
+              body: `The Lemuria fell on 9, 11 and 13 May. The lemures were restless or hostile spirits of the dead, and the rite drove them from the house. Ovid describes it: at midnight, barefoot, the head of the household made a sign with his fingers and thumb to ward off ghosts, washed his hands in spring water and threw black beans behind him without looking, saying nine times, "haec ego mitto, his redimo meque meosque fabis": "these I send; with these beans I redeem me and mine." The shade was believed to gather the beans and follow. Then he washed again, clashed bronze vessels together, and asked the shade to leave, saying nine times "manes exite paterni", "spirits of my fathers, go out". Only then did he look back.
+
+The Lemuria is a protective rite of separation, not a curse. Modern practitioners keep it as written, with dried black beans and a pot lid or bell.`,
+            },
+            {
+              heading: `Keeping both at home`,
+              body: `For the Parentalia, make a small separate shrine to your dead: photos, names, a candle, a little bowl. On one or more of the nine days, offer violets or other flowers, grain, salt and bread dipped in wine, and speak their names. Leave the offerings, then dispose of them outside: they are not eaten. On the Caristia, share a meal with your living family.
+
+For the Lemuria, follow Ovid's rite simply and quietly on one or all three nights. Keep it gentle: you are asking the restless to go, not attacking anyone. Wash your hands after, and the next morning offer to the Lares.`,
+            },
+          ],
+          knowAndDont: {
+            known: `Ovid's Fasti (2.533 to 570 and 5.419 to 492) describes Parentalia, Feralia and Lemuria in detail; tomb inscriptions, libation pipes and funerary meals are well attested archaeologically; the Caristia is described by Ovid and Valerius Maximus.`,
+            unknown: `Ovid is a poet, and his explanations of origins are often guesses or inventions. Whether most Roman families kept the Lemuria as he describes is unknown. Many modern home versions of these rites (a separate shrine with photographs, for example) are reasonable adaptations, not ancient customs.`,
+          },
+          inPractice: `Before February, set up a small separate place for your dead. Keep the Parentalia with the app's premade rite, and the Caristia with a family meal. In May, keep one night of the Lemuria with dried black beans and a bell or pot lid.`,
+          reflect: [
+            `Whom among your dead do you want to honour, and what small gifts would they want?`,
+            `Is there anyone, living or dead, you need reconciling with at the Caristia?`,
+          ],
+          further: [
+            `Ovid, Fasti, book 2 (Parentalia) and book 5 (Lemuria)`,
+            `J. M. C. Toynbee, Death and Burial in the Roman World`,
+          ],
+          library: ['traditional/candle/white'],
+          premade: ['folk-parentalia', 'hedge-ancestor-candle-evening'],
+        },
+        {
+          id: 'r-festivals',
+          title: `The Festival Year`,
+          summary: `The major Roman festivals from Lupercalia to Saturnalia, what happened at each, and how to keep them at home.`,
+          minutes: 8,
+          sections: [
+            {
+              heading: `Late winter and spring`,
+              body: `Parentalia (13 to 21 February) you have met. Lupercalia (15 February) was a festival of purification and fertility in honour of Faunus. At the Lupercal cave, where the she-wolf was said to have nursed Romulus and Remus, priests called Luperci sacrificed goats and a dog, then ran around the Palatine wearing goatskins and struck those they met with strips of hide; women hoped this brought fertility. At home, honour Faunus, purify the house, and pray for fertility of whatever kind you need.
+
+Matronalia (1 March) honoured Juno Lucina, goddess of childbirth: married women went to her temple, and husbands gave gifts to their wives. Floralia (28 April to 3 May) honoured Flora with theatre, games, flowers and bright clothes. At home: bring flowers, wear colour, and honour Flora and Venus.`,
+            },
+            {
+              heading: `Summer`,
+              body: `Lemuria (9, 11 and 13 May) you have met. Vestalia (7 to 15 June) was Vesta's festival: the inner shrine of her temple, normally closed, was opened to married women, who came barefoot with offerings of food. Bakers and millers honoured her, and donkeys, which turned the mill-stones, were garlanded with flowers and loaves and given a rest. On 15 June the temple was cleaned and the sweepings carried to the Tiber. At home: clean your stove or hearth, bake salted bread, and garland your lamp.
+
+Neptunalia (23 July), in the summer heat, honoured Neptune as god of fresh water. People built shelters of leafy branches (umbrae) and feasted in them. At home: offer to Neptune at a river, spring or a bowl of water, and think about water in a dry season.`,
+            },
+            {
+              heading: `Winter`,
+              body: `Saturnalia began on 17 December and grew to seven days. Saturn's statue in his temple had woollen bonds on its feet all year; at Saturnalia they were loosened. People wore the felt cap (pilleus) of freed slaves, dropped the toga for casual dress, gambled, feasted and exchanged gifts, especially wax candles (cerei) and little clay figurines (sigillaria). Enslaved people were feasted and granted licence, and a mock king was chosen. The greeting was "Io Saturnalia!" Because Saturn was worshipped by the Greek rite, his rites were performed with the head uncovered.
+
+Dies Natalis Solis Invicti (25 December), the birthday of the Unconquered Sun, is later: the emperor Aurelian founded the temple of Sol Invictus in 274 CE, and the date appears in a calendar of 354 CE. It celebrates the sun's return after the solstice.`,
+            },
+            {
+              heading: `Other days worth knowing`,
+              body: `The app marks the major festivals, but many others can be kept: Agonalia for Janus (9 January), Terminalia for the boundary god (23 February), the Parilia, Rome's birthday (21 April), Vinalia (23 April and 19 August), Robigalia against crop blight (25 April), Consualia and Opiconsivia for the harvest store (August), Compitalia (late December or early January). Keep those that belong to your gods and your life. A festival at home follows the prayer pattern you know, with its own particular offering.`,
+            },
+          ],
+          knowAndDont: {
+            known: `The dates and main features of these festivals are recorded in inscribed calendars, Ovid, Varro, Macrobius and others. Saturnalia customs are described in detail by Macrobius and in Martial's and Seneca's writings.`,
+            unknown: `Many festivals' origins were already obscure to Romans. Ovid covers only January to June, so the details of later festivals depend on other sources. The connection between Sol Invictus and Christmas is debated by historians. Modern home observances are adaptations.`,
+          },
+          inPractice: `Look at the app's calendar and find the next Roman festival. Plan a home observance with the prayer pattern and one element that belongs to that festival, and add it to your planner.`,
+          reflect: [
+            `Which Roman festival speaks to your life now, and why?`,
+            `What would a modern Saturnalia, keeping the spirit of turning the world upside down, look like for you?`,
+          ],
+          further: [
+            `H. H. Scullard, Festivals and Ceremonies of the Roman Republic`,
+            `Macrobius, Saturnalia, book 1`,
+            `Ovid, Fasti`,
+          ],
+          library: ['traditional/deity/vesta', 'traditional/deity/juno', 'traditional/deity/venus'],
+          premade: ['folk-vestalia-hearth', 'folk-parentalia'],
+        },
+        {
+          id: 'r-household-state',
+          title: `Household Religion and the Lost State Cult`,
+          summary: `What the public religion of Rome was, why it can't simply be restarted, and why the household is the heart of modern practice.`,
+          minutes: 6,
+          sections: [
+            {
+              heading: `The public religion`,
+              body: `Roman state religion was run by colleges of priests who were also politicians. The pontifices, led by the Pontifex Maximus, oversaw the calendar and sacred law. The augurs interpreted the will of the gods through signs. The flamines served individual gods, the Flamen Dialis serving Jupiter under many taboos. The Vestal Virgins kept the city's sacred flame and made mola salsa. Magistrates made vows and sacrifices for the whole people. Temples, festivals and games were paid for by the state.
+
+This religion ended gradually after Christianity became the empire's religion. In 382 CE state funding for the old cults was withdrawn, the Altar of Victory was removed from the Senate house, and in 394 the Vestal fire was put out.`,
+            },
+            {
+              heading: `Why it can't simply be restarted`,
+              body: `The state cult depended on the state: priests elected or appointed by the Roman people, temples owned by the city, sacrifices paid for by public money. There is no Roman people in that sense now, and nobody can claim the authority of the Pontifex Maximus. Some modern groups appoint priests and keep public rites as a community, which is a real and valuable thing, but it is a modern community religion, not the restoration of the Roman state.
+
+So most modern practitioners treat the household as the foundation, and approach the great gods personally and in small groups, as private Romans also did.`,
+            },
+            {
+              heading: `Why the household is enough`,
+              body: `Household religion was never the poor cousin of the public cult. It was older, more constant, and outlived it: laws against household offerings to the Lares, Genius and Penates were still being made at the end of the fourth century, which shows they were still being made. The paterfamilias, and in practice often the materfamilias and the household's women, were the priests of their own home.
+
+When you keep your lararium on the Kalends, Nones and Ides, honour your dead at the Parentalia and mark birthdays and passages with the household gods, you are doing exactly what most Romans did, most of the time.`,
+            },
+            {
+              heading: `Honouring the great gods from home`,
+              body: `You can still honour Jupiter on the Ides, Juno on the Kalends, Vesta at the Vestalia and Mars in March from your home. Add an image or symbol of the god to the lararium or set up a small shrine of their own. Pray in the Roman pattern, and make your offerings according to your means, as Cato says (pro copia). For particularly important requests, make a vow, and fulfil it publicly, perhaps by donating to a cause the god would favour, and noting it in your journal as Romans noted theirs in stone.`,
+            },
+          ],
+          knowAndDont: {
+            known: `The public priesthoods, their roles and the end of state funding of the cults in the late fourth century (under Gratian and Theodosius) are well documented. Theodosius's law of 392 forbidding household offerings to the Lares, Genius and Penates is preserved in the Theodosian Code (16.10.12).`,
+            unknown: `How long household cult survived after the laws, and in what forms, is uncertain; some customs may have continued in folk practice for centuries, but direct continuity to the present cannot be shown.`,
+          },
+          inPractice: `Choose one great god to honour on their monthly day (Jupiter on the Ides, Juno on the Kalends). Add a small image or symbol of them to your lararium.`,
+          reflect: [
+            `How do you feel about practising a religion that once belonged to a state, as a private person?`,
+            `What does it mean to be the priest or priestess of your own home?`,
+          ],
+          further: [
+            `Mary Beard, John North and Simon Price, Religions of Rome, volume 1`,
+            `Theodosian Code 16.10.12`,
+          ],
+          library: ['traditional/deity/jupiter', 'traditional/deity/juno', 'traditional/deity/vesta'],
+        },
+        {
+          id: 'r-divination',
+          title: `Augury and Divination, Honestly`,
+          summary: `How Romans sought the will of the gods through birds, lightning, entrails and lots, what augury was really for, and what modern practitioners do.`,
+          minutes: 7,
+          sections: [
+            {
+              heading: `Asking permission, not telling fortunes`,
+              body: `Roman augury was not mainly fortune-telling. The augurs, a college of public priests, took the auspices to discover whether the gods approved of an action: an election, a battle, the founding of a temple. The question was "is this permitted, today?" rather than "what will happen?" The augur marked out a templum, a defined area of sky, and watched for signs: the flight of birds such as eagles and vultures (alites), the calls of birds like ravens and owls (oscines), lightning and thunder, the behaviour of animals and strange events.
+
+On campaign, the army carried sacred chickens. If they ate eagerly so that grain dropped from their beaks (tripudium), the omen was good.`,
+            },
+            {
+              heading: `Other methods`,
+              body: `The haruspices, experts trained in Etruscan lore, read the entrails of sacrificed animals, especially the liver, and interpreted prodigies and lightning. A bronze model of a sheep's liver from Piacenza is divided into regions labelled with the names of Etruscan gods. The Sibylline Books, a collection of oracles kept on the Capitol, were consulted by a priestly college in times of crisis to find which rites would restore the pax deorum. At Praeneste, the oracle of Fortuna gave answers by lots (sortes) drawn by a child from a box of oak tiles inscribed with sayings.`,
+            },
+            {
+              heading: `Romans' own doubts`,
+              body: `Educated Romans argued about all of this. Cicero, himself an augur, wrote On Divination, in which his brother defends divination and Cicero takes it apart. Augury was often used politically: a magistrate could block an assembly by announcing he was "watching the sky". A famous story tells of the consul Publius Claudius Pulcher, in 249 BCE, throwing the sacred chickens overboard when they wouldn't eat ("let them drink, then"), and losing the battle that followed.
+
+This honesty is part of the Roman tradition. You can practise divination and keep your head.`,
+            },
+            {
+              heading: `What modern practitioners do`,
+              body: `No one holds a public augurate in the ancient sense, though some modern groups appoint augurs within their community. In practice, Roman polytheists watch birds and the sky as signs, especially before big decisions, often defining a "templum" of sky from a window, and take a yes/no answer from what appears in a set time. Many use lots: oak or wooden tiles inscribed with answers, drawn after prayer to Fortuna or Jupiter, or simple yes/no lots. Others use dice, or modern systems like tarot, which are not Roman.
+
+Ask before acting, not about the distant future. Ask whether the gods approve, accept the answer for today, and ask again another day if the answer is no.`,
+            },
+          ],
+          knowAndDont: {
+            known: `Augury, the auspices, sacred chickens, haruspicy, the Sibylline Books and the lots of Praeneste are described in Cicero's On Divination, Livy and many other sources; the Piacenza liver survives.`,
+            unknown: `The detailed rules of augural lore were secret to the college and are mostly lost. Modern Roman divination methods are adaptations without ancient authority.`,
+          },
+          inPractice: `Before a real but modest decision, cover your head, pray to Jupiter for a sign, and watch a set patch of sky from a window for ten minutes. Birds from the left were favourable in Roman augury. Write down what you saw and what you made of it.`,
+          reflect: [
+            `What would you want to ask the gods' permission for?`,
+            `How will you hold an answer you don't like?`,
+          ],
+          further: [
+            `Cicero, On Divination (trans. C. D. Yonge, 1853)`,
+            `Mary Beard, John North and Simon Price, Religions of Rome`,
+          ],
+          library: ['traditional/deity/jupiter'],
+          premade: ['hedge-crossroads-choice'],
+        },
+        {
+          id: 'r-community',
+          title: `Modern Roman Communities and What to Read Next`,
+          summary: `Nova Roma, Pietas and other modern groups, where they differ, and how to practise alone or together.`,
+          minutes: 6,
+          sections: [
+            {
+              heading: `Modern groups`,
+              body: `Nova Roma, founded in 1998 in the United States, is an international organisation that models itself on the Roman Republic, with elected magistrates, a senate, priestly colleges and public rites. It has members around the world and organises festivals and conventions. Some people love its Republican structure; others find the political role-play distracting from religion.
+
+In Italy, the Associazione Tradizionale Pietas, founded in the 2000s, runs public rites and works on legal recognition. The Movimento Tradizionale Romano, active since the 1980s, is older. Some Italian Roman traditionalist circles have drawn on the writings of Julius Evola, an esoteric writer associated with Fascism, and critics have raised concerns about far-right sympathies in parts of that milieu. Practitioners vary a great deal, and you should judge groups by what they actually say and do.`,
+            },
+            {
+              heading: `Differences you will meet`,
+              body: `Modern Roman polytheists disagree on several questions. How strict should reconstruction be? Should rites be in Latin? Is the "state" cult something a modern group can or should recreate? What about blood sacrifice (almost all modern practitioners don't)? How Roman should the gods be, as opposed to Greek-influenced? Some practise Religio Romana alongside Hellenic religion; others keep them strictly separate.
+
+The app's view: the Roman gods may be honoured by anyone, in any country, of any ancestry or politics, and good practice is careful practice, not a matter of lineage.`,
+            },
+            {
+              heading: `Practising alone or together`,
+              body: `Most Roman polytheists practise alone or as a household, which suits a religion whose heart was always the home. If you want company, try online communities and groups' public festivals. Look for groups that welcome questions and that are open about their structures and money. Be wary of anyone claiming an unbroken secret lineage from ancient Roman priesthoods: there is no evidence of one.`,
+            },
+            {
+              heading: `What to read next`,
+              body: `Ancient sources: Cato, On Agriculture 132 to 143; Ovid, Fasti; Cicero, On the Nature of the Gods and On Divination; Livy, book 1; Virgil's Aeneid; Horace, Odes 3.23; Plautus, The Pot of Gold; Macrobius, Saturnalia. Scholarship: Beard, North and Price, Religions of Rome; John Scheid, An Introduction to Roman Religion; Jörg Rüpke, Religion of the Romans; H. H. Scullard, Festivals and Ceremonies of the Roman Republic; Robert Turcan, The Gods of Ancient Rome; Harriet Flower, The Dancing Lares and the Serpent in the Garden; Celia Schultz, Women's Religious Activity in the Roman Republic.`,
+            },
+          ],
+          knowAndDont: {
+            known: `Nova Roma was founded in 1998; Pietas is an active Italian association with public rites. Both publish their aims and structures openly.`,
+            unknown: `Numbers of practitioners are not known. Groups change and split, and some Italian groups are small and private. Claims of continuous survival of Roman religion from antiquity are not supported by evidence.`,
+          },
+          inPractice: `Read the public statements of Nova Roma and Pietas. Note one thing you share with each and one you would do differently, and decide whether you want community now.`,
+          reflect: [
+            `Do you want community, solitude, or both?`,
+            `What would you look for in a group before joining?`,
+          ],
+          further: [
+            `John Scheid, An Introduction to Roman Religion`,
+            `Jörg Rüpke, Religion of the Romans`,
+          ],
+        },
+      ],
+      practices: [
+        {
+          id: 'r-practice-kni',
+          title: `Keep the monthly days`,
+          instructions: `Keep every Kalends, Nones and Ides in this stage at your lararium: garland, incense, wine and salted grain, head covered, Janus first and Vesta last.`,
+          times: 3,
+          every: 'holy-day',
+          prompt: `What did you offer, and what did you ask?`,
+          premade: 'folk-lararium-offering',
+        },
+        {
+          id: 'r-practice-meal',
+          title: `Share the meal`,
+          instructions: `Each evening, set aside a pinch of food for the Lares and keep a salt dish on the table.`,
+          times: 30,
+          every: 'day',
+          prompt: `What did the household gods share in today?`,
+        },
+        {
+          id: 'r-practice-festival',
+          title: `Keep one festival`,
+          instructions: `Choose a Roman festival in or near this stage and keep it at home with the Roman prayer pattern and one element that belongs to the festival.`,
+          times: 1,
+          every: 'holy-day',
+          prompt: `What did the festival teach you about its god?`,
+        },
+      ],
+    },
+
+    // ──────────────────────────── DISCERNMENT ────────────────────────────
+    {
+      kind: 'discernment',
+      title: `Is This My Path?`,
+      intro: `Before you make your vow, weigh these weeks honestly. A Roman would not make a vow lightly, and neither should you. Stopping, pausing, choosing another path, or keeping a lararium without a formal dedication are all good outcomes; nothing is lost by deciding not to go on. A vow made in doubt is worse than none.`,
+      days: 10,
+      lessons: [],
+      practices: [
+        {
+          id: 'r-discern-read',
+          title: `Read your record`,
+          instructions: `Read your journal from the opening rite. Notice which practices you kept without effort, which you skipped, and which gods you returned to.`,
+          times: 1,
+          prompt: `What does your record tell you?`,
+        },
+        {
+          id: 'r-discern-lots',
+          title: `Ask by lot`,
+          instructions: `With your head covered and incense offered to Janus and Fortuna, ask whether you should make the vow of dedication. Draw a lot (a coin, a die, or tiles marked yes and no). Sleep on the answer and weigh it with your own judgement.`,
+          times: 1,
+          prompt: `What answer came, and what does your judgement say?`,
+        },
+      ],
+      questions: [
+        `Has the household cult become something you want to keep, or does it feel like a chore?`,
+        `Can you keep the Kalends, Nones and Ides, or something like them, for a year?`,
+        `Do you value the precision of Roman ritual, or does it feel too formal for you?`,
+        `Are you drawn to the Roman gods themselves, or to the history and image of Rome? Both are fine, but they lead to different places.`,
+        `How do you feel about the hard parts: the empire's violence, slavery, the politics of some modern groups?`,
+        `Would another path, a looser practice, or simply more time suit you better? Any of these is a good answer.`,
+      ],
+    },
+
+    // ──────────────────────────── DEDICATION ─────────────────────────────
+    {
+      kind: 'dedication',
+      title: `The Vow of Dedication`,
+      intro: `If you have chosen to go on, this rite takes the form of a Roman vow (votum): a formal promise to the gods to keep their worship for a year, made exactly and kept faithfully, to be paid and renewed at the end of the year. Make it on a Kalends, never on a black day. It is a self-dedication: a private religious act, not an initiation into any priesthood, college or group, and it does not replace the membership or priestly rites of groups such as Nova Roma or Pietas.`,
+      days: 4,
+      lessons: [],
+      practices: [
+        {
+          id: 'r-dedication-write',
+          title: `Write the vow`,
+          instructions: `Write your vow exactly, as a Roman would. Name the gods to whom you make it. State what you will do for a year (for example, keep the Kalends, Nones and Ides at the lararium, greet the Lares daily, keep the Parentalia and one festival per season), and what you ask in return (for example, that the household gods be willing and favourable to you and your household). Name when you will pay and renew it. Promise only what you can keep. Read it aloud until you can say it without stumbling.`,
+          times: 1,
+          prompt: `Copy out your vow exactly as you will say it.`,
+        },
+      ],
+      rite: {
+        title: `Rite of the Vow`,
+        summary: `A full Roman household rite: washing, covering the head, the preface to Janus, garland and offering to the household gods, the vow spoken from the page, a libum shared, Vesta last and the turn to the right.`,
+        minutes: 40,
+        ingredients: [
+          { name: `A scarf or shawl to cover your head` },
+          { name: `A bowl of fresh water and a towel`, ref: 'traditional/vessel/bowl' },
+          { name: `A candle or oil lamp for Vesta`, ref: 'traditional/candle/white' },
+          { name: `Frankincense or other incense`, ref: 'traditional/herb/frankincense' },
+          { name: `Unmixed wine, or grape juice, in a cup or shallow dish` },
+          { name: `Mola salsa (toasted flour and salt)` },
+          { name: `A libum cake (Cato's recipe) or a small honey cake` },
+          { name: `A garland, sprig of rosemary or flowers for the lararium`, ref: 'traditional/herb/rosemary' },
+          { name: `An offering dish`, ref: 'traditional/vessel/offering_bowl' },
+          { name: `Your written vow` },
+        ],
+        preparation: `Clean the lararium and the room. Bake the libum the day before or that morning. Bathe and wear clean clothes. Set out the lamp, incense, wine, mola salsa, libum and garland. Have your vow written clearly on a page. Decide who, if anyone, will "read ahead" for you; alone, you will read from the page.`,
+        steps: [
+          {
+            title: `Wash and cover`,
+            instructions: `Wash your hands in fresh water and dry them. Draw your scarf over your head. From now until the end, speak carefully; if you stumble in any prayer, stop and begin that prayer again.`,
+          },
+          {
+            title: `Garland and light`,
+            instructions: `Place the garland or sprig on the lararium. Light Vesta's lamp.`,
+            light: true,
+          },
+          {
+            title: `Preface to Janus`,
+            instructions: `Put incense on the burner and pour a drop of wine for Janus.`,
+            spoken: `Father Janus, opener of every beginning, with this incense and this wine I pray you good prayers, that you be willing and favourable to me, my house and my household, and open the way for what I now begin. Be honoured by this wine.`,
+          },
+          {
+            title: `Offering to the household gods`,
+            instructions: `Sprinkle mola salsa into the dish and pour wine. Speak to the Lares, Penates and your Genius or Juno, and to any great god you are especially honouring.`,
+            spoken: `Lares of this house, Penates of its store, my own Genius (or Juno), and you, [name of god], whether by this name or whatever name you wish to be called: be honoured by this salted grain, be honoured by this wine. I pray you good prayers, that you be willing and favourable to me, my house and my household.`,
+          },
+          {
+            title: `The vow`,
+            instructions: `Read your vow from the page, slowly and exactly. When you finish, place a piece of the libum in the offering dish.`,
+            spoken: `For the sake of this, I make this vow. Be honoured by this cake, and receive my promise.`,
+          },
+          {
+            title: `Share the libum`,
+            instructions: `Eat a piece of the libum yourself, and drink a sip of wine: a meal shared with the household gods.`,
+          },
+          {
+            title: `Vesta last`,
+            instructions: `Pour the last of the wine near the lamp for Vesta.`,
+            spoken: `Vesta, guardian of the hearth, with whom every rite ends: be honoured by this wine, and keep this house and this vow.`,
+          },
+          {
+            title: `Turn to the right`,
+            instructions: `Bring your right hand to your lips, and turn your whole body round to the right. Uncover your head. Put out the lamp once the incense is done.`,
+            snuff: true,
+          },
+        ],
+        closing: `Write the vow in your journal with today's date: "Vow made on the Kalends of [month]". Leave the gods' portion overnight and dispose of it respectfully. A year from now, you will pay the vow with a thank-offering and renew it.`,
+        safety: `Never leave a flame or burning incense unattended; use heat-proof holders and ventilate the room. Skip incense with asthma or pet birds. Use grape juice if you avoid alcohol. Keep wine, cake and offerings away from pets, and dispose of them where animals cannot eat them.`,
+      },
+    },
+
+    // ───────────────────────────── ONGOING ───────────────────────────────
+    {
+      kind: 'ongoing',
+      title: `Keeping the Peace of the Gods`,
+      intro: `The household cult is a lifetime practice, kept in small acts: the morning greeting, a pinch of food at dinner, the Kalends, Nones and Ides, the dead in February and May, the festivals as they come. When life is busy, keep the three monthly days and let the rest flex. When you fall behind, a Roman would make a small piacular (expiatory) offering, a little extra incense and wine with an apology, and begin again.`,
+      days: 365,
+      lessons: [],
+      practices: [
+        {
+          id: 'r-ongoing-kni',
+          title: `Kalends, Nones and Ides`,
+          instructions: `Keep the three monthly days at the lararium all year, with garland, incense, wine and salted grain.`,
+          times: 36,
+          every: 'holy-day',
+          prompt: `What did you offer, and what has the month brought?`,
+          premade: 'folk-lararium-offering',
+        },
+        {
+          id: 'r-ongoing-dead',
+          title: `The dead`,
+          instructions: `Keep the Parentalia in February and the Lemuria in May each year, and the anniversaries of your own dead.`,
+          times: 2,
+          every: 'holy-day',
+          prompt: `Whom did you honour, and what did you give?`,
+          premade: 'folk-parentalia',
+        },
+        {
+          id: 'r-ongoing-vow',
+          title: `Pay and renew the vow`,
+          instructions: `On the Kalends nearest a year after your dedication, pay your vow with a thank-offering (incense, wine, a libum and something special) and, if you wish, make a new vow for the coming year using the dedication rite. Note it in your journal as Romans did on stone: "vow paid willingly, as deserved".`,
+          times: 1,
+          prompt: `What did your vow bring this year, and what will you promise next?`,
+        },
+      ],
+    },
+  ],
+  sources: [
+    `Cato, De Agri Cultura 132, 134, 139 and 143 (Latin text), The Latin Library: https://www.thelatinlibrary.com/cato/cato.agri.html (public domain; English renderings are the app's own).`,
+    `Pliny the Elder, Naturalis Historia 28.11 and 28.25 (Latin text), LacusCurtius: https://penelope.uchicago.edu/Thayer/L/Roman/Texts/Pliny_the_Elder/28*.html (public domain; English renderings are the app's own).`,
+    `Ovid, Fasti 2.533 to 542 and 5.429 to 444 (Latin text), The Latin Library: https://www.thelatinlibrary.com/ovid/ovid.fasti2.shtml and https://www.thelatinlibrary.com/ovid/ovid.fasti5.shtml (public domain; English renderings are the app's own).`,
+    `Horace, Odes 3.23 (Latin text), The Latin Library: https://www.thelatinlibrary.com/horace/carm3.shtml (public domain; English renderings are the app's own).`,
+    `Cicero, De Natura Deorum 2.67 to 72 (Janus first, Vesta last; religio and superstitio), The Latin Library: https://www.thelatinlibrary.com/cicero/nd2.shtml.`,
+    `Plautus, Aulularia, prologue; Pliny, Naturalis Historia 28.27; Festus on the Compitalia; Virgil, Aeneid 3.403 to 409; Censorinus, De Die Natali 2; Macrobius, Saturnalia book 1; Theodosian Code 16.10.12.`,
+    `Mary Beard, John North and Simon Price, Religions of Rome (1998).`,
+    `John Scheid, An Introduction to Roman Religion (2003).`,
+    `Jörg Rüpke, Religion of the Romans (2007).`,
+    `H. H. Scullard, Festivals and Ceremonies of the Roman Republic (1981).`,
+    `Harriet I. Flower, The Dancing Lares and the Serpent in the Garden (2017).`,
+  ],
+};

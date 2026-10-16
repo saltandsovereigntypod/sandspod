@@ -75,6 +75,16 @@ export function correspondenceOf(entry: LibraryEntry | null, fallbackName = ''):
 
 let fallback: LibraryEntry[] | null = null;
 /** The entries to read from: those given, or the Traditional Library. */
+/**
+ * Deadly plants (foxglove, belladonna, mandrake, yew) belong in the Library to
+ * be known, never handled: they're never suggested for jars, sachets, dressings
+ * or the altar, and can't be picked for anything made by hand.
+ */
+export function handleSafe(entry: LibraryEntry | null | undefined): boolean {
+  const warning = String((entry?.traditional as Record<string, unknown> | null | undefined)?.TraditionalWarnings ?? '');
+  return !/DEADLY POISONOUS|don[’']t handle it/i.test(warning);
+}
+
 export function libraryOr(entries?: LibraryEntry[] | null): LibraryEntry[] {
   if (entries && entries.length) return entries;
   fallback = fallback ?? traditionalEntries();

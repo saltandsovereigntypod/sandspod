@@ -569,7 +569,6 @@ If you miss a night, don’t start over. Pick up where you left off.`,
           instructions:
             'On the anniversary of your dedication, or at Yule, repeat the dedication rite. Read last year’s vow aloud first and say honestly how you kept it. Make the new vow fit the life you actually have.',
           times: 1,
-          every: 'month',
           prompt: 'How did you keep last year’s vow, and what will this year’s be?',
         },
       ],

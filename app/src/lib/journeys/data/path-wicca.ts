@@ -511,6 +511,12 @@ In covens the high priestess may draw down the moon, an initiatory rite in which
 
 Many Wiccans also mark the new moon, for beginnings, and the dark moon, for rest and inner work. You don't need to do everything. Keeping every full moon for a year is already a real practice.`,
             },
+            {
+              heading: 'An esbat in a small flat',
+              body: `You don't need a garden or moonlight to keep an esbat. Check the time of moonrise in the app or a weather site: the full moon rises around sunset, and in a city you may see her from a window only late in the evening. If clouds or buildings hide her, face the direction she will be and work by candlelight. A bowl of water on the sill catches her reflection for scrying if the angle is right.
+
+A small working esbat might take forty minutes: ten to set up and cleanse, five to cast and call, ten with the moon in praise and quiet, ten for a little magic or a tarot reading, five for cakes and ale and closing. In a shared home, you can cast and call silently and speak to the Goddess under your breath. What matters is that you show up every month.`,
+            },
           ],
           knowAndDont: {
             known:
@@ -740,6 +746,12 @@ Some people keep two books: a rough working journal and a fair copy, written slo
               body: `Write after every rite, even a short one, while it is fresh: date, moon, what you did, what you felt, what happened afterwards. Be honest when nothing happened. Over a year the patterns will surprise you. Mark sources: if you copy a correspondence list, note the book; if you wrote a chant, say so. That habit will save you from passing on someone else's work as tradition.
 
 Treat the book with respect. Keep it on or near the altar, bless it at the start, and don't leave it lying about for idle reading if privacy matters to you.`,
+            },
+            {
+              heading: 'What to put in this year',
+              body: `For this journey, a useful structure is a section for each of the eight sabbats, with what you did and what the land was doing; a moon log with a line or two for each esbat; a section of rites you have written; a section of correspondences you have tested; and a spell record with dates and results. Add a page for each god or goddess you come to know, with what you have learned and what you have offered.
+
+At the end of the year, these pages are the material of your discernment. A full, honest book is the best evidence you will have of whether this path is yours.`,
             },
           ],
           knowAndDont: {

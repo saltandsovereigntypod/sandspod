@@ -1,0 +1,898 @@
+import type { Journey } from '../types';
+
+// The Wheel of the Year as a broad, eclectic Pagan path: the eight festivals'
+// real histories, both hemispheres, seasonal living and the local land. A year
+// and a day, paced by sabbat and full moon. Original wording throughout; the
+// one quotation is a short verified fragment of Bede's Latin (public domain).
+
+const CANDLE_SAFETY =
+  'Never leave a lit candle unattended. Use a sturdy holder on a heatproof surface, away from curtains, hair, loose sleeves, pets and children, and snuff it rather than blowing it out.';
+
+const OUTDOOR_SAFETY =
+  'Outdoors, tell someone where you are going, dress for the weather, and stay on paths in unfamiliar country. Never light a fire where fire bans are in force or on dry ground; a candle in a jar, or a lantern, does the same work. Leave no trace: take home everything you bring, including food offerings in places where wildlife could be harmed by them.';
+
+const FOOD_SAFETY =
+  'Keep offerings and seasonal food away from pets: chocolate, grapes and raisins, onion and garlic, xylitol and alcohol are dangerous to dogs and cats, and lilies, including their pollen and vase water, can kill a cat. Bread, milk and processed food left outdoors can harm birds and wildlife; leave small amounts of plain, natural things, or pour water instead.';
+
+export const JOURNEY: Journey = {
+  id: 'path-wheel',
+  kind: 'path',
+  paths: ['wheel'],
+  title: 'The Wheel of the Year: A Year and a Day',
+  summary:
+    'A year and a day keeping the eight seasonal festivals as an eclectic Pagan path: their real histories, old and new, the seasons where you actually live, and a dedication to the turning year and your own land.',
+  welcome: `This journey is for anyone who wants to live by the turning of the year: eclectic Pagans, nature-centred witches, Druid-leaning folk, people with or without gods. It follows the eight festivals of the modern Wheel of the Year, Samhain, Yule, Imbolc, the spring equinox, Beltane, midsummer, Lammas and the autumn equinox, for a year and a day, with the full moons as the month's heartbeat.
+
+You will learn what each festival really is: which are old and which were assembled in the twentieth century, and how they were kept in the past. More importantly, you will learn to keep them where you live, in your own hemisphere and your own weather, with the plants, birds and land outside your door.
+
+At the end, if you choose, you make a self-dedication to the turning year and to your land. It is not an initiation into any tradition. Wicca, Druid orders and other groups have their own ways in, and this doesn't replace them. Nothing here is ever failed; if you miss a festival, the Wheel comes round again.`,
+  about: `The Wheel of the Year is a modern Pagan calendar of eight festivals spaced around the year: the two solstices, the two equinoxes, and four "cross-quarter" days roughly halfway between them. It took shape in English Wicca and Druidry around 1958 and spread across the Pagan world from the 1970s, and today it is kept by Wiccans, Druids, eclectic Pagans and many people who use no other label. Some of its festivals have deep roots: Samhain, Beltane, Imbolc and Lughnasadh are named in medieval Irish literature, midsummer fires and Yule are recorded across Europe, and ancient monuments align with the solstice sun. Others, especially the equinoxes, have little historical festival tradition behind them, and three of the popular names (Ostara, Litha and Mabon) date only from the 1970s. As a whole, it is a modern creation that gathers old customs into a new pattern, and a good tool for paying attention to the year.`,
+  notes: [
+    'This is a self-dedication to the seasons and the land, not an initiation. It does not make you a Wiccan initiate, a Druid of any order, or a member of any tradition with its own rites of entry.',
+    'The Wheel is a modern calendar. This journey says plainly which festivals and customs are old, which are recent, and where the evidence runs out.',
+    'In the southern hemisphere the seasons are reversed, and in the tropics the four temperate seasons may not exist at all. The app\'s calendar has a Southern Hemisphere Wheel you can choose, and this journey helps you build a wheel that fits your own climate.',
+    'Honouring the land you live on means respecting the people whose land it has long been. Learn about local Indigenous seasonal knowledge where it is publicly shared, and do not take up closed Indigenous ceremonies or sacred items.',
+    'White sage is not used here. Rosemary, juniper, bay, mugwort, garden herbs or plain water are used instead.',
+    'Fire, food and outdoor work appear throughout. Every rite carries safety notes; read them.',
+  ],
+  holyDays: ['samhain', 'yule', 'imbolc', 'ostara', 'beltane', 'litha', 'lammas', 'mabon'],
+  stages: [
+    // ───────────────────────── Threshold ─────────────────────────
+    {
+      kind: 'threshold',
+      title: 'Where you stand',
+      intro:
+        'Two weeks to begin. Read what the Wheel is and isn\'t, find north and the place where the sun rises from your window, start a nature journal, and hold a short rite outdoors or at a window to tell the land you are paying attention.',
+      days: 14,
+      lessons: [
+        {
+          id: 'wheel-how-it-came-together',
+          title: 'How the Wheel came together',
+          summary: 'The real history of the eightfold year, which festivals are old and which names are new.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Eight spokes',
+              body: `Draw a circle and divide it into eight. At the four main points sit the solstices and equinoxes, set by the sun: midwinter around 21 December, the spring equinox around 20 March, midsummer around 21 June and the autumn equinox around 22 September (in the northern hemisphere). Between them sit four "cross-quarter" days, traditionally the start of February, May, August and November. Together they make the Wheel of the Year, eight festivals about six or seven weeks apart.
+
+It is a beautiful, simple pattern, and it is modern. No ancient people is known to have kept exactly these eight. The pattern was put together in England in the 1950s from pieces that are genuinely old, and that mixture of old and new is the most honest way to understand it.`,
+            },
+            {
+              heading: 'The pieces',
+              body: `The four cross-quarter festivals come from Ireland. Medieval Irish texts name Samain (1 November), Imbolc (1 February), Beltaine (1 May) and Lugnasad (1 August) as the turning points of the year, and the early tale Tochmarc Emire, the Wooing of Emer, lists them together. Whether they were kept in this form across all the Celtic-speaking world, in Britain and Gaul, is much less certain; Imbolc in particular has little trace outside Ireland.
+
+The solstices have a different kind of evidence. Newgrange in Ireland, built around 3200 BCE, lets the midwinter sunrise into its inner chamber; Stonehenge is aligned on the midsummer sunrise and midwinter sunset. Those builders clearly cared about the solstice sun, though we don't know what they did or believed. Much later, midwinter (Yule) and midsummer (St John's Eve) were major festivals across Europe, with fires and feasting recorded from the Middle Ages onward.
+
+The equinoxes have the thinnest history as festivals. Astronomers and calendar-makers noted them, Christian feasts fell near them (Lady Day on 25 March, Michaelmas on 29 September), but there is little sign of a popular equinox festival in the British Isles before the twentieth century.`,
+            },
+            {
+              heading: 'Putting it together',
+              body: `In the nineteenth century the folklorist James Frazer, in The Golden Bough, tied European fire festivals to a supposed ancient fertility religion, and the archaeologist and Egyptologist Margaret Murray later argued that witches had kept four great festivals. Gerald Gardner's Wiccan covens followed her and kept the four cross-quarter days. Around 1958 his coven added the solstices and equinoxes, encouraged by his friend Ross Nichols, who went on to found the Order of Bards, Ovates and Druids. The eightfold year was born, shared between Wicca and modern Druidry.
+
+The names came over the next two decades. The Irish names were natural choices for the cross-quarters. Yule was the old English and Norse midwinter word. For the rest, the American Pagan Aidan Kelly has written that around 1974 he chose Ostara for the spring equinox (from a goddess name reconstructed by Jacob Grimm), Litha for midsummer (from an Anglo-Saxon month name in Bede) and Mabon for the autumn equinox (from a Welsh mythological figure). They caught on fast. Druids often use other names, Alban Arthan, Alban Eilir, Alban Hefin and Alban Elfed, which come from the writings of the eighteenth-century Welsh antiquarian Iolo Morganwg, who invented a good deal of what he presented as ancient bardic lore.`,
+            },
+            {
+              heading: 'Why keep it anyway',
+              body: `Because it works. The Wheel gives you eight dates a year to stop and look at what the sun, the land and your own life are doing. Its old pieces connect you to customs people really kept, from Brigid's crosses to midsummer fires to harvest loaves. Its new pattern is easy to hold in the mind. And it is flexible: you can fill it with gods or with none, with Irish lore or with your own backyard.
+
+This journey asks you to hold both truths at once: these festivals are partly very old and partly very new, and they are yours to keep.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The Irish quarter-day names are attested in medieval Irish literature, including Tochmarc Emire. Newgrange\'s winter solstice alignment and Stonehenge\'s solstitial axis are established. Hutton documents Gardner\'s four festivals and the 1958 addition of the solar ones. Kelly has described naming Ostara, Litha and Mabon around 1974.',
+            unknown:
+              'What Neolithic people did at the solstices is unknown. Whether the four Irish festivals were pan-Celtic is doubtful. No ancient source describes an eightfold festival year, and there is no evidence of a widespread pre-modern equinox festival in Britain or Ireland.',
+          },
+          inPractice:
+            'Find north where you live and mark it. From a window or doorway, notice where the sun rises this week, and note it in a fresh journal with the date. Over the year you will watch that point travel along the horizon.',
+          reflect: [
+            'Does knowing the Wheel is modern change how you feel about it?',
+            'Which festival are you most curious about, and why?',
+          ],
+          further: [
+            'Ronald Hutton, The Stations of the Sun: A History of the Ritual Year in Britain (1996): the essential history.',
+            'Ronald Hutton, The Triumph of the Moon (1999), on how Wicca and Druidry built the Wheel.',
+          ],
+          premade: ['folk-build-your-own-ritual'],
+        },
+      ],
+      practices: [
+        {
+          id: 'wheel-threshold-sky',
+          title: 'Watch the sky',
+          instructions:
+            'Each day, step outside or look from a window at the same time, ideally sunrise or sunset. Note the weather, the light, and one living thing you see.',
+          times: 14,
+          every: 'day',
+          prompt: 'Today\'s sky, today\'s weather, one living thing.',
+        },
+        {
+          id: 'wheel-threshold-journal',
+          title: 'Start a nature journal',
+          instructions:
+            'Set up a notebook as your Wheel journal: a page for each of the eight festivals, a moon log at the back, and blank pages for weekly notes on what is flowering, fruiting, nesting or migrating where you live.',
+          times: 1,
+        },
+      ],
+      rite: {
+        title: 'Greeting the land',
+        summary:
+          'A short rite outdoors or at an open window: find the directions, greet the land and the sky, pour an offering of water and say that you will keep the turning year with them.',
+        minutes: 20,
+        ingredients: [
+          { name: 'A cup or small bowl of clean water', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'A candle in a jar or lantern, or an LED light', ref: 'traditional/candle/white', optional: true },
+          { name: 'Something local and seasonal: a leaf, a stone, a flower you didn\'t pick from a garden that isn\'t yours' },
+          { name: 'Your Wheel journal and a pen' },
+        ],
+        preparation:
+          'Choose a place: a garden, a park, a balcony, or an open window if that is what you have. Go at dawn or dusk if you can. Know which way is north before you start.',
+        steps: [
+          {
+            title: 'Arrive',
+            instructions:
+              'Stand or sit still for a few minutes. Feel the ground under you and the air on your skin. Listen to what is around you before you say anything.',
+            minutes: 3,
+            timed: true,
+          },
+          {
+            title: 'Turn to the four directions',
+            instructions:
+              'Turn slowly to face east, south, west and north. At each, notice what is there: a rooftop, a tree, a hill, a road. Name it out loud.',
+            spoken: 'East, where the light comes. South, west, north. This is where I stand.',
+          },
+          {
+            title: 'Light, if you can',
+            instructions: 'If you have a lantern or candle in a jar, light it now and set it on the ground or the sill.',
+            light: true,
+          },
+          {
+            title: 'Greet the land',
+            instructions:
+              'Hold the water in both hands. Speak to the land, the sky and whatever spirits or gods you honour, or simply to the place itself.',
+            spoken:
+              'Land under my feet, sky over my head, I greet you. For a year and a day I will watch your seasons and keep your festivals. Teach me what turns here.',
+          },
+          {
+            title: 'Pour the offering',
+            instructions:
+              'Pour the water slowly onto soil or a plant. Indoors, pour it onto a houseplant. Lay your leaf, stone or flower beside it, or on your sill.',
+          },
+          {
+            title: 'Write',
+            instructions: 'Write the date, the moon, the weather, where the sun rose or set, and what you noticed.',
+            minutes: 5,
+          },
+          {
+            title: 'Close',
+            instructions: 'Snuff the light if you lit one, thank the place, and leave nothing behind but water.',
+            spoken: 'Thank you. I\'ll be back.',
+            snuff: true,
+          },
+        ],
+        closing: 'Take your leaf or stone home for your altar if it came from your own garden or from the ground where it is allowed; otherwise, leave it where it was.',
+        safety: `${CANDLE_SAFETY} ${OUTDOOR_SAFETY}`,
+      },
+    },
+
+    // ───────────────────────── Study ─────────────────────────
+    {
+      kind: 'study',
+      title: 'Study: the eight festivals',
+      intro:
+        'About six months. The festival lessons run in calendar order from Samhain, but you can read each one a couple of weeks before its festival comes round, wherever you start. Between festivals, keep the full moons and your weekly nature notes. Keep every festival that falls in this time.',
+      days: 182,
+      lessons: [
+        {
+          id: 'wheel-samhain',
+          title: 'Samhain: the turn into winter',
+          summary: 'What medieval Irish texts say about Samhain, how Hallowe\'en grew, and how to keep it now.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'In the old texts',
+              body: `Samain (modern Irish Samhain, said roughly "SOW-in") was the beginning of winter in early Ireland, on 1 November with its eve the night before. Medieval Irish tales, written down by Christian monks from the eighth century on, make it a time of great assemblies, of kings feasting at Tara, and above all of the otherworld coming close. In the Adventure of Nera, the mounds of the sídhe, the otherworld people, stand open at Samhain and the dead walk; in other stories heroes die and battles are fought on this night.
+
+What we don't have is a description of pagan ritual. The tales are literature, written centuries after conversion. The idea that Samhain was "the Celtic New Year" comes from nineteenth-century scholars, especially John Rhys and James Frazer, and rests on slim evidence. Samhain was certainly the start of winter, and winter may have counted as the first half of the year, but the strong claim is uncertain.`,
+            },
+            {
+              heading: 'Hallowe\'en',
+              body: `The Church set All Saints on 1 November in the eighth and ninth centuries, and All Souls, for praying for the dead, on 2 November from around the year 1000. In Ireland, Scotland, Wales and the Isle of Man the old turning of the year and the Christian days of the dead ran together. By the eighteenth and nineteenth centuries folklorists were recording guising (going door to door in disguise), lanterns carved from turnips, bonfires, apple games, and divination with nuts and apples to foresee marriages and deaths. Robert Burns's poem Halloween (1785) is a catalogue of such customs. Irish and Scottish emigrants carried them to North America, where the pumpkin replaced the turnip.
+
+So the night's atmosphere of the dead and the uncanny has real depth in folklore, even if its pagan rites are lost.`,
+            },
+            {
+              heading: 'Samhain today',
+              body: `Modern Pagans keep Samhain as the festival of the dead and the start of the dark half of the year. Common practices: an ancestor altar with photographs, names and the foods your dead loved; a silent supper, where a place is set for the dead and the meal is eaten without speaking; lighting a candle in the window to guide them; divination; and honest reckoning with the year's losses. Many also put the garden to bed.
+
+Ancestor work is gentle, but it can stir grief. You may honour only those you choose. Not every ancestor was kind; you can honour your lineage as a whole, or the dead of your craft or place, rather than particular people who hurt you.`,
+            },
+            {
+              heading: 'A simple Samhain',
+              body: `Set a small table or shelf with a white candle, a glass of water and photographs or written names. Add a plate with a little of what they liked to eat. At dusk, light the candle and say their names one by one. Tell them something of your year. Sit for a while. Afterwards, leave the plate overnight and in the morning put the food on the compost or in the bin with thanks rather than eating it; many traditions treat food given to the dead as theirs.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Samain is named as the beginning of winter in medieval Irish literature, including Tochmarc Emire and Echtra Nerai. All Saints\' and All Souls\' dates are well documented. Guising, turnip lanterns and Hallowe\'en divination are recorded by eighteenth- and nineteenth-century folklorists and poets.',
+            unknown:
+              'No account of pre-Christian Samhain ritual survives. The "Celtic New Year" is a nineteenth-century scholarly idea with limited evidence. How far Hallowe\'en customs descend from pagan practice rather than medieval Christian and folk culture is debated.',
+          },
+          inPractice:
+            'Make an ancestor shelf a week before Samhain and keep a candle there each evening until 2 November.',
+          reflect: ['Who are your dead, and which of them do you want at your table?', 'What did this year end, for you?'],
+          further: ['Ronald Hutton, The Stations of the Sun, chapters on Hallowe\'en.', 'Robert Burns, Halloween (1785; public domain).'],
+          library: ['traditional/candle/black', 'traditional/herb/mugwort', 'traditional/herb/yew', 'traditional/tool/cauldron'],
+          premade: ['wicca-samhain-dumb-supper', 'hedge-ancestor-candle-evening', 'folk-apple-candle-halloween', 'green-putting-the-garden-to-bed'],
+        },
+        {
+          id: 'wheel-yule',
+          title: 'Yule: the longest night',
+          summary: 'Midwinter from Newgrange to Bede\'s Mothers\' Night to the Yule log, and how to keep vigil for the sun.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The returning sun',
+              body: `At the winter solstice the sun rises and sets at its southernmost points (in the north) and the night is longest. For about three days the sunrise seems to stand still on the horizon, which is what solstice means: sun standing. At Newgrange, a passage tomb in the Boyne valley built around 3200 BCE, a slot above the entrance lets the rising sun shine down the passage to the inner chamber for a few days around the solstice. At Maeshowe in Orkney the midwinter setting sun lights the back wall. These are among the oldest evidence we have of anyone caring about a calendar date.`,
+            },
+            {
+              heading: 'Yule and Mothers\' Night',
+              body: `Yule is a Germanic name. The Anglo-Saxon calendar described by Bede in 725 had two months called Giuli, around December and January, and Bede says the heathen English began their year on 25 December with a night called Modranecht, "Mothers' Night", though he doesn't say what was done. In Scandinavia, jól was a midwinter feast; the saga of King Hákon the Good, written down by Snorri Sturluson around 1230, says Hákon moved it to coincide with Christmas, and describes feasting and drinking toasts to the gods. The Roman midwinter feasts, Saturnalia from 17 December and the birthday of Sol Invictus on 25 December, were separate traditions that also shaped Christmas.
+
+Many familiar customs are later. The Yule log is recorded in England from the seventeenth century, in the poems of Robert Herrick. Kissing under mistletoe is an eighteenth-century English custom; Pliny the Elder's story of Druids cutting mistletoe with a golden sickle doesn't mention midwinter at all. Evergreens in the house at midwinter are attested in medieval England. The Oak King and Holly King are modern Pagan storytelling.`,
+            },
+            {
+              heading: 'Keeping Yule',
+              body: `Modern Pagans keep Yule as the rebirth of the sun. The great practice is the vigil: stay up through the longest night, or at least until late, with a candle or a log burning, and then greet the sunrise. Decorate with evergreens, holly, ivy and pine. Give gifts. Feast. Many Pagans who also keep Christmas with family simply let the two run together, as people have for a thousand years.
+
+If you can't stay up all night, light a candle at sunset, let it burn safely while you are awake and in the room, and get up for sunrise the next morning to watch the sun come back.`,
+            },
+            {
+              heading: 'Evergreens and their cautions',
+              body: `Bringing green branches indoors at midwinter is well attested: medieval English churches and houses were decked with holly and ivy, and the German Christmas tree spread through Europe in the nineteenth century. Old English folklore said the greenery should come down by Candlemas, 2 February, or bad luck would follow. It is a pleasing rule: burn or compost the old greens, and the year moves on to Imbolc.
+
+Holly berries, mistletoe and ivy are poisonous to people, cats and dogs, and yew, which some people bring in as a symbol of death and rebirth, is very toxic in every part except the red flesh of the berry. Keep them high and out of reach, or use pine, spruce and fir, which are safer. Never leave a candle burning near dry greenery.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Newgrange\'s and Maeshowe\'s solstice alignments are established. Bede\'s De temporum ratione (725) names the Giuli months and Modranecht. Hákonar saga góða in Snorri\'s Heimskringla describes Hákon\'s change to the Yule feast. Herrick\'s poems record the Yule log in the 1640s.',
+            unknown:
+              'What Modranecht involved is unknown; some link it to the Matronae, mother goddesses honoured in Roman-era inscriptions, but that is conjecture. What Neolithic people did at Newgrange is unknown. Snorri wrote two centuries after Norway\'s conversion, as a Christian.',
+          },
+          inPractice:
+            'Watch the solstice sunrise or sunset, at a window if need be, and note exactly where it meets the horizon. Compare it with the point you noted at the start of the journey.',
+          reflect: ['What do you need to carry through the dark until the light returns?', 'How do you want to blend Yule with any family midwinter you keep?'],
+          further: ['Ronald Hutton, The Stations of the Sun, chapters on midwinter.', 'Bede, The Reckoning of Time, chapter 15, trans. Faith Wallis (1999).'],
+          library: ['traditional/herb/holly', 'traditional/herb/mistletoe', 'traditional/herb/juniper', 'traditional/herb/cinnamon', 'traditional/candle/gold'],
+          premade: ['wicca-yule-log-sun-vigil', 'kitchen-seasonal-simmer-pot', 'folk-jol-rune-casting'],
+        },
+        {
+          id: 'wheel-imbolc',
+          title: 'Imbolc: Brigid and the first stirring',
+          summary: 'The Irish festival of early spring, the saint and goddess Brigid, and the customs of her eve.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'An uncertain name',
+              body: `Imbolc falls on 1 February, the start of spring in the old Irish reckoning. Its meaning is uncertain. Cormac's Glossary, an Irish word-list of around 900, explains it as oimelc, "ewe's milk", because it is the time ewes come into milk with the lambing; many scholars now prefer i mbolg, "in the belly", for the pregnant ewes, or a root meaning washing and purification. Any of them fits the season: the lambs, the first milk, the first green.
+
+There is no description of a pagan Imbolc rite. By the time the festival is clearly recorded it belongs to St Brigid, whose feast is 1 February.`,
+            },
+            {
+              heading: 'Saint and goddess',
+              body: `Brigid of Kildare is one of Ireland's patron saints, said to have died around 525. Her earliest life, by the monk Cogitosus, dates from the seventh century. In the twelfth century Gerald of Wales described a perpetual fire at Kildare tended by nineteen nuns, with Brigid herself said to tend it on the twentieth night. Cormac's Glossary also mentions a Brigit who was a goddess of poets, with two sisters of the same name linked to healing and smithcraft. How far the saint absorbed a goddess is one of the great debated questions of Irish religion: there are real parallels, and also the danger of making every saint a goddess in disguise.
+
+Modern Pagans often honour Brigid as goddess of hearth, poetry, healing and the forge, and many keep a flame for her; the Brigidine Sisters relit a perpetual flame at Kildare in 1993.`,
+            },
+            {
+              heading: 'Customs of Brigid\'s Eve',
+              body: `Irish and Scottish folk customs on the eve of 31 January are well recorded from the eighteenth to twentieth centuries. In Ireland people wove Brigid's crosses from rushes and hung them over doors and in byres for protection through the year. A brat Bríde, a strip of cloth, was left outside overnight for the saint to bless and kept for healing. Girls carried a doll, the brídeog, from house to house. In the Hebrides, Alexander Carmichael's Carmina Gadelica (1900) records women dressing a sheaf of corn as Bride, laying her in a basket bed with a white wand, and calling her welcome; in the morning they looked for her mark in the ashes of the hearth.
+
+In England, 2 February was Candlemas, when candles for the year were blessed in church.`,
+            },
+            {
+              heading: 'Keeping Imbolc',
+              body: `Clean the house thoroughly, a real spring clean of the hearth and the altar. Weave a Brigid's cross from rushes, straw, or paper strips. Leave a cloth on the windowsill or outside overnight. Light every candle you have for a few minutes, or bless new candles for the year. Make a small bed for Brigid by the hearth or altar. Pour milk, a traditional Irish offering, on the ground or onto a plant; use water if you prefer. Look for the first snowdrops, catkins and lambs, or whatever early sign your land gives.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Cormac\'s Glossary (c. 900) gives the oimelc etymology and mentions the goddess Brigit and her sisters. Gerald of Wales recorded the Kildare fire. The Irish rush cross, brat Bríde and brídeog, and the Hebridean Bride\'s bed, are documented by folklorists including Carmichael (1900) and the Irish Folklore Commission.',
+            unknown:
+              'The meaning of the word Imbolc is uncertain, and nothing survives of any pre-Christian rite. Whether St Brigid continues a goddess is genuinely debated. Imbolc has little evidence outside Ireland; its place in a pan-Celtic year is a modern assumption.',
+          },
+          inPractice:
+            'On 31 January, make a simple Brigid\'s cross and put a cloth on your windowsill overnight. Keep the cloth with your healing things for the year.',
+          reflect: ['What is stirring in you, just under the surface, like the first green?', 'What would you like Brigid\'s blessing on this year?'],
+          further: ['Alexander Carmichael, Carmina Gadelica, vol. 1 (1900; public domain).', 'Séamas Ó Catháin, The Festival of Brigit (1995).'],
+          library: ['traditional/deity/brigid', 'traditional/candle/white', 'traditional/herb/rowan', 'traditional/tool/besom'],
+          premade: ['wicca-imbolc-brigids-bed', 'folk-brigid-cross-well', 'folk-candlemas-candles', 'folk-smooring-the-fire'],
+        },
+        {
+          id: 'wheel-equinoxes',
+          title: 'The equinoxes: Ostara and Mabon',
+          summary: 'The two newest festivals, the one line of Bede behind Ostara, and how to keep a day of balance.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Day and night equal',
+              body: `At the equinoxes, around 20 March and 22 September, the sun rises due east and sets due west and day and night are close to equal everywhere on Earth. Sunrise and sunset move fastest along the horizon now, and daylight changes by the most each day. In spring the light is racing; in autumn it is falling away. That is something you can see and feel, and it gives these festivals their real meaning.
+
+As festivals, though, the equinoxes are the youngest spokes of the Wheel. There is no good evidence that the Irish, Britons or Anglo-Saxons held popular festivals at either one. Christian feasts sat near them: Lady Day, the Annunciation, on 25 March, which was the start of the legal year in England until 1752, and Michaelmas on 29 September, a quarter day for rents and hiring fairs.`,
+            },
+            {
+              heading: 'Ostara, and one line of Bede',
+              body: `Everything about a goddess of spring rests on one sentence. In The Reckoning of Time (725), Bede says that the English month around April, Eosturmonath, which now means the Paschal month, was named "a dea illorum quae Eostre vocabatur", after a goddess of theirs called Eostre, whose festivals they held in it. That is all he says. In 1835 Jacob Grimm, noting that the German word for Easter is Ostern, reconstructed a German goddess "Ostara" to match. Scholars still argue whether Bede knew of a real goddess or guessed from a month name; place names and some Roman-era inscriptions to Austriahenae mother goddesses have been suggested in support.
+
+The hare and the eggs are later. Easter eggs are recorded in medieval Europe, linked to the Lenten fast on eggs, and the Easter hare bringing eggs appears in German sources from the late seventeenth century. Links to Eostre are modern guesses, and the popular story of Eostre turning a bird into an egg-laying hare is a twentieth-century invention.`,
+            },
+            {
+              heading: 'Mabon and the harvest home',
+              body: `The autumn equinox's popular name, Mabon, was chosen in the 1970s. Mabon son of Modron, "Son, son of Mother", is a figure in the Welsh tale Culhwch and Olwen (written down around 1100), a prisoner freed from Caer Loyw with the help of the oldest animals. He has no known connection with the equinox or the harvest. Some Pagans prefer simply "autumn equinox", "Harvest Home" or the Druid name Alban Elfed.
+
+Harvest suppers and the decorating of the last sheaf were real English, Scottish and Irish customs, but they were held when the harvest was in, which varied, not on a fixed date. The church harvest festival began with the Reverend Robert Hawker at Morwenstow in Cornwall in 1843.`,
+            },
+            {
+              heading: 'Keeping the equinoxes',
+              body: `In spring, sow seeds, even in a pot on a windowsill. Decorate eggs. Spring clean. Take stock of what you want to grow this year. Go out at sunrise and see the sun rise due east.
+
+In autumn, give thanks. Make a list of what the year has given you. Share a meal with seasonal food, apples, squash, bread, blackberries. Gather seeds. Balance is the theme of both: set aside an hour to put your life in order, to rest as much as you work.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Bede\'s sentence on Eostre (De temporum ratione 15) is the only early source for her. Grimm reconstructed Ostara in Deutsche Mythologie (1835). Mabon ap Modron appears in Culhwch and Olwen. Hawker\'s 1843 harvest festival and the Lady Day new year are well documented. Kelly has described naming Ostara and Mabon around 1974.',
+            unknown:
+              'Whether Eostre was a real goddess or Bede\'s explanation of a month name is unresolved. No evidence shows a popular pre-modern equinox festival in Britain or Ireland. Hare and egg links to any pagan goddess are speculation.',
+          },
+          inPractice:
+            'At each equinox, watch the sunrise or sunset and note that it is due east or west. In spring, sow something; in autumn, write a thank-you list and share food.',
+          reflect: ['Where is your life out of balance, and what would one small correction look like?', 'What are you sowing this spring, or what has this autumn brought in?'],
+          further: ['Bede, The Reckoning of Time, chapter 15, trans. Faith Wallis (1999).', 'Ronald Hutton, The Stations of the Sun, chapters on Easter and harvest.'],
+          library: ['traditional/herb/dandelion', 'traditional/herb/calendula', 'traditional/crystal/moss_agate'],
+          premade: ['wicca-ostara-seed-and-egg', 'green-seed-blessing-before-sowing', 'wicca-mabon-thanks-and-balance', 'folk-gratitude-ritual'],
+        },
+        {
+          id: 'wheel-beltane',
+          title: 'Beltane: May, fire and flowers',
+          summary: 'Cormac\'s fires and cattle, the English May Day, and keeping summer\'s beginning.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Fires and cattle',
+              body: `Beltaine (modern Irish Bealtaine, Scottish Gaelic Bealltainn) is 1 May, the start of summer in the old Irish year. Cormac's Glossary, around 900, gives the most famous early description: on this day druids made two fires with great incantations, and cattle were driven between them as a protection against disease for the year. The text is short and its meaning is argued over, and it was written by a Christian scholar long after druids had gone. Still, it shows that by the early Middle Ages Beltaine was linked with fire and the protection of cattle as they were moved to summer pasture.
+
+In the Scottish Highlands, eighteenth-century travellers such as Thomas Pennant described Beltane bonfires, special oatmeal cakes (bannocks) and offerings to protect the herds. In Ireland, May Eve was a dangerous, magical time when the fairies were abroad, butter could be stolen by charms, and people protected doors and byres with rowan, primroses and hawthorn.`,
+            },
+            {
+              heading: 'May Day in England',
+              body: `In England May Day was a festival of flowers rather than fire. People went "a-maying" before dawn to gather hawthorn blossom and greenery, danced around maypoles, crowned May queens, and washed their faces in the morning dew for beauty; Samuel Pepys recorded his wife going out to gather May dew in 1667. Maypoles are recorded from the fourteenth century. The Puritans banned them in 1644 and they returned with the Restoration in 1660. Hobby horses still dance at Padstow in Cornwall on May Day.
+
+Modern Wicca adds the sacred marriage of the Goddess and God at Beltane, a modern theological idea that draws on these older customs of fertility and courtship.`,
+            },
+            {
+              heading: 'Keeping Beltane',
+              body: `Go out at dawn on May morning and wash your face in the dew. Gather flowers that are plentiful, and only from places you're allowed, to make a crown or a garland for the door. Hawthorn is the traditional May blossom, though old folklore warns against bringing it indoors; put it on the door or the gate. Light a fire if you can do so safely and legally, or a candle in a lantern; many people jump a small fire or a candle for luck, which needs real care. Feast with friends, dance, make love if you have someone to make love with.
+
+It is also a festival of protection, as the Irish customs show: a sprig of rowan tied with red thread over the door is an old May Eve charm.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Cormac\'s Glossary (c. 900) describes Beltaine fires and cattle. Eighteenth-century travel writers recorded Highland Beltane fires and bannocks. Maypoles are documented from the fourteenth century and were banned in 1644. Pepys\'s diary for May 1667 records the gathering of May dew.',
+            unknown:
+              'The exact meaning of Cormac\'s two fires, and whether "Bel" refers to a god, is disputed. What a pre-Christian Beltaine involved beyond these hints is unknown. The Wiccan sacred marriage at Beltane is modern.',
+          },
+          inPractice:
+            'On May morning, before breakfast, go outside and touch the dew, or the first rain, or a damp leaf, to your face. Hang a sprig of green over your door.',
+          reflect: ['What do you want to bring into bloom this summer?', 'Where in your life do you need protection as you go out into the world?'],
+          further: ['Ronald Hutton, The Stations of the Sun, chapters on May.'],
+          library: ['traditional/herb/hawthorn', 'traditional/herb/rowan', 'traditional/herb/birch', 'traditional/herb/rose', 'traditional/candle/red'],
+          premade: ['wicca-beltane-flower-crown', 'folk-bealtaine-dew', 'green-hawthorn-may-blossom-blessing', 'folk-rowan-red-thread'],
+        },
+        {
+          id: 'wheel-midsummer',
+          title: 'Midsummer: the sun at its height',
+          summary: 'Stonehenge, St John\'s fires and herbs, the name Litha, and keeping the shortest night.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'Stone and sun',
+              body: `At the summer solstice the sun rises and sets at its northernmost points (in the north) and the day is longest. Stonehenge's main axis points to the midsummer sunrise in one direction and the midwinter sunset in the other; thousands of people gather there each June. Archaeologists now think midwinter may have mattered more to the builders, since feasting remains at nearby Durrington Walls suggest winter gatherings. Either way, the alignment is deliberate.
+
+The name Litha comes from Bede's list of Anglo-Saxon months: Ærra Liða and Æfterra Liða, "before Litha" and "after Litha", around June and July. He doesn't say what Litha was. Its use for midsummer dates from the 1970s.`,
+            },
+            {
+              heading: 'St John\'s Eve',
+              body: `The great midsummer festival of medieval and early modern Europe was the eve of St John the Baptist, 23 June. Bonfires were lit on hills and in streets from Ireland to Russia; people leapt them, drove cattle past them and carried burning brands round fields. Herbs gathered on St John's Eve were thought especially powerful, above all St John's wort, which flowers at midsummer and was hung over doors against evil. In Slavic lands the night of Kupala brought wreaths floated on rivers and searches for the fern flower. Much of this was recorded by medieval churchmen and later folklorists, and survives in places today, in the bonfires of Cornwall, Scandinavia's midsummer poles and the fires of the Baltic.`,
+            },
+            {
+              heading: 'Keeping midsummer',
+              body: `Get up for the sunrise, or stay up through the short night. Gather herbs at noon, the sun's height, with thanks and only what you need. Light a fire or a candle at dusk. Float a flower wreath on running water, and use flowers and string that won't harm the river. Spend the day outdoors.
+
+Midsummer is also the turning point: from now the days shorten. Many Pagans honour the sun at his height and acknowledge, gently, the decline that begins.`,
+            },
+            {
+              heading: 'Herbs of the sun',
+              body: `Midsummer herb lore is some of the best recorded in European folk magic. St John's wort, with its yellow flowers that show red oil when crushed, was the chief midsummer herb from Ireland to Germany, hung over doors and windows and tucked into beds. Mugwort was worn as a belt or garland on St John's Eve and then thrown into the fire to carry away bad luck, a custom recorded in medieval Germany and France. Yarrow, vervain, elder flowers and fern were all gathered on this night in different places. Most of these traditions are Christian-era folk practice, not ancient rites, but they are real and old.
+
+If you gather, do it properly: be sure of the plant, take no more than a tenth of what is there, never take rare plants, and ask permission on private land. St John's wort interacts with many medicines, including the contraceptive pill and antidepressants, so don't take it internally without checking with a pharmacist. Elder leaves, bark and unripe berries are toxic; the flowers are the safe part.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Stonehenge\'s solstitial axis is established. Bede names the Liða months. St John\'s Eve bonfires and herb lore are widely recorded from the Middle Ages to the twentieth century, and Kupala customs are recorded in Slavic lands.',
+            unknown:
+              'What the Stonehenge builders did at the solstices is unknown. What Litha meant to the Anglo-Saxons is unknown. How far St John\'s customs continue pre-Christian practice is debated.',
+          },
+          inPractice:
+            'Gather a small bunch of a herb that grows near you at noon on midsummer day, dry it, and hang it over your door until next midsummer.',
+          reflect: ['What is at its height in your life right now?', 'What will you do with the light you have before the days begin to shorten?'],
+          further: ['Ronald Hutton, The Stations of the Sun, chapters on midsummer.'],
+          library: ['traditional/herb/st_johns_wort', 'traditional/herb/yarrow', 'traditional/herb/elder', 'traditional/herb/oak', 'traditional/crystal/sunstone'],
+          premade: ['wicca-litha-noon-herb-gathering', 'folk-kupala-wreath', 'green-harvesting-herbs-with-thanks', 'green-drying-hanging-herb-bundles'],
+        },
+        {
+          id: 'wheel-lughnasadh',
+          title: 'Lughnasadh and Lammas: the first harvest',
+          summary: 'Lugh\'s games for Tailtiu, the English loaf-mass, the hill gatherings of August, and how to keep the first fruits.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Lugh and Tailtiu',
+              body: `Lughnasadh (Old Irish Lugnasad, "the assembly of Lugh") on 1 August was the start of autumn in the Irish year. The medieval Book of Invasions says the god Lugh founded it as funeral games for his foster-mother Tailtiu, who died of exhaustion after clearing the plains of Ireland for farming. The great fair at Teltown in County Meath, which bears her name, was held at this season into the Middle Ages, with games, horse-racing, law-making and trial marriages.
+
+In 1962 the folklorist Máire MacNeill published The Festival of Lughnasa, which gathered records of nearly two hundred Irish sites where people climbed hills or gathered at lakes and wells on the last Sunday of July or the first of August. They picked bilberries, danced, held faction fights and brought flowers. The pilgrimage up Croagh Patrick on Reek Sunday is one survivor; Puck Fair at Killorglin, where a wild goat is crowned king, may be another.`,
+            },
+            {
+              heading: 'Lammas',
+              body: `In England, 1 August was Lammas, from Old English hlafmæsse, "loaf mass". The name appears in the Anglo-Saxon Chronicle in the tenth century. A loaf made from the first wheat or barley of the harvest was brought to church and blessed. One Anglo-Saxon charm says to crumble the blessed bread into the four corners of the barn to protect the grain. Lammas was also a rent day and the time when common meadows reopened for grazing.
+
+Modern Pagans blend the two, calling the festival Lughnasadh or Lammas, and some tell of the corn spirit or grain god who is cut down and returns. The ballad of John Barleycorn, the grain who is buried, cut, threshed and brewed and still rises again, is a seventeenth-century English folk song (Robert Burns made a version in 1782), not an ancient myth, but it fits the season well.`,
+            },
+            {
+              heading: 'Keeping the first harvest',
+              body: `Bake bread, the central act of Lammas: a simple loaf, or a plaited one, or a loaf shaped like a person or a sheaf. Offer the first slice outside or on the altar, and share the rest. Climb a hill if you can, and pick some fruit; bilberries, blackberries and early apples are the old Lughnasa fruit. Hold games or a picnic. Think about what you have worked for this year and what you are beginning to reap.
+
+Lugh is a god of many skills, so it is also a good day to practise a craft or to begin learning one.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Lugnasad is named in medieval Irish literature and Lugh\'s founding of it for Tailtiu is told in Lebor Gabála Érenn. MacNeill (1962) documented the hill and well gatherings. Hlafmæsse is attested in the Anglo-Saxon Chronicle; the Lammas bread charm is in Anglo-Saxon sources. John Barleycorn is a seventeenth-century ballad.',
+            unknown:
+              'How far the Teltown fair and the modern hill gatherings continue pre-Christian practice is uncertain, though MacNeill made a strong case. The "dying grain god" is a modern idea shaped by Frazer, not a recorded ancient belief in Britain or Ireland.',
+          },
+          inPractice:
+            'Bake or buy a good loaf at the start of August. Break the first piece for the land and leave it outside (crumbled small, where birds can manage it), and eat the rest with someone.',
+          reflect: ['What are you beginning to harvest this year?', 'What skill would you like to learn or grow?'],
+          further: ['Máire MacNeill, The Festival of Lughnasa (1962).', 'Ronald Hutton, The Stations of the Sun, chapters on harvest.'],
+          library: ['traditional/deity/lugh', 'traditional/herb/meadowsweet', 'traditional/candle/orange'],
+          premade: ['wicca-lammas-bread-offering', 'kitchen-prosperity-bread'],
+        },
+      ],
+      practices: [
+        {
+          id: 'wheel-study-sabbat',
+          title: 'Keep the festival',
+          instructions:
+            'At each festival that falls in this stage, read its lesson beforehand, and keep the day: a rite from the app or one of your own, a seasonal meal, and time outdoors.',
+          times: 4,
+          every: 'sabbat',
+          prompt: 'What was the land doing this festival? What did the old customs mean to you, and what did you do instead?',
+        },
+        {
+          id: 'wheel-study-moon',
+          title: 'The full moon',
+          instructions:
+            'At each full moon, go out or look from a window, find the moon, and spend a few minutes with her. Note where she rose, the weather and what is growing.',
+          times: 7,
+          every: 'esbat',
+          prompt: 'Moon log: where she rose, what she looked like, the weather, what is growing.',
+          premade: 'wicca-full-moon-esbat',
+        },
+        {
+          id: 'wheel-study-walk',
+          title: 'A weekly seasonal walk',
+          instructions:
+            'Once a week, walk the same short route, or sit in the same spot, for twenty minutes. Note what has changed: the first and last flowers, birds arriving and leaving, the light.',
+          times: 26,
+          every: 'week',
+          prompt: 'What changed this week on your route?',
+          premade: 'hedge-hearing-the-land-walk',
+        },
+      ],
+    },
+
+    // ───────────────────────── Practice ─────────────────────────
+    {
+      kind: 'practice',
+      title: 'Practice: your own wheel, your own land',
+      intro:
+        'The rest of your year. The lessons turn from history to living: turning the Wheel for your hemisphere and climate, keeping the seasons in daily life, meeting your local land with care, and shaping festivals of your own. Keep every festival and every full moon; by the end you will have kept the whole Wheel once.',
+      days: 142,
+      lessons: [
+        {
+          id: 'wheel-hemispheres',
+          title: 'Both hemispheres, and beyond the four seasons',
+          summary: 'How southern and tropical Pagans turn the Wheel, and how to build one that fits your climate.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Turning the Wheel south',
+              body: `The Wheel of the Year was made in England, and its festivals follow England's seasons. South of the equator the seasons are reversed, so most Pagans in Australia, New Zealand, South Africa and South America turn the Wheel six months: Samhain on 30 April or 1 May, Yule at the June solstice, Imbolc at the start of August, the spring equinox in September, Beltane on 31 October or 1 November, midsummer in December, Lammas at the start of February and the autumn equinox in March. That means Samhain falls in Australian autumn while shops are full of Easter eggs, and Beltane while the northern world celebrates Hallowe'en.
+
+Not everyone agrees. Some southern Pagans keep the northern dates, because the festivals' stories and the gods' myths are tied to them, or because they work with a northern tradition, or to stay in step with the global community. Others keep a hybrid. The app's calendar offers a Southern Hemisphere Wheel; choose whichever fits you.`,
+            },
+            {
+              heading: 'The directions turn too',
+              body: `In the south, the sun at noon is in the north. Many southern practitioners put fire in the north and earth in the south, and some cast their circles anticlockwise to follow the sun's path across their sky. Others keep the northern conventions. If you live near the coast, you might put water where the sea is. The point of directional correspondences is to orient you in your actual world.`,
+            },
+            {
+              heading: 'Where four seasons don\'t fit',
+              body: `In much of the world, four temperate seasons are not what the land does. The tropics have wet and dry seasons, monsoons, cyclone seasons. Deserts have their own rhythm of heat and rare rain. Mountains, high latitudes and even large cities with heat islands bend the calendar. Australia's Aboriginal peoples hold many local calendars, some with six or more seasons marked by flowering plants, animal behaviour and weather; several have been shared publicly, for example through the Bureau of Meteorology's Indigenous Weather Knowledge project, and they show what a calendar truly grounded in one place looks like. Learn from what is shared, with credit, and don't borrow ceremonies.
+
+You can keep the eight festivals as they are, as markers of the sun's journey, which happens everywhere. Or you can build a wheel of your own: note the land's real turning points over the year (first rains, first flowering of a local tree, the arrival of migrant birds, the hottest week) and make your festivals there.`,
+            },
+            {
+              heading: 'The sun is the same everywhere',
+              body: `Whatever you choose, the solstices and equinoxes are astronomical events that happen everywhere on Earth. Near the equator, day length barely changes, but the sun's rising point still moves north and south through the year. Watching it is a practice that works in any climate and anchors the whole Wheel in something real.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Solstice and equinox dates and the reversal of seasons south of the equator are astronomical facts. Southern hemisphere Pagan communities have kept reversed Wheels since at least the 1980s, and some keep northern dates. Many Aboriginal seasonal calendars recognise more than four seasons.',
+            unknown:
+              'There is no single southern or tropical practice, and communities disagree in good faith. Indigenous calendars are local knowledge with their own protocols; what is published is only part of it.',
+          },
+          inPractice:
+            'Write down the dates of the eight festivals for your hemisphere, then beside each note what your land is actually doing at that time. Mark any festival that feels wrong for your climate, and write what you would celebrate instead.',
+          reflect: ['Which festivals fit your land well, and which feel borrowed?', 'What are the real turning points of the year where you live?'],
+          further: ['Hutton, The Triumph of the Moon, on the spread of the Wheel.', 'Look for published local Indigenous seasonal calendars for your region, and follow their terms of use.'],
+          premade: ['green-elemental-altar-setup'],
+        },
+        {
+          id: 'wheel-seasonal-living',
+          title: 'Living by the seasons',
+          summary: 'Turning eight festivals into a whole year of attention: phenology, food, light and rest.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'Phenology',
+              body: `Phenology is the study of when things happen in nature: the first frog spawn, the first swallow, the leaf-fall of the oaks, the first frost. People kept these records for centuries; in England the Marsham family recorded the first signs of spring on their Norfolk estate from 1736 for nearly two hundred years, and today citizen science projects collect them to track climate change. For a seasonal Pagan it is the heart of practice. Your weekly walk is already a phenology record.
+
+Over a year you will build a calendar of your own place. Over several years you will start to notice what is early or late, and the festivals will begin to mean what your land is doing.`,
+            },
+            {
+              heading: 'Food and the year',
+              body: `Eating with the seasons is one of the simplest ways to keep the Wheel daily. Find out what grows near you and when it is ripe. Visit a farmers' market. Make seasonal food the centre of each festival: early greens and eggs in spring, strawberries at midsummer, bread at Lammas, apples and squash in autumn, roots, preserves and spices in winter. If you can, grow something, even herbs on a windowsill. Forage only with a good guide, only plants you are certain of, and only where it is legal and plentiful.`,
+            },
+            {
+              heading: 'Light and rest',
+              body: `The year has a rhythm of energy too. Many people find summer's long days drive outward activity and winter's dark asks for rest and inwardness. Our working lives rarely allow for this, but small changes help: more candlelight and earlier nights in winter, more time outdoors in summer, a real pause at each festival.
+
+Notice your own year as well: anniversaries, the months you are low, the season of your birthday. These are spokes of your wheel too.`,
+            },
+            {
+              heading: 'The seasonal altar',
+              body: `A simple way to keep the year in your home is a seasonal altar: a shelf, a windowsill or a corner of a table that changes with the Wheel. At each festival, clear it, clean it and set it again with what the season brings: bare twigs and a candle in winter, the first catkins and an egg in spring, flowers and a bowl of water at midsummer, wheat, a loaf and fruit at harvest, seed heads, nuts and photographs of your dead in autumn. In between, add whatever your weekly walk turns up, a feather, a fallen leaf, a stone.
+
+Many families keep a nature table like this, a custom popularised by Steiner schools in the twentieth century, and it works for children and adults alike. It needs no belief at all, only attention. Over the year it becomes a visual record of what you saw, and changing it is a small rite of its own: clearing the old season away with thanks, letting the new one in.
+
+Take only what is fallen, plentiful or from your own garden, and return natural things to the earth when the season ends rather than throwing them out.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The Marsham phenological record (1736 to 1958) is a well-known historical dataset. Phenology is an established science, and seasonal shifts in timing due to climate change are well documented.',
+            unknown:
+              'Whether people are biologically built for seasonal rhythms of activity, beyond effects of daylight on sleep and mood, is still studied. Seasonal mood changes are real for many people; if winter is very hard for you, talk to a doctor.',
+          },
+          inPractice:
+            'Start a list called "firsts and lasts" in your journal: first and last dates for at least ten things in your local year, such as a flower, a bird, a frost, a fruit.',
+          reflect: ['What season are you most yourself in?', 'What would it look like to rest properly in winter this year?'],
+          further: ['Look for a phenology or nature-recording project in your country and join it.'],
+          premade: ['kitchen-moon-phase-meal-planning', 'kitchen-seasonal-simmer-pot', 'green-planting-by-the-moon'],
+        },
+        {
+          id: 'wheel-local-land',
+          title: 'The local land',
+          summary: 'Meeting the spirits of place, caring for the land you honour, and respecting its first peoples.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Spirits of place',
+              body: `Many ancient peoples honoured the spirits of particular places. The Romans spoke of the genius loci, the spirit of a place, and left altars to it across their empire; the Norse honoured landvættir, land-wights; Irish folklore is full of the sídhe in hills and of sacred wells; Greek religion had nymphs of springs and trees. Modern Pagans often seek a relationship with the spirits of their own local land, whether they think of them as beings, as the living web of the place, or as the place itself.
+
+The way in is slow attention. Visit the same place often. Learn its name and history, the river it drains into, the rock under it, the plants and animals that live there. Offer something: clean water, a song, an hour of picking up litter. Listen.`,
+            },
+            {
+              heading: 'Offerings that help',
+              body: `Be careful with offerings outdoors. Bread, milk, cakes and processed food can harm birds, hedgehogs and other wildlife and attract pests; glitter, wax, plastic flowers and coins stay as pollution. Ribbons tied on trees can strangle branches. The best offerings are clean water, a song or poem, your time, and work: clearing litter, planting a native species, removing an invasive one with the landowner's blessing, giving money to a local conservation group.
+
+This is old wisdom in a new form: a gift calls for a gift, and the land gives you a great deal.`,
+            },
+            {
+              heading: 'Whose land is it?',
+              body: `In much of the world, honouring the land means facing a history of dispossession. If you live in the Americas, Australia, New Zealand or elsewhere where Indigenous peoples were displaced, the land you honour has been in relationship with them for thousands of years and often still is. Learn whose traditional land you live on, and something of their history and present. Support Indigenous-led land care where you can.
+
+Do not take up closed Indigenous ceremonies, sacred objects or titles, and do not use Indigenous imagery for your own rites without permission. White sage is a clear example: its wild harvest is depleting it, and its ceremonial use belongs to particular peoples. You can honour the land deeply with your own respectful practice, and that respect is part of the honour.`,
+            },
+            {
+              heading: 'Your local festivals',
+              body: `Many places have their own seasonal customs: a well-dressing, a harvest fair, a blessing of boats, a first-snow festival, a local saint's day. Some are old, some revived, some new. Find out what your area keeps and go. They are often the best link between the Wheel and your actual community.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Roman altars to the genius loci and Norse landvættir are well documented. The harm caused by bread and processed food to wildlife, and the conservation concerns around wild white sage, are documented by wildlife and plant conservation bodies.',
+            unknown:
+              'Whether spirits of place exist as beings is a matter of belief. How ancient peoples experienced them can only partly be recovered from inscriptions and literature.',
+          },
+          inPractice:
+            'Find out whose traditional land you live on, what river catchment you are in and one native plant in decline nearby. Write them on your altar card. Give an hour of real work to a local green space this season.',
+          reflect: ['What do you owe the land you live on?', 'How do you feel about honouring land with a difficult history?'],
+          further: ['Find your local wildlife trust, land conservancy or Indigenous land-care organisation and read their guidance.'],
+          library: ['traditional/herb/oak', 'traditional/herb/willow', 'traditional/herb/hawthorn'],
+          premade: ['green-land-spirit-garden-offering', 'green-tree-befriending-offering', 'green-wildflower-walk-gathering-ethics', 'hedge-hearing-the-land-walk'],
+        },
+        {
+          id: 'wheel-shaping-a-rite',
+          title: 'Shaping a festival, and keeping an eclectic path honest',
+          summary: 'A simple structure for any seasonal rite, with or without a circle, and how to practise eclectically with integrity.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'A shape for any festival',
+              body: `Seasonal rites across many modern traditions share a simple shape, and you can use it with or without casting a circle. Arrive: still yourself and look around. Mark the space: walk its edge, or greet the four directions. Honour the land and whatever gods or spirits you keep. Tell the season: say what the land is doing, perhaps tell an old story or read a poem. Act: do something the season asks for, light, sow, bake, gather, remember. Give: an offering of water, food, a song. Share: eat and drink. Thank and close.
+
+If you are Wiccan-leaning, the circle and quarters fit around this. If you are Druid-leaning, you might call peace to the four directions and honour the spirits of place, ancestors and gods. If you have no gods, honour the land and the sun. All of it works.`,
+            },
+            {
+              heading: 'Eclectic, with integrity',
+              body: `Eclectic Paganism means drawing from many sources rather than following one tradition. Done well, it is thoughtful and personal. Done badly, it becomes a jumble of other people's sacred things. A few principles help. Know where things come from and say so, in your journal at least. Prefer open practices; don't take what a living culture has closed, such as Indigenous ceremonies, Hoodoo or initiatory rites. Don't mix gods carelessly: if you honour Brigid at Imbolc, learn who she is. And let what you do be tested by practice; keep what holds and let go of what doesn't.
+
+Reconstructionist paths, such as Heathenry, Hellenic polytheism or Gaelic polytheism, keep their own festival calendars based on what is known of the ancient ones. If you find yourself drawn to one people's gods and customs, those calendars are worth exploring; many reconstructionists don't keep the eightfold Wheel at all, and that is a fine discovery.`,
+            },
+            {
+              heading: 'Community',
+              body: `The Wheel is kept in many communities. Wiccan covens and open circles celebrate the sabbats. The Order of Bards, Ovates and Druids (founded 1964) and the Ancient Order of Druids in America keep the eight festivals with their own ritual. The Pagan Federation in the UK and Pagan Pride events elsewhere run public celebrations. Stonehenge and Avebury open for the solstices and equinoxes. Going to a public festival is a good way to see how others keep the day, and to remember that you are one of many.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'OBOD was founded by Ross Nichols in 1964 and keeps the eight festivals. English Heritage opens Stonehenge for managed solstice and equinox access. Reconstructionist calendars draw on documented ancient festivals.',
+            unknown:
+              'Where eclectic borrowing becomes appropriation is not always clear-cut, and communities differ. The best guide is what the living tradition itself says about outsiders.',
+          },
+          inPractice:
+            'For the next festival, write your own rite using the shape above, in your own words, and perform it. Keep the written rite in your journal and revise it next year.',
+          reflect: ['What sources does your practice draw on, and do you know where each came from?', 'Is there one tradition you are drawn to more deeply than the Wheel as a whole?'],
+          further: ['Philip Carr-Gomm, Druid Mysteries (2002), on the eightfold year in Druidry.', 'John Michael Greer, The Druidry Handbook (2006).'],
+          premade: ['folk-build-your-own-ritual', 'green-fire-safe-bonfire-release', 'green-daily-calling-the-elements'],
+        },
+      ],
+      practices: [
+        {
+          id: 'wheel-practice-sabbat',
+          title: 'Keep the festival',
+          instructions:
+            'Keep each remaining festival. For at least two, write and perform your own rite using the lesson\'s shape, rooted in what your land is doing.',
+          times: 4,
+          every: 'sabbat',
+          prompt: 'How did your own rite feel compared with the app\'s? What will you change next year?',
+        },
+        {
+          id: 'wheel-practice-moon',
+          title: 'The full moon',
+          instructions: 'Keep the full moons as before, adding a small offering of water to the land each time.',
+          times: 6,
+          every: 'esbat',
+          prompt: 'Moon log: where she rose, the weather, what is growing, what you offered.',
+        },
+        {
+          id: 'wheel-practice-care',
+          title: 'Monthly land care',
+          instructions:
+            'Once a month, give an hour of work to your local land: a litter pick, planting a native, helping a conservation group, or tending a garden.',
+          times: 5,
+          every: 'month',
+          prompt: 'What did you do for the land, and what did you notice while you did it?',
+        },
+      ],
+    },
+
+    // ───────────────────────── Discernment ─────────────────────────
+    {
+      kind: 'discernment',
+      title: 'Discernment: does the Wheel turn for you?',
+      intro:
+        'Three weeks to look back over your year and a day. Read your journal from the first page. Keep your weekly walk. Whether you dedicate, wait, move toward Wicca, Druidry or a reconstructionist path, or simply keep the seasons without any formal promise, every one of these is a good outcome.',
+      days: 21,
+      lessons: [],
+      practices: [
+        {
+          id: 'wheel-discern-read',
+          title: 'Read the year back',
+          instructions:
+            'Read your journal from the first page. Make a list of the eight festivals and, for each, a line on what you did and what it meant.',
+          times: 1,
+          prompt: 'Which festival meant most to you, and which least?',
+        },
+        {
+          id: 'wheel-discern-sit',
+          title: 'Sit in your place',
+          instructions: 'Three times over these weeks, go to the place you have visited most this year and sit there for twenty minutes with the question: is this my path?',
+          times: 3,
+          every: 'week',
+          prompt: 'What did the place, or you, say?',
+        },
+      ],
+      questions: [
+        'Did keeping the festivals become something you look forward to, or a chore?',
+        'Do you want gods in your practice, and if so, which? Has a particular deity or pantheon come forward this year?',
+        'Is the eightfold Wheel right for your land, or do you want to build a calendar of your own?',
+        'Are you drawn to a particular tradition, Wicca, Druidry, a reconstructionist path, that would serve you better than an eclectic one?',
+        'Would a formal dedication add something real, or would you rather keep the seasons without one?',
+        'Can you keep up the practice you have built, honestly, for another year? What would you trim?',
+        'What would it mean to choose not to dedicate, or not yet? How does that feel?',
+      ],
+    },
+
+    // ───────────────────────── Dedication ─────────────────────────
+    {
+      kind: 'dedication',
+      title: 'Dedication to the turning year',
+      intro:
+        'If you choose to dedicate, take a week to prepare and pick your day, often the festival nearest the day you began. This is a self-dedication to the turning year, to your land and to whatever gods or spirits you honour. It is not an initiation into Wicca, any Druid order or any other tradition, and it doesn\'t replace their own rites of entry if you seek them later.',
+      days: 7,
+      lessons: [],
+      practices: [
+        {
+          id: 'wheel-dedication-words',
+          title: 'Write your dedication',
+          instructions:
+            'Write your promise in your own words: what you dedicate yourself to (the seasons, the land, particular gods), what you will do (keep the festivals, care for the land), and for how long. Many people dedicate for a year and renew. Keep it short and only promise what you can keep.',
+          times: 1,
+          prompt: 'Say your dedication aloud. Is every word true?',
+        },
+        {
+          id: 'wheel-dedication-token',
+          title: 'Choose a token',
+          instructions:
+            'Choose something from your land to mark the dedication: a stone, a fallen twig, a seed, a shell, gathered where that is allowed. It will sit on your altar for the coming year.',
+          times: 1,
+        },
+      ],
+      rite: {
+        title: 'Dedication to the turning year and the land',
+        summary:
+          'Outdoors if possible: greet the directions and the land, tell the year you have kept, make your promise, give an offering, receive your token, share food and close.',
+        minutes: 45,
+        ingredients: [
+          { name: 'A candle in a lantern or jar, or an LED light', ref: 'traditional/candle/white' },
+          { name: 'A cup of clean water for the offering', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'Eight small things, one for each festival, from your year (a seed, a leaf, a dried flower, a crust of Lammas bread, a candle stub)' },
+          { name: 'Your token from the land' },
+          { name: 'A little seasonal food and drink to share' },
+          { name: 'A sprig of rosemary or another local herb', ref: 'traditional/herb/rosemary', optional: true },
+          { name: 'Your journal and your written dedication' },
+        ],
+        preparation:
+          'Choose the day and the place, ideally the place you have visited most this year. Spend some of the morning outdoors. If you will be indoors, open a window and set your altar so you can see out. Before the rite, wash your hands and face in cool water.',
+        steps: [
+          {
+            title: 'Arrive',
+            instructions: 'Stand still and look and listen for a few minutes. Notice the season around you in as much detail as you can.',
+            minutes: 3,
+            timed: true,
+          },
+          {
+            title: 'Greet the directions',
+            instructions:
+              'Turn to each of the four directions, starting where the sun rises. At each, name what lies there and the season\'s gift from that side.',
+            spoken: 'East, south, west, north: I greet you. I have watched your light and weather for a year and a day.',
+          },
+          {
+            title: 'Light and honour',
+            instructions: 'Light your lantern. Honour the land, and any gods or spirits you keep, by name or simply as the powers of this place.',
+            spoken: 'Land that holds me, sun that turns the year, spirits of this place and powers I honour: be with me now.',
+            light: true,
+          },
+          {
+            title: 'Tell the year',
+            instructions:
+              'Lay out the eight small things in a circle, in the order of the festivals as you kept them. Touch each and say a sentence about what that festival was this year.',
+            minutes: 8,
+          },
+          {
+            title: 'Make your promise',
+            instructions: 'Stand in the middle of your circle of eight, or before it, and speak your dedication. Then add the words below.',
+            spoken:
+              'I make this promise freely. It is a dedication, not an initiation; I claim no tradition but the turning year and this land. I will keep its festivals, care for it as I can, and keep listening.',
+          },
+          {
+            title: 'Give',
+            instructions: 'Pour the water slowly onto the soil, or a plant, as your gift. If you have a sprig of herb, lay it down too.',
+          },
+          {
+            title: 'Receive your token',
+            instructions: 'Pick up your token and hold it. This is the land\'s witness to your promise. Keep it on your altar for the year.',
+          },
+          {
+            title: 'Share',
+            instructions: 'Eat and drink a little of your seasonal food. Leave nothing outdoors except water and the herb.',
+          },
+          {
+            title: 'Write and close',
+            instructions: 'Write the date, the season, your dedication and anything you noticed. Then thank the land and powers, snuff the light and gather your things.',
+            spoken: 'Thank you. The Wheel turns, and I turn with it.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Put the eight festival things somewhere safe, or return the natural ones to the earth. Mark the date: each year, at this festival, you can renew your dedication.',
+        safety: `${CANDLE_SAFETY} ${OUTDOOR_SAFETY} ${FOOD_SAFETY}`,
+      },
+    },
+
+    // ───────────────────────── Ongoing ─────────────────────────
+    {
+      kind: 'ongoing',
+      title: 'Turning with the year',
+      intro:
+        'Keep the eight festivals and the full moons, keep your journal and your walks, care for your land, and renew your dedication each year at the festival you made it. Each year will be different, and over the years your wheel will become more and more your own.',
+      days: 365,
+      lessons: [],
+      practices: [
+        {
+          id: 'wheel-ongoing-sabbat',
+          title: 'The eight festivals',
+          instructions: 'Keep each festival, adding one new thing from your own land or community each year.',
+          times: 8,
+          every: 'sabbat',
+          prompt: 'What was different about this festival this year?',
+        },
+        {
+          id: 'wheel-ongoing-moon',
+          title: 'The full moons',
+          instructions: 'Keep the full moons, simply or fully.',
+          times: 13,
+          every: 'esbat',
+          prompt: 'Moon log: where she rose, the weather, what is growing.',
+        },
+        {
+          id: 'wheel-ongoing-renewal',
+          title: 'Yearly rededication',
+          instructions:
+            'At the festival of your dedication, return to your place, reread your promise, and renew or change it. Return last year\'s token to the land and choose a new one.',
+          times: 1,
+          prompt: 'What have you kept, what have you let go, and what do you promise this year?',
+        },
+        {
+          id: 'wheel-ongoing-firsts',
+          title: 'Firsts and lasts',
+          instructions: 'Keep your "firsts and lasts" list each year and compare it with the year before.',
+          times: 12,
+          every: 'month',
+          prompt: 'Is anything early or late this year compared with last?',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'Bede, De temporum ratione (725), chapter 15: Latin fragment "a dea illorum quae Eostre vocabatur" verified against the Berlin manuscript transcription at https://www.roger-pearse.com/weblog/tag/eostre/ (public domain). English rendering in the lesson is the app\'s own. Modern translation: Faith Wallis, Bede: The Reckoning of Time (1999).',
+    'Ronald Hutton, The Stations of the Sun: A History of the Ritual Year in Britain (Oxford University Press, 1996).',
+    'Ronald Hutton, The Triumph of the Moon (1999; 2nd ed. 2019), on the 1958 eightfold calendar.',
+    'Aidan Kelly, on his naming of Ostara, Litha and Mabon around 1974 (see his Crafting the Art of Magic, 1991, and later writings).',
+    'Jacob Grimm, Deutsche Mythologie (1835), on Ostara.',
+    'Cormac\'s Glossary (c. 900), ed. Whitley Stokes, trans. John O\'Donovan (1868), for Beltaine and Imbolc (paraphrased).',
+    'Alexander Carmichael, Carmina Gadelica, vol. 1 (1900), on Bride\'s bed (paraphrased).',
+    'Máire MacNeill, The Festival of Lughnasa (1962).',
+    'Snorri Sturluson, Heimskringla, Hákonar saga góða (c. 1230), on Yule.',
+    'Culhwch and Olwen (c. 1100), on Mabon son of Modron.',
+    'All rite wording in this journey is original to the app.',
+  ],
+};
