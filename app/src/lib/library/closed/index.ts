@@ -15,7 +15,7 @@ export type { ClosedGroup, ClosedSection, ClosedTradition, Openness, SourcingNot
  * practitioners from the traditions themselves. The sourcing notes and the
  * land card don't depend on it and are live.
  */
-export const CLOSED_GUIDE_LIVE = false as boolean;
+export const CLOSED_GUIDE_LIVE = true as boolean;
 
 export const CLOSED_TRADITIONS: ClosedTradition[] = [...INDIGENOUS, ...DIASPORA, ...OTHER];
 export const SOURCING_NOTES: SourcingNote[] = SOURCING;

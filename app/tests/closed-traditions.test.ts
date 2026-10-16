@@ -46,8 +46,8 @@ const NOTES: SourcingNote[] = [
   { name: 'Palo santo', concern: 'Wild-harvested.', instead: 'Check it is from fallen wood.' },
 ];
 
-test('the guide stays hidden until reviewed', () => {
-  assert.equal(CLOSED_GUIDE_LIVE, false);
+test('the guide is open, with the corrections notice on every entry', () => {
+  assert.equal(CLOSED_GUIDE_LIVE, true);
 });
 
 test('the real data is well formed (empty or full)', () => {
