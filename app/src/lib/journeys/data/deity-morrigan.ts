@@ -127,14 +127,14 @@ export const JOURNEY: Journey = {
             {
               heading: 'Outside Ireland, and what she is not',
               body:
-                'There is one intriguing piece of evidence from Gaul. An inscription from Mieussy in the French Alps, from the Roman period, names a goddess Cathubodua, “battle crow”, which is the same name as the Irish Badb Catha. It suggests that a battle-crow goddess was known among Celtic-speaking peoples well beyond Ireland, but it is a single stone.\n\nThe Morrigan is often confused with Morgan le Fay, the enchantress of Arthurian romance. The names sound alike, but Morgan comes from a Welsh or Breton root linked with the sea, and the two figures belong to different literatures. She is also sometimes identified with the banshee (bean sí) of later folklore, who keens before a death in certain families. The two are related ideas, but the banshee is a folk figure, not the same goddess.',
+                'There is one intriguing piece of evidence from Gaul. A worn Roman-period altar found in 1867 near Mieussy in the French Alps was set up by a woman named Servilia Terentia to a goddess whose name survives as [.]ATHUBODUA. Most scholars restore the lost first letter to read Cathubodua, “battle crow”, the same name as the Irish Badb Catha. If that is right, a battle-crow goddess was known among Celtic-speaking peoples well beyond Ireland, but it rests on a single damaged stone and a restored letter.\n\nThe Morrigan is often confused with Morgan le Fay, the enchantress of Arthurian romance. The names sound alike, but Morgan comes from a Welsh or Breton root linked with the sea, and the two figures belong to different literatures. She is also sometimes identified with the banshee (bean sí) of later folklore, who keens before a death in certain families. The two are related ideas, but the banshee is a folk figure, not the same goddess.',
             },
           ],
           knowAndDont: {
             known:
-              'Medieval Irish texts name the Morrigan with sisters Badb and Macha, and in some texts Nemain; one says her name was Anand. Badb means crow. A Gaulish inscription names a goddess Cathubodua, “battle crow”. Cormac’s Glossary calls Anu the mother of the Irish gods.',
+              'Medieval Irish texts name the Morrigan with sisters Badb and Macha, and in some texts Nemain; one says her name was Anand. Badb means crow. An altar from Mieussy in Gaul names a goddess usually read as Cathubodua, “battle crow”. Cormac’s Glossary calls Anu the mother of the Irish gods.',
             unknown:
-              'We do not know whether these were originally one goddess, several, or a title; the texts disagree. The meaning of the name (Great Queen or Phantom Queen) is debated. The link between the Irish Badb and the Gaulish Cathubodua rests on one inscription.',
+              'We do not know whether these were originally one goddess, several, or a title; the texts disagree. The meaning of the name (Great Queen or Phantom Queen) is debated. The link between the Irish Badb and the Gaulish Cathubodua rests on one inscription, whose first letter has to be restored.',
           },
           inPractice:
             'Devotees address her as the Morrigan, the Great Queen, or Mór-Ríoghain, and sometimes Badb or Macha separately. Many groups, such as the US-based Coru Cathubodua Priesthood, take names from the Gaulish inscription. Some people keep separate days or offerings for each sister.',
@@ -144,7 +144,7 @@ export const JOURNEY: Journey = {
           ],
           further: [
             'Angelique Gulermovich Epstein, War Goddess: The Morrígan and Her Germano-Celtic Counterparts (PhD dissertation, UCLA, 1998).',
-            'Morgan Daimler, Pagan Portals: The Morrigan (2014) and The Morrigan: Meeting the Great Queens (2014).',
+            'Morgan Daimler, Pagan Portals: The Morrigan: Meeting the Great Queens (Moon Books, 2014), a short, careful introduction by a Gaelic polytheist.',
             'Lebor Gabála Érenn, ed. R. A. S. Macalister, Irish Texts Society (1938–56).',
           ],
           library: ['traditional/deity/morrigan', 'traditional/deity/dagda'],
@@ -158,7 +158,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'The river at Samhain',
               body:
-                'The great tale of the Morrigan is in Cath Maige Tuired, the Second Battle of Mag Tuired. Before the battle between the Tuatha Dé and the Fomorians, at Samhain, the Dagda goes to meet her at a river in Connacht, the Unshin near Corann in County Sligo. Lady Gregory’s retelling puts it this way: “he saw the Battle-Crow, the Morrigu, washing herself in the river Unius of Connacht, and one of her two feet at Ullad Echne, to the south of the water, and the other at Loscuinn, to the north of the water, and her hair hanging in nine loosened locks.”\n\nThey lie together, and the place was afterwards called the Bed of the Couple. She promises the Dagda that she will take the heart’s blood of the Fomorian king Indech for the Tuatha Dé. It is a story of union between a war goddess and the father-god on the night the year turns, and devotees today often keep Samhain in her honour because of it.',
+                'The great tale of the Morrigan is in Cath Maige Tuired, the Second Battle of Mag Tuired. Before the battle between the Tuatha Dé and the Fomorians, at Samhain, the Dagda goes to meet her at a river in Connacht, the Unshin near Corann in County Sligo. Lady Gregory’s retelling of the Dagda’s journey puts it this way: “he saw the Battle-Crow, the Morrigu, washing herself in the river Unius of Connacht, and one of her two feet at Ullad Echne, to the south of the water, and the other at Loscuinn, to the north of the water, and her hair hanging in nine loosened locks.”\n\nGregory leaves out what follows; the medieval text says they lie together, and the place was afterwards called the Bed of the Couple. She promises the Dagda that she will take the heart’s blood of the Fomorian king Indech for the Tuatha Dé. It is a story of union between a war goddess and the father-god on the night the year turns, and devotees today often keep Samhain in her honour because of it.',
             },
             {
               heading: 'Peace up to the skies',
@@ -189,7 +189,7 @@ export const JOURNEY: Journey = {
             'Cú Chulainn refuses her and is wounded; later he blesses her without knowing her and she is healed. What do you make of that?',
           ],
           further: [
-            'Lady Gregory, Gods and Fighting Men (1904), Book I and the chapter “The Morrigu” (public domain, Project Gutenberg).',
+            'Lady Gregory, Gods and Fighting Men (1904), Part I Book II ch. III, “The Great Battle of Magh Tuireadh”, and Book IV ch. IV, “The Morrigu” (public domain, Project Gutenberg).',
             'The Táin, trans. Thomas Kinsella (1969) or Ciaran Carson (2007).',
             'Cath Maige Tuired, ed. and trans. Elizabeth A. Gray (Irish Texts Society, 1982).',
           ],
@@ -209,7 +209,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Places with her name',
               body:
-                'A few places carry her name or her stories. At Rathcroghan in County Roscommon, the ancient royal site of Connacht, a narrow cave called Oweynagat (Uaimh na gCat, the Cave of the Cats) is said in the Táin Bó Regamna to be her dwelling; she drives a cow from it and returns there. The cave can be visited on guided tours from the Rathcroghan Visitor Centre. It is wet, narrow and protected; never go in alone or without permission.\n\nAt Brú na Bóinne, the Newgrange complex, medieval place-lore names two mounds the Paps of the Morrigan, and the tale itself names a Bed of the Couple by the Unshin. The Paps of Anu in Kerry are two rounded hills topped with cairns, named for Anu, who is sometimes identified with the Morrigan. None of these sites has produced evidence of her cult; they are places where her stories were told.',
+                'A few places carry her name or her stories. At Rathcroghan in County Roscommon, the ancient royal site of Connacht, a narrow cave called Oweynagat (Uaimh na gCat, the Cave of the Cats) is usually identified with the síd (otherworld mound) of Cruachan, from which, in Táin Bó Regamna, she drives a cow. The cave can be visited on guided tours from the Rathcroghan Visitor Centre. It is wet, narrow and protected; never go in alone or without permission.\n\nAt Brú na Bóinne, the Newgrange complex, the medieval lists of wonders at the Dagda’s house include a Hall of the Morrigan, and modern writers also point to two mounds there called the Paps of the Morrigan, though that identification is less secure. Cath Maige Tuired names a Bed of the Couple by the Unshin. The Paps of Anu in Kerry are two rounded hills topped with cairns, named for Anu, who is sometimes identified with the Morrigan. None of these sites has produced evidence of her cult; they are places where her stories were told.',
             },
             {
               heading: 'Echoes in folklore',
@@ -224,7 +224,7 @@ export const JOURNEY: Journey = {
           ],
           knowAndDont: {
             known:
-              'There is no surviving evidence of the Morrigan’s cult in Ireland. Medieval glossators equated her with the lamia. Oweynagat at Rathcroghan, the Paps of Anu and sites at Brú na Bóinne are linked with her in medieval lore.',
+              'There is no surviving evidence of the Morrigan’s cult in Ireland. Medieval glossators equated her with the lamia. Oweynagat at Rathcroghan, the Paps of Anu and the Hall of the Morrigan at Brú na Bóinne are linked with her in medieval lore.',
             unknown:
               'We do not know whether she had priests, shrines, festivals or offerings, or whether the tales reflect a goddess actually worshipped or a literary figure. Modern correspondences (colours, crystals, herbs) and modern rites are reconstructions or personal practice.',
           },
@@ -281,7 +281,7 @@ export const JOURNEY: Journey = {
             'What draws you to her: her power, her honesty, her imagery? Be honest about which.',
           ],
           further: [
-            'Morgan Daimler, The Morrigan: Meeting the Great Queens (2014).',
+            'Morgan Daimler, Pagan Portals: The Morrigan: Meeting the Great Queens (2014).',
             'Stephanie Woodfield, Celtic Lore and Spellcraft of the Dark Goddess (2011), for a Wiccan-eclectic approach.',
             'Erynn Rowan Laurie and Kathryn Price NicDhàna et al., The CR FAQ (2007), on Celtic Reconstructionism.',
           ],
@@ -515,12 +515,12 @@ export const JOURNEY: Journey = {
     },
   ],
   sources: [
-    'Lady Augusta Gregory, Gods and Fighting Men (1904), Book I chs. on Magh Tuireadh and “The Morrigu”, Project Gutenberg: https://www.gutenberg.org/ebooks/14465',
+    'Lady Augusta Gregory, Gods and Fighting Men (1904), Part I Book I ch. I (the great women of the Tuatha Dé), Book II ch. III (the river, the peace proclamation) and Book IV ch. IV (“The Morrigu”), Project Gutenberg: https://www.gutenberg.org/ebooks/14465',
     'Cormac’s Glossary, trans. John O’Donovan, ed. Whitley Stokes (1868), “Ana”: https://archive.org/details/cu31924071173474',
     'Cath Maige Tuired, ed. and trans. Elizabeth A. Gray (Irish Texts Society, 1982).',
     'Táin Bó Cúailnge, trans. Thomas Kinsella (1969).',
     'Angelique Gulermovich Epstein, War Goddess: The Morrígan and Her Germano-Celtic Counterparts (UCLA, 1998).',
-    'Inscription to Cathubodua, Mieussy, Haute-Savoie (CIL XII 2571).',
+    'Votive altar to [C]athubodua, found near Mieussy, Haute-Savoie, in 1867 (catalogue number not confirmed for this edition).',
     'Ronald Hutton, Pagan Britain (2013).',
   ],
 };

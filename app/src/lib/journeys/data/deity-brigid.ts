@@ -233,7 +233,7 @@ export const JOURNEY: Journey = {
               'Cath Maige Tuired survives in a sixteenth-century manuscript of an earlier text, and its Brigit may be a learned construction rather than a record of belief. We have no prayers, hymns or temple stories of the pre-Christian goddess. Modern devotees’ readings of the myths are interpretation, not doctrine.',
           },
           inPractice:
-            'Many devotees dedicate a specific piece of work to Brigid each week: a poem, a repair, a meal, a hospital shift. Some keep a "Brigid’s notebook" of poems written for her. Those grieving sometimes ask her help to lament, by singing, crying or writing a keen of their own.',
+            'Many devotees dedicate a specific piece of work to Brigid each week: a poem, a repair, a meal, a hospital shift. Some keep a "Brigid’s notebook" of poems written for her. Those grieving sometimes ask her help to lament, by singing, crying or writing a keen of their own. Devotion can sit alongside grief, but it is not a replacement for people: if a loss is overwhelming you, talk to someone you trust, your doctor, or a bereavement service such as Cruse (UK) or the Irish Hospice Foundation’s bereavement support line (Ireland).',
           reflect: [
             'Brigit made the first keen out of grief. Is there a loss in your life that has not yet been given a song?',
             'Which of the saint’s stories of giving away and receiving back speaks to you? Where could you give something away this week?',
@@ -400,7 +400,7 @@ export const JOURNEY: Journey = {
           id: 'brigid-discern-walk',
           title: 'A walk to water',
           instructions:
-            'Walk to the nearest water you can find: a river, a pond, a fountain, even the sea. Sit with it for a while and think through the questions below. You do not need to answer them in order or all at once.',
+            'Walk to the nearest water you can find: a river, a pond, a fountain, even the sea. Keep back from the edge, especially of fast or cold water and at the coast. Sit with it for a while and think through the questions below. You do not need to answer them in order or all at once.',
           times: 1,
           prompt: 'Write down your honest answers to the questions, including the uncomfortable ones.',
           premade: 'hedge-hearing-the-land-walk',
@@ -541,7 +541,7 @@ export const JOURNEY: Journey = {
     'Cormac’s Glossary, trans. John O’Donovan, ed. Whitley Stokes (Calcutta, 1868), “Brigit”, p. 23 of the Additional Articles: https://archive.org/details/cu31924071173474',
     'Gerald of Wales, The Topography of Ireland, Dist. II chs. 34–36, trans. Thomas Forester (quoted: the twentieth night), in The Historical Works of Giraldus Cambrensis, ed. Thomas Wright (London, 1863): https://archive.org/details/historicalworkso00gira',
     'Alexander Carmichael, Carmina Gadelica vol. 1 (Edinburgh, 1900), notes on Bride, pp. 164–170 (quoted: the serpent verse; “Bride’s bed is ready”): https://archive.org/details/carminagadelicah03carm',
-    'Lady Augusta Gregory, Gods and Fighting Men (1904), Part I Book I ch. II (Brigit’s two-sided face, the whistle) and Book II ch. III (the first keening), Project Gutenberg: https://www.gutenberg.org/ebooks/14465',
+    'Lady Augusta Gregory, Gods and Fighting Men (1904), Part I Book I ch. I (Brigit’s two-sided face, the whistle) and Book II ch. III (the first keening), Project Gutenberg: https://www.gutenberg.org/ebooks/14465',
     'Cogitosus, Vita Brigitae (c. 650–680), trans. Seán Connolly and Jean-Michel Picard, JRSAI 117 (1987).',
     'Kevin Danaher, The Year in Ireland (1972).',
     'Seán Ó Duinn, The Rites of Brigid, Goddess and Saint (2005).',
