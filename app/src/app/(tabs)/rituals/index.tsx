@@ -104,6 +104,12 @@ export default function RitualsHome() {
           onPress={() => router.push('/rituals/templates')}
         />
         <Row
+          icon="wheel"
+          title="My practice"
+          detail="Tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft"
+          onPress={() => router.push('/rituals/craft')}
+        />
+        <Row
           icon="grimoire"
           title="Rituals & spells"
           detail={`${PREMADE.length} premade workings for every practice and path`}
