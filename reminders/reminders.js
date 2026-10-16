@@ -117,7 +117,7 @@
           sources.length
             ? `For ${esc(sources.map((s) => s.name).join(", "))}, over the next three months.`
             : "Add a patron or dedicated deity in Settings → My deities and their days will come here."
-        } <a class="gd-link" href="/?sanctuary=settings">Settings</a></p>
+        } <a class="gd-link" href="/more/settings/deities/">My deities</a></p>
       </div></section>`;
   }
 

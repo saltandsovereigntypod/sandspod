@@ -120,6 +120,7 @@
       { label: "Spell over days", symbol: "◔", action: "spell", hint: `Start a spell timer with ${label}` }
     ]));
 
+    out.push(global.AltarReading?.practiceHtml?.(saved) || "");
     if (tonightWhy) out.push(block("Why it’s here tonight", caption(tonightWhy) + chips([{ label: "Swap it", symbol: "⇄", action: "tonight-swap", hint: `Swap ${label} for something with the same correspondence` }])));
     if (charge) out.push(block(core.charge.chargeLine(charge), caption(core.charge.chargeDetail(charge)), charge.level === "faded" ? " app-block--faded" : ""));
     spells.forEach((entry) => {

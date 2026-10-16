@@ -78,7 +78,7 @@
     "/more/library": "/grimoire/",
     "/more/library/closed": "/library/closed/",
     "/more/library/sourcing": "/library/sourcing/",
-    "/more/support": "/support/",
+    "/more/support": "/more/support/",
     "/more/help": "/help/",
     "/more/community": "/grimoire/community-grimoire.html",
     "/more/community/offer": "/submit/",

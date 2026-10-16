@@ -10,7 +10,7 @@
 /* Text and small pieces */
 .pr-quote { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.25rem; line-height: 1.5; color: #e9dfc4; margin: 0; }
 .pr-warn { color: #e2c36d; }
-.pr-big { font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 1.35rem; line-height: 1.25; margin: 0; }
+.pr-big { max-width: none; text-align: left; font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 1.35rem; line-height: 1.25; margin: 0; }
 .pr-bullets { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; line-height: 1.5; }
 .pr-row-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .pr-link { color: #e2c36d; text-underline-offset: 3px; }

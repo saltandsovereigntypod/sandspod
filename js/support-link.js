@@ -9,7 +9,7 @@
  * script and sends nothing anywhere.
  */
 (function (global) {
-  const SUPPORT_HREF = "/support/";
+  const SUPPORT_HREF = "/more/support/";
   const DEFAULT_LABEL = "If this stirs up something heavy, support is here.";
   const esc = (text) => String(text ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
