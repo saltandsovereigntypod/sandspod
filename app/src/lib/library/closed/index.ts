@@ -1,6 +1,7 @@
 // Closed & living traditions, and the sourcing notes that go with them.
 // Pure lookups, so they can be tested; the content lives in ./data.
 
+import { SUPPORT_EMAIL } from '../../community/model.ts';
 import { DIASPORA } from './data/diaspora.ts';
 import { INDIGENOUS } from './data/indigenous.ts';
 import { OTHER } from './data/other.ts';
@@ -109,4 +110,25 @@ export function sourcingForEntry(entry: { traditionalRef?: string | null; name: 
 /** All the notes, sorted by name. */
 export function sourcingNotes(notes: SourcingNote[] = SOURCING_NOTES): SourcingNote[] {
   return [...notes].sort((a, b) => a.name.localeCompare(b.name));
+}
+
+export const CLOSED_GUIDE_TITLE = 'Closed & living traditions';
+
+/** The owner's note shown at the top of the guide and of every entry. */
+export const CLOSED_NOTICE =
+  'Written with care, to the best of our knowledge. For the most accurate understanding, please learn from people who belong to this tradition. If you’re part of this faith or practice and have concerns, corrections or more to share, we’d be grateful to hear from you.';
+
+export { SUPPORT_EMAIL };
+
+/** A mailto for sending a correction about one tradition, or about the guide as a whole. */
+export function correctionUrl(tradition?: Pick<ClosedTradition, 'id' | 'name'> | null): string {
+  const subject = tradition ? `Correction: ${tradition.name}` : CLOSED_GUIDE_TITLE;
+  const body = [
+    tradition ? `I'd like to share a correction or more about ${tradition.name}.` : `I'd like to share a correction or more about the ${CLOSED_GUIDE_TITLE} guide.`,
+    '',
+    `Reference: ${tradition ? `closed/${tradition.id}` : 'closed'}`,
+    '',
+    '',
+  ].join('\n');
+  return `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }

@@ -149,7 +149,7 @@ That is the Thor of ordinary faith: the god of farmers who needed rain, of fishe
             known:
               'Thor is attested across the Germanic world in place names, weekday names and Roman and Christian accounts. Snorri and the Eddic poems give his family, goats, hammer, belt and gloves in detail. Thor- names are the most common theophoric names in Viking Age Scandinavia and Iceland.',
             unknown:
-              'Much of the family detail (Þrúðr, the children’s names) comes only from Snorri. The meanings of names such as Vingþórr and Hlórriði are uncertain. How closely continental Donar and Anglo-Saxon Þunor matched Norse Thor is not known; we have very few of their stories.',
+              'Much of the family detail comes mainly from Snorri, though skaldic kennings also know Þrúðr and Þjálfi. The meanings of names such as Vingþórr and Hlórriði are uncertain. How closely continental Donar and Anglo-Saxon Þunor matched Norse Thor is not known; we have very few of their stories.',
           },
           inPractice:
             'Many Heathens greet Thor when they hear thunder, with a raised cup or simply a “Hail Thor!”, and keep Thursday for him with a short offering or an act of service.',
@@ -177,7 +177,7 @@ Then the giant calls for the hammer to bless the marriage: “Bring in the hamme
             },
             {
               heading: 'The goats and the farmer’s son',
-              body: `Snorri tells how Thor, travelling with Loki, stayed the night with a poor farmer. He killed his goats for supper, invited the household to share, and told them to throw the bones onto the goatskins. The farmer’s son Þjálfi split a thigh bone for the marrow. In the morning Thor, in Anderson’s translation, “took the hammer Mjolner, lifted it and hallowed the goat-skins. Then the goats arose, but one of them limped.”
+              body: `Snorri tells how Thor, travelling with Loki, stayed the night with a poor farmer. He killed his goats for supper, invited the household to share, and told them to throw the bones onto the goatskins. The farmer’s son Þjálfi split a thigh bone for the marrow. In the morning Thor, in Anderson’s translation, “took the hammer Mjolner, lifted it and hallowed the goat-skins. Then the goats arose, but one of them limped on one of its hind legs.”
 
 Thor’s rage was terrible to see. The family begged for mercy. And Thor, seeing their fear, calmed down and took the two children, Þjálfi and Röskva, into his service as settlement. They were with him ever after. The hammer that kills giants also brings the dead back to life, and Thor’s fury is followed by a deal.`,
             },
@@ -305,7 +305,7 @@ So devotion to Thor asks something of you. Stand between someone vulnerable and 
               heading: 'The hammer and the people who misuse it',
               body: `Some white-supremacist groups use Norse imagery, and the hammer sometimes appears in their insignia, usually combined with other symbols or slogans. On its own the hammer is not a hate symbol; hate-symbol databases say so explicitly, and in 2013 it was approved as an emblem of belief for US military headstones. Symbols more often adopted by racist groups include Othala with “wings” or feet, the Wolfsangel, double sowilo runes (the SS lightning bolts) and the so-called black sun.
 
-Inclusive Heathens have spent decades reclaiming the hammer, and many groups say so openly: in 2016 hundreds signed Declaration 127, refusing to associate with a large folkish organisation over its racial policies. This app stands with them. Thor’s protection is for anyone who asks. If a group you meet treats his hammer as a badge of race, leave.`,
+Inclusive Heathens have spent decades reclaiming the hammer, and many groups say so openly: in 2016 well over a hundred groups signed Declaration 127, refusing to associate with a large folkish organisation over its racial policies. This app stands with them. Thor’s protection is for anyone who asks. If a group you meet treats his hammer as a badge of race, leave.`,
             },
             {
               heading: 'Hallowing in daily life',
@@ -328,7 +328,7 @@ The runestones that end “Þórr vígi” are a lovely model. Some Heathens wri
           ],
           further: [
             'Mattias Gardell, Gods of the Blood: The Pagan Revival and White Separatism (2003), for the history of racist misuse.',
-            'The Troth, Our Troth, vol. 1, on Thor in modern practice.',
+            'The Troth, Our Troth, vol. 1 (2006), on Thor and the other gods.',
           ],
           library: ['traditional/deity/thor', 'traditional/crystal/hematite', 'traditional/herb/nettle'],
           premade: ['folk-simple-blot', 'kitchen-threshold-salt-blessing'],
@@ -343,7 +343,7 @@ The runestones that end “Þórr vígi” are a lovely model. Some Heathens wri
               heading: 'His day and his tides',
               body: `Thursday is Thor’s day in English, German (Donnerstag), the Scandinavian languages (torsdag) and Old Norse (Þórsdagr). In parts of Scandinavia, Thursday evening was kept free of certain kinds of work, spinning especially, into the 1800s; folklorists have connected this with old respect for Thor’s day, though the link is uncertain.
 
-Of the year’s tides, Midsummer and the season of summer thunder suit him, and Heathens often hail him at Haustblót, the autumn harvest feast, for the crops his rain helped grow. At Winter Nights and Yule he is asked to guard the household through the dark. Þorrablót, Iceland’s midwinter feast, is a 19th-century revival named for the old month Þorri; its link to Thor is a folk etymology, but many Heathens raise a horn to him there anyway, and it is a hearty feast in his spirit.`,
+Of the year’s tides, Midsummer and the season of summer thunder suit him, and Heathens often hail him at Haustblót, the autumn harvest feast, for the crops his rain helped grow. At Winter Nights and Yule he is asked to guard the household through the dark. Þorrablót, Iceland’s midwinter feast, is a 19th-century revival named for the old month Þorri, first held by Icelandic students in Copenhagen in 1873. Its link to Thor is a folk etymology, but that first feast already included a poem called Full Þórs, “Thor’s Cup,” and many Heathens raise a horn to him there still, and it is a hearty feast in his spirit.`,
             },
             {
               heading: 'What he likes',
@@ -366,7 +366,7 @@ Don’t treat his rowdiness as permission to be drunk at rites. A sip is a share
           ],
           knowAndDont: {
             known:
-              'Thursday’s name in many languages; ale and bread offerings and the god’s great appetites in the sources; the Gudbrandsdal daily bread in Heimskringla. Þorrablót as a revived festival dates from the 1870s in Reykjavik and spread in the 1950s.',
+              'Thursday’s name in many languages; ale and bread offerings and the god’s great appetites in the sources; the Gudbrandsdal daily bread in Heimskringla. The first recorded modern Þorrablót was held by Icelandic students in Copenhagen in 1873, with Reykjavík societies following from 1880; the buffet of traditional þorramatur that most Icelanders now know was popularised from the late 1950s.',
             unknown:
               'There is no evidence that Þorri was Thor. The Thursday-evening work taboos are recorded late and their origin is debated. The exact dates of any Thor festivals in the Viking Age are unknown.',
           },

@@ -59,7 +59,7 @@ It is a beautiful, simple pattern, and it is modern. No ancient people is known 
             },
             {
               heading: 'The pieces',
-              body: `The four cross-quarter festivals come from Ireland. Medieval Irish texts name Samain (1 November), Imbolc (1 February), Beltaine (1 May) and Lugnasad (1 August) as the turning points of the year, and the early tale Tochmarc Emire, the Wooing of Emer, lists them together. Whether they were kept in this form across all the Celtic-speaking world, in Britain and Gaul, is much less certain; Imbolc in particular has little trace outside Ireland.
+              body: `The four cross-quarter festivals come from Ireland. Medieval Irish texts name Samain (1 November), Imbolc (1 February), Beltaine (1 May) and Lugnasad (1 August) as the turning points of the year. The tale Tochmarc Emire, the Wooing of Emer, lists the four together, with a scholar's gloss on each: Samuin as summer's end, Oimelc as the start of spring, Beltine with its druids' fires, and the August feast under its older name, Brón Trogain, the start of autumn. The same gloss says the year once had two halves, summer from Beltaine and winter from Samain. Whether they were kept in this form across all the Celtic-speaking world, in Britain and Gaul, is much less certain; Imbolc in particular has little trace outside Ireland.
 
 The solstices have a different kind of evidence. Newgrange in Ireland, built around 3200 BCE, lets the midwinter sunrise into its inner chamber; Stonehenge is aligned on the midsummer sunrise and midwinter sunset. Those builders clearly cared about the solstice sun, though we don't know what they did or believed. Much later, midwinter (Yule) and midsummer (St John's Eve) were major festivals across Europe, with fires and feasting recorded from the Middle Ages onward.
 
@@ -80,7 +80,7 @@ This journey asks you to hold both truths at once: these festivals are partly ve
           ],
           knowAndDont: {
             known:
-              'The Irish quarter-day names are attested in medieval Irish literature, including Tochmarc Emire. Newgrange\'s winter solstice alignment and Stonehenge\'s solstitial axis are established. Hutton documents Gardner\'s four festivals and the 1958 addition of the solar ones. Kelly has described naming Ostara, Litha and Mabon around 1974.',
+              'The Irish quarter-day names are attested in medieval Irish literature, including Tochmarc Emire (where the August feast is called Brón Trogain). Newgrange\'s winter solstice alignment and Stonehenge\'s solstitial axis are established. Hutton documents Gardner\'s four festivals and the 1958 addition of the solar ones. Kelly has described naming Ostara, Litha and Mabon around 1974.',
             unknown:
               'What Neolithic people did at the solstices is unknown. Whether the four Irish festivals were pan-Celtic is doubtful. No ancient source describes an eightfold festival year, and there is no evidence of a widespread pre-modern equinox festival in Britain or Ireland.',
           },
@@ -561,7 +561,7 @@ You can keep the eight festivals as they are, as markers of the sun's journey, w
           sections: [
             {
               heading: 'Phenology',
-              body: `Phenology is the study of when things happen in nature: the first frog spawn, the first swallow, the leaf-fall of the oaks, the first frost. People kept these records for centuries; in England the Marsham family recorded the first signs of spring on their Norfolk estate from 1736 for nearly two hundred years, and today citizen science projects collect them to track climate change. For a seasonal Pagan it is the heart of practice. Your weekly walk is already a phenology record.
+              body: `Phenology is the study of when things happen in nature: the first frog spawn, the first swallow, the leaf-fall of the oaks, the first frost. People kept these records for centuries; in England Robert Marsham began recording the first signs of spring on his Norfolk estate at Stratton Strawless in 1736, and his descendants kept it up until 1958, more than two hundred years, and today citizen science projects collect them to track climate change. For a seasonal Pagan it is the heart of practice. Your weekly walk is already a phenology record.
 
 Over a year you will build a calendar of your own place. Over several years you will start to notice what is early or late, and the festivals will begin to mean what your land is doing.`,
             },
@@ -883,12 +883,13 @@ Reconstructionist paths, such as Heathenry, Hellenic polytheism or Gaelic polyth
     },
   ],
   sources: [
-    'Bede, De temporum ratione (725), chapter 15: Latin fragment "a dea illorum quae Eostre vocabatur" verified against the Berlin manuscript transcription at https://www.roger-pearse.com/weblog/tag/eostre/ (public domain). English rendering in the lesson is the app\'s own. Modern translation: Faith Wallis, Bede: The Reckoning of Time (1999).',
+    'Bede, De temporum ratione (725), chapter 15: Latin fragment "a dea illorum quae Eostre vocabatur" verified against Migne, Patrologia Latina vol. 90 (public domain), https://archive.org/details/patrologiaecursu0090mign (the same chapter gives Modranicht, "id est, matrum noctem"). English renderings in the lesson are the app\'s own. Modern translation: Faith Wallis, Bede: The Reckoning of Time (1999).',
     'Ronald Hutton, The Stations of the Sun: A History of the Ritual Year in Britain (Oxford University Press, 1996).',
     'Ronald Hutton, The Triumph of the Moon (1999; 2nd ed. 2019), on the 1958 eightfold calendar.',
-    'Aidan Kelly, on his naming of Ostara, Litha and Mabon around 1974 (see his Crafting the Art of Magic, 1991, and later writings).',
+    'Aidan Kelly, on his naming of Ostara, Litha and Mabon in 1974: his own later account (a 2017 blog post), as summarised in Hutton and in histories of the Wheel.',
     'Jacob Grimm, Deutsche Mythologie (1835), on Ostara.',
-    'Cormac\'s Glossary (c. 900), ed. Whitley Stokes, trans. John O\'Donovan (1868), for Beltaine and Imbolc (paraphrased).',
+    'Cormac\'s Glossary (c. 900), Sanas Chormaic, trans. John O\'Donovan, ed. Whitley Stokes (1868), public domain, https://archive.org/details/cu31924071173474: entries Belltaine, Brigit and Oimelc (paraphrased).',
+    'Tochmarc Emire, trans. Kuno Meyer, Archaeological Review 1 (1888), public domain, https://celt.ucc.ie/published/T301021.html, for the four festival names and glosses (paraphrased).',
     'Alexander Carmichael, Carmina Gadelica, vol. 1 (1900), on Bride\'s bed (paraphrased).',
     'Máire MacNeill, The Festival of Lughnasa (1962).',
     'Snorri Sturluson, Heimskringla, Hákonar saga góða (c. 1230), on Yule.',
