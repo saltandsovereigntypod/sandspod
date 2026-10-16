@@ -2,6 +2,7 @@
 // happened under. Stored in the craft collection `green.plants` as plain
 // JSON, one entry per plant with its history inside. Pure, so it can be tested.
 
+import { TRADITIONAL_LIBRARY } from '../../library/traditionalData.ts';
 import { moonState, type PhaseName } from '../../moon.ts';
 import { dateFromKey, localDateKey } from '../../rituals/lifecycle.ts';
 
@@ -159,4 +160,25 @@ export function asPlant(data: unknown): Plant {
     goneOn: typeof d.goneOn === 'string' ? d.goneOn : null,
     goneNote: typeof d.goneNote === 'string' ? d.goneNote : null,
   };
+}
+
+/** The Library's herbs, for linking a plant to its page. */
+export const HERB_OPTIONS: { key: string; name: string }[] = Object.entries(
+  (TRADITIONAL_LIBRARY as unknown as Record<string, Record<string, { DisplayName?: string }>>).herb ?? {},
+)
+  .filter(([key]) => !key.startsWith('_'))
+  .map(([key, v]) => ({ key, name: String(v?.DisplayName ?? key) }))
+  .sort((a, b) => a.name.localeCompare(b.name));
+
+export const herbName = (key: string | null | undefined) => HERB_OPTIONS.find((h) => h.key === key)?.name ?? null;
+
+const fold = (text: string) => text.toLowerCase().replace(/[^a-z]/g, '');
+
+/** Library herbs matching what's typed, best first: the name itself, then names containing it. */
+export function matchHerbs(text: string, limit = 6): { key: string; name: string }[] {
+  const q = fold(text);
+  if (q.length < 2) return [];
+  const starts = HERB_OPTIONS.filter((h) => fold(h.name).startsWith(q) || q.startsWith(fold(h.name)));
+  const contains = HERB_OPTIONS.filter((h) => !starts.includes(h) && fold(h.name).includes(q));
+  return [...starts, ...contains].slice(0, limit);
 }

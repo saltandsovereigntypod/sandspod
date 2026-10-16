@@ -16,6 +16,7 @@ import {
   searchStations,
   slimStations,
   tideNow,
+  tidyName,
   upcomingRanges,
 } from '../src/lib/craft/sea/tides.ts';
 
@@ -154,4 +155,10 @@ test('filters, names and sorts finds', () => {
   assert.equal(findTitle(list[2].data), 'Little cowrie');
   assert.equal(findTitle(list[1].data), 'Hagstone');
   assert.deepEqual(byFound(list).map((f) => f.data.date), ['2026-10-05', '2026-10-02', '2026-09-30']);
+});
+
+test('tidies capitalised station names', () => {
+  assert.equal(tidyName('MONTEREY, MONTEREY BAY'), 'Monterey, Monterey Bay');
+  assert.equal(tidyName('KWAJALEIN ATOLL (Kwajalein I.)'), 'KWAJALEIN ATOLL (Kwajalein I.)');
+  assert.equal(tidyName('SAND ISLAND (MIDWAY)'), 'Sand Island (Midway)');
 });

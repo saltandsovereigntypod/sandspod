@@ -292,6 +292,13 @@ export function sameClock(stationOffsetHours: number | null | undefined, phoneOf
 
 export type Station = { id: string; name: string; state: string; lat: number; lng: number; /** Standard UTC offset, hours. */ tz: number | null };
 
+/** NOAA writes some names in capitals ("MONTEREY, MONTEREY BAY"); give them ordinary case. */
+export function tidyName(name: string): string {
+  const n = name.trim().replace(/\s+/g, ' ');
+  if (/[a-z]/.test(n)) return n;
+  return n.toLowerCase().replace(/(^|[\s(/-])([a-z])/g, (_, a: string, b: string) => a + b.toUpperCase());
+}
+
 /** Keep just what we need from NOAA's station list (it's 2 MB as sent). */
 export function slimStations(json: unknown): Station[] {
   const list = (json as { stations?: unknown })?.stations;
@@ -303,7 +310,7 @@ export function slimStations(json: unknown): Station[] {
     const lng = Number(s.lng);
     if (!Number.isFinite(lat) || !Number.isFinite(lng)) continue;
     const tz = Number(s.timezonecorr);
-    out.push({ id: s.id, name: s.name.trim(), state: typeof s.state === 'string' ? s.state : '', lat, lng, tz: Number.isFinite(tz) ? tz : null });
+    out.push({ id: s.id, name: tidyName(s.name), state: typeof s.state === 'string' ? s.state : '', lat, lng, tz: Number.isFinite(tz) ? tz : null });
   }
   return out;
 }
