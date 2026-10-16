@@ -326,8 +326,9 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
       {/* Burned down: its remnant of wax, spread at the foot. */}
       {wax.kind === 'remnant' && wax.amount > 0 && (
         <>
-          <Ellipse cx={cx} cy={bottom - rim * 0.3} rx={Math.max(half * 2.2, width * 0.3)} ry={Math.max(2, rim * 1.4, width * 0.07)} fill={waxHex} opacity={0.9} stroke={mix(waxHex, [20, 10, 5], 0.4)} strokeOpacity={0.5} strokeWidth={Math.max(0.5, width * 0.012)} />
-          <Ellipse cx={cx - half * 0.4} cy={bottom - rim * 0.55} rx={Math.max(half * 0.8, width * 0.1)} ry={Math.max(0.8, width * 0.025)} fill="rgb(255,250,236)" opacity={0.4} />
+          <Ellipse cx={cx} cy={bottom - rim * 0.3} rx={Math.max(half * 2, width * 0.2)} ry={Math.max(2, rim * 1.2, width * 0.05)} fill={mix(waxHex, [70, 66, 60], 0.25)} opacity={0.88} stroke={mix(waxHex, [20, 10, 5], 0.45)} strokeOpacity={0.55} strokeWidth={Math.max(0.5, width * 0.012)} />
+          <Ellipse cx={cx + half * 0.6} cy={bottom - rim * 0.1} rx={Math.max(half * 0.7, width * 0.06)} ry={Math.max(1, width * 0.025)} fill={mix(waxHex, [20, 10, 5], 0.3)} opacity={0.5} />
+          <Ellipse cx={cx - half * 0.5} cy={bottom - rim * 0.55} rx={Math.max(half * 0.7, width * 0.07)} ry={Math.max(0.8, width * 0.018)} fill="rgb(255,250,236)" opacity={0.35} />
         </>
       )}
     </Svg>
