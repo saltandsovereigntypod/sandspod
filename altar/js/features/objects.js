@@ -54,6 +54,7 @@ function captureAltarSnapshot() {
     const position = getStagePositionPercent(object);
 
     return {
+      ...(typeof savedObjectExtras === "function" ? savedObjectExtras(object) : {}),
       imagePath: getObjectImagePath(object),
       fallbackSymbol: object.textContent || "",
       label: object.dataset.label || "object",

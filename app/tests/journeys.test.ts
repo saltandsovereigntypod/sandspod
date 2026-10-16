@@ -399,3 +399,17 @@ test('every real journey can be walked from start to dedication without anything
     assert.equal(currentStage(j, p).stage.kind, 'ongoing');
   }
 });
+
+test('the catalog matches every journey (run scripts/gen-journeys-index.mjs if not)', async () => {
+  const { JOURNEY_CATALOG } = await import('../src/lib/journeys/catalog.ts');
+  assert.deepEqual(
+    JOURNEY_CATALOG,
+    JOURNEYS.map(({ id, kind, paths, deityRef, title, summary }) => (deityRef ? { id, kind, paths, deityRef, title, summary } : { id, kind, paths, title, summary })),
+  );
+  const { pathsMineFirstIn, deityGroupsIn } = await import('../src/lib/journeys/lookup.ts');
+  assert.deepEqual(pathsMineFirstIn(JOURNEY_CATALOG, ['norse']).map((j) => j.id), pathsMineFirst(['norse']).map((j) => j.id));
+  assert.deepEqual(
+    deityGroupsIn(JOURNEY_CATALOG, ['hellenic']).map((g) => g.journeys.map((j) => j.id)),
+    deityGroups(['hellenic']).map((g) => g.journeys.map((j) => j.id)),
+  );
+});

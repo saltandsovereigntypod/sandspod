@@ -15,7 +15,6 @@ import {
   enqueue,
   ensureBook,
   isTransient,
-  nextOrder,
   pageInsert,
   pageLinkInsert,
   pageTitlePatch,
@@ -29,6 +28,7 @@ import {
   type Op,
   type SendError,
 } from './edits';
+import { holyPageOps } from './holyOps';
 import { altarRitualOps, ritualDateText, type AltarRitualItem, type WorkingDetails } from './altarImport';
 import { newId } from './ids';
 import { openSectionIn, pageBlocks } from './structure';
@@ -387,39 +387,11 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
         commit([...ops, ...page]);
         return id;
       },
-      saveHolyPage({ ref, title, sectionTitle, blocks }) {
+      saveHolyPage(input) {
         const s = snap();
         if (!s || !userRef.current) return null;
-        const { bookId, ops } = ensureBook(s, ctx(), newId);
-        let next = applyOps(s, ops);
-        const all: Op[] = [...ops];
-        let section = next.sections.find((x) => x.book_id === bookId && x.title.trim().toLowerCase() === sectionTitle.toLowerCase());
-        if (!section) {
-          const sectionId = newId();
-          const op = sectionInsert(next, ctx(), { id: sectionId, bookId, title: sectionTitle });
-          all.push(op);
-          next = applyOps(next, [op]);
-          section = next.sections.find((x) => x.id === sectionId);
-        }
-        const sectionId = section?.id ?? null;
-        const id = newId();
-        const siblings = next.pages.filter((p) => p.book_id === bookId && (p.section_id ?? null) === sectionId);
-        all.push({
-          kind: 'insert',
-          table: 'grimoire_pages',
-          id,
-          row: { id, user_id: ctx().userId, book_id: bookId, section_id: sectionId, title, icon: '', page_type: 'blank', sort_order: nextOrder(siblings), metadata: { holyRef: ref } },
-        });
-        blocks.forEach((block, index) => {
-          const blockId = newId();
-          all.push({
-            kind: 'insert',
-            table: 'grimoire_blocks',
-            id: blockId,
-            row: { id: blockId, user_id: ctx().userId, book_id: bookId, page_id: id, block_type: block.type, content: block.content, metadata: {}, rich_content: null, sort_order: index },
-          });
-        });
-        commit(all);
+        const { id, ops } = holyPageOps(s, ctx(), input, newId);
+        commit(ops);
         return id;
       },
       setOpenSection: openSection,

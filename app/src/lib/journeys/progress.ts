@@ -8,7 +8,8 @@
 import { shortDate } from '../calendar.ts';
 import { holidaysBetween, TRADITIONS, type Holiday, type HolidayChoice } from '../holidays.ts';
 import { nextPhase } from '../moon.ts';
-import { premadeDraft, type Premade } from '../rituals/premade/index.ts';
+import { premadeDraft } from '../rituals/premade/draft.ts';
+import type { Premade } from '../rituals/premade/types.ts';
 import type { TemplateDraft } from '../rituals/types.ts';
 import type { Journey, Lesson, Practice, Rite, Stage, StageKind } from './types.ts';
 

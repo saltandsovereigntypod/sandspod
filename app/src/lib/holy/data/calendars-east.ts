@@ -877,10 +877,10 @@ Its name changes with the weekday: Soma Pradosh on a Monday and Shani Pradosh on
     correspondences: {
       deities: ['Shiva', 'Parvati'],
       herbs: ['Bilva (bael) leaves', 'Sandalwood'],
-      crystals: ['Clear Quartz', 'Rudraksha (a seed, not a stone)'],
+      crystals: ['Clear Quartz'],
       colors: ['White', 'Blue'],
       foods: ['Milk', 'Fruit'],
-      symbols: ['Nandi the bull', 'The linga', 'Twilight'],
+      symbols: ['Nandi the bull', 'The linga', 'Twilight', 'Rudraksha beads'],
     },
     respect:
       'Pradosh is Hindu worship of Shiva. If you are not Hindu, attending temple worship respectfully (modest dress, shoes off, following devotees’ lead) is welcome in most places; please don’t treat Shiva’s rites as a spell timing.',
@@ -959,10 +959,10 @@ Devotees fast through the day, and the night is divided into four watches (praha
     correspondences: {
       deities: ['Shiva', 'Parvati', 'Ganesha'],
       herbs: ['Bilva (bael) leaves', 'Sandalwood'],
-      crystals: ['Clear Quartz', 'Rudraksha (a seed, not a stone)'],
+      crystals: ['Clear Quartz'],
       colors: ['White', 'Blue', 'Grey'],
       foods: ['Milk', 'Fruit', 'Thandai'],
-      symbols: ['The linga', 'The trident (trishula)', 'The crescent in Shiva’s hair', 'Ash'],
+      symbols: ['The linga', 'The trident (trishula)', 'The crescent in Shiva’s hair', 'Ash', 'Rudraksha beads'],
     },
     respect:
       'Maha Shivaratri is a sacred night of Hindu devotion to Shiva. Outsiders are welcome at many temples and public celebrations: dress modestly, remove shoes, follow queues and devotees’ lead, and ask before photographing. Please don’t treat Shiva or the linga as an exotic prop, or bhang culture as the point of the festival.',
@@ -1060,7 +1060,7 @@ Vijayadashami is held a good day to begin learning, and children are introduced 
     },
     correspondences: {
       deities: ['Durga', 'Lakshmi', 'Saraswati', 'Rama'],
-      herbs: ['Barley', 'Jasmine', 'Marigold'],
+      herbs: ['Jasmine', 'Marigold'],
       crystals: ['Carnelian', 'Garnet', 'Ruby'],
       colors: ['Red', 'Gold', 'A different colour each day (as many communities assign)'],
       foods: ['Kuttu (buckwheat)', 'Sabudana', 'Fruit', 'Halwa, puri and chana (kanya puja)'],
@@ -1264,7 +1264,7 @@ How much of the didukh and kutia is older than Christianity is a fair question: 
     respect:
       'Sviatvechir is the Christmas Eve of Orthodox and Greek Catholic Christians, above all Ukrainians, Belarusians and Rusyns, and it is a deeply family occasion, kept with special feeling now in Ukraine and its diaspora. If you are not part of these communities, learn the customs, cook the dishes, go to a parish service or a community supper if invited, and support Ukrainian artists and charities. Please don’t present the didukh or kutia as a “pagan Slavic” spell, or reinvent the feast as a solstice rite: the people who keep it keep it for Christ’s birth.',
     sources: [
-      'https://en.wikipedia.org/wiki/Ukrainian_Christmas_traditions',
+      'https://en.wikipedia.org/wiki/Christmas_in_Ukraine',
       'https://en.wikipedia.org/wiki/Didukh',
       'https://en.wikipedia.org/wiki/Kutia',
       'O. Voropai, Zvychai nashoho narodu (Munich, 1958)',
@@ -1315,7 +1315,7 @@ Many koliadky are clearly Christian; others sing of a golden-horned stag, of the
     sources: [
       'https://en.wikipedia.org/wiki/Koliada',
       'https://en.wikipedia.org/wiki/Vertep',
-      'https://en.wikipedia.org/wiki/Ukrainian_Christmas_traditions',
+      'https://en.wikipedia.org/wiki/Christmas_in_Ukraine',
       'V. Hnatiuk, Koliadky i shchedrivky (Lviv, 1914)',
     ],
   },
@@ -1361,7 +1361,6 @@ The Malanka troupe is a masked folk play: a young man dressed as the bride Malan
     sources: [
       'https://en.wikipedia.org/wiki/Malanka',
       'https://en.wikipedia.org/wiki/Shchedryk_(song)',
-      'https://en.wikipedia.org/wiki/Shchedryi_Vechir',
     ],
   },
   {
@@ -1406,7 +1405,7 @@ The Malanka troupe is a masked folk play: a young man dressed as the bride Malan
     sources: [
       'https://en.wikipedia.org/wiki/Old_New_Year',
       'https://en.wikipedia.org/wiki/Basil_of_Caesarea',
-      'https://en.wikipedia.org/wiki/Ukrainian_Christmas_traditions',
+      'https://en.wikipedia.org/wiki/Christmas_in_Ukraine',
     ],
   },
   {
@@ -1450,9 +1449,9 @@ People carry the blessed water home and keep it all year: for sprinkling the hou
     respect:
       'The Great Blessing of Waters is a sacred rite of the Orthodox and Greek Catholic churches. Visitors are often welcome to watch and even to take water, but ask first, follow the clergy and community, and treat blessed water with reverence. Please don’t take it for spells.',
     sources: [
-      'https://en.wikipedia.org/wiki/Great_Blessing_of_the_Waters',
+      'https://en.wikipedia.org/wiki/Great_Blessing_of_Waters',
       'https://en.wikipedia.org/wiki/Epiphany_(holiday)',
-      'https://en.wikipedia.org/wiki/Ukrainian_Christmas_traditions',
+      'https://en.wikipedia.org/wiki/Christmas_in_Ukraine',
     ],
   },
   {
@@ -1601,7 +1600,7 @@ Many scholars, from 19th-century folklorists to Ivanov and Toporov in the 1970s,
       ],
     },
     correspondences: {
-      deities: ['Perun (a debated scholarly link)'],
+      deities: ['Perun'],
       herbs: ['Oak', 'Nettle'],
       crystals: ['Hematite', 'Garnet'],
       colors: ['Red', 'Gold'],
@@ -1611,7 +1610,7 @@ Many scholars, from 19th-century folklorists to Ivanov and Toporov in the 1970s,
     respect:
       'Illia’s Day is a Christian feast. Rodnovers and others honour Perun at this season in their own reconstructed ways, which is their right; but please don’t present the saint’s feast as a disguised Perun festival, as if the people who keep it didn’t know their own faith.',
     sources: [
-      'https://en.wikipedia.org/wiki/Elijah%27s_Day',
+      'https://en.wikipedia.org/wiki/Elijah',
       'https://en.wikipedia.org/wiki/Perun',
       'V. V. Ivanov and V. N. Toporov, Issledovaniia v oblasti slavianskikh drevnostei (Moscow, 1974)',
     ],
@@ -1890,7 +1889,6 @@ Pascha is reckoned by the Julian computus, so it usually falls later than Wester
     sources: [
       'https://en.wikipedia.org/wiki/Pysanka',
       'https://en.wikipedia.org/wiki/Paskha',
-      'https://en.wikipedia.org/wiki/Easter_in_Ukraine',
       'J. Meeus, Astronomical Algorithms, ch. 8 (the Julian computus)',
     ],
   },
@@ -2058,7 +2056,7 @@ Because Samonios means “summer”, and because Irish Samain (1 November) was t
       ],
     },
     correspondences: {
-      herbs: ['Oak', 'Mistletoe (never to eat)'],
+      herbs: ['Oak', 'Mistletoe'],
       colors: ['Gold', 'Black', 'White'],
       symbols: ['Three lights', 'The peg in the bronze', 'The moon past full'],
     },

@@ -8,6 +8,51 @@ let isRestoringAltarDraft = false;
 let altarDraftSaveTimeout = null;
 let altarDraftDirty = false;
 
+/*
+  Fields this page doesn't know (written by the app or a newer version of the
+  site) are kept: an object's in dataset.appExtra, the altar's own in
+  window.altarExtraFields, and written back on every save.
+*/
+const KNOWN_OBJECT_FIELDS = new Set([
+  "imagePath", "fallbackSymbol", "label", "type", "entityId", "instanceId", "herb", "form", "color",
+  "crystal", "tool", "vessel", "deity", "apothecaryItemId", "apothecaryType", "apothecaryIngredients",
+  "apothecaryIntention", "apothecaryNotes", "apothecaryLogToGrimoire", "apothecaryGrimoireStatus",
+  "scale", "rotation", "flipped", "locked", "glowing", "lit", "ritualIncluded", "livingState",
+  "plaqueText", "altarObjectId", "groupId", "leftPercent", "topPercent", "sizePercent", "zIndex",
+  "dressings", "accumulatedBurnMs", "currentBurn", "currentBurnStartedAt", "lastBurnedAt", "lastLit", "lastLitAt"
+]);
+const KNOWN_ALTAR_FIELDS = new Set(["id", "updatedAt", "name", "savedAt", "background", "backgroundName", "groups", "activeGroupId", "objects"]);
+const CURRENT_ALTAR_KEY = "saltAndSovereigntyCurrentAltarId";
+window.altarExtraFields = window.altarExtraFields || {};
+
+function unknownFields(source, known) {
+  const extra = {};
+  Object.entries(source || {}).forEach(([key, value]) => {
+    if (!known.has(key) && value !== undefined) extra[key] = value;
+  });
+  return extra;
+}
+
+function savedObjectExtras(object) {
+  try {
+    const extra = JSON.parse(object?.dataset?.appExtra || "{}");
+    return extra && typeof extra === "object" && !Array.isArray(extra) ? extra : {};
+  } catch {
+    return {};
+  }
+}
+
+/** The saved altar this page has open (so its petitions, spells and intention stay with it), or "". */
+function setCurrentSavedAltar(id) {
+  window.currentSavedAltarId = id || "";
+  try {
+    if (id) localStorage.setItem(CURRENT_ALTAR_KEY, id);
+    else localStorage.removeItem(CURRENT_ALTAR_KEY);
+  } catch { /* storage blocked */ }
+  document.dispatchEvent(new CustomEvent("altar:current-changed", { detail: { id: window.currentSavedAltarId } }));
+}
+try { window.currentSavedAltarId = localStorage.getItem(CURRENT_ALTAR_KEY) || ""; } catch { window.currentSavedAltarId = ""; }
+
 function getStagePositionPercent(object) {
   const scale = Number(object.dataset.scale || 1);
   const leftPx = parseFloat(object.style.left) || 0;
@@ -96,6 +141,7 @@ function createAltarSnapshot(name = "Working Altar") {
     const position = getStagePositionPercent(object);
     
     return {
+      ...savedObjectExtras(object),
       imagePath: getObjectImagePath(object),
       fallbackSymbol: object.textContent || "",
       label: object.dataset.label || "object",
@@ -135,6 +181,7 @@ function createAltarSnapshot(name = "Working Altar") {
   });
 
   return {
+    ...(window.altarExtraFields || {}),
     name,
     savedAt: new Date().toISOString(),
     background: altarStage.dataset.background || "",
@@ -250,45 +297,80 @@ async function migrateLocalAltarsToCloud() {
   return { pending: getLocalSavedAltars().length > 0 };
 }
 
-async function saveAltar() {
-  if (!altarStage) return;
+async function saveAltar(options = {}) {
+  if (!altarStage) return null;
 
-  const altarName =
-    window.prompt("Name this altar save:", "My Altar") || "My Altar";
+  // The altar open from your saves can be saved again in place (as the app's
+  // Save does); otherwise, or when asked, it's saved as a new altar.
+  const currentId = options.asNew ? "" : window.currentSavedAltarId || "";
+  const currentAltar = currentId ? (await getSavedAltars()).find((altar) => altar.id === currentId) : null;
+  let updateInPlace = false;
+  if (currentAltar && !options.asNew) {
+    updateInPlace = options.inPlace === true || window.confirm(`Save your changes to “${currentAltar.name || "My Altar"}”?\n\nChoose Cancel to save this as a new altar instead.`);
+  }
+
+  const altarName = updateInPlace
+    ? currentAltar.name || "My Altar"
+    : options.name || window.prompt("Name this altar save:", currentAltar?.name || "My Altar") || "My Altar";
 
   const altarData = createAltarSnapshot(altarName.trim() || "My Altar");
 
-  if (!altarData) return;
+  if (!altarData) return null;
   saveWorkingAltarDraft({ immediate: true, snapshot: altarData });
 
   const user = await ensureAltarUser();
 
   if (!user) {
     const savedAltars = getLocalSavedAltars();
-
-    savedAltars.unshift({
-      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
-      ...altarData
-    });
+    let id = currentAltar?.id || "";
+    if (updateInPlace) {
+      const index = savedAltars.findIndex((altar) => altar.id === id);
+      savedAltars[index] = { ...savedAltars[index], ...altarData, id, updatedAt: altarData.savedAt };
+    } else {
+      id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now());
+      savedAltars.unshift({ id, ...altarData });
+    }
 
     storeLocalSavedAltars(savedAltars);
+    setCurrentSavedAltar(id);
+    window.currentSavedAltarName = altarData.name;
     showAltarToast(`Saved locally: ${altarData.name}`);
-    return;
+    document.dispatchEvent(new CustomEvent("altar:saved", { detail: { id, name: altarData.name } }));
+    return id;
   }
 
-  const { error } = await db.from(ALTAR_CLOUD_TABLE).insert({
-    user_id: user.id,
-    name: altarData.name,
-    altar_data: altarData
-  });
+  let id = currentAltar?.id || "";
+  if (updateInPlace) {
+    const { error } = await db
+      .from(ALTAR_CLOUD_TABLE)
+      .update({ name: altarData.name, altar_data: altarData })
+      .eq("id", id)
+      .eq("user_id", user.id);
+    if (error) {
+      console.error(error);
+      showAltarToast("Cloud save failed");
+      return null;
+    }
+  } else {
+    const { data, error } = await db.from(ALTAR_CLOUD_TABLE).insert({
+      user_id: user.id,
+      name: altarData.name,
+      altar_data: altarData
+    }).select("id").single();
 
-  if (error) {
-    console.error(error);
-    showAltarToast("Cloud save failed");
-    return;
+    if (error) {
+      console.error(error);
+      showAltarToast("Cloud save failed");
+      return null;
+    }
+    id = data?.id || "";
   }
 
+  if (id) setCurrentSavedAltar(id);
+  window.currentSavedAltarName = altarData.name;
   showAltarToast(`Saved: ${altarData.name}`);
+  document.dispatchEvent(new CustomEvent("altar:saved", { detail: { id, name: altarData.name } }));
+  return id;
 }
 
 function createSavedObject(savedObject) {
@@ -340,6 +422,8 @@ function createSavedObject(savedObject) {
   object.dataset.plaqueText = savedObject.plaqueText || "";
   object.dataset.altarObjectId = savedObject.altarObjectId || "";
   object.dataset.groupId = savedObject.groupId || "";
+  const extras = unknownFields(savedObject, KNOWN_OBJECT_FIELDS);
+  if (Object.keys(extras).length) object.dataset.appExtra = JSON.stringify(extras);
 
   if (typeof initializeLivingObjectState === "function") {
     initializeLivingObjectState(object, { preserveUpdatedAt: true });
@@ -419,6 +503,7 @@ function restoreAltarData(altarData) {
 
   altarGroups = Array.isArray(altarData.groups) ? altarData.groups : [];
   activeGroupId = altarData.activeGroupId || null;
+  window.altarExtraFields = unknownFields(altarData, KNOWN_ALTAR_FIELDS);
   const restoredObjects = [];
 
   (altarData.objects || []).forEach((savedObject) => {
@@ -498,6 +583,8 @@ async function loadAltarById(altarId) {
   }
 
   restoreAltarData(altarData);
+  setCurrentSavedAltar(altarData.id);
+  window.currentSavedAltarName = altarData.name || "My Altar";
   closeSavedAltarsManager();
   showAltarToast(`Loaded: ${altarData.name || "Altar"}`);
 }
@@ -571,6 +658,7 @@ async function deleteSavedAltar(altarId) {
     }
   }
 
+  if (window.currentSavedAltarId === altarId) setCurrentSavedAltar("");
   await renderSavedAltarsManager();
   showAltarToast("Altar deleted");
 }
@@ -705,6 +793,7 @@ function clearAltar() {
 
   altarGroups = [];
   activeGroupId = null;
+  window.altarExtraFields = {};
 
   deselectObject();
   clearCandleDressingMode();

@@ -31,7 +31,8 @@ for (const name of entries) {
       '--bundle',
       '--minify',
       '--format=iife',
-      `--global-name=SaltCore.${name}`,
+      // Names like "practice-b" aren't identifiers: SaltCore["practice-b"].
+      /^[A-Za-z_$][\w$]*$/.test(name) ? `--global-name=SaltCore.${name}` : `--global-name=SaltCore[${JSON.stringify(name)}]`,
       '--target=es2019',
       `--outfile=js/core/${name}.js`,
       '--log-level=warning',

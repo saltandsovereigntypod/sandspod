@@ -6,21 +6,13 @@ import { CALENDAR_EAST_PAGES } from './data/calendars-east.ts';
 import { CALENDAR_WEST_PAGES } from './data/calendars-west.ts';
 import { HOLIDAY_PAGES } from './data/holidays.ts';
 import type { HolyPage } from './types.ts';
+import { holyRef, moonRef as moonRefFor, principalRef } from './refs.ts';
 
 export type { HolyPage } from './types.ts';
+export { holyRef, principalRef };
 
 export const HOLY_PAGES: HolyPage[] = [...HOLIDAY_PAGES, ...CALENDAR_WEST_PAGES, ...CALENDAR_EAST_PAGES];
 const byRef = new Map(HOLY_PAGES.map((p) => [p.ref, p]));
-
-/**
- * The page ref for a holiday or calendar event id as Today has it: holidays
- * carry their date ("hellenic-lenaia-2026-0-30"), calendar events don't
- * ("roman-cerialia"); the southern Wheel shares the northern pages.
- */
-export function holyRef(id: string): string {
-  const ref = id.replace(/-\d{4}-\d{1,2}-\d{1,2}$/, '');
-  return ref.startsWith('wheel_south-') ? `wheel-${ref.slice('wheel_south-'.length)}` : ref;
-}
 
 /** The page for a ref, trying a multi-day festival's first day ("roman-carmentalia-2" → "roman-carmentalia"). */
 export function holyPage(ref: string | null | undefined): HolyPage | null {
@@ -31,26 +23,8 @@ export function holyPage(ref: string | null | undefined): HolyPage | null {
 /** Whether a holiday or event id has a page. */
 export const hasHolyPage = (id: string) => !!holyPage(holyRef(id));
 
-const PHASE_REF: Record<string, string> = {
-  'New Moon': 'moon-new',
-  'Waxing Crescent': 'moon-waxing-crescent',
-  'First Quarter': 'moon-first-quarter',
-  'Waxing Gibbous': 'moon-waxing-gibbous',
-  'Full Moon': 'moon-full',
-  'Waning Gibbous': 'moon-waning-gibbous',
-  'Last Quarter': 'moon-last-quarter',
-  'Waning Crescent': 'moon-waning-crescent',
-};
-const PRINCIPAL_REF: Record<string, string> = { new: 'moon-new', firstQuarter: 'moon-first-quarter', full: 'moon-full', lastQuarter: 'moon-last-quarter' };
-
 /** The page ref for the moon as it is: the dark moon in the day or so either side of new. */
-export function moonRef(moon: Pick<MoonState, 'name' | 'illumination'>): string {
-  if (moon.illumination < 0.015 && byRef.has('moon-dark')) return 'moon-dark';
-  return PHASE_REF[moon.name] ?? 'moon-full';
-}
-
-/** The page ref for a principal phase (new, firstQuarter, full, lastQuarter), as On the horizon has them. */
-export const principalRef = (phase: string) => PRINCIPAL_REF[phase] ?? 'moon-full';
+export const moonRef = (moon: Pick<MoonState, 'name' | 'illumination'>): string => moonRefFor(moon, byRef.has('moon-dark'));
 
 /** The Grimoire section a page is kept in. */
 export const grimoireSection = (page: HolyPage) => (page.ref.startsWith('moon-') ? 'The Moon' : 'Holy Days');
