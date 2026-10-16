@@ -139,7 +139,7 @@ Night, Hesiod says, “holds in her arms Sleep the brother of Death.” Sleep an
               heading: 'The goddess Zeus feared',
               body: `In Homer’s Iliad, there is a revealing moment. Hera asks Sleep to put Zeus to sleep so she can help the Greeks behind his back. Sleep refuses at first, because he did it once before and Zeus woke furious, hurling gods around the palace. Sleep says Zeus would have thrown him into the sea, “had not Night who cows both men and gods protected me. I fled to her and Jove left off looking for me in spite of his being so angry, for he did not dare do anything to displease Night.” (The translator Samuel Butler used Jove for Zeus.)
 
-This is the only place in Homer where Zeus backs down out of respect for another god. Nyx is a power even the king of the gods will not cross. That is worth keeping in mind. She is gentle, as sleep is gentle, but she is not small.`,
+It is a rare moment in Homer: the king of the gods backs down out of respect for another power. Nyx is a power even the king of the gods will not cross. That is worth keeping in mind. She is gentle, as sleep is gentle, but she is not small.`,
             },
           ],
           knowAndDont: {
@@ -220,9 +220,9 @@ Each Orphic hymn names the incense to burn with it, and for Night the instructio
           sections: [
             {
               heading: 'Three traces',
-              body: `If you look for temples, festivals or priestesses of Nyx in ancient Greece, you will find almost nothing. Here is nearly all of it. Pausanias, the travel writer of the second century CE, says that on the acropolis of Megara, near Athens, there was an oracle of Night. He gives no details of how it worked. He also says that at Ephesus, in the great temple of Artemis, there was a statue of Night made by Rhoikos, an early sculptor of the sixth century BCE, which he describes as old and rough.
+              body: `If you look for temples, festivals or priestesses of Nyx in ancient Greece, you will find almost nothing. Here is nearly all of it. Pausanias, the travel writer of the second century CE, says that on the acropolis of Megara, near Athens, there was an oracle of Night. He gives no details of how it worked. He also says that at Ephesus, in the sanctuary of Artemis, a statue of a woman by Rhoikos, an early sculptor of the sixth century BCE, stood on a wall above an altar, and that the Ephesians called it Night. He found it older and rougher in workmanship than anything he had just described.
 
-And at Olympia Pausanias saw the chest of Kypselos, an ancient carved and inlaid cedar chest, on which Night was shown holding two children: a white one asleep and a black one who seemed asleep, Sleep and Death, with their feet crossed. That is a picture, not a cult, but it shows how she was imagined.`,
+And at Olympia Pausanias saw the chest of Kypselos, an ancient carved and inlaid cedar chest, on which a woman was shown holding a white child asleep on her right arm and a black child who seemed to be asleep on her left, each with his feet turned different ways. The inscriptions, Pausanias says, named them Death and Sleep, with Night the nurse of both. That is a picture, not a cult, but it shows how she was imagined.`,
             },
             {
               heading: 'Why so little',
@@ -245,7 +245,7 @@ It also means that the most traditional things you can do are the simplest: hono
           ],
           knowAndDont: {
             known:
-              'Pausanias mentions the oracle of Night at Megara (1.40.6), the statue by Rhoikos at Ephesus (10.38.6) and the chest of Kypselos (5.18.1). Virgil, Aeneid 6.249–251, has a black lamb sacrificed to the mother of the Eumenides. Parmenides’ proem describes the gates of Night and Day.',
+              'Pausanias mentions the oracle of Night on the acropolis of Megara (1.40.6), the statue by Rhoikos that the Ephesians called Night (10.38.6–7) and the chest of Kypselos (5.18.1). Virgil, Aeneid 6.249–251, has a black lamb sacrificed to the mother of the Eumenides. Parmenides’ proem describes the gates of Night and Day.',
             unknown:
               'How the Megara oracle worked, who used it and when are all unknown. We do not know whether ordinary Greeks prayed to Nyx at night. Any claim of an ancient Nyx festival or ritual should be treated with suspicion.',
           },
@@ -256,7 +256,7 @@ It also means that the most traditional things you can do are the simplest: hono
             'What ordinary night-time acts might have been prayers that nobody wrote down?',
           ],
           further: [
-            'Pausanias, Description of Greece 1.40.6, 5.18.1 and 10.38.6, trans. W. H. S. Jones (1918)',
+            'Pausanias, Description of Greece 1.40.6, 5.18.1 and 10.38.6–7, trans. W. H. S. Jones (1918–1935), free at theoi.com',
             'Virgil, Aeneid book 6',
             'Parmenides, fragment 1 (the proem)',
           ],
@@ -290,7 +290,7 @@ Stargazing is a natural devotion. Her children, in some traditions, include the 
               heading: 'Her shrine',
               body: `Keep Nyx’s shrine simple. A dark cloth, perhaps with stars on it. A small lamp or two tealights, for the torches of the Orphic hymn. A dark bowl for water or libations. An image of the night sky, or of her veiled and winged. A poppy seed head as a dried decoration for Hypnos, never to be eaten. Your dream journal beside it.
 
-Place it in your bedroom if you can, so that it is the last thing you see before sleep. Black, deep blue and dark purple, and stones such as obsidian, labradorite or lapis lazuli, are modern choices that suit her well. Lavender, which many people find calming at bedtime, is a gentle modern addition.`,
+Place it in your bedroom if you can, so that it is the last thing you see before sleep. Black, deep blue and dark purple, and stones such as obsidian, labradorite or lapis lazuli, are modern choices that suit her well. Lavender, which many people find calming at bedtime, is a gentle modern addition; use the dried flowers rather than essential oil if you live with cats, and never diffuse oils around pets.`,
             },
           ],
           knowAndDont: {
@@ -559,10 +559,10 @@ Once a year, on the new moon nearest your dedication or on the winter solstice, 
   sources: [
     'Hesiod, Theogony, trans. H. G. Evelyn-White, Hesiod, the Homeric Hymns and Homerica (1914), Project Gutenberg #348: https://www.gutenberg.org/ebooks/348 (quoted: 116, “Verily at the first Chaos came to be”; 123–125, “from Chaos came forth Erebus and black Night; but of Night were born Aether and Day, whom she conceived and bare from union in love with Erebus”; 211–212, “And Night bare hateful Doom and black Fate and Death, and she bare Sleep and the tribe of Dreams”; 744–750, “There stands the awful home of murky Night wrapped in dark clouds”, “where Night and Day draw near and greet one another as they pass the great threshold of bronze: and while the one is about to go down into the house, the other comes out at the door”; 756, “holds in her arms Sleep the brother of Death”)',
     'Homer, Iliad 14.256–261, trans. Samuel Butler (1898), Project Gutenberg #2199: https://www.gutenberg.org/ebooks/2199 (quoted: “had not Night who cows both men and gods protected me. I fled to her and Jove left off looking for me in spite of his being so angry, for he did not dare do anything to displease Night”)',
-    'Orphic Hymn 3 (2 in Taylor’s numbering), To Night, trans. Thomas Taylor (1792), as transcribed at theoi.com: https://www.theoi.com/Text/OrphicHymns1.html (quoted: “Night, parent goddess, source of sweet repose, from whom at first both Gods and men arose”; the fumigation with torches)',
+    'Orphic Hymn 3 (II in Taylor’s numbering), To Night, “The Fumigation with Torches”, trans. Thomas Taylor, The Hymns of Orpheus (London, 1792), checked against the archive.org scan: https://archive.org/details/dli.ministry.28841 (quoted, with the long s modernised: “Night, parent goddess, source of sweet repose, / From whom at first both Gods and men arose”; paraphrased: “Dissolving anxious care”, “Dispel the fears of Twilight’s dreadful shade”); same text in the 1787 first edition: https://archive.org/details/b28775430',
     'Aristophanes, Birds 693–702 (paraphrased)',
     'The Derveni papyrus, col. 11 and following; Gábor Betegh, The Derveni Papyrus (2004)',
-    'Pausanias, Description of Greece 1.40.6, 5.18.1 and 10.38.6',
+    'Pausanias, Description of Greece 1.40.6, 5.18.1 and 10.38.6–7, trans. W. H. S. Jones, checked at https://www.theoi.com/Text/Pausanias1C.html, https://www.theoi.com/Text/Pausanias5B.html and https://www.theoi.com/Text/Pausanias10C.html',
     'Virgil, Aeneid 6.249–251; Parmenides, fragment 1',
     'M. L. West, The Orphic Poems (1983) and Hesiod: Theogony (1966)',
   ],
