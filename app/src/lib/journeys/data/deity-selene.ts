@@ -19,7 +19,7 @@ It is a self-dedication, not an initiation. It is best begun on the Noumenia, th
     'Selene was blended with Artemis and Hekate mainly in later antiquity. Earlier Greeks kept them distinct. The modern “triple moon goddess” is a twentieth-century idea.',
     'The Wiccan rite called Drawing Down the Moon is initiatory and oathbound in traditional covens; this journey does not reproduce it. The phrase itself comes from ancient Greek jokes about Thessalian witches.',
     'If you are outside at night to watch the moon, stay in safe, lit places, tell someone where you are, and dress warmly.',
-    'White lilies and some night-blooming flowers are toxic to cats and dogs. Choose pet-safe white flowers such as roses or jasmine if you share your home with animals.',
+    'White lilies and some night-blooming flowers are toxic to cats and dogs. Choose pet-safe white flowers such as roses or true jasmine (Jasminum) if you share your home with animals; “Carolina jasmine” and “star jasmine” are different plants, and Carolina jasmine is poisonous.',
   ],
   holyDays: ['noumenia', 'mounichia', 'deipnon'],
   stages: [
@@ -71,7 +71,7 @@ It is a self-dedication, not an initiation. It is best begun on the Noumenia, th
           {
             title: 'Greet Selene',
             instructions:
-              'Turn toward the crescent, or the place in the sky where she is. Raise your hands with palms up, toward her. Greeks often greeted the rising moon with a kiss blown from the hand; you may do that too.',
+              'Turn toward the crescent, or the place in the sky where she is. Raise your hands with palms up, toward her. Plato mentions people bowing to the sun and moon as they rose and set, and in the ancient Mediterranean people sometimes kissed their hand toward a god in worship; you may greet her either way.',
             spoken:
               'Selene, bright moon, daughter of Hyperion, sister of the sun: hail to you. I am [your name]. A new month begins with your light. I would like to know you.',
             minutes: 2,
@@ -173,23 +173,23 @@ For a devotee, Endymion is a reminder that Selene is a goddess of rest, sleep an
             },
             {
               heading: 'Pan and the fleece',
-              body: `A stranger story, told by the Roman poet Virgil and attributed to older Greek sources, says that Pan, the goat-legged god of the wild, won Selene by offering her a beautiful white fleece, or by disguising himself in one. The moon, who loves white and shining things, came down to him in the woods. It is a small, odd tale, but it explains why white wool and white things are sometimes given to her by modern devotees.`,
+              body: `A stranger story, told by the Roman poet Virgil (the later scholar Macrobius says he took it from the Greek poet Nicander), says that Pan, the goat-legged god of the wild, won Selene by offering her a beautiful white fleece, or by disguising himself in one. The moon, who loves white and shining things, came down to him in the woods. It is a small, odd tale, but it explains why white wool and white things are sometimes given to her by modern devotees.`,
             },
             {
               heading: 'Drawing down the moon',
               body: `The women of Thessaly in northern Greece had a reputation for witchcraft, and above all for being able to draw down the moon from the sky. Aristophanes, in his comedy the Clouds (423 BCE), has a debt-ridden old man plan to hire a Thessalian witch to pull down the moon and lock it in a box, so that the month will never end and his interest will never fall due. Plato mentions the same belief more seriously, saying that the Thessalian women who draw down the moon pay for it with something dear to them.
 
-Eclipses were sometimes blamed on such witches, and people banged bronze pots to help the moon. This is where the modern Wiccan phrase “drawing down the moon” comes from, though the Wiccan rite is a twentieth-century creation with a different meaning, and in traditional covens it is oathbound. In Greek eyes, pulling the moon down was dangerous meddling with a goddess who should be left to drive her horses in peace.`,
+Eclipses were sometimes blamed on such witches, and Roman writers describe crowds clashing bronze to help the moon in her trouble. This is where the modern Wiccan phrase “drawing down the moon” comes from, though the Wiccan rite is a twentieth-century creation with a different meaning, and in traditional covens it is oathbound. In Greek eyes, pulling the moon down was dangerous meddling with a goddess who should be left to drive her horses in peace.`,
             },
           ],
           knowAndDont: {
             known:
               'Endymion appears in Sappho (according to ancient commentators), Apollonius (Argonautica 4.57–58), Pausanias (5.1.4–5) and many others. Pan and the fleece is in Virgil, Georgics 3.391–393. Aristophanes’ Clouds (749–755) and Plato’s Gorgias (513a) mention the Thessalian witches.',
             unknown:
-              'Whether Endymion had a real cult beyond his tomb shrines is unclear. The fifty daughters as lunar months is a modern interpretation. Virgil says he took the Pan story from others but does not name them, and its Greek source is uncertain.',
+              'Whether Endymion had a real cult beyond his tomb shrines is unclear. The fifty daughters as lunar months is a modern interpretation. Macrobius (Saturnalia 5.22.9–10) names Nicander as Virgil’s source for the Pan story, but Nicander’s version is lost.',
           },
           inPractice:
-            'Some devotees honour Selene with a quiet bedtime greeting, asking for good sleep and gentle dreams, and keep a dream journal beside the bed as a lunar practice. Try it this week: before sleep, look out at the night, greet her, and write down what you dream.',
+            'Some devotees honour Selene with a quiet bedtime greeting, asking for good sleep and gentle dreams, and keep a dream journal beside the bed as a lunar practice. Try it this week: before sleep, look out at the night, greet her, and write down what you dream. If you make the dream pillow, leave out the mugwort if you are pregnant, trying to conceive or breastfeeding, or allergic to ragweed and daisy-family plants; lavender or chamomile alone works well, and keep dried herbs away from cats.',
           reflect: [
             'What would it mean to love something that only meets you at night?',
             'How do you feel about the Greek idea that pulling the moon down is meddling, not power?',
@@ -217,7 +217,7 @@ Plato, in the Laws, mentions people bowing and praying to the sun and moon at th
             },
             {
               heading: 'The few traces',
-              body: `There are some traces. Pausanias saw bronze statues of Helios and Selene in the marketplace of Elis, with rays on his head and horns on hers. Near Thalamai in Laconia there was an oracle of Pasiphae, “the all-shining,” which Pausanias suggests was a title of the moon; people slept there and received answers in dreams. In Attica and elsewhere there are a few inscriptions and altars to Selene, and Orphic poetry gave her a hymn in which she was offered aromatic incense.
+              body: `There are some traces. Pausanias saw stone images of the sun and the moon in the marketplace of Elis, with rays on his head and horns on hers. Near Thalamai in Laconia there was a dream oracle, where people slept and the goddess answered them in dreams. Pausanias calls it a sanctuary of Ino, but bronze statues of Pasiphae, “the all-shining,” and Helios stood there, and he says Pasiphae is a title of the moon; Plutarch calls it the oracle of Pasiphae. In Attica and elsewhere there are a few inscriptions and altars to Selene, and Orphic poetry gave her a hymn in which she was offered aromatic incense.
 
 The Orphic Hymn to the Moon, in Thomas Taylor’s 1792 translation, begins “Hear, Goddess queen, diffusing silver light” and calls her “fair lamp of Night.” The Orphic hymns are late, probably from the Roman period, and were used by a particular group, but they show that someone was praying to her.`,
             },
@@ -229,7 +229,7 @@ In Athens, the Mounichia festival of Artemis, at the full moon of spring, featur
             },
             {
               heading: 'Roman Luna',
-              body: `The Romans had a moon goddess of their own, Luna, with a temple on the Aventine hill whose anniversary fell on 31 March, and a shrine on the Palatine to Luna Noctiluca, “the night-shining,” where a lamp burned at night. Later Romans identified Diana with the moon as Greeks did with Artemis. The Roman day of the moon, dies Lunae, survives as Monday in English, lundi in French and lunedì in Italian.
+              body: `The Romans had a moon goddess of their own, Luna, with a temple on the Aventine hill whose anniversary fell on 31 March, and a temple on the Palatine to Luna Noctiluca, “the night-shining,” which the scholar Varro says was lit up at night. Later Romans identified Diana with the moon as Greeks did with Artemis. The Roman day of the moon, dies Lunae, survives as Monday in English, lundi in French and lunedì in Italian.
 
 So if you honour Selene on Mondays, you are following a Roman-era naming of the week rather than a Greek custom, since the Greeks did not use a seven-day week. That is a perfectly good modern practice. Just know where it comes from.`,
             },
@@ -343,7 +343,7 @@ If sleeplessness or low mood is wearing you down, do talk to a doctor; devotion 
           sections: [
             {
               heading: 'Her days',
-              body: `The natural holy days of Selene are the moon’s own: the Noumenia, when the first crescent is seen; the full moon, the dichomenia, in the middle of the month; and, more quietly, the dark of the moon, which belongs to Hekate but is the night Selene rests. The Mounichia, Artemis’s full-moon festival in spring, is a good yearly day to bake round, candle-ringed cakes for the full moon.
+              body: `The natural holy days of Selene are the moon’s own: the Noumenia, when the first crescent is seen; the full moon, the dichomenia, in the middle of the month; and, more quietly, the dark of the moon, which in Athens belonged to Hekate; many modern devotees think of it as the night Selene rests. The Mounichia, Artemis’s full-moon festival in spring, is a good yearly day to bake round, candle-ringed cakes for the full moon.
 
 Eclipses were frightening in antiquity, a sign of the moon in trouble. Modern devotees often keep a gentle vigil during a lunar eclipse, keeping her company as she darkens and returns. Mondays are a Roman-era choice; Greeks did not use the seven-day week.`,
             },
@@ -355,7 +355,7 @@ Offerings to Selene are generally treated as those of the gods above: set out, p
             },
             {
               heading: 'Praying to a goddess you can see',
-              body: `Selene is one of the few gods you can actually look at while you pray. Use that. Greeks prayed to the sky gods standing, with arms raised and palms up. Face her, raise your hands, and speak to her directly. Plato mentions people bowing to her at rising and setting. A simple bow, or a kiss blown from the fingers, is an old and lovely gesture.
+              body: `Selene is one of the few gods you can actually look at while you pray. Use that. Greeks prayed to the sky gods standing, with arms raised and palms up. Face her, raise your hands, and speak to her directly. Plato mentions people bowing to her at rising and setting. A simple bow, or a kiss of the hand toward her, is an old gesture of worship.
 
 Name her with the hymn’s titles: white-armed, bright-tressed, mild, queen. Mention her family, Hyperion, Theia and Helios, as Greek prayer liked to. Then speak plainly. She does not need elaborate words. Ask for good sleep, steady rhythm, clear dreams, and a good month.`,
             },
@@ -468,7 +468,7 @@ Ancient Greeks rarely dedicated themselves to a single god, and almost nobody de
           {
             title: 'Greet her rising',
             instructions:
-              'Face the moon. Raise your arms, palms up. Bow, or blow her a kiss from your fingers, as Greeks greeted the rising moon. Add incense if you are using it.',
+              'Face the moon. Raise your arms, palms up. Bow, as Plato says people did at moonrise, or kiss your hand toward her. Add incense if you are using it.',
             spoken:
               'Hail, white-armed goddess, bright Selene, mild, bright-tressed queen! Daughter of Hyperion and Theia, sister of the sun and the dawn, driver of the long-maned horses: hear me.',
             minutes: 2,
@@ -553,9 +553,9 @@ Once a year, at the full moon nearest your dedication, or at the Mounichia, read
     'Homeric Hymn 32, To Selene, trans. H. G. Evelyn-White, Hesiod, the Homeric Hymns and Homerica (1914), Project Gutenberg #348: https://www.gutenberg.org/ebooks/348 (quoted: “from her immortal head a radiance is shown from heaven and embraces earth”; “at eventime in the mid-month”; “her great orbit is full and then her beams shine brightest as she increases. So she is a sure token and a sign to mortal men”; “exceeding lovely amongst the deathless gods”; “Hail, white-armed goddess, bright Selene, mild, bright-tressed queen!”)',
     'Hesiod, Theogony 371–374, trans. H. G. Evelyn-White (1914), Project Gutenberg #348 (quoted: “great Helius (Sun) and clear Selene (Moon) and Eos (Dawn) who shines upon all”)',
     'Apollonius of Rhodes, Argonautica 4.57–58, trans. R. C. Seaton (1912), Project Gutenberg #830: https://www.gutenberg.org/ebooks/830 (quoted: “nor do I alone burn with love for fair Endymion”)',
-    'Orphic Hymn 9 (8 in Taylor’s numbering), To the Moon, trans. Thomas Taylor (1792), as transcribed at theoi.com: https://www.theoi.com/Text/OrphicHymns1.html (quoted: “Hear, Goddess queen, diffusing silver light”; “fair lamp of Night”)',
-    'Pausanias, Description of Greece 3.26.1, 5.1.4–5 and 6.24.6',
-    'Plato, Laws 887e and Gorgias 513a; Aristophanes, Clouds 749–755; Virgil, Georgics 3.391–393',
+    'Orphic Hymn 9 (VIII in Taylor’s numbering), To the Moon, “The Fumigation from Aromatics”, trans. Thomas Taylor, The Hymns of Orpheus (London, 1792), checked against the archive.org scan: https://archive.org/details/dli.ministry.28841 (quoted, with the long s modernised: “Hear, Goddess queen, diffusing silver light”; “Fair lamp of Night”)',
+    'Pausanias, Description of Greece 3.26.1, 5.1.4–5 and 6.24.6, trans. W. H. S. Jones, checked at https://www.theoi.com/Text/Pausanias3B.html and https://www.theoi.com/Text/Pausanias6B.html',
+    'Plato, Laws 887e and Gorgias 513a; Aristophanes, Clouds 749–755; Virgil, Georgics 3.391–393; Macrobius, Saturnalia 5.22.9–10; Varro, De Lingua Latina 5.68 (Luna Noctiluca); Plutarch, Agis 9 (the oracle of Pasiphae)',
     'Jon D. Mikalson, The Sacred and Civil Calendar of the Athenian Year (1975); H. W. Parke, Festivals of the Athenians (1977)',
     'Ronald Hutton, The Triumph of the Moon (1999); Robert Graves, The White Goddess (1948)',
   ],
