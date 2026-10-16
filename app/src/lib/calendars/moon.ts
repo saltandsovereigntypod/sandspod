@@ -17,14 +17,17 @@
 // as "the second full moon in a calendar month", which is now the popular
 // meaning. Both are offered (choice 'blue'); the seasonal rule is the default.
 //
-// Folk names follow the Old Farmer's Almanac list (Wolf, Snow, Worm, Pink,
-// Flower, Strawberry, Buck, Sturgeon, Corn/Harvest, Hunter's, Beaver, Cold),
-// which mixes Algonquian, Colonial American and European names. They belong
-// to the northern seasons; south of the equator they are turned six months.
-// The Harvest Moon is the full moon nearest the autumn equinox: when that is
-// the first moon of autumn, the late-summer moon is the Corn Moon and the
-// Hunter's Moon follows the Harvest Moon (the Beaver Moon drops out that year),
-// as the Old Farmer's Almanac does.
+// Folk names follow the Old Farmer's Almanac list by calendar month (Wolf,
+// Snow, Worm, Pink, Flower, Strawberry, Buck, Sturgeon, Corn/Harvest,
+// Hunter's, Beaver, Cold), which mixes Algonquian, Colonial American and
+// European names. A month is named by its full moon. They belong to the
+// northern seasons; south of the equator they are turned six months. The
+// Harvest Moon is the full moon nearest the autumn equinox: when it falls in
+// October the September moon is the Corn Moon and the Hunter's Moon moves to
+// November (the Beaver Moon drops out that year), as the Old Farmer's Almanac
+// does. A thirteenth moon in a lunar year is not by itself a Blue Moon: the
+// Blue Moon is the extra full moon by the chosen rule, which usually but not
+// always falls in a thirteen-moon year.
 
 import { julianDayToDate, moonState, phaseJde, lunationNear, sunReaches, type PrincipalPhase } from '../moon.ts';
 import type { CalendarContext, CalendarDate, CalendarDef, CalendarEvent, CalendarMark } from './types.ts';
@@ -33,7 +36,8 @@ const DAY_MS = 86_400_000;
 
 const startOfDay = (date: Date) => new Date(date.getFullYear(), date.getMonth(), date.getDate());
 const addDays = (date: Date, days: number) => new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
-const dayKey = (date: Date) => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+const pad = (n: number) => String(n).padStart(2, '0');
+const dayKey = (date: Date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 /** Whole local days from a to b. */
 const daysFrom = (a: Date, b: Date) => Math.round((startOfDay(b).getTime() - startOfDay(a).getTime()) / DAY_MS);
 
@@ -139,13 +143,6 @@ export function lunarYearOf(day: Date, start: YearStart, south: boolean): LunarY
 
 // ─── Full moon names ─────────────────────────────────────────────────────
 
-type Season = 'winter' | 'spring' | 'summer' | 'autumn';
-const SEASON_NAMES: Record<Season, [string, string, string]> = {
-  winter: ['Wolf Moon', 'Snow Moon', 'Worm Moon'],
-  spring: ['Pink Moon', 'Flower Moon', 'Strawberry Moon'],
-  summer: ['Buck Moon', 'Sturgeon Moon', 'Corn Moon'],
-  autumn: ['Hunter’s Moon', 'Beaver Moon', 'Cold Moon'],
-};
 const MONTH_NAMES = [
   'Wolf Moon',
   'Snow Moon',
@@ -174,14 +171,7 @@ export const MOON_MEANINGS: Record<string, string> = {
   'Hunter’s Moon': 'The moon after the Harvest Moon, lighting the fields for autumn hunting.',
   'Beaver Moon': 'Beavers building their winter lodges; the time to set traps before the freeze.',
   'Cold Moon': 'The long cold nights near the winter solstice.',
-  'Blue Moon': 'An extra full moon: thirteen fell in the year instead of twelve.',
-};
-
-// Sun longitude where each season begins, north and south.
-const SEASON_START: Record<'north' | 'south', Record<0 | 90 | 180 | 270, Season>> = {
-  north: { 270: 'winter', 0: 'spring', 90: 'summer', 180: 'autumn' },
-  south: { 90: 'winter', 180: 'spring', 270: 'summer', 0: 'autumn' },
-};
+  };
 
 /** The solstices and equinoxes around `date`, in order. */
 function cardinalPoints(date: Date): { at: Date; longitude: 0 | 90 | 180 | 270 }[] {
@@ -219,23 +209,6 @@ function isHarvestMoon(full: Date, south: boolean): boolean {
   return false;
 }
 
-/** Folk name of a full moon by the Maine Farmers' Almanac's seasonal rule. */
-function seasonalName(full: Date, south: boolean): string {
-  const points = cardinalPoints(full);
-  const i = points.findIndex((p, n) => p.at.getTime() <= full.getTime() && full.getTime() < points[n + 1].at.getTime());
-  const season = SEASON_START[south ? 'south' : 'north'][points[i].longitude];
-  const moons = fullMoonsBetween(points[i].at, points[i + 1].at);
-  const position = moons.findIndex((m) => m.getTime() === full.getTime());
-  let names = [...SEASON_NAMES[season]];
-  if (season === 'summer' && isHarvestMoon(moons[moons.length - 1], south)) names = ['Buck Moon', 'Sturgeon Moon', 'Harvest Moon'];
-  if (season === 'autumn' && isHarvestMoon(moons[0], south)) names = ['Harvest Moon', 'Hunter’s Moon', 'Cold Moon'];
-  if (moons.length === 4) {
-    if (position === 2) return 'Blue Moon';
-    return names[position === 3 ? 2 : position];
-  }
-  return names[Math.min(position, 2)];
-}
-
 /** The full moon one lunation before `full`. */
 function previousFull(full: Date): Date {
   for (let k = lunationNear(full) - 1; k <= lunationNear(full) + 2; k++) {
@@ -244,11 +217,27 @@ function previousFull(full: Date): Date {
   return new Date(full.getTime() - 29.53 * DAY_MS);
 }
 
-/** Folk name by calendar month, with the second full moon in a month a Blue Moon. */
-function monthlyName(full: Date, south: boolean): string {
+/** Whether a full moon is the third of four in its astronomical season (the Maine Farmers' Almanac's Blue Moon). */
+export function isSeasonalBlueMoon(full: Date): boolean {
+  const points = cardinalPoints(full);
+  const i = points.findIndex((p, n) => p.at.getTime() <= full.getTime() && full.getTime() < points[n + 1].at.getTime());
+  const moons = fullMoonsBetween(points[i].at, points[i + 1].at);
+  return moons.length === 4 && moons[2].getTime() === full.getTime();
+}
+
+/** Whether a full moon is the second in its calendar month (the popular Blue Moon). */
+export function isMonthlyBlueMoon(full: Date): boolean {
   const prior = previousFull(full);
-  if (prior.getFullYear() === full.getFullYear() && prior.getMonth() === full.getMonth()) return 'Blue Moon';
+  return prior.getFullYear() === full.getFullYear() && prior.getMonth() === full.getMonth();
+}
+
+/** The month's folk name (Old Farmer's Almanac), turned six months in the south, with the Harvest Moon rule. */
+export function monthName(full: Date, south: boolean): string {
+  const prior = previousFull(full);
   const turned = (full.getMonth() + (south ? 6 : 0)) % 12;
+  // A second full moon in a month repeats its month's name (its first is the Harvest Moon, perhaps).
+  const base = isMonthlyBlueMoon(full) ? monthName(prior, south) : null;
+  if (base) return base === 'Harvest Moon' ? 'Hunter’s Moon' : base;
   // Harvest: the moon nearest the autumn equinox, in the (turned) ninth or tenth month.
   if ((turned === 8 || turned === 9) && isHarvestMoon(full, south)) return 'Harvest Moon';
   // When the Harvest Moon came in the tenth month, the Hunter's Moon follows in the eleventh.
@@ -256,8 +245,13 @@ function monthlyName(full: Date, south: boolean): string {
   return MONTH_NAMES[turned];
 }
 
-export function fullMoonName(full: Date, south: boolean, rule: BlueRule = 'seasonal'): string {
-  return rule === 'monthly' ? monthlyName(full, south) : seasonalName(full, south);
+export type FullMoonName = { name: string; /** The month's own name, even for a Blue Moon. */ month: string; blue: boolean };
+
+/** A full moon's folk name: its month's name, or the Blue Moon by the chosen rule. */
+export function fullMoonName(full: Date, south: boolean, rule: BlueRule = 'seasonal'): FullMoonName {
+  const month = monthName(full, south);
+  const blue = rule === 'monthly' ? isMonthlyBlueMoon(full) : isSeasonalBlueMoon(full);
+  return { name: blue ? 'Blue Moon' : month, month, blue };
 }
 
 // ─── Words ───────────────────────────────────────────────────────────────
@@ -276,50 +270,86 @@ const MARK_MEANINGS: Record<string, string> = {
   'Dark Moon': 'The last day of the moon’s month, before the new moon: the old moon hidden in the Sun’s glare. A time for rest and endings.',
 };
 
-type MoonInfo = { lunation: Lunation; year: LunarYear; number: number; day: number; name: string; numbered: string; folk: string };
+type Month = {
+  lunation: Lunation;
+  year: LunarYear;
+  /** 1–13 within the lunar year. */
+  number: number;
+  /** The name shown: folk or numbered, per the choice. */
+  name: string;
+  numbered: string;
+  full: FullMoonName;
+};
 
-function info(day: Date, ctx: CalendarContext): MoonInfo {
+const numberedName = (n: number) => `${ORDINAL_WORDS[n - 1] ?? ordinal(n)} Moon`;
+const ordinalWord = (n: number) => ORDINAL_WORDS[n - 1]?.toLowerCase() ?? ordinal(n);
+
+function monthOf(l: Lunation, ctx: CalendarContext): Month {
   const south = ctx.hemisphere === 'south';
-  const year = lunarYearOf(day, yearStartOf(ctx), south);
-  const here = lunationOf(day);
-  const number = here.k - year.start.k + 1;
-  const folk = fullMoonName(here.full, south, blueRuleOf(ctx));
-  const numbered = `${ORDINAL_WORDS[number - 1] ?? `${ordinal(number)}`} Moon`;
-  return { lunation: here, year, number, day: daysFrom(here.start, day) + 1, name: nameStyleOf(ctx) === 'numbered' ? numbered : folk, numbered, folk };
+  const year = lunarYearOf(l.start, yearStartOf(ctx), south);
+  const number = l.k - year.start.k + 1;
+  const full = fullMoonName(l.full, south, blueRuleOf(ctx));
+  const numbered = numberedName(number);
+  return { lunation: l, year, number, name: nameStyleOf(ctx) === 'numbered' ? numbered : full.name, numbered, full };
 }
 
-function marksOn(day: Date, l: Lunation): CalendarMark[] {
+/** What a full moon means, with a word on the Blue Moon. */
+function fullMeaning(m: Month, ctx: CalendarContext): string {
+  const own = MOON_MEANINGS[m.full.month] ?? '';
+  if (!m.full.blue) {
+    return isMonthlyBlueMoon(m.lunation.full) ? `${own} The second full moon this month, which many now call a Blue Moon.` : own;
+  }
+  const why =
+    blueRuleOf(ctx) === 'monthly'
+      ? 'A Blue Moon: the second full moon in one calendar month.'
+      : 'A Blue Moon: the third of four full moons in this season, by the Maine Farmers’ Almanac’s rule.';
+  return `${why} By its month it is also the ${m.full.month}.`;
+}
+
+function marksOn(day: Date, m: Month, ctx: CalendarContext): CalendarMark[] {
+  const l = m.lunation;
   const marks: CalendarMark[] = [];
-  const add = (name: string) => marks.push({ name, meaning: MARK_MEANINGS[name] });
+  const add = (name: string, meaning = MARK_MEANINGS[name]) => marks.push({ name, meaning });
   if (sameDay(day, l.newMoon)) add('New Moon');
   if (sameDay(day, l.firstQuarter)) add('First Quarter');
-  if (sameDay(day, l.full)) add('Full Moon');
+  if (sameDay(day, l.full)) {
+    add('Full Moon');
+    if (m.full.blue) add('Blue Moon', fullMeaning(m, ctx));
+  }
   if (sameDay(day, l.lastQuarter)) add('Last Quarter');
   if (sameDay(addDays(day, 1), l.next)) add('Dark Moon');
   return marks;
 }
 
+function phaseWords(at: Date): string {
+  const phase = moonState(at).name.toLowerCase();
+  if (phase === 'new moon' || phase === 'full moon') return `the ${phase}`;
+  if (phase === 'first quarter' || phase === 'last quarter') return `the moon at its ${phase}`;
+  return `the moon ${phase}`;
+}
+
+function yearLabel(year: LunarYear): string {
+  const first = year.start.start;
+  const last = addDays(year.next.start, -1);
+  const span = first.getFullYear() === last.getFullYear() ? String(first.getFullYear()) : `${first.getFullYear()}–${String(last.getFullYear()).slice(-2)}`;
+  return `Lunar year ${span} · ${year.months.length} moons, from ${SHORT_MONTH[first.getMonth()]} ${first.getDate()}, ${first.getFullYear()}`;
+}
+
 function dateOf(day: Date, ctx: CalendarContext): CalendarDate {
   const at = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 12);
-  const m = info(at, ctx);
-  const days = daysFrom(m.lunation.start, m.lunation.next);
-  const phase = moonState(at).name.toLowerCase();
+  const m = monthOf(lunationOf(at), ctx);
+  const dayNumber = daysFrom(m.lunation.start, at) + 1;
   const folkStyle = nameStyleOf(ctx) === 'folk';
-  const short = folkStyle ? `${m.name} · day ${m.day}` : `Moon ${m.number} · day ${m.day}`;
-  const of = `${ordinal(m.day)} day of the ${m.name}`;
-  const which = folkStyle ? `, the ${ORDINAL_WORDS[m.number - 1]?.toLowerCase() ?? ordinal(m.number)} moon of the year` : `, the ${m.folk}`;
-  const phaseWords = phase === 'new moon' || phase === 'full moon' ? `the ${phase}` : phase === 'first quarter' || phase === 'last quarter' ? `the moon at its ${phase}` : `the moon ${phase}`;
-  const startYear = m.year.start.start;
-  const endYear = addDays(m.year.next.start, -1);
-  const label = startYear.getFullYear() === endYear.getFullYear() ? String(startYear.getFullYear()) : `${startYear.getFullYear()}–${String(endYear.getFullYear()).slice(-2)}`;
+  const short = folkStyle ? `${m.name} · day ${dayNumber}` : `Moon ${m.number} · day ${dayNumber}`;
+  const which = folkStyle ? `the ${ordinalWord(m.number)} moon of the year` : `the ${m.full.name}`;
   return {
     calendar: 'moon',
     short,
-    long: `The ${of}${which}: ${phaseWords}.`,
-    month: { name: m.name, index: m.number, days, meaning: MOON_MEANINGS[m.folk] },
-    day: m.day,
-    year: { label: `Lunar year ${label} · ${m.year.months.length} moons, from ${SHORT_MONTH[startYear.getMonth()]} ${startYear.getDate()}, ${startYear.getFullYear()}` },
-    marks: marksOn(at, m.lunation),
+    long: `The ${ordinal(dayNumber)} day of the ${m.name}, ${which}: ${phaseWords(at)}.`,
+    month: { name: m.name, index: m.number, days: daysFrom(m.lunation.start, m.lunation.next), meaning: fullMeaning(m, ctx) },
+    day: dayNumber,
+    year: { label: yearLabel(m.year) },
+    marks: marksOn(at, m, ctx),
   };
 }
 
@@ -327,39 +357,28 @@ function eventsBetween(from: Date, to: Date, ctx: CalendarContext): CalendarEven
   const first = startOfDay(from).getTime();
   const last = startOfDay(to).getTime();
   const out: CalendarEvent[] = [];
-  const south = ctx.hemisphere === 'south';
-  const numberedStyle = nameStyleOf(ctx) === 'numbered';
-  let l = lunationOf(from);
-  if (l.start.getTime() < first && startOfDay(l.full).getTime() < first) l = lunation(l.k + 1);
-  for (; l.start.getTime() <= last; l = lunation(l.k + 1)) {
-    const year = lunarYearOf(l.start, yearStartOf(ctx), south);
-    const number = l.k - year.start.k + 1;
-    const folk = fullMoonName(l.full, south, blueRuleOf(ctx));
-    const numbered = `${ORDINAL_WORDS[number - 1] ?? ordinal(number)} Moon`;
-    const name = numberedStyle ? numbered : folk;
-    if (l.start.getTime() >= first) {
-      out.push({
-        calendar: 'moon',
-        id: `moon-new-${dayKey(l.start)}`,
-        name: number === 1 ? `${name} begins · the lunar new year` : `${name} begins`,
-        meaning: `New moon: day 1 of the ${numberedStyle ? `${ORDINAL_WORDS[number - 1]?.toLowerCase()} moon` : `${ORDINAL_WORDS[number - 1]?.toLowerCase()} moon of the year, the ${folk}`}.${number === 1 ? ' The first new moon of the lunar year.' : ''}`,
-        date: l.start,
-        days: 1,
-      });
-    }
-    const fullDay = startOfDay(l.full);
-    if (fullDay.getTime() >= first && fullDay.getTime() <= last) {
-      out.push({
-        calendar: 'moon',
-        id: `moon-full-${dayKey(fullDay)}`,
-        name: numberedStyle ? `Full moon of the ${numbered}` : `The ${folk} is full`,
-        meaning: MOON_MEANINGS[folk] ?? 'The full moon.',
-        date: fullDay,
-        days: 1,
-      });
-    }
+  const folkStyle = nameStyleOf(ctx) === 'folk';
+  for (let l = lunationOf(from); l.start.getTime() <= last; l = lunation(l.k + 1)) {
+    const m = monthOf(l, ctx);
+    const newYear = m.number === 1;
+    out.push({
+      calendar: 'moon',
+      id: `moon-new-${dayKey(l.start)}`,
+      name: newYear ? `${m.name} begins · the lunar new year` : `${m.name} begins`,
+      meaning: `New moon: day 1 of the ${folkStyle ? `${ordinalWord(m.number)} moon of the year` : `${ordinalWord(m.number)} moon, the ${m.full.name}`}.${newYear ? ' The first new moon of the lunar year.' : ''}`,
+      date: l.start,
+      days: 1,
+    });
+    out.push({
+      calendar: 'moon',
+      id: `moon-full-${dayKey(startOfDay(l.full))}`,
+      name: folkStyle ? `${m.full.name} · full moon` : `Full moon of the ${m.numbered}`,
+      meaning: folkStyle ? fullMeaning(m, ctx) : `The ${m.full.name}. ${fullMeaning(m, ctx)}`,
+      date: startOfDay(l.full),
+      days: 1,
+    });
   }
-  return out.filter((e) => e.date.getTime() >= first && e.date.getTime() <= last);
+  return out.filter((e) => e.date.getTime() >= first && e.date.getTime() <= last).sort((a, b) => a.date.getTime() - b.date.getTime());
 }
 
 export const MOON_CALENDAR: CalendarDef = {
@@ -367,7 +386,7 @@ export const MOON_CALENDAR: CalendarDef = {
   name: 'The moon’s months',
   confidence: 'historical',
   about:
-    'Counting months by the moon is one of the oldest ways of keeping time, used across the ancient world and still kept in the Hebrew, Islamic, Chinese and Hindu calendars. Here each month runs from one new moon to the next, and day 1 is the day the new moon falls where you are; many older calendars began instead at the first thin crescent, a day or two later. The way the months are gathered into a year is a modern convention: by default the year begins at the first new moon on or after the winter solstice, with the first new moon after the spring equinox, or after Samhain, as other choices. The folk names (Wolf, Snow, Worm and the rest) come from the Old Farmer’s Almanac’s mix of Algonquian, Colonial American and European names; they follow the northern seasons, so they are turned six months south of the equator. A Blue Moon is, by the old Maine Farmers’ Almanac rule, the third full moon of a season that has four; the popular “second full moon in a month” comes from a 1946 misreading of it.',
+    'Counting months by the moon is one of the oldest ways of keeping time, used across the ancient world and still kept in the Hebrew, Islamic, Chinese and Hindu calendars. Here each month runs from one new moon to the next, and day 1 is the day the new moon falls where you are; many older calendars began instead at the first thin crescent, a day or two later. The way the months are gathered into a year is a modern convention: by default the year begins at the first new moon on or after the winter solstice, with the first new moon after the spring equinox, or after Samhain, as other choices. Each month is named for its full moon. The folk names (Wolf, Snow, Worm and the rest) go by the month the full moon falls in and come from the Old Farmer’s Almanac’s mix of Algonquian, Colonial American and European names; they follow the northern seasons, so they are turned six months south of the equator. A Blue Moon is, by the old Maine Farmers’ Almanac rule, the third full moon of a season that has four; the popular “second full moon in a month” comes from a 1946 misreading of it. Both rules are offered.',
   choices: [
     {
       key: 'names',
@@ -394,7 +413,7 @@ export const MOON_CALENDAR: CalendarDef = {
       default: 'seasonal',
       options: [
         { value: 'seasonal', label: 'The third of four in a season', note: 'The Maine Farmers’ Almanac’s original rule.' },
-        { value: 'monthly', label: 'The second in a month', note: 'The popular modern meaning; the other moons are named by month.' },
+        { value: 'monthly', label: 'The second in a month', note: 'The popular modern meaning, from a 1946 misreading.' },
       ],
     },
   ],

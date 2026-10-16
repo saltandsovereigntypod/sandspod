@@ -170,13 +170,12 @@ export function describeTithi(n: number): Tithi {
 function monthName(month: LunarMonth, tithi: number, scheme: string): { index: number; name: string; adhika: boolean } {
   let index = month.index;
   let adhika = month.adhika;
-  if (scheme === 'purnimanta' && tithi > 15) {
-    // The dark fortnight belongs to the next month. After an adhika month's
-    // dark half, the nija month follows; after the adhika's bright half,
-    // its own dark half still counts as adhika.
-    const next = lunarMonthAt(new Date(month.end + HOUR));
-    index = next.index;
-    adhika = next.adhika;
+  if (scheme === 'purnimanta' && tithi > 15 && !month.adhika) {
+    // The dark fortnight belongs to the next month. An adhika month is the
+    // same new-moon-to-new-moon span in both schemes (it sits between the
+    // dark and bright halves of the nija month), so it is left as it is.
+    index = lunarMonthAt(new Date(month.end + HOUR)).index;
+    adhika = false;
   }
   return { index, name: `${adhika ? 'Adhika ' : ''}${HINDU_MONTHS[index].name}`, adhika };
 }
