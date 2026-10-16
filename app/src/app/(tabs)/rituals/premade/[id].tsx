@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
+import { SupportLink } from '../../../../components/SupportLink';
 import { AltarChoiceSheet, useBeginOnAltar } from '../../../../components/altar/connect/BeginOnAltar';
 import { IngredientCheck } from '../../../../components/altar/connect/IngredientCheck';
 import { premadeNeeds } from '../../../../lib/altar/connect/ingredients';
@@ -178,6 +179,7 @@ export default function PremadeView() {
       </Card>
 
       <AltarChoiceSheet visible={choosingAltar} title={premade.title} onClose={() => setChoosingAltar(false)} onPick={(id) => void beginOnAltar(id)} />
+      <SupportLink />
     </RitualScreen>
   );
 }

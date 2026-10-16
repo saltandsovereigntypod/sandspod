@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
+import { SupportLink } from '../../../../../../components/SupportLink';
 import { Body, Card, RitualScreen, SectionLabel, Title, tell, ui } from '../../../../../../components/rituals/ui';
 import { relativeDay } from '../../../../../../lib/calendar';
 import { ANCESTORS, anniversaryWords, candleDraft, formatPartial, normalizeAncestor, upcomingAnniversaries } from '../../../../../../lib/craft/hedge/ancestors';
@@ -79,6 +80,7 @@ export default function AncestorPage() {
       )}
 
       <Button label="Edit" variant="outline" onPress={() => router.push(`/rituals/craft/hedge/ancestors/edit?id=${raw.id}` as Href)} />
+      <SupportLink />
     </RitualScreen>
   );
 }

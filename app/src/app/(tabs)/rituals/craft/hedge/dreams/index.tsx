@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
+import { SupportLink } from '../../../../../../components/SupportLink';
 import { Body, Card, Field, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../../../components/rituals/ui';
 import { fullDate } from '../../../../../../lib/calendar';
 import { DREAMS, groupByMonth, normalizeDream, searchDreams, type DreamEntry } from '../../../../../../lib/craft/hedge/dreams';
@@ -65,6 +66,7 @@ export default function DreamJournal() {
           <Row icon="wheel" title="Dream symbols" detail="Common associations, as starting points" last onPress={() => router.push('/rituals/craft/hedge/dreams/symbols' as Href)} />
         </List>
       )}
+      <SupportLink />
     </RitualScreen>
   );
 }

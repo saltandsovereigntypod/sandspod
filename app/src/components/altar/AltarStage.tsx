@@ -64,8 +64,8 @@ type Props = {
   moment?: StageMoment | null;
   /** Where a dragged object is settling (snap to meaning), in stage fractions. */
   guide?: Snap | null;
-  /** The minute, so candles' carvings and wax follow their burn. */
-  now?: number;
+  /** The minute, so candles burn down and their carvings and wax follow, and incense burns. */
+  now: number;
 };
 
 /** Smallest hit area for tiny objects, in screen points. */
@@ -226,7 +226,7 @@ export function AltarStage(props: Props) {
   const charges = props.charges ?? {};
   const moment = props.moment ?? null;
   const guide = props.guide ?? null;
-  const now = props.now ?? Math.floor(Date.now() / 60_000) * 60_000;
+  const now = props.now;
 
   return (
     <GestureDetector gesture={gesture}>

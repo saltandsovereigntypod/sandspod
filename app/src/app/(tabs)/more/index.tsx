@@ -113,6 +113,12 @@ export default function More() {
       })}
       <Section label="Help">
         <MenuList>
+          <MenuRow
+            label="Support"
+            detail="Crisis, grief and other support lines"
+            icon="support"
+            onPress={() => router.push('/more/support' as Href)}
+          />
           <MenuRow label="Contact us" detail={SUPPORT_EMAIL} onPress={() => void Linking.openURL(`mailto:${SUPPORT_EMAIL}`)} />
           <MenuRow label="Privacy Policy" onPress={() => void WebBrowser.openBrowserAsync(PRIVACY_URL)} />
           <MenuRow label="Submission Terms" onPress={() => void WebBrowser.openBrowserAsync(TERMS_URL)} />

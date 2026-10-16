@@ -38,9 +38,12 @@ export function CloseUpSheet({ visible, object, label, background, agedOpacity, 
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     if (!visible) return;
-    setNow(Date.now());
+    const opened = setTimeout(() => setNow(Date.now()), 0);
     const timer = setInterval(() => setNow(Date.now()), 20_000);
-    return () => clearInterval(timer);
+    return () => {
+      clearTimeout(opened);
+      clearInterval(timer);
+    };
   }, [visible]);
   const window = useWindowDimensions();
   if (!object) return null;

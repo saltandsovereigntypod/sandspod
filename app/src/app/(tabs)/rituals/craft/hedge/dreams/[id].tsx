@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
+import { SupportLink } from '../../../../../../components/SupportLink';
 import { Body, Card, Chip, Chips, RitualScreen, SectionLabel, Title, ui } from '../../../../../../components/rituals/ui';
 import { MOON_IN_SIGN } from '../../../../../../lib/astro/meanings';
 import { fullDate } from '../../../../../../lib/calendar';
@@ -88,6 +89,7 @@ export default function DreamPage() {
       <View style={ui.actions}>
         <Button label="Edit" variant="outline" onPress={() => router.push(`/rituals/craft/hedge/dreams/edit?id=${entry.id}` as Href)} />
       </View>
+      <SupportLink />
     </RitualScreen>
   );
 }

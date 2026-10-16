@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
+import { SupportLink } from '../../../../../../components/SupportLink';
 import { ongoingHref, Paragraphs, STAGE_WORDS } from '../../../../../../components/journeys/parts';
 import { Body, Card, confirmAction, RitualScreen, SectionLabel, Title, tell, ui } from '../../../../../../components/rituals/ui';
 import { fullDate } from '../../../../../../lib/calendar';
@@ -137,6 +138,7 @@ export default function RiteView() {
         <SectionLabel>Closing</SectionLabel>
         <Paragraphs text={rite.closing} />
       </Card>
+      <SupportLink />
     </RitualScreen>
   );
 }

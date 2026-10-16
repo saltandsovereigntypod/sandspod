@@ -2,6 +2,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
+import { SupportLink } from '../../../../../../components/SupportLink';
 import { JournalPrompt, journeyStyles, lessonHref, Paragraphs, STAGE_WORDS } from '../../../../../../components/journeys/parts';
 import { Body, Card, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../../../components/rituals/ui';
 import { findLesson, nextLesson } from '../../../../../../lib/journeys';
@@ -151,6 +152,7 @@ export default function LessonView() {
         )}
       </View>
       {!read && going && <Text style={type.caption}>Read it in more than one sitting if you like. It keeps.</Text>}
+      <SupportLink />
     </RitualScreen>
   );
 }

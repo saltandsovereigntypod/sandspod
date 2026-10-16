@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
+import { SupportLink } from '../../../../../components/SupportLink';
 import { journeyHref, journeyStyles, Paragraphs, stageHref } from '../../../../../components/journeys/parts';
 import { Body, Card, Field, RitualScreen, SectionLabel, Title, tell, ui } from '../../../../../components/rituals/ui';
 import { shortDate } from '../../../../../lib/calendar';
@@ -156,6 +157,7 @@ export default function Discern() {
           ))}
         </View>
       )}
+      <SupportLink />
     </RitualScreen>
   );
 }
