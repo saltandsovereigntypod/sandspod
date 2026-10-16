@@ -17,6 +17,9 @@ export default function SettingsIndex() {
   return (
     <MoreScreen title="Settings" eyebrow="Shape your Sanctuary" back="/more" backLabel="Back to More">
       <MenuList>
+        <MenuRow icon="search" label="How to use the app" detail="A guide to everything, with search" last onPress={() => router.push('/more/help')} />
+      </MenuList>
+      <MenuList>
         <MenuRow
           icon="account"
           label="Identity"

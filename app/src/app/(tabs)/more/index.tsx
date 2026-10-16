@@ -115,6 +115,7 @@ export default function More() {
       })}
       <Section label="Help">
         <MenuList>
+          <MenuRow label="How to use the app" detail="A guide to everything, with search" icon="search" onPress={() => router.push('/more/help' as Href)} />
           <MenuRow
             label="Support"
             detail="Crisis, grief and other support lines"
