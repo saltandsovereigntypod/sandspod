@@ -728,79 +728,151 @@ function Smoke({ layout }: { layout: FlameLayout }) {
   );
 }
 
-/** How a flame is behaving for a spell: its height, how far it leans, and how fast and how much it changes. */
-type FlameMood = { stretch: [number, number]; lean: [number, number]; step: [number, number]; steps: [number, number]; dim: [number, number] };
-const FLAME_MOODS: { weight: number; mood: FlameMood }[] = [
-  // Steady: barely moving, a slow breath up and down.
-  { weight: 5, mood: { stretch: [0.94, 1.06], lean: [-1.5, 1.5], step: [380, 820], steps: [4, 9], dim: [0.94, 1] } },
-  // Tall and still: drawing well, reaching up.
-  { weight: 2, mood: { stretch: [1.12, 1.3], lean: [-1, 1], step: [450, 900], steps: [2, 5], dim: [0.97, 1] } },
-  // Low: a short, quiet flame.
-  { weight: 2, mood: { stretch: [0.72, 0.86], lean: [-2, 2], step: [400, 800], steps: [2, 5], dim: [0.82, 0.92] } },
-  // Restless: quick little flickers.
-  { weight: 2, mood: { stretch: [0.84, 1.16], lean: [-4, 4], step: [55, 140], steps: [8, 22], dim: [0.78, 1] } },
-  // A draught: leaning one way, stretched and fluttering, then back.
-  { weight: 1.5, mood: { stretch: [1.0, 1.22], lean: [7, 15], step: [90, 260], steps: [5, 12], dim: [0.85, 1] } },
-];
-
-const between = ([lo, hi]: [number, number]) => lo + Math.random() * (hi - lo);
-function pickMood(): FlameMood {
-  let roll = Math.random() * FLAME_MOODS.reduce((sum, m) => sum + m.weight, 0);
-  for (const m of FLAME_MOODS) if ((roll -= m.weight) <= 0) return m.mood;
-  return FLAME_MOODS[0].mood;
-}
+const between = (lo: number, hi: number) => lo + Math.random() * (hi - lo);
 
 /**
- * The flame drawn above a lit candle's wick: a teardrop with a blue root and
- * a bright core, that never quite repeats. It drifts between moods (steady,
- * tall, low, restless, caught in a draught), each a run of small random
- * moves, so it grows and shrinks, leans and flutters like a real one.
+ * Run `next` again and again until stopped: each call starts one animation
+ * and says when it's done. Three of these run a flame, each on its own clock.
  */
-function Flame({ layout }: { layout: FlameLayout }) {
-  const stretch = useRef(new Animated.Value(1)).current;
-  const lean = useRef(new Animated.Value(0)).current;
-  const glow = useRef(new Animated.Value(1)).current;
-  // Reduce motion: a steady flame instead of a flickering one.
-  const still = useReducedMotion();
+function useChain(still: boolean, next: () => Animated.CompositeAnimation) {
   useEffect(() => {
-    if (still) {
-      stretch.setValue(1);
-      lean.setValue(0);
-      glow.setValue(1);
-      return;
-    }
+    if (still) return;
     let stopped = false;
     let current: Animated.CompositeAnimation | null = null;
-    let mood = pickMood();
-    let left = Math.round(between(mood.steps));
-    let side = Math.random() < 0.5 ? -1 : 1; // which way a draught blows
-    const step = () => {
+    const go = () => {
       if (stopped) return;
-      if (left-- <= 0) {
-        mood = pickMood();
-        left = Math.round(between(mood.steps));
-        side = Math.random() < 0.5 ? -1 : 1;
-      }
-      const draught = mood.lean[0] > 0;
-      const duration = between(mood.step);
-      current = Animated.parallel([
-        Animated.timing(stretch, { toValue: between(mood.stretch), duration, useNativeDriver: useNative }),
-        Animated.timing(lean, { toValue: draught ? side * between(mood.lean) : between(mood.lean), duration: duration * 1.2, useNativeDriver: useNative }),
-        Animated.timing(glow, { toValue: between(mood.dim), duration, useNativeDriver: useNative }),
-      ]);
-      current.start(({ finished }) => finished && step());
+      current = next();
+      current.start(({ finished }) => finished && go());
     };
-    step();
+    go();
     return () => {
       stopped = true;
       current?.stop();
     };
-  }, [stretch, lean, glow, still]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `next` reads only refs
+  }, [still]);
+}
 
-  // Taller is narrower, as a real flame thins when it draws up.
-  const scaleX = stretch.interpolate({ inputRange: [0.7, 1, 1.3], outputRange: [1.12, 1, 0.84] });
-  const rotate = lean.interpolate({ inputRange: [-20, 20], outputRange: ['-20deg', '20deg'] });
-  const haloScale = stretch.interpolate({ inputRange: [0.7, 1.3], outputRange: [0.85, 1.12] });
+// The flame's parts, in a 10 × 18 box with the wick at the foot.
+const FLAME_BODY = 'M5 3.4 C6.6 6 9.2 8.6 9.2 11.8 C9.2 15.1 7.3 17.4 5 17.4 C2.7 17.4 0.8 15.1 0.8 11.8 C0.8 8.6 3.4 6 5 3.4 Z';
+const FLAME_TONGUE = 'M5 0.3 C5.8 3 7.6 6.2 7.6 9.6 C7.6 12.4 6.4 14.4 5 14.4 C3.6 14.4 2.4 12.4 2.4 9.6 C2.4 6.2 4.2 3 5 0.3 Z';
+const FLAME_HEART = 'M5 5.4 C5.9 7.8 7.2 9.9 7.2 12.2 C7.2 14.3 6.2 15.6 5 15.6 C3.8 15.6 2.8 14.3 2.8 12.2 C2.8 9.9 4.1 7.8 5 5.4 Z';
+
+function FlameDefs() {
+  return (
+    <Defs>
+      <LinearGradient id="flame-body" x1="0" y1="0" x2="0" y2="1">
+        <Stop offset="0" stopColor="rgb(255,150,50)" stopOpacity={0.25} />
+        <Stop offset="0.25" stopColor="rgb(255,190,80)" stopOpacity={0.85} />
+        <Stop offset="0.65" stopColor="rgb(255,226,140)" stopOpacity={0.97} />
+        <Stop offset="0.86" stopColor="rgb(255,200,110)" stopOpacity={0.9} />
+        <Stop offset="1" stopColor="rgb(90,120,255)" stopOpacity={0.55} />
+      </LinearGradient>
+      <RadialGradient id="flame-core" cx="50%" cy="66%" r="50%">
+        <Stop offset="0" stopColor="rgb(255,255,246)" stopOpacity={1} />
+        <Stop offset="0.6" stopColor="rgb(255,246,200)" stopOpacity={0.85} />
+        <Stop offset="1" stopColor="rgb(255,236,170)" stopOpacity={0} />
+      </RadialGradient>
+    </Defs>
+  );
+}
+
+/**
+ * The flame drawn above a lit candle's wick: a teardrop with a blue root and a
+ * bright core. Three things move it, each on its own clock so they mix and
+ * never line up: its shape (tall and thin, or short and fat), its lean (left,
+ * upright, right, sometimes held, sometimes swinging), and its flicker (spells
+ * of fast trembling, then slow breathing).
+ */
+function Flame({ layout }: { layout: FlameLayout }) {
+  const [tall] = useState(() => new Animated.Value(1)); // 0.6 short and fat … 1.5 tall and thin
+  const [lean] = useState(() => new Animated.Value(0)); // degrees
+  const [tremble] = useState(() => new Animated.Value(1)); // the flicker on top
+  const [glow] = useState(() => new Animated.Value(1));
+  const fastRef = useRef({ until: 0, on: false }); // a spell of quick flicker, and when it ends
+  const leanRef = useRef(0); // where the lean is heading
+  const [tipLean] = useState(() => new Animated.Value(0)); // the tip swings on its own, so the flame bends
+  const [tipTall] = useState(() => new Animated.Value(1));
+  const [skew] = useState(() => new Animated.Value(0)); // one side fuller than the other
+  const [split] = useState(() => new Animated.Value(0)); // now and then the flame parts into tongues
+  const [tongues, setTongues] = useState<number[]>([1]);
+  // The drawing is fitted into its box (centred), so its foot isn't the box's bottom: turn and stretch it from the foot.
+  const [box, setBox] = useState<{ w: number; foot: number } | null>(null);
+  // Reduce motion: a steady flame instead of a flickering one.
+  const still = useReducedMotion();
+  useEffect(() => {
+    if (!still) return;
+    split.setValue(0);
+    tipLean.setValue(0);
+    skew.setValue(0);
+    tall.setValue(1);
+    lean.setValue(0);
+    tremble.setValue(1);
+    glow.setValue(1);
+  }, [still, tall, lean, tremble, glow, split, tipLean, skew]);
+
+  // Shape: drifts between tall-and-thin and short-and-fat, sometimes holding a while.
+  useChain(still, () => {
+    const roll = Math.random();
+    const to = roll < 0.3 ? between(1.2, 1.5) : roll < 0.55 ? between(0.6, 0.82) : between(0.88, 1.12);
+    const move = Animated.timing(tall, { toValue: to, duration: between(250, 1400), easing: Easing.inOut(Easing.sin), useNativeDriver: useNative });
+    return Math.random() < 0.35 ? Animated.sequence([move, Animated.delay(between(400, 2200))]) : move;
+  });
+  // Lean: often swings to the other side, sometimes stands upright, sometimes held over.
+  useChain(still, () => {
+    const from = leanRef.current;
+    const roll = Math.random();
+    const to = roll < 0.25 ? between(-2, 2) : (from > 0 ? -1 : 1) * between(4, 16) * (roll < 0.5 ? 1 : 0.6);
+    leanRef.current = to;
+    const move = Animated.timing(lean, { toValue: to, duration: between(300, 1500), easing: Easing.inOut(Easing.quad), useNativeDriver: useNative });
+    return Math.random() < 0.3 ? Animated.sequence([move, Animated.delay(between(300, 1800))]) : move;
+  });
+  // Flicker: spells of quick trembling, then slow; changes every second or few.
+  useChain(still, () => {
+    const fast = fastRef.current;
+    const now = Date.now();
+    if (now > fast.until) {
+      fast.on = Math.random() < 0.45;
+      fast.until = now + between(900, 4200);
+    }
+    const duration = fast.on ? between(40, 110) : between(280, 800);
+    const depth = fast.on ? 0.14 : 0.06;
+    return Animated.parallel([
+      Animated.timing(tremble, { toValue: between(1 - depth, 1 + depth), duration, useNativeDriver: useNative }),
+      Animated.timing(glow, { toValue: fast.on ? between(0.72, 1) : between(0.9, 1), duration, useNativeDriver: useNative }),
+    ]);
+  });
+
+  // The tip and the sides: never quite the same shape twice.
+  useChain(still, () => {
+    const duration = fastRef.current.on ? between(60, 160) : between(220, 760);
+    return Animated.parallel([
+      Animated.timing(tipLean, { toValue: leanRef.current * between(0.1, 0.45) + between(-5, 5), duration, easing: Easing.inOut(Easing.sin), useNativeDriver: useNative }),
+      Animated.timing(tipTall, { toValue: between(0.88, 1.18), duration, easing: Easing.inOut(Easing.sin), useNativeDriver: useNative }),
+      Animated.timing(skew, { toValue: between(-9, 9), duration: duration * 1.4, easing: Easing.inOut(Easing.sin), useNativeDriver: useNative }),
+    ]);
+  });
+  // Rarely, it parts into two tongues (or three) for a few seconds, as a long wick's flame does.
+  useChain(still, () => {
+    const roll = Math.random();
+    setTongues(roll < 0.25 ? [-1, 1] : roll < 0.62 ? [-1] : [1]);
+    return Animated.sequence([
+      Animated.delay(between(20000, 70000)),
+      Animated.timing(split, { toValue: 1, duration: between(250, 600), easing: Easing.out(Easing.quad), useNativeDriver: useNative }),
+      Animated.delay(between(900, 4200)),
+      Animated.timing(split, { toValue: 0, duration: between(300, 800), easing: Easing.inOut(Easing.quad), useNativeDriver: useNative }),
+    ]);
+  });
+
+  // Tall is thin and short is fat, as a flame keeps about the same body.
+  const scaleY = Animated.multiply(tall, tremble);
+  const scaleX = tall.interpolate({ inputRange: [0.6, 1, 1.5], outputRange: [1.3, 1, 0.72] });
+  const rotate = lean.interpolate({ inputRange: [-30, 30], outputRange: ['-30deg', '30deg'] });
+  const tipRotate = Animated.add(lean, tipLean).interpolate({ inputRange: [-40, 40], outputRange: ['-40deg', '40deg'] });
+  const tipScaleY = Animated.multiply(scaleY, tipTall);
+  const skewX = skew.interpolate({ inputRange: [-20, 20], outputRange: ['-20deg', '20deg'] });
+  const origin = box ? { transformOrigin: `50% ${box.foot}px` } : null;
+  const haloScale = tall.interpolate({ inputRange: [0.6, 1.5], outputRange: [0.8, 1.15] });
 
   return (
     <>
@@ -808,8 +880,8 @@ function Flame({ layout }: { layout: FlameLayout }) {
         <Svg width="100%" height="100%" viewBox="0 0 10 10">
           <Defs>
             <RadialGradient id="halo" cx="50%" cy="50%" r="50%">
-              <Stop offset="0" stopColor="rgb(255,252,230)" stopOpacity={0.6} />
-              <Stop offset="0.45" stopColor="rgb(255,220,130)" stopOpacity={0.6} />
+              <Stop offset="0" stopColor="rgb(255,252,230)" stopOpacity={0.38} />
+              <Stop offset="0.45" stopColor="rgb(255,220,130)" stopOpacity={0.3} />
               <Stop offset="0.7" stopColor="rgb(255,180,70)" stopOpacity={0.15} />
               <Stop offset="1" stopColor="rgb(255,180,70)" stopOpacity={0} />
             </RadialGradient>
@@ -817,35 +889,58 @@ function Flame({ layout }: { layout: FlameLayout }) {
           <Circle cx={5} cy={5} r={5} fill="url(#halo)" />
         </Svg>
       </Animated.View>
-      <Animated.View
-        style={[
-          styles.flame,
-          { left: `${layout.centerX - 5}%`, top: `${layout.flameTop}%`, height: `${layout.flameHeight}%` },
-          { opacity: glow, transform: [{ rotate }, { scaleY: stretch }, { scaleX }] },
-        ]}
+      <View
+        style={[styles.flame, { left: `${layout.centerX - 5}%`, top: `${layout.flameTop}%`, height: `${layout.flameHeight}%` }]}
+        onLayout={(e) => {
+          const { width: w, height: h } = e.nativeEvent.layout;
+          const drawn = Math.min(w / 10, h / 18) * 18;
+          setBox({ w, foot: h / 2 + drawn / 2 - drawn * (0.6 / 18) });
+        }}
       >
-        <Svg width="100%" height="100%" viewBox="0 0 10 18">
-          <Defs>
-            <LinearGradient id="flame-body" x1="0" y1="0" x2="0" y2="1">
-              <Stop offset="0" stopColor="rgb(255,150,50)" stopOpacity={0.2} />
-              <Stop offset="0.25" stopColor="rgb(255,190,80)" stopOpacity={0.85} />
-              <Stop offset="0.65" stopColor="rgb(255,226,140)" stopOpacity={0.97} />
-              <Stop offset="0.86" stopColor="rgb(255,200,110)" stopOpacity={0.9} />
-              <Stop offset="1" stopColor="rgb(90,120,255)" stopOpacity={0.55} />
-            </LinearGradient>
-            <RadialGradient id="flame-core" cx="50%" cy="62%" r="50%">
-              <Stop offset="0" stopColor="rgb(255,255,246)" stopOpacity={1} />
-              <Stop offset="0.6" stopColor="rgb(255,246,200)" stopOpacity={0.85} />
-              <Stop offset="1" stopColor="rgb(255,236,170)" stopOpacity={0} />
-            </RadialGradient>
-          </Defs>
-          {/* The flame: a pointed tip, a round foot. */}
-          <Path d="M5 0.4 C6.1 3.6 9.2 7.6 9.2 11.6 C9.2 15 7.3 17.4 5 17.4 C2.7 17.4 0.8 15 0.8 11.6 C0.8 7.6 3.9 3.6 5 0.4 Z" fill="url(#flame-body)" />
-          {/* Its bright heart, and the darker, cooler hollow round the wick. */}
-          <Path d="M5 4.8 C5.9 7.4 7.4 9.6 7.4 12 C7.4 14.2 6.3 15.6 5 15.6 C3.7 15.6 2.6 14.2 2.6 12 C2.6 9.6 4.1 7.4 5 4.8 Z" fill="url(#flame-core)" />
-          <Ellipse cx={5} cy={15.3} rx={1.25} ry={1.7} fill="rgb(120,70,40)" opacity={0.35} />
-        </Svg>
-      </Animated.View>
+        {/* Tongues it parts into, now and then, leaning out from the wick. */}
+        {tongues.map((side) => (
+          <Animated.View
+            key={side}
+            style={[
+              StyleSheet.absoluteFill,
+              origin,
+              {
+                opacity: Animated.multiply(split, glow),
+                transform: [
+                  { translateX: split.interpolate({ inputRange: [0, 1], outputRange: [0, side * (box?.w ?? 4) * 0.24] }) },
+                  { rotate },
+                  { rotate: split.interpolate({ inputRange: [0, 1], outputRange: ['0deg', `${side * 20}deg`] }) },
+                  { scaleY: Animated.multiply(split.interpolate({ inputRange: [0, 1], outputRange: [0.3, side < 0 ? 0.72 : 0.62] }), tremble) },
+                  { scaleX: split.interpolate({ inputRange: [0, 1], outputRange: [0.4, 0.62] }) },
+                ],
+              },
+            ]}
+          >
+            <Svg width="100%" height="100%" viewBox="0 0 10 18">
+              <FlameDefs />
+              <Path d={FLAME_BODY} fill="url(#flame-body)" />
+              <Path d={FLAME_TONGUE} fill="url(#flame-core)" opacity={0.7} />
+            </Svg>
+          </Animated.View>
+        ))}
+        {/* The body: a round foot, one side fuller than the other as it moves. */}
+        <Animated.View style={[StyleSheet.absoluteFill, origin, { opacity: glow, transform: [{ rotate }, { skewX }, { scaleY }, { scaleX }] }]}>
+          <Svg width="100%" height="100%" viewBox="0 0 10 18">
+            <FlameDefs />
+            <Path d={FLAME_BODY} fill="url(#flame-body)" />
+          </Svg>
+        </Animated.View>
+        {/* The tip, swinging and stretching on its own, so the flame bends and reaches. */}
+        <Animated.View style={[StyleSheet.absoluteFill, origin, { opacity: glow, transform: [{ rotate: tipRotate }, { scaleY: tipScaleY }, { scaleX }] }]}>
+          <Svg width="100%" height="100%" viewBox="0 0 10 18">
+            <FlameDefs />
+            <Path d={FLAME_TONGUE} fill="url(#flame-body)" />
+            {/* Its bright heart, and the darker, cooler hollow round the wick. */}
+            <Path d={FLAME_HEART} fill="url(#flame-core)" />
+            <Ellipse cx={5} cy={15.3} rx={1.25} ry={1.7} fill="rgb(120,70,40)" opacity={0.35} />
+          </Svg>
+        </Animated.View>
+      </View>
     </>
   );
 }
@@ -896,7 +991,7 @@ const styles = StyleSheet.create({
   herbOverlay: { position: 'absolute', top: '8%', left: '-1%', width: '100%', height: '80%' },
   oilOverlay: { position: 'absolute', top: '11%', left: '0%', width: '94%', height: '70%', opacity: 0.55 },
   flameHalo: { position: 'absolute', left: '46%', top: '-3%', width: '8%', height: '10%', transformOrigin: '50% 100%' },
-  flame: { position: 'absolute', left: '45%', top: '-5%', width: '10%', height: '18%', transformOrigin: '50% 100%' },
+  flame: { position: 'absolute', left: '45%', top: '-5%', width: '10%', height: '18%' },
   smoke: { position: 'absolute', left: '45%', top: '-10%', width: '10%', height: '22%' },
   outline: {
     position: 'absolute',
