@@ -46,4 +46,6 @@ export * as apothecary from '../../app/src/lib/altar/apothecary.ts';
 export * as moon from '../../app/src/lib/moon.ts';
 export * as holidays from '../../app/src/lib/holidays.ts';
 export { TRADITIONAL_LIBRARY } from '../../app/src/lib/library/traditionalData.ts';
-export { traditionalEntries } from '../../app/src/lib/library/model.ts';
+export { traditionalEntries, searchLibrary } from '../../app/src/lib/library/model.ts';
+export * as ritualLifecycle from '../../app/src/lib/rituals/lifecycle.ts';
+export * as ritualRows from '../../app/src/lib/rituals/rows.ts';

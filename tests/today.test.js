@@ -57,7 +57,10 @@ test("the location is only asked for on request and handles a refusal", async ()
 });
 
 test("the app's routes open the website's pages", () => {
-  assert.equal(T.siteHref("/rituals/craft/green/moon"), "/rituals/craft/green/moon/");
+  assert.equal(T.siteHref("/rituals/craft/green/moon"), "/practice/green/moon/");
+  assert.equal(T.siteHref("/rituals/craft/eclectic"), "/practice/eclectic/");
+  assert.equal(T.siteHref("/today/reminders"), "/reminders/");
+  assert.equal(T.siteHref("/more/settings/practice"), "/?sanctuary=settings");
   assert.equal(T.siteHref({ pathname: "/rituals/premade/[id]", params: { id: "folk-lararium-offering" } }), "/rituals/premade/?id=folk-lararium-offering");
   assert.equal(T.siteHref({ pathname: "/rituals/plan/[id]", params: { id: "p1" } }), "/rituals/plan/?id=p1");
   assert.equal(T.siteHref({ pathname: "/today/journal/[id]", params: { id: "j 1" } }), "/rituals/journal/?id=j%201");
@@ -81,6 +84,9 @@ test("guests' plans and rituals are read from the keys the app and website use",
   const rituals = T.guestRituals(storage);
   assert.equal(rituals.active.id, "s1");
   assert.equal(rituals.journal.length, 1);
+  assert.equal(T.moonRemindersOn(storage), false);
+  storage.setItem("reminders.settings.v1", JSON.stringify({ phases: { full: true } }));
+  assert.equal(T.moonRemindersOn(storage), true);
   storage.setItem("rituals.plans.v1", "not json");
   assert.deepEqual(T.guestPlans(storage), []);
 });
@@ -132,7 +138,7 @@ test("keeping a holy page writes the app's rows: section, tagged page, then bloc
   let n = 0;
   const blocks = H.holy.holyBlocks(page, null);
   const { id, ops } = H.holyOps.holyPageOps(snapshot, { userId: "u", now: "2026-10-16T00:00:00Z" }, { ref: page.ref, title: page.title, sectionTitle: H.holy.grimoireSection(page), blocks }, () => `id${n++}`);
-  assert.deepEqual(ops.map((op) => op.table).slice(0, 2), ["grimoire_sections", "grimoire_pages"]);
+  assert.deepEqual([...ops.map((op) => op.table).slice(0, 2)], ["grimoire_sections", "grimoire_pages"]);
   assert.equal(ops[0].row.title, "Holy Days");
   assert.equal(ops[0].row.sort_order, 1);
   assert.equal(ops[1].row.id, id);

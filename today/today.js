@@ -128,7 +128,11 @@
       else if (today.holidaysToday.length) holiday = holidayPanel(today, false);
       else if (show === "holiday") holiday = `<p class="sp-caption td-center">No holiday today</p>`;
     }
-    panels = `<section class="td-panels${side ? " td-panels--side" : ""}" aria-label="The moon and today’s holidays">${side ? `<div>${moon}</div>` : moon}${holiday}</section>`;
+    // Under the moon when stacked; below the row when side by side, where a half is too narrow.
+    const on = T.moonRemindersOn(storage);
+    const reminder = `<div class="sp-actions td-reminder"><a class="sp-chip" href="${esc(T.siteHref("/today/reminders"))}" title="Choose which moon phases to be reminded of">${on ? "Moon reminders on" : "Remind me of the moon"}</a></div>`;
+    const moonBlock = moon ? (side ? `<div>${moon}</div>` : `<div class="td-panels">${moon}${reminder}</div>`) : "";
+    panels = `<section class="td-panels${side ? " td-panels--side" : ""}" aria-label="The moon and today’s holidays">${moonBlock}${holiday}</section>${side ? reminder : ""}`;
 
     root.innerHTML =
       `<h1 class="sr-only">Today</h1>` +

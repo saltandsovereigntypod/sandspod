@@ -19,18 +19,27 @@
     ritualJournals: "saltAndSovereigntyUserRituals",
     ritualLifecycle: "saltAndSovereigntyRitualLifecycle:guest",
     customCabinet: "saltAndSovereigntyCustomCabinetItems",
-    mundaneMode: "saltAndSovereigntyMundaneMode"
+    mundaneMode: "saltAndSovereigntyMundaneMode",
+    // Planned rituals, under the app's own key and shape (app/src/lib/rituals/store.ts).
+    ritualPlans: "rituals.plans.v1"
   });
+  // The practice tools' entries (garden, dreams, readings, stones, journey
+  // progress…): one key per collection, "salt.craft.<collection>" in this
+  // browser (js/salt-store.js); the app keeps them as "craft.<collection>".
+  // A backup holds them as data.craftEntries = { <collection>: [entries] }.
+  const CRAFT_SECTION = "craftEntries";
+  const CRAFT_PREFIX = "salt.craft.";
   const CLOUD_SECTIONS = Object.freeze({
     settings: ["user_settings"],
     altars: ["saved_altars", "custom_altar_backgrounds", "custom_cabinet_items", "custom_cabinet_image_overrides"],
     grimoire: ["grimoire_books", "grimoire_sections", "grimoire_pages", "grimoire_blocks", "grimoire_page_links"],
     livingLibrary: ["living_library_entries", "library_relations", "object_instances", "object_instance_events"],
     apothecary: ["apothecary_items"],
-    rituals: ["ritual_templates", "ritual_template_steps", "ritual_sessions", "ritual_session_steps", "user_rituals", "ritual_links"],
+    rituals: ["ritual_templates", "ritual_template_steps", "ritual_sessions", "ritual_session_steps", "user_rituals", "ritual_links", "ritual_plans"],
+    practice: ["craft_entries"],
     community: ["community_submissions", "community_submission_messages"]
   });
-  const RESTORE_ORDER = Object.freeze(["user_settings", "grimoire_books", "grimoire_sections", "living_library_entries", "grimoire_pages", "grimoire_blocks", "apothecary_items", "ritual_templates", "ritual_template_steps", "ritual_sessions", "ritual_session_steps", "user_rituals", "saved_altars", "custom_cabinet_items", "custom_altar_backgrounds", "custom_cabinet_image_overrides", "object_instances", "object_instance_events", "grimoire_page_links", "library_relations", "ritual_links", "community_submissions"]);
+  const RESTORE_ORDER = Object.freeze(["user_settings", "grimoire_books", "grimoire_sections", "living_library_entries", "grimoire_pages", "grimoire_blocks", "apothecary_items", "ritual_templates", "ritual_template_steps", "ritual_sessions", "ritual_session_steps", "user_rituals", "ritual_plans", "saved_altars", "custom_cabinet_items", "custom_altar_backgrounds", "custom_cabinet_image_overrides", "object_instances", "object_instance_events", "grimoire_page_links", "library_relations", "ritual_links", "craft_entries", "community_submissions"]);
   const clone = (value) => value == null ? value : JSON.parse(JSON.stringify(value));
   const isPlainObject = (value) => value !== null && typeof value === "object" && !Array.isArray(value) && Object.getPrototypeOf(value) === Object.prototype;
   const isForbiddenKey = (key) => FORBIDDEN_KEYS.has(key) || /(?:^|_)(?:access|refresh|auth|id)?token(?:$|_)|password|client_secret|secret_key|service.role|supabase(?:url|key)|moderator(?:id|role)|authorization/i.test(key);
@@ -92,13 +101,40 @@
     return backup;
   }
 
-  function collectGuest(storage) {
+  /** Every key a storage holds, when it can list them (localStorage can; a plain getItem view can't). */
+  function storageKeys(storage) {
+    if (typeof storage?.keys === "function") return [...storage.keys()];
+    if (typeof storage?.key !== "function" || typeof storage.length !== "number") return [];
+    const keys = [];
+    for (let index = 0; index < storage.length; index += 1) { const key = storage.key(index); if (key != null) keys.push(key); }
+    return keys;
+  }
+
+  /** A guest's own records: ones already sent to an account (syncedTo) belong to that account, not the guest. */
+  const ownGuestRecords = (list) => Array.isArray(list) ? list.filter((record) => record && typeof record === "object" && !record.syncedTo) : list;
+
+  /** The practice tools' entries kept in this storage, by collection: { <collection>: [entries] }. */
+  function collectCraft(storage, prefix = CRAFT_PREFIX) {
+    const craft = {};
+    for (const key of storageKeys(storage).filter((name) => name.startsWith(prefix)).sort()) {
+      let list; try { list = JSON.parse(storage.getItem(key)); } catch { continue; }
+      if (!Array.isArray(list)) continue;
+      const entries = ownGuestRecords(list).filter((entry) => typeof entry?.id === "string");
+      if (entries.length) craft[key.slice(prefix.length)] = entries;
+    }
+    return craft;
+  }
+
+  function collectGuest(storage, options = {}) {
     const data = {};
     for (const [section, key] of Object.entries(GUEST_KEYS)) {
       const raw = storage.getItem(key);
       if (raw == null) continue;
       try { data[section] = JSON.parse(raw); } catch { data[section] = raw; }
     }
+    if (Array.isArray(data.ritualPlans)) data.ritualPlans = ownGuestRecords(data.ritualPlans);
+    const craft = collectCraft(storage, options.craftPrefix || CRAFT_PREFIX);
+    if (Object.keys(craft).length) data[CRAFT_SECTION] = craft;
     return sanitize(data);
   }
 
@@ -227,7 +263,7 @@
     return { valid: errors.length === 0, errors, warnings: backup?.manifest?.warnings || [], backup: errors.length ? null : sanitize(backup) };
   }
 
-  function buildGuestMergePlan(backup, storage) {
+  function buildGuestMergePlan(backup, storage, options = {}) {
     const operations = []; const conflicts = [];
     for (const [section, key] of Object.entries(GUEST_KEYS)) {
       if (!(section in (backup.data || {}))) continue;
@@ -240,6 +276,20 @@
       } else if (existing && isPlainObject(existing) && isPlainObject(incoming)) operations.push({ section, key, value: { ...incoming, ...existing } });
       else if (existing != null) conflicts.push({ section, id: null, resolution: "kept-existing" });
       else operations.push({ section, key, value: incoming });
+    }
+    // Practice tools: each collection merges into its own key, keeping what's here.
+    const craft = backup.data?.[CRAFT_SECTION];
+    if (isPlainObject(craft) || (craft && typeof craft === "object" && Object.getPrototypeOf(craft) === null)) {
+      for (const [collection, records] of Object.entries(craft)) {
+        if (!Array.isArray(records) || !collection) continue;
+        const key = `${options.craftPrefix || CRAFT_PREFIX}${collection}`;
+        let existing = []; try { existing = JSON.parse(storage.getItem(key)) || []; } catch { existing = []; }
+        if (!Array.isArray(existing)) existing = [];
+        const ids = new Set(existing.map((entry) => String(entry?.id)));
+        const added = [];
+        records.forEach((entry) => { const id = String(entry?.id || ""); if (!id) return; if (ids.has(id)) conflicts.push({ section: CRAFT_SECTION, id, resolution: "kept-existing" }); else { ids.add(id); added.push(clone(entry)); } });
+        if (added.length) operations.push({ section: `${CRAFT_SECTION}.${collection}`, key, value: [...added, ...existing] });
+      }
     }
     return { strategy: "merge", scope: "guest", operations, conflicts, writesApplied: false };
   }
@@ -293,7 +343,7 @@
     const url = URL.createObjectURL(blob); const anchor = documentRef.createElement("a"); anchor.href = url; anchor.download = filename; anchor.click(); setTimeout(() => URL.revokeObjectURL(url), 0);
   }
 
-  const api = { FORMAT, VERSION, MAX_FILE_BYTES, MAX_ASSET_BYTES, MAX_ASSETS, PAGE_SIZE, GUEST_KEYS, CLOUD_SECTIONS, RESTORE_ORDER, sanitize, scanForbidden, stableStringify, sha256, recordCounts, createBackup, collectGuest, fetchAllOwned, collectCloud, findAssetReferences, collectAssets, restorableCollections, validateIds, validateBackup, buildGuestMergePlan, applyGuestMergePlan, flattenCloudData, buildCloudMergePlan, applyCloudMergePlan, downloadJson };
+  const api = { FORMAT, VERSION, MAX_FILE_BYTES, MAX_ASSET_BYTES, MAX_ASSETS, PAGE_SIZE, GUEST_KEYS, CRAFT_SECTION, CRAFT_PREFIX, CLOUD_SECTIONS, RESTORE_ORDER, sanitize, scanForbidden, stableStringify, sha256, recordCounts, createBackup, storageKeys, ownGuestRecords, collectCraft, collectGuest, fetchAllOwned, collectCloud, findAssetReferences, collectAssets, restorableCollections, validateIds, validateBackup, buildGuestMergePlan, applyGuestMergePlan, flattenCloudData, buildCloudMergePlan, applyCloudMergePlan, downloadJson };
   global.SanctuaryBackup = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

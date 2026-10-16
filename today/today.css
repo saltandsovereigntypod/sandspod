@@ -153,3 +153,4 @@ a.td-tag:hover { background: rgba(226, 195, 109, 0.16); }
 .td-page h2.sp-eyebrow { font-family: inherit; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.18em; line-height: 1.4; margin: 0; }
 .td-page h1, .td-page h2, .td-page h3 { max-width: none; }
 .td-page [hidden] { display: none !important; }
+.td-reminder { justify-content: center; }

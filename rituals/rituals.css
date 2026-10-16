@@ -100,3 +100,5 @@ a.sp-chip { display: inline-flex; align-items: center; }
 
 /* Read like the app: titles and section labels sit to the left. */
 .rt-head, .rt-head h1, .sp-page .sp-label, .sp-page h2, .sp-page h3 { text-align: left; }
+.sp-page h2.sp-label, .sp-page p.sp-label { font-family: inherit; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.rt-head h1 { max-width: none; }

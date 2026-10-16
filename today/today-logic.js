@@ -23,7 +23,9 @@
     try {
       const saved = JSON.parse(storage.getItem(PLACE_KEY) || "null");
       if (saved && validPlace(Number(saved.latitude), Number(saved.longitude))) {
-        return { latitude: Number(saved.latitude), longitude: Number(saved.longitude), source: saved.source === "device" ? "device" : "manual", label: saved.label };
+        const place = { latitude: Number(saved.latitude), longitude: Number(saved.longitude), source: saved.source === "device" ? "device" : "manual" };
+        if (typeof saved.label === "string" && saved.label) place.label = saved.label;
+        return place;
       }
     } catch {
       /* nothing saved, or storage blocked */
@@ -112,6 +114,11 @@
       const ref = libraryIdToRef(decodeURIComponent(library[1]));
       return ref ? `/grimoire/?entity=${encodeURIComponent(ref)}` : "/grimoire/";
     }
+    // Pages the website keeps somewhere else (as help/web-notes.js maps them).
+    if (path === "/rituals/craft") return "/practice/";
+    if (path.startsWith("/rituals/craft/")) return `/practice/${path.slice("/rituals/craft/".length).replace(/\/$/, "")}/`;
+    if (path === "/today/reminders" || path === "/rituals/reminders" || path === "/more/reminders") return "/reminders/";
+    if (path.startsWith("/more/settings") && path.replace(/\/$/, "") !== "/more/settings/deities") return "/?sanctuary=settings";
     if (path === "/today/journal" || path.startsWith("/today/journal/")) path = path.replace("/today/journal", "/rituals/journal");
     if (path.startsWith("/today/holy/")) {
       const ref = path.slice("/today/holy/".length);
@@ -322,8 +329,16 @@
     });
   }
 
+  /** Whether any moon phase reminder is on (the website's /reminders/ page keeps them under this key). */
+  function moonRemindersOn(storage) {
+    const saved = readJson(storage, "reminders.settings.v1", null);
+    const phases = saved && typeof saved === "object" ? saved.phases || {} : {};
+    return ["new", "firstQuarter", "full", "lastQuarter"].some((p) => phases[p] === true);
+  }
+
   const api = {
     PLACE_KEY,
+    moonRemindersOn,
     CONFIDENCE_LABEL,
     CONFIDENCE_NOTE,
     confidenceChip,
