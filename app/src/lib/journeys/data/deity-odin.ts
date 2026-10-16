@@ -17,9 +17,9 @@ Go at your own pace. Pausing is fine, and so is deciding at the end that he is n
   notes: [
     'Odin’s historical cult included human and animal sacrifice, including hanging. This journey describes that honestly and offers only devotional practice: bread, drink, poetry, study and kept promises. No ordeals, no bloodletting, no fasting to harm.',
     'Heathenry has a long-running split between inclusive groups, open to anyone of any ancestry, gender or orientation, and “folkish” groups that tie the gods to race. This app stands with the inclusive side, plainly: the gods are not a racial inheritance.',
-    'Some Odin-related symbols, especially the valknut, Othala (particularly with “wings” or feet), the Wolfsangel and the sun wheel known as the black sun, have been used by white-supremacist groups. Context matters, and many Heathens reclaim them, but learn what they signal before wearing them.',
+    'Some Norse and Germanic symbols, especially the valknut, Othala (particularly with “wings” or feet), the Wolfsangel and the Nazi-era sun wheel known as the black sun, have been used by white-supremacist groups. Context matters, and many Heathens reclaim them, but learn what they signal before wearing them.',
     'Odin is a god of poetry and also of deception in the myths. Be wary of anyone, online or in person, who claims to speak for him in order to get your money, obedience or body. A god does not need a middleman to make you uncomfortable.',
-    'If you have struggled with self-harm, mania or psychosis, keep trance and ecstatic work for later, with support. The study, poetry and offering parts of this journey are safe places to begin.',
+    'If you have struggled with self-harm, mania or psychosis, keep trance and ecstatic work for later, with support. The study, poetry and offering parts of this journey are safe places to begin. If you are in crisis, contact a doctor, a local crisis line or emergency services; a god is not a substitute for care.',
   ],
   holyDays: ['jol', 'vetrnaetur', 'sigrblot', 'haustblot', 'disablot'],
   stages: [
@@ -259,7 +259,7 @@ The modern image of Valhalla as a warriors’ paradise owes a lot to Wagner and 
               heading: 'What this means for you now',
               body: `No modern Heathen group of any standing practises human or animal sacrifice to Odin. What remains is the shape: something of value given, so that something else may be received. Today that is mead, bread, a poem, a year of study, a promise kept.
 
-Be careful of a strand of modern writing that makes Odin’s devotion about suffering: you must lose something, be broken, pay in pain. People do sometimes go through hard times and later find meaning in them. That is not the same as seeking harm, and no god you choose to honour requires you to stay in a situation that is hurting you. If you notice yourself reading every misfortune as Odin’s price, talk to someone you trust.
+Be careful of a strand of modern writing that makes Odin’s devotion about suffering: you must lose something, be broken, pay in pain. People do sometimes go through hard times and later find meaning in them. That is not the same as seeking harm, and no god you choose to honour requires you to stay in a situation that is hurting you. If you notice yourself reading every misfortune as Odin’s price, talk to someone you trust, and if it is weighing on you, to a counsellor or doctor.
 
 Finally, the symbol. The valknut, three interlocked triangles seen on Gotland picture stones beside scenes of death and Odin, is a beautiful and genuinely old image. It has also been adopted by racist groups and is listed in hate-symbol databases. Many inclusive Heathens wear it proudly. If you do, know what others may read into it, and let your community and your conduct make the meaning clear.`,
             },
@@ -312,7 +312,7 @@ Finally, the symbol. The valknut, three interlocked triangles seen on Gotland pi
           sections: [
             {
               heading: 'Odin’s cup comes first',
-              body: `The fullest description of a Norse feast is Snorri’s, in the saga of Hákon the Good. At Hlaðir in Trøndelag, the farmers brought ale and animals; the blood (hlaut) was sprinkled on the altars and the people with twigs, the meat was boiled in kettles over fires down the middle of the hall, and the chieftain blessed the cups and the food. Then, in Samuel Laing’s 1844 translation, “first Odin’s goblet was emptied for victory and power to his king.” After it came the cups of Njörðr and Freyr for a good year and peace, then the bragafull, the chieftain’s cup over which vows were made, and last a cup for dead kinsmen.
+              body: `The fullest description of a Norse feast is Snorri’s, in the saga of Hákon the Good. At Hlaðir in Trøndelag, the farmers brought ale and animals; the blood (hlaut) was sprinkled on the altars and the people with twigs, the meat was boiled in kettles over fires down the middle of the hall, and the chieftain blessed the cups and the food. Then, in Samuel Laing’s 1844 translation, “first Odin’s goblet was emptied for victory and power to his king.” After it came the cups of Njörðr and Freyr for a good year and peace (Laing writes “Freyja’s,” but the Old Norse names Freyr), then the bragafull, the chieftain’s cup over which vows were made, and last a cup for dead kinsmen.
 
 So Odin’s place in the feast was first, and his gift was victory and rule. When the Christian King Hákon was pressed to drink and made the sign of the cross over his horn, Earl Sigurd smoothed it over by telling the farmers the king was making Thor’s hammer sign. That story tells you that hallowing a cup with a gesture was normal.`,
             },
@@ -332,12 +332,12 @@ Odin, god of words and of the mead, belongs here especially. Many groups toast h
               heading: 'The communities',
               body: `Heathenry today is a family of traditions rather than one church. Iceland’s Ásatrúarfélagið, founded in 1972 and a recognised religion there, is inclusive and holds public blóts. The Troth, founded in the United States in 1987, is an international inclusive organisation. Many people practise in local groups called kindreds or hearths, or alone. Some prefer the names Ásatrú, Forn Sed (“the old custom”, common in Scandinavia), Theodism (an Anglo-Saxon-focused reconstruction) or simply Heathenry.
 
-There is also a folkish wing, which teaches that the gods belong only to people of northern European descent; some folkish groups are openly racist. In 2016 hundreds of Heathen groups signed Declaration 127, refusing to associate with one large folkish organisation over its racial policies. This app is inclusive: Odin was a wanderer and a guest, and the Hávamál’s hospitality is not checked at the door by ancestry. If a group asks about your blood before your conduct, walk away.`,
+There is also a folkish wing, which teaches that the gods belong only to people of northern European descent; some folkish groups are openly racist. In 2016 well over a hundred Heathen groups signed Declaration 127, refusing to associate with one large folkish organisation over its racial policies. This app is inclusive: Odin was a wanderer and a guest, and the Hávamál’s hospitality is not checked at the door by ancestry. If a group asks about your blood before your conduct, walk away.`,
             },
           ],
           knowAndDont: {
             known:
-              'Snorri’s description of the Hlaðir feast (Hákonar saga góða, ch. 14–18), including the order of cups, the hlaut and the hammer sign, is detailed. The words blót and sumbel are both attested in Old Norse and Old English. Ásatrúarfélagið, The Troth and Declaration 127 are matters of public record.',
+              'Snorri’s description of the Hlaðir feast (Hákonar saga góða, ch. 14–18), including the order of cups, the hlaut and the hammer sign, is detailed (Laing’s translation mistakenly gives Freyja’s cup where the Old Norse has Freyr’s). The words blót and sumbel are both attested in Old Norse and Old English. Ásatrúarfélagið, The Troth and Declaration 127 are matters of public record.',
             unknown:
               'Snorri wrote some 250 years after the events and may have generalised from many sources. The three-round sumbel and the idea that words enter Urðr’s well are modern Heathen systematisations, drawing on scholarship (especially by Paul Bauschatz in the 1980s), not described in this form in any old source.',
           },
@@ -350,7 +350,7 @@ There is also a folkish wing, which teaches that the gods belong only to people 
           further: [
             'Saga of Hákon the Good, ch. 16–18, in Samuel Laing’s Heimskringla (1844), public domain on Project Gutenberg.',
             'Stefanie von Schnurbein, Norse Revival: Transformations of Germanic Neopaganism (2016), on the inclusive–folkish divide.',
-            'The Troth, Our Troth (3 vols), a practitioner reference.',
+            'The Troth, Our Troth (2nd ed., 2 vols, 2006–07), a practitioner reference.',
           ],
           library: ['traditional/deity/odin', 'traditional/deity/thor', 'traditional/deity/freyr'],
           premade: ['folk-simple-blot'],
@@ -576,7 +576,7 @@ If you miss a night, don’t start over. Pick up where you left off.`,
   ],
   sources: [
     'Henry Adams Bellows, trans., The Poetic Edda (American-Scandinavian Foundation, 1923), public domain: Hávamál 3, 42, 139, 146; Grímnismál 20; Hárbarðsljóð 24 quoted from Project Gutenberg ebook #73533 (https://www.gutenberg.org/ebooks/73533).',
-    'Samuel Laing, trans., Heimskringla (1844), public domain: Saga of Hákon the Good ch. 16 (“first Odin’s goblet was emptied for victory and power to his king”) and Saga of Olaf Haraldson (“three sacrifices every year…”), quoted from Project Gutenberg ebook #598 (https://www.gutenberg.org/ebooks/598).',
+    'Samuel Laing, trans., Heimskringla (1844), public domain: Saga of Hákon the Good ch. 16 (“first Odin’s goblet was emptied for victory and power to his king”; Laing’s “Freyja’s goblet” corrected to Freyr’s from the Old Norse) and Saga of Olaf Haraldson (“three sacrifices every year…”), quoted from Project Gutenberg ebook #598 (https://www.gutenberg.org/ebooks/598).',
     'Snorri Sturluson, Prose Edda (Gylfaginning, Skáldskaparmál), trans. Rasmus B. Anderson, The Younger Edda (1880), Project Gutenberg #18947: the eye pledge and the mead of poetry (paraphrased).',
     'Adam of Bremen, Gesta Hammaburgensis ecclesiae pontificum IV.26–27 (c. 1075), on the Uppsala temple and festival (paraphrased).',
     'Gautreks saga and Ynglinga saga, on sacrifice to Odin (paraphrased).',

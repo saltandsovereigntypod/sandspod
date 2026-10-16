@@ -32,7 +32,8 @@ Nothing here is ever failed. If you miss a moon, the next one comes. Pause whene
     'Wicca is a modern religion with old roots. This journey says plainly which parts are old and which are twentieth-century; you can love the practice and still be honest about its history.',
     'Traditional Wicca has been built around male and female polarity. Many covens and most solitaries today practise inclusively, and the app does too: you are welcome here whatever your gender or sexuality.',
     'Fire, smoke, knives and food all appear in Wiccan practice. Every rite carries safety notes; read them.',
-    'White sage is not used in this journey. Its wild harvest and its place in closed Indigenous practice make it a poor fit; rosemary, juniper, bay, mugwort and frankincense are used in its place (skip mugwort and juniper if you are pregnant).',
+    'A year of inner work can stir up old grief or low moods. That is common and nothing to be ashamed of. If it becomes heavy, pause the journey and talk to someone you trust, your doctor or a counsellor; in a crisis, call your local emergency number or a helpline such as Samaritans (116 123 in the UK and Ireland) or 988 in the US.',
+    'White sage is not used in this journey. Its wild harvest and its place in closed Indigenous practice make it a poor fit; rosemary, juniper, bay, mugwort and frankincense are used in its place (skip mugwort if you are pregnant).',
   ],
   holyDays: ['samhain', 'yule', 'imbolc', 'ostara', 'beltane', 'litha', 'lammas', 'mabon'],
   stages: [

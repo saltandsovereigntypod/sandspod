@@ -12,10 +12,10 @@ export const JOURNEY: Journey = {
 It is a dedication, not an initiation. It joins you to no group. It is a promise you make yourself, and it is mostly about how you meet endings.
 
 Working with a figure of death can stir up grief. If you are grieving hard, or having thoughts of ending your life, please reach out to people and to a crisis line or doctor before anything else. Morana is about letting winter go so spring can come, never about giving up.`,
-  about: `Across Poland, Czechia, Slovakia, Slovenia, Lusatia and beyond, people have long carried a straw figure dressed as a woman out of the village in late Lent or at the spring equinox, sung over it, and burned it, drowned it in a river, or both, then brought a green branch back home as the new summer. The figure is called Marzanna, Morana, Mařena, Smrtka (little Death) or simply Death. Church synods in Prague in the fourteenth century and in Poland in the fifteenth tried to ban the custom, which tells us it is old, and the Polish chronicler Jan Długosz in the 1400s named Marzanna as a Polish goddess, though he matched her with Ceres, the grain goddess, not with death. Her name is usually tied to the Slavic root mor-, death or plague, and to the nightmare spirit mara. Beyond the custom and Długosz’s line, there is no evidence of a cult of Morana: no temple, no prayer, no offering. Modern Rodnovers have made her a goddess of winter and death, often paired with a spring goddess, and honour her at the onset of winter and at its end. This journey honours both: the living folk custom, and the modern goddess of necessary endings built on it.`,
+  about: `Across Poland, Czechia, Slovakia, Slovenia, Lusatia and beyond, people have long carried a straw figure dressed as a woman out of the village in late Lent or at the spring equinox, sung over it, and burned it, drowned it in a river, or both, then brought a green branch back home as the new summer. The figure is called Marzanna, Morana, Mařena, Smrtka (little Death) or simply Death. Church prohibitions in Prague in 1366 and 1384, and the Polish Synod of Poznań in 1420, tried to ban the custom, which tells us it is old, and the Polish chronicler Jan Długosz in the 1400s named Marzanna as a Polish goddess, though he matched her with Ceres, the grain goddess, not with death. Her name is usually tied to the Slavic root mor-, death or plague, and to the nightmare spirit mara. Beyond the custom and Długosz’s line, there is no evidence of a cult of Morana: no temple, no prayer, no offering. Modern Rodnovers have made her a goddess of winter and death, often paired with a spring goddess, and honour her at the onset of winter and at its end. This journey honours both: the living folk custom, and the modern goddess of necessary endings built on it.`,
   notes: [
     'Morana is best evidenced as a folk custom with an effigy, not as an ancient goddess with a cult. This journey says so plainly.',
-    'Ritual can help with grief and endings, but it never replaces human support. If you are struggling with grief, depression or thoughts of suicide, contact a crisis line, a doctor or someone you trust now.',
+    'Ritual can help with grief and endings, but it never replaces human support. If you are struggling with grief, depression or thoughts of suicide, contact a crisis line, a doctor or someone you trust now: in the US and Canada call or text 988; in the UK and Ireland call Samaritans on 116 123; elsewhere, findahelpline.com lists free local lines. If you are in immediate danger, call your emergency number.',
     'The effigy is driven out, not worshipped, in the folk custom. If you honour Morana as a goddess, you are doing something modern; do it respectfully alongside communities that keep the custom.',
     'Burning or drowning effigies can harm rivers and wildlife. Use only natural materials, follow local fire and water rules, and choose a safe alternative if needed.',
     'Death and winter are fierce. Nothing in this journey sends death, illness or bad luck toward anyone. The custom drives misfortune out of the community, not onto another person.',
@@ -112,7 +112,7 @@ What we have instead is a custom, recorded mainly among the West and South Slavs
             },
             {
               heading: 'The Church and the chronicler',
-              body: `The custom first appears in Church records trying to stop it. Synods in Prague in the 1360s and 1380s forbade people to carry “death” out of towns and drown it, and Polish Church statutes of the fifteenth century did the same. If the Church was banning it in the fourteenth century, it was already well established.
+              body: `The custom first appears in Church records trying to stop it. Church prohibitions in Prague in 1366 and 1384, collected by the Czech ethnographer Čeněk Zíbrt, forbade people to carry “death” out and drown it, and in Poland the Synod of Poznań in 1420 told priests not to allow the image called Death to be carried about and drowned in puddles. If the Church was banning it in the fourteenth century, it was already well established.
 
 Then, in the 1400s, the Polish chronicler Jan Długosz listed Marzanna among the gods of the pagan Poles. But he matched her with Ceres, the Roman goddess of grain, not with death or winter. Długosz was building a classical-style pantheon for Poland and his list is not reliable, but it is the only medieval text that calls Marzanna a goddess.`,
             },
@@ -160,7 +160,7 @@ In Russia, a similar straw figure, the Maslenitsa doll, was burned at the end of
               heading: 'Making and carrying her',
               body: `The figure was made of straw, often from the last sheaf of the previous harvest, bound onto a stick or cross. She was dressed as a woman, in an old skirt, a blouse, a headscarf, sometimes with a necklace of eggshells or snail shells, ribbons and a painted face. Girls usually made and carried her, though in some places boys or the whole village took part.
 
-She was carried through the village and out past its edge, with singing. A Czech song, printed in a farming calendar of 1617 and still sung in many versions, begins: “Již nesem smrt ze vsi, nové léto do vsi,” “Now we carry Death out of the village, the new summer into the village.” In some places she was carried from house to house first, and the girls were given eggs or coins.`,
+She was carried through the village and out past its edge, with singing. The Czech song, sung in many local versions and collected by nineteenth-century folklorists, opens with words like Smrt nesem ze vsi, nové léto do vsi: we carry Death out of the village, the new summer into the village. Frazer’s Golden Bough gives one Bohemian version in English: “Now carry we Death out of the village, / The new Summer into the village, / Welcome, dear Summer, / Green little corn.” In some places she was carried from house to house first, and the girls were given eggs or coins.`,
             },
             {
               heading: 'Fire, water, and not looking back',
@@ -502,9 +502,10 @@ Do not use Morana to send death, illness or misfortune toward anyone. The custom
     },
   ],
   sources: [
-    'Traditional Czech Morana song, version printed in a farming calendar of 1617, first line quoted (folk text; translation original): https://catvusa.com/traditions/spring-welcoming/',
+    'Traditional Czech Morana song, opening line given as a folk text (as in Čeněk Zíbrt, Veselé chvíle v životě českého lidu, 1910, chapter “Smrt nesem ze vsi”); the claim that it was first printed in 1617 could not be confirmed and has been removed',
+    'James George Frazer, The Golden Bough, abridged ed. (1922), ch. XXVIII §3 “Carrying out Death,” Bohemian song quoted: https://www.gutenberg.org/ebooks/3623',
+    'Čeněk Zíbrt, Veselé chvíle v životě českého lidu (1910), on the Prague prohibitions of 1366 and 1384',
     'Jan Długosz, Annales seu cronicae incliti Regni Poloniae (15th century), on Marzanna as Ceres (paraphrased)',
-    'James George Frazer, The Golden Bough (abridged ed., 1922), chapters on carrying out Death and bringing in summer',
     'W. R. S. Ralston, The Songs of the Russian People (1872), on Kostroma and the Marena tree: https://archive.org/details/songsofrussianpe00ralsuoft',
     'Judith Kalik and Alexander Uchitel, Slavic Gods and Heroes (2019)',
     'Linda J. Ivanits, Russian Folk Belief (1989)',
