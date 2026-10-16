@@ -265,6 +265,11 @@ export const JOURNEY: Journey = {
               body:
                 'Antlers are the most popular object on a Cernunnos shrine. Buy or collect only naturally shed antlers, never those taken from killed animals unless you know the hunt was lawful and ethical. In some places, such as many national parks and nature reserves, collecting anything is illegal. Deer are sensitive to disturbance, especially during the rut (roughly September to November) and calving (May to July), so keep your distance.\n\nThe same goes for feathers, bones and skulls. Laws in many countries protect wild birds and their feathers. When in doubt, leave it where it lies and take a photograph instead.',
             },
+            {
+              heading: 'A god of the wild, in the city',
+              body:
+                'You do not need a forest. Cities are full of wild life: foxes in the railway cuttings, peregrines on cathedral towers, mosses in the cracks of the pavement, and the trees along every street. Many devotees in towns honour Cernunnos through the wildness that survives there, by learning which birds nest nearby, putting up a bird box, letting a corner of a balcony or yard grow untidy for insects, or joining a local group that cares for a park.\n\nThe images of Cernunnos show wild and tame animals together around him. A city, where people and animals live tightly side by side, is not as far from his world as it seems.',
+            },
           ],
           knowAndDont: {
             known:

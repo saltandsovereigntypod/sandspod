@@ -337,6 +337,11 @@ export const JOURNEY: Journey = {
               body:
                 'No ancient festival of Cerridwen is known. Modern Pagans honour her most at Samhain (31 October), the Welsh Calan Gaeaf, as the goddess of the cauldron of death and rebirth. Calan Mai, May Eve (the Welsh Bealtaine), is fitting too, since it was on May Eve that Elffin found Taliesin in Gwyddno’s weir.\n\nMany devotees also honour her at the dark moon, a modern association, and at any time of change in their lives. If you keep a creative practice, the day you finish a project is a good day to give her thanks.',
             },
+            {
+              heading: 'Keeping her shrine',
+              body:
+                'Change the water in her cauldron at least once a week, and never let it sit until it turns stale; a fresh vessel is part of the respect. Keep your current notebook on the shrine, and when one is full, give it a night before her before you put it away. Dried herbs on the shrine should be replaced each season and composted, not left to gather dust.\n\nIf you want to mark the chase, you can keep four small things on her shrine for the four pairs of forms: something for the hare and greyhound, the fish and otter, the bird and hawk, the grain and hen. Move one forward each season, as a reminder that change goes on.',
+            },
           ],
           knowAndDont: {
             known:

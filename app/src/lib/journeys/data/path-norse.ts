@@ -366,7 +366,9 @@ The sagas, too, admire people who keep their word, protect their household, stay
             },
             {
               heading: 'Writing your own measure',
-              body: `A good exercise, and one many kindreds do, is to read the Hávamál slowly and write down the values you find, in your own words. You might end up with something like: give and receive well; keep frith with your people; speak truly; be moderate; learn; honour the gods and the dead; protect the vulnerable; build a name worth leaving. That list is yours, and you can test it against your life and change it.`,
+              body: `A good exercise, and one many kindreds do, is to read the Hávamál slowly and write down the values you find, in your own words. You might end up with something like: give and receive well; keep frith with your people; speak truly; be moderate; learn; honour the gods and the dead; protect the vulnerable; build a name worth leaving. That list is yours, and you can test it against your life and change it.
+
+There is an older test, too, the saga way. Imagine your deeds told aloud at your funeral ale, by people who knew you well and owe you nothing. Would the story make your kin proud? Would your word be remembered as good? That is the measure the Hávamál points at when it says the fame of a dead man's deeds never dies, and it asks more of you than any poster.`,
             },
           ],
           knowAndDont: {
@@ -626,7 +628,9 @@ Keep it clean. Dust it, change the water and flowers, and never leave old offeri
             },
             {
               heading: 'Outdoors and on the move',
-              body: `If you have access to a garden or a park, a small stone or a ring of pebbles under a tree makes a fine hörgr. Give there in all weathers. When you travel, greet the land-spirits of the new place, and pour a little at the base of a tree. A small travel kit of a cup, a stone and a few runes on a card fits in any bag.`,
+              body: `If you have access to a garden or a park, a small stone or a ring of pebbles under a tree makes a fine hörgr. Give there in all weathers. When you travel, greet the land-spirits of the new place, and pour a little at the base of a tree. A small travel kit of a cup, a stone and a few runes on a card fits in any bag.
+
+When your outdoor spot changes, because you move or the park is built over, thank the wights there, give a last gift, and say goodbye. Then greet the new place properly. Heathenry is a religion of relationships, and relationships deserve a proper beginning and end.`,
             },
           ],
           knowAndDont: {

@@ -1,0 +1,519 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-artemis',
+  kind: 'deity',
+  paths: ['hellenic', 'roman'],
+  deityRef: 'traditional/deity/artemis',
+  title: 'Artemis: Mistress of Wild Things',
+  summary:
+    'A lunar month with Artemis: the huntress and mistress of animals, guardian of girls and of women in childbirth, the fierce goddess of the margins, and how to honour her outdoors, at the full moon cakes of the Mounichia and on her sixth day.',
+  welcome: `This is a month of study and devotion with Artemis, the Greek goddess of wild places and wild animals, of the hunt, of girls growing up and of women giving birth. She is fierce, free and protective, and she is honoured best outside, in all weathers.
+
+It is a self-dedication, not an initiation. No priesthood or group stands behind it, and it does not replace any group’s initiation. Ancient Greeks honoured many gods; a dedication to Artemis can sit alongside others.
+
+You will need fresh water, a little honey, access to some outdoor place, even a park or a tree on your street, and boots you do not mind getting muddy.`,
+  about: `Artemis was one of the most widely worshipped goddesses in the Greek world. Homer calls her Potnia Thērōn, mistress of wild beasts. She was the twin of Apollo, daughter of Zeus and Leto, a virgin huntress who roamed the mountains with her nymphs and hounds. But she was also a goddess of the edges of the city: girls served her before marriage at Brauron, women called on her in childbirth, and young people passing into adulthood were under her care. Athenians kept her festivals with cakes shaped like deer and round cakes ringed with tiny torches like the full moon. Her link with the moon is mostly later, through her overlap with Selene, Hekate and the Roman Diana. Today Hellenic polytheists honour her with offerings in wild places and protection of animals and children; many modern witches and Pagans honour her as a lunar goddess of independence and nature; and the Great Goddess of Ephesus, often called Artemis, is a distinct Anatolian goddess worth knowing about too.`,
+  notes: [
+    'Artemis’s link with the moon is mostly a later development; in early Greek religion the moon was Selene. Both views are honoured today.',
+    'Her “virginity” (parthenos) means an unmarried girl or woman, independent of a husband’s household, not only sexual abstinence. And she is the goddess called on in childbirth. The journey explains both.',
+    'Her myths include human sacrifice stories (Iphigenia) and harsh punishments (Actaeon, Callisto). The journey treats them honestly.',
+    'Offerings in wild places should be water, honey on the earth or biodegradable food in small amounts. Never leave plastic, foil, candles or anything that harms wildlife.',
+    'This journey is open to everyone. Some modern Artemis groups are women-only; this one is not, and it welcomes trans and non-binary devotees fully.',
+  ],
+  holyDays: ['mounichia', 'thargelia', 'noumenia'],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'Going outside',
+      intro:
+        'Artemis is honoured at the margins: forests, mountains, rivers, and the wild edges of towns. So the journey begins outdoors, with water poured on the earth and an introduction. If you cannot go far, a park, a riverbank or a single tree will do.',
+      days: 2,
+      lessons: [],
+      practices: [
+        {
+          id: 'artemis-threshold-place',
+          title: 'Find a wild place',
+          instructions:
+            'Find a nearby place that feels a little wild: a wood, a meadow, a riverbank, the overgrown corner of a park. Visit it once before the rite. Notice the animals, birds and plants. Pick up any litter you see.',
+          times: 1,
+          prompt: 'What lives in your wild place? What did you notice that you had not noticed before?',
+        },
+      ],
+      rite: {
+        title: 'An introduction in the wild',
+        summary: 'Wash your hands in stream or bottled water, greet Hestia in a word, introduce yourself to Artemis, and pour fresh water and honey on the earth.',
+        minutes: 20,
+        ingredients: [
+          { name: 'A bottle of fresh water' },
+          { name: 'A small jar of honey' },
+          { name: 'A small cup', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'A sprig of a local wild plant you can pick freely, or a fallen leaf', optional: true },
+        ],
+        preparation:
+          'Go to your wild place in daylight or at dusk, with your phone charged and someone knowing where you are. Find a spot where you can stand or sit quietly. Make sure what you pour will go onto bare soil, not into a pond or onto a path.',
+        steps: [
+          {
+            title: 'Wash your hands',
+            instructions:
+              'Pour a little water over your hands. Out of doors, this simple washing stands in for khernips.',
+            spoken: 'With clean hands I come to your wild places.',
+          },
+          {
+            title: 'Begin with Hestia',
+            instructions: 'Pour a drop of water on the earth for Hestia, remembering the hearth you came from.',
+            spoken: 'Hestia, first and last, keeper of the home I left this morning.',
+          },
+          {
+            title: 'Call Artemis',
+            instructions: 'Face the wildest part of the place. Raise your hands, palms up, and speak plainly.',
+            spoken:
+              'Artemis, mistress of wild things, Agrotera of the fields and hills, sister of Apollo, daughter of Leto: I am [your name]. I have come to your place to learn who you are. I will take nothing from here but what I brought, and I will leave it cleaner than I found it.',
+            minutes: 2,
+          },
+          {
+            title: 'Pour water and honey',
+            instructions:
+              'Pour a cup of water mixed with a spoon of honey slowly onto the earth. Then stand or sit still for ten minutes. Watch for animals and birds. Let the place be what it is.',
+            minutes: 10,
+            timed: true,
+          },
+          {
+            title: 'Close with Hestia',
+            instructions: 'Pour a last drop for Hestia. Thank Artemis and go home quietly.',
+            spoken: 'Hestia, last as you were first. Artemis, thank you.',
+          },
+        ],
+        closing:
+          'Take all your things home with you. Write about the place, what you saw and heard, and how it felt to stand there and call her.',
+        safety:
+          'Tell someone where you are going, carry a charged phone and stay on safe ground. Do not pick protected plants, disturb nests or feed wildlife. Pour honey only on bare earth, in small amounts, away from paths and water.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'Learning the huntress',
+      intro:
+        'Ten days of reading: who Artemis is in the oldest poems, what her maidenhood and her care for childbirth meant, her fierce myths, and how she was worshipped across Greece.',
+      days: 10,
+      lessons: [
+        {
+          id: 'artemis-who',
+          title: 'Mistress of animals',
+          summary: 'Artemis in Homer, the hymns and Callimachus: the huntress, the twin and the wild goddess.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The huntress',
+              body: `The longer of the two Homeric hymns to Artemis begins: “I sing of Artemis, whose shafts are of gold, who cheers on the hounds, the pure maiden, shooter of stags, who delights in archery, own sister to Apollo with the golden sword.” She ranges the shadowy hills and windy peaks, and the mountains tremble at the cries of the beasts.
+
+Then, at the end of the hunt, she unstrings her bow and goes to her brother’s house at Delphi, where she “heads and leads the dances” of the Muses and Graces. This is worth remembering. Artemis is not only the solitary huntress. She leads the dance, and her festivals were full of girls dancing.`,
+            },
+            {
+              heading: 'Mistress of wild beasts',
+              body: `In the Iliad she is called Potnia Thērōn, mistress or lady of wild beasts, an old title shared with older images of a goddess holding animals by the neck or legs, found across the Aegean and the Near East. Her name may appear on Linear B tablets from Pylos, as a-te-mi-to, though scholars do not all agree.
+
+She is the one who hunts animals and the one who protects them, especially the young. To the Greeks there was no contradiction. She knew the wild from inside it, as hunter and guardian both, and she kept its rules.`,
+            },
+            {
+              heading: 'Twin of Apollo',
+              body: `The Homeric Hymn to Apollo says that Leto bore Artemis on Ortygia and Apollo on Delos. Later stories have Artemis born first, then helping her mother deliver her brother, which is why women in labour prayed to her. The twins are often honoured together: their birthdays fell on the sixth and seventh of the month Thargelion, and the sixth of every month was hers.
+
+Brother and sister are both archers. Apollo’s arrows bring plague to men; Artemis’s bring sudden death to women. Both can heal and harm.`,
+            },
+            {
+              heading: 'Callimachus’ girl goddess',
+              body: `The Hellenistic poet Callimachus, in the third century BCE, wrote a hymn imagining Artemis as a little girl on her father Zeus’s knee, asking for gifts. She wants to stay a maiden forever, to have as many names as her brother, a bow and arrows, a short tunic for running, nymphs to attend her and hounds, and all the mountains; she will visit cities only rarely, when women in labour call her.
+
+It is a charming poem, and it gathers up a great deal: virginity as freedom, the wild as home, and childbirth as the one thing that brings her into town.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Homeric Hymns III, IX and XXVII, Homer’s Iliad and Callimachus’ Hymn 3 give a consistent picture of the huntress, twin of Apollo, mistress of animals and helper in childbirth. The Mistress of Animals image is ancient and widespread.',
+            unknown:
+              'Whether the Linear B name is hers, and how she developed from older animal goddesses, is uncertain. Local Artemises varied a great deal; there was no one “Artemis” across Greece.',
+          },
+          inPractice:
+            'Many devotees keep an image of a deer, bear or hound on the shrine and carry something from her wild places, such as a fallen feather, pine cone or stone. Reading Homeric Hymn 27 outdoors is a simple and lovely offering.',
+          reflect: [
+            'Artemis hunts and protects at once. Where do you see that pairing in the world?',
+            'What would you ask for if you sat on her father’s knee?',
+          ],
+          further: [
+            'Homeric Hymn XXVII to Artemis, trans. H. G. Evelyn-White (1914)',
+            'Callimachus, Hymn 3 to Artemis, trans. A. W. Mair (1921)',
+            'Susan Guettel Cole, Landscapes, Gender, and Ritual Space (2004)',
+          ],
+          library: ['traditional/deity/artemis', 'traditional/deity/apollo', 'traditional/deity/diana'],
+        },
+        {
+          id: 'artemis-maiden-birth',
+          title: 'Maiden, girls and childbirth',
+          summary: 'What her virginity meant, the bears of Brauron, and Artemis as the goddess of women in labour.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'What parthenos means',
+              body: `Artemis is a parthenos, usually translated “virgin.” But in Greek the word meant above all an unmarried girl or young woman, one not yet under a husband’s authority. A parthenos could be wild, free, and outside the household. Artemis is the eternal parthenos: she never passes into marriage, and so she guards the time before it.
+
+So her virginity is less about purity in the modern moral sense and more about autonomy. That is why many modern devotees see her as a goddess of independence and bodily sovereignty, and why people of any gender or relationship status can honour her.`,
+            },
+            {
+              heading: 'The bears of Brauron',
+              body: `At Brauron, on the east coast of Attica, young Athenian girls served Artemis for a time as arktoi, “bears,” before marriage. Fragments of pottery show girls running and dancing, some in short tunics, some naked. The story behind it was that a tame bear in Artemis’s sanctuary was killed, and the goddess demanded that girls “play the bear” in atonement.
+
+Before marriage, girls dedicated their toys, a lock of hair and their girdles to Artemis. The goddess of the wild thus took the girl’s childhood into her keeping as she passed into adult life. Many modern families mark a daughter’s or any child’s coming of age by dedicating a childhood object to Artemis.`,
+            },
+            {
+              heading: 'The goddess of labour',
+              body: `Greek women in childbirth called on Artemis as Lochia, the goddess of childbirth, often together with Eileithyia, the birth goddess. When a woman died suddenly, especially in childbirth, people said Artemis had shot her. In the Iliad, Hera says scornfully to her (in Samuel Butler’s Victorian translation, which uses the Roman names), “Jove made you as a lion among women, and lets you kill them whenever you choose.”
+
+At Brauron, says Euripides, the garments of women who died in childbirth were dedicated to Iphigenia, Artemis’s heroine priestess. After a safe delivery, women dedicated clothing to Artemis herself. Hundreds of such dedications are recorded in inscriptions. Childbirth was the most dangerous thing most ancient women did, and Artemis stood at that edge.`,
+            },
+            {
+              heading: 'Kourotrophos',
+              body: `Artemis was also kourotrophos, nurse and guardian of the young, human and animal. Infants, children and adolescents were under her care. That is the heart of her protective side today: devotees ask her to watch over children, people giving birth, young animals and anyone at a dangerous passage. Supporting a midwife, a birth charity or a wildlife rescue in her name continues her ancient work.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The Brauron arkteia is attested in Aristophanes’ Lysistrata, in later commentaries and in pottery from the sanctuary. Dedications of clothing after childbirth are recorded in inscriptions from Brauron and the Athenian Acropolis. Euripides’ Iphigenia among the Taurians (1462–1467) mentions the garments of women who died. Hera’s taunt is in Iliad 21.',
+            unknown:
+              'Exactly what the arkteia involved, how many girls took part and at what age, is debated. The bear story is a later explanation, and we cannot know how girls themselves experienced it.',
+          },
+          inPractice:
+            'Devotees today ask Artemis Lochia to watch over anyone giving birth, often lighting a candle at home during a friend’s labour. Coming-of-age dedications of a childhood toy or a lock of hair are a popular revival. Many give to birth, children’s or wildlife charities in her name.',
+          reflect: [
+            'What does independence, the parthenos kind, mean in your life?',
+            'Who in your life is at a dangerous passage right now? How could you stand at that edge with them?',
+          ],
+          further: [
+            'Euripides, Iphigenia among the Taurians',
+            'Homer, Iliad 21, trans. Samuel Butler (1898)',
+            'Sarah Pomeroy, Goddesses, Whores, Wives, and Slaves (1975)',
+          ],
+          library: ['traditional/deity/artemis', 'traditional/herb/mugwort'],
+        },
+        {
+          id: 'artemis-myths',
+          title: 'The fierce myths',
+          summary: 'Actaeon, Callisto, Niobe, the Calydonian boar and Iphigenia: her anger, and what it guarded.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Actaeon and Callisto',
+              body: `The hunter Actaeon saw Artemis bathing naked in a spring. She turned him into a stag, and his own hounds tore him apart. Callisto, one of her nymphs, was raped by Zeus in disguise; when her pregnancy was discovered, she was turned into a bear, by Artemis or by Hera depending on the version, and later placed in the stars as the Great Bear.
+
+These stories are hard. Actaeon’s seems to be about crossing a boundary that must not be crossed. Callisto’s is about a victim punished, and many modern readers, rightly, are angry at it. Ancient versions differ, and some blame Hera or Zeus. You can hold her fierceness as real without approving every story told about it.`,
+            },
+            {
+              heading: 'Niobe and the forgotten offering',
+              body: `With Apollo she shot down the children of Niobe, who had boasted over their mother Leto. And when King Oineus of Calydon gave first fruits of the harvest to all the gods but forgot Artemis, she sent a monstrous boar to ravage his land. The great hunt of the Calydonian boar, with Meleager and the huntress Atalanta, followed.
+
+The lesson the Greeks drew from Oineus is practical: do not forget her. In a Greek rite that honoured several gods, every god received their portion. Forgetting one was an insult. If you honour several gods at harvest, give her a share.`,
+            },
+            {
+              heading: 'Iphigenia',
+              body: `The darkest story is Iphigenia. When the Greek fleet was stuck at Aulis on its way to Troy, the prophet Calchas said that Artemis demanded the sacrifice of Agamemnon’s daughter. In some versions Iphigenia is killed. In others, Artemis rescues her at the last moment, substituting a deer, and carries her off to be her priestess among the Taurians, a people the Greeks said practised human sacrifice.
+
+The Greeks told this story to think about war, fathers and the cost of glory. Iphigenia was honoured as a heroine at Brauron. There is no evidence of real human sacrifice to Artemis in historical Greek cult, and this journey treats the story as myth and tragedy, not as a model.`,
+            },
+            {
+              heading: 'What her anger guards',
+              body: `Looked at together, Artemis’s anger falls on those who cross certain lines: who see what is not theirs to see, boast over the gods, forget her portion, or break the order of the wild. Her fierceness is boundary-keeping. That is why many modern devotees, especially survivors of abuse, turn to her for protection and strength in setting boundaries.
+
+Ask her to guard your boundaries and those of the vulnerable. That is fully in keeping with her. Do not ask her to punish people. This app keeps devotional and protective work only, and her worship never needed curses.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Actaeon, Callisto, Niobe, Oineus and Iphigenia are told in archaic and classical sources: Homer (Iliad 9 for Oineus), Hesiod’s lost works, Aeschylus, Euripides and later mythographers like Apollodorus, with Ovid giving famous Roman versions.',
+            unknown:
+              'The versions conflict: who changed Callisto, whether Iphigenia died. There is no historical evidence of human sacrifice to Artemis in Greek cult. Later Spartan rites at Artemis Orthia, where boys were whipped at her altar, are attested mainly for the Roman period and were partly a spectacle for tourists.',
+          },
+          inPractice:
+            'Many devotees honour Iphigenia and Callisto alongside Artemis, as the ones who suffered in her stories. Asking Artemis to guard boundaries, rather than to punish, is the common practice in protective devotion today.',
+          reflect: [
+            'Which of these myths do you find hardest? What do you want to say to her about it?',
+            'Which of your boundaries most needs guarding?',
+          ],
+          further: [
+            'Euripides, Iphigenia at Aulis and Iphigenia among the Taurians',
+            'Homer, Iliad 9.533–599 (Oineus and the boar)',
+            'Ovid, Metamorphoses books 2 and 3',
+          ],
+          library: ['traditional/deity/artemis'],
+          premade: ['folk-iron-threshold'],
+        },
+        {
+          id: 'artemis-worship',
+          title: 'How she was worshipped, and how she is honoured now',
+          summary: 'Agrotera, the Mounichia and Elaphebolia, Ephesus, the moon question, and modern communities.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Artemis across Greece',
+              body: `Artemis had sanctuaries all over the Greek world, often at the edges: on mountains, by marshes and at borders between territories. At Athens she was Agrotera, “of the wild” or “huntress”; before the battle of Marathon in 490 BCE, the Athenians vowed her a goat for every Persian killed, and since there were too many, they sacrificed five hundred goats each year instead, as Xenophon reports.
+
+At Patrai, Pausanias describes the Laphria, where wild animals were driven onto a great altar fire. At Sparta she was Orthia. And at Ephesus, the Greeks called the city’s great goddess Artemis, though she was a distinct Anatolian goddess, her statue hung with rows of rounded objects that have been read as breasts, eggs or bulls’ testicles; no one is sure.`,
+            },
+            {
+              heading: 'Moon cakes and deer cakes',
+              body: `Two Athenian festivals are lovely to keep today. At the Mounichia, at the full moon of the month Mounichion in spring, people offered Artemis amphiphōntes, round cakes ringed with small lit torches or candles, “shining all round” like the full moon. At the Elaphebolia, she received cakes shaped like deer, made with honey and sesame.
+
+The sixth day of each month was hers, and her birthday in the month Thargelion, the day before Apollo’s, was celebrated with the Thargelia.`,
+            },
+            {
+              heading: 'The moon question',
+              body: `Modern witchcraft often sees Artemis as a moon goddess. In early Greek religion, the moon was Selene. Artemis’s link with the moon grew from her torch-bearing title Phosphoros, her overlap with Hekate, the Mounichia’s full-moon cakes, and above all from the Roman Diana, who was identified with the moon. By Hellenistic and Roman times, Artemis-Selene was common.
+
+So both views are valid, but they are different. If you follow Hellenic reconstructionist practice, you might honour Selene at the full moon and Artemis on the sixth. If you follow modern witchcraft, the full moon may be her night.`,
+            },
+            {
+              heading: 'Who honours her now',
+              body: `Hellenic polytheists honour Artemis with offerings in wild places, the monthly sixth, the Mounichia and Elaphebolia, and acts of protection for animals and children. Eclectic Pagans and witches often honour her as a goddess of the moon, nature and independence. Dianic Wicca, founded in the 1970s, honours a Goddess drawn partly from Artemis and Diana; some Dianic groups are women-only and some have excluded trans women, which has caused deep hurt. This journey is open to everyone.
+
+Hunters, too, honour her, as do vegans who see her as protector of animals. Both claim her, and both have ancient support. What she asks of both is respect for the wild and its rules.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Xenophon (Anabasis 3.2.12) reports the Marathon vow. Pausanias describes the Laphria (7.18) and the cult of Orthia. Athenaeus and other writers mention the amphiphontes and the deer cakes. The Ephesian statue is well known from copies.',
+            unknown:
+              'The meaning of the Ephesian ornaments is unknown. Many local Artemis cults are known only from a few lines. When exactly the moon became central to her is a matter of gradual change, not a single date.',
+          },
+          inPractice:
+            'Set up her shrine near a window or plant, with an image of a deer or bear, a bow or arrow, a bowl of water and things from your wild place. Plan to make amphiphontes or deer cakes for her next festival.',
+          reflect: [
+            'Where do you stand on the moon question? Why?',
+            'What do you think she asks of people who hunt, and of people who do not?',
+          ],
+          further: [
+            'Xenophon, Anabasis 3.2.12; Pausanias 7.18',
+            'Jennifer Larson, Ancient Greek Cults (2007)',
+            'Robert Parker, Polytheism and Society at Athens (2005)',
+          ],
+          library: ['traditional/deity/artemis', 'traditional/deity/selene', 'traditional/deity/diana', 'traditional/deity/hekate'],
+        },
+      ],
+      practices: [
+        {
+          id: 'artemis-study-walk',
+          title: 'Return to the wild place',
+          instructions:
+            'Go back to your wild place at least twice in this stage. Each time, pick up some litter, pour a little water on the earth and sit for ten minutes.',
+          times: 2,
+          every: 'week',
+          prompt: 'What had changed in the place since you last came?',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Nine days in her keeping',
+      intro:
+        'Nine days of going out, giving water and protection, then a lesson on her days, cakes and offerings.',
+      days: 12,
+      lessons: [
+        {
+          id: 'artemis-days-offerings',
+          title: 'Her days, cakes and offerings',
+          summary: 'The sixth of the month, how to make Mounichia cakes, offerings in wild places, and her titles for prayer.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The sixth, the Thargelia and the Mounichia',
+              body: `Artemis’s monthly day is the sixth, counted from the Noumenia. A small offering then, a walk, water poured, a hymn read, keeps the relationship steady. Her birthday comes in the Thargelia, in late spring, the day before her brother’s; the Mounichia falls at the full moon of the following month; the Elaphebolia came in early spring. The app marks the Thargelia, Mounichia and Noumenia in your calendar.
+
+If you follow the Roman calendar too, Diana’s festival, the Nemoralia, fell on the Ides of August, when women carried torches to her grove at Nemi and gave thanks for safe births.`,
+            },
+            {
+              heading: 'Making amphiphontes',
+              body: `Make a simple round honey cake: a plain sponge or a flat round of honey and sesame dough. Before the rite, set a ring of birthday candles or very small tealights around it (on a heatproof plate, not stuck in the cake if they are tealights). Light them at the moment of offering. When they burn low, put them out, and give the cake to her.
+
+In Hellenic custom, offerings to Olympians can be shared, so many people keep part of the cake and leave a slice outdoors in a safe place or on the shrine until the next day. If you leave food outdoors, keep it small and free of chocolate or raisins.`,
+            },
+            {
+              heading: 'Offerings in wild places',
+              body: `Artemis receives water, honey, milk, fruit, honey cakes, small handmade things such as a woven bracelet or carved token, and hymns. Wild-place offerings should leave no trace: pour liquids on bare earth, leave nothing that will not rot within days, and never leave candles, ribbons, plastic or coins. A beautiful modern offering is to carry a bag and pick up litter, or to volunteer with a conservation group, in her name.
+
+At home, give her clean water every few days, change her shrine with the seasons, and keep a portion of any harvest feast for her, remembering Oineus.`,
+            },
+            {
+              heading: 'Her titles',
+              body: `Good titles for prayer are Agrotera, of the wild; Potnia Thērōn, mistress of animals; Iocheaira, shooter of arrows; Elaphebolos, deer-shooter; Phosphoros, light-bringer; Lochia, of childbirth; Kourotrophos, nurse of the young; Soteira, saviour; Hegemone, leader; and the local names Brauronia and Mounichia. Call her Lochia for anyone giving birth, Kourotrophos for children, Phosphoros for guidance in dark times, and Agrotera in wild places.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The sixth of the month and her birthday at the Thargelia are attested for Athens. Amphiphontes and deer cakes are mentioned in ancient writers. Her epithets above appear in Homer, the hymns, inscriptions and Pausanias. The Nemoralia is described by Ovid and others.',
+            unknown:
+              'The exact recipe for amphiphontes is lost; modern versions are reconstructions. Leave-no-trace practice is a modern ethic, though very much in keeping with her ancient care for wild places.',
+          },
+          inPractice:
+            'Mark her next sixth day and the next Mounichia. Choose one local conservation or animal-welfare act to dedicate to her this month.',
+          reflect: ['Which of her titles do you most want to call on?', 'What does the wild place near you need from you?'],
+          further: ['Jon D. Mikalson, The Sacred and Civil Calendar of the Athenian Year (1975)'],
+          library: ['traditional/deity/artemis', 'traditional/crystal/moonstone', 'traditional/herb/mugwort'],
+          premade: ['hedge-hearing-the-land-walk', 'folk-noumenia-blessing'],
+        },
+      ],
+      practices: [
+        {
+          id: 'artemis-nine-days',
+          title: 'Nine days in her keeping',
+          instructions:
+            'For nine days, go outside at least once, even for ten minutes, and walk somewhere with trees, sky or water. Pour a little water on the earth for her. Notice one animal or bird. At home, light a candle or simply sit by her shrine for a few minutes in the evening, and do one thing that protects something smaller than you: feed a pet well, fill a bird bath, check on a child or a friend, pick up litter.',
+          times: 9,
+          every: 'day',
+          prompt: 'What animal or bird did you see? What did you protect today?',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'Listening at the edge',
+      intro: `Take a few days to sit at the edge of things and look at the month honestly.
+
+Stopping here is a good outcome. So is honouring Artemis on her sixth day without dedicating, or realising that Apollo, Selene, Diana or another god is calling more strongly. She never asked anyone to stay who did not want to; her nymphs chose her.`,
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'artemis-discern-sit',
+          title: 'A long sit in the wild',
+          instructions:
+            'Go to your wild place and sit for half an hour without your phone. Bring the questions below in your head and let the place answer, or not.',
+          times: 1,
+          prompt: 'What came to you, out there?',
+        },
+      ],
+      questions: [
+        'Am I drawn to Artemis herself, or to an image of moonlit freedom? Have I met the huntress and the goddess of childbirth too?',
+        'Can I keep going outside, in all weathers, for a year?',
+        'How do I feel about her fierce myths? Can I hold them honestly?',
+        'Is there a boundary in my life I am asking her to guard, and am I ready to guard it myself too?',
+        'If I waited, would I feel relief or loss?',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'The dedication under the full moon',
+      intro: `If you have chosen to go on, make your dedication at a full moon with amphiphontes cakes, in honour of the Mounichia, or on her sixth day. You can do it at home, or begin outdoors and finish at home. This is a self-dedication: your own promise. It is not an initiation and makes you no priestess. Groups that initiate keep their own rites, and this does not replace them.
+
+Girls at Brauron dedicated a childhood thing to Artemis as they grew. You may dedicate something from your own past too.`,
+      days: 1,
+      lessons: [],
+      practices: [],
+      rite: {
+        title: 'Self-dedication to Artemis',
+        summary: 'Purify, begin with Hestia, call Artemis by her titles, offer a ring-lit moon cake, make your promise and dedicate a token, then pour water and honey on the earth.',
+        minutes: 45,
+        ingredients: [
+          { name: 'A bowl of fresh water and a match for khernips', ref: 'traditional/vessel/bowl' },
+          { name: 'A round honey cake on a heatproof plate', ref: 'traditional/vessel/dish' },
+          { name: 'A ring of small birthday candles or tealights' },
+          { name: 'Water mixed with honey for the libation' },
+          { name: 'A token to dedicate: a childhood object, a lock of hair, or something handmade' },
+          { name: 'A sprig of mugwort or a local wild plant', ref: 'traditional/herb/mugwort', optional: true },
+          { name: 'Your written promise' },
+        ],
+        preparation:
+          'If you can, visit your wild place during the day and pour water there, telling her that tonight you will make your promise. Bake or buy the cake. Write your promise: for example, to keep her sixth day, to go outside, to protect the young and the wild, and to guard your own boundaries. Clean the shrine.',
+        steps: [
+          {
+            title: 'Purify',
+            instructions: 'Make khernips by quenching the match in the water. Wash your hands and face.',
+            spoken: 'With clean hands I come to the mistress of wild things.',
+          },
+          {
+            title: 'Begin with Hestia',
+            instructions: 'Pour a drop of the honey water for Hestia.',
+            spoken: 'Hestia, first and last: I begin with you.',
+          },
+          {
+            title: 'Light the moon',
+            instructions: 'Light the ring of small candles around the cake.',
+            spoken:
+              'Artemis Agrotera, mistress of animals, Phosphoros light-bringer, Lochia of women in labour, Kourotrophos, guardian of the young: as the Athenians brought you cakes shining all round like the full moon, so I bring you this.',
+            light: true,
+            minutes: 2,
+          },
+          {
+            title: 'Make your promise',
+            instructions:
+              'Read your promise aloud. Place the token on the shrine and tell her what it is and why you give it.',
+            spoken: 'This I promise freely. I give you this from my past, and my future steps on your paths.',
+          },
+          {
+            title: 'Sit with her',
+            instructions: 'Sit in quiet while the candles burn down a little.',
+            minutes: 5,
+            timed: true,
+            snuff: true,
+          },
+          {
+            title: 'Share the cake',
+            instructions:
+              'Set aside a slice for her on the shrine. Eat a piece yourself, as Greeks shared feasts with the Olympians. Keep a piece to take outside.',
+          },
+          {
+            title: 'Close with Hestia',
+            instructions: 'Pour the last drop for Hestia and thank them both.',
+            spoken: 'Hestia, last as you were first. Artemis, thank you.',
+          },
+        ],
+        closing:
+          'Pour the honey water on earth outside. The next day, take a small piece of the cake to a safe outdoor spot or compost it. Keep the token on her shrine, or bury it in your wild place if it is natural and biodegradable. Write down your promise and what you felt.',
+        safety:
+          'Put candles out before they burn into the cake or the plate. Never leave them unattended. If you leave cake outdoors, use only a small piece, without chocolate or raisins, away from paths and water. Mugwort should not be used by anyone pregnant, and some people react to it on the skin.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'Keeping to her paths',
+      intro: `Your devotion now lives outdoors and in the month. Keep her sixth day. Go out to wild places, in all seasons, and look after them. Keep the Thargelia and the Mounichia, and give her a share of any harvest feast.
+
+Once a year, at the Mounichia or the full moon nearest your dedication, renew your promise, change it or set it down with thanks. If you drift, go outside, pour some water on the earth and say her name. The wild was always her home, and it is still there.`,
+      days: 30,
+      lessons: [],
+      practices: [
+        {
+          id: 'artemis-ongoing-sixth',
+          title: 'Her monthly sixth',
+          instructions: 'On the sixth day of each lunar month, go outside, pour water and honey, and do one protective act in her name.',
+          times: 12,
+          every: 'month',
+          prompt: 'What did the wild show you this month?',
+        },
+        {
+          id: 'artemis-ongoing-festivals',
+          title: 'Thargelia and Mounichia',
+          instructions: 'Keep the Thargelia with first fruits for the twins, and the Mounichia with amphiphontes cakes.',
+          times: 2,
+          every: 'holy-day',
+        },
+        {
+          id: 'artemis-ongoing-rededicate',
+          title: 'Yearly rededication',
+          instructions: 'Repeat the dedication rite at the Mounichia or the full moon nearest your dedication.',
+          times: 1,
+          every: 'month',
+          prompt: 'What has a year in her keeping taught you?',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'Homeric Hymn XXVII to Artemis, trans. H. G. Evelyn-White (1914), Project Gutenberg #348: https://www.gutenberg.org/ebooks/348 (quoted: “I sing of Artemis, whose shafts are of gold, who cheers on the hounds, the pure maiden, shooter of stags, who delights in archery, own sister to Apollo with the golden sword”; “heads and leads the dances”)',
+    'Homer, Iliad 21, trans. Samuel Butler (1898), Project Gutenberg #2199: https://www.gutenberg.org/ebooks/2199 (quoted: “Jove made you as a lion among women, and lets you kill them whenever you choose”)',
+    'Homeric Hymn III to Apollo (Ortygia and Delos)',
+    'Callimachus, Hymn 3 to Artemis, trans. A. W. Mair (1921)',
+    'Euripides, Iphigenia at Aulis; Iphigenia among the Taurians 1462–1467',
+    'Aristophanes, Lysistrata 641–647; Xenophon, Anabasis 3.2.12; Pausanias 7.18',
+    'Susan Guettel Cole, Landscapes, Gender, and Ritual Space (2004)',
+    'Jennifer Larson, Ancient Greek Cults (2007)',
+    'Robert Parker, Polytheism and Society at Athens (2005)',
+  ],
+};

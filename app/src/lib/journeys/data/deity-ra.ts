@@ -174,7 +174,7 @@ Ra was the god most often joined to others, because almost every great god wante
               heading: 'Ra-Horakhty',
               body: `Ra-Horakhty means "Ra, who is Horus of the two horizons", the falcon of the eastern and western edges of the sky. He is the most common image of the sun god: a falcon-headed man with the disc and cobra on his head. In hymns he is greeted as Harmachis ("Horus in the horizon") at dawn. In the Book of the Dead, the scribe Ani praises him, in Budge's translation (1899), as the one who rises on the horizon and sheds his beams on "the lands of the North and of the South, thou art beautiful, yea beautiful, and all the gods rejoice when they behold thee, the king of heaven."
 
-At Abu Simbel, Ramesses II carved a temple into a cliff so that, twice a year, around 22 February and 22 October, the rising sun shines down the whole length of the temple and lights the statues of Ra-Horakhty, Amun-Ra and the king himself in the sanctuary, while Ptah, a god of the underworld, stays in shadow.`,
+At Abu Simbel, Ramesses II carved a temple into a cliff so that, twice a year, around 22 February and 22 October, the rising sun shines down the whole length of the temple and lights the statues of Ra-Horakhty, Amun-Ra and the king himself in the sanctuary, while Ptah, a god linked with the underworld, stays in shadow.`,
             },
             {
               heading: 'Amun-Ra, king of the gods',
