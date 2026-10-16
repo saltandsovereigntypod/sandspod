@@ -90,7 +90,7 @@ You will need a safe flame or an electric light, a little olive oil, bread or so
           },
         ],
         closing:
-          'Offerings to Hestia are a little different from those to the underworld gods: many Hellenists leave the bread on the shrine for a while and then place it outside for birds or in the compost, rather than eating it. Write a few lines about the place you chose and how it felt to light it.',
+          'Hestia is not an underworld goddess, and her offerings were never treated as untouchable. The old proverb about her suggests the household kept and ate what was offered at the hearth. Many Hellenists today leave the bread on the shrine for a while and then compost it or put a crumb out for birds; others eat it with the meal. Either is fine; choose one and keep to it. Write a few lines about the place you chose and how it felt to light it.',
         safety:
           'Never leave a flame unattended, and keep it clear of cupboards, curtains, tea towels and cooking. Keep oil lamps on a stable, heatproof surface. Put food offerings out of reach of pets, and do not leave bread out for birds in large amounts.',
       },
@@ -176,7 +176,7 @@ In Athens, Hestia was also honoured in the council house as Hestia Boulaia, of t
             },
             {
               heading: 'What was offered',
-              body: `Hestia shared in sacrifices rather than having many of her own, and she received small, everyday things: wine and water poured on the hearth, a little of the meal, incense, olive oil for lamps. Ancient proverb collections record a saying, “to sacrifice to Hestia,” used of someone who shared nothing with outsiders, because what was offered to her stayed within the household. She is the goddess of the ordinary offering made well, every day.`,
+              body: `Hestia shared in sacrifices rather than having many of her own, and she received small, everyday things: wine and water poured on the hearth, a little of the meal, incense, olive oil for lamps. Ancient proverb collections and the Byzantine lexicon called the Suda record a saying, “to sacrifice to Hestia,” used of a stingy person who shares nothing, because, they explain, nothing from a sacrifice to Hestia was given away to anyone outside. That tells us something practical: what was offered at her hearth stayed in the house, and was most likely eaten by the household itself. She is the goddess of the ordinary offering made well, every day.`,
             },
           ],
           knowAndDont: {
@@ -297,7 +297,7 @@ So a modern devotion to Hestia often reaches beyond the shrine. Feeding a friend
           further: [
             'Homeric Hymn XXIX to Hestia and Hermes',
             'Drew Campbell, Old Stones, New Temples (2000)',
-            'Christos Pandion Panopoulos and others, Hellenic Polytheism: Household Worship (2014)',
+            'Christos Pandion Panopoulos and others of the Labrys community, Hellenic Polytheism: Household Worship (2014)',
           ],
           library: ['traditional/deity/hestia', 'traditional/herb/bay', 'traditional/crystal/carnelian'],
           premade: ['kitchen-hearth-blessing', 'kitchen-housewarming-blessing'],
@@ -330,7 +330,7 @@ So a modern devotion to Hestia often reaches beyond the shrine. Feeding a friend
           sections: [
             {
               heading: 'A goddess of every day',
-              body: `Hestia had no great Athenian festival of her own. Her worship ran through everything else. Still, the monthly days of the Greek calendar suit her well. The Deipnon at the month’s end is a day for cleaning the house; the Noumenia, the first day of the new month, is when the household gods are honoured and the hearth can be relit with prayer; the second day honours the Agathos Daimon, the good spirit of the house.
+              body: `Hestia had no great Athenian festival of her own. Her worship ran through everything else. Still, the monthly days of the Greek calendar suit her well. The Deipnon at the month’s end is a day for cleaning the house; the Noumenia, the first day of the new month, is when the household gods are honoured and the hearth can be relit with prayer; modern Hellenists keep the second day for the Agathos Daimon, the good spirit of the house.
 
 Many Hellenists clean the hearth shrine on the Deipnon, replace the oil or candle, and relight it on the Noumenia. That gives a monthly renewal to a daily practice. The Roman Vestalia in June is the nearest thing to a yearly festival, and many Hestia devotees keep it.`,
             },
@@ -338,7 +338,7 @@ Many Hellenists clean the hearth shrine on the Deipnon, replace the oil or candl
               heading: 'What to give',
               body: `Traditional offerings are simple: olive oil, wine, water, bread, incense, and the first and last of any meal. Fruit and honey are fine. Since she shares in every offering, you do not need to buy anything special. A little of what you cook is exactly right.
 
-What happens to the food afterwards differs among modern practitioners. Many leave it on the shrine for a while, then put it outside or in the compost, rather than eating it. Some families share bread offered to Hestia, since her worship is about the household table. Choose one way and keep it consistently.`,
+What happens to the food afterwards differs among modern practitioners. Many leave it on the shrine for a while, then put it outside or in the compost. Others share bread offered to Hestia at the family table, which fits the ancient proverb that nothing from her sacrifice left the house. Choose one way and keep it consistently.`,
             },
             {
               heading: 'Fire safety is devotion',
@@ -353,9 +353,9 @@ Her virginity, too, was about independence: she chose not to belong to a husband
           ],
           knowAndDont: {
             known:
-              'The monthly calendar of Deipnon, Noumenia and Agathos Daimon is attested for Athens. Hestia’s share in all sacrifices and her lack of a great Athenian festival are well established.',
+              'The Deipnon and Noumenia are attested for Athens; a fixed second-day observance for the Agathos Daimon is a modern Hellenic convention built on his ancient household cult. Hestia’s share in all sacrifices and her lack of a great Athenian festival are well established.',
             unknown:
-              'Relighting the hearth on the Noumenia is a modern Hellenic custom built on ancient patterns, not a rule we can trace. Whether household offerings to Hestia were eaten afterwards probably varied.',
+              'Relighting the hearth on the Noumenia is a modern Hellenic custom built on ancient patterns, not a rule we can trace. The proverb “to sacrifice to Hestia” implies her offerings stayed in, and were eaten by, the household, but practice probably varied.',
           },
           inPractice:
             'Mark the Deipnon and Noumenia in your calendar. On the Deipnon, clean the hearth shrine. On the Noumenia, relight it with a short prayer and a drop of oil. If June comes during your journey, keep the Vestalia with the premade working.',
@@ -510,10 +510,11 @@ Once a year, on the Noumenia nearest your dedication, cook a meal, read your pro
   sources: [
     'Homeric Hymn XXIX to Hestia, trans. H. G. Evelyn-White (1914), Project Gutenberg #348: https://www.gutenberg.org/ebooks/348 (quoted: “For without you mortals hold no banquet,—where one does not duly pour sweet wine in offering to Hestia both first and last”)',
     'Homeric Hymn V to Aphrodite, lines 21–32, trans. H. G. Evelyn-White (1914), Project Gutenberg #348 (quoted: “she has her place in the midst of the house and has the richest portion”; “chief of the goddesses”)',
-    'Homeric Hymn XXIV to Hestia, trans. H. G. Evelyn-White (1914) (quoted: “the holy house of the lord Apollo”)',
+    'Homeric Hymn XXIV to Hestia, trans. H. G. Evelyn-White (1914), Project Gutenberg #348 (quoted: “the holy house of the lord Apollo”)',
     'Hesiod, Theogony 453–500',
     'Plato, Phaedrus 247a',
     'Ovid, Fasti books 3 and 6',
+    'Zenobius 4.44 and the Suda, s.v. “Histia,” on the proverb “to sacrifice to Hestia”',
     'Walter Burkert, Greek Religion (1985)',
     'Jon D. Mikalson, Ancient Greek Religion (2010)',
     'Robert Graves, The Greek Myths (1955), as the source of the modern Dionysus seat story',

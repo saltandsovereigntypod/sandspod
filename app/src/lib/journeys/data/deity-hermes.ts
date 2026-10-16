@@ -27,7 +27,7 @@ You will need a few small stones, a coin, a little olive oil or honey, a cup for
       kind: 'threshold',
       title: 'A stone on the heap',
       intro:
-        'Greek travellers added a stone to the heaps by the road where Hermes was honoured. The journey begins the same way: a small heap of stones at your door or shrine, a libation and an introduction. If you can, begin on the fourth day after the new crescent, his birthday.',
+        'Greek travellers added a stone to the heaps by the road where Hermes was honoured. The journey begins the same way: a small heap of stones at your door or shrine, a libation and an introduction. If you can, begin on the fourth day of the lunar month, counting the Noumenia, the first crescent, as day one: his birthday.',
       days: 2,
       lessons: [],
       practices: [
@@ -176,7 +176,7 @@ The phallus was not obscene to Greeks. It was a sign of luck, fertility and prot
             },
             {
               heading: 'The night of the herms',
-              body: `In 415 BCE, on the eve of Athens’ great naval expedition to Sicily, almost all the herms in the city were mutilated in one night, their faces and phalluses smashed. Thucydides describes the panic that followed. It was seen as an omen of disaster and a conspiracy against the city, and it helped drive the general Alcibiades into exile. The Sicilian expedition ended in catastrophe.
+              body: `In 415 BCE, on the eve of Athens’ great naval expedition to Sicily, most of the herms in the city were mutilated in one night. Thucydides says their faces were cut about, and Aristophanes jokes about their phalluses too. Thucydides describes the panic that followed. It was seen as an omen of disaster and a conspiracy against the city, and it helped drive the general Alcibiades into exile. The Sicilian expedition ended in catastrophe.
 
 The scandal shows how much the herms mattered. Attacking them was attacking the safety of every door and road in Athens.`,
             },
@@ -245,7 +245,7 @@ This is a lovely custom to revive. Before bed, pour a few drops of water or wine
               'How widely the last libation to Hermes was kept outside the Odyssey’s Phaeacians is unknown. The details of the Chytroi and what was said are known only from late sources.',
           },
           inPractice:
-            'Many devotees honour Hermes Psychopompos when someone dies, lighting a candle and asking him to guide them safely. The bedtime libation is a common modern Hellenic practice built from the Odyssey.',
+            'Many devotees honour Hermes Psychopompos when someone dies, lighting a candle and asking him to guide them safely. The bedtime libation is a common modern Hellenic practice built from the Odyssey. If a death is recent and the grief feels too heavy to carry, lean on people too: a friend, your doctor, or a bereavement service such as Cruse (UK) or a local grief line. Hermes guided Priam to someone who could help.',
           reflect: [
             'Who would you want to guide you through hard ground, as Hermes guided Priam?',
             'Is there someone who has died whom you would like to ask Hermes to guide?',
@@ -524,10 +524,10 @@ Once a year, on the fourth nearest your dedication, renew your promise, change i
   ],
   sources: [
     'Homeric Hymn IV to Hermes, trans. H. G. Evelyn-White (1914), Project Gutenberg #348: https://www.gutenberg.org/ebooks/348 (quoted: “of many shifts, blandly cunning, a robber, a cattle driver, a bringer of dreams, a watcher by night, a thief at the gates”; “born with the dawning, at mid-day he played on the lyre, and in the evening he stole the cattle of far-shooting Apollo on the fourth day of the month”; “It was Hermes who first made the tortoise a singer”)',
-    'Homeric Hymn XVIII to Hermes, trans. H. G. Evelyn-White (1914) (quoted: “Hail, Hermes, giver of grace, guide, and giver of good things!”)',
+    'Homeric Hymn XVIII to Hermes, trans. H. G. Evelyn-White (1914), Project Gutenberg #348 (quoted: “Hail, Hermes, giver of grace, guide, and giver of good things!”)',
     'Homer, Odyssey, trans. Samuel Butler (1900), Project Gutenberg #1727: https://www.gutenberg.org/ebooks/1727 (quoted: book 7, “making their drink offerings to Mercury, which they always did the last thing before going away for the night”; book 14, “for Mercury the son of Maia and the nymphs”; book 24, “Mercury of Cyllene summoned the ghosts of the suitors…” and “Mercury the healer of sorrow led them down into the dark abode of death”)',
     'Homer, Iliad 24; Homeric Hymn to Demeter',
-    'Thucydides 6.27–29; Plato, Hipparchus 228–229; Ovid, Fasti 5.663–692',
+    'Thucydides 6.27–29; Aristophanes, Lysistrata 1093–1094; Plato, Hipparchus 228–229; Ovid, Fasti 5.663–692',
     'Norman O. Brown, Hermes the Thief (1947)',
     'Garth Fowden, The Egyptian Hermes (1986)',
     'Sarah Iles Johnston, Restless Dead (1999)',

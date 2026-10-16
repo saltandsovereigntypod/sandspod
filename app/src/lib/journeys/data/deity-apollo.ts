@@ -173,7 +173,7 @@ At first she prophesied only on Apollo’s birthday, the seventh of the month By
               heading: 'Know yourself, nothing in excess',
               body: `On the temple at Delphi were carved short sayings: gnōthi seauton, “know yourself,” and mēden agan, “nothing in excess.” A third was a single letter E, whose meaning puzzled even Plutarch, who served as a priest at Delphi and wrote a whole essay on it.
 
-Later a longer list of around 147 Delphic maxims circulated, preserved by the anthologist Stobaeus and found inscribed as far away as Ai Khanoum in Afghanistan. They are short practical sayings: “control the tongue,” “honour the gods,” “be kind to friends.” Many Hellenic polytheists use them as an ethical guide today.`,
+Later a longer list of around 147 Delphic maxims circulated, preserved by the anthologist Stobaeus and found inscribed as far away as Ai Khanoum in Afghanistan. They are short practical sayings, two or three words each in Greek: follow god, honour the gods, respect your parents, be kind to friends, keep a hold on pleasure. Many Hellenic polytheists use them as an ethical guide today. Translations vary, so it is worth reading a few versions of the list side by side.`,
             },
             {
               heading: 'Divination for you',
@@ -219,7 +219,7 @@ He was father of Asklepios, the great healing god, whose sanctuaries at Epidauro
             },
             {
               heading: 'The arrows of plague',
-              body: `The same god sends plague. The Iliad opens with Apollo’s priest Chryses, whose daughter has been taken by Agamemnon, praying by the sea. In Samuel Butler’s translation he says: “If I have ever decked your temple with garlands, or burned your thigh-bones in fat of bulls or goats, grant my prayer, and let your arrows avenge these my tears upon the Danaans.” Apollo comes down “with a face as dark as night,” and for nine days his arrows bring disease on the Greek camp.
+              body: `The same god sends plague. The Iliad opens with Apollo’s priest Chryses, whose daughter has been taken by Agamemnon, praying by the sea. In Samuel Butler’s translation he says: “If I have ever decked your temple with garlands, or burned your thigh-bones in fat of bulls or goats, grant my prayer, and let your arrows avenge these my tears upon the Danaans.” Apollo comes down from Olympus and sits apart from the ships “with a face as dark as night,” and for nine days his arrows bring disease on the Greek camp.
 
 The Greeks understood that the power to heal and the power to harm are one power. Apollo is Smintheus, perhaps “lord of mice,” which carried disease. To call him healer is to ask that power to turn toward healing.`,
             },
@@ -283,7 +283,7 @@ You do not have to excuse Apollo, and you do not have to pretend the stories do 
           ],
           knowAndDont: {
             known:
-              'Marsyas, Niobe, Koronis, Cassandra and Hyakinthos are told in Greek sources from the archaic and classical periods (Homer, Pindar, Aeschylus, Herodotus, Apollodorus). Daphne’s story is fullest in Ovid’s Metamorphoses 1. Plato criticises such myths in the Republic.',
+              'Marsyas, Niobe, Koronis, Cassandra and Hyakinthos are told in Greek sources (Homer, Pindar, Aeschylus, Herodotus, Euripides, and the later handbook of Apollodorus). Kyparissos is known mainly from Ovid’s Metamorphoses 10. Daphne’s story is fullest in Ovid’s Metamorphoses 1. Plato criticises such myths in the Republic.',
             unknown:
               'We cannot know how ordinary worshippers felt about these myths when they prayed. Ovid’s version of Daphne is a Roman literary retelling; earlier Greek versions differ and are fragmentary.',
           },
@@ -516,7 +516,8 @@ Once a year, on the seventh nearest your dedication, renew your promise, revise 
   sources: [
     'Homeric Hymn III to Apollo, trans. H. G. Evelyn-White (1914), Project Gutenberg #348: https://www.gutenberg.org/ebooks/348 (quoted: “The lyre and the curved bow shall ever be dear to me, and I will declare to men the unfailing will of Zeus”; “the gods tremble before him and all spring up from their seats when he draws near, as he bends his bright bow”)',
     'Homer, Iliad book 1, trans. Samuel Butler (1898), Project Gutenberg #2199: https://www.gutenberg.org/ebooks/2199 (quoted: Chryses’ prayer; “with a face as dark as night”; “worshipped the god with song, hymning him and chaunting the joyous paean, and the god took pleasure in their voices”)',
-    'Plutarch, On the E at Delphi; The Oracles at Delphi',
+    'Plutarch, On the E at Delphi; The Oracles at Delphi No Longer Given in Verse; Greek Questions 9 (the Pythia on the seventh of Bysios)',
+    'Stobaeus, Anthology 3.1.173, the list of Delphic maxims attributed to Sosiades',
     'Pausanias, Description of Greece 1.3.4, 10.24.1; Livy 4.25',
     'Aeschylus, Eumenides; Ovid, Metamorphoses 1, 6, 10; Plato, Republic 2–3',
     'Fritz Graf, Apollo (2009)',

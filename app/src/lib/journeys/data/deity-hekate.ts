@@ -284,7 +284,7 @@ Keep the shrine clean and keep food off it except on the night you take it out. 
             },
             {
               heading: 'Plants and stones',
-              body: `Ancient sources connect her with very few plants. Garlic turns up in connection with crossroads offerings, though the evidence is thin. Aconite and other poisonous plants appear in later stories linking her with Medea, and a late poem, the Orphic Argonautica, describes a walled garden of hers full of such plants. Most of the herb and crystal correspondences you will see online, from mugwort to labradorite, are modern. That does not make them wrong to use. It means you should treat them as a modern language for honouring her, not as ancient rules.`,
+              body: `Ancient sources connect her with very few plants. Garlic turns up in connection with crossroads offerings, though the evidence is thin. Aconite and other poisonous plants appear in later stories linking her with Medea, and a late poem, the Orphic Argonautica, describes a walled garden of hers full of such plants. Most of the herb and crystal correspondences you will see online, from mugwort to labradorite, are modern. That does not make them wrong to use. It means you should treat them as a modern language for honouring her, not as ancient rules. Keep the poisonous plants of her legends (aconite, belladonna, yew) as stories, not shrine material, and avoid mugwort if you are pregnant.`,
             },
           ],
           knowAndDont: {

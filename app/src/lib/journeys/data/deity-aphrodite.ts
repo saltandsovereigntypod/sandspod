@@ -163,7 +163,7 @@ But it is one character’s argument at a drinking party, not a description of G
             },
             {
               heading: 'Two Aphrodites in Athens',
-              body: `In Athens, Aphrodite Pandemos was honoured near the Acropolis as the goddess “of all the people.” Pausanias the travel writer says her worship was founded by the hero Theseus when he united the villages of Attica into one city. She was a civic goddess, the love and concord that bind citizens together, and Athenian magistrates made offerings to her. Her temple was purified each year with the blood of a dove.
+              body: `In Athens, Aphrodite Pandemos was honoured near the Acropolis as the goddess “of all the people.” Pausanias the travel writer says her worship was founded by the hero Theseus when he united the villages of Attica into one city. She was a civic goddess, the love and concord that bind citizens together, and Athenian magistrates made offerings to her. An Athenian decree of 283/2 BCE orders the city’s officials to provide a dove to purify her shrine when her procession is held, to whitewash the altars and to wash the statues.
 
 Aphrodite Ourania also had a sanctuary in Athens and was honoured widely across Greece, often as a stately, older power linked to the eastern goddess. So in religion, neither title was the “lower” love. Both were great.`,
             },
@@ -180,7 +180,7 @@ She was also Epistrophia, the turner of hearts; Melainis, the dark one, a goddes
           ],
           knowAndDont: {
             known:
-              'Plato’s Symposium (180d–181c) gives the philosophical distinction. Pausanias’ Description of Greece reports the Athenian cults of Pandemos (1.22.3) and Ourania (1.14.7), the Theban statues (9.16.3) and the armed Aphrodite at Kythera (3.23.1). Inscriptions record the dove purification of Pandemos’ temple.',
+              'Plato’s Symposium (180d–181c) gives the philosophical distinction. Pausanias’ Description of Greece reports the Athenian cults of Pandemos (1.22.3) and Ourania (1.14.7), the Theban statues (9.16.3) and the armed Aphrodite at Kythera (3.23.1). An Athenian decree records the dove purification of Pandemos’ temple. Polemon (via the Suda, s.v. nephalia) reports wineless offerings to Ourania.',
             unknown:
               'The details of most of these local cults, including what was said and how often they were honoured, are lost. Later readers often confuse the Symposium’s argument with how worshippers actually saw her.',
           },
@@ -213,7 +213,7 @@ The story is comic and adult. It shows that Greeks did not expect Aphrodite to b
               heading: 'Anchises and Adonis',
               body: `The long Homeric Hymn to Aphrodite tells how Zeus made Aphrodite fall for a mortal, the herdsman Anchises, so that she too would know what it is to love someone who will die. She comes to him on Mount Ida disguised as a girl, they lie together, and then she reveals herself in terror and glory. Their son is Aeneas, ancestor of the Romans.
 
-Adonis was a beautiful young man she loved, killed by a boar. Greek women mourned him each summer at the Adonia, planting quick-growing seeds in pots on rooftops, the “gardens of Adonis,” and letting them wither, with songs of lament. The Adonia came from the east, like Aphrodite herself, and Sappho mentions it. These are stories of a goddess who grieves.`,
+Adonis was a beautiful young man she loved, killed by a boar. Greek women mourned him each summer at the Adonia, planting quick-growing seeds in pots on rooftops, the “gardens of Adonis,” and letting them wither, with songs of lament. The Adonia came from the east, like Aphrodite herself, and Sappho’s songs already lament Adonis. Its date in Athens is debated; it is usually placed in summer. These are stories of a goddess who grieves.`,
             },
             {
               heading: 'Paris, Helen and Hippolytus',
@@ -258,7 +258,7 @@ That is why this journey does not teach spells to make a particular person love 
               heading: 'Incense, flowers and doves',
               body: `In one of Sappho’s fragments, the poet calls Aphrodite from Crete to a grove of apple trees, where altars smoke with frankincense, cold water murmurs through the branches and the ground is shaded with roses. That is a fair picture of her cult: incense, flowers, water, gardens.
 
-Her birds were doves and sparrows, and images of doves, real doves in some sanctuaries, and dove offerings were common. Myrtle, roses and apples were hers. Pigs, the usual sacrifice for many gods, were usually not given to her. Wine was poured for her in many places, though one ancient writer reports that Aphrodite Ourania in Athens received wineless offerings. Little terracotta figurines, mirrors and jewellery were common dedications.`,
+Her birds were doves and sparrows, and images of doves, real doves in some sanctuaries, and dove offerings were common. Myrtle, roses and apples were hers. Pigs, the usual sacrifice for many gods, were usually not given to her. Wine was poured for her in many places, but the Hellenistic antiquarian Polemon, as reported in the Suda and in scholia on Sophocles, says that Athenians gave Aphrodite Ourania nephalia, wineless offerings, as they did for Mnemosyne, the Muses, Eos, Helios, Selene and the Nymphs. Honey mixed with water or milk is the classic wineless libation, which makes it a good choice for her Ourania side. Little terracotta figurines, mirrors and jewellery were common dedications.`,
             },
             {
               heading: 'The sacred prostitution question',
@@ -328,9 +328,9 @@ Many queer devotees honour her as the goddess Sappho prayed to. Roman polytheist
           sections: [
             {
               heading: 'The fourth day and the Aphrodisia',
-              body: `In the Athenian month, the fourth day after the new crescent was sacred to Aphrodite and Eros, as well as to Hermes and Herakles. Modern Hellenists count it from the Noumenia, so if you mark the Noumenia in your calendar, the fourth day is easy to find. A small offering of flowers, incense and honey on that day each month is a good rhythm.
+              body: `In the Athenian month, the fourth day was sacred to Aphrodite and Eros, as well as to Hermes and Herakles. The Noumenia, the first sighting of the new crescent, counts as day one, so if you mark the Noumenia in your calendar, the fourth day is three days later. A small offering of flowers, incense and honey on that day each month is a good rhythm.
 
-Many cities held an Aphrodisia, a festival of Aphrodite, at different times. In Athens, the temple of Aphrodite Pandemos was cleaned and purified around the fourth of Hekatombaion, in midsummer. The Adonia also fell in summer. Romans kept the Veneralia on 1 April. None of these is a fixed holy day in the app’s calendar, so choose one or two that speak to you and mark them yourself.`,
+Many cities held an Aphrodisia, a festival of Aphrodite, at different times. In Athens, the temple of Aphrodite Pandemos was purified before her procession, which some scholars place on the fourth of Hekatombaion, in midsummer, though the date is not certain. The Adonia also fell in summer. Romans kept the Veneralia on 1 April. None of these is a fixed holy day in the app’s calendar, so choose one or two that speak to you and mark them yourself.`,
             },
             {
               heading: 'What to give',
@@ -353,9 +353,9 @@ Treat care for your body as worship, not as a test. Wash, dress, rest, eat well,
           ],
           knowAndDont: {
             known:
-              'The fourth day of the month was sacred to Aphrodite and Eros in Athenian tradition. An inscription records the purification of Pandemos’ temple. Love spells naming her and other gods survive in the Greek Magical Papyri and curse tablets.',
+              'The fourth day of the month was sacred to Aphrodite and Eros in Athenian tradition. An Athenian decree (IG II² 659, 283/2 BCE) records the dove purification of Pandemos’ temple before her procession. Love spells naming her and other gods survive in the Greek Magical Papyri and curse tablets.',
             unknown:
-              'The exact date and form of many local Aphrodisia are uncertain. Whether her offerings were usually shared or not likely depended on the rite.',
+              'The exact date and form of many local Aphrodisia are uncertain, including the date of the Pandemos procession in Athens. Whether her offerings were usually shared or not likely depended on the rite.',
           },
           inPractice:
             'Mark the next Noumenia and count four days for her monthly day. On that day, freshen the shrine, give incense and honeyed water, and do one act of real care for yourself or someone else. Use the app’s self-love mirror rite if you want a guided form.',
@@ -503,11 +503,13 @@ Once a year, on the day you dedicated or at the Aphrodisia you chose, renew your
   sources: [
     'Hesiod, Theogony 188–206, trans. H. G. Evelyn-White (1914), Project Gutenberg #348: https://www.gutenberg.org/ebooks/348 (quoted: “a white foam spread around them from the immortal flesh, and in it there grew a maiden”; “came forth an awful and lovely goddess, and grass grew up about her beneath her shapely feet”; “the whisperings of maidens and smiles and deceits with sweet delight and love and graciousness”)',
     'Homeric Hymn X to Aphrodite, trans. H. G. Evelyn-White (1914), Project Gutenberg #348 (quoted: “smiles are ever on her lovely face, and lovely is the brightness that plays over it”)',
-    'Homeric Hymns V and VI to Aphrodite, trans. H. G. Evelyn-White (1914)',
+    'Homeric Hymns V and VI to Aphrodite, trans. H. G. Evelyn-White (1914), Project Gutenberg #348',
     'Homer, Iliad 5 and Odyssey 8',
     'Herodotus, Histories 1.105, 1.199; Strabo, Geography 8.6.20',
     'Plato, Symposium 180d–181c; Pausanias, Description of Greece 1.14.7, 1.22.3, 3.23.1, 9.16.3',
     'Sappho, fragments 1 and 2',
+    'Athenian decree on the purification of the temple of Aphrodite Pandemos, IG II² 659 (283/2 BCE)',
+    'Polemon, cited in the Suda, s.v. “nephalia,” and the scholia on Sophocles, Oedipus at Colonus 100, on wineless offerings to Aphrodite Ourania',
     'Vinciane Pirenne-Delforge, L’Aphrodite grecque (1994)',
     'Stephanie Budin, The Origin of Aphrodite (2003) and The Myth of Sacred Prostitution in Antiquity (2008)',
     'Rachel Rosenzweig, Worshipping Aphrodite (2004)',

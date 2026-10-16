@@ -257,7 +257,7 @@ Some Rodnover groups, and RUNVira in its early years, used it as scripture. Reco
             },
             {
               heading: 'The sun wheel and the far right',
-              body: `Sun symbols are a real part of Slavic folk art: rosettes, rayed circles, crosses in circles, carved on houses, painted on eggs and embroidered on cloth. But the eight-armed hooked sun wheel called the kolovrat is not one of them. It was first drawn in 1923 by the Polish artist Stanisław Jakubowski, in a book of imagined proto-Slavic designs, and in recent decades it has become one of the most common symbols of neo-Nazi and far-right groups in Russia, Ukraine and Poland, often alongside other hooked crosses.
+              body: `Sun symbols are a real part of Slavic folk art: rosettes, rayed circles, crosses in circles, carved on houses, painted on eggs and embroidered on cloth. But the eight-armed hooked sun wheel called the kolovrat is not one of them. Its earliest known drawing is a 1923 design by the Polish artist Stanisław Jakubowski, in Prasłowiańskie motywy architektoniczne (Proto-Slavic Architectural Motifs), a book of imagined designs; the name kolovrat was attached to it later, and in recent decades it has become one of the most common symbols of neo-Nazi and far-right groups in Russia, Ukraine and Poland, often alongside other hooked crosses.
 
 Some peaceful Rodnovers use it without any such meaning, and some groups have tried to reclaim it. But a newcomer cannot know who will read it how. This journey recommends a simple circle, a rayed sun, or a folk rosette instead.`,
             },
@@ -269,7 +269,7 @@ This journey is inclusive. If you take Dazhbog as your god, you are a grandchild
             },
           ],
           knowAndDont: {
-            known: 'Dazhbog is honoured in many Rodnover groups as a sun and ancestral god, and as the one God in RUNVira, founded by Lev Sylenko in 1966. The Book of Veles is a twentieth-century forgery. The kolovrat was designed in 1923 and is widely used by the far right.',
+            known: 'Dazhbog is honoured in many Rodnover groups as a sun and ancestral god, and as the one God in RUNVira, founded by Lev Sylenko in 1966. The Book of Veles is a twentieth-century forgery. The eight-armed kolovrat goes back to a 1923 design by Stanisław Jakubowski, was named and spread by modern movements, and is widely used by the far right.',
             unknown: 'Whether the Rus of the Lay of Igor really thought of themselves as descended from Dazhbog, or whether it was a poetic figure, is unknown.',
           },
           inPractice: 'Choose your symbols with care: a rayed sun, a circle, a sunflower or a folk rosette. If you look for a group, ask what they think of outsiders, other faiths and ethnic purity, and avoid any that answer uneasily.',
@@ -469,7 +469,7 @@ Do not hoard in his name. A prosperity devotion that only ever asks is the oppos
           prompt: 'What did I give this week?',
         },
         {
-          id: 'dazhbog-solstices',
+          id: 'dazhbog-two-turnings',
           title: 'The two turnings',
           instructions: 'At Koliada, keep a light through the longest night, give gifts, and greet the first sunrise after the solstice. At Kupala, keep a fire, rise early or stay up, and greet the sunrise on the shortest night.',
           times: 1,
@@ -487,9 +487,9 @@ Do not hoard in his name. A prosperity devotion that only ever asks is the oppos
     },
   ],
   sources: [
-    'The Russian Primary Chronicle, trans. Samuel H. Cross (1930), entry for 980, quoted: https://archive.org/details/doncarlosthemeha0000fred',
+    'The Russian Primary Chronicle, trans. Samuel H. Cross, in Harvard Studies and Notes in Philology and Literature vol. XII (1930; public domain in the US since 2026), entry for 980, quoted and checked against the scan of that volume (catalogued on archive.org under its companion study, The Don Carlos Theme): https://archive.org/details/doncarlosthemeha0000fred',
     'W. R. S. Ralston, The Songs of the Russian People (1872), p. 102, quoted on Khors and Dazhbog: https://archive.org/details/songsofrussianpe00ralsuoft',
-    'The Tale of the Armament of Igor, ed. and trans. Leonard A. Magnus (1915), with notes on Dazhbog and the Hypatian gloss of 1114: https://archive.org/details/taleofarmamentof00magnuoft',
+    'The Tale of the Armament of Igor, ed. and trans. Leonard A. Magnus (1915), quoted from the introduction’s rendering of line 288, with notes on Dazhbog and the Hypatian gloss of 1114: https://archive.org/details/taleofarmamentof00magnuoft',
     'Hypatian Chronicle, s.a. 1114, gloss on the Slavonic Malalas (paraphrased)',
     'Judith Kalik and Alexander Uchitel, Slavic Gods and Heroes (2019)',
     'Linda J. Ivanits, Russian Folk Belief (1989)',

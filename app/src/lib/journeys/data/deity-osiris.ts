@@ -240,7 +240,7 @@ Neither is "the" right answer. Pick one, say why, and keep it from year to year.
           ],
           knowAndDont: {
             known:
-              'The Ikhernofret stela (Berlin 1204) and the Dendera Khoiak texts are the main sources; Osiris beds (including Tutankhamun’s) and many corn-mummies survive. The Sokar festival with onion garlands is shown in reliefs at Medinet Habu.',
+              'The Ikhernofret stela (Berlin 1204) and the Dendera Khoiak texts are the main sources; Osiris beds (including Tutankhamun’s) and many corn-mummies survive. The Sokar festival is shown in reliefs at Medinet Habu, and festival texts link its day with garlands of onions.',
             unknown:
               'The secret parts of the Abydos mysteries were never written down. The Dendera texts are late (Ptolemaic and Roman) and may not describe earlier practice exactly. Exact day numbers vary between sources and scholars. There is no agreed way to fix Khoiak in the modern year.',
           },
@@ -336,7 +336,7 @@ That tone matters. Egyptian care of the dead was solemn but not gloomy. It was a
           sections: [
             {
               heading: 'Who honours him now',
-              body: `Kemetic religion, the modern revival of Egyptian religion, honours Osiris as one of its central gods. Reconstructionists work closely from the sources, often keeping a Khoiak observance with grain gardens and an ancestor practice built on the offering formula. Kemetic Orthodoxy, an organised temple founded in the late 1980s by Tamara Siuda, holds its own Osiris festivals in its calendar and keeps purity customs. Many people practise independently.
+              body: `Kemetic religion, the modern revival of Egyptian religion, honours Osiris as one of its central gods. Reconstructionists work closely from the sources, often keeping a Khoiak observance with grain gardens and an ancestor practice built on the offering formula. Kemetic Orthodoxy, an organised temple founded in 1988 by Tamara Siuda, holds its own Osiris festivals in its calendar and keeps purity customs. Many people practise independently.
 
 Outside Kemetic religion, Wiccans and other Pagans often honour Osiris as a god of death and rebirth, sometimes paired with Isis as God and Goddess. That is a modern pairing with its own logic. If that is your path, honour him there, and know that Egyptian practice is different.`,
             },
@@ -348,7 +348,7 @@ Present each thing with both hands, say what it is, leave it a while, then eat o
             },
             {
               heading: 'His days',
-              body: `His birthday is the first of the five epagomenal days at the end of the Egyptian year, just before Wep Ronpet, the new year. Khoiak is his great season, with the corn-Osiris, the Sokar festival on the 26th and the raising of the djed on the 30th. The Wag festival of the dead falls around the 18th of the first month. The 17th of the month Hathor, the day Plutarch gives for his death, was marked as unlucky in Egyptian calendars of lucky and unlucky days.
+              body: `His birthday is the first of the five epagomenal days at the end of the Egyptian year, just before Wep Ronpet, the new year. Khoiak is his great season, with the corn-Osiris, the Sokar festival on the 26th and the raising of the djed on the 30th. The Wag festival of the dead falls around the 18th of the first month. Plutarch gives the 17th of the month Hathor as the day of his death. Egyptian calendars of lucky and unlucky days, such as the Cairo Calendar, tie many days to episodes of his myth, and devotees often keep such days quietly.
 
 Modern calendars differ, so choose one and keep it. Many people also honour Osiris on the anniversaries of their own dead.`,
             },
@@ -356,7 +356,7 @@ Modern calendars differ, so choose one and keep it. Many people also honour Osir
               heading: 'Sensitive points',
               body: `His myth includes a murder, a dismembered body and, in Plutarch, a lost phallus that Isis replaced. Egyptian sources are more reticent. Be matter-of-fact about it; it is about restoration, not gore.
 
-Grief is the big one. Osiris is a god for the bereaved, but working with death can open old wounds. Keep rites short when you are raw, and ask for help from people when you need it. Never use his practice to avoid medical or psychological care.
+Grief is the big one. Osiris is a god for the bereaved, but working with death can open old wounds. Keep rites short when you are raw, and ask for help from people when you need it. Never use his practice to avoid medical or psychological care. If grief becomes too heavy, talk to your doctor or a bereavement service; if you are in crisis, call your local emergency number or a crisis line (988 in the US, Samaritans on 116 123 in the UK and Ireland).
 
 And go easy on comparisons. Osiris is often lined up with Jesus, Dionysus or Adonis as a "dying-and-rising god". He does not rise to walk among the living again; he becomes king of the dead. Respect what makes him himself.`,
             },

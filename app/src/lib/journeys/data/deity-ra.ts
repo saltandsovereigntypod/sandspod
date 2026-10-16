@@ -300,7 +300,7 @@ Purity, the offering formula and the reversion of offerings all apply. Come wash
             'What does it mean that the greatest offering was right order itself?',
           ],
           further: [
-            'Plutarch, On Isis and Osiris §§79–80, trans. F. C. Babbitt (Loeb, 1936; public domain, at LacusCurtius)',
+            'Plutarch, On Isis and Osiris §§52 and 79–80, trans. F. C. Babbitt (Loeb, 1936; public domain, at LacusCurtius)',
             'Erik Hornung, The Ancient Egyptian Books of the Afterlife (1999), on the Book of the Heavenly Cow',
             'Emily Teeter, The Presentation of Maat (1997)',
           ],
@@ -334,7 +334,7 @@ Purity, the offering formula and the reversion of offerings all apply. Come wash
           sections: [
             {
               heading: 'Who honours him now',
-              body: `Ra is central to Kemetic religion, the modern revival of Egyptian religion. Reconstructionists build morning rites on the temple liturgy and the sun hymns, often reciting a translated hymn at dawn. Kemetic Orthodoxy, an organised temple founded in the late 1980s by Tamara Siuda and based in Illinois, includes Ra in its daily devotions and festival calendar. Many people practise independently, sometimes simply by greeting the sunrise.
+              body: `Ra is central to Kemetic religion, the modern revival of Egyptian religion. Reconstructionists build morning rites on the temple liturgy and the sun hymns, often reciting a translated hymn at dawn. Kemetic Orthodoxy, an organised temple founded in 1988 by Tamara Siuda and based in Illinois, includes Ra in its daily devotions and festival calendar. Many people practise independently, sometimes simply by greeting the sunrise.
 
 Ra also appears in modern Western occultism, especially in Thelema, whose Book of the Law (1904) speaks of Ra-Hoor-Khuit, and in New Age writing that uses his name. Those are separate traditions with their own logic. They are not Egyptian religion, and it helps to keep them apart.`,
             },
@@ -495,7 +495,7 @@ Rise in the dark. Bathe, rinse your mouth with natron or salt water, and dress i
         closing:
           'Pour the water on the earth at noon. Say farewell at sunset that evening, and cover the shrine. Record the rite in your journal.',
         safety:
-          'Never look directly at the sun. Keep candle and incense on heatproof surfaces, away from curtains you open to the east, children, pets and pet birds, and never leave them unattended. Keep dates, grapes and alcohol away from dogs.',
+          'Never look directly at the sun. Keep candle and incense on heatproof surfaces, away from curtains you open to the east, children, pets and pet birds, and never leave them unattended. Keep grapes, raisins, chocolate and alcohol away from dogs and cats. If you do not drink, water or juice is a full offering.',
       },
     },
     {
@@ -547,7 +547,7 @@ On each, rise for the true sunrise, give a fuller offering, and read a hymn alou
   sources: [
     'Hymns to Ra from the Papyrus of Hunefer and the Papyrus of Ani, trans. E. A. Wallis Budge, Egyptian Ideas of the Future Life (1899), Project Gutenberg ebook 11277: "Homage to thee, O thou who art Ra when thou risest…", "Homage to thee, O Amen-Ra…", "the lands of the North and of the South…" (Budge’s R[=a] spelled Ra here)',
     'The Legend of Ra and Isis (Turin papyrus), trans. E. A. Wallis Budge, The Literature of the Ancient Egyptians (1914), Project Gutenberg ebook 15932: "I am Khepera in the morning…", "I open my eyes, and there is light…"',
-    'Plutarch, On Isis and Osiris §80, trans. F. C. Babbitt (Loeb, 1936; public domain), LacusCurtius: "Very appropriately, therefore, they burn resin and myrrh…"',
+    'Plutarch, On Isis and Osiris §80 (and §52 on the three daily incense offerings), trans. F. C. Babbitt (Loeb, 1936; public domain), LacusCurtius: "Very appropriately, therefore, they burn resin and myrrh…"',
     'The Amduat, Book of Gates, Book of the Heavenly Cow and Bremner-Rhind papyrus (Book of Overthrowing Apep)',
     'Erik Hornung, Conceptions of God in Ancient Egypt (1982) and The Ancient Egyptian Books of the Afterlife (1999); Stephen Quirke, The Cult of Ra (2001); Jan Assmann, Egyptian Solar Religion in the New Kingdom (1995)',
     'Richard H. Wilkinson, The Complete Gods and Goddesses of Ancient Egypt (2003)',

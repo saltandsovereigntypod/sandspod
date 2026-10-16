@@ -76,7 +76,7 @@ In Greek she became myrionymos, "of ten thousand names", the goddess who is call
           ],
           further: [
             'Richard H. Wilkinson, The Complete Gods and Goddesses of Ancient Egypt (2003), entry on Isis',
-            'Geraldine Pinch, Egyptian Mythology: A Guide to the Gods, Goddesses, and Traditions of Ancient Egypt (2002)',
+            'Geraldine Pinch, Egyptian Mythology: A Guide to the Gods, Goddesses, and Traditions of Ancient Egypt (Oxford, 2004; first published 2002 as Handbook of Egyptian Mythology)',
           ],
           library: ['traditional/deity/isis', 'traditional/deity/osiris', 'traditional/deity/hathor', 'traditional/crystal/carnelian'],
         },
@@ -220,7 +220,7 @@ The story was itself a healing spell against snakebite. It also says something a
           sections: [
             {
               heading: 'Her houses',
-              body: `For most of Egyptian history Isis was honoured in the temples of other gods, especially Osiris, and in funerary religion. Great temples of her own came later. The Iseum at Behbeit el-Hagar in the Delta, now a field of fallen granite blocks, was begun by the last native kings in the fourth century BCE and finished under the Ptolemies. Her most famous temple stands at Philae, an island near Aswan, built mostly under the Ptolemies and Romans. When the Aswan dam threatened it, the whole temple was taken apart and rebuilt on the neighbouring island of Agilkia in the 1970s.
+              body: `For most of Egyptian history Isis was honoured in the temples of other gods, especially Osiris, and in funerary religion. Great temples of her own came later. The Iseum at Behbeit el-Hagar in the Delta, now a field of fallen granite blocks, was begun by the last native kings in the fourth century BCE and finished under the Ptolemies. Her most famous temple stands at Philae, an island near Aswan, built mostly under the Ptolemies and Romans. When the Aswan dam threatened it, the whole temple was taken apart and rebuilt on the neighbouring island of Agilkia between 1972 and 1980.
 
 Philae kept the old rites late. The last known hieroglyphic inscription anywhere was carved there in 394 CE, and the last demotic one in the 450s. Pilgrims from Nubia came to it long after the rest of Egypt had become Christian; the temple was closed under the emperor Justinian, traditionally in the 530s.`,
             },
@@ -340,7 +340,7 @@ Many people also claim the Virgin Mary's iconography was copied from Isis nursin
           sections: [
             {
               heading: 'The communities',
-              body: `Kemetic religion is the modern revival of Egyptian religion. Reconstructionists work from Egyptological sources, adapting temple and household practice and keeping closely to what is attested. Kemetic Orthodoxy, founded in the late 1980s by Tamara Siuda and based in Illinois, is an organised temple with its own priesthood, a leader in a pharaonic role, beginners' classes and a divination that identifies each member's "parent" deities; it keeps purity rules and a daily rite of its own. Many Kemetics belong to neither and practise independently. There are also Afrocentric and diaspora groups who approach Kemet as African heritage.
+              body: `Kemetic religion is the modern revival of Egyptian religion. Reconstructionists work from Egyptological sources, adapting temple and household practice and keeping closely to what is attested. Kemetic Orthodoxy, founded in 1988 by Tamara Siuda and based in Illinois, is an organised temple with its own priesthood, led by Siuda as its spiritual head (its Nisut), with beginners' classes and a divination rite that identifies each member's "parent" deities; it keeps its own purity rules and daily rite. Many Kemetics belong to neither and practise independently. There are also Afrocentric and diaspora groups who approach Kemet as African heritage.
 
 The Fellowship of Isis was founded in 1976 at Huntington Castle in Clonegal, Ireland, by Olivia Robertson with her brother and his wife. It is goddess-centred and open to any faith, with its own liturgies and many local centres. Wiccans and eclectic Pagans often call on Isis as the Great Mother or as the Goddess of magic, a habit going back through Dion Fortune's novels and the Golden Dawn's "Rites of Isis" in 1890s Paris. These are all honest ways of honouring her. They are also different ways, and they are worth not mixing up.`,
             },
@@ -378,7 +378,6 @@ Be careful with heritage. Egyptian religion is the inheritance of Egypt and of A
           further: [
             'Richard J. Reidy, Eternal Egypt: Ancient Rituals for the Modern World (2010)',
             'Lesley Jackson, Isis: The Eternal Goddess of Egypt and Rome (2016)',
-            'Fellowship of Isis, Liturgy (Olivia Robertson)',
           ],
           library: ['traditional/deity/isis', 'traditional/crystal/lapis_lazuli', 'traditional/crystal/turquoise'],
           premade: ['folk-build-your-own-ritual'],

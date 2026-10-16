@@ -6,6 +6,7 @@ import { Button } from '../Button';
 import { Card, MoreScreen, RichText, Section, Tags } from '../more/ui';
 import { journeyForDeityRef, JOURNEYS_LIVE } from '../../lib/journeys';
 import { correspondences, entryIntro, findByName, useLibrary, type LibraryEntry } from '../../lib/library';
+import { sourcingForEntry } from '../../lib/library/closed';
 import { layerFields, visibleLayers } from '../../lib/library/model';
 import { ritualRecord } from '../../lib/library/records';
 import type { LibraryField } from '../../lib/library/types';
@@ -49,6 +50,8 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
   const journey = JOURNEYS_LIVE && entry.type === 'deity' ? journeyForDeityRef(entry.traditionalRef ?? entry.id) : null;
   // Rituals and ritual templates read as a record of the working, as on the website.
   const record = entry.myPractice ? ritualRecord(entry.type, entry.myPractice) : null;
+  // Plants, resins and stones whose sourcing raises real concerns.
+  const sourcing = sourcingForEntry(entry);
 
   const openByName = (name: string) => {
     const target = findByName(entries, name);
@@ -75,6 +78,24 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
             </View>
           ))}
         </View>
+      )}
+
+      {!!sourcing && (
+        <Section label="Sourcing with care">
+          <Card tone="gold">
+            <Text style={type.body}>{sourcing.concern}</Text>
+            <View style={styles.field}>
+              <Text style={styles.fieldLabel}>Instead</Text>
+              <Text style={type.body}>{sourcing.instead}</Text>
+            </View>
+            <Button
+              label="All sourcing notes"
+              variant="text"
+              accessibilityHint="Opens Sourcing with care: every plant and stone that needs care"
+              onPress={() => router.push('/more/library/sourcing' as Href)}
+            />
+          </Card>
+        </Section>
       )}
 
       {!!journey && (

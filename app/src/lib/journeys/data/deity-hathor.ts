@@ -16,7 +16,7 @@ This is a self-dedication. It is not an initiation into Kemetic Orthodoxy or any
   about: `Hathor (Egyptian Hut-Hor, "House of Horus", meaning the sky in which the falcon god lives) was one of the oldest and most widely loved goddesses of Egypt. She appears as a cow, as a woman wearing cow horns around a sun disc, or as a broad, cow-eared face on sistrum rattles and temple columns. She was the Golden One, the goddess of love, sexuality, music, dance, drink, beauty and joy; a mother of the king, who nursed him as a cow; a sky goddess and Eye of Ra; Lady of the West, who welcomed the dead; Lady of the Sycamore, who gave them water; and mistress of foreign lands, of the turquoise mines of Sinai and of Byblos in Lebanon. Her greatest surviving temple is at Dendera, built under the Ptolemies and Romans. In the myth called the Destruction of Mankind she is sent out as the Eye of Ra to punish humankind, rages as a lioness, and is stopped by beer dyed red. Greeks identified her with Aphrodite. Today she is honoured in Kemetic religion, by reconstructionists and in Kemetic Orthodoxy, and by many Pagans and Goddess devotees.`,
   notes: [
     'Hathor and Sekhmet are distinct goddesses with separate cults. One famous myth links them, and Egyptians understood the gentle and the raging Eye as two sides of one power, but you should not treat them as interchangeable.',
-    'Her festivals, especially the Feast of Drunkenness, involved heavy drinking. Nothing here requires alcohol. If you are in recovery, or simply do not drink, pomegranate or hibiscus juice, alcohol-free beer, music and dance are full offerings.',
+    'Her festivals, especially the Feast of Drunkenness, involved heavy drinking. Nothing here requires alcohol. If you are in recovery, or simply do not drink, pomegranate or hibiscus juice, alcohol-free beer, music and dance are full offerings. Hibiscus tea is best avoided in pregnancy; pomegranate juice is a safe red drink.',
     'Malachite contains copper and is toxic: never put it in water or drinks, and wash your hands after handling raw stones.',
     'Lilies are deadly to cats, and chocolate, grapes, onion and garlic are toxic to cats and dogs. Keep such flowers and foods away from pets.',
     'Kemetic religion is a living practice with its own communities and customs. Ask before joining their spaces.',
@@ -60,7 +60,7 @@ At Dendera her husband was Horus of Edfu and her son was Ihy, a child god who pl
             },
             {
               heading: 'What to call her',
-              body: `Her best-loved title is Nebet, "the Golden One", or simply "the Gold", for her shining beauty. Others include Lady of Dendera, Lady of the West, Lady of the Sycamore, Lady of Turquoise, Eye of Ra, and Lady of Drunkenness (nebet tekh), which is a title of praise, not a joke.
+              body: `Her best-loved title is "the Golden One" (Egyptian nebut), or simply "the Gold", for her shining beauty. Others include Lady of Dendera, Lady of the West, Lady of the Sycamore, Lady of Turquoise, Eye of Ra, and Lady of Drunkenness (nebet tekh), which is a title of praise, not a joke.
 
 Many elite women of the Old Kingdom held the title "priestess of Hathor", and the goddess was close to ordinary women as well. Love songs from the New Kingdom call on the Golden One to bring a lover. You can call her Hathor, Hut-Hor or the Golden One. She will not mind which.`,
             },
@@ -302,7 +302,7 @@ If you do drink, keep it moderate and safe: never drive, never drink alone at a 
             'What is your honest relationship with alcohol, and how does it shape the way you would keep this feast?',
           ],
           further: [
-            'Betsy M. Bryan, "Hatshepsut and Cultic Revelries in the New Kingdom", in Creativity and Innovation in the Reign of Hatshepsut (2014)',
+            'Betsy M. Bryan, "Hatshepsut and Cultic Revelries in the New Kingdom", in J. M. Galán, B. M. Bryan and P. F. Dorman (eds.), Creativity and Innovation in the Reign of Hatshepsut (Chicago, 2014; free PDF from the University of Chicago’s Institute for the Study of Ancient Cultures)',
           ],
           library: ['traditional/deity/hathor', 'traditional/deity/sekhmet', 'traditional/candle/red'],
         },
@@ -348,13 +348,13 @@ Modern Kemetics place these by their chosen calendar, usually counting from Wep 
               heading: 'Keeping her shrine',
               body: `Keep her shrine clean, bright and fresh. Change the water daily, and the flowers when they fade. Use good dishes. Give music often: shake the sistrum each time you greet her, and play her songs. Revert food offerings the same day, eating them yourself or sharing them, and give water to a plant.
 
-Come pure, in the Egyptian way: wash your hands and face, rinse your mouth, wear clean clothes. Many Kemetics also put on perfume or eye makeup before approaching her, as Egyptians did for festivals; kohl was worn by women and men alike. Beauty, in her worship, is not vanity. It is a way of honouring the gift.`,
+Come pure, in the Egyptian way: wash your hands and face, rinse your mouth, wear clean clothes. Many Kemetics also put on perfume or eye makeup before approaching her, as Egyptians did for festivals; kohl was worn by women and men alike. If you wear it, use a modern cosmetic eyeliner; traditional kohl powders can contain lead. Beauty, in her worship, is not vanity. It is a way of honouring the gift.`,
             },
             {
               heading: 'Sensitive points',
               body: `Hathor is joyful, but she is also an Eye of Ra. Treat her with respect, not as a decoration for self-care. If you find yourself coming to her only when you feel good, try also coming in grief; she is Lady of the West, who received the dead.
 
-Self-worth is one of the gifts many people seek from her today, especially after hardship, abuse or illness. That is a modern focus, and a good one; it fits her mirror and her love of beauty. But she will not do the work alone. If you are struggling with body image, an eating disorder or depression, please seek support from people trained to help.
+Self-worth is one of the gifts many people seek from her today, especially after hardship, abuse or illness. That is a modern focus, and a good one; it fits her mirror and her love of beauty. But she will not do the work alone. If you are struggling with body image, an eating disorder or depression, please seek support from people trained to help: your doctor, a therapist, or an eating-disorder charity such as Beat in the UK.
 
 Respect living Kemetic communities and modern Egypt: Dendera is a real place, cared for by Egyptian archaeologists and visited by Egyptian families. Learn from Egyptian scholars as well as European ones.`,
             },
@@ -446,7 +446,7 @@ Night 1: the sistrum. Shake it and listen. Night 2: the cow. Drink a glass of mi
         ],
         preparation: `During the day, write your vow: what you will do (a daily song, offerings at the new moon, her festivals, an act of beauty or love), for how long (a year and a day is common), and what you hope for. Keep it short and keepable.
 
-Bathe, rinse your mouth, and dress in clean clothes you love. Put on perfume or a little kohl if you like. Clean the shrine and set out fresh flowers. Choose your song.`,
+Bathe, rinse your mouth, and dress in clean clothes you love. Put on perfume or a little eyeliner if you like (a cosmetic one, not a traditional kohl powder, which can contain lead). Clean the shrine and set out fresh flowers. Choose your song.`,
         steps: [
           {
             title: 'Purify',
@@ -546,7 +546,7 @@ Bathe, rinse your mouth, and dress in clean clothes you love. Put on perfume or 
     'E. A. Wallis Budge, Legends of the Gods (1912), Project Gutenberg ebook 9411, "The Legend of the Destruction of Mankind": "Come, come in peace, O Hathor…", "when I gained the mastery over men and women it was sweet to my heart", "Now they made seven thousand vessels of beer", "her heart rejoiced, and she became drunk…", "from that early time until now"',
     'Miriam Lichtheim, Ancient Egyptian Literature, vol. 2 (1976), for a modern translation of the Destruction of Mankind',
     'Geraldine Pinch, Votive Offerings to Hathor (1993); Barbara S. Lesko, The Great Goddesses of Egypt (1999)',
-    'Betsy M. Bryan, work on the Mut temple at Karnak and the Festival of Drunkenness (2006–2014)',
+    'Betsy M. Bryan, "Hatshepsut and Cultic Revelries in the New Kingdom", in J. M. Galán, B. M. Bryan and P. F. Dorman (eds.), Creativity and Innovation in the Reign of Hatshepsut (Chicago, 2014), pp. 93–123, on the Mut temple and the Festival of Drunkenness',
     'Richard H. Wilkinson, The Complete Gods and Goddesses of Ancient Egypt (2003); Emily Teeter, Religion and Ritual in Ancient Egypt (2011)',
   ],
 };

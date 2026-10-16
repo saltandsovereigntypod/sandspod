@@ -32,7 +32,7 @@ Nothing here is ever failed. If you miss a moon, the next one comes. Pause whene
     'Wicca is a modern religion with old roots. This journey says plainly which parts are old and which are twentieth-century; you can love the practice and still be honest about its history.',
     'Traditional Wicca has been built around male and female polarity. Many covens and most solitaries today practise inclusively, and the app does too: you are welcome here whatever your gender or sexuality.',
     'Fire, smoke, knives and food all appear in Wiccan practice. Every rite carries safety notes; read them.',
-    'White sage is not used in this journey. Its wild harvest and its place in closed Indigenous practice make it a poor fit; rosemary, juniper, bay, mugwort and frankincense are used in its place.',
+    'White sage is not used in this journey. Its wild harvest and its place in closed Indigenous practice make it a poor fit; rosemary, juniper, bay, mugwort and frankincense are used in its place (skip mugwort and juniper if you are pregnant).',
   ],
   holyDays: ['samhain', 'yule', 'imbolc', 'ostara', 'beltane', 'litha', 'lammas', 'mabon'],
   stages: [
@@ -197,19 +197,19 @@ You also need a little time: ten minutes a day for devotion, an hour or so at ea
           sections: [
             {
               heading: 'A retired civil servant in the New Forest',
-              body: `Gerald Brosseau Gardner (1884 to 1964) spent most of his working life in Ceylon, Borneo and Malaya as a rubber planter and customs official, and came home to England in 1936 with a lifelong interest in folklore, weapons, naturism and the occult. He settled near the New Forest on the south coast, joined a local esoteric theatre group, the Rosicrucian Order Crotona Fellowship in Christchurch, and through people he met there was, he said, initiated in 1939 into a coven of hereditary witches.
+              body: `Gerald Brosseau Gardner (1884 to 1964) spent most of his working life in Ceylon, Borneo and Malaya as a rubber planter and customs official, and came home to England in 1936 with a lifelong interest in folklore, weapons, naturism and the occult. He settled at Highcliffe, on the edge of the New Forest on the south coast, joined a local esoteric group, the Rosicrucian Order Crotona Fellowship, which ran a small theatre in Christchurch, and through people he met there was, he said, initiated in September 1939 into a coven of witches whose craft had come down through families.
 
-Gardner always told that story the same way, and a local woman, Dorothy Clutterbuck, was later named as one of its circle. Historians have tested it hard. Some of the people he mentioned were real and did know him; whether a working coven with an ancient lineage existed is another matter, and the evidence for it is thin. Ronald Hutton concluded that something may have existed in the New Forest, but that the religion Gardner taught owed far more to his own reading and creativity than to any surviving witch-cult.`,
+Gardner told versions of that story for the rest of his life, though the details shifted between tellings. He named a local woman, "Old Dorothy" Clutterbuck, as one of the circle; for years sceptics doubted she had existed, until Doreen Valiente tracked down her birth and death records in the 1980s. Historians have tested the rest hard. Some of the people he mentioned were real and did know him; whether a working coven with an ancient lineage existed is another matter, and the evidence for it is thin. Ronald Hutton concluded that something may have existed in the New Forest, but that the religion Gardner taught owed far more to his own reading and creativity than to any surviving witch-cult.`,
             },
             {
               heading: 'Going public',
               body: `Until 1951 the Witchcraft Act of 1735, which made pretending to witchcraft or fortune-telling a crime, was still law in Britain. In 1949 Gardner published High Magic's Aid, a novel with witchcraft rites in it. After the Act was replaced by the Fraudulent Mediums Act in 1951, he went further: Witchcraft Today (1954) and The Meaning of Witchcraft (1959) presented witchcraft as a living, ancient, nature-loving religion, and he spoke to newspapers and on television. He ran a museum of witchcraft at Castletown on the Isle of Man and initiated a stream of new people into covens, notably at Bricket Wood near St Albans.
 
-Gardner called the people of the religion "the Wica". The name Wicca for the religion itself spread in the 1960s. The word comes from Old English wicca, a male sorcerer, with wicce as its female form; the modern pronunciation with a hard "k" is a modern convention, since the Old English was said closer to "witcha".`,
+Gardner called the people of the religion "the Wica". The name Wicca for the religion itself spread in the 1960s and 1970s. The word comes from Old English wicca, a male sorcerer, with wicce as its female form; the modern pronunciation with a hard "k" is a modern convention, since the Old English was said closer to "witcha".`,
             },
             {
               heading: 'What Gardner put together',
-              body: `Look at Gardner's early rites and you can see where the pieces came from. The magic circle, the consecrated tools and the four quarters came from ceremonial magic, especially the medieval Key of Solomon and the late Victorian Hermetic Order of the Golden Dawn. Degrees of initiation and some of the language of oaths echo Freemasonry, which Gardner had joined. Some early passages were adapted from Aleister Crowley, whom Gardner met in 1947. The idea of a horned god and a moon goddess drew on Margaret Murray's theory of a surviving witch-cult, on Charles Leland's book Aradia (1899) about Italian witches, and on a century of English poetry in love with Pan and the greenwood.
+              body: `Look at Gardner's early rites and you can see where the pieces came from. The magic circle, the consecrated tools and the four quarters came from ceremonial magic, especially the Renaissance grimoire known as the Key of Solomon and the late Victorian Hermetic Order of the Golden Dawn. Degrees of initiation and some of the language of oaths echo Freemasonry, which Gardner had joined. Some early passages were adapted from Aleister Crowley, whom Gardner met in 1947. The idea of a horned god and a moon goddess drew on Margaret Murray's theory of a surviving witch-cult, on Charles Leland's book Aradia (1899) about Italian witches, and on a century of English poetry in love with Pan and the greenwood.
 
 None of this is a scandal. Every religion is built from what came before it. The honest picture is that Gardner, with a handful of collaborators, wove these threads into something new and coherent, and that people found in it a living religion.`,
             },
@@ -224,7 +224,7 @@ It also protects you. People who believe Wicca is a direct survival of an ancien
             known:
               'Gardner\'s biography, his books, his involvement with the Crotona Fellowship, his meeting with Crowley in 1947, the repeal of the 1735 Act in 1951, and the existence of his covens from the early 1950s are all well documented, notably in Philip Heselton\'s biographies and Hutton\'s history.',
             unknown:
-              'Whether a coven initiated Gardner in 1939, and what it did, cannot be confirmed. Heselton argues for a real New Forest group; Hutton and others think it was at most a small modern circle. No document of any witch religion before Gardner\'s has been found.',
+              'Whether a coven initiated Gardner in 1939, and what it did, cannot be confirmed; the only account of the initiation is Gardner\'s own. Heselton argues for a real New Forest group drawn from the Crotona circle; Hutton and others think it was at most a small, recent circle, not an ancient survival. No document of any witch religion before Gardner\'s has been found.',
           },
           inPractice:
             'At your next altar time, light your candle for the people who built this practice, whatever you think of their claims: Gardner, the coven members whose names we know, and the unnamed folk practitioners whose charms and customs fed it.',
@@ -264,7 +264,7 @@ His conclusion was that Wicca is a new religion, perhaps the only one England ha
             },
             {
               heading: 'Holding it honestly',
-              body: `You will still meet the old story in books, especially ones published before 2000 and some written since: the Burning Times with nine million dead witches, an unbroken goddess religion from the Stone Age, a coven tradition handed down in secret. The figure of nine million is a nineteenth-century guess; careful modern estimates for the European witch trials are around 40,000 to 60,000 executions between about 1450 and 1750, most of them Christians accused by neighbours. That is horror enough and deserves remembrance on its own terms.
+              body: `You will still meet the old story in books, especially ones published before 2000 and some written since: the Burning Times with nine million dead witches, an unbroken goddess religion from the Stone Age, a coven tradition handed down in secret. The figure of nine million goes back to a German writer's rough extrapolation in 1784 and was spread by the American feminist Matilda Joslyn Gage in 1893; it has no basis in the records. Careful modern estimates for the European witch trials are around 40,000 to 60,000 executions between about 1450 and 1750, roughly three-quarters of them women, nearly all of them Christians accused by neighbours. That is horror enough and deserves remembrance on its own terms.
 
 You can still feel kinship with those who were persecuted, and with the folk healers and charmers of the past. Just call it kinship, not descent.`,
             },
@@ -273,7 +273,7 @@ You can still feel kinship with those who were persecuted, and with the folk hea
             known:
               'Murray\'s books, her Britannica entry, and the scholarly refutation by Cohn, Thomas and others are firmly established. Modern estimates of witch-trial executions, drawn from surviving court records, cluster around 40,000 to 60,000.',
             unknown:
-              'Records of many trials are lost, so totals remain estimates. How much genuine pre-Christian belief survived in folk custom (as distinct from a cult) is debated and varies by place; Carlo Ginzburg\'s work on the Friulian benandanti shows some striking popular beliefs, but not a pagan church.',
+              'Records of many trials are lost, so totals remain estimates, and scholars give slightly different ranges (Brian Levack suggests about 45,000; others go a little higher or lower). The share of women also varied sharply by region: in Iceland and parts of Russia most of the accused were men. How much genuine pre-Christian belief survived in folk custom (as distinct from a cult) is debated and varies by place; Carlo Ginzburg\'s work on the Friulian benandanti shows some striking popular beliefs, but not a pagan church.',
           },
           inPractice:
             'Go through any Wicca book on your shelf and pencil a small mark in the margin wherever it makes a historical claim. As this journey goes on, check a few of them. Keep the ones that hold.',
@@ -425,7 +425,7 @@ One rule is worth keeping firmly: if you cast a circle, take it down afterwards.
             'Which elements and directions make sense where you live? Would you change any?',
           ],
           further: [
-            'Janet and Stewart Farrar, A Witches\' Bible (1981, 1984): the published form of much Alexandrian practice.',
+            'Janet and Stewart Farrar, A Witches\' Bible (1996; first published as Eight Sabbats for Witches, 1981, and The Witches\' Way, 1984): the published form of much Alexandrian practice.',
             'Thea Sabin, Wicca for Beginners, chapters on ritual structure.',
           ],
           library: ['traditional/tool/athame', 'traditional/tool/besom', 'traditional/tool/wand', 'traditional/tool/salt_circle'],
@@ -645,7 +645,7 @@ Read closely, it is permission more than prohibition. It says that the things yo
             },
             {
               heading: 'The threefold return',
-              body: `Many Wiccans also hold that what you send out comes back to you threefold. The idea of magic returning multiplied appears in Gardner's 1949 novel, and Raymond Buckland and others popularised it as a "law" in the 1970s. It is not in the older layers of the tradition as a rule, and many traditional Wiccans dislike it, seeing it as a borrowed idea of karma used to frighten beginners.
+              body: `Many Wiccans also hold that what you send out comes back to you threefold. The idea of magic returning multiplied appears in Gardner's 1949 novel, and from the late 1960s writers including Raymond Buckland popularised it as a "law". It is not in the older layers of the tradition as a rule, and many traditional Wiccans dislike it, seeing it as a borrowed idea of karma used to frighten beginners.
 
 A useful way to hold it: actions have consequences, often larger and stranger than we expect, and the person most changed by your magic is you. You don't need a cosmic accountant to take that seriously.`,
             },
@@ -870,7 +870,7 @@ Traditional Gardnerian practice is skyclad. A good coven tells you this early, e
           id: 'wicca-discern-sit',
           title: 'Sit with the question',
           instructions:
-            'Three times a week, light your candles and sit in silence for ten minutes with the question "Is this my path?" Don\'t try to answer. Write afterwards whatever is there.',
+            'Every couple of days, nine times over these three weeks, light your candles and sit in silence for ten minutes with the question "Is this my path?" Don\'t try to answer. Write afterwards whatever is there.',
           times: 9,
           every: 'day',
           prompt: 'What came up when you sat with the question today?',
@@ -1063,7 +1063,7 @@ Traditional Gardnerian practice is skyclad. A good coven tells you this early, e
     'Doreen Valiente, Witchcraft for Tomorrow (1978) and The Rebirth of Witchcraft (1989).',
     'Margaret Murray, The Witch-Cult in Western Europe (1921).',
     'Norman Cohn, Europe\'s Inner Demons (1975); Keith Thomas, Religion and the Decline of Magic (1971).',
-    'Aidan Kelly, Crafting the Art of Magic (1991), on the development of the Gardnerian Book of Shadows and his naming of the equinox and solstice sabbats.',
+    'Aidan Kelly, Crafting the Art of Magic (1991), on the development of the Gardnerian Book of Shadows; his naming of Ostara, Litha and Mabon in 1974 is told in his own later account (a 2017 blog post) and summarised by Hutton.',
     'Robert Graves, The White Goddess (1948), as the source of the Maiden-Mother-Crone scheme.',
     'Charles Godfrey Leland, Aradia, or the Gospel of the Witches (1899).',
     'Thorn Mooney, Traditional Wicca: A Seeker\'s Guide (2018), on finding a coven.',

@@ -17,7 +17,7 @@ This is a self-dedication. It is not an initiation into Kemetic Orthodoxy, a Her
   notes: [
     'Hermes Trismegistus, the Corpus Hermeticum, the Emerald Tablet and the "Thoth" tarot are later Greek, Arabic, European and modern creations that grew from his name. They are worth studying, but they are not Egyptian worship of Djehuty.',
     'The "Emerald Tablets of Thoth the Atlantean" (1930s) is a modern work by the American writer Doreal. It has no ancient source.',
-    'The popular claim that every Egyptian scribe poured a drop of water for Thoth before writing is weakly evidenced; I could not trace it to an ancient text. Scribes certainly honoured Thoth. Treat the libation as a modern custom, and a good one.',
+    'The popular claim that every Egyptian scribe poured a drop of water for Thoth before writing is repeated in many books, but no ancient text or image showing it has been traced. Scribes certainly honoured Thoth. Treat the libation as a modern custom, and a good one.',
     'Millions of ibises and many baboons were mummified as offerings to Thoth. Do not buy animal mummies or other antiquities; reproductions and pictures are better offerings.',
     'Kemetic religion is a living practice with its own communities and customs. Ask before joining their spaces.',
     'Safety: never put ink, pigments or stones in drinks; keep incense smoke away from pet birds.',
@@ -223,7 +223,7 @@ Saqqara also had an oracle and a place of dream incubation for Thoth. A priest t
               heading: 'The scribes’ god',
               body: `Scribes were Egypt's educated class, perhaps a few per cent of the population, and Thoth was theirs. Their palettes, long slips of wood with wells for black and red ink and a slot for reed pens, sometimes carry invocations to Thoth alongside prayers for offerings. School texts of the New Kingdom, the so-called Late Egyptian Miscellanies, include short prayers in which a scribe begs Thoth to come to him, to make him skilled, to take him to Hermopolis where life is sweet. Statues show officials as scribes beneath a baboon of Thoth.
 
-You will often read that every scribe poured a drop of water from his water pot as a libation to Thoth before starting work. It is a lovely idea and many modern devotees do it. But I could not find an ancient text or image that shows it. The palette invocations and scribes' prayers are real; the drop of water is best called a modern custom inspired by them.`,
+You will often read that every scribe poured a drop of water from his water pot as a libation to Thoth before starting work. It is a lovely idea and many modern devotees do it. But no one has yet pointed to an ancient text or image that shows it; popular books repeat it without a source. The palette invocations and scribes' prayers are real; the drop of water is best called a modern custom inspired by them.`,
             },
             {
               heading: 'His festival',
@@ -337,7 +337,7 @@ A simple test, and a Thoth-like one: ask where a text comes from, when it was wr
           sections: [
             {
               heading: 'Who honours him now',
-              body: `Thoth is much loved in Kemetic religion, the modern revival of Egyptian religion. Reconstructionists honour him with offerings modelled on the temple rite and with careful study, which many count as worship in itself. Kemetic Orthodoxy, an organised temple founded in the late 1980s by Tamara Siuda and based in Illinois, includes him in its calendar and devotions. Independent Kemetics often keep a Thoth shrine on their desk.
+              body: `Thoth is much loved in Kemetic religion, the modern revival of Egyptian religion. Reconstructionists honour him with offerings modelled on the temple rite and with careful study, which many count as worship in itself. Kemetic Orthodoxy, an organised temple founded in 1988 by Tamara Siuda and based in Illinois, includes him in its calendar and devotions. Independent Kemetics often keep a Thoth shrine on their desk.
 
 Beyond Kemetic religion, Thoth is honoured by Hermeticists and ceremonial magicians as Hermes Trismegistus, by tarot readers, and by eclectic Pagans and witches who see him as a god of magic and learning. Students and writers of many faiths simply light a candle to him before exams. Each of these is its own practice; none needs to pretend to be another.`,
             },
@@ -477,7 +477,7 @@ Wash, rinse your mouth with natron or salt water, and dress in clean clothes. Cl
           },
           {
             title: 'A sweet thing is Truth',
-            instructions: 'Dip the fig in honey and eat it, as Egyptians did at his festival, saying the words.',
+            instructions: 'Dip the fig in honey and eat it, as Plutarch says Egyptians did at his festival, saying the words.',
             spoken: 'A sweet thing is Truth.',
           },
           {
@@ -547,7 +547,6 @@ Wash, rinse your mouth with natron or salt water, and dress in clean clothes. Cl
     'Plutarch, On Isis and Osiris §12 and §68, trans. F. C. Babbitt (Loeb, 1936; public domain), LacusCurtius: "playing at draughts with the moon…", "on the nineteenth day of the first month…"',
     'Plato, Phaedrus, trans. Benjamin Jowett, Project Gutenberg ebook 1636: "this discovery of yours will create forgetfulness…"',
     'E. A. Wallis Budge, Egyptian Ideas of the Future Life (1899), Project Gutenberg ebook 11277: "Thoth, the scribe of the gods, ibis-headed…"',
-    'E. A. Wallis Budge, The Literature of the Ancient Egyptians (1914), Project Gutenberg ebook 15932, on scribes’ palettes inscribed with invocations to Thoth',
     'Patrick Boylan, Thoth, the Hermes of Egypt (1922); Richard H. Wilkinson, The Complete Gods and Goddesses of Ancient Egypt (2003)',
     'J. D. Ray, The Archive of Hor (1976); Wasef et al., PLOS ONE 14 (2019), on sacred ibis mummies',
     'Garth Fowden, The Egyptian Hermes (1986); Richard Jasnow and Karl-Theodor Zauzich, The Ancient Egyptian Book of Thoth (2005); Michael Dummett, The Game of Tarot (1980)',

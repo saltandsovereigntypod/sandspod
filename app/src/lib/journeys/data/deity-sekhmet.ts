@@ -18,7 +18,7 @@ Egyptians approached Sekhmet with care, and so does this journey. Every rite her
     'Sekhmet is fierce, and Egyptians approached her to calm and please her, not to provoke her. This journey keeps that tone. Its rites are devotional and protective only: no curses, no "rites against enemies", no asking her to harm anyone.',
     'Sekhmet and Bastet are distinct goddesses with separate cults. Both are lionesses and Eyes of Ra, and Egyptians contrasted them as the raging and the gentle, but they are not interchangeable.',
     'Prayer to Sekhmet never replaces medical care. If you or someone you love is ill, see a doctor, and pray as well if you wish.',
-    'Never use red ochre, pigments, dyes or stones in drinks, whatever the myth says. Pomegranate or hibiscus juice gives the red colour safely.',
+    'Never use red ochre, pigments, dyes or stones in drinks, whatever the myth says. Pomegranate juice or hibiscus tea gives the red colour safely (hibiscus is best avoided in pregnancy).',
     'Kemetic religion is a living practice with its own communities and customs. Ask before joining their spaces.',
   ],
   holyDays: [],
@@ -218,7 +218,7 @@ This was not a contradiction to Egyptians. It was simply how power worked. A lio
             },
             {
               heading: 'The wab-priests of Sekhmet',
-              body: `Egyptian healers came in several kinds. The swnw was the physician. The sau was the amulet-maker and magician. And the wab-priest of Sekhmet was a priest of the goddess who also treated the sick. The great medical text called the Ebers Papyrus, from around 1550 BCE, mentions them in its section on the heart: it explains that when any physician, any wab-priest of Sekhmet or any magician lays his hands on the head, the heart or other parts of the body, he is feeling the heart, whose vessels lead to every limb. That is one of the oldest descriptions of taking a pulse.
+              body: `Egyptian healers came in several kinds. The swnw was the physician. The sau was the amulet-maker and magician. And the wab-priest of Sekhmet was a priest of the goddess who also treated the sick. The great medical text called the Ebers Papyrus, from around 1550 BCE, mentions them in its section on the heart: it explains that when any physician, any wab-priest of Sekhmet or any magician lays his hands on the head, the heart or other parts of the body, he is feeling the heart, whose vessels lead to every limb. It is often read as one of the oldest descriptions of feeling the pulse.
 
 Priests of Sekhmet seem also to have dealt with animals, inspecting sacrificial cattle, and to have served at the frontiers and on expeditions. They were practical people. The idea that her worship and medical care go together is not a modern add-on; it was there from the beginning.`,
             },
@@ -329,7 +329,7 @@ It also means honesty about yourself. If you come to her in rage, she is not you
               heading: 'Who honours her now',
               body: `Kemetic religion, the modern revival of Egyptian religion, honours Sekhmet in several ways. Reconstructionists follow the temple pattern of offering and pacification, and often keep her as a protector of the household against illness, especially around the year's end. Kemetic Orthodoxy, a temple founded in the United States in 1988 by Tamara Siuda, includes her in its calendar and devotions; members there follow that temple's own customs. Independent Kemetics mix study and personal practice.
 
-Sekhmet has also become very popular in modern Goddess spirituality, as an image of women's strength and righteous anger. A temple dedicated to her was built in the Nevada desert, near Las Vegas, in the 1990s as a centre of Goddess spirituality. Healers, nurses and many eclectic Pagans honour her too. Each practice is its own; none needs to pretend to be another, and all can be honest about where their ideas come from.`,
+Sekhmet has also become very popular in modern Goddess spirituality, as an image of women's strength and righteous anger. In 1993 the feminist writer Genevieve Vaughan built the Temple of Goddess Spirituality Dedicated to Sekhmet at Cactus Springs in the Nevada desert, about an hour north-west of Las Vegas, as a centre of Goddess spirituality. Healers, nurses and many eclectic Pagans honour her too. Each practice is its own; none needs to pretend to be another, and all can be honest about where their ideas come from.`,
             },
             {
               heading: 'How to offer',
@@ -351,7 +351,7 @@ The Feast of Drunkenness in the first month celebrated the calmed Eye and belong
 
 Do not confuse her with Bastet, or swap them freely. Do not treat her as a mascot for anger. Respect her as a goddess of healing as much as of war.
 
-If you are working with anger that frightens you, or with an illness, let her be one support among several, not the only one. She is powerful. That is exactly why you should not lean your whole weight on her alone.`,
+If you are working with anger that frightens you, or with an illness, let her be one support among several, not the only one: talk to your doctor or a counsellor too. She is powerful. That is exactly why you should not lean your whole weight on her alone.`,
             },
           ],
           knowAndDont: {

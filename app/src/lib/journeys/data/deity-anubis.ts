@@ -225,7 +225,7 @@ The chief embalmer acted as Anubis. Diodorus says that embalmers were held in hi
             },
             {
               heading: 'The priest in the mask',
-              body: `Did embalmers really wear Anubis masks? Scenes in tombs show a jackal-headed figure tending the mummy, and we cannot always tell whether the artist meant the god or a priest playing him. But at least one real mask survives: a pottery mask of Anubis's head, now in the Roemer- und Pelizaeus-Museum in Hildesheim, with holes for the wearer to see and breathe through. It is from the Late Period or later. Roman writers also describe priests wearing his mask in Isis processions.
+              body: `Did embalmers really wear Anubis masks? Scenes in tombs show a jackal-headed figure tending the mummy, and we cannot always tell whether the artist meant the god or a priest playing him. But at least one real mask survives: a pottery mask of Anubis's head, now in the Roemer- und Pelizaeus-Museum in Hildesheim, with holes for the wearer to see and breathe through. It dates from the Late Period, roughly between 664 and 332 BCE. Roman writers also describe priests wearing his mask in Isis processions.
 
 At the funeral came the Opening of the Mouth, the rite that restored the dead person's ability to breathe, eat and speak. Priests touched the mouth and eyes of the mummy or statue with special tools. In many tomb paintings the mummy is held upright at the tomb door by a figure of Anubis, while the priests perform the rite.`,
             },
@@ -278,7 +278,7 @@ Its name is linked to Anubis's title Imy-ut, "he who is in the place of embalmin
             },
             {
               heading: 'The jackal on the chest',
-              body: `When Howard Carter entered the treasury of Tutankhamun's tomb in 1926, the doorway was guarded by a life-sized wooden Anubis, painted black with gilded details, lying on top of a gilded shrine-shaped chest on carrying poles. He had a linen shawl draped over him, and inside the chest were amulets and ritual objects. He faced west into the burial chamber, watching over the king.
+              body: `When Howard Carter first looked into the treasury of Tutankhamun's tomb in 1923 (his team cleared it in 1926 and 1927), its doorway was guarded by a life-sized wooden Anubis, painted black with gilded details, lying on top of a gilded shrine-shaped chest on carrying poles. He had a linen shawl draped over him, and inside the chest were amulets and ritual objects. He faced west into the burial chamber, watching over the king.
 
 That image, the recumbent black jackal on a shrine, alert, ears up, front paws stretched out, is the classic hieroglyph for Anubis and for the title "he who is upon his mountain". It is also the best model for your own shrine image: watchful, still and calm.`,
             },
@@ -358,7 +358,7 @@ Modern Kemetics place these feasts according to their chosen calendar, usually c
               heading: 'Sensitive points',
               body: `Anubis is not a horror figure, and his shrine is not a place for frightening yourself or anyone else. He is not a god of curses. The Egyptian dead were dangerous only when neglected or disturbed; the answer was offering and respect, not summoning.
 
-Do not try to contact the dead through him. If you sense a loved one near, you can greet them kindly and give them water, as Egyptians did at tombs, but do not chase it. And if grief is overwhelming, if you are thinking about your own death in a way that frightens you, please speak to someone you trust or to a crisis line. That is what he would want: the living looked after too.
+Do not try to contact the dead through him. If you sense a loved one near, you can greet them kindly and give them water, as Egyptians did at tombs, but do not chase it. And if grief is overwhelming, if you are thinking about your own death in a way that frightens you, please speak to someone you trust or to a crisis line: 988 in the US, Samaritans on 116 123 in the UK and Ireland, or your local emergency number. That is what he would want: the living looked after too.
 
 Finally, respect human remains. Do not buy bones, mummy parts or "real" skulls for his shrine, and be careful with animal remains, which can be illegal to own or poorly sourced.`,
             },

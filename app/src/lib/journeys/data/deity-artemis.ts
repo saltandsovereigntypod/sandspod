@@ -87,7 +87,7 @@ You will need fresh water, a little honey, access to some outdoor place, even a 
         closing:
           'Take all your things home with you. Write about the place, what you saw and heard, and how it felt to stand there and call her.',
         safety:
-          'Tell someone where you are going, carry a charged phone and stay on safe ground. Do not pick protected plants, disturb nests or feed wildlife. Pour honey only on bare earth, in small amounts, away from paths and water.',
+          'Tell someone where you are going, carry a charged phone and stay on safe ground. Dress for the weather: in cold, wet or icy conditions keep the rite short, and do not go out alone at dusk in winter. Do not pick protected plants, disturb nests or feed wildlife. Pour honey only on bare earth, in small amounts, away from paths and water.',
       },
     },
     {
@@ -163,7 +163,7 @@ So her virginity is less about purity in the modern moral sense and more about a
               heading: 'The bears of Brauron',
               body: `At Brauron, on the east coast of Attica, young Athenian girls served Artemis for a time as arktoi, “bears,” before marriage. Fragments of pottery show girls running and dancing, some in short tunics, some naked. The story behind it was that a tame bear in Artemis’s sanctuary was killed, and the goddess demanded that girls “play the bear” in atonement.
 
-Before marriage, girls dedicated their toys, a lock of hair and their girdles to Artemis. The goddess of the wild thus took the girl’s childhood into her keeping as she passed into adult life. Many modern families mark a daughter’s or any child’s coming of age by dedicating a childhood object to Artemis.`,
+Before marriage, girls dedicated their toys, a lock of hair and their girdles to Artemis. The goddess of the wild thus took the girl’s childhood into her keeping as she passed into adult life. Some modern families mark a daughter’s or any child’s coming of age by dedicating a childhood object to Artemis.`,
             },
             {
               heading: 'The goddess of labour',
@@ -324,9 +324,9 @@ Hunters, too, honour her, as do vegans who see her as protector of animals. Both
           sections: [
             {
               heading: 'The sixth, the Thargelia and the Mounichia',
-              body: `Artemis’s monthly day is the sixth, counted from the Noumenia. A small offering then, a walk, water poured, a hymn read, keeps the relationship steady. Her birthday comes in the Thargelia, in late spring, the day before her brother’s; the Mounichia falls at the full moon of the following month; the Elaphebolia came in early spring. The app marks the Thargelia, Mounichia and Noumenia in your calendar.
+              body: `Artemis’s monthly day is the sixth, counted from the Noumenia. A small offering then, a walk, water poured, a hymn read, keeps the relationship steady. Her yearly round in Athens ran through spring: the Elaphebolia, with its deer cakes, in the month Elaphebolion (roughly March); the Mounichia at the full moon of the next month, Mounichion (roughly April); and her birthday on the sixth of Thargelion (roughly May), the day before her brother’s, at the Thargelia. The app marks the Thargelia, Mounichia and Noumenia in your calendar.
 
-If you follow the Roman calendar too, Diana’s festival, the Nemoralia, fell on the Ides of August, when women carried torches to her grove at Nemi and gave thanks for safe births.`,
+If you follow the Roman calendar too, Diana’s festival, the Nemoralia, fell on the Ides of August (13 August), when women carried torches to her grove at Nemi to give thanks for prayers she had answered, many of them prayers for children and safe births.`,
             },
             {
               heading: 'Making amphiphontes',
@@ -347,7 +347,7 @@ At home, give her clean water every few days, change her shrine with the seasons
           ],
           knowAndDont: {
             known:
-              'The sixth of the month and her birthday at the Thargelia are attested for Athens. Amphiphontes and deer cakes are mentioned in ancient writers. Her epithets above appear in Homer, the hymns, inscriptions and Pausanias. The Nemoralia is described by Ovid and others.',
+              'The sixth of the month and her birthday at the Thargelia are attested for Athens. Athenaeus (book 14) mentions the amphiphontes and the deer cakes. Amphiphontes and deer cakes are mentioned in ancient writers. Her epithets above appear in Homer, the hymns, inscriptions and Pausanias. The Nemoralia is described by Ovid and others.',
             unknown:
               'The exact recipe for amphiphontes is lost; modern versions are reconstructions. Leave-no-trace practice is a modern ethic, though very much in keeping with her ancient care for wild places.',
           },
@@ -511,6 +511,8 @@ Once a year, at the Mounichia or the full moon nearest your dedication, renew yo
     'Homeric Hymn III to Apollo (Ortygia and Delos)',
     'Callimachus, Hymn 3 to Artemis, trans. A. W. Mair (1921)',
     'Euripides, Iphigenia at Aulis; Iphigenia among the Taurians 1462–1467',
+    'Athenaeus, Deipnosophists 14.645a–646e, on amphiphontes and deer cakes (elaphoi)',
+    'Ovid, Fasti 3.261–272, on the torches at Nemi',
     'Aristophanes, Lysistrata 641–647; Xenophon, Anabasis 3.2.12; Pausanias 7.18',
     'Susan Guettel Cole, Landscapes, Gender, and Ritual Space (2004)',
     'Jennifer Larson, Ancient Greek Cults (2007)',

@@ -26,7 +26,7 @@ You will need olive oil, a bowl of water, a project you are working on, whether 
       kind: 'threshold',
       title: 'An offering of oil',
       intro:
-        'Athena gave Athens the olive, so the journey begins with olive oil: a clean shrine, washed hands, a drop of oil and an introduction. If you can, begin on the third day after the new crescent, her monthly day.',
+        'Athena gave Athens the olive, so the journey begins with olive oil: a clean shrine, washed hands, a drop of oil and an introduction. If you can, begin on the third day of the lunar month, counting the Noumenia, the first crescent, as day one: that was her monthly day.',
       days: 2,
       lessons: [],
       practices: [
@@ -344,7 +344,7 @@ A practical rhythm: on the third of each month, give oil and incense and show he
               heading: 'What to give',
               body: `Olive oil is her offering above all, poured as a libation or burned in a lamp. Olives, honey cakes, barley, incense and wine are fitting. Woven and handmade things, finished work, books, and study done in her name all count. As an Olympian goddess, her food offerings can be shared after the rite.
 
-One ancient tradition says goats were not brought onto the Acropolis because they damage olive trees. Whether that was a strict rule is uncertain, but it is a nice reminder: give her things that grow her olive, not things that harm it.`,
+The Roman writer Varro, in his book on farming (37 BCE), says goats were not driven onto the Athenian Acropolis except once a year for a necessary sacrifice, so that no goat would touch the sacred olive; farmers believed a goat’s bite made an olive barren. It is a nice reminder: give her things that grow her olive, not things that harm it.`,
             },
             {
               heading: 'Names for prayer',
@@ -363,7 +363,7 @@ One caution: Athena has been used as a symbol by many causes, including national
             known:
               'The third of the month, the Panathenaia and the Plynteria are well attested. Her epithets above appear in Homer, inscriptions and Pausanias. Olive oil was central to her cult.',
             unknown:
-              'The goat ban on the Acropolis is reported by later writers and may not have been a strict rule. Modern prayers to her draw on the ancient pattern but are new.',
+              'The goat ban on the Acropolis is reported by Varro (On Agriculture 1.2.19–20), a Roman writing centuries after classical Athens; we do not know how old the rule was, or which yearly sacrifice was the exception. Modern prayers to her draw on the ancient pattern but are new.',
           },
           inPractice:
             'Mark the next Noumenia and count three days for her monthly day. Plan what you will offer at the Panathenaia or Plynteria, whichever comes next.',
@@ -516,11 +516,12 @@ Once a year, at the Panathenaia or on the third nearest your dedication, renew y
   ],
   sources: [
     'Homeric Hymn XXVIII to Athena, trans. H. G. Evelyn-White (1914), Project Gutenberg #348: https://www.gutenberg.org/ebooks/348 (quoted: “From his awful head wise Zeus himself bare her arrayed in warlike arms of flashing gold, and awe seized all the gods as they gazed”; “until the maiden Pallas Athene had stripped the heavenly armour from her immortal shoulders. And wise Zeus was glad”; “bright-eyed, inventive, unbending of heart, pure virgin, saviour of cities, courageous, Tritogeneia”)',
-    'Homeric Hymn XI to Athena, trans. H. G. Evelyn-White (1914) (quoted: “Dread is she, and with Ares she loves deeds of war, the sack of cities and the shouting and the battle. It is she who saves the people as they go out to war and come back”)',
-    'Homeric Hymn V to Aphrodite, lines 7–15, trans. H. G. Evelyn-White (1914) (quoted: “She has no pleasure in the deeds of golden Aphrodite…” and “She first taught earthly craftsmen…”)',
+    'Homeric Hymn XI to Athena, trans. H. G. Evelyn-White (1914), Project Gutenberg #348 (quoted: “Dread is she, and with Ares she loves deeds of war, the sack of cities and the shouting and the battle. It is she who saves the people as they go out to war and come back”)',
+    'Homeric Hymn V to Aphrodite, lines 7–15, trans. H. G. Evelyn-White (1914), Project Gutenberg #348 (quoted: “She has no pleasure in the deeds of golden Aphrodite…” and “She first taught earthly craftsmen…”)',
     'Hesiod, Theogony 270–283, 886–926',
     'Homer, Iliad 5 and 21; Odyssey 13; Aeschylus, Eumenides; Ovid, Metamorphoses 4 and 6',
     'Herodotus 8.55; Pausanias 1.24–27',
+    'Varro, On Agriculture 1.2.19–20, trans. W. D. Hooper and H. B. Ash (1934), LacusCurtius: https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Varro/de_Re_Rustica/1*.html',
     'Susan Deacy, Athena (2008)',
     'Jenifer Neils (ed.), Goddess and Polis (1992)',
     'Joan Breton Connelly, The Parthenon Enigma (2014)',

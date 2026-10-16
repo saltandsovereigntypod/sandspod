@@ -2,6 +2,7 @@ import { router, type Href } from 'expo-router';
 import { useMemo } from 'react';
 import { Text, View } from 'react-native';
 
+import { LandCard } from '../../../../../components/craft/LandCard';
 import { Body, Card, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { gardenNight, eveningOf, QUARTERS } from '../../../../../lib/craft/green/moonGarden';
 import { PLANTS, asPlant, isGrowing } from '../../../../../lib/craft/green/garden';
@@ -52,6 +53,8 @@ export default function GreenPractice() {
           ))}
         </List>
       </View>
+
+      <LandCard />
 
       <List>
         <Row icon="rituals" title="Green workings" detail="Premade rituals and spells; filter by Green" last onPress={() => router.push({ pathname: '/rituals/premade', params: { practice: 'green' } })} />

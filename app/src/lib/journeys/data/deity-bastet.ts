@@ -13,7 +13,7 @@ export const JOURNEY: Journey = {
 You will learn who she was in Egypt, how a fierce lioness came to be shown as a cat, what Herodotus saw at her festival, what the cat cemeteries really tell us, and how people honour her now. For ten evenings you will keep a small offering at her shrine. At the end you may dedicate yourself to her, or not.
 
 This is a self-dedication. It is not an initiation into Kemetic Orthodoxy or any other temple or group, and it does not replace one. And a warning she would approve of: if you share your home with cats, the living cats come first. Everything in this journey is written to be safe for them.`,
-  about: `Bastet was one of the most popular goddesses of ancient Egypt. Her name is written with the sign of an ointment jar, and it may mean "she of the ointment jar", though that is not certain. Her city was Per-Bastet, "House of Bastet", the Greeks' Bubastis, in the eastern Delta near modern Zagazig (the ruins are called Tell Basta). In her oldest images, from the Old Kingdom, she is a lioness or a lion-headed woman, a fierce protector of the king and a daughter of the sun god Ra. From the Middle Kingdom onward she is increasingly shown as a cat or a cat-headed woman, often with a sistrum rattle, a basket and kittens at her feet. Her cult grew greatest in the first millennium BCE, when the kings of the 22nd Dynasty came from Bubastis, and Herodotus describes her festival there as the biggest in Egypt. Greeks identified her with Artemis. Today she is honoured in Kemetic religion, by reconstructionists and in Kemetic Orthodoxy, and she is loved by eclectic Pagans and witches, who often call her Bast.`,
+  about: `Bastet was one of the most popular goddesses of ancient Egypt. Her name is written with the sign of an ointment jar, and it may mean "she of the ointment jar", though that is not certain. Her city was Per-Bastet, "House of Bastet", the Greeks' Bubastis, in the eastern Delta near modern Zagazig (the ruins are called Tell Basta). In her oldest images, from the Old Kingdom, she is a lioness or a lion-headed woman, a fierce protector of the king and a daughter of the sun god Ra. From the late second millennium BCE, and above all in the first millennium, she is more and more often shown as a cat or a cat-headed woman, often with a sistrum rattle, a basket and kittens at her feet. Her cult grew greatest in the first millennium BCE, when the kings of the 22nd Dynasty came from Bubastis, and Herodotus describes her festival there as the biggest in Egypt. Greeks identified her with Artemis. Today she is honoured in Kemetic religion, by reconstructionists and in Kemetic Orthodoxy, and she is loved by eclectic Pagans and witches, who often call her Bast.`,
   notes: [
     'Bastet and Sekhmet are distinct goddesses with separate cults and cities. Both are lion-headed daughters of Ra and Eyes of Ra, and Egyptians paired them as the gentle and the raging sides of the same power, but they were not simply one goddess.',
     '"Bast" is a common modern spelling. Egyptologists write Bastet; both are used in good faith.',
@@ -44,7 +44,7 @@ She was a daughter of Ra, the sun god, and one of the goddesses called the Eye o
             },
             {
               heading: 'Becoming a cat',
-              body: `From the Middle Kingdom onward, and above all in the first millennium BCE, Bastet is more and more often a cat. The change was gradual, and the lioness never vanished; late hymns still remember that she can rage. But the household cat suited a goddess of the home perfectly. Cats kept grain stores clear of mice and killed snakes, including the deadly cobra, and they were affectionate, playful, fertile and fiercely protective of their kittens.
+              body: `Cat images of Bastet are rare before the late New Kingdom; from then on, and above all in the first millennium BCE, she is more and more often a cat. The change was gradual, and the lioness never vanished; late hymns still remember that she can rage. But the household cat suited a goddess of the home perfectly. Cats kept grain stores clear of mice and killed snakes, including the deadly cobra, and they were affectionate, playful, fertile and fiercely protective of their kittens.
 
 The classic image comes from the Late Period, around 600 BCE: a bronze cat sitting upright, alert and calm, often with gold earrings and a nose ring and a protective eye on a chain at the breast. The Gayer-Anderson cat in the British Museum is the most famous example. Another common image is a woman with a cat's head, holding a sistrum in one hand and a small shield-like collar called an aegis in the other, with a basket on her arm and kittens at her feet.`,
             },
@@ -63,7 +63,7 @@ The meaning of her name is debated. It is written with the hieroglyph of a seale
           ],
           knowAndDont: {
             known:
-              'Bastet’s early lioness form, her title Eye of Ra, the rise of the cat form from the Middle Kingdom, her cult at Bubastis and Saqqara, the 22nd Dynasty building at Tell Basta and her Greek identification with Artemis are all well attested.',
+              'Bastet’s early lioness form, her title Eye of Ra, the rise of the cat form, above all in the first millennium BCE, her cult at Bubastis and Saqqara, the 22nd Dynasty building at Tell Basta and her Greek identification with Artemis are all well attested.',
             unknown:
               'The meaning of her name is uncertain. Exactly why and when the cat replaced the lioness in popular imagery is not fully understood, and much of Bubastis is lost, so her temple theology is known mostly from fragments, other sites and Greek writers.',
           },
@@ -201,7 +201,7 @@ In daily life she was a goddess for women in childbirth, for children, for the h
             'What would a "clear no" look like this week, said kindly?',
           ],
           further: [
-            'Geraldine Pinch, Egyptian Mythology: A Guide to the Gods, Goddesses, and Traditions of Ancient Egypt (2002), on the Distant Goddess',
+            'Geraldine Pinch, Egyptian Mythology: A Guide to the Gods, Goddesses, and Traditions of Ancient Egypt (Oxford, 2004; first published 2002), on the Distant Goddess',
             'Miriam Lichtheim, Ancient Egyptian Literature, vol. 1, for the Loyalist Instruction',
           ],
           library: ['traditional/deity/bastet', 'traditional/deity/sekhmet', 'traditional/deity/ra', 'traditional/deity/hathor'],
@@ -266,11 +266,11 @@ Rattles, music and dance were part of her worship, and so was perfume. Offerings
               heading: 'Gifts to the goddess',
               body: `From about the seventh century BCE through the Roman period, pilgrims honoured Bastet by buying a mummified cat from the temple and having it buried in her cemetery. It was a votive offering, a gift that carried the giver's prayer to the goddess for eternity. The great cat cemeteries were at Bubastis, at the Bubasteion of Saqqara, and at Beni Hasan in Middle Egypt (where the cats belonged to the lioness goddess Pakhet, a close relative of Bastet).
 
-The numbers were enormous. In 1888 a farmer at Beni Hasan broke into a pit holding tens of thousands of cat mummies. Many were ground up for fertiliser, and in 1890 a shipment of about nineteen tons of cat remains was auctioned in Liverpool for that purpose. Excavations at Saqqara keep finding more; Egyptian teams announced new caches of cat mummies and bronze cat statues there as recently as 2018 and 2019.`,
+The numbers were enormous. In 1888 or 1889 (accounts differ) a farmer near Beni Hasan broke into a cemetery holding tens of thousands of cat mummies. Many were ground up for fertiliser, and in February 1890 a shipment of about nineteen and a half tons, perhaps 180,000 cats, was auctioned in Liverpool for that purpose; a few fragments from it survive in Liverpool's museums. Excavations at Saqqara keep finding more; Egyptian teams announced new caches of cat mummies and bronze cat statues there as recently as 2018 and 2019.`,
             },
             {
               heading: 'What the mummies show',
-              body: `When scientists X-ray and scan these mummies, a hard picture emerges. Many of the cats were young, often only a few months old, and some show broken necks or other signs that they were killed for the purpose. The evidence points to breeding catteries attached to temples, raising kittens to be offered. Some wrapped bundles contain only part of a cat, or bones from several animals, or no animal at all, just mud, cloth and reeds shaped like a cat; a 2015 study of animal mummies in British museum collections found that about a third had no animal remains inside.
+              body: `When scientists X-ray and scan these mummies, a hard picture emerges. Many of the cats were young, often only a few months old, and some show broken necks or other signs that they were killed for the purpose. The evidence points to breeding catteries attached to temples, raising kittens to be offered. Some wrapped bundles contain only part of a cat, or bones from several animals, or no animal at all, just mud, cloth and reeds shaped like a cat; a 2015 study by the University of Manchester and Manchester Museum, which scanned more than 800 animal mummies in UK collections, found that about a third held no animal remains at all.
 
 This is the same culture in which, Herodotus says, whole households shaved their eyebrows when the family cat died. Both are true. Household cats were loved and mourned and sometimes buried with care; temple cats were raised as offerings. The pilgrims, who paid for the gift, may often not have known what was in the wrapping.`,
             },
@@ -285,7 +285,7 @@ Do not buy cat mummies or any other antiquities, even if they are offered legall
           ],
           knowAndDont: {
             known:
-              'Cat cemeteries at Bubastis, Saqqara and Beni Hasan, the 1888 Beni Hasan discovery and the 1890 Liverpool sale, radiographic evidence of young and deliberately killed cats, and the many partial or empty mummies are documented.',
+              'Cat cemeteries at Bubastis, Saqqara and Beni Hasan, the Beni Hasan discovery of 1888 or 1889 and the 1890 Liverpool sale, radiographic evidence of young and deliberately killed cats, and the many partial or empty mummies are documented.',
             unknown:
               'How the catteries were run and how many cats were bred rather than gathered is not fully known. What pilgrims believed about the contents of the bundles, and how priests understood empty or partial mummies, is uncertain; they may have been seen as valid offerings in themselves.',
           },

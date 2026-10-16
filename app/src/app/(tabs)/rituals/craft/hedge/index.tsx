@@ -2,6 +2,7 @@ import { router, type Href } from 'expo-router';
 import { useMemo } from 'react';
 import { Text, View } from 'react-native';
 
+import { LandCard } from '../../../../../components/craft/LandCard';
 import { Body, Card, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { relativeDay } from '../../../../../lib/calendar';
 import { ANCESTORS, ancestorDays, anniversaryWords, normalizeAncestor, upcomingAnniversaries } from '../../../../../lib/craft/hedge/ancestors';
@@ -110,6 +111,8 @@ export default function HedgePractice() {
           </List>
         </View>
       )}
+
+      <LandCard />
 
       <List>
         <Row icon="rituals" title="Hedge workings" detail="Premade rituals and spells; filter by Hedge" last onPress={() => router.push({ pathname: '/rituals/premade', params: { practice: 'hedge' } })} />
