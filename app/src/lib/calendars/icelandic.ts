@@ -7,12 +7,17 @@
 // same place so that the year keeps up with the sun.
 //
 // The rule, as the almanac applies it: summer begins on the Thursday falling
-// 19–25 April (sumardagurinn fyrsti). Winter is exactly six months, 180 days,
-// so it begins on the Saturday 180 days before the next first day of summer
-// (fyrsti vetrardagur, usually 21–27 October, but 28 October before a leap
-// year whose summer begins on 25 April, as in 2023). Summer is 184 days, or
-// 191 with sumarauki; sumarauki falls in the years whose summer must
-// stretch to meet that winter. Pure.
+// 19–25 April (sumardagurinn fyrsti, the first Thursday after 18 April).
+// Winter is exactly six months, 180 days, so it begins on the Saturday 180
+// days before the next first day of summer (fyrsti vetrardagur, the first
+// Saturday after 26 weeks of summer, or 27 with sumarauki: 21–27 October,
+// but 28 October in a rímspillisár, before a leap year whose summer begins
+// on 25 April, as in 2023; then Þorri begins on 26 January and Góa on 25
+// February). Summer is 184 days, or 191 with sumarauki, the week put in
+// after the aukanætur. The almanac's own rule for sumarauki (years ending
+// on a Monday, or on a Sunday before a leap year; Vísindavefurinn 69821)
+// picks out exactly the years whose summer must stretch to meet that
+// winter; the two were checked against each other for 1800–2400. Pure.
 
 import { startOfDay } from '../calendar.ts';
 import type { CalendarDate, CalendarDef, CalendarEvent, CalendarMark } from './types.ts';
@@ -115,7 +120,7 @@ const FIRST_DAYS: Record<string, { id: string; name: string; meaning: string; ev
   Haustmánuður: { id: 'haustmanudur', name: 'First day of Haustmánuður', meaning: 'Autumn month, the last of summer, begins on a Thursday.', event: true },
   Gormánuður: { id: 'fyrsti-vetrardagur', name: 'Fyrsti vetrardagur', meaning: 'The first day of winter and of Gormánuður, a Saturday. The old Winter Nights (vetrnætur), with feasting and the blót for a good year.', event: false },
   Ýlir: { id: 'ylir', name: 'First day of Ýlir', meaning: 'The second month of winter begins, on a Monday.', event: true },
-  Mörsugur: { id: 'morsugur', name: 'First day of Mörsugur', meaning: 'Mörsugur, the midwinter month, begins on a Wednesday, just before the solstice.', event: true },
+  Mörsugur: { id: 'morsugur', name: 'First day of Mörsugur', meaning: 'Mörsugur, the midwinter month, begins on a Wednesday (20–27 December), around the solstice.', event: true },
   Þorri: { id: 'bondadagur', name: 'Bóndadagur', meaning: 'The first day of Þorri, “husband’s day”, a Friday. Folk custom told the man of the house to greet Þorri at dawn hopping round the house in one trouser leg; today husbands are given gifts, and the Þorrablót season of traditional food begins.', event: false },
   Góa: { id: 'konudagur', name: 'Konudagur', meaning: 'The first day of Góa, “wife’s day”, a Sunday: in folk custom the woman of the house welcomed Góa in, and today wives are given flowers and treats.', event: true },
   Einmánuður: { id: 'einmanudur', name: 'First day of Einmánuður', meaning: 'The last month of winter begins, on a Tuesday; traditionally the young men’s day (yngismannadagur).', event: true },
@@ -164,6 +169,8 @@ function marksOf(at: Located, day: Date): CalendarMark[] {
   return marks;
 }
 
+const ordinal = (n: number) => `${n}${n % 100 >= 11 && n % 100 <= 13 ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] ?? 'th'}`;
+
 function dateOf(date: Date): CalendarDate {
   const day = startOfDay(date);
   const at = icelandicDay(day);
@@ -175,17 +182,16 @@ function dateOf(date: Date): CalendarDate {
     return {
       calendar: 'icelandic',
       short: `${p.which === 'aukanætur' ? 'Aukanætur' : 'Sumarauki'} ${p.day} · week ${p.week} of summer`,
-      long: `Night ${p.day} of ${p.of} of ${what}, between Sólmánuður and Heyannir, in the ${p.week}th week of summer.`,
+      long: `Night ${p.day} of ${p.of} of ${what}, between Sólmánuður and Heyannir, in the ${ordinal(p.week)} week of summer.`,
       year,
       marks,
     };
   }
   const season = p.season === 'summer' ? 'summer' : 'winter';
-  const ord = (n: number) => `${n}${n % 100 >= 11 && n % 100 <= 13 ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] ?? 'th'}`;
   return {
     calendar: 'icelandic',
     short: `${p.month.name} ${p.day} · week ${p.week} of ${season}`,
-    long: `The ${ord(p.day)} day of ${p.month.name}, in the ${ord(p.week)} week of ${season}. ${p.month.meaning}`,
+    long: `The ${ordinal(p.day)} day of ${p.month.name}, in the ${ordinal(p.week)} week of ${season}. ${p.month.meaning}`,
     month: { name: p.month.name, index: p.index, days: 30, meaning: p.month.meaning },
     day: p.day,
     year,
@@ -199,13 +205,15 @@ export const ICELANDIC_CALENDAR: CalendarDef = {
   path: 'norse',
   confidence: 'historical',
   about:
-    'The calendar of medieval Iceland, still printed in the Icelandic almanac and still used to date the first day of summer, bóndadagur and konudagur. The year has two seasons, summer and winter, of six months each. Every month has 30 days and begins on its own weekday, and four extra nights (aukanætur) in midsummer make the year exactly 52 weeks, so dates are often given as “the 10th week of summer”. Because 364 days is a little short of the sun’s year, a leap week, sumarauki, is added every five to seven years. Summer begins on the Thursday between 19 and 25 April; winter begins on a Saturday, normally 21–27 October. The rules for sumarauki have changed over the centuries (they were first set out around 955 and adjusted after Iceland took up the Gregorian calendar in 1700); the modern almanac rule is used here. The months are Icelandic and are kept by the Icelandic calendar wherever you live, so summer and winter here are the North’s.',
+    'The calendar of medieval Iceland, still printed in the Icelandic almanac and still used to date the first day of summer, bóndadagur and konudagur. The year has two seasons, summer and winter, of six months each. Every month has 30 days and begins on its own weekday, and four extra nights (aukanætur) in midsummer make the year exactly 52 weeks, so dates are often given as “the 10th week of summer”. Because 364 days is a little short of the sun’s year, a leap week, sumarauki, is added every five to seven years. Summer begins on the Thursday between 19 and 25 April; winter begins on a Saturday, normally 21–27 October. In a rímspillisár, when winter must begin on 28 October (as in 2023), Þorri and Góa that winter begin a day past their usual ranges too, on 26 January and 25 February. The rules for sumarauki have changed over the centuries (the leap week was brought in around 955, says Íslendingabók, and the rule was adjusted after Iceland took up the Gregorian calendar in 1700); the modern almanac rule is used here: the last sumarauki was in 2023, the next in 2029. The months are Icelandic and are kept by the Icelandic calendar wherever you live, so summer and winter here are the North’s.',
   sources: [
-    'Almanak Háskóla Íslands (University of Iceland Almanac), https://almanak.hi.is/',
+    'Almanak Háskóla Íslands (University of Iceland Almanac), https://almanak.hi.is/rim.html',
+    'Þorsteinn Sæmundsson & Gunnlaugur Björnsson, “Hvað er sumarauki og á hvaða árum er hann?”, Vísindavefurinn: https://www.visindavefur.is/svar.php?id=69821',
+    'Vísindavefurinn, “Hvenær er sumardagurinn fyrsti?”: https://www.visindavefur.is/svar.php?id=65157',
     'Árni Björnsson, Saga daganna (1993)',
-    'https://is.wikipedia.org/wiki/Heyannir',
+    'https://is.wikipedia.org/wiki/Fyrsti_vetrardagur',
+    'https://islensktalmanak.is/dagar/konudagur/',
     'https://en.wikipedia.org/wiki/Icelandic_calendar',
-    'https://icelandmonitor.mbl.is/news/news/2015/10/21/do_you_know_your_old_icelandic_months/',
   ],
   dateOf: (day) => dateOf(day),
   eventsBetween: (from, to) => eventsBetween(from, to),

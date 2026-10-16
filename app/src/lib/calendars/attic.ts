@@ -146,12 +146,13 @@ export const ATTIC_CALENDAR: CalendarDef = {
   path: 'hellenic',
   confidence: 'historical',
   about:
-    'The festival calendar of ancient Athens: twelve lunar months from Hekatombaion to Skirophorion, each beginning at the Noumenia, the first crescent after the new moon. Months were full (30 days) or hollow (29), and days were counted in three tens, the last ten counted down towards the month’s end, so day 23 of a month was “the 8th of the waning”. The month names, the festivals and the monthly holy days are well known from inscriptions and writers. What is reconstructed is the mechanism: Athens had no fixed rule. The archons decided when to add a month (usually a second Poseideon) and sometimes even inserted or skipped days, and days ran from sunset to sunset. Most modern Hellenists start the year at the first new moon after the summer solstice, begin each month the day after the astronomical new moon, and add Poseideon II whenever thirteen new moons fall in a year, which is what is done here, with days from midnight. Years are also shown by Olympiad, as some Hellenists count them.',
+    'The festival calendar of ancient Athens: twelve lunar months from Hekatombaion to Skirophorion, each beginning at the Noumenia, the first crescent after the new moon. Months were full (30 days) or hollow (29), and days were counted in three tens, the last ten counted down towards the month’s end, so day 23 of a month was “the 8th of the waning”. The month names, the festivals and the monthly holy days are well known from inscriptions and writers. What is reconstructed is the mechanism: Athens had no fixed rule. The archons decided when to add a month (usually a second Poseideon) and sometimes even inserted or skipped days, and days ran from sunset to sunset. Most modern Hellenists start the year at the first new moon after the summer solstice, begin each month the day after the astronomical new moon, and add Poseideon II whenever thirteen new moons fall in a year, which is what is done here, with days from midnight. Groups differ by a day on this: some (Hellenion, for one) keep Hekate’s Deipnon on the day after the dark moon and the Noumenia the day after that, when the crescent is more surely visible, so their months often begin a day later than these. Years are also shown by Olympiad, as some Hellenists count them (Ol. 701.2 from the summer of 2026).',
   sources: [
     'J. D. Mikalson, The Sacred and Festival Calendar of Athens (1975)',
     'W. K. Pritchett & O. Neugebauer, The Calendars of Athens (1947)',
     'Hesiod, Works and Days 765–828',
     'https://en.wikipedia.org/wiki/Attic_calendar',
+    'Hellenion, 2026 calendar: https://www.hellenion.org/wp-content/uploads/2025/11/HellenionCalendar2026.html',
   ],
   dateOf: (day) => dateOf(day),
   eventsBetween: (from, to) => eventsBetween(from, to),

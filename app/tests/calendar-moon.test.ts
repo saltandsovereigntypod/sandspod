@@ -7,13 +7,15 @@
 // Blue Moons: Sky & Telescope gives seasonal Blue Moons on 22 Aug 2021,
 // 19 Aug 2024 and 20 May 2027 (https://skyandtelescope.org/astronomy-resources/what-is-a-blue-moon/);
 // 31 Aug 2023 and 31 May 2026 are second full moons in a calendar month.
+// obliquity.com/astro/blue-seasonal.html lists the seasonal Blue Moons on the
+// true seasons and on the Maine Farmers' Almanac's mean-Sun seasons, 2018–2035.
 // Each test file runs in its own process, so the time zone set here holds.
 process.env.TZ = 'UTC';
 
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { fullMoonName, isMonthlyBlueMoon, isSeasonalBlueMoon, lunationOf, MOON_CALENDAR } from '../src/lib/calendars/moon.ts';
+import { fullMoonName, isMonthlyBlueMoon, isSeasonalBlueMoon, lunation, lunationOf, MOON_CALENDAR } from '../src/lib/calendars/moon.ts';
 import type { CalendarContext } from '../src/lib/calendars/types.ts';
 
 const MINUTE = 60_000;
@@ -165,4 +167,53 @@ test('the day boundary is local: the 9 Dec 2026 00:52 UT new moon is 8 Dec in Ne
     process.env.TZ = 'UTC';
   }
   assert.equal(MOON_CALENDAR.dateOf(new Date(2026, 11, 9, 12), ctx()).day, 1);
+});
+
+test('USNO 2027: the year turns at the 7 Jan 20:24 UT new moon; the 20 May 10:59 UT full moon', () => {
+  // https://aa.usno.navy.mil/api/moon/phases/year?year=2027
+  const jan = lunationOf(day(2027, 1, 10));
+  near(jan.newMoon, '2027-01-07T20:24:00Z');
+  near(lunationOf(day(2027, 5, 20)).full, '2027-05-20T10:59:00Z');
+  near(lunationOf(day(2027, 2, 20)).full, '2027-02-20T23:23:00Z');
+});
+
+test('seasonal Blue Moons 2018–2035 match obliquity.com, on the true seasons and on the almanac’s', () => {
+  const blues = (mean: boolean) => {
+    const out: string[] = [];
+    for (let k = lunationOf(new Date(Date.UTC(2018, 0, 1))).k; k < lunationOf(new Date(Date.UTC(2036, 0, 1))).k; k++) {
+      const full = lunation(k).full;
+      if (isSeasonalBlueMoon(full, mean)) out.push(full.toISOString().slice(0, 10));
+    }
+    return out;
+  };
+  assert.deepEqual(blues(false), ['2019-05-18', '2021-08-22', '2024-08-19', '2027-05-20', '2029-08-24', '2032-08-21', '2035-05-22']);
+  assert.deepEqual(blues(true), ['2019-02-19', '2021-11-19', '2024-08-19', '2027-02-20', '2029-11-21', '2032-08-21', '2035-05-22']);
+  // By choice: 20 Feb 2027 is the almanac's Blue Moon, 20 May 2027 the true seasons'.
+  assert.equal(MOON_CALENDAR.dateOf(day(2027, 2, 20), ctx({ blue: 'almanac' })).month?.name, 'Blue Moon');
+  assert.equal(MOON_CALENDAR.dateOf(day(2027, 2, 20), ctx()).month?.name, 'Snow Moon');
+  assert.equal(MOON_CALENDAR.dateOf(day(2027, 5, 20), ctx({ blue: 'almanac' })).month?.name, 'Flower Moon');
+  assert.match(MOON_CALENDAR.dateOf(day(2027, 2, 20), ctx({ blue: 'almanac' })).month?.meaning ?? '', /equal seasons/);
+});
+
+test('the Hunter’s Moon follows an October Harvest Moon (5 Nov 2025, Time and Date, EarthSky)', () => {
+  // The Old Farmer's Almanac keeps the Beaver Moon for that November; the about says sources differ.
+  assert.equal(fullMoonName(lunationOf(day(2025, 11, 5)).full, false).name, 'Hunter’s Moon');
+  assert.equal(fullMoonName(lunationOf(day(2025, 12, 4)).full, false).name, 'Cold Moon');
+});
+
+test('south of the equator the northern names can be kept instead of turned', () => {
+  const kept = ctx({ southNames: 'northern' }, 'south');
+  // The lunation from 10 Oct 2026 has its full moon on 26 Oct: Hunter's by the northern names, Pink turned.
+  assert.equal(MOON_CALENDAR.dateOf(day(2026, 10, 16), kept).month?.name, 'Hunter’s Moon');
+  assert.equal(MOON_CALENDAR.dateOf(day(2026, 10, 16), ctx({}, 'south')).month?.name, 'Pink Moon');
+  // The year still starts from the June solstice in the south: Oct 10 is the fourth moon.
+  assert.equal(MOON_CALENDAR.dateOf(day(2026, 10, 16), kept).month?.index, 4);
+  // The northern names have no effect in the north.
+  assert.equal(MOON_CALENDAR.dateOf(day(2026, 10, 16), ctx({ southNames: 'turned' })).month?.name, 'Hunter’s Moon');
+});
+
+test('the about is honest that the arrangement is modern', () => {
+  assert.equal(MOON_CALENDAR.confidence, 'modern');
+  assert.match(MOON_CALENDAR.about, /modern arrangement/);
+  assert.match(MOON_CALENDAR.about, /1946 misreading/);
 });

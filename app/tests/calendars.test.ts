@@ -62,9 +62,10 @@ test('shownCalendars reads the calendar_extra list, ignoring unknown ids and the
 });
 
 test('calendarChoices: saved values, defaults, and nothing invalid', () => {
-  assert.deepEqual(calendarChoices(null, 'moon'), { names: 'folk', yearStart: 'winter-solstice', blue: 'seasonal' });
+  assert.deepEqual(calendarChoices(null, 'moon'), { names: 'folk', southNames: 'turned', yearStart: 'winter-solstice', blue: 'seasonal' });
   assert.deepEqual(calendarChoices({ calendar_opt_moon_names: 'numbered', calendar_opt_moon_blue: 'sometimes' }, 'moon'), {
     names: 'numbered',
+    southNames: 'turned',
     yearStart: 'winter-solstice',
     blue: 'seasonal',
   });

@@ -32,17 +32,53 @@ test('tithi follows the Moon–Sun elongation', () => {
   assert.equal(tithiAt(new Date('2025-11-05T15:00:00Z')), 16);
 });
 
-test('Ganesh Chaturthi, Navaratri and Diwali match the published 2025 and 2026 dates', () => {
+test('festivals match Drik Panchang’s New Delhi dates, 2025–2027 (and Ujjain gives the same)', () => {
+  // Drik Panchang with geoname-id=1261481 (New Delhi), checked Oct 2026:
+  //   https://www.drikpanchang.com/hindu-festivals/maha-shivaratri/maha-shivaratri.html
+  //   https://www.drikpanchang.com/festivals/holi/festivals-holika-dahan-timings.html?year=2025|2026|2027
+  //   https://www.drikpanchang.com/hindu-festivals/holi/holi.html
+  //   https://www.drikpanchang.com/festivals/ganesh-chaturthi/ganesh-chaturthi-date-time.html?year=2027
+  //   https://www.drikpanchang.com/navratri/shardiya-navratri-ghatasthapana.html?year=2026|2027
+  //   https://www.drikpanchang.com/diwali/diwali-puja-calendar.html?year=2026|2027
   for (const ctx of [DELHI, UJJAIN_DEFAULT]) {
     const from = new Date(2025, 0, 1);
-    const to = new Date(2026, 11, 31);
-    // Ganesh Chaturthi: 27 Aug 2025 and 14 Sep 2026 (Drik Panchang; Brut, dekhopanchang for 2026).
-    assert.deepEqual(eventDates('hindu-ganesh-chaturthi', from, to, ctx), ['2025-08-27', '2026-09-14']);
-    // Sharad Navaratri Ghatasthapana: 22 Sep 2025 and 11 Oct 2026.
-    assert.deepEqual(eventDates('hindu-navaratri', from, to, ctx), ['2025-09-22', '2026-10-11']);
-    // Diwali Lakshmi Puja: 20 Oct 2025 and 8 Nov 2026 (Amavasya 11:27 8 Nov – 12:31 9 Nov 2026 IST).
-    assert.deepEqual(eventDates('hindu-diwali', from, to, ctx), ['2025-10-20', '2026-11-08']);
+    const to = new Date(2027, 11, 31);
+    // Maha Shivaratri: 26 Feb 2025, 15 Feb 2026, 6 Mar 2027 (Chaturdashi 12:03 6 Mar – 13:46 7 Mar IST; nishita 00:07–00:57).
+    assert.deepEqual(eventDates('hindu-maha-shivaratri', from, to, ctx), ['2025-02-26', '2026-02-15', '2027-03-06']);
+    // Holika Dahan: 13 Mar 2025 (after Bhadra, 23:26), 3 Mar 2026 (Bhadra past midnight on the 2nd,
+    // so the next evening), 21 Mar 2027 (Purnima begins 18:21; stays on the first evening).
+    assert.deepEqual(eventDates('hindu-holika-dahan', from, to, ctx), ['2025-03-13', '2026-03-03', '2027-03-21']);
+    // Rangwali Holi: 14 Mar 2025, 4 Mar 2026, 22 Mar 2027.
+    assert.deepEqual(eventDates('hindu-holi', from, to, ctx), ['2025-03-14', '2026-03-04', '2027-03-22']);
+    // Ganesh Chaturthi: 27 Aug 2025, 14 Sep 2026, 4 Sep 2027 (Chaturthi 14:18 3 Sep – 12:25 4 Sep IST).
+    assert.deepEqual(eventDates('hindu-ganesh-chaturthi', from, to, ctx), ['2025-08-27', '2026-09-14', '2027-09-04']);
+    // Sharad Navaratri Ghatasthapana: 22 Sep 2025, 11 Oct 2026, and 30 Sep 2027, when the
+    // Pratipada (08:05 30 Sep – 05:34 1 Oct IST) touches no sunrise and is kept the day it begins.
+    assert.deepEqual(eventDates('hindu-navaratri', from, to, ctx), ['2025-09-22', '2026-10-11', '2027-09-30']);
+    // Diwali Lakshmi Puja: 20 Oct 2025, 8 Nov 2026 (Amavasya 11:27 8 Nov – 12:31 9 Nov IST), 29 Oct 2027.
+    assert.deepEqual(eventDates('hindu-diwali', from, to, ctx), ['2025-10-20', '2026-11-08', '2027-10-29']);
   }
+});
+
+test('Holika Dahan by the Bhadra rule in 2023 and 2028 too (Drik Panchang, New Delhi)', () => {
+  // 2023: Purnima 16:17 6 Mar – 18:09 7 Mar, Bhadra past midnight → 7 Mar, Holi 8 Mar.
+  // 2028: Purnima 10:20 10 Mar – 06:35 11 Mar, Bhadra over before midnight → 10 Mar, Holi 11 Mar.
+  const range = (y: number) => [new Date(y, 1, 15), new Date(y, 2, 31)] as const;
+  assert.deepEqual(eventDates('hindu-holika-dahan', ...range(2023), DELHI), ['2023-03-07']);
+  assert.deepEqual(eventDates('hindu-holi', ...range(2023), DELHI), ['2023-03-08']);
+  assert.deepEqual(eventDates('hindu-holika-dahan', ...range(2028), DELHI), ['2028-03-10']);
+  // A range starting on Holi itself still finds it, though the Purnima began two days before.
+  assert.deepEqual(eventDates('hindu-holi', new Date(2026, 2, 4), new Date(2026, 2, 4), DELHI), ['2026-03-04']);
+});
+
+test('far from India the day can differ: Drik Panchang for Houston', () => {
+  // geoname-id=4699066 (Houston, Texas): Maha Shivaratri 25 Feb 2025 (nishita 00:09 26 Feb),
+  // Holika Dahan 2 Mar 2026 with Holi 3 Mar, Diwali 28 Oct 2027 — each a day before New Delhi.
+  const houston: CalendarContext = { place: { latitude: 29.763, longitude: -95.363 }, hemisphere: 'north', options: {} };
+  assert.deepEqual(eventDates('hindu-maha-shivaratri', new Date(2025, 1, 1), new Date(2025, 2, 31), houston), ['2025-02-25']);
+  assert.deepEqual(eventDates('hindu-holika-dahan', new Date(2026, 1, 15), new Date(2026, 2, 31), houston), ['2026-03-02']);
+  assert.deepEqual(eventDates('hindu-holi', new Date(2026, 1, 15), new Date(2026, 2, 31), houston), ['2026-03-03']);
+  assert.deepEqual(eventDates('hindu-diwali', new Date(2027, 9, 1), new Date(2027, 10, 30), houston), ['2027-10-28']);
 });
 
 test('adhika months: Adhika Shravana 2023 and Adhika Jyeshtha 2026', () => {
@@ -74,6 +110,11 @@ test('the lunar year turns at Chaitra Shukla Pratipada (Ugadi / Gudi Padwa)', ()
   // Across the Gregorian new year the samvat doesn't change.
   assert.equal(HINDU_CALENDAR.dateOf(day(2025, 12, 31), DELHI).year?.label, 'Vikram Samvat 2082 · Shaka 1947');
   assert.equal(HINDU_CALENDAR.dateOf(day(2026, 1, 1), DELHI).year?.label, 'Vikram Samvat 2082 · Shaka 1947');
+  // Margashirsha can run into January (13 Dec 2023 – 11 Jan 2024; Paush Amavasya 11 Jan
+  // 2024, Drik Panchang): still the old year, VS 2080.
+  const jan = HINDU_CALENDAR.dateOf(day(2024, 1, 5), DELHI);
+  assert.equal(jan.month?.name, 'Margashirsha');
+  assert.equal(jan.year?.label, 'Vikram Samvat 2080 · Shaka 1945');
 });
 
 test('pūrṇimānta gives the dark fortnight the next month’s name', () => {

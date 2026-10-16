@@ -13,11 +13,15 @@
 //   longitudes use the Lahiri (Chitrapaksha) ayanamsa, the one the Indian
 //   national calendar uses.
 //
+// - A month with two sankrantis (a kshaya, "lost", month) is not modelled: the
+//   last was in 1983 and the next is not expected until the 2120s.
+//
 // Observances use the rules panchangs commonly give, which are not all
 // "tithi at sunrise": Sankashti at moonrise, Pradosh at dusk, Vinayaka and
-// Ganesh Chaturthi at midday, Diwali (Lakshmi Puja) in the evening. Many
-// communities and temples use other rules, so every date carries that note.
-// Pure; no React.
+// Ganesh Chaturthi at midday, Diwali (Lakshmi Puja) in the evening, Maha
+// Shivaratri at midnight (nishita), Holika Dahan in the evening with the
+// Bhadra rule. Many communities and temples use other rules, so every date
+// carries that note. Pure; no React.
 
 import { dateToJulianDay, moonLongitude, sunLongitude } from '../moon.ts';
 import { moonTimes, sunTimes } from '../astro/rise.ts';
@@ -41,15 +45,15 @@ export const HINDU_MONTHS: { name: string; meaning: string }[] = [
   { name: 'Chaitra', meaning: 'named for Chitra (Spica), the star its full moon sits near; the lunar year begins here' },
   { name: 'Vaishakha', meaning: 'named for the nakshatra Vishakha, near its full moon' },
   { name: 'Jyeshtha', meaning: 'named for Jyeshtha (Antares), “the eldest”, near its full moon' },
-  { name: 'Ashadha', meaning: 'named for the nakshatra Purva Ashadha, near its full moon; the rains begin' },
+  { name: 'Ashadha', meaning: 'named for the nakshatras Purva and Uttara Ashadha, near its full moon; the rains begin' },
   { name: 'Shravana', meaning: 'named for Shravana, “hearing”, near its full moon; the heart of the monsoon' },
-  { name: 'Bhadrapada', meaning: 'named for the nakshatra Purva Bhadrapada, near its full moon' },
-  { name: 'Ashvin', meaning: 'named for Ashvini, the horse-headed twins, near its full moon' },
+  { name: 'Bhadrapada', meaning: 'named for the nakshatras Purva and Uttara Bhadrapada, near its full moon' },
+  { name: 'Ashvin', meaning: 'named for Ashvini, the nakshatra of the Ashvins, the divine twin horsemen, near its full moon' },
   { name: 'Kartika', meaning: 'named for Krittika (the Pleiades), near its full moon; a month of lamps' },
   { name: 'Margashirsha', meaning: 'named for Mrigashira, “the deer’s head”, near its full moon' },
   { name: 'Pausha', meaning: 'named for Pushya, “nourishing”, near its full moon' },
   { name: 'Magha', meaning: 'named for the nakshatra Magha, near its full moon' },
-  { name: 'Phalguna', meaning: 'named for Purva Phalguni, near its full moon; the year ends with Holi' },
+  { name: 'Phalguna', meaning: 'named for the nakshatras Purva and Uttara Phalguni, near its full moon, when Holi is kept; the last month of the lunar year' },
 ];
 
 // ─── Astronomy ───────────────────────────────────────────────────────────
@@ -235,41 +239,100 @@ function observancesOn(day: Date, ctx: CalendarContext, parts: DayParts, sunrise
 }
 
 // ─── Festivals ───────────────────────────────────────────────────────────
-// Only three, and only because the tests reproduce the published 2025 and
-// 2026 dates (Drik Panchang, New Delhi; and Ujjain). Each is looked for in the
-// right (non-adhika) amānta month at the moment its own rule names.
+// Only those whose published dates the tests reproduce (Drik Panchang, New
+// Delhi, 2025–2027). Each is looked for in the right (non-adhika) amānta
+// month at the moment its own rule names, and returns that month's start so
+// it is found once a year.
 
-type Festival = { id: string; name: string; meaning: string; month: number; tithi: number; at: (p: DayParts) => Date; days: number };
+type Festival = { id: string; name: string; meaning: string; days: number; on: (day: Date, ctx: CalendarContext, parts: DayParts) => number | null };
+
+/** The amānta month start when `at` falls in tithi `tithi` of non-adhika month `index`. */
+function inMonth(at: Date, index: number, tithi: number): number | null {
+  const month = lunarMonthAt(at);
+  return !month.adhika && month.index === index && tithiAt(at) === tithi ? month.start : null;
+}
+
+/** Midnight: halfway from this sunset to the next sunrise (the middle of nishita kaal). */
+const nightMiddle = (day: Date, ctx: CalendarContext, p: DayParts) => new Date((p.sunset.getTime() + dayParts(addDays(day, 1), ctx).sunrise.getTime()) / 2);
+
+/**
+ * The evening Holika is burned, for the Phalguna Purnima near `day`, or null
+ * when `day` is not the first evening (sunset to midnight) the Purnima touches.
+ * The first half of Purnima is Bhadra (Vishti karana), when the fire is not
+ * lit. When Bhadra runs past that midnight and the Purnima still holds for
+ * 3½ of the 4 prahars of the next day, the fire moves to the next evening
+ * (the rule that gives Drik Panchang's 7 Mar 2023 and 3 Mar 2026); otherwise
+ * it stays on the first evening, after Bhadra or in its tail.
+ */
+function holikaDahan(day: Date, ctx: CalendarContext, p: DayParts): { date: Date; start: number } | null {
+  const sunset = p.sunset.getTime();
+  const tithi = tithiAt(p.sunset);
+  if (tithi < 14 || tithi > 15) return null;
+  const pStart = solveElongation(sunset, 168);
+  const pEnd = solveElongation(sunset, 180);
+  const midnight = nightMiddle(day, ctx, p).getTime();
+  // The first evening it touches: it holds between sunset and midnight, and didn't at yesterday's sunset.
+  if (pStart > midnight || pEnd < sunset) return null;
+  const start = inMonth(new Date(Math.max(pStart, sunset) + 60_000), 11, 15);
+  if (start === null) return null;
+  const bhadraEnd = solveElongation(sunset, 174);
+  if (bhadraEnd > midnight) {
+    const next = dayParts(addDays(day, 1), ctx);
+    const dayLength = next.sunset.getTime() - next.sunrise.getTime();
+    if (pEnd > next.sunrise.getTime() && pEnd - next.sunrise.getTime() >= (7 / 8) * dayLength) return { date: addDays(day, 1), start };
+  }
+  return { date: day, start };
+}
 
 const FESTIVALS: Festival[] = [
+  {
+    id: 'hindu-maha-shivaratri',
+    name: 'Maha Shivaratri',
+    meaning: `The great night of Shiva, on the fourteenth of the dark fortnight of Magha (amānta), which is Phalguna in the pūrṇimānta reckoning: kept on the night the Chaturdashi holds at midnight (nishita), with fasting, a night-long vigil and offerings of water, milk and bilva leaves to the linga. ${CONFIRM}`,
+    days: 1,
+    on: (day, ctx, p) => inMonth(nightMiddle(day, ctx, p), 10, 29),
+  },
   {
     id: 'hindu-ganesh-chaturthi',
     name: 'Ganesh Chaturthi',
     meaning: `The birthday of Ganesha, Bhadrapada Shukla Chaturthi, kept on the day the fourth tithi holds at midday. Images of Ganesha are welcomed into homes and pandals for up to ten days, then immersed in water. ${CONFIRM}`,
-    month: 5,
-    tithi: 4,
-    at: midday,
     days: 1,
+    on: (_day, _ctx, p) => inMonth(midday(p), 5, 4),
   },
   {
     id: 'hindu-navaratri',
     name: 'Sharad Navaratri begins',
-    meaning: `Ghatasthapana: Ashvin Shukla Pratipada opens the nine nights of the Goddess (Durga and her nine forms), ending in Vijayadashami. The number of days can shift when a tithi is skipped or doubled. ${CONFIRM}`,
-    month: 6,
-    tithi: 1,
-    at: (p) => p.sunrise,
+    meaning: `Ghatasthapana: Ashvin Shukla Pratipada opens the nine nights of the Goddess (Durga and her nine forms), ending in Vijayadashami. When the Pratipada begins after one sunrise and ends before the next, Ghatasthapana is done on the day it begins. The number of days can shift when a tithi is skipped or doubled. ${CONFIRM}`,
     days: 9,
+    on: (day, ctx, p) => {
+      const n = tithiAt(p.sunrise);
+      if (n === 1) return inMonth(p.sunrise, 6, 1);
+      // A kshaya Pratipada (touching no sunrise) is kept on the day it begins.
+      if (skippedAfter(day, ctx, n) !== 1) return null;
+      const month = lunarMonthAt(dayParts(addDays(day, 1), ctx).sunrise);
+      return !month.adhika && month.index === 6 ? month.start : null;
+    },
   },
   {
     id: 'hindu-diwali',
     name: 'Diwali (Lakshmi Puja)',
-    meaning: `The festival of lamps on the new moon of Kartika (pūrṇimānta) — Ashvin in the amānta reckoning — kept on the evening the Amavasya holds after sunset, with lamps, Lakshmi Puja and sweets. Some regional panchangs keep it on the next day in years when the Amavasya only just touches dusk. ${CONFIRM}`,
-    month: 6,
-    tithi: 30,
-    at: evening,
+    meaning: `The festival of lamps on the new moon of Kartika (pūrṇimānta) — Ashvin in the amānta reckoning — kept on the evening the Amavasya holds after sunset, with lamps, Lakshmi Puja and sweets. Some regional panchangs keep it on the next day in years when the Amavasya only just touches dusk, and the day can differ between India and the Americas. ${CONFIRM}`,
     days: 1,
+    on: (_day, _ctx, p) => inMonth(evening(p), 6, 30),
   },
 ];
+
+/** Holika Dahan and Holi (Rangwali Holi, Dhulandi) the day after; see holikaDahan. */
+const HOLIKA = {
+  id: 'hindu-holika-dahan',
+  name: 'Holika Dahan',
+  meaning: `The bonfire on the evening of Phalguna Purnima, for Prahlad saved and the demoness Holika burned: lit after sunset while the Purnima holds, avoiding Bhadra, the first half of the tithi. The rules for when Bhadra runs late are applied differently by different panchangs (in 2026 some kept it on 2 March, others on 3 March). ${CONFIRM}`,
+};
+const HOLI = {
+  id: 'hindu-holi',
+  name: 'Holi',
+  meaning: `Rangwali Holi (Dhulandi), the festival of colours, on the morning after Holika Dahan: coloured powder and water, gujiya and friends forgiven. Some regions keep their own day: Dol Purnima in Bengal and Odisha falls on the full moon itself, and Rang Panchami in Maharashtra five days later. ${CONFIRM}`,
+};
 
 // ─── Helpers ─────────────────────────────────────────────────────────────
 
@@ -280,7 +343,8 @@ const atMidday = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate(
 function samvat(day: Date, month: LunarMonth): { vikram: number; shaka: number } {
   // The lunar year begins with Chaitra Shukla Pratipada (amānta Chaitra), in March or April.
   const y = day.getFullYear();
-  const startYear = month.index >= 9 && day.getMonth() < 6 ? y - 1 : y;
+  // Margashirsha (8) can run into early January, so it counts as the old year too.
+  const startYear = month.index >= 8 && day.getMonth() < 6 ? y - 1 : y;
   return { vikram: startYear + 57, shaka: startYear - 78 };
 }
 
@@ -292,7 +356,7 @@ export const HINDU_CALENDAR: CalendarDef = {
   path: 'hindu',
   confidence: 'historical',
   about:
-    'The lunisolar calendar of the panchang, a living tradition kept by hundreds of millions. Each lunar day (tithi) is the time the Moon takes to move 12° further from the Sun, so a month has 30 tithis in two fortnights: Shukla (bright, waxing) and Krishna (dark, waning). A day takes the name of the tithi in force at local sunrise, so the same moment can fall on different days in different towns, and now and then a tithi is skipped or spans two sunrises. Months are named Chaitra to Phalguna by the sidereal (nirayana) sign the Sun is in, with the Lahiri ayanamsa; about every 32½ months a month passes with no solar ingress and becomes an extra (adhika) month. South and west India count months from new moon to new moon (amānta); north India from full moon to full moon (pūrṇimānta), so the dark fortnight carries the next month’s name. Ekadashi, Purnima, Amavasya and the Chaturthis are marked with the rules panchangs commonly use. Festival dates differ between traditions and regions: always confirm them with a local panchang or temple.',
+    'The lunisolar calendar of the panchang, a living tradition kept by hundreds of millions, computed here from the Sun and Moon as modern panchangs do (the drik method). Each lunar day (tithi) is the time the Moon takes to move 12° further from the Sun, so a month has 30 tithis in two fortnights: Shukla (bright, waxing) and Krishna (dark, waning). A day takes the name of the tithi in force at local sunrise, so the same moment can fall on different days in different towns, and now and then a tithi is skipped or spans two sunrises. Months are named Chaitra to Phalguna by the sidereal (nirayana) sign the Sun is in when the month begins, with the Lahiri ayanamsa; about every 32½ months a month passes with no solar ingress and becomes an extra (adhika) month, named for the month after it. South and west India count months from new moon to new moon (amānta); north India from full moon to full moon (pūrṇimānta), so the dark fortnight carries the next month’s name. Tamil Nadu, Kerala, Bengal, Odisha, Assam and Punjab name their months by the Sun instead, though their festivals still follow the tithis. The year shown is Vikram Samvat from Chaitra; in Gujarat it begins after Diwali. Festival dates follow the rules Drik Panchang gives and match its New Delhi dates for 2023–2028, but traditional (Vākya and other) panchangs, temples and regions can differ by a day, and places far from India often keep a different day: always confirm with a local panchang or temple.',
   choices: [
     {
       key: 'hinduMonths',
@@ -327,7 +391,11 @@ export const HINDU_CALENDAR: CalendarDef = {
     'https://en.wikipedia.org/wiki/Tithi',
     'https://en.wikipedia.org/wiki/Adhik_Maas',
     'https://en.wikipedia.org/wiki/Ayanamsa',
-    'https://www.drikpanchang.com/',
+    'https://www.drikpanchang.com/ (festival dates checked for New Delhi and Houston, 2023–2028)',
+    'https://www.drikpanchang.com/festivals/holi/festivals-holika-dahan-timings.html (Holika Dahan and the Bhadra rules)',
+    'https://www.drikpanchang.com/festivals/maha-shivaratri/maha-shivaratri-date-time.html',
+    'https://www.drikpanchang.com/navratri/shardiya-navratri-ghatasthapana.html',
+    'https://en.wikipedia.org/wiki/Karana_(pancanga) (Vishti, or Bhadra)',
     'Indian Calendar Reform Committee report (1955), Lahiri ayanamsa',
     'E. M. Reingold and N. Dershowitz, Calendrical Calculations, ch. “The Modern Hindu Calendars”',
   ],
@@ -371,8 +439,15 @@ export const HINDU_CALENDAR: CalendarDef = {
 
   eventsBetween(from: Date, to: Date, ctx: CalendarContext): CalendarEvent[] {
     const events: CalendarEvent[] = [];
+    const first = startOfDay(from).getTime();
     const last = startOfDay(to).getTime();
     const seen = new Set<string>();
+    const once = (id: string, start: number) => {
+      const key = `${id}-${Math.round(start / HOUR)}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    };
     for (let d = startOfDay(from); d.getTime() <= last; d = addDays(d, 1)) {
       const noon = atMidday(d);
       const parts = dayParts(noon, ctx);
@@ -381,19 +456,21 @@ export const HINDU_CALENDAR: CalendarDef = {
         events.push({ calendar: 'hindu', id: o.id, name: o.mark.name, meaning: o.mark.meaning, date: d, days: 1 });
       }
       for (const f of FESTIVALS) {
-        const at = f.at(parts);
-        const month = lunarMonthAt(at);
-        if (month.adhika || month.index !== f.month) continue;
-        const key = `${f.id}-${Math.round(month.start / HOUR)}`;
-        if (seen.has(key)) continue;
-        const here = tithiAt(at);
-        // Navaratri opens on the first day of the bright fortnight even when Pratipada is skipped.
-        const hit = f.tithi === 1 ? here >= 1 && here <= 2 : here === f.tithi;
-        if (!hit) continue;
-        seen.add(key);
+        const start = f.on(noon, ctx, parts);
+        if (start === null || !once(f.id, start)) continue;
         events.push({ calendar: 'hindu', id: f.id, name: f.name, meaning: f.meaning, date: d, days: f.days });
       }
     }
-    return events;
+    // Holika Dahan can move to the evening after the Purnima's first, so look from two days before.
+    for (let d = addDays(startOfDay(from), -2); d.getTime() <= last; d = addDays(d, 1)) {
+      const noon = atMidday(d);
+      const holika = holikaDahan(noon, ctx, dayParts(noon, ctx));
+      if (!holika || !once(HOLIKA.id, holika.start)) continue;
+      const fire = startOfDay(holika.date);
+      for (const [e, date] of [[HOLIKA, fire], [HOLI, addDays(fire, 1)]] as const) {
+        if (date.getTime() >= first && date.getTime() <= last) events.push({ calendar: 'hindu', id: e.id, name: e.name, meaning: e.meaning, date, days: 1 });
+      }
+    }
+    return events.sort((a, b) => a.date.getTime() - b.date.getTime());
   },
 };

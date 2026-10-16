@@ -10,6 +10,15 @@
 // carols, the Kupala fires, the blessing of water, poppies and apples — is tied
 // to those feasts. These are Christian feasts carrying older folk customs;
 // how much of them is "pre-Christian" is often guessed at, and the notes say so.
+//
+// What is attested: the month names (Old Czech and Old Polish from the late
+// Middle Ages, Slovene from 1466; several fixed only in the 19th–20th century,
+// e.g. Croatian by the Illyrian movement in the 1830s and Czech květen from
+// 1805) and the feasts with their folk customs (19th–20th century
+// ethnography). What is not: no pre-Christian Slavic calendar or festival
+// list survives. The festivals of modern Slavic Native Faith (Rodnovery),
+// such as Perun's Day or Koliada as a feast of a sun god, are reconstructions,
+// and none are given here (the app's Slavic holidays list has its own).
 // Pure; no React.
 
 import type { CalendarContext, CalendarDate, CalendarDef, CalendarEvent, CalendarMark } from './types.ts';
@@ -93,7 +102,7 @@ export const SLAVIC_MONTHS: Record<SlavicLanguage, { label: string; months: Mont
     label: 'Belarusian',
     months: [
       { native: 'Студзень', latin: 'Studzień', meaning: 'cold: from studzieny' },
-      { native: 'Люты', latin: 'Liuty', meaning: 'fierce: the bitter cold' },
+      { native: 'Люты', latin: 'Luty', meaning: 'fierce: the bitter cold' },
       { native: 'Сакавік', latin: 'Sakavik', meaning: 'sap: from sok, when birch and maple sap run' },
       { native: 'Красавік', latin: 'Krasavik', meaning: 'flowering, beauty: from krasa' },
       { native: 'Травень', latin: 'Travień', meaning: 'grass: from trava' },
@@ -103,7 +112,7 @@ export const SLAVIC_MONTHS: Record<SlavicLanguage, { label: string; months: Mont
       { native: 'Верасень', latin: 'Vierasień', meaning: 'heather: from vieras' },
       { native: 'Кастрычнік', latin: 'Kastryčnik', meaning: 'shives: from kastryca, the broken stalks left from working flax' },
       { native: 'Лістапад', latin: 'Listapad', meaning: 'leaf-fall' },
-      { native: 'Снежань', latin: 'Sniežań', meaning: 'snow: from snieh' },
+      { native: 'Снежань', latin: 'Śniežań', meaning: 'snow: from śnieh' },
     ],
   },
 };
@@ -177,7 +186,7 @@ type FixedFeast = { id: string; name: string; meaning: string; month: number; da
 const FIXED: FixedFeast[] = [
   { id: 'slavic-sviatvechir', name: 'Sviatvechir (Holy Evening)', month: 12, day: 24, meaning: `Christmas Eve by the Old Style. Twelve meatless dishes are served at the first star, kutia (wheat with poppy seed and honey) first; a sheaf (didukh) stands in the corner for the ancestors, and hay lies under the tablecloth. A Christian feast carrying much older household customs. ${OS}` },
   { id: 'slavic-rizdvo', name: 'Rizdvo / Koliada (Old Style Christmas)', month: 12, day: 25, meaning: `The Nativity by the Old Style, when carollers (koliadnyky) go from house to house with the star, singing koliadky for the household’s luck. ${OS}` },
-  { id: 'slavic-shchedryi-vechir', name: 'Shchedryi Vechir / Malanka', month: 12, day: 31, meaning: `The Generous Evening, St Melania’s eve: New Year’s Eve by the Old Style, with shchedrivky (well-wishing songs) and masked mummers playing Malanka and the goat. ${OS}` },
+  { id: 'slavic-shchedryi-vechir', name: 'Shchedryi Vechir / Malanka', month: 12, day: 31, meaning: `The Generous Evening on St Melania’s day (Malanka), the eve of St Basil: New Year’s Eve by the Old Style, with shchedrivky (well-wishing songs) and masked mummers playing Malanka and the goat. ${OS}` },
   { id: 'slavic-old-new-year', name: 'Old New Year (St Basil’s Day)', month: 1, day: 1, meaning: `New Year by the Old Style, the feast of St Basil. Boys go sowing (posivannia), throwing grain into homes for a fruitful year. ${OS}` },
   { id: 'slavic-vodokhreshche', name: 'Vodokhreshche / Jordan (Theophany)', month: 1, day: 6, meaning: `The Baptism of Christ by the Old Style: rivers and springs are blessed, crosses are cut in the ice, and the blessed water is carried home and kept all year. The end of the winter feasts. ${OS}` },
   { id: 'slavic-stritennia', name: 'Stritennia (the Meeting)', month: 2, day: 2, meaning: `Candlemas by the Old Style, said to be when winter meets spring. Candles blessed today (hromnychni svichky) are lit against storms and illness. ${OS}` },
@@ -197,8 +206,8 @@ const PASCHA_NOTE = 'Pascha is reckoned by the Julian computus and the Old Style
 
 const MOVABLE: MovableFeast[] = [
   { id: 'slavic-pascha', name: 'Velykden (Orthodox Easter)', offset: 0, meaning: `Pascha, the Resurrection, the “Great Day”. Baskets of paska bread, pysanky eggs, butter and salt are blessed at dawn, and the greeting is “Khrystos voskres!” ${PASCHA_NOTE}` },
-  { id: 'slavic-radunytsia', name: 'Radunytsia (Remembrance of the Dead)', offset: 9, meaning: `The Tuesday after Thomas Sunday, when families go to the graves of their dead with eggs and bread, eat with them and share the Easter joy. A Christian remembrance holding one of the oldest ancestral customs. ${PASCHA_NOTE}` },
-  { id: 'slavic-zeleni-sviata', name: 'Zeleni Sviata (Green Holidays, Trinity)', offset: 49, meaning: `Pentecost by the Orthodox reckoning: houses and churches are decked with green branches, herbs and sweet flag. The week around it is the old Rusalii, when the rusalky were said to walk. ${PASCHA_NOTE}` },
+  { id: 'slavic-radunytsia', name: 'Radunytsia (Remembrance of the Dead)', offset: 9, meaning: `The Tuesday after Thomas Sunday, when families go to the graves of their dead with eggs and bread, eat with them and share the Easter joy; kept chiefly in Belarus and Russia, while in Ukraine the same visits (Provody) are often made on Thomas Sunday or Monday. A Christian remembrance holding one of the oldest ancestral customs. ${PASCHA_NOTE}` },
+  { id: 'slavic-zeleni-sviata', name: 'Zeleni Sviata (Green Holidays, Trinity)', offset: 49, meaning: `Pentecost by the Orthodox reckoning: houses and churches are decked with green branches, herbs and sweet flag. The week around it is Rusalii (Rusalnyi tyzhden), when the rusalky were said to walk; the name comes from the Latin Rosalia, a Roman feast of roses for the dead. ${PASCHA_NOTE}` },
 ];
 
 // ─── Helpers ─────────────────────────────────────────────────────────────
@@ -245,7 +254,7 @@ export const SLAVIC_CALENDAR: CalendarDef = {
   path: 'slavic',
   confidence: 'historical',
   about:
-    'The Slavic languages kept their own names for the months, names of the working and growing year: cutting wood, fierce cold, birch sap, blossom, grass, red dye, linden, sickle, heather, leaf-fall, frozen clods. Once they named shifting seasonal stretches and differed from village to village; today they are simply the names of the ordinary months, and the same word can mean different months in different languages (listopad is November in Polish, Czech and Ukrainian but October in Croatian). Polish took Marzec and Maj from Latin. Beside the month, the Julian date is shown: the Old Style calendar, now 13 days behind, by which many Orthodox and Greek Catholic communities keep their feasts. The folk year of carols, Kupala fires, blessed water, poppies and apples grew up around those Christian feasts; how much of it is older than Christianity is often guessed and seldom known. Since 2023 the main churches of Ukraine keep fixed feasts on the New Style date, while Russia, Belarus, Serbia and many diaspora parishes keep the Old Style.',
+    'Several Slavic languages use their own names for the months, names of the working and growing year: cutting wood, fierce cold, birch sap, blossom, grass, red dye, linden, sickle, heather, leaf-fall, frozen clods. They are standard today in Ukrainian, Belarusian, Polish, Czech and Croatian (Polish took Marzec and Maj from Latin); Russian, Serbian, Bulgarian, Slovak and Slovene use Latin names and keep the old ones only in folk or church use. The names are well attested, from late-medieval Czech and Polish onward, but they wandered: the same word can name different months in different languages (listopad is November in Polish, Czech and Ukrainian but October in Croatian; lipanj is June in Croatian, lypen July in Ukrainian), and several were fixed only in the 19th and 20th centuries. Beside the month, the Julian date is shown: the Old Style calendar, now 13 days behind, by which many Orthodox and Greek Catholic communities keep their feasts. The observances are those feasts of the East Slavic (chiefly Ukrainian) folk year — carols, Kupala fires, blessed water, poppies and apples — Christian feasts recorded with their customs by 19th- and 20th-century ethnographers; how much of them is older than Christianity is often guessed and seldom known. No pre-Christian Slavic calendar survives, and the festivals of modern Slavic Native Faith (Rodnovery) are reconstructions, not shown here. Since 2023 the main churches of Ukraine keep fixed feasts on the New Style date, while Russia, Belarus, Serbia and many diaspora parishes keep the Old Style; Catholic Poles, Czechs and Croats keep the same saints’ days on the ordinary date.',
   choices: [
     {
       key: 'slavicLanguage',
@@ -267,9 +276,11 @@ export const SLAVIC_CALENDAR: CalendarDef = {
     'https://en.wiktionary.org/wiki/leden',
     'https://en.wiktionary.org/wiki/listopad',
     'https://en.wikipedia.org/wiki/Old_Style_and_New_Style_dates',
-    'https://en.wikipedia.org/wiki/Revised_Julian_calendar',
+    'https://en.wikipedia.org/wiki/Revised_Julian_calendar (and the 2023 move of the Orthodox Church of Ukraine and the Ukrainian Greek Catholic Church to it)',
     'https://en.wikipedia.org/wiki/Kupala_Night',
     'https://en.wikipedia.org/wiki/Radonitsa',
+    'https://en.wikipedia.org/wiki/Rusalii',
+    'https://en.wikipedia.org/wiki/Slavic_Native_Faith (modern reconstructed festivals, not used here)',
     'J. Meeus, Astronomical Algorithms, ch. 7–8 (Julian Day, the Julian computus for Easter)',
   ],
 

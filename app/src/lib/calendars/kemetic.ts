@@ -291,16 +291,18 @@ export const KEMETIC_CALENDAR: CalendarDef = {
   id: 'kemetic',
   name: 'Kemetic (Egyptian) calendar',
   path: 'egyptian',
-  confidence: 'historical',
+  // The calendar is historical; lining it up with ours (by default, Sirius each
+  // year) is modern practice, so the dates it gives are a reconstruction.
+  confidence: 'reconstructed',
   about:
-    'The civil calendar of ancient Egypt: three seasons, Akhet (the flood), Peret (growing) and Shemu (harvest), each of four 30-day months, then five days “upon the year”, the birthdays of Osiris, Horus, Set, Isis and Nephthys. The calendar itself is well known; how to line it up with ours is a modern choice. The ancient year was always 365 days with no leap day, so it slid a quarter-day a year against the seasons and the rising of Sirius, coming back into line only every 1,460 years or so; festivals were also kept by a separate lunar calendar. Modern Kemetic groups fix the new year instead: many watch for the heliacal rising of Sirius, its first dawn appearance (around 3 August at Cairo today, earlier further south); some follow the Coptic Church’s Nayrouz on 11 or 12 September; some simply use 1 August. When the new year moves, the closing days stretch to five or six to meet it. The Sirius date is calculated for where you are (or Cairo if your place isn’t known) and may differ by a day or two from what an observer sees. Festival dates come from temple calendars (Medinet Habu, Dendera) and changed over Egypt’s three thousand years; lunar feasts are approximate.',
+    'The civil calendar of ancient Egypt: three seasons, Akhet (the flood), Peret (growing) and Shemu (harvest), each of four 30-day months, then five days “upon the year”, the birthdays of Osiris, Horus, Set, Isis and Nephthys. The calendar itself is well known; how to line it up with ours is a modern choice. The ancient year was always 365 days with no leap day, so it slid a quarter-day a year against the seasons and the rising of Sirius, coming back into line only every 1,460 years or so; festivals were also kept by a separate lunar calendar. No ancient Egyptian ever kept a year fixed to Sirius like this (the one attempt, the Canopus decree of 238 BCE, did not last; Augustus’s Alexandrian reform, which added a leap day, survives as the Coptic calendar). Modern Kemetic groups fix the new year instead, and differ: many watch for the heliacal rising of Sirius, its first dawn appearance (about 3–4 August at Cairo today, some four days earlier at Aswan, later further north); some follow the Coptic Church’s Nayrouz on 11 or 12 September, the old calendar’s living descendant; some simply use 1 August. When the new year moves, the closing days stretch to five or six to meet it. The Sirius date is calculated for where you are (or Cairo if your place isn’t known) and may differ by a day or two from what an observer sees. Festival dates come from temple calendars (Medinet Habu, Dendera, Esna) and changed over Egypt’s three thousand years; many feasts, like the Beautiful Feast of the Valley, were kept by the moon instead and are approximate here. How modern groups observe them is their own reconstruction.',
   choices: [
     {
       key: 'kemeticNewYear',
       label: 'When the year begins',
       default: 'sirius',
       options: [
-        { value: 'sirius', label: 'The rising of Sirius', note: 'The morning Sirius first appears before dawn, worked out for your place (Cairo if unknown). Around 3 August in Egypt.' },
+        { value: 'sirius', label: 'The rising of Sirius', note: 'The morning Sirius first appears before dawn, worked out for your place (Cairo if unknown, or where it never sets or never rises). About 3–4 August at Cairo, late July at Aswan, mid-June in Sydney.' },
         { value: 'coptic', label: 'Nayrouz (Coptic new year)', note: '11 September, or 12 September before a leap year, as the Coptic Church keeps it.' },
         { value: 'aug1', label: '1 August', note: 'A fixed date some modern groups use.' },
       ],
@@ -314,7 +316,8 @@ export const KEMETIC_CALENDAR: CalendarDef = {
     'https://en.wikipedia.org/wiki/Coptic_calendar',
     'https://en.wikipedia.org/wiki/Opet_Festival',
     'https://en.wikipedia.org/wiki/Beautiful_Festival_of_the_Valley',
-    'https://skyandtelescope.org/observing/a-real-scorcher-sirius-at-heliacal-rising/',
+    'Sky & Telescope, “A real scorcher: Sirius at heliacal rising” (Cairo, 3 August; arcus visionis about 9–10°): https://skyandtelescope.org/observing/a-real-scorcher-sirius-at-heliacal-rising/',
+    'Plutarch, On Isis and Osiris 12 (the epagomenal births) and 68 (Thoth’s feast, “sweet is truth”)',
     'https://anefest.spbu.ru/en/articles/ancient-minor-asia/164-wag-festival-egypt.html',
     'https://ancientegyptonline.co.uk/festivalcalendar/',
   ],

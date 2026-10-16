@@ -9,6 +9,7 @@ import { ICELANDIC_CALENDAR } from './icelandic.ts';
 import { KEMETIC_CALENDAR } from './kemetic.ts';
 import { HINDU_CALENDAR } from './hindu.ts';
 import { SLAVIC_CALENDAR } from './slavic.ts';
+import { COLIGNY_CALENDAR } from './coligny.ts';
 
 /** The traditional calendars, in display order (the moon is added by index.ts). */
 export const TRADITIONAL_CALENDARS: CalendarDef[] = [
@@ -18,4 +19,5 @@ export const TRADITIONAL_CALENDARS: CalendarDef[] = [
   KEMETIC_CALENDAR,
   HINDU_CALENDAR,
   SLAVIC_CALENDAR,
+  COLIGNY_CALENDAR,
 ];

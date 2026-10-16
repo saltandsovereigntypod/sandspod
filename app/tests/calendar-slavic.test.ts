@@ -96,3 +96,32 @@ test('marks on the day, including the second night of Kupala', () => {
   assert.deepEqual(SLAVIC_CALENDAR.dateOf(day(2026, 7, 8), ctx()).marks, []);
   assert.match(SLAVIC_CALENDAR.dateOf(day(2026, 8, 2), ctx()).marks[0].meaning, /Perun.*argued over/);
 });
+
+test('Orthodox Pascha 2028–2030 and its movable feasts', () => {
+  // TrueCalendar (https://truecalendar.com/orthodox-easter-dates/2029): 16 Apr 2028 (shared with the West), 8 Apr 2029, 28 Apr 2030.
+  assert.equal(ymd(orthodoxEaster(2028)), '2028-04-16');
+  assert.equal(ymd(orthodoxEaster(2029)), '2029-04-08');
+  assert.equal(ymd(orthodoxEaster(2030)), '2030-04-28');
+  const events = SLAVIC_CALENDAR.eventsBetween(new Date(2028, 3, 1), new Date(2028, 5, 30), ctx());
+  const on = (id: string) => events.filter((e) => e.id === id).map((e) => ymd(e.date));
+  assert.deepEqual(on('slavic-radunytsia'), ['2028-04-25']);
+  assert.deepEqual(on('slavic-zeleni-sviata'), ['2028-06-04']);
+});
+
+test('a leap year: Julian 29 Feb 2028 is 13 Mar, and Stritennia stays on 15 Feb', () => {
+  assert.deepEqual(julianDateOf(day(2028, 3, 13)), { year: 2028, month: 2, day: 29 });
+  assert.deepEqual(julianDateOf(day(2028, 3, 14)), { year: 2028, month: 3, day: 1 });
+  const events = SLAVIC_CALENDAR.eventsBetween(new Date(2028, 1, 1), new Date(2028, 1, 29), ctx());
+  assert.deepEqual(events.filter((e) => e.id === 'slavic-stritennia').map((e) => ymd(e.date)), ['2028-02-15']);
+});
+
+test('Belarusian in Łacinka, and the about separates the attested from the reconstructed', () => {
+  assert.equal(SLAVIC_CALENDAR.dateOf(day(2026, 2, 1), ctx('be')).short.split(' · ')[0], 'Люты (Luty) 1');
+  assert.equal(SLAVIC_CALENDAR.dateOf(day(2026, 12, 1), ctx('be')).short.split(' · ')[0], 'Снежань (Śniežań) 1');
+  assert.equal(SLAVIC_CALENDAR.confidence, 'historical');
+  assert.match(SLAVIC_CALENDAR.about, /No pre-Christian Slavic calendar survives/);
+  assert.match(SLAVIC_CALENDAR.about, /Rodnovery\) are reconstructions/);
+  // Shchedryi Vechir is St Melania's day itself, the eve of St Basil.
+  const malanka = SLAVIC_CALENDAR.eventsBetween(new Date(2027, 0, 13), new Date(2027, 0, 13), ctx())[0];
+  assert.match(malanka.meaning, /St Melania’s day \(Malanka\), the eve of St Basil/);
+});

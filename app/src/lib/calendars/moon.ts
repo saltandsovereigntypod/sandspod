@@ -13,15 +13,22 @@
 // Blue Moon: the Maine Farmers' Almanac (1932–57 under H. P. Trefethen) gave
 // each season three named full moons; when a season held four, the third was
 // the Blue Moon, so the last moon before each solstice and equinox kept its
-// usual name. James Hugh Pruett misread this in Sky & Telescope (March 1946)
-// as "the second full moon in a calendar month", which is now the popular
-// meaning. Both are offered (choice 'blue'); the seasonal rule is the default.
+// usual name. The almanac's seasons were four equal quarters of the year, from
+// the right ascension of the mean Sun, so its Blue Moons sometimes differ from
+// the same rule on the true (astronomical) seasons that Sky & Telescope and
+// most tables use today: 2027's is 20 Feb by the almanac, 20 May by the true
+// seasons (obliquity.com/astro/blue-seasonal.html). James Hugh Pruett misread
+// the almanac in Sky & Telescope (March 1946) as "the second full moon in a
+// calendar month", now the popular meaning. All three are offered (choice
+// 'blue'); the seasonal rule on the true seasons is the default.
 //
 // Folk names follow the Old Farmer's Almanac list by calendar month (Wolf,
 // Snow, Worm, Pink, Flower, Strawberry, Buck, Sturgeon, Corn/Harvest,
 // Hunter's, Beaver, Cold), which mixes Algonquian, Colonial American and
 // European names. A month is named by its full moon. They belong to the
-// northern seasons; south of the equator they are turned six months. The
+// northern seasons; south of the equator many turn them six months, a modern
+// convention (EarthSky and Time and Date say the names don't really fit the
+// south either way), so keeping the northern names is a choice. The
 // Harvest Moon is the full moon nearest the autumn equinox: when it falls in
 // October the September moon is the Corn Moon and the Hunter's Moon (the
 // full moon after the Harvest Moon) moves to November, as Time and Date and
@@ -30,7 +37,7 @@
 // Blue Moon is the extra full moon by the chosen rule, which usually but not
 // always falls in a thirteen-moon year.
 
-import { julianDayToDate, moonState, phaseJde, lunationNear, sunReaches, type PrincipalPhase } from '../moon.ts';
+import { dateToJulianDay, julianDayToDate, moonState, phaseJde, lunationNear, sunReaches, type PrincipalPhase } from '../moon.ts';
 import type { CalendarContext, CalendarDate, CalendarDef, CalendarEvent, CalendarMark } from './types.ts';
 
 const DAY_MS = 86_400_000;
@@ -93,7 +100,8 @@ function firstLunationFrom(instant: Date): Lunation {
 
 export type YearStart = 'winter-solstice' | 'spring-equinox' | 'samhain';
 export type NameStyle = 'folk' | 'numbered';
-export type BlueRule = 'seasonal' | 'monthly';
+export type BlueRule = 'seasonal' | 'almanac' | 'monthly';
+export type SouthNames = 'turned' | 'northern';
 
 const option = <T extends string>(ctx: CalendarContext, key: string, allowed: readonly T[], fallback: T): T => {
   const value = ctx.options[key];
@@ -101,7 +109,9 @@ const option = <T extends string>(ctx: CalendarContext, key: string, allowed: re
 };
 const yearStartOf = (ctx: CalendarContext) => option<YearStart>(ctx, 'yearStart', ['winter-solstice', 'spring-equinox', 'samhain'], 'winter-solstice');
 const nameStyleOf = (ctx: CalendarContext) => option<NameStyle>(ctx, 'names', ['folk', 'numbered'], 'folk');
-const blueRuleOf = (ctx: CalendarContext) => option<BlueRule>(ctx, 'blue', ['seasonal', 'monthly'], 'seasonal');
+const blueRuleOf = (ctx: CalendarContext) => option<BlueRule>(ctx, 'blue', ['seasonal', 'almanac', 'monthly'], 'seasonal');
+/** Whether the folk names are turned six months: only in the south, and only when chosen (the default there). */
+const namesTurned = (ctx: CalendarContext) => ctx.hemisphere === 'south' && option<SouthNames>(ctx, 'southNames', ['turned', 'northern'], 'turned') === 'turned';
 
 /** The moment the lunar year's starting point is reached in ordinary year `year`. */
 function yearPoint(year: number, start: YearStart, south: boolean): Date {
@@ -155,7 +165,7 @@ const MONTH_NAMES = [
 export const MOON_MEANINGS: Record<string, string> = {
   'Wolf Moon': 'Deep winter, when wolves were heard at night.',
   'Snow Moon': 'The month of the heaviest snows.',
-  'Worm Moon': 'The ground softening and earthworms returning as winter ends.',
+  'Worm Moon': 'The thaw as winter ends: earthworms stirring in the softening ground, or, as Jonathan Carver heard it in the 1760s, beetle larvae coming out of the thawing bark.',
   'Pink Moon': 'The early spring flowers, such as creeping phlox.',
   'Flower Moon': 'Spring in full flower.',
   'Strawberry Moon': 'Wild strawberries ripening in early summer.',
@@ -168,11 +178,27 @@ export const MOON_MEANINGS: Record<string, string> = {
   'Cold Moon': 'The long cold nights near the winter solstice.',
   };
 
-/** The solstices and equinoxes around `date`, in order. */
-function cardinalPoints(date: Date): { at: Date; longitude: 0 | 90 | 180 | 270 }[] {
+/**
+ * When the mean Sun reaches `longitude` in `year`: the Sun's mean longitude
+ * (Meeus 25.2) stands for the right ascension of the mean Sun, which the Maine
+ * Farmers' Almanac used for its four equal seasons.
+ */
+export function meanSunReaches(year: number, longitude: 0 | 90 | 180 | 270): Date {
+  const guess = sunReaches(year, longitude);
+  let T = (dateToJulianDay(guess) - 2451545.0) / 36525;
+  for (let i = 0; i < 3; i++) {
+    const L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
+    const behind = ((((longitude - L0) % 360) + 540) % 360) - 180;
+    T += behind / 36000.76983;
+  }
+  return julianDayToDate(2451545.0 + T * 36525);
+}
+
+/** The solstices and equinoxes around `date`, in order: true, or the mean Sun's. */
+function cardinalPoints(date: Date, mean = false): { at: Date; longitude: 0 | 90 | 180 | 270 }[] {
   const out: { at: Date; longitude: 0 | 90 | 180 | 270 }[] = [];
   for (let y = date.getFullYear() - 1; y <= date.getFullYear() + 1; y++) {
-    for (const longitude of [0, 90, 180, 270] as const) out.push({ at: sunReaches(y, longitude), longitude });
+    for (const longitude of [0, 90, 180, 270] as const) out.push({ at: (mean ? meanSunReaches : sunReaches)(y, longitude), longitude });
   }
   return out.sort((a, b) => a.at.getTime() - b.at.getTime());
 }
@@ -212,9 +238,13 @@ function previousFull(full: Date): Date {
   return new Date(full.getTime() - 29.53 * DAY_MS);
 }
 
-/** Whether a full moon is the third of four in its astronomical season (the Maine Farmers' Almanac's Blue Moon). */
-export function isSeasonalBlueMoon(full: Date): boolean {
-  const points = cardinalPoints(full);
+/**
+ * Whether a full moon is the third of four in its season: the Maine Farmers'
+ * Almanac's rule, on the true seasons (default) or, with `mean`, on the
+ * almanac's own equal seasons of the mean Sun.
+ */
+export function isSeasonalBlueMoon(full: Date, mean = false): boolean {
+  const points = cardinalPoints(full, mean);
   const i = points.findIndex((p, n) => p.at.getTime() <= full.getTime() && full.getTime() < points[n + 1].at.getTime());
   const moons = fullMoonsBetween(points[i].at, points[i + 1].at);
   return moons.length === 4 && moons[2].getTime() === full.getTime();
@@ -245,7 +275,7 @@ export type FullMoonName = { name: string; /** The month's own name, even for a 
 /** A full moon's folk name: its month's name, or the Blue Moon by the chosen rule. */
 export function fullMoonName(full: Date, south: boolean, rule: BlueRule = 'seasonal'): FullMoonName {
   const month = monthName(full, south);
-  const blue = rule === 'monthly' ? isMonthlyBlueMoon(full) : isSeasonalBlueMoon(full);
+  const blue = rule === 'monthly' ? isMonthlyBlueMoon(full) : isSeasonalBlueMoon(full, rule === 'almanac');
   return { name: blue ? 'Blue Moon' : month, month, blue };
 }
 
@@ -283,7 +313,7 @@ function monthOf(l: Lunation, ctx: CalendarContext): Month {
   const south = ctx.hemisphere === 'south';
   const year = lunarYearOf(l.start, yearStartOf(ctx), south);
   const number = l.k - year.start.k + 1;
-  const full = fullMoonName(l.full, south, blueRuleOf(ctx));
+  const full = fullMoonName(l.full, namesTurned(ctx), blueRuleOf(ctx));
   const numbered = numberedName(number);
   return { lunation: l, year, number, name: nameStyleOf(ctx) === 'numbered' ? numbered : full.name, numbered, full };
 }
@@ -294,10 +324,13 @@ function fullMeaning(m: Month, ctx: CalendarContext): string {
   if (!m.full.blue) {
     return isMonthlyBlueMoon(m.lunation.full) ? `${own} The second full moon this month, which many now call a Blue Moon.` : own;
   }
+  const rule = blueRuleOf(ctx);
   const why =
-    blueRuleOf(ctx) === 'monthly'
+    rule === 'monthly'
       ? 'A Blue Moon: the second full moon in one calendar month.'
-      : 'A Blue Moon: the third of four full moons in this season, by the Maine Farmers’ Almanac’s rule.';
+      : rule === 'almanac'
+        ? 'A Blue Moon: the third of four full moons in this season, by the Maine Farmers’ Almanac’s rule and its equal seasons.'
+        : 'A Blue Moon: the third of four full moons between a solstice and an equinox, by the Maine Farmers’ Almanac’s rule.';
   return `${why} By its month it is also the ${m.full.month}.`;
 }
 
@@ -379,17 +412,26 @@ function eventsBetween(from: Date, to: Date, ctx: CalendarContext): CalendarEven
 export const MOON_CALENDAR: CalendarDef = {
   id: 'moon',
   name: 'The moon’s months',
-  confidence: 'historical',
+  confidence: 'modern',
   about:
-    'Counting months by the moon is one of the oldest ways of keeping time, used across the ancient world and still kept in the Hebrew, Islamic, Chinese and Hindu calendars. Here each month runs from one new moon to the next, and day 1 is the day the new moon falls where you are; many older calendars began instead at the first thin crescent, a day or two later. The way the months are gathered into a year is a modern convention: by default the year begins at the first new moon on or after the winter solstice, with the first new moon after the spring equinox, or after Samhain, as other choices. Each month is named for its full moon. The folk names (Wolf, Snow, Worm and the rest) go by the month the full moon falls in and come from the Old Farmer’s Almanac’s mix of Algonquian, Colonial American and European names; they follow the northern seasons, so they are turned six months south of the equator. A Blue Moon is, by the old Maine Farmers’ Almanac rule, the third full moon of a season that has four; the popular “second full moon in a month” comes from a 1946 misreading of it. Both rules are offered.',
+    'Counting months by the moon is one of the oldest ways of keeping time, used across the ancient world and still kept in the Hebrew, Islamic, Chinese and Hindu calendars. This calendar is a modern arrangement drawing on that: the new and full moons are exact astronomy, but the way the months are gathered into a year and named is convention. Each month runs from one new moon to the next, and day 1 is the day the new moon falls where you are; many older calendars began instead at the first thin crescent, a day or two later. By default the year begins at the first new moon on or after the winter solstice, with the spring equinox or Samhain as other choices. Each month is named for its full moon. The folk names (Wolf, Snow, Worm and the rest) go by the calendar month the full moon falls in and come from the Old Farmer’s Almanac, a 20th-century gathering of Algonquian, Colonial American and European names; the Harvest Moon is the full moon nearest the autumn equinox, and sources differ on whether the moon after an October Harvest Moon is the Hunter’s or the Beaver Moon. The names follow the northern seasons: south of the equator many turn them six months, a modern convention, and you can keep the northern names instead. A Blue Moon is, by the old Maine Farmers’ Almanac rule, the third full moon of a season that has four; the almanac counted four equal seasons, so its dates sometimes differ from the same rule on the true seasons. The popular “second full moon in a month” comes from a 1946 misreading of it. All three are offered.',
   choices: [
     {
       key: 'names',
       label: 'Name the months',
       default: 'folk',
       options: [
-        { value: 'folk', label: 'Folk full moon names', note: 'Wolf, Snow, Worm, Pink…, turned for the southern hemisphere.' },
+        { value: 'folk', label: 'Folk full moon names', note: 'Wolf, Snow, Worm, Pink… from the Old Farmer’s Almanac.' },
         { value: 'numbered', label: 'First Moon, Second Moon…', note: 'Simply counted from the start of the year.' },
+      ],
+    },
+    {
+      key: 'southNames',
+      label: 'South of the equator, the folk names',
+      default: 'turned',
+      options: [
+        { value: 'turned', label: 'Turned six months', note: 'So the Harvest Moon falls near the March equinox and the Cold Moon in June. A modern convention.' },
+        { value: 'northern', label: 'Kept as in the north', note: 'The names stay with their calendar months, as almanacs print them.' },
       ],
     },
     {
@@ -407,7 +449,8 @@ export const MOON_CALENDAR: CalendarDef = {
       label: 'A Blue Moon is',
       default: 'seasonal',
       options: [
-        { value: 'seasonal', label: 'The third of four in a season', note: 'The Maine Farmers’ Almanac’s original rule.' },
+        { value: 'seasonal', label: 'The third of four in a season', note: 'The Maine Farmers’ Almanac’s rule on the true seasons, as Sky & Telescope gives it today.' },
+        { value: 'almanac', label: 'The same, on the almanac’s equal seasons', note: 'As the Maine Farmers’ Almanac itself reckoned, from the mean Sun; now and then a different full moon.' },
         { value: 'monthly', label: 'The second in a month', note: 'The popular modern meaning, from a 1946 misreading.' },
       ],
     },
@@ -418,6 +461,9 @@ export const MOON_CALENDAR: CalendarDef = {
     'https://skyandtelescope.org/astronomy-resources/what-is-a-blue-moon/',
     'https://www.almanac.com/full-moon-names',
     'https://www.timeanddate.com/astronomy/moon/beaver.html',
+    'https://obliquity.com/astro/blue-seasonal.html (seasonal Blue Moons on the true and the almanac’s seasons)',
+    'https://earthsky.org/astronomy-essentials/full-moon-names/ (on the names in the southern hemisphere)',
+    'https://earthsky.org/astronomy-essentials/everything-you-need-to-know-hunters-moon/',
   ],
   dateOf,
   eventsBetween,
