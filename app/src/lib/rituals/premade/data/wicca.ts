@@ -621,9 +621,9 @@ export const WICCA: Premade[] = [
       "Leave the log on the hearth or windowsill through the twelve days of Yule. Afterwards burn it safely in a fireplace or fire pit, keeping a fragment, or return the greenery to the earth.",
     safety: `${CANDLE_SAFETY} Dried greenery, cinnamon and orange catch fire easily: keep them well clear of the flames and never leave the log lit while you sleep. Holly berries and mistletoe are poisonous to people and pets, so keep them out of reach and don't use them in food or drink. Use clove and cinnamon only at normal cooking amounts.`,
     lore:
-      "Midwinter festivals were widespread in pre-Christian Europe; the Old Norse jól and the Anglo-Saxon month name Geola are attested by Bede (725). The Yule log is documented as a household custom in England from the seventeenth century: Robert Herrick wrote of bringing in the Christmas log and lighting it with last year's brand. Keeping a vigil for the returning sun is a modern Pagan practice, part of the Wheel of the Year assembled in the 1950s.",
+      "Midwinter festivals were widespread in pre-Christian Europe; the Old Norse jól is attested in the sagas, and Bede (725) records the Anglo-Saxon month name Giuli (Old English Geola). The Yule log is documented as a household custom in England from the seventeenth century: Robert Herrick wrote of bringing in the Christmas log and lighting it with last year's brand. Keeping a vigil for the returning sun is a modern Pagan practice, part of the Wheel of the Year assembled in the 1950s.",
     sources: [
-      "Bede, De temporum ratione (725), on Geola",
+      "Bede, De temporum ratione (725), on Giuli",
       "Herrick, Hesperides (1648), “Ceremonies for Christmas”",
       "Hutton, The Stations of the Sun (on the Yule log)",
     ],
@@ -659,9 +659,9 @@ export const WICCA: Premade[] = [
       {
         title: "Welcome Brigid at the door",
         instructions:
-          "Carry the doll to the front door. Knock three times from the inside, open the door, and invite her in, then carry her to the bed by the hearth or altar.",
+          "Carry the doll to the front door. Open the door, stand on the step with a hand on the frame and call softly into the dark, then answer yourself from inside, as the two women did in Carmichael's account. Carry her to the bed by the hearth or altar.",
         spoken:
-          "Bríd, Bríd, come in; thy bed is ready. (Brigid, Brigid, come in, your bed is made.)",
+          "Bride's bed is ready. Let Bride come in, Bride is welcome. Bride! Bride, come thou in, thy bed is made.",
       },
       {
         title: "Lay her down",
@@ -702,9 +702,9 @@ export const WICCA: Premade[] = [
       "In the morning, check the flour or ashes, bring in the brat Bríde, and pour the milk on the earth. Keep the doll safely until next Imbolc, or burn it at Beltane.",
     safety: `${CANDLE_SAFETY} Keep straw dolls, cloth and dried greenery well away from the flame.`,
     lore:
-      "Imbolc (Lá Fhéile Bríde) is an old Gaelic festival on 1 February, linked to St Brigid and before her, many think, to a goddess of the same name. The customs here are documented folk practice. Martin Martin described Brigid's bed in the Hebrides in 1703, and Alexander Carmichael recorded it in Carmina Gadelica (1900): women dressed a sheaf as Brigid, laid it in a basket with a wand, and called out “Bride is come, Bride is welcome,” then looked in the ashes for her footprint in the morning. The Irish brat Bríde, a cloth left out for her blessing, is recorded in twentieth-century folklore collections. The spoken welcome is adapted from the Gaelic call recorded by Carmichael. Blessing candles echoes Candlemas, on 2 February.",
+      "Imbolc (Lá Fhéile Bríde) is an old Gaelic festival on 1 February, linked to St Brigid and before her, many think, to a goddess of the same name. The customs here are documented folk practice. Martin Martin described it in the Hebrides in 1703: the women of the house dressed a sheaf of oats in women's clothes, laid it in a large basket with a wooden club, called “Briid's bed,” and cried three times “Briid is come, Briid is welcome,” then looked in the ashes in the morning for the mark of the club. Alexander Carmichael recorded a fuller form in Carmina Gadelica (1900): a sheaf dressed as Bride was laid in a cradle-shaped basket with a peeled white wand, usually of birch, and the family looked in the smoothed ashes for the mark of the wand or Bride's footprint. The spoken welcome is Carmichael's own English rendering of the Gaelic call at the door (“Tha leaba Bride deiseal … Thigeadh Bride steach, is e beatha Bride … A Bhride! Bhride, thig a steach, tha do leaba deanta”), shortened. The Irish brat Bríde, a cloth left out for her blessing, is recorded in twentieth-century folklore collections. Blessing candles echoes Candlemas, on 2 February.",
     sources: [
-      "Carmichael, Carmina Gadelica, vol. 1 (1900), on Bride's bed",
+      "Carmichael, Carmina Gadelica, vol. 1 (1900), notes to the hymns of the seasons, on Bride's bed (pp. 167–168)",
       "Martin, A Description of the Western Islands of Scotland (1703)",
       "Danaher, The Year in Ireland (on the brat Bríde)",
     ],
