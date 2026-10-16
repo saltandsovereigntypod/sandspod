@@ -10,6 +10,7 @@ import { PHASE_ORDER } from '../../../lib/reminders/schedule';
 import { currentStep } from '../../../lib/rituals/lifecycle';
 import { journalDetail, planSky, planWhen } from '../../../lib/rituals/format';
 import { journalInsights } from '../../../lib/rituals/insights';
+import { PREMADE } from '../../../lib/rituals/premade';
 import { sortJournal, upcomingPlans } from '../../../lib/rituals/plans';
 import { bringDeviceRitualsToAccount, refresh, useRituals } from '../../../lib/rituals/store';
 import { useSession } from '../../../lib/session';
@@ -101,6 +102,12 @@ export default function RitualsHome() {
           title="Begin a ritual"
           detail="From one of your templates, or a quiet working of your own"
           onPress={() => router.push('/rituals/templates')}
+        />
+        <Row
+          icon="grimoire"
+          title="Rituals & spells"
+          detail={`${PREMADE.length} premade workings for every practice and path`}
+          onPress={() => router.push('/rituals/premade')}
         />
         <Row icon="calendar" title="Plan a night" detail="Moon phase and weekday for your intention" onPress={() => router.push('/rituals/planner')} />
         <Row icon="altar" title="Build a spell" detail="Ingredients from the Library, steps to follow" onPress={() => router.push('/rituals/spell')} />

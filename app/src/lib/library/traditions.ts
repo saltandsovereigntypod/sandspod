@@ -12,6 +12,10 @@ export type PathTradition = { id: string; name: string };
 /** Every tradition an entry can belong to, as named in the Library's `Traditions` field. */
 export const PATH_TRADITIONS: PathTradition[] = [
   { id: 'wheel', name: 'Wheel of the Year' },
+  // Modern Wicca keeps the Wheel's sabbats and the full-moon esbats. Library
+  // entries describe Wiccan use under the Wheel of the Year, so choosing it
+  // shapes premade rituals and spells rather than adding a Library section.
+  { id: 'wicca', name: 'Wicca' },
   { id: 'celtic', name: 'Celtic' },
   { id: 'norse', name: 'Norse' },
   { id: 'hellenic', name: 'Hellenic' },

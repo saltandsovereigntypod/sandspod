@@ -5,6 +5,7 @@ import { MenuList, MenuRow, MoreScreen } from '../../../../components/more/ui';
 import { useSession } from '../../../../lib/session';
 import { holidayChoice, TRADITIONS } from '../../../../lib/holidays';
 import { layerOrderLabel, type Settings } from '../../../../lib/settings/defaults';
+import { myPractices, practiceName } from '../../../../lib/rituals/premade';
 import { useMySettings } from '../../../../lib/settings/store';
 import { type } from '../../../../theme';
 
@@ -33,6 +34,12 @@ export default function SettingsIndex() {
           label="Book of Shadows"
           detail="Mundane mode, page font"
           onPress={() => router.push('/more/settings/book')}
+        />
+        <MenuRow
+          icon="journey"
+          label="My practice"
+          detail={practiceSummary(settings)}
+          onPress={() => router.push('/more/settings/practice')}
         />
         <MenuRow
           icon="library"
@@ -71,6 +78,11 @@ export default function SettingsIndex() {
       </Text>
     </MoreScreen>
   );
+}
+
+function practiceSummary(settings: Settings | null): string {
+  const chosen = myPractices(settings);
+  return chosen.length ? chosen.map(practiceName).join(', ') : 'Green, Kitchen, Hedge, Cosmic…';
 }
 
 function calendarSummary(settings: Settings | null): string {
