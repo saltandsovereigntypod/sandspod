@@ -81,22 +81,26 @@ export function AltarWidgetAndroid({ altar, box, now }: { altar: WidgetAltar | u
     const bh = item.box.h * W;
     const iw = bw * (1 - item.inset.x * 2);
     const ih = bh * (1 - item.inset.y * 2);
+    // Android clips what's drawn outside a box, and a flame rises above its
+    // candle's box: give the box room above for it.
+    const tops = item.lit ? [item.flame, item.halo].filter(Boolean).map((r) => r!.y * bh) : [];
+    const room = Math.ceil(Math.max(0, ...tops.map((t) => -t)));
     return (
       <OverlapWidget
         key={item.key}
         {...(item.candle ? click(item.lit ? 'snuff' : 'light', item.key) : {})}
-        style={{ marginLeft: Math.round(p.x), marginTop: Math.round(p.y), width: Math.round(bw), height: Math.round(bh), ...(item.rotation ? { rotation: item.rotation } : {}) }}
+        style={{ marginLeft: Math.round(p.x), marginTop: Math.round(p.y - room), width: Math.round(bw), height: Math.round(bh + room), ...(item.rotation ? { rotation: item.rotation } : {}) }}
       >
-        <Picture uri={item.image} x={bw * item.inset.x} y={bh * item.inset.y} w={iw} h={ih} />
+        <Picture uri={item.image} x={bw * item.inset.x} y={room + bh * item.inset.y} w={iw} h={ih} />
         {item.overlays.map((o, i) => (
-          <Picture key={`o${i}`} uri={o.image} x={o.rect.x * bw} y={o.rect.y * bh} w={o.rect.w * bw} h={o.rect.h * bh} />
+          <Picture key={`o${i}`} uri={o.image} x={o.rect.x * bw} y={room + o.rect.y * bh} w={o.rect.w * bw} h={o.rect.h * bh} />
         ))}
         {item.spent ? (
           // Burned down: shaded, as the app fades it.
-          <FlexWidget style={{ marginLeft: Math.round(bw * item.inset.x), marginTop: Math.round(bh * item.inset.y), width: Math.round(iw), height: Math.round(ih), backgroundColor: '#0f1a1488', borderRadius: 4 }} />
+          <FlexWidget style={{ marginLeft: Math.round(bw * item.inset.x), marginTop: Math.round(room + bh * item.inset.y), width: Math.round(iw), height: Math.round(ih), backgroundColor: '#0f1a1488', borderRadius: 4 }} />
         ) : null}
-        {item.lit && item.halo ? <Picture uri={WIDGET_ART.halo} x={item.halo.x * bw} y={item.halo.y * bh} w={item.halo.w * bw} h={item.halo.h * bh} mode="stretch" /> : null}
-        {item.lit && item.flame ? <Picture uri={WIDGET_ART.flame} x={item.flame.x * bw} y={item.flame.y * bh} w={item.flame.w * bw} h={item.flame.h * bh} mode="stretch" /> : null}
+        {item.lit && item.halo ? <Picture uri={WIDGET_ART.halo} x={item.halo.x * bw} y={room + item.halo.y * bh} w={item.halo.w * bw} h={item.halo.h * bh} mode="stretch" /> : null}
+        {item.lit && item.flame ? <Picture uri={WIDGET_ART.flame} x={item.flame.x * bw} y={room + item.flame.y * bh} w={Math.max(3, item.flame.w * bw)} h={item.flame.h * bh} mode="stretch" /> : null}
       </OverlapWidget>
     );
   };
