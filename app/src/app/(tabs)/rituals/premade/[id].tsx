@@ -38,7 +38,7 @@ export default function PremadeView() {
     return (
       <RitualScreen back="Rituals & spells">
         <Title>Not found</Title>
-        <Body>This working isn't in the book any more.</Body>
+        <Body>This working isn’t in the book any more.</Body>
       </RitualScreen>
     );
   }
@@ -87,7 +87,7 @@ export default function PremadeView() {
 
       <View style={ui.actions}>
         <Button label={busy === 'begin' ? 'Beginning…' : 'Begin this ritual'} disabled={!!busy || !!rituals.active} onPress={begin} />
-        {!!rituals.active && <Body muted>Finish the ritual that's under way before beginning another.</Body>}
+        {!!rituals.active && <Body muted>Finish the ritual that’s under way before beginning another.</Body>}
         <Button label="Plan a night for it" variant="outline" onPress={plan} />
         {session ? (
           <Button label={busy === 'save' ? 'Saving…' : 'Save a copy to my templates'} variant="outline" disabled={!!busy} onPress={save} />
@@ -104,7 +104,7 @@ export default function PremadeView() {
       )}
 
       <Card>
-        <SectionLabel>You'll need</SectionLabel>
+        <SectionLabel>You’ll need</SectionLabel>
         {premade.ingredients.length ? (
           premade.ingredients.map((item, i) => {
             const label = `${item.name}${item.optional ? ' (optional)' : ''}`;
