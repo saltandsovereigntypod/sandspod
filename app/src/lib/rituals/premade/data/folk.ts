@@ -1698,7 +1698,7 @@ export const FOLK: Premade[] = [
     id: 'folk-diya-gayatri',
     title: 'Lighting the Diya at Dusk',
     kind: 'ritual',
-    summary: 'A simple, respectful evening devotion: light a ghee lamp at sunset, offer a flower, and reflect on the Gayatri verse of the Rig Veda.',
+    summary: 'A simple, respectful evening devotion: light a ghee lamp at sunset, offer a flower, and sit with the light as it dispels the dark.',
     intention: null,
     alsoFor: ['peace', 'study'],
     practices: ['solitary'],
@@ -1730,9 +1730,9 @@ export const FOLK: Premade[] = [
         instructions: 'Hold the flower in both hands, then place it before the lamp or your deity’s image with a small bow.',
       },
       {
-        title: 'The Gayatri',
-        instructions: 'Read Griffith’s English rendering of the Gayatri verse (Rig Veda 3.62.10) aloud or silently, several times. Hindus who have received it chant it in Sanskrit; if you are not Hindu, reading the English is a respectful way to begin. Reflect on light awakening understanding.',
-        spoken: 'May we attain that excellent glory of Savitar the God:\nSo may he stimulate our prayers.',
+        title: 'Reflect on the light',
+        instructions: 'Look into the flame and think of what it stands for in so many homes: light dispelling darkness, knowledge dispelling ignorance. If you have prayers or verses from your own family or teacher, say them now; otherwise speak simply, in your own words.',
+        spoken: 'As this small flame lights the room,\nmay understanding light my mind.',
         minutes: 5,
       },
       {
@@ -1749,8 +1749,7 @@ export const FOLK: Premade[] = [
     ],
     closing: 'The flower can later be placed in a plant pot or garden. Lighting the lamp daily at dusk is a practice in itself.',
     safety: 'Set the diya on a heatproof plate away from curtains and anything that can catch. Never leave it unattended; ghee can flare if the wick is too long.',
-    lore: 'The Gayatri mantra (Rig Veda 3.62.10), addressed to Savitr, the sun as the divine impeller, is one of the most revered verses in Hinduism. It was traditionally taught at the sacred-thread initiation (upanayana); many modern teachers and movements, such as the Arya Samaj, have opened it to all, though some communities still see it as given by a guru. The English is Ralph T. H. Griffith’s translation (1896), now in the public domain. Lighting a lamp (deepa) at dusk is a widespread household custom across Hindu traditions.',
-    sources: ['The Hymns of the Rigveda, trans. Ralph T. H. Griffith (1896), 3.62.10'],
+    lore: 'Lighting a lamp (deepa) at dusk is a widespread household custom across Hindu traditions, often with the evening prayer sandhya. The words spoken here are the app’s own: sacred mantras such as the Gayatri are traditionally received from a teacher or family, so they are left to those who have been given them.',
   },
   {
     id: 'folk-lakshmi-diwali',

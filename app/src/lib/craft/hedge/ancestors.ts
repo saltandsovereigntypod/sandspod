@@ -137,6 +137,8 @@ export const ANCESTOR_HOLIDAYS = [
   'christian-all_hallows_eve',
   'christian-all_souls',
   'roman-parentalia',
+  'roman-lemuria',
+  'hellenic-anthesteria',
   'norse-vetrnaetur',
   'norse-disablot',
 ];

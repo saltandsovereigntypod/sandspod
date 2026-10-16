@@ -18,7 +18,7 @@ export const ANY_MONTH: WeatherSaying[] = [
   {
     saying: 'Red sky at night, shepherd’s delight; red sky in the morning, shepherd’s warning.',
     verdict: 'sound',
-    note: 'Where weather comes mostly from the west, as in Britain and Ireland, a red sunset means clear sky to the west lighting up dust and cloud overhead: fair weather is on its way. A red sunrise means the clear air has passed east and cloud is arriving behind it. Least reliable in summer and where weather comes from other directions.',
+    note: 'Where weather comes mostly from the west, as in Britain and Ireland, a red sunset means clear sky to the west lighting up dust and cloud overhead: fair weather is on its way. A red sunrise means the clear air has passed east and cloud is arriving behind it. Less reliable where weather comes from other directions, and no help with sudden showers.',
   },
   {
     saying: 'Mackerel sky and mares’ tails make lofty ships carry low sails.',
@@ -48,7 +48,7 @@ export const ANY_MONTH: WeatherSaying[] = [
   {
     saying: 'Cows lie down before the rain.',
     verdict: 'no',
-    note: 'Cows lie down to chew the cud, rest or keep warm, whatever the forecast. Studies have found no useful link with rain.',
+    note: 'Cows lie down to chew the cud or rest, whatever the forecast. The Met Office calls it an old wives’ tale: there’s no evidence it has anything to do with rain.',
   },
 ];
 
@@ -62,7 +62,7 @@ export const BY_MONTH: WeatherSaying[][] = [
       note: 'The land and sea keep losing stored warmth for weeks after the winter solstice, so the coldest weather in Britain usually comes in January and February even as the days draw out.',
     },
     {
-      saying: 'If the grass grows in Janiveer, it grows the worse for all the year.',
+      saying: 'If the grass grow in Janiveer, ’twill be the worse for’t all the year.',
       verdict: 'no',
       note: 'A mild January says little about the rest of the year. There is a real risk that early growth gets nipped by later frost, which may be what the saying remembers.',
     },
@@ -80,7 +80,7 @@ export const BY_MONTH: WeatherSaying[][] = [
   // February
   [
     {
-      saying: 'If Candlemas Day be fair and bright, winter will have another flight; if Candlemas Day be clouds and rain, winter is gone and won’t come again.',
+      saying: 'If Candlemas Day be fair and bright, winter will have another flight; if Candlemas Day be clouds and rain, winter is gone and will not come again.',
       verdict: 'no',
       note: 'One day’s weather can’t foretell six weeks. The American groundhog version, from the same European root, has been checked against records and does no better than chance.',
     },
@@ -164,9 +164,9 @@ export const BY_MONTH: WeatherSaying[][] = [
       note: 'Moisture in late spring and warmth in early summer are what crops want. A description of a good year, not a forecast of one.',
     },
     {
-      saying: 'Who shears his sheep before St Gervase’s Day (19 June) loves more his wool than his sheep.',
+      saying: 'Who shears his sheep before St Servatius’ Day loves more his wool than his sheep.',
       verdict: 'sound',
-      note: 'Cold snaps in late May and early June can chill newly shorn sheep, so waiting was good husbandry.',
+      note: 'St Servatius (13 May) is one of Europe’s “ice saints”, whose days in mid-May are known for late cold snaps. A freshly shorn sheep can be badly chilled by one, so waiting was good husbandry.',
     },
   ],
   // June
@@ -275,8 +275,8 @@ export const BY_MONTH: WeatherSaying[][] = [
     },
     {
       saying: 'If ducks do slide at Hollantide, at Christmas they will swim.',
-      verdict: 'partly',
-      note: 'Hollantide is All Saints, 1 November. An early cold snap is often followed by milder weather. A tendency, not a rule.',
+      verdict: 'no',
+      note: 'Hollantide is All Saints, 1 November. Cold spells in Britain seldom last long, so milder weather usually follows any of them, but an early freeze tells you nothing about Christmas.',
     },
     {
       saying: 'Much rain in October, much wind in December.',
@@ -316,8 +316,8 @@ export const BY_MONTH: WeatherSaying[][] = [
     },
     {
       saying: 'If ice will bear a man before Christmas, it will not bear a mouse after.',
-      verdict: 'partly',
-      note: 'Early cold snaps are often followed by milder spells. It’s a tendency at most.',
+      verdict: 'no',
+      note: 'Like the November duck, a hopeful rhyme rather than a pattern: an early hard frost is no guide to the rest of the winter, either way.',
     },
     {
       saying: 'Frost on the shortest day indicates a severe winter.',

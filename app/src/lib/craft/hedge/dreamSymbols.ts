@@ -47,7 +47,7 @@ export const DREAM_SYMBOLS: DreamSymbol[] = [
   {
     symbol: 'snake',
     also: ['serpent', 'adder'],
-    notes: 'Carries opposite meanings across cultures: danger and betrayal, or healing, wisdom and renewal (the skin shed). In folk tradition, guardians of wells and thresholds.',
+    notes: 'Carries opposite meanings across cultures: danger and betrayal, or healing, wisdom and renewal (the skin shed). In some folk traditions, such as the Baltic house snake, a guardian of the home and threshold.',
     ask: 'Did the snake threaten, guard, or simply watch?',
   },
   {
@@ -77,7 +77,7 @@ export const DREAM_SYMBOLS: DreamSymbol[] = [
   {
     symbol: 'death',
     also: ['dying', 'funeral'],
-    notes: 'Seldom a forecast. Usually an ending that makes room for something: a job, a role, a version of yourself.',
+    notes: 'Not a forecast. Usually an ending that makes room for something: a job, a role, a version of yourself.',
     ask: 'What in your life is ending, or needs to?',
   },
   {
@@ -143,7 +143,7 @@ export const DREAM_SYMBOLS: DreamSymbol[] = [
   {
     symbol: 'hare',
     also: ['rabbit'],
-    notes: 'In British and Irish lore, the hare is a creature of the moon and of witches, said to be a witch in another shape. Also speed, fertility and spring.',
+    notes: 'In British and Irish lore, the hare is a creature of the moon and of witches, said to be a witch in another shape; from India to China and Japan, a hare lives in the moon. Also speed, fertility and spring.',
     ask: 'Did it run from you, or wait?',
   },
   {
