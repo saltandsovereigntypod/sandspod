@@ -120,11 +120,11 @@ Varro, the great scholar of the first century BCE, wrote a vast work on Roman re
             },
             {
               heading: `Poets, historians and philosophers`,
-              body: `Ovid's Fasti is a poem on the Roman calendar, month by month, explaining festivals and their origins. It covers only January to June (he never finished, or the rest is lost), and Ovid loved a good story more than a strict fact, but he describes rites like the Parentalia and Lemuria in detail. Livy's history of Rome is full of vows, prodigies and expiations. Cicero's On the Nature of the Gods and On Divination give educated Romans' arguments about the gods and about augury. Later writers like Macrobius (around 400 CE) gathered a great deal of antiquarian lore, especially about the Saturnalia.`,
+              body: `Ovid's Fasti is a poem on the Roman calendar, month by month, explaining festivals and their origins. It covers only January to June (he never finished, or the rest is lost), and Ovid loved a good story more than a strict fact, but he describes rites like the Parentalia and Lemuria in detail. Livy's history of Rome is full of vows, prodigies and expiations. Cicero's On the Nature of the Gods and On Divination give educated Romans' arguments about the gods and about augury. Later writers like Macrobius (early fifth century CE) gathered a great deal of antiquarian lore, especially about the Saturnalia.`,
             },
             {
               heading: `Stones, paintings and calendars`,
-              body: `Thousands of Latin inscriptions record vows fulfilled to gods, often ending with the formula V.S.L.M., votum solvit libens merito, "paid the vow willingly, as deserved". Painted and carved calendars, called fasti, survive in fragments; the Fasti Antiates Maiores, painted on a wall in the 60s BCE, is the only largely complete calendar from before Julius Caesar's reform. Pompeii and Herculaneum, buried in 79 CE, preserve dozens of household shrines (lararia) with their paintings of dancing Lares, snakes and the Genius of the house pouring an offering. These are the best evidence we have for how ordinary Romans actually worshipped at home.`,
+              body: `Thousands of Latin inscriptions record vows fulfilled to gods, often ending with the formula V.S.L.M., votum solvit libens merito, "paid the vow willingly, as deserved". Painted and carved calendars, called fasti, survive in fragments; the Fasti Antiates Maiores, painted on a wall at Antium some time between about 84 and 55 BCE, is the only largely complete calendar from before Julius Caesar's reform. Pompeii and Herculaneum, buried in 79 CE, preserve dozens of household shrines (lararia) with their paintings of dancing Lares, snakes and the Genius of the house pouring an offering. These are the best evidence we have for how ordinary Romans actually worshipped at home.`,
             },
             {
               heading: `Reconstruction today`,
@@ -309,13 +309,13 @@ This is not because Roman gods were pedantic, but because prayer was a formal ag
               heading: `Head covered, right hand, right turn`,
               body: `When praying by the Roman rite (ritus Romanus), the person offering drew a fold of the toga over the back of the head: capite velato, "with head veiled". Virgil has the seer Helenus tell Aeneas to cover his head with a purple cloth while sacrificing, so that no hostile sight would break the rite. Both men and women prayed with covered heads. A few cults were done by the Greek rite (ritus Graecus), with the head bare: the worship of Saturn, of Hercules at the Ara Maxima, and some others.
 
-Pliny also describes the end of prayer: "in adorando dextram ad osculum referimus totumque corpus circumagimus". In plain English: when we worship, we bring the right hand to the lips and turn the whole body round, to the right.`,
+Pliny also describes the end of prayer: "in adorando dextram ad osculum referimus totumque corpus circumagimus". In plain English: when we worship, we bring the right hand to the lips and turn the whole body round. Pliny adds that the Gauls think it more devout to turn to the left, which implies the Roman turn was to the right, the direction modern practitioners follow.`,
             },
             {
               heading: `The structure`,
               body: `A Roman prayer usually ran like this. First a preface (praefatio) with incense and wine to Janus, the god of beginnings, and often Jupiter. Then the invocation: the god's name and title, carefully. If unsure, Romans added "or by whatever name you wish to be called" or, as Cato does, "Si deus, si dea es": "whether you are god or goddess". Then the reason and the request, often in pairs and triplets of words to cover every case. Then the offering, with the words "macte ... esto": "be honoured", "be increased", by this. Last, Vesta.
 
-Cato's prayer to Janus before the harvest begins: "Iane pater, te hac strue commovenda bonas preces precor, uti sies volens propitius mihi liberisque meis domo familiaeque meae." In plain English: Father Janus, by offering this heap of cakes I pray you good prayers, that you be willing and favourable to me and my children, my house and my household. And for the wine: "macte vino inferio esto", "be honoured by this wine that is offered".`,
+Cato's prayer to Janus before the harvest begins: "Iane pater, te hac strue commovenda bonas preces precor, uti sies volens propitius mihi liberisque meis domo familiaeque meae." In plain English: Father Janus, by offering this heap of cakes I pray you good prayers, that you be willing and favourable to me and my children, my house and my household. And in his prayer to Jupiter of the Feast, the words for the wine: "macte vino inferio esto", "be honoured by this wine that is offered".`,
             },
             {
               heading: `Writing your own`,
@@ -402,7 +402,7 @@ These were the household holy days: Cato's housekeeper garlanded the hearth and 
               heading: `Fasti, nefasti and black days`,
               body: `Each day on the calendar carried a letter. F (fastus) days were open for legal business; N (nefastus) days were not, because they belonged to the gods; C (comitialis) days were open for assemblies. NP marked many festival days; scholars still debate what it meant exactly. EN days were split, closed in the morning and evening but open in the middle.
 
-The days right after each Kalends, Nones and Ides were dies atri, "black days" (also called dies religiosi): unlucky for beginning anything, starting a journey or making a new start. Modern practitioners often avoid starting new projects, rites or dedications on those days.`,
+The days right after each Kalends, Nones and Ides were dies atri, "black days" (often grouped with the other ill-omened dies religiosi): unlucky for beginning anything, starting a journey or making a new start. Modern practitioners often avoid starting new projects, rites or dedications on those days.`,
             },
             {
               heading: `The year`,
@@ -530,13 +530,15 @@ In plain English: the dead ask small things; devotion pleases them more than a c
               heading: `Lemuria`,
               body: `The Lemuria fell on 9, 11 and 13 May. The lemures were restless or hostile spirits of the dead, and the rite drove them from the house. Ovid describes it: at midnight, barefoot, the head of the household made a sign with his fingers and thumb to ward off ghosts, washed his hands in spring water and threw black beans behind him without looking, saying nine times, "haec ego mitto, his redimo meque meosque fabis": "these I send; with these beans I redeem me and mine." The shade was believed to gather the beans and follow. Then he washed again, clashed bronze vessels together, and asked the shade to leave, saying nine times "manes exite paterni", "spirits of my fathers, go out". Only then did he look back.
 
-The Lemuria is a protective rite of separation, not a curse. Modern practitioners keep it as written, with dried black beans and a pot lid or bell.`,
+The Lemuria is a protective rite of separation, not a curse. Modern practitioners keep it as written, with dried black beans and a pot lid or bell. Keep a small light on so you don't trip, and sweep up the beans afterwards: raw dried beans are harmful to dogs and cats.`,
             },
             {
               heading: `Keeping both at home`,
               body: `For the Parentalia, make a small separate shrine to your dead: photos, names, a candle, a little bowl. On one or more of the nine days, offer violets or other flowers, grain, salt and bread dipped in wine, and speak their names. Leave the offerings, then dispose of them outside: they are not eaten. On the Caristia, share a meal with your living family.
 
-For the Lemuria, follow Ovid's rite simply and quietly on one or all three nights. Keep it gentle: you are asking the restless to go, not attacking anyone. Wash your hands after, and the next morning offer to the Lares.`,
+For the Lemuria, follow Ovid's rite simply and quietly on one or all three nights. Keep it gentle: you are asking the restless to go, not attacking anyone. Wash your hands after, and the next morning offer to the Lares.
+
+If you are grieving someone recently lost, the Parentalia can be tender. Go at your own pace, and if grief is overwhelming or not easing, talk to someone you trust, your doctor, or a bereavement support service where you live. If you feel genuinely haunted or frightened at home, that is worth talking through with someone too, not only ritualising.`,
             },
           ],
           knowAndDont: {
@@ -571,7 +573,7 @@ Matronalia (1 March) honoured Juno Lucina, goddess of childbirth: married women 
               heading: `Summer`,
               body: `Lemuria (9, 11 and 13 May) you have met. Vestalia (7 to 15 June) was Vesta's festival: the inner shrine of her temple, normally closed, was opened to married women, who came barefoot with offerings of food. Bakers and millers honoured her, and donkeys, which turned the mill-stones, were garlanded with flowers and loaves and given a rest. On 15 June the temple was cleaned and the sweepings carried to the Tiber. At home: clean your stove or hearth, bake salted bread, and garland your lamp.
 
-Neptunalia (23 July), in the summer heat, honoured Neptune as god of fresh water. People built shelters of leafy branches (umbrae) and feasted in them. At home: offer to Neptune at a river, spring or a bowl of water, and think about water in a dry season.`,
+Neptunalia (23 July), in the summer heat, honoured Neptune as god of fresh water. People built shelters of leafy branches (umbrae) and feasted in them. At home: offer to Neptune at a bowl of fresh water, or pour clean water at a river or spring, and think about water in a dry season. Don't throw food or wine into rivers and springs, and keep well back from fast or deep water.`,
             },
             {
               heading: `Winter`,
@@ -611,7 +613,7 @@ Dies Natalis Solis Invicti (25 December), the birthday of the Unconquered Sun, i
               heading: `The public religion`,
               body: `Roman state religion was run by colleges of priests who were also politicians. The pontifices, led by the Pontifex Maximus, oversaw the calendar and sacred law. The augurs interpreted the will of the gods through signs. The flamines served individual gods, the Flamen Dialis serving Jupiter under many taboos. The Vestal Virgins kept the city's sacred flame and made mola salsa. Magistrates made vows and sacrifices for the whole people. Temples, festivals and games were paid for by the state.
 
-This religion ended gradually after Christianity became the empire's religion. In 382 CE state funding for the old cults was withdrawn, the Altar of Victory was removed from the Senate house, and in 394 the Vestal fire was put out.`,
+This religion ended gradually after Christianity became the empire's religion. In 382 CE state funding for the old cults was withdrawn, the Altar of Victory was removed from the Senate house, and by about 394 the Vestal fire had gone out and the Vestals were disbanded.`,
             },
             {
               heading: `Why it can't simply be restarted`,
@@ -700,7 +702,7 @@ Ask before acting, not about the distant future. Ask whether the gods approve, a
               heading: `Modern groups`,
               body: `Nova Roma, founded in 1998 in the United States, is an international organisation that models itself on the Roman Republic, with elected magistrates, a senate, priestly colleges and public rites. It has members around the world and organises festivals and conventions. Some people love its Republican structure; others find the political role-play distracting from religion.
 
-In Italy, the Associazione Tradizionale Pietas, founded in the 2000s, runs public rites and works on legal recognition. The Movimento Tradizionale Romano, active since the 1980s, is older. Some Italian Roman traditionalist circles have drawn on the writings of Julius Evola, an esoteric writer associated with Fascism, and critics have raised concerns about far-right sympathies in parts of that milieu. Practitioners vary a great deal, and you should judge groups by what they actually say and do.`,
+In Italy, the Associazione Tradizionale Pietas, active since the early 2000s and drawing on circles that go back decades earlier, runs public rites and keeps a temple sanctuary in Rome; in 2020 it reorganised as Pietas – Comunità Gentile, registered under Italian law as a religious community. The Movimento Tradizionale Romano was formed in 1988 by uniting several existing groups. Some Italian Roman traditionalist circles have drawn on the writings of Julius Evola, an esoteric writer associated with Fascism, and critics have raised concerns about far-right sympathies in parts of that milieu. Practitioners vary a great deal, and you should judge groups by what they actually say and do.`,
             },
             {
               heading: `Differences you will meet`,
@@ -718,7 +720,7 @@ The app's view: the Roman gods may be honoured by anyone, in any country, of any
             },
           ],
           knowAndDont: {
-            known: `Nova Roma was founded in 1998; Pietas is an active Italian association with public rites. Both publish their aims and structures openly.`,
+            known: `Nova Roma was founded in 1998 and later incorporated in Maine; Pietas reorganised in 2020 as Pietas – Comunità Gentile; the Movimento Tradizionale Romano dates from 1988. Nova Roma and Pietas publish their aims and structures openly.`,
             unknown: `Numbers of practitioners are not known. Groups change and split, and some Italian groups are small and private. Claims of continuous survival of Roman religion from antiquity are not supported by evidence.`,
           },
           inPractice: `Read the public statements of Nova Roma and Pietas. Note one thing you share with each and one you would do differently, and decide whether you want community now.`,
@@ -920,5 +922,7 @@ The app's view: the Roman gods may be honoured by anyone, in any country, of any
     `Jörg Rüpke, Religion of the Romans (2007).`,
     `H. H. Scullard, Festivals and Ceremonies of the Roman Republic (1981).`,
     `Harriet I. Flower, The Dancing Lares and the Serpent in the Garden (2017).`,
+    `Censorinus, De Die Natali 2 (no bloodshed on birthdays), checked at https://www.thelatinlibrary.com/censorinus.html; Theodosian Code 16.10.12 (8 November 392), Latin text and Pharr's translation at https://ostia-antica.org/privrel/privrel-intro.htm.`,
+    `Modern groups: Nova Roma (formed 1998), https://en.wikipedia.org/wiki/Nova_Roma_(organization); Pietas – Comunità Gentile (2020), The Wild Hunt, https://wildhunt.org/?p=571603; Movimento Tradizionale Romano (1988), https://en.wikipedia.org/wiki/Roman_Traditional_Movement.`,
   ],
 };

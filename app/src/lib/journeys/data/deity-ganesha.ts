@@ -226,7 +226,7 @@ In late Vedic household manuals, beings called vinayakas are troublesome spirits
               heading: 'Puranas and the Ganapatyas',
               body: `In the Puranas Ganesha becomes the son of Shiva and Parvati and takes on his familiar stories. Two late Puranas, the Ganesha Purana and the Mudgala Purana, are wholly about him. The Ganapatya tradition worships him as the supreme god, of whom all others are forms. A short Sanskrit text, the Ganapati Atharvashirsha, which praises him as the ultimate reality, is recited widely; scholars generally date it late, often to the sixteenth or seventeenth century, though devotees hold it to be Vedic.
 
-The Ganapatyas were strongest in Maharashtra, where the saint Morya Gosavi, around the sixteenth century, settled at Chinchwad near Pune. Morya's name is in the festival cry "Ganpati Bappa Morya!"`,
+The Ganapatyas were strongest in Maharashtra, where the saint Morya Gosavi settled at Chinchwad near Pune; his dates are disputed, with estimates running from the fourteenth to the seventeenth century. Morya's name is in the festival cry "Ganpati Bappa Morya!"`,
             },
             {
               heading: 'Temples',
@@ -273,7 +273,7 @@ At home, families bring in a new clay image of Ganesha, often carried in from th
             },
             {
               heading: 'A public festival',
-              body: `Ganesh Chaturthi was a household festival for centuries. In 1893 the nationalist leader Bal Gangadhar Tilak promoted it in Pune as a great public festival (sarvajanik), partly to bring people together across caste lines under colonial rule; a Pune contemporary, Bhausaheb Rangari, is also credited with the first public image a year earlier. Since then public pandals have become huge. Mumbai's Lalbaugcha Raja, set up since 1934, draws queues that last a whole day.
+              body: `Ganesh Chaturthi was a household festival for centuries. In 1893 the nationalist leader Bal Gangadhar Tilak promoted it in Pune as a great public festival (sarvajanik), partly to bring people together across caste lines under colonial rule; a Pune contemporary, Bhausaheb Rangari, is also credited with the first public image a year earlier. Since then public pandals have become huge. Mumbai's Lalbaugcha Raja, whose mandal was founded in 1934, draws queues that last a whole day.
 
 The Marathi arati "Sukhakarta Dukhaharta", attributed to the seventeenth-century saint Samarth Ramdas, is sung at nearly every Ganesha arati in Maharashtra. You will hear it at any festival, and it is worth learning the tune from people who sing it.`,
             },

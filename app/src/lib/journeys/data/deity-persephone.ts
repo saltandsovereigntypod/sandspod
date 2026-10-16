@@ -13,7 +13,7 @@ export const JOURNEY: Journey = {
 It is a self-dedication, not an initiation. Persephone was at the centre of the Eleusinian Mysteries, the most famous initiation of the ancient world, and those rites were secret and are lost. Nothing here reconstructs them. What you will find is her hymn, her real cult, a clear account of what is modern in how she is pictured now, and a practice you can keep.
 
 Her story begins with an abduction. If that touches your own life, go gently, take breaks, and skip any section you need to. You will need a small lamp or candle, a bowl of water, a pomegranate if you can find one, and some fresh flowers.`,
-  about: `Persephone, called Kore, “the Maiden,” and in Athens often Pherephatta, was the daughter of Demeter and Zeus. In the Homeric Hymn to Demeter, Hades carries her off from a flowering meadow with Zeus’s consent; her mother’s grief stops the grain from growing until Zeus relents, but because Persephone has eaten a pomegranate seed she must spend a third of each year below. Yet in Homer, which is older still, she is simply the “dread” queen of the dead, ruling beside Hades, with no abduction mentioned. In cult she was honoured with her mother at Eleusis and at the women’s Thesmophoria, as Despoina, “the Mistress,” in Arcadia, and as a goddess of brides and the dead at Locri in southern Italy. The Orphic gold tablets placed in graves address her as the queen the soul must meet. The Romans knew her as Proserpina. Today Hellenic polytheists honour her with Demeter and Hades, modern Pagans mark her descent and return at the equinoxes, and many people have taken her up as a “dark goddess” of shadow work and self-reclamation. That last image is modern, and this journey will say so, kindly and plainly.`,
+  about: `Persephone, called Kore, “the Maiden,” and in Athens often Pherephatta, was the daughter of Demeter and Zeus. In the Homeric Hymn to Demeter, Hades carries her off from a flowering meadow with Zeus’s consent; her mother’s grief stops the grain from growing until Zeus relents, but because Persephone has eaten a pomegranate seed she must spend a third of each year below. Yet in Homer, which is older still, she is simply the “dread” queen of the dead, ruling beside Hades, with no abduction mentioned. In cult she was honoured with her mother at Eleusis and at the women’s Thesmophoria, and as a goddess of brides and the dead at Locri in southern Italy. Arcadia had a close cousin of hers, Despoina, “the Mistress,” a daughter of Demeter whose true name was secret. The Orphic gold tablets placed in graves address her as the queen the soul must meet. The Romans knew her as Proserpina. Today Hellenic polytheists honour her with Demeter and Hades, modern Pagans mark her descent and return at the equinoxes, and many people have taken her up as a “dark goddess” of shadow work and self-reclamation. That last image is modern, and this journey will say so, kindly and plainly.`,
   notes: [
     'The Eleusinian Mysteries were secret and are not reconstructed here. Anyone claiming to teach them is offering a modern creation.',
     'The Hymn tells of an abduction, using words like “against my will.” Modern retellings in which Persephone chooses Hades are modern. Both can be meaningful, but they are not the same story.',
@@ -131,9 +131,9 @@ In the Iliad, a grieving mother called Althaia beats the earth with her hands an
             },
             {
               heading: 'Her titles',
-              body: `Her titles show both sides. As Kore she is Hagne, “the pure” or “holy,” and Kalligeneia, “of fair birth,” at the Thesmophoria. In Homer and later she is Epaine, “dread,” and Praxidike, “exacter of justice.” In Arcadia she was worshipped as Despoina, “the Mistress,” at the sanctuary of Lykosoura; Pausanias says her true name there was kept secret from the uninitiated, and he will not write it.
+              body: `Her titles show both sides. As Kore she is Hagne, “the pure” or “holy.” In Homer she is epaine, “dread,” and in the Orphic hymn to her she is Praxidike, “exacter of justice.” She is called Chthonia, “of the earth,” and simply Anassa, “Queen.” Despoina, “the Mistress,” was used of her and of other great goddesses as a respectful title.
 
-She is called Chthonia, “of the earth,” and simply Anassa, “Queen.” Many modern devotees also call her Queen of the Dead or Iron Queen. These are good modern titles drawn from old ideas. When you pray, use whichever names fit what you are asking: Kore for spring and new growth, Persephone or Despoina for matters of death and justice.`,
+Be careful with one famous Despoina. At Lykosoura in Arcadia, the Despoina worshipped in a great sanctuary was, Pausanias says, a daughter of Demeter by Poseidon, not by Zeus, and her real name was kept from the uninitiated; he will not write it, though he does write Persephone’s. She is a sister or local double of Kore rather than Kore herself. Many modern devotees also call Persephone Queen of the Dead or Iron Queen. These are good modern titles drawn from old ideas. When you pray, use whichever names fit what you are asking: Kore or Hagne for spring and new growth, Persephone, Anassa or Praxidike for matters of death and justice.`,
             },
             {
               heading: 'Symbols, plants and animals',
@@ -144,19 +144,19 @@ Animals are less clear. Snakes, which live in the ground, appear with her and De
           ],
           knowAndDont: {
             known:
-              'Homer’s Odyssey (books 10–11) and Iliad (book 9) show her as queen of the dead without telling the abduction story. Her titles Hagne, Epaine, Praxidike and Despoina are attested in literature and inscriptions. The pomegranate, torch, grain and flowers are her emblems in art.',
+              'Homer’s Odyssey (books 10–11) and Iliad (book 9) show her as queen of the dead without telling the abduction story. Her titles Hagne, epaine and Praxidike are attested in literature, inscriptions and the Orphic hymns. Pausanias (8.37.9) makes the Lykosoura Despoina a daughter of Demeter and Poseidon, distinct from Kore. The pomegranate, torch, grain and flowers are her emblems in art.',
             unknown:
               'Her name’s meaning and origin are unknown. Some scholars think the Maiden of the grain and the Queen of the dead were once separate goddesses who merged; others think they were always one. The Minthe story is late, and modern animal lists are mostly modern.',
           },
           inPractice:
-            'Many Hellenic polytheists keep Persephone on the shrine beside her mother as Kore and honour her separately, at night and with chthonic offerings, as queen. Choose two names to use this month, one for each face. Kore and Despoina are a good pair.',
+            'Many Hellenic polytheists keep Persephone on the shrine beside her mother as Kore and honour her separately, at night and with chthonic offerings, as queen. Choose two names to use this month, one for each face. Kore and Anassa are a good pair.',
           reflect: [
             'Which Persephone came to you first, the maiden or the queen? Did you know the queen was older in the sources?',
             'Where in your own life do you hold two roles that seem not to fit together?',
           ],
           further: [
             'Homer, Odyssey books 10–11, trans. Samuel Butler (1900), free on Project Gutenberg',
-            'Pausanias, Description of Greece 8.37, on Despoina at Lykosoura',
+            'Pausanias, Description of Greece 8.37, on Despoina at Lykosoura, a goddess close to Kore but not the same',
             'Walter Burkert, Greek Religion (1985), section on Demeter and Persephone',
           ],
           library: ['traditional/deity/persephone', 'traditional/deity/demeter', 'traditional/deity/hades', 'traditional/herb/mint'],
@@ -183,7 +183,7 @@ When she reunites with Demeter, she tells her mother that Hermes came and “I s
               heading: 'What changed in the retellings',
               body: `Many modern versions, in novels, comics, poems and devotional writing, tell the story differently: Persephone chooses Hades, eats the seed knowingly, and goes down to claim her throne. Some of these are lovely, and they have helped many people, especially survivors, find a story of power in a myth of being taken. But they are modern. The ancient hymn says she ate “against my will.”
 
-Later ancient writers also changed details. Ovid, writing in Latin around 8 CE, says she ate seven seeds and was betrayed by a gardener called Ascalaphus. Other writers set the meadow in Sicily. There was never one fixed version. The honest way to hold this is to know which version you are telling, and not to claim that a modern meaning is the ancient one.`,
+Later ancient writers also changed details. Ovid, writing in Latin around 8 CE, says she ate seven seeds in an underworld orchard and was betrayed by Ascalaphus, who saw her do it. Other writers set the meadow in Sicily. There was never one fixed version. The honest way to hold this is to know which version you are telling, and not to claim that a modern meaning is the ancient one.`,
             },
             {
               heading: 'The queen who stays',
@@ -219,7 +219,7 @@ That is why ancient people could honour her in two ways without contradiction. S
           sections: [
             {
               heading: 'With her mother',
-              body: `Most of Persephone’s worship was shared with Demeter. At Eleusis the Mysteries were for both goddesses, and the story of her loss and return was at their centre, though what initiates saw inside the hall remains secret. The Lesser Mysteries at Agrai each spring were associated especially with Kore. At the women’s Thesmophoria in autumn, the third day, Kalligeneia, celebrated “fair birth” in her name.
+              body: `Most of Persephone’s worship was shared with Demeter. At Eleusis the Mysteries were for both goddesses, and the story of her loss and return was at their centre, though what initiates saw inside the hall remains secret. The Lesser Mysteries at Agrai each spring were associated especially with Kore. At the women’s Thesmophoria in autumn, mother and daughter were honoured together, and the third day, Kalligeneia, “fair birth,” prayed for good children and good crops; ancient writers were unsure which goddess the name Kalligeneia belonged to.
 
 At Eleusis there was also a small cave sanctuary, the Plutonion, built into the rock beside the great hall, sacred to Hades and Persephone as rulers of the dead. It was a doorway to the underworld in stone. Many Greek towns had places like this, caves and chasms where people believed the queen below could be reached.`,
             },
@@ -284,7 +284,7 @@ It is worth being honest about this. The ancient Persephone was dread and powerf
               heading: 'Grief and the dead',
               body: `The other way many people come to her is through death. Persephone receives the dead, and the gold tablets show people trusting her to be kind to them. People who have lost someone often pray to her to welcome their dead, and to Kore to bring them back to life in themselves.
 
-This is good and old. But if you are drawn to her because you are thinking about your own death, or feel pulled toward the underworld in a way that frightens you, please talk to someone you trust or to a crisis line in your country. Persephone’s story ends with her coming back up into the light every year. The descent is only half of it.`,
+This is good and old. But if you are drawn to her because you are thinking about your own death, or feel pulled toward the underworld in a way that frightens you, please talk to someone you trust today, or to a crisis line: 988 in the US, Samaritans on 116 123 in the UK and Ireland, or your local emergency number. Grief that will not lift is also worth taking to a doctor or a bereavement service. Persephone’s story ends with her coming back up into the light every year. The descent is only half of it.`,
             },
             {
               heading: 'A shrine of your own',
@@ -481,7 +481,7 @@ Ancient Greeks rarely dedicated themselves to a single god. Your promise can sit
             instructions:
               'Turn to the earth, palms down. Pour the honey-milk slowly onto the soil, then the water.',
             spoken:
-              'Persephone, Despoina, dread Queen, wife of the Host of Many, you who rule all that lives and moves below and receive the dead with justice: I honour you, and I give this to you and take nothing back.',
+              'Persephone, Anassa, dread Queen, wife of the Host of Many, you who rule all that lives and moves below and receive the dead with justice: I honour you, and I give this to you and take nothing back.',
             minutes: 2,
           },
           {
@@ -563,9 +563,10 @@ Once a year, at her descent or her return, read your promise again and renew it,
   ],
   sources: [
     'Homeric Hymn to Demeter, trans. H. G. Evelyn-White, Hesiod, the Homeric Hymns and Homerica (1914), Project Gutenberg #348: https://www.gutenberg.org/ebooks/348 (quoted: “to be a snare for the bloom-like girl”; “reluctant”; “lamenting”; “all unwilling”; “you shall rule all that lives and moves and shall have the greatest rights among the deathless gods”; “I sprang up at once for joy”; “secretly put in my mouth sweet food, a pomegranate seed, and forced me to taste against my will”; “minister and companion”)',
-    'Homer, Odyssey, trans. Samuel Butler (1900), Project Gutenberg #1727: https://www.gutenberg.org/ebooks/1727 (quoted: “to the house of Hades and of dread Proserpine”; honey mixed with milk, wine and water, 10.516–520)',
-    'Homer, Iliad 9, trans. Samuel Butler (1898), Project Gutenberg #2199 (Althaia beating the earth and calling on Hades and Proserpine)',
-    'Pausanias, Description of Greece 8.37 (Despoina at Lykosoura)',
+    'Homer, Odyssey, trans. Samuel Butler (1900), Project Gutenberg #1727: https://www.gutenberg.org/ebooks/1727 (quoted: “to the house of Hades and of dread Proserpine”; paraphrased: honey mixed with milk, wine and water, 10.516–520; Proserpine sending up the Gorgon’s head, book 11; her groves of poplars and willows, book 10)',
+    'Homer, Iliad 9, trans. Samuel Butler (1898), Project Gutenberg #2199: https://www.gutenberg.org/ebooks/2199 (Althaia “beat the earth with her hands, calling upon Hades and on awful Proserpine”, paraphrased)',
+    'Orphic Hymn 29, To Persephone (Praxidike as her title)',
+    'Pausanias, Description of Greece 8.37.9 (Despoina at Lykosoura, daughter of Demeter and Poseidon, her name kept secret), trans. W. H. S. Jones, checked at https://www.theoi.com/Text/Pausanias8C.html',
     'Ovid, Metamorphoses 5 and Fasti 4 (later versions of the myth)',
     'Fritz Graf and Sarah Iles Johnston, Ritual Texts for the Afterlife (2013), on the gold tablets',
     'Christiane Sourvinou-Inwood on the Locri pinakes',

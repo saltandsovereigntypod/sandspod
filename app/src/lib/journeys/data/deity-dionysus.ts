@@ -220,7 +220,7 @@ Be careful with this one. The full story is pieced together mainly from late sou
               heading: 'The Anthesteria',
               body: `The Anthesteria, the festival of flowers, came in early spring in the month of Anthesterion, around February. It lasted three days. On the first, Pithoigia, “jar-opening,” the jars of the new wine were opened and the first of it offered to the god. On the second, Choes, “jugs,” everyone over the age of about three, including enslaved people, drank from their own jug of wine. There was a drinking contest held in silence, each person at a separate table, remembering a story of the polluted Orestes being welcomed but kept apart. Small children were given little jugs and wreaths of flowers. The wife of the city’s religious official was married to the god in a secret rite.
 
-The third day, Chytroi, “pots,” belonged to the dead. Pots of mixed grains were cooked for Hermes of the underworld, and nobody else ate them. The spirits of the dead were believed to walk the city, and people chewed buckthorn and smeared pitch on their doors to protect themselves. At the end of the day the spirits were sent away with an old saying, which runs roughly: “Out the door, you spirits; it is no longer the Anthesteria.”`,
+The third day, Chytroi, “pots,” belonged to the dead. Pots of mixed grains were cooked for Hermes of the underworld, and nobody else ate them. The spirits of the dead were believed to walk the city, and people chewed buckthorn and smeared pitch on their doors to protect themselves. At the end of the day the spirits were sent away with an old saying, recorded by later lexicographers as Thyraze Kēres, ouket’ Anthestēria: roughly, “Out the door, Keres, it is Anthesteria no more.” Some ancient sources give Kares, “Carians,” instead of Keres, which would make it a joke about household slaves sent back to work after the holiday.`,
             },
             {
               heading: 'The Lenaia and the City Dionysia',
@@ -245,7 +245,7 @@ For the Dionysia and Lenaia, the most fitting devotion is theatre: go to a play,
             known:
               'The three days of the Anthesteria, the silent drinking, the Chytroi pots for Hermes Chthonios and the sending-away of the spirits are attested in Aristophanes, Plutarch, Athenaeus and later lexicographers. The structure of the City Dionysia, its procession and its contests are well documented in inscriptions and literature.',
             unknown:
-              'The sacred marriage of the god to the wife of the archon basileus was secret and its form is unknown. Whether the spirits sent away at the Anthesteria were the dead or other beings (the Greek word keres is ambiguous) is debated. How plays were chosen in the earliest years is unclear.',
+              'The sacred marriage of the god to the wife of the archon basileus was secret and its form is unknown. Whether the spirits sent away at the Anthesteria were the dead or other beings (the Greek word keres is ambiguous) is debated, and some ancient writers read the saying as Kares, Carian slaves, rather than Keres at all. Whether the Chytroi was originally a day of the dead or a flood-remembrance (another ancient explanation) is also argued. How plays were chosen in the earliest years is unclear.',
           },
           inPractice:
             'Put the Anthesteria, Lenaia and Dionysia in your calendar now. For each, plan one thing: a first pour of new wine or juice at the Anthesteria, with a pot of grains for the dead that you do not eat; a play read, watched or performed at the Lenaia and Dionysia.',
@@ -361,7 +361,7 @@ Most offerings to Dionysus are shared, Olympian-style: pour his portion, and the
               heading: 'The sober way',
               body: `You never need alcohol to honour Dionysus. Grape juice is the fruit of the vine. Water, milk and honey were poured to many gods. The maenads in the Bacchae drew milk, honey and wine from the earth, and ecstasy came from the dance on the mountain, not from the cup.
 
-If you are in recovery, or alcohol harms you, honour him without it every time. Many devotees in recovery see him as Lyaios, the loosener, the god who frees people from what binds them, including addiction. Pour him juice, play him music and tell him about your freedom. If you are struggling with drinking, please reach out to a doctor or a support service in your country; that, too, is an offering to the god of liberation.`,
+If you are in recovery, or alcohol harms you, honour him without it every time. Many devotees in recovery see him as Lyaios, the loosener, the god who frees people from what binds them, including addiction. Pour him juice, play him music and tell him about your freedom. If you are struggling with drinking, please reach out to a doctor, a local alcohol service or a mutual-help group such as Alcoholics Anonymous or SMART Recovery; that, too, is an offering to the god of liberation.`,
             },
             {
               heading: 'Safe ecstasy',
@@ -571,7 +571,7 @@ Between festivals, pour for him now and then, dance, go to the theatre, make som
     'Euripides, Bacchae (405 BCE)',
     'Plutarch, On the Principle of Cold 18 (the Thyiades caught in snow on Parnassus), On the Bravery of Women 13 and Isis and Osiris 35 (the Thyiades at Delphi)',
     'Livy, History of Rome 39.8–19, and the Senatus Consultum de Bacchanalibus (186 BCE)',
-    'Aristophanes, Acharnians; Athenaeus and Photius on the Anthesteria',
+    'Aristophanes, Acharnians; Athenaeus and Photius on the Anthesteria; the saying “Thyraze Keres” in Photius and the Suda, s.v. Thyraze (paraphrased, in the journey’s own translation)',
     'H. W. Parke, Festivals of the Athenians (1977); Walter Burkert, Greek Religion (1985) and Homo Necans (1983)',
     'Radcliffe G. Edmonds III, Redefining Ancient Orphism (2013), on the Zagreus myth',
     'Fritz Graf and Sarah Iles Johnston, Ritual Texts for the Afterlife (2013), on the Bacchic gold tablets',

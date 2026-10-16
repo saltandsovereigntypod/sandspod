@@ -154,14 +154,14 @@ That is the character most modern devotees meet: grave, unflinching, fair, and n
             },
             {
               heading: 'Her place in the end of the world',
-              body: `At Ragnarök, the poem Völuspá says, a ship sails from the east with “the people of Hel” on board and Loki at the helm. Fenrir breaks free and Garmr howls before his cave. Hel herself does not fight in any surviving source; it is her people and her kin who go to war.
+              body: `At Ragnarök, the poem Völuspá says, a ship sails against the gods with Loki at the helm. In Bellows’ translation it carries “the people of Hel”; the manuscripts actually say the people of Muspell, the fire-realm, and Bellows changed it, so even this link is uncertain. Fenrir breaks free and Garmr howls before his cave. Hel herself does not fight in any surviving source; it is her people and her kin who go to war.
 
 Some Heathens find this reason enough not to honour her. Others note that the dead of Hel rising at the end is part of the turning of the world, not a sign of malice, and that after the fire a green earth rises and Baldr comes back from her hall. You will meet both views in the community, and both are honest readings of a few cryptic lines.`,
             },
           ],
           knowAndDont: {
             known:
-              'Snorri’s Gylfaginning (ch. 34 and 49–53, Anderson’s numbering) gives Hel’s parentage, appointment, hall, household and appearance, and the story of Baldr in her hall. Völuspá refers to the people of Hel at Ragnarök, and Baldrs draumar describes Odin riding to Hel’s high house.',
+              'Snorri’s Gylfaginning (ch. 34 and 49–53, Anderson’s numbering) gives Hel’s parentage, appointment, hall, household and appearance, and the story of Baldr in her hall. Völuspá describes Loki steering a ship at Ragnarök and the hound Garmr howling, and Baldrs draumar describes Odin riding to Hel’s high house.',
             unknown:
               'We cannot tell how much of Snorri’s Hel is older tradition and how much is his own learned elaboration, possibly shaped by Christian pictures of death personified. The meanings of Éljúðnir and several household names are uncertain. No source describes prayers or offerings to her.',
           },
@@ -362,7 +362,7 @@ Many also honour her on the anniversaries of deaths in their own family, at fune
             },
             {
               heading: 'What to give',
-              body: `Keep it plain. Cold water is the simplest and most common offering. Dark beer, stout, mead or red wine suit her, and dark bread, rye, porridge and butter, the foods of an ordinary farm. Soil, stones, a sprig of rosemary or yew (handled carefully and never burned indoors), and candles in black and white are traditional in modern practice.
+              body: `Keep it plain. Cold water is the simplest and most common offering. Dark beer, stout, mead or red wine suit her, and dark bread, rye, porridge and butter, the foods of an ordinary farm. Soil, stones, a sprig of rosemary or yew (yew handled with care, hands washed afterwards, kept from children and pets, never burned), and candles in black and white are traditional in modern practice.
 
 Some of the best offerings are acts: tending a neglected grave, giving to a hospice, volunteering with the dying, attending a funeral for someone with few mourners, learning a dead relative’s language or craft. Hel is often said to value such work over any gift on the shelf.`,
             },
@@ -566,7 +566,7 @@ On the ninth night, cook or buy something one of your dead loved, eat some in th
   ],
   sources: [
     'Rasmus B. Anderson, trans., The Younger Edda (1880), public domain: Gylfaginning ch. 34 (“Hel he cast into Niflheim…”, “One-half of her is blue…”) and ch. 52 (“He rode nine nights through deep and dark valleys…”, “the hue of dead men”, “downward and northward”), quoted from Project Gutenberg ebook #18947 (https://www.gutenberg.org/ebooks/18947); Ynglinga saga ch. 8 (“all dead men should be burned…”) from the Laing translation reproduced in the same edition.',
-    'Henry Adams Bellows, trans., The Poetic Edda (1923), public domain: Baldrs draumar 7 (“Here for Baldr the mead is brewed, the shining drink”), Hávamál 42 and 146, quoted from Project Gutenberg ebook #73533 (https://www.gutenberg.org/ebooks/73533); Völuspá 44 and 51 paraphrased.',
+    'Henry Adams Bellows, trans., The Poetic Edda (1923), public domain: Baldrs draumar 7 (“Here for Baldr the mead is brewed, the shining drink”), Hávamál 42 and 146, quoted from Project Gutenberg ebook #73533 (https://www.gutenberg.org/ebooks/73533); Völuspá 51 (“the people of Hel”, with Bellows’ note that the manuscripts read “people of Muspell”) and Völuspá 44 paraphrased.',
     'Gísla saga (Hel-shoes), Eyrbyggja saga (Helgafell), Óláfs saga Tryggvasonar (the erfi), the Norwegian Christian law codes on sitting out: paraphrased.',
     'Archaeology: the Oseberg ship burial (834). Scholarship: H. R. Ellis Davidson, The Road to Hel (1943); John Lindow (2001); Rudolf Simek (1993); Terry Gunnell (2000); Neil Price (2020).',
   ],

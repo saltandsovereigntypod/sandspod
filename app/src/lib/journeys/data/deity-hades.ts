@@ -12,7 +12,7 @@ export const JOURNEY: Journey = {
 
 The Greeks rarely worshipped him. They spoke of him with euphemisms, offered to him with averted faces, and never shared what they gave him. This journey keeps that care. It is quieter and more sparing than most, and that is the point.
 
-It is a self-dedication, not an initiation, and it does not make you a priest of anything. If you are grieving, Hades can be a steady presence; if you find yourself drawn to him because you are thinking about ending your life, please stop and talk to someone now, a friend, a doctor or a crisis line in your country. You will need a small lamp, a bowl of water, a dish of earth or a place outside to pour, and honey, milk and water.`,
+It is a self-dedication, not an initiation, and it does not make you a priest of anything. If you are grieving, Hades can be a steady presence; if you find yourself drawn to him because you are thinking about ending your life, please stop and talk to someone now: a friend, a doctor, or a crisis line such as 988 in the US or Samaritans on 116 123 in the UK and Ireland, or your local emergency number. You will need a small lamp, a bowl of water, a dish of earth or a place outside to pour, and honey, milk and water.`,
   about: `In Greek myth, after the gods defeated the Titans, the three sons of Kronos drew lots for the world: Zeus took the sky, Poseidon the sea, and Hades “the darkness of the realms under the earth,” as Poseidon puts it in the Iliad. His name may mean “the unseen,” and he wore a cap of invisibility. He rules the dead with Persephone, whom he carried off from her mother, and he is grim and unyielding: the Iliad calls him the god most hateful to mortals because he never gives anyone back. Yet he is not evil. He keeps the laws of the dead, punishes oath-breakers, and is fair. Few Greeks built him temples; Pausanias says the Eleans were the only people he knew of who honoured Hades with one, and it opened once a year. Instead people called him Plouton, “the wealthy one,” who sends up grain and metal from below, or Zeus Katachthonios, Zeus of the underworld, and honoured him beside Persephone at Eleusis and in cave shrines. Offerings to him were poured into the earth at night and never eaten. The Romans knew him as Pluto and Dis Pater. Today a small number of Hellenic polytheists honour him, mostly as Plouton and alongside Persephone, and he has many modern devotees drawn by grief, death work and pop culture. This journey asks you to meet the ancient god, not the cartoon.`,
   notes: [
     'Offerings to Hades are chthonic. They are poured into the earth, a pit or a dish of soil, or burnt or left, and are never eaten, drunk or shared. Keep his dishes separate from kitchen ware.',
@@ -126,7 +126,7 @@ So Hades is not a lesser god. He is one of the three great powers of the univers
               heading: 'Names they did not say',
               body: `Greeks were wary of saying his name. They used titles instead, and these titles tell you how they saw him. Plouton, “the wealthy one,” became the most common, because all the riches of the earth come from below: seed corn, metals, the dead themselves, who are many. Klymenos means “renowned,” Eubouleus “good counsellor,” and Polydegmon or Polydektes “receiver of many.” The Homeric Hymn to Demeter calls him “the Son of Cronos, He who has many names,” “Host of Many” and “Ruler of Many.”
 
-Homer also calls him Zeus Katachthonios, Zeus of the underworld, and Hesiod tells farmers to pray to “Zeus of the Earth.” Aidoneus is a poetic form of his name. The Romans called him Pluto, from Plouton, and Dis Pater, “rich father.” When you pray, it is perfectly traditional to use Plouton or another title.`,
+Homer also calls him Zeus Katachthonios, Zeus of the underworld, and Hesiod tells farmers to pray to “Zeus of the Earth,” whom most readers take to be the same god below. Aidoneus is a poetic form of his name. The Romans called him Pluto, from Plouton, and Dis Pater, “rich father.” When you pray, it is perfectly traditional to use Plouton or another title.`,
             },
             {
               heading: 'Emblems',
@@ -218,7 +218,7 @@ For a devotee, this means approaching Hades without either fear or flirtation. H
           sections: [
             {
               heading: 'Almost no temples',
-              body: `Greek cities were full of temples to Zeus, Athena, Apollo and Demeter. Temples to Hades were almost unknown. The travel writer Pausanias, in the second century CE, says the people of Elis were the only ones he knew of who honoured Hades with a sanctuary. It was opened once a year, and even then only the priest was allowed to enter. The Eleans explained that Hades had once helped them in war.
+              body: `Greek cities were full of temples to Zeus, Athena, Apollo and Demeter. Temples to Hades were almost unknown. The travel writer Pausanias, in the second century CE, says the people of Elis were the only ones he knew of who honoured Hades with a sanctuary. It was opened once a year, and even then only the priest was allowed to enter; Pausanias guesses this is because people too go down to Hades only once. The Eleans explained that when Herakles attacked Pylos, Hades had fought against him, and they honoured the god as a friend and an enemy of Herakles.
 
 There was also a sanctuary at the foot of Mount Minthe in Triphylia, named after the nymph in the mint story, and a few others. But for the most part Hades was not given the ordinary cult of sacrifices and feasts. He was the god you did not need to court. Sooner or later, everyone came to him.`,
             },
@@ -236,7 +236,7 @@ This is the pattern of chthonic offering. It happens at night. It goes down into
             },
             {
               heading: 'Rome: Dis and the mundus',
-              body: `The Romans honoured Dis Pater and Pluto in a similar way. Offerings were made at night, black animals were sacrificed, and libations were poured onto the ground. At the Secular Games, held roughly once a century, sacrifices were made to Dis and Proserpina at an underground altar in the Campus Martius called the Tarentum, uncovered only for the festival.
+              body: `The Romans honoured Dis Pater and Pluto in a similar way. Offerings were made at night, black animals were sacrificed, and libations were poured onto the ground. In the older, Republican form of the Secular Games, held roughly once a century, sacrifices were made to Dis and Proserpina at an underground altar in the Campus Martius called the Tarentum, uncovered only for the festival. Augustus’s Games of 17 BCE used the same place but honoured the Fates and other powers instead.
 
 Rome also had the mundus, a pit or chamber thought to connect with the underworld. On three days a year, 24 August, 5 October and 8 November, it was opened, and people said “the mundus is open”: the dead could come out, and public business was avoided. These days are sometimes kept by modern Roman polytheists as days to honour the dead and the gods below.`,
             },
@@ -276,7 +276,7 @@ Eclectic Pagans and witches sometimes honour him at Samhain as a god of the dead
               heading: 'Grief',
               body: `Hades is a steady god for the grieving. He does not promise to give your dead back, and he does not lie about death. What devotees often ask is that he keep their dead well, that Persephone receive them kindly, and that they themselves be able to bear the loss. Pouring a libation into the earth and saying the name of someone you have lost is one of the oldest acts of Greek religion.
 
-If you are grieving, also look after yourself in ordinary ways. Eat, sleep, talk to people, and seek a bereavement service or counsellor if the weight does not lift. If you feel drawn to Hades because you want to be with your dead, or because you are thinking about ending your life, please contact a crisis line or a doctor today. He is a god of the dead, not a god who calls the living to die.`,
+If you are grieving, also look after yourself in ordinary ways. Eat, sleep, talk to people, and seek a bereavement service or counsellor if the weight does not lift. If you feel drawn to Hades because you want to be with your dead, or because you are thinking about ending your life, please contact a crisis line (988 in the US, Samaritans on 116 123 in the UK and Ireland, or your local emergency number) or a doctor today. He is a god of the dead, not a god who calls the living to die.`,
             },
             {
               heading: 'A shrine apart',
@@ -557,8 +557,8 @@ Once a year, at the Anthesteria or on your dedication anniversary, read your pro
     'Homer, Odyssey, trans. Samuel Butler (1900), Project Gutenberg #1727: https://www.gutenberg.org/ebooks/1727 (quoted: 10.516–520, “dig a trench a cubit or so in length, breadth, and depth, and pour into it as a drink-offering to all the dead, first, honey mixed with milk, then wine, and in the third place water—sprinkling white barley meal over the whole”; “to Hades and to Proserpine”)',
     'Homeric Hymn to Demeter, trans. H. G. Evelyn-White (1914), Project Gutenberg #348 (quoted: “the Son of Cronos, He who has many names”; “Host of Many”; “Ruler of Many”; “no unfitting husband”)',
     'Hesiod, Works and Days 465, trans. H. G. Evelyn-White (1914) (quoted: “Zeus of the Earth”)',
-    'Orphic Hymn 18 (17 in Taylor’s numbering), To Pluto, trans. Thomas Taylor (1792), as transcribed at theoi.com: https://www.theoi.com/Text/OrphicHymns1.html (quoted: “Earth’s keys to thee, illustrious king belong”)',
-    'Pausanias, Description of Greece 6.25.2 (the shrine of Hades at Elis)',
+    'Orphic Hymn 18 (XVII in Taylor’s numbering), To Pluto, trans. Thomas Taylor, The Hymns of Orpheus (London, 1792), checked against the archive.org scan: https://archive.org/details/dli.ministry.28841 (quoted, with the long s modernised: “Earth’s keys to thee, illustrious king belong”); the same line stands in Taylor’s first edition, The Mystical Initiations (1787): https://archive.org/details/b28775430',
+    'Pausanias, Description of Greece 6.25.2–3 (the shrine of Hades at Elis), trans. W. H. S. Jones, checked at https://www.theoi.com/Text/Pausanias6B.html',
     'Plato, Cratylus 403a–404b',
     'Macrobius, Saturnalia 1.16.18, and Festus, on the Roman mundus',
     'Walter Burkert, Greek Religion (1985); Robert Garland, The Greek Way of Death (2001); Sarah Iles Johnston, Restless Dead (1999)',

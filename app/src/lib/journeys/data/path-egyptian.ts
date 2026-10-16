@@ -151,7 +151,7 @@ Modern Kemetics choose their own focus. Some lean on the New Kingdom, which has 
             `How does it feel to practise a religion whose words were silent for 1,400 years?`,
           ],
           further: [
-            `Geraldine Pinch, Egyptian Mythology: A Guide to the Gods, Goddesses, and Traditions of Ancient Egypt (2002)`,
+            `Geraldine Pinch, Egyptian Mythology: A Guide to the Gods, Goddesses, and Traditions of Ancient Egypt (Oxford, 2004; first published 2002 as Handbook of Egyptian Mythology)`,
             `Emily Teeter, Religion and Ritual in Ancient Egypt (2011)`,
             `The Book of the Dead, trans. Raymond Faulkner, ed. Carol Andrews (British Museum Press), or Budge's older translation (public domain)`,
             `Miriam Lichtheim, Ancient Egyptian Literature (3 vols.), for hymns and wisdom texts`,
@@ -322,7 +322,9 @@ At Deir el-Medina, people kept stelae for an "excellent akh of Ra" in their hous
               heading: 'An akhu shrine today',
               body: `Keep the akhu separate from the gods: a different shelf or a lower one. Put photographs or names on it, a candle, a cup of water and a small plate. Choose your honoured dead freely: family you loved, ancestors known and unknown, teachers, people of your community or your craft. You owe no place to anyone who harmed you. Don't put photos of the living on it.
 
-Offer water regularly, and bread, coffee or a food they liked from time to time. Say their names aloud; in Egypt, to speak someone's name was to make them live. Some Kemetics share offerings to the akhu back as they would offerings to the gods; others prefer to leave them and dispose of them respectfully the next day. Either is reasonable.`,
+If a loss is recent, go gently: the shelf can wait, and grief is not a test of devotion. If it is overwhelming or not easing, talk to someone you trust, your doctor, or a bereavement support service where you live.
+
+Offer water regularly, and bread, coffee or a food they liked from time to time, kept out of pets' reach. Say their names aloud; in Egypt, to speak someone's name was to make them live. Some Kemetics share offerings to the akhu back as they would offerings to the gods; others prefer to leave them and dispose of them respectfully the next day. Either is reasonable.`,
             },
           ],
           knowAndDont: {
@@ -499,7 +501,7 @@ For the akhu, end "for the ka of [name]".`,
             },
             {
               heading: 'What to offer',
-              body: `The first offering is always water, poured or set in a cup. After that, the old staples were bread and beer, and you can give bread or a cake and a beer, a grain drink, or juice. Wine, milk, dates, figs, honey, pomegranates, melons and roast meat or poultry were all given, as were lotus and other flowers, lettuce (for Min), onions (to Sokar and in Osiris festivals), linen, eye paint and incense. Frankincense (senetjer) and myrrh (antiu) were the great incenses, and kyphi, a blend described by Plutarch and in the temple of Edfu, was burned at night.
+              body: `The first offering is always water, poured or set in a cup. After that, the old staples were bread and beer, and you can give bread or a cake and a beer, a grain drink, or juice. Wine, milk, dates, figs, honey, pomegranates, melons and roast meat or poultry were all given, as were lotus and other flowers, lettuce (for Min), onions (to Sokar and in Osiris festivals; keep them well away from dogs and cats), linen, eye paint and incense. Frankincense (senetjer) and myrrh (antiu) were the great incenses, and kyphi, a blend described by Plutarch and in the temple of Edfu, was burned at night.
 
 Give what you would serve an honoured guest, fresh and clean. Don't offer leftovers or anything you've tasted first. Red drinks suit Sekhmet, remembering the red beer that calmed her.`,
             },
@@ -536,7 +538,7 @@ At home, after the offering has sat before the god for a while (some wait until 
               heading: 'The pure ones',
               body: `The ordinary Egyptian word for a priest was wab, "pure one". Purity was not a moral grade but a physical, ritual state, needed before coming near a god. Priests bathed in the temple's sacred lake, chewed or rinsed with natron (a natural salt of sodium carbonate and bicarbonate found in the Wadi Natrun), shaved their heads and bodies, abstained from sex before service, and wore only linen.
 
-Herodotus, visiting in the 5th century BC, was struck by it. In Macaulay's translation: "they wear garments of linen always newly washed... the priests shave themselves all over their body every other day... and the priests wear garments of linen only and sandals of papyrus... these wash themselves in cold water twice in the day and twice again in the night."`,
+Herodotus, visiting in the 5th century BC, was struck by it, first in Egyptians generally and then in the priests. In Macaulay's translation: "they wear garments of linen always newly washed... the priests shave themselves all over their body every other day... and the priests wear garments of linen only and sandals of papyrus... these wash themselves in cold water twice in the day and twice again in the night."`,
             },
             {
               heading: 'Things kept away',
@@ -585,11 +587,11 @@ That's enough. Fuss over purity can become anxiety, and that isn't ma’at eithe
               heading: 'A calendar of the river',
               body: `The Egyptian civil year had 365 days: twelve months of thirty days, in three seasons of four months each. Akhet was the inundation, when the Nile flooded; Peret, "emergence", the growing season; Shemu, the harvest. Five extra days at the end of the year, the epagomenal days, were the birthdays of Osiris, Horus, Set, Isis and Nephthys, and were treated as a dangerous, holy time.
 
-Because the year had no leap day, it slipped against the seasons by a day every four years. The ideal New Year was the heliacal rising of Sopdet (Sirius), the morning the star was first seen again before dawn after months of absence, which came at the start of the flood. Temples also kept a lunar calendar for some feasts. The Coptic Church still keeps the old civil months, and its New Year, Nayrouz, falls on 11 September.`,
+Because the year had no leap day, it slipped against the seasons by a day every four years. The ideal New Year was the heliacal rising of Sopdet (Sirius), the morning the star was first seen again before dawn after months of absence, which came at the start of the flood. Temples also kept a lunar calendar for some feasts. The Coptic Church still keeps the old civil months, and its New Year, Nayrouz, falls on 11 September (12 September in the year before a leap year).`,
             },
             {
               heading: 'Wep Ronpet and the Wag',
-              body: `Wep Ronpet, "the Opening of the Year", was the New Year festival, on the first day of the month of Thoth. It celebrated the renewal of the world, the return of the flood and the birth of the year, with offerings, new lamps, and gifts. Modern Kemetics usually date it by Sirius: in the northern hemisphere, from late July to mid August depending on your latitude. Some use a fixed date instead. Pick one and keep it.
+              body: `Wep Ronpet, "the Opening of the Year", was the New Year festival, on the first day of the month of Thoth. It celebrated the renewal of the world, the return of the flood and the birth of the year, with offerings, new lamps, and gifts. Modern Kemetics usually date it by Sirius: the star's first dawn rising comes in early August in Egypt and later the further north you live, toward late August in northern Europe. Some use a fixed date instead. Pick one and keep it.
 
 The Wag festival, on the 18th day of Thoth, honoured Osiris and the dead with offerings at tombs; it is one of the feasts most often named in offering formulas. Modern Kemetics give generously to the akhu at the Wag and remember the year's dead. The feast of Thoth often followed the next day.`,
             },
@@ -699,7 +701,7 @@ Keep the akhu shelf separate and lower.`,
           sections: [
             {
               heading: 'A formal temple',
-              body: `Kemetic Orthodoxy is a formal Kemetic temple founded in the United States in 1988 by Tamara Siuda, who leads it as its spiritual head. It is organised as a religious body with a priesthood, a structured beginners' course, community festivals, and a divination rite that identifies a member's divine "parents". Some people join after the course, at different levels of commitment.
+              body: `Kemetic Orthodoxy is a formal Kemetic temple founded in the United States in 1988 by Tamara Siuda, and incorporated in Illinois in 1993 as the House of Netjer. From 1996 she led it as its Nisut, or spiritual head; in August 2023 she stepped down from that role, and the temple's future leadership structure was still being worked out at the time of writing. It has a priesthood, a free introductory course, community festivals, and a divination rite that identifies a member's divine "parents". Some people join after the course, at different levels of commitment.
 
 For some, the structure, teaching and community are a gift; others find a hierarchy with a living spiritual leader doesn't suit them. If you're curious, read the temple's own materials and talk to members, and decide for yourself. If you join, its rites of membership are its own; this journey's dedication doesn't replace them.`,
             },
@@ -719,7 +721,7 @@ Eclectic practitioners honour Egyptian gods within other frameworks: in Wiccan c
             },
           ],
           knowAndDont: {
-            known: `Kemetic Orthodoxy was founded in the US in 1988 by Tamara Siuda; the Fellowship of Isis was founded in 1976; Crowley's Book of the Law dates to Cairo, 1904; the Ausar Auset Society was founded in 1973. Ancient Egypt was an African civilisation with deep ties to Nubia.`,
+            known: `Kemetic Orthodoxy was founded in the US in 1988 by Tamara Siuda, who stepped down as its Nisut in 2023; the Fellowship of Isis was founded in 1976; Crowley's Book of the Law dates to Cairo, 1904; the Ausar Auset Society was founded in 1973. Ancient Egypt was an African civilisation with deep ties to Nubia.`,
             unknown: `How many Kemetics there are, and how practice is split between the different approaches, is unknown. Debates over ancient Egyptians' ethnic identity have been distorted from many sides; the evidence shows a diverse Nile Valley population, not a modern racial category.`,
           },
           inPractice: `Read the "about" pages of two or three different Kemetic groups or writers, including one African-centred one. Note what you admire and what doesn't suit you. Learn three facts about modern Egypt you didn't know.`,
@@ -771,7 +773,7 @@ Eclectic practitioners honour Egyptian gods within other frameworks: in Wiccan c
         {
           id: 'eg-dedication-maat-figure',
           title: 'Make a Ma’at feather',
-          instructions: `Make or find a symbol of Ma’at: a real feather (shed, not from a protected species), a feather drawn on card, or a small figure of a seated woman with a feather. This is what you will present.`,
+          instructions: `Make or find a symbol of Ma’at: an ostrich feather (Ma’at's own, and sold legally as a farm by-product), a craft feather, a feather drawn on card, or a small figure of a seated woman with a feather. Don't pick up wild birds' feathers for this: in the United States and many other countries, keeping most wild bird feathers is illegal even when they were shed naturally. This is what you will present.`,
           times: 1,
         },
       ],
@@ -900,5 +902,6 @@ Ma’at is my offering. Ma’at is my life.`,
     `Erik Hornung, Conceptions of God in Ancient Egypt (1982); Geraldine Pinch, Egyptian Mythology (2002) and Magic in Ancient Egypt (1994); Robert K. Ritner, The Mechanics of Ancient Egyptian Magical Practice (1993)`,
     `John H. Taylor, Death and the Afterlife in Ancient Egypt (2001); Richard A. Parker, The Calendars of Ancient Egypt (1950); Serge Sauneron, The Priests of Ancient Egypt`,
     `Richard J. Reidy, Eternal Egypt (2010)`,
+    `Kemetic Orthodoxy's founding (1988), incorporation (1993) and the founder's stepping down as Nisut (August 2023): https://en.wikipedia.org/wiki/Kemetic_Orthodoxy, summarising the temple's own announcements at kemet.org`,
   ],
 };

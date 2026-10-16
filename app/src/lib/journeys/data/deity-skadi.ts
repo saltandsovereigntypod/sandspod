@@ -15,7 +15,7 @@ It is a self-dedication, not an initiation, and it does not replace the rites of
   notes: [
     'Skaði is a giantess (jötunn) who joined the gods. Heathen communities welcome her almost universally, but some honour the giants more cautiously than the Æsir and Vanir. Follow a group’s customs at its rites.',
     'The evidence for her worship is thin: a line of Lokasenna, a few place names and a royal genealogy. Most of what devotees do today is modern, and this journey says which is which.',
-    'Cold-weather practice must be safe. Dress for the weather, tell someone where you are going, stay off ice you are not sure of, and never go into the mountains alone or unprepared. An open window and a cold morning are enough.',
+    'Cold-weather practice must be safe. Dress for the weather, tell someone where you are going, stay off ice you are not sure of, and never go into the mountains alone or unprepared. Cold-water plunges are not part of this journey; if you swim in winter, do it only with training and company. An open window and a cold morning are enough.',
     'Hunting is part of her lore. If you hunt, follow the law and hunt ethically; if you do not, there is no need to start. Vegetarian and vegan offerings are fine.',
     'Do not leave food for wild animals. Take offerings of food away again, or give them to the earth where they will not habituate wildlife. Clean water and acts of care for wild places are always welcome.',
     'This app is inclusive. Skaði, who crossed from the giants to the gods and chose her own way of living, is for everyone, of any ancestry, gender or orientation. Folkish groups that make the gods a matter of race are not the tradition taught here.',
@@ -238,7 +238,7 @@ Some Swedish place names have been read as preserving it: Skedevi in Östergötl
             },
             {
               heading: 'Mother of jarls',
-              body: `In Ynglinga saga, Snorri says that after leaving Njörðr, Skaði married Odin and bore him many sons, one of them Sæmingr. He quotes a verse by the tenth-century skald Eyvindr skáldaspillir, from his poem Háleygjatal, which praised the jarls of Hlaðir in northern Norway. In the translation printed with Anderson’s edition: “To Asason Queen Skade bore / Saming, who dyed his shield in gore,— / The giant queen of rock and snow / Who loves to dwell on earth below.”
+              body: `In Ynglinga saga, Snorri says that after leaving Njörðr, Skaði married Odin and bore him many sons, one of them Sæmingr. He quotes a verse by the tenth-century skald Eyvindr skáldaspillir, from his poem Háleygjatal, which praised the jarls of Hlaðir, a family from Hålogaland in the far north of Norway. In the translation printed with Anderson’s edition: “To Asason Queen Skade bore / Saming, who dyed his shield in gore,— / The giant queen of rock and snow / Who loves to dwell on earth below.”
 
 The powerful Jarl Hákon, one of the last great pagan rulers of Norway, traced his family back to Sæmingr, and so to Skaði and Odin. A royal family claiming a goddess as ancestress suggests she was respected, not merely a figure of story.`,
             },

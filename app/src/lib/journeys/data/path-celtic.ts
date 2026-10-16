@@ -374,7 +374,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Ideas to treat with caution',
               body:
-                'A few popular notions come from modern books, not from the Celts. The “Celtic tree calendar” of thirteen tree-months was devised by Robert Graves in The White Goddess (1948), building on a seventeenth-century misreading of the ogham alphabet; Celtic tree astrology came later still. Ogham itself is real, carved on hundreds of stones from the fourth to seventh centuries, and medieval scholars linked its letters to trees, but its use for divination is modern. “Celtic shamanism” is a modern synthesis. And the fourfold “Celtic” Wheel of the Year with solstices and equinoxes is a twentieth-century combination; the Gaelic year had four fire festivals, and the solstices and equinoxes are barely mentioned.\n\nNone of this makes these things wrong to use. It means saying where they come from.',
+                'A few popular notions come from modern books, not from the Celts. The “Celtic tree calendar” of thirteen tree-months was devised by Robert Graves in The White Goddess (1948), building on a seventeenth-century misreading of the ogham alphabet; Celtic tree astrology came later still. Ogham itself is real, carved on hundreds of stones from the fourth to seventh centuries, and medieval scholars linked its letters to trees, but its use for divination is modern. “Celtic shamanism” is a modern synthesis. And the eightfold “Celtic” Wheel of the Year with solstices and equinoxes is a twentieth-century combination; the Gaelic year had four fire festivals, and the solstices and equinoxes are barely mentioned.\n\nNone of this makes these things wrong to use. It means saying where they come from.',
             },
           ],
           knowAndDont: {
@@ -447,7 +447,7 @@ export const JOURNEY: Journey = {
           id: 'c-study-weekly',
           title: 'Weekly offering at the hearth',
           instructions:
-            'Once a week, on a day you choose, light your hearth candle and make a small offering: milk, butter, bread, oats, ale or whiskey. Speak to the gods, the ancestors or the spirits of place, or to a single god you are learning about. Read aloud a short passage from the week’s text.',
+            'Once a week, on a day you choose, light your hearth candle and make a small offering: milk, butter, bread, oats, or a drop of ale or whiskey (water, milk or apple juice if you don’t drink). Speak to the gods, the ancestors or the spirits of place, or to a single god you are learning about. Read aloud a short passage from the week’s text.',
           times: 6,
           every: 'week',
           prompt: 'What did you offer, to whom, and what did you read? Did anything stand out?',
@@ -536,7 +536,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Holy wells',
               body:
-                'There are around three thousand holy wells in Ireland, and many more across Scotland, Wales, Cornwall and Brittany. Most are now dedicated to saints, Brigid above all, and many had pagan predecessors, though that is rarely provable. On the saint’s day (the pattern, from patrún) people come to make the rounds: walking sunwise around the well a set number of times, praying at each station, drinking or washing with the water, and leaving a small token.\n\nVisit with respect: these are living Christian sites, cared for by local people. Walk the rounds sunwise, take only a little water if any, and don’t leave synthetic rags, plastic or anything that won’t rot. If you tie a cloth to a rag tree (a clootie in Scotland), use undyed cotton or wool and a short strip. Leave the place cleaner than you found it.',
+                'There are around three thousand holy wells in Ireland, and many more across Scotland, Wales, Cornwall and Brittany. Most are now dedicated to saints, Brigid above all, and many had pagan predecessors, though that is rarely provable. On the saint’s day (the pattern, from patrún) people come to make the rounds: walking sunwise around the well a set number of times, praying at each station, drinking or washing with the water, and leaving a small token. (Today most well water is untested; wash with it rather than drink it.)\n\nVisit with respect: these are living Christian sites, cared for by local people. Walk the rounds sunwise, take only a little water if any, and don’t leave synthetic rags, plastic or anything that won’t rot. If you tie a cloth to a rag tree (a clootie in Scotland), use undyed cotton or wool and a short strip. Leave the place cleaner than you found it.',
             },
             {
               heading: 'What not to do',
@@ -619,12 +619,12 @@ export const JOURNEY: Journey = {
             {
               heading: 'The Gaelic year',
               body:
-                'The Gaelic year turned on four festivals, each beginning at sunset: Samhain (1 November), Imbolc (1 February), Bealtaine (1 May) and Lughnasadh (1 August). Medieval Irish texts such as Tochmarc Emire name all four, and they were legal and agricultural turning points, when rents were paid, livestock moved and hired workers changed masters. The Gaulish Coligny calendar, a bronze tablet of the second century CE found in France in 1897, marks a month called Samonios with “three nights” (TRINOX SAMONI), which may or may not be related to Samhain.',
+                'The Gaelic year turned on four festivals, each beginning at sunset: Samhain (1 November), Imbolc (1 February), Bealtaine (1 May) and Lughnasadh (1 August). The tale Tochmarc Emire (the Wooing of Emer) lists all four with a learned gloss on each, calling the August feast by its older name Brón Trogain, and notes that the year once had two halves, summer from Bealtaine and winter from Samhain. They were legal and agricultural turning points, when rents were paid, livestock moved and hired workers changed masters. The Gaulish Coligny calendar, a bronze tablet of the second century CE found in France in 1897, marks a month called Samonios with “three nights” (TRINOX SAMONI), which may or may not be related to Samhain.',
             },
             {
               heading: 'Samhain',
               body:
-                'Samhain, “summer’s end”, opened the dark half of the year and was the Gaelic new year. In the stories it is when the síd mounds open, when great assemblies were held at Tara, and when the Dagda met the Morrígan. In folk custom, recorded across Ireland, Scotland and Man, people lit bonfires, went guising in masks and disguises, carved turnips into lanterns, played divination games with apples and nuts, and baked barmbrack with a ring inside to foretell a marriage. Food was left out and doors left unlatched for the dead coming home. After Samhain the blackberries were left alone; the púca had spoiled them. In Wales, Nos Galan Gaeaf was a spirit night (ysbrydnos), with bonfires and a fearsome tailless black sow said to take the last one home.\n\nToday you can keep it with a meal for the living and the dead: a candle in the window, a plate set for the ancestors, the names of your dead spoken aloud, apples and nuts on the table.',
+                'Samhain, “summer’s end”, opened the dark half of the year, and many people call it the Gaelic new year, though that is a reasonable reading rather than a stated fact in the sources. In the stories it is when the síd mounds open, when great assemblies were held at Tara, and when the Dagda met the Morrígan. In folk custom, recorded across Ireland, Scotland and Man, people lit bonfires, went guising in masks and disguises, carved turnips into lanterns, played divination games with apples and nuts, and baked barmbrack with a ring inside to foretell a marriage. Food was left out and doors left unlatched for the dead coming home. After Samhain the blackberries were left alone; the púca had spoiled them. In Wales, Nos Galan Gaeaf was a spirit night (ysbrydnos), with bonfires and a fearsome tailless black sow said to take the last one home.\n\nToday you can keep it with a meal for the living and the dead: a candle in the window, a plate set for the ancestors, the names of your dead spoken aloud, apples and nuts on the table. If a death is recent and raw, keep it as lightly as you need to, and lean on the living too: friends, a bereavement service or your doctor.',
             },
             {
               heading: 'Imbolc and Lá Fhéile Bríde',
@@ -728,7 +728,7 @@ export const JOURNEY: Journey = {
           id: 'c-prac-well',
           title: 'A visit to a well or spring',
           instructions:
-            'Find a holy well, spring or source near you (there are directories online for Ireland, Britain and Brittany). Visit with respect: walk sunwise around it three times, drink or wash if the water is safe, leave nothing that won’t rot. If none is within reach, visit a stream or river.',
+            'Find a holy well, spring or source near you (there are directories online for Ireland, Britain and Brittany). Visit with respect: walk sunwise around it three times, wash your hands or face in the water, leave nothing that won’t rot. Most holy wells are untested, so don’t drink unless the water is signed as safe. If none is within reach, visit a stream or river.',
           times: 1,
           prompt: 'What did the place feel like? Who cares for it now?',
         },
@@ -793,7 +793,7 @@ export const JOURNEY: Journey = {
           { name: 'A sprig of juniper or rowan', ref: 'traditional/herb/rowan', optional: true },
         ],
         preparation:
-          'Clean the house and shrine as for a festival. Bathe and dress in clean clothes. Fast lightly if that is safe for you. If you are going outdoors, choose a quiet place by water or on a hill, take everything you need, and plan to leave no trace.',
+          'Clean the house and shrine as for a festival. Bathe and dress in clean clothes. Fast lightly if that is safe for you. If you are going outdoors, choose a quiet place by water or on a hill, take everything you need, and plan to leave no trace. At dawn it is colder than you expect: dress warmly, tell someone where you are going, and stay on the shore or bank rather than in the water.',
         steps: [
           {
             title: 'Saining',
@@ -861,7 +861,7 @@ export const JOURNEY: Journey = {
       kind: 'ongoing',
       title: 'The turning year',
       intro:
-        'The dedication is a beginning. Keep the hearth daily, the four fire festivals through the year, and renew your vow each Samhain, the Gaelic new year. Keep reading the stories, keep learning the language and keep visiting the waters.',
+        'The dedication is a beginning. Keep the hearth daily, the four fire festivals through the year, and renew your vow each Samhain, the turn into winter that many keep as the Gaelic new year. Keep reading the stories, keep learning the language and keep visiting the waters.',
       days: 365,
       lessons: [],
       practices: [
@@ -898,8 +898,9 @@ export const JOURNEY: Journey = {
   sources: [
     'Julius Caesar, The Gallic War VI.14 and VI.18, trans. W. A. McDevitte & W. S. Bohn (1869), public domain: https://www.gutenberg.org/ebooks/10657 (quoted: “souls do not become extinct, but pass after death from one body to another”; “they compute the divisions of every season, not by the number of days, but of nights”).',
     'Alexander Carmichael, Carmina Gadelica vol. I (1900), public domain: https://archive.org/details/carminagadelicah01carm_0 (quoted: the smooring blessing, p. 237; “Bride’s bed is ready” / “Let Bride come in. Bride is welcome”, p. 168).',
-    'Kuno Meyer (trans.), The Triads of Ireland (1906), public domain, nos. 127, 210 and 250: https://celt.ucc.ie/published/T103006.html',
-    'Pliny the Elder, Natural History XVI.95 (Druids and mistletoe); Tacitus, Annals XIV.30 (Anglesey); Lucan, Pharsalia I (Teutates, Esus, Taranis); Cormac’s Glossary (Bealtaine fires); Gerald of Wales, Topographia Hibernica (Kildare fire). Paraphrased, not quoted.',
+    'Kuno Meyer (trans.), The Triads of Ireland (1906), public domain, nos. 127, 201 and 250, verified against the printed edition at https://archive.org/details/triadsofireland00meyeuoft (also on CELT: https://celt.ucc.ie/published/T103006.html).',
+    'Tochmarc Emire (the Wooing of Emer), trans. Kuno Meyer (1888), public domain: https://celt.ucc.ie/published/T301021.html, for the four festivals and the two halves of the year (paraphrased).',
+    'Pliny the Elder, Natural History XVI.95 (Druids and mistletoe); Tacitus, Annals XIV.30 (Anglesey); Lucan, Pharsalia I (Teutates, Esus, Taranis); Cormac’s Glossary, trans. O’Donovan, ed. Stokes (1868), entry Belltaine, https://archive.org/details/cu31924071173474; Gerald of Wales, Topographia Hibernica (Kildare fire). Paraphrased, not quoted.',
     'Ronald Hutton, Blood and Mistletoe (2009) and The Stations of the Sun (1996), for the Druid revival, Iolo Morganwg and festival history.',
     'Máire MacNeill, The Festival of Lughnasa (1962); Kevin Danaher, The Year in Ireland (1972), for folk customs.',
     'Fergus Kelly, A Guide to Early Irish Law (1988), for hospitality, honour price and the briugu.',

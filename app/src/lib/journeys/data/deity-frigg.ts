@@ -354,7 +354,7 @@ The Hávamál’s rule holds for her too: “gifts with gifts requite” (Bellow
               heading: 'How to offer',
               body: `Stand or sit at the shrine. Lift the offering, name her, and say what you give and why. Share a taste yourself, as at any blót. Leave her portion a while, then give it to the earth outside, or compost it. Milk and food should not sit out for long. Do not eat what has been given.
 
-Speak to her plainly. Snorri says Frigg listens; Lokasenna shows her trying to calm a quarrel. Bring her honest worries rather than grand speeches.`,
+Speak to her plainly. In Vafþrúðnismál she hears Odin out and gives honest counsel; in Lokasenna she tries to calm a quarrel. Bring her honest worries rather than grand speeches.`,
             },
             {
               heading: 'What not to ask',

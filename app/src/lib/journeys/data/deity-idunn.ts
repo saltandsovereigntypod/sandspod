@@ -126,7 +126,7 @@ Keep the fruit fresh. Replace it before it softens. A shrine to the goddess of r
               heading: 'Snorri’s few lines',
               body: `Snorri Sturluson introduces Iðunn in Gylfaginning, in the entry on her husband Bragi, the god of poetry. In Rasmus Anderson’s 1880 translation: “His wife is Idun. She keeps in a box those apples of which the gods eat when they grow old, and then they become young again, and so it will be until Ragnarok.” The questioner says it must be of great importance to the gods that she keeps them “with care and honesty,” and the god answering laughs: they ran a great risk once, he says, and he might tell of it.
 
-That is nearly all. Elsewhere Snorri lists Iðunn among the goddesses and gives poets kennings for her: “wife of Bragi,” “keeper of the apples,” and for the apples, “the gods’ remedy against old age.”`,
+That is nearly all. Elsewhere Snorri lists Iðunn among the goddesses and gives poets kennings for her: “wife of Bragi,” “keeper of the apples,” and for the apples “the medicine to bar old age” (Anderson’s wording for the Old Norse ellilyf).`,
             },
             {
               heading: 'In Lokasenna',
@@ -136,7 +136,7 @@ It is a small scene, but it shows a character: a peacemaker who will not trade i
             },
             {
               heading: 'Her name',
-              body: `Her name is usually explained as built on ið-, “again, renewed” (as in iðgrœnn, “evergreen, green again”), with a feminine ending: the renewing one, the ever-young, she who rejuvenates. That fits her role perfectly, which may be a sign that her role came from her name, or her name from her role. Either way, the meaning is not in doubt.`,
+              body: `Her name is usually explained as built on ið-, “again, renewed” (as in iðgrœnn, “evergreen, green again”), with a feminine ending: the renewing one, the ever-young, she who rejuvenates. That fits her role perfectly, which may be a sign that her role came from her name, or her name from her role. Either way, this meaning is widely accepted, though, as with most old names, not certain.`,
             },
             {
               heading: 'How slim the sources are',
@@ -296,7 +296,7 @@ There is also a late poem, Hrafnagaldr Óðins, in which Iðunn falls from the W
           sections: [
             {
               heading: 'A modern devotion, sincerely kept',
-              body: `Iðunn has many modern devotees, though there is no ancient cult to reconstruct. People come to her when they are recovering from illness or burnout, when they are caring for an ageing parent, when they garden or keep orchards, or simply because she is one of the gentlest figures in Norse myth. Heathens in Iceland’s Ásatrúarfélagið, The Troth and many kindreds honour her with apples, cider and spring flowers, often together with Bragi.
+              body: `Iðunn has many modern devotees, though there is no ancient cult to reconstruct. People come to her when they are recovering from illness or burnout, when they are caring for an ageing parent, when they garden or keep orchards, or simply because she is one of the gentlest figures in Norse myth. Heathens in many communities honour her with apples, cider and spring flowers, often together with Bragi.
 
 Everything they do is built on the story. That is a perfectly good foundation, as long as it is named honestly.`,
             },
@@ -367,7 +367,7 @@ Many devotees give her the first apple of the season, before anyone else eats fr
           ],
           knowAndDont: {
             known:
-              'Sigrblót, Midsummer and Yule are attested Norse seasonal feasts; Haustblót is a modern harvest blót. Hávamál 42 gives the gift-for-gift principle. Apple seeds contain amygdalin.',
+              'Sigrblót (the summer-opening feast) and Yule are attested Norse seasonal feasts; Midsummer customs are richly recorded in later Scandinavian folk tradition; Haustblót as an equinox harvest blót is modern. Hávamál 42 gives the gift-for-gift principle. Apple seeds contain amygdalin.',
             unknown:
               'None of these tides is connected with Iðunn in the old sources. Her colours, stones and flowers are modern associations.',
           },
@@ -543,7 +543,7 @@ On the ninth day, give someone an apple or apple cake, and give her the first sl
     },
   ],
   sources: [
-    'Rasmus B. Anderson, trans., The Younger Edda (1880), public domain: Gylfaginning ch. 26 (“His wife is Idun. She keeps in a box those apples…”, “with care and honesty”) and Skáldskaparmál (“Loke coaxed Idun out of Asgard into a forest…”), quoted from Project Gutenberg ebook #18947 (https://www.gutenberg.org/ebooks/18947).',
+    'Rasmus B. Anderson, trans., The Younger Edda (1880), public domain: Gylfaginning ch. 26 (“His wife is Idun. She keeps in a box those apples…”, “with care and honesty”) and Skáldskaparmál (“Loke coaxed Idun out of Asgard into a forest…”, “the medicine to bar old age”), quoted from Project Gutenberg ebook #18947 (https://www.gutenberg.org/ebooks/18947).',
     'Henry Adams Bellows, trans., The Poetic Edda (1923), public domain: Lokasenna 16 and 18, Skírnismál 19 and its note, Hávamál 42, quoted from Project Gutenberg ebook #73533 (https://www.gutenberg.org/ebooks/73533).',
     'Þjóðólfr of Hvinir, Haustlöng (c. 900); Völsunga saga ch. 1–2; Hrafnagaldr Óðins: paraphrased.',
     'Archaeology: the Oseberg ship burial (834). Art: James Doyle Penrose, Idun and the Apples (1890). Scholarship: Richard North (1997); H. R. Ellis Davidson (1964); John Lindow (2001); Rudolf Simek (1993); Ronald Hutton (1996).',

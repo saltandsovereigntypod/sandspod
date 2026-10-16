@@ -186,7 +186,7 @@ Epithets were not decoration. They aimed the prayer. A sailor called on Poseidon
             },
           ],
           knowAndDont: {
-            known: `Hundreds of epithets survive in inscriptions, dedications and literature, often tied to particular sanctuaries. Sacred animals and plants are well attested in art and texts. The Olympians as a group of twelve appear by the fifth century BCE, with an altar of the Twelve Gods in the Athenian agora.`,
+            known: `Hundreds of epithets survive in inscriptions, dedications and literature, often tied to particular sanctuaries. Sacred animals and plants are well attested in art and texts. The Olympians as a group of twelve are worshipped by the late sixth century BCE, when an altar of the Twelve Gods was set up in the Athenian agora (522/1 BCE).`,
             unknown: `The list of the Twelve varied. How ordinary people imagined the gods' natures, as persons, forces or both, differed widely and is hard to recover. Some popular modern ideas, such as "triple goddess" Hekate as maiden, mother and crone, are modern; Hekate was shown with three bodies from about the fifth century BCE, but as a guardian of crossroads, not as life stages.`,
           },
           inPractice: `Choose one or two gods to get to know through this journey, as well as Hestia, who comes first for everyone. Look them up in the Living Library and write down three epithets for each, what each one means, and one sacred animal or plant you could place on your shrine.`,
@@ -428,7 +428,7 @@ Prayer usually went with an offering, a libation or incense, as the gift that ca
             },
             {
               heading: `Writing your own`,
-              body: `Begin with the god's name and two or three epithets that fit why you are praying. Add something they are known for, or a place sacred to them. Then give your argument honestly: what you have offered before, or that you are just beginning and offer this libation now, or what you promise to give if they help. Then ask for one clear thing, or simply give thanks. End with a line of goodbye or praise; the Homeric Hymns often close with "Hail, and I will remember you in another song."
+              body: `Begin with the god's name and two or three epithets that fit why you are praying. Add something they are known for, or a place sacred to them. Then give your argument honestly: what you have offered before, or that you are just beginning and offer this libation now, or what you promise to give if they help. Then ask for one clear thing, or simply give thanks. End with a line of goodbye or praise; the Homeric Hymns often close with a farewell and, in Evelyn-White's words, "And now I will remember you and another song also."
 
 Keep prayers short at first. A good prayer is a few true sentences, said out loud, with your hands raised and your cup ready.`,
             },
@@ -607,7 +607,7 @@ On the second day, after dinner, pour a little wine to the Agathos Daimon. Ancie
               heading: `Hekate's Deipnon`,
               body: `On the last day of the month, the household cleaned itself. The sweepings and remains of household purifications were carried out, and food was left at the crossroads for Hekate, together with offerings for the restless dead. This is the Deipnon, "supper". Foods mentioned include cakes, bread, eggs, cheese, and small fish such as red mullet.
 
-The modern rite: clean the house and shrine, take out the rubbish, purify with khernips or incense, then take a plate of food out after dark to a crossroads (or a place in your garden, or a bowl at the door), set it down and walk away without looking back. The food is not eaten: by you, your family or your guests. It belongs to Hekate and the dead. One honest note: Aristophanes jokes that the poor ate Hekate's suppers, so in Athens they were sometimes taken by the hungry. Many modern practitioners give food to a food bank on the Deipnon as well, or instead.`,
+The modern rite: clean the house and shrine, take out the rubbish, purify with khernips or incense, then take a plate of food out after dark to a crossroads (or a place in your garden, or a bowl at the door), set it down and walk away without looking back. If you leave it anywhere public, use plain food with no packaging, keep it small, avoid foods that harm wildlife and pets (onion, garlic, chocolate, grapes and raisins, anything salty or spiced), and clear what remains the next morning; a bowl at your own threshold, emptied into the compost or bin the next day, is just as traditional and kinder to the neighbours. The food is not eaten: by you, your family or your guests. It belongs to Hekate and the dead. One honest note: Aristophanes jokes that the poor ate Hekate's suppers, so in Athens they were sometimes taken by the hungry. Many modern practitioners give food to a food bank on the Deipnon as well, or instead.`,
             },
           ],
           knowAndDont: {
@@ -688,7 +688,7 @@ If you live in the southern hemisphere, or far from Greek seasons, you can follo
           sections: [
             {
               heading: `The great oracles`,
-              body: `At Delphi, the Pythia, a woman of the town who served as Apollo's prophetess, sat on a tripod in the inner temple and gave answers inspired by the god. Consultations happened on set days, originally only Apollo's birthday on the seventh of the month, and a goat was sprinkled with cold water first: if it shivered, the god was willing. Answers came through male priests, sometimes in verse. Whether vapours from the rock played a part is still debated by geologists and historians.
+              body: `At Delphi, the Pythia, a woman of the town who served as Apollo's prophetess, sat on a tripod in the inner temple and gave answers inspired by the god. Consultations happened on set days: originally, Plutarch says, only once a year, on Apollo's birthday, the seventh of the spring month Bysios, and later on the seventh of most months. A goat was sprinkled with cold water first: if it shivered, the god was willing. Answers came through male priests, sometimes in verse. Whether vapours from the rock played a part is still debated by geologists and historians.
 
 At Dodona, Zeus spoke through the rustling of a sacred oak and other signs. Over four thousand small lead tablets survive there, scratched with ordinary people's questions: should I marry, is the child mine, will this trade go well. Other oracles included Apollo at Didyma and Claros, and the healing sanctuaries of Asklepios, where the sick slept in the temple hoping for a dream of the god.`,
             },
@@ -730,9 +730,9 @@ Treat signs as conversation, not commands. Greeks argued with oracles, reinterpr
           sections: [
             {
               heading: `In Greece`,
-              body: `Revival of the old religion in Greece began quietly in the twentieth century and grew from the 1990s. YSEE, the Supreme Council of Ethnikoi Hellenes, was founded in 1997. It calls the religion the ethnic Hellenic religion, holds public rites, including ceremonies at ancient sites, and campaigns for legal recognition; in 2017 Greek authorities granted the religion legal status as a "known religion", allowing public places of worship. YSEE is a member of the European Congress of Ethnic Religions.
+              body: `Revival of the old religion in Greece began quietly in the twentieth century and grew from the 1990s. YSEE, the Supreme Council of Ethnikoi Hellenes, was founded in 1997. It calls the religion the ethnic Hellenic religion, holds public rites, including ceremonies at ancient sites, and campaigns for legal recognition; in April 2017 it announced that Greek authorities had recognised the religion as a "known religion", the constitutional status that allows open worship and, with permits, its own places of worship. It is still not a legal religious body in the fuller sense the Orthodox Church enjoys. YSEE is a member of the European Congress of Ethnic Religions.
 
-Labrys, a religious community founded in Athens in the 2000s, focuses on household worship, philosophy and festivals, and has published a well-regarded practical book in English. Other Greek groups exist, some more nationalistic than others. Many Greek practitioners face social pressure in a country where the Orthodox Church is part of national identity.`,
+Labrys, a religious community founded in Athens around 2008 (accounts vary by a year or two), focuses on household worship, philosophy and festivals, and has published a well-regarded practical book in English. Other Greek groups exist, some more nationalistic than others. Many Greek practitioners face social pressure in a country where the Orthodox Church is part of national identity.`,
             },
             {
               heading: `Outside Greece`,
@@ -752,7 +752,7 @@ Festivals are a good way to meet others. Many groups hold public or online rites
             },
           ],
           knowAndDont: {
-            known: `YSEE was founded in 1997 and its religion was legally recognised in Greece in 2017. Labrys and Hellenion are well-established organisations with public writing and calendars.`,
+            known: `YSEE was founded in 1997, and in 2017 its religion gained "known religion" status in Greece. Labrys dates from around 2008 and Hellenion from 2001; both are well-established organisations with public writing and calendars.`,
             unknown: `Numbers of practitioners are not known with any accuracy; estimates for Greece range from a few thousand upward. Modern groups change, split and reform, and online communities are especially fluid.`,
           },
           inPractice: `Look up YSEE, Labrys and Hellenion online and read one statement of belief or practice from each. Note one thing you share with each and one thing you would do differently.`,
@@ -963,5 +963,8 @@ Festivals are a good way to meet others. Many groups hold public or online rites
     `Gunnel Ekroth, The Sacrificial Rituals of Greek Hero-Cults (2002); Scott Scullion, "Olympian and Chthonian", Classical Antiquity 13 (1994).`,
     `Sarah Iles Johnston, Ancient Greek Divination (2008).`,
     `Labrys Religious Community, Hellenic Polytheism: Household Worship (2014).`,
+    `Athenaeus 11.473b–c (Autocleides' Exegetikon on the kadiskos), checked in the English translation at https://www.attalus.org/old/athenaeus11.html (summarised, not quoted).`,
+    `YSEE's 2017 "known religion" status: The Wild Hunt, April 2017, https://wildhunt.org/2017/04/greek-paganism-legally-recognized-as-known-religion-in-greece.html; founding dates of YSEE (1997), Hellenion (2001) and Labrys (c. 2008) from https://en.wikipedia.org/wiki/Hellenism_(modern_religion).`,
+    `Homeric Hymns closing formula and Hymn 29, checked at https://www.gutenberg.org/ebooks/348; Hesiod, Works and Days 336–341 and 724–726, same edition.`,
   ],
 };

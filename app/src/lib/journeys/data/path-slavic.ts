@@ -40,7 +40,7 @@ export const JOURNEY: Journey = {
           id: 's-thr-tree',
           title: 'Greet a tree',
           instructions:
-            'This week, find an oak or a birch near you: oak was Perun’s tree in folk belief, birch the tree of spring and the Green Week. Stand with it, touch its bark, and greet it. If you can, leave a pinch of bread at its roots.',
+            'This week, find an oak or a birch near you: oak was Perun’s tree in folk belief, birch the tree of spring and the Green Week. Stand with it, touch its bark, and greet it. Leave a pinch of bread at its roots, or simply pour a little clean water, which is kinder to wildlife in towns and parks.',
           times: 1,
           prompt: 'Which tree did you find? What did it feel like to greet it?',
         },
@@ -180,7 +180,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Archaeology, folklore and forgeries',
               body:
-                'Archaeology adds sanctuaries, such as the eight-lobed ring at Peryn near Novgorod, traditionally linked to Perun, and the four-faced Zbruch idol, found in a river in 1848 and still debated. Folklore, collected in the nineteenth century by scholars such as Alexander Afanasyev in Russia and Oskar Kolberg in Poland, is by far the largest body of evidence for actual practice.\n\nThere are also forgeries. The bronze Prillwitz idols, “found” in the eighteenth century, were fakes. The Book of Veles, said to have been written on wooden boards that no scholar has ever seen, appeared in émigré circles in the 1950s and is regarded by linguists as a modern fabrication. The “Slavic-Aryan Vedas” of Ynglism are a 1990s invention. Treat them as modern texts if you read them at all.',
+                'Archaeology adds sanctuaries, such as the eight-lobed ring at Peryn near Novgorod, traditionally linked to Perun, and the four-faced Zbruch idol, found in a river in 1848 and still debated. Folklore, collected in the nineteenth century by scholars such as Alexander Afanasyev in Russia and Oskar Kolberg in Poland, is by far the largest body of evidence for actual practice.\n\nThere are also forgeries. The bronze Prillwitz idols, “found” in the eighteenth century, were fakes. The Book of Veles, said to have been written on wooden boards that no scholar has ever seen, appeared in émigré circles in the 1950s and is regarded by linguists as a modern fabrication. The “Slavic-Aryan Vedas” of Ynglism, published from the late 1990s, are a modern invention. Treat them as modern texts if you read them at all.',
             },
           ],
           knowAndDont: {
@@ -211,7 +211,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Perun and Veles',
               body:
-                'Perun, the thunderer, was the chief god of the Kyivan princes and their warriors, and most scholars see him in Procopius’s “maker of the lightning”. His name is related to the Lithuanian Perkūnas and to words for striking and for oak. In folklore his thunder passed to the prophet Elijah (Ilya), whose feast on 20 July in the Julian calendar (2 August in the Gregorian) was the great day of thunderstorms. The oak was his tree; the axe and the thunderstone were his signs. Rodnovers honour him as god of storm, justice, oaths and protection.\n\nVeles, or Volos, was “the god of cattle” by whom the Rus’ swore treaties alongside Perun. In the twelfth-century Tale of Igor’s Campaign the poet Boyan is called Veles’s grandson, linking him to song and magic. In folklore cattle came under St Blaise (Vlasiy), and the last ears of grain in the field were sometimes left as “Volos’s beard”. Today Veles is honoured as god of cattle, wealth, the underworld, the dead, magic and poetry, though some of those roles are reconstructed.',
+                'Perun, the thunderer, was the chief god of the Kyivan princes and their warriors, and most scholars see him in Procopius’s “maker of the lightning”. His name is related to the Lithuanian Perkūnas and to words for striking and for oak. In folklore his thunder passed to the prophet Elijah (Ilya), whose feast on 20 July in the Julian calendar (2 August in the Gregorian) was the great day of thunderstorms. The oak was his tree; the axe and the thunderstone were his signs. Rodnovers honour him as god of storm, justice, oaths and protection.\n\nVeles, or Volos, was “the god of cattle” by whom the Rus’ swore treaties alongside Perun. In the twelfth-century Tale of Igor’s Campaign the poet Boyan is called Veles’s grandson, linking him to song and magic. In folklore cattle came under St Blaise (Vlasiy), and in some places the last ears of grain left standing in the field were called “Volos’s beard” (elsewhere Elijah’s beard, the Saviour’s beard or simply “the beard”). Today Veles is honoured as god of cattle, wealth, the underworld, the dead, magic and poetry, though some of those roles are reconstructed.',
             },
             {
               heading: 'Mokosh',
@@ -359,12 +359,12 @@ export const JOURNEY: Journey = {
             {
               heading: 'Different approaches',
               body:
-                'Some groups are reconstructionist: they work carefully from the sources and folklore, sing folk songs, keep the Julian folk calendar and avoid forged texts. Others are freer, combining Slavic gods with ideas from Hinduism, Western esotericism or their own revelations. In Poland, the Native Polish Church (registered 1995) and Rodzima Wiara (Native Faith, registered 1996) are the best known. In Russia, groups range from the Circle of Pagan Tradition, which is relatively moderate and scholarly, to unions of communities with more political aims.\n\nCommon features include a kapishche (an outdoor sanctuary with carved wooden figures of the gods), a sacred fire, offerings called treba, priests or ritual leaders called volkhvy or zhrets, walking sunwise (posolon), and the cry “Slava!”, “Glory!”',
+                'Some groups are reconstructionist: they work carefully from the sources and folklore, sing folk songs, keep the Julian folk calendar and avoid forged texts. Others are freer, combining Slavic gods with ideas from Hinduism, Western esotericism or their own revelations. In Poland, the Native Polish Church (registered in 1995) and Rodzima Wiara (Native Faith, founded in Wrocław and registered in 1996) are the best known. In Russia, groups range from the Circle of Pagan Tradition, which is relatively moderate and scholarly, to unions of communities with more political aims.\n\nCommon features include a kapishche (an outdoor sanctuary with carved wooden figures of the gods), a sacred fire, offerings called treba, priests or ritual leaders called volkhvy or zhrets, walking sunwise (posolon), and the cry “Slava!”, “Glory!”',
             },
             {
               heading: 'The nationalist strands',
               body:
-                'Some Rodnover groups, especially but not only in Russia, have taken up nationalist, racist or antisemitic ideas, sometimes borrowing “Aryan” myths from the twentieth century. Ynglism, which teaches the forged “Slavic-Aryan Vedas”, has been banned as extremist by Russian courts. The eight-armed kolovrat sun symbol is used innocently by many Rodnovers but also by neo-Nazi groups, so context matters. Some groups have been tied to militarism and to the current war.\n\nMany Rodnovers reject all this firmly, and scholars of the movement stress how varied it is.',
+                'Some Rodnover groups, especially but not only in Russia, have taken up nationalist, racist or antisemitic ideas, sometimes borrowing “Aryan” myths from the twentieth century. Ynglism, founded in Omsk in 1992 and teaching the invented “Slavic-Aryan Vedas”, has been treated as extremist by Russian courts: its Omsk organisation was dissolved in 2004 for inciting ethnic hatred, a ruling upheld by the Supreme Court, and later court rulings declared books of the “Vedas” extremist material. The eight-armed kolovrat sun symbol is used innocently by many Rodnovers but also by neo-Nazi groups, so context matters. Some groups have been tied to militarism and to the current war.\n\nMany Rodnovers reject all this firmly, and scholars of the movement stress how varied it is.',
             },
             {
               heading: 'Where this app stands',
@@ -441,7 +441,7 @@ export const JOURNEY: Journey = {
           id: 's-study-weekly',
           title: 'Weekly treba',
           instructions:
-            'Once a week, light the candle in your beautiful corner and make a small offering (treba): bread and salt, honey, kasha, kvass, mead or milk. Speak to one god you are learning about, or to the ancestors, and read aloud something from the week’s lesson.',
+            'Once a week, light the candle in your beautiful corner and make a small offering (treba): bread and salt, honey, kasha, milk, or a little kvass or mead (honeyed water or fruit juice if you don’t drink alcohol). Speak to one god you are learning about, or to the ancestors, and read aloud something from the week’s lesson.',
           times: 6,
           every: 'week',
           prompt: 'What did you offer, to whom, and how did it feel?',
@@ -504,7 +504,7 @@ export const JOURNEY: Journey = {
             'How does it feel to treat your home as having its own spirit? What would you like to ask of him?',
           ],
           further: [
-            'W. R. S. Ralston, The Songs of the Russian People (1872, public domain), the chapter on demigods and fairies',
+            'W. R. S. Ralston, The Songs of the Russian People (1872, public domain), chapter II, on the Domovoy and household spirits',
             'Linda J. Ivanits, Russian Folk Belief (1989)',
           ],
           library: ['traditional/herb/birch'],
@@ -577,7 +577,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'The courtesy that keeps you safe',
               body:
-                'The old customs are mostly about courtesy and caution. Greet the place. Ask, at least silently, before gathering. Leave a little bread or a drink. Don’t litter or break branches for no reason. Stay away from the water at night. Many practitioners carry a sprig of wormwood or mugwort in summer, and keep a little salt and bread with them in the woods.\n\nThis journey does not teach calling up these beings. The folk tradition is clear that they are not pets, and that some of them are best left alone.',
+                'The old customs are mostly about courtesy and caution. Greet the place. Ask, at least silently, before gathering. Leave a little bread or a drink. Don’t litter or break branches for no reason. Stay away from the water at night. Many practitioners carry a sprig of wormwood or mugwort in summer, and keep a little salt and bread with them in the woods. Carry them, don’t eat or brew them: both are best avoided altogether in pregnancy, and wormwood is toxic in quantity. And never eat a wild mushroom or berry you have not identified with certainty.\n\nThis journey does not teach calling up these beings. The folk tradition is clear that they are not pets, and that some of them are best left alone.',
             },
           ],
           knowAndDont: {
@@ -618,7 +618,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Marzanna',
               body:
-                'In Poland, the Czech lands, Slovakia and among the Sorbs, a straw effigy of Marzanna (Morana, Smrtka, “Death”) was dressed in rags and carried out of the village in mid-Lent, then burned or drowned in a river while people sang that they were carrying death out and bringing summer in. Coming back, they carried a green branch or a decorated tree (the gaik or líto) to welcome spring, and nobody looked back at the river. Church records complained about it as early as the fifteenth century. Today Polish children drown Marzanna on the first day of spring, 21 March.\n\nYou can make a small Marzanna from straw, twigs and a scrap of cloth (natural materials only), carry her to running water or burn her safely, and bring home a green branch. Use only materials that won’t harm the river.',
+                'In Poland, the Czech lands, Slovakia and among the Sorbs, a straw effigy of Marzanna (Morana, Smrtka, “Death”) was dressed in rags and carried out of the village in mid-Lent, then burned or drowned in a river while people sang that they were carrying death out and bringing summer in. Coming back, they carried a green branch or a decorated tree (the gaik or líto) to welcome spring, and nobody looked back at the river. Church records complained about it as early as the fifteenth century. Today Polish children drown Marzanna on the first day of spring, 21 March.\n\nYou can make a small Marzanna from straw, twigs and a scrap of cloth (natural materials only), carry her to running water or burn her safely, and bring home a green branch. Use only materials that won’t harm the river, and throw her in from the bank: March water is cold enough to be dangerous.',
             },
             {
               heading: 'Honest dating',
@@ -654,12 +654,12 @@ export const JOURNEY: Journey = {
             {
               heading: 'Kupala Night',
               body:
-                'Kupala Night, the eve of St John the Baptist (23–24 June, or 6–7 July in the Julian calendar), is the great midsummer festival of fire and water, known as Ivan Kupala in the east and Noc Kupały or Sobótka in Poland. Young people wove wreaths of wild flowers and herbs and floated them on rivers with candles to see whom they would marry; they jumped over bonfires in pairs; they bathed in rivers or in the dawn dew; herbs gathered that night were thought especially strong. Late at night, the brave went into the forest to look for the fern flower, which blooms only on Kupala Night and grants luck or hidden treasure (ferns don’t flower; that is the point of the story).\n\nAt home: weave a wreath of flowers and herbs such as St John’s wort and mugwort, float it on a river (with no wire, plastic or candle wax that will harm the water), and light a candle or a safe fire.',
+                'Kupala Night, the eve of St John the Baptist (23–24 June, or 6–7 July in the Julian calendar), is the great midsummer festival of fire and water, known as Ivan Kupala in the east and Noc Kupały or Sobótka in Poland. Young people wove wreaths of wild flowers and herbs and floated them on rivers with candles to see whom they would marry; they jumped over bonfires in pairs; they bathed in rivers or in the dawn dew; herbs gathered that night were thought especially strong. Late at night, the brave went into the forest to look for the fern flower, which blooms only on Kupala Night and grants luck or hidden treasure (ferns don’t flower; that is the point of the story).\n\nAt home: weave a wreath of flowers and herbs such as St John’s wort and mugwort, float it on a river from a safe bank (with no wire, plastic or candle wax that will harm the water), and light a candle or a safe fire. If you jump a fire, keep it small, tie back hair and loose clothes and never jump after drinking; if you bathe at dawn, go with someone, in water you know, and never swim at night.',
             },
             {
               heading: 'Perun’s day and harvest',
               body:
-                'Ilya’s day, 20 July in the Julian calendar (2 August Gregorian), was the feast of thunder in East Slavic folk religion: people feared storms, didn’t work in the fields and sometimes shared a communal feast, including a bull or ram slaughtered together in some regions. Rodnovers keep it as Perun’s day, with oak leaves, beer or mead and a fire.\n\nHarvest ended with Dozhynki (dożynki in Polish): a wreath or a figure made from the last sheaf was carried in procession and kept in the house, and a few ears were left standing in the field, tied together and called in some places “Volos’s beard”, for the spirit of the field or for Veles. If you have a garden, leave the last of the harvest; if not, give the first or last loaf of autumn bread to the land.',
+                'Ilya’s day, 20 July in the Julian calendar (2 August Gregorian), was the feast of thunder in East Slavic folk religion: people feared storms, didn’t work in the fields and sometimes shared a communal feast, including a bull or ram slaughtered together in some regions. Rodnovers keep it as Perun’s day, with oak leaves, beer or mead and a fire.\n\nHarvest ended with Dozhynki (dożynki in Polish): a wreath or a figure made from the last sheaf was carried in procession and kept in the house, and a few ears were left standing in the field, knotted together, with bread and salt laid on the ground beside them, and called “the beard”. Ralston (1872) records the Russian name “the plaiting of the beard of Volos”; elsewhere it was Elijah’s or the Saviour’s beard, a gift for the spirit of the field, the ancestors or the saint. The link to Veles rests chiefly on that name. If you have a garden, leave the last of the harvest; if not, give the first or last loaf of autumn bread to the land.',
             },
             {
               heading: 'Dziady',
@@ -669,7 +669,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Keeping them now',
               body:
-                'Keep Kupala outdoors if you can, with water and fire. Keep Perun’s day in a thunderstorm season, with oak and mead. Keep the harvest with bread. Keep Dziady at home with your dead: a supper, a spoonful set aside of each dish, their names spoken, the door opened and closed, and the offerings not eaten afterwards but given to the earth.',
+                'Keep Kupala outdoors if you can, with water and fire. Keep Perun’s day in a thunderstorm season, with oak and mead. Keep the harvest with bread. Keep Dziady at home with your dead: a supper, a spoonful set aside of each dish, their names spoken, the door opened and closed, and the offerings not eaten afterwards but given to the earth.\n\nRemembering the dead can bring grief close. If a loss is recent, keep the festival as gently as you need, and lean on the living as well: family, friends, a bereavement service or your doctor.',
             },
           ],
           knowAndDont: {
@@ -707,7 +707,7 @@ export const JOURNEY: Journey = {
           id: 's-prac-treba',
           title: 'Weekly treba to a god',
           instructions:
-            'Each week, make a fuller offering to one god in turn: Perun (oak leaves, beer or mead), Veles (bread, milk, honey, a coin), Mokosh (thread, grain, bread, ideally on a Friday), Dazhbog (at sunrise, with honey and light). Follow the shape of a basic rite from the lesson.',
+            'Each week, make a fuller offering to one god in turn: Perun (oak leaves, beer or mead, or honeyed water if you don’t drink), Veles (bread, milk, honey, a coin), Mokosh (thread, grain, bread, ideally on a Friday), Dazhbog (at sunrise, with honey and light). Follow the shape of a basic rite from the lesson.',
           times: 4,
           every: 'week',
           prompt: 'Which god did you honour, and what did you notice?',
@@ -835,7 +835,7 @@ export const JOURNEY: Journey = {
         closing:
           'Share the rest of the loaf with your household or friends, as a feast. Leave the gods’ and ancestors’ portions overnight, then return them to the earth or running water. Keep your vow in the beautiful corner and reread it at Koliada.',
         safety:
-          'Only light outdoor fires where it is safe and allowed, keep water nearby and put the fire out completely. Never leave a candle unattended. Don’t pour alcohol onto a large flame; a few drops only, or pour it into a bowl. Keep salt and bread offerings away from pets.',
+          'Only light outdoor fires where it is safe and allowed, keep water nearby and put the fire out completely. Never leave a candle unattended. Don’t pour alcohol onto a large flame; a few drops only, or pour it into a bowl. Honeyed water or fruit juice serves as well as mead, beer or kvass (which has a little alcohol), especially if you don’t drink. Keep salt and bread offerings away from pets.',
       },
     },
     {
@@ -877,8 +877,8 @@ export const JOURNEY: Journey = {
   ],
   sources: [
     'Procopius, History of the Wars VII.14.22–23, trans. H. B. Dewing, Loeb vol. IV (1924), public domain in the US: https://archive.org/details/procopius0004proc (quoted: “For they believe that one god, the maker of the lightning, is alone lord of all things, and they sacrifice to him cattle and all other victims”; “They reverence, however, both rivers and nymphs and some other spirits, and they sacrifice to all these also, and they make their divinations in connection with these sacrifices”).',
-    'W. R. S. Ralston, The Songs of the Russian People (1872), public domain, pp. 121 and 137–38: https://archive.org/details/songsofrussianpe00ralsuoft (quoted: “Welcome, dyedushka (grandfather) to our new home!”, p. 138; the 28 January porridge offering, p. 121, paraphrased).',
-    'The Russian Primary Chronicle (Povest’ vremennykh let), entries for 907, 945, 971, 980, 988 and 1071; paraphrased, not quoted.',
+    'W. R. S. Ralston, The Songs of the Russian People (1872), public domain, ch. II, pp. 121 and 137: https://archive.org/details/songsofrussianpe00ralsuoft (quoted, verified: “Welcome, dyedushka (grandfather) to our new home!”, p. 137; the 28 January porridge offering, p. 121, paraphrased); ch. III, p. 251, “the plaiting of the beard of Volos” at harvest.',
+    'The Russian Primary Chronicle (Povest’ vremennykh let), entries for 907, 945, 971, 980, 988 and 1071; paraphrased, apart from the three-word phrase “the god of cattle”. The standard English translation (Cross & Sherbowitz-Wetzor, 1953) is still in copyright and is recommended, not quoted.',
     'Thietmar of Merseburg, Chronicon VI.23–25; Helmold of Bosau, Chronica Slavorum, Book I; Saxo Grammaticus, Gesta Danorum XIV; Lives of Otto of Bamberg; Maurice, Strategikon XI.4; paraphrased, not quoted.',
     'Vyacheslav Ivanov & Vladimir Toporov, Issledovaniya v oblasti slavyanskikh drevnostey (1974), for the reconstructed Perun–Veles myth; Radoslav Katičić, Božanski boj (2008).',
     'Stella Rock, Popular Religion in Russia: “Double Belief” and the Making of an Academic Myth (2007); Eve Levin, “Dvoeverie and Popular Religion” (1993).',

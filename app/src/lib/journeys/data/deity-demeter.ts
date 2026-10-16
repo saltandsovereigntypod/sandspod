@@ -17,7 +17,7 @@ You will need a loaf of bread or some barley, a small lamp or candle, a bowl of 
   notes: [
     'The inner rites of the Eleusinian Mysteries are unknown. Anyone who claims to teach or restore them is offering a modern creation. This journey describes only what ancient writers let slip and what modern scholars infer.',
     'Do not recreate the ancient kykeon drink with pennyroyal. Pennyroyal is toxic and dangerous in pregnancy, and has caused deaths. Barley water with garden mint is a safe modern nod to it.',
-    'The Thesmophoria was kept by citizen women in ancient Athens. Modern Hellenic groups differ on whether to keep it as a women’s rite; this journey offers a home version anyone can keep, and says so.',
+    'In antiquity the Thesmophoria was a women’s festival: in Athens it was kept by citizen wives, men were kept out, and its rites were secret. Modern groups differ. Many keep it as a rite for all women, trans women included; some open it to everyone. The home version in this journey is a modern adaptation that anyone can keep, not the ancient rite. If you join a group’s Thesmophoria, follow that group’s custom.',
     'The Hymn begins with an abduction. If that story touches your own experience, go gently, and skip any part you need to.',
     'If you leave grain, bread or fruit outside, keep grapes, raisins, onion, garlic and chocolate away from places animals can reach. Poppy seeds are fine for people; poppy pods and plants are not for eating.',
   ],
@@ -66,7 +66,7 @@ You will need a loaf of bread or some barley, a small lamp or candle, a bowl of 
           {
             title: 'Begin with Hestia',
             instructions:
-              'Light the lamp. Every Greek rite begins with Hestia, the goddess of the hearth. Pour a drop of your libation into the dish for her.',
+              'Light the lamp. Every Greek rite begins with Hestia, the goddess of the hearth. Pour a drop of your libation onto the table beside the lamp for her, or simply speak her name.',
             spoken: 'Hestia, first and last, keeper of this house, I begin with you.',
             light: true,
           },
@@ -171,7 +171,7 @@ Only two beings hear her cry: Hekate in her cave and Helios the sun. Demeter hea
             },
             {
               heading: 'The old woman at the well',
-              body: `Demeter does not go back to Olympus. She disguises herself as an old woman and sits by the Maiden Well at Eleusis, where the daughters of King Keleos find her and bring her home as a nurse for their baby brother Demophon. She will not sit on the fine couch. A servant woman called Iambe sets a plain stool with a fleece over it, and makes her laugh with jokes, the first time she has smiled since her daughter vanished. Offered red wine, she refuses and asks instead for barley meal mixed with water and soft mint. This drink is the kykeon.
+              body: `Demeter does not go back to Olympus. She disguises herself as an old woman and sits by the Maiden Well at Eleusis, where the daughters of King Keleos find her and bring her home as a nurse for their baby brother Demophon. She will not sit on the fine couch. A servant woman called Iambe sets out a simple jointed seat with a silvery fleece over it, and makes her laugh with jokes, the first time she has smiled since her daughter vanished. Offered red wine, she refuses and asks instead for barley meal mixed with water and soft mint. This drink is the kykeon.
 
 At night Demeter secretly lays the baby in the fire to burn away his mortality. His mother Metaneira sees, screams, and breaks the spell. Demeter reveals herself in her full height and radiance, demands a temple, and promises to teach her rites. Then she sits in the temple and grieves, and for a whole year no seed comes up anywhere on earth.`,
             },
@@ -222,7 +222,7 @@ There were two stages. The Lesser Mysteries were held in early spring at Agrai, 
               heading: 'The public days',
               body: `Much of the Greater Mysteries was public, and those days are fairly well described. On the 14th of Boedromion the sacred objects, the hiera, were carried in closed baskets from Eleusis to Athens. On the 15th the initiates gathered and the herald proclaimed who was excluded. On the 16th came the cry “To the sea, initiates!”, and each one bathed in the sea with a piglet, which was then sacrificed. Further sacrifices followed.
 
-On the 19th thousands walked the Sacred Way from Athens to Eleusis, about twenty kilometres, carrying torches and myrtle and singing to Iakchos, a god of the procession. On the way, at a bridge, masked figures shouted jokes and insults at them, echoing Iambe. They arrived after dark and fasted, breaking the fast with the kykeon.`,
+On the 19th thousands walked the Sacred Way from Athens to Eleusis, about twenty kilometres, carrying torches and myrtle and singing to Iakchos, a god of the procession. On the way, at a bridge over the river Kephisos, people shouted jokes and insults at them, echoing Iambe; later sources disagree about who did the jeering. They arrived after dark and fasted, breaking the fast with the kykeon.`,
             },
             {
               heading: 'Inside the hall',
@@ -239,7 +239,7 @@ That should shape how we approach it now. When a modern book or group offers “
           ],
           knowAndDont: {
             known:
-              'The festival calendar, the procession, the bathing with piglets, the exclusion proclamation, the Telesterion’s architecture and the kykeon are attested by inscriptions, excavation and many ancient authors. The plemochoai and “hye, kye” are reported by Proclus and Hippolytus. The penalties for revealing the secret are well documented.',
+              'The festival calendar, the procession, the bathing with piglets, the exclusion proclamation, the Telesterion’s architecture and the kykeon are attested by inscriptions, excavation and many ancient authors. The plemochoai vessels are described by Athenaeus, and the cry “hye, kye” is reported by Proclus and Hippolytus. The penalties for revealing the secret are well documented.',
             unknown:
               'What was said, done and shown in the Telesterion is unknown. Theories range from a sacred drama of Persephone’s return to a psychoactive kykeon made from ergot of barley; the ergot theory is popular but has no direct evidence. The Christian reports are late and hostile, and may not be accurate.',
           },
@@ -276,13 +276,13 @@ This is a good example of chthonic, earth-facing ritual: something given down in
             },
             {
               heading: 'The Haloa and the Skira',
-              body: `The Haloa was a winter festival at Eleusis in the month of Poseideon, around December, named after the threshing floor (halos). It honoured Demeter, Kore and Dionysus. Again women held their own feast, with food of every kind except a few forbidden things such as pomegranates and certain fish, cakes shaped like genitals, and much ribald joking, while officials of the cult urged them on. It celebrated fertility in the middle of winter, when the young grain was just coming up.
+              body: `The Haloa was a winter festival at Eleusis in the month of Poseideon, around December, named after the threshing floor (halos). It honoured Demeter, Kore and Dionysus. Again women held their own feast, with food of every kind except a few forbidden things such as pomegranates, apples, eggs and certain fish, cakes shaped like genitals, and much ribald joking. According to the late commentary that describes it, the magistrates laid the tables and then withdrew, leaving the women alone with the priestesses. It celebrated fertility in the middle of winter, when the young grain was just coming up.
 
 The Skira, at midsummer, was another women’s festival of Demeter and Persephone before threshing. Less is known about it. Together with the Thesmophoria and Haloa, it shows that Demeter’s year was largely in women’s hands, outside the great civic sacrifices that men ran.`,
             },
             {
               heading: 'Keeping them today',
-              body: `Modern Hellenic polytheists keep these festivals in different ways. Some groups hold the Thesmophoria as a women’s rite, with all women welcome, including trans women; some open it to everyone; some solitary devotees keep it alone at home. No modern group can claim to do exactly what Athenian women did, because no complete description survives.
+              body: `Modern Hellenic polytheists keep these festivals in different ways. Some groups hold the Thesmophoria as a women’s rite, with all women welcome, including trans women; some open it to everyone; some solitary devotees keep it alone at home. Each is a modern choice. The ancient festival was for women only, and no modern group can claim to do exactly what Athenian women did, because no complete description survives. If you join a group, keep its custom; at home, the version below is open to anyone who feels called to Demeter.
 
 A simple home Thesmophoria looks like this: on the first day, clean and set up the shrine; on the second, fast from morning until evening if your health allows, sit on the floor for a while, and read the Iambe scene aloud; on the third, feast, give her a share of good bread, and bury a little grain or bread in a pot of soil. A home Haloa can be a cheerful midwinter meal with friends, with a toast to Demeter, Kore and Dionysus and permission to laugh loudly.`,
             },
@@ -355,7 +355,7 @@ A good modern rule follows from this. Everyday offerings at the table are a shar
             },
             {
               heading: 'The kykeon, safely',
-              body: `In the hymn Demeter asks for barley meal with water and soft mint, and initiates drank this kykeon to break their fast. The mint was probably glechon, pennyroyal. Pennyroyal is toxic: its oil has killed people, and even the tea is dangerous in pregnancy and for anyone with liver or kidney problems. Please do not recreate the ancient recipe.
+              body: `In the hymn Demeter asks for barley meal with water and soft mint, and initiates drank this kykeon to break their fast. The Greek word the hymn uses for the herb is glechon, which is pennyroyal, a kind of mint. Pennyroyal is toxic: its oil has killed people, and even the tea is dangerous in pregnancy and for anyone with liver or kidney problems. Please do not recreate the ancient recipe.
 
 A safe modern nod is barley water: simmer a handful of pearl barley in water for half an hour, strain, cool, and add a few leaves of ordinary garden mint and a little honey if you like. It is not the sacred drink of Eleusis and should not be called that. It is a drink Demeter asked for in her grief, and a kind thing to drink while reading her story.`,
             },
@@ -570,7 +570,8 @@ Once a year, at the Thesmophoria or on the anniversary of your dedication, read 
   ],
   sources: [
     'Homeric Hymn to Demeter, trans. H. G. Evelyn-White, Hesiod, the Homeric Hymns and Homerica (1914), Project Gutenberg #348: https://www.gutenberg.org/ebooks/348 (quoted: “to be a snare for the bloom-like girl”; “queenly Deo wandered over the earth with flaming torches in her hands”; “secretly gave her sweet pomegranate seed to eat”; “a third part of the circling year”; “as does a Maenad down some thick-wooded mountain”; “Happy is he among men upon earth who has seen these mysteries”; “like good things”; “bringer of seasons and giver of good gifts”)',
-    'Hesiod, Works and Days 465–469, trans. H. G. Evelyn-White (1914), Project Gutenberg #348 (paraphrased: prayer to Zeus of the earth and pure Demeter at ploughing)',
+    'Hesiod, Works and Days 465–469, trans. H. G. Evelyn-White (1914), Project Gutenberg #348: https://www.gutenberg.org/ebooks/348 (quoted: “pray to Zeus of the Earth and to pure Demeter”)',
+    'Homeric Hymn to Demeter 192–211, trans. H. G. Evelyn-White (1914), Project Gutenberg #348 (paraphrased: Iambe’s jointed seat and silvery fleece; the drink of meal, water and soft mint)',
     'Pausanias, Description of Greece 8.25 and 8.42 (Demeter Erinys and Melaina)',
     'Aristophanes, Thesmophoriazusae; scholion on Lucian, Dialogues of the Courtesans 2.1 and 7.4 (Thesmophoria and Haloa)',
     'Cicero, De Legibus 2.36 (paraphrased, on the Mysteries and better hope)',

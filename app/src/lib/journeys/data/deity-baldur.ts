@@ -191,7 +191,7 @@ Only one did not. A giantess called Þökk sat in a cave and answered: “Thok w
             },
             {
               heading: 'The return',
-              body: `That is not quite the end. After the fire and flood of Ragnarök, Völuspá sees a green earth rising from the sea: “Then fields unsowed bear ripened fruit, / All ills grow better, and Baldr comes back; / Baldr and Hoth dwell in Hropt’s battle-hall.” (Bellows, stanza 62.) The killer and the killed, brothers again, live together in the new world.`,
+              body: `That is not quite the end. After the fire and flood of Ragnarök, Völuspá sees a green earth rising from the sea: “Then fields unsowed bear ripened fruit, / All ills grow better, and Baldr comes back; / Baldr and Hoth dwell in Hropt’s battle-hall” (Bellows, stanza 62). The killer and the killed, brothers again, live together in the new world.`,
             },
           ],
           knowAndDont: {
@@ -319,7 +319,7 @@ Yule is the other natural tide. The return of the light at midwinter suits a god
               'Whether the original weapon was a plant or a sword is unknown. Whether Scandinavian midsummer fires had anything to do with Baldr in pagan times is unknown; the name “Balder’s balefires” is poorly attested and late. The sun-god interpretation is a modern theory.',
           },
           inPractice:
-            'A common modern Litha or Midsummer custom: a bonfire or candle at sunset on the longest day, white flowers given to the fire or the water, and Baldr remembered as the light begins to wane; then a morning of light for him at Yule.',
+            'A common modern Litha or Midsummer custom: a candle, or a bonfire only where fires are permitted and with water at hand, at sunset on the longest day, white flowers given to the fire or the water, and Baldr remembered as the light begins to wane; then a morning of light for him at Yule.',
           reflect: [
             'What small thing, too young or too slight to worry about, has turned out to matter enormously in your life?',
             'How do you feel about keeping a custom that comes from a discredited theory but has become meaningful to many?',

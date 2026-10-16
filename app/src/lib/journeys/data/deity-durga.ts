@@ -278,9 +278,9 @@ Navaratri's popular "colour of the day", now widely followed in Maharashtra and 
             },
             {
               heading: 'Durga Puja in Bengal',
-              body: `In West Bengal, Bangladesh, Assam, Odisha and the Bengali diaspora, the same season is Durga Puja, the greatest festival of the year. It begins with Mahalaya, about a week before, when people remember their ancestors at dawn and, since the early 1930s, listen to the radio programme Mahishasuramardini, with Birendra Krishna Bhadra's chanting. The main days run from Shashthi (the sixth) to Dashami (the tenth).
+              body: `In West Bengal, Bangladesh, Assam, Odisha and the Bengali diaspora, the same season is Durga Puja, the greatest festival of the year. It begins with Mahalaya, about a week before, when people remember their ancestors at dawn and, since the early 1930s (accounts differ on the very first year, usually given as 1931), listen to All India Radio's dawn programme Mahishasuramardini, with Birendra Krishna Bhadra's chanting; the recording still broadcast was made decades later, and when the station replaced it in 1976 the outcry brought it straight back. The main days run from Shashthi (the sixth) to Dashami (the tenth).
 
-The images are made of clay by potters, most famously in Kumartuli in north Kolkata. Durga stands on her lion with Mahishasura at her feet, and around her stand her children, Lakshmi, Saraswati, Kartikeya and Ganesha. Beside Ganesha stands the kolabou, a banana plant dressed in a sari, the nine plants that embody the Goddess. Communities build pandals, temporary temples that can be astonishing works of art, and the whole city goes out to see them. Kolkata's Durga Puja was inscribed on UNESCO's list of the intangible cultural heritage of humanity in 2021.`,
+The images are made of clay by potters, most famously in Kumartuli in north Kolkata. Durga stands on her lion with Mahishasura at her feet, and around her stand her children, Lakshmi, Saraswati, Kartikeya and Ganesha. Beside Ganesha stands the kola bou, the “banana bride”: a banana plant bound together with eight other plants, the navapatrika or nine plants that embody the Goddess, bathed at dawn on the seventh day and dressed in a red-bordered sari. Communities build pandals, temporary temples that can be astonishing works of art, and the whole city goes out to see them. Kolkata's Durga Puja was inscribed on UNESCO's list of the intangible cultural heritage of humanity in 2021.`,
             },
             {
               heading: 'Her leaving',
@@ -366,7 +366,7 @@ Be a good guest. Dress modestly. Follow what others do, and ask when you are uns
               'There is no single "correct" Hindu home puja; customs differ by family, region, caste community and sampradaya (tradition). Views on menstruation and worship, and on non-Hindus taking part, vary and are actively debated within Hinduism.',
           },
           inPractice:
-            'Keep the five-part puja each night of the nine. Fast lightly if you wish, by eating simple vegetarian food, never in a way that harms your health. Plan one visit to a temple during or after these nine nights.',
+            'Keep the five-part puja each night of the nine. Fast lightly if you wish, by eating simple vegetarian food, never in a way that harms your health. If you are pregnant, diabetic, unwell, on medication, or have a history of disordered eating, skip fasting altogether; devotees in those situations are not expected to fast, and a simple offering is enough. Plan one visit to a temple during or after these nine nights.',
           reflect: [
             'Which of the customs of respect is hardest for you, and why?',
             'What do you hope to learn from a temple or a teacher that you cannot learn alone?',
