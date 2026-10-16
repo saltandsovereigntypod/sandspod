@@ -190,7 +190,7 @@ This is the heart of the story. Without Iðunn, the gods, who are not immortal b
             },
             {
               heading: 'The oldest telling',
-              body: `Snorri’s version is based on Haustlöng, “Autumn-long,” a poem by the Norwegian skald Þjóðólfr of Hvinir, composed around 900. It describes scenes painted on a shield, and it is the oldest source we have for Iðunn. In it she is “the maid who knew the Æsir’s cure for old age,” and the gods grow “grey and old” in her absence, though the apples themselves are not clearly named. The poem was made while the old religion was still alive, so we know her story is genuinely pre-Christian, even if we know nothing of her worship.`,
+              body: `Snorri’s version is based on Haustlöng, “Autumn-long,” a poem by the Norwegian skald Þjóðólfr of Hvinir, composed around 900. It describes scenes painted on a shield, and it is the oldest source we have for Iðunn. In it she is called, in a kenning, the maiden who knew the gods’ cure for old age, and the gods grow grey and old in her absence, though the apples themselves are not clearly named. The poem was made while the old religion was still alive, so we know her story is genuinely pre-Christian, even if we know nothing of her worship.`,
             },
             {
               heading: 'What it means',
@@ -310,7 +310,7 @@ Many devotees honour her by caring for their bodies kindly at every age: rest wh
               heading: 'Gardens and orchards',
               body: `Iðunn is close to people who grow things. Some plant an apple tree for her, or adopt one in a community orchard. Some keep a pot of herbs or a window box. Composting, saving seeds and tending soil are all fitting acts of renewal.
 
-English wassailing, singing to apple trees in midwinter to wake them for the year, is often borrowed for Iðunn. It is a lovely custom from the cider country of south-west England, recorded from the 1500s on; it is not Norse, and it is good to say so if you use it.`,
+English wassailing, singing to apple trees in midwinter to wake them for the year, is often borrowed for Iðunn. It is a lovely custom from the cider country of south-west England, recorded from the late 1500s on; it is not Norse, and it is good to say so if you use it.`,
             },
             {
               heading: 'Honest limits',
