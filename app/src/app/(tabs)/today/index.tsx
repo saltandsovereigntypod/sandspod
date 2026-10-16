@@ -27,6 +27,9 @@ import { primaryTradition } from '../../../lib/traditionDay';
 import { useMySettings } from '../../../lib/settings/store';
 import { todaySettings } from '../../../lib/library/traditions';
 import { buildToday, type HorizonItem, type TodayModel } from '../../../lib/today';
+import { practiceToday } from '../../../lib/craft/today';
+import { forYou, forYouContext, myPractices } from '../../../lib/rituals/premade';
+import type { Place } from '../../../lib/astro/rise';
 import { colors, fonts, radius, space, type } from '../../../theme';
 
 /** A clock that ticks every quarter hour, for the void-of-course Moon and planetary hours. */
@@ -176,6 +179,8 @@ export default function Today() {
         )}
       </View>
 
+      <PracticeCard settings={settings} place={place} now={clock} />
+
       <View style={styles.horizon}>
         <Text style={type.eyebrow}>On the horizon</Text>
         <View style={styles.tiles}>
@@ -201,6 +206,68 @@ export default function Today() {
       </View>
       <LastTimeLine journal={rituals.journal} now={clock} />
     </Screen>
+  );
+}
+
+type SettingsLike = Record<string, unknown> | null | undefined;
+
+/** For your practice: a line from each practice kept, and a working that suits tonight. */
+function PracticeCard({ settings, place, now }: { settings: SettingsLike; place: Place | null; now: Date }) {
+  const practices = myPractices(settings);
+  const tick = now.getTime(); // Today’s clock ticks each quarter hour
+  const lines = useMemo(
+    () => practiceToday(practices, now, { place, choice: holidayChoice(settings) }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- recomputed as the clock ticks, and when the practices or place change
+    [practices.join(','), tick, place?.latitude, place?.longitude, settings?.calendar_traditions],
+  );
+  const working = useMemo(
+    () => forYou(forYouContext(settings, now), undefined, 1)[0] ?? null,
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- as above
+    [practices.join(','), tick, settings?.calendar_traditions, settings?.library_path],
+  );
+
+  if (!practices.length) {
+    return (
+      <Pressable accessibilityRole="link" onPress={() => router.navigate('/more/settings/practice')} style={styles.working}>
+        <Text style={[type.eyebrow, styles.gold]}>For your practice</Text>
+        <Text style={type.body}>Choose the practices you keep, green, kitchen, hedge, cosmic and more, and Today will offer something from each.</Text>
+      </Pressable>
+    );
+  }
+  return (
+    <View style={styles.working}>
+      <Text style={[type.eyebrow, styles.gold]}>For your practice</Text>
+      {lines.map((line) => (
+        <Pressable
+          key={line.practice}
+          accessibilityRole="link"
+          accessibilityLabel={`${line.label}: ${line.line}`}
+          onPress={() => router.navigate(line.href as never)}
+          style={styles.practiceRow}
+        >
+          <View style={styles.practiceText}>
+            <Text style={styles.practiceLabel}>{line.label}</Text>
+            <Text style={type.body}>{line.line}</Text>
+            {!!line.detail && <Text style={type.caption}>{line.detail}</Text>}
+          </View>
+          <Icon name="chevron" size={16} color={colors.gold} />
+        </Pressable>
+      ))}
+      {working && (
+        <Pressable
+          accessibilityRole="link"
+          onPress={() => router.navigate({ pathname: '/rituals/premade/[id]', params: { id: working.id } })}
+          style={styles.practiceRow}
+        >
+          <View style={styles.practiceText}>
+            <Text style={styles.practiceLabel}>A working for tonight</Text>
+            <Text style={type.body}>{working.title}</Text>
+            <Text style={type.caption}>{working.summary}</Text>
+          </View>
+          <Icon name="chevron" size={16} color={colors.gold} />
+        </Pressable>
+      )}
+    </View>
   );
 }
 
@@ -434,6 +501,9 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   workingText: { gap: 3 },
+  practiceRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingTop: 12, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.goldLine },
+  practiceText: { flex: 1, gap: 2 },
+  practiceLabel: { fontFamily: fonts.bodySemi, fontSize: 12, letterSpacing: 1.2, textTransform: 'uppercase', color: colors.gold },
   horizon: { gap: 10 },
   tiles: { flexDirection: 'row', gap: 10 },
   tile: {
