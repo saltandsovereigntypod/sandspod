@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 
 import type { SavedAltar } from '../../lib/altar/types';
 import { ALTAR_WIDGET_SLOTS, slotAltars } from '../../lib/altarWidget';
@@ -24,7 +24,7 @@ export function WidgetSheet({ visible, altarId, altarName, altars, onClose }: Pr
   return (
     <Sheet visible={visible} size="half" eyebrow="Home screen widget" title={altarName} onClose={onClose}>
       <Text style={type.body}>
-        Put this altar on your home or lock screen, with buttons to light its candles, tend offerings and cleanse its crystals.
+        Put this altar on your {Platform.OS === 'ios' ? 'home or lock screen' : 'home screen'}, with buttons to light its candles, tend offerings and cleanse its crystals.
         Whatever you do there is carried onto this altar the next time the app opens.
       </Text>
       <Text style={[type.eyebrow, styles.heading]}>Choose its place</Text>
@@ -57,9 +57,9 @@ export function WidgetSheet({ visible, altarId, altarName, altars, onClose }: Pr
       </Text>
       <Text style={[type.eyebrow, styles.heading]}>Adding it</Text>
       <Text style={type.caption}>
-        Press and hold an empty spot on your home screen, tap Edit, then Add Widget, and find Salt & Sovereignty. Choose
-        Altar in the size you like. Then press and hold the widget, tap Edit Widget and pick {`“Altar ${placed.findIndex((a) => a.id === altarId) + 1 || 1}”`}.
-        Add as many as you like, one for each altar.
+        {Platform.OS === 'ios'
+          ? `Press and hold an empty spot on your home screen, tap Edit, then Add Widget, and find Salt & Sovereignty. Choose Altar in the size you like. Then press and hold the widget, tap Edit Widget and pick “Altar ${placed.findIndex((a) => a.id === altarId) + 1 || 1}”. Add as many as you like, one for each altar.`
+          : `Press and hold an empty spot on your home screen, tap Widgets, and find Salt & Sovereignty. Drag Altar onto your home screen and choose “Altar ${placed.findIndex((a) => a.id === altarId) + 1 || 1}”. To change it later, press and hold the widget and choose its settings. Add as many as you like, one for each altar.`}
       </Text>
     </Sheet>
   );

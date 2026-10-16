@@ -580,7 +580,7 @@ export default function AltarEditor() {
                 onPress={() => setSheet('grimoire')}
                 disabled={doc.objects.length === 0}
               />
-              {Platform.OS === 'ios' ? (
+              {Platform.OS !== 'web' ? (
                 <Chip
                   label="Home screen"
                   symbol="▣"
@@ -1105,14 +1105,14 @@ function ObjectPanel({
           <Chip label="Cleanse" symbol="☾" onPress={() => act.crystal('cleanse')} />
           <Chip label="Charge" symbol="✦" onPress={() => act.crystal('charge')} />
           <Chip label="Dedicate" symbol="♡" onPress={() => act.crystal('dedicate')} />
-          {Platform.OS === 'ios' && <Chip label="Widget cleansing" symbol="▣" onPress={() => act.crystal('widget')} />}
+          {Platform.OS !== 'web' && <Chip label="Widget cleansing" symbol="▣" onPress={() => act.crystal('widget')} />}
         </ChipRow>
       )}
       {object.type === 'deity' && (
         <ChipRow>
           <Chip label="Offering" symbol="❀" onPress={() => act.deity('offering')} />
           <Chip label="Reason for presence" symbol="☉" onPress={() => act.deity('reason')} />
-          {Platform.OS === 'ios' && <Chip label="Widget offering" symbol="▣" onPress={() => act.deity('widget')} />}
+          {Platform.OS !== 'web' && <Chip label="Widget offering" symbol="▣" onPress={() => act.deity('widget')} />}
         </ChipRow>
       )}
 
