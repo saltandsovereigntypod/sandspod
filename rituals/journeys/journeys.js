@@ -354,7 +354,7 @@
         target.textContent = "Saving…";
         try {
           await S.saveJournal({ title: journalTitle, intention: intention ?? prompt, notes: `${prompt}\n\n${text}` });
-          box.innerHTML = `<p class="sp-caption" role="status">Kept in your journal.</p>`;
+          box.innerHTML = `<p class="sp-caption" role="status">Kept in your journal · <a class="jr-link" href="${L.href.journal()}">open it</a></p>`;
         } catch (error) {
           target.disabled = false;
           target.textContent = "Save to my journal";

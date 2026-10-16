@@ -27,7 +27,8 @@
     library: (ref) => `/grimoire/?entity=${enc(String(ref || "").replace(/:/g, "/"))}`,
     premade: (id) => `/rituals/premade/?id=${enc(id)}`,
     support: () => "/more/support/",
-    ritual: () => "/altar/?ritual=1"
+    ritual: () => "/altar/?ritual=1",
+    journal: () => "/rituals/journal/"
   };
 
   /** Which view a URL asks for. */

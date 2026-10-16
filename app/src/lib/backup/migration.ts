@@ -25,7 +25,7 @@ import { sha256 } from './sha256.ts';
 export const DISMISS_PREFIX = 'saltAndSovereigntyGuestMigrationDismissed';
 export const CHECKPOINT_PREFIX = 'saltAndSovereigntyGuestMigration';
 
-export type CategoryId = 'settings' | 'altars' | 'grimoire' | 'livingLibrary' | 'apothecary' | 'rituals' | 'custom';
+export type CategoryId = 'settings' | 'altars' | 'grimoire' | 'livingLibrary' | 'apothecary' | 'rituals' | 'custom' | 'practice';
 
 export const CATEGORIES: readonly { id: CategoryId; label: string; sections: string[] }[] = Object.freeze([
   { id: 'settings', label: 'Settings and preferences', sections: ['settings', 'mundaneMode'] },
@@ -35,6 +35,8 @@ export const CATEGORIES: readonly { id: CategoryId; label: string; sections: str
   { id: 'apothecary', label: 'Apothecary', sections: ['apothecary'] },
   { id: 'rituals', label: 'Rituals and templates', sections: ['ritualJournals', 'ritualLifecycle'] },
   { id: 'custom', label: 'Custom images and Cabinet items', sections: ['customCabinet'] },
+  // The website moves these itself; the app's own stores send a guest's to the account on sign-in.
+  { id: 'practice', label: 'Practice tools and planned rituals', sections: ['craftEntries', 'ritualPlans'] },
 ]);
 
 export const STAGE_ORDER = Object.freeze([
