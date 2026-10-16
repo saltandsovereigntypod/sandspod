@@ -1,12 +1,22 @@
+import Constants from 'expo-constants';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { Platform } from 'react-native';
 
+import { signInThroughBrowser } from './googleSignIn';
 import { supabase } from './supabase';
 
 export type AppleSignInResult = 'signed-in' | 'cancelled';
 
-/** Sign in with Apple is offered on iPhones and iPads only. */
+/**
+ * On Android, Apple's sign-in page opens in the browser. It needs the Supabase
+ * project's Apple provider set up for the web (a Services ID and its secret),
+ * so it shows only once that's done (extra.appleBrowserSignIn in app.json).
+ */
+export const appleInBrowser = Platform.OS === 'android' && Constants.expoConfig?.extra?.appleBrowserSignIn === true;
+
+/** Sign in with Apple: the system sheet on iPhones and iPads, the browser on Android. */
 export async function appleSignInAvailable(): Promise<boolean> {
+  if (appleInBrowser) return true;
   if (Platform.OS !== 'ios') return false;
   try {
     return await AppleAuthentication.isAvailableAsync();
@@ -21,6 +31,10 @@ export async function appleSignInAvailable(): Promise<boolean> {
  * must list the app's bundle ID (com.saltandsovereignty.app) as a client ID.
  */
 export async function signInWithApple(): Promise<AppleSignInResult> {
+  if (appleInBrowser) {
+    const result = await signInThroughBrowser('apple');
+    return result === 'cancelled' ? 'cancelled' : 'signed-in';
+  }
   let credential: AppleAuthentication.AppleAuthenticationCredential;
   try {
     credential = await AppleAuthentication.signInAsync({

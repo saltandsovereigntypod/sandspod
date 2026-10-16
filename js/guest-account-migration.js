@@ -11,11 +11,12 @@
     { id: "livingLibrary", label: "Living Library", sections: ["livingLibrary", "livingLibraryLayouts"] },
     { id: "apothecary", label: "Apothecary", sections: ["apothecary"] },
     { id: "rituals", label: "Rituals and templates", sections: ["ritualJournals", "ritualLifecycle"] },
-    { id: "custom", label: "Custom images and Cabinet items", sections: ["customCabinet"] }
+    { id: "custom", label: "Custom images and Cabinet items", sections: ["customCabinet"] },
+    { id: "practice", label: "Practice tools and planned rituals", sections: ["craftEntries", "ritualPlans"] }
   ]);
-  const STAGE_ORDER = Object.freeze(["user_settings", "living_library_entries", "ritual_templates", "ritual_template_steps", "ritual_sessions", "ritual_session_steps", "user_rituals", "apothecary_items", "saved_altars", "custom_cabinet_items", "library_relations"]);
-  const TABLE_KEYS = Object.freeze({ user_settings: "user_id", living_library_entries: "entity_id", library_relations: null, saved_altars: "id", apothecary_items: "id", custom_cabinet_items: "id", ritual_templates: "id", ritual_template_steps: "id", ritual_sessions: "id", ritual_session_steps: "id", user_rituals: "id" });
-  const UUID_ID_TABLES = new Set(["saved_altars", "apothecary_items", "custom_cabinet_items", "ritual_templates", "ritual_template_steps", "ritual_sessions", "ritual_session_steps", "user_rituals"]);
+  const STAGE_ORDER = Object.freeze(["user_settings", "living_library_entries", "ritual_templates", "ritual_template_steps", "ritual_sessions", "ritual_session_steps", "user_rituals", "apothecary_items", "saved_altars", "custom_cabinet_items", "library_relations", "ritual_plans", "craft_entries"]);
+  const TABLE_KEYS = Object.freeze({ user_settings: "user_id", living_library_entries: "entity_id", library_relations: null, saved_altars: "id", apothecary_items: "id", custom_cabinet_items: "id", ritual_templates: "id", ritual_template_steps: "id", ritual_sessions: "id", ritual_session_steps: "id", user_rituals: "id", ritual_plans: "id", craft_entries: "id" });
+  const UUID_ID_TABLES = new Set(["saved_altars", "apothecary_items", "custom_cabinet_items", "ritual_templates", "ritual_template_steps", "ritual_sessions", "ritual_session_steps", "user_rituals", "ritual_plans", "craft_entries"]);
   const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   const clone = (value) => value == null ? value : JSON.parse(JSON.stringify(value));
 
@@ -25,15 +26,35 @@
     return value !== null && value !== undefined && value !== "" && value !== false;
   }
 
+  // The practice tools' entries and planned rituals, kept as the app keeps a guest's
+  // (js/salt-store.js "salt.craft.<collection>", and "rituals.plans.v1"): only records
+  // not yet sent to an account are the guest's own.
+  function readPractice(storage) {
+    const backup = global.SanctuaryBackup;
+    const out = {};
+    const craft = backup.collectCraft ? backup.collectCraft(storage) : {};
+    if (Object.keys(craft).length) out.craftEntries = craft;
+    let plans = null; try { plans = JSON.parse(storage.getItem(backup.GUEST_KEYS.ritualPlans || "rituals.plans.v1")); } catch { plans = null; }
+    if (Array.isArray(plans)) out.ritualPlans = plans.filter((plan) => plan && typeof plan === "object" && !plan.syncedTo);
+    return out;
+  }
+
   function readGuestRaw(storage) {
     const preserved = storage.getItem(global.SaltAccountData?.PENDING_GUEST_SNAPSHOT_KEY || "saltAndSovereigntyPendingGuestMigrationSnapshot");
-    if (preserved) { try { return JSON.parse(preserved); } catch {} }
+    if (preserved) {
+      try {
+        const snapshot = JSON.parse(preserved);
+        // Snapshots taken before practice tools moved too: read them from this browser.
+        if (snapshot && typeof snapshot === "object" && !("craftEntries" in snapshot) && !("ritualPlans" in snapshot)) Object.assign(snapshot, readPractice(storage));
+        return snapshot;
+      } catch {}
+    }
     const data = {};
     for (const [section, key] of Object.entries(global.SanctuaryBackup.GUEST_KEYS)) {
       const raw = storage.getItem(key); if (raw == null) continue;
       try { data[section] = JSON.parse(raw); } catch { data[section] = raw; }
     }
-    return data;
+    return Object.assign(data, readPractice(storage));
   }
 
   function readGuestData(storage) {
@@ -43,7 +64,7 @@
   function hasGuestData(storage) {
     const data = readGuestData(storage);
     const marked = storage.getItem(GUEST_SCOPE_KEY) === "true" || storage.getItem("saltAndSovereigntySanctuaryChoice") === "true";
-    const strongSections = ["altars", "altarDraft", "apothecary", "ritualJournals", "ritualLifecycle", "customCabinet"];
+    const strongSections = ["altars", "altarDraft", "apothecary", "ritualJournals", "ritualLifecycle", "customCabinet", "craftEntries", "ritualPlans"];
     return Boolean((marked && Object.values(data).some(hasValue)) || strongSections.some((section) => hasValue(data[section])));
   }
 
@@ -63,6 +84,7 @@
   function isPersonalEntity(entity) { return Boolean(entity?.image || Object.keys(entity?.myPractice || {}).length || Object.keys(entity?.community || {}).length || entity?.metadata?.custom || entity?.metadata?.ritualId || entity?.metadata?.ritualTemplateId); }
   function countLibrary(value) { return Object.values(value?.entities || {}).filter(isPersonalEntity).length; }
   function countRituals(value, journals) { return (Array.isArray(journals) ? journals.length : 0) + (Array.isArray(value?.sessions) ? value.sessions.length : 0); }
+  function countPractice(data) { return Object.values(data?.craftEntries || {}).reduce((sum, list) => sum + (Array.isArray(list) ? list.length : 0), 0) + (Array.isArray(data?.ritualPlans) ? data.ritualPlans.length : 0); }
   function countAssets(data) { return global.SanctuaryBackup.findAssetReferences(data).filter((url) => /^data:image\//i.test(url)).length; }
 
   async function createPreview(storage) {
@@ -80,6 +102,7 @@
       apothecary: Array.isArray(data.apothecary) ? data.apothecary.length : 0,
       rituals: countRituals(data.ritualLifecycle, data.ritualJournals),
       custom: Array.isArray(data.customCabinet) ? data.customCabinet.length : 0,
+      practice: countPractice(data),
       assets: countAssets(data)
     };
     const unsupported = [];
@@ -121,6 +144,18 @@
     return { id: item.id, user_id: userId, name: item.name || "Untitled", type: item.type || "", type_label: item.typeLabel || "", image_url: /^https?:\/\//i.test(item.imagePath || item.image_url || "") ? (item.imagePath || item.image_url) : "", intention: item.intention || "", notes: item.notes || "", details: stripBrowserAssets(item.details || {}, warnings), ingredients: stripBrowserAssets(item.ingredients || [], warnings), living_state: item.livingState || item.living_state || {}, entity_id: item.entityId || item.entity_id || "", instance_id: item.instanceId || item.instance_id || "", grimoire_entry_id: item.grimoireEntryId || "", grimoire_status: item.grimoireStatus || "", log_to_grimoire: Boolean(item.logToGrimoire), metadata: { source: "guest-migration" } };
   }
 
+  // A planned ritual as the app stores it in ritual_plans (app/src/lib/rituals/planSync.ts planRow).
+  const PLAN_DATE = /^\d{4}-\d{2}-\d{2}$/;
+  const PLAN_TIME = /^\d{1,2}:\d{2}$/;
+  function isSyncablePlan(plan) { return Boolean(plan && PLAN_DATE.test(plan.date || "") && String(plan.title || "").trim()); }
+  function planRow(plan, userId, now) {
+    return { id: plan.id, user_id: userId, planned_date: plan.date, planned_time: PLAN_TIME.test(plan.time || "") ? plan.time : "21:00", title: String(plan.title).trim(), intention: plan.intention ?? null, intention_key: plan.intentionKey ?? null, template_id: plan.templateId ?? null, draft: plan.draft ?? null, ingredients: Array.isArray(plan.ingredients) ? plan.ingredients : [], done_at: plan.doneAt ?? null, created_at: plan.createdAt || now, updated_at: now };
+  }
+  // A practice tool's entry as the app stores it in craft_entries (app/src/lib/craft/store.ts).
+  function craftRow(collection, entry, userId, now, warnings) {
+    return { id: entry.id, user_id: userId, collection, data: stripBrowserAssets(entry.data ?? {}, warnings, `${collection}.${entry.id}`), deleted_at: entry.deletedAt ?? null, created_at: entry.createdAt || now, updated_at: entry.updatedAt || entry.createdAt || now };
+  }
+
   async function normalizeIds(table, rows, maps) {
     const key = TABLE_KEYS[table];
     if (!key || key === "user_id" || !UUID_ID_TABLES.has(table)) return rows;
@@ -160,7 +195,19 @@
       rows.user_rituals = clone(data.ritualJournals || lifecycle.journals || []);
       Object.values(rows).flat().forEach((row) => { if (row && typeof row === "object") { delete row.user_id; row.user_id = userId; } });
     }
+    if (selected.includes("practice")) {
+      const now = new Date().toISOString();
+      rows.craft_entries = Object.entries(data.craftEntries || {}).flatMap(([collection, entries]) => (Array.isArray(entries) ? entries : []).filter((entry) => entry && typeof entry.id === "string").map((entry) => craftRow(collection, entry, userId, now, warnings)));
+      rows.ritual_plans = (Array.isArray(data.ritualPlans) ? data.ritualPlans : []).filter(isSyncablePlan).map((plan) => planRow(plan, userId, now));
+    }
     for (const table of STAGE_ORDER) if (rows[table]?.length) await normalizeIds(table, rows[table], maps);
+    // A plan can only point at a template that's in the account; one left behind is dropped from the plan, which keeps its own steps.
+    (rows.ritual_plans || []).forEach((row) => {
+      if (!row.template_id) return;
+      const mapped = maps.ritual_templates?.get(String(row.template_id));
+      if (mapped) row.template_id = mapped;
+      else { row.template_id = null; warnings.push("A planned ritual’s template stays in this browser; the plan keeps its own steps."); }
+    });
     for (const [table, records] of Object.entries(rows)) rows[table] = records.map((record) => remapReferences(table, record, maps));
     return { rows, maps, warnings };
   }
@@ -247,7 +294,7 @@
   function isDismissed(storage, userId, digest) { return storage.getItem(dismissalKey(userId, digest)) === "true"; }
   function dismiss(storage, userId, digest) { storage.setItem(dismissalKey(userId, digest), "true"); }
 
-  const api = { GUEST_SCOPE_KEY, CATEGORIES, STAGE_ORDER, TABLE_KEYS, readGuestRaw, readGuestData, hasGuestData, sourceDigest, snapshotFingerprint, currentFingerprint, createPreview, createSafetyBackup, isPreviewCurrent, deterministicUuid, stripBrowserAssets, rowsByTable, buildPlan, checkpointKey, loadCheckpoint, verifyPlan, applyPlan, dismissalKey, isDismissed, dismiss };
+  const api = { GUEST_SCOPE_KEY, CATEGORIES, STAGE_ORDER, TABLE_KEYS, readPractice, isSyncablePlan, planRow, craftRow, readGuestRaw, readGuestData, hasGuestData, sourceDigest, snapshotFingerprint, currentFingerprint, createPreview, createSafetyBackup, isPreviewCurrent, deterministicUuid, stripBrowserAssets, rowsByTable, buildPlan, checkpointKey, loadCheckpoint, verifyPlan, applyPlan, dismissalKey, isDismissed, dismiss };
   global.GuestAccountMigration = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

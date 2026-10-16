@@ -4,6 +4,7 @@
 // position, old Icelandic weekday rules, the Moon for the Attic calendar, or
 // Easter for the moveable feasts), so nothing needs updating as years pass.
 
+import { firstDayOfWinter } from './calendars/icelandic.ts';
 import { startOfDay } from './calendar.ts';
 import { nextPhase, sunReaches } from './moon.ts';
 
@@ -12,6 +13,8 @@ type Rule =
   | { kind: 'sun'; at: 0 | 90 | 180 | 270 }
   /** The first `weekday` (0 = Sunday) from day `from` of `month` (Icelandic seasons). */
   | { kind: 'weekday'; month: number; from: number; weekday: number }
+  /** By the old Icelandic calendar: the first day of winter, or of Þorri (90 days later), in `year`. */
+  | { kind: 'icelandic'; at: 'winter' | 'thorri' }
   /** The first full moon falling in `month`. */
   | { kind: 'fullMoon'; month: number }
   /** A day of a month of the Athenian (Attic) lunar calendar. */
@@ -164,7 +167,7 @@ export const TRADITIONS: Tradition[] = [
         id: 'thorrablot',
         name: 'Þorrablót',
         meaning: 'The midwinter feast at the start of the old Icelandic month of Þorri (Bóndadagur), honoring Þorri, the spirit of winter, with traditional foods and toasts.',
-        rule: { kind: 'weekday', month: 0, from: 19, weekday: 5 },
+        rule: { kind: 'icelandic', at: 'thorri' },
       },
       {
         id: 'disablot',
@@ -194,7 +197,7 @@ export const TRADITIONS: Tradition[] = [
         id: 'vetrnaetur',
         name: 'Winter Nights (Vetrnætur)',
         meaning: 'The start of winter in the Icelandic year. The sagas tell of a blót “for a good year”, and it is a time to honor the álfar and dísir (Álfablót).',
-        rule: { kind: 'weekday', month: 9, from: 21, weekday: 6 },
+        rule: { kind: 'icelandic', at: 'winter' },
       },
       {
         id: 'jol',
@@ -254,12 +257,12 @@ export const TRADITIONS: Tradition[] = [
   {
     id: 'slavic',
     name: 'Slavic',
-    description: 'Seasonal festivals of the Slavic folk year.',
+    description: 'Seasonal festivals of the Slavic folk year, kept for centuries within the Christian calendar; each says where a date is a modern reconstruction.',
     holidays: [
-      { id: 'marzanna', name: 'Drowning of Marzanna', meaning: 'At the spring equinox an effigy of Marzanna (Morana), goddess of winter and death, is burned or drowned to send winter away and welcome spring.', rule: { kind: 'sun', at: 0 } },
-      { id: 'kupala', name: 'Kupala Night', meaning: 'Midsummer night of fire and water: jumping over bonfires, floating flower wreaths on rivers, and searching for the magical fern flower.', rule: { kind: 'fixed', month: 5, day: 23 } },
-      { id: 'dziady', name: 'Dziady', meaning: 'Forefathers’ Eve in autumn, when the spirits of the ancestors are welcomed home and fed.', rule: { kind: 'fixed', month: 10, day: 1 } },
-      { id: 'koliada', name: 'Koliada', meaning: 'Midwinter festival of the newborn sun, with carols (koliadki) sung from house to house for blessings in the year ahead.', rule: { kind: 'sun', at: 270 } },
+      { id: 'marzanna', name: 'Drowning of Marzanna', meaning: 'An effigy of Marzanna (Morana), the figure of winter and death, is burned or drowned to send winter away and welcome spring. Traditionally on the fourth Sunday of Lent in Poland and Czechia; many now keep it on the first day of spring or at the equinox. She is first named by the 15th-century chronicler Jan Długosz, who likened her to Ceres; whether she was ever a goddess is debated.', rule: { kind: 'sun', at: 0 } },
+      { id: 'kupala', name: 'Kupala Night', meaning: 'Midsummer night of fire and water: jumping over bonfires, floating flower wreaths on rivers, and searching for the magical fern flower. Kept on St John’s Eve, 23–24 June; in Orthodox lands by the Old Style, 6–7 July.', rule: { kind: 'fixed', month: 5, day: 23 } },
+      { id: 'dziady', name: 'Dziady', meaning: 'Forefathers’ Eve, when the spirits of the ancestors are welcomed home and fed. Kept several times a year in Belarus; the autumn Dziady falls on the Saturday before St Dmitri’s day in early November, and in Poland it has merged with All Saints’ and All Souls’ (1–2 November).', rule: { kind: 'fixed', month: 10, day: 1 } },
+      { id: 'koliada', name: 'Koliada', meaning: 'The season of carolling: koliadki sung from house to house for blessings in the year ahead, traditionally from Christmas Eve to Epiphany (6–19 January by the Old Style). The name comes from the Latin calendae. Keeping it at the solstice as a festival of the newborn sun is a modern Rodnover (Slavic Native Faith) reconstruction; no pre-Christian Koliada is recorded.', rule: { kind: 'sun', at: 270 } },
     ],
   },
   {
@@ -364,6 +367,9 @@ function occurrences(rule: Rule, year: number): Date[] {
       const first = new Date(year, rule.month, rule.from);
       return [addDays(first, (rule.weekday - first.getDay() + 7) % 7)];
     }
+    case 'icelandic':
+      // The year's own rules (rímspillir years put both a week later than a plain weekday rule would).
+      return [rule.at === 'winter' ? firstDayOfWinter(year) : addDays(firstDayOfWinter(year - 1), 90)];
     case 'fullMoon': {
       const full = startOfDay(nextPhase(new Date(year, rule.month, 1), 'full'));
       return full.getMonth() === rule.month ? [full] : [];

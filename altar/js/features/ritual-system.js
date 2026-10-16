@@ -98,6 +98,8 @@ async function getRitualUser() {
 
   const { data, error } = await db.auth.getUser();
 
+  // Nobody signed in: supabase-js reports a missing session as an error.
+  if (error?.name === "AuthSessionMissingError") return null;
   if (error) throw error;
   return data.user || null;
 }

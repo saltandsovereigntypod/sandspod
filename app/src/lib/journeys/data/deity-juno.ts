@@ -1,0 +1,504 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-juno',
+  kind: 'deity',
+  paths: ['roman'],
+  deityRef: 'traditional/deity/juno',
+  title: 'Juno of the Kalends',
+  summary:
+    'A month with Juno, queen of Rome: her many forms from Lucina of childbirth to Moneta of the warning geese, the Kalends that open every month, and the Matronalia.',
+  welcome:
+    'This journey runs one Roman month, ideally starting on a Kalends (the 1st). You will meet Juno in her distinct Roman forms, learn the Kalends offering and the Roman manner of prayer, keep a nine-night practice, and, if it feels right, make a self-dedication on the next Kalends.\n\nIt is a self-dedication, not an initiation. Rome had priestesses who served Juno, among them the regina sacrorum, and modern groups have their own roles; this does not make you one. Juno was honoured by women above all, but not only by women: she was queen of the state too, and anyone who approaches her respectfully is welcome here.',
+  about:
+    'Juno is the great goddess of Rome: queen (Regina) beside Jupiter on the Capitol, guardian of women through marriage and childbirth (as Lucina, "she who brings into the light"), protector of the city (as Sospita, the Saviour, and Moneta, the Warner), and mistress of the Kalends, the first day of every Roman month. She was not one simple figure but many cults with many titles, some imported from neighbouring towns. Greek poetry matched her with Hera, and from Vergil onward she often appears as Hera does, the angry queen of heaven. In cult she was something steadier: a goddess of women\'s lives and of Rome\'s safety. Modern Roman polytheists honour her on the Kalends and at the Matronalia on 1 March, and many also honour the "juno", the personal guardian spirit of a woman, on her birthday.',
+  notes: [
+    'Juno has many distinct Roman titles with different concerns. Address the form that fits: Lucina for birth, Pronuba for marriage, Regina for the queen of the state, Moneta for warning and good counsel, Sospita for protection.',
+    'Juno is connected with pregnancy and childbirth. Devotion is never a substitute for medical care. If you are pregnant, or trying, or grieving a loss, this journey treats those things gently and you can skip any part.',
+    'Lilies are sacred to her and highly toxic to cats, even the pollen and vase water. Use another flower if you live with a cat.',
+    'Much of the "jealous wife" picture comes from Greek myths about Hera and from Vergil\'s Aeneid. Those are literature. The journey separates them from Roman cult.',
+    'Modern Roman polytheism is small and varied, and this app is inclusive. You do not need to be married, a mother, or a woman to honour Juno.',
+  ],
+  holyDays: ['matronalia'],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'On the Kalends',
+      intro:
+        'Juno owns the first day of every month. This short opening rite greets her in Roman form: washed hands, covered head, Janus first, then Juno with incense and flowers. If you can, hold it on a Kalends.',
+      days: 2,
+      lessons: [],
+      practices: [
+        {
+          id: 'juno-new-crescent',
+          title: 'Watch for the new moon',
+          instructions:
+            'The Kalends originally fell on the day the new crescent moon was first seen: a junior priest watched for it and announced it. Over these two days, look for the crescent after sunset (an app or almanac will tell you when). If it is not the right time of month, simply note what phase the moon is in.',
+          times: 2,
+          every: 'day',
+          prompt: 'What is beginning for me this month?',
+        },
+      ],
+      rite: {
+        title: 'Greeting Juno',
+        summary: 'Purification, Janus first, then incense and flowers for Juno, with a short prayer in the Roman form.',
+        minutes: 20,
+        ingredients: [
+          { name: 'A bowl of clean water and a towel', ref: 'traditional/vessel/bowl' },
+          { name: 'A scarf or fold of cloth to cover your head' },
+          { name: 'A few fresh flowers (Ovid says "bring the goddess flowers")' },
+          { name: 'Frankincense or myrrh', ref: 'traditional/herb/myrrh' },
+          { name: 'An incense burner', ref: 'traditional/tool/incense_burner' },
+          { name: 'A little milk, or wine, in a cup', ref: 'traditional/tool/chalice' },
+          { name: 'An offering dish', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'A white or blue candle', ref: 'traditional/candle/blue', optional: true },
+        ],
+        preparation:
+          'Set a small table or shelf with a clean cloth. Put the flowers in water. Read the words through until you can say them smoothly: Roman prayer cared about exact words, and a stumble meant beginning again.',
+        steps: [
+          {
+            title: 'Wash and veil',
+            instructions: 'Wash your hands and dry them. Draw the cloth over your head. Romans prayed capite velato, "with the head veiled".',
+          },
+          {
+            title: 'Janus first',
+            instructions: 'Light the candle. Give a few grains of incense to Janus, who is named first in every Roman prayer.',
+            spoken: 'Father Janus, keeper of the door,\nreceive this incense and open the way.',
+            light: true,
+          },
+          {
+            title: 'Call Juno',
+            instructions: 'Add incense. Raise your hands with palms up.',
+            spoken: 'Juno, queen, mistress of the Kalends,\nLucina who brings us into the light,\nor by whatever name it is right to call you:\nbe honoured by this incense.\nI come to know you, and ask that you know me.',
+          },
+          {
+            title: 'Flowers and milk',
+            instructions: 'Set the flowers before her image or the candle. Pour a little milk or wine into the dish.',
+            spoken: 'Be honoured by these flowers and this offering.\nBe willing and favourable to me and my household.',
+          },
+          {
+            title: 'Sit with her',
+            instructions: 'Sit quietly. Think of the women who have protected you, by blood or not.',
+            minutes: 4,
+          },
+          {
+            title: 'Vesta last, and turn',
+            instructions: 'Name Vesta, turn to your right, and uncover your head.',
+            spoken: 'Vesta of the hearth, be honoured, last as always.',
+            snuff: true,
+          },
+        ],
+        closing: 'Leave the milk until evening, then pour it onto the earth. Keep the flowers on the shrine until they fade, then compost them.',
+        safety:
+          'Never leave the candle or incense unattended; use a heatproof holder. Lilies are toxic to cats, including the pollen and the water in the vase; choose roses, violets or other safe flowers if you have a cat. Grapes and wine are toxic to dogs and cats.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'The many Junos',
+      intro:
+        'Five lessons, about two days each: who Juno is; her forms and their stories; the Kalends and how she was worshipped; how people honour her today; and the hard parts.',
+      days: 10,
+      lessons: [
+        {
+          id: 'juno-who',
+          title: 'Who Juno is',
+          summary: 'Queen, guardian of women, mistress of the month\'s beginning, and how she differs from Hera.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'An Italian goddess',
+              body:
+                'Juno was worshipped all over central Italy long before Rome dominated it. The Etruscans had a closely related goddess, Uni. Many Latin towns had their own Juno: Juno Sospita at Lanuvium, Juno Curitis at Falerii, Juno Regina at the Etruscan city of Veii. Rome absorbed several of these over time, which is part of why Roman Juno has so many titles. Each title was, in a sense, its own cult, with its own temple, festival day and concerns.\n\nThe Romans themselves connected her name with youth and with the young, vigorous time of life, and with the moon. Modern linguists are not sure; one likely root is the word for youthful vigour. What is certain is her role: she watched over women\'s lives, the beginning of each month, and the safety of the Roman people.',
+            },
+            {
+              heading: 'Queen of the Capitol',
+              body:
+                'On the Capitoline Hill Juno Regina shared the great temple with Jupiter and Minerva: the Capitoline triad. At the Epulum Iovis, the Feast of Jupiter, the three gods were served a banquet, Jupiter reclining on a couch and Juno and Minerva seated on chairs, as Roman women sat at formal dinners.\n\nAs Regina she was not a mere consort. She was a power of the state. In times of crisis the senate ordered matrons to make offerings to her, and processions of girls sang hymns in her honour, one of them written by the poet Livius Andronicus in 207 BC.',
+            },
+            {
+              heading: 'Not just Hera',
+              body:
+                'From the third century BC Roman poets read Greek literature and matched their gods to Greek ones, a process scholars call interpretatio graeca. Juno became Hera: wife and sister of Jupiter, daughter of Saturn, the jealous persecutor of Jupiter\'s lovers and their children. In Vergil\'s Aeneid she is the great antagonist, hounding Aeneas because she loves Carthage and resents Troy.\n\nThose stories are part of Latin literature and you may find them moving. But Roman cult knew a different Juno: a guardian of births, marriages and the city, approached by women and magistrates for protection. Many modern devotees set the jealous-wife stories aside as Greek and literary. If you keep them, keep them as poetry, not as theology.',
+            },
+            {
+              heading: 'Her signs',
+              body:
+                'The peacock became her bird through the Greek Hera; the Roman bird that truly belongs to her is the goose, kept on the Capitol in her honour. The cow and the she-goat appear in her cults too: Juno Sospita wore a goatskin over her head, with spear, shield and upturned shoes. Her plants include the fig (Juno Caprotina was honoured under a wild fig tree), the pomegranate and the lily. The diadem and sceptre mark the queen; the patera, a shallow offering bowl, marks the goddess who receives libations.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Juno\'s many local cults (Lanuvium, Falerii, Veii) and her Roman titles are well attested in Livy, Ovid, Macrobius, coins and inscriptions. Her place in the Capitoline triad and the Epulum Iovis seating is described by Valerius Maximus.',
+            unknown:
+              'The origin of her name is disputed. How closely the different Junos were felt to be "the same goddess" by ancient worshippers is unclear, and probably varied. The peacock as her bird is mostly Greek and later.',
+          },
+          inPractice:
+            'Write her titles on a card for your shrine: Regina, Lucina, Moneta, Sospita, Pronuba, Caprotina. In prayer, choose the one that fits your need, as a Roman would.',
+          reflect: [
+            'Which of her forms speaks to you first, and why?',
+            'What is the difference, for you, between a goddess of women and a goddess of wives?',
+          ],
+          further: [
+            'Celia E. Schultz, Women\'s Religious Activity in the Roman Republic (2006)',
+            'Vergil, Aeneid, book 1 (public-domain translations on Gutenberg), for the literary Juno',
+          ],
+          library: ['traditional/deity/juno', 'traditional/deity/jupiter', 'traditional/deity/minerva'],
+        },
+        {
+          id: 'juno-forms',
+          title: 'Lucina, Moneta, Regina, Sospita',
+          summary: 'The stories behind her main titles, including the geese of the Capitol and the goddess brought from Veii.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'Lucina: into the light',
+              body:
+                'Juno Lucina watched over childbirth. Her temple stood in a sacred grove (lucus) on the Esquiline Hill, and Ovid offers two explanations of her name: from that grove, or because she gives the "beginning of light" to the newborn. He has the goddess\'s worshippers say: "tu nobis lucem, Lucina, dedisti", "you, Lucina, gave us the light" (Fasti 3.255). Elsewhere he prays: "parce, precor, gravidis, facilis Lucina, puellis", "spare pregnant women, kindly Lucina, I pray" (Fasti 2.451).\n\nShe was the goddess a woman in labour cried out to. In Terence\'s comedy The Girl from Andros, a woman giving birth offstage calls: "Iuno Lucina, fer opem, serva me, obsecro", "Juno Lucina, bring help, save me, I beg you" (Andria 473). Ovid adds that a pregnant woman should pray to her with her hair unbound, so that the birth would be loosened too: knots and tied things were kept away from birth.',
+            },
+            {
+              heading: 'Moneta: the Warner',
+              body:
+                'In 390 BC, the story goes, Gauls climbed the Capitol by night. The dogs did not bark, but the geese kept there for Juno, which the starving garrison had refused to eat, cackled and beat their wings, and the former consul Marcus Manlius woke and threw the first Gaul down (Livy 5.47). A temple of Juno Moneta, "the Warner" (from monere, to warn), was later built on the citadel, and it is said she warned the Romans again before an earthquake.\n\nRome\'s mint was set up beside her temple, and so coins came to be called after her: moneta, which gives us "money" and "mint". She is a good goddess for clear counsel, for heeding warnings, and for honest dealing with money.',
+            },
+            {
+              heading: 'Regina: the goddess who came to Rome',
+              body:
+                'Juno Regina had been the queen-goddess of Veii, an Etruscan city Rome besieged for ten years. Before the final assault, the general Camillus called on her to leave Veii and come to Rome, promising her a temple worthy of her. This rite of calling out an enemy\'s god is called evocatio. Livy tells that young men chosen to move her statue washed and dressed in white, and one asked her, "visne Romam ire, Iuno?", "do you want to go to Rome, Juno?" The others cried out that she had nodded (Livy 5.22). Her temple on the Aventine was dedicated soon after, with great enthusiasm from the matrons.',
+            },
+            {
+              heading: 'Sospita, Pronuba, Caprotina',
+              body:
+                'Juno Sospita, the Saviour, came from Lanuvium, where she was pictured armed, in goatskin, with a sacred snake that girls fed in a cave as a test. Juno Pronuba presided over marriage, and Romans considered the bride\'s girdle, tied in a special knot, to be under her care. Juno Caprotina was honoured on the Nones of July by women, especially slave women, with a feast under a wild fig tree; the story attached to it tells of enslaved women who saved Rome from a Latin army by a ruse.\n\nEach form gives a different door into the goddess. You do not need all of them. But knowing they exist keeps you from flattening her into one idea.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Ovid\'s lines on Lucina (Fasti 2.449–452, 3.255–258) and Terence\'s Andria 473 survive word for word. Livy tells the stories of the geese (5.47) and of Juno Regina\'s evocatio (5.21–22). The mint beside the temple of Juno Moneta is attested, as are the cults of Sospita and Caprotina.',
+            unknown:
+              'The goose story may have grown in the telling, and the temple of Moneta was built decades after 390 BC, so the link between the geese and the title "Warner" may be a later explanation. Whether "Moneta" really comes from monere was already a guess in antiquity.',
+          },
+          inPractice:
+            'Choose one form to focus on this month. If you face a decision, pray to Juno Moneta for good warning; if someone near you is pregnant, light a candle to Lucina for them (and offer practical help too).',
+          reflect: [
+            'When have you been warned, and heeded or ignored it?',
+            'What would it mean to "loosen the knots" before a new thing is born in your life?',
+          ],
+          further: [
+            'Ovid, Fasti books 2 and 3 (Latin at The Latin Library; Riley\'s 1851 prose translation is public domain)',
+            'Livy, History of Rome, book 5 (public-domain translations on Gutenberg)',
+          ],
+          library: ['traditional/deity/juno'],
+        },
+        {
+          id: 'juno-kalends',
+          title: 'The Kalends and the Matronalia',
+          summary: 'How Juno was worshipped: the monthly Kalends, her temple days, and the women\'s festival of 1 March.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Every first of the month',
+              body:
+                'The Roman month began on the Kalends. In early times a junior pontiff watched for the new crescent moon and then "called out" (calare, from which Kalendae comes) how many days until the Nones, invoking Juno as he did so. On every Kalends, the antiquarian Macrobius reports, the wife of the king of sacrifices (the regina sacrorum) offered a sow or a lamb to Juno in the Regia, the old royal house in the Forum (Saturnalia 1.15.19).\n\nSo Juno belongs to beginnings, sharing them with Janus, who also received offerings on every Kalends. A monthly household offering to Juno on the 1st is one of the best-grounded practices a modern devotee can keep.',
+            },
+            {
+              heading: 'A month full of her',
+              body:
+                'Several of Juno\'s temples were dedicated on a Kalends, so her temple birthdays fall on firsts of the month: Juno Sospita on 1 February, Juno Lucina on 1 March, Juno Moneta on 1 June, Juno Regina on the Aventine on 1 September. The Nones of July were the Nonae Caprotinae. June itself may be named after her; Ovid has Juno claim the month in Fasti book 6, though he also gives other explanations.\n\nThe Kalends of March, the old Roman new year, was the Matronalia, and it is the one most people keep today.',
+            },
+            {
+              heading: 'The Matronalia, 1 March',
+              body:
+                'On the Matronalia married women went to the temple of Juno Lucina on the Esquiline with flowers and prayed for their marriages and children. Husbands prayed for their wives\' health and gave them gifts. Ovid connects the day with the Sabine women who stood between their Roman husbands and their Sabine fathers and made peace (Fasti 3.167–258). Macrobius adds that on this day mistresses of households served a meal to the enslaved members of the household.\n\nA modern Matronalia keeps the core: flowers and incense to Juno Lucina, gifts and real care for the women in your life, and some service to others, cooking for someone, donating to a maternity or women\'s shelter.',
+            },
+            {
+              heading: 'The manner of offering',
+              body:
+                'Juno was approached in the standard Roman way: clean hands, covered head, Janus named first, Vesta last, a prayer naming the goddess with the right title, the gift named exactly, and a request that she be "volens propitia", willing and favourable. Her offerings were incense, flowers, wine, milk and cakes; in public cult, female animals such as cows and sows. Because she was a goddess of the sky and city, not the underworld, her offerings were the kind shared out: the goddess\'s portion was burned or poured, and the rest could be eaten. In public crises, the senate asked the matrons of Rome to make a collective offering to her, so even her state cult ran through women.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Macrobius (Saturnalia 1.15) and Varro (On the Latin Language 6.27) describe the Kalends announcement and the regina sacrorum\'s offering. The Matronalia is described by Ovid (Fasti 3) and Macrobius (1.12.7); temple dedication days come from surviving calendars.',
+            unknown:
+              'We know little about what individual women actually prayed or did at home on the Kalends. The origin of the name June is uncertain. Modern Kalends rites are a household adaptation of a public, priestly practice.',
+          },
+          inPractice:
+            'Set your calendar for the 1st of each month. On the Kalends, offer incense and a flower to Juno (and a grain of incense to Janus first). Note the Matronalia on 1 March as your great yearly day.',
+          reflect: [
+            'What would you like each month to begin with?',
+            'Who are the women you would honour at the Matronalia, and how?',
+          ],
+          further: [
+            'Macrobius, Saturnalia, book 1 (Loeb translation by R. A. Kaster, 2011)',
+            'Ovid, Fasti 3.167–258, on the Matronalia',
+          ],
+          library: ['traditional/deity/juno', 'traditional/deity/janus', 'traditional/herb/myrrh'],
+          premade: ['folk-lararium-offering'],
+        },
+        {
+          id: 'juno-today',
+          title: 'Juno today: shrine, juno and household',
+          summary: 'Modern practice, the personal "juno" of a woman, and how to set up her shrine.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'Modern practice',
+              body:
+                'Roman polytheists today, whether in groups like Nova Roma, in Italian associations or alone, generally honour Juno on the Kalends and at the Matronalia. Practice is reconstructive: the forms come from Cato, Ovid, Livy and the calendars, adapted to homes without temples or priests. Some practitioners also keep her other temple days through the year.\n\nEclectic witches and Wiccans sometimes honour Juno as a mother or queen goddess, or as a moon goddess at esbats. That is a modern approach, and fine in its own setting. Roman cult did connect her with the new moon and the month, but not with the "maiden, mother, crone" pattern, which is twentieth century.',
+            },
+            {
+              heading: 'Your juno',
+              body:
+                'Romans believed each man had a genius, a guardian spirit of his life and vitality, honoured especially on his birthday. By the imperial period, women were said to have a juno in the same way. A poem from the Tibullan collection, addressed to a woman on her birthday, calls on her "Natalis Iuno", her birthday Juno, with incense and cakes. Seneca mentions genius and juno as the guardians given to each person.\n\nMany modern practitioners honour their own juno, or a friend\'s, on her birthday: a candle, incense, a cake, wine, and a prayer that she be strong and well. Some people of any gender honour a genius or juno as they feel fits them. The evidence is thinner than for the genius, so do it knowing it is an old but not central practice.',
+            },
+            {
+              heading: 'Setting up her shrine',
+              body:
+                'Choose a calm, clean place, a shelf or small table. A white or royal blue cloth suits her. An image of Juno, or a symbol: a diadem, a goose, a pomegranate, a patera (any shallow bowl). An incense burner, a cup, an offering dish and a candle or oil lamp. Fresh flowers when you can.\n\nIf you honour Juno Lucina for a pregnancy, keep the shrine free of knots: no tied ribbons or bows. If you honour Juno Moneta, a coin on the shrine is a good sign. Keep it clean before each Kalends, and remove dead flowers promptly.\n\nJuno also has a place in the wider household shrine. If you keep a lararium for the Lares and the Genius of the house, Juno can stand there too, especially as the juno of the woman who runs the household. Some practitioners keep a single shrine for the household gods and a small corner of it for Juno, rather than a separate altar; both are reasonable, and space in a small flat is a good enough reason to combine them.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The personal genius is very well attested; the woman\'s juno appears in poetry (Tibullus 3.12 / 4.6, depending on edition), Seneca (Letters 110.1) and some inscriptions. Modern groups publish their calendars and practice.',
+            unknown:
+              'How widely ordinary Roman women honoured their own juno is uncertain; the idea may have been more literary than common. Modern extensions of genius and juno beyond the binary are modern choices.',
+          },
+          inPractice:
+            'Set up her shrine this week. Find the birthdays of the women closest to you and put them in your calendar, so you can honour their juno, and theirs, on the day.',
+          reflect: [
+            'What is the protecting spirit of your own life like?',
+            'How will your shrine reflect the form of Juno you are drawn to?',
+          ],
+          further: [
+            'Harriet I. Flower, The Dancing Lares and the Serpent in the Garden (2017), on genius and household cult',
+            'Tibullus, Elegies (public-domain translations on Gutenberg), the birthday poem to a woman\'s Juno',
+          ],
+          library: ['traditional/tool/altar', 'traditional/vessel/offering_bowl', 'traditional/candle/blue', 'traditional/crystal/moonstone'],
+          premade: ['kitchen-solitary-birthday-new-year'],
+        },
+        {
+          id: 'juno-hard',
+          title: 'Hard things: anger, war and the womb',
+          summary: 'The angry Juno of the poets, the goddess called out of a conquered city, and how to approach a birth goddess with care.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'The angry queen',
+              body:
+                'Vergil opens the Aeneid by asking why the queen of the gods was so angry, and much of Western art followed him. In Greek myth Hera persecutes Heracles, Io, Semele and others. Those stories are vivid and part of the literature you may read. But reading them as a guide to how Juno treats her devotees would be a mistake: they belong to poets working with Greek models. Roman women did not approach Juno Lucina expecting jealousy; they approached her for help.\n\nIt is fair, though, to see Juno as a goddess of dignity who does not take insult lightly. Approach her formally and keep your word.',
+            },
+            {
+              heading: 'A goddess taken in war',
+              body:
+                'The evocatio of Juno Regina from Veii is a war story. Rome called the enemy\'s protecting goddess away and then destroyed the city. Later, Carthage\'s great goddess, whom the Romans called Juno Caelestis, was also brought into Roman worship. It is honest to know that Roman religion used the gods this way.\n\nModern devotees often read the Aventine Juno as a goddess who chose Rome; others are uneasy with that. Either way, the practice is not something to imitate. You do not call gods away from other peoples.',
+            },
+            {
+              heading: 'Birth, loss and not giving birth',
+              body:
+                'A goddess of childbirth touches tender places: infertility, miscarriage, difficult births, choices about having children, and the fact that not every woman wants or can have a baby. Juno\'s Roman forms are broader than motherhood: she is queen, warner, saviour, guardian of the month and of each woman\'s life. You can honour any of them.\n\nIf you pray to Lucina for a pregnancy, do it alongside proper medical care, never instead of it. If you are grieving, a candle to Juno for the child or the hope you have lost is a gentle and fitting act. No offering earns or loses a child. Grief after pregnancy loss or infertility is real grief, and support exists for it: your doctor or midwife, or a specialist charity (in the UK, the Miscarriage Association or Sands; in the US, Share Pregnancy and Infant Loss Support).',
+            },
+            {
+              heading: 'What not to do',
+              body:
+                'Do not ask Juno to harm a rival, a partner\'s lover or anyone else. Roman cult did not ask her for that, and this app does not offer it. Do not treat her as the Greek Hera at a Roman shrine; if you also honour Hera, give each her own setting. Do not leave lilies where a cat can reach them. And do not forget Janus first and Vesta last: the order of the gods mattered to Romans.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The evocatio of Juno from Veii (Livy 5.21–22) and the adoption of Carthage\'s goddess as Juno Caelestis are attested. Vergil\'s angry Juno draws on Greek epic traditions about Hera.',
+            unknown:
+              'Whether evocatio was common or a rare showpiece is debated. Ancient women\'s private religious experience around pregnancy and loss is mostly lost to us, apart from votive objects like terracotta wombs and swaddled infants found at Italian sanctuaries.',
+          },
+          inPractice:
+            'Decide which forms of Juno you will honour and write them down. If any part of her worship is painful for you right now, note that, and leave it aside without guilt.',
+          reflect: [
+            'What do you do with the angry Juno of the poets?',
+            'Which of her forms can you approach most honestly right now?',
+          ],
+          further: [
+            'Livy, History of Rome 5.21–23',
+            'Celia E. Schultz, Women\'s Religious Activity in the Roman Republic (2006)',
+          ],
+          library: ['traditional/deity/juno'],
+        },
+      ],
+      practices: [
+        {
+          id: 'juno-women-notes',
+          title: 'Women who held you',
+          instructions:
+            'Every two days of the study stage, write about one woman, living or dead, related or not, who protected, taught or steadied you.',
+          times: 5,
+          every: 'day',
+          prompt: 'Who was she, and what did she give me? How might I honour her?',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Nine nights with Juno',
+      intro:
+        'Nine nights from the Kalends towards the Nones and beyond, honouring a different form of Juno, with a short Roman-form offering each night. The number nine was meaningful in Roman ritual (the dies lustricus, when a baby girl was named and purified, was the eighth day after birth, a boy\'s the ninth), but the nine-night shape here is a modern frame.',
+      days: 9,
+      lessons: [],
+      practices: [
+        {
+          id: 'juno-nine-nights',
+          title: 'Nine nights, nine names',
+          instructions:
+            'Each night: wash your hands, cover your head, a grain of incense to Janus. Then incense and a flower petal, a drop of milk or wine to Juno under one title, saying her name and asking her to be "willing and favourable". Name Vesta last and turn to your right.\n\nThe names, one per night: 1 Regina, queen. 2 Lucina, bringer into the light. 3 Moneta, the Warner. 4 Sospita, the Saviour. 5 Pronuba, of marriage and partnership. 6 Caprotina, of the fig tree and the women who saved the city. 7 Your own juno, the protecting spirit of your life (or a woman\'s you love). 8 Juno of the Kalends, of beginnings. 9 Juno by whatever name she wishes to be called.',
+          times: 9,
+          every: 'day',
+          prompt: 'What did this form of Juno ask of me? What did I notice about dignity, protection or beginnings today?',
+        },
+        {
+          id: 'juno-act-of-care',
+          title: 'An act of care',
+          instructions:
+            'During these nine nights, do one concrete act for a woman or a family: cook a meal for a new parent, donate to a women\'s shelter or maternity charity, help a friend with childcare. Offer it to Juno.',
+          times: 1,
+          prompt: 'How did giving care feel as an offering?',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'Is this your goddess?',
+      intro:
+        'A few days to weigh what you have learned. Stopping, pausing, or choosing another goddess or path is a good outcome; a queen respects honest judgement more than an empty promise.',
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'juno-discern',
+          title: 'Three evenings of questions',
+          instructions: 'Read back your notes from the nine nights. Then answer the questions below, a few each evening.',
+          times: 3,
+          every: 'day',
+          prompt: 'What am I really drawn to: Juno herself, one of her forms, or an idea of motherhood or queenship?',
+        },
+      ],
+      questions: [
+        'Can I keep a monthly offering on the Kalends for a year?',
+        'Which of her forms do I actually want to serve, and is that enough to dedicate to?',
+        'Are any parts of her worship (marriage, childbirth) painful or unsuitable for me now, and can I honour her without them?',
+        'Is the formal Roman manner of prayer right for me, or does it feel like a costume?',
+        'Am I drawn to Juno, or to Hera, or to a general "goddess" figure? They are not the same.',
+        'Would I rather keep honouring her without a dedication for now? That is a fine choice.',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'The dedication',
+      intro:
+        'If you go ahead, hold this on a Kalends, or at the Matronalia on 1 March. It is a self-dedication, not an initiation: it does not make you a priestess, and modern groups that keep priesthoods have their own processes. What you make is a personal commitment, spoken exactly and kept.',
+      days: 1,
+      lessons: [],
+      practices: [],
+      rite: {
+        title: 'Self-dedication to Juno',
+        summary: 'Purification, Janus first, a prayer to Juno by her titles, a spoken and written dedication, offerings of incense, flowers, milk and a libum, and Vesta last.',
+        minutes: 40,
+        ingredients: [
+          { name: 'A bowl of clean water and a towel', ref: 'traditional/vessel/bowl' },
+          { name: 'A head covering' },
+          { name: 'Fresh flowers' },
+          { name: 'Frankincense or myrrh', ref: 'traditional/herb/myrrh' },
+          { name: 'An incense burner', ref: 'traditional/tool/incense_burner' },
+          { name: 'Milk or wine in a cup', ref: 'traditional/tool/chalice' },
+          { name: 'An offering dish', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'A libum (cheese cake) or honey cake' },
+          { name: 'Your written dedication' },
+          { name: 'A white or royal blue candle', ref: 'traditional/candle/blue' },
+          { name: 'A coin, for Moneta', optional: true },
+        ],
+        preparation:
+          'The day before, bake a libum after Cato (On Agriculture 75): mix about 250 g ricotta with 100 g plain flour and one egg, shape a round, bake on bay leaves at 200°C for 35–40 minutes, and drizzle with honey.\n\nWrite your dedication: who you are; that you dedicate yourself to Juno, and under which titles; for how long (a year is wise); what you will do (the Kalends offering, the Matronalia, an act of care, a value you will keep). Read it aloud until it flows. Clean the shrine and bathe. Unbind your hair if it is long, after Ovid\'s advice to women praying to Lucina.',
+        steps: [
+          {
+            title: 'Purify and veil',
+            instructions: 'Wash your hands and face. Put on clean clothes. Cover your head. Light the candle.',
+            light: true,
+          },
+          {
+            title: 'Janus first',
+            instructions: 'Incense to Janus.',
+            spoken: 'Father Janus, first in every prayer,\nbe honoured by this incense, and open the way to Juno.',
+          },
+          {
+            title: 'Invoke Juno',
+            instructions: 'Add incense. Raise your hands, palms up.',
+            spoken: 'Juno Regina, queen of the Capitol,\nJuno Lucina, who brings us into the light,\nJuno Moneta, who warns, Juno Sospita, who saves,\nmistress of the Kalends,\nor by whatever name it is right to call you:\nI offer you this incense, and I pray good prayers,\nthat you may be willing and favourable\nto me, my house and my household.',
+          },
+          {
+            title: 'Speak the dedication',
+            instructions: 'Read your dedication aloud, clearly and in full. If you stumble, stop and begin again.',
+            minutes: 5,
+          },
+          {
+            title: 'Offer',
+            instructions: 'Lay the flowers before her. Break a piece of libum into the dish and pour milk or wine beside it. Lay the coin on the shrine if you are using one.',
+            spoken: 'Juno, be honoured by these flowers,\nby this cake, by this offering.\nAs I have spoken, so I will do.',
+          },
+          {
+            title: 'Silence',
+            instructions: 'Sit with her for a while.',
+            minutes: 5,
+            timed: true,
+          },
+          {
+            title: 'Vesta last, and turn',
+            instructions: 'Name Vesta, turn to your right, uncover your head, and snuff the candle.',
+            spoken: 'Vesta, keeper of the hearth, be honoured. It is done.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Place the written dedication on her shrine for the year. Eat the rest of the libum, ideally with women you love. Pour out the milk on earth the next day and compost the god\'s portion.',
+        safety:
+          'Never leave candle or incense unattended; use heatproof holders. Lilies are toxic to cats. Wine and grapes are toxic to dogs and cats. The libum contains dairy, egg and gluten.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'Every Kalends',
+      intro:
+        'Juno\'s rhythm is monthly. Keep the Kalends, keep the Matronalia, honour the women around you and their birthdays, and rededicate each year.',
+      days: 4,
+      lessons: [],
+      practices: [
+        {
+          id: 'juno-kalends-offering',
+          title: 'The Kalends offering',
+          instructions:
+            'On the 1st of each month: wash, cover your head, incense to Janus, then incense, a flower and a drop of milk or wine to Juno of the Kalends. Name what you hope the month will bring, and ask her to be willing and favourable. Vesta last, turn right.',
+          times: 12,
+          every: 'month',
+          prompt: 'What is beginning this month, and what do I ask of Juno for it?',
+          premade: 'folk-lararium-offering',
+        },
+        {
+          id: 'juno-year',
+          title: 'The yearly round',
+          instructions:
+            'Mark these: 1 February (Juno Sospita), 1 March, the Matronalia (flowers, gifts and care for the women in your life, and an offering to Lucina), 1 June (Juno Moneta), 7 July, the Nonae Caprotinae (a fig, and a thought for women who served and saved others), and 1 September (Juno Regina). Rededicate each year at the Matronalia or on your dedication anniversary: read your vow, say honestly how you kept it, and renew it.',
+          times: 1,
+          every: 'holy-day',
+          prompt: 'How has Juno\'s protection shown up in my year?',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'Ovid, Fasti 2.449–452 and 3.167–258, incl. 3.255 "tu nobis lucem, Lucina, dedisti" and 2.451 (Latin, The Latin Library: https://www.thelatinlibrary.com/ovid/ovid.fasti2.shtml and https://www.thelatinlibrary.com/ovid/ovid.fasti3.shtml); translations original',
+    'Terence, Andria 473 (Latin, The Latin Library: https://www.thelatinlibrary.com/ter.andria.html)',
+    'Livy, History of Rome 5.21–22 ("visne Romam ire, Iuno?") and 5.47, the geese (Latin, The Latin Library: https://www.thelatinlibrary.com/livy/liv.5.shtml)',
+    'Cato, On Agriculture 75, the libum (Latin, The Latin Library: https://www.thelatinlibrary.com/cato/cato.agri.html)',
+    'Macrobius, Saturnalia 1.12.7 and 1.15.18–19 (paraphrased)',
+    'Varro, On the Latin Language 6.27, the Kalends (paraphrased)',
+    'Seneca, Letters 110.1, genius and juno (paraphrased)',
+    'Celia E. Schultz, Women\'s Religious Activity in the Roman Republic (Chapel Hill, 2006)',
+    'Mary Beard, John North and Simon Price, Religions of Rome (Cambridge, 1998)',
+  ],
+};

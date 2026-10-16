@@ -1,0 +1,527 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-cernunnos',
+  kind: 'deity',
+  paths: ['celtic', 'wheel'],
+  deityRef: 'traditional/deity/cernunnos',
+  title: 'Cernunnos: The Antlered One',
+  summary:
+    'A month with Cernunnos, the antlered god of Gaul: one carved name in Paris, a cauldron from a Danish bog, a hundred images of a seated god with torc and serpent, and the modern Horned God he became, ending in a self-dedication made outdoors or at a window onto the wild.',
+  welcome:
+    'This journey takes about a lunar month. You will read five lessons, set up a shrine, keep nine evenings of offering and listening to the land, and decide whether to dedicate yourself to Cernunnos.\n\nIt is a self-dedication, not an initiation, and it does not make you part of any coven, grove or order. Cernunnos is a god of whom almost nothing is written, so this journey is especially careful to separate the ancient images from the modern Horned God of Wicca, while respecting both. You can pause whenever you need to.',
+  about:
+    'Cernunnos is known by name from a single carved stone: the Pillar of the Boatmen, set up in Paris under the emperor Tiberius (AD 14–37) and found beneath Notre-Dame in 1710 or 1711 (accounts differ), where an antlered god with torcs hanging from his antlers is labelled [C]ERNUNNOS. Scholars give the same name, by convention, to dozens of other images from Gaul, Britain and northern Italy of an antlered or horned god, often seated cross-legged, wearing or holding a torc, with a ram-horned serpent, a stag and sometimes a bag of coins or grain. The most famous is on the Gundestrup Cauldron, found in a Danish bog in 1891. No myth, prayer or account of his worship survives. In the twentieth century, Margaret Murray’s theory of a witch-cult of the Horned God and Gerald Gardner’s Wicca made Cernunnos one of the best-loved gods of modern Paganism, as the Horned God who rules the wild and the dead, partners the Goddess and turns with the seasons. Celtic polytheists, Druids, Gaulish revivalists and Wiccans honour him today, each in their own way.',
+  notes: [
+    'Only one ancient inscription certainly names Cernunnos, and it is damaged. Everything else is images, which may or may not show the same god. Be cautious with any claim about his "ancient" myths, festivals or worship.',
+    'The Wiccan Horned God, Herne the Hunter, Pan and Cernunnos are often blended. They have different histories. You can honour the blend, but know it is a modern one.',
+    'He is not the Christian devil, and the horned devil of Christian art is not evidence of a suppressed Cernunnos cult; that idea comes from Margaret Murray’s theories, which historians have rejected.',
+    'Outdoor offerings must be safe for wildlife: no bread, salt, alcohol puddles, chocolate, onions, grapes or plastic. Take home anything that will not quickly rot.',
+    'If you collect antlers, use only naturally shed antlers found legally, and leave them where collecting is forbidden. Never disturb deer, especially in the rut or the calving season.',
+  ],
+  holyDays: ['bealtaine', 'beltane', 'samhain_gaelic', 'samhain'],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'At the edge of the wood',
+      intro:
+        'Begin by making a place for Cernunnos and introducing yourself. He is a god of the wild, so you will also go outside, to a park, a field, a towpath or a window looking onto a tree, and simply attend to it.',
+      days: 2,
+      lessons: [],
+      practices: [
+        {
+          id: 'cernunnos-shrine',
+          title: 'Set up a simple shrine',
+          instructions:
+            'Choose a windowsill or shelf, ideally near a window with a view of a tree or the sky. Lay down a cloth of green, brown or undyed wool. Place a candle in a safe holder on a heatproof dish, a bowl for offerings, and a small cup. Add an image of a stag or of the god from the Gundestrup Cauldron or the Pillar of the Boatmen (postcards and printouts are fine), a ring or a circle of cord to stand for the torc, and a few things from the land near you: an acorn, a pine cone, a stone, an oak leaf. If you have a shed antler, it can go here, but it is not necessary.',
+          times: 1,
+          prompt: 'What did you bring from the land near you? Where did you find it?',
+        },
+      ],
+      rite: {
+        title: 'Introduction to Cernunnos',
+        summary:
+          'A simple rite at your shrine and at the window: light a flame, offer grain and drink, introduce yourself, and spend time attending to the living world.',
+        minutes: 25,
+        ingredients: [
+          { name: 'A green or brown candle in a safe holder', ref: 'traditional/candle/green' },
+          { name: 'A handful of oats, barley or mixed grain' },
+          { name: 'A small cup of ale, cider or apple juice' },
+          { name: 'An acorn, an oak leaf or a sprig of evergreen', ref: 'traditional/herb/oak' },
+          { name: 'A coin', optional: true },
+        ],
+        preparation:
+          'Choose a time near dusk if you can, when deer and many other animals are most active. Open the window or curtains. Set the grain in the bowl and pour the drink.',
+        steps: [
+          {
+            title: 'Look out',
+            instructions:
+              'Stand at the window or step outside. For three minutes, simply look and listen. Count the living things you can see or hear: birds, trees, insects, grass, the wind.',
+            minutes: 3,
+          },
+          {
+            title: 'Light the flame',
+            instructions: 'Return to the shrine and light the candle.',
+            spoken: 'Cernunnos, Antlered One, lord of the wild and its plenty, I light this flame for you.',
+            light: true,
+          },
+          {
+            title: 'Offer grain, drink and a coin',
+            instructions:
+              'Pour a little grain into your hand and let it fall into the bowl. Lift the cup. If you have a coin, set it beside the bowl; Gaulish images often show coins or grain pouring from his bag, and coins were common offerings at Gaulish sanctuaries.',
+            spoken: 'Here is grain and drink, and a coin from my hand. I give them freely.',
+          },
+          {
+            title: 'Introduce yourself',
+            instructions:
+              'Sit down, cross-legged if that is comfortable, as he is so often shown. Tell him your name, where you live, and what land you live on: its river, its trees, its animals. Say why you have come.',
+          },
+          {
+            title: 'Attend',
+            instructions:
+              'Hold the acorn or leaf and sit quietly. Breathe slowly. Imagine the land beyond the walls and all the life in it, from the soil to the birds.',
+            minutes: 7,
+          },
+          {
+            title: 'Close',
+            instructions: 'Thank him and snuff the candle.',
+            spoken: 'Cernunnos, thank you. I will come again, and I will look after the land where I live.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Next day, scatter the grain where birds can eat it or put it in the compost, and pour the drink onto earth away from paths and pets. Keep the coin on the shrine or give it to a wildlife or conservation charity. Write a few lines about what you noticed outside.',
+        safety:
+          'Keep the candle on a heatproof dish away from open windows and curtains, and never leave it unattended. Do not leave alcohol where pets or wildlife can drink it. Acorns are toxic to dogs and horses if eaten, so keep shrine acorns out of reach of pets.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'Learning who he is',
+      intro:
+        'Four lessons: the one inscription and the many images; how to read those images; how Cernunnos became the Horned God of Wicca; and how he is honoured today. Read one every day or two, and go outside between them.',
+      days: 8,
+      lessons: [
+        {
+          id: 'cernunnos-name-and-images',
+          title: 'One name, many antlers',
+          summary: 'The Pillar of the Boatmen, the Gundestrup Cauldron, Val Camonica and Reims: what has actually been found, and why we call it all Cernunnos.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The Pillar of the Boatmen',
+              body:
+                'In 1710 or 1711 (the accounts differ), workmen digging a vault under Notre-Dame in Paris found carved blocks, reused in a late Roman wall, from a Roman-era monument. They had been set up by the nautae Parisiaci, the guild of boatmen of the Parisii tribe, in honour of Jupiter, during the reign of Tiberius (AD 14–37). The blocks show both Roman and Gaulish gods, each with a name: Jupiter, Vulcan, Castor, Esus cutting a tree, a bull with three cranes called Tarvos Trigaranus, and on one damaged block an older man’s head with stag’s antlers, a torc hanging from each antler. Above him are the letters ERNUNNOS, with the first letter lost. Almost everyone reads it as Cernunnos.\n\nThe Pillar of the Boatmen is now in the Musée de Cluny in Paris. It is the only ancient object that we can be sure calls this god by this name. A few other inscriptions have been proposed as variants of the name, but they are fragmentary and debated.',
+            },
+            {
+              heading: 'The Gundestrup Cauldron',
+              body:
+                'In 1891, peat cutters at Rævemose in Himmerland, Denmark, found a great silver cauldron in pieces in a bog. It was probably made between about 150 BC and 1 BC, perhaps by Thracian silversmiths working for Celtic patrons, and had been taken apart and deposited in the bog as an offering. One of its inner plates shows a figure seated cross-legged, with antlers, wearing a torc at his neck and holding another torc in his right hand and a ram-horned serpent in his left. A stag stands beside him, and around him are a wolf, a boy on a dolphin, lions and other beasts.\n\nThis is the image most people picture when they hear Cernunnos. But the cauldron has no inscription; we call the figure Cernunnos because he looks like the god on the Paris pillar.',
+            },
+            {
+              heading: 'Other images',
+              body:
+                'There are many more. At Val Camonica in northern Italy, a rock carving perhaps from the fourth century BC shows a tall antlered figure with a torc on his arm and a serpent beside him. At Reims, a carved stone from the Roman period shows an antlered god seated cross-legged between Apollo and Mercury, pouring coins or grain from a bag, with a stag and a bull at his feet. In Britain there are horned heads and figures, such as a Romano-British relief from Cirencester of an antlered or horned god whose legs are formed by two ram-horned snakes that rear up on either side of his head, as Miranda Green describes it.\n\nThe images vary. Some have antlers, some have ram’s or bull’s horns, some have holes in the head where antlers made of another material once fitted. Some are surrounded by animals, some by coins. Whether they all show one god, or a family of related horned gods with different local names, we do not know.',
+            },
+            {
+              heading: 'What the name means',
+              body:
+                'Cernunnos probably comes from a Celtic root karn- or cern-, meaning horn or peak, so the name is usually translated “horned one” or “the antlered one”. The ending -on(n)os is common in Gaulish divine names, and may mark him as a god or a great one; the details of the word-building are debated.\n\nThere is no Cernunnos in the surviving myths of Ireland or Wales. People have suggested echoes, such as the Irish warrior Conall Cernach (“victorious” or “angular”), or antlered figures in later legend, but none of these is a clear link. He is a Gaulish god, known from Gaulish and Romano-British stone and metal.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The Pillar of the Boatmen (AD 14–37) names an antlered god [C]ERNUNNOS. Many images of an antlered or horned god, often cross-legged with a torc and ram-horned serpent, survive from Gaul, Britain and northern Italy, including the Gundestrup Cauldron (c. 150–1 BC) and the Reims stele.',
+            unknown:
+              'We do not know whether all these images show the same god, what his myths were, how or when he was worshipped, or what his worshippers called him in different regions. No text describes him.',
+          },
+          inPractice:
+            'Devotees often keep a picture of the Gundestrup or Reims figure on their shrine, and many make a pilgrimage to the Musée de Cluny in Paris or the National Museum of Denmark in Copenhagen to see the originals.',
+          reflect: [
+            'How does it feel to honour a god known mostly by his image? What does an image tell you that words cannot?',
+            'Look closely at a picture of the Gundestrup figure. What do you notice first?',
+          ],
+          further: [
+            'Miranda Green, The Gods of the Celts (1986) and Animals in Celtic Life and Myth (1992).',
+            'Musée de Cluny, Paris: the Pilier des Nautes.',
+            'National Museum of Denmark: the Gundestrup Cauldron.',
+          ],
+          library: ['traditional/deity/cernunnos'],
+        },
+        {
+          id: 'cernunnos-reading-images',
+          title: 'Reading the images: torc, serpent, stag and coin',
+          summary: 'What each of his attributes meant in the Celtic world, and what we can carefully infer about the god from them.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The torc',
+              body:
+                'A torc is a heavy neck-ring, usually of twisted gold, silver or bronze, open at the front. It was a mark of high status and sacred power in the Celtic world: Greek and Roman writers describe Gaulish warriors wearing them, gods and goddesses are carved wearing them, and many were deposited in hoards and sacred places, such as the great hoards at Snettisham in Norfolk. On the Paris pillar, torcs hang from Cernunnos’s antlers; at Gundestrup he wears one and holds another out.\n\nWe can say carefully that he was shown as a god of high rank, one who possessed and perhaps gave the signs of status and sacred power. Devotees today often read the held-out torc as an offering of blessing or an invitation.',
+            },
+            {
+              heading: 'The ram-horned serpent',
+              body:
+                'A snake with a ram’s horns is one of the strangest and most distinctive creatures in Gaulish art, and it appears again and again with the antlered god. It combines the serpent, which sheds its skin, lives in the earth and was linked with healing and the underworld in many ancient cultures, with the ram, a creature of fertility and strength.\n\nWe do not have a Gaulish text explaining it. Interpretations range from renewal and fertility to the underworld and the riches beneath the ground. All are reasonable guesses. If you work with this image, hold it as a living mystery rather than a fixed symbol.',
+            },
+            {
+              heading: 'The stag and the other animals',
+              body:
+                'A stag grows his antlers anew every year. Red deer stags cast their antlers in late winter or spring, grow new ones in soft velvet through the summer, rub the velvet off in late summer, and fight and mate in the rut of autumn. An antlered god therefore carries a calendar on his head: growth, ripeness, contest and loss, every year.\n\nAround him at Gundestrup and Reims are many animals, wild and tame together: stag, bull, wolf, lion, serpent. This has led to the common reading of Cernunnos as a lord of animals, one who stands between wild and domestic life. Again, this is interpretation, but it fits the images well.',
+            },
+            {
+              heading: 'Coins, grain and the cross-legged seat',
+              body:
+                'On the Reims stele and some other images, he pours coins or grain from a bag, and a stag and bull eat from what falls. This suggests a god of plenty, and in Roman times he may have been linked with Mercury, the god of trade and wealth, beside whom he sits at Reims. Caesar wrote that the Gauls believed they were descended from a god of the underworld and wealth whom he called Dis Pater; some scholars wonder if this was Cernunnos, but nothing proves it.\n\nThe cross-legged seated pose appears across Gaulish sculpture, not only for him. Classical writers say the Gauls sat on the ground on skins or straw to eat. Devotees today often sit this way to pray to him.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Torcs were high-status, sacred objects in the Celtic world. The ram-horned serpent is a distinctively Gaulish motif often found with the antlered god. The Reims stele shows coins or grain flowing from his bag, with a stag and bull, beside Apollo and Mercury.',
+            unknown:
+              'What the serpent, the torc, the coins and the animals meant to his worshippers is not recorded anywhere. Readings of him as lord of animals, god of plenty, or god of the underworld are modern interpretations, plausible but unproven. The link with Caesar’s Dis Pater is speculation.',
+          },
+          inPractice:
+            'Devotees often choose one attribute to focus on: wearing a torc-style necklace or bracelet in his honour, keeping a serpent image for renewal, following the deer’s antler cycle through the year, or giving coins to conservation or to people in need.',
+          reflect: [
+            'Which of his attributes speaks to you most: torc, serpent, stag or coin? What does it suggest about what you need?',
+            'How does the stag’s yearly cycle of growing and losing mirror your own life?',
+          ],
+          further: [
+            'Miranda Green, Symbol and Image in Celtic Religious Art (1989).',
+            'Julius Caesar, The Gallic War, book 6, chs. 16–18, on Gaulish religion (public domain, trans. W. A. McDevitte).',
+          ],
+          library: ['traditional/deity/cernunnos', 'traditional/crystal/moss_agate', 'traditional/crystal/green_aventurine'],
+        },
+        {
+          id: 'cernunnos-horned-god',
+          title: 'From Gaul to the Horned God of Wicca',
+          summary: 'How Margaret Murray, Gerald Gardner and the twentieth-century witchcraft revival made Cernunnos the Horned God, and how to honour both honestly.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Margaret Murray’s Horned God',
+              body:
+                'In The Witch-Cult in Western Europe (1921) and The God of the Witches (1931), the Egyptologist Margaret Murray argued that the witches tried in early modern Europe were members of a surviving pagan fertility religion, whose god was a horned deity whom Christians mistook for the devil. She drew on the antlered images of Gaul, the cave painting known as the Sorcerer at Trois-Frères, and the horned devils of the witch-trial records, and called them all one god.\n\nHistorians have since shown that Murray’s evidence does not hold up: she selected and misread trial records, and there is no evidence of an organised pagan religion behind the trials. But her books were enormously influential, and they gave the twentieth century a powerful image: the Horned God of the witches, ancient, wild and wronged.',
+            },
+            {
+              heading: 'Gardner and Wicca',
+              body:
+                'Gerald Gardner, who brought Wicca to public notice in the 1950s, took up Murray’s Horned God. In Wicca, the God is the Goddess’s partner: born at Yule, growing in strength through spring, joining with her at Beltane, ripening and declining with the harvest, and ruling as the lord of death and the hunt from Samhain. He is often called Cernunnos or Karnayna (a form Gardner used), and is sometimes blended with Herne the Hunter, a ghostly antlered huntsman of Windsor Forest first mentioned in Shakespeare’s The Merry Wives of Windsor (c. 1597), and with the Greek Pan.\n\nThis Horned God is a modern figure, but he is not a fake one. Wiccans have honoured him for seventy years, and his cycle of the seasons gives many people a living way to relate to nature.',
+            },
+            {
+              heading: 'Two ways of honouring',
+              body:
+                'Today there are, broadly, two ways people approach Cernunnos. Celtic and Gaulish polytheists and many Druids honour him as the Gaulish god of the images: a specific deity, approached through what can be learned of Gaulish religion, with offerings at sacred places and respect for the evidence. Wiccans and many Wheel of the Year Pagans honour him as the Horned God, a name for the masculine divine in nature, whose story follows the seasons.\n\nThe two often borrow from each other, and both are sincere. Where people sometimes stumble is in presenting the Wiccan cycle as ancient Gaulish myth. There is no evidence that the Gauls told of Cernunnos dying and being reborn each year or marrying a Goddess at Beltane. If that story moves you, keep it, but know where it comes from.',
+            },
+            {
+              heading: 'What not to borrow',
+              body:
+                'Some modern images give Cernunnos the face of the medieval devil, or treat him as a god of unbridled lust or violence. Neither comes from the Gaulish evidence, which shows a calm, seated, richly adorned god among animals.\n\nWicca’s ritual texts, including its invocations of the Horned God, are oathbound in initiatory covens and should not be copied from books that leaked them. This journey uses its own words. If you want Wiccan practice in full, the right path is through a coven and its initiation, or through openly published eclectic material.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Margaret Murray’s books (1921, 1931) created the idea of a single ancient Horned God of the witches; historians have rejected her thesis. Gerald Gardner’s Wicca adopted the Horned God in the 1950s. Herne the Hunter first appears in Shakespeare’s Merry Wives of Windsor.',
+            unknown:
+              'Whether the antlered god of Gaul had any seasonal myth, partner or role in death and rebirth is unknown. The Wiccan Horned God’s cycle of the year is modern theology, not a surviving tradition.',
+          },
+          inPractice:
+            'Wiccans honour the Horned God at the eight sabbats, especially Beltane and Samhain, often with antlers on the altar. Gaulish polytheists and Druids may honour Cernunnos in the woods with offerings of grain, coins and drink, and some keep the Gaulish month-names from the Coligny calendar.',
+          reflect: [
+            'Which Cernunnos are you drawn to: the Gaulish god of the images, the Wiccan Horned God of the seasons, or both? Can you say why?',
+            'Is there an image of him you have absorbed that does not match the evidence? Does it still serve you?',
+          ],
+          further: [
+            'Ronald Hutton, The Triumph of the Moon: A History of Modern Pagan Witchcraft (1999).',
+            'Ronald Hutton, The Witch: A History of Fear (2017), on Murray’s thesis.',
+            'Margaret Murray, The God of the Witches (1931), read as history of an idea.',
+          ],
+          library: ['traditional/deity/cernunnos', 'traditional/tool/altar'],
+        },
+        {
+          id: 'cernunnos-today',
+          title: 'Honouring him today: the land, the animals and the ethics of the wild',
+          summary: 'How Druids, Gaulish polytheists and Wiccans honour Cernunnos now, and the practical ethics of devotion to a god of wild things.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Who honours him',
+              body:
+                'Cernunnos is honoured by many groups. Druid orders such as the Order of Bards, Ovates and Druids and Ár nDraíocht Féin include him among the gods some members serve. Gaulish polytheists, a small but growing community, try to rebuild Gaulish religion from archaeology and classical sources, honouring him alongside gods like Lugus, Epona and Taranis. Wiccans and eclectic Pagans honour him as the Horned God. Some people with no group simply feel called by him in the woods.\n\nThese groups agree on one thing: devotion to him involves the living world. A Cernunnos devotee who never goes outside is missing the point.',
+            },
+            {
+              heading: 'What Gaulish sanctuaries tell us about offering',
+              body:
+                'We have no record of offerings to Cernunnos specifically. But archaeology tells us how the Gauls made offerings in general. They deposited coins, jewellery, weapons and torcs in rivers, lakes and bogs, as at La Tène in Switzerland or the Gundestrup bog. At healing sanctuaries, such as the source of the Seine, people left carved wooden and stone figures of themselves or their ailing body parts. At sanctuaries like Gournay-sur-Aronde in northern Gaul, animals were sacrificed: some old cattle were left to decay in a central pit, while pigs and lambs were eaten in feasts.\n\nDevotees today borrow the spirit of this without the harm: coins, grain, ale, cider, apples, nuts, carved or handmade things, and above all time and labour given to the land.',
+            },
+            {
+              heading: 'The ethics of the wild',
+              body:
+                'If Cernunnos is a lord of animals, his devotion carries obligations. Leave wild places better than you found them. Learn the names of the plants and animals around you. Support conservation, rewilding, and the protection of habitats. Do not feed wildlife food that harms it: bread is bad for ducks and deer, salt and alcohol harm all animals, and food left out can draw rats or make wild animals dependent.\n\nIf you hunt or fish, many devotees honour him by doing it lawfully, cleanly and with thanks, using what they take. If you do not, honour animals by learning about them, watching them without disturbing them, and helping their habitats.',
+            },
+            {
+              heading: 'Antlers, bones and found things',
+              body:
+                'Antlers are the most popular object on a Cernunnos shrine. Buy or collect only naturally shed antlers, never those taken from killed animals unless you know the hunt was lawful and ethical. In some places, such as many national parks and nature reserves, collecting anything is illegal. Deer are sensitive to disturbance, especially during the rut (roughly September to November) and calving (May to July), so keep your distance.\n\nThe same goes for feathers, bones and skulls. Laws in many countries protect wild birds and their feathers. When in doubt, leave it where it lies and take a photograph instead.',
+            },
+            {
+              heading: 'A god of the wild, in the city',
+              body:
+                'You do not need a forest. Cities are full of wild life: foxes in the railway cuttings, peregrines on cathedral towers, mosses in the cracks of the pavement, and the trees along every street. Many devotees in towns honour Cernunnos through the wildness that survives there, by learning which birds nest nearby, putting up a bird box, letting a corner of a balcony or yard grow untidy for insects, or joining a local group that cares for a park.\n\nThe images of Cernunnos show wild and tame animals together around him. A city, where people and animals live tightly side by side, is not as far from his world as it seems.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Gaulish religion included deposits of coins, torcs and weapons in water and bogs, and offerings at sanctuaries, as archaeology shows. Modern Druid, Gaulish polytheist and Wiccan communities honour Cernunnos.',
+            unknown:
+              'We do not know what offerings were given specifically to Cernunnos, where his sanctuaries were, or what his worshippers asked of him. Modern ecological ethics are a devotional choice, not an ancient rule.',
+          },
+          inPractice:
+            'Many devotees give a regular act of service to the land, such as litter picking, tree planting, a donation to a wildlife trust, or volunteering at a reserve, and dedicate it to him. Offerings at home are grain, ale or cider, apples and nuts, later returned to the earth safely.',
+          reflect: [
+            'What do you know about the wild animals and plants within a mile of your home? What could you learn this month?',
+            'What act of service to the land could become your regular offering to him?',
+          ],
+          further: [
+            'Jean-Louis Brunaux, The Celtic Gauls: Gods, Rites and Sanctuaries (1988).',
+            'Ár nDraíocht Féin and OBOD websites for modern Druid practice.',
+            'Robin Wall Kimmerer, Braiding Sweetgrass (2013), on reciprocity with the living world (not Celtic, but widely loved by devotees of nature gods).',
+          ],
+          library: ['traditional/deity/cernunnos', 'traditional/herb/oak', 'traditional/crystal/smoky_quartz'],
+          premade: ['hedge-hearing-the-land-walk'],
+        },
+      ],
+      practices: [
+        {
+          id: 'cernunnos-sit-spot',
+          title: 'Find a sit spot',
+          instructions:
+            'Choose one outdoor place you can visit easily: a bench under a tree, a patch of park, a riverbank, a balcony with a view. Go there four times during the study stage and sit for fifteen minutes each time, without your phone. Notice what changes.',
+          times: 4,
+          every: 'day',
+          prompt: 'What did you notice in your sit spot today that you had not noticed before?',
+          premade: 'hedge-hearing-the-land-walk',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Nine evenings with the land',
+      intro:
+        'Now you put what you have learned into practice: nine evenings of offering at your shrine and attending to the living world, with a lesson on his seasons and how to set out a rite.',
+      days: 10,
+      lessons: [
+        {
+          id: 'cernunnos-seasons-rite',
+          title: 'His seasons, offerings and the shape of a rite',
+          summary: 'A year of the stag, the modern holy days, what to offer and how, and a simple outdoor or indoor rite.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The year of the stag',
+              body:
+                'Because no ancient festival of Cernunnos is known, many devotees use the deer’s own year as his calendar. In late winter and early spring, stags cast their antlers; it is a time of loss and quiet. Through spring and summer, new antlers grow in velvet, and the hinds give birth: growth and tenderness. In late summer the velvet is rubbed away and the antlers harden: ripeness. In autumn comes the rut, when stags roar and fight: contest and abundance, before the winter.\n\nIf you live near deer, learn their calendar where you are; it varies by species and place. If you do not, the trees can be your calendar: bud, leaf, fruit, fall.',
+            },
+            {
+              heading: 'The modern holy days',
+              body:
+                'Wiccans and Wheel of the Year Pagans honour the Horned God at all eight sabbats, but especially at Beltane (1 May), when he and the Goddess join, and at Samhain (31 October), when he leads the wild hunt and rules the dead. Gaelic and Gaulish polytheists may honour him at the start of summer and winter, Bealtaine and Samhain, as the great turning points of the year.\n\nThese are modern choices, but sensible ones. You might also choose a day that matters for your land: the first frost, the day the swifts arrive, or the night you first hear stags roar.',
+            },
+            {
+              heading: 'Offerings and how to give them',
+              body:
+                'Good offerings for Cernunnos are grain (oats, barley, wheat), apples, nuts and acorns, ale, cider or mead, spring water, coins, and handmade things. Above all, give labour and care to the land.\n\nAt home, set the offering in a bowl before his candle with a word of what it is. Leave it overnight. Then return it to the land carefully: scatter grain where birds can feed but not on paths, bury fruit and nuts in a garden or compost, pour drink onto earth away from water and pets. Outdoors, offer only what wildlife can safely eat or what will rot quickly, or pour clean water. Take everything else home. Coins are best given to conservation work rather than dropped in ponds and streams, where they can harm the water.',
+            },
+            {
+              heading: 'The shape of a simple rite',
+              body:
+                'A rite to Cernunnos can be done under a tree or at your window. First, arrive: walk slowly to the place, or stand at the window, and spend a few minutes looking and listening. Second, greet: light a candle at home, or simply stand still outside, and name him. Third, give: offer grain, drink or a coin, saying what it is. Fourth, sit: cross-legged if you can, and attend to the life around you for ten minutes or more. Fifth, close: thank him, and commit to one act of care for the land.\n\nOutdoors, do not use candles or fire unless you are in a place where it is lawful and safe, such as a fire pit you are allowed to use. A torch, a lantern with an LED or nothing at all is better in dry woods.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Deer have a yearly cycle of antler casting, growth and rut. Wicca honours the Horned God at the eight sabbats, especially Beltane and Samhain. Grain, drink and coins were common offerings in the wider Gaulish and Romano-British world.',
+            unknown:
+              'No ancient festival of Cernunnos is known. Using the deer’s year as his calendar, and the five-part rite shape, are modern devotional practice.',
+          },
+          inPractice:
+            'Devotees often keep a nature journal alongside their devotion, noting the turning of the year in their own place, and mark Beltane and Samhain with longer rites.',
+          reflect: [
+            'What season is your own life in right now: casting, growing, ripening or contest?',
+            'What is happening in the land near you this week?',
+          ],
+          further: [
+            'John Fletcher, Deer (Reaktion Books, 2014), for the natural history of deer.',
+            'Ronald Hutton, The Stations of the Sun (1996), on the ritual year in Britain.',
+          ],
+          library: ['traditional/deity/cernunnos', 'traditional/herb/oak', 'traditional/herb/cedar'],
+          premade: ['folk-bealtaine-dew', 'kitchen-prosperity-bread'],
+        },
+      ],
+      practices: [
+        {
+          id: 'cernunnos-nine-evenings',
+          title: 'Nine evenings with the land',
+          instructions:
+            'For nine evenings, near dusk if you can: light his candle, offer a little grain, a nut, an apple slice or a splash of drink, and say his name. Then go to your sit spot, or stand at your window, for ten minutes, and attend to the living world without your phone. Come back, thank him and snuff the candle. In the morning, return the offering to the land safely. On at least one of the nine days, do an act of practical care for the land: pick up litter, water a street tree, put out clean water for birds.',
+          times: 9,
+          every: 'day',
+          prompt: 'What did you notice tonight? What did you give, and what did the land give back?',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'Discernment under the trees',
+      intro:
+        'Before any dedication, stop and look back over the month. A dedication to Cernunnos is a promise to him and to the living world. Stopping here, waiting a season, or choosing another god or path are all good outcomes; the woods will still be there.',
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'cernunnos-discern',
+          title: 'A long walk',
+          instructions:
+            'Take a long walk, an hour or more, through the wildest place you can reach. Think through the questions below as you go. Write your answers when you get home.',
+          times: 1,
+          prompt: 'Your honest answers to the discernment questions.',
+        },
+      ],
+      questions: [
+        'Have you been able to spend regular time outdoors this month? Can you keep that up as part of a devotion?',
+        'Are you drawn to the Gaulish god, the Wiccan Horned God, or both? Are you clear and comfortable about the difference?',
+        'Can you live with how little is known about him, and build a practice honestly?',
+        'Is there a practical act of care for the land that you can commit to regularly?',
+        'Are you looking for a god, or for a relationship with nature itself? Both are good; only one needs a dedication.',
+        'Is another deity or path calling you more strongly? Choosing them, or choosing nothing yet, is a good and honest outcome.',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'Dedication at the edge of the wild',
+      intro:
+        'If you choose to go on, this is a self-dedication to Cernunnos: a promise you make before him, in your own words. It is not an initiation into Wicca, Druidry or any group, and it does not replace one where they have their own. Do it outdoors if you have a safe, private place, or at your shrine with the window open. Beltane or Samhain are fitting; so is any evening when you are ready.',
+      days: 1,
+      lessons: [],
+      practices: [],
+      rite: {
+        title: 'Self-dedication to Cernunnos',
+        summary:
+          'Arrive and attend, offer grain, drink and a coin, sit as he sits, make your promise to him and to the land, and receive the torc of his blessing.',
+        minutes: 45,
+        ingredients: [
+          { name: 'A green or brown candle in a safe holder (indoors only)', ref: 'traditional/candle/green' },
+          { name: 'Grain, apples and nuts' },
+          { name: 'Ale, cider or apple juice' },
+          { name: 'A coin to give later to conservation' },
+          { name: 'A ring, bracelet or necklace to wear as your "torc"' },
+          { name: 'Your written promise' },
+          { name: 'An oak leaf, acorn or sprig of evergreen', ref: 'traditional/herb/oak', optional: true },
+        ],
+        preparation:
+          'Write your promise over several days, including one regular act of care for the land. Choose your place: a safe, private outdoor spot or your shrine. Wash, and dress in clothes you can sit on the ground in. Lay out the offerings, the ring and the promise.',
+        steps: [
+          {
+            title: 'Arrive and attend',
+            instructions:
+              'Walk slowly to your place, or stand at your open window. Spend five minutes looking and listening to the living world.',
+            minutes: 5,
+          },
+          {
+            title: 'Greet him',
+            instructions: 'Indoors, light the candle. Outdoors, stand still and lay down the oak leaf or acorn.',
+            spoken: 'Cernunnos, Antlered One, lord of the wild and its plenty, I come to you of my own free will.',
+            light: true,
+          },
+          {
+            title: 'Give the offerings',
+            instructions:
+              'Offer the grain, fruit and nuts, then the drink, naming each. Hold up the coin and promise it to the care of the land.',
+            spoken: 'Here is grain and fruit and drink, and a coin for the land. I give them freely.',
+          },
+          {
+            title: 'Sit as he sits',
+            instructions:
+              'Sit cross-legged if you can, or comfortably on a cushion or stool. Breathe slowly. Feel the ground beneath you and imagine the roots and the animals all around.',
+            minutes: 5,
+          },
+          {
+            title: 'Make your promise',
+            instructions:
+              'Read your promise aloud. Say plainly that this is a self-dedication, made in good faith, and that you will keep it as well as you can.',
+            spoken: 'I give this promise to you and to the land I live on. I will keep it as long as it is true.',
+          },
+          {
+            title: 'Receive the torc',
+            instructions:
+              'Hold the ring or necklace out in your right hand, as the god at Gundestrup holds out his torc. Ask for his blessing on it. Then put it on.',
+            spoken: 'As you hold out the torc, I take it: a sign of your blessing and of my promise.',
+          },
+          {
+            title: 'Listen',
+            instructions: 'Sit in silence and attend. Receive what comes, or nothing.',
+            minutes: 10,
+          },
+          {
+            title: 'Close',
+            instructions: 'Thank him. Snuff the candle indoors, or simply stand and bow outdoors.',
+            spoken: 'Cernunnos, thank you. I go back into the world as one who is yours.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Return the offerings to the land safely within a day. Give the coin, or its equivalent, to a conservation or wildlife charity within a week. Wear your torc when you go into wild places. Write about the rite in your journal.',
+        safety:
+          'Use candles indoors only, on a heatproof dish, never unattended. Outdoors, never light fires except where it is lawful and safe. Tell someone where you are if you go somewhere remote, especially at dusk. Do not leave food or drink that harms wildlife or pets.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'Living in the wild year',
+      intro:
+        'The relationship lives in time spent outdoors and care for the land. Here is a rhythm for the year: a weekly visit to your sit spot, the turning points of summer and winter, and a yearly renewal of your promise.',
+      days: 4,
+      lessons: [],
+      practices: [
+        {
+          id: 'cernunnos-weekly',
+          title: 'Weekly sit spot',
+          instructions:
+            'Once a week, go to your sit spot or another wild place, greet him, offer a little grain or water, and attend for fifteen minutes. Note in your journal what has changed.',
+          times: 52,
+          every: 'week',
+          prompt: 'What is the land doing this week?',
+        },
+        {
+          id: 'cernunnos-holy-days',
+          title: 'Beltane and Samhain',
+          instructions:
+            'At Bealtaine (1 May), go out at dawn, wash in the dew and honour him as the green growth of summer. At Samhain (31 October), honour him as lord of the wild in its dying and the dead, with apples, nuts and a candle in the window.',
+          times: 1,
+          every: 'holy-day',
+          prompt: 'How did you keep the turning of the year?',
+          premade: 'folk-bealtaine-dew',
+        },
+        {
+          id: 'cernunnos-renew',
+          title: 'Yearly renewal',
+          instructions:
+            'On the anniversary of your dedication, return to the place where you made it. Read your promise, say honestly what you kept, and make a new one for the coming year, or release the promise with thanks.',
+          times: 1,
+          every: 'holy-day',
+          prompt: 'What did the year with him teach you about the land and yourself?',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'Pilier des Nautes (Pillar of the Boatmen), Paris, AD 14–37, Musée de Cluny (CIL XIII 3026).',
+    'Gundestrup Cauldron, National Museum of Denmark, found at Rævemose, 1891.',
+    'Julius Caesar, The Gallic War, book 6, trans. W. A. McDevitte and W. S. Bohn, Project Gutenberg: https://www.gutenberg.org/ebooks/10657',
+    'Miranda Green, The Gods of the Celts (1986); Symbol and Image in Celtic Religious Art (1989).',
+    'Ronald Hutton, The Triumph of the Moon (1999); The Witch: A History of Fear (2017).',
+    'Margaret Murray, The Witch-Cult in Western Europe (1921); The God of the Witches (1931).',
+    'Jean-Louis Brunaux, The Celtic Gauls: Gods, Rites and Sanctuaries (1988).',
+  ],
+};

@@ -1,0 +1,527 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-lugh',
+  kind: 'deity',
+  paths: ['celtic', 'wheel'],
+  deityRef: 'traditional/deity/lugh',
+  title: 'Lugh: Master of All Arts',
+  summary:
+    'A month with Lugh of the Long Arm, the many-skilled god of Ireland: his arrival at Tara, his victory over Balor, the Gaulish Lugus behind him, the hilltop festival of Lughnasadh, and a self-dedication made with the work of your hands.',
+  welcome:
+    'This journey takes about a lunar month. You will read five lessons, set up a shrine, keep nine days of offering and practice of a skill, and decide whether to dedicate yourself to Lugh.\n\nIt is a self-dedication, not an initiation, and it does not make you a member of any group or order. Lugh is one of the best-attested Celtic gods, with stories, place-names and a festival that lasted into the twentieth century, but there are still large gaps, and this journey says where they are. You can pause whenever you need to.',
+  about:
+    'Lugh (Old Irish Lug, modern Irish Lú) is the young, bright, many-skilled god of the Tuatha Dé Danann. Half Fomorian through his mother Eithne, daughter of Balor, he arrives at Tara as the Samildánach, “skilled in all the arts together”, leads the Tuatha Dé to victory at the Second Battle of Mag Tuired, and kills his grandfather Balor with a sling-stone through his baleful eye. He is called Lámhfhada, “of the long arm”, and is the father of Cú Chulainn. His name is the Irish form of a god known across the Celtic world as Lugus, whose name lives on in places like Lyon (Lugdunum) and in the Welsh Lleu Llaw Gyffes. His festival, Lughnasadh, on or around 1 August, began in myth as the games he held for his foster-mother Tailtiu, and survived into modern Ireland as a host of hilltop gatherings, bilberry picking and first-fruits customs recorded by the folklorist Máire MacNeill. Gaelic polytheists, Druids and Wheel of the Year Pagans honour him today as a god of skill, kingship, oaths and the first harvest.',
+  notes: [
+    'Lugh’s stories survive in medieval Irish texts written by Christian monks, and the Lughnasadh customs survive in Irish folk practice, often in Christian form. Neither tells us directly how he was worshipped before Christianity.',
+    'Many Pagan books call Lughnasadh the "funeral games of Lugh" or say Lugh dies at the harvest. In the Irish tradition the games are for his foster-mother Tailtiu, and Lugh does not die at the harvest. The sacrificed grain-god is John Barleycorn of English folk song and Wicca, not Lugh.',
+    'He is honoured by excellence and effort, not by boasting. Promises made to him should be kept, and contests in his honour should be fair.',
+    'Irish custom is living heritage. Many Lughnasadh sites, such as Croagh Patrick, are now Christian pilgrimages. Be a respectful guest.',
+    'If you live in the southern hemisphere, the first harvest falls around 1 February; many people there keep Lughnasadh then.',
+  ],
+  holyDays: ['lughnasadh', 'lammas', 'samhain_gaelic'],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'At the gate of Tara',
+      intro:
+        'Begin by making a place for Lugh and introducing yourself, as he did at the gate of Tara: by saying who you are and what you can do. Bring your skills, small or large.',
+      days: 2,
+      lessons: [],
+      practices: [
+        {
+          id: 'lugh-shrine',
+          title: 'Set up a simple shrine',
+          instructions:
+            'Choose a shelf or table in good light, ideally near where you work or practise a skill. Lay down a cloth of gold, yellow, orange or undyed linen. Put a candle in a safe holder on a heatproof dish, a small plate for bread, and a cup for drink. Add a spear point or spear image (a pencil or knitting needle stood upright works), a sun or harvest image, a sheaf or a few ears of wheat, and tools of the crafts you practise: a pen, a brush, a spanner, a chess piece, a musical instrument. Lugh is the god of every art, so your tools belong here.',
+          times: 1,
+          prompt: 'Which tools did you put on his shrine? What skills do they stand for?',
+        },
+      ],
+      rite: {
+        title: 'Introduction to Lugh',
+        summary:
+          'Knock at his door, light his flame, offer bread and drink, and introduce yourself by your skills, as Lugh did at Tara.',
+        minutes: 20,
+        ingredients: [
+          { name: 'A gold or yellow candle in a safe holder', ref: 'traditional/candle/gold' },
+          { name: 'A piece of good bread' },
+          { name: 'A small cup of ale, cider or apple juice' },
+          { name: 'A list of your skills, written beforehand' },
+          { name: 'A sprig of bay or a few ears of wheat', ref: 'traditional/herb/bay', optional: true },
+        ],
+        preparation:
+          'Write a list of every skill you have, from the impressive to the everyday: cooking, listening, driving, spreadsheets, gardening, comforting a child. Then add one skill you want to learn. Set out the bread and drink.',
+        steps: [
+          {
+            title: 'Knock at the gate',
+            instructions:
+              'Stand before the shrine and knock three times on the table or a door. In the tale, Lugh came to the gate of Tara and was told that “no one without an art comes into Teamhair.”',
+            spoken: 'Lugh of the Long Arm, Master of All Arts, I come to your gate.',
+          },
+          {
+            title: 'Light the flame',
+            instructions: 'Light the candle.',
+            spoken: 'I light this flame for Lugh, bright one, skilled in all the arts together.',
+            light: true,
+          },
+          {
+            title: 'Offer bread and drink',
+            instructions: 'Lift the bread and the cup, then set them before the candle.',
+            spoken: 'Here is bread and drink, freely given.',
+          },
+          {
+            title: 'Say what you can do',
+            instructions:
+              'Read your list of skills aloud, one by one, as Lugh named his to the doorkeeper. Do not boast and do not belittle; just name them. Finish with the skill you want to learn.',
+          },
+          {
+            title: 'Sit in the light',
+            instructions:
+              'Sit quietly with the candle. Imagine the gate of Tara opening. Notice what you feel.',
+            minutes: 5,
+          },
+          {
+            title: 'Close',
+            instructions: 'Thank him and snuff the candle.',
+            spoken: 'Lugh, thank you for letting me in. I will come again with the work of my hands.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Leave the bread and drink overnight. In the morning, crumble the bread for the birds or compost it, and pour the drink on the earth. Keep your list of skills in your journal.',
+        safety:
+          'Keep the candle on a heatproof dish away from paper and tools, and never leave it unattended. Pour alcohol away from pets and children.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'Learning who he is',
+      intro:
+        'Four lessons on Lugh: the many-skilled god and his names; his arrival at Tara and the battle; Lughnasadh as Máire MacNeill recorded it; and how he is honoured today. Read one every day or two.',
+      days: 8,
+      lessons: [
+        {
+          id: 'lugh-who',
+          title: 'The many-skilled god: Lugh, Lugus and Lleu',
+          summary: 'Lugh’s family and names, the Gaulish Lugus, the Welsh Lleu, and what Caesar may have meant by the Gaulish Mercury.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Family and fosterage',
+              body:
+                'Lugh’s father is Cian, of the Tuatha Dé Danann, and his mother is Eithne (Ethlinn), daughter of Balor of the Evil Eye, king of the Fomorians. So Lugh belongs to both sides of the great war of Irish myth. A prophecy said Balor would be killed by his grandson, so Balor locked Eithne away; Cian reached her, and Lugh was born and saved.\n\nLugh was fostered, as noble children in early Ireland usually were. His foster-mother was Tailtiu, a queen of the Fir Bolg, and in some versions Manannán mac Lir, the sea god, also raised him. Fosterage was a deep bond in Gaelic society, and Lugh’s love for his foster-mother is at the root of his festival.',
+            },
+            {
+              heading: 'His names',
+              body:
+                'Lugh has many epithets. Lámhfhada (Lámfada), “of the long arm” or “long hand”, perhaps for his skill with spear and sling. Samildánach, “skilled in all the arts together”, from his arrival at Tara; Lady Gregory’s retelling gives the form Ildánach, “Master of all Arts”. In Ireland his name survives in Lughnasadh, the August festival, and in place-names like Louth (Lugmad).\n\nThe meaning of his name is debated. It was long linked with words for light, making him a sun god, but most linguists now reject that. Another view connects it with the Old Irish luige, “oath”, which would make him a god of oaths and contracts. Neither is certain.',
+            },
+            {
+              heading: 'Lugus across the Celtic world',
+              body:
+                'Lugh is the Irish form of a god whom scholars call Lugus, known across the Celtic world. Towns were named Lugudunon, “fort of Lugus”, including Lugdunum, now Lyon in France, and several other towns in Gaul and beyond. Inscriptions to the Lugoves, apparently a plural form, have been found in Spain and Switzerland.\n\nWhen Julius Caesar described Gaulish religion in the 50s BC, he said that the Gauls worshipped Mercury above all. In W. A. McDevitte’s translation, they “regard him as the inventor of all arts”, as well as the guide of journeys and the patron of trade. Many scholars think Caesar’s “Mercury” was Lugus, because of the match with Lugh the many-skilled. It is a strong guess, but Caesar never gives the Gaulish name.',
+            },
+            {
+              heading: 'Lleu of Wales',
+              body:
+                'In the Fourth Branch of the Mabinogi, the Welsh story of Math son of Mathonwy, there is Lleu Llaw Gyffes, “the bright one of the skilful hand”. His mother Arianrhod refuses him a name, arms and a wife, and he wins all three through the trickery of his uncle Gwydion. He earns his name by striking a wren between the sinew and the bone of its leg with a single throw.\n\nLleu’s story is very different from Lugh’s, but the names match, and both are skilful young heroes with remarkable throwing arms. Most scholars see them as two forms of the same ancient god, Lugus, shaped by separate Irish and Welsh traditions.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Medieval Irish texts make Lugh the son of Cian and Eithne, grandson of Balor and foster-son of Tailtiu. Places named for Lugus, like Lugdunum, and inscriptions to the Lugoves, survive. Caesar describes a Gaulish “Mercury” as inventor of all arts. The Welsh Lleu Llaw Gyffes has a cognate name.',
+            unknown:
+              'We do not know for certain that Caesar’s Mercury was Lugus, what his name originally meant, or how he was worshipped in Gaul, Britain or Ireland. The links between Lugh, Lugus and Lleu are accepted by most scholars but rest on names and parallels.',
+          },
+          inPractice:
+            'Gaelic polytheists call him Lugh or Lú and use his Irish epithets in prayer; Gaulish polytheists honour Lugus; some Welsh-focused Pagans honour Lleu. Many devotees honour a foster-parent, teacher or mentor as part of his devotion.',
+          reflect: [
+            'Who fostered you, in the broad sense of raising, teaching or mentoring you? How might you honour them?',
+            'Which of his names speaks to you most, and why?',
+          ],
+          further: [
+            'Julius Caesar, The Gallic War, book 6, ch. 17, trans. W. A. McDevitte (public domain, Project Gutenberg).',
+            'Proinsias Mac Cana, Celtic Mythology (1970).',
+            'Sioned Davies, trans., The Mabinogion (Oxford World’s Classics, 2007), the Fourth Branch.',
+          ],
+          library: ['traditional/deity/lugh', 'traditional/deity/arianrhod', 'traditional/deity/manannan', 'traditional/deity/mercury'],
+        },
+        {
+          id: 'lugh-tara',
+          title: 'At the gate of Tara and the Battle of Mag Tuired',
+          summary: 'How Lugh came to Tara with every skill, led the Tuatha Dé against the Fomorians, and killed Balor, and what these stories say about leadership.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'The gate of Tara',
+              body:
+                'The tale of the Second Battle of Mag Tuired (Cath Maige Tuired) tells how the young Lugh came to Tara while Nuada of the Silver Hand was holding a feast. The doorkeeper asked what art he had, “for no one without an art comes into Teamhair,” as Lady Gregory puts it. “Question me,” said Lugh; “I am a carpenter.” They had a carpenter. He was a smith; they had a smith. A champion, a harper, a poet and teller of tales, a magician, a physician, a cup-bearer, a worker in brass: they had all of them.\n\nThen Lugh said: “Go and ask the king if he has any one man that can do all these things, and if he has, I will not ask to come into Teamhair.” The doorkeeper told Nuada that the young man should be called “the Ildánach, the Master of all Arts.” Nuada had him tested at the chess-boards, and he won every game, and was let in.',
+            },
+            {
+              heading: 'Leading the Tuatha Dé',
+              body:
+                'Once inside, Lugh threw back the great stone that Ogma had hurled out of the hall, and played the harp so that people laughed, wept and slept in turn. Nuada saw that this was the leader who could free the Tuatha Dé from the Fomorians, and gave him the king’s seat for thirteen days.\n\nLugh prepared for war by asking every expert what they would contribute. The smith Goibniu would make spearheads that never missed. The physician Dian Cécht would heal the wounded in a well. The Dagda would fight, the Morrigan would harry the enemy, and the druids would bring down showers of fire. It is a picture of leadership as the skilful gathering of others’ skills, not doing everything alone.',
+            },
+            {
+              heading: 'Balor’s eye',
+              body:
+                'In the battle, Lugh faced his grandfather Balor, whose eye was so poisonous that it could destroy an army when its lid was raised, which took four men with a polished handle. As the lid lifted, Lugh cast a sling-stone that drove the eye out through the back of Balor’s head, so that it looked on the Fomorian host and destroyed them.\n\nAfter the battle, Bres, the half-Fomorian king who had once ruled the Tuatha Dé so meanly, was captured and begged for his life. Lugh spared him in return for knowledge: when the men of Ireland should plough, sow and reap. Then the Morrigan proclaimed the victory to the hills and rivers of Ireland.',
+            },
+            {
+              heading: 'A harder story',
+              body:
+                'Not every tale of Lugh is bright. In the Fate of the Children of Tuireann, three brothers kill his father Cian. Lugh does not take their lives directly, but demands an éraic, a legal fine, made up of seemingly impossible quests, knowing they will die in the attempt. When they return dying and ask for healing, he refuses.\n\nIt is a reminder that early Irish gods are not models of modern kindness. Lugh is just, but his justice can be stern, and he is bound by honour and law. Devotees today often take from this the seriousness of oaths, debts and the duty owed to one’s family.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Cath Maige Tuired tells of Lugh’s arrival at Tara as Samildánach, his leadership, the killing of Balor and the sparing of Bres. Oidheadh Chlainne Tuireann (The Fate of the Children of Tuireann) tells of the éraic for Cian. Both survive in medieval and early modern manuscripts.',
+            unknown:
+              'These are literary tales, and we do not know how they related to any worship of Lugh. The Children of Tuireann survives in a late form. Modern readings of the stories as lessons in leadership are interpretation.',
+          },
+          inPractice:
+            'Devotees often learn a new skill each year in his honour, recognise and thank the skilled people around them, and treat their promises and debts with care. Some play chess or board games as a devotional act.',
+          reflect: [
+            'If you stood at the gate of Tara today, which of your skills would you name first? Which would you hesitate to mention?',
+            'Where in your life could you lead by gathering others’ skills rather than doing everything yourself?',
+          ],
+          further: [
+            'Lady Gregory, Gods and Fighting Men (1904), Part I Book II, “Lugh of the Long Hand” (public domain, Project Gutenberg).',
+            'Cath Maige Tuired, ed. and trans. Elizabeth A. Gray (Irish Texts Society, 1982).',
+          ],
+          library: ['traditional/deity/lugh', 'traditional/deity/dagda', 'traditional/deity/morrigan'],
+        },
+        {
+          id: 'lugh-lughnasadh',
+          title: 'Lughnasadh: the festival Máire MacNeill found',
+          summary: 'The games for Tailtiu, the hilltop gatherings of rural Ireland, bilberries and first potatoes, and what MacNeill’s great study revealed.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'The games for Tailtiu',
+              body:
+                'In the tale, Lugh’s foster-mother Tailtiu cleared the forests of Meath to make a plain for farming, and died of the effort. Lugh buried her there and founded a festival in her memory. In Lady Gregory’s words: “he ordered fires to be kindled, and keening to be made, and games and sports to be held in the summer of every year out of respect to her. And the place they were held got its name from her, that is Taillten.”\n\nTailtiu is Teltown, in County Meath. The Óenach Tailten, the fair of Tailtiu, was held there in early medieval times, with horse racing, athletic contests, law-giving and matchmaking. The festival was Lughnasadh, which means “Lugh’s assembly”, held at the beginning of August, the start of the harvest season in the Gaelic year.',
+            },
+            {
+              heading: 'Máire MacNeill’s study',
+              body:
+                'In 1962 the Irish folklorist Máire MacNeill published The Festival of Lughnasa, one of the great works of Irish folklore. Using the archives of the Irish Folklore Commission, she identified 195 places across Ireland where gatherings had been held at the end of July or beginning of August, often on hills, at lakes or at holy wells.\n\nThe names varied: Garland Sunday, Bilberry Sunday (Domhnach na bhFraochán), Height Sunday, Crom Dubh Sunday. But the customs were strikingly similar. People climbed a hill or went to a lake, picked bilberries, danced, raced horses and swam them in rivers, fought mock (and sometimes real) faction fights, courted, and brought the first fruits home. In many places this was the first day the new potatoes could be dug and eaten.',
+            },
+            {
+              heading: 'Lugh and Crom Dubh',
+              body:
+                'MacNeill found a recurring story behind the festival. A dark figure, often called Crom Dubh, holds the harvest in his power; a bright hero or saint, often St Patrick, defeats him, and the harvest is released. She argued that the bright hero was originally Lugh, and the dark figure a god like Balor, and that the Christian legends had kept the shape of the old myth.\n\nSome famous gatherings still continue. On Reek Sunday, the last Sunday of July, thousands of pilgrims climb Croagh Patrick in County Mayo, many of them barefoot. At Puck Fair in Killorglin, County Kerry, on 10–12 August, a wild goat is crowned king of the town for three days. MacNeill treated both as survivals of Lughnasa customs, though their meanings today are Christian or civic.',
+            },
+            {
+              heading: 'Lughnasadh and Lammas',
+              body:
+                'In England, the same time of year was Lammas, from Old English hlafmæsse, “loaf-mass”, when bread made from the first grain was blessed in church on 1 August. It is a different tradition from Lughnasadh, but the two now sit side by side on the modern Pagan Wheel of the Year, and many Pagans use the names interchangeably.\n\nIn Wicca, the festival is often linked with the sacrifice of the corn god, John Barleycorn of the folk song. That is a modern theological idea, not Irish tradition. In the Irish sources, Lughnasadh is about Lugh honouring his foster-mother, the gathering of the people, contests of skill, and the first fruits.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Medieval texts describe the Óenach Tailten at Teltown and link Lughnasadh to Lugh’s games for Tailtiu. Máire MacNeill (1962) documented around 195 Lughnasa sites in Irish folk tradition. Reek Sunday and Puck Fair continue today. Lammas (“loaf-mass”) is an Anglo-Saxon Christian festival.',
+            unknown:
+              'We do not know what religious rites, if any, were held for Lugh at Lughnasadh before Christianity. MacNeill’s argument that the Crom Dubh legends preserve a Lugh myth is influential but debated. The festival’s customs varied a lot from place to place.',
+          },
+          inPractice:
+            'Gaelic polytheists keep Lughnasadh with hill walks, bilberries or blueberries, the first new potatoes, games and contests, and honouring foster-parents and teachers. Wheel of the Year Pagans bake a first loaf and give thanks for the harvest.',
+          reflect: [
+            'What is the first fruit of your year so far, the first thing you have harvested from your efforts?',
+            'Who cleared the ground for you, as Tailtiu cleared the plain? How could you honour them this year?',
+          ],
+          further: [
+            'Máire MacNeill, The Festival of Lughnasa (Oxford, 1962; facsimile reprint by Comhairle Bhéaloideas Éireann, Dublin, 1982).',
+            'Kevin Danaher, The Year in Ireland (1972), the chapter on Lughnasa.',
+            'Lady Gregory, Gods and Fighting Men (1904), Part I Book II ch. III, on Taillte (public domain, Project Gutenberg).',
+          ],
+          library: ['traditional/deity/lugh'],
+          premade: ['kitchen-prosperity-bread'],
+        },
+        {
+          id: 'lugh-today',
+          title: 'Honouring Lugh today: skill, fair play and the kept word',
+          summary: 'Who honours Lugh now, what they do, and the values his devotees try to live by.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Who honours him',
+              body:
+                'Lugh is honoured by Gaelic polytheists and Celtic Reconstructionists, who work from the Irish texts and folklore and often learn Irish; by Druids, who may honour him as a god of skill and the bardic arts; and by Wiccans and Wheel of the Year Pagans, mostly at Lughnasadh. Gaulish polytheists honour Lugus, sometimes as the chief of their gods.\n\nAll of these communities agree that he is a god of doing, not just being. A Lugh devotee is expected to practise something.',
+            },
+            {
+              heading: 'Skill as devotion',
+              body:
+                'The heart of Lugh’s devotion is the practice of a skill. It need not be grand: baking, carpentry, coding, singing, running, needlework, learning a language. What matters is working at it seriously, with the intent to get better, and offering the effort to him.\n\nMany devotees choose one skill a year to learn in his honour. Others dedicate their main work or craft to him and offer the first or best piece of each project. Finishing things is part of it; Lugh is the god who came to Tara with skills already mastered, not intentions.',
+            },
+            {
+              heading: 'Fair play and the kept word',
+              body:
+                'Lughnasadh was a time of contests, and contests need rules. Devotees often stress fair play: winning honestly, losing gracefully, and recognising the skill of others. Lugh at Tara does not belittle the experts already there; he simply shows what he can do.\n\nIf his name is linked to oaths, as some scholars think, then keeping your word is part of honouring him. Even if it is not, early Irish society took oaths, contracts and debts very seriously, and so do his devotees. Promise less and deliver more.',
+            },
+            {
+              heading: 'Honouring teachers and foster-parents',
+              body:
+                'Lugh’s festival is a festival for his foster-mother. One of the most fitting ways to honour him is to honour those who raised and taught you: parents, step-parents, grandparents, foster-carers, teachers, mentors, coaches.\n\nWrite to a teacher who made a difference. Visit an elderly relative. Look after the grave of someone who raised you. Give your time to teach a skill to someone else. All of these are offerings in the spirit of Tailtiu’s games.',
+            },
+            {
+              heading: 'Where the communities differ, and what to avoid',
+              body:
+                'Reconstructionists and eclectic Pagans approach Lugh differently. A Gaelic polytheist will usually keep Lughnasadh on or near 1 August with Irish customs, address him in Irish where possible, and be wary of treating him as a generic “sun god”, a label the Irish sources do not support. A Wiccan may honour him as one face of the God at the harvest sabbat, sometimes alongside the Goddess as the grain mother. Both are sincere; it helps to know which conversation you are in, and to be honest about where an idea comes from when you share it.\n\nA few things are best avoided in any tradition. Do not boast to him of skills you do not have, or claim mastery you have not earned; the whole point of the tale at Tara is that Lugh could back up every claim. Do not make contests in his name unfair or cruel. And do not promise him a project you have no intention of finishing. A small thing finished is a better gift than a great thing abandoned.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Gaelic polytheists, Druids, Gaulish polytheists and Wheel of the Year Pagans honour Lugh or Lugus today. Fosterage, oaths and contracts were central to early Irish society, as the law texts show.',
+            unknown:
+              'There is no ancient record of individual devotion to Lugh. The modern emphasis on skill, fair play and honouring teachers is drawn from the tales, not from any surviving rule of worship.',
+          },
+          inPractice:
+            'A typical devotee keeps a small shrine with tools of their crafts, offers bread and ale, dedicates a skill or project to him, keeps Lughnasadh with games and first fruits, and honours their teachers.',
+          reflect: [
+            'Which skill will you dedicate to Lugh this year? What would "getting better" look like in it?',
+            'Who taught you something that changed your life? Have you thanked them?',
+          ],
+          further: [
+            'Erynn Rowan Laurie and others, The CR FAQ (2007), on Celtic Reconstructionist practice.',
+            'Fergus Kelly, A Guide to Early Irish Law (1988), on fosterage and contracts.',
+          ],
+          library: ['traditional/deity/lugh', 'traditional/crystal/sunstone', 'traditional/crystal/citrine'],
+          premade: ['cosmic-wednesday-mercury-study'],
+        },
+      ],
+      practices: [
+        {
+          id: 'lugh-study-light',
+          title: 'Read in the light',
+          instructions:
+            'Before each lesson, light his candle and say, “Lugh, open the gate.” Afterwards, spend ten minutes on the skill you want to learn.',
+          times: 4,
+          every: 'day',
+          prompt: 'What did you learn, and what did you practise?',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Nine days of practice',
+      intro:
+        'Now you put what you have learned into practice. For nine days you will make a small offering and practise a skill in his honour, with a lesson on his days, offerings and the shape of a rite.',
+      days: 10,
+      lessons: [
+        {
+          id: 'lugh-offerings-rite',
+          title: 'The first loaf: days, offerings and the shape of a rite',
+          summary: 'When to honour Lugh, what to give and how, how to bake or choose the first loaf, and a simple home rite.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'His days',
+              body:
+                'Lughnasadh is his great festival, on 1 August, or on the nearest Sunday, as many rural Irish communities kept it at the end of July or the start of August. Samhain is also linked to him in the tales, as the time of the Battle of Mag Tuired.\n\nFor regular devotion, choose a day of the week and keep it. Many devotees choose Sunday, the day of the sun, though this is a modern correspondence; others choose Wednesday for Caesar’s Mercury, the inventor of all arts. Choose what you can keep.',
+            },
+            {
+              heading: 'What to offer',
+              body:
+                'Bread is his best offering, especially the first loaf of the harvest: bread you have baked yourself, or the best loaf you can buy from a good baker. Bilberries (or blueberries), the first new potatoes with butter, ale, cider and mead, and honey are all fitting.\n\nSo is the work of your hands: the first piece from a new project, a poem, a song, a carving, a perfect chess game. Contests and games can be offerings too: a race, a game of hurling or football, a quiz, played fairly and dedicated to him.',
+            },
+            {
+              heading: 'How to offer',
+              body:
+                'Set the bread and drink before his candle, and say what they are. Break the bread: give him the first and best piece, and eat a little yourself as a shared meal, which is in the spirit of a feast. Leave his portion overnight, then give it to the birds (crumbled small) or the compost. Pour his drink onto the earth.\n\nFor craftwork, show it to him, say what it is and what went into it, and leave it on the shrine for a day. You can then keep it, give it away, or use it; the offering is in the dedication and the effort.',
+            },
+            {
+              heading: 'The shape of a simple rite',
+              body:
+                'A rite for Lugh has five parts. First, arrive at the gate: knock, and say who you are. Second, light his flame and name him with his epithets. Third, offer bread and drink. Fourth, show your skill: read, play, display or describe what you have made or practised. Fifth, close with a promise: name the next thing you will learn or finish, and thank him.\n\nAt Lughnasadh, you can expand this: climb a hill or go to a high place, take the first loaf and some berries, hold a game or contest with friends, and honour those who taught you.',
+            },
+            {
+              heading: 'Keeping his shrine through the year',
+              body:
+                'A Lugh shrine changes with your work. Keep the tools of the skill you are learning on it, and swap them as you move on. When you finish something, put it there for a day before you use it or give it away. At Lughnasadh, add fresh ears of wheat or oats, a bunch of wild flowers or heather, and a bowl of berries, and replace last year’s sheaf, which can be burned safely outdoors or composted.\n\nKeep the shrine bright and tidy. A dusty shrine with a half-finished project gathering cobwebs on it says something; so does one where the candle is lit and the tools are in use.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Lughnasadh was held around 1 August, often moved to the nearest Sunday in folk practice. First fruits, bilberries and new potatoes were part of folk custom. Bread offerings at Lammas are recorded in Anglo-Saxon England.',
+            unknown:
+              'There is no record of specific offerings to Lugh before Christianity. Weekly days and the five-part rite shape are modern practice. Sharing a portion of the offering is a modern choice drawn from the feast tradition.',
+          },
+          inPractice:
+            'Many devotees bake bread for Lughnasadh each year, sometimes shaping it as a sun or a man, and take it to a hilltop. Weekly devotion is usually a candle, bread and some practice of a skill.',
+          reflect: [
+            'What could you bake, make or practise as your offering this week?',
+            'Is there a game or contest you could hold in his honour, fairly, with friends?',
+          ],
+          further: [
+            'Máire MacNeill, The Festival of Lughnasa (1962).',
+            'Ronald Hutton, The Stations of the Sun (1996), on Lammas.',
+          ],
+          library: ['traditional/deity/lugh', 'traditional/herb/bay', 'traditional/herb/calendula'],
+          premade: ['kitchen-prosperity-bread', 'kitchen-family-meal-blessing'],
+        },
+      ],
+      practices: [
+        {
+          id: 'lugh-nine-days',
+          title: 'Nine days of practice',
+          instructions:
+            'For nine days, light his candle, offer a small piece of bread and a splash of drink, and say: “Lugh, Master of All Arts, I bring you the work of my hands.” Then practise your chosen skill for at least twenty minutes, with full attention. At the end, tell him what you did and what you learned. Snuff the candle. In the morning, give the bread to the birds and the drink to the earth. On one of the nine days, thank a teacher, mentor or foster-parent, in person, by letter or by tending their grave.',
+          times: 9,
+          every: 'day',
+          prompt: 'What did you practise today, and what did you learn? Did you get a little better?',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'Discernment on the hill',
+      intro:
+        'Before any dedication, look back over the month. A dedication to Lugh is a promise to keep working at your crafts and to keep your word. Stopping, waiting, or choosing another god or path are all good outcomes; the gate of Tara will still be there.',
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'lugh-discern',
+          title: 'Climb a hill',
+          instructions:
+            'Climb a hill, a tower or the highest place you can safely reach, as the people of Lughnasa did. Take a little bread. At the top, think through the questions below. Write your answers when you get home.',
+          times: 1,
+          prompt: 'Your honest answers to the discernment questions.',
+        },
+      ],
+      questions: [
+        'Did you practise your skill on most of the nine days? What does that tell you about the promise you might make?',
+        'Are you drawn to Lugh for his brightness and success, or for the hard work behind it? Can you accept both?',
+        'Can you keep a small, regular devotion and a yearly Lughnasadh without it becoming a burden?',
+        'Are you comfortable with the sterner side of his stories, the justice of the éraic and the seriousness of oaths?',
+        'Do you want a god of skill, or mainly a productivity practice? Both are fine; only one needs a dedication.',
+        'Is another deity or path calling you more strongly? Choosing them, or pausing, is a good and honest outcome.',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'Dedication at the gate',
+      intro:
+        'If you choose to go on, this is a self-dedication to Lugh, made before him in your own words. It is not an initiation into any group, order or tradition, and it does not replace one where they have their own. Lughnasadh is the fitting time, but any day you are ready will do.',
+      days: 1,
+      lessons: [],
+      practices: [],
+      rite: {
+        title: 'Self-dedication to Lugh',
+        summary:
+          'Knock at the gate, name your skills, offer the first loaf, show your work, make your promise and be let in.',
+        minutes: 45,
+        ingredients: [
+          { name: 'A gold or yellow candle in a safe holder', ref: 'traditional/candle/gold' },
+          { name: 'A loaf you have baked, or the best you can buy' },
+          { name: 'Ale, cider, mead or apple juice' },
+          { name: 'A bowl of bilberries or blueberries', optional: true },
+          { name: 'A piece of your own work to show him' },
+          { name: 'Your written promise' },
+          { name: 'Ears of wheat or a sprig of bay', ref: 'traditional/herb/bay', optional: true },
+        ],
+        preparation:
+          'Write your promise over several days: what skill or skills you will practise in his honour, how often, and what you will do at Lughnasadh, for a year. Include honouring a teacher or foster-parent. Bake the bread if you can. Wash and dress well, as for a feast. Set the shrine with the candle unlit, the bread, drink, berries, your work and your promise.',
+        steps: [
+          {
+            title: 'Knock at the gate',
+            instructions: 'Knock three times on the door or the table.',
+            spoken: 'Lugh of the Long Arm, Master of All Arts, I come to your gate of my own free will.',
+          },
+          {
+            title: 'Light the flame',
+            instructions: 'Light the candle. Lay the wheat or bay beside it if you have it.',
+            spoken: 'Lugh Lámhfhada, Samildánach, bright one, I light this flame for you.',
+            light: true,
+          },
+          {
+            title: 'Name your skills',
+            instructions:
+              'Name your skills aloud, as at the gate of Tara, simply and honestly.',
+          },
+          {
+            title: 'Offer the first loaf',
+            instructions:
+              'Break the loaf. Set the first and best piece before the candle for him. Pour his drink. Eat a small piece yourself, sharing the meal.',
+            spoken: 'Here is the first of the bread, for you. I share this feast with you.',
+          },
+          {
+            title: 'Show your work',
+            instructions:
+              'Show him the piece of your own work. Say what it is, how you made it, and what you learned.',
+          },
+          {
+            title: 'Make your promise',
+            instructions:
+              'Read your promise aloud. Say plainly that this is a self-dedication, made in good faith, and that you will keep your word as best you can.',
+            spoken: 'This is my word, given to you. I will keep it, and I will keep practising.',
+          },
+          {
+            title: 'Be let in',
+            instructions:
+              'Sit in silence with the candle. Imagine the gate of Tara opening and being shown to your seat.',
+            minutes: 10,
+          },
+          {
+            title: 'Close',
+            instructions: 'Thank him and snuff the candle.',
+            spoken: 'Lugh, thank you for letting me in. I go out to do the work.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Leave his portion overnight and give it to the birds or the earth. Share the rest of the loaf with friends or family. Within three days, practise your skill and thank a teacher.',
+        safety:
+          'Keep the candle on a heatproof dish and never leave it unattended. Pour alcohol away from pets. If you climb a hill for the rite, check the weather and tell someone where you are going.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'The work of your hands',
+      intro:
+        'The relationship lives in practice and in kept promises. Here is a rhythm: a weekly offering and practice, Lughnasadh each year, and a yearly renewal.',
+      days: 4,
+      lessons: [],
+      practices: [
+        {
+          id: 'lugh-weekly',
+          title: 'Weekly offering and practice',
+          instructions:
+            'Once a week, light his candle, offer bread and drink, and practise your skill for at least half an hour. Tell him what you did.',
+          times: 52,
+          every: 'week',
+          prompt: 'What did you practise, and how are you improving?',
+        },
+        {
+          id: 'lugh-lughnasadh-yearly',
+          title: 'Lughnasadh',
+          instructions:
+            'Around 1 August (or 1 February in the southern hemisphere), climb a hill or go to a high place with a first loaf and berries. Hold a game or contest with friends. Honour your teachers and foster-parents. Give thanks for the first fruits of your year.',
+          times: 1,
+          every: 'holy-day',
+          prompt: 'What did you harvest this year?',
+          premade: 'kitchen-prosperity-bread',
+        },
+        {
+          id: 'lugh-renew',
+          title: 'Yearly renewal',
+          instructions:
+            'At Lughnasadh or on the anniversary of your dedication, read your promise. Say honestly what you kept. Show him what you made this year. Make a new promise for the next year, with a new skill to learn, or release the old one with thanks.',
+          times: 1,
+          every: 'holy-day',
+          prompt: 'What did you learn and finish this year?',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'Lady Augusta Gregory, Gods and Fighting Men (1904), Part I Book II ch. I “The Coming of Lugh” (the gate of Tara, Ildánach) and ch. III (the account of Taillte), Project Gutenberg: https://www.gutenberg.org/ebooks/14465',
+    'Julius Caesar, The Gallic War, book 6 ch. 17, trans. W. A. McDevitte and W. S. Bohn, Project Gutenberg: https://www.gutenberg.org/ebooks/10657',
+    'Máire MacNeill, The Festival of Lughnasa (Oxford, 1962).',
+    'Cath Maige Tuired, ed. and trans. Elizabeth A. Gray (Irish Texts Society, 1982).',
+    'Kevin Danaher, The Year in Ireland (1972).',
+    'Proinsias Mac Cana, Celtic Mythology (1970).',
+  ],
+};

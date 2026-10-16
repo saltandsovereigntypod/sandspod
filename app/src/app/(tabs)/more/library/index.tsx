@@ -4,6 +4,7 @@ import { StyleSheet, Text } from 'react-native';
 
 import { Chips, Field, MenuList, MenuRow, MoreScreen, Notice } from '../../../../components/more/ui';
 import { hasMyPractice, LIBRARY_TYPES, pathEntryIds, searchLibrary, typeLabel, useLibrary } from '../../../../lib/library';
+import { CLOSED_GUIDE_LIVE, SOURCING_NOTES } from '../../../../lib/library/closed';
 import { entryVisible, myPath, pathName } from '../../../../lib/library/traditions';
 import { useSession } from '../../../../lib/session';
 import { useMySettings } from '../../../../lib/settings/store';
@@ -41,6 +42,22 @@ export default function LibraryIndex() {
 
   return (
     <MoreScreen title="Living Library" eyebrow="Correspondences and lore" back="/more" backLabel="Back to More">
+      <MenuList>
+        <MenuRow
+          label="Sourcing with care"
+          detail={SOURCING_NOTES.length ? `${SOURCING_NOTES.length} plants, resins and stones to buy thoughtfully` : 'Plants, resins and stones to buy thoughtfully'}
+          last={!CLOSED_GUIDE_LIVE}
+          onPress={() => router.push('/more/library/sourcing')}
+        />
+        {CLOSED_GUIDE_LIVE && (
+          <MenuRow
+            label="Closed & living traditions"
+            detail="What the app doesn’t teach, and why"
+            last
+            onPress={() => router.push('/more/library/closed')}
+          />
+        )}
+      </MenuList>
       <Field
         label="Search the Library"
         value={query}

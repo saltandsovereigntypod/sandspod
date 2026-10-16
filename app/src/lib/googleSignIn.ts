@@ -21,10 +21,16 @@ export function authReturnUrl(): string {
  * browser that hands the code back through the app's link.
  * Every return address must be on the Supabase project's redirect allow-list.
  */
-export async function signInWithGoogle(): Promise<GoogleSignInResult> {
+export function signInWithGoogle(): Promise<GoogleSignInResult> {
+  return signInThroughBrowser('google');
+}
+
+/** The browser sign-in Google uses, for any provider (Apple uses it on Android). */
+export async function signInThroughBrowser(provider: 'google' | 'apple'): Promise<GoogleSignInResult> {
+  const name = provider === 'google' ? 'Google' : 'Apple';
   if (Platform.OS === 'web') {
     const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
+      provider,
       options: { redirectTo: authReturnUrl() },
     });
     if (error) throw error;
@@ -33,7 +39,7 @@ export async function signInWithGoogle(): Promise<GoogleSignInResult> {
 
   const redirectTo = authReturnUrl();
   const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
+    provider,
     options: { redirectTo, skipBrowserRedirect: true },
   });
   if (error) throw error;
@@ -45,7 +51,7 @@ export async function signInWithGoogle(): Promise<GoogleSignInResult> {
   const failure = queryParams?.error_description ?? queryParams?.error;
   if (failure) throw new Error(String(failure));
   const code = queryParams?.code;
-  if (typeof code !== 'string') throw new Error('Google did not return a sign-in code.');
+  if (typeof code !== 'string') throw new Error(`${name} did not return a sign-in code.`);
 
   const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
   if (exchangeError) {

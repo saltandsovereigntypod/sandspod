@@ -129,3 +129,19 @@ test('odd custom settings are cleaned up', () => {
   assert.equal(odd.notes.full.length, 120);
   assert.equal(odd.notes.new, '');
 });
+
+test('daily devotions ring morning and evening for two weeks, with that day’s practice', () => {
+  const now = new Date(2026, 9, 16, 12, 0);
+  const settings = normalizeSettings({ rituals: false, devotionMorning: true, devotionMorningAt: 7 * 60 + 30, devotionEvening: true });
+  const list = buildSchedule(settings, [], now);
+  const devotions = list.filter((r) => r.kind === 'devotion');
+  // Today's morning has passed; evening today plus 14 more of each.
+  assert.equal(devotions.filter((r) => r.title === 'Evening devotion').length, 15);
+  assert.equal(devotions.filter((r) => r.title === 'Morning devotion').length, 14);
+  const first = devotions[0];
+  assert.equal(first.at.getHours(), 21);
+  assert.equal(first.url, '/rituals/craft/solitary/devotion');
+  assert.ok(first.body.length > 0);
+  assert.equal(devotions.find((r) => r.title === 'Morning devotion')!.at.getMinutes(), 30);
+  assert.equal(normalizeSettings({ devotionMorningAt: 99999 }).devotionMorningAt, 7 * 60);
+});

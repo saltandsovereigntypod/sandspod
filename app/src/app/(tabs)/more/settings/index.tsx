@@ -1,3 +1,4 @@
+import { myDeities } from '../../../../lib/patron/mine';
 import { router } from 'expo-router';
 import { Text } from 'react-native';
 
@@ -5,8 +6,15 @@ import { MenuList, MenuRow, MoreScreen } from '../../../../components/more/ui';
 import { useSession } from '../../../../lib/session';
 import { holidayChoice, TRADITIONS } from '../../../../lib/holidays';
 import { layerOrderLabel, type Settings } from '../../../../lib/settings/defaults';
+import { myPractices, practiceName } from '../../../../lib/rituals/premade';
 import { useMySettings } from '../../../../lib/settings/store';
 import { type } from '../../../../theme';
+
+function deitySummary(settings: Record<string, unknown> | null | undefined) {
+  const list = myDeities(settings);
+  if (!list.length) return 'Patron, dedicated and exploring';
+  return list.map((d) => (d.level === 'patron' ? `${d.name} (patron)` : d.name)).join(', ');
+}
 
 export default function SettingsIndex() {
   const { session } = useSession();
@@ -15,6 +23,9 @@ export default function SettingsIndex() {
 
   return (
     <MoreScreen title="Settings" eyebrow="Shape your Sanctuary" back="/more" backLabel="Back to More">
+      <MenuList>
+        <MenuRow icon="search" label="How to use the app" detail="A guide to everything, with search" last onPress={() => router.push('/more/help')} />
+      </MenuList>
       <MenuList>
         <MenuRow
           icon="account"
@@ -33,6 +44,18 @@ export default function SettingsIndex() {
           label="Book of Shadows"
           detail="Mundane mode, page font"
           onPress={() => router.push('/more/settings/book')}
+        />
+        <MenuRow
+          icon="journey"
+          label="My practice"
+          detail={practiceSummary(settings)}
+          onPress={() => router.push('/more/settings/practice')}
+        />
+        <MenuRow
+          icon="journey"
+          label="My deities"
+          detail={deitySummary(settings)}
+          onPress={() => router.push('/more/settings/deities')}
         />
         <MenuRow
           icon="library"
@@ -71,6 +94,11 @@ export default function SettingsIndex() {
       </Text>
     </MoreScreen>
   );
+}
+
+function practiceSummary(settings: Settings | null): string {
+  const chosen = myPractices(settings);
+  return chosen.length ? chosen.map(practiceName).join(', ') : 'Green, Kitchen, Hedge, Cosmic…';
 }
 
 function calendarSummary(settings: Settings | null): string {

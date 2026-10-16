@@ -54,6 +54,14 @@ export function todayPracticeHref(entry: Pick<LibraryEntry, 'id'>) {
   return { pathname: '/today/practice' as const, params: { entryId: entry.id } };
 }
 
+/** The same pages, opened inside the Rituals tab (from a ritual's ingredients). */
+export function ritualsLibraryHref(entry: Pick<LibraryEntry, 'id'>) {
+  return { pathname: '/rituals/library/[entryId]' as const, params: { entryId: entry.id } };
+}
+export function ritualsPracticeHref(entry: Pick<LibraryEntry, 'id'>) {
+  return { pathname: '/rituals/practice' as const, params: { entryId: entry.id } };
+}
+
 /** The same pages, opened inside the Altar tab (from a selected object's About sheet). */
 export function altarLibraryHref(entry: Pick<LibraryEntry, 'id'>) {
   return { pathname: '/altar/library/[entryId]' as const, params: { entryId: entry.id } };

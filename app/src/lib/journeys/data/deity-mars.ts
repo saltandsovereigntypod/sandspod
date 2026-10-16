@@ -1,0 +1,536 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-mars',
+  kind: 'deity',
+  paths: ['roman'],
+  deityRef: 'traditional/deity/mars',
+  title: 'Mars the Guardian',
+  summary:
+    'A month with Mars, father of Rome and guardian of its fields and borders: Cato\'s farmer\'s prayer, the dancing Salii and their shields, the festivals of March and October, and how to honour a war god honestly and without harm.',
+  welcome:
+    'This journey runs about a lunar month. You will learn who Mars was to the Romans, both the god of soldiers and the god a farmer asked to keep blight from his fields, how his priests danced through Rome every March, how his festivals ran, and how people honour him today. There is a nine-day practice of disciplined effort, a boundary-walking rite at the start and, at the end, a self-dedication.\n\nIt is a self-dedication, not an initiation, and it does not make you a Salian priest or a flamen of Mars; those were public offices of Rome and have their own modern revivals, if any. All rites here are devotional and protective. Nothing in this journey asks Mars to harm anyone.',
+  about:
+    'Mars was, after Jupiter, the greatest god of Rome. He was the father of Romulus and Remus, so every Roman was in a sense his child. He was the god of the army and of war, worshipped on the Campus Martius, the Field of Mars, where citizens mustered. But he was also the god a farmer prayed to when he led a pig, a sheep and a bull around his land, asking Mars to keep off disease, bad weather and devastation and to let the crops grow. Scholars have long argued about whether Mars began as a farm god or a war god; most now see one idea under both: Mars guards the boundary of the community, whether the threat is an army or a blight. The first month of the old Roman year, March, was his, full of his priests\' dancing and his festivals, and October closed the fighting season with more. Today Roman polytheists honour him with incense, wine and grain, especially in March, and many devotees offer him disciplined effort: training, protective work, and service.',
+  notes: [
+    'This journey uses the Roman form throughout: clean hands, head covered (capite velato), exact words read from a page, Janus first. It follows the common modern pattern of Janus first and Vesta last in prayer, with the first share of food set aside for Vesta. The ancient sources disagree on Vesta: Cicero says prayer ends with her, while Ovid (Fasti 6.303–304) says she is addressed first. Choose one and keep to it.',
+    'Mars is a protector, not a licence for aggression. There are no curses, war-magic or vengeance rites here. His fierce side is described honestly; the rites are devotional.',
+    'Roman worship of Mars included animal sacrifice (the pig, sheep and bull of the suovetaurilia, and the October Horse). It is described as history. Modern practice uses grain, cakes, wine and incense.',
+    'Rome\'s wars were conquests that killed and enslaved many peoples. Honouring Mars does not mean admiring that. Many devotees dedicate their practice to protection, to veterans and to the cost of conflict.',
+  ],
+  holyDays: ['matronalia'],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'Walking the boundary',
+      intro:
+        'Mars\'s oldest work was guarding a boundary. Begin by learning your own: the walls and door of your home. The opening rite is a small household lustration, a purifying walk around the edge, in the shape of Cato\'s farmer\'s rite, with grain and wine instead of animals.',
+      days: 2,
+      lessons: [],
+      practices: [
+        {
+          id: 'mars-boundary-look',
+          title: 'Know your boundary',
+          instructions:
+            'On each of these two days, walk slowly around the inside edge of your home, touching each wall, window and door. Notice what needs fixing: a loose lock, a smoke alarm without a battery, a cluttered fire exit. Fix one thing.',
+          times: 2,
+          every: 'day',
+          prompt: 'What does my home need protecting from, and what did I fix?',
+        },
+      ],
+      rite: {
+        title: 'Greeting Mars',
+        summary: 'Wash and veil, Janus and Jupiter first with wine, a small lustration carried around your home, a red flame for Mars with spelt and wine, and Vesta last.',
+        minutes: 30,
+        ingredients: [
+          { name: 'A bowl of clean water and a towel', ref: 'traditional/vessel/bowl' },
+          { name: 'A head covering' },
+          { name: 'A red candle in a stable holder', ref: 'traditional/candle/red' },
+          { name: 'A little red wine, or red grape juice, in a cup', ref: 'traditional/tool/chalice' },
+          { name: 'A small dish of spelt grains or a piece of spelt bread', ref: 'traditional/vessel/dish' },
+          { name: 'Frankincense and a burner you can carry safely', ref: 'traditional/tool/incense_burner' },
+          { name: 'A sprig of bay', ref: 'traditional/herb/bay', optional: true },
+          { name: 'Your words on a card' },
+        ],
+        preparation:
+          'Set his shrine on a sturdy shelf or table near your front door if you can. Read the words until you can say them without stumbling: Romans read prayers exactly, and if you trip, begin again. Put a crumb of the bread or a few grains aside on a saucer for Vesta, the first share of food.',
+        steps: [
+          {
+            title: 'Wash and veil',
+            instructions: 'Wash your hands and dry them. Cover your head with a fold of cloth.',
+          },
+          {
+            title: 'Janus and Jupiter first',
+            instructions: 'Cato told the farmer to address Janus and Jupiter first with wine before praying to Mars. Pour a few drops of wine into the bowl for each.',
+            spoken: 'Father Janus, opener, be honoured by this wine.\nJupiter, best and greatest, be honoured by this wine.',
+          },
+          {
+            title: 'The lustration',
+            instructions: 'Light the incense. Carrying it carefully (or carrying the dish of grain if smoke is a problem), walk around the inside edge of your home, starting and ending at the front door, keeping the walls on your right. Three times is a good Roman number. Walk steadily and say the words at the door.',
+            spoken: 'Father Mars, I walk the bounds of this house.\nKeep out sickness seen and unseen,\nharm, ruin and bad weather.\nKeep safe the people within.',
+            minutes: 5,
+          },
+          {
+            title: 'Light his flame',
+            instructions: 'Return to the shrine. Light the red candle.',
+            spoken: 'Mars Pater, father Mars, guardian of the fields and of the city,\nor by whatever name it is right to call you:\nI pray and ask that you be willing and favourable\nto me, my house and my household.',
+            light: true,
+          },
+          {
+            title: 'Offer',
+            instructions: 'Set down the spelt and pour a little wine beside it. Name each gift.',
+            spoken: 'Father Mars, be honoured by this spelt,\nbe honoured by this wine.\nI have come to learn your ways.',
+          },
+          {
+            title: 'Stand',
+            instructions: 'Stand in silence for a few minutes, feet planted, as a guard stands.',
+            minutes: 3,
+            timed: true,
+          },
+          {
+            title: 'Vesta last, and turn',
+            instructions: 'A word or pinch of incense for Vesta. Turn to your right, uncover your head and put out the flame.',
+            spoken: 'Vesta, last as always: be honoured.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Leave the grain and wine until morning, then pour the wine onto soil outside and scatter the grain for birds or put it in the compost. Vesta\'s share goes the same way.',
+        safety:
+          'Carry incense only in a burner with a handle or on a heatproof dish, and keep it away from curtains and coats. Never leave the candle unattended. Keep smoke away from birds and anyone with asthma. Grapes, raisins, grape juice and wine are toxic to dogs and cats; pour libations where pets cannot reach. Spelt contains gluten.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'Father of Rome, guardian of the fields',
+      intro:
+        'Five lessons, about two days each: who Mars is; Cato\'s farmer\'s prayer and the Arval hymn; March, the Salii and the shields; honouring Mars today, with his shrine; and the hard parts of a war god.',
+      days: 11,
+      lessons: [
+        {
+          id: 'mars-who',
+          title: 'Who Mars is',
+          summary: 'Father of the twins, guardian of the community, and why he is not simply Ares.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'Father of Rome',
+              body:
+                'Roman legend made Mars the father of Romulus and Remus. Their mother, Rhea Silvia (also called Ilia), was a Vestal; their uncle ordered the babies thrown into the Tiber, but the basket washed ashore, and a she-wolf, Mars\'s animal, suckled them while a woodpecker, his bird, brought them food. Romulus founded Rome. So the Romans thought of themselves as children of Mars, and called him Mars Pater, Father Mars.\n\nHis old names show how deep he goes. Early Latin forms include Mavors and Marmar; the second appears in the ancient hymn of the Arval Brothers. He was also called Gradivus, "the one who strides out", and was closely linked with Quirinus, the god of the citizen body, who in later legend was Romulus made divine.',
+            },
+            {
+              heading: 'Farm god or war god?',
+              body:
+                'Ovid opens the March book of his Fasti by asking the god to put down his shield and spear for a moment: "Bellice, depositis clipeo paulisper et hasta, / Mars, ades et nitidas casside solve comas", "Warlike Mars, lay down your shield and spear a little while; come, and free your shining hair from the helmet." That is the Mars most people picture: armed and helmeted.\n\nBut the oldest prayers to Mars we have are farmers\' prayers. In Cato\'s handbook On Agriculture, written about 160 BC, a farmer asks Mars to keep disease and storms from his fields and his flocks. Nineteenth-century scholars concluded he was originally an agricultural god; the French scholar Georges Dumézil argued he was always the warrior. Many now see one role under both: Mars guards the edge of the community and drives off whatever threatens it, armies or blight.',
+            },
+            {
+              heading: 'Not just Ares',
+              body:
+                'The Greeks matched Mars with Ares, but the two feel very different. Ares in Greek myth is a violent, unloved god whom even his father Zeus dislikes. Mars was honoured, central and fatherly, worshipped at the heart of Roman life. Romans did borrow the Greek love story of Ares and Aphrodite, so Mars and Venus became a pair; Lucretius opens his great poem with Mars lying in Venus\'s lap, subdued by love. Read that as poetry built on Greek myth. The Roman Mars stands on his own.\n\nRoman texts also pair Mars with Nerio, a goddess whose name means strength or valour; she is barely known.',
+            },
+            {
+              heading: 'His signs',
+              body:
+                'His symbols are the spear (in the Regia, the old king\'s house, his sacred spears were kept, and a general going to war shook them and said "Mars, wake"), the shield, the helmet and armour. His animals are the wolf, the woodpecker and the horse. His colour is red. His places are the Campus Martius, boundaries and fields. His offerings were grain cakes, wine, incense and, in the state cult, animals. His month is March, and in the later planetary week Tuesday (dies Martis, French mardi) is his.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Ovid, Fasti 3.1–2 (verified in Latin) on the armed Mars. Cato, On Agriculture 141, on the farmer\'s Mars. The legend of the twins, the wolf and the woodpecker is told by Livy (1.3–4) and others. The Arval hymn names him Marmar.',
+            unknown:
+              'Whether Mars began as a farm god, a war god, or a guardian god is still debated. Nerio and the earliest forms of his cult are poorly known. The spear-shaking "Mars vigila" comes from a late commentator (Servius) and may reflect antiquarian tradition.',
+          },
+          inPractice:
+            'Decide which face of Mars you are approaching first: the guardian of your home and its boundaries, or the god of disciplined strength. You will learn both, but begin with one.',
+          reflect: [
+            'What do I think a protector is, and how is that different from a fighter?',
+            'Where in my life are the boundaries that need guarding?',
+          ],
+          further: [
+            'Ovid, Fasti 3 (Latin at The Latin Library; Riley\'s 1851 prose translation)',
+            'Livy 1.3–7 (public-domain translations on Gutenberg)',
+            'Mary Beard, John North and Simon Price, Religions of Rome (1998)',
+          ],
+          library: ['traditional/deity/mars', 'traditional/deity/venus', 'traditional/deity/jupiter'],
+        },
+        {
+          id: 'mars-cato',
+          title: 'Cato\'s prayer and the Arval hymn',
+          summary: 'The farmer\'s lustration of his land, word for word, and the oldest Latin song to Mars.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'Leading the offering around',
+              body:
+                'In chapter 141 of On Agriculture, Cato tells the farmer how to purify his land: "Agrum lustrare sic oportet", "this is how to purify a field." He orders the suovetaurilia, a pig, a sheep and a bull together, to be led around the boundary. Before praying to Mars, "Ianum Iovemque vino praefamino", "address Janus and Jupiter first with wine." Then comes the prayer, which is worth reading slowly because it shows exactly how a Roman spoke to a god.',
+            },
+            {
+              heading: 'The prayer',
+              body:
+                'It opens: "Mars pater te precor quaesoque / uti sies volens propitius / mihi domo familiaeque nostrae", "Father Mars, I pray and beseech you, that you be willing and favourable to me, my house and our household." The farmer explains what he has done: he has had the offering led around his land. Then he lists, very precisely, what he wants kept out: "uti tu morbos visos invisosque / viduertatem vastitudinemque, / calamitates intemperiasque / prohibessis defendas averruncesque", "that you prevent, ward off and turn away diseases seen and unseen, barrenness and devastation, disasters and bad weather."\n\nThen what he wants let in: that Mars allow crops, grain, vines and young growth to flourish, keep shepherds and flocks safe, and give good health and strength to him and his household. And he closes with the formula that seals every Roman gift: "macte hisce suovitaurilibus lactentibus immolandis esto", "be honoured by the offering of these suckling victims."',
+            },
+            {
+              heading: 'What the prayer teaches',
+              body:
+                'Notice the pairs and triplets: pray and beseech; seen and unseen; prevent, ward off, turn away. Romans named things exhaustively so nothing slipped through. Notice that the request is specific and practical, and that the household is always included. Notice the condition: "for these things ... be honoured." Roman prayer is a clear exchange between a person and a god.\n\nCato even plans for failure. If the signs in the offering are not good, the farmer offers again with a new form: "Mars pater, quod tibi illoc porco neque satisfactum est, te hoc porco piaculo", "Father Mars, since you were not satisfied by that pig, [I offer] you this pig in atonement." Getting it right mattered more than getting it done.',
+            },
+            {
+              heading: 'The Arval hymn',
+              body:
+                'The Arval Brothers were an ancient college of twelve priests who prayed for the fields. An inscription of AD 218 preserves their song, already so old the priests read it from a text. It begins "enos Lases iuvate", "help us, Lares," then calls on Mars: "neve lue rue Marmar sins incurrere in pleoris", probably "do not let plague and ruin, Marmar, fall on the people," and "satur fu, fere Mars, limen sali, sta berber", perhaps "be sated, fierce Mars, leap the threshold, stand fast" (the last word is unclear). It ends "triumpe", five times. Each line is sung three times.\n\nScholars disagree on almost every word. But the shape is clear: Mars is fierce, and the people ask him to be satisfied and to guard the threshold, not to cross it against them.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Cato, On Agriculture 141, verified in the Latin Library text, gives the full lustration and prayer. The Carmen Arvale is preserved in the Arval Brothers\' records of AD 218 (verified text at the Latin Library).',
+            unknown:
+              'The meaning of several Arval words (lue rue, sins, pleoris, berber) is uncertain. How widely Cato\'s form was used by ordinary farmers, and how much it changed by region, is not known. The household version in this journey is a modern adaptation without animals.',
+          },
+          inPractice:
+            'Write your own lustration prayer to Mars on Cato\'s model: "Father Mars, I pray and beseech you to be willing and favourable to me, my house and my household," then list what you want kept out of your home and what you want kept safe, in pairs and threes. Use it in the nine-day practice.',
+          reflect: [
+            'What, specifically, would I ask Mars to keep out: "seen and unseen"?',
+            'What do I make of a religion that plans for the gods not being satisfied?',
+          ],
+          further: [
+            'Cato, On Agriculture 141 (Latin at The Latin Library; W. D. Hooper and H. B. Ash\'s Loeb translation on LacusCurtius)',
+            'John Scheid, An Introduction to Roman Religion (2003), on prayer and the Arval Brothers',
+          ],
+          library: ['traditional/deity/mars', 'traditional/deity/janus', 'traditional/deity/jupiter'],
+          premade: ['green-garden-boundary-planting', 'kitchen-threshold-salt-blessing'],
+        },
+        {
+          id: 'mars-march',
+          title: 'March, the Salii and the shields',
+          summary: 'The god\'s month, his birthday, the leaping priests, the festivals of March and October, and how to keep them.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'The first month',
+              body:
+                'The oldest Roman year began in March, named for Mars, and the Kalends of March (1 March) was his birthday. On that day the Vestals rekindled their fire and fresh laurel was hung in the old public buildings. It was also the Matronalia, when married women honoured Juno Lucina, goddess of childbirth; Ovid asks Mars why women keep his day, and Mars answers with the story of the Sabine women who made peace between their fathers and their Roman husbands. The god of war\'s birthday is a festival of mothers and of peace-making. That is worth sitting with.',
+            },
+            {
+              heading: 'The shield from heaven',
+              body:
+                'Ovid tells how, in King Numa\'s time, a shield fell from the sky as a sign that Rome would last as long as it was kept safe. It was an ancile, a figure-of-eight shaped shield, "quod ab omni parte recisum est", "cut away on every side" (Fasti 3.377). To protect it Numa had a smith, Mamurius, make eleven copies so no thief could tell which was real.\n\nThe twelve shields were kept by the Salii, twelve priests of Mars, young men of old families. Ovid explains their name: "iam dederat Saliis a saltu nomina ducta", "he had given the Salii their name, drawn from leaping" (3.387). In March they processed through Rome in archaic armour, carrying the shields, beating them with staffs, leaping and dancing in a three-step and singing a hymn so old that even Romans of the late Republic barely understood it. Each night they stopped at a different house and feasted; their dinners were famous for richness. Ovid adds that while the shields were moving, it was a bad time to marry (3.393–396).',
+            },
+            {
+              heading: 'The festivals',
+              body:
+                'Mars\'s calendar ran like this. 27 February and 14 March: the Equirria, horse races on the Campus Martius. 1 March: his birthday. 17 March: an Agonium for Mars. 19 March: the Quinquatrus, when the Salii danced in the assembly place (the day later became a festival of Minerva). 23 March: the Tubilustrium, purification of the war trumpets. These readied the army for the campaign season.\n\nIn autumn the season was closed. On 15 October came the October Horse, a chariot race after which the right-hand horse of the winning team was sacrificed to Mars. On 19 October, the Armilustrium, the army\'s weapons were purified and put away for winter, and the Salii danced again.',
+            },
+            {
+              heading: 'Keeping his months today',
+              body:
+                'A modern March for Mars: on 1 March, clean his shrine, hang fresh bay, light a new red candle, and give incense, wine and spelt cake; give a gift to the mothers in your life for the Matronalia. Through March, set yourself a discipline, such as training, a protective project, or volunteering, and offer it to him. Dance or move to a strong rhythm in his honour; the Salii danced. On 19 October, the Armilustrium, put your gear away, clean your tools, and give thanks for a season of effort. Some devotees mark Mars\'s days by supporting veterans, first responders and peace-building charities.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Ovid, Fasti 3 (verified in Latin) on the Kalends, the Matronalia, the ancile, Mamurius and the Salii. The festival dates appear in surviving Roman calendars (the fasti). Varro, Festus and Dionysius of Halicarnassus describe the Salii, the Tubilustrium and the October Horse.',
+            unknown:
+              'The Salian hymn survives only in scraps that cannot be fully translated. What the October Horse meant (its tail\'s blood was taken to the Regia and kept for the purifications of the Parilia) is debated. Modern ways of keeping these days are modern.',
+          },
+          inPractice:
+            'Put 1 March, 23 March and 19 October in your calendar for Mars. Choose one discipline you could keep through next March as his offering.',
+          reflect: [
+            'Why might Rome have made the war god\'s birthday a festival of mothers and peace-making?',
+            'What would it mean to "put the weapons away" at the end of a hard season in my life?',
+          ],
+          further: [
+            'Ovid, Fasti 3.167–398 (Latin at The Latin Library)',
+            'H. H. Scullard, Festivals and Ceremonies of the Roman Republic (1981)',
+          ],
+          library: ['traditional/deity/mars', 'traditional/deity/juno', 'traditional/deity/minerva', 'traditional/herb/bay'],
+          premade: ['folk-lararium-offering'],
+        },
+        {
+          id: 'mars-today',
+          title: 'Honouring Mars today',
+          summary: 'The Roman manner, the right offerings, effort as a gift, the modern community, and his shrine.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The Roman manner',
+              body:
+                'Approach Mars as Cato did. Wash your hands, cover your head (capite velato), and begin with Janus, and with Jupiter too if you like, giving them incense or wine. Name Mars with his title: Mars Pater, or Mars Gradivus, or Mars the guardian. Ask him to be "willing and favourable" to you, your house and household. Say precisely what you ask or give thanks for. Give the gift with "be honoured by this" (macte esto). End with Vesta, turn to your right, and uncover.\n\nRead the words from a page. Pliny says Romans used a written text so that no word was left out or said out of order, and an attendant checked. If you stumble, start again. This journey follows the common modern pattern: Janus first, Vesta last in prayer, the first share of any food set aside for Vesta. The ancient authors disagree, so choose and keep to it.',
+            },
+            {
+              heading: 'What to give',
+              body:
+                'His traditional gifts that suit a modern home are spelt cakes or bread, grain, wine and incense. Cato\'s farmer also offered a strues (a heap of small cakes) and a fertum (a sacrificial cake) with his lustration; a simple spelt cake or flatbread does well. Olive oil can be poured. Red flowers and bay are fitting.\n\nMany devotees find that the best gift to Mars is effort itself: a training session done properly, a hard protective job, a night shift, a first-aid course, time given to a veterans\' charity or a mountain rescue team. Dedicate it before you begin ("Father Mars, this is for you") and thank him after. Keep promises made to him. Romans took vows to Mars seriously, and so should you.',
+            },
+            {
+              heading: 'The community today',
+              body:
+                'Roman polytheism (often called the Religio Romana) is a small, varied modern religion. Some practitioners are strict reconstructionists who follow ancient forms closely; others mix Roman deities into eclectic paganism. Mars is popular among people in the military, police, fire and emergency services, martial artists and athletes, and among those protecting a home or family. Groups and online communities differ on politics and style; look for those that keep his worship about protection and duty, and that welcome everyone.\n\nAstrologers and many modern witches work with Mars as a planet of drive and courage, especially on Tuesdays. That is a later, astrological Mars, built on the Roman god but not the same thing; you can use both if you label them.',
+            },
+            {
+              heading: 'Setting up his shrine',
+              body:
+                'Choose a sturdy shelf, ideally near the front door, the boundary he guards. You need a red candle in a stable holder, a cup for wine, a dish for grain or cake, an incense burner, and a symbol: a small spear, shield or helmet, an image of a wolf or woodpecker, or a figure of Mars. Add a stone if you like (bloodstone, carnelian or hematite are modern choices). Keep it orderly and clean; Mars is a soldier\'s god, and soldiers keep kit tidy. A written card with your current discipline or vow sits well there.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The prayer form is from Cato and other Roman sources; Pliny (Natural History 28.10–11) on reading prayers exactly. Grain, cakes, wine and incense were standard offerings. Modern Roman polytheist communities are documented and small.',
+            unknown:
+              'Private devotion to Mars, as opposed to state and farm cult, is thinly recorded. Effort as offering is a modern way of thinking, though it fits Roman ideas of duty. Crystals and planetary days are modern or late-antique additions.',
+          },
+          inPractice:
+            'Set up his shrine. Choose one discipline for the nine-day practice and write it on a card for the shrine.',
+          reflect: [
+            'What effort could I give Mars that would be a real gift, not just a habit renamed?',
+            'Who are the protectors in my community, and how could I support them?',
+          ],
+          further: [
+            'John Scheid, An Introduction to Roman Religion (2003)',
+            'Cato, On Agriculture 132–141 (Latin at The Latin Library)',
+          ],
+          library: ['traditional/deity/mars', 'traditional/tool/altar', 'traditional/candle/red', 'traditional/crystal/bloodstone', 'traditional/crystal/hematite'],
+          premade: ['cosmic-tuesday-mars-courage', 'folk-lararium-offering'],
+        },
+        {
+          id: 'mars-hard',
+          title: 'The hard parts of a war god',
+          summary: 'Conquest and its cost, Mars the Avenger, the October Horse, and what not to do in his name.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'What Rome did',
+              body:
+                'Rome prayed to Mars before wars that destroyed cities, killed hundreds of thousands and enslaved whole peoples, from Carthage and Corinth in 146 BC to Gaul under Caesar. Triumphs paraded captives through the streets. You cannot honour Mars honestly while pretending this did not happen. Many devotees hold both truths: that Mars stood for courage, discipline and the defence of home, and that his name was used for conquest. A modern devotion can keep the first and grieve the second.',
+            },
+            {
+              heading: 'Mars the Avenger',
+              body:
+                'Augustus vowed a temple to Mars Ultor, Mars the Avenger, before the battle of Philippi, to avenge the murder of Julius Caesar, and built it in his new forum, where it was dedicated in 2 BC. Ovid describes Mars coming down to see it (Fasti 5.545–598). It was also linked with the return of the legionary standards lost to the Parthians. Mars Ultor was a state god of revenge and of an emperor\'s power. Do not ask Mars for revenge on people who have hurt you. Ask for protection, justice through proper means, and the strength to set boundaries.',
+            },
+            {
+              heading: 'Blood and animals',
+              body:
+                'The suovetaurilia of Cato\'s prayer, the October Horse and countless other offerings to Mars involved killing animals. This was normal in ancient religion, and the meat was usually eaten. Modern practitioners do not sacrifice animals, and nothing in this journey suggests it. Grain, cakes, wine, incense and effort are the gifts here.',
+            },
+            {
+              heading: 'War has an end',
+              body:
+                'Romans did not think war should be endless. When Rome was at peace everywhere, the doors of the shrine of Janus in the Forum were closed, which happened only a handful of times in Roman history; Augustus boasted that it happened three times in his reign. Every October the Salii danced and the weapons were purified and stored. And on Mars\'s own birthday the city remembered the Sabine women, who stopped a battle by standing between the armies.\n\nSo even in Roman terms Mars\'s work has an end point. He guards so that the fighting can stop and the fields can be farmed. Many modern devotees pray to Mars for peace, for soldiers to come home, and for the healing of those who served. That is not soft; it is the purpose of a guard.\n\nIf you or someone close to you lives with the aftermath of violence or military service, Mars\'s worship should never push you towards it. Get proper support from veterans\' services or trauma specialists, and let the shrine be a place of steadiness, not of reliving.',
+            },
+            {
+              heading: 'What not to do',
+              body:
+                'Do not use Mars to justify aggression, bullying, or violence at home or on the street. Do not make war-magic or curses in his name. Do not train recklessly as an "offering": injury is not devotion, so warm up, rest and get proper instruction for combat sports. Do not glorify war to people who have lived through it. And do not attach him to nationalism or racial politics; Rome itself was a mixed city of many peoples, and his altar is open to anyone who wants to protect others.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Rome\'s wars and enslavements are well documented. The temple of Mars Ultor in the Forum of Augustus survives in part; Ovid, Fasti 5.545–598, describes it. The October Horse is described by Festus and Plutarch.',
+            unknown:
+              'How ordinary Romans felt about Mars and the cost of war is mostly unrecorded. Modern devotees vary widely in how they think about Mars and the military, and there is no single modern view.',
+          },
+          inPractice:
+            'Write in your journal what you will and will not ask of Mars. Keep it on his shrine.',
+          reflect: [
+            'Can I honour Mars while being honest about Rome\'s wars? What does that look like for me?',
+            'Where is the line, for me, between protection and aggression?',
+          ],
+          further: [
+            'Mary Beard, The Roman Triumph (2007)',
+            'Ovid, Fasti 5.545–598 (Latin at The Latin Library)',
+          ],
+          library: ['traditional/deity/mars'],
+        },
+      ],
+      practices: [
+        {
+          id: 'mars-morning',
+          title: 'A morning word',
+          instructions:
+            'Through the study stage, each morning before you leave the house, stand at your front door for a moment and say: "Father Mars, guard this threshold." Lock up properly.',
+          times: 11,
+          every: 'day',
+          prompt: 'Did I remember? What did I learn about Mars today?',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Nine days of discipline',
+      intro:
+        'Nine days of a chosen discipline, offered to Mars each evening with grain and wine. Roman religion knew nine-day rites (the novendiale), but this nine-day frame is a modern devotional form. The point is steadiness: Mars values the soldier who turns up.',
+      days: 9,
+      lessons: [],
+      practices: [
+        {
+          id: 'mars-nine-days',
+          title: 'Effort and offering',
+          instructions:
+            'Choose one discipline you can do every day for nine days: a training session, a run, a self-defence practice, a stretch of protective or repair work, an hour volunteering. Before you begin it each day, say: "Father Mars, this is for you."\n\nEach evening: wash and cover your head. Incense or wine to Janus. Light Mars\'s red candle and read your Cato-style lustration prayer, asking him to keep harm from your house and household. Offer a pinch of spelt or a piece of spelt bread and a little wine. Tell him plainly whether you did the discipline that day. Name Vesta last, turn to your right, uncover, and put out the flame.\n\nIf you miss a day, do not pretend; say so, and offer again the next day, as Cato\'s farmer offered again when the first was not accepted.',
+          times: 9,
+          every: 'day',
+          prompt: 'Did I keep the discipline today? What did it cost, and what did it give?',
+          premade: 'cosmic-tuesday-mars-courage',
+        },
+        {
+          id: 'mars-repair',
+          title: 'One protective job',
+          instructions:
+            'Once in the nine days, do one job that makes your home safer: test the smoke alarm, fix a lock, put together a first-aid kit, learn your building\'s fire exit. Offer it to Mars.',
+          times: 1,
+          prompt: 'What does protection look like in practice, here, for me?',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'Is he your god?',
+      intro:
+        'A few days to weigh it honestly. Mars asks for discipline and kept promises; if that does not fit your life now, it is wise to know. Stopping, pausing, or choosing another god or path is a good outcome.',
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'mars-discern',
+          title: 'Three evenings at the shrine',
+          instructions: 'Light his candle and answer the questions below in your journal, a few each evening.',
+          times: 3,
+          every: 'day',
+          prompt: 'What did nine days of discipline show me about myself and about Mars?',
+        },
+      ],
+      questions: [
+        'Am I drawn to Mars as protector and guardian, or mainly to the image of a warrior? Be honest.',
+        'Can I keep a regular practice and a specific vow to him for a year?',
+        'How do I hold the history of Rome\'s wars alongside devotion to Mars?',
+        'Does my wish to honour him come from a wish to protect, or from anger I want permission for?',
+        'Does the formal Roman manner (veiled head, exact words, Janus first and Vesta last) feel right to me?',
+        'Would I rather honour him occasionally, in March and October, without a dedication? That is a respectable choice.',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'The dedication',
+      intro:
+        'If you go ahead, hold this on 1 March, on a Kalends, or on a Tuesday. It is a self-dedication, not an initiation, and it does not make you a priest of Mars or a member of any group. It takes the Roman shape of a vow (votum): you promise what you will do for him, and you do it.',
+      days: 1,
+      lessons: [],
+      practices: [],
+      rite: {
+        title: 'Self-dedication to Mars',
+        summary: 'A household lustration, Janus and Jupiter first, a vow read exactly, offerings of spelt cake, wine and incense, a standing silence, and Vesta last.',
+        minutes: 45,
+        ingredients: [
+          { name: 'A bowl of clean water and a towel', ref: 'traditional/vessel/bowl' },
+          { name: 'A head covering' },
+          { name: 'A new red candle', ref: 'traditional/candle/red' },
+          { name: 'Red wine or red grape juice in a cup', ref: 'traditional/tool/chalice' },
+          { name: 'A spelt cake or flatbread you made', ref: 'traditional/vessel/dish' },
+          { name: 'A little olive oil' },
+          { name: 'Frankincense and a carryable burner', ref: 'traditional/tool/incense_burner' },
+          { name: 'Fresh bay leaves', ref: 'traditional/herb/bay' },
+          { name: 'Your vow, written out' },
+        ],
+        preparation:
+          'Clean his shrine and tidy your home, especially the doorway. Bake a simple spelt cake: 200 g spelt flour, a pinch of salt, a spoon of honey, a spoon of olive oil and about 120 ml water, pressed flat and baked at 200°C for 20 minutes. Write your vow: your name; that you dedicate yourself to Mars Pater as his devotee; for how long (a year is wise); and what you will do, such as a named discipline, a protective service, keeping 1 March and 19 October, and never using his name to justify harm. Read it until it flows. Set aside the first piece of the cake for Vesta.',
+        steps: [
+          {
+            title: 'Purify and veil',
+            instructions: 'Wash your hands and face, put on clean clothes, and cover your head.',
+          },
+          {
+            title: 'Janus and Jupiter first',
+            instructions: 'Light the incense. Give incense and a few drops of wine to Janus, then to Jupiter.',
+            spoken: 'Father Janus, first in every prayer, be honoured by this wine.\nJupiter, best and greatest, be honoured by this wine.',
+          },
+          {
+            title: 'The lustration',
+            instructions: 'Carry the incense (or the cake on its dish) around the inside of your home three times, starting and ending at the door.',
+            spoken: 'Father Mars, I walk the bounds of this house.\nKeep out sickness seen and unseen,\nharm, ruin and bad weather.\nKeep safe the people within.',
+            minutes: 6,
+          },
+          {
+            title: 'Light the new flame',
+            instructions: 'At the shrine, lay fresh bay and light the new red candle.',
+            spoken: 'Mars Pater, Gradivus, guardian of field and city,\nfather of Rome,\nor by whatever name it is right to call you:\nI pray and beseech you to be willing and favourable\nto me, my house and my household.',
+            light: true,
+          },
+          {
+            title: 'Read the vow',
+            instructions: 'Read your vow aloud, exactly. If you stumble, stop and begin again from the beginning.',
+            minutes: 5,
+          },
+          {
+            title: 'Offer',
+            instructions: 'Set down the cake, pour a little oil on it, and pour a little wine beside it. Name each gift.',
+            spoken: 'Father Mars, be honoured by this cake,\nby this oil and this wine.\nFor these things, as I have spoken, so I will do.',
+          },
+          {
+            title: 'Stand guard',
+            instructions: 'Stand in silence, feet planted, for a few minutes.',
+            minutes: 5,
+            timed: true,
+          },
+          {
+            title: 'Vesta last, and turn',
+            instructions: 'A pinch of incense to Vesta. Turn to your right and uncover your head. Put out the flame.',
+            spoken: 'Vesta, last as always: be honoured.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Leave his portion of cake and wine until morning, then pour the wine onto soil and give the cake to the compost or the birds. Eat the rest of the cake. Keep the vow on his shrine. Romans who kept a vow set up an altar marked V.S.L.M., votum solvit libens merito, "paid the vow willingly, as was deserved"; when your year is done, write those letters on your vow card and renew it.',
+        safety:
+          'Carry incense only in a burner with a handle or on a heatproof dish, away from coats and curtains, and never leave the candle unattended. Keep smoke from birds and anyone with asthma. Grapes, wine and grape juice are toxic to dogs and cats. Use oven gloves with the cake. Spelt contains gluten.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'Keeping the watch',
+      intro:
+        'His ongoing practice is a monthly offering, a kept discipline, and the great days of March and October. Rededicate each year on 1 March.',
+      days: 4,
+      lessons: [],
+      practices: [
+        {
+          id: 'mars-kalends',
+          title: 'Kalends offering',
+          instructions:
+            'On the Kalends (the 1st) of each month: wash and veil, Janus first, light his candle, offer spelt and wine, read your prayer and report on your vow. Check your home\'s boundary: locks, alarms, exits. Vesta last, turn right.',
+          times: 12,
+          every: 'month',
+          prompt: 'How is my discipline going? What needs guarding this month?',
+          premade: 'folk-lararium-offering',
+        },
+        {
+          id: 'mars-year',
+          title: 'March and October',
+          instructions:
+            'On 1 March, his birthday and the Matronalia: clean his shrine, hang fresh bay, light a new candle, offer cake and wine, give gifts to the mothers in your life, and rededicate. Through March, keep a discipline for him. On 23 March, ring a bell or play a trumpet call for the Tubilustrium. On 19 October, the Armilustrium, clean and put away your gear and give thanks for the season.',
+          times: 1,
+          every: 'holy-day',
+          prompt: 'What did this year with Mars protect, and what did it cost?',
+        },
+        {
+          id: 'mars-weekly',
+          title: 'A weekly effort',
+          instructions: 'Once a week, often on Tuesday, do one session of your discipline dedicated to him.',
+          times: 52,
+          every: 'week',
+          prompt: 'Did I turn up this week?',
+          premade: 'cosmic-tuesday-mars-courage',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'Cato, On Agriculture 141, the lustration and prayer to Mars, quoted in Latin (The Latin Library: https://www.thelatinlibrary.com/cato/cato.agri.html); translations original',
+    'Carmen Arvale, quoted in Latin (The Latin Library: https://www.thelatinlibrary.com/carmenarvale.html); translations original and tentative',
+    'Ovid, Fasti 3.1–2, 3.377, 3.387 and 3.393–396 (Latin, The Latin Library: https://www.thelatinlibrary.com/ovid/ovid.fasti3.shtml); Fasti 5.545–598 on Mars Ultor (https://www.thelatinlibrary.com/ovid/ovid.fasti5.shtml); translations original',
+    'Ovid, Fasti 6.303–304, Vesta addressed first; Cicero, On the Nature of the Gods 2.67, Vesta last (paraphrased)',
+    'Livy 1.3–4; Pliny, Natural History 28.10–11; Servius on Aeneid 8.3; Festus and Plutarch on the October Horse (paraphrased)',
+    'H. H. Scullard, Festivals and Ceremonies of the Roman Republic (1981)',
+    'John Scheid, An Introduction to Roman Religion (2003)',
+    'Mary Beard, John North and Simon Price, Religions of Rome (1998)',
+  ],
+};

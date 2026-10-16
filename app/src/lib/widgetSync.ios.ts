@@ -4,10 +4,12 @@
 import { useEffect } from 'react';
 import { AppState } from 'react-native';
 
+import { calendarSettingsKey, leadLine } from './calendars';
 import { holidayChoice } from './holidays';
+import { usePlace } from './location';
 import { useRituals } from './rituals/store';
 import { useMySettings } from './settings/store';
-import { widgetTimeline } from './widgetTimeline';
+import { WIDGET_DAYS, widgetTimeline } from './widgetTimeline';
 
 type WidgetModule = typeof import('../widgets');
 
@@ -25,12 +27,15 @@ function widgets(): WidgetModule[keyof WidgetModule][] {
 export function useWidgetSync() {
   const { settings } = useMySettings();
   const { plans, templates } = useRituals();
-  const choiceKey = `${settings?.calendar_traditions ?? ''}|${settings?.calendar_custom_holidays ?? ''}|${settings?.calendar_picked_holidays ?? ''}`;
+  const place = usePlace();
+  const choiceKey = `${settings?.calendar_traditions ?? ''}|${settings?.calendar_custom_holidays ?? ''}|${settings?.calendar_picked_holidays ?? ''}|${calendarSettingsKey(settings)}|${place ? `${place.latitude.toFixed(1)},${place.longitude.toFixed(1)}` : ''}`;
 
   useEffect(() => {
     const send = () => {
       try {
-        const timeline = widgetTimeline(new Date(), holidayChoice(settings), plans, templates);
+        const timeline = widgetTimeline(new Date(), holidayChoice(settings), plans, templates, WIDGET_DAYS, {
+          lead: (day) => leadLine(day, settings, place),
+        });
         for (const widget of widgets()) {
           try {
             widget.updateTimeline(timeline);

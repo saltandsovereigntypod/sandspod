@@ -83,3 +83,126 @@ window.addEventListener("load", () => {
     .then(() => window.history.replaceState({}, "", window.location.pathname))
     .catch(console.error);
 });
+
+/* =========================================================
+   BEGIN A RITUAL HANDED OVER FROM THE RITUALS PAGES
+   /rituals/ (the planner, a plan, the premade book, the spell
+   builder) links here with ?ritual=1&beginRitual=1 and leaves
+   what to begin in sessionStorage "saltRitualBegin": one of
+   your templates by id, a premade working or spell shaped as a
+   template, or a working of your own. It starts the way the
+   companion's own "Begin This Ritual" does.
+   ========================================================= */
+
+const RITUAL_BEGIN_HANDOFF_KEY = "saltRitualBegin";
+const RITUAL_PLANS_KEY = "rituals.plans.v1";
+
+function takeRitualBeginHandoff() {
+  const url = new URL(window.location.href);
+  if (!url.searchParams.has("beginRitual")) return null;
+  url.searchParams.delete("beginRitual");
+  window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+  let handoff = null;
+  try {
+    handoff = JSON.parse(sessionStorage.getItem(RITUAL_BEGIN_HANDOFF_KEY));
+    sessionStorage.removeItem(RITUAL_BEGIN_HANDOFF_KEY);
+  } catch {
+    return null;
+  }
+  // Only a hand-off from the last few minutes: a reload later never starts a ritual again.
+  if (!handoff || handoff.version !== 1 || Date.now() - Number(handoff.createdAt || 0) > 10 * 60 * 1000) return null;
+  return handoff;
+}
+
+function waitForRitualAuth() {
+  if (window.getSaltCommunityModeratorState?.().resolved) return Promise.resolve();
+  return new Promise((resolve) => {
+    document.addEventListener("saltAuthReady", () => resolve(), { once: true });
+    window.setTimeout(resolve, 5000);
+  });
+}
+
+/** A planned working is done once it has begun (as the app does); its row stays. */
+async function markHandedOverPlanDone(planId, user) {
+  const doneAt = new Date().toISOString();
+  try {
+    const plans = JSON.parse(localStorage.getItem(RITUAL_PLANS_KEY) || "[]");
+    if (Array.isArray(plans)) {
+      localStorage.setItem(RITUAL_PLANS_KEY, JSON.stringify(plans.map((plan) => (plan && plan.id === planId ? { ...plan, doneAt } : plan))));
+    }
+  } catch {
+    /* The account's copy below is the one that matters when signed in. */
+  }
+  if (!user) return;
+  const { error } = await db.from("ritual_plans").update({ done_at: doneAt, updated_at: doneAt }).eq("id", planId).eq("user_id", user.id);
+  if (error) console.warn("The plan could not be marked as begun.", error);
+}
+
+/** Keep what the app keeps with a session: its ingredients, the premade it came from, the altar it runs on. */
+async function addHandoffToRitualSession(handoff, user) {
+  const extra = {};
+  if (Array.isArray(handoff.ingredients) && handoff.ingredients.length) extra.ingredients = handoff.ingredients;
+  if (handoff.premadeId) extra.premadeId = handoff.premadeId;
+  if (handoff.closing) extra.closing = handoff.closing;
+  if (handoff.altarId) extra.ranOnAltar = handoff.altarId;
+  if (!Object.keys(extra).length || !activeRitualSession) return;
+  activeRitualSession.metadata = { ...(activeRitualSession.metadata || {}), ...extra };
+  if (!user) {
+    persistGuestActiveRitual();
+    return;
+  }
+  const { error } = await db
+    .from("ritual_sessions")
+    .update({ metadata: activeRitualSession.metadata })
+    .eq("id", activeRitualSession.id)
+    .eq("user_id", user.id);
+  if (error) console.warn("The ritual's ingredients could not be kept with it.", error);
+}
+
+async function beginHandedOverRitual() {
+  const handoff = takeRitualBeginHandoff();
+  if (!handoff || typeof createTemplateRitualSession !== "function") return;
+  await waitForRitualAuth();
+  try {
+    const user = await getRitualUser();
+    await fetchActiveRitualSession();
+    if (activeRitualSession) {
+      renderActiveRitualPanel();
+      showAltarToast("Finish the ritual that's under way before beginning another.");
+      return;
+    }
+
+    let session = null;
+    if (handoff.kind === "free") {
+      session = await createFreeRitualSession({ title: handoff.title || "", intention: handoff.intention || "" });
+    } else {
+      let template = handoff.template || null;
+      if (handoff.kind === "template") {
+        const templates = await getRitualTemplates();
+        template = templates.find((item) => item.id === handoff.templateId) || null;
+        if (!template) throw new Error("That template could not be found. It may have been archived.");
+      }
+      if (!template) return;
+      if (handoff.altarId) {
+        template = { ...template, linked_altar_id: handoff.altarId };
+        // Signed in, the automation loads the linked altar itself; guests' altars are in this browser.
+        if (!user && typeof loadAltarById === "function") await loadAltarById(handoff.altarId);
+      }
+      // null means the person chose not to continue past a candle-life warning.
+      session = await createTemplateRitualSession(template);
+    }
+    if (!session) return;
+
+    await addHandoffToRitualSession(handoff, user);
+    if (handoff.planId) await markHandedOverPlanDone(handoff.planId, user);
+    renderActiveRitualPanel();
+    showAltarToast("Ritual started");
+  } catch (error) {
+    console.error(error);
+    showAltarToast(error.message || "The ritual could not be started");
+  }
+}
+
+window.addEventListener("load", () => {
+  beginHandedOverRitual();
+});

@@ -3390,3 +3390,12 @@ body.library-page-open .book-toc .book-toc-section:not(.my-practice-shelf):not(.
   outline: 2px solid #b9a05d;
   outline-offset: 2px;
 }
+
+/* A deity's card on their Living Library page (js/deity-yours.js) */
+.book-library-deity-yours:empty { display: none; }
+.deity-yours { display: grid; gap: 10px; padding: 16px 18px; border: 1px solid rgba(226, 195, 109, 0.24); border-radius: 16px; background: rgba(38, 61, 46, 0.32); }
+.deity-yours--patron { border-color: rgba(226, 195, 109, 0.6); background: rgba(185, 160, 93, 0.12); }
+.deity-yours p { margin: 0; }
+.deity-yours__badge { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
+.deity-yours__since, .deity-yours__hint { font-size: 0.88rem; color: var(--muted); }
+.deity-yours__actions { display: flex; flex-wrap: wrap; gap: 8px; }

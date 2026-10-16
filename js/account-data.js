@@ -5,7 +5,15 @@
   const GUEST_CLEAR_CONFIRMATION = "CLEAR MY GUEST DATA";
   const DELETE_CONFIRMATION = "DELETE MY SALT AND SOVEREIGNTY ACCOUNT";
   const PENDING_GUEST_SNAPSHOT_KEY = "saltAndSovereigntyPendingGuestMigrationSnapshot";
-  const GUEST_MIGRATION_KEYS = Object.freeze({ settings: "saltAndSovereigntyUserSettings", altars: "saltAndSovereigntySavedAltars", altarDraft: "saltAndSovereigntyWorkingAltarDraft", livingLibrary: "saltAndSovereigntyLibrary", livingLibraryLayouts: "saltAndSovereigntyLibraryPageLayouts", apothecary: "saltAndSovereigntyApothecaryItems", ritualJournals: "saltAndSovereigntyUserRituals", ritualLifecycle: "saltAndSovereigntyRitualLifecycle:guest", customCabinet: "saltAndSovereigntyCustomCabinetItems", mundaneMode: "saltAndSovereigntyMundaneMode" });
+  const GUEST_MIGRATION_KEYS = Object.freeze({ settings: "saltAndSovereigntyUserSettings", altars: "saltAndSovereigntySavedAltars", altarDraft: "saltAndSovereigntyWorkingAltarDraft", livingLibrary: "saltAndSovereigntyLibrary", livingLibraryLayouts: "saltAndSovereigntyLibraryPageLayouts", apothecary: "saltAndSovereigntyApothecaryItems", ritualJournals: "saltAndSovereigntyUserRituals", ritualLifecycle: "saltAndSovereigntyRitualLifecycle:guest", customCabinet: "saltAndSovereigntyCustomCabinetItems", mundaneMode: "saltAndSovereigntyMundaneMode", ritualPlans: "rituals.plans.v1" });
+  // The practice tools' entries, one key per collection (js/salt-store.js).
+  const GUEST_CRAFT_PREFIX = "salt.craft.";
+  function craftKeys(storage) {
+    if (typeof storage?.key !== "function" || typeof storage.length !== "number") return [];
+    const keys = [];
+    for (let index = 0; index < storage.length; index += 1) { const key = storage.key(index); if (key && key.startsWith(GUEST_CRAFT_PREFIX)) keys.push(key); }
+    return keys;
+  }
   const GUEST_KEYS = Object.freeze([
     "saltAndSovereigntyUserSettings",
     "saltAndSovereigntySavedAltars",
@@ -20,6 +28,7 @@
     "saltAndSovereigntyMundaneMode",
     "saltAndSovereigntyAltarToGrimoire",
     "saltAndSovereigntyApothecaryToGrimoire",
+    "rituals.plans.v1",
     PENDING_GUEST_SNAPSHOT_KEY
   ]);
 
@@ -100,7 +109,7 @@
     if (!backupCompleted) throw new Error("Download a fresh guest backup before clearing this browser.");
     if (confirmation !== GUEST_CLEAR_CONFIRMATION) throw new Error("The confirmation phrase did not match.");
     const removed = [];
-    GUEST_KEYS.forEach((key) => { if (storage.getItem(key) !== null) removed.push(key); storage.removeItem(key); });
+    [...GUEST_KEYS, ...craftKeys(storage)].forEach((key) => { if (storage.getItem(key) !== null) removed.push(key); storage.removeItem(key); });
     return { removed, count: removed.length };
   }
 
@@ -113,6 +122,11 @@
       const raw = storage.getItem(key); if (raw == null) continue;
       try { data[section] = JSON.parse(raw); } catch { data[section] = raw; }
     }
+    // Only plans not yet sent to an account are the guest's own.
+    if (Array.isArray(data.ritualPlans)) data.ritualPlans = data.ritualPlans.filter((plan) => plan && typeof plan === "object" && !plan.syncedTo);
+    const craft = {};
+    craftKeys(storage).sort().forEach((key) => { try { const list = JSON.parse(storage.getItem(key)); if (Array.isArray(list) && list.length) craft[key.slice(GUEST_CRAFT_PREFIX.length)] = list.filter((entry) => entry && typeof entry.id === "string" && !entry.syncedTo); } catch {} });
+    if (Object.keys(craft).length) data.craftEntries = craft;
     if (!Object.keys(data).length) return null;
     storage.setItem(PENDING_GUEST_SNAPSHOT_KEY, JSON.stringify(data));
     return data;

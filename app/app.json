@@ -197,7 +197,81 @@
         {
           "initialOrientation": "PORTRAIT_UP"
         }
-      ]
+      ],
+      [
+        "react-native-android-widget",
+        {
+          "widgets": [
+            {
+              "name": "AltarWidget",
+              "label": "Altar",
+              "description": "One of your altars: light its candles, tend offerings and cleanse crystals from here.",
+              "minWidth": "110dp",
+              "minHeight": "110dp",
+              "targetCellWidth": 4,
+              "targetCellHeight": 2,
+              "maxResizeWidth": "420dp",
+              "maxResizeHeight": "440dp",
+              "resizeMode": "horizontal|vertical",
+              "updatePeriodMillis": 1800000,
+              "widgetFeatures": "reconfigurable"
+            },
+            {
+              "name": "MoonWidget",
+              "label": "Tonight's Moon",
+              "description": "The moon tonight; larger, with today's holiday and what it means.",
+              "minWidth": "110dp",
+              "minHeight": "110dp",
+              "targetCellWidth": 2,
+              "targetCellHeight": 2,
+              "maxResizeWidth": "420dp",
+              "maxResizeHeight": "440dp",
+              "resizeMode": "horizontal|vertical",
+              "updatePeriodMillis": 1800000
+            },
+            {
+              "name": "HolidayWidget",
+              "label": "Next Holiday",
+              "description": "A countdown to the next holiday in your calendars.",
+              "minWidth": "110dp",
+              "minHeight": "110dp",
+              "targetCellWidth": 2,
+              "targetCellHeight": 2,
+              "maxResizeWidth": "420dp",
+              "maxResizeHeight": "440dp",
+              "resizeMode": "horizontal|vertical",
+              "updatePeriodMillis": 1800000
+            },
+            {
+              "name": "ComingUpWidget",
+              "label": "Coming Up",
+              "description": "The next moon phases and holidays.",
+              "minWidth": "250dp",
+              "minHeight": "110dp",
+              "targetCellWidth": 4,
+              "targetCellHeight": 2,
+              "maxResizeWidth": "420dp",
+              "maxResizeHeight": "440dp",
+              "resizeMode": "horizontal|vertical",
+              "updatePeriodMillis": 1800000
+            },
+            {
+              "name": "RitualWidget",
+              "label": "Next Ritual",
+              "description": "Your next planned ritual; larger, with its intention and what you'll need.",
+              "minWidth": "110dp",
+              "minHeight": "110dp",
+              "targetCellWidth": 2,
+              "targetCellHeight": 2,
+              "maxResizeWidth": "420dp",
+              "maxResizeHeight": "440dp",
+              "resizeMode": "horizontal|vertical",
+              "updatePeriodMillis": 1800000
+            }
+          ]
+        }
+      ],
+      "./plugins/withAndroidWorkManager"
     ],
     "experiments": {
       "typedRoutes": true
@@ -206,7 +280,8 @@
       "router": {},
       "eas": {
         "projectId": "08131a0f-a981-4de5-9def-e19761ca46ae"
-      }
+      },
+      "appleBrowserSignIn": true
     },
     "owner": "ashley19175s-team",
     "runtimeVersion": {

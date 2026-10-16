@@ -912,3 +912,88 @@ return {
 };
 
 })();
+
+/* =========================================================
+   SOURCING WITH CARE ON LIBRARY ENTRIES
+   Plants, resins and stones whose sourcing raises real
+   concerns carry the app's sourcing note on their page
+   (app/src/lib/library/closed, built into js/core/guides.js,
+   which loads only when an entry page opens).
+   ========================================================= */
+
+const LibrarySourcing = (function (global) {
+  const BUNDLE = "/js/core/guides.js";
+  let loading = null;
+
+  function guides() {
+    if (global.SaltCore?.guides?.closed) return Promise.resolve(global.SaltCore.guides);
+    if (!loading) {
+      loading = new Promise((resolve) => {
+        const script = document.createElement("script");
+        script.src = BUNDLE;
+        script.async = true;
+        script.onload = () => resolve(global.SaltCore?.guides || null);
+        script.onerror = () => {
+          loading = null;
+          resolve(null);
+        };
+        document.head.append(script);
+      });
+    }
+    return loading;
+  }
+
+  /** The note for an entity: by its traditional reference first, then by its name. */
+  function noteFor(entity, closed) {
+    if (!entity || !closed?.sourcingForEntry) return null;
+    return closed.sourcingForEntry({ traditionalRef: entity.metadata?.traditionalReference || entity.traditionalReference || null, name: entity.name || "" });
+  }
+
+  const esc = (text) => String(text ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+
+  function noteHtml(note) {
+    return `<aside class="library-sourcing-note" data-library-sourcing aria-labelledby="library-sourcing-title">
+      <h2 id="library-sourcing-title">Sourcing with care</h2>
+      <p>${esc(note.concern)}</p>
+      <p><span class="library-sourcing-note__label">Instead: </span>${esc(note.instead)}</p>
+      <p><a href="/library/sourcing/">All sourcing notes</a></p>
+    </aside>`;
+  }
+
+  function addStyles() {
+    if (document.querySelector("style[data-library-sourcing-styles]")) return;
+    const style = document.createElement("style");
+    style.dataset.librarySourcingStyles = "";
+    style.textContent = ".library-sourcing-note{margin:0 0 18px;padding:14px 16px;border:1px solid rgba(226,195,109,.6);border-radius:16px;background:rgba(185,160,93,.12);display:grid;gap:8px}.library-sourcing-note h2{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;margin:0;color:var(--gold,#b9a05d);font-family:inherit}.library-sourcing-note p{margin:0;line-height:1.55}.library-sourcing-note__label{font-weight:600;color:var(--gold,#b9a05d)}.library-sourcing-note a{color:var(--gold,#b9a05d)}";
+    document.head.append(style);
+  }
+
+  /** Add the note to an entry page the Grimoire has just drawn, once. */
+  async function decorate(page) {
+    const id = page?.querySelector("[data-living-journey]")?.getAttribute("data-living-journey");
+    if (!id || page.dataset.sourcingChecked === id) return;
+    page.dataset.sourcingChecked = id;
+    const entity = Library.getEntity(id);
+    if (!entity || entity.type === "ritual" || entity.type === "ritual_template") return;
+    const G = await guides();
+    const note = noteFor(entity, G?.closed);
+    const body = page.querySelector(".book-library-body");
+    if (!note || !body || !page.isConnected || body.querySelector("[data-library-sourcing]")) return;
+    addStyles();
+    body.insertAdjacentHTML("afterbegin", noteHtml(note));
+  }
+
+  function watch() {
+    if (typeof MutationObserver === "undefined" || !document.body) return;
+    const scan = () => document.querySelectorAll(".book-library-entity-page").forEach((page) => decorate(page));
+    new MutationObserver(scan).observe(document.body, { childList: true, subtree: true });
+    scan();
+  }
+
+  if (typeof document !== "undefined") {
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", watch);
+    else watch();
+  }
+
+  return { noteFor, noteHtml, guides };
+})(typeof window !== "undefined" ? window : globalThis);

@@ -54,6 +54,17 @@ const listeners = new Set<() => void>();
 let version = 0;
 const notify = () => listeners.forEach((listener) => listener());
 
+/** The settings last read or saved, outside React (e.g. for reminders), or null before any screen has loaded them. */
+export const cachedSettings = (): Settings | null => cached?.settings ?? null;
+
+/** Be told when settings are loaded or saved. */
+export function subscribeSettings(listener: () => void): () => void {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+}
+
 /** Re-read settings everywhere, e.g. after a restore wrote new ones. */
 export function reloadMySettings() {
   cached = null;

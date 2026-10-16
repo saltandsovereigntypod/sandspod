@@ -2,7 +2,8 @@
 // what it means when medium or large; and on the lock screen. It runs inside
 // iOS's widget extension, in its own JavaScript runtime: no hooks, no imports at
 // run time, nothing from outside the function. The app sends it a month of
-// days (lib/widgetTimeline).
+// days (lib/widgetTimeline). When the person counts their days by the moon,
+// the large and medium sizes add the moon's date (`calendarLine`).
 
 import { HStack, Image, Spacer, Text, VStack } from '@expo/ui/swift-ui';
 import { containerBackground, font, foregroundStyle, frame, lineLimit, widgetURL } from '@expo/ui/swift-ui/modifiers';
@@ -81,6 +82,7 @@ const MoonWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => {
             <Text modifiers={[font({ size: 24, weight: 'semibold', design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>{props.phase}</Text>
             <Text modifiers={[font({ size: 13 }), foregroundStyle(muted)]}>{`in ${props.sign} · ${lit} lit`}</Text>
             <Text modifiers={[font({ size: 13 }), foregroundStyle(gold), lineLimit(1)]}>{`Next: ${props.next}`}</Text>
+            {props.calendarLine ? <Text modifiers={[font({ size: 13, design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>{props.calendarLine}</Text> : null}
           </VStack>
         </HStack>
         {today(4)}
@@ -112,7 +114,8 @@ const MoonWidget = (props: WidgetDayProps, environment: WidgetEnvironment) => {
       <HStack alignment="top" spacing={14} modifiers={[link, containerBackground(sky, 'widget'), fill]}>
         {moonColumn}
         <VStack alignment="leading" spacing={8} modifiers={[frame({ maxWidth: 10000, alignment: 'leading' })]}>
-          {today(3)}
+          {props.calendarLine ? <Text modifiers={[font({ size: 12, weight: 'semibold', design: 'serif' }), foregroundStyle(cream), lineLimit(1)]}>{props.calendarLine}</Text> : null}
+          {today(props.calendarLine ? 2 : 3)}
         </VStack>
       </HStack>
     );

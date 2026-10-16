@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
+import { AltarChoiceSheet, useBeginOnAltar } from '../../../../components/altar/connect/BeginOnAltar';
 import { Connections } from '../../../../components/rituals/Connections';
 import { Body, Card, RitualScreen, SectionLabel, Title, tell, ui } from '../../../../components/rituals/ui';
 import { minutesLabel } from '../../../../lib/rituals/format';
@@ -15,6 +16,8 @@ export default function TemplateView() {
   const rituals = useRituals();
   const template = rituals.templates.find((t) => t.id === id) ?? null;
   const [starting, setStarting] = useState(false);
+  const [choosingAltar, setChoosingAltar] = useState(false);
+  const onAltar = useBeginOnAltar();
 
   if (!template) {
     return (
@@ -41,6 +44,15 @@ export default function TemplateView() {
     }
   };
 
+  const beginOnAltar = async (altarId: string) => {
+    setChoosingAltar(false);
+    try {
+      await onAltar.begin({ kind: 'template', template }, altarId);
+    } catch (e) {
+      tell("Couldn't begin", e instanceof Error ? e.message : 'Please try again.');
+    }
+  };
+
   return (
     <RitualScreen back="Templates">
       <Title eyebrow={template.metadata?.kind === 'spell' ? 'Spell' : 'Ritual template'}>{template.title}</Title>
@@ -49,6 +61,13 @@ export default function TemplateView() {
 
       <View style={ui.actions}>
         <Button label={starting ? 'Beginning…' : 'Begin this ritual'} disabled={starting || !!rituals.active} onPress={begin} />
+        <Button
+          label={onAltar.busy ? 'Beginning…' : 'Begin on an altar'}
+          variant="outline"
+          disabled={starting || onAltar.busy || !!rituals.active}
+          accessibilityHint="Choose one of your altars; the ritual runs over it and lights its candles as the steps begin"
+          onPress={() => setChoosingAltar(true)}
+        />
         {!!rituals.active && <Body muted>Finish the ritual that's under way before beginning another.</Body>}
         <Button
           label="Plan a night for it"
@@ -100,6 +119,8 @@ export default function TemplateView() {
         variant="outline"
         onPress={() => router.push({ pathname: '/rituals/templates/edit', params: { id: template.id } })}
       />
+
+      <AltarChoiceSheet visible={choosingAltar} title={template.title} onClose={() => setChoosingAltar(false)} onPick={(id) => void beginOnAltar(id)} />
     </RitualScreen>
   );
 }

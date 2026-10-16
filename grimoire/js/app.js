@@ -2061,6 +2061,12 @@ async function hydrateLivingJourney(entityId, requestId) {
   }
 }
 
+/** A deity's card: you and them, a shrine, My deities, their journey (js/deity-yours.js fills it). */
+function renderDeityYoursSlot(entity) {
+  const key = (String(entity.metadata?.traditionalReference || "").match(/^traditional\/deity\/([^/]+)$/) || [])[1] || "";
+  return `<section class="book-library-layer book-library-deity-yours" aria-label="${escapeHtml(`${entity.name} in your practice`)}" data-deity-yours="${escapeHtml(key)}" data-deity-name="${escapeHtml(entity.name)}"></section>`;
+}
+
 async function renderLibraryEntity(entityId) {
   const renderStartedAt = performance.now();
   if (!entryList || typeof Library === "undefined") return;
@@ -2162,6 +2168,7 @@ async function renderLibraryEntity(entityId) {
       </header>
 
       <div class="book-reader-body book-library-body">
+        ${entity.type === "deity" && !libraryEditMode ? renderDeityYoursSlot(entity) : ""}
         ${renderedLayers}
         <section class="book-library-layer book-library-journey" data-living-journey="${escapeHtml(entity.id)}" aria-live="polite">
           <div class="library-section-heading-row"><h2>Your Journey with ${escapeHtml(entity.name)}</h2></div>
@@ -2171,6 +2178,7 @@ async function renderLibraryEntity(entityId) {
     </section>
   `;
 
+  window.SaltDeityYours?.hydrate(entryList.querySelector("[data-deity-yours]"));
   renderLivingLibraryShelves();
   hydrateLivingJourney(entity.id, journeyRequestId);
   console.info(`[Grimoire timing] entity rendering: ${Math.round((performance.now() - renderStartedAt) * 10) / 10}ms`);

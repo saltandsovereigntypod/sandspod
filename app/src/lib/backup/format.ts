@@ -43,7 +43,21 @@ export const GUEST_KEYS = Object.freeze({
   ritualLifecycle: 'saltAndSovereigntyRitualLifecycle:guest',
   customCabinet: 'saltAndSovereigntyCustomCabinetItems',
   mundaneMode: 'saltAndSovereigntyMundaneMode',
+  // Planned rituals, under the key the app (rituals/store.ts) and the website both use.
+  ritualPlans: 'rituals.plans.v1',
 } as const);
+
+/**
+ * The practice tools' entries (craft/store.ts), one key per collection. A
+ * backup holds them as data.craftEntries = { <collection>: [entries] }; the
+ * app keeps them as "craft.<collection>", the website as "salt.craft.<collection>".
+ */
+export const CRAFT_SECTION = 'craftEntries';
+export const CRAFT_PREFIX = 'craft.';
+export const WEBSITE_CRAFT_PREFIX = 'salt.craft.';
+
+/** A storage view the guest helpers read; `keys` lists every key when the storage can. */
+export type GuestStorage = Pick<Storage, 'getItem'> & { keys?: () => readonly string[] };
 
 export const CLOUD_SECTIONS: Readonly<Record<string, readonly string[]>> = Object.freeze({
   settings: ['user_settings'],
@@ -58,7 +72,9 @@ export const CLOUD_SECTIONS: Readonly<Record<string, readonly string[]>> = Objec
     'ritual_session_steps',
     'user_rituals',
     'ritual_links',
+    'ritual_plans',
   ],
+  practice: ['craft_entries'],
   community: ['community_submissions', 'community_submission_messages'],
 });
 
@@ -75,6 +91,7 @@ export const RESTORE_ORDER = Object.freeze([
   'ritual_sessions',
   'ritual_session_steps',
   'user_rituals',
+  'ritual_plans',
   'saved_altars',
   'custom_cabinet_items',
   'custom_altar_backgrounds',
@@ -84,6 +101,7 @@ export const RESTORE_ORDER = Object.freeze([
   'grimoire_page_links',
   'library_relations',
   'ritual_links',
+  'craft_entries',
   'community_submissions',
 ]);
 
@@ -244,8 +262,31 @@ export async function createBackup(data: Record<string, unknown>, options: Creat
   return backup;
 }
 
-/** Reads the allow-listed guest keys out of a storage snapshot. */
-export function collectGuest(storage: Pick<Storage, 'getItem'>): Record<string, unknown> {
+/** A guest's own records: ones already sent to an account (`syncedTo`) belong to that account. */
+export function ownGuestRecords(list: unknown): unknown {
+  return Array.isArray(list) ? list.filter((record) => record && typeof record === 'object' && !(record as Row).syncedTo) : list;
+}
+
+/** The practice tools' entries in a storage, by collection (empty when it can't list its keys). */
+export function collectCraft(storage: GuestStorage, prefix: string = CRAFT_PREFIX): Record<string, unknown[]> {
+  const craft: Record<string, unknown[]> = {};
+  const keys = storage.keys ? [...storage.keys()].filter((key) => key.startsWith(prefix)).sort() : [];
+  for (const key of keys) {
+    let list: unknown;
+    try {
+      list = JSON.parse(storage.getItem(key) as string);
+    } catch {
+      continue;
+    }
+    if (!Array.isArray(list)) continue;
+    const entries = (ownGuestRecords(list) as Row[]).filter((entry) => typeof entry?.id === 'string');
+    if (entries.length) craft[key.slice(prefix.length)] = entries;
+  }
+  return craft;
+}
+
+/** Reads the allow-listed guest keys (and the practice tools' entries) out of a storage snapshot. */
+export function collectGuest(storage: GuestStorage, options: { craftPrefix?: string } = {}): Record<string, unknown> {
   const data: Record<string, unknown> = {};
   for (const [section, key] of Object.entries(GUEST_KEYS)) {
     const raw = storage.getItem(key);
@@ -256,6 +297,9 @@ export function collectGuest(storage: Pick<Storage, 'getItem'>): Record<string, 
       data[section] = raw;
     }
   }
+  if (Array.isArray(data.ritualPlans)) data.ritualPlans = ownGuestRecords(data.ritualPlans);
+  const craft = collectCraft(storage, options.craftPrefix ?? CRAFT_PREFIX);
+  if (Object.keys(craft).length) data[CRAFT_SECTION] = craft;
   return sanitize(data) as Record<string, unknown>;
 }
 
@@ -368,7 +412,7 @@ export type GuestPlan = {
   writesApplied: boolean;
 };
 
-export function buildGuestMergePlan(backup: Backup, storage: Pick<Storage, 'getItem'>): GuestPlan {
+export function buildGuestMergePlan(backup: Backup, storage: Pick<Storage, 'getItem'>, options: { craftPrefix?: string } = {}): GuestPlan {
   const operations: GuestOperation[] = [];
   const conflicts: GuestPlan['conflicts'] = [];
   for (const [section, key] of Object.entries(GUEST_KEYS)) {
@@ -394,6 +438,33 @@ export function buildGuestMergePlan(backup: Backup, storage: Pick<Storage, 'getI
       operations.push({ section, key, value: { ...incoming, ...existing } });
     else if (existing != null) conflicts.push({ section, id: null, resolution: 'kept-existing' });
     else operations.push({ section, key, value: incoming });
+  }
+  // Practice tools: each collection merges into its own key, keeping what's here.
+  const craft = (backup.data || {})[CRAFT_SECTION];
+  if (craft && typeof craft === 'object' && !Array.isArray(craft)) {
+    for (const [collection, records] of Object.entries(craft as Record<string, unknown>)) {
+      if (!Array.isArray(records) || !collection) continue;
+      const key = `${options.craftPrefix ?? CRAFT_PREFIX}${collection}`;
+      let existing: Row[] = [];
+      try {
+        const parsed = JSON.parse(storage.getItem(key) as string);
+        existing = Array.isArray(parsed) ? parsed : [];
+      } catch {
+        existing = [];
+      }
+      const ids = new Set(existing.map((entry) => String(entry?.id)));
+      const added: Row[] = [];
+      (records as Row[]).forEach((entry) => {
+        const id = String(entry?.id || '');
+        if (!id) return;
+        if (ids.has(id)) conflicts.push({ section: CRAFT_SECTION, id, resolution: 'kept-existing' });
+        else {
+          ids.add(id);
+          added.push(clone(entry));
+        }
+      });
+      if (added.length) operations.push({ section: `${CRAFT_SECTION}.${collection}`, key, value: [...added, ...existing] });
+    }
   }
   return { strategy: 'merge', scope: 'guest', operations, conflicts, writesApplied: false };
 }

@@ -1,0 +1,81 @@
+/*
+ * Guides, support and reminders pages (Closed & living traditions, Sourcing
+ * with care, Support, How to, Reminders) and the land card snippet.
+ */
+.gd-header { display: grid; gap: 2px; }
+.gd-header h1:focus { outline: none; }
+[data-page-root] h1, [data-page-root] h2, [data-page-root] h3 { max-width: none; }
+.gd-intro { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.35rem; line-height: 1.35; color: var(--parchment, #e6dcc2); }
+.gd-tags { display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 0; list-style: none; }
+.gd-tags li { border: 1px solid rgba(226, 195, 109, 0.35); border-radius: 999px; padding: 3px 10px; font-size: 0.85rem; color: var(--muted); }
+.gd-tags li:first-child { color: var(--gold); border-color: rgba(226, 195, 109, 0.7); }
+.gd-myth { display: grid; gap: 4px; }
+.gd-myth + .gd-myth { margin-top: 8px; }
+.gd-myth__myth { font-weight: 600; color: var(--gold); }
+.gd-bullets { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.gd-bullets li::marker { color: var(--gold); }
+.gd-part { display: grid; gap: 4px; }
+.gd-part__label { font-weight: 600; font-size: 0.92rem; color: var(--gold); margin: 0; }
+.gd-links { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.gd-link { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+.gd-link:hover, .gd-link:focus-visible { color: var(--cream); }
+.gd-search { display: grid; gap: 10px; }
+.gd-search input[type="search"] { width: 100%; box-sizing: border-box; }
+.gd-selectable { user-select: text; overflow-wrap: anywhere; }
+
+/* Support lines */
+.gd-line__head { display: grid; gap: 2px; }
+.gd-line__reach { font-weight: 600; font-size: 1.15rem; color: var(--gold); margin: 0; }
+.gd-line__url { color: var(--parchment, #e6dcc2); font-size: 0.92rem; }
+.gd-line .sp-actions .button { min-height: 44px; }
+
+/* How to */
+.gd-topic { border: 1px solid var(--line); border-radius: 14px; }
+.gd-topic > summary { cursor: pointer; padding: 14px 16px; font-weight: 600; list-style: none; display: flex; gap: 10px; align-items: baseline; }
+.gd-topic > summary::-webkit-details-marker { display: none; }
+.gd-topic > summary::before { content: "▸"; color: var(--gold); flex: none; }
+.gd-topic[open] > summary::before { content: "▾"; }
+.gd-topic > summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 14px; }
+.gd-topic__body { padding: 0 16px 16px; display: grid; gap: 8px; }
+.gd-steps { margin: 0; padding-left: 1.6em; display: grid; gap: 6px; }
+.gd-steps li::marker { color: var(--gold); font-weight: 600; }
+.gd-web { border-left: 2px solid var(--gold); padding: 6px 0 6px 12px; display: grid; gap: 4px; }
+.gd-web__label { font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin: 0; }
+.gd-where { color: var(--gold); font-size: 0.85rem; margin: 0; }
+
+/* Reminders */
+.gd-toggle { display: flex; gap: 12px; align-items: flex-start; padding: 6px 0; cursor: pointer; }
+.gd-toggle input { width: 22px; height: 22px; margin-top: 2px; accent-color: var(--gold); flex: none; }
+.gd-toggle__text { display: grid; gap: 2px; }
+.gd-time { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.gd-time input[type="time"] { background: rgba(17, 21, 18, 0.7); color: var(--cream); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; font: inherit; }
+.gd-events { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.gd-events li { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.gd-events li:last-child { border-bottom: 0; }
+.gd-events__when { color: var(--gold); font-size: 0.85rem; letter-spacing: 0.06em; }
+.gd-events__title { font-weight: 600; }
+.gd-events__text { display: grid; gap: 2px; flex: 1 1 220px; }
+.gd-fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 8px; }
+.gd-fieldset legend { font-size: 0.85rem; color: var(--muted); padding: 0; margin-bottom: 6px; }
+
+/* The land card (js/land-card.js) */
+.land-card { display: grid; gap: 10px; }
+.land-card__label { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.land-card__title { font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 1.35rem; margin: 0; }
+.land-card .sp-muted { font-size: 0.95rem; }
+
+/* The quiet support line (js/support-link.js) */
+.support-link { display: flex; justify-content: center; padding: 8px; }
+.support-link a { color: var(--muted); font-size: 0.85rem; text-decoration: underline; text-decoration-color: rgba(202, 191, 157, 0.4); text-underline-offset: 3px; min-height: 44px; display: inline-flex; align-items: center; text-align: center; }
+.support-link a:hover, .support-link a:focus-visible { color: var(--cream); }
+
+/* Sourcing note on Living Library entries (js/library.js) */
+.library-sourcing-note { margin: 0 0 18px; padding: 14px 16px; border: 1px solid rgba(226, 195, 109, 0.6); border-radius: 16px; background: rgba(185, 160, 93, 0.12); display: grid; gap: 8px; }
+.library-sourcing-note h2 { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; margin: 0; color: var(--gold); font-family: inherit; }
+.library-sourcing-note p { margin: 0; line-height: 1.55; }
+.library-sourcing-note__label { font-weight: 600; color: var(--gold); }
+.library-sourcing-note a { color: var(--gold); }
+
+@media (max-width: 420px) {
+  .gd-line .sp-actions .button { flex: 1 1 40%; }
+}

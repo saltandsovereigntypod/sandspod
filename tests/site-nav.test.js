@@ -17,6 +17,13 @@ test("each page lights up its own tab", () => {
   assert.equal(SiteNav.activeTab("/grimoire/community-grimoire.html"), "more");
   assert.equal(SiteNav.activeTab("/privacy.html"), "more");
   assert.equal(SiteNav.activeTab("/submit/"), "more");
+  assert.equal(SiteNav.activeTab("/today/"), "today");
+  assert.equal(SiteNav.activeTab("/today/holy/", "?ref=wheel-samhain"), "today");
+  assert.equal(SiteNav.activeTab("/rituals/premade/"), "rituals");
+  assert.equal(SiteNav.activeTab("/rituals/journeys/"), "rituals");
+  assert.equal(SiteNav.activeTab("/practice/green/garden/"), "rituals");
+  assert.equal(SiteNav.activeTab("/help/"), "more");
+  assert.equal(SiteNav.activeTab("/more/support/"), "more");
 });
 
 test("only the home page shows the podcast sections", () => {

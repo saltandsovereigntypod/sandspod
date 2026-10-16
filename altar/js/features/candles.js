@@ -253,10 +253,11 @@ function renderLighting() {
         stageRect.left +
         rect.width / 2;
 
+      // The light sits lower as the candle burns down (living-art.js sets the drop).
       const y =
         rect.top -
         stageRect.top +
-        rect.height * 0.10;
+        rect.height * (0.10 + (Number(candle.dataset.lightDrop) || 0));
 
       const candleScale = Number(candle.dataset.scale || 1);
       const lightRadius = Math.max(110, 170 * candleScale);

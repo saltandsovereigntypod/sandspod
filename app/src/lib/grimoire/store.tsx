@@ -28,6 +28,7 @@ import {
   type Op,
   type SendError,
 } from './edits';
+import { holyPageOps } from './holyOps';
 import { altarRitualOps, ritualDateText, type AltarRitualItem, type WorkingDetails } from './altarImport';
 import { newId } from './ids';
 import { openSectionIn, pageBlocks } from './structure';
@@ -51,6 +52,8 @@ export type GrimoireActions = {
   createPage: (input: { title: string; sectionId: string | null; templateKey: string }) => string | null;
   /** A ritual page from a group on the altar (the website's altar import), filed under the open section. */
   createRitualFromAltar: (input: { title: string; purpose: string | WorkingDetails; items: AltarRitualItem[] }) => string | null;
+  /** Keep a holy-day or moon page in the Grimoire, under its own section ("Holy Days", "The Moon"), tagged so it's found again. */
+  saveHolyPage: (input: { ref: string; title: string; sectionTitle: string; blocks: { type: string; content: string }[] }) => string | null;
   /** The section being viewed (a page's section, or null for the top level), as the website's activeSectionId. */
   setOpenSection: (sectionId: string | null) => void;
   renamePage: (pageId: string, title: string) => void;
@@ -382,6 +385,13 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
           newId,
         );
         commit([...ops, ...page]);
+        return id;
+      },
+      saveHolyPage(input) {
+        const s = snap();
+        if (!s || !userRef.current) return null;
+        const { id, ops } = holyPageOps(s, ctx(), input, newId);
+        commit(ops);
         return id;
       },
       setOpenSection: openSection,
