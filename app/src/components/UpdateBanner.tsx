@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { AppState, Platform, Pressable, StyleSheet, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { releaseScreen } from '../lib/screenOrientation';
 import { colors, fonts } from '../theme';
 
 const enabled = Platform.OS !== 'web' && !__DEV__ && Updates.isEnabled;
@@ -38,7 +39,7 @@ export function UpdateBanner() {
     <Pressable
       accessibilityRole="button"
       accessibilityLabel="A new version is ready. Restart to use it."
-      onPress={() => void Updates.reloadAsync()}
+      onPress={() => void releaseScreen().then(() => Updates.reloadAsync())}
       style={[styles.pill, { top: insets.top + 6 }]}
     >
       <Text style={styles.text}>A new version is ready · Restart</Text>

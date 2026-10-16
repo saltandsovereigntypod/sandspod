@@ -1,7 +1,19 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  ActivityIndicator,
+  BackHandler,
+  Platform,
+  Pressable,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+  type LayoutChangeEvent,
+} from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AboutSheet } from '../../../components/altar/AboutSheet';
 import { AltarStage, clampViewport, type Viewport } from '../../../components/altar/AltarStage';
@@ -20,7 +32,8 @@ import { Chip, ChipRow } from '../../../components/altar/Chip';
 import { WidgetSheet } from '../../../components/altar/WidgetSheet';
 import { BackgroundSheet, DressSheet, LayersSheet, SaveSheet } from '../../../components/altar/OptionSheets';
 import { Button } from '../../../components/Button';
-import { burnDuration, burnedSoFar, dressingNames, glanceLine, resolveAltarEntry } from '../../../lib/altar/companion';
+import { burnDuration, burnedSoFar, dressingNames, glanceLine, lifeDuration, resolveAltarEntry } from '../../../lib/altar/companion';
+import { CandleLifeSheet } from '../../../components/altar/CandleLifeSheet';
 import { builtInCabinet, defaultAltarBackground, objectFromForm, shortLabel } from '../../../lib/altar/cabinet';
 import {
   addObject,
@@ -46,6 +59,10 @@ import {
   toggleLight,
   updateObjects,
   clearAltar,
+  freshCandleAt,
+  nextBurnout,
+  setCandleLifeAt,
+  settleCandles,
   groupName,
   groupObjects,
   lightAll,
@@ -58,7 +75,7 @@ import {
 } from '../../../lib/altar/editor';
 import { displayBox, STAGE_ASPECT } from '../../../lib/altar/geometry';
 import { stackOrder } from '../../../lib/altar/layers';
-import { apothecaryStateOf, carvingsOf, dressingsOf, isCandle, isLit, type ApothecaryState } from '../../../lib/altar/livingState';
+import { apothecaryStateOf, CANDLE_LIFE, candleLife, carvingsOf, dressingsOf, isCandle, isLit, type ApothecaryState } from '../../../lib/altar/livingState';
 import { addObjectInstanceEvent, getObjectInstance, updateObjectInstance, useObjectInstance } from '../../../lib/altar/instanceStore';
 import {
   ACTIVITY_TYPES,
@@ -78,6 +95,8 @@ import { altarSummary, documentFromAltar, emptyDocument, type AltarDocument } fr
 import { useAltars } from '../../../lib/altar/store';
 import type { CabinetForm, CabinetItem } from '../../../lib/altar/types';
 import { useLibrary } from '../../../lib/library';
+import { setAltarFullScreen } from '../../../lib/altarFullScreen';
+import { canTurnScreen, turnScreen } from '../../../lib/screenOrientation';
 import { useMySettings } from '../../../lib/settings/store';
 import { tonightAltar } from '../../../lib/altar/tonight';
 import { holidayChoice, holidaysToday } from '../../../lib/holidays';
@@ -99,6 +118,7 @@ type SheetName =
   | 'dress'
   | 'save'
   | 'widget'
+  | 'length'
   | null;
 
 const nowIso = () => new Date().toISOString();
@@ -127,6 +147,11 @@ export default function AltarEditor() {
   const [crystalMode, setCrystalMode] = useState<CrystalMode | null>(null);
   const [deityMode, setDeityMode] = useState<DeityMode | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  // Full screen: the altar turned sideways to fill the phone, its tools in a drawer.
+  const [full, setFull] = useState(false);
+  const [tools, setTools] = useState(false);
+  const win = useWindowDimensions();
+  const insets = useSafeAreaInsets();
   const undo = useRef<AltarDocument[]>([]);
   const redo = useRef<AltarDocument[]>([]);
   const loadedFor = useRef<string | null>(null);
@@ -135,7 +160,8 @@ export default function AltarEditor() {
   useEffect(() => {
     if (!altarId || loadedFor.current === altarId) return;
     const start = (source: AltarDocument, id: string | null, altarName: string) => {
-      const prepared = prepareDocument(source, nowIso());
+      // Candles that burned down while the altar was closed are out when it opens.
+      const prepared = settleCandles(prepareDocument(source, nowIso()), nowIso());
       loadedFor.current = altarId;
       setDoc(prepared);
       setBaseline(prepared);
@@ -185,7 +211,7 @@ export default function AltarEditor() {
     if (!saved || saved === seenSaved.current) return;
     seenSaved.current = saved;
     if (dirty) return;
-    const fresh = prepareDocument(documentFromAltar(saved), nowIso());
+    const fresh = settleCandles(prepareDocument(documentFromAltar(saved), nowIso()), nowIso());
     if (JSON.stringify(fresh.objects) === JSON.stringify(doc?.objects)) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- the saved altar is outside state; this follows it
     setDoc(fresh);
@@ -199,11 +225,58 @@ export default function AltarEditor() {
     if (doc && dirty) saveDraft(doc, sourceId);
   }, [doc, dirty, sourceId, saveDraft]);
 
-  const stageWidth = Math.min(containerWidth, MAX_STAGE_WIDTH);
+  const fullWidth = Math.floor(Math.min(win.width - insets.left - insets.right, win.height * STAGE_ASPECT));
+  const stageWidth = full ? fullWidth : Math.min(containerWidth, MAX_STAGE_WIDTH);
+
+  const enterFullScreen = (next: boolean) => {
+    setViewport({ zoom: 1, offsetX: 0, offsetY: 0 });
+    setTools(false);
+    setFull(next);
+  };
+  useEffect(() => {
+    if (!full) return;
+    setAltarFullScreen(true);
+    void turnScreen(true);
+    const back = BackHandler.addEventListener('hardwareBackPress', () => {
+      enterFullScreen(false);
+      return true;
+    });
+    return () => {
+      back.remove();
+      setAltarFullScreen(false);
+      void turnScreen(false);
+    };
+  }, [full]);
+  // Leaving the altar (another tab, or back) always comes out of full screen.
+  useFocusEffect(useCallback(() => () => setFull(false), []));
 
   // Edits go through a ref so several in one gesture frame build on each other.
   const docRef = useRef<AltarDocument | null>(null);
   docRef.current = doc;
+
+  // A lit candle burns down and goes out on its own while the altar is open.
+  const [clock, setClock] = useState(0);
+  useEffect(() => {
+    if (!doc) return;
+    const next = nextBurnout(doc);
+    if (next == null) return;
+    const timer = setTimeout(
+      () => {
+        const current = docRef.current;
+        if (!current) return;
+        const settled = settleCandles(current, nowIso());
+        if (settled === current) return setClock((c) => c + 1);
+        const out = current.objects.filter((o, i) => isLit(o) && !isLit(settled.objects[i])).map((o) => shortLabel(o.label, 'Candle'));
+        docRef.current = settled;
+        setDoc(settled);
+        // Going out isn't an edit of yours: a saved altar stays saved (it's saved for you in the background).
+        setBaseline((b) => (b === current ? settled : b));
+        setNotice(`${out.join(' and ')} burned down and went out.`);
+      },
+      Math.min(Math.max(0, next - Date.now()) + 250, 6 * 60 * 60 * 1000),
+    );
+    return () => clearTimeout(timer);
+  }, [doc, clock]);
 
   const commit = useCallback((next: (d: AltarDocument) => AltarDocument, recordUndo = true) => {
     const current = docRef.current;
@@ -420,42 +493,8 @@ export default function AltarEditor() {
     router.push({ pathname: '/grimoire/edit/[pageId]', params: { pageId } });
   };
 
-  if (missing) {
-    return (
-      <SafeAreaView edges={['top']} style={styles.safe}>
-        <View style={styles.centered}>
-          <Text style={type.cardTitle}>This altar isn't here</Text>
-          <Text style={type.body}>It may have been deleted, or it's saved to another account.</Text>
-          <Button label="Back to your altars" variant="outline" onPress={() => router.back()} />
-        </View>
-      </SafeAreaView>
-    );
-  }
-
-  return (
-    <SafeAreaView edges={['top']} style={styles.safe}>
-      <View style={styles.header}>
-        <Pressable
-          onPress={() => (from === 'today' ? router.navigate('/today') : router.canGoBack() ? router.back() : router.replace('/altar'))}
-          accessibilityRole="button"
-          accessibilityLabel="Back to your altars"
-          style={styles.headerButton}
-        >
-          <Text style={styles.back}>‹</Text>
-        </Pressable>
-        <View style={styles.headerText}>
-          <Text style={type.eyebrow} numberOfLines={1}>
-            {dirty ? 'Unsaved changes' : doc?.backgroundName || 'Altar'}
-          </Text>
-          <Text accessibilityRole="header" style={styles.title} numberOfLines={1}>
-            {name}
-          </Text>
-        </View>
-        <Button label="Save" variant={dirty ? 'primary' : 'outline'} onPress={() => setSheet('save')} disabled={!doc} />
-      </View>
-
-      <View style={styles.stageWrap} onLayout={onLayout}>
-        {doc && stageWidth > 0 ? (
+  const stage =
+    doc && stageWidth > 0 ? (
           <AltarStage
             doc={doc}
             width={stageWidth}
@@ -469,21 +508,10 @@ export default function AltarEditor() {
             onGestureEnd={() => {}}
             onViewportChange={setViewport}
           />
-        ) : (
-          <View style={{ height: (containerWidth || 320) / STAGE_ASPECT, justifyContent: 'center' }}>
-            <ActivityIndicator color={colors.gold} />
-          </View>
-        )}
-      </View>
+    ) : null;
 
-      <ScrollView
-        style={styles.panel}
-        contentContainerStyle={styles.panelContent}
-        alwaysBounceHorizontal={false}
-        automaticallyAdjustKeyboardInsets
-        keyboardDismissMode="interactive"
-        keyboardShouldPersistTaps="handled"
-      >
+  const panelBody = (
+    <>
         {notice && (
           <Text style={[type.caption, styles.notice]} accessibilityLiveRegion="polite" onPress={() => setNotice(null)}>
             {notice}
@@ -503,6 +531,8 @@ export default function AltarEditor() {
             onDone={() => setSelected(null)}
             act={{
               light: () => commit((d) => toggleLight(d, selected, nowIso())),
+              fresh: () => commit((d) => freshCandleAt(d, selected, nowIso())),
+              length: () => setSheet('length'),
               rename: () => setSheet('rename'),
               crystal: (mode) => setCrystalMode(mode),
               deity: (mode) => setDeityMode(mode),
@@ -565,12 +595,13 @@ export default function AltarEditor() {
               ) : null}
               <Chip label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} disabled={undo.current.length === 0} />
               <Chip label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} disabled={redo.current.length === 0} />
+              {canTurnScreen && !full ? <Chip label="Full screen" symbol="⤢" accessibilityLabel="Turn the altar sideways to fill the screen" onPress={() => enterFullScreen(true)} /> : null}
               <Chip label="Zoom in" symbol="+" onPress={() => zoomBy(1.5)} disabled={viewport.zoom >= 4} />
               <Chip label="Zoom out" symbol="−" onPress={() => zoomBy(1 / 1.5)} disabled={viewport.zoom <= 1} />
             </ChipRow>
             {(doc.objects.some(isCandle) || doc.objects.length > 1) && (
               <ChipRow>
-                {doc.objects.some((o) => isCandle(o) && !isLit(o)) && (
+                {doc.objects.some((o) => isCandle(o) && !isLit(o) && !candleLife(o).spent) && (
                   <Chip label="Light all candles" symbol="✺" onPress={() => commit((d) => lightAll(d, nowIso()))} />
                 )}
                 {doc.objects.some(isLit) && <Chip label="Snuff all" symbol="◌" onPress={() => commit((d) => snuffAll(d, nowIso()))} />}
@@ -616,10 +647,11 @@ export default function AltarEditor() {
         ) : (
           <ActivityIndicator color={colors.gold} />
         )}
-      </ScrollView>
+    </>
+  );
 
-      {doc && (
-        <>
+  const sheets = doc ? (
+    <>
           {sourceId ? (
             <WidgetSheet visible={sheet === 'widget'} altarId={sourceId} altarName={name} altars={altars} onClose={() => setSheet(null)} />
           ) : null}
@@ -823,6 +855,17 @@ export default function AltarEditor() {
               setSheet(null);
             }}
           />
+          <CandleLifeSheet
+            visible={sheet === 'length'}
+            candle={shortLabel(selectedObject?.label, 'Candle')}
+            current={selectedObject ? candleLife(selectedObject).expectedMs : 0}
+            usual={selectedObject ? (CANDLE_LIFE[candleLife(selectedObject).form] ?? 0) : 0}
+            onClose={() => setSheet(null)}
+            onChoose={(ms) => {
+              if (selected != null) commit((d) => setCandleLifeAt(d, selected, ms, nowIso()));
+              setSheet(null);
+            }}
+          />
           <SaveSheet
             visible={sheet === 'save'}
             initialName={name}
@@ -831,14 +874,134 @@ export default function AltarEditor() {
             onClose={() => setSheet(null)}
             onSave={save}
           />
-        </>
-      )}
+    </>
+  ) : null;
+
+  if (full && doc) {
+    // The drawer opens only when asked, so tapping things to arrange them keeps the whole altar in view.
+    const drawerOpen = tools;
+    const drawerWidth = Math.min(380, Math.round(win.width * 0.42)) + insets.right;
+    return (
+      <View style={styles.full}>
+        <StatusBar hidden />
+        {stage}
+        <View style={[styles.fullBar, { left: insets.left + 10, top: Math.max(insets.top, 10) }]}>
+          <Chip label="Done" symbol="✕" accessibilityLabel="Leave full screen" onPress={() => enterFullScreen(false)} />
+          <Chip label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} />
+          <Chip label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} />
+        </View>
+        {!drawerOpen ? (
+          <View style={[styles.fullBar, { right: insets.right + 10, top: Math.max(insets.top, 10) }]}>
+            <Chip label={dirty ? 'Save' : 'Saved'} symbol="✓" onPress={() => setSheet('save')} />
+            <Chip label="Cabinet" symbol="❖" accessibilityLabel="Open the cabinet" onPress={() => setSheet('cabinet')} />
+            {selectedObject ? (
+              <Chip label="Show details" symbol="☰" accessibilityLabel={`Show details for ${shortLabel(selectedObject.label)}`} onPress={() => setTools(true)} />
+            ) : (
+              <Chip label="Tools" symbol="☰" accessibilityLabel="Show the altar's tools" onPress={() => setTools(true)} />
+            )}
+          </View>
+        ) : (
+          <View style={[styles.drawer, { width: drawerWidth, paddingRight: insets.right }]}>
+            <View style={styles.drawerHead}>
+              <Text style={type.eyebrow} numberOfLines={1}>
+                {dirty ? 'Unsaved changes' : name}
+              </Text>
+              <Pressable
+                onPress={() => setTools(false)}
+                accessibilityRole="button"
+                accessibilityLabel="Hide the tools"
+                style={styles.drawerClose}
+              >
+                <Text style={styles.drawerCloseText}>Close</Text>
+              </Pressable>
+            </View>
+            <ScrollView
+              contentContainerStyle={styles.drawerContent}
+              alwaysBounceHorizontal={false}
+              automaticallyAdjustKeyboardInsets
+              keyboardDismissMode="interactive"
+              keyboardShouldPersistTaps="handled"
+            >
+              {panelBody}
+            </ScrollView>
+          </View>
+        )}
+        {sheets}
+      </View>
+    );
+  }
+
+  if (missing) {
+    return (
+      <SafeAreaView edges={['top']} style={styles.safe}>
+        <View style={styles.centered}>
+          <Text style={type.cardTitle}>This altar isn't here</Text>
+          <Text style={type.body}>It may have been deleted, or it's saved to another account.</Text>
+          <Button label="Back to your altars" variant="outline" onPress={() => router.back()} />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <SafeAreaView edges={['top']} style={styles.safe}>
+      <View style={styles.header}>
+        <Pressable
+          onPress={() => {
+            if (from === 'today') {
+              // Close this altar first, so the Altar tab opens on your altars next time, then go back to Today.
+              router.dismissTo('/altar');
+              router.navigate('/today');
+            } else if (router.canGoBack()) router.back();
+            else router.replace('/altar');
+          }}
+          accessibilityRole="button"
+          accessibilityLabel="Back to your altars"
+          style={styles.headerButton}
+        >
+          <Text style={styles.back}>‹</Text>
+        </Pressable>
+        <View style={styles.headerText}>
+          <Text style={type.eyebrow} numberOfLines={1}>
+            {dirty ? 'Unsaved changes' : doc?.backgroundName || 'Altar'}
+          </Text>
+          <Text accessibilityRole="header" style={styles.title} numberOfLines={1}>
+            {name}
+          </Text>
+        </View>
+        <Button label="Save" variant={dirty ? 'primary' : 'outline'} onPress={() => setSheet('save')} disabled={!doc} />
+      </View>
+
+      <View style={styles.stageWrap} onLayout={onLayout}>
+        {stage ? (
+          stage
+        ) : (
+          <View style={{ height: (containerWidth || 320) / STAGE_ASPECT, justifyContent: 'center' }}>
+            <ActivityIndicator color={colors.gold} />
+          </View>
+        )}
+      </View>
+
+      <ScrollView
+        style={styles.panel}
+        contentContainerStyle={styles.panelContent}
+        alwaysBounceHorizontal={false}
+        automaticallyAdjustKeyboardInsets
+        keyboardDismissMode="interactive"
+        keyboardShouldPersistTaps="handled"
+      >
+        {panelBody}
+      </ScrollView>
+
+      {sheets}
     </SafeAreaView>
   );
 }
 
 type Actions = {
   light: () => void;
+  fresh: () => void;
+  length: () => void;
   rename: () => void;
   ungroup: () => void;
   crystal: (mode: CrystalMode) => void;
@@ -895,20 +1058,28 @@ function ObjectPanel({
     return () => clearInterval(timer);
   }, [lit]);
   const burned = candle ? burnedSoFar(object, now) : 0;
+  const life = candle ? candleLife(object, now) : null;
   const [confirmRemove, setConfirmRemove] = useState(false);
 
   return (
     <View style={styles.section}>
       <View style={styles.objectHead}>
         <View style={{ flex: 1 }}>
-          <Text style={type.eyebrow}>{locked ? 'Locked in place' : lit ? 'Burning' : 'Selected'}</Text>
+          <Text style={type.eyebrow}>{locked ? 'Locked in place' : lit ? 'Burning' : life?.spent ? 'Spent' : 'Selected'}</Text>
           <Text style={type.cardTitle}>{objectLabel}</Text>
           {!!glance && <Text style={styles.glance}>{glance}</Text>}
           {!!group && <Text style={type.caption}>{`In the group “${group}”`}</Text>}
-          {candle && (burned > 0 || lit || dressings.length > 0 || carvings.length > 0) && (
+          {candle && (
             <Text style={type.caption}>
               {[
                 lit ? `Burning time ${burnDuration(burned)}` : burned > 0 ? `Burned ${burnDuration(burned)} in all` : null,
+                life?.spent
+                  ? 'Burned all the way down'
+                  : life?.expectedMs
+                    ? burned > 0 || lit
+                      ? `About ${lifeDuration(life.remainingMs)} left`
+                      : `Burns about ${lifeDuration(life.expectedMs)}`
+                    : null,
                 dressings.length ? `Dressed with ${dressingNames(dressings).join(', ')}` : null,
                 carvings.length ? `Carved with ${carvings.map((c) => `“${c.text}”`).join(', ')}` : null,
               ]
@@ -947,8 +1118,16 @@ function ObjectPanel({
 
       {candle && (
         <>
-          <Button label={lit ? 'Snuff the candle' : 'Light the candle'} onPress={act.light} />
+          {life?.spent ? (
+            <>
+              <Text style={type.caption}>This candle has burned down. Put a fresh one in its place to light it again; this one’s burns stay in its history.</Text>
+              <Button label="Put a fresh candle here" onPress={act.fresh} />
+            </>
+          ) : (
+            <Button label={lit ? 'Snuff the candle' : 'Light the candle'} onPress={act.light} />
+          )}
           <ChipRow>
+            {life?.adjustable && <Chip label="How long it burns" symbol="⧗" onPress={act.length} />}
             <Chip label="Dress" symbol="❦" onPress={act.dress} />
             <Chip label="Carve" symbol="✎" onPress={act.carve} />
             {dressings.length > 0 && <Chip label="Undress" symbol="⌫" onPress={act.undress} />}
@@ -1016,4 +1195,19 @@ const styles = StyleSheet.create({
   notice: { color: colors.gold, textAlign: 'center' },
   danger: { marginTop: 8 },
   centered: { flex: 1, justifyContent: 'center', padding: space.gutter, gap: 14 },
+  full: { flex: 1, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' },
+  fullBar: { position: 'absolute', flexDirection: 'row', gap: 8 },
+  drawer: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'rgba(12, 21, 16, 0.94)',
+    borderLeftWidth: 1,
+    borderLeftColor: colors.goldLine,
+  },
+  drawerHead: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingLeft: 16, paddingRight: 8, paddingTop: 6 },
+  drawerClose: { marginLeft: 'auto', minHeight: touch, minWidth: touch, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 8 },
+  drawerCloseText: { color: colors.gold, fontFamily: fonts.bodySemi, fontSize: 15 },
+  drawerContent: { paddingHorizontal: 16, paddingBottom: 24, gap: 14 },
 });

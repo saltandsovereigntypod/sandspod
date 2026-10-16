@@ -22,7 +22,7 @@ import { lightAll, snuffAll } from './altar/editor.ts';
 import { flameLayout } from './altar/flame.ts';
 import { boxToPixels, candleLightRadius, displayBox, IMAGE_INSET, imageRatio, rotationOf, STAGE_ASPECT } from './altar/geometry.ts';
 import { stackOrder } from './altar/layers.ts';
-import { apothecaryStateOf, dressingOverlays, isCandle, isLit, lightCandle, readLivingState, snuffCandle } from './altar/livingState.ts';
+import { apothecaryStateOf, candleLife, dressingOverlays, isCandle, isLit, lightCandle, readLivingState, snuffCandle } from './altar/livingState.ts';
 import { documentFromAltar, type AltarDocument } from './altar/snapshot.ts';
 import type { SavedAltar, SavedObject } from './altar/types.ts';
 
@@ -81,6 +81,8 @@ export type SceneItem = {
   flipped: boolean;
   candle: boolean;
   lit: boolean;
+  /** A candle that has burned all the way down (drawn faded). */
+  spent?: boolean;
   /** Flame and halo, as fractions of the box (only for candles). */
   flame?: StageRect;
   halo?: StageRect;
@@ -333,6 +335,7 @@ export function altarScene(objects: SavedObject[], image: (path: string) => stri
       rotation: rotationOf(object),
       flipped: object.flipped === 'true',
       candle,
+      ...(candle && !lit && candleLife(object).spent ? { spent: true } : {}),
       lit,
       overlays: [],
     };
@@ -360,7 +363,8 @@ export function widgetAltar(altar: SavedAltar, image: (path: string) => string, 
   const scene = altarScene(doc.objects, image);
   const iso = now.toISOString();
   const keyed = doc.objects.map((object, index) => ({ object, key: objectKey(object, index) }));
-  const candles = keyed.filter(({ object }) => isCandle(object));
+  // Burned-down candles stay in the picture but can't be lit, so they aren't counted or offered.
+  const candles = keyed.filter(({ object }) => isCandle(object) && (isLit(object) || !candleLife(object).spent));
   const picture = (object: SavedObject) => (object.imagePath ? image(String(object.imagePath)) : '');
   const workings = doc.objects.filter(isWorking);
   return {

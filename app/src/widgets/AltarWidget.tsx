@@ -185,7 +185,13 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
     const ih = bh * (1 - item.inset.y * 2);
     return (
       <ZStack alignment="topLeading" modifiers={[frame({ width: bw, height: bh, alignment: 'topLeading' })]}>
-        {picture(item.image, bw * item.inset.x, bh * item.inset.y, iw, ih, 'fit')}
+        {item.spent ? (
+          <ZStack alignment="topLeading" modifiers={[opacity(0.45)]}>
+            {picture(item.image, bw * item.inset.x, bh * item.inset.y, iw, ih, 'fit')}
+          </ZStack>
+        ) : (
+          picture(item.image, bw * item.inset.x, bh * item.inset.y, iw, ih, 'fit')
+        )}
         {item.overlays.map((o, i) => (
           <ZStack key={`o${i}`} alignment="topLeading" modifiers={[opacity(o.opacity)]}>
             {picture(o.image, o.rect.x * bw, o.rect.y * bh, o.rect.w * bw, o.rect.h * bh, 'fit')}

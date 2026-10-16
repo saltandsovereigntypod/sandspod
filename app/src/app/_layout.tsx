@@ -16,12 +16,17 @@ import { useAccessibilityLoaded, useReducedMotion } from '../lib/accessibility/s
 import { AltarProvider } from '../lib/altar/store';
 import { GrimoireProvider } from '../lib/grimoire/store';
 import { registerServiceWorker } from '../lib/offline/serviceWorker';
+import { turnScreen } from '../lib/screenOrientation';
 import { SessionProvider, useSession } from '../lib/session';
 import { colors } from '../theme';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  // Upright everywhere; only the full-screen altar turns sideways.
+  useEffect(() => {
+    void turnScreen(false);
+  }, []);
   useEffect(() => {
     registerServiceWorker();
   }, []);

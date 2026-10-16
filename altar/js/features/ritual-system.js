@@ -326,10 +326,19 @@ async function createTemplateRitualSession(template) {
   const altarSnapshot = typeof createAltarSnapshot === "function"
     ? createAltarSnapshot(template.title || "Ritual Session")
     : {};
-  const templateSnapshot = window.RitualLifecycle.snapshotTemplate(template);
+  const candleEndBehavior = window.RitualLifecycle.normalizeCandleEndBehavior(template.candle_end_behavior || template.settings?.candle_end_behavior);
+  const templateSnapshot = window.RitualLifecycle.snapshotTemplate({ ...template, candle_end_behavior: candleEndBehavior });
+  // Linked candles that may not last the ritual get a non-blocking warning.
+  const candleWarnings = typeof getCandleRitualWarnings === "function"
+    ? getCandleRitualWarnings(templateSnapshot.estimated_duration_seconds * 1000)
+    : [];
+  if (candleWarnings.length) {
+    const message = candleWarnings.map((warning) => `${warning.label} has ${window.CandleLifecycle.formatDuration(warning.remainingMs)} remaining, while this ritual is estimated at ${window.CandleLifecycle.formatDuration(warning.estimatedDurationMs)}.`).join("\n");
+    if (!window.confirm(`${message}\n\nContinue anyway? You may replace the candle or remove it from the ritual before continuing.`)) return null;
+  }
 
   if (!user) {
-    const session = getGuestRitualRepository().start(template, { altarSnapshot });
+    const session = getGuestRitualRepository().start({ ...template, candle_end_behavior: candleEndBehavior }, { altarSnapshot, candleEndBehavior });
     activeRitualSession = session;
     activeRitualSteps = session.session_steps || [];
     storeActiveRitualSession({ id: session.id, title: session.title, startedAt: session.started_at, scope: "guest" });
@@ -350,7 +359,7 @@ async function createTemplateRitualSession(template) {
       current_step_order: 0,
       altar_snapshot: altarSnapshot || {},
       context_snapshot: createRitualContextSnapshot(),
-      metadata: { lifecycleVersion: window.RitualLifecycle.VERSION, templateSnapshot },
+      metadata: { lifecycleVersion: window.RitualLifecycle.VERSION, templateSnapshot, candle_end_behavior: templateSnapshot.candle_end_behavior },
       event_log: [{
         type: "template_session_started",
         templateId: template.id,
@@ -660,6 +669,33 @@ async function skipCurrentRitualStep() {
   }
 }
 
+function getRitualCandleEndBehavior(session) {
+  return window.RitualLifecycle?.normalizeCandleEndBehavior?.(
+    session?.candle_end_behavior || session?.metadata?.candle_end_behavior || session?.template_snapshot?.candle_end_behavior || session?.metadata?.templateSnapshot?.candle_end_behavior
+  ) || "ask_at_end";
+}
+
+function handleRitualCandleEnding(session) {
+  if (!session || session.candle_end_handled_at) return false;
+  let behavior = getRitualCandleEndBehavior(session);
+  // Only candles explicitly marked "Include in Ritual" follow the ritual.
+  const linked = [...document.querySelectorAll('.altar-object[data-type="candle"][data-ritual-included="true"][data-lit="true"]')];
+  if (!linked.length || behavior === "keep_burning") return false;
+  if (behavior === "ask_at_end") {
+    behavior = window.confirm("Extinguish linked ritual candles now? Choose Cancel to keep them burning.")
+      ? "extinguish_at_end" : "keep_burning";
+  }
+  session.candle_end_handled_at = new Date().toISOString();
+  if (behavior !== "extinguish_at_end") return false;
+  let changed = false;
+  linked.forEach((object) => {
+    const result = window.extinguishCandleObject?.(object, "ritual_ended", { ritualId: session.id, showSummary: false });
+    changed = Boolean(result?.changed) || changed;
+  });
+  if (changed) window.showCandleLifeSummary?.();
+  return changed;
+}
+
 async function completeActiveRitualSession(status = "completed") {
   if (ritualCompletionPending) return null;
   const activeSession = activeRitualSession || getStoredActiveRitualSession();
@@ -672,6 +708,7 @@ async function completeActiveRitualSession(status = "completed") {
   try {
   const user = await getRitualUser();
   const endedAt = new Date().toISOString();
+  if (status === "completed") handleRitualCandleEnding(activeRitualSession || activeSession);
   const finalSnapshot = typeof createAltarSnapshot === "function"
     ? createAltarSnapshot(activeSession.title || "Ritual Session")
     : {};
@@ -1048,7 +1085,8 @@ document.addEventListener(
         const template = templateButton._ritualTemplate;
         if (!template) throw new Error("That template could not be opened.");
 
-        await createTemplateRitualSession(template);
+        // null means the user chose not to continue past a candle-life warning.
+        if (!(await createTemplateRitualSession(template))) return;
         renderActiveRitualPanel();
         showAltarToast("Ritual started");
         return;

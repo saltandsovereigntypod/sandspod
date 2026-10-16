@@ -289,7 +289,15 @@ test('lighting and snuffing records the burn and keeps newer state fields', () =
   assert.equal(state.candle!.currentBurnStartedAt, '');
   assert.equal(state.candle!.totalBurnMs, 30 * 60 * 1000);
   assert.deepEqual(state.candle!.burnHistory, [
-    { startedAt: '2026-09-01T20:00:00.000Z', endedAt: '2026-09-01T20:30:00.000Z', durationMs: 1800000 },
+    {
+      eventId: `candle-burn:${candle.altarObjectId}:2026-09-01T20:00:00.000Z`,
+      litAt: '2026-09-01T20:00:00.000Z',
+      extinguishedAt: '2026-09-01T20:30:00.000Z',
+      startedAt: '2026-09-01T20:00:00.000Z',
+      endedAt: '2026-09-01T20:30:00.000Z',
+      durationMs: 1800000,
+      endReason: 'manual_extinguish',
+    },
   ]);
 });
 

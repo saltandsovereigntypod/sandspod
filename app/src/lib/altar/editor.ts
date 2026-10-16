@@ -5,7 +5,24 @@
 import { displayBox, objectSize, rotationOf, withCenter, withRotation, withSize } from './geometry.ts';
 import { moveLayer, nextLayer, type LayerMove } from './layers.ts';
 import { apothecaryObject, refreshPlaced, type ApothecaryItem } from './apothecary.ts';
-import { carveCandle, dressCandle, ensureLivingState, lightCandle, setApothecaryState, snuffCandle, toggleLit, uncarveCandle, undressCandle, type ApothecaryState } from './livingState.ts';
+import {
+  candleLife,
+  carveCandle,
+  dressCandle,
+  ensureLivingState,
+  freshCandle,
+  lightCandle,
+  parseLivingState,
+  setApothecaryState,
+  setCandleLife,
+  settleCandle,
+  snuffCandle,
+  toggleLit,
+  uncarveCandle,
+  undressCandle,
+  writeLivingState,
+  type ApothecaryState,
+} from './livingState.ts';
 import type { AltarDocument } from './snapshot.ts';
 import type { SavedObject } from './types.ts';
 import { newId } from './uid.ts';
@@ -159,8 +176,8 @@ export function removeObject(doc: AltarDocument, index: number): AltarDocument {
 }
 
 /**
- * duplicateObject(): a copy offset down-right, on top, with its own id. A lit
- * copy starts its own burn now. The website offsets by 24px; we use the same
+ * duplicateObject(): a copy offset down-right, on top, with its own id. A
+ * candle's copy is a fresh, unlit candle. The website offsets by 24px; we use the same
  * share of a 900px stage.
  */
 export function duplicateObject(doc: AltarDocument, index: number, now: string): AltarDocument {
@@ -169,16 +186,19 @@ export function duplicateObject(doc: AltarDocument, index: number, now: string):
   const box = displayBox(object);
   const offset = 24 / 900;
   let copy: SavedObject = { ...object, altarObjectId: newId(), zIndex: String(nextLayer(doc.objects)) };
-  if (copy.livingState && copy.lit === 'true') {
-    try {
-      const state = JSON.parse(copy.livingState);
-      if (state?.candle?.currentBurnStartedAt) {
-        state.candle.currentBurnStartedAt = now;
-        state.candle.lastLitAt = now;
-        copy.livingState = JSON.stringify(state);
-      }
-    } catch {
-      // Unreadable state stays as it was.
+  if (copy.type === 'candle') {
+    // A copy is a new candle: unlit, with its full life and none of the burns. Its dressings and carvings come along.
+    const before = parseLivingState(object)?.candle;
+    const fresh = freshCandle(copy, now);
+    const state = parseLivingState(fresh);
+    if (state?.candle) {
+      const { replacesInstanceId: _replaces, ...candle } = state.candle;
+      void _replaces;
+      copy = writeLivingState(
+        { ...fresh, altarObjectId: copy.altarObjectId, instanceId: object.instanceId || '' },
+        { ...state, candle: { ...candle, dressings: before?.dressings ?? [], carvings: before?.carvings ?? [] } },
+        now,
+      );
     }
   }
   copy = withCenter({ ...copy, locked: object.locked }, box.cx + offset, box.cy + offset * (16 / 9));
@@ -242,6 +262,37 @@ export function lightAll(doc: AltarDocument, now: string): AltarDocument {
 export function snuffAll(doc: AltarDocument, now: string): AltarDocument {
   const objects = doc.objects.map((o) => snuffCandle(o, now));
   return objects.every((o, i) => o === doc.objects[i]) ? doc : { ...doc, objects };
+}
+
+/** Candles whose life has run out go out, at the moment they would have. Unchanged docs come back as they were. */
+export function settleCandles(doc: AltarDocument, now: string): AltarDocument {
+  const objects = doc.objects.map((o) => settleCandle(o, now));
+  return objects.every((o, i) => o === doc.objects[i]) ? doc : { ...doc, objects };
+}
+
+/** The soonest moment a lit candle on the altar runs out, or null. */
+export function nextBurnout(doc: AltarDocument, now: Date = new Date()): number | null {
+  let soonest: number | null = null;
+  for (const object of doc.objects) {
+    if (object.type !== 'candle' || object.lit !== 'true') continue;
+    const { burnoutAt } = candleLife(object, now);
+    if (burnoutAt != null && (soonest == null || burnoutAt < soonest)) soonest = burnoutAt;
+  }
+  return soonest;
+}
+
+export function freshCandleAt(doc: AltarDocument, index: number, now: string): AltarDocument {
+  const object = doc.objects[index];
+  if (!object) return doc;
+  const next = freshCandle(object, now);
+  return next === object ? doc : replace(doc, new Map([[index, next]]));
+}
+
+export function setCandleLifeAt(doc: AltarDocument, index: number, ms: number, now: string): AltarDocument {
+  const object = doc.objects[index];
+  if (!object) return doc;
+  const next = setCandleLife(object, ms, now);
+  return next === object ? doc : replace(doc, new Map([[index, next]]));
 }
 
 /** Take everything off the altar, groups too (events.js clear-altar). */

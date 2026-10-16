@@ -65,6 +65,17 @@ function extinguishFlame(object) {
 function toggleLight(object) {
   if (!object || object.dataset.type !== "candle") return;
 
+  // Candle lifecycle owns lit/spent state when it is loaded.
+  if (typeof lightCandleObject === "function" && typeof extinguishCandleObject === "function") {
+    if (object.dataset.lit === "true") {
+      extinguishCandleObject(object, "manual_extinguish");
+    } else {
+      lightCandleObject(object);
+    }
+    renderLighting();
+    return;
+  }
+
   const isCurrentlyLit = object.dataset.lit === "true";
 
   if (isCurrentlyLit) {
