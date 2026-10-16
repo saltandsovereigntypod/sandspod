@@ -5,9 +5,6 @@
 // the working names, and the crystal care done on the altar that a stone's own
 // log can take. Pure, so it can be tested.
 
-import { humanize } from '../devotion.ts';
-import { readLivingState } from '../livingState.ts';
-import type { SavedObject } from '../types.ts';
 import { colorsInText, draftForAltar } from './ritual.ts';
 import { premadeById, premadeDraft } from '../../rituals/premade/index.ts';
 import type { Premade } from '../../rituals/premade/types.ts';
@@ -107,26 +104,6 @@ export function ritualOrigin(session: RitualSession, templates: TemplateRow[]): 
   };
 }
 
-export type AltarCare = { kind: 'cleansed' | 'charged'; at: string; methods: string[]; intention?: string };
-
-type CareRecord = { occurredAt?: string; methods?: unknown; intention?: string };
-
-/**
- * The most recent cleansing or charge recorded on this crystal on the altar
- * (devotion careForCrystal), in the words the stone's own log takes. Null when
- * there isn't one.
- */
-export function lastAltarCareOf(object: SavedObject | null | undefined): AltarCare | null {
-  if (!object) return null;
-  const crystal = (readLivingState(object, '').crystal ?? {}) as { cleansingHistory?: unknown; chargingHistory?: unknown };
-  const last = (list: unknown): CareRecord | null => {
-    const records = (Array.isArray(list) ? list : []).filter((r): r is CareRecord => !!r && typeof r === 'object' && !!(r as CareRecord).occurredAt);
-    return records.reduce<CareRecord | null>((best, r) => (!best || String(r.occurredAt) > String(best.occurredAt) ? r : best), null);
-  };
-  const cleansed = last(crystal.cleansingHistory);
-  const charged = last(crystal.chargingHistory);
-  const pick = cleansed && (!charged || String(cleansed.occurredAt) >= String(charged.occurredAt)) ? { kind: 'cleansed' as const, r: cleansed } : charged ? { kind: 'charged' as const, r: charged } : null;
-  if (!pick) return null;
-  const methods = (Array.isArray(pick.r.methods) ? pick.r.methods : []).map((m) => humanize(m)).filter(Boolean);
-  return { kind: pick.kind, at: String(pick.r.occurredAt), methods, ...(pick.r.intention ? { intention: String(pick.r.intention) } : {}) };
-}
+// The crystal care done on the altar that a stone's own log can take lives in
+// altarCare.ts (no ritual data), so the website's altar bundle can use it.
+export { lastAltarCareOf, type AltarCare } from './altarCare.ts';

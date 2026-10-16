@@ -8,7 +8,7 @@ import { TRADITIONAL_LIBRARY } from './traditionalData.ts';
 import { entryTraditions, entryVisible, myPath, pathName, withoutHidden } from './traditions.ts';
 import { hiddenTraditions } from '../holidays.ts';
 import { looksLikeHtml, richTextToPlain } from './richText.ts';
-import type { LibraryEntry, LibraryField, PageLayout, PracticeRow, TraditionalRecord } from './types.ts';
+import type { LibraryEntry, LibraryField, PageLayout, PracticeRow, TraditionalLibraryData, TraditionalRecord } from './types.ts';
 
 export const LIBRARY_TYPES = ['herb', 'crystal', 'candle', 'deity', 'tool', 'vessel'] as const;
 export const PRACTICE_TYPES = [
@@ -348,11 +348,14 @@ function traditionalEntry(type: string, key: string, record: TraditionalRecord):
 
 let traditionalCache: LibraryEntry[] | null = null;
 
-/** Every Traditional Library entry, available offline and without an account. */
-export function traditionalEntries(): LibraryEntry[] {
-  if (traditionalCache) return traditionalCache;
+/**
+ * The entries a Traditional Library holds (the website's js/traditional-library.js,
+ * or the app's copy of it), sorted by name. Pure, so the website can build its
+ * Library from its own data file.
+ */
+export function entriesFromData(data: TraditionalLibraryData): LibraryEntry[] {
   const entries: LibraryEntry[] = [];
-  for (const [type, collection] of Object.entries(TRADITIONAL_LIBRARY)) {
+  for (const [type, collection] of Object.entries(data)) {
     for (const [key, value] of Object.entries(collection)) {
       if (!isRecord(value)) continue;
       const looksLikeEntry = 'DisplayName' in value || 'tags' in value || 'Overview' in value || 'Purpose' in value;
@@ -366,7 +369,13 @@ export function traditionalEntries(): LibraryEntry[] {
       }
     }
   }
-  traditionalCache = entries.sort((a, b) => a.name.localeCompare(b.name));
+  return entries.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/** Every Traditional Library entry, available offline and without an account. */
+export function traditionalEntries(): LibraryEntry[] {
+  if (traditionalCache) return traditionalCache;
+  traditionalCache = entriesFromData(TRADITIONAL_LIBRARY);
   return traditionalCache;
 }
 
@@ -383,7 +392,12 @@ const latest = (a: string | null | undefined, b: string | null | undefined) =>
   !a ? b || null : !b ? a : Date.parse(b) > Date.parse(a) ? b : a;
 
 export function buildLibrary(practice: PracticeRow[] = []): LibraryEntry[] {
-  const entries = traditionalEntries().map((entry) => ({ ...entry, practiceEntityIds: [] as string[] }));
+  return libraryFrom(traditionalEntries(), practice);
+}
+
+/** buildLibrary over a given set of Traditional entries (see entriesFromData). */
+export function libraryFrom(traditional: LibraryEntry[], practice: PracticeRow[] = []): LibraryEntry[] {
+  const entries = traditional.map((entry) => ({ ...entry, practiceEntityIds: [] as string[] }));
   const byTypeAndName = new Map<string, LibraryEntry>();
   for (const entry of entries) {
     byTypeAndName.set(`${entry.type}|${normalizeName(entry.name)}`, entry);
