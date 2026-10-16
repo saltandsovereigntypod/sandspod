@@ -4,7 +4,7 @@
 // can choose them by hand or turn the sections off. A hidden calendar (the
 // Christian one) is gone here too. Pure, so it can be tested.
 
-import { hiddenTraditions, holidayChoice } from '../holidays.ts';
+import { hiddenTraditions, holidayChoice, TRADITIONS } from '../holidays.ts';
 import type { LibraryEntry, TraditionalRecord } from './types.ts';
 
 export type PathTradition = { id: string; name: string };
@@ -83,6 +83,19 @@ export function myPath(settings: SettingsLike): MyPath {
     hideOtherDeities: mode !== 'off' && settings?.library_path_other_deities === 'hide',
     hidden,
   };
+}
+
+/**
+ * The settings Today reads its traditions from. Someone who chose their path
+ * (Settings → Living Library) but never set up the calendars gets that path's
+ * holidays and its way of naming the day, ahead of the Wheel; once they choose
+ * calendars in Settings → Calendar, those win.
+ */
+export function todaySettings<T extends SettingsLike>(settings: T): T {
+  if (typeof settings?.calendar_traditions === 'string' || pathMode(settings) !== 'custom') return settings;
+  const path = myPath(settings).traditions.map((id) => (id === 'wicca' ? 'wheel' : id));
+  const ids = [...new Set([...path, 'wheel'])].filter((id) => TRADITIONS.some((t) => t.id === id));
+  return { ...settings, calendar_traditions: ids.join(',') } as T;
 }
 
 export const pathName = (id: string) => PATH_TRADITIONS.find((t) => t.id === id)?.name ?? id;

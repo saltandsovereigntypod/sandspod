@@ -25,6 +25,7 @@ import { usePlace } from '../../../lib/location';
 import { placeSky, skyNow, type PlaceSky, type Sky } from '../../../lib/sky';
 import { primaryTradition } from '../../../lib/traditionDay';
 import { useMySettings } from '../../../lib/settings/store';
+import { todaySettings } from '../../../lib/library/traditions';
 import { buildToday, type HorizonItem, type TodayModel } from '../../../lib/today';
 import { colors, fonts, radius, space, type } from '../../../theme';
 
@@ -52,7 +53,9 @@ function useToday(): Date {
 
 export default function Today() {
   const now = useToday();
-  const { settings } = useMySettings();
+  const { settings: mySettings } = useMySettings();
+  // With no calendars chosen, Today follows My path.
+  const settings = useMemo(() => todaySettings(mySettings), [mySettings]);
   const choiceKey = `${settings?.calendar_traditions ?? ''}|${settings?.calendar_custom_holidays ?? ''}|${settings?.calendar_picked_holidays ?? ''}`;
   const primary = primaryTradition(settings, holidayChoice(settings));
   const place = usePlace();
