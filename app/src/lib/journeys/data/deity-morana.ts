@@ -262,6 +262,12 @@ Follow those rules. A rite for clearing out winter should not leave rubbish in t
 Communities differ in how dark they make her. Some treat her as a stern but just goddess; some, influenced by fantasy and games, as a sinister witch-queen. The folk custom supports neither strongly. You can be guided by the custom: she is winter, honoured for her season and then cheerfully sent away.`,
             },
             {
+              heading: 'Keeping it at home',
+              body: `You do not need a village or a river to keep Marzanna. In a flat, make a doll the length of your hand from a few stalks of straw, dried grass or broom bristles, bound with cotton thread and dressed in a scrap of old cotton. Carry her through your rooms, singing, and out of your front door. Then take her apart on the doorstep or balcony and put the pieces in compost, or burn her in a small metal bowl outdoors where fires are allowed.
+
+Walk back in without looking behind you. Then bring the summer in: a sprig of green from a florist or a fallen evergreen twig, tied with a red ribbon, carried through the door and set somewhere you will see it. Children love this, and it is just as true a version as the village one.`,
+            },
+            {
               heading: 'Where this journey stands',
               body: `This journey is inclusive. Morana belongs to the Slavic folk year, and anyone who comes respectfully can learn from her. Some Rodnover groups carry nationalist or racial politics; this app does not.
 
@@ -323,6 +329,12 @@ Bread and water are given humbly, as to winter itself. The release is given by d
               body: `Work in the evening, ideally in the waning moon or the cold months. Light the black candle, then the white. Speak plainly to her. Write or name what you are releasing, and bind it into straw, thread or paper.
 
 When you destroy it, do it cleanly and then do not look back. Walk away from the fire or the water, turn off the light, close the door. The old custom’s rule is wise: once you have sent something out, do not keep checking on it.`,
+            },
+            {
+              heading: 'Pacing grief',
+              body: `Nine nights of naming what you are letting go can be strong medicine. If something you write brings up more grief than you expected, slow down. You can write the same thing two nights running, write something small instead, or skip a night entirely. The custom carried winter out once a year, not every week.
+
+Keep the light on after the rite if you need to. Eat something warm. Tell a friend what you are doing. Morana is honoured by honesty about endings, and part of that honesty is knowing when you need company.`,
             },
             {
               heading: 'What to avoid',

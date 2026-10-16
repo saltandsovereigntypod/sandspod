@@ -264,6 +264,12 @@ But harmony never means putting up with harm. If someone hurts, controls or frig
 Lada, as she is honoured here, blesses couples of every gender, people who love more than one person, single people who keep a warm household of friends, chosen family, and the deep loves of friendship. The girls of Semik who swore friendship through the birch wreath were doing her work too.`,
             },
             {
+              heading: 'A Native Faith wedding',
+              body: `Rodnover weddings draw heavily on Slavic folk wedding customs and on modern invention, and Lada is often at the centre. A typical rite takes place outdoors, by a fire, a tree or water. The couple’s hands may be bound with an embroidered towel, the rushnyk, and they walk sunwise around the fire or a sacred tree, often three times. A great round wedding loaf, the korovai, decorated with dough birds and flowers, is blessed and shared. The couple offer bread, honey and flowers to Lada and to the ancestors, and the guests sing.
+
+The towel, the round loaf and the songs are old and well recorded; walking around a fire rather than a church lectern, and calling on Lada, are modern Rodnover choices. Many inclusive groups now hold these rites for couples of any gender.`,
+            },
+            {
               heading: 'Beauty, without vanity',
               body: `Lada is also honoured as a goddess of beauty. In the folk world, beauty was a spring wreath, an embroidered shirt, a well-sung song, a clean house with flowers in the window. It was something you made and shared, not a standard you measured yourself against.
 

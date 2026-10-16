@@ -325,6 +325,12 @@ Above all, he is given gifts given to others. Share food with someone who is hun
 His bread goes outside within a day, for the birds or into the soil. If you have a safe outdoor fire, crumbling bread and grain into it is the oldest form of offering. The gift you give to another person is best given without fuss or credit; you might simply say, inwardly, “in Dazhbog’s name.”`,
             },
             {
+              heading: 'The round loaf',
+              body: `Round breads are the most fitting thing to bake for him, and Slavic kitchens are full of them. The korovai is the great wedding loaf of Ukraine, Belarus and Russia; the kolach is a braided ring bread for Christmas and harvest, with a candle set in the centre on Ukrainian Christmas Eve tables. Smaller round buns and flatbreads were baked for many feasts.
+
+You do not need to be a baker. A plain bread dough shaped into a round, slashed across the top with a simple cross or rays before baking, is a perfectly good offering. Brush it with a little honey as it comes out of the oven. Give the first slice to his shrine, share the rest, and if you can, give a whole loaf away to someone who would welcome it.`,
+            },
+            {
               heading: 'What to avoid',
               body: `Never look directly at the sun, even at dawn. Do not use the kolovrat or other symbols you cannot vouch for. Do not use his name or the “grandchildren” line to divide people.
 

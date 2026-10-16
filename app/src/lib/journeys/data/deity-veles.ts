@@ -264,6 +264,12 @@ Be careful with the trickster image. A god of cunning is not a god of cheating. 
 There is also the political divide. Some Rodnover groups are nationalist or racialist, and some build Slavic paganism into a story of ethnic purity that the history does not support. Other groups are open and anti-racist. Veles was worshipped in a world of traders where Slavs, Norse, Finns, Balts, Khazars and Greeks met in the same markets.`,
             },
             {
+              heading: 'Veles and money',
+              body: `Because skot meant both cattle and money, many people today come to Veles for help with finances. That is fair, and it can be done honestly. Rodnovers often keep a coin or a little dish of grain on his shrine as a sign of the household’s stores, and thank him on payday.
+
+The best devotion here is practical. Count what you have, as a herdsman counts the herd. Pay debts on time. Do not lend what you cannot lose. Give something to people who have less. A god of wealth who witnessed treaties will look more kindly on an honest budget than on a request for a windfall.`,
+            },
+            {
               heading: 'Where this journey stands',
               body: `This journey is inclusive. Veles does not belong to a bloodline. Anyone who comes to him with honesty, care for living things and respect for the dead is welcome.
 
