@@ -74,6 +74,16 @@ export default function JourneysHome() {
         </View>
       )}
 
+      <List>
+        <Row
+          title="Patron deities"
+          detail="What a patron is, how to know if one is calling you, and how to answer"
+          icon="grimoire"
+          last
+          onPress={() => router.push('/rituals/journeys/patron')}
+        />
+      </List>
+
       <Field label="Search journeys" value={query} onChange={setQuery} placeholder="A path or a god: Norse, Hekate, hearth…" />
 
       {paths.length === 0 && groups.length === 0 && (

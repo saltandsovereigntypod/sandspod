@@ -1,3 +1,4 @@
+import { KeepDedicated } from '../../../../../../components/library/DeityYours';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -72,6 +73,7 @@ export default function RiteView() {
               ? `You made your dedication on ${fullDate(doneAt)}. What comes now is the keeping of it: the holy days, the small daily things, and a rededication each year.`
               : `You did this rite on ${fullDate(doneAt)}.`}
           </Body>
+          {isDedication && !!journey.deityRef && <KeepDedicated deityRef={journey.deityRef} since={String(doneAt)} />}
           {isDedication && (
             <Button
               label="On to the year after"

@@ -4,7 +4,9 @@
 // the holidays coming up. Pure, so it can be tested.
 
 import { holidayChoice, holidaysBetween } from '../../holidays.ts';
+import { TRADITIONAL_LIBRARY } from '../../library/traditionalData.ts';
 import { myPath } from '../../library/traditions.ts';
+import { myDeities } from '../../patron/mine.ts';
 import { moonState } from '../../moon.ts';
 import { libraryItem, tideOf } from '../planner.ts';
 import type { Ingredient, StepDraft, TemplateDraft } from '../types.ts';
@@ -66,6 +68,9 @@ export type ForYouContext = {
   weekday: number;
   /** Holiday ids within the next fortnight, nearest first. */
   holidays: string[];
+  /** The deities kept as patron or dedicated (names), and the words of their domains. */
+  deities?: string[];
+  domains?: string;
 };
 
 export function forYouContext(settings: SettingsLike, now: Date): ForYouContext {
@@ -77,8 +82,33 @@ export function forYouContext(settings: SettingsLike, now: Date): ForYouContext 
     moon: moonTonight(now),
     weekday: now.getDay(),
     holidays: [...new Set(holidays)],
+    ...deityContext(settings),
   };
 }
+
+/** Patron and dedicated deities, and their Library domains, for weighting workings toward them. */
+function deityContext(settings: SettingsLike): Pick<ForYouContext, 'deities' | 'domains'> {
+  const close = myDeities(settings).filter((d) => d.level !== 'exploring');
+  if (!close.length) return {};
+  const deities = TRADITIONAL_LIBRARY as unknown as Record<string, Record<string, Record<string, unknown>>>;
+  const domains = close.map((d) => (d.key ? String(deities.deity?.[d.key]?.Domains ?? '') : '')).join(' ').toLowerCase();
+  return { deities: close.map((d) => d.name), domains };
+}
+
+/** Domain words that answer each intention. */
+const INTENTION_WORDS: Record<string, string[]> = {
+  protection: ['protect', 'guard', 'ward'],
+  prosperity: ['prosper', 'abundan', 'wealth', 'harvest', 'fortune', 'luck'],
+  love: ['love', 'beauty', 'desire', 'marriage'],
+  healing: ['heal', 'health', 'medicine'],
+  banishing: ['banish', 'death', 'ending', 'war'],
+  intuition: ['magic', 'prophe', 'divination', 'dream', 'moon', 'mystery', 'wisdom'],
+  courage: ['courage', 'strength', 'war', 'battle', 'thunder'],
+  cleansing: ['purif', 'cleans', 'water'],
+  beginnings: ['beginning', 'door', 'birth', 'dawn', 'spring'],
+  study: ['wisdom', 'knowledge', 'writing', 'learning', 'craft'],
+  peace: ['peace', 'hearth', 'home', 'family'],
+};
 
 /** How well a working suits someone tonight; 0 or less means not especially. */
 export function fitScore(p: Premade, ctx: ForYouContext): number {
@@ -92,6 +122,13 @@ export function fitScore(p: Premade, ctx: ForYouContext): number {
   if (p.holidays?.length) {
     const at = p.holidays.map((h) => ctx.holidays.indexOf(h)).filter((i) => i >= 0);
     score += at.length ? 6 - Math.min(...at) : -4;
+  }
+  // Your patron's own workings, and workings in their domains.
+  if (ctx.deities?.length) {
+    const text = `${p.title} ${p.summary}`.toLowerCase();
+    if (ctx.deities.some((name) => text.includes(name.toLowerCase()))) score += 5;
+    const intents = [p.intention, ...(p.alsoFor ?? [])].filter(Boolean) as string[];
+    if (ctx.domains && intents.some((i) => INTENTION_WORDS[i]?.some((w) => ctx.domains!.includes(w)))) score += 2;
   }
   // Blue moons and eclipses only when one is close; the app doesn't predict them.
   if (p.moon?.length && p.moon.every((m) => m === 'blue' || m === 'eclipse')) score -= 4;

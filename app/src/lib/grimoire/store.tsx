@@ -15,6 +15,7 @@ import {
   enqueue,
   ensureBook,
   isTransient,
+  nextOrder,
   pageInsert,
   pageLinkInsert,
   pageTitlePatch,
@@ -51,6 +52,8 @@ export type GrimoireActions = {
   createPage: (input: { title: string; sectionId: string | null; templateKey: string }) => string | null;
   /** A ritual page from a group on the altar (the website's altar import), filed under the open section. */
   createRitualFromAltar: (input: { title: string; purpose: string | WorkingDetails; items: AltarRitualItem[] }) => string | null;
+  /** Keep a holy-day or moon page in the Grimoire, under its own section ("Holy Days", "The Moon"), tagged so it's found again. */
+  saveHolyPage: (input: { ref: string; title: string; sectionTitle: string; blocks: { type: string; content: string }[] }) => string | null;
   /** The section being viewed (a page's section, or null for the top level), as the website's activeSectionId. */
   setOpenSection: (sectionId: string | null) => void;
   renamePage: (pageId: string, title: string) => void;
@@ -382,6 +385,41 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
           newId,
         );
         commit([...ops, ...page]);
+        return id;
+      },
+      saveHolyPage({ ref, title, sectionTitle, blocks }) {
+        const s = snap();
+        if (!s || !userRef.current) return null;
+        const { bookId, ops } = ensureBook(s, ctx(), newId);
+        let next = applyOps(s, ops);
+        const all: Op[] = [...ops];
+        let section = next.sections.find((x) => x.book_id === bookId && x.title.trim().toLowerCase() === sectionTitle.toLowerCase());
+        if (!section) {
+          const sectionId = newId();
+          const op = sectionInsert(next, ctx(), { id: sectionId, bookId, title: sectionTitle });
+          all.push(op);
+          next = applyOps(next, [op]);
+          section = next.sections.find((x) => x.id === sectionId);
+        }
+        const sectionId = section?.id ?? null;
+        const id = newId();
+        const siblings = next.pages.filter((p) => p.book_id === bookId && (p.section_id ?? null) === sectionId);
+        all.push({
+          kind: 'insert',
+          table: 'grimoire_pages',
+          id,
+          row: { id, user_id: ctx().userId, book_id: bookId, section_id: sectionId, title, icon: '', page_type: 'blank', sort_order: nextOrder(siblings), metadata: { holyRef: ref } },
+        });
+        blocks.forEach((block, index) => {
+          const blockId = newId();
+          all.push({
+            kind: 'insert',
+            table: 'grimoire_blocks',
+            id: blockId,
+            row: { id: blockId, user_id: ctx().userId, book_id: bookId, page_id: id, block_type: block.type, content: block.content, metadata: {}, rich_content: null, sort_order: index },
+          });
+        });
+        commit(all);
         return id;
       },
       setOpenSection: openSection,

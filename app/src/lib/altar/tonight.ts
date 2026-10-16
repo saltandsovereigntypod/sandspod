@@ -394,3 +394,78 @@ export function tonightAltar(date: Date, holidays: { id: string; name: string }[
     labels,
   };
 }
+
+// ── A shrine for a deity ─────────────────────────────────────────────────
+
+/** Library deity keys whose statue goes by another id in the cabinet. */
+const STATUE_ID: Record<string, string> = { manannan: 'manann-n-mac-lir', dagda: 'the-dagda', morrigan: 'the-morrigan' };
+/** Never set out on a shrine: poisonous to handle. */
+const NOT_ON_SHRINES = new Set(['belladonna', 'foxglove', 'mandrake', 'yew']);
+
+const slug = (name: string) =>
+  name
+    .toLowerCase()
+    .replace(/\(.*?\)/g, '')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+const listOf = (value: unknown) => (typeof value === 'string' ? value.split(/[,;]/).map((s) => s.trim()).filter(Boolean) : []);
+const inCabinet = (id: string) => builtInCabinet.some((i) => i.id === id);
+
+/** The first names in `values` the cabinet has under `category`, as cabinet ids. */
+function cabinetMatches(category: string, values: string[], skip: Set<string> = new Set()): string[] {
+  const out: string[] = [];
+  for (const value of values) {
+    const id = `${category}:${slug(value.replace(/\b(candles?|stones?)\b/gi, ''))}`;
+    if (!skip.has(id.split(':')[1]) && inCabinet(id) && !out.includes(id)) out.push(id);
+  }
+  return out;
+}
+
+/**
+ * A starter shrine for a deity, from their Living Library entry: their statue
+ * at the centre, candles in their colours, their plants and stones, incense,
+ * and an offering bowl in front. Everything can be moved or swapped.
+ */
+export function shrineAltar(key: string, name: string, record: Record<string, unknown> | null, date: Date): TonightAltar {
+  const statue = `deities:${STATUE_ID[key] ?? key}-statue`;
+  const colours = listOf(record?.CandleColors).map((c) => `candles:${slug(c.replace(/\bcandles?\b/gi, ''))}-candle`).filter((id, i, all) => inCabinet(id) && all.indexOf(id) === i);
+  const plants = cabinetMatches('herbs', [...listOf(record?.SacredPlants), ...listOf(record?.Herbs)], NOT_ON_SHRINES);
+  const stones = cabinetMatches('crystals', listOf(record?.Crystals));
+  const candle = (i: number, form = 'vigil'): Pick => [colours[i] ?? colours[0] ?? 'candles:white-candle', form];
+  const incense: Pick = plants.some((p) => p === 'herbs:frankincense') ? herb('frankincense', 'incense') : plants.includes('herbs:myrrh') ? herb('myrrh', 'incense') : herb('frankincense', 'incense');
+  const theme: Theme = {
+    reason: `a shrine for ${name}`,
+    background: 'forest-altar',
+    focal: inCabinet(statue) ? [statue, 'statue'] : vessel('offering-bowl'),
+    candles: [candle(0), candle(1)],
+    outer: [candle(2, 'taper'), candle(2, 'taper')],
+    incense,
+    herb: plants[0] ? [plants[0], 'sprig'] : herb('rosemary'),
+    offering: vessel('offering-bowl'),
+    crystals: [stones[0] ? [stones[0], 'tumbled'] : stone('clear-quartz', 'tumbled'), stones[1] ? [stones[1], 'tumbled'] : stones[0] ? [stones[0], 'tumbled'] : stone('clear-quartz', 'tumbled')],
+    tool: tool('chalice'),
+  };
+  const parts: [Pick, Slot][] = [
+    [theme.focal, SLOTS.focal],
+    [theme.outer[0], SLOTS.outerL],
+    [theme.outer[1], SLOTS.outerR],
+    [theme.candles[0], SLOTS.candleL],
+    [theme.candles[1], SLOTS.candleR],
+    [theme.incense, SLOTS.incense],
+    [theme.herb, SLOTS.herb],
+    [theme.offering, SLOTS.offering],
+    [theme.crystals[0], SLOTS.crystalL],
+    [theme.crystals[1], SLOTS.crystalR],
+    [theme.tool, SLOTS.tool],
+  ];
+  const background = builtInBackgrounds.find((b) => b.id === theme.background);
+  const { objects, labels } = placed(parts, SURFACES[background?.id ?? 'forest-altar'] ?? SURFACES['forest-altar'], date.toISOString());
+  return {
+    doc: { background: background?.background ?? '', backgroundName: background?.name ?? '', groups: [], activeGroupId: null, objects, extra: {} },
+    reason: theme.reason,
+    labels,
+  };
+}

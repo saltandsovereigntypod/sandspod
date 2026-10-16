@@ -5,6 +5,7 @@ import { PRINCIPAL_NAMES, signAtSyzygy, upcomingPhases, type PrincipalPhase } fr
 import { planStart } from '../rituals/plans.ts';
 import type { RitualPlan } from '../rituals/types.ts';
 import { dateKey, devotionFor } from '../craft/solitary/devotion.ts';
+import { sacredReminders, type SacredReminderSource } from '../patron/index.ts';
 
 export type ReminderSettings = {
   version: 1;
@@ -31,6 +32,10 @@ export type ReminderSettings = {
   devotionMorningAt: number;
   devotionEvening: boolean;
   devotionEveningAt: number;
+  /** The sacred days of your patron and dedicated deities (Settings → My deities). */
+  sacredDays: boolean;
+  /** Minutes after midnight. */
+  sacredAt: number;
 };
 
 export const DEFAULT_SETTINGS: ReminderSettings = {
@@ -48,6 +53,8 @@ export const DEFAULT_SETTINGS: ReminderSettings = {
   devotionMorningAt: 7 * 60,
   devotionEvening: false,
   devotionEveningAt: 21 * 60,
+  sacredDays: false,
+  sacredAt: 9 * 60,
 };
 
 export const PHASE_ORDER: PrincipalPhase[] = ['new', 'firstQuarter', 'full', 'lastQuarter'];
@@ -86,6 +93,8 @@ export function normalizeSettings(raw: unknown): ReminderSettings {
     devotionMorningAt: minuteOfDay(value.devotionMorningAt, DEFAULT_SETTINGS.devotionMorningAt),
     devotionEvening: value.devotionEvening === true,
     devotionEveningAt: minuteOfDay(value.devotionEveningAt, DEFAULT_SETTINGS.devotionEveningAt),
+    sacredDays: value.sacredDays === true,
+    sacredAt: minuteOfDay(value.sacredAt, DEFAULT_SETTINGS.sacredAt),
   };
 }
 
@@ -95,13 +104,13 @@ function minuteOfDay(raw: unknown, fallback: number): number {
 }
 
 export function anyReminders(settings: ReminderSettings): boolean {
-  return settings.rituals || settings.devotionMorning || settings.devotionEvening || PHASE_ORDER.some((p) => settings.phases[p]);
+  return settings.rituals || settings.devotionMorning || settings.devotionEvening || settings.sacredDays || PHASE_ORDER.some((p) => settings.phases[p]);
 }
 
 export type Reminder = {
   /** Stable per event, so rescheduling never duplicates. */
   key: string;
-  kind: 'moon' | 'ritual' | 'devotion';
+  kind: 'moon' | 'ritual' | 'devotion' | 'sacred';
   at: Date;
   title: string;
   body: string;
@@ -139,7 +148,7 @@ function leadText(minutes: number): string {
 }
 
 /** Every reminder due after `now` within the horizon, soonest first, capped. */
-export function buildSchedule(settings: ReminderSettings, plans: RitualPlan[], now: Date, horizonDays = HORIZON_DAYS): Reminder[] {
+export function buildSchedule(settings: ReminderSettings, plans: RitualPlan[], now: Date, horizonDays = HORIZON_DAYS, sacred: SacredReminderSource[] = []): Reminder[] {
   const horizon = now.getTime() + horizonDays * 86_400_000;
   const reminders: Reminder[] = [];
 
@@ -230,6 +239,14 @@ export function buildSchedule(settings: ReminderSettings, plans: RitualPlan[], n
         body: prompt.title,
         url: '/rituals/craft/solitary/devotion',
       });
+    }
+  }
+
+  // Your deities' sacred days (Settings → My deities), as far ahead as the devotions.
+  if (settings.sacredDays && sacred.length) {
+    for (const r of sacredReminders(sacred, now, Math.min(DEVOTION_DAYS, horizonDays) + 1)) {
+      const at = new Date(r.date.getFullYear(), r.date.getMonth(), r.date.getDate(), Math.floor(settings.sacredAt / 60), settings.sacredAt % 60, 0, 0);
+      reminders.push({ key: `sacred-${r.key}:${dateKey(at)}`, kind: 'sacred', at, title: r.title, body: r.body, url: `/today/library/traditional:deity:${r.key}` });
     }
   }
 

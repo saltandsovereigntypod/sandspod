@@ -177,7 +177,8 @@ import { useLibrary } from '../../../lib/library';
 import { setAltarFullScreen } from '../../../lib/altarFullScreen';
 import { canTurnScreen, turnScreen } from '../../../lib/screenOrientation';
 import { useMySettings } from '../../../lib/settings/store';
-import { tonightAltar } from '../../../lib/altar/tonight';
+import { shrineAltar, tonightAltar } from '../../../lib/altar/tonight';
+import { TRADITIONAL_LIBRARY } from '../../../lib/library/traditionalData';
 import { holidayChoice, holidaysToday } from '../../../lib/holidays';
 import { moonState } from '../../../lib/moon';
 import { colors, fonts, space, touch, type } from '../../../theme';
@@ -237,7 +238,7 @@ const afterSheetCloses = (open: () => void) => setTimeout(open, Platform.OS === 
 const MAX_STAGE_WIDTH = 960;
 
 export default function AltarEditor() {
-  const { altarId, from } = useLocalSearchParams<{ altarId: string; from?: string }>();
+  const { altarId, from, deity } = useLocalSearchParams<{ altarId: string; from?: string; deity?: string }>();
   const store = useAltars();
   const { settings } = useMySettings();
   const { altars, draft, draftSourceId, status, backgrounds, overrides, signedIn } = store;
@@ -312,6 +313,15 @@ export default function AltarEditor() {
       setNotice(`Set for ${tonight.reason}. Move, swap or add anything, then Save to keep it.`);
       return;
     }
+    if (altarId === 'shrine' && deity) {
+      // A starter shrine from the deity's Living Library entry.
+      const record = ((TRADITIONAL_LIBRARY as Record<string, Record<string, unknown>>).deity?.[deity] ?? null) as Record<string, unknown> | null;
+      const name = String(record?.DisplayName ?? deity);
+      const shrine = shrineAltar(deity, name, record, new Date());
+      start(shrine.doc, null, `${name}’s Shrine`);
+      setNotice(`A shrine for ${name}, from their Living Library entry: their colours, plants and stones. Move, swap or add anything, then Save to keep it.`);
+      return;
+    }
     if (altarId === 'draft') {
       if (!draft) return;
       const source = draftSourceId ? altars.find((a) => a.id === draftSourceId) : null;
@@ -324,7 +334,7 @@ export default function AltarEditor() {
     const altar = altars.find((a) => a.id === altarId);
     if (altar) return start(documentFromAltar(altar), altar.id, altar.name || 'My Altar');
     if (status === 'ready' || status === 'offline' || status === 'error') setMissing(true);
-  }, [altarId, altars, backgrounds, draft, draftSourceId, status, settings, optionEntries]);
+  }, [altarId, deity, altars, backgrounds, draft, draftSourceId, status, settings, optionEntries]);
 
   const dirty = !!doc && doc !== baseline;
 

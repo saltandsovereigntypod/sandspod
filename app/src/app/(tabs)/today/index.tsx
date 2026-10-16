@@ -28,6 +28,8 @@ import { useMySettings } from '../../../lib/settings/store';
 import { todaySettings } from '../../../lib/library/traditions';
 import { buildToday, type HorizonItem, type TodayModel } from '../../../lib/today';
 import { practiceToday } from '../../../lib/craft/today';
+import { deityLines } from '../../../lib/patron';
+import { hasHolyPage, holyRef, moonRef, principalRef } from '../../../lib/holy';
 import { forYou, forYouContext, myPractices } from '../../../lib/rituals/premade';
 import type { Place } from '../../../lib/astro/rise';
 import { colors, fonts, radius, space, type } from '../../../theme';
@@ -226,7 +228,13 @@ function PracticeCard({ settings, place, now }: { settings: SettingsLike; place:
     [kept, tick, settings?.calendar_traditions, settings?.library_path],
   );
 
-  if (!practices.length) {
+  const deities = useMemo(
+    () => deityLines(settings, now),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- as above
+    [kept, tick, settings?.my_deities],
+  );
+
+  if (!practices.length && !deities.length) {
     return (
       <Pressable accessibilityRole="link" onPress={() => router.navigate('/more/settings/practice')} style={styles.working}>
         <Text style={[type.eyebrow, styles.gold]}>For your practice</Text>
@@ -237,6 +245,22 @@ function PracticeCard({ settings, place, now }: { settings: SettingsLike; place:
   return (
     <View style={styles.working}>
       <Text style={[type.eyebrow, styles.gold]}>For your practice</Text>
+      {deities.map((line) => (
+        <Pressable
+          key={`deity-${line.deity.key ?? line.deity.name}`}
+          accessibilityRole="link"
+          accessibilityLabel={`${line.label}: ${line.line}`}
+          onPress={() => router.navigate(line.href as never)}
+          style={styles.practiceRow}
+        >
+          <View style={styles.practiceText}>
+            <Text style={styles.practiceLabel}>{line.label}</Text>
+            <Text style={[type.body, line.holyToday && styles.gold]}>{line.line}</Text>
+            {!!line.detail && <Text style={type.caption}>{line.detail}</Text>}
+          </View>
+          <Icon name="chevron" size={16} color={colors.gold} />
+        </Pressable>
+      ))}
       {lines.map((line) => (
         <Pressable
           key={line.practice}
@@ -295,36 +319,50 @@ function LastTimeLine({ journal, now }: { journal: Parameters<typeof journalInsi
 
 function MoonPanel({ today, compact }: { today: TodayModel; compact: boolean }) {
   return (
-    <View style={styles.moon} accessible accessibilityLabel={`${today.moon.name}. ${today.signLine}. ${today.illuminationLine}`}>
+    <Pressable
+      style={({ pressed }) => [styles.moon, pressed && styles.pressed]}
+      accessibilityRole="link"
+      accessibilityLabel={`${today.moon.name}. ${today.signLine}. ${today.illuminationLine}`}
+      accessibilityHint="Opens what this phase of the moon means and what it's good for"
+      onPress={() => router.navigate({ pathname: '/today/holy/[ref]', params: { ref: moonRef(today.moon) } })}
+    >
       <MoonDisc size={compact ? 80 : 136} illumination={today.moon.illumination} waxing={today.moon.waxing} />
       <Text accessibilityRole="header" style={[styles.phase, compact && styles.phaseCompact, styles.wide]}>
         {today.moon.name}
       </Text>
       <Text style={[styles.sign, compact && styles.signCompact, styles.wide]}>{today.signLine}</Text>
       <Text style={[type.caption, styles.wide]}>{today.illuminationLine}</Text>
-    </View>
+    </Pressable>
   );
 }
 
 /** Holidays happening today, from the chosen calendars, with what they mean. */
 function HolidayPanel({ today, compact }: { today: TodayModel; compact: boolean }) {
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityHint="Opens your calendars and the holidays ahead"
-      onPress={() => router.navigate('/today/calendar')}
-      style={({ pressed }) => [styles.holiday, compact && styles.holidayCompact, pressed && styles.pressed]}
-    >
+    <View style={[styles.holiday, compact && styles.holidayCompact]}>
       {today.holidaysToday.map((holiday, i) => (
-        <View key={holiday.id} style={styles.holidayItem} accessible accessibilityLabel={`${today.holidayWhen[i]}: ${holiday.name}. ${holiday.meaning}`}>
+        <Pressable
+          key={holiday.id}
+          style={({ pressed }) => [styles.holidayItem, pressed && styles.pressed]}
+          accessibilityRole="link"
+          accessibilityLabel={`${today.holidayWhen[i]}: ${holiday.name}. ${holiday.meaning}`}
+          accessibilityHint={hasHolyPage(holiday.id) ? 'Opens what this day is and how to keep it' : 'Opens your calendars and the holidays ahead'}
+          onPress={() => openHoliday(holiday.id)}
+        >
           <Text style={[type.eyebrow, styles.gold]}>{`${today.holidayWhen[i]} · ${today.holidayTerms[i]}`}</Text>
           <Text style={[styles.holidayName, compact && styles.holidayNameCompact]}>{holiday.name}</Text>
           <Text style={[type.caption, compact && styles.small]}>{holiday.traditions.join(' · ')}</Text>
           <Text style={[styles.meaning, compact && styles.meaningCompact]}>{holiday.meaning}</Text>
-        </View>
+        </Pressable>
       ))}
-    </Pressable>
+    </View>
   );
+}
+
+/** A holiday's own page when it has one, else the calendars. */
+function openHoliday(id: string) {
+  if (hasHolyPage(id)) router.navigate({ pathname: '/today/holy/[ref]', params: { ref: holyRef(id) } });
+  else router.navigate('/today/calendar');
 }
 
 const PERSONAL = ['Mercury', 'Venus', 'Mars'];
@@ -432,7 +470,14 @@ const PHASE_DISC: Record<string, { illumination: number; waxing: boolean }> = {
 
 function HorizonTile({ item }: { item: HorizonItem }) {
   return (
-    <View style={styles.tile} accessible accessibilityLabel={`${item.title}, ${item.detail}`}>
+    <Pressable
+      style={({ pressed }) => [styles.tile, pressed && styles.pressed]}
+      accessibilityRole="link"
+      accessibilityLabel={`${item.title}, ${item.detail}`}
+      onPress={() =>
+        item.kind === 'holiday' ? openHoliday(item.id) : router.navigate({ pathname: '/today/holy/[ref]', params: { ref: principalRef(item.phase) } })
+      }
+    >
       {item.kind === 'holiday' ? (
         <Icon name={item.title.startsWith('Samhain') ? 'samhain' : 'wheel'} size={26} color={colors.gold} />
       ) : (
@@ -442,7 +487,7 @@ function HorizonTile({ item }: { item: HorizonItem }) {
         <Text style={styles.tileTitle}>{item.title}</Text>
         <Text style={type.caption}>{item.detail}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 }
 

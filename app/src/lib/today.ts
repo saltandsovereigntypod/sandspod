@@ -8,7 +8,7 @@ import { moonSign, moonState, nextMoonIngress, nextPhase, PRINCIPAL_NAMES, signA
 
 export type HorizonItem =
   | { kind: 'moon'; phase: PrincipalPhase; title: string; detail: string }
-  | { kind: 'holiday'; title: string; detail: string };
+  | { kind: 'holiday'; title: string; detail: string; id: string };
 
 export type TodayModel = {
   dateLine: string;
@@ -104,7 +104,7 @@ export function buildToday(
   const { themes } = dayRuler(now);
 
   const horizon: HorizonItem[] = [{ kind: 'moon', phase: phase.phase, title: phaseTitle, detail: whenLabel(now, phase.date) }];
-  if (upcoming) horizon.push({ kind: 'holiday', title: upcoming.name, detail: whenLabel(now, upcoming.date) });
+  if (upcoming) horizon.push({ kind: 'holiday', title: upcoming.name, detail: whenLabel(now, upcoming.date), id: upcoming.id });
 
   const sign = moonSign(now);
   const nextEclipse = eclipsesBetween(now, new Date(now.getTime() + 60 * 86_400_000))[0] ?? null;

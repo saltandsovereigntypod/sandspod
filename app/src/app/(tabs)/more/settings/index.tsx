@@ -1,3 +1,4 @@
+import { myDeities } from '../../../../lib/patron/mine';
 import { router } from 'expo-router';
 import { Text } from 'react-native';
 
@@ -8,6 +9,12 @@ import { layerOrderLabel, type Settings } from '../../../../lib/settings/default
 import { myPractices, practiceName } from '../../../../lib/rituals/premade';
 import { useMySettings } from '../../../../lib/settings/store';
 import { type } from '../../../../theme';
+
+function deitySummary(settings: Record<string, unknown> | null | undefined) {
+  const list = myDeities(settings);
+  if (!list.length) return 'Patron, dedicated and exploring';
+  return list.map((d) => (d.level === 'patron' ? `${d.name} (patron)` : d.name)).join(', ');
+}
 
 export default function SettingsIndex() {
   const { session } = useSession();
@@ -43,6 +50,12 @@ export default function SettingsIndex() {
           label="My practice"
           detail={practiceSummary(settings)}
           onPress={() => router.push('/more/settings/practice')}
+        />
+        <MenuRow
+          icon="journey"
+          label="My deities"
+          detail={deitySummary(settings)}
+          onPress={() => router.push('/more/settings/deities')}
         />
         <MenuRow
           icon="library"

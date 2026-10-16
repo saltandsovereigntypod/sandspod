@@ -15,6 +15,7 @@ import { useSession } from '../../lib/session';
 import { useMySettings } from '../../lib/settings/store';
 import { colors, fonts, radius, type } from '../../theme';
 import { ConnectedTo, LibraryJourney, RelationshipManager } from './LibraryConnections';
+import { DeityYours } from './DeityYours';
 
 type Props = {
   entryId: string;
@@ -97,6 +98,8 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
           </Card>
         </Section>
       )}
+
+      {entry.type === 'deity' && <DeityYours entry={entry} />}
 
       {!!journey && (
         <Button

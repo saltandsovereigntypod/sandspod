@@ -5,7 +5,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useSyncExternalStore } from 'react';
 
+import { sacredSources } from '../patron';
 import { getRituals, loadPlans, subscribeRituals } from '../rituals/store';
+import { cachedSettings, subscribeSettings } from '../settings/store';
 import type { RitualPlan } from '../rituals/types';
 import { syncSkyCalendar } from './calendarStore';
 import { applySchedule, permissionState, remindersSupported, requestPermission, type PermissionState } from './notifier';
@@ -43,7 +45,7 @@ export function syncReminders(): Promise<void> {
   syncing = syncing.then(async () => {
     if (!state.loaded) return;
     try {
-      const reminders = buildSchedule(state.settings, getRituals().plans, new Date());
+      const reminders = buildSchedule(state.settings, getRituals().plans, new Date(), undefined, sacredSources(cachedSettings()));
       const permission = remindersSupported ? await permissionState() : 'unavailable';
       const scheduled = await applySchedule(permission === 'granted' ? reminders : []);
       set({ permission, scheduled });
@@ -71,6 +73,15 @@ async function start() {
     if (plans !== lastPlans) {
       lastPlans = plans;
       void syncReminders();
+    }
+  });
+  // Your deities' sacred days follow Settings → My deities.
+  let lastDeities = String(cachedSettings()?.my_deities ?? '');
+  subscribeSettings(() => {
+    const deities = String(cachedSettings()?.my_deities ?? '');
+    if (deities !== lastDeities) {
+      lastDeities = deities;
+      if (state.settings.sacredDays) void syncReminders();
     }
   });
   // Top up the rolling window every time the app opens.
