@@ -12,6 +12,7 @@ import { JOURNEY as DEITY_ATHENA } from './data/deity-athena.ts';
 import { JOURNEY as DEITY_BALDUR } from './data/deity-baldur.ts';
 import { JOURNEY as DEITY_BASTET } from './data/deity-bastet.ts';
 import { JOURNEY as DEITY_BRIGID } from './data/deity-brigid.ts';
+import { JOURNEY as DEITY_CERES } from './data/deity-ceres.ts';
 import { JOURNEY as DEITY_CERNUNNOS } from './data/deity-cernunnos.ts';
 import { JOURNEY as DEITY_CERRIDWEN } from './data/deity-cerridwen.ts';
 import { JOURNEY as DEITY_DAGDA } from './data/deity-dagda.ts';
@@ -31,6 +32,7 @@ import { JOURNEY as DEITY_HEKATE } from './data/deity-hekate.ts';
 import { JOURNEY as DEITY_HEL } from './data/deity-hel.ts';
 import { JOURNEY as DEITY_HERMES } from './data/deity-hermes.ts';
 import { JOURNEY as DEITY_HESTIA } from './data/deity-hestia.ts';
+import { JOURNEY as DEITY_IDUNN } from './data/deity-idunn.ts';
 import { JOURNEY as DEITY_ISIS } from './data/deity-isis.ts';
 import { JOURNEY as DEITY_JANUS } from './data/deity-janus.ts';
 import { JOURNEY as DEITY_JUNO } from './data/deity-juno.ts';
@@ -52,6 +54,7 @@ import { JOURNEY as DEITY_PERUN } from './data/deity-perun.ts';
 import { JOURNEY as DEITY_RA } from './data/deity-ra.ts';
 import { JOURNEY as DEITY_RHIANNON } from './data/deity-rhiannon.ts';
 import { JOURNEY as DEITY_SEKHMET } from './data/deity-sekhmet.ts';
+import { JOURNEY as DEITY_SELENE } from './data/deity-selene.ts';
 import { JOURNEY as DEITY_SKADI } from './data/deity-skadi.ts';
 import { JOURNEY as DEITY_THOR } from './data/deity-thor.ts';
 import { JOURNEY as DEITY_THOTH } from './data/deity-thoth.ts';
@@ -79,6 +82,7 @@ export const JOURNEYS: Journey[] = [
   DEITY_BALDUR,
   DEITY_BASTET,
   DEITY_BRIGID,
+  DEITY_CERES,
   DEITY_CERNUNNOS,
   DEITY_CERRIDWEN,
   DEITY_DAGDA,
@@ -98,6 +102,7 @@ export const JOURNEYS: Journey[] = [
   DEITY_HEL,
   DEITY_HERMES,
   DEITY_HESTIA,
+  DEITY_IDUNN,
   DEITY_ISIS,
   DEITY_JANUS,
   DEITY_JUNO,
@@ -119,6 +124,7 @@ export const JOURNEYS: Journey[] = [
   DEITY_RA,
   DEITY_RHIANNON,
   DEITY_SEKHMET,
+  DEITY_SELENE,
   DEITY_SKADI,
   DEITY_THOR,
   DEITY_THOTH,
