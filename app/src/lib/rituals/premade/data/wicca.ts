@@ -776,8 +776,8 @@ export const WICCA: Premade[] = [
       },
     ],
     closing:
-      "Water the seeds as they need, and each time, think of your hopes. After three days, eat a hard-boiled egg (if it was kept in the fridge) or bury a blown or older egg in the garden as an offering.",
-    safety: `${CANDLE_SAFETY} Don't eat an egg that has been dyed with non-food colours or left out of the fridge for more than two hours.`,
+      "Water the seeds as they need, and each time, think of your hopes. When the rite is over, bury the egg in the garden as an offering, or, if it is a hard-boiled egg coloured only with food-safe dyes and out of the fridge for less than two hours, chill it and eat it within a few days.",
+    safety: `${CANDLE_SAFETY} Only eat a hard-boiled egg that was coloured with food-safe dyes and kept out of the fridge for less than two hours; otherwise bury it. If you blow a raw egg, wash your hands and surfaces afterwards, as raw egg can carry salmonella.`,
     lore:
       "The only early mention of a goddess Eostre is a single line in Bede's De temporum ratione (725), naming an Anglo-Saxon month after her; Jacob Grimm built a larger figure, Ostara, on that line in 1835. Decorated eggs at Easter and spring are attested across Europe from the medieval period, and the Easter hare from seventeenth-century Germany. Ostara as a name for the Pagan spring equinox sabbat dates from Aidan Kelly's naming of the solstices and equinoxes in the 1970s Wheel of the Year.",
     sources: [
@@ -815,7 +815,7 @@ export const WICCA: Premade[] = [
       {
         title: "Wash in the May dew",
         instructions:
-          "At sunrise, step outside and wash your face with dew from the grass, or with a bowl of fresh water left out overnight. Feel the cold and the morning on your skin.",
+          "At sunrise, step outside and wash your face with dew from unsprayed grass, or with a bowl of fresh water left out overnight. Feel the cold and the morning on your skin.",
         spoken: "May dew, May morning, make me bright and make me new.",
       },
       {
@@ -874,7 +874,6 @@ export const WICCA: Premade[] = [
     practices: ["solitary", "green", "folk", "eclectic"],
     paths: ["wicca", "wheel"],
     holidays: ["litha"],
-    weekday: 0,
     minutes: 50,
     level: "beginner",
     solo: true,
@@ -977,7 +976,7 @@ export const WICCA: Premade[] = [
         instructions:
           "Mix the flour, yeast and salt in a large bowl. Stir the honey into the warm water and pour it in. Bring it together with your hand, naming the people and places that made this flour: the farmer, the field, the rain, the sun.",
         light: true,
-        spoken: "Hail to you, earth, mother of all; grow full with the gift of grain.",
+        spoken: "Hail to you, earth, mother of men: be fruitful, and filled with food for our need.",
       },
       {
         title: "Knead",
@@ -1024,10 +1023,11 @@ export const WICCA: Premade[] = [
       "Share the rest of the loaf with friends or neighbours. Older custom kept a piece of the Lammas loaf to protect the grain store; you might keep a dry crust on the altar until Mabon.",
     safety: `${CANDLE_SAFETY} Use oven gloves. Check for gluten, egg and seed allergies before you share the bread.`,
     lore:
-      "Lammas comes from the Old English hlafmæsse, “loaf mass,” when bread from the first wheat was brought to church on 1 August. An Anglo-Saxon charm in an eleventh-century manuscript says that bread from the Lammas loaf, crumbled at the four corners of the barn, would protect the grain. The Gaelic festival at the same time was Lughnasadh, honouring the god Lugh. The spoken blessing here adapts a line from the Anglo-Saxon field-blessing charm, the Æcerbot (“Hal wes þu, folde, fira modor”). Lammas is part of the 1950s Wheel of the Year.",
+      "Lammas comes from the Old English hlafmæsse, “loaf mass,” when bread from the first wheat was brought to church on 1 August. A fragment of an Anglo-Saxon charm in an eleventh-century manuscript (Cotton Vitellius E. xviii) directs that bread hallowed on Lammas day be broken into four pieces and crumbled at the four corners of the barn, presumably to guard the stored grain. The Gaelic festival at the same time was Lughnasadh, honouring the god Lugh. The first spoken blessing is adapted, not quoted, from the Anglo-Saxon field-blessing charm, the Æcerbot (“Hal wes þu, folde, fira modor,” which Grendon translated in 1909 as “All hail, Earth, mother of men!”). Lammas is part of the 1950s Wheel of the Year.",
     sources: [
-      "Æcerbot, the Anglo-Saxon field remedy (eleventh century, public domain)",
-      "Anglo-Saxon charms collected by Grattan and Singer (on the Lammas loaf charm)",
+      "Æcerbot, the Anglo-Saxon field remedy, Cotton MS Caligula A.vii (eleventh century)",
+      "Cockayne, Leechdoms, Wortcunning, and Starcraft of Early England, vol. 3 (1866), pp. 290–292 (the Lammas bread fragment)",
+      "Grendon, The Anglo-Saxon Charms (1909), A13, for the Æcerbot text and translation",
       "Hutton, The Stations of the Sun (on Lammas and Lughnasadh)",
     ],
   },
@@ -1054,6 +1054,8 @@ export const WICCA: Premade[] = [
       { name: "A handful of dried beans, nuts or acorns" },
       { name: "A cup of cider or apple juice", ref: "traditional/tool/chalice" },
       { name: "A pen and two slips of paper" },
+      { name: "An offering bowl", ref: "traditional/vessel/offering_bowl" },
+      { name: "Your book of shadows or journal", ref: "traditional/tool/book_of_shadows", optional: true },
     ],
     preparation:
       "Gather fallen leaves and some seasonal produce on a walk or at a market. Dress your altar with them, with the two candles side by side and a bowl in front of each. Cut the apple crosswise to reveal the five-pointed star of seeds.",
@@ -1091,12 +1093,12 @@ export const WICCA: Premade[] = [
       {
         title: "Let go",
         instructions:
-          "Tear up the release slip and add it to the fallen leaves. Fold the keep slip and place it in your book of shadows. Snuff the candles, dark first.",
+          "Tear up the release slip and add it to the fallen leaves. Fold the keep slip and place it in your book of shadows or journal. Snuff the candles, dark first.",
         snuff: true,
       },
     ],
     closing:
-      "Take the leaves, the torn slip and the apple half outside and leave them under a tree to rot back into the earth. Cook something with the rest of the produce this week and share it, if you can.",
+      "Take the leaves, the torn slip, the apple half and the drink from the offering bowl outside and leave them under a tree to rot back into the earth. Cook something with the rest of the produce this week and share it, if you can.",
     safety: `${CANDLE_SAFETY} Keep dry leaves well away from the flames.`,
     lore:
       "Harvest thanksgiving and harvest-home suppers are long-standing customs in the British countryside, and Michaelmas (29 September) closed the farming year. The name Mabon for the autumn equinox was given by Aidan Kelly in the 1970s, after the Welsh figure Mabon ap Modron of the medieval tales; it has no ancient link to the equinox, and some Pagans prefer to call it the Autumn Equinox or Harvest Home. The five-pointed star inside an apple is a favourite modern Pagan symbol.",

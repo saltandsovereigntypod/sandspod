@@ -65,7 +65,7 @@ export default function DreamSymbols() {
                 <View style={styles.track}>
                   <View style={[styles.fill, { width: `${(p.count / most) * 100}%` }]} />
                 </View>
-                <Text style={styles.count}>{p.count}</Text>
+                <Text style={[type.caption, styles.count]}>{p.count}</Text>
               </View>
             ))}
           </Card>
@@ -98,5 +98,5 @@ const styles = StyleSheet.create({
   barLabel: { width: 124, fontFamily: fonts.body, fontSize: 13, color: colors.parchment },
   track: { flex: 1, height: 10, borderRadius: 5, backgroundColor: colors.surfaceRaised, overflow: 'hidden' },
   fill: { height: 10, borderRadius: 5, backgroundColor: colors.gold },
-  count: { ...type.caption, width: 24, textAlign: 'right' },
+  count: { width: 24, textAlign: 'right' },
 });
