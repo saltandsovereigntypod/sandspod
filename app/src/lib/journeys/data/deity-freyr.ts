@@ -290,13 +290,13 @@ Bellows’ own note calls it “a boar consecrated to Freyr, an integral part of
             },
             {
               heading: 'Yule and Freyr now',
-              body: `Many modern Heathens give Freyr a central place at Yule, alongside Odin as Jólnir. The Yule ham of Scandinavia (julskinka), the boar’s head brought in at Queen’s College, Oxford, every Christmas since at least the 1600s, and boar-shaped Yule breads are often said to descend from Freyr’s boar. That is possible and not proven; pork was also simply the meat of midwinter, when pigs were slaughtered.
+              body: `Many modern Heathens give Freyr a central place at Yule, alongside Odin as Jólnir. The Yule ham of Scandinavia (julskinka), the boar’s head carried in to a carol at Queen’s College, Oxford, a custom kept there for centuries, and boar-shaped Yule breads are often said to descend from Freyr’s boar. That is possible and not proven; pork was also simply the meat of midwinter, when pigs were slaughtered.
 
 A modern Yule blót for Freyr often includes a boar (a joint of pork, a boar-shaped loaf or a carved figure) on which people lay their hands to make their vows for the coming year. Toasts go “til árs ok friðar,” for a good year and peace. Vegetarian and vegan Heathens use a bread boar or a figure.`,
             },
             {
               heading: 'The álfar and Winter Nights',
-              body: `Freyr is lord of Álfheimr. Kormáks saga describes an álfablót, an offering to the elves, in which a bull was killed and its blood poured on a hill where the álfar lived, and its meat made into a feast for them, to heal a wound. The skald Sigvatr, travelling in Sweden around 1020, was turned away from farms because an álfablót was being held at Winter Nights and strangers were not welcome.
+              body: `Freyr is lord of Álfheimr. Kormáks saga describes an álfablót, an offering to the elves, in which a bull was killed and its blood poured on a hill where the álfar lived, and its meat made into a feast for them, to heal a wound. The skald Sigvatr, travelling in Sweden in autumn around 1020, was turned away from farms because an álfablót was being held and strangers were not welcome.
 
 Modern Heathens often keep an álfablót at Winter Nights, honouring the elves, the ancestral dead and Freyr together, usually privately at home, with ale, bread and butter left out. It is a quiet, family rite; the old one was closed to outsiders, and the modern one usually is too.`,
             },
@@ -309,7 +309,7 @@ Folkish groups have sometimes used Ingwaz, Freyr’s rune, alongside other symbo
           ],
           knowAndDont: {
             known:
-              'The vow-boar appears in the Helgakviða Hjörvarðssonar prose and in Hervarar saga; the álfablót in Kormáks saga and Sigvatr’s Austrfararvísur. The Queen’s College boar’s head custom is documented from the 1600s.',
+              'The vow-boar appears in the Helgakviða Hjörvarðssonar prose and in Hervarar saga; the álfablót in Kormáks saga and Sigvatr’s Austrfararvísur. The Queen’s College boar’s head custom is old but Christian and English; the medieval carol sung with it was printed in 1521.',
             unknown:
               'That the Yule boar was specifically Freyr’s is scholarly inference, though strong. Links between modern Christmas pork and Freyr are possible but unproven. Modern álfablót practice is reconstructed from a few saga passages.',
           },

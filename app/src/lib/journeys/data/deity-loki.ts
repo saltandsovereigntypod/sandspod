@@ -195,7 +195,7 @@ Worst of all is Baldr. Snorri says that when Frigg took oaths from every thing n
               heading: 'The binding and the end',
               body: `The gods hunted Loki down. He hid as a salmon in a waterfall, and they caught him in a net, the net he himself had invented. Snorri tells how they turned his son Váli into a wolf, who tore apart his brother Narfi, and bound Loki with Narfi’s entrails across three stones. Skaði hung a serpent over his face. In Anderson’s translation: “But Sigyn, his wife, stands by him, and holds a dish under the venom-drops. Whenever the dish becomes full, she goes and pours away the venom, and meanwhile the venom drops onto Loke’s face. Then he twists his body so violently that the whole earth shakes, and this you call earthquakes.”
 
-At Ragnarök Loki breaks free and steers the ship Naglfar, made of dead men’s nails, with the host of Hel against the gods. He and the god Heimdallr kill each other.`,
+At Ragnarök Loki breaks free. Völuspá has him at the helm of a ship sailing against the gods (Snorri instead gives Naglfar, the ship made of dead men’s nails, to the giant Hrymr). He and the god Heimdallr kill each other.`,
             },
             {
               heading: 'Reading Loki',
@@ -240,7 +240,7 @@ That is a striking silence. It suggests that Loki was a figure of myth and story
             },
             {
               heading: 'Folklore',
-              body: `Loki survives better in later folklore than in cult. In Danish and Norwegian sayings recorded in the 1800s and later, the shimmering air on a hot day is Loki sowing his oats, a crackle or spit from the fire is Loki beating his children, and a lazy person is said to have Loki on their back. A Faroese ballad, Lokka táttur, recorded in the 1800s, has Loki, after Odin and Hœnir fail, cleverly saving a farmer’s son from a giant by hiding him in a fish’s roe and luring the giant into a trap. Here he is a crafty helper of humans.
+              body: `Loki survives better in later folklore than in cult. In Danish and Norwegian sayings recorded in the 1800s and later, the shimmering air on a hot day is Loki sowing his oats, and a crackle or spit from the fire is Loki beating his children. A Faroese ballad, Lokka táttur, recorded in the 1800s, has Loki, after Odin and Hœnir fail, cleverly saving a farmer’s son from a giant by hiding him in a fish’s roe and luring the giant into a trap. Here he is a crafty helper of humans.
 
 These are traces of a figure people knew and talked about, sometimes fondly. They are not signs of worship.`,
             },
@@ -367,7 +367,7 @@ For the year, many Loki devotees mark him privately at Yule and Winter Nights, a
 
 Keep boundaries. Open and close every rite clearly. Do not let him, or the idea of him, take over your thinking; take days off. If you start attributing every mishap to Loki, step back. And never use Loki as an excuse for your own harmful behaviour. Tricksters in myth face consequences; so do people.
 
-Be honest about your health. If you have a history of mania, psychosis or self-destructive patterns, keep your Loki practice light and talk to someone you trust if it starts to feel compulsive or frightening. A good god does not need you unwell.`,
+Be honest about your health. If you have a history of mania, psychosis or self-destructive patterns, keep your Loki practice light and talk to someone you trust, or to your doctor or counsellor, if it starts to feel compulsive or frightening. If you are in crisis, contact a crisis line or emergency services. A good god does not need you unwell.`,
             },
             {
               heading: 'Fire',

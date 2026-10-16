@@ -9,10 +9,10 @@ const CANDLE_SAFETY =
   'Never leave a lit candle unattended. Use a sturdy holder on a heatproof surface, away from curtains, hair, loose sleeves, pets and children, and snuff it rather than blowing it out.';
 
 const OUTDOOR_SAFETY =
-  'Outdoors, tell someone where you are going, dress for the weather, and stay on paths in unfamiliar country. Never light a fire where fire bans are in force or on dry ground; a candle in a jar, or a lantern, does the same work. Leave no trace: take home everything you bring, including food offerings in places where wildlife could be harmed by them.';
+  'Outdoors, tell someone where you are going, dress for the weather, and stay on paths in unfamiliar country. Never light a fire where fire bans are in force or on dry ground; a candle in a jar, or a lantern, does the same work. Leave no trace: take home everything you bring, including food offerings in places where wildlife could be harmed by them. In cold weather, wrap up, take a warm drink and keep dawn and night vigils outdoors short. Near water, stay on the bank, keep children close and never wade into rivers or the sea at night or alone.';
 
 const FOOD_SAFETY =
-  'Keep offerings and seasonal food away from pets: chocolate, grapes and raisins, onion and garlic, xylitol and alcohol are dangerous to dogs and cats, and lilies, including their pollen and vase water, can kill a cat. Bread, milk and processed food left outdoors can harm birds and wildlife; leave small amounts of plain, natural things, or pour water instead.';
+  'Keep offerings and seasonal food away from pets: chocolate, grapes and raisins, onion and garlic, xylitol and alcohol are dangerous to dogs and cats, and lilies, including their pollen and vase water, can kill a cat. Bread, milk and processed food left outdoors can harm birds and wildlife; leave small amounts of plain, natural things, or pour water instead. Wherever a drink is shared or poured, juice, tea or water serves as well as wine or ale.';
 
 export const JOURNEY: Journey = {
   id: 'path-wheel',
@@ -32,7 +32,7 @@ At the end, if you choose, you make a self-dedication to the turning year and to
     'The Wheel is a modern calendar. This journey says plainly which festivals and customs are old, which are recent, and where the evidence runs out.',
     'In the southern hemisphere the seasons are reversed, and in the tropics the four temperate seasons may not exist at all. The app\'s calendar has a Southern Hemisphere Wheel you can choose, and this journey helps you build a wheel that fits your own climate.',
     'Honouring the land you live on means respecting the people whose land it has long been. Learn about local Indigenous seasonal knowledge where it is publicly shared, and do not take up closed Indigenous ceremonies or sacred items.',
-    'White sage is not used here. Rosemary, juniper, bay, mugwort, garden herbs or plain water are used instead.',
+    'White sage is not used here. Rosemary, juniper, bay, mugwort (not in pregnancy), garden herbs or plain water are used instead.',
     'Fire, food and outdoor work appear throughout. Every rite carries safety notes; read them.',
   ],
   holyDays: ['samhain', 'yule', 'imbolc', 'ostara', 'beltane', 'litha', 'lammas', 'mabon'],
@@ -206,7 +206,7 @@ So the night's atmosphere of the dead and the uncanny has real depth in folklore
               heading: 'Samhain today',
               body: `Modern Pagans keep Samhain as the festival of the dead and the start of the dark half of the year. Common practices: an ancestor altar with photographs, names and the foods your dead loved; a silent supper, where a place is set for the dead and the meal is eaten without speaking; lighting a candle in the window to guide them; divination; and honest reckoning with the year's losses. Many also put the garden to bed.
 
-Ancestor work is gentle, but it can stir grief. You may honour only those you choose. Not every ancestor was kind; you can honour your lineage as a whole, or the dead of your craft or place, rather than particular people who hurt you.`,
+Ancestor work is gentle, but it can stir grief. You may honour only those you choose. Not every ancestor was kind; you can honour your lineage as a whole, or the dead of your craft or place, rather than particular people who hurt you. If a recent loss makes this season very hard, it is fine to keep Samhain lightly or skip it, and to lean on real support: friends, a bereavement service such as Cruse (UK) or a local grief group, or your doctor.`,
             },
             {
               heading: 'A simple Samhain',
@@ -294,7 +294,7 @@ In England, 2 February was Candlemas, when candles for the year were blessed in 
             },
             {
               heading: 'Keeping Imbolc',
-              body: `Clean the house thoroughly, a real spring clean of the hearth and the altar. Weave a Brigid's cross from rushes, straw, or paper strips. Leave a cloth on the windowsill or outside overnight. Light every candle you have for a few minutes, or bless new candles for the year. Make a small bed for Brigid by the hearth or altar. Pour milk, a traditional Irish offering, on the ground or onto a plant; use water if you prefer. Look for the first snowdrops, catkins and lambs, or whatever early sign your land gives.`,
+              body: `Clean the house thoroughly, a real spring clean of the hearth and the altar. Weave a Brigid's cross from rushes, straw, or paper strips. Leave a cloth on the windowsill or outside overnight. Light every candle you have for a few minutes, or bless new candles for the year. Make a small bed for Brigid by the hearth or altar. Pour a little milk, a traditional Irish offering, onto the soil (not into a dish left out, which can make hedgehogs and other wild animals ill); use water if you prefer. Look for the first snowdrops, catkins and lambs, or whatever early sign your land gives.`,
             },
           ],
           knowAndDont: {
@@ -374,7 +374,7 @@ Modern Wicca adds the sacred marriage of the Goddess and God at Beltane, a moder
             },
             {
               heading: 'Keeping Beltane',
-              body: `Go out at dawn on May morning and wash your face in the dew. Gather flowers that are plentiful, and only from places you're allowed, to make a crown or a garland for the door. Hawthorn is the traditional May blossom, though old folklore warns against bringing it indoors; put it on the door or the gate. Light a fire if you can do so safely and legally, or a candle in a lantern; many people jump a small fire or a candle for luck, which needs real care. Feast with friends, dance, make love if you have someone to make love with.
+              body: `Go out at dawn on May morning and wash your face in the dew. Gather flowers that are plentiful, and only from places you're allowed, to make a crown or a garland for the door. Hawthorn is the traditional May blossom, though old folklore warns against bringing it indoors; put it on the door or the gate. Light a fire if you can do so safely and legally, or a candle in a lantern; many people jump a small fire or a candle for luck. If you do, keep it tiny, tie back hair and loose clothes, have water or a fire blanket to hand, and never let children or anyone who has been drinking jump. Feast with friends, dance, make love if you have someone to make love with.
 
 It is also a festival of protection, as the Irish customs show: a sprig of rowan tied with red thread over the door is an old May Eve charm.`,
             },
@@ -410,13 +410,13 @@ The name Litha comes from Bede's list of Anglo-Saxon months: Ærra Liða and Æf
             },
             {
               heading: 'Keeping midsummer',
-              body: `Get up for the sunrise, or stay up through the short night. Gather herbs at noon, the sun's height, with thanks and only what you need. Light a fire or a candle at dusk. Float a flower wreath on running water, and use flowers and string that won't harm the river. Spend the day outdoors.
+              body: `Get up for the sunrise, or stay up through the short night. Gather herbs at noon, the sun's height, with thanks and only what you need. Light a fire or a candle at dusk. Float a flower wreath on running water from a safe bank, and use flowers and string that won't harm the river. Spend the day outdoors.
 
 Midsummer is also the turning point: from now the days shorten. Many Pagans honour the sun at his height and acknowledge, gently, the decline that begins.`,
             },
             {
               heading: 'Herbs of the sun',
-              body: `Midsummer herb lore is some of the best recorded in European folk magic. St John's wort, with its yellow flowers that show red oil when crushed, was the chief midsummer herb from Ireland to Germany, hung over doors and windows and tucked into beds. Mugwort was worn as a belt or garland on St John's Eve and then thrown into the fire to carry away bad luck, a custom recorded in medieval Germany and France. Yarrow, vervain, elder flowers and fern were all gathered on this night in different places. Most of these traditions are Christian-era folk practice, not ancient rites, but they are real and old.
+              body: `Midsummer herb lore is some of the best recorded in European folk magic. St John's wort, with its yellow flowers that show red oil when crushed, was the chief midsummer herb from Ireland to Germany, hung over doors and windows and tucked into beds. Mugwort was worn as a belt or garland on St John's Eve and then thrown into the fire to carry away bad luck, a custom recorded in medieval Germany and France. (Avoid handling or burning mugwort in pregnancy, and don't take it internally.) Yarrow, vervain, elder flowers and fern were all gathered on this night in different places. Most of these traditions are Christian-era folk practice, not ancient rites, but they are real and old.
 
 If you gather, do it properly: be sure of the plant, take no more than a tenth of what is there, never take rare plants, and ask permission on private land. St John's wort interacts with many medicines, including the contraceptive pill and antidepressants, so don't take it internally without checking with a pharmacist. Elder leaves, bark and unripe berries are toxic; the flowers are the safe part.`,
             },
@@ -466,7 +466,7 @@ Lugh is a god of many skills, so it is also a good day to practise a craft or to
               'How far the Teltown fair and the modern hill gatherings continue pre-Christian practice is uncertain, though MacNeill made a strong case. The "dying grain god" is a modern idea shaped by Frazer, not a recorded ancient belief in Britain or Ireland.',
           },
           inPractice:
-            'Bake or buy a good loaf at the start of August. Break the first piece for the land and leave it outside (crumbled small, where birds can manage it), and eat the rest with someone.',
+            'Bake or buy a good loaf at the start of August. Break off the first piece for the land, set it on your altar overnight and then bury it or put it on the compost (bread is poor food for birds), and eat the rest with someone.',
           reflect: ['What are you beginning to harvest this year?', 'What skill would you like to learn or grow?'],
           further: ['Máire MacNeill, The Festival of Lughnasa (1962).', 'Ronald Hutton, The Stations of the Sun, chapters on harvest.'],
           library: ['traditional/deity/lugh', 'traditional/herb/meadowsweet', 'traditional/candle/orange'],
@@ -776,7 +776,7 @@ Reconstructionist paths, such as Heathenry, Hellenic polytheism or Gaelic polyth
           { name: 'A cup of clean water for the offering', ref: 'traditional/vessel/offering_bowl' },
           { name: 'Eight small things, one for each festival, from your year (a seed, a leaf, a dried flower, a crust of Lammas bread, a candle stub)' },
           { name: 'Your token from the land' },
-          { name: 'A little seasonal food and drink to share' },
+          { name: 'A little seasonal food and drink to share (juice or water if you don\'t drink alcohol)' },
           { name: 'A sprig of rosemary or another local herb', ref: 'traditional/herb/rosemary', optional: true },
           { name: 'Your journal and your written dedication' },
         ],

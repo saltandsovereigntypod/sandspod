@@ -270,7 +270,9 @@ This is also where the app is firm: honouring your forebears has nothing to do w
             },
             {
               heading: 'An ancestor shelf',
-              body: `Set aside a shelf, separate from your gods' place if you can. Put photographs, a keepsake, a written list of names, maybe a little earth from a place they lived. Give them what they liked: coffee, a biscuit, a splash of whisky, a pinch of tobacco on the soil outside, a sprig of something from the garden. Speak to them, tell them your news, and thank them. Clear old food after a day.
+              body: `Set aside a shelf, separate from your gods' place if you can. Put photographs, a keepsake, a written list of names, maybe a little earth from a place they lived. Give them what they liked: coffee, a biscuit, a splash of whisky (or their favourite soft drink), a sprig of something from the garden. Speak to them, tell them your news, and thank them. Clear old food after a day, and keep coffee, chocolate and alcohol where pets can't reach them.
+
+If a death is recent, go gently. Grief is not a test of your devotion, and the shelf can wait until you are ready. If grief is overwhelming or isn't easing, talk to someone you trust, your doctor, or a bereavement support service where you live.
 
 Many Heathens give to the dead at Winter Nights, at Jól's first night and at Dísablót, and on the anniversaries of their deaths.`,
             },
@@ -404,7 +406,7 @@ Most surviving runic inscriptions are practical or memorial: names on brooches, 
             },
             {
               heading: 'Lots and divination: the honest picture',
-              body: `Tacitus, writing in AD 98, describes Germanic divination: "They cut a twig from a fruit-tree, and divide it into small pieces, which, distinguished by certain marks, are thrown promiscuously upon a white garment." The head of the family, after praying to the gods, picks up three pieces and reads them. He does not say the marks were runes, and runes as far as we know did not yet exist. No later source clearly describes casting runes to tell the future.
+              body: `Tacitus, writing in AD 98, describes Germanic divination: "They cut a twig from a fruit-tree, and divide it into small pieces, which, distinguished by certain marks, are thrown promiscuously upon a white garment." Then a priest, or for a private question the master of the family, calls on the gods, looks up to the sky, takes up three pieces one after another and reads their marks. If the answer is unfavourable, the matter is not asked again that day. He does not say the marks were runes, and runes as far as we know did not yet exist. No later source clearly describes casting runes to tell the future.
 
 Most rune divination today comes from the 20th century. Guido von List invented his own "Armanen" runes in Austria in the early 1900s; his ideas fed directly into Nazi occultism, and that row is best avoided. Ralph Blum's The Book of Runes (1982) popularised rune-casting in the New Age world and added a "blank rune" that has no historical basis at all. Later Heathen writers built more careful systems on the rune poems.
 
@@ -412,7 +414,7 @@ Divining with runes can still be a meaningful modern practice, the way tarot is.
             },
             {
               heading: 'Using them well',
-              body: `If you want to work with runes, learn them first as letters: write your name, a blessing, a date. Then learn each rune's name and its rune-poem verse. Make a set yourself on wood, stone or card, and keep them in a cloth bag. To draw, do as Tacitus describes: pray, scatter, and pick up three without looking. Read them as prompts to think with, not verdicts.
+              body: `If you want to work with runes, learn them first as letters: write your name, a blessing, a date. Then learn each rune's name and its rune-poem verse. Make a set yourself on wood, stone or card, and keep them in a cloth bag. To draw, do as Tacitus describes: pray, scatter them on a white cloth, look up, and pick up three without looking. If the answer is no, don't keep asking the same question that day. Read them as prompts to think with, not verdicts.
 
 And learn which runes have been stolen. The SS used a doubled sowilo as its badge and a winged othala on uniforms; the algiz rune was used as a Nazi "life rune". In ordinary Heathen use these runes are fine, but tattoos or flags with those exact Nazi styles signal racism, not religion.`,
             },
@@ -616,7 +618,7 @@ Most Heathen worship happened outdoors or in ordinary halls, not purpose-built t
 – A horn or a cup used only for offerings.
 – An offering bowl, the hlautbolli, wood or pottery.
 – A candle or a small lamp.
-– A sprig of evergreen for sprinkling: juniper, fir, pine or yew (don't eat yew; it is very poisonous).
+– A sprig of evergreen for sprinkling: juniper, fir or pine. Yew was a holy tree, but almost every part of it is deadly to people, dogs, cats and horses, so honour it with a picture or a visit rather than a sprig on the stalli.
 – Images or symbols of your gods: a hammer for Thor, a boar for Freyr, a cat or a necklace for Freyja, a spindle or keys for Frigg, a spear or ravens for Odin. A simple carved figure or a postcard is fine.
 – Optionally, a ring to swear on, amber, and a cloth.
 
@@ -668,7 +670,9 @@ Galdr is different: sung or chanted charms, like the ones Odin lists in the Háv
             },
             {
               heading: 'Approach with care',
-              body: `Trance work is not for your first year, and not alone. It can unsettle people with a history of dissociation, psychosis or severe anxiety, and if that is you, it is wise to skip it. If you want to explore, find an experienced, accountable group, ask how they ground and care for people afterwards, and never go into trance under alcohol or drugs. For now, a gentle beginning is enough: sing or hum a rune's name slowly in the evening, sit in silence by a candle, and write what comes. And as always, no harmful seiðr: the app's workings are for seeing and blessing, not for binding other people.`,
+              body: `Trance work is not for your first year, and not alone. It can unsettle people with a history of dissociation, psychosis or severe anxiety, and if that is you, it is wise to skip it. If you want to explore, find an experienced, accountable group, ask how they ground and care for people afterwards, and never go into trance under alcohol or drugs. If you ever feel detached from yourself, frightened or unable to come back to ordinary awareness after spiritual practice, stop, ground yourself with food, warmth and company, and talk to a doctor or mental health professional; that is wisdom, not failure. Some modern seiðworkers use mugwort; leave it out if you are pregnant or trying to conceive, have asthma or are allergic to daisy-family plants. If you try útiseta, choose a safe place, tell someone where you are, and dress for the cold.
+
+For now, a gentle beginning is enough: sing or hum a rune's name slowly in the evening, sit in silence by a candle, and write what comes. And as always, no harmful seiðr: the app's workings are for seeing and blessing, not for binding other people.`,
             },
           ],
           knowAndDont: {
@@ -730,13 +734,13 @@ Galdr is different: sung or chanted charms, like the ones Odin lists in the Háv
           sections: [
             {
               heading: 'A young, varied religion',
-              body: `Modern Heathenry began in the early 1970s, almost at once in several countries. In Iceland, the farmer-poet Sveinbjörn Beinteinsson founded Ásatrúarfélagið in 1972; it was recognised by the state in 1973 and is now one of the country's larger religious bodies, open to all, with a hof being built in Reykjavík. In Britain, the Odinic Rite and others formed; in the United States, Stephen McNallen's Asatru Free Assembly. The Troth, founded in 1987 in the US, is now one of the largest international Heathen organisations and explicitly inclusive. In Sweden, Samfundet Forn Sed Sverige and others keep a Scandinavian "old custom" practice.
+              body: `Modern Heathenry began in the early 1970s, almost at once in several countries. In Iceland, the farmer-poet Sveinbjörn Beinteinsson founded Ásatrúarfélagið in 1972; it was recognised by the state in 1973 and is now one of the country's larger religious bodies, open to all, with a long-running project to build a hof (temple) on Öskjuhlíð hill in Reykjavík, begun in 2015. In Britain, the Odinic Rite and others formed; in the United States, Stephen McNallen's Asatru Free Assembly. The Troth, founded in 1987 in the US, is now one of the largest international Heathen organisations and explicitly inclusive. In Sweden, Samfundet Forn Sed Sverige and others keep a Scandinavian "old custom" practice.
 
 Locally, Heathens gather in kindreds, hearths or garths: small groups that blót and feast together. Some focus on Anglo-Saxon practice (often called Fyrnsidu or Theodism), some on Scandinavian or continental sources, some are broad.`,
             },
             {
               heading: 'Folkish and inclusive',
-              body: `From the start, a minority of Heathens claimed the religion belongs only to people of northern European descent. They call themselves "folkish". At the far end are openly white-supremacist groups, some in prisons, who use the gods as a banner for racism. The Asatru Folk Assembly, which restricts membership by ancestry, is listed as a hate group by the Southern Poverty Law Center. In 2016, well over a hundred Heathen organisations from around the world signed Declaration 127, publicly cutting ties with it.
+              body: `From the start, a minority of Heathens claimed the religion belongs only to people of northern European descent. They call themselves "folkish". At the far end are openly white-supremacist groups, some in prisons, who use the gods as a banner for racism. The Asatru Folk Assembly, which restricts membership by ancestry, has been listed as a hate group by the Southern Poverty Law Center since its count for 2017, in a category the SPLC calls "neo-Völkisch". In 2016, after the AFA announced that its halls were open only to people of European descent who were also straight and cisgender, Heathen groups issued Declaration 127, named for Hávamál stanza 127, publicly cutting ties with it. Within a few years more than 180 organisations in over twenty countries had signed.
 
 Most Heathens today are inclusive (some say "universalist", though the word is used loosely). They hold that the gods call whom they will. The lore backs them: the gods themselves marry giants and take in the Vanir as family, and the Viking Age was a world of trade, travel and mixed households from Dublin to Baghdad.
 
@@ -754,7 +758,7 @@ When you choose jewellery, tattoos or flags, ask what a stranger would read in t
             },
           ],
           knowAndDont: {
-            known: `Ásatrúarfélagið was founded in 1972 and recognised in 1973; The Troth was founded in 1987; the SPLC lists the Asatru Folk Assembly as a hate group; Declaration 127 was signed in 2016 by many Heathen groups. The Black Sun design dates to the Nazi period, and the SS adopted runic badges.`,
+            known: `Ásatrúarfélagið was founded in 1972 and recognised in 1973; The Troth (first called the Ring of Troth) was founded in December 1987; the SPLC has listed the Asatru Folk Assembly as a hate group since its 2017 count; Declaration 127 was issued in 2016 and later signed by more than 180 groups. The Black Sun design dates to the Nazi period, and the SS adopted runic badges.`,
             unknown: `How many Heathens there are, and what proportion are folkish, is hard to measure; surveys suggest a clear inclusive majority. "Folkish" covers a range of views, not all openly supremacist. No ancient source supports restricting the gods to a race.`,
           },
           inPractice: `Look up two or three Heathen organisations or kindreds near you or online. Read their statements on inclusion and their codes of conduct. Note any warning signs, and any that feel welcoming.`,
@@ -927,6 +931,7 @@ Let it be laid in the Well.`,
     `Bede, De temporum ratione, ch. 15, on Modranecht (summarised)`,
     `R. I. Page, Runes (1987); Neil Price, Children of Ash and Elm (2020); John Lindow, Norse Mythology (2001); H. R. Ellis Davidson, Gods and Myths of Northern Europe (1964)`,
     `Paul C. Bauschatz, The Well and the Tree (1982); Jenny Blain, Nine Worlds of Seid-Magic (2002); Mattias Gardell, Gods of the Blood (2003)`,
-    `Southern Poverty Law Center listing of the Asatru Folk Assembly; Declaration 127 (2016)`,
+    `Southern Poverty Law Center, Extremist Files: Asatru Folk Assembly (listed as a neo-Völkisch hate group since the 2017 count), https://www.splcenter.org/fighting-hate/extremist-files/group/asatru-folk-assembly; Declaration 127 (2016), background and signatory count from The Wild Hunt, https://wildhunt.org/tag/declaration-127`,
+    `Tacitus, Germania 10, checked against the Oxford translation at https://www.gutenberg.org/ebooks/7524; Heimskringla, Hákon the Good ch. 15 ("the night of mid-winter") and ch. 16 (Laing), checked at https://www.gutenberg.org/ebooks/598`,
   ],
 };

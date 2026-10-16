@@ -3,8 +3,8 @@ import { useMemo, useState } from 'react';
 import { Text } from 'react-native';
 
 import { Card, Chips, Field, MenuList, MenuRow, MoreScreen, Paragraphs, Section } from '../../../../../components/more/ui';
+import { CLOSED_GUIDE_VISIBLE, ClosedNotice } from '../../../../../components/library/ClosedNotice';
 import {
-  CLOSED_GUIDE_LIVE,
   CLOSED_TRADITIONS,
   closedGroups,
   OPENNESS_DETAIL,
@@ -13,10 +13,6 @@ import {
   type Openness,
 } from '../../../../../lib/library/closed';
 import { type } from '../../../../../theme';
-
-// Shown in development so the guide can be read before it goes live; hidden
-// in release builds until practitioners have reviewed it.
-export const CLOSED_GUIDE_VISIBLE = CLOSED_GUIDE_LIVE || __DEV__;
 
 const INTRO = [
   'Some traditions belong to a particular people. They are held by a nation, a family line or a community, often carried through times when people tried to stamp them out, and they are alive today. We call these closed: you come to them as a guest, not a practitioner, unless the people themselves bring you in.',
@@ -54,6 +50,8 @@ export default function ClosedTraditionsIndex() {
 
   return (
     <MoreScreen title="Closed & living traditions" eyebrow="Living Library" back="/more/library" backLabel="Back to the Library">
+      <ClosedNotice />
+
       <Section label="What closed means and why it matters">
         <Card tone="gold">
           <Paragraphs items={INTRO} />

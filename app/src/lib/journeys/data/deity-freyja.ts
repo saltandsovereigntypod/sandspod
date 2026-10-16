@@ -63,7 +63,7 @@ Beauty matters here, but money does not. A clean, cared-for shelf with a wildflo
           { name: 'An offering bowl', ref: 'traditional/vessel/offering_bowl' },
         ],
         preparation:
-          'Bathe or wash, and wear something you feel good in; a little scent or jewellery is fitting. Tidy the shrine. Pour the mead, set out the honey and the flower.',
+          'Bathe or wash, and wear something you feel good in; a little scent or jewellery is fitting (but no diffused essential oils if you have cats). Tidy the shrine. Pour the mead, set out the honey and the flower.',
         steps: [
           {
             title: 'Hallow the space',
@@ -236,11 +236,11 @@ Both own a falcon-feather cloak. Both weep: Frigg for her son Baldr, Freyja for 
               heading: 'The case for one origin',
               body: `Outside Scandinavia there is no Freyja. The continental Germans and Anglo-Saxons knew only a Frija or Frīg, Wodan’s wife; Friday is named for her. The Lombards told a story of Frea, Godan’s wife, who tricked him into giving her people victory. Some scholars argue that there was once a single Germanic goddess, *Frijjō, who in the north split into two figures: a wife-and-queen Frigg and a love-and-magic Freyja. On this view Óðr is Odin under an older name.
 
-Bellows, in a note to his 1923 translation of Grímnismál, already said that Freyja here “represents a confusion between two originally distinct divinities: the wife of Othin (Frigg) and the northern goddess of love.” Notice that even he thought the confusion was there to explain.`,
+Bellows, in a note to his 1923 translation of Grímnismál, reported the German scholar Eugen Mogk’s view that Freyja here “represents a confusion between two originally distinct divinities: the wife of Othin (Frigg) and the northern goddess of love.” Notice that even a century ago scholars thought there was a tangle to explain, though they disagreed about which way it ran.`,
             },
             {
               heading: 'The case for two',
-              body: `Other scholars point out that the Norse sources consistently keep them apart, and that Freyja has a strong identity of her own: her Vanir family, her twin brother, her cats and boar, her seiðr. Her name may be a title, “Lady,” attached to a goddess who once had another name. Place names in Norway and Sweden distinguish Frigg sites from Freyja sites. Separate cults may have existed side by side for a long time, whatever their deep origins.
+              body: `Other scholars point out that the Norse sources consistently keep them apart, and that Freyja has a strong identity of her own: her Vanir family, her twin brother, her cats and boar, her seiðr. Her name may be a title, “Lady,” attached to a goddess who once had another name. The few place names that may contain Frigg’s name are distinct from the Freyja names. Separate cults may have existed side by side for a long time, whatever their deep origins.
 
 The honest answer is that nobody knows. The evidence allows both readings, and serious scholars hold each.`,
             },
@@ -253,7 +253,7 @@ What matters in practice is to be clear about which goddess you are addressing i
           ],
           knowAndDont: {
             known:
-              'The Norse sources treat Freyja and Frigg as distinct. Continental and Anglo-Saxon sources know only Frija/Frīg/Frea, Wodan’s wife. The shared falcon cloak, weeping and Óðr/Óðinn parallel are in the sources. Bellows’ note on Grímnismál 14 is in his 1923 translation.',
+              'The Norse sources treat Freyja and Frigg as distinct. Continental and Anglo-Saxon sources know only Frija/Frīg/Frea, Wodan’s wife. The shared falcon cloak, weeping and Óðr/Óðinn parallel are in the sources. Bellows’ note on Grímnismál 14, citing Mogk, is in his 1923 translation.',
             unknown:
               'Whether the two share one origin, and if so when they diverged, is unresolved. Whether Óðr is Odin is unknown. Which goddess Friday was originally named for in the north is unclear; Old Norse Frjádagr could come from either, and was probably borrowed from West Germanic.',
           },
@@ -298,13 +298,13 @@ What matters in practice is to be clear about which goddess you are addressing i
           sections: [
             {
               heading: 'Traces of her cult',
-              body: `Freyja’s worship is harder to see than Thor’s or Freyr’s, but it is there. Place names in Norway and Sweden such as Frøihov (“Freyja’s temple”) and several Härnevi and Hørnes (from Hörn, one of her names) mark places where she was honoured. Snorri, in Ynglinga saga, says that when the other gods died Freyja alone remained to keep up the sacrifices, and that she was honoured far and wide.
+              body: `Freyja’s worship is harder to see than Thor’s or Freyr’s, but it is there. Place names in Norway and Sweden such as Frøihov (probably “Freyja’s temple”), and several Swedish Härnevi (perhaps “Hörn’s shrine,” from one of her names), seem to mark places where she was honoured. Snorri, in Ynglinga saga, says that when the other gods died Freyja alone remained to keep up the sacrifices, and that she was honoured far and wide.
 
 One name links her to a festival. As Vanadís, the dís of the Vanir, she is connected with the dísir, female guardian spirits and ancestral mothers, who were honoured at the dísablót. At Uppsala the Dísablót was held in late winter alongside a great assembly and market, the Dísting; Ynglinga saga tells of a king who rode around the hall of the dísir at a dísablót and was thrown from his horse.`,
             },
             {
               heading: 'The seeress',
-              body: `The fullest description of a seiðr-woman is in the Saga of Erik the Red, set in Greenland around 1000. The seeress Þorbjörg, called the Little Völva, arrives in a blue cloak hung with stones, a hood of black lambskin lined with white catskin, and gloves of catskin. She eats a porridge of goat’s milk and a meal of animal hearts, sits on a high platform on a cushion of hen feathers, and the women sing a special song, the varðlokkur, while she goes into trance. Then she answers the community’s questions about the coming season and their own fates.
+              body: `The fullest description of a seiðr-woman is in the Saga of Erik the Red, set in Greenland around 1000. The seeress Þorbjörg, called the Little Völva, arrives in a blue cloak hung with stones, a hood of black lambskin lined with white catskin, and gloves of catskin. She eats a porridge of goat’s milk and a meal of animal hearts, sits on a high seat on a cushion of hen feathers, and, with the women of the house standing round her, one woman sings a special song, the varðlokkur, for her work. Then she answers the community’s questions about the coming season and their own fates.
 
 The saga does not name Freyja, but the catskins and the seiðr tradition point to her. Since the 1990s, groups such as Hrafnar in California, led by Diana Paxson, have reconstructed an oracular seiðr based on this account, and it is now practised by Heathens in many countries.`,
             },
@@ -323,7 +323,7 @@ Don’t ask her to make a particular person love you or to bind someone. That is
           ],
           knowAndDont: {
             known:
-              'Freyja place names are found in Norway and Sweden. The Dísablót and Dísting at Uppsala are attested in Ynglinga saga and later Swedish records; the market at Uppsala continued into modern times. The Little Völva episode is in the Saga of Erik the Red. Hrafnar’s oracular seiðr began in the late 1980s and 1990s.',
+              'Probable Freyja place names are found in Norway and Sweden, though individual etymologies are debated. The Dísablót and Dísting at Uppsala are attested in Ynglinga saga and later Swedish records; the market at Uppsala continued into modern times. The Little Völva episode is in the Saga of Erik the Red. Hrafnar’s oracular seiðr began in the late 1980s and 1990s.',
             unknown:
               'Whether Freyja was the goddess honoured at the dísablót, or whether the dísir were honoured on their own, is not clear; the link through her name Vanadís is suggestive, not proven. The Erik saga was written two centuries after its setting and may be literary. Modern seiðr is a reconstruction.',
           },
@@ -357,7 +357,7 @@ In the year, the Dísablót around the February full moon is her great tide in m
               heading: 'What to offer',
               body: `Mead and honey are the most common offerings, for a goddess of sweetness and plenty. Strawberries and other berries, good bread, milk and butter, and flowers fresh from a garden are all fitting. Amber, which was traded across the north and worn as beads, is given to her, as are other jewellery and gold; some devotees offer a small piece of gold jewellery and wear it only in her honour. Perfume, a song, a dance, a love poem, a well-made thing: beauty is an offering.
 
-Chocolate is a modern favourite, popular among American Heathens since the 1990s. It is fine, but it is toxic to cats and dogs, so keep it out of reach. Some devotees offer time spent caring for cats, at a shelter or for a neighbour.`,
+Chocolate is a modern favourite among devotees. It is fine, but it is toxic to cats and dogs, so keep it out of reach. Some devotees offer time spent caring for cats, at a shelter or for a neighbour.`,
             },
             {
               heading: 'Gift for a gift',
@@ -509,7 +509,7 @@ On the ninth night, give something you have made or something precious to you: a
         closing:
           'Write the date and your vow in your journal, and keep the paper copy for your rededication. Do something kind for your body afterwards: eat well, rest.',
         safety:
-          'Keep the candle away from hair, scarves, flowers and the necklace cord, and never leave it burning. Lilies are deadly to cats; honey, chocolate and alcohol are bad for pets. Pour offerings outside or down a drain, not into houseplants. If you choose to drink alcohol, a sip is enough.',
+          'Keep the candle away from hair, scarves, flowers and the necklace cord, and never leave it burning. Lilies are deadly to cats; chocolate and alcohol are toxic to pets, and honey is best kept from them too. Essential oils and diffused or sprayed perfume can harm cats and birds; wear scent lightly, on yourself, not in the air. Pour offerings outside or down a drain, not into houseplants. If you choose to drink alcohol, a sip is enough.',
       },
     },
     {
