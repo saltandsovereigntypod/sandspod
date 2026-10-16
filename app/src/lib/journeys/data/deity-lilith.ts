@@ -20,7 +20,7 @@ You will learn the layers of her story, from Mesopotamian spirits to a feminist 
     'Please avoid the story that "patriarchal Jews turned a great goddess into a demon". There is no evidence for an ancient Lilith goddess, and that story easily slides into old antisemitic tropes.',
     'Do not use Hebrew divine names, or the names of the three angels from Jewish childbirth amulets, as decorations or tools in this practice. They belong to Jewish protective custom.',
     'Rites here are devotional and empowering only: no curses, no harm, no rites aimed at another person.',
-    'Shadow work and boundary work can stir up painful things. This is not therapy. If old trauma rises, pause, and reach out to someone you trust or a qualified professional.',
+    'Shadow work and boundary work can stir up painful things. This is not therapy. If old trauma rises, pause, and reach out to someone you trust or a qualified professional. If you are in crisis, call or text 988 in the US and Canada, call Samaritans on 116 123 in the UK and Ireland, or find a local line at findahelpline.com.',
     'Safety: wine, dark chocolate and grapes are toxic to dogs and cats. Mugwort is not for use in pregnancy and should be kept away from pets. Never leave candles unattended.',
   ],
   holyDays: [],
@@ -221,7 +221,7 @@ These are brief remarks in a vast work, folklore carried in passing by rabbis wh
             },
             {
               heading: 'The incantation bowls',
-              body: `Archaeologists have found well over two thousand Aramaic incantation bowls from Mesopotamia, mostly from about the fifth to the eighth centuries CE, made for Jewish, Christian, Mandaean and other clients. They are simple clay bowls with a spiral of protective writing inside, buried upside-down under the floors of houses to trap demons. Liliths are among their commonest targets.
+              body: `Some two thousand or more Aramaic incantation bowls from Mesopotamia are now known, in museums and private collections, mostly from about the sixth to the eighth centuries CE (scholars’ estimates of the total vary), made for Jewish, Christian, Mandaean and other clients. They are simple clay bowls with a spiral of protective writing inside, buried upside-down under the floors of houses to trap demons. Liliths are among their commonest targets.
 
 Some bowls are written as a get, a Jewish bill of divorce, served on Lilith: she is formally divorced from the family and ordered to leave the house and never return. It is a striking legal-religious idea. It also shows that for ordinary families Lilith was a real fear, a spirit who came at night to harm sleepers, women in childbirth and babies.`,
             },
@@ -340,13 +340,13 @@ These Liliths are beautiful, self-absorbed and deadly to men: a Victorian fantas
             },
             {
               heading: 'Feminist reclamation',
-              body: `In the early 1970s the Jewish feminist theologian Judith Plaskow wrote "The Coming of Lilith", a new midrash (a retelling of scripture) in which Lilith and Eve meet over the garden wall, talk, and become sisters. In 1976 Jewish feminists in New York founded Lilith, a magazine that is still published, named for the first woman who claimed equality. In the 1990s the music festival Lilith Fair (1997–99) brought her name to a wide audience.
+              body: `In the early 1970s the Jewish feminist theologian Judith Plaskow wrote "The Coming of Lilith", a new midrash (a retelling of scripture) in which Lilith and Eve meet over the garden wall, talk, and become sisters. In 1976 Jewish feminists in New York founded Lilith, a magazine that is still published, named for the first woman who claimed equality. In the late 1990s the touring music festival Lilith Fair (1997–99, briefly revived in 2010) brought her name to a wide audience.
 
 For these women Lilith was not a goddess. She was a symbol, taken from inside Jewish tradition, of a woman who would not be ruled, and a way of arguing within Judaism for women's equality. Many Jewish feminists still honour her this way, in midrash, ritual and art.`,
             },
             {
               heading: 'Occult and Pagan Lilith',
-              body: `In Western occultism, Lilith grew from the Kabbalah into a powerful spirit or goddess of the night, sexuality and the "dark feminine". Some left-hand path and Qliphothic traditions treat her as a demon queen to be worked with. Modern astrologers use a point they call Black Moon Lilith, usually the moon's apogee, the far point of its orbit; the name goes back to an occult astrologer, Sepharial, in the early twentieth century, and is modern. Many witches and Pagans honour her as a goddess of autonomy and the night, often at the dark moon.
+              body: `In Western occultism, Lilith grew from the Kabbalah into a powerful spirit or goddess of the night, sexuality and the "dark feminine". Some left-hand path and Qliphothic traditions treat her as a demon queen to be worked with. Modern astrologers use a point they call Black Moon Lilith, usually the moon's apogee, the far point of its orbit. The name is modern: in 1918 the occult astrologer Sepharial gave the name Lilith to a supposed hidden second moon of the Earth (which does not exist), and later twentieth-century astrologers moved the name to the lunar apogee. Many witches and Pagans honour her as a goddess of autonomy and the night, often at the dark moon.
 
 These are modern practices, sometimes drawing heavily on Jewish texts, sometimes not at all. They are not "ancient Lilith worship", and it is better to say so plainly. That does not stop them being real devotion.`,
             },
@@ -359,7 +359,7 @@ A few sensitive points. Keep it honest about history. Keep it respectful of Jewi
           ],
           knowAndDont: {
             known:
-              'Goethe’s Faust (1808), Rossetti’s Lady Lilith (1866–68), Collier’s Lilith (1887), MacDonald’s Lilith (1895), Plaskow’s "The Coming of Lilith" (early 1970s), Lilith magazine (founded 1976) and Lilith Fair (1997–99) are documented. Black Moon Lilith is a modern astrological point.',
+              'Goethe’s Faust (1808), Rossetti’s Lady Lilith (1866–68), Collier’s Lilith (1887), MacDonald’s Lilith (1895), Plaskow’s "The Coming of Lilith" (early 1970s), Lilith magazine (founded 1976) and Lilith Fair (1997–99) are documented. Black Moon Lilith is a modern astrological point: the name was first given by Sepharial in 1918 to an imaginary dark second moon, and later moved to the lunar apogee.',
             unknown:
               'Modern occult and Pagan devotion to Lilith is diverse and largely unwritten; practices vary from person to person and group to group. Popular offering lists and correspondences for her are modern and personal, not traditional.',
           },
@@ -499,7 +499,7 @@ Take a bath or shower. Dress in something you feel fully yourself in. Prepare th
         closing:
           'Keep your vow folded beneath the mirror and reread it at each dark moon. Pour the wine or juice onto the earth outside, or down the sink with respect, the next morning. Let the rose dry. Record the rite in your journal.',
         safety:
-          'Use a stable candle holder on a heatproof plate, away from hair, clothing, curtains and paper, and never leave candle or incense unattended. Keep wine, grapes, chocolate and incense smoke away from pets. Do not drink alcohol if you should not, and use juice instead. If the mirror work becomes frightening or distressing, turn on the light and stop.',
+          'Use a stable candle holder on a heatproof plate, away from hair, clothing, curtains and paper, and never leave candle or incense unattended. Keep wine, grapes, chocolate and incense smoke away from pets, and leave out the incense if you or anyone at home has asthma. Do not drink alcohol if you should not (under age, pregnant, in recovery, on medication), and use pomegranate juice instead. If the mirror work becomes frightening or distressing, turn on the light and stop.',
       },
     },
     {
