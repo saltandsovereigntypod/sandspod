@@ -93,7 +93,6 @@ export const FRESHNESS_WORDS: Record<FreshnessLevel, string> = {
 export function freshnessLine(kind: OfferingKindId, fresh: Freshness): string {
   const k = offeringKind(kind);
   if (!k || fresh.level === 'lasting') return 'This keeps; it doesn’t need refreshing.';
-  const what = k.label.toLowerCase();
   const change =
     k.ages === 'evaporates'
       ? 'evaporating'
@@ -104,9 +103,9 @@ export function freshnessLine(kind: OfferingKindId, fresh: Freshness): string {
           : k.ages === 'wilts'
             ? 'wilting'
             : 'turning';
-  if (fresh.level === 'fresh') return `Fresh. The ${what} was set out ${ago(fresh.sinceMs)}.`;
-  if (fresh.level === 'fading') return `Fading: the ${what} is ${change}. Set out ${ago(fresh.sinceMs)}.`;
-  return `Time to refresh: the ${what} has been out ${ago(fresh.sinceMs).replace(' ago', '')}. Pour it out or return it to the earth, and set out fresh.`;
+  if (fresh.level === 'fresh') return `Fresh. Set out ${ago(fresh.sinceMs)}.`;
+  if (fresh.level === 'fading') return `Fading, and ${change}. Set out ${ago(fresh.sinceMs)}.`;
+  return `Time to refresh: it has been out ${ago(fresh.sinceMs).replace(' ago', '')}. ${k.ages === 'evaporates' ? 'Pour it out' : 'Return it to the earth'} and set out fresh.`;
 }
 
 function ago(ms: number): string {

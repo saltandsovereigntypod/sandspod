@@ -330,17 +330,17 @@ const AltarObjectView = memo(function AltarObjectView({
       ]}
     >
       <View style={[styles.layer, agedOpacity < 1 && { opacity: agedOpacity }, droop > 0 && { transformOrigin: '50% 100%', transform: [{ rotate: `${droop}deg` }, { scaleY: 1 - droop / 120 }] }]}>
-      {glowing && <View style={[styles.glow, { borderRadius: rect.width / 2 }]} />}
-      {source ? (
-        // The website's image sits in the button's content box (6px / 1px padding on 80px).
-        <View style={[styles.content, { paddingHorizontal: rect.width * IMAGE_INSET.x, paddingVertical: rect.width * IMAGE_INSET.y }]}>
-          <Image source={source} style={[styles.fill, (spent || ash) && styles.spentImage]} resizeMode="contain" />
-        </View>
-      ) : paper ? (
-        <PetitionPaper />
-      ) : (
-        <Text style={[styles.symbol, { fontSize: rect.width * 0.49 }]}>{object.fallbackSymbol || '✦'}</Text>
-      )}
+        {glowing && <View style={[styles.glow, { borderRadius: rect.width / 2 }]} />}
+        {source ? (
+          // The website's image sits in the button's content box (6px / 1px padding on 80px).
+          <View style={[styles.content, { paddingHorizontal: rect.width * IMAGE_INSET.x, paddingVertical: rect.width * IMAGE_INSET.y }]}>
+            <Image source={source} style={[styles.fill, (spent || ash) && styles.spentImage]} resizeMode="contain" />
+          </View>
+        ) : paper ? (
+          <PetitionPaper />
+        ) : (
+          <Text style={[styles.symbol, { fontSize: rect.width * 0.49 }]}>{object.fallbackSymbol || '✦'}</Text>
+        )}
       </View>
       {overlays.herb && <Image source={candleHerbOverlay} style={styles.herbOverlay} resizeMode="contain" />}
       {overlays.oil && <Image source={candleOilOverlay} style={styles.oilOverlay} resizeMode="contain" />}
