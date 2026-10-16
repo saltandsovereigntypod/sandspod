@@ -29,7 +29,7 @@
     person: (x) => kit.href.tool("hedge", "ancestors/person", `id=${encodeURIComponent(x)}`),
     personEdit: (x) => kit.href.tool("hedge", "ancestors/edit", x ? `id=${encodeURIComponent(x)}` : "")
   };
-  const supportLink = () => kit.support(core.support);
+  const supportLink = () => kit.support();
   let user = null;
   let settings = {};
   let dreams = [];
@@ -633,7 +633,6 @@
     return `${words}${error?.message ? ` (${error.message})` : ""}. Your words are still here.`;
   };
 
-  kit.bindSupport(root, core.support);
   kit.delegate(root, {
     // Dream journal
     "dream-search"(el) {
@@ -846,7 +845,7 @@
     // Ancestors
     candle() {
       const entry = people.find((e) => e.id === id);
-      if (entry) kit.runDraft(A.candleDraft(entry.data));
+      if (entry) kit.beginRitual(A.candleDraft(entry.data));
     },
     "person-field"(el) {
       personForm.person[el.id] = el.value;

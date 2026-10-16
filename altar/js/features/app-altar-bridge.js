@@ -282,7 +282,9 @@
       noticeEl.title = "Click to dismiss";
       noticeEl.addEventListener("click", () => { noticeEl.hidden = true; });
       const wrap = document.querySelector(".altar-stage-wrap");
-      wrap?.insertAdjacentElement("afterend", noticeEl);
+      const stage = wrap?.querySelector("[data-altar-stage]");
+      if (stage) stage.insertAdjacentElement("afterend", noticeEl);
+      else wrap?.appendChild(noticeEl);
     }
     noticeEl.textContent = text || "";
     noticeEl.hidden = !text;

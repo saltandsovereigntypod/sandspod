@@ -353,7 +353,7 @@
       const chosen = S.simmerPot(el.dataset.value);
       if (!chosen) return;
       const label = planner.intentionByKey(pot.intention)?.label ?? "Peace & rest";
-      kit.runDraft(S.simmerDraft(chosen, pot.intention, label));
+      kit.beginRitual(S.simmerDraft(chosen, pot.intention, label));
     },
     "book-search"(el) {
       book.query = el.value;

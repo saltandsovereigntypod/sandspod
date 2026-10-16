@@ -41,7 +41,10 @@
         ? h.card(`${h.label("This hour")}${h.cardTitle(`The hour of ${hour.planet}`)}${h.muted(`Until ${timeOfDay(hour.end)}. Good for ${B.hours.HOUR_SUITS[hour.planet].short}.`)}`, { gold: true })
         : "",
       h.section("Tools", h.list(tools.map((tool, i) => h.row({ href: routes[i], title: tool.title, detail: details[i] ?? tool.detail })), "Cosmic tools")),
-      h.list([h.row({ href: links.premadeFor("cosmic"), title: "Cosmic workings", detail: "Premade rituals and spells; filter by Cosmic & celestial" })])
+      h.list([
+        h.row({ href: "/today/sky/", title: "The sky today", detail: "Planets, retrogrades and eclipses" }),
+        h.row({ href: links.premadeFor("cosmic"), title: "Cosmic workings", detail: "Premade rituals and spells; filter by Cosmic & celestial" })
+      ])
     ].join("");
   }
 
@@ -384,7 +387,8 @@
         "Day and night are each split into twelve hours, longer or shorter with the seasons. Each is ruled in turn by one of the seven old planets, starting at sunrise with the planet that rules the day."
       ),
       '<div class="pb-stack" data-part="body"></div>',
-      '<div data-part="place"></div>'
+      '<div data-part="place"></div>',
+      h.list([h.row({ href: "/today/sky/", title: "The sky today", detail: "Planets, retrogrades, eclipses and your place" })])
     ].join("");
     const body = root.querySelector('[data-part="body"]');
     const placeBox = root.querySelector('[data-part="place"]');

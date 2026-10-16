@@ -5,7 +5,7 @@
 .practice-b { overflow-wrap: anywhere; }
 .practice-b .pb-title { display: grid; gap: 4px; text-align: left; }
 .practice-b .pb-title h1 { text-align: left; }
-.practice-b h1, .practice-b h2, .practice-b h3 { max-width: none; }
+.practice-b h1, .practice-b h2, .practice-b h3 { max-width: none; text-align: left; }
 .practice-b .sp-label {
   font-family: inherit; font-weight: 400; font-size: 0.78rem; letter-spacing: 0.16em;
   text-transform: uppercase; color: var(--muted); margin: 0; line-height: 1.4;

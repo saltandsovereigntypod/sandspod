@@ -85,8 +85,7 @@
       tools = document.createElement("section");
       tools.className = "app-altar-tools";
       tools.setAttribute("aria-label", "Altar workings and tools");
-      const workspace = document.querySelector(".altar-workspace");
-      workspace?.appendChild(tools);
+      document.querySelector(".altar-stage-wrap")?.appendChild(tools);
     }
     const objects = B().doc().objects;
     const L = core.livingState;
@@ -989,6 +988,8 @@
     document.addEventListener("altar:saved", () => { loadAltarData(); keepSnapshot(); });
     ["app-altar:changed", "living-object-state:changed"].forEach((name) => document.addEventListener(name, () => requestAnimationFrame(renderTools)));
     global.addEventListener("resize", renderSky);
+    const stage = document.querySelector("[data-altar-stage]");
+    if (stage) new MutationObserver(() => requestAnimationFrame(renderTools)).observe(stage, { childList: true });
     setInterval(() => { if (!document.hidden) { renderSky(); loadAltarData(); } }, 5 * 60 * 1000);
     global.SaltPage?.onUserChange?.(() => { loadAltarData(); loadPractice(); });
     // After the page restores its working draft.

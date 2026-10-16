@@ -26,4 +26,3 @@ export * as dreamSymbols from '../../app/src/lib/craft/hedge/dreamSymbols.ts';
 export * as readings from '../../app/src/lib/craft/hedge/readings.ts';
 export * as devotion from '../../app/src/lib/craft/solitary/devotion.ts';
 export * as correspondences from '../../app/src/lib/craft/eclectic/correspondences.ts';
-export * as support from '../../app/src/lib/support/lines.ts';

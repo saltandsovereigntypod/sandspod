@@ -120,3 +120,24 @@ test("the bundle carries the app's practices, collections and My practice choice
   assert.equal(core.correspondences.CORRESPONDENCES, "eclectic.correspondences");
   for (const id of ["green", "kitchen", "hedge", "solitary", "eclectic"]) assert.ok(core.practices.CRAFT_TOOLS[id].length > 0);
 });
+
+test("Light a candle hands the app's draft to the altar's Ritual Companion", () => {
+  const L = require("../rituals/js/rituals-logic.js");
+  const store = memoryStorage();
+  const saved = { RitualsLogic: globalThis.RitualsLogic, sessionStorage: globalThis.sessionStorage, location: globalThis.location };
+  globalThis.RitualsLogic = L;
+  globalThis.sessionStorage = store;
+  globalThis.location = { href: "/practice/hedge/ancestors/person/?id=a1" };
+  try {
+    const draft = core.ancestors.candleDraft({ name: "Nan", relation: "", born: {}, died: {}, loved: "", memory: "" });
+    kit.beginRitual(draft);
+    assert.equal(globalThis.location.href, L.BEGIN_URL);
+    const handoff = JSON.parse(store.getItem(L.KEYS.begin));
+    assert.equal(handoff.kind, "draft");
+    assert.equal(handoff.template.title, "A candle for Nan");
+    assert.equal(handoff.template.ritual_template_steps.length, draft.steps.length);
+  } finally {
+    Object.assign(globalThis, saved);
+  }
+  assert.match(kit.support(), /href="\/more\/support\/"/);
+});

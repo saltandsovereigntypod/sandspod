@@ -44,6 +44,8 @@
     library: (id) => `/grimoire/?entity=${enc(String(id || "").replace(/:/g, "/"))}`,
     /** Settings in the Sanctuary panel (calendars, My practice). */
     settings: "/?sanctuary=settings",
+    /** Crisis and support lines (the app's More → Support). */
+    support: "/more/support/",
     nativeLand: "https://native-land.ca"
   };
 
@@ -290,72 +292,12 @@
 
   // ------------------------------------------------------------------ support
 
-  let supportRegion = null;
-  function guessRegion(lines) {
-    if (supportRegion) return supportRegion;
-    try {
-      return lines.regionFromLocale(Intl.DateTimeFormat().resolvedOptions().locale) || "none";
-    } catch {
-      return "none";
-    }
-  }
-  const SUPPORT_REGIONS = [
-    ["US", "US"],
-    ["GB", "UK"],
-    ["IE", "Ireland"],
-    ["CA", "Canada"],
-    ["AU", "Australia"],
-    ["NZ", "New Zealand"],
-    ["none", "Elsewhere"]
-  ];
-  function supportLines(lines, region) {
-    const sections = lines.supportSections(region === "none" ? null : region);
-    return sections
-      .map((s) => {
-        const items = s.lines
-          .map((line) => {
-            const where = line.region.map((r) => lines.REGION_NAMES[r]).join(" & ");
-            const texting = lines.textWords(line);
-            const reach = join([line.number ? `Call ${line.number}` : null, texting]);
-            const links = [
-              line.number && line.how.includes("call") ? `<a class="pr-link" href="${esc(lines.telUrl(line.number))}">Call</a>` : "",
-              ...(line.alsoCall || []).map((a) => `<a class="pr-link" href="${esc(lines.telUrl(a.number))}">Call ${esc(a.label)}</a>`),
-              `<a class="pr-link" href="${esc(line.url)}" target="_blank" rel="noopener noreferrer">Website<span class="pr-visually-hidden"> for ${esc(line.name)} (opens in a new tab)</span></a>`
-            ].filter(Boolean);
-            return `<div class="pr-support__line"><strong>${esc(line.name)}</strong><span class="sp-caption">${esc(join([where, line.hours]))}</span>${reach ? `<span class="sp-gold">${esc(reach)}</span>` : ""}${(line.alsoCall || [])
-              .map((a) => `<span>${esc(`${a.label}: ${a.number}`)}</span>`)
-              .join("")}${line.note ? `<span>${esc(line.note)}</span>` : ""}<span class="pr-row-actions">${links.join("")}</span></div>`;
-          })
-          .join("");
-        return `<section class="sp-section"><h3 class="sp-label">${esc(s.label)}</h3>${caption(s.blurb)}${items}</section>`;
-      })
-      .join("");
-  }
   /**
    * "If this stirs up something heavy, support is here." (the app's
-   * SupportLink), opening the app's support lines in place. `lines` is the
-   * app's lib/support/lines module from a page's bundle.
+   * SupportLink), opening the site's Support page with its crisis lines.
    */
-  function support(lines) {
-    if (!lines?.supportSections) return "";
-    const region = guessRegion(lines);
-    return `<details class="sp-details pr-support" data-support><summary>If this stirs up something heavy, support is here.</summary><div class="sp-section">${card(
-      `<p>The practices here can stir deep things: grief, old wounds, the ones we’ve lost. That’s part of the work, and it can still be a lot to carry. Reaching out to another person is a strong thing to do.</p><p>If you’re in danger now, call your local emergency number (911, 999, 112, 000).</p>`,
-      { gold: true }
-    )}<div class="sp-field"><label for="support-region">Show lines for</label><select id="support-region" data-support-region>${SUPPORT_REGIONS.map(
-      ([value, label]) => `<option value="${value}"${value === region ? " selected" : ""}>${esc(label)}</option>`
-    ).join("")}</select></div><div data-support-list>${supportLines(lines, region)}</div>${caption(
-      "Each line was checked against its own website in October 2026. Numbers sometimes change: if one doesn’t connect, its website will have the latest. The links open your phone or browser; this site doesn’t send anything."
-    )}</div></details>`;
-  }
-  function bindSupport(root, lines) {
-    root.addEventListener("change", (event) => {
-      const select = event.target.closest?.("[data-support-region]");
-      if (!select || !lines) return;
-      supportRegion = select.value;
-      const box = root.querySelector("[data-support-list]");
-      if (box) box.innerHTML = supportLines(lines, supportRegion);
-    });
+  function support(label = "If this stirs up something heavy, support is here.") {
+    return `<p class="pr-support"><a class="pr-link sp-caption" href="${href.support}">${esc(label)}</a></p>`;
   }
 
   // ------------------------------------------------------------------ drawing
@@ -615,7 +557,26 @@
     return dialog;
   }
 
+  /**
+   * Begin a guided working in the altar's Ritual Companion, as the app's
+   * startRitual does: hand it the draft (rituals/js/rituals-logic.js
+   * beginHandoff, stored in sessionStorage) and go there, where the session
+   * is saved. Pages without the Rituals logic fall back to runDraft.
+   */
+  function beginRitual(draft) {
+    const L = global.RitualsLogic;
+    if (!L?.beginHandoff) return runDraft(draft);
+    try {
+      global.sessionStorage.setItem(L.KEYS?.begin || "saltRitualBegin", JSON.stringify(L.beginHandoff({ kind: "draft", draft })));
+    } catch {
+      return runDraft(draft);
+    }
+    global.location.href = L.BEGIN_URL || "/altar/?ritual=1&beginRitual=1";
+    return null;
+  }
+
   return {
+    beginRitual,
     esc,
     plural,
     cap,
@@ -659,7 +620,6 @@
     typedDay,
     landCard,
     support,
-    bindSupport,
     render,
     delegate,
     root,
