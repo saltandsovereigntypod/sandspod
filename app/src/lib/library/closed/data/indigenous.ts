@@ -117,7 +117,7 @@ export const INDIGENOUS: ClosedTradition[] = [
       {
         heading: "“The Dreaming” is an English approximation",
         body:
-          "“Dreaming” and “Dreamtime” are English words. They come from the 1890s, when Francis Gillen and Baldwin Spencer used them to translate the Arrernte word altyerre, and the translation was disputed almost at once. Each nation has its own word and its own understanding: for Anangu at Uluru it is Tjukurpa. The anthropologist W. E. H. Stanner called it the “everywhen”: not a distant past but a reality that is still present.\n\nSome Aboriginal people dislike “Dreaming” because it suggests something unreal. Many describe it instead as Law: the foundation of how to live, who is related to whom, and how to care for Country.",
+          "“Dreaming” and “Dreamtime” are English words. They date from 1896, when Francis Gillen, followed by Baldwin Spencer, used “dream times” to translate an Arrernte word now usually written altyerre (they wrote alcheringa), and the translation has been debated ever since, beginning with the missionary Carl Strehlow in 1908. Each nation has its own word and its own understanding: for Anangu at Uluru it is Tjukurpa. The anthropologist W. E. H. Stanner called it the “everywhen”: not a distant past but a reality that is still present.\n\nSome Aboriginal people dislike “Dreaming” because it suggests something unreal. Many describe it instead as Law: the foundation of how to live, who is related to whom, and how to care for Country.",
       },
       {
         heading: "Law and Country",
@@ -335,7 +335,7 @@ export const INDIGENOUS: ClosedTradition[] = [
       {
         heading: "Seized, burned and returned",
         body:
-          "From the 17th and 18th centuries, Lutheran church and state authorities campaigned to convert the Sámi. Drums were confiscated and many were burned; noaidi were persecuted, and some were tried and executed for sorcery. Only around 70 old drums survive, most in museums.\n\nIn recent years Sámi museums have been bringing drums home. In 2022 Denmark transferred ownership of the drum confiscated from Anders Poulsen in 1691 to the Sámi museum in Karasjok, and South Sámi institutions have negotiated the return of other drums from museums abroad.",
+          "From the 17th and 18th centuries, Lutheran church and state authorities campaigned to convert the Sámi. Drums were confiscated and many were burned; noaidi were persecuted, and some were tried and executed for sorcery. Only around 70 old drums survive, most in museums.\n\nIn recent years Sámi museums have been bringing drums home. In 2022 Denmark transferred ownership of the drum confiscated from Anders Poulsen in 1691 to RiddoDuottarMuseat, the Sámi museum in Karasjok, where it had been on loan since 1979. Sámi museums are seeking the return of other drums still held abroad.",
       },
       {
         heading: "Sámi views today",
@@ -460,7 +460,7 @@ export const INDIGENOUS: ClosedTradition[] = [
       {
         heading: "Temazcal and ayahuasca",
         body:
-          "The temazcal is the Mesoamerican sweat bath, used for thousands of years for healing, purification and care after childbirth, and still part of family and community life. Resort versions sell it as an exotic spa, often without the knowledge or care that traditional temazcaleras bring.\n\nAyahuasca is a sacred plant medicine of some, not all, Amazonian peoples; Peru declared the traditional knowledge and use of ayahuasca by native Amazonian communities part of its national cultural heritage in 2008. A tourism boom has brought deaths, sexual abuse by fake healers, dangerous drug interactions and overharvesting near tourist hubs. In 2018 Olivia Arévalo, an 81-year-old Shipibo-Konibo healer and rights defender, was shot dead; a Canadian tourist suspected of killing her was then lynched. Who killed her was never clearly established, but the case drew attention to the strain ayahuasca tourism places on Indigenous communities.",
+          "The temazcal is the Mesoamerican sweat bath, used for thousands of years for healing, purification and care after childbirth, and still part of family and community life. Resort versions sell it as an exotic spa, often without the knowledge or care that traditional temazcaleras bring.\n\nAyahuasca is a sacred plant medicine of some, not all, Amazonian peoples; Peru declared the traditional knowledge and use of ayahuasca by native Amazonian communities part of its national cultural heritage in 2008. A tourism boom has brought deaths, sexual abuse by fake healers, dangerous drug interactions and overharvesting near tourist hubs. In 2018 Olivia Arévalo, an 81-year-old Shipibo-Konibo healer and rights defender, was shot dead; a Canadian ayahuasca tourist whom prosecutors named as the suspect was then lynched by local people. Because he died without a trial, the case was never tested in court, but it drew attention to the strain ayahuasca tourism places on Indigenous communities.",
       },
       {
         heading: "Pachamama and the Andes",

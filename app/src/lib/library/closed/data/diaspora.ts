@@ -110,7 +110,7 @@ export const DIASPORA: ClosedTradition[] = [
       {
         heading: 'Persecution and recognition',
         body:
-          "Vodou was suppressed under French colonial law and then by successive Haitian governments and the Catholic Church. A 1935 decree-law outlawed 'superstitious practices', and in the early 1940s a Church-backed 'anti-superstition' campaign destroyed temples and sacred objects. During the US occupation of Haiti (1915–1934), American writers spread sensational 'voodoo' stories that fed Hollywood for decades.\n\nThe 1987 constitution repealed the 1935 law, and an April 2003 decree under President Aristide recognised Vodou as a religion, allowing its clergy to perform legally recognised ceremonies such as marriages. Practitioners still face stigma and, at times, violence.",
+          "Vodou was suppressed under French colonial law and then by successive Haitian governments and the Catholic Church. A 1935 decree-law outlawed 'superstitious practices', and in the early 1940s a Church-backed 'anti-superstition' campaign destroyed temples and sacred objects. During the US occupation of Haiti (1915–1934), American writers spread sensational 'voodoo' stories that fed Hollywood for decades.\n\nArticle 297 of the 1987 constitution, won after protests that included a large march in 1986, abrogated the 1935 decree-law by name. An April 2003 decree under President Aristide recognised Vodou as a religion, allowing its priests to perform legally recognised ceremonies such as marriages. A constitutional amendment that took effect in 2012 dropped Article 297, which worried many Vodou leaders; the government said the 2003 recognition still stands. Practitioners still face stigma and, at times, violence.",
       },
     ],
     howPeopleComeIn:
@@ -187,7 +187,7 @@ export const DIASPORA: ClosedTradition[] = [
       {
         heading: 'Marie Laveau: myth and history',
         body:
-          "Marie Laveau (c. 1801–1881), a free woman of colour, was New Orleans's most famous Voodoo priestess. The historical record shows a Catholic woman, a hairdresser and healer who nursed the sick during yellow fever epidemics, and who visited and ministered to prisoners. She was a respected and powerful figure in her community.\n\nMuch of the rest is legend: secret spy networks among the households she served, ceremonies with a great snake, magical feats, and a belief that she never aged, which probably grew from confusion with her daughter, also named Marie, who may have carried on her work. Historians Carolyn Morrow Long and Ina Johanna Fandrich have worked to separate record from story.\n\nThe 'make three X's on her tomb' custom in St Louis Cemetery No. 1 is a twentieth-century tourist practice, not a tradition, and it damaged the tomb. Since 2015 the cemetery has been open to visitors only with licensed guides, partly because of this vandalism.",
+          "Marie Laveau (c. 1801–1881), a free woman of colour, was New Orleans's most famous Voodoo priestess. The historical record shows a Catholic woman, a hairdresser and healer who nursed the sick during yellow fever epidemics, and who visited and ministered to prisoners. She was a respected and powerful figure in her community.\n\nMuch of the rest is legend: secret spy networks among the households she served, ceremonies with a great snake, magical feats, and a belief that she never aged, which probably grew from confusion with her daughter, also named Marie, who may have carried on her work. Historians Carolyn Morrow Long and Ina Johanna Fandrich have worked to separate record from story.\n\nThe 'make three X's on her tomb' custom in St Louis Cemetery No. 1 is a twentieth-century tourist practice, not a tradition, and it damaged the tomb. Since 2015 the Archdiocese of New Orleans has admitted visitors only with an authorised guide (or as relatives of those buried there), largely because of this vandalism.",
       },
       {
         heading: 'Tourist Voodoo today',
@@ -259,7 +259,7 @@ export const DIASPORA: ClosedTradition[] = [
       {
         heading: 'National Vodun Day',
         body:
-          "Since 1996, Benin has recognised Vodun with a national holiday on 10 January, celebrated most famously in Ouidah, where pilgrims, practitioners and the diaspora gather. In recent years the government has expanded the celebrations into a multi-day 'Vodun Days' festival. These are public, national occasions; the inner rites of the orders remain private.",
+          "Benin has marked Vodun with a national holiday on 10 January since the mid-1990s (the year is usually given as 1996, though some sources differ), celebrated most famously in Ouidah, where pilgrims, practitioners and the diaspora gather. Since 2024 the government has expanded the celebrations into a multi-day 'Vodun Days' festival. These are public, national occasions; the inner rites of the orders remain private.",
       },
     ],
     howPeopleComeIn:
@@ -374,7 +374,7 @@ export const DIASPORA: ClosedTradition[] = [
       {
         heading: 'What it is',
         body:
-          "Ifá is both a divination system and a vast body of sacred literature. Its knowledge is held in hundreds of verses arranged under 256 signs (odu), which carry Yoruba history, ethics, medicine, philosophy and stories. Trained priests learn this corpus over many years, largely by memory, and use it to counsel people on their lives.\n\nIfá sits within the wider Yoruba religious world (sometimes called Isese, 'tradition'), which also honours the orishas and the ancestors.",
+          "Ifá is both a divination system and a vast body of sacred literature. Its knowledge is held in a vast and still-growing body of verses (ese) arranged under 256 signs (odu), which carry Yoruba history, ethics, medicine, philosophy and stories. Trained priests learn this corpus over many years, largely by memory, and use it to counsel people on their lives.\n\nIfá sits within the wider Yoruba religious world (sometimes called Isese, 'tradition'), which also honours the orishas and the ancestors.",
       },
       {
         heading: 'History and heritage',
@@ -492,7 +492,7 @@ export const DIASPORA: ClosedTradition[] = [
       {
         heading: 'History and persecution',
         body:
-          "Candomblé took shape in nineteenth-century Bahia among enslaved and freed Africans. The Casa Branca do Engenho Velho (Ilê Axé Iyá Nassô Oká) in Salvador, founded by African women, is considered one of the oldest terreiros and became the first Afro-Brazilian temple protected as national heritage in the 1980s.\n\nCandomblé was long persecuted. Police raided terreiros and seized sacred objects, and in Bahia terreiros were required to register with and get permits from the police, a rule that applied to no other religion, until 1976. Today terreiros still face attacks and 'religious racism', often from extremist groups. Brazil marks 21 January as the National Day to Combat Religious Intolerance, in memory of Mãe Gilda de Ogum, a Candomblé priestess who died in 2000 after her terreiro was attacked.",
+          "Candomblé took shape in nineteenth-century Bahia among enslaved and freed Africans. The Casa Branca do Engenho Velho (Ilê Axé Iyá Nassô Oká) in Salvador, founded by African women, is considered one of the oldest terreiros and became the first Afro-Brazilian temple protected as national heritage in the 1980s.\n\nCandomblé was long persecuted. Police raided terreiros and seized sacred objects, and in Bahia terreiros were required to register with and get permits from the police, a rule that applied to no other religion, until 1976. Today terreiros still face attacks and 'religious racism', often from extremist groups. Brazil marks 21 January as the National Day to Combat Religious Intolerance, in memory of Mãe Gilda de Ogum, a Candomblé priestess who died on that date in 2000 after she was vilified in print and her terreiro was attacked.",
       },
       {
         heading: "Women's leadership",
@@ -611,7 +611,7 @@ export const DIASPORA: ClosedTradition[] = [
       {
         heading: 'Obeah and the colonial law',
         body:
-          "Colonial authorities saw Obeah as a threat because spiritual leaders could unite enslaved people. After Tacky's Revolt in Jamaica in 1760, in which Obeah practitioners were said to have played a part, Jamaica passed a law making Obeah a crime punishable by death. Similar laws spread across the British Caribbean, and after emancipation 'Obeah Acts' continued to be used to criminalise African-derived religion and policing of Black communities into the twentieth century.\n\nSome territories have since decriminalised it, among them Anguilla, Barbados, Trinidad and Tobago and St Lucia, between 1980 and 2004. Others have not: Jamaica's Obeah Act of 1898 remains on the books, though a 2013 amendment removed flogging as a punishment and prosecutions are now rare. Historian Diana Paton's work traces this history in detail.",
+          "Colonial authorities saw Obeah as a threat because spiritual leaders could unite enslaved people. After Tacky's Revolt in Jamaica in 1760, in which Obeah practitioners were said to have played a part, Jamaica passed a law making Obeah a crime punishable by death. Similar laws spread across the British Caribbean, and after emancipation 'Obeah Acts' continued to be used to criminalise African-derived religion and to police Black communities well into the twentieth century.\n\nSome territories have since decriminalised it, among them Anguilla, Barbados, Trinidad and Tobago and St Lucia, between 1980 and 2004. Others have not: Jamaica's Obeah Act of 1898 remains on the books, though a 2013 amendment removed flogging and whipping as punishments, and prosecutions are now rare. Historian Diana Paton's work traces this history in detail.",
       },
       {
         heading: 'In Caribbean life today',
@@ -681,7 +681,7 @@ export const DIASPORA: ClosedTradition[] = [
     howPeopleComeIn:
       "Many people first attend a session at a centro or a misa (spiritual mass), or are brought by family. Those with mediumship develop it over time under the guidance of experienced espiritistas. There is generally no formal initiation, but there is apprenticeship and community.",
     openAndClosed:
-      "Espiritismo is one of the more open traditions here. Kardec's writings are public and freely available, many centres welcome visitors, and people of many backgrounds attend. The forms crossed with Afro-Caribbean religion are more bound to particular houses and lineages. In all forms, developing mediumship is done with guidance in a community, and practitioners caution against attempting it alone.",
+      "Espiritismo is one of the more open traditions here. Kardec's writings are public and freely available, many centres welcome visitors, and people of many backgrounds attend. The forms crossed with Afro-Caribbean religion are more bound to particular houses and lineages. In all forms, developing mediumship is done with guidance in a community, and practitioners caution against attempting it alone. We list it as initiatory in the broad sense this guide uses: there is usually no initiation rite, but serious practice is learned within a centre and under experienced mediums.",
     myths: [
       {
         myth: 'Espiritismo is the same as Santería.',
@@ -735,7 +735,7 @@ export const DIASPORA: ClosedTradition[] = [
       {
         heading: 'Commercialisation abroad',
         body:
-          "Since the 2000s, Quimbanda has been marketed in English-language books and online courses, often presented as dark or 'left-hand path' magic for an international audience. Many Brazilian practitioners see this as a distortion that strips the tradition of its Brazilian community, language and lineage. If you are curious, the respectful course is to learn from Brazilian scholarship and voices rather than from courses.",
+          "In the last two decades or so, Quimbanda has been marketed in English-language books and online courses, often presented as dark or 'left-hand path' magic for an international audience. Many Brazilian practitioners see this as a distortion that strips the tradition of its Brazilian community, language and lineage. If you are curious, the respectful course is to learn from Brazilian scholarship and voices rather than from courses.",
       },
     ],
     howPeopleComeIn:
@@ -746,7 +746,7 @@ export const DIASPORA: ClosedTradition[] = [
       {
         myth: 'Exu is the devil.',
         truth:
-          'The equation of Exu with the devil came from Christian polemic. In Afro-Brazilian religion, Exu spirits are complex messengers and guardians, not Satan.',
+          'The equation of Exu with the devil came largely from Christian polemic. In Afro-Brazilian religion, the orixá Exu and the exu spirits of Umbanda and Quimbanda are complex figures, messengers and guardians among them, not Satan. Some houses use devilish imagery themselves, a legacy of that history that practitioners interpret in their own ways.',
       },
     ],
     please: [

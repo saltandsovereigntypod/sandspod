@@ -23,7 +23,7 @@ export const SOURCING: SourcingNote[] = [
   {
     name: "Palo santo (Bursera graveolens)",
     concern:
-      "Palo santo is a tree of the dry forests of Ecuador and Peru, and is part of Andean and coastal folk healing. Good-quality palo santo should come only from wood that has died and lain on the ground for years, and Peru requires permits showing legal origin. Forest authorities regularly seize illegally cut wood, and a lot of sticks sold abroad are of unknown origin, freshly cut or not palo santo at all. Its IUCN status is old (2010), so nobody can say for certain how wild stands are doing.",
+      "Palo santo grows in tropical dry forests from Mexico to Peru, and most sold abroad comes from Ecuador and Peru, where it is part of coastal and Andean folk healing. Good-quality palo santo should come only from wood that has died and lain on the ground for years. Globally the IUCN lists it as Least Concern (2019), but Peru classes it as Critically Endangered, bans felling living trees and requires documents proving legal origin. Peru’s forest service regularly seizes illegally cut wood, and a lot of sticks sold abroad are of unknown origin, freshly cut or not palo santo at all.",
     instead:
       "Buy only from sellers who can name the community or cooperative, show the legal paperwork and confirm the wood was collected from fallen trees, ideally with profits going to local reforestation. Or use local woods and resins instead.",
     tradition: 'mexican-andean',
@@ -42,7 +42,7 @@ export const SOURCING: SourcingNote[] = [
     concern:
       "Indian sandalwood (Santalum album) is listed as Vulnerable on the IUCN Red List after centuries of overharvesting and smuggling. Hawaiian sandalwood (ʻiliahi) was stripped from the islands in the early 1800s for the China trade. Cheap “sandalwood” incense is often synthetic fragrance on another wood.",
     instead:
-      "Choose plantation-grown sandalwood from a supplier who can show its origin. Australian sandalwood (Santalum spicatum) is sold as an alternative, harvested under licence in Western Australia, but wild stands there are also under pressure, so look for plantation sources. A little goes a long way; use it sparingly.",
+      "Choose plantation-grown sandalwood from a supplier who can show its origin. Australian sandalwood (Santalum spicatum) is sold as an alternative and is still harvested from the wild under licence in Western Australia, but the IUCN assessed it as Vulnerable in 2021, so look for plantation sources. A little goes a long way; use it sparingly.",
   },
   {
     ref: 'traditional/herb/frankincense',

@@ -111,4 +111,4 @@ export function nextLesson(journey: Journey | null, lessonId: string) {
  * Whether the journeys show in the app. Off until every journey has had its
  * fact-check pass; the screens exist, but nothing links to them.
  */
-export const JOURNEYS_LIVE = false;
+export const JOURNEYS_LIVE = true;

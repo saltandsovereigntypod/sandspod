@@ -59,9 +59,9 @@ export const OTHER: ClosedTradition[] = [
     learn:
       "Read scholars and practitioners of the traditions, visit Hindu temples as a respectful guest, and if you feel called, seek a teacher in an established lineage and take time to know them.",
     reading: [
-      "Swami Lakshmanjoo, Kashmir Shaivism: The Secret Supreme (1985)",
+      "Swami Lakshmanjoo, Kashmir Shaivism: The Secret Supreme (1988)",
       "André Padoux, The Hindu Tantric World: An Overview (2017)",
-      "Christopher D. Wallis, Tantra Illuminated (2012)",
+      "Christopher D. Wallis, Tantra Illuminated (2012; 2nd ed. 2013)",
       "Gavin Flood, The Tantric Body (2006)",
       "Hugh B. Urban, Tantra: Sex, Secrecy, Politics, and Power in the Study of Religion (2003)",
       "David Gordon White (ed.), Tantra in Practice (2000)",
@@ -86,12 +86,12 @@ export const OTHER: ClosedTradition[] = [
       {
         heading: "Who may study it",
         body:
-          "Traditionally, deep Kabbalah study was limited to learned, observant Jewish men, and later custom, strengthened after the false messiah crisis of the 1660s, held that students should be at least forty, married and well grounded in Talmud. Today many Jewish teachers, including Hasidic and Jewish Renewal teachers, teach it more widely.\n\nThere is real disagreement. Many Jews hold that Kabbalah is part of Torah and belongs within Jewish life; some welcome sincere non-Jewish learners to study respectfully; many object to it being sold as a self-help brand cut off from Judaism, as with commercial “Kabbalah centres” and red-string bracelets.",
+          "Traditionally, deep Kabbalah study was limited to learned, observant Jewish men, and a later custom, recorded by 17th-century rabbis and reinforced by rabbinic bans after the Sabbatean and Frankist upheavals, held that students should be at least forty, married and well grounded in Talmud. It was never universally observed. Today many Jewish teachers, including Hasidic and Jewish Renewal teachers, teach it more widely.\n\nThere is real disagreement. Many Jews hold that Kabbalah is part of Torah and belongs within Jewish life; some welcome sincere non-Jewish learners to study respectfully; many object to it being sold as a self-help brand cut off from Judaism, as with commercial “Kabbalah centres” and red-string bracelets.",
       },
       {
         heading: "Hermetic Qabalah is a separate thing",
         body:
-          "From the late 15th century, Christian scholars such as Giovanni Pico della Mirandola and Johannes Reuchlin adapted Kabbalah for Christian purposes. Western occultists later joined it to astrology, alchemy and tarot, most influentially in the Hermetic Order of the Golden Dawn, founded in 1888. That system, usually spelled Qabalah, is a Western esoteric tradition in its own right.\n\nIt is fine to say so plainly: Hermetic Qabalah is not Jewish Kabbalah. Jewish scholars note that it often misreads Jewish sources and uses Hebrew divine names out of context. Practitioners of the Western system should name it accurately and not present it as Jewish tradition.",
+          "From the late 15th century, Christian scholars such as Giovanni Pico della Mirandola and Johannes Reuchlin adapted Kabbalah for Christian purposes. Western occultists later joined it to astrology, alchemy and tarot, most influentially in the Hermetic Order of the Golden Dawn, founded in 1888. That system, usually spelled Qabalah, is a Western esoteric tradition in its own right.\n\nPut plainly, Hermetic Qabalah is not Jewish Kabbalah. Jewish scholars note that it often misreads Jewish sources and uses Hebrew divine names out of context. Practitioners of the Western system should name it accurately and not present it as Jewish tradition.",
       },
     ],
     howPeopleComeIn:
@@ -154,7 +154,7 @@ export const OTHER: ClosedTradition[] = [
       {
         heading: "Lineage, degrees and oaths",
         body:
-          "Initiatory Wicca is passed person to person: “only a witch can make a witch”. A seeker is initiated by a priestess or priest who was themselves initiated, so each Wiccan can trace a line back. There are usually three degrees, and the second or third allows a person to lead a coven.\n\nAt initiation, a Wiccan swears to keep the tradition’s secrets and copies the coven’s Book of Shadows by hand. Its contents are oathbound: some early material was published (by Gardner’s critics and later, with permission, by Janet and Stewart Farrar), but reading text is not the same as being initiated. Traditional covens do not charge for training.",
+          "Initiatory Wicca is passed person to person: “only a witch can make a witch”. A seeker is initiated by a priestess or priest who was themselves initiated, so each Wiccan can trace a line back. There are usually three degrees, and the second or third allows a person to lead a coven.\n\nAt initiation, a Wiccan swears to keep the tradition’s secrets and copies the coven’s Book of Shadows by hand. Its contents are oathbound: some early material was published (by Gardner’s critics and later, with Doreen Valiente’s support, by Janet and Stewart Farrar), but reading text is not the same as being initiated. Traditional covens do not charge for training.",
       },
       {
         heading: "Our stance",

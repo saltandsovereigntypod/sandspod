@@ -122,7 +122,7 @@ export const JOURNEY: Journey = {
             {
               heading: '“Stay for me”',
               body:
-                'At last Pwyll does what no one had thought of. He calls out: “O maiden, for the sake of him whom thou best lovest, stay for me.” And she answers, with the dry wit that runs through all her speeches: “I will stay gladly, and it were better for thy horse hadst thou asked it long since.”\n\nShe tells him who she is: “I am Rhiannon, the daughter of Heveydd Hên.” She is being married against her will to another man, and she has come to choose Pwyll instead. She sets the date: a year from that night, at her father’s court. It is one of the great scenes in Welsh literature, and it shows everything at once: Rhiannon cannot be captured by force, only asked; and she is the one who chooses.',
+                'At last Pwyll does what no one had thought of. He calls out: “O maiden, for the sake of him whom thou best lovest, stay for me.” And she answers, with the dry wit that runs through all her speeches: “I will stay gladly,” said she, “and it were better for thy horse hadst thou asked it long since.”\n\nShe tells him who she is: “I am Rhiannon, the daughter of Heveydd Hên.” She is being married against her will to another man, and she has come to choose Pwyll instead. She sets the date: a year from that night, at her father’s court. It is one of the great scenes in Welsh literature, and it shows everything at once: Rhiannon cannot be captured by force, only asked; and she is the one who chooses.',
             },
             {
               heading: 'The bag that could not be filled',
