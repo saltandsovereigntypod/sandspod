@@ -569,7 +569,7 @@ function restoreWorkingAltarDraft() {
 
   restoreAltarData(draft);
   const destinationParams = new URLSearchParams(window.location.search);
-  const hasSpecificDestination = ["cabinet", "apothecaryItem", "placeCabinetItem", "placeApothecaryItem", "selectObject", "editRitualTemplate"].some((name) => destinationParams.has(name));
+  const hasSpecificDestination = ["cabinet", "apothecaryItem", "placeCabinetItem", "placeApothecaryItem", "selectObject", "editRitualTemplate", "beginRitual"].some((name) => destinationParams.has(name));
   if (!hasSpecificDestination) showAltarToast("Working altar restored");
 }
 

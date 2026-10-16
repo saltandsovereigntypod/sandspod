@@ -128,10 +128,11 @@ a.td-tag:hover { background: rgba(226, 195, 109, 0.16); }
 .td-year__meaning { color: var(--td-parchment); font-size: 0.92rem; line-height: 1.5; }
 .td-custom { display: flex; align-items: center; gap: 12px; }
 .td-custom > div { flex: 1; display: grid; gap: 2px; min-width: 0; }
-.td-save { position: sticky; bottom: 84px; z-index: 2; display: grid; gap: 8px; padding: 12px; border-radius: 16px; background: rgba(12, 21, 16, 0.94); border: 1px solid var(--td-goldline); }
+.td-save { z-index: 2; display: grid; gap: 8px; padding: 12px; border-radius: 16px; background: rgba(12, 21, 16, 0.94); border: 1px solid var(--td-goldline); }
 .td-save .button { justify-self: start; }
 .td-save .button[disabled] { opacity: 0.5; cursor: default; }
-@media (min-width: 701px) { .td-save { bottom: 16px; } }
+.td-save--sticky { position: sticky; bottom: 84px; }
+@media (min-width: 701px) { .td-save--sticky { bottom: 16px; } }
 
 /* Holy pages */
 .td-summary { font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 500; font-size: 1.3rem; line-height: 1.4; color: var(--cream); }

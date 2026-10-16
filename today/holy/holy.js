@@ -1,0 +1,229 @@
+/*
+ * A holy day or a moon phase, opened from Today, as the app has it
+ * (app/src/app/(tabs)/today/holy/[ref].tsx): what it is, who is honoured,
+ * what we know and don't, how to keep it, a working, and its correspondences.
+ * Signed in, it's kept in your Grimoire the first time you open it (the same
+ * rows the app's saveHolyPage writes), or linked if you already have it.
+ */
+(function () {
+  "use strict";
+
+  const C = window.SaltCore && window.SaltCore.today;
+  const H = window.SaltCore && window.SaltCore.holy;
+  const T = window.SaltToday;
+  const root = document.querySelector("[data-page-root]");
+  const esc = (text) => (window.SaltPage ? window.SaltPage.esc(text) : String(text ?? ""));
+  if (!root) return;
+  if (!C || !H || !T) {
+    root.innerHTML = '<p><a class="sp-back" href="/today/">‹ Back to Today</a></p><p class="sp-notice">This page could not load. Check your connection and refresh the page.</p>';
+    return;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get("ref") || "";
+  const fromToday = params.get("from") === "today";
+  const page = (() => {
+    try {
+      return H.holy.holyPage(ref);
+    } catch {
+      return null;
+    }
+  })();
+
+  const back = `<p><a class="sp-back" href="/today/">‹ Back to Today</a></p>`;
+
+  if (!page) {
+    // From Today, a holiday without its own page opens the calendars, as the app does.
+    if (fromToday && ref && !ref.startsWith("moon-")) {
+      window.location.replace("/today/calendar/");
+      return;
+    }
+    document.title = "Not found | Salt & Sovereignty";
+    root.innerHTML =
+      back +
+      `<header><p class="sp-eyebrow">Holy days</p><h1>Not found</h1></header>` +
+      `<p>There isn’t a page for this day yet.</p>` +
+      `<p class="sp-caption">See every holiday ahead in <a class="td-link" href="/today/calendar/">Calendar &amp; holidays</a>.</p>`;
+    return;
+  }
+
+  document.title = `${page.title} | Salt & Sovereignty`;
+  const premade = (() => {
+    try {
+      return page.ritual.premade ? C.premade.premadeById(page.ritual.premade) : null;
+    } catch {
+      return null;
+    }
+  })();
+
+  let libraryEntries = null;
+  function libraryLink(name) {
+    try {
+      if (!libraryEntries) libraryEntries = C.library.traditionalEntries();
+      return T.libraryHref(C.library.findByName(libraryEntries, name));
+    } catch {
+      return null;
+    }
+  }
+
+  const paras = (text) =>
+    `<div class="td-paras">` +
+    String(text || "")
+      .split(/\n\s*\n/)
+      .map((p) => p.trim())
+      .filter(Boolean)
+      .map((p) => `<p>${esc(p)}</p>`)
+      .join("") +
+    `</div>`;
+  const section = (label, body) => `<section class="sp-section"><h2 class="sp-label">${esc(label)}</h2>${body}</section>`;
+
+  /** A source, with any web address in it made a link. */
+  function source(text) {
+    return esc(text).replace(/https?:\/\/[^\s<]+[^\s<.,;:)]/g, (url) => `<a href="${url}" rel="noopener noreferrer" target="_blank">${url}</a>`);
+  }
+
+  /** The moon as it is now: phase, sign, its name this month, and any void-of-course time today. */
+  function moonTonight() {
+    const now = new Date();
+    const moon = C.moon.moonState(now);
+    let name = null;
+    try {
+      name = C.calendars.MOON_CALENDAR.dateOf(now, { place: null, hemisphere: "north", options: {} }).long;
+    } catch {
+      name = null;
+    }
+    const voc = C.cosmicHours.vocForDay(new Date(now.getFullYear(), now.getMonth(), now.getDate()));
+    const t = C.calendar.timeOfDay;
+    return (
+      `<div class="td-card"><p class="td-practice-label">Tonight</p>` +
+      `<p>${esc(`${moon.name} in ${C.moon.moonSign(now)}, ${Math.round(moon.illumination * 100)}% lit`)}</p>` +
+      (name ? `<p class="sp-caption">${esc(name)}</p>` : "") +
+      (voc.length
+        ? voc.map((v) => `<p class="sp-caption">${esc(`Void of course ${t(v.start)}–${t(v.end)}, until it enters ${v.nextSign}: traditionally a time to finish things, not begin them.`)}</p>`).join("")
+        : `<p class="sp-caption">No void-of-course time today.</p>`) +
+      `</div>`
+    );
+  }
+
+  function render(grimoireHtml) {
+    const c = page.correspondences || {};
+    const groups = [
+      ["Deities", c.deities],
+      ["Herbs", c.herbs],
+      ["Crystals", c.crystals],
+      ["Colours", c.colors],
+      ["Foods", c.foods],
+      ["Symbols", c.symbols]
+    ];
+    const tags = (items) =>
+      `<div class="td-tags">` +
+      items
+        .map((name) => {
+          const href = libraryLink(name);
+          return href ? `<a class="td-tag" href="${esc(href)}">${esc(name)}</a>` : `<span class="td-tag">${esc(name)}</span>`;
+        })
+        .join("") +
+      `</div>`;
+
+    const working =
+      premade || page.ritual.outline?.length
+        ? section(
+            "A working",
+            `<div class="td-card"><h3 class="td-card__title">${esc(page.ritual.title ?? premade?.title ?? "A working for the day")}</h3>` +
+              (premade ? `<p class="sp-caption">${esc(premade.summary)}</p>` : "") +
+              (page.ritual.outline?.length ? `<ol class="td-bullets">${page.ritual.outline.map((s) => `<li>${esc(s)}</li>`).join("")}</ol>` : "") +
+              `<div class="sp-actions">` +
+              (premade ? `<a class="button button--primary" href="${esc(T.siteHref({ pathname: "/rituals/premade/[id]", params: { id: premade.id } }))}">Open the working</a>` : "") +
+              `<a class="button button--ghost" href="${esc(T.siteHref("/rituals/planner"))}">Plan a ritual</a></div></div>`
+          )
+        : "";
+
+    root.innerHTML =
+      back +
+      `<header><p class="sp-eyebrow">${esc(page.tradition)}</p><h1>${esc(page.title)}</h1></header>` +
+      `<p class="td-summary">${esc(page.summary)}</p>` +
+      (page.ref.startsWith("moon-") ? moonTonight() : "") +
+      `<div data-grimoire aria-live="polite">${grimoireHtml || ""}</div>` +
+      section("Who is honoured, and why", paras(page.honours)) +
+      section("History", paras(page.history)) +
+      (page.respect ? `<div class="sp-card sp-card--gold"><p class="td-practice-label">With respect</p>${paras(page.respect)}</div>` : "") +
+      (page.celebrate.length ? section("Keeping it today", `<ul class="td-bullets">${page.celebrate.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`) : "") +
+      working +
+      (groups.some(([, items]) => items?.length)
+        ? section(
+            "Correspondences",
+            groups
+              .filter(([, items]) => items?.length)
+              .map(([label, items]) => `<div class="td-corr"><span class="td-practice-label">${esc(label)}</span>${tags(items)}</div>`)
+              .join("") + `<p class="sp-caption">Tap one the Living Library has to open it.</p>`
+          )
+        : "") +
+      section("What we know", paras(page.knowAndDont.known)) +
+      section("What we don’t", paras(page.knowAndDont.unknown)) +
+      (page.sources.length ? section("Sources", `<ul class="td-sources">${page.sources.map((s) => `<li>${source(s)}</li>`).join("")}</ul>`) : "");
+  }
+
+  function setGrimoire(html) {
+    const slot = root.querySelector("[data-grimoire]");
+    if (slot) slot.innerHTML = html;
+  }
+
+  const section_ = () => H.holy.grimoireSection(page);
+  const keptCard = (pageId, savedNow) =>
+    `<div class="td-card"><p class="td-practice-label">${savedNow ? "Saved to your Grimoire" : "In your Grimoire"}</p>` +
+    `<p class="sp-caption">${esc(`Under ${section_()}, with room for your own notes.`)}</p>` +
+    `<div class="sp-actions"><a class="button button--ghost" href="/grimoire/?page=${encodeURIComponent(pageId)}">Open the page</a></div></div>`;
+
+  /** Kept in your Grimoire: linked if you already have it, saved the first time you open it. */
+  let keeping = false;
+  async function keepInGrimoire(user) {
+    if (!user || !window.db) {
+      setGrimoire(`<p class="sp-caption">Sign in to keep pages like this in your Grimoire, with room for your own notes.</p>`);
+      return;
+    }
+    if (keeping) return;
+    keeping = true;
+    const db = window.db;
+    try {
+      // Row-level security limits these to your own rows.
+      const [books, sections, pages] = await Promise.all([
+        db.from("grimoire_books").select("id,title,created_at,updated_at").eq("user_id", user.id).order("created_at"),
+        db.from("grimoire_sections").select("id,book_id,title,sort_order,created_at").eq("user_id", user.id),
+        db.from("grimoire_pages").select("id,book_id,section_id,title,page_type,sort_order,metadata,created_at,updated_at").eq("user_id", user.id)
+      ]);
+      const failed = [books, sections, pages].find((r) => r.error);
+      if (failed) throw failed.error;
+      const existing = H.holy.findHolyGrimoirePage(pages.data || [], sections.data || [], page);
+      if (existing) {
+        setGrimoire(keptCard(existing.id, false));
+        return;
+      }
+      const snapshot = { fetchedAt: new Date().toISOString(), books: books.data || [], sections: sections.data || [], pages: pages.data || [], blocks: [], links: [] };
+      const { id, ops } = H.holyOps.holyPageOps(
+        snapshot,
+        { userId: user.id, now: new Date().toISOString() },
+        { ref: page.ref, title: page.title, sectionTitle: section_(), blocks: H.holy.holyBlocks(page, premade?.title) },
+        H.newId
+      );
+      // In order: the book, the section, the page, then its blocks.
+      for (const op of ops) {
+        if (op.kind !== "insert") continue;
+        const { error } = await db.from(op.table).insert(op.row);
+        if (error && error.code !== "23505") throw error;
+      }
+      setGrimoire(keptCard(id, true));
+    } catch {
+      setGrimoire(`<p class="sp-caption">This page couldn’t be kept in your Grimoire just now. It will try again next time you open it.</p>`);
+    } finally {
+      keeping = false;
+    }
+  }
+
+  render("");
+  if (window.SaltPage) {
+    window.SaltPage.ready().then(keepInGrimoire);
+    window.SaltPage.onUserChange((user) => keepInGrimoire(user));
+  } else {
+    keepInGrimoire(null);
+  }
+})();

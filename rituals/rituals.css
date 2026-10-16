@@ -1,0 +1,102 @@
+/* Rituals pages: what the shared Sanctuary page styles don't already cover. */
+.rt-head { display: grid; gap: 6px; }
+.rt-head-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.rt-text-link { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+.rt-text-link:hover, .rt-text-link:focus-visible { color: var(--cream); }
+.rt-quiet { border-color: transparent; }
+.rt-status[data-tone="problem"] { color: var(--cream); border-left-color: #d98b6a; }
+.rt-narrow { max-width: 220px; }
+
+.sp-page a:focus-visible,
+.sp-page button:focus-visible,
+.sp-page input:focus-visible,
+.sp-page textarea:focus-visible,
+.sp-page summary:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+.sp-chip:disabled { opacity: 0.4; cursor: not-allowed; }
+.sp-chip { min-height: 36px; }
+a.sp-chip { display: inline-flex; align-items: center; }
+.sp-page .button[disabled] { opacity: 0.5; cursor: not-allowed; }
+.sp-row { min-height: 52px; }
+
+/* Moon discs */
+.rt-moon { flex: none; }
+.rt-moon__dark { fill: rgba(17, 21, 18, 0.85); stroke: rgba(226, 195, 109, 0.45); stroke-width: 0.8; }
+.rt-moon__lit { fill: #efe3bf; }
+
+/* Planner */
+.rt-night-head { display: flex; align-items: center; gap: 14px; }
+.rt-stepper { display: flex; align-items: center; gap: 6px; }
+.rt-stepper__day { flex: 1; min-width: 0; text-align: center; font-family: "Cormorant Garamond", serif; font-size: 1.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rt-stepper .sp-chip { padding: 6px 10px; }
+.rt-nights { display: grid; gap: 8px; }
+.rt-night {
+  display: flex; align-items: center; gap: 14px; width: 100%; min-height: 60px;
+  padding: 10px 14px; border-radius: 14px; border: 1px solid transparent;
+  background: rgba(38, 61, 46, 0.42); color: var(--cream); font: inherit; text-align: left; cursor: pointer;
+}
+.rt-night.is-on { border-color: var(--gold); }
+.rt-night:hover { background: rgba(185, 160, 93, 0.12); }
+.rt-night__text { flex: 1; display: grid; gap: 2px; }
+.rt-night__title { font-family: "Cormorant Garamond", serif; font-size: 1.25rem; }
+.rt-best { font-size: 0.75rem; font-weight: 600; color: var(--charcoal); background: var(--gold); border-radius: 999px; padding: 3px 10px; }
+.rt-toggle { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; }
+.rt-toggle input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--gold); }
+.rt-toggle > span { display: grid; gap: 2px; }
+.rt-toggle__label { font-weight: 600; }
+
+/* Premade book */
+.rt-chipset { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; min-width: 0; }
+.rt-chipset legend { padding: 0; margin-bottom: 8px; }
+.rt-actions { align-items: center; }
+.rt-needs, .rt-links { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.rt-needs a, .rt-links a { color: var(--gold); text-underline-offset: 3px; }
+.rt-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: rt-step; }
+.rt-step {
+  counter-increment: rt-step; position: relative; display: grid; gap: 6px;
+  padding: 14px 14px 14px 52px; border-radius: 14px; background: rgba(38, 61, 46, 0.42);
+}
+.rt-step::before {
+  content: counter(rt-step); position: absolute; left: 14px; top: 10px; width: 26px; text-align: center;
+  font-family: "Cormorant Garamond", serif; font-size: 1.6rem; color: var(--gold);
+}
+.rt-spoken { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.2rem; line-height: 1.4; color: #efe3bf; }
+.rt-plain-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+
+/* Ingredient check */
+.rt-check > summary { display: flex; align-items: center; gap: 12px; list-style: none; min-height: 44px; }
+.rt-check > summary::-webkit-details-marker { display: none; }
+.rt-check > summary::after { content: "▾"; color: var(--gold); margin-left: auto; }
+.rt-check[open] > summary::after { content: "▴"; }
+.rt-check__meter { width: 44px; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; flex: none; }
+.rt-check__meter > span { display: block; height: 6px; background: var(--gold); }
+.rt-check__head { display: grid; gap: 2px; }
+.rt-check__line { font-weight: 600; }
+.rt-check__list { display: grid; gap: 6px; margin-bottom: 10px; }
+.rt-check__list ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.rt-check__list li { display: flex; gap: 10px; align-items: flex-start; }
+.rt-check__mark { width: 18px; text-align: center; color: var(--muted); }
+.rt-check__list li.is-have .rt-check__mark { color: #9fc79a; }
+
+/* Insights */
+.rt-bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.rt-bar { display: flex; align-items: center; gap: 10px; min-height: 28px; }
+.rt-bar__label { width: 118px; flex: none; font-size: 0.85rem; }
+.rt-bar__track { flex: 1; height: 8px; border-radius: 6px; background: rgba(17, 21, 18, 0.7); overflow: hidden; }
+.rt-bar__track > span { display: block; height: 8px; background: var(--gold); border-radius: 6px; }
+.rt-bar__count { width: 24px; text-align: right; font-weight: 600; font-size: 0.85rem; }
+
+/* Reminders */
+.rt-cal-list { list-style: none; margin: 0; }
+.rt-cal-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.rt-cal-row:last-child { border-bottom: 0; }
+
+@media (max-width: 420px) {
+  .rt-bar__label { width: 96px; font-size: 0.8rem; }
+  .sp-page .sp-actions .button { flex: 1 1 100%; text-align: center; }
+}
+
+/* Read like the app: titles and section labels sit to the left. */
+.rt-head, .rt-head h1, .sp-page .sp-label, .sp-page h2, .sp-page h3 { text-align: left; }
