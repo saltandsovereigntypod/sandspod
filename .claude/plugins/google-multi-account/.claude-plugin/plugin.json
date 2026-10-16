@@ -1,0 +1,23 @@
+{
+  "name": "google-multi-account",
+  "version": "0.7.0-sands.1",
+  "description": "Salt & Sovereignty edition of Google Multi-Account: Gmail, Calendar, and Drive across the S&S business account (ashley.p@saltandsovereignty.com) and any personal account. Adds S&S inbox triage, 30-day privacy and deletion request handling, Ashley's reply voice, and podcast/coaching calendar and Drive conventions. Untrusted email content is sanitized before it reaches the model.",
+  "author": {
+    "name": "Steve Gustafson (original); customized for Salt & Sovereignty LLC"
+  },
+  "repository": "https://github.com/stevegustafson32/google-multi-account",
+  "keywords": [
+    "google",
+    "gmail",
+    "calendar",
+    "drive",
+    "multi-account",
+    "oauth",
+    "email",
+    "attachments",
+    "mcp",
+    "salt-and-sovereignty",
+    "podcast",
+    "coaching"
+  ]
+}

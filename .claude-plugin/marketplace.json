@@ -1,0 +1,17 @@
+{
+  "name": "salt-and-sovereignty",
+  "owner": {
+    "name": "Salt & Sovereignty LLC",
+    "email": "ashley.p@saltandsovereignty.com"
+  },
+  "plugins": [
+    {
+      "name": "google-multi-account",
+      "source": "./.claude/plugins/google-multi-account",
+      "description": "Gmail, Calendar, and Drive across Google accounts, customized for Salt & Sovereignty: inbox triage, 30-day privacy requests, Ashley's reply voice, podcast and coaching conventions",
+      "version": "0.7.0-sands.1",
+      "license": "MIT",
+      "category": "productivity"
+    }
+  ]
+}
