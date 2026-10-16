@@ -96,6 +96,7 @@ import { blankAnswers } from '../../../lib/rituals/lifecycle';
 import { saveJournal, startRitual, updateActive, useRituals } from '../../../lib/rituals/store';
 import { CabinetSheet } from '../../../components/altar/CabinetSheet';
 import { CarveSheet } from '../../../components/altar/CarveSheet';
+import { CloseUpSheet } from '../../../components/altar/CloseUpSheet';
 import { GroupGrimoireSheet, GroupSheet, RenameSheet } from '../../../components/altar/ArrangeSheets';
 import { PracticeSheet } from '../../../components/altar/PracticeSheet';
 import { CrystalSheet, DeitySheet, type CrystalMode, type DeityMode } from '../../../components/altar/DevotionSheets';
@@ -183,6 +184,7 @@ import { colors, fonts, space, touch, type } from '../../../theme';
 
 type SheetName =
   | 'about'
+  | 'closer'
   | 'carve'
   | 'rename'
   | 'group'
@@ -1045,6 +1047,7 @@ export default function AltarEditor() {
               onPickPage: () => setSheet('page'),
             }}
             onAbout={() => setSheet('about')}
+            onCloser={() => setSheet('closer')}
             onDone={() => setSelected(null)}
             act={{
               light: () => {
@@ -1233,6 +1236,16 @@ export default function AltarEditor() {
           {sourceId ? (
             <WidgetSheet visible={sheet === 'widget'} altarId={sourceId} altarName={name} altars={altars} onClose={() => setSheet(null)} />
           ) : null}
+          <CloseUpSheet
+            visible={sheet === 'closer'}
+            object={selectedObject}
+            label={shortLabel(selectedObject?.label)}
+            background={doc.background}
+            agedOpacity={aging[String(selectedObject?.altarObjectId)]?.opacity}
+            droop={aging[String(selectedObject?.altarObjectId)]?.droop}
+            charge={charges[String(selectedObject?.altarObjectId)]}
+            onClose={() => setSheet(null)}
+          />
           <AboutSheet
             visible={sheet === 'about'}
             object={selectedObject}
@@ -1835,6 +1848,7 @@ function ObjectPanel({
   connect,
   act,
   onAbout,
+  onCloser,
   onDone,
 }: {
   /** Links to the rest of your practice: ancestors, stones, the Book of Shadows. */
@@ -1862,6 +1876,8 @@ function ObjectPanel({
   glance: string;
   act: Actions;
   onAbout: () => void;
+  /** Open the close-up of it. */
+  onCloser: () => void;
   onDone: () => void;
 }) {
   const candle = isCandle(object);
@@ -1936,6 +1952,7 @@ function ObjectPanel({
 
       <ChipRow>
         <Chip label="About" symbol="☽" accessibilityLabel={`About ${objectLabel}`} onPress={onAbout} />
+        <Chip label="Look closer" symbol="◎" accessibilityLabel={`Look closer at ${objectLabel}: shown large, with every mark on it`} onPress={onCloser} />
         {crafted && <Chip label="Status" symbol="✓" accessibilityLabel={`Status of ${objectLabel}: activation, remaining and review`} onPress={act.tend} />}
         {canPractice && <Chip label="Begin Practice" symbol="✧" accessibilityLabel={`Begin today’s practice with ${objectLabel}`} onPress={act.practice} />}
         {object.type === 'apothecary' && !!object.apothecaryItemId && (

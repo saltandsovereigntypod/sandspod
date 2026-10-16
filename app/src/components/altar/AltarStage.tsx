@@ -10,12 +10,12 @@ import { isPetitionPaper } from '../../lib/altar/petitions';
 import { MoonDisc } from '../MoonDisc';
 import type { MomentKind } from '../../lib/altar/charge';
 import type { Snap } from '../../lib/altar/arrange';
-import { CandleMarks } from './CandleMarks';
+import { CandleMarks, CandlePicture, candleGeometry, drawsBurnedDown } from './CandleMarks';
 import { ChargeAura, Moment, SnapGuide } from './StageEffects';
 import { altarImageSource, candleHerbOverlay, candleOilOverlay, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
 import { DEFAULT_BACKGROUND } from '../../lib/altar/cabinet';
-import { flameLayout, type FlameLayout } from '../../lib/altar/flame';
-import { boxToPixels, candleLightRadius, displayBox, hitTest, IMAGE_INSET, imageRatio, rotationOf, STAGE_ASPECT } from '../../lib/altar/geometry';
+import type { FlameLayout } from '../../lib/altar/flame';
+import { boxToPixels, candleLightRadius, displayBox, hitTest, IMAGE_INSET, rotationOf, STAGE_ASPECT } from '../../lib/altar/geometry';
 import { stackOrder } from '../../lib/altar/layers';
 import { candleLife, dressingOverlays, isCandle, isLit } from '../../lib/altar/livingState';
 import type { AltarDocument } from '../../lib/altar/snapshot';
@@ -226,7 +226,7 @@ export function AltarStage(props: Props) {
   const charges = props.charges ?? {};
   const moment = props.moment ?? null;
   const guide = props.guide ?? null;
-  const now = props.now ?? 0;
+  const now = props.now ?? Math.floor(Date.now() / 60_000) * 60_000;
 
   return (
     <GestureDetector gesture={gesture}>
@@ -251,7 +251,7 @@ export function AltarStage(props: Props) {
 
           {sky && <SkyLayer sky={sky} stageWidth={stageWidth} />}
 
-          {lit.length > 0 && <LightPools objects={lit.map((i) => doc.objects[i])} stageWidth={stageWidth} />}
+          {lit.length > 0 && <LightPools objects={lit.map((i) => doc.objects[i])} stageWidth={stageWidth} now={now} />}
 
           {ordered.map((index) => (
             <AltarObjectView
@@ -264,7 +264,7 @@ export function AltarStage(props: Props) {
               agedOpacity={aging[String(doc.objects[index].altarObjectId)]?.opacity ?? 1}
               droop={aging[String(doc.objects[index].altarObjectId)]?.droop ?? 0}
               charge={charges[String(doc.objects[index].altarObjectId)] ?? 0}
-              now={isCandle(doc.objects[index]) ? now : 0}
+              now={isCandle(doc.objects[index]) || isIncense(doc.objects[index]) ? now : 0}
             />
           ))}
 
@@ -288,7 +288,7 @@ export function AltarStage(props: Props) {
 }
 
 /** The warm pools of light the website paints around lit candles (renderLighting). */
-function LightPools({ objects, stageWidth }: { objects: SavedObject[]; stageWidth: number }) {
+function LightPools({ objects, stageWidth, now }: { objects: SavedObject[]; stageWidth: number; now: number }) {
   const stageHeight = stageWidth / STAGE_ASPECT;
   return (
     <Svg width={stageWidth} height={stageHeight} style={StyleSheet.absoluteFill} pointerEvents="none">
@@ -305,7 +305,8 @@ function LightPools({ objects, stageWidth }: { objects: SavedObject[]; stageWidt
         const rect = boxToPixels(box, stageWidth);
         const angle = (rotationOf(object) * Math.PI) / 180;
         const boundsHeight = rect.width * Math.abs(Math.sin(angle)) + rect.height * Math.abs(Math.cos(angle));
-        const y = rect.centerY - boundsHeight / 2 + boundsHeight * 0.1;
+        // The light sits lower as the candle burns down.
+        const y = rect.centerY - boundsHeight / 2 + boundsHeight * 0.1 + candleGeometry(object, rect.width, rect.height, now).dropPx * Math.abs(Math.cos(angle));
         return <Circle key={i} cx={rect.centerX} cy={y} r={candleLightRadius(box.size) * stageWidth} fill="url(#candle-light)" />;
       })}
     </Svg>
@@ -333,22 +334,6 @@ const AltarObjectView = memo(function AltarObjectView({
   now: number;
 }) {
   const rect = boxToPixels(displayBox(object), stageWidth);
-  const source = altarImageSource(object.imagePath);
-  useImageRatio(object.imagePath);
-  const overlays = dressingOverlays(object);
-  const flipped = object.flipped === 'true';
-  const glowing = object.glowing === 'true';
-  const lit = isCandle(object) && isLit(object);
-  // A candle that has burned down fades, with a word to say so (candle-lifecycle.js).
-  const spent = isCandle(object) && !lit && candleLife(object).spent;
-  const smoke = useSnuffSmoke(lit);
-  // The flame sits on this picture's wick (the vigil candles keep the website's spot).
-  const flame = lit || smoke != null ? flameLayout(object.imagePath, object.imagePath ? imageRatio(object.imagePath) : null) : null;
-  // Incense burns with an ember and drifting smoke, and leaves ash.
-  const incense = isIncense(object) ? incenseLife(object) : null;
-  const ash = !!incense?.ash;
-  const paper = isPetitionPaper(object) && !source;
-
   return (
     <View
       pointerEvents="none"
@@ -359,44 +344,111 @@ const AltarObjectView = memo(function AltarObjectView({
           top: rect.top,
           width: rect.width,
           height: rect.height,
-          transform: [{ rotate: `${rotationOf(object)}deg` }, { scaleX: flipped ? -1 : 1 }],
+          transform: [{ rotate: `${rotationOf(object)}deg` }],
         },
       ]}
     >
-      <View style={[styles.layer, agedOpacity < 1 && { opacity: agedOpacity }, droop > 0 && { transformOrigin: '50% 100%', transform: [{ rotate: `${droop}deg` }, { scaleY: 1 - droop / 120 }] }]}>
+      <AltarObjectArt object={object} width={rect.width} height={rect.height} agedOpacity={agedOpacity} droop={droop} charge={charge} now={now} />
+      {(selected || highlighted) && <View style={[styles.outline, highlighted && !selected && styles.outlineSoft]} />}
+    </View>
+  );
+});
+
+type ArtProps = {
+  object: SavedObject;
+  /** The object's box, in points. */
+  width: number;
+  height: number;
+  /** An aging offering: 1 fresh → paler as it ages. */
+  agedOpacity?: number;
+  /** A wilting flower's bow, in degrees. */
+  droop?: number;
+  /** How strongly it holds a charge, 0–1. */
+  charge?: number;
+  /** The minute, so a candle burns down and its carvings and wax follow. */
+  now: number;
+};
+
+/**
+ * One object drawn in its box, with everything its life has left on it: a
+ * candle burned down with its carvings, wax and flame; incense smoking; a
+ * charge's glow; an offering going over. The stage places it; the close-up
+ * in the object panel draws the same thing large.
+ */
+export const AltarObjectArt = memo(function AltarObjectArt({ object, width, height, agedOpacity = 1, droop = 0, charge = 0, now }: ArtProps) {
+  const source = altarImageSource(object.imagePath);
+  useImageRatio(object.imagePath);
+  const overlays = dressingOverlays(object);
+  const flipped = object.flipped === 'true';
+  const glowing = object.glowing === 'true';
+  const candle = isCandle(object);
+  const lit = candle && isLit(object);
+  // A candle that has burned down fades, with a word to say so (candle-lifecycle.js).
+  const spent = candle && !lit && candleLife(object, now).spent;
+  const smoke = useSnuffSmoke(lit);
+  // The candle burns shorter; its flame sits on its wick, moved down with its top.
+  const geometry = candle ? candleGeometry(object, width, height, now) : null;
+  const burned = !!geometry && !!source && drawsBurnedDown(geometry);
+  const flame = (lit || smoke != null) && geometry ? geometry.flame : null;
+  // Incense burns with an ember and drifting smoke, and leaves ash.
+  const incense = isIncense(object) ? incenseLife(object, now) : null;
+  const ash = !!incense?.ash;
+  const paper = isPetitionPaper(object) && !source;
+  // An offering going over: paler, browning, and a flower bowing its head.
+  const aged = Math.max(0, Math.min(1, (1 - agedOpacity) / 0.35));
+  const labelSize = Math.max(8, Math.min(13, width * 0.16));
+
+  return (
+    <View pointerEvents="none" style={{ width, height, transform: [{ scaleX: flipped ? -1 : 1 }] }}>
+      <View
+        style={[
+          styles.layer,
+          aged > 0 && { opacity: 1 - 0.45 * aged },
+          droop > 0 && { transformOrigin: '50% 100%', transform: [{ rotate: `${Math.min(24, droop * 2.2)}deg` }, { scaleY: 1 - Math.min(0.18, droop / 55) }] },
+        ]}
+      >
         {charge > 0 && <ChargeAura strength={charge} id={String(object.altarObjectId || 'obj')} />}
-        {glowing && <View style={[styles.glow, { borderRadius: rect.width / 2 }]} />}
-        {source ? (
+        {glowing && <View style={[styles.glow, { borderRadius: width / 2 }]} />}
+        {source && burned && geometry ? (
+          <CandlePicture source={source} geometry={geometry} style={spent ? styles.spentImage : undefined} />
+        ) : source ? (
           // The website's image sits in the button's content box (6px / 1px padding on 80px).
-          <View style={[styles.content, { paddingHorizontal: rect.width * IMAGE_INSET.x, paddingVertical: rect.width * IMAGE_INSET.y }]}>
+          <View
+            style={[
+              styles.content,
+              { paddingHorizontal: width * IMAGE_INSET.x, paddingVertical: width * IMAGE_INSET.y },
+              // Going over: browner and duller (a tinted copy does it off the web).
+              aged > 0.05 && Platform.OS === 'web' && { filter: `sepia(${0.75 * aged}) saturate(${1 - 0.45 * aged}) brightness(${1 - 0.18 * aged})` },
+            ]}
+          >
             <Image source={source} style={[styles.fill, (spent || ash) && styles.spentImage]} resizeMode="contain" />
+            {aged > 0.05 && Platform.OS !== 'web' && <Image source={source} style={[styles.tinted, { left: width * IMAGE_INSET.x, right: width * IMAGE_INSET.x, top: width * IMAGE_INSET.y, bottom: width * IMAGE_INSET.y, tintColor: 'rgb(98,72,42)', opacity: 0.5 * aged }]} resizeMode="contain" />}
           </View>
         ) : paper ? (
           <PetitionPaper />
         ) : (
-          <Text style={[styles.symbol, { fontSize: rect.width * 0.49 }]}>{object.fallbackSymbol || '✦'}</Text>
+          <Text style={[styles.symbol, { fontSize: width * 0.49 }]}>{object.fallbackSymbol || '✦'}</Text>
         )}
       </View>
-      {overlays.herb && <Image source={candleHerbOverlay} style={styles.herbOverlay} resizeMode="contain" />}
-      {overlays.oil && <Image source={candleOilOverlay} style={styles.oilOverlay} resizeMode="contain" />}
-      {isCandle(object) && source && (
-        <CandleMarks object={object} width={rect.width} height={rect.height} now={now} uid={String(object.altarObjectId || 'obj')} flipped={flipped} />
+      {overlays.herb && !burned && <Image source={candleHerbOverlay} style={styles.herbOverlay} resizeMode="contain" />}
+      {overlays.oil && !burned && <Image source={candleOilOverlay} style={styles.oilOverlay} resizeMode="contain" />}
+      {candle && source && geometry && (
+        <CandleMarks object={object} width={width} height={height} now={now} uid={String(object.altarObjectId || 'obj')} flipped={flipped} geometry={geometry} />
       )}
       {lit && flame && <Flame layout={flame} />}
       {smoke != null && flame && <Smoke key={smoke} layout={flame} />}
-      {incense?.lit && <IncenseSmoke origin={smokeOrigin(object)} width={rect.width} />}
+      {incense?.lit && <IncenseSmoke origin={smokeOrigin(object)} width={width} />}
       {ash && <View style={styles.ash} />}
       {ash && (
-        <Text style={[styles.spentLabel, { fontSize: Math.max(8, Math.min(13, rect.width * 0.16)), transform: [{ scaleX: flipped ? -1 : 1 }] }]} numberOfLines={1}>
+        <Text style={[styles.spentLabel, { fontSize: labelSize, transform: [{ scaleX: flipped ? -1 : 1 }] }]} numberOfLines={1}>
           Ash
         </Text>
       )}
       {spent && (
-        <Text style={[styles.spentLabel, { fontSize: Math.max(8, Math.min(13, rect.width * 0.16)), transform: [{ scaleX: flipped ? -1 : 1 }] }]} numberOfLines={1}>
+        <Text style={[styles.spentLabel, { fontSize: labelSize, transform: [{ scaleX: flipped ? -1 : 1 }] }]}>
           Spent
         </Text>
       )}
-      {(selected || highlighted) && <View style={[styles.outline, highlighted && !selected && styles.outlineSoft]} />}
     </View>
   );
 });
@@ -447,17 +499,24 @@ function PetitionPaper() {
   );
 }
 
-const WISPS = [0, 1, 2];
+const WISPS = [0, 1, 2, 3];
 /** How long one wisp of incense smoke takes to rise and fade. */
-const WISP_MS = 5200;
+const WISP_MS = 5600;
 
-/** Smoke drifting up from lit incense, with a glowing ember; one still, faint wisp with Reduce Motion. */
+/**
+ * Smoke rising from lit incense: a thin curling stream off the ember that
+ * sways, and soft wisps that climb, spread and fade above it, in a blue-grey
+ * that reads on light backgrounds and dark. Reduce Motion: the stream and two
+ * wisps, still.
+ */
 function IncenseSmoke({ origin, width }: { origin: { x: number; y: number }; width: number }) {
   const still = useReducedMotion();
   const [rise] = useState(() => WISPS.map(() => new Animated.Value(0)));
+  const [sway] = useState(() => new Animated.Value(0.5));
   useEffect(() => {
     if (still) {
-      rise.forEach((v) => v.setValue(0.35));
+      rise.forEach((v, i) => v.setValue(0.25 + i * 0.18));
+      sway.setValue(0.5);
       return;
     }
     const loops = rise.map((value, i) =>
@@ -469,19 +528,59 @@ function IncenseSmoke({ origin, width }: { origin: { x: number; y: number }; wid
         ]),
       ),
     );
+    const swaying = Animated.loop(
+      Animated.sequence([
+        Animated.timing(sway, { toValue: 1, duration: 2400, easing: Easing.inOut(Easing.sin), useNativeDriver: useNative }),
+        Animated.timing(sway, { toValue: 0, duration: 2600, easing: Easing.inOut(Easing.sin), useNativeDriver: useNative }),
+      ]),
+    );
     loops.forEach((l) => l.start());
-    return () => loops.forEach((l) => l.stop());
-  }, [rise, still]);
+    swaying.start();
+    return () => {
+      loops.forEach((l) => l.stop());
+      swaying.stop();
+    };
+  }, [rise, sway, still]);
 
-  const wisp = Math.max(10, width * 0.5);
-  const ember = Math.max(3, width * 0.07);
+  const wisp = Math.max(16, width * 0.85);
+  const ember = Math.max(3.5, width * 0.08);
+  const stream = Math.max(34, Math.min(110, width * 2.2));
+  // The stream's line, about the same few points thick at any size (its drawing is 40 units tall).
+  const line = (Math.max(1.4, Math.min(3.2, width * 0.06)) * 40) / stream;
+  const streamX = sway.interpolate({ inputRange: [0, 1], outputRange: [-stream * 0.05, stream * 0.05] });
   return (
     <View pointerEvents="none" style={[StyleSheet.absoluteFill, { overflow: 'visible' }]}>
+      {/* The stream: a thin ribbon curling up off the ember. */}
+      <Animated.View
+        style={{
+          position: 'absolute',
+          left: `${origin.x * 100}%`,
+          top: `${origin.y * 100}%`,
+          width: stream * 0.5,
+          height: stream,
+          marginLeft: -stream * 0.25,
+          marginTop: -stream,
+          transform: [{ translateX: still ? 0 : streamX }],
+        }}
+      >
+        <Svg width="100%" height="100%" viewBox="0 0 20 40">
+          <Defs>
+            <LinearGradient id="incense-stream" x1="0" y1="1" x2="0" y2="0">
+              <Stop offset="0" stopColor="rgb(214,218,226)" stopOpacity={0.95} />
+              <Stop offset="0.6" stopColor="rgb(200,206,218)" stopOpacity={0.55} />
+              <Stop offset="1" stopColor="rgb(200,206,218)" stopOpacity={0} />
+            </LinearGradient>
+          </Defs>
+          <Path d="M10 40 C 9 33, 12.5 29, 10.5 23 S 7 14, 10 8 S 13 2, 11 0" stroke="rgba(70,74,84,0.35)" strokeWidth={line * 1.7} fill="none" strokeLinecap="round" />
+          <Path d="M10 40 C 9 33, 12.5 29, 10.5 23 S 7 14, 10 8 S 13 2, 11 0" stroke="url(#incense-stream)" strokeWidth={line} fill="none" strokeLinecap="round" />
+        </Svg>
+      </Animated.View>
       {rise.map((value, i) => {
-        const opacity = still ? 0.28 : value.interpolate({ inputRange: [0, 0.15, 0.7, 1], outputRange: [0, 0.42, 0.18, 0] });
-        const translateY = value.interpolate({ inputRange: [0, 1], outputRange: [0, -wisp * 2.2] });
-        const translateX = value.interpolate({ inputRange: [0, 0.35, 0.7, 1], outputRange: [0, wisp * (i % 2 ? 0.18 : -0.15), wisp * (i % 2 ? -0.1 : 0.22), wisp * 0.3] });
-        const scale = value.interpolate({ inputRange: [0, 1], outputRange: [0.5, 1.6] });
+        if (still && i > 1) return null;
+        const opacity = still ? 0.5 - i * 0.12 : value.interpolate({ inputRange: [0, 0.12, 0.6, 1], outputRange: [0, 0.8, 0.45, 0] });
+        const translateY = value.interpolate({ inputRange: [0, 1], outputRange: [-wisp * 0.4, -wisp * 2.8] });
+        const translateX = value.interpolate({ inputRange: [0, 0.35, 0.7, 1], outputRange: [0, wisp * (i % 2 ? 0.2 : -0.18), wisp * (i % 2 ? -0.12 : 0.25), wisp * 0.35] });
+        const scale = value.interpolate({ inputRange: [0, 1], outputRange: [0.45, 1.8] });
         return (
           <Animated.View
             key={i}
@@ -500,8 +599,9 @@ function IncenseSmoke({ origin, width }: { origin: { x: number; y: number }; wid
             <Svg width="100%" height="100%" viewBox="0 0 10 14">
               <Defs>
                 <RadialGradient id={`wisp-${i}`} cx="50%" cy="60%" r="50%">
-                  <Stop offset="0" stopColor="rgb(222,222,214)" stopOpacity={0.7} />
-                  <Stop offset="1" stopColor="rgb(222,222,214)" stopOpacity={0} />
+                  <Stop offset="0" stopColor="rgb(208,212,222)" stopOpacity={0.9} />
+                  <Stop offset="0.55" stopColor="rgb(170,176,190)" stopOpacity={0.45} />
+                  <Stop offset="1" stopColor="rgb(170,176,190)" stopOpacity={0} />
                 </RadialGradient>
               </Defs>
               <Ellipse cx={5} cy={8} rx={4} ry={6} fill={`url(#wisp-${i})`} />
@@ -519,8 +619,8 @@ function IncenseSmoke({ origin, width }: { origin: { x: number; y: number }; wid
           marginLeft: -ember / 2,
           marginTop: -ember / 2,
           borderRadius: ember / 2,
-          backgroundColor: 'rgb(255,120,40)',
-          boxShadow: '0 0 6px 2px rgba(255,140,60,0.7)',
+          backgroundColor: 'rgb(255,140,50)',
+          boxShadow: '0 0 8px 3px rgba(255,140,60,0.85)',
         }}
       />
     </View>
@@ -680,6 +780,7 @@ const styles = StyleSheet.create({
   },
   object: { position: 'absolute', alignItems: 'center', justifyContent: 'center' },
   fill: { width: '100%', height: '100%' },
+  tinted: { position: 'absolute' },
   content: { width: '100%', height: '100%' },
   layer: { position: 'absolute', left: 0, top: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' },
   ash: {
@@ -731,6 +832,10 @@ const styles = StyleSheet.create({
   spentLabel: {
     position: 'absolute',
     bottom: '2%',
+    width: 72,
+    left: '50%',
+    marginLeft: -36,
+    textAlign: 'center',
     color: colors.parchment,
     fontFamily: fonts.bodySemi,
     letterSpacing: 1,
