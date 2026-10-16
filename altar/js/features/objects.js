@@ -78,6 +78,7 @@ function captureAltarSnapshot() {
       locked: object.dataset.locked || "false",
       glowing: object.dataset.glowing || "false",
       lit: object.dataset.lit || "false",
+      ritualIncluded: object.dataset.ritualIncluded || "false",
       livingState: object.dataset.livingState || "",
       plaqueText: object.dataset.plaqueText || "",
       altarObjectId: object.dataset.altarObjectId || "",
@@ -597,6 +598,9 @@ function deleteObject(object) {
     clearCandleDressingMode();
   }
 
+  if (object.dataset.type === "candle" && object.dataset.lit === "true" && typeof extinguishCandleObject === "function") {
+    extinguishCandleObject(object, "removed_from_altar", { showSummary: false });
+  }
   stopFlame(object);
   object.remove();
   deselectObject();
@@ -616,7 +620,22 @@ function duplicateObject(object) {
     ? crypto.randomUUID()
     : String(Date.now() + Math.random());
 
-  if (typeof getLivingObjectState === "function" && typeof saveLivingObjectState === "function") {
+  if (clone.dataset.type === "candle" && window.CandleLifecycle && typeof getLivingObjectState === "function" && typeof saveLivingObjectState === "function") {
+    // A duplicate is a fresh candle: full life, unlit, unlocked, no burn
+    // history. Dressings are copied as before; burn state never is.
+    const originalState = getLivingObjectState(object);
+    const clonedState = getLivingObjectState(clone);
+    clonedState.candle = window.CandleLifecycle.fresh(clone.dataset.form || originalState?.candle?.form, {
+      expectedBurnMs: window.CandleLifecycle.formDefinition(clone.dataset.form)?.defaultBurnMs,
+      dressings: originalState?.candle?.dressings || []
+    });
+    delete clone.dataset.instanceId;
+    clone.dataset.lit = "false";
+    clone.dataset.candleStatus = "unlit";
+    clone.dataset.ritualIncluded = "false";
+    clone.classList.remove("is-lit", "is-candle-spent", "is-extinguishing");
+    saveLivingObjectState(clone, clonedState, { silent: true });
+  } else if (typeof getLivingObjectState === "function" && typeof saveLivingObjectState === "function") {
     const clonedState = getLivingObjectState(clone);
     if (clonedState?.candle?.currentBurnStartedAt) {
       const time = new Date().toISOString();

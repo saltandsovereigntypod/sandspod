@@ -514,6 +514,8 @@ altarActionBar.addEventListener("click", (event) => {
         .querySelectorAll('.altar-object[data-type="candle"]')
         .forEach((candle) => {
           if (candle.dataset.lit === "true") return;
+          // Spent or archived candles cannot be relit.
+          if (candle.dataset.candleStatus === "spent" || candle.dataset.candleStatus === "archived") return;
 
           candle.dataset.lit = "true";
           candle.classList.add("is-lit");
@@ -525,18 +527,20 @@ altarActionBar.addEventListener("click", (event) => {
       saveWorkingAltarDraft();
       return;
 
-    case "extinguish-all":
+    case "extinguish-all": {
       pushAltarUndoSnapshot();
+      let extinguishedAny = false;
 
       altarStage
         .querySelectorAll('.altar-object[data-type="candle"]')
         .forEach((candle) => {
+          if (candle.dataset.lit === "true") extinguishedAny = true;
           candle.dataset.lit = "false";
           candle.classList.remove("is-lit", "has-flame-glow", "is-flame-glowing");
 
           stopFlame(candle);
           extinguishFlame(candle);
-          stopLivingCandleBurn(candle);
+          stopLivingCandleBurn(candle, "manual_extinguish", { showSummary: false });
 
           candle.querySelectorAll(".candle-flame, .candle-glow, .flame-glow").forEach((effect) => {
             effect.remove();
@@ -545,7 +549,9 @@ altarActionBar.addEventListener("click", (event) => {
 
       renderLighting();
       saveWorkingAltarDraft();
+      if (extinguishedAny && typeof showCandleLifeSummary === "function") showCandleLifeSummary();
       return;
+    }
   }
 });
 

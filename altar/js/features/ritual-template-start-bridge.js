@@ -66,7 +66,7 @@ if (typeof saveRitualTemplateFromEditor === "function") {
     ritualTemplateShouldStartAfterSave = false;
     closeRitualTemplateEditor();
 
-    await createTemplateRitualSession(savedTemplate);
+    if (!(await createTemplateRitualSession(savedTemplate))) return;
     renderActiveRitualPanel();
 
     if (typeof showAltarToast === "function") {

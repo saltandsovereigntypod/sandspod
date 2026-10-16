@@ -81,3 +81,17 @@ test("ritual integrations distinguish references and preserve exact search IDs",
   assert.match(search, /ritual-template:\$\{template\.id\}/);
   assert.match(search, /ritual:\$\{ritual\.id\}/);
 });
+
+test("ritual candle end behavior is snapshotted and defaults to ask_at_end", () => {
+  assert.deepEqual([...Lifecycle.CANDLE_END_BEHAVIORS], ["keep_burning", "extinguish_at_end", "ask_at_end"]);
+  assert.equal(Lifecycle.normalizeCandleEndBehavior("nonsense"), "ask_at_end");
+  assert.equal(Lifecycle.snapshotTemplate({ title: "Old" }).candle_end_behavior, "ask_at_end");
+  const template = { title: "Moon", settings: { candle_end_behavior: "extinguish_at_end" }, estimated_duration_seconds: 600 };
+  const snapshot = Lifecycle.snapshotTemplate(template);
+  assert.equal(snapshot.candle_end_behavior, "extinguish_at_end");
+  assert.equal(snapshot.estimated_duration_seconds, 600);
+  const session = Lifecycle.createSession(template, { candleEndBehavior: "keep_burning", idFactory: () => "id" });
+  assert.equal(session.candle_end_behavior, "keep_burning");
+  assert.equal(session.candle_end_handled_at, null);
+  assert.equal(template.settings.candle_end_behavior, "extinguish_at_end", "template is not mutated");
+});

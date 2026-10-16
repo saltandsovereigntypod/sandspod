@@ -14,6 +14,10 @@ async function executeRitualStepActions(step, when) {
         ?.querySelectorAll('.altar-object[data-type="candle"]')
         .forEach((candle) => {
           if (candle.dataset.lit === "true") return;
+          if (typeof lightCandleObject === "function") {
+            lightCandleObject(candle);
+            return;
+          }
           candle.dataset.lit = "true";
           candle.classList.add("is-lit");
           if (typeof startFlame === "function") startFlame(candle);
@@ -26,6 +30,9 @@ async function executeRitualStepActions(step, when) {
       altarStage
         ?.querySelectorAll('.altar-object[data-type="candle"]')
         .forEach((candle) => {
+          if (candle.dataset.lit === "true" && typeof extinguishCandleObject === "function") {
+            extinguishCandleObject(candle, "ritual_ended", { showSummary: false });
+          }
           candle.dataset.lit = "false";
           candle.classList.remove("is-lit", "has-flame-glow", "is-flame-glowing");
 
