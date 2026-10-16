@@ -214,6 +214,18 @@ document.addEventListener("submit", async (event) => {
   const defaults = getDefaultMySettings();
   const settings = {};
 
+  // Keep settings this form doesn't show (the app's My practice, My deities,
+  // calendars and Today choices live in the same row): only the fields here change.
+  try {
+    const stored = await getMySettings();
+    const rowOnly = new Set(["id", "user_id", "created_at", "updated_at", "settings"]);
+    Object.entries(stored || {}).forEach(([key, value]) => {
+      if (!rowOnly.has(key) && !(key in defaults)) settings[key] = value;
+    });
+  } catch (error) {
+    console.error(error);
+  }
+
   Object.keys(defaults).forEach((key) => {
     const input = form.elements[key];
 
