@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams, type Href } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
@@ -19,7 +19,7 @@ import {
   searchTarot,
   type Reading,
 } from '../../../../../../lib/craft/hedge/readings';
-import { addEntry, removeEntry, updateEntry, useCraft } from '../../../../../../lib/craft/store';
+import { addEntry, removeEntry, updateEntry, useCraft, type CraftEntry } from '../../../../../../lib/craft/store';
 import { dateFromKey, localDateKey } from '../../../../../../lib/rituals/lifecycle';
 import { useSession } from '../../../../../../lib/session';
 
@@ -36,17 +36,26 @@ const CAME_UP_HINT: Record<string, string> = {
 
 export default function ReadingForm() {
   const { id } = useLocalSearchParams<{ id?: string }>();
-  const { session } = useSession();
   const { entries, ready } = useCraft<unknown>(READINGS);
   const existing = id ? entries.find((e) => e.id === id) ?? null : null;
+  if (id && !existing) {
+    return (
+      <RitualScreen back="Readings">
+        <Title>Reading</Title>
+        <Body>{ready ? 'This reading couldn’t be found. It may have been deleted on another device.' : 'Opening…'}</Body>
+      </RitualScreen>
+    );
+  }
+  // Keyed by the entry, so the form starts from its saved copy and typing is never overwritten.
+  return <Form key={existing?.id ?? 'new'} existing={existing} />;
+}
+
+function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
+  const { session } = useSession();
   const [reading, setReading] = useState<Reading>(() => (existing ? normalizeReading(existing.data) : blankReading(new Date())));
   const [cardQuery, setCardQuery] = useState('');
   const [typedLookBack, setTypedLookBack] = useState('');
   const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    if (existing) setReading(normalizeReading(existing.data));
-  }, [existing?.id]);
 
   const set = (patch: Partial<Reading>) => setReading((r) => ({ ...r, ...patch }));
   const toggleDrawn = (name: string) => set({ drawn: reading.drawn.includes(name) ? reading.drawn.filter((n) => n !== name) : [...reading.drawn, name] });
@@ -89,15 +98,6 @@ export default function ReadingForm() {
     await removeEntry(READINGS, existing.id);
     router.replace('/rituals/craft/hedge/readings' as Href);
   };
-
-  if (id && !existing) {
-    return (
-      <RitualScreen back="Readings">
-        <Title>Reading</Title>
-        <Body>{ready ? 'This reading couldn’t be found. It may have been deleted on another device.' : 'Opening…'}</Body>
-      </RitualScreen>
-    );
-  }
 
   return (
     <RitualScreen back={existing ? 'Reading' : 'Readings'}>

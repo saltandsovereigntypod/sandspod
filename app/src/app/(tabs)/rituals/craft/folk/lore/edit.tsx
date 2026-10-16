@@ -1,27 +1,36 @@
 import { router, useLocalSearchParams, type Href } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
 import { Body, Chip, Chips, Field, Notice, RitualScreen, SectionLabel, Title, confirmAction, tell, ui } from '../../../../../../components/rituals/ui';
 import { fullDate } from '../../../../../../lib/calendar';
 import { blankLore, LORE, LORE_KINDS, normalizeLore, type Lore } from '../../../../../../lib/craft/folk/lore';
-import { addEntry, removeEntry, updateEntry, useCraft } from '../../../../../../lib/craft/store';
+import { addEntry, removeEntry, updateEntry, useCraft, type CraftEntry } from '../../../../../../lib/craft/store';
 import { dateFromKey, localDateKey } from '../../../../../../lib/rituals/lifecycle';
 import { useSession } from '../../../../../../lib/session';
 
 export default function LoreForm() {
   const { id } = useLocalSearchParams<{ id?: string }>();
-  const { session } = useSession();
   const { entries, ready } = useCraft<unknown>(LORE);
   const existing = id ? entries.find((e) => e.id === id) ?? null : null;
+  if (id && !existing) {
+    return (
+      <RitualScreen back="Local lore">
+        <Title>Lore</Title>
+        <Body>{ready ? 'This entry couldn’t be found. It may have been deleted on another device.' : 'Opening…'}</Body>
+      </RitualScreen>
+    );
+  }
+  // Keyed by the entry, so the form starts from its saved copy and typing is never overwritten.
+  return <Form key={existing?.id ?? 'new'} existing={existing} />;
+}
+
+function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
+  const { session } = useSession();
   const [lore, setLore] = useState<Lore>(() => (existing ? normalizeLore(existing.data) : blankLore(new Date())));
   const [typedDate, setTypedDate] = useState('');
   const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    if (existing) setLore(normalizeLore(existing.data));
-  }, [existing?.id]);
 
   const set = (patch: Partial<Lore>) => setLore((l) => ({ ...l, ...patch }));
   const hint = LORE_KINDS.find((k) => k.id === lore.kind)?.hint;
@@ -53,15 +62,6 @@ export default function LoreForm() {
     await removeEntry(LORE, existing.id);
     router.replace('/rituals/craft/folk/lore' as Href);
   };
-
-  if (id && !existing) {
-    return (
-      <RitualScreen back="Local lore">
-        <Title>Lore</Title>
-        <Body>{ready ? 'This entry couldn’t be found. It may have been deleted on another device.' : 'Opening…'}</Body>
-      </RitualScreen>
-    );
-  }
 
   return (
     <RitualScreen back={existing ? lore.title || 'Lore' : 'Local lore'}>

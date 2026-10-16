@@ -1,11 +1,11 @@
 import { router, useLocalSearchParams, type Href } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
 import { Body, Field, Notice, RitualScreen, SectionLabel, Title, confirmAction, tell, ui } from '../../../../../../components/rituals/ui';
 import { ANCESTORS, blankAncestor, formatPartial, normalizeAncestor, partialDate, type Ancestor, type PartialDate } from '../../../../../../lib/craft/hedge/ancestors';
-import { addEntry, removeEntry, updateEntry, useCraft } from '../../../../../../lib/craft/store';
+import { addEntry, removeEntry, updateEntry, useCraft, type CraftEntry } from '../../../../../../lib/craft/store';
 import { useSession } from '../../../../../../lib/session';
 
 type Boxes = { day: string; month: string; year: string };
@@ -36,22 +36,27 @@ function DateBoxes({ label, value, onChange }: { label: string; value: Boxes; on
 
 export default function AncestorForm() {
   const { id } = useLocalSearchParams<{ id?: string }>();
-  const { session } = useSession();
   const { entries, ready } = useCraft<unknown>(ANCESTORS);
   const existing = id ? entries.find((e) => e.id === id) ?? null : null;
+  if (id && !existing) {
+    return (
+      <RitualScreen back="Ancestors">
+        <Title>Ancestor</Title>
+        <Body>{ready ? 'This page couldn’t be found. It may have been removed on another device.' : 'Opening…'}</Body>
+      </RitualScreen>
+    );
+  }
+  // Keyed by the entry, so the form starts from its saved copy and typing is never overwritten.
+  return <Form key={existing?.id ?? 'new'} existing={existing} />;
+}
+
+function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
+  const { session } = useSession();
   const start = existing ? normalizeAncestor(existing.data) : blankAncestor();
   const [person, setPerson] = useState<Ancestor>(start);
   const [born, setBorn] = useState<Boxes>(boxesOf(start.born));
   const [died, setDied] = useState<Boxes>(boxesOf(start.died));
   const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    if (!existing) return;
-    const a = normalizeAncestor(existing.data);
-    setPerson(a);
-    setBorn(boxesOf(a.born));
-    setDied(boxesOf(a.died));
-  }, [existing?.id]);
 
   const set = (patch: Partial<Ancestor>) => setPerson((p) => ({ ...p, ...patch }));
 
@@ -89,15 +94,6 @@ export default function AncestorForm() {
     await removeEntry(ANCESTORS, existing.id);
     router.replace('/rituals/craft/hedge/ancestors' as Href);
   };
-
-  if (id && !existing) {
-    return (
-      <RitualScreen back="Ancestors">
-        <Title>Ancestor</Title>
-        <Body>{ready ? 'This page couldn’t be found. It may have been removed on another device.' : 'Opening…'}</Body>
-      </RitualScreen>
-    );
-  }
 
   return (
     <RitualScreen back={existing ? person.name || 'Ancestor' : 'Ancestors'}>

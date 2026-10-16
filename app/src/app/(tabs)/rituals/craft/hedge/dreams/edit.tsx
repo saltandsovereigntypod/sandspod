@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams, type Href } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
@@ -16,24 +16,32 @@ import {
   VIVIDNESS,
   type Dream,
 } from '../../../../../../lib/craft/hedge/dreams';
-import { addEntry, removeEntry, updateEntry, useCraft } from '../../../../../../lib/craft/store';
+import { addEntry, removeEntry, updateEntry, useCraft, type CraftEntry } from '../../../../../../lib/craft/store';
 import { dateFromKey, localDateKey } from '../../../../../../lib/rituals/lifecycle';
 import { useSession } from '../../../../../../lib/session';
 
 export default function DreamForm() {
   const { id } = useLocalSearchParams<{ id?: string }>();
-  const { session } = useSession();
   const { entries, ready } = useCraft<unknown>(DREAMS);
   const existing = id ? entries.find((e) => e.id === id) ?? null : null;
+  if (id && !existing) {
+    return (
+      <RitualScreen back="Dream journal">
+        <Title>Dream</Title>
+        <Body>{ready ? 'This dream couldn’t be found. It may have been deleted on another device.' : 'Opening…'}</Body>
+      </RitualScreen>
+    );
+  }
+  // Keyed by the entry, so the form starts from its saved copy and typing is never overwritten.
+  return <Form key={existing?.id ?? 'new'} existing={existing} entries={entries} />;
+}
+
+function Form({ existing, entries }: { existing: CraftEntry<unknown> | null; entries: CraftEntry<unknown>[] }) {
+  const { session } = useSession();
   const [dream, setDream] = useState<Dream>(() => (existing ? normalizeDream(existing.data) : blankDream(new Date())));
   const [symbolText, setSymbolText] = useState('');
   const [typedDate, setTypedDate] = useState('');
   const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    // Only when the entry first arrives, so typing is never overwritten.
-    if (existing) setDream(normalizeDream(existing.data));
-  }, [existing?.id]);
 
   const set = (patch: Partial<Dream>) => setDream((d) => ({ ...d, ...patch }));
   const setDate = (date: string) => set({ date, ...dreamMoon(date) });
@@ -86,15 +94,6 @@ export default function DreamForm() {
     await removeEntry(DREAMS, existing.id);
     router.replace('/rituals/craft/hedge/dreams' as Href);
   };
-
-  if (id && !existing) {
-    return (
-      <RitualScreen back="Dream journal">
-        <Title>Dream</Title>
-        <Body>{ready ? 'This dream couldn’t be found. It may have been deleted on another device.' : 'Opening…'}</Body>
-      </RitualScreen>
-    );
-  }
 
   return (
     <RitualScreen back={existing ? dream.title || 'Dream' : 'Dream journal'}>
