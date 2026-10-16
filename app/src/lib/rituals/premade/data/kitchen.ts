@@ -690,3 +690,572 @@ export const KITCHEN: Premade[] = [
       'Merrifield, The Archaeology of Ritual and Magic (on concealed doorway charms)',
     ],
   },
+  {
+    id: 'kitchen-hearth-blessing',
+    title: 'Blessing the Hearth',
+    kind: 'ritual',
+    summary:
+      'Set up and bless a small kitchen altar by the stove, the modern hearth, and honour the fire that feeds the house with an old Gaelic hearth blessing.',
+    intention: 'protection',
+    alsoFor: ['peace', 'prosperity'],
+    practices: ['kitchen', 'folk'],
+    paths: [],
+    moon: ['new', 'full'],
+    holidays: ['imbolc', 'la_fheile_bride', 'vestalia'],
+    minutes: 40,
+    level: 'beginner',
+    solo: true,
+    ingredients: [
+      { name: 'A small shelf, tray or windowsill near the stove', ref: 'traditional/tool/altar' },
+      { name: 'A white or orange candle in a sturdy holder', ref: 'traditional/candle/white' },
+      { name: 'A small dish of salt', ref: 'traditional/vessel/dish' },
+      { name: 'A small dish of grain, rice or a crust of bread', ref: 'traditional/vessel/offering_bowl' },
+      { name: 'A sprig of a kitchen herb you cook with: rosemary, thyme or bay', ref: 'traditional/herb/rosemary' },
+      { name: 'A wooden spoon or a favourite kitchen tool' },
+      { name: 'An image or figure of a hearth goddess, if you honour one', ref: 'traditional/deity/hestia', optional: true },
+      { name: 'Brigid, if you honour her', ref: 'traditional/deity/brigid', optional: true },
+      { name: 'Vesta, if you honour her', ref: 'traditional/deity/vesta', optional: true },
+    ],
+    preparation:
+      'Clean the stove and the worktop around it thoroughly; this is the most important part. Choose a spot for the altar that is away from the direct heat of the hob and out of the way of splashes and tea towels. It can be tiny. Many kitchen witches honour Hestia, Vesta or Brigid here; others honour the spirits of the house or simply the fire itself.',
+    steps: [
+      {
+        title: 'Clear and wash',
+        instructions:
+          'Wipe the chosen shelf with warm water and a little salt. Wipe the stove knobs and the oven door. As you clean, think of the meals this kitchen has made and will make.',
+      },
+      {
+        title: 'Lay the altar',
+        instructions:
+          'Place the salt on the left, the grain on the right, and the candle in the middle at the back. Lay the herb sprig and the wooden spoon in front. Add the image of your hearth deity if you have one. Keep it simple; a hearth altar should be easy to keep clean.',
+      },
+      {
+        title: 'Kindle the flame',
+        light: true,
+        instructions:
+          'Light the candle, and if you have a gas hob, light one ring briefly too, then turn it off. Watch the flame settle. Rest your hands on the worktop either side of it.',
+        spoken:
+          'Fire of the hearth, heart of the house, you warm us and you feed us. Be welcome here, and be honoured.',
+      },
+      {
+        title: 'The smooring blessing',
+        instructions:
+          'In the Hebrides, the woman of the house “smoored” the peat fire each night, banking it so it would last till morning, and said a blessing over it. Say these words from Carmina Gadelica, or adapt them to your own powers.',
+        spoken:
+          'The sacred Three to save, to shield, to surround the hearth, the house, the household, this eve, this night, and every night, each single night.',
+      },
+      {
+        title: 'Offer and ask',
+        instructions:
+          'Take a pinch of the grain and place it in front of the candle as an offering. Ask for what a hearth gives: warmth, nourishment, safety, a table that draws people together.',
+        minutes: 3,
+      },
+      {
+        title: 'Sit with the fire',
+        instructions:
+          'Sit or stand quietly and watch the candle for a few minutes. Listen to the kitchen: the fridge hum, the clock, the house settling. This is the sound of the hearth at rest.',
+        minutes: 5,
+        timed: true,
+      },
+      {
+        title: 'Bank the fire',
+        snuff: true,
+        instructions:
+          'Snuff the candle (rather than blowing it out) as a little act of smooring: the fire is not ended, only resting.',
+        spoken: 'Rest now, and rise again tomorrow.',
+      },
+    ],
+    closing:
+      'Each time you cook, touch the altar or say a word to it. Change the grain offering weekly, giving the old to the birds. Relight the candle on Fridays, festival days or whenever the household needs warmth.',
+    safety:
+      'Keep the candle well away from the hob, curtains, tea towels and kitchen roll, and never leave it burning unattended. Do not leave gas rings lit. Keep salt and grain dishes out of reach of pets.',
+    lore:
+      'The hearth was the sacred centre of the home in many old cultures: the Greeks gave Hestia the first offering of every sacrifice, Rome kept Vesta’s eternal flame tended by the Vestal Virgins, and Irish tradition linked Brigid to the hearth fire, with her flame kept burning at Kildare. The smooring blessing is quoted from Alexander Carmichael’s Carmina Gadelica (1900), which records nightly prayers said over the banked peat fire in the Scottish Highlands and Islands. The kitchen altar is a modern kitchen-witch practice that carries this forward to the stove.',
+    sources: [
+      'Carmichael, Carmina Gadelica, vol. 1 (1900), “Smooring the Fire”',
+      'Homeric Hymn 29, To Hestia',
+      'Gerald of Wales, Topographia Hibernica (c. 1188), on Brigid’s fire at Kildare',
+    ],
+  },
+  {
+    id: 'kitchen-sweeping-out-the-old',
+    title: 'Sweeping Out the Old',
+    kind: 'spell',
+    summary:
+      'A whole-house sweep with a broom, moving from the back of the home to the front door, to clear out stagnant energy at the turn of a season or after a hard chapter.',
+    intention: 'banishing',
+    alsoFor: ['cleansing', 'beginnings'],
+    practices: ['kitchen', 'folk'],
+    paths: [],
+    moon: ['waning', 'dark'],
+    holidays: ['imbolc', 'ostara', 'samhain'],
+    minutes: 45,
+    level: 'beginner',
+    solo: true,
+    ingredients: [
+      { name: 'A broom or besom', ref: 'traditional/tool/besom' },
+      { name: 'A dustpan' },
+      { name: 'A handful of dried rosemary, lavender or garden sage to scatter', ref: 'traditional/herb/lavender', optional: true },
+      { name: 'A pinch of salt' },
+    ],
+    preparation:
+      'Declutter a little first: one bag of things to give away or throw out. Open the front door and a back window. Waning and dark moons are traditional for clearing. In folklore you never sweep on New Year’s Day, lest you sweep the luck out, so do this before, not on, a fresh start.',
+    steps: [
+      {
+        title: 'Name what goes',
+        instructions:
+          'Stand at the furthest point from the front door with the broom upright. Say aloud what you are sweeping out: “the winter’s gloom,” “the grief of this year,” “the arguing,” “the illness.”',
+        spoken: 'Old and done, old and done, out the door and into the sun.',
+      },
+      {
+        title: 'Scatter the herbs',
+        instructions:
+          'If using, scatter a light sprinkle of dried herbs and a pinch of salt across the floor of the far room. They give the broom something to gather and fill the air with scent as you work.',
+      },
+      {
+        title: 'Sweep toward the door',
+        instructions:
+          'Sweep each room from the far corners toward its doorway, then along corridors toward the front door. Use long, deliberate strokes. Notice the sound of the bristles; let it become a rhythm. Pay attention to corners, behind doors and under beds, where stillness collects.',
+        minutes: 25,
+      },
+      {
+        title: 'Out of the door',
+        instructions:
+          'Sweep everything gathered right out of the front door and off the step. Scoop it up and put it in an outside bin, or scatter organic matter in the garden away from the house.',
+        spoken: 'Go, and do not come back.',
+      },
+      {
+        title: 'Turn and welcome',
+        instructions:
+          'Turn the broom bristles-up and stand it by the door (a folk sign that the work is done and guards the entry). Step back inside, facing the house, and name what you welcome in instead.',
+        spoken: 'Fresh and new, fresh and new, come in, come in, the door is through.',
+      },
+    ],
+    closing:
+      'Close the door and windows. Do something that fills the cleared space: open a new jar of something, cook, play music. Clean the broom bristles outdoors with a shake.',
+    safety:
+      'Salt and scattered herbs should be fully swept up where pets roam. Dust can trigger asthma and allergies; open windows and consider a dust mask.',
+    lore:
+      'Brooms are full of folklore in Britain and Europe: sweeping dust out of the door at the old year’s end, never sweeping on New Year’s Day or after dark, and laying a broom across a threshold against unwanted visitors. Spring cleaning itself has roots in seasonal renewal customs, including Iranian khaneh tekani before Nowruz and the Jewish clearing of leaven before Passover. The besom as a witch’s tool appears in early modern witch-trial imagery, and the ritual sweep is a modern witchcraft practice built on those household habits.',
+    sources: [
+      'Opie and Tatem, A Dictionary of Superstitions (on brooms and sweeping)',
+      'Hutton, The Triumph of the Moon (on the besom in modern witchcraft)',
+    ],
+  },
+  {
+    id: 'kitchen-family-meal-blessing',
+    title: 'Blessing the Family Meal',
+    kind: 'ritual',
+    summary:
+      'A short, warm ritual for the start of a shared meal: a lit candle, a word of thanks, a portion set aside, and each person naming one good thing.',
+    intention: 'love',
+    alsoFor: ['peace', 'prosperity'],
+    practices: ['kitchen', 'folk'],
+    paths: [],
+    minutes: 10,
+    level: 'beginner',
+    solo: false,
+    ingredients: [
+      { name: 'A candle for the table', ref: 'traditional/candle/white' },
+      { name: 'A small spare plate or dish for the first portion', ref: 'traditional/vessel/offering_bowl' },
+      { name: 'The meal itself, and the people sharing it' },
+    ],
+    preparation:
+      'Set the table properly, even for a simple supper: everyone seated, screens away. Decide who will lead; it can rotate each week. Children love to be the one who lights (with help) or snuffs the candle.',
+    steps: [
+      {
+        title: 'Light the table',
+        light: true,
+        instructions:
+          'Once everyone is seated and the food is on the table, light the candle. Pause for three breaths, together, before anyone reaches for anything.',
+      },
+      {
+        title: 'Give thanks',
+        instructions:
+          'The leader gives thanks for the food and the hands that made it, from field to kitchen. Use these words, from Proverbs, or your own.',
+        spoken:
+          'Better is a dinner of herbs where love is, than a stalled ox and hatred therewith. For the food, for the hands, for each other: thank you.',
+      },
+      {
+        title: 'Set aside the first portion',
+        instructions:
+          'Put a small spoonful of the meal on the spare dish: for the house spirits, the ancestors, the gods you honour, or simply for those who are hungry tonight. Families who prefer can instead commit to a donation to a food bank.',
+      },
+      {
+        title: 'One good thing',
+        instructions:
+          'Go round the table. Each person names one good thing from their day, however small. No commenting or fixing; just listening.',
+        minutes: 5,
+      },
+      {
+        title: 'Eat',
+        instructions:
+          'Begin the meal. The candle stays lit while you eat together.',
+        spoken: 'Eat well, all of you.',
+      },
+      {
+        title: 'Close the meal',
+        snuff: true,
+        instructions:
+          'When the meal ends, the person who lit the candle snuffs it, and everyone says a word of thanks to the cook.',
+      },
+    ],
+    closing:
+      'After the meal, put the set-aside portion outside for the birds or wildlife (if it is safe for them), or compost it with thanks.',
+    safety:
+      'Keep the candle away from napkins, children’s sleeves and serving reach, and never leave it burning after the table is cleared. Don’t put food containing onion, garlic, chocolate or grapes outdoors where pets or wildlife could eat it.',
+    lore:
+      'Grace before meals is found in almost every culture, and the custom of setting aside a first portion is ancient: Greeks offered the first of the meal to Hestia, Romans dropped a morsel into the hearth fire for the Lares, and Scottish and Irish households left milk and bread for the brownie or the “good people.” The Proverbs line is from the King James Bible (1611). The round of “one good thing” is a modern family practice.',
+    sources: [
+      'Proverbs 15:17, King James Version (1611)',
+      'Ovid, Fasti (on offerings to the Lares at meals)',
+    ],
+  },
+  {
+    id: 'kitchen-housewarming-blessing',
+    title: 'Bread and Salt Housewarming',
+    kind: 'ritual',
+    summary:
+      'Bless a new home before or as you move in: bread so you never go hungry, salt so life has flavour, a candle carried through every room, and a first meal cooked on the new stove.',
+    intention: 'beginnings',
+    alsoFor: ['protection', 'prosperity', 'cleansing'],
+    practices: ['kitchen', 'folk'],
+    paths: [],
+    moon: ['new', 'waxing'],
+    minutes: 60,
+    level: 'beginner',
+    solo: true,
+    ingredients: [
+      { name: 'A loaf of bread (homemade or bought)' },
+      { name: 'A small jar or dish of salt' },
+      { name: 'A little honey or sugar, for sweetness', optional: true },
+      { name: 'A white candle in a holder with a drip guard', ref: 'traditional/candle/white' },
+      { name: 'A broom', ref: 'traditional/tool/besom' },
+      { name: 'A bowl of water with a pinch of salt and a sprig of rosemary', ref: 'traditional/herb/rosemary' },
+      { name: 'A small coin' },
+    ],
+    preparation:
+      'If you can, do this before the furniture arrives, when the rooms are empty. Bring the bread and salt into the house first, before anything else: that is the old custom. Sweep the house through once to clear the previous occupants’ energy, with thanks to them.',
+    steps: [
+      {
+        title: 'Carry in bread and salt',
+        instructions:
+          'Step over the threshold carrying the bread and salt together. Set them down in the kitchen, the new heart of the house.',
+        spoken: 'Bread, that this house may never know hunger. Salt, that life here may always have flavour.',
+      },
+      {
+        title: 'Sweep and sprinkle',
+        instructions:
+          'Sweep each room toward the front door. Then dip the rosemary sprig in the salted water and sprinkle a few drops in each corner of each room, moving clockwise through the house.',
+        minutes: 20,
+      },
+      {
+        title: 'Carry the light',
+        light: true,
+        instructions:
+          'Light the candle in the kitchen. Carry it, carefully, through every room, pausing in each to say what that room is for: rest, play, work, love, cooking. In each doorway, hold the candle up to the lintel for a moment.',
+        spoken: 'Light in this room, and life in this room.',
+      },
+      {
+        title: 'The coin under the step',
+        instructions:
+          'Place the small coin somewhere hidden near the front door, such as under the doormat or on the top of the door frame, as a seed of plenty.',
+      },
+      {
+        title: 'Cook the first meal',
+        instructions:
+          'Make something simple on the new stove, even just toast from the blessed bread or a pan of soup. Eat it in the kitchen, sprinkling a pinch of the blessed salt on it.',
+        minutes: 20,
+      },
+      {
+        title: 'Welcome yourself home',
+        snuff: true,
+        instructions:
+          'Stand in the middle of the home. Say your name, and the names of everyone who will live there, people and pets. Snuff the candle.',
+        spoken: 'This is our home now. We are welcome here, and we will be good to it.',
+      },
+    ],
+    closing:
+      'Keep a little of the blessed salt in the kitchen for cooking. Give the end of the loaf to the birds. Traditionally, the first guests are offered bread and salt too, so keep some on hand for your housewarming visitors.',
+    safety:
+      'Never leave the candle unattended and take care carrying it through rooms with boxes and packing material. Use a drip guard. Keep salt away from pets.',
+    lore:
+      'Bread and salt as a welcome is especially strong in Slavic tradition (khleb-sol), where a loaf with salt set on top greets guests and newlyweds, and it was carried into Jewish households of Eastern Europe, sometimes with sugar for sweetness. In Britain and Ireland, the first things carried into a new house were often bread, salt and coal, echoed in the Scottish first-footing gifts at New Year. Carrying fire into a new home goes back to the Greek custom of bringing a flame from the mother’s hearth to light the hearth of a new household.',
+    sources: [
+      'Frazer, The Golden Bough (1890–1915), on house-entry customs',
+      'Banks, British Calendar Customs: Scotland (1937–41), on first-footing gifts',
+    ],
+  },
+  {
+    id: 'kitchen-wooden-spoon-charm',
+    title: 'The Wooden Spoon Charm',
+    kind: 'spell',
+    summary:
+      'Turn an ordinary wooden spoon into your kitchen wand: oil it, mark it with symbols of your own, and bless it so that every stir carries intention.',
+    intention: 'protection',
+    alsoFor: ['prosperity', 'love', 'beginnings'],
+    practices: ['kitchen', 'folk'],
+    paths: [],
+    moon: ['new', 'waxing'],
+    weekday: 0,
+    minutes: 45,
+    level: 'beginner',
+    solo: true,
+    ingredients: [
+      { name: 'A plain, unfinished wooden spoon (beech, cherry or olive wood)' },
+      { name: 'Food-safe oil or board butter: mineral oil, beeswax and mineral oil blend, or fractionated coconut oil' },
+      { name: 'A fine-tipped pyrography pen, or a craft knife for shallow carving, or a food-safe marker', optional: true },
+      { name: 'Fine sandpaper (240 grit)' },
+      { name: 'A soft cloth' },
+      { name: 'A sprig of rosemary or bay to lay with it overnight', ref: 'traditional/herb/bay' },
+    ],
+    preparation:
+      'Choose your symbols: a sun for plenty, a spiral for growth, a heart, an eye for protection, runes or initials, your household’s mark. Sketch them on paper first. Keep any carving on the handle, away from the bowl that touches food. Do not use culinary vegetable oils like olive or sunflower, which can go rancid in wood.',
+    steps: [
+      {
+        title: 'Sand it smooth',
+        instructions:
+          'Lightly sand the whole spoon, following the grain, until it feels silky. Wipe off the dust. This is the spoon’s first cleansing, and your first getting-to-know it.',
+        minutes: 5,
+      },
+      {
+        title: 'Mark the handle',
+        instructions:
+          'Burn, carve or draw your chosen symbols into the handle. Go slowly. As you make each mark, say what it stands for.',
+        minutes: 20,
+      },
+      {
+        title: 'Oil and name it',
+        instructions:
+          'Rub a little food-safe oil into the whole spoon with the cloth, working it into the grain until the wood darkens and glows. As you oil it, speak its purpose.',
+        spoken: 'Spoon of the hearth, wood of the tree, stir what I wish and bring it to me. Sunwise for plenty, widdershins to free.',
+      },
+      {
+        title: 'Teach it the two directions',
+        instructions:
+          'Holding the spoon over an empty bowl, stir the air three times clockwise, saying “I draw in,” then three times counter-clockwise, saying “I let go.” This is how you will use it from now on.',
+      },
+      {
+        title: 'Rest it overnight',
+        instructions:
+          'Lay the spoon on a clean cloth beside the stove or your hearth altar with the bay or rosemary sprig on top. Leave it overnight for the oil to soak in and the blessing to settle.',
+      },
+    ],
+    closing:
+      'Use the spoon for your spell-cooking: sunwise to draw in, widdershins to release. Wash by hand, never in the dishwasher, and re-oil every month or so, renewing its blessing as you do.',
+    safety:
+      'Use only food-safe oil finishes and markers labelled food-safe. Pyrography pens and craft knives are sharp and hot; work on a heatproof surface and cut away from yourself. Keep burning and carving off the bowl of the spoon. Some people are allergic to certain woods or to nut-based oils; avoid walnut oil if anyone has nut allergies.',
+    lore:
+      'Spoons and ladles have their own folklore: in Wales, carved lovespoons were given as tokens of courtship from the seventeenth century, and stirring sunwise for luck is recorded in Scotland and Ireland. In the kitchen-witch revival, the wooden spoon came to be treated as the hearth witch’s wand, a modern idea that fits the older belief that everyday tools gather power with use.',
+    sources: [
+      'Owen, Welsh Folk Customs (on lovespoons)',
+      'Carmichael, Carmina Gadelica (1900), on the sunwise turn',
+    ],
+  },
+  {
+    id: 'kitchen-blessed-salt-and-sugar',
+    title: 'Blessed Salt and Sweetening Sugar Jars',
+    kind: 'spell',
+    summary:
+      'Bless the everyday salt and sugar on your kitchen shelf, one for protection and purity, the other for sweetness and kindness, so they work quietly in every meal.',
+    intention: 'cleansing',
+    alsoFor: ['protection', 'love', 'peace'],
+    practices: ['kitchen', 'folk'],
+    paths: [],
+    moon: ['full'],
+    minutes: 25,
+    level: 'beginner',
+    solo: true,
+    ingredients: [
+      { name: 'A clean glass jar of salt (sea salt or kitchen salt)', ref: 'traditional/vessel/spell_jar' },
+      { name: 'A clean glass jar of sugar (white, brown or both)' },
+      { name: 'A dried bay leaf for the salt jar', ref: 'traditional/herb/bay', optional: true },
+      { name: 'A vanilla pod or a cinnamon stick for the sugar jar', ref: 'traditional/herb/vanilla', optional: true },
+      { name: 'Labels and a pen' },
+      { name: 'A wooden spoon' },
+    ],
+    preparation:
+      'Wash and fully dry the jars; any moisture will make the salt and sugar clump. A full moon is traditional for blessing and charging. Do this where moonlight reaches, a windowsill if possible.',
+    steps: [
+      {
+        title: 'Fill the salt jar',
+        instructions:
+          'Pour the salt in slowly, watching the crystals. Tuck in the bay leaf. Stir three times clockwise with the wooden spoon.',
+        spoken: 'Salt of the earth and salt of the sea, keep this house and keep it free.',
+      },
+      {
+        title: 'Fill the sugar jar',
+        instructions:
+          'Pour the sugar in, and bury the vanilla pod or cinnamon stick in the middle; over a few weeks it will scent the sugar beautifully. Stir three times clockwise.',
+        spoken: 'Sugar and spice, sweet as can be, kindness for all who eat with me.',
+      },
+      {
+        title: 'Label them',
+        instructions:
+          'Label the jars with their purpose as well as what they are: “Salt: to keep and to cleanse,” “Sugar: to sweeten.” Draw a small symbol on each if you like.',
+      },
+      {
+        title: 'Moon them',
+        instructions:
+          'Set both jars, lids on, on the windowsill under the full moon overnight. Rest your hands on the lids before you go to bed.',
+        minutes: 2,
+      },
+      {
+        title: 'Put them to work',
+        instructions:
+          'In the morning, put the jars in their place by the stove. Use the salt when cooking, for threshold work and in cleansing water; use the sugar in tea and baking when you want to sweeten the day.',
+      },
+    ],
+    closing:
+      'When a jar runs low, top it up and stir in a fresh blessing. Remove the bay leaf after a few months and replace it.',
+    safety:
+      'These are ordinary food ingredients; keep the bay leaf whole and remove it before using the salt in a dish if it has broken. Salt is harmful to pets in quantity. Keep the jars sealed against damp and insects.',
+    lore:
+      'Salt has been used as a purifier in ritual since antiquity: Greek and Roman offerings were sprinkled with salted grain (mola salsa), and salt features in protective folk charms across Europe, from spilling-salt superstitions to salt placed on the chests of the dead. Sweetening with sugar or honey to soften a situation is a widely shared folk idea. Blessing pantry staples so they work in every meal is a modern kitchen-witch practice.',
+    sources: [
+      'Frazer, The Golden Bough (1890–1915), on salt in custom',
+      'Pliny the Elder, Natural History 31 (on salt)',
+    ],
+  },
+  {
+    id: 'kitchen-four-thieves-vinegar',
+    title: 'Four Thieves Herbal Vinegar',
+    kind: 'spell',
+    summary:
+      'A food-safe herbal vinegar inspired by the old plague legend: garlic, rosemary, sage, thyme and mint steeped in cider vinegar for salad dressings, kitchen tonics and protective household washes.',
+    intention: 'protection',
+    alsoFor: ['healing', 'cleansing', 'banishing'],
+    practices: ['kitchen', 'folk', 'green'],
+    paths: [],
+    moon: ['new', 'waxing'],
+    weekday: 6,
+    minutes: 30,
+    level: 'intermediate',
+    solo: true,
+    ingredients: [
+      { name: '500 ml raw apple cider vinegar (at least 5% acidity)' },
+      { name: '1 head of garlic, cloves peeled and lightly crushed', ref: 'traditional/herb/garlic' },
+      { name: '2 sprigs fresh rosemary', ref: 'traditional/herb/rosemary' },
+      { name: 'A small handful fresh garden sage', ref: 'traditional/herb/sage' },
+      { name: '4 sprigs fresh thyme', ref: 'traditional/herb/thyme' },
+      { name: 'A small handful fresh mint', ref: 'traditional/herb/mint' },
+      { name: '1 tsp dried lavender buds', ref: 'traditional/herb/lavender', optional: true },
+      { name: '1 tsp black peppercorns', ref: 'traditional/herb/black_pepper' },
+      { name: '6 whole cloves', ref: 'traditional/herb/clove' },
+      { name: 'A clean glass jar with a non-metal lid (or a sheet of baking paper under a metal lid)', ref: 'traditional/vessel/spell_jar' },
+    ],
+    preparation:
+      'Sterilise the jar: wash in hot soapy water and dry in a low oven (120 °C) for 15 minutes, then let it cool. Wash the fresh herbs and pat them completely dry. The historical versions contain wormwood, rue and camphor, which are not food-safe; this kitchen version keeps only culinary herbs.',
+    steps: [
+      {
+        title: 'Tell the story',
+        instructions:
+          'As you set out the herbs, tell the legend aloud or to yourself: four thieves robbed plague houses and never fell ill, and when caught they traded their secret for their lives. Whatever its truth, it is a story about walking through danger unharmed.',
+      },
+      {
+        title: 'Bruise and layer',
+        instructions:
+          'Lightly bruise each herb between your fingers to release its oils, smelling each. Layer them in the jar with the garlic, peppercorns and cloves, naming the four guardians as you go.',
+        spoken: 'Garlic the first, rosemary the second, sage the third, thyme the fourth: four thieves to stand at the four corners and let no sickness through.',
+      },
+      {
+        title: 'Pour the vinegar',
+        instructions:
+          'Pour the vinegar over until every leaf is submerged by at least 2 cm. Poke out air bubbles with a clean chopstick. Herbs above the surface can go mouldy.',
+      },
+      {
+        title: 'Seal and mark the date',
+        instructions:
+          'Seal the jar and label it with the name and date. Shake it gently, then set it in a cool, dark cupboard.',
+        spoken: 'Steep and strengthen, dark and deep.',
+      },
+      {
+        title: 'Tend it',
+        instructions:
+          'Shake the jar every day or two for 2 to 3 weeks, each time saying a word of protection over it. Keep the herbs submerged.',
+      },
+      {
+        title: 'Strain and bottle',
+        instructions:
+          'Strain through a fine sieve or muslin into a clean bottle, pressing the herbs gently. Compost the spent herbs. Store the vinegar in the fridge.',
+      },
+    ],
+    closing:
+      'Use a spoonful in salad dressings or a marinade, add a splash to a mug of warm water and honey as a winter tonic, or dilute 1 part to 4 of water in a spray bottle for wiping doorknobs and worktops as a protective cleanse.',
+    safety:
+      'Use only food-safe culinary herbs; never add wormwood, rue, camphor or essential oils to anything you will ingest. Keep the herbs fully submerged and refrigerate the strained vinegar, using it within 3 to 4 months; discard if mould appears. Garlic is toxic to pets. Vinegar is acidic: dilute it before drinking, rinse your mouth afterwards to protect tooth enamel, and avoid it as a tonic if you have reflux or stomach ulcers. Do not use on marble or natural stone.',
+    lore:
+      'The Four Thieves legend is told of plague-time Marseille or Toulouse: thieves who robbed the sick and dead were protected by an herbal vinegar and traded the recipe for leniency. References are scant before the 1800s, and the best-known “original” recipe, said to have been posted in Marseille, was published by René-Maurice Gattefossé in 1937. Herbal vinegars (vinaigre des quatre voleurs) were sold by eighteenth- and nineteenth-century apothecaries as preservatives against infection. Some historians note the herbs may have repelled fleas, the real carriers of plague.',
+    sources: [
+      'Gattefossé, Aromathérapie (1937), the posted Marseille recipe',
+      'Historical pharmacopoeias of the 18th–19th centuries (vinaigre des quatre voleurs)',
+    ],
+  },
+  {
+    id: 'kitchen-moon-phase-meal-planning',
+    title: 'Moon-Phase Meal Planning',
+    kind: 'ritual',
+    summary:
+      'A monthly planning session at the new moon: look at the coming lunar month, match meals to the phases, write a menu with intention, and shop once with care.',
+    intention: 'beginnings',
+    alsoFor: ['prosperity', 'healing', 'study'],
+    practices: ['kitchen', 'cosmic'],
+    paths: [],
+    moon: ['new'],
+    minutes: 45,
+    level: 'beginner',
+    solo: true,
+    ingredients: [
+      { name: 'A calendar or the app’s moon calendar for the coming month' },
+      { name: 'A notebook or your book of shadows', ref: 'traditional/tool/book_of_shadows' },
+      { name: 'Your favourite recipe books or saved recipes' },
+      { name: 'A cup of tea', ref: 'traditional/herb/mint', optional: true },
+      { name: 'A silver or white candle', ref: 'traditional/candle/silver', optional: true },
+    ],
+    preparation:
+      'Check what is already in your fridge, freezer and cupboards and jot it down; waste is the enemy of plenty. Note any busy days, celebrations or travel in the coming month. Make your tea.',
+    steps: [
+      {
+        title: 'Open the month',
+        light: true,
+        instructions:
+          'Light the candle if using. Open your calendar to the coming lunar month and mark the four phases: new, first quarter, full, last quarter.',
+        spoken: 'New moon, new month, new table. Let what I cook this month feed what I am growing.',
+      },
+      {
+        title: 'Set a month’s intention',
+        instructions:
+          'Write one intention for the month at the top of the page: more energy, eating together more, saving money, comfort during grief. Every meal plan will lean toward it.',
+        minutes: 5,
+      },
+      {
+        title: 'Match meals to phases',
+        instructions:
+          'Use the phases as a loose guide. New moon (days 1–7): seeds, sprouts, eggs, fresh starts and new recipes. Waxing (8–14): growing, abundant foods such as breads, grains, slow-rising doughs. Full moon (around day 15): a celebratory or shared meal, round foods, something golden. Waning (16–28): simple, cleansing, comforting food; soups, use-up-the-fridge dishes, bitter greens.',
+        minutes: 15,
+      },
+      {
+        title: 'Write the menu',
+        instructions:
+          'Fill in your meals for at least the first week, and sketch the rest. Mark one spell-meal per phase, a dish you will cook as a deliberate working (for example, Prosperity Bread at the waxing moon, the Healing Broth at the waning).',
+        minutes: 15,
+      },
+      {
+        title: 'Write the list and bless it',
+        snuff: true,
+        instructions:
+          'Write the shopping list from the menu. Hold it, wish the budget well and the food good, and snuff the candle.',
+        spoken: 'Enough for us, and some to share.',
+      },
+    ],
+    closing:
+      'Keep the plan on the fridge. At the next new moon, look back before planning again: which meals nourished you, which went uneaten, and how the month’s intention fared.',
+    safety:
+      'Plan around everyone’s allergies and dietary needs first. Phase-based eating is a symbolic framework, not medical or nutritional advice. Do not leave the candle unattended.',
+    lore:
+      'Timing household work by the moon is old folk practice: farmers planted, cut timber, slaughtered and brewed by its phases, as recorded in almanacs from Hesiod’s Works and Days to the English farmers’ almanacs of the seventeenth century onward. The idea of matching meals to the phases (growing foods at the waxing moon, cleansing foods at the waning) is a modern kitchen-witch adaptation of that lunar-almanac thinking.',
+    sources: [
+      'Hesiod, Works and Days (on lucky and unlucky days of the month)',
+      'Tusser, Five Hundred Points of Good Husbandry (1573), on moon-timed work',
+    ],
+  },
