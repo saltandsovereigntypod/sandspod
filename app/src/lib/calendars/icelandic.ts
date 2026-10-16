@@ -117,7 +117,7 @@ const FIRST_DAYS: Record<string, { id: string; name: string; meaning: string; ev
   Ýlir: { id: 'ylir', name: 'First day of Ýlir', meaning: 'The second month of winter begins, on a Monday.', event: true },
   Mörsugur: { id: 'morsugur', name: 'First day of Mörsugur', meaning: 'Mörsugur, the midwinter month, begins on a Wednesday, just before the solstice.', event: true },
   Þorri: { id: 'bondadagur', name: 'Bóndadagur', meaning: 'The first day of Þorri, “husband’s day”, a Friday. Folk custom told the man of the house to greet Þorri at dawn hopping round the house in one trouser leg; today husbands are given gifts, and the Þorrablót season of traditional food begins.', event: false },
-  Góa: { id: 'konudagur', name: 'Konudagur', meaning: 'The first day of Góa, “wife’s day”, a Sunday: women were welcomed Góa in folk custom, and today wives are given flowers and treats.', event: true },
+  Góa: { id: 'konudagur', name: 'Konudagur', meaning: 'The first day of Góa, “wife’s day”, a Sunday: in folk custom the woman of the house welcomed Góa in, and today wives are given flowers and treats.', event: true },
   Einmánuður: { id: 'einmanudur', name: 'First day of Einmánuður', meaning: 'The last month of winter begins, on a Tuesday; traditionally the young men’s day (yngismannadagur).', event: true },
 };
 
@@ -202,7 +202,6 @@ export const ICELANDIC_CALENDAR: CalendarDef = {
     'The calendar of medieval Iceland, still printed in the Icelandic almanac and still used to date the first day of summer, bóndadagur and konudagur. The year has two seasons, summer and winter, of six months each. Every month has 30 days and begins on its own weekday, and four extra nights (aukanætur) in midsummer make the year exactly 52 weeks, so dates are often given as “the 10th week of summer”. Because 364 days is a little short of the sun’s year, a leap week, sumarauki, is added every five to seven years. Summer begins on the Thursday between 19 and 25 April; winter begins on a Saturday, normally 21–27 October. The rules for sumarauki have changed over the centuries (they were first set out around 955 and adjusted after Iceland took up the Gregorian calendar in 1700); the modern almanac rule is used here. The months are Icelandic and are kept by the Icelandic calendar wherever you live, so summer and winter here are the North’s.',
   sources: [
     'Almanak Háskóla Íslands (University of Iceland Almanac), https://almanak.hi.is/',
-    'Þorsteinn Sæmundsson, “Íslenska misseristalið”, in the Almanak Háskóla Íslands',
     'Árni Björnsson, Saga daganna (1993)',
     'https://is.wikipedia.org/wiki/Heyannir',
     'https://en.wikipedia.org/wiki/Icelandic_calendar',

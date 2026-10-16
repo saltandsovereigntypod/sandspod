@@ -3,9 +3,19 @@
 
 import type { CalendarDef } from './types.ts';
 
+import { ROMAN_CALENDAR } from './roman.ts';
+import { ATTIC_CALENDAR } from './attic.ts';
+import { ICELANDIC_CALENDAR } from './icelandic.ts';
+import { KEMETIC_CALENDAR } from './kemetic.ts';
 import { HINDU_CALENDAR } from './hindu.ts';
+import { SLAVIC_CALENDAR } from './slavic.ts';
 
 /** The traditional calendars, in display order (the moon is added by index.ts). */
 export const TRADITIONAL_CALENDARS: CalendarDef[] = [
+  ROMAN_CALENDAR,
+  ATTIC_CALENDAR,
+  ICELANDIC_CALENDAR,
+  KEMETIC_CALENDAR,
   HINDU_CALENDAR,
+  SLAVIC_CALENDAR,
 ];

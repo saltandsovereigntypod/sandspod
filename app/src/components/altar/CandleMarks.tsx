@@ -9,7 +9,7 @@
 
 import { memo } from 'react';
 import { Image, type ImageSourcePropType, type ImageStyle, StyleSheet, View, type StyleProp } from 'react-native';
-import Svg, { Defs, Ellipse, G, LinearGradient, Line, Path, RadialGradient, Rect, Stop, Text as SvgText } from 'react-native-svg';
+import Svg, { ClipPath, Defs, Ellipse, G, LinearGradient, Line, Path, RadialGradient, Rect, Stop, Text as SvgText } from 'react-native-svg';
 
 import { flameLayout, lowerFlame, pictureBox, type FlameLayout } from '../../lib/altar/flame';
 import { imageRatio } from '../../lib/altar/geometry';
@@ -59,10 +59,20 @@ const lightness = (hex: string) => {
   return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 };
 
-/** The groove and the lit edge of a carving in this wax: dark cut into pale wax, a paler scratch into dark. */
-function incision(waxHex: string): { groove: string; edge: string } {
-  if (lightness(waxHex) < 0.32) return { groove: mix(waxHex, [240, 230, 210], 0.7), edge: 'rgb(6,4,3)' };
-  return { groove: mix(waxHex, [44, 12, 6], 0.8), edge: mix(waxHex, [255, 253, 246], 0.75) };
+/** A carving in this wax: the groove a shade into the wax's own colour (darker in pale wax, paler in dark), with a faint lit edge. */
+function incision(waxHex: string) {
+  if (lightness(waxHex) < 0.32) return { groove: mix(waxHex, [235, 222, 200], 0.34), grooveOpacity: 0.85, edge: 'rgb(0,0,0)', edgeOpacity: 0.55 };
+  return { groove: mix(waxHex, [40, 16, 8], 0.55), grooveOpacity: 0.7, edge: mix(waxHex, [255, 253, 246], 0.6), edgeOpacity: 0.5 };
+}
+
+/** Drips in the candle's own wax: a little glossier, with a darker edge and a glint. */
+function dripLook(waxHex: string, lit: boolean) {
+  const dark = lightness(waxHex) < 0.32;
+  return {
+    fill: mix(waxHex, dark ? [90, 84, 78] : [255, 250, 240], lit ? 0.14 : 0.08),
+    edge: mix(waxHex, dark ? [0, 0, 0] : [40, 20, 10], 0.5),
+    shine: mix(waxHex, [255, 255, 250], dark ? 0.4 : 0.7),
+  };
 }
 
 // ── Where things are ──────────────────────────────────────────────────────
@@ -177,6 +187,7 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
   const rim = Math.max(1.2, half * 0.2); // the ellipse depth of the wax's top
   const waxHex = waxColor(String(object.color || 'white'));
   const cut = incision(waxHex);
+  const drip = dripLook(waxHex, lit);
   const oil = dressings.some((d) => d.type === 'oil');
   const herbs = dressings.filter((d) => d.type === 'herb');
   const progress = burnProgress(object, now);
@@ -248,39 +259,43 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
           );
         })}
 
-      {/* Carvings: incised down the wax, melting away from the top as it burns. */}
+      {/* Carvings: cut along the candle's length, as people carve them, in the wax's own colour; melting away from the top as it burns. */}
       {carvings.map((carving, column) => {
-        const chars = [...carving.text];
-        const n = Math.max(1, chars.length);
+        const text = carving.text;
+        const n = Math.max(1, [...text].length);
         const columns = carvings.length;
-        const span = Math.max(1, bottom - carveTop - body * 0.03);
-        const size = Math.min((half * 2 * (columns > 1 ? 0.46 : 0.8)), (span / n) * 1.08, 44);
-        if (size < 1.5) return null;
-        const advance = Math.min(size * 1.02, span / n);
-        // The word sits in the middle of the wax (a little high), so it lasts into the burn.
-        const start = carveTop + Math.max(0, (span - advance * n) * 0.4);
-        const x = columns > 1 ? cx + (column === 0 ? -0.5 : 0.5) * half : cx;
-        const remains = burn ? null : carvingRemaining(carving.text, progress);
+        const lane = (half * 2 * 0.86) / columns; // the width each carving has across the wax
+        const span = Math.max(1, bottom - carveTop - body * 0.05);
+        // Letter height across the wax (cap height ≈ 0.62 of the size); the word's length (≈ 0.46 a letter) must fit down it.
+        const size = Math.min(lane * 0.85, (span * 0.86) / (0.46 * n), 30);
+        if (size < 3) return null;
+        const length = 0.46 * n * size;
+        const x = cx + (columns > 1 ? (column === 0 ? -0.5 : 0.5) * lane : 0);
+        const mid = carveTop + span * 0.48; // a little high, so it lasts into the burn
+        const start = mid - length / 2;
+        const remains = burn ? null : carvingRemaining(text, progress);
+        const melted = remains ? start + remains.meltLine * length : goneLine + size * 0.15;
+        const clipTop = Math.max(melted, start - size);
+        if (clipTop >= start + length) return null;
+        const id = `carve-${uid}-${column}-${Math.round(width)}x${Math.round(height)}`;
+        const glyph = { fontSize: size, fontFamily: fonts.display, textAnchor: 'middle' as const, letterSpacing: size * 0.02 };
         return (
-          <G key={`c${column}`} transform={flipped ? `translate(${2 * x} 0) scale(-1 1)` : undefined}>
-            {chars.map((char, i) => {
-              if (!char.trim()) return null;
-              const y = start + advance * (i + 0.82);
-              const glyphTop = y - size * 0.72;
-              const opacity = remains ? (remains.glyphs[i]?.opacity ?? 0) : Math.max(0, Math.min(1, (glyphTop - goneLine) / (size * 0.5) + 1));
-              if (!(opacity > 0.02) || y > bottom + size * 0.1) return null;
-              const common = { x, fontSize: size, fontFamily: fonts.displayBold, textAnchor: 'middle' as const };
-              return (
-                <G key={i} opacity={opacity}>
-                  <SvgText {...common} y={y + size * 0.06} dx={size * 0.05} fill={cut.edge} fillOpacity={0.8}>
-                    {char}
-                  </SvgText>
-                  <SvgText {...common} y={y} fill={cut.groove} fillOpacity={0.95} stroke={cut.groove} strokeOpacity={0.6} strokeWidth={Math.max(0.3, size * 0.035)}>
-                    {char}
-                  </SvgText>
-                </G>
-              );
-            })}
+          <G key={`c${column}`}>
+            <Defs>
+              <ClipPath id={id}>
+                <Rect x={cx - half * 0.94} y={clipTop} width={half * 1.88} height={Math.max(0, bottom - clipTop)} />
+              </ClipPath>
+            </Defs>
+            <G clipPath={`url(#${id})`}>
+              <G transform={`translate(${x} ${mid}) rotate(90)${flipped ? ' scale(1 -1)' : ''}`}>
+                <SvgText {...glyph} x={size * 0.03} y={size * 0.31 + size * 0.04} fill={cut.edge} fillOpacity={cut.edgeOpacity}>
+                  {text}
+                </SvgText>
+                <SvgText {...glyph} x={0} y={size * 0.31} fill={cut.groove} fillOpacity={cut.grooveOpacity}>
+                  {text}
+                </SvgText>
+              </G>
+            </G>
           </G>
         );
       })}
@@ -302,23 +317,26 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
       {/* Lit: the top glows and a pool of molten wax gathers under the flame. */}
       {lit && wax.melt > 0 && (
         <>
-          <Rect x={cx - half} y={surface} width={half * 2} height={Math.min(body, Math.max(rim * 5, body * 0.34))} fill={`url(#glow-${uid})`} opacity={0.55 + 0.45 * wax.melt} />
+          <Rect x={cx - half} y={surface} width={half * 2} height={Math.min(body, Math.max(rim * 3, body * 0.16))} fill={`url(#glow-${uid})`} opacity={(lightness(waxHex) < 0.32 ? 0.22 : 0.4) + 0.3 * wax.melt} />
           <Ellipse cx={cx} cy={surface + rim * 0.35} rx={half * (0.45 + 0.5 * wax.melt)} ry={rim * (0.55 + 0.45 * wax.melt)} fill={`url(#pool-${uid})`} opacity={0.6 + 0.4 * wax.melt} />
         </>
       )}
 
-      {/* Drips running down from the top. */}
+      {/* Drips: the candle's own wax run down from the top, each ending in a bead. */}
       {wax.drips > 0 &&
         DRIPS.slice(0, wax.drips).map(([dx, len], i) => {
-          const x = cx + dx * half * 0.86;
-          const l = Math.min(body * 0.85, body * (0.12 + 0.3 * len * Math.max(wax.amount, wax.melt * 0.7)));
-          const w = Math.max(1.4, half * 0.26);
-          const top = surface + rim * (0.6 + 0.3 * (1 - Math.abs(dx)));
-          const d = `M ${x - w / 2} ${top} L ${x - w * 0.42} ${top + l} Q ${x} ${top + l + w * 1.5} ${x + w * 0.42} ${top + l} L ${x + w / 2} ${top} Z`;
+          const x = cx + dx * half * 0.84;
+          const l = Math.min(body * 0.7, body * (0.08 + 0.26 * len * Math.max(wax.amount, wax.melt * 0.7)));
+          const w = Math.max(1.1, half * 0.17);
+          const r = w * 0.62; // the bead at its end
+          const top = surface + rim * (0.3 + 0.3 * (1 - Math.abs(dx)));
+          const end = top + l;
+          const d = `M ${x - w * 0.55} ${top} C ${x - w * 0.5} ${top + l * 0.4} ${x - w * 0.3} ${end - r * 1.6} ${x - r} ${end} A ${r} ${r} 0 1 0 ${x + r} ${end} C ${x + w * 0.3} ${end - r * 1.6} ${x + w * 0.5} ${top + l * 0.4} ${x + w * 0.55} ${top} Z`;
           return (
             <G key={`d${i}`}>
-              <Path d={d} fill={mix(waxHex, [255, 250, 240], 0.18)} stroke={mix(waxHex, [30, 14, 6], 0.45)} strokeOpacity={0.55} strokeWidth={Math.max(0.35, w * 0.12)} />
-              <Line x1={x - w * 0.12} y1={top + w * 0.4} x2={x - w * 0.12} y2={top + l - w * 0.2} stroke="rgb(255,252,244)" strokeOpacity={0.6} strokeWidth={Math.max(0.3, w * 0.2)} strokeLinecap="round" />
+              <Path d={d} fill={drip.fill} stroke={drip.edge} strokeOpacity={0.45} strokeWidth={Math.max(0.3, w * 0.08)} />
+              <Path d={`M ${x - w * 0.18} ${top + w * 0.6} L ${x - w * 0.14} ${end - r * 0.4}`} stroke={drip.shine} strokeOpacity={0.35} strokeWidth={Math.max(0.3, w * 0.14)} strokeLinecap="round" />
+              <Ellipse cx={x - r * 0.3} cy={end - r * 0.15} rx={r * 0.28} ry={r * 0.22} fill={drip.shine} opacity={0.4} />
             </G>
           );
         })}

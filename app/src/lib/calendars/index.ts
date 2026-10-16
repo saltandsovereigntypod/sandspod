@@ -24,6 +24,9 @@ export { MOON_CALENDAR } from './moon.ts';
 type SettingsLike = Record<string, unknown> | null | undefined;
 
 /** The moon first, then the traditional calendars that exist (see registry.ts). */
+/** Off until every calendar has been checked: Settings and Today show none of them. */
+export const CALENDARS_LIVE = false as boolean;
+
 export const CALENDARS: CalendarDef[] = [MOON_CALENDAR, ...TRADITIONAL_CALENDARS.filter((c) => c.id !== 'moon')];
 
 export const calendarById = (id: string): CalendarDef | undefined => CALENDARS.find((c) => c.id === id);

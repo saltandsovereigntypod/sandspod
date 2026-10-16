@@ -23,9 +23,10 @@
 // European names. A month is named by its full moon. They belong to the
 // northern seasons; south of the equator they are turned six months. The
 // Harvest Moon is the full moon nearest the autumn equinox: when it falls in
-// October the September moon is the Corn Moon and the Hunter's Moon moves to
-// November (the Beaver Moon drops out that year), as the Old Farmer's Almanac
-// does. A thirteenth moon in a lunar year is not by itself a Blue Moon: the
+// October the September moon is the Corn Moon and the Hunter's Moon (the
+// full moon after the Harvest Moon) moves to November, as Time and Date and
+// EarthSky name it; the Old Farmer's Almanac keeps the Beaver Moon then, so
+// sources differ for those Novembers. A thirteenth moon in a lunar year is not by itself a Blue Moon: the
 // Blue Moon is the extra full moon by the chosen rule, which usually but not
 // always falls in a thirteen-moon year.
 
@@ -58,24 +59,18 @@ export type Lunation = {
   next: Date;
 };
 
-const cache = new Map<number, Lunation>();
+// Phase instants are cached by lunation; local days are worked out fresh each
+// time, so a change of time zone is picked up at once.
+const instants = new Map<number, [Date, Date, Date, Date, Date]>();
 export function lunation(k: number): Lunation {
-  let found = cache.get(k);
+  let found = instants.get(k);
   if (!found) {
-    const newMoon = phaseOf(k, 'new');
-    found = {
-      k,
-      newMoon,
-      firstQuarter: phaseOf(k, 'firstQuarter'),
-      full: phaseOf(k, 'full'),
-      lastQuarter: phaseOf(k, 'lastQuarter'),
-      start: startOfDay(newMoon),
-      next: startOfDay(phaseOf(k + 1, 'new')),
-    };
-    if (cache.size > 400) cache.clear();
-    cache.set(k, found);
+    found = [phaseOf(k, 'new'), phaseOf(k, 'firstQuarter'), phaseOf(k, 'full'), phaseOf(k, 'lastQuarter'), phaseOf(k + 1, 'new')];
+    if (instants.size > 600) instants.clear();
+    instants.set(k, found);
   }
-  return found;
+  const [newMoon, firstQuarter, full, lastQuarter, nextNew] = found;
+  return { k, newMoon, firstQuarter, full, lastQuarter, start: startOfDay(newMoon), next: startOfDay(nextNew) };
 }
 
 /** The lunation whose local days include `day`. */
@@ -422,6 +417,7 @@ export const MOON_CALENDAR: CalendarDef = {
     'https://aa.usno.navy.mil/data/MoonPhases',
     'https://skyandtelescope.org/astronomy-resources/what-is-a-blue-moon/',
     'https://www.almanac.com/full-moon-names',
+    'https://www.timeanddate.com/astronomy/moon/beaver.html',
   ],
   dateOf,
   eventsBetween,
