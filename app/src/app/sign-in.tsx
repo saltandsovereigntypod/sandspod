@@ -5,7 +5,7 @@ import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, View } fro
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '../components/Button';
-import { appleSignInAvailable, signInWithApple } from '../lib/appleSignIn';
+import { appleInBrowser, appleSignInAvailable, signInWithApple } from '../lib/appleSignIn';
 import { signInWithGoogle } from '../lib/googleSignIn';
 import { requestRecovery } from '../lib/settings/account';
 import { supabase } from '../lib/supabase';
@@ -96,7 +96,10 @@ export default function SignIn() {
             : 'Use the same account as the Salt & Sovereignty website.'}
         </Text>
 
-        {appleAvailable && (
+        {appleAvailable && appleInBrowser ? (
+          <Button label="Continue with Apple" variant="outline" disabled={busy} onPress={continueWithApple} style={styles.submit} />
+        ) : null}
+        {appleAvailable && !appleInBrowser && (
           <AppleAuthentication.AppleAuthenticationButton
             buttonType={
               creating

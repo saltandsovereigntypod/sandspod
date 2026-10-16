@@ -291,7 +291,7 @@ function sizeFrame(boxes: StageRect[], size: WidgetSize, background: string): Sc
 }
 
 /** Every picture the widget needs for an altar, each made just big enough to stay sharp. */
-export function altarPictures(altar: SavedAltar): WidgetPicture[] {
+export function altarPictures(altar: SavedAltar, scale = SCALE): WidgetPicture[] {
   const doc = documentFromAltar(altar);
   const objects = sceneObjects(doc.objects);
   const boxes = objects.map(({ object }) => boxRect(object));
@@ -301,17 +301,17 @@ export function altarPictures(altar: SavedAltar): WidgetPicture[] {
   for (const size of Object.keys(WIDGET_VIEWS) as WidgetSize[]) {
     const frame = sizeFrame(boxes, size, background);
     widest = Math.max(widest, frame.W);
-    out.push({ id: backgroundId(size, background), path: background, width: WIDGET_VIEWS[size].w * SCALE, crop: frame.crop });
+    out.push({ id: backgroundId(size, background), path: background, width: WIDGET_VIEWS[size].w * scale, crop: frame.crop });
   }
   const sizes = new Map<string, number>();
   for (const { object } of objects) {
     const path = String(object.imagePath);
-    sizes.set(path, Math.max(sizes.get(path) ?? 0, displayBox(object).size * widest * SCALE));
+    sizes.set(path, Math.max(sizes.get(path) ?? 0, displayBox(object).size * widest * scale));
     const overlays = dressingOverlays(object);
-    if (overlays.herb) sizes.set(HERB_OVERLAY, Math.max(sizes.get(HERB_OVERLAY) ?? 0, displayBox(object).size * widest * SCALE));
-    if (overlays.oil) sizes.set(OIL_OVERLAY, Math.max(sizes.get(OIL_OVERLAY) ?? 0, displayBox(object).size * widest * SCALE));
+    if (overlays.herb) sizes.set(HERB_OVERLAY, Math.max(sizes.get(HERB_OVERLAY) ?? 0, displayBox(object).size * widest * scale));
+    if (overlays.oil) sizes.set(OIL_OVERLAY, Math.max(sizes.get(OIL_OVERLAY) ?? 0, displayBox(object).size * widest * scale));
   }
-  for (const [path, width] of sizes) out.push({ id: path, path, width: Math.min(300, Math.max(48, Math.ceil(width * 1.25))) });
+  for (const [path, width] of sizes) out.push({ id: path, path, width: Math.min(150 * scale, Math.max(48, Math.ceil(width * 1.25))) });
   return out;
 }
 
@@ -435,6 +435,27 @@ export function slotAltars(altars: SavedAltar[], chosen: (string | null)[]): Sav
     .filter((a) => !used.has(a.id))
     .sort((a, b) => String(b.updatedAt || b.savedAt || '').localeCompare(String(a.updatedAt || a.savedAt || '')));
   return slots.map((a) => a ?? rest.shift() ?? null).filter((a): a is SavedAltar => !!a);
+}
+
+/**
+ * What a tap on the widget shows straight away, before the app carries it out
+ * on the real altar (the iPhone widget does the same inside the widget).
+ */
+export function previewWidgetAction(altars: WidgetAltar[], action: WidgetAction): WidgetAltar[] {
+  const hit = (k: string) => !action.key || k === action.key;
+  return altars.map((a) => {
+    if (a.id !== action.altarId) return a;
+    if (action.kind === 'light' || action.kind === 'snuff') {
+      const on = action.kind === 'light';
+      return {
+        ...a,
+        candles: a.candles.map((c) => (hit(c.key) && c.lit !== on ? { ...c, lit: on, since: on ? action.at : '' } : c)),
+        scene: (a.scene ?? []).map((s) => (s.candle && !s.spent && hit(s.key) ? { ...s, lit: on } : s)),
+      };
+    }
+    if (action.kind === 'offer') return { ...a, presences: a.presences.map((p) => (hit(p.key) ? { ...p, lastOffering: action.at } : p)) };
+    return { ...a, crystals: a.crystals.map((c) => (hit(c.key) ? { ...c, lastCleansed: action.at } : c)) };
+  });
 }
 
 /** Move an altar into a place (1-based), or take it off the home screen with 0. */
