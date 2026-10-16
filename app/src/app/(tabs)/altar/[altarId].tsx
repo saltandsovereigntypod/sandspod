@@ -32,7 +32,8 @@ import { Chip, ChipRow } from '../../../components/altar/Chip';
 import { WidgetSheet } from '../../../components/altar/WidgetSheet';
 import { BackgroundSheet, DressSheet, LayersSheet, SaveSheet } from '../../../components/altar/OptionSheets';
 import { Button } from '../../../components/Button';
-import { burnDuration, burnedSoFar, dressingNames, glanceLine, resolveAltarEntry } from '../../../lib/altar/companion';
+import { burnDuration, burnedSoFar, dressingNames, glanceLine, lifeDuration, resolveAltarEntry } from '../../../lib/altar/companion';
+import { CandleLifeSheet } from '../../../components/altar/CandleLifeSheet';
 import { builtInCabinet, defaultAltarBackground, objectFromForm, shortLabel } from '../../../lib/altar/cabinet';
 import {
   addObject,
@@ -58,6 +59,10 @@ import {
   toggleLight,
   updateObjects,
   clearAltar,
+  freshCandleAt,
+  nextBurnout,
+  setCandleLifeAt,
+  settleCandles,
   groupName,
   groupObjects,
   lightAll,
@@ -70,7 +75,7 @@ import {
 } from '../../../lib/altar/editor';
 import { displayBox, STAGE_ASPECT } from '../../../lib/altar/geometry';
 import { stackOrder } from '../../../lib/altar/layers';
-import { apothecaryStateOf, carvingsOf, dressingsOf, isCandle, isLit, type ApothecaryState } from '../../../lib/altar/livingState';
+import { apothecaryStateOf, CANDLE_LIFE, candleLife, carvingsOf, dressingsOf, isCandle, isLit, type ApothecaryState } from '../../../lib/altar/livingState';
 import { addObjectInstanceEvent, getObjectInstance, updateObjectInstance, useObjectInstance } from '../../../lib/altar/instanceStore';
 import {
   ACTIVITY_TYPES,
@@ -113,6 +118,7 @@ type SheetName =
   | 'dress'
   | 'save'
   | 'widget'
+  | 'length'
   | null;
 
 const nowIso = () => new Date().toISOString();
@@ -154,7 +160,8 @@ export default function AltarEditor() {
   useEffect(() => {
     if (!altarId || loadedFor.current === altarId) return;
     const start = (source: AltarDocument, id: string | null, altarName: string) => {
-      const prepared = prepareDocument(source, nowIso());
+      // Candles that burned down while the altar was closed are out when it opens.
+      const prepared = settleCandles(prepareDocument(source, nowIso()), nowIso());
       loadedFor.current = altarId;
       setDoc(prepared);
       setBaseline(prepared);
@@ -204,7 +211,7 @@ export default function AltarEditor() {
     if (!saved || saved === seenSaved.current) return;
     seenSaved.current = saved;
     if (dirty) return;
-    const fresh = prepareDocument(documentFromAltar(saved), nowIso());
+    const fresh = settleCandles(prepareDocument(documentFromAltar(saved), nowIso()), nowIso());
     if (JSON.stringify(fresh.objects) === JSON.stringify(doc?.objects)) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- the saved altar is outside state; this follows it
     setDoc(fresh);
@@ -246,6 +253,30 @@ export default function AltarEditor() {
   // Edits go through a ref so several in one gesture frame build on each other.
   const docRef = useRef<AltarDocument | null>(null);
   docRef.current = doc;
+
+  // A lit candle burns down and goes out on its own while the altar is open.
+  const [clock, setClock] = useState(0);
+  useEffect(() => {
+    if (!doc) return;
+    const next = nextBurnout(doc);
+    if (next == null) return;
+    const timer = setTimeout(
+      () => {
+        const current = docRef.current;
+        if (!current) return;
+        const settled = settleCandles(current, nowIso());
+        if (settled === current) return setClock((c) => c + 1);
+        const out = current.objects.filter((o, i) => isLit(o) && !isLit(settled.objects[i])).map((o) => shortLabel(o.label, 'Candle'));
+        docRef.current = settled;
+        setDoc(settled);
+        // Going out isn't an edit of yours: a saved altar stays saved (it's saved for you in the background).
+        setBaseline((b) => (b === current ? settled : b));
+        setNotice(`${out.join(' and ')} burned down and went out.`);
+      },
+      Math.min(Math.max(0, next - Date.now()) + 250, 6 * 60 * 60 * 1000),
+    );
+    return () => clearTimeout(timer);
+  }, [doc, clock]);
 
   const commit = useCallback((next: (d: AltarDocument) => AltarDocument, recordUndo = true) => {
     const current = docRef.current;
@@ -500,6 +531,8 @@ export default function AltarEditor() {
             onDone={() => setSelected(null)}
             act={{
               light: () => commit((d) => toggleLight(d, selected, nowIso())),
+              fresh: () => commit((d) => freshCandleAt(d, selected, nowIso())),
+              length: () => setSheet('length'),
               rename: () => setSheet('rename'),
               crystal: (mode) => setCrystalMode(mode),
               deity: (mode) => setDeityMode(mode),
@@ -568,7 +601,7 @@ export default function AltarEditor() {
             </ChipRow>
             {(doc.objects.some(isCandle) || doc.objects.length > 1) && (
               <ChipRow>
-                {doc.objects.some((o) => isCandle(o) && !isLit(o)) && (
+                {doc.objects.some((o) => isCandle(o) && !isLit(o) && !candleLife(o).spent) && (
                   <Chip label="Light all candles" symbol="✺" onPress={() => commit((d) => lightAll(d, nowIso()))} />
                 )}
                 {doc.objects.some(isLit) && <Chip label="Snuff all" symbol="◌" onPress={() => commit((d) => snuffAll(d, nowIso()))} />}
@@ -822,6 +855,17 @@ export default function AltarEditor() {
               setSheet(null);
             }}
           />
+          <CandleLifeSheet
+            visible={sheet === 'length'}
+            candle={shortLabel(selectedObject?.label, 'Candle')}
+            current={selectedObject ? candleLife(selectedObject).expectedMs : 0}
+            usual={selectedObject ? (CANDLE_LIFE[candleLife(selectedObject).form] ?? 0) : 0}
+            onClose={() => setSheet(null)}
+            onChoose={(ms) => {
+              if (selected != null) commit((d) => setCandleLifeAt(d, selected, ms, nowIso()));
+              setSheet(null);
+            }}
+          />
           <SaveSheet
             visible={sheet === 'save'}
             initialName={name}
@@ -949,6 +993,8 @@ export default function AltarEditor() {
 
 type Actions = {
   light: () => void;
+  fresh: () => void;
+  length: () => void;
   rename: () => void;
   ungroup: () => void;
   crystal: (mode: CrystalMode) => void;
@@ -1005,20 +1051,28 @@ function ObjectPanel({
     return () => clearInterval(timer);
   }, [lit]);
   const burned = candle ? burnedSoFar(object, now) : 0;
+  const life = candle ? candleLife(object, now) : null;
   const [confirmRemove, setConfirmRemove] = useState(false);
 
   return (
     <View style={styles.section}>
       <View style={styles.objectHead}>
         <View style={{ flex: 1 }}>
-          <Text style={type.eyebrow}>{locked ? 'Locked in place' : lit ? 'Burning' : 'Selected'}</Text>
+          <Text style={type.eyebrow}>{locked ? 'Locked in place' : lit ? 'Burning' : life?.spent ? 'Spent' : 'Selected'}</Text>
           <Text style={type.cardTitle}>{objectLabel}</Text>
           {!!glance && <Text style={styles.glance}>{glance}</Text>}
           {!!group && <Text style={type.caption}>{`In the group “${group}”`}</Text>}
-          {candle && (burned > 0 || lit || dressings.length > 0 || carvings.length > 0) && (
+          {candle && (
             <Text style={type.caption}>
               {[
                 lit ? `Burning time ${burnDuration(burned)}` : burned > 0 ? `Burned ${burnDuration(burned)} in all` : null,
+                life?.spent
+                  ? 'Burned all the way down'
+                  : life?.expectedMs
+                    ? burned > 0 || lit
+                      ? `About ${lifeDuration(life.remainingMs)} left`
+                      : `Burns about ${lifeDuration(life.expectedMs)}`
+                    : null,
                 dressings.length ? `Dressed with ${dressingNames(dressings).join(', ')}` : null,
                 carvings.length ? `Carved with ${carvings.map((c) => `“${c.text}”`).join(', ')}` : null,
               ]
@@ -1057,8 +1111,16 @@ function ObjectPanel({
 
       {candle && (
         <>
-          <Button label={lit ? 'Snuff the candle' : 'Light the candle'} onPress={act.light} />
+          {life?.spent ? (
+            <>
+              <Text style={type.caption}>This candle has burned down. Put a fresh one in its place to light it again; this one’s burns stay in its history.</Text>
+              <Button label="Put a fresh candle here" onPress={act.fresh} />
+            </>
+          ) : (
+            <Button label={lit ? 'Snuff the candle' : 'Light the candle'} onPress={act.light} />
+          )}
           <ChipRow>
+            {life?.adjustable && <Chip label="How long it burns" symbol="⧗" onPress={act.length} />}
             <Chip label="Dress" symbol="❦" onPress={act.dress} />
             <Chip label="Carve" symbol="✎" onPress={act.carve} />
             {dressings.length > 0 && <Chip label="Undress" symbol="⌫" onPress={act.undress} />}

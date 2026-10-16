@@ -164,6 +164,18 @@ export function burnDuration(ms: number): string {
 }
 const duration = burnDuration;
 
+/** A candle's whole life or what's left of it: "7 days", "2 days 5 hr", "3 hr 20 min", "10 min". */
+export function lifeDuration(ms: number): string {
+  const minutes = Math.floor(Math.max(0, ms) / 60000);
+  if (minutes < 1) return 'under a minute';
+  const days = Math.floor(minutes / 1440);
+  const hours = Math.floor((minutes % 1440) / 60);
+  const mins = minutes % 60;
+  if (days > 0) return [`${days} day${days === 1 ? '' : 's'}`, hours ? `${hours} hr` : ''].filter(Boolean).join(' ');
+  if (hours > 0) return [`${hours} hr`, mins ? `${mins} min` : ''].filter(Boolean).join(' ');
+  return `${mins} min`;
+}
+
 /** Every minute a candle has burned, counting the burn going on now. */
 export function burnedSoFar(object: SavedObject, now: Date): number {
   const candle = readLivingState(object, now.toISOString()).candle;

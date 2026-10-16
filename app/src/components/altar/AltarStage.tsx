@@ -9,7 +9,7 @@ import { DEFAULT_BACKGROUND } from '../../lib/altar/cabinet';
 import { flameLayout, type FlameLayout } from '../../lib/altar/flame';
 import { boxToPixels, candleLightRadius, displayBox, hitTest, IMAGE_INSET, imageRatio, rotationOf, STAGE_ASPECT } from '../../lib/altar/geometry';
 import { stackOrder } from '../../lib/altar/layers';
-import { dressingOverlays, isCandle, isLit } from '../../lib/altar/livingState';
+import { candleLife, dressingOverlays, isCandle, isLit } from '../../lib/altar/livingState';
 import type { AltarDocument } from '../../lib/altar/snapshot';
 import type { SavedObject } from '../../lib/altar/types';
 import { colors, fonts } from '../../theme';
@@ -276,6 +276,8 @@ const AltarObjectView = memo(function AltarObjectView({
   const flipped = object.flipped === 'true';
   const glowing = object.glowing === 'true';
   const lit = isCandle(object) && isLit(object);
+  // A candle that has burned down fades, with a word to say so (candle-lifecycle.js).
+  const spent = isCandle(object) && !lit && candleLife(object).spent;
   const smoke = useSnuffSmoke(lit);
   // The flame sits on this picture's wick (the vigil candles keep the website's spot).
   const flame = lit || smoke != null ? flameLayout(object.imagePath, object.imagePath ? imageRatio(object.imagePath) : null) : null;
@@ -298,7 +300,7 @@ const AltarObjectView = memo(function AltarObjectView({
       {source ? (
         // The website's image sits in the button's content box (6px / 1px padding on 80px).
         <View style={[styles.content, { paddingHorizontal: rect.width * IMAGE_INSET.x, paddingVertical: rect.width * IMAGE_INSET.y }]}>
-          <Image source={source} style={styles.fill} resizeMode="contain" />
+          <Image source={source} style={[styles.fill, spent && styles.spentImage]} resizeMode="contain" />
         </View>
       ) : (
         <Text style={[styles.symbol, { fontSize: rect.width * 0.49 }]}>{object.fallbackSymbol || '✦'}</Text>
@@ -307,6 +309,11 @@ const AltarObjectView = memo(function AltarObjectView({
       {overlays.oil && <Image source={candleOilOverlay} style={styles.oilOverlay} resizeMode="contain" />}
       {lit && flame && <Flame layout={flame} />}
       {smoke != null && flame && <Smoke key={smoke} layout={flame} />}
+      {spent && (
+        <Text style={[styles.spentLabel, { fontSize: Math.max(8, Math.min(13, rect.width * 0.16)), transform: [{ scaleX: flipped ? -1 : 1 }] }]} numberOfLines={1}>
+          Spent
+        </Text>
+      )}
       {(selected || highlighted) && <View style={[styles.outline, highlighted && !selected && styles.outlineSoft]} />}
     </View>
   );
@@ -496,6 +503,17 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   outlineSoft: { borderColor: 'rgba(226,195,109,0.55)' },
+  spentImage: Platform.OS === 'ios' ? { opacity: 0.45 } : { opacity: 0.6, filter: 'grayscale(1)' },
+  spentLabel: {
+    position: 'absolute',
+    bottom: '2%',
+    color: colors.parchment,
+    fontFamily: fonts.bodySemi,
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+    textShadowColor: '#000',
+    textShadowRadius: 3,
+  },
   empty: {
     position: 'absolute',
     left: '15%',

@@ -11,6 +11,7 @@ import { useEffect, useRef } from 'react';
 import { AppState } from 'react-native';
 
 import { altarImageSource } from './altar/assets';
+import { altarsAt, burnoutTimes } from './altar/burnout';
 import { altarDataFromDocument } from './altar/snapshot';
 import { useAltars } from './altar/store';
 import type { SavedAltar } from './altar/types';
@@ -163,9 +164,20 @@ function withoutEmpties<T>(value: T): T {
 
 async function pendingActions(widget: AltarWidgetModule['default']): Promise<WidgetAction[]> {
   try {
+    // A tap is kept on whichever entry was showing; gather them from every entry.
     const timeline = await widget.getTimeline();
-    const latest = timeline[timeline.length - 1]?.props as AltarWidgetProps | undefined;
-    return Array.isArray(latest?.actions) ? latest!.actions : [];
+    const seen = new Set<string>();
+    const actions: WidgetAction[] = [];
+    for (const entry of timeline) {
+      const list = (entry?.props as AltarWidgetProps | undefined)?.actions;
+      if (!Array.isArray(list)) continue;
+      for (const action of list) {
+        if (!action || seen.has(action.id)) continue;
+        seen.add(action.id);
+        actions.push(action);
+      }
+    }
+    return actions;
   } catch {
     return [];
   }
@@ -213,13 +225,22 @@ export function useAltarWidgetSync() {
       const placed = slotAltars(shown, chosen);
       const done = new Set(actions.map((a) => a.id));
       const send = async (pictures: Map<string, string>, art?: AltarWidgetArt) => {
-        const props: AltarWidgetProps = {
-          altars: placed.map((altar) => widgetAltar(altar, (path) => pictures.get(path) ?? '', new Date())),
-          // Keep anything tapped while this was running, for next time.
-          actions: (await pendingActions(widget)).filter((a) => !done.has(a.id)),
+        // Keep anything tapped while this was running, for next time.
+        const kept = (await pendingActions(widget)).filter((a) => !done.has(a.id));
+        const propsAt = (when: Date): AltarWidgetProps => {
+          const props: AltarWidgetProps = {
+            altars: altarsAt(placed, when).map((altar) => widgetAltar(altar, (path) => pictures.get(path) ?? '', when)),
+            actions: kept,
+          };
+          if (art) props.art = art;
+          return withoutEmpties(props);
         };
-        if (art) props.art = art;
-        widget.updateSnapshot(withoutEmpties(props));
+        // Now, and again at each moment a lit candle burns down, so the widget
+        // shows it going out even if the app isn't opened.
+        const start = new Date();
+        const times = burnoutTimes(placed, start);
+        if (!times.length) return widget.updateSnapshot(propsAt(start));
+        widget.updateTimeline([start.getTime(), ...times].map((t) => ({ date: new Date(t), props: propsAt(new Date(t)) })));
       };
 
       // The altars go to the widget straight away with the pictures made last time

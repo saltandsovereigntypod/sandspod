@@ -14,11 +14,31 @@ export type Carving = { text: string; carvedAt: string };
 
 export const CARVING_MAX = 40;
 
+/** One burn. The website's lifecycle names its ends litAt/extinguishedAt; older saves say startedAt/endedAt. The app writes both. */
+export type BurnRecord = {
+  eventId?: string;
+  litAt?: string;
+  extinguishedAt?: string;
+  startedAt?: string;
+  endedAt?: string;
+  durationMs: number;
+  endReason?: string;
+  [key: string]: unknown;
+};
+
 type CandleState = {
   totalBurnMs?: number;
   currentBurnStartedAt?: string;
   lastLitAt?: string;
-  burnHistory?: { startedAt: string; endedAt: string; durationMs: number }[];
+  burnHistory?: BurnRecord[];
+  /** The candle lifecycle (version 2, shared with the website): how long this candle lasts and whether it's spent. */
+  form?: string;
+  expectedBurnMs?: number;
+  durationLocked?: boolean;
+  firstLitAt?: string;
+  estimatedBurnoutAt?: string;
+  spentAt?: string;
+  status?: string;
   dressings?: Dressing[];
   carvings?: Carving[];
   [key: string]: unknown;
@@ -128,32 +148,195 @@ export function writeLivingState(object: SavedObject, state: LivingState, now: s
 export const isCandle = (object: SavedObject) => object.type === 'candle';
 export const isLit = (object: SavedObject) => object.lit === 'true';
 
-/** Light a candle (candles.js toggleLight + startCandleBurn). Other objects are unchanged. */
+// ── Candle life ───────────────────────────────────────────────────────────
+// Each kind of candle burns for about as long as a real one would, then goes
+// out on its own and is spent (the website's candle-lifecycle.js, same table
+// and same saved fields). An approximation: size, wick and drafts all vary.
+
+const HOUR = 60 * 60 * 1000;
+const DAY = 24 * HOUR;
+export const CANDLE_LIFE_MAX = 365 * DAY;
+
+/** About how long each kind of candle burns, by form. */
+export const CANDLE_LIFE: Record<string, number> = {
+  'chime-spell': 2 * HOUR,
+  taper: 8 * HOUR,
+  'tea-light': 4 * HOUR,
+  pillar: 60 * HOUR,
+  vigil: 7 * DAY,
+  votive: 12 * HOUR,
+  jar: 40 * HOUR,
+  novena: 7 * DAY,
+  floating: 4 * HOUR,
+  birthday: 10 * 60 * 1000,
+  figure: 4 * HOUR,
+  'figure-male': 4 * HOUR,
+  'figure-female': 4 * HOUR,
+  'figure-couple': 5 * HOUR,
+  'beeswax-rolled': 2 * HOUR,
+  'seven-knob': 7 * HOUR,
+  'double-action': 6 * HOUR,
+  reversible: 6 * HOUR,
+};
+
+const FORM_FILES: Record<string, string> = { chime: 'chime-spell' };
+
+/** Which kind of candle this is: as saved, from the cabinet, or from its picture. */
+export function candleLifeForm(object: SavedObject): string {
+  const saved = String(parseLivingState(object)?.candle?.form || '').toLowerCase();
+  if (saved) return saved;
+  const own = String(object.form || '').toLowerCase();
+  if (own) return own;
+  const path = String(object.imagePath || '');
+  const folder = /candles\/([a-z-]+)\/[^/]+$/i.exec(path);
+  if (folder) return FORM_FILES[folder[1].toLowerCase()] ?? folder[1].toLowerCase();
+  return /candles\/[a-z]+-candle\.png$/i.test(path) ? 'vigil' : '';
+}
+
+export type CandleLife = {
+  form: string;
+  /** How long it lasts in all (0: no known limit). */
+  expectedMs: number;
+  /** Burned so far, counting the burn going on now. */
+  burnedMs: number;
+  /** Left to burn (Infinity when there's no limit). */
+  remainingMs: number;
+  spent: boolean;
+  /** When the burn going on now runs out, or null. */
+  burnoutAt: number | null;
+  /** Its length can still be changed (it has never been lit). */
+  adjustable: boolean;
+};
+
+export function candleLife(object: SavedObject, now: Date | number = Date.now()): CandleLife {
+  const at = typeof now === 'number' ? now : now.getTime();
+  const candle = readLivingState(object, '').candle ?? {};
+  const form = candleLifeForm(object);
+  const custom = Number(candle.expectedBurnMs);
+  const expectedMs = custom > 0 ? Math.min(custom, CANDLE_LIFE_MAX) : (CANDLE_LIFE[form] ?? 0);
+  const total = Math.max(0, Number(candle.totalBurnMs) || 0);
+  const started = isLit(object) ? Date.parse(candle.currentBurnStartedAt || '') : NaN;
+  const running = Number.isFinite(started) ? Math.max(0, at - started) : 0;
+  const burnedMs = expectedMs ? Math.min(expectedMs, total + running) : total + running;
+  const spent = !!candle.spentAt || candle.status === 'spent' || (expectedMs > 0 && total >= expectedMs);
+  const burnoutAt = Number.isFinite(started) && expectedMs ? started + Math.max(0, expectedMs - total) : null;
+  const burnedBefore = total > 0 || (candle.burnHistory?.length ?? 0) > 0 || !!candle.firstLitAt;
+  return {
+    form,
+    expectedMs,
+    burnedMs,
+    remainingMs: expectedMs ? Math.max(0, expectedMs - burnedMs) : Infinity,
+    spent,
+    burnoutAt,
+    adjustable: !candle.durationLocked && !burnedBefore && !isLit(object) && !spent,
+  };
+}
+
+/** Light a candle (candles.js toggleLight + startCandleBurn). Spent candles and other objects are unchanged. */
 export function lightCandle(object: SavedObject, now: string): SavedObject {
   if (!isCandle(object) || isLit(object)) return object;
+  const life = candleLife(object, Date.parse(now));
+  if (life.spent) return object;
   const state = readLivingState(object, now);
   const candle = { ...state.candle };
   if (!candle.currentBurnStartedAt) {
     candle.currentBurnStartedAt = now;
     candle.lastLitAt = now;
-    if (candle.firstLitAt === '') candle.firstLitAt = now;
+    if (!candle.firstLitAt) candle.firstLitAt = now;
   }
+  if (life.form) candle.form = life.form;
+  if (life.expectedMs) {
+    candle.expectedBurnMs = life.expectedMs;
+    candle.estimatedBurnoutAt = new Date(Date.parse(candle.currentBurnStartedAt!) + life.remainingMs).toISOString();
+  }
+  candle.durationLocked = true;
+  candle.status = 'burning';
   return writeLivingState({ ...object, lit: 'true' }, { ...state, lastUsedAt: now, candle }, now);
 }
 
-/** Snuff a candle and record the burn (stopCandleBurn). */
-export function snuffCandle(object: SavedObject, now: string): SavedObject {
-  if (!isCandle(object) || !isLit(object)) return object;
+/** End the burn going on now at `endAt`, recording it; a candle that has used its life is spent. */
+function endBurn(object: SavedObject, endAt: number, reason: string, now: string): SavedObject {
+  const life = candleLife(object, endAt);
   const state = readLivingState(object, now);
   const candle = { ...state.candle };
-  const started = Date.parse(candle.currentBurnStartedAt || '');
+  const startedAt = candle.currentBurnStartedAt || '';
+  const started = Date.parse(startedAt);
   if (Number.isFinite(started)) {
-    const durationMs = Math.max(0, Date.parse(now) - started);
-    candle.totalBurnMs = Math.max(0, Number(candle.totalBurnMs) || 0) + durationMs;
-    candle.burnHistory = [...(candle.burnHistory ?? []), { startedAt: candle.currentBurnStartedAt!, endedAt: now, durationMs }];
+    const before = Math.max(0, Number(candle.totalBurnMs) || 0);
+    const room = life.expectedMs ? Math.max(0, life.expectedMs - before) : Infinity;
+    const durationMs = Math.min(room, Math.max(0, endAt - started));
+    const endedAt = new Date(started + durationMs).toISOString();
+    candle.totalBurnMs = before + durationMs;
+    candle.burnHistory = [
+      ...(candle.burnHistory ?? []),
+      {
+        eventId: `candle-burn:${object.instanceId || object.altarObjectId || 'unscoped'}:${startedAt}`,
+        litAt: startedAt,
+        extinguishedAt: endedAt,
+        startedAt,
+        endedAt,
+        durationMs,
+        endReason: reason,
+      },
+    ];
   }
   candle.currentBurnStartedAt = '';
+  candle.estimatedBurnoutAt = '';
+  const spent = life.expectedMs > 0 && (Number(candle.totalBurnMs) || 0) >= life.expectedMs;
+  candle.status = spent ? 'spent' : 'unlit';
+  if (spent && !candle.spentAt) candle.spentAt = new Date(Math.min(endAt, Date.parse(now) || endAt)).toISOString();
   return writeLivingState({ ...object, lit: 'false' }, { ...state, lastUsedAt: now, candle }, now);
+}
+
+/** Snuff a candle and record the burn (stopCandleBurn). A burn can't run past the candle's life. */
+export function snuffCandle(object: SavedObject, now: string): SavedObject {
+  if (!isCandle(object) || !isLit(object)) return object;
+  const at = Date.parse(now);
+  const { burnoutAt } = candleLife(object, at);
+  if (burnoutAt != null && at >= burnoutAt) return endBurn(object, burnoutAt, 'candle_life_reached', now);
+  return endBurn(object, at, 'manual_extinguish', now);
+}
+
+/** A lit candle whose life ran out (even while the app was closed) goes out, at the moment it would have. */
+export function settleCandle(object: SavedObject, now: string): SavedObject {
+  if (!isCandle(object) || !isLit(object)) return object;
+  const { burnoutAt } = candleLife(object, Date.parse(now));
+  return burnoutAt != null && Date.parse(now) >= burnoutAt ? endBurn(object, burnoutAt, 'candle_life_reached', now) : object;
+}
+
+/** Set how long a candle lasts, before it is first lit. */
+export function setCandleLife(object: SavedObject, ms: number, now: string): SavedObject {
+  if (!isCandle(object) || !candleLife(object).adjustable || !(ms > 0)) return object;
+  const state = readLivingState(object, now);
+  return writeLivingState(object, { ...state, candle: { ...state.candle, expectedBurnMs: Math.min(Math.round(ms), CANDLE_LIFE_MAX) } }, now);
+}
+
+/** Put a fresh candle in a spent one's place: a new candle, same spot, full life. */
+export function freshCandle(object: SavedObject, now: string): SavedObject {
+  if (!isCandle(object)) return object;
+  const state = readLivingState(object, now);
+  const { expectedBurnMs: _custom, ...rest } = state.candle ?? {};
+  void _custom;
+  const candle = {
+    ...rest,
+    totalBurnMs: 0,
+    currentBurnStartedAt: '',
+    lastLitAt: '',
+    burnHistory: [],
+    dressings: [],
+    carvings: [],
+    firstLitAt: '',
+    estimatedBurnoutAt: '',
+    spentAt: '',
+    status: 'unlit',
+    durationLocked: false,
+    replacesInstanceId: object.altarObjectId || '',
+  };
+  return writeLivingState(
+    { ...object, lit: 'false', altarObjectId: newId(), instanceId: '' },
+    { ...state, createdAt: now, lastUsedAt: now, candle },
+    now,
+  );
 }
 
 export function toggleLit(object: SavedObject, now: string): SavedObject {
