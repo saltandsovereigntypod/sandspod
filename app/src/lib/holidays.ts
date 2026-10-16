@@ -4,6 +4,7 @@
 // position, old Icelandic weekday rules, the Moon for the Attic calendar, or
 // Easter for the moveable feasts), so nothing needs updating as years pass.
 
+import { firstDayOfWinter } from './calendars/icelandic.ts';
 import { startOfDay } from './calendar.ts';
 import { nextPhase, sunReaches } from './moon.ts';
 
@@ -12,6 +13,8 @@ type Rule =
   | { kind: 'sun'; at: 0 | 90 | 180 | 270 }
   /** The first `weekday` (0 = Sunday) from day `from` of `month` (Icelandic seasons). */
   | { kind: 'weekday'; month: number; from: number; weekday: number }
+  /** By the old Icelandic calendar: the first day of winter, or of Þorri (90 days later), in `year`. */
+  | { kind: 'icelandic'; at: 'winter' | 'thorri' }
   /** The first full moon falling in `month`. */
   | { kind: 'fullMoon'; month: number }
   /** A day of a month of the Athenian (Attic) lunar calendar. */
@@ -164,7 +167,7 @@ export const TRADITIONS: Tradition[] = [
         id: 'thorrablot',
         name: 'Þorrablót',
         meaning: 'The midwinter feast at the start of the old Icelandic month of Þorri (Bóndadagur), honoring Þorri, the spirit of winter, with traditional foods and toasts.',
-        rule: { kind: 'weekday', month: 0, from: 19, weekday: 5 },
+        rule: { kind: 'icelandic', at: 'thorri' },
       },
       {
         id: 'disablot',
@@ -194,7 +197,7 @@ export const TRADITIONS: Tradition[] = [
         id: 'vetrnaetur',
         name: 'Winter Nights (Vetrnætur)',
         meaning: 'The start of winter in the Icelandic year. The sagas tell of a blót “for a good year”, and it is a time to honor the álfar and dísir (Álfablót).',
-        rule: { kind: 'weekday', month: 9, from: 21, weekday: 6 },
+        rule: { kind: 'icelandic', at: 'winter' },
       },
       {
         id: 'jol',
@@ -364,6 +367,9 @@ function occurrences(rule: Rule, year: number): Date[] {
       const first = new Date(year, rule.month, rule.from);
       return [addDays(first, (rule.weekday - first.getDay() + 7) % 7)];
     }
+    case 'icelandic':
+      // The year's own rules (rímspillir years put both a week later than a plain weekday rule would).
+      return [rule.at === 'winter' ? firstDayOfWinter(year) : addDays(firstDayOfWinter(year - 1), 90)];
     case 'fullMoon': {
       const full = startOfDay(nextPhase(new Date(year, rule.month, 1), 'full'));
       return full.getMonth() === rule.month ? [full] : [];

@@ -115,7 +115,7 @@ test('festival marks agree with the Hellenic holidays, which use the same months
     assert.ok(date.marks.some((m) => m.name === h.name), `${h.name} on ${ymd(h.date)}`);
   }
   // The Panathenaia on Hekatombaion 28.
-  const pan = holidays.find((h) => h.id.endsWith('panathenaia'))!;
+  const pan = holidays.find((h) => h.name === 'Panathenaia')!;
   assert.equal(ATTIC_CALENDAR.dateOf(new Date(pan.date.getFullYear(), pan.date.getMonth(), pan.date.getDate(), 12), ctx).short, 'Hekatombaion 28');
 });
 

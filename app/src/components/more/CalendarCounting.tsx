@@ -53,8 +53,9 @@ function ChoiceList({ def, draft, set }: { def: CalendarDef; draft: Settings; se
         const note = choice.options.find((o) => o.value === value)?.note;
         return (
           <View key={choice.key} style={styles.choice}>
+            <Text style={styles.choiceLabel}>{choice.label}</Text>
             <Chips label={choice.label} options={choice.options} value={value} onChange={(v) => set(optionKey(def.id, choice.key), v)} />
-            <Text style={type.caption}>{`${choice.label}: ${note ?? choice.options.find((o) => o.value === value)?.label ?? ''}`}</Text>
+            {!!note && <Text style={type.caption}>{note}</Text>}
           </View>
         );
       })}
@@ -172,6 +173,7 @@ export function CalendarCounting({ draft, set }: { draft: Settings; set: SetValu
 }
 
 const styles = StyleSheet.create({
+  choiceLabel: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.parchment },
   row: { paddingVertical: 12, gap: 6 },
   rule: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.hairline },
   rowHead: { flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 44 },
