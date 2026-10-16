@@ -22,6 +22,7 @@ import { lightAll, snuffAll } from './altar/editor.ts';
 import { flameLayout } from './altar/flame.ts';
 import { boxToPixels, candleLightRadius, displayBox, IMAGE_INSET, imageRatio, rotationOf, STAGE_ASPECT } from './altar/geometry.ts';
 import { stackOrder } from './altar/layers.ts';
+import { incenseLife, isIncense } from './altar/incense.ts';
 import { apothecaryStateOf, candleLife, dressingOverlays, isCandle, isLit, lightCandle, readLivingState, snuffCandle } from './altar/livingState.ts';
 import { documentFromAltar, type AltarDocument } from './altar/snapshot.ts';
 import type { SavedAltar, SavedObject } from './altar/types.ts';
@@ -335,7 +336,8 @@ export function altarScene(objects: SavedObject[], image: (path: string) => stri
       rotation: rotationOf(object),
       flipped: object.flipped === 'true',
       candle,
-      ...(candle && !lit && candleLife(object).spent ? { spent: true } : {}),
+      // Burned-down candles, and incense burned down to ash, are drawn faded.
+      ...((candle && !lit && candleLife(object).spent) || (isIncense(object) && incenseLife(object, Date.now()).ash) ? { spent: true } : {}),
       lit,
       overlays: [],
     };

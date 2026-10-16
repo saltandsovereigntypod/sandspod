@@ -1,9 +1,13 @@
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { AccessibilityInfo, Animated, Easing, Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Svg, { Circle, Defs, Ellipse, RadialGradient, Stop } from 'react-native-svg';
+import Svg, { Circle, Defs, Ellipse, LinearGradient, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
 
 import { useReducedMotion } from '../../lib/accessibility/store';
+import type { Tint } from '../../lib/altar/ambient';
+import { incenseLife, isIncense, smokeOrigin } from '../../lib/altar/incense';
+import { isPetitionPaper } from '../../lib/altar/petitions';
+import { MoonDisc } from '../MoonDisc';
 import { altarImageSource, candleHerbOverlay, candleOilOverlay, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
 import { DEFAULT_BACKGROUND } from '../../lib/altar/cabinet';
 import { flameLayout, type FlameLayout } from '../../lib/altar/flame';
@@ -15,6 +19,19 @@ import type { SavedObject } from '../../lib/altar/types';
 import { colors, fonts } from '../../theme';
 
 export type Viewport = { zoom: number; offsetX: number; offsetY: number };
+
+/** The real sky laid over the background (never over the objects). */
+export type StageSky = {
+  tint: Tint;
+  accent: Tint;
+  /** Tonight's moon in a little window, or null to leave it out. */
+  moon: { illumination: number; waxing: boolean; mirrored: boolean } | null;
+  /** Spoken with the stage's label ("dusk light, autumn; a waxing crescent moon"). */
+  label: string;
+};
+
+/** How an aging offering looks now, by altarObjectId. */
+export type AgingLooks = Record<string, { opacity: number; droop: number }>;
 
 type Props = {
   doc: AltarDocument;
@@ -31,6 +48,8 @@ type Props = {
   onRotate: (index: number, degrees: number) => void;
   onGestureEnd: () => void;
   onViewportChange: (viewport: Viewport) => void;
+  sky?: StageSky | null;
+  aging?: AgingLooks;
 };
 
 /** Smallest hit area for tiny objects, in screen points. */
@@ -186,6 +205,8 @@ export function AltarStage(props: Props) {
   const ordered = stackOrder(doc.objects);
   const lit = ordered.filter((i) => isCandle(doc.objects[i]) && isLit(doc.objects[i]));
   const background = altarImageSource(doc.background || DEFAULT_BACKGROUND);
+  const sky = props.sky ?? null;
+  const aging = props.aging ?? {};
 
   return (
     <GestureDetector gesture={gesture}>
@@ -195,7 +216,7 @@ export function AltarStage(props: Props) {
         accessibilityRole="image"
         accessibilityLabel={`Your altar${doc.backgroundName ? `, ${doc.backgroundName}` : ''}, with ${doc.objects.length} ${
           doc.objects.length === 1 ? 'object' : 'objects'
-        }. Drag an object to move it; pinch to resize and twist to rotate. Every action is also in the panel below.`}
+        }${sky?.label ? `, in ${sky.label}` : ''}. Drag an object to move it; pinch to resize and twist to rotate. Every action is also in the panel below.`}
       >
         <View
           style={{
@@ -208,6 +229,8 @@ export function AltarStage(props: Props) {
         >
           {background && <Image source={background} style={styles.background} resizeMode="cover" />}
 
+          {sky && <SkyLayer sky={sky} stageWidth={stageWidth} />}
+
           {lit.length > 0 && <LightPools objects={lit.map((i) => doc.objects[i])} stageWidth={stageWidth} />}
 
           {ordered.map((index) => (
@@ -218,6 +241,8 @@ export function AltarStage(props: Props) {
               selected={selected === index}
               highlighted={!!highlightCandles && isCandle(doc.objects[index])}
               ratioVersion={ratioVersion}
+              agedOpacity={aging[String(doc.objects[index].altarObjectId)]?.opacity ?? 1}
+              droop={aging[String(doc.objects[index].altarObjectId)]?.droop ?? 0}
             />
           ))}
 
@@ -262,12 +287,16 @@ const AltarObjectView = memo(function AltarObjectView({
   stageWidth,
   selected,
   highlighted,
+  agedOpacity,
+  droop,
 }: {
   object: SavedObject;
   stageWidth: number;
   selected: boolean;
   highlighted: boolean;
   ratioVersion: number;
+  agedOpacity: number;
+  droop: number;
 }) {
   const rect = boxToPixels(displayBox(object), stageWidth);
   const source = altarImageSource(object.imagePath);
@@ -281,6 +310,10 @@ const AltarObjectView = memo(function AltarObjectView({
   const smoke = useSnuffSmoke(lit);
   // The flame sits on this picture's wick (the vigil candles keep the website's spot).
   const flame = lit || smoke != null ? flameLayout(object.imagePath, object.imagePath ? imageRatio(object.imagePath) : null) : null;
+  // Incense burns with an ember and drifting smoke, and leaves ash.
+  const incense = isIncense(object) ? incenseLife(object) : null;
+  const ash = !!incense?.ash;
+  const paper = isPetitionPaper(object) && !source;
 
   return (
     <View
@@ -296,19 +329,30 @@ const AltarObjectView = memo(function AltarObjectView({
         },
       ]}
     >
+      <View style={[styles.layer, agedOpacity < 1 && { opacity: agedOpacity }, droop > 0 && { transformOrigin: '50% 100%', transform: [{ rotate: `${droop}deg` }, { scaleY: 1 - droop / 120 }] }]}>
       {glowing && <View style={[styles.glow, { borderRadius: rect.width / 2 }]} />}
       {source ? (
         // The website's image sits in the button's content box (6px / 1px padding on 80px).
         <View style={[styles.content, { paddingHorizontal: rect.width * IMAGE_INSET.x, paddingVertical: rect.width * IMAGE_INSET.y }]}>
-          <Image source={source} style={[styles.fill, spent && styles.spentImage]} resizeMode="contain" />
+          <Image source={source} style={[styles.fill, (spent || ash) && styles.spentImage]} resizeMode="contain" />
         </View>
+      ) : paper ? (
+        <PetitionPaper />
       ) : (
         <Text style={[styles.symbol, { fontSize: rect.width * 0.49 }]}>{object.fallbackSymbol || '✦'}</Text>
       )}
+      </View>
       {overlays.herb && <Image source={candleHerbOverlay} style={styles.herbOverlay} resizeMode="contain" />}
       {overlays.oil && <Image source={candleOilOverlay} style={styles.oilOverlay} resizeMode="contain" />}
       {lit && flame && <Flame layout={flame} />}
       {smoke != null && flame && <Smoke key={smoke} layout={flame} />}
+      {incense?.lit && <IncenseSmoke origin={smokeOrigin(object)} width={rect.width} />}
+      {ash && <View style={styles.ash} />}
+      {ash && (
+        <Text style={[styles.spentLabel, { fontSize: Math.max(8, Math.min(13, rect.width * 0.16)), transform: [{ scaleX: flipped ? -1 : 1 }] }]} numberOfLines={1}>
+          Ash
+        </Text>
+      )}
       {spent && (
         <Text style={[styles.spentLabel, { fontSize: Math.max(8, Math.min(13, rect.width * 0.16)), transform: [{ scaleX: flipped ? -1 : 1 }] }]} numberOfLines={1}>
           Spent
@@ -320,6 +364,130 @@ const AltarObjectView = memo(function AltarObjectView({
 });
 
 const useNative = Platform.OS !== 'web';
+
+/**
+ * The real sky: the light of the hour laid over the background, a faint
+ * seasonal edge along the foot of the altar, and tonight's moon in a small
+ * window high in a corner. All of it sits beneath the objects.
+ */
+function SkyLayer({ sky, stageWidth }: { sky: StageSky; stageWidth: number }) {
+  const stageHeight = stageWidth / STAGE_ASPECT;
+  const windowSize = Math.max(28, Math.min(64, stageWidth * 0.075));
+  return (
+    <View style={StyleSheet.absoluteFill} pointerEvents="none">
+      {sky.tint.opacity > 0 && <View style={[StyleSheet.absoluteFill, { backgroundColor: sky.tint.color, opacity: sky.tint.opacity }]} />}
+      {sky.accent.opacity > 0 && (
+        <Svg width={stageWidth} height={stageHeight} style={StyleSheet.absoluteFill}>
+          <Defs>
+            <LinearGradient id="season" x1="0" y1="0" x2="0" y2="1">
+              <Stop offset="0.62" stopColor={sky.accent.color} stopOpacity={0} />
+              <Stop offset="1" stopColor={sky.accent.color} stopOpacity={sky.accent.opacity * 2.4} />
+            </LinearGradient>
+          </Defs>
+          <Rect x={0} y={0} width={stageWidth} height={stageHeight} fill="url(#season)" />
+        </Svg>
+      )}
+      {sky.moon && (
+        <View style={[styles.moonWindow, { width: windowSize, height: windowSize, borderRadius: windowSize / 2, top: stageHeight * 0.04, right: stageWidth * 0.025 }]}>
+          <View style={sky.moon.mirrored ? { transform: [{ scaleX: -1 }] } : null}>
+            <MoonDisc size={windowSize * 0.72} illumination={sky.moon.illumination} waxing={sky.moon.waxing} halo={false} />
+          </View>
+        </View>
+      )}
+    </View>
+  );
+}
+
+/** A folded petition paper (the website shows its symbol instead). */
+function PetitionPaper() {
+  return (
+    <Svg width="100%" height="100%" viewBox="0 0 40 40">
+      <Path d="M5 9 L33 6 L35 31 L7 34 Z" fill="rgb(236,224,192)" stroke="rgba(90,70,40,0.55)" strokeWidth={0.8} />
+      <Path d="M6 21.5 L34 18.5" stroke="rgba(90,70,40,0.35)" strokeWidth={0.7} />
+      <Path d="M10 13 L28 11 M10 16 L25 14.3 M10 25 L29 23 M10 28 L22 26.8" stroke="rgba(110,60,40,0.5)" strokeWidth={0.6} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+const WISPS = [0, 1, 2];
+/** How long one wisp of incense smoke takes to rise and fade. */
+const WISP_MS = 5200;
+
+/** Smoke drifting up from lit incense, with a glowing ember; one still, faint wisp with Reduce Motion. */
+function IncenseSmoke({ origin, width }: { origin: { x: number; y: number }; width: number }) {
+  const still = useReducedMotion();
+  const [rise] = useState(() => WISPS.map(() => new Animated.Value(0)));
+  useEffect(() => {
+    if (still) {
+      rise.forEach((v) => v.setValue(0.35));
+      return;
+    }
+    const loops = rise.map((value, i) =>
+      Animated.loop(
+        Animated.sequence([
+          Animated.delay((i * WISP_MS) / WISPS.length),
+          Animated.timing(value, { toValue: 1, duration: WISP_MS, easing: Easing.out(Easing.quad), useNativeDriver: useNative }),
+          Animated.timing(value, { toValue: 0, duration: 0, useNativeDriver: useNative }),
+        ]),
+      ),
+    );
+    loops.forEach((l) => l.start());
+    return () => loops.forEach((l) => l.stop());
+  }, [rise, still]);
+
+  const wisp = Math.max(10, width * 0.5);
+  const ember = Math.max(3, width * 0.07);
+  return (
+    <View pointerEvents="none" style={[StyleSheet.absoluteFill, { overflow: 'visible' }]}>
+      {rise.map((value, i) => {
+        const opacity = still ? 0.28 : value.interpolate({ inputRange: [0, 0.15, 0.7, 1], outputRange: [0, 0.42, 0.18, 0] });
+        const translateY = value.interpolate({ inputRange: [0, 1], outputRange: [0, -wisp * 2.2] });
+        const translateX = value.interpolate({ inputRange: [0, 0.35, 0.7, 1], outputRange: [0, wisp * (i % 2 ? 0.18 : -0.15), wisp * (i % 2 ? -0.1 : 0.22), wisp * 0.3] });
+        const scale = value.interpolate({ inputRange: [0, 1], outputRange: [0.5, 1.6] });
+        return (
+          <Animated.View
+            key={i}
+            style={{
+              position: 'absolute',
+              left: `${origin.x * 100}%`,
+              top: `${origin.y * 100}%`,
+              width: wisp,
+              height: wisp * 1.4,
+              marginLeft: -wisp / 2,
+              marginTop: -wisp * 1.3,
+              opacity,
+              transform: [{ translateX }, { translateY }, { scale }],
+            }}
+          >
+            <Svg width="100%" height="100%" viewBox="0 0 10 14">
+              <Defs>
+                <RadialGradient id={`wisp-${i}`} cx="50%" cy="60%" r="50%">
+                  <Stop offset="0" stopColor="rgb(222,222,214)" stopOpacity={0.7} />
+                  <Stop offset="1" stopColor="rgb(222,222,214)" stopOpacity={0} />
+                </RadialGradient>
+              </Defs>
+              <Ellipse cx={5} cy={8} rx={4} ry={6} fill={`url(#wisp-${i})`} />
+            </Svg>
+          </Animated.View>
+        );
+      })}
+      <View
+        style={{
+          position: 'absolute',
+          left: `${origin.x * 100}%`,
+          top: `${origin.y * 100}%`,
+          width: ember,
+          height: ember,
+          marginLeft: -ember / 2,
+          marginTop: -ember / 2,
+          borderRadius: ember / 2,
+          backgroundColor: 'rgb(255,120,40)',
+          boxShadow: '0 0 6px 2px rgba(255,140,60,0.7)',
+        }}
+      />
+    </View>
+  );
+}
 
 /** How long the snuffed-candle smoke lasts (candles.js extinguishFlame). */
 const SMOKE_MS = 1400;
@@ -475,6 +643,24 @@ const styles = StyleSheet.create({
   object: { position: 'absolute', alignItems: 'center', justifyContent: 'center' },
   fill: { width: '100%', height: '100%' },
   content: { width: '100%', height: '100%' },
+  layer: { position: 'absolute', left: 0, top: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' },
+  ash: {
+    position: 'absolute',
+    bottom: '1%',
+    left: '22%',
+    width: '56%',
+    height: '5%',
+    borderRadius: 999,
+    backgroundColor: 'rgba(150,146,138,0.85)',
+  },
+  moonWindow: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(10,18,40,0.55)',
+    borderWidth: 1,
+    borderColor: 'rgba(226,195,109,0.35)',
+  },
   background: { position: 'absolute', left: 0, top: 0, width: '100%', height: '100%' },
   symbol: { color: colors.cream },
   glow: {

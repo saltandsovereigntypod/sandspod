@@ -16,13 +16,54 @@ import {
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AboutSheet } from '../../../components/altar/AboutSheet';
-import { AltarStage, clampViewport, type Viewport } from '../../../components/altar/AltarStage';
+import { AltarStage, clampViewport, type AgingLooks, type StageSky, type Viewport } from '../../../components/altar/AltarStage';
+import { AltarOptionsSheet, FlameReadingSheet, IncenseSheet, OfferingSheet } from '../../../components/altar/LivingSheets';
+import { PetitionBoxSheet, WritePetitionSheet } from '../../../components/altar/PetitionSheets';
+import { ALTAR_OPTIONS, altarOptionsFor, defaultAltarOptions, type AltarOptions } from '../../../lib/altar/altarOptions';
+import { ambientAt, moonMirrored, nextAmbientCheck } from '../../../lib/altar/ambient';
+import { burnToRead, lastBurn, linkReadingJournal, readingsOf, readingText, recordReading, remnantOf, setRemnant, type ReadingInput } from '../../../lib/altar/ceromancy';
+import { clearAsh, incenseFormOf, incenseLife, isIncense, lightIncense, putOutIncense, setIncenseForm, setIncenseLength } from '../../../lib/altar/incense';
+import { moonChargesOf } from '../../../lib/altar/moonCharge';
+import {
+  agingDeityOffering,
+  agingLook,
+  canHoldOffering,
+  endOffering,
+  FRESHNESS_WORDS,
+  freshnessLine,
+  holdsOfferings,
+  offeringFreshness,
+  offeringKind,
+  offeringOf,
+  refreshOffering,
+  setOffering,
+  type OfferingEnd,
+} from '../../../lib/altar/offerings';
+import {
+  finishPetition,
+  isPetitionPaper,
+  newPetition,
+  petitionBox,
+  petitionEntryOf,
+  petitionObject,
+  PETITIONS,
+  releaseNights,
+  schedulePetition,
+  type Petition,
+  type PetitionEnd,
+} from '../../../lib/altar/petitions';
+import { storyLines, storySummary } from '../../../lib/altar/story';
+import { logAppEvent } from '../../../lib/altar/livingState';
+import { addEntry, updateEntry, useCraft, type CraftEntry } from '../../../lib/craft/store';
+import { usePlace } from '../../../lib/location';
+import { blankAnswers } from '../../../lib/rituals/lifecycle';
+import { saveJournal } from '../../../lib/rituals/store';
 import { CabinetSheet } from '../../../components/altar/CabinetSheet';
 import { CarveSheet } from '../../../components/altar/CarveSheet';
 import { GroupGrimoireSheet, GroupSheet, RenameSheet } from '../../../components/altar/ArrangeSheets';
 import { PracticeSheet } from '../../../components/altar/PracticeSheet';
 import { CrystalSheet, DeitySheet, type CrystalMode, type DeityMode } from '../../../components/altar/DevotionSheets';
-import { careForCrystal, dedicateCrystal, recordOffering, setDefaultCleansing, setDefaultOffering, setPresenceReason, updateOffering } from '../../../lib/altar/devotion';
+import { careForCrystal, dedicateCrystal, humanize, offeringsOf, recordOffering, setDefaultCleansing, setDefaultOffering, setPresenceReason, updateOffering } from '../../../lib/altar/devotion';
 import { CustomItemSheet } from '../../../components/altar/CustomItemSheet';
 import { ApothecaryEditor, ApothecarySheet, type ApothecaryTarget, type SavedWorking } from '../../../components/altar/Apothecary';
 import { TendSheet } from '../../../components/altar/TendSheet';
@@ -62,6 +103,7 @@ import {
   freshCandleAt,
   nextBurnout,
   setCandleLifeAt,
+  settleAltar,
   settleCandles,
   groupName,
   groupObjects,
@@ -119,9 +161,16 @@ type SheetName =
   | 'save'
   | 'widget'
   | 'length'
+  | 'reading'
+  | 'offering'
+  | 'incense'
+  | 'petition'
+  | 'petitions'
+  | 'options'
   | null;
 
 const nowIso = () => new Date().toISOString();
+const newMoonFor = (entries: CraftEntry<AltarOptions>[], id: string | null) => (id ? altarOptionsFor(entries, id).options.newMoonCharging : false);
 
 // iOS won't present one sheet while another is still sliding away, so the next waits for it.
 const afterSheetCloses = (open: () => void) => setTimeout(open, Platform.OS === 'ios' ? 450 : 0);
@@ -156,12 +205,17 @@ export default function AltarEditor() {
   const redo = useRef<AltarDocument[]>([]);
   const loadedFor = useRef<string | null>(null);
 
+  // This altar's own options (sky, moon window, New Moon charging), kept per altar in the craft store.
+  const { entries: optionEntries } = useCraft<AltarOptions>(ALTAR_OPTIONS);
+  const [unsavedOptions, setUnsavedOptions] = useState<AltarOptions>(() => defaultAltarOptions(''));
+
   // Open the requested altar once its data is available.
   useEffect(() => {
     if (!altarId || loadedFor.current === altarId) return;
     const start = (source: AltarDocument, id: string | null, altarName: string) => {
-      // Candles that burned down while the altar was closed are out when it opens.
-      const prepared = settleCandles(prepareDocument(source, nowIso()), nowIso());
+      // Candles and incense that burned down while the altar was closed are out when it opens,
+      // and crystals that sat through a Full Moon are charged under it.
+      const prepared = settleAltar(prepareDocument(source, nowIso()), nowIso(), { newMoon: newMoonFor(optionEntries, id) });
       loadedFor.current = altarId;
       setDoc(prepared);
       setBaseline(prepared);
@@ -199,7 +253,7 @@ export default function AltarEditor() {
     const altar = altars.find((a) => a.id === altarId);
     if (altar) return start(documentFromAltar(altar), altar.id, altar.name || 'My Altar');
     if (status === 'ready' || status === 'offline' || status === 'error') setMissing(true);
-  }, [altarId, altars, backgrounds, draft, draftSourceId, status, settings]);
+  }, [altarId, altars, backgrounds, draft, draftSourceId, status, settings, optionEntries]);
 
   const dirty = !!doc && doc !== baseline;
 
@@ -211,7 +265,7 @@ export default function AltarEditor() {
     if (!saved || saved === seenSaved.current) return;
     seenSaved.current = saved;
     if (dirty) return;
-    const fresh = settleCandles(prepareDocument(documentFromAltar(saved), nowIso()), nowIso());
+    const fresh = settleAltar(prepareDocument(documentFromAltar(saved), nowIso()), nowIso(), { newMoon: newMoonFor(optionEntries, sourceId) });
     if (JSON.stringify(fresh.objects) === JSON.stringify(doc?.objects)) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- the saved altar is outside state; this follows it
     setDoc(fresh);
@@ -267,11 +321,21 @@ export default function AltarEditor() {
         const settled = settleCandles(current, nowIso());
         if (settled === current) return setClock((c) => c + 1);
         const out = current.objects.filter((o, i) => isLit(o) && !isLit(settled.objects[i])).map((o) => shortLabel(o.label, 'Candle'));
+        const ash = current.objects
+          .filter((o, i) => isIncense(o) && incenseLife(o).lit && incenseLife(settled.objects[i]).ash)
+          .map((o) => shortLabel(o.label, 'Incense'));
         docRef.current = settled;
         setDoc(settled);
         // Going out isn't an edit of yours: a saved altar stays saved (it's saved for you in the background).
         setBaseline((b) => (b === current ? settled : b));
-        setNotice(`${out.join(' and ')} burned down and went out.`);
+        setNotice(
+          [
+            out.length ? `${out.join(' and ')} burned down and went out. Tap ${out.length > 1 ? 'one' : 'it'} to read how it burned.` : '',
+            ash.length ? `${ash.join(' and ')} burned down to ash.` : '',
+          ]
+            .filter(Boolean)
+            .join(' '),
+        );
       },
       Math.min(Math.max(0, next - Date.now()) + 250, 6 * 60 * 60 * 1000),
     );
@@ -493,6 +557,179 @@ export default function AltarEditor() {
     router.push({ pathname: '/grimoire/edit/[pageId]', params: { pageId } });
   };
 
+  // ── The altar that responds ──────────────────────────────────────────
+  // A minute clock for offerings that age; the sky looks again around sunrise and sunset.
+  const here = usePlace();
+  const [tick, setTick] = useState(() => Date.now());
+  useEffect(() => {
+    const timer = setTimeout(() => setTick(Date.now()), Math.min(60_000, nextAmbientCheck(new Date(tick), here)));
+    return () => clearTimeout(timer);
+  }, [tick, here]);
+  useFocusEffect(useCallback(() => setTick(Date.now()), []));
+
+  const { options } = sourceId ? altarOptionsFor(optionEntries, sourceId) : { options: unsavedOptions };
+  const changeOptions = (change: Partial<AltarOptions>) => {
+    if (!sourceId) return setUnsavedOptions((o) => ({ ...o, ...change }));
+    const { options: current, entryId } = altarOptionsFor(optionEntries, sourceId);
+    const next = { ...current, ...change, altarId: sourceId };
+    void (entryId ? updateEntry(ALTAR_OPTIONS, entryId, next) : addEntry(ALTAR_OPTIONS, next));
+  };
+  const minute = Math.floor(tick / 60_000);
+  const sky = useMemo<StageSky | null>(() => {
+    if (!options.sky && !options.moonWindow) return null;
+    const at = new Date(minute * 60_000);
+    const ambient = ambientAt(at, here);
+    const moon = moonState(at);
+    return {
+      tint: options.sky ? ambient.tint : { color: 'transparent', opacity: 0 },
+      accent: options.sky ? ambient.accent : { color: 'transparent', opacity: 0 },
+      moon: options.moonWindow ? { illumination: moon.illumination, waxing: moon.waxing, mirrored: moonMirrored(here) } : null,
+      label: [options.sky ? ambient.label : '', options.moonWindow ? `a ${moon.name.toLowerCase()} in the window` : ''].filter(Boolean).join('; '),
+    };
+  }, [options.sky, options.moonWindow, here, minute]);
+  const aging = useMemo<AgingLooks>(() => {
+    const looks: AgingLooks = {};
+    for (const object of doc?.objects ?? []) {
+      const fresh = offeringFreshness(object, minute * 60_000);
+      if (fresh && fresh.level !== 'lasting' && object.altarObjectId) looks[object.altarObjectId] = agingLook(fresh.kind, fresh);
+    }
+    return looks;
+  }, [doc, minute]);
+
+  /** Change the selected object (found again by its id, in case the altar changed underneath). */
+  const changeSelected = (change: (o: import('../../../lib/altar/types').SavedObject) => import('../../../lib/altar/types').SavedObject, recordUndo = true) => {
+    if (selected == null) return;
+    commit((d) => updateObjects(d, [selected], change), recordUndo);
+  };
+  const indexOfId = (id: string) => (docRef.current?.objects ?? []).findIndex((o) => o.altarObjectId === id);
+
+  // How did it burn? Kept with the burn, and if you like in your ritual journal.
+  const saveReading = async (input: ReadingInput, journal: boolean) => {
+    if (selected == null || !selectedObject) return;
+    const id = String(selectedObject.altarObjectId || '');
+    const label = shortLabel(selectedObject.label, 'Candle');
+    commit((d) => updateObjects(d, [selected], (o) => recordReading(o, input, nowIso())));
+    setSheet(null);
+    if (!journal) return setNotice('Reading kept with the candle. You’ll find it in its story.');
+    const index = indexOfId(id);
+    const reading = index >= 0 ? readingsOf(docRef.current!.objects[index]).slice(-1)[0] : null;
+    try {
+      const answers = blankAnswers(null, new Date());
+      const carvings = carvingsOf(selectedObject).map((c) => c.text);
+      const row = await saveJournal({
+        session: null,
+        answers: {
+          ...answers,
+          title: `Candle reading: ${label}`,
+          intention: carvings.join(', '),
+          signs_and_symbols: readingText(input),
+          what_happened_during: lastBurn(selectedObject) ? `The candle burned for ${burnDuration(Number(lastBurn(selectedObject)?.durationMs) || 0)}.` : '',
+        },
+      });
+      const at = indexOfId(id);
+      if (reading && at >= 0) commit((d) => updateObjects(d, [at], (o) => linkReadingJournal(o, reading.id, row.id, nowIso())), false);
+      setNotice('Reading kept with the candle and saved to your journal.');
+    } catch {
+      setNotice('Reading kept with the candle, but it couldn’t be saved to your journal. Please try again later.');
+    }
+  };
+
+  // Offerings: refreshed, returned to nature or cleared away, each logged.
+  const endSelectedOffering = (how: OfferingEnd) => {
+    if (selected == null || !selectedObject) return;
+    const contents = offeringOf(selectedObject);
+    if (!contents) return;
+    const what = contents.label || offeringKind(contents.kind)?.label.toLowerCase() || 'offering';
+    if (holdsOfferings(selectedObject)) {
+      commit((d) => updateObjects(d, [selected], (o) => endOffering(o, how, nowIso())));
+      setNotice(how === 'returned' ? `Returned the ${what} to nature. The vessel is empty now.` : `Cleared away the ${what}.`);
+      return;
+    }
+    // A sprig is the offering itself: it leaves the altar, and the altar's log remembers it.
+    const name = shortLabel(selectedObject.label, 'Sprig');
+    commit((d) => removeObject(d, selected));
+    setSelected(null);
+    logAltar(how === 'returned' ? `${name} was returned to nature.` : `${name} was cleared away.`);
+    setNotice(how === 'returned' ? `${name} is returned to nature and off the altar.` : `${name} is cleared away.`);
+  };
+  const logAltar = (text: string) => {
+    if (sourceId) void addEntry('altar.history', { altarId: sourceId, text, at: nowIso() });
+  };
+  const deityOffering = (action: 'refresh' | 'returned' | 'removed') => {
+    if (selected == null || !selectedObject) return;
+    const current = agingDeityOffering(offeringsOf(selectedObject, nowIso()), Date.now());
+    if (!current) return;
+    const { offering } = current;
+    const status = action === 'refresh' ? 'Completed' : action === 'returned' ? 'Returned to nature' : 'Removed';
+    changeSelected((o) => {
+      const at = nowIso();
+      const done = updateOffering(o, offering.id, {
+        status,
+        customStatus: '',
+        response: offering.perceivedResponse ? humanize(offering.perceivedResponse) : '',
+        responseNotes: offering.responseNotes || '',
+        followUpNotes: action === 'refresh' ? 'Refreshed with a fresh offering.' : offering.followUpNotes || '',
+        completedAt: at,
+      }, at);
+      if (action !== 'refresh') return done;
+      const items = offering.items ?? [];
+      return recordOffering(done, {
+        types: offering.types ?? [],
+        supports: items.filter((i) => !i.custom).map((i) => ({ id: String(i.id || i.label), label: i.label })),
+        customItems: items.filter((i) => i.custom).map((i) => i.label).join(', '),
+        intention: offering.intention || '',
+        message: 'A fresh offering in place of the last.',
+        status: 'Present on altar',
+        customStatus: '',
+        response: '',
+        responseNotes: '',
+        occurredAt: at,
+      }, at);
+    });
+    setNotice(action === 'refresh' ? 'A fresh offering is set out.' : action === 'returned' ? 'The offering is returned to nature.' : 'The offering is cleared away.');
+  };
+
+  // Petitions: the box for this altar, synced with your account.
+  const { entries: petitionEntries } = useCraft<Petition>(PETITIONS);
+  const box = useMemo(() => petitionBox(petitionEntries, sourceId ?? ''), [petitionEntries, sourceId]);
+  const openPetitions = () => {
+    if (sourceId) return setSheet('petitions');
+    setNotice('Save this altar first; its petition box is kept with it.');
+    setSheet('save');
+  };
+  const writePetition = async (input: import('../../../lib/altar/petitions').PetitionInput, candleId: string | null) => {
+    if (!sourceId || !docRef.current) return;
+    setSheet(null);
+    const now = new Date();
+    const candleIndex = candleId ? indexOfId(candleId) : -1;
+    const candle = candleIndex >= 0 ? docRef.current.objects[candleIndex] : null;
+    const petition: Petition = { ...newPetition(sourceId, input, now), place: candle ? 'candle' : 'box', candleId: candle ? candleId! : '' };
+    const entry = await addEntry(PETITIONS, petition, now);
+    const paper = petitionObject(petition, entry.id, docRef.current.objects, now.toISOString(), candle);
+    commit((d) => {
+      const added = addObject(d, paper);
+      const at = candle ? d.objects.indexOf(candle) : -1;
+      return at >= 0 ? updateObjects(added, [at], (o) => logAppEvent(o, { kind: 'petition', text: `The petition “${petition.title}” was folded beneath it.` }, now.toISOString())) : added;
+    });
+    await updateEntry(PETITIONS, entry.id, { ...petition, objectId: paper.altarObjectId });
+    setNotice(candle ? `“${petition.title}” is folded under ${shortLabel(candle.label, 'the candle')}.` : `“${petition.title}” is on the altar and in the petition box.`);
+  };
+  const finishPetitionEntry = (entry: CraftEntry<Petition>, how: PetitionEnd) => {
+    const now = new Date();
+    void updateEntry(PETITIONS, entry.id, finishPetition(entry.data, how, now));
+    const words = how === 'burned' ? 'burned' : how === 'buried' ? 'buried' : 'released';
+    // The paper leaves the altar; the candle it sat under remembers it.
+    commit((d) => {
+      let next = d;
+      const candleAt = entry.data.candleId ? d.objects.findIndex((o) => o.altarObjectId === entry.data.candleId) : -1;
+      if (candleAt >= 0) next = updateObjects(next, [candleAt], (o) => logAppEvent(o, { kind: 'petition', text: `The petition “${entry.data.title}” was ${words}.` }, now.toISOString()));
+      const paperAt = next.objects.findIndex((o) => isPetitionPaper(o) && petitionEntryOf(o) === entry.id);
+      return paperAt >= 0 ? removeObject(next, paperAt) : next;
+    });
+    setSelected(null);
+    setNotice(`“${entry.data.title}” is ${words}. It stays in the box’s history.`);
+  };
+
   const stage =
     doc && stageWidth > 0 ? (
           <AltarStage
@@ -507,6 +744,8 @@ export default function AltarEditor() {
             onRotate={(i, deg) => commit((d) => setRotation(d, i, deg), false)}
             onGestureEnd={() => {}}
             onViewportChange={setViewport}
+            sky={sky}
+            aging={aging}
           />
     ) : null;
 
@@ -527,10 +766,26 @@ export default function AltarEditor() {
             group={groupName(doc, selectedObject)}
             crafted={crafted}
             canPractice={!!selectedInstanceId}
+            petition={selectedObject && isPetitionPaper(selectedObject) ? petitionEntries.find((e) => e.id === petitionEntryOf(selectedObject))?.data ?? null : null}
             onAbout={() => setSheet('about')}
             onDone={() => setSelected(null)}
             act={{
               light: () => commit((d) => toggleLight(d, selected, nowIso())),
+              read: () => setSheet('reading'),
+              offer: () => setSheet('offering'),
+              refreshOffering: () => {
+                changeSelected((o) => refreshOffering(o, nowIso()));
+                setNotice('Refreshed.');
+              },
+              endOffering: endSelectedOffering,
+              deityOffering,
+              incense: () => {
+                const life = incenseLife(selectedObject);
+                changeSelected((o) => (life.lit ? putOutIncense(o, nowIso()) : life.ash ? clearAsh(o, nowIso()) : lightIncense(o, nowIso())));
+                if (life.ash) setNotice('The ash is cleared. Fresh incense is ready to light.');
+              },
+              incenseKind: () => setSheet('incense'),
+              petitions: openPetitions,
               fresh: () => commit((d) => freshCandleAt(d, selected, nowIso())),
               length: () => setSheet('length'),
               rename: () => setSheet('rename'),
@@ -573,6 +828,13 @@ export default function AltarEditor() {
               <Chip label="Background" symbol="❖" onPress={() => setSheet('background')} />
               <Chip label="Layers" symbol="☰" onPress={() => setSheet('layers')} disabled={doc.objects.length === 0} />
               <Chip label="Apothecary" symbol="⚗" accessibilityLabel="My Apothecary" onPress={() => setSheet('apothecary')} />
+              <Chip
+                label={box.open.length ? `Petitions (${box.open.length})` : 'Petitions'}
+                symbol="✉"
+                accessibilityLabel={`The petition box${box.open.length ? `, ${box.open.length} waiting` : ''}`}
+                onPress={openPetitions}
+              />
+              <Chip label="Sky & season" symbol="☾" accessibilityLabel="Sky and season options for this altar" onPress={() => setSheet('options')} />
               <Chip
                 label="Record in Grimoire"
                 symbol="❧"
@@ -866,6 +1128,75 @@ export default function AltarEditor() {
               setSheet(null);
             }}
           />
+          <FlameReadingSheet
+            visible={sheet === 'reading' && !!selectedObject && isCandle(selectedObject)}
+            candle={shortLabel(selectedObject?.label, 'Candle')}
+            spent={!!selectedObject && isCandle(selectedObject) && candleLife(selectedObject).spent}
+            remnant={selectedObject ? remnantOf(selectedObject)?.choice ?? null : null}
+            canJournal
+            onClose={() => setSheet(null)}
+            onSave={(input, journal) => void saveReading(input, journal)}
+            onRemnant={(choice) => {
+              changeSelected((o) => setRemnant(o, choice, nowIso()));
+              setNotice(choice === 'keep' ? 'The remnant is kept.' : choice === 'bury' ? 'The remnant is to be buried.' : 'The remnant is thrown away.');
+            }}
+          />
+          <OfferingSheet
+            visible={sheet === 'offering' && !!selectedObject && canHoldOffering(selectedObject)}
+            name={shortLabel(selectedObject?.label)}
+            current={selectedObject ? offeringOf(selectedObject)?.kind ?? null : null}
+            onClose={() => setSheet(null)}
+            onChoose={(kind, label) => {
+              changeSelected((o) => setOffering(o, kind, label, nowIso()));
+              setSheet(null);
+            }}
+          />
+          <IncenseSheet
+            visible={sheet === 'incense' && !!selectedObject && isIncense(selectedObject)}
+            name={shortLabel(selectedObject?.label, 'Incense')}
+            form={selectedObject ? incenseFormOf(selectedObject) : 'stick'}
+            burnMs={selectedObject ? incenseLife(selectedObject).burnMs : 0}
+            onClose={() => setSheet(null)}
+            onForm={(form) => changeSelected((o) => setIncenseForm(o, form, nowIso()))}
+            onLength={(ms) => {
+              changeSelected((o) => setIncenseLength(o, ms, nowIso()));
+              setSheet(null);
+            }}
+          />
+          <AltarOptionsSheet
+            visible={sheet === 'options'}
+            options={options}
+            placeKnown={!!here}
+            saved={!!sourceId}
+            onClose={() => setSheet(null)}
+            onChange={changeOptions}
+          />
+          <WritePetitionSheet
+            visible={sheet === 'petition'}
+            candles={doc.objects
+              .filter((o) => isCandle(o) && !candleLife(o).spent && o.altarObjectId)
+              .map((o) => ({ id: String(o.altarObjectId), label: shortLabel(o.label, 'Candle') }))}
+            onClose={() => setSheet(null)}
+            onWrite={(input, candleId) => void writePetition(input, candleId)}
+          />
+          <PetitionBoxSheet
+            visible={sheet === 'petitions'}
+            open={box.open}
+            history={box.history}
+            nights={releaseNights(new Date(minute * 60_000), here?.latitude ?? null)}
+            onClose={() => setSheet(null)}
+            onWrite={() => {
+              setSheet(null);
+              afterSheetCloses(() => setSheet('petition'));
+            }}
+            onBurn={(entry) => finishPetitionEntry(entry, 'burned')}
+            onBury={(entry) => finishPetitionEntry(entry, 'buried')}
+            onRelease={(entry) => finishPetitionEntry(entry, 'released')}
+            onSchedule={(entry, night) => {
+              void updateEntry(PETITIONS, entry.id, schedulePetition(entry.data, night.date, night.why));
+              setNotice(`“${entry.data.title}” will wait for ${night.label.toLowerCase()}.`);
+            }}
+          />
           <SaveSheet
             visible={sheet === 'save'}
             initialName={name}
@@ -1000,6 +1331,14 @@ export default function AltarEditor() {
 
 type Actions = {
   light: () => void;
+  read: () => void;
+  offer: () => void;
+  refreshOffering: () => void;
+  endOffering: (how: OfferingEnd) => void;
+  deityOffering: (action: 'refresh' | 'returned' | 'removed') => void;
+  incense: () => void;
+  incenseKind: () => void;
+  petitions: () => void;
   fresh: () => void;
   length: () => void;
   rename: () => void;
@@ -1030,10 +1369,12 @@ function ObjectPanel({
   group,
   crafted,
   canPractice,
+  petition,
   act,
   onAbout,
   onDone,
 }: {
+  petition: Petition | null;
   group: string;
   crafted: boolean;
   canPractice: boolean;
@@ -1051,12 +1392,21 @@ function ObjectPanel({
   const dressings = candle ? dressingsOf(object) : [];
   const carvings = candle ? carvingsOf(object) : [];
   const [now, setNow] = useState(() => new Date());
-  // A lit candle's burning time counts up, as on the website.
+  const incense = isIncense(object) ? incenseLife(object, now.getTime()) : null;
+  // A lit candle's burning time counts up, as on the website; offerings age by the minute.
   useEffect(() => {
-    if (!lit) return;
-    const timer = setInterval(() => setNow(new Date()), 10_000);
+    const timer = setInterval(() => setNow(new Date()), lit || incense?.lit ? 10_000 : 60_000);
     return () => clearInterval(timer);
-  }, [lit]);
+  }, [lit, incense?.lit]);
+  const toRead = candle && !lit ? burnToRead(object, now.getTime()) : null;
+  const read = candle && !lit && !!lastBurn(object);
+  const offering = canHoldOffering(object) ? offeringFreshness(object, now.getTime()) : null;
+  const contents = offering ? offeringOf(object) : null;
+  const deityAging = object.type === 'deity' ? agingDeityOffering(offeringsOf(object, now.toISOString()), now.getTime()) : null;
+  const moonCharge = object.type === 'crystal' || offering?.kind === 'water' ? moonChargesOf(object)[0] ?? null : null;
+  const story = useMemo(() => storyLines(object), [object]);
+  const [allStory, setAllStory] = useState(false);
+  const summary = storySummary(object, now);
   const burned = candle ? burnedSoFar(object, now) : 0;
   const life = candle ? candleLife(object, now) : null;
   const [confirmRemove, setConfirmRemove] = useState(false);
@@ -1065,7 +1415,7 @@ function ObjectPanel({
     <View style={styles.section}>
       <View style={styles.objectHead}>
         <View style={{ flex: 1 }}>
-          <Text style={type.eyebrow}>{locked ? 'Locked in place' : lit ? 'Burning' : life?.spent ? 'Spent' : 'Selected'}</Text>
+          <Text style={type.eyebrow}>{locked ? 'Locked in place' : lit || incense?.lit ? 'Burning' : life?.spent ? 'Spent' : incense?.ash ? 'Ash' : 'Selected'}</Text>
           <Text style={type.cardTitle}>{objectLabel}</Text>
           {!!glance && <Text style={styles.glance}>{glance}</Text>}
           {!!group && <Text style={type.caption}>{`In the group “${group}”`}</Text>}
@@ -1100,6 +1450,9 @@ function ObjectPanel({
         )}
       </ChipRow>
 
+      {moonCharge && (
+        <Text style={type.caption}>{`Charged under the ${moonCharge.moon || 'moon'}, ${new Date(moonCharge.at).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}, sitting here.`}</Text>
+      )}
       {object.type === 'crystal' && (
         <ChipRow>
           <Chip label="Cleanse" symbol="☾" onPress={() => act.crystal('cleanse')} />
@@ -1115,6 +1468,70 @@ function ObjectPanel({
           {Platform.OS !== 'web' && <Chip label="Widget offering" symbol="▣" onPress={() => act.deity('widget')} />}
         </ChipRow>
       )}
+      {deityAging && (
+        <View style={styles.living}>
+          <Text style={type.eyebrow}>{`Your offering · ${FRESHNESS_WORDS[deityAging.fresh.level]}`}</Text>
+          <Text style={type.caption}>{freshnessLine(deityAging.kind, deityAging.fresh)}</Text>
+          <ChipRow>
+            <Chip label="Refresh" symbol="↻" accessibilityLabel="Refresh the offering with a fresh one" onPress={() => act.deityOffering('refresh')} />
+            <Chip label="Return to nature" symbol="❧" onPress={() => act.deityOffering('returned')} />
+            <Chip label="Remove" symbol="⌫" accessibilityLabel="Clear the offering away" onPress={() => act.deityOffering('removed')} />
+          </ChipRow>
+        </View>
+      )}
+
+      {offering && contents ? (
+        <View style={styles.living}>
+          <Text style={type.eyebrow}>{`${contents.label || offeringKind(contents.kind)?.label} · ${FRESHNESS_WORDS[offering.level]}`}</Text>
+          <Text style={type.caption}>{freshnessLine(offering.kind, offering)}</Text>
+          <ChipRow>
+            {offering.level !== 'lasting' && <Chip label="Refresh" symbol="↻" active={offering.level === 'refresh'} onPress={act.refreshOffering} />}
+            <Chip label="Return to nature" symbol="❧" onPress={() => act.endOffering('returned')} />
+            <Chip label="Remove" symbol="⌫" accessibilityLabel={holdsOfferings(object) ? 'Empty the vessel' : 'Clear it away'} onPress={() => act.endOffering('removed')} />
+            <Chip label={holdsOfferings(object) ? 'Something else' : 'What it is'} symbol="✎" onPress={act.offer} />
+          </ChipRow>
+        </View>
+      ) : holdsOfferings(object) ? (
+        <Button label="Set out an offering" variant="outline" onPress={act.offer} />
+      ) : null}
+
+      {incense && (
+        <View style={styles.living}>
+          <Text style={type.caption}>
+            {incense.lit
+              ? `Burning · about ${lifeDuration(incense.remainingMs)} left`
+              : incense.ash
+                ? 'Burned down to ash.'
+                : incense.burnedMs > 0
+                  ? `Partly burned · about ${lifeDuration(incense.remainingMs)} left`
+                  : `${incense.form === 'resin' ? 'Resin on charcoal' : incense.form === 'cone' ? 'A cone' : 'A stick'} · burns about ${lifeDuration(incense.burnMs)}`}
+          </Text>
+          <Button label={incense.lit ? 'Put it out' : incense.ash ? 'Clear the ash' : 'Light the incense'} onPress={act.incense} />
+          {incense.adjustable && (
+            <ChipRow>
+              <Chip label="Stick, cone or resin" symbol="⧗" accessibilityLabel="Choose what kind of incense it is and how long it burns" onPress={act.incenseKind} />
+            </ChipRow>
+          )}
+        </View>
+      )}
+
+      {isPetitionPaper(object) && (
+        <View style={styles.living}>
+          {petition ? (
+            <>
+              {!!petition.words && <Text style={styles.glance}>{petition.words}</Text>}
+              <Text style={type.caption}>
+                {[petition.intention ? `For ${petition.intention}` : '', petition.status === 'scheduled' ? `To be released ${new Date(petition.releaseOn).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' })}` : 'Waiting in the petition box']
+                  .filter(Boolean)
+                  .join(' · ')}
+              </Text>
+            </>
+          ) : (
+            <Text style={type.caption}>A folded petition. Its words are kept in the petition box.</Text>
+          )}
+          <Button label="Burn, bury or release it" variant="outline" onPress={act.petitions} />
+        </View>
+      )}
 
       {candle && (
         <>
@@ -1126,6 +1543,17 @@ function ObjectPanel({
           ) : (
             <Button label={lit ? 'Snuff the candle' : 'Light the candle'} onPress={act.light} />
           )}
+          {toRead ? (
+            <View style={styles.living}>
+              <Text style={type.eyebrow}>How did it burn?</Text>
+              <Text style={type.caption}>While it’s fresh in your mind: the flame, the smoke and the wax. Candle-readers have long looked to them.</Text>
+              <Button label="Read the candle" variant="outline" onPress={act.read} />
+            </View>
+          ) : read ? (
+            <ChipRow>
+              <Chip label={life?.spent ? 'How it burned · its remnant' : 'How it burned'} symbol="✧" onPress={act.read} />
+            </ChipRow>
+          ) : null}
           <ChipRow>
             {life?.adjustable && <Chip label="How long it burns" symbol="⧗" onPress={act.length} />}
             <Chip label="Dress" symbol="❦" onPress={act.dress} />
@@ -1133,6 +1561,19 @@ function ObjectPanel({
             {dressings.length > 0 && <Chip label="Undress" symbol="⌫" onPress={act.undress} />}
           </ChipRow>
         </>
+      )}
+
+      {(story.length > 0 || !!summary) && (
+        <View style={styles.living}>
+          <Text style={type.eyebrow}>Its story</Text>
+          {!!summary && <Text style={type.caption}>{summary}</Text>}
+          {(allStory ? story : story.slice(0, 5)).map((line, i) => (
+            <Text key={`${line.at}-${i}`} style={type.caption}>
+              {`${new Date(line.at).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })} · ${line.text}`}
+            </Text>
+          ))}
+          {story.length > 5 && <Chip label={allStory ? 'Show less' : `Show all ${story.length}`} onPress={() => setAllStory((v) => !v)} />}
+        </View>
       )}
 
       <Text style={type.eyebrow}>Arrange</Text>
@@ -1192,6 +1633,7 @@ const styles = StyleSheet.create({
   section: { gap: 14 },
   objectHead: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
   glance: { fontFamily: fonts.displayItalic, fontSize: 17, lineHeight: 22, color: colors.parchment },
+  living: { gap: 8 },
   notice: { color: colors.gold, textAlign: 'center' },
   danger: { marginTop: 8 },
   centered: { flex: 1, justifyContent: 'center', padding: space.gutter, gap: 14 },

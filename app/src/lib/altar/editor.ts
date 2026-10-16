@@ -14,6 +14,7 @@ import {
   lightCandle,
   parseLivingState,
   setApothecaryState,
+  setAppState,
   setCandleLife,
   settleCandle,
   snuffCandle,
@@ -23,6 +24,8 @@ import {
   writeLivingState,
   type ApothecaryState,
 } from './livingState.ts';
+import { incenseLife, incenseStateOf, isIncense, settleIncense } from './incense.ts';
+import { chargeUnderMoons } from './moonCharge.ts';
 import type { AltarDocument } from './snapshot.ts';
 import type { SavedObject } from './types.ts';
 import { newId } from './uid.ts';
@@ -201,6 +204,11 @@ export function duplicateObject(doc: AltarDocument, index: number, now: string):
       );
     }
   }
+  if (isIncense(copy) && incenseLife(copy).lit) {
+    // A copy of burning incense is a fresh, unlit one of the same kind.
+    const incense = { ...incenseStateOf(copy), litAt: '', status: 'unlit' as const, burnedMs: 0, burns: [] };
+    copy = setAppState(copy, { incense }, now, false);
+  }
   copy = withCenter({ ...copy, locked: object.locked }, box.cx + offset, box.cy + offset * (16 / 9));
   return addObject(doc, copy);
 }
@@ -264,19 +272,34 @@ export function snuffAll(doc: AltarDocument, now: string): AltarDocument {
   return objects.every((o, i) => o === doc.objects[i]) ? doc : { ...doc, objects };
 }
 
-/** Candles whose life has run out go out, at the moment they would have. Unchanged docs come back as they were. */
+/**
+ * Candles whose life has run out go out, at the moment they would have, and
+ * incense whose time is up burns down to ash. Unchanged docs come back as they were.
+ */
 export function settleCandles(doc: AltarDocument, now: string): AltarDocument {
-  const objects = doc.objects.map((o) => settleCandle(o, now));
+  const objects = doc.objects.map((o) => settleIncense(settleCandle(o, now), now));
   return objects.every((o, i) => o === doc.objects[i]) ? doc : { ...doc, objects };
 }
 
-/** The soonest moment a lit candle on the altar runs out, or null. */
+/**
+ * Everything that happens to an altar while no one's looking: candles and
+ * incense burn down, and crystals and moon water sitting there through a Full
+ * Moon (and, if chosen, a New Moon) are charged under it, once per lunation.
+ */
+export function settleAltar(doc: AltarDocument, now: string, options: { newMoon?: boolean } = {}): AltarDocument {
+  const burned = settleCandles(doc, now);
+  const objects = burned.objects.map((o) => chargeUnderMoons(o, now, options));
+  return objects.every((o, i) => o === burned.objects[i]) ? burned : { ...burned, objects };
+}
+
+/** The soonest moment a lit candle (or burning incense) on the altar runs out, or null. */
 export function nextBurnout(doc: AltarDocument, now: Date = new Date()): number | null {
   let soonest: number | null = null;
   for (const object of doc.objects) {
-    if (object.type !== 'candle' || object.lit !== 'true') continue;
-    const { burnoutAt } = candleLife(object, now);
-    if (burnoutAt != null && (soonest == null || burnoutAt < soonest)) soonest = burnoutAt;
+    let at: number | null = null;
+    if (object.type === 'candle' && object.lit === 'true') at = candleLife(object, now).burnoutAt;
+    else if (isIncense(object)) at = incenseLife(object, now.getTime()).endsAt;
+    if (at != null && (soonest == null || at < soonest)) soonest = at;
   }
   return soonest;
 }
