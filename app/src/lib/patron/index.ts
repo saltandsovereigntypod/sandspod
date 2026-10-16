@@ -50,7 +50,12 @@ export function deityLines(settings: SettingsLike, now: Date, max = 3): DeityLin
     }
     const next = upcomingSacred(devotion, now, 8)[0];
     const daily = devotionOfDay(devotion, now) ?? undefined;
-    if (next) return { deity, label, line: `${next.day.name} ${when(next)}`, detail: daily, href, holyToday: next.inDays === 0 };
+    if (next) {
+      // "Thursday, Thor's day" already says when, unless it's today or tomorrow.
+      const words = when(next);
+      const named = words.startsWith('on ') && next.day.name.toLowerCase().includes(words.slice(3).toLowerCase());
+      return { deity, label, line: named ? next.day.name : `${next.day.name} ${words}`, detail: daily, href, holyToday: next.inDays === 0 };
+    }
     return { deity, label, line: daily ?? `A few quiet minutes with ${deity.name}`, href, holyToday: false };
   });
 }

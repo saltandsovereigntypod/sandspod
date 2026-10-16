@@ -42,6 +42,13 @@ function savedObjectExtras(object) {
   }
 }
 
+/** An object's own symbol (its text), leaving out what the living art draws over it. */
+function objectFallbackSymbol(object) {
+  if (!object) return "";
+  if (object.dataset.fallbackSymbol) return object.dataset.fallbackSymbol;
+  return [...object.childNodes].filter((node) => node.nodeType === 3).map((node) => node.textContent).join("").trim();
+}
+
 /** The saved altar this page has open (so its petitions, spells and intention stay with it), or "". */
 function setCurrentSavedAltar(id) {
   window.currentSavedAltarId = id || "";
@@ -143,7 +150,7 @@ function createAltarSnapshot(name = "Working Altar") {
     return {
       ...savedObjectExtras(object),
       imagePath: getObjectImagePath(object),
-      fallbackSymbol: object.textContent || "",
+      fallbackSymbol: objectFallbackSymbol(object),
       label: object.dataset.label || "object",
       type: object.dataset.type || "",
       entityId: object.dataset.entityId || "",
@@ -441,6 +448,7 @@ function createSavedObject(savedObject) {
     object.appendChild(img);
   } else {
     object.textContent = savedObject.fallbackSymbol || "";
+    if (savedObject.fallbackSymbol) object.dataset.fallbackSymbol = savedObject.fallbackSymbol;
   }
 
   object.setAttribute(

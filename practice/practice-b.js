@@ -104,7 +104,7 @@
     esc,
     attr,
     head(eyebrow, title, back) {
-      return `${back ? `<a class="sp-back" href="${esc(back.href)}">← ${esc(back.label)}</a>` : ""}<header>${eyebrow ? `<p class="sp-eyebrow">${esc(eyebrow)}</p>` : ""}<h1>${esc(title)}</h1></header>`;
+      return `${back ? `<a class="sp-back pr-back" href="${esc(back.href)}">← ${esc(back.label)}</a>` : ""}<div class="pr-head pb-title">${eyebrow ? `<p class="sp-eyebrow">${esc(eyebrow)}</p>` : ""}<h1>${esc(title)}</h1></div>`;
     },
     p(text, cls = "") {
       return text ? `<p${cls ? ` class="${cls}"` : ""}>${esc(text)}</p>` : "";
@@ -158,8 +158,8 @@
       const input = multiline ? `<textarea ${common}>${esc(value)}</textarea>` : `<input type="${esc(type)}" ${common} value="${esc(value)}" />`;
       return `<div class="sp-field"><label for="${esc(id)}">${esc(label)}</label>${input}</div>`;
     },
-    toggle({ id, label, detail, checked }) {
-      return `<label class="pb-toggle" for="${esc(id)}"><input type="checkbox" id="${esc(id)}"${checked ? " checked" : ""} /><span><span class="pb-toggle__label">${esc(label)}</span>${detail ? `<span class="sp-caption">${esc(detail)}</span>` : ""}</span></label>`;
+    toggle({ id, label, detail, checked, attrs = {} }) {
+      return `<label class="pb-toggle" for="${esc(id)}"><input type="checkbox" id="${esc(id)}"${checked ? " checked" : ""}${attr(attrs)} /><span><span class="pb-toggle__label">${esc(label)}</span>${detail ? `<span class="sp-caption">${esc(detail)}</span>` : ""}</span></label>`;
     },
     button(label, { variant = "primary", attrs = {}, href } = {}) {
       const cls = variant === "primary" ? "button button--primary" : variant === "text" ? "pb-text-button" : "button button--ghost";
@@ -175,13 +175,29 @@
 
   // ── Where things live on the website ──────────────────────────────────────
 
+  // The shared PracticeKit (practice/practice.js) knows the site's addresses;
+  // these fall back to the same ones if it hasn't loaded.
+  const kit = () => global.PracticeKit;
   const links = {
     hub: "/practice/",
     practice: (id) => `/practice/${id}/`,
-    premade: (id) => `/rituals/premade/?id=${encodeURIComponent(id)}`,
-    premadeFor: (practice) => `/rituals/premade/?practice=${encodeURIComponent(practice)}`,
+    premade: (id) => kit()?.href?.premade?.(id) ?? `/rituals/premade/?id=${encodeURIComponent(id)}`,
+    premadeFor: (practice) => kit()?.href?.premadeList?.(practice) ?? `/rituals/premade/?practice=${encodeURIComponent(practice)}`,
+    /** A Living Library entry ("traditional:crystal:amethyst"), opened in the Grimoire. */
+    library: (id) => kit()?.href?.library?.(id) ?? `/grimoire/?entity=${encodeURIComponent(String(id || "").replace(/:/g, "/"))}`,
     nativeLand: "https://native-land.ca"
   };
+
+  /** "Whose land are you on?", the app's LandCard, from the shared kit. */
+  const landCard = () => kit()?.landCard?.() ?? "";
+
+  /** Begin a premade working as a guided ritual (the kit's dialog); false when it can't. */
+  function beginPremade(premade) {
+    const core = global.SaltCore && global.SaltCore["practice-b"];
+    if (!premade || !core || typeof kit()?.runDraft !== "function") return false;
+    kit().runDraft(core.premade.premadeDraft(premade));
+    return true;
+  }
 
   // ── Page plumbing ─────────────────────────────────────────────────────────
 
@@ -207,17 +223,37 @@
     }
   }
 
-  /** Delegate clicks on [data-action] inside root to handlers[action](el, event). */
-  function onActions(root, handlers) {
-    root.addEventListener("click", (event) => {
-      const el = event.target.closest("[data-action]");
+  /**
+   * Delegate events inside root: clicks on [data-action], typing in
+   * [data-input] and changes on [data-change], each to handlers by name.
+   * Calling it again (on a re-render) swaps the handlers; listeners are added once.
+   */
+  function bind(root, { click = {}, input = {}, change = {} } = {}) {
+    root._pb = { click, input, change };
+    if (root._pbBound) return;
+    root._pbBound = true;
+    const route = (kind, selector, prevent) => (event) => {
+      const el = event.target.closest(selector);
       if (!el || !root.contains(el)) return;
-      const fn = handlers[el.getAttribute("data-action")];
-      if (fn) {
-        event.preventDefault();
-        fn(el, event);
-      }
-    });
+      const name = el.getAttribute(selector.slice(1, -1));
+      const fn = root._pb[kind][name];
+      if (!fn) return;
+      if (prevent) event.preventDefault();
+      fn(el, event);
+    };
+    root.addEventListener("click", route("click", "[data-action]", true));
+    root.addEventListener("input", route("input", "[data-input]", false));
+    root.addEventListener("change", route("change", "[data-change]", false));
+  }
+
+  /** A collection's live entries, or [] with a problem when the account can't be reached. */
+  async function listEntries(collection) {
+    try {
+      return { entries: await global.SaltCraft.list(collection), problem: null };
+    } catch (error) {
+      console.warn("[practice]", collection, error);
+      return { entries: [], problem: "Couldn’t reach your account just now, so your saved entries aren’t showing. Check your connection and refresh." };
+    }
   }
 
   /**
@@ -312,9 +348,12 @@
     onPlaceChange,
     h,
     links,
+    landCard,
+    beginPremade,
     query,
     paint,
-    onActions,
+    bind,
+    listEntries,
     start,
     signedIn,
     confirmAction,

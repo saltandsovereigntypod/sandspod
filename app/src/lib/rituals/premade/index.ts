@@ -15,26 +15,12 @@ import { GREEN } from './data/green.ts';
 import { HEDGE } from './data/hedge.ts';
 import { KITCHEN } from './data/kitchen.ts';
 import { WICCA } from './data/wicca.ts';
+import { myPractices } from './practices.ts';
 import type { PracticeId, Premade, PremadeMoon } from './types.ts';
 
 export type { PracticeId, Premade, PremadeIngredient, PremadeMoon, PremadeStep } from './types.ts';
 
-export type Practice = { id: PracticeId; name: string; about: string };
-
-export const PRACTICES: Practice[] = [
-  { id: 'eclectic', name: 'Eclectic', about: 'Blends practices, folklore and beliefs from many cultures, paths and traditions rather than one set system.' },
-  { id: 'green', name: 'Green', about: 'Nature, botanical work and gardening: herbs, plants and flowers in spellwork.' },
-  { id: 'kitchen', name: 'Kitchen & hearth', about: 'Magic in the home: cooking, baking, cleaning and family care as intentional ritual.' },
-  { id: 'hedge', name: 'Hedge', about: 'Liminal spaces, intuition, spirit work and journeying between this world and the veil.' },
-  { id: 'solitary', name: 'Solitary', about: 'Rituals, spells and practice done alone rather than in a group or coven.' },
-  { id: 'cosmic', name: 'Cosmic & celestial', about: 'Astrology, astronomy, star charts and planetary timing to time and power the work.' },
-  { id: 'crystal', name: 'Crystal', about: 'Minerals, crystals and stones for energy work, healing and amplification.' },
-  { id: 'elemental', name: 'Elemental', about: 'Earth, air, fire and water: all four in balance, or one element alone.' },
-  { id: 'sea', name: 'Sea', about: 'Oceans, rivers and tides, sea weather, shells and salt water, and the moon’s pull on water.' },
-  { id: 'folk', name: 'Traditional & folk', about: 'Historical lore, regional folklore, local spirits and old-ways customs rather than modern frameworks.' },
-];
-
-export const practiceName = (id: string) => PRACTICES.find((p) => p.id === id)?.name ?? id;
+export { PRACTICES, practiceName, myPractices, practicesValue, type Practice } from './practices.ts';
 
 /** Every premade working, in a stable order. */
 export const PREMADE: Premade[] = [...WICCA, ...GREEN, ...KITCHEN, ...HEDGE, ...COSMIC, ...FOLK];
@@ -43,15 +29,6 @@ const byId = new Map(PREMADE.map((p) => [p.id, p]));
 export const premadeById = (id: string | null | undefined): Premade | null => (id ? byId.get(id) ?? null : null);
 
 type SettingsLike = Record<string, unknown> | null | undefined;
-
-/** Settings → My practice, saved as a comma list of practice ids. */
-export function myPractices(settings: SettingsLike): PracticeId[] {
-  const raw = typeof settings?.my_practice === 'string' ? settings.my_practice : '';
-  const chosen = raw.split(',').map((id) => id.trim());
-  return PRACTICES.map((p) => p.id).filter((id) => chosen.includes(id));
-}
-
-export const practicesValue = (ids: string[]) => PRACTICES.map((p) => p.id).filter((id) => ids.includes(id)).join(',');
 
 /** The moon tonight in the words premade workings use. Dark is the last sliver before new. */
 export function moonTonight(now: Date): PremadeMoon[] {

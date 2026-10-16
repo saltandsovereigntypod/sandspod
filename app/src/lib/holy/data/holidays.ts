@@ -628,7 +628,6 @@ export const HOLIDAY_PAGES: HolyPage[] = [
     sources: [
       'Snorri Sturluson, Ynglinga saga, ch. 8; in Heimskringla, tr. Lee M. Hollander (Austin, 1964).',
       'Árni Björnsson, Icelandic Feasts and Holidays (Reykjavík, 1980).',
-      'Government of Iceland, public holidays: https://www.government.is/topics/foreign-affairs/protocol/public-holidays/',
     ],
   },
   {
@@ -667,7 +666,7 @@ export const HOLIDAY_PAGES: HolyPage[] = [
     sources: [
       'Árni Björnsson, Icelandic Feasts and Holidays (Reykjavík, 1980), “Jónsmessa”.',
       'Jesse Byock, Viking Age Iceland (London, 2001), on the Althing.',
-      'Þingvellir National Park, history of the Althing: https://www.thingvellir.is/en/history/',
+      'Þingvellir National Park, history of the Althing: https://www.thingvellir.is/en/education/history/',
       'James George Frazer, The Golden Bough (abridged 1922), ch. 62–65: https://www.gutenberg.org/ebooks/3623',
     ],
   },
@@ -2092,7 +2091,7 @@ export const HOLIDAY_PAGES: HolyPage[] = [
     sources: [
       'Linda J. Ivanits, Russian Folk Belief (Armonk, 1989).',
       'Jan Kochanowski, Pieśń świętojańska o Sobótce (1586).',
-      'W. R. S. Ralston, The Songs of the Russian People (1872): https://www.gutenberg.org/ebooks/search/?query=ralston+songs+of+the+russian+people',
+      'W. R. S. Ralston, The Songs of the Russian People (London, 1872).',
       'Aleksander Gieysztor, Mitologia Słowian (Warsaw, 1982).',
     ],
   },

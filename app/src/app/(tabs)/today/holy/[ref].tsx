@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams, type Href } from 'expo-router';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
@@ -168,25 +168,24 @@ function KeepInGrimoire({ ref_ }: { ref_: string }) {
   const page = holyPage(ref_);
   const premade = page?.ritual.premade ? premadeById(page.ritual.premade) : null;
   const existing = page && grimoire.snapshot ? findHolyGrimoirePage(grimoire.snapshot.pages, grimoire.snapshot.sections, page) : null;
-  const [saved, setSaved] = useState<string | null>(null);
   const tried = useRef(false);
 
   useEffect(() => {
     if (tried.current || !page || !session || !grimoire.canEdit || !grimoire.snapshot || existing) return;
     tried.current = true;
-    const id = grimoire.actions.saveHolyPage({ ref: page.ref, title: page.title, sectionTitle: grimoireSection(page), blocks: holyBlocks(page, premade?.title) });
-    if (id) setSaved(id);
+    // The new page shows up in the Grimoire's snapshot straight away, and so below.
+    grimoire.actions.saveHolyPage({ ref: page.ref, title: page.title, sectionTitle: grimoireSection(page), blocks: holyBlocks(page, premade?.title) });
   }, [page, session, grimoire, existing, premade?.title]);
 
   if (!page) return null;
   if (!session) {
     return <Text style={type.caption}>Sign in to keep pages like this in your Grimoire, with room for your own notes.</Text>;
   }
-  const pageId = existing?.id ?? saved;
+  const pageId = existing?.id;
   if (!pageId) return null;
   return (
     <Card>
-      <Text style={styles.label}>{saved && !existing ? 'Saved to your Grimoire' : 'In your Grimoire'}</Text>
+      <Text style={styles.label}>In your Grimoire</Text>
       <Text style={type.caption}>{`Under ${grimoireSection(page)}, with room for your own notes.`}</Text>
       <View style={styles.row}>
         <Button label="Open the page" variant="outline" onPress={() => router.push({ pathname: '/grimoire/[pageId]', params: { pageId } } as Href)} />
