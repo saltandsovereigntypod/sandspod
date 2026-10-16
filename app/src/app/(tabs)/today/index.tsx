@@ -215,15 +215,16 @@ type SettingsLike = Record<string, unknown> | null | undefined;
 function PracticeCard({ settings, place, now }: { settings: SettingsLike; place: Place | null; now: Date }) {
   const practices = myPractices(settings);
   const tick = now.getTime(); // Today’s clock ticks each quarter hour
+  const kept = practices.join(',');
   const lines = useMemo(
     () => practiceToday(practices, now, { place, choice: holidayChoice(settings) }),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- recomputed as the clock ticks, and when the practices or place change
-    [practices.join(','), tick, place?.latitude, place?.longitude, settings?.calendar_traditions],
+    [kept, tick, place?.latitude, place?.longitude, settings?.calendar_traditions],
   );
   const working = useMemo(
     () => forYou(forYouContext(settings, now), undefined, 1)[0] ?? null,
     // eslint-disable-next-line react-hooks/exhaustive-deps -- as above
-    [practices.join(','), tick, settings?.calendar_traditions, settings?.library_path],
+    [kept, tick, settings?.calendar_traditions, settings?.library_path],
   );
 
   if (!practices.length) {
