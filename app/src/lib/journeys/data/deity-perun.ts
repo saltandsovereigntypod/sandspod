@@ -57,7 +57,7 @@ You do not need Slavic ancestry. You need honesty, a little courage, and a willi
           },
           {
             title: 'Light the flame',
-            instructions: 'Light the candle. Fire is how Rodnovers most often open a rite to Perun, since lightning was the first fire.',
+            instructions: 'Light the candle. Fire is how Rodnovers most often open a rite to Perun; many say it is because lightning gave people their first fire.',
             light: true,
           },
           {
@@ -220,7 +220,7 @@ This is the heart of him. An oath by Perun was not a nice sentiment. You put you
             },
             {
               heading: 'What carried on under Elijah',
-              body: `After Christianity, much of his cult moved quietly into the feast of the Prophet Elijah. On Ilyinden people avoided field work so as not to anger the Thunderer, and blessed the first new grain. In parts of northern Russia whole villages bought an ox or bull together, slaughtered it at the church, and ate it in a common meal called a bratchina, a brotherhood feast. Ralston, in 1872, also records patches of rye left unreaped “in honour of the Prophet Elijah.”
+              body: `After Christianity, much of his cult moved quietly into the feast of the Prophet Elijah. On Ilyinden people avoided field work so as not to anger the Thunderer, and blessed the first new grain. In parts of northern Russia whole villages bought an ox or bull together, slaughtered it at the church, and ate it in a common meal called a bratchina, a brotherhood feast. Ralston, in 1872, also records that near Kursk and Voronezh a patch of rye was usually left unreaped “in honour of the Prophet Elijah.”
 
 In Poland, people lit a blessed candle called a gromnica, a thunder candle, during storms. It was blessed on Candlemas, 2 February, the feast of Our Lady of the Thunder Candles. These are Christian customs, and they belong to Christian families. But they show you the old instinct: in a storm, you light a flame, you keep the house quiet, and you ask the sky to pass you by.`,
             },
@@ -507,8 +507,8 @@ Do not go out into a storm to “be close to him.” Folk belief told people to 
   ],
   sources: [
     'Procopius, History of the Wars VII.14.22–24, trans. H. B. Dewing (Loeb, 1924), quoted: https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Procopius/Wars/7C*.html',
-    'The Russian Primary Chronicle, trans. Samuel H. Cross (Harvard Studies and Notes in Philology and Literature 12, 1930), entries for 907, 971, 980 and 988, quoted: https://archive.org/details/doncarlosthemeha0000fred',
-    'W. R. S. Ralston, The Songs of the Russian People (1872), on Elijah and harvest customs: https://archive.org/details/songsofrussianpe00ralsuoft',
+    'The Russian Primary Chronicle, trans. Samuel H. Cross, in Harvard Studies and Notes in Philology and Literature vol. XII (1930; public domain in the US since 2026), entries for 907, 971, 980 and 988, quoted and checked against the scan of that volume (catalogued on archive.org under the volume’s other study, Lieder’s The Don Carlos Theme): https://archive.org/details/doncarlosthemeha0000fred',
+    'W. R. S. Ralston, The Songs of the Russian People (1872), pp. 251–252, on Elijah and harvest customs, quoted: https://archive.org/details/songsofrussianpe00ralsuoft',
     'Constantine VII Porphyrogenitus, De Administrando Imperio, ch. 9 (paraphrased)',
     'V. V. Ivanov and V. N. Toporov, Issledovanija v oblasti slavjanskih drevnostej (1974), the storm-myth reconstruction',
     'Radoslav Katičić, Božanski boj (2008)',
