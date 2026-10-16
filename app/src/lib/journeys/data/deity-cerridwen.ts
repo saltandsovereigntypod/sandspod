@@ -11,7 +11,7 @@ export const JOURNEY: Journey = {
   welcome:
     'This journey takes about a lunar month. You will read five lessons, set up a shrine with a cauldron or pot, keep nine nights of offering and writing, and decide whether to dedicate yourself to Cerridwen.\n\nIt is a self-dedication, not an initiation, and it does not make you a member of any Druid order or coven. Cerridwen is known to us from a story, not from records of worship, and this journey is honest about that while taking seriously the modern people who honour her as a goddess. You can pause whenever you like.',
   about:
-    'Cerridwen (also Ceridwen, Caridwen, Keridwen) is the central figure of Hanes Taliesin, the Tale of Taliesin, first written down in full in Wales in the sixteenth century. A wise woman of Penllyn by Lake Tegid, she brews a cauldron of inspiration for a year and a day for her son, but the three precious drops fall on the finger of her servant boy Gwion Bach. She pursues him through a chain of shape-changes, swallows him as a grain of wheat, bears him again, and casts him into the sea, where he is found and named Taliesin, the greatest of poets. Medieval Welsh court poets already spoke of Ceridwen’s cauldron as the source of their gift. There is no evidence that she was worshipped as a goddess in pre-Christian Wales, no inscription and no shrine; some scholars think she may echo an older goddess, others see a literary enchantress. In the twentieth century, Robert Graves, Wicca and the Druid revival made her a goddess of the cauldron, the Crone, the moon, the white sow and transformation, and she is now widely and sincerely honoured as such.',
+    'Cerridwen (also Ceridwen, Caridwen, Keridwen) is the central figure of Hanes Taliesin, the Tale of Taliesin, first written down in full in Wales in the sixteenth century. A wise woman of Penllyn by Lake Tegid, she brews a cauldron of inspiration for a year and a day for her son, but the three precious drops fall on the finger of her servant boy Gwion Bach. She pursues him through a chain of shape-changes, swallows him as a grain of wheat, bears him again, and casts him into the sea, where he is found and named Taliesin, the greatest of poets. Medieval Welsh court poets of the twelfth and thirteenth centuries already spoke of Ceridwen and her cauldron as the source of their gift. There is no evidence that she was worshipped as a goddess in pre-Christian Wales, no inscription and no shrine; some scholars think she may echo an older goddess, others see a literary enchantress. In the twentieth century, Robert Graves, Wicca and the Druid revival made her a goddess of the cauldron, the Crone, the moon, the white sow and transformation, and she is now widely and sincerely honoured as such.',
   notes: [
     'Cerridwen comes from a late medieval Welsh tale. There is no evidence of a pre-Christian cult. Modern devotion to her as a goddess is real and widespread, but it is modern; the lessons say what comes from where.',
     'Her association with the white sow, the moon and the Crone of maiden-mother-crone comes from twentieth-century writers, especially Robert Graves, not from the Welsh sources.',
@@ -120,7 +120,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Older than the tale',
               body:
-                'The story as we have it is late, but Cerridwen is older. The Book of Taliesin, a manuscript copied around 1350 of poems attributed to the sixth-century poet Taliesin, includes a poem called Cadair Ceridwen, “the Chair of Ceridwen”, and other references to her. Welsh court poets of the twelfth and thirteenth centuries, the Gogynfeirdd, sometimes refer to Ceridwen or her cauldron as the source of their poetic gift.\n\nSo by the high Middle Ages, Welsh poets knew a Ceridwen whose cauldron stood for inspiration. Whether they thought of her as a goddess, a wise woman of legend, or a poetic figure of speech, we cannot tell.',
+                'The story as we have it is late, but Cerridwen is older. The Book of Taliesin, a manuscript copied around 1350 of poems attributed to the sixth-century poet Taliesin, includes a poem called Cadair Ceridwen, “the Chair of Ceridwen”, and other references to her. Welsh court poets of the twelfth and thirteenth centuries, the Gogynfeirdd or Poets of the Princes, sometimes name her too. Cynddelw Brydydd Mawr, in the later twelfth century, speaks of Ceridwen as a source of his art, and early in the thirteenth century Prydydd y Moch mentions her cauldron as the source of the gift of awen.\n\nSo by the high Middle Ages, Welsh poets knew a Ceridwen whose cauldron stood for inspiration. Whether they thought of her as a goddess, a wise woman of legend, or a poetic figure of speech, we cannot tell.',
             },
             {
               heading: 'Was she a goddess?',
@@ -135,9 +135,9 @@ export const JOURNEY: Journey = {
           ],
           knowAndDont: {
             known:
-              'Hanes Taliesin was first written down in full by Elis Gruffydd around the 1540s. The Book of Taliesin (c. 1350) includes the poem Cadair Ceridwen, and medieval Welsh court poets mention her cauldron. Lady Charlotte Guest’s translation brought her to English readers in the 1840s.',
+              'Hanes Taliesin was first written down in full by Elis Gruffydd around the 1540s. The Book of Taliesin (copied in the first half of the fourteenth century) includes the poem Cadair Ceridwen, and twelfth- and thirteenth-century court poets such as Cynddelw and Prydydd y Moch mention her and her cauldron. Lady Charlotte Guest’s translation brought her to English readers in the 1840s.',
             unknown:
-              'There is no evidence of worship of Cerridwen as a goddess in pre-Christian or medieval Wales. Whether she preserves an older goddess is debated. The meaning of her name is unclear.',
+              'There is no evidence of worship of Cerridwen as a goddess in pre-Christian or medieval Wales. Whether she preserves an older goddess is debated; Ronald Hutton, for one, suggests the court poets themselves may have raised her standing. The meaning of her name is unclear.',
           },
           inPractice:
             'Modern devotees honour her as a goddess of inspiration and transformation, often alongside Taliesin as her “son” and the first poet of her cauldron. Many read the tale aloud on her holy days.',
@@ -193,8 +193,8 @@ export const JOURNEY: Journey = {
           ],
           further: [
             'Lady Charlotte Guest, The Mabinogion (1849), “Taliesin” (public domain, Project Gutenberg).',
-            'John Matthews, Taliesin: The Last Celtic Shaman (1991), for a modern devotional reading.',
-            'Juliette Wood, “The Elphin Section of Hanes Taliesin”, Études Celtiques 18 (1981).',
+            'John Matthews, Taliesin: The Last Celtic Shaman (2002; first published 1991 as Taliesin: Shamanism and the Bardic Mysteries in Britain and Ireland), for a modern devotional reading.',
+            'Juliette Wood, “The Elphin Section of Hanes Taliesin”, Études Celtiques 18 (1981), 229–244.',
           ],
           library: ['traditional/deity/cerridwen', 'traditional/tool/cauldron'],
         },
@@ -510,7 +510,7 @@ export const JOURNEY: Journey = {
     },
   ],
   sources: [
-    'Lady Charlotte Guest, trans., The Mabinogion (1849), “Taliesin”, Project Gutenberg: https://www.gutenberg.org/ebooks/5160',
+    'Lady Charlotte Guest, trans., The Mabinogion (1849), “Taliesin”, Project Gutenberg: https://www.gutenberg.org/ebooks/5160 (quoted: the opening; the cauldron “of Inspiration and Science”; the three drops; “by reason of his beauty”; “Behold a radiant brow!”).',
     'Patrick K. Ford, ed., Ystoria Taliesin (University of Wales Press, 1992).',
     'Marged Haycock, ed., Legendary Poems from the Book of Taliesin (2007).',
     'Rachel Bromwich, ed., Trioedd Ynys Prydein (4th ed., 2014).',

@@ -166,7 +166,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Balor’s eye',
               body:
-                'In the battle, Lugh faced his grandfather Balor, whose eye was so poisonous that it could destroy an army when its lid was raised, which took four men with a polished handle. As the lid lifted, Lugh cast a sling-stone that drove the eye out through the back of Balor’s head, so that it looked on the Fomorian host and destroyed them.\n\nAfter the battle, the Fomorian king Bres, Lugh’s cousin by marriage, begged for his life. Lugh spared him in return for knowledge: when the men of Ireland should plough, sow and reap. Then the Morrigan proclaimed the victory to the hills and rivers of Ireland.',
+                'In the battle, Lugh faced his grandfather Balor, whose eye was so poisonous that it could destroy an army when its lid was raised, which took four men with a polished handle. As the lid lifted, Lugh cast a sling-stone that drove the eye out through the back of Balor’s head, so that it looked on the Fomorian host and destroyed them.\n\nAfter the battle, Bres, the half-Fomorian king who had once ruled the Tuatha Dé so meanly, was captured and begged for his life. Lugh spared him in return for knowledge: when the men of Ireland should plough, sow and reap. Then the Morrigan proclaimed the victory to the hills and rivers of Ireland.',
             },
             {
               heading: 'A harder story',
@@ -187,7 +187,7 @@ export const JOURNEY: Journey = {
             'Where in your life could you lead by gathering others’ skills rather than doing everything yourself?',
           ],
           further: [
-            'Lady Gregory, Gods and Fighting Men (1904), Book II, “Lugh of the Long Hand” (public domain, Project Gutenberg).',
+            'Lady Gregory, Gods and Fighting Men (1904), Part I Book II, “Lugh of the Long Hand” (public domain, Project Gutenberg).',
             'Cath Maige Tuired, ed. and trans. Elizabeth A. Gray (Irish Texts Society, 1982).',
           ],
           library: ['traditional/deity/lugh', 'traditional/deity/dagda', 'traditional/deity/morrigan'],
@@ -206,7 +206,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Máire MacNeill’s study',
               body:
-                'In 1962 the Irish folklorist Máire MacNeill published The Festival of Lughnasa, one of the great works of Irish folklore. Using the archives of the Irish Folklore Commission, she identified around 195 places across Ireland where gatherings had been held at the end of July or beginning of August, often on hills, at lakes or at holy wells.\n\nThe names varied: Garland Sunday, Bilberry Sunday (Domhnach na bhFraochán), Height Sunday, Crom Dubh Sunday. But the customs were strikingly similar. People climbed a hill or went to a lake, picked bilberries, danced, raced horses and swam them in rivers, fought mock (and sometimes real) faction fights, courted, and brought the first fruits home. In many places this was the first day the new potatoes could be dug and eaten.',
+                'In 1962 the Irish folklorist Máire MacNeill published The Festival of Lughnasa, one of the great works of Irish folklore. Using the archives of the Irish Folklore Commission, she identified 195 places across Ireland where gatherings had been held at the end of July or beginning of August, often on hills, at lakes or at holy wells.\n\nThe names varied: Garland Sunday, Bilberry Sunday (Domhnach na bhFraochán), Height Sunday, Crom Dubh Sunday. But the customs were strikingly similar. People climbed a hill or went to a lake, picked bilberries, danced, raced horses and swam them in rivers, fought mock (and sometimes real) faction fights, courted, and brought the first fruits home. In many places this was the first day the new potatoes could be dug and eaten.',
             },
             {
               heading: 'Lugh and Crom Dubh',
@@ -232,9 +232,9 @@ export const JOURNEY: Journey = {
             'Who cleared the ground for you, as Tailtiu cleared the plain? How could you honour them this year?',
           ],
           further: [
-            'Máire MacNeill, The Festival of Lughnasa (1962; reissued by University College Dublin, 2008).',
+            'Máire MacNeill, The Festival of Lughnasa (Oxford, 1962; facsimile reprint by Comhairle Bhéaloideas Éireann, Dublin, 1982).',
             'Kevin Danaher, The Year in Ireland (1972), the chapter on Lughnasa.',
-            'Lady Gregory, Gods and Fighting Men (1904), on Taillte (public domain, Project Gutenberg).',
+            'Lady Gregory, Gods and Fighting Men (1904), Part I Book II ch. III, on Taillte (public domain, Project Gutenberg).',
           ],
           library: ['traditional/deity/lugh'],
           premade: ['kitchen-prosperity-bread'],
@@ -495,7 +495,7 @@ export const JOURNEY: Journey = {
           prompt: 'What did you practise, and how are you improving?',
         },
         {
-          id: 'lugh-lughnasadh',
+          id: 'lugh-lughnasadh-yearly',
           title: 'Lughnasadh',
           instructions:
             'Around 1 August (or 1 February in the southern hemisphere), climb a hill or go to a high place with a first loaf and berries. Hold a game or contest with friends. Honour your teachers and foster-parents. Give thanks for the first fruits of your year.',
@@ -517,7 +517,7 @@ export const JOURNEY: Journey = {
     },
   ],
   sources: [
-    'Lady Augusta Gregory, Gods and Fighting Men (1904), Book II ch. I “The Coming of Lugh” and the account of Taillte, Project Gutenberg: https://www.gutenberg.org/ebooks/14465',
+    'Lady Augusta Gregory, Gods and Fighting Men (1904), Part I Book II ch. I “The Coming of Lugh” (the gate of Tara, Ildánach) and ch. III (the account of Taillte), Project Gutenberg: https://www.gutenberg.org/ebooks/14465',
     'Julius Caesar, The Gallic War, book 6 ch. 17, trans. W. A. McDevitte and W. S. Bohn, Project Gutenberg: https://www.gutenberg.org/ebooks/10657',
     'Máire MacNeill, The Festival of Lughnasa (Oxford, 1962).',
     'Cath Maige Tuired, ed. and trans. Elizabeth A. Gray (Irish Texts Society, 1982).',

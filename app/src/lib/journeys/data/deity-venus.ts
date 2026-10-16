@@ -132,7 +132,7 @@ export const JOURNEY: Journey = {
           ],
           knowAndDont: {
             known:
-              'Lucretius 1.1–2 (verified in Latin) on Venus as mother of the Romans. Varro and Festus record her as a garden goddess and connect her with the Vinalia. The Trojan legend and the Julian claim are well attested.',
+              'Lucretius 1.1–2 (verified in Latin) on Venus as mother of the Romans. Varro and Festus record her as a garden goddess; Varro links her with the country Vinalia of August (On the Latin Language 6.20), while insisting that the April Vinalia is Jupiter\'s day, not hers (6.16). The Trojan legend and the Julian claim are well attested.',
             unknown:
               'What the earliest Italian Venus was really like is reconstructed from scattered antiquarian notes; the venia etymology is likely but debated. How far ordinary Romans thought of her as the Greek Aphrodite or as their own goddess varied.',
           },
@@ -222,7 +222,7 @@ export const JOURNEY: Journey = {
           ],
           knowAndDont: {
             known:
-              'Ovid, Fasti 4.133–162 and 4.863–900 (verified in Latin) for the Veneralia and the Vinalia. The Praeneste calendar notes the bathing. Varro (On the Latin Language 6.16, 6.20) on the Vinalia and Venus. The Genetrix temple was dedicated on 26 September 46 BC.',
+              'Ovid, Fasti 4.133–162 and 4.863–900 (verified in Latin) for the Veneralia and the Vinalia. The Praeneste calendar notes the bathing. Varro (On the Latin Language 6.20) ties the Vinalia Rustica to a temple of Venus and to gardens; in 6.16 he says the April Vinalia "is Jupiter\'s day, not Venus\'s", which shows Romans themselves argued about it. The Genetrix temple was dedicated on 26 September 46 BC.',
             unknown:
               'Ovid\'s poem mixes cults (Verticordia, Fortuna Virilis) and is not a ritual manual. The name "Veneralia" appears in only a few sources. Ovid\'s drink of poppy pounded with milk and honey is not recommended to recreate. Modern customs are modern.',
           },
