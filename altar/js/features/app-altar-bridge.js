@@ -261,8 +261,7 @@
     if (typeof global.restoreAltarData !== "function") return;
     const objects = document_.objects || [];
     Promise.all(objects.map((o) => loadRatio(o.imagePath))).finally(() => {
-      global.pushAltarUndoSnapshot?.();
-      global.restoreAltarData({ ...(document_.extra || {}), name, background: document_.background, backgroundName: document_.backgroundName, groups: document_.groups || [], activeGroupId: document_.activeGroupId || null, objects });
+      global.restoreAltarData({ ...(document_.extra || {}), name, background: document_.background, backgroundName: document_.backgroundName, groups: document_.groups || [], activeGroupId: document_.activeGroupId || null, objects }, { keepDraft: true });
       global.setCurrentSavedAltar?.("");
       document.dispatchEvent(new CustomEvent("app-altar:changed", { detail: { object: null } }));
     });

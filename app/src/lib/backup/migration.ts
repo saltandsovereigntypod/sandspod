@@ -10,14 +10,18 @@
 // is verified in the account, the guest copy of what moved is cleared.
 
 import {
+  collectCraft,
   collectGuest,
+  CRAFT_SECTION,
   createBackup,
   findAssetReferences,
   GUEST_KEYS,
+  ownGuestRecords,
   sanitize,
   scanForbidden,
   stableStringify,
   validateBackup,
+  type GuestStorage,
   type Row,
 } from './format.ts';
 import { sha256 } from './sha256.ts';
@@ -81,7 +85,7 @@ const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}
 const clone = <T>(value: T): T => (value == null ? value : JSON.parse(JSON.stringify(value)));
 
 type Data = Record<string, unknown>;
-type Storage = Pick<globalThis.Storage, 'getItem'>;
+type Storage = GuestStorage;
 
 export function hasValue(value: unknown): boolean {
   if (Array.isArray(value)) return value.length > 0;
@@ -111,6 +115,9 @@ export function isPersonalEntity(entity: unknown): boolean {
 const countLibrary = (value: unknown) => Object.values(asRecord(asRecord(value).entities)).filter(isPersonalEntity).length;
 const countRituals = (value: unknown, journals: unknown) =>
   (Array.isArray(journals) ? journals.length : 0) + (Array.isArray(asRecord(value).sessions) ? (asRecord(value).sessions as unknown[]).length : 0);
+const countPractice = (data: Data) =>
+  Object.values(asRecord(data[CRAFT_SECTION])).reduce<number>((sum, list) => sum + (Array.isArray(list) ? list.length : 0), 0) +
+  (Array.isArray(data.ritualPlans) ? data.ritualPlans.length : 0);
 const countAssets = (data: Data) => findAssetReferences(data).filter((url) => /^data:image\//i.test(url)).length;
 
 /** Same as the website's snapshotFingerprint: FNV-1a over the cleaned data. */
@@ -150,6 +157,10 @@ export async function createPreview(storage: Storage): Promise<Preview> {
       raw[section] = value;
     }
   }
+  // Practice tools and planned rituals, as the website reads them: only a guest's own.
+  if (Array.isArray(raw.ritualPlans)) raw.ritualPlans = ownGuestRecords(raw.ritualPlans);
+  const craft = collectCraft(storage);
+  if (Object.keys(craft).length) raw[CRAFT_SECTION] = craft;
   const securityErrors: string[] = [];
   scanForbidden(raw, securityErrors, 'guest');
   if (securityErrors.some((message) => !/\.(?:user_id|owner_id|created_by)$/.test(message)))
@@ -164,6 +175,7 @@ export async function createPreview(storage: Storage): Promise<Preview> {
     apothecary: Array.isArray(data.apothecary) ? data.apothecary.length : 0,
     rituals: countRituals(data.ritualLifecycle, data.ritualJournals),
     custom: Array.isArray(data.customCabinet) ? data.customCabinet.length : 0,
+    practice: countPractice(data),
     assets: countAssets(data),
   };
   const unsupported: string[] = [];

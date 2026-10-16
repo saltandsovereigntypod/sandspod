@@ -483,7 +483,7 @@ function createSavedObject(savedObject) {
   return object;
 }
 
-function restoreAltarData(altarData) {
+function restoreAltarData(altarData, options = {}) {
   if (!altarStage || !altarData) return;
 
   window.clearTimeout(altarDraftSaveTimeout);
@@ -558,7 +558,8 @@ function restoreAltarData(altarData) {
     };
   });
 
-  persistWorkingAltarDraft({ ...altarData, objects: normalizedObjects });
+  // Tonight's altar and a shrine open unsaved: they replace your working draft only once you change something.
+  if (!options.keepDraft) persistWorkingAltarDraft({ ...altarData, objects: normalizedObjects });
   isRestoringAltarDraft = false;
 }
 
