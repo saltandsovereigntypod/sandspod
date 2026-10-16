@@ -270,7 +270,8 @@
             }
           ]
         }
-      ]
+      ],
+      "./plugins/withAndroidWorkManager"
     ],
     "experiments": {
       "typedRoutes": true
@@ -280,7 +281,7 @@
       "eas": {
         "projectId": "08131a0f-a981-4de5-9def-e19761ca46ae"
       },
-      "appleBrowserSignIn": false
+      "appleBrowserSignIn": true
     },
     "owner": "ashley19175s-team",
     "runtimeVersion": {
