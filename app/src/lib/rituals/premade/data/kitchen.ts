@@ -1259,3 +1259,636 @@ export const KITCHEN: Premade[] = [
       'Tusser, Five Hundred Points of Good Husbandry (1573), on moon-timed work',
     ],
   },
+
+  // ───────────────────────────── SOLITARY ─────────────────────────────
+  {
+    id: 'kitchen-solitary-self-dedication',
+    title: 'Self-Dedication to Your Path',
+    kind: 'ritual',
+    summary:
+      'A simple, heartfelt rite to commit yourself to your own spiritual path. It is a promise made to yourself and whatever you hold sacred, not an initiation into any tradition.',
+    intention: 'beginnings',
+    alsoFor: ['courage', 'study'],
+    practices: ['solitary', 'eclectic'],
+    paths: [],
+    moon: ['new', 'waxing'],
+    holidays: ['imbolc', 'samhain'],
+    minutes: 45,
+    level: 'beginner',
+    solo: true,
+    ingredients: [
+      { name: 'A white candle', ref: 'traditional/candle/white' },
+      { name: 'A small bowl of water', ref: 'traditional/vessel/bowl' },
+      { name: 'A small dish of salt or soil', ref: 'traditional/vessel/dish' },
+      { name: 'A sprig of rosemary or a stick of incense for air', ref: 'traditional/herb/rosemary' },
+      { name: 'A few drops of olive oil in a dish, for anointing' },
+      { name: 'Paper and pen, or your book of shadows', ref: 'traditional/tool/book_of_shadows' },
+      { name: 'A personal token to keep: a ring, a stone, a cord', ref: 'traditional/crystal/clear_quartz', optional: true },
+    ],
+    preparation:
+      'Spend a few days beforehand writing your dedication: what you are committing to (learning, practice, honouring nature, honouring a deity), for how long, and why. Many modern witches choose “a year and a day,” a span borrowed from old legal custom. Bathe or wash before the rite and wear something that feels like you.',
+    steps: [
+      {
+        title: 'Arrange the four elements',
+        instructions:
+          'Set the candle in the centre, water to the west, salt or soil to the north, rosemary or incense to the east, and keep the south for the flame. Sit facing them. Take a few slow breaths and let the room grow quiet.',
+        minutes: 3,
+      },
+      {
+        title: 'Light the flame',
+        light: true,
+        instructions:
+          'Light the candle and the incense if you are using it.',
+        spoken: 'I come to this path of my own will, with an open heart and open eyes.',
+      },
+      {
+        title: 'Touch each element',
+        instructions:
+          'Touch the soil or salt, pass your hand through the scent of the rosemary or smoke, hold your palm near (not over) the warmth of the flame, and dip your fingertips in the water. With each, say what it means to you.',
+        spoken: 'Earth to steady me, air to teach me, fire to fuel me, water to heal me.',
+      },
+      {
+        title: 'Read your dedication',
+        instructions:
+          'Read aloud the dedication you wrote. Speak slowly. If your voice shakes, let it; that is how you know it matters.',
+        minutes: 5,
+      },
+      {
+        title: 'Anoint yourself',
+        instructions:
+          'Dip a finger in the olive oil and touch it to your forehead, your heart and your palms.',
+        spoken: 'Mind to know, heart to feel, hands to work. I am dedicated.',
+      },
+      {
+        title: 'Bless the token',
+        instructions:
+          'Pass the token you chose over each element, then hold it to your heart. It is now a reminder of this promise.',
+      },
+      {
+        title: 'Sit in the silence',
+        instructions:
+          'Sit with the candle for a while. Notice whatever comes: images, feelings, a sense of presence, or simply quiet.',
+        minutes: 10,
+        timed: true,
+      },
+      {
+        title: 'Close',
+        snuff: true,
+        instructions:
+          'Thank whatever you honour, and yourself. Snuff the candle.',
+        spoken: 'It is begun.',
+      },
+    ],
+    closing:
+      'Write down the date and anything you felt in your book. Pour the water onto the earth. Wear or carry the token. At the end of your chosen span, renew, revise or complete your dedication.',
+    safety:
+      'Do not hold your hand over the flame, and keep the candle away from loose sleeves and paper. Olive oil is fine on skin for most people; patch-test if you have sensitive skin and avoid using essential oils undiluted.',
+    lore:
+      'Self-dedication is a modern practice that grew in the 1980s and 1990s alongside solitary witchcraft, popularised in books for practitioners without a coven. It is deliberately distinct from initiation, which is conferred by a coven within a lineage. The “year and a day” comes from medieval law and folk custom, where it marked a full term (for example in tenancies and handfasting). The four-element structure follows the general shape of modern Pagan ritual.',
+    sources: [
+      'Hutton, The Triumph of the Moon (on the rise of solitary practice)',
+      'Folk and legal use of “a year and a day” in medieval English and Scots law',
+    ],
+  },
+  {
+    id: 'kitchen-solitary-morning-practice',
+    title: 'Five-Minute Morning Practice',
+    kind: 'ritual',
+    summary:
+      'A short daily rite to begin the day grounded: three breaths, a greeting to the day, one card or a moment of stillness, and a single intention.',
+    intention: 'peace',
+    alsoFor: ['courage', 'intuition', 'beginnings'],
+    practices: ['solitary', 'elemental'],
+    paths: [],
+    minutes: 8,
+    level: 'beginner',
+    solo: true,
+    ingredients: [
+      { name: 'A glass of water' },
+      { name: 'A window or doorway with daylight' },
+      { name: 'A tarot or oracle deck', ref: 'traditional/tool/tarot_deck', optional: true },
+      { name: 'A notebook', optional: true },
+    ],
+    preparation:
+      'Do this before you look at your phone. Keep the deck and notebook in the same spot each night so the morning needs no thought. Consistency matters more than length.',
+    steps: [
+      {
+        title: 'Three breaths at the window',
+        instructions:
+          'Stand at a window or open door. Take three slow breaths, longer out than in. Look at the sky and notice one thing: the colour, the clouds, the weather.',
+        minutes: 1,
+        timed: true,
+      },
+      {
+        title: 'Greet the day',
+        instructions:
+          'Say good morning to the day, the sun, or whatever you honour, out loud or under your breath.',
+        spoken: 'Good morning, new day. I am here, and I am ready to meet you.',
+      },
+      {
+        title: 'Drink with intention',
+        instructions:
+          'Hold the glass of water and think of one quality you want today: patience, focus, gentleness, nerve. Drink it slowly, picturing the quality filling you.',
+        minutes: 1,
+      },
+      {
+        title: 'One card or one minute',
+        instructions:
+          'Draw one card and read it as advice for today, or simply sit for one minute with your eyes closed and notice what you feel in your body.',
+        minutes: 2,
+      },
+      {
+        title: 'Name the intention',
+        instructions:
+          'Say or write one sentence: “Today I will…” Keep it small and doable.',
+        spoken: 'Today I will…',
+      },
+    ],
+    closing:
+      'Go into your day. If you wrote something down, glance at it once at lunchtime. Try the practice daily for a full moon cycle before deciding whether it suits you.',
+    lore:
+      'Greeting the sun is among the oldest devotional habits: the Gayatri mantra of the Rig Veda is recited at sunrise, and Carmina Gadelica records Hebridean women and men saluting the sun each morning. A short, repeatable daily practice is now the backbone of most modern solitary witchcraft, which lacks a coven’s regular meetings.',
+    sources: [
+      'Rig Veda 3.62.10 (Griffith, 1896), the Gayatri at dawn',
+      'Carmichael, Carmina Gadelica (1900), “Hail to the Sun”',
+    ],
+  },
+  {
+    id: 'kitchen-solitary-evening-reflection',
+    title: 'Evening Reflection by Candlelight',
+    kind: 'ritual',
+    summary:
+      'A gentle ten-minute rite at day’s end: light a candle, ask three questions, release what you don’t need to carry into sleep, and give thanks.',
+    intention: 'peace',
+    alsoFor: ['healing', 'banishing', 'study'],
+    practices: ['solitary'],
+    paths: [],
+    moon: ['waning', 'dark'],
+    minutes: 15,
+    level: 'beginner',
+    solo: true,
+    ingredients: [
+      { name: 'A tea light or small candle in a holder', ref: 'traditional/candle/white' },
+      { name: 'A journal and pen', ref: 'traditional/tool/book_of_shadows' },
+      { name: 'A cup of chamomile or other caffeine-free tea', ref: 'traditional/herb/chamomile', optional: true },
+      { name: 'An amethyst or other calming stone to hold', ref: 'traditional/crystal/amethyst', optional: true },
+    ],
+    preparation:
+      'Choose a time an hour or so before sleep. Dim the lights and silence your phone. Make your tea if using.',
+    steps: [
+      {
+        title: 'Light the candle',
+        light: true,
+        instructions:
+          'Light the candle and watch the flame for a moment. Let it mark the line between the day and the night.',
+        spoken: 'The day is done. I come home to myself.',
+      },
+      {
+        title: 'Three questions',
+        instructions:
+          'Write brief answers to three questions: What went well today? What was hard? What did I learn, about the world or about me? A line or two for each is enough.',
+        minutes: 6,
+      },
+      {
+        title: 'Set it down',
+        instructions:
+          'Look at the hard thing. Hold the stone, or simply your open palms, and picture placing that hardness into it, or into the flame, to be held overnight so you don’t have to.',
+        spoken: 'I set this down. It will keep until morning, or it will go.',
+        minutes: 2,
+      },
+      {
+        title: 'Give thanks',
+        instructions:
+          'Name three things you are grateful for, aloud. Small is fine: a warm meal, a kind word, a cat on your lap.',
+      },
+      {
+        title: 'Quiet',
+        instructions:
+          'Sit and watch the flame for a few minutes, breathing slowly.',
+        minutes: 3,
+        timed: true,
+      },
+      {
+        title: 'Snuff and rest',
+        snuff: true,
+        instructions:
+          'Snuff the candle.',
+        spoken: 'Goodnight.',
+      },
+    ],
+    closing:
+      'Go to bed without picking your phone back up. Once a month, perhaps at the dark moon, read back over your reflections to see the patterns.',
+    safety:
+      'Snuff the candle before you go to bed and never leave it burning unattended or near bedding. Chamomile can affect people with ragweed allergies.',
+    lore:
+      'The nightly review of the day has deep roots: Pythagoras was said to have taught his students to ask each evening “What have I done amiss? What good have I done? What have I left undone?”, and the Stoic Seneca describes the same practice. Carmina Gadelica records many night blessings said over the fire and the bed. This rite combines the ancient examination with modern gratitude journalling.',
+    sources: [
+      'The Golden Verses of Pythagoras (on the evening review)',
+      'Seneca, On Anger 3.36',
+      'Carmichael, Carmina Gadelica (1900), night blessings',
+    ],
+  },
+  {
+    id: 'kitchen-solitary-book-of-shadows-blessing',
+    title: 'Making and Blessing a Book of Shadows',
+    kind: 'ritual',
+    summary:
+      'Choose a blank book, prepare its first pages, and bless it with the four elements so it becomes your own grimoire, a living record of your practice.',
+    intention: 'study',
+    alsoFor: ['beginnings', 'intuition', 'protection'],
+    practices: ['solitary', 'elemental'],
+    paths: [],
+    moon: ['new', 'waxing'],
+    weekday: 3,
+    minutes: 60,
+    level: 'beginner',
+    solo: true,
+    ingredients: [
+      { name: 'A blank notebook, journal or ring binder', ref: 'traditional/tool/book_of_shadows' },
+      { name: 'A good pen you love writing with' },
+      { name: 'A candle, yellow for Mercury and learning, or white', ref: 'traditional/candle/yellow' },
+      { name: 'A small dish of salt', ref: 'traditional/vessel/dish' },
+      { name: 'A small bowl of water', ref: 'traditional/vessel/bowl' },
+      { name: 'A sprig of rosemary, the herb of memory', ref: 'traditional/herb/rosemary' },
+      { name: 'A pressed leaf or flower to keep in the book', optional: true },
+    ],
+    preparation:
+      'Choose your book with care: some prefer a beautiful bound journal, others a binder so pages can be added and reordered. Decide how you will organise it (for example: correspondences, spells, rituals, dreams, divination, journal). Wednesday, Mercury’s day, favours books and learning.',
+    steps: [
+      {
+        title: 'Lay out the elements',
+        light: true,
+        instructions:
+          'Arrange the salt, rosemary, candle and water around the closed book, and light the candle.',
+      },
+      {
+        title: 'Bless with earth',
+        instructions:
+          'Sprinkle a pinch of salt around the book (not on the pages).',
+        spoken: 'By earth, be steady and keep what I learn.',
+      },
+      {
+        title: 'Bless with air',
+        instructions:
+          'Brush the rosemary sprig over the cover and pages, letting its scent rise.',
+        spoken: 'By air, hold my thoughts and make them clear.',
+      },
+      {
+        title: 'Bless with fire',
+        instructions:
+          'Pass the book carefully above the candle at a safe height, or simply hold it in the candle’s light.',
+        spoken: 'By fire, kindle my will to keep writing.',
+      },
+      {
+        title: 'Bless with water',
+        instructions:
+          'Dip a fingertip in the water and touch the four corners of the inside cover, very lightly.',
+        spoken: 'By water, let my intuition flow onto these pages.',
+      },
+      {
+        title: 'Write the first page',
+        instructions:
+          'Write your name (or a craft name), the date and moon phase, and a few lines about why you are keeping this book. Tuck in the pressed leaf or a rosemary needle. Add a simple contents page for the sections you chose.',
+        minutes: 20,
+      },
+      {
+        title: 'Seal it',
+        snuff: true,
+        instructions:
+          'Close the book and rest both hands on it. Snuff the candle.',
+        spoken: 'Book of my craft, keeper of my way, grow with me day by day.',
+      },
+    ],
+    closing:
+      'Keep the book somewhere safe and personal. Write in it often, and don’t worry about perfect handwriting; it is a working book. Re-bless it at each new year of your practice.',
+    safety:
+      'Keep the book and paper well away from the candle flame; never pass pages through the flame itself. Do not leave the candle burning unattended.',
+    lore:
+      'The term “Book of Shadows” comes from Gerald Gardner’s Wicca in the 1950s, where it named an oathbound coven text; this rite does not use or reproduce that material. Solitary witches since the 1980s have used the name for their own personal grimoire. The older idea of a practitioner’s handwritten book of charms, recipes and remedies is ancient: medieval leechbooks, cunning-folk notebooks and household receipt books are all ancestors.',
+    sources: [
+      'Hutton, The Triumph of the Moon (on the Book of Shadows)',
+      'Davies, Grimoires: A History of Magic Books (on cunning-folk books)',
+      'Bald’s Leechbook (10th century)',
+    ],
+  },
+  {
+    id: 'kitchen-solitary-self-love-mirror',
+    title: 'Self-Love Mirror Ritual',
+    kind: 'ritual',
+    summary:
+      'Sit before a mirror by candlelight with rose and rose quartz, and practise seeing yourself with the warmth you would give a dear friend.',
+    intention: 'love',
+    alsoFor: ['healing', 'courage', 'peace'],
+    practices: ['solitary', 'crystal'],
+    paths: [],
+    moon: ['waxing', 'full'],
+    weekday: 5,
+    minutes: 30,
+    level: 'beginner',
+    solo: true,
+    ingredients: [
+      { name: 'A mirror you can sit in front of' },
+      { name: 'A pink candle', ref: 'traditional/candle/pink' },
+      { name: 'A rose quartz', ref: 'traditional/crystal/rose_quartz' },
+      { name: 'A handful of rose petals (fresh or dried)', ref: 'traditional/herb/rose' },
+      { name: 'A small dish', ref: 'traditional/vessel/dish' },
+      { name: 'A body oil or plain almond or olive oil', optional: true },
+    ],
+    preparation:
+      'Clean the mirror. Take a bath or shower beforehand if you can and put on something comfortable. Write down three things you like about yourself in advance; it is often hard to think of them on the spot. Friday, Venus’s day, is traditional.',
+    steps: [
+      {
+        title: 'Set the scene',
+        light: true,
+        instructions:
+          'Put the candle beside the mirror, not in front of it, so the light falls on your face. Scatter the rose petals in the dish. Light the candle.',
+      },
+      {
+        title: 'Look softly',
+        instructions:
+          'Sit and look at your reflection. Don’t inspect; just look, the way you would look at someone you love who has had a long day. Notice the urge to criticise and let it pass.',
+        minutes: 3,
+        timed: true,
+      },
+      {
+        title: 'Hold the stone',
+        instructions:
+          'Hold the rose quartz to your heart. Breathe into the place under your hands.',
+        spoken: 'I see you. You are doing your best. You are worth tenderness.',
+      },
+      {
+        title: 'Speak three truths',
+        instructions:
+          'Meet your own eyes and say the three things you wrote down, beginning each with your name. It may feel strange; that is fine.',
+        minutes: 3,
+      },
+      {
+        title: 'Anoint with care',
+        instructions:
+          'If using oil, warm a little in your palms and smooth it onto your hands, wrists and collarbones, slowly, as an act of care.',
+      },
+      {
+        title: 'The promise',
+        instructions:
+          'Make one small, specific promise to yourself for the coming week: rest, a walk, saying no to something.',
+        spoken: 'I promise to be on my own side.',
+      },
+      {
+        title: 'Close',
+        snuff: true,
+        instructions:
+          'Smile at your reflection, even a little. Snuff the candle.',
+      },
+    ],
+    closing:
+      'Keep the rose quartz somewhere you will see it daily, and dry the petals to add to a bath later. Repeat on a Friday whenever you need it.',
+    safety:
+      'Keep the candle away from hair, clothing and the mirror frame. Patch-test any oil and avoid nut oils if you have a nut allergy; do not use undiluted essential oils on skin. If this brings up overwhelming feelings, stop gently and consider reaching out to someone you trust or a professional.',
+    lore:
+      'Mirrors have long been tools of divination and folklore, from the scrying mirrors of the Renaissance to Halloween mirror-gazing customs. Rose and rose quartz as stones and flowers of love belong to modern correspondence lists (rose to Aphrodite and Venus is ancient). Self-love mirror work itself is a modern practice that came out of the 1980s self-help movement and was taken into contemporary witchcraft.',
+    sources: [
+      'Bion of Smyrna, Lament for Adonis (on the rose and Aphrodite)',
+      'Opie and Tatem, A Dictionary of Superstitions (on mirrors)',
+    ],
+  },
+  {
+    id: 'kitchen-solitary-birthday-new-year',
+    title: 'Birthday Rite: Your Personal New Year',
+    kind: 'ritual',
+    summary:
+      'On or near your birthday, the sun’s return to where it stood when you were born, look back at the year you are closing and set the tone for the one opening.',
+    intention: 'beginnings',
+    alsoFor: ['prosperity', 'intuition', 'courage'],
+    practices: ['solitary', 'cosmic'],
+    paths: [],
+    minutes: 60,
+    level: 'beginner',
+    solo: true,
+    ingredients: [
+      { name: 'A gold or yellow candle', ref: 'traditional/candle/gold' },
+      { name: 'Your journal', ref: 'traditional/tool/book_of_shadows' },
+      { name: 'A small cake or sweet treat' },
+      { name: 'A tarot or oracle deck', ref: 'traditional/tool/tarot_deck', optional: true },
+      { name: 'An envelope, paper and pen' },
+      { name: 'A sunstone or citrine', ref: 'traditional/crystal/sunstone', optional: true },
+    ],
+    preparation:
+      'If you like astrology, look up the exact time of your solar return (when the sun reaches its birth position again; it can fall a day either side of your birthday). Otherwise use your birthday evening. Find last year’s letter to yourself if you wrote one.',
+    steps: [
+      {
+        title: 'Light your sun',
+        light: true,
+        instructions:
+          'Light the gold candle. It stands for your own sun, returned to its place.',
+        spoken: 'Once more around the sun. I am here, and I am still becoming.',
+      },
+      {
+        title: 'Look back',
+        instructions:
+          'Write about the year that is ending: what you are proud of, what hurt, what surprised you, who mattered. If you have last year’s letter, open and read it now.',
+        minutes: 15,
+      },
+      {
+        title: 'Release the old year',
+        instructions:
+          'Name aloud one thing from the past year you are leaving behind.',
+        spoken: 'I thank you, old year, and I let you go.',
+      },
+      {
+        title: 'Read the year ahead',
+        instructions:
+          'If using a deck, draw three cards: the gift of the year ahead, the challenge, and the advice. Or sit quietly and ask what the coming year wants from you. Write what comes.',
+        minutes: 10,
+      },
+      {
+        title: 'Write to your future self',
+        instructions:
+          'Write a letter to yourself to open next birthday: your hopes, a few intentions, what you want to remember. Seal it in the envelope and write next year’s date on it.',
+        minutes: 15,
+      },
+      {
+        title: 'Eat the cake',
+        instructions:
+          'Make one wish over the cake, then eat it slowly by the candle. Sweetness at a beginning is an old charm.',
+      },
+      {
+        title: 'Close',
+        snuff: true,
+        instructions:
+          'Snuff the candle rather than blowing it out, so the wish stays.',
+        spoken: 'Welcome, new year of my life.',
+      },
+    ],
+    closing:
+      'Put the letter somewhere safe where you will find it next year. Carry the sunstone or citrine through your first month.',
+    safety:
+      'Never leave the candle unattended. Mind any allergies in your treat (gluten, dairy, eggs, nuts).',
+    lore:
+      'Birthday celebrations with cake and candles have roots in Greek offerings of round cakes with candles to Artemis and in German Kinderfeste of the late 1700s. The solar return chart, cast for the sun’s return to its natal degree, is a technique of Hellenistic and medieval Arabic astrology. Treating the birthday as a personal new year with reflection and letter-writing is a modern practice.',
+    sources: [
+      'Abu Ma’shar, On the Revolutions of the Years of Nativities (9th century)',
+      'Philochorus, fragment on cakes offered to Artemis (via Athenaeus)',
+    ],
+  },
+  {
+    id: 'kitchen-solitary-grounding-centering',
+    title: 'Grounding and Centering Basics',
+    kind: 'ritual',
+    summary:
+      'The foundation of every working: root down like a tree, draw up steady earth energy, find your still centre, and release what is excess. Ten minutes, anywhere.',
+    intention: 'peace',
+    alsoFor: ['protection', 'healing', 'courage'],
+    practices: ['solitary', 'elemental', 'green'],
+    paths: [],
+    minutes: 12,
+    level: 'beginner',
+    solo: true,
+    ingredients: [
+      { name: 'A place to sit or stand, ideally barefoot on earth or grass' },
+      { name: 'A grounding stone to hold', ref: 'traditional/crystal/hematite', optional: true },
+      { name: 'A glass of water and a small snack for afterwards' },
+    ],
+    preparation:
+      'Find somewhere you won’t be disturbed. Outdoors on the earth is lovely, but a chair with your feet flat on the floor works just as well. Do this before any ritual or spell, after an upsetting day, or whenever you feel scattered.',
+    steps: [
+      {
+        title: 'Settle',
+        instructions:
+          'Sit or stand with your spine tall and feet flat. Close your eyes or soften your gaze. Breathe in for four counts, out for six, five times.',
+        minutes: 1,
+        timed: true,
+      },
+      {
+        title: 'Send down roots',
+        instructions:
+          'Picture roots growing from the soles of your feet (and the base of your spine if sitting), down through the floor, the foundations, the soil, the rock, deep into the earth. Feel their weight anchoring you.',
+        minutes: 2,
+        timed: true,
+      },
+      {
+        title: 'Draw up the earth',
+        instructions:
+          'With each in-breath, imagine drawing steady, cool earth energy up through the roots into your body, like a tree drawing water. Let it fill your legs, belly, chest, arms and head.',
+        minutes: 2,
+        timed: true,
+      },
+      {
+        title: 'Reach to the sky',
+        instructions:
+          'Now imagine branches reaching up from the crown of your head toward the sun or the stars, and bright, warm light falling down into you, meeting the earth energy in your heart.',
+        minutes: 2,
+        timed: true,
+      },
+      {
+        title: 'Find the centre',
+        instructions:
+          'Bring your attention to a point just below your navel or in your heart, wherever feels steady. Sense all of you gathered there, calm and upright like a candle flame in still air.',
+        spoken: 'Rooted below, open above, steady in the middle.',
+        minutes: 2,
+      },
+      {
+        title: 'Release the excess',
+        instructions:
+          'Place your palms flat on the floor or ground and let any extra buzzing, anxious energy drain out through your hands into the earth, which can always take it.',
+        minutes: 1,
+      },
+      {
+        title: 'Return',
+        instructions:
+          'Wiggle your fingers and toes, open your eyes, and drink the water. Eat something small if you feel light-headed.',
+      },
+    ],
+    closing:
+      'Notice how you feel compared to when you began. The more often you practise, the faster it works; eventually a single breath and the thought of roots will be enough.',
+    safety:
+      'If you feel dizzy, open your eyes and breathe normally. Check outdoor ground for glass, stings or sharp stones before going barefoot.',
+    lore:
+      'Grounding and centering as named techniques come from twentieth-century Western esotericism and were popularised in modern Paganism in the 1970s and 1980s, especially through the “Tree of Life” meditation familiar from modern witchcraft teaching. The image of the human as a tree between earth and sky is much older, echoed in the world-tree Yggdrasil of the Poetic Edda.',
+    sources: [
+      'The Poetic Edda, Völuspá (Bellows, 1923), on Yggdrasil',
+      'Hutton, The Triumph of the Moon (on modern Pagan meditation)',
+    ],
+  },
+  {
+    id: 'kitchen-solitary-rite-of-passage',
+    title: 'Rite of Passage: Crossing a Threshold',
+    kind: 'ritual',
+    summary:
+      'A solitary rite for an ending or transition: a breakup, a move, a new job, a diagnosis, menopause, retirement, an anniversary. Set down a stone for what you leave, cross a threshold, and take up a new one.',
+    intention: 'healing',
+    alsoFor: ['beginnings', 'courage', 'banishing'],
+    practices: ['solitary', 'folk', 'hedge'],
+    paths: [],
+    moon: ['waning', 'dark', 'new'],
+    minutes: 60,
+    level: 'intermediate',
+    solo: true,
+    ingredients: [
+      { name: 'A black or grey candle for the ending', ref: 'traditional/candle/black' },
+      { name: 'A white candle for the beginning', ref: 'traditional/candle/white' },
+      { name: 'A dark stone for what you are leaving', ref: 'traditional/crystal/smoky_quartz' },
+      { name: 'A clear or light stone for what you are entering', ref: 'traditional/crystal/clear_quartz' },
+      { name: 'A doorway, gate, or a line laid on the floor with a cord or scarf' },
+      { name: 'A bowl of water with a pinch of salt', ref: 'traditional/vessel/bowl' },
+      { name: 'Journal and pen', ref: 'traditional/tool/book_of_shadows' },
+    ],
+    preparation:
+      'Write beforehand: what you are leaving (people, roles, a body, a home, a self), what you are grateful for in it, what you grieve, and what you hope for on the other side. Place the black candle and dark stone on one side of the doorway or line, and the white candle and clear stone on the other.',
+    steps: [
+      {
+        title: 'Stand in what was',
+        light: true,
+        instructions:
+          'Stand on the “before” side and light the black candle. Read what you wrote about what you are leaving. Let feelings come; this is the part most of us skip.',
+        minutes: 8,
+      },
+      {
+        title: 'Honour it',
+        instructions:
+          'Hold the dark stone. Thank this chapter for what it gave you, even if it was hard.',
+        spoken: 'You were part of my life. I honour you, and I am ready to let you go.',
+      },
+      {
+        title: 'Set it down',
+        instructions:
+          'Lay the dark stone on the floor at the threshold. Wash your hands in the salt water and dry them.',
+      },
+      {
+        title: 'Stand in between',
+        instructions:
+          'Step onto the threshold itself, the place that is neither here nor there, and stay a while. In-between times are uncomfortable and sacred. Notice how it feels not to know yet.',
+        minutes: 5,
+        timed: true,
+      },
+      {
+        title: 'Cross',
+        instructions:
+          'When you are ready, step over firmly onto the “after” side. Light the white candle from the black one before you turn away.',
+        spoken: 'I cross. I carry what is mine, and leave what is not.',
+      },
+      {
+        title: 'Take up the new',
+        instructions:
+          'Pick up the clear stone and hold it to your heart. Read what you hope for. Say your name, as you are now.',
+        minutes: 5,
+      },
+      {
+        title: 'Close',
+        snuff: true,
+        instructions:
+          'Snuff the black candle first, then the white. Sit for a moment on the new side.',
+        spoken: 'It is done, and it is begun.',
+      },
+    ],
+    closing:
+      'Bury the dark stone, drop it into running water from a safe bank, or give it back to the earth somewhere meaningful. Keep the clear stone with you through the first months of the new chapter. Burn the white candle again on milestones.',
+    safety:
+      'Never leave candles unattended and keep them clear of the cord or scarf. If returning a stone to a river, stay on safe ground well away from fast or deep water. Some transitions bring up grief that is too much to hold alone; reach out to people you trust or a professional.',
+    lore:
+      'The anthropologist Arnold van Gennep described rites of passage in 1909 as three stages: separation, a liminal threshold, and incorporation; this rite follows that shape. Thresholds as sacred, dangerous in-between places run through European folklore, from Roman Janus to the custom of carrying a bride over the doorstep. Self-made solitary rites for personal transitions are a modern practice, filling a gap where many people no longer have communal ceremonies for such moments.',
+    sources: [
+      'Van Gennep, Les rites de passage (1909)',
+      'Ovid, Fasti 1 (on Janus and doorways)',
+    ],
+  },
+];
