@@ -58,9 +58,10 @@ export const GREEN: Premade[] = [
       },
     ],
     closing: "Pour any water left in the cup over the sown row or tray. Wash your hands and leave the bowl of soil outside, tipping it back onto the bed. Note in your journal which seeds you blessed and check them each morning: the first green hooks are worth a small thank-you.",
+    safety: "Some bought seed is treated with fungicide or insecticide, usually dyed a bright colour and noted on the packet. Don't handle treated seed with bare hands or breathe on it closely; do the breath blessing over the closed packet instead. Wash your hands after handling seed and soil, and keep seeds away from children and pets.",
     lore: "Blessing seed before sowing is found all over rural Europe. In the Scottish Highlands, Alexander Carmichael recorded a sowing blessing in which the sower faces into the wind and casts a 'gracious handful' high, and in England seed corn was sometimes kept on the hearth or blessed at Candlemas before spring sowing. The Christian calendar's Lady Day (25 March) was a traditional start for field work. The breath-and-palm charge here is a modern form written for the app, built on those old gestures.",
     sources: [
-      "Carmichael, Carmina Gadelica (1900), the sowing blessing",
+      "Carmichael, Carmina Gadelica, vol. 1 (1900), 'The Consecration of the Seed' (An Coisrigeadh Sioil)",
       "Hutton, The Stations of the Sun (on Candlemas and the farming year)",
     ],
   },
@@ -102,7 +103,7 @@ export const GREEN: Premade[] = [
       },
       {
         title: "Full to last quarter: the root tide",
-        instructions: "On the waning moon, the old rule turns downward. Pencil in roots and bulbs (carrots, potatoes, onions, garlic), and perennials, fruit bushes and trees, along with transplanting and taking cuttings. Thomas Tusser's 1573 advice belongs here too: he told farmers to sow peas and beans 'in the wane of the moon.' Gardeners disagree on beans; note which rule you're testing.",
+        instructions: "On the waning moon, the old rule turns downward. Pencil in roots and bulbs (carrots, potatoes, onions, garlic), and perennials, fruit bushes and trees, along with transplanting and taking cuttings. Thomas Tusser's rhyming advice belongs here too: 'Sowe peason and beanes in the wane of the Moone, / who soweth them sooner, he soweth too soone.' Gardeners disagree on beans; note which rule you're testing.",
         spoken: "As the light sinks, the root sinks deep.",
       },
       {
@@ -122,11 +123,11 @@ export const GREEN: Premade[] = [
     ],
     closing: "At the next new moon, read your notes and begin again. Planting by the moon is a practice of noticing: you'll learn your soil and your weather as much as the sky.",
     safety: "If you light the planning candle, keep it on a heatproof dish away from seed packets and paper, and never leave it burning unattended.",
-    lore: "Timing farm work by the moon is very old. Hesiod's Works and Days (around 700 BCE) gives lucky days for farm jobs, and Pliny the Elder records Roman advice on cutting timber and sowing by the moon's age. English almanacs and Thomas Tusser's Five Hundred Points of Good Husbandry (1573) carried the habit into early modern farming, and it lives on in farmers' almanacs today. The four-quarter scheme used here is the common modern almanac form. Biodynamic planting calendars, which add the zodiac, come from Rudolf Steiner's 1924 lectures. Controlled studies of moon planting give mixed results, so treat it as a living tradition and a way of paying attention.",
+    lore: "Timing farm work by the moon is very old. Hesiod's Works and Days (around 700 BCE) gives lucky days for farm jobs, and Pliny the Elder records Roman advice on cutting timber and sowing by the moon's age. English almanacs and Thomas Tusser's Five Hundred Points of Good Husbandry (first printed 1573, enlarged by 1580) carried the habit into early modern farming, and it lives on in farmers' almanacs today. The four-quarter scheme used here is the common modern almanac form. Biodynamic planting calendars, which add the zodiac, come from Rudolf Steiner's 1924 lectures. Controlled studies of moon planting give mixed results, so treat it as a living tradition and a way of paying attention.",
     sources: [
       "Hesiod, Works and Days (Evelyn-White translation, 1914)",
       "Pliny the Elder, Natural History, books 16 and 18 (Bostock and Riley translation, 1855)",
-      "Thomas Tusser, Five Hundred Points of Good Husbandry (1573)",
+      "Thomas Tusser, Five Hundred Points of Good Husbandry (1573; quoted from the 1580 edition, English Dialect Society reprint, 1878), February's husbandry",
     ],
   },
   {
@@ -185,9 +186,10 @@ export const GREEN: Premade[] = [
     ],
     closing: "Water the new plants every few days until they settle, and talk to them when you do. Each spring, when they leaf out, walk the bounds again and thank them. A boundary planted is a protection that grows.",
     safety: "Elder berries and leaves are toxic raw, and St John's wort can cause sunburn-like rashes on sensitive skin and is toxic to grazing animals; keep pets and small children from chewing either. Wear gloves for hawthorn's thorns. Check what's invasive in your region before planting, and call before you dig near buried cables or pipes.",
-    lore: "Protective planting is genuine folk custom. Rowan was planted by Scottish and northern English doors and byres against witchcraft and ill luck, and a widely recorded rhyme pairs 'rowan tree and red thread.' Charlemagne's estate decree, the Capitulare de villis (around 800), orders houseleek grown on roofs, and it was long believed to ward off lightning and fire. Hawthorn hedges marked field boundaries for centuries and carried their own fairy lore, while rosemary by the door is a common English garden belief. The walking of the bounds echoes the parish custom of 'beating the bounds' at Rogationtide.",
+    lore: "Protective planting is genuine folk custom. Rowan was planted by Scottish and northern English doors and byres against witchcraft and ill luck, and a Scottish rhyme printed by Robert Chambers in 1826 runs 'Black luggie, lammer bead, / Rowan-tree, and red thread, / Put the witches to their speed!' Charlemagne's estate decree, the Capitulare de villis (around 800), orders houseleek grown on roofs, and it was long believed to ward off lightning and fire. Hawthorn hedges marked field boundaries for centuries and carried their own fairy lore, while rosemary by the door is a common English garden belief. The walking of the bounds echoes the parish custom of 'beating the bounds' at Rogationtide.",
     sources: [
       "Capitulare de villis (c. 800), on houseleek",
+      "Chambers, Popular Rhymes of Scotland (1826), the rowan-tree and red thread rhyme",
       "Frazer, The Golden Bough (1922), on rowan and protective plants",
       "Hutton, The Stations of the Sun (on beating the bounds)",
     ],
@@ -249,7 +251,7 @@ export const GREEN: Premade[] = [
     lore: "Rites for gathering herbs are among the oldest recorded magic. Pliny the Elder describes Gaulish druids cutting the herb selago without iron, dressed in white, after an offering of bread and wine, and says vervain should be gathered with an offering of honeycomb to the earth. Medieval herbals and the Anglo-Saxon charms speak to plants directly as helpers. In Scotland, Carmichael recorded a charm that begins 'I will pluck the yarrow fair.' Gathering at Midsummer, especially St John's wort on St John's Eve, was widespread across Europe. The cutting rules here are ordinary good horticulture.",
     sources: [
       "Pliny the Elder, Natural History 24.62 and 25.59 (Bostock and Riley translation, 1855)",
-      "Carmichael, Carmina Gadelica (1900), the yarrow charm",
+      "Carmichael, Carmina Gadelica, vol. 2 (1900), 'The Yarrow' (Earr Thalmhainn)",
       "Frazer, The Golden Bough (1922), on Midsummer herb gathering",
     ],
   },
@@ -363,10 +365,10 @@ export const GREEN: Premade[] = [
       },
     ],
     closing: "Squeeze the sachet whenever you need courage or feel uneasy; the scent will rise to remind you. Refresh it each season, or sooner if it gets damp or loses its smell. Old sachets can be opened and their herbs returned to the earth or the compost with thanks.",
-    safety: "Keep sachets away from small children and pets, who may chew them; dill and rosemary are kitchen-safe, but vervain and cloves aren't for nibbling in quantity. Don't put a sachet inside a pillowcase if you're allergic to any of the herbs.",
-    lore: "Protective bundles of herbs, carried or hung, are found throughout European folk magic. An old English rhyme, 'Vervain and dill / hinder witches from their will,' was recorded by several nineteenth-century folklorists, and rowan, bay and rosemary all had household protective lore. Red thread as a protective binding is widespread from Scotland to Eastern Europe. Salt as a guard against harm is near-universal. The sachet form itself, a small sewn or tied pouch, is common in modern open practice.",
+    safety: "Keep sachets away from small children and pets, who may chew them; dill and rosemary are kitchen-safe, but vervain and cloves aren't for nibbling, and cloves are especially harmful to cats. Vervain should be avoided in pregnancy. Don't put a sachet inside a pillowcase if you're allergic to any of the herbs.",
+    lore: "Protective bundles of herbs, carried or hung, are found throughout European folk magic. An old English rhyme, 'Vervain and dill / Hinders witches from their will,' was written down by John Aubrey in his Miscellanies (1696), and rowan, bay and rosemary all had household protective lore. Red thread as a protective binding is widespread from Scotland to Eastern Europe. Salt as a guard against harm is near-universal. The sachet form itself, a small sewn or tied pouch, is common in modern open practice.",
     sources: [
-      "Traditional English rhyme, 'Vervain and dill,' as recorded by nineteenth-century folklorists",
+      "Aubrey, Miscellanies (1696), for the rhyme 'Vervain and dill'",
       "Frazer, The Golden Bough (1922), on red thread and protective plants",
     ],
   },
@@ -390,7 +392,7 @@ export const GREEN: Premade[] = [
       { name: "A notebook for each plant's needs", optional: true },
       { name: "A small moss agate or green aventurine to sit in a pot", ref: "traditional/crystal/moss_agate", optional: true },
     ],
-    preparation: "Choose a regular day; Friday, Venus's day, is a gentle choice for tending what you love. Fill the watering can the night before so the water comes to room temperature, and chlorine in tap water has time to evaporate. Turn off screens and open a window if the weather allows.",
+    preparation: "Choose a regular day; Friday, Venus's day, is a gentle choice for tending what you love. Fill the watering can the night before so the water comes to room temperature and some of the chlorine in tap water can escape. Turn off screens and open a window if the weather allows.",
     steps: [
       {
         title: "Greet the household",
@@ -481,6 +483,7 @@ export const GREEN: Premade[] = [
       },
     ],
     closing: "Visit again at each new and full moon, or at each sabbat, and keep writing. Over a year you'll learn its rhythm, and it will become one of the places you belong.",
+    safety: "Don't sit beneath a tree in high winds or when it has dead or hanging branches. Check for ticks after sitting in long grass or woodland. Yew, and the berries and leaves of many trees and shrubs, are poisonous, so don't chew twigs or leaves, and let someone know where you've gone if the tree is somewhere remote.",
     lore: "Trees have been honoured with offerings across Europe for as long as there are records. Classical writers describe sacred groves, Norse lore centres the world tree Yggdrasil, and the Celtic world had holy trees and the later rag trees beside wells. English folklore has a well-known custom of asking the 'Old Lady' of the elder before cutting its wood, recorded in Lincolnshire in the nineteenth century, with a promise to give back to the tree in time. The 'tree friend' practice here is modern, blending those traditions with nature connection.",
     sources: [
       "Frazer, The Golden Bough (1922), chapters on tree worship",
@@ -540,7 +543,7 @@ export const GREEN: Premade[] = [
     safety: "Never eat, drink or put on skin any wild plant unless you're completely certain of its identity; confirm with two good sources or an experienced local forager. Deadly lookalikes are common, for example hemlock and hemlock water-dropwort alongside cow parsley and wild carrot, or foxglove alongside comfrey. Wear gloves for unknown plants, as some (giant hogweed, rue, wild parsnip) cause severe burns on skin in sunlight. Check for ticks afterward. Don't gather from roadsides, sprayed land or polluted water.",
     lore: "Wild gathering is as old as humanity, and 'wortcunning,' plant knowledge, was valued in every village. The Anglo-Saxon herbals and Nine Herbs Charm show how carefully plants were known by name. The ethical guidelines here (the one-in-twenty rule, permission and identification first) come from modern botanical societies' and conservation charities' codes of conduct, which have grown up as wild places have shrunk.",
     sources: [
-      "Botanical Society of Britain and Ireland, code of conduct for wild plants (on the one-in-twenty principle)",
+      "Botanical Society of Britain and Ireland, Code of Conduct for picking, collecting, photographing and enjoying wild plants (2017), on the 1-in-20 principle",
       "Wildlife and Countryside Act 1981 (UK), on uprooting and protected species",
       "Cockayne, Leechdoms, Wortcunning, and Starcraft of Early England (1864–66)",
     ],
@@ -592,6 +595,7 @@ export const GREEN: Premade[] = [
       },
     ],
     closing: "Each time you add to the compost over the next month, remember: it's still working. When the compost is ready, months from now, spread it on the garden or a pot and plant something you love in it. That's the end of the spell.",
+    safety: "Wear gloves if you have cuts on your hands, avoid breathing in dust when you open or turn a dry heap, and wash your hands well afterwards: compost and potting mix can carry tetanus and Legionella bacteria. Don't add meat, dairy or cooked food to an open heap, and keep pets and children from eating from it. Lift and turn with a straight back.",
     lore: "Folk magic often uses decay to remove a trouble. Frazer and many English collections record the charm of rubbing a wart with a bean pod, bacon rind or a cut potato and burying it, so that as it rots the wart fades. Composting itself was ordinary farm practice everywhere. Using the heap as a deliberate place of release and transformation is modern green practice, building on that old idea of letting the earth take something away.",
     sources: [
       "Frazer, The Golden Bough (1922), on the transference of ills",
@@ -833,10 +837,11 @@ export const GREEN: Premade[] = [
       },
     ],
     closing: "Bring the cut sprig indoors. Through the winter, read your garden notes and dream over seed catalogues. In spring, when you open the beds again, bury the dried sprig in the first one you sow.",
+    safety: "Wear gloves for clearing and mulching, and wash your hands afterwards; manure and compost can carry bacteria, so cover cuts. Work carefully on frosty paths. If you burn diseased material, check local rules and never leave a garden fire unattended. Keep offerings free of chocolate, grapes and raisins, which are toxic to dogs.",
     lore: "Samhain marked the end of the harvest in the Gaelic year, and later Irish and Scottish folklore held that crops left in the field after Samhain belonged to the fairies or were spoiled by the púca. Norse Winter Nights (vetrnætur) marked the turn of the year too, with a sacrifice for good seasons. Pouring a drink to the land echoes the old English custom of wassailing apple trees. The idea of 'putting the garden to bed' is a gardener's phrase; leaving stems for wildlife is modern ecological good practice.",
     sources: [
       "Hutton, The Stations of the Sun (on Samhain and the end of harvest)",
-      "Grimm, Teutonic Mythology (Stallybrass translation, 1883), on winter feasts",
+      "Grimm, Teutonic Mythology (Stallybrass translation, 1880–88), on winter feasts",
     ],
   },
   {
@@ -894,7 +899,7 @@ export const GREEN: Premade[] = [
     lore: "Belief in spirits of a particular place is ancient and widespread. Romans honoured the genius loci and household Lares; Norse sources describe landvættir, and the medieval Icelandic Landnámabók says ships had to remove their dragon-heads when approaching Iceland so as not to frighten the land spirits. British and Irish folklore has household and field spirits who were left milk or a bowl of cream. The garden shrine here is a modern, open form inspired by those beliefs, adapted for the home grower.",
     sources: [
       "Landnámabók, on the land spirits of Iceland",
-      "Grimm, Teutonic Mythology (Stallybrass translation, 1883), on house and land spirits",
+      "Grimm, Teutonic Mythology (Stallybrass translation, 1880–88), on house and land spirits",
     ],
   },
   {
@@ -932,8 +937,8 @@ export const GREEN: Premade[] = [
       },
       {
         title: "Anoint the sods",
-        instructions: "Turn each sod over and drip the poultice onto its underside, then sprinkle each with water, three times. In the original, the words are Latin from Genesis: 'grow, and multiply, and fill the earth.'",
-        spoken: "Crescite, et multiplicamini, et replete terram.\nGrow, and multiply, and fill the earth.",
+        instructions: "Turn each sod over and drip the poultice onto its underside, then sprinkle each with water, three times. In the original, the words are the Latin of Genesis 1:28, with an Old English gloss after each word (left out here).",
+        spoken: "Crescite … et multiplicamini … et replete … terram.\nGrow, and multiply, and replenish, the earth.",
       },
       {
         title: "Let the sods rest in a holy place",
@@ -942,8 +947,8 @@ export const GREEN: Premade[] = [
       },
       {
         title: "Return them before sunset",
-        instructions: "Before the sun goes down, carry the sods back and set each in its hole. Put a twig cross or marker into each. Then stand facing east and bow nine times, turning sunwise once around.",
-        spoken: "Eastward I stand, for mercies I pray.\nI pray the great Lord, the strong one,\nthat he grant me the growing of this land.",
+        instructions: "Before the sun goes down, carry the sods back. Lay a twig cross or marker in the bottom of each hole and set the sod back on top of it. Then turn to the east, bow humbly nine times and speak the opening of the prayer. When you have finished, turn round three times with the sun, as the original directs.",
+        spoken: "Eastward I stand, for blessings I pray,\nI pray the mighty Lord, I pray the potent Prince,\nI pray the holy Guardian of the celestial realm,\nEarth I pray, and Heaven above …",
       },
       {
         title: "Bless the tools",
@@ -951,26 +956,27 @@ export const GREEN: Premade[] = [
       },
       {
         title: "Call the earth",
-        instructions: "Stand at the bed's head with your seeds, and say the old line, which begins with a name for the earth herself. The Old English is given first, then a plain translation.",
-        spoken: "Erce, Erce, Erce, eorþan modor.\nErce, Erce, Erce, mother of earth,\nmay the all-wielder, the eternal Lord,\ngrant you fields growing and thriving.",
+        instructions: "Stand at the bed's head with your seeds, and say the old lines, which begin with a name for the earth herself. The Old English is given first, then Grendon's 1909 translation.",
+        spoken: "Erce, Erce, Erce, eorþan modor,\ngeunne þe se alwalda, ece drihten,\næcera wexendra and wridendra …\n\nErce, erce, erce, mother of Earth,\nMay the Almighty, the eternal Lord, grant you\nFields flourishing and bountiful …",
       },
       {
         title: "Cut the first furrow",
         instructions: "Draw your first furrow or drill with the trowel, and as you do, greet the land.",
-        spoken: "Hal wes þu, folde, fira modor.\nHail to you, earth, mother of all,\nbe growing in God's embrace,\nfilled with food for us to use.",
+        spoken: "Hal wes þu, folde, fira modor,\nbeo þu growende on godes fæþme,\nfodre gefylled firum to nytte.\n\nAll hail, Earth, mother of men!\nBe fruitful in God's embracing arm,\nFilled with food for the needs of men.",
       },
       {
         title: "Lay the loaf",
         instructions: "Break off a piece of the loaf and lay it in the furrow, covering it with soil. Then sow your seeds. Share the rest of the loaf with whoever helped, or eat it yourself in the garden.",
-        spoken: "Full field of food for all our kind,\nbright with blossom, blessed be.",
+        spoken: "Full field of food for the race of man,\nBrightly blooming, be you blessèd\nIn the holy name of Him who shaped\nHeaven, and earth whereon we dwell …",
       },
     ],
     closing: "Water the bed. Keep the twig markers in until harvest. The Æcerbot ends with a prayer that the land be defended against all harm; finish in your own words, asking that the garden be kept safe and fruitful.",
     safety: "If you burn frankincense, use a heatproof burner on a stable surface, ventilate well and keep it away from children and pets. The bread is safe to eat; the honey and milk poultice is for the soil only.",
-    lore: "The Æcerbot ('field remedy') is one of the Old English metrical charms, copied in the eleventh century in a British Library manuscript (Cotton Caligula A.vii). It is a full day's ritual for land that will not bear, or that has been harmed by sorcery: four sods, oil, honey, yeast, milk and herbs, four masses, crosses of aspen wood, the plough anointed with incense, fennel, salt and soap, seed from almsmen, the address to 'Erce, mother of earth' and a loaf under the first furrow. Its blend of Christian liturgy and much older ideas of earth as mother has fascinated scholars; the meaning of 'Erce' is still debated. The Old English lines here are quoted from the medieval text, and the English renderings are the app's own; the ritual has been shortened and adapted for a garden.",
+    lore: "The Æcerbot ('field remedy') is one of the Old English metrical charms, copied in the eleventh century in a British Library manuscript (Cotton Caligula A.vii). It is a full day's ritual for land that will not bear, or that has been harmed by sorcery: four sods, oil, honey, yeast, milk and herbs, four masses, crosses of aspen wood (cwicbeam), incense, fennel, hallowed soap and hallowed salt set into a hole bored in the plough-beam, seed taken from almsmen, the address to 'Erce, mother of earth' and a loaf under the first furrow. Its blend of Christian liturgy and much older ideas of earth as mother has fascinated scholars; the meaning of 'Erce' is still debated. The Latin and Old English lines here are quoted from the medieval text as edited by Felix Grendon (1909), and the English is his public-domain translation, trimmed where marked; the ritual itself has been shortened and adapted for a garden.",
     sources: [
       "Æcerbot, Old English metrical charm, Cotton MS Caligula A.vii (11th century)",
-      "Cockayne, Leechdoms, Wortcunning, and Starcraft of Early England (1864–66)",
+      "Grendon, The Anglo-Saxon Charms (1909), charm A13, text and translation",
+      "Cockayne, Leechdoms, Wortcunning, and Starcraft of Early England, vol. 1 (1864)",
       "Storms, Anglo-Saxon Magic (1948), on the charm's structure",
     ],
   },
@@ -1491,7 +1497,7 @@ export const GREEN: Premade[] = [
       { name: "A notebook and pen" },
       { name: "A piece of black tourmaline or obsidian to hold", ref: "traditional/crystal/black_tourmaline", optional: true },
     ],
-    preparation: "When a storm is forecast, set a clean open jar outdoors in an open spot, away from trees and metal fences, well before it arrives. Then stay indoors for the whole storm. Sit by a window, but not touching it, and away from plumbing and electrical appliances.",
+    preparation: "When a storm is forecast, set a clean open jar outdoors in an open spot, away from trees and metal fences, well before it arrives. Then stay indoors for the whole storm. Sit a few steps back from a window where you can still see the sky, away from plumbing and electrical appliances.",
     steps: [
       {
         title: "Watch it arrive",

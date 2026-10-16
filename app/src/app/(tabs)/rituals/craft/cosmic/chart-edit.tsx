@@ -1,5 +1,5 @@
 import { router, type Href } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
@@ -14,7 +14,7 @@ import {
   type ChartInput,
 } from '../../../../../lib/craft/cosmic/chart';
 import { CHART } from '../../../../../lib/craft/cosmic/collections';
-import { addEntry, removeEntry, updateEntry, useCraft } from '../../../../../lib/craft/store';
+import { addEntry, removeEntry, updateEntry, useCraft, type CraftEntry } from '../../../../../lib/craft/store';
 import { askDeviceLocation, usePlace } from '../../../../../lib/location';
 
 const num = (s: string) => Number(s.trim().replace(',', '.'));
@@ -22,50 +22,45 @@ const num = (s: string) => Number(s.trim().replace(',', '.'));
 // The birth details behind My chart: date, time, the clock's UTC offset, and where.
 export default function ChartEdit() {
   const { entries, ready } = useCraft<ChartInput>(CHART);
+  if (!ready) {
+    return (
+      <RitualScreen back="My chart">
+        <Title eyebrow="My chart">Birth details</Title>
+      </RitualScreen>
+    );
+  }
   const existing = entries[0] ?? null;
-  const place = usePlace();
+  return <ChartForm key={existing?.id ?? 'new'} existing={existing} />;
+}
 
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
-  const [useDevice, setUseDevice] = useState(true);
-  const [offset, setOffset] = useState('');
-  const [lat, setLat] = useState('');
-  const [lon, setLon] = useState('');
-  const [label, setLabel] = useState('');
+function ChartForm({ existing }: { existing: CraftEntry<ChartInput> | null }) {
+  const place = usePlace();
+  const d = existing?.data;
+
+  const [date, setDate] = useState(d?.date ?? '');
+  const [time, setTime] = useState(d?.time ?? '');
+  const [useDevice, setUseDevice] = useState(d ? !!d.offsetFromDevice : true);
+  const [offset, setOffset] = useState(d && !d.offsetFromDevice ? formatOffset(d.utcOffsetMinutes).replace('UTC', '').replace('−', '-') : '');
+  const [lat, setLat] = useState(typeof d?.latitude === 'number' ? String(d.latitude) : '');
+  const [lon, setLon] = useState(typeof d?.longitude === 'number' ? String(d.longitude) : '');
+  const [label, setLabel] = useState(d?.placeLabel ?? '');
   const [problem, setProblem] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-  const waitingForPlace = useRef(false);
-  const filled = useRef(false);
+  const [waitingForPlace, setWaitingForPlace] = useState(false);
 
-  useEffect(() => {
-    // Fill the form once, when the saved chart first arrives, so typing is never overwritten.
-    if (!ready || filled.current) return;
-    filled.current = true;
-    const d = existing?.data;
-    if (!d) return;
-    setDate(d.date ?? '');
-    setTime(d.time ?? '');
-    setUseDevice(!!d.offsetFromDevice);
-    setOffset(d.offsetFromDevice ? '' : formatOffset(d.utcOffsetMinutes).replace('UTC', '').replace('−', '-'));
-    setLat(typeof d.latitude === 'number' ? String(d.latitude) : '');
-    setLon(typeof d.longitude === 'number' ? String(d.longitude) : '');
-    setLabel(d.placeLabel ?? '');
-  }, [ready, existing]);
-
-  useEffect(() => {
-    if (waitingForPlace.current && place) {
-      waitingForPlace.current = false;
-      setLat(String(place.latitude));
-      setLon(String(place.longitude));
-      setMessage('Filled in from where you are now. Change it if you were born somewhere else.');
-    }
-  }, [place]);
+  // Once the phone's location arrives, copy it into the form (state adjusted while rendering, not in an effect).
+  if (waitingForPlace && place) {
+    setWaitingForPlace(false);
+    setLat(String(place.latitude));
+    setLon(String(place.longitude));
+    setMessage('Filled in from where you are now. Change it if you were born somewhere else.');
+  }
 
   const validDate = parseDate(date);
   const deviceOffset = deviceOffsetOn(validDate ? date.trim() : '');
 
-  const useHere = async () => {
+  const fillFromHere = async () => {
     if (place) {
       setLat(String(place.latitude));
       setLon(String(place.longitude));
@@ -73,10 +68,10 @@ export default function ChartEdit() {
       return;
     }
     setMessage('Finding where you are…');
-    waitingForPlace.current = true;
+    setWaitingForPlace(true);
     const result = await askDeviceLocation();
     if (result !== 'ok') {
-      waitingForPlace.current = false;
+      setWaitingForPlace(false);
       setMessage(
         result === 'denied'
           ? 'Location wasn’t allowed. You can enter your birthplace’s latitude and longitude below.'
@@ -160,7 +155,7 @@ export default function ChartEdit() {
 
       <Card>
         <SectionLabel>Where</SectionLabel>
-        <Button label="Use my current place" variant="outline" onPress={() => void useHere()} />
+        <Button label="Use my current place" variant="outline" onPress={() => void fillFromHere()} />
         <View style={ui.gap}>
           <Field label="Latitude" value={lat} onChange={setLat} placeholder="e.g. 51.51 (south is negative)" keyboardType="default" />
           <Field label="Longitude" value={lon} onChange={setLon} placeholder="e.g. -0.13 (west is negative)" keyboardType="default" />

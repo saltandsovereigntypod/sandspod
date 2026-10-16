@@ -61,8 +61,6 @@ export type StoneCare = {
 
 type Row = Omit<StoneCare, 'key' | 'library'>;
 
-const GENTLE: CleanseMethod[] = ['smoke', 'sound', 'moonlight', 'breath'];
-
 // Stones in the Living Library.
 const LIBRARY: Record<string, Row> = {
   amethyst: { name: 'Amethyst', mineral: 'Purple quartz', mohs: '7', water: 'yes', salt: 'yes', sun: 'fades', handling: 'none', cleanse: ['moonlight', 'smoke', 'sound', 'water', 'earth'], note: 'Its purple fades in strong sun, so keep it off sunny windowsills.' },

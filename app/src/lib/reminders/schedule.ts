@@ -4,6 +4,7 @@
 import { PRINCIPAL_NAMES, signAtSyzygy, upcomingPhases, type PrincipalPhase } from '../moon.ts';
 import { planStart } from '../rituals/plans.ts';
 import type { RitualPlan } from '../rituals/types.ts';
+import { dateKey, devotionFor } from '../craft/solitary/devotion.ts';
 
 export type ReminderSettings = {
   version: 1;
@@ -24,6 +25,12 @@ export type ReminderSettings = {
   rituals: boolean;
   /** How long before a planned ritual. */
   ritualLeadMinutes: number;
+  /** Daily devotion (My practice → Solitary): a morning and an evening nudge. */
+  devotionMorning: boolean;
+  /** Minutes after midnight. */
+  devotionMorningAt: number;
+  devotionEvening: boolean;
+  devotionEveningAt: number;
 };
 
 export const DEFAULT_SETTINGS: ReminderSettings = {
@@ -37,6 +44,10 @@ export const DEFAULT_SETTINGS: ReminderSettings = {
   notes: { new: '', firstQuarter: '', full: '', lastQuarter: '' },
   rituals: true,
   ritualLeadMinutes: 60,
+  devotionMorning: false,
+  devotionMorningAt: 7 * 60,
+  devotionEvening: false,
+  devotionEveningAt: 21 * 60,
 };
 
 export const PHASE_ORDER: PrincipalPhase[] = ['new', 'firstQuarter', 'full', 'lastQuarter'];
@@ -71,17 +82,26 @@ export function normalizeSettings(raw: unknown): ReminderSettings {
     notes,
     rituals: value.rituals !== false,
     ritualLeadMinutes: Number.isFinite(lead) && lead >= 0 && lead <= 24 * 60 ? lead : DEFAULT_SETTINGS.ritualLeadMinutes,
+    devotionMorning: value.devotionMorning === true,
+    devotionMorningAt: minuteOfDay(value.devotionMorningAt, DEFAULT_SETTINGS.devotionMorningAt),
+    devotionEvening: value.devotionEvening === true,
+    devotionEveningAt: minuteOfDay(value.devotionEveningAt, DEFAULT_SETTINGS.devotionEveningAt),
   };
 }
 
+function minuteOfDay(raw: unknown, fallback: number): number {
+  const n = Number(raw);
+  return Number.isInteger(n) && n >= 0 && n < 24 * 60 ? n : fallback;
+}
+
 export function anyReminders(settings: ReminderSettings): boolean {
-  return settings.rituals || PHASE_ORDER.some((p) => settings.phases[p]);
+  return settings.rituals || settings.devotionMorning || settings.devotionEvening || PHASE_ORDER.some((p) => settings.phases[p]);
 }
 
 export type Reminder = {
   /** Stable per event, so rescheduling never duplicates. */
   key: string;
-  kind: 'moon' | 'ritual';
+  kind: 'moon' | 'ritual' | 'devotion';
   at: Date;
   title: string;
   body: string;
@@ -92,6 +112,8 @@ export type Reminder = {
 // iOS keeps at most 64 pending local notifications per app; leave headroom.
 export const MAX_REMINDERS = 60;
 export const HORIZON_DAYS = 60;
+/** Daily devotions are kept two weeks ahead (topped up whenever the app opens), so they never crowd out the moon. */
+export const DEVOTION_DAYS = 14;
 
 function atTime(day: Date, hour: number, minute: number, daysEarlier = 0): Date {
   return new Date(day.getFullYear(), day.getMonth(), day.getDate() - daysEarlier, hour, minute, 0, 0);
@@ -187,6 +209,26 @@ export function buildSchedule(settings: ReminderSettings, plans: RitualPlan[], n
         title: plan.title || 'Your ritual',
         body: `Your working begins ${leadText(settings.ritualLeadMinutes)}, at ${clockTime(start)}.`,
         url: `/rituals/plan/${plan.id}`,
+      });
+    }
+  }
+
+  for (const [on, at, which] of [
+    [settings.devotionMorning, settings.devotionMorningAt, 'morning'],
+    [settings.devotionEvening, settings.devotionEveningAt, 'evening'],
+  ] as const) {
+    if (!on) continue;
+    for (let d = 0; d <= Math.min(DEVOTION_DAYS, horizonDays); d++) {
+      const day = new Date(now.getFullYear(), now.getMonth(), now.getDate() + d, Math.floor(at / 60), at % 60, 0, 0);
+      const key = dateKey(day);
+      const prompt = devotionFor(key)[which];
+      reminders.push({
+        key: `devotion-${which}:${key}`,
+        kind: 'devotion',
+        at: day,
+        title: which === 'morning' ? 'Morning devotion' : 'Evening devotion',
+        body: prompt.title,
+        url: '/rituals/craft/solitary/devotion',
       });
     }
   }

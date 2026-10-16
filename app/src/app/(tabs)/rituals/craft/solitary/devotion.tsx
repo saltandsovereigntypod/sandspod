@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
-import { Body, Card, confirmAction, Expander, Field, RitualScreen, SectionLabel, Title, tell, ui } from '../../../../../components/rituals/ui';
+import { TimeStepper } from '../../../../../components/rituals/TimeStepper';
+import { Body, Card, confirmAction, Expander, Field, RitualScreen, SectionLabel, Title, Toggle, tell, ui } from '../../../../../components/rituals/ui';
 import {
   dateKey,
   daysByDate,
@@ -16,6 +17,8 @@ import {
   type DevotionPrompt,
 } from '../../../../../lib/craft/solitary/devotion';
 import { addEntry, removeEntry, updateEntry, useCraft } from '../../../../../lib/craft/store';
+import { remindersSupported } from '../../../../../lib/reminders/notifier';
+import { updateReminderSettings, useReminders } from '../../../../../lib/reminders/store';
 import { colors, fonts, type } from '../../../../../theme';
 
 const COLLECTION = 'solitary.devotions';
@@ -149,6 +152,8 @@ export default function DailyDevotion() {
         </View>
       </Card>
 
+      <DevotionReminders />
+
       {earlier.length > 0 && (
         <Expander title="Earlier notes">
           {earlier.map((d) => (
@@ -160,6 +165,38 @@ export default function DailyDevotion() {
         </Expander>
       )}
     </RitualScreen>
+  );
+}
+
+/** Optional daily nudges, kept with the moon reminders on this phone. */
+function DevotionReminders() {
+  const { settings, permission } = useReminders();
+  if (!remindersSupported) return null;
+  return (
+    <Card>
+      <SectionLabel>Remind me</SectionLabel>
+      <Toggle
+        label="Morning devotion"
+        detail="A gentle nudge with the morning’s practice"
+        value={settings.devotionMorning}
+        onChange={(on) => void updateReminderSettings({ devotionMorning: on })}
+      />
+      {settings.devotionMorning && (
+        <TimeStepper minutes={settings.devotionMorningAt} onChange={(minutes) => void updateReminderSettings({ devotionMorningAt: minutes })} />
+      )}
+      <Toggle
+        label="Evening devotion"
+        detail="A nudge to close the day"
+        value={settings.devotionEvening}
+        onChange={(on) => void updateReminderSettings({ devotionEvening: on })}
+      />
+      {settings.devotionEvening && (
+        <TimeStepper minutes={settings.devotionEveningAt} onChange={(minutes) => void updateReminderSettings({ devotionEveningAt: minutes })} />
+      )}
+      {permission === 'denied' && (settings.devotionMorning || settings.devotionEvening) && (
+        <Body muted>Notifications are off for this app. Turn them on in your phone’s Settings to hear these.</Body>
+      )}
+    </Card>
   );
 }
 

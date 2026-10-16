@@ -6,7 +6,7 @@ import { Button } from '../../../../../components/Button';
 import { Body, Card, Expander, Notice, RitualScreen, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { planetInSign } from '../../../../../lib/astro/meanings';
 import { shortDate, timeOfDay } from '../../../../../lib/calendar';
-import { formatOffset, formatPlacement, natalChart, natalOf, type ChartInput, type Placement } from '../../../../../lib/craft/cosmic/chart';
+import { formatOffset, formatPlacement, natalChart, natalOf, type ChartInput, type NatalChart, type Placement } from '../../../../../lib/craft/cosmic/chart';
 import { CHART } from '../../../../../lib/craft/cosmic/collections';
 import {
   ASPECT_TONE,
@@ -26,6 +26,18 @@ import { colors, fonts, radius, type } from '../../../../../theme';
 const EDIT = '/rituals/craft/cosmic/chart-edit' as Href;
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+/** The Moon's spells this month in the person's sun and moon signs. */
+function moonInMySigns(chart: NatalChart, month: { start: Date; end: Date }) {
+  const sunSign = natalOf(chart, 'Sun').sign;
+  const moonSign = natalOf(chart, 'Moon').sign;
+  const signs = sunSign === moonSign ? [sunSign] : [sunSign, moonSign];
+  return signs.map((sign) => ({
+    sign,
+    label: sign === sunSign && sign === moonSign ? 'your sun and moon sign' : sign === sunSign ? 'your sun sign' : 'your moon sign',
+    spells: moonInSign(sign, month.start, month.end),
+  }));
+}
+
 const when = (d: Date) => `${shortDate(d)}, ${timeOfDay(d)}`;
 
 // My chart: the big three with what they mean, the rest of the planets, and what touches them today.
@@ -35,18 +47,10 @@ export default function MyChart() {
   const chart = useMemo(() => (input ? natalChart(input) : null), [input]);
   const now = useMemo(() => new Date(), []);
   const transits = useMemo(() => (chart ? transitsAt(chart, now) : []), [chart, now]);
-  const month = monthAround(now);
+  const month = useMemo(() => monthAround(now), [now]);
   const sun = chart ? natalOf(chart, 'Sun') : null;
   const moon = chart ? natalOf(chart, 'Moon') : null;
-  const spells = useMemo(() => {
-    if (!sun || !moon) return [];
-    const signs = sun.sign === moon.sign ? [sun.sign] : [sun.sign, moon.sign];
-    return signs.map((sign) => ({
-      sign,
-      label: sign === sun.sign && sign === moon.sign ? 'your sun and moon sign' : sign === sun.sign ? 'your sun sign' : 'your moon sign',
-      spells: moonInSign(sign, month.start, month.end),
-    }));
-  }, [sun?.sign, moon?.sign, month.start.getTime()]);
+  const spells = useMemo(() => (chart ? moonInMySigns(chart, month) : []), [chart, month]);
 
   if (!ready) {
     return (

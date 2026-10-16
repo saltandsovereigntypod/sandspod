@@ -86,9 +86,9 @@ export const HEDGE: Premade[] = [
     safety:
       'Journeying is not suitable during a mental-health crisis, or if you are prone to dissociation or psychosis, without support from a professional. Open your eyes whenever you need to. Don’t journey while driving or in the bath. If you hold mugwort, don’t eat it; avoid it if you are pregnant or have a ragweed or daisy-family allergy, and keep it from pets.',
     lore:
-      'The “hedge” in hedge witchery is the boundary between the village and the wild, and between this world and the other. Old Norse texts speak of túnriður, “fence-riders” or witches who rode the boundary, and Odin in the Hávamál boasts of a charm to send such riders astray. The guided inner-landscape journey is modern. It draws on mid-twentieth-century visualisation, on Rae Beth’s *Hedge Witch* (1990), and on core-shamanism workshops, rather than on any single ancient rite.',
+      'The “hedge” in hedge witchery is the boundary between the village and the wild, and between this world and the other. Old Norse texts speak of túnriður, “fence-riders” or witches who rode the boundary, and Odin in the Hávamál boasts of a charm that sends such riders (Bellows’s “house-riders”) wildly home in their true shapes. The guided inner-landscape journey is modern. It draws on mid-twentieth-century visualisation, on Rae Beth’s *Hedge Witch* (1990), and on core-shamanism workshops, rather than on any single ancient rite.',
     sources: [
-      'Hávamál, st. 155, in The Poetic Edda, trans. Bellows (1923)',
+      'Hávamál, st. 156 in Bellows’s numbering (st. 155 in most editions), The Poetic Edda, trans. Bellows (1923)',
       'Etymological scholarship on Old English haga, “hedge, enclosure”, and Old Norse túnriða',
       'Rae Beth, Hedge Witch (1990), on the modern use of the term',
     ],
@@ -308,7 +308,7 @@ export const HEDGE: Premade[] = [
     safety:
       'Never leave the candle unattended, and keep it clear of photographs, paper and dried rosemary. Keep it away from pets and children. Grief can surface strongly: be gentle with yourself and stop whenever you need to. If you are struggling, reach out to someone you trust or a bereavement service.',
     lore:
-      'Honouring the household dead is one of the oldest and most widespread human customs. Romans visited family tombs at the Parentalia in February. The Slavic Dziady (“Grandfathers”) laid food for the ancestors. In Ireland and Britain, food and a lit window were left for the dead at Samhain and All Souls’ Night, and Norse households held the Álfablót and Dísablót in autumn. The modern Pagan ancestor altar draws on all these, and is open to anyone.',
+      'Honouring the household dead is one of the oldest and most widespread human customs. Romans visited family tombs at the Parentalia in February. The Slavic Dziady (“Grandfathers”) laid food for the ancestors. In Ireland and Britain, food and a lit window were left for the dead at Samhain and All Souls’ Night, and Norse households held the Álfablót around the Winter Nights, when the dísir were also honoured in parts of the north. The modern Pagan ancestor altar draws on all these, and is open to anyone.',
     sources: [
       'Hutton, The Stations of the Sun (1996), on Samhain and All Souls customs',
       'Ovid, Fasti, Book II, on the Parentalia',
@@ -387,7 +387,7 @@ export const HEDGE: Premade[] = [
     title: 'Reading the Tea Leaves',
     kind: 'ritual',
     summary:
-      'Brew loose-leaf tea, drink it slowly with a question in mind, then turn the cup and read the shapes the leaves leave behind, in the old way of the Highland tea-cup readers.',
+      'Brew loose-leaf tea, drink it slowly with a question in mind, then turn the cup and read the shapes the leaves leave behind, in the way set down by the 1920s guide credited to “A Highland Seer”.',
     intention: 'intuition',
     alsoFor: ['study'],
     practices: ['kitchen', 'hedge', 'folk', 'solitary'],
@@ -416,13 +416,13 @@ export const HEDGE: Premade[] = [
       {
         title: 'Drink with the question',
         instructions:
-          'Let it cool until it is comfortable to drink. Hold the cup in both hands and drink slowly, thinking of your question. Stop when about a teaspoon of liquid is left with the leaves.',
+          'Let it cool until it is comfortable to drink. Hold the cup in both hands and drink slowly, thinking of your question. Stop when about half a teaspoon of liquid is left with the leaves.',
         minutes: 10,
       },
       {
         title: 'Swirl and turn',
         instructions:
-          'Take the cup by the handle in your left hand. Swirl it three times anticlockwise so the leaves climb the sides. Then turn it upside down onto the saucer and leave it to drain for a minute.',
+          'Take the cup by the handle in your left hand, rim upwards. Swirl it three times from left to right in one quick swinging movement so the leaves climb the sides. Then turn it upside down onto the saucer and leave it to drain for a minute.',
         spoken: 'Three times round, the leaves are found. Show me what is coming.',
         minutes: 1,
       },
@@ -435,7 +435,7 @@ export const HEDGE: Premade[] = [
       {
         title: 'Write it down',
         instructions:
-          'Sketch the main shapes and note where they sit. Write what each means to you first, then compare it with the traditional meanings if you like: a ring for a union or completion, a bird for news, a ladder for rising, a snake for caution.',
+          'Sketch the main shapes and note where they sit. Write what each means to you first, then compare it with the traditional meanings if you like: a ring for marriage or union, a flying bird for good news, a ladder for travel, a snake for caution.',
         minutes: 5,
       },
     ],
@@ -444,9 +444,9 @@ export const HEDGE: Premade[] = [
     safety:
       'Use only food-safe tea, and let it cool before drinking. Take care with boiling water, especially around children. If you are sensitive to caffeine or pregnant, use a decaffeinated loose-leaf tea and keep to one cup.',
     lore:
-      'Reading tea leaves (tasseography) grew out of older European cup-reading with wine lees and coffee grounds, and became popular in Britain and Ireland once tea was cheap in the eighteenth and nineteenth centuries. The handle-as-querent and rim-as-near-future method was set down in a popular 1920s guide credited to “A Highland Seer.” It is a folk custom of kitchens and parlours, with no secret lineage, and is open to everyone.',
+      'Reading tea leaves (tasseography) is a cousin of reading coffee grounds, and became popular in Britain and Ireland once tea was cheap in the eighteenth and nineteenth centuries. The handle-as-querent and rim-as-near-future method was set down in a popular guide credited to “A Highland Seer” (published soon after the First World War), which presents it as the practice of Scottish country people. It is a folk custom of kitchens and parlours, with no secret lineage, and is open to everyone.',
     sources: [
-      '“A Highland Seer”, Tea-Cup Reading and the Art of Fortune-Telling by Tea Leaves (c. 1920)',
+      '“A Highland Seer”, Tea-Cup Reading and the Art of Fortune-Telling by Tea Leaves (c. 1920), ch. II–IV',
     ],
   },
   {
@@ -572,7 +572,7 @@ export const HEDGE: Premade[] = [
         title: 'Take up the rowan',
         instructions:
           'Hold the rowan sprig, or put the berries in your pocket. Rowan with red thread is the old charm against anything that would harm or deceive.',
-        spoken: 'Rowan tree and red thread, put the witches to their speed.',
+        spoken: '… Rowan-tree and red thread, put the witches to their speed!',
       },
       {
         title: 'State your terms',
@@ -586,11 +586,11 @@ export const HEDGE: Premade[] = [
     safety:
       'Rowan berries are mildly toxic raw and should not be eaten; keep them away from small children and pets. Salt water can sting broken skin. Wash your hands after handling the berries.',
     lore:
-      'Salt, iron and rowan are the three great protectors of British and Irish folklore. Iron turned away fairies and spirits, salt was thrown over the shoulder and sprinkled on thresholds, and rowan twigs bound with red thread were hung over byres and doors. The rhyme “Rowan tree and red thread / put the witches to their speed” is a traditional Scottish saying recorded in the nineteenth century. Warding before spirit work is modern practice built from these old protections.',
+      'Salt, iron and rowan are the three great protectors of British and Irish folklore. Iron turned away fairies and spirits, salt was thrown over the shoulder and sprinkled on thresholds, and rowan twigs bound with red thread were hung over byres and doors. The words spoken here are the last two lines of a Border rhyme printed by Robert Chambers (“Black luggie, lammer bead, / Rowan-tree and red thread, / Put the witches to their speed!”), and Gregor records an Aberdeenshire form, “Rawn-tree in red-threed / Pits the witches t’ their speed,” said over a rowan cross tied to cattle with scarlet thread. Warding before spirit work is modern practice built from these old protections.',
     sources: [
-      'Traditional Scottish rhyme, “Rowan tree and red thread” (recorded in nineteenth-century folklore collections)',
+      'Chambers, Popular Rhymes of Scotland (new ed. 1870), p. 328, “Rowan-tree and red thread”',
       'Frazer, The Golden Bough (1890–1915), on iron and salt as protectors',
-      'Gregor, Notes on the Folk-Lore of the North-East of Scotland (1881)',
+      'Gregor, Notes on the Folk-Lore of the North-East of Scotland (1881), on rowan, red thread and the rhyme',
     ],
   },
   {
@@ -664,7 +664,7 @@ export const HEDGE: Premade[] = [
     title: 'Hagstone Seeing & Hanging',
     kind: 'spell',
     summary:
-      'Look through a naturally holed stone to see the world differently, as folklore says one may see the hidden folk, then hang it on a red cord by your door or bed as a guardian.',
+      'Look through a naturally holed stone to see the world differently (later folklore says it shows the hidden folk), then hang it on a red cord by your door or bed as a guardian.',
     intention: 'protection',
     alsoFor: ['intuition'],
     practices: ['hedge', 'folk', 'sea'],
@@ -716,11 +716,10 @@ export const HEDGE: Premade[] = [
     safety:
       'Check the tide times before beachcombing, keep well away from cliff bases, and never climb on unstable rocks. Take only one or two stones and leave fossils. Some protected beaches and nature reserves forbid taking stones at all: check local rules.',
     lore:
-      'Holed stones are called hagstones, witch stones, adder stones, or glain neidr in Welsh. In Britain they were hung in byres and stables to stop witches and night-hags from riding the horses and cattle, and over beds against nightmares. The belief that one may see the fairies through the hole is recorded in English and Scottish folklore. Scottish museums hold stones that were hung in homes as charms into the early twentieth century.',
+      'Holed stones are called hagstones, witch stones or adder stones. In Britain they were hung in byres and stables to stop witches and night-hags from riding the horses and cattle, and over beds against nightmares. Francis Grose, quoted in Brand’s Popular Antiquities, says a stone with a hole hung at the bed’s head prevents the nightmare, “therefore called a hag-stone,” and that it was tied to stable keys to stop witches riding the horses. The idea of looking through the hole to see the fairies is more recent folklore, and very popular today.',
     sources: [
-      'Black, Folk-Medicine (1883), on holed stones',
-      'Museum collections of nineteenth- and early twentieth-century witch stones from south-west Scotland',
-    ],
+      'Brand, Observations on Popular Antiquities, ed. Ellis (Bohn ed., 1849; repr. 1888), vol. III, quoting Grose on the hag-stone',
+          ],
   },
   {
     id: 'hedge-hawthorn-blackthorn',
@@ -785,11 +784,11 @@ export const HEDGE: Premade[] = [
     safety:
       'Both trees have long, sharp thorns that can cause infections: wear gloves and clean any scratch well. Don’t eat haws or sloes from this working; their seeds and stones contain compounds that can be harmful, and raw sloes are very astringent. Hawthorn can interact with heart medicines. Take nothing from protected sites, and never cut living wood.',
     lore:
-      'Hawthorn is the “may” of English May Day and the fairy thorn of Ireland, where lone bushes are still left uncut out of respect. Its name comes from Old English haguthorn, “hedge-thorn.” Bringing may blossom indoors was thought to be unlucky in many English counties. Blackthorn is the tree of the cold “blackthorn winter” and of Irish shillelaghs, and is linked in later folklore with witches’ wands and stern protection. Hawthorn has a long herbal history as a heart remedy, which is behind the healing association.',
+      'Hawthorn is the “may” of English May Day and the fairy thorn of Ireland, where lone bushes are still left uncut out of respect. Its name comes from Old English hagaþorn, “hedge-thorn.” Bringing may blossom indoors was thought to be unlucky in many English counties. Blackthorn is the tree of the cold “blackthorn winter” and of Irish shillelaghs, and is linked in later folklore with witches’ wands and stern protection. Hawthorn has a long herbal history as a heart remedy, which is behind the healing association.',
     sources: [
       'Grieve, A Modern Herbal (1931), on hawthorn and blackthorn',
       'Wilde, Ancient Legends, Mystic Charms and Superstitions of Ireland (1887), on fairy thorns',
-      'Etymological scholarship on Old English haguthorn',
+      'Etymological scholarship on Old English hagaþorn',
     ],
   },
   {
@@ -934,7 +933,7 @@ export const HEDGE: Premade[] = [
     closing:
       'Scatter the cooled ashes under a tree, or bury the letter. Be gentle with yourself for the rest of the day: eat something warm and, if you can, talk to someone who knew them.',
     safety:
-      'Burn paper only in a fireproof container on a heat-safe surface, away from curtains, with water to hand; never leave flame unattended. Grief can be overwhelming: if you are struggling to cope, or having thoughts of harming yourself, please contact a doctor, a bereavement service or a local crisis line.',
+      'Burn paper only in a fireproof container on a heat-safe surface, away from curtains, with water to hand, and open a window for the smoke (bury the letter instead if you have asthma); never leave flame unattended. Grief can be overwhelming: if you are struggling to cope, or having thoughts of harming yourself, please contact a doctor, a bereavement service or a local crisis line.',
     lore:
       'Many cultures have rites to help the dead move on, from the Roman Lemuria, when the householder cast beans and sent wandering spirits away, to the Irish wake and keen, and the “month’s mind” Mass of Catholic tradition. Rosemary has been the herb of remembrance since at least Shakespeare (“There’s rosemary, that’s for remembrance”). Writing to the dead is a modern grief-therapy practice, and this rite joins it with older forms of farewell.',
     sources: [
@@ -1151,7 +1150,7 @@ export const HEDGE: Premade[] = [
     title: 'Wind Knots for a Fair Wind',
     kind: 'spell',
     summary:
-      'Tie three knots in a cord to bind the wind’s strength into them, as the wind-sellers of Shetland, Lewis and the Isle of Man once did for sailors. Loosen one when you need a breeze behind a new venture.',
+      'Tie three knots in a cord to bind the wind’s strength into them, as Finnish wizards and Shetland wise-women were said to sell winds to sailors. Loosen one when you need a breeze behind a new venture.',
     intention: 'beginnings',
     alsoFor: ['courage', 'prosperity'],
     practices: ['sea', 'folk', 'elemental'],
@@ -1211,10 +1210,10 @@ export const HEDGE: Premade[] = [
     safety:
       'Stay well back from cliff edges and stay off exposed high ground in high winds. If you burn the cord at the end, do so in a fireproof dish, away from anything flammable. Never untie the third knot near open flame or on the water.',
     lore:
-      'The sale of winds tied up in knots is one of the best-recorded pieces of sea folklore in northern Europe. Frazer reports that Lapland and Finnish sorcerers sold knotted cords to sailors, and that witches in Shetland, Lewis and the Isle of Man did the same: one knot for a moderate breeze, two for a strong wind and three for a gale. He adds that Shetland seamen were still buying knotted threads from old women in his own day. A 1555 woodcut by Olaus Magnus shows a wind-seller with her ropes.',
+      'The sale of winds tied up in knots is one of the best-recorded pieces of sea folklore in northern Europe. Frazer reports that Finnish wizards sold wind to storm-stayed mariners in three knots (the first loosed a moderate wind, the second half a gale, the third a hurricane), and that the art was attributed to wizards in Lapland and witches in Shetland, Lewis and the Isle of Man. He adds that Shetland seamen still bought winds as knotted handkerchiefs or threads from old women. Olaus Magnus’s Historia (1555) has a woodcut of a northern wizard selling a knotted rope to a ship’s master.',
     sources: [
       'Frazer, The Golden Bough (1890–1915), ch. “The Magical Control of the Wind”',
-      'Olaus Magnus, Historia de Gentibus Septentrionalibus (1555)',
+      'Olaus Magnus, Historia de Gentibus Septentrionalibus (1555), bk III, on the wizards of the Finns',
     ],
   },
   {
@@ -1275,9 +1274,9 @@ export const HEDGE: Premade[] = [
     safety:
       'Check the tide times and stay aware of the water: incoming tides can move very fast across flat sand and cut off sandbars and bays. Never stand below the tideline on a rising tide, and keep away from cliff bases and soft mud. Stay out of the water in cold or rough conditions.',
     lore:
-      'Giving troubles to running water is very old, and appears in charms across Europe, including the Anglo-Saxon Lacnunga, where ailments are sent off into the water. Writing in the sand to be erased by the tide is a modern practice, but it is a natural form of that older logic, and it is gentle on the shore because it leaves nothing behind.',
+      'Giving troubles to water is very old: Frazer collects European customs of throwing an effigy of Death or of sickness into a river, and of floating ills out to sea on the ebb tide. Writing in the sand to be erased by the tide is a modern practice, but it is a natural form of that older logic, and it is gentle on the shore because it leaves nothing behind.',
     sources: [
-      'Lacnunga (Old English medical and charm collection, c. 10th–11th century), on sending illness into water',
+      'Frazer, The Golden Bough (1890–1915), on carrying out Death and the transference of evil',
     ],
   },
   {
@@ -1521,7 +1520,7 @@ export const HEDGE: Premade[] = [
     closing:
       'When the purse becomes brittle and crumbles, return it to the shore and look for a new one. Keep the driftwood as long as it stays sound.',
     safety:
-      'Collect only empty, dry egg cases; full ones contain living young and must be returned to the sea. Check tide times and stay below cliffs only when the tide is far out and the cliffs are stable. Don’t burn driftwood indoors: salt-soaked wood can give off harmful fumes. Some beaches forbid removing materials, so check local rules.',
+      'Collect only empty, dry egg cases; full ones contain living young and must be returned to the sea. Check tide times, and keep away from cliff bases, where rock can fall at any state of the tide. Don’t burn driftwood indoors: salt-soaked wood can give off harmful fumes. Some beaches forbid removing materials, so check local rules.',
     lore:
       'Mermaid’s purses, the leathery egg cases of skates, rays and some sharks, have that name in English coastal folklore, and were sometimes kept as curiosities and charms by fishing families. Driftwood was precious on treeless coasts such as Orkney, Shetland and Iceland, where it was used for building and where its arrival was treated as a gift from the sea. This charm is modern sea-witch practice. It makes something new from those old beachcombing customs and leans on the sympathetic logic of a full purse and a wanderer come home.',
     sources: [
@@ -1585,7 +1584,7 @@ export const HEDGE: Premade[] = [
       {
         title: 'Ebb: drain',
         instructions:
-          'Stand up carefully, pull the plug and stay standing in the bath for a moment as the water drains around your feet. Picture the ache going down with it, out to the river and the sea.',
+          'Sit up, pull the plug and stay sitting as the water drains around you, then stand up slowly, holding the side. Picture the ache going down with it, out to the river and the sea.',
         spoken: 'Out to the sea and away from me.',
         minutes: 3,
       },
@@ -1667,10 +1666,10 @@ export const HEDGE: Premade[] = [
     safety:
       'No blessing replaces seamanship. Check the marine forecast, wear a life jacket on small boats, tell someone your route and expected return time, and follow the skipper’s and crew’s instructions. Don’t lean over rails or stand on slippery quaysides to do this ritual. Leave only natural, biodegradable offerings.',
     lore:
-      'Sailors and fishing families everywhere have blessed boats and crossings. Carmina Gadelica (1900) records Gaelic prayers said on launching a boat and setting out to sea, calling on God and the saints to guard the crew. On the Isle of Man, an old ballad describes how landholders paid Manannán, the sea god and first ruler of the island, a “rent” of green rushes on Midsummer Eve; the custom is remembered in the rushes strewn on the Tynwald path each July, and has been revived by people today. The Romans honoured Neptune at the Neptunalia in July.',
+      'Sailors and fishing families everywhere have blessed boats and crossings. Carmina Gadelica (1900) records Gaelic prayers said on launching a boat and setting out to sea, calling on God and the saints to guard the crew. On the Isle of Man, the Manannan Ballad (early sixteenth century) says that landholders paid Manannán, the sea god and first ruler of the island, a “rent” of a bundle of rushes on St John’s Eve, carried up to Barrule. Rushes are still strewn on the Tynwald path each July, a custom popularly linked to the same rent, and Manx people today have revived the offering. The Romans honoured Neptune at the Neptunalia in July.',
     sources: [
       'Carmichael, Carmina Gadelica, vol. I (1900), on Hebridean sea and boat blessings',
-      'The Manx Traditionary Ballad (printed in Train, History of the Isle of Man, 1845), on rushes paid to Manannán',
+      'The Manx Traditionary Ballad (printed in Train, An Historical and Statistical Account of the Isle of Man, 1845), on rushes paid to Manannán',
     ],
   },
 ];

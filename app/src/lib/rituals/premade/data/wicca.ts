@@ -1165,7 +1165,7 @@ export const WICCA: Premade[] = [
     ],
     closing: "Leave the paper and thread on your altar until the next full moon, then fold the thread into the paper and keep it.",
     safety: CANDLE_SAFETY,
-    lore: `${MOON_LORE} The Wolf Moon name is usually traced to English and European settler folklore rather than a Native American source.`,
+    lore: `${MOON_LORE} The Wolf Moon name has been credited both to Native American peoples and to old English usage, and neither attribution is well documented.`,
     sources: ["Old Farmer's Almanac and Maine Farmers' Almanac (on the popular moon names)"],
   },
   {
@@ -1329,7 +1329,7 @@ export const WICCA: Premade[] = [
       },
     ],
     closing: "Pour the herb bag's contents into the compost. Keep the rose quartz by your bed until the next full moon.",
-    safety: `${CANDLE_SAFETY} Check the water temperature before getting in. Patch test herbs if your skin is sensitive, and skip lavender and chamomile if you are allergic to the daisy family. Take care stepping out of a bath, as petals and herbs can make it slippery.`,
+    safety: `${CANDLE_SAFETY} Check the water temperature before getting in. Patch test herbs if your skin is sensitive, and leave out the chamomile if you are allergic to the daisy family (ragweed, daisies, chrysanthemums). Take care stepping out of a bath, as petals and herbs can make it slippery.`,
     lore: `${MOON_LORE} The Pink Moon refers to moss phlox, one of the first wildflowers of the North American spring.`,
     sources: ["Old Farmer's Almanac and Maine Farmers' Almanac (on the popular moon names)"],
   },
@@ -1380,7 +1380,7 @@ export const WICCA: Premade[] = [
       },
     ],
     closing: "In the morning, pour the water and flowers at the roots of a tree or shrub.",
-    safety: `${CANDLE_SAFETY} A floating candle is still a naked flame: keep it away from overhanging plants and leaves.`,
+    safety: `${CANDLE_SAFETY} A floating candle is still a naked flame: keep it away from overhanging plants and leaves. If you have cats, leave lilies out of the bowl: every part of the plant, the pollen and even the water they stand in can cause fatal kidney failure in cats.`,
     lore: MOON_LORE,
     sources: ["Old Farmer's Almanac and Maine Farmers' Almanac (on the popular moon names)"],
   },
@@ -1489,7 +1489,7 @@ export const WICCA: Premade[] = [
     ],
     closing: "Return the twigs to the woods or hedge where you found them at the next full moon.",
     safety: CANDLE_SAFETY,
-    lore: `${MOON_LORE} The antlered god figure in modern Wicca is often linked to the Gaulish Cernunnos, known from a handful of Romano-Celtic carvings, including the Gundestrup cauldron.`,
+    lore: `${MOON_LORE} The antlered god figure in modern Wicca is often linked to the Gaulish Cernunnos, a name known from a single Gallo-Roman inscription, the Pillar of the Boatmen in Paris (first century CE), and applied by scholars to other antlered figures such as the one on the Gundestrup cauldron.`,
     sources: [
       "Old Farmer's Almanac and Maine Farmers' Almanac (on the popular moon names)",
       "Green, Dictionary of Celtic Myth and Legend (on Cernunnos)",
@@ -1666,7 +1666,7 @@ export const WICCA: Premade[] = [
     lore: `${MOON_LORE} Artemis and Diana, hunter goddesses linked with the moon in Greek and Roman religion, are often honoured at this moon in modern practice.`,
     sources: [
       "Old Farmer's Almanac and Maine Farmers' Almanac (on the popular moon names)",
-      "Homeric Hymn 27, To Artemis (public domain)",
+      "Homeric Hymn 27, To Artemis (Evelyn-White translation, 1914)",
     ],
   },
   {

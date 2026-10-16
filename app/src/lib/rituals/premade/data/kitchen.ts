@@ -57,7 +57,7 @@ export const KITCHEN: Premade[] = [
       {
         title: 'First rise',
         instructions:
-          'Return the dough to the oiled bowl, cover with a clean cloth and leave somewhere warm until doubled, about 1 to 1½ hours. With your fingertip, trace a small equal-armed cross or a sun sign on the cloth: an old baker’s mark for blessing the rise. Use the waiting time to tidy, or to sit with a cup of tea and picture your cupboards full.',
+          'Wipe a few drops of oil round the bowl, return the dough to it, cover with a clean cloth and leave somewhere warm until doubled, about 1 to 1½ hours. With your fingertip, trace a small equal-armed cross or a sun sign on the cloth: an old baker’s mark for blessing the rise. Use the waiting time to tidy, or to sit with a cup of tea and picture your cupboards full.',
         minutes: 75,
       },
       {
@@ -84,9 +84,9 @@ export const KITCHEN: Premade[] = [
     safety:
       'Contains gluten (wheat) and honey; use a gluten-free bread flour blend and its own recipe if needed, and replace honey with sugar for anyone avoiding it. Use oven gloves. Seeds can be an allergen (sesame especially); leave them off when baking for others.',
     lore:
-      'Bread is the oldest household offering in Europe. Lammas (“loaf-mass”) on 1 August took its name from the custom of blessing loaves from the first harvest, recorded in the Anglo-Saxon Chronicle. Scoring a cross on loaves was long explained as letting the devil out or blessing the rise, and keeping a little bread in the house so it is never empty is common folk practice across Britain and Eastern Europe. Stirring sunwise (deiseal in Gaelic) for good luck is a well-attested Scottish and Irish custom. Baking as a deliberate spell, with spoken intention, is modern kitchen witchcraft built on those habits.',
+      'Bread is the oldest household offering in Europe. Lammas (“loaf-mass”, Old English hlafmæsse) on 1 August is named in the Anglo-Saxon Chronicle, and the name is usually explained by the custom of bringing a loaf from the first harvest to church to be blessed. Scoring a cross on loaves was long explained as letting the devil out or blessing the rise, and keeping a little bread in the house so it is never empty is common folk practice across Britain and Eastern Europe. Stirring sunwise (deiseal in Gaelic) for good luck is a well-attested Scottish and Irish custom. Baking as a deliberate spell, with spoken intention, is modern kitchen witchcraft built on those habits.',
     sources: [
-      'The Anglo-Saxon Chronicle (on hlafmæsse, the loaf-mass)',
+      'The Anglo-Saxon Chronicle (where hlafmæsse, the loaf-mass, is named)',
       'Carmichael, Carmina Gadelica (1900), on the sunwise turn',
       'Hutton, The Stations of the Sun (on Lammas customs)',
     ],
@@ -200,7 +200,7 @@ export const KITCHEN: Premade[] = [
       { name: 'A pink candle for the table', ref: 'traditional/candle/pink', optional: true },
     ],
     preparation:
-      'Heat the oven to 170 °C (150 °C fan, 340 °F, gas 3½). Butter and line a 20 cm round or 900 g loaf tin. Friday, Venus’s day, is traditional for love work. Before you begin, decide what you want sweetened: the mood between housemates, a willing reconciliation, your own heart. Keep it about warmth offered, not a person’s will.',
+      'Heat the oven to 170 °C (150 °C fan, 325 °F, gas 3). Butter and line a 20 cm round or 900 g loaf tin. Friday, Venus’s day, is traditional for love work. Before you begin, decide what you want sweetened: the mood between housemates, a willing reconciliation, your own heart. Keep it about warmth offered, not a person’s will.',
     steps: [
       {
         title: 'Melt the sweetness',
@@ -233,13 +233,14 @@ export const KITCHEN: Premade[] = [
       {
         title: 'Share it',
         light: true,
+        snuff: true,
         instructions:
-          'Light the pink candle on the table if using. Serve the cake with tea, offering the first piece to the person you most want ease with, or keep it for yourself as a kindness. Say something sincerely warm as you hand it over; the spell is finished in the giving.',
+          'Light the pink candle on the table if using. Serve the cake with tea, offering the first piece to the person you most want ease with, or keep it for yourself as a kindness. Say something sincerely warm as you hand it over; the spell is finished in the giving. Snuff the candle once the cake has been shared.',
         spoken: 'Something sweet, for you.',
       },
     ],
     closing:
-      'Snuff the candle when the cake is eaten. Wrapped well, honey cake keeps and improves for 3 to 4 days, which folk wisdom would call a sign that good feeling deepens with time.',
+      'Wrapped well, honey cake keeps and improves for 3 to 4 days, which folk wisdom would call a sign that good feeling deepens with time.',
     safety:
       'Contains gluten, eggs and dairy; vegan and gluten-free versions are possible but need their own tested recipe. Never give honey to babies under 12 months. Use only unsprayed, food-grade rose petals. Do not leave a lit candle unattended.',
     lore:
@@ -281,7 +282,7 @@ export const KITCHEN: Premade[] = [
       { name: 'A large stockpot', ref: 'traditional/tool/cauldron' },
     ],
     preparation:
-      'Write the name of the person the broth is for, or simply “me”, on a slip of paper and tuck it under the stockpot’s spot on the hob or beside it (not under the flame). Sunday, the sun’s day, is kind for health and vitality. Allow a quiet afternoon; broth cannot be hurried.',
+      'Write the name of the person the broth is for, or simply “me”, on a slip of paper and set it on the worktop near the stove, well away from the hob and any flame. Sunday, the sun’s day, is kind for health and vitality. Allow a quiet afternoon; broth cannot be hurried.',
     steps: [
       {
         title: 'Lay the foundation',
@@ -319,7 +320,7 @@ export const KITCHEN: Premade[] = [
       },
     ],
     closing:
-      'Burn or compost the name slip with thanks. Keep broth refrigerated for up to 4 days or frozen for 3 months.',
+      'Compost or tear up the name slip with thanks. Keep broth refrigerated for up to 4 days or frozen for 3 months.',
     safety:
       'This supports comfort and nourishment and is not a substitute for medical care. Cool broth quickly and refrigerate within 2 hours. Cooked bones splinter: never give them to pets, and onion and garlic are toxic to dogs and cats. Celery is a common allergen in Europe; leave it out if needed. Kombu is high in iodine, so use it sparingly for anyone with thyroid conditions.',
     lore:
@@ -392,10 +393,10 @@ export const KITCHEN: Premade[] = [
     safety:
       'Chamomile is in the daisy family; avoid it if you are allergic to ragweed, chrysanthemums or marigolds. Avoid medicinal amounts in pregnancy and check with a doctor if you take sedatives, blood thinners or thyroid medication (lemon balm may interact). These are ordinary culinary amounts for one cup. Never give honey to babies under 12 months.',
     lore:
-      'Chamomile was one of the herbs of the Anglo-Saxon Nine Herbs Charm (as “maythe”), and has been a household calming tea across Europe for centuries; Beatrix Potter’s Mrs Rabbit doses Peter with it. Lemon balm was praised by the medieval Arab physician Avicenna and by Culpeper for “driving away all troublesome cares.” Lavender has a long place in European linen cupboards and sleep pillows. Brewing the cup as a slow ritual is modern practice drawn from these old comforts.',
+      'Chamomile was one of the herbs of the Anglo-Saxon Nine Herbs Charm (as “maythe”), and has been a household calming tea across Europe for centuries; Beatrix Potter’s Mrs Rabbit doses Peter with it. Culpeper writes that balm, praised by the Arabian physicians Serapio and Avicenna, “drives away all troublesome cares and thoughts out of the mind.” Lavender has a long place in European linen cupboards and sleep pillows. Brewing the cup as a slow ritual is modern practice drawn from these old comforts.',
     sources: [
       'The Nine Herbs Charm, Lacnunga (10th–11th century)',
-      'Culpeper, The English Physitian (1652), on balm and chamomile',
+      'Culpeper, The English Physitian (1652; later The Complete Herbal), on balm',
       'Gerard, Herball (1597), on lavender',
     ],
   },
@@ -431,7 +432,7 @@ export const KITCHEN: Premade[] = [
         title: 'Wake the fire',
         instructions:
           'Put the water in a small pan. Add the ginger, cinnamon stick, cloves and peel. Before switching on the heat, hold your hand over the pan and say your one sentence aloud.',
-        spoken: 'Root of fire, bark of sun, I will do the thing I must be done.',
+        spoken: 'Root of fire, bark of sun, I will do the thing that must be done.',
       },
       {
         title: 'Simmer',
@@ -641,7 +642,7 @@ export const KITCHEN: Premade[] = [
       { name: 'A drawing pin or a bit of tape' },
     ],
     preparation:
-      'Bless the salt first: hold the bowl in both hands and breathe on it three times, asking it to guard. List your doorways: front, back, balcony, and, if you like, the windows. Samhain and Imbolc, the old quarter-days when households were renewed, are especially fitting, but do this any time you move in or feel the home needs guarding.',
+      'Bless the salt first: hold the bowl in both hands and breathe on it three times, asking it to guard. List your doorways: front, back, balcony, and, if you like, the windows. Samhain and Imbolc, two of the old Gaelic turning points of the year, are especially fitting, but do this any time you move in or feel the home needs guarding.',
     steps: [
       {
         title: 'Sweep the threshold out',
@@ -683,10 +684,10 @@ export const KITCHEN: Premade[] = [
     safety:
       'Salt is harmful to dogs and cats if they eat a lot of it, and can irritate paws; use the tucked-in-the-corners method if you have pets, and sweep it up after a day. Rowan berries should not be eaten raw. Salt can mark some wooden floors.',
     lore:
-      'Thresholds are protected in folk custom across Europe: Hungarian households sprinkled salt on a new home’s threshold, Russians drew crosses on it, and in Britain and Scandinavia rowan sprigs were fixed over doors against witchcraft and ill-luck, especially on May Eve and Samhain. Horseshoes, iron and witch bottles were buried beneath doorsteps in early modern England. Salt as a purifier is ancient, appearing in Greek and Roman ritual. The combined working here is a modern arrangement of these older, widely shared customs.',
+      'Thresholds are protected in folk custom across Europe. In north-east Scotland, Gregor records pieces of rowan placed over the byre doors on the eve of May Day to keep witches away, and salt and iron at the door are widespread British charms. Horseshoes, iron and witch bottles were buried beneath doorsteps in early modern England. Salt as a purifier is ancient, appearing in Greek and Roman ritual. The combined working here is a modern arrangement of these older, widely shared customs.',
     sources: [
       'Frazer, The Golden Bough (1890–1915), on threshold rites',
-      'Gregor, Notes on the Folk-Lore of the North-East of Scotland (1881), on rowan over doors',
+      'Gregor, Notes on the Folk-Lore of the North-East of Scotland (1881), on rowan over byre doors at Beltane',
       'Merrifield, The Archaeology of Ritual and Magic (on concealed doorway charms)',
     ],
   },
@@ -740,9 +741,9 @@ export const KITCHEN: Premade[] = [
       {
         title: 'The smooring blessing',
         instructions:
-          'In the Hebrides, the woman of the house “smoored” the peat fire each night, banking it so it would last till morning, and said a blessing over it. Say these words from Carmina Gadelica, or adapt them to your own powers.',
+          'In the Hebrides, the woman of the house “smoored” the peat fire each night, banking it so it would last till morning, and said a blessing over it. Say these words, Carmichael’s translation from Carmina Gadelica, or adapt them to your own powers.',
         spoken:
-          'The sacred Three to save, to shield, to surround the hearth, the house, the household, this eve, this night, and every night, each single night.',
+          'The sacred Three to save, to shield, to surround the hearth, the house, the household, this eve, this night, oh! this eve, this night, and every night, each single night. Amen.',
       },
       {
         title: 'Offer and ask',
@@ -772,7 +773,7 @@ export const KITCHEN: Premade[] = [
     lore:
       'The hearth was the sacred centre of the home in many old cultures: the Greeks gave Hestia the first offering of every sacrifice, Rome kept Vesta’s eternal flame tended by the Vestal Virgins, and Irish tradition linked Brigid to the hearth fire, with her flame kept burning at Kildare. The smooring blessing is quoted from Alexander Carmichael’s Carmina Gadelica (1900), which records nightly prayers said over the banked peat fire in the Scottish Highlands and Islands. The kitchen altar is a modern kitchen-witch practice that carries this forward to the stove.',
     sources: [
-      'Carmichael, Carmina Gadelica, vol. 1 (1900), “Smooring the Fire”',
+      'Carmichael, Carmina Gadelica, vol. I (1900), no. 84, “Smooring the Fire” (Smaladh an Teine)',
       'Homeric Hymn 29, To Hestia',
       'Gerald of Wales, Topographia Hibernica (c. 1188), on Brigid’s fire at Kildare',
     ],
@@ -827,7 +828,7 @@ export const KITCHEN: Premade[] = [
       {
         title: 'Turn and welcome',
         instructions:
-          'Turn the broom bristles-up and stand it by the door (a folk sign that the work is done and guards the entry). Step back inside, facing the house, and name what you welcome in instead.',
+          'Turn the broom bristles-up and stand it by the door as your own sign that the work is done. Step back inside, facing the house, and name what you welcome in instead.',
         spoken: 'Fresh and new, fresh and new, come in, come in, the door is through.',
       },
     ],
@@ -935,7 +936,7 @@ export const KITCHEN: Premade[] = [
       { name: 'A small coin' },
     ],
     preparation:
-      'If you can, do this before the furniture arrives, when the rooms are empty. Bring the bread and salt into the house first, before anything else: that is the old custom. Sweep the house through once to clear the previous occupants’ energy, with thanks to them.',
+      'If you can, do this before the furniture arrives, when the rooms are empty. Bring the bread and salt into the house first, before anything else: that is the old custom. The sweeping comes straight after, with thanks to the previous occupants.',
     steps: [
       {
         title: 'Carry in bread and salt',
@@ -1185,10 +1186,10 @@ export const KITCHEN: Premade[] = [
     safety:
       'Use only food-safe culinary herbs; never add wormwood, rue, camphor or essential oils to anything you will ingest. Keep the herbs fully submerged and refrigerate the strained vinegar, using it within 3 to 4 months; discard if mould appears. Garlic is toxic to pets. Vinegar is acidic: dilute it before drinking, rinse your mouth afterwards to protect tooth enamel, and avoid it as a tonic if you have reflux or stomach ulcers. Do not use on marble or natural stone.',
     lore:
-      'The Four Thieves legend is told of plague-time Marseille or Toulouse: thieves who robbed the sick and dead were protected by an herbal vinegar and traded the recipe for leniency. References are scant before the 1800s, and the best-known “original” recipe, said to have been posted in Marseille, was published by René-Maurice Gattefossé in 1937. Herbal vinegars (vinaigre des quatre voleurs) were sold by eighteenth- and nineteenth-century apothecaries as preservatives against infection. Some historians note the herbs may have repelled fleas, the real carriers of plague.',
+      'The Four Thieves legend is told of plague-time Marseille or Toulouse: thieves who robbed the sick and dead were protected by an herbal vinegar and traded the recipe for leniency. The story is attached to many dates and both cities, and is best treated as legend. The best-known “original” recipe was printed by René-Maurice Gattefossé in 1937 as a copy of one said to have been posted in Marseille during a plague; it calls for wormwood, meadowsweet, marjoram, sage, cloves, angelica, rosemary, horehound and camphor. Nineteenth-century German and French pharmacopoeias list vinaigre des quatre voleurs (acetum quatuor latronum) among their aromatic and “antiseptic” vinegars. Some historians note the herbs may have repelled fleas, the real carriers of plague.',
     sources: [
-      'Gattefossé, Aromathérapie (1937), the posted Marseille recipe',
-      'Historical pharmacopoeias of the 18th–19th centuries (vinaigre des quatre voleurs)',
+      'Gattefossé, Aromathérapie (1937), the Marseille recipe',
+      'Nineteenth-century pharmacopoeia commentaries (acetum quatuor latronum, vinaigre des quatre voleurs)',
     ],
   },
   {
@@ -1291,7 +1292,7 @@ export const KITCHEN: Premade[] = [
       {
         title: 'Arrange the four elements',
         instructions:
-          'Set the candle in the centre, water to the west, salt or soil to the north, rosemary or incense to the east, and keep the south for the flame. Sit facing them. Take a few slow breaths and let the room grow quiet.',
+          'Set the candle to the south, water to the west, salt or soil to the north, and rosemary or incense to the east, leaving the centre clear for your book and token. Sit facing them. Take a few slow breaths and let the room grow quiet.',
         minutes: 3,
       },
       {
@@ -1342,9 +1343,9 @@ export const KITCHEN: Premade[] = [
     closing:
       'Write down the date and anything you felt in your book. Pour the water onto the earth. Wear or carry the token. At the end of your chosen span, renew, revise or complete your dedication.',
     safety:
-      'Do not hold your hand over the flame, and keep the candle away from loose sleeves and paper. Olive oil is fine on skin for most people; patch-test if you have sensitive skin and avoid using essential oils undiluted.',
+      'Do not hold your hand over the flame, and keep the candle away from loose sleeves and paper. Olive oil is fine on skin for most people; patch-test if you have sensitive skin and avoid using essential oils undiluted. If you burn incense, ventilate the room, and use the rosemary sprig instead if you or anyone in the home has asthma; keep smoke away from pets and birds.',
     lore:
-      'Self-dedication is a modern practice that grew in the 1980s and 1990s alongside solitary witchcraft, popularised in books for practitioners without a coven. It is deliberately distinct from initiation, which is conferred by a coven within a lineage. The “year and a day” comes from medieval law and folk custom, where it marked a full term (for example in tenancies and handfasting). The four-element structure follows the general shape of modern Pagan ritual.',
+      'Self-dedication is a modern practice that grew in the 1980s and 1990s alongside solitary witchcraft, popularised in books for practitioners without a coven. It is deliberately distinct from initiation, which is conferred by a coven within a lineage. The “year and a day” comes from medieval law and folk custom, where it marked a full legal term (later folklore also gave it to trial “handfast” marriages). The four-element structure follows the general shape of modern Pagan ritual.',
     sources: [
       'Hutton, The Triumph of the Moon (on the rise of solitary practice)',
       'Folk and legal use of “a year and a day” in medieval English and Scots law',
@@ -1410,7 +1411,7 @@ export const KITCHEN: Premade[] = [
       'Greeting the sun is among the oldest devotional habits: the Gayatri mantra of the Rig Veda is recited at sunrise, and Carmina Gadelica records Hebridean women and men saluting the sun each morning. A short, repeatable daily practice is now the backbone of most modern solitary witchcraft, which lacks a coven’s regular meetings.',
     sources: [
       'Rig Veda 3.62.10 (Griffith, 1896), the Gayatri at dawn',
-      'Carmichael, Carmina Gadelica (1900), “Hail to the Sun”',
+      'Carmichael, Carmina Gadelica, vol. III (1940), “The Sun”, with notes on saluting the morning sun',
     ],
   },
   {
@@ -1481,9 +1482,9 @@ export const KITCHEN: Premade[] = [
     safety:
       'Snuff the candle before you go to bed and never leave it burning unattended or near bedding. Chamomile can affect people with ragweed allergies.',
     lore:
-      'The nightly review of the day has deep roots: Pythagoras was said to have taught his students to ask each evening “What have I done amiss? What good have I done? What have I left undone?”, and the Stoic Seneca describes the same practice. Carmina Gadelica records many night blessings said over the fire and the bed. This rite combines the ancient examination with modern gratitude journalling.',
+      'The nightly review of the day has deep roots: The Golden Verses attributed to Pythagoras tell the reader to review the day before sleep, asking “Wherein have I done amiss? What have I done? What have I omitted that I ought to have done?”, and the Stoic Seneca describes the same practice. Carmina Gadelica records many night blessings said over the fire and the bed. This rite combines the ancient examination with modern gratitude journalling.',
     sources: [
-      'The Golden Verses of Pythagoras (on the evening review)',
+      'The Golden Verses of Pythagoras, ed. Firth (1904), lines 40–42, on the evening review',
       'Seneca, On Anger 3.36',
       'Carmichael, Carmina Gadelica (1900), night blessings',
     ],

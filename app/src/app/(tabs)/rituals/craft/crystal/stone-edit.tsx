@@ -1,13 +1,13 @@
 import { router, useLocalSearchParams, type Href } from 'expo-router';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
 import { Body, Card, Chip, Chips, Field, Notice, RitualScreen, SectionLabel, Title, ui } from '../../../../../components/rituals/ui';
 import { careByKey, careBadges, findCare, STONE_CARE } from '../../../../../lib/craft/crystal/care';
 import { STONES } from '../../../../../lib/craft/crystal/collections';
-import { isDateKey, normaliseStone, STONE_FORMS, type Stone, type StoneForm } from '../../../../../lib/craft/crystal/stones';
-import { addEntry, updateEntry, useCraft } from '../../../../../lib/craft/store';
+import { isDateKey, normaliseStone, STONE_FORMS, type Stone, type StoneForm as Form } from '../../../../../lib/craft/crystal/stones';
+import { addEntry, updateEntry, useCraft, type CraftEntry } from '../../../../../lib/craft/store';
 
 const tidy = (s: string) => s.toLowerCase().replace(/[’'`]/g, '').trim();
 const POPULAR = ['amethyst', 'clear_quartz', 'rose_quartz', 'black_tourmaline', 'citrine', 'selenite', 'carnelian', 'moonstone', 'labradorite', 'smoky_quartz', 'obsidian', 'tiger_eye'];
@@ -16,32 +16,36 @@ const POPULAR = ['amethyst', 'clear_quartz', 'rose_quartz', 'black_tourmaline', 
 export default function StoneEdit() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const { entries, ready } = useCraft<Stone>(STONES);
+  if (id && !ready) {
+    return (
+      <RitualScreen back="Stone">
+        <Title eyebrow="My stones">Edit stone</Title>
+      </RitualScreen>
+    );
+  }
   const existing = id ? entries.find((e) => e.id === id) ?? null : null;
+  if (id && !existing) {
+    return (
+      <RitualScreen back="My stones">
+        <Title eyebrow="My stones">Edit stone</Title>
+        <Body muted>This stone isn’t in your collection any more.</Body>
+      </RitualScreen>
+    );
+  }
+  return <StoneForm key={existing?.id ?? 'new'} existing={existing} />;
+}
 
-  const [name, setName] = useState('');
-  const [key, setKey] = useState<string | null>(null);
-  const [form, setForm] = useState<StoneForm>('tumbled');
-  const [source, setSource] = useState('');
-  const [acquired, setAcquired] = useState('');
-  const [notes, setNotes] = useState('');
-  const [intentions, setIntentions] = useState('');
+function StoneForm({ existing }: { existing: CraftEntry<Stone> | null }) {
+  const start = existing ? normaliseStone(existing.data) : null;
+  const [name, setName] = useState(start?.name ?? '');
+  const [key, setKey] = useState<string | null>(start?.key ?? null);
+  const [form, setForm] = useState<Form>(start?.form ?? 'tumbled');
+  const [source, setSource] = useState(start?.source ?? '');
+  const [acquired, setAcquired] = useState(start?.acquired ?? '');
+  const [notes, setNotes] = useState(start?.notes ?? '');
+  const [intentions, setIntentions] = useState(start ? start.intentions.join('\n') : '');
   const [problem, setProblem] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-  const filled = useRef(false);
-
-  useEffect(() => {
-    // Only when the stone first arrives, so typing is never overwritten.
-    if (!ready || filled.current || !existing) return;
-    filled.current = true;
-    const s = normaliseStone(existing.data);
-    setName(s.name);
-    setKey(s.key ?? null);
-    setForm(s.form);
-    setSource(s.source ?? '');
-    setAcquired(s.acquired ?? '');
-    setNotes(s.notes ?? '');
-    setIntentions(s.intentions.join('\n'));
-  }, [ready, existing]);
 
   const picked = careByKey(key);
   const matches = useMemo(() => {
