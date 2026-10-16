@@ -108,11 +108,11 @@
   }
 
   /** Planned rituals still to come, each with an alert before it begins. */
-  function ritualReminderEvents(settings, plans, now, G) {
+  function ritualReminderEvents(settings, plans, now, G, templateFor = () => null) {
     if (!settings.rituals) return [];
     return (plans || [])
       .filter((plan) => plan && !plan.doneAt)
-      .map((plan) => G.calendarEvent.planEvent(plan))
+      .map((plan) => G.calendarEvent.planEvent(plan, templateFor(plan) || null))
       .filter((spec) => spec && spec.start.getTime() > now.getTime())
       .map((spec) => ({ ...spec, key: spec.key.replace(/^plan-/, "reminder-plan-"), alarms: [-settings.ritualLeadMinutes], notes: spec.notes.replace("Planned in the Salt & Sovereignty app.", FOOTER) }));
   }
@@ -144,10 +144,10 @@
   }
 
   /** Every reminder as a calendar event, soonest first. */
-  function reminderEvents({ settings, plans, appSettings, now }, G) {
+  function reminderEvents({ settings, plans, appSettings, now, templateFor }, G) {
     return [
       ...moonReminderEvents(settings, now, G),
-      ...ritualReminderEvents(settings, plans, now, G),
+      ...ritualReminderEvents(settings, plans, now, G, templateFor),
       ...devotionReminderEvents(settings, now, G),
       ...sacredReminderEvents(settings, appSettings, now, G),
     ].sort((a, b) => a.start.getTime() - b.start.getTime());

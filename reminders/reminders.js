@@ -130,7 +130,7 @@
   }
 
   function yourCalendarHtml() {
-    const events = L.reminderEvents({ settings, plans, appSettings, now: now() }, G);
+    const events = L.reminderEvents({ settings, plans, appSettings, now: now(), templateFor }, G);
     return `<section class="sp-section" aria-labelledby="gd-file"><h2 class="sp-label" id="gd-file">Into your calendar</h2>
       <div class="sp-card sp-card--gold">
         <p role="status" aria-live="polite">${events.length ? `${events.length} ${events.length === 1 ? "reminder is" : "reminders are"} ready for your calendar, each with its alerts.` : "Choose something above and its reminders will gather here."}</p>
@@ -209,7 +209,7 @@
 
   function download(kind) {
     const at = now();
-    const events = kind === "sky" ? L.skyEvents({ calendar, phases: settings.phases, appSettings, now: at }, G) : L.reminderEvents({ settings, plans, appSettings, now: at }, G);
+    const events = kind === "sky" ? L.skyEvents({ calendar, phases: settings.phases, appSettings, now: at }, G) : L.reminderEvents({ settings, plans, appSettings, now: at, templateFor }, G);
     if (!events.length) return;
     const blob = new Blob([G.calendarEvent.toIcs(events, at)], { type: "text/calendar;charset=utf-8" });
     const url = URL.createObjectURL(blob);
@@ -293,7 +293,21 @@
     return undefined;
   });
 
+  // Plans and templates come through the Rituals pages' own store (rituals/js/rituals-store.js),
+  // so plans made offline are sent first and a template's timers set each event's length.
+  let templates = [];
+  const templateFor = (plan) => (global.SaltCore?.rituals?.plans?.planTemplate ? global.SaltCore.rituals.plans.planTemplate(plan, templates) : null);
+
   async function loadPlans(user) {
+    if (global.RitualsStore?.loadPlans) {
+      try {
+        const [list, found] = await Promise.all([global.RitualsStore.loadPlans(), global.RitualsStore.templates().catch(() => [])]);
+        templates = found || [];
+        return list || [];
+      } catch {
+        /* fall back to reading them here */
+      }
+    }
     if (user && global.db) {
       try {
         const { data, error } = await global.db.from("ritual_plans").select("*").eq("user_id", user.id);

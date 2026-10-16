@@ -79,6 +79,7 @@
     "/more/library/closed": "/library/closed/",
     "/more/library/sourcing": "/library/sourcing/",
     "/more/support": "/more/support/",
+    "/more/settings/deities": "/more/settings/deities/",
     "/more/help": "/help/",
     "/more/community": "/grimoire/community-grimoire.html",
     "/more/community/offer": "/submit/",
