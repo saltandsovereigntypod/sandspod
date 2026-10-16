@@ -71,7 +71,7 @@ export default function FolkPractice() {
       )}
 
       <List>
-        <Row icon="rituals" title="Folk workings" detail="Premade rituals and spells; filter by Traditional & folk" last onPress={() => router.push('/rituals/premade' as Href)} />
+        <Row icon="rituals" title="Folk workings" detail="Premade rituals and spells; filter by Traditional & folk" last onPress={() => router.push({ pathname: '/rituals/premade', params: { practice: 'folk' } })} />
       </List>
     </RitualScreen>
   );

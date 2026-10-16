@@ -11,11 +11,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useMemo, useState } from 'react';
 
 import { uuid } from '../rituals/lifecycle';
+import { supabase } from '../supabase';
 import { mergeEntries, type CraftEntry } from './merge';
 
 export { mergeEntries, type CraftEntry };
-import { supabase } from '../supabase';
-
 
 type Row = { id: string; user_id: string; collection: string; data: unknown; deleted_at: string | null; created_at: string; updated_at: string };
 

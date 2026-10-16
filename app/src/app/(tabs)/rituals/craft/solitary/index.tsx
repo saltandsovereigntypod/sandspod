@@ -58,7 +58,7 @@ export default function SolitaryPractice() {
           title="Premade workings"
           detail="Every ritual and spell, filter by Solitary"
           last
-          onPress={() => router.push('/rituals/premade')}
+          onPress={() => router.push({ pathname: '/rituals/premade', params: { practice: 'solitary' } })}
         />
       </List>
     </RitualScreen>

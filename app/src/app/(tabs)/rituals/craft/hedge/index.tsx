@@ -112,7 +112,7 @@ export default function HedgePractice() {
       )}
 
       <List>
-        <Row icon="rituals" title="Hedge workings" detail="Premade rituals and spells; filter by Hedge" last onPress={() => router.push('/rituals/premade' as Href)} />
+        <Row icon="rituals" title="Hedge workings" detail="Premade rituals and spells; filter by Hedge" last onPress={() => router.push({ pathname: '/rituals/premade', params: { practice: 'hedge' } })} />
       </List>
     </RitualScreen>
   );

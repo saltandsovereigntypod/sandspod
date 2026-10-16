@@ -69,7 +69,7 @@ export default function CosmicPractice() {
           title="Cosmic workings"
           detail="Premade rituals and spells; filter by Cosmic & celestial"
           last
-          onPress={() => router.push('/rituals/premade' as Href)}
+          onPress={() => router.push({ pathname: '/rituals/premade', params: { practice: 'cosmic' } })}
         />
       </List>
     </RitualScreen>

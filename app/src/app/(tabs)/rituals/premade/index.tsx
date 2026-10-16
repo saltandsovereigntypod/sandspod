@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 
@@ -24,7 +24,8 @@ export default function PremadeBook() {
   const ctx = useMemo(() => forYouContext(settings, new Date()), [settings]);
   const suggested = useMemo(() => forYou(ctx), [ctx]);
   const [query, setQuery] = useState('');
-  const [practice, setPractice] = useState<string | null>(null);
+  const params = useLocalSearchParams<{ practice?: string }>();
+  const [practice, setPractice] = useState<string | null>(PRACTICES.some((p) => p.id === params.practice) ? params.practice! : null);
   const [intention, setIntention] = useState<string | null>(null);
   const [kind, setKind] = useState<'ritual' | 'spell' | null>(null);
   const [path, setPath] = useState<string | null>(null);

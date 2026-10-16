@@ -73,7 +73,7 @@ export default function SeaPractice() {
           title="Premade sea workings"
           detail={workings ? `${workings} rituals and spells · filter by Sea` : 'Rituals and spells for every practice'}
           last
-          onPress={() => router.push('/rituals/premade')}
+          onPress={() => router.push({ pathname: '/rituals/premade', params: { practice: 'sea' } })}
         />
       </List>
     </RitualScreen>

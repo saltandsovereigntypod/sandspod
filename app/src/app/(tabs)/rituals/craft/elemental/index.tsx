@@ -45,7 +45,7 @@ export default function ElementalPractice() {
       </View>
 
       <List>
-        <Row icon="rituals" title="Elemental workings" detail="Premade rituals and spells; filter by Elemental" last onPress={() => router.push('/rituals/premade' as Href)} />
+        <Row icon="rituals" title="Elemental workings" detail="Premade rituals and spells; filter by Elemental" last onPress={() => router.push({ pathname: '/rituals/premade', params: { practice: 'elemental' } })} />
       </List>
     </RitualScreen>
   );

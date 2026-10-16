@@ -65,7 +65,7 @@ export default function CrystalPractice() {
       </View>
 
       <List>
-        <Row icon="rituals" title="Crystal workings" detail="Premade rituals and spells; filter by Crystal" last onPress={() => router.push('/rituals/premade' as Href)} />
+        <Row icon="rituals" title="Crystal workings" detail="Premade rituals and spells; filter by Crystal" last onPress={() => router.push({ pathname: '/rituals/premade', params: { practice: 'crystal' } })} />
       </List>
     </RitualScreen>
   );

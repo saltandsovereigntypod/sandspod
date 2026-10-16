@@ -56,7 +56,7 @@ export default function KitchenPractice() {
           title="Premade workings"
           detail="Every ritual and spell, filter by Kitchen & hearth"
           last
-          onPress={() => router.push('/rituals/premade')}
+          onPress={() => router.push({ pathname: '/rituals/premade', params: { practice: 'kitchen' } })}
         />
       </List>
     </RitualScreen>

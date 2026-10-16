@@ -78,7 +78,7 @@ export default function EclecticPractice() {
           title="All premade workings"
           detail="Rituals and spells from every practice · filter by Eclectic"
           last
-          onPress={() => router.push('/rituals/premade')}
+          onPress={() => router.push({ pathname: '/rituals/premade', params: { practice: 'eclectic' } })}
         />
       </List>
     </RitualScreen>

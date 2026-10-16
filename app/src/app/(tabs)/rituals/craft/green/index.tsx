@@ -54,7 +54,7 @@ export default function GreenPractice() {
       </View>
 
       <List>
-        <Row icon="rituals" title="Green workings" detail="Premade rituals and spells; filter by Green" last onPress={() => router.push('/rituals/premade' as Href)} />
+        <Row icon="rituals" title="Green workings" detail="Premade rituals and spells; filter by Green" last onPress={() => router.push({ pathname: '/rituals/premade', params: { practice: 'green' } })} />
       </List>
     </RitualScreen>
   );
