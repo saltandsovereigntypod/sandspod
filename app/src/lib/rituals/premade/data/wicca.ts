@@ -242,7 +242,7 @@ export const WICCA: Premade[] = [
       "Consecrating ritual instruments by the four elements comes from the grimoire and ceremonial magic tradition, which Wicca inherited in the mid-twentieth century. In public Wicca the athame (a ritual knife used to direct energy, not to cut), the wand, the chalice and the pentacle are commonly matched with the four elements, though which tool goes with which element varies between groups. This rite is a simple open form.",
     sources: [
       "Hutton, The Triumph of the Moon (on Wicca's debt to ceremonial magic)",
-      "The Key of Solomon, Mathers translation (1888), on the consecration of instruments",
+      "The Key of Solomon the King, Mathers translation (1889), on the consecration of instruments",
     ],
   },
   {
@@ -379,7 +379,7 @@ export const WICCA: Premade[] = [
       "Honouring a Goddess and a God as a divine pair is characteristic of modern Wicca and was shaped in the mid-twentieth century from Romantic-era images of a Moon goddess and a horned or green god. A small daily rite at a household shrine has deep roots across many old religions, from the Roman lararium to the hearth fire. This wording is original.",
     sources: [
       "Hutton, The Triumph of the Moon (on the Goddess and Horned God in modern Paganism)",
-      "Orr, Roman Domestic Religion (on the lararium)",
+      "Orr, 'Roman Domestic Religion', in Aufstieg und Niedergang der römischen Welt II.16.2 (1978), on the lararium",
     ],
   },
   {
@@ -423,7 +423,7 @@ export const WICCA: Premade[] = [
       {
         title: "Moon in the water",
         instructions:
-          "Hold the chalice so the moon or the candle shines in it. Gaze softly at the reflection and let images, words or feelings rise. Don't strain.",
+          "Hold the chalice so the moon or the candle shines in it, with the moonstone or quartz (if you have one) in your other hand, not in the water. Gaze softly at the reflection and let images, words or feelings rise. Don't strain.",
         minutes: 7,
         timed: true,
       },
@@ -451,7 +451,7 @@ export const WICCA: Premade[] = [
       },
     ],
     closing:
-      "Drink the moon water (if it is plain drinking water in a clean cup) or pour it on a houseplant. Place the stone back on the windowsill to bathe in moonlight overnight.",
+      "Pour the water on a houseplant or the earth rather than drinking it, since it has stood open through the rite. Place the stone on the windowsill to bathe in moonlight overnight.",
     safety: `${CANDLE_SAFETY} ${INCENSE_SAFETY} Ground well after raising energy: eat something and put your palms on the floor if you feel light-headed.`,
     lore: MOON_LORE,
     sources: [
@@ -535,7 +535,7 @@ export const WICCA: Premade[] = [
     ],
     closing:
       "Leave the ancestors' plate outside overnight at the foot of a tree or on the step, then compost it in the morning. Wash their cup last and put it away carefully.",
-    safety: `${CANDLE_SAFETY} If you burn paper, do it in a fireproof vessel on a heatproof surface with water nearby, a small piece at a time. Grief can be heavy: if this rite stirs up more than you can hold, stop and reach out to someone you trust.`,
+    safety: `${CANDLE_SAFETY} If you burn paper, do it in a fireproof vessel on a heatproof surface with water nearby, a small piece at a time. Grief can be heavy: if this rite stirs up more than you can hold, stop and reach out to someone you trust, your doctor, a bereavement service or a grief counsellor. If you are in crisis, call your local emergency number or a crisis line.`,
     lore:
       "Samhain was a major Gaelic seasonal festival at the start of winter, attested in medieval Irish literature as a time of assemblies and of contact with the otherworld. The silent or “dumb” supper comes from later folk custom in Britain, Ireland and Appalachia, where it was mostly a divination to glimpse a future spouse; modern Pagans have reshaped it into a supper for the ancestors. Setting a place for the dead also appears in many European All Souls customs. Samhain as one of eight Wiccan sabbats dates from the 1950s.",
     sources: [
@@ -581,7 +581,7 @@ export const WICCA: Premade[] = [
       {
         title: "Light the Yule log",
         instructions:
-          "Light the candles on or beside the log one at a time. If you kept a piece of last year's log or greenery, touch it to the first flame (outdoors, or just hold it near).",
+          "Light the candles on or beside the log one at a time. If you kept a piece of last year's log or greenery, set it beside the first candle, close but never touching the flame.",
         spoken:
           "Out of the dark the light is born. Burn, little log, for the sun's return, and keep this house warm through the winter.",
         light: true,
@@ -600,18 +600,20 @@ export const WICCA: Premade[] = [
       {
         title: "Keep vigil",
         instructions:
-          "Sit with the flames for as long as you like, reading, singing, or simply watching. If you can, keep a candle burning (attended) late into the night, or set an alarm to rise before dawn.",
+          "Sit with the flames for as long as you like, reading, singing, or simply watching, staying awake and in the room while anything burns. Before you sleep, snuff every candle, and set an alarm to rise before dawn.",
         minutes: 20,
+        snuff: true,
       },
       {
         title: "Greet the sun",
         instructions:
           "At sunrise, go to an east-facing window or step outside. Light the gold candle, raise your hands to the new light, and welcome it.",
         spoken: "Welcome, sun! The wheel has turned. The light is young again, and so am I.",
+        light: true,
       },
       {
         title: "Close the vigil",
-        instructions: "Snuff all the candles. Keep a piece of the log or a sprig of its greenery to start next year's fire.",
+        instructions: "Snuff the gold candle. Keep a piece of the log or a sprig of its greenery to start next year's fire.",
         snuff: true,
       },
     ],

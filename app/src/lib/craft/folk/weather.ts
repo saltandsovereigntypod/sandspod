@@ -189,7 +189,7 @@ export const BY_MONTH: WeatherSaying[][] = [
     {
       saying: 'If on the eighth of June it rain, it foretells a wet harvest.',
       verdict: 'no',
-      note: 'No single day sets the summer.',
+      note: 'No single day sets the weather for a whole summer.',
     },
   ],
   // July
@@ -304,7 +304,7 @@ export const BY_MONTH: WeatherSaying[][] = [
     {
       saying: 'As November, so the following March.',
       verdict: 'no',
-      note: 'No measurable link.',
+      note: 'Records show no measurable link between the two months.',
     },
   ],
   // December

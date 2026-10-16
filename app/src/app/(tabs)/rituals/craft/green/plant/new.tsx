@@ -1,37 +1,42 @@
 import { router, useLocalSearchParams, type Href } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
 import { Body, Chip, Chips, Field, Notice, RitualScreen, SectionLabel, Title, ui } from '../../../../../../components/rituals/ui';
 import { DayPicker } from '../../../../../../lib/craft/green/DayPicker';
 import { asPlant, herbName, matchHerbs, newPlant, PLANTS, type Plant } from '../../../../../../lib/craft/green/garden';
-import { addEntry, updateEntry, useCraft } from '../../../../../../lib/craft/store';
+import { addEntry, updateEntry, useCraft, type CraftEntry } from '../../../../../../lib/craft/store';
 import { localDateKey } from '../../../../../../lib/rituals/lifecycle';
 
-export default function PlantForm() {
+export default function PlantFormScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
-  const { entries } = useCraft<unknown>(PLANTS);
+  const { entries, ready } = useCraft<unknown>(PLANTS);
   const existing = id ? entries.find((e) => e.id === id) ?? null : null;
+
+  if (id && !existing) {
+    return (
+      <RitualScreen back="My garden">
+        <Title>My garden</Title>
+        <Body>{ready ? 'This plant isn’t in your garden any more.' : 'Opening…'}</Body>
+      </RitualScreen>
+    );
+  }
+  // Keyed, so the form starts afresh from the plant once it has arrived.
+  return <PlantForm key={existing?.id ?? 'new'} existing={existing} />;
+}
+
+function PlantForm({ existing }: { existing: CraftEntry<unknown> | null }) {
   const plant = existing ? asPlant(existing.data) : null;
 
-  const [name, setName] = useState('');
-  const [herb, setHerb] = useState<string | null>(null);
-  const [place, setPlace] = useState('');
+  const [name, setName] = useState(plant?.name ?? '');
+  const [herb, setHerb] = useState<string | null>(plant?.herb ?? null);
+  const [place, setPlace] = useState(plant?.place ?? '');
   const [startedBy, setStartedBy] = useState<'sowed' | 'planted'>('planted');
   const [started, setStarted] = useState<string | null>(localDateKey(new Date()));
-  const [notes, setNotes] = useState('');
+  const [notes, setNotes] = useState(plant?.notes ?? '');
   const [saving, setSaving] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
-
-  useEffect(() => {
-    // Only when the plant first arrives, so typing is never overwritten.
-    if (!plant) return;
-    setName(plant.name);
-    setHerb(plant.herb ?? null);
-    setPlace(plant.place);
-    setNotes(plant.notes);
-  }, [existing?.id]);
 
   const suggestions = herb ? [] : matchHerbs(name);
 

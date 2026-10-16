@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Icon } from '../../../../../components/Icon';
@@ -24,9 +24,9 @@ const SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'O
 export default function InSeasonNow() {
   const place = usePlace();
   const [month, setMonth] = useState(() => new Date().getMonth() + 1);
-  const [hemisphere, setHemisphere] = useState<Hemisphere>(hemisphereOf(place?.latitude));
-  // Follow the saved place when it loads or changes.
-  useEffect(() => setHemisphere(hemisphereOf(place?.latitude)), [place?.latitude]);
+  // The saved place decides, unless the person picks one here.
+  const [chosen, setHemisphere] = useState<Hemisphere | null>(null);
+  const hemisphere = chosen ?? hemisphereOf(place?.latitude);
 
   const now = useMemo(() => inSeason(month, hemisphere), [month, hemisphere]);
   const thisMonth = month === new Date().getMonth() + 1;
