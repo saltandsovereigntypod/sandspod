@@ -797,7 +797,7 @@ function Flame({ layout }: { layout: FlameLayout }) {
   const [split] = useState(() => new Animated.Value(0)); // now and then the flame parts into tongues
   const [tongues, setTongues] = useState<number[]>([1]);
   // The drawing is fitted into its box (centred), so its foot isn't the box's bottom: turn and stretch it from the foot.
-  const [box, setBox] = useState<{ w: number; foot: number } | null>(null);
+  const [box, setBox] = useState<{ w: number; h: number; foot: number } | null>(null);
   // Reduce motion: a steady flame instead of a flickering one.
   const still = useReducedMotion();
   useEffect(() => {
@@ -871,7 +871,8 @@ function Flame({ layout }: { layout: FlameLayout }) {
   const tipRotate = Animated.add(lean, tipLean).interpolate({ inputRange: [-40, 40], outputRange: ['-40deg', '40deg'] });
   const tipScaleY = Animated.multiply(scaleY, tipTall);
   const skewX = skew.interpolate({ inputRange: [-20, 20], outputRange: ['-20deg', '20deg'] });
-  const origin = box ? { transformOrigin: `50% ${box.foot}px` } : null;
+  // Turned and stretched from its foot on the wick: shift the foot to the middle, transform, shift back (transformOrigin in pixels breaks animated views on iOS).
+  const pivot = box ? box.foot - box.h / 2 : 0;
   const haloScale = tall.interpolate({ inputRange: [0.6, 1.5], outputRange: [0.8, 1.15] });
 
   return (
@@ -894,7 +895,7 @@ function Flame({ layout }: { layout: FlameLayout }) {
         onLayout={(e) => {
           const { width: w, height: h } = e.nativeEvent.layout;
           const drawn = Math.min(w / 10, h / 18) * 18;
-          setBox({ w, foot: h / 2 + drawn / 2 - drawn * (0.6 / 18) });
+          setBox({ w, h, foot: h / 2 + drawn / 2 - drawn * (0.6 / 18) });
         }}
       >
         {/* Tongues it parts into, now and then, leaning out from the wick. */}
@@ -903,15 +904,16 @@ function Flame({ layout }: { layout: FlameLayout }) {
             key={side}
             style={[
               StyleSheet.absoluteFill,
-              origin,
               {
                 opacity: Animated.multiply(split, glow),
                 transform: [
                   { translateX: split.interpolate({ inputRange: [0, 1], outputRange: [0, side * (box?.w ?? 4) * 0.24] }) },
+                  { translateY: pivot },
                   { rotate },
                   { rotate: split.interpolate({ inputRange: [0, 1], outputRange: ['0deg', `${side * 20}deg`] }) },
                   { scaleY: Animated.multiply(split.interpolate({ inputRange: [0, 1], outputRange: [0.3, side < 0 ? 0.72 : 0.62] }), tremble) },
                   { scaleX: split.interpolate({ inputRange: [0, 1], outputRange: [0.4, 0.62] }) },
+                  { translateY: -pivot },
                 ],
               },
             ]}
@@ -924,14 +926,14 @@ function Flame({ layout }: { layout: FlameLayout }) {
           </Animated.View>
         ))}
         {/* The body: a round foot, one side fuller than the other as it moves. */}
-        <Animated.View style={[StyleSheet.absoluteFill, origin, { opacity: glow, transform: [{ rotate }, { skewX }, { scaleY }, { scaleX }] }]}>
+        <Animated.View style={[StyleSheet.absoluteFill, { opacity: glow, transform: [{ translateY: pivot }, { rotate }, { skewX }, { scaleY }, { scaleX }, { translateY: -pivot }] }]}>
           <Svg width="100%" height="100%" viewBox="0 0 10 18">
             <FlameDefs />
             <Path d={FLAME_BODY} fill="url(#flame-body)" />
           </Svg>
         </Animated.View>
         {/* The tip, swinging and stretching on its own, so the flame bends and reaches. */}
-        <Animated.View style={[StyleSheet.absoluteFill, origin, { opacity: glow, transform: [{ rotate: tipRotate }, { scaleY: tipScaleY }, { scaleX }] }]}>
+        <Animated.View style={[StyleSheet.absoluteFill, { opacity: glow, transform: [{ translateY: pivot }, { rotate: tipRotate }, { scaleY: tipScaleY }, { scaleX }, { translateY: -pivot }] }]}>
           <Svg width="100%" height="100%" viewBox="0 0 10 18">
             <FlameDefs />
             <Path d={FLAME_TONGUE} fill="url(#flame-body)" />
