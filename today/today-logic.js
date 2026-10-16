@@ -74,10 +74,10 @@
   const parseCoordinate = (text) => (String(text ?? "").trim() === "" ? NaN : Number(String(text).trim().replace(",", ".")));
 
   // ── Links ──────────────────────────────────────────────────────────────
-  /** A Living Library entry's page in the website's Grimoire. */
+  /** A Living Library entry's public page on the website. */
   function libraryHref(entry) {
     if (!entry) return null;
-    if (entry.traditionalRef) return `/grimoire/?entity=${encodeURIComponent(entry.traditionalRef)}`;
+    if (entry.traditionalRef) return `/library/entry/?entity=${encodeURIComponent(entry.traditionalRef)}`;
     return null;
   }
 
@@ -97,7 +97,7 @@
   /**
    * The website's page for one of the app's routes. The site mirrors the app's
    * routes as folders and puts ids in the query string ("/rituals/premade/?id=x").
-   * Library entries open in the Grimoire.
+   * Library entries open on the public Library page.
    */
   function siteHref(appHref) {
     let path = typeof appHref === "string" ? appHref : appHref?.pathname || "/";
@@ -111,8 +111,10 @@
 
     const library = path.match(/^\/(?:today|rituals|grimoire|more)\/library\/([^/?#]+)/);
     if (library) {
-      const ref = libraryIdToRef(decodeURIComponent(library[1]));
-      return ref ? `/grimoire/?entity=${encodeURIComponent(ref)}` : "/grimoire/";
+      const id = decodeURIComponent(library[1]);
+      const ref = libraryIdToRef(id);
+      // A candle style ("traditional:candle:styles.tea_light") shares its parent's reference, so it goes by its id.
+      return ref ? `/library/entry/?entity=${encodeURIComponent(id.split(":")[2].includes(".") ? id : ref)}` : "/library/";
     }
     // Pages the website keeps somewhere else (as help/web-notes.js maps them).
     if (path === "/rituals/craft") return "/practice/";

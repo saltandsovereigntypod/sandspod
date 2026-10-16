@@ -67,7 +67,7 @@ test("html helpers escape what people write and mark chips pressed", () => {
 
 test("links: premade and Library ids become site addresses", () => {
   assert.equal(kit.href.premade("hedge-ancestor-candle-evening"), "/rituals/premade/?id=hedge-ancestor-candle-evening");
-  assert.equal(kit.href.library("traditional:herb:rosemary"), "/grimoire/?entity=traditional%2Fherb%2Frosemary");
+  assert.equal(kit.href.library("traditional:herb:rosemary"), "/library/entry/?entity=traditional%2Fherb%2Frosemary");
   assert.equal(kit.href.tool("green", "plant", "id=x"), "/practice/green/plant/?id=x");
 });
 

@@ -10,7 +10,7 @@
   const SECTION_NOTES = {
     "getting-started": "On the website, the same tabs sit in the bar at the top of the page on a computer and along the bottom on a phone: Today, Altar, Grimoire, Rituals, Podcast and More. Where a step says tap, click.",
     altar: "On the website, the Altar is its own page (Altar in the bar). Most tools are there under the same names; a few, like turning the phone sideways or the home screen widget, belong to the app alone.",
-    grimoire: "On the website, the Grimoire opens your Book of Shadows with the Living Library shelves beside it.",
+    grimoire: "On the website, the Grimoire opens your Book of Shadows with the Living Library shelves beside it. Anyone can read the Living Library itself under More → Living Library.",
     rituals: "On the website, Rituals opens the altar’s Ritual Companion, where you plan, run and journal a ritual.",
     widgets: "Widgets live on a phone’s home screen, so they’re only in the app.",
   };
@@ -40,6 +40,8 @@
     "ritual-plan-calendar": "Reminders lists your planned rituals with an Add to Google Calendar link for each, and puts them all in its calendar file.",
     "ritual-bring-device-rituals": "On the website, rituals from before you signed in come over with the rest of your guest work: More → Settings → Account & Data.",
     "practice-choose": "In More → Settings → My practice.",
+    "library-browse": "Open More, then Living Library. It’s open to everyone, signed in or not.",
+    "library-add-practice": "On the website, My Practice is written in your Book of Shadows. Sign in, open the entry in the Living Library and choose Open in your Book of Shadows.",
     "library-my-path": "In More → Settings → Living Library, under My path.",
     "library-layers-settings": "In More → Settings → Living Library.",
     "library-companion-panel": "In More → Settings → Companion.",
@@ -77,7 +79,7 @@
     "/more/accessibility": "/?sanctuary=more",
     "/more/search": "/grimoire/",
     "/more/journey": "/?sanctuary=journey",
-    "/more/library": "/grimoire/",
+    "/more/library": "/library/",
     "/more/library/closed": "/library/closed/",
     "/more/library/sourcing": "/library/sourcing/",
     "/more/support": "/more/support/",
@@ -101,6 +103,9 @@
     const path = appHref.split("?")[0].replace(/\/+$/, "") || "/";
     if (EXACT[path]) return EXACT[path];
     if (path.startsWith("/more/settings")) return "/?sanctuary=settings";
+    // One Library entry ("/more/library/traditional:herb:rosemary") on its public page.
+    const entry = path.match(/^\/(?:more|today|rituals|grimoire|altar)\/library\/([^/]+)$/);
+    if (entry && !["closed", "sourcing", "practice"].includes(entry[1])) return `/library/entry/?entity=${encodeURIComponent(decodeURIComponent(entry[1]))}`;
     if (path === "/rituals/craft") return "/practice/";
     if (path.startsWith("/rituals/craft/")) return `/practice/${path.slice("/rituals/craft/".length)}/`;
     return `${path}/`;

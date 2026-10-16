@@ -58,8 +58,9 @@
 
   // ── Picking ingredients (IngredientPicker) ──────────────────────────────
   const keyOf = (id) => String(id || "").split(":")[2] || "";
+  // The Library with your own My Practice notes once it loads (app-altar-bridge.js), the built-in one until then.
   let entriesCache = null;
-  const entries = () => (entriesCache ||= A().traditionalEntries());
+  const entries = () => B().library() || (entriesCache ||= A().traditionalEntries());
   const apothecary = () => (typeof global.getApothecaryItems === "function" ? global.getApothecaryItems() : []) || [];
   function pickerResults(query, kinds, suggestFor) {
     const core = A();
@@ -169,7 +170,7 @@
           suggestFor: () => jar.intention,
           chosen: () => jar.layers.map((l) => l.label),
           onPick: (p) => {
-            jar = J.addLayer(jar, J.jarLayer({ label: p.label, source: p.source, herb: p.herb, crystal: p.crystal, type: p.type, apothecaryItemId: p.apothecaryItemId, spoken }, nowIso(), null));
+            jar = J.addLayer(jar, J.jarLayer({ label: p.label, source: p.source, herb: p.herb, crystal: p.crystal, type: p.type, apothecaryItemId: p.apothecaryItemId, spoken }, nowIso(), B().library()));
             spoken = "";
             draw();
           }
@@ -274,7 +275,7 @@
         chosen: () => bag.fillings.map((f) => f.label),
         onPick: (p) => {
           const k = p.type === "crystal" ? "stone" : p.type === "herb" ? "herb" : kind;
-          bag = S.addFilling(bag, S.filling(p.label, k, { herb: p.herb, crystal: p.crystal }, null));
+          bag = S.addFilling(bag, S.filling(p.label, k, { herb: p.herb, crystal: p.crystal }, B().library()));
           draw();
         }
       });

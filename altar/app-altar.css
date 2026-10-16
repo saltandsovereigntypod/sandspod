@@ -231,3 +231,8 @@ body.altar-full-screen .altar-stage { width: min(100vw, calc(100vh * 16 / 9)); m
 
 .app-row > .app-chip, .app-sheet__body > .app-chip { justify-self: start; }
 a.app-button { display: inline-flex; align-items: center; text-decoration: none; }
+
+/* Links that look like the app's chips (an object's page in Crystal, Green, Hedge or the Grimoire). */
+a.app-chip { text-decoration: none; }
+.app-problem { color: #f1c7bb; margin: 4px 0; }
+.app-tabs { display: flex; flex-wrap: wrap; gap: 8px; }

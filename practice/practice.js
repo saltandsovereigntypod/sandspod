@@ -40,8 +40,8 @@
     /** A premade ritual or spell, and the list filtered by a practice. */
     premade: (id) => `/rituals/premade/?id=${enc(id)}`,
     premadeList: (practice) => `/rituals/premade/${practice ? `?practice=${enc(practice)}` : ""}`,
-    /** A Living Library entry ("traditional:herb:rosemary"), opened in the Grimoire. */
-    library: (id) => `/grimoire/?entity=${enc(String(id || "").replace(/:/g, "/"))}`,
+    /** A Living Library entry ("traditional:herb:rosemary"), on its public Library page. */
+    library: (id) => `/library/entry/?entity=${enc(String(id || "").replace(/:/g, "/"))}`,
     /** Settings in the Sanctuary panel (calendars, My practice). */
     settings: "/today/calendar/",
     /** Crisis and support lines (the app's More → Support). */

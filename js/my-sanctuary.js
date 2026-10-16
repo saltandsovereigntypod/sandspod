@@ -158,6 +158,7 @@ function createMySanctuaryPanel() {
           <a href="/today/calendar/">📅 Calendar &amp; holidays</a>
           <a href="/today/sky/">🌙 The sky today</a>
           <a href="/reminders/">🔔 Reminders</a>
+          <a href="/library/">📚 Living Library</a>
           <a href="/library/closed/">🌍 Closed &amp; living traditions</a>
           <a href="/library/sourcing/">🌱 Sourcing with care</a>
         </nav>

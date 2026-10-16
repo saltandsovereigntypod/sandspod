@@ -87,13 +87,13 @@
     const altarId = B().altarId();
     const spells = altarId && uid ? cache.spells.filter((e) => e.data?.altarId === altarId && e.data.objectUid === uid && !e.data.closedAt) : [];
     const petition = core.petitions.isPetitionPaper(saved) ? cache.petitions.find((e) => e.id === core.petitions.petitionEntryOf(saved))?.data || null : null;
-    const wisdom = core.layouts.placementWisdom(saved, null);
+    const wisdom = core.layouts.placementWisdom(saved, B().library());
     const canMirror = (() => {
       const objects = B().doc().objects;
       const index = B().objects().indexOf(object);
       return index >= 0 && core.arrange.mirrorPartner(objects, index) != null;
     })();
-    const tonightWhy = tonight ? core.tonightExplained.whyThisPiece(saved, core.tonightExplained.tonightTheme(tonight.altar, tonight.date), null) : "";
+    const tonightWhy = tonight ? core.tonightExplained.whyThisPiece(saved, core.tonightExplained.tonightTheme(tonight.altar, tonight.date), B().library()) : "";
     if (storyFor !== uid) {
       storyFor = uid;
       showAllStory = false;
@@ -199,6 +199,7 @@
       const lines = showAllStory ? story : story.slice(0, 5);
       out.push(block("Its story", caption(summary) + `<ul class="app-story">${lines.map((line) => `<li>${esc(`${B().dateShort(line.at)} · ${line.text}`)}</li>`).join("")}</ul>` + (story.length > 5 ? chips([{ label: showAllStory ? "Show less" : `Show all ${story.length}`, action: "story-all" }]) : "")));
     }
+    out.push(global.AltarReading?.pageLinkHtml?.(saved) || "");
     out.push(block("Arrange", caption(wisdom) + chips([
       canMirror ? { label: "Mirror its pair", symbol: "⇆", action: "mirror", disabled: locked, hint: `Move its twin to mirror ${label} across the altar` } : null,
       { label: "Layouts", symbol: "✣", action: "layouts", hint: "Layouts with meaning" }
@@ -370,13 +371,13 @@
       const at = nowIso();
       const list = [];
       const oilName = state.typedOil.trim() || state.oil;
-      if (oilName) list.push(core.dressing.dressingEntry("oil", oilName, state.direction, at, null));
-      state.herbs.forEach((h) => list.push(core.dressing.dressingEntry("herb", h, state.direction, at, null)));
+      if (oilName) list.push(core.dressing.dressingEntry("oil", oilName, state.direction, at, B().library()));
+      state.herbs.forEach((h) => list.push(core.dressing.dressingEntry("herb", h, state.direction, at, B().library())));
       return list;
     };
     const draw = (body) => {
       const existing = core.livingState.dressingsOf(B().toSaved(object));
-      const reading = core.dressing.dressingCorrespondences([...existing, ...chosen()], null);
+      const reading = core.dressing.dressingCorrespondences([...existing, ...chosen()], B().library());
       body.querySelector("[data-oils]").innerHTML = B().chips(oils.map((name) => ({ label: name, action: "oil", pressed: !state.typedOil.trim() && state.oil === name, data: { name } })));
       body.querySelector("[data-herbs]").innerHTML = state.herbs.length ? B().chips(state.herbs.map((h) => ({ label: `${h}  ×`, action: "unherb", data: { name: h }, hint: `Remove ${h}` }))) : "";
       body.querySelector("[data-direction]").innerHTML = B().chips(core.dressing.DIRECTIONS.map((d) => ({ label: d.label, action: "direction", pressed: state.direction === d.id, data: { id: d.id } }))) + `<p class="app-caption">${esc(core.dressing.DIRECTIONS.find((d) => d.id === state.direction)?.how)}</p>`;
@@ -794,7 +795,7 @@
       const date = new Date();
       titleEl.textContent = mode.kind === "burn" ? "The burn bowl" : mode.kind === "night" ? "Choose a night" : mode.kind === "bury" ? "Bury it" : "Petition box";
       if (mode.kind === "night") {
-        const nights = P.releaseNights(date, null);
+        const nights = P.releaseNights(date, B().place()?.latitude ?? null);
         sheet.setBody(`<p>${esc(`When will you release “${mode.entry.data.title}”? It stays in the box until then.`)}</p>${nights.map((n, i) => `<div class="app-row"><span class="app-row__title">${esc(n.label)}</span><span class="app-caption">${esc(`${n.why}. ${day(n.date.toISOString())}`)}</span><button type="button" class="app-button app-button--outline" data-night="${i}">Choose</button></div>`).join("")}<button type="button" class="app-chip" data-back>Back to the box</button>`);
         sheet.body.querySelectorAll("[data-night]").forEach((b) => b.addEventListener("click", async () => {
           const night = nights[Number(b.dataset.night)];
@@ -1033,7 +1034,10 @@
     undress: () => change((o) => A().livingState.undressCandle(o, nowIso())),
     "story-all": storyAll,
     mirror,
-    layouts: () => global.AltarReading?.openLayouts(selected())
+    layouts: () => global.AltarReading?.openLayouts(selected()),
+    "stone-log": (button) => global.AltarReading?.logStoneCare(selected(), button.dataset.id),
+    "ancestor-rite": (button) => global.AltarReading?.beginAncestorRite(button.dataset.id),
+    "page-link": () => global.AltarReading?.openPageLink(selected())
   };
 
   document.addEventListener("click", (event) => {

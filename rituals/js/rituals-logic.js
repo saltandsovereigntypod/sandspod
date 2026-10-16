@@ -137,8 +137,8 @@
 
   /** "traditional/herb/rosemary" → the Library entry id "traditional:herb:rosemary". */
   const entryIdOf = (ref) => String(ref || "").replace(/\//g, ":");
-  /** The Library entry in the Grimoire. */
-  const libraryHref = (ref) => `/grimoire/?entity=${encodeURIComponent(entryIdOf(ref))}`;
+  /** The Library entry, on its public Library page. */
+  const libraryHref = (ref) => `/library/entry/?entity=${encodeURIComponent(entryIdOf(ref))}`;
   /** The app's short ingredient card: "traditional/herb/basil" → "herb.basil". */
   const ingredientHref = (ref) => `/rituals/ingredient/?ref=${encodeURIComponent(String(ref || "").replace(/^traditional\//, "").replace("/", "."))}`;
 

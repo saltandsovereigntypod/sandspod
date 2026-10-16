@@ -68,10 +68,10 @@
   function renderIndex() {
     global.document.title = `${TITLE} | Salt & Sovereignty`;
     if (!C.CLOSED_GUIDE_LIVE) {
-      root.innerHTML = `${header({ title: TITLE, back: "/grimoire/", backLabel: "Back to the Library" })}<p>${esc(NOT_OPEN)}</p>`;
+      root.innerHTML = `${header({ title: TITLE, back: "/library/", backLabel: "Back to the Library" })}<p>${esc(NOT_OPEN)}</p>`;
       return;
     }
-    root.innerHTML = `${header({ title: TITLE, eyebrow: "Living Library", back: "/grimoire/", backLabel: "Back to the Library" })}
+    root.innerHTML = `${header({ title: TITLE, eyebrow: "Living Library", back: "/library/", backLabel: "Back to the Library" })}
       ${notice(null)}
       <section class="sp-section" aria-labelledby="gd-why">
         <h2 class="sp-label" id="gd-why">What closed means and why it matters</h2>

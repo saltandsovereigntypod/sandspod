@@ -23,7 +23,7 @@
         .map((note) => {
           const tradition = C.CLOSED_GUIDE_LIVE ? C.closedById(note.tradition) : null;
           const links = [
-            note.ref ? `<a class="gd-link" href="/grimoire/?entity=${encodeURIComponent(note.ref)}">Open its Library page</a>` : "",
+            note.ref ? `<a class="gd-link" href="/library/entry/?entity=${encodeURIComponent(note.ref)}">Open its Library page</a>` : "",
             tradition ? `<a class="gd-link" href="/library/closed/?id=${encodeURIComponent(tradition.id)}">About ${esc(tradition.name)}</a>` : "",
           ].filter(Boolean);
           return `<article class="sp-card">
@@ -36,7 +36,7 @@
         .join("")}`;
   }
 
-  root.innerHTML = `${header({ title: "Sourcing with care", eyebrow: "Living Library", back: "/grimoire/", backLabel: "Back to the Library" })}
+  root.innerHTML = `${header({ title: "Sourcing with care", eyebrow: "Living Library", back: "/library/", backLabel: "Back to the Library" })}
     ${paragraphs([
       "Some of the most loved materials in the craft come at a cost to the land or to the people they belong to: wild plants harvested faster than they grow back, medicines that are sacred to a living people, stones dug by hand in unsafe mines.",
       "None of this is about guilt. It’s about buying well, growing your own where you can, and choosing something else when the real thing isn’t yours to take.",

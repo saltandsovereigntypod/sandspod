@@ -322,10 +322,98 @@
     return { dialog, body, close, setBody(next) { body.innerHTML = next; } };
   }
 
-  /** Buttons in a row, the app's chips: [{ label, symbol, action, pressed, danger, disabled, hint }]. */
+  /** Buttons in a row, the app's chips: [{ label, symbol, action, pressed, danger, disabled, hint }], or links ({ label, href }). */
   function chips(list) {
-    return `<div class="app-chips">${list.filter(Boolean).map((c) => `
+    return `<div class="app-chips">${list.filter(Boolean).map((c) => c.href ? `
+      <a class="app-chip" href="${esc(c.href)}"${c.hint ? ` aria-label="${esc(c.hint)}"` : ""}>${c.symbol ? `<span aria-hidden="true">${esc(c.symbol)}</span> ` : ""}${esc(c.label)}</a>` : `
       <button type="button" class="app-chip${c.danger ? " app-chip--danger" : ""}${c.primary ? " app-chip--primary" : ""}" data-app-action="${esc(c.action)}"${c.pressed != null ? ` aria-pressed="${c.pressed ? "true" : "false"}"` : ""}${c.disabled ? " disabled" : ""}${c.hint ? ` aria-label="${esc(c.hint)}"` : ""}${c.data ? Object.entries(c.data).map(([k, v]) => ` data-${k}="${esc(v)}"`).join("") : ""}>${c.symbol ? `<span aria-hidden="true">${esc(c.symbol)}</span> ` : ""}${esc(c.label)}</button>`).join("")}</div>`;
+  }
+
+  // ── Your place, for your own sunrise and sunset ─────────────────────────
+  // Kept only in this browser, never sent: "sky.place" is the app's own key,
+  // which /today/sky/ saves; "salt.sky.place" is the practice pages' copy.
+  const PLACE_KEYS = ["sky.place", "salt.sky.place"];
+  function place(storage = global.localStorage) {
+    for (const key of PLACE_KEYS) {
+      try {
+        const raw = JSON.parse(storage?.getItem(key) || "null");
+        const latitude = Number(raw?.latitude);
+        const longitude = Number(raw?.longitude);
+        if (raw && Number.isFinite(latitude) && Number.isFinite(longitude) && Math.abs(latitude) <= 90 && Math.abs(longitude) <= 180) {
+          return { latitude, longitude, source: raw.source === "device" ? "device" : "manual" };
+        }
+      } catch {
+        /* nothing saved, or storage blocked */
+      }
+    }
+    return null;
+  }
+
+  // ── The Library, with your own My Practice notes (lib/library/store.ts) ─
+  // Signed in: living_library_entries; as a guest: this browser's Library.
+  // Until it loads (or if it can't), the app's functions use the built-in Library.
+  const GUEST_LIBRARY_KEY = "saltAndSovereigntyLibrary";
+  let libraryEntries = null;
+  let libraryLoading = null;
+  async function loadLibrary() {
+    const C = core();
+    if (!C?.buildLibrary) return null;
+    const user = typeof global.getCurrentSaltUser === "function" ? global.getCurrentSaltUser() : null;
+    let rows = [];
+    try {
+      if (user?.id && global.db) {
+        const { data, error } = await global.db
+          .from("living_library_entries")
+          .select("entity_id,name,type,image,my_practice,community,layout,updated_at")
+          .eq("user_id", user.id)
+          .order("updated_at", { ascending: false });
+        if (error) throw error;
+        rows = data || [];
+      } else {
+        const stored = JSON.parse(global.localStorage?.getItem(GUEST_LIBRARY_KEY) || "null");
+        rows = stored ? C.guestPracticeRows(stored) : [];
+      }
+    } catch {
+      return libraryEntries;
+    }
+    let entries = C.buildLibrary(rows);
+    try {
+      const hidden = C.holidays.hiddenTraditions((await global.SaltSettings?.get?.()) || null);
+      if (hidden.length) entries = C.hideTraditions(entries, hidden);
+    } catch {
+      /* settings unreadable: show every tradition */
+    }
+    libraryEntries = entries;
+    document.dispatchEvent(new CustomEvent("app-altar:library"));
+    return entries;
+  }
+  function reloadLibrary() {
+    libraryLoading = loadLibrary().finally(() => { libraryLoading = null; });
+    return libraryLoading;
+  }
+  const library = () => libraryEntries;
+  if (typeof document !== "undefined" && typeof global.addEventListener === "function") {
+    const startLibrary = () => {
+      Promise.resolve(global.SaltPage?.ready?.()).catch(() => null).finally(reloadLibrary);
+      global.SaltPage?.onUserChange?.(reloadLibrary);
+    };
+    if (document.readyState === "complete") startLibrary();
+    else global.addEventListener("load", startLibrary, { once: true });
+  }
+
+  /** Load a script once (for the parts of the site only some sheets need). */
+  const scripts = new Map();
+  function loadScript(src) {
+    if (!scripts.has(src)) {
+      scripts.set(src, new Promise((resolve, reject) => {
+        const el = document.createElement("script");
+        el.src = src;
+        el.onload = () => resolve();
+        el.onerror = () => { scripts.delete(src); reject(new Error(`Couldn’t load ${src}`)); };
+        document.head.appendChild(el);
+      }));
+    }
+    return scripts.get(src);
   }
 
   const shortLabel = (label, fallback = "") => core()?.cabinet?.shortLabel?.(label, fallback) || String(label || fallback);
@@ -337,7 +425,8 @@
   const api = {
     core, nowIso, esc, selected: lexical.selected, toSaved, apply, update, addSaved, removeEl, findById, doc, applyObjects, setDocument,
     objects: objectEls, mainImage, altarId, altarName, notice, openSheet, chips, shortLabel, dateShort,
-    ratioOf, loadRatio, noteRatio, assetKey, registerRatioLookup
+    ratioOf, loadRatio, noteRatio, assetKey, registerRatioLookup,
+    place, library, reloadLibrary, loadScript
   };
   global.AltarApp = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;

@@ -67,11 +67,11 @@ test("the app's routes open the website's pages", () => {
   assert.equal(T.siteHref({ pathname: "/rituals/plan/[id]", params: { id: "p1" } }), "/rituals/plan/?id=p1");
   assert.equal(T.siteHref({ pathname: "/today/journal/[id]", params: { id: "j 1" } }), "/rituals/journal/?id=j%201");
   assert.equal(T.siteHref("/rituals/planner"), "/rituals/planner/");
-  assert.equal(T.siteHref("/today/library/traditional:deity:hekate"), "/grimoire/?entity=traditional%2Fdeity%2Fhekate");
+  assert.equal(T.siteHref("/today/library/traditional:deity:hekate"), "/library/entry/?entity=traditional%2Fdeity%2Fhekate");
   assert.equal(T.siteHref("/more/settings/deities"), "/more/settings/deities/");
   assert.equal(T.siteHref({ pathname: "/altar/[altarId]", params: { altarId: "tonight" } }), "/altar/?tonight=1");
   assert.equal(T.holyHref("wheel-samhain", true), "/today/holy/?ref=wheel-samhain&from=today");
-  assert.equal(T.libraryHref({ traditionalRef: "traditional/crystal/rose_quartz" }), "/grimoire/?entity=traditional%2Fcrystal%2Frose_quartz");
+  assert.equal(T.libraryHref({ traditionalRef: "traditional/crystal/rose_quartz" }), "/library/entry/?entity=traditional%2Fcrystal%2Frose_quartz");
   assert.equal(T.libraryHref(null), null);
 });
 

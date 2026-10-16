@@ -24,7 +24,7 @@
     ongoing: (id) => `${BASE}?id=${enc(id)}&view=ongoing`,
     patron: () => `${BASE}patron/`,
     deities: () => "/more/settings/deities/",
-    library: (ref) => `/grimoire/?entity=${enc(String(ref || "").replace(/:/g, "/"))}`,
+    library: (ref) => `/library/entry/?entity=${enc(String(ref || "").replace(/:/g, "/"))}`,
     premade: (id) => `/rituals/premade/?id=${enc(id)}`,
     support: () => "/more/support/",
     ritual: () => "/altar/?ritual=1",

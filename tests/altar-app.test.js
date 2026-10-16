@@ -106,3 +106,75 @@ test("the altar page loads the app's altar after the altar it builds on", () => 
   assert.deepEqual([...order].sort((a, b) => a - b), order);
   assert.match(html, /href="app-altar\.css"/);
 });
+
+// ── Panels that reach the rest of your practice ──────────────────────────
+const Logic = require("../rituals/js/rituals-logic.js");
+
+test("a cleansing done on the altar goes into the stone's own log, once", () => {
+  // The record the site's Companion keeps (object-actions.js baseRecord).
+  const crystal = {
+    type: "crystal", altarObjectId: "s1", label: "Amethyst",
+    livingState: JSON.stringify({ version: 2, crystal: { cleansingHistory: [{ occurredAt: "2026-10-15T20:00:00.000Z", methods: ["Moonlight", "Smoke"], purpose: "Routine care" }], chargingHistory: [] } })
+  };
+  const care = A.altarCare.lastAltarCareOf(crystal);
+  assert.equal(care.kind, "cleansed");
+  assert.deepEqual(care.methods, ["Moonlight", "Smoke"]);
+  const stone = A.stones.normaliseStone({ name: "Amethyst", care: [] });
+  const logged = A.practice.stoneCareFromAltar(stone, { ...care, altarName: "Hearth" });
+  assert.equal(logged.care.length, 1);
+  assert.equal(logged.care[0].at, care.at);
+  assert.match(logged.care[0].note || "", /Hearth/);
+  assert.equal(A.practice.stoneCareFromAltar(logged, care).care.length, 1, "the same cleansing isn't logged twice");
+});
+
+test("an ancestor's candle rite is handed to the Ritual Companion linked to the altar", () => {
+  const entry = { id: "a1", data: { name: "Nan", relation: "grandmother", born: { year: 1931, month: 3, day: 2 }, died: { year: 2019, month: 11, day: 1 }, loved: "roses", memory: "" } };
+  const draft = A.ancestor.ancestorRite(entry, "altar-1");
+  assert.equal(draft.linked_altar_id, "altar-1");
+  assert.ok(draft.steps.length > 0);
+  const handoff = Logic.beginHandoff({ kind: "draft", draft }, { altarId: "altar-1", now: 5 });
+  assert.equal(handoff.kind, "draft");
+  assert.equal(handoff.altarId, "altar-1");
+  assert.equal(handoff.template.linked_altar_id, "altar-1");
+  assert.equal(handoff.template.ritual_template_steps.length, draft.steps.length);
+  assert.equal(handoff.closing, String(draft.closing || ""));
+});
+
+test("an object can be linked to a page in your Book of Shadows, kept in its own living state", () => {
+  const sprig = { type: "herb", label: "Rosemary sprig", altarObjectId: "h1", livingState: "" };
+  const snapshot = { sections: [{ id: "sec", title: "Herbs" }], pages: [{ id: "p1", title: "Rosemary", section_id: "sec", page_type: "blank" }, { id: "p2", title: "Moon water", section_id: null, page_type: "blank" }] };
+  const choices = A.grimoire.pageChoices(snapshot, "Rosemary sprig");
+  assert.equal(choices[0].id, "p1");
+  assert.equal(choices[0].suggested, true);
+  const linked = A.grimoire.withPageLink(sprig, { id: "p1", title: "Rosemary" }, "2026-10-16T20:00:00.000Z");
+  assert.deepEqual(A.grimoire.pageLinkOf(linked), { pageId: "p1", title: "Rosemary" });
+  assert.deepEqual(A.grimoire.resolvePageLink(A.grimoire.pageLinkOf(linked), { ...snapshot, pages: [] }), { title: "Rosemary", exists: false });
+  assert.equal(A.grimoire.pageLinkOf(A.grimoire.withoutPageLink(linked, "2026-10-16T21:00:00.000Z")), null);
+});
+
+test("your own Library notes reach the altar's correspondences", () => {
+  // A guest's Library as the website keeps it (js/library.js saltAndSovereigntyLibrary).
+  const stored = { entities: { e1: { id: "e1", name: "Hawthorn", type: "herb", myPractice: { Element: "Fire", Planet: "Mars", Uses: "Protection, Heart" } } } };
+  const entries = A.buildLibrary(A.guestPracticeRows(stored));
+  const c = A.correspondence.objectCorrespondence({ type: "herb", label: "Hawthorn", herb: "hawthorn" }, entries);
+  assert.equal(c.element, "Fire");
+  assert.equal(c.planet, "Mars");
+  assert.ok(c.uses.includes("protection"));
+});
+
+test("the altar's sky reads the place saved in this browser", () => {
+  const ctx = { console, Map, Set, Promise, JSON, Number, Math, String, Object, Array, URL, CustomEvent: class {} };
+  ctx.window = ctx;
+  ctx.document = { readyState: "loading", addEventListener() {}, querySelector: () => null };
+  ctx.addEventListener = () => {};
+  vm.createContext(ctx);
+  vm.runInContext(fs.readFileSync(path.join(root, "altar/js/features/app-altar-bridge.js"), "utf8"), ctx);
+  const store = (values) => ({ getItem: (k) => (k in values ? values[k] : null) });
+  assert.deepEqual({ ...ctx.AltarApp.place(store({ "sky.place": JSON.stringify({ latitude: -33.87, longitude: 151.21, source: "manual" }) })) }, { latitude: -33.87, longitude: 151.21, source: "manual" });
+  assert.equal(ctx.AltarApp.place(store({ "salt.sky.place": JSON.stringify({ latitude: 51.5, longitude: -0.13 }) })).latitude, 51.5);
+  assert.equal(ctx.AltarApp.place(store({ "sky.place": "{bad" })), null);
+  assert.equal(ctx.AltarApp.place(store({})), null);
+  const south = ctx.AltarApp.place(store({ "sky.place": JSON.stringify({ latitude: -33.87, longitude: 151.21 }) }));
+  assert.equal(A.ambient.moonMirrored(south), true);
+  assert.ok(A.ambient.ambientAt(new Date("2026-10-16T09:00:00Z"), south).label);
+});

@@ -110,6 +110,7 @@
 
   // ── More sheets (MoreSheet.tsx) ─────────────────────────────────────────
   const WORKINGS = [
+    { id: "ritual", symbol: "✶", title: "Begin a ritual here", line: "A working from the book or one of your templates, its steps over the altar.", needsSave: true },
     { id: "jar", symbol: "⚱", title: "Spell jar", line: "Build a jar in layers, a word spoken with each, and seal it with wax." },
     { id: "sachet", symbol: "❦", title: "Sachet or charm bag", line: "Fill it, tie it with knots, carry it, and feed it on its day." },
     { id: "spell", symbol: "◔", title: "Spell over days", line: "A seven-day candle, nine nights, a moon’s jar: the altar keeps count.", needsSave: true },
@@ -175,6 +176,7 @@
     else if (action === "stone") openStones();
     else if (action === "plant") openPlants();
     else if (action === "drawn") openDrawn();
+    else if (action === "ritual") openRitualPicker();
   }
 
   // ── Reading the altar ───────────────────────────────────────────────────
@@ -183,7 +185,7 @@
     const objects = B().doc().objects;
     const intention = state.intention?.data?.text || "";
     const owned = (global.getApothecaryItems?.() || []).flatMap((a) => (a.ingredients || []).map((i) => i.label || i.name || "")).filter(Boolean);
-    const reading = core.reading.readAltar({ objects, entries: null, intention, cabinet: [], ownedNames: owned });
+    const reading = core.reading.readAltar({ objects, entries: B().library(), intention, cabinet: [], ownedNames: owned });
     const E = core.correspondence.ELEMENTS;
     const most = Math.max(1, ...E.map((e) => reading.elements[e]));
     const s = reading.suggestion;
@@ -218,7 +220,7 @@
     }
     const core = A();
     const initial = state.intention?.data?.text || "";
-    const supports = initial ? core.intention.scoreAltar(B().doc().objects, initial, null) : [];
+    const supports = initial ? core.intention.scoreAltar(B().doc().objects, initial, B().library()) : [];
     B().openSheet({
       eyebrow: "This altar’s intention",
       title: initial || "What is this altar for?",
@@ -258,7 +260,7 @@
     const core = A();
     const doc = B().doc();
     const selectedSaved = selectedObject ? B().toSaved(selectedObject) : null;
-    const wisdom = selectedSaved ? core.layouts.placementWisdom(selectedSaved, null) : "";
+    const wisdom = selectedSaved ? core.layouts.placementWisdom(selectedSaved, B().library()) : "";
     let kind = null;
     B().openSheet({
       eyebrow: "Layouts with meaning",
@@ -268,7 +270,7 @@
         let plan = null;
         const draw = () => {
           body.querySelector("[data-kinds]").innerHTML = B().chips(core.layouts.LAYOUTS.map((l) => ({ label: l.title, action: "layout", pressed: kind === l.id, data: { id: l.id } })));
-          plan = kind ? core.layouts.layoutPlan(kind, doc.objects, doc.background, null) : null;
+          plan = kind ? core.layouts.layoutPlan(kind, doc.objects, doc.background, B().library()) : null;
           body.querySelector("[data-plan]").innerHTML = plan
             ? `<p>${esc(plan.note)}</p>${plan.moves.length ? `${plan.moves.map((m) => `<p class="app-caption">${esc(`${m.role}: ${B().shortLabel(m.label)}`)}</p>`).join("")}<button type="button" class="app-button" data-apply>${esc(`Arrange as ${plan.title.toLowerCase()}`)}</button><p class="app-caption">Locked pieces and cloths stay where they are. Anything else without a place in it stays put too.</p>` : `<p class="app-caption">Nothing on the altar fits this layout yet.</p>`}`
             : `<p class="app-caption">Choose a layout to see where each piece would go.</p>`;
@@ -370,7 +372,7 @@
     if (!state.tonight) return;
     const objects = B().doc().objects;
     const tonight = { ...state.tonight.altar, doc: { ...state.tonight.altar.doc, objects } };
-    const pieces = core.tonightExplained.explainTonight(tonight, state.tonight.date, null);
+    const pieces = core.tonightExplained.explainTonight(tonight, state.tonight.date, B().library());
     let open = null;
     const reason = tonight.reason.charAt(0).toUpperCase() + tonight.reason.slice(1);
     const sheet = B().openSheet({ eyebrow: "Tonight’s altar", title: reason, html: "" });
@@ -379,7 +381,7 @@
       sheet.setBody(pieces.map((piece) => {
         const object = current[piece.index];
         if (!object) return "";
-        const swaps = open === piece.index ? core.tonightExplained.swapsFor(object, { entries: null, cabinet: [], others: current, now: nowIso() }) : [];
+        const swaps = open === piece.index ? core.tonightExplained.swapsFor(object, { entries: B().library(), cabinet: [], others: current, now: nowIso() }) : [];
         sheet.body._swaps = open === piece.index ? swaps : sheet.body._swaps;
         return `<div class="app-row"><p>${esc(piece.why)}</p>${B().chips([{ label: open === piece.index ? "Hide swaps" : "Swap", symbol: "⇄", action: "swaps", data: { i: piece.index }, hint: `Swaps for ${piece.label}` }])}
           ${open === piece.index ? (swaps.length ? swaps.map((s, k) => `<p class="app-caption">${esc(s.why)}</p>${B().chips([{ label: `Use ${s.label}`, symbol: s.owned ? "★" : "", action: "use", data: { i: piece.index, k } }])}`).join("") : `<p class="app-caption">Nothing in the cabinet shares its correspondence closely enough.</p>`) : ""}</div>`;
@@ -418,17 +420,27 @@
       stage.insertBefore(skyEl, stage.firstChild?.nextSibling || null);
     }
     const at = new Date();
-    const ambient = core.ambient.ambientAt(at, null);
+    const here = B().place();
+    const ambient = core.ambient.ambientAt(at, here);
+    const mirrored = core.ambient.moonMirrored(here);
     const moon = core.moon.moonState(at);
     const size = Math.max(28, Math.min(64, stage.clientWidth * 0.075));
     const r = size * 0.36;
     const lit = core.shareCard.moonPath(size / 2, size / 2, r, moon.illumination, moon.waxing);
     skyEl.innerHTML = `${sky && ambient.tint.opacity > 0 ? `<div class="altar-sky__tint" style="background:${ambient.tint.color};opacity:${ambient.tint.opacity}"></div>` : ""}
       ${sky && ambient.accent.opacity > 0 ? `<div class="altar-sky__season" style="background:linear-gradient(to bottom, transparent 62%, ${ambient.accent.color})" data-opacity="${ambient.accent.opacity}"></div>` : ""}
-      ${moonWindow ? `<div class="altar-sky__moon" title="${esc(`A ${moon.name.toLowerCase()} in the window`)}" style="width:${size}px;height:${size}px;top:4%;right:2.5%"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="#1c2e22"/>${lit ? `<path d="${lit}" fill="#f4ecd8"/>` : ""}</svg></div>` : ""}`;
+      ${moonWindow ? `<div class="altar-sky__moon" title="${esc(`A ${moon.name.toLowerCase()} in the window`)}" style="width:${size}px;height:${size}px;top:4%;right:2.5%"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"${mirrored ? ' style="transform:scaleX(-1)"' : ""}><circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="#1c2e22"/>${lit ? `<path d="${lit}" fill="#f4ecd8"/>` : ""}</svg></div>` : ""}`;
     const season = skyEl.querySelector(".altar-sky__season");
     if (season) season.style.opacity = String(Math.min(1, Number(season.dataset.opacity) * 2.4));
     skyEl.title = [sky ? ambient.label : "", moonWindow ? `a ${moon.name.toLowerCase()} in the window` : ""].filter(Boolean).join("; ");
+  }
+  // The sky looks again around your sunrise and sunset (ambient nextAmbientCheck), at least once a minute.
+  let skyTimer = 0;
+  function watchSky() {
+    clearTimeout(skyTimer);
+    const core = A();
+    const wait = core ? Math.min(60000, core.ambient.nextAmbientCheck(new Date(), B().place())) : 60000;
+    skyTimer = setTimeout(() => { if (!document.hidden) renderSky(); watchSky(); }, Math.max(15000, wait));
   }
   function openOptions() {
     const options = state.options || A().altarOptions.defaultAltarOptions("");
@@ -436,7 +448,9 @@
     B().openSheet({
       eyebrow: "This altar",
       title: "Sky and season",
-      html: `${row("sky", "The real sky", "The light follows the time of day and the season. On the website the times are your device’s clock; the app can follow your own sunrise and sunset.")}
+      html: `${B().place()
+          ? row("sky", "The real sky", "The light follows your sunrise, sunset and dusk, with a faint touch of the season.")
+          : `${row("sky", "The real sky", "The light follows the time of day and the season. Add your place in Sky for your real sunrise and sunset.")}<p class="app-caption"><a href="/today/sky/">Add your place</a> (kept only in this browser).</p>`}
         ${row("moonWindow", "Tonight’s moon", "A small window showing the moon’s real phase.")}
         ${row("newMoonCharging", "Charge under the New Moon too", "Crystals and moon water sitting here through a Full Moon are charged under it. Turn this on to count New Moons as well.")}
         ${B().altarId() ? "" : `<p class="app-caption">Save this altar to keep these choices with it.</p>`}`,
@@ -699,6 +713,8 @@
     state.practice = { ancestors, stones, settings, plants, readings };
   }
   const capital = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+  /** "2026-10-16" is a day where you are, not midnight in London. */
+  const dayOf = (value) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(value || "")); return m ? new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])) : value; };
   function placeFromPractice(object) {
     B().loadRatio(object.imagePath).finally(() => {
       B().addSaved(object);
@@ -715,7 +731,7 @@
     let form = "tea-light";
     const sheet = B().openSheet({ eyebrow: "Ancestor shrine", title: "A candle for one of your dead", html: "" });
     const draw = () => {
-      if (!choices.length) return sheet.setBody(`<p>Add the people you remember in Hedge → Ancestors, with their days and what they loved. Then you can set a candle for them here.</p><a class="app-button app-button--outline" href="/practice/hedge/">Open Hedge</a>`);
+      if (!choices.length) return sheet.setBody(`<p>Add the people you remember in Hedge → Ancestors, with their days and what they loved. Then you can set a candle for them here.</p><a class="app-button app-button--outline" href="${PAGES.ancestors}">Open Ancestors</a>`);
       const picked = choices.find((c) => c.entry.id === chosen)?.entry || null;
       sheet.setBody(`${label("Who")}<div class="app-rows">${choices.map(({ entry, placed }) => { const a = core.ancestors.normalizeAncestor(entry.data); const detail = [a.relation, placed ? "already on this altar" : ""].filter(Boolean).join(" · "); return `<button type="button" class="app-row" style="text-align:left;color:inherit;font:inherit;cursor:pointer" aria-pressed="${chosen === entry.id}" data-who="${esc(entry.id)}"><span class="app-row__title">${esc(a.name || "Unnamed")}</span>${detail ? `<span class="app-caption">${esc(detail)}</span>` : ""}</button>`; }).join("")}</div>
         ${picked ? `${label("The candle")}${B().chips(C.MEMORIAL_FORMS.map((f) => ({ label: f.label, action: "form", pressed: form === f.form, data: { v: f.form }, hint: `${f.label}. ${f.hint}` })))}<p class="app-caption">${esc(C.MEMORIAL_FORMS.find((f) => f.form === form)?.hint)}</p>
@@ -749,7 +765,7 @@
       eyebrow: "From your stones",
       title: "Set a stone on the altar",
       html: entries.length ? `<div class="app-rows">${entries.map((entry, i) => { const stone = core.stones.normaliseStone(entry.data); const status = core.practice.stonePanel(stone, rule, new Date()); const here = objects.some((o) => core.practice.stoneIdOf(o) === entry.id); return `<button type="button" class="app-row" style="text-align:left;color:inherit;font:inherit;cursor:pointer" data-i="${i}"><span class="app-row__title">${esc(stone.name)}</span><span class="app-caption">${esc([status.status, here ? "already on this altar" : ""].filter(Boolean).join(" · "))}</span></button>`; }).join("")}</div>`
-        : `<p>Your stones live in Crystal → My stones, with when each was last cleansed. Add one there and it can sit on your altar.</p><a class="app-button app-button--outline" href="/practice/crystal/">Open Crystal</a>`,
+        : `<p>Your stones live in Crystal → My stones, with when each was last cleansed. Add one there and it can sit on your altar.</p><a class="app-button app-button--outline" href="${PAGES.stones}">Open My stones</a>`,
       onMount(body, dialog, close) {
         body.addEventListener("click", (event) => {
           const b = event.target.closest("[data-i]");
@@ -769,7 +785,7 @@
       eyebrow: "From your garden",
       title: "Bring a plant to the altar",
       html: entries.length ? `<div data-forms></div><div class="app-rows">${entries.map((entry, i) => { const p = core.practice.plantPanel(core.garden.asPlant(entry.data)); const detail = [p.herb, p.place, p.growing ? "" : "gone"].filter(Boolean).join(" · "); return `<button type="button" class="app-row" style="text-align:left;color:inherit;font:inherit;cursor:pointer" data-i="${i}"><span class="app-row__title">${esc(p.name)}</span>${detail ? `<span class="app-caption">${esc(detail)}</span>` : ""}</button>`; }).join("")}</div>`
-        : `<p>Your plants live in Green → My garden. Add what you grow there and you can bring a sprig of it here.</p><a class="app-button app-button--outline" href="/practice/green/">Open Green</a>`,
+        : `<p>Your plants live in Green → My garden. Add what you grow there and you can bring a sprig of it here.</p><a class="app-button app-button--outline" href="${PAGES.garden}">Open My garden</a>`,
       onMount(body, dialog, close) {
         const forms = body.querySelector("[data-forms]");
         const draw = () => { if (forms) forms.innerHTML = B().chips([{ label: "A fresh sprig", action: "form", pressed: form === "sprig", data: { v: "sprig" } }, { label: "Dried, loose", action: "form", pressed: form === "loose", data: { v: "loose" } }]); };
@@ -798,10 +814,10 @@
     B().openSheet({
       eyebrow: "From your readings",
       title: "Tonight’s card or rune",
-      html: !t ? `<p>Draw a card or a rune and keep it in Hedge → Readings; then it can sit on your altar while you sit with it.</p><a class="app-button app-button--outline" href="/practice/hedge/">Open Hedge</a>`
-        : `${label(`${R.methodLabel(t.method)} · ${new Date(t.date).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" })}`)}${t.question ? `<p class="app-living__glance">${esc(t.question)}</p>` : ""}
+      html: !t ? `<p>Draw a card or a rune and keep it in Hedge → Readings; then it can sit on your altar while you sit with it.</p><a class="app-button app-button--outline" href="${PAGES.readings}">Open Readings</a>`
+        : `${label(`${R.methodLabel(t.method)} · ${B().dateShort(dayOf(t.date), { day: "numeric", month: "long", year: "numeric" }) || t.date}`)}${t.question ? `<p class="app-living__glance">${esc(t.question)}</p>` : ""}
           ${B().chips(t.drawn.map((name) => { choices.push([tonight, name]); return { label: name, symbol: "✦", action: "place", data: { i: choices.length - 1 }, hint: `Set ${name} on the altar` }; }))}
-          ${earlier.length ? `${label("Earlier readings")}<div class="app-rows">${earlier.map((e) => { choices.push([e, e.data.drawn[0]]); return `<button type="button" class="app-row" style="text-align:left;color:inherit;font:inherit;cursor:pointer" data-app-action="place" data-i="${choices.length - 1}"><span class="app-row__title">${esc(e.data.drawn.join(", "))}</span><span class="app-caption">${esc(R.methodLabel(e.data.method))}</span></button>`; }).join("")}</div>` : ""}`,
+          ${earlier.length ? `${label("Earlier readings")}<div class="app-rows">${earlier.map((e) => { choices.push([e, e.data.drawn[0]]); return `<button type="button" class="app-row" style="text-align:left;color:inherit;font:inherit;cursor:pointer" data-app-action="place" data-i="${choices.length - 1}"><span class="app-row__title">${esc(e.data.drawn.join(", "))}</span><span class="app-caption">${esc([R.methodLabel(e.data.method), B().dateShort(dayOf(e.data.date), { day: "numeric", month: "long", year: "numeric" })].filter(Boolean).join(" · "))}</span></button>`; }).join("")}</div>` : ""}`,
       onMount(body, dialog, close) {
         body.addEventListener("click", (event) => {
           const b = event.target.closest('[data-app-action="place"]');
@@ -813,6 +829,20 @@
       }
     });
   }
+  // Each thing's own page on the site (the app's "Its page in Crystal", "Their page", …).
+  const PAGES = {
+    stones: "/practice/crystal/stones/",
+    stone: (id) => `/practice/crystal/stone/?id=${encodeURIComponent(id)}`,
+    garden: "/practice/green/garden/",
+    plant: (id) => `/practice/green/plant/?id=${encodeURIComponent(id)}`,
+    ancestors: "/practice/hedge/ancestors/",
+    ancestor: (id) => `/practice/hedge/ancestors/person/?id=${encodeURIComponent(id)}`,
+    readings: "/practice/hedge/readings/",
+    reading: (id) => `/practice/hedge/readings/reading/?id=${encodeURIComponent(id)}`,
+    grimoirePage: (id) => `/grimoire/?page=${encodeURIComponent(id)}`
+  };
+  const careSaved = new Map(); // stone id → "Added to its cleansing log in Crystal."
+
   /** The selected object's ties to your practice, for the living panel. */
   function practiceHtml(saved) {
     const core = A();
@@ -827,32 +857,287 @@
       if (!panel) out.push(block("In memory", cap(`A candle for ${link.name || "one remembered"}. Their page in Ancestors isn’t here, or it has been removed.`)));
       else {
         const lit = core.livingState.isLit(saved);
-        out.push(block("In memory", `<p>${esc([panel.name, panel.relation].filter(Boolean).join(", "))}</p>${cap([panel.born && `Born ${panel.born}`, panel.died && `died ${panel.died}`].filter(Boolean).join(", "))}${panel.today ? `<p>${esc(`Today: ${panel.today.words.toLowerCase()}.`)}</p>` : ""}${panel.days.filter((d) => d.inDays > 0).map((d) => cap(`${d.when}: ${d.words.charAt(0).toLowerCase()}${d.words.slice(1)}`)).join("")}${panel.loved ? `<p>${esc(`They loved ${panel.loved}.`)}</p>` : ""}${panel.memory ? `<p class="app-living__glance">${esc(panel.memory)}</p>` : ""}${B().chips([{ label: lit ? "Their candle is lit" : "Light a candle for them", symbol: "🜂", action: "light", disabled: lit }])}`));
+        out.push(block("In memory", `<p>${esc([panel.name, panel.relation].filter(Boolean).join(", "))}</p>${cap([panel.born && `Born ${panel.born}`, panel.died && `died ${panel.died}`].filter(Boolean).join(", "))}${panel.today ? `<p>${esc(`Today: ${panel.today.words.toLowerCase()}.`)}</p>` : ""}${panel.days.filter((d) => d.inDays > 0).map((d) => cap(`${d.when}: ${d.words.charAt(0).toLowerCase()}${d.words.slice(1)}`)).join("")}${panel.loved ? `<p>${esc(`They loved ${panel.loved}.`)}</p>` : ""}${panel.memory ? `<p class="app-living__glance">${esc(panel.memory)}</p>` : ""}${B().chips([
+          { label: lit ? "Their candle is lit" : "Light a candle for them", symbol: "🜂", action: "light", disabled: lit },
+          { label: "Begin the candle rite", symbol: "❦", action: "ancestor-rite", data: { id: entry.id }, hint: `Begin the candle rite for ${panel.name || "them"} on this altar` },
+          { label: "Their page", href: PAGES.ancestor(entry.id), hint: `${panel.name || "Their"} page in Ancestors` }
+        ])}`));
       }
     }
     const stoneId = core.practice.stoneIdOf(saved);
     if (stoneId) {
       const entry = state.practice.stones.find((e) => e.id === stoneId);
-      if (!entry) out.push(block("One of your stones", cap("This stone isn’t in My stones any more.")));
+      if (!entry) out.push(block("One of your stones", cap("This stone isn’t in My stones any more.") + B().chips([{ label: "My stones", href: PAGES.stones }])));
       else {
         const stone = core.stones.normaliseStone(entry.data);
         const panel = core.practice.stonePanel(stone, core.stones.normaliseRule(state.practice.settings[0]?.data?.cleanse), new Date());
-        out.push(block("One of your stones", `<p${panel.due ? ' style="color:var(--gold)"' : ""}>${esc(panel.status)}</p>${cap(panel.badges.join(" · "))}${panel.intentions.length ? cap(`Held for ${panel.intentions.join(", ")}`) : ""}${core.practice.recentCare(stone, 2).map((c) => cap(`${c.kind === "cleansed" ? "Cleansed" : c.kind === "charged" ? "Charged" : "Programmed"} ${B().dateShort(c.at, { day: "numeric", month: "long", year: "numeric" })}${c.method ? ` · ${c.method}` : ""}`)).join("")}`));
+        // The newest cleansing or charge done here, offered to the stone's own log in Crystal.
+        const care = core.altarCare.lastAltarCareOf(saved);
+        const logged = !!care && stone.care.some((c) => c.kind === care.kind && c.at === care.at);
+        const warnings = care ? core.practice.careWarnings(stone, care.methods) : [];
+        const done = careSaved.get(entry.id);
+        out.push(block("One of your stones", `<p${panel.due ? ' style="color:var(--gold)"' : ""}>${esc(panel.status)}</p>${cap(panel.badges.join(" · "))}${panel.intentions.length ? cap(`Held for ${panel.intentions.join(", ")}`) : ""}${core.practice.recentCare(stone, 2).map((c) => cap(`${c.kind === "cleansed" ? "Cleansed" : c.kind === "charged" ? "Charged" : "Programmed"} ${B().dateShort(c.at, { day: "numeric", month: "long", year: "numeric" })}${c.method ? ` · ${c.method}` : ""}`)).join("")}${warnings.map((w) => `<p class="app-problem">${esc(w)}</p>`).join("")}${B().chips([
+          care && !logged && !done ? { label: care.kind === "cleansed" ? "Add this cleansing to its log" : "Add this charge to its log", symbol: "✓", action: "stone-log", data: { id: entry.id } } : null,
+          { label: "Its page in Crystal", href: PAGES.stone(entry.id) }
+        ])}${done ? cap(done) : ""}`));
       }
     }
     const plantId = core.practice.plantIdOf(saved);
     if (plantId) {
       const entry = state.practice.plants.find((e) => e.id === plantId);
-      if (!entry) out.push(block("From your garden", cap("This plant isn’t in My garden any more.")));
-      else { const p = core.practice.plantPanel(core.garden.asPlant(entry.data)); out.push(block("From your garden", `<p>${esc(p.name)}</p>${cap([p.place, p.last].filter(Boolean).join(" · "))}`)); }
+      if (!entry) out.push(block("From your garden", cap("This plant isn’t in My garden any more.") + B().chips([{ label: "My garden", href: PAGES.garden }])));
+      else { const p = core.practice.plantPanel(core.garden.asPlant(entry.data)); out.push(block("From your garden", `<p>${esc(p.name)}</p>${cap([p.place, p.last].filter(Boolean).join(" · "))}${B().chips([{ label: "Its page in Green", href: PAGES.plant(entry.id) }])}`)); }
     }
     const readingId = core.practice.readingIdOf(saved);
     if (readingId) {
       const entry = state.practice.readings.find((e) => e.id === readingId);
-      if (!entry) out.push(block("From a reading", cap(`${core.practice.drawnOf(saved) || "This card"}: its reading isn’t here any more.`)));
-      else { const p = core.practice.readingPanel(entry.data, core.practice.drawnOf(saved)); out.push(block("From a reading", `<p>${esc(p.title)}</p>${cap(p.method)}${p.question ? `<p class="app-living__glance">${esc(p.question)}</p>` : ""}${cap(p.meaning)}`)); }
+      if (!entry) out.push(block("From a reading", cap(`${core.practice.drawnOf(saved) || "This card"}: its reading isn’t here any more.`) + B().chips([{ label: "Readings", href: PAGES.readings }])));
+      else { const p = core.practice.readingPanel(entry.data, core.practice.drawnOf(saved)); out.push(block("From a reading", `<p>${esc(p.title)}</p>${cap([p.method, B().dateShort(dayOf(p.date), { day: "numeric", month: "long", year: "numeric" })].filter(Boolean).join(" · "))}${p.question ? `<p class="app-living__glance">${esc(p.question)}</p>` : ""}${cap(p.meaning)}${B().chips([{ label: "The reading", href: PAGES.reading(entry.id) }])}`)); }
     }
     return out.join("");
+  }
+
+  /** Add the cleansing or charge done here to the stone's own log in Crystal (StonePanelSection addToLog). */
+  async function logStoneCare(object, stoneId) {
+    const core = A();
+    const entry = state.practice.stones.find((e) => e.id === stoneId);
+    const care = object ? core.altarCare.lastAltarCareOf(B().toSaved(object)) : null;
+    if (!entry || !care || !global.SaltCraft) return;
+    try {
+      const next = core.practice.stoneCareFromAltar(core.stones.normaliseStone(entry.data), { ...care, altarName: B().altarName() });
+      await global.SaltCraft.update(core.stoneCollections.STONES, entry.id, next);
+      entry.data = next;
+      careSaved.set(entry.id, care.kind === "cleansed" ? "Added to its cleansing log in Crystal." : "Added to its care log in Crystal.");
+    } catch (error) {
+      notice(`Couldn’t add it: ${error?.message || "please try again."}`);
+    }
+    global.AltarLiving?.schedule();
+  }
+
+  // ── Beginning a ritual on this altar (the app's startRitual) ─────────────
+  // The website's way: hand the altar's Ritual Companion what to begin
+  // (rituals/js/rituals-logic.js beginHandoff, in sessionStorage) and begin it.
+  const RITUALS_LOGIC = "/rituals/js/rituals-logic.js";
+  const ritualsLogic = () => B().loadScript(RITUALS_LOGIC).then(() => global.RitualsLogic);
+  function needsSavedAltar(words) {
+    if (B().altarId()) return false;
+    notice(words);
+    global.saveAltar?.().then((id) => id && notice("Saved. Now you can begin it."));
+    return true;
+  }
+  async function handOff(handoff) {
+    const L = await ritualsLogic();
+    // Keep the altar as it is now: the Companion opens the altar a ritual is linked to.
+    if (B().altarId()) await global.saveAltar?.({ inPlace: true });
+    try {
+      global.sessionStorage.setItem(L.KEYS.begin, JSON.stringify(handoff));
+    } catch {
+      notice("Couldn’t begin: this browser is blocking storage for the site.");
+      return;
+    }
+    if (typeof global.beginHandedOverRitual !== "function") {
+      global.location.href = L.BEGIN_URL;
+      return;
+    }
+    const url = new URL(global.location.href);
+    url.searchParams.set("beginRitual", "1");
+    global.history.replaceState(global.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+    global.deselectObject?.();
+    await global.beginHandedOverRitual();
+  }
+  /** The Hedge candle rite for one of your dead, begun here (AncestorPanelSection onBeginRite). */
+  async function beginAncestorRite(entryId) {
+    if (needsSavedAltar("Save this altar first; a rite begun here is kept with it.")) return;
+    const entry = state.practice.ancestors.find((e) => e.id === entryId);
+    if (!entry) return;
+    try {
+      const L = await ritualsLogic();
+      const altarId = B().altarId();
+      await handOff(L.beginHandoff({ kind: "draft", draft: A().ancestor.ancestorRite(entry, altarId) }, { altarId }));
+    } catch (error) {
+      notice(`Couldn’t begin: ${error?.message || "please try again."}`);
+    }
+  }
+
+  /** On the altar: choose a working from the book or one of your templates to begin here (RitualPickerSheet). */
+  async function openRitualPicker() {
+    if (needsSavedAltar("Save this altar first; its ritual is kept with it.")) return;
+    const sheet = B().openSheet({ eyebrow: "Begin a ritual here", title: "Which ritual?", html: `<p class="app-caption">Opening the book…</p>` });
+    let R;
+    let templates = [];
+    let active = null;
+    let pantry = null;
+    try {
+      await ritualsLogic();
+      await Promise.all([B().loadScript("/js/core/rituals.js"), B().loadScript("/rituals/js/rituals-store.js")]);
+      R = global.SaltCore.rituals;
+      [templates, active, pantry] = await Promise.all([
+        (typeof global.getRitualTemplates === "function" ? global.getRitualTemplates() : Promise.resolve([])).catch(() => []),
+        global.RitualsStore.activeSession().catch(() => null),
+        global.RitualsStore.pantry().catch(() => null)
+      ]);
+    } catch (error) {
+      sheet.setBody(`<p>${esc(`Couldn’t open the book: ${error?.message || "please try again."}`)}</p>`);
+      return;
+    }
+    if (!sheet.dialog.open) return;
+    const PM = R.premade;
+    let settings = null;
+    try { settings = (await global.SaltSettings?.get?.()) || null; } catch { settings = null; }
+    const suggested = PM.forYou(PM.forYouContext(settings, new Date()), PM.PREMADE, 8);
+    const altarId = B().altarId();
+    const altarName = B().altarName();
+    let tab = "premade";
+    let query = "";
+    let chosen = null;
+    let busy = false;
+    const row = (attrs, title, detail) => `<button type="button" class="app-row" style="text-align:left;color:inherit;font:inherit;cursor:pointer" ${attrs}><span class="app-row__title">${esc(title)}</span>${detail ? `<span class="app-caption">${esc(detail)}</span>` : ""}</button>`;
+    const listHtml = () => {
+      if (tab === "premade") {
+        const list = query.trim() ? PM.filterPremade(PM.PREMADE, { query }).slice(0, 40) : suggested;
+        return `${label(query.trim() ? "From the book" : "Suited to tonight")}${list.length ? `<div class="app-rows">${list.map((p) => row(`data-premade="${esc(p.id)}"`, p.title, `${p.kind === "spell" ? "Spell" : "Ritual"} · about ${p.minutes} min`)).join("")}</div>` : `<p class="app-caption">Nothing in the book matches that.</p>`}`;
+      }
+      const q = query.trim().toLowerCase();
+      const list = templates.filter((t) => t.status !== "archived" && (!q || `${t.title} ${t.intention || ""}`.toLowerCase().includes(q)));
+      if (!list.length) return `<p>${esc(templates.length ? "None of your templates match that." : "Your own templates appear here once you make one in Rituals → Templates.")}</p>`;
+      return `<div class="app-rows">${list.map((t) => { const n = (t.ritual_template_steps || []).length; return row(`data-template="${esc(t.id)}"`, t.title || "Untitled", `${n} ${n === 1 ? "step" : "steps"}`); }).join("")}</div>`;
+    };
+    const elsewhere = active && active.linked_altar_id !== altarId && active.metadata?.ranOnAltar !== altarId;
+    const drawList = () => {
+      sheet.dialog.querySelector(".app-sheet__eyebrow").textContent = "Begin a ritual here";
+      sheet.dialog.querySelector(".app-sheet__title").textContent = "Which ritual?";
+      sheet.setBody(`<div class="app-tabs">${B().chips([{ label: "From the book", action: "tab", pressed: tab === "premade", data: { v: "premade" } }, { label: "Your templates", action: "tab", pressed: tab === "templates", data: { v: "templates" } }])}</div>
+        <label class="app-field"><span>Search rituals</span><input type="search" data-q value="${esc(query)}" placeholder="${esc(tab === "premade" ? "Search the book: protection, Full Moon…" : "Search your templates")}" autocomplete="off"></label>
+        ${elsewhere ? `<div class="app-row"><span class="app-row__title">${esc(`“${active.title || "A ritual"}” is under way`)}</span><span class="app-caption">Finish it in the Ritual Companion before beginning another here.</span></div>` : ""}
+        <div data-list>${listHtml()}</div>`);
+    };
+    const drawChosen = () => {
+      const premade = chosen.kind === "premade" ? chosen.premade : null;
+      const title = premade ? premade.title : chosen.template.title || "Untitled";
+      const summary = premade ? premade.summary : chosen.template.intention || "";
+      const steps = premade ? premade.steps.length : (chosen.template.ritual_template_steps || []).length;
+      const needs = premade ? R.ingredients.premadeNeeds(premade) : R.ingredients.templateNeeds(chosen.template);
+      const check = needs.length && pantry ? R.ingredients.checkIngredients(needs, { ...pantry, objects: B().doc().objects }) : null;
+      const list = (title_, items) => (items.length ? `${label(title_)}<ul class="app-story">${items.map((i) => `<li>${esc(i.have ? `✓ ${i.name} · ${R.ingredients.foundWords(i)}` : `○ ${i.name}`)}</li>`).join("")}</ul>` : "");
+      sheet.dialog.querySelector(".app-sheet__title").textContent = title;
+      sheet.setBody(`${summary ? `<p>${esc(summary)}</p>` : ""}<p class="app-caption">${esc(`${steps} ${steps === 1 ? "step" : "steps"}${premade ? ` · about ${premade.minutes} min` : ""}`)}</p>
+        ${check ? `<details class="app-block"><summary>${esc(check.line)} <span class="app-caption">${esc(`On ${altarName}, and among your things`)}</span></summary>${list("You have", check.have)}${list("To gather", check.missing)}${list("If you like", [...check.optionalHave, ...check.optionalMissing])}</details>` : ""}
+        ${active ? `<p class="app-problem">${esc(`“${active.title || "A ritual"}” is under way. Finish it before beginning another.`)}</p>` : `<button type="button" class="app-button" data-begin${busy ? " disabled" : ""}>${esc(busy ? "Beginning…" : `Begin on ${altarName}`)}</button>`}
+        <button type="button" class="app-button app-button--outline" data-another>Choose another</button>`);
+    };
+    sheet.body.addEventListener("input", (event) => {
+      if (!event.target.matches("[data-q]")) return;
+      query = event.target.value;
+      sheet.body.querySelector("[data-list]").innerHTML = listHtml();
+    });
+    sheet.body.addEventListener("click", async (event) => {
+      const b = event.target.closest("button");
+      if (!b) return;
+      if (b.dataset.appAction === "tab") { tab = b.dataset.v; query = ""; drawList(); sheet.body.querySelector(`[data-v="${tab}"]`)?.focus(); return; }
+      if (b.dataset.premade) { chosen = { kind: "premade", premade: PM.premadeById(b.dataset.premade) }; drawChosen(); return; }
+      if (b.dataset.template) { chosen = { kind: "template", template: templates.find((t) => t.id === b.dataset.template) }; drawChosen(); return; }
+      if (b.hasAttribute("data-another")) { chosen = null; drawList(); return; }
+      if (b.hasAttribute("data-begin") && chosen && !busy) {
+        busy = true;
+        drawChosen();
+        try {
+          const L = global.RitualsLogic;
+          const handoff = chosen.kind === "premade"
+            ? L.beginHandoff({ kind: "draft", draft: { ...PM.premadeDraft(chosen.premade), linked_altar_id: altarId } }, { premadeId: chosen.premade.id, altarId })
+            : L.beginHandoff({ kind: "template", templateId: chosen.template.id }, { altarId });
+          sheet.close();
+          await handOff(handoff);
+        } catch (error) {
+          busy = false;
+          notice(`Couldn’t begin: ${error?.message || "please try again."}`);
+        }
+      }
+    });
+    drawList();
+  }
+
+  // ── A page in your Book of Shadows (GrimoireLink) ───────────────────────
+  // The link is kept on the object (livingState.app.pageId, lib/altar/connect/grimoire);
+  // the pages are read from the Grimoire, which lives with your account.
+  const grimoire = { snapshot: null, status: "idle", for: null };
+  async function loadGrimoire(force = false) {
+    const user = typeof global.getCurrentSaltUser === "function" ? global.getCurrentSaltUser() : null;
+    if (!user?.id || !global.db) { Object.assign(grimoire, { snapshot: null, status: "signed-out", for: null }); return null; }
+    if (!force && grimoire.for === user.id && grimoire.snapshot) return grimoire.snapshot;
+    grimoire.status = "loading";
+    try {
+      const [sections, pages] = await Promise.all([
+        global.db.from("grimoire_sections").select("id,title").eq("user_id", user.id),
+        global.db.from("grimoire_pages").select("id,title,section_id,page_type").eq("user_id", user.id)
+      ]);
+      if (pages.error) throw pages.error;
+      Object.assign(grimoire, { snapshot: { sections: sections.data || [], pages: pages.data || [] }, status: "ready", for: user.id });
+    } catch {
+      grimoire.status = "offline";
+    }
+    global.AltarLiving?.schedule();
+    return grimoire.snapshot;
+  }
+  /** The panel row: the linked page (open it), or an offer to link one (GrimoirePageLink). */
+  function pageLinkHtml(saved) {
+    const G = A()?.grimoire;
+    if (!G) return "";
+    const link = G.pageLinkOf(saved);
+    const resolved = G.resolvePageLink(link, grimoire.snapshot);
+    const body = link && resolved
+      ? `<p>${esc(resolved.title)}</p>${resolved.exists === false ? `<p class="app-caption">That page has been deleted from your Book of Shadows.</p>` : ""}${B().chips([
+          resolved.exists !== false ? { label: "Open the page", symbol: "❧", href: PAGES.grimoirePage(link.pageId) } : null,
+          { label: "Change", action: "page-link", hint: "Link a different page from your Book of Shadows" }
+        ])}`
+      : B().chips([{ label: "Link a page", symbol: "❧", action: "page-link", hint: "Link a page from your Book of Shadows" }]);
+    return `<div class="app-block"><p class="app-living__eyebrow">Book of Shadows</p>${body}</div>`;
+  }
+  /** Choose the Book of Shadows page an object belongs to (GrimoireLinkSheet). */
+  async function openPageLink(object) {
+    if (!object) return;
+    const core = A();
+    const G = core.grimoire;
+    const name = B().shortLabel(object.dataset.label, "this object");
+    let query = "";
+    const sheet = B().openSheet({ eyebrow: "Book of Shadows", title: `A page for ${name}`, html: `<p>Opening your Book of Shadows…</p>` });
+    const snapshot = await loadGrimoire();
+    if (!sheet.dialog.open) return;
+    if (!snapshot) {
+      sheet.setBody(`<p>${esc(grimoire.status === "offline" ? "Your Book of Shadows couldn’t be reached. Please try again in a moment." : "Your Book of Shadows lives with your account. Sign in, and its pages can be linked to things on your altar.")}</p>`);
+      return;
+    }
+    const current = () => G.pageLinkOf(B().toSaved(object));
+    const rowFor = (c) => `<button type="button" class="app-row" style="text-align:left;color:inherit;font:inherit;cursor:pointer" data-page="${esc(c.id)}" aria-pressed="${current()?.pageId === c.id}"><span class="app-row__title">${esc(c.title)}</span>${[c.section, current()?.pageId === c.id ? "linked now" : ""].filter(Boolean).length ? `<span class="app-caption">${esc([c.section, current()?.pageId === c.id ? "linked now" : ""].filter(Boolean).join(" · "))}</span>` : ""}</button>`;
+    const listHtml = () => {
+      const choices = G.pageChoices(snapshot, name, query);
+      if (!choices.length) return `<p>${esc(query ? "No page has that in its title." : "Your Book of Shadows has no pages yet. Write one in the Grimoire, then link it here.")}</p>`;
+      const suggested = choices.filter((c) => c.suggested);
+      const rest = choices.filter((c) => !c.suggested);
+      return `${current() ? B().chips([{ label: "Remove the link", action: "unlink", danger: true }]) : ""}
+        ${suggested.length ? `${label("Might belong")}<div class="app-rows">${suggested.map(rowFor).join("")}</div>` : ""}
+        ${suggested.length && rest.length ? label("Your pages") : ""}<div class="app-rows">${rest.map(rowFor).join("")}</div>`;
+    };
+    sheet.setBody(`<label class="app-field"><span>Search your pages</span><input type="search" data-q placeholder="Search your pages…" autocomplete="off"></label><div data-list>${listHtml()}</div>`);
+    sheet.body.addEventListener("input", (event) => {
+      if (!event.target.matches("[data-q]")) return;
+      query = event.target.value;
+      sheet.body.querySelector("[data-list]").innerHTML = listHtml();
+    });
+    sheet.body.addEventListener("click", (event) => {
+      const b = event.target.closest("button");
+      if (!b) return;
+      if (b.dataset.page) {
+        const page = snapshot.pages.find((p) => p.id === b.dataset.page);
+        if (!page) return;
+        B().update(object, (o) => G.withPageLink(o, { id: page.id, title: page.title || "" }, nowIso()));
+        sheet.close();
+        notice(`Linked to “${(page.title || "").trim() || "Untitled page"}” in your Book of Shadows.`);
+      } else if (b.dataset.appAction === "unlink") {
+        B().update(object, (o) => G.withoutPageLink(o, nowIso()));
+        sheet.close();
+      }
+    });
+    sheet.body.querySelector("[data-q]")?.focus();
   }
 
   // ── Full screen ─────────────────────────────────────────────────────────
@@ -992,15 +1277,24 @@
     document.addEventListener("altar:saved", () => { loadAltarData(); keepSnapshot(); });
     ["app-altar:changed", "living-object-state:changed"].forEach((name) => document.addEventListener(name, () => requestAnimationFrame(renderTools)));
     global.addEventListener("resize", renderSky);
+    // A place saved on /today/sky/ in another tab.
+    global.addEventListener("storage", (event) => { if (event.key === "sky.place" || event.key === "salt.sky.place") { renderSky(); watchSky(); } });
+    watchSky();
     const stage = document.querySelector("[data-altar-stage]");
     if (stage) new MutationObserver(() => requestAnimationFrame(renderTools)).observe(stage, { childList: true });
     setInterval(() => { if (!document.hidden) { renderSky(); loadAltarData(); } }, 5 * 60 * 1000);
-    global.SaltPage?.onUserChange?.(() => { loadAltarData(); loadPractice(); });
+    global.SaltPage?.onUserChange?.(() => { loadAltarData(); loadPractice().then(() => global.AltarLiving?.schedule()); loadGrimoire(true); });
+    Promise.resolve(global.SaltPage?.ready?.()).catch(() => null).finally(() => loadGrimoire());
+    // Your own My Practice notes, once they load, reach the panel's correspondences.
+    document.addEventListener("app-altar:library", () => global.AltarLiving?.schedule());
     // After the page restores its working draft.
     setTimeout(urlStart, 50);
   }
   if (document.readyState === "complete") start();
   else global.addEventListener("load", start, { once: true });
 
-  global.AltarReading = { openTonight, openLayouts, openAltarReading, openIntention, openHistory, openShare, openTonightAltar, openMore, practiceHtml, renderTools, setFull, state };
+  global.AltarReading = {
+    openTonight, openLayouts, openAltarReading, openIntention, openHistory, openShare, openTonightAltar, openMore, practiceHtml, renderTools, setFull, state,
+    pageLinkHtml, openPageLink, logStoneCare, beginAncestorRite, openRitualPicker, PAGES
+  };
 })(typeof window !== "undefined" ? window : globalThis);

@@ -136,7 +136,7 @@ test("premade wording matches the app", () => {
 });
 
 test("links to the Library and ingredient cards", () => {
-  assert.equal(L.libraryHref("traditional/herb/rosemary"), "/grimoire/?entity=traditional%3Aherb%3Arosemary");
+  assert.equal(L.libraryHref("traditional/herb/rosemary"), "/library/entry/?entity=traditional%3Aherb%3Arosemary");
   assert.equal(L.ingredientHref("traditional/herb/rosemary"), "/rituals/ingredient/?ref=herb.rosemary");
   assert.equal(R.format.paramToRef("herb.rosemary"), "traditional/herb/rosemary");
 });

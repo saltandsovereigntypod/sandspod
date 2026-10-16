@@ -183,8 +183,8 @@
     practice: (id) => `/practice/${id}/`,
     premade: (id) => kit()?.href?.premade?.(id) ?? `/rituals/premade/?id=${encodeURIComponent(id)}`,
     premadeFor: (practice) => kit()?.href?.premadeList?.(practice) ?? `/rituals/premade/?practice=${encodeURIComponent(practice)}`,
-    /** A Living Library entry ("traditional:crystal:amethyst"), opened in the Grimoire. */
-    library: (id) => kit()?.href?.library?.(id) ?? `/grimoire/?entity=${encodeURIComponent(String(id || "").replace(/:/g, "/"))}`,
+    /** A Living Library entry ("traditional:crystal:amethyst"), on its public Library page. */
+    library: (id) => kit()?.href?.library?.(id) ?? `/library/entry/?entity=${encodeURIComponent(String(id || "").replace(/:/g, "/"))}`,
     nativeLand: "https://native-land.ca"
   };
 

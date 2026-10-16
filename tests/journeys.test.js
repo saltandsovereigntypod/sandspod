@@ -32,7 +32,7 @@ test("each view has its own query string, and the URL picks it", () => {
   assert.equal(L.route(L.href.discern("x").split("?")[1]).view, "discern");
   assert.equal(L.route(L.href.ongoing("x").split("?")[1]).view, "ongoing");
   assert.equal(L.route("?id=x&stage=-1").view, "journey");
-  assert.equal(L.href.library("traditional:deity:hekate"), "/grimoire/?entity=traditional%2Fdeity%2Fhekate");
+  assert.equal(L.href.library("traditional:deity:hekate"), "/library/entry/?entity=traditional%2Fdeity%2Fhekate");
 });
 
 test("the app's words for lengths, cadences and steps", () => {
