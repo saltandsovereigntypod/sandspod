@@ -78,8 +78,8 @@ export function waxLook(object: SavedObject, now: number = Date.now()): WaxLook 
   if (!melt) return look;
   const form = candleLifeForm(object);
   // Drips run while it burns: a first one within minutes, more as the burn goes on.
-  if (look.kind === 'drips') {
-    return { ...look, melt, drips: Math.min(6, Math.max(look.drips, 1 + Math.round(melt * 2.5))), amount: Math.max(look.amount, Math.round(melt * 0.6 * 1000) / 1000) };
+  if (look.kind === 'drips' || (look.kind === 'even' && DRIPPING_FORMS.has(form))) {
+    return { ...look, kind: 'drips', melt, drips: Math.min(6, Math.max(look.drips, 1 + Math.round(melt * 2.5))), amount: Math.max(look.amount, Math.round(melt * 0.6 * 1000) / 1000) };
   }
   if (DRIP_PRONE_FORMS.has(form)) return { ...look, melt, drips: Math.min(4, Math.round(melt * 3)) };
   return { ...look, melt };

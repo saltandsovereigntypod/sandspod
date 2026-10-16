@@ -7,7 +7,7 @@
 
 import { useEffect, useState } from 'react';
 import { Animated, Easing, Platform, StyleSheet, Text, View } from 'react-native';
-import Svg, { Circle, Defs, Ellipse, Path, RadialGradient, Stop } from 'react-native-svg';
+import Svg, { Circle, Defs, Ellipse, LinearGradient, Path, RadialGradient, Stop } from 'react-native-svg';
 
 import { useReducedMotion } from '../../lib/accessibility/store';
 import { MOMENT_MS, type MomentKind } from '../../lib/altar/charge';
@@ -102,15 +102,20 @@ export function Moment({ kind, rect }: { kind: MomentKind; rect: Rect }) {
       <Animated.View pointerEvents="none" style={{ position: 'absolute', left: cx - w / 2, top: rect.top - h * 0.25, width: w, height: h, opacity: fade, transform: [{ translateY }] }}>
         <Svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
           <Defs>
-            <RadialGradient id={`wash-${kind}`} cx="50%" cy="40%" r="55%">
+            <LinearGradient id={`shaft-${kind}`} x1="0" y1="0" x2="0" y2="1">
+              <Stop offset="0" stopColor={tone} stopOpacity={0} />
+              <Stop offset="0.5" stopColor={tone} stopOpacity={0.35} />
+              <Stop offset="1" stopColor={tone} stopOpacity={0} />
+            </LinearGradient>
+            <RadialGradient id={`wash-${kind}`} cx="50%" cy="52%" r="50%">
               <Stop offset="0" stopColor={tone} stopOpacity={0.9} />
               <Stop offset="0.5" stopColor={tone} stopOpacity={0.45} />
               <Stop offset="1" stopColor={tone} stopOpacity={0} />
             </RadialGradient>
           </Defs>
-          <Ellipse cx={50} cy={45} rx={50} ry={55} fill={`url(#wash-${kind})`} />
+          <Ellipse cx={50} cy={52} rx={49} ry={47} fill={`url(#wash-${kind})`} />
           {/* A shaft of light falling onto it. */}
-          <Path d="M38 0 L62 0 L58 70 L42 70 Z" fill={tone} opacity={0.35} />
+          <Path d="M40 0 L60 0 L57 72 L43 72 Z" fill={`url(#shaft-${kind})`} />
         </Svg>
       </Animated.View>
     );
