@@ -126,8 +126,20 @@ function placeFor(ctx: CalendarContext): { place: Place; placeName: string } {
   return { place: UJJAIN, placeName: 'Ujjain' };
 }
 
+const partsCache = new Map<string, DayParts>();
+
 function dayParts(day: Date, ctx: CalendarContext): DayParts {
   const { place, placeName } = placeFor(ctx);
+  const key = `${day.getFullYear()}-${day.getMonth()}-${day.getDate()}@${place.latitude},${place.longitude}`;
+  const cached = partsCache.get(key);
+  if (cached) return cached;
+  const parts = computeDayParts(day, place, placeName);
+  if (partsCache.size > 2000) partsCache.clear();
+  partsCache.set(key, parts);
+  return parts;
+}
+
+function computeDayParts(day: Date, place: Place, placeName: string): DayParts {
   const times = sunTimes(day, place);
   // Near the poles, when the Sun doesn't rise or set, fall back to 6am and 6pm local solar time.
   const solarMidnight = Date.UTC(day.getFullYear(), day.getMonth(), day.getDate()) - (place.longitude / 15) * HOUR;
@@ -184,16 +196,38 @@ const MEANINGS = {
 
 type Observance = { id: string; mark: CalendarMark };
 
+/** The tithi skipped between this sunrise and the next (a kshaya tithi), if any. */
+function skippedAfter(day: Date, ctx: CalendarContext, sunriseTithi: number): number | null {
+  const next = tithiAt(dayParts(addDays(day, 1), ctx).sunrise);
+  return (next - sunriseTithi + 30) % 30 === 2 ? (sunriseTithi % 30) + 1 : null;
+}
+
+/** Tithi at moonrise on `day`, or null when the Moon doesn't rise that day. */
+function moonriseTithi(day: Date, place: Place): number | null {
+  const rise = moonTimes(day, place).rise;
+  return rise ? tithiAt(rise) : null;
+}
+
 function observancesOn(day: Date, ctx: CalendarContext, parts: DayParts, sunriseTithi: number): Observance[] {
   const found: Observance[] = [];
-  const t = describeTithi(sunriseTithi);
-  const fortnight = t.paksha === 'Shukla' ? 'shukla' : 'krishna';
-  if (t.inPaksha === 11) found.push({ id: `hindu-ekadashi-${fortnight}`, mark: { name: `${t.paksha} Ekadashi`, meaning: MEANINGS.ekadashi } });
-  if (sunriseTithi === 15) found.push({ id: 'hindu-purnima', mark: { name: 'Purnima', meaning: MEANINGS.purnima } });
-  if (sunriseTithi === 30) found.push({ id: 'hindu-amavasya', mark: { name: 'Amavasya', meaning: MEANINGS.amavasya } });
+  // A tithi that touches no sunrise is kept on the day it begins.
+  const skipped = skippedAfter(day, ctx, sunriseTithi);
+  const held = (n: number) => sunriseTithi === n || skipped === n;
+  if (held(11) || held(26)) {
+    const paksha = held(11) ? 'Shukla' : 'Krishna';
+    found.push({ id: `hindu-ekadashi-${paksha.toLowerCase()}`, mark: { name: `${paksha} Ekadashi`, meaning: MEANINGS.ekadashi } });
+  }
+  if (held(15)) found.push({ id: 'hindu-purnima', mark: { name: 'Purnima', meaning: MEANINGS.purnima } });
+  if (held(30)) found.push({ id: 'hindu-amavasya', mark: { name: 'Amavasya', meaning: MEANINGS.amavasya } });
   if (tithiAt(midday(parts)) === 4) found.push({ id: 'hindu-vinayaka-chaturthi', mark: { name: 'Vinayaka Chaturthi', meaning: MEANINGS.vinayaka } });
-  const moonrise = moonTimes(day, parts.place).rise;
-  if (moonrise && tithiAt(moonrise) === 19) found.push({ id: 'hindu-sankashti-chaturthi', mark: { name: 'Sankashti Chaturthi', meaning: MEANINGS.sankashti } });
+  // Sankashti is kept on the day the dark fourth holds at moonrise; when it
+  // slips between two moonrises, on the day it holds at sunrise.
+  const rising = moonriseTithi(day, parts.place);
+  if (rising === 19) found.push({ id: 'hindu-sankashti-chaturthi', mark: { name: 'Sankashti Chaturthi', meaning: MEANINGS.sankashti } });
+  else if (rising !== null && rising > 19 && rising < 23 && sunriseTithi === 19) {
+    const before = moonriseTithi(addDays(day, -1), parts.place);
+    if (before !== null && before < 19 && before > 15) found.push({ id: 'hindu-sankashti-chaturthi', mark: { name: 'Sankashti Chaturthi', meaning: MEANINGS.sankashti } });
+  }
   if (ctx.options.hinduPradosh === 'show') {
     const dusky = tithiAt(dusk(parts));
     if (dusky === 13 || dusky === 28) found.push({ id: `hindu-pradosh-${dusky === 13 ? 'shukla' : 'krishna'}`, mark: { name: 'Pradosh', meaning: MEANINGS.pradosh } });
