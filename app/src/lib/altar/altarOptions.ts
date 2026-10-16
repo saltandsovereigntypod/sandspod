@@ -12,9 +12,11 @@ export type AltarOptions = {
   moonWindow: boolean;
   /** Crystals and moon water are charged under New Moons too, not only Full Moons. */
   newMoonCharging: boolean;
+  /** While arranging, things dragged near the four directions or the centre settle onto them. */
+  snapToMeaning: boolean;
 };
 
-export const defaultAltarOptions = (altarId: string): AltarOptions => ({ altarId, sky: true, moonWindow: true, newMoonCharging: false });
+export const defaultAltarOptions = (altarId: string): AltarOptions => ({ altarId, sky: true, moonWindow: true, newMoonCharging: false, snapToMeaning: false });
 
 /** This altar's options (the defaults when none are saved), and the entry they're saved in. */
 export function altarOptionsFor<T extends { id: string; data: Partial<AltarOptions> }>(entries: T[], altarId: string): { options: AltarOptions; entryId: string | null } {
@@ -28,6 +30,7 @@ export function altarOptionsFor<T extends { id: string; data: Partial<AltarOptio
       sky: typeof d.sky === 'boolean' ? d.sky : base.sky,
       moonWindow: typeof d.moonWindow === 'boolean' ? d.moonWindow : base.moonWindow,
       newMoonCharging: typeof d.newMoonCharging === 'boolean' ? d.newMoonCharging : base.newMoonCharging,
+      snapToMeaning: typeof d.snapToMeaning === 'boolean' ? d.snapToMeaning : base.snapToMeaning,
     },
     entryId: hit.id,
   };

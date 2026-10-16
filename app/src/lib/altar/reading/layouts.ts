@@ -6,24 +6,13 @@
 
 import type { LibraryEntry } from '../../library/types.ts';
 import { builtInBackgrounds } from '../cabinet.ts';
+import { SURFACES } from '../tonight.ts';
 import { boxHeightFraction, displayBox, withCenter } from '../geometry.ts';
 import type { SavedObject } from '../types.ts';
 import { objectCorrespondence, objectUid, type ElementOrSpirit } from './correspondence.ts';
 
-/**
- * Where each background's tabletop starts and ends, in stage heights. The same
- * table as tonight.ts's SURFACES (not exported there); keep the two in step.
- */
-export const SURFACES: Record<string, [back: number, front: number]> = {
-  'forest-altar': [0.6, 0.88],
-  gothic: [0.56, 0.8],
-  'winter-yule': [0.51, 0.76],
-  'spring-meadow': [0.54, 0.78],
-  'autumn-harvest': [0.51, 0.77],
-  cottagecore: [0.55, 0.8],
-  'witch-cabin': [0.55, 0.8],
-  celestial: [0.55, 0.79],
-};
+// Where each background's tabletop starts and ends: the same table tonight.ts stands things on.
+export { SURFACES };
 
 /** The tabletop for a saved background path (the forest altar's when unknown or custom). */
 export function surfaceFor(background: string | null | undefined): [number, number] {
@@ -89,6 +78,16 @@ const DIRECTIONS: Record<'Earth' | 'Air' | 'Fire' | 'Water', Spot> = {
   Water: { x: 0.22, depth: 0.5, role: 'West · Water' },
 };
 const CENTRE: Spot = { x: 0.5, depth: 0.5, role: 'Centre' };
+
+/** The spots that mean something on any altar: the four directions and the centre (arrange.ts snaps to them). */
+export const MEANING_SPOTS: readonly Spot[] = [DIRECTIONS.Earth, DIRECTIONS.Air, DIRECTIONS.Fire, DIRECTIONS.Water, CENTRE];
+
+/** Where an object would stand on a spot of this background's tabletop (its visual centre, and the spot's role). */
+export function standOn(object: SavedObject, spot: Spot, background?: string | null): { cx: number; cy: number; footX: number; footY: number; role: string } {
+  const surface = surfaceFor(background);
+  const move = moveTo(object, -1, spot, surface);
+  return { cx: move.cx, cy: move.cy, footX: spot.x, footY: surface[0] + 0.05 + spot.depth * (surface[1] - surface[0]), role: spot.role };
+}
 
 /** Pentagram points, top first and clockwise, with the element each traditionally holds. */
 function pentaclePoints(): (Spot & { element: ElementOrSpirit })[] {

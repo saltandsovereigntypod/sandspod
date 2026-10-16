@@ -52,9 +52,9 @@ test('the next check is never more than a quarter hour away, nor less than a min
   assert.ok(ms >= 60_000 && ms <= 15 * 60_000);
 });
 
-test('altar options default on (except New Moon charging), per altar', () => {
+test('altar options default on (except New Moon charging and snapping), per altar', () => {
   const none = altarOptionsFor([], 'a');
-  assert.deepEqual(none.options, { altarId: 'a', sky: true, moonWindow: true, newMoonCharging: false });
+  assert.deepEqual(none.options, { altarId: 'a', sky: true, moonWindow: true, newMoonCharging: false, snapToMeaning: false });
   const saved = altarOptionsFor([{ id: 'e1', data: { altarId: 'a', sky: false } }, { id: 'e2', data: { altarId: 'b', moonWindow: false } }], 'a');
   assert.equal(saved.entryId, 'e1');
   assert.equal(saved.options.sky, false);

@@ -306,8 +306,8 @@ const MOON_ARC: Slot[] = [
 /** In front of the centrepiece, for the moon's own touch. */
 const MOON_CENTRE: Slot = { cx: 0.5, depth: 0.18, scale: 0.55 };
 
-/** Where each background's tabletop starts and ends, in stage heights. */
-const SURFACES: Record<string, [back: number, front: number]> = {
+/** Where each background's tabletop starts and ends, in stage heights (reading/layouts.ts stands things on it too). */
+export const SURFACES: Record<string, [back: number, front: number]> = {
   'forest-altar': [0.6, 0.88],
   gothic: [0.56, 0.8],
   'winter-yule': [0.51, 0.76],
