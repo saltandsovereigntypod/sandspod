@@ -1,8 +1,11 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
+import { AltarChoiceSheet, useBeginOnAltar } from '../../../../components/altar/connect/BeginOnAltar';
+import { IngredientCheck } from '../../../../components/altar/connect/IngredientCheck';
+import { premadeNeeds } from '../../../../lib/altar/connect/ingredients';
 import { Body, Card, RitualScreen, SectionLabel, Title, tell, ui } from '../../../../components/rituals/ui';
 import { ritualsLibraryHref } from '../../../../lib/library';
 import { pathName } from '../../../../lib/library/traditions';
@@ -33,6 +36,9 @@ export default function PremadeView() {
   const rituals = useRituals();
   const { session } = useSession();
   const [busy, setBusy] = useState<'begin' | 'save' | null>(null);
+  const [choosingAltar, setChoosingAltar] = useState(false);
+  const onAltar = useBeginOnAltar();
+  const needs = useMemo(() => (premade ? premadeNeeds(premade) : []), [premade]);
 
   if (!premade) {
     return (
@@ -58,6 +64,15 @@ export default function PremadeView() {
       tell("Couldn't begin", e instanceof Error ? e.message : 'Please try again.');
     } finally {
       setBusy(null);
+    }
+  };
+
+  const beginOnAltar = async (altarId: string) => {
+    setChoosingAltar(false);
+    try {
+      await onAltar.begin({ kind: 'premade', premade }, altarId);
+    } catch (e) {
+      tell("Couldn't begin", e instanceof Error ? e.message : 'Please try again.');
     }
   };
 
@@ -87,6 +102,13 @@ export default function PremadeView() {
 
       <View style={ui.actions}>
         <Button label={busy === 'begin' ? 'Beginning…' : 'Begin this ritual'} disabled={!!busy || !!rituals.active} onPress={begin} />
+        <Button
+          label={onAltar.busy ? 'Beginning…' : 'Begin on an altar'}
+          variant="outline"
+          disabled={!!busy || onAltar.busy || !!rituals.active}
+          accessibilityHint="Choose one of your altars; the ritual runs over it and lights its candles as the steps begin"
+          onPress={() => setChoosingAltar(true)}
+        />
         {!!rituals.active && <Body muted>Finish the ritual that’s under way before beginning another.</Body>}
         <Button label="Plan a night for it" variant="outline" onPress={plan} />
         {session ? (
@@ -102,6 +124,8 @@ export default function PremadeView() {
           <Body>{premade.safety}</Body>
         </Card>
       )}
+
+      <IngredientCheck needs={needs} />
 
       <Card>
         <SectionLabel>You’ll need</SectionLabel>
@@ -152,6 +176,8 @@ export default function PremadeView() {
         <Body>{premade.lore}</Body>
         {!!premade.sources?.length && <Body muted>{`Drawn from: ${premade.sources.join('; ')}.`}</Body>}
       </Card>
+
+      <AltarChoiceSheet visible={choosingAltar} title={premade.title} onClose={() => setChoosingAltar(false)} onPick={(id) => void beginOnAltar(id)} />
     </RitualScreen>
   );
 }

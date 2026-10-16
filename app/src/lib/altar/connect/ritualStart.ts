@@ -68,6 +68,13 @@ export function withRitualOrigin(session: RitualSession, source: RitualSource): 
   return { ...session, metadata: { ...session.metadata, premadeId: source.premade.id } };
 }
 
+/** Keep a draft's closing words with its session (sessions don't carry them), for a draft that isn't a premade. */
+export function withDraftClosing(session: RitualSession, draft: Pick<TemplateDraft, 'closing'>): RitualSession {
+  const closing = String(draft.closing || '').trim();
+  if (!closing || session.metadata?.closing === closing) return session;
+  return { ...session, metadata: { ...session.metadata, closing } };
+}
+
 /** Whether a running session is being done on this altar. */
 export function runsOnAltar(session: RitualSession | null | undefined, altarId: string | null | undefined): boolean {
   if (!session || !altarId) return false;
@@ -92,7 +99,7 @@ export function ritualOrigin(session: RitualSession, templates: TemplateRow[]): 
   const template = !premade && session.template_id ? (templates.find((t) => t.id === session.template_id) ?? null) : null;
   return {
     title: session.title || premade?.title || template?.title || 'Ritual Session',
-    closing: premade?.closing ?? template?.closing ?? '',
+    closing: premade?.closing ?? template?.closing ?? (typeof session.metadata?.closing === 'string' ? session.metadata.closing : ''),
     intentionKey: premade?.intention ?? null,
     candleScope: sessionCandleScope(session),
     premade,

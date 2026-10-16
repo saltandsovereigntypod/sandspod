@@ -78,3 +78,31 @@ export function searchJourneys(query: string, list: Journey[] = JOURNEYS): Journ
     return words.every((w) => text.includes(w));
   });
 }
+
+/** A lesson and the stage it belongs to. */
+export function findLesson(journey: Journey | null, lessonId: string | null | undefined) {
+  if (!journey || !lessonId) return null;
+  for (const [index, stage] of journey.stages.entries()) {
+    const lesson = stage.lessons.find((l) => l.id === lessonId);
+    if (lesson) return { lesson, stage, index };
+  }
+  return null;
+}
+
+/** A practice and the stage it belongs to. */
+export function findPractice(journey: Journey | null, practiceId: string | null | undefined) {
+  if (!journey || !practiceId) return null;
+  for (const [index, stage] of journey.stages.entries()) {
+    const practice = stage.practices.find((p) => p.id === practiceId);
+    if (practice) return { practice, stage, index };
+  }
+  return null;
+}
+
+/** The lesson after this one in the same stage, if any. */
+export function nextLesson(journey: Journey | null, lessonId: string) {
+  const found = findLesson(journey, lessonId);
+  if (!found) return null;
+  const at = found.stage.lessons.findIndex((l) => l.id === lessonId);
+  return found.stage.lessons[at + 1] ?? null;
+}

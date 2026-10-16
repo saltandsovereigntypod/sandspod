@@ -18,6 +18,19 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { AboutSheet } from '../../../components/altar/AboutSheet';
 import { AltarStage, clampViewport, type AgingLooks, type ChargeGlows, type StageMoment, type StageSky, type Viewport } from '../../../components/altar/AltarStage';
 import { MoreSheet, type MoreAction } from '../../../components/altar/MoreSheet';
+import { AltarHistorySheet, useAltarSnapshots } from '../../../components/altar/connect/AltarHistorySheet';
+import { AltarRitualOverlay } from '../../../components/altar/connect/AltarRitualOverlay';
+import { AncestorPanelSection, AncestorShrineSheet } from '../../../components/altar/connect/AncestorSheets';
+import { RitualPickerSheet, useBeginOnAltar } from '../../../components/altar/connect/BeginOnAltar';
+import type { AltarRef } from '../../../components/altar/connect/common';
+import { GrimoireLinkSheet, GrimoirePageLink } from '../../../components/altar/connect/GrimoireLink';
+import { PlantPanelSection, PlantSheet, ReadingPanelSection, ReadingSheet, StonePanelSection, StoneSheet } from '../../../components/altar/connect/PracticeSheets';
+import { ShareAltarSheet } from '../../../components/altar/connect/ShareAltarSheet';
+import { withoutPageLink, withPageLink } from '../../../lib/altar/connect/grimoire';
+import { stoneIdOf } from '../../../lib/altar/connect/practice';
+import { applyAltarEffect, type AltarEffect } from '../../../lib/altar/connect/ritual';
+import { lastAltarCareOf, ritualOrigin, runsOnAltar, withDraftClosing, type RitualSource } from '../../../lib/altar/connect/ritualStart';
+import type { TemplateDraft } from '../../../lib/rituals/types';
 import { AltarReadingSheet } from '../../../components/altar/workings/AltarReadingSheet';
 import type { AltarContext } from '../../../components/altar/workings/common';
 import { DressingSheet } from '../../../components/altar/workings/DressingSheet';
@@ -80,7 +93,7 @@ import { logAppEvent } from '../../../lib/altar/livingState';
 import { addEntry, updateEntry, useCraft, type CraftEntry } from '../../../lib/craft/store';
 import { usePlace } from '../../../lib/location';
 import { blankAnswers } from '../../../lib/rituals/lifecycle';
-import { saveJournal } from '../../../lib/rituals/store';
+import { saveJournal, startRitual, updateActive, useRituals } from '../../../lib/rituals/store';
 import { CabinetSheet } from '../../../components/altar/CabinetSheet';
 import { CarveSheet } from '../../../components/altar/CarveSheet';
 import { GroupGrimoireSheet, GroupSheet, RenameSheet } from '../../../components/altar/ArrangeSheets';
@@ -156,7 +169,7 @@ import {
 } from '../../../lib/altar/instances';
 import { altarRitualItem, groupAltarItems, type WorkingDetails } from '../../../lib/grimoire/altarImport';
 import { useGrimoire } from '../../../lib/grimoire/store';
-import { altarSummary, documentFromAltar, emptyDocument, type AltarDocument } from '../../../lib/altar/snapshot';
+import { altarSummary, documentFromAltar, emptyDocument, ritualAltarSnapshot, type AltarDocument } from '../../../lib/altar/snapshot';
 import { useAltars } from '../../../lib/altar/store';
 import type { CabinetForm, CabinetItem } from '../../../lib/altar/types';
 import { useLibrary } from '../../../lib/library';
@@ -204,6 +217,14 @@ type SheetName =
   | 'intention'
   | 'layouts'
   | 'tonight'
+  | 'ritual'
+  | 'ancestor'
+  | 'stone'
+  | 'plant'
+  | 'drawn'
+  | 'page'
+  | 'share'
+  | 'history'
   | null;
 
 const nowIso = () => new Date().toISOString();
@@ -233,6 +254,7 @@ export default function AltarEditor() {
   const [crystalMode, setCrystalMode] = useState<CrystalMode | null>(null);
   const [deityMode, setDeityMode] = useState<DeityMode | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [justSaved, setJustSaved] = useState(false);
   // The altar set by "Tonight's altar", while it's open: why each piece is there, and swaps.
   const [tonight, setTonight] = useState<{ altar: TonightAltar; date: Date } | null>(null);
   // The spell timer opened from one object.
@@ -447,6 +469,8 @@ export default function AltarEditor() {
     if (!doc) return;
     const { id, outcome } = await store.save({ id: asNew ? null : sourceId, name: altarName, doc });
     await store.clearDraft();
+    // The day's picture of the altar is kept once a save has gone through.
+    setJustSaved(outcome !== 'failed');
     setBaseline(doc);
     setSourceId(id);
     setName(altarName.trim() || 'My Altar');
@@ -839,6 +863,8 @@ export default function AltarEditor() {
       else if (action === 'intention') openSaved('intention', 'intention');
       else if (action === 'layouts') setSheet('layouts');
       else if (action === 'tonight') setSheet('tonight');
+      else if (action === 'ritual') openSaved('ritual', 'ritual');
+      else if (action === 'ancestor' || action === 'stone' || action === 'plant' || action === 'drawn') setSheet(action);
     });
   };
   const placeWorking = ({ object }: PlacedWorking) => {
@@ -873,6 +899,84 @@ export default function AltarEditor() {
   );
   const wisdom = useMemo(() => (selectedObject ? placementWisdom(selectedObject, libraryEntries) : ''), [selectedObject, libraryEntries]);
   const canMirror = !!doc && selected != null && mirrorPartner(doc.objects, selected) != null;
+
+  // ── Rituals here, things from your practice, and the altar's history ──
+  const altarRef = useMemo<AltarRef | null>(() => (doc ? { id: sourceId, name, objects: doc.objects, background: doc.background } : null), [doc, sourceId, name]);
+  // Once a save has gone through, the day's picture of the altar is kept (at most one a day).
+  useAltarSnapshots(justSaved && !dirty ? altarRef : null, justSaved && !dirty);
+  const rituals = useRituals();
+  const ritualHere = runsOnAltar(rituals.active, sourceId) ? rituals.active : null;
+  const origin = useMemo(() => (ritualHere ? ritualOrigin(ritualHere, rituals.templates) : null), [ritualHere, rituals.templates]);
+  const ritualTitle = origin?.title ?? 'Ritual Session';
+  const ritualSnapshot = useCallback(
+    () => (docRef.current ? (ritualAltarSnapshot(docRef.current, ritualTitle, nowIso()) as unknown as Record<string, unknown>) : null),
+    [ritualTitle],
+  );
+  /** What a ritual step does to the altar: candles and incense change; an offering opens its sheet. */
+  const ritualEffect = (effect: AltarEffect) => {
+    if (effect.kind !== 'offering') return commit((d) => applyAltarEffect(d, effect, nowIso()));
+    const at = effect.objectIds.length ? indexOfId(effect.objectIds[0]) : -1;
+    if (at < 0) {
+      setNotice('Set a bowl or dish on the altar to hold the offering; you’ll find them among the cabinet’s vessels.');
+      return;
+    }
+    setSelected(at);
+    setSheet('offering');
+  };
+  const onAltar = useBeginOnAltar();
+  const beginHere = async (source: RitualSource) => {
+    if (!sourceId) return;
+    try {
+      await onAltar.begin(source, sourceId, false);
+      setSheet(null);
+      setSelected(null);
+      setTools(false);
+      setNotice(null);
+    } catch (e) {
+      setNotice(`Couldn’t begin: ${e instanceof Error ? e.message : 'please try again.'}`);
+    }
+  };
+  /** A rite from your practice (an ancestor's candle rite), begun on this altar. */
+  const beginRite = async (draft: TemplateDraft) => {
+    if (!sourceId) {
+      setNotice('Save this altar first; a rite begun here is kept with it.');
+      setSheet('save');
+      return;
+    }
+    try {
+      await startRitual({ kind: 'draft', draft: { ...draft, linked_altar_id: sourceId } });
+      await updateActive((s) => withDraftClosing(s, draft));
+      setSelected(null);
+      setTools(false);
+    } catch (e) {
+      setNotice(`Couldn’t begin: ${e instanceof Error ? e.message : 'please try again.'}`);
+    }
+  };
+  const placeFromPractice = (object: import('../../../lib/altar/types').SavedObject) => {
+    const index = docRef.current?.objects.length ?? 0;
+    commit((d) => addObject(d, object));
+    setSelected(index);
+    setSheet(null);
+    setNotice(`${shortLabel(object.label, 'It')} is on your altar.`);
+  };
+  // The newest cleansing or charge done here on one of your own stones, for its log in Crystal.
+  const selectedCare = useMemo(() => (selectedObject && stoneIdOf(selectedObject) ? lastAltarCareOf(selectedObject) : null), [selectedObject]);
+  const ritualOverlay =
+    ritualHere && altarRef ? (
+      <AltarRitualOverlay
+        altar={altarRef}
+        closing={origin?.closing}
+        intentionKey={origin?.intentionKey}
+        candleScope={origin?.candleScope ?? 'all'}
+        snapshot={ritualSnapshot}
+        onEffect={ritualEffect}
+        onFinished={(finished, status) => {
+          // The candles the ritual lit or snuffed are kept with the altar.
+          if (sourceId) void save(name, false);
+          if (status === 'completed') router.push({ pathname: '/rituals/journal/new', params: { sessionId: finished.id } });
+        }}
+      />
+    ) : null;
 
   const stage =
     doc && stageWidth > 0 ? (
@@ -933,6 +1037,13 @@ export default function AltarEditor() {
             tonightWhy={tonightWhy}
             spells={selectedSpells}
             canMirror={canMirror}
+            connect={{
+              altarId: sourceId,
+              altarName: name,
+              lastAltarCare: selectedCare,
+              onBeginRite: (draft) => void beginRite(draft),
+              onPickPage: () => setSheet('page'),
+            }}
             onAbout={() => setSheet('about')}
             onDone={() => setSelected(null)}
             act={{
@@ -1025,9 +1136,16 @@ export default function AltarEditor() {
                 onPress={openPetitions}
               />
               <Chip label="Sky & season" symbol="☾" accessibilityLabel="Sky and season options for this altar" onPress={() => setSheet('options')} />
-              <Chip label="Workings" symbol="✶" accessibilityLabel="Workings: spell jar, sachet, spell timer, scrying and the gratitude bowl" onPress={() => setSheet('more-workings')} />
+              <Chip
+                label="Workings"
+                symbol="✶"
+                accessibilityLabel="Workings: begin a ritual here, spell jar, sachet, spell timer, scrying, the gratitude bowl, and things from your practice"
+                onPress={() => setSheet('more-workings')}
+              />
               <Chip label="Read & arrange" symbol="☉" accessibilityLabel="Read this altar, its intention and layouts with meaning" onPress={() => setSheet('more-reading')} />
               {tonight && <Chip label="Why these pieces" symbol="✧" accessibilityLabel="Why each piece of tonight’s altar is there, and swaps" onPress={() => setSheet('tonight')} />}
+              <Chip label="History" symbol="◷" accessibilityLabel="This altar’s history: what happened here and how it looked" onPress={() => openSaved('history', 'history')} />
+              <Chip label="Share" symbol="⇪" accessibilityLabel="Share a picture of this altar" onPress={() => setSheet('share')} disabled={doc.objects.length === 0} />
               <Chip
                 label="Record in Grimoire"
                 symbol="❧"
@@ -1497,6 +1615,31 @@ export default function AltarEditor() {
               />
             </>
           )}
+          {altarRef && (
+            <>
+              <RitualPickerSheet visible={sheet === 'ritual' && !!sourceId} altar={altarRef} busy={onAltar.busy} onClose={() => setSheet(null)} onBegin={(source) => void beginHere(source)} />
+              <AncestorShrineSheet visible={sheet === 'ancestor'} altar={altarRef} onClose={() => setSheet(null)} onPlace={placeFromPractice} />
+              <StoneSheet visible={sheet === 'stone'} altar={altarRef} onClose={() => setSheet(null)} onPlace={placeFromPractice} />
+              <PlantSheet visible={sheet === 'plant'} altar={altarRef} onClose={() => setSheet(null)} onPlace={placeFromPractice} />
+              <ReadingSheet visible={sheet === 'drawn'} altar={altarRef} onClose={() => setSheet(null)} onPlace={placeFromPractice} />
+              <ShareAltarSheet visible={sheet === 'share'} altar={altarRef} onClose={() => setSheet(null)} />
+              <AltarHistorySheet visible={sheet === 'history' && !!sourceId} altar={altarRef} onClose={() => setSheet(null)} />
+            </>
+          )}
+          <GrimoireLinkSheet
+            visible={sheet === 'page' && !!selectedObject}
+            object={selectedObject}
+            onClose={() => setSheet(null)}
+            onLink={(page) => {
+              changeSelected((o) => withPageLink(o, page, nowIso()));
+              setSheet(null);
+              setNotice(`Linked to “${page.title}” in your Book of Shadows.`);
+            }}
+            onUnlink={() => {
+              changeSelected((o) => withoutPageLink(o, nowIso()));
+              setSheet(null);
+            }}
+          />
           <TonightExplainedSheet
             visible={sheet === 'tonight' && !!tonightNow}
             tonight={tonightNow}
@@ -1518,6 +1661,7 @@ export default function AltarEditor() {
       <View style={styles.full}>
         <StatusBar hidden />
         {stage}
+        {ritualOverlay}
         <View style={[styles.fullBar, { left: insets.left + 10, top: Math.max(insets.top, 10) }]}>
           <Chip label="Done" symbol="✕" accessibilityLabel="Leave full screen" onPress={() => enterFullScreen(false)} />
           <Chip label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} />
@@ -1605,6 +1749,7 @@ export default function AltarEditor() {
         <Button label="Save" variant={dirty ? 'primary' : 'outline'} onPress={() => setSheet('save')} disabled={!doc} />
       </View>
 
+      <View style={styles.work}>
       <View style={styles.stageWrap} onLayout={onLayout}>
         {stage ? (
           stage
@@ -1625,6 +1770,8 @@ export default function AltarEditor() {
       >
         {panelBody}
       </ScrollView>
+      {ritualOverlay}
+      </View>
 
       {sheets}
     </SafeAreaView>
@@ -1685,10 +1832,19 @@ function ObjectPanel({
   tonightWhy,
   spells,
   canMirror,
+  connect,
   act,
   onAbout,
   onDone,
 }: {
+  /** Links to the rest of your practice: ancestors, stones, the Book of Shadows. */
+  connect: {
+    altarId: string | null;
+    altarName: string;
+    lastAltarCare: ReturnType<typeof lastAltarCareOf>;
+    onBeginRite: (draft: TemplateDraft) => void;
+    onPickPage: () => void;
+  };
   petition: Petition | null;
   objects: import('../../../lib/altar/types').SavedObject[];
   /** Where tradition puts it on an altar, or ''. */
@@ -1786,6 +1942,11 @@ function ObjectPanel({
           <Chip label="Recipe" symbol="✎" accessibilityLabel={`Open the recipe for ${objectLabel}`} onPress={act.recipe} />
         )}
       </ChipRow>
+
+      <AncestorPanelSection object={object} altarId={connect.altarId} onLight={act.light} onBeginRite={connect.onBeginRite} />
+      <StonePanelSection object={object} altarName={connect.altarName} lastAltarCare={connect.lastAltarCare} />
+      <PlantPanelSection object={object} />
+      <ReadingPanelSection object={object} />
 
       {!!tonightWhy && (
         <View style={styles.living}>
@@ -1979,6 +2140,8 @@ function ObjectPanel({
         </View>
       )}
 
+      <GrimoirePageLink object={object} onPick={connect.onPickPage} />
+
       <Text style={type.eyebrow}>Arrange</Text>
       {!!wisdom && <Text style={type.caption}>{wisdom}</Text>}
       <ChipRow>
@@ -2034,6 +2197,7 @@ const styles = StyleSheet.create({
   back: { color: colors.gold, fontSize: 34, lineHeight: 36, fontFamily: fonts.display },
   headerText: { flex: 1 },
   title: { fontFamily: fonts.display, fontSize: 24, lineHeight: 28, color: colors.cream },
+  work: { flex: 1 },
   stageWrap: { paddingHorizontal: 12, alignItems: 'center' },
   panel: { flex: 1 },
   panelContent: { paddingHorizontal: space.gutter, paddingTop: 16, paddingBottom: 32, gap: 14 },

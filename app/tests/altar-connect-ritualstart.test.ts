@@ -11,6 +11,7 @@ import {
   sessionCandleScope,
   sourceCandleScope,
   startOnAltar,
+  withDraftClosing,
   withRitualOrigin,
 } from '../src/lib/altar/connect/ritualStart.ts';
 import type { SavedObject } from '../src/lib/altar/types.ts';
@@ -100,4 +101,11 @@ test('the newest crystal care on the altar is offered to the stone’s log', () 
   const charged = careForCrystal(cleansed, 'charge', { decision: 'General energetic charge', purpose: 'General recharge', methods: ['Sunlight'], supports: [], occurredAt: iso(30) }, iso(30));
   assert.equal(lastAltarCareOf(charged)?.kind, 'charged');
   assert.equal(lastAltarCareOf(charged)?.at, iso(30));
+});
+
+test('a draft’s closing words are kept with its session', () => {
+  const draft = { ...premadeDraft(PREMADE[0]), closing: 'Blow the candle out with thanks.' };
+  const session = withDraftClosing(createSession({ kind: 'draft', draft: { ...draft, linked_altar_id: 'a1' } }, { userId: null, now: T0, idFactory: ids }), draft);
+  assert.equal(ritualOrigin(session, []).closing, 'Blow the candle out with thanks.');
+  assert.equal(withDraftClosing(session, draft), session);
 });

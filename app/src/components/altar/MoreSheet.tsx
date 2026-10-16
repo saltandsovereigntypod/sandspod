@@ -8,16 +8,39 @@ import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 import { colors, fonts, radius, touch, type } from '../../theme';
 import { Sheet } from './Sheet';
 
-export type MoreAction = 'jar' | 'sachet' | 'spell' | 'scry' | 'gratitude' | 'read' | 'intention' | 'layouts' | 'tonight';
+export type MoreAction =
+  | 'jar'
+  | 'sachet'
+  | 'spell'
+  | 'scry'
+  | 'gratitude'
+  | 'read'
+  | 'intention'
+  | 'layouts'
+  | 'tonight'
+  | 'ritual'
+  | 'ancestor'
+  | 'stone'
+  | 'plant'
+  | 'drawn';
 
 type Row = { id: MoreAction; symbol: string; title: string; line: string; needsSave?: boolean };
 
 const WORKINGS: Row[] = [
+  { id: 'ritual', symbol: '✶', title: 'Begin a ritual here', line: 'A working from the book or one of your templates, its steps over the altar.', needsSave: true },
   { id: 'jar', symbol: '⚱', title: 'Spell jar', line: 'Build a jar in layers, a word spoken with each, and seal it with wax.' },
   { id: 'sachet', symbol: '❦', title: 'Sachet or charm bag', line: 'Fill it, tie it with knots, carry it, and feed it on its day.' },
   { id: 'spell', symbol: '◔', title: 'Spell over days', line: 'A seven-day candle, nine nights, a moon’s jar: the altar keeps count.', needsSave: true },
   { id: 'scry', symbol: '◉', title: 'Scrying bowl', line: 'A quiet, timed sit with dark water, then a few words on what came.', needsSave: true },
   { id: 'gratitude', symbol: '❂', title: 'Gratitude bowl', line: 'A bead for each thing you’re thankful for, filling through the moon.', needsSave: true },
+];
+
+// Things from the rest of your practice, set on the altar.
+const PRACTICE: Row[] = [
+  { id: 'ancestor', symbol: '✿', title: 'Ancestor', line: 'A memorial candle for one of your dead, from Hedge → Ancestors.' },
+  { id: 'stone', symbol: '◆', title: 'My stone', line: 'One of your own stones, with when it was last cleansed.' },
+  { id: 'plant', symbol: '❧', title: 'My plant', line: 'A sprig or a pinch from your garden.' },
+  { id: 'drawn', symbol: 'ᚱ', title: 'Tonight’s card or rune', line: 'What you drew in your readings, laid on the altar.' },
 ];
 
 const READING: Row[] = [
@@ -45,24 +68,15 @@ export function MoreSheet({ visible, section, saved, tonight, intention, snap, o
   return (
     <Sheet visible={visible} size="half" eyebrow={section === 'workings' ? 'Workings' : 'Read & arrange'} title={section === 'workings' ? 'Work at this altar' : 'Read and arrange it'} onClose={onClose}>
       {section === 'reading' && !!intention && <Text style={styles.intention}>{`“${intention}”`}</Text>}
-      <View style={styles.list}>
-        {rows.map((row) => (
-          <Pressable
-            key={row.id}
-            onPress={() => onPick(row.id)}
-            accessibilityRole="button"
-            accessibilityLabel={row.title}
-            accessibilityHint={row.needsSave && !saved ? `${row.line} Save the altar first; it’s kept with it.` : row.line}
-            style={({ pressed }) => [styles.row, pressed && { opacity: 0.7 }]}
-          >
-            <Text style={styles.symbol}>{row.symbol}</Text>
-            <View style={styles.rowText}>
-              <Text style={styles.title}>{row.title}</Text>
-              <Text style={type.caption}>{row.needsSave && !saved ? `${row.line} Kept with the altar once it’s saved.` : row.line}</Text>
-            </View>
-          </Pressable>
-        ))}
-      </View>
+      <RowList rows={rows} saved={saved} onPick={onPick} />
+      {section === 'workings' && (
+        <>
+          <Text style={type.eyebrow} accessibilityRole="header">
+            From your practice
+          </Text>
+          <RowList rows={PRACTICE} saved={saved} onPick={onPick} />
+        </>
+      )}
       {section === 'reading' && (
         <View style={styles.toggle}>
           <View style={styles.rowText}>
@@ -73,6 +87,29 @@ export function MoreSheet({ visible, section, saved, tonight, intention, snap, o
         </View>
       )}
     </Sheet>
+  );
+}
+
+function RowList({ rows, saved, onPick }: { rows: Row[]; saved: boolean; onPick: (action: MoreAction) => void }) {
+  return (
+    <View style={styles.list}>
+      {rows.map((row) => (
+        <Pressable
+          key={row.id}
+          onPress={() => onPick(row.id)}
+          accessibilityRole="button"
+          accessibilityLabel={row.title}
+          accessibilityHint={row.needsSave && !saved ? `${row.line} Save the altar first; it’s kept with it.` : row.line}
+          style={({ pressed }) => [styles.row, pressed && { opacity: 0.7 }]}
+        >
+          <Text style={styles.symbol}>{row.symbol}</Text>
+          <View style={styles.rowText}>
+            <Text style={styles.title}>{row.title}</Text>
+            <Text style={type.caption}>{row.needsSave && !saved ? `${row.line} Kept with the altar once it’s saved.` : row.line}</Text>
+          </View>
+        </Pressable>
+      ))}
+    </View>
   );
 }
 
