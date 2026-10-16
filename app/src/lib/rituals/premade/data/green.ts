@@ -933,7 +933,7 @@ export const GREEN: Premade[] = [
       {
         title: "Anoint the sods",
         instructions: "Turn each sod over and drip the poultice onto its underside, then sprinkle each with water, three times. In the original, the words are Latin from Genesis: 'grow, and multiply, and fill the earth.'",
-        spoken: "Crescite, et multiplicamini, et replenite terram.\nGrow, and multiply, and fill the earth.",
+        spoken: "Crescite, et multiplicamini, et replete terram.\nGrow, and multiply, and fill the earth.",
       },
       {
         title: "Let the sods rest in a holy place",
