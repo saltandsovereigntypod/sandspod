@@ -38,10 +38,10 @@ test('fourteen nights ahead each carry a sign, and a quarter change is found wit
   assert.ok(change && change.date.getTime() - new Date(2026, 9, 16, 21).getTime() < 8 * 86_400_000);
 });
 
-test('the almanac signs: water fruitful, fire and air barren, Virgo barren, Libra half', () => {
+test('the almanac signs: water fruitful, earth and Libra half, fire and air barren, Virgo barren', () => {
   assert.equal(signNote('Cancer').fertility, 'fruitful');
   assert.equal(signNote('Pisces').fertility, 'fruitful');
-  assert.equal(signNote('Taurus').fertility, 'fruitful');
+  assert.equal(signNote('Taurus').fertility, 'semi-fruitful');
   assert.equal(signNote('Aries').fertility, 'barren');
   assert.equal(signNote('Aquarius').fertility, 'barren');
   assert.equal(signNote('Virgo').fertility, 'barren');

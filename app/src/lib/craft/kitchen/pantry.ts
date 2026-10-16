@@ -124,7 +124,8 @@ const RAW: Raw[] = [
     about:
       'Sugar sweetens people as well as tea. Sweetening jars of sugar or honey are kept to make someone kinder towards you or a home gentler, and a spoonful stirred clockwise into a drink is a small spell for a warm conversation.',
     kitchen: 'Stir your tea or coffee clockwise three times while you think of someone you’d like things to be easier with.',
-    safety: 'Spilled sugar draws ants. Anyone diabetic should swap in an unsweetened symbol, such as a sprig of rosemary, for anything they’d eat.',
+    safety:
+      'Spilled sugar draws ants. Anyone diabetic should swap in an unsweetened symbol, such as a sprig of rosemary, for anything they’d eat. If you swap in a sugar-free sweetener, keep xylitol (birch sugar) well away from dogs: even a little can be deadly to them.',
   },
   {
     key: 'brown_sugar',
@@ -201,7 +202,7 @@ const RAW: Raw[] = [
       'The oil of the Mediterranean, used for food, for lamps and for anointing priests, kings, the sick and the dead. The olive branch is the old sign of peace. It is the usual carrier oil for dressing candles, and a drop on the forehead is one of the simplest blessings there is.',
     kitchen: 'Warm a little with a sprig of rosemary to make a small anointing oil, or bless the bottle before you cook with it.',
     safety:
-      'Never put water on burning oil: turn off the heat and cover the pan. Herb-infused oils kept at room temperature can grow botulism, so make them small, keep them in the fridge and use them within a week. Patch-test before anointing skin.',
+      'Never put water on burning oil: turn off the heat and cover the pan. Herb-infused oils kept at room temperature can grow botulism, so make them small, keep them in the fridge and use them within four days, or freeze them. Patch-test before anointing skin.',
   },
   {
     key: 'butter',
@@ -308,7 +309,7 @@ const RAW: Raw[] = [
     about:
       'The grain of cold, wet places, oats fed Scotland, the North of England and Ireland through hard winters. Porridge is comfort and steadiness, oatcakes were baked for the old quarter days, and oats tied in muslin make a soothing bath for sore skin.',
     kitchen: 'Stir the morning porridge clockwise for something to grow and anticlockwise for something to ease.',
-    safety: 'Pure oats are gluten-free but are often milled alongside wheat; buy certified gluten-free oats for anyone coeliac.',
+    safety: 'Pure oats are gluten-free but are often milled alongside wheat; buy certified gluten-free oats for anyone coeliac, and know that a few coeliacs react even to pure oats.',
   },
   {
     key: 'barley',
@@ -407,7 +408,7 @@ const RAW: Raw[] = [
       'Sharp, bright and clean. Lemon is the kitchen witch’s cleanser: lemon water to wash tools and surfaces, peel in a floor wash, a halved lemon on the windowsill to sour bad feeling. It is also used for clear thinking and for friendship that lasts.',
     kitchen: 'Wipe down the worktops with lemon and water at the end of a waning-moon clean, and leave the halves on a saucer to finish.',
     safety:
-      'Lemon juice on skin in sunlight can cause blistering burns (phytophotodermatitis); wash it off before going out. Citrus oils are toxic to cats. Lemon etches marble.',
+      'Lemon juice on skin in sunlight can cause blistering burns (phytophotodermatitis); wash it off before going out. Citrus oils are toxic to cats and dogs. Lemon etches marble.',
   },
   {
     key: 'orange',
@@ -494,7 +495,7 @@ const RAW: Raw[] = [
     intentions: ['prosperity', 'love', 'courage', 'protection'],
     about: '',
     kitchen: 'Add a stick to the coffee pot or blow a pinch through the front door on the first of the month.',
-    safety: 'Cassia, the common supermarket cinnamon, is high in coumarin, so keep daily amounts small. Cinnamon oil burns skin; never apply it neat.',
+    safety: 'Cassia, the common supermarket cinnamon, is high in coumarin, so keep daily amounts small. Cinnamon oil burns skin; never apply it neat, and keep the oil away from pets.',
   },
   {
     key: 'nutmeg',
@@ -509,7 +510,7 @@ const RAW: Raw[] = [
       'Once worth more than gold by weight and the cause of wars over the Banda Islands, nutmeg is the luck spice: a whole nutmeg was carried as a charm by gamblers and travellers, and grated into drinks for good fortune. Mace is the red lace around the seed.',
     kitchen: 'Grate a little over warm milk or a custard and make a wish for luck as you grate.',
     safety:
-      'Only a pinch: two teaspoons or more can cause nutmeg poisoning (hallucinations, racing heart, vomiting), and it is toxic to dogs and cats. Keep whole nutmegs away from children.',
+      'Only a pinch: around a teaspoon or two (5 g or so) has caused nutmeg poisoning (hallucinations, racing heart, vomiting), and it is toxic to dogs and cats. Keep whole nutmegs away from children.',
   },
   {
     key: 'cloves',
@@ -565,7 +566,7 @@ const RAW: Raw[] = [
     intentions: ['love', 'peace'],
     about: '',
     kitchen: 'Add a drop of vanilla to a cake batter for a loving home, or dab a little on a pulse point before a date.',
-    safety: 'Vanilla extract is mostly alcohol; keep it from children and pets. Patch-test before using on skin.',
+    safety: 'Vanilla extract is about a third alcohol; keep it from children and pets. Patch-test before using on skin.',
   },
   {
     key: 'mustard_seed',
@@ -579,7 +580,7 @@ const RAW: Raw[] = [
     about:
       'The smallest of seeds growing into a great plant made mustard the parable of faith in the Gospels, and a mustard seed carried in a locket is still a charm for faith and courage. Scattered across a doorway or carried in red cloth, it guards against harm.',
     kitchen: 'Toast mustard seeds in oil until they pop at the start of a curry or pickle, and let each pop be a small courage.',
-    safety: 'Mustard is a major food allergen. Mustard plasters and compresses can blister skin; don’t leave them on.',
+    safety: 'Mustard is a common allergen (one of the 14 that must be labelled in the UK and EU). Mustard plasters and compresses can blister skin; don’t leave them on.',
   },
   {
     key: 'chili',
@@ -681,7 +682,7 @@ const RAW: Raw[] = [
       'The libation of the old world: a little poured on the ground or into the fire for the gods and the dead before anyone drinks. Wine blesses a feast, seals a promise and is the cup of cakes and ale in modern Wiccan rites.',
     kitchen: 'Pour the first splash of the bottle outside or into an offering bowl with thanks before a celebration meal.',
     safety:
-      'Grape juice or water does the same work for anyone sober, young or pregnant. Alcohol is toxic to pets. Wine near candles or in a hot pan can catch.',
+      'Grape juice or water does the same work for anyone sober, young or pregnant. Alcohol is toxic to pets, and grapes, raisins and grape products can cause kidney failure in dogs, so don’t leave offerings where they can reach. Wine near candles or in a hot pan can catch.',
   },
   {
     key: 'water',

@@ -153,7 +153,7 @@ export const COSMIC: Premade[] = [
       'The idea that things begun on a growing moon will grow is ancient farm and household lore, recorded from Roman agricultural writers through to Victorian almanacs. Basil, cinnamon and bay as money herbs come from modern Western correspondences; aventurine as a "luck stone" is a twentieth-century attribution. Adding to a working night by night is a modern adaptation.',
     sources: [
       'Pliny the Elder, Natural History, Book 18',
-      'Frazer, The Golden Bough (1890), on sympathetic magic and the waxing moon',
+      'Frazer, The Golden Bough (3rd ed., 1906–15), on sympathetic magic and the moon’s influence on growth',
     ],
   },
   {
@@ -290,7 +290,7 @@ export const COSMIC: Premade[] = [
       {
         title: 'The last knot',
         instructions:
-          'On the dark moon, undo the last knot. Bury or bin the cord and the salt away from your home, and rinse the smoky quartz under running water.',
+          'On the dark moon, undo the last knot. Bin the salt (it harms soil and plants) and bury or bin the cord away from your home, then rinse the smoky quartz under running water.',
       },
     ],
     closing:
@@ -564,6 +564,7 @@ export const COSMIC: Premade[] = [
       { name: 'Citrine or tiger eye', ref: 'traditional/crystal/citrine' },
       { name: 'Three bay leaves', ref: 'traditional/herb/bay' },
       { name: 'A pinch of frankincense resin', ref: 'traditional/herb/frankincense', optional: true },
+      { name: 'A charcoal disc and a proper incense burner, for the resin', ref: 'traditional/tool/incense_burner', optional: true },
       { name: 'Calendula petals', ref: 'traditional/herb/calendula' },
       { name: 'A heat-proof dish', ref: 'traditional/vessel/dish' },
     ],
@@ -607,7 +608,7 @@ export const COSMIC: Premade[] = [
       'Carry the sunstone today. Put one bay leaf in your wallet or work bag and return the others to the garden. Do one visible thing this week that lets people see what you can do.',
     safety:
       CANDLE_SAFETY +
-      ' Do not look directly at the sun. If you burn resin on charcoal, use a proper burner on a heat-proof surface with the window open, and keep charcoal away from children and pets.',
+      ' Do not look directly at the sun. If you burn resin on charcoal, use a proper burner on a heat-proof surface with the window open, keep charcoal away from children and pets, and skip the smoke if you or anyone in the house has asthma; smelling the resin unburned works too.',
     lore:
       'The seven-day planetary week, each day ruled by one of the seven classical "planets" in the Chaldean order, was in common use in the Roman world by the first century CE (Cassius Dio explains it). Sunday is the Sun\'s day in most European languages. Gold, bay, frankincense and marigold as solar materials appear in Renaissance tables of correspondences such as Agrippa\'s; sunstone is a later, modern attribution.',
     sources: [
@@ -686,9 +687,9 @@ export const COSMIC: Premade[] = [
       'Tuck the pouch inside your pillowcase. In the morning, write down your dreams before you look at your phone, and compare them with what you saw in the bowl.',
     safety:
       CANDLE_SAFETY +
-      ' Mugwort must not be eaten or drunk here; avoid it entirely if pregnant or trying to conceive, if you have a ragweed or daisy allergy, and keep it away from pets. Leave it out if it gives you restless nights.',
+      ' Mugwort must not be eaten or drunk here; avoid it entirely if pregnant or trying to conceive, if you have a ragweed or daisy allergy, and keep it away from pets. Leave it out if it gives you restless nights. Use true jasmine (Jasminum) or a jasmine tea bag: "Carolina" or "yellow" jasmine (Gelsemium) is a different, highly poisonous plant.',
     lore:
-      'Monday is the Moon\'s day across Europe (Lunae dies, Montag, lundi). Silver, the colour white, moonstone, and water-plants belong to the Moon in Renaissance correspondences. Lecanomancy, divination with a bowl of water, is ancient and appears in the Greek Magical Papyri. Dream pillows of mugwort are folk and modern herbal practice.',
+      'Monday is the Moon\'s day across Europe (Lunae dies, Montag, lundi). In Agrippa\'s Renaissance tables silver, white and green stones, the moon-stone he calls selenites, and water and all moist things belong to the Moon. Lecanomancy, divination with a bowl of water, is ancient and appears in the Greek Magical Papyri. Dream pillows of mugwort are folk and modern herbal practice.',
     sources: [
       'Agrippa, Three Books of Occult Philosophy (1533; English 1651), Book I, on lunar things',
       'Greek Magical Papyri (on bowl divination), in Betz\'s translated edition and older translations',
@@ -758,10 +759,9 @@ export const COSMIC: Premade[] = [
       CANDLE_SAFETY +
       ' Use only culinary amounts of ginger. Ginger can interact with blood thinners; check with your doctor if that applies. Keep pepper away from eyes and pets.',
     lore:
-      'Tuesday belongs to Mars in Latin (Martis dies, mardi) and to the war-god Tyr in English (Tiw\'s day). Red, iron, pepper and ginger are Martial things in Renaissance correspondences; carnelian was carried for courage in medieval lapidaries. The ginger cup is a modern kitchen addition.',
+      'Tuesday belongs to Mars in Latin (Martis dies, mardi) and to the war-god Tyr in English (Tiw\'s day). In Agrippa\'s Renaissance tables red and fiery colours, iron, the bloodstone and sharp, burning plants such as mustard and garlic are Martial; pepper and ginger as Mars herbs, and carnelian for courage, are later and modern correspondences. The ginger cup is a modern kitchen addition.',
     sources: [
-      'Agrippa, Three Books of Occult Philosophy (1533; English 1651), Book I, on Martial things',
-      'Marbodus of Rennes, De Lapidibus (11th c.)',
+      'Agrippa, Three Books of Occult Philosophy (1533; English 1651), Book I, ch. 27, on Martial things',
     ],
   },
   {
@@ -829,7 +829,7 @@ export const COSMIC: Premade[] = [
       CANDLE_SAFETY +
       ' Keep the flame well clear of paper. Peppermint scent can be too strong for small children and cats; use garden mint if so.',
     lore:
-      'Wednesday is Mercury\'s day in Romance languages (mercredi, miércoles) and Woden\'s in English; Roman writers matched Mercury with Odin. Renaissance tables give Mercury mixed colours, quicksilver and fine-leaved, aromatic herbs. "Rosemary, that\'s for remembrance" (Hamlet, 1600) records an old belief; fluorite and sodalite for study are modern crystal lore.',
+      'Wednesday is Mercury\'s day in Romance languages (mercredi, miércoles) and Woden\'s in English; Roman writers matched Mercury with Odin. Renaissance tables give Mercury mixed colours, quicksilver and fine-leaved, aromatic herbs. "There\'s rosemary, that\'s for remembrance" (Hamlet, c. 1600) records an old belief; fluorite and sodalite for study are modern crystal lore.',
     sources: [
       'Agrippa, Three Books of Occult Philosophy (1533; English 1651), Book I, on Mercurial things',
       'Shakespeare, Hamlet IV.v (on rosemary)',
@@ -905,7 +905,7 @@ export const COSMIC: Premade[] = [
       'Make your act of generosity today. Keep the bundle until the next Thursday of a waxing moon, then return the herbs to the earth and refresh it.',
     safety: CANDLE_SAFETY,
     lore:
-      'Thursday is Jupiter\'s day in Latin (Iovis dies, jeudi) and Thor\'s in English. Jupiter was the "greater fortune" in Hellenistic and medieval astrology. Agrippa assigns him blue, tin, the oak, and spicy or sweet herbs such as clove and sage. Lapis was linked with Jupiter in some Renaissance lists. Giving to receive is a modern framing of an old idea of reciprocity.',
+      'Thursday is Jupiter\'s day in Latin (Iovis dies, jeudi) and Thor\'s in English. Jupiter was the "greater fortune" in Hellenistic and medieval astrology. Agrippa gives him tin, sweet tastes, the sapphire and "airy" colours, and the oak among his lucky trees; clove and sage as Jupiter herbs come from later tables, and lapis lazuli for Jupiter is a modern attribution. Giving to receive is a modern framing of an old idea of reciprocity.',
     sources: [
       'Agrippa, Three Books of Occult Philosophy (1533; English 1651), Book I, on Jovial things',
       'Ptolemy, Tetrabiblos (on the benefic planets)',
@@ -976,7 +976,7 @@ export const COSMIC: Premade[] = [
       CANDLE_SAFETY +
       ' Use only unsprayed petals. Test vanilla and milk on a patch of skin first if you have sensitive skin. Do not add essential oils neat to the bath. Keep the water comfortably warm, not hot, if you are pregnant or have heart or blood-pressure concerns. Take the rose quartz out after the bath; it can fade if left in sunny windows.',
     lore:
-      'Friday is Venus\'s day in Latin (Veneris dies, vendredi) and Frigg\'s or Freyja\'s in English. Venus as the evening and morning star was Inanna and Ishtar in Mesopotamia. Agrippa gives Venus green, copper, the rose and sweet scents. Rose quartz as the love stone is a modern twentieth-century attribution; love baths are found in many folk and modern traditions.',
+      'Friday is Venus\'s day in Latin (Veneris dies, vendredi) and Frigg\'s or Freyja\'s in English. Venus as the evening and morning star was Inanna and Ishtar in Mesopotamia. Agrippa gives Venus green and fair-coloured stones, brass, the rose and all sweet perfumes. Rose quartz as the love stone is a modern twentieth-century attribution; love baths are found in many folk and modern traditions.',
     sources: [
       'Agrippa, Three Books of Occult Philosophy (1533; English 1651), Book I, on Venereal things',
       'Scholarship on Inanna-Ishtar and the planet Venus',
@@ -1003,7 +1003,6 @@ export const COSMIC: Premade[] = [
       { name: 'Four small black stones or pieces of hematite', ref: 'traditional/crystal/hematite' },
       { name: 'Black salt', ref: 'traditional/tool/black_salt' },
       { name: 'A sprig of cypress or a few juniper berries', ref: 'traditional/herb/cypress' },
-      { name: 'A grain of myrrh', ref: 'traditional/herb/myrrh', optional: true },
       { name: 'Paper and a dark pen' },
     ],
     preparation:
@@ -1046,7 +1045,7 @@ export const COSMIC: Premade[] = [
       'Fold the list and keep it under the onyx on your altar or desk. Hold your boundaries out loud at least once this week. Sweep up and replace the salt line each Saturday as needed.',
     safety:
       CANDLE_SAFETY +
-      ' Myrrh and juniper should not be burned or used around anyone pregnant. Keep salt lines away from where pets lick and from plants. Jet is soft and can burn; never place it in the flame.',
+      ' Keep the cypress or juniper away from the flame; it is not burned here, and juniper berries are not to be eaten (avoid them entirely in pregnancy). Keep salt lines away from where pets lick and from plants. Jet is soft and can burn; never place it in the flame.',
     lore:
       'Saturday is Saturn\'s day in English (and Saturni dies in Latin). Saturn was the slowest and outermost visible planet, ruler of limits, time and old age in Hellenistic astrology. Agrippa gives him black, lead, the cypress and bitter, dark resins such as myrrh. Laying salt or stones across a threshold is widespread European folk protection; black salt is a modern witchcraft preparation.',
     sources: [
@@ -1274,7 +1273,7 @@ export const COSMIC: Premade[] = [
     sources: [
       'Taylor, The Hymns of Orpheus (1792), Hymn to the Stars',
       'Psalm 8:3, King James Version (1611)',
-      'Kunitzsch, on the Arabic origins of star names (scholarship)',
+      'Kunitzsch and Smart, A Dictionary of Modern Star Names (2006), on their Arabic origins',
     ],
   },
 
@@ -1321,9 +1320,7 @@ export const COSMIC: Premade[] = [
       {
         title: 'Smoke for the rest',
         instructions:
-          'Light the rosemary bundle, let it catch, then blow it out so it smoulders over the heat-proof dish. Pass each keep-dry stone slowly through the smoke three times. Smoke works for every stone, but keep it brief and ventilated.',
-        light: true,
-        snuff: true,
+          'Light the rosemary bundle, let it catch, then blow it out so it smoulders over the heat-proof dish. Pass each keep-dry stone slowly through the smoke three times. Smoke works for every stone, but keep it brief and ventilated. Press the bundle out in the dish when you finish.',
       },
       {
         title: 'Sound for everything',
@@ -1334,7 +1331,7 @@ export const COSMIC: Premade[] = [
       {
         title: 'Rest on selenite or quartz',
         instructions:
-          'Set small stones on the selenite slab or around the quartz cluster, or bury hardy ones in the bowl of dry rice. Leave them for at least an hour, or overnight.',
+          'Set small stones on the selenite slab or around the quartz cluster, or bury hardy ones in the bowl of dry rice. Keep soft, porous or polished stones (opal, turquoise, malachite, pearl, amber) out of salt, which can scratch them or draw in moisture. Leave them for at least an hour, or overnight.',
       },
       {
         title: 'Charge',
@@ -1492,7 +1489,7 @@ export const COSMIC: Premade[] = [
     lore:
       'Protecting the corners, thresholds and hearth of a home is old European folk practice: things were buried under thresholds and placed in walls and chimneys. Black tourmaline as a protection stone and crystal grids as a technique are modern, from the late twentieth-century crystal movement.',
     sources: [
-      'Merrifield, The Archaeology of Ritual and Magic (scholarship on house protection)',
+      'Merrifield, The Archaeology of Ritual and Magic (1987), on concealed house protection',
       'Scholarship on the New Age crystal movement',
     ],
   },
@@ -1569,7 +1566,7 @@ export const COSMIC: Premade[] = [
       ' Citrine fades in strong sunlight, so set the grid out of direct sun. Pyrite should stay dry and should not be handled by small children; wash your hands after touching it.',
     lore:
       'Crystal grids, often laid on sacred geometry patterns, are a late twentieth-century New Age practice. Citrine as a "merchant\'s stone" and aventurine for luck are modern associations; pyrite\'s link with money comes from its gold colour, the "fool\'s gold" of miners. Thursday and the waxing moon follow older planetary and lunar timing.',
-    sources: ['Scholarship on the New Age crystal movement', 'Agrippa (1533) on Jupiter and Thursday'],
+    sources: ['Scholarship on the New Age crystal movement', 'Agrippa, Three Books of Occult Philosophy (1533), on Jovial things'],
   },
   {
     id: 'crystal-rose-quartz-self-love',
@@ -1689,15 +1686,15 @@ export const COSMIC: Premade[] = [
       {
         title: 'Tie it closed',
         instructions:
-          'Pull the drawstring and tie three knots: one for the body, one for the mind, one for the heart.',
+          'Pull the drawstring and tie three knots: one for the body, one for the mind, one for the heart. Then snuff the candle.',
+        snuff: true,
       },
       {
         title: 'Breathe down',
         instructions:
-          'Snuff the candle. Lie down with the sachet on your chest and breathe in for four, hold for seven, out for eight. Repeat as the timer runs, then tuck the sachet under your pillow or on the nightstand.',
+          'With the candle out, lie down with the sachet on your chest and breathe in for four, hold for seven, out for eight. Repeat as the timer runs, then tuck the sachet under your pillow or on the nightstand.',
         minutes: 5,
         timed: true,
-        snuff: true,
       },
     ],
     closing:

@@ -3,7 +3,8 @@
 // 1. Everywhere: spring and neap tides read from the moon. Springs (the
 //    biggest range, highest highs and lowest lows) follow the new and full
 //    moon by a day or two; neaps (the smallest range) follow the quarters.
-//    Near perigee the springs run larger still ("king tides").
+//    Near perigee the springs run larger still (perigean springs, often
+//    called "king tides", an informal name for the year's highest tides).
 // 2. US coasts: real high and low water from NOAA CO-OPS predictions. The
 //    parsing, grouping and station-finding here are pure; the fetching and
 //    caching live in noaa.ts.
@@ -147,7 +148,7 @@ export const RANGE_WORDS: Record<RangeStage, { title: string; body: string }> = 
   },
   neap: {
     title: 'Neap tides',
-    body: 'Sun and moon pull at right angles, so the water barely rises and barely falls. Gentle, steady work: tending, maintaining, patient habits, quiet devotion.',
+    body: 'Sun and moon pull at right angles, so the range is smallest: lower highs and higher lows. Gentle, steady work: tending, maintaining, patient habits, quiet devotion.',
   },
   building: {
     title: 'Building toward springs',

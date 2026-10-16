@@ -289,8 +289,9 @@ export const SIMMER_SAFETY = [
   'Never leave a simmer pot on the stove unattended, and turn it off before you go out or to bed.',
   'Keep the heat at the lowest simmer and top it up with hot water every 20 to 30 minutes so it never boils dry.',
   'Keep pets and small children away from the hot pan and the cooker.',
+  'Use a stainless steel or enamel pan, not a non-stick one: a non-stick pan that boils dry gives off fumes that can kill pet birds.',
   'No essential oils in the pot: heated and spread through the air they are harmful to cats, dogs and birds.',
-  'Don’t eat or drink what’s been simmering. Strain the solids onto the compost when you’re done.',
+  'Don’t eat or drink what’s been simmering. Strain the solids onto the compost when you’re done, where pets can’t get at the spices.',
 ];
 
 const WORDS: Record<string, string> = {

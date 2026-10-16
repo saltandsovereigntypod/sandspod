@@ -107,6 +107,7 @@ export function describeCode(code: number): string {
   if (code >= 80 && code <= 82) return code === 82 ? 'Violent showers' : 'Showers';
   if (code === 85 || code === 86) return 'Snow showers';
   if (code === 95) return 'Thunderstorm';
+  if (code === 97) return 'Heavy thunderstorm';
   if (code === 96 || code === 99) return 'Thunderstorm with hail';
   return 'Mixed weather';
 }
@@ -124,12 +125,13 @@ export type WeatherWorking = {
   premadeId?: string;
 };
 
-const isStorm = (code: number) => code === 95 || code === 96 || code === 99;
+const isStorm = (code: number) => code === 95 || code === 96 || code === 97 || code === 99;
 const isRain = (code: number) => (code >= 51 && code <= 67) || (code >= 80 && code <= 82);
 const isSnow = (code: number) => (code >= 71 && code <= 77) || code === 85 || code === 86;
 
-// Thresholds in km/h. 50 km/h gusts move whole branches (Beaufort 6–7);
-// 75 km/h and up is a gale, when going out to work is unwise.
+// Thresholds in km/h. Gusts of 50 km/h sway large branches and whole small
+// trees (Beaufort 6–7); 75 km/h and up is severe-gale strength (Beaufort 9),
+// when going out to work is unwise.
 export const WINDY_GUSTS = 50;
 export const WINDY_MEAN = 30;
 export const GALE_GUSTS = 75;
@@ -143,7 +145,7 @@ export function workingsFor(day: DayWeather): WeatherWorking[] {
       element: 'Fire',
       title: 'Storm energy, from indoors',
       detail: 'Thunder is the old sky-fire: raw power for breaking stuck things and charging a working. Watch and work from behind a window, and set out a jar for storm water only before it arrives.',
-      care: 'Stay indoors during thunder and lightning. If you can hear thunder you are close enough to be struck. Keep away from windows in hail, and don’t go out to fetch anything until 30 minutes after the last thunder.',
+      care: 'Stay indoors during thunder and lightning. If you can hear thunder you are close enough to be struck. Indoors, keep off corded phones and plumbing (baths, showers, washing up) and away from windows, and don’t go out to fetch anything until 30 minutes after the last thunder.',
       premadeId: 'green-storm-energy-working',
     });
   }

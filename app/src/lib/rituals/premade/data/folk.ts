@@ -66,7 +66,7 @@ export const FOLK: Premade[] = [
         spoken: 'Here you stay and here you keep,\nwhile we wake and while we sleep.',
       },
     ],
-    closing: 'Wash your hands in cold water. Leave the bottle undisturbed. Folk custom says that as long as it stays whole and hidden it keeps working; if you move house, dig it up, empty it far from the house into running drains or earth, and make a new one.',
+    closing: 'Wash your hands in cold water. Leave the bottle undisturbed. Folk custom says that as long as it stays whole and hidden it keeps working; if you move house, dig it up, pour the liquid away far from the house, wrap the pins and nails in paper and put them in the bin, and make a new one.',
     safety: 'Handle pins and nails with care, and keep the finished bottle away from children and pets. Glass can crack in hard frost if it is full to the brim, so leave a little air. Never leave a candle unattended, and keep wax away from fabric.',
     lore: 'Witch bottles are well attested in England from the early 1600s, usually stoneware "Bellarmine" jugs buried under hearths and thresholds and filled with bent pins, nails, hair, nail parings and urine. Hundreds have been found by archaeologists. Joseph Blagrave described making one in 1671, and an intact example dug up in Greenwich still held its pins, nails and liquid. Vinegar or wine in place of urine is a modern, more pleasant substitute.',
     sources: [
@@ -318,7 +318,7 @@ export const FOLK: Premade[] = [
       { name: 'A length of natural string or yarn, about 30 cm' },
       { name: 'Sharp scissors or a small knife', ref: 'traditional/tool/boline' },
       { name: 'A small bowl of water with a pinch of salt', ref: 'traditional/vessel/bowl' },
-      { name: 'Dried rosemary to burn or scatter', ref: 'traditional/herb/rosemary', optional: true },
+      { name: 'A pinch of dried rosemary for the salt water', ref: 'traditional/herb/rosemary', optional: true },
     ],
     preparation: 'Be clear on what you are cutting: not a person out of the world, but the hooks, habits and old patterns between you that still pull at you. This works for an ended relationship, a past job, a version of yourself. Set the two candles about 30 cm apart and tie one end of the string around the base of each holder.',
     steps: [
@@ -345,7 +345,7 @@ export const FOLK: Premade[] = [
       },
       {
         title: 'Wash',
-        instructions: 'Dip your fingers in the salt water and wipe your hands, your wrists and the middle of your chest. Breathe there for a few moments.',
+        instructions: 'Crumble the rosemary into the salt water if you have it. Dip your fingers in and wipe your hands, your wrists and the middle of your chest. Breathe there for a few moments.',
         minutes: 3,
         timed: true,
       },
@@ -356,7 +356,7 @@ export const FOLK: Premade[] = [
       },
     ],
     closing: 'Throw the far piece of string away outside your home, in a public bin or in compost. Keep or bury your own piece. Expect to feel tender for a few days; drink water, sleep, and stay out of contact with what you cut if you can.',
-    safety: 'Do not let the string burn through: cut it with scissors. Never leave candles unattended. If a tie is to someone who is harming you, reach out to people you trust and local support services; this ritual is for your own heart, not your safety plan.',
+    safety: 'Do not let the string burn through: cut it with scissors. Never leave candles unattended. If a tie is to someone who is harming you, reach out to people you trust and local support services; this ritual is for your own heart, not your safety plan. Endings can bring up grief that lingers; if it stays heavy, talk with a friend, a counsellor or your doctor.',
     lore: 'Cord cutting is a modern practice, popular in energy-healing and witchcraft circles from the late twentieth century, built on the older idea of invisible ties between people that can be bound or loosed. The symbolism of cutting a thread to end a fate reaches back to the Greek Moirai, whose third sister cuts the thread of life.',
   },
   {
@@ -377,11 +377,10 @@ export const FOLK: Premade[] = [
       { name: 'A small box or jar the mirror can stand in', ref: 'traditional/vessel/spell_jar' },
       { name: 'A bowl of water with three pinches of salt', ref: 'traditional/vessel/bowl' },
       { name: 'Fresh or dried rosemary', ref: 'traditional/herb/rosemary' },
-      { name: 'A pinch of dried rue', ref: 'traditional/herb/rue', optional: true },
       { name: 'A white candle', ref: 'traditional/candle/white' },
       { name: 'Black salt or ordinary salt', ref: 'traditional/tool/black_salt', optional: true },
     ],
-    preparation: 'Steep the rosemary (and rue if you have it) in a jug of just-boiled water for 15 minutes, then strain and let it cool. Add the salt water. You will use this wash on your hands, face and doorway, not as a drink. Clean the mirror.',
+    preparation: 'Steep the rosemary in a jug of just-boiled water for 15 minutes, then strain and let it cool completely. Add the salt water. You will use this wash on your hands, face and doorway, not as a drink. Clean the mirror.',
     steps: [
       {
         title: 'Light',
@@ -416,7 +415,7 @@ export const FOLK: Premade[] = [
       },
     ],
     closing: 'Leave the mirror facing outward for one full moon cycle, then wash it in running water and put it away. Repeat the wash whenever you feel weighed down.',
-    safety: 'Rue can irritate skin and cause a rash in sunlight; patch-test the wash on your wrist first, and leave out rue if you are pregnant. Do not drink the wash. Never leave a candle unattended.',
+    safety: 'Patch-test the wash on your wrist first and keep it out of your eyes. Do not drink the wash. Some older recipes add rue: leave it out, since its sap can cause blistering burns on skin exposed to sunlight and it is unsafe in pregnancy. Never leave a candle unattended.',
     lore: 'Turning harm back with a mirror or shining surface is a widespread European and Mediterranean folk idea, part of the wider family of charms against the evil eye. Salt and rosemary washes appear across English and Southern European household custom. The word "uncrossing" is closely tied to African American hoodoo, a closed practice this working does not draw on: there are no hoodoo formulas, condition oils or psalm workings here, only open European folk customs.',
     sources: ['Elworthy, The Evil Eye (1895), on mirrors and reflective amulets'],
   },
@@ -555,7 +554,7 @@ export const FOLK: Premade[] = [
       { name: 'Red thread' },
       { name: 'An amethyst', ref: 'traditional/crystal/amethyst', optional: true },
     ],
-    preparation: 'Wash your sheets or air the room before you start. Holed stones are found on shingle beaches and riverbanks; if you have none, a small old iron key does the same work in English lore.',
+    preparation: 'Wash your sheets or air the room before you start. Holed stones are found on shingle beaches and riverbanks; if you go looking, check the tide times, stay off cliff bases, and take only one small stone where local rules allow it. If you have none, a small old iron key does the same work in English lore.',
     steps: [
       {
         title: 'Fill the bag',
@@ -568,7 +567,7 @@ export const FOLK: Premade[] = [
       {
         title: 'Walk the bed',
         instructions: 'Walk around your bed three times, sunwise (clockwise), holding the stone. Say the old night-spell as you go.',
-        spoken: 'S. Withold footed thrice the old;\nHe met the night-mare, and her nine-fold;\nBid her alight,\nAnd her troth plight,\nAnd aroint thee, witch, aroint thee!',
+        spoken: 'Swithold footed thrice the old;\nHe met the nightmare, and her nine-fold;\nBid her alight and her troth plight,\nAnd aroint thee, witch, aroint thee!',
         minutes: 2,
       },
       {
@@ -585,10 +584,10 @@ export const FOLK: Premade[] = [
     ],
     closing: 'Squeeze the herb bag before sleep to wake the scent. Refresh the herbs each month and rinse the stone in running water.',
     safety: 'Check for herb allergies (chamomile is in the daisy family). Keep small stones and bags away from babies and pets. Persistent nightmares can be linked to stress, trauma, medication or sleep conditions; talk to a doctor if they continue.',
-    lore: 'The "mare" in nightmare is an Old English word for a spirit thought to sit on sleepers’ chests and press the breath out of them. Holed stones hung by the bed or in stables to keep her off are recorded by John Aubrey (1696) and many later folklorists, which is where the name "hag stone" comes from. Edgar’s night-spell is from Shakespeare’s King Lear (Act 3, Scene 4, c. 1606), and imitates the folk charms of his day: St Withold walks three times over the wold, meets the mare and her nine foals, and makes her promise to leave.',
+    lore: 'The "mare" in nightmare is an Old English word for a spirit thought to sit on sleepers’ chests and press the breath out of them. John Aubrey (1696) records a flint with a natural hole hung by the manger to stop the night-mare, “the hag”, from riding the horses at night; later folklorists record holed stones hung over beds as well, and the name “hag stone” comes from this belief. Edgar’s night-spell is from Shakespeare’s King Lear (Act 3, Scene 4, c. 1606), and imitates the folk charms of his day: St Withold (Swithold) walks three times over the wold, meets the mare and her nine foals, and makes her promise to leave.',
     sources: [
       'William Shakespeare, King Lear (c. 1606), Act 3, Scene 4',
-      'John Aubrey, Miscellanies (1696), on holed stones',
+      'John Aubrey, Miscellanies (1696), on the holed flint against the night-mare',
     ],
   },
 
@@ -619,9 +618,9 @@ export const FOLK: Premade[] = [
     steps: [
       {
         title: 'Welcome her in',
-        instructions: 'Light the candle. Open the front door a crack, or stand at it, and call Brigid in, the way women of the Hebrides did on this night.',
+        instructions: 'Light the candle. Open the front door a crack, or stand at it with your hands on the door frame, and call Brigid in, the way women of the Hebrides did on this night.',
         light: true,
-        spoken: 'Bride is come, Bride is welcome!',
+        spoken: 'Bride’s bed is ready.\nLet Bride come in. Bride is welcome.',
       },
       {
         title: 'Begin the cross',
@@ -655,8 +654,8 @@ export const FOLK: Premade[] = [
       },
     ],
     closing: 'In the morning, bring in the cloth and keep it all year for comfort and healing: lay it on a sore head or tuck it under a pillow. Give the bread to the birds. Keep a little of the blessed water in a bottle by the door.',
-    safety: 'Never leave a candle unattended. Do not drink well or spring water unless you know it is safe; tap water is fine to bless.',
-    lore: 'Brigid is both a goddess and a saint. Cormac’s Glossary (c. 900) names Brigit as a goddess of poets, with sisters of healing and smithcraft, and St Brigid of Kildare’s Lives date from the seventh century. Weaving rush crosses on her eve, leaving a cloth out to be blessed, and visiting her holy wells are living Irish customs. Alexander Carmichael recorded the Hebridean welcome "Thàinig Bride! Is beannaichte Bride" (Bride is come, Bride is welcome). The prayer verses here are new.',
+    safety: 'Never leave a candle unattended. Do not drink well or spring water unless you know it is safe, and use clean tap water if you will touch it to your eyes (especially if you wear contact lenses). Tap water is fine to bless.',
+    lore: 'Brigid is both a goddess and a saint. Cormac’s Glossary (c. 900) names Brigit as a goddess of poets, with sisters of healing and smithcraft, and St Brigid of Kildare’s Lives date from the seventh century. Weaving rush crosses on her eve, leaving a cloth out to be blessed, and visiting her holy wells are living Irish customs. Alexander Carmichael recorded the Hebridean women calling from the doorstep on Bride’s Eve, “Tha leaba Bride deiseil” (Bride’s bed is ready) and “Thigeadh Bride steach, is e beatha Bride” (Let Bride come in. Bride is welcome); the welcome here is his English. The rush cross and the brat Bríde are Irish customs. The prayer verses here are new.',
     sources: [
       'Alexander Carmichael, Carmina Gadelica, vol. 1 (1900), on the Feast of Bride',
       'Cormac’s Glossary (c. 900)',
@@ -695,7 +694,7 @@ export const FOLK: Premade[] = [
       {
         title: 'Cover with ash',
         instructions: 'Gently heap ash over the embers so they glow slowly through the night without going out. Speak the smooring blessing as you do it.',
-        spoken: 'The sacred Three\nTo save,\nTo shield,\nTo surround\nThe hearth,\nThe house,\nThe household,\nThis eve,\nThis night,\nAnd every night,\nEach single night.',
+        spoken: 'The sacred Three\nTo save,\nTo shield,\nTo surround\nThe hearth,\nThe house,\nThe household,\nThis eve,\nThis night,\nOh! this eve,\nThis night,\nAnd every night,\nEach single night.\nAmen.',
         minutes: 3,
       },
       {
@@ -711,7 +710,7 @@ export const FOLK: Premade[] = [
     ],
     closing: 'In the morning, uncover the embers and blow them back to life (or relight your candle from a match), and say good morning to the house.',
     safety: 'Follow your stove’s safety guidance, use a fireguard and keep a working smoke alarm. Never leave a lit candle overnight: snuff it before bed. Keep ash and embers in a metal container away from anything that can burn.',
-    lore: 'Before matches, the hearth fire in Highland and Island homes was kept alive for generations and banked every night, a task called smooring (smàladh). Alexander Carmichael recorded the custom and several of its blessings in the Outer Hebrides in the later nineteenth century, describing the circle of embers divided in three. The words used here are his English translation of "Smàladh an Teine", published in 1900 and now in the public domain; the final couplet is new.',
+    lore: 'Before matches, the hearth fire in Highland and Island homes was kept alive for generations and banked every night, a task called smooring (smàladh). Alexander Carmichael recorded the custom and several of its blessings in the Outer Hebrides in the later nineteenth century, describing the circle of embers divided in three. The words used here are his English translation of "Smàladh an Teine", published in 1900 and now in the public domain. The closing couplet is new, after another of his smooring prayers that sets “an angel white in charge of the hearth till white day shall come to the embers”.',
     sources: ['Alexander Carmichael, Carmina Gadelica, vol. 1 (1900), "Smooring the Fire"'],
   },
   {
@@ -764,10 +763,10 @@ export const FOLK: Premade[] = [
     ],
     closing: 'Go home, have something warm, and keep the jar of dew in the fridge for a week to dab on your face or wrists. Do not drink it.',
     safety: 'Only wash in dew from grass you know has not been sprayed with weedkiller or fertiliser, and away from roadsides and dog-walking paths. Check yourself for ticks afterwards. Take a phone and tell someone where you are going if you go out alone in the dark.',
-    lore: 'Washing in May-morning dew for beauty and health is recorded across Ireland, Scotland and England. Samuel Pepys noted in his diary in 1667 that his wife had gone out to gather May dew, which "she is told by Mrs Turner is the only thing in the world to wash her face with". The rhyme quoted here is a traditional English nursery rhyme. In Ireland, May dew was also thought precious enough that some tried to steal a neighbour’s luck by skimming it from their fields. Bealtaine itself is one of the four great Gaelic seasonal festivals.',
+    lore: 'Washing in May-morning dew for beauty and health is recorded across Ireland, Scotland and England. Samuel Pepys noted in his diary on 28 May 1667 that his wife had gone to Woolwich to gather May-dew, “which Mrs. Turner hath taught her as the only thing in the world to wash her face with”. The rhyme quoted here is a traditional English nursery rhyme, printed as “The First of May” in The Real Mother Goose (1916). In Ireland, May dew was also thought precious enough that some tried to steal a neighbour’s luck by skimming it from their fields. Bealtaine itself is one of the four great Gaelic seasonal festivals.',
     sources: [
-      'Samuel Pepys, Diary (May 1667)',
-      'Traditional English rhyme, "The fair maid who, the first of May"',
+      'Samuel Pepys, Diary (28 May 1667)',
+      'The Real Mother Goose (1916), “The First of May”',
       'Kevin Danaher, The Year in Ireland (on May customs)',
     ],
   },
@@ -803,7 +802,7 @@ export const FOLK: Premade[] = [
       {
         title: 'Hail day and night',
         instructions: 'Stand with your arms raised, palms up, and speak the greeting of the valkyrie Sigrdrífa from the Poetic Edda.',
-        spoken: 'Hail, day!\nHail, sons of day!\nAnd night and her daughter now!\nLook on us here\nwith loving eyes,\nThat waiting we victory win.\nHail to the gods!\nYe goddesses, hail,\nAnd all the generous earth!',
+        spoken: 'Hail, day!\nHail, sons of day!\nAnd night and her daughter now!\nLook on us here\nwith loving eyes,\nThat waiting we victory win.\nHail to the gods!\nYe goddesses, hail,\nAnd all the generous earth!…',
       },
       {
         title: 'Hallow the drink',
@@ -827,7 +826,7 @@ export const FOLK: Premade[] = [
     ],
     closing: 'Thank the gods and the land-spirits and say that the blót is ended. Wash the horn and bowl and put them away for next time.',
     safety: 'If you drink alcohol, keep it to a mouthful; juice is entirely traditional in spirit. Pour offerings on soil, not into rivers or drains, and only food that is safe for wild animals (no chocolate, grapes or onion where dogs roam).',
-    lore: 'Blót is the Old Norse word for sacrifice. Saga writers and chroniclers such as Snorri Sturluson describe great seasonal blóts with animal sacrifice, feasting, and the blood (hlaut) sprinkled over people and the temple with twigs. Modern Heathens almost always offer drink and food instead, keeping the shape: hallowing, hailing, sharing, pouring out, and the principle from the Hávamál that "a gift always looks for a gift". The opening hail is Sigrdrífumál, stanzas 3 and 4, in Bellows’ translation (1923).',
+    lore: 'Blót is the Old Norse word for sacrifice. Saga writers and chroniclers such as Snorri Sturluson describe great seasonal blóts with animal sacrifice, feasting, and the blood (hlaut) sprinkled over people and the temple with twigs. Modern Heathens almost always offer drink and food instead, keeping the shape: hallowing, hailing, sharing, pouring out, and the Hávamál’s principle that a gift looks for a gift in return (Bellows renders it “gifts with gifts requite”). The opening hail is Sigrdrífumál, stanzas 3 and 4, in Bellows’ translation (1923).',
     sources: [
       'The Poetic Edda, trans. Henry Adams Bellows (1923), Sigrdrífumál 3–4',
       'Snorri Sturluson, Heimskringla (on the blót at Hlaðir)',
@@ -863,19 +862,19 @@ export const FOLK: Premade[] = [
       {
         title: 'On caution',
         instructions: 'Read the first stanza aloud twice, slowly. Then sit with it. Where in your life do you walk in without looking?',
-        spoken: 'Within the gates | ere a man shall go,\nFull warily let him watch,\nFull long let him look about him;\nFor little he knows | where a foe may lurk,\nAnd sit in the seats within.',
+        spoken: 'Within the gates ere a man shall go,\n(Full warily let him watch,)\nFull long let him look about him;\nFor little he knows where a foe may lurk,\nAnd sit in the seats within.',
         minutes: 5,
       },
       {
         title: 'On friendship',
         instructions: 'Read the second stanza aloud twice. Think of a person who made you feel rich just by keeping you company.',
-        spoken: 'Young was I once, and wandered alone,\nAnd nought of the road I knew;\nRich did I feel | when a comrade I found,\nFor man is man’s delight.',
+        spoken: 'Young was I once, and wandered alone,\nAnd nought of the road I knew;\nRich did I feel when a comrade I found,\nFor man is man’s delight.',
         minutes: 5,
       },
       {
         title: 'On a name',
         instructions: 'Read the third stanza aloud twice. What would you like to be remembered for? What one deed this month would build it?',
-        spoken: 'Cattle die, and kinsmen die,\nAnd so one dies one’s self;\nBut a noble name | will never die,\nIf good renown one gets.',
+        spoken: 'Cattle die, and kinsmen die,\nAnd so one dies one’s self;\nBut a noble name will never die,\nIf good renown one gets.',
         minutes: 5,
       },
       {
@@ -1005,7 +1004,7 @@ export const FOLK: Premade[] = [
       {
         title: 'First to Hestia',
         instructions: 'Raise the cup and speak to Hestia, then pour a little into the offering bowl. Scatter barley if you have it.',
-        spoken: 'Hestia, you who tend the holy house of the lord Apollo, the Far-shooter at goodly Pytho, with soft oil dripping ever from your locks, come now into this house, come, having one mind with Zeus the all-wise.',
+        spoken: 'Hestia, you who tend the holy house of the lord Apollo, the Far-shooter at goodly Pytho, with soft oil dripping ever from your locks, come now into this house, come, having one mind with Zeus the all-wise…',
       },
       {
         title: 'Your prayer',
@@ -1021,9 +1020,9 @@ export const FOLK: Premade[] = [
     ],
     closing: 'Pour the libation onto the earth outside, never down the sink. Pour the khernips outside too, or onto a plant, since it has carried away impurity.',
     safety: 'Hold the burning sprig over the bowl and keep sleeves and hair clear. Never leave a lamp or candle unattended. Grape juice is a perfectly good libation if you avoid alcohol.',
-    lore: 'Khernips (lustral water) is attested across ancient Greek religion: a burning brand from the altar was plunged into water, which was then used to purify hands and participants before sacrifice. Hestia, as the hearth, received the first and last offerings, a custom noted in the Homeric Hymn to Hestia and elsewhere. The spoken invocation is the Homeric Hymn 24 to Hestia in Evelyn-White’s translation (1914). "Hekas, hekas, este bebeloi", rendered here as "Begone, all that is unholy", is the ritual cry recorded by Callimachus and others. Modern Hellenic polytheists (Hellenismos) reconstruct these practices for daily use.',
+    lore: 'Khernips (lustral water) is attested across ancient Greek religion: a burning brand from the altar was plunged into water, which was then used to purify hands and participants before sacrifice. Hestia, as the hearth, received the first and last offerings: the Homeric Hymn 29 says no feast is held without wine poured “to Hestia both first and last”. The spoken invocation is the Homeric Hymn 24 to Hestia in Evelyn-White’s translation (1914), trimmed at the end. The cry “hekas, hekas” (“far, far away”), bidding the unholy keep off, opens Callimachus’ Hymn to Apollo; “Begone, begone, all that is unholy” is a new rendering of that idea. Modern Hellenic polytheists (Hellenismos) reconstruct these practices for daily use.',
     sources: [
-      'Homeric Hymn 24, To Hestia, trans. H. G. Evelyn-White (1914)',
+      'Homeric Hymns 24 and 29, To Hestia, trans. H. G. Evelyn-White (1914)',
       'Burkert, Greek Religion (scholarship on khernips and libation)',
     ],
   },
@@ -1080,10 +1079,10 @@ export const FOLK: Premade[] = [
       },
     ],
     closing: 'The next day, the Noumenia, begins a new month with a clean house. If you left food on your own step, clear it away in the morning and compost it.',
-    safety: 'Never leave a candle burning outdoors or unattended. Leave only food that is safe for passing animals (no chocolate, grapes or raisins, onion or heavily salted food), and do not leave offerings where they will be a nuisance to neighbours.',
-    lore: 'The deipnon ("supper") of Hekate at the end of each lunar month is mentioned in classical Athenian sources, and Aristophanes jokes in the Wealth (388 BC) that the poor would eat the food left for her at the crossroads. The household’s sweepings and the remains of purification offerings (katharmata) were carried out at the same time. Hekate was honoured at three-way crossroads, and her images often stood at doorways. The hymn lines are from Thomas Taylor’s translation of the Orphic Hymns (1792).',
+    safety: 'Never leave a candle burning outdoors or unattended. Leave only food that is safe for passing animals: garlic, onion, chocolate, grapes and raisins are toxic to dogs and cats, so leave the garlic out (or keep it on your own step and clear it at first light) wherever pets roam. Do not leave offerings where they will be a nuisance to neighbours.',
+    lore: 'The deipnon ("supper") of Hekate at the end of each lunar month is mentioned in classical Athenian sources, and Aristophanes jokes in the Wealth (388 BC) that the poor would eat the food left for her at the crossroads. The household’s sweepings and the remains of purification offerings (katharmata) were carried out at the same time. Hekate was honoured at three-way crossroads, and her images often stood at doorways. The hymn lines are from Thomas Taylor’s translation of the Orphic Hymns (1792), where the hymn to Hekate (numbered 1 in modern editions) forms part of the opening address to Musaeus.',
     sources: [
-      'Orphic Hymn 1, To Hekate, trans. Thomas Taylor (1792)',
+      'Thomas Taylor, The Hymns of Orpheus (1792), “To Musaeus”, lines 55–58 (the hymn to Hekate)',
       'Aristophanes, Wealth (Plutus), 388 BC',
       'Parker, Polytheism and Society at Athens (on the monthly calendar)',
     ],
@@ -1146,9 +1145,8 @@ export const FOLK: Premade[] = [
     ],
     closing: 'Leave the food offering on the shrine until the next day (the Agathos Daimon) and then give it to the earth. Mark your calendar for the month ahead.',
     safety: 'Keep incense and candles on a heatproof surface, away from curtains, and never leave them unattended. Ventilate the room; smoke can trouble asthma and pets, especially birds.',
-    lore: 'Noumenia, the first day of the lunar month, was described by Plutarch and others as the holiest of days, when Athenians honoured the household gods with incense and small cakes. Apollo Noumenios and the household protectors such as Zeus Ktesios were especially associated with it. It is followed by a day for the Agathos Daimon, the good spirit of the house. Modern Hellenic polytheists keep this monthly cycle of Deipnon, Noumenia and Agathos Daimon.',
+    lore: 'Noumenia, the first day of the lunar month, was counted among the holiest days of the Athenian month, when households honoured the household gods with incense and small cakes. Apollo Noumenios and the household protectors such as Zeus Ktesios were especially associated with it. It is followed by a day for the Agathos Daimon, the good spirit of the house. Modern Hellenic polytheists keep this monthly cycle of Deipnon, Noumenia and Agathos Daimon.',
     sources: [
-      'Plutarch, Moralia (on the Noumenia)',
       'Mikalson, The Sacred and Civil Calendar of the Athenian Year (scholarship)',
     ],
   },
@@ -1270,7 +1268,7 @@ export const FOLK: Premade[] = [
       },
     ],
     closing: 'In the morning, return the offering to the earth. On 22 February the Romans held the Caristia, a family meal for the living, to make peace after the days of the dead: cook something good and share it.',
-    safety: 'Never leave a flame unattended, at home or at a grave. Follow cemetery rules about candles and offerings.',
+    safety: 'Never leave a flame unattended, at home or at a grave. Follow cemetery rules about candles and offerings. Honouring the dead can reopen grief; if it feels heavy, lean on friends and family or a bereavement service or counsellor.',
     lore: 'Ovid describes the Parentalia in the Fasti (Book 2): a tile wreathed with garlands, a sprinkling of grain, a few grains of salt, bread softened in wine and loose violets were enough to please the shades. He tells how once, when the rites were neglected, the dead were said to have walked the streets. The final day, the Feralia, was public; the Caristia followed. Modern Roman polytheists keep these days, and anyone may honour their own dead this way.',
     sources: ['Ovid, Fasti, Book 2 (on the Parentalia, Feralia and Caristia)'],
   },
@@ -1294,7 +1292,7 @@ export const FOLK: Premade[] = [
       { name: 'Vesta', ref: 'traditional/deity/vesta' },
       { name: 'A sprig of bay or a few flowers for a garland', ref: 'traditional/herb/bay', optional: true },
     ],
-    preparation: 'The Vestalia ran from 7 to 15 June. Clear and clean the hob, oven or fireplace thoroughly; on the last day of the festival the Vestals swept out the temple and carried the sweepings to the Tiber. Mix the dough an hour before if you are using yeast.',
+    preparation: 'The Vestalia ran from 7 to 15 June. Clear and clean the hob, oven or fireplace thoroughly; on the last day of the festival the Vestals swept out the temple and carried the sweepings to the Tiber. If you use yeast, mix the dough an hour before and leave it covered to rise; without yeast it makes a flat, unleavened loaf.',
     steps: [
       {
         title: 'Clean the hearth',
@@ -1309,7 +1307,7 @@ export const FOLK: Premade[] = [
       },
       {
         title: 'Make the bread',
-        instructions: 'Mix flour, salt and water (and yeast if using) and knead for a few minutes, feeling the dough warm under your hands. Shape a small round loaf and bake at 200°C for about 25 minutes. Salted grain was the Vestals’ offering.',
+        instructions: 'If you mixed a yeasted dough earlier, knock it back now; if not, mix the flour, salt and water into a soft dough. Knead for a few minutes, feeling it warm under your hands. Shape a small round loaf and bake at 200°C (180°C fan, gas 6) for 25 to 30 minutes, until it sounds hollow when tapped underneath. Salted grain was the Vestals’ offering.',
         minutes: 35,
       },
       {
@@ -1410,7 +1408,7 @@ export const FOLK: Premade[] = [
     holidays: ['dziady'],
     minutes: 90,
     level: 'intermediate',
-    solo: false,
+    solo: true,
     ingredients: [
       { name: 'Kutia or kolyvo: cooked wheat berries with honey and poppy seed' },
       { name: 'Bread, pancakes (bliny) and honey' },
@@ -1454,7 +1452,7 @@ export const FOLK: Premade[] = [
       },
     ],
     closing: 'In the morning, give the dead’s portion to birds or the earth, or as custom often did, give food to someone in need. Visit and tidy family graves in the days around Dziady if you can.',
-    safety: 'Never leave a candle burning unattended or overnight. Kutia contains poppy seed and honey; do not give honey to babies under one year. Keep usual food hygiene for food left out overnight and do not eat it afterward.',
+    safety: 'Never leave a candle burning unattended or overnight. Kutia contains poppy seed and honey; do not give honey to babies under one year. Keep usual food hygiene for food left out overnight and do not eat it afterward. Remembering the dead can bring grief to the surface; if it stays heavy, lean on family and friends or a bereavement service or counsellor.',
     lore: 'Dziady ("forefathers") is an old feast of the dead among Belarusians, Poles, Ukrainians and Lithuanians, recorded by nineteenth-century ethnographers and kept on several days of the year, with the autumn Dziady closest to All Souls. Families set food and drink for the dead, opened doors and windows, spoke little, and gave food to beggars, who were thought to pray for the dead. Adam Mickiewicz’s verse drama Dziady (1823) made the rite famous in literature. Modern Slavic Native Faith (Rodnovery) groups and many families still keep it.',
     sources: [
       'Adam Mickiewicz, Dziady (1823)',
@@ -1517,7 +1515,7 @@ export const FOLK: Premade[] = [
     ],
     closing: 'Many people read Psalm 91 each night through a hard season, or copy it out and carry it.',
     safety: 'Carry a lit candle only in a holder with a drip guard, or leave it where it is and take the oil. Never leave a candle unattended.',
-    lore: 'Psalm 91 has been used for protection by Jews and Christians for thousands of years; fragments of it appear among the Dead Sea Scrolls in a collection of psalms against evil spirits. Soldiers in the First World War carried it, earning it the name "the soldier’s psalm". The words here are the King James Version (1611). This is folk-Christian devotion, prayer rather than spellwork, and fits alongside ordinary church practice.',
+    lore: 'Psalm 91 has been used for protection by Jews and Christians for thousands of years; fragments of it appear among the Dead Sea Scrolls in a collection of psalms against evil spirits. It is often called “the soldier’s psalm”, and many soldiers have carried it into war, especially in the two World Wars. The words here are the King James Version (1611). This is folk-Christian devotion, prayer rather than spellwork, and fits alongside ordinary church practice.',
     sources: ['The Holy Bible, King James Version (1611), Psalm 91:1–2, 4–5, 11'],
   },
   {
@@ -1606,7 +1604,7 @@ export const FOLK: Premade[] = [
       {
         title: 'Gather at the door',
         instructions: 'Stand together at the front door. Tell or read the story of the Magi following the star to the house where the child was.',
-        spoken: 'And when they were come into the house, they saw the young child with Mary his mother, and fell down, and worshipped him: and when they had opened their treasures, they presented unto him gifts; gold, and frankincense, and myrrh.',
+        spoken: 'And when they were come into the house, they saw the young child with Mary his mother, and fell down, and worshipped him: and when they had opened their treasures, they presented unto him gifts; gold, and frankincense and myrrh.',
       },
       {
         title: 'Chalk the lintel',
@@ -1688,7 +1686,7 @@ export const FOLK: Premade[] = [
     ],
     closing: 'Pour the water onto a plant. Some modern Kemetics offer to Thoth before every study session or exam.',
     safety: 'Keep incense on a heatproof burner and never leave a candle or incense unattended. Ventilate the room.',
-    lore: 'Thoth (Djehuty) was the Egyptian god of writing, knowledge, reckoning and the moon, worshipped especially at Hermopolis and patron of scribes. A well-known New Kingdom statuette in the Louvre shows the scribe Nebmertef at work beneath Thoth as a baboon. A popular modern claim says every scribe poured a drop of water for Thoth before writing; the evidence for that exact custom is thin, though scribes did honour Thoth and later Imhotep. "Reversion of offerings" is well attested in temple practice. This rite is modern Kemetic revival devotion, open to all, not a reconstruction of temple liturgy.',
+    lore: 'Thoth (Djehuty) was the Egyptian god of writing, knowledge, reckoning and the moon, worshipped especially at Hermopolis and patron of scribes. A well-known New Kingdom statuette in the Louvre, from the reign of Amenhotep III, shows the scribe Nebmerutef (Nebmertef) at work beneath Thoth as a baboon. A popular modern claim says every scribe poured a drop of water for Thoth before writing; the evidence for that exact custom is thin, though scribes did honour Thoth and later Imhotep. "Reversion of offerings" is well attested in temple practice. This rite is modern Kemetic revival devotion, open to all, not a reconstruction of temple liturgy.',
     sources: [
       'Budge, The Gods of the Egyptians (1904), on Thoth',
       'Egyptological scholarship on offering ritual and the reversion of offerings',
@@ -1764,7 +1762,6 @@ export const FOLK: Premade[] = [
     practices: ['kitchen', 'solitary'],
     paths: ['hindu'],
     moon: ['new'],
-    weekday: 5,
     minutes: 90,
     level: 'intermediate',
     solo: false,

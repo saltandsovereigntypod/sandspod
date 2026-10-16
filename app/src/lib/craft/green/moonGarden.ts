@@ -33,14 +33,14 @@ export const QUARTERS: Record<GardenQuarter, QuarterAdvice> = {
       'Take softwood cuttings',
       'Water seed trays and young seedlings',
     ],
-    examples: 'Basil, parsley, coriander, dill, chamomile, lettuce, spinach, cabbage',
+    examples: 'Basil, parsley, coriander, dill, lettuce, spinach, cabbage',
   },
   fruit: {
     quarter: 'fruit',
     span: 'First quarter to full moon',
     short: 'Sow fruit & seed',
     headline: 'Sow what bears fruit, flowers and seed',
-    why: 'The moon is nearly full and the pull is strongest. Tradition gives this week to plants that flower, fruit and set seed above ground.',
+    why: 'The moon swells toward full, and the old belief is that growth above ground is strongest now. Tradition gives this week to plants that flower, fruit and set seed above ground.',
     tasks: [
       'Sow fruiting and seed-bearing plants',
       'Sow flowers for cutting and for the altar',
@@ -109,12 +109,12 @@ const SIGN_ELEMENT: Record<ZodiacSign, SignNote['element']> = {
   Pisces: 'Water',
 };
 
-// The almanac lists: the water signs most fruitful, Taurus and Capricorn
-// productive, Libra half so (good for flowers), and the fire and air signs,
-// with Virgo, barren.
+// The almanac lists: the water signs most fruitful; Taurus, Capricorn and
+// Libra semi-fruitful (Libra kindest to flowers); and the fire and air signs,
+// with Virgo, barren. Some lists count Taurus fruitful or Virgo semi-fruitful.
 const SIGN_FERTILITY: Record<ZodiacSign, Fertility> = {
   Aries: 'barren',
-  Taurus: 'fruitful',
+  Taurus: 'semi-fruitful',
   Gemini: 'barren',
   Cancer: 'fruitful',
   Leo: 'barren',
@@ -122,7 +122,7 @@ const SIGN_FERTILITY: Record<ZodiacSign, Fertility> = {
   Libra: 'semi-fruitful',
   Scorpio: 'fruitful',
   Sagittarius: 'barren',
-  Capricorn: 'fruitful',
+  Capricorn: 'semi-fruitful',
   Aquarius: 'barren',
   Pisces: 'fruitful',
 };
@@ -134,7 +134,7 @@ export function signNote(sign: ZodiacSign): SignNote {
   if (sign === 'Virgo') note = 'An earth sign, but the almanacs count Virgo barren: good for weeding and cultivating, not for sowing.';
   else if (sign === 'Libra') note = 'An air sign the almanacs count half fruitful: kind to flowers and to plants grown for their scent.';
   else if (element === 'Water') note = 'A water sign, the most fruitful of all in the old lists: the best days for sowing and planting.';
-  else if (element === 'Earth') note = 'An earth sign, counted productive: good for roots, perennials and anything that must last.';
+  else if (element === 'Earth') note = 'An earth sign the almanacs count semi-fruitful, or productive: good for roots, perennials and anything that must last.';
   else if (element === 'Fire') note = 'A fire sign, counted barren: the old days for weeding, clearing, harvesting and drying.';
   else note = 'An air sign, counted barren: days for weeding, turning the soil and gathering.';
   return { sign, element, fertility, note };

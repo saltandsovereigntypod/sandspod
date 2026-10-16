@@ -167,11 +167,11 @@ export const COLLECTING: { title: string; body: string }[] = [
   },
   {
     title: 'Check the rules for the beach',
-    body: 'Many national and state parks, marine reserves and protected beaches forbid taking anything, shells and stones included. Some islands and shores fine people for taking sand, shells or pebbles, and in parts of Britain removing beach pebbles and sand can be an offence. Read the signs or ask a ranger.',
+    body: 'Many national and state parks, marine reserves and protected beaches forbid taking anything, shells and stones included. Some islands and shores fine people for taking sand, shells or pebbles, and in parts of Britain taking sand, shingle or pebbles is an offence where a coast-protection order or local byelaw covers the beach. Read the signs or ask a ranger.',
   },
   {
     title: 'Feathers and the law',
-    body: 'In the US it’s illegal to keep the feathers of almost all native wild birds, gulls and pelicans included, even ones found on the sand. Other countries have their own rules. When unsure, take a photograph instead.',
+    body: 'In the US the Migratory Bird Treaty Act makes it illegal to keep the feathers of almost all native wild birds, gulls and pelicans included, even ones found on the sand; eagle feathers are covered by a second law too. Other countries have their own rules. When unsure, take a photograph instead.',
   },
   {
     title: 'Seaweed and driftwood',
@@ -183,6 +183,6 @@ export const COLLECTING: { title: string; body: string }[] = [
   },
   {
     title: 'Not all that glows is amber',
-    body: 'On some Baltic and North Sea beaches, lumps of white phosphorus from old munitions look like amber and can catch fire as they dry. Never pocket a “stone” you aren’t sure of, and report anything that looks like ordnance.',
+    body: 'On some Baltic beaches, lumps of white phosphorus from wartime munitions look like amber and can burst into flame as they dry, causing deep burns. Carry amber finds in a metal tin, never a pocket, until you’re sure. If one starts to burn, smother it with wet sand, and report anything that looks like ordnance.',
   },
 ];
