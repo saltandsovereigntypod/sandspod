@@ -259,7 +259,11 @@
     const saved = B().toSaved(object);
     const lighting = core.livingState.isCandle(saved) && !core.livingState.isLit(saved) && !core.livingState.candleLife(saved).spent;
     global.pushAltarUndoSnapshot?.();
-    global.toggleLight?.(object);
+    if (core.livingState.isLit(saved) && typeof global.extinguishCandleObject === "function") {
+      // The panel asks how it burned, as the app does, in place of the summary dialog.
+      global.extinguishCandleObject(object, "manual_extinguish", { showSummary: false });
+      global.renderLighting?.();
+    } else global.toggleLight?.(object);
     // A candle kept over nights: lighting it is tonight's tending of its spell.
     if (lighting) {
       const uid = saved.altarObjectId;
