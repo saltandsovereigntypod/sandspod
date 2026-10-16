@@ -16,7 +16,30 @@ import {
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AboutSheet } from '../../../components/altar/AboutSheet';
-import { AltarStage, clampViewport, type AgingLooks, type StageSky, type Viewport } from '../../../components/altar/AltarStage';
+import { AltarStage, clampViewport, type AgingLooks, type ChargeGlows, type StageMoment, type StageSky, type Viewport } from '../../../components/altar/AltarStage';
+import { MoreSheet, type MoreAction } from '../../../components/altar/MoreSheet';
+import { AltarReadingSheet } from '../../../components/altar/workings/AltarReadingSheet';
+import type { AltarContext } from '../../../components/altar/workings/common';
+import { DressingSheet } from '../../../components/altar/workings/DressingSheet';
+import { GratitudeSheet } from '../../../components/altar/workings/GratitudeSheet';
+import { IntentionSheet, useAltarIntention } from '../../../components/altar/workings/IntentionSheet';
+import { LayoutSheet } from '../../../components/altar/workings/LayoutSheet';
+import { SachetFeedSheet, SachetSheet } from '../../../components/altar/workings/SachetSheet';
+import { ScryingScreen } from '../../../components/altar/workings/ScryingScreen';
+import { JarRenewSheet, SpellJarSheet, type PlacedWorking } from '../../../components/altar/workings/SpellJarSheet';
+import { SpellTimerSheet } from '../../../components/altar/workings/SpellTimerSheet';
+import { TonightExplainedSheet } from '../../../components/altar/workings/TonightExplainedSheet';
+import { mirrorPair, mirrorPartner, snapToMeaning, type Snap } from '../../../lib/altar/arrange';
+import { attunementOf } from '../../../lib/altar/attunement';
+import { chargeDetail, chargeLine, chargeOf, MOMENT_MS, MOMENT_WORDS, momentFor, recordCharge, recordCleanse } from '../../../lib/altar/charge';
+import { applyMoves, placementWisdom } from '../../../lib/altar/reading/layouts';
+import { tonightTheme, whyThisPiece } from '../../../lib/altar/reading/tonightExplained';
+import { deityRelationship } from '../../../lib/altar/relationship';
+import type { TonightAltar } from '../../../lib/altar/tonight';
+import { nightCandle, waxLook } from '../../../lib/altar/wax';
+import { feedingDue, feedingLine, sachetStateOf } from '../../../lib/altar/workings/sachet';
+import { daysSinceRenewal, jarStateOf } from '../../../lib/altar/workings/spellJar';
+import { SPELLS_COLLECTION, spellToday, tickSpell, type SpellEntry } from '../../../lib/altar/workings/spells';
 import { AltarOptionsSheet, FlameReadingSheet, IncenseSheet, OfferingSheet } from '../../../components/altar/LivingSheets';
 import { PetitionBoxSheet, WritePetitionSheet } from '../../../components/altar/PetitionSheets';
 import { ALTAR_OPTIONS, altarOptionsFor, defaultAltarOptions, type AltarOptions } from '../../../lib/altar/altarOptions';
@@ -167,6 +190,20 @@ type SheetName =
   | 'petition'
   | 'petitions'
   | 'options'
+  | 'more-workings'
+  | 'more-reading'
+  | 'jar'
+  | 'renew'
+  | 'sachet'
+  | 'feed'
+  | 'anoint'
+  | 'spell'
+  | 'scry'
+  | 'gratitude'
+  | 'altarReading'
+  | 'intention'
+  | 'layouts'
+  | 'tonight'
   | null;
 
 const nowIso = () => new Date().toISOString();
@@ -196,6 +233,14 @@ export default function AltarEditor() {
   const [crystalMode, setCrystalMode] = useState<CrystalMode | null>(null);
   const [deityMode, setDeityMode] = useState<DeityMode | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  // The altar set by "Tonight's altar", while it's open: why each piece is there, and swaps.
+  const [tonight, setTonight] = useState<{ altar: TonightAltar; date: Date } | null>(null);
+  // The spell timer opened from one object.
+  const [spellWith, setSpellWith] = useState<{ uid: string; label: string } | null>(null);
+  // A cleansing or charge playing out on the stage, and where a dragged object is settling.
+  const [moment, setMoment] = useState<StageMoment | null>(null);
+  const [guide, setGuide] = useState<Snap | null>(null);
+  const guideRef = useRef<Snap | null>(null);
   // Full screen: the altar turned sideways to fill the phone, its tools in a drawer.
   const [full, setFull] = useState(false);
   const [tools, setTools] = useState(false);
@@ -223,6 +268,7 @@ export default function AltarEditor() {
       setName(altarName);
       setSelected(null);
       setMissing(false);
+      setTonight(null);
       undo.current = [];
       redo.current = [];
     };
@@ -238,6 +284,7 @@ export default function AltarEditor() {
       const tonight = tonightAltar(night, holidaysToday(night, holidayChoice(settings)), moonState(night).name);
       // Not marked unsaved, so a working draft you already have isn't replaced until you change something here.
       start(tonight.doc, null, 'Tonight’s Altar');
+      setTonight({ altar: tonight, date: night });
       setNotice(`Set for ${tonight.reason}. Move, swap or add anything, then Save to keep it.`);
       return;
     }
@@ -372,16 +419,20 @@ export default function AltarEditor() {
     setSelected(null);
   };
 
-  const place = (item: CabinetItem, form: CabinetForm) => {
-    if (!doc) return;
+  /** The middle of what's in view, in stage fractions: where new things are set down. */
+  const viewCenter = () => {
     const zoomedWidth = stageWidth * viewport.zoom;
-    const center = zoomedWidth
+    return zoomedWidth
       ? {
           cx: (viewport.offsetX + stageWidth / 2) / zoomedWidth,
           cy: (viewport.offsetY + stageWidth / STAGE_ASPECT / 2) / (zoomedWidth / STAGE_ASPECT),
         }
       : { cx: 0.5, cy: 0.5 };
-    const object = objectFromForm(item, form, doc.objects, nowIso(), overrides, center);
+  };
+
+  const place = (item: CabinetItem, form: CabinetForm) => {
+    if (!doc) return;
+    const object = objectFromForm(item, form, doc.objects, nowIso(), overrides, viewCenter());
     commit((d) => {
       const added = addObject(d, object);
       const index = added.objects.length - 1;
@@ -525,11 +576,37 @@ export default function AltarEditor() {
   /** Charge, Perform Ritual or Journal (submitLivingStateActivityForm). */
   const recordActivity = async (kind: Exclude<PracticeActivity, 'tend'>, options: string[], notes: string) => {
     const userId = workshop.userId;
+    const uid = String(selectedObject?.altarObjectId || '');
     const saved = userId && selectedInstanceId ? await addObjectInstanceEvent(userId, selectedInstanceId, activityRecord(kind, options, notes)) : null;
     reloadInstance();
     setNotice(saved ? `${ACTIVITY_TYPES[kind].title} saved.` : 'Couldn’t save that. Please try again.');
+    // The object on the altar remembers it too (its charge, and how often it's worked with), and the moment plays.
+    const at = saved && uid ? indexOfId(uid) : -1;
+    if (at >= 0) {
+      const how = options.join(', ');
+      const cleansing = kind === 'ritual' && options.some((o) => /cleans/i.test(o));
+      if (kind === 'charge') {
+        commit((d) => updateObjects(d, [at], (o) => recordCharge(o, how, nowIso())), false);
+        playMoment([uid], options);
+      } else if (kind === 'ritual') {
+        commit((d) => updateObjects(d, [at], (o) => logAppEvent(cleansing ? recordCleanse(o, how, nowIso()) : o, { kind: 'ritual', text: how ? `Part of a ritual: ${how.toLowerCase()}.` : 'Part of a ritual.' }, nowIso())), false);
+        if (cleansing) playMoment([uid], ['Smoke']);
+      }
+    }
     return !!saved;
   };
+
+  /** Play a cleansing or charge on the stage, by method. */
+  const playMoment = (uids: string[], methods: string[]) => {
+    const kind = momentFor(methods);
+    setMoment((m) => ({ uids: uids.filter(Boolean), kind, key: (m?.key ?? 0) + 1 }));
+    return MOMENT_WORDS[kind];
+  };
+  useEffect(() => {
+    if (!moment) return;
+    const timer = setTimeout(() => setMoment(null), MOMENT_MS + 200);
+    return () => clearTimeout(timer);
+  }, [moment]);
 
   // Record a group, or with nothing selected the whole altar, in the Grimoire
   // as a ritual page (groups.js sendCurrentGroupToGrimoire / sendAltarToGrimoire).
@@ -730,6 +807,73 @@ export default function AltarEditor() {
     setNotice(`“${entry.data.title}” is ${words}. It stays in the box’s history.`);
   };
 
+  // ── Workings, reading and arranging ──────────────────────────────────
+  const altarCtx = useMemo<AltarContext | null>(
+    () => (doc ? { id: sourceId ?? '', name, objects: doc.objects, background: doc.background } : null),
+    [doc, sourceId, name],
+  );
+  const intention = useAltarIntention(sourceId ?? '');
+  const { entries: spellEntries } = useCraft<SpellEntry>(SPELLS_COLLECTION);
+  const selectedUid = String(selectedObject?.altarObjectId || '');
+  const selectedSpells = useMemo(
+    () => (sourceId && selectedUid ? spellEntries.filter((e) => e.data?.altarId === sourceId && e.data.objectUid === selectedUid && !e.data.closedAt) : []),
+    [spellEntries, sourceId, selectedUid],
+  );
+  /** Open a sheet whose work is kept with the altar, once it's saved. */
+  const openSaved = (next: SheetName, what: string) => {
+    if (sourceId) return setSheet(next);
+    setNotice(`Save this altar first; its ${what} is kept with it.`);
+    setSheet('save');
+  };
+  const fromMore = (action: MoreAction) => {
+    setSheet(null);
+    afterSheetCloses(() => {
+      if (action === 'jar') setSheet('jar');
+      else if (action === 'sachet') setSheet('sachet');
+      else if (action === 'spell') {
+        setSpellWith(null);
+        openSaved('spell', 'spell timer');
+      } else if (action === 'scry') openSaved('scry', 'scrying');
+      else if (action === 'gratitude') openSaved('gratitude', 'gratitude bowl');
+      else if (action === 'read') setSheet('altarReading');
+      else if (action === 'intention') openSaved('intention', 'intention');
+      else if (action === 'layouts') setSheet('layouts');
+      else if (action === 'tonight') setSheet('tonight');
+    });
+  };
+  const placeWorking = ({ object }: PlacedWorking) => {
+    const index = docRef.current?.objects.length ?? 0;
+    commit((d) => addObject(d, object));
+    setSelected(index);
+    setSheet(null);
+    setNotice(`${shortLabel(object.label, 'It')} is on your altar and saved to My Apothecary.`);
+  };
+  /** Tend today's step of a spell worked with an object (lighting its candle counts). */
+  const tendSpell = (id: string, spell: SpellEntry, quiet = false) => {
+    const now = new Date();
+    if (spellToday(spell, now).status !== 'tend') return;
+    const next = tickSpell(spell, now);
+    if (next === spell) return;
+    void updateEntry(SPELLS_COLLECTION, id, next);
+    const today = spellToday(next, now);
+    setNotice(`${quiet ? 'Lit for tonight. ' : ''}${today.label} of “${spell.title}” is tended.`);
+  };
+  const charges = useMemo<ChargeGlows>(() => {
+    const glows: ChargeGlows = {};
+    for (const object of doc?.objects ?? []) {
+      const charge = object.altarObjectId ? chargeOf(object, minute * 60_000) : null;
+      if (charge && charge.strength > 0) glows[String(object.altarObjectId)] = charge.strength;
+    }
+    return glows;
+  }, [doc, minute]);
+  const tonightNow = tonight && doc ? { ...tonight.altar, doc: { ...tonight.altar.doc, objects: doc.objects } } : null;
+  const tonightWhy = useMemo(
+    () => (tonight && selectedObject ? whyThisPiece(selectedObject, tonightTheme(tonight.altar, tonight.date), libraryEntries) : ''),
+    [tonight, selectedObject, libraryEntries],
+  );
+  const wisdom = useMemo(() => (selectedObject ? placementWisdom(selectedObject, libraryEntries) : ''), [selectedObject, libraryEntries]);
+  const canMirror = !!doc && selected != null && mirrorPartner(doc.objects, selected) != null;
+
   const stage =
     doc && stageWidth > 0 ? (
           <AltarStage
@@ -739,13 +883,30 @@ export default function AltarEditor() {
             selected={selected}
             onSelect={setSelected}
             onGestureStart={pushUndo}
-            onMove={(i, cx, cy) => commit((d) => moveObject(d, i, cx, cy), false)}
+            onMove={(i, cx, cy) => {
+              // Snap to meaning: near a direction or the centre, it settles onto it.
+              const current = docRef.current;
+              const snap = options.snapToMeaning && current?.objects[i] ? snapToMeaning(current.objects[i], cx, cy, current.background) : null;
+              if (snap?.role !== guideRef.current?.role) {
+                guideRef.current = snap;
+                setGuide(snap);
+              }
+              commit((d) => moveObject(d, i, snap ? snap.cx : cx, snap ? snap.cy : cy), false);
+            }}
             onResize={(i, size) => commit((d) => setObjectSize(d, i, size), false)}
             onRotate={(i, deg) => commit((d) => setRotation(d, i, deg), false)}
-            onGestureEnd={() => {}}
+            onGestureEnd={() => {
+              if (guideRef.current) setNotice(`Set in the ${guideRef.current.role.split(' · ')[0].toLowerCase()}${guideRef.current.role.includes('·') ? `, with ${guideRef.current.role.split(' · ')[1]}` : ''}.`);
+              guideRef.current = null;
+              setGuide(null);
+            }}
             onViewportChange={setViewport}
             sky={sky}
             aging={aging}
+            charges={charges}
+            moment={moment}
+            guide={guide}
+            now={minute * 60_000}
           />
     ) : null;
 
@@ -767,10 +928,39 @@ export default function AltarEditor() {
             crafted={crafted}
             canPractice={!!selectedInstanceId}
             petition={selectedObject && isPetitionPaper(selectedObject) ? petitionEntries.find((e) => e.id === petitionEntryOf(selectedObject))?.data ?? null : null}
+            objects={doc.objects}
+            wisdom={wisdom}
+            tonightWhy={tonightWhy}
+            spells={selectedSpells}
+            canMirror={canMirror}
             onAbout={() => setSheet('about')}
             onDone={() => setSelected(null)}
             act={{
-              light: () => commit((d) => toggleLight(d, selected, nowIso())),
+              light: () => {
+                const lighting = isCandle(selectedObject) && !isLit(selectedObject) && !candleLife(selectedObject).spent;
+                commit((d) => toggleLight(d, selected, nowIso()));
+                // A candle kept over nights: lighting it is tonight's tending of its spell.
+                if (lighting) for (const e of selectedSpells) tendSpell(e.id, e.data, true);
+              },
+              anoint: () => setSheet('anoint'),
+              renew: () => setSheet('renew'),
+              feed: () => setSheet('feed'),
+              spell: () => {
+                setSpellWith({ uid: selectedUid, label: shortLabel(selectedObject.label) });
+                openSaved('spell', 'spell timer');
+              },
+              tendSpell: (id) => {
+                const e = selectedSpells.find((x) => x.id === id);
+                if (e) tendSpell(e.id, e.data);
+              },
+              layouts: () => setSheet('layouts'),
+              tonight: () => setSheet('tonight'),
+              mirror: () => {
+                const result = mirrorPair(doc.objects, selected);
+                if (!result) return;
+                commit((d) => ({ ...d, objects: mirrorPair(d.objects, selected)?.objects ?? d.objects }));
+                setNotice(`${shortLabel(doc.objects[result.partner].label)} now mirrors it across the altar.`);
+              },
               read: () => setSheet('reading'),
               offer: () => setSheet('offering'),
               refreshOffering: () => {
@@ -835,6 +1025,9 @@ export default function AltarEditor() {
                 onPress={openPetitions}
               />
               <Chip label="Sky & season" symbol="☾" accessibilityLabel="Sky and season options for this altar" onPress={() => setSheet('options')} />
+              <Chip label="Workings" symbol="✶" accessibilityLabel="Workings: spell jar, sachet, spell timer, scrying and the gratitude bowl" onPress={() => setSheet('more-workings')} />
+              <Chip label="Read & arrange" symbol="☉" accessibilityLabel="Read this altar, its intention and layouts with meaning" onPress={() => setSheet('more-reading')} />
+              {tonight && <Chip label="Why these pieces" symbol="✧" accessibilityLabel="Why each piece of tonight’s altar is there, and swaps" onPress={() => setSheet('tonight')} />}
               <Chip
                 label="Record in Grimoire"
                 symbol="❧"
@@ -869,6 +1062,11 @@ export default function AltarEditor() {
                 {doc.objects.some(isLit) && <Chip label="Snuff all" symbol="◌" onPress={() => commit((d) => snuffAll(d, nowIso()))} />}
                 {doc.objects.length > 1 && <Chip label="Group" symbol="⊕" onPress={() => setSheet('group')} />}
               </ChipRow>
+            )}
+            {!!intention.text && (
+              <Text style={styles.glance} accessibilityLabel={`This altar’s intention: ${intention.text}`} onPress={() => openSaved('intention', 'intention')}>
+                {`“${intention.text}”`}
+              </Text>
             )}
             <Text style={type.caption}>
               {altarSummary(doc)}. Tap something on the altar to tend it. Drag to move it, pinch to resize and twist to
@@ -995,7 +1193,8 @@ export default function AltarEditor() {
             onCare={(indices, kind, input) => {
               commit((d) => updateObjects(d, indices, (o) => careForCrystal(o, kind, input, nowIso())));
               setCrystalMode(null);
-              setNotice(`${kind === 'cleanse' ? 'Cleansed' : 'Charged'}${indices.length > 1 ? ` ${indices.length} crystals` : ''}.`);
+              const words = playMoment(indices.map((i) => String(doc.objects[i]?.altarObjectId || '')), input.methods);
+              setNotice(`${kind === 'cleanse' ? 'Cleansed' : 'Charged'}${indices.length > 1 ? ` ${indices.length} crystals` : ''}. ${words}`);
             }}
             onDedicate={(index, input) => {
               commit((d) => updateObjects(d, [index], (o) => dedicateCrystal(o, input, nowIso())));
@@ -1205,6 +1404,109 @@ export default function AltarEditor() {
             onClose={() => setSheet(null)}
             onSave={save}
           />
+          <MoreSheet
+            visible={sheet === 'more-workings' || sheet === 'more-reading'}
+            section={sheet === 'more-reading' ? 'reading' : 'workings'}
+            saved={!!sourceId}
+            tonight={!!tonight}
+            intention={intention.text}
+            snap={options.snapToMeaning}
+            onSnap={(on) => {
+              changeOptions({ snapToMeaning: on });
+              setNotice(on ? 'Snap to meaning is on: drag things near a direction or the centre and they settle there.' : 'Snap to meaning is off.');
+            }}
+            onPick={fromMore}
+            onClose={() => setSheet(null)}
+          />
+          {altarCtx && (
+            <>
+              <SpellJarSheet visible={sheet === 'jar'} altar={altarCtx} center={viewCenter()} onClose={() => setSheet(null)} onPlace={placeWorking} />
+              <SachetSheet visible={sheet === 'sachet'} altar={altarCtx} center={viewCenter()} onClose={() => setSheet(null)} onPlace={placeWorking} />
+              <JarRenewSheet
+                visible={sheet === 'renew'}
+                object={selectedObject && jarStateOf(selectedObject) ? selectedObject : null}
+                onClose={() => setSheet(null)}
+                onUpdate={(o) => {
+                  changeSelected(() => o);
+                  setNotice('Shaken and renewed.');
+                }}
+              />
+              <SachetFeedSheet
+                visible={sheet === 'feed'}
+                object={selectedObject && sachetStateOf(selectedObject) ? selectedObject : null}
+                onClose={() => setSheet(null)}
+                onUpdate={(o) => {
+                  changeSelected(() => o);
+                  setNotice('Fed.');
+                }}
+              />
+              <DressingSheet
+                visible={sheet === 'anoint'}
+                candle={selectedObject && isCandle(selectedObject) ? selectedObject : null}
+                onClose={() => setSheet(null)}
+                onDress={(o) => {
+                  changeSelected(() => o);
+                  setSheet(null);
+                  setNotice('Dressed and anointed. The oil and herbs show on the wax.');
+                }}
+              />
+              <SpellTimerSheet
+                visible={sheet === 'spell' && !!sourceId}
+                altar={altarCtx}
+                objectUid={spellWith?.uid}
+                objectLabel={spellWith?.label}
+                onClose={() => {
+                  setSheet(null);
+                  setSpellWith(null);
+                }}
+              />
+              <ScryingScreen
+                visible={sheet === 'scry' && !!sourceId}
+                altar={altarCtx}
+                onClose={() => setSheet(null)}
+                onSaved={(where) => setNotice(where === 'journal' ? 'What came in the water is in your journal.' : 'What came in the water is kept with this altar.')}
+              />
+              <GratitudeSheet visible={sheet === 'gratitude' && !!sourceId} altar={altarCtx} onClose={() => setSheet(null)} />
+              <AltarReadingSheet
+                visible={sheet === 'altarReading'}
+                altar={altarCtx}
+                onClose={() => setSheet(null)}
+                onPlaceSuggestion={(o) => {
+                  const index = docRef.current?.objects.length ?? 0;
+                  commit((d) => addObject(d, o));
+                  setSelected(index);
+                  setSheet(null);
+                  setNotice(`${shortLabel(o.label)} is on the altar.`);
+                }}
+                onEditIntention={() => {
+                  setSheet(null);
+                  afterSheetCloses(() => openSaved('intention', 'intention'));
+                }}
+              />
+              <IntentionSheet visible={sheet === 'intention' && !!sourceId} altar={altarCtx} onClose={() => setSheet(null)} />
+              <LayoutSheet
+                visible={sheet === 'layouts'}
+                altar={altarCtx}
+                selected={selectedObject}
+                onClose={() => setSheet(null)}
+                onApply={(plan) => {
+                  commit((d) => ({ ...d, objects: applyMoves(d.objects, plan.moves) }));
+                  setSheet(null);
+                  setNotice(`Arranged as ${plan.title.toLowerCase()}. Undo puts it back.`);
+                }}
+              />
+            </>
+          )}
+          <TonightExplainedSheet
+            visible={sheet === 'tonight' && !!tonightNow}
+            tonight={tonightNow}
+            date={tonight?.date ?? new Date()}
+            onClose={() => setSheet(null)}
+            onSwap={(i, o) => {
+              commit((d) => updateObjects(d, [i], () => o));
+              setNotice(`${shortLabel(o.label)} stands in its place.`);
+            }}
+          />
     </>
   ) : null;
 
@@ -1331,6 +1633,14 @@ export default function AltarEditor() {
 
 type Actions = {
   light: () => void;
+  anoint: () => void;
+  renew: () => void;
+  feed: () => void;
+  spell: () => void;
+  tendSpell: (entryId: string) => void;
+  layouts: () => void;
+  tonight: () => void;
+  mirror: () => void;
   read: () => void;
   offer: () => void;
   refreshOffering: () => void;
@@ -1370,11 +1680,24 @@ function ObjectPanel({
   crafted,
   canPractice,
   petition,
+  objects,
+  wisdom,
+  tonightWhy,
+  spells,
+  canMirror,
   act,
   onAbout,
   onDone,
 }: {
   petition: Petition | null;
+  objects: import('../../../lib/altar/types').SavedObject[];
+  /** Where tradition puts it on an altar, or ''. */
+  wisdom: string;
+  /** Why it's on tonight's altar, when the altar came from there. */
+  tonightWhy: string;
+  /** Open spells worked with it. */
+  spells: CraftEntry<SpellEntry>[];
+  canMirror: boolean;
   group: string;
   crafted: boolean;
   canPractice: boolean;
@@ -1410,6 +1733,14 @@ function ObjectPanel({
   const burned = candle ? burnedSoFar(object, now) : 0;
   const life = candle ? candleLife(object, now) : null;
   const [confirmRemove, setConfirmRemove] = useState(false);
+  const minuteNow = Math.floor(now.getTime() / 60_000) * 60_000;
+  const wax = candle ? waxLook(object, minuteNow) : null;
+  const nights = candle ? nightCandle(object, minuteNow) : null;
+  const charge = chargeOf(object, minuteNow);
+  const attunement = useMemo(() => attunementOf(object), [object]);
+  const jar = jarStateOf(object);
+  const sachet = sachetStateOf(object);
+  const relationship = useMemo(() => (object.type === 'deity' ? deityRelationship(object, objects, new Date()) : null), [object, objects]);
 
   return (
     <View style={styles.section}>
@@ -1419,6 +1750,11 @@ function ObjectPanel({
           <Text style={type.cardTitle}>{objectLabel}</Text>
           {!!glance && <Text style={styles.glance}>{glance}</Text>}
           {!!group && <Text style={type.caption}>{`In the group “${group}”`}</Text>}
+          {attunement.attuned && (
+            <Text style={styles.attuned} accessibilityLabel={attunement.line}>
+              {`✦ ${attunement.line}`}
+            </Text>
+          )}
           {candle && (
             <Text style={type.caption}>
               {[
@@ -1432,6 +1768,7 @@ function ObjectPanel({
                     : null,
                 dressings.length ? `Dressed with ${dressingNames(dressings).join(', ')}` : null,
                 carvings.length ? `Carved with ${carvings.map((c) => `“${c.text}”`).join(', ')}` : null,
+                nights && !life?.spent ? nights.line : null,
               ]
                 .filter(Boolean)
                 .join(' · ')}
@@ -1450,6 +1787,38 @@ function ObjectPanel({
         )}
       </ChipRow>
 
+      {!!tonightWhy && (
+        <View style={styles.living}>
+          <Text style={type.eyebrow}>Why it’s here tonight</Text>
+          <Text style={type.caption}>{tonightWhy}</Text>
+          <ChipRow>
+            <Chip label="Swap it" symbol="⇄" accessibilityLabel={`Swap ${objectLabel} for something with the same correspondence`} onPress={act.tonight} />
+          </ChipRow>
+        </View>
+      )}
+
+      {charge && (
+        <View style={styles.living} accessible accessibilityLabel={`${chargeLine(charge)}. ${chargeDetail(charge)}`}>
+          <Text style={[type.eyebrow, charge.level === 'faded' && styles.faded]}>{chargeLine(charge)}</Text>
+          <Text style={type.caption}>{chargeDetail(charge)}</Text>
+        </View>
+      )}
+
+      {spells.map((e) => {
+        const today = spellToday(e.data, now);
+        return (
+          <View key={e.id} style={styles.living}>
+            <Text style={type.eyebrow}>{`${e.data.title} · ${today.label}`}</Text>
+            <Text style={type.caption}>{[today.instruction, today.waited].filter(Boolean).join(' ')}</Text>
+            {today.status === 'tend' && (
+              <ChipRow>
+                <Chip label="Tended today" symbol="✓" accessibilityLabel={`Mark today’s tending of ${e.data.title} done`} onPress={() => act.tendSpell(e.id)} />
+              </ChipRow>
+            )}
+          </View>
+        );
+      })}
+
       {moonCharge && (
         <Text style={type.caption}>{`Charged under the ${moonCharge.moon || 'moon'}, ${new Date(moonCharge.at).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}, sitting here.`}</Text>
       )}
@@ -1467,6 +1836,18 @@ function ObjectPanel({
           <Chip label="Reason for presence" symbol="☉" onPress={() => act.deity('reason')} />
           {Platform.OS !== 'web' && <Chip label="Widget offering" symbol="▣" onPress={() => act.deity('widget')} />}
         </ChipRow>
+      )}
+      {relationship && (
+        <View style={styles.living}>
+          <Text style={type.eyebrow}>Your relationship</Text>
+          <Text style={type.caption}>{relationship.summary}</Text>
+          {!!relationship.reason && <Text style={type.caption}>{`Here for ${relationship.reason}.`}</Text>}
+          {relationship.feasts.map((f) => (
+            <Text key={`${f.name}-${f.date.getTime()}`} style={type.caption}>
+              {`${f.date.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' })} · ${f.name}${f.tradition ? ` (${f.tradition})` : ''}`}
+            </Text>
+          ))}
+        </View>
       )}
       {deityAging && (
         <View style={styles.living}>
@@ -1494,6 +1875,26 @@ function ObjectPanel({
       ) : holdsOfferings(object) ? (
         <Button label="Set out an offering" variant="outline" onPress={act.offer} />
       ) : null}
+
+      {jar && (
+        <View style={styles.living}>
+          <Text style={type.eyebrow}>{`Spell jar${jar.intention ? ` · for ${jar.intention.toLowerCase()}` : ''}`}</Text>
+          <Text style={type.caption}>
+            {jar.renewals.length ? `Last shaken ${daysSinceRenewal(jar, now) === 0 ? 'today' : `${daysSinceRenewal(jar, now)} days ago`}.` : 'Not shaken yet. A shake now and then wakes it.'}
+          </Text>
+          <Button label="Shake to renew" variant="outline" onPress={act.renew} />
+        </View>
+      )}
+
+      {sachet && (
+        <View style={styles.living}>
+          <Text style={type.eyebrow}>{sachet.carried ? 'Sachet · carried' : 'Sachet · on the altar'}</Text>
+          <Text style={type.caption}>{feedingLine(sachet, now)}</Text>
+          <ChipRow>
+            <Chip label="Feed it" symbol="❦" active={feedingDue(sachet, now)} accessibilityLabel={`Feed ${objectLabel}${feedingDue(sachet, now) ? ', it’s due' : ''}`} onPress={act.feed} />
+          </ChipRow>
+        </View>
+      )}
 
       {incense && (
         <View style={styles.living}>
@@ -1554,9 +1955,11 @@ function ObjectPanel({
               <Chip label={life?.spent ? 'How it burned · its remnant' : 'How it burned'} symbol="✧" onPress={act.read} />
             </ChipRow>
           ) : null}
+          {!!wax?.line && <Text style={type.caption}>{wax.line}</Text>}
           <ChipRow>
             {life?.adjustable && <Chip label="How long it burns" symbol="⧗" onPress={act.length} />}
-            <Chip label="Dress" symbol="❦" onPress={act.dress} />
+            {!life?.spent && <Chip label="Dress & anoint" symbol="❦" accessibilityLabel={`Dress and anoint ${objectLabel} with oil and herbs`} onPress={act.anoint} />}
+            <Chip label="Dress from the altar" symbol="❧" accessibilityLabel="Dress it with a loose herb or oil that’s on the altar" onPress={act.dress} />
             <Chip label="Carve" symbol="✎" onPress={act.carve} />
             {dressings.length > 0 && <Chip label="Undress" symbol="⌫" onPress={act.undress} />}
           </ChipRow>
@@ -1577,12 +1980,15 @@ function ObjectPanel({
       )}
 
       <Text style={type.eyebrow}>Arrange</Text>
+      {!!wisdom && <Text style={type.caption}>{wisdom}</Text>}
       <ChipRow>
         <Chip label="Turn left" symbol="↺" accessibilityLabel="Turn left 15 degrees" onPress={() => act.rotate(-15)} disabled={locked} />
         <Chip label="Turn right" symbol="↻" accessibilityLabel="Turn right 15 degrees" onPress={() => act.rotate(15)} disabled={locked} />
         <Chip label="Smaller" symbol="−" onPress={() => act.resize(1 / 1.12)} disabled={locked} />
         <Chip label="Larger" symbol="+" onPress={() => act.resize(1.12)} disabled={locked} />
         <Chip label="Flip" symbol="⇋" onPress={act.flip} disabled={locked} />
+        {canMirror && <Chip label="Mirror its pair" symbol="⇆" accessibilityLabel={`Move its twin to mirror ${objectLabel} across the altar`} onPress={act.mirror} disabled={locked} />}
+        <Chip label="Layouts" symbol="✣" accessibilityLabel="Layouts with meaning" onPress={act.layouts} />
       </ChipRow>
 
       <Text style={type.eyebrow}>Layer</Text>
@@ -1599,6 +2005,7 @@ function ObjectPanel({
         <Chip label="Glow" symbol="✦" onPress={act.glow} active={glowing} />
         <Chip label="Duplicate" symbol="⧉" onPress={act.duplicate} />
         <Chip label="Rename" symbol="✎" onPress={act.rename} />
+        <Chip label="Spell over days" symbol="◔" accessibilityLabel={`Start a spell timer with ${objectLabel}`} onPress={act.spell} />
         {!!group && <Chip label="Send group to Grimoire" symbol="❧" onPress={act.grimoire} />}
         {!!group && <Chip label="Ungroup" symbol="⊘" onPress={act.ungroup} />}
         {confirmRemove ? (
@@ -1635,6 +2042,8 @@ const styles = StyleSheet.create({
   glance: { fontFamily: fonts.displayItalic, fontSize: 17, lineHeight: 22, color: colors.parchment },
   living: { gap: 8 },
   notice: { color: colors.gold, textAlign: 'center' },
+  attuned: { fontFamily: fonts.bodySemi, fontSize: 13, color: colors.gold, marginTop: 2 },
+  faded: { color: colors.muted },
   danger: { marginTop: 8 },
   centered: { flex: 1, justifyContent: 'center', padding: space.gutter, gap: 14 },
   full: { flex: 1, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' },

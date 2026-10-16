@@ -1,0 +1,550 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-brigid',
+  kind: 'deity',
+  paths: ['celtic', 'wheel'],
+  deityRef: 'traditional/deity/brigid',
+  title: 'Brigid: Flame, Well and Making',
+  summary:
+    'A month with Brigid of the poets, healers and smiths: the goddess of the Irish glossaries, the saint of Kildare, her fire and her wells, and the customs of her day, ending in a self-dedication at your own hearth.',
+  welcome:
+    'This journey takes about a lunar month. You will read five lessons, set up a small shrine, keep a nine-night offering of flame, water and bread, and decide honestly whether to dedicate yourself to Brigid.\n\nIt is a self-dedication, not an initiation, and it does not make you a member of any order or church. You can pause at any point; the journey waits for you. It suits anyone drawn to Brigid, whether you come to her as a goddess, a saint, or a presence you are still getting to know, and it is respectful of the living Christians and pagans who honour her.',
+  about:
+    'Brigid (Old Irish Brigit, modern Irish Bríd, Scottish Gaelic Brìde) is two figures who share a name and a feast day. The medieval Irish glossary of Cormac calls Brigit a goddess whom poets adored, with two sisters of the same name, one a healer and one a smith. St Brigid of Kildare, said to have died in the 520s, founded a great double monastery whose nuns kept a perpetual fire. How the goddess and the saint relate is genuinely unknown: some scholars see a goddess taken into the saint, others warn that the evidence for a pagan cult at Kildare is thin. Today she is honoured at holy wells and on 1 February by Catholics and Anglicans, by the Brigidine Sisters who relit her flame in 1993, by Celtic polytheists and Druids, and by Wiccans and other Pagans at Imbolc. Rush crosses, a cloth left out for her blessing, milk, butter, bread and a flame tended with care are the heart of her customs, old and new.',
+  notes: [
+    'Brigid is honoured as a saint by living Christian communities, and many holy wells are Catholic places of prayer. Be a respectful guest there, and avoid telling anyone that their saint is only a disguised goddess.',
+    'Almost nothing is known about how the goddess Brigit was worshipped before Christianity. Most of her customs come to us through the saint’s feast, and modern Pagan practice builds on them. The lessons say which is which.',
+    'Her symbol is flame. Never leave a candle burning unattended, keep it away from curtains, cats and children, and use an LED light for long vigils.',
+    'Irish and Scottish custom is living heritage. Learn the words and customs from Irish and Scottish sources where you can, and say the Irish names as well as you are able; trying matters more than accent.',
+    'Food left out for Brigid on her eve is not eaten by the household the next day. It goes to the birds, the animals or the earth. Brigid’s customs sit alongside caution about the good folk (the aos sí): do not leave food out "for whoever comes" or make bargains with unseen beings in her name.',
+  ],
+  holyDays: ['la_fheile_bride', 'imbolc', 'st_brigid', 'candlemas'],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'Lighting the first flame',
+      intro:
+        'Begin by making a small place for Brigid and introducing yourself. You do not need to believe anything yet. You are lighting a candle, setting out water and bread, and saying who you are and why you have come.',
+      days: 2,
+      lessons: [],
+      practices: [
+        {
+          id: 'brigid-shrine',
+          title: 'Set up a simple shrine',
+          instructions:
+            'Choose a shelf, a windowsill or the top of a chest, ideally near where you cook or work, since Brigid is a goddess of the hearth and of making. Lay down a cloth of white, green or undyed wool or linen. Set out a candle in a sturdy holder on a heatproof dish, a small bowl or glass of fresh water (your "well"), and a little plate for bread and butter. Add one thing you have made or use for your craft: a pen, a knitting needle, a small hammer, a stethoscope, a sketchbook. If you can, add a Brigid’s cross (you will learn to weave one later) or a picture of a flame, a well or a cow. Keep it plain. A Brigid shrine is closer to a farmhouse dresser than a temple.',
+          times: 1,
+          prompt: 'What did you choose for her shrine, and why? Which object of your own craft did you set there?',
+        },
+      ],
+      rite: {
+        title: 'Introduction to Brigid',
+        summary:
+          'A short rite of welcome at your new shrine: light her flame, bless water as a little well, offer bread and butter, and introduce yourself.',
+        minutes: 20,
+        ingredients: [
+          { name: 'A white candle in a safe holder', ref: 'traditional/candle/white' },
+          { name: 'A bowl or glass of fresh water', ref: 'traditional/vessel/bowl' },
+          { name: 'A piece of bread and a little butter' },
+          { name: 'A small glass of milk (oat milk is fine)', optional: true },
+          { name: 'Four lines of your own writing, prepared or spoken from the heart' },
+        ],
+        preparation:
+          'Wash your hands and face, as you might at a well before praying. Tidy the space around the shrine. Put the bread and butter on the plate and fill the water fresh from the tap, or from a spring if you have one nearby.',
+        steps: [
+          {
+            title: 'Stand at the door',
+            instructions:
+              'Brigid’s customs begin at the threshold. In the Hebrides a woman would stand on the doorstep with her hands on the doorposts and call Brigid in. Go to your front door, or the door of your room. Open it, stand with a hand on each side of the frame, and invite her in, simply.',
+            spoken: 'Brigid, you are welcome here. Come in, and be at home in this house.',
+          },
+          {
+            title: 'Light the flame',
+            instructions:
+              'Return to the shrine and light the candle. Watch the flame settle for a few breaths.',
+            spoken: 'I light this flame for Brigid of the poets, the healers and the smiths. May it burn clear in this house.',
+            light: true,
+          },
+          {
+            title: 'Bless the well',
+            instructions:
+              'Hold your hands over the bowl of water. Imagine it joined to every spring and holy well where people have asked her for healing. Dip your fingers in and touch your forehead, your lips and your heart.',
+            spoken: 'Water from the well, clear and cold: be blessed in Brigid’s name, for healing and for making.',
+          },
+          {
+            title: 'Offer bread and butter',
+            instructions:
+              'Butter the bread and set it on the plate before the candle. If you have milk, set that beside it. Bread, butter and milk are the old gifts of her day, the food of a dairy farm in early spring.',
+            spoken: 'Here is bread and butter from my house, the gift that has always been given you. Take it with my thanks.',
+          },
+          {
+            title: 'Introduce yourself',
+            instructions:
+              'Sit down. Tell her your name, where you come from, what you do with your hands and your mind, and why you have come to her. Then read or say your four lines of writing. They do not have to be good; they have to be yours. Sit quietly for a few minutes afterwards and notice what you feel.',
+            minutes: 5,
+          },
+          {
+            title: 'Close and bank the flame',
+            instructions:
+              'Thank her. Snuff the candle rather than blowing it out, as the nuns of Kildare were said to fan their fire and never breathe on it.',
+            spoken: 'Brigid, thank you for your welcome. I will come again.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Leave the bread and milk on the shrine overnight. In the morning, put the bread out for the birds (crumbled small) or in the garden or compost, and pour the milk onto the earth or into a plant pot rather than eating or drinking them. Write a few lines in your journal about how the rite felt.',
+        safety:
+          'Never leave the candle burning while you are out of the room, and keep it away from curtains, shelves above and pets’ tails. Bread and milk left out should not be eaten by people or given to pets the next day. Use oat or another plant milk if you or your household avoid dairy.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'Learning who she is',
+      intro:
+        'Four lessons on Brigid: the goddess and the saint, her fire at Kildare, her stories, and her feast day. Read one every day or two, and light her candle briefly while you read if you like.',
+      days: 8,
+      lessons: [
+        {
+          id: 'brigid-two-brigids',
+          title: 'Goddess and saint: two Brigids, one name',
+          summary: 'What the old glossary says of the goddess, what the saint’s Lives say of the abbess, and why nobody can tell you exactly how they fit together.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Brigit the poetess',
+              body:
+                'Our earliest description of a goddess called Brigit comes from Sanas Cormaic, Cormac’s Glossary, a dictionary of hard words put together in Ireland around the year 900 and linked with Cormac mac Cuilennáin, a king-bishop of Munster. In Whitley Stokes’s 1868 edition of John O’Donovan’s translation, the entry reads: “Brigit i.e. a poetess, daughter of the Dagda. This is Brigit the female sage, or woman of wisdom, i.e. Brigit the goddess whom poets adored, because very great and very famous was her protecting care.”\n\nThe entry goes on to name her sisters: “Brigit the female physician [woman of leechcraft,] Brigit the female smith [woman of smithwork]; from whose names with all Irishmen a goddess was called Brigit.” So the glossary gives us three Brigits, poet, healer and smith, all daughters of the Dagda, the great father-god of the Tuatha Dé Danann. Whether this means one goddess with three crafts or three sisters is left open, and modern devotees read it both ways.',
+            },
+            {
+              heading: 'Brigid of Kildare',
+              body:
+                'St Brigid is said to have been born around 450, perhaps at Faughart in County Louth, and to have died around 524. She founded a monastery at Kildare, Cill Dara, “the church of the oak”, which became one of the great houses of early Ireland, with nuns and monks living side by side under an abbess and a bishop.\n\nHer first surviving Life was written in Latin by a monk of Kildare named Cogitosus around 650. It is a book of wonders more than a biography. As a girl working in her mother’s dairy she gives the butter away to the poor, and the churn fills again. She hangs her wet cloak on a sunbeam. She heals the sick, feeds the hungry and frees the bound. Cogitosus also describes the great church at Kildare, with its painted partitions and the decorated tombs of Brigid and Bishop Conlaed on either side of the altar. Later Lives add her turning bathwater into beer for visiting clerics, and the famous story of the King of Leinster who granted her as much land as her cloak would cover, only to watch it spread across the Curragh.',
+            },
+            {
+              heading: 'How do they fit together?',
+              body:
+                'This is the honest answer: nobody knows. The saint and the goddess share a name, a feast day at the start of spring, and an interest in poetry, healing, fire, cattle and dairy. Some scholars have argued that a goddess’s cult at Kildare was taken over by Christian nuns and the saint absorbed her attributes. Others point out that there is no direct evidence of a pagan sanctuary at Kildare, that “Brigit” may have been a common name meaning “the exalted one”, and that early Irish Christians wrote their own saints with their own purposes.\n\nThe name itself is old. It comes from a Celtic root meaning “high” or “exalted”, the same root as Brigantia, a goddess of the Brigantes tribe in northern Britain known from Roman-era inscriptions. Whether Brigantia and the Irish Brigit were the same goddess is another open question.',
+            },
+            {
+              heading: 'Holding both with respect',
+              body:
+                'You do not have to settle the question to honour her. Many Pagans honour the goddess and treat the saint’s customs as the vessel in which her memory was carried. Many Christians honour the saint and are uneasy at hearing her called a goddess in disguise. Some people, especially in Ireland and Scotland, keep her day without worrying about the theology at all.\n\nWhat this journey asks is that you keep the two clear in your own mind and speech. When you light a candle to Brigid the goddess, you are doing something modern people have revived. When you weave a rush cross and hang it over the door, you are doing something Irish households, mostly Catholic, have done for centuries in the saint’s name. Both can be sincere. Neither needs to erase the other.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Cormac’s Glossary (c. 900) describes Brigit as a goddess of poets with sister Brigits of healing and smithcraft, daughters of the Dagda. Cogitosus wrote a Life of St Brigid around 650, and Kildare was a major monastery. The name comes from a root meaning “exalted” and is related to the British goddess-name Brigantia.',
+            unknown:
+              'We do not know whether the saint was a single historical woman, whether there was a pagan sanctuary at Kildare, or how much of the saint’s lore comes from an older goddess. Nothing survives describing pre-Christian rites to Brigit. Modern devotion to the goddess is a revival that draws heavily on the saint’s customs.',
+          },
+          inPractice:
+            'Pagan devotees usually call her Brigid, Bríd or Brigit and honour her as poet, healer and smith; some pray to her in three aspects, others as one goddess. Christian devotees pray to St Brigid, especially on 1 February and at her wells. Many people of both kinds keep the same customs of crosses, cloths and food.',
+          reflect: [
+            'Which Brigid are you drawn to: the goddess of the glossary, the abbess of the Lives, or the figure of the folk customs? Can you say why?',
+            'Poetry, healing and smithcraft: which of the three is closest to your own life right now?',
+          ],
+          further: [
+            'Cormac’s Glossary, trans. John O’Donovan, ed. Whitley Stokes (1868), the entry “Brigit” (public domain, archive.org).',
+            'Cogitosus, Life of St Brigit, trans. Seán Connolly and Jean-Michel Picard, Journal of the Royal Society of Antiquaries of Ireland 117 (1987).',
+            'Dáithí Ó hÓgáin, Myth, Legend and Romance: An Encyclopaedia of the Irish Folk Tradition (1991), entry on Brighid.',
+            'Lisa Bitel, Landscape with Two Saints (2009), on Brigid, Kildare and the uses of her story.',
+          ],
+          library: ['traditional/deity/brigid', 'traditional/deity/dagda'],
+        },
+        {
+          id: 'brigid-flame-kildare',
+          title: 'The fire at Kildare, then and now',
+          summary: 'The perpetual flame Gerald of Wales saw, how it was put out and relit, and how to keep a flame for Brigid safely at home.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'What Gerald saw',
+              body:
+                'The most famous thing about Kildare is its fire, and we know of it from a Welsh churchman, Gerald of Wales (Giraldus Cambrensis), who toured Ireland in the 1180s and wrote The Topography of Ireland. He describes a fire that had never gone out, tended by nineteen nuns in turn, one each night. On the twentieth night, he says, something remarkable happened. In Thomas Forester’s 1863 translation: “the last nun, having heaped wood upon the fire, says, ‘Brigit, take charge of your own fire; for this night belongs to you.’ She then leaves the fire, and in the morning it is found that the fire has not gone out, and that the usual quantity of fuel has been used.”\n\nGerald adds that the fire was surrounded by a circular hedge of stakes and brushwood that no man might enter, and that the women fanned it with bellows rather than blowing on it with their breath. Notice that Cogitosus, writing five centuries earlier, does not mention the fire at all. We do not know when it began.',
+            },
+            {
+              heading: 'Put out and relit',
+              body:
+                'According to later tradition, Henry of London, Archbishop of Dublin, ordered the fire put out around 1220, perhaps because it looked too much like a pagan survival. It was relit and kept, by most accounts, until the monasteries were suppressed under Henry VIII in the sixteenth century.\n\nIn 1993 the Brigidine Sisters, a Catholic order founded in 1807 and named for her, relit Brigid’s flame in Kildare. They tend it at Solas Bhríde, their centre of Celtic Christian spirituality on the edge of the town, and in 2006 a perpetual flame was placed in a sculpture in Kildare’s Market Square. The same year, 1993, a group in North America founded Ord Brighideach, an international order of flame-keepers, mostly Pagan, who tend her flame in "cells" of nineteen on a twenty-day cycle, leaving the twentieth day to Brigid as Gerald described.',
+            },
+            {
+              heading: 'Why a flame?',
+              body:
+                'Brigid’s crafts all need fire. The smith works iron in the forge. The healer boils water and warms the sick. The poet, in Irish tradition, was said to compose in darkness and come out into light, and inspiration was spoken of as fire in the head. The hearth fire itself, banked at night and blown up again in the morning, was the life of every farmhouse.\n\nIn the Hebrides, Alexander Carmichael recorded the custom of smooring (smothering) the fire at night, banking the peats under ash in a circle and asking for protection until morning; many of the blessings he collected name Brigid. You can use the app’s Smooring the Fire working for this.',
+            },
+            {
+              heading: 'Keeping a flame at home, safely',
+              body:
+                'You do not need a perpetual fire. Most modern flame-keepers light a candle for the length of their prayer or their shift and then put it out, holding the flame in mind rather than in wax for the rest of the day. Use a candle in a glass jar or a tea light in a metal cup, set on a heatproof dish, away from curtains and shelves.\n\nIf you want a flame that stays lit for a day, use an LED candle and say so honestly to yourself and to her: the intention is the keeping, not the burning. Snuff rather than blow, if you want to follow Gerald’s detail about breath. When you put the flame out, say something simple, such as “Brigid, keep your own fire.”',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Gerald of Wales described a perpetual fire at Kildare kept by nineteen nuns in the 1180s, with the twentieth night left to Brigid and a hedge no man could enter. The Brigidine Sisters relit Brigid’s flame in Kildare in 1993, and it burns at Solas Bhríde and in the town’s Market Square.',
+            unknown:
+              'We do not know how old the Kildare fire was, whether it continued a pre-Christian custom (it is often compared to the Vestal fire at Rome, but there is no evidence linking them), or exactly when it was finally put out. Ord Brighideach’s twenty-day cycle is a modern practice inspired by Gerald, not a surviving rule.',
+          },
+          inPractice:
+            'Today people keep Brigid’s flame alone or in groups, lighting a candle on their assigned day and praying for those who need healing, for creative work, or for the world. Christians do this at Solas Bhríde and in their parishes; Pagans through Ord Brighideach and independent cells. Some people carry a candle lit from the Kildare flame home with them.',
+          reflect: [
+            'What does tending something faithfully, day after day, mean in your life? What already depends on your care?',
+            'Gerald’s nun hands the fire back to Brigid on the twentieth night. What could you hand back to her, or let rest?',
+          ],
+          further: [
+            'Gerald of Wales, The Topography of Ireland, chs. 34–36, trans. Thomas Forester (1863), public domain.',
+            'Alexander Carmichael, Carmina Gadelica vol. 1 (1900), the smooring blessings (public domain).',
+            'Solas Bhríde Centre, Kildare: solasbhride.ie, on the relighting of the flame.',
+          ],
+          library: ['traditional/candle/white', 'traditional/candle/red'],
+          premade: ['folk-smooring-the-fire'],
+        },
+        {
+          id: 'brigid-stories',
+          title: 'Her stories: poet, healer, smith and mother',
+          summary: 'Brigit in the tale of the Battle of Mag Tuired, the first keening in Ireland, and the saint’s stories of butter, cows and hospitality.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Brigit among the gods',
+              body:
+                'Very few myths about the goddess Brigit survive, and the few we have are short. In Cath Maige Tuired, the story of the second battle between the Tuatha Dé Danann and the Fomorians, Brigit is the wife of Bres, the half-Fomorian king, and the mother of Ruadán. Ruadán spies on the forge of the Tuatha Dé, where the smith Goibniu makes spearheads with three blows. He takes a spear and wounds Goibniu, but Goibniu pulls it out, throws it back and kills him.\n\nLady Gregory, retelling the tale in Gods and Fighting Men (1904), writes: “And then Brigit came and keened her son with shrieking and with crying.” The medieval text says this was the first keening heard in Ireland. The keen (caoineadh) was the lament sung over the dead, mostly by women, and it was kept up in rural Ireland into the twentieth century.',
+            },
+            {
+              heading: 'What the myth gives us',
+              body:
+                'It is worth sitting with how much grief is in this one story. Brigit is married across a divide, to a king of the enemy. Her son dies at the forge, the place of her own craft. And her response is to make something: a new form of song, which her people then kept for a thousand years.\n\nGregory’s retelling also adds that Brigit “first made the whistle for calling one to another through the night”, and that one side of her face was ugly and the other very comely. These details come from medieval lists and glosses, and they hint at a goddess of two sides: comfort and warning, beauty and hardship, spring and the cold that comes before it.',
+            },
+            {
+              heading: 'The saint’s stories',
+              body:
+                'The saint’s stories are about the dairy, the poor and the guest. Brigid gives away her mother’s butter and it is restored. She milks her cows three times in a day to feed visiting bishops. She gives her father’s sword to a leper. She is the patron of dairy workers, midwives, poets, blacksmiths and newborns, and her emblems are a cow, a cloak and a flame.\n\nIn the Scottish Highlands, as Alexander Carmichael recorded in 1900, Brìde was remembered as the aid-woman (midwife) of Mary, who was carried to Bethlehem in a story outside time and received the infant Christ into her arms, so that she was called “foster-mother of Christ”. When a woman was in labour, the midwife would stand at the door and call Brìde in.',
+            },
+            {
+              heading: 'The meaning underneath',
+              body:
+                'Put together, the goddess and the saint teach the same things. Make with your hands and your words. Give food away; it comes back. Look after the sick and the newborn. Welcome the stranger at the door. Grieve honestly and turn grief into song.\n\nThis is why devotees say Brigid responds to work rather than display. A loaf baked for a neighbour, a poem written for a friend who is ill, a hinge mended, a shift worked on a hospital ward: these are her offerings as surely as anything set on a shrine.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Cath Maige Tuired makes Brigit the wife of Bres and mother of Ruadán, and says her keening for him was the first in Ireland. The saint’s Lives give the stories of butter, cows, the cloak and the poor, and Hebridean folklore made her Mary’s midwife and Christ’s foster-mother.',
+            unknown:
+              'Cath Maige Tuired survives in a sixteenth-century manuscript of an earlier text, and its Brigit may be a learned construction rather than a record of belief. We have no prayers, hymns or temple stories of the pre-Christian goddess. Modern devotees’ readings of the myths are interpretation, not doctrine.',
+          },
+          inPractice:
+            'Many devotees dedicate a specific piece of work to Brigid each week: a poem, a repair, a meal, a hospital shift. Some keep a "Brigid’s notebook" of poems written for her. Those grieving sometimes ask her help to lament, by singing, crying or writing a keen of their own.',
+          reflect: [
+            'Brigit made the first keen out of grief. Is there a loss in your life that has not yet been given a song?',
+            'Which of the saint’s stories of giving away and receiving back speaks to you? Where could you give something away this week?',
+          ],
+          further: [
+            'Lady Gregory, Gods and Fighting Men (1904), Book I, on the Battle of Magh Tuireadh (public domain, Project Gutenberg).',
+            'Cath Maige Tuired, ed. and trans. Elizabeth A. Gray (Irish Texts Society, 1982).',
+            'Alexander Carmichael, Carmina Gadelica vol. 1 (1900), the notes on Bride (public domain).',
+          ],
+          library: ['traditional/deity/brigid', 'traditional/deity/dagda'],
+        },
+        {
+          id: 'brigid-imbolc',
+          title: 'Her day: Imbolc and Lá Fhéile Bríde',
+          summary: 'The first day of spring in the Gaelic year and how it was kept: the cross, the brat, the bed, the Brídeóg, the bread on the windowsill.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'The first of spring',
+              body:
+                'In the Gaelic year, spring begins on 1 February. Its old name is Imbolc, which appears in medieval Irish texts as one of the four quarter days with Bealtaine, Lughnasadh and Samhain. Its meaning is debated: “in the belly”, perhaps for the ewes heavy with lambs, or oímelc, “ewe’s milk”, for the first milk of the season. In Irish today the day is Lá Fhéile Bríde, St Brigid’s feast day, and in Scotland Là Fhèill Brìde. Since 2023 Ireland has kept a public holiday for her on the first Monday of February, or on 1 February itself when it falls on a Friday.\n\nThe weather lore of the day is about the turn of the season. In Scotland and Ireland it was said that the Cailleach, the old woman of winter, gathered her firewood on this day: if it was bright, she was laying in a store for a long cold spell; if it was wet and grey, she was asleep and winter was nearly done. Carmichael also recorded that the serpent came from its hole on Brìde’s Day, with a little verse: “To-day is the Day of Bride, / The serpent shall come from the hole, / I will not molest the serpent, / Nor will the serpent molest me.”',
+            },
+            {
+              heading: 'The eve: crosses and the bed of Brigid',
+              body:
+                'Most customs belong to the eve, 31 January. In Ireland, rushes were pulled (traditionally pulled, not cut) and brought to the door, where the person carrying them asked to be let in, often in the name of Brigid. The family wove crosses from them: the familiar four-armed cross woven around a square centre, and in some districts three-legged or diamond-shaped forms. The new cross was hung over the door or in the rafters, and in the byre for the cattle, to guard against fire, illness and hunger. Last year’s cross was burned, buried or tucked into the thatch.\n\nIn the Hebrides, Carmichael records that the women made a bed, leaba Bhrìde, from a basket, and dressed a sheaf of oats as an image of Bride with ribbons, shells and the first flowers. One woman went to the door, stood with her hands on the doorposts, and called softly into the dark, “Bride’s bed is ready,” and a woman behind her answered, “Let Bride come in. Bride is welcome.” The figure was laid in the bed with a small peeled white wand. The ashes of the hearth were smoothed, and in the morning the family looked for the mark of the wand, or better, Bride’s footprint.',
+            },
+            {
+              heading: 'The brat, the Brídeóg and the bread',
+              body:
+                'The brat Bríde, Brigid’s cloak, is a strip of cloth or a ribbon left outside overnight on the eve, on a bush or the windowsill, for Brigid to touch as she passes. It was kept through the year and used for healing: tied around an aching head, laid on a sore throat, or put in the bed of a woman in labour, and it was thought to grow a little longer each year.\n\nIn many parts of Ireland the girls of the village carried a Brídeóg (“little Brigid”), a doll made from a churn-dash or a sheaf, from house to house, and were given pennies or food; elsewhere the Biddy Boys went round in straw masks. Households left a cake or a piece of bread and butter on the windowsill for Brigid, and sometimes a sheaf for her white cow. The food was given to the poor or the animals afterwards.',
+            },
+            {
+              heading: 'Keeping it now',
+              body:
+                'Christian households still have crosses blessed at Mass and hang them in the kitchen. Kildare holds Féile Bríde, a week of talks, music and pilgrimage to her wells. Modern Pagans keep Imbolc with candles, rush or straw crosses, poetry, milk and seed cakes, and an evening vigil.\n\nYou can do almost all of this in a flat. Buy rushes or soft straw from a florist or craft shop, or use paper straws or pipe-cleaners if that is what you have. Leave your brat on a windowsill or a balcony rail. Make a little bed for a Brigid doll from a basket or a shoebox. The app’s Brigid’s Cross and Well Blessing working walks you through the eve.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Imbolc appears in medieval Irish texts as the start of spring. The rush cross, the brat Bríde, the Brídeóg and the bed of Brigid are well recorded in nineteenth- and twentieth-century folklore, in Ireland by the Irish Folklore Commission and in Scotland by Alexander Carmichael. Ireland made the day a public holiday in 2023.',
+            unknown:
+              'We do not know whether any of these customs go back before Christianity; they are first recorded in a Christian setting, in the saint’s name. The meaning of the word Imbolc is uncertain. Seed cakes, Imbolc candle rites and the wider idea of Imbolc as a goddess festival are modern Pagan practice.',
+          },
+          inPractice:
+            'On the eve, weave a cross, leave a ribbon or strip of cloth outside, put bread and butter on the sill, and light a candle. On the day, hang the cross over the door, keep the brat in a drawer for healing through the year, and give something away to someone in need.',
+          reflect: [
+            'What is beginning in you this season, however small, like the first milk or the first snowdrop?',
+            'If Brigid walked past your window tonight, what would you want her to bless?',
+          ],
+          further: [
+            'Alexander Carmichael, Carmina Gadelica vol. 1 (1900), pp. 164–170, on the customs of Bride’s Day (public domain).',
+            'Kevin Danaher, The Year in Ireland (1972), the chapter on St Brigid’s Day.',
+            'Seán Ó Duinn, The Rites of Brigid, Goddess and Saint (2005).',
+          ],
+          library: ['traditional/deity/brigid', 'traditional/herb/rowan', 'traditional/herb/birch'],
+          premade: ['folk-brigid-cross-well'],
+        },
+      ],
+      practices: [
+        {
+          id: 'brigid-study-flame',
+          title: 'Read by her flame',
+          instructions:
+            'When you sit down to read a lesson, light the candle on her shrine and say, “Brigid, be with me while I learn.” When you finish, snuff it and say, “Brigid, keep your own fire.”',
+          times: 4,
+          every: 'day',
+          prompt: 'One thing you learned that surprised you, and one thing you want to know more about.',
+        },
+        {
+          id: 'brigid-weave-cross',
+          title: 'Weave a Brigid’s cross',
+          instructions:
+            'You need about sixteen rushes or long straws, soaked in warm water for an hour so they bend without cracking. Hold one upright. Fold a second in half around its middle so it points right. Turn the bundle a quarter turn anticlockwise and fold a third rush over both, pointing the same way you just turned. Keep turning and folding, always pulling each new rush tight around the centre, until you have a square middle and four arms of four rushes each. Tie each arm near its end with thread and trim the ends. Hang it over your door. If rushes are hard to find, pipe-cleaners or paper straws work too.',
+          times: 1,
+          prompt: 'How did the weaving feel in your hands? Where did you hang the cross?',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Nine nights of flame, water and bread',
+      intro:
+        'Now you put what you have learned into a nightly practice: nine nights of flame, water and bread, with a lesson on her wells and offerings. Nine is a common number in Irish lore and in rounds at holy wells; the point is steadiness rather than the number.',
+      days: 10,
+      lessons: [
+        {
+          id: 'brigid-wells-offerings',
+          title: 'Wells, offerings and good manners',
+          summary: 'How people honour Brigid at holy wells, what to offer and how, and the cautions that go with leaving food and gifts out at night.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'Holy wells and the round',
+              body:
+                'Ireland has some three thousand holy wells, and many are dedicated to Brigid. At Kildare, St Brigid’s Well at Tully has stepping stones called Brigid’s shoes and a statue of the saint, and in the grounds of St Brigid’s Cathedral you can see the restored foundations said to be those of her fire-house. Faughart, her traditional birthplace in County Louth, has a well and a shrine. At Liscannor in County Clare, her well is visited on the last Sunday of July as well as on her day.\n\nA visit traditionally follows a pattern called the round, or turas. Pilgrims walk sunwise (deiseal, clockwise) around the well or a set of stations a fixed number of times, often three, seven or nine, praying as they go. They kneel, drink a little of the water or bless themselves with it, and often leave a small token: a coin, a medal, a ribbon or a rag tied to a nearby tree (a clootie). The rag was thought to carry the illness away as it rotted.',
+            },
+            {
+              heading: 'Being a good guest at a well',
+              body:
+                'Most holy wells are Catholic places of prayer, often looked after by local people, and some are on private land. If you visit, behave as you would in a church. Wait your turn, be quiet, do not move or take anything that others have left, and do not photograph people praying.\n\nIf you want to leave a clootie, use a strip of undyed cotton, wool or linen that will rot away, not synthetic fabric, plastic or anything with writing on it. Many wells are now overwhelmed with offerings that do not decay, and local custodians ask visitors to leave nothing but prayer. When in doubt, leave nothing; Brigid will not mind.',
+            },
+            {
+              heading: 'What to offer, and how',
+              body:
+                'The traditional offerings for Brigid are the foods of an early spring dairy farm: milk, butter, bread, oatcakes and sometimes a little cheese. Fresh water from a spring or the tap is always fitting. Beyond food, her gifts are things made: a poem read aloud, a piece of embroidery, a mended chair, a song. Acts of care given in her name, such as visiting the sick, donating to a food bank or volunteering, are offerings too.\n\nOffer simply. Set the food on a plate before her candle, say what it is and that it is for her, and leave it for a few hours or overnight. Then give it back to the earth: crumble bread for the birds, pour milk on a plant pot or the garden, compost the rest. Do not pour milk into a stream or holy well, where it harms the water. Many devotees share a little of the bread at the time of offering as a meal with her; what has been left out overnight is not eaten afterwards.',
+            },
+            {
+              heading: 'The good folk caution',
+              body:
+                'Irish and Scottish folklore is full of the aos sí, the people of the mounds, often called the good people or the gentry so as not to name them. Folk custom treats them with great caution: you do not eat food that has been left out for them, you do not thank them as if closing a bargain, and you do not invite them in. Milk and butter in particular were things the good folk were thought to covet and steal.\n\nBrigid’s eve customs invite her by name, at the door, with the protection of her cross. This is not the same thing as leaving food out for any spirit that happens by. Keep your offerings clearly for Brigid, say so aloud, and if you want to honour the spirits of your home or land, do that as a separate act with its own care (the app’s house-spirit working is one way).',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Holy wells dedicated to Brigid are visited at Kildare, Faughart, Liscannor and many other places, with rounds, prayers and small offerings, as recorded by folklorists and still practised. Milk, butter and bread are the foods most often linked with her day in folk custom.',
+            unknown:
+              'Holy wells are often said to be pagan sites taken over by the church, and some may be, but for most there is no evidence either way. The Irish customs around the aos sí are folklore, not a single doctrine, and differ from place to place.',
+          },
+          inPractice:
+            'Devotees often keep a bowl of fresh water on the shrine as a "well" and change it daily, bless themselves with it before work, and save a little holy water from a visit to one of her wells. Offerings are usually small and frequent rather than large and rare.',
+          reflect: [
+            'Which of your daily acts could be offered to Brigid as part of your devotion?',
+            'Is there a well, spring or river near you that you could visit and look after?',
+          ],
+          further: [
+            'Walter and Mary Brenneman, Crossing the Circle at the Holy Wells of Ireland (1995).',
+            'Celeste Ray, The Origins of Ireland’s Holy Wells (2014).',
+            'Dúchas.ie, the Irish Folklore Commission’s Schools’ Collection (1937–39), searchable for St Brigid’s Day and holy wells.',
+          ],
+          library: ['traditional/deity/brigid', 'traditional/vessel/offering_bowl', 'traditional/crystal/clear_quartz'],
+          premade: ['folk-brigid-cross-well', 'hedge-house-spirit-offering'],
+        },
+      ],
+      practices: [
+        {
+          id: 'brigid-nine-nights',
+          title: 'Nine nights of flame, water and bread',
+          instructions:
+            'Each evening for nine nights, wash your hands, change the water in her bowl, and light her candle. Set out a small piece of bread with butter, or an oatcake, and say: “Brigid, here is bread from my house and water from the well.” Then give her one piece of making: four lines of writing, ten minutes of your craft at the shrine, a sketch, a few rows of knitting, or a description of a kind thing you did that day for someone else. Sit with the flame for five minutes. Snuff it with “Brigid, keep your own fire.” In the morning, give the bread to the birds or the earth.',
+          times: 9,
+          every: 'day',
+          prompt: 'What did you make or give for her tonight? Did anything shift in you, or in the day that followed?',
+        },
+        {
+          id: 'brigid-brat',
+          title: 'Make your brat Bríde',
+          instructions:
+            'Take a strip of natural cloth, about the length of your forearm. On one of the nine nights (ideally the last), hang it outside on a windowsill, balcony rail or bush, and ask Brigid to bless it as she passes. Bring it in before dawn, fold it, and keep it in a drawer or on her shrine. Use it to cover your head or hold it on a sore place when you or someone you love is unwell.',
+          times: 1,
+          prompt: 'Who would you want your brat to help this year?',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'Discernment by the well',
+      intro:
+        'Before any dedication, pause and look honestly at what this month has been. A dedication is a promise; it should be made with open eyes. Stopping here, pausing for a season, or turning to another god or saint are all good outcomes, and Brigid’s hospitality does not depend on it.',
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'brigid-discern-walk',
+          title: 'A walk to water',
+          instructions:
+            'Walk to the nearest water you can find: a river, a pond, a fountain, even the sea. Sit with it for a while and think through the questions below. You do not need to answer them in order or all at once.',
+          times: 1,
+          prompt: 'Write down your honest answers to the questions, including the uncomfortable ones.',
+          premade: 'hedge-hearing-the-land-walk',
+        },
+      ],
+      questions: [
+        'Has this month been a relationship with Brigid, or mainly an interest in her? Both are fine; only one needs a dedication.',
+        'Can you keep a small, regular practice for her, perhaps a weekly flame and a monthly offering, without it becoming a burden or a source of guilt?',
+        'Are you comfortable honouring a figure who is also a living Christian saint? How will you speak about her with Christians you know?',
+        'Are you drawn to her crafts of poetry, healing and making, or mainly to her imagery? Which of her crafts will you actually practise?',
+        'Would it be better to wait a full year and dedicate at Imbolc, when her customs come together?',
+        'Is another deity or path calling you more strongly? Choosing them, or choosing nothing yet, is a good and honest outcome.',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'Dedication at the hearth',
+      intro:
+        'If you choose to go on, this is a self-dedication to Brigid: a promise you make yourself, before her, at your own hearth. It is not an initiation into any order, coven or church, and it does not replace one where a tradition has them; Ord Brighideach, the Brigidine Sisters and Druid orders each have their own ways in. Do it on her eve (31 January) if you can wait, or on any evening when you feel ready.',
+      days: 1,
+      lessons: [],
+      practices: [],
+      rite: {
+        title: 'Self-dedication to Brigid',
+        summary:
+          'A rite at the threshold, the well and the flame: welcome Brigid in, wash in her water, make your promise, give her a gift of your own making, and receive her blessing in your brat.',
+        minutes: 40,
+        ingredients: [
+          { name: 'A white or red candle in a safe holder', ref: 'traditional/candle/white' },
+          { name: 'A bowl of fresh water', ref: 'traditional/vessel/bowl' },
+          { name: 'Bread, butter and a small glass of milk' },
+          { name: 'Your Brigid’s cross' },
+          { name: 'Your brat Bríde' },
+          { name: 'A gift you have made for her: a poem, a small craft, a piece of music' },
+          { name: 'Your written promise, on paper' },
+          { name: 'A sprig of rosemary', ref: 'traditional/herb/rosemary', optional: true },
+        ],
+        preparation:
+          'Spend some days writing your promise: what you will do for her and how often, in plain words. Keep it small enough to keep; you can add to it next year. Tidy your home, especially the hearth or kitchen. Bathe or shower before the rite and put on clean clothes. Set the shrine with the candle unlit, the water, bread, butter, milk, cross, brat, gift and promise.',
+        steps: [
+          {
+            title: 'Call her in at the door',
+            instructions:
+              'Go to your front door with your Brigid’s cross. Open it. Stand on the threshold with a hand on each doorpost, holding the cross, and call softly out into the evening.',
+            spoken: 'Brigid, Brigid, come in. Your bed is made and your welcome is ready. Bless this house and all within it.',
+          },
+          {
+            title: 'Hang the cross and light the flame',
+            instructions:
+              'Close the door and hang the cross above it, or lay it on the shrine. Go to the shrine and light the candle.',
+            spoken: 'I light this flame for Brigid, poet, healer and smith, keeper of the fire of Kildare.',
+            light: true,
+          },
+          {
+            title: 'Wash at the well',
+            instructions:
+              'Dip your fingers in the water three times. Touch your forehead for poetry, your hands for craft, and your heart for healing. If you have rosemary, dip it in the water and sprinkle a little around the shrine.',
+            spoken: 'In the water of the well I am washed: head for her poetry, hands for her craft, heart for her healing.',
+          },
+          {
+            title: 'Offer the food',
+            instructions:
+              'Butter the bread, pour the milk and set them before the candle.',
+            spoken: 'Brigid, here is bread and butter and milk, the gifts of your day, given with love.',
+          },
+          {
+            title: 'Make your promise',
+            instructions:
+              'Read your written promise aloud, slowly. Say who you are, that you come to her of your own free will, and what you will do in her honour. Then add, in your own words, that this is a self-dedication made in good faith, and that you will keep it as best you can.',
+            spoken: 'Brigid, I come to you of my own free will. I give you this promise, and I will keep it as long as it is true.',
+          },
+          {
+            title: 'Give your gift',
+            instructions:
+              'Read your poem, play your music, or set your handmade gift on the shrine. This is the centre of the rite: Brigid is honoured by making.',
+            minutes: 5,
+          },
+          {
+            title: 'Receive the blessing',
+            instructions:
+              'Lay your brat Bríde across your shoulders like a small cloak. Sit in silence with the flame and receive whatever comes, or nothing; both are fine.',
+            minutes: 10,
+          },
+          {
+            title: 'Close and keep the fire',
+            instructions:
+              'Thank her. Fold the promise and keep it on her shrine or in your journal. Snuff the candle.',
+            spoken: 'Brigid, thank you. Keep your own fire, and keep me in your care.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Leave the bread and milk on the shrine overnight and give them to the birds or the earth in the morning. Keep your promise somewhere you will see it. Do one act of care for someone else within the next three days and dedicate it to her.',
+        safety:
+          'Keep the candle in a stable holder on a heatproof dish and never leave it unattended, especially while you are at the door. Rosemary is safe to handle; keep cut herbs and leftover food away from pets. Use plant milk if you avoid dairy.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'Keeping the flame',
+      intro:
+        'A dedication is the start, not the end. Brigid’s relationship lives in small regular acts: a weekly flame, a yearly cross, a well visited, a poem written. Here is a rhythm to keep, and the holy days to mark.',
+      days: 4,
+      lessons: [],
+      practices: [
+        {
+          id: 'brigid-weekly-flame',
+          title: 'Weekly flame',
+          instructions:
+            'Once a week, on a day you choose, light her candle, change her water and give her a few minutes of making or prayer for those who are ill. If you want to go further, look into a flame-keeping cell on the twenty-day cycle, keeping one day in twenty for her as the nuns of Kildare did.',
+          times: 52,
+          every: 'week',
+          prompt: 'What did you make or tend this week in her name?',
+        },
+        {
+          id: 'brigid-holy-days',
+          title: 'Her holy days',
+          instructions:
+            'Keep 1 February (Lá Fhéile Bríde, Imbolc) with the full eve customs: rushes at the door, a new cross and the old one burned or buried, your brat left out to be blessed again, bread and butter on the sill, and a gift given to someone in need. Many devotees also mark 2 February (Candlemas), when candles were blessed for the year, by blessing their candles for her shrine.',
+          times: 1,
+          every: 'holy-day',
+          prompt: 'How did you keep her day this year? What did you give away?',
+          premade: 'folk-brigid-cross-well',
+        },
+        {
+          id: 'brigid-rededication',
+          title: 'Yearly rededication',
+          instructions:
+            'Each year on her eve, read last year’s promise. Note what you kept and what you did not, without shame. Write a new promise for the coming year and repeat the core of the dedication rite: welcome at the door, washing, promise and gift.',
+          times: 1,
+          every: 'holy-day',
+          prompt: 'What changed this year in your making, your healing and your hearth?',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'Cormac’s Glossary, trans. John O’Donovan, ed. Whitley Stokes (Calcutta, 1868), “Brigit”: https://archive.org/details/cu31924071173474',
+    'Gerald of Wales, The Topography of Ireland, Dist. II chs. 34–36, trans. Thomas Forester, in The Historical Works of Giraldus Cambrensis, ed. Thomas Wright (London, 1863): https://archive.org/details/historicalworkso00gira',
+    'Alexander Carmichael, Carmina Gadelica vol. 1 (Edinburgh, 1900), notes on Bride, pp. 164–170: https://archive.org/details/carminagadelica00carmgoog',
+    'Lady Augusta Gregory, Gods and Fighting Men (1904), Project Gutenberg: https://www.gutenberg.org/ebooks/14465',
+    'Cogitosus, Vita Brigitae (c. 650), trans. Connolly and Picard (1987).',
+    'Kevin Danaher, The Year in Ireland (1972).',
+    'Seán Ó Duinn, The Rites of Brigid, Goddess and Saint (2005).',
+    'Solas Bhríde Centre and Hermitages, Kildare (Brigidine Sisters), on the relighting of the flame in 1993.',
+  ],
+};

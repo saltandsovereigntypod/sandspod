@@ -41,9 +41,9 @@ const FLECKS: [number, number][] = [
 /** Where drips run from, across the top, and how long each may get. */
 const DRIPS: [number, number][] = [[-0.9, 0.5], [0.85, 0.7], [-0.4, 0.35], [0.5, 0.9], [0.05, 0.45], [-0.75, 0.8]];
 
-type Props = { object: SavedObject; width: number; height: number; now: number; uid: string };
+type Props = { object: SavedObject; width: number; height: number; now: number; uid: string; /** The picture is mirrored: the words are turned back so they still read. */ flipped?: boolean };
 
-export const CandleMarks = memo(function CandleMarks({ object, width, height, now, uid }: Props) {
+export const CandleMarks = memo(function CandleMarks({ object, width, height, now, uid, flipped }: Props) {
   if (!(width > 0) || !(height > 0)) return null;
   const form = candleLifeForm(object);
   const carvings = carvingsOf(object).slice(0, 2);
@@ -67,7 +67,7 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
   const progress = burnProgress(object, now);
 
   return (
-    <Svg style={StyleSheet.absoluteFill} viewBox={`0 0 100 ${H}`} pointerEvents="none">
+    <Svg width="100%" height="100%" style={StyleSheet.absoluteFill} viewBox={`0 0 100 ${H}`} pointerEvents="none">
       <Defs>
         <LinearGradient id={`sheen-${uid}`} x1="0" y1="0" x2="1" y2="0">
           <Stop offset="0" stopColor="rgb(255,236,180)" stopOpacity={0} />
@@ -105,7 +105,7 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
           const remains = carvingRemaining(carving.text, progress);
           const glyphs = remains.glyphs;
           const span = body * 0.66;
-          const size = Math.min(half * (carvings.length > 1 ? 0.7 : 0.95), span / Math.max(1, glyphs.length), 9);
+          const size = Math.min(half * (carvings.length > 1 ? 0.7 : 0.95), span / Math.max(1, glyphs.length), 14);
           const x = carvings.length > 1 ? cx + (column === 0 ? -0.42 : 0.42) * half : cx;
           return glyphs.map((g, i) =>
             g.opacity > 0 && g.char.trim() ? (
@@ -121,6 +121,7 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
                 stroke="rgb(255,240,220)"
                 strokeOpacity={0.18 * g.opacity}
                 strokeWidth={size * 0.06}
+                transform={flipped ? `translate(${2 * x} 0) scale(-1 1)` : undefined}
               >
                 {g.char}
               </SvgText>

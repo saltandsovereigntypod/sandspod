@@ -1,5 +1,6 @@
-import { useState, type ReactNode } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { useEffect, useState, type ReactNode } from 'react';
+import { Animated, Easing, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
+import Svg, { Ellipse, Path } from 'react-native-svg';
 
 import { Button } from '../Button';
 import { shortLabel } from '../../lib/altar/cabinet';
@@ -34,6 +35,8 @@ import {
   type Support,
 } from '../../lib/altar/devotion';
 import type { SavedObject } from '../../lib/altar/types';
+import { deityName, offeringSteps, type OfferingStep } from '../../lib/altar/relationship';
+import { useReducedMotion } from '../../lib/accessibility/store';
 import { colors, fonts, radius, touch, type } from '../../theme';
 import { Chip, ChipRow } from './Chip';
 import { Sheet } from './Sheet';
@@ -292,6 +295,21 @@ function NewOffering({ object, objects, onSave }: { object: SavedObject; objects
   const [customStatus, setCustomStatus] = useState('');
   const [response, setResponse] = useState('');
   const [responseNotes, setResponseNotes] = useState('');
+  // Making it: a short guided moment before it is recorded.
+  const [making, setMaking] = useState(false);
+  const chosen = supports.filter((s) => picked.includes(s.id));
+  const input = (): OfferingInput => ({ types, supports: chosen, customItems, intention, message, status, customStatus, response, responseNotes, occurredAt: nowIso() });
+
+  if (making) {
+    const items = [...chosen.map((s) => shortLabel(s.label)), ...customItems.split(',').map((v) => v.trim()).filter(Boolean)];
+    return (
+      <GuidedOffering
+        steps={offeringSteps({ types, items, message, name: deityName(object) })}
+        onBack={() => setMaking(false)}
+        onGiven={() => onSave(input())}
+      />
+    );
+  }
 
   return (
     <View style={styles.form}>
@@ -315,13 +333,77 @@ function NewOffering({ object, objects, onSave }: { object: SavedObject; objects
         <Options options={RESPONSES} value={response} onChange={setResponse} />
         <Input value={responseNotes} onChange={setResponseNotes} placeholder="Optional personal interpretation" multiline />
       </Group>
-      <Button
-        label="Record offering"
-        disabled={status === 'Custom' && !customStatus.trim()}
-        onPress={() =>
-          onSave({ types, supports: supports.filter((s) => picked.includes(s.id)), customItems, intention, message, status, customStatus, response, responseNotes, occurredAt: nowIso() })
-        }
-      />
+      <Button label="Make the offering" disabled={status === 'Custom' && !customStatus.trim()} onPress={() => setMaking(true)} accessibilityHint="A short guided moment, then it is recorded" />
+      <Button label="Just record it" variant="outline" disabled={status === 'Custom' && !customStatus.trim()} onPress={() => onSave(input())} />
+    </View>
+  );
+}
+
+const useNative = Platform.OS !== 'web';
+
+/** The offering made as an act: pour, set it down, speak, one step at a time. */
+function GuidedOffering({ steps, onBack, onGiven }: { steps: OfferingStep[]; onBack: () => void; onGiven: () => void }) {
+  const [at, setAt] = useState(0);
+  const step = steps[Math.min(at, steps.length - 1)];
+  const last = at >= steps.length - 1;
+  return (
+    <View style={styles.form}>
+      <Text style={type.eyebrow}>{`${at + 1} of ${steps.length}`}</Text>
+      <View style={styles.moment} accessible accessibilityLabel={`${step.title}. ${step.line}`} accessibilityLiveRegion="polite">
+        <MomentPicture key={step.id + at} id={step.id} />
+        <Text style={styles.momentTitle}>{step.title}</Text>
+        <Text style={styles.momentLine}>{step.line}</Text>
+      </View>
+      {last ? <Button label="It is given" onPress={onGiven} /> : <Button label="Done, next" onPress={() => setAt((n) => n + 1)} />}
+      <ChipRow>
+        {at > 0 ? <Chip label="Back a step" symbol="‹" onPress={() => setAt((n) => n - 1)} /> : <Chip label="Back to the details" symbol="‹" onPress={onBack} />}
+        {!last && <Chip label="Skip to the end" onPress={() => setAt(steps.length - 1)} />}
+      </ChipRow>
+    </View>
+  );
+}
+
+/** A small picture for each step: drops falling, a bowl settling, a breath rippling out. Still with Reduce Motion. */
+function MomentPicture({ id }: { id: OfferingStep['id'] }) {
+  const still = useReducedMotion();
+  const [t] = useState(() => new Animated.Value(still ? 0.6 : 0));
+  useEffect(() => {
+    if (still) return;
+    const loop = Animated.loop(Animated.timing(t, { toValue: 1, duration: id === 'speak' ? 2600 : 1800, easing: Easing.inOut(Easing.quad), useNativeDriver: useNative }));
+    loop.start();
+    return () => loop.stop();
+  }, [t, still, id]);
+  if (id === 'pour') {
+    const translateY = t.interpolate({ inputRange: [0, 1], outputRange: [0, 34] });
+    const opacity = still ? 0.9 : t.interpolate({ inputRange: [0, 0.8, 1], outputRange: [1, 1, 0] });
+    return (
+      <View style={styles.picture}>
+        <Animated.View style={[styles.drop, { opacity, transform: [{ translateY: still ? 16 : translateY }] }]} />
+        <Svg width={90} height={34} style={styles.bowl}>
+          <Path d="M5 6 Q45 40 85 6 Z" fill={colors.goldLine} />
+          <Ellipse cx={45} cy={6} rx={40} ry={4} fill="rgba(160,190,220,0.55)" />
+        </Svg>
+      </View>
+    );
+  }
+  if (id === 'set') {
+    const translateY = still ? 0 : t.interpolate({ inputRange: [0, 0.6, 1], outputRange: [-14, 0, 0] });
+    return (
+      <View style={styles.picture}>
+        <Animated.View style={{ transform: [{ translateY }] }}>
+          <Svg width={90} height={40}>
+            <Path d="M8 10 Q45 44 82 10 Z" fill={colors.goldLine} />
+            <Ellipse cx={45} cy={10} rx={37} ry={4} fill="rgba(226,195,109,0.5)" />
+          </Svg>
+        </Animated.View>
+      </View>
+    );
+  }
+  const scale = still ? 1 : t.interpolate({ inputRange: [0, 1], outputRange: [0.4, 1.4] });
+  const opacity = still ? 0.5 : t.interpolate({ inputRange: [0, 0.2, 1], outputRange: [0, 0.8, 0] });
+  return (
+    <View style={styles.picture}>
+      <Animated.View style={[styles.ripple, { opacity, transform: [{ scale }] }]} />
     </View>
   );
 }
@@ -525,4 +607,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   multiline: { minHeight: 80, textAlignVertical: 'top' },
+  moment: { alignItems: 'center', gap: 10, paddingVertical: 12, borderRadius: radius.tile, borderWidth: 1, borderColor: colors.hairline, backgroundColor: colors.surfaceRaised, paddingHorizontal: 16 },
+  momentTitle: { fontFamily: fonts.display, fontSize: 26, color: colors.cream },
+  momentLine: { fontFamily: fonts.displayItalic, fontSize: 18, lineHeight: 25, color: colors.parchment, textAlign: 'center' },
+  picture: { width: 120, height: 70, alignItems: 'center', justifyContent: 'flex-end' },
+  drop: { position: 'absolute', top: 0, width: 8, height: 12, borderRadius: 4, backgroundColor: 'rgba(170,200,230,0.9)' },
+  bowl: { marginTop: 8 },
+  ripple: { width: 60, height: 60, borderRadius: 30, borderWidth: 1.5, borderColor: colors.gold, marginBottom: 5 },
 });

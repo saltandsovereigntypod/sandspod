@@ -1,0 +1,586 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-odin',
+  kind: 'deity',
+  paths: ['norse'],
+  deityRef: 'traditional/deity/odin',
+  title: 'Odin, the Wanderer',
+  summary:
+    'A lunar month with the one-eyed god of wisdom, poetry, runes and the dead: who he was in the sources, how he was worshipped, and how to honour him today without romanticising the cost.',
+  welcome: `This is a month-long journey toward a working relationship with Odin. You will read the oldest stories, learn the shape of a blót and a sumbel, set up a small shrine, keep nine nights of offerings, and decide at the end whether to dedicate yourself to him.
+
+It is a self-dedication, not an initiation. Heathenry has no single clergy, and some groups have their own rites of profession or oath; this does not replace them. Nothing here asks you to hurt yourself, fast to exhaustion or take on an ordeal. Odin’s stories are full of cost. Your practice does not need to be.
+
+Go at your own pace. Pausing is fine, and so is deciding at the end that he is not your god.`,
+  about: `Odin (Old Norse Óðinn, Old English Wōden, Old High German Wuotan) is the chief of the Æsir in the Norse sources: a one-eyed wanderer in a broad hat and grey cloak who gave an eye for wisdom, hung nine nights on the world-tree to win the runes, and stole the mead of poetry. He is also the lord of the slain, who gathers fallen warriors to Valhalla, and a god of ecstatic magic, frenzy and battle-luck. Most of what we know comes from Icelandic writers of the 1200s, chiefly the poems of the Poetic Edda and Snorri Sturluson’s Edda and Heimskringla, written by Christians two centuries after conversion, alongside place names, runestones and the hostile account of Adam of Bremen. Today he is one of the most honoured gods in Heathenry, the modern revival of pre-Christian Germanic religion, where people pour mead to him at blót, toast him in sumbel, study the runes and the Hávamál, and keep Wednesday, his day, for learning.`,
+  notes: [
+    'Odin’s historical cult included human and animal sacrifice, including hanging. This journey describes that honestly and offers only devotional practice: bread, drink, poetry, study and kept promises. No ordeals, no bloodletting, no fasting to harm.',
+    'Heathenry has a long-running split between inclusive groups, open to anyone of any ancestry, gender or orientation, and “folkish” groups that tie the gods to race. This app stands with the inclusive side, plainly: the gods are not a racial inheritance.',
+    'Some Odin-related symbols, especially the valknut, Othala (particularly with “wings” or feet), the Wolfsangel and the sun wheel known as the black sun, have been used by white-supremacist groups. Context matters, and many Heathens reclaim them, but learn what they signal before wearing them.',
+    'Odin is a god of poetry and also of deception in the myths. Be wary of anyone, online or in person, who claims to speak for him in order to get your money, obedience or body. A god does not need a middleman to make you uncomfortable.',
+    'If you have struggled with self-harm, mania or psychosis, keep trance and ecstatic work for later, with support. The study, poetry and offering parts of this journey are safe places to begin.',
+  ],
+  holyDays: ['jol', 'vetrnaetur', 'sigrblot', 'haustblot', 'disablot'],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'At the Door',
+      intro:
+        'In the Hávamál the first duty of a household is to the stranger at the door, and Odin often arrives as that stranger. These first days are about making room: a shelf, a cup, a first greeting, and an honest statement of why you have come.',
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'odin-shrine',
+          title: 'Set up a small shrine',
+          instructions: `Choose a shelf, windowsill or the top of a bookcase, somewhere you can stand in front of for five minutes. Heathen household shrines were often called a stalli (a stand or altar) or a hörgr (a stone heap, outdoors); for a flat, a shelf is right.
+
+Put down a plain cloth. Add a cup or drinking horn, a small bowl for food offerings, and one candle in a holder (dark blue, grey or black are common modern choices; any colour will do). Add one image: a raven, a wolf, a spear, a one-eyed wanderer, or a printed stanza of the Hávamál. If you have a set of runes, keep them here.
+
+Leave room. Shrines to Odin often fill up with books, notebooks and poems people have written, which suits a god who prizes words. Keep it dusted, and never leave food on it overnight.`,
+          times: 1,
+          prompt: 'What did you choose to put on the shrine, and why? What did you decide to leave off?',
+        },
+        {
+          id: 'odin-name',
+          title: 'Learn his names',
+          instructions: `Odin has more names than any other Norse god; Grímnismál lists dozens. Learn five and say them aloud once a day: Alföðr (All-father), Hár (High One, the speaker of the Hávamál), Grímnir (the Masked One), Gangleri (Way-weary, the wanderer), and Yggr (the Terrible). Notice which one feels like the face that has met you.`,
+          times: 3,
+          every: 'day',
+          prompt: 'Which name came most easily to your mouth? Which one made you hesitate?',
+        },
+      ],
+      rite: {
+        title: 'Opening the Door to the Wanderer',
+        summary:
+          'A short first greeting: hallow the space, pour a drink for Odin, tell him honestly why you have come, and drink your own share.',
+        minutes: 20,
+        ingredients: [
+          { name: 'A cup or horn of mead, ale or apple juice' },
+          { name: 'A second cup for yourself' },
+          { name: 'A slice of good bread' },
+          { name: 'A candle in a safe holder', ref: 'traditional/candle/blue', optional: true },
+          { name: 'An offering bowl', ref: 'traditional/vessel/offering_bowl' },
+        ],
+        preparation: `Wash your hands and face. Tidy the space; a guest is welcomed into a clean hall. Pour the mead or juice into the cup on the shrine, and a little into your own. Put the bread in the bowl. Turn off screens.`,
+        steps: [
+          {
+            title: 'Hallow the space',
+            instructions:
+              'Light the candle. Walk once around the room clockwise (sunwise), carrying the candle or simply pointing with your hand, and say the words. Heathens often hallow with the hammer sign, a T traced in the air, in Thor’s name; for Odin you may simply name the space as holy.',
+            spoken: 'I make this place a hall for the gods. Let nothing unwelcome stay here while the cup is poured.',
+            light: true,
+          },
+          {
+            title: 'Greet him',
+            instructions:
+              'Stand before the shrine. Lift the cup in both hands. Heathens usually pray standing, arms raised or holding the horn, eyes open.',
+            spoken:
+              'Odin, Allfather, wanderer, High One. I have heard your name in the old poems and I have come to the door. I bring mead and bread, a small gift for a first meeting.',
+          },
+          {
+            title: 'Say why you have come',
+            instructions:
+              'In your own words, say out loud why you are here: what drew you, what you hope to learn, and what you are not yet ready to give. Keep it honest and short. Odin is a god of words; plain words are better than grand ones.',
+            minutes: 5,
+          },
+          {
+            title: 'Share the drink',
+            instructions:
+              'Drink a sip from your own cup. In the old feasts, the gods and the people drank together; that sharing is what made a blót a meal and not just a gift. Leave Odin’s cup full on the shrine.',
+            spoken: 'I drink with you. Hail Odin.',
+          },
+          {
+            title: 'Sit a while',
+            instructions:
+              'Sit in front of the shrine for a few minutes. Do not try to make anything happen. Notice your breathing, the candle, the room.',
+            minutes: 5,
+            timed: true,
+          },
+          {
+            title: 'Close',
+            instructions:
+              'Thank him, and say that you will come back. Snuff the candle. Within a few hours, take the cup and bread outside and pour and lay them on the earth: at the foot of a tree, in a garden bed, or a park verge. If you cannot get outside, see the safety note.',
+            spoken: 'Thank you for hearing me. I will come back.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Write down what you said and how it felt. Keep the record; you will read it again before the dedication.',
+        safety:
+          'Never leave a candle burning unattended or near curtains, books or a cat’s tail. If you cannot pour outside, pour the drink down the sink with a word of thanks, and compost or bin the bread; do not pour alcohol into houseplants. Bread and mead left out attract pests, so clear them the same day. Grapes, raisins and wine are toxic to dogs and cats: keep offerings out of reach.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'Hearing the High One',
+      intro:
+        'Twelve days of reading. You will meet Odin as the sources describe him, read the myths of how he won his wisdom, and look honestly at the darker side of his worship before you learn how people honour him now.',
+      days: 12,
+      lessons: [
+        {
+          id: 'odin-who',
+          title: 'The Wanderer with Many Names',
+          summary: 'Who Odin is in the sources, how he appears, and why he keeps turning up at the door in disguise.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'A god across the Germanic world',
+              body: `Odin is older than the Vikings. The name comes from a Proto-Germanic *Wōðanaz, built on a word for frenzy, fury and inspiration (Old Norse óðr, related to Old English wōd, “mad”). The Anglo-Saxons knew him as Wōden, and he gave English its Wednesday. The continental Lombards told of Wodan and his wife Frea. Anglo-Saxon royal family trees began with him. By the Viking Age he was the high god of poets, kings and warriors across Scandinavia.
+
+That breadth matters. When people say “Odin” today they usually mean the Odin of Iceland in the 1200s, because that is where the stories were written down. But he was worshipped for centuries before, across a wide area, and probably not in exactly the same way everywhere.`,
+            },
+            {
+              heading: 'What he looks like, and what he carries',
+              body: `The sources picture him as an old man, tall, grey-bearded, with one eye, a wide-brimmed hat pulled low and a blue or grey cloak. He carries the spear Gungnir, made by dwarves, which never misses. On his arm is the ring Draupnir, from which eight rings of equal weight drip every ninth night. He rides Sleipnir, the eight-legged grey horse. From his high seat Hliðskjálf he can see into all the worlds.
+
+Two ravens sit on his shoulders, Huginn (thought) and Muninn (memory or mind). In Grímnismál, Odin says of them, in Henry Adams Bellows’ 1923 translation:
+
+“O’er Mithgarth Hugin and Munin both / Each day set forth to fly; / For Hugin I fear lest he come not home, / But for Munin my care is more.”
+
+He worries more about losing memory than thought. That one line says a good deal about him. Two wolves, Geri and Freki (both names mean greedy), eat the meat from his table; he lives on wine alone.`,
+            },
+            {
+              heading: 'The names',
+              body: `Odin has more names than any other Norse god, some two hundred in all. Many are disguises: Grímnir (the Masked One), Gangleri (Way-weary), Vegtamr (Road-tamed), Hárbarðr (Grey-beard). Some describe his roles: Alföðr (All-father), Valföðr (Father of the Slain), Sigföðr (Victory-father), Hangatýr (God of the Hanged), Farmatýr (God of Cargoes), Jólnir (the Yule One). Hár, the High One, is the voice of the Hávamál.
+
+The names are not trivia. Heathens use them in prayer the way Greeks used epithets, to call on the face of the god they need: Alföðr at a family blót, Gangleri for a journey, Jólnir at midwinter.`,
+            },
+            {
+              heading: 'The guest at the door',
+              body: `Again and again, Odin arrives as a stranger. In Grímnismál he visits King Geirröðr in disguise and is tortured between two fires for eight nights; only the king’s young son brings him a horn to drink. The boy is rewarded, and the king dies by his own sword. Behind the story is one of the deepest values in the old poems: hospitality. The Hávamál opens with it:
+
+“Fire he needs who with frozen knees / Has come from the cold without; / Food and clothes must the farer have, / The man from the mountains come.” (Bellows, stanza 3)
+
+For a modern devotee this is the first practical lesson. Treat guests well, and treat strangers as though they might be more than they seem. Many people who honour Odin start by being better hosts.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Odin was worshipped across the Germanic world, from Anglo-Saxon England to Scandinavia; Wednesday and many place names (Odense, Woodnesborough, Wednesbury) carry his name. The Poetic Edda and Snorri’s Edda give his appearance, names, ravens, wolves, horse and spear in detail.',
+            unknown:
+              'Almost all the stories were written down in Christian Iceland, 200 or more years after conversion. We do not know how much they reflect pagan belief and how much is poetic or antiquarian invention. Whether ordinary farmers prayed to Odin much, or mainly to Thor and Freyr, is debated; his cult may have been strongest among kings, poets and warriors.',
+          },
+          inPractice:
+            'Many Heathens begin by reading the Hávamál slowly, a few stanzas a week, and by improving how they treat guests: offering a drink, a seat by the warmth, a real welcome. Some keep a list of his names in their journal and note which ones they use.',
+          reflect: [
+            'Odin fears more for Memory than for Thought. Which do you neglect?',
+            'When have you been the stranger at someone’s door? How were you received?',
+          ],
+          further: [
+            'Hávamál and Grímnismál, in Henry Adams Bellows, The Poetic Edda (1923), public domain on Project Gutenberg.',
+            'Rudolf Simek, A Dictionary of Northern Mythology (trans. 1993): the entries on Odin and his names.',
+            'Jackson Crawford, The Poetic Edda (2015), a clear modern translation.',
+          ],
+          library: ['traditional/deity/odin', 'traditional/deity/frigg'],
+          premade: ['folk-havamal-reflection'],
+        },
+        {
+          id: 'odin-myths',
+          title: 'Wisdom at a Price',
+          summary: 'The eye in the well, nine nights on the tree, the stolen mead: the myths of how Odin got what he knows, and what they ask of us.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The eye in Mímir’s well',
+              body: `Under one root of the world-tree Yggdrasil is the well of Mímir, whose water holds wisdom. Snorri tells that Odin came and asked for a single drink, and was refused until he gave one of his eyes as a pledge. The Völuspá, the seeress’s prophecy that opens the Poetic Edda, says the eye is hidden in the well, and that Mímir drinks mead every morning from Odin’s pledge.
+
+The lesson is blunt. Some knowledge cannot be had for free. You give up a way of seeing to gain another. For a modern devotee this is usually small and practical: the hours of study you could have spent scrolling, the comfortable belief you have to give up when the evidence is against it.`,
+            },
+            {
+              heading: 'Nine nights on the windy tree',
+              body: `The best-known passage about Odin is in the Hávamál, where he speaks of winning the runes:
+
+“I ween that I hung on the windy tree, / Hung there for nights full nine; / With the spear I was wounded, and offered I was / To Othin, myself to myself, / On the tree that none may ever know / What root beneath it runs.” (Bellows, stanza 139)
+
+No one fed him or gave him drink. He looked down, took up the runes “shrieking,” and fell back. Afterwards, he says, “each word led me on to another word, each deed to another deed.” This is a sacrifice of a god to himself, and its shape echoes the way men were offered to Odin: hanged, and pierced with a spear.
+
+Modern Heathens read this in different ways: as a shamanic initiation, as an account of real sacrificial practice, as a poem about how insight comes after you have been emptied out. All of these can be true at once. What it does not do is ask you to hang yourself on anything. The runes are already won.`,
+            },
+            {
+              heading: 'The mead of poetry',
+              body: `Snorri tells how the gods and the Vanir made peace by spitting into a vat, and from that spittle was made a wise man, Kvasir. Two dwarves killed him and brewed his blood with honey into a mead that made anyone who drank it a poet or a scholar. The mead passed to the giant Suttungr, who hid it in a mountain under the guard of his daughter Gunnlöð. Odin bored into the mountain as a snake, spent three nights with Gunnlöð, drank all three vessels, and flew home as an eagle, spitting the mead into the gods’ vats. A little spilled backwards; that, Snorri says, is the share of bad poets.
+
+Poets called their art “Odin’s mead” and “the drink of the dwarves” for centuries. It is why poetry is one of the best offerings to him, and why Heathens raise mead when they toast him.`,
+            },
+            {
+              heading: 'A god who is not always kind',
+              body: `The myths do not make Odin simply good. He wins Gunnlöð’s help and leaves her weeping; the Hávamál itself admits he broke an oath to get the mead. He practises seiðr, a magic the sources associate with women, and in Lokasenna Loki mocks him for it. In Hárbarðsljóð he boasts of stirring up wars between princes and never making peace, and says “The noble who fall in the fight hath Othin, / And Thor hath the race of the thralls” (Bellows, stanza 24). Kings in the sagas complain that he grants victory and then takes it away.
+
+It is honest to hold both sides. He is the god of hard-won wisdom and of words that last, and also of deceit, frenzy and death. Heathens who are close to him tend to speak of him with respect and a little wariness, as you would of a brilliant, difficult elder. Keep your promises to him, and do not make ones you cannot keep.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The eye pledge appears in Völuspá and Snorri; the hanging in Hávamál 138–141 (139–142 in Bellows’ numbering); the mead of poetry in Hávamál and in Snorri’s Skáldskaparmál. Skaldic poets used “Odin’s mead” as a kenning for poetry from at least the 900s.',
+            unknown:
+              'Whether the hanging stanzas reflect a real initiation rite, a borrowing from the Christian crucifixion, or something else entirely is unresolved. Snorri’s account of Kvasir and Suttungr is the only full version and may be his own synthesis. Seiðr is described in only a handful of sources, so modern practice is largely reconstructed.',
+          },
+          inPractice:
+            'Heathens who work with Odin often study the runes, beginning with the Elder Futhark of 24 staves and the Old Norwegian, Old Icelandic and Old English rune poems. Others write poetry for him and read it aloud at the shrine; even a few lines in alliterative verse, the way the Eddic poems were made, is a real gift.',
+          reflect: [
+            'What way of seeing have you already given up to know something you now know?',
+            'Odin is honoured and distrusted in the same stories. Can you hold both? What does that ask of you?',
+          ],
+          further: [
+            'Völuspá and Hávamál in Bellows (1923); Skáldskaparmál on the mead, in Rasmus B. Anderson’s The Younger Edda (1880) or Anthony Faulkes’ Edda (Everyman).',
+            'John Lindow, Norse Mythology: A Guide to the Gods, Heroes, Rituals, and Beliefs (2001).',
+            'Diana L. Paxson, Taking Up the Runes (2005), a practitioner’s rune course.',
+          ],
+          library: ['traditional/deity/odin', 'traditional/deity/loki', 'traditional/herb/yew'],
+          premade: ['folk-jol-rune-casting'],
+        },
+        {
+          id: 'odin-dark',
+          title: 'The Hanged God and the Lord of the Slain',
+          summary: 'An honest look at sacrifice, frenzy and war in Odin’s cult, and why modern devotion keeps the meaning and leaves the blood.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'What the sources say',
+              body: `Odin received human sacrifice, and the sources are not shy about it. Adam of Bremen, a German cleric writing around 1075, describes a great festival at Uppsala every nine years at which nine males of every kind, men among them, were hanged in a grove beside the temple. He is hostile and wrote from hearsay, but other evidence points the same way. Gautreks saga tells of King Víkarr, offered to Odin by being hanged and stabbed with a spear. The Ynglinga saga says Odin himself asked to be marked with a spear point when he died. Hanged men were “Odin’s” in poetry; the gallows is “Odin’s horse.”
+
+In war, a leader might throw a spear over the enemy army to dedicate all of it to Odin; the slain were his. Some kings were said to have sacrificed their own sons for victory or long life.`,
+            },
+            {
+              heading: 'The frenzy',
+              body: `Odin’s name means something like “the frenzied one,” and the frenzy is real in the sources. Snorri says his warriors went into battle without mail, mad as dogs or wolves, biting their shields: the berserkers (“bear-shirts”) and úlfheðnar (“wolf-skins”). Poets were seized by his inspiration. Seiðr trances and the wandering of the soul in animal shape belong to him too.
+
+This is part of why he draws people. Ecstasy, creative possession and the sense of being taken over by something larger are powerful experiences. They can also be dangerous, especially for anyone with a history of mania, dissociation or addiction. Treat trance like strong drink: something to approach slowly, with people you trust, and not alone when you are fragile.`,
+            },
+            {
+              heading: 'Valhalla and the valkyries',
+              body: `Odin’s hall in Asgard is Valhöll, the hall of the slain, where half of those who die in battle feast and fight each day until Ragnarök; the other half go to Freyja’s field, Fólkvangr. The valkyries, “choosers of the slain,” decide who falls. Valhalla was never the only afterlife in Norse belief: the sources also mention Hel, the grave mound, Freyja’s hall, and Rán’s halls under the sea for the drowned. Ordinary people probably expected to go to their ancestors.
+
+The modern image of Valhalla as a warriors’ paradise owes a lot to Wagner and to Victorian romance. It is fine to love the stories. It is worth noticing when they get used to make violence look glorious.`,
+            },
+            {
+              heading: 'What this means for you now',
+              body: `No modern Heathen group of any standing practises human or animal sacrifice to Odin. What remains is the shape: something of value given, so that something else may be received. Today that is mead, bread, a poem, a year of study, a promise kept.
+
+Be careful of a strand of modern writing that makes Odin’s devotion about suffering: you must lose something, be broken, pay in pain. People do sometimes go through hard times and later find meaning in them. That is not the same as seeking harm, and no god you choose to honour requires you to stay in a situation that is hurting you. If you notice yourself reading every misfortune as Odin’s price, talk to someone you trust.
+
+Finally, the symbol. The valknut, three interlocked triangles seen on Gotland picture stones beside scenes of death and Odin, is a beautiful and genuinely old image. It has also been adopted by racist groups and is listed in hate-symbol databases. Many inclusive Heathens wear it proudly. If you do, know what others may read into it, and let your community and your conduct make the meaning clear.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Human sacrifice to Odin is attested by Adam of Bremen, saga literature, skaldic poetry and the hanging imagery of Hávamál. Gotland picture stones of the 700s–900s show hanged figures, valknuts and scenes read as arrival in Valhalla. Berserkers appear in sagas and in Snorri.',
+            unknown:
+              'How common human sacrifice was, and whether Adam’s Uppsala account is accurate, is debated. The meaning of the valknut on the picture stones is not recorded; “valknut” is a modern name. Whether berserkers were a cult band, a literary type or something in between is unclear.',
+          },
+          inPractice:
+            'Modern Heathens honour Odin’s link with the dead by remembering their own dead in sumbel and at Winter Nights and Yule, and many make a point of honouring veterans and others who have died violently, without glorifying war. Trance work, if done at all, is usually done in groups with a guide and a clear way back.',
+          reflect: [
+            'What are you willing to give for knowledge, and what are you not willing to give? Write both lists.',
+            'Where in your life has “it was worth it” been true, and where was it a story you told yourself?',
+          ],
+          further: [
+            'Neil Price, The Viking Way: Magic and Mind in Late Iron Age Scandinavia (2nd ed. 2019).',
+            'H. R. Ellis Davidson, Gods and Myths of Northern Europe (1964).',
+            'The Anti-Defamation League’s hate-symbol database, for how the valknut and Othala are misused, alongside inclusive Heathen statements such as Declaration 127 (2016).',
+          ],
+          library: ['traditional/deity/odin', 'traditional/deity/freyja', 'traditional/deity/hel'],
+        },
+      ],
+      practices: [
+        {
+          id: 'odin-havamal',
+          title: 'A stanza a day',
+          instructions:
+            'Read three stanzas of the Hávamál each day, in order, from a translation you like. Copy one into your journal by hand. The poem is long and mixes household advice with magic; let both teach you.',
+          times: 12,
+          every: 'day',
+          prompt: 'Which line today was advice you needed? Which one did you disagree with?',
+          premade: 'folk-havamal-reflection',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Nine Nights',
+      intro:
+        'Odin hung nine nights, Draupnir drips every ninth night, and the great Uppsala feast lasted nine days. In this stage you learn how Odin was and is worshipped, and keep nine nights of offering at your shrine.',
+      days: 9,
+      lessons: [
+        {
+          id: 'odin-worship',
+          title: 'Blót, Sumbel and the Full Cup',
+          summary: 'How Odin was worshipped in the old feasts and how Heathens honour him today, from the first toast to the communities that keep it.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Odin’s cup comes first',
+              body: `The fullest description of a Norse feast is Snorri’s, in the saga of Hákon the Good. At Hlaðir in Trøndelag, the farmers brought ale and animals; the blood (hlaut) was sprinkled on the altars and the people with twigs, the meat was boiled in kettles over fires down the middle of the hall, and the chieftain blessed the cups and the food. Then, in Samuel Laing’s 1844 translation, “first Odin’s goblet was emptied for victory and power to his king.” After it came the cups of Njörðr and Freyr for a good year and peace, then the bragafull, the chieftain’s cup over which vows were made, and last a cup for dead kinsmen.
+
+So Odin’s place in the feast was first, and his gift was victory and rule. When the Christian King Hákon was pressed to drink and made the sign of the cross over his horn, Earl Sigurd smoothed it over by telling the farmers the king was making Thor’s hammer sign. That story tells you that hallowing a cup with a gesture was normal.`,
+            },
+            {
+              heading: 'The shape of a modern blót',
+              body: `“Blót” means a sacrifice or offering. Modern Heathen blót keeps the old shape but with drink and food in place of animals. It usually goes like this. First, the space is hallowed, often by walking it with fire or making the hammer sign. Then the god is called, by name and with praise. A horn or cup of mead is held up and blessed, and the god is asked to accept it. The horn is passed and everyone drinks or touches it to their lips, sharing the gift with the god. Then the rest is poured into a bowl (the hlautbolli) and, at the end, out on the earth or onto a stone, so that it goes wholly to the gods. Some groups sprinkle the people with mead from the bowl with a sprig of evergreen, echoing the hlaut.
+
+A solitary blót at a shelf in a flat has the same bones. You just are the whole hall.`,
+            },
+            {
+              heading: 'Sumbel: words over the horn',
+              body: `Sumbel is a ritual drinking, distinct from blót, in which a horn is passed around a group for usually three rounds. The first round is for the gods, the second for heroes and ancestors, the third open: a boast of something done, a vow of something to do, a toast to a friend. What is said over the horn is held to enter the Well of Urðr, the well of fate, and become part of what has been. That is why sumbel boasts must be true and vows must be kept.
+
+Odin, god of words and of the mead, belongs here especially. Many groups toast him first. The sagas show the danger of rash words at the cup: in one Eddic story, the hero Heðinn swears at the Yule toast to take his brother’s beloved, and is overwhelmed with grief at what he has said. Say less, and mean it.`,
+            },
+            {
+              heading: 'The communities',
+              body: `Heathenry today is a family of traditions rather than one church. Iceland’s Ásatrúarfélagið, founded in 1972 and a recognised religion there, is inclusive and holds public blóts. The Troth, founded in the United States in 1987, is an international inclusive organisation. Many people practise in local groups called kindreds or hearths, or alone. Some prefer the names Ásatrú, Forn Sed (“the old custom”, common in Scandinavia), Theodism (an Anglo-Saxon-focused reconstruction) or simply Heathenry.
+
+There is also a folkish wing, which teaches that the gods belong only to people of northern European descent; some folkish groups are openly racist. In 2016 hundreds of Heathen groups signed Declaration 127, refusing to associate with one large folkish organisation over its racial policies. This app is inclusive: Odin was a wanderer and a guest, and the Hávamál’s hospitality is not checked at the door by ancestry. If a group asks about your blood before your conduct, walk away.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Snorri’s description of the Hlaðir feast (Hákonar saga góða, ch. 14–18), including the order of cups, the hlaut and the hammer sign, is detailed. The words blót and sumbel are both attested in Old Norse and Old English. Ásatrúarfélagið, The Troth and Declaration 127 are matters of public record.',
+            unknown:
+              'Snorri wrote some 250 years after the events and may have generalised from many sources. The three-round sumbel and the idea that words enter Urðr’s well are modern Heathen systematisations, drawing on scholarship (especially by Paul Bauschatz in the 1980s), not described in this form in any old source.',
+          },
+          inPractice:
+            'A simple monthly blót to Odin, with a short sumbel afterwards even if you are alone, is the backbone of many devotees’ practice. Use the premade Simple Blót as your template: hallow, hail, share, pour.',
+          reflect: [
+            'If what you say over the horn becomes part of your fate, what are you willing to say?',
+            'What would you need to know about a Heathen group before you would join it?',
+          ],
+          further: [
+            'Saga of Hákon the Good, ch. 16–18, in Samuel Laing’s Heimskringla (1844), public domain on Project Gutenberg.',
+            'Stefanie von Schnurbein, Norse Revival: Transformations of Germanic Neopaganism (2016), on the inclusive–folkish divide.',
+            'The Troth, Our Troth (3 vols), a practitioner reference.',
+          ],
+          library: ['traditional/deity/odin', 'traditional/deity/thor', 'traditional/deity/freyr'],
+          premade: ['folk-simple-blot'],
+        },
+        {
+          id: 'odin-days',
+          title: 'Wednesdays, Holy Tides and the Gift for a Gift',
+          summary: 'When to honour Odin, what to offer, how to offer it, and the Hávamál’s rule of measure.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'His day and his tides',
+              body: `Wednesday is Odin’s day in English (Wōdnesdæg), Dutch (woensdag) and the Scandinavian languages’ older forms (Óðinsdagr). Many devotees keep it for study, rune work or a short offering.
+
+In the old year, the sagas speak of three great feasts: in the Saga of Olaf the Saint, a chieftain named Sigurd held “three sacrifices every year: one on winter-night’s eve, one on mid-winter’s eve, and the third in summer” (Laing’s translation). The Ynglinga saga, which makes Odin the founder of these customs, gives them as a blót for a good year at winter’s start, one for growth at midwinter, and one for victory at summer’s start. In the calendar used here, that is Winter Nights (Vetrnætur) in late October, Yule (Jól) at midwinter, and Sigrblót at the first day of summer in April. Odin’s name Jólnir, the Yule one, ties him to midwinter in particular, and Scandinavian folklore puts him at the head of the Wild Hunt that rides through the winter nights.`,
+            },
+            {
+              heading: 'What to offer',
+              body: `Mead is the traditional drink, and the right one for the god who won the mead of poetry; good ale or cider will do, and non-alcoholic mead or apple juice is entirely acceptable. Bread, especially dark or seeded bread you baked yourself, is a good food offering. Odin famously lives on wine; modern devotees sometimes pour red wine for him. Some American Heathens offer pipe tobacco or whisky; these are modern customs, not old ones.
+
+The offerings that suit him most are not things at all. A poem you wrote, read aloud. An hour of real study. A rune learned properly. A promise kept. Many people dedicate their learning to him, a course, a language, a book read carefully, and report progress at the shrine.`,
+            },
+            {
+              heading: 'Gift for a gift, and the measure',
+              body: `The relationship between Heathens and their gods is built on gift exchange. The Hávamál says “To his friend a man a friend shall prove, / And gifts with gifts requite” (Bellows, stanza 42), and the same rule applies to gods. You give; the gods give; the bond grows with each exchange. You do not owe a god everything, and they do not owe you anything in particular.
+
+Just as important is measure. In the rune section of the Hávamál, Odin himself says: “Better no prayer than too big an offering, / By thy getting measure thy gift” (Bellows, stanza 146). Do not overpromise. A small offering, kept up for years, is better than a grand one that leaves you resentful or broke. If you have little, give little, gladly.`,
+            },
+            {
+              heading: 'How to offer, and what not to do',
+              body: `Stand to offer, hold the cup up, speak the god’s name and what you are giving. Take a sip yourself first or after, depending on your group’s custom; in blót the sharing is the point. Pour the god’s portion out onto the earth afterwards, or into a bowl that you take outside. Food offerings are left out for a few hours and then given to the earth, composted or respectfully binned; they are not eaten afterwards.
+
+Don’t offer something stolen or bought with someone else’s money. Don’t offer what you would not give a respected guest: no leftovers, no flat beer. Don’t promise Odin anything in a moment of fear or excitement; make vows calmly, at the shrine, and write them down. And don’t treat him as a wishing well. He is called on for wisdom, inspiration, courage in a hard task and the protection of travellers, not for lottery numbers.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Wednesday’s name and Odin’s name Jólnir are attested. The three seasonal sacrifices appear in Ynglinga saga and Olaf’s saga. The gift-exchange ethic and the warning against too big an offering are in the Hávamál.',
+            unknown:
+              'The exact dates of the old feasts are not known; modern Heathens fix them by the Icelandic calendar, the moon or the solstices. The Wild Hunt as Odin’s ride is recorded in later Scandinavian and German folklore, not in Viking Age sources. Tobacco and whisky offerings are modern.',
+          },
+          inPractice:
+            'A common rhythm: a short Wednesday offering (a candle, a few lines read aloud, a sip of mead), a monthly blót, and Odin’s cup first at the great tides of Winter Nights, Yule and Sigrblót.',
+          reflect: [
+            'What can you offer Odin every week without strain for a year?',
+            'Is there a promise you have made too lightly, to anyone? What would keeping it look like?',
+          ],
+          further: [
+            'Hávamál 138–165, the rune and spell section, in Bellows (1923).',
+            'Saga of Olaf Haraldson, in Laing’s Heimskringla (1844).',
+          ],
+          library: ['traditional/deity/odin', 'traditional/herb/mugwort', 'traditional/crystal/obsidian'],
+          premade: ['folk-simple-blot', 'folk-havamal-reflection'],
+        },
+      ],
+      practices: [
+        {
+          id: 'odin-nine-nights',
+          title: 'Nine nights at the shrine',
+          instructions: `For nine nights in a row, go to the shrine at the same hour. Light the candle. Pour a small measure of mead or juice and say his name. Then give one thing of words: read a stanza of the Hávamál aloud, learn one rune of the Elder Futhark (its name, sound and rune-poem verse), or speak a few lines you wrote.
+
+Sit for five minutes. Snuff the candle and pour the drink outside before bed, or the next morning. On the ninth night, offer something you made yourself, a poem, a drawing, a carving, and thank him for the nine nights.
+
+If you miss a night, don’t start over. Pick up where you left off.`,
+          times: 9,
+          every: 'day',
+          prompt: 'What did you offer tonight, and what came back: a thought, a memory, a dream, nothing at all? Write it down plainly.',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'Weighing It',
+      intro:
+        'Before any vow, the Hávamál advises thinking twice. Take these days to look back over your journal, honestly. Stopping here, pausing for a season, or turning to another god is a good outcome, not a failure.',
+      days: 4,
+      lessons: [],
+      practices: [
+        {
+          id: 'odin-reread',
+          title: 'Read your record',
+          instructions:
+            'Read everything you have written since the opening rite. Mark the moments that felt real, and the ones that felt like performance. Then put the journal away for a day.',
+          times: 1,
+          prompt: 'Reading it back, what do you notice that you didn’t see at the time?',
+        },
+      ],
+      questions: [
+        'Did your offerings feel like a meeting or like a chore? Both are honest answers.',
+        'Are you drawn to Odin himself, or to an image of yourself as someone who serves him?',
+        'Can you live with his darker side as it appears in the sources, without either excusing it or making it glamorous?',
+        'What will you actually give each week, and can you keep that up for a year?',
+        'Have you been reading hardship as Odin’s price? If so, is that helping you?',
+        'Would it be better to stay a respectful guest of Odin for now, honouring him at blót without a vow?',
+        'If you stop here, what would you take from this month? That is worth keeping either way.',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'Before the High Seat',
+      intro: `If you have decided to go on, this is the dedication: a blót, a vow you have written in advance, and a token to keep. It is a self-dedication between you and Odin. It is not an initiation into any group, and it does not replace a group’s own rites if you later join one. Make the vow modest and specific; you can always make a larger one next year.`,
+      days: 1,
+      lessons: [],
+      practices: [
+        {
+          id: 'odin-write-vow',
+          title: 'Write the vow first',
+          instructions:
+            'A day before, write your vow. Say what you will do (for example, a Wednesday offering and a monthly blót), for how long (a year and a day is common), and what you ask (wisdom, inspiration, steadiness). Read it aloud. Cut anything you are not sure you can keep.',
+          times: 1,
+          prompt: 'Write the final vow here.',
+        },
+      ],
+      rite: {
+        title: 'Dedication to Odin',
+        summary:
+          'A household blót in which you hallow the space, hail Odin by his names, share the horn, speak a written vow over it, pour the god’s portion and take up a token.',
+        minutes: 40,
+        ingredients: [
+          { name: 'A horn or cup of mead (or non-alcoholic mead or apple juice)' },
+          { name: 'An offering bowl for the pour', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'Bread you baked or chose with care' },
+          { name: 'A candle in a safe holder', ref: 'traditional/candle/blue' },
+          { name: 'Your written vow' },
+          { name: 'A token to keep: a raven feather found (not bought from a wild-taken source), a rune you carved, a ring', optional: true },
+          { name: 'A poem you wrote for him', optional: true },
+        ],
+        preparation: `Clean the shrine and the room. Wash and dress in clean clothes. Set the token on the shrine. Fill the horn. Have the bowl and bread ready, and your vow written on paper. If you can, do this on a Wednesday, at Winter Nights, Yule or Sigrblót, or at the end of your nine nights.`,
+        steps: [
+          {
+            title: 'Hallow',
+            instructions:
+              'Light the candle. Walk sunwise around the room with it, or around the shrine, and name the place holy.',
+            spoken: 'I hallow this hall for Odin and for every god and good wight who wishes me well. Let it be a frith-stead, a place of peace, while the horn is full.',
+            light: true,
+          },
+          {
+            title: 'Call him',
+            instructions: 'Raise both arms or hold up the horn, and call him by his names, slowly.',
+            spoken:
+              'Odin, Allfather, High One, Grímnir, Gangleri, wanderer on every road. You who gave an eye at the well, who hung nine nights on the windy tree, who brought the mead home to the gods: hear me. I have come back to the door, as I said I would.',
+          },
+          {
+            title: 'Bless and share the horn',
+            instructions:
+              'Hold the horn up and ask him to bless it. Then drink a sip. This is your share of a drink taken together.',
+            spoken: 'Take this mead, Odin, and bless it. I drink with you, as guests drink with their host. Hail Odin!',
+          },
+          {
+            title: 'Give your words',
+            instructions:
+              'If you have written a poem, read it aloud now. If not, speak for a minute about what this month has taught you. This is your gift of words.',
+            minutes: 5,
+          },
+          {
+            title: 'Speak the vow over the horn',
+            instructions:
+              'Hold the horn and read your vow aloud, clearly, once. Then take one more sip to seal it. In sumbel, words spoken over the horn are kept; speak only what you mean.',
+            spoken: 'These words I lay in the well. Witness them, Odin, and hold me to them.',
+          },
+          {
+            title: 'Pour the god’s portion',
+            instructions:
+              'Pour the rest of the mead into the offering bowl. Lay the bread beside it. The pour is wholly his; you do not drink from the bowl.',
+            spoken: 'This is yours. A gift calls for a gift; I give gladly, and ask in my turn for wisdom, a keen mind and good words.',
+          },
+          {
+            title: 'Take up the token',
+            instructions:
+              'Hold the token over the candle flame, at a safe height, or pass it through the warmth, and put it on. Let it be a reminder, not a charm you are afraid to lose.',
+            spoken: 'I wear this as a sign of the vow. When I see it, I will remember.',
+          },
+          {
+            title: 'Close',
+            instructions:
+              'Thank Odin. Stand quietly for a minute. Snuff the candle. Take the bowl and bread outside and pour and lay them on the earth, at a tree if you can.',
+            spoken: 'Hail Odin, and thank you. The horn is empty; the vow is full.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Write the date and your vow in your journal. Put the paper copy somewhere safe; you will read it again at your rededication. Eat something and drink water afterwards.',
+        safety:
+          'Keep the candle away from paper, hair and sleeves, especially when holding a token near it, and never leave it burning. If you choose to drink alcohol, keep it to a sip; the dedication does not need intoxication. Do not use a feather from a protected bird species; corvid feathers are protected in many countries. Pour offerings outside or down a drain, not into houseplants, and keep them away from pets.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'The Long Road',
+      intro: `A dedication is the start of a relationship, not its end. Keep the rhythm you vowed, and let the holy tides of the year mark its turns: Odin’s cup first at Winter Nights, Yule and Sigrblót, the honoured dead at Dísablót and Winter Nights, and thanks at the autumn Haustblót. Once a year, on the anniversary or at Yule, read your vow, say how you kept it, and renew it, changed if it needs to be.`,
+      days: 365,
+      lessons: [],
+      practices: [
+        {
+          id: 'odin-weekly',
+          title: 'Wednesday offering',
+          instructions:
+            'Each Wednesday, light the candle, pour a small measure, and give something of words: a stanza, a rune, a page of something you are learning.',
+          times: 52,
+          every: 'week',
+          prompt: 'What did you learn this week that you could offer him?',
+        },
+        {
+          id: 'odin-tides',
+          title: 'Keep the holy tides',
+          instructions:
+            'At Winter Nights, Yule and Sigrblót, hold a blót with Odin’s cup first, followed by a sumbel round for the gods, the ancestors and your own boast or vow. Remember your dead at Dísablót and Winter Nights.',
+          times: 5,
+          every: 'holy-day',
+          prompt: 'What did you say over the horn at this tide, and will you keep it?',
+          premade: 'folk-simple-blot',
+        },
+        {
+          id: 'odin-rededicate',
+          title: 'Yearly rededication',
+          instructions:
+            'On the anniversary of your dedication, or at Yule, repeat the dedication rite. Read last year’s vow aloud first and say honestly how you kept it. Make the new vow fit the life you actually have.',
+          times: 1,
+          every: 'month',
+          prompt: 'How did you keep last year’s vow, and what will this year’s be?',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'Henry Adams Bellows, trans., The Poetic Edda (American-Scandinavian Foundation, 1923), public domain: Hávamál 3, 42, 139, 146; Grímnismál 20; Hárbarðsljóð 24 quoted from Project Gutenberg ebook #73533 (https://www.gutenberg.org/ebooks/73533).',
+    'Samuel Laing, trans., Heimskringla (1844), public domain: Saga of Hákon the Good ch. 16 (“first Odin’s goblet was emptied for victory and power to his king”) and Saga of Olaf Haraldson (“three sacrifices every year…”), quoted from Project Gutenberg ebook #598 (https://www.gutenberg.org/ebooks/598).',
+    'Snorri Sturluson, Prose Edda (Gylfaginning, Skáldskaparmál), trans. Rasmus B. Anderson, The Younger Edda (1880), Project Gutenberg #18947: the eye pledge and the mead of poetry (paraphrased).',
+    'Adam of Bremen, Gesta Hammaburgensis ecclesiae pontificum IV.26–27 (c. 1075), on the Uppsala temple and festival (paraphrased).',
+    'Gautreks saga and Ynglinga saga, on sacrifice to Odin (paraphrased).',
+    'Neil Price, The Viking Way (2019); H. R. Ellis Davidson, Gods and Myths of Northern Europe (1964); Rudolf Simek, A Dictionary of Northern Mythology (1993); Stefanie von Schnurbein, Norse Revival (2016).',
+  ],
+};

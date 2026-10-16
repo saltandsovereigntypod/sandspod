@@ -8,6 +8,10 @@ import type { Tint } from '../../lib/altar/ambient';
 import { incenseLife, isIncense, smokeOrigin } from '../../lib/altar/incense';
 import { isPetitionPaper } from '../../lib/altar/petitions';
 import { MoonDisc } from '../MoonDisc';
+import type { MomentKind } from '../../lib/altar/charge';
+import type { Snap } from '../../lib/altar/arrange';
+import { CandleMarks } from './CandleMarks';
+import { ChargeAura, Moment, SnapGuide } from './StageEffects';
 import { altarImageSource, candleHerbOverlay, candleOilOverlay, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
 import { DEFAULT_BACKGROUND } from '../../lib/altar/cabinet';
 import { flameLayout, type FlameLayout } from '../../lib/altar/flame';
@@ -33,6 +37,12 @@ export type StageSky = {
 /** How an aging offering looks now, by altarObjectId. */
 export type AgingLooks = Record<string, { opacity: number; droop: number }>;
 
+/** How strongly each charged object still holds its charge (0–1), by altarObjectId. */
+export type ChargeGlows = Record<string, number>;
+
+/** A cleansing or charge playing out over some objects (by altarObjectId); a fresh key plays it again. */
+export type StageMoment = { uids: string[]; kind: MomentKind; key: number };
+
 type Props = {
   doc: AltarDocument;
   /** Width of the visible stage on screen; height follows the website's 16:9. */
@@ -50,6 +60,12 @@ type Props = {
   onViewportChange: (viewport: Viewport) => void;
   sky?: StageSky | null;
   aging?: AgingLooks;
+  charges?: ChargeGlows;
+  moment?: StageMoment | null;
+  /** Where a dragged object is settling (snap to meaning), in stage fractions. */
+  guide?: Snap | null;
+  /** The minute, so candles' carvings and wax follow their burn. */
+  now?: number;
 };
 
 /** Smallest hit area for tiny objects, in screen points. */
@@ -207,6 +223,10 @@ export function AltarStage(props: Props) {
   const background = altarImageSource(doc.background || DEFAULT_BACKGROUND);
   const sky = props.sky ?? null;
   const aging = props.aging ?? {};
+  const charges = props.charges ?? {};
+  const moment = props.moment ?? null;
+  const guide = props.guide ?? null;
+  const now = props.now ?? 0;
 
   return (
     <GestureDetector gesture={gesture}>
@@ -243,8 +263,18 @@ export function AltarStage(props: Props) {
               ratioVersion={ratioVersion}
               agedOpacity={aging[String(doc.objects[index].altarObjectId)]?.opacity ?? 1}
               droop={aging[String(doc.objects[index].altarObjectId)]?.droop ?? 0}
+              charge={charges[String(doc.objects[index].altarObjectId)] ?? 0}
+              now={isCandle(doc.objects[index]) ? now : 0}
             />
           ))}
+
+          {moment &&
+            moment.uids.map((uid) => {
+              const object = doc.objects.find((o) => String(o.altarObjectId) === uid);
+              return object ? <Moment key={`${moment.key}-${uid}`} kind={moment.kind} rect={boxToPixels(displayBox(object), stageWidth)} /> : null;
+            })}
+
+          {guide && <SnapGuide x={guide.footX * stageWidth} y={guide.footY * stageHeight} role={guide.role} scale={stageWidth / 600} width={stageWidth} height={stageHeight} />}
 
           {doc.objects.length === 0 && (
             <Text style={[styles.empty, { top: stageHeight * 0.3 }]} pointerEvents="none">
@@ -289,6 +319,8 @@ const AltarObjectView = memo(function AltarObjectView({
   highlighted,
   agedOpacity,
   droop,
+  charge,
+  now,
 }: {
   object: SavedObject;
   stageWidth: number;
@@ -297,6 +329,8 @@ const AltarObjectView = memo(function AltarObjectView({
   ratioVersion: number;
   agedOpacity: number;
   droop: number;
+  charge: number;
+  now: number;
 }) {
   const rect = boxToPixels(displayBox(object), stageWidth);
   const source = altarImageSource(object.imagePath);
@@ -330,6 +364,7 @@ const AltarObjectView = memo(function AltarObjectView({
       ]}
     >
       <View style={[styles.layer, agedOpacity < 1 && { opacity: agedOpacity }, droop > 0 && { transformOrigin: '50% 100%', transform: [{ rotate: `${droop}deg` }, { scaleY: 1 - droop / 120 }] }]}>
+        {charge > 0 && <ChargeAura strength={charge} id={String(object.altarObjectId || 'obj')} />}
         {glowing && <View style={[styles.glow, { borderRadius: rect.width / 2 }]} />}
         {source ? (
           // The website's image sits in the button's content box (6px / 1px padding on 80px).
@@ -344,6 +379,9 @@ const AltarObjectView = memo(function AltarObjectView({
       </View>
       {overlays.herb && <Image source={candleHerbOverlay} style={styles.herbOverlay} resizeMode="contain" />}
       {overlays.oil && <Image source={candleOilOverlay} style={styles.oilOverlay} resizeMode="contain" />}
+      {isCandle(object) && source && (
+        <CandleMarks object={object} width={rect.width} height={rect.height} now={now} uid={String(object.altarObjectId || 'obj')} flipped={flipped} />
+      )}
       {lit && flame && <Flame layout={flame} />}
       {smoke != null && flame && <Smoke key={smoke} layout={flame} />}
       {incense?.lit && <IncenseSmoke origin={smokeOrigin(object)} width={rect.width} />}

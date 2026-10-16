@@ -121,9 +121,8 @@ export function findNeed(need: Need, pantry: Pantry): { source: Source; label: s
   const ref = parseRef(need.ref);
   for (const o of pantry.objects) if (matchesObject(need, o)) out.push({ source: 'altar', label: String(o.label || need.name) });
   for (const item of pantry.apothecary ?? []) {
-    const inside = item.ingredients.map((i) => i.label).join(' ');
-    // A working counts when it is the thing ("Moon water") or, for herbs, holds it.
-    if (matchesText(need, item.name) || (ref?.type === 'herb' && matchesText(need, inside))) out.push({ source: 'apothecary', label: item.name });
+    // A working counts when it is the thing ("Moon water", "Rosemary oil"); what went into one is used up.
+    if (matchesText(need, item.name)) out.push({ source: 'apothecary', label: item.name });
   }
   for (const item of pantry.customItems ?? []) {
     const fields = item.forms.map((f) => [f.herb, f.crystal, f.tool, f.vessel, f.color].filter(Boolean).join(' ')).join(' ');
