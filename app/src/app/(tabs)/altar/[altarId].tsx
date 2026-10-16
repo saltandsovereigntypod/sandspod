@@ -947,7 +947,14 @@ export default function AltarEditor() {
     <SafeAreaView edges={['top']} style={styles.safe}>
       <View style={styles.header}>
         <Pressable
-          onPress={() => (from === 'today' ? router.navigate('/today') : router.canGoBack() ? router.back() : router.replace('/altar'))}
+          onPress={() => {
+            if (from === 'today') {
+              // Close this altar first, so the Altar tab opens on your altars next time, then go back to Today.
+              router.dismissTo('/altar');
+              router.navigate('/today');
+            } else if (router.canGoBack()) router.back();
+            else router.replace('/altar');
+          }}
           accessibilityRole="button"
           accessibilityLabel="Back to your altars"
           style={styles.headerButton}
