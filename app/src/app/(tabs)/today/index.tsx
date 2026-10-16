@@ -179,8 +179,6 @@ export default function Today() {
         )}
       </View>
 
-      <PracticeCard settings={settings} place={place} now={clock} />
-
       <View style={styles.horizon}>
         <Text style={type.eyebrow}>On the horizon</Text>
         <View style={styles.tiles}>
@@ -192,6 +190,7 @@ export default function Today() {
         {today.eclipseLine && <Text style={[type.caption, styles.center, styles.gold]}>{today.eclipseLine}</Text>}
       </View>
 
+      <PracticeCard settings={settings} place={place} now={clock} />
       <DaySky today={today} sky={sky} here={here} now={clock} />
       <CorrespondencesCard today={today} />
       <Button
