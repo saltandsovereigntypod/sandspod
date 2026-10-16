@@ -826,9 +826,9 @@ export const FOLK: Premade[] = [
     ],
     closing: 'Thank the gods and the land-spirits and say that the blót is ended. Wash the horn and bowl and put them away for next time.',
     safety: 'If you drink alcohol, keep it to a mouthful; juice is entirely traditional in spirit. Pour offerings on soil, not into rivers or drains, and only food that is safe for wild animals (no chocolate, grapes or onion where dogs roam).',
-    lore: 'Blót is the Old Norse word for sacrifice. Saga writers and chroniclers such as Snorri Sturluson describe great seasonal blóts with animal sacrifice, feasting, and the blood (hlaut) sprinkled over people and the temple with twigs. Modern Heathens almost always offer drink and food instead, keeping the shape: hallowing, hailing, sharing, pouring out, and the Hávamál’s principle that a gift looks for a gift in return (Bellows renders it “gifts with gifts requite”). The opening hail is Sigrdrífumál, stanzas 3 and 4, in Bellows’ translation (1923).',
+    lore: 'Blót is the Old Norse word for sacrifice. Saga writers and chroniclers such as Snorri Sturluson describe great seasonal blóts with animal sacrifice, feasting, and the blood (hlaut) sprinkled over people and the temple with twigs. Modern Heathens almost always offer drink and food instead, keeping the shape: hallowing, hailing, sharing, pouring out, and the Hávamál’s principle that a gift looks for a gift in return (Bellows renders it “gifts with gifts requite”). The opening hail is from Sigrdrífumál in Bellows’ translation (1923), stanzas 2–3 in his numbering (3–4 in most other editions).',
     sources: [
-      'The Poetic Edda, trans. Henry Adams Bellows (1923), Sigrdrífumál 3–4',
+      'The Poetic Edda, trans. Henry Adams Bellows (1923), Sigrdrífumál 2–3 (3–4 in most editions)',
       'Snorri Sturluson, Heimskringla (on the blót at Hlaðir)',
     ],
   },
