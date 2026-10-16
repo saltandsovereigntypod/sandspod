@@ -119,7 +119,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Brigid of Kildare',
               body:
-                'St Brigid is said to have been born around 450, perhaps at Faughart in County Louth, and to have died around 524. She founded a monastery at Kildare, Cill Dara, “the church of the oak”, which became one of the great houses of early Ireland, with nuns and monks living side by side under an abbess and a bishop.\n\nHer first surviving Life was written in Latin by a monk of Kildare named Cogitosus around 650. It is a book of wonders more than a biography. As a girl working in her mother’s dairy she gives the butter away to the poor, and the churn fills again. She hangs her wet cloak on a sunbeam. She heals the sick, feeds the hungry and frees the bound. Cogitosus also describes the great church at Kildare, with its painted partitions and the decorated tombs of Brigid and Bishop Conlaed on either side of the altar. Later Lives add her turning bathwater into beer for visiting clerics, and the famous story of the King of Leinster who granted her as much land as her cloak would cover, only to watch it spread across the Curragh.',
+                'St Brigid is said to have been born around 450, perhaps at Faughart in County Louth, and to have died around 524. She founded a monastery at Kildare, Cill Dara, “the church of the oak”, which became one of the great houses of early Ireland, with nuns and monks living side by side under an abbess and a bishop.\n\nHer first surviving Life was written in Latin by a monk of Kildare named Cogitosus, probably between about 650 and 680, partly to raise Kildare’s standing against its rival Armagh. It is a book of wonders more than a biography. As a girl working in the dairy she gives the butter away to the poor, and it is restored. She hangs her wet cloak on a sunbeam. She heals the sick and feeds the hungry, and water is turned into beer for those who ask her for drink. Cogitosus also describes the great wooden church at Kildare, with its painted pictures and partition wall, and the adorned tombs of Brigid and Bishop Conlaed on either side of the altar. Later tradition, recorded in folklore rather than the early Lives, adds the famous story of the King of Leinster who granted her as much land as her cloak would cover, only to watch it spread across the Curragh.',
             },
             {
               heading: 'How do they fit together?',
@@ -166,7 +166,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Put out and relit',
               body:
-                'According to later tradition, Henry of London, Archbishop of Dublin, ordered the fire put out around 1220, perhaps because it looked too much like a pagan survival. It was relit and kept, by most accounts, until the monasteries were suppressed under Henry VIII in the sixteenth century.\n\nIn 1993 the Brigidine Sisters, a Catholic order founded in 1807 and named for her, relit Brigid’s flame in Kildare. They tend it at Solas Bhríde, their centre of Celtic Christian spirituality on the edge of the town, and in 2006 a perpetual flame was placed in a sculpture in Kildare’s Market Square. The same year, 1993, a group in North America founded Ord Brighideach, an international order of flame-keepers, mostly Pagan, who tend her flame in "cells" of nineteen on a twenty-day cycle, leaving the twentieth day to Brigid as Gerald described.',
+                'According to later tradition, Henry of London, Archbishop of Dublin, ordered the fire put out around 1220, perhaps because it looked too much like a pagan survival. It was relit and kept, by most accounts, until the monasteries were suppressed under Henry VIII in the sixteenth century.\n\nOn 1 February 1993 Mary Teresa Cullen, then leader of the Brigidine Sisters (a Catholic order founded in 1807 and named for her), relit Brigid’s flame in Kildare’s Market Square at the opening of a justice and peace conference. The sisters have tended it ever since at Solas Bhríde, their centre of Celtic Christian spirituality on the edge of the town, and on St Brigid’s Day 2006 a perpetual flame, lit from theirs, was set in a sculpture in the Market Square. In the same year, 1993, a small group of Pagan women in Vancouver began the Daughters of the Flame, and later groups such as Ord Brighideach, an international and mostly Pagan order, tend her flame in "cells" of nineteen on a twenty-day cycle, leaving the twentieth day to Brigid as Gerald described.',
             },
             {
               heading: 'Why a flame?',
@@ -181,9 +181,9 @@ export const JOURNEY: Journey = {
           ],
           knowAndDont: {
             known:
-              'Gerald of Wales described a perpetual fire at Kildare kept by nineteen nuns in the 1180s, with the twentieth night left to Brigid and a hedge no man could enter. The Brigidine Sisters relit Brigid’s flame in Kildare in 1993, and it burns at Solas Bhríde and in the town’s Market Square.',
+              'Gerald of Wales described a perpetual fire at Kildare kept by nineteen nuns in the 1180s, with the twentieth night left to Brigid and a hedge no man could enter. The Brigidine Sisters relit Brigid’s flame in Kildare in 1993; it burns at Solas Bhríde, and since 2006 in the town’s Market Square.',
             unknown:
-              'We do not know how old the Kildare fire was, whether it continued a pre-Christian custom (it is often compared to the Vestal fire at Rome, but there is no evidence linking them), or exactly when it was finally put out. Ord Brighideach’s twenty-day cycle is a modern practice inspired by Gerald, not a surviving rule.',
+              'We do not know how old the Kildare fire was, whether it continued a pre-Christian custom (it is often compared to the Vestal fire at Rome, but there is no evidence linking them), or exactly when it was finally put out. The archbishop’s order of around 1220 and the fire’s survival to the Reformation are later tradition, not contemporary record. The “fire-house” foundations at the cathedral are heavily restored and of uncertain date. The flame-keepers’ twenty-day cycle is a modern practice inspired by Gerald, not a surviving rule.',
           },
           inPractice:
             'Today people keep Brigid’s flame alone or in groups, lighting a candle on their assigned day and praying for those who need healing, for creative work, or for the world. Christians do this at Solas Bhríde and in their parishes; Pagans through Ord Brighideach and independent cells. Some people carry a candle lit from the Kildare flame home with them.',
@@ -239,7 +239,7 @@ export const JOURNEY: Journey = {
             'Which of the saint’s stories of giving away and receiving back speaks to you? Where could you give something away this week?',
           ],
           further: [
-            'Lady Gregory, Gods and Fighting Men (1904), Book I, on the Battle of Magh Tuireadh (public domain, Project Gutenberg).',
+            'Lady Gregory, Gods and Fighting Men (1904), Part I Book II ch. III, “The Great Battle of Magh Tuireadh” (public domain, Project Gutenberg).',
             'Cath Maige Tuired, ed. and trans. Elizabeth A. Gray (Irish Texts Society, 1982).',
             'Alexander Carmichael, Carmina Gadelica vol. 1 (1900), the notes on Bride (public domain).',
           ],
@@ -307,7 +307,7 @@ export const JOURNEY: Journey = {
           id: 'brigid-weave-cross',
           title: 'Weave a Brigid’s cross',
           instructions:
-            'You need about sixteen rushes or long straws, soaked in warm water for an hour so they bend without cracking. Hold one upright. Fold a second in half around its middle so it points right. Turn the bundle a quarter turn anticlockwise and fold a third rush over both, pointing the same way you just turned. Keep turning and folding, always pulling each new rush tight around the centre, until you have a square middle and four arms of four rushes each. Tie each arm near its end with thread and trim the ends. Hang it over your door. If rushes are hard to find, pipe-cleaners or paper straws work too.',
+            'You need about sixteen rushes or long straws, soaked in warm water for an hour so they bend without cracking. Hold one upright. Fold a second in half around its middle so that both its ends point to the right. Turn the bundle a quarter turn anticlockwise, so the new arm points up, and fold a third rush in half over everything at the centre, again with its ends pointing right. Keep turning a quarter turn anticlockwise and folding a new rush over the centre pointing right, always pulling each new rush tight around the centre, until you have a square middle and four arms of four rushes each. Tie each arm near its end with thread and trim the ends. Hang it over your door. If rushes are hard to find, pipe-cleaners or paper straws work too.',
           times: 1,
           prompt: 'How did the weaving feel in your hands? Where did you hang the cross?',
         },
@@ -329,7 +329,7 @@ export const JOURNEY: Journey = {
             {
               heading: 'Holy wells and the round',
               body:
-                'Ireland has some three thousand holy wells, and many are dedicated to Brigid. At Kildare, St Brigid’s Well at Tully has stepping stones called Brigid’s shoes and a statue of the saint, and in the grounds of St Brigid’s Cathedral you can see the restored foundations said to be those of her fire-house. Faughart, her traditional birthplace in County Louth, has a well and a shrine. At Liscannor in County Clare, her well is visited on the last Sunday of July as well as on her day.\n\nA visit traditionally follows a pattern called the round, or turas. Pilgrims walk sunwise (deiseal, clockwise) around the well or a set of stations a fixed number of times, often three, seven or nine, praying as they go. They kneel, drink a little of the water or bless themselves with it, and often leave a small token: a coin, a medal, a ribbon or a rag tied to a nearby tree (a clootie). The rag was thought to carry the illness away as it rotted.',
+                'Ireland has some three thousand holy wells, and many are dedicated to Brigid. At Kildare, St Brigid’s Well at Tully has stepping stones called Brigid’s shoes and a statue of the saint, and in the grounds of St Brigid’s Cathedral you can see heavily restored foundations, of uncertain date, said to be those of her fire-house. Faughart, her traditional birthplace in County Louth, has a well and a shrine. At Liscannor in County Clare, her well is visited on the last Sunday of July as well as on her day.\n\nA visit traditionally follows a pattern called the round, or turas. Pilgrims walk sunwise (deiseal, clockwise) around the well or a set of stations a fixed number of times, often three, seven or nine, praying as they go. They kneel, drink a little of the water or bless themselves with it, and often leave a small token: a coin, a medal, a ribbon or a rag tied to a nearby tree (a clootie). The rag was thought to carry the illness away as it rotted.',
             },
             {
               heading: 'Being a good guest at a well',
@@ -538,11 +538,11 @@ export const JOURNEY: Journey = {
     },
   ],
   sources: [
-    'Cormac’s Glossary, trans. John O’Donovan, ed. Whitley Stokes (Calcutta, 1868), “Brigit”: https://archive.org/details/cu31924071173474',
-    'Gerald of Wales, The Topography of Ireland, Dist. II chs. 34–36, trans. Thomas Forester, in The Historical Works of Giraldus Cambrensis, ed. Thomas Wright (London, 1863): https://archive.org/details/historicalworkso00gira',
-    'Alexander Carmichael, Carmina Gadelica vol. 1 (Edinburgh, 1900), notes on Bride, pp. 164–170: https://archive.org/details/carminagadelica00carmgoog',
-    'Lady Augusta Gregory, Gods and Fighting Men (1904), Project Gutenberg: https://www.gutenberg.org/ebooks/14465',
-    'Cogitosus, Vita Brigitae (c. 650), trans. Connolly and Picard (1987).',
+    'Cormac’s Glossary, trans. John O’Donovan, ed. Whitley Stokes (Calcutta, 1868), “Brigit”, p. 23 of the Additional Articles: https://archive.org/details/cu31924071173474',
+    'Gerald of Wales, The Topography of Ireland, Dist. II chs. 34–36, trans. Thomas Forester (quoted: the twentieth night), in The Historical Works of Giraldus Cambrensis, ed. Thomas Wright (London, 1863): https://archive.org/details/historicalworkso00gira',
+    'Alexander Carmichael, Carmina Gadelica vol. 1 (Edinburgh, 1900), notes on Bride, pp. 164–170 (quoted: the serpent verse; “Bride’s bed is ready”): https://archive.org/details/carminagadelicah03carm',
+    'Lady Augusta Gregory, Gods and Fighting Men (1904), Part I Book I ch. II (Brigit’s two-sided face, the whistle) and Book II ch. III (the first keening), Project Gutenberg: https://www.gutenberg.org/ebooks/14465',
+    'Cogitosus, Vita Brigitae (c. 650–680), trans. Seán Connolly and Jean-Michel Picard, JRSAI 117 (1987).',
     'Kevin Danaher, The Year in Ireland (1972).',
     'Seán Ó Duinn, The Rites of Brigid, Goddess and Saint (2005).',
     'Solas Bhríde Centre and Hermitages, Kildare (Brigidine Sisters), on the relighting of the flame in 1993.',
