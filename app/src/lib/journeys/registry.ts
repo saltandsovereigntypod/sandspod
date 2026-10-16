@@ -9,6 +9,7 @@ import { JOURNEY as DEITY_APOLLO } from './data/deity-apollo.ts';
 import { JOURNEY as DEITY_ARIANRHOD } from './data/deity-arianrhod.ts';
 import { JOURNEY as DEITY_ARTEMIS } from './data/deity-artemis.ts';
 import { JOURNEY as DEITY_ATHENA } from './data/deity-athena.ts';
+import { JOURNEY as DEITY_BALDUR } from './data/deity-baldur.ts';
 import { JOURNEY as DEITY_BASTET } from './data/deity-bastet.ts';
 import { JOURNEY as DEITY_BRIGID } from './data/deity-brigid.ts';
 import { JOURNEY as DEITY_CERNUNNOS } from './data/deity-cernunnos.ts';
@@ -24,6 +25,7 @@ import { JOURNEY as DEITY_FREYJA } from './data/deity-freyja.ts';
 import { JOURNEY as DEITY_FREYR } from './data/deity-freyr.ts';
 import { JOURNEY as DEITY_FRIGG } from './data/deity-frigg.ts';
 import { JOURNEY as DEITY_GANESHA } from './data/deity-ganesha.ts';
+import { JOURNEY as DEITY_HADES } from './data/deity-hades.ts';
 import { JOURNEY as DEITY_HATHOR } from './data/deity-hathor.ts';
 import { JOURNEY as DEITY_HEKATE } from './data/deity-hekate.ts';
 import { JOURNEY as DEITY_HEL } from './data/deity-hel.ts';
@@ -34,9 +36,11 @@ import { JOURNEY as DEITY_JANUS } from './data/deity-janus.ts';
 import { JOURNEY as DEITY_JUNO } from './data/deity-juno.ts';
 import { JOURNEY as DEITY_JUPITER } from './data/deity-jupiter.ts';
 import { JOURNEY as DEITY_LADA } from './data/deity-lada.ts';
+import { JOURNEY as DEITY_LILITH } from './data/deity-lilith.ts';
 import { JOURNEY as DEITY_LOKI } from './data/deity-loki.ts';
 import { JOURNEY as DEITY_LUGH } from './data/deity-lugh.ts';
 import { JOURNEY as DEITY_MARS } from './data/deity-mars.ts';
+import { JOURNEY as DEITY_MERCURY } from './data/deity-mercury.ts';
 import { JOURNEY as DEITY_MINERVA } from './data/deity-minerva.ts';
 import { JOURNEY as DEITY_MOKOSH } from './data/deity-mokosh.ts';
 import { JOURNEY as DEITY_MORANA } from './data/deity-morana.ts';
@@ -46,6 +50,8 @@ import { JOURNEY as DEITY_OSIRIS } from './data/deity-osiris.ts';
 import { JOURNEY as DEITY_PERSEPHONE } from './data/deity-persephone.ts';
 import { JOURNEY as DEITY_PERUN } from './data/deity-perun.ts';
 import { JOURNEY as DEITY_RA } from './data/deity-ra.ts';
+import { JOURNEY as DEITY_RHIANNON } from './data/deity-rhiannon.ts';
+import { JOURNEY as DEITY_SEKHMET } from './data/deity-sekhmet.ts';
 import { JOURNEY as DEITY_SKADI } from './data/deity-skadi.ts';
 import { JOURNEY as DEITY_THOR } from './data/deity-thor.ts';
 import { JOURNEY as DEITY_THOTH } from './data/deity-thoth.ts';
@@ -70,6 +76,7 @@ export const JOURNEYS: Journey[] = [
   DEITY_ARIANRHOD,
   DEITY_ARTEMIS,
   DEITY_ATHENA,
+  DEITY_BALDUR,
   DEITY_BASTET,
   DEITY_BRIGID,
   DEITY_CERNUNNOS,
@@ -85,6 +92,7 @@ export const JOURNEYS: Journey[] = [
   DEITY_FREYR,
   DEITY_FRIGG,
   DEITY_GANESHA,
+  DEITY_HADES,
   DEITY_HATHOR,
   DEITY_HEKATE,
   DEITY_HEL,
@@ -95,9 +103,11 @@ export const JOURNEYS: Journey[] = [
   DEITY_JUNO,
   DEITY_JUPITER,
   DEITY_LADA,
+  DEITY_LILITH,
   DEITY_LOKI,
   DEITY_LUGH,
   DEITY_MARS,
+  DEITY_MERCURY,
   DEITY_MINERVA,
   DEITY_MOKOSH,
   DEITY_MORANA,
@@ -107,6 +117,8 @@ export const JOURNEYS: Journey[] = [
   DEITY_PERSEPHONE,
   DEITY_PERUN,
   DEITY_RA,
+  DEITY_RHIANNON,
+  DEITY_SEKHMET,
   DEITY_SKADI,
   DEITY_THOR,
   DEITY_THOTH,
