@@ -1,0 +1,501 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-morana',
+  kind: 'deity',
+  paths: ['slavic'],
+  deityRef: 'traditional/deity/morana',
+  title: 'Morana, Winter’s Ending',
+  summary: 'A lunar month with Morana, or Marzanna: the straw figure of winter and death carried out of the village each spring. An honest look at a folk custom more than a documented cult, and a devotion of clean endings.',
+  welcome: `This is a month-long self-dedication to Morana, also called Marzanna, Morena and Mařena, the Slavic figure of winter and death. You will learn something important straight away: she is known to us mostly as a straw effigy in a spring custom, not as a goddess with temples and priests. You will learn that custom in detail, what she has come to mean in modern devotion, and you will keep nine nights of releasing before deciding whether to dedicate yourself to her.
+
+It is a dedication, not an initiation. It joins you to no group. It is a promise you make yourself, and it is mostly about how you meet endings.
+
+Working with a figure of death can stir up grief. If you are grieving hard, or having thoughts of ending your life, please reach out to people and to a crisis line or doctor before anything else. Morana is about letting winter go so spring can come, never about giving up.`,
+  about: `Across Poland, Czechia, Slovakia, Slovenia, Lusatia and beyond, people have long carried a straw figure dressed as a woman out of the village in late Lent or at the spring equinox, sung over it, and burned it, drowned it in a river, or both, then brought a green branch back home as the new summer. The figure is called Marzanna, Morana, Mařena, Smrtka (little Death) or simply Death. Church synods in Prague in the fourteenth century and in Poland in the fifteenth tried to ban the custom, which tells us it is old, and the Polish chronicler Jan Długosz in the 1400s named Marzanna as a Polish goddess, though he matched her with Ceres, the grain goddess, not with death. Her name is usually tied to the Slavic root mor-, death or plague, and to the nightmare spirit mara. Beyond the custom and Długosz’s line, there is no evidence of a cult of Morana: no temple, no prayer, no offering. Modern Rodnovers have made her a goddess of winter and death, often paired with a spring goddess, and honour her at the onset of winter and at its end. This journey honours both: the living folk custom, and the modern goddess of necessary endings built on it.`,
+  notes: [
+    'Morana is best evidenced as a folk custom with an effigy, not as an ancient goddess with a cult. This journey says so plainly.',
+    'Ritual can help with grief and endings, but it never replaces human support. If you are struggling with grief, depression or thoughts of suicide, contact a crisis line, a doctor or someone you trust now.',
+    'The effigy is driven out, not worshipped, in the folk custom. If you honour Morana as a goddess, you are doing something modern; do it respectfully alongside communities that keep the custom.',
+    'Burning or drowning effigies can harm rivers and wildlife. Use only natural materials, follow local fire and water rules, and choose a safe alternative if needed.',
+    'Death and winter are fierce. Nothing in this journey sends death, illness or bad luck toward anyone. The custom drives misfortune out of the community, not onto another person.',
+  ],
+  holyDays: ['marzanna', 'koliada', 'dziady'],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'The bare branch',
+      intro: 'You begin quietly, in the cold half of the year if you can, with a bare branch, a bowl of water, a black and a white candle, and your name. Morana is met honestly and calmly, not with fear.',
+      days: 1,
+      lessons: [],
+      practices: [
+        {
+          id: 'morana-threshold-journal',
+          title: 'Endings I have known',
+          instructions: 'After the opening rite, write about endings in your life: a loss, a move, a relationship, a part of yourself you outgrew. Which were clean and which were tangled? Note what you already believe about Morana and where you learned it.',
+          times: 1,
+          prompt: 'What ending in my life still needs to be finished?',
+        },
+      ],
+      rite: {
+        title: 'Introduction with water and a bare branch',
+        summary: 'Two candles, black and white, a bare twig and cold water, and your name spoken to winter.',
+        minutes: 20,
+        ingredients: [
+          { name: 'A black candle', ref: 'traditional/candle/black' },
+          { name: 'A white candle', ref: 'traditional/candle/white' },
+          { name: 'A bare twig or branch, found fallen' },
+          { name: 'A bowl of cold water', ref: 'traditional/vessel/bowl' },
+          { name: 'A piece of bread' },
+        ],
+        preparation: 'Choose an evening, ideally around the waning moon or in winter. Find a fallen bare twig on a walk; do not cut a living tree. Clear a small surface and set the two candles side by side with the twig and the bowl of water between them.',
+        steps: [
+          {
+            title: 'Still yourself',
+            instructions: 'Sit or stand before the space. Breathe slowly. Notice any fear or heaviness, and let it be there without feeding it.',
+            minutes: 2,
+          },
+          {
+            title: 'Light both candles',
+            instructions: 'Light the black candle, for winter and endings, then the white, for the snow and for what comes after.',
+            light: true,
+          },
+          {
+            title: 'Greet her',
+            instructions: 'Speak calmly and respectfully.',
+            spoken: 'Morana, Marzanna, lady of the winter,\nyou who are carried out so that spring can come in,\nI greet you with a bare branch and cold water.',
+          },
+          {
+            title: 'Name yourself',
+            instructions: 'Tell her your name, where you live, and why you have come. Be honest about what endings you are facing.',
+            minutes: 3,
+          },
+          {
+            title: 'Give bread and water',
+            instructions: 'Set the bread beside the bowl. Dip the twig in the water and let a few drops fall back.',
+            spoken: 'Bread for the long winter, water from the thawing ice.\nI do not fear you; I have come to learn.',
+          },
+          {
+            title: 'Sit with the cold',
+            instructions: 'Sit quietly for a few minutes. Let your mind rest on the image of a frozen river beginning to move.',
+            minutes: 5,
+            timed: true,
+          },
+          {
+            title: 'Close',
+            instructions: 'Thank her. Snuff the black candle first, then the white.',
+            spoken: 'Thank you, Morana. I will come again.',
+            snuff: true,
+          },
+        ],
+        closing: 'Pour the water onto the earth outside. Put the bread out for birds. Keep the twig; it will stand on her shrine.',
+        safety: 'Never leave candles unattended or near curtains. Keep a lit candle away from dry twigs. If this rite brings up grief that feels too heavy, stop, turn on a light, and reach out to someone.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'Learning Morana',
+      intro: 'Ten days of reading. You will learn what the evidence really shows, the custom of carrying out death in detail, what she means in modern devotion, and how she is honoured today.',
+      days: 10,
+      lessons: [
+        {
+          id: 'morana-who',
+          title: 'Who Morana is',
+          summary: 'A name, an effigy and a chronicler’s list: what the evidence is, and what it is not.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'Not on Vladimir’s hill',
+              body: `Start with the gap. Morana does not appear in Procopius, in the Rus treaties, in Prince Vladimir’s row of idols of 980, or in the Old Russian sermons that scold people for worshipping Perun, Mokosh and the Rod and Rozhanitsy. No early source names a goddess of death or winter among the Slavs.
+
+What we have instead is a custom, recorded mainly among the West and South Slavs, and a name attached to its central figure: the straw woman who is carried out of the village and destroyed each spring.`,
+            },
+            {
+              heading: 'The Church and the chronicler',
+              body: `The custom first appears in Church records trying to stop it. Synods in Prague in the 1360s and 1380s forbade people to carry “death” out of towns and drown it, and Polish Church statutes of the fifteenth century did the same. If the Church was banning it in the fourteenth century, it was already well established.
+
+Then, in the 1400s, the Polish chronicler Jan Długosz listed Marzanna among the gods of the pagan Poles. But he matched her with Ceres, the Roman goddess of grain, not with death or winter. Długosz was building a classical-style pantheon for Poland and his list is not reliable, but it is the only medieval text that calls Marzanna a goddess.`,
+            },
+            {
+              heading: 'Her names',
+              body: `The figure has many names: Marzanna and Śmierć (Death) in Poland; Morana, Mařena, Smrt and Smrtka in Czech and Slovak; Morana and Morena in Slovenia and Croatia; Marena and Kostroma in some Russian customs. Most scholars connect them to the Slavic root mor-, which gives words for death and plague: Czech mřít and Polish mrzeć, to die, and mor, a pestilence.
+
+The same root may lie behind the mara or mora, the nightmare spirit who sits on sleepers’ chests in Slavic, Germanic and Baltic folklore. Some think Marzanna may also have been influenced by the month of March or by Mary. The name points to death; the custom puts her at the hinge of the year.`,
+            },
+            {
+              heading: 'Custom, not cult',
+              body: `The honest summary is this. Morana is well attested as a ritual figure: winter and death made of straw, carried out and destroyed so spring can come. She is barely attested as a goddess with a cult. Nobody in the folk custom prayed to her, made her offerings, or asked her blessing; they sang her out of the village and did not look back.
+
+Modern Rodnovers and many pagans honour her as a goddess of winter, death and endings. That is a legitimate modern devotion, and this journey supports it. But it is new, and it sits beside a living folk custom in which she is a thing to be gladly got rid of.`,
+            },
+          ],
+          knowAndDont: {
+            known: 'The custom of carrying out and destroying a straw “Death” or Marzanna in spring is recorded from the fourteenth century in Bohemia and the fifteenth in Poland, through Church bans, and widely by later ethnographers. Długosz named Marzanna as a Polish goddess, equated with Ceres. Her names connect to the Slavic root for death.',
+            unknown: 'There is no evidence of temples, priests, prayers or offerings to Morana. Whether she was ever a goddess before Długosz, rather than a personification in a seasonal custom, is unknown. Her modern domains of winter, death and rebirth are interpretation.',
+          },
+          inPractice: 'Most people who honour Morana today keep two things side by side: the folk custom of carrying her out at the spring equinox, and a quieter modern devotion to her as the lady of endings in the dark half of the year. Write the honest summary on the first page of your notebook.',
+          reflect: [
+            'How do I feel about honouring a figure that the old custom drove out?',
+            'What is the difference, for me, between a personification and a god?',
+          ],
+          further: [
+            'Judith Kalik and Alexander Uchitel, Slavic Gods and Heroes (2019), on Długosz’s pantheon',
+            'James George Frazer, The Golden Bough (1922 abridged edition), chapter “Carrying out Death,” for its wealth of nineteenth-century reports (its theories are outdated)',
+          ],
+          library: ['traditional/deity/morana', 'traditional/deity/lada'],
+        },
+        {
+          id: 'morana-custom',
+          title: 'Carrying out Death',
+          summary: 'How the custom was and is done: the doll, the songs, the river, and the green branch carried home.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'When',
+              body: `In Czech and Slovak lands the day was Smrtná neděle, Death Sunday, the fifth Sunday of Lent, two weeks before Easter. In Poland it was often the fourth Sunday of Lent, Laetare Sunday. In the twentieth century, Polish schools and towns moved it to the first day of astronomical spring, around 21 March, which is when most people keep it now and when this app marks it.
+
+In Russia, a similar straw figure, the Maslenitsa doll, was burned at the end of Butter Week, the week of pancakes before Lent. Other Russian effigies, called Kostroma or Marena, were buried or drowned in early summer. These are cousins of the same idea.`,
+            },
+            {
+              heading: 'Making and carrying her',
+              body: `The figure was made of straw, often from the last sheaf of the previous harvest, bound onto a stick or cross. She was dressed as a woman, in an old skirt, a blouse, a headscarf, sometimes with a necklace of eggshells or snail shells, ribbons and a painted face. Girls usually made and carried her, though in some places boys or the whole village took part.
+
+She was carried through the village and out past its edge, with singing. A Czech song, printed in a farming calendar of 1617 and still sung in many versions, begins: “Již nesem smrt ze vsi, nové léto do vsi,” “Now we carry Death out of the village, the new summer into the village.” In some places she was carried from house to house first, and the girls were given eggs or coins.`,
+            },
+            {
+              heading: 'Fire, water, and not looking back',
+              body: `At the river, pond or village boundary, the figure was stripped, set alight, and thrown into the water, or only drowned, or torn apart and scattered. Then people ran home without looking back. To look back, or to trip, was to risk bringing death or illness home with you; in some villages whoever touched the doll afterwards might fall ill within the year.
+
+The point was to send away everything harmful that winter held: cold, hunger, sickness, death. The ritual did not curse anyone; it sent misfortune out of the human world, downstream and away.`,
+            },
+            {
+              heading: 'Bringing the summer home',
+              body: `The second half of the custom is just as important, though it is often forgotten. On the way back, the young people cut a small green tree or branch, a spruce or birch, and decorated it with ribbons, eggshells and paper flowers. Czechs call it líto or léto, summer, or májíček; Poles call it gaik or gaj, the little grove. It was carried back into the village with songs welcoming spring, and taken from house to house.
+
+So the full rite is a turning: winter carried out, summer carried in. If you only drown Marzanna and bring nothing home, you have done half of it.`,
+            },
+          ],
+          knowAndDont: {
+            known: 'The making, dressing, carrying, burning or drowning of the straw figure, the songs, the taboo on looking back, and the green branch or tree carried home are widely recorded in Czech, Slovak, Polish, Sorbian, Slovene and other ethnography, and the custom is still kept. Russian Maslenitsa and Kostroma effigies are well documented.',
+            unknown: 'The custom’s pre-Christian meaning is reconstructed. Whether it was ever addressed to a goddess, or always simply sent out a personified winter and death, is unknown.',
+          },
+          inPractice: 'Many families, schools, folk groups and Rodnover communities still carry Marzanna out on or around 21 March. Small, natural-material effigies, safe fires on the bank, and a decorated green branch brought home are the common modern form.',
+          reflect: [
+            'What would I carry out of my life this spring, and what would I carry in?',
+            'Why might it matter not to look back?',
+          ],
+          further: [
+            'James George Frazer, The Golden Bough (1922), “Carrying out Death” and “Bringing in Summer”',
+            'Ronald Hutton, The Stations of the Sun (1996), on European spring customs',
+          ],
+          library: ['traditional/herb/birch', 'traditional/herb/juniper'],
+          premade: ['kitchen-sweeping-out-the-old'],
+        },
+        {
+          id: 'morana-meaning',
+          title: 'Winter, death, and the nightmare',
+          summary: 'What Morana has come to mean, the mara of nightmares, and how to meet death without despair.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'Winter made visible',
+              body: `In a farming village, winter was not a pretty season. It was the time when stores ran low, the old and the very young died, animals sickened, and roads closed. By late Lent, hunger was real. Making winter into a figure you could carry and burn turned a vast, faceless threat into something people could act against together.
+
+This is why Morana’s custom is joyful, not mournful. People sang. Children ran. The doll was mocked and drowned. Death was being sent away, and the community was choosing life.`,
+            },
+            {
+              heading: 'The mara',
+              body: `Her name shares a root with the mara or mora, a night spirit across much of Europe. In Slavic folk belief, a mora was often a living woman or girl whose spirit left her body at night to sit on sleepers, press their chests and drink their breath, causing nightmares and exhaustion. People protected themselves with knives or brooms by the bed, by stopping the keyhole, or by charms.
+
+The mora is not Morana; they are separate folk figures that share a word. But the link explains why some modern writers make Morana frightening, a witch-goddess of nightmares. That picture is modern. In the custom she is a straw doll, and the people carrying her are laughing.`,
+            },
+            {
+              heading: 'Morana and the spring goddess',
+              body: `Many modern Rodnovers pair Morana with a spring goddess, Vesna, Lada or Živa, as winter and spring, death and life, two sides of one turning. Some tell a story in which Morana and the spring maiden are the same goddess in different seasons, or in which Morana is a daughter of the gods who becomes the winter. These stories are modern, some drawing on Rybakov and others newer.
+
+They can be meaningful. The folk custom does hold death and spring together in one rite: you cannot bring in summer without carrying out winter.`,
+            },
+            {
+              heading: 'Meeting death without despair',
+              body: `To honour a figure of death is to make peace with endings. That can be healing. It can help with grief, with change, with ageing, with letting go of what no longer fits.
+
+It must never become a way of courting death. If you find yourself drawn to Morana because you feel you want to die or disappear, please tell someone now, a friend, a doctor, or a crisis line. The custom’s whole point is that death is carried out of the village so that people can live. Honour her that way.`,
+            },
+          ],
+          knowAndDont: {
+            known: 'Slavic folk belief in the mora or mara as a nightmare spirit is widely recorded. The joyful, mocking character of the carrying-out custom is documented. Winter hardship and late-Lent hunger in peasant life are well attested.',
+            unknown: 'The Morana–Vesna (or Lada) pairing and stories about Morana’s family are modern. The link between Morana and the mara is etymological only; their shared meaning is not known.',
+          },
+          inPractice: 'Modern devotion to Morana usually centres on release and acceptance: writing what you are ready to let go, sitting with grief honestly, preparing for winter, and welcoming the turn to spring. Many keep a protective habit against nightmares too, such as a broom or knife by the bed, without confusing the mara with her.',
+          reflect: [
+            'What is my relationship with death? Have I let myself think about it calmly?',
+            'Is there a grief I have been avoiding that I could sit with, with support?',
+          ],
+          further: [
+            'Linda J. Ivanits, Russian Folk Belief (1989), on night spirits and the dead',
+          ],
+          library: ['traditional/crystal/obsidian', 'traditional/herb/wormwood', 'traditional/herb/mugwort'],
+          premade: ['hedge-letting-go-of-the-dead', 'folk-nightmare-charm'],
+        },
+        {
+          id: 'morana-today',
+          title: 'Morana today',
+          summary: 'Schools, folk groups and Rodnovers; rivers and rules; and an inclusive devotion of endings.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'A custom still alive',
+              body: `In Poland, carrying out Marzanna is one of the best-known folk customs, done by schoolchildren and kindergartens, folk ensembles and town councils on the first day of spring. In Czechia, villages and towns carry Morana out on Death Sunday or the equinox, often with costumed singers and a little líto tree. Slovaks, Sorbs and Slovenes keep their own forms.
+
+For most people who take part, this is a cheerful seasonal custom, not a religious rite. They are not honouring a goddess, and many are Christian. That deserves respect.`,
+            },
+            {
+              heading: 'Rivers and rules',
+              body: `Modern awareness has changed the custom. Effigies used to be thrown whole into rivers; now many towns ask people not to, because plastic dolls, synthetic clothes and wire pollute the water. Some forbid fires on riverbanks. Many groups now make small dolls from straw and natural cloth only, burn them safely in a fire bowl, and put just the ashes or a few straws into the water, or none at all.
+
+Follow those rules. A rite for clearing out winter should not leave rubbish in the river.`,
+            },
+            {
+              heading: 'In the Native Faith',
+              body: `In Rodnovery, Morana is honoured as a goddess of winter, death and the cold half of the year. Some groups hold a rite for her at the onset of winter, in late autumn or around the first snows, asking her for a gentle winter and clean endings, and then carry her out at the spring equinox. Some honour her near Dziady with the dead and at Koliada as winter reaches its depth.
+
+Communities differ in how dark they make her. Some treat her as a stern but just goddess; some, influenced by fantasy and games, as a sinister witch-queen. The folk custom supports neither strongly. You can be guided by the custom: she is winter, honoured for her season and then cheerfully sent away.`,
+            },
+            {
+              heading: 'Where this journey stands',
+              body: `This journey is inclusive. Morana belongs to the Slavic folk year, and anyone who comes respectfully can learn from her. Some Rodnover groups carry nationalist or racial politics; this app does not.
+
+It is also gentle. Her rites here are about release, acceptance and renewal, never about sending harm to anyone. And it takes care: if grief or despair is heavy for you, human support comes first.`,
+            },
+          ],
+          knowAndDont: {
+            known: 'The custom is widely kept in Poland, Czechia, Slovakia, Lusatia and Slovenia, mostly as a secular or folk-Christian spring custom. Many towns now restrict throwing effigies into rivers. Rodnovers honour Morana as a goddess of winter and death.',
+            unknown: 'Modern Rodnover dates for Morana are modern. How widely the custom was kept in East Slavic lands under her name, rather than as Maslenitsa or Kostroma, is unclear.',
+          },
+          inPractice: 'A modern, responsible Marzanna: a small straw-and-cloth doll, carried out with singing, burned safely in a fire bowl or simply dismantled, a few straws given to the water if allowed, no looking back, and a decorated green branch carried home.',
+          reflect: [
+            'Do I want to honour Morana as a goddess, or to keep the custom as a seasonal rite, or both?',
+            'How can I keep my rites kind to the land and the water?',
+          ],
+          further: [
+            'Kaarina Aitamurto and Scott Simpson (eds.), Modern Pagan and Native Faith Movements in Central and Eastern Europe (2013)',
+          ],
+          library: ['traditional/deity/morana'],
+          premade: ['cosmic-waning-moon-release'],
+        },
+      ],
+      practices: [
+        {
+          id: 'morana-winter-walk',
+          title: 'A winter walk',
+          instructions: 'Once during the study stage, go for a walk and look for signs of winter and of what comes after it: bare branches, buds, ice, mud, the first green. Pick up a few dry stems of straw or grass if you can find them; you will use them in the next stage.',
+          times: 1,
+          prompt: 'Where did I see winter, and where did I see spring already waiting?',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Nine nights of release',
+      intro: 'Now you build her shrine and keep nine nights of offering and release. Each night you write one thing you are ready to let go and bind it into a small straw figure. At the end, you carry it out.',
+      days: 9,
+      lessons: [
+        {
+          id: 'morana-shrine-offerings',
+          title: 'Shrine, days and offerings',
+          summary: 'A quiet winter shrine, the right gifts, the manner of releasing, and what to avoid.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'A winter shrine',
+              body: `Morana’s shrine should feel like a clear winter evening: spare and clean. A small shelf or table near a window is enough. Lay a white or grey cloth. Stand a bare branch in a jar. Set a bowl of cold water and two candles, one black and one white.
+
+Obsidian, jet or smoky quartz suit her if you use stones. A small straw doll, a sickle image, or a few dried stalks of wormwood or mugwort are traditional in feeling. Keep it uncluttered. When spring comes, you will take the bare branch down and put a green one up, and the shrine will turn with the year.`,
+            },
+            {
+              heading: 'What to give',
+              body: `Because the folk custom gave Morana nothing but a trip to the river, her offerings are modern. Rodnovers and pagans give her straw dolls, bread, water, candles, and especially what you are ready to release: written lists, old letters, symbols of habits you are ending.
+
+Bread and water are given humbly, as to winter itself. The release is given by destroying or dismantling the token safely, and walking away from it. That is the offering: you give her what you are done with.`,
+            },
+            {
+              heading: 'The manner of release',
+              body: `Work in the evening, ideally in the waning moon or the cold months. Light the black candle, then the white. Speak plainly to her. Write or name what you are releasing, and bind it into straw, thread or paper.
+
+When you destroy it, do it cleanly and then do not look back. Walk away from the fire or the water, turn off the light, close the door. The old custom’s rule is wise: once you have sent something out, do not keep checking on it.`,
+            },
+            {
+              heading: 'What to avoid',
+              body: `Do not burn plastic, synthetic cloth or anything that gives off toxic smoke. Do not throw dolls or anything else into rivers where it is forbidden or would harm wildlife; a few natural straws are the most you should give the water. Do not light fires on dry ground or where they are banned.
+
+Do not use Morana to send death, illness or misfortune toward anyone. The custom carried misfortune away from people, not onto them. And do not use her devotion to dwell in despair. Sit with grief, yes; but if you notice yourself sinking, reach out.`,
+            },
+          ],
+          knowAndDont: {
+            known: 'The straw figure, burning, water and the taboo on looking back come from the documented custom.',
+            unknown: 'No historical offerings to Morana are recorded. The shrine, offerings and release practice here are modern, drawn from the custom and from Rodnover practice.',
+          },
+          inPractice: 'Set her shrine today. For nine nights, light her candles, write one thing you are ready to release, wrap it around a few straws, and bind it into a small figure with natural thread. On the last night, or at the spring equinox, carry it out.',
+          reflect: [
+            'What is the first thing I am ready to release?',
+            'Is there something I think I am ready to release but am not, yet?',
+          ],
+          library: ['traditional/crystal/obsidian', 'traditional/crystal/jet', 'traditional/crystal/smoky_quartz', 'traditional/candle/black', 'traditional/candle/white'],
+          premade: ['cosmic-waning-moon-release', 'folk-cord-cutting'],
+        },
+      ],
+      practices: [
+        {
+          id: 'morana-nine-nights',
+          title: 'Nine nights of release',
+          instructions: 'On each of nine nights, sit at Morana’s shrine. Light the black candle, then the white. Write on a small strip of paper one thing you are ready to let go: a habit, a fear, a grudge, a season of your life. Wrap the strip around a few straws or dry grasses and bind it with natural thread, adding each night’s bundle to the last, so that by the ninth night you have a small figure. Give a crumb of bread and a drop of water. Sit five minutes. Snuff the candles, white first. On the ninth night, carry the figure out as below.',
+          times: 9,
+          every: 'day',
+          prompt: 'What did I bind tonight, and how did it feel to name it?',
+        },
+        {
+          id: 'morana-carry-out',
+          title: 'Carry her out',
+          instructions: 'After the ninth night, or at the spring equinox if it is near, carry the little figure out. Walk to a fire bowl, a safe outdoor fireplace, or a stream. Burn it fully in a safe fire and scatter the cold ashes on the earth, or, if fire is not possible, take it apart and put the straw and paper in compost; give only a few natural straws to the water if allowed. Walk home without looking back. On the way, pick up or buy a green twig and put it on her shrine in place of the bare branch.',
+          times: 1,
+          prompt: 'What did I carry out, and what did I bring home?',
+          premade: 'kitchen-sweeping-out-the-old',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'Facing the cold honestly',
+      intro: 'Before dedicating, pause and weigh it. With Morana the questions are about endings and about your own wellbeing. Answer honestly. Choosing not to dedicate, pausing, or turning to another god are all good outcomes; choosing life and support over any ritual is always right.',
+      days: 4,
+      lessons: [],
+      practices: [
+        {
+          id: 'morana-discernment-write',
+          title: 'Write it out',
+          instructions: 'Answer the questions below in your journal over a few days. Reread your threshold entry about endings. Then write in one sentence what you would promise her for a year.',
+          times: 1,
+          prompt: 'How do I want to meet the endings that will come this year?',
+        },
+      ],
+      questions: [
+        'Did these weeks help me let go cleanly, or did they pull me into heaviness?',
+        'Am I comfortable honouring as a goddess a figure the folk custom carried out and drowned?',
+        'Am I drawn to her for acceptance and release, or because I feel hopeless? If the second, have I reached out for support?',
+        'Can I keep her rites safe for the land, the water and myself?',
+        'Would a figure of spring, or simply the folk custom each March, suit me better than a dedication?',
+        'Would it be enough, for now, to keep the custom without a formal dedication?',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'Between winter and spring',
+      intro: 'If you choose to go ahead, this is your dedication. It is a self-dedication, a promise between you and Morana. It is not an initiation into any group and does not replace one if you later join a community with its own rites. Stopping before this, or choosing another path, would have been a good outcome too.',
+      days: 1,
+      lessons: [],
+      practices: [],
+      rite: {
+        title: 'Dedication to Morana',
+        summary: 'Black and white candles, the bare branch and the green, bread and water, and a promise to meet endings with honesty.',
+        minutes: 35,
+        ingredients: [
+          { name: 'A black candle', ref: 'traditional/candle/black' },
+          { name: 'A white candle', ref: 'traditional/candle/white' },
+          { name: 'The bare branch from her shrine' },
+          { name: 'A green twig or sprig: spruce, birch or any evergreen', ref: 'traditional/herb/juniper' },
+          { name: 'A bowl of cold water', ref: 'traditional/vessel/bowl' },
+          { name: 'A piece of bread' },
+          { name: 'A dark stone to keep: obsidian, jet or smoky quartz', ref: 'traditional/crystal/obsidian', optional: true },
+        ],
+        preparation: 'Choose an evening near the spring equinox, the onset of winter, or a waning moon. Clear her shrine and lay a fresh cloth. Write your promise in one sentence: “I will let things end when they end,” “I will grieve honestly,” “I will carry winter out each spring.” If you are grieving hard right now, consider waiting, and tell someone you trust what you are doing.',
+        steps: [
+          {
+            title: 'Set the two seasons',
+            instructions: 'Place the black candle and the bare branch on the left, the white candle and the green twig on the right, the water and bread between them.',
+          },
+          {
+            title: 'Light',
+            instructions: 'Light the black candle, then the white.',
+            light: true,
+          },
+          {
+            title: 'Call her',
+            instructions: 'Speak calmly and clearly.',
+            spoken: 'Morana, Marzanna, Mařena,\nlady of the winter and of the ending,\nyou who are carried out so that spring can come in,\nI come to you with an honest heart.',
+          },
+          {
+            title: 'Give bread and water',
+            instructions: 'Set the bread by the bare branch. Dip your fingers in the water and touch them to the bare branch.',
+            spoken: 'Bread for the long night, water from the ice.\nI honour your season.',
+          },
+          {
+            title: 'Make the promise',
+            instructions: 'Hold the dark stone, or simply your open hands. Read your promise aloud once, then the words below.',
+            spoken: 'This I promise for a year and a day.\nI give myself to your honour, Morana,\nto let what ends, end,\nto grieve honestly and not alone,\nand to carry winter out so spring can come in.',
+          },
+          {
+            title: 'The turning',
+            instructions: 'Take the bare branch and lay it down flat on the cloth. Stand the green twig upright in its place. This is the turn of the year in miniature.',
+            spoken: 'Winter goes out. Summer comes in.',
+          },
+          {
+            title: 'Sit in quiet',
+            instructions: 'Sit with both candles for a few minutes.',
+            minutes: 5,
+            timed: true,
+          },
+          {
+            title: 'Close',
+            instructions: 'Thank her. Snuff the white candle, then the black.',
+            spoken: 'Thank you, Morana. Go gently, and come in your season.',
+            snuff: true,
+          },
+        ],
+        closing: 'Pour the water onto the earth. Put the bread out for birds. Break the bare branch and put it in compost or a safe fire; keep the green twig on her shrine. Keep the stone. Note the date for your renewal.',
+        safety: 'Never leave candles unattended or near dry twigs and cloth. Juniper and many evergreens are toxic to pets if chewed; keep them out of reach. If this rite stirs grief or despair, stop, turn on the lights, and reach out to someone or a crisis line.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'Turning with the year',
+      intro: 'A dedication begins a year of practice. Here is a rhythm: a monthly release at the waning moon, her two turnings in autumn and spring, the dead at Dziady, and a yearly renewal.',
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'morana-waning',
+          title: 'Monthly release',
+          instructions: 'Each waning moon, light her two candles, name one thing you are ready to let go, write it down, and burn or tear it safely. Do not look back at it.',
+          times: 12,
+          every: 'month',
+          prompt: 'What did I let end this month?',
+          premade: 'cosmic-waning-moon-release',
+        },
+        {
+          id: 'morana-seasons',
+          title: 'Her two turnings',
+          instructions: 'At the onset of winter, or at Dziady, put the bare branch on her shrine and honour her season and your dead. At Koliada, light a candle for her in the deep of winter. At the spring equinox, keep Marzanna: make a small doll, carry it out, and bring home a green branch.',
+          times: 1,
+          every: 'holy-day',
+          prompt: 'How did I meet winter this year, and how did I let it go?',
+        },
+        {
+          id: 'morana-rededication',
+          title: 'Renew the promise',
+          instructions: 'A year and a day after your dedication, return to her shrine. Read your promise and say honestly how you kept it. Make a new promise for the year, or thank her and release it.',
+          times: 1,
+          prompt: 'What endings am I ready to meet next?',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'Traditional Czech Morana song, version printed in a farming calendar of 1617, first line quoted (folk text; translation original): https://catvusa.com/traditions/spring-welcoming/',
+    'Jan Długosz, Annales seu cronicae incliti Regni Poloniae (15th century), on Marzanna as Ceres (paraphrased)',
+    'James George Frazer, The Golden Bough (abridged ed., 1922), chapters on carrying out Death and bringing in summer',
+    'W. R. S. Ralston, The Songs of the Russian People (1872), on Kostroma and the Marena tree: https://archive.org/details/songsofrussianpe00ralsuoft',
+    'Judith Kalik and Alexander Uchitel, Slavic Gods and Heroes (2019)',
+    'Linda J. Ivanits, Russian Folk Belief (1989)',
+    'Ronald Hutton, The Stations of the Sun (1996)',
+  ],
+};
