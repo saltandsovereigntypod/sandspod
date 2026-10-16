@@ -440,6 +440,11 @@ export const DIASPORA: ClosedTradition[] = [
         body:
           "Kongo people were among the largest groups enslaved and taken to Cuba. Their religious ideas survived in cabildos, in maroon (escaped) communities and in families, and developed into Palo. Like other Afro-Cuban religions, it was criminalised, policed and sensationalised in the press, and it still carries particular stigma, even within Afro-Cuban religious life.",
       },
+      {
+        heading: 'Where it lives today',
+        body:
+          "Palo is practised in Cuba and throughout the Cuban diaspora, especially in Miami and New York, and has spread to Puerto Rico, Venezuela, Mexico and elsewhere. In the United States, police and the press have at times linked Palo with crime on thin evidence, repeating an old pattern of treating African-rooted religion as inherently criminal. Most practitioners are ordinary people seeking protection, healing and connection with their dead.",
+      },
     ],
     howPeopleComeIn:
       "Only through initiation by an elder of a specific house and branch (rama). The initiate becomes part of a lineage with obligations to their elders. Different branches have different practices and rules.",
@@ -488,6 +493,11 @@ export const DIASPORA: ClosedTradition[] = [
         heading: 'History and persecution',
         body:
           "Candomblé took shape in nineteenth-century Bahia among enslaved and freed Africans. The Casa Branca do Engenho Velho (Ilê Axé Iyá Nassô Oká) in Salvador, founded by African women, is considered one of the oldest terreiros and became the first Afro-Brazilian temple protected as national heritage in the 1980s.\n\nCandomblé was long persecuted. Police raided terreiros and seized sacred objects, and in Bahia terreiros were required to register with and get permits from the police, a rule that applied to no other religion, until 1976. Today terreiros still face attacks and 'religious racism', often from extremist groups. Brazil marks 21 January as the National Day to Combat Religious Intolerance, in memory of Mãe Gilda de Ogum, a Candomblé priestess who died in 2000 after her terreiro was attacked.",
+      },
+      {
+        heading: "Women's leadership",
+        body:
+          "Several of the oldest and most famous Ketu terreiros in Salvador have been led by women for generations, and great mães de santo are revered figures in Brazilian life. The anthropologist Ruth Landes called Bahia a 'city of women' in 1947. Later scholars, notably J. Lorand Matory, have argued that the picture is more complicated and that men have always held important roles too. Both the reality of women's leadership and the scholarly debate about it are worth knowing.",
       },
     ],
     howPeopleComeIn:
@@ -545,6 +555,11 @@ export const DIASPORA: ClosedTradition[] = [
         body:
           "Umbanda's founding story holds that on 15 November 1908, in Niterói, the young medium Zélio Fernandino de Moraes received a spirit guide who announced a new religion open to all. Historians note that Umbanda drew on older Afro-Brazilian practices and that its origins are more varied than one founding event. Brazil marks 15 November as National Umbanda Day, set in law in 2012.\n\nUmbanda grew in the cities in the twentieth century and was partly shaped by efforts to make African-derived religion acceptable to middle-class and white Brazilians, which some critics see as 'whitening'. It was nonetheless policed and stigmatised alongside Candomblé, and its terreiros face attacks today.",
       },
+      {
+        heading: 'Umbanda, Candomblé and Kardecism',
+        body:
+          "Umbanda is often confused with Candomblé, and with the Spiritism (Kardecismo) of Allan Kardec that is also widespread in Brazil. It draws on both, but is its own religion: it typically works with spirit guides received by mediums in open sessions, while Candomblé centres on the orixás and on a strict initiatory hierarchy, and Kardecist centres usually avoid African elements altogether. Many Brazilians move between these religions or belong to more than one.",
+      },
     ],
     howPeopleComeIn:
       "Many people first come as consulentes, visitors who attend public sessions to receive counsel and help. Those who wish to go further join a terreiro as members and, under the guidance of its leader, develop as mediums over time. Some houses have formal initiations; others do not.",
@@ -597,6 +612,11 @@ export const DIASPORA: ClosedTradition[] = [
         heading: 'Obeah and the colonial law',
         body:
           "Colonial authorities saw Obeah as a threat because spiritual leaders could unite enslaved people. After Tacky's Revolt in Jamaica in 1760, in which Obeah practitioners were said to have played a part, Jamaica passed a law making Obeah a crime punishable by death. Similar laws spread across the British Caribbean, and after emancipation 'Obeah Acts' continued to be used to criminalise African-derived religion and policing of Black communities into the twentieth century.\n\nSome territories have since decriminalised it, among them Anguilla, Barbados, Trinidad and Tobago and St Lucia, between 1980 and 2004. Others have not: Jamaica's Obeah Act of 1898 remains on the books, though a 2013 amendment removed flogging as a punishment and prosecutions are now rare. Historian Diana Paton's work traces this history in detail.",
+      },
+      {
+        heading: 'In Caribbean life today',
+        body:
+          "Obeah remains part of everyday Caribbean culture, in stories, proverbs, literature and in the quiet practice of healers, even where it is still technically illegal or socially stigmatised. Caribbean writers and scholars continue to debate what the word means and whether it should be reclaimed, and there have been calls in several countries to remove the remaining colonial-era laws. These are conversations for Caribbean people to lead.",
       },
     ],
     howPeopleComeIn:
@@ -652,6 +672,11 @@ export const DIASPORA: ClosedTradition[] = [
         body:
           "Allan Kardec's The Spirits' Book (1857) reached Puerto Rico and Cuba in the later nineteenth century, often among educated liberals and independence activists, and was suppressed by Spanish colonial authorities and the Church. Among working-class and rural people, especially Afro-Caribbean communities, it merged with existing healing and spirit traditions. It spread with migration to the United States, where espiritistas have long served as healers and counsellors in Puerto Rican and Cuban neighbourhoods.",
       },
+      {
+        heading: 'Healing and community',
+        body:
+          "For many families, the espiritista has been a trusted counsellor for illness, grief, family trouble and bad luck, often alongside, not instead of, doctors. From the 1970s, researchers in New York, such as the anthropologist Alan Harwood, studied how Puerto Rican espiritistas worked as community healers, and some mental-health services began learning from them. Centres usually stress charity, moral growth and helping troubled spirits as well as the living.",
+      },
     ],
     howPeopleComeIn:
       "Many people first attend a session at a centro or a misa (spiritual mass), or are brought by family. Those with mediumship develop it over time under the guidance of experienced espiritistas. There is generally no formal initiation, but there is apprenticeship and community.",
@@ -679,6 +704,7 @@ export const DIASPORA: ClosedTradition[] = [
     reading: [
       "Allan Kardec, The Spirits' Book (1857)",
       'Raquel Romberg, Witchcraft and Welfare: Spiritual Capital and the Business of Magic in Modern Puerto Rico (2003)',
+      'Alan Harwood, Rx: Spiritist as Needed: A Study of a Puerto Rican Community Mental Health Resource (1977)',
       'Andrés I. Pérez y Mena, Speaking with the Dead: Development of Afro-Latin Religion among Puerto Ricans in the United States (1991)',
       'Margarite Fernández Olmos & Lizabeth Paravisini-Gebert, Creole Religions of the Caribbean (2003; 2nd ed. 2011)',
     ],
@@ -700,6 +726,16 @@ export const DIASPORA: ClosedTradition[] = [
         heading: 'What it is',
         body:
           "Quimbanda works with classes of spirits called Exus and Pombagiras, understood in Brazil as powerful spirits of the crossroads, the streets and human desire. It developed alongside Umbanda in twentieth-century Brazil; some Umbanda houses describe it as a separate 'left-hand' line, while some Quimbanda houses see themselves as an independent religion.\n\nIt has long been stigmatised, including by some Umbandistas, and portrayed as sinister. Scholars such as Kelly Hayes have shown how Pombagira in particular is bound up with Brazilian ideas of gender, sexuality and the struggles of poor women.",
+      },
+      {
+        heading: 'History',
+        body:
+          "The word 'quimbanda' comes from Kimbundu, a Bantu language of Angola, where it referred to a healer or ritual specialist. In twentieth-century Brazil it came to name the practices and houses devoted to Exus and Pombagiras. Because some early Umbanda leaders defined their religion as the 'white' or 'pure' line in contrast to Quimbanda, it was pushed to the margins and became a target for both police and religious rivals.",
+      },
+      {
+        heading: 'Commercialisation abroad',
+        body:
+          "Since the 2000s, Quimbanda has been marketed in English-language books and online courses, often presented as dark or 'left-hand path' magic for an international audience. Many Brazilian practitioners see this as a distortion that strips the tradition of its Brazilian community, language and lineage. If you are curious, the respectful course is to learn from Brazilian scholarship and voices rather than from courses.",
       },
     ],
     howPeopleComeIn:
