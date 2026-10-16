@@ -191,11 +191,14 @@
   /** "Whose land are you on?", the app's LandCard, from the shared kit. */
   const landCard = () => kit()?.landCard?.() ?? "";
 
-  /** Begin a premade working as a guided ritual (the kit's dialog); false when it can't. */
+  /** Begin a premade working in the altar's Ritual Companion, as the app does (the kit's hand-off); false when it can't. */
   function beginPremade(premade) {
     const core = global.SaltCore && global.SaltCore["practice-b"];
-    if (!premade || !core || typeof kit()?.runDraft !== "function") return false;
-    kit().runDraft(core.premade.premadeDraft(premade));
+    const k = kit();
+    if (!premade || !core || !(k?.beginRitual || k?.runDraft)) return false;
+    const draft = core.premade.premadeDraft(premade);
+    if (k.beginRitual) k.beginRitual(draft);
+    else k.runDraft(draft);
     return true;
   }
 
