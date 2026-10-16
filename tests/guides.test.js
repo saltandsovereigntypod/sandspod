@@ -43,7 +43,9 @@ test("the guides bundle carries the app's guides, lines and practices", () => {
 test("How to: app screens map to the website's pages", () => {
   assert.equal(Notes.siteHref("/rituals/craft/green/moon"), "/practice/green/moon/");
   assert.equal(Notes.siteHref("/rituals/craft"), "/practice/");
-  assert.equal(Notes.siteHref("/more/settings/calendar"), "/?sanctuary=settings");
+  assert.equal(Notes.siteHref("/more/settings/calendar"), "/today/calendar/");
+  assert.equal(Notes.siteHref("/more/settings/practice"), "/practice/#choose");
+  assert.equal(Notes.siteHref("/more/settings/identity"), "/?sanctuary=settings");
   assert.equal(Notes.siteHref("/today/reminders"), "/reminders/");
   assert.equal(Notes.siteHref("/more/library/closed"), "/library/closed/");
   assert.equal(Notes.siteHref("/today/sky"), "/today/sky/");

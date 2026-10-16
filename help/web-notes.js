@@ -67,6 +67,8 @@
     "/rituals": "/altar/?ritual=1",
     "/today": "/today/",
     "/more": "/?sanctuary=more",
+    "/more/settings/practice": "/practice/#choose",
+    "/more/settings/calendar": "/today/calendar/",
     "/more/settings": "/?sanctuary=settings",
     "/more/account": "/?sanctuary=settings",
     "/more/backup": "/?sanctuary=settings",

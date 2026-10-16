@@ -87,7 +87,7 @@
       <section class="sp-card" aria-labelledby="rt-reminder">
         <h2 class="sp-label" id="rt-reminder">Reminder</h2>
         <p class="sp-muted">Reminders ring in the phone app; browsers can’t send them at a set time. Add the plan to your calendar and your calendar can remind you.</p>
-        <p><a class="rt-text-link" href="/rituals/reminders/">Reminders & calendar</a></p>
+        <p><a class="rt-text-link" href="/reminders/">Reminders & calendar</a></p>
       </section>
 
       <section class="sp-card" id="calendar" aria-labelledby="rt-calendar">

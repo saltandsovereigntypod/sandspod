@@ -60,7 +60,9 @@ test("the app's routes open the website's pages", () => {
   assert.equal(T.siteHref("/rituals/craft/green/moon"), "/practice/green/moon/");
   assert.equal(T.siteHref("/rituals/craft/eclectic"), "/practice/eclectic/");
   assert.equal(T.siteHref("/today/reminders"), "/reminders/");
-  assert.equal(T.siteHref("/more/settings/practice"), "/?sanctuary=settings");
+  assert.equal(T.siteHref("/more/settings/practice"), "/practice/#choose");
+  assert.equal(T.siteHref("/more/settings/calendar"), "/today/calendar/");
+  assert.equal(T.siteHref("/more/settings/identity"), "/?sanctuary=settings");
   assert.equal(T.siteHref({ pathname: "/rituals/premade/[id]", params: { id: "folk-lararium-offering" } }), "/rituals/premade/?id=folk-lararium-offering");
   assert.equal(T.siteHref({ pathname: "/rituals/plan/[id]", params: { id: "p1" } }), "/rituals/plan/?id=p1");
   assert.equal(T.siteHref({ pathname: "/today/journal/[id]", params: { id: "j 1" } }), "/rituals/journal/?id=j%201");

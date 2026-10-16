@@ -67,3 +67,5 @@
 @media (max-width: 700px) {
   .sp-page { padding-top: 84px; padding-bottom: 110px; }
 }
+/* styles.css caps h1/h2 widths for the home page's hero; these pages use the full column. */
+.sp-page h1, .sp-page h2, .sp-page h3, [data-page-root] h1, [data-page-root] h2 { max-width: none; }

@@ -1,6 +1,7 @@
 /*
  * The site's main bar, shared by every page, laid out like the app's tabs:
  * Today · Altar · Grimoire · Rituals · Podcast · More.
+ * Today and Rituals are their own pages (/today/, /rituals/), as in the app.
  *
  * On computers and iPads it sits in the top header. On phones it moves to the
  * bottom of the screen with five tabs; Podcast is reached from the logo and
@@ -19,10 +20,10 @@
   };
 
   const TABS = [
-    { key: "today", label: "Today", view: "dashboard" },
+    { key: "today", label: "Today", href: "/today/" },
     { key: "altar", label: "Altar", href: "/altar/" },
     { key: "grimoire", label: "Grimoire", href: "/grimoire/" },
-    { key: "rituals", label: "Rituals", href: "/altar/?ritual=1" },
+    { key: "rituals", label: "Rituals", href: "/rituals/" },
     { key: "podcast", label: "Podcast", href: "/" },
     { key: "more", label: "More", view: "more" }
   ];
@@ -46,6 +47,9 @@
   function activeTab(pathname, search = "") {
     const path = normalPath(pathname);
     if (path.startsWith("/altar/")) return new URLSearchParams(search).get("ritual") ? "rituals" : "altar";
+    if (path.startsWith("/today/")) return "today";
+    // Rituals holds the planner, premade book, journeys and My practice, as in the app.
+    if (path.startsWith("/rituals/") || path.startsWith("/practice/")) return "rituals";
     if (path === "/grimoire/") return "grimoire";
     if (path === "/" || path.startsWith("/blog/")) return "podcast";
     return "more";
@@ -108,7 +112,7 @@
   }
 
   // While the Sanctuary panel is open, the tab for its view is the lit one.
-  const PANEL_TABS = { welcome: "today", auth: "today", dashboard: "today", rituals: "today", more: "more", journey: "more", submissions: "more", settings: "more" };
+  const PANEL_TABS = { welcome: "today", auth: "today", dashboard: "today", rituals: "rituals", more: "more", journey: "more", submissions: "more", settings: "more" };
 
   function panelState(doc = document) {
     const panel = doc.querySelector("[data-my-sanctuary-panel]");
@@ -180,12 +184,6 @@
           global.closeMySanctuaryPanel?.();
           return;
         }
-      }
-      const ritualTab = event.target.closest('[data-site-tab="rituals"]');
-      if (ritualTab && activeTab(location.pathname) === "altar" && openRitualCompanion()) {
-        event.preventDefault();
-        history.replaceState(null, "", "/altar/?ritual=1");
-        return;
       }
       const accessibility = event.target.closest("[data-site-accessibility]");
       if (accessibility) document.querySelector("[data-accessibility-trigger]")?.click();

@@ -149,6 +149,25 @@ function createMySanctuaryPanel() {
           <button type="button" data-site-accessibility>♿ Accessibility Options</button>
         </nav>
 
+        <h3 class="my-sanctuary-subheading">Practice</h3>
+        <nav class="my-sanctuary-links" aria-label="Practice">
+          <a href="/practice/">🌿 My practice</a>
+          <a href="/rituals/journeys/">🕯 Dedication journeys</a>
+          <a href="/more/settings/deities/">☾ My deities</a>
+          <a href="/practice/cosmic/chart/">✶ Your birth chart</a>
+          <a href="/today/calendar/">📅 Calendar &amp; holidays</a>
+          <a href="/today/sky/">🌙 The sky today</a>
+          <a href="/reminders/">🔔 Reminders</a>
+          <a href="/library/closed/">🌍 Closed &amp; living traditions</a>
+          <a href="/library/sourcing/">🌱 Sourcing with care</a>
+        </nav>
+
+        <h3 class="my-sanctuary-subheading">Help</h3>
+        <nav class="my-sanctuary-links" aria-label="Help">
+          <a href="/help/">❓ How to use the Sanctuary</a>
+          <a href="/more/support/">💚 Support lines</a>
+        </nav>
+
         <h3 class="my-sanctuary-subheading">Salt &amp; Sovereignty</h3>
         <nav class="my-sanctuary-links" aria-label="Salt &amp; Sovereignty">
           <a href="/#podcast">🎙 Podcast</a>

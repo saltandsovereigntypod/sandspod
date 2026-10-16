@@ -43,7 +43,7 @@
     /** A Living Library entry ("traditional:herb:rosemary"), opened in the Grimoire. */
     library: (id) => `/grimoire/?entity=${enc(String(id || "").replace(/:/g, "/"))}`,
     /** Settings in the Sanctuary panel (calendars, My practice). */
-    settings: "/?sanctuary=settings",
+    settings: "/today/calendar/",
     /** Crisis and support lines (the app's More → Support). */
     support: "/more/support/",
     nativeLand: "https://native-land.ca"

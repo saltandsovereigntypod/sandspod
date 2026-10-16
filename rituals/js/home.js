@@ -64,7 +64,9 @@
         ${UI.row({ href: "/rituals/premade/", title: "Rituals & spells", detail: `${R.premade.PREMADE.length} premade workings for every practice and path` })}
         ${UI.row({ href: "/rituals/planner/", title: "Plan a night", detail: "Moon phase and weekday for your intention" })}
         ${UI.row({ href: "/rituals/spell/", title: "Build a spell", detail: "Ingredients from the Library, steps to follow" })}
-        ${UI.row({ href: "/rituals/reminders/", title: "Reminders & calendar", detail: "Add planned rituals and moon phases to your calendar" })}
+        ${UI.row({ href: "/rituals/journeys/", title: "Dedication journeys", detail: "Study, practice and a rite of self-dedication, for each path and god" })}
+        ${UI.row({ href: "/practice/", title: "My practice", detail: "Tools for your craft: garden, hearth, dreams, stars, stones, tides and more" })}
+        ${UI.row({ href: "/reminders/", title: "Reminders & calendar", detail: "Moon phases, planned rituals, devotions and sacred days in your calendar" })}
       </nav>`;
 
     const journalList = entries.length

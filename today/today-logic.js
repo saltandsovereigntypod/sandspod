@@ -118,6 +118,8 @@
     if (path === "/rituals/craft") return "/practice/";
     if (path.startsWith("/rituals/craft/")) return `/practice/${path.slice("/rituals/craft/".length).replace(/\/$/, "")}/`;
     if (path === "/today/reminders" || path === "/rituals/reminders" || path === "/more/reminders") return "/reminders/";
+    if (path.replace(/\/$/, "") === "/more/settings/practice") return "/practice/#choose";
+    if (path.replace(/\/$/, "") === "/more/settings/calendar") return "/today/calendar/";
     if (path.startsWith("/more/settings") && path.replace(/\/$/, "") !== "/more/settings/deities") return "/?sanctuary=settings";
     if (path === "/today/journal" || path.startsWith("/today/journal/")) path = path.replace("/today/journal", "/rituals/journal");
     if (path.startsWith("/today/holy/")) {
