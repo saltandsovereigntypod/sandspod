@@ -1,0 +1,515 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-arianrhod',
+  kind: 'deity',
+  paths: ['celtic', 'wheel'],
+  deityRef: 'traditional/deity/arianrhod',
+  title: 'Arianrhod: Lady of the Sea-Castle',
+  summary:
+    'A month with Arianrhod, the proud daughter of Dôn in the Fourth Branch of the Mabinogi: the test of Math’s wand, the three destinies she lays on her son, the drowned castle off the Welsh coast and the stars that bear her name, with an honest line between the medieval tale and the modern star goddess, and a self-dedication made under the night sky.',
+  welcome:
+    'This journey takes about a lunar month. You will read five lessons, set up a spare and solemn shrine, keep nine nights under the sky, and decide whether to dedicate yourself to Arianrhod.\n\nIt is a self-dedication, not an initiation, and it does not make you a member of any group or order. Arianrhod is a difficult figure. The one medieval story about her shows her proud, wronged and wrathful, and much of what is now said about her as a goddess of the moon, the stars and the silver wheel is modern. This journey tells you which is which, so that you can honour her with your eyes open. You can pause whenever you need to.',
+  about:
+    'Arianrhod (said roughly ar-YAN-hrod, with a breathy rh) is a figure from Welsh tradition, best known from Math fab Mathonwy, the Fourth Branch of the Mabinogi, written down in the eleventh or twelfth century. She is the daughter of Dôn, sister of the magician Gwydion, and lady of Caer Arianrhod, a castle by the sea in Gwynedd. Brought to King Math as a maiden, she is shamed by a magical test and gives birth to two sons, Dylan, who goes into the sea, and the boy later called Lleu. She lays three destinies (tynghedau) on Lleu: that he will have no name, no arms and no wife unless she gives them, and Gwydion tricks her out of the first two. She is proud, sharp and wronged, and the tale does not let her win. Outside the Mabinogi, a Welsh triad names her a daughter of Beli, poems in the Taliesin tradition speak of her prison and fetter, a reef off Dinas Dinlle is called Caer Arianrhod and said to be her drowned court, and the constellation Corona Borealis is called Caer Arianrhod in Welsh. Her name is often read as “silver wheel”, and modern Pagans honour her as a goddess of the stars, the moon, fate, initiation and the turning wheel of time. Some of that grows from the Welsh material; much of it is new, and both deserve honesty.',
+  notes: [
+    'Arianrhod appears in a single medieval prose tale and a few other mentions. She is not called a goddess in any medieval source, though many scholars think the children of Dôn were once gods.',
+    'The popular images of Arianrhod as a moon goddess, a goddess of the silver wheel, a spinner of fate or a lady of initiation are modern, shaped partly by Robert Graves’s The White Goddess (1948). They can be honoured sincerely, but they are not ancient.',
+    'The Fourth Branch includes sexual violence (the rape of Goewin, Math’s footholder, which sets the story in motion) and the public humiliation of Arianrhod. The lessons describe these plainly but briefly.',
+    'Welsh is a living language and the Mabinogi is living Welsh heritage. Learn to say the names, read a good translation, and listen to Welsh voices.',
+    'Stargazing and visits to the coast at night need care: check the tide times before going near Caer Arianrhod or any shore, and tell someone where you are.',
+  ],
+  holyDays: ['samhain_gaelic', 'samhain', 'yule'],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'At the castle gate',
+      intro:
+        'Begin by making a place for Arianrhod and introducing yourself honestly: by name, and by who you are. She is a lady who cares about names and dignity, so come to her plainly and with self-respect.',
+      days: 2,
+      lessons: [],
+      practices: [
+        {
+          id: 'arianrhod-shrine',
+          title: 'Set up a spare, solemn shrine',
+          instructions:
+            'Choose a shelf or a windowsill, ideally one with a view of the night sky. Keep it spare: Arianrhod is a lady of a castle, not a cluttered cottage. Lay down a deep blue, grey or white cloth. Put a silver or white candle in a safe holder on a heatproof dish. Add a small bowl of water, sea water if you can collect it safely, or water with a pinch of sea salt. Add a circle: a silver ring, a round mirror, a bracelet, a disc of shell. Add a few shells or a sea-smoothed stone, a sprig of birch or ivy, and a small card on which you will later write your name. A stone such as moonstone or labradorite suits her, though the link is modern. Leave space. A sparse shrine with room to breathe is the right one for her.',
+          times: 1,
+          prompt: 'How did it feel to build a spare shrine rather than a full one?',
+        },
+      ],
+      rite: {
+        title: 'Introduction to Arianrhod',
+        summary:
+          'Under the night sky or at a dark window, light a silver flame, offer water from the sea, and introduce yourself by your full name and an honest word about who you are.',
+        minutes: 20,
+        ingredients: [
+          { name: 'A silver or white candle in a safe holder', ref: 'traditional/candle/silver' },
+          { name: 'A small bowl of sea water, or water with a pinch of sea salt', ref: 'traditional/vessel/bowl' },
+          { name: 'A silver ring, round mirror or other circle' },
+          { name: 'A card and pen' },
+          { name: 'A piece of moonstone or labradorite', ref: 'traditional/crystal/moonstone', optional: true },
+        ],
+        preparation:
+          'Choose a clear night if you can. Turn off the lights in the room and let your eyes adjust to the dark for a few minutes; if you can see stars from the window, find one. On the card, write your full name, every part of it, and any name you are known by that is truly yours.',
+        steps: [
+          {
+            title: 'Come to the gate',
+            instructions:
+              'Stand before the shrine or the window. In the tale, those who came to Caer Arianrhod were asked who they were at the gate. Stand straight.',
+            spoken: 'Arianrhod, daughter of Dôn, lady of the castle by the sea, I come to your gate.',
+          },
+          {
+            title: 'Light the silver flame',
+            instructions: 'Light the candle.',
+            spoken: 'I light this flame for Arianrhod, whose name is in the stars.',
+            light: true,
+          },
+          {
+            title: 'Offer the sea',
+            instructions:
+              'Lift the bowl of water and set it before the candle, beside the circle.',
+            spoken: 'Here is water from the sea that washes your castle, freely given.',
+          },
+          {
+            title: 'Say your name',
+            instructions:
+              'Read your full name aloud from the card, slowly and clearly. Then say one honest sentence about who you are now, not who you wish you were. Arianrhod is the lady who decides what a name is worth; give yours with dignity.',
+          },
+          {
+            title: 'Look to the sky',
+            instructions:
+              'Look out at the night sky, or at the candle flame if you cannot see it. Sit with whatever you feel: awe, unease, coolness, nothing at all.',
+            minutes: 5,
+          },
+          {
+            title: 'Close',
+            instructions: 'Thank her and snuff the candle. Lay the card with your name on her shrine.',
+            spoken: 'Arianrhod, thank you for hearing my name. I will come to your gate again.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Leave the water overnight. In the morning, pour it onto the earth or, if you live near the sea, back into the sea on your next visit. Keep the name card on her shrine through the journey.',
+        safety:
+          'Keep the candle on a heatproof dish away from curtains and paper, especially at a window, and never leave it unattended. If you go outside to see the stars, take a torch, stay on safe ground, and keep away from cliff edges and shores in the dark.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'Learning who she is',
+      intro:
+        'Four lessons on Arianrhod: who she is in Welsh tradition and what her name may mean; her story in the Fourth Branch; the drowned castle, the stars and the modern goddess; and how she is honoured today, with the hard parts of her story. Read one every day or two, at night if you can.',
+      days: 8,
+      lessons: [
+        {
+          id: 'arianrhod-who',
+          title: 'Daughter of Dôn: family, name and place',
+          summary: 'Where Arianrhod comes from, the children of Dôn, the debate over “silver wheel”, and the places in Gwynedd that carry her name.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The children of Dôn',
+              body:
+                'Arianrhod belongs to the family the Mabinogi calls the children of Dôn. Her brothers are Gwydion, the great magician and storyteller, Gilfaethwy, and Gofannon the smith; their uncle is Math son of Mathonwy, the king and enchanter of Gwynedd in north-west Wales. Her own court, Caer Arianrhod, stands by the sea near Dinas Dinlle, south-west of Caernarfon.\n\nMany scholars think the children of Dôn were once gods. Gofannon’s name matches the Irish smith-god Goibniu, and Dôn herself has often been compared with the Irish Danu, though that link is now doubted. The Mabinogi never calls any of them gods. They are lords and ladies with magic, written down by Christian Welsh storytellers in the eleventh or twelfth century. Whether Arianrhod was once a goddess is a reasonable guess, not a fact.',
+            },
+            {
+              heading: 'What her name may mean',
+              body:
+                'In modern Welsh, arian means “silver” and rhod means “wheel” or “circle”, so the name is usually translated “silver wheel”. That reading is old and popular, and it has shaped almost everything modern Pagans say about her: the wheel of the stars, the wheel of the year, the wheel of fate.\n\nIt is not settled. The medieval manuscripts often spell the name Aranrot, and scholars such as Rachel Bromwich have pointed out that its original form and meaning are uncertain. Even a nineteenth-century edition of Lady Charlotte Guest’s Mabinogion cautions that “Caer Arianrod” should be taken simply as the “Camp of Arianrod”, and not rendered the “Camp of the silver circle”. So “silver wheel” is a meaning that people have heard in her name for centuries. It may not be what the name meant first.',
+            },
+            {
+              heading: 'Outside the Mabinogi',
+              body:
+                'Arianrhod appears in a few other places. One of the Welsh Triads, the medieval lists of things in threes, names Arianrhod daughter of Beli among the fair maidens of Britain, giving her a different father; Beli Mawr is a great ancestor-figure of Welsh tradition. Poems in the Taliesin tradition refer to her prison and her fetter, as places of trial or confinement, though what they mean is unclear.\n\nAnd she is in the landscape. Off the shore at Dinas Dinlle, a reef visible at low spring tides is called Caer Arianrhod, and local legend recorded in the nineteenth century says it is her court, drowned by the sea. In the Welsh sky, the constellation Corona Borealis, the Northern Crown, is also called Caer Arianrhod. Lesson three looks at how old those names are.',
+            },
+            {
+              heading: 'Saying her name',
+              body:
+                'It is worth learning to say her name properly. Ar-YAN-hrod: the stress falls on the middle syllable, and the Welsh rh is a breathy r, as if you breathed out an h through it. Don is said “dawn”, Gwydion “GWID-yon”, Lleu with the Welsh ll, made by putting your tongue where you would for an l and blowing past its sides.\n\nThese are small courtesies, but Arianrhod is a figure for whom names matter more than almost anything. Taking the trouble to say hers well is a fitting first offering.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The Fourth Branch of the Mabinogi (in manuscripts of the fourteenth century, composed earlier) makes Arianrhod daughter of Dôn, sister of Gwydion and lady of Caer Arianrhod. A Welsh triad calls her daughter of Beli. Taliesin poems mention her prison. Caer Arianrhod is the name of a reef off Dinas Dinlle and of Corona Borealis in Welsh.',
+            unknown:
+              'We do not know whether she was ever worshipped as a goddess. The meaning of her name is debated; “silver wheel” is popular but may not be original. The age of the reef legend and the star name is uncertain, and the triad’s different father is unexplained.',
+          },
+          inPractice:
+            'Devotees usually begin by reading the Fourth Branch in a good translation, learning to say the names, and, where possible, visiting Dinas Dinlle to see the reef at low tide. Many honour her as a lady of the children of Dôn, alongside Gwydion and Lleu.',
+          reflect: [
+            'What does the name “silver wheel” call up in you? Can you hold it as a meaning people have heard, rather than a proven one?',
+            'What does your own name mean to you? Who gave it to you, and is it yours?',
+          ],
+          further: [
+            'Sioned Davies, trans., The Mabinogion (Oxford World’s Classics, 2007), the Fourth Branch.',
+            'Rachel Bromwich, ed., Trioedd Ynys Prydein: The Triads of the Island of Britain (4th ed., 2014).',
+            'Lady Charlotte Guest, trans., The Mabinogion (public domain, Project Gutenberg).',
+          ],
+          library: ['traditional/deity/arianrhod', 'traditional/deity/lugh', 'traditional/deity/cerridwen'],
+        },
+        {
+          id: 'arianrhod-tale',
+          title: 'The wand and the three destinies: Arianrhod in the Fourth Branch',
+          summary: 'How Arianrhod came to Math’s court, the birth of Dylan and Lleu, the destinies she laid on her son, and how Gwydion broke them.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'The footholder',
+              body:
+                'The Fourth Branch begins with a strange rule. King Math can live only if, except in time of war, his feet rest in the lap of a maiden. His footholder is Goewin. Arianrhod’s brother Gilfaethwy desires Goewin, and Gwydion stirs up a war so that Math will leave his court; while he is gone, Gilfaethwy rapes her. Math punishes his nephews by turning them into pairs of animals for three years, and then he needs a new footholder.\n\nGwydion suggests his sister. In Lady Guest’s translation, Math asks Arianrhod if she is a maiden, and she answers, “I know not, lord, other than that I am.” He has her step over his magic wand as a test. As she does, she gives birth to a yellow-haired boy, and as she runs for the door, something small drops from her, which Gwydion snatches up and hides. Arianrhod has been publicly shamed in her uncle’s hall.',
+            },
+            {
+              heading: 'Dylan and the boy with no name',
+              body:
+                'The first boy is named Dylan. As soon as he is baptised, he plunges into the sea, and in Guest’s words he “took its nature, and swam as well as the best fish that was therein. And for that reason was he called Dylan, the son of the Wave. Beneath him no wave ever broke.” He is later killed by his uncle Gofannon.\n\nThe small thing Gwydion hid grows into a second boy, who grows unnaturally fast. Gwydion raises him and, when he is four, takes him to Caer Arianrhod. Arianrhod asks who the boy is, and Gwydion tells her he is her son. She is furious that he has kept her shame alive. And she lays the first destiny on the child: “I lay this destiny upon him, that he shall never have a name until he receives one from me.”',
+            },
+            {
+              heading: 'Name, arms and a wife',
+              body:
+                'Gwydion tricks her. He disguises himself and the boy as shoemakers in a boat below her castle, and gets her to come down to be measured. A wren lands on the deck; the boy hits it in the leg with a single throw. Arianrhod smiles and says, “with a steady hand did the lion aim at it.” Gwydion seizes on it: the boy is named Lleu Llaw Gyffes, “the fair one with the skilful hand”.\n\nShe then swears he will never bear arms unless she arms him. Gwydion conjures the illusion of a fleet attacking her castle, and she arms the boy herself to defend it. When she learns it was a trick, she lays the third destiny: “that he shall never have a wife of the race that now inhabits this earth.” Gwydion and Math make Lleu a wife out of the flowers of oak, broom and meadowsweet: Blodeuwedd, whose own story, of love, betrayal and transformation into an owl, takes up the rest of the tale. Arianrhod is not seen again.',
+            },
+            {
+              heading: 'Reading her story',
+              body:
+                'The storyteller is not on Arianrhod’s side. Gwydion calls her wicked and malicious, and the narrative rewards his cleverness. Yet she is the one whose body has been tested and exposed in public, whose brothers have brought her to this through their own crimes, and whose son is pressed on her against her will. Her destinies, harsh as they are, are the one power she has left.\n\nHer three destinies also follow the shape of a young man’s life in medieval Welsh society: he receives a name, then arms, then a wife, and each is normally given by his mother or his family. Arianrhod withholds her son’s passage into manhood. That is why many modern devotees see her as a goddess of initiation and of the thresholds of life, the one who has the power to grant or refuse them. It is a reading of the tale, not a statement the tale makes.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Math fab Mathonwy, the Fourth Branch, tells of Goewin, the wand test, the births of Dylan and Lleu, the three destinies (tynghedau) and Gwydion’s tricks. The quoted words come from Lady Charlotte Guest’s nineteenth-century translation. The tale is preserved in the White Book of Rhydderch and the Red Book of Hergest (fourteenth century).',
+            unknown:
+              'We do not know what older myth, if any, lies behind the story, or why Arianrhod refuses her son so fiercely. The reading of the destinies as stages of initiation, and modern sympathetic readings of Arianrhod, are interpretation.',
+          },
+          inPractice:
+            'Devotees read the Fourth Branch more than once, noticing how their sympathies shift. Some keep the wren as a sign of her, for the moment she smiled. Many honour Dylan, the son of the Wave, at the sea alongside her.',
+          reflect: [
+            'Whose side were you on as you read? Did that change?',
+            'Have you ever withheld something from someone because of how you yourself had been treated? What did it protect, and what did it cost?',
+          ],
+          further: [
+            'Lady Charlotte Guest, trans., The Mabinogion, “Math the son of Mathonwy” (public domain, Project Gutenberg).',
+            'Sioned Davies, The Four Branches of the Mabinogi (1993).',
+            'Will Parker, The Four Branches of the Mabinogi (2005), with commentary.',
+          ],
+          library: ['traditional/deity/arianrhod', 'traditional/deity/lugh', 'traditional/herb/meadowsweet', 'traditional/herb/oak'],
+        },
+        {
+          id: 'arianrhod-stars',
+          title: 'The drowned castle and the Northern Crown: old names and the modern goddess',
+          summary: 'Caer Arianrhod at sea and in the sky, the Taliesin poems, and how the moon and wheel goddess of modern Paganism grew up.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The castle in the sea',
+              body:
+                'Less than a mile off the shore at Dinas Dinlle, near Caernarfon, a patch of rocks and stones shows above the water at the lowest spring tides. It is called Caer Arianrhod. A legend recorded by the folklorist John Rhŷs and others in the nineteenth century says that Arianrhod’s court once stood there and was swallowed by the sea, as punishment for the wickedness of its people, and that its walls can be seen on a still day.\n\nGeologists think the reef is a natural feature, a bank of boulder clay and stones, though some have looked for traces of buildings. Drowned court legends are common along the Welsh coast, Cantre’r Gwaelod in Cardigan Bay being the most famous. What matters is that the people of the area tied her name to that place and remembered her there. Visiting at low tide, from the beach, is a real pilgrimage, and a safe one if you check the tide times and stay on the shore.',
+            },
+            {
+              heading: 'The castle in the stars',
+              body:
+                'In Welsh, Corona Borealis, the Northern Crown, a small semicircle of stars between the bright stars Arcturus and Vega, is also called Caer Arianrhod. It is a beautiful name, and it is the main reason she is called a star goddess today.\n\nHow old the star name is, nobody knows for sure. It is recorded from the early modern period, and some Welsh star names first appear in the work of eighteenth- and early-nineteenth-century antiquarians, including the circle of Iolo Morganwg, who is known to have invented a great deal of supposedly ancient Welsh lore. So the name may be a genuine folk name, or a learned one, or something in between. In the northern hemisphere the Northern Crown is best seen on spring and summer evenings, high overhead in June and July; in the southern hemisphere it is low in the northern sky in winter.',
+            },
+            {
+              heading: 'The prison of Arianrhod',
+              body:
+                'In the late medieval tale of Taliesin, the young poet boasts of his many lives to a king. Among them, in Guest’s translation, he says: “I have been three periods in the prison of Arianrod.” Another poem speaks of “the fetter of Arianrod”.\n\nNo one knows quite what this means. Some read the prison as a place of trial or initiation, or as the circling stars, or as her castle. The poems are deliberately riddling and late, so it is wise not to build too much on them. But they show that Arianrhod was remembered in Welsh poetry as a figure of mystery and confinement, not only as a character in the Mabinogi.',
+            },
+            {
+              heading: 'How the modern goddess grew',
+              body:
+                'From these pieces, twentieth-century writers built a goddess. Robert Graves, in The White Goddess (1948), made Arianrhod a form of his great moon goddess, the lady of the silver wheel and the castle of the stars to which dead poets go. Wiccan and Goddess writers took this up, adding the spinning wheel, the wheel of the year, the full moon, fate and rebirth. Many popular books now list moonstone, silver and the full moon as hers as if they were ancient.\n\nThey are not ancient, and the moon is nowhere in the Welsh sources. But a modern goddess is not a fake one. Millions of people have prayed to her this way, and their experience is real. The honest path is to know which layer you are standing on: the medieval tale, the Welsh place-names and star-name, or the twentieth-century goddess. You can honour all three, as long as you do not pass the last off as the first.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'A reef off Dinas Dinlle is called Caer Arianrhod, with a nineteenth-century legend of a drowned court. Corona Borealis is called Caer Arianrhod in Welsh. The Taliesin tradition mentions her prison and fetter. Robert Graves’s The White Goddess (1948) cast her as a moon goddess.',
+            unknown:
+              'We do not know how old the star name or the reef legend is, or what the Taliesin poems mean by her prison. There is no medieval evidence linking her to the moon, spinning, the wheel of the year or initiation; these are modern.',
+          },
+          inPractice:
+            'Many devotees learn to find the Northern Crown and greet her there on clear nights. Some visit Dinas Dinlle at a low spring tide. Wiccan and eclectic Pagans often honour her at the full moon; reconstructionist-minded devotees tend to focus on the tale, the place and the stars.',
+          reflect: [
+            'Which layer of Arianrhod draws you most: the woman in the tale, the castle in the sea, the crown of stars, or the modern goddess?',
+            'How do you feel about honouring something modern alongside something medieval?',
+          ],
+          further: [
+            'John Rhŷs, Celtic Folklore: Welsh and Manx (1901), on drowned court legends (public domain).',
+            'Robert Graves, The White Goddess (1948), as a source of the modern image, read critically.',
+            'Ronald Hutton, The Pagan Religions of the Ancient British Isles (1991) and Pagan Britain (2013), on modern myth-making.',
+          ],
+          library: ['traditional/deity/arianrhod', 'traditional/crystal/moonstone', 'traditional/crystal/labradorite'],
+          premade: ['cosmic-stargazing-name-your-star'],
+        },
+        {
+          id: 'arianrhod-today',
+          title: 'Honouring Arianrhod today, and the hard parts of her story',
+          summary: 'Who honours her and how, sympathetic and critical readings, the sensitive material in the tale, and what to avoid.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Who honours her',
+              body:
+                'Arianrhod is honoured by Welsh-focused Celtic polytheists, who work from the Mabinogi and Welsh language and landscape; by Druids, some of whom see her as a lady of the stars and of the bardic mysteries hinted at in the Taliesin poems; and by Wiccans and Goddess-centred Pagans, who often honour her as a moon or star goddess and a weaver of fate.\n\nThe difference is mostly about evidence. A Welsh polytheist will start from the tale and the places, and be cautious about the moon. A Wiccan may call her at the full moon as one face of the Goddess. Both can approach her sincerely; it helps to know which conversation you are in.',
+            },
+            {
+              heading: 'Sympathetic readings',
+              body:
+                'Many modern readers find Arianrhod more sympathetic than the storyteller did. She is shamed in public by a magical virginity test, in a story set in motion by her brothers’ violence against another woman. Her son is pushed on her against her will. She has her own castle and her own power, and she uses it to refuse what is demanded of her.\n\nFeminist readers see her as a woman claiming sovereignty over her body and her life, and many devotees honour her for exactly that: as the lady who will not be shamed, who decides what she gives and to whom. Others are more cautious: she is also cruel to a child who did nothing to her. Holding both is the honest way. Arianrhod is not a cosy goddess, and devotion to her does not need to make her one.',
+            },
+            {
+              heading: 'The hard parts',
+              body:
+                'The Fourth Branch includes the rape of Goewin, the public humiliation of Arianrhod, a mother’s rejection of her son, and the killing of Dylan. If any of these touch your own life, go gently. You can honour Arianrhod without dwelling on them, and you can pause the journey at any time.\n\nDevotion to her is not a substitute for real support. If you are dealing with sexual violence, family rejection or shame, please talk to someone you trust and reach out to a support service in your country. Many devotees find her an ally in reclaiming dignity; let her be that alongside people who can help.',
+            },
+            {
+              heading: 'What to avoid',
+              body:
+                'Do not present the moon goddess, the spinning wheel or the silver-wheel etymology as medieval Welsh tradition. Say they are modern, or modern readings. Do not treat Welsh culture as a costume: the Mabinogi is a national literature, and Welsh is spoken today by hundreds of thousands of people.\n\nAnd be careful what you ask of her. In the tale, Arianrhod’s gifts are hard won: her son gets his name and arms only by trickery, and never her blessing. Do not try to trick her, and do not demand. Come with honesty about who you are, and with respect for her pride. Many devotees find her cool and distant at first, and warmer only after long, steady practice.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Welsh polytheists, Druids, Wiccans and Goddess-centred Pagans honour Arianrhod today. The Fourth Branch contains the episodes of sexual violence, humiliation and rejection described here. Welsh is a living language with a large speaking community.',
+            unknown:
+              'There is no ancient record of devotion to Arianrhod. Modern sympathetic and feminist readings, and practices such as self-naming and star-greeting, are new, built from the tale and the place-names.',
+          },
+          inPractice:
+            'A typical devotee keeps a spare shrine with silver, sea water and a circle, greets her under the stars or at the full moon, reads the Fourth Branch regularly, and works with themes of names, dignity, destiny and thresholds.',
+          reflect: [
+            'Where in your life have you been shamed or exposed? What would it mean to reclaim your dignity there?',
+            'Can you honour a goddess who is cruel in her one story? What does it ask of you?',
+          ],
+          further: [
+            'Sioned Davies, The Mabinogion (2007), introduction and notes.',
+          ],
+          library: ['traditional/deity/arianrhod', 'traditional/candle/silver'],
+          premade: ['kitchen-solitary-self-love-mirror', 'kitchen-solitary-rite-of-passage'],
+        },
+      ],
+      practices: [
+        {
+          id: 'arianrhod-study-sky',
+          title: 'Look up before reading',
+          instructions:
+            'Before each lesson, look out at the night sky for a minute, or at the candle flame if it is cloudy, and say, “Arianrhod, I come to learn your story.” Afterwards, write one sentence about her in your own words.',
+          times: 4,
+          every: 'day',
+          prompt: 'One sentence about her, in your own words.',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Nine nights under the sky',
+      intro:
+        'Now you put what you have learned into practice. For nine nights you will greet Arianrhod under the sky, or at her candle, and work with names: your own and the names of your choices. Start with the lesson on offerings and the shape of a rite.',
+      days: 10,
+      lessons: [
+        {
+          id: 'arianrhod-offerings',
+          title: 'Silver, sea and starlight: offerings and the shape of a rite',
+          summary: 'When to honour Arianrhod, what to give and how, how to find the Northern Crown, a simple night rite, and keeping her shrine.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Her times',
+              body:
+                'No medieval source gives Arianrhod a holy day. Modern devotees choose times that fit what is known and what is felt. Clear nights, when the stars are out, are the most natural. Many Wiccans and Pagans honour her at the full moon, as a modern moon goddess. Samhain, Calan Gaeaf in Wales (the night of 31 October), suits a lady of thresholds and of the drowned court; Yule, at the winter solstice, suits a lady of the turning wheel.\n\nThose who focus on the Northern Crown honour her most in early summer evenings, when it rides high overhead in the northern hemisphere. Choose a rhythm you can keep: one night a week, or every full moon. Be honest with yourself that these are modern choices.',
+            },
+            {
+              heading: 'What to offer',
+              body:
+                'Arianrhod is a noble lady, and her offerings should be fine but not fussy. Sea water, or water with a pinch of sea salt, recalls her castle by the sea. Water left out under the stars, sometimes called starlight water, is a modern practice many find fitting. Silver, a ring, a coin, a small charm, can be dedicated to her and kept on her shrine.\n\nWords are her best gifts. A poem you have written, a careful retelling of her story, an honest declaration of who you are and what you choose: all suit a lady for whom names and words have power. Mead and white wine are often given today. Keep it spare: one good thing rather than many cheap ones.',
+            },
+            {
+              heading: 'Finding her crown',
+              body:
+                'If you can see the stars, learn to find Corona Borealis. In the northern hemisphere, find the Plough or Big Dipper, follow the curve of its handle to the bright orange star Arcturus, then look about a third of the way from Arcturus towards the bright blue-white star Vega. There you will find a small, neat semicircle of stars, like a tiara, with one brighter jewel, Alphecca. That is Caer Arianrhod.\n\nIt is high overhead on June and July evenings, in the west in autumn, and low or hidden in winter evenings. In the southern hemisphere it is low in the northern sky on winter evenings. A free stargazing app can help. If you cannot see it, greet any star, or the moon; she will not mind the substitution as much as she would mind dishonesty.',
+            },
+            {
+              heading: 'How to offer, and the shape of a rite',
+              body:
+                'A rite for Arianrhod has five parts. First, come to the gate: stand in the dark and say who you are. Second, light her silver flame. Third, offer water and words: set out the sea water and read your poem or declaration. Fourth, look up: greet her crown, a star or the moon, and sit in silence. Fifth, close with a name: say aloud one thing you are choosing, a destiny you lay on yourself, and thank her.\n\nPour water offerings onto the earth the next morning, or carry them to the sea. Keep silver offerings on her shrine. Burn or bury written words safely, or keep them in your journal. Do not leave metal or plastic on beaches or in water, where they become litter.',
+            },
+            {
+              heading: 'Keeping her shrine',
+              body:
+                'Keep her shrine clean and spare, like a well-kept hall. Change the water weekly. Polish the silver. Remove anything that has lost its meaning. At the full moon or on a clear night, open the curtains so that the shrine can see the sky.\n\nThe name card from the threshold rite belongs here. Over time you may add other names: the names of choices you have made, destinies you have set yourself and kept. It becomes a small record of who you have chosen to be.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'No medieval source gives Arianrhod a holy day or offerings. Corona Borealis is called Caer Arianrhod in Welsh, and the star-finding directions are standard astronomy. Calan Gaeaf is the Welsh winter festival at the start of November.',
+            unknown:
+              'Every offering and time here is a modern choice. Starlight water, silver offerings and full moon rites are modern Pagan practice, not Welsh tradition.',
+          },
+          inPractice:
+            'Many devotees greet her on clear nights, keep a full moon rite, offer sea water and words, and keep a record of the names and choices they have made in her presence.',
+          reflect: [
+            'What destiny would you lay on yourself, if you had Arianrhod’s power to do it?',
+            'What is the finest thing you could give her that costs words rather than money?',
+          ],
+          further: [
+            'Ian Ridpath, Star Tales (1988; online), on Corona Borealis.',
+            'Any reliable star atlas or free stargazing app.',
+          ],
+          library: ['traditional/deity/arianrhod', 'traditional/crystal/selenite', 'traditional/herb/birch'],
+          premade: ['cosmic-stargazing-name-your-star', 'cosmic-full-moon-charging-moon-water'],
+        },
+      ],
+      practices: [
+        {
+          id: 'arianrhod-nine-nights',
+          title: 'Nine nights of names',
+          instructions:
+            'For nine nights, light her silver candle and set out a little sea water. Look out at the sky, find her crown or any star, and say: “Arianrhod, lady of the castle by the sea, I say my name to you.” Say your full name. Then name one choice: something you are deciding to be or do, however small. Write it on a slip of paper and lay it on her shrine. Sit in silence for a few minutes. Snuff the candle. On one clear night, if you can, go outside to a safe dark place and stand under the stars for ten minutes.',
+          times: 9,
+          every: 'day',
+          prompt: 'What did you name tonight, and how did it feel to say it aloud?',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'Discernment at the shore',
+      intro:
+        'Before any dedication, look back over the month. A dedication to Arianrhod is a promise to live honestly under your own name and to keep the destinies you set yourself. Stopping, waiting, or choosing another goddess or path are all good outcomes; her castle has stood under the sea for a long time, and it will wait.',
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'arianrhod-discern',
+          title: 'Walk by water',
+          instructions:
+            'Walk by the sea, a river or a lake, by day or at dusk, keeping well clear of the water’s edge if it is rough. Take your nine slips of paper. Think through the questions below. Write your answers when you get home.',
+          times: 1,
+          prompt: 'Your honest answers to the discernment questions.',
+        },
+      ],
+      questions: [
+        'Did you keep most of the nine nights? What does that tell you about the promise you might make?',
+        'Are you drawn to the Arianrhod of the tale, the modern star goddess, or both? Can you be honest about which?',
+        'Can you honour a proud, difficult figure who is cruel in her only story, without making her soft or making yourself small?',
+        'Did the hard parts of the tale stir things in you that need care first, from people as well as from her?',
+        'Do you want a goddess, or mainly a practice of self-naming and intention? Both are fine; only one needs a dedication.',
+        'Is another deity or path calling you more strongly? Choosing them, or pausing, is a good and honest outcome.',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'Dedication under the crown',
+      intro:
+        'If you choose to go on, this is a self-dedication to Arianrhod, made before her in your own words. It is not an initiation into any group, order or tradition, and it does not replace one where they have their own. A clear night is the fitting time, especially in early summer when her crown is high, or Calan Gaeaf, or a full moon if you honour her that way.',
+      days: 1,
+      lessons: [],
+      practices: [],
+      rite: {
+        title: 'Self-dedication to Arianrhod',
+        summary:
+          'Come to her gate in the dark, offer the sea and your words, say your name, lay a destiny on yourself, and be received under the crown of stars.',
+        minutes: 40,
+        ingredients: [
+          { name: 'A silver or white candle in a safe holder', ref: 'traditional/candle/silver' },
+          { name: 'A bowl of sea water, or water with sea salt', ref: 'traditional/vessel/bowl' },
+          { name: 'A silver ring or charm to dedicate and keep' },
+          { name: 'A poem or declaration you have written for her' },
+          { name: 'Your written promise, with the destiny you lay on yourself' },
+          { name: 'A piece of moonstone or labradorite', ref: 'traditional/crystal/labradorite', optional: true },
+        ],
+        preparation:
+          'Write your promise over several days: how you will honour her (clear nights, the full moon or Calan Gaeaf), and one destiny you lay on yourself for the year, something you will become or do, stated as plainly as Arianrhod stated hers. Write a poem or declaration for her. Choose a clear night. Wash and dress with care. Turn off the lights and let your eyes adjust to the dark.',
+        steps: [
+          {
+            title: 'Come to the gate',
+            instructions: 'Stand before the shrine, or at a window or outdoors under the sky.',
+            spoken: 'Arianrhod, daughter of Dôn, lady of Caer Arianrhod in the sea and in the stars, I come to your gate of my own free will.',
+          },
+          {
+            title: 'Light the silver flame',
+            instructions: 'Light the candle.',
+            spoken: 'I light this flame for you, lady of the silver circle.',
+            light: true,
+          },
+          {
+            title: 'Offer the sea and the silver',
+            instructions:
+              'Set the bowl of water before the candle. Lay the silver ring or charm in front of it, or drop it gently into the water.',
+            spoken: 'Here is the sea that washes your walls, and silver, given to you.',
+          },
+          {
+            title: 'Give your words',
+            instructions: 'Read your poem or declaration aloud.',
+          },
+          {
+            title: 'Say your name and lay your destiny',
+            instructions:
+              'Say your full name. Then read your promise and the destiny you lay on yourself. Say plainly that this is a self-dedication, made in good faith, and that you will keep it as best you can.',
+            spoken: 'This is my name, and this is the destiny I lay on myself, before you. I will keep it.',
+          },
+          {
+            title: 'Under the crown',
+            instructions:
+              'Look up at her crown, a star or the moon. Sit or stand in silence. Imagine a castle of light above you, and its gate opening.',
+            minutes: 10,
+          },
+          {
+            title: 'Close',
+            instructions: 'Thank her and snuff the candle. Take up the silver ring or charm.',
+            spoken: 'Arianrhod, thank you for hearing my name. I go out under it.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Dry the silver and wear it or keep it on her shrine as a sign of your dedication. Pour the water onto the earth the next morning, or carry it to the sea. Keep your poem and promise in your journal. Within a week, take the first step towards the destiny you named.',
+        safety:
+          'Keep the candle on a heatproof dish, away from curtains at the window, and never leave it unattended. If you hold the rite outdoors, use a lantern or battery candle, stay on safe ground away from cliffs and water, take a torch and tell someone where you are.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'Turning with the stars',
+      intro:
+        'The relationship lives under the sky and in the names you keep. Here is a rhythm: a weekly or full moon greeting, the year’s great nights, and a yearly renewal of the destiny you set.',
+      days: 4,
+      lessons: [],
+      practices: [
+        {
+          id: 'arianrhod-weekly',
+          title: 'Weekly greeting',
+          instructions:
+            'Once a week, or at each full moon if you honour her that way, light her candle, change the water, greet her crown or a star, and say your name and how you are keeping your destiny.',
+          times: 52,
+          every: 'week',
+          prompt: 'How are you keeping the destiny you set?',
+        },
+        {
+          id: 'arianrhod-crown',
+          title: 'When the crown is high',
+          instructions:
+            'On a clear early summer evening (June or July in the northern hemisphere), go out and find the Northern Crown high overhead. Offer sea water or words, and spend time under it.',
+          times: 1,
+          every: 'holy-day',
+          prompt: 'What did you see and feel under her crown?',
+        },
+        {
+          id: 'arianrhod-renew',
+          title: 'Yearly renewal',
+          instructions:
+            'At Calan Gaeaf (31 October) or the anniversary of your dedication, read your promise and the destiny you set. Say honestly what you kept. Lay a new destiny for the coming year, or release the old one with thanks.',
+          times: 1,
+          every: 'holy-day',
+          prompt: 'What did you become this year?',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'Lady Charlotte Guest, trans., The Mabinogion, “Math the son of Mathonwy” and “Taliesin”, Project Gutenberg: https://www.gutenberg.org/ebooks/5160 (quoted: “I know not, lord, other than that I am”; Dylan “took its nature, and swam as well as the best fish…”; the three destinies; “with a steady hand did the lion aim at it”; “I have been three periods in the prison of Arianrod”; the note that Caer Arianrod should not be rendered “Camp of the silver circle”).',
+    'Sioned Davies, trans., The Mabinogion (Oxford World’s Classics, 2007).',
+    'Rachel Bromwich, ed., Trioedd Ynys Prydein: The Triads of the Island of Britain (University of Wales Press, 4th ed., 2014).',
+    'John Rhŷs, Celtic Folklore: Welsh and Manx (1901).',
+    'Robert Graves, The White Goddess (1948), as the source of much modern imagery.',
+    'Ronald Hutton, Pagan Britain (Yale, 2013).',
+  ],
+};

@@ -4,6 +4,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../Button';
 import { Card, MoreScreen, RichText, Section, Tags } from '../more/ui';
+import { journeyForDeityRef, JOURNEYS_LIVE } from '../../lib/journeys';
 import { correspondences, entryIntro, findByName, useLibrary, type LibraryEntry } from '../../lib/library';
 import { layerFields, visibleLayers } from '../../lib/library/model';
 import { ritualRecord } from '../../lib/library/records';
@@ -44,6 +45,8 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
   const shown = visibleLayers(settings)
     .map((layer) => ({ layer, fields: layerFields(layerData(entry, layer), layer, settings, entry.layout) }))
     .filter(({ fields }) => fields.length > 0);
+  // A deity with a dedication journey links to it.
+  const journey = JOURNEYS_LIVE && entry.type === 'deity' ? journeyForDeityRef(entry.traditionalRef ?? entry.id) : null;
   // Rituals and ritual templates read as a record of the working, as on the website.
   const record = entry.myPractice ? ritualRecord(entry.type, entry.myPractice) : null;
 
@@ -72,6 +75,15 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
             </View>
           ))}
         </View>
+      )}
+
+      {!!journey && (
+        <Button
+          label="Begin a dedication journey"
+          variant="outline"
+          accessibilityHint={`Opens ${journey.title}: study, practice and a rite of self-dedication`}
+          onPress={() => router.push({ pathname: '/rituals/journeys/[id]', params: { id: journey.id } } as Href)}
+        />
       )}
 
       {!!session && (

@@ -106,3 +106,9 @@ export function nextLesson(journey: Journey | null, lessonId: string) {
   const at = found.stage.lessons.findIndex((l) => l.id === lessonId);
   return found.stage.lessons[at + 1] ?? null;
 }
+
+/**
+ * Whether the journeys show in the app. Off until every journey has had its
+ * fact-check pass; the screens exist, but nothing links to them.
+ */
+export const JOURNEYS_LIVE = false;

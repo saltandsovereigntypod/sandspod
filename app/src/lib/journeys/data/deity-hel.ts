@@ -161,7 +161,7 @@ Some Heathens find this reason enough not to honour her. Others note that the de
           ],
           knowAndDont: {
             known:
-              'Snorri’s Gylfaginning (ch. 34 and 49) gives Hel’s parentage, appointment, hall, household and appearance, and the story of Baldr in her hall. Völuspá refers to the people of Hel at Ragnarök, and Baldrs draumar describes Odin riding to Hel’s high house.',
+              'Snorri’s Gylfaginning (ch. 34 and 49–53, Anderson’s numbering) gives Hel’s parentage, appointment, hall, household and appearance, and the story of Baldr in her hall. Völuspá refers to the people of Hel at Ragnarök, and Baldrs draumar describes Odin riding to Hel’s high house.',
             unknown:
               'We cannot tell how much of Snorri’s Hel is older tradition and how much is his own learned elaboration, possibly shaped by Christian pictures of death personified. The meanings of Éljúðnir and several household names are uncertain. No source describes prayers or offerings to her.',
           },
@@ -172,7 +172,7 @@ Some Heathens find this reason enough not to honour her. Others note that the de
             'Where in your own life have you met someone stern but fair? How did they earn your trust?',
           ],
           further: [
-            'Gylfaginning ch. 34 and 49 in Rasmus B. Anderson, The Younger Edda (1880), public domain.',
+            'Gylfaginning ch. 34 and 49–53 in Rasmus B. Anderson, The Younger Edda (1880), public domain.',
             'John Lindow, Norse Mythology: A Guide to the Gods, Heroes, Rituals, and Beliefs (2001), entries “Hel” and “Baldr.”',
             'Rudolf Simek, A Dictionary of Northern Mythology (1993), “Hel.”',
           ],
@@ -223,7 +223,7 @@ Many modern Heathens hold these ideas loosely and do not insist on a map. What m
           ],
           further: [
             'Baldrs draumar and Völuspá in Henry Adams Bellows, The Poetic Edda (1923), public domain.',
-            'Gylfaginning ch. 49 in Anderson (1880).',
+            'Gylfaginning ch. 52 in Anderson (1880).',
             'H. R. Ellis Davidson, The Road to Hel: A Study of the Conception of the Dead in Old Norse Literature (1943).',
           ],
           library: ['traditional/deity/hel', 'traditional/deity/baldur', 'traditional/herb/yew'],

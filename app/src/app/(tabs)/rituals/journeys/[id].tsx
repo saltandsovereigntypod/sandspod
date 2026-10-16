@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
@@ -38,16 +38,14 @@ export default function JourneyOverview() {
   const [busy, setBusy] = useState(false);
   const now = new Date();
 
-  const holyDays = useMemo(() => {
-    if (!journey) return [];
-    const seen = new Set<string>();
-    return holyDaysBetween(journey, now, new Date(now.getTime() + 380 * 86_400_000), cadence.choice, cadence.hidden).filter((h) => {
-      if (seen.has(h.name)) return false;
-      seen.add(h.name);
-      return true;
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- once a day is plenty
-  }, [journey?.id, cadence, now.toDateString()]);
+  const seenDays = new Set<string>();
+  const holyDays = journey
+    ? holyDaysBetween(journey, now, new Date(now.getTime() + 380 * 86_400_000), cadence.choice, cadence.hidden).filter((h) => {
+        if (seenDays.has(h.name)) return false;
+        seenDays.add(h.name);
+        return true;
+      })
+    : [];
 
   if (!journey) {
     return (

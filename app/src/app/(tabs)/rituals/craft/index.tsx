@@ -3,6 +3,7 @@ import { View } from 'react-native';
 
 import { Body, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
 import { CRAFT_TOOLS } from '../../../../lib/craft/practices';
+import { JOURNEYS_LIVE } from '../../../../lib/journeys';
 import { myPractices, PRACTICES, type Practice } from '../../../../lib/rituals/premade';
 import { useMySettings } from '../../../../lib/settings/store';
 
@@ -40,6 +41,14 @@ export default function CraftHub() {
         <List>{others.map(row)}</List>
       </View>
       <List>
+        {JOURNEYS_LIVE && (
+          <Row
+            icon="wheel"
+            title="Dedication journeys"
+            detail="A guided path to dedicating yourself to a tradition or a god"
+            onPress={() => router.push('/rituals/journeys')}
+          />
+        )}
         <Row icon="grimoire" title="Choose my practice" detail="Settings → My practice" last onPress={() => router.push('/more/settings/practice')} />
       </List>
     </RitualScreen>
