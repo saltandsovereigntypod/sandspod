@@ -20,6 +20,7 @@ You do not need to be a witch, a Hellenic polytheist or anything else to begin. 
     'Modern lists of “Hekate’s herbs” and the popular “Hekate’s wheel” design are mostly modern. The journey explains what is old and what is new.',
     'Ancient curse tablets and necromantic spells sometimes invoked her. This journey describes that honestly and offers only devotional and protective work.',
     'If you leave food outdoors, never use garlic, onion, chocolate, grapes or raisins where dogs, cats or wildlife can reach them.',
+    'If you go out to a crossroads after dark, choose a lit, safe spot near home or simply use your own doorstep. If Hekate’s link with the dead brings up grief that feels too heavy, talk to someone you trust or a bereavement service such as Cruse (UK) or a local grief line; devotion is not a substitute for support.',
   ],
   holyDays: ['deipnon', 'noumenia', 'samhain'],
   stages: [
@@ -163,7 +164,7 @@ What is clear is that by the fifth century BCE she was everywhere in Greek domes
           sections: [
             {
               heading: 'The three-formed goddess',
-              body: `Hekate’s three faces are old, but not as old as she is. The travel writer Pausanias, in the second century CE, says the sculptor Alkamenes was the first to make three images of Hekate joined together, for a statue on the Athenian Acropolis in the late fifth century BCE. After that the triple Hekate, three women back to back facing three ways, became common, especially at three-way crossroads.
+              body: `Hekate’s three faces are old, but not as old as she is. The travel writer Pausanias, in the second century CE, gives his opinion that the sculptor Alkamenes was the first to make three images of Hekate joined together. That statue, which Athenians called Hekate Epipyrgidia, “on the tower,” stood at the entrance to the Acropolis beside the little temple of Athena Nike, and Alkamenes was working in the later fifth century BCE. After that the triple Hekate, three women back to back facing three ways, became common, especially at three-way crossroads.
 
 Her epithet Trioditis, “of the three ways,” and the Roman name Trivia say the same thing. The faces watch each road. Small triple pillars called hekataia stood at doorways and crossroads all over the Greek world. So the triple form grew out of her place, the meeting of roads, not out of a theory about the stages of a woman’s life.`,
             },
@@ -188,9 +189,9 @@ The maze-like “Hekate’s wheel” sold on altar cloths and jewellery, a circl
           ],
           knowAndDont: {
             known:
-              'Pausanias (2.30.2) credits Alkamenes with the first triple Hekate in the late fifth century BCE. Euripides, Apollonius and Theocritus tie her to sorceresses. The Greek Magical Papyri and some curse tablets invoke her. Fragments of the Chaldean Oracles make her a cosmic saviour, and Psellus describes the strophalos.',
+              'Pausanias (2.30.2) credits Alkamenes, a sculptor of the later fifth century BCE, with the first triple Hekate. Euripides, Apollonius and Theocritus tie her to sorceresses. The Greek Magical Papyri and some curse tablets invoke her. Fragments of the Chaldean Oracles make her a cosmic saviour, and Psellus describes the strophalos.',
             unknown:
-              'We do not know exactly how the strophalos worked or what the theurgists saw in it, and the Oracles survive only in pieces. The crone Hekate is a twentieth-century creation. The modern wheel design has no confirmed ancient source, and claims about who drew it first conflict.',
+              'Pausanias offers the Alkamenes attribution as his own opinion, five centuries later; an earlier triple image cannot be ruled out, and the exact date of the statue is not known. We do not know exactly how the strophalos worked or what the theurgists saw in it, and the Oracles survive only in pieces. The crone Hekate is a twentieth-century creation. The modern wheel design has no confirmed ancient source, and claims about who drew it first conflict.',
           },
           inPractice:
             'Modern devotees tend to lean toward one or two of these Hekates: the household goddess of the Deipnon, the queen of witches, or the Chaldean world soul. You do not have to choose, but it helps to know which one you are speaking to on a given night. Many people keep a triple image or a strophalos on the shrine and a key and torch beside it, honouring both the old and the new.',
@@ -232,9 +233,9 @@ Hekate stands with a foot in each world, but her suppers were treated in the cht
             },
             {
               heading: 'Torches, keys and dogs',
-              body: `Her emblems in cult were torches, keys and dogs. At Lagina in Caria, a yearly Key Procession, the kleidos pompe, carried her key in honour. Her title Kleidouchos, “key-holder,” made her a goddess who opens and shuts the ways.
+              body: `Her emblems in cult were torches, keys and dogs. At Lagina in Caria, inscriptions of the Hellenistic and Roman periods record a yearly Kleidos Agoge, the procession of the key, which linked her sanctuary with the nearby city of Stratonikeia. No surviving source says what the key was meant to do. Her title Kleidouchos, “key-holder,” made her a goddess who opens and shuts the ways.
 
-Dogs were her companions, and their barking at night was said to announce her. Some ancient sources also mention dogs sacrificed to her, for instance at Colophon. That is part of the honest record and nothing anyone does today. Modern devotees honour the dog instead by caring for living dogs: a donation to a shelter is a common offering.`,
+Dogs were her companions, and their barking at night was said to announce her. Dogs were also sometimes sacrificed to her. Pausanias says the people of Colophon offered a black female puppy at night to Enodia, the goddess of the road, usually taken to be Hekate, and Plutarch mentions Greeks sacrificing dogs to Hekate. That is part of the honest record and nothing anyone does today. Modern devotees honour the dog instead by caring for living dogs: a donation to a shelter is a common offering.`,
             },
           ],
           knowAndDont: {
@@ -267,7 +268,7 @@ Dogs were her companions, and their barking at night was said to announce her. S
               heading: 'Who honours her now',
               body: `Hekate may be the most widely honoured Greek goddess today, and among very different groups. Hellenic polytheists, sometimes called Hellenismos, try to reconstruct ancient Greek religion from the evidence. They keep her Deipnon at the month’s end, honour her at the door, and mostly see her as one of many household gods. Groups like YSEE in Greece and Hellenion in the United States keep this approach.
 
-Eclectic Hellenic Pagans and a great many witches take a looser path. For them Hekate is often a patron goddess of witchcraft, honoured at the dark moon and Samhain, called on for protection, crossroads magic and spirit work. Some groups devote themselves to her alone; the Covenant of Hekate, founded in the 2010s, is one international example. Others draw on the Chaldean Oracles and treat her as a cosmic saviour in a more philosophical way. You will meet all of these online, often in disagreement.`,
+Eclectic Hellenic Pagans and a great many witches take a looser path. For them Hekate is often a patron goddess of witchcraft, honoured at the dark moon and Samhain, called on for protection, crossroads magic and spirit work. Some groups devote themselves to her alone; the Covenant of Hekate, founded by Sorita d’Este in 2010, is one international example. Others draw on the Chaldean Oracles and treat her as a cosmic saviour in a more philosophical way. You will meet all of these online, often in disagreement.`,
             },
             {
               heading: 'Names to call her by',
@@ -283,7 +284,7 @@ Keep the shrine clean and keep food off it except on the night you take it out. 
             },
             {
               heading: 'Plants and stones',
-              body: `Ancient sources connect her with very few plants. Garlic appears among offerings at the crossroads. Aconite and other poisonous plants appear in later stories linking her with Medea, and a late poem, the Orphic Argonautica, describes a walled garden of hers full of such plants. Most of the herb and crystal correspondences you will see online, from mugwort to labradorite, are modern. That does not make them wrong to use. It means you should treat them as a modern language for honouring her, not as ancient rules.`,
+              body: `Ancient sources connect her with very few plants. Garlic turns up in connection with crossroads offerings, though the evidence is thin. Aconite and other poisonous plants appear in later stories linking her with Medea, and a late poem, the Orphic Argonautica, describes a walled garden of hers full of such plants. Most of the herb and crystal correspondences you will see online, from mugwort to labradorite, are modern. That does not make them wrong to use. It means you should treat them as a modern language for honouring her, not as ancient rules.`,
             },
           ],
           knowAndDont: {
@@ -342,13 +343,13 @@ Keep the shrine clean and keep food off it except on the night you take it out. 
           sections: [
             {
               heading: 'The month: Deipnon and Noumenia',
-              body: `The Greek month followed the moon. Its last day, the dark of the moon, belonged to Hekate’s Deipnon. The next day, when the first thin crescent could be seen at sunset, was the Noumenia, the new month, given to the household gods and to Apollo Noumenios. The day after that honoured the Agathos Daimon, the good spirit of the house. These three days make a small cycle: clear out, begin again, bless the house.
+              body: `The Greek month followed the moon. Its last day, the dark of the moon, belonged to Hekate’s Deipnon. The next day, when the first thin crescent could be seen at sunset, was the Noumenia, the new month, given to the household gods and to Apollo Noumenios. Modern Hellenists keep the day after that for the Agathos Daimon, the good spirit of the house. Together these three days make a small cycle: clear out, begin again, bless the house.
 
 So the most traditional rhythm for honouring Hekate is monthly. Clean on the Deipnon, leave her supper, and greet the new month the next evening. The app marks all three days in your calendar.`,
             },
             {
               heading: 'Dates that are modern',
-              body: `You will often read that 16 November is the “Night of Hekate,” or that 13 August is her feast. Neither has good ancient evidence. The November date seems to come from a modern misreading of older calendars, and 13 August is the Roman Nemoralia of Diana, with whom Hekate was later linked. Samhain, the Gaelic festival at the start of November, has nothing to do with Hekate historically, though many witches now honour her then because it is a festival of the dead.
+              body: `You will often read that 16 November is the “Night of Hekate,” or that 13 August is her feast. Neither has any ancient evidence. Nobody has traced where the November date began; it circulates in modern Pagan calendars without a source. 13 August is the Ides of August, the day of the Roman Nemoralia of Diana at Nemi, and Hekate was linked to it later through Diana and Trivia. Samhain, the Gaelic festival at the start of November, has nothing to do with Hekate historically, though many witches now honour her then because it is a festival of the dead.
 
 You are free to keep any of these. Just keep them as modern devotional dates, chosen because they mean something to the community now.`,
             },
@@ -367,9 +368,9 @@ You will also find online warnings that Hekate punishes those who stop honouring
           ],
           knowAndDont: {
             known:
-              'The Deipnon fell on the last day of the lunar month, followed by the Noumenia and the Agathos Daimon day; this calendar is well attested for Athens. Cakes, eggs, cheese, bread and small fish are named as foods for Hekate in ancient comedy and later scholarship.',
+              'The Deipnon fell on the last day of the lunar month and the Noumenia on the first; both are well attested for Athens. Cakes, eggs, cheese, bread and small fish are named as foods for Hekate in ancient comedy and later scholarship.',
             unknown:
-              'Whether every Greek city kept the Deipnon, or kept it the same way, is unknown. The November and August feast dates have no solid ancient basis. Exactly what was said over the supper is lost; modern prayers fill the gap.',
+              'Whether every Greek city kept the Deipnon, or kept it the same way, is unknown. Setting the second day of the month apart for the Agathos Daimon is a modern Hellenic convention; the Agathos Daimon was honoured with wine after meals in antiquity, but a fixed monthly day is hard to trace. The November and August feast dates have no ancient basis. Exactly what was said over the supper is lost; modern prayers fill the gap.',
           },
           inPractice:
             'Mark the next Deipnon in your calendar now. Plan a cleaning task for that day, a simple plate (honey cake, egg, bread) and a place to leave it. On the Noumenia after, give the household gods a little incense and water. Use the premade Deipnon and Noumenia workings if you want a guided version.',
@@ -554,8 +555,10 @@ Once a year, on the Deipnon nearest the date of your dedication, read your promi
   ],
   sources: [
     'Hesiod, Theogony 411–452, trans. H. G. Evelyn-White, Hesiod, the Homeric Hymns and Homerica (1914), Project Gutenberg #348: https://www.gutenberg.org/ebooks/348 (quoted: “Hecate whom Zeus the son of Cronos honoured above all”)',
-    'Homeric Hymn to Demeter, trans. H. G. Evelyn-White (1914), Project Gutenberg #348 (quoted: “tender-hearted Hecate, bright-coiffed”; “with a torch in her hands”; “minister and companion to Persephone”)',
-    'Pausanias, Description of Greece 2.30.2, on Alkamenes’ triple Hekate',
+    'Homeric Hymn to Demeter (the closing lines are 438–440), trans. H. G. Evelyn-White (1914), Project Gutenberg #348: https://www.gutenberg.org/ebooks/348 (quoted: “tender-hearted Hecate, bright-coiffed”; “with a torch in her hands”; “minister and companion to Persephone”)',
+    'Pausanias, Description of Greece 2.30.2, on Alkamenes’ triple Hekate; 3.14.9, on the Colophonian puppy offering to Enodia',
+    'Plutarch, Roman Questions 52 and 68, on dogs offered to Hekate',
+    'Hellenistic and Roman inscriptions from Lagina and Stratonikeia on the Kleidos Agoge (key procession)',
     'Aristophanes, Wealth 594–597; Theophrastus, Characters 16',
     'Euripides, Medea; Apollonius of Rhodes, Argonautica 3; Theocritus, Idyll 2',
     'Michael Psellus on the strophalos, in Ruth Majercik, The Chaldean Oracles (1989)',

@@ -14,7 +14,7 @@ It is a dedication, not an initiation. It joins you to no group and makes you no
 Veles is earthy and clever, and he has a reputation as a trickster. Come to him honestly, with respect and a little caution, and he is generous.`,
   about: `Volos is named twice in the Russian Primary Chronicle as “the god of cattle,” sworn by alongside Perun in the treaties of 907 and 971; his idol is not among those Vladimir set on the hill in 980, and a later tradition places it in the lower town by the river instead. As Veles he appears in the twelfth-century Lay of Igor, where the poet Boyan is called “Veles’s grandson,” in a Rostov saint’s life, and in Czech sayings that use his name for a devil. Cognate words in Lithuanian mean the souls of the dead, which supports his long-standing link with the underworld. Whether Volos and Veles were one god or two is still debated. His famous role as Perun’s serpent adversary, who steals cattle or waters and is struck by lightning, is a reconstruction by Ivanov and Toporov from folklore and comparison. In folk Christianity St Blaise (Vlasiy) took over his care of cattle, and the last ears of the harvest were tied as “Volos’s beard.” Today Veles is one of the most popular gods in Rodnovery, honoured with grain, milk, honey and the dead in winter.`,
   notes: [
-    'Veles is linked with the dead and the underworld. Ancestor work with him is gentle and devotional here; this journey does not call up spirits.',
+    'Veles is linked with the dead and the underworld. Ancestor work with him is gentle and devotional here; this journey does not call up spirits. If remembering your dead brings up heavy or fresh grief, talk to someone you trust, your doctor, or a bereavement service (in the UK, Cruse: 0808 808 1677; in the US, a local hospice often runs free groups), alongside the ritual.',
     'The Book of Veles (Velesova kniga), named after him and widely quoted online, is a twentieth-century forgery. So is the Prav–Yav–Nav cosmology as usually presented, which comes from that book.',
     'His trickster side is a modern emphasis built on folklore of the devil and on comparison with other gods. Approach him with honesty; cunning is not a licence for dishonesty.',
     'Rodnovery includes inclusive and nationalist groups. This journey is inclusive: Veles is not a bloodline god.',
@@ -111,7 +111,7 @@ Two things stand out. He is sworn by side by side with Perun, not against him. A
             },
             {
               heading: 'Missing from the hill',
-              body: `When Vladimir set up his idols on the hill outside his hall in 980, the chronicle names Perun, Khors, Dazhbog, Stribog, Simargl and Mokosh. Volos is not there. A later Kievan tradition says his image stood instead down in the Podil, the lower trading town by the river, and that Vladimir had it thrown into the Pochaina river at the conversion.
+              body: `When Vladimir set up his idols on the hill outside his hall in 980, the chronicle names Perun, Khors, Dazhbog, Stribog, Simargl and Mokosh. Volos is not there. A later Kievan tradition, found in some versions of the Life of St Vladimir written long after the event, says his image stood instead down in the Podil, the lower trading town by the river, and that Vladimir had it thrown into the Pochaina river at the conversion.
 
 If that is right, it fits him beautifully: Perun on the height by the prince’s hall, Volos below among the merchants, the herds and the water. In Rostov, a saint’s life tells how St Abraham destroyed a stone idol of Veles that the people of the town’s Finnic quarter still honoured.`,
             },
@@ -498,8 +498,8 @@ Do not try to call up the dead or work necromancy in his name; that is not what 
     },
   ],
   sources: [
-    'The Russian Primary Chronicle, trans. Samuel H. Cross (1930), entries for 907, 971 and 980, quoted: https://archive.org/details/doncarlosthemeha0000fred',
-    'W. R. S. Ralston, The Songs of the Russian People (1872), pp. 251–3, quoted on the beard of Volos and St Vlas: https://archive.org/details/songsofrussianpe00ralsuoft',
+    'The Russian Primary Chronicle, trans. Samuel H. Cross, in Harvard Studies and Notes in Philology and Literature vol. XII (1930; public domain in the US since 2026), entries for 907, 971 and 980, quoted and checked against the scan of that volume (catalogued on archive.org under its companion study, The Don Carlos Theme): https://archive.org/details/doncarlosthemeha0000fred',
+    'W. R. S. Ralston, The Songs of the Russian People (1872), pp. 251–253, quoted on the beard of Volos and St Vlas, and paraphrased on Afanasyev’s view of Volos as an epithet of Perun: https://archive.org/details/songsofrussianpe00ralsuoft',
     'The Tale of the Armament of Igor, ed. and trans. Leonard A. Magnus (1915): https://archive.org/details/taleofarmamentof00magnuoft',
     'V. V. Ivanov and V. N. Toporov, Issledovanija v oblasti slavjanskih drevnostej (1974)',
     'Radoslav Katičić, Božanski boj (2008)',

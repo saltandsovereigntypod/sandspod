@@ -117,9 +117,9 @@ That is almost all the chronicle gives us. Eight years later Vladimir was baptiz
             },
             {
               heading: 'The scolding sermons',
-              body: `What we have next is the Church complaining. Old Russian sermons from the eleventh to fourteenth centuries, such as the Sermon of a Certain Christ-Lover, list the gods people still pray to in secret, and Mokosh is often among them, next to Perun, Khors and the Rod and Rozhanitsy, the spirits of birth and fate. A sixteenth-century penitential manual, a guide for priests hearing confession, asks women whether they have “gone to Mokosh.”
+              body: `What we have next is the Church complaining. Old Russian sermons from the eleventh to fourteenth centuries, such as the Sermon of a Certain Christ-Lover, list the gods people still pray to in secret, and Mokosh is often among them, next to Perun, Khors and the Rod and Rozhanitsy, the spirits of birth and fate. Sixteenth-century guides for priests hearing confession go further. One question asks the penitent whether they have gone about with impious women and prayed to the vilas, to Rod and the Rozhanitsy, to Perun, Khors and Mokosh, and eaten and drunk in their honour. Another, in a small village rulebook, asks simply, “Did you go to Mokusha?”
 
-So for five centuries after conversion, women were still doing something they called going to Mokosh. We do not know exactly what. It may have been a gathering, a visit to a holy place, a spinning custom, or a prayer at a well. The fact that confessors asked women in particular is telling.`,
+That last question is less clear than it looks. Many scholars think mokusha there means a wise woman or sorceress, someone you visited for a charm, rather than the goddess herself. Either way, the picture is of people, and especially women, still keeping company with the old powers long after conversion, in ways the Church could name but not stop.`,
             },
             {
               heading: 'Her name',
@@ -135,8 +135,8 @@ Today you will read that she is Perun’s wife, the Great Mother of all Slavs, a
             },
           ],
           knowAndDont: {
-            known: 'Mokosh was the only goddess among Vladimir’s idols in 980. Church sermons from the eleventh to fourteenth centuries name her among the gods still worshipped, and a sixteenth-century penitential asks women whether they had gone to Mokosh. Place names keep her name in several Slavic countries.',
-            unknown: 'We have no description of her image, myths, festivals or prayers. Her name’s meaning is debated. That she was Perun’s wife, a mother goddess, an earth goddess or the same as Mother Damp Earth are all modern interpretations.',
+            known: 'Mokosh was the only goddess among Vladimir’s idols in 980. Church sermons from the eleventh to fourteenth centuries name her among the gods still worshipped, and sixteenth-century confession questions still list her among the old gods people prayed to. Place names keep her name in several Slavic countries.',
+            unknown: 'We have no description of her image, myths, festivals or prayers. Her name’s meaning is debated. Whether the sixteenth-century question “Did you go to Mokusha?” means the goddess or a village wise woman is disputed. That she was Perun’s wife, a mother goddess, an earth goddess or the same as Mother Damp Earth are all modern interpretations.',
           },
           inPractice: 'Most practitioners today speak to Mokosh simply and familiarly, as to a grandmother of the house, without elaborate titles. Write her few firm facts on the first page of your notebook, and keep the beliefs you meet later on separate pages, marked as modern.',
           reflect: [
@@ -146,7 +146,7 @@ Today you will read that she is Perun’s wife, the Great Mother of all Slavs, a
           further: [
             'The Russian Primary Chronicle, trans. Samuel H. Cross (1930), entry for 980',
             'Linda J. Ivanits, Russian Folk Belief (1989), on Mokosh and Paraskeva Pyatnitsa',
-            'W. R. S. Ralston, The Songs of the Russian People (1872), pp. 102–3',
+            'W. R. S. Ralston, The Songs of the Russian People (1872), pp. 102–103',
           ],
           library: ['traditional/deity/mokosh', 'traditional/deity/perun'],
         },
@@ -170,9 +170,9 @@ Mokosh is never called a fate-spinner in any source. But modern writers often li
             },
             {
               heading: 'Mokosha in the north',
-              body: `The most direct folk memory comes from the Russian north. Nineteenth-century reports from the Olonets and Vologda regions tell of a spirit called Mokosha, or Mokusha, who walked the house at night during Lent. If a woman had left unspun tow on her distaff, Mokosha might spin it badly or tangle it; if she was angry, she sheared the sheep in the night, and people heard her at it.
+              body: `The most direct folk memory comes from the Russian north. In the 1880s the ethnographer Elpidifor Barsov recorded, in the Olonets region, a spirit called Mokusha who went about among people during Great Lent, spinning wool at night and shearing the sheep. When the sheep rubbed off loose wool in spring, people said, “Mokusha has sheared the sheep.” When a spindle whirred in the dark, Mokusha was spinning. Her small offering was a tuft of wool left in the shears overnight.
 
-Women would say, if a sheep came in oddly shorn, that Mokosha had been at it. This is not a grand goddess. It is a sharp-eyed household power who checks that the work is done, and done right, and punishes laziness and work on forbidden days.`,
+This is not a grand goddess. It is a household power with sharp eyes, close kin to the kikimora, the spinning house-spirit who in other villages was said to tangle the work of a careless or Friday-working spinner. It shows how deeply spinning, sheep and night-work stayed bound up with her name.`,
             },
             {
               heading: 'Mother Damp Earth',
@@ -182,8 +182,8 @@ Many modern writers treat Mokosh and Mother Damp Earth as one. The sources do no
             },
           ],
           knowAndDont: {
-            known: 'The central place of spinning in Slavic village life and the winter spinning bees are well documented. South and East Slavic folk beliefs in fate-women and Rod and the Rozhanitsy are recorded by Church writers and ethnographers. A spinning, sheep-shearing spirit called Mokosha is reported from the Russian north in the nineteenth century. Mother Damp Earth is a well-attested folk concept.',
-            unknown: 'Whether the pagan Mokosh was a fate-goddess, an earth goddess, or neither is not known. The link between Mokosh and Mother Damp Earth is a modern equation. The northern Mokosha may be a faded memory of the goddess or a separate household spirit who shares her name.',
+            known: 'The central place of spinning in Slavic village life and the winter spinning bees are well documented. South and East Slavic folk beliefs in fate-women and Rod and the Rozhanitsy are recorded by Church writers and ethnographers. A spinning, sheep-shearing spirit called Mokusha, given a tuft of wool in the shears, was recorded by Barsov in the Olonets region in the 1880s. Mother Damp Earth is a well-attested folk concept.',
+            unknown: 'Whether the pagan Mokosh was a fate-goddess, an earth goddess, or neither is not known. The link between Mokosh and Mother Damp Earth is a modern equation. The northern Mokusha may be a faded memory of the goddess or a separate household spirit who shares her name.',
           },
           inPractice: 'Rodnovers and folk practitioners honour Mokosh through work: spinning, weaving, embroidery, mending, baking. Many begin a piece of handwork with a few words to her and finish it the same way. Pouring a little water and grain onto the earth, or into a plant pot, is the commonest offering.',
           reflect: [
@@ -217,9 +217,9 @@ Women brought her offerings of flax, yarn, wool and small coins, tying them to h
             },
             {
               heading: 'Is Paraskeva Mokosh?',
-              body: `Many scholars think Paraskeva Pyatnitsa took over much of Mokosh’s role, because the two share spinning, women, water and fertility, and because the Friday taboos look like an older women’s observance wearing a saint’s name. The sixteenth-century question “have you gone to Mokosh?” comes from the same world as the Friday customs.
+              body: `Many scholars of the twentieth century, Toporov and Rybakov among them, thought Paraskeva Pyatnitsa took over much of Mokosh’s role, because the two share spinning, women, water and fertility, and because the Friday taboos look like an older women’s observance wearing a saint’s name.
 
-But it is not proven, and it should be said with care. Paraskeva is a Christian saint with her own history and her own living devotees. For Orthodox women who keep her Fridays today, she is not a disguised goddess. If you borrow her customs, do it knowing they come from a Christian folk practice.`,
+But it is not proven, and more recent scholars, including Eve Levin, argue that Paraskeva’s spinning, water and Friday all have Christian roots: Friday was the day of the Passion and of fasting, and the bans on women’s work grew from that. Say it with care. Paraskeva is a Christian saint with her own history and her own living devotees. For Orthodox women who keep her Fridays today, she is not a disguised goddess. If you borrow her customs, do it knowing they come from a Christian folk practice.`,
             },
             {
               heading: 'Using the Friday wisely',
@@ -230,7 +230,7 @@ If you have to work on Fridays, as most people do, keep the taboo where you can:
           ],
           knowAndDont: {
             known: 'St Paraskeva Pyatnitsa was widely honoured in Russia, Ukraine and Belarus as a patron of spinning, women, marriage, markets and wells, with strict taboos against women’s work on Fridays and offerings of flax and yarn. The Stoglav council of 1551 condemned self-appointed prophets of Pyatnitsa, and Church writers objected to excessive Friday observance. Her feast is 28 October (Julian) or 10 November (Gregorian).',
-            unknown: 'Whether Paraskeva’s cult directly continues the worship of Mokosh is a widely held scholarly hypothesis, not a proven fact. Whether the pagan Mokosh had any link to Friday is unknown; the week itself came to the Slavs with Christianity.',
+            unknown: 'Whether Paraskeva’s cult directly continues the worship of Mokosh is an older, still popular scholarly hypothesis that several recent scholars reject; it is not a proven fact. Whether the pagan Mokosh had any link to Friday is unknown; the week itself came to the Slavs with Christianity.',
           },
           inPractice: 'Keep Friday evenings as her rest: no sewing, mending or washing, a fresh cloth on the shrine, a cup of water poured for her. On or near 10 November, some Rodnovers hold a Mokosh feast with bread, grain and offerings of thread; others hold it at the last Friday of October after the harvest.',
           reflect: [
@@ -333,7 +333,7 @@ Offerings of food go out within a day, to the earth or the birds. Water goes ont
             },
             {
               heading: 'What to avoid',
-              body: `Do not spin, sew, knit, mend or do laundry on Friday evenings in her name; that is the one thing every source agrees she, or her saint, disliked. Do not leave work sloppily unfinished on her shrine; the northern Mokosha punished tangled tow.
+              body: `Do not spin, sew, knit, mend or do laundry on Friday evenings in her name; that is the one thing every source agrees she, or her saint, disliked. Do not leave work sloppily unfinished on her shrine; northern house-spirits of the spindle were said to tangle a careless spinner’s work.
 
 Do not use her for magic aimed at controlling someone’s fertility, marriage or fate. Spinning someone else’s thread for them is not a gift. Be careful with plastic or acrylic yarn as an offering outdoors; birds and animals can be trapped or poisoned by it. And do not treat Paraskeva’s Orthodox devotees as secret pagans or her icons as goddess images to collect.`,
             },
@@ -502,7 +502,8 @@ Do not use her for magic aimed at controlling someone’s fertility, marriage or
     },
   ],
   sources: [
-    'The Russian Primary Chronicle, trans. Samuel H. Cross (1930), entry for 980, quoted: https://archive.org/details/doncarlosthemeha0000fred',
+    'The Russian Primary Chronicle, trans. Samuel H. Cross, in Harvard Studies and Notes in Philology and Literature vol. XII (1930; public domain in the US since 2026), entry for 980, quoted and checked against the scan of that volume (catalogued on archive.org under its companion study, The Don Carlos Theme): https://archive.org/details/doncarlosthemeha0000fred',
+    'Sixteenth-century confession questions and the Olonets Mokusha (E. V. Barsov, 1887; N. M. Gal’kovskii, 1916), as summarised in Ivanits (1989) and later surveys; paraphrased and quoted in translation only in short phrases',
     'W. R. S. Ralston, The Songs of the Russian People (1872), p. 102, quoted on Mokosh and Astarte: https://archive.org/details/songsofrussianpe00ralsuoft',
     'Linda J. Ivanits, Russian Folk Belief (1989), on Mokosh, Mokosha and Paraskeva Pyatnitsa',
     'Judith Kalik and Alexander Uchitel, Slavic Gods and Heroes (2019)',

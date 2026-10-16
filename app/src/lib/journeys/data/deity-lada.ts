@@ -16,7 +16,7 @@ This journey welcomes every kind of love and every kind of household.`,
   notes: [
     'Lada may be a later scholarly or folk construct rather than an ancient goddess. This journey says so plainly and treats modern devotion to her as valid on its own terms.',
     'Her daughter Lelya, and the shepherd Lel, come largely from nineteenth-century scholarship and from Ostrovsky’s 1873 play The Snow Maiden; Rybakov’s mother–daughter pair is twentieth-century.',
-    'Harmony is not the same as keeping the peace at any cost. Nothing in a devotion to Lada asks anyone to stay in a harmful or abusive relationship. If you are not safe at home, contact a domestic abuse service.',
+    'Harmony is not the same as keeping the peace at any cost. Nothing in a devotion to Lada asks anyone to stay in a harmful or abusive relationship. If you are not safe at home, contact a domestic abuse service: in the UK the National Domestic Abuse Helpline (0808 2000 247), in the US the National Domestic Violence Hotline (1-800-799-7233), or your local emergency number if you are in danger now.',
     'Lada is a goddess of love in modern practice, and this journey welcomes every kind of love: same-sex, queer, polyamorous, chosen family and friendship, as well as marriage.',
     'Some Rodnover groups carry nationalist or racial politics or narrow views of women’s roles. This app is inclusive.',
   ],
@@ -113,7 +113,7 @@ This matters because those sources do name Mokosh, the only goddess on Vladimir�
               heading: 'Długosz and the chroniclers',
               body: `She first appears as a deity in the 1400s, in the Annals of the Polish historian Jan Długosz. Długosz wanted the Poles to have a classical pantheon, so he matched names to Roman gods. His Lada is the Polish Mars, a god of war; his Polish Venus is Dzidzilela, and his Ceres is Marzanna. He also mentions a temple on the Łysa Góra mountain where people supposedly honoured Lada, Boda and Leli.
 
-Two centuries later, a Ukrainian chronicle of the 1670s, often called the Gustyn Chronicle, describes Lado as “the God of marriage, of mirth, of pleasure, and of general happiness,” to whom people offered sacrifices before a wedding. That is the line Ralston quotes in 1872, and it is the seed of the Lada you know. Notice the gender shift: here Lado is a god, and in Długosz Lada is a war god.`,
+Some two centuries later, a Ukrainian chronicle of the early 1600s, the Hustyn (or Gustyn) Chronicle, followed by the widely read Kievan Synopsis of 1674, describes Lado as “the God of marriage, of mirth, of pleasure, and of general happiness,” to whom people offered sacrifices before a wedding. That is the line Ralston quotes in 1872, and it is the seed of the Lada you know. Notice the gender shift: here Lado is a god, and in Długosz Lada is a war god.`,
             },
             {
               heading: 'The Romantics, the sceptics and Rybakov',
@@ -129,7 +129,7 @@ You can hold this honestly and still love her. Many living religions honour figu
             },
           ],
           knowAndDont: {
-            known: 'Lada is absent from all pagan-era and early Christian sources. She first appears as a deity in Jan Długosz’s fifteenth-century Annals, as a Polish Mars. A seventeenth-century Ukrainian chronicle calls Lado a god of marriage and merriment. Nineteenth-century scholars made her a spring and love goddess; Brückner argued she was a misreading of refrains; Rybakov made her a mother goddess in 1981.',
+            known: 'Lada is absent from all pagan-era and early Christian sources. She first appears as a deity in Jan Długosz’s fifteenth-century Annals, as a Polish Mars. The seventeenth-century Hustyn Chronicle and Kievan Synopsis call Lado a god of marriage and merriment. Nineteenth-century scholars made her a spring and love goddess; Brückner argued she was a misreading of refrains; Rybakov made her a mother goddess in 1981.',
             unknown: 'Whether any real pagan goddess or god stood behind the refrain “lado” is unknown. Her form, myths, family and worship before the fifteenth century are entirely unattested.',
           },
           inPractice: 'Rodnovers who honour Lada generally do so as a goddess of love and harmony, whatever her age. Write the honest history on the first page of your notebook. When you speak of her to others, try “Lada, as she is honoured today,” rather than “the ancient goddess Lada.”',
@@ -138,7 +138,7 @@ You can hold this honestly and still love her. Many living religions honour figu
             'How do I feel about devotion that grew from songs and scholarship rather than temples?',
           ],
           further: [
-            'W. R. S. Ralston, The Songs of the Russian People (1872), pp. 104–5',
+            'W. R. S. Ralston, The Songs of the Russian People (1872), pp. 104–105',
             'Aleksander Brückner, Mitologia słowiańska (1918) and Mitologia polska (1924) (Polish)',
             'Judith Kalik and Alexander Uchitel, Slavic Gods and Heroes (2019), on Długosz and the invented gods',
           ],
@@ -497,8 +497,9 @@ Do not pick flowers from protected land or take more than a few from any patch. 
     },
   ],
   sources: [
-    'W. R. S. Ralston, The Songs of the Russian People (1872), pp. 104–5 on Lado and Lada, and on Semik, quoted: https://archive.org/details/songsofrussianpe00ralsuoft',
-    'The Russian Primary Chronicle, trans. Samuel H. Cross (1930), entry for 980 (for her absence): https://archive.org/details/doncarlosthemeha0000fred',
+    'W. R. S. Ralston, The Songs of the Russian People (1872), pp. 104–105 on Lado and Lada and p. 233 on Semik, quoted (the proverb’s “klad” is misread as “Idad” or “Mad” in archive.org’s OCR; the printed page reads klad, Russian for treasure): https://archive.org/details/songsofrussianpe00ralsuoft',
+    'The Hustyn (Gustyn) Chronicle (early 17th century) and the Kievan Synopsis (1674), on Lado, known here through Ralston’s quotation',
+    'The Russian Primary Chronicle, trans. Samuel H. Cross, in Harvard Studies and Notes in Philology and Literature vol. XII (1930), entry for 980 (for her absence): https://archive.org/details/doncarlosthemeha0000fred',
     'Jan Długosz, Annales seu cronicae incliti Regni Poloniae (15th century), on the Polish gods (paraphrased)',
     'Aleksander Brückner, Mitologia słowiańska (1918) and Mitologia polska (1924)',
     'B. A. Rybakov, Yazychestvo drevnikh slavyan (1981)',
