@@ -11,7 +11,9 @@
  * on the phone. Location is only ever asked for when you press a button.
  */
 (function (global) {
-  const PLACE_KEY = "salt.sky.place";
+  // The app's own key, shared with /today/sky/ and the altar; the older practice-page key is still read.
+  const PLACE_KEY = "sky.place";
+  const OLD_PLACE_KEY = "salt.sky.place";
 
   const store = {
     get(key, fallback = null) {
@@ -53,14 +55,17 @@
   }
 
   function getPlace() {
-    const saved = store.get(PLACE_KEY);
+    const saved = store.get(PLACE_KEY) ?? store.get(OLD_PLACE_KEY);
     if (!saved || !validPlace(Number(saved.latitude), Number(saved.longitude))) return null;
     return { ...saved, latitude: Number(saved.latitude), longitude: Number(saved.longitude) };
   }
 
   function setPlace(next) {
     if (next) store.set(PLACE_KEY, next);
-    else store.remove(PLACE_KEY);
+    else {
+      store.remove(PLACE_KEY);
+      store.remove(OLD_PLACE_KEY);
+    }
     global.dispatchEvent?.(new CustomEvent("saltPlaceChanged", { detail: next }));
   }
 

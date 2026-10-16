@@ -53,14 +53,16 @@
 
   // The person's place for seasons and hemispheres, as the app keeps it:
   // only in this browser, rounded to about a kilometre, never synced or sent.
-  const PLACE_KEY = "salt.sky.place";
+  // The app's own key, which /today/sky/ and the altar use too; the older practice-page key is still read.
+  const PLACE_KEY = "sky.place";
+  const OLD_PLACE_KEY = "salt.sky.place";
   const round = (n) => Math.round(n * 100) / 100;
   function validPlace(latitude, longitude) {
     return Number.isFinite(latitude) && Number.isFinite(longitude) && Math.abs(latitude) <= 90 && Math.abs(longitude) <= 180;
   }
   function readPlace(storage = global.localStorage) {
     try {
-      const raw = JSON.parse(storage.getItem(PLACE_KEY) || "null");
+      const raw = JSON.parse(storage.getItem(PLACE_KEY) || storage.getItem(OLD_PLACE_KEY) || "null");
       return raw && validPlace(raw.latitude, raw.longitude) ? raw : null;
     } catch {
       return null;
@@ -81,6 +83,7 @@
   function clearPlace(storage = global.localStorage) {
     try {
       storage.removeItem(PLACE_KEY);
+      storage.removeItem(OLD_PLACE_KEY);
     } catch {
       /* nothing saved */
     }

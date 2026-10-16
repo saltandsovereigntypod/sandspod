@@ -40,7 +40,7 @@ function loadBundle() {
 test("the place is validated, rounded to about a kilometre and kept under the shared key", () => {
   const win = fakeWindow();
   const PB = loadHelpers(win);
-  assert.equal(PB.PLACE_KEY, "salt.sky.place");
+  assert.equal(PB.PLACE_KEY, "sky.place"); // the app's key, shared with /today/sky/ and the altar
   assert.equal(PB.validPlace(91, 0), false);
   assert.equal(PB.validPlace(-33.8, 151.2), true);
   assert.equal(PB.setManualPlace(200, 0), false);
@@ -50,6 +50,12 @@ test("the place is validated, rounded to about a kilometre and kept under the sh
   assert.ok(win.events.includes("saltPlaceChanged"));
   PB.clearPlace();
   assert.equal(PB.getPlace(), null);
+});
+
+test("a place saved under the practice pages' older key is still found", () => {
+  const win = fakeWindow();
+  win.data.set("salt.sky.place", JSON.stringify({ latitude: 51.5, longitude: -0.13, source: "manual" }));
+  assert.equal(loadHelpers(win).getPlace().latitude, 51.5);
 });
 
 test("typed numbers accept commas and the minus sign, and blanks are not zero", () => {
