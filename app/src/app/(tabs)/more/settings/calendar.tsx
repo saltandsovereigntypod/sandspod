@@ -3,9 +3,12 @@ import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
+import { CalendarCounting } from '../../../../components/more/CalendarCounting';
 import { Card, Chips, Field, MenuList, Notice, Section, SwitchRow } from '../../../../components/more/ui';
 import { SettingsForm } from '../../../../components/more/SettingsForm';
 import { shortDate } from '../../../../lib/calendar';
+import { calendarEventsBetween, calendarSettingsKey, mergeCalendarEvents } from '../../../../lib/calendars';
+import { usePlace } from '../../../../lib/location';
 import { customRepeat, HIDEABLE_TRADITIONS, hiddenTraditions, holidayChoice, holidaysBetween, pickId, TRADITIONS, type CustomHoliday, type Recurrence } from '../../../../lib/holidays';
 import { primaryTradition } from '../../../../lib/traditionDay';
 import { newId } from '../../../../lib/altar/uid';
@@ -99,6 +102,8 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
     <>
       <Text style={type.body}>Choose the calendars you keep. Their holidays show on Today on the day, with what they mean, and On the horizon shows the next one.</Text>
 
+      <CalendarCounting draft={draft} set={(key, value) => set(key, value)} />
+
       <Section label="Your calendars">
         <MenuList>
           {shown.map((tradition) => (
@@ -184,11 +189,16 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
 
 /** Every holiday from the chosen calendars for the next twelve months (below Save). */
 function YearAhead({ draft }: { draft: Settings }) {
+  const place = usePlace();
+  const calendarKey = calendarSettingsKey(draft);
   const year = useMemo(() => {
     const now = new Date();
-    return holidaysBetween(now, new Date(now.getFullYear() + 1, now.getMonth(), now.getDate()), holidayChoice(draft));
+    const end = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
+    // The other calendars' observances too; of the moon's, just each month's first day.
+    const events = calendarEventsBetween(now, end, draft, place).filter((e) => e.calendar !== 'moon' || e.id.startsWith('moon-new-'));
+    return mergeCalendarEvents(holidaysBetween(now, end, holidayChoice(draft)), events);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- recompute when the calendar choice changes
-  }, [draft.calendar_traditions, draft.calendar_custom_holidays, draft.calendar_picked_holidays]);
+  }, [draft.calendar_traditions, draft.calendar_custom_holidays, draft.calendar_picked_holidays, calendarKey, place]);
 
   return (
     <Section label="The year ahead">

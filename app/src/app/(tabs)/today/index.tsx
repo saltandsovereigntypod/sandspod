@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
+import { CalendarLineList, LeadCalendarLine } from '../../../components/CalendarLines';
 import { Icon } from '../../../components/Icon';
 import { MoonDisc } from '../../../components/MoonDisc';
 import { Screen } from '../../../components/Screen';
@@ -17,6 +18,7 @@ import { nextPlan } from '../../../lib/rituals/plans';
 import { useRituals } from '../../../lib/rituals/store';
 import { Tags } from '../../../components/more/ui';
 import { dateFrom, daysBetween, shortDate, timeOfDay } from '../../../lib/calendar';
+import { calendarEventsBetween, calendarSettingsKey, todayLines } from '../../../lib/calendars';
 import { holidayChoice } from '../../../lib/holidays';
 import { findByName, todayLibraryHref, useLibrary } from '../../../lib/library';
 import { usePlace } from '../../../lib/location';
@@ -53,11 +55,26 @@ export default function Today() {
   const { settings } = useMySettings();
   const choiceKey = `${settings?.calendar_traditions ?? ''}|${settings?.calendar_custom_holidays ?? ''}|${settings?.calendar_picked_holidays ?? ''}`;
   const primary = primaryTradition(settings, holidayChoice(settings));
+  const place = usePlace();
+  const placeKey = place ? `${place.latitude.toFixed(1)},${place.longitude.toFixed(1)}` : '';
+  const calendarKey = calendarSettingsKey(settings);
+  // The other calendars: the moon's date when it leads, a line for each shown, and their observances.
+  const lines = useMemo(
+    () => todayLines(now, settings, place),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- the keys stand in for the settings and place they read
+    [now, calendarKey, placeKey],
+  );
+  const calendarEvents = useMemo(
+    () => calendarEventsBetween(now, new Date(now.getFullYear(), now.getMonth(), now.getDate() + 60), settings, place),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- the keys stand in for the settings and place they read
+    [now, calendarKey, placeKey],
+  );
+  const lead = lines.find((line) => line.lead) ?? null;
+  const beside = lines.filter((line) => !line.lead);
   // eslint-disable-next-line react-hooks/exhaustive-deps -- choiceKey stands in for the calendar settings it reads
-  const today = useMemo(() => buildToday(now, holidayChoice(settings), primary), [now, choiceKey, primary]);
+  const today = useMemo(() => buildToday(now, holidayChoice(settings), primary, calendarEvents), [now, choiceKey, primary, calendarEvents]);
   const clock = useClock();
   const sky = useMemo(() => skyNow(clock, { planets: false }), [clock]);
-  const place = usePlace();
   const here = useMemo(() => (place ? placeSky(clock, place) : null), [clock, place]);
   const show = (settings?.today_show as string) || 'both';
 
@@ -94,10 +111,12 @@ export default function Today() {
   return (
     <Screen>
       <View style={styles.header}>
+        {lead && <LeadCalendarLine line={lead} />}
         <Text style={[type.eyebrow, styles.date]}>{today.dateLine}</Text>
         <Text style={styles.ruler}>{today.rulerLine}</Text>
         {today.tradition && <Text style={[type.caption, styles.center]}>{today.tradition.line}</Text>}
         {today.tradition?.detail && <Text style={[type.caption, styles.center, styles.muted]}>{today.tradition.detail}</Text>}
+        <CalendarLineList lines={beside} />
       </View>
 
       <View style={side ? styles.sideBySide : styles.stacked}>

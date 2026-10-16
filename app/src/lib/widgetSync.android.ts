@@ -5,10 +5,12 @@
 import { useEffect } from 'react';
 import { AppState } from 'react-native';
 
+import { calendarSettingsKey, leadLine } from './calendars';
 import { holidayChoice } from './holidays';
+import { usePlace } from './location';
 import { useRituals } from './rituals/store';
 import { useMySettings } from './settings/store';
-import { widgetTimeline } from './widgetTimeline';
+import { WIDGET_DAYS, widgetTimeline } from './widgetTimeline';
 
 const DAY_WIDGETS = ['MoonWidget', 'HolidayWidget', 'ComingUpWidget', 'RitualWidget'];
 
@@ -30,13 +32,16 @@ export async function redrawAndroidWidgets(names: string[]) {
 export function useWidgetSync() {
   const { settings } = useMySettings();
   const { plans, templates } = useRituals();
-  const choiceKey = `${settings?.calendar_traditions ?? ''}|${settings?.calendar_custom_holidays ?? ''}|${settings?.calendar_picked_holidays ?? ''}`;
+  const place = usePlace();
+  const choiceKey = `${settings?.calendar_traditions ?? ''}|${settings?.calendar_custom_holidays ?? ''}|${settings?.calendar_picked_holidays ?? ''}|${calendarSettingsKey(settings)}|${place ? `${place.latitude.toFixed(1)},${place.longitude.toFixed(1)}` : ''}`;
 
   useEffect(() => {
     const send = async () => {
       try {
         const { writeDays } = await import('../widgets/android/store');
-        const timeline = widgetTimeline(new Date(), holidayChoice(settings), plans, templates);
+        const timeline = widgetTimeline(new Date(), holidayChoice(settings), plans, templates, WIDGET_DAYS, {
+          lead: (day) => leadLine(day, settings, place),
+        });
         await writeDays(timeline.map(({ date, props }) => ({ date: date.toISOString(), value: props })));
         await redrawAndroidWidgets(DAY_WIDGETS);
       } catch {

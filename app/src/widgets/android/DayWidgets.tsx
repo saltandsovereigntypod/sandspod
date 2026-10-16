@@ -72,6 +72,7 @@ export function MoonWidgetAndroid({ day, box }: { day: WidgetDayProps; box: Box 
             <Words text={day.phase} size={24} weight="600" font={serif} />
             <Words text={`in ${day.sign} · ${lit} lit`} size={13} color={muted} />
             <Words text={`Next: ${day.next}`} size={13} color={gold} />
+            {day.calendarLine ? <Words text={day.calendarLine} size={13} font={serif} /> : null}
           </Col>
         </Row>
         {today(4)}
@@ -102,7 +103,8 @@ export function MoonWidgetAndroid({ day, box }: { day: WidgetDayProps; box: Box 
       <Frame box={box} row gap={14}>
         {moonColumn}
         <Col gap={8} flex={1}>
-          {today(3)}
+          {day.calendarLine ? <Words text={day.calendarLine} size={12} weight="600" font={serif} /> : null}
+          {today(day.calendarLine ? 2 : 3)}
         </Col>
       </Frame>
     );
