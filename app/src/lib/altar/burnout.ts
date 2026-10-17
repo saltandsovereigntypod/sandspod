@@ -1,18 +1,27 @@
 // Candles on saved altars burn down even when no one has the altar open: these
 // find the altars with a candle that has run out, and when the next one will.
 
-import { nextBurnout, settleCandles } from './editor.ts';
+import { nextBurnout, settleAltar, settleCandles } from './editor.ts';
+import { incenseLife, isIncense } from './incense.ts';
 import { candleLife } from './livingState.ts';
 import { altarDataFromDocument, documentFromAltar } from './snapshot.ts';
 import type { AltarDocument } from './snapshot.ts';
 import type { SavedAltar } from './types.ts';
 
-/** The saved altars that changed because a candle on them went out, with their settled documents. */
-export function settleAltars(altars: SavedAltar[], now: string): { altar: SavedAltar; doc: AltarDocument }[] {
+/**
+ * The saved altars that changed because a candle or incense on them went out
+ * (and, with `moon`, because something on them was charged under a moon),
+ * with their settled documents.
+ */
+export function settleAltars(
+  altars: SavedAltar[],
+  now: string,
+  options: { moon?: boolean; newMoon?: (altarId: string) => boolean } = {},
+): { altar: SavedAltar; doc: AltarDocument }[] {
   const changed: { altar: SavedAltar; doc: AltarDocument }[] = [];
   for (const altar of altars) {
     const doc = documentFromAltar(altar);
-    const settled = settleCandles(doc, now);
+    const settled = options.moon ? settleAltar(doc, now, { newMoon: !!options.newMoon?.(altar.id) }) : settleCandles(doc, now);
     if (settled !== doc) changed.push({ altar, doc: settled });
   }
   return changed;
@@ -43,8 +52,7 @@ export function burnoutTimes(altars: SavedAltar[], now: Date, days = 7, limit = 
   const times = new Set<number>();
   for (const altar of altars) {
     for (const object of documentFromAltar(altar).objects) {
-      if (object.type !== 'candle' || object.lit !== 'true') continue;
-      const { burnoutAt } = candleLife(object, now);
+      const burnoutAt = object.type === 'candle' && object.lit === 'true' ? candleLife(object, now).burnoutAt : isIncense(object) ? incenseLife(object, now.getTime()).endsAt : null;
       if (burnoutAt != null && burnoutAt > now.getTime() && burnoutAt <= until) times.add(burnoutAt);
     }
   }

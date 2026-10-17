@@ -1,0 +1,514 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-janus',
+  kind: 'deity',
+  paths: ['roman'],
+  deityRef: 'traditional/deity/janus',
+  title: 'Janus of the Doorway',
+  summary:
+    'A month with Janus, the two-faced god of doors and beginnings, named first in every Roman prayer: thresholds, the Kalends, January and the sweet gifts of the new year.',
+  welcome:
+    'This journey runs about a lunar month, and it starts, fittingly, at your front door. You will learn who Janus was, why Romans called him first in every prayer, how they honoured him on the Kalends and at the new year, and how people keep him today. There is a nine-night practice at the threshold, and at the end a self-dedication.\n\nIt is a self-dedication, not an initiation. In Rome the king of sacrifices (rex sacrorum) offered to Janus for the state; you will not become a priest of any kind. But Janus was everyone\'s god at every door and every beginning, and the household side of his worship is open to anyone.',
+  about:
+    'Janus is the Roman god of doorways, gates, passages and beginnings, shown with two faces looking forward and back. Romans named him first in every prayer, so that through him they could reach the other gods; he received offerings on the Kalends of every month, and January, the month of the new year, is named after him. His most famous shrine in the Forum had doors that stood open in war and were closed only in peace, which happened very rarely. Janus is unusually Roman: the Greeks had no god like him, and Ovid says so. He has few myths and a great deal of everyday presence: at the front door, at the start of the day, at the turning of the year. Modern Roman polytheists open every rite with incense and wine for him, and keep the Kalends of January with sweet gifts and good words.',
+  notes: [
+    'Janus is a god of real thresholds. He suits beginnings, transitions and doorways, not general wish-granting.',
+    'Janus has no Greek counterpart, so there is less interpretatio graeca to unpick than with most Roman gods. Most of what we know comes from Roman sources, above all Ovid\'s Fasti book 1 and Macrobius.',
+    'One myth in Ovid involves Janus assaulting a nymph, Crane. The journey mentions it honestly in the lesson on hard things.',
+    'Modern Roman polytheism is small and varied. This app is inclusive: Janus is god of every door, and his worship is open to anyone who approaches respectfully.',
+    'Figs, raisins and grapes are traditional new-year gifts but are toxic to dogs and cats. Keep them out of reach.',
+  ],
+  holyDays: ['saturnalia'],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'At the front door',
+      intro:
+        'What better place to begin? This opening rite greets Janus at your own threshold, in the Roman manner: washed hands, covered head, incense and wine, and exact words.',
+      days: 2,
+      lessons: [],
+      practices: [
+        {
+          id: 'janus-doors',
+          title: 'Notice the doors',
+          instructions:
+            'For two days, pause for one breath each time you go through your front door. Coming out, look ahead; coming in, look back at the day. That is the two faces of Janus, practised.',
+          times: 2,
+          every: 'day',
+          prompt: 'How many doors did I pass through without noticing? What changed when I paused?',
+        },
+      ],
+      rite: {
+        title: 'Greeting Janus at the door',
+        summary: 'Purify, cover your head, then offer incense and wine to Father Janus at the threshold, with Cato\'s words.',
+        minutes: 20,
+        ingredients: [
+          { name: 'A bowl of clean water and a towel', ref: 'traditional/vessel/bowl' },
+          { name: 'A head covering' },
+          { name: 'Frankincense', ref: 'traditional/herb/frankincense' },
+          { name: 'An incense burner', ref: 'traditional/tool/incense_burner' },
+          { name: 'A small cup of wine or grape juice', ref: 'traditional/tool/chalice' },
+          { name: 'A small offering dish', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'A key (your house key is ideal)', ref: 'traditional/tool/key' },
+          { name: 'A sprig of bay', ref: 'traditional/herb/bay', optional: true },
+        ],
+        preparation:
+          'Clean your front door and the step or floor in front of it, inside and out if you can. Set the burner, dish and cup on a small stool or tray just inside the door. Read through the words until you can say them smoothly.',
+        steps: [
+          {
+            title: 'Wash and veil',
+            instructions: 'Wash your hands in the clean water and dry them. Draw a fold of cloth over your head, as Romans did to pray.',
+          },
+          {
+            title: 'Open the door',
+            instructions: 'Open the front door and stand in the doorway, facing out. Hold your key.',
+          },
+          {
+            title: 'Incense',
+            instructions: 'Light the incense and give a few grains. Raise your free hand, palm up.',
+            spoken: 'Father Janus, god of the doorway,\nfirst of the gods in every prayer,\nPatulcius who opens, Clusius who closes,\nor by whatever name it is right to call you:\nbe honoured by this incense.',
+          },
+          {
+            title: 'Wine',
+            instructions: 'Pour a little wine into the dish. Cato\'s farmer prayed to Janus that he be "willing and favourable to me and my children, my house and my household". Say it in English.',
+            spoken: 'Father Janus, I pray good prayers,\nthat you may be willing and favourable\nto me, my house and my household.\nBe honoured by this wine.',
+          },
+          {
+            title: 'Look both ways',
+            instructions: 'Look out through the door for a minute: what lies ahead. Then turn and look back into your home: what lies behind and within.',
+            minutes: 2,
+          },
+          {
+            title: 'Close',
+            instructions: 'Close the door gently. Name Vesta, last, turn to your right and uncover your head.',
+            spoken: 'Vesta of the hearth, be honoured.',
+          },
+        ],
+        closing: 'Leave the wine on the step or just inside until evening, then pour it on the earth or a plant outside your door. Keep the bay by the door.',
+        safety:
+          'Never leave incense burning unattended, and keep it clear of coats and curtains by the door. Wine and grape juice are toxic to dogs and cats; do not leave the dish where pets can reach it.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'The god who looks both ways',
+      intro:
+        'Five lessons, about two days each: who Janus is; his gates and stories; why he comes first in prayer; the Kalends and the new year; and how people keep him today, with the hard parts.',
+      days: 10,
+      lessons: [
+        {
+          id: 'janus-who',
+          title: 'Who Janus is',
+          summary: 'Doorways, passages and beginnings, and a god the Greeks did not have.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'The door itself',
+              body:
+                'The Latin for door is ianua, and an ianus was an arched passageway. Janus is the god of exactly these: the place where you pass from outside to inside, from one state to another. Romans also placed him at the beginnings of things in time: the start of the day, the start of the month, the start of the year, the start of a war or an undertaking.\n\nHis two faces look both ways, like a door that has an inside and an outside. Ovid has Janus himself explain it: every doorway has two faces, one towards the street and one towards the household god. Later Romans gave him four faces in one statue, looking to the four quarters.',
+            },
+            {
+              heading: 'A god without a Greek twin',
+              body:
+                'With most Roman gods, Greek myth was poured in over time: Jupiter became Zeus, Juno Hera, Minerva Athena. Janus resisted this. Ovid, beginning his book on the Roman year, asks him outright: "Quem tamen esse deum te dicam, Iane biformis? nam tibi par nullum Graecia numen habet." "But what god shall I say you are, two-formed Janus? For Greece has no divinity equal to you" (Fasti 1.89–90).\n\nThat makes Janus a good god to learn Roman religion through. What we know about him comes from Roman writers: Ovid, Varro, Macrobius, Cato\'s farming prayers, Livy\'s histories.',
+            },
+            {
+              heading: 'His names',
+              body:
+                'Romans called him Ianus Pater, Father Janus, as Cato does. In prayer he was Patulcius, the opener, and Clusius (or Clusivius), the closer; Ovid has him laugh at the names, saying the priest calls him one and then the other (Fasti 1.129–130). He was Geminus, the twin, Bifrons, two-browed, and Quirinus as god of the Roman citizens. Macrobius gives others: Consivius, of sowing and begetting; Iunonius, because the Kalends of every month belonged to him and Juno together. The poet Horace calls him the father of morning, Matutinus, at the start of each working day.',
+            },
+            {
+              heading: 'His signs',
+              body:
+                'His symbols are the key, which opens and locks, and the staff or rod of a doorkeeper. Coins of the early Republic, the bronze as, showed a two-faced Janus on one side and the prow of a ship on the other; Romans tossed them and called "heads or ships!" Ovid explains the ship by the story of Saturn arriving by boat (Fasti 1.229–240). His tree associations are weak; fresh bay was hung at the doors of the old public buildings at the old new year on 1 March (Ovid, Fasti 3.137–140), and Ovid names incense and wine as Janus\'s own gifts. No animal is closely his, though a ram was sacrificed to him on the Agonium of 9 January.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The connection of Janus with ianua and passages is ancient and widely accepted. Ovid\'s Fasti book 1 is our richest single source; Macrobius (Saturnalia 1.9) collects his titles. The two-faced Janus on the bronze as is common on surviving coins.',
+            unknown:
+              'Where Janus came from is unclear; some scholars think he began as the spirit of a particular gate or bridge. Ancient writers themselves offered rival theories (that he was chaos, or the sky, or the sun). His early mythology, if he had much, is lost.',
+          },
+          inPractice:
+            'Put a key on a small dish or hook by your front door and dedicate it to Janus. Touch it as you leave and come home.',
+          reflect: [
+            'Which doorway in your life are you standing in right now?',
+            'What is it like to learn a god who has very few stories?',
+          ],
+          further: [
+            'Ovid, Fasti book 1 (Latin at The Latin Library; Riley\'s 1851 prose translation is public domain)',
+            'Macrobius, Saturnalia 1.7–9 (Loeb translation by R. A. Kaster, 2011)',
+          ],
+          library: ['traditional/deity/janus', 'traditional/tool/key'],
+        },
+        {
+          id: 'janus-gates',
+          title: 'The gates of war, and other stories',
+          summary: 'The shrine whose doors closed only in peace, Janus and Saturn, and the hot springs that stopped an army.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Open in war, closed in peace',
+              body:
+                'In the Roman Forum stood the shrine of Janus Geminus, a small bronze-covered passage with doors at each end. Tradition said King Numa built it. When Rome was at war its doors stood open; when the whole Roman world was at peace they were closed. Livy says they had been closed only twice between Numa and his own day: once after the First Punic War, in 235 BC, and once by Augustus after Actium (Livy 1.19). Augustus boasted in his own record of achievements that they were closed three times during his rule.\n\nNo one is sure why open meant war. One explanation was that the god went out to help the army; another, that the doors were open so the soldiers could return. What the shrine shows is that Janus was the god of the threshold between war and peace.',
+            },
+            {
+              heading: 'Janus and Saturn',
+              body:
+                'Roman tradition made Janus an early king of Latium, living on the hill across the Tiber that still bears his name, the Janiculum. When Saturn, driven out of heaven by Jupiter, arrived by ship, Janus welcomed him and shared his kingdom, and Saturn taught the people farming. That was the golden age, remembered at the Saturnalia in December, just before the Kalends of January (Ovid, Fasti 1.233–240; Macrobius 1.7).\n\nThis is one of the few places where Janus has a story. It ties together the two great midwinter festivals: Saturn\'s feast of plenty and turned-around rules, and Janus\'s new year of good beginnings.',
+            },
+            {
+              heading: 'The hot springs',
+              body:
+                'Ovid tells a second story (Fasti 1.259–276). When the Sabines attacked Rome to avenge the carrying-off of their daughters, the girl Tarpeia betrayed the citadel to them, and Juno opened a gate. Janus, who could not undo another god\'s act, made hot springs burst from the ground at the gate, and the boiling water drove the Sabines back. A shrine was built on the spot.\n\nThe story is late and literary, but it captures something Romans felt about him: Janus is the god who controls passage, who lets things through and keeps things out.',
+            },
+            {
+              heading: 'Doors at home',
+              body:
+                'Every Roman house had a door, and a whole cluster of small divine powers were said to watch over it: Forculus for the door leaves, Cardea for the hinges, Limentinus for the threshold. Christian writers like Augustine mocked the Romans for needing three gods for one door (City of God 4.8). Whatever you think of that, it shows how seriously Romans took the line between outside and in. A bride was lifted over the threshold of her new home; stumbling on a threshold was a bad omen.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Livy (1.19) and Augustus\'s Res Gestae (13) describe the gates of Janus Geminus. Ovid tells the Saturn and Sabine stories, and Macrobius repeats and expands them. Augustine (City of God 4.8, 6.7) lists the door deities.',
+            unknown:
+              'The stories of Janus as king and host of Saturn are probably antiquarian invention rather than ancient myth. How many times the gates were really closed, and how the custom began, are uncertain. The door deities may have been more priestly lists than popular gods.',
+          },
+          inPractice:
+            'Think of one conflict in your life. At your door, ask Janus to help you close that gate in peace, and then take one practical step towards it this week.',
+          reflect: [
+            'What is "at war" in my life, and what would closing the gates look like?',
+            'How do I welcome guests and strangers at my door?',
+          ],
+          further: [
+            'Livy, History of Rome 1.19 (public-domain translations on Gutenberg)',
+            'Augustus, Res Gestae Divi Augusti 13 (public-domain translations on LacusCurtius)',
+          ],
+          library: ['traditional/deity/janus', 'traditional/deity/juno'],
+          premade: ['kitchen-threshold-salt-blessing'],
+        },
+        {
+          id: 'janus-first',
+          title: 'First in every prayer',
+          summary: 'Why Janus opens every rite, with his own words in Ovid and the farmer\'s words in Cato, and the order of a Roman prayer.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The way to all the gods',
+              body:
+                'Ovid asks Janus directly: "cur, quamvis aliorum numina placem, Iane, tibi primum tura merumque fero?", "why, though I am appeasing other gods, Janus, do I bring incense and wine to you first?" The god answers: "ut possis aditum per me, qui limina servo, ad quoscumque voles … habere deos", "so that through me, who guard the thresholds, you may have access to whatever gods you wish" (Fasti 1.171–174).\n\nThat is the whole logic. Janus is the doorkeeper of prayer. Before you speak to Jupiter or Juno or the Lares, you open the door. The pontiff who dictated the most solemn prayer in Livy begins with him: "Iane, Iuppiter, Mars pater, Quirine…", Janus, Jupiter, father Mars, Quirinus (Livy 8.9), and the consul spoke it with his head veiled.',
+            },
+            {
+              heading: 'Cato\'s prayer to Janus',
+              body:
+                'Before the harvest, Cato tells the farmer to give incense and wine as a preface to Janus, Jupiter and Juno, and then to offer a cake (strues) to Janus with these words: "Iane pater, te hac strue commovenda bonas preces precor, uti sies volens propitius mihi liberisque meis domo familiaeque meae" (On Agriculture 134).\n\nIn English: "Father Janus, in offering you this cake, I pray good prayers, that you may be willing and favourable to me and my children, my house and my household." Then wine: "Father Janus, as I prayed good prayers in offering you the cake, for the same reason be honoured by this wine." Only after Janus and Jupiter have been given their share does the farmer make the main offering, to Ceres. Janus is the opening, not the main event.',
+            },
+            {
+              heading: 'The shape you will use',
+              body:
+                'So every Roman-form rite in this app runs: wash, cover the head, incense (and often wine) to Janus first, then the god you came for, named with titles and "or by whatever name you wish to be called", the gift named exactly, the request that the god be "willing and favourable", the gift given with "be honoured" (macte esto), Vesta named last, a turn to the right, and the head uncovered.\n\nThe opening to Janus can be short, a line and a grain of incense. Romans also had a special cake for him, the ianual, mentioned by the antiquarian Festus; we do not have its recipe, so modern devotees use a small cake of spelt, salt and honey, or a libum.',
+            },
+            {
+              heading: 'Good words',
+              body:
+                'Because beginnings carry omens, Romans were careful what was said at the start of anything. Ovid has Janus explain that "omens are present in beginnings" (omina principiis inesse solent, Fasti 1.178): people listen anxiously to the first word, and the augur watches for the first bird. On his day: "linguis animisque favete; nunc dicenda bona sunt bona verba die", "be favourable in tongue and mind; now, on a good day, good words must be spoken" (1.71–72).\n\nThe practical rule: start things with good words. No complaining, no ill-omened talk, as you begin a prayer, a day, a project or a year.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Ovid (Fasti 1.171–174, 1.178, 1.71–72), Cato (On Agriculture 134, 141) and Livy (8.9) give Janus first place in prayer, and their words survive exactly. Festus mentions the ianual cake.',
+            unknown:
+              'We do not know how strictly ordinary Romans kept "Janus first" in everyday private prayer. The ianual\'s recipe is lost. The full modern sequence is a reconstruction combining several sources.',
+          },
+          inPractice:
+            'From now on, begin every prayer you make, to any Roman god, with a line and a grain of incense to Janus. Practise Cato\'s Latin opening if you like; say "Iane pater" and the rest slowly from a card.',
+          reflect: [
+            'What does it change to open a door before you ask for anything?',
+            'What are the first words you say each day, and are they good ones?',
+          ],
+          further: [
+            'Cato, On Agriculture 134 and 141 (Latin at The Latin Library; Loeb translation by Hooper and Ash on LacusCurtius)',
+            'Ovid, Fasti 1.63–288',
+          ],
+          library: ['traditional/deity/janus', 'traditional/deity/jupiter', 'traditional/deity/ceres', 'traditional/herb/frankincense'],
+          premade: ['folk-lararium-offering'],
+        },
+        {
+          id: 'janus-new-year',
+          title: 'The Kalends and the new year',
+          summary: 'January, the sweet gifts of the Kalends, working a little on the first day, and the Agonium.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Every Kalends',
+              body:
+                'Janus shared the Kalends of every month with Juno: Macrobius calls him Iunonius for that reason. The beginning of each month is his as well as hers. A grain of incense and a line to Janus at every Kalends, before your offering to Juno or the household gods, is a simple and well-grounded practice.\n\nThe great day, though, was the Kalends of January. Roman tradition said the old calendar began in March, and that January and February were added later by King Numa, with January placed first in honour of Janus. From 153 BC the consuls entered office on 1 January, and it became the civil new year.',
+            },
+            {
+              heading: 'Sweet gifts',
+              body:
+                'On the Kalends of January Romans gave each other strenae: dates, dried figs, honey, and often coins. The word itself was said to come from the grove of an old goddess, Strenia, whose green sprigs were the first new-year gifts. Ovid asks Janus why, and the god explains that it is an omen, "ut res sapor ille sequatur et peragat coeptum dulcis ut annus iter", "so that the sweetness may follow events, and the year may complete its journey sweetly as it began" (Fasti 1.187–188). Ovid adds that people now like coins best, and the god laughs at how much the age loves money.\n\nPeople dressed in white, spoke good words, burned incense, and the new consuls went up to the Capitol in procession to sacrifice to Jupiter. And everyone did a little of their ordinary work, so that the year would not begin idle: each "tastes his own craft by doing it" (1.169).',
+            },
+            {
+              heading: 'The Agonium',
+              body:
+                'On 9 January the rex sacrorum, the "king of sacrifices", offered a ram to Janus in the Regia (Ovid, Fasti 1.317–334). Ovid lists several theories about the name of the day and admits no one knows. A modern household Agonium is a quiet offering of incense, wine and a cake, nine days into the year, to ask Janus to steady the year\'s beginning.',
+            },
+            {
+              heading: 'A modern Kalends of January',
+              body:
+                'Clean your front door on 31 December. On 1 January, before anything else, wash, cover your head, and at the door give Janus incense, wine and a sweet cake. Give honey, dates or figs to the people you live with or meet. Speak only good words, as far as you can, for the whole morning. Do a little of your real work, or the craft you care about most. Write your hopes for the year and lay them on his shrine. Many people also make resolutions; you can offer one to Janus, as long as you mean to keep it.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Ovid (Fasti 1.63–294) describes the Kalends of January in detail. The consuls\' entry into office on 1 January from 153 BC, the strenae, and the Agonium of 9 January are well attested.',
+            unknown:
+              'The story that Numa added January and February is Roman tradition, not verified history. We do not know how far strenae customs reached ordinary households across the empire, though Christian preachers were still complaining about them centuries later.',
+          },
+          inPractice:
+            'Put 1 January and 9 January in your calendar as Janus\'s days, and every 1st of the month as a small Kalends offering. Buy a jar of honey for his shrine.',
+          reflect: [
+            'What would you like the sweetness of the coming year to follow?',
+            'What small piece of your real work would you do on the first day of the year?',
+          ],
+          further: [
+            'Ovid, Fasti 1.63–294 (Latin at The Latin Library)',
+            'Michele Renee Salzman, On Roman Time (1990), on the calendar and new-year customs',
+          ],
+          library: ['traditional/deity/janus', 'traditional/herb/bay'],
+          premade: ['kitchen-solitary-birthday-new-year'],
+        },
+        {
+          id: 'janus-today',
+          title: 'Keeping Janus today, and the hard parts',
+          summary: 'Modern practice, the doorway shrine, two-facedness, and the story of Crane.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Modern practice',
+              body:
+                'Among modern Roman polytheists, whether in groups such as Nova Roma, in Italian associations or alone, Janus is probably the most often honoured of all the gods, simply because every rite begins with him. Many also keep a small shrine by the front door, offer to him on the Kalends, and make the Kalends of January a real household festival.\n\nOutside Roman polytheism, witches and pagans often call on Janus at the turning of the year, at moves and job changes, and in threshold magic. That is a reasonable adaptation; just remember that in Roman cult he was approached with the same formality as any other god.',
+            },
+            {
+              heading: 'A shrine at the door',
+              body:
+                'Put his shrine by the front door: a small shelf, a hook, a dish on a side table. You need a key, a coin or image with two faces (a printed coin image is fine), an incense burner, a small cup, and a sprig of bay. Some people hang the bay on the inside of the door at the new year and replace it each Kalends of January. Keep the doorway itself swept and clear of clutter: a jammed, dirty door is a poor offering to the god of passage.\n\nIf your home has no space by the door, keep his things on your main household shrine and simply turn towards the front door when you speak to him.',
+            },
+            {
+              heading: 'Two-faced',
+              body:
+                'In English "two-faced" means deceitful, and some people worry this reflects on Janus. It does not. His two faces are about seeing honestly both what has been and what is coming: memory and foresight, outside and inside, endings and beginnings. If anything he asks for clear sight in both directions.',
+            },
+            {
+              heading: 'The story of Crane',
+              body:
+                'Ovid tells, in Fasti 6.101–130, how the nymph Crane avoided all her suitors by a trick until Janus, who could see behind him, caught her and raped her; in return he gave her power over hinges, and she became Cardea, goddess of the door-pivot. It is a disturbing story, typical of how Latin poets used Greek-style tales of gods taking women. It is not part of Janus\'s cult, and you do not need to accept it as the truth of the god. It is honest to know it exists.\n\nFinally: do not use Janus for curses or for "closing doors" on people in a harmful way. Asking him to close a door on a habit, a bad situation or an unwanted influence is protective and fitting. Turning his power against someone is not something this app will help with.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Ovid\'s Crane story (Fasti 6.101–130) is in the text. Janus\'s first place in modern Roman polytheist rites is documented in the published practices of modern groups.',
+            unknown:
+              'The Crane story may be Ovid\'s own invention to explain the name Cardea. Modern threshold magic using Janus is modern, though the Roman reverence for thresholds is real.',
+          },
+          inPractice:
+            'Set up his doorway shrine this week. Sweep the threshold and clear the hallway.',
+          reflect: [
+            'What does my front door say about how I begin and end each day?',
+            'What do I need to see more clearly, looking back, and looking forward?',
+          ],
+          further: [
+            'Ovid, Fasti 6.101–182 (Latin at The Latin Library)',
+            'John Scheid, An Introduction to Roman Religion (2003)',
+          ],
+          library: ['traditional/deity/janus', 'traditional/tool/key', 'traditional/tool/altar', 'traditional/crystal/labradorite'],
+          premade: ['kitchen-threshold-salt-blessing'],
+        },
+      ],
+      practices: [
+        {
+          id: 'janus-morning',
+          title: 'Janus of the morning',
+          instructions:
+            'Each morning of the study stage, before you begin work or leave the house, pause at the door and say: "Father Janus, open this day well." Speak only good words for the first minutes of the day.',
+          times: 10,
+          every: 'day',
+          prompt: 'How did today begin? Did the first words shape the rest?',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Nine nights at the threshold',
+      intro:
+        'Nine nights of short offerings at your door, each looking back at one thing and forward to another. The nine-night frame is modern; Roman religion did use nine-day rites (the novendiale), but not for Janus specifically.',
+      days: 9,
+      lessons: [],
+      practices: [
+        {
+          id: 'janus-nine-nights',
+          title: 'Nightly threshold offering',
+          instructions:
+            'Each night: wash your hands, cover your head, open the front door (or stand by it). Give a grain of incense and a drop of wine or a little honey on the dish.\n\nSay: "Father Janus, opener and closer, be willing and favourable to me and my household. Be honoured by this offering." Then speak aloud one thing you are leaving behind, looking back into your home, and one thing you are stepping towards, looking out. Close the door, name Vesta, turn to your right and uncover.\n\nOn the last night, offer a small sweet cake and a coin, and keep the coin on his shrine.',
+          times: 9,
+          every: 'day',
+          prompt: 'What did I leave behind tonight, and what am I stepping towards?',
+        },
+        {
+          id: 'janus-begin-something',
+          title: 'Begin one thing well',
+          instructions:
+            'During the nine nights, start one real thing you have been putting off: a course, a conversation, a project. Before you start, offer Janus incense at the door and ask him to open the way. Do the first piece of work that same day.',
+          times: 1,
+          prompt: 'How did the beginning go, and what did it feel like to start with a god\'s blessing?',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'Which way to go',
+      intro:
+        'A few days to weigh what you have learned. Janus is the god of choices and passages, so this stage suits him: stopping, pausing, or choosing another god or path is a good outcome, and an honest one.',
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'janus-discern',
+          title: 'Looking both ways',
+          instructions: 'For three evenings, write on two facing pages: on the left, what this month has shown you; on the right, what you think a year with Janus would ask. Then work through the questions below.',
+          times: 3,
+          every: 'day',
+          prompt: 'Looking back and looking forward, what do I see?',
+        },
+      ],
+      questions: [
+        'Am I drawn to Janus himself, or mainly to the idea of new beginnings? Both are fine, but they are different commitments.',
+        'Can I keep a small offering at each Kalends, and open each prayer with him, for a year?',
+        'Does the Roman manner of prayer (veiled head, exact words) suit me, or do I want something looser?',
+        'Is there another god of the Roman house, Vesta at the hearth or Juno of the Kalends, who fits me better, with Janus as the door to them?',
+        'Am I at a real threshold in my life right now, and do I want a god beside me for it?',
+        'Would I rather keep honouring Janus first in every prayer without a formal dedication? That is the most traditional relationship of all.',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'The dedication',
+      intro:
+        'If you go ahead, hold this at your front door, ideally on a Kalends, and best of all on 1 January. It is a self-dedication, not an initiation, and it does not make you a priest. You are making a personal commitment to the god of your doorway, in exact words.',
+      days: 1,
+      lessons: [],
+      practices: [],
+      rite: {
+        title: 'Self-dedication to Janus',
+        summary: 'At the open door: purification, incense, wine and a sweet cake to Father Janus, a spoken dedication, a key consecrated, and Vesta named last.',
+        minutes: 35,
+        ingredients: [
+          { name: 'A bowl of clean water and a towel', ref: 'traditional/vessel/bowl' },
+          { name: 'A head covering' },
+          { name: 'Frankincense', ref: 'traditional/herb/frankincense' },
+          { name: 'An incense burner', ref: 'traditional/tool/incense_burner' },
+          { name: 'Wine or grape juice', ref: 'traditional/tool/chalice' },
+          { name: 'An offering dish', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'A small cake: libum, or spelt, salt and honey' },
+          { name: 'Honey, and a few dates' },
+          { name: 'A coin' },
+          { name: 'A key to keep as his', ref: 'traditional/tool/key' },
+          { name: 'A sprig of bay', ref: 'traditional/herb/bay' },
+          { name: 'A white candle', ref: 'traditional/candle/white', optional: true },
+          { name: 'Your written dedication' },
+        ],
+        preparation:
+          'Clean the front door, the threshold and the hallway. Bake a small cake if you can: a libum after Cato (about 250 g ricotta, 100 g flour, one egg, baked on bay leaves at 200°C for 35–40 minutes) or a simple spelt cake sweetened with honey. Write your dedication: who you are, that you dedicate yourself to Janus Pater as a devotee, for how long (a year is wise), and what you will do (Janus first in every prayer, the Kalends, the new year, beginning things well). Read it through until it flows.',
+        steps: [
+          {
+            title: 'Purify and veil',
+            instructions: 'Wash your hands and face. Put on clean clothes. Cover your head. Light the candle if using one.',
+            light: true,
+          },
+          {
+            title: 'Open the door',
+            instructions: 'Open the front door and stand on the threshold. Hang or lay the bay at the door.',
+          },
+          {
+            title: 'Invoke Janus',
+            instructions: 'Give incense. Raise your hand, palm up.',
+            spoken: 'Father Janus, Ianus Pater,\nPatulcius and Clusius, opener and closer,\ntwo-faced, who see what was and what will be,\nfirst of the gods in every prayer,\nor by whatever name it is right to call you:\nbe honoured by this incense.',
+          },
+          {
+            title: 'The cake',
+            instructions: 'Offer a piece of the cake on the dish, after Cato.',
+            spoken: 'Father Janus, in offering you this cake,\nI pray good prayers,\nthat you may be willing and favourable\nto me, my house and my household.',
+          },
+          {
+            title: 'Speak the dedication',
+            instructions: 'Read your dedication aloud, clearly, standing in the doorway. If you stumble, stop and begin again.',
+            minutes: 5,
+          },
+          {
+            title: 'Wine, honey and the key',
+            instructions: 'Pour wine on the dish. Touch a drop of honey to the key and lay the coin and key on his shrine.',
+            spoken: 'Father Janus, as I have prayed good prayers,\nbe honoured by this wine.\nThis key is yours: open well, close well.\nMay the year follow this sweetness.',
+          },
+          {
+            title: 'Look both ways',
+            instructions: 'Look out through the door, then back into your home, in silence.',
+            minutes: 3,
+            timed: true,
+          },
+          {
+            title: 'Close',
+            instructions: 'Close the door. Name Vesta, turn to your right and uncover your head.',
+            spoken: 'Vesta of the hearth, be honoured, last as always. It is done.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Share the rest of the cake, the honey and the dates with someone, as strenae, sweet gifts for a sweet beginning. Pour out the god\'s wine on the earth by your door the next day. Keep the key on his shrine and the dedication beside it. Rededicate each Kalends of January.',
+        safety:
+          'Never leave the candle or incense unattended, and keep them clear of coats and curtains. Dates, honey and the cake are safe for most people; the libum contains dairy, egg and gluten. Wine, grapes, raisins and figs are toxic to dogs and cats. Do not give honey to infants under one year.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'Every door, every beginning',
+      intro:
+        'Janus\'s ongoing worship is woven through everything: first in every prayer, at each Kalends, and at the new year. Here is how to keep it.',
+      days: 4,
+      lessons: [],
+      practices: [
+        {
+          id: 'janus-kalends',
+          title: 'The Kalends offering',
+          instructions:
+            'On the 1st of each month: wash, cover your head, and at the door give Janus incense and wine, asking him to open the month well. Then make your offering to Juno and the household gods if you keep them.',
+          times: 12,
+          every: 'month',
+          prompt: 'What door does this month open?',
+          premade: 'folk-lararium-offering',
+        },
+        {
+          id: 'janus-year',
+          title: 'The yearly round',
+          instructions:
+            'Keep the Saturnalia in December (17–23) as the time of Saturn, whom Janus welcomed; clean your doorway at its end. On 31 December sweep the threshold. On 1 January hold the full Kalends: white clothes if you have them, incense and a sweet cake at the door, good words, sweet gifts, a little of your real work, and your yearly rededication. On 9 January, the Agonium, make a quiet offering to steady the year.',
+          times: 1,
+          every: 'holy-day',
+          prompt: 'Looking back at the year and forward to the next: what do I see, and what do I ask?',
+          premade: 'kitchen-solitary-birthday-new-year',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'Ovid, Fasti 1.71–72, 1.89–90, 1.129–130, 1.169, 1.171–174, 1.178, 1.187–188 (Latin, The Latin Library: https://www.thelatinlibrary.com/ovid/ovid.fasti1.shtml); translations original',
+    'Cato, On Agriculture 134 and 141 (Latin, The Latin Library: https://www.thelatinlibrary.com/cato/cato.agri.html)',
+    'Livy, History of Rome 8.9, the order of gods in prayer (Latin, The Latin Library: https://www.thelatinlibrary.com/livy/liv.8.shtml); 1.19 (paraphrased)',
+    'Macrobius, Saturnalia 1.7 and 1.9 (paraphrased)',
+    'Augustus, Res Gestae 13; Augustine, City of God 4.8 and 6.7 (Latin, The Latin Library: https://www.thelatinlibrary.com/augustine/civ4.shtml); Symmachus, Letters book 10, on Strenia (paraphrased)',
+    'Ovid, Fasti 6.101–130, the story of Crane (paraphrased)',
+    'Mary Beard, John North and Simon Price, Religions of Rome (Cambridge, 1998)',
+    'John Scheid, An Introduction to Roman Religion (Edinburgh, 2003)',
+  ],
+};

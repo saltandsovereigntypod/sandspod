@@ -1,0 +1,545 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-sekhmet',
+  kind: 'deity',
+  paths: ['egyptian'],
+  deityRef: 'traditional/deity/sekhmet',
+  title: 'Sekhmet: The Powerful One',
+  summary:
+    'A month with Sekhmet, the lioness of Memphis, burning Eye of Ra, who sends plague and drives it away, and whose priests were healers. Study her fierce and healing sides, the hundreds of statues of Amenhotep III and the rites that calmed her, keep ten nights of pacification, and decide, with care, whether to dedicate.',
+  welcome: `This journey spends about a lunar month with Sekhmet, the Egyptian lioness goddess of war, plague, the burning sun and healing. She suits people who work in medicine or care for the sick, people who are ill or recovering, people learning to use anger well, and anyone who needs fierce protection and is ready to meet a goddess who is not gentle.
+
+You will learn who she was in Egypt, the myth in which she almost destroys humankind, her "arrows" and the dangerous days at the end of the year, why her priests were doctors, the hundreds of granite statues set up for her by Amenhotep III, and the Egyptian art of calming her. For ten nights you will keep a rite of pacification. At the end you may dedicate yourself to her, or not.
+
+Egyptians approached Sekhmet with care, and so does this journey. Every rite here is devotional and protective: there are no curses, no rites against enemies, and nothing that asks her to harm anyone. This is a self-dedication. It is not an initiation into Kemetic Orthodoxy or any other group, and it does not replace one. And prayer to her never replaces a doctor; her own priests were doctors.`,
+  about: `Sekhmet, "the Powerful One" (from sekhem, "power"), was the great lioness goddess of Memphis, Egypt's old capital, where she was the wife of the creator god Ptah and mother of Nefertum, the lotus god. She is shown as a woman with a lioness's head, crowned with the sun disc and the rearing cobra (uraeus), often dressed in red. She was the Eye of Ra in its most terrible form: the scorching heat of the sun, the desert wind that was said to be her breath, the plague that came with the hot season, and the king's fury in battle. In the myth called the Destruction of Mankind she almost wipes out humanity and is stopped by beer dyed red. Yet the same goddess who sent illness could take it away, and her priests, the wab-priests of Sekhmet, were among Egypt's physicians. King Amenhotep III set up hundreds of granite statues of her, and temples kept rites to pacify her. Today she is honoured in Kemetic religion, by reconstructionists and in Kemetic Orthodoxy, and by many modern Pagans, Goddess devotees and healers.`,
+  notes: [
+    'Sekhmet is fierce, and Egyptians approached her to calm and please her, not to provoke her. This journey keeps that tone. Its rites are devotional and protective only: no curses, no "rites against enemies", no asking her to harm anyone.',
+    'Sekhmet and Bastet are distinct goddesses with separate cults. Both are lionesses and Eyes of Ra, and Egyptians contrasted them as the raging and the gentle, but they are not interchangeable.',
+    'Prayer to Sekhmet never replaces medical care. If you or someone you love is ill, see a doctor, and pray as well if you wish.',
+    'Never use red ochre, pigments, dyes or stones in drinks, whatever the myth says. Pomegranate juice or hibiscus tea gives the red colour safely (hibiscus is best avoided in pregnancy).',
+    'Kemetic religion is a living practice with its own communities and customs. Ask before joining their spaces.',
+  ],
+  holyDays: [],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'Approaching the Lioness',
+      intro:
+        'Begin by learning who Sekhmet is and making her a shrine with care. The threshold ends with a short introduction rite of greeting and calming: you approach her with red drink, bread and the words "come in peace".',
+      days: 3,
+      lessons: [
+        {
+          id: 'sekhmet-who',
+          title: 'The Lady of Memphis',
+          summary: 'Her name, her form, her family at Memphis, her titles, and the Eye of Ra.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The Powerful One',
+              body: `Her name comes from sekhem, "power" or "might". Sekhmet means "the Powerful One", in the feminine. The same word sekhem was used for a sceptre of authority and for a type of sistrum, and Egyptians loved puns; her name hints at both rule and music.
+
+She is shown as a woman with the head of a lioness, crowned with the sun disc and the cobra that rears on the brow of Ra and of kings. Her dress is often red, and one of her titles is Lady of the Bright Red Linen. Red was the colour of blood, of the desert, of fire and of fierce life. She often holds a papyrus sceptre, the sign of flourishing, and the ankh, the sign of life. That pairing matters: the lioness who can kill also carries life.
+
+Lionesses hunt for the pride. Egyptians saw lions at the desert edges, especially in the hot season when they came to the river to drink, and they knew exactly how dangerous they were.`,
+            },
+            {
+              heading: 'Her family at Memphis',
+              body: `Sekhmet's great centre was Memphis, the old capital near modern Cairo, where she was wife of Ptah, the craftsman creator god, and mother of Nefertum, the young god of the lotus and its perfume. Together they formed the Memphite triad, the divine family of the city, honoured especially from the New Kingdom onward. One of her titles is Lady of Ankhtawy, "Life of the Two Lands", a name for part of Memphis.
+
+She also had a famous cult at Abusir, in the funerary temple of King Sahure of the Fifth Dynasty. Centuries later, in the New Kingdom, a relief of "Sekhmet of Sahure" there became the focus of a popular healing cult, and people came to pray to her as a goddess who heard prayers. A goddess of terror was also a goddess you could visit with your troubles.`,
+            },
+            {
+              heading: 'The Eye of Ra',
+              body: `Above all, Sekhmet was the Eye of Ra: the sun god's daughter and his weapon, who goes out from him to destroy his enemies. As the uraeus cobra on his brow, she spits fire at them. Her breath was the hot desert wind. Her heat was the summer sun that withers the fields.
+
+Several goddesses could be the Eye: Hathor, Bastet, Tefnut, Mut, Wadjet. Sekhmet was its most dangerous face. A Middle Kingdom teaching, the Loyalist Instruction, describes the king as Bastet to those who are loyal, protecting the land, and Sekhmet to those who defy him. The point of the contrast is that everyone knew what each meant. Bastet is shelter. Sekhmet is the fire at the border.`,
+            },
+            {
+              heading: 'What to call her',
+              body: `Sekhmet is the standard form; Sakhmet and Sachmet are other spellings. Good titles to use include Lady of Memphis, Beloved of Ptah, Lady of the Bright Red Linen, Eye of Ra, Lady of Life, and Great One. In the pacification litanies of later temples she is called by hundreds of names, each naming one of her moods or places, so that every face of her could be addressed and calmed.
+
+Modern devotees sometimes call her Mother Sekhmet, and many call on her as a healer. When you speak to her, speak plainly and respectfully. She is not a goddess for flattery, and not a goddess to dare.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The meaning of her name, her lioness form with sun disc and uraeus, her red linen, the Memphite triad with Ptah and Nefertum, the cult of Sekhmet of Sahure at Abusir, her role as Eye of Ra and the Loyalist Instruction’s pairing with Bastet are well attested.',
+            unknown:
+              'Where her cult began and how early she was joined to Ptah are uncertain. How ordinary people related to her outside Memphis and the healing cult at Abusir is less clear. The modern title "Mother Sekhmet" is not ancient.',
+          },
+          inPractice:
+            'Choose a name and an image: the seated lioness-headed goddess with the sun disc, like the statues of Amenhotep III, is traditional. Learn two titles, such as "Lady of Memphis" and "Lady of the Bright Red Linen". Decide where her shrine will go: a place where it will be treated with respect, not a cluttered corner.',
+          reflect: [
+            'What draws you to Sekhmet: healing, protection, strength, anger? Be honest.',
+            'How do you feel about approaching a goddess who is dangerous? What would respect look like?',
+          ],
+          further: [
+            'Richard H. Wilkinson, The Complete Gods and Goddesses of Ancient Egypt (2003), entry on Sekhmet',
+            'Geraldine Pinch, Egyptian Mythology (2002), on the Eye of Ra',
+          ],
+          library: ['traditional/deity/sekhmet', 'traditional/deity/ra', 'traditional/deity/bastet', 'traditional/candle/red'],
+        },
+      ],
+      practices: [
+        {
+          id: 'sekhmet-shrine',
+          title: 'Set up a shrine with care',
+          instructions: `Choose a shelf or small table in a clean, calm place, where her shrine will not be cluttered or casually used as a surface. Clean it with water that has a pinch of salt and baking soda in it (a modern stand-in for natron).
+
+Lay a clean red cloth; red linen was hers. Set her image at the back. In front, place a cup for red drink (pomegranate juice or hibiscus tea), a cup for water, a dish for bread, an incense burner on a heatproof tile, and a red, orange or gold candle. Add a sistrum or rattle: music was used to calm her. Carnelian, red jasper or garnet suit her.
+
+Many devotees keep a small image of Bastet or Hathor near, but not on, Sekhmet's shrine, as a reminder of the calmed Eye. Keep her shrine clean and orderly at all times.`,
+          times: 1,
+          prompt: 'What did you set on her shrine, and how did it feel to approach it?',
+        },
+      ],
+      rite: {
+        title: 'Introduction to Sekhmet',
+        summary: 'A short first visit: purify, greet her with respect, offer red drink, water and bread, shake the sistrum and say "come in peace".',
+        minutes: 20,
+        ingredients: [
+          { name: 'Sekhmet', ref: 'traditional/deity/sekhmet' },
+          { name: 'A cup of red drink: pomegranate juice or hibiscus tea', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'A cup of fresh water' },
+          { name: 'A bowl of water with a pinch of salt and a pinch of baking soda (natron substitute)', ref: 'traditional/vessel/bowl' },
+          { name: 'A piece of bread', ref: 'traditional/vessel/dish' },
+          { name: 'Frankincense or myrrh and a burner', ref: 'traditional/herb/frankincense' },
+          { name: 'A red, orange or gold candle', ref: 'traditional/candle/red' },
+          { name: 'A sistrum, rattle or bell', ref: 'traditional/tool/bell' },
+        ],
+        preparation:
+          'Wash your hands and face and rinse your mouth. Wear clean clothes. Come in a settled mood: if you are very angry, take a walk first, or keep the rite very short. Put away your phone.',
+        steps: [
+          {
+            title: 'Purify',
+            instructions: 'Light the candle and the incense. Touch the natron water to your lips and hands, and pass your hands through the smoke.',
+            light: true,
+            spoken: 'I am pure. My hands are clean and my mouth is clean. I come with respect before the Powerful One.',
+          },
+          {
+            title: 'Calm with music',
+            instructions: 'Before speaking to her, shake the sistrum or rattle gently for a minute. Egyptian priests shook the sistrum to soothe her.',
+            minutes: 1,
+          },
+          {
+            title: 'Greet her',
+            instructions: 'Raise both hands, palms toward her image, at face height. Speak slowly and plainly.',
+            spoken: 'Homage to you, Sekhmet, Lady of Memphis, beloved of Ptah, Eye of Ra, Lady of the Bright Red Linen. Come in peace. Come in peace.',
+          },
+          {
+            title: 'Offer',
+            instructions: 'Lift the red drink, then the water and the bread, toward her and set them down.',
+            spoken: 'Hetep-di-nesu. An offering for Sekhmet: red drink to delight you, cool water, bread and sweet smoke. May they please you and calm your heart.',
+          },
+          {
+            title: 'Sit',
+            instructions: 'Sit quietly for a few minutes. Tell her briefly why you have come. Do not ask for anything big today.',
+            minutes: 4,
+          },
+          {
+            title: 'Close',
+            instructions: 'Thank her, bow, shake the sistrum once more, and snuff the candle.',
+            snuff: true,
+            spoken: 'Thank you, Sekhmet. Be at peace. I will come again.',
+          },
+        ],
+        closing:
+          'Take the bread and drink away later and share them yourself; this is the reversion of offerings, the Egyptian custom of sharing the god’s table. Pour the water on a plant. Write a few lines in your journal.',
+        safety:
+          'Keep candle and incense on a heatproof tile, away from the red cloth, curtains and paper, in a ventilated room, and never leave them unattended. Keep smoke away from birds, small pets and anyone with asthma. Never add pigments, ochre or stones to drinks.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'Fire and Healing',
+      intro:
+        'Three lessons: her fierce side, from the Destruction of Mankind to the dangerous days of the year; her healing side and her physician priests; and the statues of Amenhotep III and the rites of pacification. Keep the short daily calming at her shrine.',
+      days: 11,
+      lessons: [
+        {
+          id: 'sekhmet-fierce',
+          title: 'The Raging Eye',
+          summary: 'The Destruction of Mankind, her arrows and messengers, the dangerous end of the year, and the king in battle.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'The Destruction of Mankind',
+              body: `The best-known story of Sekhmet comes from the Book of the Heavenly Cow, a New Kingdom text found on a shrine of Tutankhamun and in royal tombs. Ra, grown old, learns that humankind is plotting against him. On the gods' advice he sends out his Eye to punish them. The goddess goes out as Hathor and becomes a destroyer; the text plays on sekhem, "power", as she boasts of her mastery, and names her Sekhmet as she rages.
+
+In E. A. Wallis Budge's translation (1912), "Sekhet of the offerings waded about in the night season in their blood". Ra changes his mind and wants to save the rest of humanity, but even he cannot simply order her to stop. He has seven thousand jars of beer dyed red and poured over the fields. At dawn she drinks what looks like blood, becomes drunk and content, and forgets her slaughter. Humanity survives.
+
+The story is not easy reading, and it does not soften her. It shows a power that, once loosed, follows its own pleasure, and has to be calmed by something it enjoys more.`,
+            },
+            {
+              heading: 'Arrows and messengers',
+              body: `Egyptians believed illness and plague could be sent by Sekhmet. Texts speak of the "arrows of Sekhmet" and of her messengers or slaughterers (khatyu), demons who carry disease and misfortune through the land. Epidemics often came in the hot season before the flood, when the river was low and water bad, and this was when her fury was most feared.
+
+The most dangerous time of all was the end of the year: the five extra days (epagomenal days) that closed the Egyptian calendar before the New Year. Spells survive to protect a person through those days and the "pestilence of the year", calling on her and other gods, asking that her messengers pass by. A New Kingdom papyrus now in Leiden, sometimes called the Book of the Last Day of the Year, is one of these. The Edwin Smith papyrus, famous for its surgery, has similar spells on its back.`,
+            },
+            {
+              heading: 'The king in battle',
+              body: `Sekhmet was the king's fury in war. Kings were praised as being "like Sekhmet" against their enemies, and her fiery breath was the heat of their attack. In royal inscriptions, the arrows of the king and the arrows of Sekhmet are almost the same thing.
+
+This side of her was real, and it is honest to name it. Egyptians also used her name in rites against the enemies of Egypt and of the gods. This journey does not; it keeps to the devotional and protective. Many modern devotees understand her war side as the fierce defence of life: the strength to fight illness, injustice and danger, and the force behind a firm boundary. That is a modern reading, but it is faithful to the lioness who hunts for her pride.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The Book of the Heavenly Cow survives on Tutankhamun’s shrine and in the tombs of Seti I and Ramesside kings. The arrows and messengers of Sekhmet, the danger of the epagomenal days and protective spells for the year’s end (Papyrus Leiden I 346, the Edwin Smith verso) are attested, as is her role in royal war imagery.',
+            unknown:
+              'How literally people believed Sekhmet sent each illness is hard to know. How widely the year-end protective rites were used by ordinary people, rather than priests and officials, is uncertain. Budge’s 1912 translation is dated; Lichtheim’s is more accurate.',
+          },
+          inPractice:
+            'Read the Destruction of Mankind in full. Mark the five days before your chosen Egyptian New Year in your calendar: they are the traditional time to ask her to keep her arrows away from you and your household. This week, name one fierce boundary in your life she might help you keep, without harming anyone.',
+          reflect: [
+            'What is the difference, for you, between fierce protection and harm?',
+            'Have you ever felt anger become "sweet"? What calmed it?',
+          ],
+          further: [
+            'E. A. Wallis Budge, Legends of the Gods (1912), Project Gutenberg ebook 9411',
+            'Miriam Lichtheim, Ancient Egyptian Literature, vol. 2 (1976), "The Destruction of Mankind"',
+            'Geraldine Pinch, Magic in Ancient Egypt (1994; revised 2006)',
+          ],
+          library: ['traditional/deity/sekhmet', 'traditional/deity/hathor', 'traditional/deity/ra'],
+        },
+        {
+          id: 'sekhmet-healing',
+          title: 'Her Physician Priests',
+          summary: 'Why the goddess of plague was also the goddess of healing, and what her priests did.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'She who sends, she who removes',
+              body: `Egyptian thinking held that the power that causes a thing is the power that can stop it. If Sekhmet's arrows brought plague, then Sekhmet, pleased and calmed, could call them back. So the goddess of epidemics became a goddess of healing, and people who were ill, or afraid of illness, prayed to her to turn her face away from them or to heal them.
+
+This was not a contradiction to Egyptians. It was simply how power worked. A lioness can kill, and a lioness can defend her cubs; the same strength does both. Modern devotees often feel this deeply: the fierceness of fighting an illness, the fierceness of nursing someone through one.`,
+            },
+            {
+              heading: 'The wab-priests of Sekhmet',
+              body: `Egyptian healers came in several kinds. The swnw was the physician. The sau was the amulet-maker and magician. And the wab-priest of Sekhmet was a priest of the goddess who also treated the sick. The great medical text called the Ebers Papyrus, from around 1550 BCE, mentions them in its section on the heart: it explains that when any physician, any wab-priest of Sekhmet or any magician lays his hands on the head, the heart or other parts of the body, he is feeling the heart, whose vessels lead to every limb. It is often read as one of the oldest descriptions of feeling the pulse.
+
+Priests of Sekhmet seem also to have dealt with animals, inspecting sacrificial cattle, and to have served at the frontiers and on expeditions. They were practical people. The idea that her worship and medical care go together is not a modern add-on; it was there from the beginning.`,
+            },
+            {
+              heading: 'Healing in her name today',
+              body: `If you come to Sekhmet for healing, the Library entry's advice is exact: "Prayer to her never replaces seeing a doctor." Her own priests examined the sick; they did not tell them to wait for a miracle. Pray, light her candle, and take the medicine, keep the appointment, rest.
+
+Fitting offerings for healing include red drink and bread, as for any rite of hers, and, above all, acts of care: supporting healthcare workers, giving blood if you can, donating to a medical charity, nursing a sick friend, keeping up with your own health. Many nurses, doctors, paramedics and carers keep a small Sekhmet image at work or at home and offer her their shifts.
+
+If you are ill yourself, keep rites short and gentle. Sekhmet does not need you to exhaust yourself for her.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The titles swnw, sau and wab-priest of Sekhmet are attested; the Ebers Papyrus heart section mentions the wab-priests of Sekhmet; the healing cult of Sekhmet of Sahure at Abusir is documented; she was invoked against illness.',
+            unknown:
+              'How the duties of physicians, magicians and wab-priests of Sekhmet divided in practice is debated; they may have overlapped a great deal. How effective their treatments were varied, as in any premodern medicine.',
+          },
+          inPractice:
+            'Make one offering of care this week: give blood, donate to a medical charity, check on someone who is ill, or book the health appointment you have been putting off. Tell her at her shrine what you did. If you are unwell, light her candle each evening and keep the rite to a single line.',
+          reflect: [
+            'Who in your life does the work of her priests: heals, nurses, carries others through illness?',
+            'Is there a part of your own health you have been neglecting? What would she say?',
+          ],
+          further: [
+            'John F. Nunn, Ancient Egyptian Medicine (1996)',
+            'Paul Ghalioungui, The Physicians of Pharaonic Egypt (1983)',
+          ],
+          library: ['traditional/deity/sekhmet', 'traditional/herb/myrrh', 'traditional/crystal/carnelian'],
+          premade: ['kitchen-healing-broth'],
+        },
+        {
+          id: 'sekhmet-statues',
+          title: 'A Litany in Stone: Statues and Pacification',
+          summary: 'The hundreds of granite Sekhmets of Amenhotep III, the temple rites that calmed her, and the Egyptian art of approaching her with care.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'The statues of Amenhotep III',
+              body: `King Amenhotep III (reigned about 1390 to 1352 BCE) set up hundreds of statues of Sekhmet in black granite, some seated on thrones, some standing, each about life-sized or larger. Many came from his vast funerary temple on the west bank at Thebes, now called Kom el-Hettan, where excavators still find them, and hundreds stood in the precinct of the goddess Mut at Karnak, where many remain today. Others are scattered through museums from Cairo and Luxor to London, Paris, Turin, Berlin and New York. They are among the most common Egyptian statues in the world.
+
+Why so many? The French Egyptologist Jean Yoyotte suggested that there were once 730 of them, a seated and a standing statue for each day of the year, each perhaps inscribed with a different title of the goddess. Together they would have formed a "litany in stone", a prayer to calm her made permanent, on every day of the year. It is a hypothesis, not a proven fact, but it fits what we know of pacification rites.`,
+            },
+            {
+              heading: 'Why calm her?',
+              body: `We do not know for certain why Amenhotep III needed so much of Sekhmet's goodwill. Some historians have suggested an epidemic during his reign; there is evidence of plague in the wider region in this period, but no clear Egyptian record that ties it to the statues. Others see the statues as part of the king's great building programme and his jubilee festivals, or as protection for his temple.
+
+What is clear is the logic. Sekhmet's power was necessary: she defended Ra, the king and Egypt. But it had to be kept turned outward, away from the land and its people. That was done not by commanding her but by pacifying her, sehetep Sekhmet: offering, praising, making music and giving her what she loved, so that she would come "in peace".`,
+            },
+            {
+              heading: 'The rites of pacification',
+              body: `Later temples, especially in the Ptolemaic period, carry long litanies to pacify Sekhmet and other dangerous goddesses: lists of her names and forms, each addressed with an invitation to be calm and gracious. The priest would offer red linen, beer and wine, the menat necklace and the sistrum, and sing or recite. The sistrum's soft rattle and the menat's jingle were thought to soothe the goddess, and to turn the raging lioness into the gentle cat or the joyful Hathor.
+
+Two words run through these rites: hetep, "peace" or "offering" (the same word), and sehetep, "to make peaceful". In the Destruction of Mankind, Ra greets the calmed goddess with "come in peace, come in peace". That phrase is the heart of approaching Sekhmet: you do not command her; you invite her to come in peace.`,
+            },
+            {
+              heading: 'Approaching with care, today',
+              body: `In practice, approaching Sekhmet with care means a few simple things. Come pure and calm. Begin with music before speech. Offer first, ask later, and ask modestly. Use her titles and the words "come in peace". Keep her shrine clean and orderly. Do not use her name lightly, in anger, or as a threat.
+
+It also means honesty about yourself. If you come to her in rage, she is not your weapon. Many devotees find that she helps them turn anger into clear, just action, but that is a slow, practised thing. Coming to her with a list of people you want punished is the opposite of the Egyptian approach, and this journey does not support it.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Hundreds of granite Sekhmet statues of Amenhotep III survive, from Kom el-Hettan and the Mut precinct at Karnak. Ptolemaic temples record litanies to pacify Sekhmet; the menat and sistrum were offered to calm dangerous goddesses; "come in peace" appears in the Destruction of Mankind.',
+            unknown:
+              'The original number of statues and Yoyotte’s 730-statue "litany in stone" are hypotheses. Why Amenhotep III made them, and whether an epidemic was the reason, is unknown. How the litanies were performed in detail is partly reconstructed.',
+          },
+          inPractice:
+            'Find a photograph of the Sekhmet statues at the Mut precinct in Karnak, or visit one in a museum near you; most major collections have one. Learn the pattern of pacification this week: music, then titles, then offering, then "come in peace", and only then any request.',
+          reflect: [
+            'What would it mean to pacify a power rather than command it? Is there one in your life?',
+            'How do you want to come to Sekhmet: as a petitioner, a carer, a student? What does each ask of you?',
+          ],
+          further: [
+            'Jean Yoyotte, "Une monumentale litanie de granit: les Sekhmet d’Aménophis III et la conjuration permanente de la Déesse dangereuse", Bulletin de la Société française d’égyptologie 87–88 (1980)',
+            'Arielle P. Kozloff and Betsy M. Bryan, Egypt’s Dazzling Sun: Amenhotep III and His World (1992)',
+          ],
+          library: ['traditional/deity/sekhmet', 'traditional/tool/bell', 'traditional/crystal/red_jasper'],
+        },
+      ],
+      practices: [
+        {
+          id: 'sekhmet-daily-calming',
+          title: 'A daily calming',
+          instructions:
+            'Each day, wash your hands, shake the sistrum gently at her shrine, raise your hands, say "Sekhmet, come in peace", and give fresh water. Then sit for one breath before getting on with your day.',
+          times: 11,
+          every: 'day',
+          prompt: 'One line: what in you needed calming today?',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Ten Nights of Pacification',
+      intro:
+        'For ten nights, one Egyptian ten-day week, you keep a rite of pacification at her shrine: music, titles, offering, and "come in peace", each night with a theme. First read the lesson on honouring her today.',
+      days: 10,
+      lessons: [
+        {
+          id: 'sekhmet-today',
+          title: 'Sekhmet Today: Practice, Days and Care',
+          summary: 'Modern communities, how to offer, her days, and the sensitive points.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'Who honours her now',
+              body: `Kemetic religion, the modern revival of Egyptian religion, honours Sekhmet in several ways. Reconstructionists follow the temple pattern of offering and pacification, and often keep her as a protector of the household against illness, especially around the year's end. Kemetic Orthodoxy, a temple founded in the United States in 1988 by Tamara Siuda, includes her in its calendar and devotions; members there follow that temple's own customs. Independent Kemetics mix study and personal practice.
+
+Sekhmet has also become very popular in modern Goddess spirituality, as an image of women's strength and righteous anger. In 1993 the feminist writer Genevieve Vaughan built the Temple of Goddess Spirituality Dedicated to Sekhmet at Cactus Springs in the Nevada desert, about an hour north-west of Las Vegas, as a centre of Goddess spirituality. Healers, nurses and many eclectic Pagans honour her too. Each practice is its own; none needs to pretend to be another, and all can be honest about where their ideas come from.`,
+            },
+            {
+              heading: 'How to offer',
+              body: `Use the Egyptian shape, with pacification at its heart: purify, light, calm with music, praise with her titles, offer, sit, close, revert. Come pure: wash your hands and face, rinse your mouth, wear clean clothes. Come settled; if you are furious, walk first.
+
+Speak the offering formula: "Hetep-di-nesu. An offering for Sekhmet: red drink and bread, incense and light, every good and pure thing. Come in peace." Then, after closing, take the food and drink away and share them: the reversion of offerings. In Egypt, nothing given to the gods was wasted; it fed the temple and the town.
+
+Fitting gifts: red drinks (pomegranate juice, hibiscus tea, red grape juice, or beer or red wine if you drink), bread, frankincense and myrrh, red cloth, music, and acts of healing and care. Do not offer anything harmful, and never put pigments, ochre or stones into a drink.`,
+            },
+            {
+              heading: 'Her days',
+              body: `The five epagomenal days at the end of the Egyptian year, before Wep Ronpet, the New Year, were the most important time to pacify her and ask protection from her arrows. Many Kemetics keep these days carefully, with offerings each day and protection for the household. Wep Ronpet itself, ideally linked to the rising of Sirius in late summer, celebrates the return of the Eye and the flood.
+
+The Feast of Drunkenness in the first month celebrated the calmed Eye and belongs to her as well as to Hathor. The hot season, when her fury was feared, is a good time for regular offerings. Modern Kemetics place these by their chosen calendar. In modern astrology, Tuesday belongs to Mars and Sunday to the sun, and some honour her on those days; that is a modern association, not Egyptian.`,
+            },
+            {
+              heading: 'Sensitive points',
+              body: `Do not use Sekhmet to curse, punish or frighten anyone. Ancient Egyptians did call on her against enemies; that is history. This journey, and this app, keep to devotion and protection. If someone has harmed you, ask her for strength, protection and healing for yourself, and seek practical help: friends, a counsellor, the police or legal advice where needed.
+
+Do not confuse her with Bastet, or swap them freely. Do not treat her as a mascot for anger. Respect her as a goddess of healing as much as of war.
+
+If you are working with anger that frightens you, or with an illness, let her be one support among several, not the only one: talk to your doctor or a counsellor too. She is powerful. That is exactly why you should not lean your whole weight on her alone.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Kemetic Orthodoxy and other Kemetic communities are documented modern movements. The danger of the epagomenal days, Wep Ronpet, the Feast of Drunkenness and the pacification pattern of offering and music are attested.',
+            unknown:
+              'There is no single modern Kemetic calendar, and ancient dates drifted. Her role as a goddess of women’s anger and empowerment is a modern emphasis. Most crystal, colour and weekday correspondences for her are modern.',
+          },
+          inPractice:
+            'Learn the offering formula with "come in peace" by heart. Put the epagomenal days and Wep Ronpet in your calendar. Decide on one act of healing or care to offer her each month after this journey.',
+          reflect: [
+            'What do you hope she will protect you from? What do you hope she will help you become?',
+            'How will you make sure your devotion to her stays protective and never becomes a weapon?',
+          ],
+          further: [
+            'Richard J. Reidy, Eternal Egypt: Ancient Rituals for the Modern World (2010)',
+            'Emily Teeter, Religion and Ritual in Ancient Egypt (2011)',
+          ],
+          library: ['traditional/deity/sekhmet', 'traditional/crystal/garnet', 'traditional/herb/cinnamon', 'traditional/candle/orange'],
+          premade: ['kitchen-courage-brew'],
+        },
+      ],
+      practices: [
+        {
+          id: 'sekhmet-ten-nights',
+          title: 'Ten nights of pacification',
+          instructions: `Each night: wash your hands and face, light the candle and incense, and shake the sistrum gently before you speak. Raise your hands and greet her by her titles, and say "come in peace". Say the offering formula and give red drink, water and bread. Then keep the night's theme for five to ten minutes. Close, thank her, shake the sistrum once more, and revert the offering.
+
+Night 1: the Powerful One. Sit in silence and simply feel her presence, or its absence. Night 2: Lady of Memphis. Read about Ptah and Nefertum, her family. Night 3: the sun. Sit for a few minutes in sunlight, or with the candle, and thank her for warmth. Night 4: the Eye. Name an anger you carry, and ask her to help you use it justly. Night 5: the red beer. Offer pomegranate juice and give thanks for something calmed in you. Night 6: the healers. Give thanks for a doctor, nurse or carer, by name if you can. Night 7: the arrows. Ask her to keep illness away from your household. Night 8: the statues. Speak ten of her titles slowly, as a small litany. Night 9: boundaries. Name one boundary you will keep, kindly and firmly. Night 10: come in peace. Offer music only, and sit with her.`,
+          times: 10,
+          every: 'day',
+          prompt: 'What was tonight’s theme, and how did she seem to you?',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'Is She Calling You?',
+      intro:
+        'Take a few days with only the daily calming. Read your journal from the beginning. Dedication is one good outcome; so is pausing, stopping, or finding that another goddess, perhaps Bastet or Hathor, or her husband Ptah, is the one calling you. With Sekhmet especially, waiting is never a failure.',
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'sekhmet-reread',
+          title: 'Read the month back',
+          instructions:
+            'Read your journal from the first entry. Notice when you came to her calm and when in anger, and what each was like. Then answer the questions below honestly, in writing.',
+          times: 1,
+          prompt: 'What does the month actually show about you and Sekhmet?',
+        },
+      ],
+      questions: [
+        'Are you drawn to Sekhmet herself, or mainly to the idea of a goddess of anger? Both are worth knowing about yourself.',
+        'Are you coming to her mainly out of a crisis, an illness or a grievance? If so, would it be wiser to keep honouring her without a vow until that has settled?',
+        'Can you keep your devotion to her protective and never use it against anyone?',
+        'Can you keep a small, steady practice (a daily calming, the epagomenal days, acts of care) through a busy year?',
+        'Would a Kemetic community or temple, with its own customs and rites, serve you better than a solitary self-dedication?',
+        'If you decide to wait or stop, can you thank her, give a last offering with music and take down the shrine with care? That is a good ending too.',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'The Dedication',
+      intro:
+        'If you choose to go on, this is your self-dedication to Sekhmet, a promise you write and speak yourself. It is not an initiation into Kemetic Orthodoxy or any other group, and it does not replace one. Wep Ronpet, a new moon, or a calm day after the epagomenal days are all fitting times. Choose a day when you are settled.',
+      days: 1,
+      lessons: [],
+      practices: [],
+      rite: {
+        title: 'Self-Dedication to Sekhmet',
+        summary: 'A full rite in the Egyptian shape of pacification: purification, music before speech, opening, praise by her titles, offering with the formula, the vow, a time of stillness, reversion and closing.',
+        minutes: 45,
+        ingredients: [
+          { name: 'Sekhmet', ref: 'traditional/deity/sekhmet' },
+          { name: 'A cup of red drink: pomegranate juice, hibiscus tea, or beer or red wine if you drink', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'A cup of fresh water' },
+          { name: 'A bowl of water with a pinch of salt and a pinch of baking soda (natron substitute)', ref: 'traditional/vessel/bowl' },
+          { name: 'Bread', ref: 'traditional/vessel/dish' },
+          { name: 'Frankincense or myrrh and a burner', ref: 'traditional/herb/frankincense' },
+          { name: 'A red or gold candle', ref: 'traditional/candle/red' },
+          { name: 'A length of red cloth' },
+          { name: 'A sistrum, rattle or bell', ref: 'traditional/tool/bell' },
+          { name: 'Your written vow' },
+          { name: 'Carnelian or red jasper to keep on the shrine or carry', ref: 'traditional/crystal/carnelian', optional: true },
+        ],
+        preparation: `During the day, write your vow: what you will do (a daily calming, the epagomenal days, acts of healing and care), what you will not do (use her power against anyone), for how long (a year and a day is common), and what you ask of her. Keep it short and keepable.
+
+Bathe, rinse your mouth, and dress in clean clothes. Clean the shrine. Fold the red cloth. If you feel agitated, take a walk before you begin. Set everything out.`,
+        steps: [
+          {
+            title: 'Purify',
+            instructions: 'Light the candle and the incense. Touch the natron water to your forehead, lips and hands, and pass your hands through the smoke.',
+            light: true,
+            spoken: 'I am pure, I am pure. My hands are clean, my mouth is clean. I come with respect before the Powerful One.',
+          },
+          {
+            title: 'Music before speech',
+            instructions: 'Shake the sistrum gently for two minutes, as priests did to calm her before any word was spoken.',
+            minutes: 2,
+          },
+          {
+            title: 'Open and praise',
+            instructions: 'Uncover or open her shrine. Raise both hands, palms toward her, and speak the praise slowly.',
+            spoken: 'Homage to you, Sekhmet, Lady of Memphis, beloved of Ptah, mother of Nefertum, Eye of Ra, Lady of the Bright Red Linen, Lady of Life, you who send the arrows and call them back, you whose priests heal. Come in peace. Come in peace.',
+          },
+          {
+            title: 'Offer',
+            instructions: 'Lay the red cloth before her image. Lift the red drink, the water and the bread toward her and set them down.',
+            spoken: 'Hetep-di-nesu. An offering for Sekhmet: red linen and red drink to delight you, cool water and bread, sweet smoke, every good and pure thing on which a goddess lives. May it please you and calm your heart.',
+          },
+          {
+            title: 'Speak the vow',
+            instructions: 'Stand before her and read your vow aloud, clearly. Sign and date it.',
+            spoken: 'Sekhmet, hear me. This is my word, given freely, in peace.',
+          },
+          {
+            title: 'Sit with her',
+            instructions: 'Sit quietly. Notice what you feel. If words or images come, write them down afterwards.',
+            minutes: 8,
+          },
+          {
+            title: 'Calm and close',
+            instructions: 'Shake the sistrum once more, gently. Thank her. Close or cover the shrine. Snuff the candle.',
+            snuff: true,
+            spoken: 'Be at peace, Great One. Guard this house, keep the arrows from it, and let my strength serve life. I am yours.',
+          },
+          {
+            title: 'Reversion',
+            instructions: 'Take the bread and drink away. Eat and drink a little straight away.',
+            spoken: 'The offering returns. What you have received, I share.',
+          },
+        ],
+        closing:
+          'Share the rest of the food and drink, if you like. Pour the water on a plant. Keep the red cloth and your vow on her shrine and reread the vow at each new moon. Make one act of healing or care within the week, as the first fruit of your dedication. Record the rite in your journal.',
+        safety:
+          'Keep candle and incense on a heatproof dish, away from the red cloth, curtains and paper, in a ventilated room, and never leave them unattended. Keep smoke away from birds, small pets and anyone with asthma. If you use alcohol, keep it moderate and do not drive. Never put pigments, ochre or stones in drinks.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'Come in Peace',
+      intro:
+        'After the dedication, the practice is steady and careful: a daily calming, the dangerous days kept, acts of healing offered, and a yearly renewal.',
+      days: 365,
+      lessons: [],
+      practices: [
+        {
+          id: 'sekhmet-daily',
+          title: 'Daily calming',
+          instructions:
+            'Each day, a gentle shake of the sistrum, fresh water, raised hands and "Sekhmet, come in peace". On hard days, the water and the words are a full rite.',
+          times: 365,
+          every: 'day',
+        },
+        {
+          id: 'sekhmet-month',
+          title: 'Monthly offering and act of care',
+          instructions:
+            'Once a month, at the new moon if you like, give red drink and bread with the formula, speak ten of her titles, reread your vow, and do one act of healing or care.',
+          times: 12,
+          every: 'month',
+          prompt: 'What act of care did you offer her this month?',
+        },
+        {
+          id: 'sekhmet-holy-days',
+          title: 'The epagomenal days and the New Year',
+          instructions: `On each of the five days before your chosen Wep Ronpet, give a pacification offering: music, titles, red drink, bread, and a request that her arrows pass by your household. On Wep Ronpet, celebrate the Eye’s return in peace with a fuller offering and music. At the Feast of Drunkenness, give thanks for anger turned to joy, with red drink, sober or not as you choose.`,
+          times: 1,
+          every: 'holy-day',
+          prompt: 'How did you keep the year’s end, and what did you ask her to guard?',
+        },
+        {
+          id: 'sekhmet-renewal',
+          title: 'Yearly rededication',
+          instructions:
+            'On the anniversary of your dedication, read the year’s journal, write a new vow, and repeat the dedication rite. Change the promise honestly. If you are ending the dedication, give a last offering with music, thank her, and take down the shrine with care.',
+          times: 1,
+          prompt: 'What has a year with the Powerful One changed in how you use your strength?',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'E. A. Wallis Budge, Legends of the Gods (1912), Project Gutenberg ebook 9411, "The Legend of the Destruction of Mankind": "Sekhet of the offerings waded about in the night season in their blood"',
+    'Miriam Lichtheim, Ancient Egyptian Literature, vols. 1–2 (1973–1976), for the Loyalist Instruction and the Destruction of Mankind',
+    'Jean Yoyotte, Bulletin de la Société française d’égyptologie 87–88 (1980), on the Sekhmet statues of Amenhotep III as a "litany in granite"',
+    'John F. Nunn, Ancient Egyptian Medicine (1996); Paul Ghalioungui, The Physicians of Pharaonic Egypt (1983); the Ebers Papyrus heart section on the wab-priests of Sekhmet',
+    'Geraldine Pinch, Magic in Ancient Egypt (1994; 2006); Richard H. Wilkinson, The Complete Gods and Goddesses of Ancient Egypt (2003)',
+  ],
+};

@@ -28,6 +28,12 @@ export type WidgetHoliday = {
 };
 
 export type WidgetDayProps = {
+  /**
+   * The day in the calendar that leads Today when it isn't the ordinary date
+   * ("Hunter’s Moon · day 7" when counting by the moon), else "". Widgets
+   * built before it existed simply don't show it.
+   */
+  calendarLine?: string;
   phase: string;
   /** How much of the moon is lit, 0–100. */
   percent: number;
@@ -142,8 +148,11 @@ function ritualDetails(plan: RitualPlan | null, day: Date, templates: TemplateRo
   };
 }
 
+/** Extra lines worked out by the app for each day (lib/calendars). */
+export type WidgetCalendar = { lead?: (day: Date) => string };
+
 /** The widgets' props for one day. */
-export function widgetDay(day: Date, choice: HolidayChoice, plans: RitualPlan[], templates: TemplateRow[] = []): WidgetDayProps {
+export function widgetDay(day: Date, choice: HolidayChoice, plans: RitualPlan[], templates: TemplateRow[] = [], calendar: WidgetCalendar = {}): WidgetDayProps {
   const evening = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 21);
   const moon = moonState(evening);
   // The next principal phase after tonight's (so a full moon tonight points at the last quarter).
@@ -178,7 +187,15 @@ export function widgetDay(day: Date, choice: HolidayChoice, plans: RitualPlan[],
       ? `${coming.name} ${whenWords(day, coming.date).replace(/^tonight$/, 'today')}`
       : '';
 
+  let calendarLine = '';
+  try {
+    calendarLine = calendar.lead?.(new Date(day.getFullYear(), day.getMonth(), day.getDate(), 12)) ?? '';
+  } catch {
+    // A calendar that can't say leaves the line out.
+  }
+
   return {
+    calendarLine,
     phase: moon.name,
     percent: Math.round(moon.illumination * 100),
     symbol: SYMBOLS[moon.name],
@@ -195,9 +212,9 @@ export function widgetDay(day: Date, choice: HolidayChoice, plans: RitualPlan[],
 }
 
 /** A month of widget days: now, then each following midnight. */
-export function widgetTimeline(now: Date, choice: HolidayChoice, plans: RitualPlan[], templates: TemplateRow[] = [], days = WIDGET_DAYS) {
+export function widgetTimeline(now: Date, choice: HolidayChoice, plans: RitualPlan[], templates: TemplateRow[] = [], days = WIDGET_DAYS, calendar: WidgetCalendar = {}) {
   return Array.from({ length: days }, (_, i) => {
     const date = i === 0 ? now : new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
-    return { date, props: widgetDay(date, choice, plans, templates) };
+    return { date, props: widgetDay(date, choice, plans, templates, calendar) };
   });
 }

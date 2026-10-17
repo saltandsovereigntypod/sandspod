@@ -452,3 +452,54 @@ export function setApothecaryState(object: SavedObject, change: Partial<Apotheca
   const apothecary = { ...apothecaryStateOf(object), ...change };
   return writeLivingState(object, { ...state, lastUsedAt: now, apothecary }, now);
 }
+
+// ── The app's own per-object state ─────────────────────────────────────────
+// Flame readings, offerings and their freshness, incense, petitions and a
+// small log of what was done with the object live under `livingState.app`.
+// The website keeps unknown top-level keys of the state as they are, so this
+// travels with the object without the website needing to know about it.
+
+/** One thing that happened to an object, for its story. */
+export type AppEvent = { id: string; at: string; kind: string; text: string; [key: string]: unknown };
+
+export type AppState = {
+  history?: AppEvent[];
+  [key: string]: unknown;
+};
+
+/** At most this many entries are kept in an object's own log. */
+export const APP_HISTORY_MAX = 120;
+
+export function appStateOf(object: SavedObject): AppState {
+  const app = parseLivingState(object)?.app;
+  return app && typeof app === 'object' && !Array.isArray(app) ? (app as AppState) : {};
+}
+
+/** Change part of the app's state; every other key (and the rest of the living state) is kept. */
+export function setAppState(object: SavedObject, change: Partial<AppState>, now: string, used = true): SavedObject {
+  const state = readLivingState(object, now);
+  const app = { ...appStateOf(object), ...change };
+  return writeLivingState(object, { ...state, ...(used ? { lastUsedAt: now } : {}), app }, now);
+}
+
+export function appHistoryOf(object: SavedObject): AppEvent[] {
+  const list = appStateOf(object).history;
+  return Array.isArray(list) ? list.filter((e) => e && typeof e.at === 'string' && typeof e.text === 'string') : [];
+}
+
+/** Add a line to the object's log (and any other app-state change in the same write). */
+export function logAppEvent(
+  object: SavedObject,
+  event: { kind: string; text: string; at?: string; [key: string]: unknown },
+  now: string,
+  change: Partial<AppState> = {},
+): SavedObject {
+  const entry: AppEvent = { ...event, id: newId(), at: event.at || now, kind: event.kind, text: event.text };
+  const history = [...appHistoryOf(object), entry].slice(-APP_HISTORY_MAX);
+  return setAppState(object, { ...change, history }, now);
+}
+
+/** When the object came to the altar (its living state's birth), or NaN when unknown. */
+export function placedAtOf(object: SavedObject): number {
+  return Date.parse(String(parseLivingState(object)?.createdAt || ''));
+}

@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '../../../../components/Button';
 import { BlockEditor, Field, InkButton } from '../../../../components/grimoire/BlockEditor';
 import { ink, Ornament } from '../../../../components/grimoire/BlockView';
+import { useLeave } from '../../../../components/grimoire/leave';
 import { PagePicker } from '../../../../components/grimoire/PagePicker';
 import { PageFaceContext, useMundaneMode } from '../../../../components/grimoire/presentation';
 import { FailedChanges, SaveStatus } from '../../../../components/grimoire/SaveStatus';
@@ -23,6 +24,7 @@ export default function EditGrimoirePage() {
   const { snapshot, canEdit } = useGrimoire();
   const { mundane, settings } = useMundaneMode();
   const page = snapshot?.pages.find((p) => p.id === pageId) ?? null;
+  const done = useLeave(page ? { pathname: '/grimoire/[pageId]', params: { pageId: page.id } } : '/grimoire');
 
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
@@ -32,7 +34,7 @@ export default function EditGrimoirePage() {
           label="Done"
           variant="text"
           accessibilityHint="Closes the editor and shows the page"
-          onPress={() => (router.canGoBack() ? router.back() : router.replace('/grimoire'))}
+          onPress={done}
         />
       </View>
 

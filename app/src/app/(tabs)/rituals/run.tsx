@@ -120,6 +120,15 @@ export default function RunRitual() {
         </Text>
       </View>
 
+      {typeof session.metadata?.ranOnAltar === 'string' && !!session.linked_altar_id && (
+        <Button
+          label="Carry on at the altar"
+          variant="outline"
+          accessibilityHint="Open the altar this ritual is being worked on, with its steps over it"
+          onPress={() => router.navigate({ pathname: '/altar/[altarId]', params: { altarId: session.linked_altar_id! } })}
+        />
+      )}
+
       {steps.length > 0 && step ? (
         <Card accent>
           <Text style={[type.eyebrow, ui.gold]}>{`Step ${index + 1} of ${steps.length}`}</Text>

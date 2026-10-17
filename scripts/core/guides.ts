@@ -1,0 +1,20 @@
+// The app's own logic for the website's guides, settings and reminders: the
+// Closed & living traditions guide and sourcing notes, support lines, the How
+// to guide, the settings choices the site was missing (My practice, My path,
+// Calendar & holidays, Today), and moon/ritual/devotion reminders as calendar
+// files. Built by scripts/build-core.mjs into js/core/guides.js
+// (window.SaltCore.guides). Keep it to pure modules from app/src/lib.
+export * as closed from '../../app/src/lib/library/closed/index.ts';
+export * as help from '../../app/src/lib/help/index.ts';
+export * as support from '../../app/src/lib/support/lines.ts';
+export * as holidays from '../../app/src/lib/holidays.ts';
+export * as traditions from '../../app/src/lib/library/traditions.ts';
+export * as traditionDay from '../../app/src/lib/traditionDay.ts';
+export * as calendar from '../../app/src/lib/calendar.ts';
+export * as moon from '../../app/src/lib/moon.ts';
+export * as schedule from '../../app/src/lib/reminders/schedule.ts';
+export * as calendarEvent from '../../app/src/lib/reminders/calendarEvent.ts';
+export * as planSync from '../../app/src/lib/rituals/planSync.ts';
+export * as patron from '../../app/src/lib/patron/index.ts';
+export { PRACTICES, myPractices, practicesValue, practiceName } from '../../app/src/lib/rituals/premade/practices.ts';
+export * as calendars from '../../app/src/lib/calendars/index.ts';

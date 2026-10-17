@@ -1,0 +1,563 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-durga',
+  kind: 'deity',
+  paths: ['hindu'],
+  deityRef: 'traditional/deity/durga',
+  title: 'Durga: The Mother Who Carries Us Across',
+  summary:
+    'A devotional month with Durga, the lion-riding Goddess of the Devi Mahatmya. Learn her story and her nine forms, how Navaratri and Bengal’s Durga Puja are kept, and how to offer a simple, clean puja at home, then decide whether to make a personal vow of devotion.',
+  welcome: `This journey spends about a lunar month learning about Durga and offering her simple devotion (bhakti) at home. It is written for people who want to understand her as she is actually worshipped: by hundreds of millions of Hindus, in temples, homes and great public festivals, with their own teachers, families and customs.
+
+You will read her story in the Devi Mahatmya, meet her many forms, learn how Navaratri and Durga Puja are kept, and practise a small home puja of flowers, lamp, incense and food. For nine evenings you will sit with one of her nine forms. At the end you may make a personal vow of devotion, or not.
+
+Please read this plainly. This is not an initiation. Formal initiation (dīkṣā) and the mantras a guru gives with it are not offered here and cannot be given by an app. Nothing here is "magic" or a spell; it is devotion. The best thing this journey can do is send you to a temple, a Durga Puja pandal or a Hindu friend's home, to learn from the people whose religion this is.`,
+  about: `Durga (Durgā) is the Great Goddess in her protecting, victorious form. Her name is usually explained as "the one who is hard to reach" or "the fortress", and also as the one who carries her devotees across difficulties (durga also means a hard passage). She is pictured with eight, ten or more arms holding the weapons the gods gave her, riding a lion or tiger, often at the moment she slays the buffalo-demon Mahishasura; in that form she is Mahishasuramardini. Her great text is the Devi Mahatmya ("Glory of the Goddess"), about 700 verses within the Markandeya Purana, composed around the fifth or sixth century CE and recited as the Durga Saptashati or Chandi Path. For many Hindus she is Shakti, the power of the divine itself, and one with Parvati, the wife of Shiva; in Bengal she is also Uma, the beloved daughter who comes home each autumn with her children. She is worshipped above all at Navaratri, the "nine nights", and at Durga Puja in Bengal, Assam, Odisha and the Bengali diaspora.`,
+  notes: [
+    'Hinduism is a living religion. Durga belongs first to the Hindu families, temples and teachers who worship her. This journey is a respectful introduction and an invitation to learn from them, not a replacement.',
+    'Dīkṣā (formal initiation) and mantras traditionally given by a guru are not offered here. Where Hindu prayers are mentioned, the app gives its own English words; learn Sanskrit prayers, and their pronunciation and proper use, from a priest, teacher or family.',
+    'This is devotion, not magic. Please do not use Durga, her image or her names in spells, curses or "warrior goddess" aesthetics.',
+    'Offerings here are vegetarian: no meat, fish, eggs or alcohol. Some Shakta temples have historically offered animal sacrifice (bali), and a few still do; many households use a pumpkin, ash gourd or sugarcane instead. This app never includes animal sacrifice.',
+    'Treat her image with care: keep it raised, clean and out of bathrooms; do not put it on clothing you sit on, on shoes, or on the floor.',
+    'The app’s calendar does not yet list Hindu festivals. Navaratri dates follow the lunar calendar and move each year; check a Hindu panchang (almanac) or your local temple.',
+    'Safety: some sindoor and kumkum powders have been found to contain lead. Buy lead-free, never eat it, and keep it from children. Ghee lamps, camphor and incense need a heatproof plate and constant attention.',
+  ],
+  holyDays: [],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'Coming to Her Door',
+      intro:
+        'Begin by learning who Durga is, set up a small clean shrine, and offer a first simple puja: a lamp, a flower and a few words of greeting. Take it slowly; respect comes before everything else.',
+      days: 3,
+      lessons: [
+        {
+          id: 'durga-who',
+          title: 'Who Durga Is',
+          summary: 'Her name, her image, her many forms, and her place in Hindu religion.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The name and the image',
+              body: `Sanskrit durga means a place that is hard to reach, a fortress, or a difficult passage. Durgā is the goddess who is that fortress, and who brings her devotees through the hard passage to safety. Devotees often call her simply Ma, "Mother", or Devi, "Goddess".
+
+Her image is one of the most recognisable in India. She stands or sits on a lion (in some regions a tiger), calm in the face, with many arms. Each hand holds a gift from a god: Shiva's trident, Vishnu's discus, Varuna's conch, Indra's thunderbolt, a bow, a sword, a bell, a lotus. Very often she is shown at the moment of victory, her trident piercing the buffalo-demon Mahishasura as he struggles out of the buffalo's body. Notice her face in these images. It is rarely angry. Her composure is part of the point.`,
+            },
+            {
+              heading: 'Shakti, Devi and Parvati',
+              body: `In Hindu thought the divine has a power, Shakti, by which it creates, sustains and acts. Many Hindus, especially in the Shakta traditions, worship that power as the Goddess herself, the Mahadevi or Great Goddess, of whom all goddesses are forms. Durga is one of her greatest forms.
+
+Most Hindus also identify Durga with Parvati, the wife of Shiva and daughter of the mountain Himalaya. In Bengal she is Uma, a young married daughter who comes home to her parents once a year with her four children: Lakshmi, Saraswati, Kartikeya and Ganesha. These ideas sit together without much strain. A devotee may see Durga as the cosmic Mother, as Shiva's wife, and as the daughter coming home, all at once.`,
+            },
+            {
+              heading: 'Her many forms',
+              body: `Durga appears in many forms, and different families and regions are close to different ones. Kali, black and fierce, springs from her in the Devi Mahatmya. Chamunda, Chandi and Chandika are fierce forms. Ambika, "little mother", is gentle. In the north, Vaishno Devi is visited in her cave shrine in the Trikuta hills of Jammu by millions of pilgrims a year. In Mysuru she is Chamundeshwari on Chamundi Hill.
+
+At Navaratri many worship her as the Navadurga, nine forms for nine nights: Shailaputri, Brahmacharini, Chandraghanta, Kushmanda, Skandamata, Katyayani, Kalaratri, Mahagauri and Siddhidatri. That list comes from the Devi Kavacha, a prayer recited before the Chandi Path. You will meet each of them in the practice stage.`,
+            },
+            {
+              heading: 'Starting in the right place',
+              body: `Durga is not a figure from a museum. She is worshipped today in homes and temples across India, Nepal, Bangladesh, Sri Lanka and wherever Hindus have settled, from Leicester to Houston. That shapes how an outsider should come to her. Learn before you act. Ask before you join in. Expect customs that differ by family and region, and accept that the people who keep them know better than any book, including this one.
+
+In return, Hindu communities are often warmly welcoming. Most temples are open to respectful visitors, and Durga Puja pandals in particular invite everyone in to see the Goddess, eat the prasad and enjoy the festival.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Durga’s iconography, her identification with Parvati and Shakti, the Bengali image of Uma coming home with her children, and the Navadurga list from the Devi Kavacha are well established in Hindu texts and living practice.',
+            unknown:
+              'How Durga’s worship began is not fully known. Images of a goddess slaying a buffalo appear in the Kushan period (around the first and second centuries CE), before the Devi Mahatmya, but the earlier history of the Goddess, and what lies behind her, is debated by scholars.',
+          },
+          inPractice:
+            'Find an image of Durga that you can treat with care: a framed print or a small murti (sacred image) from a Hindu shop or temple store. Learn to say her name properly: DOOR-gaa, with a long final a. If you can, find out where your nearest Hindu temple is and whether it has a Durga shrine.',
+          reflect: [
+            'What draws you to Durga: her protection, her courage, her motherhood, or something you cannot name yet?',
+            'What do you already assume about her that you might need to unlearn?',
+          ],
+          further: [
+            'David Kinsley, Hindu Goddesses: Visions of the Divine Feminine in the Hindu Religious Tradition (1986)',
+            'Gavin Flood, An Introduction to Hinduism (1996)',
+          ],
+          library: ['traditional/deity/durga', 'traditional/deity/ganesha'],
+        },
+      ],
+      practices: [
+        {
+          id: 'durga-shrine',
+          title: 'Set up a small, clean shrine',
+          instructions: `Choose a raised place: a shelf or small table, never the floor, and never a bathroom. Many Hindu homes keep the shrine in the north-east of the house, facing east; do this if you can, and do not worry if you cannot.
+
+Clean the place and lay a fresh red or yellow cloth. Set Durga's image at the back, at or above eye level when you sit. In front, place a small diya (oil lamp) with ghee or sesame oil on a heatproof plate, an incense holder, a small dish for flowers, a small plate for food offerings and a cup of clean water. A small bell is customary to ring as you begin. Keep a little lead-free kumkum (red powder) if you like.
+
+Keep it simple and keep it clean. Hindu shrines are cared for daily: old flowers are removed, the lamp wiped, the water changed. Take your shoes off before you approach it.`,
+          times: 1,
+          prompt: 'Where did you place her shrine, and what did you clean or clear to make room?',
+        },
+      ],
+      rite: {
+        title: 'First Greeting to the Mother',
+        summary: 'A first short puja: wash, light the lamp, offer a red flower and water, greet her in your own words, and sit quietly.',
+        minutes: 15,
+        ingredients: [
+          { name: 'Durga’s image', ref: 'traditional/deity/durga' },
+          { name: 'A diya (small oil lamp) with ghee or sesame oil and a cotton wick, on a heatproof plate' },
+          { name: 'One fresh red flower, such as a hibiscus or a red rose', ref: 'traditional/herb/rose' },
+          { name: 'A small cup of clean water', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'A stick of sandalwood incense and a holder', ref: 'traditional/herb/sandalwood', optional: true },
+          { name: 'A small bell', ref: 'traditional/tool/bell', optional: true },
+        ],
+        preparation:
+          'Bathe or wash your hands, feet and face, and put on clean clothes. Remove your shoes. Clean the shrine. Do not eat meat or drink alcohol before the puja. Sit on a mat or cushion before the image.',
+        steps: [
+          {
+            title: 'Settle',
+            instructions: 'Sit quietly before the image. Join your palms at your chest (the gesture of namaste) and take a few slow breaths.',
+            minutes: 2,
+          },
+          {
+            title: 'Ring and light',
+            instructions: 'Ring the bell gently, if you have one, to mark the beginning. Light the diya, then the incense.',
+            light: true,
+          },
+          {
+            title: 'Offer water and the flower',
+            instructions:
+              'Hold the cup of water up a little, then set it before her. Take the flower in both hands, hold it to your heart for a moment, and place it at her feet. Flowers are offered fresh, whole and unsmelled: you do not sniff a flower before you give it.',
+            spoken: 'Durga, Mother, I bow to you.\nI have come to learn who you are.\nAccept this water and this flower.',
+          },
+          {
+            title: 'Greet her',
+            instructions: 'Speak simply and honestly: who you are, why you have come, and that you come to learn. Then bow your head.',
+            minutes: 3,
+          },
+          {
+            title: 'Sit with the light',
+            instructions: 'Look at her face in the lamplight. Then close your eyes for a few minutes.',
+            minutes: 4,
+            timed: true,
+          },
+          {
+            title: 'Close',
+            instructions:
+              'Bow with joined palms. Let the lamp burn while you are present, or put it out gently by covering it or pinching it with a flower; in many homes lamps for the Goddess are not blown out.',
+            snuff: true,
+            spoken: 'Thank you, Mother. I will come again.',
+          },
+        ],
+        closing:
+          'Leave the flower until it wilts, then place it in a plant pot, garden or compost rather than the bin. Pour the water onto a plant. Write a few lines in your journal.',
+        safety:
+          'Set the diya and incense on a heatproof plate, away from curtains, cloth and paper, and never leave them unattended. Keep flame and smoke away from pets and children. Ghee flares if the wick is too long; trim it short.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'The Glory of the Goddess',
+      intro:
+        'Three lessons: the Devi Mahatmya and what it says; how Durga has been worshipped through history; and the great autumn festivals of Navaratri and Durga Puja. Light the lamp and offer a flower before you study each day.',
+      days: 12,
+      lessons: [
+        {
+          id: 'durga-devi-mahatmya',
+          title: 'The Devi Mahatmya',
+          summary: 'Her great text: three battles, the gods’ hymns, and the promise to return.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'The text',
+              body: `The Devi Mahatmya, "Glory of the Goddess", is a Sanskrit poem of about 700 verses, which is why it is also called the Durga Saptashati, "Seven Hundred to Durga". It forms chapters 81 to 93 of the Markandeya Purana and was probably composed around the fifth or sixth century CE. Recited in full, it is the Chandi Path, and reciting it during Navaratri is one of the central acts of Durga worship.
+
+The frame is a story. A king who has lost his kingdom and a merchant betrayed by his family meet in a forest and ask a sage, Medhas, why they still love what has hurt them. He answers by telling them about the Goddess, in three episodes. F. E. Pargiter's English translation of 1904 is public domain and is the one quoted here.`,
+            },
+            {
+              heading: 'Born from the light of all the gods',
+              body: `In the first episode, the Goddess as cosmic sleep releases Vishnu so he can kill two demons, Madhu and Kaitabha. The second is the most famous. The buffalo-demon Mahisha has conquered heaven, and the gods, furious, pour out their energies. In Pargiter's words, "that unparalleled energy born of the bodies of all the gods, which pervaded the three worlds with its light, gathering into one became a female."
+
+Each god then gives her his weapon. Shiva draws a trident from his own trident; Vishnu a discus from his discus; Indra a thunderbolt. And, Pargiter has it, "Himavat gave her a lion to ride on". She fights Mahisha's armies, and finally kills Mahisha himself as he changes from buffalo to lion to man to elephant and back. This is why she holds so many weapons. They are not hers alone; the whole divine order has armed her.`,
+            },
+            {
+              heading: 'Kali, the Mothers and the blood-seed',
+              body: `In the third episode two brothers, Shumbha and Nishumbha, take heaven. The gods go to the Himalaya and sing her a hymn that is still sung everywhere: a long litany saluting the Goddess who dwells in all beings as consciousness, sleep, hunger, patience, faith, memory, mercy and much more. One line, in Pargiter: "To the goddess who among all created beings / Stands firm with the form of Mother, / Reverence to her, yea reverence to her!"
+
+The battles that follow are fierce. Kali springs from the Goddess's brow to destroy the generals Chanda and Munda, and so is called Chamunda. The demon Raktabija, from every drop of whose blood a new demon springs, is defeated when Kali drinks his blood before it can fall. Goddesses called the Matrikas, the "Mothers", the powers of the male gods, join the fight. At the end Shumbha mocks her for relying on others, and she draws them all back into herself: there was only ever one Goddess.`,
+            },
+            {
+              heading: 'The promise',
+              body: `When it is over the gods praise her again, and she grants them a boon. In Pargiter: "Thus whenever trouble shall arise caused by the Dānavas, at each such time I shall become incarnate and accomplish the foes' destruction." In the next canto she praises the text itself and asks that it be recited, especially "at the great annual worship that is performed in autumn time". That line is one root of the autumn Navaratri.
+
+Devotees read the Devi Mahatmya in many ways at once: as sacred history, as the praise of the Mother, and as a picture of inner struggle, where the demons are pride, greed and delusion and the Goddess is the clear power that overcomes them. The frame story leans that way too: the king and merchant were stuck in attachment, and the Goddess is also the one who frees the mind.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The Devi Mahatmya forms cantos 81–93 of the Markandeya Purana and is usually dated to about the fifth or sixth century CE. Its three episodes, hymns and closing promises are as described, and it is recited at Navaratri today. The quotations are from Pargiter’s 1904 translation.',
+            unknown:
+              'The exact date and place of composition are uncertain, and Pargiter himself thought it was added to the Purana later. Readings and verse numbering differ between manuscripts and editions; Pargiter used a Calcutta text and notes variants from the Bombay edition.',
+          },
+          inPractice:
+            'Read Pargiter’s translation of cantos 82 to 84 (Mahisha) this week, a canto a day, sitting before her lamp. You are reading to learn, not performing the Chandi Path: formal recitation is done in Sanskrit with its own rules, often by a priest, and is best learned from a teacher. Write down one line each day that stays with you.',
+          reflect: [
+            'The gods combined their power to make her. What does it mean to you that the Goddess is everyone’s strength gathered into one?',
+            'The king and the merchant still loved what hurt them. Where do you recognise that in yourself?',
+          ],
+          further: [
+            'F. E. Pargiter, trans., The Markandeya Purana (Calcutta, 1904), cantos 81–93; public domain, on archive.org and wisdomlib.org',
+            'Thomas B. Coburn, Encountering the Goddess: A Translation of the Devī-Māhātmya and a Study of Its Interpretation (1991)',
+            'Devadatta Kali, In Praise of the Goddess: The Devimahatmya and Its Meaning (2003)',
+          ],
+          library: ['traditional/deity/durga'],
+        },
+        {
+          id: 'durga-worship',
+          title: 'How She Has Been Worshipped',
+          summary: 'Temples and seats of the Goddess, autumn worship, offerings, and the hard question of sacrifice.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Old stones and great temples',
+              body: `Long before the Devi Mahatmya, sculptors in Mathura in the Kushan period were carving a small goddess with a buffalo, pressing it down with her hands. Later the image grows into the great scenes of the seventh-century Mahishasuramardini cave at Mamallapuram, near Chennai, where she rides her lion into battle against the buffalo-headed demon.
+
+Shakta tradition tells of the Shakti Pithas, "seats of the Goddess", places where parts of the body of Sati, Shiva's first wife, fell to earth. The lists vary, often counting 51 or 108. Among the most famous are Kamakhya in Assam, Kalighat in Kolkata, and the cave of Vaishno Devi in Jammu. Pilgrimage to them is one of the oldest forms of devotion to the Goddess.`,
+            },
+            {
+              heading: 'Puja: honouring a guest',
+              body: `The basic form of Hindu worship is puja, which treats the deity as an honoured guest. A full temple puja may have sixteen services (shodashopachara): inviting her, offering a seat, washing her feet, water to drink, a bath, clothing, ornaments, sandalwood paste, flowers, incense, lamp, food, and more. At home many people use a short form of five (panchopachara): sandalwood paste or fragrance, a flower, incense, a lamp, and food.
+
+Puja usually ends with arati: a lamp is waved in clockwise circles before the deity while a song is sung, and then the worshippers pass their hands over the flame and touch their eyes and head, taking in its blessing. The food offered is then received back as prasad, the Goddess's grace, and shared.`,
+            },
+            {
+              heading: 'Her flowers and foods',
+              body: `Red belongs to Durga. Red hibiscus, called jaba in Bengali, is especially loved by her and by Kali; red cloth, a red chunri (scarf) and red bangles are offered by women. Lotus flowers have a special place: during the Sandhi Puja at the meeting of the eighth and ninth days of Durga Puja, 108 lotuses and 108 lamps are offered. Bel (wood-apple) leaves, sacred to Shiva, are used for her too.
+
+Food offerings are vegetarian and made cleanly: fruit, coconut, rice, sweets such as kheer and laddoos, and in Bengal the bhog of khichuri (rice and lentils), fried vegetables and payesh (rice pudding). Food is not tasted before it is offered. Sindoor, the red powder worn in a married woman's hair parting, is offered by married women in many traditions.`,
+            },
+            {
+              heading: 'The question of bali',
+              body: `The Devi Mahatmya mentions bali, offerings, and in some Shakta traditions bali has included animal sacrifice, usually goats. It still happens at some temples, such as Kamakhya, and during Dashain in Nepal. It is also strongly opposed by many Hindus, and many Bengali households and community pujas now offer a pumpkin, ash gourd, sugarcane or banana instead, cut with the same respect.
+
+It is worth knowing this honestly rather than pretending it is not there. It is also simple to decide what you will do. Vegetarian offering is entirely traditional, common, and accepted everywhere. This journey uses only flowers, fruit, sweets, grain, water, lamp and incense.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Kushan-period buffalo-slaying goddess images, the Mamallapuram reliefs, the Shakti Pitha tradition, the forms of puja, Sandhi Puja with 108 lotuses and lamps, and the continuing practice and opposition around animal bali are all documented.',
+            unknown:
+              'Whether the early Kushan images were already called Durga is not certain. The Shakti Pitha lists disagree with each other, and their legends grew over many centuries. Customs about offerings vary greatly by family, region and sect.',
+          },
+          inPractice:
+            'This week, add a short five-part puja to your daily lamp: fragrance (a dab of sandalwood paste or a drop of sandalwood oil on the image’s base), flower, incense, lamp and a small food offering, then eat the food afterwards as prasad. Visit a temple if you can, take off your shoes at the door, and watch how the arati is done.',
+          reflect: [
+            'Puja treats the Goddess as a guest. How would you treat a guest you loved and respected?',
+            'How do you feel about learning that part of her tradition has included sacrifice, and that many devotees reject it?',
+          ],
+          further: [
+            'Diana L. Eck, Darśan: Seeing the Divine Image in India (1981)',
+            'Hillary Rodrigues, Ritual Worship of the Great Goddess: The Liturgy of the Durgā Pūjā with Interpretations (2003)',
+          ],
+          library: ['traditional/deity/durga', 'traditional/herb/sandalwood', 'traditional/tool/bell'],
+          premade: ['folk-diya-gayatri'],
+        },
+        {
+          id: 'durga-festivals',
+          title: 'Navaratri and Durga Puja',
+          summary: 'The nine nights, the ten days of Bengal, and how the Goddess comes home and leaves again.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'Nine nights',
+              body: `Navaratri means "nine nights". The great one is Sharada Navaratri, the autumn Navaratri, beginning on the first day of the bright half of the lunar month Ashvin, in September or October. A spring Navaratri, Chaitra Navaratri, falls in March or April. Dates follow the lunar calendar, so they move each year.
+
+Across India the festival takes different shapes. Many devotees fast or eat only simple vegetarian food. Many set up a kalash (water pot) and sow barley or other grain in a small bed of earth on the first day, and watch it sprout over the nine days. In Gujarat people dance garba and dandiya raas in circles around the Goddess late into the night; garba was recognised by UNESCO in 2023. In Tamil Nadu and Karnataka families build a golu, steps of dolls and figures. On the eighth or ninth day many families honour young girls as living forms of the Goddess (Kumari or Kanya Puja), wash their feet and feed them.`,
+            },
+            {
+              heading: 'The tenth day',
+              body: `The day after Navaratri is Vijayadashami, "the victorious tenth", called Dussehra in much of North India, where it celebrates Rama's victory over Ravana with Ramlila plays and burning effigies. In Mysuru, Dasara is a royal festival of Chamundeshwari, ending with a great procession.
+
+Navaratri's popular "colour of the day", now widely followed in Maharashtra and beyond, is a modern custom spread by newspapers and is not ancient. It is harmless and fun. Knowing which customs are old and which are new is part of honouring a tradition truthfully.`,
+            },
+            {
+              heading: 'Durga Puja in Bengal',
+              body: `In West Bengal, Bangladesh, Assam, Odisha and the Bengali diaspora, the same season is Durga Puja, the greatest festival of the year. It begins with Mahalaya, about a week before, when people remember their ancestors at dawn and, since the early 1930s (accounts differ on the very first year, usually given as 1931), listen to All India Radio's dawn programme Mahishasuramardini, with Birendra Krishna Bhadra's chanting; the recording still broadcast was made decades later, and when the station replaced it in 1976 the outcry brought it straight back. The main days run from Shashthi (the sixth) to Dashami (the tenth).
+
+The images are made of clay by potters, most famously in Kumartuli in north Kolkata. Durga stands on her lion with Mahishasura at her feet, and around her stand her children, Lakshmi, Saraswati, Kartikeya and Ganesha. Beside Ganesha stands the kola bou, the “banana bride”: a banana plant bound together with eight other plants, the navapatrika or nine plants that embody the Goddess, bathed at dawn on the seventh day and dressed in a red-bordered sari. Communities build pandals, temporary temples that can be astonishing works of art, and the whole city goes out to see them. Kolkata's Durga Puja was inscribed on UNESCO's list of the intangible cultural heritage of humanity in 2021.`,
+            },
+            {
+              heading: 'Her leaving',
+              body: `Bengali songs treat the festival as a married daughter's visit home. Uma comes to her mother Menaka for a few days, and then must go back to Shiva on Mount Kailash. On Dashami, married women offer her sweets and sindoor and then smear sindoor on each other's faces in sindoor khela. The images are carried to the river and immersed (visarjan), to cries of "Asche bochhor abar hobe": "Next year it will happen again."
+
+The farewell is sad and loving at once, and many people cry. More and more pujas now use natural clay and paints and immerse in ponds or tanks made for the purpose, to protect rivers from paint and plaster. If you keep a small image at home for the festival, immerse it in a bucket of water and pour the water onto your garden.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The timing of Sharada and Chaitra Navaratri, Vijayadashami, the Bengali Durga Puja and its customs (Mahalaya, Kumartuli images, kolabou, sindoor khela, visarjan), the UNESCO recognitions of Durga Puja in Kolkata (2021) and of garba (2023) are documented.',
+            unknown:
+              'How and when autumn Durga Puja took its present Bengali form is debated; landlord families and the Krittivasi Ramayana’s story of Rama’s "untimely awakening" (akal bodhan) of the Goddess are often cited. Regional customs differ widely, and many “traditional” details are local or recent.',
+          },
+          inPractice:
+            'Find out when the next Navaratri falls using a panchang or your local temple’s website. If you live near a Hindu or Bengali community, look for a Durga Puja you can visit: arrive respectfully dressed, remove your shoes where others do, accept prasad with your right hand, and ask questions.',
+          reflect: [
+            'The Bengali Durga is both the cosmic Mother and a daughter coming home. Which side of her moves you more?',
+            'What would it mean to you to welcome someone for a few days and then let them go with love?',
+          ],
+          further: [
+            'Tapati Guha-Thakurta, In the Name of the Goddess: The Durga Pujas of Contemporary Kolkata (2015)',
+            'UNESCO, “Durga Puja in Kolkata” (inscribed 2021), ich.unesco.org',
+          ],
+          library: ['traditional/deity/durga', 'traditional/deity/ganesha', 'traditional/candle/red'],
+          premade: ['folk-lakshmi-diwali'],
+        },
+      ],
+      practices: [
+        {
+          id: 'durga-daily-lamp',
+          title: 'Lamp and flower each day',
+          instructions:
+            'Each day, wash, remove old flowers, light the diya and offer one fresh flower and a cup of water. Add the five-part puja when you have time. Sit for a minute before you study.',
+          times: 12,
+          every: 'day',
+          prompt: 'One line: what did you learn about her today?',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Nine Nights with the Mother',
+      intro:
+        'For nine nights, one for each of the Navadurga, you will offer a simple puja and sit with one form of the Goddess. If you can, keep these nights during Navaratri itself; otherwise begin on the first day of a bright lunar fortnight. First read the lesson on honouring her at home.',
+      days: 9,
+      lessons: [
+        {
+          id: 'durga-today',
+          title: 'Honouring Her at Home Today',
+          summary: 'How devotees keep her today: a home puja, fasting, recitation, the temple, and what not to do.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'A simple home puja',
+              body: `Every Hindu family has its own way, but a simple daily puja to Durga often looks like this. Bathe and put on clean clothes. Clean the shrine and remove yesterday's flowers. Ring the bell. Light the lamp and incense. Offer water, fragrance, fresh flowers, and a little food. Say the prayers you know. Wave the lamp in arati. Bow, and take the prasad.
+
+That is enough, and it is complete. Many devotees add a fast on Tuesdays or Fridays, days often given to the Goddess, and keep the eighth day of each bright fortnight, Durga Ashtami. The Devi Mahatmya itself names the eighth, the ninth and the fourteenth days of the lunar fortnight as good days to hear her story.`,
+            },
+            {
+              heading: 'Words and mantras',
+              body: `Hindus pray in many ways: in their own words, with songs (bhajans), with stotras (hymns of praise), and with mantras. The great hymns of the Devi Mahatmya are public scripture, sung in temples and broadcast on radio, and many families recite them. Some mantras, though, are traditionally received from a guru at initiation, with instruction about how and when to say them. Those are not given here.
+
+What you can do freely is pray to her in your own language and read her texts in translation. If you want to recite in Sanskrit, ask a priest or teacher: pronunciation matters in Sanskrit recitation, and so does knowing what is appropriate for you to say. Most will be glad you asked.`,
+            },
+            {
+              heading: 'Customs of respect',
+              body: `Some customs are nearly universal in Hindu worship. Remove your shoes. Offer with the right hand, or both hands. Do not offer food you have already tasted, or flowers you have smelled. Do not point your feet at the shrine. Keep meat, eggs, alcohol and tobacco away from the shrine, and many devotees avoid them entirely on her days. Keep images off the floor, and do not use them as decoration on clothes, mats or bags.
+
+Other customs vary. Some families do not perform puja during menstruation or after a death in the family; others reject these restrictions. Ask about the custom of a temple or family you are visiting, and follow it there. At home, you will need to decide thoughtfully for yourself.`,
+            },
+            {
+              heading: 'Go to the temple',
+              body: `Home devotion is real, but Hindu religion is lived in community. A temple will show you more in one evening than this app can in a month: how the arati is sung, how people move around the shrine, how prasad is shared. Many temples offer classes, festivals open to all, and priests who are happy to answer questions. Durga Puja committees in many cities welcome volunteers.
+
+Be a good guest. Dress modestly. Follow what others do, and ask when you are unsure. Do not photograph the deity or worshippers where it is not allowed. If you are drawn to her deeply, consider learning from a teacher within a Hindu tradition. A self-made devotion is a beginning; it is not the whole thing.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The forms of home puja, the customs of shoes, right hand, untasted food and unsmelled flowers, Tuesday and Friday fasting for the Goddess, and the Devi Mahatmya’s naming of the eighth, ninth and fourteenth days are all widely attested.',
+            unknown:
+              'There is no single "correct" Hindu home puja; customs differ by family, region, caste community and sampradaya (tradition). Views on menstruation and worship, and on non-Hindus taking part, vary and are actively debated within Hinduism.',
+          },
+          inPractice:
+            'Keep the five-part puja each night of the nine. Fast lightly if you wish, by eating simple vegetarian food, never in a way that harms your health. If you are pregnant, diabetic, unwell, on medication, or have a history of disordered eating, skip fasting altogether; devotees in those situations are not expected to fast, and a simple offering is enough. Plan one visit to a temple during or after these nine nights.',
+          reflect: [
+            'Which of the customs of respect is hardest for you, and why?',
+            'What do you hope to learn from a temple or a teacher that you cannot learn alone?',
+          ],
+          further: [
+            'C. J. Fuller, The Camphor Flame: Popular Hinduism and Society in India (1992; revised 2004)',
+            'Rachel Fell McDermott, Revelry, Rivalry, and Longing for the Goddesses of Bengal (2011)',
+          ],
+          library: ['traditional/deity/durga', 'traditional/herb/jasmine', 'traditional/candle/gold'],
+          premade: ['folk-diya-gayatri'],
+        },
+      ],
+      practices: [
+        {
+          id: 'durga-nine-nights',
+          title: 'Nine nights of the Navadurga',
+          instructions: `Each evening: bathe or wash, remove old flowers, ring the bell, light the diya and incense, and offer water, a red flower and a small vegetarian food offering. Read the night's form below, and sit with her for ten minutes. Then wave the lamp three times clockwise before her image, bow, and take the prasad.
+
+Night 1, Shailaputri, "daughter of the mountain", riding a bull: beginnings and steadiness. Night 2, Brahmacharini, the ascetic with a rosary and water pot: discipline. Night 3, Chandraghanta, with a bell-shaped crescent moon on her brow: courage and calm. Night 4, Kushmanda, said to have created the world with her smile: warmth. Night 5, Skandamata, mother of Skanda with her child on her lap: protective love. Night 6, Katyayani, the warrior born in the sage Katyayana's hermitage: right action. Night 7, Kalaratri, "dark night", the fiercest: facing fear. Night 8, Mahagauri, radiant and white: purity and forgiveness. Night 9, Siddhidatri, giver of accomplishment: gratitude.
+
+On nights 2, 5 and 8, also read one canto of Pargiter's Devi Mahatmya. On night 9, offer a sweet such as kheer and share it with someone.`,
+          times: 9,
+          every: 'day',
+          prompt: 'Which form did you sit with tonight, and what did she show you about yourself?',
+          premade: 'folk-diya-gayatri',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'After the Nine Nights',
+      intro:
+        'Take a few days with only the daily lamp and flower. Reread your journal. A vow of devotion is one good outcome; so is pausing, learning more at a temple first, or finding that your path lies elsewhere. Any of these honours her.',
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'durga-reread',
+          title: 'Read your journal back',
+          instructions:
+            'Read your journal from the first greeting. Note what drew you, what surprised you, and what you have learned from people rather than from screens. Then answer the questions below.',
+          times: 1,
+          prompt: 'What has this month taught you about Durga, and about yourself?',
+        },
+      ],
+      questions: [
+        'Are you drawn to Durga herself, as Hindus worship her, or to an idea of a "warrior goddess"? Be honest; only the first is what this vow is for.',
+        'Can you keep a small, clean daily practice (lamp, flower, water) and the customs of respect, through an ordinary year?',
+        'Have you visited a temple or a Durga Puja, or spoken with Hindu devotees? If not, would it be better to do that before any vow?',
+        'Would learning from a Hindu teacher or community, in time, serve your devotion better than a self-made vow? A vow now does not stop you doing that later.',
+        'If you decide to wait, or stop, can you offer her a last flower with thanks? That is a good ending too.',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'A Vow of Devotion',
+      intro:
+        'If you choose to go on, this is a personal vow of devotion to Durga, made in a simple puja. It is not dīkṣā, not an initiation into any Hindu tradition or lineage, and does not replace one; it does not make you a member of a sampradaya or give you anything a guru gives. It is your own promise of bhakti. A Friday, a Durga Ashtami, or Vijayadashami are fitting days.',
+      days: 1,
+      lessons: [],
+      practices: [],
+      rite: {
+        title: 'Vow of Devotion to Durga',
+        summary: 'A full home puja in the five-part form, with your own vow (sankalpa) of devotion, arati and the sharing of prasad.',
+        minutes: 45,
+        ingredients: [
+          { name: 'Durga’s image, cleaned and garlanded if you can', ref: 'traditional/deity/durga' },
+          { name: 'A fresh red cloth for the shrine' },
+          { name: 'A diya with ghee and a cotton wick, on a heatproof plate' },
+          { name: 'A second small diya, or a plate for the arati lamp' },
+          { name: 'Red flowers (hibiscus, roses or marigolds) or a small garland', ref: 'traditional/herb/rose' },
+          { name: 'Sandalwood paste or a little sandalwood oil', ref: 'traditional/herb/sandalwood' },
+          { name: 'Sandalwood or jasmine incense and a holder', ref: 'traditional/herb/jasmine' },
+          { name: 'A vegetarian sweet such as kheer or laddoos, and fruit', ref: 'traditional/vessel/dish' },
+          { name: 'A coconut, whole', optional: true },
+          { name: 'A cup of clean water', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'A small bell', ref: 'traditional/tool/bell', optional: true },
+          { name: 'Your vow, written on clean paper' },
+        ],
+        preparation: `During the day, write your vow. Keep it honest and keepable: what you will do (a daily lamp and flower, her days, a temple visit, reading her texts, a kindness offered in her name), for how long (a year is common), and what you ask of her. Many people include a promise of service, such as giving food to those who need it.
+
+Bathe, dress in clean clothes (red or yellow if you like), and remove your shoes. Clean the shrine and lay the fresh red cloth. Prepare the food without tasting it.`,
+        steps: [
+          {
+            title: 'Begin',
+            instructions:
+              'Sit before her. Join your palms and breathe. Ring the bell. Many Hindus honour Ganesha first at the start of any puja; if you wish, offer him a flower and a bow before you begin.',
+            spoken: 'Ganesha, remover of obstacles, I bow to you first.',
+          },
+          {
+            title: 'Light and fragrance',
+            instructions: 'Light the diya and the incense. Touch a little sandalwood paste to the base of her image or its frame.',
+            light: true,
+          },
+          {
+            title: 'Flowers',
+            instructions: 'Offer the flowers or garland with both hands, one by one, at her feet.',
+            spoken: 'Durga, Mother, fortress and refuge,\nyou who carry us across what is hard to cross,\naccept these flowers.',
+          },
+          {
+            title: 'Food and water',
+            instructions:
+              'Set the sweet, the fruit and the coconut before her, with the cup of water. Sprinkle a few drops of water around the food.',
+            spoken: 'This food is yours, Mother. Accept it, and let it come back to us as your grace.',
+          },
+          {
+            title: 'The vow',
+            instructions:
+              'Take a little water in your right palm. Read your vow aloud, slowly. Then let the water fall onto the plate beneath her, as a sign that the intention is made. Place the paper at her feet.',
+            minutes: 5,
+          },
+          {
+            title: 'Praise',
+            instructions:
+              'Read the lines from the Devi Mahatmya in Pargiter’s translation, as the gods said them to her, or say your own praise.',
+            spoken: 'From terrors save us, O goddess!\nO goddess Durgā, reverence be to thee!',
+          },
+          {
+            title: 'Arati',
+            instructions:
+              'Light the arati lamp from the diya. Wave it slowly in clockwise circles before her, from her feet to her face, while you sing or hum. Then pass your hands over the flame and touch them to your eyes and the top of your head.',
+            minutes: 3,
+          },
+          {
+            title: 'Sit with her',
+            instructions: 'Sit in silence before her for a while.',
+            minutes: 8,
+          },
+          {
+            title: 'Close and share prasad',
+            instructions:
+              'Bow fully, or with joined palms. Take the sweet as prasad, and share it with someone today. Let the lamp burn while you are present, then cover it gently.',
+            snuff: true,
+            spoken: 'Thank you, Mother. I am your child. I will keep my word.',
+          },
+        ],
+        closing:
+          'Keep your vow folded near her shrine and read it at each Navaratri. Share the prasad; eat the fruit and break the coconut later for the household. Return flowers to the earth. Write the date in your journal. If you can, visit a temple in the coming week and offer a flower there.',
+        safety:
+          'Keep diyas, the arati lamp and incense on heatproof plates, away from cloth, garlands, hair and loose sleeves, and never leave them unattended. If you use camphor for arati, burn only a small piece on a metal plate, keep it from children and pets, and never eat it. Keep sweets with chocolate, raisins or xylitol away from dogs and cats.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'The Mother’s Year',
+      intro:
+        'After the vow, devotion is daily and yearly: a lamp and flower, her days, the autumn and spring Navaratris, temple visits, and a yearly renewal of your vow.',
+      days: 365,
+      lessons: [],
+      practices: [
+        {
+          id: 'durga-daily',
+          title: 'Daily lamp and flower',
+          instructions: 'Each morning or evening, wash, light the lamp, offer a flower and water, and bow. Add the five-part puja when you can.',
+          times: 365,
+          every: 'day',
+        },
+        {
+          id: 'durga-ashtami',
+          title: 'Durga Ashtami each month',
+          instructions:
+            'On the eighth day of the bright fortnight (check a panchang), offer a fuller puja with red flowers and a sweet, read a canto of the Devi Mahatmya in translation, and give something to someone in need.',
+          times: 12,
+          every: 'month',
+          prompt: 'What has she carried you through this month?',
+        },
+        {
+          id: 'durga-navaratri',
+          title: 'Navaratri and Durga Puja',
+          instructions: `Keep the nine nights each autumn (Sharada Navaratri, September or October) with the Navadurga practice, and if you wish the spring Navaratri too. Visit a temple or a Durga Puja pandal. On Vijayadashami, renew your vow and say goodbye to the Mother until next year. If you keep a clay image for the festival, immerse it at home in a bucket of water and give the water to your garden.`,
+          times: 2,
+          every: 'holy-day',
+          prompt: 'What did the community teach you this festival?',
+        },
+        {
+          id: 'durga-renewal',
+          title: 'Yearly renewal',
+          instructions:
+            'On the anniversary of your vow, or at Vijayadashami, reread it, write it anew, and repeat the vow puja. Change it honestly. If you are ending it, offer a last flower and sweet with thanks, take down the shrine with care, and give the image to a temple or immerse a clay image respectfully.',
+          times: 1,
+          prompt: 'What has a year with the Mother changed in you?',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'F. E. Pargiter, trans., The Markandeya Purana (Bibliotheca Indica, Calcutta, 1904; public domain), cantos 82, 85, 91 and 92, verified at https://www.wisdomlib.org/hinduism/book/the-markandeya-purana (doc117157, doc117163, doc117171, doc117173); scan at archive.org, Bibliotheca_Indica_Series',
+    'Devi Kavacha, verses listing the Navadurga (Shailaputri to Siddhidatri), as printed at brhat.in and vedadhara.com',
+    'Thomas B. Coburn, Devī-Māhātmya: The Crystallization of the Goddess Tradition (1984) and Encountering the Goddess (1991)',
+    'David Kinsley, Hindu Goddesses (1986); Gavin Flood, An Introduction to Hinduism (1996); C. J. Fuller, The Camphor Flame (1992)',
+    'Hillary Rodrigues, Ritual Worship of the Great Goddess (2003); Tapati Guha-Thakurta, In the Name of the Goddess (2015)',
+    'UNESCO Intangible Cultural Heritage lists: Durga Puja in Kolkata (2021); Garba of Gujarat (2023)',
+  ],
+};

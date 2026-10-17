@@ -1,0 +1,129 @@
+/*
+ * My practice pages (/practice/…): the hub and every practice's tools.
+ * Shared by all ten practices; builds on css/sanctuary-pages.css.
+ */
+.pr-back { justify-self: start; }
+.pr-head { display: grid; gap: 6px; }
+.pr-head .sp-eyebrow { margin: 0; }
+.pr-lede { color: var(--muted); }
+
+/* Text and small pieces */
+.pr-quote { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.25rem; line-height: 1.5; color: #e9dfc4; margin: 0; }
+.pr-warn { color: #e2c36d; }
+.pr-big { max-width: none; text-align: left; font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 1.35rem; line-height: 1.25; margin: 0; }
+.pr-bullets { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; line-height: 1.5; }
+.pr-row-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.pr-link { color: #e2c36d; text-underline-offset: 3px; }
+.pr-link:focus-visible, .pr-textbtn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+.pr-textbtn {
+  background: none; border: 0; padding: 6px 2px; min-height: 2.4rem; color: #e2c36d; font: inherit; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.pr-textbtn:disabled { opacity: 0.5; cursor: not-allowed; }
+.pr-textbtn--quiet { color: var(--muted); }
+.sp-row { min-height: 52px; }
+.sp-row__detail { overflow-wrap: anywhere; }
+.sp-chip { min-height: 2.25rem; }
+.sp-chip:focus-visible, .sp-row:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+.sp-chip--static { cursor: default; }
+.sp-chip--static:hover { background: transparent; }
+.sp-field input:focus-visible, .sp-field textarea:focus-visible, .sp-field select:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+.sp-field input, .sp-field textarea, .sp-field select { width: 100%; box-sizing: border-box; min-width: 0; }
+.sp-details > summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+.sp-label--plain { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin: 0; }
+
+/* A plain list of lines inside a panel (nights, history, the year) */
+.pr-lines { border: 1px solid var(--line); border-radius: 16px; padding: 0 16px; margin: 0; list-style: none; }
+.pr-lines > li { padding: 12px 0; border-bottom: 1px solid var(--line); display: flex; gap: 12px; align-items: flex-start; }
+.pr-lines > li:last-child { border-bottom: 0; }
+.pr-lines__when { width: 112px; flex: none; display: grid; gap: 2px; }
+.pr-lines__what { flex: 1; display: grid; gap: 2px; min-width: 0; }
+.pr-lines__title { font-weight: 600; }
+.pr-lines > li.is-turning { border-top: 1px solid rgba(226, 195, 109, 0.6); }
+.pr-lines .is-gold { color: #e2c36d; }
+
+/* Tick lists (Home by the moon) */
+.pr-ticks { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+.pr-tick {
+  display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px 16px; min-height: 64px;
+  background: transparent; border: 0; border-bottom: 1px solid var(--line); color: var(--cream); font: inherit; text-align: left; cursor: pointer;
+}
+.pr-tick:last-child { border-bottom: 0; }
+.pr-tick:hover, .pr-tick:focus-visible { background: rgba(185, 160, 93, 0.1); outline: none; }
+.pr-tick:focus-visible { box-shadow: inset 0 0 0 2px var(--gold); }
+.pr-tick:disabled { cursor: progress; }
+.pr-tick__box {
+  width: 28px; height: 28px; flex: none; border-radius: 8px; border: 1.5px solid #8a7642;
+  display: grid; place-items: center; color: var(--charcoal); font-weight: 700;
+}
+.pr-tick[aria-checked="true"] .pr-tick__box { background: var(--gold); border-color: var(--gold); }
+.pr-tick__text { display: grid; gap: 2px; }
+.pr-tick__title { font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 1.25rem; line-height: 1.2; }
+.pr-tick[aria-checked="true"] .pr-tick__title { color: var(--muted); }
+
+/* Switches (lucid, recurring, reminders) */
+.pr-switch { display: flex; align-items: center; gap: 14px; padding: 10px 0; cursor: pointer; }
+.pr-switch input { width: 22px; height: 22px; accent-color: var(--gold); flex: none; margin: 0; }
+.pr-switch input:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.pr-switch__text { display: grid; gap: 2px; }
+.pr-switch__title { font-weight: 600; }
+
+/* Week of dots (Daily devotion) */
+.pr-week { display: flex; justify-content: space-between; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.pr-week li { display: grid; justify-items: center; gap: 6px; min-width: 34px; }
+.pr-week__day { font-size: 0.8rem; color: var(--muted); }
+.pr-week__day.is-today { color: #e2c36d; font-weight: 600; }
+.pr-dot { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid #8a7642; }
+.pr-dot--evening { border-color: var(--fern); }
+.pr-dot.is-on { background: var(--gold); border-color: var(--gold); }
+
+/* Bars (dream phases) */
+.pr-bars { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.pr-bar { display: grid; grid-template-columns: minmax(96px, 128px) 1fr 28px; gap: 10px; align-items: center; font-size: 0.9rem; }
+.pr-bar__track { height: 10px; border-radius: 5px; background: rgba(244, 236, 216, 0.1); overflow: hidden; }
+.pr-bar__fill { height: 10px; border-radius: 5px; background: var(--gold); }
+.pr-bar__count { text-align: right; color: var(--muted); }
+
+/* Pairs (correspondences: to me / in the Library) */
+.pr-pairs { display: grid; gap: 12px; margin: 0; }
+.pr-pair { border-left: 2px solid rgba(226, 195, 109, 0.5); padding-left: 10px; display: grid; gap: 2px; }
+.pr-pair dt { font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
+.pr-pair dd { margin: 0; line-height: 1.55; }
+
+/* Date boxes (ancestors) */
+.pr-datebox { display: grid; grid-template-columns: 1fr 1fr 1.4fr; gap: 10px; }
+
+/* A plant card for In season now */
+.pr-plant { display: flex; gap: 12px; align-items: center; text-decoration: none; color: var(--cream); }
+.pr-plant:hover .pr-big, .pr-plant:focus-visible .pr-big { color: #e2c36d; }
+.pr-plant:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 18px; }
+.pr-plant__text { flex: 1; display: grid; gap: 4px; min-width: 0; }
+
+/* The guided working (Begin as a ritual / Light a candle) */
+.pr-run {
+  width: min(640px, calc(100vw - 32px)); max-height: calc(100vh - 48px); box-sizing: border-box;
+  border: 1px solid rgba(226, 195, 109, 0.5); border-radius: 22px; padding: 22px;
+  background: #142a1d; color: var(--cream);
+}
+.pr-run::backdrop { background: rgba(5, 10, 7, 0.72); }
+.pr-run__inner { display: grid; gap: 14px; }
+.pr-run h2 { font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 1.7rem; margin: 0; }
+.pr-run p { margin: 0; line-height: 1.6; }
+.pr-run__spoken { border-left: 2px solid var(--gold); padding-left: 14px; }
+.pr-run__timer { font-variant-numeric: tabular-nums; font-size: 1.6rem; font-family: "Cormorant Garamond", serif; }
+.pr-run__progress { color: var(--muted); font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; }
+
+/* Support link */
+.pr-support { text-align: center; }
+
+/* The hub's practice chooser */
+.pr-hub-tools { color: var(--muted); font-size: 0.92rem; }
+
+.pr-visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+@media (max-width: 420px) {
+  .sp-page { padding-left: 16px; padding-right: 16px; }
+  .pr-lines__when { width: 92px; }
+  .pr-bar { grid-template-columns: 92px 1fr 24px; }
+  .pr-week li { min-width: 0; }
+}

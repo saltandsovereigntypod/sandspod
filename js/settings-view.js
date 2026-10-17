@@ -1,5 +1,14 @@
 (function initializeLivingSettingsView(global) {
-  const CATEGORIES = ["identity", "appearance", "book", "library", "companion", "objects", "account"];
+  const CATEGORIES = ["identity", "appearance", "book", "practice", "calendar", "library", "companion", "objects", "account"];
+  // My practice and Calendar & holidays (and My path under Living Library) are the app's;
+  // js/settings-more.js fills them, with the app's logic from js/core/guides.js.
+  const MORE_SCRIPTS = ["/js/core/guides.js", "/js/settings-more.js"];
+  let moreLoading = null;
+  function loadMore(doc = document) {
+    if (global.SettingsMore && global.SaltCore?.guides) return Promise.resolve(true);
+    if (!moreLoading) moreLoading = MORE_SCRIPTS.reduce((chain, src) => chain.then(() => new Promise((resolve, reject) => { if ((src.includes("guides") && global.SaltCore?.guides) || (src.includes("settings-more") && global.SettingsMore)) return resolve(); const script = doc.createElement("script"); script.src = src; script.onload = resolve; script.onerror = reject; doc.head.append(script); })), Promise.resolve()).then(() => true).catch(() => { moreLoading = null; return false; });
+    return moreLoading;
+  }
   const categoryForName = (name = "") => name.startsWith("library_") ? "library" : name.startsWith("companion_") ? "companion" : name.startsWith("living_state_") ? "objects" : ["preferred_name", "pronouns", "magical_name", "sanctuary_greeting_name"].includes(name) ? "identity" : ["default_altar_background"].includes(name) ? "appearance" : "book";
   function backgroundOptions(items = [], saved = "") {
     const names = [...new Set(items.map((item) => item?.name || item?.background).filter(Boolean))];
@@ -36,13 +45,16 @@
     const background = form.querySelector('[name="default_altar_background"]');
     populateBackgroundSelect(background, saved.default_altar_background);
     const nav = document.createElement("nav"); nav.className = "settings-category-nav"; nav.setAttribute("aria-label", "Settings categories");
-    const labels = { identity: "Identity", appearance: "Appearance", book: "Book of Shadows", library: "Living Library", companion: "Companion", objects: "Living Objects", account: "Account & Data" };
+    const labels = { identity: "Identity", appearance: "Appearance", book: "Book of Shadows", practice: "My practice", calendar: "Calendar & holidays", library: "Living Library", companion: "Companion", objects: "Living Objects", account: "Account & Data" };
     CATEGORIES.forEach((category, index) => nav.insertAdjacentHTML("beforeend", `<button class="button button--small button--pill" type="button" data-settings-category="${category}" aria-pressed="${index === 0}">${labels[category]}</button>`));
     form.prepend(nav);
     const buckets = Object.fromEntries(CATEGORIES.map((category) => { const fieldset = document.createElement("fieldset"); fieldset.className = "settings-category"; fieldset.dataset.settingsPanel = category; fieldset.hidden = category !== "identity"; fieldset.innerHTML = `<legend>${labels[category]}</legend>`; form.insertBefore(fieldset, form.querySelector('button[type="submit"]')); return [category, fieldset]; }));
     [...form.querySelectorAll(":scope > label, :scope > fieldset:not(.settings-category)")].forEach((node) => { const name = node.querySelector("[name]")?.name || ""; buckets[categoryForName(name)]?.append(node); });
     const user = global.getCurrentSaltUser?.() || null;
     buckets.account.innerHTML += `<div class="my-sanctuary-actions" data-account-auth-actions>${user ? '<button type="button" class="button button--ghost" data-my-sanctuary-signout>Sign Out</button>' : '<button type="button" class="button button--ghost" data-my-sanctuary-show-auth>Sign In or Create Account</button>'}</div>`;
+    buckets.practice.insertAdjacentHTML("beforeend", '<p class="my-sanctuary-intro" data-settings-more-loading>Opening…</p>');
+    buckets.calendar.insertAdjacentHTML("beforeend", '<p class="my-sanctuary-intro" data-settings-more-loading>Opening…</p>');
+    loadMore().then((ok) => { form.querySelectorAll("[data-settings-more-loading]").forEach((node) => { if (ok) node.remove(); else node.textContent = "These settings couldn’t load just now. Please check your connection and open Settings again."; }); if (ok) return global.SettingsMore.mount({ practice: buckets.practice, calendar: buckets.calendar, library: buckets.library }); return null; }).catch((error) => console.error(error));
     global.SaltAccountDataUI?.mount?.(buckets.account, user);
     global.SanctuaryBackupUI?.mount?.(buckets.account, user);
     form.querySelectorAll("[name]").forEach((input) => { const value = saved[input.name]; if (input.type === "checkbox") input.checked = Boolean(value); else if (value != null) input.value = value; });
@@ -54,7 +66,7 @@
     window.addEventListener("altarBackgroundsReady", () => populateBackgroundSelect(background, background?.value || saved.default_altar_background));
     window.addEventListener("saltSettingsSaveState", (event) => { if (event.detail?.ok) { form.dataset.dirty = "false"; save.disabled = true; status.textContent = "Settings saved."; window.setTimeout(() => { if (form.dataset.dirty !== "true") status.textContent = "All changes saved."; }, 1800); } else { form.dataset.dirty = "true"; save.disabled = false; status.textContent = "Settings could not be saved."; } });
   }
-  const api = { CATEGORIES, categoryForName, backgroundOptions, categoryDefaults, isStale, populateBackgroundSelect, render };
+  const api = { CATEGORIES, MORE_SCRIPTS, loadMore, categoryForName, backgroundOptions, categoryDefaults, isStale, populateBackgroundSelect, render };
   global.LivingSettingsView = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

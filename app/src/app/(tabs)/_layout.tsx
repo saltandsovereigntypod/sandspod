@@ -4,6 +4,7 @@ import { GuestMigrationPrompt } from '../../components/account/GuestMigrationPro
 import { TabBar } from '../../components/TabBar';
 import { WelcomeTour } from '../../components/WelcomeTour';
 import { useCandleKeeper } from '../../lib/altar/useCandleKeeper';
+import { useCraftAccount } from '../../lib/craft/useCraftAccount';
 import { useAltarWidgetSync } from '../../lib/altarWidgetSync';
 import { useWidgetSync } from '../../lib/widgetSync';
 import { colors } from '../../theme';
@@ -12,6 +13,7 @@ export default function TabsLayout() {
   useWidgetSync();
   useAltarWidgetSync();
   useCandleKeeper();
+  useCraftAccount();
   return (
     <>
       <Tabs

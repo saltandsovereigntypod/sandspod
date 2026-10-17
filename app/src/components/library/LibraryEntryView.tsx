@@ -4,7 +4,9 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../Button';
 import { Card, MoreScreen, RichText, Section, Tags } from '../more/ui';
+import { journeyForDeityRef, JOURNEYS_LIVE } from '../../lib/journeys';
 import { correspondences, entryIntro, findByName, useLibrary, type LibraryEntry } from '../../lib/library';
+import { sourcingForEntry } from '../../lib/library/closed';
 import { layerFields, visibleLayers } from '../../lib/library/model';
 import { ritualRecord } from '../../lib/library/records';
 import type { LibraryField } from '../../lib/library/types';
@@ -13,6 +15,7 @@ import { useSession } from '../../lib/session';
 import { useMySettings } from '../../lib/settings/store';
 import { colors, fonts, radius, type } from '../../theme';
 import { ConnectedTo, LibraryJourney, RelationshipManager } from './LibraryConnections';
+import { DeityYours } from './DeityYours';
 
 type Props = {
   entryId: string;
@@ -44,8 +47,12 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
   const shown = visibleLayers(settings)
     .map((layer) => ({ layer, fields: layerFields(layerData(entry, layer), layer, settings, entry.layout) }))
     .filter(({ fields }) => fields.length > 0);
+  // A deity with a dedication journey links to it.
+  const journey = JOURNEYS_LIVE && entry.type === 'deity' ? journeyForDeityRef(entry.traditionalRef ?? entry.id) : null;
   // Rituals and ritual templates read as a record of the working, as on the website.
   const record = entry.myPractice ? ritualRecord(entry.type, entry.myPractice) : null;
+  // Plants, resins and stones whose sourcing raises real concerns.
+  const sourcing = sourcingForEntry(entry);
 
   const openByName = (name: string) => {
     const target = findByName(entries, name);
@@ -72,6 +79,35 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
             </View>
           ))}
         </View>
+      )}
+
+      {!!sourcing && (
+        <Section label="Sourcing with care">
+          <Card tone="gold">
+            <Text style={type.body}>{sourcing.concern}</Text>
+            <View style={styles.field}>
+              <Text style={styles.fieldLabel}>Instead</Text>
+              <Text style={type.body}>{sourcing.instead}</Text>
+            </View>
+            <Button
+              label="All sourcing notes"
+              variant="text"
+              accessibilityHint="Opens Sourcing with care: every plant and stone that needs care"
+              onPress={() => router.push('/more/library/sourcing' as Href)}
+            />
+          </Card>
+        </Section>
+      )}
+
+      {entry.type === 'deity' && <DeityYours entry={entry} />}
+
+      {!!journey && (
+        <Button
+          label="Begin a dedication journey"
+          variant="outline"
+          accessibilityHint={`Opens ${journey.title}: study, practice and a rite of self-dedication`}
+          onPress={() => router.push({ pathname: '/rituals/journeys/[id]', params: { id: journey.id } } as Href)}
+        />
       )}
 
       {!!session && (

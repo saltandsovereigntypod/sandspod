@@ -1,0 +1,538 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-manannan',
+  kind: 'deity',
+  paths: ['celtic', 'wheel'],
+  deityRef: 'traditional/deity/manannan',
+  title: 'Manannán mac Lir: Lord of the Sea',
+  summary:
+    'A month with Manannán son of the sea: the pilot who read the weather, the rider whose sea is a flowery plain, the lord of the Apple Isle and the cloak of mist, and the Manx custom of paying him a rent of green rushes at Midsummer, with real respect for the danger of the sea and a self-dedication made at the water’s edge.',
+  welcome:
+    'This journey takes about a lunar month. You will read five lessons, set up a shrine of sea and mist, keep nine tides of offering, and decide whether to dedicate yourself to Manannán.\n\nIt is a self-dedication, not an initiation, and it does not make you a member of any group or order. Manannán appears in many medieval Irish tales and in living Manx custom, but there is almost no record of how he was worshipped before Christianity. This journey says where the evidence stops. It also takes the sea seriously: nothing here asks you to go into the water, and the safety notes matter. You can pause whenever you need to.',
+  about:
+    'Manannán mac Lir (Old Irish Manannán mac Lir, Manx Mannanan beg mac y Leirr) is the sea god of Irish and Manx tradition, “son of the sea” (or son of Ler, the sea personified). Cormac’s Glossary, around 900, remembers him as a merchant of the Isle of Man and the best pilot in the west, who could read the weather in the sky, so that the Irish and the Britons called him god of the sea. In the tales he rides a chariot over the waves, which to him are a flowering plain, and rules the otherworld islands of the west, Emain Ablach, the Isle of Apples, and Tír Tairngire, the Land of Promise. He owns the horse Enbarr, the self-steering boat Scuabtuinne, the crane-skin bag whose treasures appear only at high tide, and the féth fíada, a cloak of mist that hides what he wishes hidden. He is foster-father to Lugh, a shape-shifter and trickster who turns up at feasts as a ragged clown, and a guide and tester of mortals such as Bran, Cormac and Cú Chulainn. On the Isle of Man, which takes its name in his story, a Manx ballad usually dated to the sixteenth century says he hid the island in fog from enemy ships, and that each landholder paid him a rent of green rushes every Midsummer Eve; rushes are still strewn on the path to Tynwald Hill on Tynwald Day, 5 July. Gaelic polytheists, Manx people celebrating their heritage, Druids and other Pagans honour him today at the shore, with offerings poured into the sea, and with care for coasts and the people who work on the water.',
+  notes: [
+    'The sea is dangerous. Never go into the water, onto wet rocks, harbour walls or the edge of cliffs for a ritual. Check tide times, stay back from breaking waves, and if you see someone in trouble in the water, call the coastguard (999 or 112 in the UK and Ireland, or your local emergency number) rather than going in.',
+    'Manannán’s tales were written down by Christian Irish scholars from the eighth century onwards. They tell us about him as a figure of story, not how he was worshipped.',
+    'Manx customs such as the rushes at Tynwald are living civic and cultural heritage on the Isle of Man, not pagan rituals. Many Manx people value them as heritage without any religious meaning. Be a respectful guest.',
+    'Offerings at the sea must not harm it. Pour liquids straight into the water, keep them small and natural, and never leave food, candles, glitter, plastic, balloons or flowers wrapped in plastic on the shore.',
+    'He is a trickster and a lord of illusion as well as a protector. The tales show him both generous and unsettling. Approach him with respect, not casual familiarity.',
+  ],
+  holyDays: ['litha', 'st_john', 'bealtaine', 'samhain_gaelic'],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'At the water’s edge',
+      intro:
+        'Begin by making a place for Manannán and greeting him at water, at the shore if you can reach it safely, or at a bowl of sea water at home. Introduce yourself plainly, as a traveller would to the master of the crossing.',
+      days: 2,
+      lessons: [],
+      practices: [
+        {
+          id: 'manannan-shrine',
+          title: 'Set up a shrine of sea and mist',
+          instructions:
+            'Choose a shelf or windowsill, ideally one facing west, towards his islands, or towards the sea if you live near it. Lay down a grey, blue or green cloth: grey for the mist, blue or green for the waves. Put a candle in a safe holder on a heatproof dish. Add a bowl of sea water, or tap water with a pinch of sea salt. Add shells, a stone smoothed by the sea, a piece of driftwood or sea glass you found yourself, and a small boat: a model, a paper boat, a picture. A small bundle of rushes or long grass, tied with thread, recalls his Manx rent. An apple, or an apple-tree twig, recalls Emain Ablach, the Isle of Apples. A stone such as aquamarine or labradorite suits him, though the link is modern. A small bag on the shrine, for the crane bag, is a good place to keep written prayers.',
+          times: 1,
+          prompt: 'What did you put on his shrine, and which way does it face?',
+        },
+      ],
+      rite: {
+        title: 'Introduction to Manannán',
+        summary:
+          'At the shore or at a bowl of sea water, light a lamp, pour a little offering into the water, introduce yourself as a traveller and ask for safe passage.',
+        minutes: 20,
+        ingredients: [
+          { name: 'A blue, green or grey candle in a safe holder, or a lantern if outdoors', ref: 'traditional/candle/blue' },
+          { name: 'A bowl of sea water, or water with a pinch of sea salt', ref: 'traditional/vessel/bowl' },
+          { name: 'A small cup of milk, mead or whiskey, or plain water' },
+          { name: 'A small bundle of rushes or long grass', optional: true },
+          { name: 'An apple', optional: true },
+        ],
+        preparation:
+          'If you go to the shore, check the tide times and the weather first, choose a safe beach rather than rocks or a harbour wall, go in daylight or with a torch, and tell someone where you are. Stand back from the waves. If you stay at home, set the bowl of sea water on the shrine. Think of one journey ahead of you, literal or not, for which you want safe passage.',
+        steps: [
+          {
+            title: 'Come to the water',
+            instructions:
+              'Stand at the water’s edge, a safe distance back, or before the bowl. Watch the waves, or the water in the bowl, for a minute. Notice the sound and the smell.',
+            spoken: 'Manannán mac Lir, son of the sea, lord of the Isle of Apples, I come to the edge of your country.',
+          },
+          {
+            title: 'Light the lamp',
+            instructions: 'Light the candle or lantern.',
+            spoken: 'I light this lamp for Manannán, pilot of the west, who knows the fair weather and the foul.',
+            light: true,
+          },
+          {
+            title: 'Pour the offering',
+            instructions:
+              'At the shore, wait for a wave to come in and pour a little of the drink into the water, never onto the sand. At home, pour a few drops into the bowl of sea water.',
+            spoken: 'Here is drink poured into your sea, freely given.',
+          },
+          {
+            title: 'Say who you are',
+            instructions:
+              'Tell him your name, where you come from, and the journey you are thinking of. Speak plainly, as a traveller to the master of the crossing.',
+          },
+          {
+            title: 'Ask for safe passage',
+            instructions: 'Ask him for safe passage on that journey.',
+            spoken: 'Manannán, keep me on the crossing. Hide me in your mist from harm, and show me what I need to see.',
+          },
+          {
+            title: 'Listen to the water',
+            instructions:
+              'Stand or sit and listen to the waves, or to the silence. Notice what you feel.',
+            minutes: 5,
+          },
+          {
+            title: 'Close',
+            instructions: 'Thank him and snuff the candle or lantern.',
+            spoken: 'Manannán, thank you. I will come to your shore again.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'At the shore, take everything home with you, and pick up a few pieces of litter as a thank-you. At home, leave the bowl overnight, then pour the water onto the earth or carry it back to the sea on your next visit. Lay the rushes or grass on his shrine.',
+        safety:
+          'Stay well back from the waves and off rocks, harbour walls and cliff edges; never enter the water for this rite. Check tide times so you cannot be cut off. Keep a candle on a heatproof dish away from cloth at home, never leave it unattended, and use a lantern outdoors. Pour alcohol away from pets and children.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'Learning who he is',
+      intro:
+        'Four lessons on Manannán: his names, his treasures and the pilot of Cormac’s Glossary; his otherworld islands and the mortals he called there; the Isle of Man and its rent of rushes; and how he is honoured today, with the sea’s real dangers. Read one every day or two.',
+      days: 8,
+      lessons: [
+        {
+          id: 'manannan-who',
+          title: 'Son of the sea: names, treasures and the pilot of the west',
+          summary: 'What “mac Lir” means, the Cormac’s Glossary entry, his family and fosterlings, and the horse, boat, bag and cloak of the tales.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Son of the sea',
+              body:
+                'Manannán mac Lir means “Manannán son of Ler”, and ler is an old Irish word for the sea, so he is “Manannán son of the sea”. Ler himself, as a person, appears only faintly in the tales, mostly as the father of the children of Lir who were turned into swans. Manannán also has another name, Oirbsen, which Irish tradition said gave its name to Loch Oirbsen, now Lough Corrib in County Galway; Lady Gregory’s retelling says that when he was buried there, “a great lake burst up under his feet”.\n\nHis first name is usually taken to mean “of Man”, the Isle of Man, Manu in Old Irish. In Welsh tradition the same figure appears as Manawydan son of Llŷr, the patient, crafty second husband of Rhiannon in the Third Branch of the Mabinogi, though the Welsh tale gives him no sea powers. How the Irish and Welsh figures relate is still debated.',
+            },
+            {
+              heading: 'The pilot of Cormac’s Glossary',
+              body:
+                'Our earliest description of him comes from Cormac’s Glossary, an Irish dictionary of hard words compiled around 900. In John O’Donovan’s translation, edited by Whitley Stokes in 1868, the entry reads: “Manannan mac Lir, a celebrated merchant who was in the Isle of Mann. He was the best pilot that was in the west of Europe. He used to know by studying the heavens [i.e. using the sky], the period which would be the fine weather and the bad weather, and when each of these two times would change.” The entry goes on, in Latin, to say that for this reason the Irish and the Britons called him god of the sea and son of the sea.\n\nThe glossary’s Christian author is explaining away a god as a clever mortal. But he also tells us that Manannán was called a god of the sea, that he was tied to Man, and that his gift was reading the sky and the weather. That last detail is very practical, and it is where many devotees begin: by learning to read the weather themselves.',
+            },
+            {
+              heading: 'His treasures',
+              body:
+                'Later tales give Manannán wonderful possessions. Enbarr, his horse, could gallop over sea and land alike. Scuabtuinne, “wave-sweeper”, was a boat that needed no oars or sail, but went wherever its rider wished. Fragarach, “the answerer”, was a sword from whose wound no one recovered. In Gregory’s retelling, Lugh rides out against the Fomorians on Manannán’s horse with Manannán’s sword at his side; Manannán is his foster-father.\n\nHe also had a bag made of the skin of a crane, holding treasures including his own shirt and knife. Gregory says: “All those treasures would be in the bag at full tide, but at the ebbing of the tide it would be empty.” And he had the féth fíada, a magical mist or cloak of invisibility, with which the Tuatha Dé hid themselves from mortal eyes when they withdrew into the hills. The mist is the treasure most often linked to him today.',
+            },
+            {
+              heading: 'Family and fosterlings',
+              body:
+                'Manannán’s wife in the tales is Fand, the otherworld beauty who falls in love with Cú Chulainn. His children include Ilbrec, Niamh in some later traditions, and the hero Mongán, whom he fathered on a mortal queen in the guise of her husband, an echo of many trickster-father stories. He is a great foster-father, above all of Lugh, and a teacher of heroes.\n\nGregory’s retelling also remembers how much he was everywhere: “he had many places of living, and he was often heard of in Ireland after.” He taught weapons to Diarmuid and Cú Chulainn, he sent messengers, he appeared and vanished. He is the one god of the Tuatha Dé who seems never quite to belong to any one place, because his place is the sea between them.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Cormac’s Glossary (c. 900) calls him a merchant of Man and the best pilot of the west, whom the Irish and Britons called god of the sea. Medieval and early modern Irish tales give him the horse Enbarr, the boat Scuabtuinne, the sword Fragarach, the crane bag and the mist, make him foster-father of Lugh and husband of Fand. The Welsh Manawydan is his namesake.',
+            unknown:
+              'We do not know how he was worshipped, how old his link with the Isle of Man is, or whether “Manannán” really means “of Man”. Several treasures, such as Enbarr, appear only in late tales like the Fate of the Children of Tuireann. The relation between Manannán and Manawydan is debated.',
+          },
+          inPractice:
+            'Devotees often begin by learning to read the weather and the sky, as the pilot of Cormac’s Glossary did, and by learning their local tides. Many keep a small bag on his shrine for prayers, and greet him by several names: mac Lir, Oirbsen, lord of Emain Ablach.',
+          reflect: [
+            'What do you know about the weather and the tides where you live? What could you learn?',
+            'Manannán belongs to the sea between places. Where in your life do you live between places?',
+          ],
+          further: [
+            'Cormac’s Glossary, trans. John O’Donovan, ed. Whitley Stokes (1868), s.v. Manannan mac Lir (public domain, archive.org).',
+            'Lady Gregory, Gods and Fighting Men (1904), Part I Book IV ch. VIII, “Manannan” (public domain, Project Gutenberg).',
+            'Charles W. MacQuarrie, The Biography of the Irish God of the Sea from The Voyage of Bran (700 a.d.) to Finnegans Wake (1939) (2004).',
+          ],
+          library: ['traditional/deity/manannan', 'traditional/deity/lugh', 'traditional/deity/rhiannon'],
+        },
+        {
+          id: 'manannan-otherworld',
+          title: 'The flowery plain: Bran, Cormac, Fand and the cloak of mist',
+          summary: 'Manannán’s otherworld islands, his song to Bran, the cup of truth he gave Cormac, how he parted Fand and Cú Chulainn, and the trickster at the feast.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'The Isle of Apples',
+              body:
+                'Manannán rules the otherworld islands that lie west over the sea: Emain Ablach, “Emain of the apple trees”, Mag Mell, the Plain of Delight, and Tír Tairngire, the Land of Promise. In the Voyage of Bran, one of the oldest Irish tales, perhaps from around 700, a woman of the otherworld comes to Bran with a silver branch and sings of these islands. In Lady Gregory’s retelling: “I bring a branch of the apple-tree from Emhain, from the far island around which are the shining horses of the Son of Lir.”\n\nThe shining horses of the son of Lir are the white-crested waves. Some people in Ireland, Man and Scotland still call the white-topped waves Manannán’s horses. When you see whitecaps at sea, you are looking at his herd.',
+            },
+            {
+              heading: 'His song to Bran',
+              body:
+                'Bran sets out to sea with three companies of nine men. After two days, a man comes riding towards them in a chariot over the sea: Manannán. He sings to Bran, and in Gregory’s words: “It is what Bran thinks, he is going in his curragh over the wonderful, beautiful clear sea; but to me, from far off in my chariot, it is a flowery plain he is riding on.” Where Bran sees waves, Manannán sees “red flowers without any fault”; under Bran’s little boat there is “a wood of beautiful acorns”.\n\nIt is one of the most beautiful passages in Irish literature, and the key to Manannán. The same reality looks different from his side. What is dangerous water to a mortal is a meadow to him. He is the god of perspective as well as of the sea, the one who reminds you that the world you see is not the only one.',
+            },
+            {
+              heading: 'The cup of truth and the cloak between',
+              body:
+                'In the tale of Cormac’s Adventure in the Land of Promise, Manannán comes to King Cormac mac Airt carrying a silver branch with golden apples whose music lulls the sick and wounded to sleep. He takes Cormac’s family away, leads him through a mist to his otherworld hall, and gives him a golden cup that breaks if three lies are told over it, and mends if three truths are told. In the morning Cormac wakes at home with his family, the cup and the branch.\n\nIn The Wasting Sickness of Cú Chulainn, Manannán’s wife Fand falls in love with Cú Chulainn. When Manannán comes for her and she chooses to go back to him, he shakes his cloak between Fand and Cú Chulainn, so that they will never meet again. The mist and the cloak are tools of mercy as much as illusion: they separate what cannot be together, and they hide what needs hiding.',
+            },
+            {
+              heading: 'The trickster at the feast',
+              body:
+                'Manannán also plays tricks. A late tale in Gregory’s collection has him arrive at O’Donnell’s feast as a ragged clown, with puddle water in his shoes, saying, “a pleasant, rambling, wandering man I am”, play music better than anyone, perform wonders and vanish. In other stories he steals and returns, tests and teaches, and takes many shapes.\n\nSo he is not simply kind. He is the lord of a country where the rules are different, and mortals who meet him are tested, changed or sent home with something precious they did not expect. Devotees today approach him with trust and with care, as you would approach the sea itself.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Immram Brain (the Voyage of Bran), possibly from around 700, contains the woman’s song of Emain and Manannán’s song of the flowery plain. Echtra Cormaic tells of the silver branch and the cup of truth. Serglige Con Culainn tells of Fand and the cloak. Late tales, retold by Gregory, show him as O’Donnell’s Kern. The quotations are from Gregory’s 1904 retelling.',
+            unknown:
+              'These are literary tales with Christian framing; we do not know whether they reflect pre-Christian belief about an otherworld across the sea. The names of his islands vary between texts. The phrase “Manannán’s horses” for whitecaps is modern folk usage of uncertain age.',
+          },
+          inPractice:
+            'Many devotees read the Voyage of Bran aloud at the shore. Some practise telling three truths over a cup, as a devotional act of honesty. Others ask him to “put his cloak between” them and a person or situation they need to be free of, a gentle, protective use of his mist.',
+          reflect: [
+            'What looks like a dangerous sea to you that might look like a flowery plain from another side?',
+            'Is there something in your life that needs a cloak shaken between you and it?',
+          ],
+          further: [
+            'Kuno Meyer, trans., The Voyage of Bran Son of Febal (1895) (public domain).',
+            'Lady Gregory, Gods and Fighting Men (1904), Part I Book IV ch. IX–XV (public domain).',
+            'John Carey, “The Location of the Otherworld in Irish Tradition”, Éigse 19 (1982–83), 36–43.',
+          ],
+          library: ['traditional/deity/manannan', 'traditional/deity/lugh'],
+          premade: ['hedge-dark-bowl-scrying', 'hedge-inner-landscape-journey'],
+        },
+        {
+          id: 'manannan-mann',
+          title: 'A rent of green rushes: Manannán and the Isle of Man',
+          summary: 'The Manx Traditionary Ballad, the fog that hid the island, the rushes paid at Midsummer, Tynwald Day, and the three legs of Man.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The first that had her',
+              body:
+                'The Isle of Man, Ellan Vannin in Manx Gaelic, lies in the Irish Sea between Ireland, Scotland, England and Wales. Its people remember Manannán as their first king. The fullest witness is a long Manx-language poem called the Manx Traditionary Ballad. It is usually dated to the sixteenth century, though the earliest surviving copy is a Douglas pamphlet printed in 1778, and scholars disagree about its exact age. In A. W. Moore’s 1896 translation it begins: “Mannanan-Beg was son of Leirr, / He was the first that e’er had her / But as it seemeth unto me, / He himself was but a heathen.”\n\nThe ballad goes on to say how he defended the island, not with weapons, but with mist: “’Twas not with his sword he kept her, / Nor with his arrows, nor his bow; / But when he would see ships sailing, / He hid her right round with a fog.” He could make one man on a hilltop look like a hundred. To this day, sea mist over Man is called Manannán’s cloak.',
+            },
+            {
+              heading: 'The rent of rushes',
+              body:
+                'In return, the ballad says, he asked very little of his people. In Moore’s translation: “The rent each paid out of his land, / Was a bundle of green rushes, / And that was on them as a tax, / Throughout the country each John’s Eve.” The ballad goes on: “Some went up with the rushes to / The great mountain up at Barool; / Others would leave the grass below, / With Mannanan above Keamool.” Barool is South Barrule, the mountain in the south of the island.\n\nOther early sources say the same: a sixteenth-century chronicle prefixed to a copy of the Manx statutes, a manuscript of 1573, and James Chaloner’s Treatise of the Isle of Man (1656), which says Manannán “took of the people no other acknowledgment for their land, but the bearing of Rushes to certain places called Warefield, and Mame, on Midsummer even.” All of them speak in the past tense: by the time anyone wrote it down, the custom seems already to have lapsed. St John’s Eve, the night of 23 June, is Midsummer Eve. So the one custom we have that is tied to Manannán by name is this: a bundle of green rushes, given at Midsummer, as rent for the land.',
+            },
+            {
+              heading: 'Tynwald Day',
+              body:
+                'Tynwald is the Isle of Man’s parliament, which claims to be the oldest in the world in continuous existence, founded by Norse settlers more than a thousand years ago. Every year on Tynwald Day, 5 July, which is Midsummer Day in the old calendar, the island’s parliament meets in the open air on Tynwald Hill at St John’s, and the new laws are proclaimed in Manx and English.\n\nThe processional path from the Royal Chapel of St John to the hill is strewn with rushes. Manx tradition remembers this as Manannán’s rent, still being paid. The ceremony itself is civic and Christian, opening with a service in the chapel, and many people in Man value the rushes as heritage, not religion. In recent years, people have also climbed South Barrule around Midsummer to carry rushes up the mountain for Manannán, a modern revival of the custom in the ballad rather than an unbroken survival.',
+            },
+            {
+              heading: 'The three legs of Man',
+              body:
+                'The flag of Man shows three armoured legs joined at the hip, the triskelion, with the motto Quocunque Jeceris Stabit, “whichever way you throw it, it will stand”. The emblem is recorded from the thirteenth century, under the kings of Man and the Isles. A Manx and Irish folk tradition, recorded in the nineteenth century, says that Manannán himself would take the form of three legs and roll like a wheel across the land.\n\nThat legend is charming and it is folklore. Historians link the emblem to medieval heraldry, possibly borrowed from Sicily, which used a similar sign. You can enjoy the link between Manannán and the three legs as a living Manx story, while being honest that the flag did not begin as his sign.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The Manx Traditionary Ballad (usually dated to the sixteenth century; earliest surviving print 1778; translated by Train in 1845 and Moore in 1896) makes Manannán the first ruler of Man, defending it with fog and taking a rent of green rushes on St John’s Eve, carried in part up South Barrule. English sources of the sixteenth century and Chaloner (1656) say the same, all in the past tense. Rushes are strewn at Tynwald on 5 July. The triskelion is recorded from the thirteenth century.',
+            unknown:
+              'We do not know whether the rush custom goes back to pre-Christian times, how it was originally understood, or when it lapsed; the ballad’s exact date is debated. The link between the rushes at Tynwald and Manannán’s rent is Manx tradition rather than documented history. The three-legged Manannán is nineteenth-century folklore.',
+          },
+          inPractice:
+            'Many devotees give Manannán a bundle of green rushes or long grass each Midsummer Eve, leaving it at a high place, at the shore or on his shrine. Some visit the Isle of Man for Tynwald Day or Midsummer, as respectful guests. Others learn a few words of Manx Gaelic.',
+          reflect: [
+            'What would your “bundle of green rushes” be: the small, regular rent you could pay for the place you live?',
+            'Where has a mist protected you, or hidden you, when you needed it?',
+          ],
+          further: [
+            'A. W. Moore, ed., Manx Ballads and Music (1896) (public domain; online at the Manx Note Book).',
+            'A. W. Moore, The Folk-Lore of the Isle of Man (1891) (public domain).',
+            'Culture Vannin, on Midsummer and Tynwald customs.',
+          ],
+          library: ['traditional/deity/manannan'],
+          premade: ['sea-wind-knots'],
+        },
+        {
+          id: 'manannan-today',
+          title: 'Honouring Manannán today, and respecting the sea',
+          summary: 'Who honours him now, offerings at the shore, the sea’s real dangers, care for coasts and seafarers, and what to avoid.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Who honours him',
+              body:
+                'Manannán is honoured by Gaelic polytheists, who work from the Irish texts and Irish and Manx folk custom; by Druids, who often call on him as the guardian of the threshold between worlds and the bringer of mist; by Wiccans and other Pagans, often in sea and water rites; and by sailors, surfers, swimmers and fishers who simply greet the sea before they go out.\n\nOn the Isle of Man, Manannán is also part of national heritage, celebrated in festivals, place-names and art, and honoured at Midsummer by people of every belief and none. If you share Manx customs, it helps to say which you are doing: a religious devotion, or a cultural celebration. Both are fine; they are not the same.',
+            },
+            {
+              heading: 'Offerings at the shore',
+              body:
+                'Celtic polytheists usually pour offerings into the sea: a little milk, mead, whiskey or ale, a crumb of bread. Pour straight into an incoming wave, never onto the sand, and keep the amount small. Rushes, long grass or a few flowers without wrapping can be laid on the water or at the tideline. A song or a poem spoken to the waves is an offering that leaves no trace.\n\nThe best offering many devotees know is care for the sea itself. A beach clean, picking up plastic, fishing line and nets, is the commonest. Supporting the lifeboat service or coastguard, cutting plastic use, choosing sustainable fish, joining a coastal conservation group: all are ways of paying rent to the lord of the sea.',
+            },
+            {
+              heading: 'The sea is not safe',
+              body:
+                'This has to be said plainly. The sea kills people every year, and many of them never meant to go in. Cold water shock can overwhelm a strong swimmer in a minute. Rip currents pull people out from apparently calm beaches. Tides cut people off on sandbanks and below cliffs. Waves knock people off rocks and harbour walls.\n\nSo: never go into the water, or onto wet rocks, slipways or harbour walls, for a ritual. Check tide times and the weather before going to the shore. Stand well back from the waves, especially on steep shingle beaches. Go with someone, or tell someone where you are. If you fall in, the lifeboat services advise floating on your back until the cold shock passes, then calling for help. If someone else is in trouble, call the coastguard (999 or 112 in the UK and Ireland) and do not go in after them. Manannán is the god of a dangerous country, and the tales never pretend otherwise.',
+            },
+            {
+              heading: 'What to avoid',
+              body:
+                'Avoid leaving anything on the shore that the sea cannot take: candles, tea lights, glitter, plastic, ribbons, balloons, wrapped flowers or food that will feed gulls and rats. Avoid taking things from the shore in protected areas, and take only a small stone or shell elsewhere, where it is allowed.\n\nAvoid treating him as a gentle sea-daddy. He is generous, and he is also the one who parted Fand and Cú Chulainn, and whose mist leaves you lost. Avoid presenting Manx civic customs as pagan rites, or Irish texts as scripture. And avoid asking him for anything you would not want granted in an unexpected form; the tales are full of people who got what they asked for in a way they did not expect.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Gaelic polytheists, Druids, Pagans and Manx heritage communities honour Manannán today. Pouring offerings into the sea is common modern practice. The sea safety advice follows the lifeboat and coastguard services of the UK and Ireland.',
+            unknown:
+              'There is no record of offerings to Manannán before Christianity except the rush rent in later Manx sources. Milk, whiskey and other poured offerings, beach cleans as devotion, and the modern Midsummer climbs are modern practice drawn from tradition.',
+          },
+          inPractice:
+            'A typical devotee keeps a shrine of sea water, shells and rushes, greets the sea before journeys, pours small offerings into incoming waves, gives rushes at Midsummer, and does a beach clean or other coastal care regularly.',
+          reflect: [
+            'What is your honest relationship with the sea: love, fear, distance, longing?',
+            'What practical thing could you do for the sea or for those who work on it this year?',
+          ],
+          further: [
+            'RNLI, “Float to Live” sea safety guidance.',
+            'Marine Conservation Society and Clean Coasts (Ireland), on beach cleans.',
+            'Erynn Rowan Laurie and others, The CR FAQ (2007), on Celtic Reconstructionist practice.',
+          ],
+          library: ['traditional/deity/manannan', 'traditional/crystal/aquamarine', 'traditional/crystal/labradorite'],
+          premade: ['sea-safe-passage-blessing', 'sea-seawater-cleansing'],
+        },
+      ],
+      practices: [
+        {
+          id: 'manannan-study-weather',
+          title: 'Read the sky before reading',
+          instructions:
+            'Before each lesson, look out at the sky for a minute and guess the weather for the next few hours, as the pilot of Cormac’s Glossary did. Say, “Manannán, pilot of the west, teach me to read.” Afterwards, check whether you were right.',
+          times: 4,
+          every: 'day',
+          prompt: 'What did you see in the sky, and were you right about the weather?',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Nine tides',
+      intro:
+        'Now you put what you have learned into practice. For nine days you will make a small offering of water and words, learn your local tides, and do one act of care for water. Start with the lesson on his days, offerings and the shape of a rite.',
+      days: 10,
+      lessons: [
+        {
+          id: 'manannan-offerings',
+          title: 'Rushes, sea water and the turning tide: days, offerings and the shape of a rite',
+          summary: 'Midsummer Eve and his other days, what to give and how, rites at home and at the shore, and keeping his shrine.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'His days',
+              body:
+                'Midsummer Eve, St John’s Eve, the night of 23 June, is the night of his rent in the Manx sources, and Tynwald Day, 5 July, Old Midsummer Day, is when rushes are strewn at St John’s. Many devotees keep both. In the southern hemisphere, some keep the rushes at their own midsummer in December; others keep the Manx dates.\n\nSamhain and Bealtaine, the two great doorways of the Gaelic year, suit a lord of the otherworld, since the síd and the islands were close then. The tides give him a monthly rhythm: the spring tides, the highest and lowest of the month, come just after the new and full moons. Many devotees make a fuller offering at a spring high tide, when the crane bag is full.',
+            },
+            {
+              heading: 'What to offer',
+              body:
+                'Green rushes are his own offering, from the Manx ballad. Soft rush (Juncus effusus) grows in damp fields and ditches across Britain and Ireland; cut a small bundle where you are allowed, or use long grass or reeds. Sea water or salted water on the shrine is a constant offering. Apples, for the Isle of Apples, are fitting.\n\nPoured offerings of milk, mead, ale or whiskey are common today. Music, especially the silver branch of the tales, can be honoured with a bell or chime. Honesty is a fine offering: the cup of truth asks three true things. And care for water, a beach clean, a river clean-up, supporting the lifeboats, is the offering that most devotees think he values best.',
+            },
+            {
+              heading: 'How to offer',
+              body:
+                'At home, set your offering before his candle and the bowl of sea water and say what it is. Pour a few drops of drink into the bowl. Lay rushes on the shrine. After a day, pour the water onto the earth or carry it to the sea, and compost the rushes or lay them at the tideline.\n\nAt the shore, stand well back from the waves. Wait for an incoming wave, step forward only as far as is safe, pour your small offering into the edge of it, and step back. Lay rushes at the tideline for the sea to take. Take everything else home. If the sea is rough, make the offering from higher up the beach, or do it at home: he will understand caution better than recklessness.',
+            },
+            {
+              heading: 'The shape of a simple rite',
+              body:
+                'A rite for Manannán has five parts. First, come to the water: stand at the shore or before the bowl and listen. Second, light his lamp. Third, offer: pour into the water, lay the rushes. Fourth, speak or ask: tell him three true things, as over Cormac’s cup, then ask for safe passage, protection or clear sight. Fifth, close: thank him and take everything home.\n\nOn Midsummer Eve, you can expand this: cut a bundle of green rushes, take it to a high place or the shore, and give it to him as rent, naming the land where you live. If you are on the Isle of Man at Tynwald, walk respectfully past the rushes on the path and give thanks quietly.',
+            },
+            {
+              heading: 'Keeping his shrine',
+              body:
+                'Change the sea water weekly, or at each spring tide. Let the shrine change with what the sea gives you: a shell from one visit, a piece of sea glass from another, a feather, a smooth stone. Do not take more than a little, and never from protected beaches.\n\nReplace the rushes each Midsummer, and burn the old bundle safely outdoors or compost it. Keep written prayers in the bag on his shrine, and take them out at the spring high tide to read them again. Some will have come true in ways you did not expect. That is very like him.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The Manx Traditionary Ballad and Chaloner give rushes at Midsummer Eve (St John’s Eve). Tynwald Day is 5 July. Spring tides follow the new and full moons. Soft rush grows widely in damp ground in Britain and Ireland.',
+            unknown:
+              'Apart from the rushes, no source tells us what was offered to Manannán. Poured offerings, spring-tide rites, the three truths and the five-part rite are modern practice drawn from the tales.',
+          },
+          inPractice:
+            'Many devotees keep a weekly offering at the shrine, a monthly rite at a spring tide, Midsummer rushes each year, and a regular beach clean or other water care.',
+          reflect: [
+            'Which three true things would you tell him over Cormac’s cup?',
+            'When are the spring tides where you live this month?',
+          ],
+          further: [
+            'Your national tide tables or a tide app for your coast.',
+            'A. W. Moore, The Folk-Lore of the Isle of Man (1891), on Midsummer customs (public domain).',
+          ],
+          library: ['traditional/deity/manannan', 'traditional/crystal/moonstone', 'traditional/vessel/bowl'],
+          premade: ['sea-tide-draw-and-release', 'sea-river-flower-offering'],
+        },
+      ],
+      practices: [
+        {
+          id: 'manannan-nine-tides',
+          title: 'Nine tides of offering',
+          instructions:
+            'For nine days, look up the time of high tide on the nearest coast and, as close to it as you can, light his candle, pour a few drops of drink into the bowl of sea water, and say: “Manannán mac Lir, son of the sea, here is my offering at the turning of the tide.” Tell him three true things about your day. Then ask for one thing: safe passage, protection or clear sight. Sit for a few minutes listening, to the sea if you are near it, to the silence if not. Snuff the candle. On one of the nine days, go to the shore or a river or lake if you can do it safely, and spend at least half an hour picking up litter there, dedicated to him.',
+          times: 9,
+          every: 'day',
+          prompt: 'What three true things did you tell him, and what did you ask?',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'In the mist',
+      intro:
+        'Before any dedication, look back over the month. A dedication to Manannán is a promise to respect the sea, care for waters and keep your word in his presence. Stopping, waiting, or choosing another god or path are all good outcomes; his mist hides the way for a while, then lifts.',
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'manannan-discern',
+          title: 'Watch the water',
+          instructions:
+            'Go to the sea, or a river or lake, and watch the water from a safe place for half an hour. If there is mist or rain, all the better. Think through the questions below. Write your answers when you get home.',
+          times: 1,
+          prompt: 'Your honest answers to the discernment questions.',
+        },
+      ],
+      questions: [
+        'Did you keep most of the nine tides? What does that tell you about the promise you might make?',
+        'How do you feel about honouring a god who is a trickster and a lord of illusion as well as a protector?',
+        'Can you keep your devotion safe: never taking risks at the water, never leaving harm on the shore?',
+        'Are you drawn to Manannán himself, or to the sea in general? Both are good; only one needs a dedication.',
+        'If you are not Manx or Irish, how will you honour the cultures his stories come from?',
+        'Is another deity or path calling you more strongly? Choosing them, or pausing, is a good and honest outcome.',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'Dedication at the turning of the tide',
+      intro:
+        'If you choose to go on, this is a self-dedication to Manannán, made before him in your own words. It is not an initiation into any group, order or tradition, and it does not replace one where they have their own. Midsummer Eve is the fitting time, at high tide if you can, but any day you are ready will do.',
+      days: 1,
+      lessons: [],
+      practices: [],
+      rite: {
+        title: 'Self-dedication to Manannán',
+        summary:
+          'At the shore or at a bowl of sea water, at the turning of the tide, pay him a rent of green rushes, pour an offering, tell three truths, make your promise and step back from the water.',
+        minutes: 40,
+        ingredients: [
+          { name: 'A blue, green or grey candle in a safe holder, or a lantern if outdoors', ref: 'traditional/candle/blue' },
+          { name: 'A bowl of sea water, or water with sea salt', ref: 'traditional/vessel/bowl' },
+          { name: 'A bundle of green rushes or long grass, tied with natural thread' },
+          { name: 'A cup of milk, mead or whiskey' },
+          { name: 'An apple', optional: true },
+          { name: 'A stone such as aquamarine or labradorite for the shrine', ref: 'traditional/crystal/aquamarine', optional: true },
+          { name: 'Your written promise' },
+        ],
+        preparation:
+          'Write your promise over several days: how you will honour him (weekly offerings, spring tides, Midsummer rushes each year), what you will do for the sea or for those who work on it, and how you will keep safe at the water. Make it a year’s promise. Cut your rushes. Look up the time of high tide. If you will be at the shore, check the weather and tide, choose a safe beach, and tell someone where you are going. Wash and dress warmly.',
+        steps: [
+          {
+            title: 'Come to the water',
+            instructions:
+              'At the turning of the tide, stand at a safe distance from the waves, or before the bowl at home. Listen for a minute.',
+            spoken: 'Manannán mac Lir, son of the sea, lord of the Isle of Apples, pilot of the west, I come to your shore of my own free will.',
+          },
+          {
+            title: 'Light the lamp',
+            instructions: 'Light the candle or lantern.',
+            spoken: 'I light this lamp for you, who hides the island in mist and shows the way home.',
+            light: true,
+          },
+          {
+            title: 'Pay the rent of rushes',
+            instructions:
+              'Hold up the bundle of rushes. Name the place where you live. At the shore, lay the bundle at the tideline for the sea to take. At home, lay it on the shrine beside the bowl.',
+            spoken: 'Here is my rent of green rushes, for the land where I live, as the people of Man gave you on Midsummer Eve.',
+          },
+          {
+            title: 'Pour the offering',
+            instructions:
+              'At the shore, wait for a wave and pour the drink into its edge, then step back. At home, pour a little into the bowl.',
+            spoken: 'Here is drink poured into your sea, freely given.',
+          },
+          {
+            title: 'Tell three truths',
+            instructions:
+              'Tell him three true things about yourself, as over Cormac’s cup. Then read your promise aloud. Say plainly that this is a self-dedication, made in good faith, and that you will keep it as best you can.',
+            spoken: 'This is my word, given at your shore. I will respect your sea, care for its waters, and keep my word to you.',
+          },
+          {
+            title: 'In the mist',
+            instructions:
+              'Stand or sit in silence. Imagine a mist rising off the sea and Manannán riding out of it over a flowery plain, his cloak about you.',
+            minutes: 10,
+          },
+          {
+            title: 'Close',
+            instructions: 'Thank him and snuff the candle or lantern. Step back from the water.',
+            spoken: 'Manannán, thank you. Keep me on the crossing, and bring me home.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'At the shore, take everything else home, and pick up some litter before you leave. At home, leave the bowl and rushes overnight, then carry the water to the sea or pour it onto the earth, and keep the rushes on his shrine until next Midsummer. Within a month, do the first act of care for the sea in your promise.',
+        safety:
+          'Never enter the water, or stand on rocks, harbour walls or cliff edges, for this rite. Check tide times so that you cannot be cut off, and dress for the cold. If anyone gets into trouble in the water, call the coastguard rather than going in. Keep a candle on a heatproof dish at home and never leave it unattended; use a lantern outdoors. Pour alcohol away from pets and children.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'Paying the rent',
+      intro:
+        'The relationship lives at the water’s edge and in kept promises. Here is a rhythm: a weekly offering, a spring-tide rite each month, care for the waters, Midsummer rushes each year, and a yearly renewal.',
+      days: 4,
+      lessons: [],
+      practices: [
+        {
+          id: 'manannan-weekly',
+          title: 'Weekly offering',
+          instructions:
+            'Once a week, change the sea water, light his candle, pour a few drops of drink into the bowl, and tell him three true things. Ask for safe passage for any journeys ahead.',
+          times: 52,
+          every: 'week',
+          prompt: 'What journeys are ahead, and what truths did you tell?',
+          premade: 'sea-safe-passage-blessing',
+        },
+        {
+          id: 'manannan-spring-tide',
+          title: 'Spring tide rite and care for the waters',
+          instructions:
+            'Once a month, at a spring high tide (just after the new or full moon), make a fuller offering at the shrine or a safe shore, read the prayers in his bag, and do one act of care for water: a beach or river clean, a donation to the lifeboats, cutting plastic use.',
+          times: 12,
+          every: 'month',
+          prompt: 'What did you do for the waters this month?',
+        },
+        {
+          id: 'manannan-midsummer',
+          title: 'Midsummer rushes',
+          instructions:
+            'On Midsummer Eve (23 June) or Tynwald Day (5 July), cut a bundle of green rushes and give it to him as rent for the land where you live, at a high place, the shore or his shrine.',
+          times: 1,
+          every: 'holy-day',
+          prompt: 'Where did you lay your rushes, and what land did you name?',
+        },
+        {
+          id: 'manannan-renew',
+          title: 'Yearly renewal',
+          instructions:
+            'At Midsummer or the anniversary of your dedication, read your promise. Say honestly what you kept. Make a new promise for the next year, or release the old one with thanks.',
+          times: 1,
+          every: 'holy-day',
+          prompt: 'What did you give the sea this year, and what did it give you?',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'Cormac’s Glossary, trans. John O’Donovan, ed. Whitley Stokes (Calcutta, 1868), s.v. Manannan mac Lir, archive.org: https://archive.org/details/cu31924071173474 (quoted: “a celebrated merchant who was in the Isle of Mann…”).',
+    'Lady Augusta Gregory, Gods and Fighting Men (1904), Part I Book II ch. I (Lugh rides out with Manannán’s horse and sword), Book IV chs. VIII–X, and Part II Book I ch. I on the crane bag, Project Gutenberg: https://www.gutenberg.org/ebooks/14465 (quoted: “a great lake burst up under his feet”; “he had many places of living…”; “I bring a branch of the apple-tree from Emhain…”; Manannán’s song to Bran; “All those treasures would be in the bag at full tide…”; “a pleasant, rambling, wandering man I am”).',
+    'A. W. Moore, ed., Manx Ballads and Music (1896), the Manx Traditionary Ballad, Manx Note Book: http://www.isle-of-man.com/manxnotebook/fulltext/mb1896/p006.htm (quoted: “Mannanan-Beg was son of Leirr…”; the fog; the rent of green rushes; the rushes carried up Barool).',
+    'James Chaloner, A Short Treatise of the Isle of Man (1656), as quoted with the earlier sixteenth-century accounts in W. W. Gill, A Second Manx Scrapbook (1932), Manx Note Book: https://isle-of-man.com/manxnotebook/fulltext/scrap2/ch10_1.htm (quoted: “took of the people no other acknowledgment for their land…”).',
+    'Kuno Meyer, trans., The Voyage of Bran Son of Febal (1895).',
+    'Charles W. MacQuarrie, The Biography of the Irish God of the Sea (Edwin Mellen, 2004).',
+    'RNLI sea safety guidance (“Float to Live”).',
+  ],
+};

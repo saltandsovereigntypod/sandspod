@@ -49,6 +49,22 @@ function inBox(point: [number, number], imageRatio: number, aspect: number): { x
   };
 }
 
+/**
+ * Where the picture sits in its box (contained in the content box), as
+ * fractions: left and width of the box's width, top and height of its height.
+ */
+export function pictureBox(imageRatio: number, aspect: number = boxAspect(imageRatio)): { left: number; top: number; width: number; height: number } {
+  const origin = inBox([0, 0], imageRatio, aspect);
+  const corner = inBox([1, 1], imageRatio, aspect);
+  return { left: origin.x, top: origin.y / aspect, width: corner.x - origin.x, height: (corner.y - origin.y) / aspect };
+}
+
+/** The flame, glow and smoke moved down by `percent` of the box's height, onto a candle that has burned shorter. */
+export function lowerFlame(layout: FlameLayout, percent: number): FlameLayout {
+  if (!(percent > 0)) return layout;
+  return { ...layout, flameTop: layout.flameTop + percent, haloTop: layout.haloTop + percent, smokeTop: layout.smokeTop + percent };
+}
+
 // The vigil candle the website's flame was drawn for (red-candle.png, 500 × 1536),
 // and its wick tip, so the flame keeps the same size and the same place on a wick.
 const VIGIL_RATIO = 1536 / 500;

@@ -1,0 +1,402 @@
+/*
+ * Today, as the app's Today tab has it (app/src/app/(tabs)/today/index.tsx):
+ * the date and the other calendars, the moon and the day's holidays, your
+ * next working, On the horizon, For your practice, the day's sky,
+ * correspondences, Set tonight's altar, Reflect and Last time. Everything is
+ * worked out by the app's own logic (js/core/today.js); the place stays in
+ * this browser and is only asked for when you press "Use my location".
+ */
+(function () {
+  "use strict";
+
+  const C = window.SaltCore && window.SaltCore.today;
+  const T = window.SaltToday;
+  const root = document.querySelector("[data-page-root]");
+  const esc = (text) => (window.SaltPage ? window.SaltPage.esc(text) : String(text ?? ""));
+  if (!root) return;
+  if (!C || !T) {
+    root.innerHTML = '<p class="sp-notice">Today could not load. Check your connection and refresh the page.</p>';
+    return;
+  }
+
+  const storage = (() => {
+    try {
+      return window.localStorage;
+    } catch {
+      return { getItem: () => null, setItem() {}, removeItem() {} };
+    }
+  })();
+
+  const state = {
+    settings: initialSettings(),
+    place: T.readPlace(storage),
+    user: null,
+    rituals: { plans: T.guestPlans(storage), ...T.guestRituals(storage) },
+    message: ""
+  };
+
+  function initialSettings() {
+    try {
+      return typeof window.getLocalMySettings === "function" ? window.getLocalMySettings() : {};
+    } catch {
+      return {};
+    }
+  }
+
+  // ── Loading what's yours ───────────────────────────────────────────────
+  async function loadSettings() {
+    try {
+      state.settings = (await window.SaltSettings.get()) || {};
+    } catch {
+      /* keep what this browser has */
+    }
+  }
+
+  /** Plans, the ritual under way and the journal: your account's, or this browser's for guests. */
+  async function loadRituals(user) {
+    if (!user || !window.db) {
+      state.rituals = { plans: T.guestPlans(storage), ...T.guestRituals(storage) };
+      return;
+    }
+    const db = window.db;
+    try {
+      const [plans, journal, open] = await Promise.all([
+        db.from("ritual_plans").select("*").eq("user_id", user.id),
+        db.from("user_rituals").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
+        db.from("ritual_sessions").select("*").eq("user_id", user.id).in("status", ["active", "paused"]).order("updated_at", { ascending: false }).limit(1)
+      ]);
+      let active = null;
+      const openRow = !open.error && open.data && open.data[0];
+      if (openRow) {
+        const steps = await db.from("ritual_session_steps").select("*").eq("session_id", openRow.id).order("sort_order");
+        if (!steps.error) active = C.ritualRows.sessionFromRows(openRow, steps.data || []);
+      }
+      state.rituals = {
+        plans: plans.error ? [] : C.planSync.mergePlans([], plans.data || [], user.id),
+        journal: journal.error ? [] : journal.data || [],
+        active
+      };
+    } catch {
+      state.rituals = { plans: [], journal: [], active: null };
+    }
+  }
+
+  // ── The page ───────────────────────────────────────────────────────────
+  function compute(now) {
+    const raw = state.settings || {};
+    // With no calendars chosen, Today follows My path.
+    const settings = C.traditions.todaySettings(raw);
+    const choice = C.holidays.holidayChoice(settings);
+    const primary = C.traditionDay.primaryTradition(settings, choice);
+    const place = state.place;
+    const live = C.calendars.CALENDARS_LIVE;
+    const lines = live ? C.calendars.todayLines(now, settings, place) : [];
+    const events = live
+      ? C.calendars.calendarEventsBetween(now, new Date(now.getFullYear(), now.getMonth(), now.getDate() + 60), settings, place)
+      : [];
+    const today = C.today.buildToday(now, choice, primary, events);
+    const sky = C.sky.skyNow(now, { planets: false });
+    const here = place ? C.sky.placeSky(now, place) : null;
+    return { settings, choice, lines, today, sky, here, now };
+  }
+
+  function render() {
+    const now = new Date();
+    const m = compute(now);
+    const { today, settings } = m;
+    const show = settings.today_show || "both";
+    const side = show === "both" && settings.today_layout === "side";
+
+    const lead = m.lines.find((l) => l.lead);
+    const beside = m.lines.filter((l) => !l.lead);
+
+    const header =
+      `<header class="td-header">` +
+      (lead ? T.leadLineHtml(lead, esc, "td-lead-details") : "") +
+      `<p class="sp-eyebrow td-date">${esc(today.dateLine)}</p>` +
+      `<p class="td-ruler">${esc(today.rulerLine)}</p>` +
+      (today.tradition ? `<p class="sp-caption td-center">${esc(today.tradition.line)}</p>` : "") +
+      (today.tradition && today.tradition.detail ? `<p class="sp-caption td-center sp-muted">${esc(today.tradition.detail)}</p>` : "") +
+      T.lineListHtml(beside, esc, "td-line") +
+      `</header>`;
+
+    let panels = "";
+    const moon = show !== "holiday" ? moonPanel(today, side) : "";
+    let holiday = "";
+    if (show !== "moon") {
+      if (side) holiday = `<div>${today.holidaysToday.length ? holidayPanel(today, true) : ""}</div>`;
+      else if (today.holidaysToday.length) holiday = holidayPanel(today, false);
+      else if (show === "holiday") holiday = `<p class="sp-caption td-center">No holiday today</p>`;
+    }
+    // Under the moon when stacked; below the row when side by side, where a half is too narrow.
+    const on = T.moonRemindersOn(storage);
+    const reminder = `<div class="sp-actions td-reminder"><a class="sp-chip" href="${esc(T.siteHref("/today/reminders"))}" title="Choose which moon phases to be reminded of">${on ? "Moon reminders on" : "Remind me of the moon"}</a></div>`;
+    const moonBlock = moon ? (side ? `<div>${moon}</div>` : `<div class="td-panels">${moon}${reminder}</div>`) : "";
+    panels = `<section class="td-panels${side ? " td-panels--side" : ""}" aria-label="The moon and today’s holidays">${moonBlock}${holiday}</section>${side ? reminder : ""}`;
+
+    root.innerHTML =
+      `<h1 class="sr-only">Today</h1>` +
+      header +
+      panels +
+      workingCard(m) +
+      horizonSection(today) +
+      practiceCard(m) +
+      daySkyCard(m) +
+      correspondencesCard(today) +
+      `<div class="sp-actions"><a class="button button--ghost" href="${esc(T.siteHref({ pathname: "/altar/[altarId]", params: { altarId: "tonight" } }))}">Set tonight’s altar</a></div>` +
+      `<section class="td-prompt" aria-label="Reflect"><p class="sp-eyebrow td-gold">Reflect</p><p class="td-prompt__text">${esc(today.prompt)}</p></section>` +
+      lastTimeLine(m) +
+      (state.message ? `<p class="sp-notice" role="status">${esc(state.message)}</p>` : "");
+  }
+
+  function moonPanel(today, compact) {
+    const ref = C.holyRefs.moonRef(today.moon);
+    return (
+      `<a class="td-moon${compact ? " td-moon--compact" : ""}" href="${esc(T.holyHref(ref))}" aria-label="${esc(`${today.moon.name}. ${today.signLine}. ${today.illuminationLine}. Opens what this phase of the moon means and what it’s good for.`)}">` +
+      T.moonDiscSvg(compact ? 80 : 136, today.moon.illumination, today.moon.waxing) +
+      `<h2 class="td-moon__phase">${esc(today.moon.name)}</h2>` +
+      `<span class="td-moon__sign">${esc(today.signLine)}</span>` +
+      `<span class="sp-caption td-center">${esc(today.illuminationLine)}</span>` +
+      `</a>`
+    );
+  }
+
+  function holidayPanel(today, compact) {
+    return (
+      `<div class="td-holiday${compact ? " td-holiday--compact" : ""}">` +
+      today.holidaysToday
+        .map(
+          (holiday, i) =>
+            `<a class="td-holiday__item" href="${esc(T.holyHref(C.holyRefs.holyRef(holiday.id), true))}">` +
+            `<span class="sp-eyebrow td-gold">${esc(`${today.holidayWhen[i]} · ${today.holidayTerms[i]}`)}</span>` +
+            `<h2 class="td-holiday__name">${esc(holiday.name)}</h2>` +
+            `<span class="sp-caption">${esc(holiday.traditions.join(" · "))}</span>` +
+            `<span class="td-holiday__meaning">${esc(holiday.meaning)}</span>` +
+            `</a>`
+        )
+        .join("") +
+      `</div>`
+    );
+  }
+
+  function workingCard(m) {
+    const { active, plans } = state.rituals;
+    const next = C.plans.nextPlan(plans, new Date());
+    const step = active ? C.lifecycle.currentStep(active) : null;
+    let text;
+    let button;
+    if (active) {
+      text =
+        `<p class="sp-eyebrow td-gold">${active.status === "paused" ? "Paused" : "Under way"}</p>` +
+        `<h2 class="td-card__title">${esc(active.title || "Your ritual")}</h2>` +
+        `<p class="sp-caption">${esc(step ? step.title : "Finish and journal it when you are ready.")}</p>`;
+      button = `<a class="button button--primary" href="${esc(T.siteHref("/rituals/run"))}">Continue the ritual</a>`;
+    } else if (next) {
+      text =
+        `<p class="sp-eyebrow td-gold">Your next working</p>` +
+        `<h2 class="td-card__title">${esc(next.title)}</h2>` +
+        `<p class="sp-caption">${esc(`${C.ritualFormat.planWhen(next, m.now)} · ${C.ritualFormat.planSky(next)}`)}</p>`;
+      button = `<a class="button button--primary" href="${esc(T.siteHref({ pathname: "/rituals/plan/[id]", params: { id: next.id } }))}">Open the plan</a>`;
+    } else {
+      text =
+        `<p class="sp-eyebrow td-gold">Your next working</p>` +
+        `<h2 class="td-card__title">Nothing planned yet</h2>` +
+        `<p class="sp-caption">Choose an intention and we’ll find the right night.</p>`;
+      button = `<a class="button button--primary" href="${esc(T.siteHref("/rituals/planner"))}">Plan a ritual</a>`;
+    }
+    return `<section class="td-card td-card--working" aria-label="Your next working"><div class="td-working-text">${text}</div>${button}</section>`;
+  }
+
+  function horizonSection(today) {
+    const tiles = today.horizon
+      .map((item) => {
+        const href = item.kind === "holiday" ? T.holyHref(C.holyRefs.holyRef(item.id), true) : T.holyHref(C.holyRefs.principalRef(item.phase));
+        const icon =
+          item.kind === "holiday"
+            ? T.ICONS[item.title.startsWith("Samhain") ? "samhain" : "wheel"]
+            : T.moonDiscSvg(26, T.PHASE_DISC[item.phase].illumination, T.PHASE_DISC[item.phase].waxing, false);
+        return (
+          `<a class="td-tile" href="${esc(href)}" aria-label="${esc(`${item.title}, ${item.detail}`)}">${icon}` +
+          `<span class="td-tile__text"><span class="td-tile__title">${esc(item.title)}</span><span class="sp-caption">${esc(item.detail)}</span></span></a>`
+        );
+      })
+      .join("");
+    return (
+      `<section class="td-horizon" aria-labelledby="td-horizon-label"><h2 class="sp-eyebrow" id="td-horizon-label" style="color:var(--muted)">On the horizon</h2>` +
+      `<div class="td-tiles">${tiles}</div>` +
+      `<p class="sp-caption td-center">${esc(today.nextSyzygyLine)}</p>` +
+      (today.eclipseLine ? `<p class="sp-caption td-center td-gold">${esc(today.eclipseLine)}</p>` : "") +
+      `</section>`
+    );
+  }
+
+  function practiceRow(label, line, detail, href, gold) {
+    return (
+      `<a class="td-practice-row" href="${esc(href)}">` +
+      `<span class="td-practice-row__text"><span class="td-practice-label">${esc(label)}</span>` +
+      `<span class="td-practice-row__line${gold ? " td-gold" : ""}">${esc(line)}</span>` +
+      (detail ? `<span class="sp-caption">${esc(detail)}</span>` : "") +
+      `</span><span class="td-chev">${T.ICONS.chevron}</span></a>`
+    );
+  }
+
+  /** For your practice: a line from each practice kept, your deities, and a working that suits tonight. */
+  function practiceCard(m) {
+    const { settings, now } = m;
+    const practices = C.premade.myPractices(settings);
+    const deities = C.patron.deityLines(settings, now);
+    if (!practices.length && !deities.length) {
+      return (
+        `<a class="td-card td-card--working td-card--link" href="${esc(T.siteHref("/more/settings/practice"))}">` +
+        `<span class="sp-eyebrow td-gold">For your practice</span>` +
+        `<span>Choose the practices you keep, green, kitchen, hedge, cosmic and more, and Today will offer something from each.</span></a>`
+      );
+    }
+    const lines = C.practiceDay.practiceToday(practices, now, { place: state.place, choice: C.holidays.holidayChoice(settings) });
+    const working = C.premade.forYou(C.premade.forYouContext(settings, now), undefined, 1)[0] || null;
+    return (
+      `<section class="td-card td-card--working" aria-labelledby="td-practice-label"><h2 class="sp-eyebrow td-gold" id="td-practice-label">For your practice</h2>` +
+      deities.map((line) => practiceRow(line.label, line.line, line.detail, T.siteHref(line.href), line.holyToday)).join("") +
+      lines.map((line) => practiceRow(line.label, line.line, line.detail, T.siteHref(line.href), false)).join("") +
+      (working
+        ? practiceRow("A working for tonight", working.title, working.summary, T.siteHref({ pathname: "/rituals/premade/[id]", params: { id: working.id } }), false)
+        : "") +
+      `</section>`
+    );
+  }
+
+  /** What today is good for, and what the sky is doing that matters for it. */
+  function daySkyCard(m) {
+    const { today, sky, here, now } = m;
+    const lines = T.daySkyLines(C, sky, now);
+    let where;
+    if (here) {
+      where =
+        `<p class="sp-caption">${esc(T.riseSetLine(C, here))}</p>` +
+        (here.hour ? `<p class="sp-caption td-gold">${esc(`Planetary hour of ${here.hour.planet} until ${C.calendar.timeOfDay(here.hour.end)}`)}</p>` : "");
+    } else {
+      where =
+        `<p class="sp-caption">Add your location on the <a class="td-link" href="/today/sky/">Sky page</a> for sunrise, moonrise and planetary hours. It stays in this browser and is never sent anywhere.</p>` +
+        `<div class="sp-actions"><button type="button" class="button button--ghost" data-use-location>Use my location</button></div>`;
+    }
+    return (
+      `<section class="td-card" aria-labelledby="td-sky-label"><h2 class="sp-eyebrow td-gold" id="td-sky-label">Today’s sky</h2>` +
+      `<p class="td-good-for">${esc(today.goodFor)}</p>` +
+      lines.map((line) => `<p class="sp-caption">${esc(line)}</p>`).join("") +
+      where +
+      `<a class="button button--ghost" href="/today/sky/">The sky today</a></section>`
+    );
+  }
+
+  let libraryEntries = null;
+  function libraryLink(name) {
+    try {
+      if (!libraryEntries) libraryEntries = C.library.traditionalEntries();
+      return T.libraryHref(C.library.findByName(libraryEntries, name));
+    } catch {
+      return null;
+    }
+  }
+
+  function tags(items) {
+    return (
+      `<div class="td-tags">` +
+      items
+        .map((name) => {
+          const href = libraryLink(name);
+          return href ? `<a class="td-tag" href="${esc(href)}">${esc(name)}</a>` : `<span class="td-tag">${esc(name)}</span>`;
+        })
+        .join("") +
+      `</div>`
+    );
+  }
+
+  /** The weekday's traditional correspondences, linked to the Living Library where it has them. */
+  function correspondencesCard(today) {
+    const c = today.correspondences;
+    const planet = c.planet === "Sun" || c.planet === "Moon" ? `the ${c.planet}` : c.planet;
+    const row = (label, text) => `<div class="td-corr"><span class="td-corr__label">${esc(label)}</span><span>${esc(text)}</span></div>`;
+    return (
+      `<section class="td-card" aria-labelledby="td-corr-label"><h2 class="sp-eyebrow td-gold" id="td-corr-label">${esc(`Correspondences · ${planet}`)}</h2>` +
+      row("Colors", c.colors.join(", ")) +
+      `<div class="td-corr"><span class="td-corr__label">Crystals</span>${tags(c.crystals)}</div>` +
+      `<div class="td-corr"><span class="td-corr__label">Herbs</span>${tags(c.herbs)}</div>` +
+      row("Metal", c.metal) +
+      row("Incense", c.incense) +
+      row("Candle", c.candle) +
+      `</section>`
+    );
+  }
+
+  const PRINCIPAL = ["New Moon", "First Quarter", "Full Moon", "Last Quarter"];
+
+  /** On a new, quarter or full moon: what you did last time the moon looked like this. */
+  function lastTimeLine(m) {
+    let last = null;
+    try {
+      last = C.insights.journalInsights(state.rituals.journal || [], m.now).lastThisPhase;
+    } catch {
+      last = null;
+    }
+    if (!last || !PRINCIPAL.includes(last.phase)) return "";
+    const title = last.entry.title || "a ritual";
+    return (
+      `<a class="td-last sp-caption" href="${esc(T.siteHref({ pathname: "/today/journal/[id]", params: { id: last.entry.id } }))}" aria-label="${esc(`Last ${last.phase} you kept ${title}. Opens your journal.`)}">` +
+      `<span>${esc(`Last ${last.phase} you kept `)}<span class="td-gold">“${esc(title)}”</span> ›</span></a>`
+    );
+  }
+
+  // ── Events ─────────────────────────────────────────────────────────────
+  T.bindToggles(root);
+  root.addEventListener("click", async (event) => {
+    const button = event.target.closest("[data-use-location]");
+    if (!button) return;
+    button.disabled = true;
+    button.textContent = "Finding where you are…";
+    const { result, place } = await T.askBrowserLocation(storage, navigator.geolocation);
+    if (result === "ok") {
+      state.place = place;
+      state.message = "Location set. It stays in this browser.";
+    } else {
+      state.message =
+        result === "denied"
+          ? "Location wasn’t allowed. You can allow it in your browser’s settings, or enter it on the Sky page."
+          : "This browser couldn’t find your location. You can enter it on the Sky page.";
+    }
+    render();
+  });
+
+  let refreshing = false;
+  async function refresh(user) {
+    if (refreshing) return;
+    refreshing = true;
+    try {
+      state.user = user;
+      await Promise.all([loadSettings(), loadRituals(user)]);
+    } finally {
+      refreshing = false;
+    }
+    render();
+  }
+
+  render();
+  if (window.SaltPage) {
+    window.SaltPage.ready().then(refresh);
+    window.SaltPage.onUserChange((user) => {
+      if ((user && user.id) !== (state.user && state.user.id)) refresh(user);
+    });
+  }
+  window.addEventListener("saltSettingsChanged", () => loadSettings().then(render));
+  window.addEventListener("storage", (event) => {
+    if (event.key === T.PLACE_KEY) {
+      state.place = T.readPlace(storage);
+      render();
+    }
+  });
+
+  // A quarter-hourly clock for the void-of-course Moon and planetary hours,
+  // and a fresh day after midnight. Keep any open calendar line open.
+  setInterval(() => {
+    if (!root.querySelector('[data-td-toggle][aria-expanded="true"]') && !root.contains(document.activeElement)) render();
+  }, 15 * 60000);
+})();

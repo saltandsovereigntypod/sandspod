@@ -1,0 +1,907 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'path-egyptian',
+  kind: 'path',
+  paths: ['egyptian'],
+  title: 'The Way of Ma’at',
+  summary: `Thirteen weeks with the religion of ancient Egypt and its modern revival: the texts and temples, ma’at, the many forms of the gods, the daily rite and the offering formula, the akhu, heka, purity and the feasts, ending in a self-dedication before your shrine.`,
+  welcome: `This journey is a careful introduction to Kemetism, the modern revival of the religion of ancient Egypt (Kemet, "the Black Land", the Egyptians' own name for their country, after the dark Nile soil). You will learn what the sources are, why ma’at sits at the centre of everything, how the gods take many forms, and how the daily temple rite can be adapted to a shelf in a flat. You will keep a small daily rite, make offerings in the old formula and share them back, honour your akhu, the blessed dead, and learn the festival year.
+
+At the end, if it is right for you, you dedicate yourself in a rite of your own. It is a self-dedication, not an initiation or ordination. Ancient priests were appointed and purified by temples, and modern temples such as Kemetic Orthodoxy have their own rites of membership. Nothing here replaces them.`,
+  about: `Egyptian religion was practised for over three thousand years, from before the first pyramids to the closing of the temple of Isis at Philae in the 6th century AD. It centred on ma’at, the right order of the world, kept up by offerings, ritual and right living, and on the netjeru, the gods, who appear in many forms and blend into one another. Temples were the gods' houses, served daily by priests on behalf of the king; ordinary people met the gods at festivals, in household shrines, and through their dead. Nothing of the religion survived as a living tradition, so everything today is revival, built from hieroglyphic texts, temple walls, archaeology and Greek writers. Modern practice ranges from formal temples to careful reconstructionists to eclectic pagans who work with Egyptian gods in other frameworks.`,
+  notes: [
+    `There is no unbroken lineage. Modern Kemetism is reconstruction and revival, and anyone claiming secret priestly descent from ancient Egypt is not telling the truth.`,
+    `Ancient Egypt was an African civilisation, and modern Egyptians are heirs to its land and monuments. Practise with respect for both, and never buy antiquities without a documented legal history: looting destroys the record we learn from.`,
+    `The popular "42 Laws of Ma’at" are modern rewritings of the declarations in Book of the Dead chapter 125. They are a fine prompt for reflection, but they are not an ancient commandment list.`,
+    `Heka, Egyptian ritual power, includes cursing rites in the ancient record (the execration texts). This journey describes them as history and teaches only protective and devotional heka.`,
+    `Kemetic Orthodoxy is one formal temple that some people join; reconstructionist and eclectic practitioners mostly work alone or in small groups. The journey describes each fairly.`,
+    `The app's calendar does not yet list Egyptian feast days, because modern Kemetics reckon them differently. The festivals lesson shows you how to set your own dates.`,
+  ],
+  holyDays: [],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'Opening the Doors',
+      intro: `Before study comes a first greeting. This week you wash, light a lamp, open a small shrine for the first time, and make the oldest Egyptian offering: cool water, with words of praise. You also begin greeting the sun each morning, as the Egyptians did.`,
+      days: 7,
+      lessons: [],
+      practices: [
+        {
+          id: 'eg-dawn-greeting',
+          title: 'Greeting the sun at dawn',
+          instructions: `Each morning for a week, wash your hands and face, stand at an east-facing window if you have one, raise your hands palms outward at shoulder height (the Egyptian gesture of praise, dua), and greet the rising sun, in your own words or with the line from the Book of the Dead given in the opening rite. A minute is enough.`,
+          times: 7,
+          every: 'day',
+          prompt: `How did the morning feel? What did I notice about the light?`,
+        },
+        {
+          id: 'eg-why-kemet',
+          title: 'Why Egypt?',
+          instructions: `Write a page about what drew you here: a museum visit, a god who appeared in your life, a film, a family heritage, a love of the art. Be honest about what comes from popular culture; many people start there. Note what you hope to find, and what you're unsure about.`,
+          times: 1,
+          prompt: `What do I hope this path will give me, and what will I give it?`,
+        },
+      ],
+      rite: {
+        title: 'A First Offering of Water',
+        summary: `Purify, light a lamp, open the shrine, offer cool water and praise, close the shrine and share the offering back.`,
+        minutes: 20,
+        ingredients: [
+          { name: 'A small box or cabinet with doors, or a cloth to veil the shrine' },
+          { name: 'An image of the netjeru: a postcard, print or small statue (the sun disk is a good start)' },
+          { name: 'A candle or oil lamp' },
+          { name: 'A cup of fresh cool water', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'Frankincense resin or a stick of frankincense incense', ref: 'traditional/herb/frankincense', optional: true },
+          { name: 'A bowl of water with a pinch of salt and a pinch of baking soda (a modern stand-in for natron)', ref: 'traditional/vessel/bowl' },
+          { name: 'A small piece of bread', optional: true },
+        ],
+        preparation: `Choose a shelf or a box with doors, in a clean, quiet place, not in a bathroom. Put the image inside or behind a cloth. Wash your hands. Have the water, lamp and incense ready beside it. Dress in clean clothes.`,
+        steps: [
+          {
+            title: 'Purify yourself',
+            instructions: `Dip your fingers in the natron water and touch your forehead, lips and hands. Rinse your mouth with a little clean water. In Egypt, purity came before every approach to the gods.`,
+            spoken: `I am pure. I am pure. I come before the gods clean of hands.`,
+          },
+          {
+            title: 'Light the lamp and the incense',
+            instructions: `Light the candle or lamp, then the incense. Waft a little smoke over the closed shrine. Incense was called senetjer, "that which makes divine".`,
+            light: true,
+          },
+          {
+            title: 'Open the shrine',
+            instructions: `Open the doors of the box, or lift the cloth, slowly, so the image is revealed. In the temples this moment was called "revealing the face" of the god. Bow, or kneel and touch the ground.`,
+            spoken: `The doors are open. The face is revealed.
+Wake in peace, you gods. Wake in peace.`,
+          },
+          {
+            title: 'Praise',
+            instructions: `Raise your hands in praise and speak the opening of the Book of the Dead's hymn to the rising sun, from Budge's translation, then add your own words: who you are, and that you have come to learn.`,
+            spoken: `Homage to thee, O Ra, at thy beauteous rising.
+Thou risest, thou risest; thou shinest, thou shinest at the dawn.
+
+I am [your name]. I have come to learn your ways and to do ma’at.`,
+          },
+          {
+            title: 'Offer water',
+            instructions: `Hold up the cup of water with both hands, then set it before the image. Water was the first and simplest offering, given to gods and the dead alike. Add the bread if you have it.`,
+            spoken: `Cool water for you, pure water for you.
+I give it freely, in peace.`,
+          },
+          {
+            title: 'Sit in the presence',
+            instructions: `Sit quietly for a few minutes before the open shrine. You don't need to feel anything special.`,
+            minutes: 4,
+          },
+          {
+            title: 'Close the shrine and share back',
+            instructions: `Bow, close the doors or lower the cloth, and snuff the lamp. Take the water and bread away from the shrine, say "the offering returns", and drink or eat a little; pour the rest on a plant. This sharing back is the reversion of offerings, which the journey will teach in full.`,
+            snuff: true,
+            spoken: `The offering returns. Thank you.`,
+          },
+        ],
+        closing: `The rite is done. Leave the shrine set up; you will use it every day of the journey.`,
+        safety: `Never leave a candle, lamp or incense burning unattended; set incense on a heatproof dish away from curtains and the shrine's cloth. Burn resin on charcoal only with ventilation, and avoid smoke around birds, small pets, babies or anyone with asthma. Keep the natron water out of eyes and don't drink it.`,
+      },
+    },
+    {
+      kind: 'study',
+      title: 'The House of the Gods',
+      intro: `Five weeks with the foundations: the sources across three thousand years, ma’at, the many forms of the gods, the religion of ordinary households, the akhu, and heka. Read a lesson or so a week, and keep up the weekly practices.`,
+      days: 35,
+      lessons: [
+        {
+          id: 'eg-sources',
+          title: 'Three Thousand Years of Sources',
+          summary: `The Pyramid Texts, Coffin Texts, Book of the Dead, temple walls, hymns, letters and Greek writers: what each tells you, and how to read across such a long history.`,
+          minutes: 8,
+          sections: [
+            {
+              heading: 'Words for the dead king',
+              body: `The oldest religious texts in Egypt, and among the oldest in the world, are the Pyramid Texts. They were first carved on the walls of the burial chambers of King Unas, the last king of the 5th Dynasty, at Saqqara around 2350 BC, and appear in later pyramids of kings and queens. They are spells and ritual speeches to help the king rise to the sky, join the sun god and the stars, and be fed for eternity. Some of them are clearly older than the pyramids that hold them.
+
+In the Middle Kingdom (around 2000–1700 BC), officials and their families had similar texts painted inside their wooden coffins: the Coffin Texts. Then, from around 1550 BC, people wrote spells on papyrus rolls placed in the tomb. The Egyptians called these "spells for going forth by day"; we call them the Book of the Dead. No two copies are the same. One of the most famous, the Papyrus of Ani from about 1250 BC, is in the British Museum.`,
+            },
+            {
+              heading: 'Temple walls and the living',
+              body: `Most of what we know about daily worship comes from temples. The temple of Seti I at Abydos, built around 1290 BC, shows the king performing the daily rite in each of its seven chapels, step by step. A papyrus now in Berlin (P. Berlin 3055) gives the words of the daily ritual of Amun. The great temples of the Ptolemaic and Roman period, at Edfu, Dendera, Esna and Philae, are covered with festival calendars, hymns and even recipes for incense.
+
+For ordinary people, we have wisdom texts such as the Instruction of Ptahhotep, hymns, letters written to dead relatives on bowls, little stelae with carved ears asking a god to hear, and thousands of notes on pottery from the workers' village of Deir el-Medina, near the Valley of the Kings. They show a religion of families, worries, prayers and feasts, not only of kings and temples.`,
+            },
+            {
+              heading: 'Outsiders and the long silence',
+              body: `Greek writers visited Egypt and wrote about it. Herodotus, around 440 BC, describes priests and festivals; Plutarch, around AD 100, wrote On Isis and Osiris, the only complete retelling of the Osiris myth from the ancient world. Both are useful, and both saw Egypt through Greek eyes.
+
+The last known hieroglyphic inscription was carved at Philae in AD 394, and the temple of Isis there was closed around AD 535. Knowledge of the script was lost until Jean-François Champollion deciphered it in 1822. Everything modern Kemetics know comes from the two centuries of Egyptology since.`,
+            },
+            {
+              heading: 'Reading across three thousand years',
+              body: `The biggest trap is to treat "ancient Egypt" as one moment. A belief from the Pyramid Texts may be twelve centuries older than one in the Book of the Dead, and as far from it as we are from the Vikings. Gods rose and fell in importance; Amun was a minor local god before he became king of the gods at Thebes, and Isis's widespread worship is mostly late. When you read "the Egyptians believed", ask "when, where, and who?"
+
+Modern Kemetics choose their own focus. Some lean on the New Kingdom, which has the richest temple records; some on the Late and Ptolemaic periods; some take what speaks to them from all eras. All of these are reasonable if you are honest about it.`,
+            },
+          ],
+          knowAndDont: {
+            known: `The Pyramid Texts first appear in Unas's pyramid (c. 2350 BC); the Coffin Texts are Middle Kingdom; the Book of the Dead dates from c. 1550 BC onward. Seti I's Abydos reliefs and P. Berlin 3055 record the daily rite; Ptolemaic temples preserve festival calendars and recipes. Champollion deciphered hieroglyphs in 1822.`,
+            unknown: `Much of the texts' meaning is still debated, and translations differ widely. We know far more about kings, temples and the dead than about everyday belief, and much less about the Old Kingdom than the New. Large parts of temple ritual were never written down, or were lost.`,
+          },
+          inPractice: `Get one good modern book on Egyptian religion and one translation of the Book of the Dead. Make a "When and where?" page in your journal and note the date and place of each idea you learn.`,
+          reflect: [
+            `Which period of Egyptian history are you most drawn to, and why?`,
+            `How does it feel to practise a religion whose words were silent for 1,400 years?`,
+          ],
+          further: [
+            `Geraldine Pinch, Egyptian Mythology: A Guide to the Gods, Goddesses, and Traditions of Ancient Egypt (Oxford, 2004; first published 2002 as Handbook of Egyptian Mythology)`,
+            `Emily Teeter, Religion and Ritual in Ancient Egypt (2011)`,
+            `The Book of the Dead, trans. Raymond Faulkner, ed. Carol Andrews (British Museum Press), or Budge's older translation (public domain)`,
+            `Miriam Lichtheim, Ancient Egyptian Literature (3 vols.), for hymns and wisdom texts`,
+          ],
+          library: ['traditional/deity/ra', 'traditional/deity/osiris'],
+        },
+        {
+          id: 'eg-maat',
+          title: 'Ma’at at the Centre',
+          summary: `What ma’at means, the goddess with the feather, the weighing of the heart, and how to live ma’at in ordinary life.`,
+          minutes: 8,
+          sections: [
+            {
+              heading: 'Order, truth and rightness',
+              body: `Ma’at is the most important idea in Egyptian religion and the hardest to translate. It means truth, justice, order, balance and rightness all at once: the way things ought to be, set in place at creation. Its opposite is isfet, chaos, lies and wrongdoing. Ma’at was not automatic. The world drifted toward isfet unless it was kept up, by the gods, the king, the temples, and every person's conduct.
+
+Ma’at was also a goddess, the daughter of the sun god Ra, shown as a woman with an ostrich feather on her head. On temple walls, the king holds up a tiny figure of her to the gods: "presenting ma’at". It was the greatest offering, because it said "I have kept the world right". In wisdom texts, the phrase "do ma’at" means to speak truly and act justly; a Middle Kingdom story, the Eloquent Peasant, tells an official to do ma’at for the Lord of Ma’at.`,
+            },
+            {
+              heading: 'The weighing of the heart',
+              body: `The best-known picture of ma’at is the judgement in the Book of the Dead, chapter 125. The dead person's heart is weighed on a scale against the feather of ma’at, with Anubis at the scale, Thoth recording, and a monster, Ammit, waiting to devour a heart that fails. Before the weighing, the dead person speaks a long declaration of innocence. In Budge's translation it begins:
+
+"I have not sinned against men. I have not oppressed [my] kinsfolk. I have done no wrong in the place of truth."
+
+It goes on: not causing pain, not letting anyone go hungry, not making anyone weep, not cheating with the scales, not stopping water when it should flow. Then, to the forty-two judges, the speaker adds the positive: "I have given bread to the hungry, water to the thirsty, raiment to the naked, and a boat to him that needed one."`,
+            },
+            {
+              heading: 'The 42 Laws, honestly',
+              body: `Online you will find "the 42 Laws of Ma’at" or "42 Negative Confessions", often rewritten as positive commandments. These come from the chapter 125 declarations, but the popular lists are modern rewrites, sometimes heavily changed, and the ancient list varies from papyrus to papyrus. Some lines are about very specific things: not catching the gods' birds, not taking milk from babies, not damming a canal. They are a portrait of an Egyptian ideal life, not a code handed down from a mountain.
+
+That said, they are excellent material for reflection. Many Kemetics read them once a month and ask which they have kept and which they haven't.`,
+            },
+            {
+              heading: 'Living ma’at today',
+              body: `Ma’at in modern practice is practical. It means telling the truth, paying what you owe, being fair to people who have less power than you, keeping your home and body in order, caring for the land and the water, and keeping your commitments to the gods. It also means balance: not burning yourself out, not neglecting your duties for your devotions or the reverse. Ritual and ethics are one thing here. Your daily rite keeps ma’at, and so does how you treat the person at the till.`,
+            },
+          ],
+          knowAndDont: {
+            known: `Ma’at as order and justice runs through texts from the Old Kingdom to Roman times; temple reliefs show kings presenting ma’at; the weighing of the heart and the declarations of innocence are in Book of the Dead 125. The Eloquent Peasant and Instruction of Ptahhotep praise ma’at.`,
+            unknown: `How ordinary people understood ma’at day to day, and how closely they connected the judgement scene with their own conduct. Chapter 125 also worked as a powerful spell: saying the right words might help even an imperfect person pass, so it is not simply a moral checklist.`,
+          },
+          inPractice: `Read the declarations of Book of the Dead 125 in a translation. Choose three that speak to your life now, rewrite them in your own words as things you will do, and put them by your shrine. Review them each week.`,
+          reflect: [
+            `Where in your life is ma’at strong, and where is isfet creeping in?`,
+            `What is one thing you could do this week to put something right?`,
+          ],
+          further: [
+            `The Book of the Dead, chapter 125 (Budge 1901, public domain; or Faulkner)`,
+            `"The Eloquent Peasant" and "The Instruction of Ptahhotep", in Miriam Lichtheim, Ancient Egyptian Literature, vol. 1`,
+            `Jan Assmann, The Mind of Egypt (2002)`,
+          ],
+          library: ['traditional/deity/thoth', 'traditional/deity/anubis', 'traditional/deity/osiris'],
+        },
+        {
+          id: 'eg-netjeru',
+          title: 'The Netjeru and Their Many Forms',
+          summary: `How Egyptian gods appear as animals, people and blends of both, how they merge into each other, and how to begin with one.`,
+          minutes: 8,
+          sections: [
+            {
+              heading: 'One god, many faces',
+              body: `The Egyptian word for a god is netjer, plural netjeru. A god could appear in many forms at once. Hathor is a cow, a woman with cow's horns and a sun disk, a woman with cow's ears on a sistrum rattle, and a sycamore tree. Thoth is an ibis and a baboon. Horus is a falcon, a child with a side-lock, and a falcon-headed king. These are not costumes; each image shows a facet of the god's nature, and none is the whole.
+
+Animals were sacred to gods, but the gods were not simply animals. A cat was Bastet's living image, not Bastet herself. In the Late Period, millions of animal mummies, ibises at Saqqara, cats at Bubastis, were offered by pilgrims as gifts to the gods, a practice modern Kemetics remember but do not repeat.`,
+            },
+            {
+              heading: 'Gods who merge',
+              body: `Egyptian gods combine easily. Amun of Thebes joined with the sun god to become Amun-Ra, king of the gods. Ra merged with Horus as Ra-Horakhty, "Ra, Horus of the horizon". The fierce lioness Sekhmet and the gentle Hathor are two sides of the same "Eye of Ra": in the myth of the Destruction of Mankind, Ra sends his Eye as Sekhmet to punish rebels, and she is calmed only by beer dyed red to look like blood, after which she returns as gentle Hathor. Late hymns describe all the gods as forms of one hidden power, and yet worship of many gods continued alongside.
+
+The Egyptologist Erik Hornung called this "the One and the Many". It means you can address a god by a single name or a combination, and both are true to the tradition.`,
+            },
+            {
+              heading: 'Families and creations',
+              body: `Different cities had their own creation stories and divine families, and they were not seen as contradicting each other. At Heliopolis, Atum created the world and nine gods, the Ennead: Shu and Tefnut, Geb and Nut, and Osiris, Isis, Set and Nephthys. At Memphis, Ptah created by thinking in his heart and speaking with his tongue. At Hermopolis, eight primeval beings, the Ogdoad, came before light. Thebes had its triad of Amun, Mut and Khonsu; Memphis, Ptah, Sekhmet and Nefertem.
+
+The most loved story is the myth of Osiris: murdered by his brother Set, gathered and restored by Isis and Nephthys, Osiris becomes king of the dead, and his son Horus wins back the throne of the living. Plutarch gives the only full telling; Egyptian sources allude to it everywhere.`,
+            },
+            {
+              heading: 'Beginning with one',
+              body: `You don't have to choose a single god. Many Kemetics honour a household of gods, often including a few gods who came to them and gods of the home, like Bes and Taweret, alongside the great gods of the sun and the dead. To start, choose one god to read about, find a respectful image, learn two or three of their epithets (for example, Thoth "Lord of the Sacred Words", Hathor "Lady of the West", Anubis "He Who Is upon His Mountain"), and give a daily cup of water and a few words. Gods in Egypt were approached gradually, through their house and their servants; it's no bad thing to be patient.`,
+            },
+          ],
+          knowAndDont: {
+            known: `Egyptian art and texts give gods multiple forms; combined gods like Amun-Ra and Ra-Horakhty are well attested; the Destruction of Mankind story appears in the Book of the Heavenly Cow (e.g., on Tutankhamun's shrine); creation accounts from Heliopolis, Memphis (the Shabaka Stone) and Hermopolis survive. Plutarch preserves the fullest Osiris myth.`,
+            unknown: `How ordinary Egyptians understood the relationship between gods and their forms, and whether learned "all gods are one" hymns reflected common belief. Whether Egyptian religion was fundamentally polytheist, henotheist or something else is still argued among Egyptologists.`,
+          },
+          inPractice: `Choose one netjer this week. Read their myths, write down three of their epithets and their sacred animals and plants, and find an image for your shrine. Offer water each day with a greeting by name.`,
+          reflect: [
+            `Which form of your god speaks to you most, and why?`,
+            `How do you feel about gods who merge and change? Does it unsettle or free you?`,
+          ],
+          further: [
+            `Erik Hornung, Conceptions of God in Ancient Egypt: The One and the Many (1982)`,
+            `Richard H. Wilkinson, The Complete Gods and Goddesses of Ancient Egypt (2003)`,
+            `Plutarch, On Isis and Osiris (Moralia vol. 5)`,
+          ],
+          library: ['traditional/deity/hathor', 'traditional/deity/sekhmet', 'traditional/deity/bastet', 'traditional/deity/isis', 'traditional/deity/osiris', 'traditional/deity/thoth', 'traditional/deity/ra'],
+        },
+        {
+          id: 'eg-household',
+          title: 'Religion Beyond the Temple',
+          summary: `How ordinary Egyptians met the gods: household shrines, Bes and Taweret, listening ears, oracles and personal prayer.`,
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Who went into the temple',
+              body: `Ordinary Egyptians did not go into the inner temple. Only priests in a state of purity entered the sanctuary, and the image of the god lived behind sealed doors in darkness. People came to the outer courts and the gates, where some temples had "chapels of the hearing ear" for prayers. They saw the gods mainly on festival days, when the god's image was carried out in a shrine on a boat-shaped litter on priests' shoulders.
+
+At those processions, people could ask the god a question. The barque would move forward for yes or backward for no, a kind of oracle well documented in the New Kingdom and later. It was used for everything from choosing a king to settling a dispute over a stolen garment.`,
+            },
+            {
+              heading: 'Gods of the house',
+              body: `At home, people turned to protective gods of daily life. Bes, a dwarf god with a lion's mane and his tongue stuck out, guarded sleep, childbirth and children; he appears on beds, headrests and mirrors. Taweret, a pregnant hippopotamus with lion's paws and a crocodile's back, protected mothers and babies. Houses in the workers' village of Deir el-Medina and at Amarna had wall niches and small shrines, and people kept little busts of their honoured dead.
+
+These household gods are wonderful for a modern home shrine. Bes for a child's room or the bedroom, Taweret for anyone pregnant or trying to be, Hathor and Bastet for joy and the household.`,
+            },
+            {
+              heading: 'Personal prayer',
+              body: `In the Ramesside period (around 1300–1070 BC), we see many prayers from ordinary people asking a god's help or forgiveness. A workman at Deir el-Medina, Neferabu, set up a stela confessing that he had sworn falsely by Ptah and been struck blind, and praising the god's mercy. Others left stelae carved with ears, so the god would hear. People named their children after gods, wore amulets, and visited holy sites.
+
+These prayers are close to how many modern Kemetics practise: one person, a small image, honest words, and trust that the gods hear.
+
+At Deir el-Medina, people also wrote short questions for the god's oracle on flakes of limestone or pottery, asking, for example, whether a particular person had stolen something, or whether they would get a job. Many survive. They are a reminder that the gods were asked about ordinary troubles, and that no question was too small.`,
+            },
+            {
+              heading: 'What this means for you',
+              body: `You are not a temple priest, and that's fine. Ancient Egyptians had two ways to the gods: the formal service of the temple, done by professionals, and the warm, personal religion of home and family. A modern Kemetic's shrine combines both, using the shape of the temple rite in a home setting. Don't feel you must reproduce a whole temple. Do keep it clean, regular and sincere.`,
+            },
+          ],
+          knowAndDont: {
+            known: `Restricted access to sanctuaries, festival processions and barque oracles are well documented; Bes and Taweret appear widely in household objects; Deir el-Medina and Amarna houses had niches and ancestor busts; Neferabu's stela and ear stelae survive.`,
+            unknown: `How much household religion differed by region, class and era; what words people used in home rites; and how individual belief related to temple theology. Most household evidence comes from a few well-preserved villages.`,
+          },
+          inPractice: `Add a household guardian to your shrine this week, Bes or Taweret if they suit your home, and greet them each evening as you close the shrine. Write a short personal prayer in your own words, as the people of Deir el-Medina did.`,
+          reflect: [
+            `What would a "chapel of the hearing ear" in your own home look like?`,
+            `What do you most want to ask the gods for, and what do you want to thank them for?`,
+          ],
+          further: [
+            `Leonard H. Lesko (ed.), Pharaoh's Workers: The Villagers of Deir el Medina (1994)`,
+            `Geraldine Pinch, Magic in Ancient Egypt (1994), on household protection`,
+          ],
+          library: ['traditional/deity/hathor', 'traditional/deity/bastet'],
+        },
+        {
+          id: 'eg-akhu',
+          title: 'The Akhu: Honouring the Blessed Dead',
+          summary: `The parts of a person, the akh, how Egyptians fed and wrote to their dead, and how to keep an akhu shrine.`,
+          minutes: 8,
+          sections: [
+            {
+              heading: 'The parts of a person',
+              body: `Egyptians saw a person as made of several parts. The ka was the life-force, passed down from parents and fed by offerings; offerings were given "for the ka of" someone. The ba was the personality, shown as a bird with a human head, which could fly out of the tomb by day. The ren, the name, had to be spoken and remembered. The shut, the shadow, and the ib, the heart, the seat of thought and feeling, were parts too.
+
+After death and a successful judgement, the dead person became an akh, a transfigured, effective spirit, living in the light. The akhu, plural, are the blessed dead. They could help their families, or, if neglected or angry, cause trouble.`,
+            },
+            {
+              heading: 'Feeding the dead',
+              body: `Tombs had offering chapels where families brought bread, beer and water. Tombs also carried an "appeal to the living", asking any passer-by to say the offering formula, because words alone could feed the dead: "a thousand of bread, a thousand of beer". Even a stranger's spoken prayer counted.
+
+At Deir el-Medina, people kept stelae for an "excellent akh of Ra" in their houses and small busts of ancestors. Families also wrote letters to the dead, sometimes on the very bowls that held the food offering, asking a dead parent or spouse to help with an illness or a quarrel, or to stop troubling the household. They show love, grief and a businesslike expectation that the dead would do their part.`,
+            },
+            {
+              heading: 'Feasting with them',
+              body: `At the Beautiful Feast of the Valley at Thebes, families crossed to the west bank of the Nile and feasted at their relatives' tombs with music, flowers and plenty to drink, spending the night with the dead. At the Wag festival, early in the year, offerings were made for Osiris and the dead. The dead were not cut off from the living; they were part of the family's year.`,
+            },
+            {
+              heading: 'An akhu shrine today',
+              body: `Keep the akhu separate from the gods: a different shelf or a lower one. Put photographs or names on it, a candle, a cup of water and a small plate. Choose your honoured dead freely: family you loved, ancestors known and unknown, teachers, people of your community or your craft. You owe no place to anyone who harmed you. Don't put photos of the living on it.
+
+If a loss is recent, go gently: the shelf can wait, and grief is not a test of devotion. If it is overwhelming or not easing, talk to someone you trust, your doctor, or a bereavement support service where you live.
+
+Offer water regularly, and bread, coffee or a food they liked from time to time, kept out of pets' reach. Say their names aloud; in Egypt, to speak someone's name was to make them live. Some Kemetics share offerings to the akhu back as they would offerings to the gods; others prefer to leave them and dispose of them respectfully the next day. Either is reasonable.`,
+            },
+          ],
+          knowAndDont: {
+            known: `The ka, ba, akh, ren, shut and ib are attested concepts; offering chapels and appeals to the living are common in tombs; akh-iqer-en-Ra stelae and ancestor busts come from Deir el-Medina; letters to the dead survive on bowls and papyri; the Beautiful Feast of the Valley involved feasts at tombs.`,
+            unknown: `How these soul-parts fitted together is not systematic in the sources, and modern summaries make it neater than it was. Whether offerings to the dead were eaten by the living afterwards is not clear for household practice, though temple offerings were redistributed. Modern akhu shrines are an adaptation.`,
+          },
+          inPractice: `Set up a small akhu shelf, separate from your gods. Put one name or photo, a cup of water and a candle. Each week, give water and say the names aloud.`,
+          reflect: [
+            `Whose names do you want to keep alive?`,
+            `What would you write in a letter to one of your dead, if you could?`,
+          ],
+          further: [
+            `John H. Taylor, Death and the Afterlife in Ancient Egypt (2001)`,
+            `Salima Ikram, Death and Burial in Ancient Egypt (2003)`,
+          ],
+          premade: ['hedge-ancestor-candle-evening'],
+          library: ['traditional/deity/anubis', 'traditional/deity/osiris', 'traditional/deity/hathor'],
+        },
+        {
+          id: 'eg-heka',
+          title: 'Heka: the Power of Words and Images',
+          summary: `What heka is, how names, words, amulets and images worked, what the record includes, and protective heka for today.`,
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Not "magic" as we think of it',
+              body: `Heka is usually translated "magic", but in Egypt it was not opposed to religion. It was the creative power the gods used to make the world, and Heka was himself a god, present at creation. The Instruction for King Merikare, a Middle Kingdom text, says the creator gave people heka as a weapon to ward off the blows of events. Priests used heka in the temples, doctors used it beside remedies, and mothers used it over their children.
+
+Heka works through words, especially names, through images that make what they show present, and through ritual actions. The lector priest, the one who read the ritual from the scroll, was the great master of heka.`,
+            },
+            {
+              heading: 'Amulets and healing',
+              body: `Egyptians wore amulets of all kinds. The wedjat, the healed Eye of Horus, meant wholeness and protection. The ankh meant life, the djed pillar stability, the tyet knot the protection of Isis, and the scarab beetle the god Khepri, "coming into being". Medical papyri like the Ebers Papyrus, around 1550 BC, mix remedies with spoken charms.
+
+In the Late Period, people set up small stelae called cippi, showing the child Horus standing on crocodiles and holding snakes and scorpions. Water was poured over the carved spells, collected and drunk as protection against bites and stings. It is a beautiful picture of heka: words carved, then washed into the water that heals.`,
+            },
+            {
+              heading: 'What the record also contains',
+              body: `Heka had a hostile side too. The state performed execration rites, writing the names of enemies on pots or figurines and breaking or burying them, to keep Egypt's foes in check. The Greek Magical Papyri from Roman Egypt, which mix Egyptian, Greek and Jewish material, contain love spells and curses as well as prayers. Modern books sometimes present these as "Egyptian magic"; they are late, mixed and often far from temple religion.
+
+This journey does not teach cursing or binding of other people. It teaches heka for protection, healing and devotion, which is most of what the record holds.`,
+            },
+            {
+              heading: 'Protective heka today',
+              body: `A simple modern practice inspired by the cippi: write a short blessing of protection in your own words on paper, set a glass of water on it overnight at your shrine, and drink a little in the morning, or use it to wipe your doorframe. Or wear an amulet, a wedjat or ankh, consecrated by holding it in incense smoke and naming its purpose. Speak names with care, your own and the gods'. Words are the heart of heka.
+
+The Egyptians told a story about how much a name could hold. In a Ramesside papyrus now in Turin, Isis makes a snake from the sun god's spittle and earth, and it bites him. Ra, in agony, lists his many names, but the poison stays until he gives Isis his true, hidden name; then she heals him. The story is a warning and a promise: a name gives power, so it is given with trust. Many modern Kemetics keep a private devotional name that they share only with their gods.`,
+            },
+          ],
+          knowAndDont: {
+            known: `Heka as a god and creative power is attested from the Pyramid Texts on; the Merikare passage gives heka to humanity; amulets and cippi of Horus survive in large numbers; execration texts and the Greek Magical Papyri are well known.`,
+            unknown: `What most spoken charms sounded like in daily life, and how much the Greek Magical Papyri reflect earlier Egyptian practice. Modern "Egyptian magic" systems, including much Golden Dawn and Thelemic material, are modern Western creations using Egyptian imagery.`,
+          },
+          inPractice: `Choose one amulet symbol, a wedjat, ankh, djed or tyet, and learn its meaning. Draw it, or buy a simple pendant, cleanse it in incense smoke, and wear it with a spoken purpose. Try the water blessing one night.`,
+          reflect: [
+            `What does it mean to you that words can do things?`,
+            `How will you use names, your own and the gods', with more care?`,
+          ],
+          further: [
+            `Geraldine Pinch, Magic in Ancient Egypt (1994)`,
+            `Robert K. Ritner, The Mechanics of Ancient Egyptian Magical Practice (1993)`,
+          ],
+          premade: ['folk-thoth-offering'],
+          library: ['traditional/deity/thoth', 'traditional/deity/isis', 'traditional/crystal/lapis_lazuli', 'traditional/crystal/carnelian'],
+        },
+      ],
+      practices: [
+        {
+          id: 'eg-weekly-maat',
+          title: 'Weekly ma’at reckoning',
+          instructions: `Once a week, sit at your shrine, read your three ma’at commitments, and write honestly about how you kept them. Note one thing to put right. End with a cup of water offered to Ma’at.`,
+          times: 5,
+          every: 'week',
+          prompt: `Where did I do ma’at this week, and where did I fall short?`,
+        },
+        {
+          id: 'eg-weekly-akhu',
+          title: 'Water for the akhu',
+          instructions: `Once a week, give fresh water at your akhu shelf, light a candle, and say each name aloud.`,
+          times: 5,
+          every: 'week',
+          prompt: `Whom did I name, and what did I remember?`,
+        },
+        {
+          id: 'eg-thoth-study',
+          title: 'An offering to Thoth before study',
+          instructions: `Before one study session each week, make the offering to Thoth: water, bread and incense for the lord of writing, then read your lesson.`,
+          times: 5,
+          every: 'week',
+          premade: 'folk-thoth-offering',
+          prompt: `What did I learn this week, and what puzzled me?`,
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Serving at the Shrine',
+      intro: `Five weeks of practice. You learn the daily temple rite and how to adapt it, the offering formula and the reversion of offerings, purity customs, the festival year, and how to build a proper shrine. You keep a short daily rite throughout.`,
+      days: 35,
+      lessons: [
+        {
+          id: 'eg-daily-rite',
+          title: 'The Daily Rite, Temple and Home',
+          summary: `How priests woke, clothed and fed the god each morning, and a ten-minute home rite in the same shape.`,
+          minutes: 8,
+          sections: [
+            {
+              heading: 'Morning in the temple',
+              body: `Every morning in every major temple, a priest woke the god. The reliefs at Abydos and the Berlin papyrus let us follow him. Purified, he entered the dark sanctuary, lit a light and burned incense. He broke the clay seal on the doors of the shrine, the naos, drew back the bolt and opened it: "revealing the face" of the god. He bowed down, kissed the ground, and sang hymns of praise; a morning hymn begins "Wake in peace". He held up a small figure of Ma’at.
+
+Then he served the god as one would a great lord. He took the image from the shrine, cleansed it with water and natron, anointed it with oil, dressed it in fresh linen in white, green and red, and painted its eyes. Food was laid out: bread, beer, meat, fowl, fruit, vegetables, flowers. At the end, he put the god back, closed and sealed the doors, and walked backwards out of the sanctuary, sweeping away his footprints with a broom.`,
+            },
+            {
+              heading: 'Why it mattered',
+              body: `The daily rite was not for the public. It was the god's household, kept up on behalf of the king, who was in theory the only priest. Keeping the god fed and honoured kept ma’at in the world: the sun would rise, the Nile flood, and the land prosper. Shorter services were held at midday and evening, and the temple shut at night.
+
+Ancient Egyptians did not see the statue as the god, but as a place where the god's ba could come to rest. Caring for the image was caring for that meeting point.`,
+            },
+            {
+              heading: 'A home rite in the same shape',
+              body: `Modern Kemetics adapt this rite into a short daily practice. The essential steps:
+1. Purify: wash hands and face, rinse your mouth, perhaps with natron water.
+2. Light the lamp and incense.
+3. Open the shrine: open the doors or lift the veil, and bow.
+4. Praise: speak a hymn or your own words, hands raised.
+5. Offer: water at least; bread, fruit or a drink as you can. Say the offering formula (next lesson).
+6. Sit with the god: a few minutes of quiet, prayer or reading.
+7. Close: bow, close the shrine, snuff the lamp.
+8. Revert the offering: share the food and drink back to yourself.
+
+This takes ten minutes. On busy days, a cup of water, a bow and a word is enough. In the evening, some Kemetics close the shrine with a goodnight.`,
+            },
+            {
+              heading: 'Small things that matter',
+              body: `Treat the image gently. If it is a statue, dust it with a clean cloth and, now and then, wipe it with a little water. You can "clothe" it with a strip of clean linen or cotton. Don't keep the shrine open all day if you can close it; the old rhythm of opening and closing makes each opening matter. And when you leave the shrine, some people step back a pace before turning, an echo of the priest sweeping away his footprints.`,
+            },
+          ],
+          knowAndDont: {
+            known: `The daily ritual's sequence (lighting, censing, breaking the seal, opening the doors, praise, presenting ma’at, cleansing, anointing, clothing, offering, closing and removing footprints) is shown at Abydos and recorded in P. Berlin 3055 and other papyri. Shorter midday and evening services are attested.`,
+            unknown: `The exact wording varied between temples and periods; we have Amun's and Mut's rituals in detail, others less so. How priests experienced the god's presence is beyond the record. The home rite is a modern adaptation, which differs between Kemetic groups.`,
+          },
+          inPractice: `Begin a daily home rite in the eight-step shape this week, every morning if you can. Keep it to ten minutes. On days you can't manage it, offer water and a bow.`,
+          reflect: [
+            `How does opening and closing the shrine change the way you feel about it?`,
+            `What is the smallest version of this rite you could keep on your hardest day?`,
+          ],
+          further: [
+            `Emily Teeter, Religion and Ritual in Ancient Egypt (2011), chapter on temple ritual`,
+            `Richard H. Wilkinson, The Complete Temples of Ancient Egypt (2000)`,
+          ],
+          library: ['traditional/tool/altar', 'traditional/tool/incense_burner'],
+        },
+        {
+          id: 'eg-offering',
+          title: 'Hetep-di-nesu: the Offering and Its Return',
+          summary: `The ancient offering formula, what to offer and how, and the reversion of offerings: why you eat what you give.`,
+          minutes: 8,
+          sections: [
+            {
+              heading: 'The formula',
+              body: `The most common sentence in ancient Egypt, carved on thousands of tombs and stelae, begins hetep-di-nesu (ḥtp-dj-nswt), "an offering which the king gives". In full, it runs something like this (a plain modern rendering):
+
+"An offering which the king gives to Osiris, Lord of Abydos, that he may give an invocation offering of bread and beer, cattle and fowl, alabaster and linen, and every good and pure thing on which a god lives, for the ka of [name]."
+
+The idea is that every offering flows from the king, who stood between people and gods, through the god, and then on to the dead. The "invocation offering" (peret-kheru, literally "going out of the voice") means the words themselves supply the food. That is why a passer-by reading the formula aloud could feed the dead.`,
+            },
+            {
+              heading: 'Using it today',
+              body: `Modern Kemetics often speak the opening words, "hetep-di-nesu", as they make an offering, then name the god and the gifts in their own language. Some keep the king in the formula as a symbol of the order of things; some name a god as the giver instead. A simple version you can use:
+
+"Hetep-di-nesu. An offering which the king gives: bread and water, incense and light, every good and pure thing, for you, [god's name]."
+
+For the akhu, end "for the ka of [name]".`,
+            },
+            {
+              heading: 'What to offer',
+              body: `The first offering is always water, poured or set in a cup. After that, the old staples were bread and beer, and you can give bread or a cake and a beer, a grain drink, or juice. Wine, milk, dates, figs, honey, pomegranates, melons and roast meat or poultry were all given, as were lotus and other flowers, lettuce (for Min), onions (to Sokar and in Osiris festivals; keep them well away from dogs and cats), linen, eye paint and incense. Frankincense (senetjer) and myrrh (antiu) were the great incenses, and kyphi, a blend described by Plutarch and in the temple of Edfu, was burned at night.
+
+Give what you would serve an honoured guest, fresh and clean. Don't offer leftovers or anything you've tasted first. Red drinks suit Sekhmet, remembering the red beer that calmed her.`,
+            },
+            {
+              heading: 'The reversion of offerings',
+              body: `In the temples, the food did not go to waste. After the god had been served, the offerings were "reverted" (wedjeb-khet): taken to the altars of other gods, or to the statues and tombs of honoured people, and then shared out among the priests and temple staff as their wages. The god takes the essence, and the people eat the substance.
+
+At home, after the offering has sat before the god for a while (some wait until the rite ends, some until the candle is out, some until evening), say a word like "the offering returns" and eat or drink it. This is a blessing, not a leftover. Water can be drunk or poured on a plant. If food has spoiled, compost it or put it out for the birds, if safe. Practices vary for offerings to the dead and in protective rites, where some people don't revert at all.`,
+            },
+          ],
+          knowAndDont: {
+            known: `The hetep-di-nesu formula is attested from the Old Kingdom onward in many variants; peret-kheru and the appeal to the living are common in tombs; temple offering lists record food, linen and incense; the reversion of offerings to priests and other altars is well documented.`,
+            unknown: `How the formula was understood by ordinary people, and whether home offerings were reverted the way temple ones were. Kyphi recipes differ between Plutarch, Dioscorides and the Edfu texts. Modern use of the formula and its wording are reconstructions.`,
+          },
+          inPractice: `This week, use the hetep-di-nesu formula at each daily rite, offer water and something to eat or drink, and revert the offering after you close the shrine. Note how it feels to share the god's table.`,
+          reflect: [
+            `What does it mean to you that the god takes the essence and you take the substance?`,
+            `What offerings feel right for the god you honour?`,
+          ],
+          further: [
+            `James P. Allen, Middle Egyptian (3rd ed., 2014), lesson on the offering formula`,
+            `Plutarch, On Isis and Osiris 80–81, on kyphi`,
+          ],
+          premade: ['folk-thoth-offering'],
+          library: ['traditional/herb/frankincense', 'traditional/herb/myrrh', 'traditional/herb/juniper', 'traditional/herb/cinnamon', 'traditional/vessel/offering_bowl'],
+        },
+        {
+          id: 'eg-purity',
+          title: 'Purity: Natron, Linen and the Clean Approach',
+          summary: `What ritual purity meant for priests, what Herodotus saw, and sensible purity customs for a home practitioner.`,
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The pure ones',
+              body: `The ordinary Egyptian word for a priest was wab, "pure one". Purity was not a moral grade but a physical, ritual state, needed before coming near a god. Priests bathed in the temple's sacred lake, chewed or rinsed with natron (a natural salt of sodium carbonate and bicarbonate found in the Wadi Natrun), shaved their heads and bodies, abstained from sex before service, and wore only linen.
+
+Herodotus, visiting in the 5th century BC, was struck by it, first in Egyptians generally and then in the priests. In Macaulay's translation: "they wear garments of linen always newly washed... the priests shave themselves all over their body every other day... and the priests wear garments of linen only and sandals of papyrus... these wash themselves in cold water twice in the day and twice again in the night."`,
+            },
+            {
+              heading: 'Things kept away',
+              body: `Each temple and region had its own taboos (bwt, "abominations"). Some priests avoided particular fish, pork or beans; some places held certain animals sacred. Herodotus says wool was not taken into temples or buried with the dead. The Book of the Dead's instructions often say a spell should be recited by someone "clean and pure", who has not eaten meat or fish or had sex. Purity could be lost and restored; it was a state you entered, not a status you held for life.`,
+            },
+            {
+              heading: 'Purity at home',
+              body: `Modern Kemetics usually keep a simpler form:
+– Wash your hands and face, and rinse your mouth, before approaching the shrine.
+– Use natron water if you can: dissolve a spoonful of natron in water, or use a modern mix of salt and baking soda. Touch it to your face and hands, or rinse your mouth and spit.
+– Wear clean clothes; many keep a white or linen garment for ritual.
+– Some take off shoes, especially leather ones, before the shrine.
+– Don't come straight from the bathroom, the gym or sex without washing.
+– Keep the shrine area itself clean and dusted, and keep food offerings fresh.
+
+That's enough. Fuss over purity can become anxiety, and that isn't ma’at either.`,
+            },
+            {
+              heading: 'Bodies, blood and modern choices',
+              body: `There is some evidence of ancient restrictions around menstruation and childbirth, and modern Kemetic groups differ: some ask people to skip formal rites during menstruation, many don't. This app's view is that bodies are not shameful. If a restriction helps you feel focused, keep it; if it makes you feel excluded or ashamed, let it go and wash with care before the shrine. Illness is different: if you're unwell, rest, and a cup of water and a word from your bed is a full offering.`,
+            },
+          ],
+          knowAndDont: {
+            known: `Wab priests, sacred lakes, natron use, shaving and linen are well attested in Egyptian texts and by Herodotus (Histories 2.37); local bwt (taboos) and purity rubrics in the Book of the Dead survive; Herodotus 2.81 mentions the wool taboo.`,
+            unknown: `How far purity rules applied to ordinary people at home, how consistent taboos were across regions, and what the rules on menstruation actually were in practice. Modern purity customs, including the salt-and-baking-soda "natron", are modern adaptations.`,
+          },
+          inPractice: `Make a jar of natron or natron-substitute this week and keep it near your shrine. Add a purification step at the start of every daily rite. Choose one clean garment or scarf to wear only for ritual.`,
+          reflect: [
+            `How does washing before the shrine change your state of mind?`,
+            `Where is the line between helpful purity and anxious perfectionism for you?`,
+          ],
+          further: [
+            `Herodotus, Histories, book 2 (Macaulay trans., public domain)`,
+            `Serge Sauneron, The Priests of Ancient Egypt (new ed. 2000)`,
+          ],
+          premade: ['kitchen-cleansing-floor-wash'],
+          library: ['traditional/vessel/bowl'],
+        },
+        {
+          id: 'eg-festivals',
+          title: 'The Festival Year',
+          summary: `The Egyptian calendar, its three seasons and five extra days, and how to reckon and keep Wep Ronpet, the Wag, Opet, the Beautiful Feast of the Valley and more.`,
+          minutes: 8,
+          sections: [
+            {
+              heading: 'A calendar of the river',
+              body: `The Egyptian civil year had 365 days: twelve months of thirty days, in three seasons of four months each. Akhet was the inundation, when the Nile flooded; Peret, "emergence", the growing season; Shemu, the harvest. Five extra days at the end of the year, the epagomenal days, were the birthdays of Osiris, Horus, Set, Isis and Nephthys, and were treated as a dangerous, holy time.
+
+Because the year had no leap day, it slipped against the seasons by a day every four years. The ideal New Year was the heliacal rising of Sopdet (Sirius), the morning the star was first seen again before dawn after months of absence, which came at the start of the flood. Temples also kept a lunar calendar for some feasts. The Coptic Church still keeps the old civil months, and its New Year, Nayrouz, falls on 11 September (12 September in the year before a leap year).`,
+            },
+            {
+              heading: 'Wep Ronpet and the Wag',
+              body: `Wep Ronpet, "the Opening of the Year", was the New Year festival, on the first day of the month of Thoth. It celebrated the renewal of the world, the return of the flood and the birth of the year, with offerings, new lamps, and gifts. Modern Kemetics usually date it by Sirius: the star's first dawn rising comes in early August in Egypt and later the further north you live, toward late August in northern Europe. Some use a fixed date instead. Pick one and keep it.
+
+The Wag festival, on the 18th day of Thoth, honoured Osiris and the dead with offerings at tombs; it is one of the feasts most often named in offering formulas. Modern Kemetics give generously to the akhu at the Wag and remember the year's dead. The feast of Thoth often followed the next day.`,
+            },
+            {
+              heading: 'Opet and the Valley',
+              body: `The Opet Festival, at Thebes in the second month of Akhet, was one of the great processions of the New Kingdom. The images of Amun, Mut and Khonsu sailed in their barques from Karnak to Luxor temple, by river or along the avenue of sphinxes, with crowds, music and food handed out. It lasted from about eleven days under Thutmose III to over twenty under Ramesses III, and renewed the king's divine power.
+
+The Beautiful Feast of the Valley, at the new moon of the second month of Shemu, took Amun across the river to the temples of the west bank, especially Hathor's at Deir el-Bahari. Families followed and feasted at their relatives' tombs, with flowers, music and drink, keeping vigil with the dead. It is the natural festival for a modern akhu feast.`,
+            },
+            {
+              heading: 'Other feasts and setting your year',
+              body: `Other important festivals include the Khoiak mysteries of Osiris in the fourth month of Akhet, when "grain Osirises" of earth and seed were made and sprouted, ending with the raising of the djed pillar; and the Feast of Drunkenness for Hathor early in the year, remembering how Sekhmet was calmed. Temples also kept monthly feasts on the new moon and the full moon ("the half-month").
+
+To set your own calendar: choose your Wep Ronpet date (by Sirius, or a fixed date), count thirty-day months from it, add the five epagomenal days before the next New Year, and mark the feasts by their day and month. Many Kemetic groups publish calendars online. The app's calendar doesn't list Egyptian feasts yet, so keep yours in your journal.`,
+            },
+          ],
+          knowAndDont: {
+            known: `The civil calendar of 12 × 30 days plus five epagomenal days, the three seasons, the drift of the civil year, and the ideal link with Sirius's rising are well documented. Wep Ronpet, the Wag, Opet, the Beautiful Feast of the Valley and Khoiak are attested in temple calendars and texts. Nayrouz continues the civil months.`,
+            unknown: `Exact festival dates shifted with the drifting calendar and by period and place; some feasts were lunar, some civil. Modern Kemetic calendars differ in how they fix Wep Ronpet and convert dates. How ordinary people kept the feasts outside Thebes and the big temples is less known.`,
+          },
+          inPractice: `Choose your Wep Ronpet date and draw up a simple year: months, the epagomenal days, and Wep Ronpet, the Wag, Opet, the Valley festival and Khoiak. Note the next new moon and plan a small offering for it.`,
+          reflect: [
+            `Which festival do you most want to keep this year, and how?`,
+            `How does it feel to live by a calendar built around a river you may never see?`,
+          ],
+          further: [
+            `Richard A. Parker, The Calendars of Ancient Egypt (1950)`,
+            `Emily Teeter, Religion and Ritual in Ancient Egypt (2011), on festivals`,
+          ],
+          premade: ['hedge-ancestor-candle-evening'],
+          library: ['traditional/deity/osiris', 'traditional/deity/hathor', 'traditional/deity/sekhmet', 'traditional/deity/isis'],
+        },
+        {
+          id: 'eg-shrine',
+          title: 'Building Your Shrine',
+          summary: `The naos, the image, the offering table and the tools, how to welcome a new image, and how to keep it all clean and safe.`,
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The god\'s house',
+              body: `An Egyptian temple was a house for a god, and its holiest part was a small shrine, the naos, a stone or wooden cabinet with doors that held the image. Your shrine can follow that pattern exactly. A small cupboard, a wooden box with hinged doors, or even a shelf with a curtain lets you open and close the god's house each day.
+
+Put it somewhere clean and quiet, at chest height or higher if you can, not in a bathroom and not on the floor. Many temples were aligned east–west with the sun's path, but there is no single rule; a shrine where you'll actually use it beats a perfectly oriented one you avoid.`,
+            },
+            {
+              heading: 'What goes in it',
+              body: `– An image: a statue, a carved or printed picture, or a symbol like the sun disk or an ankh. Buy from reputable modern makers, and never buy ancient objects without a proven legal history.
+– An offering plate or table. The hieroglyph for hetep, "offering" and "peace", shows a loaf on a reed mat.
+– A cup or jar for water.
+– A lamp or candle. Egyptians used oil lamps with linen wicks.
+– An incense burner. A dish of sand with charcoal for resin, or a holder for sticks.
+– A small cloth of linen or cotton to "clothe" the image or veil the shrine.
+– Optionally: a Ma’at feather or figure, a sistrum or bell, flowers, a stone like lapis lazuli, turquoise or carnelian, all prized in Egypt.
+
+Keep the akhu shelf separate and lower.`,
+            },
+            {
+              heading: 'Welcoming a new image',
+              body: `In Egypt, statues and mummies were brought to life by the Opening of the Mouth rite, in which priests touched the face with special tools so it could breathe, eat and speak. Modern Kemetics don't usually attempt the full rite, and formal temples have their own versions. A simple, respectful welcome is enough: cleanse the image with natron water, pass it through incense smoke, place it in the shrine, open the doors, and invite the god, by name, to be present there if it is their will. Offer water and bread, and leave it a while before you revert the offering.`,
+            },
+            {
+              heading: 'Care and safety',
+              body: `Dust the shrine weekly and wash the cups. Change water daily. Don't let food sit for days; revert it the same day. Burn resin on charcoal only in a ventilated room, on a heatproof dish with sand. Keep flames well away from the cloth veil. If you have cats, as many devotees of Bastet do, beware: lilies, including the lily-like flowers often used for lotus, are deadly to cats, and grapes, raisins, chocolate and onions are dangerous to dogs and cats. A photo, a painted lotus or a silk flower honours the lotus without the risk.`,
+            },
+          ],
+          knowAndDont: {
+            known: `Temples housed images in a naos with doors; the hetep sign shows a loaf on a mat; oil lamps, censers, offering tables and linen clothing for statues are well attested; the Opening of the Mouth rite was performed on statues and mummies.`,
+            unknown: `What household shrines looked like in detail beyond a few sites, and how far household images were ritually "opened". The modern welcome rite and shrine layout are adaptations that differ between groups.`,
+          },
+          inPractice: `Upgrade your threshold shrine this week: give it doors or a veil, an offering plate, a water cup, a lamp, an incense holder and a cloth. Welcome your image with the simple rite above.`,
+          reflect: [
+            `What does your shrine say about the god you're inviting?`,
+            `What would make it easier to visit every day?`,
+          ],
+          library: ['traditional/tool/altar', 'traditional/tool/incense_burner', 'traditional/crystal/lapis_lazuli', 'traditional/crystal/turquoise', 'traditional/crystal/carnelian', 'traditional/deity/bastet'],
+        },
+      ],
+      practices: [
+        {
+          id: 'eg-daily-rite-practice',
+          title: 'The daily rite',
+          instructions: `Each morning, keep the eight-step home rite: purify, light, open, praise, offer with the hetep-di-nesu formula, sit, close, revert. On hard days, a cup of water and a bow is a full rite.`,
+          times: 28,
+          every: 'day',
+          prompt: `How was the rite today? What did I offer, and what did I notice?`,
+        },
+        {
+          id: 'eg-new-moon',
+          title: 'A new-moon offering',
+          instructions: `At the next new moon, a festival day in the temple calendar, make a fuller offering: bread, a drink, fruit, flowers and incense, with a longer hymn or prayer. Revert and share it with your household.`,
+          times: 1,
+          prompt: `What did I offer at the new moon, and what do I ask for this month?`,
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'Before the Scales',
+      intro: `A week to weigh things honestly. You learn how modern Kemetic communities differ and what cultural respect asks of you, and then you sit with hard questions. Pausing, stopping, choosing a different path, or deciding you want to join a formal temple instead of dedicating yourself: all are good outcomes. Ma’at is truth, including about yourself.`,
+      days: 7,
+      lessons: [
+        {
+          id: 'eg-communities',
+          title: 'Modern Kemetism and Cultural Respect',
+          summary: `Kemetic Orthodoxy, reconstructionism, eclectic practice and African-centred Kemetic spirituality, and how to honour Egypt and Egyptians.`,
+          minutes: 8,
+          sections: [
+            {
+              heading: 'A formal temple',
+              body: `Kemetic Orthodoxy is a formal Kemetic temple founded in the United States in 1988 by Tamara Siuda, and incorporated in Illinois in 1993 as the House of Netjer. From 1996 she led it as its Nisut, or spiritual head; in August 2023 she stepped down from that role, and the temple's future leadership structure was still being worked out at the time of writing. It has a priesthood, a free introductory course, community festivals, and a divination rite that identifies a member's divine "parents". Some people join after the course, at different levels of commitment.
+
+For some, the structure, teaching and community are a gift; others find a hierarchy with a living spiritual leader doesn't suit them. If you're curious, read the temple's own materials and talk to members, and decide for yourself. If you join, its rites of membership are its own; this journey's dedication doesn't replace them.`,
+            },
+            {
+              heading: 'Reconstructionists and eclectics',
+              body: `Kemetic reconstructionists base their practice as closely as possible on Egyptological sources: the daily rite, the offering formula, the festival calendar and the ethics of ma’at, with modern adaptation only where the record is silent. They tend to work alone or in small groups, and read a lot.
+
+Eclectic practitioners honour Egyptian gods within other frameworks: in Wiccan circles, in ceremonial magic, alongside gods of other pantheons. Egyptian imagery also runs through Western occultism, the Golden Dawn and Thelema (Aleister Crowley received his Book of the Law in Cairo in 1904), and groups like the Fellowship of Isis, founded in Ireland in 1976. These are real and sincere modern traditions; they are not ancient Egyptian religion, and honesty means saying which is which.`,
+            },
+            {
+              heading: 'Kemet as African heritage',
+              body: `For many people of African descent, especially in the Americas, Kemet is reclaimed African heritage. African-centred Kemetic spirituality, from groups like the Ausar Auset Society (founded in 1973) to Kemetic Yoga and independent practitioners, has a long history and its own concerns, including correcting centuries in which Europeans treated Egypt as if it weren't part of Africa. Whatever your background, know this: Egypt was an African civilisation, with its own people, languages and ties to Nubia and the rest of the continent. Don't erase that, and don't treat African-centred Kemetics as less legitimate than European or American revivalists.`,
+            },
+            {
+              heading: 'Respecting Egypt and Egyptians',
+              body: `Egypt is not a museum. It is a country of more than a hundred million people, mostly Muslim with a large Coptic Christian community, who live among these monuments and whose heritage they are. Learn something about modern Egypt, too, and Egyptian Egyptologists' work. Never buy unprovenanced antiquities: the trade in looted objects is huge and destroys sites. Be thoughtful about "Egyptian" kitsch and costume. Behave respectfully at sites, and don't perform rituals in ways that break rules or offend local people. And learn a few words of the old language with care: dua (praise), netjer (god), hetep (offering, peace), em hetep (in peace).`,
+            },
+          ],
+          knowAndDont: {
+            known: `Kemetic Orthodoxy was founded in the US in 1988 by Tamara Siuda, who stepped down as its Nisut in 2023; the Fellowship of Isis was founded in 1976; Crowley's Book of the Law dates to Cairo, 1904; the Ausar Auset Society was founded in 1973. Ancient Egypt was an African civilisation with deep ties to Nubia.`,
+            unknown: `How many Kemetics there are, and how practice is split between the different approaches, is unknown. Debates over ancient Egyptians' ethnic identity have been distorted from many sides; the evidence shows a diverse Nile Valley population, not a modern racial category.`,
+          },
+          inPractice: `Read the "about" pages of two or three different Kemetic groups or writers, including one African-centred one. Note what you admire and what doesn't suit you. Learn three facts about modern Egypt you didn't know.`,
+          reflect: [
+            `Would a formal temple, a small group, or solitary practice suit you best? Why?`,
+            `What do you owe to the people whose ancestors built the temples?`,
+          ],
+          further: [
+            `Richard J. Reidy, Eternal Egypt: Ancient Rituals for the Modern World (2010), a reconstructionist guide`,
+            `Kemetic Orthodoxy's own published materials`,
+            `Stephen Quirke, Exploring Religion in Ancient Egypt (2015)`,
+          ],
+        },
+      ],
+      practices: [
+        {
+          id: 'eg-discern-scales',
+          title: 'An evening at the scales',
+          instructions: `Each evening this week, open your shrine, read one or two of the discernment questions aloud, sit for five minutes, and write your honest answer. Close the shrine.`,
+          times: 7,
+          every: 'day',
+          prompt: `What did I find true tonight?`,
+        },
+      ],
+      questions: [
+        `Has the daily rite become something I look forward to, or something I force?`,
+        `Do I feel a real relationship with the netjeru, or am I mostly drawn to the beauty of the art?`,
+        `Am I at peace with practising a revival, built from scholarship and modern adaptation, with no unbroken lineage?`,
+        `Can I hold ma’at as a daily ethic, not just as ritual?`,
+        `Do I want to dedicate myself on my own, or would I rather explore a formal temple like Kemetic Orthodoxy first?`,
+        `Am I ready to practise with respect for Egypt as an African civilisation and for Egyptians today?`,
+        `Would another path, a pause, or simply more time serve me better? Saying so honestly is ma’at.`,
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'Presenting Ma’at',
+      intro: `If you have chosen to go on, this is your self-dedication. In the shape of the daily rite, you present a figure of Ma’at as the kings did, declaring that you will keep ma’at and serve the gods, and you share a feast. It is a self-dedication, not an initiation or ordination: ancient priests were appointed by temples, and modern temples have their own rites of membership. This doesn't replace them, and it is fine to wait.`,
+      days: 1,
+      lessons: [],
+      practices: [
+        {
+          id: 'eg-dedication-declaration',
+          title: 'Write your declaration',
+          instructions: `In the days before, write your declaration. Base it on Book of the Dead 125, but in the positive: what you will do. Include your gods by name, your akhu, and your commitments: a daily offering, the festivals you will keep, and the ma’at you will practise. Make it something you can keep for a year.`,
+          times: 1,
+          prompt: `What am I promising, and to whom?`,
+        },
+        {
+          id: 'eg-dedication-maat-figure',
+          title: 'Make a Ma’at feather',
+          instructions: `Make or find a symbol of Ma’at: an ostrich feather (Ma’at's own, and sold legally as a farm by-product), a craft feather, a feather drawn on card, or a small figure of a seated woman with a feather. Don't pick up wild birds' feathers for this: in the United States and many other countries, keeping most wild bird feathers is illegal even when they were shed naturally. This is what you will present.`,
+          times: 1,
+        },
+      ],
+      rite: {
+        title: 'The Presentation of Ma’at',
+        summary: `A full daily rite in which you purify, open the shrine, praise, offer with the formula, present Ma’at with your declaration, and share the offering in a feast.`,
+        minutes: 45,
+        ingredients: [
+          { name: 'Natron water, or salt and baking soda dissolved in water', ref: 'traditional/vessel/bowl' },
+          { name: 'A candle or oil lamp' },
+          { name: 'Frankincense or kyphi incense', ref: 'traditional/herb/frankincense' },
+          { name: 'Myrrh resin', ref: 'traditional/herb/myrrh', optional: true },
+          { name: 'Fresh water in a cup' },
+          { name: 'Bread or a cake, and beer, wine or juice', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'Fruit and flowers (dates, figs, pomegranate; safe flowers if you have pets)', optional: true },
+          { name: 'A Ma’at feather or figure' },
+          { name: 'A strip of clean white linen or cotton to clothe the image' },
+          { name: 'Your written declaration' },
+        ],
+        preparation: `Choose a day: Wep Ronpet, a new moon, or a day that matters to you. Clean your shrine and the room. Bathe, and dress in clean white or linen clothes. Prepare the food fresh. Fast lightly beforehand if that suits your health; otherwise simply eat simply.`,
+        steps: [
+          {
+            title: 'Purify',
+            instructions: `Wash your hands in the natron water, touch it to your forehead and lips, and rinse your mouth.`,
+            spoken: `I am pure. I am pure. I am pure. I am pure.
+I come before the gods clean of hands and clean of mouth.`,
+          },
+          {
+            title: 'Light and cense',
+            instructions: `Light the lamp, then the incense. Cense the closed shrine and the room.`,
+            light: true,
+          },
+          {
+            title: 'Open the shrine',
+            instructions: `Open the doors slowly. Bow, or kneel and touch the ground with your forehead or hands.`,
+            spoken: `The doors are open, the face is revealed.
+Wake in peace, [god's name], wake in peace.`,
+          },
+          {
+            title: 'Praise and clothe',
+            instructions: `With raised hands, praise the god in your words or the Book of the Dead's hymn to the rising sun. Wipe the image gently with a little clean water, and lay the strip of linen over or around it as clothing.`,
+            spoken: `Homage to thee, O Ra, at thy beauteous rising.
+Thou risest, thou risest; thou shinest, thou shinest at the dawn.
+I praise you, [god's name], [epithets], in all your forms.`,
+          },
+          {
+            title: 'The offering',
+            instructions: `Pour or set down the water, then the food and drink and flowers. Speak the formula.`,
+            spoken: `Hetep-di-nesu. An offering which the king gives:
+water, bread and beer, incense and light, every good and pure thing,
+for you, [god's name], and for the ka of my honoured dead.`,
+          },
+          {
+            title: 'Present Ma’at',
+            instructions: `Hold up the Ma’at feather or figure in both hands, as kings do on the temple walls. Read your declaration slowly, then lay the feather in the shrine before the image.`,
+            spoken: `I present Ma’at to you, [god's name].
+I, [name], dedicate myself to the netjeru and to the way of ma’at.
+I will speak truth and do justice. I will give bread to the hungry and water to the thirsty.
+I will serve at this shrine, keep the feasts, and honour my akhu.
+[Your own commitments.]
+Ma’at is my offering. Ma’at is my life.`,
+          },
+          {
+            title: 'Sit with the god',
+            instructions: `Sit before the open shrine for some minutes. Listen. Then thank the god.`,
+            minutes: 8,
+          },
+          {
+            title: 'Close and revert',
+            instructions: `Bow, step back a pace, and close the doors, leaving the feather inside. Snuff the lamp. Take the food and drink out and say the reversion words, then eat them as a feast, with others if you can.`,
+            snuff: true,
+            spoken: `The offering returns. I eat at the table of the gods. Em hetep, in peace.`,
+          },
+        ],
+        closing: `The rite is complete. Write your declaration and the date in your journal and keep it near your shrine. Leave the Ma’at feather in the shrine as a sign of your dedication.`,
+        safety: `Never leave the lamp, candle or incense unattended; burn resin on charcoal only in a ventilated room, on a heatproof dish with sand, away from the linen and the shrine's cloth. Avoid smoke around birds, small pets, babies or anyone with asthma. If you have cats, keep lilies away entirely; keep grapes, raisins, chocolate and onions out of reach of pets. If you fast, stop if you feel faint, and don't fast at all if you are pregnant, diabetic or have a history of eating disorders.`,
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'Living in Ma’at',
+      intro: `Kemetic practice lives in repetition: the daily rite, the monthly feasts of the moon, the great festivals of the year, and a yearly renewal at Wep Ronpet, the opening of the year. Keep reading, keep ma’at, and keep the doors opening and closing.`,
+      days: 365,
+      lessons: [],
+      practices: [
+        {
+          id: 'eg-ongoing-daily',
+          title: 'The daily rite',
+          instructions: `Keep the daily home rite each morning, short or long as your day allows, and close the shrine in the evening.`,
+          times: 365,
+          every: 'day',
+          prompt: `What did I offer today, and how did I keep ma’at?`,
+        },
+        {
+          id: 'eg-ongoing-moon',
+          title: 'Feasts of the moon',
+          instructions: `At each new moon, make a fuller offering with bread, drink and incense. At the full moon ("the half-month"), give to the akhu or to a god of the moon such as Thoth or Khonsu.`,
+          times: 12,
+          every: 'month',
+          prompt: `What happened this month, and what do I ask for the next?`,
+        },
+        {
+          id: 'eg-ongoing-festivals',
+          title: 'The great festivals',
+          instructions: `Keep the festivals on your own calendar: Wep Ronpet, the Wag (with offerings to the akhu), the feast of Thoth, Opet, Khoiak, and the Beautiful Feast of the Valley (an akhu feast with flowers and music). Mark the five epagomenal days with care and offerings to the gods born on them.`,
+          times: 6,
+          prompt: `Which festival was this, and how did I keep it?`,
+          premade: 'hedge-ancestor-candle-evening',
+        },
+        {
+          id: 'eg-ongoing-rededication',
+          title: 'Rededication at Wep Ronpet',
+          instructions: `Each year at Wep Ronpet, repeat the Presentation of Ma’at, rereading last year's declaration. Note what you kept and what you didn't, and write the new year's declaration.`,
+          times: 1,
+          prompt: `What did I keep this year? What do I commit to in the new one?`,
+        },
+      ],
+    },
+  ],
+  sources: [
+    `The Book of the Dead, E. A. Wallis Budge (1901; public domain): chapter 125 declarations ("I have not sinned against men…", "I have given bread to the hungry…") and the Hymn to Ra at his rising ("Homage to thee, O Ra, at thy beauteous rising…"). Verified at https://www.gutenberg.org/ebooks/7145`,
+    `Herodotus, The History, book 2, ch. 37, trans. G. C. Macaulay (1890; public domain). Verified at https://www.gutenberg.org/ebooks/2707`,
+    `The hetep-di-nesu offering formula, in the app's own plain translation; see James P. Allen, Middle Egyptian (2014)`,
+    `Temple of Seti I at Abydos reliefs and Papyrus Berlin 3055 (the daily ritual of Amun), summarised from Emily Teeter, Religion and Ritual in Ancient Egypt (2011)`,
+    `Plutarch, On Isis and Osiris (summarised); the Instruction for Merikare, the Eloquent Peasant and the Instruction of Ptahhotep (summarised; see Lichtheim, Ancient Egyptian Literature)`,
+    `Erik Hornung, Conceptions of God in Ancient Egypt (1982); Geraldine Pinch, Egyptian Mythology (2002) and Magic in Ancient Egypt (1994); Robert K. Ritner, The Mechanics of Ancient Egyptian Magical Practice (1993)`,
+    `John H. Taylor, Death and the Afterlife in Ancient Egypt (2001); Richard A. Parker, The Calendars of Ancient Egypt (1950); Serge Sauneron, The Priests of Ancient Egypt`,
+    `Richard J. Reidy, Eternal Egypt (2010)`,
+    `Kemetic Orthodoxy's founding (1988), incorporation (1993) and the founder's stepping down as Nisut (August 2023): https://en.wikipedia.org/wiki/Kemetic_Orthodoxy, summarising the temple's own announcements at kemet.org`,
+  ],
+};

@@ -99,4 +99,6 @@ test("account deletion remains server-side, current-user scoped, and auth-last",
   assert.match(edge, /deleteUser\(userId\)/);
   assert.ok(edge.indexOf("deleteUser(userId)") > edge.indexOf('completed.push("storage")'));
   assert.match(edge, /display_as: "anonymous"/);
+  // Practice-tool entries, journey progress and planned rituals go with the account.
+  for (const table of ["craft_entries", "ritual_plans"]) assert.match(edge, new RegExp(`"${table}"`), table);
 });
