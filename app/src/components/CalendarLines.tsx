@@ -42,7 +42,8 @@ function Details({ line }: { line: CalendarLine }) {
 }
 
 /** The moon's date at the top of Today, when it leads; the ordinary date goes beneath. */
-export function LeadCalendarLine({ line }: { line: CalendarLine }) {
+/** `marks`: show the day's marks under the date (off when Today's holiday card already lists them). */
+export function LeadCalendarLine({ line, marks = true }: { line: CalendarLine; marks?: boolean }) {
   const [open, setOpen] = useState(false);
   return (
     <Pressable
@@ -54,14 +55,14 @@ export function LeadCalendarLine({ line }: { line: CalendarLine }) {
       style={({ pressed }) => [styles.lead, pressed && styles.pressed]}
     >
       <Text style={styles.leadText}>{line.short}</Text>
-      {line.marks.length > 0 && !open && <Text style={[type.caption, styles.gold, styles.center]}>{line.marks.map((m) => m.name).join(' · ')}</Text>}
+      {marks && line.marks.length > 0 && !open && <Text style={[type.caption, styles.gold, styles.center]}>{line.marks.map((m) => m.name).join(' · ')}</Text>}
       {open && <Details line={line} />}
     </Pressable>
   );
 }
 
 /** One short line per calendar shown beside the date. */
-export function CalendarLineList({ lines }: { lines: CalendarLine[] }) {
+export function CalendarLineList({ lines, marks = true }: { lines: CalendarLine[]; marks?: boolean }) {
   const [open, setOpen] = useState<string | null>(null);
   if (!lines.length) return null;
   return (
@@ -80,7 +81,7 @@ export function CalendarLineList({ lines }: { lines: CalendarLine[] }) {
           >
             <Text style={[type.caption, styles.center]}>
               <Text style={styles.cream}>{line.short}</Text>
-              {line.marks.length > 0 && !expanded ? <Text style={styles.gold}>{` · ${line.marks[0].name}`}</Text> : null}
+              {marks && line.marks.length > 0 && !expanded ? <Text style={styles.gold}>{` · ${line.marks[0].name}`}</Text> : null}
               <Text style={styles.muted}>{expanded ? '  ▾' : '  ▸'}</Text>
             </Text>
             {expanded && <Details line={line} />}
