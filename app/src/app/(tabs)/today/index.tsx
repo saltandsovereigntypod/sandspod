@@ -119,12 +119,12 @@ export default function Today() {
   return (
     <Screen>
       <View style={styles.header}>
-        {lead && <LeadCalendarLine line={lead} marks={show === 'moon'} />}
+        {lead && <LeadCalendarLine line={lead} />}
         <Text style={[type.eyebrow, styles.date]}>{today.dateLine}</Text>
         <Text style={styles.ruler}>{today.rulerLine}</Text>
         {today.tradition && <Text style={[type.caption, styles.center]}>{today.tradition.line}</Text>}
         {today.tradition?.detail && <Text style={[type.caption, styles.center, styles.muted]}>{today.tradition.detail}</Text>}
-        <CalendarLineList lines={beside} marks={show === 'moon'} />
+        <CalendarLineList lines={beside} />
       </View>
 
       <View style={side ? styles.sideBySide : styles.stacked}>
