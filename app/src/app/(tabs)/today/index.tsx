@@ -19,7 +19,7 @@ import { useRituals } from '../../../lib/rituals/store';
 import { Tags } from '../../../components/more/ui';
 import { dateFrom, daysBetween, shortDate, timeOfDay } from '../../../lib/calendar';
 import { calendarEventsBetween, CALENDARS_LIVE, calendarSettingsKey, todayLines } from '../../../lib/calendars';
-import { holidayChoice } from '../../../lib/holidays';
+import { holidayChoice, type Holiday } from '../../../lib/holidays';
 import { findByName, todayLibraryHref, useLibrary } from '../../../lib/library';
 import { usePlace } from '../../../lib/location';
 import { placeSky, skyNow, type PlaceSky, type Sky } from '../../../lib/sky';
@@ -351,6 +351,9 @@ function HolidayPanel({ today, compact }: { today: TodayModel; compact: boolean 
         >
           <Text style={[type.eyebrow, styles.gold]}>{`${today.holidayWhen[i]} · ${today.holidayTerms[i]}`}</Text>
           <Text style={[styles.holidayName, compact && styles.holidayNameCompact]}>{holiday.name}</Text>
+          <View style={[styles.recurs, holiday.recurs === 'yearly' && styles.recursYearly]}>
+            <Text style={[styles.recursText, holiday.recurs === 'yearly' && styles.recursTextYearly]}>{RECURS[holiday.recurs]}</Text>
+          </View>
           <Text style={[type.caption, compact && styles.small]}>{holiday.traditions.join(' · ')}</Text>
           <Text style={[styles.meaning, compact && styles.meaningCompact]}>{holiday.meaning}</Text>
         </Pressable>
@@ -358,6 +361,10 @@ function HolidayPanel({ today, compact }: { today: TodayModel; compact: boolean 
     </View>
   );
 }
+
+// How often a holiday comes round, so a monthly holy day and a yearly festival
+// on the same day (Apollo's Hebdomē and the Pyanepsia) read as different things.
+const RECURS: Record<Holiday['recurs'], string> = { yearly: 'Once a year', monthly: 'Every month', weekly: 'Every week', once: 'This year only' };
 
 /** A holiday's own page when it has one, else the calendars. */
 function openHoliday(id: string) {
@@ -514,6 +521,10 @@ const styles = StyleSheet.create({
   },
   holidayCompact: { padding: 12, gap: 10 },
   holidayItem: { gap: 4 },
+  recurs: { alignSelf: 'flex-start', borderRadius: 999, borderWidth: 1, borderColor: colors.hairline, paddingHorizontal: 10, paddingVertical: 2 },
+  recursYearly: { borderColor: colors.gold, backgroundColor: 'rgba(226, 195, 109, 0.14)' },
+  recursText: { fontFamily: fonts.bodySemi, fontSize: 11, letterSpacing: 1, textTransform: 'uppercase', color: colors.parchment },
+  recursTextYearly: { color: colors.gold },
   holidayName: { fontFamily: fonts.display, fontSize: 28, lineHeight: 32, color: colors.cream },
   holidayNameCompact: { fontSize: 19, lineHeight: 23 },
   meaning: { ...type.body, color: colors.parchment },

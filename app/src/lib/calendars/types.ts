@@ -53,6 +53,8 @@ export type CalendarEvent = {
   date: Date;
   /** How many days it runs. */
   days: number;
+  /** How often it comes round, when not yearly (the Attic monthly holy days). */
+  recurs?: 'monthly';
 };
 
 export type CalendarDef = {

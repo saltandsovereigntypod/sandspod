@@ -133,7 +133,7 @@ function eventsBetween(from: Date, to: Date): CalendarEvent[] {
         if (!m.event) continue;
         const date = addDays(span.start, m.day - 1);
         if (date.getTime() < start || date.getTime() > end) continue;
-        out.push({ calendar: 'attic', id: `attic-${m.id}`, name: m.name, meaning: `${m.meaning} (${span.name} ${m.day})`, date, days: 1 });
+        out.push({ calendar: 'attic', id: `attic-${m.id}`, name: m.name, meaning: `${m.meaning} (${span.name} ${m.day})`, date, days: 1, recurs: 'monthly' });
       }
     }
   }
