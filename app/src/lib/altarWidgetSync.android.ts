@@ -12,7 +12,7 @@ import { AppState, DeviceEventEmitter } from 'react-native';
 import { altarsAt, burnoutTimes } from './altar/burnout';
 import { altarDataFromDocument } from './altar/snapshot';
 import { useAltars } from './altar/store';
-import { applyWidgetActions, slotAltars, widgetAltar, type WidgetAltar } from './altarWidget';
+import { applyWidgetActions, burnStepTimes, slotAltars, widgetAltar, type WidgetAltar } from './altarWidget';
 import { hash, preparePictures, withoutEmpties } from './altarWidgetPictures';
 import { reportAltarWidgetSync, useAltarWidgetSlots } from './altarWidgetSlots';
 import { redrawAndroidWidgets } from './widgetSync.android';
@@ -70,21 +70,29 @@ export function useAltarWidgetSync() {
       const placed = slotAltars(shown, chosen);
       const root = new Directory(Paths.document, 'widget');
       if (!root.exists) root.create({ intermediates: true, idempotent: true });
-      const { pictures } = await preparePictures(root.uri, placed, SCALE);
+      // Now, and again as each lit candle burns shorter and at the moment it burns down.
+      const start = new Date();
+      const times = [...new Set([start.getTime(), ...burnoutTimes(placed, start), ...burnStepTimes(placed, start)])].sort((a, b) => a - b);
+      const { pictures } = await preparePictures(root.uri, placed, SCALE, times);
       const dir = new Directory(root, 'flips');
       if (!dir.exists) dir.create({ intermediates: true, idempotent: true });
       const flips = new Map<string, string>();
 
-      // Now, and again at each moment a lit candle burns down.
-      const start = new Date();
-      const times = [start.getTime(), ...burnoutTimes(placed, start)];
       const entries: { date: string; value: WidgetAltar[] }[] = [];
       for (const t of times) {
         const when = new Date(t);
         const value: WidgetAltar[] = [];
         for (const altar of altarsAt(placed, when)) {
           const shownAltar = widgetAltar(altar, (path) => pictures.get(path) ?? '', when);
-          for (const item of shownAltar.scene) if (item.flipped) item.image = await flipped(dir, item.image, flips);
+          for (const item of shownAltar.scene) {
+            if (!item.flipped) continue;
+            item.image = await flipped(dir, item.image, flips);
+            // Its pieces and dressings too, mirrored across the box.
+            for (const o of item.overlays) {
+              o.image = await flipped(dir, o.image, flips);
+              o.rect = { ...o.rect, x: 1 - o.rect.x - o.rect.w };
+            }
+          }
           value.push(shownAltar);
         }
         entries.push({ date: when.toISOString(), value: withoutEmpties(value) });

@@ -26,6 +26,7 @@ import { incenseLife, isIncense } from './altar/incense.ts';
 import { apothecaryStateOf, candleLife, dressingOverlays, isCandle, isLit, lightCandle, readLivingState, snuffCandle } from './altar/livingState.ts';
 import { documentFromAltar, type AltarDocument } from './altar/snapshot.ts';
 import type { SavedAltar, SavedObject } from './altar/types.ts';
+import { burnDown } from './altar/wax.ts';
 
 /** How many altars can be on the home screen at once (the widget's "Which altar" choices). */
 export const ALTAR_WIDGET_SLOTS = 6;
@@ -84,6 +85,8 @@ export type SceneItem = {
   lit: boolean;
   /** A candle that has burned all the way down (drawn faded). */
   spent?: boolean;
+  /** Drawn burned down: `image` is left empty and the candle is its pieces in `overlays`. */
+  burned?: boolean;
   /** Flame and halo, as fractions of the box (only for candles). */
   flame?: StageRect;
   halo?: StageRect;
@@ -220,6 +223,9 @@ const SCALE = 2;
 const MAX_SCENE_ITEMS = 40;
 export const HERB_OVERLAY = '../assets/altar/overlays/candle-herb-overlay.png';
 export const OIL_OVERLAY = '../assets/altar/overlays/candle-oil-overlay.png';
+/** Where the dressings lie on a candle, as fractions of its box. */
+const HERB_RECT: StageRect = { x: -0.01, y: 0.08, w: 1, h: 0.8 };
+const OIL_RECT: StageRect = { x: 0, y: 0.11, w: 0.94, h: 0.7 };
 
 const backgroundOf = (altarBackground: string | undefined) => altarBackground || DEFAULT_BACKGROUND;
 
@@ -261,7 +267,8 @@ export function sceneFrame(
 }
 
 /** A picture the widget needs: a saved path, the width to make it, and for backgrounds the part to cut out (fractions of the image). */
-export type WidgetPicture = { id: string; path: string; width: number; crop?: StageRect };
+/** `crop`: the part of the picture to keep (fractions); `alpha`: keep it see-through (a candle's piece, not a background). */
+export type WidgetPicture = { id: string; path: string; width: number; crop?: StageRect; alpha?: boolean };
 
 const backgroundId = (size: WidgetSize, path: string) => `bg-${size}:${path}`;
 
@@ -292,7 +299,7 @@ function sizeFrame(boxes: StageRect[], size: WidgetSize, background: string): Sc
 }
 
 /** Every picture the widget needs for an altar, each made just big enough to stay sharp. */
-export function altarPictures(altar: SavedAltar, scale = SCALE): WidgetPicture[] {
+export function altarPictures(altar: SavedAltar, scale = SCALE, now: number = Date.now()): WidgetPicture[] {
   const doc = documentFromAltar(altar);
   const objects = sceneObjects(doc.objects);
   const boxes = objects.map(({ object }) => boxRect(object));
@@ -312,7 +319,17 @@ export function altarPictures(altar: SavedAltar, scale = SCALE): WidgetPicture[]
     if (overlays.herb) sizes.set(HERB_OVERLAY, Math.max(sizes.get(HERB_OVERLAY) ?? 0, displayBox(object).size * widest * scale));
     if (overlays.oil) sizes.set(OIL_OVERLAY, Math.max(sizes.get(OIL_OVERLAY) ?? 0, displayBox(object).size * widest * scale));
   }
-  for (const [path, width] of sizes) out.push({ id: path, path, width: Math.min(150 * scale, Math.max(48, Math.ceil(width * 1.25))) });
+  const widthOf = (path: string) => Math.min(150 * scale, Math.max(48, Math.ceil((sizes.get(path) ?? 0) * 1.25)));
+  for (const path of sizes.keys()) out.push({ id: path, path, width: widthOf(path) });
+  // The pieces of candles that have burned shorter, and of their dressings.
+  for (const { object } of objects) {
+    if (!isCandle(object)) continue;
+    const px = boxToPixels(displayBox(object), 1);
+    const burn = burnPieces(object, px.height / px.width, now);
+    if (!burn) continue;
+    for (const p of burn.pieces) out.push({ id: p.id, path: p.path, width: widthOf(p.path), crop: p.crop, alpha: true });
+    for (const p of burn.dressings.values()) if (p) out.push({ id: p.id, path: p.path, width: widthOf(p.path), crop: p.crop, alpha: true });
+  }
   return out;
 }
 
@@ -321,8 +338,91 @@ function boxRect(object: SavedObject): StageRect {
   return { x: px.left, y: px.top, w: px.width, h: px.height };
 }
 
+// ── Burning down ──────────────────────────────────────────────────────────
+// The widget can't cut a picture, so a candle that has burned shorter is sent
+// as pieces of its picture, cut by the app: its top (rim and wick) set down on
+// what is left of its body, as the stage draws it (CandlePicture). The wax is
+// drawn in steps, so only a few pieces are made for each candle.
+
+/** The steps the widget's candles burn down in, as a fraction of the picture's height. */
+const BURN_STEP = 0.02;
+/** The dressing pictures' height / width. */
+const OVERLAY_RATIO = 1.5;
+
+type BurnPiece = { id: string; path: string; crop: StageRect; rect: StageRect };
+
+/** A picture of height/width `ratio` fitted into `rect` (fractions of a box `aspect` tall per wide), centred. */
+function fitted(ratio: number, rect: StageRect, aspect: number): StageRect {
+  const w = Math.min(rect.w, (rect.h * aspect) / ratio);
+  const h = (w * ratio) / aspect;
+  return { x: rect.x + (rect.w - w) / 2, y: rect.y + (rect.h - h) / 2, w, h };
+}
+
+/** Rows `from`–`to` of a picture drawn at `at`, drawn with their top at `y`. */
+function piece(path: string, at: StageRect, from: number, to: number, y: number): BurnPiece {
+  return {
+    id: `${path}#burn:${from.toFixed(3)}-${to.toFixed(3)}`,
+    path,
+    crop: { x: 0, y: from, w: 1, h: to - from },
+    rect: { x: at.x, y, w: at.w, h: (to - from) * at.h },
+  };
+}
+
+/**
+ * A candle burned down at `now`, in a box `aspect` tall per wide: the pieces
+ * of its picture, how far its flame comes down and the top of its wax (both
+ * fractions of the box's height), and its dressings cut to the wax that's
+ * left. Null when it stands its full height, or its wax sinks in glass.
+ */
+export function burnPieces(object: SavedObject, aspect: number, now: number): { pieces: BurnPiece[]; drop: number; dressings: Map<string, BurnPiece | null> } | null {
+  const path = String(object.imagePath || '');
+  const ratio = path ? imageRatio(path) : null;
+  const burn = ratio ? burnDown(object, now) : null;
+  if (!ratio || !burn || (burn.mode !== 'cap' && burn.mode !== 'crop')) return null;
+  const drop = Math.round(burn.drop / BURN_STEP) * BURN_STEP;
+  if (!(drop > 0)) return null;
+  const inset = { x: IMAGE_INSET.x, y: IMAGE_INSET.y / aspect };
+  const pic = fitted(ratio, { x: inset.x, y: inset.y, w: 1 - inset.x * 2, h: 1 - inset.y * 2 }, aspect);
+  const pieces: BurnPiece[] = [];
+  if (burn.mode === 'crop') {
+    if (drop < 1) pieces.push(piece(path, pic, drop, 1, pic.y + drop * pic.h));
+  } else {
+    const below = burn.capEnd + drop;
+    if (below < 1) pieces.push(piece(path, pic, below, 1, pic.y + below * pic.h));
+    pieces.push(piece(path, pic, 0, burn.capEnd, pic.y + drop * pic.h));
+  }
+  if (!pieces.length) return null;
+  // The dressing lies only on the wax that's there.
+  const waxTop = pic.y + (burn.top + drop) * pic.h;
+  const dressings = new Map<string, BurnPiece | null>();
+  for (const [overlay, rect] of [[HERB_OVERLAY, HERB_RECT], [OIL_OVERLAY, OIL_RECT]] as const) {
+    const at = fitted(OVERLAY_RATIO, rect, aspect);
+    if (waxTop <= at.y) continue;
+    const from = Math.round(((waxTop - at.y) / at.h) * 1000) / 1000;
+    dressings.set(overlay, from >= 1 ? null : piece(overlay, at, from, 1, at.y + from * at.h));
+  }
+  return { pieces, drop: drop * pic.h, dressings };
+}
+
+/** The moments within `hours` a lit candle on these altars burns down another step, for the widget's timeline (at most `limit`). */
+export function burnStepTimes(altars: SavedAltar[], now: Date, hours = 12, limit = 24): number[] {
+  const lit = altars.flatMap((altar) => documentFromAltar(altar).objects.filter((o) => isCandle(o) && isLit(o)));
+  if (!lit.length) return [];
+  const level = (t: number) => lit.map((o) => Math.round((burnDown(o, t)?.drop ?? 0) / BURN_STEP)).join(',');
+  const out: number[] = [];
+  const start = now.getTime();
+  let last = level(start);
+  for (let t = start + 5 * 60_000; t <= start + hours * 3_600_000; t += 5 * 60_000) {
+    const next = level(t);
+    if (next !== last) out.push(t);
+    last = next;
+  }
+  if (out.length <= limit) return out;
+  return Array.from({ length: limit }, (_, i) => out[Math.floor((i * out.length) / limit)]);
+}
+
 /** Where each object sits, as the app's altar stage draws it (AltarStage). */
-export function altarScene(objects: SavedObject[], image: (path: string) => string): SceneItem[] {
+export function altarScene(objects: SavedObject[], image: (path: string) => string, now?: number): SceneItem[] {
   return sceneObjects(objects).map(({ object, index }) => {
     const box = displayBox(object);
     const px = boxToPixels(box, 1);
@@ -349,9 +449,27 @@ export function altarScene(objects: SavedObject[], image: (path: string) => stri
       const angle = (item.rotation * Math.PI) / 180;
       const boundsHeight = px.width * Math.abs(Math.sin(angle)) + px.height * Math.abs(Math.cos(angle));
       item.pool = { x: px.centerX, y: px.centerY - boundsHeight / 2 + boundsHeight * 0.1, r: candleLightRadius(box.size) };
+      // Burned shorter (on the widget, given `now`): its pieces, with the flame on what's left.
+      const burn = now != null ? burnPieces(object, px.height / px.width, now) : null;
+      const parts = burn ? burn.pieces.map((p) => ({ image: image(p.id), rect: p.rect, opacity: item.spent ? 0.45 : 1 })) : [];
+      const burned = !!burn && parts.every((p) => p.image);
+      if (burned) {
+        item.image = '';
+        item.burned = true;
+        item.overlays.push(...parts);
+        item.flame.y += burn.drop;
+        item.halo.y += burn.drop;
+      }
       const dressed = dressingOverlays(object);
-      if (dressed.herb) item.overlays.push({ image: image(HERB_OVERLAY), rect: { x: -0.01, y: 0.08, w: 1, h: 0.8 }, opacity: 1 });
-      if (dressed.oil) item.overlays.push({ image: image(OIL_OVERLAY), rect: { x: 0, y: 0.11, w: 0.94, h: 0.7 }, opacity: 0.55 });
+      const dressing = (overlay: string, rect: StageRect, opacity: number) => {
+        const cut = burned ? burn.dressings.get(overlay) : undefined;
+        if (cut === null) return; // burned away
+        const cutImage = cut ? image(cut.id) : '';
+        if (cut && cutImage) item.overlays.push({ image: cutImage, rect: cut.rect, opacity });
+        else if (!cut) item.overlays.push({ image: image(overlay), rect, opacity });
+      };
+      if (dressed.herb) dressing(HERB_OVERLAY, HERB_RECT, 1);
+      if (dressed.oil) dressing(OIL_OVERLAY, OIL_RECT, 0.55);
     }
     return item;
   });
@@ -362,7 +480,7 @@ export function altarScene(objects: SavedObject[], image: (path: string) => stri
 /** What the widget shows for one altar. `image` turns a saved picture path into a file the widget can read. */
 export function widgetAltar(altar: SavedAltar, image: (path: string) => string, now: Date): WidgetAltar {
   const doc = documentFromAltar(altar);
-  const scene = altarScene(doc.objects, image);
+  const scene = altarScene(doc.objects, image, now.getTime());
   const iso = now.toISOString();
   const keyed = doc.objects.map((object, index) => ({ object, key: objectKey(object, index) }));
   // Burned-down candles stay in the picture but can't be lit, so they aren't counted or offered.

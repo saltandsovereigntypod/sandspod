@@ -7,6 +7,7 @@ import { Directory, File, Paths } from 'expo-file-system';
 import { ImageManipulator, SaveFormat, type ImageRef } from 'expo-image-manipulator';
 
 import { altarImageSource } from './altar/assets';
+import { altarsAt } from './altar/burnout';
 import type { SavedAltar } from './altar/types';
 import { altarPictures, type AltarWidgetArt } from './altarWidget';
 
@@ -54,9 +55,11 @@ export const WIDGET_ART: Record<Required<keyof AltarWidgetArt>, number> = {
 /**
  * Copies of the pictures in the folder the widget can read, each made just big
  * enough for its size on the widget (iOS refuses pictures far bigger than the
- * widget). Made once and kept; ones no longer shown are cleared away.
+ * widget). Made once and kept; ones no longer shown are cleared away. With
+ * `times` (the widget's timeline), also the pieces of each candle as it will
+ * have burned down at each.
  */
-export async function preparePictures(root: string, altars: SavedAltar[], scale?: number): Promise<{ pictures: Map<string, string>; art: AltarWidgetArt }> {
+export async function preparePictures(root: string, altars: SavedAltar[], scale?: number, times: number[] = [Date.now()]): Promise<{ pictures: Map<string, string>; art: AltarWidgetArt }> {
   const dir = new Directory(root, 'altar');
   if (!dir.exists) dir.create({ intermediates: true, idempotent: true });
   const pictures = new Map<string, string>();
@@ -78,10 +81,11 @@ export async function preparePictures(root: string, altars: SavedAltar[], scale?
     }
   }
 
-  for (const altar of altars) {
-    for (const { id, path, width, crop } of altarPictures(altar, scale)) {
+  const states = times.flatMap((at) => altarsAt(altars, new Date(at)).map((altar) => ({ altar, at })));
+  for (const { altar, at } of states) {
+    for (const { id, path, width, crop, alpha } of altarPictures(altar, scale, at)) {
       if (pictures.has(id)) continue;
-      const isBackground = !!crop;
+      const isBackground = !!crop && !alpha;
       const name = `${hash(`${id}|${crop ? [crop.x, crop.y, crop.w, crop.h].map((v) => v.toFixed(4)).join(',') : ''}`)}-${width}${isBackground ? '.jpg' : '.png'}`;
       const file = new File(dir, name);
       try {
