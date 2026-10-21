@@ -9,7 +9,7 @@ import { ImageManipulator, SaveFormat, type ImageRef } from 'expo-image-manipula
 import { altarImageSource } from './altar/assets';
 import { altarsAt } from './altar/burnout';
 import type { SavedAltar } from './altar/types';
-import { altarPictures, type AltarWidgetArt } from './altarWidget';
+import { altarPictures, GLASS_EMPTY, type AltarWidgetArt } from './altarWidget';
 
 export function hash(text: string): string {
   let h = 5381;
@@ -19,7 +19,7 @@ export function hash(text: string): string {
 
 /** A local copy of a saved picture path, to shrink. */
 async function localUri(path: string): Promise<string | null> {
-  const source = altarImageSource(path);
+  const source = path === GLASS_EMPTY ? require('../../assets/widget/glass-empty.png') : altarImageSource(path);
   if (source == null) return null;
   if (typeof source === 'number') {
     const asset = Asset.fromModule(source);
@@ -83,10 +83,10 @@ export async function preparePictures(root: string, altars: SavedAltar[], scale?
 
   const states = times.flatMap((at) => altarsAt(altars, new Date(at)).map((altar) => ({ altar, at })));
   for (const { altar, at } of states) {
-    for (const { id, path, width, crop, alpha } of altarPictures(altar, scale, at)) {
+    for (const { id, path, width, height, crop, alpha } of altarPictures(altar, scale, at)) {
       if (pictures.has(id)) continue;
       const isBackground = !!crop && !alpha;
-      const name = `${hash(`${id}|${crop ? [crop.x, crop.y, crop.w, crop.h].map((v) => v.toFixed(4)).join(',') : ''}`)}-${width}${isBackground ? '.jpg' : '.png'}`;
+      const name = `${hash(`${id}|${crop ? [crop.x, crop.y, crop.w, crop.h].map((v) => v.toFixed(4)).join(',') : ''}`)}-${width}${height ? `x${height}` : ''}${isBackground ? '.jpg' : '.png'}`;
       const file = new File(dir, name);
       try {
         if (!file.exists) {
@@ -102,7 +102,7 @@ export async function preparePictures(root: string, altars: SavedAltar[], scale?
             const h = Math.min(full.height - y, Math.round(crop.h * full.height));
             source = await ImageManipulator.manipulate(full).crop({ originX: x, originY: y, width: w, height: h }).renderAsync();
           }
-          const image = await ImageManipulator.manipulate(source).resize({ width }).renderAsync();
+          const image = await ImageManipulator.manipulate(source).resize(height ? { width, height } : { width }).renderAsync();
           const saved = await image.saveAsync(isBackground ? { format: SaveFormat.JPEG, compress: 0.85 } : { format: SaveFormat.PNG });
           new File(saved.uri).move(file);
         }

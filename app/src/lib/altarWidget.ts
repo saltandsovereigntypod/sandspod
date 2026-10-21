@@ -267,8 +267,8 @@ export function sceneFrame(
 }
 
 /** A picture the widget needs: a saved path, the width to make it, and for backgrounds the part to cut out (fractions of the image). */
-/** `crop`: the part of the picture to keep (fractions); `alpha`: keep it see-through (a candle's piece, not a background). */
-export type WidgetPicture = { id: string; path: string; width: number; crop?: StageRect; alpha?: boolean };
+/** `crop`: the part of the picture to keep (fractions); `height`: stretched to this; `alpha`: keep it see-through (a candle's piece, not a background). */
+export type WidgetPicture = { id: string; path: string; width: number; height?: number; crop?: StageRect; alpha?: boolean };
 
 const backgroundId = (size: WidgetSize, path: string) => `bg-${size}:${path}`;
 
@@ -327,7 +327,11 @@ export function altarPictures(altar: SavedAltar, scale = SCALE, now: number = Da
     const px = boxToPixels(displayBox(object), 1);
     const burn = burnPieces(object, px.height / px.width, now);
     if (!burn) continue;
-    for (const p of burn.pieces) out.push({ id: p.id, path: p.path, width: widthOf(p.path), crop: p.crop, alpha: true });
+    for (const p of burn.pieces) {
+      // The empty glass: as wide as the candle's picture, stretched to its height.
+      const width = p.stretch ? widthOf(String(object.imagePath)) : widthOf(p.path);
+      out.push({ id: p.id, path: p.path, width, crop: p.crop, alpha: true, ...(p.stretch ? { height: Math.max(2, Math.round(width * p.stretch)) } : {}) });
+    }
     for (const p of burn.dressings.values()) if (p) out.push({ id: p.id, path: p.path, width: widthOf(p.path), crop: p.crop, alpha: true });
   }
   return out;
@@ -349,7 +353,11 @@ const BURN_STEP = 0.02;
 /** The dressing pictures' height / width. */
 const OVERLAY_RATIO = 1.5;
 
-type BurnPiece = { id: string; path: string; crop: StageRect; rect: StageRect };
+/** The empty glass above a sunken candle's wax (CandleMarks' glass gradient), stretched to fit. */
+export const GLASS_EMPTY = 'widget:glass-empty';
+
+/** `crop`: the part of the picture it is cut from; `stretch`: or the whole picture stretched to this height / width. */
+type BurnPiece = { id: string; path: string; crop?: StageRect; stretch?: number; rect: StageRect };
 
 /** A picture of height/width `ratio` fitted into `rect` (fractions of a box `aspect` tall per wide), centred. */
 function fitted(ratio: number, rect: StageRect, aspect: number): StageRect {
@@ -374,15 +382,28 @@ function piece(path: string, at: StageRect, from: number, to: number, y: number)
  * fractions of the box's height), and its dressings cut to the wax that's
  * left. Null when it stands its full height, or its wax sinks in glass.
  */
-export function burnPieces(object: SavedObject, aspect: number, now: number): { pieces: BurnPiece[]; drop: number; dressings: Map<string, BurnPiece | null> } | null {
+export function burnPieces(
+  object: SavedObject,
+  aspect: number,
+  now: number,
+): { pieces: BurnPiece[]; drop: number; dressings: Map<string, BurnPiece | null>; whole?: boolean } | null {
   const path = String(object.imagePath || '');
   const ratio = path ? imageRatio(path) : null;
   const burn = ratio ? burnDown(object, now) : null;
-  if (!ratio || !burn || (burn.mode !== 'cap' && burn.mode !== 'crop')) return null;
+  if (!ratio || !burn || (burn.mode !== 'cap' && burn.mode !== 'crop' && burn.mode !== 'glass')) return null;
   const drop = Math.round(burn.drop / BURN_STEP) * BURN_STEP;
   if (!(drop > 0)) return null;
   const inset = { x: IMAGE_INSET.x, y: IMAGE_INSET.y / aspect };
   const pic = fitted(ratio, { x: inset.x, y: inset.y, w: 1 - inset.x * 2, h: 1 - inset.y * 2 }, aspect);
+  if (burn.mode === 'glass') {
+    // In glass the candle is drawn whole, with the glass above its sunken wax empty.
+    const cx = (flameLayout(path, ratio).centerX / 100);
+    const half = burn.half * pic.w;
+    const rim = (half * 0.2) / aspect;
+    const rect = { x: cx - half, y: pic.y + burn.top * pic.h - rim, w: half * 2, h: drop * pic.h + rim };
+    const stretch = Math.round(((rect.h * aspect) / rect.w) * 1000) / 1000;
+    return { pieces: [{ id: `${GLASS_EMPTY}#${stretch.toFixed(3)}`, path: GLASS_EMPTY, stretch, rect }], drop: drop * pic.h, dressings: new Map(), whole: true };
+  }
   const pieces: BurnPiece[] = [];
   if (burn.mode === 'crop') {
     if (drop < 1) pieces.push(piece(path, pic, drop, 1, pic.y + drop * pic.h));
@@ -454,7 +475,7 @@ export function altarScene(objects: SavedObject[], image: (path: string) => stri
       const parts = burn ? burn.pieces.map((p) => ({ image: image(p.id), rect: p.rect, opacity: item.spent ? 0.45 : 1 })) : [];
       const burned = !!burn && parts.every((p) => p.image);
       if (burned) {
-        item.image = '';
+        if (!burn.whole) item.image = '';
         item.burned = true;
         item.overlays.push(...parts);
         item.flame.y += burn.drop;
