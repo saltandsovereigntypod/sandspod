@@ -4,6 +4,8 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { MoonDisc } from '../../../../components/MoonDisc';
 import { Body, Card, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
+import { lookBackWorkings } from '../../../../lib/altar/apothecaryLookBack';
+import { useWorkshop } from '../../../../lib/altar/workshop';
 import { journalDetail } from '../../../../lib/rituals/format';
 import { journalInsights } from '../../../../lib/rituals/insights';
 import { useRituals } from '../../../../lib/rituals/store';
@@ -27,7 +29,9 @@ const openEntry = (id: string) => router.push({ pathname: '/rituals/journal/[id]
 export default function JournalInsights() {
   const rituals = useRituals();
   const insights = useMemo(() => journalInsights(rituals.journal, new Date()), [rituals.journal]);
-  const works = useMemo(() => whatWorks(rituals.journal), [rituals.journal]);
+  // Spell jars, sachets and the rest of My Apothecary count too, with their intentions and ingredients.
+  const { apothecary } = useWorkshop();
+  const works = useMemo(() => whatWorks([...rituals.journal, ...lookBackWorkings(apothecary)]), [rituals.journal, apothecary]);
   const most = Math.max(1, ...insights.byPhase.map((p) => p.count));
   const last = insights.lastThisPhase;
   const lastWords = last ? last.entry.what_happened_during || last.entry.feelings_after || last.entry.notes || last.entry.intention : null;

@@ -170,7 +170,15 @@ function leadText(minutes: number): string {
 }
 
 /** A look-back day to ask "Did it work?" on (lookBack.ts lookBackReminder). */
-export type LookBackReminderSource = { key: string; id: string; date: string; title: string; body: string };
+export type LookBackReminderSource = {
+  key: string;
+  id: string;
+  date: string;
+  title: string;
+  body: string;
+  /** Where a tap opens: the journal entry unless given (an apothecary item's look-back, apothecaryLookBack.ts). */
+  url?: string;
+};
 
 /** Every reminder due after `now` within the horizon, soonest first, capped. */
 export function buildSchedule(
@@ -310,7 +318,7 @@ export function buildSchedule(
         at: atTime(day, settings.phaseHour, settings.phaseMinute),
         title: lookBack.title,
         body: lookBack.body,
-        url: `/rituals/journal/${lookBack.id}`,
+        url: lookBack.url || `/rituals/journal/${lookBack.id}`,
       });
     }
   }

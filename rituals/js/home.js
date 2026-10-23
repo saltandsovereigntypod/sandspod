@@ -8,17 +8,20 @@
   const R = global.SaltCore.rituals;
   const D = global.DidItWork;
   let current = [];
+  let made = [];
 
   async function render() {
     const main = UI.root();
     const now = new Date();
     const moon = R.moon.moonState(now);
     const account = S.user();
-    const [plans, journal, active] = await Promise.all([
+    const [plans, journal, active, items] = await Promise.all([
       S.loadPlans(),
       S.journal().catch(() => []),
-      S.activeSession().catch(() => null)
+      S.activeSession().catch(() => null),
+      S.apothecaryItems().catch(() => [])
     ]);
+    made = items;
 
     const upcoming = R.plans.upcomingPlans(plans, now);
     const [next, ...later] = upcoming;
@@ -26,10 +29,15 @@
     const insight = R.insights.journalInsights(journal, now);
     current = journal;
     const due = R.lookBack.dueLookBacks(journal, now);
-    const dueCards = due.length
+    // Spell jars, sachets and other workings from My Apothecary, after the journal's.
+    const dueMade = R.apothecaryLookBack.dueItems(items, now);
+    const shown = Math.max(0, 3 - due.length);
+    const more = due.length + dueMade.length - Math.min(due.length, 3) - Math.min(dueMade.length, shown);
+    const dueCards = due.length || dueMade.length
       ? `<section class="sp-section" aria-labelledby="rt-due"><h2 class="sp-label" id="rt-due">Did it work?</h2>
           ${due.slice(0, 3).map((entry) => D.card(entry, now, { title: true })).join("")}
-          ${due.length > 3 ? `<div class="sp-actions"><a class="button button--ghost" href="/rituals/journal/insights/#did-it-work">${esc(`${due.length - 3} more to look back on`)}</a></div>` : ""}
+          ${dueMade.slice(0, shown).map((item) => D.itemCard(item, now)).join("")}
+          ${more > 0 ? `<div class="sp-actions"><a class="button button--ghost" href="/rituals/journal/insights/#did-it-work">${esc(`${more} more to look back on`)}</a></div>` : ""}
         </section>`
       : "";
 
@@ -124,7 +132,7 @@
   async function start() {
     await global.SaltPage.ready();
     await UI.attempt(render, "Your rituals couldn't be opened");
-    D.bind(UI.root(), () => current, () => UI.attempt(render, "Your rituals couldn't be opened"));
+    D.bind(UI.root(), () => current, () => UI.attempt(render, "Your rituals couldn't be opened"), { list: () => made, save: S.saveApothecaryMetadata });
     global.SaltPage.onUserChange(() => UI.attempt(render, "Your rituals couldn't be opened"));
   }
 

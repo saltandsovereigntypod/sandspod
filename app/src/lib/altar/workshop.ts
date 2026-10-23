@@ -282,6 +282,34 @@ export async function saveTendingBlend(userId: string | null, blend: ApothecaryI
   return next;
 }
 
+/**
+ * Save a change to a working's metadata alone ("Did it work?", metadata
+ * .lookBack), as saveJournalMetadata does for the journal: only that column
+ * is written, so no Library entry or object event is touched.
+ */
+export function saveApothecaryMetadata(userId: string | null, item: ApothecaryItem): Promise<ApothecaryItem> {
+  return trackSave(userId, async () => {
+    const metadata = { ...(item.metadata ?? {}), source: (item.metadata?.source as string | undefined) || 'altar-apothecary' };
+    const updated_at = new Date().toISOString();
+    if (userId) {
+      const { error } = await supabase.from('apothecary_items').update({ metadata, updated_at }).eq('user_id', userId).eq('id', item.id);
+      if (error) throw new Error(error.message);
+    } else {
+      const list = parseList(await AsyncStorage.getItem(LOCAL_APOTHECARY_KEY));
+      await AsyncStorage.setItem(LOCAL_APOTHECARY_KEY, JSON.stringify(list.map((x) => (x.id === item.id ? { ...x, metadata, updatedAt: updated_at } : x))));
+    }
+    const next = { ...item, metadata, updatedAt: updated_at };
+    // Show it at once; the reload brings back the row as stored.
+    if (state.owner === userId) set({ apothecary: state.apothecary.map((a) => (a.id === item.id ? next : a)) });
+    await loadWorkshop(userId, true);
+    return state.apothecary.find((a) => a.id === item.id) ?? next;
+  });
+}
+
+/** The workings as last loaded, and a way to hear when they change (for reminders). */
+export const getWorkshop = () => state;
+export const subscribeWorkshop = subscribe;
+
 export async function deleteApothecary(userId: string | null, item: ApothecaryItem): Promise<void> {
   if (userId) {
     const { error } = await supabase.from('apothecary_items').delete().eq('user_id', userId).eq('id', item.id);

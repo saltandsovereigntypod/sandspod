@@ -855,10 +855,14 @@ export const HELP: HelpSection[] = [
           'Tap "Make something new".',
           'Choose what you are making, name it, and add ingredients from the altar, cabinet, Library or your apothecary.',
           'Add an intention, notes, and choose tending reminders if you want them.',
+          'Under "Did it work? Look back", keep the day that suits its intention or choose another.',
           'Tap "Save to My Apothecary and place it".',
         ],
-        tips: ['In the Apothecary list, tap "Place" to put one on the altar or "Recipe" to open its recipe.'],
-        keywords: ['recipe', 'oil', 'tincture', 'blend', 'potion', 'crafted item', 'workshop'],
+        tips: [
+          'In the Apothecary list, tap "Place" to put one on the altar or "Recipe" to open its recipe.',
+          'On its look-back day you’re asked whether it worked: on Today, in the journal under "Spell jars & sachets", and with a reminder if look-back reminders are on. Answers count in What works for you.',
+        ],
+        keywords: ['recipe', 'oil', 'tincture', 'blend', 'potion', 'crafted item', 'workshop', 'did it work', 'look back', 'spell jar', 'sachet'],
       },
       {
         id: 'altar-tending-status',

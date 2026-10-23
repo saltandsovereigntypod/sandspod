@@ -11,7 +11,10 @@ import type { ApothecaryItem } from '../../../lib/altar/apothecary';
 import { ALTAR_ARTWORK } from '../../../lib/altar/artworkData';
 import { shortLabel } from '../../../lib/altar/cabinet';
 import type { SavedObject } from '../../../lib/altar/types';
+import { startItemLookBack } from '../../../lib/altar/apothecaryLookBack';
 import { saveApothecary, useWorkshop } from '../../../lib/altar/workshop';
+import type { LookBackPick } from '../../rituals/DidItWork';
+import { ItemLookBackPicker, PlacedDidItWork } from '../../rituals/ItemDidItWork';
 import {
   addLayer,
   daysSinceRenewal,
@@ -72,6 +75,8 @@ function JarBuilder({ altar, onPlace, center }: Props) {
   const [spoken, setSpoken] = useState('');
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
+  // "Did it work?": the day that suits its intention, unless another is chosen.
+  const [lookBack, setLookBack] = useState<{ pick: LookBackPick; custom: string }>({ pick: 'suggested', custom: '' });
   const bands = layerBands(jar.layers);
   const drips = dripCandles(altar.objects);
 
@@ -85,7 +90,7 @@ function JarBuilder({ altar, onPlace, center }: Props) {
     if (why) return setProblem(why);
     setBusy(true);
     const now = nowIso();
-    let item = jarItem(jar, now);
+    let item = startItemLookBack(jarItem(jar, now), lookBack.pick, new Date(now), lookBack.custom);
     try {
       item = await saveApothecary(userId, item, null);
     } catch {
@@ -181,6 +186,12 @@ function JarBuilder({ altar, onPlace, center }: Props) {
           )}
           <Text style={type.caption}>{sealLine(jar.seal)}.</Text>
           <Field label="Name the jar" value={jar.name} onChangeText={(name) => setJar((j) => ({ ...j, name }))} placeholder={`${jar.intention.trim() || 'Intention'} jar`} maxLength={60} />
+          <ItemLookBackPicker
+            item={{ id: '', name: jar.name || `${jar.intention.trim()} jar`, intention: jar.intention, createdAt: '' }}
+            value={lookBack.pick}
+            custom={lookBack.custom}
+            onChange={(pick, custom) => setLookBack({ pick, custom })}
+          />
           {problem && <Text style={sheetStyles.problem}>{problem}</Text>}
           <View style={sheetStyles.row}>
             <Button
@@ -232,6 +243,7 @@ export function JarRenewSheet({ visible, object, onClose, onUpdate }: RenewProps
           </Text>
           <Field label="A word as you shake it" value={note} onChangeText={setNote} placeholder="Still growing…" maxLength={SPOKEN_MAX} />
           <Button label="Shake to renew" onPress={renew} />
+          <PlacedDidItWork apothecaryItemId={object?.apothecaryItemId} />
           {jar.layers.some((l) => l.spoken) && (
             <View style={sheetStyles.section}>
               <Label>What was said</Label>
