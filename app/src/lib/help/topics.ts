@@ -1742,13 +1742,16 @@ export const HELP: HelpSection[] = [
         title: 'Keep a dream journal',
         summary: 'Write dreams down, with the moon they came under.',
         steps: [
-          'Open My practice, then Hedge, then "Dream journal".',
+          'Open the Grimoire and tap "Dreams" (or My practice, then Hedge, then "Dream journal").',
           'Tap "Write down a dream".',
           'Type the dream and a title, choose "Which morning?", and add symbols and feelings.',
           'Optionally mark it Lucid or Recurring, then tap "Keep this dream".',
         ],
-        tips: ['Tap "Symbols and moons" to see what keeps returning and the phases your dreams cluster in.'],
-        href: '/rituals/craft/hedge/dreams',
+        tips: [
+          'Tap "Symbols and moons" to see what keeps returning and the phases your dreams cluster in.',
+          'Turn on "Last night’s dream" under Remind me for a gentle morning nudge. In the morning, Today also offers a place to catch a line or two.',
+        ],
+        href: '/grimoire/dreams',
         keywords: ['dreams', 'dreamwork', 'symbols', 'lucid', 'recurring dream'],
       },
       {
@@ -1756,11 +1759,11 @@ export const HELP: HelpSection[] = [
         title: 'Look up common dream symbols',
         summary: 'Associations to start from; yours matter most.',
         steps: [
-          'Open "Dream journal" and tap "Dream symbols".',
+          'Open Dreams in the Grimoire and tap "Dream symbols" ("Symbols and moons" once you have a few dreams).',
           'Open a symbol to read its notes and a question to ask yourself.',
           'See "What keeps returning" for your own repeated symbols.',
         ],
-        href: '/rituals/craft/hedge/dreams/symbols',
+        href: '/grimoire/dreams/symbols',
         keywords: ['dream dictionary', 'dream meaning'],
       },
       {

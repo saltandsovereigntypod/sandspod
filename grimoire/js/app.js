@@ -985,6 +985,8 @@ async function renderMyPracticeShelf() {
 
 async function renderLivingLibraryShelves() {
   await renderMyPracticeShelf();
+  // Dreams, the built-in section after My Practice (grimoire/js/ui/dreams.js).
+  if (typeof renderDreamsShelf === "function") await renderDreamsShelf();
   await renderTraditionalLibraryShelf();
 }
 

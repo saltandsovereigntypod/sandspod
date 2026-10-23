@@ -36,6 +36,10 @@ export type ReminderSettings = {
   sacredDays: boolean;
   /** Minutes after midnight. */
   sacredAt: number;
+  /** A morning nudge to write down last night's dream (Grimoire → Dreams). */
+  dreamMorning: boolean;
+  /** Minutes after midnight. */
+  dreamMorningAt: number;
 };
 
 export const DEFAULT_SETTINGS: ReminderSettings = {
@@ -55,6 +59,8 @@ export const DEFAULT_SETTINGS: ReminderSettings = {
   devotionEveningAt: 21 * 60,
   sacredDays: false,
   sacredAt: 9 * 60,
+  dreamMorning: false,
+  dreamMorningAt: 7 * 60,
 };
 
 export const PHASE_ORDER: PrincipalPhase[] = ['new', 'firstQuarter', 'full', 'lastQuarter'];
@@ -95,6 +101,8 @@ export function normalizeSettings(raw: unknown): ReminderSettings {
     devotionEveningAt: minuteOfDay(value.devotionEveningAt, DEFAULT_SETTINGS.devotionEveningAt),
     sacredDays: value.sacredDays === true,
     sacredAt: minuteOfDay(value.sacredAt, DEFAULT_SETTINGS.sacredAt),
+    dreamMorning: value.dreamMorning === true,
+    dreamMorningAt: minuteOfDay(value.dreamMorningAt, DEFAULT_SETTINGS.dreamMorningAt),
   };
 }
 
@@ -104,13 +112,13 @@ function minuteOfDay(raw: unknown, fallback: number): number {
 }
 
 export function anyReminders(settings: ReminderSettings): boolean {
-  return settings.rituals || settings.devotionMorning || settings.devotionEvening || settings.sacredDays || PHASE_ORDER.some((p) => settings.phases[p]);
+  return settings.rituals || settings.devotionMorning || settings.devotionEvening || settings.sacredDays || settings.dreamMorning || PHASE_ORDER.some((p) => settings.phases[p]);
 }
 
 export type Reminder = {
   /** Stable per event, so rescheduling never duplicates. */
   key: string;
-  kind: 'moon' | 'ritual' | 'devotion' | 'sacred';
+  kind: 'moon' | 'ritual' | 'devotion' | 'sacred' | 'dream';
   at: Date;
   title: string;
   body: string;
@@ -247,6 +255,22 @@ export function buildSchedule(settings: ReminderSettings, plans: RitualPlan[], n
     for (const r of sacredReminders(sacred, now, Math.min(DEVOTION_DAYS, horizonDays) + 1)) {
       const at = new Date(r.date.getFullYear(), r.date.getMonth(), r.date.getDate(), Math.floor(settings.sacredAt / 60), settings.sacredAt % 60, 0, 0);
       reminders.push({ key: `sacred-${r.key}:${dateKey(at)}`, kind: 'sacred', at, title: r.title, body: r.body, url: `/today/library/traditional:deity:${r.key}` });
+    }
+  }
+
+  // A gentle morning nudge for the dream journal, two weeks ahead like the devotions.
+  if (settings.dreamMorning) {
+    const at = settings.dreamMorningAt;
+    for (let d = 0; d <= Math.min(DEVOTION_DAYS, horizonDays); d++) {
+      const day = new Date(now.getFullYear(), now.getMonth(), now.getDate() + d, Math.floor(at / 60), at % 60, 0, 0);
+      reminders.push({
+        key: `dream-morning:${dateKey(day)}`,
+        kind: 'dream',
+        at: day,
+        title: 'Last night’s dream',
+        body: 'Write down last night’s dream, before it fades.',
+        url: '/grimoire/dreams/edit',
+      });
     }
   }
 

@@ -132,6 +132,21 @@
     }));
   }
 
+  /** The morning nudge to write down last night's dream (two weeks, as the app keeps it). */
+  function dreamReminderEvents(settings, now, G) {
+    if (!settings.dreamMorning) return [];
+    const only = { ...G.schedule.DEFAULT_SETTINGS, rituals: false, dreamMorning: true, dreamMorningAt: settings.dreamMorningAt };
+    return G.schedule.buildSchedule(only, [], now).map((r) => ({
+      key: `reminder-${r.key.replace(/:/g, "-")}`,
+      title: r.title,
+      start: r.at,
+      end: new Date(r.at.getTime() + 15 * 60000),
+      allDay: false,
+      notes: `${r.body}\nhttps://saltandsovereignty.com/grimoire/dreams/edit/\n${FOOTER}`,
+      alarms: [0],
+    }));
+  }
+
   /** Your deities' sacred days (Settings → My deities) at your time of day. */
   function sacredReminderEvents(settings, appSettings, now, G, days = HORIZON.sacred) {
     if (!settings.sacredDays) return [];
@@ -149,6 +164,7 @@
       ...moonReminderEvents(settings, now, G),
       ...ritualReminderEvents(settings, plans, now, G, templateFor),
       ...devotionReminderEvents(settings, now, G),
+      ...dreamReminderEvents(settings, now, G),
       ...sacredReminderEvents(settings, appSettings, now, G),
     ].sort((a, b) => a.start.getTime() - b.start.getTime());
   }
@@ -199,7 +215,7 @@
     return before === 60 ? "An hour before" : `${Math.round(before / 60)} hours before`;
   }
 
-  const api = { KEYS, SKY_KINDS, HORIZON, readJson, writeJson, loadReminders, saveReminders, loadCalendar, saveCalendar, clock, minutesLabel, moonReminderEvents, ritualReminderEvents, devotionReminderEvents, sacredReminderEvents, reminderEvents, skyEvents, sampleEvent, plansFrom, whenLabel, alarmLabel };
+  const api = { KEYS, SKY_KINDS, HORIZON, readJson, writeJson, loadReminders, saveReminders, loadCalendar, saveCalendar, clock, minutesLabel, moonReminderEvents, ritualReminderEvents, devotionReminderEvents, dreamReminderEvents, sacredReminderEvents, reminderEvents, skyEvents, sampleEvent, plansFrom, whenLabel, alarmLabel };
   global.RemindersLogic = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

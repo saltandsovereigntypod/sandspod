@@ -16,7 +16,7 @@ import { journalInsights } from '../../../lib/rituals/insights';
 import { currentStep } from '../../../lib/rituals/lifecycle';
 import { nextPlan } from '../../../lib/rituals/plans';
 import { useRituals } from '../../../lib/rituals/store';
-import { Tags } from '../../../components/more/ui';
+import { Field, Tags } from '../../../components/more/ui';
 import { dateFrom, daysBetween, shortDate, timeOfDay } from '../../../lib/calendar';
 import { calendarEventsBetween, CALENDARS_LIVE, calendarSettingsKey, todayLines } from '../../../lib/calendars';
 import { holidayChoice, type Holiday } from '../../../lib/holidays';
@@ -28,6 +28,9 @@ import { useMySettings } from '../../../lib/settings/store';
 import { todaySettings } from '../../../lib/library/traditions';
 import { buildToday, type HorizonItem, type TodayModel } from '../../../lib/today';
 import { practiceToday } from '../../../lib/craft/today';
+import { DREAMS, morningDreamPrompt, normalizeDream, quickDream } from '../../../lib/craft/hedge/dreams';
+import { addEntry, useCraft } from '../../../lib/craft/store';
+import { DREAM_ROUTES } from '../../../lib/grimoire/dreams';
 import { deityLines } from '../../../lib/patron';
 import { hasHolyPage, holyRef, moonRef, principalRef } from '../../../lib/holy';
 import { forYou, forYouContext, myPractices } from '../../../lib/rituals/premade';
@@ -192,6 +195,7 @@ export default function Today() {
         {today.eclipseLine && <Text style={[type.caption, styles.center, styles.gold]}>{today.eclipseLine}</Text>}
       </View>
 
+      <DreamCapture settings={settings} now={clock} reminderOn={reminders.settings.dreamMorning} />
       <PracticeCard settings={settings} place={place} now={clock} />
       <DaySky today={today} sky={sky} here={here} now={clock} />
       <CorrespondencesCard today={today} />
@@ -211,6 +215,55 @@ export default function Today() {
 }
 
 type SettingsLike = Record<string, unknown> | null | undefined;
+
+/**
+ * In the morning hours, for someone who keeps a dream journal: catch last
+ * night's dream in a line or two. It goes into the Grimoire's Dreams.
+ */
+function DreamCapture({ settings, now, reminderOn }: { settings: SettingsLike; now: Date; reminderOn: boolean }) {
+  const { entries } = useCraft<unknown>(DREAMS);
+  const [text, setText] = useState('');
+  const [kept, setKept] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const dreams = useMemo(() => entries.map((e) => ({ ...e, data: normalizeDream(e.data) })), [entries]);
+  const keepsHedge = myPractices(settings).includes('hedge');
+  const prompt = morningDreamPrompt(now, { keepsHedge, reminderOn, dreams: kept ? [] : dreams });
+
+  if (kept) {
+    return (
+      <View style={styles.working}>
+        <Text style={[type.eyebrow, styles.gold]}>Last night’s dream</Text>
+        <Text style={type.body}>Kept in your Grimoire, with the moon it came under.</Text>
+        <Button label="Add symbols and feelings" variant="outline" onPress={() => router.navigate(DREAM_ROUTES.edit(kept) as never)} />
+      </View>
+    );
+  }
+  if (!prompt) return null;
+
+  const keep = async () => {
+    if (!text.trim() || saving) return;
+    setSaving(true);
+    try {
+      const entry = await addEntry(DREAMS, quickDream(text, new Date()));
+      setText('');
+      setKept(entry.id);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <View style={styles.working}>
+      <Text style={[type.eyebrow, styles.gold]}>{prompt.title}</Text>
+      <Text style={type.caption}>{prompt.detail}</Text>
+      <Field label="What you remember" value={text} onChangeText={setText} placeholder="Even a fragment: a place, a face, a feeling" multiline />
+      <View style={styles.dreamActions}>
+        <Button label={saving ? 'Keeping it…' : 'Keep it'} onPress={keep} disabled={!text.trim() || saving} />
+        <Button label="Write it in full" variant="text" onPress={() => router.navigate(DREAM_ROUTES.write as never)} />
+      </View>
+    </View>
+  );
+}
 
 /** For your practice: a line from each practice kept, and a working that suits tonight. */
 function PracticeCard({ settings, place, now }: { settings: SettingsLike; place: Place | null; now: Date }) {
@@ -557,6 +610,7 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   workingText: { gap: 3 },
+  dreamActions: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 10 },
   practiceRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingTop: 12, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.goldLine },
   practiceText: { flex: 1, gap: 2 },
   practiceLabel: { fontFamily: fonts.bodySemi, fontSize: 12, letterSpacing: 1.2, textTransform: 'uppercase', color: colors.gold },
