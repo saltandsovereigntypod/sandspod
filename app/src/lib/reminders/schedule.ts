@@ -6,6 +6,7 @@ import { planStart } from '../rituals/plans.ts';
 import type { RitualPlan } from '../rituals/types.ts';
 import { dateKey, devotionFor } from '../craft/solitary/devotion.ts';
 import { sacredReminders, type SacredReminderSource } from '../patron/index.ts';
+import { tendingNote, type OfferingDue } from '../altar/offerings.ts';
 
 export type ReminderSettings = {
   version: 1;
@@ -36,6 +37,10 @@ export type ReminderSettings = {
   sacredDays: boolean;
   /** Minutes after midnight. */
   sacredAt: number;
+  /** Offerings on your altars that want refreshing (water drying, flowers wilting). Off unless chosen. */
+  offerings: boolean;
+  /** Minutes after midnight: offerings that go over during the day are mentioned at this time. */
+  offeringsAt: number;
 };
 
 export const DEFAULT_SETTINGS: ReminderSettings = {
@@ -55,6 +60,8 @@ export const DEFAULT_SETTINGS: ReminderSettings = {
   devotionEveningAt: 21 * 60,
   sacredDays: false,
   sacredAt: 9 * 60,
+  offerings: false,
+  offeringsAt: 18 * 60,
 };
 
 export const PHASE_ORDER: PrincipalPhase[] = ['new', 'firstQuarter', 'full', 'lastQuarter'];
@@ -95,6 +102,8 @@ export function normalizeSettings(raw: unknown): ReminderSettings {
     devotionEveningAt: minuteOfDay(value.devotionEveningAt, DEFAULT_SETTINGS.devotionEveningAt),
     sacredDays: value.sacredDays === true,
     sacredAt: minuteOfDay(value.sacredAt, DEFAULT_SETTINGS.sacredAt),
+    offerings: value.offerings === true,
+    offeringsAt: minuteOfDay(value.offeringsAt, DEFAULT_SETTINGS.offeringsAt),
   };
 }
 
@@ -104,13 +113,13 @@ function minuteOfDay(raw: unknown, fallback: number): number {
 }
 
 export function anyReminders(settings: ReminderSettings): boolean {
-  return settings.rituals || settings.devotionMorning || settings.devotionEvening || settings.sacredDays || PHASE_ORDER.some((p) => settings.phases[p]);
+  return settings.rituals || settings.devotionMorning || settings.devotionEvening || settings.sacredDays || settings.offerings || PHASE_ORDER.some((p) => settings.phases[p]);
 }
 
 export type Reminder = {
   /** Stable per event, so rescheduling never duplicates. */
   key: string;
-  kind: 'moon' | 'ritual' | 'devotion' | 'sacred';
+  kind: 'moon' | 'ritual' | 'devotion' | 'sacred' | 'offering';
   at: Date;
   title: string;
   body: string;
@@ -148,7 +157,14 @@ function leadText(minutes: number): string {
 }
 
 /** Every reminder due after `now` within the horizon, soonest first, capped. */
-export function buildSchedule(settings: ReminderSettings, plans: RitualPlan[], now: Date, horizonDays = HORIZON_DAYS, sacred: SacredReminderSource[] = []): Reminder[] {
+export function buildSchedule(
+  settings: ReminderSettings,
+  plans: RitualPlan[],
+  now: Date,
+  horizonDays = HORIZON_DAYS,
+  sacred: SacredReminderSource[] = [],
+  offerings: OfferingDue[] = [],
+): Reminder[] {
   const horizon = now.getTime() + horizonDays * 86_400_000;
   const reminders: Reminder[] = [];
 
@@ -247,6 +263,32 @@ export function buildSchedule(settings: ReminderSettings, plans: RitualPlan[], n
     for (const r of sacredReminders(sacred, now, Math.min(DEVOTION_DAYS, horizonDays) + 1)) {
       const at = new Date(r.date.getFullYear(), r.date.getMonth(), r.date.getDate(), Math.floor(settings.sacredAt / 60), settings.sacredAt % 60, 0, 0);
       reminders.push({ key: `sacred-${r.key}:${dateKey(at)}`, kind: 'sacred', at, title: r.title, body: r.body, url: `/today/library/traditional:deity:${r.key}` });
+    }
+  }
+
+  // Offerings that go over: one gentle reminder on each day some do, at your chosen time.
+  if (settings.offerings && offerings.length) {
+    const byDay = new Map<string, { at: Date; due: OfferingDue[] }>();
+    for (const due of offerings) {
+      const when = new Date(due.dueAt);
+      let at = new Date(when.getFullYear(), when.getMonth(), when.getDate(), Math.floor(settings.offeringsAt / 60), settings.offeringsAt % 60, 0, 0);
+      if (at.getTime() < due.dueAt) at = new Date(at.getFullYear(), at.getMonth(), at.getDate() + 1, at.getHours(), at.getMinutes(), 0, 0);
+      const key = dateKey(at);
+      const day = byDay.get(key) ?? { at, due: [] };
+      day.due.push(due);
+      byDay.set(key, day);
+    }
+    for (const [key, day] of byDay) {
+      const first = day.due[0];
+      const oneAltar = day.due.every((d) => d.altarId === first.altarId);
+      reminders.push({
+        key: `offering:${key}`,
+        kind: 'offering',
+        at: day.at,
+        title: day.due.length === 1 ? 'An offering wants tending' : 'Your offerings want tending',
+        body: tendingNote(day.due) ?? '',
+        url: oneAltar && first.altarId ? `/altar/${first.altarId}` : '/altar',
+      });
     }
   }
 

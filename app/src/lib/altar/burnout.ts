@@ -4,6 +4,7 @@
 import { nextBurnout, settleAltar, settleCandles } from './editor.ts';
 import { incenseLife, isIncense } from './incense.ts';
 import { candleLife } from './livingState.ts';
+import { offeringsDue, type OfferingDue } from './offerings.ts';
 import { altarDataFromDocument, documentFromAltar } from './snapshot.ts';
 import type { AltarDocument } from './snapshot.ts';
 import type { SavedAltar } from './types.ts';
@@ -57,4 +58,10 @@ export function burnoutTimes(altars: SavedAltar[], now: Date, days = 7, limit = 
     }
   }
   return [...times].sort((a, b) => a - b).slice(0, limit);
+}
+
+/** Offerings on these altars that want tending now or will within `days`, soonest first (for reminders). */
+export function altarOfferingsDue(altars: SavedAltar[], now: Date, days = 14): OfferingDue[] {
+  const docs = altars.map((altar) => ({ id: altar.id, name: altar.name, objects: documentFromAltar(altar).objects }));
+  return offeringsDue(docs, now.getTime(), now.getTime() + days * 86_400_000);
 }

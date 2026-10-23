@@ -14,6 +14,7 @@
 .altar-object > .living-art--under { z-index: 0; }
 .altar-object > img:first-of-type { position: relative; z-index: 1; }
 .altar-object > .living-art--burned { z-index: 2; }
+.altar-object > .living-art--offering { z-index: 3; }
 .altar-object > .living-art--marks { z-index: 5; }
 .altar-object > .living-art--flame { z-index: 6; }
 .altar-object > .living-art--fx { z-index: 6; }

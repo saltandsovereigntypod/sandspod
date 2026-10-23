@@ -9,6 +9,7 @@ import { sacredSources } from '../patron';
 import { getRituals, loadPlans, subscribeRituals } from '../rituals/store';
 import { cachedSettings, subscribeSettings } from '../settings/store';
 import type { RitualPlan } from '../rituals/types';
+import type { OfferingDue } from '../altar/offerings';
 import { syncSkyCalendar } from './calendarStore';
 import { applySchedule, permissionState, remindersSupported, requestPermission, type PermissionState } from './notifier';
 import { anyReminders, buildSchedule, DEFAULT_SETTINGS, normalizeSettings, type ReminderSettings } from './schedule';
@@ -28,6 +29,9 @@ const listeners = new Set<() => void>();
 let started = false;
 let lastPlans: RitualPlan[] | null = null;
 let syncing: Promise<void> = Promise.resolve();
+/** Offerings on your altars that want tending soon (set by the altar keeper). */
+let offeringsDue: OfferingDue[] = [];
+let offeringsKey = '';
 
 function set(patch: Partial<RemindersState>) {
   state = { ...state, ...patch };
@@ -45,7 +49,7 @@ export function syncReminders(): Promise<void> {
   syncing = syncing.then(async () => {
     if (!state.loaded) return;
     try {
-      const reminders = buildSchedule(state.settings, getRituals().plans, new Date(), undefined, sacredSources(cachedSettings()));
+      const reminders = buildSchedule(state.settings, getRituals().plans, new Date(), undefined, sacredSources(cachedSettings()), offeringsDue);
       const permission = remindersSupported ? await permissionState() : 'unavailable';
       const scheduled = await applySchedule(permission === 'granted' ? reminders : []);
       set({ permission, scheduled });
@@ -87,6 +91,15 @@ async function start() {
   // Top up the rolling window every time the app opens.
   await syncReminders();
   void syncSkyCalendar(state.settings.phases);
+}
+
+/** The altar keeper's latest list of offerings that want tending; reschedules when it changes and offering reminders are on. */
+export function setOfferingsDue(due: OfferingDue[]) {
+  const key = due.map((d) => `${d.altarId}:${d.objectId}:${d.dueAt}`).join('|');
+  if (key === offeringsKey) return;
+  offeringsKey = key;
+  offeringsDue = due;
+  if (state.settings.offerings) void syncReminders();
 }
 
 export async function updateReminderSettings(change: Partial<ReminderSettings>): Promise<PermissionState> {

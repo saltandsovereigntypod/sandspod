@@ -13,6 +13,7 @@ export * as flame from '../../app/src/lib/altar/flame.ts';
 export * as ceromancy from '../../app/src/lib/altar/ceromancy.ts';
 export * as incense from '../../app/src/lib/altar/incense.ts';
 export * as offerings from '../../app/src/lib/altar/offerings.ts';
+export * as offeringArt from '../../app/src/lib/altar/offeringArt.ts';
 export * as petitions from '../../app/src/lib/altar/petitions.ts';
 export * as charge from '../../app/src/lib/altar/charge.ts';
 export * as moonCharge from '../../app/src/lib/altar/moonCharge.ts';
