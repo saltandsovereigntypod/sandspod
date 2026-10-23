@@ -128,6 +128,12 @@ export const builtInCabinet: CabinetItem[] = [
     tool: 'black-salt',
     form: 'pile',
   }),
+  single('tools', 'Graveyard Dirt', ['ancestors', 'protection', 'binding'], {
+    image: '../assets/altar/objects/tools/grave-dirt/grave-dirt.png',
+    type: 'tool',
+    tool: 'grave-dirt',
+    form: 'pile',
+  }),
   single('tools', 'Salt Circle', ['protection', 'banishing', 'warding'], {
     image: '../assets/altar/objects/tools/salt-circle/2E77AAEA-4775-4EB3-9EEF-659AB1218A61.png',
     type: 'tool',

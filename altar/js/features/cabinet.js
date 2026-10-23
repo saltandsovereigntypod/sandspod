@@ -74,6 +74,13 @@ const cabinetItems = [
   },
   {
     category: "tools",
+    name: "Graveyard Dirt",
+    icon: "🪦",
+    keywords: ["ancestors", "protection", "binding"],
+    forms: [{ label: "Place", image: "../assets/altar/objects/tools/grave-dirt/grave-dirt.png", type: "tool", tool: "grave-dirt", form: "pile" }]
+  },
+  {
+    category: "tools",
     name: "Salt Circle",
     icon: "⭕️",
     keywords: ["protection", "banishing", "warding"],

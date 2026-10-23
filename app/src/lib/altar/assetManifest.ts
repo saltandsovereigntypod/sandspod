@@ -666,6 +666,7 @@ export const bundledAltarAssets: Record<string, { source: number; width: number;
   'assets/altar/objects/tools/deities/veles/veles-statue.png': { source: require('../../../assets/altar/objects/tools/deities/veles/veles-statue.webp'), width: 1024, height: 1536 },
   'assets/altar/objects/tools/deities/venus/venus-statue.png': { source: require('../../../assets/altar/objects/tools/deities/venus/venus-statue.webp'), width: 1024, height: 1536 },
   'assets/altar/objects/tools/deities/vesta/vesta-statue.png': { source: require('../../../assets/altar/objects/tools/deities/vesta/vesta-statue.webp'), width: 1024, height: 1536 },
+  'assets/altar/objects/tools/grave-dirt/grave-dirt.png': { source: require('../../../assets/altar/objects/tools/grave-dirt/grave-dirt.webp'), width: 400, height: 800 },
   'assets/altar/objects/tools/incense-burner/incense-burner.png': { source: require('../../../assets/altar/objects/tools/incense-burner/incense-burner.webp'), width: 1264, height: 1264 },
   'assets/altar/objects/tools/key/key.png': { source: require('../../../assets/altar/objects/tools/key/key.webp'), width: 800, height: 400 },
   'assets/altar/objects/tools/mortar-and-pestle/mortar-and-pestle.png': { source: require('../../../assets/altar/objects/tools/mortar-and-pestle/mortar-and-pestle.webp'), width: 1264, height: 1264 },
