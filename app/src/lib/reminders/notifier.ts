@@ -107,7 +107,8 @@ export function useReminderTaps() {
   useEffect(() => {
     const open = (notification: Notifications.Notification) => {
       const data = notification.request.content.data;
-      if ((data?.source === SOURCE || data?.source === STEP_SOURCE) && typeof data.url === 'string') router.push(data.url as Href);
+      // 'coven-rites' are coven rite reminders (lib/covens/reminders.ts).
+      if ((data?.source === SOURCE || data?.source === STEP_SOURCE || data?.source === 'coven-rites') && typeof data.url === 'string') router.push(data.url as Href);
     };
     try {
       const last = Notifications.getLastNotificationResponse();

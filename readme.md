@@ -69,6 +69,22 @@
   <li>Future search and organization tools</li>
 </ul>
 
+<h3>Covens</h3>
+
+<p>
+  Discoverable digital covens for witches 18 and over (see
+  <code>docs/covens.md</code>).
+</p>
+
+<ul>
+  <li>Coven directory, founding a coven, and open or application-based joining</li>
+  <li>Each coven's own creed, rules, requirements and versioned, signed agreements</li>
+  <li>Coven-defined positions, applications to join and requests to advance</li>
+  <li>Live coven chat and a shared, live coven altar</li>
+  <li>Coven rituals whose steps are given to members or positions, run live step by step</li>
+  <li>Reporting, blocking, and site-wide moderation of every coven</li>
+</ul>
+
 <h2>Technologies</h2>
 
 <ul>

@@ -76,7 +76,7 @@ for (const jsonFile of trackedFiles("*.json")) {
   }
 }
 
-const runtimeFiles = trackedFiles().filter((file) => /^(?:js|altar|grimoire|admin|submit)\//.test(file) || file === "index.html" || file === "script.js");
+const runtimeFiles = trackedFiles().filter((file) => /^(?:js|altar|grimoire|admin|submit|covens)\//.test(file) || file === "index.html" || file === "script.js");
 const runtimeSource = runtimeFiles.map((file) => `${file}\n${fs.readFileSync(path.join(root, file), "utf8")}`).join("\n");
 for (const pattern of [/\bservice_role\b/i, /\bsb_secret_[A-Za-z0-9_-]+/, /\/sandspod\//]) {
   if (pattern.test(runtimeSource)) failures.push(`runtime source contains forbidden pattern ${pattern}`);

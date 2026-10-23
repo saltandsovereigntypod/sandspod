@@ -1,0 +1,154 @@
+/*
+ * Covens: the directory, a coven's home, its gathering (chat) and its shared
+ * altar, on the Sanctuary pages' forest palette (css/sanctuary-pages.css).
+ */
+.cv-page--wide { max-width: 1080px; }
+
+.cv-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid rgba(226, 195, 109, 0.4); border-radius: 999px; padding: 3px 10px;
+  font-size: 0.8rem; color: var(--muted); white-space: nowrap;
+}
+.cv-pill--gold { color: var(--charcoal); background: var(--gold); border-color: var(--gold); }
+.cv-pill--warn { color: #f3c9a8; border-color: rgba(243, 160, 110, 0.6); }
+.cv-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+.cv-card-link { color: inherit; text-decoration: none; }
+.cv-card-link:hover .sp-card, .cv-card-link:focus-visible .sp-card { border-color: var(--gold); }
+.cv-card-link:focus-visible { outline: none; }
+.cv-directory { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.cv-directory .sp-card { height: 100%; align-content: start; }
+
+.cv-tabs { display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+.cv-tab {
+  border: 1px solid transparent; border-radius: 999px; padding: 7px 14px; background: transparent;
+  color: var(--cream); font: inherit; font-size: 0.95rem; cursor: pointer; text-decoration: none;
+}
+.cv-tab[aria-current="page"] { background: var(--gold); color: var(--charcoal); }
+.cv-tab:hover:not([aria-current="page"]), .cv-tab:focus-visible { border-color: rgba(226, 195, 109, 0.5); outline: none; }
+.cv-tab .cv-count { margin-left: 6px; font-size: 0.75rem; background: rgba(17, 21, 18, 0.6); color: var(--cream); border-radius: 999px; padding: 1px 7px; }
+
+.cv-doc { white-space: pre-wrap; line-height: 1.65; }
+.cv-banner { border: 1px solid rgba(243, 160, 110, 0.6); background: rgba(120, 60, 30, 0.22); border-radius: 14px; padding: 12px 16px; }
+.cv-banner--site { border-color: rgba(150, 180, 230, 0.6); background: rgba(40, 60, 100, 0.25); }
+.cv-status { min-height: 1.2em; color: var(--muted); font-size: 0.92rem; }
+.cv-status.is-error { color: #f3b8a0; }
+.cv-check { display: flex; gap: 10px; align-items: flex-start; line-height: 1.5; }
+/* styles.css makes every input full width; a checkbox sits beside its words. */
+.cv-check input { width: auto; flex: none; margin-top: 5px; padding: 0; }
+.cv-pane { display: grid; gap: 22px; }
+/* .button and friends set display, which would otherwise show [hidden] controls. */
+[data-page-root] [hidden] { display: none !important; }
+.cv-inline-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; }
+.cv-inline-form .sp-field { flex: 1 1 180px; }
+.cv-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.cv-table th, .cv-table td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.cv-table th { color: var(--muted); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.cv-scroll { overflow-x: auto; }
+
+/* --- the gathering (chat) ------------------------------------------------- */
+.cv-gathering { display: grid; gap: 12px; }
+.cv-presence { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; color: var(--muted); font-size: 0.9rem; }
+.cv-presence__dot { width: 8px; height: 8px; border-radius: 50%; background: #8fd18b; box-shadow: 0 0 8px #8fd18b; display: inline-block; }
+.cv-chat {
+  border: 1px solid var(--line); border-radius: 16px; background: rgba(17, 21, 18, 0.45);
+  height: min(62vh, 620px); overflow-y: auto; padding: 14px; display: grid; align-content: start; gap: 4px;
+  overscroll-behavior: contain;
+}
+.cv-day { text-align: center; color: var(--muted); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; margin: 10px 0 4px; }
+.cv-msg { display: grid; gap: 2px; padding: 6px 8px; border-radius: 10px; position: relative; }
+.cv-msg:hover, .cv-msg:focus-within { background: rgba(185, 160, 93, 0.08); }
+.cv-msg__head { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.cv-msg__name { font-weight: 600; color: var(--gold); }
+.cv-msg__time { color: var(--muted); font-size: 0.78rem; }
+.cv-msg__body { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5; }
+.cv-msg__body--gone { color: var(--muted); font-style: italic; }
+.cv-msg__actions { display: none; gap: 4px; position: absolute; right: 6px; top: 4px; }
+.cv-msg:hover .cv-msg__actions, .cv-msg:focus-within .cv-msg__actions { display: flex; }
+.cv-msg__actions button { background: rgba(17, 21, 18, 0.9); border: 1px solid var(--line); color: var(--cream); border-radius: 8px; font: inherit; font-size: 0.78rem; padding: 2px 8px; cursor: pointer; }
+@media (hover: none) { .cv-msg__actions { display: flex; position: static; margin-top: 2px; } }
+.cv-composer { display: flex; gap: 8px; align-items: flex-end; }
+.cv-composer textarea {
+  flex: 1; min-height: 48px; max-height: 180px; resize: vertical; background: rgba(17, 21, 18, 0.7); color: var(--cream);
+  border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; font: inherit;
+}
+
+/* --- the shared altar ------------------------------------------------------ */
+.cv-altar-layout { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr) 280px; align-items: start; }
+@media (max-width: 860px) { .cv-altar-layout { grid-template-columns: 1fr; } }
+.cv-altar {
+  position: relative; width: 100%; aspect-ratio: 4 / 3; border-radius: 18px; overflow: hidden;
+  border: 1px solid rgba(226, 195, 109, 0.35); background: radial-gradient(ellipse at 50% 85%, #2b2418 0%, #141a15 55%, #0b0e0c 100%);
+  background-size: cover; background-position: center; touch-action: none; user-select: none;
+}
+.cv-altar__item {
+  position: absolute; width: calc(11% * var(--scale, 1)); transform: translate(-50%, -100%) rotate(var(--rot, 0deg));
+  transform-origin: 50% 100%; cursor: grab; background: none; border: 0; padding: 0;
+}
+.cv-altar__item:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 6px; }
+.cv-altar__item.is-selected { filter: drop-shadow(0 0 6px rgba(226, 195, 109, 0.9)); }
+.cv-altar__item.is-dragging { cursor: grabbing; }
+.cv-altar__item img { width: 100%; height: auto; display: block; pointer-events: none; -webkit-user-drag: none; }
+.cv-altar__item.is-burnt img { filter: grayscale(0.7) brightness(0.6); }
+.cv-flame {
+  position: absolute; width: 22%; aspect-ratio: 1 / 2.2; left: var(--wick-x, 50%); top: var(--wick-y, 5%);
+  transform: translate(-50%, -96%); pointer-events: none;
+  background: radial-gradient(ellipse at 50% 72%, #fffbe6 0%, #ffd56b 28%, #ff9a2e 55%, rgba(255, 110, 20, 0) 75%);
+  border-radius: 50% 50% 45% 45% / 62% 62% 38% 38%; filter: blur(0.4px);
+  animation: cv-flicker 1.6s ease-in-out infinite alternate; opacity: calc(0.55 + 0.45 * var(--life, 1));
+}
+.cv-flame::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 340%; aspect-ratio: 1; transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255, 196, 90, 0.28) 0%, rgba(255, 170, 60, 0) 60%); border-radius: 50%;
+}
+@keyframes cv-flicker {
+  0% { transform: translate(-50%, -96%) scale(1, 1) rotate(-1deg); }
+  50% { transform: translate(-50%, -96%) scale(0.94, 1.06) rotate(1.5deg); }
+  100% { transform: translate(-50%, -96%) scale(1.04, 0.95) rotate(-0.5deg); }
+}
+@media (prefers-reduced-motion: reduce) { .cv-flame { animation: none; } }
+.cv-altar__empty { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 20px; color: var(--muted); pointer-events: none; }
+.cv-altar-panel { display: grid; gap: 12px; }
+.cv-picker { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 6px; max-height: 260px; overflow-y: auto; }
+.cv-picker button {
+  background: rgba(17, 21, 18, 0.6); border: 1px solid var(--line); border-radius: 10px; padding: 4px; cursor: pointer; color: var(--cream);
+  display: grid; gap: 2px; font: inherit; font-size: 0.7rem; text-align: center;
+}
+.cv-picker button img { width: 100%; aspect-ratio: 1; object-fit: contain; }
+.cv-picker button:hover, .cv-picker button:focus-visible { border-color: var(--gold); outline: none; }
+.cv-swatches { display: flex; flex-wrap: wrap; gap: 6px; }
+.cv-swatch { width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; }
+.cv-swatch[aria-pressed="true"] { border-color: var(--cream); box-shadow: 0 0 0 2px var(--gold); }
+
+/* --- coven rituals ----------------------------------------------------------- */
+.cv-banner--turn { border-color: rgba(226, 195, 109, 0.8); background: rgba(185, 160, 93, 0.18); }
+.cv-steps, .cv-steps-edit { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.cv-step { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; display: grid; gap: 8px; }
+.cv-step.is-current { border-color: var(--gold); background: rgba(185, 160, 93, 0.12); }
+.cv-step.is-done { opacity: 0.7; }
+.cv-step.is-mine:not(.is-done) { border-left: 4px solid var(--gold); }
+.cv-step__head { display: flex; gap: 12px; align-items: flex-start; }
+.cv-step__n { flex: none; width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(226, 195, 109, 0.6); display: grid; place-items: center; color: var(--gold); font-weight: 600; }
+.cv-step.is-current .cv-step__n { background: var(--gold); color: var(--charcoal); }
+.cv-step__title { display: grid; gap: 6px; }
+.cv-spoken { border-left: 2px solid var(--gold); padding-left: 14px; font-family: "Cormorant Garamond", serif; font-size: 1.2rem; font-style: italic; margin: 0; }
+.cv-your-turn { box-shadow: 0 0 0 2px rgba(226, 195, 109, 0.35), 0 0 40px rgba(226, 195, 109, 0.15); }
+.cv-step-edit .cv-inline-form { align-items: center; }
+.cv-grow { flex: 1; }
+
+.cv-altar--preview { max-width: 720px; }
+.cv-altar--preview .cv-altar__item { cursor: default; pointer-events: none; }
+.cv-altar-action { border-top: 1px dashed rgba(226, 195, 109, 0.35); padding-top: 10px; display: grid; gap: 8px; }
+
+.cv-swatch--small { width: 14px; height: 14px; border-radius: 50%; display: inline-block; border: 1px solid var(--line); }
+.cv-swatch-choice { position: relative; display: inline-flex; }
+.cv-swatch-choice input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.cv-swatch-choice input:checked + .cv-swatch { border-color: var(--cream); box-shadow: 0 0 0 2px var(--gold); }
+.cv-swatch-choice input:focus-visible + .cv-swatch { outline: 2px solid var(--gold); outline-offset: 2px; }
+.cv-petition--closed { opacity: 0.75; }
+.cv-book-page { font-size: 1.05rem; line-height: 1.75; }
+
+/* --- dialogs -------------------------------------------------------------- */
+.cv-dialog { border: 1px solid rgba(226, 195, 109, 0.5); border-radius: 18px; background: #18211b; color: var(--cream); padding: 22px; width: min(520px, calc(100vw - 32px)); }
+.cv-dialog::backdrop { background: rgba(5, 8, 6, 0.7); }
+.cv-dialog form { display: grid; gap: 14px; }
