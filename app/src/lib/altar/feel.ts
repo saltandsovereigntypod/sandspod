@@ -1,5 +1,5 @@
 // How the altar sounds and feels: a match struck and a soft tap as a candle
-// is lit, a breath as it's snuffed, and while candles burn the small sounds
+// is lit, a lighter tap as it's snuffed, and while candles burn the small sounds
 // real ones make: dry crackles of wax now and then, sharp pops when there are
 // herbs dressed into the wax, and little sputters from oil. Quiet, mixed with
 // whatever else is playing, and silent when the phone's ring switch is off.
@@ -17,7 +17,6 @@ import type { SavedObject } from './types';
 
 const SOUNDS = {
   strike: require('../../../assets/sounds/match-strike.wav'),
-  snuff: require('../../../assets/sounds/snuff.wav'),
   crackle1: require('../../../assets/sounds/crackle-1.wav'),
   crackle2: require('../../../assets/sounds/crackle-2.wav'),
   crackle3: require('../../../assets/sounds/crackle-3.wav'),
@@ -82,8 +81,8 @@ function tap(style: Haptics.ImpactFeedbackStyle) {
 const uidOf = (o: SavedObject) => String(o.altarObjectId || '');
 
 /**
- * A match and a tap when a candle on this altar is lit, a breath and a lighter
- * tap when one is put out. Watches the candles themselves, so lighting from a
+ * A match and a tap when a candle on this altar is lit, a lighter tap when
+ * one is put out. Watches the candles themselves, so lighting from a
  * button, the close-up or the widget all sound the same. Not on first showing.
  */
 export function useCandleFeel(altarId: string, objects: SavedObject[]) {
@@ -100,7 +99,6 @@ export function useCandleFeel(altarId: string, objects: SavedObject[]) {
       if (prefs.candleSounds) play('strike', 0.6);
       if (prefs.haptics) tap(Haptics.ImpactFeedbackStyle.Medium);
     } else if (snuffed) {
-      if (prefs.candleSounds) play('snuff', 0.45);
       if (prefs.haptics) tap(Haptics.ImpactFeedbackStyle.Light);
     }
   }, [altarId, objects, prefs.candleSounds, prefs.haptics]);
