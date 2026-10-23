@@ -10,6 +10,9 @@
 // so it can be tested.
 
 import { isCandle, logAppEvent, appStateOf, placedAtOf } from './livingState.ts';
+import { isFrame } from './frame.ts';
+import { seasonalFood, seasonalIdOf } from './seasonal.ts';
+import { shelfObjectOf } from './shelf.ts';
 import type { SavedObject } from './types.ts';
 import type { Offering } from './devotion.ts';
 
@@ -23,6 +26,7 @@ export type OfferingKindId =
   | 'honey'
   | 'bread'
   | 'fruit'
+  | 'harvest'
   | 'sweets'
   | 'cooked'
   | 'flowers'
@@ -69,6 +73,10 @@ export const OFFERING_KINDS: OfferingKind[] = [
     stages: [FRESH, st('Drying at the edges', 'is drying at the edges'), st('Stale', 'has gone stale'), st('Hard and dry', 'has gone hard')], overMs: 5 * DAY },
   { id: 'fruit', label: 'Fruit', lifeMs: 4 * DAY, ages: 'softens', words: ['fruit', 'apple', 'apples', 'pomegranate', 'orange', 'oranges', 'grape', 'grapes', 'berries', 'berry', 'fig', 'figs', 'pear', 'pears', 'plum', 'plums', 'peach', 'lemon'],
     stages: [FRESH, st('Softening', 'is softening'), st('Browning', 'is browning'), st('Going over', 'is going over')], overMs: 7 * DAY },
+  // Whole apples, pomegranates, gourds and squash from the harvest keep far
+  // longer than cut or soft fruit: they soften over a couple of weeks.
+  { id: 'harvest', label: 'Whole apples, gourds or squash', lifeMs: 14 * DAY, ages: 'softens', words: ['gourd', 'gourds', 'squash', 'squashes', 'pumpkin', 'pumpkins', 'marrow'],
+    stages: [FRESH, st('Softening', 'is softening'), st('Browning', 'is browning'), st('Going over', 'is going over')], overMs: 30 * DAY },
   { id: 'sweets', label: 'Sweets or honey cakes', lifeMs: 3 * DAY, ages: 'stale', words: ['sweet', 'sweets', 'chocolate', 'candy', 'honey cake', 'honey cakes', 'cookie', 'cookies'],
     stages: [FRESH, st('Drying', 'is drying out'), st('Stale', 'has gone stale'), st('Hard and dry', 'has gone hard')], overMs: 7 * DAY },
   { id: 'cooked', label: 'A cooked meal', lifeMs: DAY, ages: 'spoils', words: ['meal', 'food', 'soup', 'stew', 'rice', 'egg', 'eggs', 'meat'],
@@ -269,7 +277,15 @@ const LIKENESS = / (silk|artificial|fake|paper|plastic|wax|wooden|ceramic|carved
  * Returns its kind, or null.
  */
 export function perishableItself(object: SavedObject): OfferingKindId | null {
-  if (NEVER_ITSELF.has(String(object.type || '')) || holdsOfferings(object)) return null;
+  // A seasonal thing is food or it keeps, whatever it's called (seasonal.ts).
+  const seasonal = seasonalIdOf(object);
+  if (seasonal) {
+    const food = seasonalFood(seasonal);
+    return food && offeringKind(food)?.lifeMs ? (food as OfferingKindId) : null;
+  }
+  // A frame named for someone ("In memory of Rose") is never a flower.
+  // Nor are the cabinet's other tools and natural finds ("Tea Leaf Cup", "Pressed Flowers"): they keep.
+  if (NEVER_ITSELF.has(String(object.type || '')) || holdsOfferings(object) || isFrame(object) || shelfObjectOf(object)) return null;
   const name = ` ${String(object.label || '').toLowerCase().replace(/[^a-z ]+/g, ' ')} `;
   if (!name.trim() || LIKENESS.test(name)) return null;
   const kind = kindFromWords(name);

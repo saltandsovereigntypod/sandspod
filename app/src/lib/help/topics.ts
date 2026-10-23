@@ -443,12 +443,57 @@ export const HELP: HelpSection[] = [
         summary: 'The cabinet holds everything you can set on an altar.',
         steps: [
           'On the altar screen, tap "Open the cabinet".',
-          'Choose a drawer: Candles, Herbs, Crystals, Tools, Deities or Vessels. Or type in "Search the cabinet".',
+          'Choose a drawer: Candles, Herbs, Crystals, Tools, Deities, Vessels, Natural or Seasonal. Or type in "Search the cabinet".',
           'Tap an item to place it in the middle of the altar.',
           'For an item with several forms, tap the form you want.',
         ],
         tips: ['The cabinet shows each item’s best-known uses, so you can choose with meaning.'],
         keywords: ['cabinet', 'add object', 'place item', 'items', 'tools', 'deity statues', 'vessels'],
+      },
+      {
+        id: 'altar-natural-and-tools',
+        title: 'Add natural finds and everyday tools',
+        summary: 'Feathers, a hag stone, shells and acorns; a scrying mirror, red cord, a lantern or a singing bowl.',
+        steps: [
+          'Open the cabinet and choose the Natural drawer for feathers, stones, shells, wood, antler, leaves and other finds.',
+          'Or choose Tools for divination tools, cords and wax, candle care, drums and bowls, lamps and figures.',
+          'Each says a few words about itself. Tap one to place it.',
+        ],
+        tips: ['An oil lamp, lantern or salt lamp is set down glowing. Tap "Glow" to turn it off or on.'],
+        keywords: ['natural', 'feathers', 'hag stone', 'shells', 'sea glass', 'acorns', 'antler', 'scrying mirror', 'crystal ball', 'red cord', 'witch’s ladder', 'lantern', 'oil lamp', 'singing bowl', 'drum', 'stang'],
+      },
+      {
+        id: 'altar-seasonal',
+        title: 'Set out seasonal things for the sabbats',
+        summary: 'Lanterns at Samhain, the Yule log, Brigid’s cross, the harvest’s wheat and apples.',
+        steps: [
+          'Open the cabinet and choose the Seasonal drawer.',
+          'Its things are grouped by sabbat. In the week before a sabbat, and on the day, the drawer comes first and that sabbat’s things are at the top, under "For Samhain" (or whichever is coming).',
+          'Tap one to place it on the altar.',
+        ],
+        tips: [
+          'Apples, gourds and a pomegranate are real food: they soften and brown over a couple of weeks, and ask to be tended as other offerings do. The woven and straw things keep.',
+          'On a sabbat night, "Set tonight’s altar" sets out one of its seasonal things too.',
+        ],
+        keywords: ['seasonal', 'sabbat', 'wheel of the year', 'samhain', 'yule', 'imbolc', 'ostara', 'beltane', 'litha', 'lammas', 'mabon', 'pumpkin', 'harvest'],
+      },
+      {
+        id: 'altar-ancestor-frame',
+        title: 'Set a photo of an ancestor in a frame',
+        summary: 'A gilt or wooden frame with a photo of your own, and their name and dates.',
+        steps: [
+          'Open the cabinet, choose Tools, and tap Ancestor Frame in the style you like.',
+          'With the frame selected, tap "Choose a photo" and pick one. It is cropped to fill the frame’s opening.',
+          'Tap "Old sepia" to soften it to an old print, or again to show it as it is.',
+          'Tap "Add a name" to give their name and dates, or choose them from your Ancestors in Hedge. Tap "Save".',
+          'Tap "Look closer" to see the photo large, with "In memory of" and their dates beneath it.',
+        ],
+        tips: [
+          'You can set as many frames on an altar as you like.',
+          'Signed in, the photo is kept with your account and shows on the website too. As a guest it stays on this device.',
+          'A frame named from your Ancestors shows their days and what they loved when it’s selected.',
+        ],
+        keywords: ['photo frame', 'picture frame', 'ancestor photo', 'memorial', 'in memory', 'beloved dead', 'sepia', 'portrait'],
       },
       {
         id: 'altar-make-own-item',
@@ -743,8 +788,11 @@ export const HELP: HelpSection[] = [
           'Tap "Set it out".',
           'Later tap "Refresh", "Return to nature" or "Remove" (reads "Empty the vessel" for a vessel).',
         ],
-        tips: ['Fresh offerings age on the altar. A note says when one is ready to be refreshed.'],
-        keywords: ['food offering', 'libation', 'milk and honey', 'wine', 'flowers', 'fresh', 'wilts'],
+        tips: [
+          'Fresh offerings age on the altar. A note says when one is ready to be refreshed.',
+          'Fruit, bread, sweets, a meal, flowers or honey in the comb are drawn heaped in the bowl, dish, chalice or cauldron, and go over there: bread dries, fruit browns, a meal spoils, flowers wilt and drop their petals.',
+        ],
+        keywords: ['food offering', 'libation', 'milk and honey', 'wine', 'flowers', 'fresh', 'wilts', 'fruit bowl', 'honeycomb'],
       },
       {
         id: 'altar-deity-offering',

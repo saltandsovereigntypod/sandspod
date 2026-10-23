@@ -10,6 +10,11 @@ export const ALTAR_ARTWORK: {
   pantheonGroups: string[];
   deityPantheons: Record<string, string>;
   backgrounds: { id: string; name: string; assetPath: string }[];
+  seasonal: Record<string, string>;
+  shelfTools: Record<string, string>;
+  natural: Record<string, string>;
+  frames: Record<string, { image: string; ratio: number | null; opening: { left: number; top: number; width: number; height: number; oval: boolean } | null }>;
+  offeringFoods: Record<string, { image: string; ratio: number | null }>;
   items: Record<'herbs' | 'crystals' | 'deities' | 'tools' | 'vessels', ArtworkItem[]>;
 } = {
   "candleColors": [
@@ -361,6 +366,11 @@ export const ALTAR_ARTWORK: {
       "assetPath": "/assets/altar/backgrounds/candlelit-cave.png"
     }
   ],
+  "seasonal": {},
+  "shelfTools": {},
+  "natural": {},
+  "frames": {},
+  "offeringFoods": {},
   "items": {
     "herbs": [
       {

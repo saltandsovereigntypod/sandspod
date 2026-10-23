@@ -157,7 +157,7 @@ export function OfferingSheet({
   }, [visible]);
   return (
     <Sheet visible={visible} eyebrow={name} title="Set out an offering" onClose={onClose} size="half">
-      <Text style={type.caption}>Water and drink last a day or two, bread a few days, fruit a little longer, cut flowers about a week. Stones, coins and dried herbs keep.</Text>
+      <Text style={type.caption}>Water and drink last a day or two, bread a few days, fruit a little longer, cut flowers about a week, whole apples and gourds a couple of weeks. Food and flowers are drawn in the bowl, and go over there. Stones, coins and dried herbs keep.</Text>
       <ChipRow>
         {OFFERING_KINDS.map((k) => (
           <Chip key={k.id} label={k.label} active={kind === k.id} onPress={() => setKind(k.id)} />
@@ -166,7 +166,7 @@ export function OfferingSheet({
       <TextInput
         value={label}
         onChangeText={setLabel}
-        placeholder="What exactly (optional): red wine, an apple"
+        placeholder="What exactly (optional): red wine, an apple, honey in the comb"
         placeholderTextColor={colors.tabInactive}
         accessibilityLabel="What the offering is"
         maxLength={60}

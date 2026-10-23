@@ -350,6 +350,11 @@
         "assetPath": "/assets/altar/backgrounds/candlelit-cave.png"
       }
     ],
+    "seasonal": {},
+    "shelfTools": {},
+    "natural": {},
+    "frames": {},
+    "offeringFoods": {},
     "items": {
       "herbs": [
         {
