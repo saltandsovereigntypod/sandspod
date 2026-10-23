@@ -173,6 +173,24 @@ export default function Reminders() {
       </View>
 
       <View style={ui.gapSmall}>
+        <SectionLabel>Altar offerings</SectionLabel>
+        <Card>
+          <Toggle
+            label="Remind me when an offering wants tending"
+            detail="Water drying, flowers wilting, bread going stale"
+            value={settings.offerings}
+            onChange={(offerings) => void updateReminderSettings({ offerings })}
+          />
+          {settings.offerings && (
+            <>
+              <TimeStepper minutes={settings.offeringsAt} onChange={(offeringsAt) => void updateReminderSettings({ offeringsAt })} />
+              <Body muted>One gentle note on a day something on your altars goes over, at this time. Offerings you’ve chosen to leave as they are won’t ask.</Body>
+            </>
+          )}
+        </Card>
+      </View>
+
+      <View style={ui.gapSmall}>
         <SectionLabel>Your calendar</SectionLabel>
         <Card>
           <Body muted>Optional. Planned rituals can be added one by one from their plan.</Body>

@@ -23,6 +23,7 @@ import { flameLayout } from './altar/flame.ts';
 import { boxToPixels, candleLightRadius, displayBox, IMAGE_INSET, imageRatio, rotationOf, STAGE_ASPECT } from './altar/geometry.ts';
 import { stackOrder } from './altar/layers.ts';
 import { incenseLife, isIncense } from './altar/incense.ts';
+import { agingLook, isOfferingItself, offeringFreshness } from './altar/offerings.ts';
 import { apothecaryStateOf, candleLife, dressingOverlays, isCandle, isLit, lightCandle, readLivingState, snuffCandle } from './altar/livingState.ts';
 import { documentFromAltar, type AltarDocument } from './altar/snapshot.ts';
 import type { SavedAltar, SavedObject } from './altar/types.ts';
@@ -442,6 +443,13 @@ export function burnStepTimes(altars: SavedAltar[], now: Date, hours = 12, limit
   return Array.from({ length: limit }, (_, i) => out[Math.floor((i * out.length) / limit)]);
 }
 
+/** How far an offering that is itself wilting bows (degrees), or 0. */
+function offeringBow(object: SavedObject, now: number): number {
+  if (!isOfferingItself(object)) return 0;
+  const fresh = offeringFreshness(object, now);
+  return fresh ? agingLook(fresh.kind, fresh).droop : 0;
+}
+
 /** Where each object sits, as the app's altar stage draws it (AltarStage). */
 export function altarScene(objects: SavedObject[], image: (path: string) => string, now?: number): SceneItem[] {
   return sceneObjects(objects).map(({ object, index }) => {
@@ -454,7 +462,8 @@ export function altarScene(objects: SavedObject[], image: (path: string) => stri
       image: image(String(object.imagePath)),
       box: { x: px.left, y: px.top, w: px.width, h: px.height },
       inset: { x: IMAGE_INSET.x, y: (IMAGE_INSET.y * px.width) / px.height },
-      rotation: rotationOf(object),
+      // A wilting flower bows its head on the widget too (its colour and a vessel's sinking liquid show only in the app).
+      rotation: rotationOf(object) + offeringBow(object, now ?? Date.now()),
       flipped: object.flipped === 'true',
       candle,
       // Burned-down candles, and incense burned down to ash, are drawn faded.

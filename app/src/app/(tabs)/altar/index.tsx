@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ActivityIndicator, Image, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -8,6 +8,8 @@ import { Icon } from '../../../components/Icon';
 import { altarImageSource } from '../../../lib/altar/assets';
 import { DEFAULT_BACKGROUND } from '../../../lib/altar/cabinet';
 import { confirmAction } from '../../../lib/grimoire/confirm';
+import { altarOfferingsDue } from '../../../lib/altar/burnout';
+import { tendingNote } from '../../../lib/altar/offerings';
 import { altarSummary } from '../../../lib/altar/snapshot';
 import { useAltars } from '../../../lib/altar/store';
 import type { SavedAltar } from '../../../lib/altar/types';
@@ -27,6 +29,9 @@ export default function AltarList() {
   const [pulling, setPulling] = useState(false);
   const open = (altarId: string) => router.push({ pathname: '/altar/[altarId]', params: { altarId } });
   const draftSource = draftSourceId ? altars.find((a) => a.id === draftSourceId) : null;
+  // Offerings that have gone over on your saved altars (water drying, flowers wilting).
+  const due = useMemo(() => altarOfferingsDue(altars, new Date(), 0), [altars]);
+  const note = tendingNote(due);
 
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
@@ -58,6 +63,18 @@ export default function AltarList() {
         </View>
 
         <Button label="Build a new altar" onPress={() => open('new')} />
+
+        {note && (
+          <Pressable
+            onPress={() => open(due[0].altarId)}
+            accessibilityRole="button"
+            accessibilityHint="Opens the altar, where you can refresh it, give it back or leave it as it is"
+            style={({ pressed }) => [styles.tending, pressed && styles.pressed]}
+          >
+            <Text style={type.eyebrow}>Tending</Text>
+            <Text style={type.body}>{note}</Text>
+          </Pressable>
+        )}
 
         {draft && (draft.objects?.length ?? 0) > 0 && (
           <Pressable
@@ -195,6 +212,7 @@ const styles = StyleSheet.create({
     borderColor: colors.goldLine,
   },
   list: { gap: 12 },
+  tending: { backgroundColor: colors.surface, borderRadius: radius.card, padding: 18, gap: 4, borderLeftWidth: 2, borderLeftColor: colors.goldLine },
   altar: {
     flexDirection: 'row',
     alignItems: 'center',

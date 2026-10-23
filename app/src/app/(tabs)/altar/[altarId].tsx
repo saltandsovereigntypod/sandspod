@@ -63,17 +63,19 @@ import { clearAsh, incenseFormOf, incenseLife, isIncense, lightIncense, putOutIn
 import { moonChargesOf } from '../../../lib/altar/moonCharge';
 import {
   agingDeityOffering,
-  agingLook,
   canHoldOffering,
   endOffering,
-  FRESHNESS_WORDS,
   freshnessLine,
+  freshnessWord,
   holdsOfferings,
+  leaveOffering,
   offeringFreshness,
   offeringKind,
   offeringOf,
+  offeringsDue,
   refreshOffering,
   setOffering,
+  tendingNote,
   type OfferingEnd,
 } from '../../../lib/altar/offerings';
 import {
@@ -299,6 +301,9 @@ export default function AltarEditor() {
       setTonight(null);
       undo.current = [];
       redo.current = [];
+      // Offerings that have gone over while you were away ask, gently, to be tended.
+      const due = tendingNote(offeringsDue([{ id: id ?? '', name: altarName, objects: prepared.objects }], Date.now()), { oneAltar: true });
+      if (due) setNotice(`${due} Tap it to refresh it, give it back, or leave it as it is.`);
     };
     if (altarId === 'new') {
       // Settings → Default altar background, as the website sets the stage on a fresh altar page.
@@ -713,7 +718,7 @@ export default function AltarEditor() {
     const looks: AgingLooks = {};
     for (const object of doc?.objects ?? []) {
       const fresh = offeringFreshness(object, minute * 60_000);
-      if (fresh && fresh.level !== 'lasting' && object.altarObjectId) looks[object.altarObjectId] = agingLook(fresh.kind, fresh);
+      if (fresh && fresh.level !== 'lasting' && object.altarObjectId) looks[object.altarObjectId] = true;
     }
     return looks;
   }, [doc, minute]);
@@ -1100,6 +1105,10 @@ export default function AltarEditor() {
                 changeSelected((o) => refreshOffering(o, nowIso()));
                 setNotice('Refreshed.');
               },
+              leaveOffering: () => {
+                changeSelected((o) => leaveOffering(o, nowIso()));
+                setNotice('Left as it is. It won’t ask to be tended again until you refresh it.');
+              },
               endOffering: endSelectedOffering,
               deityOffering,
               incense: () => {
@@ -1260,8 +1269,6 @@ export default function AltarEditor() {
             object={selectedObject}
             label={shortLabel(selectedObject?.label)}
             background={doc.background}
-            agedOpacity={aging[String(selectedObject?.altarObjectId)]?.opacity}
-            droop={aging[String(selectedObject?.altarObjectId)]?.droop}
             charge={charges[String(selectedObject?.altarObjectId)]}
             onClose={() => setSheet(null)}
           />
@@ -1823,6 +1830,7 @@ type Actions = {
   read: () => void;
   offer: () => void;
   refreshOffering: () => void;
+  leaveOffering: () => void;
   endOffering: (how: OfferingEnd) => void;
   deityOffering: (action: 'refresh' | 'returned' | 'removed') => void;
   incense: () => void;
@@ -2048,7 +2056,7 @@ function ObjectPanel({
       )}
       {deityAging && (
         <View style={styles.living}>
-          <Text style={type.eyebrow}>{`Your offering · ${FRESHNESS_WORDS[deityAging.fresh.level]}`}</Text>
+          <Text style={type.eyebrow}>{`Your offering · ${freshnessWord(deityAging.fresh)}`}</Text>
           <Text style={type.caption}>{freshnessLine(deityAging.kind, deityAging.fresh)}</Text>
           <ChipRow>
             <Chip label="Refresh" symbol="↻" accessibilityLabel="Refresh the offering with a fresh one" onPress={() => act.deityOffering('refresh')} />
@@ -2060,10 +2068,13 @@ function ObjectPanel({
 
       {offering && contents ? (
         <View style={styles.living}>
-          <Text style={type.eyebrow}>{`${contents.label || offeringKind(contents.kind)?.label} · ${FRESHNESS_WORDS[offering.level]}`}</Text>
-          <Text style={type.caption}>{freshnessLine(offering.kind, offering)}</Text>
+          <Text style={type.eyebrow}>{`${contents.label || offeringKind(contents.kind)?.label} · ${freshnessWord(offering)}`}</Text>
+          <Text style={type.caption}>{contents.leftAt ? `${offering.stage.name}. Left as it is; refresh it whenever you like.` : freshnessLine(offering.kind, offering)}</Text>
           <ChipRow>
             {offering.level !== 'lasting' && <Chip label="Refresh" symbol="↻" active={offering.level === 'refresh'} onPress={act.refreshOffering} />}
+            {offering.level !== 'lasting' && offering.level !== 'fresh' && !contents.leftAt && (
+              <Chip label="Leave it be" symbol="☙" accessibilityLabel="Leave it as it is, and stop asking to tend it" onPress={act.leaveOffering} />
+            )}
             <Chip label="Return to nature" symbol="❧" onPress={() => act.endOffering('returned')} />
             <Chip label="Remove" symbol="⌫" accessibilityLabel={holdsOfferings(object) ? 'Empty the vessel' : 'Clear it away'} onPress={() => act.endOffering('removed')} />
             <Chip label={holdsOfferings(object) ? 'Something else' : 'What it is'} symbol="✎" onPress={act.offer} />

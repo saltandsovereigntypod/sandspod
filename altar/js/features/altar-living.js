@@ -132,7 +132,7 @@
       out.push(block("Your relationship", caption(relationship.summary) + (relationship.reason ? caption(`Here for ${relationship.reason}.`) : "") + relationship.feasts.map((f) => caption(`${f.date.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })} · ${f.name}${f.tradition ? ` (${f.tradition})` : ""}`)).join("")));
     }
     if (deityAging) {
-      out.push(block(`Your offering · ${core.offerings.FRESHNESS_WORDS[deityAging.fresh.level]}`, caption(core.offerings.freshnessLine(deityAging.kind, deityAging.fresh)) + chips([
+      out.push(block(`Your offering · ${core.offerings.freshnessWord(deityAging.fresh)}`, caption(core.offerings.freshnessLine(deityAging.kind, deityAging.fresh)) + chips([
         { label: "Refresh", symbol: "↻", action: "deity-offering", data: { how: "refresh" }, hint: "Refresh the offering with a fresh one" },
         { label: "Return to nature", symbol: "❧", action: "deity-offering", data: { how: "returned" } },
         { label: "Remove", symbol: "⌫", action: "deity-offering", data: { how: "removed" }, hint: "Clear the offering away" }
@@ -140,8 +140,10 @@
     }
     if (offering && contents) {
       const holds = core.offerings.holdsOfferings(saved);
-      out.push(block(`${contents.label || core.offerings.offeringKind(contents.kind)?.label} · ${core.offerings.FRESHNESS_WORDS[offering.level]}`, caption(core.offerings.freshnessLine(offering.kind, offering)) + chips([
+      const line = contents.leftAt ? `${offering.stage.name}. Left as it is; refresh it whenever you like.` : core.offerings.freshnessLine(offering.kind, offering);
+      out.push(block(`${contents.label || core.offerings.offeringKind(contents.kind)?.label} · ${core.offerings.freshnessWord(offering)}`, caption(line) + chips([
         offering.level !== "lasting" ? { label: "Refresh", symbol: "↻", action: "offering-refresh", pressed: offering.level === "refresh" } : null,
+        offering.level !== "lasting" && offering.level !== "fresh" && !contents.leftAt ? { label: "Leave it be", symbol: "☙", action: "offering-leave", hint: "Leave it as it is, and stop asking to tend it" } : null,
         { label: "Return to nature", symbol: "❧", action: "offering-end", data: { how: "returned" } },
         { label: "Remove", symbol: "⌫", action: "offering-end", data: { how: "removed" }, hint: holds ? "Empty the vessel" : "Clear it away" },
         { label: holds ? "Something else" : "What it is", symbol: "✎", action: "offer" }
@@ -1016,6 +1018,7 @@
     "tend-spell": (button) => { const e = cache.spells.find((x) => x.id === button.dataset.entry); if (e) tendSpell(e); },
     "deity-offering": (button) => deityOffering(button.dataset.how),
     "offering-refresh": () => { change((o) => A().offerings.refreshOffering(o, nowIso())); notice("Refreshed."); },
+    "offering-leave": () => { change((o) => A().offerings.leaveOffering(o, nowIso())); notice("Left as it is. It won’t ask to be tended again until you refresh it."); },
     "offering-end": (button) => endOffering(button.dataset.how),
     offer: openOffering,
     renew: shakeJar,
@@ -1072,15 +1075,30 @@
     };
   }
 
+  // Offerings that went over while you were away ask, gently, to be tended (once each time an altar opens).
+  const tendingNoted = new Set();
+  function noteTending() {
+    const core = A();
+    if (!core || !B()) return;
+    const id = B().altarId() || "unsaved";
+    if (tendingNoted.has(id)) return;
+    const objects = B().objects().map((el) => B().toSaved(el));
+    if (!objects.length) return;
+    tendingNoted.add(id);
+    const due = core.offerings.tendingNote(core.offerings.offeringsDue([{ id, name: B().altarName(), objects }], Date.now()), { oneAltar: true });
+    if (due) notice(`${due} Select it to refresh it, give it back, or leave it as it is.`);
+  }
+
   function watch() {
     const panel = document.querySelector(".altar-companion-panel [data-companion-content]");
     if (panel) new MutationObserver(() => { if (!panel.querySelector("[data-app-living]") && selected()) schedule(); }).observe(panel, { childList: true });
     ["app-altar:changed", "living-object-state:changed", "companion:refreshed"].forEach((name) => document.addEventListener(name, schedule));
-    document.addEventListener("altar:current-changed", () => loadEntries().then(schedule));
+    document.addEventListener("altar:current-changed", () => { loadEntries().then(schedule); setTimeout(noteTending, 600); });
     global.SaltPage?.onUserChange?.(() => loadEntries().then(schedule));
     // The burning time counts up; offerings age by the minute.
     setInterval(() => { if (!document.hidden && selected()) render(); }, 10000);
     loadEntries().then(schedule);
+    setTimeout(noteTending, 1500);
     scheduleIncense();
     document.addEventListener("app-altar:changed", scheduleIncense);
   }

@@ -27,14 +27,12 @@ type Props = {
   label: string;
   /** The altar's background, laid dim behind it. */
   background?: string;
-  /** How it's aging and how charged it is, as the stage shows them. */
-  agedOpacity?: number;
-  droop?: number;
+  /** How charged it is, as the stage shows it. */
   charge?: number;
   onClose: () => void;
 };
 
-export function CloseUpSheet({ visible, object, label, background, agedOpacity, droop, charge, onClose }: Props) {
+export function CloseUpSheet({ visible, object, label, background, charge, onClose }: Props) {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     if (!visible) return;
@@ -74,7 +72,7 @@ export function CloseUpSheet({ visible, object, label, background, agedOpacity, 
           <Ellipse cx="50%" cy="55%" rx="55%" ry="50%" fill="url(#closeup-light)" />
         </Svg>
         <View style={[styles.object, { width, height, top: frameHeight - height - 18 }]}>
-          <AltarObjectArt object={object} width={width} height={height} agedOpacity={agedOpacity} droop={droop} charge={charge} now={now} />
+          <AltarObjectArt object={object} width={width} height={height} charge={charge} now={now} />
         </View>
       </View>
       {lines.length > 0 && (
