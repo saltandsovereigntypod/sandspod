@@ -4,8 +4,10 @@
 
 import { supabase } from '../supabase';
 import type {
+  Advancement,
   AltarItem,
   Application,
+  CovenDraft,
   BookDraft,
   BookPage,
   Coven,
@@ -25,7 +27,7 @@ import type {
 } from './model';
 
 const COVEN_FIELDS =
-  'id,slug,name,tagline,description,tradition,tags,meeting_rhythm,joining,visibility,status,moderation_note,application_questions,altar_background,founder_id,created_at,member_count';
+  'id,slug,name,tagline,description,tradition,tags,meeting_rhythm,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,founder_id,created_at,member_count';
 
 async function run<T>(promise: PromiseLike<{ data: unknown; error: { message: string } | null }>): Promise<T> {
   const { data, error } = await promise;
@@ -116,6 +118,58 @@ export async function fetchCoven(slug: string, userId: string | null): Promise<C
   ]);
   return { coven, ranks, documents, membership, signatures, application: applications[0] ?? null };
 }
+
+// ─── Founding and managing (the database checks who may) ───────────────
+
+export const createCoven = (draft: CovenDraft) =>
+  rpc<Coven>('create_coven', {
+    p_name: draft.name.trim(),
+    p_slug: draft.slug,
+    p_tagline: draft.tagline?.trim() || null,
+    p_description: draft.description?.trim() || null,
+    p_tradition: draft.tradition?.trim() || null,
+    p_tags: draft.tags ?? [],
+    p_joining: draft.joining ?? 'application',
+    p_visibility: draft.visibility ?? 'listed',
+    p_meeting_rhythm: draft.meeting_rhythm?.trim() || null,
+    p_founder_rank: draft.founder_rank?.trim() || null,
+  });
+export const updateCoven = (id: string, changes: Partial<Coven>) => run<Coven>(supabase.from('covens').update(changes).eq('id', id).select(COVEN_FIELDS).single());
+export const moderateCoven = (id: string, status: Coven['status'], note?: string) => rpc('moderate_coven', { p_coven: id, p_status: status, p_note: note?.trim() || null });
+export const saveRank = (rank: Partial<Rank>) =>
+  rank.id ? run<Rank>(supabase.from('coven_ranks').update(rank).eq('id', rank.id).select().single()) : run<Rank>(supabase.from('coven_ranks').insert(rank).select().single());
+export const deleteRank = (id: string) => run(supabase.from('coven_ranks').delete().eq('id', id));
+export const saveDocument = (doc: Partial<CovenDocument>) =>
+  doc.id ? run<CovenDocument>(supabase.from('coven_documents').update(doc).eq('id', doc.id).select().single()) : run<CovenDocument>(supabase.from('coven_documents').insert(doc).select().single());
+export const deleteDocument = (id: string) => run(supabase.from('coven_documents').delete().eq('id', id));
+
+/** Every membership, former members too (leaders and moderators see them all). */
+export const fetchAllMembers = (covenId: string) => run<Member[]>(supabase.from('coven_members').select('*').eq('coven_id', covenId).order('joined_at'));
+export const fetchCovenSignatures = (covenId: string) => run<Signature[]>(supabase.from('coven_signatures').select('document_id,version,user_id').eq('coven_id', covenId));
+export const updateMember = (covenId: string, userId: string, changes: { rank_id?: string; status?: Member['status']; muted_until?: string; clear_mute?: boolean }) =>
+  rpc('update_coven_member', {
+    p_coven: covenId,
+    p_user: userId,
+    p_rank: changes.rank_id ?? null,
+    p_status: changes.status ?? null,
+    p_muted_until: changes.muted_until ?? null,
+    p_clear_mute: !!changes.clear_mute,
+  });
+export const transferCoven = (covenId: string, userId: string) => rpc('transfer_coven', { p_coven: covenId, p_user: userId });
+
+export function fetchApplications(covenId: string, status: Application['status'] | 'all' = 'pending') {
+  let query = supabase.from('coven_applications').select('*').eq('coven_id', covenId).order('created_at', { ascending: status === 'pending' }).limit(100);
+  if (status !== 'all') query = query.eq('status', status);
+  return run<Application[]>(query);
+}
+export const decideApplication = (id: string, approve: boolean, note: string) => rpc('decide_coven_application', { p_application: id, p_approve: approve, p_note: note.trim() || null });
+export const fetchAdvancements = (covenId: string) =>
+  run<Advancement[]>(supabase.from('coven_advancement_requests').select('*').eq('coven_id', covenId).eq('status', 'pending').order('created_at'));
+export const fetchMyAdvancements = (covenId: string, userId: string) =>
+  run<Advancement[]>(supabase.from('coven_advancement_requests').select('*').eq('coven_id', covenId).eq('user_id', userId).order('created_at', { ascending: false }).limit(20));
+export const requestAdvancement = (covenId: string, rankId: string, statement: string) => rpc('request_coven_advancement', { p_coven: covenId, p_rank: rankId, p_statement: statement.trim() || null });
+export const withdrawAdvancement = (id: string) => rpc('withdraw_coven_request', { p_kind: 'advancement', p_id: id });
+export const decideAdvancement = (id: string, approve: boolean, note: string) => rpc('decide_coven_advancement', { p_request: id, p_approve: approve, p_note: note.trim() || null });
 
 export const fetchMembers = (covenId: string) => run<Member[]>(supabase.from('coven_members').select('*').eq('coven_id', covenId).eq('status', 'active').order('joined_at'));
 export const sign = (documentId: string, signedName: string) => run(supabase.from('coven_signatures').insert({ document_id: documentId, signed_name: signedName }));

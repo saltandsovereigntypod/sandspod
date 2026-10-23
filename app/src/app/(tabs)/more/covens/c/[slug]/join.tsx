@@ -2,14 +2,14 @@ import { router, type Href } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { Button } from '../../../../../components/Button';
-import { covenHref, CovenScreen } from '../../../../../components/covens/CovenScreen';
-import { Words } from '../../../../../components/covens/ui';
-import { Card, CheckRow, Field, Notice, Section } from '../../../../../components/more/ui';
-import * as api from '../../../../../lib/covens/api';
-import { useCoven } from '../../../../../lib/covens/CovenContext';
-import { errorMessage, KIND_LABELS, missingAnswers } from '../../../../../lib/covens/model';
-import { type } from '../../../../../theme';
+import { Button } from '../../../../../../components/Button';
+import { covenHref, CovenScreen } from '../../../../../../components/covens/CovenScreen';
+import { Words } from '../../../../../../components/covens/ui';
+import { Card, CheckRow, Field, Notice, Section } from '../../../../../../components/more/ui';
+import * as api from '../../../../../../lib/covens/api';
+import { useCoven } from '../../../../../../lib/covens/CovenContext';
+import { errorMessage, KIND_LABELS, missingAnswers } from '../../../../../../lib/covens/model';
+import { type } from '../../../../../../theme';
 
 // Reading and signing the coven's agreements, then joining or applying.
 // Members come here too when an agreement changes and needs signing again.

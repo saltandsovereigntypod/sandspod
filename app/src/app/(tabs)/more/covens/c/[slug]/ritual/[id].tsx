@@ -2,12 +2,12 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 
-import { Button } from '../../../../../../components/Button';
-import { CovenScreen } from '../../../../../../components/covens/CovenScreen';
-import { CovenAltarView, Pill, Pills, Spoken, Words } from '../../../../../../components/covens/ui';
-import { Card, Chips, Notice, Section } from '../../../../../../components/more/ui';
-import * as api from '../../../../../../lib/covens/api';
-import { useCoven } from '../../../../../../lib/covens/CovenContext';
+import { Button } from '../../../../../../../components/Button';
+import { CovenScreen } from '../../../../../../../components/covens/CovenScreen';
+import { CovenAltarView, Pill, Pills, Spoken, Words } from '../../../../../../../components/covens/ui';
+import { Card, Chips, Notice, Section } from '../../../../../../../components/more/ui';
+import * as api from '../../../../../../../lib/covens/api';
+import { useCoven } from '../../../../../../../lib/covens/CovenContext';
 import {
   altarActionButton,
   altarActionNote,
@@ -19,9 +19,9 @@ import {
   stepAssignee,
   stepIsMine,
   type Rsvp,
-} from '../../../../../../lib/covens/model';
-import { syncCovenReminders } from '../../../../../../lib/covens/reminders';
-import { colors, radius, type } from '../../../../../../theme';
+} from '../../../../../../../lib/covens/model';
+import { syncCovenReminders } from '../../../../../../../lib/covens/reminders';
+import { colors, radius, type } from '../../../../../../../theme';
 
 const ANSWERS = [
   { value: 'going', label: 'Going' },

@@ -1,4 +1,4 @@
-// One coven's state, shared by its screens (app/(tabs)/more/covens/[slug]/):
+// One coven's state, shared by its screens (app/(tabs)/more/covens/c/[slug]/):
 // the coven, its positions and pages, your membership and signatures, its
 // rituals and rites, and, once a screen asks for them, its gathering and
 // altar. One live connection keeps it all current while any of its screens

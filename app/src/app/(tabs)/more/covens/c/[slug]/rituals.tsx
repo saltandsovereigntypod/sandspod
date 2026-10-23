@@ -1,12 +1,12 @@
 import { router } from 'expo-router';
 import { Text } from 'react-native';
 
-import { Button } from '../../../../../components/Button';
-import { covenHref, CovenScreen, openOnWebsite } from '../../../../../components/covens/CovenScreen';
-import { MenuList, MenuRow, Section } from '../../../../../components/more/ui';
-import { useCoven } from '../../../../../lib/covens/CovenContext';
-import { occasionLabel, orderSteps, ritualGroups, riteTime, rsvpSummary, type Ritual } from '../../../../../lib/covens/model';
-import { type } from '../../../../../theme';
+import { Button } from '../../../../../../components/Button';
+import { covenHref, CovenScreen, openOnWebsite } from '../../../../../../components/covens/CovenScreen';
+import { MenuList, MenuRow, Section } from '../../../../../../components/more/ui';
+import { useCoven } from '../../../../../../lib/covens/CovenContext';
+import { occasionLabel, orderSteps, ritualGroups, riteTime, rsvpSummary, type Ritual } from '../../../../../../lib/covens/model';
+import { type } from '../../../../../../theme';
 
 export default function Rituals() {
   const coven = useCoven();

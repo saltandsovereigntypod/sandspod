@@ -20,6 +20,7 @@ export type Coven = {
   moderation_note: string | null;
   application_questions: Question[];
   altar_background: string | null;
+  member_limit?: number | null;
   founder_id: string | null;
   created_at: string;
   member_count?: number;
@@ -49,6 +50,7 @@ export type Question = { id: string; prompt: string; required: boolean };
 export type CovenDocument = { id: string; coven_id: string; kind: string; title: string; body: string; visibility: 'public' | 'members'; requires_signature: boolean; published: boolean; position: number; version: number };
 export type Signature = { document_id: string; version: number; user_id: string };
 export type Application = { id: string; coven_id: string; user_id: string; status: 'pending' | 'approved' | 'declined' | 'withdrawn'; answers: Record<string, string>; message: string | null; reviewer_note: string | null; created_at: string; decided_at: string | null };
+export type Advancement = { id: string; coven_id: string; user_id: string; rank_id: string; statement: string | null; status: 'pending' | 'approved' | 'declined' | 'withdrawn'; reviewer_id?: string | null; reviewer_note: string | null; created_at: string; decided_at: string | null };
 export type Message = { id: string; coven_id: string; user_id: string | null; body: string; created_at: string; edited_at: string | null; deleted_at: string | null; deleted_by: string | null };
 export type AltarItem = {
   id: string;
@@ -206,6 +208,14 @@ export function orderDocuments(documents: CovenDocument[]): CovenDocument[] {
 }
 
 export const KIND_LABELS: Record<string, string> = { creed: 'Creed', rules: 'Rules', requirements: 'Requirements', agreement: 'Agreement', other: 'Page' };
+export const DOCUMENT_KINDS = [
+  { value: 'creed', label: 'Creed' },
+  { value: 'rules', label: 'Rules' },
+  { value: 'requirements', label: 'Requirements' },
+  { value: 'agreement', label: 'Agreement' },
+  { value: 'other', label: 'Other' },
+] as const;
+export type DocumentKind = (typeof DOCUMENT_KINDS)[number]['value'];
 
 /** Whether chat, the altar and ritual parts are open to this person, and if not, why. */
 export function standing(perms: Permissions, unsigned: CovenDocument[], banned: boolean): { ok: boolean; reasons: string[] } {
@@ -229,6 +239,105 @@ export function rankPowers(rank: Rank | null): string[] {
   else if (rank.can_write_book) powers.push('writes in the coven’s book');
   return powers;
 }
+
+/** Positions this person may give others (the database checks the same). */
+export function grantableRanks(ranks: Rank[], perms: Permissions): Rank[] {
+  return ranks.filter((r) => {
+    if (perms.site || perms.founder) return true;
+    if (perms.manage) return r.level <= perms.level;
+    if (perms.review) return r.level < perms.level && !(r.can_manage || r.can_review || r.can_moderate);
+    return false;
+  });
+}
+
+/** Positions this member could apply to rise to. */
+export function advancementOptions(ranks: Rank[], perms: Permissions): Rank[] {
+  return ranks.filter((r) => r.open_to_applications && r.level > perms.level).sort((a, b) => a.level - b.level);
+}
+
+/** Whether this person can act on that member (raise, pause, remove): never yourself, the founder, or anyone at or above you. */
+export function actsOn(target: Member, perms: Permissions, coven: Pick<Coven, 'founder_id'>, ranks: Rank[], userId: string | null): boolean {
+  if (target.user_id === userId) return false;
+  if (perms.site) return true;
+  const level = target.user_id === coven.founder_id ? 1000 : ranks.find((r) => r.id === target.rank_id)?.level ?? 0;
+  return target.user_id !== coven.founder_id && level < perms.level;
+}
+
+// ─── Founding and managing ───────────────────────────────────────────────
+
+/** A coven's web address from its name, as the website makes it. */
+export function slugify(name: string): string {
+  return String(name ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60)
+    .replace(/-+$/g, '');
+}
+
+const SLUG_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
+/** Tags typed with commas: trimmed, at most 30 characters, no repeats, at most 12. */
+export function parseTags(value: string | string[]): string[] {
+  const list = Array.isArray(value) ? value : String(value ?? '').split(',');
+  const seen = new Set<string>();
+  const tags: string[] = [];
+  for (const raw of list) {
+    const tag = String(raw ?? '').trim().replace(/\s+/g, ' ').slice(0, 30);
+    if (!tag || seen.has(tag.toLowerCase())) continue;
+    seen.add(tag.toLowerCase());
+    tags.push(tag);
+    if (tags.length === 12) break;
+  }
+  return tags;
+}
+
+export type CovenDraft = { name: string; slug: string; tagline?: string; description?: string; tradition?: string; meeting_rhythm?: string; tags?: string[]; joining?: Joining; visibility?: 'listed' | 'unlisted'; founder_rank?: string };
+
+/** Problems with a coven's details, in the words the form shows. */
+export function validateCoven(draft: Pick<CovenDraft, 'name' | 'slug' | 'tagline' | 'description' | 'joining' | 'visibility'>): string[] {
+  const errors: string[] = [];
+  const name = String(draft.name ?? '').trim();
+  const slug = String(draft.slug ?? '');
+  if (name.length < 3 || name.length > 80) errors.push('Give the coven a name of 3 to 80 characters.');
+  if (slug.length < 3 || slug.length > 60 || !SLUG_PATTERN.test(slug)) errors.push('The coven’s address needs 3 to 60 lower-case letters, numbers and dashes.');
+  if (String(draft.tagline ?? '').length > 160) errors.push('Keep the tagline to 160 characters.');
+  if (String(draft.description ?? '').length > 5000) errors.push('Keep the description to 5,000 characters.');
+  if (draft.joining && !JOINING[draft.joining]) errors.push('Choose how people join.');
+  if (draft.visibility && !['listed', 'unlisted'].includes(draft.visibility)) errors.push('Choose whether the coven is listed.');
+  return errors;
+}
+
+/** Application questions as the database keeps them: [{ id, prompt, required }], at most 20. */
+export function normalizeQuestions(list: Partial<Question>[]): Question[] {
+  const used = new Set<string>();
+  const out: Question[] = [];
+  for (const raw of Array.isArray(list) ? list : []) {
+    const prompt = String(raw?.prompt ?? '').trim().slice(0, 300);
+    if (!prompt) continue;
+    const base = String(raw?.id ?? '').trim() || `q-${slugify(prompt).slice(0, 24) || 'question'}`;
+    let id = base;
+    let n = 2;
+    while (used.has(id)) id = `${base}-${n++}`;
+    used.add(id);
+    out.push({ id, prompt, required: !!raw?.required });
+    if (out.length === 20) break;
+  }
+  return out;
+}
+
+export const RANK_POWERS = [
+  { key: 'can_review', label: 'Reviews applications and requests to advance' },
+  { key: 'can_moderate', label: 'Moderates the gathering (removes messages, pauses or removes members)' },
+  { key: 'can_lead_rituals', label: 'Leads the coven’s rituals (plans them, gives out their steps, begins them)' },
+  { key: 'can_schedule_rites', label: 'Puts rites on the coven’s calendar' },
+  { key: 'can_write_book', label: 'Writes in the coven’s Book of Shadows (drafts go for approval)' },
+  { key: 'can_approve_book', label: 'Approves pages for the coven’s Book of Shadows' },
+  { key: 'can_manage', label: 'Leads the coven (edits its pages, positions and details)' },
+] as const;
 
 export function missingAnswers(questions: Question[], answers: Record<string, string>): Question[] {
   return (questions ?? []).filter((q) => q.required && !String(answers[q.id] ?? '').trim());
@@ -370,7 +479,7 @@ export function riteReminders(
     const start = new Date(ritual.scheduled_for).getTime();
     const label = occasionLabel(ritual);
     const when = new Date(start).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
-    const url = `/more/covens/${coven.slug}/ritual/${ritual.id}`;
+    const url = `/more/covens/c/${coven.slug}/ritual/${ritual.id}`;
     const items: [string, number, string][] = [
       ['day', start - 86400000, `Tomorrow at ${when}`],
       ['hour', start - 3600000, `In an hour, at ${when}`],

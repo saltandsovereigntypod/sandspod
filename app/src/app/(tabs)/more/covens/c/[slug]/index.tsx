@@ -1,16 +1,18 @@
 import { router } from 'expo-router';
+import * as WebBrowser from 'expo-web-browser';
 import { useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 
-import { Button } from '../../../../../components/Button';
-import { covenHref, CovenScreen, openOnWebsite } from '../../../../../components/covens/CovenScreen';
-import { Pill, Pills, Words, useReport } from '../../../../../components/covens/ui';
-import { Card, MenuList, MenuRow, Notice, Section } from '../../../../../components/more/ui';
-import * as api from '../../../../../lib/covens/api';
-import { useCoven } from '../../../../../lib/covens/CovenContext';
-import { errorMessage, JOINING, KIND_LABELS, occasionLabel, orderDocuments, rankPowers, ritualGroups, riteTime } from '../../../../../lib/covens/model';
-import { useSession } from '../../../../../lib/session';
-import { type } from '../../../../../theme';
+import { Button } from '../../../../../../components/Button';
+import { covenHref, CovenScreen } from '../../../../../../components/covens/CovenScreen';
+import { Pill, Pills, Words, useReport } from '../../../../../../components/covens/ui';
+import { Card, MenuList, MenuRow, Notice, Section } from '../../../../../../components/more/ui';
+import { WEBSITE_ORIGIN } from '../../../../../../lib/altar/assetPaths';
+import * as api from '../../../../../../lib/covens/api';
+import { useCoven } from '../../../../../../lib/covens/CovenContext';
+import { errorMessage, JOINING, KIND_LABELS, occasionLabel, orderDocuments, rankPowers, ritualGroups, riteTime } from '../../../../../../lib/covens/model';
+import { useSession } from '../../../../../../lib/session';
+import { type } from '../../../../../../theme';
 
 export default function CovenHome() {
   const coven = useCoven();
@@ -23,6 +25,8 @@ export default function CovenHome() {
   const documents = snap ? orderDocuments(snap.documents).filter((d) => d.published !== false && (insider || d.visibility === 'public')) : [];
   const { live, upcoming } = ritualGroups(coven.rituals);
   const next = upcoming.find((r) => r.scheduled_for && new Date(r.scheduled_for).getTime() > Date.now() - 3600000);
+
+  const leads = coven.perms.review || coven.perms.manage || coven.perms.site;
 
   const leave = () =>
     Alert.alert('Leave this coven?', 'You can ask to come back later. Your words in the gathering stay.', [
@@ -127,7 +131,7 @@ export default function CovenHome() {
                   {!!rank.requirements && <Text style={type.caption}>Requirements: {rank.requirements}</Text>}
                 </Card>
               ))}
-              {coven.perms.member && <Text style={type.caption}>To apply for a higher position, open the coven on the website.</Text>}
+              {coven.perms.member && <Text style={type.caption}>To ask to rise to a higher position, open My path.</Text>}
             </Section>
           )}
 
@@ -139,9 +143,16 @@ export default function CovenHome() {
               </Card>
             ) : coven.perms.member ? (
               <View style={styles.actions}>
-                {coven.perms.review && <Button label="Review applications (website)" variant="outline" onPress={() => openOnWebsite(coven.slug, 'review')} />}
-                {coven.perms.manage && <Button label="Manage the coven (website)" variant="outline" onPress={() => openOnWebsite(coven.slug, 'manage')} />}
-                <Button label="My path and positions (website)" variant="outline" onPress={() => openOnWebsite(coven.slug, 'path')} />
+                <MenuList>
+                  <MenuRow
+                    label="My path"
+                    detail={coven.unsigned.length ? 'Agreements to sign' : 'Your position, rising higher, leaving'}
+                    icon="journey"
+                    last={!leads}
+                    onPress={() => router.push(covenHref(coven.slug, 'path'))}
+                  />
+                  {leads && <LeaderRows />}
+                </MenuList>
                 {!coven.perms.founder && <Button label="Leave the coven" variant="text" onPress={leave} />}
               </View>
             ) : snap.application?.status === 'pending' ? (
@@ -158,7 +169,12 @@ export default function CovenHome() {
                 )}
               </Card>
             )}
-            {coven.perms.site && <Button label="Moderate on the website" variant="outline" onPress={() => openOnWebsite(coven.slug, 'manage')} />}
+            {coven.perms.site && !coven.perms.member && (
+              <MenuList>
+                <LeaderRows />
+              </MenuList>
+            )}
+            {coven.perms.site && <Button label="Pause or reopen it (website moderation)" variant="outline" onPress={() => void WebBrowser.openBrowserAsync(`${WEBSITE_ORIGIN}/covens/moderation/`)} />}
             {session && !coven.perms.founder && (
               <Button label="Report this coven" variant="text" onPress={() => report.open({ target_type: 'coven', target_id: info.id, coven_id: info.id, label: info.name })} />
             )}
@@ -168,6 +184,18 @@ export default function CovenHome() {
         </>
       )}
     </CovenScreen>
+  );
+}
+
+/** Review and Manage, for those the coven gives them to (and site moderators). */
+function LeaderRows() {
+  const coven = useCoven();
+  const { review, manage, site } = coven.perms;
+  return (
+    <>
+      {(review || site) && <MenuRow label="Review" detail="Applications and requests to advance" icon="offer" last={!(manage || site)} onPress={() => router.push(covenHref(coven.slug, 'review'))} />}
+      {(manage || site) && <MenuRow label="Manage" detail="Details, pages, positions and questions" icon="settings" last onPress={() => router.push(covenHref(coven.slug, 'manage'))} />}
+    </>
   );
 }
 

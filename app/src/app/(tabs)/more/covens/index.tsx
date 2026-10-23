@@ -75,14 +75,14 @@ export default function Covens() {
               onPress={() => router.push('/more/covens/profile' as Href)}
             />
             {(mine.data ?? []).map((c) => (
-              <MenuRow key={c.id} label={c.name} detail={c.tagline ?? 'Your coven'} icon="community" onPress={() => router.push(`/more/covens/${c.slug}` as Href)} />
+              <MenuRow key={c.id} label={c.name} detail={c.tagline ?? 'Your coven'} icon="community" onPress={() => router.push(`/more/covens/c/${c.slug}` as Href)} />
             ))}
             <MenuRow
               label="Found a coven"
-              detail="Opens the website"
+              detail="Lead a coven of your own"
               icon="offer"
               last={!me.data?.siteModerator}
-              onPress={() => void WebBrowser.openBrowserAsync(`${WEBSITE_ORIGIN}/covens/new/`)}
+              onPress={() => router.push('/more/covens/new' as Href)}
             />
             {me.data?.siteModerator && (
               <MenuRow label="Coven moderation" detail="Reports and covens · opens the website" icon="support" last onPress={() => void WebBrowser.openBrowserAsync(`${WEBSITE_ORIGIN}/covens/moderation/`)} />
@@ -117,7 +117,7 @@ export default function Covens() {
               {typeof c.member_count === 'number' && <Pill label={`${c.member_count} ${c.member_count === 1 ? 'member' : 'members'}`} />}
             </Pills>
             {!!c.meeting_rhythm && <Text style={type.caption}>Meets {c.meeting_rhythm}</Text>}
-            <Button label="Visit" variant="outline" onPress={() => router.push(`/more/covens/${c.slug}` as Href)} />
+            <Button label="Visit" variant="outline" onPress={() => router.push(`/more/covens/c/${c.slug}` as Href)} />
           </Card>
         ))}
       </Section>

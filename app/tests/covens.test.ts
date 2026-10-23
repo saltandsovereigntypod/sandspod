@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import {
+  actsOn,
+  advancementOptions,
   altarActionButton,
   applyChange,
   bookSections,
@@ -10,18 +12,23 @@ import {
   canTend,
   chatMessages,
   filterDirectory,
+  grantableRanks,
   missingAnswers,
   myTurn,
+  normalizeQuestions,
   occasionLabel,
   orderDocuments,
+  parseTags,
   permissions,
   riteReminders,
   ritualGroups,
   rsvpSummary,
+  slugify,
   standing,
   stepAssignee,
   stepIsMine,
   unsignedAgreements,
+  validateCoven,
   type BookPage,
   type Coven,
   type CovenDocument,
@@ -215,7 +222,7 @@ test('rite reminders come a day and an hour before, only for those coming', () =
   ];
   const reminders = riteReminders(rites, now);
   assert.deepEqual(reminders.map((r) => r.key), ['coven-rite-a-day', 'coven-rite-a-hour']);
-  assert.equal(reminders[0].url, '/more/covens/moon/ritual/a');
+  assert.equal(reminders[0].url, '/more/covens/c/moon/ritual/a');
   assert.equal(reminders[0].at.toISOString(), '2026-10-24T20:00:00.000Z');
 });
 
@@ -242,4 +249,46 @@ test('the book groups pages by section, and petitions are tended twice a day at 
   assert.equal(canTend(petition, tended, 'w', now), true);
   assert.equal(canTend(petition, tended, 'u', Date.parse('2026-10-23T19:00:00Z')), true);
   assert.equal(canTend({ ...petition, status: 'answered' }, [], 'u', now), false);
+});
+
+test('founding: addresses, tags and details are checked as the website checks them', () => {
+  assert.equal(slugify('The Thistle & Moon Circle'), 'the-thistle-and-moon-circle');
+  assert.equal(slugify('  Café  Lune!! '), 'cafe-lune');
+  assert.equal(slugify('x'.repeat(70)).length, 60);
+  assert.deepEqual(parseTags('moon work, Moon Work,  herbs ,,'), ['moon work', 'herbs']);
+  assert.equal(parseTags(Array.from({ length: 20 }, (_, i) => `t${i}`)).length, 12);
+  assert.deepEqual(validateCoven({ name: 'Moon Circle', slug: 'moon-circle', joining: 'open', visibility: 'listed' }), []);
+  assert.equal(validateCoven({ name: 'Mo', slug: 'moon' }).length, 1);
+  assert.equal(validateCoven({ name: 'Moon Circle', slug: 'Moon Circle' }).length, 1);
+  assert.equal(validateCoven({ name: 'Moon Circle', slug: '-moon' }).length, 1);
+});
+
+test('application questions keep their ids, gain new ones, and drop empty prompts', () => {
+  const out = normalizeQuestions([{ id: 'why', prompt: ' Why join? ', required: true }, { id: '', prompt: 'Your path?' }, { id: '', prompt: 'Your path?' }, { id: 'x', prompt: '   ' }]);
+  assert.deepEqual(out, [
+    { id: 'why', prompt: 'Why join?', required: true },
+    { id: 'q-your-path', prompt: 'Your path?', required: false },
+    { id: 'q-your-path-2', prompt: 'Your path?', required: false },
+  ]);
+  assert.equal(normalizeQuestions(Array.from({ length: 30 }, (_, i) => ({ id: `q${i}`, prompt: `Q${i}` }))).length, 20);
+});
+
+test('who may give which positions, and act on whom', () => {
+  const all: Rank[] = [...ranks, { id: 'r-hp', coven_id: 'c1', name: 'High Priestess', description: null, requirements: null, level: 90, can_manage: true }];
+  const elder = permissions({ coven: coven(), membership: member('e', 'r-elder'), ranks: all, userId: 'e' });
+  // A reviewer gives only junior positions without powers.
+  assert.deepEqual(grantableRanks(all, elder).map((r) => r.id), ['r-member', 'r-scribe']);
+  const founder = permissions({ coven: coven(), membership: member('founder', null), ranks: all, userId: 'founder' });
+  assert.equal(grantableRanks(all, founder).length, all.length);
+  const seeker = permissions({ coven: coven(), membership: member('s', 'r-member'), ranks: all, userId: 's' });
+  assert.deepEqual(grantableRanks(all, seeker), []);
+
+  assert.equal(actsOn(member('s', 'r-member'), elder, coven(), all, 'e'), true);
+  assert.equal(actsOn(member('e2', 'r-elder'), elder, coven(), all, 'e'), false);
+  assert.equal(actsOn(member('founder', null), elder, coven(), all, 'e'), false);
+  assert.equal(actsOn(member('e', 'r-elder'), elder, coven(), all, 'e'), false);
+  assert.equal(actsOn(member('founder', null), { ...seeker, site: true }, coven(), all, 'mod'), true);
+
+  const open = all.map((r) => (r.id === 'r-elder' || r.id === 'r-member' ? { ...r, open_to_applications: true } : r));
+  assert.deepEqual(advancementOptions(open, permissions({ coven: coven(), membership: member('s', 'r-member'), ranks: open, userId: 's' })).map((r) => r.id), ['r-elder']);
 });

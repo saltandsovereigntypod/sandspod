@@ -2,7 +2,8 @@
 // coven's name, and what to show while the coven loads, can't be found, or
 // isn't open to you. `need` says who the screen is for: anyone ('public'),
 // members and site moderators ('member'), or members in good standing who
-// have signed the current agreements ('standing'). A 'standing' screen still
+// have signed the current agreements ('standing'), or its leaders ('manage')
+// and reviewers ('review'), site moderators always included. A 'standing' screen still
 // shows to members who aren't in good standing, under a note saying why, and
 // leaves its actions off (each screen checks `standing.ok`).
 
@@ -17,7 +18,7 @@ import { WEBSITE_ORIGIN } from '../../lib/altar/assetPaths';
 import { useCoven } from '../../lib/covens/CovenContext';
 import { colors, type } from '../../theme';
 
-export const covenHref = (slug: string, sub = '') => `/more/covens/${slug}${sub ? `/${sub}` : ''}` as Href;
+export const covenHref = (slug: string, sub = '') => `/more/covens/c/${slug}${sub ? `/${sub}` : ''}` as Href;
 
 /** The coven's page on the website (founding, managing and moderation live there for now). */
 export function openOnWebsite(slug: string, tab?: string) {
@@ -37,7 +38,7 @@ export function CovenScreen({
   eyebrow?: string;
   /** The coven's own page: its name is the title, and Back goes to Covens. */
   home?: boolean;
-  need?: 'public' | 'member' | 'standing';
+  need?: 'public' | 'member' | 'standing' | 'manage' | 'review';
   children: ReactNode;
   onRefresh?: () => Promise<void>;
 }) {
@@ -98,6 +99,14 @@ export function CovenScreen({
         <Card>
           <Text style={type.body}>This part of the coven is for its members.</Text>
           <Button label="About this coven" variant="outline" onPress={() => router.replace(back)} />
+        </Card>,
+      );
+    const allowed = need === 'manage' ? coven.perms.manage || coven.perms.site : need === 'review' ? coven.perms.review || coven.perms.site : true;
+    if (!allowed)
+      return frame(
+        <Card>
+          <Text style={type.body}>{need === 'manage' ? 'Only the coven’s leaders manage it.' : 'Only the coven’s reviewers see this.'}</Text>
+          <Button label="Back to the coven" variant="outline" onPress={() => router.replace(back)} />
         </Card>,
       );
     if (need === 'standing' && !coven.standing.ok && !coven.perms.site)

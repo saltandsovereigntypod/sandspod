@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { Button } from '../../../../../components/Button';
-import { CovenScreen } from '../../../../../components/covens/CovenScreen';
-import { Pill, Pills, Words, useReport } from '../../../../../components/covens/ui';
-import { Card, Field, Notice, Section } from '../../../../../components/more/ui';
-import * as api from '../../../../../lib/covens/api';
-import { useCoven } from '../../../../../lib/covens/CovenContext';
-import { CANDLE_COLORS, canTend, errorMessage, relativeTime, SWATCH, type Petition, type Tending } from '../../../../../lib/covens/model';
-import { colors, type } from '../../../../../theme';
+import { Button } from '../../../../../../components/Button';
+import { CovenScreen } from '../../../../../../components/covens/CovenScreen';
+import { Pill, Pills, Words, useReport } from '../../../../../../components/covens/ui';
+import { Card, Field, Notice, Section } from '../../../../../../components/more/ui';
+import * as api from '../../../../../../lib/covens/api';
+import { useCoven } from '../../../../../../lib/covens/CovenContext';
+import { CANDLE_COLORS, canTend, errorMessage, relativeTime, SWATCH, type Petition, type Tending } from '../../../../../../lib/covens/model';
+import { colors, type } from '../../../../../../theme';
 
 // Petitions the circle holds: a member asks, a candle is set for it on the
 // shared altar, and anyone in the coven can tend it (relighting its candle)

@@ -1,17 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { Button } from '../../../../../components/Button';
-import { CovenScreen } from '../../../../../components/covens/CovenScreen';
-import { CovenAltarView, useReport } from '../../../../../components/covens/ui';
-import { Card, CheckRow, Chips, Field, Notice, Section } from '../../../../../components/more/ui';
-import { websiteAssetKey } from '../../../../../lib/altar/assetPaths';
-import { altarImageSource } from '../../../../../lib/altar/assets';
-import { ALTAR_ARTWORK } from '../../../../../lib/altar/artworkData';
-import * as api from '../../../../../lib/covens/api';
-import { useCoven } from '../../../../../lib/covens/CovenContext';
-import { CANDLE_COLORS, CANDLE_FORMS, candleImage, candleState, errorMessage, SWATCH, type AltarItem } from '../../../../../lib/covens/model';
-import { colors, fonts, radius, type } from '../../../../../theme';
+import { Button } from '../../../../../../components/Button';
+import { CovenScreen } from '../../../../../../components/covens/CovenScreen';
+import { CovenAltarView, useReport } from '../../../../../../components/covens/ui';
+import { Card, CheckRow, Chips, Field, Notice, Section } from '../../../../../../components/more/ui';
+import { websiteAssetKey } from '../../../../../../lib/altar/assetPaths';
+import { altarImageSource } from '../../../../../../lib/altar/assets';
+import { ALTAR_ARTWORK } from '../../../../../../lib/altar/artworkData';
+import * as api from '../../../../../../lib/covens/api';
+import { useCoven } from '../../../../../../lib/covens/CovenContext';
+import { CANDLE_COLORS, CANDLE_FORMS, candleImage, candleState, errorMessage, SWATCH, type AltarItem } from '../../../../../../lib/covens/model';
+import { colors, fonts, radius, type } from '../../../../../../theme';
 
 type Category = keyof typeof ALTAR_ARTWORK.items;
 const CATEGORIES: { value: Category; label: string }[] = [
