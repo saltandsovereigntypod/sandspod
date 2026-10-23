@@ -104,7 +104,7 @@
       lit ? `Burning time ${core.companion.burnDuration(burned)}` : burned > 0 ? `Burned ${core.companion.burnDuration(burned)} in all` : null,
       life?.spent ? "Burned all the way down" : life?.expectedMs ? (burned > 0 || lit ? `About ${core.companion.lifeDuration(life.remainingMs)} left` : `Burns about ${core.companion.lifeDuration(life.expectedMs)}`) : null,
       dressings.length ? `Dressed with ${core.companion.dressingNames(dressings).join(", ")}` : null,
-      carvings.length ? `Carved with ${carvings.map((c) => `“${c.text}”`).join(", ")}` : null,
+      carvings.length ? `Carved with ${carvings.map((c) => (L.carvingMark(c) ? `the sigil for “${c.text}”` : `“${c.text}”`)).join(", ")}` : null,
       nights && !life?.spent ? nights.line : null
     ].filter(Boolean).join(" · ") : "";
     const chips = B().chips;
@@ -326,7 +326,34 @@
     const core = A();
     const draw = (body) => {
       const carvings = core.livingState.carvingsOf(B().toSaved(object));
-      body.querySelector("[data-carvings]").innerHTML = carvings.length ? `<p class="app-label">Carved into it</p>${B().chips(carvings.map((c, i) => ({ label: `“${c.text}”  ×`, action: "smooth", data: { index: i }, hint: `Smooth away ${c.text}` })))}<p class="app-caption">Tap a carving to smooth it away.</p>` : "";
+      const isSigil = (c) => !!core.livingState.carvingMark(c);
+      body.querySelector("[data-carvings]").innerHTML = carvings.length ? `<p class="app-label">Carved into it</p>${B().chips(carvings.map((c, i) => ({ label: isSigil(c) ? `Sigil: ${c.text}  ×` : `“${c.text}”  ×`, action: "smooth", data: { index: i }, hint: `Smooth away ${isSigil(c) ? `the sigil for ${c.text}` : c.text}` })))}<p class="app-caption">Tap a carving to smooth it away.</p>` : "";
+      // Sigils kept from the sigil maker (craft store `eclectic.sigils`, as the app keeps them), ready to carve.
+      const carved = new Set(carvings.map((c) => core.livingState.carvingMark(c)?.d).filter(Boolean));
+      const box = body.querySelector("[data-carve-sigils]");
+      if (box) {
+        box.innerHTML = sigils.length
+          ? `<div class="app-sigils">${sigils
+              .map((k, i) => {
+                const mark = core.sigil.markOf(k.sigil);
+                const done = !!mark && carved.has(mark.d);
+                return `<button type="button" class="app-sigil" data-app-action="carve-sigil" data-index="${i}"${done ? " disabled" : ""} aria-label="${esc(done ? `${k.name}, already carved` : `Carve the sigil for ${k.name}`)}">${core.sigil.sigilSvg(k.sigil, { size: 64, id: `carve-sigil-${i}` })}<span>${esc(done ? "Carved" : k.name)}</span></button>`;
+              })
+              .join("")}</div>`
+          : `<p class="app-caption">Sigils you keep from the <a href="/practice/eclectic/sigil/">sigil maker</a> wait here, ready to carve.</p>`;
+      }
+    };
+    let sigils = [];
+    const loadSigils = async (body) => {
+      try {
+        const entries = global.SaltCraft ? await global.SaltCraft.list(core.sigil.SIGILS) : [];
+        sigils = (entries || [])
+          .map((e) => ({ name: (e.data && e.data.name) || "My sigil", sigil: core.sigil.readSigil(e.data && e.data.sigil) }))
+          .filter((k) => k.sigil);
+      } catch {
+        sigils = [];
+      }
+      draw(body);
     };
     B().openSheet({
       eyebrow: "Carve the candle",
@@ -334,9 +361,12 @@
       html: `<p class="app-caption">A name, a word, a date or a sigil’s name. Keep it short enough to hold in mind.</p>
         <form class="app-field" data-carve-form><label for="carve-word">Word to carve</label>
           <div style="display:flex;gap:8px"><input id="carve-word" name="word" maxlength="${core.livingState.CARVING_MAX}" placeholder="Abundance" autocapitalize="words" autocomplete="off"><button class="app-button" type="submit">Carve</button></div></form>
+        <p class="app-label">Or carve a sigil</p>
+        <div data-carve-sigils></div>
         <div data-carvings></div>`,
       onMount(body) {
         draw(body);
+        loadSigils(body);
         body.querySelector("[data-carve-form]").addEventListener("submit", (event) => {
           event.preventDefault();
           const input = body.querySelector("#carve-word");
@@ -346,6 +376,14 @@
           draw(body);
         });
         body.addEventListener("click", (event) => {
+          const sigilButton = event.target.closest('[data-app-action="carve-sigil"]');
+          if (sigilButton) {
+            const kept = sigils[Number(sigilButton.dataset.index)];
+            const mark = kept && core.sigil.markOf(kept.sigil);
+            if (mark) change((o) => core.livingState.carveCandle(o, kept.name, nowIso(), mark));
+            draw(body);
+            return;
+          }
           const button = event.target.closest('[data-app-action="smooth"]');
           if (!button) return;
           change((o) => core.livingState.uncarveCandle(o, nowIso(), Number(button.dataset.index)));
@@ -937,10 +975,7 @@
       const wax = core.wax.waxLook(saved, t);
       if (wax.line) lines.push(wax.line);
       const progress = core.wax.burnProgress(saved, t);
-      core.livingState.carvingsOf(saved).forEach((carving) => {
-        const left = core.dressing.carvingRemaining(carving.text, progress).visibleText;
-        lines.push(left === carving.text.trim() ? `“${carving.text}” is carved down the wax.` : left ? `“${carving.text}” is melting away from the top; “${left}” is left.` : `“${carving.text}” has melted away into the wax.`);
-      });
+      core.livingState.carvingsOf(saved).forEach((carving) => lines.push(core.dressing.carvingLine(carving, progress)));
       const dressings = core.livingState.dressingsOf(saved);
       if (dressings.length) lines.push(`Dressed with ${dressings.map((d) => d.label).filter(Boolean).join(", ")}.`);
     }

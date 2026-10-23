@@ -385,7 +385,7 @@ async function createPage(sectionId = activeSectionId) {
   const user = requireUser();
   if (!user || !currentBook) return;
 
-  const templateKey = await openPageTemplateChooser();
+  const templateKey = await openPageTemplateChooser(sectionId || null);
   if (!templateKey) return;
 
   let chosenSectionId = sectionId || null;

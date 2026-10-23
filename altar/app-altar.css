@@ -237,3 +237,11 @@ a.app-button { display: inline-flex; align-items: center; text-decoration: none;
 a.app-chip { text-decoration: none; }
 .app-problem { color: #f1c7bb; margin: 4px 0; }
 .app-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Sigils ready to carve (the carve sheet). */
+.app-sigils { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 12px; }
+.app-sigil { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 84px; min-height: 44px; padding: 4px; background: none; border: 1px solid transparent; border-radius: 12px; color: inherit; font: inherit; font-size: 12px; line-height: 1.25; text-align: center; cursor: pointer; }
+.app-sigil svg { width: 64px; height: 64px; border-radius: 6px; }
+.app-sigil:hover, .app-sigil:focus-visible { border-color: var(--gold); }
+.app-sigil:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.app-sigil[disabled] { opacity: .55; cursor: default; }

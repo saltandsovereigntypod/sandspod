@@ -145,6 +145,30 @@
       const columns = carvings.length;
       const lane = (half * 2 * 0.86) / columns;
       const span = Math.max(1, bottom - carveTop - body * 0.05);
+      const mark = A.livingState.carvingMark(carving);
+      if (mark) {
+        // A sigil: the mark itself, upright, cut into the wax and melting from the top (CandleMarks.tsx).
+        const side = Math.min(lane * 0.92, span * 0.6, 64);
+        if (side < 6) return;
+        const sx = cx + (columns > 1 ? (column === 0 ? -0.5 : 0.5) * lane : 0);
+        const smid = carveTop + span * 0.4;
+        const sstart = smid - side / 2;
+        const sremains = burn ? null : A.dressing.carvingRemaining(text, progress);
+        const smelted = sremains ? sstart + sremains.meltLine * side : goneLine + side * 0.05;
+        const sclip = Math.max(smelted, sstart - 2);
+        if (sclip >= sstart + side) return;
+        const k = side / 100;
+        const stroke = Math.max(0.7, side * 0.035) / k;
+        const ring = A.sigil.RING;
+        const glyph = (dx, dy, color, opacity) =>
+          `<g transform="translate(${n2(sx - side / 2 + dx)} ${n2(sstart + dy)}) scale(${n2(k * 1000) / 1000})">${
+            mark.ring ? `<circle cx="${ring.cx}" cy="${ring.cy}" r="${ring.r}" fill="none" stroke="${color}" stroke-opacity="${opacity}" stroke-width="${n2(stroke * 0.8)}"/>` : ""
+          }<path d="${mark.d}" fill="none" stroke="${color}" stroke-opacity="${opacity}" stroke-width="${n2(stroke)}" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+        const sid = `carve-${uid}-${column}`;
+        out.push(`<clipPath id="${sid}"><rect x="${n2(cx - half * 0.94)}" y="${n2(sclip)}" width="${n2(half * 1.88)}" height="${n2(Math.max(0, bottom - sclip))}"/></clipPath>`);
+        out.push(`<g clip-path="url(#${sid})">${glyph(side * 0.012, side * 0.016, cut.edge, cut.edgeOpacity)}${glyph(0, 0, cut.groove, cut.grooveOpacity)}</g>`);
+        return;
+      }
       const size = Math.min(lane * 0.85, (span * 0.86) / (0.46 * count), 30);
       if (size < 3) return;
       const length = 0.46 * count * size;

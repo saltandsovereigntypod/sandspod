@@ -875,6 +875,42 @@
   color: var(--gold);
 }
 
+.book-template-extra {
+  margin: 1rem 0 0.5rem;
+  color: var(--muted, #cabf9d);
+}
+
+.book-template-link {
+  grid-column: 1 / -1;
+  display: block;
+  min-height: 4rem;
+  border: 1px solid rgba(185, 160, 93, 0.26);
+  border-radius: 0.85rem;
+  padding: 0.85rem;
+  color: var(--cream);
+  background: rgba(8, 10, 8, 0.38);
+  text-decoration: none;
+}
+
+.book-template-link span {
+  display: block;
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+.book-template-link:hover,
+.book-template-link:focus-visible {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.book-sigil-preview {
+  display: block;
+  width: min(100%, 220px);
+  margin: 0.5rem 0;
+  border-radius: 6px;
+}
+
 /* =========================================================
    STATUS
    ========================================================= */
@@ -3403,3 +3439,10 @@ body.library-page-open .book-toc .book-toc-section:not(.my-practice-shelf):not(.
 /* Dreams, the built-in section (js/ui/dreams.js): each dream with the moon it came under. */
 .dreams-shelf-link { display: grid; gap: 0.1rem; text-decoration: none; }
 .dreams-shelf-link small { font-size: 0.78rem; opacity: 0.72; }
+
+.book-image--sigil img {
+  width: min(100%, 320px);
+  margin: 0 auto;
+  display: block;
+  border-radius: 6px;
+}

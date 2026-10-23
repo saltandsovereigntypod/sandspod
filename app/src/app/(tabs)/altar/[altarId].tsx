@@ -157,7 +157,7 @@ import {
 } from '../../../lib/altar/editor';
 import { displayBox, STAGE_ASPECT } from '../../../lib/altar/geometry';
 import { stackOrder } from '../../../lib/altar/layers';
-import { apothecaryStateOf, CANDLE_LIFE, candleLife, carvingsOf, dressingsOf, isCandle, isLit, type ApothecaryState } from '../../../lib/altar/livingState';
+import { apothecaryStateOf, CANDLE_LIFE, candleLife, carvingMark, carvingsOf, dressingsOf, isCandle, isLit, type ApothecaryState } from '../../../lib/altar/livingState';
 import { addObjectInstanceEvent, getObjectInstance, updateObjectInstance, useObjectInstance } from '../../../lib/altar/instanceStore';
 import {
   ACTIVITY_TYPES,
@@ -1413,8 +1413,12 @@ export default function AltarEditor() {
             candle={shortLabel(selectedObject?.label, 'Candle')}
             carvings={selectedObject ? carvingsOf(selectedObject) : []}
             onClose={() => setSheet(null)}
-            onCarve={(text) => {
-              if (selected != null) commit((d) => carveObject(d, selected, text, nowIso()));
+            onCarve={(text, sigil) => {
+              if (selected != null) commit((d) => carveObject(d, selected, text, nowIso(), sigil));
+            }}
+            onMakeSigil={() => {
+              setSheet(null);
+              router.push('/altar/sigil');
             }}
             onSmooth={(index) => {
               if (selected != null) commit((d) => uncarveObject(d, selected, nowIso(), index));
@@ -1966,7 +1970,7 @@ function ObjectPanel({
                       : `Burns about ${lifeDuration(life.expectedMs)}`
                     : null,
                 dressings.length ? `Dressed with ${dressingNames(dressings).join(', ')}` : null,
-                carvings.length ? `Carved with ${carvings.map((c) => `“${c.text}”`).join(', ')}` : null,
+                carvings.length ? `Carved with ${carvings.map((c) => (carvingMark(c) ? `the sigil for “${c.text}”` : `“${c.text}”`)).join(', ')}` : null,
                 nights && !life?.spent ? nights.line : null,
               ]
                 .filter(Boolean)

@@ -101,6 +101,28 @@ export default function NewPage() {
             </View>
 
             <Button label="Create page" onPress={create} />
+
+            <View style={styles.group}>
+              <Text style={type.eyebrow}>Or make something for it</Text>
+              <View style={styles.list}>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel="A sigil. Make one from your intent, and it gets its own page."
+                  onPress={() => router.push({ pathname: '/grimoire/sigil', params: sectionId ? { sectionId } : {} })}
+                  style={({ pressed }) => [styles.row, pressed && styles.pressed]}
+                >
+                  <Text style={styles.sigilMark} aria-hidden>
+                    ✧
+                  </Text>
+                  <View style={styles.flex}>
+                    <Text style={styles.rowTitle}>A sigil</Text>
+                    <Text style={type.caption} numberOfLines={2}>
+                      Make one from your intent, by its letters or a planetary square, and it gets its own page.
+                    </Text>
+                  </View>
+                </Pressable>
+              </View>
+            </View>
           </ScrollView>
         </KeyboardAvoidingView>
       )}
@@ -166,5 +188,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   radioOn: { borderColor: colors.gold },
+  sigilMark: { width: 22, textAlign: 'center', fontSize: 18, color: colors.gold },
   radioDot: { width: 11, height: 11, borderRadius: 6, backgroundColor: colors.gold },
 });

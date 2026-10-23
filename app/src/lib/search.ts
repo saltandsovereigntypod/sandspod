@@ -88,7 +88,8 @@ export function searchEverything(sources: SearchSources, query: string, perKind 
     sources.pages.flatMap((page) => {
       const titled = (page.title ?? '').toLowerCase().includes(needle);
       const blocks = (blocksByPage.get(page.id) ?? []).sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
-      const body = firstMatch(blocks.flatMap((b) => [b.content, b.rich_content?.html]), needle);
+      // A picture kept as a data: url (a sigil) has nothing to read.
+      const body = firstMatch(blocks.flatMap((b) => (b.content?.startsWith('data:') ? [] : [b.content, b.rich_content?.html])), needle);
       if (!titled && !body) return [];
       return [{ kind: 'page' as const, id: page.id, title: page.title || 'Untitled page', detail: body ?? 'Grimoire page', titled }];
     }),
