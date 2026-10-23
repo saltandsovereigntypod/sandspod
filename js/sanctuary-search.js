@@ -3,6 +3,7 @@
     library: "Living Library",
     pages: "Book of Shadows",
     dreams: "Dreams",
+    divination: "Divination",
     rituals: "Rituals",
     templates: "Ritual Templates",
     apothecary: "Apothecary",
@@ -76,6 +77,25 @@
       href: `/grimoire/dreams/dream/?id=${encodeURIComponent(entry.id || "")}`,
       timestamp: entry.updatedAt || entry.createdAt
     });
+  }
+
+  /**
+   * Every tarot card, rune and ogham stave in the Grimoire's Traditional
+   * Information, from the app's own pages (js/core/divination-library.js):
+   * found by name, by its three words, and by its page.
+   */
+  function createDivinationResults(core) {
+    if (!core || typeof core.allDivinationEntries !== "function") return [];
+    return core.allDivinationEntries().map((entry) => {
+      const page = core.divinationPage(entry);
+      return createResult({
+        id: `${entry.kind}/${entry.id}`, group: "divination", source: "divination", type: entry.kind, title: entry.name,
+        subtitle: `${page.eyebrow} · ${core.wordsLine(entry.words)}`,
+        aliases: [...entry.words, page.gloss].filter(Boolean),
+        fields: page.sections.map((section) => section.text),
+        href: core.divinationWebPath(entry)
+      });
+    }).filter(Boolean);
   }
 
   function dedupe(records = []) {
@@ -165,7 +185,7 @@
     return Boolean(isOpen) && requestId === currentRequestId;
   }
 
-  const api = { GROUP_LABELS, buildIndex, updateSource, getIndex, search, rankRecords, groupResults, resolveDestination, getRecent, isCurrentRequest, createResult, createApothecaryResult, createDreamResult };
+  const api = { GROUP_LABELS, buildIndex, updateSource, getIndex, search, rankRecords, groupResults, resolveDestination, getRecent, isCurrentRequest, createResult, createApothecaryResult, createDreamResult, createDivinationResults };
   global.SanctuarySearch = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);
