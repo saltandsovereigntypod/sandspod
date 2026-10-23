@@ -183,23 +183,24 @@
     if (id !== "new" && !ritual) return detail(id);
     if (!(state.perms.lead || state.perms.site)) return detail(id);
     pane.innerHTML = `<p class="sp-caption">Opening the planner…</p>`;
-    const [members, templates] = await Promise.all([D.members(state.coven.id).catch(() => []), D.myRitualTemplates(state.context.user?.id).catch(() => [])]);
-    const active = members.filter((m) => m.status === "active");
-    await UI.loadNames(state.context, active.map((m) => m.user_id));
+    // Who can be given a part: members who have signed the coven's current agreements.
+    const [candidates, templates] = await Promise.all([D.ritualPeople(state.coven.id).catch(() => []), D.myRitualTemplates(state.context.user?.id).catch(() => [])]);
+    await UI.loadNames(state.context, candidates.map((c) => c.user_id));
     if (!pane || !editing) return;
     let steps = ritual ? stepsOf(ritual).map((s) => ({ ...s })) : [{ title: "", instructions: "", spoken_text: "", duration_minutes: null, assigned_user_id: null, assigned_rank_id: null }];
     const ranks = [...state.ranks].sort((a, b) => b.level - a.level);
-    const people = active.map((m) => ({ id: m.user_id, name: nameOf(m.user_id) })).sort((a, b) => a.name.localeCompare(b.name));
+    const people = candidates.map((c) => ({ id: c.user_id, name: nameOf(c.user_id), eligible: Boolean(c.eligible) })).sort((a, b) => a.name.localeCompare(b.name));
 
     const assignValue = (s) => (s.assigned_user_id ? `user:${s.assigned_user_id}` : s.assigned_rank_id ? `rank:${s.assigned_rank_id}` : "");
     const assignOptions = (s) => {
       const value = assignValue(s);
-      const opt = (v, label) => `<option value="${esc(v)}"${v === value ? " selected" : ""}>${esc(label)}</option>`;
-      const gone = s.assigned_user_id && !people.some((p) => p.id === s.assigned_user_id) ? opt(`user:${s.assigned_user_id}`, `${nameOf(s.assigned_user_id)} (no longer a member)`) : "";
+      const opt = (v, label, disabled) => `<option value="${esc(v)}"${v === value ? " selected" : ""}${disabled ? " disabled" : ""}>${esc(label)}</option>`;
+      const gone = s.assigned_user_id && !people.some((p) => p.id === s.assigned_user_id) ? opt(`user:${s.assigned_user_id}`, `${nameOf(s.assigned_user_id)} (no longer a member)`, true) : "";
       return `${opt("", "The whole coven")}
         <optgroup label="Everyone in a position">${ranks.map((r) => opt(`rank:${r.id}`, `Every ${r.name}`)).join("")}</optgroup>
-        <optgroup label="One person">${people.map((p) => opt(`user:${p.id}`, p.name)).join("")}${gone}</optgroup>`;
+        <optgroup label="One person">${people.map((p) => opt(`user:${p.id}`, p.eligible ? p.name : `${p.name} (needs to re-sign)`, !p.eligible)).join("")}${gone}</optgroup>`;
     };
+    const blockedPart = (s) => L.unassignablePart(s, people, nameOf);
 
     const stepHtml = (s, i) => `<li class="sp-card cv-step-edit" data-index="${i}">
         <div class="cv-inline-form"><p class="sp-label">Step ${i + 1}</p><span class="cv-grow"></span>
@@ -208,7 +209,8 @@
           <button class="button button--ghost button--small" type="button" data-remove aria-label="Remove step ${i + 1}">Remove</button></div>
         <div class="sp-field"><label for="st-title-${i}">What happens</label><input id="st-title-${i}" name="title" maxlength="120" required value="${esc(s.title)}" placeholder="Cast the circle" /></div>
         <div class="sp-grid-2">
-          <div class="sp-field"><label for="st-who-${i}">Whose step</label><select id="st-who-${i}" name="assign">${assignOptions(s)}</select></div>
+          <div class="sp-field"><label for="st-who-${i}">Whose step</label><select id="st-who-${i}" name="assign"${blockedPart(s) ? ` aria-describedby="st-who-note-${i}"` : ""}>${assignOptions(s)}</select>
+            ${blockedPart(s) ? `<p class="cv-status is-error" id="st-who-note-${i}">${esc(blockedPart(s))}</p>` : ""}</div>
           <div class="sp-field"><label for="st-min-${i}">Minutes (optional)</label><input id="st-min-${i}" name="duration_minutes" type="number" min="0" max="240" value="${esc(s.duration_minutes ?? "")}" /></div>
         </div>
         <div class="sp-field"><label for="st-ins-${i}">Instructions (shown to them when the step comes)</label><textarea id="st-ins-${i}" name="instructions" maxlength="4000">${esc(s.instructions || "")}</textarea></div>
@@ -252,6 +254,13 @@
     };
     const drawSteps = () => (holder.innerHTML = steps.map(stepHtml).join(""));
     drawSteps();
+    // Choosing someone else clears the warning.
+    holder.addEventListener("change", (event) => {
+      if (event.target.name !== "assign") return;
+      read();
+      drawSteps();
+      holder.querySelector(`#${CSS.escape(event.target.id)}`)?.focus();
+    });
 
     holder.addEventListener("click", (event) => {
       const li = event.target.closest("[data-index]");
@@ -296,6 +305,11 @@
       event.preventDefault();
       read();
       const kept = steps.filter((s) => String(s.title).trim());
+      const blocked = kept.findIndex((s) => blockedPart(s));
+      if (blocked >= 0) {
+        drawSteps();
+        return UI.setStatus(form.querySelector("[data-status]"), `Step ${blocked + 1}: ${blockedPart(kept[blocked])}`, true);
+      }
       const fields = {
         title: form.elements.ritual_title.value.trim(),
         intention: form.elements.ritual_intention.value.trim(),

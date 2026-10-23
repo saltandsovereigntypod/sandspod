@@ -195,6 +195,8 @@
       return run(db().from("coven_ritual_steps").select("*").in("ritual_id", ids).order("position", { ascending: true }));
     },
     saveRitual: (covenId, ritualId, ritual, steps) => rpc("save_coven_ritual", { p_coven: covenId, p_ritual_id: ritualId || null, p_ritual: ritual, p_steps: steps }),
+    /** Active members, and whether each can be given a ritual part (signed the current agreements). */
+    ritualPeople: (covenId) => rpc("coven_ritual_people", { p_coven: covenId }),
     startRitual: (ritualId) => rpc("start_coven_ritual", { p_ritual: ritualId }),
     finishStep: (stepId) => rpc("finish_coven_ritual_step", { p_step: stepId }),
     goToStep: (ritualId, stepId) => rpc("go_to_coven_ritual_step", { p_ritual: ritualId, p_step: stepId || null }),

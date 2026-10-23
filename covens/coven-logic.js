@@ -310,6 +310,20 @@
     return true;
   }
 
+  /**
+   * Why a step can't keep its person, or "" if it can: ritual parts go only to
+   * members who have signed the coven's current agreements (as
+   * public.save_coven_ritual insists). `people` is [{ id, eligible }].
+   */
+  function unassignablePart(step, people, nameOf) {
+    if (!step?.assigned_user_id) return "";
+    const person = (people || []).find((p) => p.id === step.assigned_user_id);
+    const name = nameOf ? nameOf(step.assigned_user_id) : "This member";
+    if (!person) return `${name} is no longer a member. Give this step to someone else.`;
+    if (!person.eligible) return `${name} hasn’t signed the coven’s current agreements, so can’t be given a part. Give this step to someone else.`;
+    return "";
+  }
+
   /** A ritual's steps in order. */
   const orderSteps = (steps, ritualId) => [...(steps || [])].filter((s) => !ritualId || s.ritual_id === ritualId).sort((a, b) => a.position - b.position);
 
@@ -387,6 +401,7 @@
     relativeTime,
     stepAssignee,
     stepIsMine,
+    unassignablePart,
     orderSteps,
     ritualGroups,
     toLocalInput,

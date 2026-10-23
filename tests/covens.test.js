@@ -251,3 +251,15 @@ test("the coven rituals migration keeps its rules", () => {
   assert.match(sql, /when 'lead' then coalesce\(r\.can_lead_rituals or r\.can_moderate or r\.can_manage, false\)/);
   assert.match(sql, /revoke execute on function public\.coven_ritual_leader\(uuid\), public\.coven_ritual_move\(uuid, uuid\), public\.coven_ritual_prune\(uuid, uuid\[\]\), public\.coven_ritual_remove\(uuid\) from public, anon, authenticated/);
 });
+
+test("only members who have signed the current agreements can be given a ritual part", () => {
+  const people = [{ id: "a", eligible: true }, { id: "b", eligible: false }];
+  const name = (id) => ({ a: "Wren", b: "Rowan", c: "Sage" })[id];
+  assert.equal(L.unassignablePart({ assigned_user_id: "a" }, people, name), "");
+  assert.match(L.unassignablePart({ assigned_user_id: "b" }, people, name), /^Rowan hasn’t signed the coven’s current agreements/);
+  assert.match(L.unassignablePart({ assigned_user_id: "c" }, people, name), /^Sage is no longer a member/);
+  assert.equal(L.unassignablePart({ assigned_rank_id: "elder" }, people, name), "", "positions and the whole coven are always fine");
+  assert.equal(L.unassignablePart({}, people, name), "");
+  const sql = fs.readFileSync(path.join(root, "supabase/migrations/20261025000000_coven_ritual_signed_parts.sql"), "utf8");
+  assert.match(sql, /coven_unsigned_agreements\(p_coven, person\) > 0 or public\.is_community_banned\(person\)/, "the database refuses unsigned members too");
+});
