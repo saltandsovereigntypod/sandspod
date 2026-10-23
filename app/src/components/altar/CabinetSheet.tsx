@@ -4,8 +4,9 @@ import { ActivityIndicator, Image, Pressable, StyleSheet, Text, TextInput, View 
 import { altarImageSource, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
 import { imageRatio } from '../../lib/altar/geometry';
 import { cabinetEntry, topUses } from '../../lib/altar/companion';
-import { cabinetCategories, cabinetItemsFor, deityPantheon, formImage, formObjectLabel, overrideKey, PANTHEON_GROUPS, placeableForms, shortLabel } from '../../lib/altar/cabinet';
+import { cabinetCategoriesFor, cabinetItemsFor, deityPantheon, formImage, formObjectLabel, overrideKey, PANTHEON_GROUPS, placeableForms, shortLabel } from '../../lib/altar/cabinet';
 import { pickImage, type PickedImage } from '../../lib/altar/images';
+import { seasonalSections, type SabbatNear } from '../../lib/altar/seasonal';
 import type { CabinetForm, CabinetItem } from '../../lib/altar/types';
 import type { LibraryEntry } from '../../lib/library';
 import { colors, fonts, radius, space, touch, type } from '../../theme';
@@ -29,6 +30,8 @@ type Props = {
   signedIn?: boolean;
   onSetImage?: (item: CabinetItem, form: CabinetForm, picked: PickedImage) => Promise<void>;
   onRemoveImage?: (item: CabinetItem, form: CabinetForm) => Promise<void>;
+  /** The sabbat that is near (a week before through the day): its seasonal things come first. */
+  near?: SabbatNear | null;
 };
 
 export function CabinetSheet({
@@ -43,8 +46,13 @@ export function CabinetSheet({
   signedIn,
   onSetImage,
   onRemoveImage,
+  near = null,
 }: Props) {
-  const [category, setCategory] = useState<string>('candles');
+  const hasSeasonal = items.some((item) => item.category === 'seasonal');
+  // Near a sabbat the cabinet opens on its seasonal things.
+  const [category, setCategory] = useState<string>(() => (near && hasSeasonal ? 'seasonal' : 'candles'));
+  // The Seasonal and Natural drawers show once something in them has a picture.
+  const categories = cabinetCategoriesFor(!!near).filter((c) => (c.id !== 'seasonal' && c.id !== 'natural') || items.some((item) => item.category === c.id));
   const [search, setSearch] = useState('');
   // The form whose picture is being changed (press and hold a built-in tile).
   const [picture, setPicture] = useState<{ item: CabinetItem; form: CabinetForm } | null>(null);
@@ -106,7 +114,8 @@ export function CabinetSheet({
       cabinetItemsFor(items, category, search)
         .map((item) => ({ item, forms: placeableForms(item, overrides) }))
         .filter((entry) => entry.forms.length > 0)
-        .map((entry) => ({ ...entry, uses: topUses(cabinetEntry(library, entry.item, entry.forms[0])) })),
+        // Things the Living Library has no page for say a few words of their own (shelf.ts).
+        .map((entry) => ({ ...entry, uses: topUses(cabinetEntry(library, entry.item, entry.forms[0])) || entry.item.description || '' })),
     [items, category, search, overrides, library],
   );
 
@@ -147,7 +156,7 @@ export function CabinetSheet({
             clearButtonMode="while-editing"
           />
           <ChipRow>
-            {cabinetCategories.map((c) => (
+            {categories.map((c) => (
               <Chip key={c.id} label={c.label} active={c.id === category} onPress={() => setCategory(c.id)} />
             ))}
           </ChipRow>
@@ -175,7 +184,7 @@ export function CabinetSheet({
       }
     >
       {shown.length === 0 && <Text style={type.body}>Nothing in this drawer{search ? ' matches that search' : ''}.</Text>}
-      {!!onMakeOwn && (
+      {!!onMakeOwn && category !== 'seasonal' && category !== 'natural' && (
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Make your own item for this drawer"
@@ -254,7 +263,23 @@ export function CabinetSheet({
                 </View>
               );
             })
-        : singles.length > 0 && <View style={styles.grid}>{singles.map(singleTile)}</View>}
+        : category === 'seasonal'
+          ? // Round the wheel from the sabbat that's coming, "For Samhain" first when it's near.
+            seasonalSections(
+              singles.map(({ item }) => item),
+              near,
+            ).map((section) => (
+              <View key={section.title} style={styles.pantheon}>
+                <Text style={styles.groupTitle} accessibilityRole="header">
+                  {section.title}
+                </Text>
+                {section.sabbat === near?.id && (
+                  <Text style={type.caption}>{near.inDays === 0 ? `${near.name} is today.` : `${near.name} is ${near.inDays === 1 ? 'tomorrow' : `in ${near.inDays} days`}.`}</Text>
+                )}
+                <View style={styles.grid}>{singles.filter(({ item }) => section.items.includes(item)).map(singleTile)}</View>
+              </View>
+            ))
+          : singles.length > 0 && <View style={styles.grid}>{singles.map(singleTile)}</View>}
       <Text style={type.caption}>
         Tap to place it in the middle of the altar. Items you make here or on the website are kept in your cabinet in both places.
         {changesPictures ? ' Press and hold a picture to use a photo of your own for it.' : ''}

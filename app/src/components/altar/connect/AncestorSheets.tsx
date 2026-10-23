@@ -11,7 +11,7 @@ import { Button } from '../../Button';
 import { ANCESTORS, normalizeAncestor, type Ancestor, type AncestorEntry } from '../../../lib/craft/hedge/ancestors';
 import { useCraft } from '../../../lib/craft/store';
 import { ancestorOf, ancestorPanel, ancestorRite, MEMORIAL_COLORS, MEMORIAL_FORMS, memorialObject, shrineChoices } from '../../../lib/altar/connect/ancestor';
-import { isLit } from '../../../lib/altar/livingState';
+import { isCandle, isLit } from '../../../lib/altar/livingState';
 import type { SavedObject } from '../../../lib/altar/types';
 import type { TemplateDraft } from '../../../lib/rituals/types';
 import { type } from '../../../theme';
@@ -106,7 +106,7 @@ type PanelProps = {
   altarId: string | null;
 };
 
-/** The object panel section for a memorial candle. */
+/** The object panel section for a memorial candle, or an ancestor frame linked to someone. */
 export function AncestorPanelSection({ object, onLight, onBeginRite, altarId }: PanelProps) {
   const link = ancestorOf(object);
   const { entries } = useCraft<Ancestor>(ANCESTORS);
@@ -116,7 +116,7 @@ export function AncestorPanelSection({ object, onLight, onBeginRite, altarId }: 
   if (!panel || !entry) {
     return (
       <PanelSection title="In memory">
-        <Text style={connectStyles.body}>{`A candle for ${link.name || 'one remembered'}. Their page in Ancestors isn’t on this phone, or it has been removed.`}</Text>
+        <Text style={connectStyles.body}>{`${isCandle(object) ? 'A candle' : 'Kept here'} for ${link.name || 'one remembered'}. Their page in Ancestors isn’t on this phone, or it has been removed.`}</Text>
       </PanelSection>
     );
   }
@@ -134,7 +134,8 @@ export function AncestorPanelSection({ object, onLight, onBeginRite, altarId }: 
       {!!panel.loved && <Text style={connectStyles.body}>{`They loved ${panel.loved}.`}</Text>}
       {!!panel.memory && <Text style={connectStyles.quote}>{panel.memory}</Text>}
       <ChipRow>
-        <Chip label={lit ? 'Their candle is lit' : 'Light a candle for them'} symbol="🜂" disabled={lit} onPress={onLight} />
+        {/* An ancestor frame is linked to them too, but only a candle is lit. */}
+        {isCandle(object) && <Chip label={lit ? 'Their candle is lit' : 'Light a candle for them'} symbol="🜂" disabled={lit} onPress={onLight} />}
         {onBeginRite && <Chip label="Begin the candle rite" symbol="❦" onPress={() => onBeginRite(ancestorRite(entry, altarId))} />}
         <Chip label="Their page" onPress={() => router.push(`/rituals/craft/hedge/ancestors/${entry.id}` as Href)} />
       </ChipRow>

@@ -27,6 +27,9 @@ import { stackOrder } from '../../lib/altar/layers';
 import { candleLife, dressingOverlays, isCandle, isLit } from '../../lib/altar/livingState';
 import { incenseStickArt, offeringArt, tintFilter, tintMatrix, type IncenseStickArt, type OfferingArt } from '../../lib/altar/offeringArt';
 import { AgedPicture, HAS_AGED } from './AgedPicture';
+import { FoodHeap } from './FoodHeap';
+import { FramePhoto } from './FramePhoto';
+import { frameOf, framePhotoRect, framePhotoTint, isFrame } from '../../lib/altar/frame';
 import type { AltarDocument } from '../../lib/altar/snapshot';
 import type { SavedObject } from '../../lib/altar/types';
 import { colors, fonts } from '../../theme';
@@ -419,6 +422,9 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
   const bend = art?.bend ?? null;
   const uid = String(object.altarObjectId || 'obj');
   const labelSize = Math.max(8, Math.min(13, width * 0.16));
+  // An ancestor frame: the photo of your own in its opening.
+  const frame = isFrame(object) ? frameOf(object) : null;
+  const photoRect = frame && source ? framePhotoRect(object, width, height) : null;
 
   return (
     <View pointerEvents="none" style={{ width, height, transform: [{ scaleX: flipped ? -1 : 1 }] }}>
@@ -487,6 +493,8 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
       {lit && geometry && <WaxGlow object={object} width={width} height={height} now={now} motion={motion} />}
       {lit && flame && <Flame layout={flame} motion={motion} />}
       {smoke != null && flame && (HAS_SMOKE ? <SmokeFire key={smoke} layout={flame} width={width} height={height} /> : <Smoke key={smoke} layout={flame} />)}
+      {photoRect && frame && <FramePhoto source={frame.photo ? altarImageSource(frame.photo) : null} rect={photoRect} tint={framePhotoTint(object)} unmirror={flipped} />}
+      {art?.food && <FoodHeap food={art.food} width={width} height={height} uid={uid} />}
       {art && (art.liquid || art.tide || art.stain || art.petals.length > 0) && <OfferingMarks art={art} width={width} height={height} uid={uid} />}
       {stick && (stick.pile || stickCut) && <StickAsh stick={stick} width={width} height={height} lit={!!incense?.lit} />}
       {incense?.lit && <IncenseSmoke origin={stick?.origin ?? smokeOrigin(object)} width={width} />}
