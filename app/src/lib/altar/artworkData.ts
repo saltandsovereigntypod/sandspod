@@ -366,11 +366,73 @@ export const ALTAR_ARTWORK: {
       "assetPath": "/assets/altar/backgrounds/candlelit-cave.png"
     }
   ],
-  "seasonal": {},
+  "seasonal": {
+    "apples": "../assets/altar/objects/seasonal/apples/apples.png",
+    "brigids-cross": "../assets/altar/objects/seasonal/brigids-cross/brigids-cross.png",
+    "corn-dolly": "../assets/altar/objects/seasonal/corn-dolly/corn-dolly.png",
+    "evergreen-boughs": "../assets/altar/objects/seasonal/evergreen-boughs/evergreen-boughs.png",
+    "flower-crown": "../assets/altar/objects/seasonal/flower-crown/flower-crown.png",
+    "gourds": "../assets/altar/objects/seasonal/gourds/gourds.png",
+    "ostara-eggs": "../assets/altar/objects/seasonal/ostara-eggs/ostara-eggs.png",
+    "pomegranate": "../assets/altar/objects/seasonal/pomegranate/pomegranate.png",
+    "pumpkin-lantern": "../assets/altar/objects/seasonal/pumpkin-lantern/pumpkin-lantern.png",
+    "sun-wheel": "../assets/altar/objects/seasonal/sun-wheel/sun-wheel.png",
+    "turnip-lantern": "../assets/altar/objects/seasonal/turnip-lantern/turnip-lantern.png",
+    "wheat-sheaf": "../assets/altar/objects/seasonal/wheat-sheaf/wheat-sheaf.png",
+    "yule-log": "../assets/altar/objects/seasonal/yule-log/yule-log.png"
+  },
   "shelfTools": {},
   "natural": {},
-  "frames": {},
-  "offeringFoods": {},
+  "frames": {
+    "gilt": {
+      "image": "../assets/altar/objects/tools/ancestor-frame/ancestor-frame-gilt.png",
+      "ratio": 1.3382,
+      "opening": {
+        "left": 0.2555,
+        "top": 0.25,
+        "width": 0.4881,
+        "height": 0.5089,
+        "oval": true
+      }
+    },
+    "wood": {
+      "image": "../assets/altar/objects/tools/ancestor-frame/ancestor-frame-wood.png",
+      "ratio": 1.3382,
+      "opening": {
+        "left": 0.2785,
+        "top": 0.2102,
+        "width": 0.4421,
+        "height": 0.5124,
+        "oval": false
+      }
+    }
+  },
+  "offeringFoods": {
+    "bread": {
+      "image": "../assets/altar/objects/offerings/bread/bread.png",
+      "ratio": 0.6667
+    },
+    "flowers": {
+      "image": "../assets/altar/objects/offerings/flowers/flowers.png",
+      "ratio": 0.6667
+    },
+    "fruit": {
+      "image": "../assets/altar/objects/offerings/fruit/fruit.png",
+      "ratio": 0.6667
+    },
+    "honeycomb": {
+      "image": "../assets/altar/objects/offerings/honeycomb/honeycomb.png",
+      "ratio": 0.6667
+    },
+    "meal": {
+      "image": "../assets/altar/objects/offerings/meal/meal.png",
+      "ratio": 0.6667
+    },
+    "sweets": {
+      "image": "../assets/altar/objects/offerings/sweets/sweets.png",
+      "ratio": 0.6667
+    }
+  },
   "items": {
     "herbs": [
       {
@@ -6069,6 +6131,33 @@ export const ALTAR_ARTWORK: {
             "type": "tool",
             "tool": "altar",
             "form": "standard"
+          }
+        ]
+      },
+      {
+        "category": "tools",
+        "name": "Ancestor Frame",
+        "keywords": [
+          "ancestors",
+          "remembrance",
+          "the beloved dead",
+          "photo",
+          "memorial"
+        ],
+        "forms": [
+          {
+            "label": "Gilt",
+            "image": "../assets/altar/objects/tools/ancestor-frame/ancestor-frame-gilt.png",
+            "type": "tool",
+            "tool": "ancestor-frame",
+            "form": "gilt"
+          },
+          {
+            "label": "Wood",
+            "image": "../assets/altar/objects/tools/ancestor-frame/ancestor-frame-wood.png",
+            "type": "tool",
+            "tool": "ancestor-frame",
+            "form": "wood"
           }
         ]
       },

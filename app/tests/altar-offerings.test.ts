@@ -182,8 +182,8 @@ test('drawn going over: wine sinks in the chalice, water leaves a ring in the bo
   // Low in a chalice it's behind the rim.
   assert.equal(offeringArt(chalice, W, W * 1.5, T0 + 4.8 * DAY)?.liquid ?? null, null);
 
-  // Bread in a bowl has no picture of its own to change.
-  assert.equal(offeringArt(setOffering(place('vessels:bowl'), 'bread', '', at(0)), W, W / 1.5, T0 + 4 * DAY), null);
+  // Bread in a bowl is drawn as its own heap inside the rim.
+  assert.equal(offeringArt(setOffering(place('vessels:bowl'), 'bread', '', at(0)), W, W / 1.5, T0 + 4 * DAY)?.food?.id, 'bread');
 
   const sprig = { ...place('herbs:rose', 'sprig'), altarObjectId: 'rose-1' };
   const wilted = offeringArt(sprig, W, W * 1.5, T0 + 10 * DAY, 1.5)!;

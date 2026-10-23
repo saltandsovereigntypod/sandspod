@@ -99,22 +99,15 @@ test('tonight’s altar on a sabbat night sets out one of its seasonal things, t
   const holidays = holidaysToday(night, { traditions: ['wheel'], custom: [] });
   // The calendars' own ids now bring the holiday's altar (they carry the calendar and date).
   assert.equal(tonightAltar(night, holidays, 'x').reason, 'Samhain');
-  const without = tonightAltar(night, holidays, 'x');
-  assert.ok(!without.doc.objects.some((o) => o.type === 'seasonal'), 'no pictures yet, nothing seasonal');
-  // Once the pictures are there (the turnip lantern only, say), it stands in front of the centrepiece.
-  const added = seasonalCabinetItems(pictures(['turnip-lantern']));
-  builtInCabinet.push(...added);
-  try {
-    const altar = tonightAltar(night, holidays, 'x');
-    const lantern = altar.doc.objects.find((o) => o.type === 'seasonal');
-    assert.equal(lantern?.form, 'turnip-lantern');
-    assert.ok(altar.labels.includes('Turnip Lantern'));
-    assert.ok(explainTonight(altar, night).some((p) => p.why === 'Turnip Lantern: one of the things kept at Samhain.'));
-    // Not on an ordinary night.
-    assert.ok(!tonightAltar(new Date(2026, 9, 13, 20), [], 'x').doc.objects.some((o) => o.type === 'seasonal'));
-  } finally {
-    builtInCabinet.splice(builtInCabinet.length - added.length, added.length);
-  }
+  // The pictures are painted, so the most fitting one (the pumpkin lantern) stands in front of the centrepiece.
+  const altar = tonightAltar(night, holidays, 'x');
+  const lantern = altar.doc.objects.find((o) => o.type === 'seasonal');
+  assert.equal(lantern?.form, 'pumpkin-lantern');
+  const name = builtInCabinet.find((i) => i.id === 'seasonal:pumpkin-lantern')!.name;
+  assert.ok(altar.labels.includes(name));
+  assert.ok(explainTonight(altar, night).some((p) => p.why === `${name}: one of the things kept at Samhain.`));
+  // Not on an ordinary night.
+  assert.ok(!tonightAltar(new Date(2026, 9, 13, 20), [], 'x').doc.objects.some((o) => o.type === 'seasonal'));
 });
 
 test('apples, gourds and a pomegranate go over slowly; the woven and straw things keep', () => {
