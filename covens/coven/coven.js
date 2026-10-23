@@ -3,7 +3,8 @@
  *
  * Everyone sees About: the coven's creed, rules, requirements, agreements
  * and positions. Seekers sign the agreements and join or apply under Join.
- * Members get the Gathering (live chat, covens/coven/chat.js), the Altar
+ * Members get the Gathering (live chat, covens/coven/chat.js), Rituals
+ * (steps given to members or positions, run live, covens/coven/rituals.js), the Altar
  * (shared and live, covens/coven/altar.js), Members and My path (their
  * position, agreements and requests to advance). Reviewers get Review and
  * leaders Manage (covens/coven/manage.js). Site moderators see every tab.
@@ -20,7 +21,7 @@
   const { header } = global.GuidesUI;
 
   const slug = new URLSearchParams(global.location.search).get("c") || "";
-  const state = { context: null, coven: null, ranks: [], documents: [], membership: null, perms: null, signatures: [], unsigned: [], application: null, advancements: [], pending: { applications: 0, advancements: 0 }, presence: [] };
+  const state = { context: null, coven: null, ranks: [], documents: [], membership: null, perms: null, signatures: [], unsigned: [], application: null, advancements: [], pending: { applications: 0, advancements: 0 }, presence: [], rituals: [], ritualSteps: [] };
   let live = null;
   let mounted = null;
 
@@ -51,6 +52,11 @@
       const [apps, advs] = await Promise.all([D.applications(coven.id).catch(() => []), D.advancements(coven.id).catch(() => [])]);
       state.pending = { applications: apps.length, advancements: advs.length };
     }
+    if (state.perms.member || state.perms.site) {
+      state.rituals = await D.rituals(coven.id).catch(() => []);
+      state.ritualSteps = await D.ritualSteps(state.rituals.map((r) => r.id)).catch(() => []);
+      await UI.loadNames(context, [...state.rituals.map((r) => r.led_by), ...state.ritualSteps.flatMap((s) => [s.assigned_user_id, s.completed_by])]);
+    }
     if (coven.founder_id) await UI.loadNames(context, [coven.founder_id]);
   }
 
@@ -69,7 +75,10 @@
     const list = [{ key: "about", label: "About" }];
     const insider = perms.member || perms.site;
     if (!perms.member && coven.status === "active") list.push({ key: "join", label: coven.joining === "open" ? "Join" : "Apply" });
-    if (insider) list.push({ key: "gathering", label: "Gathering" }, { key: "altar", label: "Altar" }, { key: "members", label: "Members" });
+    if (insider) {
+      const live = state.rituals.some((r) => r.status === "live");
+      list.push({ key: "gathering", label: "Gathering" }, { key: "rituals", label: live ? "Rituals · now" : "Rituals" }, { key: "altar", label: "Altar" }, { key: "members", label: "Members" });
+    }
     if (perms.member) list.push({ key: "path", label: "My path", count: state.unsigned.length });
     if (perms.review || perms.site) list.push({ key: "review", label: "Review", count: state.pending.applications + state.pending.advancements });
     if (perms.manage || perms.site) list.push({ key: "manage", label: "Manage" });
@@ -94,22 +103,56 @@
     if (coven.status === "archived") out.push(`<div class="cv-banner"><p>This coven has been archived. Its members can still read it.</p></div>`);
     if (perms.site && !perms.member) out.push(`<div class="cv-banner cv-banner--site"><p>You’re viewing this coven as a site moderator.</p></div>`);
     if (context.banned) out.push(UI.bannedCard());
+    out.push(`<div data-turn-banner>${turnBanner()}</div>`);
     if (perms.member && state.unsigned.length && currentTab() !== "path") out.push(`<div class="cv-banner"><p>The coven’s agreements have changed. <a href="${esc(covenHref("path"))}" data-tab="path">Read and sign them</a> to keep taking part in the gathering and at the altar.</p></div>`);
     return out.join("");
+  }
+
+  /** A live ritual whose current step is mine, wherever I am in the coven. */
+  function myTurn() {
+    const userId = state.context.user?.id;
+    for (const ritual of state.rituals.filter((r) => r.status === "live")) {
+      const step = state.ritualSteps.find((s) => s.id === ritual.current_step_id);
+      if (step && L.stepIsMine(step, state.membership, userId)) return { ritual, step };
+    }
+    return null;
+  }
+
+  function turnBanner() {
+    const turn = myTurn();
+    const params = new URLSearchParams(global.location.search);
+    const here = currentTab() === "rituals" && params.get("ritual") === turn?.ritual.id;
+    doc.title = `${turn ? "✦ Your turn · " : ""}${state.coven.name} | Salt & Sovereignty`;
+    if (!turn || here) return "";
+    return `<div class="cv-banner cv-banner--turn" role="status"><p><strong>✦ It’s your turn in ${esc(turn.ritual.title)}:</strong> ${esc(turn.step.title)}.
+      <a href="${esc(covenHref("rituals"))}&amp;ritual=${esc(encodeURIComponent(turn.ritual.id))}" data-tab="rituals">Open your step</a></p></div>`;
+  }
+
+  async function onRitualChange(kind, change) {
+    const record = change?.new && Object.keys(change.new).length ? change.new : null;
+    if (record?.coven_id && record.coven_id !== state.coven.id) return;
+    const listKey = kind === "ritual" ? "rituals" : "ritualSteps";
+    if (change?.eventType === "DELETE" && !state[listKey].some((x) => x.id === change.old?.id)) return;
+    state[listKey] = L.applyChange(state[listKey], change);
+    if (record) await UI.loadNames(state.context, [record.led_by, record.assigned_user_id, record.completed_by]);
+    const banner = root.querySelector("[data-turn-banner]");
+    if (banner) banner.innerHTML = turnBanner();
+    const tab = root.querySelector('.cv-tab[data-tab="rituals"]');
+    if (tab) tab.textContent = state.rituals.some((r) => r.status === "live") ? "Rituals · now" : "Rituals";
+    global.CovenRituals?.onChange?.();
   }
 
   function draw(tab) {
     mounted?.unmount?.();
     mounted = null;
     const { coven } = state;
-    doc.title = `${coven.name} | Salt & Sovereignty`;
     root.innerHTML = `${header({ title: coven.name, eyebrow: coven.tradition || "Coven", back: "/covens/", backLabel: "All covens" })}
       ${coven.tagline ? `<p class="sp-muted">${esc(coven.tagline)}</p>` : ""}
       ${banners()}
       ${tabBar(tab)}
       <div class="cv-pane" data-pane></div>`;
     const pane = root.querySelector("[data-pane]");
-    const views = { about, join, path, gathering: () => mount(global.CovenChat), altar: () => mount(global.CovenAltar), members: () => mount(global.CovenMembers), review: () => mount(global.CovenReview), manage: () => mount(global.CovenManage) };
+    const views = { about, join, path, gathering: () => mount(global.CovenChat), rituals: () => mount(global.CovenRituals), altar: () => mount(global.CovenAltar), members: () => mount(global.CovenMembers), review: () => mount(global.CovenReview), manage: () => mount(global.CovenManage) };
     function mount(module) {
       if (!module) return (pane.innerHTML = `<p class="sp-notice">This part of the coven couldn’t load. Please refresh the page.</p>`);
       mounted = module;
@@ -355,6 +398,7 @@
     live = D.live(coven.id, {
       onMessage: (change) => global.CovenChat?.onChange?.(change),
       onAltar: (change) => global.CovenAltar?.onChange?.(change),
+      onRitual: onRitualChange,
       onPresence: (presence) => {
         state.presence = Object.values(presence).map((list) => list[0]).filter(Boolean);
         global.CovenChat?.onPresence?.(state.presence);

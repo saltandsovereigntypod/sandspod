@@ -145,6 +145,7 @@
       manage: open && active && (founder || Boolean(rank?.can_manage)),
       review: may("can_review"),
       moderate: may("can_moderate"),
+      lead: open && active && (founder || Boolean(rank && (rank.can_lead_rituals || rank.can_moderate || rank.can_manage))),
       muted,
       site: Boolean(siteModerator),
       status: membership?.status || null
@@ -181,6 +182,7 @@
     if (rank?.can_manage) powers.push("leads the coven");
     if (rank?.can_review) powers.push("reviews applications");
     if (rank?.can_moderate) powers.push("keeps the gathering safe");
+    if (rank?.can_lead_rituals || rank?.can_moderate || rank?.can_manage) powers.push("leads rituals");
     return powers;
   }
 
@@ -288,6 +290,72 @@
     return new Date(value).toLocaleDateString();
   }
 
+  // --- coven rituals ------------------------------------------------------------
+
+  /** Whose a ritual step is: a person, everyone in a position, or the whole coven. */
+  function stepAssignee(step, ranks, nameOf) {
+    if (step?.assigned_user_id) return { kind: "person", label: nameOf ? nameOf(step.assigned_user_id) : "A member" };
+    if (step?.assigned_rank_id) {
+      const rank = (ranks || []).find((r) => r.id === step.assigned_rank_id);
+      return { kind: "rank", label: rank ? `Every ${rank.name}` : "A position" };
+    }
+    return { kind: "everyone", label: "The whole coven" };
+  }
+
+  /** Mirrors public.coven_step_is_mine: by name, by position, or everyone's. */
+  function stepIsMine(step, membership, userId) {
+    if (!step || !userId || membership?.status !== "active") return false;
+    if (step.assigned_user_id) return step.assigned_user_id === userId;
+    if (step.assigned_rank_id) return step.assigned_rank_id === membership.rank_id;
+    return true;
+  }
+
+  /** A ritual's steps in order. */
+  const orderSteps = (steps, ritualId) => [...(steps || [])].filter((s) => !ritualId || s.ritual_id === ritualId).sort((a, b) => a.position - b.position);
+
+  /** Rituals grouped as the Rituals tab shows them. */
+  function ritualGroups(rituals, now = Date.now()) {
+    const by = (key, dir = 1) => (a, b) => dir * ((new Date(a[key] || 0)) - (new Date(b[key] || 0)));
+    const list = rituals || [];
+    return {
+      live: list.filter((r) => r.status === "live"),
+      upcoming: list.filter((r) => r.status === "scheduled").sort((a, b) => (a.scheduled_for ? new Date(a.scheduled_for) : Infinity) - (b.scheduled_for ? new Date(b.scheduled_for) : Infinity)),
+      drafts: list.filter((r) => r.status === "draft").sort(by("updated_at", -1)),
+      past: list.filter((r) => r.status === "done" || r.status === "cancelled").sort(by("ended_at", -1)).slice(0, 20)
+    };
+  }
+
+  /** A timestamp as a datetime-local input's value, in this browser's time. */
+  function toLocalInput(value) {
+    if (!value) return "";
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return "";
+    const pad = (n) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  function fromLocalInput(value) {
+    if (!value) return null;
+    const d = new Date(value);
+    return Number.isNaN(d.getTime()) ? null : d.toISOString();
+  }
+
+  /** A saved personal ritual's steps, ready to become coven ritual steps. */
+  function stepsFromTemplate(templateSteps) {
+    return [...(templateSteps || [])]
+      .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
+      .filter((s) => String(s.title || "").trim())
+      .slice(0, 60)
+      .map((s) => ({
+        title: String(s.title).trim().slice(0, 120),
+        instructions: s.instructions ? String(s.instructions).slice(0, 4000) : "",
+        spoken_text: s.spoken_text ? String(s.spoken_text).slice(0, 4000) : "",
+        duration_minutes: s.duration_seconds ? Math.min(240, Math.max(0, Math.round(s.duration_seconds / 60))) : null,
+        assigned_user_id: null,
+        assigned_rank_id: null
+      }));
+  }
+
   const api = {
     JOINING,
     DOCUMENT_KINDS,
@@ -316,7 +384,14 @@
     chatTimeline,
     applyChange,
     errorMessage,
-    relativeTime
+    relativeTime,
+    stepAssignee,
+    stepIsMine,
+    orderSteps,
+    ritualGroups,
+    toLocalInput,
+    fromLocalInput,
+    stepsFromTemplate
   };
 
   if (typeof module !== "undefined" && module.exports) module.exports = api;

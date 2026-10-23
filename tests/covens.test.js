@@ -181,3 +181,73 @@ test("coven pages load their scripts in order", () => {
   const coven = fs.readFileSync(path.join(root, "covens/coven/index.html"), "utf8");
   assert.ok(coven.indexOf("/covens/coven/coven.js") > coven.indexOf("/covens/coven/manage.js"), "the coven page loads its tabs before starting");
 });
+
+test("ritual steps belong to a person, to everyone in a position, or to the whole coven", () => {
+  const membership = { status: "active", rank_id: "elder" };
+  const name = (id) => ({ u1: "Wren" })[id] || "A witch";
+  assert.equal(L.stepIsMine({ assigned_user_id: "me" }, membership, "me"), true);
+  assert.equal(L.stepIsMine({ assigned_user_id: "u1" }, membership, "me"), false);
+  assert.equal(L.stepIsMine({ assigned_rank_id: "elder" }, membership, "me"), true);
+  assert.equal(L.stepIsMine({ assigned_rank_id: "seeker" }, membership, "me"), false);
+  assert.equal(L.stepIsMine({}, membership, "me"), true, "the whole coven's step is everyone's");
+  assert.equal(L.stepIsMine({}, { status: "left", rank_id: "elder" }, "me"), false, "former members have no steps");
+  assert.deepEqual(L.stepAssignee({ assigned_user_id: "u1" }, ranks, name), { kind: "person", label: "Wren" });
+  assert.deepEqual(L.stepAssignee({ assigned_rank_id: "elder" }, [{ id: "elder", name: "Elder" }], name), { kind: "rank", label: "Every Elder" });
+  assert.deepEqual(L.stepAssignee({}, ranks, name), { kind: "everyone", label: "The whole coven" });
+});
+
+test("those who moderate or lead the coven, or hold a ritual-leading position, lead rituals", () => {
+  assert.equal(perms("founder", "seeker").lead, true);
+  assert.equal(perms("u", "elder").lead, true, "Elders moderate, so they lead rituals");
+  assert.equal(perms("u", "dedicant").lead, false);
+  const withFlag = L.permissions({ coven, membership: { status: "active", rank_id: "x" }, ranks: [{ id: "x", level: 2, can_lead_rituals: true }], userId: "u" });
+  assert.equal(withFlag.lead, true);
+  assert.ok(L.rankPowers({ can_lead_rituals: true }).includes("leads rituals"));
+});
+
+test("rituals are grouped as under way, coming up, drafts and past", () => {
+  const groups = L.ritualGroups([
+    { id: "a", status: "scheduled", scheduled_for: "2026-11-05T20:00:00Z" },
+    { id: "b", status: "scheduled", scheduled_for: "2026-10-30T20:00:00Z" },
+    { id: "c", status: "scheduled", scheduled_for: null },
+    { id: "d", status: "live" },
+    { id: "e", status: "draft", updated_at: "2026-10-01T00:00:00Z" },
+    { id: "f", status: "done", ended_at: "2026-10-01T00:00:00Z" },
+    { id: "g", status: "cancelled", ended_at: null }
+  ]);
+  assert.deepEqual(groups.live.map((r) => r.id), ["d"]);
+  assert.deepEqual(groups.upcoming.map((r) => r.id), ["b", "a", "c"]);
+  assert.deepEqual(groups.drafts.map((r) => r.id), ["e"]);
+  assert.deepEqual(groups.past.map((r) => r.id).sort(), ["f", "g"]);
+  assert.deepEqual(L.orderSteps([{ ritual_id: "r", position: 2, id: "y" }, { ritual_id: "r", position: 1, id: "x" }, { ritual_id: "q", position: 0, id: "z" }], "r").map((s) => s.id), ["x", "y"]);
+});
+
+test("a saved personal ritual's steps become coven steps for the whole coven", () => {
+  const steps = L.stepsFromTemplate([
+    { title: "Close", sort_order: 3, duration_seconds: 125 },
+    { title: "Cast the circle", sort_order: 1, instructions: "Walk deosil.", spoken_text: "I cast this circle." },
+    { title: "  ", sort_order: 2 }
+  ]);
+  assert.deepEqual(steps.map((s) => s.title), ["Cast the circle", "Close"]);
+  assert.equal(steps[0].spoken_text, "I cast this circle.");
+  assert.equal(steps[1].duration_minutes, 2);
+  assert.ok(steps.every((s) => s.assigned_user_id === null && s.assigned_rank_id === null));
+});
+
+test("ritual times round-trip through the date-and-time field", () => {
+  const iso = "2026-10-30T20:15:00.000Z";
+  assert.equal(L.fromLocalInput(L.toLocalInput(iso)), iso);
+  assert.equal(L.toLocalInput(null), "");
+  assert.equal(L.fromLocalInput(""), null);
+});
+
+test("the coven rituals migration keeps its rules", () => {
+  const sql = fs.readFileSync(path.join(root, "supabase/migrations/20261024000000_coven_rituals.sql"), "utf8");
+  for (const table of ["coven_rituals", "coven_ritual_steps"]) {
+    assert.match(sql, new RegExp(`alter table public\\.${table} enable row level security`), table);
+    assert.match(sql, new RegExp(`add table public\\.${table}`), `${table} is live`);
+  }
+  assert.doesNotMatch(sql, /for (insert|update|delete|all) to authenticated/, "rituals change only through the functions");
+  assert.match(sql, /when 'lead' then coalesce\(r\.can_lead_rituals or r\.can_moderate or r\.can_manage, false\)/);
+  assert.match(sql, /revoke execute on function public\.coven_ritual_leader\(uuid\), public\.coven_ritual_move\(uuid, uuid\), public\.coven_ritual_prune\(uuid, uuid\[\]\), public\.coven_ritual_remove\(uuid\) from public, anon, authenticated/);
+});

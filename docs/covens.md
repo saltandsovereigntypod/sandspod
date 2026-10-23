@@ -21,6 +21,15 @@ Messages are rate-limited (8 per 30 seconds) and can be edited for a day. Removi
 
 Altar items use only the site's own altar pictures (a check constraint on `image`). Candles burn down over `burn_minutes` from `lit_at`; the database sets `lit_at`/`lit_by` itself, and an altar holds at most 80 items.
 
+## Coven rituals
+
+The Rituals tab (`covens/coven/rituals.js`, `supabase/migrations/20261024000000_coven_rituals.sql`) holds rituals the coven performs together. Each step (`coven_ritual_steps`) belongs to one member (`assigned_user_id`), to everyone in a position (`assigned_rank_id`), or, with neither, to the whole coven.
+
+- **Who leads:** the founder, positions that lead or moderate the coven, and positions given `can_lead_rituals` (the `lead` permission). They plan rituals (`save_coven_ritual`, which replaces the steps in one go), begin them, move back a step or end them.
+- **Running:** a live ritual's `current_step_id` is shared over Realtime. The person (or people) a step belongs to see its full instructions and words to speak, and an "I've finished this step" button (`finish_coven_ritual_step`) that moves everyone on. On every coven tab, a banner and the page title tell a member when the current step is theirs.
+- **Starting from a personal ritual:** the planner can copy the steps of one of your own saved rituals (`ritual_templates` / `ritual_template_steps`); each copied step starts as the whole coven's until you give it to someone.
+- Rituals can only be changed through the functions; there are no direct write policies. A ritual can't be edited while it's under way. If a position is deleted, steps given to it become the whole coven's.
+
 ## Account deletion
 
 `supabase/functions/delete-account` removes the person's coven profile, memberships, signatures, applications, advancement requests and messages. Covens they founded remain, with `founder_id` cleared; a site moderator can hand such a coven on (`transfer_coven`). Redeploy the function after this change.

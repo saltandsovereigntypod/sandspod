@@ -152,16 +152,23 @@
     clearAltarItem: (id) => run(db().from("coven_altar_items").delete().eq("id", id)),
 
     /**
-     * Live updates for one coven: chat messages and altar items as they
-     * change, and who else is here. Returns { track(state), close() }.
+     * Live updates for one coven: chat messages, altar items and rituals as
+     * they change, and who else is here. Returns { track(state), close() }.
      */
-    live(covenId, { onMessage, onAltar, onPresence, onStatus } = {}) {
+    live(covenId, { onMessage, onAltar, onRitual, onPresence, onStatus } = {}) {
       const channel = db().channel(`coven:${covenId}`, { config: { presence: { key: global.getCurrentSaltUser?.()?.id || "guest" } } });
       if (onMessage) channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_messages", filter: `coven_id=eq.${covenId}` }, onMessage);
       if (onAltar) {
         channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_altar_items", filter: `coven_id=eq.${covenId}` }, onAltar);
         // Deletes can't be filtered by coven; the page ignores ids it doesn't hold.
         channel.on("postgres_changes", { event: "DELETE", schema: "public", table: "coven_altar_items" }, onAltar);
+      }
+      if (onRitual) {
+        channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_rituals", filter: `coven_id=eq.${covenId}` }, (change) => onRitual("ritual", change));
+        channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_ritual_steps", filter: `coven_id=eq.${covenId}` }, (change) => onRitual("step", change));
+        // As with the altar, deletes can't be filtered; ids this page doesn't hold are ignored.
+        channel.on("postgres_changes", { event: "DELETE", schema: "public", table: "coven_rituals" }, (change) => onRitual("ritual", change));
+        channel.on("postgres_changes", { event: "DELETE", schema: "public", table: "coven_ritual_steps" }, (change) => onRitual("step", change));
       }
       if (onPresence) channel.on("presence", { event: "sync" }, () => onPresence(channel.presenceState()));
       let tracked = null;
@@ -179,6 +186,25 @@
         }
       };
     },
+
+    // --- coven rituals --------------------------------------------------------
+    rituals: (covenId) => run(db().from("coven_rituals").select("*").eq("coven_id", covenId).order("created_at", { ascending: false }).limit(200)),
+    async ritualSteps(ritualIds) {
+      const ids = [...new Set((ritualIds || []).filter(Boolean))];
+      if (!ids.length) return [];
+      return run(db().from("coven_ritual_steps").select("*").in("ritual_id", ids).order("position", { ascending: true }));
+    },
+    saveRitual: (covenId, ritualId, ritual, steps) => rpc("save_coven_ritual", { p_coven: covenId, p_ritual_id: ritualId || null, p_ritual: ritual, p_steps: steps }),
+    startRitual: (ritualId) => rpc("start_coven_ritual", { p_ritual: ritualId }),
+    finishStep: (stepId) => rpc("finish_coven_ritual_step", { p_step: stepId }),
+    goToStep: (ritualId, stepId) => rpc("go_to_coven_ritual_step", { p_ritual: ritualId, p_step: stepId || null }),
+    setRitualStatus: (ritualId, status) => rpc("set_coven_ritual_status", { p_ritual: ritualId, p_status: status }),
+    /** Your own saved rituals (the Rituals planner's templates), to start a coven ritual from. */
+    async myRitualTemplates(userId) {
+      if (!userId) return [];
+      return run(db().from("ritual_templates").select("id,title,intention,description").eq("user_id", userId).order("updated_at", { ascending: false }).limit(100));
+    },
+    templateSteps: (templateId) => run(db().from("ritual_template_steps").select("title,instructions,spoken_text,duration_seconds,sort_order").eq("template_id", templateId).order("sort_order", { ascending: true })),
 
     // --- safety -------------------------------------------------------------
     report: (report) => run(db().from("coven_reports").insert({ ...report, reporter_id: global.getCurrentSaltUser?.()?.id })),

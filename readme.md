@@ -81,6 +81,7 @@
   <li>Each coven's own creed, rules, requirements and versioned, signed agreements</li>
   <li>Coven-defined positions, applications to join and requests to advance</li>
   <li>Live coven chat and a shared, live coven altar</li>
+  <li>Coven rituals whose steps are given to members or positions, run live step by step</li>
   <li>Reporting, blocking, and site-wide moderation of every coven</li>
 </ul>
 
