@@ -163,6 +163,30 @@ export default function Reminders() {
               ))}
             </Chips>
           )}
+          <Toggle
+            label="Ask “Did it work?” on look-back days"
+            detail="On the day you chose to look back on a ritual or spell, at the time set for moon reminders"
+            value={settings.lookBacks}
+            onChange={(lookBacks) => void updateReminderSettings({ lookBacks })}
+          />
+        </Card>
+      </View>
+
+      <View style={ui.gapSmall}>
+        <SectionLabel>Altar offerings</SectionLabel>
+        <Card>
+          <Toggle
+            label="Remind me when an offering wants tending"
+            detail="Water drying, flowers wilting, bread going stale"
+            value={settings.offerings}
+            onChange={(offerings) => void updateReminderSettings({ offerings })}
+          />
+          {settings.offerings && (
+            <>
+              <TimeStepper minutes={settings.offeringsAt} onChange={(offeringsAt) => void updateReminderSettings({ offeringsAt })} />
+              <Body muted>One gentle note on a day something on your altars goes over, at this time. Offerings you’ve chosen to leave as they are won’t ask.</Body>
+            </>
+          )}
         </Card>
       </View>
 

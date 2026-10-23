@@ -68,6 +68,28 @@ function buildRitualJournalSummary(session) {
   };
 }
 
+/* Did it work? The day to look back, shared with the app (SaltCore.lookback, metadata.lookBack). */
+function getRitualLookBack() {
+  return window.SaltCore?.lookback?.lookBack || window.SaltCore?.rituals?.lookBack || null;
+}
+
+function ritualLookBackDay(key) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(key || "");
+  return match ? new Date(+match[1], +match[2] - 1, +match[3]).toLocaleDateString([], { month: "short", day: "numeric" }) : key;
+}
+
+function renderRitualLookBackField(session) {
+  const LB = getRitualLookBack();
+  if (!LB) return "";
+  const started = session.started_at ? new Date(session.started_at) : new Date();
+  const working = { title: session.title || "", intention: session.intention || "", moon_phase: null, ritual_date: started.toISOString().slice(0, 10) };
+  const options = LB.lookBackChoices(working, new Date())
+    .map((choice, index) => `<option value="${choice.when}"${index === 0 ? " selected" : ""}>${escapeRitualHtml(`${choice.label} · ${ritualLookBackDay(choice.date)}`)}</option>`)
+    .join("");
+  return `<label>Did it work? Look back<select name="look_back">${options}<option value="">Not needed</option></select></label>
+        <p class="ritual-empty-note">On that day you'll be asked whether it worked, here and in the app.</p>`;
+}
+
 function renderRitualJournalForm(session, mode = "completed_session") {
   pendingRitualJournalSession = session;
   pendingRitualJournalMode = mode;
@@ -130,6 +152,7 @@ function renderRitualJournalForm(session, mode = "completed_session") {
         <label>Results or changes you are watching for<textarea name="results"></textarea></label>
         <label>What would you change next time?<textarea name="changes_for_next_time"></textarea></label>
         <label>Private notes<textarea name="notes"></textarea></label>
+        ${renderRitualLookBackField(session)}
       </div>
 
       <div class="ritual-journal-actions">
@@ -232,6 +255,11 @@ async function saveRitualJournal(form, saveMode = "journal") {
     }
   };
 
+  const lookBackApi = getRitualLookBack();
+  if (lookBackApi && values.look_back) {
+    payload.metadata.lookBack = lookBackApi.newLookBack(payload, new Date(), values.look_back);
+  }
+
   if (!user) {
     const repository = window.RitualLifecycle.createLocalRepository(localStorage, "guest");
     const reflectedSession = window.RitualLifecycle.saveReflection(session, [payload.what_happened_during, payload.what_happened_after, payload.notes].filter(Boolean).join("\n\n"));
@@ -252,6 +280,10 @@ async function saveRitualJournal(form, saveMode = "journal") {
       .maybeSingle();
     if (existingError) throw existingError;
     if (existing) {
+      // Keep what the entry already holds (its look-back and any answer), as the app does.
+      const kept = existing.metadata && typeof existing.metadata === "object" ? existing.metadata : {};
+      payload.metadata = { ...kept, ...payload.metadata };
+      if (kept.lookBack && (kept.lookBack.answer || !payload.metadata.lookBack)) payload.metadata.lookBack = kept.lookBack;
       const { data, error } = await db
         .from("user_rituals")
         .update(payload)

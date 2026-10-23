@@ -145,6 +145,30 @@
       const columns = carvings.length;
       const lane = (half * 2 * 0.86) / columns;
       const span = Math.max(1, bottom - carveTop - body * 0.05);
+      const mark = A.livingState.carvingMark(carving);
+      if (mark) {
+        // A sigil: the mark itself, upright, cut into the wax and melting from the top (CandleMarks.tsx).
+        const side = Math.min(lane * 0.92, span * 0.6, 64);
+        if (side < 6) return;
+        const sx = cx + (columns > 1 ? (column === 0 ? -0.5 : 0.5) * lane : 0);
+        const smid = carveTop + span * 0.4;
+        const sstart = smid - side / 2;
+        const sremains = burn ? null : A.dressing.carvingRemaining(text, progress);
+        const smelted = sremains ? sstart + sremains.meltLine * side : goneLine + side * 0.05;
+        const sclip = Math.max(smelted, sstart - 2);
+        if (sclip >= sstart + side) return;
+        const k = side / 100;
+        const stroke = Math.max(0.7, side * 0.035) / k;
+        const ring = A.sigil.RING;
+        const glyph = (dx, dy, color, opacity) =>
+          `<g transform="translate(${n2(sx - side / 2 + dx)} ${n2(sstart + dy)}) scale(${n2(k * 1000) / 1000})">${
+            mark.ring ? `<circle cx="${ring.cx}" cy="${ring.cy}" r="${ring.r}" fill="none" stroke="${color}" stroke-opacity="${opacity}" stroke-width="${n2(stroke * 0.8)}"/>` : ""
+          }<path d="${mark.d}" fill="none" stroke="${color}" stroke-opacity="${opacity}" stroke-width="${n2(stroke)}" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+        const sid = `carve-${uid}-${column}`;
+        out.push(`<clipPath id="${sid}"><rect x="${n2(cx - half * 0.94)}" y="${n2(sclip)}" width="${n2(half * 1.88)}" height="${n2(Math.max(0, bottom - sclip))}"/></clipPath>`);
+        out.push(`<g clip-path="url(#${sid})">${glyph(side * 0.012, side * 0.016, cut.edge, cut.edgeOpacity)}${glyph(0, 0, cut.groove, cut.grooveOpacity)}</g>`);
+        return;
+      }
       const size = Math.min(lane * 0.85, (span * 0.86) / (0.46 * count), 30);
       if (size < 3) return;
       const length = 0.46 * count * size;
@@ -437,6 +461,41 @@
     return `<div class="living-charge" aria-hidden="true" style="--charge:${n2(strength)}"><svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="none"><ellipse cx="50" cy="55" rx="50" ry="48" fill="url(#living-charge)" opacity="${n2(strength)}"/></svg></div>${glints.map(([x, y, size], i) => `<div class="living-glint living-glint--${i % 2}" aria-hidden="true" style="left:${x * 100}%;top:${y * 100}%;width:${16 * size}%"><svg viewBox="0 0 10 10" width="100%" height="100%"><path d="M5 0 L5.9 4.1 L10 5 L5.9 5.9 L5 10 L4.1 5.9 L0 5 L4.1 4.1 Z" fill="rgb(240,246,255)"/><circle cx="5" cy="5" r="1.3" fill="#fff"/></svg></div>`).join("")}`;
   }
 
+  // ── Offerings going over and incense burning down (lib/altar/offeringArt) ─
+  /** The liquid sinking in a vessel, its tide line and stain, and fallen petals (AltarStage.tsx OfferingMarks). */
+  function offeringSvg(art, width, height, uid) {
+    const { liquid, tide, stain, petals } = art;
+    if (!liquid && !tide && !stain && !petals.length) return "";
+    const ell = (e, attrs) => `<ellipse cx="${n2(e.cx)}" cy="${n2(e.cy)}" rx="${n2(e.rx)}" ry="${n2(e.ry)}" ${attrs}/>`;
+    const defs = [
+      liquid ? `<radialGradient id="liquid-${uid}" cx="50%" cy="45%" r="58%"><stop offset="0" stop-color="${liquid.color}" stop-opacity="${liquid.opacity}"/><stop offset="1" stop-color="${liquid.deep}" stop-opacity="${liquid.opacity}"/></radialGradient>` : "",
+      stain ? `<radialGradient id="stain-${uid}" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="${stain.color}" stop-opacity="${n2(stain.opacity * 0.5)}"/><stop offset="0.8" stop-color="${stain.color}" stop-opacity="${stain.opacity}"/><stop offset="1" stop-color="${stain.color}" stop-opacity="0"/></radialGradient>` : ""
+    ].join("");
+    const parts = [
+      stain ? ell(stain, `fill="url(#stain-${uid})"`) : "",
+      tide ? ell(tide, `fill="none" stroke="${tide.color}" stroke-opacity="${tide.opacity}" stroke-width="${tide.stroke}"`) : "",
+      liquid ? ell(liquid, `fill="url(#liquid-${uid})"`) : "",
+      liquid && liquid.sheen > 0 ? ell({ cx: liquid.cx - liquid.rx * 0.28, cy: liquid.cy - liquid.ry * 0.35, rx: liquid.rx * 0.32, ry: liquid.ry * 0.22 }, `fill="rgb(255,250,236)" fill-opacity="${n2(liquid.sheen * Math.min(1, liquid.opacity + 0.2))}"`) : "",
+      ...petals.map((p) => ell(p, `fill="${p.color}" fill-opacity="0.88" stroke="rgb(60,40,30)" stroke-opacity="0.25" stroke-width="0.5" transform="rotate(${p.rotate} ${n2(p.cx)} ${n2(p.cy)})"`))
+    ].join("");
+    return `<svg class="living-art__marks" width="${n2(width)}" height="${n2(height)}" viewBox="0 0 ${n2(width)} ${n2(height)}" aria-hidden="true"><defs>${defs}</defs>${parts}</svg>`;
+  }
+
+  /** A stick burned shorter from its tip (AltarStage.tsx StickPicture). */
+  function stickPictureHtml(src, stick, ash) {
+    const { pic, cutPx } = stick;
+    return `<div class="living-art__clip${ash ? " is-spent" : ""}" style="left:${n2(pic.left)}px;top:${n2(pic.top + cutPx)}px;width:${n2(pic.width)}px;height:${n2(Math.max(0, pic.height - cutPx))}px"><img src="${xmlEsc(src)}" alt="" draggable="false" style="position:absolute;left:0;top:${n2(-cutPx)}px;width:${n2(pic.width)}px;height:${n2(pic.height)}px;max-width:none"></div>`;
+  }
+
+  /** Its grey tip and the ash fallen at its foot (AltarStage.tsx StickAsh). */
+  function stickAshSvg(stick, width, height, lit) {
+    const { tip, pile } = stick;
+    const cap = Math.max(1, tip.width * 0.9);
+    const capEl = stick.cutPx > 0.25 ? `<ellipse cx="${n2(tip.x)}" cy="${n2(tip.y + cap * 0.3)}" rx="${n2(tip.width / 2)}" ry="${n2(cap * 0.7)}" fill="${lit ? "rgb(176,170,160)" : "rgb(150,146,138)"}" fill-opacity="0.92" transform="rotate(${-tip.slant} ${n2(tip.x)} ${n2(tip.y)})"/>` : "";
+    const pileEl = pile ? `<ellipse cx="${n2(pile.cx)}" cy="${n2(pile.cy)}" rx="${n2(pile.rx)}" ry="${n2(pile.ry)}" fill="rgb(156,151,142)" fill-opacity="0.7"/>` : "";
+    return capEl || pileEl ? `<svg class="living-art__marks" width="${n2(width)}" height="${n2(height)}" viewBox="0 0 ${n2(width)} ${n2(height)}" aria-hidden="true">${capEl}${pileEl}</svg>` : "";
+  }
+
   const PETITION_SVG = `<svg class="living-petition" viewBox="0 0 40 40" width="100%" height="100%" aria-hidden="true"><path d="M5 9 L33 6 L35 31 L7 34 Z" fill="rgb(236,224,192)" stroke="rgba(90,70,40,0.55)" stroke-width="0.8"/><path d="M6 21.5 L34 18.5" stroke="rgba(90,70,40,0.35)" stroke-width="0.7"/><path d="M10 13 L28 11 M10 16 L25 14.3 M10 25 L29 23 M10 28 L22 26.8" stroke="rgba(110,60,40,0.5)" stroke-width="0.6" stroke-linecap="round"/></svg>`;
 
   // ── Per object ──────────────────────────────────────────────────────────
@@ -485,16 +544,19 @@
     const uid = String(saved.altarObjectId || Math.random().toString(36).slice(2)).replace(/[^a-z0-9-]/gi, "");
     const img = bridge.mainImage(object);
 
-    // Offerings going over, and charges (the app's aging and ChargeAura).
-    const fresh = A.offerings.offeringFreshness(saved, minute);
-    const look = fresh && fresh.level !== "lasting" ? A.offerings.agingLook(fresh.kind, fresh) : null;
+    // Offerings going over, and charges (the app's offeringArt and ChargeAura).
+    const ratio = saved.imagePath ? bridge.ratioOf(saved.imagePath) : null;
+    const art = A.offeringArt.offeringArt(saved, width, height, minute, ratio);
     const charge = saved.altarObjectId ? A.charge.chargeOf(saved, minute) : null;
     const incense = A.incense.isIncense(saved) ? A.incense.incenseLife(saved, now) : null;
+    // A stick of incense burns shorter from its tip and drops its ash at its foot.
+    const stick = incense ? A.offeringArt.incenseStickArt(saved, width, height, now) : null;
+    const stickCut = !!img && !!stick && stick.cutPx > 0.25;
     const geo = isCandle ? candleGeometry(saved, width, height, now) : null;
     const burned = !!geo && !!img && drawsBurnedDown(geo);
     const spent = isCandle && !lit && A.livingState.candleLife(saved, now).spent;
 
-    const key = JSON.stringify([saved.livingState, saved.lit, saved.flipped, saved.color, saved.imagePath, width, height, minute, lit ? Math.floor(now / 15000) : 0, fresh?.level, look, charge?.strength && Math.round(charge.strength * 50), incense?.lit, incense?.ash]);
+    const key = JSON.stringify([saved.livingState, saved.lit, saved.flipped, saved.color, saved.imagePath, width, height, minute, lit ? Math.floor(now / 15000) : 0, art, stick?.cutPx, charge?.strength && Math.round(charge.strength * 50), incense?.lit, incense?.ash]);
     if (key !== record.key) {
       record.key = key;
 
@@ -503,23 +565,19 @@
       ensureFlameDefs();
       under.innerHTML = charge && charge.strength > 0 ? chargeHtml(charge.strength) : "";
 
-      // An offering going over: paler, browning, a flower bowing its head.
+      // An offering going over: browning and duller, a flower bowing its head.
       if (img) {
-        const aged = look ? Math.max(0, Math.min(1, (1 - look.opacity) / 0.35)) : 0;
-        object.classList.toggle("is-aging", aged > 0.05);
-        if (aged > 0.05) {
-          img.style.filter = `sepia(${n2(0.75 * aged)}) saturate(${n2(1 - 0.45 * aged)}) brightness(${n2(1 - 0.18 * aged)})`;
-          img.style.opacity = n2(1 - 0.45 * aged);
-        } else {
-          img.style.removeProperty("filter");
-          img.style.removeProperty("opacity");
-        }
-        const droop = look?.droop || 0;
-        if (droop > 0) {
+        object.classList.toggle("is-aging", !!art?.tint);
+        if (art?.tint) img.style.filter = A.offeringArt.tintFilter(art.tint);
+        else img.style.removeProperty("filter");
+        img.style.removeProperty("opacity");
+        if (art?.bend) {
           img.style.transformOrigin = "50% 100%";
-          img.style.transform = `rotate(${n2(Math.min(24, droop * 2.2))}deg) scaleY(${n2(1 - Math.min(0.18, droop / 55))})`;
+          img.style.transform = `rotate(${n2(art.bend.rotate)}deg) scale(${n2(art.bend.scaleX)}, ${n2(art.bend.scaleY)})`;
         } else img.style.removeProperty("transform");
       }
+      // Liquid sinking in its vessel, the ring it leaves, petals fallen.
+      layerOf(object, "offering").innerHTML = art ? offeringSvg(art, width, height, uid) : "";
 
       // A folded petition with no picture of its own.
       if (!img && A.petitions.isPetitionPaper(saved)) {
@@ -530,8 +588,8 @@
 
       // The candle, burned down, with its marks.
       const burnedLayer = layerOf(object, "burned");
-      burnedLayer.innerHTML = burned ? burnedPictureHtml(img.getAttribute("src"), geo, spent) : "";
-      object.classList.toggle("is-burned-down", burned);
+      burnedLayer.innerHTML = burned ? burnedPictureHtml(img.getAttribute("src"), geo, spent) : stickCut ? stickPictureHtml(img.getAttribute("src"), stick, !!incense?.ash) : "";
+      object.classList.toggle("is-burned-down", burned || stickCut);
       const marks = layerOf(object, "marks");
       marks.innerHTML = isCandle && img && geo ? marksSvg(saved, width, height, now, uid, geo) : "";
 
@@ -558,7 +616,12 @@
 
       // Incense: its ember and smoke, or its ash.
       const fx = layerOf(object, "fx");
-      fx.innerHTML = incense?.lit ? incenseHtml(A.incense.smokeOrigin(saved), width) : incense?.ash ? `<div class="living-ash"></div><span class="living-label">Ash</span>` : "";
+      const stickAsh = stick ? stickAshSvg(stick, width, height, !!incense?.lit) : "";
+      fx.innerHTML = incense?.lit
+        ? stickAsh + incenseHtml(stick?.origin ?? A.incense.smokeOrigin(saved), width)
+        : incense?.ash
+          ? `${stick ? stickAsh : `<div class="living-ash"></div>`}<span class="living-label">Ash</span>`
+          : stickAsh;
       object.classList.toggle("is-incense-ash", !!incense?.ash);
       object.classList.toggle("is-incense-lit", !!incense?.lit);
 
@@ -694,6 +757,6 @@
   else if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", watch, { once: true });
   else watch();
 
-  global.LivingArt = { render, renderAll, playMoment, candleGeometry, marksSvg, drawsBurnedDown, burnedPictureHtml };
+  global.LivingArt = { render, renderAll, playMoment, candleGeometry, marksSvg, drawsBurnedDown, burnedPictureHtml, offeringSvg, stickPictureHtml, stickAshSvg };
   if (typeof module !== "undefined" && module.exports) module.exports = global.LivingArt;
 })(typeof window !== "undefined" ? window : globalThis);

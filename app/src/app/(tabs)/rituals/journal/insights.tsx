@@ -7,6 +7,7 @@ import { Body, Card, List, RitualScreen, Row, SectionLabel, Title, ui } from '..
 import { journalDetail } from '../../../../lib/rituals/format';
 import { journalInsights } from '../../../../lib/rituals/insights';
 import { useRituals } from '../../../../lib/rituals/store';
+import { tallyWords, whatWorks, type Tally } from '../../../../lib/rituals/whatWorks';
 import { colors, fonts, radius, type } from '../../../../theme';
 
 // How lit each phase is, for the little moons beside the counts.
@@ -26,6 +27,7 @@ const openEntry = (id: string) => router.push({ pathname: '/rituals/journal/[id]
 export default function JournalInsights() {
   const rituals = useRituals();
   const insights = useMemo(() => journalInsights(rituals.journal, new Date()), [rituals.journal]);
+  const works = useMemo(() => whatWorks(rituals.journal), [rituals.journal]);
   const most = Math.max(1, ...insights.byPhase.map((p) => p.count));
   const last = insights.lastThisPhase;
   const lastWords = last ? last.entry.what_happened_during || last.entry.feelings_after || last.entry.notes || last.entry.intention : null;
@@ -90,6 +92,37 @@ export default function JournalInsights() {
         </View>
       )}
 
+      <View style={ui.gapSmall}>
+        <SectionLabel>What works for you</SectionLabel>
+        {works.answered === 0 ? (
+          <Card>
+            <Body>
+              {works.waiting
+                ? `When you look back on your workings and say whether they worked, what works for you will gather here. ${works.waiting} ${works.waiting === 1 ? 'is' : 'are'} waiting for a look-back day.`
+                : 'When you journal a ritual or spell, choose a day to look back. Once you’ve said whether your workings worked, what works for you will gather here.'}
+            </Body>
+          </Card>
+        ) : (
+          <>
+            <Card accent>
+              {works.lines.map((line) => (
+                <Text key={line} style={styles.line}>
+                  {line}
+                </Text>
+              ))}
+              {!!works.caveat && <Body muted>{works.caveat}</Body>}
+            </Card>
+            <WorksGroup title="By moon phase" tallies={works.byPhase} />
+            <WorksGroup title="By intention" tallies={works.byIntention} />
+            <WorksGroup title="By day and its planet" tallies={works.byDay} />
+            <WorksGroup title="Candle colours" tallies={works.byCandle} />
+            <WorksGroup title="Herbs and oils" tallies={works.byHerb} />
+            <WorksGroup title="Stones" tallies={works.byCrystal} />
+            <Body muted>A yes counts whole and a partly counts half. Groups with fewer than three answers are early notes, not patterns.</Body>
+          </>
+        )}
+      </View>
+
       {insights.watching.length > 0 && (
         <View style={ui.gapSmall}>
           <SectionLabel>Still watching for</SectionLabel>
@@ -111,7 +144,34 @@ export default function JournalInsights() {
   );
 }
 
+/** One way of looking at what worked: a bar for each, with the numbers behind it said plainly. */
+function WorksGroup({ title, tallies }: { title: string; tallies: Tally[] }) {
+  if (!tallies.length) return null;
+  return (
+    <Card>
+      <SectionLabel>{title}</SectionLabel>
+      {tallies.map((t) => (
+        <View key={t.label} style={styles.worksRow} accessible accessibilityLabel={`${t.label}: ${tallyWords(t)}${t.caveat ? `, ${t.caveat}` : ''}`}>
+          <View style={styles.bar}>
+            <Text style={styles.worksLabel} numberOfLines={1}>
+              {t.label}
+            </Text>
+            <View style={styles.track}>
+              <View style={[styles.fill, t.caveat ? styles.fillFaint : null, { width: `${Math.max(t.rate * 100, 2)}%` }]} />
+            </View>
+          </View>
+          <Text style={styles.worksDetail}>{`${tallyWords(t)}${t.caveat ? ` · ${t.caveat}` : ''}`}</Text>
+        </View>
+      ))}
+    </Card>
+  );
+}
+
 const styles = StyleSheet.create({
+  worksRow: { gap: 2, paddingVertical: 2 },
+  worksLabel: { width: 140, fontFamily: fonts.body, fontSize: 13, color: colors.parchment },
+  worksDetail: { fontFamily: fonts.body, fontSize: 12, color: colors.parchment, opacity: 0.8 },
+  fillFaint: { opacity: 0.45 },
   line: { ...type.body, color: colors.cream },
   bar: { flexDirection: 'row', alignItems: 'center', gap: 10, minHeight: 28 },
   barLabel: { width: 118, fontFamily: fonts.body, fontSize: 13, color: colors.parchment },

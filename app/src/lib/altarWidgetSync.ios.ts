@@ -10,7 +10,7 @@ import { AppState } from 'react-native';
 import { altarsAt, burnoutTimes } from './altar/burnout';
 import { altarDataFromDocument } from './altar/snapshot';
 import { useAltars } from './altar/store';
-import { applyWidgetActions, slotAltars, widgetAltar, type AltarWidgetArt, type AltarWidgetProps, type WidgetAction } from './altarWidget';
+import { applyWidgetActions, burnStepTimes, slotAltars, widgetAltar, type AltarWidgetArt, type AltarWidgetProps, type WidgetAction } from './altarWidget';
 import { preparePictures, withoutEmpties } from './altarWidgetPictures';
 import { reportAltarWidgetSync, useAltarWidgetSlots } from './altarWidgetSlots';
 
@@ -107,13 +107,14 @@ export function useAltarWidgetSync() {
           if (art) props.art = art;
           return withoutEmpties(props);
         };
-        // Now, and again at each moment a lit candle burns down, so the widget
-        // shows it going out even if the app isn't opened.
-        const start = new Date();
-        const times = burnoutTimes(placed, start);
-        if (!times.length) return widget.updateSnapshot(propsAt(start));
-        widget.updateTimeline([start.getTime(), ...times].map((t) => ({ date: new Date(t), props: propsAt(new Date(t)) })));
+        // Now, and again as each lit candle burns shorter and at the moment it
+        // burns down, so the widget shows it even if the app isn't opened.
+        const times = timelineTimes(new Date());
+        if (times.length === 1) return widget.updateSnapshot(propsAt(new Date(times[0])));
+        widget.updateTimeline(times.map((t) => ({ date: new Date(t), props: propsAt(new Date(t)) })));
       };
+      const timelineTimes = (start: Date) =>
+        [...new Set([start.getTime(), ...burnoutTimes(placed, start), ...burnStepTimes(placed, start)])].sort((a, b) => a - b);
 
       // The altars go to the widget straight away with the pictures made last time
       // (so a tap on the widget never leaves it without its buttons and shading);
@@ -127,7 +128,7 @@ export function useAltarWidgetSync() {
       report(0, firstError, placed.length);
       try {
         if (!widgets.widgetsDirectory) throw new Error('the shared widget folder is unavailable');
-        const { pictures, art } = await preparePictures(widgets.widgetsDirectory, placed);
+        const { pictures, art } = await preparePictures(widgets.widgetsDirectory, placed, undefined, timelineTimes(new Date()));
         lastPictures = pictures;
         lastArt = art;
         await send(pictures, art);

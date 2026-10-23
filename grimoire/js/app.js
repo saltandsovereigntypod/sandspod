@@ -385,7 +385,7 @@ async function createPage(sectionId = activeSectionId) {
   const user = requireUser();
   if (!user || !currentBook) return;
 
-  const templateKey = await openPageTemplateChooser();
+  const templateKey = await openPageTemplateChooser(sectionId || null);
   if (!templateKey) return;
 
   let chosenSectionId = sectionId || null;
@@ -985,6 +985,8 @@ async function renderMyPracticeShelf() {
 
 async function renderLivingLibraryShelves() {
   await renderMyPracticeShelf();
+  // Dreams, the built-in section after My Practice (grimoire/js/ui/dreams.js).
+  if (typeof renderDreamsShelf === "function") await renderDreamsShelf();
   await renderTraditionalLibraryShelf();
 }
 

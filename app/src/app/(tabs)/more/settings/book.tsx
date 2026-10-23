@@ -21,6 +21,12 @@ export default function BookSettings() {
               detail="Keep Traditional Reference Library pages in your Book of Shadows on the website."
               value={draft.sync_traditional_library_to_grimoire}
               onChange={(v) => set('sync_traditional_library_to_grimoire', v)}
+            />
+            <SwitchRow
+              label="Show Dreams"
+              detail="Keep your dream journal as a section of your Grimoire."
+              value={draft.grimoire_show_dreams !== false}
+              onChange={(v) => set('grimoire_show_dreams', v)}
               last
             />
           </MenuList>

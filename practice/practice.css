@@ -127,3 +127,22 @@
   .pr-bar { grid-template-columns: 92px 1fr 24px; }
   .pr-week li { min-width: 0; }
 }
+
+/* The sigil maker (/practice/eclectic/sigil/). */
+.sg-picture { display: inline-block; flex: none; border-radius: 6px; overflow: hidden; line-height: 0; }
+.sg-picture svg { width: 100%; height: 100%; }
+.sg-letters { margin: 0; font-family: "Cormorant Garamond", serif; font-size: 1.8rem; letter-spacing: 0.25em; color: var(--cream, #f4ecd8); }
+.sg-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; max-width: 340px; }
+.sg-option { display: grid; justify-items: center; gap: 6px; padding: 6px; background: none; border: 1px solid var(--line, rgba(244, 236, 216, 0.12)); border-radius: 16px; color: inherit; font: inherit; cursor: pointer; }
+.sg-option .sg-picture { width: 100% !important; height: auto !important; aspect-ratio: 1; }
+.sg-option[aria-checked="true"] { border-color: var(--gold, #e2c36d); color: var(--gold, #e2c36d); }
+.sg-option:focus-visible { outline: 2px solid var(--gold, #e2c36d); outline-offset: 2px; }
+.sg-preview { position: relative; width: min(100%, 340px); aspect-ratio: 1; }
+.sg-preview .sg-picture { width: 100% !important; height: 100% !important; }
+.sg-preview--blank { display: grid; place-items: center; border: 1px dashed var(--line, rgba(244, 236, 216, 0.2)); border-radius: 6px; }
+.sg-overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.sg-pad { width: min(100%, 340px); aspect-ratio: 1; touch-action: none; cursor: crosshair; border-radius: 6px; overflow: hidden; line-height: 0; }
+.sg-pad svg { width: 100%; height: 100%; }
+.sg-kept { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.sg-kept > li { display: flex; gap: 14px; align-items: center; }
+.sg-kept__name { margin: 0 0 4px; font-family: "Cormorant Garamond", serif; font-size: 1.25rem; }

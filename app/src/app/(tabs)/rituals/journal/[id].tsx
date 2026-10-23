@@ -3,6 +3,7 @@ import { View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
 import { Connections } from '../../../../components/rituals/Connections';
+import { DidItWork } from '../../../../components/rituals/DidItWork';
 import { Body, Card, Chip, Chips, RitualScreen, SectionLabel, Title, confirmAction, tell, ui } from '../../../../components/rituals/ui';
 import { journalDetail } from '../../../../lib/rituals/format';
 import { journalConnections } from '../../../../lib/rituals/plans';
@@ -61,6 +62,8 @@ export default function JournalEntry() {
     <RitualScreen back="Journal">
       <Title eyebrow={[entry.day_of_week, entry.time_of_day].filter(Boolean).join(' · ') || 'Ritual journal'}>{entry.title || 'Untitled Ritual'}</Title>
       <Body muted>{journalDetail(entry)}</Body>
+
+      <DidItWork key={entry.id} entry={entry} />
 
       <Connections
         grimoirePageId={links.grimoirePageId}

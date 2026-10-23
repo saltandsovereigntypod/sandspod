@@ -233,6 +233,18 @@ function createMySanctuaryPanel() {
             <textarea name="notes" rows="5"></textarea>
           </label>
 
+          <label>
+            Did it work? Look back
+            <select name="look_back">
+              <option value="suggested" selected>At the moon that suits it</option>
+              <option value="full_moon">At the next full moon</option>
+              <option value="new_moon">At the next new moon</option>
+              <option value="week">In a week</option>
+              <option value="month">In a month</option>
+              <option value="">Not needed</option>
+            </select>
+          </label>
+
           <button class="button button--primary" type="submit">
             Save Ritual
           </button>
@@ -299,6 +311,11 @@ function createMySanctuaryPanel() {
           <label class="my-sanctuary-check">
             <input type="checkbox" name="sync_traditional_library_to_grimoire" />
             Add Traditional Reference Library pages to my Book of Shadows
+          </label>
+
+          <label class="my-sanctuary-check">
+            <input type="checkbox" name="grimoire_show_dreams" />
+            Show my dream journal as a Dreams section in my Book of Shadows
           </label>
 
           <label>

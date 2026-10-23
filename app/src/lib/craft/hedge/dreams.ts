@@ -57,6 +57,13 @@ export function dreamMoon(dateKey: string): { moonPhase: PhaseName; moonSign: Zo
   return { moonPhase: moonState(at).name, moonSign: moonSign(at) };
 }
 
+/** How full the moon was that night, for drawing it beside the dream. */
+export function dreamMoonDisc(dateKey: string): { illumination: number; waxing: boolean } {
+  const day = dateFromKey(dateKey) ?? new Date();
+  const { illumination, waxing } = moonState(new Date(day.getFullYear(), day.getMonth(), day.getDate(), 3));
+  return { illumination, waxing };
+}
+
 export function blankDream(now: Date): Dream {
   const date = localDateKey(now);
   return { date, title: '', dream: '', feelings: '', symbols: [], lucid: false, vividness: 3, recurring: false, ...dreamMoon(date) };
@@ -195,4 +202,41 @@ export function dreamStats(list: DreamEntry[]): { total: number; lucid: number; 
     recurring: list.filter((e) => e.data.recurring).length,
     vividness: total ? Math.round((list.reduce((sum, e) => sum + e.data.vividness, 0) / total) * 10) / 10 : null,
   };
+}
+
+/**
+ * A dream caught in a line or two (Today's morning prompt): dated this
+ * morning, with its first few words as the title so it can be found again.
+ */
+export function quickDream(text: string, now: Date): Dream {
+  const dream = text.trim();
+  const words = dream.split(/\s+/).filter(Boolean);
+  const first = words.slice(0, 6).join(' ').replace(/[,.;:!?…]+$/, '');
+  return { ...blankDream(now), dream, title: words.length > 6 ? `${first}…` : first };
+}
+
+/** The morning hours Today offers to catch last night's dream: 4 am until noon. */
+export const DREAM_MORNING = { from: 4, until: 12 } as const;
+
+export type MorningDreamContext = {
+  /** Hedge is one of the practices kept (Settings → My practice). */
+  keepsHedge: boolean;
+  /** The morning dream reminder is on. */
+  reminderOn: boolean;
+  dreams: DreamEntry[];
+};
+
+/**
+ * Today's morning prompt to write down last night's dream, or null: only in
+ * the morning hours, only for someone who keeps a dream journal (Hedge, the
+ * reminder, or dreams already written), and not once this morning's is in.
+ */
+export function morningDreamPrompt(now: Date, ctx: MorningDreamContext): { title: string; detail: string } | null {
+  const hour = now.getHours();
+  if (hour < DREAM_MORNING.from || hour >= DREAM_MORNING.until) return null;
+  if (!ctx.keepsHedge && !ctx.reminderOn && !ctx.dreams.length) return null;
+  const today = localDateKey(now);
+  if (ctx.dreams.some((e) => e.data.date === today)) return null;
+  const moon = dreamMoon(today);
+  return { title: 'Write down last night’s dream', detail: `Under a ${moon.moonPhase} in ${moon.moonSign}. A line or two is enough; it fades fast.` };
 }

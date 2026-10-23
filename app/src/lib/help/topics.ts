@@ -1742,13 +1742,16 @@ export const HELP: HelpSection[] = [
         title: 'Keep a dream journal',
         summary: 'Write dreams down, with the moon they came under.',
         steps: [
-          'Open My practice, then Hedge, then "Dream journal".',
+          'Open the Grimoire and tap "Dreams" (or My practice, then Hedge, then "Dream journal").',
           'Tap "Write down a dream".',
           'Type the dream and a title, choose "Which morning?", and add symbols and feelings.',
           'Optionally mark it Lucid or Recurring, then tap "Keep this dream".',
         ],
-        tips: ['Tap "Symbols and moons" to see what keeps returning and the phases your dreams cluster in.'],
-        href: '/rituals/craft/hedge/dreams',
+        tips: [
+          'Tap "Symbols and moons" to see what keeps returning and the phases your dreams cluster in.',
+          'Turn on "Last night’s dream" under Remind me for a gentle morning nudge. In the morning, Today also offers a place to catch a line or two.',
+        ],
+        href: '/grimoire/dreams',
         keywords: ['dreams', 'dreamwork', 'symbols', 'lucid', 'recurring dream'],
       },
       {
@@ -1756,11 +1759,11 @@ export const HELP: HelpSection[] = [
         title: 'Look up common dream symbols',
         summary: 'Associations to start from; yours matter most.',
         steps: [
-          'Open "Dream journal" and tap "Dream symbols".',
+          'Open Dreams in the Grimoire and tap "Dream symbols" ("Symbols and moons" once you have a few dreams).',
           'Open a symbol to read its notes and a question to ask yourself.',
           'See "What keeps returning" for your own repeated symbols.',
         ],
-        href: '/rituals/craft/hedge/dreams/symbols',
+        href: '/grimoire/dreams/symbols',
         keywords: ['dream dictionary', 'dream meaning'],
       },
       {
@@ -1776,6 +1779,20 @@ export const HELP: HelpSection[] = [
         ],
         href: '/rituals/craft/hedge/readings',
         keywords: ['tarot', 'runes', 'oracle', 'pendulum', 'divination log', 'look back'],
+      },
+      {
+        id: 'practice-draw',
+        title: 'Draw tarot cards, runes or ogham',
+        summary: 'A card for the day, three cards, the Celtic Cross and many more spreads, runes or ogham staves, with what each means; or a spread of your own.',
+        steps: [
+          'Open My practice, then Hedge, then "Draw cards, runes or ogham". On Today, "Draw a card for the day" opens it too.',
+          'Choose Tarot, Runes or Ogham. Tap the spread to see the others, grouped Quick, Classic, Moon & seasons, Deep work and Your spreads, each with a picture of its shape.',
+          'Tap "Shuffle and draw", then tap each card to turn it over and read what it means in its place. Big spreads scroll sideways; "Look closer" makes them bigger.',
+          'Write what you make of it, choose a day to come back to it, and tap "Keep this reading". It goes into your Readings, and lays out in its shape again when you open it.',
+          'To make your own spread, tap the spread, then "Make your own": name it, choose a shape (a line, a cross, an arc, a circle or a grid) and name each place.',
+        ],
+        href: '/rituals/craft/hedge/readings/draw',
+        keywords: ['tarot', 'draw a card', 'card of the day', 'daily card', 'celtic cross', 'three card spread', 'rune cast', 'ogham', 'reversed cards', 'blank rune', 'spreads', 'horseshoe', 'tree of life', 'new moon spread', 'full moon spread', 'samhain spread', 'make your own spread', 'custom spread'],
       },
       {
         id: 'practice-ancestors',

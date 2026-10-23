@@ -2,6 +2,8 @@ import { router } from 'expo-router';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { listItems, plainText } from '../../lib/grimoire/richText';
+import { readSigil } from '../../lib/sigil/sigil';
+import { SigilPicture } from '../sigil/SigilPicture';
 import { blockMetadata, blockSource } from '../../lib/grimoire/structure';
 import type { BlockRow, PageRow } from '../../lib/grimoire/types';
 import { fonts } from '../../theme';
@@ -67,8 +69,18 @@ export function BlockView({ block, pages }: Props) {
       );
     case 'image': {
       const url = typeof meta.url === 'string' ? meta.url : plainText(source);
-      if (!/^https?:\/\//.test(url)) return null;
       const caption = typeof meta.caption === 'string' ? meta.caption : null;
+      // A sigil from the sigil maker: drawn from its own shape rather than its picture's url.
+      const sigil = readSigil(meta.sigil);
+      if (sigil) {
+        return (
+          <View style={[styles.group, styles.sigil]}>
+            <SigilPicture sigil={sigil} size={260} label={typeof meta.alt === 'string' ? meta.alt : (caption ?? 'A sigil')} />
+            {caption && <Text style={styles.caption}>{caption}</Text>}
+          </View>
+        );
+      }
+      if (!/^https?:\/\//.test(url)) return null;
       return (
         <View style={styles.group}>
           <Image
@@ -143,6 +155,7 @@ const styles = StyleSheet.create({
   marker: { fontFamily: fonts.bodySemi, fontSize: 16, lineHeight: 25, color: ink.faint, minWidth: 16 },
   listText: { flex: 1 },
   image: { width: '100%', aspectRatio: 4 / 3, borderRadius: 12, backgroundColor: ink.chip },
+  sigil: { alignItems: 'center' },
   caption: { fontFamily: fonts.body, fontSize: 13, color: ink.faint, textAlign: 'center' },
   ornament: { textAlign: 'center', color: ink.faint, fontSize: 14, letterSpacing: 4, marginVertical: 4 },
   pageLink: {

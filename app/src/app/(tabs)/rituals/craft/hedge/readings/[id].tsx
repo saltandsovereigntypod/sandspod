@@ -1,13 +1,18 @@
 import { router, useLocalSearchParams, type Href } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
+import { SpreadTable } from '../../../../../../components/divination/Spread';
 import { Body, Card, Chip, Chips, Field, RitualScreen, SectionLabel, Title, ui } from '../../../../../../components/rituals/ui';
+import { useReducedMotion } from '../../../../../../lib/accessibility/store';
 import { fullDate } from '../../../../../../lib/calendar';
 import { glossOf, methodLabel, normalizeReading, READINGS } from '../../../../../../lib/craft/hedge/readings';
 import { updateEntry, useCraft } from '../../../../../../lib/craft/store';
+import { customSpreads, SPREADS_COLLECTION } from '../../../../../../lib/divination/custom';
+import { drawOfReading, meaningOf, placeOf } from '../../../../../../lib/divination/draw';
 import { localDateKey } from '../../../../../../lib/rituals/lifecycle';
+import { type } from '../../../../../../theme';
 
 export default function ReadingPage() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -16,6 +21,12 @@ export default function ReadingPage() {
   const reading = useMemo(() => (raw ? normalizeReading(raw.data) : null), [raw]);
   const [outcome, setOutcome] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [picked, setPicked] = useState<number | null>(null);
+  const [width, setWidth] = useState(0);
+  const still = useReducedMotion();
+  // Your own spreads too, so a reading drawn from one lays out in its shape.
+  const { entries: mine } = useCraft<unknown>(SPREADS_COLLECTION);
+  const laid = useMemo(() => (reading ? drawOfReading(reading, customSpreads(mine)) : null), [reading, mine]);
 
   if (!raw || !reading) {
     return (
@@ -45,6 +56,23 @@ export default function ReadingPage() {
     <RitualScreen back="Readings">
       <Title eyebrow={`${methodLabel(reading.method)} · ${fullDate(reading.date) ?? reading.date}`}>{reading.question || 'A reading'}</Title>
       <Body muted>{`Under a ${reading.moonPhase}`}</Body>
+
+      {laid && (
+        <View style={ui.gap} onLayout={(e) => setWidth(e.nativeEvent.layout.width)}>
+          {width > 0 && (
+            <SpreadTable
+              spread={laid.spread}
+              draw={laid.draw}
+              revealed={laid.draw.items.map(() => true)}
+              selected={picked}
+              onPress={(i) => setPicked(picked === i ? null : i)}
+              still={still}
+              width={width}
+            />
+          )}
+          <DrawnMeaning laid={laid} picked={picked} />
+        </View>
+      )}
 
       {reading.drawn.length > 0 && (
         <View style={ui.gapSmall}>
@@ -96,5 +124,22 @@ export default function ReadingPage() {
 
       <Button label="Edit" variant="outline" onPress={() => router.push(`/rituals/craft/hedge/readings/edit?id=${raw.id}` as Href)} />
     </RitualScreen>
+  );
+}
+
+/** The meaning of the card, rune or stave tapped in a kept draw. */
+function DrawnMeaning({ laid, picked }: { laid: NonNullable<ReturnType<typeof drawOfReading>>; picked: number | null }) {
+  if (picked === null) return <Body muted>Tap one for its meaning.</Body>;
+  const item = laid.draw.items[picked];
+  const m = item ? meaningOf(item) : null;
+  if (!m) return null;
+  const place = laid.spread.positions.length > 1 ? placeOf(laid.spread, laid.draw, picked) : null;
+  return (
+    <Card accent>
+      <SectionLabel>{place ? `${picked + 1} · ${place.name}` : laid.spread.label}</SectionLabel>
+      <Text style={type.cardTitle}>{`${m.glyph ? `${m.glyph}  ` : ''}${m.name}${m.reversed ? ', reversed' : ''}`}</Text>
+      <Text style={[type.body, ui.gold]}>{m.meaning.keywords}</Text>
+      <Body>{m.meaning.text}</Body>
+    </Card>
   );
 }

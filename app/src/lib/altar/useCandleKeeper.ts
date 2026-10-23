@@ -1,6 +1,8 @@
 // Puts out candles (and incense) on your saved altars when their life runs
 // out, as the website does, records moon charges for crystals and moon water
-// that sat through a Full Moon, and saves the altar so it syncs. Runs when the
+// that sat through a Full Moon, and saves the altar so it syncs. It also
+// tells the reminders which offerings will want tending (if you asked for
+// those reminders). Runs when the
 // app opens or comes to the front, when your altars change, and at the next burnout.
 
 import { useEffect, useRef, useState } from 'react';
@@ -8,7 +10,8 @@ import { AppState } from 'react-native';
 
 import { useCraft } from '../craft/store';
 import { ALTAR_OPTIONS, altarOptionsFor, type AltarOptions } from './altarOptions';
-import { nextAltarBurnout, settleAltars } from './burnout';
+import { altarOfferingsDue, nextAltarBurnout, settleAltars } from './burnout';
+import { setOfferingsDue } from '../reminders/store';
 import { useAltars } from './store';
 
 export function useCandleKeeper() {
@@ -26,6 +29,7 @@ export function useCandleKeeper() {
 
   useEffect(() => {
     if (status === 'loading' || status === 'idle' || busy.current) return;
+    setOfferingsDue(altarOfferingsDue(altars, new Date()));
     const changed = settleAltars(altars, new Date().toISOString(), {
       // Moon charges wait until each altar's options are known (New Moons are its choice).
       moon: optionsReady,

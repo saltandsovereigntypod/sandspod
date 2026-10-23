@@ -11,6 +11,8 @@ export * as traditionDay from '../../app/src/lib/traditionDay.ts';
 export * as today from '../../app/src/lib/today.ts';
 export * as calendars from '../../app/src/lib/calendars/index.ts';
 export * as practiceDay from '../../app/src/lib/craft/today.ts';
+// The morning prompt to catch last night's dream (Grimoire → Dreams).
+export * as dreams from '../../app/src/lib/craft/hedge/dreams.ts';
 export * as patron from '../../app/src/lib/patron/index.ts';
 export * as traditions from '../../app/src/lib/library/traditions.ts';
 // The sky: Today's sky card and the Sky page.
@@ -26,9 +28,14 @@ export * as plans from '../../app/src/lib/rituals/plans.ts';
 export * as planSync from '../../app/src/lib/rituals/planSync.ts';
 export * as ritualFormat from '../../app/src/lib/rituals/format.ts';
 export * as insights from '../../app/src/lib/rituals/insights.ts';
+export * as lookBack from '../../app/src/lib/rituals/lookBack.ts';
 export * as lifecycle from '../../app/src/lib/rituals/lifecycle.ts';
 export * as ritualRows from '../../app/src/lib/rituals/rows.ts';
 // A working for tonight, and the premade a holy page suggests.
 export * as premade from '../../app/src/lib/rituals/premade/index.ts';
 // The Living Library entries the correspondences open.
 export * as library from '../../app/src/lib/library/model.ts';
+// The card of the day, from the Hedge reading log.
+export * as readings from '../../app/src/lib/craft/hedge/readings.ts';
+export * as daily from '../../app/src/lib/divination/daily.ts';
+export * as seasonal from '../../app/src/lib/divination/seasonal.ts';

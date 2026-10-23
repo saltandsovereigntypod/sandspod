@@ -87,6 +87,22 @@ async function deleteMyRitual(ritualId) {
   if (error) throw error;
 }
 
+/** "Did it work?" for a saved ritual: its answer, or a nudge once its look-back day has come. */
+function myRitualLookBackLine(ritual) {
+  const lookBackApi = window.SaltCore?.lookback?.lookBack;
+  if (!lookBackApi) return "";
+  const lookBack = lookBackApi.readLookBack(ritual);
+  const escape = (text) => String(text).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  if (lookBack && lookBack.answer) {
+    return `<p><strong>Did it work?</strong> ${escape(lookBackApi.answerLabel(lookBack.answer))}${lookBack.outcome ? `. ${escape(lookBack.outcome)}` : ""}</p>`;
+  }
+  if (lookBackApi.isDue(ritual, new Date())) {
+    return `<p><strong>Did it work?</strong> <a href="/rituals/journal/insights/#did-it-work">Time to look back</a></p>`;
+  }
+  if (lookBack && lookBack.date) return `<p><strong>Looking back:</strong> ${escape(lookBack.date)}</p>`;
+  return "";
+}
+
 async function renderMyRitualsList() {
   const list = document.querySelector("[data-my-rituals-list]");
   if (!list) return;
@@ -114,6 +130,7 @@ async function renderMyRitualsList() {
           ${ritual.moon_phase ? `<p><strong>Moon:</strong> ${ritual.moon_phase}</p>` : ""}
           ${ritual.linked_altar ? `<p><strong>Altar:</strong> ${ritual.linked_altar}</p>` : ""}
           ${ritual.notes ? `<p>${ritual.notes}</p>` : ""}
+          ${myRitualLookBackLine(ritual)}
 
           ${
             tags.length
@@ -150,6 +167,14 @@ document.addEventListener("submit", async (event) => {
   if (!ritual.title) {
     showMySanctuaryNotice("Name your ritual first.");
     return;
+  }
+
+  // Did it work? The day to look back, saved as the app saves it (metadata.lookBack).
+  const lookBackApi = window.SaltCore?.lookback?.lookBack;
+  const lookBackChoice = form.look_back ? form.look_back.value : "";
+  if (lookBackApi && lookBackChoice) {
+    const when = lookBackChoice === "suggested" ? lookBackApi.suggestedWhen(ritual) : lookBackChoice;
+    ritual.metadata = { lookBack: lookBackApi.newLookBack(ritual, new Date(), when) };
   }
 
   try {

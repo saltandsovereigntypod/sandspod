@@ -17,6 +17,12 @@ const READING: Toggle[] = [
   { key: 'readableFont', label: 'Readable font', detail: 'Your phone’s plain system font instead of the decorative ones.' },
 ];
 
+const ALTAR: Toggle[] = [
+  { key: 'candleSounds', label: 'Candle sounds', detail: 'A match as you light, and quiet crackles while candles burn; herbs pop and oil sputters. Silent when your ring switch is off.' },
+  { key: 'haptics', label: 'Vibration', detail: 'A soft tap as a candle is lit or snuffed, and as dressed candles pop.' },
+  { key: 'tiltDepth', label: 'Tilt depth', detail: 'The altar shifts a little as you tilt your phone, and flames lean against it.' },
+];
+
 const DISPLAY: Toggle[] = [
   { key: 'highContrast', label: 'High contrast', detail: 'Brighter text against the dark background.' },
   { key: 'reduceMotion', label: 'Reduce motion', detail: 'Steady candle flames, and screens and sheets appear without sliding.' },
@@ -62,6 +68,7 @@ export default function AccessibilityScreen() {
       </Section>
       <Section label="Reading">{toggles(READING)}</Section>
       <Section label="Display">{toggles(DISPLAY)}</Section>
+      <Section label="The altar">{toggles(ALTAR)}</Section>
       <Button label="Reset all" variant="outline" onPress={() => resetAccessibility()} />
       <Text style={type.caption}>
         {session

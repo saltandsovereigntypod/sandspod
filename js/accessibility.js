@@ -10,6 +10,10 @@
     readableFont: false,
     highContrast: false,
     reduceMotion: false,
+    // The app's altar: candle sounds, vibration and tilt depth (kept here so a save from either keeps them).
+    candleSounds: true,
+    haptics: true,
+    tiltDepth: true,
     hideDecoration: false,
     readingRuler: false,
     focusMode: false

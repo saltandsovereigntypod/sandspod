@@ -61,6 +61,7 @@ const PAGE_TYPE_LABELS: Record<string, string> = {
   ritual: 'Ritual',
   spell: 'Spell',
   apothecary: 'Apothecary',
+  sigil: 'Sigil',
 };
 
 export function pageTypeLabel(page: PageRow): string {

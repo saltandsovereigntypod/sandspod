@@ -8,6 +8,8 @@ import { CRAFT_TOOLS } from '../../../../../lib/craft/practices';
 import { useCraft } from '../../../../../lib/craft/store';
 import { PRACTICES, PREMADE } from '../../../../../lib/rituals/premade';
 
+const ROUTES = ['/rituals/craft/eclectic/correspondences', '/rituals/craft/eclectic/sigil'];
+
 // Eclectic: your own correspondences, and a little from every path.
 export default function EclecticPractice() {
   const about = PRACTICES.find((p) => p.id === 'eclectic')?.about;
@@ -29,9 +31,9 @@ export default function EclecticPractice() {
               key={tool.title}
               icon="grimoire"
               title={tool.title}
-              detail={entries.length ? `${entries.length} of your own · ${tool.detail.toLowerCase()}` : tool.detail}
+              detail={i === 0 && entries.length ? `${entries.length} of your own · ${tool.detail.toLowerCase()}` : tool.detail}
               last={i === all.length - 1}
-              onPress={() => router.push('/rituals/craft/eclectic/correspondences' as Href)}
+              onPress={() => router.push(ROUTES[i] as Href)}
             />
           ))}
         </List>
