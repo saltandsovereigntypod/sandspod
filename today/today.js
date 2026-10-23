@@ -2,7 +2,7 @@
  * Today, as the app's Today tab has it (app/src/app/(tabs)/today/index.tsx):
  * the date and the other calendars, the moon and the day's holidays, your
  * next working, On the horizon, For your practice, the day's sky,
- * correspondences, Set tonight's altar, Reflect and Last time. Everything is
+ * correspondences, a card for the day, Set tonight's altar, Reflect and Last time. Everything is
  * worked out by the app's own logic (js/core/today.js); the place stays in
  * this browser and is only asked for when you press "Use my location".
  */
@@ -36,6 +36,7 @@
     dreams: [],
     dreamKept: null,
     dreamProblem: "",
+    readings: [],
     message: ""
   };
 
@@ -91,6 +92,16 @@
       };
     } catch {
       state.rituals = { plans: [], journal: [], active: null };
+    }
+  }
+
+  /** The Hedge reading log (for today's card), as the practice pages read it. */
+  async function loadReadings() {
+    try {
+      const list = window.SaltCraft ? await window.SaltCraft.list(C.readings.READINGS) : [];
+      state.readings = list.map((e) => ({ ...e, data: C.readings.normalizeReading(e.data) }));
+    } catch {
+      state.readings = [];
     }
   }
 
@@ -156,6 +167,7 @@
       horizonSection(today) +
       dreamCard(m) +
       practiceCard(m) +
+      cardOfTheDay(m) +
       daySkyCard(m) +
       correspondencesCard(today) +
       `<div class="sp-actions"><a class="button button--ghost" href="${esc(T.siteHref({ pathname: "/altar/[altarId]", params: { altarId: "tonight" } }))}">Set tonight’s altar</a></div>` +
@@ -309,6 +321,18 @@
     );
   }
 
+  /** A card for the day: one to draw, or the one kept today (the app's CardOfTheDay). Turned off in Today's calendar settings. */
+  function cardOfTheDay(m) {
+    if (!C.daily.drawOnToday(state.settings)) return "";
+    const kept = C.daily.todaysCard(state.readings, m.now);
+    if (!kept) return `<a class="td-last sp-caption td-gold" href="/practice/hedge/readings/draw/?spread=daily">Draw a card for the day ›</a>`;
+    const name = `${kept.name}${kept.reversed ? ", reversed" : ""}`;
+    return (
+      `<a class="td-last sp-caption" href="/practice/hedge/readings/reading/?id=${encodeURIComponent(kept.id)}" aria-label="${esc(`Today’s card: ${name}. Opens the reading.`)}">` +
+      `<span>Today’s card: <span class="td-gold">${esc(name)}</span> ›</span></a>`
+    );
+  }
+
   /** What today is good for, and what the sky is doing that matters for it. */
   function daySkyCard(m) {
     const { today, sky, here, now } = m;
@@ -457,7 +481,7 @@
     refreshing = true;
     try {
       state.user = user;
-      await Promise.all([loadSettings(), loadRituals(user), loadDreams()]);
+      await Promise.all([loadSettings(), loadRituals(user), loadDreams(), loadReadings()]);
     } finally {
       refreshing = false;
     }

@@ -1,0 +1,72 @@
+/*
+ * Draws (/practice/hedge/readings/draw/ and a kept draw on a reading's page):
+ * Pamela Colman Smith's cards, runes cut in stone, ogham cut along staves,
+ * and the flip that turns one over. As the app's components/divination.
+ */
+.dv-table { display: flex; justify-content: center; align-items: flex-start; gap: 12px; flex-wrap: nowrap; }
+.dv-place { display: grid; justify-items: center; gap: 6px; min-width: 0; }
+.dv-place__name { font-size: 0.85rem; color: var(--muted); text-align: center; margin: 0; }
+
+/* One card turning over */
+.dv-flip {
+  display: block; padding: 0; border: 0; background: none; cursor: pointer; perspective: 900px;
+  width: 100%; aspect-ratio: 0.58; border-radius: 8px;
+}
+.dv-flip:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.dv-flip[aria-current="true"] { outline: 2px solid #e2c36d; outline-offset: 2px; }
+.dv-inner { position: relative; display: block; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.52s ease; }
+.dv-flip.is-turned .dv-inner { transform: rotateY(180deg); }
+.dv-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.dv-front { transform: rotateY(180deg); }
+@media (prefers-reduced-motion: reduce) { .dv-inner { transition: none; } }
+.a11y-reduce-motion .dv-inner { transition: none; }
+
+/* Tarot */
+.dv-card { border-radius: 8px; border: 1px solid rgba(226, 195, 109, 0.5); background: #f4ecd8; }
+.dv-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dv-card--reversed img { transform: rotate(180deg); }
+.dv-back { border-radius: 8px; border: 1px solid #b9a05d; background: #123020; }
+.dv-back svg { width: 100%; height: 100%; }
+.dv-tarot-1 { width: min(56%, 220px); }
+.dv-tarot-3 { flex: 0 1 150px; }
+
+/* The Celtic Cross: placed by percentages worked out in hedge.js */
+.dv-cross { position: relative; width: 100%; max-width: 560px; margin: 0 auto; }
+.dv-cross > .dv-at { position: absolute; }
+.dv-cross > .dv-at--across { transform: rotate(90deg); z-index: 1; }
+
+/* Runes, cut into pale river stones */
+.dv-flip--stone { aspect-ratio: 1 / 1.18; border-radius: 42%; }
+.dv-stone {
+  border-radius: 42%; background: radial-gradient(ellipse at 35% 25%, #a8a498 0%, #8f8b80 55%, #77736a 100%);
+  border: 1px solid #6e6a60; box-shadow: inset 0 3px 5px rgba(255, 255, 255, 0.14), inset 0 -4px 8px rgba(0, 0, 0, 0.18);
+}
+.dv-glyph {
+  font-family: "Noto Sans Runic", "Noto Sans Ogham", "Segoe UI Historic", "Apple Symbols", serif;
+  line-height: 1; user-select: none;
+}
+.dv-stone .dv-glyph {
+  font-size: min(15vw, 4.4rem); color: #3b2a16;
+  text-shadow: 0 1.5px 0 rgba(244, 236, 216, 0.55);
+}
+.dv-rune-1 { width: min(34%, 120px); }
+.dv-rune-3 { flex: 0 1 96px; }
+
+/* Ogham, cut along a wooden stave and read from the bottom up */
+.dv-flip--stave { aspect-ratio: 52 / 190; border-radius: 16px; }
+.dv-stave {
+  border-radius: 16px; border: 1px solid #5a3c22;
+  background: linear-gradient(90deg, #6c4a2d 0%, #7a5636 30%, #845e3c 50%, #7a5636 70%, #6c4a2d 100%);
+}
+.dv-stave .dv-glyph {
+  font-size: 4.6rem; color: #2a180a; transform: rotate(-90deg); white-space: nowrap;
+  text-shadow: 0 1.5px 0 rgba(230, 200, 150, 0.45);
+}
+.dv-ogham-1 { width: 64px; }
+.dv-ogham-3 { width: 52px; }
+.dv-place--ogham { width: 96px; }
+
+/* What it means */
+.dv-meaning__name { font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 1.45rem; line-height: 1.2; margin: 0; }
+.dv-meaning__words { color: #e2c36d; margin: 0; }
+.dv-question { font-family: "Cormorant Garamond", serif; font-size: 1.35rem; text-align: center; margin: 0; }

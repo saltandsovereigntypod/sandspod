@@ -1781,6 +1781,19 @@ export const HELP: HelpSection[] = [
         keywords: ['tarot', 'runes', 'oracle', 'pendulum', 'divination log', 'look back'],
       },
       {
+        id: 'practice-draw',
+        title: 'Draw tarot cards, runes or ogham',
+        summary: 'A card for the day, three cards, the Celtic Cross, runes or ogham staves, with what each means.',
+        steps: [
+          'Open My practice, then Hedge, then "Draw cards, runes or ogham". On Today, "Draw a card for the day" opens it too.',
+          'Choose Tarot, Runes or Ogham and a spread, and write your question if you have one.',
+          'Tap "Shuffle and draw", then tap each card to turn it over and read what it means in its place.',
+          'Write what you make of it, choose a day to come back to it, and tap "Keep this reading". It goes into your Readings.',
+        ],
+        href: '/rituals/craft/hedge/readings/draw',
+        keywords: ['tarot', 'draw a card', 'card of the day', 'daily card', 'celtic cross', 'three card spread', 'rune cast', 'ogham', 'reversed cards', 'blank rune'],
+      },
+      {
         id: 'practice-ancestors',
         title: 'Remember your ancestors and the beloved dead',
         summary: 'Keep the people you carry, with their days and a candle to light.',

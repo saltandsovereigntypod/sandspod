@@ -174,6 +174,15 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
           />
         )}
         <Text style={type.caption}>On the horizon always shows the next moon phase and the next holiday.</Text>
+        <MenuList>
+          <SwitchRow
+            label="A card for the day"
+            detail="A small “Draw a card for the day” line, and the card once you’ve kept it."
+            value={draft.today_draw !== false}
+            onChange={(on) => set('today_draw', on)}
+            last
+          />
+        </MenuList>
       </Section>
 
       {chosen.has('custom') && (

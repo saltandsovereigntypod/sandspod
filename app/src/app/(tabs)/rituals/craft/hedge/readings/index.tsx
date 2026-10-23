@@ -43,13 +43,16 @@ export default function Readings() {
   return (
     <RitualScreen back="Hedge">
       <Title eyebrow={`${all.length} ${all.length === 1 ? 'reading' : 'readings'}`}>Readings</Title>
-      <Button label="Log a reading" onPress={() => router.push('/rituals/craft/hedge/readings/edit' as Href)} />
+      <View style={ui.actions}>
+        <Button label="Draw cards, runes or ogham" onPress={() => router.push('/rituals/craft/hedge/readings/draw' as Href)} />
+        <Button label="Log a reading" variant="outline" onPress={() => router.push('/rituals/craft/hedge/readings/edit' as Href)} />
+      </View>
 
       {!ready ? (
         <Body muted>Opening…</Body>
       ) : all.length === 0 ? (
         <Card>
-          <Body>Log what you asked, what came up and what you made of it, and choose a day to come back. When that day comes, the reading waits here for you to write what really happened: the best way to learn your own cards, runes and cup.</Body>
+          <Body>Draw cards, runes or ogham here, or log a reading you did by hand: what you asked, what came up and what you made of it, and a day to come back. When that day comes, the reading waits here for you to write what really happened: the best way to learn your own cards, runes and cup.</Body>
         </Card>
       ) : (
         <>
