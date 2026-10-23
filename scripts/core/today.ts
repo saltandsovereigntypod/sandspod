@@ -32,3 +32,6 @@ export * as ritualRows from '../../app/src/lib/rituals/rows.ts';
 export * as premade from '../../app/src/lib/rituals/premade/index.ts';
 // The Living Library entries the correspondences open.
 export * as library from '../../app/src/lib/library/model.ts';
+// The card of the day, from the Hedge reading log.
+export * as readings from '../../app/src/lib/craft/hedge/readings.ts';
+export * as daily from '../../app/src/lib/divination/daily.ts';

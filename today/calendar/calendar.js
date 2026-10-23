@@ -241,7 +241,10 @@
       `<span class="td-choice__label">Show on Today</span>` +
       chips("Show on Today", SHOW_OPTIONS, show, "today_show") +
       (show === "both" ? `<span class="td-choice__label">Layout</span>` + chips("Layout", LAYOUT_OPTIONS, draft.today_layout || "stacked", "today_layout") : "") +
-      `<p class="sp-caption">On the horizon always shows the next moon phase and the next holiday.</p></section>`;
+      `<p class="sp-caption">On the horizon always shows the next moon phase and the next holiday.</p>` +
+      `<div class="sp-list">` +
+      checkRow("today-draw", "A card for the day", "A small “Draw a card for the day” line, and the card once you’ve kept it.", draft.today_draw !== false, 'data-today-draw="1"') +
+      `</div></section>`;
 
     const custom = chosen.has("custom") ? customHolidays(choice.custom) + pickHolidays(choice.picked || [], chosen, hidden) : "";
 
@@ -402,6 +405,10 @@
       if (input.checked) next.add(input.dataset.tradition);
       else next.delete(input.dataset.tradition);
       set("calendar_traditions", [...next].join(","));
+      return render();
+    }
+    if (input.dataset.todayDraw) {
+      set("today_draw", input.checked);
       return render();
     }
     if (input.dataset.extra) {
