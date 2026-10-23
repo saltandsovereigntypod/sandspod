@@ -184,5 +184,22 @@
     });
   }
 
-  global.CovenUI = { esc, prose, href, setStatus, busy, boot, loadNames, nameOf, signInCard, bannedCard, profileForm, report, confirmAction };
+  /** Ask for a few optional words in a dialog; resolves with the text, or null if cancelled. */
+  function askText(title, label, yes = "Done") {
+    return new Promise((resolve) => {
+      const dialog = doc.createElement("dialog");
+      dialog.className = "cv-dialog";
+      dialog.innerHTML = `<form method="dialog"><h2>${esc(title)}</h2>
+        <div class="sp-field"><label for="cv-ask-text">${esc(label)}</label><textarea id="cv-ask-text" name="text" maxlength="1000"></textarea></div>
+        <div class="sp-actions"><button class="button button--primary" value="yes">${esc(yes)}</button><button class="button button--ghost" value="no">Cancel</button></div></form>`;
+      doc.body.appendChild(dialog);
+      dialog.addEventListener("close", () => {
+        resolve(dialog.returnValue === "yes" ? dialog.querySelector("textarea").value.trim() : null);
+        dialog.remove();
+      });
+      dialog.showModal();
+    });
+  }
+
+  global.CovenUI = { esc, prose, href, setStatus, busy, boot, loadNames, nameOf, signInCard, bannedCard, profileForm, report, confirmAction, askText };
 })(window);

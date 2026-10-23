@@ -360,5 +360,16 @@
     clearInterval(timer);
   }
 
-  global.CovenAltar = { mount, unmount, onChange, onPresence: presence };
+  /** A still view of the shared altar (shown beside a ritual under way). */
+  function preview(el, list, s) {
+    if (!el) return;
+    const previous = state;
+    state = s;
+    const background = ART.backgrounds?.find((b) => b.id === s.coven.altar_background);
+    el.innerHTML = `<div class="cv-altar cv-altar--preview" role="img" aria-label="The coven altar, with ${list.filter((i) => L.candleState(i).lit).length} candles lit"${background ? ` style="background-image:url('${esc(href(background.assetPath))}')"` : ""}>${list.map(itemHtml).join("")}${list.length ? "" : `<p class="cv-altar__empty">The coven altar is bare.</p>`}</div>`;
+    el.querySelectorAll("[data-item]").forEach((b) => (b.tabIndex = -1));
+    state = previous || s;
+  }
+
+  global.CovenAltar = { mount, unmount, onChange, onPresence: presence, preview };
 })(window);

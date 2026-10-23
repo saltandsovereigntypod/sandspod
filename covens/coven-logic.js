@@ -146,6 +146,9 @@
       review: may("can_review"),
       moderate: may("can_moderate"),
       lead: open && active && (founder || Boolean(rank && (rank.can_lead_rituals || rank.can_moderate || rank.can_manage))),
+      schedule: open && active && (founder || Boolean(rank && (rank.can_schedule_rites || rank.can_manage))),
+      writeBook: open && active && (founder || Boolean(rank && (rank.can_write_book || rank.can_approve_book || rank.can_manage))),
+      approveBook: open && active && (founder || Boolean(rank && (rank.can_approve_book || rank.can_manage))),
       muted,
       site: Boolean(siteModerator),
       status: membership?.status || null
@@ -183,6 +186,9 @@
     if (rank?.can_review) powers.push("reviews applications");
     if (rank?.can_moderate) powers.push("keeps the gathering safe");
     if (rank?.can_lead_rituals || rank?.can_moderate || rank?.can_manage) powers.push("leads rituals");
+    if (rank?.can_schedule_rites || rank?.can_manage) powers.push("puts rites on the calendar");
+    if (rank?.can_approve_book || rank?.can_manage) powers.push("approves pages in the coven’s book");
+    else if (rank?.can_write_book) powers.push("writes in the coven’s book");
     return powers;
   }
 
@@ -339,6 +345,149 @@
     };
   }
 
+  const OCCASIONS = [
+    { value: "full_moon", label: "Full moon" },
+    { value: "new_moon", label: "New moon" },
+    { value: "esbat", label: "Esbat" },
+    { value: "sabbat", label: "Sabbat" },
+    { value: "other", label: "Other gathering" }
+  ];
+
+  const occasionLabel = (ritual) => {
+    if (!ritual?.occasion) return "";
+    const base = OCCASIONS.find((o) => o.value === ritual.occasion)?.label || "";
+    return ritual.occasion_name ? (ritual.occasion === "sabbat" ? ritual.occasion_name : `${base} · ${ritual.occasion_name}`) : base;
+  };
+
+  /**
+   * Coming full and new moons and the next sabbats, to suggest dates for a
+   * rite. `today` is the site's moon and calendar logic (SaltCore.today).
+   */
+  function occasionSuggestions(today, from = new Date(), count = 6) {
+    if (!today?.moon?.upcomingPhases || !today?.calendar?.nextSabbat) return [];
+    const out = today.moon
+      .upcomingPhases(from, 12)
+      .filter((p) => p.phase === "full" || p.phase === "new")
+      .slice(0, 4)
+      .map((p) => ({ occasion: p.phase === "full" ? "full_moon" : "new_moon", name: "", label: p.phase === "full" ? "Full moon" : "New moon", date: new Date(p.date) }));
+    let cursor = from;
+    for (let i = 0; i < 2; i++) {
+      const s = today.calendar.nextSabbat(cursor);
+      out.push({ occasion: "sabbat", name: s.name, label: s.name, date: new Date(s.date) });
+      cursor = new Date(new Date(s.date).getTime() + 86400000 * 2);
+    }
+    return out.sort((a, b) => a.date - b.date).slice(0, count);
+  }
+
+  /** A suggested occasion's date at a sensible hour (moons at their own time, sabbats at 8pm). */
+  function suggestionTime(suggestion) {
+    const d = new Date(suggestion.date);
+    if (suggestion.occasion === "sabbat") d.setHours(20, 0, 0, 0);
+    else d.setMinutes(Math.round(d.getMinutes() / 15) * 15, 0, 0);
+    return d;
+  }
+
+  const ALTAR_ACTIONS = [
+    { value: "", label: "Nothing on the altar" },
+    { value: "light_candle", label: "Light a candle on the shared altar" },
+    { value: "place_item", label: "Place something on the shared altar" },
+    { value: "light_all", label: "Light every candle on the altar" },
+    { value: "snuff_all", label: "Put out the altar’s candles" }
+  ];
+
+  /** The button that does a step's altar action, for whoever it belongs to. */
+  function altarActionButton(step, done) {
+    if (!step?.altar_action) return "";
+    if (done) return "";
+    return {
+      light_candle: "Light your candle",
+      place_item: `Place ${step.altar_label || "your offering"} on the altar`,
+      light_all: "Light the altar’s candles",
+      snuff_all: "Put out the candles"
+    }[step.altar_action] || "";
+  }
+
+  function altarActionNote(step) {
+    if (!step?.altar_action) return "";
+    const who = step.assigned_user_id || step.assigned_rank_id ? "" : " Each member lights their own, and the candles gather in a circle.";
+    return {
+      light_candle: `Lights a ${step.altar_color || "white"} candle on the shared altar.${step.altar_action === "light_candle" ? who : ""}`,
+      place_item: `Places ${step.altar_label || "an offering"} on the shared altar.`,
+      light_all: "Lights every candle on the shared altar.",
+      snuff_all: "Puts out the candles on the shared altar."
+    }[step.altar_action];
+  }
+
+  /** Who is coming to a rite, and what this person answered. */
+  function rsvpSummary(rsvps, ritualId, userId) {
+    const list = (rsvps || []).filter((r) => r.ritual_id === ritualId);
+    return {
+      going: list.filter((r) => r.response === "going"),
+      maybe: list.filter((r) => r.response === "maybe"),
+      notGoing: list.filter((r) => r.response === "not_going"),
+      mine: list.find((r) => r.user_id === userId)?.response || null
+    };
+  }
+
+  /** Rites on the calendar in the next `hours` (for the "tonight" notice). */
+  function ritesSoon(rituals, now = Date.now(), hours = 24) {
+    return (rituals || [])
+      .filter((r) => r.status === "scheduled" && r.scheduled_for)
+      .filter((r) => {
+        const t = new Date(r.scheduled_for).getTime();
+        return t > now - 3600000 && t < now + hours * 3600000;
+      })
+      .sort((a, b) => new Date(a.scheduled_for) - new Date(b.scheduled_for));
+  }
+
+  /** A calendar file for one rite, so members can add it (with a reminder) to their own calendar. */
+  function riteCalendarFile(ritual, covenName, url) {
+    const stamp = (d) => new Date(d).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+    const text = (s) => String(s || "").replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/([,;])/g, "\\$1");
+    const start = new Date(ritual.scheduled_for);
+    const minutes = 60;
+    const end = new Date(start.getTime() + minutes * 60000);
+    return [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//Salt & Sovereignty//Covens//EN",
+      "BEGIN:VEVENT",
+      `UID:${ritual.id}@saltandsovereignty.com`,
+      `DTSTAMP:${stamp(Date.now())}`,
+      `DTSTART:${stamp(start)}`,
+      `DTEND:${stamp(end)}`,
+      `SUMMARY:${text(`${ritual.title} · ${covenName}`)}`,
+      `DESCRIPTION:${text([ritual.intention, ritual.description, url].filter(Boolean).join("\n\n"))}`,
+      url ? `URL:${url}` : "",
+      "BEGIN:VALARM",
+      "TRIGGER:-PT1H",
+      "ACTION:DISPLAY",
+      `DESCRIPTION:${text(ritual.title)}`,
+      "END:VALARM",
+      "END:VEVENT",
+      "END:VCALENDAR"
+    ].filter(Boolean).join("\r\n");
+  }
+
+  // --- the coven's Book of Shadows and petitions ------------------------------
+
+  /** Published pages by section (sections in order of name; pages by title). */
+  function bookSections(pages) {
+    const map = new Map();
+    for (const p of pages || []) {
+      const key = String(p.section || "").trim() || "Pages";
+      if (!map.has(key)) map.set(key, []);
+      map.get(key).push(p);
+    }
+    return [...map.entries()].sort(([a], [b]) => (a === "Pages" ? 1 : b === "Pages" ? -1 : a.localeCompare(b))).map(([section, list]) => ({ section, pages: list.sort((a, b) => a.title.localeCompare(b.title)) }));
+  }
+
+  /** Whether this person can tend a petition now (once every twelve hours). */
+  function canTend(petition, tendings, userId, now = Date.now()) {
+    if (!petition || petition.status !== "open" || !userId) return false;
+    return !(tendings || []).some((t) => t.petition_id === petition.id && t.user_id === userId && now - new Date(t.created_at).getTime() < 12 * 3600000);
+  }
+
   /** A timestamp as a datetime-local input's value, in this browser's time. */
   function toLocalInput(value) {
     if (!value) return "";
@@ -402,6 +551,18 @@
     stepAssignee,
     stepIsMine,
     unassignablePart,
+    OCCASIONS,
+    occasionLabel,
+    occasionSuggestions,
+    suggestionTime,
+    ALTAR_ACTIONS,
+    altarActionButton,
+    altarActionNote,
+    rsvpSummary,
+    ritesSoon,
+    riteCalendarFile,
+    bookSections,
+    canTend,
     orderSteps,
     ritualGroups,
     toLocalInput,

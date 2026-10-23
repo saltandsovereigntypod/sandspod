@@ -263,3 +263,85 @@ test("only members who have signed the current agreements can be given a ritual 
   const sql = fs.readFileSync(path.join(root, "supabase/migrations/20261025000000_coven_ritual_signed_parts.sql"), "utf8");
   assert.match(sql, /coven_unsigned_agreements\(p_coven, person\) > 0 or public\.is_community_banned\(person\)/, "the database refuses unsigned members too");
 });
+
+test("the planner suggests coming full and new moons and sabbats", () => {
+  const vm = require("node:vm");
+  const sb = { window: {}, Intl, TextEncoder, console };
+  sb.window = sb;
+  vm.createContext(sb);
+  vm.runInContext(fs.readFileSync(path.join(root, "js/core/today.js"), "utf8"), sb);
+  const list = L.occasionSuggestions(sb.SaltCore.today, new Date("2026-10-23T12:00:00Z"));
+  assert.equal(list.length, 6);
+  assert.deepEqual(Array.from(list.slice(0, 3), (s) => s.label), ["Full moon", "Samhain", "New moon"]);
+  assert.ok(list.every((s, i) => i === 0 || list[i - 1].date <= s.date), "in date order");
+  assert.equal(L.suggestionTime(list[1]).getHours(), 20, "sabbats suggest 8pm");
+  assert.deepEqual(L.occasionSuggestions(null), [], "without the moon logic there are no suggestions");
+  assert.equal(L.occasionLabel({ occasion: "sabbat", occasion_name: "Samhain" }), "Samhain");
+  assert.equal(L.occasionLabel({ occasion: "full_moon", occasion_name: "Hunter’s Moon" }), "Full moon · Hunter’s Moon");
+});
+
+test("RSVPs, rites coming up, and a calendar file with a reminder", () => {
+  const rsvps = [
+    { ritual_id: "r", user_id: "a", response: "going" },
+    { ritual_id: "r", user_id: "b", response: "maybe" },
+    { ritual_id: "q", user_id: "a", response: "not_going" }
+  ];
+  const sum = L.rsvpSummary(rsvps, "r", "b");
+  assert.equal(sum.going.length, 1);
+  assert.equal(sum.mine, "maybe");
+  const now = new Date("2026-10-26T12:00:00Z").getTime();
+  const soon = L.ritesSoon([
+    { id: "1", status: "scheduled", scheduled_for: "2026-10-26T20:00:00Z" },
+    { id: "2", status: "scheduled", scheduled_for: "2026-10-29T20:00:00Z" },
+    { id: "3", status: "draft", scheduled_for: "2026-10-26T20:00:00Z" }
+  ], now);
+  assert.deepEqual(soon.map((r) => r.id), ["1"]);
+  const ics = L.riteCalendarFile({ id: "x", title: "Full moon, rite", scheduled_for: "2026-10-26T20:00:00Z", intention: "Clarity" }, "Moon; Circle", "https://example.com/c");
+  assert.match(ics, /^BEGIN:VCALENDAR\r\n/);
+  assert.match(ics, /DTSTART:20261026T200000Z/);
+  assert.ok(ics.includes(String.raw`SUMMARY:Full moon\, rite · Moon\; Circle`), "commas and semicolons are escaped");
+  assert.match(ics, /TRIGGER:-PT1H/, "it reminds an hour before");
+});
+
+test("altar actions say what they do and who does them", () => {
+  assert.equal(L.altarActionButton({ altar_action: "light_candle" }), "Light your candle");
+  assert.equal(L.altarActionButton({ altar_action: "place_item", altar_label: "Rose · Petals" }), "Place Rose · Petals on the altar");
+  assert.equal(L.altarActionButton({}), "");
+  assert.match(L.altarActionNote({ altar_action: "light_candle", altar_color: "red" }), /red candle.*Each member lights their own/);
+  assert.doesNotMatch(L.altarActionNote({ altar_action: "light_candle", assigned_user_id: "u" }), /Each member/);
+  const sql = fs.readFileSync(path.join(root, "supabase/migrations/20261026000000_coven_rites_book_petitions.sql"), "utf8");
+  // The database builds candle pictures the same way the pages do.
+  for (const [color, form] of [["white", "vigil"], ["red", "votive"], ["black", "vigil"], ["gold", "tea-light"]]) {
+    const expected = L.candleImage(color, form);
+    const built = form === "vigil" ? `/assets/altar/objects/candles/${color}-candle.${["black", "white"].includes(color) ? "PNG" : "png"}` : `/assets/altar/objects/candles/${form}/${color}-${form}.png`;
+    assert.equal(built, expected, `${color} ${form}`);
+  }
+  assert.match(sql, /'-candle\.'\s*\|\| case when coalesce\(p_color, 'white'\) in \('black', 'white'\) then 'PNG' else 'png' end/);
+});
+
+test("the coven's book groups pages by section, and petitions are tended twice a day at most", () => {
+  const sections = L.bookSections([{ title: "B", section: "Lore" }, { title: "A", section: "Lore" }, { title: "Z", section: "" }, { title: "C", section: "Correspondences" }]);
+  assert.deepEqual(sections.map((s) => s.section), ["Correspondences", "Lore", "Pages"]);
+  assert.deepEqual(sections[1].pages.map((p) => p.title), ["A", "B"]);
+  const now = new Date("2026-10-26T12:00:00Z").getTime();
+  const petition = { id: "p", status: "open" };
+  assert.equal(L.canTend(petition, [], "me", now), true);
+  assert.equal(L.canTend(petition, [{ petition_id: "p", user_id: "me", created_at: "2026-10-26T06:00:00Z" }], "me", now), false);
+  assert.equal(L.canTend(petition, [{ petition_id: "p", user_id: "me", created_at: "2026-10-25T20:00:00Z" }], "me", now), true);
+  assert.equal(L.canTend({ ...petition, status: "answered" }, [], "me", now), false);
+});
+
+test("the coven's head chooses who schedules rites and who writes and approves the book", () => {
+  const custom = [{ id: "w", level: 2, can_write_book: true }, { id: "a", level: 3, can_approve_book: true }, { id: "s", level: 2, can_schedule_rites: true }];
+  const as = (rank) => L.permissions({ coven, membership: { status: "active", rank_id: rank }, ranks: custom, userId: "u" });
+  assert.deepEqual([as("w").writeBook, as("w").approveBook, as("w").schedule], [true, false, false]);
+  assert.deepEqual([as("a").writeBook, as("a").approveBook], [true, true], "approvers can write too");
+  assert.equal(as("s").schedule, true);
+  assert.equal(perms("founder", "seeker").schedule && perms("founder", "seeker").approveBook, true);
+  assert.equal(perms("u", "elder").schedule, false, "moderating doesn't mean scheduling");
+  const sql = fs.readFileSync(path.join(root, "supabase/migrations/20261026000000_coven_rites_book_petitions.sql"), "utf8");
+  for (const table of ["coven_ritual_rsvps", "coven_ritual_step_marks", "coven_book_pages", "coven_book_drafts", "coven_petitions", "coven_petition_tendings"]) {
+    assert.match(sql, new RegExp(`alter table public\\.${table} enable row level security`), table);
+  }
+  assert.doesNotMatch(sql, /for (insert|update|delete|all) to authenticated/, "these change only through the functions");
+});

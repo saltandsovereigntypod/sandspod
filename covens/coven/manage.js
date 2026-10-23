@@ -230,6 +230,9 @@
           ${check("can_review", "Reviews applications and requests to advance")}
           ${check("can_moderate", "Moderates the gathering (removes messages, pauses or removes members)")}
           ${check("can_lead_rituals", "Leads the coven’s rituals (plans them, gives out their steps, begins them)")}
+          ${check("can_schedule_rites", "Puts rites on the coven’s calendar")}
+          ${check("can_write_book", "Writes in the coven’s Book of Shadows (drafts go for approval)")}
+          ${check("can_approve_book", "Approves pages for the coven’s Book of Shadows")}
           ${check("can_manage", "Leads the coven (edits its pages, positions and details)")}
           <div class="sp-actions"><button class="button button--primary button--small" type="submit">${r.id ? "Save" : "Add"}</button>${r.id ? `<button class="button button--ghost button--small" type="button" data-delete-rank="${esc(r.id)}">Delete</button>` : ""}</div>
           ${statusLine()}
@@ -300,7 +303,7 @@
           event.preventDefault();
           const data = Object.fromEntries(new FormData(form));
           const row = { coven_id: coven.id, name: data.name.trim(), level: Number(data.level) || 1, description: data.description.trim() || null, requirements: data.requirements.trim() || null };
-          for (const flag of ["is_default", "open_to_applications", "can_review", "can_moderate", "can_lead_rituals", "can_manage"]) row[flag] = Boolean(data[flag]);
+          for (const flag of ["is_default", "open_to_applications", "can_review", "can_moderate", "can_lead_rituals", "can_schedule_rites", "can_write_book", "can_approve_book", "can_manage"]) row[flag] = Boolean(data[flag]);
           if (form.dataset.rank) row.id = form.dataset.rank;
           if (await UI.busy(form, form.querySelector("[data-status]"), () => D.saveRank(row))) refresh("manage");
         })

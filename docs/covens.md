@@ -31,6 +31,15 @@ The Rituals tab (`covens/coven/rituals.js`, `supabase/migrations/20261024000000_
 - **Only members in step can be given a part:** someone who hasn't signed the coven's current agreements (or is banned) can't be given a step (`save_coven_ritual` refuses it; `20261025000000_coven_ritual_signed_parts.sql`). The planner lists them greyed out as "needs to re-sign" (`coven_ritual_people`), and a step still given to them must be reassigned before the ritual can be saved. Steps given to a position or the whole coven are unaffected; at the ritual, a member who hasn't re-signed sees why they can't finish their step.
 - Rituals can only be changed through the functions; there are no direct write policies. A ritual can't be edited while it's under way. If a position is deleted, steps given to it become the whole coven's.
 
+## Rites, altar actions, the Book of Shadows and petitions
+
+`supabase/migrations/20261026000000_coven_rites_book_petitions.sql`, with `covens/coven/rituals.js`, `book.js` and `petitions.js`.
+
+- **Rites on the calendar.** A ritual can be marked as a full or new moon, an esbat, a sabbat or another gathering; the planner suggests the coming moons and sabbats (from the site's moon logic, `js/core/today.js`, loaded only when the planner opens). Only positions the coven's head gives `can_schedule_rites` (and leaders) put rites on the calendar or move them; other ritual leaders save drafts for them. Members answer going / maybe / can't make it (`rsvp_coven_ritual`). Reminders: on the website, a "coming up" notice on every coven tab for rites in the next day and an "Add to my calendar" file with a reminder an hour before; in the app, phone reminders.
+- **Altar actions in steps.** Any step can light a candle, place something from the altar cabinet, light every candle, or put the candles out (`coven_ritual_steps.altar_*`). It isn't automatic: when the ritual reaches the step, whoever it belongs to (or the ritual's leader) presses the button (`perform_coven_step_action`). On a whole-coven candle step each member lights their own (`coven_ritual_step_marks`), and the candles gather in a circle. The shared altar is shown live beside a ritual under way.
+- **Book of Shadows.** Positions with `can_write_book` write drafts and suggest changes; those with `can_approve_book` (and leaders) publish them, and their own writing publishes straight away. Members read published pages only (`coven_book_pages`); drafts (`coven_book_drafts`) are seen by their authors and approvers.
+- **Petitions.** A member asks the circle to hold a petition (`ask_coven_petition`), which sets a candle for it on the shared altar. Members tend it once every twelve hours, with a few words if they like, which relights the candle. The asker (or a coven moderator) marks it answered or closes it, and the candle leaves the altar.
+
 ## Account deletion
 
 `supabase/functions/delete-account` removes the person's coven profile, memberships, signatures, applications, advancement requests and messages. Covens they founded remain, with `founder_id` cleared; a site moderator can hand such a coven on (`transfer_coven`). Redeploy the function after this change.

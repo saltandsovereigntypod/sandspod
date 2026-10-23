@@ -155,7 +155,7 @@
      * Live updates for one coven: chat messages, altar items and rituals as
      * they change, and who else is here. Returns { track(state), close() }.
      */
-    live(covenId, { onMessage, onAltar, onRitual, onPresence, onStatus } = {}) {
+    live(covenId, { onMessage, onAltar, onRitual, onPetition, onPresence, onStatus } = {}) {
       const channel = db().channel(`coven:${covenId}`, { config: { presence: { key: global.getCurrentSaltUser?.()?.id || "guest" } } });
       if (onMessage) channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_messages", filter: `coven_id=eq.${covenId}` }, onMessage);
       if (onAltar) {
@@ -169,7 +169,10 @@
         // As with the altar, deletes can't be filtered; ids this page doesn't hold are ignored.
         channel.on("postgres_changes", { event: "DELETE", schema: "public", table: "coven_rituals" }, (change) => onRitual("ritual", change));
         channel.on("postgres_changes", { event: "DELETE", schema: "public", table: "coven_ritual_steps" }, (change) => onRitual("step", change));
+        channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_ritual_rsvps", filter: `coven_id=eq.${covenId}` }, (change) => onRitual("rsvp", change));
+        channel.on("postgres_changes", { event: "INSERT", schema: "public", table: "coven_ritual_step_marks", filter: `coven_id=eq.${covenId}` }, (change) => onRitual("mark", change));
       }
+      if (onPetition) channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_petitions", filter: `coven_id=eq.${covenId}` }, onPetition);
       if (onPresence) channel.on("presence", { event: "sync" }, () => onPresence(channel.presenceState()));
       let tracked = null;
       channel.subscribe((status) => {
@@ -201,6 +204,37 @@
     finishStep: (stepId) => rpc("finish_coven_ritual_step", { p_step: stepId }),
     goToStep: (ritualId, stepId) => rpc("go_to_coven_ritual_step", { p_ritual: ritualId, p_step: stepId || null }),
     setRitualStatus: (ritualId, status) => rpc("set_coven_ritual_status", { p_ritual: ritualId, p_status: status }),
+    async rsvps(ritualIds) {
+      const ids = [...new Set((ritualIds || []).filter(Boolean))];
+      if (!ids.length) return [];
+      return run(db().from("coven_ritual_rsvps").select("*").in("ritual_id", ids));
+    },
+    rsvp: (ritualId, response) => rpc("rsvp_coven_ritual", { p_ritual: ritualId, p_response: response }),
+    async stepMarks(ritualId) {
+      if (!ritualId) return [];
+      return run(db().from("coven_ritual_step_marks").select("*").eq("ritual_id", ritualId));
+    },
+    performStepAction: (stepId) => rpc("perform_coven_step_action", { p_step: stepId }),
+
+    // --- the coven's Book of Shadows -------------------------------------------
+    bookPages: (covenId) => run(db().from("coven_book_pages").select("*").eq("coven_id", covenId).order("title", { ascending: true }).limit(500)),
+    bookDrafts: (covenId) => run(db().from("coven_book_drafts").select("*").eq("coven_id", covenId).neq("status", "published").order("updated_at", { ascending: false }).limit(200)),
+    saveBookDraft: (covenId, draftId, pageId, fields, submit) =>
+      rpc("save_coven_book_draft", { p_coven: covenId, p_draft: draftId || null, p_page: pageId || null, p_title: fields.title, p_section: fields.section || null, p_body: fields.body || "", p_submit: Boolean(submit) }),
+    reviewBookDraft: (draftId, approve, note) => rpc("review_coven_book_draft", { p_draft: draftId, p_approve: approve, p_note: note || null }),
+    removeBookEntry: (kind, id) => rpc("remove_coven_book_entry", { p_kind: kind, p_id: id }),
+
+    // --- petitions ---------------------------------------------------------------
+    petitions: (covenId) => run(db().from("coven_petitions").select("*").eq("coven_id", covenId).order("created_at", { ascending: false }).limit(100)),
+    async petitionTendings(petitionIds) {
+      const ids = [...new Set((petitionIds || []).filter(Boolean))];
+      if (!ids.length) return [];
+      return run(db().from("coven_petition_tendings").select("*").in("petition_id", ids).order("created_at", { ascending: false }).limit(1000));
+    },
+    askPetition: (covenId, title, body, color) => rpc("ask_coven_petition", { p_coven: covenId, p_title: title, p_body: body || null, p_color: color || "white" }),
+    tendPetition: (petitionId, note) => rpc("tend_coven_petition", { p_petition: petitionId, p_note: note || null }),
+    closePetition: (petitionId, status, note) => rpc("close_coven_petition", { p_petition: petitionId, p_status: status, p_note: note || null }),
+
     /** Your own saved rituals (the Rituals planner's templates), to start a coven ritual from. */
     async myRitualTemplates(userId) {
       if (!userId) return [];

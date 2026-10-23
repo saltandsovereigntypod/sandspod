@@ -752,6 +752,9 @@ begin
     if not exists (select 1 from pg_publication_tables where pubname = 'supabase_realtime' and tablename = 'coven_ritual_rsvps') then
       alter publication supabase_realtime add table public.coven_ritual_rsvps;
     end if;
+    if not exists (select 1 from pg_publication_tables where pubname = 'supabase_realtime' and tablename = 'coven_ritual_step_marks') then
+      alter publication supabase_realtime add table public.coven_ritual_step_marks;
+    end if;
     if not exists (select 1 from pg_publication_tables where pubname = 'supabase_realtime' and tablename = 'coven_petitions') then
       alter publication supabase_realtime add table public.coven_petitions;
     end if;

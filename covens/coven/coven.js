@@ -21,7 +21,7 @@
   const { header } = global.GuidesUI;
 
   const slug = new URLSearchParams(global.location.search).get("c") || "";
-  const state = { context: null, coven: null, ranks: [], documents: [], membership: null, perms: null, signatures: [], unsigned: [], application: null, advancements: [], pending: { applications: 0, advancements: 0 }, presence: [], rituals: [], ritualSteps: [] };
+  const state = { context: null, coven: null, ranks: [], documents: [], membership: null, perms: null, signatures: [], unsigned: [], application: null, advancements: [], pending: { applications: 0, advancements: 0 }, presence: [], rituals: [], ritualSteps: [], rsvps: [], stepMarks: [] };
   let live = null;
   let mounted = null;
 
@@ -55,6 +55,7 @@
     if (state.perms.member || state.perms.site) {
       state.rituals = await D.rituals(coven.id).catch(() => []);
       state.ritualSteps = await D.ritualSteps(state.rituals.map((r) => r.id)).catch(() => []);
+      state.rsvps = await D.rsvps(state.rituals.filter((r) => ["scheduled", "live"].includes(r.status)).map((r) => r.id)).catch(() => []);
       await UI.loadNames(context, [...state.rituals.map((r) => r.led_by), ...state.ritualSteps.flatMap((s) => [s.assigned_user_id, s.completed_by])]);
     }
     if (coven.founder_id) await UI.loadNames(context, [coven.founder_id]);
@@ -77,7 +78,14 @@
     if (!perms.member && coven.status === "active") list.push({ key: "join", label: coven.joining === "open" ? "Join" : "Apply" });
     if (insider) {
       const live = state.rituals.some((r) => r.status === "live");
-      list.push({ key: "gathering", label: "Gathering" }, { key: "rituals", label: live ? "Rituals · now" : "Rituals" }, { key: "altar", label: "Altar" }, { key: "members", label: "Members" });
+      list.push(
+        { key: "gathering", label: "Gathering" },
+        { key: "rituals", label: live ? "Rituals · now" : "Rituals" },
+        { key: "altar", label: "Altar" },
+        { key: "book", label: "Book of Shadows" },
+        { key: "petitions", label: "Petitions" },
+        { key: "members", label: "Members" }
+      );
     }
     if (perms.member) list.push({ key: "path", label: "My path", count: state.unsigned.length });
     if (perms.review || perms.site) list.push({ key: "review", label: "Review", count: state.pending.applications + state.pending.advancements });
@@ -123,12 +131,36 @@
     const params = new URLSearchParams(global.location.search);
     const here = currentTab() === "rituals" && params.get("ritual") === turn?.ritual.id;
     doc.title = `${turn ? "✦ Your turn · " : ""}${state.coven.name} | Salt & Sovereignty`;
-    if (!turn || here) return "";
+    if (!turn || here) return soonBanner();
     return `<div class="cv-banner cv-banner--turn" role="status"><p><strong>✦ It’s your turn in ${esc(turn.ritual.title)}:</strong> ${esc(turn.step.title)}.
       <a href="${esc(covenHref("rituals"))}&amp;ritual=${esc(encodeURIComponent(turn.ritual.id))}" data-tab="rituals">Open your step</a></p></div>`;
   }
 
+  /** Rites on the calendar in the next day, with this member's answer. */
+  function soonBanner() {
+    const soon = L.ritesSoon(state.rituals);
+    if (!soon.length || !state.perms.member) return "";
+    const r = soon[0];
+    const answer = L.rsvpSummary(state.rsvps, r.id, state.context.user?.id).mine;
+    const when = new Date(r.scheduled_for).toLocaleString(undefined, { weekday: "long", hour: "numeric", minute: "2-digit" });
+    return `<div class="cv-banner cv-banner--turn" role="status"><p><strong>${esc(L.occasionLabel(r) || "Rite")} coming up:</strong> ${esc(r.title)}, ${esc(when)}.
+      ${answer === "going" ? "You’re going." : answer === "maybe" ? "You might come." : answer === "not_going" ? "You can’t make it." : "Will you come?"}
+      <a href="${esc(covenHref("rituals"))}&amp;ritual=${esc(encodeURIComponent(r.id))}" data-tab="rituals">${answer ? "Open the rite" : "Answer"}</a></p></div>`;
+  }
+
   async function onRitualChange(kind, change) {
+    if (kind === "rsvp" || kind === "mark") {
+      const row = change?.new && Object.keys(change.new).length ? change.new : change?.old;
+      if (!row || (row.coven_id && row.coven_id !== state.coven.id)) return;
+      const key = kind === "rsvp" ? "rsvps" : "stepMarks";
+      const same = (x) => (kind === "rsvp" ? x.ritual_id === row.ritual_id : x.step_id === row.step_id) && x.user_id === row.user_id;
+      state[key] = (state[key] || []).filter((x) => !same(x));
+      if (change.eventType !== "DELETE") state[key].push(change.new);
+      const banner = root.querySelector("[data-turn-banner]");
+      if (banner) banner.innerHTML = turnBanner();
+      global.CovenRituals?.onChange?.();
+      return;
+    }
     const record = change?.new && Object.keys(change.new).length ? change.new : null;
     if (record?.coven_id && record.coven_id !== state.coven.id) return;
     const listKey = kind === "ritual" ? "rituals" : "ritualSteps";
@@ -152,7 +184,7 @@
       ${tabBar(tab)}
       <div class="cv-pane" data-pane></div>`;
     const pane = root.querySelector("[data-pane]");
-    const views = { about, join, path, gathering: () => mount(global.CovenChat), rituals: () => mount(global.CovenRituals), altar: () => mount(global.CovenAltar), members: () => mount(global.CovenMembers), review: () => mount(global.CovenReview), manage: () => mount(global.CovenManage) };
+    const views = { about, join, path, gathering: () => mount(global.CovenChat), rituals: () => mount(global.CovenRituals), book: () => mount(global.CovenBook), petitions: () => mount(global.CovenPetitions), altar: () => mount(global.CovenAltar), members: () => mount(global.CovenMembers), review: () => mount(global.CovenReview), manage: () => mount(global.CovenManage) };
     function mount(module) {
       if (!module) return (pane.innerHTML = `<p class="sp-notice">This part of the coven couldn’t load. Please refresh the page.</p>`);
       mounted = module;
@@ -397,7 +429,11 @@
     if (live || !(perms.member || perms.site) || !context.user) return;
     live = D.live(coven.id, {
       onMessage: (change) => global.CovenChat?.onChange?.(change),
-      onAltar: (change) => global.CovenAltar?.onChange?.(change),
+      onAltar: (change) => {
+        global.CovenAltar?.onChange?.(change);
+        global.CovenRituals?.onAltarChange?.(change);
+      },
+      onPetition: (change) => global.CovenPetitions?.onChange?.(change),
       onRitual: onRitualChange,
       onPresence: (presence) => {
         state.presence = Object.values(presence).map((list) => list[0]).filter(Boolean);
