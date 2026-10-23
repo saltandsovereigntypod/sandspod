@@ -69,4 +69,6 @@
 /* What it means */
 .dv-meaning__name { font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 1.45rem; line-height: 1.2; margin: 0; }
 .dv-meaning__words { color: #e2c36d; margin: 0; }
+.dv-meaning__more { margin: 0; }
+.dv-meaning__more a { color: #e2c36d; text-underline-offset: 3px; }
 .dv-question { font-family: "Cormorant Garamond", serif; font-size: 1.35rem; text-align: center; margin: 0; }

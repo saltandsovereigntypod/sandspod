@@ -504,10 +504,14 @@
     const m = Dv.draw.meaningOf(d.items[i]);
     if (!m) return "";
     const place = spread.positions.length > 1 ? spread.positions[i] : null;
+    // Its page in the Book of Shadows' Traditional Information, unless that's turned off.
+    const more = settings.library_traditional_enabled !== false ? Dv.links?.readMoreHref(m.name) : null;
     return kit.card(
       `${place ? kit.muted(place.about) : ""}<p class="dv-meaning__name">${m.glyph ? `<span class="dv-glyph" aria-hidden="true">${kit.esc(m.glyph)}</span>  ` : ""}${kit.esc(
         itemName(m)
-      )}</p>${m.gloss ? kit.muted(m.gloss) : ""}<p class="dv-meaning__words">${kit.esc(m.meaning.keywords)}</p>${kit.p(m.meaning.text)}`,
+      )}</p>${m.gloss ? kit.muted(m.gloss) : ""}<p class="dv-meaning__words">${kit.esc(m.meaning.keywords)}</p>${kit.p(m.meaning.text)}${
+        more ? `<p class="dv-meaning__more"><a href="${kit.esc(more)}">Read more</a></p>` : ""
+      }`,
       { gold: true, label: place ? `${i + 1} · ${place.name}` : spread.label }
     );
   }

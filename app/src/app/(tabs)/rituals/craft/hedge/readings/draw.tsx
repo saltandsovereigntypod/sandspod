@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
+import { ReadMore } from '../../../../../../components/divination/ReadMore';
 import { SpreadTable } from '../../../../../../components/divination/Spread';
 import { Body, Card, Chip, Chips, Field, List, Notice, RitualScreen, Row, SectionLabel, Title, Toggle, ui } from '../../../../../../components/rituals/ui';
 import { useReducedMotion } from '../../../../../../lib/accessibility/store';
@@ -164,6 +165,7 @@ export default function DrawScreen() {
           {!!shown.gloss && <Body muted>{shown.gloss}</Body>}
           <Text style={[type.body, { color: colors.gold }]}>{shown.meaning.keywords}</Text>
           <Body>{shown.meaning.text}</Body>
+          <ReadMore name={shown.name} />
         </Card>
       )}
 
