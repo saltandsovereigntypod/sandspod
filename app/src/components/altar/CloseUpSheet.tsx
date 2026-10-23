@@ -16,7 +16,7 @@ import { carvingsOf, dressingsOf, isCandle } from '../../lib/altar/livingState';
 import { freshnessLine, offeringFreshness } from '../../lib/altar/offerings';
 import type { SavedObject } from '../../lib/altar/types';
 import { burnedDownLine, burnProgress, meltLine, waxLook } from '../../lib/altar/wax';
-import { carvingRemaining } from '../../lib/altar/workings/dressing';
+import { carvingLine } from '../../lib/altar/workings/dressing';
 import { colors, radius, type } from '../../theme';
 import { AltarObjectArt } from './AltarStage';
 import { Sheet } from './Sheet';
@@ -100,10 +100,7 @@ function closeUpLines(object: SavedObject, now: number): string[] {
     const wax = waxLook(object, now);
     if (wax.line) lines.push(wax.line);
     const progress = burnProgress(object, now);
-    for (const carving of carvingsOf(object)) {
-      const left = carvingRemaining(carving.text, progress).visibleText;
-      lines.push(left === carving.text.trim() ? `“${carving.text}” is carved down the wax.` : left ? `“${carving.text}” is melting away from the top; “${left}” is left.` : `“${carving.text}” has melted away into the wax.`);
-    }
+    for (const carving of carvingsOf(object)) lines.push(carvingLine(carving, progress));
     const dressings = dressingsOf(object);
     if (dressings.length) lines.push(`Dressed with ${dressings.map((d) => d.label).filter(Boolean).join(', ')}.`);
   }

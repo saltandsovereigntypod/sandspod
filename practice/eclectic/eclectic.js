@@ -36,7 +36,7 @@
       kit.head({ eyebrow: "My practice", title: "Eclectic", lede: about }),
       kit.section(
         "Tools",
-        kit.list(practices.CRAFT_TOOLS.eclectic.map((t) => kit.row({ url: url.list, title: t.title, detail: entries.length ? `${entries.length} of your own · ${t.detail.toLowerCase()}` : t.detail }))),
+        kit.list(practices.CRAFT_TOOLS.eclectic.map((t, i) => kit.row({ url: i === 0 ? url.list : kit.href.tool("eclectic", "sigil"), title: t.title, detail: i === 0 && entries.length ? `${entries.length} of your own · ${t.detail.toLowerCase()}` : t.detail }))),
         { id: "tools" }
       ),
       kit.section(

@@ -48,7 +48,7 @@ function openModal(title, bodyHtml) {
   });
 }
 
-function openPageTemplateChooser() {
+function openPageTemplateChooser(sectionId = null) {
   const buttons = Object.entries(PAGE_TEMPLATES)
     .map(
       ([key, template]) => `
@@ -59,9 +59,16 @@ function openPageTemplateChooser() {
     )
     .join("");
 
+  // A sigil is made first, in the sigil maker, which then saves it as its own page here.
+  const sigilHref = `/practice/eclectic/sigil/?from=grimoire${sectionId ? `&section=${encodeURIComponent(sectionId)}` : ""}`;
+
   return openModal(
     "Create a Page",
-    `<div class="book-template-grid">${buttons}</div>`
+    `<div class="book-template-grid">${buttons}</div>
+    <p class="book-template-extra">Or make something for it:</p>
+    <div class="book-template-grid">
+      <a class="book-template-link" href="${escapeHtml(sigilHref)}">A sigil <span>from your intent, by its letters or a planetary square</span></a>
+    </div>`
   );
 }
 

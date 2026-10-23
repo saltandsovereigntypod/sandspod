@@ -16,6 +16,8 @@ import { editorKind, elementLabel } from '../../lib/grimoire/elements';
 import { htmlToMarkup, insertLink, normalizeUrl, wrapSelection, type Selection } from '../../lib/grimoire/markup';
 import { useGrimoire } from '../../lib/grimoire/store';
 import { blockMetadata, blockSource } from '../../lib/grimoire/structure';
+import { readSigil } from '../../lib/sigil/sigil';
+import { SigilPicture } from '../sigil/SigilPicture';
 import type { BlockRow, PageRow } from '../../lib/grimoire/types';
 import { fonts, touch } from '../../theme';
 import { Icon } from '../Icon';
@@ -211,6 +213,26 @@ function ImageFields({ block, onFocus }: { block: BlockRow; onFocus: () => void 
     actions.saveBlockMetadata(block.id, { caption: value }),
   );
   const showPreview = /^https?:\/\/\S+$/.test(url.value.trim());
+  const sigil = readSigil(meta.sigil);
+
+  if (sigil) {
+    // A sigil's picture is made from the sigil itself; only its caption is written here.
+    return (
+      <View style={styles.group}>
+        <View style={styles.sigil}>
+          <SigilPicture sigil={sigil} size={200} label={caption.value || 'A sigil'} />
+        </View>
+        <Field
+          accessibilityLabel="Caption"
+          value={caption.value}
+          onChangeText={caption.change}
+          onFocus={onFocus}
+          onBlur={caption.flush}
+          placeholder="Caption"
+        />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.group}>
@@ -372,6 +394,7 @@ const styles = StyleSheet.create({
   error: { fontFamily: fonts.body, fontSize: 13, color: '#8a3b2a' },
   body: { fontFamily: fonts.body, fontSize: 16, lineHeight: 24, color: ink.text },
   image: { width: '100%', aspectRatio: 4 / 3, borderRadius: 12, backgroundColor: ink.chip },
+  sigil: { alignItems: 'center' },
   inkButton: {
     alignSelf: 'flex-start',
     minHeight: touch,

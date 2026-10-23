@@ -29,10 +29,12 @@ type ShellProps = {
   /** Shows a back button; the label says where it goes. */
   back?: string;
   onRefresh?: () => Promise<void>;
+  /** False while something on the screen takes the finger (a drawing pad). */
+  scrollEnabled?: boolean;
 };
 
 /** A Rituals screen: optional back bar, then one vertical scroll. */
-export function RitualScreen({ children, back, onRefresh }: ShellProps) {
+export function RitualScreen({ children, back, onRefresh, scrollEnabled = true }: ShellProps) {
   const [pulling, setPulling] = useState(false);
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
@@ -56,6 +58,7 @@ export function RitualScreen({ children, back, onRefresh }: ShellProps) {
         )}
         <ScrollView
           contentContainerStyle={styles.content}
+          scrollEnabled={scrollEnabled}
           alwaysBounceHorizontal={false}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"

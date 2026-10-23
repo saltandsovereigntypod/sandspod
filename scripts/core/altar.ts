@@ -59,3 +59,4 @@ export * as readings from '../../app/src/lib/craft/hedge/readings.ts';
 export * as stones from '../../app/src/lib/craft/crystal/stones.ts';
 export * as stoneCollections from '../../app/src/lib/craft/crystal/collections.ts';
 export * as garden from '../../app/src/lib/craft/green/garden.ts';
+export * as sigil from '../../app/src/lib/sigil/index.ts';

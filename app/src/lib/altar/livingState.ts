@@ -6,11 +6,16 @@
 
 import type { SavedObject } from './types.ts';
 import { newId } from './uid.ts';
+import { readMark, type SigilMark } from '../sigil/sigil.ts';
 
 export type Dressing = { type: string; herb: string; form: string; label: string; [key: string]: unknown };
 
-/** A word, name or sigil carved into a candle. The app's own addition; the website keeps it untouched. */
-export type Carving = { text: string; carvedAt: string };
+/**
+ * A word, name or sigil carved into a candle (shared with the website's altar).
+ * A sigil carving keeps its mark in `sigil` and its name in `text`, so a reader
+ * that doesn't know sigils still shows the name.
+ */
+export type Carving = { text: string; carvedAt: string; sigil?: SigilMark; [key: string]: unknown };
 
 export const CARVING_MAX = 40;
 
@@ -409,18 +414,22 @@ export function carvingsOf(object: SavedObject): Carving[] {
   return Array.isArray(carvings) ? carvings.filter((c) => c && typeof c.text === 'string' && c.text.trim()) : [];
 }
 
-/** Carve a word into a candle. Blank or repeated words change nothing. */
-export function carveCandle(candle: SavedObject, text: string, now: string): SavedObject {
-  const word = text.replace(/\s+/g, ' ').trim().slice(0, CARVING_MAX);
+/** The sigil carved, if this carving is one. */
+export const carvingMark = (carving: Carving): SigilMark | null => readMark(carving.sigil);
+
+/**
+ * Carve a word into a candle, or a sigil (with its name as the text). Blank or
+ * repeated words, and a sigil already carved there, change nothing.
+ */
+export function carveCandle(candle: SavedObject, text: string, now: string, sigil?: SigilMark | null): SavedObject {
+  const mark = sigil ? readMark(sigil) : null;
+  const word = text.replace(/\s+/g, ' ').trim().slice(0, CARVING_MAX) || (mark ? 'Sigil' : '');
   if (!isCandle(candle) || !word) return candle;
   const current = carvingsOf(candle);
-  if (current.some((c) => c.text.toLowerCase() === word.toLowerCase())) return candle;
+  if (mark ? current.some((c) => carvingMark(c)?.d === mark.d) : current.some((c) => !carvingMark(c) && c.text.toLowerCase() === word.toLowerCase())) return candle;
+  const carving: Carving = mark ? { text: word, carvedAt: now, sigil: mark } : { text: word, carvedAt: now };
   const state = readLivingState(candle, now);
-  return writeLivingState(
-    candle,
-    { ...state, lastUsedAt: now, candle: { ...state.candle, carvings: [...current, { text: word, carvedAt: now }] } },
-    now,
-  );
+  return writeLivingState(candle, { ...state, lastUsedAt: now, candle: { ...state.candle, carvings: [...current, carving] } }, now);
 }
 
 /** Smooth one carving away, or all of them when no index is given. */
