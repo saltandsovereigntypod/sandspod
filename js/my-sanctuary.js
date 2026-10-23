@@ -313,6 +313,11 @@ function createMySanctuaryPanel() {
             Add Traditional Reference Library pages to my Book of Shadows
           </label>
 
+          <label class="my-sanctuary-check">
+            <input type="checkbox" name="grimoire_show_dreams" />
+            Show my dream journal as a Dreams section in my Book of Shadows
+          </label>
+
           <label>
             Book of Shadows Page Font
             <select name="grimoire_page_font">

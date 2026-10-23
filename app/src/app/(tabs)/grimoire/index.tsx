@@ -134,11 +134,9 @@ function LibraryShelves() {
   const { entries: dreamRows } = useCraft<unknown>(DREAMS);
   const dreams = useMemo(() => dreamRows.map((e) => ({ ...e, data: normalizeDream(e.data) })), [dreamRows]);
   const dreamMatches = useMemo(() => dreamSearchResults(dreams, query), [dreams, query]);
-  // Dreams is a built-in shelf like My Practice, placed just after it.
-  const items = withDreamsShelf<{ key: string; shelf: GrimoireShelf | null }>(
-    shelves.map((shelf) => ({ key: shelf.key, shelf })),
-    { key: DREAMS_SHELF.key, shelf: null },
-  );
+  // Dreams is a built-in shelf like My Practice, placed just after it, unless it's switched off.
+  const shelfItems: { key: string; shelf: GrimoireShelf | null }[] = shelves.map((shelf) => ({ key: shelf.key, shelf }));
+  const items = settings?.grimoire_show_dreams === false ? shelfItems : withDreamsShelf(shelfItems, { key: DREAMS_SHELF.key, shelf: null });
 
   const toggle = (set: Set<string>, update: (next: Set<string>) => void, key: string) => {
     const next = new Set(set);
@@ -229,9 +227,11 @@ function LibraryShelves() {
 
 /** Dreams need no account (they're kept on this phone until you sign in), so guests have them here too. */
 function GuestDreams() {
+  const { settings } = useMySettings();
   const { entries } = useCraft<unknown>(DREAMS);
   const dreams = useMemo(() => entries.map((e) => ({ ...e, data: normalizeDream(e.data) })), [entries]);
   const [open, setOpen] = useState(true);
+  if (settings?.grimoire_show_dreams === false) return null;
   return <DreamsShelf dreams={dreams} matches={[]} query="" open={open} onToggle={() => setOpen(!open)} />;
 }
 

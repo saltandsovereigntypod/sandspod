@@ -40,6 +40,18 @@ async function renderDreamsShelf() {
   if (!core) return;
   const D = core.dreams;
 
+  // Dreams can be switched off in My Sanctuary's settings.
+  let showDreams = true;
+  try {
+    if (typeof getMySettings === "function") showDreams = (await getMySettings()).grimoire_show_dreams !== false;
+  } catch (error) {
+    console.warn("Settings could not be read.", error);
+  }
+  if (!showDreams) {
+    grimoireShelf.querySelector("[data-dreams-shelf]")?.remove();
+    return;
+  }
+
   let dreams = [];
   try {
     dreams = D.sortDreams((await window.SaltCraft.list(D.DREAMS)).map((e) => ({ ...e, data: D.normalizeDream(e.data) })));
