@@ -21,6 +21,8 @@ function localPath(pagePath, reference) {
   const clean = String(reference || "").split(/[?#]/, 1)[0].trim();
   if (!clean || /^(?:[a-z]+:|#|\/\/)/i.test(clean) || /[{}]/.test(clean)) return null;
   if (clean.startsWith("/sandspod-dev/")) return path.join(root, clean.slice("/sandspod-dev/".length));
+  // The app's web template is served from its own export, where /x means app/public/x.
+  if (clean.startsWith("/") && pagePath.startsWith("app/public/")) return path.join(root, "app/public", clean.slice(1));
   if (clean.startsWith("/")) return path.join(root, clean.slice(1));
   return path.resolve(root, path.dirname(pagePath), clean);
 }
