@@ -14,8 +14,10 @@ import type { Snap } from '../../lib/altar/arrange';
 import { CandleMarks, CandlePicture, candleGeometry, drawsBurnedDown } from './CandleMarks';
 import { ChargeAura, Moment, SnapGuide } from './StageEffects';
 import { FlameFire, HAS_FIRE } from './FlameFire';
+import { HAS_LIT, LitPicture } from './LitPicture';
+import { glossOf, type ObjectLight } from '../../lib/altar/litShader';
 import { TiltProvider, tiltShift, useTilt, useTiltSource } from './Tilt';
-import { CastShadows, LightPools, NightVeil, useFlameMotion, useShareFlame, WaxGlow, type FlameMotion } from './Lighting';
+import { CastShadows, LightPools, NightVeil, objectLights, useFlameMotion, useShareFlame, WaxGlow, type FlameMotion } from './Lighting';
 import { altarImageSource, candleHerbOverlay, candleOilOverlay, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
 import { DEFAULT_BACKGROUND } from '../../lib/altar/cabinet';
 import type { FlameLayout } from '../../lib/altar/flame';
@@ -233,6 +235,8 @@ export function AltarStage(props: Props) {
   const moment = props.moment ?? null;
   const guide = props.guide ?? null;
   const now = props.now;
+  // Candlelight on each object's picture (on the phone).
+  const lighting = useMemo(() => objectLights(doc.objects, stageWidth, now), [doc.objects, stageWidth, now]);
   // The phone's tilt, while this altar is on screen.
   const focused = useIsFocused();
   const tilt = useTiltSource(focused);
@@ -283,6 +287,8 @@ export function AltarStage(props: Props) {
               droop={aging[String(doc.objects[index].altarObjectId)]?.droop ?? 0}
               charge={charges[String(doc.objects[index].altarObjectId)] ?? 0}
               now={isCandle(doc.objects[index]) || isIncense(doc.objects[index]) ? now : 0}
+              lights={lighting.lights[String(doc.objects[index].altarObjectId)]}
+              lightReach={lighting.reach}
             />
           ))}
           </Animated.View>
@@ -318,6 +324,8 @@ const AltarObjectView = memo(function AltarObjectView({
   droop,
   charge,
   now,
+  lights,
+  lightReach,
 }: {
   object: SavedObject;
   stageWidth: number;
@@ -328,6 +336,8 @@ const AltarObjectView = memo(function AltarObjectView({
   droop: number;
   charge: number;
   now: number;
+  lights?: ObjectLight[];
+  lightReach?: number;
 }) {
   const rect = boxToPixels(displayBox(object), stageWidth);
   return (
@@ -344,7 +354,7 @@ const AltarObjectView = memo(function AltarObjectView({
         },
       ]}
     >
-      <AltarObjectArt object={object} width={rect.width} height={rect.height} agedOpacity={agedOpacity} droop={droop} charge={charge} now={now} />
+      <AltarObjectArt object={object} width={rect.width} height={rect.height} agedOpacity={agedOpacity} droop={droop} charge={charge} now={now} lights={lights} lightReach={lightReach} />
       {(selected || highlighted) && <View style={[styles.outline, highlighted && !selected && styles.outlineSoft]} />}
     </View>
   );
@@ -363,6 +373,9 @@ type ArtProps = {
   charge?: number;
   /** The minute, so a candle burns down and its carvings and wax follow. */
   now: number;
+  /** The lit candles' flames as this object sees them (candlelight on its picture, on the phone). */
+  lights?: ObjectLight[];
+  lightReach?: number;
 };
 
 /**
@@ -371,7 +384,7 @@ type ArtProps = {
  * charge's glow; an offering going over. The stage places it; the close-up
  * in the object panel draws the same thing large.
  */
-export const AltarObjectArt = memo(function AltarObjectArt({ object, width, height, agedOpacity = 1, droop = 0, charge = 0, now }: ArtProps) {
+export const AltarObjectArt = memo(function AltarObjectArt({ object, width, height, agedOpacity = 1, droop = 0, charge = 0, now, lights, lightReach = 0 }: ArtProps) {
   const source = altarImageSource(object.imagePath);
   useImageRatio(object.imagePath);
   const overlays = dressingOverlays(object);
@@ -382,6 +395,7 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
   // A candle that has burned down fades, with a word to say so (candle-lifecycle.js).
   const spent = candle && !lit && candleLife(object, now).spent;
   const smoke = useSnuffSmoke(lit);
+  const stillLight = useReducedMotion();
   // The flame's motion, shared with the light, shadows and wax glow round it.
   const motion = useFlameMotion();
   useShareFlame(String(object.altarObjectId || ''), motion, lit);
@@ -431,6 +445,20 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
             ]}
           >
             <Image source={source} style={[styles.fill, (spent || ash) && styles.spentImage]} resizeMode="contain" />
+            {HAS_LIT && !!lights?.length && !spent && !ash && aged <= 0.05 && (
+              // Lit by the candles near it, over the plain picture once it has loaded.
+              <View pointerEvents="none" style={{ position: 'absolute', left: width * IMAGE_INSET.x, top: width * IMAGE_INSET.y }}>
+                <LitPicture
+                  source={source}
+                  width={width * (1 - IMAGE_INSET.x * 2)}
+                  height={height - width * IMAGE_INSET.y * 2}
+                  lights={lights}
+                  gloss={glossOf(String(object.type || ''), String(object.label || ''))}
+                  reach={lightReach}
+                  still={stillLight}
+                />
+              </View>
+            )}
             {aged > 0.05 && Platform.OS !== 'web' && <Image source={source} style={[styles.tinted, { left: width * IMAGE_INSET.x, right: width * IMAGE_INSET.x, top: width * IMAGE_INSET.y, bottom: width * IMAGE_INSET.y, tintColor: 'rgb(98,72,42)', opacity: 0.5 * aged }]} resizeMode="contain" />}
           </View>
         ) : paper ? (

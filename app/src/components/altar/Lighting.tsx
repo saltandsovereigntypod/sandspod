@@ -9,7 +9,8 @@ import { Animated, StyleSheet, View } from 'react-native';
 import Svg, { Circle, Defs, Ellipse, LinearGradient, Mask, RadialGradient, Rect, Stop } from 'react-native-svg';
 
 import { pictureBox } from '../../lib/altar/flame';
-import { boxToPixels, candleLightRadius, displayBox, imageRatio, rotationOf, STAGE_ASPECT } from '../../lib/altar/geometry';
+import { boxToPixels, candleLightRadius, displayBox, IMAGE_INSET, imageRatio, rotationOf, STAGE_ASPECT } from '../../lib/altar/geometry';
+import type { ObjectLight } from '../../lib/altar/litShader';
 import { isCandle, isLit } from '../../lib/altar/livingState';
 import type { SavedObject } from '../../lib/altar/types';
 import { candleGeometry } from './CandleMarks';
@@ -293,6 +294,51 @@ export function WaxGlow({ object, width, height, now, motion }: { object: SavedO
       </Svg>
     </Animated.View>
   );
+}
+
+// ── Candlelight on objects ────────────────────────────────────────────────
+
+/** How far, in light radii, a candle's light reaches the objects round it. */
+const LIGHT_REACH = 2.4;
+
+/**
+ * The lit candles' flames as each object sees them, for its candlelit
+ * picture: where each flame is in the object's picture area (px; turned and
+ * mirrored with the object), how strongly it reaches it, and how high it
+ * burns. Nearest four; a candle lights itself from its own flame. By
+ * altarObjectId, with the light's reach in px.
+ */
+export function objectLights(objects: SavedObject[], stageWidth: number, now: number): { lights: Record<string, ObjectLight[]>; reach: number } {
+  const flames = objects.filter((o) => isCandle(o) && isLit(o)).map((o) => ({ uid: uidOf(o), ...lightOf(o, stageWidth, now) }));
+  const out: Record<string, ObjectLight[]> = {};
+  if (!flames.length) return { lights: out, reach: 0 };
+  const reach = Math.max(...flames.map((f) => f.r)) * 1.1;
+  for (const object of objects) {
+    const uid = uidOf(object);
+    if (!uid) continue;
+    const rect = boxToPixels(displayBox(object), stageWidth);
+    const angle = (-rotationOf(object) * Math.PI) / 180;
+    const flipped = object.flipped === 'true';
+    const padX = rect.width * IMAGE_INSET.x;
+    const padY = rect.width * IMAGE_INSET.y;
+    const near = flames
+      .map((f) => {
+        const dx = f.x - rect.centerX;
+        const dy = f.y - rect.centerY;
+        const distance = Math.hypot(dx, dy);
+        const strength = f.uid === uid ? 0.8 : Math.max(0, 1 - distance / (f.r * LIGHT_REACH));
+        // Into the object's own turned (and mirrored) picture area.
+        let x = dx * Math.cos(angle) - dy * Math.sin(angle);
+        const y = dx * Math.sin(angle) + dy * Math.cos(angle);
+        if (flipped) x = -x;
+        return { x: x + rect.width / 2 - padX, y: y + rect.height / 2 - padY, strength, height: Math.max(16, rect.height * 0.3) };
+      })
+      .filter((l) => l.strength > 0.02)
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, 4);
+    if (near.length) out[uid] = near;
+  }
+  return { lights: out, reach };
 }
 
 // ── Night ─────────────────────────────────────────────────────────────────
