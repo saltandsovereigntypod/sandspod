@@ -71,7 +71,9 @@ function mapApothecaryItemToRow(item, userId) {
     grimoire_entry_id: item.grimoireEntryId || "",
     grimoire_status: item.grimoireStatus || "",
     log_to_grimoire: Boolean(item.logToGrimoire),
+    // Everything else in metadata is kept, such as "Did it work?" (metadata.lookBack).
     metadata: {
+      ...(item.metadata && typeof item.metadata === "object" ? item.metadata : {}),
       source: "altar-apothecary"
     },
     updated_at: new Date().toISOString()
@@ -634,6 +636,8 @@ function openCreateApothecaryModal(preselectedType = "", editItemId = "") {
           <textarea name="notes" rows="4" placeholder="What is this working for?">${existingItem?.notes || ""}</textarea>
         </label>
 
+        ${renderApothecaryLookBackField(existingItem)}
+
         <div class="apothecary-living-state-options">
           <p class="eyebrow">Living State</p>
 
@@ -737,6 +741,46 @@ function closeCreateApothecaryModal() {
 
   modal.remove();
   document.body.classList.remove("altar-modal-open");
+}
+
+/* Did it work? A day to look back on what you made, shared with the app (SaltCore.lookback.apothecaryLookBack, metadata.lookBack). */
+function getApothecaryLookBack() {
+  return window.SaltCore?.lookback?.apothecaryLookBack || null;
+}
+
+function apothecaryLookBackDay(key) {
+  const date = /^\d{4}-\d{2}-\d{2}$/.test(key || "") ? new Date(`${key}T12:00:00`) : null;
+  return date ? date.toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" }) : key || "";
+}
+
+function renderApothecaryLookBackField(existingItem) {
+  const LB = getApothecaryLookBack();
+  if (!LB) return "";
+  const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  const current = existingItem ? LB.itemLookBack(existingItem) : null;
+  if (current?.answer) {
+    const answer = window.SaltCore.lookback.lookBack.answerLabel(current.answer);
+    return `<div class="apothecary-look-back"><p class="eyebrow">Did it work?</p><p>${esc(`${answer}${current.outcome ? `. ${current.outcome}` : ""}`)}</p><p><a href="/rituals/journal/insights/#did-it-work-made">Change the answer on Your moon</a></p></div>`;
+  }
+  const choices = LB.itemLookBackChoices(existingItem || { id: "", name: "", intention: "" }, new Date());
+  const options = [
+    existingItem
+      ? `<option value="keep" selected>${esc(current?.date ? `As set: ${apothecaryLookBackDay(current.date)}` : "Not set yet")}</option>`
+      : `<option value="suggested" selected>When it suits its intention (the next full or new moon)</option>`,
+    ...choices.map((c) => `<option value="${c.when}">${esc(`${c.label} · ${apothecaryLookBackDay(c.date)}`)}</option>`),
+    `<option value="">Not needed</option>`
+  ].join("");
+  return `<label class="apothecary-look-back">Did it work? Look back
+    <select name="look_back">${options}</select>
+    <small>On that day you’ll be asked whether it worked, on Today and on Your moon, here and in the app.</small>
+  </label>`;
+}
+
+/** The item with the chosen look-back: "keep" leaves it as it is, "" sets none (an answer is never thrown away). */
+function withApothecaryLookBackChoice(item, choice) {
+  const LB = getApothecaryLookBack();
+  if (!LB || choice === "keep") return item;
+  return LB.startItemLookBack(item, choice || null, new Date());
 }
 
 function readUploadedImage(file) {
@@ -865,8 +909,10 @@ async function saveCreatedApothecaryItem(form, modal) {
     },
     ingredients,
     createdAt: existingItem?.createdAt || new Date().toISOString(),
-    updatedAt: new Date().toISOString()
+    updatedAt: new Date().toISOString(),
+    metadata: existingItem?.metadata || {}
   };
+  item = withApothecaryLookBackChoice(item, String(formData.get("look_back") ?? "keep"));
 
   item = await createOrUpdateApothecaryLibraryEntity(item);
 

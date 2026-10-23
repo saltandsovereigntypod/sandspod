@@ -17,7 +17,7 @@ import { localDateKey } from '../../../../../lib/rituals/lifecycle';
 import { useMySettings } from '../../../../../lib/settings/store';
 import { type } from '../../../../../theme';
 
-const ROUTES = [DREAM_ROUTES.journal, '/rituals/craft/hedge/readings', '/rituals/craft/hedge/ancestors'];
+const ROUTES = [DREAM_ROUTES.journal, '/rituals/divination', '/rituals/craft/hedge/ancestors'];
 
 // Hedge practice: the dream journal, a log of readings, and the beloved dead.
 export default function HedgePractice() {
@@ -81,9 +81,10 @@ export default function HedgePractice() {
             title="Draw cards, runes or ogham"
             detail="A card for the day, the Celtic Cross and many more spreads, or one of your own"
             last
-            onPress={() => router.push('/rituals/craft/hedge/readings/draw' as Href)}
+            onPress={() => router.push('/rituals/divination/draw' as Href)}
           />
         </List>
+        <Body muted>Readings and draws belong to every practice, so they live under Divination on the Rituals home too.</Body>
       </View>
 
       {due.length > 0 && (
@@ -97,7 +98,7 @@ export default function HedgePractice() {
                 title={e.data.question || 'A reading'}
                 detail="Its look-back day has come: what happened?"
                 last={i === all.length - 1}
-                onPress={() => router.push(`/rituals/craft/hedge/readings/${e.id}` as Href)}
+                onPress={() => router.push(`/rituals/divination/${e.id}` as Href)}
               />
             ))}
           </List>

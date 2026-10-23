@@ -8,7 +8,7 @@ import { CRAFT_TOOLS } from '../../../../../lib/craft/practices';
 import { useCraft } from '../../../../../lib/craft/store';
 import { PRACTICES, PREMADE } from '../../../../../lib/rituals/premade';
 
-const ROUTES = ['/rituals/craft/eclectic/correspondences', '/rituals/craft/eclectic/sigil'];
+const ROUTES = ['/rituals/craft/eclectic/correspondences', '/rituals/sigil'];
 
 // Eclectic: your own correspondences, and a little from every path.
 export default function EclecticPractice() {
@@ -37,6 +37,7 @@ export default function EclecticPractice() {
             />
           ))}
         </List>
+        <Body muted>The sigil maker belongs to every practice, so it’s on the Rituals home too.</Body>
       </View>
 
       <View style={ui.gapSmall}>

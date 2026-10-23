@@ -837,8 +837,8 @@
     plant: (id) => `/practice/green/plant/?id=${encodeURIComponent(id)}`,
     ancestors: "/practice/hedge/ancestors/",
     ancestor: (id) => `/practice/hedge/ancestors/person/?id=${encodeURIComponent(id)}`,
-    readings: "/practice/hedge/readings/",
-    reading: (id) => `/practice/hedge/readings/reading/?id=${encodeURIComponent(id)}`,
+    readings: "/divination/",
+    reading: (id) => `/divination/reading/?id=${encodeURIComponent(id)}`,
     grimoirePage: (id) => `/grimoire/?page=${encodeURIComponent(id)}`
   };
   const careSaved = new Map(); // stone id → "Added to its cleansing log in Crystal."

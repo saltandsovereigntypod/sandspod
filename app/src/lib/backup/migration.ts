@@ -283,7 +283,8 @@ function apothecaryRow(value: unknown, userId: string, warnings: string[]): Row 
     grimoire_entry_id: item.grimoireEntryId || '',
     grimoire_status: item.grimoireStatus || '',
     log_to_grimoire: Boolean(item.logToGrimoire),
-    metadata: { source: 'guest-migration' },
+    // "Did it work?" (metadata.lookBack) comes along.
+    metadata: { ...asRecord(item.metadata), source: 'guest-migration' },
   };
 }
 

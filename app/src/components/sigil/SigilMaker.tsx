@@ -3,7 +3,7 @@
 // planetary square (the kamea), or drawn by hand. Styled as ink on aged paper.
 // Kept with your sigils (craft store `eclectic.sigils`, synced like the other
 // practice tools), as its own Grimoire page, and from there carved into a
-// candle on the altar. The website's twin is practice/eclectic/sigil.js.
+// candle on the altar. The website's twin is practice/eclectic/sigil.js (at /sigil/).
 
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';

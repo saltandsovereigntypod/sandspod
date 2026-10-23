@@ -1,6 +1,6 @@
-import { SigilMaker } from '../../../../../components/sigil/SigilMaker';
+import { Redirect, type Href } from 'expo-router';
 
-// Eclectic → Sigil maker.
+// The sigil maker is open to every practice now, from the Rituals home.
 export default function EclecticSigil() {
-  return <SigilMaker back="Eclectic" eyebrow="Eclectic" />;
+  return <Redirect href={'/rituals/sigil' as Href} />;
 }

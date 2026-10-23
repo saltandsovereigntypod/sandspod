@@ -165,7 +165,7 @@ export default function Reminders() {
           )}
           <Toggle
             label="Ask “Did it work?” on look-back days"
-            detail="On the day you chose to look back on a ritual or spell, at the time set for moon reminders"
+            detail="On the day you chose to look back on a ritual, a spell, or a spell jar, sachet or anything else you made, at the time set for moon reminders"
             value={settings.lookBacks}
             onChange={(lookBacks) => void updateReminderSettings({ lookBacks })}
           />

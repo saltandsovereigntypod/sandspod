@@ -340,7 +340,7 @@
                 return `<button type="button" class="app-sigil" data-app-action="carve-sigil" data-index="${i}"${done ? " disabled" : ""} aria-label="${esc(done ? `${k.name}, already carved` : `Carve the sigil for ${k.name}`)}">${core.sigil.sigilSvg(k.sigil, { size: 64, id: `carve-sigil-${i}` })}<span>${esc(done ? "Carved" : k.name)}</span></button>`;
               })
               .join("")}</div>`
-          : `<p class="app-caption">Sigils you keep from the <a href="/practice/eclectic/sigil/">sigil maker</a> wait here, ready to carve.</p>`;
+          : `<p class="app-caption">Sigils you keep from the <a href="/sigil/">sigil maker</a> wait here, ready to carve.</p>`;
       }
     };
     let sigils = [];

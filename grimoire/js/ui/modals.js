@@ -60,7 +60,7 @@ function openPageTemplateChooser(sectionId = null) {
     .join("");
 
   // A sigil is made first, in the sigil maker, which then saves it as its own page here.
-  const sigilHref = `/practice/eclectic/sigil/?from=grimoire${sectionId ? `&section=${encodeURIComponent(sectionId)}` : ""}`;
+  const sigilHref = `/sigil/?from=grimoire${sectionId ? `&section=${encodeURIComponent(sectionId)}` : ""}`;
 
   return openModal(
     "Create a Page",

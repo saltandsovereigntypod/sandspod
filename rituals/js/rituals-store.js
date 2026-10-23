@@ -164,6 +164,33 @@
     return result.data;
   }
 
+  /** Your My Apothecary workings (spell jars, sachets, oils…), as the altar normalizes them, for "Did it work?". */
+  async function apothecaryItems() {
+    const account = user();
+    const normalize = (row) => (global.ApothecaryNormalization ? global.ApothecaryNormalization.normalize(row) : row);
+    if (!account || !db()) return list(readJson(K.apothecary, [])).filter((x) => x && typeof x === "object" && x.id).map(normalize);
+    const result = throwIf(await db().from("apothecary_items").select("*").eq("user_id", account.id).order("created_at", { ascending: false }));
+    return (result.data || []).map(normalize);
+  }
+
+  /**
+   * Save a working's metadata alone ("Did it work?", metadata.lookBack), as the
+   * app's saveApothecaryMetadata does: only that column, every other key kept.
+   */
+  async function saveApothecaryMetadata(item) {
+    const account = user();
+    const updated_at = new Date().toISOString();
+    const metadata = { ...(item.metadata || {}), source: (item.metadata && item.metadata.source) || "altar-apothecary" };
+    if (!account || !db()) {
+      const items = list(readJson(K.apothecary, []));
+      writeJson(K.apothecary, items.map((x) => (x && x.id === item.id ? { ...x, metadata, updatedAt: updated_at } : x)));
+      global.SaltAccountData?.markGuestDataChanged?.(global.localStorage);
+      return { ...item, metadata };
+    }
+    throwIf(await db().from("apothecary_items").update({ metadata, updated_at }).eq("id", item.id).eq("user_id", account.id));
+    return { ...item, metadata };
+  }
+
   /** The ritual under way, with its steps, or null. */
   async function activeSession() {
     const account = user();
@@ -330,6 +357,8 @@
     templates,
     journal,
     saveJournalMetadata,
+    apothecaryItems,
+    saveApothecaryMetadata,
     activeSession,
     altars,
     pantry,
