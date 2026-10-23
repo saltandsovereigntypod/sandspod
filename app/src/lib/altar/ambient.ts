@@ -1,8 +1,8 @@
 // The real sky over the altar: the light follows your actual sunrise, sunset
 // and dusk (gold at dawn, plain by day, rose at dusk, blue at night), a small
 // window can show tonight's real moon, and the season (by hemisphere) adds a
-// faint accent. Tints sit between the background and the objects, so they
-// never cover anything you placed. Pure, so it can be tested.
+// faint accent. Tints sit between the background and the objects; the room's
+// darkness after sunset lies over everything, lit back round each candle. Pure, so it can be tested.
 
 import { sunTimes, type Place } from '../astro/rise.ts';
 import { sunLongitude } from '../moon.ts';
@@ -46,10 +46,13 @@ export type Tint = { color: string; opacity: number };
 /** The light laid over the altar's background at each part of the day. */
 export const DAY_TINTS: Record<DayPhase, Tint> = {
   dawn: { color: 'rgb(255,186,110)', opacity: 0.14 },
-  day: { color: 'rgb(255,248,230)', opacity: 0 },
+  day: { color: 'rgb(214,230,255)', opacity: 0.06 },
   dusk: { color: 'rgb(214,112,138)', opacity: 0.16 },
   night: { color: 'rgb(24,40,96)', opacity: 0.26 },
 };
+
+/** How dark the room is at each part of the day, before the candles light it back (laid over the objects too). */
+export const DAY_DARKNESS: Record<DayPhase, number> = { dawn: 0.16, day: 0, dusk: 0.22, night: 0.42 };
 
 export type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 
@@ -69,13 +72,13 @@ export const SEASON_ACCENTS: Record<Season, Tint> = {
   winter: { color: 'rgb(170,200,235)', opacity: 0.12 },
 };
 
-export type Ambient = { phase: DayPhase; tint: Tint; season: Season; accent: Tint; label: string };
+export type Ambient = { phase: DayPhase; tint: Tint; darkness: number; season: Season; accent: Tint; label: string };
 
 export function ambientAt(now: Date, place: Place | null): Ambient {
   const phase = dayPhase(now, place);
   const season = seasonAt(now, place ? place.latitude : null);
   const words: Record<DayPhase, string> = { dawn: 'dawn light', day: 'daylight', dusk: 'dusk light', night: 'night light' };
-  return { phase, tint: DAY_TINTS[phase], season, accent: SEASON_ACCENTS[season], label: `${words[phase]}, ${season}` };
+  return { phase, tint: DAY_TINTS[phase], darkness: DAY_DARKNESS[phase], season, accent: SEASON_ACCENTS[season], label: `${words[phase]}, ${season}` };
 }
 
 /** When to look again: soon around sunrise and sunset, otherwise every quarter hour. */

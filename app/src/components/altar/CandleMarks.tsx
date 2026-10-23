@@ -220,13 +220,24 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
           <Stop offset="0.38" stopColor="rgb(70,64,58)" stopOpacity={0.7} />
           <Stop offset="1" stopColor="rgb(40,34,30)" stopOpacity={0.82} />
         </LinearGradient>
+        <LinearGradient id={`soot-${uid}`} x1="0.15" y1="0" x2="0.4" y2="1">
+          <Stop offset="0" stopColor="rgb(12,10,9)" stopOpacity={0.95} />
+          <Stop offset="0.35" stopColor="rgb(22,18,16)" stopOpacity={0.6} />
+          <Stop offset="0.8" stopColor="rgb(30,26,22)" stopOpacity={0.15} />
+          <Stop offset="1" stopColor="rgb(30,26,22)" stopOpacity={0} />
+        </LinearGradient>
       </Defs>
 
       {/* In glass: the wax has sunk, leaving the glass above it empty. */}
       {glass && pic && glass.drop > 0 && (
         <>
           <Rect x={cx - half} y={pic.top + glass.top * pic.height - rim} width={half * 2} height={glass.drop * pic.height + rim} fill={`url(#glass-${uid})`} />
+          {/* Soot: the glass above the wax blackens over the burn, heaviest near the rim and on one side. */}
+          <Rect x={cx - half * 1.04} y={pic.top + glass.top * pic.height - rim} width={half * 2.08} height={glass.drop * pic.height + rim * 0.6} fill={`url(#soot-${uid})`} opacity={Math.min(0.85, 0.15 + progress * 0.85)} />
           <Ellipse cx={cx} cy={surface} rx={half} ry={rim} fill={mix(waxHex, [255, 255, 255], 0.25)} />
+          {/* The melted top: glossy, catching the light. */}
+          <Ellipse cx={cx - half * 0.32} cy={surface - rim * 0.12} rx={half * 0.34} ry={rim * 0.32} fill="rgb(255,255,250)" opacity={lit ? 0.6 : 0.32} />
+          {lit && <Ellipse cx={cx} cy={surface + rim * 0.1} rx={half * 0.7} ry={rim * 0.6} fill={`url(#pool-${uid})`} opacity={0.75} />}
           <Line x1={cx} y1={surface - rim * 1.6} x2={cx} y2={surface} stroke="rgb(30,20,14)" strokeWidth={Math.max(0.8, half * 0.06)} strokeLinecap="round" />
         </>
       )}

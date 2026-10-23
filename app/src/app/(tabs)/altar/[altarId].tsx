@@ -696,6 +696,7 @@ export default function AltarEditor() {
     return {
       tint: options.sky ? ambient.tint : { color: 'transparent', opacity: 0 },
       accent: options.sky ? ambient.accent : { color: 'transparent', opacity: 0 },
+      darkness: options.sky ? ambient.darkness : 0,
       moon: options.moonWindow ? { illumination: moon.illumination, waxing: moon.waxing, mirrored: moonMirrored(here) } : null,
       label: [options.sky ? ambient.label : '', options.moonWindow ? `a ${moon.name.toLowerCase()} in the window` : ''].filter(Boolean).join('; '),
     };
