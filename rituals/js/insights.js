@@ -19,11 +19,18 @@
     "Waning Crescent": [0.25, false]
   };
   const JOURNAL = "/?sanctuary=rituals";
+  const D = global.DidItWork;
+  let current = [];
 
   async function render() {
     const main = UI.root();
     const journal = await S.journal();
-    const insights = R.insights.journalInsights(journal, new Date());
+    current = journal;
+    const now = new Date();
+    const insights = R.insights.journalInsights(journal, now);
+    const works = R.whatWorks.whatWorks(journal);
+    const due = R.lookBack.dueLookBacks(journal, now);
+    const soon = R.lookBack.waitingLookBacks(journal, now).slice(0, 5);
     const most = Math.max(1, ...insights.byPhase.map((p) => p.count));
     const last = insights.lastThisPhase;
     const lastWords = last ? last.entry.what_happened_during || last.entry.feelings_after || last.entry.notes || last.entry.intention : null;
@@ -42,6 +49,19 @@
     main.innerHTML = `
       ${UI.header({ back: { href: "/rituals/", label: "Rituals" }, eyebrow: `${insights.total} ${insights.total === 1 ? "ritual" : "rituals"}`, title: "Your moon" })}
       ${summary}
+      ${
+        due.length
+          ? `<section class="sp-section" aria-labelledby="rt-due" id="did-it-work"><h2 class="sp-label" id="rt-due">Did it work?</h2>
+              ${due.map((entry) => D.card(entry, now, { title: true })).join("")}</section>`
+          : ""
+      }
+      ${D.worksSection(works)}
+      ${
+        soon.length
+          ? `<section class="sp-section" aria-labelledby="rt-soon"><h2 class="sp-label" id="rt-soon">Looking back soon</h2>
+              ${soon.map((entry) => D.card(entry, now, { title: true })).join("")}</section>`
+          : ""
+      }
       ${
         last
           ? `<section class="sp-section" aria-labelledby="rt-last"><h2 class="sp-label" id="rt-last">${esc(`Last ${last.phase}`)}</h2>
@@ -84,6 +104,7 @@
   async function start() {
     await global.SaltPage.ready();
     await UI.attempt(render, "Your journal couldn't be opened");
+    D.bind(UI.root(), () => current, () => UI.attempt(render, "Your journal couldn't be opened"));
     global.SaltPage.onUserChange(() => UI.attempt(render, "Your journal couldn't be opened"));
   }
 

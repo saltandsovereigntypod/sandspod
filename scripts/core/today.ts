@@ -26,6 +26,7 @@ export * as plans from '../../app/src/lib/rituals/plans.ts';
 export * as planSync from '../../app/src/lib/rituals/planSync.ts';
 export * as ritualFormat from '../../app/src/lib/rituals/format.ts';
 export * as insights from '../../app/src/lib/rituals/insights.ts';
+export * as lookBack from '../../app/src/lib/rituals/lookBack.ts';
 export * as lifecycle from '../../app/src/lib/rituals/lifecycle.ts';
 export * as ritualRows from '../../app/src/lib/rituals/rows.ts';
 // A working for tonight, and the premade a holy page suggests.

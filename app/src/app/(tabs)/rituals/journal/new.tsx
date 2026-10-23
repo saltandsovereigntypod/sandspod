@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
+import { LookBackPicker, lookBackWords, type LookBackPick } from '../../../../components/rituals/DidItWork';
 import { Body, Card, Chip, Chips, Expander, Field, Notice, RitualScreen, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
 import { fullDate } from '../../../../lib/calendar';
 import { moonState, type PhaseName } from '../../../../lib/moon';
 import { answersFromJournal, blankAnswers, dateFromKey, formatClock, localDateKey, sessionElapsed } from '../../../../lib/rituals/lifecycle';
+import { answerLabel, readLookBack, suggestedWhen } from '../../../../lib/rituals/lookBack';
 import { findSession, saveJournal, useRituals } from '../../../../lib/rituals/store';
 import type { JournalAnswers, RitualSession } from '../../../../lib/rituals/types';
 import { useSession } from '../../../../lib/session';
@@ -33,6 +35,8 @@ export default function JournalForm() {
   const [ready, setReady] = useState(!sessionId);
   const [saving, setSaving] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
+  // A new entry looks back at the moon that suits it; an older one keeps what it had.
+  const [lookBack, setLookBack] = useState<{ pick: LookBackPick; custom: string; touched: boolean }>({ pick: 'suggested', custom: '', touched: false });
 
   useEffect(() => {
     if (!sessionId) return;
@@ -50,9 +54,14 @@ export default function JournalForm() {
 
   useEffect(() => {
     // Only when the entry first arrives, so typing is never overwritten.
-    if (existing && !sessionId) setAnswers(answersFromJournal(existing));
+    if (existing && !sessionId) {
+      setAnswers(answersFromJournal(existing));
+      const current = readLookBack(existing);
+      setLookBack({ pick: current?.date ? current.when : null, custom: current?.when === 'custom' ? current.date : '', touched: false });
+    }
   }, [existing?.id]);
 
+  const existingLookBack = readLookBack(existing);
   const set = (patch: Partial<JournalAnswers>) => setAnswers((a) => ({ ...a, ...patch }));
   const handRecorded = !ritual && !existing?.session_id;
   const now = new Date();
@@ -65,7 +74,15 @@ export default function JournalForm() {
     setSaving(true);
     setProblem(null);
     try {
-      const entry = await saveJournal({ session: ritual, answers, existingId: existing?.id ?? null });
+      const workingLike = { title: answers.title, intention: answers.intention, moon_phase: answers.moon_phase, ritual_date: answers.ritual_date };
+      const when = lookBack.pick === 'suggested' ? suggestedWhen(workingLike) : lookBack.pick;
+      const entry = await saveJournal({
+        session: ritual,
+        answers,
+        existingId: existing?.id ?? null,
+        // An edit only changes the look-back when it was changed here.
+        ...(existing && !lookBack.touched ? {} : { lookBack: when, lookBackCustom: lookBack.custom }),
+      });
       // Editing was opened from the entry itself: go back to it rather than opening it twice.
       if (existing && router.canGoBack()) router.back();
       else router.replace({ pathname: '/rituals/journal/[id]', params: { id: entry.id } });
@@ -177,6 +194,24 @@ export default function JournalForm() {
             <Field label="What would you change next time?" value={answers.changes_for_next_time} onChange={(v) => set({ changes_for_next_time: v })} multiline />
             <Field label="Private notes" value={answers.notes} onChange={(v) => set({ notes: v })} multiline />
           </Expander>
+
+          {existingLookBack?.answer ? (
+            <Card>
+              <SectionLabel>Did it work?</SectionLabel>
+              <Body>{`${answerLabel(existingLookBack.answer)}${existingLookBack.outcome ? `. ${existingLookBack.outcome}` : ''}`}</Body>
+              <Body muted>Change the answer from the entry itself.</Body>
+            </Card>
+          ) : (
+            <LookBackPicker
+              entry={{ title: answers.title, intention: answers.intention, moon_phase: answers.moon_phase || null, ritual_date: answers.ritual_date || null }}
+              value={lookBack.pick}
+              custom={lookBack.custom}
+              onChange={(pick, custom) => setLookBack({ pick, custom, touched: true })}
+            />
+          )}
+          {!existingLookBack?.answer && existingLookBack?.date && !lookBack.touched && (
+            <Body muted>{`Set to look back ${lookBackWords(existingLookBack)}.`}</Body>
+          )}
 
           {!!problem && <Notice>{problem}</Notice>}
           {!account && <Body muted>Saved on this phone. Sign in to keep your journal with your account.</Body>}

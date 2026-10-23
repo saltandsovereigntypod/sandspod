@@ -163,6 +163,12 @@ export default function Reminders() {
               ))}
             </Chips>
           )}
+          <Toggle
+            label="Ask “Did it work?” on look-back days"
+            detail="On the day you chose to look back on a ritual or spell, at the time set for moon reminders"
+            value={settings.lookBacks}
+            onChange={(lookBacks) => void updateReminderSettings({ lookBacks })}
+          />
         </Card>
       </View>
 

@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useSyncExternalStore } from 'react';
 
 import { sacredSources } from '../patron';
+import { lookBackReminder } from '../rituals/lookBack';
 import { getRituals, loadPlans, subscribeRituals } from '../rituals/store';
 import { cachedSettings, subscribeSettings } from '../settings/store';
 import type { RitualPlan } from '../rituals/types';
@@ -27,6 +28,7 @@ let state: RemindersState = { loaded: false, settings: DEFAULT_SETTINGS, permiss
 const listeners = new Set<() => void>();
 let started = false;
 let lastPlans: RitualPlan[] | null = null;
+let lastLookBacks = '';
 let syncing: Promise<void> = Promise.resolve();
 
 function set(patch: Partial<RemindersState>) {
@@ -45,7 +47,10 @@ export function syncReminders(): Promise<void> {
   syncing = syncing.then(async () => {
     if (!state.loaded) return;
     try {
-      const reminders = buildSchedule(state.settings, getRituals().plans, new Date(), undefined, sacredSources(cachedSettings()));
+      const lookBacks = getRituals()
+        .journal.map(lookBackReminder)
+        .filter((r): r is NonNullable<typeof r> => !!r);
+      const reminders = buildSchedule(state.settings, getRituals().plans, new Date(), undefined, sacredSources(cachedSettings()), lookBacks);
       const permission = remindersSupported ? await permissionState() : 'unavailable';
       const scheduled = await applySchedule(permission === 'granted' ? reminders : []);
       set({ permission, scheduled });
@@ -70,8 +75,14 @@ async function start() {
   lastPlans = getRituals().plans;
   subscribeRituals(() => {
     const plans = getRituals().plans;
-    if (plans !== lastPlans) {
+    // Look-back days change when a ritual is journaled or answered.
+    const lookBacks = getRituals()
+      .journal.map((entry) => lookBackReminder(entry)?.key ?? '')
+      .filter(Boolean)
+      .join(',');
+    if (plans !== lastPlans || lookBacks !== lastLookBacks) {
       lastPlans = plans;
+      lastLookBacks = lookBacks;
       void syncReminders();
     }
   });

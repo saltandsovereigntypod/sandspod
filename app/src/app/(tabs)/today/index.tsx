@@ -13,6 +13,9 @@ import { setHolidaySelection, syncSkyCalendar } from '../../../lib/reminders/cal
 import { useReminders } from '../../../lib/reminders/store';
 import { planSky, planWhen } from '../../../lib/rituals/format';
 import { journalInsights } from '../../../lib/rituals/insights';
+import { dueLookBacks } from '../../../lib/rituals/lookBack';
+import type { JournalRow } from '../../../lib/rituals/types';
+import { DidItWork } from '../../../components/rituals/DidItWork';
 import { currentStep } from '../../../lib/rituals/lifecycle';
 import { nextPlan } from '../../../lib/rituals/plans';
 import { useRituals } from '../../../lib/rituals/store';
@@ -181,6 +184,8 @@ export default function Today() {
         )}
       </View>
 
+      <LookBackDue journal={rituals.journal} now={now} />
+
       <View style={styles.horizon}>
         <Text style={type.eyebrow}>On the horizon</Text>
         <View style={styles.tiles}>
@@ -291,6 +296,27 @@ function PracticeCard({ settings, place, now }: { settings: SettingsLike; place:
           <Icon name="chevron" size={16} color={colors.gold} />
         </Pressable>
       )}
+    </View>
+  );
+}
+
+/** "Did it work?" for a ritual or spell whose look-back day has come. */
+function LookBackDue({ journal, now }: { journal: JournalRow[]; now: Date }) {
+  const due = useMemo(() => dueLookBacks(journal, now), [journal, now]);
+  if (!due.length) return null;
+  const [first, ...more] = due;
+  return (
+    <View style={styles.lookBack}>
+      <DidItWork key={first.id} entry={first} compact />
+      <Pressable
+        accessibilityRole="link"
+        onPress={() => router.navigate({ pathname: '/today/journal/[id]', params: { id: first.id } })}
+        style={({ pressed }) => pressed && { opacity: 0.7 }}
+      >
+        <Text style={[type.caption, styles.center]}>
+          {more.length ? `Open “${first.title || 'the entry'}” · ${more.length} more waiting in your journal ›` : `Open “${first.title || 'the entry'}” ›`}
+        </Text>
+      </Pressable>
     </View>
   );
 }
@@ -499,6 +525,7 @@ function HorizonTile({ item }: { item: HorizonItem }) {
 }
 
 const styles = StyleSheet.create({
+  lookBack: { gap: 10 },
   header: { alignItems: 'center', gap: 4, marginTop: 8 },
   date: { letterSpacing: 2.5 },
   ruler: { fontFamily: fonts.displayItalic, fontSize: 17, color: colors.gold, textAlign: 'center' },

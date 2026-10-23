@@ -8,9 +8,14 @@ import Svg, { Circle } from 'react-native-svg';
 
 import { Button } from '../../Button';
 import { addEntry, updateEntry, useCraft } from '../../../lib/craft/store';
+import { lookBackChoices, suggestedWhen, type LookBackWhen } from '../../../lib/rituals/lookBack';
+import { localDateKey } from '../../../lib/rituals/lifecycle';
+import { saveJournal } from '../../../lib/rituals/store';
+import { shortDate } from '../../../lib/calendar';
 import {
   closeSpell,
   newSpell,
+  spellJournalAnswers,
   SPELL_KINDS,
   SPELLS_COLLECTION,
   spellProgress,
@@ -92,6 +97,20 @@ function SpellCard({ id, spell }: { id: string; spell: SpellEntry }) {
   const [closing, setClosing] = useState(false);
   const now = new Date();
   const today = spellToday(spell, now);
+  // Closing a spell can keep it in the ritual journal, to ask later whether it worked.
+  const working = { title: spell.title, intention: spell.intention ?? null, moon_phase: null, ritual_date: localDateKey(now) };
+  const [lookBack, setLookBack] = useState<LookBackWhen | null>(() => suggestedWhen(working));
+  const [problem, setProblem] = useState('');
+  const close = async () => {
+    const closed = closeSpell(spell, reflection, new Date());
+    await updateEntry(SPELLS_COLLECTION, id, closed);
+    if (!lookBack) return;
+    try {
+      await saveJournal({ session: null, answers: spellJournalAnswers(closed, new Date()), lookBack });
+    } catch {
+      setProblem('The spell is closed, but it couldn’t be added to your journal to look back on.');
+    }
+  };
   return (
     <View style={sheetStyles.card}>
       <View style={sheetStyles.row}>
@@ -118,9 +137,19 @@ function SpellCard({ id, spell }: { id: string; spell: SpellEntry }) {
       {(today.status === 'complete' || closing) && (
         <>
           <Field label="Closing reflection" value={reflection} onChangeText={setReflection} placeholder="How did it go? What changed?" multiline maxLength={1000} />
-          <Button label="Close the spell" onPress={() => void updateEntry(SPELLS_COLLECTION, id, closeSpell(spell, reflection, new Date()))} />
+          <Label>Ask me later if it worked</Label>
+          <ChipRow>
+            {lookBackChoices(working, now).map((c) => {
+              const day = new Date(`${c.date}T12:00:00`);
+              return <Chip key={c.when} label={`${c.label} · ${shortDate(day)}`} active={lookBack === c.when} onPress={() => setLookBack(c.when)} />;
+            })}
+            <Chip label="Not needed" active={lookBack === null} onPress={() => setLookBack(null)} />
+          </ChipRow>
+          {lookBack ? <Text style={type.caption}>It will be kept in your ritual journal, and you’ll be asked then.</Text> : null}
+          <Button label="Close the spell" onPress={() => void close()} />
         </>
       )}
+      {problem ? <Text style={type.caption}>{problem}</Text> : null}
       {today.status !== 'complete' && !closing && (
         <ChipRow>
           <Chip label="End it early" onPress={() => setClosing(true)} />

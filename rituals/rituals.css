@@ -102,3 +102,13 @@ a.sp-chip { display: inline-flex; align-items: center; }
 .rt-head, .rt-head h1, .sp-page .sp-label, .sp-page h2, .sp-page h3 { text-align: left; }
 .sp-page h2.sp-label, .sp-page p.sp-label { font-family: inherit; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin: 0; }
 .rt-head h1 { max-width: none; }
+
+/* Did it work? (did-it-work.js) */
+.rt-diw { display: grid; gap: 10px; }
+.rt-diw + .rt-diw { margin-top: 10px; }
+.rt-diw__title { margin: 0; font-size: 1.1rem; }
+.rt-diw__form { display: grid; gap: 10px; }
+.rt-diw__form[hidden], .rt-diw [hidden] { display: none; }
+.rt-works { display: grid; gap: 2px; }
+.rt-works__label { width: 150px; }
+.rt-bar__track.is-faint > span { opacity: 0.45; }
