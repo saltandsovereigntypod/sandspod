@@ -8,8 +8,8 @@ const defaultOrigins = [
   "https://saltandsovereigntypod.github.io"
 ];
 const allowedOrigins = new Set([...(Deno.env.get("ACCOUNT_DELETE_ALLOWED_ORIGINS") || "").split(",").map((value) => value.trim()).filter(Boolean), ...defaultOrigins]);
-const childTables = ["ritual_links", "ritual_session_steps", "ritual_template_steps", "grimoire_page_links", "grimoire_blocks", "library_relations", "object_instance_events", "community_submission_messages"];
-const parentTables = ["craft_entries", "ritual_plans", "user_rituals", "ritual_sessions", "ritual_templates", "grimoire_pages", "grimoire_sections", "grimoire_books", "object_instances", "living_library_entries", "apothecary_items", "saved_altars", "custom_altar_backgrounds", "custom_cabinet_items", "custom_cabinet_image_overrides", "user_settings"];
+const childTables = ["coven_messages", "coven_signatures", "coven_applications", "coven_advancement_requests", "coven_members", "ritual_links", "ritual_session_steps", "ritual_template_steps", "grimoire_page_links", "grimoire_blocks", "library_relations", "object_instance_events", "community_submission_messages"];
+const parentTables = ["craft_entries", "ritual_plans", "user_rituals", "ritual_sessions", "ritual_templates", "grimoire_pages", "grimoire_sections", "grimoire_books", "object_instances", "living_library_entries", "apothecary_items", "saved_altars", "custom_altar_backgrounds", "custom_cabinet_items", "custom_cabinet_image_overrides", "user_settings", "coven_profiles"];
 
 function response(origin: string, status: number, body: Record<string, unknown>) {
   const cors: Record<string, string> = origin ? { "access-control-allow-origin": origin, "access-control-allow-headers": "authorization, content-type, apikey, x-client-info", "access-control-allow-methods": "POST, OPTIONS", "vary": "Origin" } : {};

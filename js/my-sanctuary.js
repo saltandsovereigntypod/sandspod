@@ -142,6 +142,7 @@ function createMySanctuaryPanel() {
 
         <nav class="my-sanctuary-links" aria-label="More from your Sanctuary">
           <button type="button" data-my-sanctuary-view-button="journey">🧭 My Journey</button>
+          <a href="/covens/">🕯 Covens</a>
           <a href="/grimoire/community-grimoire.html">✨ Community Grimoire</a>
           <a href="/submit/">✦ Offer to the Sanctuary</a>
           <button type="button" data-my-sanctuary-view-button="submissions">📬 My Submissions</button>
