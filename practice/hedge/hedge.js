@@ -27,6 +27,7 @@
     reading: (x) => kit.href.tool("hedge", "readings/reading", `id=${encodeURIComponent(x)}`),
     readingEdit: (x) => kit.href.tool("hedge", "readings/edit", x ? `id=${encodeURIComponent(x)}` : ""),
     draw: (spread) => kit.href.tool("hedge", "readings/draw", spread ? `spread=${encodeURIComponent(spread)}` : ""),
+    spreadEdit: (x, kind) => kit.href.tool("hedge", "readings/spread", x ? `id=${encodeURIComponent(x)}` : kind ? `kind=${encodeURIComponent(kind)}` : ""),
     ancestors: kit.href.tool("hedge", "ancestors"),
     person: (x) => kit.href.tool("hedge", "ancestors/person", `id=${encodeURIComponent(x)}`),
     personEdit: (x) => kit.href.tool("hedge", "ancestors/edit", x ? `id=${encodeURIComponent(x)}` : "")
@@ -37,10 +38,13 @@
   let dreams = [];
   let readings = [];
   let people = [];
+  // Spreads of your own (`hedge.spreads`), on the pages that draw.
+  let mySpreads = [];
   let loaded = false;
 
   async function load() {
-    const [d, r, a] = await Promise.all([kit.entries(D.DREAMS), kit.entries(R.READINGS), kit.entries(A.ANCESTORS)]);
+    const [d, r, a, s] = await Promise.all([kit.entries(D.DREAMS), kit.entries(R.READINGS), kit.entries(A.ANCESTORS), Dv ? kit.entries(Dv.custom.SPREADS_COLLECTION) : []]);
+    mySpreads = s;
     dreams = d.map((e) => ({ ...e, data: D.normalizeDream(e.data) }));
     readings = R.sortReadings(r.map((e) => ({ ...e, data: R.normalizeReading(e.data) })));
     people = a.map((e) => ({ ...e, data: A.normalizeAncestor(e.data) })).sort((x, y) => x.data.name.localeCompare(y.data.name));
@@ -85,7 +89,7 @@
       kit.section(
         "Tools",
         `${kit.list(practices.CRAFT_TOOLS.hedge.map((t, i) => kit.row({ url: paths[i], title: t.title, detail: details[i] ?? t.detail })))}${kit.list([
-          kit.row({ url: url.draw(), title: "Draw cards, runes or ogham", detail: "A card for the day, three cards, the Celtic Cross, runes or staves" })
+          kit.row({ url: url.draw(), title: "Draw cards, runes or ogham", detail: "A card for the day, the Celtic Cross and many more spreads, or one of your own" })
         ])}`,
         { id: "tools" }
       ),
@@ -435,7 +439,7 @@
 
   const itemName = (item) => `${item.name}${item.reversed ? ", reversed" : ""}`;
   function placeLabel(spread, d, i, shown) {
-    const place = spread.positions.length > 1 ? `${i + 1}, ${spread.positions[i]?.name}: ` : "";
+    const place = spread.positions.length > 1 ? `${i + 1}, ${Dv.draw.placeOf(spread, d, i)?.name}: ` : "";
     return shown ? `${place}${itemName(d.items[i])}` : `${place}face down`;
   }
 
@@ -461,41 +465,85 @@
     } title="${shown ? "Shows its meaning" : "Turns it over"}"><span class="dv-inner">${back}${front}</span></button>`;
   }
 
-  /** The draw laid out: one, three in a row, or the Celtic Cross as Waite laid it. */
+  /** An item's width in pixels: the most it grows to, and the least before the table scrolls (as the app's). */
+  const ITEM_PX = { tarot: { max: 110, min: 44 }, runes: { max: 96, min: 36 }, ogham: { max: 52, min: 18 } };
+
+  /**
+   * The draw laid out in its spread's shape (js/core/divination.js `layout`,
+   * the app's own model): a short row with each place's name beneath, or
+   * every place where the layout puts it, the crossing card turned, the cast
+   * on its cloth. Too wide for the page, it scrolls sideways.
+   */
   function tableHtml(spread, d, revealed, selected, act) {
     const one = (i) => flipHtml(spread, d, i, revealed[i], selected === i, act);
-    if (spread.id === "celtic-cross") {
-      // In card widths: the crossing card needs room either side, and the staff stands apart.
-      const h = 1 / 0.58;
-      const g = 0.42;
-      const gv = 0.14;
-      const sg = 0.1;
-      const col = (c) => c * (1 + g);
-      const staffX = col(3) + 0.25;
-      const T = staffX + 1;
-      const crossH = h * 3 + gv * 2;
-      const H = Math.max(crossH, h * 4 + sg * 3);
-      const top = (H - crossH) / 2;
-      const at = (i, x, y, across) =>
-        `<div class="dv-at${across ? " dv-at--across" : ""}" style="left:${((x / T) * 100).toFixed(3)}%;top:${((y / H) * 100).toFixed(3)}%;width:${((1 / T) * 100).toFixed(3)}%">${one(i)}</div>`;
-      const mid = top + h + gv;
-      // The staff, 7 at the bottom to 10 at the top.
-      const staff = [6, 7, 8, 9].map((i, k) => at(i, staffX, H - h - k * (h + sg))).join("");
-      return `<div class="dv-cross" style="aspect-ratio:${T.toFixed(4)} / ${H.toFixed(4)}">${at(2, col(1), top)}${at(4, col(0), mid)}${at(0, col(1), mid)}${at(5, col(2), mid)}${at(
-        3,
-        col(1),
-        top + (h + gv) * 2
-      )}${at(1, col(1), mid, true)}${staff}</div>`;
+    const l = Dv.draw.layoutOfDraw(spread, d);
+    if (Dv.layout.isSimpleRow(l)) {
+      const n = d.items.length;
+      const size = spread.kind === "tarot" ? `dv-tarot-${n}` : spread.kind === "runes" ? `dv-rune-${n}` : "";
+      return `<div class="dv-table">${d.items
+        .map((_, i) => {
+          const name = n > 1 ? `<p class="dv-place__name">${kit.esc(spread.positions[i]?.name)}</p>` : "";
+          if (spread.kind === "ogham") return `<div class="dv-place dv-place--ogham"><div class="dv-ogham-${n}">${one(i)}</div>${name}</div>`;
+          return `<div class="dv-place ${size}">${one(i)}${name}</div>`;
+        })
+        .join("")}</div>`;
     }
-    const n = d.items.length;
-    const size = spread.kind === "tarot" ? `dv-tarot-${n}` : spread.kind === "runes" ? `dv-rune-${n}` : "";
-    return `<div class="dv-table">${d.items
-      .map((_, i) => {
-        const name = n > 1 ? `<p class="dv-place__name">${kit.esc(spread.positions[i]?.name)}</p>` : "";
-        if (spread.kind === "ogham") return `<div class="dv-place dv-place--ogham"><div class="dv-ogham-${n}">${one(i)}</div>${name}</div>`;
-        return `<div class="dv-place ${size}">${one(i)}${name}</div>`;
+    const W = l.width;
+    const H = l.height;
+    const px = ITEM_PX[spread.kind];
+    const pc = (n, of) => `${((n / of) * 100).toFixed(3)}%`;
+    const rings = l.cloth
+      ? [...l.cloth.rings]
+          .reverse()
+          .map(
+            (r, k) =>
+              `<div class="dv-ring${k === 0 ? " dv-ring--cloth" : ""}" style="left:${pc(l.cloth.cx - r, W)};top:${pc(l.cloth.cy - r, H)};width:${pc(r * 2, W)};height:${pc(r * 2, H)}"></div>`
+          )
+          .join("")
+      : "";
+    const places = l.slots
+      .map((s, i) => {
+        const down = spread.cast && d.items[i]?.fall?.up === false;
+        const across = l.crossings.some(([, b]) => b === i);
+        return `<div class="dv-at${across ? " dv-at--over" : ""}${down ? " dv-at--down" : ""}" style="left:${pc(s.left, W)};top:${pc(s.top, H)};width:${pc(l.item.w, W)}${
+          s.rot ? `;transform:rotate(${s.rot}deg)` : ""
+        }">${one(i)}<span class="dv-num" aria-hidden="true">${i + 1}</span></div>`;
       })
-      .join("")}</div>`;
+      .join("");
+    const legend = `<ol class="dv-legend">${d.items.map((_, i) => `<li>${kit.esc(Dv.draw.placeOf(spread, d, i)?.name ?? "")}</li>`).join("")}</ol>`;
+    const big = W * px.max > 640;
+    return `<div class="dv-scroll"><div class="dv-lay dv-lay--${spread.kind}" style="aspect-ratio:${W} / ${H};--dv-max:${Math.round(W * px.max)}px;--dv-min:${Math.round(
+      W * px.min
+    )}px">${rings}${places}</div></div>${legend}${big ? `<p class="dv-zoom">${kit.textButton({ label: "Look closer (scrolls sideways)", act: "dv-zoom" })}</p>` : ""}`;
+  }
+
+  /** A little picture of a spread's shape. */
+  const diagram = (spread, size = 56, numbers = false) => Dv.layout.diagramSvg(Dv.layout.diagramOf(Dv.layout.layoutOf(spread)), size, { numbers });
+
+  /** The spread chosen, and the rest in their groups with a picture of each (the app's SpreadPicker). */
+  function pickerHtml(spread) {
+    const base = baseOf(spread);
+    const n = spread.positions.length;
+    const current = `<button type="button" class="dv-current" data-act="draw-picker" aria-expanded="${drawState.picking ? "true" : "false"}"><span class="dv-current__pic">${diagram(
+      spread
+    )}</span><span class="dv-current__text"><span class="dv-current__label">${kit.esc(base.label)}</span><span class="dv-current__more">${
+      drawState.picking ? "Hide the other spreads ▴" : `${n === 1 ? "One place" : `${n} places`} · Choose another ▾`
+    }</span></span></button>`;
+    if (!drawState.picking) return `<div class="dv-picker">${current}</div>`;
+    const groups = Dv.draw.groupedSpreads(spread.kind, custom());
+    const make = `<a class="dv-tile dv-tile--make" href="${kit.esc(url.spreadEdit(null, spread.kind))}"><span class="dv-tile__pic dv-plus" aria-hidden="true">+</span><span class="dv-tile__label">Make your own</span></a>`;
+    const tiles = (list) =>
+      list
+        .map(
+          (s) =>
+            `<button type="button" class="dv-tile" data-act="draw-spread" data-value="${kit.esc(s.id)}" aria-pressed="${s.id === base.id ? "true" : "false"}" aria-label="${kit.esc(
+              `${s.label}, ${s.positions.length === 1 ? "one place" : `${s.positions.length} places`}`
+            )}"><span class="dv-tile__pic">${diagram(s, 52)}</span><span class="dv-tile__label">${kit.esc(s.label)}</span></button>`
+        )
+        .join("");
+    const sections = groups.map(({ group, spreads }) => `<h3 class="sp-eyebrow dv-group">${kit.esc(group.label)}</h3><div class="dv-tiles">${tiles(spreads)}${group.id === "yours" ? make : ""}</div>`);
+    if (!groups.some((g) => g.group.id === "yours")) sections.push(`<h3 class="sp-eyebrow dv-group">Your spreads</h3><div class="dv-tiles">${make}</div>`);
+    return `<div class="dv-picker">${current}${sections.join("")}</div>`;
   }
 
   /** What one card, rune or stave means, in its place. */
@@ -503,7 +551,7 @@
     if (i === null || i === undefined || !d.items[i]) return "";
     const m = Dv.draw.meaningOf(d.items[i]);
     if (!m) return "";
-    const place = spread.positions.length > 1 ? spread.positions[i] : null;
+    const place = spread.positions.length > 1 ? Dv.draw.placeOf(spread, d, i) : null;
     return kit.card(
       `${place ? kit.muted(place.about) : ""}<p class="dv-meaning__name">${m.glyph ? `<span class="dv-glyph" aria-hidden="true">${kit.esc(m.glyph)}</span>  ` : ""}${kit.esc(
         itemName(m)
@@ -515,7 +563,7 @@
   /** A kept draw on its reading's page, laid out again; tap one for its meaning. */
   const laid = { pick: null };
   function laidOutHtml(r) {
-    const found = Dv ? Dv.draw.drawOfReading(r) : null;
+    const found = Dv ? Dv.draw.drawOfReading(r, custom()) : null;
     if (!found) return "";
     const { spread, draw: d } = found;
     return `<section class="sp-section" aria-label="The draw">${tableHtml(
@@ -527,14 +575,17 @@
     )}<div data-laid-meaning>${laid.pick === null ? kit.muted("Tap one for its meaning.") : meaningHtml(spread, d, laid.pick)}</div></section>`;
   }
 
-  const drawState = { spreadId: null, question: "", draw: null, revealed: [], selected: null, interpretation: "", lookBack: null, saving: false, problem: "", local: {} };
+  const drawState = { spreadId: null, question: "", draw: null, revealed: [], selected: null, interpretation: "", lookBack: null, saving: false, problem: "", local: {}, picking: false };
+  const custom = () => (Dv ? Dv.custom.customSpreads(mySpreads) : []);
   function currentSpread() {
     if (!drawState.spreadId) {
       const kind = Dv.draw.KINDS.find((k) => k.id === params.get("kind"))?.id || "tarot";
-      drawState.spreadId = (Dv.draw.spreadById(params.get("spread")) || Dv.draw.spreadsFor(kind)[0]).id;
+      drawState.spreadId = (Dv.draw.spreadById(params.get("spread"), custom()) || Dv.draw.spreadsFor(kind)[0]).id;
     }
-    return Dv.draw.spreadById(drawState.spreadId);
+    return Dv.draw.spreadById(drawState.spreadId, custom()) || Dv.draw.spreadsFor("tarot")[0];
   }
+  /** The wheel's card in the middle is a choice on the wheel, not a spread of its own. */
+  const baseOf = (spread) => (spread.hidden ? Dv.draw.SPREADS.find((s) => s.variant?.id === spread.id) || spread : spread);
   const drawOptions = () => Dv.draw.drawOptions({ ...settings, ...drawState.local });
   const chosenLookBack = (spread) => drawState.lookBack ?? R.lookBackFrom(kit.dateKey(new Date()), spread.lookBackDays);
 
@@ -553,11 +604,12 @@
       d.items.length > 1
         ? kit.list(
             d.items.map((item, i) =>
-              kit.row({ act: "draw-pick", data: { value: i }, title: `${i + 1}. ${itemName(item)}`, detail: `${spread.positions[i]?.name} · ${Dv.draw.meaningOf(item)?.meaning.keywords ?? ""}` })
+              kit.row({ act: "draw-pick", data: { value: i }, title: `${i + 1}. ${itemName(item)}`, detail: `${Dv.draw.placeOf(spread, d, i)?.name} · ${Dv.draw.meaningOf(item)?.meaning.keywords ?? ""}` })
             ),
             "What was drawn"
           )
         : "",
+      spread.cast ? kit.muted(Dv.draw.CAST_NOTE) : "",
       spread.kind !== "tarot" ? kit.muted(Dv.staves.STAVE_NOTES[spread.kind]) : "",
       kit.field({ id: "draw-interpretation", label: "What you make of it", value: drawState.interpretation, input: "draw-interpretation", multiline: true, placeholder: "Your reading of the reading" }),
       kit.section(
@@ -592,6 +644,9 @@
     const d = drawState.draw;
     const kept = spread.id === "daily" && !d ? Dv.daily.todaysCard(readings, new Date()) : null;
     const question = drawState.question.trim();
+    const base = baseOf(spread);
+    const seasonal = spread.kind === "tarot" && !d ? Dv.seasonal.seasonalSpreads(new Date(), { south: Dv.seasonal.keepsSouthernWheel(settings) }).filter((s) => s.spread !== spread.id) : [];
+    const editing = Dv.custom.entryIdOfSpread(spread.id);
     return [
       back,
       kit.head({ eyebrow: "Draw · Hedge readings", title: kind.label }),
@@ -600,12 +655,12 @@
         `${kit.chips(
           Dv.draw.KINDS.map((k) => kit.chip({ label: k.label, act: "draw-kind", value: k.id, pressed: spread.kind === k.id })),
           "What to draw"
-        )}${kit.chips(
-          Dv.draw.spreadsFor(spread.kind).map((x) => kit.chip({ label: x.label, act: "draw-spread", value: x.id, pressed: spread.id === x.id })),
-          "Spread"
-        )}${kit.muted(spread.detail)}`,
+        )}${pickerHtml(spread)}${kit.muted(spread.detail)}${editing && !d ? kit.actions([kit.button({ label: "Change this spread", url: url.spreadEdit(editing), ghost: true })]) : ""}`,
         { id: "what" }
       ),
+      seasonal.length
+        ? kit.list(seasonal.map((s) => kit.row({ act: "draw-spread", data: { value: s.spread }, title: `${s.why}: ${s.label}`, detail: "A spread for the time. Tap to choose it." })))
+        : "",
       kept
         ? kit.list([
             kit.row({
@@ -628,6 +683,7 @@
             spread.kind === "tarot"
               ? kit.toggle({ id: "draw-reversals", label: "Reversed cards", detail: "Some cards come up upside down, with their reversed meaning.", checked: opts.reversals, change: "draw-option" })
               : "",
+            base.variant ? kit.toggle({ id: "draw-variant", label: base.variant.label, checked: spread.id === base.variant.id, change: "draw-variant" }) : "",
             spread.kind === "runes"
               ? kit.toggle({ id: "draw-blank-rune", label: "The blank rune", detail: "A modern addition to the set, standing for the unknown.", checked: opts.blankRune, change: "draw-option" })
               : "",
@@ -661,10 +717,78 @@
   }
 
   function chooseSpread(spreadId) {
-    if (spreadId === drawState.spreadId) return;
-    Object.assign(drawState, { spreadId, draw: null, revealed: [], selected: null, lookBack: null, problem: "" });
+    if (spreadId === drawState.spreadId) {
+      drawState.picking = false;
+      draw();
+      return;
+    }
+    Object.assign(drawState, { spreadId, draw: null, revealed: [], selected: null, lookBack: null, problem: "", picking: false });
     draw();
+    root.querySelector('[data-act="draw-picker"]')?.focus();
   }
+
+  // ------------------------------------------------------------------ your own spreads
+
+  /** Make or change a spread of your own (the app's readings/spread screen), kept in `hedge.spreads`. */
+  const spreadForm = { data: null, saving: false, problem: "" };
+  function spreadEditView() {
+    const back = kit.back(url.draw(id ? Dv?.custom.customSpreadId(id) : ""), "Draw");
+    if (!Dv) return [back, kit.head({ title: "Your spread" }), kit.notice("The draws couldn’t load. Check your connection and refresh the page.")].join("");
+    const existing = id ? mySpreads.find((e) => e.id === id) : null;
+    if (id && !existing) return notFound(back, "Your spread", "This spread couldn’t be found. It may have been deleted on another device.");
+    if (!spreadForm.data) {
+      const kind = Dv.draw.KINDS.find((k) => k.id === params.get("kind"))?.id || "tarot";
+      spreadForm.data = existing ? Dv.custom.normalizeCustomSpread(existing.data) : Dv.custom.blankCustomSpread(kind);
+    }
+    const data = spreadForm.data;
+    const word = Dv.custom.placeWord(data.kind);
+    const places = data.positions
+      .map((p, i) =>
+        kit.card(
+          `${kit.field({ id: `place-name-${i}`, label: `${i + 1}. What this place means`, value: p.name, input: "spread-place", placeholder: `${word} ${i + 1}` })}${kit.field({
+            id: `place-about-${i}`,
+            label: "A line on how to read it (if you like)",
+            value: p.about,
+            input: "spread-place",
+            placeholder: "What it asks, or shows"
+          })}${data.positions.length > 1 ? kit.textButton({ label: "Take this place out", act: "spread-place-remove", value: String(i) }) : ""}`
+        )
+      )
+      .join("");
+    return [
+      back,
+      kit.head({ eyebrow: existing ? "Change your spread" : "Make your own spread", title: data.name.trim() || "Your spread" }),
+      kit.field({ id: "spread-name", label: "Its name", value: data.name, input: "spread-field", placeholder: "Crossroads, Monday morning, The garden…" }),
+      kit.field({ id: "spread-detail", label: "What it’s for (if you like)", value: data.detail, input: "spread-field", placeholder: "One line on when you’d use it" }),
+      kit.section("What to draw", kit.chips(Dv.draw.KINDS.map((k) => kit.chip({ label: k.label, act: "spread-kind", value: k.id, pressed: data.kind === k.id })), "What to draw"), { id: "spread-kind" }),
+      kit.section(
+        "Its shape",
+        `${kit.chips(Dv.layout.SHAPES.map((s) => kit.chip({ label: s.label, act: "spread-shape", value: s.id, pressed: data.shape === s.id })), "Its shape")}${kit.card(
+          `<div class="dv-preview">${diagram(Dv.custom.customSpread({ id: "preview", data }), 180, true)}</div>${kit.muted(
+            "The numbers are the order they’re laid down in, and match the places below."
+          )}`
+        )}`,
+        { id: "spread-shape" }
+      ),
+      kit.section(
+        `The places (${data.positions.length})`,
+        `${places}${
+          data.positions.length < Dv.custom.MAX_PLACES
+            ? kit.actions([kit.button({ label: "Add a place", act: "spread-place-add", ghost: true })])
+            : kit.muted(`${Dv.custom.MAX_PLACES} places is the most a spread can hold here.`)
+        }`,
+        { id: "spread-places" }
+      ),
+      !user ? kit.notice("Saved in this browser. Sign in to keep your spreads with your account, and in the app.") : "",
+      kit.notice(spreadForm.problem, { live: true }),
+      kit.actions([
+        kit.button({ label: spreadForm.saving ? "Keeping it…" : "Keep this spread", act: "spread-save", primary: true, disabled: spreadForm.saving }),
+        existing ? kit.textButton({ label: "Delete this spread", act: "spread-delete" }) : ""
+      ])
+    ].join("");
+  }
+
+
 
   // ------------------------------------------------------------------ wiring
 
@@ -674,6 +798,7 @@
     "hedge-reading": readingView,
     "hedge-reading-edit": readingEditView,
     "hedge-draw": drawView,
+    "hedge-spread": spreadEditView,
     "hedge-ancestors": ancestorsView,
     "hedge-ancestor": ancestorView,
     "hedge-ancestor-edit": ancestorEditView
@@ -816,6 +941,78 @@
     "draw-spread"(el) {
       chooseSpread(el.dataset.value);
     },
+    "draw-picker"() {
+      drawState.picking = !drawState.picking;
+      draw();
+      root.querySelector('[data-act="draw-picker"]')?.focus();
+    },
+    "draw-variant"(el) {
+      const base = baseOf(currentSpread());
+      chooseSpread(el.checked ? base.variant.id : base.id);
+    },
+    "dv-zoom"(el) {
+      const lay = el.closest("section, [data-laid]")?.querySelector(".dv-lay");
+      if (!lay) return;
+      const close = lay.classList.toggle("is-close");
+      el.textContent = close ? "See it all at once" : "Look closer (scrolls sideways)";
+    },
+    // Your own spreads
+    "spread-field"(el) {
+      spreadForm.data[el.id === "spread-name" ? "name" : "detail"] = el.value;
+    },
+    "spread-place"(el) {
+      const [, which, i] = el.id.split("-");
+      const p = spreadForm.data.positions[Number(i)];
+      if (p) p[which === "name" ? "name" : "about"] = el.value;
+    },
+    "spread-kind"(el) {
+      spreadForm.data.kind = el.dataset.value;
+      draw();
+    },
+    "spread-shape"(el) {
+      spreadForm.data.shape = el.dataset.value;
+      draw();
+    },
+    "spread-place-add"() {
+      if (spreadForm.data.positions.length >= Dv.custom.MAX_PLACES) return;
+      spreadForm.data.positions.push({ name: "", about: "" });
+      draw();
+      root.querySelector(`#place-name-${spreadForm.data.positions.length - 1}`)?.focus();
+    },
+    "spread-place-remove"(el) {
+      spreadForm.data.positions.splice(Number(el.dataset.value), 1);
+      draw();
+    },
+    async "spread-save"() {
+      if (spreadForm.saving) return;
+      const data = Dv.custom.tidyCustomSpread(spreadForm.data);
+      spreadForm.saving = true;
+      spreadForm.problem = "";
+      draw();
+      try {
+        if (id) {
+          await kit.update(Dv.custom.SPREADS_COLLECTION, id, data);
+          kit.go(url.draw(Dv.custom.customSpreadId(id)));
+        } else {
+          const entry = await kit.add(Dv.custom.SPREADS_COLLECTION, data);
+          kit.go(url.draw(Dv.custom.customSpreadId(entry.id)));
+        }
+      } catch (error) {
+        spreadForm.saving = false;
+        spreadForm.problem = failed(error, "It couldn’t be kept");
+        draw();
+      }
+    },
+    async "spread-delete"() {
+      if (!kit.confirm("Delete this spread? It will be removed on every device. Readings you drew with it are kept.")) return;
+      try {
+        await kit.remove(Dv.custom.SPREADS_COLLECTION, id);
+        kit.go(url.draw());
+      } catch (error) {
+        spreadForm.problem = failed(error, "It couldn’t be deleted");
+        draw();
+      }
+    },
     "draw-question"(el) {
       drawState.question = el.value;
     },
@@ -882,7 +1079,7 @@
       const i = Number(el.dataset.value);
       laid.pick = laid.pick === i ? null : i;
       const entry = readings.find((e) => e.id === id);
-      const found = entry && Dv ? Dv.draw.drawOfReading(entry.data) : null;
+      const found = entry && Dv ? Dv.draw.drawOfReading(entry.data, custom()) : null;
       if (!found) return;
       root.querySelectorAll('[data-act="laid-pick"]').forEach((b) => (Number(b.dataset.value) === laid.pick ? b.setAttribute("aria-current", "true") : b.removeAttribute("aria-current")));
       kit.render(root.querySelector("[data-laid-meaning]"), laid.pick === null ? kit.muted("Tap one for its meaning.") : meaningHtml(found.spread, found.draw, laid.pick));

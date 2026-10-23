@@ -79,7 +79,7 @@ export default function HedgePractice() {
           <Row
             icon="wheel"
             title="Draw cards, runes or ogham"
-            detail="A card for the day, three cards, the Celtic Cross, runes or staves"
+            detail="A card for the day, the Celtic Cross and many more spreads, or one of your own"
             last
             onPress={() => router.push('/rituals/craft/hedge/readings/draw' as Href)}
           />

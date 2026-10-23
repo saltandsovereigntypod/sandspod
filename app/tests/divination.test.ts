@@ -98,7 +98,7 @@ test('a spread lays out as many as it has places, never the same card twice', ()
   assert.equal(draw.items.length, 10);
   assert.equal(new Set(draw.items.map((d) => d.name)).size, 10);
   assert.ok(draw.items.every((d) => !d.reversed));
-  assert.equal(spreadsFor('tarot').length, 4);
+  assert.equal(spreadsFor('tarot').length, 17); // the four first drawn, and the spreads added since (divination-spreads.test.ts)
   for (const s of SPREADS) assert.equal(drawSpread(s, { reversals: true, blankRune: true }, random).items.length, s.positions.length);
 });
 

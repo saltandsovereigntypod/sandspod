@@ -3,25 +3,31 @@ import { useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
+import { SpreadPicker } from '../../../../../../components/divination/Picker';
 import { SpreadTable } from '../../../../../../components/divination/Spread';
 import { Body, Card, Chip, Chips, Field, List, Notice, RitualScreen, Row, SectionLabel, Title, Toggle, ui } from '../../../../../../components/rituals/ui';
 import { useReducedMotion } from '../../../../../../lib/accessibility/store';
 import { fullDate } from '../../../../../../lib/calendar';
 import { lookBackFrom, normalizeReading, READINGS } from '../../../../../../lib/craft/hedge/readings';
 import { addEntry, useCraft } from '../../../../../../lib/craft/store';
+import { customSpreads, entryIdOfSpread, SPREADS_COLLECTION } from '../../../../../../lib/divination/custom';
 import { todaysCard } from '../../../../../../lib/divination/daily';
 import {
+  CAST_NOTE,
   drawOptions,
   drawSpread,
   DRAW_LOOK_BACK,
   KINDS,
   meaningOf,
+  placeOf,
   readingFromDraw,
   spreadById,
+  SPREADS,
   spreadsFor,
   type Draw,
   type DrawKind,
 } from '../../../../../../lib/divination/draw';
+import { keepsSouthernWheel, seasonalSpreads } from '../../../../../../lib/divination/seasonal';
 import { STAVE_NOTES } from '../../../../../../lib/divination/staves';
 import { localDateKey } from '../../../../../../lib/rituals/lifecycle';
 import { useSession } from '../../../../../../lib/session';
@@ -37,9 +43,13 @@ export default function DrawScreen() {
   const { settings, save } = useMySettings();
   const still = useReducedMotion();
   const { entries } = useCraft<unknown>(READINGS);
+  const { entries: mine } = useCraft<unknown>(SPREADS_COLLECTION);
+  const custom = useMemo(() => customSpreads(mine), [mine]);
 
-  const [spreadId, setSpreadId] = useState(first.id);
-  const spread = spreadById(spreadId) ?? first;
+  // A spread of your own may not have loaded yet, so the id is kept as asked for.
+  const [spreadId, setSpreadId] = useState(params.spread || first.id);
+  const spread = spreadById(spreadId, custom) ?? first;
+  const [picking, setPicking] = useState(false);
   const [question, setQuestion] = useState('');
   const [draw, setDraw] = useState<Draw | null>(null);
   const [revealed, setRevealed] = useState<boolean[]>([]);
@@ -68,7 +78,22 @@ export default function DrawScreen() {
     setDraw(null);
     setSelected(null);
     setLookBack(null);
+    setPicking(false);
   };
+  // Back from making a spread of your own, with it chosen.
+  const [askedFor, setAskedFor] = useState(params.spread);
+  if (params.spread !== askedFor) {
+    setAskedFor(params.spread);
+    if (params.spread) choose(params.spread);
+  }
+
+  // The wheel's card in the middle is a choice on the wheel, not a spread of its own.
+  const base = spread.hidden ? (SPREADS.find((s) => s.variant?.id === spread.id) ?? spread) : spread;
+  const seasonal = useMemo(
+    () => (spread.kind === 'tarot' ? seasonalSpreads(now, { south: keepsSouthernWheel(settings) }).filter((s) => s.spread !== spread.id) : []),
+    [now, settings, spread.id, spread.kind],
+  );
+  const editing = entryIdOfSpread(spread.id);
   const start = () => {
     const next = drawSpread(spread, options);
     setDraw(next);
@@ -97,7 +122,7 @@ export default function DrawScreen() {
   };
 
   const shown = selected !== null && draw && revealed[selected] ? meaningOf(draw.items[selected]) : null;
-  const position = selected !== null ? spread.positions[selected] : null;
+  const position = selected !== null && draw ? placeOf(spread, draw, selected) : null;
 
   return (
     <RitualScreen back="Readings">
@@ -110,13 +135,27 @@ export default function DrawScreen() {
             <Chip key={k.id} label={k.label} selected={spread.kind === k.id} onPress={() => spread.kind !== k.id && choose(spreadsFor(k.id)[0].id)} />
           ))}
         </Chips>
-        <Chips>
-          {spreadsFor(spread.kind).map((s) => (
-            <Chip key={s.id} label={s.label} selected={spread.id === s.id} onPress={() => spread.id !== s.id && choose(s.id)} />
-          ))}
-        </Chips>
+        <SpreadPicker
+          kind={spread.kind}
+          custom={custom}
+          chosen={spread}
+          open={picking}
+          onToggle={() => setPicking((o) => !o)}
+          onChoose={(id) => (id === spread.id ? setPicking(false) : choose(id))}
+          onMake={() => router.push({ pathname: '/rituals/craft/hedge/readings/spread', params: { kind: spread.kind } })}
+        />
         <Body muted>{spread.detail}</Body>
+        {!!editing && !draw && (
+          <Button label="Change this spread" variant="text" onPress={() => router.push({ pathname: '/rituals/craft/hedge/readings/spread', params: { id: editing } })} />
+        )}
       </View>
+
+      {!draw &&
+        seasonal.map((s) => (
+          <List key={s.spread}>
+            <Row icon={s.spread === 'samhain' ? 'samhain' : 'today'} title={`${s.why}: ${s.label}`} detail="A spread for the time. Tap to choose it." last onPress={() => choose(s.spread)} />
+          </List>
+        ))}
 
       {kept && !draw && (
         <List>
@@ -135,6 +174,9 @@ export default function DrawScreen() {
           <Field label="Your question (if you have one)" value={question} onChange={setQuestion} placeholder={spread.id === 'daily' ? 'What do I need today?' : 'What you want to ask, as you’d ask it'} multiline />
           {spread.kind === 'tarot' && (
             <Toggle label="Reversed cards" detail="Some cards come up upside down, with their reversed meaning." value={options.reversals} onChange={(v) => setOption('divination_reversals', v)} />
+          )}
+          {!!base.variant && (
+            <Toggle label={base.variant.label} value={spread.id === base.variant.id} onChange={(v) => choose(v ? base.variant!.id : base.id)} />
           )}
           {spread.kind === 'runes' && (
             <Toggle label="The blank rune" detail="A modern addition to the set, standing for the unknown." value={options.blankRune} onChange={(v) => setOption('divination_blank_rune', v)} />
@@ -174,7 +216,7 @@ export default function DrawScreen() {
               key={i}
               icon="wheel"
               title={`${i + 1}. ${item.name}${item.reversed ? ', reversed' : ''}`}
-              detail={`${spread.positions[i]?.name} · ${meaningOf(item)?.meaning.keywords ?? ''}`}
+              detail={`${placeOf(spread, draw, i)?.name} · ${meaningOf(item)?.meaning.keywords ?? ''}`}
               last={i === draw.items.length - 1}
               onPress={() => setSelected(i)}
             />
@@ -184,6 +226,7 @@ export default function DrawScreen() {
 
       {draw && allShown && (
         <>
+          {spread.cast && <Body muted>{CAST_NOTE}</Body>}
           {spread.kind !== 'tarot' && <Body muted>{STAVE_NOTES[spread.kind]}</Body>}
           <Field label="What you make of it" value={interpretation} onChange={setInterpretation} placeholder="Your reading of the reading" multiline />
           <View style={ui.gapSmall}>

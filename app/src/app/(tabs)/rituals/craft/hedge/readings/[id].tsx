@@ -9,7 +9,8 @@ import { useReducedMotion } from '../../../../../../lib/accessibility/store';
 import { fullDate } from '../../../../../../lib/calendar';
 import { glossOf, methodLabel, normalizeReading, READINGS } from '../../../../../../lib/craft/hedge/readings';
 import { updateEntry, useCraft } from '../../../../../../lib/craft/store';
-import { drawOfReading, meaningOf } from '../../../../../../lib/divination/draw';
+import { customSpreads, SPREADS_COLLECTION } from '../../../../../../lib/divination/custom';
+import { drawOfReading, meaningOf, placeOf } from '../../../../../../lib/divination/draw';
 import { localDateKey } from '../../../../../../lib/rituals/lifecycle';
 import { type } from '../../../../../../theme';
 
@@ -23,7 +24,9 @@ export default function ReadingPage() {
   const [picked, setPicked] = useState<number | null>(null);
   const [width, setWidth] = useState(0);
   const still = useReducedMotion();
-  const laid = useMemo(() => (reading ? drawOfReading(reading) : null), [reading]);
+  // Your own spreads too, so a reading drawn from one lays out in its shape.
+  const { entries: mine } = useCraft<unknown>(SPREADS_COLLECTION);
+  const laid = useMemo(() => (reading ? drawOfReading(reading, customSpreads(mine)) : null), [reading, mine]);
 
   if (!raw || !reading) {
     return (
@@ -130,7 +133,7 @@ function DrawnMeaning({ laid, picked }: { laid: NonNullable<ReturnType<typeof dr
   const item = laid.draw.items[picked];
   const m = item ? meaningOf(item) : null;
   if (!m) return null;
-  const place = laid.spread.positions.length > 1 ? laid.spread.positions[picked] : null;
+  const place = laid.spread.positions.length > 1 ? placeOf(laid.spread, laid.draw, picked) : null;
   return (
     <Card accent>
       <SectionLabel>{place ? `${picked + 1} · ${place.name}` : laid.spread.label}</SectionLabel>

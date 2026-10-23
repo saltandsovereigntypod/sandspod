@@ -1783,15 +1783,16 @@ export const HELP: HelpSection[] = [
       {
         id: 'practice-draw',
         title: 'Draw tarot cards, runes or ogham',
-        summary: 'A card for the day, three cards, the Celtic Cross, runes or ogham staves, with what each means.',
+        summary: 'A card for the day, three cards, the Celtic Cross and many more spreads, runes or ogham staves, with what each means; or a spread of your own.',
         steps: [
           'Open My practice, then Hedge, then "Draw cards, runes or ogham". On Today, "Draw a card for the day" opens it too.',
-          'Choose Tarot, Runes or Ogham and a spread, and write your question if you have one.',
-          'Tap "Shuffle and draw", then tap each card to turn it over and read what it means in its place.',
-          'Write what you make of it, choose a day to come back to it, and tap "Keep this reading". It goes into your Readings.',
+          'Choose Tarot, Runes or Ogham. Tap the spread to see the others, grouped Quick, Classic, Moon & seasons, Deep work and Your spreads, each with a picture of its shape.',
+          'Tap "Shuffle and draw", then tap each card to turn it over and read what it means in its place. Big spreads scroll sideways; "Look closer" makes them bigger.',
+          'Write what you make of it, choose a day to come back to it, and tap "Keep this reading". It goes into your Readings, and lays out in its shape again when you open it.',
+          'To make your own spread, tap the spread, then "Make your own": name it, choose a shape (a line, a cross, an arc, a circle or a grid) and name each place.',
         ],
         href: '/rituals/craft/hedge/readings/draw',
-        keywords: ['tarot', 'draw a card', 'card of the day', 'daily card', 'celtic cross', 'three card spread', 'rune cast', 'ogham', 'reversed cards', 'blank rune'],
+        keywords: ['tarot', 'draw a card', 'card of the day', 'daily card', 'celtic cross', 'three card spread', 'rune cast', 'ogham', 'reversed cards', 'blank rune', 'spreads', 'horseshoe', 'tree of life', 'new moon spread', 'full moon spread', 'samhain spread', 'make your own spread', 'custom spread'],
       },
       {
         id: 'practice-ancestors',

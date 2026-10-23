@@ -36,6 +36,7 @@ import { addEntry, useCraft } from '../../../lib/craft/store';
 import { DREAM_ROUTES } from '../../../lib/grimoire/dreams';
 import { normalizeReading, READINGS } from '../../../lib/craft/hedge/readings';
 import { drawOnToday, todaysCard } from '../../../lib/divination/daily';
+import { keepsSouthernWheel, seasonalSpreads } from '../../../lib/divination/seasonal';
 import { deityLines } from '../../../lib/patron';
 import { hasHolyPage, holyRef, moonRef, principalRef } from '../../../lib/holy';
 import { forYou, forYouContext, myPractices } from '../../../lib/rituals/premade';
@@ -204,7 +205,7 @@ export default function Today() {
 
       <DreamCapture settings={settings} now={clock} reminderOn={reminders.settings.dreamMorning} />
       <PracticeCard settings={settings} place={place} now={clock} />
-      {drawOnToday(settings) && <CardOfTheDay now={clock} />}
+      {drawOnToday(settings) && <CardOfTheDay now={clock} south={keepsSouthernWheel(settings)} />}
       <DaySky today={today} sky={sky} here={here} now={clock} />
       <CorrespondencesCard today={today} />
       <Button
@@ -378,35 +379,53 @@ function LookBackDue({ journal, now }: { journal: JournalRow[]; now: Date }) {
 }
 
 /** A card for the day: one to draw, or the one you've kept today. Turned off in Settings → Calendars. */
-function CardOfTheDay({ now }: { now: Date }) {
+function CardOfTheDay({ now, south }: { now: Date; south: boolean }) {
   const { entries } = useCraft<unknown>(READINGS);
   const day = now.toDateString();
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- once a day
+  const seasonal = useMemo(() => seasonalSpreads(now, { south })[0] ?? null, [day, south]);
   const kept = useMemo(
     () => todaysCard(entries.map((e) => ({ ...e, data: normalizeReading(e.data) })), now),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- once a day, and when the readings change
     [entries, day],
   );
   return (
-    <Pressable
-      accessibilityRole="link"
-      accessibilityLabel={kept ? `Today’s card: ${kept.name}${kept.reversed ? ', reversed' : ''}. Opens the reading.` : 'Draw a card for the day'}
-      onPress={() =>
-        kept
-          ? router.navigate({ pathname: '/rituals/craft/hedge/readings/[id]', params: { id: kept.id } })
-          : router.navigate({ pathname: '/rituals/craft/hedge/readings/draw', params: { spread: 'daily' } })
-      }
-      style={({ pressed }) => [styles.lastTime, pressed && { opacity: 0.7 }]}
-    >
-      {kept ? (
-        <Text style={type.caption}>
-          {'Today’s card: '}
-          <Text style={styles.gold}>{`${kept.name}${kept.reversed ? ', reversed' : ''}`}</Text>
-          {' ›'}
-        </Text>
-      ) : (
-        <Text style={[type.caption, styles.gold]}>Draw a card for the day ›</Text>
+    <>
+      <Pressable
+        accessibilityRole="link"
+        accessibilityLabel={kept ? `Today’s card: ${kept.name}${kept.reversed ? ', reversed' : ''}. Opens the reading.` : 'Draw a card for the day'}
+        onPress={() =>
+          kept
+            ? router.navigate({ pathname: '/rituals/craft/hedge/readings/[id]', params: { id: kept.id } })
+            : router.navigate({ pathname: '/rituals/craft/hedge/readings/draw', params: { spread: 'daily' } })
+        }
+        style={({ pressed }) => [styles.lastTime, pressed && { opacity: 0.7 }]}
+      >
+        {kept ? (
+          <Text style={type.caption}>
+            {'Today’s card: '}
+            <Text style={styles.gold}>{`${kept.name}${kept.reversed ? ', reversed' : ''}`}</Text>
+            {' ›'}
+          </Text>
+        ) : (
+          <Text style={[type.caption, styles.gold]}>Draw a card for the day ›</Text>
+        )}
+      </Pressable>
+      {seasonal && (
+        <Pressable
+          accessibilityRole="link"
+          accessibilityLabel={`${seasonal.why}. Draw the ${seasonal.label} spread.`}
+          onPress={() => router.navigate({ pathname: '/rituals/craft/hedge/readings/draw', params: { spread: seasonal.spread } })}
+          style={({ pressed }) => [styles.lastTime, pressed && { opacity: 0.7 }]}
+        >
+          <Text style={type.caption}>
+            {`${seasonal.why}: `}
+            <Text style={styles.gold}>{seasonal.label}</Text>
+            {' ›'}
+          </Text>
+        </Pressable>
       )}
-    </Pressable>
+    </>
   );
 }
 
