@@ -40,10 +40,18 @@ The Rituals tab (`covens/coven/rituals.js`, `supabase/migrations/20261024000000_
 - **Book of Shadows.** Positions with `can_write_book` write drafts and suggest changes; those with `can_approve_book` (and leaders) publish them, and their own writing publishes straight away. Members read published pages only (`coven_book_pages`); drafts (`coven_book_drafts`) are seen by their authors and approvers.
 - **Petitions.** A member asks the circle to hold a petition (`ask_coven_petition`), which sets a candle for it on the shared altar. Members tend it once every twelve hours, with a few words if they like, which relights the candle. The asker (or a coven moderator) marks it answered or closes it, and the candle leaves the altar.
 
+## In the app
+
+The iOS and Android app (More → Covens, `app/src/app/(tabs)/more/covens/`) uses the same tables and database functions, so a coven is the same coven on both. It ships as an over-the-air update: no new native modules or packages.
+
+- **What's there**: the directory and your covens, your coven profile (with the 18+ and guidelines confirmation), a coven's page (about, creed and other pages, positions), joining and signing agreements (including re-signing a changed one), applying, the gathering, rituals and rites (RSVP, your turn, the step's altar action, finishing a step; leaders start, step back or ahead, and end), the shared altar (set candles and offerings, light, snuff, move), the Book of Shadows (read, write, approve), petitions (ask, tend, close) and members. Reporting and blocking work everywhere they do on the website.
+- **Still on the website** (the app opens it): founding a coven, managing it (pages, positions, members), reviewing applications, applying for a position (My path), planning rituals and their steps, and site moderation.
+- **Shared code**: `app/src/lib/covens/model.ts` mirrors `covens/coven-logic.js`; `api.ts` mirrors `coven-data.js`; `CovenContext.tsx` holds one coven's state and its one live connection; `reminders.ts` sets phone reminders a day and an hour before rites you're going (or might go) to, under their own notification source so moon reminders and coven reminders never clear each other.
+
 ## Account deletion
 
 `supabase/functions/delete-account` removes the person's coven profile, memberships, signatures, applications, advancement requests and messages. Covens they founded remain, with `founder_id` cleared; a site moderator can hand such a coven on (`transfer_coven`). Redeploy the function after this change.
 
 ## Testing
 
-`tests/covens.test.js` covers the shared rules and checks that every altar picture the page offers exists and passes the database's picture rule. The SQL was exercised against a local Postgres with a Supabase-like `auth` schema and `anon`/`authenticated` roles, as each kind of user.
+`tests/covens.test.js` covers the website's shared rules (and `app/tests/covens.test.ts` the app's) and checks that every altar picture the page offers exists and passes the database's picture rule. The SQL was exercised against a local Postgres with a Supabase-like `auth` schema and `anon`/`authenticated` roles, as each kind of user.
