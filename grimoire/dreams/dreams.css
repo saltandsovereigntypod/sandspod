@@ -1,0 +1,34 @@
+/* Dreams (/grimoire/dreams/…): the dream journal dressed as a page of the
+   Book of Shadows (grimoire/grimoire.css .book-page), on the shared
+   Sanctuary page pieces (css/sanctuary-pages.css, practice/practice.css). */
+
+.gd-dreams {
+  position: relative;
+  margin-top: 88px;
+  margin-bottom: 64px;
+  padding: clamp(1.25rem, 4vw, 3rem) clamp(1rem, 4vw, 3rem) clamp(2rem, 5vw, 3.5rem);
+  border: 1px solid rgba(185, 160, 93, 0.28);
+  border-radius: 1.15rem;
+  background:
+    radial-gradient(circle at 82% 8%, rgba(185, 160, 93, 0.08), transparent 18rem),
+    radial-gradient(circle at 14% 92%, rgba(111, 132, 101, 0.1), transparent 20rem),
+    rgba(8, 10, 8, 0.18);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+}
+
+/* The ornament under a page's title, as the Book of Shadows draws it. */
+.gd-dreams .pr-head::after {
+  content: "✦ ☽ ✦ ☾ ✦";
+  display: block;
+  margin-top: 14px;
+  color: rgba(185, 160, 93, 0.7);
+  letter-spacing: 0.4em;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 640px) {
+  .gd-dreams {
+    margin: 72px 12px 48px;
+    border-radius: 0.9rem;
+  }
+}

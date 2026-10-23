@@ -102,6 +102,8 @@
       subtitle: "Ritual Template", fields: [template.description, template.intention, template.ritual_template_steps],
       href: `/grimoire/?entity=${encodeURIComponent(`ritual-template:${template.id}`)}`, timestamp: template.updated_at || template.created_at
     }))]));
+    // Dreams, the Grimoire's built-in section (craft_entries `hedge.dreams`, as the app keeps them).
+    if (global.SaltCraft?.list) tasks.push(global.SaltCraft.list("hedge.dreams").then((records) => ["dreams", records.map((entry) => global.SanctuarySearch.createDreamResult(entry)).filter(Boolean)]));
     const activeSession = global.getStoredActiveRitualSession?.();
     if (activeSession?.id) tasks.push(Promise.resolve(["ritual-sessions", [{
       id: activeSession.id, group: "rituals", type: "ritual-session", title: activeSession.title || "Active Ritual",
@@ -167,6 +169,7 @@
     const supportedGroups = Object.entries(global.SanctuarySearch.GROUP_LABELS).filter(([key]) => {
       if (key === "library") return Boolean(global.Library);
       if (key === "pages") return Boolean(global.SanctuarySearchPageSource || location.pathname.includes("grimoire"));
+      if (key === "dreams") return Boolean(global.SaltCraft);
       if (key === "rituals") return typeof global.getMyRituals === "function";
       if (key === "templates") return typeof global.getRitualTemplates === "function";
       if (key === "apothecary") return typeof global.getApothecaryItems === "function";

@@ -2,6 +2,7 @@
   const GROUP_LABELS = {
     library: "Living Library",
     pages: "Book of Shadows",
+    dreams: "Dreams",
     rituals: "Rituals",
     templates: "Ritual Templates",
     apothecary: "Apothecary",
@@ -60,6 +61,20 @@
       action: item.action || null,
       destination: item.destination || { kind: "place-apothecary-item", itemId: item.id, href: `/altar/?placeApothecaryItem=${encodeURIComponent(item.id)}` },
       timestamp: item.updatedAt || item.updated_at || item.createdAt || item.created_at
+    });
+  }
+
+  /** A dream (craft_entries `hedge.dreams`) as a result: its words, symbols and the moon it came under. */
+  function createDreamResult(entry = {}) {
+    const dream = entry.data || {};
+    const moon = [dream.moonPhase, dream.moonSign].filter(Boolean).join(" in ");
+    return createResult({
+      id: entry.id, group: "dreams", source: "dreams", type: "dream", title: dream.title || "Untitled dream",
+      subtitle: [dream.date, moon].filter(Boolean).join(" · ") || "Dream",
+      aliases: Array.isArray(dream.symbols) ? dream.symbols : [],
+      fields: [dream.dream, dream.feelings, dream.symbols, moon, dream.lucid ? "lucid" : "", dream.recurring ? "recurring" : ""],
+      href: `/grimoire/dreams/dream/?id=${encodeURIComponent(entry.id || "")}`,
+      timestamp: entry.updatedAt || entry.createdAt
     });
   }
 
@@ -150,7 +165,7 @@
     return Boolean(isOpen) && requestId === currentRequestId;
   }
 
-  const api = { GROUP_LABELS, buildIndex, updateSource, getIndex, search, rankRecords, groupResults, resolveDestination, getRecent, isCurrentRequest, createResult, createApothecaryResult };
+  const api = { GROUP_LABELS, buildIndex, updateSource, getIndex, search, rankRecords, groupResults, resolveDestination, getRecent, isCurrentRequest, createResult, createApothecaryResult, createDreamResult };
   global.SanctuarySearch = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

@@ -32,8 +32,21 @@
     place: T.readPlace(storage),
     user: null,
     rituals: { plans: T.guestPlans(storage), ...T.guestRituals(storage) },
+    // The dream journal (craft_entries `hedge.dreams`), for the morning prompt.
+    dreams: [],
+    dreamKept: null,
+    dreamProblem: "",
     message: ""
   };
+
+  async function loadDreams() {
+    if (!window.SaltCraft || !C.dreams) return;
+    try {
+      state.dreams = (await window.SaltCraft.list(C.dreams.DREAMS)).map((e) => ({ ...e, data: C.dreams.normalizeDream(e.data) }));
+    } catch {
+      state.dreams = [];
+    }
+  }
 
   function initialSettings() {
     try {
@@ -140,6 +153,7 @@
       panels +
       workingCard(m) +
       horizonSection(today) +
+      dreamCard(m) +
       practiceCard(m) +
       daySkyCard(m) +
       correspondencesCard(today) +
@@ -237,6 +251,35 @@
       `<span class="td-practice-row__line${gold ? " td-gold" : ""}">${esc(line)}</span>` +
       (detail ? `<span class="sp-caption">${esc(detail)}</span>` : "") +
       `</span><span class="td-chev">${T.ICONS.chevron}</span></a>`
+    );
+  }
+
+  /**
+   * In the morning hours, for someone who keeps a dream journal: catch last
+   * night's dream in a line or two. It goes into the Grimoire's Dreams.
+   */
+  function dreamCard(m) {
+    if (!C.dreams || !window.SaltCraft) return "";
+    if (state.dreamKept) {
+      return (
+        `<section class="td-card td-card--working" aria-labelledby="td-dream-label"><h2 class="sp-eyebrow td-gold" id="td-dream-label">Last night’s dream</h2>` +
+        `<p>Kept in your Grimoire, with the moon it came under.</p>` +
+        `<div class="sp-actions"><a class="button button--ghost" href="/grimoire/dreams/edit/?id=${encodeURIComponent(state.dreamKept)}">Add symbols and feelings</a></div></section>`
+      );
+    }
+    const prompt = C.dreams.morningDreamPrompt(m.now, {
+      keepsHedge: C.premade.myPractices(m.settings).includes("hedge"),
+      reminderOn: T.dreamReminderOn(storage),
+      dreams: state.dreams
+    });
+    if (!prompt) return "";
+    return (
+      `<section class="td-card td-card--working" aria-labelledby="td-dream-label"><h2 class="sp-eyebrow td-gold" id="td-dream-label">${esc(prompt.title)}</h2>` +
+      `<p class="sp-caption">${esc(prompt.detail)}</p>` +
+      `<div class="sp-field"><label for="td-dream-text">What you remember</label><textarea id="td-dream-text" rows="3" placeholder="Even a fragment: a place, a face, a feeling" data-dream-text></textarea></div>` +
+      (state.dreamProblem ? `<p class="sp-notice" role="status">${esc(state.dreamProblem)}</p>` : "") +
+      `<div class="sp-actions"><button type="button" class="button button--primary" data-dream-keep>Keep it</button>` +
+      `<a class="button button--ghost" href="/grimoire/dreams/edit/">Write it in full</a></div></section>`
     );
   }
 
@@ -349,6 +392,28 @@
   // ── Events ─────────────────────────────────────────────────────────────
   T.bindToggles(root);
   root.addEventListener("click", async (event) => {
+    const keep = event.target.closest("[data-dream-keep]");
+    if (keep) {
+      const text = root.querySelector("[data-dream-text]")?.value || "";
+      if (!text.trim()) return;
+      keep.disabled = true;
+      keep.textContent = "Keeping it…";
+      try {
+        const entry = await window.SaltCraft.add(C.dreams.DREAMS, C.dreams.quickDream(text, new Date()));
+        state.dreamKept = entry.id;
+        state.dreamProblem = "";
+        await loadDreams();
+      } catch (error) {
+        console.error(error);
+        state.dreamProblem = "It couldn’t be kept just now. Your words are still here; try again in a moment.";
+        render();
+        const box = root.querySelector("[data-dream-text]");
+        if (box) box.value = text;
+        return;
+      }
+      render();
+      return;
+    }
     const button = event.target.closest("[data-use-location]");
     if (!button) return;
     button.disabled = true;
@@ -372,7 +437,7 @@
     refreshing = true;
     try {
       state.user = user;
-      await Promise.all([loadSettings(), loadRituals(user)]);
+      await Promise.all([loadSettings(), loadRituals(user), loadDreams()]);
     } finally {
       refreshing = false;
     }

@@ -1,7 +1,7 @@
 /*
  * Reminders (the app's Rituals → Moon reminders, also opened from Today and
- * More): moon phases, planned rituals, daily devotions and your deities'
- * sacred days. A browser can't ring at a set time, so the website hands
+ * More): moon phases, planned rituals, daily devotions, the morning dream
+ * nudge and your deities' sacred days. A browser can't ring at a set time, so the website hands
  * them to your own calendar: one .ics file, or Google Calendar links one by
  * one. Choices stay in this browser, as the app keeps them on the phone.
  *
@@ -107,6 +107,15 @@
       </div></section>`;
   }
 
+  function dreamsHtml() {
+    return `<section class="sp-section" id="gd-dreams" aria-labelledby="gd-dreams-label"><h2 class="sp-label" id="gd-dreams-label">Dreams</h2>
+      <div class="sp-card">
+        ${toggle("gd-dream-morning", "Last night’s dream", "A gentle morning nudge: write down last night’s dream", settings.dreamMorning, 'data-dream-morning')}
+        ${settings.dreamMorning ? timeField("gd-dream-morning-at", "Each morning at", settings.dreamMorningAt, 'data-minutes="dreamMorningAt"') : ""}
+        <p class="sp-caption">Two weeks of mornings at a time, for the <a class="gd-link" href="/grimoire/dreams/">Dreams</a> in your Grimoire.</p>
+      </div></section>`;
+  }
+
   function sacredHtml() {
     const sources = G.patron.sacredSources(appSettings);
     return `<section class="sp-section" aria-labelledby="gd-sacred"><h2 class="sp-label" id="gd-sacred">Your deities’ sacred days</h2>
@@ -193,7 +202,7 @@
     root.innerHTML = `${header({ title: "Reminders", eyebrow: "Kept in this browser", back: "/today/", backLabel: "Back to Today" })}
       <p class="sp-muted">No account needed. Choose the phases you want to hear about, and we’ll remind you before planned rituals.</p>
       <div class="sp-card sp-card--gold"><p>A browser can’t ring at a set time, so here your reminders go into your own calendar, which does the reminding. The Salt &amp; Sovereignty app can remind you on your phone instead.</p></div>
-      ${moonHtml()}${ritualsHtml()}${devotionHtml()}${sacredHtml()}${yourCalendarHtml()}${skyHtml()}`;
+      ${moonHtml()}${ritualsHtml()}${devotionHtml()}${dreamsHtml()}${sacredHtml()}${yourCalendarHtml()}${skyHtml()}`;
     if (focus) root.querySelector(focus)?.focus({ preventScroll: true });
   }
 
@@ -228,6 +237,7 @@
     if (t.hasAttribute("data-rituals")) return update({ rituals: t.checked });
     if (t.dataset.devotion) return update({ [t.dataset.devotion]: t.checked });
     if (t.hasAttribute("data-sacred")) return update({ sacredDays: t.checked });
+    if (t.hasAttribute("data-dream-morning")) return update({ dreamMorning: t.checked });
     if (t.hasAttribute("data-phase-time")) {
       const minutes = fromTime(t.value);
       if (minutes == null) return undefined;

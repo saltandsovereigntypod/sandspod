@@ -340,7 +340,14 @@
     return ["new", "firstQuarter", "full", "lastQuarter"].some((p) => phases[p] === true);
   }
 
+  /** The morning dream reminder (the app's Grimoire → Dreams; /reminders/ here), as this browser keeps it. */
+  function dreamReminderOn(storage) {
+    const saved = readJson(storage, "reminders.settings.v1", null);
+    return Boolean(saved && typeof saved === "object" && saved.dreamMorning === true);
+  }
+
   const api = {
+    dreamReminderOn,
     PLACE_KEY,
     moonRemindersOn,
     CONFIDENCE_LABEL,

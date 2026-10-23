@@ -3399,3 +3399,7 @@ body.library-page-open .book-toc .book-toc-section:not(.my-practice-shelf):not(.
 .deity-yours__badge { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
 .deity-yours__since, .deity-yours__hint { font-size: 0.88rem; color: var(--muted); }
 .deity-yours__actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Dreams, the built-in section (js/ui/dreams.js): each dream with the moon it came under. */
+.dreams-shelf-link { display: grid; gap: 0.1rem; text-decoration: none; }
+.dreams-shelf-link small { font-size: 0.78rem; opacity: 0.72; }

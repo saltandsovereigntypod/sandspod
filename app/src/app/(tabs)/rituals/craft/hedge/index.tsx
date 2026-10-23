@@ -9,6 +9,7 @@ import { ANCESTORS, ancestorDays, anniversaryWords, normalizeAncestor, upcomingA
 import { DREAMS, dreamMoon, normalizeDream } from '../../../../../lib/craft/hedge/dreams';
 import { comeBackTo, normalizeReading, READINGS } from '../../../../../lib/craft/hedge/readings';
 import { CRAFT_TOOLS } from '../../../../../lib/craft/practices';
+import { DREAM_ROUTES } from '../../../../../lib/grimoire/dreams';
 import { useCraft } from '../../../../../lib/craft/store';
 import { holidayChoice } from '../../../../../lib/holidays';
 import { PRACTICES } from '../../../../../lib/rituals/premade';
@@ -16,7 +17,7 @@ import { localDateKey } from '../../../../../lib/rituals/lifecycle';
 import { useMySettings } from '../../../../../lib/settings/store';
 import { type } from '../../../../../theme';
 
-const ROUTES = ['/rituals/craft/hedge/dreams', '/rituals/craft/hedge/readings', '/rituals/craft/hedge/ancestors'];
+const ROUTES = [DREAM_ROUTES.journal, '/rituals/craft/hedge/readings', '/rituals/craft/hedge/ancestors'];
 
 // Hedge practice: the dream journal, a log of readings, and the beloved dead.
 export default function HedgePractice() {

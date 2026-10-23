@@ -11,6 +11,8 @@ export * as traditionDay from '../../app/src/lib/traditionDay.ts';
 export * as today from '../../app/src/lib/today.ts';
 export * as calendars from '../../app/src/lib/calendars/index.ts';
 export * as practiceDay from '../../app/src/lib/craft/today.ts';
+// The morning prompt to catch last night's dream (Grimoire → Dreams).
+export * as dreams from '../../app/src/lib/craft/hedge/dreams.ts';
 export * as patron from '../../app/src/lib/patron/index.ts';
 export * as traditions from '../../app/src/lib/library/traditions.ts';
 // The sky: Today's sky card and the Sky page.
