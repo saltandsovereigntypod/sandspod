@@ -150,6 +150,27 @@ export function OghamStave({ glyph, width, height }: { glyph: string; width: num
   );
 }
 
+/** A rune or ogham letter in gold on a small tile, for lists (an ogham letter stands upright, as on a stave). */
+export function StaveGlyph({ glyph, kind, size }: { glyph: string; kind: 'runes' | 'ogham'; size: number }) {
+  const [loaded] = useFonts(STAVE_FONTS);
+  return (
+    <View style={[styles.glyphTile, { width: size, height: size * 1.3 }]} accessible={false}>
+      {!!glyph && (
+        <Text
+          style={[
+            styles.glyph,
+            loaded && (kind === 'runes' ? styles.runic : styles.ogham),
+            { fontSize: size * 0.62, lineHeight: size * 0.8 },
+            kind === 'ogham' && styles.glyphUpright,
+          ]}
+        >
+          {glyph}
+        </Text>
+      )}
+    </View>
+  );
+}
+
 const fillAll = { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 } as const;
 
 const styles = StyleSheet.create({
@@ -215,6 +236,17 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     borderColor: 'rgba(40,22,8,0.18)',
   },
+  glyphTile: {
+    borderRadius: 6,
+    backgroundColor: colors.surfaceRaised,
+    borderWidth: 1,
+    borderColor: colors.hairline,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  glyph: { color: colors.gold, textAlign: 'center' },
+  glyphUpright: { transform: [{ rotate: '-90deg' }] },
   staveLetter: { position: 'absolute', alignItems: 'center', justifyContent: 'center', transform: [{ rotate: '-90deg' }] },
   cut: {
     color: '#2a180a',

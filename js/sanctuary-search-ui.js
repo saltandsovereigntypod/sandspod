@@ -81,10 +81,18 @@
     return [...builtIn, ...custom];
   }
 
+  /* Tarot, runes and ogham live in Traditional Information, so they follow its setting. */
+  function divinationRecords() {
+    const core = global.SaltCore?.["divination-library"];
+    const settings = typeof global.getLocalMySettings === "function" ? global.getLocalMySettings() : {};
+    if (!core || settings.library_traditional_enabled === false) return [];
+    return global.SanctuarySearch.createDivinationResults(core);
+  }
+
   // Refreshes the sources kept in this browser, leaving the ones loaded from the
   // account (rituals, templates) in place so My Journey and search keep them.
   function rebuildLocalIndex() {
-    const local = { library: libraryRecords(), pages: pageRecords(), apothecary: recipeRecords(), currentAltar: objectRecords(), cabinet: cabinetRecords() };
+    const local = { library: libraryRecords(), pages: pageRecords(), apothecary: recipeRecords(), currentAltar: objectRecords(), cabinet: cabinetRecords(), divination: divinationRecords() };
     Object.entries(local).forEach(([name, records]) => global.SanctuarySearch.updateSource(name, records));
   }
 
@@ -170,6 +178,7 @@
       if (key === "library") return Boolean(global.Library);
       if (key === "pages") return Boolean(global.SanctuarySearchPageSource || location.pathname.includes("grimoire"));
       if (key === "dreams") return Boolean(global.SaltCraft);
+      if (key === "divination") return Boolean(global.SaltCore?.["divination-library"]);
       if (key === "rituals") return typeof global.getMyRituals === "function";
       if (key === "templates") return typeof global.getRitualTemplates === "function";
       if (key === "apothecary") return typeof global.getApothecaryItems === "function";

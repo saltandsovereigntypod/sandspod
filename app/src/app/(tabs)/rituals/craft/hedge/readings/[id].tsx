@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
+import { ReadMore } from '../../../../../../components/divination/ReadMore';
 import { SpreadTable } from '../../../../../../components/divination/Spread';
 import { Body, Card, Chip, Chips, Field, RitualScreen, SectionLabel, Title, ui } from '../../../../../../components/rituals/ui';
 import { useReducedMotion } from '../../../../../../lib/accessibility/store';
@@ -140,6 +141,7 @@ function DrawnMeaning({ laid, picked }: { laid: NonNullable<ReturnType<typeof dr
       <Text style={type.cardTitle}>{`${m.glyph ? `${m.glyph}  ` : ''}${m.name}${m.reversed ? ', reversed' : ''}`}</Text>
       <Text style={[type.body, ui.gold]}>{m.meaning.keywords}</Text>
       <Body>{m.meaning.text}</Body>
+      <ReadMore name={m.name} />
     </Card>
   );
 }

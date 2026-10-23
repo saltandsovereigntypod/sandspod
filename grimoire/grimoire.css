@@ -3446,3 +3446,136 @@ body.library-page-open .book-toc .book-toc-section:not(.my-practice-shelf):not(.
   display: block;
   border-radius: 6px;
 }
+
+/* =========================================================
+   Traditional Information → Divination (grimoire/js/ui/divination.js)
+   ========================================================= */
+
+.divination-shelf {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+  padding-left: 0.6rem;
+  border-left: 2px solid rgba(185, 160, 93, 0.35);
+}
+
+.divination-shelf__title,
+.divination-subgroup {
+  margin: 0.35rem 0 0;
+  color: var(--gold);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.divination-count {
+  margin-left: 0.3rem;
+  opacity: 0.7;
+}
+
+.divination-shelf .divination-note {
+  margin: 0.15rem 0 0.35rem;
+  color: var(--cream);
+  font-size: 0.85rem;
+  letter-spacing: normal;
+  text-transform: none;
+  opacity: 0.8;
+}
+
+.divination-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-align: left;
+}
+
+.divination-link__text {
+  display: grid;
+  min-width: 0;
+}
+
+.divination-link__text small {
+  opacity: 0.75;
+  font-size: 0.8rem;
+}
+
+.divination-thumb {
+  flex: none;
+  width: 24px;
+  height: 41px;
+  border-radius: 3px;
+  object-fit: cover;
+  background: #f4ecd8;
+}
+
+.divination-glyph {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 31px;
+  border: 1px solid rgba(185, 160, 93, 0.28);
+  border-radius: 5px;
+  color: var(--gold);
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.divination-glyph--runes {
+  font-family: "Noto Sans Runic", serif;
+}
+
+.divination-glyph--ogham {
+  font-family: "Noto Sans Ogham", serif;
+}
+
+/* An ogham letter stands upright, as cut on a stave, read from the bottom up. */
+.divination-glyph--ogham {
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+}
+
+.divination-hero {
+  width: min(280px, 62%);
+}
+
+.divination-hero--runes,
+.divination-hero--ogham {
+  display: grid;
+  place-items: center;
+  margin: 0 auto 1.5rem;
+}
+
+.divination-hero .divination-glyph {
+  width: 120px;
+  height: 140px;
+  border-radius: 45%;
+  font-size: 4.5rem;
+}
+
+.divination-hero--ogham .divination-glyph {
+  width: 64px;
+  height: 220px;
+  border-radius: 1.2rem;
+}
+
+.divination-words,
+.divination-gloss {
+  text-align: center;
+}
+
+.divination-gloss {
+  margin-top: -0.5rem;
+  opacity: 0.8;
+}
+
+.divination-section p {
+  max-width: 68ch;
+  line-height: 1.7;
+}
+
+.divination-section--question p {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.35rem;
+  font-style: italic;
+}
