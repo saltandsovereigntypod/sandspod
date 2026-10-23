@@ -1,4 +1,6 @@
--- Not yet applied. Apply to sandspod-dev (the live project) before the coven pages go live.
+-- Applied to sandspod-dev on 2026-10-23 (migrations "covens_1_tables", "covens_2a_permission_helpers",
+-- "covens_2b_guard_functions"; the triggers, policies and functions went in by SQL because the
+-- migration tool timed out on them).
 -- Digital covens: a discoverable directory of covens that witches can found,
 -- join or apply to, with the coven's own ranks, rules, creed, requirements and
 -- signed agreements, applications for membership and for higher positions, a
@@ -46,6 +48,7 @@ create or replace function public.coven_client_write()
 returns boolean
 language sql
 stable
+set search_path = public
 as $$
   select current_user in ('authenticated', 'anon');
 $$;
@@ -404,6 +407,7 @@ $$;
 create or replace function public.touch_coven_row()
 returns trigger
 language plpgsql
+set search_path = public
 as $$
 begin
   new.updated_at := now();
@@ -1285,6 +1289,20 @@ grant execute on function
   public.moderate_coven(uuid, text, text),
   public.set_community_moderator(text, boolean),
   public.list_community_moderators()
+to authenticated;
+
+-- Internal helpers: policies for signed-in people use them, so only they may
+-- call them. is_coven_member, is_community_moderator and member_count stay
+-- callable by everyone because the public directory's policies need them.
+revoke execute on function
+  public.coven_can_grant(uuid, uuid), public.coven_in_good_standing(uuid), public.coven_level(uuid, uuid),
+  public.coven_permission(uuid, text), public.coven_require_profile(), public.coven_seat_available(uuid),
+  public.coven_unsigned_agreements(uuid, uuid), public.is_community_banned(uuid)
+from public, anon;
+grant execute on function
+  public.coven_can_grant(uuid, uuid), public.coven_in_good_standing(uuid), public.coven_level(uuid, uuid),
+  public.coven_permission(uuid, text), public.coven_require_profile(), public.coven_seat_available(uuid),
+  public.coven_unsigned_agreements(uuid, uuid), public.is_community_banned(uuid)
 to authenticated;
 
 -- ---------------------------------------------------------------------------
