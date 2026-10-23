@@ -4,6 +4,8 @@
 // collection `altar.spells`. A missed day is never a failure: the spell simply
 // waits, and the next tending is the next step.
 
+import { blankAnswers } from '../../rituals/lifecycle.ts';
+import type { JournalAnswers } from '../../rituals/types.ts';
 import { dayKey, daysBetween } from '../reading/correspondence.ts';
 
 export const SPELLS_COLLECTION = 'altar.spells';
@@ -168,3 +170,20 @@ export function spellsForAltar<T extends { data: SpellEntry }>(entries: T[], alt
 
 /** Spells worked with one object, still open. */
 export const openSpellsFor = (spells: SpellEntry[], objectUid: string) => spells.filter((s) => s.objectUid === objectUid && !isClosed(s));
+
+/**
+ * The ritual journal's answers for a closed spell, so it can be looked back
+ * on ("Did it work?") like any ritual (saveJournal({ session: null, answers, lookBack })).
+ */
+export function spellJournalAnswers(spell: SpellEntry, now: Date): JournalAnswers {
+  const info = SPELL_KINDS[spell.kind] ?? SPELL_KINDS.custom;
+  const tended = ticksOf(spell);
+  const notes = tended.filter((t) => t.note).map((t) => `Day ${t.day}: ${t.note}`);
+  return {
+    ...blankAnswers(null, now),
+    title: spell.title,
+    intention: spell.intention ?? '',
+    what_happened_during: [`${info.label}, tended ${tended.length} of ${spell.days} days.`, ...notes].join('\n'),
+    feelings_after: spell.reflection ?? '',
+  };
+}

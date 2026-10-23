@@ -233,6 +233,18 @@ function createMySanctuaryPanel() {
             <textarea name="notes" rows="5"></textarea>
           </label>
 
+          <label>
+            Did it work? Look back
+            <select name="look_back">
+              <option value="suggested" selected>At the moon that suits it</option>
+              <option value="full_moon">At the next full moon</option>
+              <option value="new_moon">At the next new moon</option>
+              <option value="week">In a week</option>
+              <option value="month">In a month</option>
+              <option value="">Not needed</option>
+            </select>
+          </label>
+
           <button class="button button--primary" type="submit">
             Save Ritual
           </button>

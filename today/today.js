@@ -152,6 +152,7 @@
       header +
       panels +
       workingCard(m) +
+      lookBackCard(m) +
       horizonSection(today) +
       dreamCard(m) +
       practiceCard(m) +
@@ -368,6 +369,25 @@
       row("Incense", c.incense) +
       row("Candle", c.candle) +
       `</section>`
+    );
+  }
+
+  /** "Did it work?" once a ritual or spell's look-back day has come; answered on the journal page. */
+  function lookBackCard(m) {
+    let due = [];
+    try {
+      due = C.lookBack.dueLookBacks(state.rituals.journal || [], m.now);
+    } catch {
+      due = [];
+    }
+    if (!due.length) return "";
+    const first = due[0];
+    return (
+      `<section class="td-card td-card--working" aria-label="Did it work?"><div class="td-working-text">` +
+      `<p class="sp-eyebrow td-gold">Did it work?</p>` +
+      `<h2 class="td-card__title">${esc(first.title || "Untitled Ritual")}</h2>` +
+      `<p class="sp-caption">${esc(due.length > 1 ? `Its look-back day has come, and ${due.length - 1} more are waiting.` : "Its look-back day has come. Yes, partly, not yet or no?")}</p>` +
+      `</div><a class="button button--primary" href="/rituals/journal/insights/#did-it-work">Look back</a></section>`
     );
   }
 

@@ -2,6 +2,7 @@
 // be tested; the notifier hands the result to expo-notifications.
 
 import { PRINCIPAL_NAMES, signAtSyzygy, upcomingPhases, type PrincipalPhase } from '../moon.ts';
+import { dateFromKey } from '../rituals/lifecycle.ts';
 import { planStart } from '../rituals/plans.ts';
 import type { RitualPlan } from '../rituals/types.ts';
 import { dateKey, devotionFor } from '../craft/solitary/devotion.ts';
@@ -26,6 +27,8 @@ export type ReminderSettings = {
   rituals: boolean;
   /** How long before a planned ritual. */
   ritualLeadMinutes: number;
+  /** Ask "Did it work?" on the day you chose to look back on a ritual or spell. */
+  lookBacks: boolean;
   /** Daily devotion (My practice → Solitary): a morning and an evening nudge. */
   devotionMorning: boolean;
   /** Minutes after midnight. */
@@ -53,6 +56,7 @@ export const DEFAULT_SETTINGS: ReminderSettings = {
   notes: { new: '', firstQuarter: '', full: '', lastQuarter: '' },
   rituals: true,
   ritualLeadMinutes: 60,
+  lookBacks: true,
   devotionMorning: false,
   devotionMorningAt: 7 * 60,
   devotionEvening: false,
@@ -95,6 +99,7 @@ export function normalizeSettings(raw: unknown): ReminderSettings {
     notes,
     rituals: value.rituals !== false,
     ritualLeadMinutes: Number.isFinite(lead) && lead >= 0 && lead <= 24 * 60 ? lead : DEFAULT_SETTINGS.ritualLeadMinutes,
+    lookBacks: value.lookBacks !== false,
     devotionMorning: value.devotionMorning === true,
     devotionMorningAt: minuteOfDay(value.devotionMorningAt, DEFAULT_SETTINGS.devotionMorningAt),
     devotionEvening: value.devotionEvening === true,
@@ -112,13 +117,13 @@ function minuteOfDay(raw: unknown, fallback: number): number {
 }
 
 export function anyReminders(settings: ReminderSettings): boolean {
-  return settings.rituals || settings.devotionMorning || settings.devotionEvening || settings.sacredDays || settings.dreamMorning || PHASE_ORDER.some((p) => settings.phases[p]);
+  return settings.rituals || settings.lookBacks || settings.devotionMorning || settings.devotionEvening || settings.sacredDays || settings.dreamMorning || PHASE_ORDER.some((p) => settings.phases[p]);
 }
 
 export type Reminder = {
   /** Stable per event, so rescheduling never duplicates. */
   key: string;
-  kind: 'moon' | 'ritual' | 'devotion' | 'sacred' | 'dream';
+  kind: 'moon' | 'ritual' | 'devotion' | 'sacred' | 'dream' | 'lookback';
   at: Date;
   title: string;
   body: string;
@@ -155,8 +160,18 @@ function leadText(minutes: number): string {
   return hours === 1 ? 'in an hour' : `in ${hours} hours`;
 }
 
+/** A look-back day to ask "Did it work?" on (lookBack.ts lookBackReminder). */
+export type LookBackReminderSource = { key: string; id: string; date: string; title: string; body: string };
+
 /** Every reminder due after `now` within the horizon, soonest first, capped. */
-export function buildSchedule(settings: ReminderSettings, plans: RitualPlan[], now: Date, horizonDays = HORIZON_DAYS, sacred: SacredReminderSource[] = []): Reminder[] {
+export function buildSchedule(
+  settings: ReminderSettings,
+  plans: RitualPlan[],
+  now: Date,
+  horizonDays = HORIZON_DAYS,
+  sacred: SacredReminderSource[] = [],
+  lookBacks: LookBackReminderSource[] = [],
+): Reminder[] {
   const horizon = now.getTime() + horizonDays * 86_400_000;
   const reminders: Reminder[] = [];
 
@@ -270,6 +285,22 @@ export function buildSchedule(settings: ReminderSettings, plans: RitualPlan[], n
         title: 'Last night’s dream',
         body: 'Write down last night’s dream, before it fades.',
         url: '/grimoire/dreams/edit',
+      });
+    }
+  }
+
+  // "Did it work?" on each look-back day, at the time chosen for moon reminders.
+  if (settings.lookBacks) {
+    for (const lookBack of lookBacks) {
+      const day = dateFromKey(lookBack.date);
+      if (!day) continue;
+      reminders.push({
+        key: lookBack.key,
+        kind: 'lookback',
+        at: atTime(day, settings.phaseHour, settings.phaseMinute),
+        title: lookBack.title,
+        body: lookBack.body,
+        url: `/rituals/journal/${lookBack.id}`,
       });
     }
   }
