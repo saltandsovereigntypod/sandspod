@@ -53,7 +53,7 @@ test("Today on the site can offer a spread for the time", () => {
 });
 
 test("the spread page is wired to the editor view", () => {
-  const html = fs.readFileSync(path.join(__dirname, "../practice/hedge/readings/spread/index.html"), "utf8");
+  const html = fs.readFileSync(path.join(__dirname, "../divination/spread/index.html"), "utf8");
   assert.match(html, /data-view="hedge-spread"/);
   assert.match(html, /\/js\/core\/divination\.js/);
   const hedge = fs.readFileSync(path.join(__dirname, "../practice/hedge/hedge.js"), "utf8");

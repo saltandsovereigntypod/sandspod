@@ -1,5 +1,5 @@
 /*
- * The sigil maker (/practice/eclectic/sigil/): a statement of intent made into
+ * The sigil maker (/sigil/, open to every practice; the old /practice/eclectic/sigil/ redirects here): a statement of intent made into
  * one mark, by the letter method, on a planetary square, or drawn by hand; ink
  * on aged paper. The app's screen is app/src/components/sigil/SigilMaker.tsx;
  * the logic is the app's own, from js/core/sigil.js. Sigils are kept in
@@ -212,9 +212,9 @@
       : "";
 
     return [
-      fromGrimoire ? kit.back("/grimoire/", "Your Grimoire") : kit.back(kit.href.practice("eclectic"), "Eclectic"),
+      fromGrimoire ? kit.back("/grimoire/", "Your Grimoire") : kit.back("/rituals/", "Rituals"),
       kit.head({
-        eyebrow: fromGrimoire ? "Grimoire" : "Eclectic",
+        eyebrow: fromGrimoire ? "Grimoire" : "For every practice",
         title: "Sigil maker",
         lede: "A sigil is an intent folded into a single mark. You write what you want, take the words apart, and build a shape from what is left, so the mind can hold the wish without turning the words over and over."
       }),

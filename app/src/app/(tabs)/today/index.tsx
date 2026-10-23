@@ -396,8 +396,8 @@ function CardOfTheDay({ now, south }: { now: Date; south: boolean }) {
         accessibilityLabel={kept ? `Today’s card: ${kept.name}${kept.reversed ? ', reversed' : ''}. Opens the reading.` : 'Draw a card for the day'}
         onPress={() =>
           kept
-            ? router.navigate({ pathname: '/rituals/craft/hedge/readings/[id]', params: { id: kept.id } })
-            : router.navigate({ pathname: '/rituals/craft/hedge/readings/draw', params: { spread: 'daily' } })
+            ? router.navigate({ pathname: '/rituals/divination/[id]', params: { id: kept.id } })
+            : router.navigate({ pathname: '/rituals/divination/draw', params: { spread: 'daily' } })
         }
         style={({ pressed }) => [styles.lastTime, pressed && { opacity: 0.7 }]}
       >
@@ -415,7 +415,7 @@ function CardOfTheDay({ now, south }: { now: Date; south: boolean }) {
         <Pressable
           accessibilityRole="link"
           accessibilityLabel={`${seasonal.why}. Draw the ${seasonal.label} spread.`}
-          onPress={() => router.navigate({ pathname: '/rituals/craft/hedge/readings/draw', params: { spread: seasonal.spread } })}
+          onPress={() => router.navigate({ pathname: '/rituals/divination/draw', params: { spread: seasonal.spread } })}
           style={({ pressed }) => [styles.lastTime, pressed && { opacity: 0.7 }]}
         >
           <Text style={type.caption}>

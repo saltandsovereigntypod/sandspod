@@ -23,11 +23,12 @@
   const url = {
     // The dream journal is a section of the Grimoire now (grimoire/dreams/).
     dreams: "/grimoire/dreams/",
-    readings: kit.href.tool("hedge", "readings"),
-    reading: (x) => kit.href.tool("hedge", "readings/reading", `id=${encodeURIComponent(x)}`),
-    readingEdit: (x) => kit.href.tool("hedge", "readings/edit", x ? `id=${encodeURIComponent(x)}` : ""),
-    draw: (spread) => kit.href.tool("hedge", "readings/draw", spread ? `spread=${encodeURIComponent(spread)}` : ""),
-    spreadEdit: (x, kind) => kit.href.tool("hedge", "readings/spread", x ? `id=${encodeURIComponent(x)}` : kind ? `kind=${encodeURIComponent(kind)}` : ""),
+    // Divination is open to every practice, at /divination/ (the app's /rituals/divination).
+    readings: "/divination/",
+    reading: (x) => `/divination/reading/?id=${encodeURIComponent(x)}`,
+    readingEdit: (x) => `/divination/edit/${x ? `?id=${encodeURIComponent(x)}` : ""}`,
+    draw: (spread) => `/divination/draw/${spread ? `?spread=${encodeURIComponent(spread)}` : ""}`,
+    spreadEdit: (x, kind) => `/divination/spread/${x ? `?id=${encodeURIComponent(x)}` : kind ? `?kind=${encodeURIComponent(kind)}` : ""}`,
     ancestors: kit.href.tool("hedge", "ancestors"),
     person: (x) => kit.href.tool("hedge", "ancestors/person", `id=${encodeURIComponent(x)}`),
     personEdit: (x) => kit.href.tool("hedge", "ancestors/edit", x ? `id=${encodeURIComponent(x)}` : "")
@@ -90,7 +91,7 @@
         "Tools",
         `${kit.list(practices.CRAFT_TOOLS.hedge.map((t, i) => kit.row({ url: paths[i], title: t.title, detail: details[i] ?? t.detail })))}${kit.list([
           kit.row({ url: url.draw(), title: "Draw cards, runes or ogham", detail: "A card for the day, the Celtic Cross and many more spreads, or one of your own" })
-        ])}`,
+        ])}${kit.muted("Readings and draws belong to every practice, so they live under Divination in the menu too.")}`,
         { id: "tools" }
       ),
       due.length
@@ -119,9 +120,13 @@
     const repeats = R.frequentDraws(readings, 6);
     const used = R.METHODS.filter((m) => readings.some((e) => e.data.method === m.id));
     return [
-      kit.back(kit.href.practice("hedge"), "Hedge"),
-      kit.head({ eyebrow: kit.plural(readings.length, "reading", "readings"), title: "Readings" }),
-      kit.actions([kit.button({ label: "Draw cards, runes or ogham", url: url.draw(), primary: true }), kit.button({ label: "Log a reading", url: url.readingEdit(), ghost: true })]),
+      kit.back("/rituals/", "Rituals"),
+      kit.head({ eyebrow: readings.length ? kit.plural(readings.length, "reading", "readings") : "For every practice", title: "Divination" }),
+      kit.actions([
+        kit.button({ label: "Draw cards, runes or ogham", url: url.draw(), primary: true }),
+        kit.button({ label: "Log a reading", url: url.readingEdit(), ghost: true }),
+        kit.button({ label: "Make a spread", url: url.spreadEdit(), ghost: true })
+      ]),
       !readings.length
         ? kit.card(
             kit.p(
@@ -653,7 +658,7 @@
     const editing = Dv.custom.entryIdOfSpread(spread.id);
     return [
       back,
-      kit.head({ eyebrow: "Draw · Hedge readings", title: kind.label }),
+      kit.head({ eyebrow: "Draw · Divination", title: kind.label }),
       kit.section(
         "What to draw",
         `${kit.chips(

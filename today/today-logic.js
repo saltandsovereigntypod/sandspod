@@ -117,6 +117,13 @@
       return ref ? `/library/entry/?entity=${encodeURIComponent(id.split(":")[2].includes(".") ? id : ref)}` : "/library/";
     }
     // Pages the website keeps somewhere else (as help/web-notes.js maps them).
+    // Divination and the sigil maker, open to every practice (as help/web-notes.js maps them).
+    const divination = path.replace(/\/$/, "").match(/^\/rituals\/divination(?:\/([^/]+))?$/);
+    if (divination) {
+      const page = divination[1] ? decodeURIComponent(divination[1]) : "";
+      if (page && !["draw", "edit", "spread"].includes(page)) params.id = page;
+      path = page ? `/divination/${["draw", "edit", "spread"].includes(page) ? page : "reading"}/` : "/divination/";
+    } else if (path.replace(/\/$/, "") === "/rituals/sigil") path = "/sigil/";
     if (path === "/rituals/craft") return "/practice/";
     if (path.startsWith("/rituals/craft/")) return `/practice/${path.slice("/rituals/craft/".length).replace(/\/$/, "")}/`;
     if (path === "/today/reminders" || path === "/rituals/reminders" || path === "/more/reminders") return "/reminders/";

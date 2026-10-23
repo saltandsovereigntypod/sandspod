@@ -97,6 +97,14 @@
       ${activeCard}
       ${dueCards}
       ${nextCard}
+      <section class="sp-section" aria-labelledby="rt-divination">
+        <h2 class="sp-label" id="rt-divination">Divination &amp; sigils</h2>
+        <nav class="sp-list" aria-label="Divination and sigils">
+          ${UI.row({ href: "/divination/draw/", title: "Draw cards, runes or ogham", detail: "A card for the day, the Celtic Cross and many more spreads, or one of your own" })}
+          ${UI.row({ href: "/divination/", title: "Your readings", detail: "Every reading you’ve kept, and the ones to come back to" })}
+          ${UI.row({ href: "/sigil/", title: "Sigil maker", detail: "An intent made into one mark, from its letters or a planetary square" })}
+        </nav>
+      </section>
       ${laterList}
       ${tools}
       <section class="sp-section" aria-labelledby="rt-journal">

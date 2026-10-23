@@ -328,14 +328,14 @@
     // A spread for the time: the new or full moon, or Samhain (the app's CardOfTheDay too).
     const time = C.seasonal ? C.seasonal.seasonalSpreads(m.now, { south: C.seasonal.keepsSouthernWheel(state.settings) })[0] : null;
     const seasonal = time
-      ? `<a class="td-last sp-caption" href="/practice/hedge/readings/draw/?spread=${encodeURIComponent(time.spread)}" aria-label="${esc(`${time.why}. Draw the ${time.label} spread.`)}"><span>${esc(
+      ? `<a class="td-last sp-caption" href="/divination/draw/?spread=${encodeURIComponent(time.spread)}" aria-label="${esc(`${time.why}. Draw the ${time.label} spread.`)}"><span>${esc(
           time.why
         )}: <span class="td-gold">${esc(time.label)}</span> ›</span></a>`
       : "";
-    if (!kept) return `<a class="td-last sp-caption td-gold" href="/practice/hedge/readings/draw/?spread=daily">Draw a card for the day ›</a>${seasonal}`;
+    if (!kept) return `<a class="td-last sp-caption td-gold" href="/divination/draw/?spread=daily">Draw a card for the day ›</a>${seasonal}`;
     const name = `${kept.name}${kept.reversed ? ", reversed" : ""}`;
     return (
-      `<a class="td-last sp-caption" href="/practice/hedge/readings/reading/?id=${encodeURIComponent(kept.id)}" aria-label="${esc(`Today’s card: ${name}. Opens the reading.`)}">` +
+      `<a class="td-last sp-caption" href="/divination/reading/?id=${encodeURIComponent(kept.id)}" aria-label="${esc(`Today’s card: ${name}. Opens the reading.`)}">` +
       `<span>Today’s card: <span class="td-gold">${esc(name)}</span> ›</span></a>${seasonal}`
     );
   }
