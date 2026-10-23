@@ -2,8 +2,11 @@
 // little one way and the objects a little less, so the altar has depth, and
 // candle flames lean against the tilt as real ones would. Tilt is measured
 // from however you're holding the phone (that slowly becomes the new rest),
-// so it never needs holding flat. Off with Reduce Motion or Tilt depth.
+// so it never needs holding flat, and along the screen as it's turned: in
+// the full-screen altar, sideways, it reads the phone's sideways axes (which
+// way round from gravity). Off with Reduce Motion or Tilt depth.
 
+import * as ScreenOrientation from 'expo-screen-orientation';
 import { Accelerometer } from 'expo-sensors';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Animated, Platform } from 'react-native';
@@ -39,6 +42,17 @@ export function useTiltSource(on: boolean): Tilt | null {
     let now = { x: 0, y: 0 };
     let sub: { remove: () => void } | null = null;
     let stopped = false;
+    // Whether the screen is turned sideways (the full-screen altar); a turn starts the rest afresh.
+    let landscape = false;
+    const setTurned = (o: ScreenOrientation.Orientation) => {
+      const next = o === ScreenOrientation.Orientation.LANDSCAPE_LEFT || o === ScreenOrientation.Orientation.LANDSCAPE_RIGHT;
+      if (next !== landscape) rest = null;
+      landscape = next;
+    };
+    void ScreenOrientation.getOrientationAsync()
+      .then(setTurned)
+      .catch(() => {});
+    const turns = ScreenOrientation.addOrientationChangeListener((e) => setTurned(e.orientationInfo.orientation));
     void Accelerometer.isAvailableAsync()
       .then((available) => {
         if (!available || stopped) return;
@@ -46,8 +60,14 @@ export function useTiltSource(on: boolean): Tilt | null {
         sub = Accelerometer.addListener(({ x, y }) => {
           if (!rest) rest = { x, y };
           rest = { x: rest.x + (x - rest.x) * SETTLE, y: rest.y + (y - rest.y) * SETTLE };
-          const tx = Math.max(-1, Math.min(1, (x - rest.x) / FULL));
-          const ty = Math.max(-1, Math.min(1, (y - rest.y) / FULL));
+          // The screen's up, in the phone's own axes: along its length upright, along its width
+          // sideways, pointing away from whichever edge gravity pulls toward. Its right is a quarter turn from up.
+          const up = landscape ? { x: rest.x > 0 ? -1 : 1, y: 0 } : { x: 0, y: 1 };
+          const right = { x: up.y, y: -up.x };
+          const dx = x - rest.x;
+          const dy = y - rest.y;
+          const tx = Math.max(-1, Math.min(1, (dx * right.x + dy * right.y) / FULL));
+          const ty = Math.max(-1, Math.min(1, (dx * up.x + dy * up.y) / FULL));
           now = { x: now.x + (tx - now.x) * SMOOTH, y: now.y + (ty - now.y) * SMOOTH };
           tilt.x.setValue(now.x);
           tilt.y.setValue(now.y);
@@ -57,6 +77,7 @@ export function useTiltSource(on: boolean): Tilt | null {
     return () => {
       stopped = true;
       sub?.remove();
+      ScreenOrientation.removeOrientationChangeListener(turns);
       tilt.x.setValue(0);
       tilt.y.setValue(0);
     };

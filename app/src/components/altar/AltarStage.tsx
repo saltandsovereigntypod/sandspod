@@ -15,6 +15,7 @@ import { CandleMarks, CandlePicture, candleGeometry, drawsBurnedDown } from './C
 import { ChargeAura, Moment, SnapGuide } from './StageEffects';
 import { FlameFire, HAS_FIRE } from './FlameFire';
 import { HAS_LIT, LitPicture } from './LitPicture';
+import { HAS_SMOKE, SmokeFire } from './SmokeFire';
 import { glossOf, type ObjectLight } from '../../lib/altar/litShader';
 import { TiltProvider, tiltShift, useTilt, useTiltSource } from './Tilt';
 import { CastShadows, LightPools, NightVeil, objectLights, useFlameMotion, useShareFlame, WaxGlow, type FlameMotion } from './Lighting';
@@ -481,7 +482,7 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
       )}
       {lit && geometry && <WaxGlow object={object} width={width} height={height} now={now} motion={motion} />}
       {lit && flame && <Flame layout={flame} motion={motion} />}
-      {smoke != null && flame && <Smoke key={smoke} layout={flame} />}
+      {smoke != null && flame && (HAS_SMOKE ? <SmokeFire key={smoke} layout={flame} width={width} height={height} /> : <Smoke key={smoke} layout={flame} />)}
       {incense?.lit && <IncenseSmoke origin={smokeOrigin(object)} width={width} />}
       {ash && <View style={styles.ash} />}
       {ash && (
@@ -676,7 +677,7 @@ function IncenseSmoke({ origin, width }: { origin: { x: number; y: number }; wid
 }
 
 /** How long the snuffed-candle smoke lasts. */
-const SMOKE_MS = 3600;
+const SMOKE_MS = 5200;
 
 /** Whether the person has asked for less motion (kept current while the altar is open). */
 function useReduceMotion(): boolean {
