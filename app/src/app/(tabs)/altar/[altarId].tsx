@@ -55,6 +55,7 @@ import { daysSinceRenewal, jarStateOf } from '../../../lib/altar/workings/spellJ
 import { SPELLS_COLLECTION, spellToday, tickSpell, type SpellEntry } from '../../../lib/altar/workings/spells';
 import { AltarOptionsSheet, FlameReadingSheet, IncenseSheet, OfferingSheet } from '../../../components/altar/LivingSheets';
 import { PetitionBoxSheet, WritePetitionSheet } from '../../../components/altar/PetitionSheets';
+import { useCandleAmbience, useCandleFeel } from '../../../lib/altar/feel';
 import { ALTAR_OPTIONS, altarOptionsFor, defaultAltarOptions, type AltarOptions } from '../../../lib/altar/altarOptions';
 import { ambientAt, moonMirrored, nextAmbientCheck } from '../../../lib/altar/ambient';
 import { burnToRead, lastBurn, linkReadingJournal, readingsOf, readingText, recordReading, remnantOf, setRemnant, type ReadingInput } from '../../../lib/altar/ceromancy';
@@ -62,17 +63,19 @@ import { clearAsh, incenseFormOf, incenseLife, isIncense, lightIncense, putOutIn
 import { moonChargesOf } from '../../../lib/altar/moonCharge';
 import {
   agingDeityOffering,
-  agingLook,
   canHoldOffering,
   endOffering,
-  FRESHNESS_WORDS,
   freshnessLine,
+  freshnessWord,
   holdsOfferings,
+  leaveOffering,
   offeringFreshness,
   offeringKind,
   offeringOf,
+  offeringsDue,
   refreshOffering,
   setOffering,
+  tendingNote,
   type OfferingEnd,
 } from '../../../lib/altar/offerings';
 import {
@@ -154,7 +157,7 @@ import {
 } from '../../../lib/altar/editor';
 import { displayBox, STAGE_ASPECT } from '../../../lib/altar/geometry';
 import { stackOrder } from '../../../lib/altar/layers';
-import { apothecaryStateOf, CANDLE_LIFE, candleLife, carvingsOf, dressingsOf, isCandle, isLit, type ApothecaryState } from '../../../lib/altar/livingState';
+import { apothecaryStateOf, CANDLE_LIFE, candleLife, carvingMark, carvingsOf, dressingsOf, isCandle, isLit, type ApothecaryState } from '../../../lib/altar/livingState';
 import { addObjectInstanceEvent, getObjectInstance, updateObjectInstance, useObjectInstance } from '../../../lib/altar/instanceStore';
 import {
   ACTIVITY_TYPES,
@@ -237,6 +240,8 @@ const newMoonFor = (entries: CraftEntry<AltarOptions>[], id: string | null) => (
 const afterSheetCloses = (open: () => void) => setTimeout(open, Platform.OS === 'ios' ? 450 : 0);
 const MAX_STAGE_WIDTH = 960;
 
+const NO_OBJECTS: import('../../../lib/altar/types').SavedObject[] = [];
+
 export default function AltarEditor() {
   const { altarId, from, deity } = useLocalSearchParams<{ altarId: string; from?: string; deity?: string }>();
   const store = useAltars();
@@ -296,6 +301,9 @@ export default function AltarEditor() {
       setTonight(null);
       undo.current = [];
       redo.current = [];
+      // Offerings that have gone over while you were away ask, gently, to be tended.
+      const due = tendingNote(offeringsDue([{ id: id ?? '', name: altarName, objects: prepared.objects }], Date.now()), { oneAltar: true });
+      if (due) setNotice(`${due} Tap it to refresh it, give it back, or leave it as it is.`);
     };
     if (altarId === 'new') {
       // Settings → Default altar background, as the website sets the stage on a fresh altar page.
@@ -388,6 +396,11 @@ export default function AltarEditor() {
   // Edits go through a ref so several in one gesture frame build on each other.
   const docRef = useRef<AltarDocument | null>(null);
   docRef.current = doc;
+
+  // A match and a tap as candles are lit, and their crackles and pops while they burn.
+  const feelObjects = doc?.objects ?? NO_OBJECTS;
+  useCandleFeel(sourceId ?? String(altarId), feelObjects);
+  useCandleAmbience(feelObjects);
 
   // A lit candle burns down and goes out on its own while the altar is open.
   const [clock, setClock] = useState(0);
@@ -696,6 +709,7 @@ export default function AltarEditor() {
     return {
       tint: options.sky ? ambient.tint : { color: 'transparent', opacity: 0 },
       accent: options.sky ? ambient.accent : { color: 'transparent', opacity: 0 },
+      darkness: options.sky ? ambient.darkness : 0,
       moon: options.moonWindow ? { illumination: moon.illumination, waxing: moon.waxing, mirrored: moonMirrored(here) } : null,
       label: [options.sky ? ambient.label : '', options.moonWindow ? `a ${moon.name.toLowerCase()} in the window` : ''].filter(Boolean).join('; '),
     };
@@ -704,7 +718,7 @@ export default function AltarEditor() {
     const looks: AgingLooks = {};
     for (const object of doc?.objects ?? []) {
       const fresh = offeringFreshness(object, minute * 60_000);
-      if (fresh && fresh.level !== 'lasting' && object.altarObjectId) looks[object.altarObjectId] = agingLook(fresh.kind, fresh);
+      if (fresh && fresh.level !== 'lasting' && object.altarObjectId) looks[object.altarObjectId] = true;
     }
     return looks;
   }, [doc, minute]);
@@ -1091,6 +1105,10 @@ export default function AltarEditor() {
                 changeSelected((o) => refreshOffering(o, nowIso()));
                 setNotice('Refreshed.');
               },
+              leaveOffering: () => {
+                changeSelected((o) => leaveOffering(o, nowIso()));
+                setNotice('Left as it is. It won’t ask to be tended again until you refresh it.');
+              },
               endOffering: endSelectedOffering,
               deityOffering,
               incense: () => {
@@ -1251,8 +1269,6 @@ export default function AltarEditor() {
             object={selectedObject}
             label={shortLabel(selectedObject?.label)}
             background={doc.background}
-            agedOpacity={aging[String(selectedObject?.altarObjectId)]?.opacity}
-            droop={aging[String(selectedObject?.altarObjectId)]?.droop}
             charge={charges[String(selectedObject?.altarObjectId)]}
             onClose={() => setSheet(null)}
           />
@@ -1397,8 +1413,12 @@ export default function AltarEditor() {
             candle={shortLabel(selectedObject?.label, 'Candle')}
             carvings={selectedObject ? carvingsOf(selectedObject) : []}
             onClose={() => setSheet(null)}
-            onCarve={(text) => {
-              if (selected != null) commit((d) => carveObject(d, selected, text, nowIso()));
+            onCarve={(text, sigil) => {
+              if (selected != null) commit((d) => carveObject(d, selected, text, nowIso(), sigil));
+            }}
+            onMakeSigil={() => {
+              setSheet(null);
+              router.push('/altar/sigil');
             }}
             onSmooth={(index) => {
               if (selected != null) commit((d) => uncarveObject(d, selected, nowIso(), index));
@@ -1814,6 +1834,7 @@ type Actions = {
   read: () => void;
   offer: () => void;
   refreshOffering: () => void;
+  leaveOffering: () => void;
   endOffering: (how: OfferingEnd) => void;
   deityOffering: (action: 'refresh' | 'returned' | 'removed') => void;
   incense: () => void;
@@ -1949,7 +1970,7 @@ function ObjectPanel({
                       : `Burns about ${lifeDuration(life.expectedMs)}`
                     : null,
                 dressings.length ? `Dressed with ${dressingNames(dressings).join(', ')}` : null,
-                carvings.length ? `Carved with ${carvings.map((c) => `“${c.text}”`).join(', ')}` : null,
+                carvings.length ? `Carved with ${carvings.map((c) => (carvingMark(c) ? `the sigil for “${c.text}”` : `“${c.text}”`)).join(', ')}` : null,
                 nights && !life?.spent ? nights.line : null,
               ]
                 .filter(Boolean)
@@ -2039,7 +2060,7 @@ function ObjectPanel({
       )}
       {deityAging && (
         <View style={styles.living}>
-          <Text style={type.eyebrow}>{`Your offering · ${FRESHNESS_WORDS[deityAging.fresh.level]}`}</Text>
+          <Text style={type.eyebrow}>{`Your offering · ${freshnessWord(deityAging.fresh)}`}</Text>
           <Text style={type.caption}>{freshnessLine(deityAging.kind, deityAging.fresh)}</Text>
           <ChipRow>
             <Chip label="Refresh" symbol="↻" accessibilityLabel="Refresh the offering with a fresh one" onPress={() => act.deityOffering('refresh')} />
@@ -2051,10 +2072,13 @@ function ObjectPanel({
 
       {offering && contents ? (
         <View style={styles.living}>
-          <Text style={type.eyebrow}>{`${contents.label || offeringKind(contents.kind)?.label} · ${FRESHNESS_WORDS[offering.level]}`}</Text>
-          <Text style={type.caption}>{freshnessLine(offering.kind, offering)}</Text>
+          <Text style={type.eyebrow}>{`${contents.label || offeringKind(contents.kind)?.label} · ${freshnessWord(offering)}`}</Text>
+          <Text style={type.caption}>{contents.leftAt ? `${offering.stage.name}. Left as it is; refresh it whenever you like.` : freshnessLine(offering.kind, offering)}</Text>
           <ChipRow>
             {offering.level !== 'lasting' && <Chip label="Refresh" symbol="↻" active={offering.level === 'refresh'} onPress={act.refreshOffering} />}
+            {offering.level !== 'lasting' && offering.level !== 'fresh' && !contents.leftAt && (
+              <Chip label="Leave it be" symbol="☙" accessibilityLabel="Leave it as it is, and stop asking to tend it" onPress={act.leaveOffering} />
+            )}
             <Chip label="Return to nature" symbol="❧" onPress={() => act.endOffering('returned')} />
             <Chip label="Remove" symbol="⌫" accessibilityLabel={holdsOfferings(object) ? 'Empty the vessel' : 'Clear it away'} onPress={() => act.endOffering('removed')} />
             <Chip label={holdsOfferings(object) ? 'Something else' : 'What it is'} symbol="✎" onPress={act.offer} />

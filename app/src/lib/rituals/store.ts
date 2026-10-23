@@ -17,6 +17,7 @@ import { useSession } from '../session';
 import { supabase } from '../supabase';
 import { permissionState, requestPermission, setStepAlarm } from '../reminders/notifier';
 import { applyAnswers, createSession, finishSession, journalPayload, stepAlarm, uuid, withAltarSnapshot, type StartSource } from './lifecycle';
+import { chooseLookBack, readLookBack, withLookBack, type LookBackWhen } from './lookBack';
 import { isSyncable, mergePlans, planRow, unsyncedPlans, type PlanRow } from './planSync';
 import {
   journalLibraryEntry,
@@ -384,10 +385,20 @@ export async function saveJournal(input: {
   session: RitualSession | null;
   answers: JournalAnswers;
   existingId?: string | null;
+  /** When to ask "Did it work?" (null for not at all); left out, an entry keeps what it had. */
+  lookBack?: LookBackWhen | null;
+  lookBackCustom?: string;
 }): Promise<JournalRow> {
   const now = new Date();
   const userId = state.userId;
   const ingredients = (input.session?.metadata?.ingredients as Ingredient[] | undefined) ?? [];
+  const build = (existing: JournalRow | null) => {
+    let entry = buildEntry(input.session, input.answers, userId, existing, now);
+    // Journaling a session again rebuilds its metadata; its look-back and answer stay.
+    const kept = readLookBack(existing);
+    if (kept && !readLookBack(entry)) entry = withLookBack(entry, kept);
+    return input.lookBack === undefined ? entry : chooseLookBack(entry, input.lookBack, now, input.lookBackCustom ?? '');
+  };
 
   if (!userId) {
     const device = await readDevice();
@@ -395,7 +406,7 @@ export async function saveJournal(input: {
       device.journals.find((j) => j.id === input.existingId) ??
       (input.session ? device.journals.find((j) => j.session_id === input.session?.id) : undefined) ??
       null;
-    const entry = buildEntry(input.session, input.answers, null, existing, now);
+    const entry = build(existing);
     device.journals = [entry, ...device.journals.filter((j) => j.id !== entry.id)];
     await writeJson(DEVICE_KEY, device);
     set({ journal: device.journals });
@@ -408,7 +419,7 @@ export async function saveJournal(input: {
     throwIf(found);
     existing = (found.data as JournalRow | null) ?? null;
   }
-  const entry = buildEntry(input.session, input.answers, userId, existing, now);
+  const entry = build(existing);
   const saved = await supabase.from('user_rituals').upsert(journalRow(entry, userId)).select('*').single();
   throwIf(saved);
   const row = saved.data as JournalRow;
@@ -422,6 +433,29 @@ export async function saveJournal(input: {
   await supabase.from('living_library_entries').upsert(journalLibraryEntry(row, userId, now), { onConflict: 'user_id,entity_id' });
 
   set({ journal: [row, ...state.journal.filter((j) => j.id !== row.id)] });
+  void writeJson(snapshotKey(userId), snapshotOf());
+  return row;
+}
+
+/**
+ * Save a change to an entry's metadata alone ("Did it work?" and its
+ * look-back day), as the website does: only that column is written, so
+ * nothing else on the entry can be overwritten.
+ */
+export async function saveJournalMetadata(entry: JournalRow): Promise<JournalRow> {
+  const userId = state.userId;
+  const updated_at = new Date().toISOString();
+  if (!userId) {
+    const device = await readDevice();
+    device.journals = device.journals.map((j) => (j.id === entry.id ? { ...j, metadata: entry.metadata, updated_at } : j));
+    await writeJson(DEVICE_KEY, device);
+    set({ journal: device.journals });
+    return device.journals.find((j) => j.id === entry.id) ?? entry;
+  }
+  const saved = await supabase.from('user_rituals').update({ metadata: entry.metadata, updated_at }).eq('id', entry.id).select('*').single();
+  throwIf(saved);
+  const row = saved.data as JournalRow;
+  set({ journal: state.journal.map((j) => (j.id === row.id ? row : j)) });
   void writeJson(snapshotKey(userId), snapshotOf());
   return row;
 }

@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Animated, Easing, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
-import Svg, { Defs, Ellipse, Path, RadialGradient, Stop } from 'react-native-svg';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { Button } from '../Button';
-import { useReducedMotion } from '../../lib/accessibility/store';
 import type { CraftEntry } from '../../lib/craft/store';
 import {
   FIRE_SAFETY,
@@ -19,9 +17,9 @@ import {
 } from '../../lib/altar/petitions';
 import { colors, fonts, radius, touch, type } from '../../theme';
 import { Chip, ChipRow } from './Chip';
+import { BuriedPetition, BurningPetition, ReleasedPetition, useRite } from './PetitionRites';
 import { Sheet } from './Sheet';
 
-const useNative = Platform.OS !== 'web';
 const day = (iso: string) => (iso ? new Date(iso).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' }) : '');
 
 // ── Writing one ──────────────────────────────────────────────────────────
@@ -112,7 +110,7 @@ export function WritePetitionSheet({
 // ── The petition box ─────────────────────────────────────────────────────
 
 type Entry = CraftEntry<Petition>;
-type Mode = { kind: 'list' } | { kind: 'burn'; entry: Entry } | { kind: 'night'; entry: Entry } | { kind: 'bury'; entry: Entry };
+type Mode = { kind: 'list' } | { kind: 'burn'; entry: Entry } | { kind: 'night'; entry: Entry } | { kind: 'bury'; entry: Entry } | { kind: 'release'; entry: Entry };
 
 export function PetitionBoxSheet({
   visible,
@@ -149,7 +147,7 @@ export function PetitionBoxSheet({
     <Sheet
       visible={visible}
       eyebrow="This altar"
-      title={mode.kind === 'burn' ? 'The burn bowl' : mode.kind === 'night' ? 'Choose a night' : mode.kind === 'bury' ? 'Bury it' : 'Petition box'}
+      title={mode.kind === 'burn' ? 'The burn bowl' : mode.kind === 'night' ? 'Choose a night' : mode.kind === 'bury' ? 'Bury it' : mode.kind === 'release' ? 'Release it' : 'Petition box'}
       onClose={onClose}
     >
       {mode.kind === 'burn' ? (
@@ -183,19 +181,21 @@ export function PetitionBoxSheet({
           <Button label="Back to the box" variant="text" onPress={back} />
         </>
       ) : mode.kind === 'bury' ? (
-        <>
-          <Text style={type.body}>
-            Burying gives a petition to the earth to work slowly: good for growth, healing and things that need time. Fold it small, use plain paper with no plastic or glitter, and bury it where it can rot down, in a garden, a pot of soil or at the foot of a tree you know.
-          </Text>
-          <Button
-            label="I’ve buried it"
-            onPress={() => {
-              onBury(mode.entry);
-              back();
-            }}
-          />
-          <Button label="Not yet" variant="text" onPress={back} />
-        </>
+        <BuryRite
+          onBuried={() => {
+            onBury(mode.entry);
+            back();
+          }}
+          onBack={back}
+        />
+      ) : mode.kind === 'release' ? (
+        <ReleaseRite
+          title={mode.entry.data.title}
+          onReleased={() => {
+            onRelease(mode.entry);
+            back();
+          }}
+        />
       ) : (
         <>
           <Button label="Write a petition" onPress={onWrite} />
@@ -232,7 +232,7 @@ export function PetitionBoxSheet({
                     <Chip label="Bury" symbol="◒" accessibilityLabel={`Bury ${p.title}`} onPress={() => setMode({ kind: 'bury', entry })} />
                     {p.status === 'scheduled' ? (
                       <>
-                        <Chip label={due ? 'Release it now' : 'Release now'} symbol="☾" active={due} onPress={() => onRelease(entry)} />
+                        <Chip label={due ? 'Release it now' : 'Release now'} symbol="☾" active={due} onPress={() => setMode({ kind: 'release', entry })} />
                         <Chip label="Another night" symbol="☽" onPress={() => setMode({ kind: 'night', entry })} />
                       </>
                     ) : (
@@ -261,80 +261,17 @@ export function PetitionBoxSheet({
 
 // ── The burn bowl ────────────────────────────────────────────────────────
 
-const BURN_MS = 4200;
+const BURN_MS = 7000;
 
 /** Burn the petition in a heatproof bowl here, with the fire-safety words for doing it for real. */
 function BurnBowl({ petition, onBurned, onBack }: { petition: Petition; onBurned: () => void; onBack: () => void }) {
-  const still = useReducedMotion();
   const [stage, setStage] = useState<'ready' | 'burning' | 'ash'>('ready');
-  const [burn] = useState(() => new Animated.Value(0));
-  const [flicker] = useState(() => new Animated.Value(0));
-
-  useEffect(() => {
-    if (stage !== 'burning') return;
-    if (still) {
-      burn.setValue(1);
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- no animation to wait for
-      setStage('ash');
-      return;
-    }
-    const loop = Animated.loop(
-      Animated.sequence([
-        Animated.timing(flicker, { toValue: 1, duration: 260, useNativeDriver: useNative }),
-        Animated.timing(flicker, { toValue: 0, duration: 320, useNativeDriver: useNative }),
-      ]),
-    );
-    loop.start();
-    const run = Animated.timing(burn, { toValue: 1, duration: BURN_MS, easing: Easing.inOut(Easing.quad), useNativeDriver: useNative });
-    run.start(({ finished }) => {
-      loop.stop();
-      if (finished) setStage('ash');
-    });
-    return () => {
-      run.stop();
-      loop.stop();
-    };
-  }, [stage, still, burn, flicker]);
-
-  const paperOpacity = burn.interpolate({ inputRange: [0, 0.75, 1], outputRange: [1, 0.35, 0] });
-  const paperScale = burn.interpolate({ inputRange: [0, 1], outputRange: [1, 0.25] });
-  const fireOpacity = stage === 'burning' ? burn.interpolate({ inputRange: [0, 0.1, 0.8, 1], outputRange: [0, 1, 0.9, 0] }) : 0;
-  const fireScale = flicker.interpolate({ inputRange: [0, 1], outputRange: [0.9, 1.12] });
-  const ashOpacity = burn.interpolate({ inputRange: [0, 0.6, 1], outputRange: [0, 0.2, 1] });
+  const p = useRite(stage === 'burning', BURN_MS, () => setStage('ash'));
 
   return (
     <>
-      <View style={styles.bowl} accessible accessibilityLabel={stage === 'ash' ? 'The petition has burned to ash in the bowl.' : stage === 'burning' ? 'The petition is burning in the bowl.' : `The petition “${petition.title}” in a heatproof bowl.`}>
-        <Svg width={220} height={150} viewBox="0 0 220 150" style={StyleSheet.absoluteFill}>
-          <Defs>
-            <RadialGradient id="bowl-in" cx="50%" cy="40%" r="60%">
-              <Stop offset="0" stopColor="rgb(70,66,60)" />
-              <Stop offset="1" stopColor="rgb(30,28,26)" />
-            </RadialGradient>
-          </Defs>
-          <Ellipse cx={110} cy={92} rx={92} ry={26} fill="url(#bowl-in)" />
-          <Path d="M18 92 Q24 140 110 142 Q196 140 202 92 Q196 118 110 118 Q24 118 18 92 Z" fill="rgb(54,50,46)" stroke="rgba(226,195,109,0.3)" />
-        </Svg>
-        <Animated.View style={[styles.ashPile, { opacity: ashOpacity }]} />
-        <Animated.View style={[styles.paper, { opacity: paperOpacity, transform: [{ scale: paperScale }, { rotate: '-8deg' }] }]}>
-          <Svg width="100%" height="100%" viewBox="0 0 40 30">
-            <Path d="M2 4 L37 2 L38 27 L3 28 Z" fill="rgb(236,224,192)" />
-            <Path d="M7 9 L30 8 M7 13 L27 12 M7 17 L31 16" stroke="rgba(110,60,40,0.5)" strokeWidth={0.8} strokeLinecap="round" />
-          </Svg>
-        </Animated.View>
-        <Animated.View style={[styles.fire, { opacity: fireOpacity, transform: [{ scaleY: fireScale }] }]}>
-          <Svg width="100%" height="100%" viewBox="0 0 30 40">
-            <Defs>
-              <RadialGradient id="fire" cx="50%" cy="75%" r="70%">
-                <Stop offset="0" stopColor="rgb(255,250,220)" />
-                <Stop offset="0.35" stopColor="rgb(255,190,70)" />
-                <Stop offset="0.75" stopColor="rgb(240,100,30)" stopOpacity={0.7} />
-                <Stop offset="1" stopColor="rgb(240,100,30)" stopOpacity={0} />
-              </RadialGradient>
-            </Defs>
-            <Path d="M15 1 C22 12 28 18 26 28 C24 36 6 36 4 28 C2 20 10 14 15 1 Z" fill="url(#fire)" />
-          </Svg>
-        </Animated.View>
+      <View style={styles.rite} accessible accessibilityLabel={stage === 'ash' ? 'The petition has burned to ash in the bowl.' : stage === 'burning' ? 'The petition is burning in the bowl.' : `The petition “${petition.title}” in a heatproof bowl.`}>
+        <BurningPetition p={stage === 'ready' ? 0 : p} title={petition.title} />
       </View>
 
       {stage === 'ready' && (
@@ -361,6 +298,60 @@ function BurnBowl({ petition, onBurned, onBack }: { petition: Petition; onBurned
   );
 }
 
+const BURY_MS = 6000;
+
+/** Give the petition to the earth: the words for doing it, then the burying played out. */
+function BuryRite({ onBuried, onBack }: { onBuried: () => void; onBack: () => void }) {
+  const [stage, setStage] = useState<'ready' | 'burying' | 'buried'>('ready');
+  const p = useRite(stage === 'burying', BURY_MS, () => setStage('buried'));
+  return (
+    <>
+      <View style={styles.rite} accessible accessibilityLabel={stage === 'buried' ? 'The petition is buried, and a shoot is coming up.' : stage === 'burying' ? 'The petition is being buried.' : 'Open earth, ready for the petition.'}>
+        <BuriedPetition p={stage === 'ready' ? 0 : p} />
+      </View>
+      {stage === 'ready' && (
+        <>
+          <Text style={type.body}>
+            Burying gives a petition to the earth to work slowly: good for growth, healing and things that need time. Fold it small, use plain paper with no plastic or glitter, and bury it where it can rot down, in a garden, a pot of soil or at the foot of a tree you know.
+          </Text>
+          <Button label="I’ve buried it" onPress={() => setStage('burying')} />
+          <Button label="Not yet" variant="text" onPress={onBack} />
+        </>
+      )}
+      {stage === 'burying' && <Text style={type.caption} accessibilityLiveRegion="polite">Into the earth…</Text>}
+      {stage === 'buried' && (
+        <>
+          <Text style={type.body} accessibilityLiveRegion="polite">It’s in the earth now. Let it work slowly, as roots do.</Text>
+          <Button label="It’s done" onPress={onBuried} />
+        </>
+      )}
+    </>
+  );
+}
+
+const RELEASE_MS = 6500;
+
+/** Release the petition to the night: it lifts, glows and comes apart into light. */
+function ReleaseRite({ title, onReleased }: { title: string; onReleased: () => void }) {
+  const [gone, setGone] = useState(false);
+  const p = useRite(true, RELEASE_MS, () => setGone(true));
+  return (
+    <>
+      <View style={styles.rite} accessible accessibilityLabel={gone ? `“${title}” has gone up into the night.` : `“${title}” is lifting into the night sky.`}>
+        <ReleasedPetition p={p} />
+      </View>
+      {gone ? (
+        <>
+          <Text style={type.body} accessibilityLiveRegion="polite">Released. It’s out of your hands now, and into the night’s.</Text>
+          <Button label="It’s done" onPress={onReleased} />
+        </>
+      ) : (
+        <Text style={type.caption}>{`Letting “${title}” go…`}</Text>
+      )}
+    </>
+  );
+}
+
 const styles = StyleSheet.create({
   input: {
     minHeight: touch,
@@ -380,9 +371,6 @@ const styles = StyleSheet.create({
   due: { color: colors.gold },
   history: { gap: 6 },
   night: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  bowl: { width: 220, height: 150, alignSelf: 'center' },
-  paper: { position: 'absolute', left: 70, top: 50, width: 80, height: 60 },
-  fire: { position: 'absolute', left: 80, top: 8, width: 60, height: 90, transformOrigin: '50% 100%' },
-  ashPile: { position: 'absolute', left: 82, top: 84, width: 56, height: 14, borderRadius: 999, backgroundColor: 'rgb(120,116,110)' },
+  rite: { width: 286, height: 208, alignSelf: 'center' },
   safety: { gap: 6, padding: 14, borderRadius: radius.tile, borderWidth: 1, borderColor: colors.goldLine },
 });

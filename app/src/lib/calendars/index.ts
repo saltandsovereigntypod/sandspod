@@ -164,7 +164,7 @@ export function eventAsHoliday(event: CalendarEvent): Holiday {
     days: Math.max(1, event.days),
     traditions: [def?.name ?? event.calendar],
     traditionIds: [calendarTraditionId(event.calendar)],
-    recurs: event.calendar === 'moon' ? 'monthly' : 'yearly',
+    recurs: event.recurs ?? (event.calendar === 'moon' ? 'monthly' : 'yearly'),
   };
 }
 

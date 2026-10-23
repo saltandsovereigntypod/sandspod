@@ -189,7 +189,7 @@ function renderReadableElement(block) {
     if (!imageUrl) return "";
 
     return `
-      <figure class="book-image">
+      <figure class="book-image${metadata.sigil ? " book-image--sigil" : ""}">
         <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(metadata.alt || "")}" />
         ${metadata.caption ? `<figcaption>${escapeHtml(metadata.caption)}</figcaption>` : ""}
       </figure>

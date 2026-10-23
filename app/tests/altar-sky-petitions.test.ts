@@ -30,7 +30,10 @@ test('the light follows the real sun: dawn, day, dusk and night in London', () =
   assert.equal(dayPhase(new Date('2026-10-16T17:05:00Z'), london), 'dusk');
   assert.equal(dayPhase(new Date('2026-10-16T22:00:00Z'), london), 'night');
   assert.equal(dayPhase(new Date('2026-10-16T02:00:00Z'), london), 'night');
-  assert.equal(ambientAt(new Date('2026-10-16T12:00:00Z'), london).tint.opacity, 0, 'daylight adds nothing');
+  const noonLight = ambientAt(new Date('2026-10-16T12:00:00Z'), london);
+  assert.ok(noonLight.tint.opacity < 0.1, 'daylight only cools the light a little');
+  assert.equal(noonLight.darkness, 0, 'and darkens nothing');
+  assert.ok(ambientAt(new Date('2026-10-16T23:00:00Z'), london).darkness > 0.3, 'the room is dark at night');
 });
 
 test('without a place the clock decides', () => {

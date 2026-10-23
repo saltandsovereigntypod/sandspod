@@ -81,10 +81,18 @@
     return [...builtIn, ...custom];
   }
 
+  /* Tarot, runes and ogham live in Traditional Information, so they follow its setting. */
+  function divinationRecords() {
+    const core = global.SaltCore?.["divination-library"];
+    const settings = typeof global.getLocalMySettings === "function" ? global.getLocalMySettings() : {};
+    if (!core || settings.library_traditional_enabled === false) return [];
+    return global.SanctuarySearch.createDivinationResults(core);
+  }
+
   // Refreshes the sources kept in this browser, leaving the ones loaded from the
   // account (rituals, templates) in place so My Journey and search keep them.
   function rebuildLocalIndex() {
-    const local = { library: libraryRecords(), pages: pageRecords(), apothecary: recipeRecords(), currentAltar: objectRecords(), cabinet: cabinetRecords() };
+    const local = { library: libraryRecords(), pages: pageRecords(), apothecary: recipeRecords(), currentAltar: objectRecords(), cabinet: cabinetRecords(), divination: divinationRecords() };
     Object.entries(local).forEach(([name, records]) => global.SanctuarySearch.updateSource(name, records));
   }
 
@@ -102,6 +110,8 @@
       subtitle: "Ritual Template", fields: [template.description, template.intention, template.ritual_template_steps],
       href: `/grimoire/?entity=${encodeURIComponent(`ritual-template:${template.id}`)}`, timestamp: template.updated_at || template.created_at
     }))]));
+    // Dreams, the Grimoire's built-in section (craft_entries `hedge.dreams`, as the app keeps them).
+    if (global.SaltCraft?.list) tasks.push(global.SaltCraft.list("hedge.dreams").then((records) => ["dreams", records.map((entry) => global.SanctuarySearch.createDreamResult(entry)).filter(Boolean)]));
     const activeSession = global.getStoredActiveRitualSession?.();
     if (activeSession?.id) tasks.push(Promise.resolve(["ritual-sessions", [{
       id: activeSession.id, group: "rituals", type: "ritual-session", title: activeSession.title || "Active Ritual",
@@ -167,6 +177,8 @@
     const supportedGroups = Object.entries(global.SanctuarySearch.GROUP_LABELS).filter(([key]) => {
       if (key === "library") return Boolean(global.Library);
       if (key === "pages") return Boolean(global.SanctuarySearchPageSource || location.pathname.includes("grimoire"));
+      if (key === "dreams") return Boolean(global.SaltCraft);
+      if (key === "divination") return Boolean(global.SaltCore?.["divination-library"]);
       if (key === "rituals") return typeof global.getMyRituals === "function";
       if (key === "templates") return typeof global.getRitualTemplates === "function";
       if (key === "apothecary") return typeof global.getApothecaryItems === "function";

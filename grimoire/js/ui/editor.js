@@ -188,6 +188,29 @@ function renderEditableElement(block, index) {
     `;
   }
 
+  if (type === "image" && metadata.sigil && typeof metadata.sigil === "object") {
+    // A sigil from the sigil maker: its picture is made from the sigil itself, so only the caption is written here.
+    return `
+      <section class="book-edit-element" data-block-id="${block.id}">
+        ${controls}
+
+        <p>Sigil</p>
+        <img class="book-sigil-preview" src="${escapeHtml(metadata.url || content)}" alt="${escapeHtml(metadata.alt || "A sigil")}" />
+
+        <label>
+          Caption
+          <input
+            type="text"
+            value="${escapeHtml(metadata.caption || "")}"
+            data-block-metadata-input
+            data-block-id="${block.id}"
+            data-metadata-field="caption"
+          />
+        </label>
+      </section>
+    `;
+  }
+
   if (type === "image") {
     return `
       <section class="book-edit-element" data-block-id="${block.id}">

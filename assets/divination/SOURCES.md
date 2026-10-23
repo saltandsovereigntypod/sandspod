@@ -1,0 +1,40 @@
+# Sources for the divination pictures
+
+## Tarot: `tarot/*.webp`
+
+The 78 cards of the Rider–Waite–Smith deck, drawn by Pamela Colman Smith
+under the direction of A. E. Waite and first published by William Rider &
+Son, London, in December 1909. Smith died in 1951 and the 1909 drawings are
+in the public domain in the United States (published before 1930) and in
+countries where copyright lasts the author's life plus 70 years or less.
+
+The scans are Wikimedia Commons' public-domain files, downloaded in
+October 2026 directly from `upload.wikimedia.org`:
+
+- Major Arcana: `RWS Tarot 00 Fool.jpg` … `RWS Tarot 21 World.jpg`
+- Minor Arcana: `Wands01.jpg` … `Wands14.jpg`, `Cups01.jpg` … `Cups14.jpg`,
+  `Swords01.jpg` … `Swords14.jpg`, `Pents01.jpg` … `Pents14.jpg`
+
+Every card was checked by eye against its name before it was kept.
+
+Each was resized to 600 px tall and saved as WebP. File names are the card
+ids in `app/src/lib/divination/tarot.ts` (`00-the-fool`, `cups-07`, …).
+The app bundles copies made by `app/scripts/build-divination-assets.py`.
+
+The card backs are drawn in code (`app/src/components/divination/Faces.tsx`,
+`practice/hedge/hedge.js`), not taken from any deck.
+
+## Runes and ogham
+
+No pictures: they are the Unicode letters themselves (Runic and Ogham
+blocks), styled as stones and staves. The app bundles Noto Sans Runic and
+Noto Sans Ogham (`app/assets/fonts/`, SIL Open Font License 1.1, from
+Google Fonts) so every phone can show them; the website loads the same fonts
+from Google Fonts.
+
+## Meanings
+
+Written for Salt & Sovereignty, after the divinatory meanings in A. E.
+Waite's *The Pictorial Key to the Tarot* (1910, public domain), the Old
+English, Norwegian and Icelandic rune poems, and the medieval ogham
+word-lists, with the modern readings most people use today.

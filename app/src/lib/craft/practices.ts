@@ -44,5 +44,8 @@ export const CRAFT_TOOLS: Record<PracticeId, CraftTool[]> = {
     { title: 'Weather lore', detail: 'Old sayings for the month' },
   ],
   solitary: [{ title: 'Daily devotion', detail: 'A morning and evening practice, gently kept' }],
-  eclectic: [{ title: 'My correspondences', detail: 'Your own meanings for things, in one place' }],
+  eclectic: [
+    { title: 'My correspondences', detail: 'Your own meanings for things, in one place' },
+    { title: 'Sigil maker', detail: 'An intent made into one mark, from its letters or a planetary square' },
+  ],
 };

@@ -29,6 +29,8 @@ import {
   type SendError,
 } from './edits';
 import { holyPageOps } from './holyOps';
+import { sigilPageOps } from './sigilOps';
+import type { Sigil } from '../sigil/sigil';
 import { altarRitualOps, ritualDateText, type AltarRitualItem, type WorkingDetails } from './altarImport';
 import { newId } from './ids';
 import { openSectionIn, pageBlocks } from './structure';
@@ -54,6 +56,8 @@ export type GrimoireActions = {
   createRitualFromAltar: (input: { title: string; purpose: string | WorkingDetails; items: AltarRitualItem[] }) => string | null;
   /** Keep a holy-day or moon page in the Grimoire, under its own section ("Holy Days", "The Moon"), tagged so it's found again. */
   saveHolyPage: (input: { ref: string; title: string; sectionTitle: string; blocks: { type: string; content: string }[] }) => string | null;
+  /** A sigil as its own page, in the given section (or the open one when undefined). */
+  saveSigilPage: (input: { sigil: Sigil; title?: string; sectionId?: string | null }) => string | null;
   /** The section being viewed (a page's section, or null for the top level), as the website's activeSectionId. */
   setOpenSection: (sectionId: string | null) => void;
   renamePage: (pageId: string, title: string) => void;
@@ -391,6 +395,14 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
         const s = snap();
         if (!s || !userRef.current) return null;
         const { id, ops } = holyPageOps(s, ctx(), input, newId);
+        commit(ops);
+        return id;
+      },
+      saveSigilPage({ sigil, title, sectionId }) {
+        const s = snap();
+        if (!s || !userRef.current) return null;
+        const wanted = sectionId === undefined ? (openSectionRef.current ?? null) : sectionId;
+        const { id, ops } = sigilPageOps(s, ctx(), { sigil, title, sectionId: wanted, dateText: ritualDateText(new Date()) }, newId);
         commit(ops);
         return id;
       },

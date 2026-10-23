@@ -1,0 +1,123 @@
+/*
+ * Draws (/practice/hedge/readings/draw/ and a kept draw on a reading's page):
+ * Pamela Colman Smith's cards, runes cut in stone, ogham cut along staves,
+ * and the flip that turns one over. As the app's components/divination.
+ */
+.dv-table { display: flex; justify-content: center; align-items: flex-start; gap: 12px; flex-wrap: nowrap; }
+.dv-place { display: grid; justify-items: center; gap: 6px; min-width: 0; }
+.dv-place__name { font-size: 0.85rem; color: var(--muted); text-align: center; margin: 0; }
+
+/* One card turning over */
+.dv-flip {
+  display: block; padding: 0; border: 0; background: none; cursor: pointer; perspective: 900px;
+  width: 100%; aspect-ratio: 0.58; border-radius: 8px;
+}
+.dv-flip:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.dv-flip[aria-current="true"] { outline: 2px solid #e2c36d; outline-offset: 2px; }
+.dv-inner { position: relative; display: block; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.52s ease; }
+.dv-flip.is-turned .dv-inner { transform: rotateY(180deg); }
+.dv-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.dv-front { transform: rotateY(180deg); }
+@media (prefers-reduced-motion: reduce) { .dv-inner { transition: none; } }
+.a11y-reduce-motion .dv-inner { transition: none; }
+
+/* Tarot */
+.dv-card { border-radius: 8px; border: 1px solid rgba(226, 195, 109, 0.5); background: #f4ecd8; }
+.dv-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dv-card--reversed img { transform: rotate(180deg); }
+.dv-back { border-radius: 8px; border: 1px solid #b9a05d; background: #123020; }
+.dv-back svg { width: 100%; height: 100%; }
+.dv-tarot-1 { width: min(56%, 220px); }
+.dv-tarot-3 { flex: 0 1 150px; }
+
+/* The Celtic Cross: placed by percentages worked out in hedge.js */
+.dv-cross { position: relative; width: 100%; max-width: 560px; margin: 0 auto; }
+.dv-cross > .dv-at { position: absolute; }
+.dv-cross > .dv-at--across { transform: rotate(90deg); z-index: 1; }
+
+/* Runes, cut into pale river stones */
+.dv-flip--stone { aspect-ratio: 1 / 1.18; border-radius: 42%; }
+.dv-stone {
+  border-radius: 42%; background: radial-gradient(ellipse at 35% 25%, #a8a498 0%, #8f8b80 55%, #77736a 100%);
+  border: 1px solid #6e6a60; box-shadow: inset 0 3px 5px rgba(255, 255, 255, 0.14), inset 0 -4px 8px rgba(0, 0, 0, 0.18);
+}
+.dv-glyph {
+  font-family: "Noto Sans Runic", "Noto Sans Ogham", "Segoe UI Historic", "Apple Symbols", serif;
+  line-height: 1; user-select: none;
+}
+.dv-stone .dv-glyph {
+  font-size: min(15vw, 4.4rem); color: #3b2a16;
+  text-shadow: 0 1.5px 0 rgba(244, 236, 216, 0.55);
+}
+.dv-rune-1 { width: min(34%, 120px); }
+.dv-rune-3 { flex: 0 1 96px; }
+
+/* Ogham, cut along a wooden stave and read from the bottom up */
+.dv-flip--stave { aspect-ratio: 52 / 190; border-radius: 16px; }
+.dv-stave {
+  border-radius: 16px; border: 1px solid #5a3c22;
+  background: linear-gradient(90deg, #6c4a2d 0%, #7a5636 30%, #845e3c 50%, #7a5636 70%, #6c4a2d 100%);
+}
+.dv-stave .dv-glyph {
+  font-size: 4.6rem; color: #2a180a; transform: rotate(-90deg); white-space: nowrap;
+  text-shadow: 0 1.5px 0 rgba(230, 200, 150, 0.45);
+}
+.dv-ogham-1 { width: 64px; }
+.dv-ogham-3 { width: 52px; }
+.dv-place--ogham { width: 96px; }
+
+/* What it means */
+.dv-meaning__name { font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 1.45rem; line-height: 1.2; margin: 0; }
+.dv-meaning__words { color: #e2c36d; margin: 0; }
+.dv-meaning__more { margin: 0; }
+.dv-meaning__more a { color: #e2c36d; text-underline-offset: 3px; }
+.dv-question { font-family: "Cormorant Garamond", serif; font-size: 1.35rem; text-align: center; margin: 0; }
+
+/*
+ * Spreads laid out in their shape (positions from js/core/divination.js
+ * `layout`, the app's own model), scrolling sideways when wider than the page.
+ */
+.dv-scroll { overflow-x: auto; overflow-y: hidden; padding: 8px 4px; -webkit-overflow-scrolling: touch; }
+.dv-lay { position: relative; margin: 0 auto; width: min(100%, var(--dv-max)); min-width: var(--dv-min); }
+.dv-lay.is-close { width: var(--dv-max); }
+.dv-lay > .dv-at { position: absolute; }
+.dv-lay > .dv-at--over { z-index: 2; }
+.dv-lay > .dv-at--down { opacity: 0.55; }
+.dv-lay .dv-flip { container-type: inline-size; }
+.dv-lay .dv-stone .dv-glyph { font-size: 62cqi; }
+.dv-lay .dv-stave .dv-glyph { font-size: 150cqi; }
+.dv-num {
+  position: absolute; top: -6px; left: -6px; min-width: 18px; height: 18px; padding: 0 3px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 3;
+  background: #123020; border: 1px solid #e2c36d; color: #e2c36d; font-size: 10px; font-weight: 700; line-height: 1;
+}
+.dv-ring { position: absolute; border-radius: 50%; border: 1px solid rgba(226, 195, 109, 0.28); }
+.dv-ring--cloth { background: rgba(18, 48, 32, 0.55); }
+.dv-legend { margin: 8px 0 0; padding-left: 1.6em; color: var(--muted); font-size: 0.9rem; columns: 2 14em; column-gap: 2em; }
+.dv-legend li { break-inside: avoid; }
+.dv-zoom { text-align: center; margin: 4px 0 0; }
+
+/* Choosing a spread: the one chosen, and the rest in their groups with a picture of each */
+.dv-picker { display: grid; gap: 10px; margin-top: 10px; }
+.dv-current {
+  display: flex; align-items: center; gap: 14px; width: 100%; padding: 12px; text-align: left; cursor: pointer;
+  border-radius: 16px; border: 1px solid rgba(226, 195, 109, 0.28); background: var(--surface, #142219); color: inherit; font: inherit;
+}
+.dv-current:focus-visible, .dv-tile:focus-visible { outline: 2px solid var(--gold, #e2c36d); outline-offset: 2px; }
+.dv-current__pic { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; color: #e2c36d; flex: none; }
+.dv-current__text { display: grid; gap: 2px; }
+.dv-current__label { font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 1.3rem; line-height: 1.2; }
+.dv-current__more { font-size: 0.85rem; color: #e2c36d; }
+.dv-group { margin: 8px 0 0; }
+.dv-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
+.dv-tile {
+  display: grid; justify-items: center; align-content: start; gap: 6px; padding: 8px; min-height: 120px; cursor: pointer; text-decoration: none;
+  border-radius: 16px; border: 1px solid rgba(244, 236, 216, 0.18); background: var(--surface, #142219); color: inherit; font: inherit;
+}
+.dv-tile[aria-pressed="true"] { border-color: #e2c36d; background: #1c2e22; }
+.dv-tile[aria-pressed="true"] .dv-tile__label { color: #e2c36d; font-weight: 600; }
+.dv-tile__pic { height: 56px; display: flex; align-items: center; justify-content: center; color: #e2c36d; }
+.dv-tile__label { font-size: 0.8rem; line-height: 1.25; text-align: center; }
+.dv-tile--make { border-style: dashed; border-color: rgba(226, 195, 109, 0.4); }
+.dv-plus { font-family: "Cormorant Garamond", serif; font-size: 2.2rem; }
+.dv-preview { display: flex; justify-content: center; padding: 6px 0; color: #e2c36d; }

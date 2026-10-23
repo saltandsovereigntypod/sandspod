@@ -95,8 +95,8 @@ export function AltarWidgetAndroid({ altar, box, now }: { altar: WidgetAltar | u
         {item.overlays.map((o, i) => (
           <Picture key={`o${i}`} uri={o.image} x={o.rect.x * bw} y={room + o.rect.y * bh} w={o.rect.w * bw} h={o.rect.h * bh} />
         ))}
-        {item.spent ? (
-          // Burned down: shaded, as the app fades it.
+        {item.spent && !item.burned ? (
+          // Burned down: shaded, as the app fades it (a remnant drawn in pieces is low enough already).
           <FlexWidget style={{ marginLeft: Math.round(bw * item.inset.x), marginTop: Math.round(room + bh * item.inset.y), width: Math.round(iw), height: Math.round(ih), backgroundColor: '#0f1a1488', borderRadius: 4 }} />
         ) : null}
         {item.lit && item.halo ? <Picture uri={WIDGET_ART.halo} x={item.halo.x * bw} y={room + item.halo.y * bh} w={item.halo.w * bw} h={item.halo.h * bh} mode="stretch" /> : null}

@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BlockView, ink, Ornament, PageLinkButton } from '../../../components/grimoire/BlockView';
+import { useLeave } from '../../../components/grimoire/leave';
 import { MundaneToggle, PageFaceContext, useMundaneMode } from '../../../components/grimoire/presentation';
 import { Button } from '../../../components/Button';
 import { Icon } from '../../../components/Icon';
@@ -19,6 +20,7 @@ export default function GrimoirePage() {
   const { snapshot, canEdit, actions } = useGrimoire();
   const { mundane, setMundane, settings } = useMundaneMode();
   const face = pageFace(settings?.grimoire_page_font);
+  const back = useLeave('/grimoire');
   const page = snapshot?.pages.find((p) => p.id === pageId) ?? null;
   const book = page ? snapshot?.books.find((b) => b.id === page.book_id) : null;
   const section = page?.section_id ? snapshot?.sections.find((s) => s.id === page.section_id) : null;
@@ -43,7 +45,7 @@ export default function GrimoirePage() {
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Back to your grimoire"
-          onPress={() => (router.canGoBack() ? router.back() : router.replace('/grimoire'))}
+          onPress={back}
           style={styles.back}
         >
           <View style={styles.flip}>

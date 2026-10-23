@@ -16,7 +16,7 @@ import { carvingsOf, dressingsOf, isCandle } from '../../lib/altar/livingState';
 import { freshnessLine, offeringFreshness } from '../../lib/altar/offerings';
 import type { SavedObject } from '../../lib/altar/types';
 import { burnedDownLine, burnProgress, meltLine, waxLook } from '../../lib/altar/wax';
-import { carvingRemaining } from '../../lib/altar/workings/dressing';
+import { carvingLine } from '../../lib/altar/workings/dressing';
 import { colors, radius, type } from '../../theme';
 import { AltarObjectArt } from './AltarStage';
 import { Sheet } from './Sheet';
@@ -27,14 +27,12 @@ type Props = {
   label: string;
   /** The altar's background, laid dim behind it. */
   background?: string;
-  /** How it's aging and how charged it is, as the stage shows them. */
-  agedOpacity?: number;
-  droop?: number;
+  /** How charged it is, as the stage shows it. */
   charge?: number;
   onClose: () => void;
 };
 
-export function CloseUpSheet({ visible, object, label, background, agedOpacity, droop, charge, onClose }: Props) {
+export function CloseUpSheet({ visible, object, label, background, charge, onClose }: Props) {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     if (!visible) return;
@@ -74,7 +72,7 @@ export function CloseUpSheet({ visible, object, label, background, agedOpacity, 
           <Ellipse cx="50%" cy="55%" rx="55%" ry="50%" fill="url(#closeup-light)" />
         </Svg>
         <View style={[styles.object, { width, height, top: frameHeight - height - 18 }]}>
-          <AltarObjectArt object={object} width={width} height={height} agedOpacity={agedOpacity} droop={droop} charge={charge} now={now} />
+          <AltarObjectArt object={object} width={width} height={height} charge={charge} now={now} />
         </View>
       </View>
       {lines.length > 0 && (
@@ -100,10 +98,7 @@ function closeUpLines(object: SavedObject, now: number): string[] {
     const wax = waxLook(object, now);
     if (wax.line) lines.push(wax.line);
     const progress = burnProgress(object, now);
-    for (const carving of carvingsOf(object)) {
-      const left = carvingRemaining(carving.text, progress).visibleText;
-      lines.push(left === carving.text.trim() ? `“${carving.text}” is carved down the wax.` : left ? `“${carving.text}” is melting away from the top; “${left}” is left.` : `“${carving.text}” has melted away into the wax.`);
-    }
+    for (const carving of carvingsOf(object)) lines.push(carvingLine(carving, progress));
     const dressings = dressingsOf(object);
     if (dressings.length) lines.push(`Dressed with ${dressings.map((d) => d.label).filter(Boolean).join(', ')}.`);
   }

@@ -13,13 +13,16 @@ import { setHolidaySelection, syncSkyCalendar } from '../../../lib/reminders/cal
 import { useReminders } from '../../../lib/reminders/store';
 import { planSky, planWhen } from '../../../lib/rituals/format';
 import { journalInsights } from '../../../lib/rituals/insights';
+import { dueLookBacks } from '../../../lib/rituals/lookBack';
+import type { JournalRow } from '../../../lib/rituals/types';
+import { DidItWork } from '../../../components/rituals/DidItWork';
 import { currentStep } from '../../../lib/rituals/lifecycle';
 import { nextPlan } from '../../../lib/rituals/plans';
 import { useRituals } from '../../../lib/rituals/store';
-import { Tags } from '../../../components/more/ui';
+import { Field, Tags } from '../../../components/more/ui';
 import { dateFrom, daysBetween, shortDate, timeOfDay } from '../../../lib/calendar';
 import { calendarEventsBetween, CALENDARS_LIVE, calendarSettingsKey, todayLines } from '../../../lib/calendars';
-import { holidayChoice } from '../../../lib/holidays';
+import { holidayChoice, type Holiday } from '../../../lib/holidays';
 import { findByName, todayLibraryHref, useLibrary } from '../../../lib/library';
 import { usePlace } from '../../../lib/location';
 import { placeSky, skyNow, type PlaceSky, type Sky } from '../../../lib/sky';
@@ -28,6 +31,12 @@ import { useMySettings } from '../../../lib/settings/store';
 import { todaySettings } from '../../../lib/library/traditions';
 import { buildToday, type HorizonItem, type TodayModel } from '../../../lib/today';
 import { practiceToday } from '../../../lib/craft/today';
+import { DREAMS, morningDreamPrompt, normalizeDream, quickDream } from '../../../lib/craft/hedge/dreams';
+import { addEntry, useCraft } from '../../../lib/craft/store';
+import { DREAM_ROUTES } from '../../../lib/grimoire/dreams';
+import { normalizeReading, READINGS } from '../../../lib/craft/hedge/readings';
+import { drawOnToday, todaysCard } from '../../../lib/divination/daily';
+import { keepsSouthernWheel, seasonalSpreads } from '../../../lib/divination/seasonal';
 import { deityLines } from '../../../lib/patron';
 import { hasHolyPage, holyRef, moonRef, principalRef } from '../../../lib/holy';
 import { forYou, forYouContext, myPractices } from '../../../lib/rituals/premade';
@@ -181,6 +190,8 @@ export default function Today() {
         )}
       </View>
 
+      <LookBackDue journal={rituals.journal} now={now} />
+
       <View style={styles.horizon}>
         <Text style={type.eyebrow}>On the horizon</Text>
         <View style={styles.tiles}>
@@ -192,7 +203,9 @@ export default function Today() {
         {today.eclipseLine && <Text style={[type.caption, styles.center, styles.gold]}>{today.eclipseLine}</Text>}
       </View>
 
+      <DreamCapture settings={settings} now={clock} reminderOn={reminders.settings.dreamMorning} />
       <PracticeCard settings={settings} place={place} now={clock} />
+      {drawOnToday(settings) && <CardOfTheDay now={clock} south={keepsSouthernWheel(settings)} />}
       <DaySky today={today} sky={sky} here={here} now={clock} />
       <CorrespondencesCard today={today} />
       <Button
@@ -211,6 +224,55 @@ export default function Today() {
 }
 
 type SettingsLike = Record<string, unknown> | null | undefined;
+
+/**
+ * In the morning hours, for someone who keeps a dream journal: catch last
+ * night's dream in a line or two. It goes into the Grimoire's Dreams.
+ */
+function DreamCapture({ settings, now, reminderOn }: { settings: SettingsLike; now: Date; reminderOn: boolean }) {
+  const { entries } = useCraft<unknown>(DREAMS);
+  const [text, setText] = useState('');
+  const [kept, setKept] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const dreams = useMemo(() => entries.map((e) => ({ ...e, data: normalizeDream(e.data) })), [entries]);
+  const keepsHedge = myPractices(settings).includes('hedge');
+  const prompt = morningDreamPrompt(now, { keepsHedge, reminderOn, dreams: kept ? [] : dreams });
+
+  if (kept) {
+    return (
+      <View style={styles.working}>
+        <Text style={[type.eyebrow, styles.gold]}>Last night’s dream</Text>
+        <Text style={type.body}>Kept in your Grimoire, with the moon it came under.</Text>
+        <Button label="Add symbols and feelings" variant="outline" onPress={() => router.navigate(DREAM_ROUTES.edit(kept) as never)} />
+      </View>
+    );
+  }
+  if (!prompt) return null;
+
+  const keep = async () => {
+    if (!text.trim() || saving) return;
+    setSaving(true);
+    try {
+      const entry = await addEntry(DREAMS, quickDream(text, new Date()));
+      setText('');
+      setKept(entry.id);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <View style={styles.working}>
+      <Text style={[type.eyebrow, styles.gold]}>{prompt.title}</Text>
+      <Text style={type.caption}>{prompt.detail}</Text>
+      <Field label="What you remember" value={text} onChangeText={setText} placeholder="Even a fragment: a place, a face, a feeling" multiline />
+      <View style={styles.dreamActions}>
+        <Button label={saving ? 'Keeping it…' : 'Keep it'} onPress={keep} disabled={!text.trim() || saving} />
+        <Button label="Write it in full" variant="text" onPress={() => router.navigate(DREAM_ROUTES.write as never)} />
+      </View>
+    </View>
+  );
+}
 
 /** For your practice: a line from each practice kept, and a working that suits tonight. */
 function PracticeCard({ settings, place, now }: { settings: SettingsLike; place: Place | null; now: Date }) {
@@ -295,6 +357,78 @@ function PracticeCard({ settings, place, now }: { settings: SettingsLike; place:
   );
 }
 
+/** "Did it work?" for a ritual or spell whose look-back day has come. */
+function LookBackDue({ journal, now }: { journal: JournalRow[]; now: Date }) {
+  const due = useMemo(() => dueLookBacks(journal, now), [journal, now]);
+  if (!due.length) return null;
+  const [first, ...more] = due;
+  return (
+    <View style={styles.lookBack}>
+      <DidItWork key={first.id} entry={first} compact />
+      <Pressable
+        accessibilityRole="link"
+        onPress={() => router.navigate({ pathname: '/today/journal/[id]', params: { id: first.id } })}
+        style={({ pressed }) => pressed && { opacity: 0.7 }}
+      >
+        <Text style={[type.caption, styles.center]}>
+          {more.length ? `Open “${first.title || 'the entry'}” · ${more.length} more waiting in your journal ›` : `Open “${first.title || 'the entry'}” ›`}
+        </Text>
+      </Pressable>
+    </View>
+  );
+}
+
+/** A card for the day: one to draw, or the one you've kept today. Turned off in Settings → Calendars. */
+function CardOfTheDay({ now, south }: { now: Date; south: boolean }) {
+  const { entries } = useCraft<unknown>(READINGS);
+  const day = now.toDateString();
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- once a day
+  const seasonal = useMemo(() => seasonalSpreads(now, { south })[0] ?? null, [day, south]);
+  const kept = useMemo(
+    () => todaysCard(entries.map((e) => ({ ...e, data: normalizeReading(e.data) })), now),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once a day, and when the readings change
+    [entries, day],
+  );
+  return (
+    <>
+      <Pressable
+        accessibilityRole="link"
+        accessibilityLabel={kept ? `Today’s card: ${kept.name}${kept.reversed ? ', reversed' : ''}. Opens the reading.` : 'Draw a card for the day'}
+        onPress={() =>
+          kept
+            ? router.navigate({ pathname: '/rituals/craft/hedge/readings/[id]', params: { id: kept.id } })
+            : router.navigate({ pathname: '/rituals/craft/hedge/readings/draw', params: { spread: 'daily' } })
+        }
+        style={({ pressed }) => [styles.lastTime, pressed && { opacity: 0.7 }]}
+      >
+        {kept ? (
+          <Text style={type.caption}>
+            {'Today’s card: '}
+            <Text style={styles.gold}>{`${kept.name}${kept.reversed ? ', reversed' : ''}`}</Text>
+            {' ›'}
+          </Text>
+        ) : (
+          <Text style={[type.caption, styles.gold]}>Draw a card for the day ›</Text>
+        )}
+      </Pressable>
+      {seasonal && (
+        <Pressable
+          accessibilityRole="link"
+          accessibilityLabel={`${seasonal.why}. Draw the ${seasonal.label} spread.`}
+          onPress={() => router.navigate({ pathname: '/rituals/craft/hedge/readings/draw', params: { spread: seasonal.spread } })}
+          style={({ pressed }) => [styles.lastTime, pressed && { opacity: 0.7 }]}
+        >
+          <Text style={type.caption}>
+            {`${seasonal.why}: `}
+            <Text style={styles.gold}>{seasonal.label}</Text>
+            {' ›'}
+          </Text>
+        </Pressable>
+      )}
+    </>
+  );
+}
+
 const PRINCIPAL = ['New Moon', 'First Quarter', 'Full Moon', 'Last Quarter'];
 
 /** On a new, quarter or full moon: what you did last time the moon looked like this. */
@@ -351,6 +485,9 @@ function HolidayPanel({ today, compact }: { today: TodayModel; compact: boolean 
         >
           <Text style={[type.eyebrow, styles.gold]}>{`${today.holidayWhen[i]} · ${today.holidayTerms[i]}`}</Text>
           <Text style={[styles.holidayName, compact && styles.holidayNameCompact]}>{holiday.name}</Text>
+          <View style={[styles.recurs, holiday.recurs === 'yearly' && styles.recursYearly]}>
+            <Text style={[styles.recursText, holiday.recurs === 'yearly' && styles.recursTextYearly]}>{RECURS[holiday.recurs]}</Text>
+          </View>
           <Text style={[type.caption, compact && styles.small]}>{holiday.traditions.join(' · ')}</Text>
           <Text style={[styles.meaning, compact && styles.meaningCompact]}>{holiday.meaning}</Text>
         </Pressable>
@@ -358,6 +495,10 @@ function HolidayPanel({ today, compact }: { today: TodayModel; compact: boolean 
     </View>
   );
 }
+
+// How often a holiday comes round, so a monthly holy day and a yearly festival
+// on the same day (Apollo's Hebdomē and the Pyanepsia) read as different things.
+const RECURS: Record<Holiday['recurs'], string> = { yearly: 'Once a year', monthly: 'Every month', weekly: 'Every week', once: 'This year only' };
 
 /** A holiday's own page when it has one, else the calendars. */
 function openHoliday(id: string) {
@@ -492,6 +633,7 @@ function HorizonTile({ item }: { item: HorizonItem }) {
 }
 
 const styles = StyleSheet.create({
+  lookBack: { gap: 10 },
   header: { alignItems: 'center', gap: 4, marginTop: 8 },
   date: { letterSpacing: 2.5 },
   ruler: { fontFamily: fonts.displayItalic, fontSize: 17, color: colors.gold, textAlign: 'center' },
@@ -514,6 +656,10 @@ const styles = StyleSheet.create({
   },
   holidayCompact: { padding: 12, gap: 10 },
   holidayItem: { gap: 4 },
+  recurs: { alignSelf: 'flex-start', borderRadius: 999, borderWidth: 1, borderColor: colors.hairline, paddingHorizontal: 10, paddingVertical: 2 },
+  recursYearly: { borderColor: colors.gold, backgroundColor: 'rgba(226, 195, 109, 0.14)' },
+  recursText: { fontFamily: fonts.bodySemi, fontSize: 11, letterSpacing: 1, textTransform: 'uppercase', color: colors.parchment },
+  recursTextYearly: { color: colors.gold },
   holidayName: { fontFamily: fonts.display, fontSize: 28, lineHeight: 32, color: colors.cream },
   holidayNameCompact: { fontSize: 19, lineHeight: 23 },
   meaning: { ...type.body, color: colors.parchment },
@@ -546,6 +692,7 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   workingText: { gap: 3 },
+  dreamActions: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 10 },
   practiceRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingTop: 12, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.goldLine },
   practiceText: { flex: 1, gap: 2 },
   practiceLabel: { fontFamily: fonts.bodySemi, fontSize: 12, letterSpacing: 1.2, textTransform: 'uppercase', color: colors.gold },

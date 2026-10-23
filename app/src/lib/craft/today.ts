@@ -71,7 +71,7 @@ const LINES: Record<PracticeId, (now: Date, ctx: PracticeDayContext) => Omit<Pra
   hedge(now, { choice }) {
     const day = ancestorDays(choice, now, 21)[0];
     if (day) return { label: 'Hedge', line: `${day.name} ${whenWords(day.inDays, day.date)}`, detail: firstSentence(day.meaning), href: '/rituals/craft/hedge/ancestors' };
-    return { label: 'Hedge', line: 'Keep your dream journal by the bed tonight', detail: 'Write down whatever comes as soon as you wake.', href: '/rituals/craft/hedge/dreams' };
+    return { label: 'Hedge', line: 'Keep your dream journal by the bed tonight', detail: 'Write down whatever comes as soon as you wake.', href: '/grimoire/dreams' };
   },
   cosmic(now, { place }) {
     const hour = place ? planetaryHours(now, place)?.find((h) => isNow(h, now)) : null;

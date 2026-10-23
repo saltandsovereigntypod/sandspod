@@ -2,10 +2,12 @@
 // be tested; the notifier hands the result to expo-notifications.
 
 import { PRINCIPAL_NAMES, signAtSyzygy, upcomingPhases, type PrincipalPhase } from '../moon.ts';
+import { dateFromKey } from '../rituals/lifecycle.ts';
 import { planStart } from '../rituals/plans.ts';
 import type { RitualPlan } from '../rituals/types.ts';
 import { dateKey, devotionFor } from '../craft/solitary/devotion.ts';
 import { sacredReminders, type SacredReminderSource } from '../patron/index.ts';
+import { tendingNote, type OfferingDue } from '../altar/offerings.ts';
 
 export type ReminderSettings = {
   version: 1;
@@ -26,6 +28,8 @@ export type ReminderSettings = {
   rituals: boolean;
   /** How long before a planned ritual. */
   ritualLeadMinutes: number;
+  /** Ask "Did it work?" on the day you chose to look back on a ritual or spell. */
+  lookBacks: boolean;
   /** Daily devotion (My practice → Solitary): a morning and an evening nudge. */
   devotionMorning: boolean;
   /** Minutes after midnight. */
@@ -36,6 +40,14 @@ export type ReminderSettings = {
   sacredDays: boolean;
   /** Minutes after midnight. */
   sacredAt: number;
+  /** A morning nudge to write down last night's dream (Grimoire → Dreams). */
+  dreamMorning: boolean;
+  /** Minutes after midnight. */
+  dreamMorningAt: number;
+  /** Offerings on your altars that want refreshing (water drying, flowers wilting). Off unless chosen. */
+  offerings: boolean;
+  /** Minutes after midnight: offerings that go over during the day are mentioned at this time. */
+  offeringsAt: number;
 };
 
 export const DEFAULT_SETTINGS: ReminderSettings = {
@@ -49,12 +61,17 @@ export const DEFAULT_SETTINGS: ReminderSettings = {
   notes: { new: '', firstQuarter: '', full: '', lastQuarter: '' },
   rituals: true,
   ritualLeadMinutes: 60,
+  lookBacks: true,
   devotionMorning: false,
   devotionMorningAt: 7 * 60,
   devotionEvening: false,
   devotionEveningAt: 21 * 60,
   sacredDays: false,
   sacredAt: 9 * 60,
+  dreamMorning: false,
+  dreamMorningAt: 7 * 60,
+  offerings: false,
+  offeringsAt: 18 * 60,
 };
 
 export const PHASE_ORDER: PrincipalPhase[] = ['new', 'firstQuarter', 'full', 'lastQuarter'];
@@ -89,12 +106,17 @@ export function normalizeSettings(raw: unknown): ReminderSettings {
     notes,
     rituals: value.rituals !== false,
     ritualLeadMinutes: Number.isFinite(lead) && lead >= 0 && lead <= 24 * 60 ? lead : DEFAULT_SETTINGS.ritualLeadMinutes,
+    lookBacks: value.lookBacks !== false,
     devotionMorning: value.devotionMorning === true,
     devotionMorningAt: minuteOfDay(value.devotionMorningAt, DEFAULT_SETTINGS.devotionMorningAt),
     devotionEvening: value.devotionEvening === true,
     devotionEveningAt: minuteOfDay(value.devotionEveningAt, DEFAULT_SETTINGS.devotionEveningAt),
     sacredDays: value.sacredDays === true,
     sacredAt: minuteOfDay(value.sacredAt, DEFAULT_SETTINGS.sacredAt),
+    dreamMorning: value.dreamMorning === true,
+    dreamMorningAt: minuteOfDay(value.dreamMorningAt, DEFAULT_SETTINGS.dreamMorningAt),
+    offerings: value.offerings === true,
+    offeringsAt: minuteOfDay(value.offeringsAt, DEFAULT_SETTINGS.offeringsAt),
   };
 }
 
@@ -104,13 +126,13 @@ function minuteOfDay(raw: unknown, fallback: number): number {
 }
 
 export function anyReminders(settings: ReminderSettings): boolean {
-  return settings.rituals || settings.devotionMorning || settings.devotionEvening || settings.sacredDays || PHASE_ORDER.some((p) => settings.phases[p]);
+  return settings.rituals || settings.lookBacks || settings.devotionMorning || settings.devotionEvening || settings.sacredDays || settings.dreamMorning || settings.offerings || PHASE_ORDER.some((p) => settings.phases[p]);
 }
 
 export type Reminder = {
   /** Stable per event, so rescheduling never duplicates. */
   key: string;
-  kind: 'moon' | 'ritual' | 'devotion' | 'sacred';
+  kind: 'moon' | 'ritual' | 'devotion' | 'sacred' | 'dream' | 'lookback' | 'offering';
   at: Date;
   title: string;
   body: string;
@@ -147,8 +169,19 @@ function leadText(minutes: number): string {
   return hours === 1 ? 'in an hour' : `in ${hours} hours`;
 }
 
+/** A look-back day to ask "Did it work?" on (lookBack.ts lookBackReminder). */
+export type LookBackReminderSource = { key: string; id: string; date: string; title: string; body: string };
+
 /** Every reminder due after `now` within the horizon, soonest first, capped. */
-export function buildSchedule(settings: ReminderSettings, plans: RitualPlan[], now: Date, horizonDays = HORIZON_DAYS, sacred: SacredReminderSource[] = []): Reminder[] {
+export function buildSchedule(
+  settings: ReminderSettings,
+  plans: RitualPlan[],
+  now: Date,
+  horizonDays = HORIZON_DAYS,
+  sacred: SacredReminderSource[] = [],
+  lookBacks: LookBackReminderSource[] = [],
+  offerings: OfferingDue[] = [],
+): Reminder[] {
   const horizon = now.getTime() + horizonDays * 86_400_000;
   const reminders: Reminder[] = [];
 
@@ -247,6 +280,64 @@ export function buildSchedule(settings: ReminderSettings, plans: RitualPlan[], n
     for (const r of sacredReminders(sacred, now, Math.min(DEVOTION_DAYS, horizonDays) + 1)) {
       const at = new Date(r.date.getFullYear(), r.date.getMonth(), r.date.getDate(), Math.floor(settings.sacredAt / 60), settings.sacredAt % 60, 0, 0);
       reminders.push({ key: `sacred-${r.key}:${dateKey(at)}`, kind: 'sacred', at, title: r.title, body: r.body, url: `/today/library/traditional:deity:${r.key}` });
+    }
+  }
+
+  // A gentle morning nudge for the dream journal, two weeks ahead like the devotions.
+  if (settings.dreamMorning) {
+    const at = settings.dreamMorningAt;
+    for (let d = 0; d <= Math.min(DEVOTION_DAYS, horizonDays); d++) {
+      const day = new Date(now.getFullYear(), now.getMonth(), now.getDate() + d, Math.floor(at / 60), at % 60, 0, 0);
+      reminders.push({
+        key: `dream-morning:${dateKey(day)}`,
+        kind: 'dream',
+        at: day,
+        title: 'Last night’s dream',
+        body: 'Write down last night’s dream, before it fades.',
+        url: '/grimoire/dreams/edit',
+      });
+    }
+  }
+
+  // "Did it work?" on each look-back day, at the time chosen for moon reminders.
+  if (settings.lookBacks) {
+    for (const lookBack of lookBacks) {
+      const day = dateFromKey(lookBack.date);
+      if (!day) continue;
+      reminders.push({
+        key: lookBack.key,
+        kind: 'lookback',
+        at: atTime(day, settings.phaseHour, settings.phaseMinute),
+        title: lookBack.title,
+        body: lookBack.body,
+        url: `/rituals/journal/${lookBack.id}`,
+      });
+    }
+  }
+
+  // Offerings that go over: one gentle reminder on each day some do, at your chosen time.
+  if (settings.offerings && offerings.length) {
+    const byDay = new Map<string, { at: Date; due: OfferingDue[] }>();
+    for (const due of offerings) {
+      const when = new Date(due.dueAt);
+      let at = new Date(when.getFullYear(), when.getMonth(), when.getDate(), Math.floor(settings.offeringsAt / 60), settings.offeringsAt % 60, 0, 0);
+      if (at.getTime() < due.dueAt) at = new Date(at.getFullYear(), at.getMonth(), at.getDate() + 1, at.getHours(), at.getMinutes(), 0, 0);
+      const key = dateKey(at);
+      const day = byDay.get(key) ?? { at, due: [] };
+      day.due.push(due);
+      byDay.set(key, day);
+    }
+    for (const [key, day] of byDay) {
+      const first = day.due[0];
+      const oneAltar = day.due.every((d) => d.altarId === first.altarId);
+      reminders.push({
+        key: `offering:${key}`,
+        kind: 'offering',
+        at: day.at,
+        title: day.due.length === 1 ? 'An offering wants tending' : 'Your offerings want tending',
+        body: tendingNote(day.due) ?? '',
+        url: oneAltar && first.altarId ? `/altar/${first.altarId}` : '/altar',
+      });
     }
   }
 

@@ -9,11 +9,12 @@
 
 import { memo } from 'react';
 import { Image, type ImageSourcePropType, type ImageStyle, StyleSheet, View, type StyleProp } from 'react-native';
-import Svg, { ClipPath, Defs, Ellipse, G, LinearGradient, Line, Path, RadialGradient, Rect, Stop, Text as SvgText } from 'react-native-svg';
+import Svg, { Circle, ClipPath, Defs, Ellipse, G, LinearGradient, Line, Path, RadialGradient, Rect, Stop, Text as SvgText } from 'react-native-svg';
 
 import { flameLayout, lowerFlame, pictureBox, type FlameLayout } from '../../lib/altar/flame';
 import { imageRatio } from '../../lib/altar/geometry';
-import { candleLifeForm, carvingsOf, dressingsOf, isLit } from '../../lib/altar/livingState';
+import { candleLifeForm, carvingMark, carvingsOf, dressingsOf, isLit } from '../../lib/altar/livingState';
+import { RING } from '../../lib/sigil/geometry';
 import type { SavedObject } from '../../lib/altar/types';
 import { burnDown, burnProgress, LOW_FORMS, waxLook, type BurnDown } from '../../lib/altar/wax';
 import { ingredientColor, waxColor } from '../../lib/altar/workings/colors';
@@ -220,13 +221,24 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
           <Stop offset="0.38" stopColor="rgb(70,64,58)" stopOpacity={0.7} />
           <Stop offset="1" stopColor="rgb(40,34,30)" stopOpacity={0.82} />
         </LinearGradient>
+        <LinearGradient id={`soot-${uid}`} x1="0.15" y1="0" x2="0.4" y2="1">
+          <Stop offset="0" stopColor="rgb(12,10,9)" stopOpacity={0.95} />
+          <Stop offset="0.35" stopColor="rgb(22,18,16)" stopOpacity={0.6} />
+          <Stop offset="0.8" stopColor="rgb(30,26,22)" stopOpacity={0.15} />
+          <Stop offset="1" stopColor="rgb(30,26,22)" stopOpacity={0} />
+        </LinearGradient>
       </Defs>
 
       {/* In glass: the wax has sunk, leaving the glass above it empty. */}
       {glass && pic && glass.drop > 0 && (
         <>
           <Rect x={cx - half} y={pic.top + glass.top * pic.height - rim} width={half * 2} height={glass.drop * pic.height + rim} fill={`url(#glass-${uid})`} />
+          {/* Soot: the glass above the wax blackens over the burn, heaviest near the rim and on one side. */}
+          <Rect x={cx - half * 1.04} y={pic.top + glass.top * pic.height - rim} width={half * 2.08} height={glass.drop * pic.height + rim * 0.6} fill={`url(#soot-${uid})`} opacity={Math.min(0.85, 0.15 + progress * 0.85)} />
           <Ellipse cx={cx} cy={surface} rx={half} ry={rim} fill={mix(waxHex, [255, 255, 255], 0.25)} />
+          {/* The melted top: glossy, catching the light. */}
+          <Ellipse cx={cx - half * 0.32} cy={surface - rim * 0.12} rx={half * 0.34} ry={rim * 0.32} fill="rgb(255,255,250)" opacity={lit ? 0.6 : 0.32} />
+          {lit && <Ellipse cx={cx} cy={surface + rim * 0.1} rx={half * 0.7} ry={rim * 0.6} fill={`url(#pool-${uid})`} opacity={0.75} />}
           <Line x1={cx} y1={surface - rim * 1.6} x2={cx} y2={surface} stroke="rgb(30,20,14)" strokeWidth={Math.max(0.8, half * 0.06)} strokeLinecap="round" />
         </>
       )}
@@ -266,6 +278,41 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
         const columns = carvings.length;
         const lane = (half * 2 * 0.86) / columns; // the width each carving has across the wax
         const span = Math.max(1, bottom - carveTop - body * 0.05);
+        const mark = carvingMark(carving);
+        if (mark) {
+          // A sigil: the mark itself, upright, cut into the wax and melting from the top like words.
+          const side = Math.min(lane * 0.92, span * 0.6, 64);
+          if (side < 6) return null;
+          const x = cx + (columns > 1 ? (column === 0 ? -0.5 : 0.5) * lane : 0);
+          const mid = carveTop + span * 0.4;
+          const start = mid - side / 2;
+          const remains = burn ? null : carvingRemaining(text, progress);
+          const melted = remains ? start + remains.meltLine * side : goneLine + side * 0.05;
+          const clipTop = Math.max(melted, start - 2);
+          if (clipTop >= start + side) return null;
+          const k = side / 100;
+          const stroke = Math.max(0.7, side * 0.035) / k; // in the sigil's own units
+          const id = `carve-${uid}-${column}-${Math.round(width)}x${Math.round(height)}`;
+          const glyph = (dx: number, dy: number, color: string, opacity: number) => (
+            <G transform={`translate(${x - side / 2 + dx} ${start + dy}) scale(${k})`}>
+              {mark.ring && <Circle cx={RING.cx} cy={RING.cy} r={RING.r} fill="none" stroke={color} strokeOpacity={opacity} strokeWidth={stroke * 0.8} />}
+              <Path d={mark.d} fill="none" stroke={color} strokeOpacity={opacity} strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" />
+            </G>
+          );
+          return (
+            <G key={`c${column}`}>
+              <Defs>
+                <ClipPath id={id}>
+                  <Rect x={cx - half * 0.94} y={clipTop} width={half * 1.88} height={Math.max(0, bottom - clipTop)} />
+                </ClipPath>
+              </Defs>
+              <G clipPath={`url(#${id})`}>
+                {glyph(side * 0.012, side * 0.016, cut.edge, cut.edgeOpacity)}
+                {glyph(0, 0, cut.groove, cut.grooveOpacity)}
+              </G>
+            </G>
+          );
+        }
         // Letter height across the wax (cap height ≈ 0.62 of the size); the word's length (≈ 0.46 a letter) must fit down it.
         const size = Math.min(lane * 0.85, (span * 0.86) / (0.46 * n), 30);
         if (size < 3) return null;

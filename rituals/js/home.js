@@ -6,6 +6,8 @@
   const S = global.RitualsStore;
   const { esc } = UI;
   const R = global.SaltCore.rituals;
+  const D = global.DidItWork;
+  let current = [];
 
   async function render() {
     const main = UI.root();
@@ -22,6 +24,14 @@
     const [next, ...later] = upcoming;
     const entries = R.plans.sortJournal(journal);
     const insight = R.insights.journalInsights(journal, now);
+    current = journal;
+    const due = R.lookBack.dueLookBacks(journal, now);
+    const dueCards = due.length
+      ? `<section class="sp-section" aria-labelledby="rt-due"><h2 class="sp-label" id="rt-due">Did it work?</h2>
+          ${due.slice(0, 3).map((entry) => D.card(entry, now, { title: true })).join("")}
+          ${due.length > 3 ? `<div class="sp-actions"><a class="button button--ghost" href="/rituals/journal/insights/#did-it-work">${esc(`${due.length - 3} more to look back on`)}</a></div>` : ""}
+        </section>`
+      : "";
 
     let activeCard = "";
     if (active) {
@@ -78,13 +88,14 @@
         <div class="sp-list">${UI.row({
           href: "/rituals/journal/insights/",
           title: "Your moon",
-          detail: insight.lines[0] || "Which moons you work under, and what for"
+          detail: insight.lines[0] || "Which moons you work under, what for, and what works for you"
         })}</div>`
       : `<section class="sp-card"><p>Rituals you finish at the altar or in the app are kept in your journal.</p></section>`;
 
     main.innerHTML = `
       ${UI.header({ back: null, eyebrow: moon.name, title: "Rituals" })}
       ${activeCard}
+      ${dueCards}
       ${nextCard}
       ${laterList}
       ${tools}
@@ -105,6 +116,7 @@
   async function start() {
     await global.SaltPage.ready();
     await UI.attempt(render, "Your rituals couldn't be opened");
+    D.bind(UI.root(), () => current, () => UI.attempt(render, "Your rituals couldn't be opened"));
     global.SaltPage.onUserChange(() => UI.attempt(render, "Your rituals couldn't be opened"));
   }
 

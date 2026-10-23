@@ -141,6 +141,29 @@
     return result.data || [];
   }
 
+  /**
+   * Save a change to a journal entry's metadata alone ("Did it work?" and its
+   * look-back day, metadata.lookBack), as the app's saveJournalMetadata does:
+   * only that column is written. Guests: both of this browser's journal copies.
+   */
+  async function saveJournalMetadata(entry) {
+    const account = user();
+    const updated_at = new Date().toISOString();
+    if (!account || !db()) {
+      const patch = (item) => (item && item.id === entry.id ? { ...item, metadata: entry.metadata, updated_at } : item);
+      const device = readJson(K.guestRituals, null);
+      if (device && Array.isArray(device.journals)) writeJson(K.guestRituals, { ...device, journals: device.journals.map(patch) });
+      const mine = list(readJson(K.myRituals, []));
+      if (mine.some((item) => item && item.id === entry.id)) writeJson(K.myRituals, mine.map(patch));
+      global.SaltAccountData?.markGuestDataChanged?.(global.localStorage);
+      return { ...entry, updated_at };
+    }
+    const result = throwIf(
+      await db().from("user_rituals").update({ metadata: entry.metadata, updated_at }).eq("id", entry.id).eq("user_id", account.id).select("*").single()
+    );
+    return result.data;
+  }
+
   /** The ritual under way, with its steps, or null. */
   async function activeSession() {
     const account = user();
@@ -306,6 +329,7 @@
     removePlan,
     templates,
     journal,
+    saveJournalMetadata,
     activeSession,
     altars,
     pantry,

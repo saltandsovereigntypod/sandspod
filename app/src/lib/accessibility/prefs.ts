@@ -16,6 +16,12 @@ export type AccessibilityPrefs = {
   readableFont: boolean;
   highContrast: boolean;
   reduceMotion: boolean;
+  /** The altar's candles: a match struck and a breath as they're lit and snuffed, and their crackles and pops while they burn. */
+  candleSounds: boolean;
+  /** A soft tap felt as a candle is lit or snuffed, and as dressed candles pop. */
+  haptics: boolean;
+  /** The altar shifts a little with the phone's tilt, and flames lean against it. */
+  tiltDepth: boolean;
   // Kept so the website's choices survive a save from the app, though a phone has no use for them.
   hideDecoration: boolean;
   readingRuler: boolean;
@@ -29,6 +35,9 @@ export const ACCESSIBILITY_DEFAULTS: Readonly<AccessibilityPrefs> = Object.freez
   readableFont: false,
   highContrast: false,
   reduceMotion: false,
+  candleSounds: true,
+  haptics: true,
+  tiltDepth: true,
   hideDecoration: false,
   readingRuler: false,
   focusMode: false,

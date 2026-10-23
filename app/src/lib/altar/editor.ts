@@ -29,6 +29,7 @@ import { chargeUnderMoons } from './moonCharge.ts';
 import type { AltarDocument } from './snapshot.ts';
 import type { SavedObject } from './types.ts';
 import { newId } from './uid.ts';
+import type { SigilMark } from '../sigil/sigil.ts';
 
 const isTrue = (value: unknown) => value === 'true';
 export const isLocked = (object: SavedObject) => isTrue(object.locked);
@@ -150,10 +151,10 @@ export function undressObject(doc: AltarDocument, index: number, now: string): A
   return next === object ? doc : replace(doc, new Map([[index, next]]));
 }
 
-export function carveObject(doc: AltarDocument, index: number, text: string, now: string): AltarDocument {
+export function carveObject(doc: AltarDocument, index: number, text: string, now: string, sigil?: SigilMark | null): AltarDocument {
   const object = doc.objects[index];
   if (!object) return doc;
-  const next = carveCandle(object, text, now);
+  const next = carveCandle(object, text, now, sigil);
   return next === object ? doc : replace(doc, new Map([[index, next]]));
 }
 

@@ -8,7 +8,7 @@
 // left as the candle burns down (the stage draws it).
 
 import type { LibraryEntry } from '../../library/types.ts';
-import { isCandle, readLivingState, writeLivingState, type Dressing } from '../livingState.ts';
+import { carvingMark, isCandle, readLivingState, writeLivingState, type Carving, type Dressing } from '../livingState.ts';
 import {
   correspondenceOf,
   entryByName,
@@ -158,4 +158,19 @@ export function carvingRemaining(text: string, progress: number, band = 0.7): Ca
     glyphs,
     meltLine,
   };
+}
+
+/** How a carving looks as the candle burns, in a sentence: a word melts letter by letter; a sigil from the top down. */
+export function carvingLine(carving: Carving, progress: number): string {
+  if (carvingMark(carving)) {
+    const melt = carvingRemaining('x', progress).meltLine;
+    const name = `The sigil for “${carving.text}”`;
+    return melt <= 0 ? `${name} is carved into the wax.` : melt < 1 ? `${name} is melting away from the top.` : `${name} has melted away into the wax.`;
+  }
+  const left = carvingRemaining(carving.text, progress).visibleText;
+  return left === carving.text.trim()
+    ? `“${carving.text}” is carved down the wax.`
+    : left
+      ? `“${carving.text}” is melting away from the top; “${left}” is left.`
+      : `“${carving.text}” has melted away into the wax.`;
 }

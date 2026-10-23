@@ -223,12 +223,21 @@ async function initGrimoire() {
       ? Library.resolveCanonicalEntityId(requestedView.get("entity"))
       : requestedView.get("entity");
     const requestedPageId = requestedView.get("page");
+    // A tarot card, rune or ogham stave from the draw pages' "Read more" (grimoire/js/ui/divination.js).
+    const divinationLibrary = window.SaltCore && window.SaltCore["divination-library"];
+    const requestedDivination = divinationLibrary ? divinationLibrary.parseDivinationParam(requestedView.get("divination")) : null;
     const lastView = getLastGrimoireView();
+    const lastDivination = lastView?.type === "divination" && divinationLibrary ? divinationLibrary.parseDivinationParam(lastView.id) : null;
     const lastEntityId = lastView?.type === "library" && typeof Library !== "undefined" && typeof Library.resolveCanonicalEntityId === "function"
       ? Library.resolveCanonicalEntityId(lastView.id)
       : lastView?.id;
 
-    if (requestedEntityId && typeof Library !== "undefined" && Library.getEntity(requestedEntityId)) {
+    if (requestedDivination && typeof renderDivinationPage === "function") {
+      renderWelcomeState();
+      renderShelf();
+      await renderDivinationPage(requestedDivination.kind, requestedDivination.id);
+      renderLivingLibraryShelves();
+    } else if (requestedEntityId && typeof Library !== "undefined" && Library.getEntity(requestedEntityId)) {
       renderWelcomeState();
       renderShelf();
       await renderLibraryEntity(requestedEntityId);
@@ -242,6 +251,11 @@ async function initGrimoire() {
       renderShelf();
       await renderLibraryEntity(lastEntityId);
       reportTiming("canonical entity first render");
+      renderLivingLibraryShelves();
+    } else if (lastDivination && typeof renderDivinationPage === "function") {
+      renderWelcomeState();
+      renderShelf();
+      await renderDivinationPage(lastDivination.kind, lastDivination.id);
       renderLivingLibraryShelves();
     } else if (lastView?.type === "page" && pages.some((page) => page.id === lastView.id)) {
       await openPage(lastView.id, lastView.mode || "read");
@@ -385,7 +399,7 @@ async function createPage(sectionId = activeSectionId) {
   const user = requireUser();
   if (!user || !currentBook) return;
 
-  const templateKey = await openPageTemplateChooser();
+  const templateKey = await openPageTemplateChooser(sectionId || null);
   if (!templateKey) return;
 
   let chosenSectionId = sectionId || null;
@@ -985,7 +999,11 @@ async function renderMyPracticeShelf() {
 
 async function renderLivingLibraryShelves() {
   await renderMyPracticeShelf();
+  // Dreams, the built-in section after My Practice (grimoire/js/ui/dreams.js).
+  if (typeof renderDreamsShelf === "function") await renderDreamsShelf();
   await renderTraditionalLibraryShelf();
+  // Tarot, Runes and Ogham inside Traditional Information (grimoire/js/ui/divination.js).
+  if (typeof renderDivinationShelf === "function") renderDivinationShelf();
 }
 
 function formatLibraryEntityName(name = "") {

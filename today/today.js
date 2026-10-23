@@ -2,7 +2,7 @@
  * Today, as the app's Today tab has it (app/src/app/(tabs)/today/index.tsx):
  * the date and the other calendars, the moon and the day's holidays, your
  * next working, On the horizon, For your practice, the day's sky,
- * correspondences, Set tonight's altar, Reflect and Last time. Everything is
+ * correspondences, a card for the day, Set tonight's altar, Reflect and Last time. Everything is
  * worked out by the app's own logic (js/core/today.js); the place stays in
  * this browser and is only asked for when you press "Use my location".
  */
@@ -32,8 +32,22 @@
     place: T.readPlace(storage),
     user: null,
     rituals: { plans: T.guestPlans(storage), ...T.guestRituals(storage) },
+    // The dream journal (craft_entries `hedge.dreams`), for the morning prompt.
+    dreams: [],
+    dreamKept: null,
+    dreamProblem: "",
+    readings: [],
     message: ""
   };
+
+  async function loadDreams() {
+    if (!window.SaltCraft || !C.dreams) return;
+    try {
+      state.dreams = (await window.SaltCraft.list(C.dreams.DREAMS)).map((e) => ({ ...e, data: C.dreams.normalizeDream(e.data) }));
+    } catch {
+      state.dreams = [];
+    }
+  }
 
   function initialSettings() {
     try {
@@ -78,6 +92,16 @@
       };
     } catch {
       state.rituals = { plans: [], journal: [], active: null };
+    }
+  }
+
+  /** The Hedge reading log (for today's card), as the practice pages read it. */
+  async function loadReadings() {
+    try {
+      const list = window.SaltCraft ? await window.SaltCraft.list(C.readings.READINGS) : [];
+      state.readings = list.map((e) => ({ ...e, data: C.readings.normalizeReading(e.data) }));
+    } catch {
+      state.readings = [];
     }
   }
 
@@ -139,8 +163,11 @@
       header +
       panels +
       workingCard(m) +
+      lookBackCard(m) +
       horizonSection(today) +
+      dreamCard(m) +
       practiceCard(m) +
+      cardOfTheDay(m) +
       daySkyCard(m) +
       correspondencesCard(today) +
       `<div class="sp-actions"><a class="button button--ghost" href="${esc(T.siteHref({ pathname: "/altar/[altarId]", params: { altarId: "tonight" } }))}">Set tonight’s altar</a></div>` +
@@ -240,6 +267,35 @@
     );
   }
 
+  /**
+   * In the morning hours, for someone who keeps a dream journal: catch last
+   * night's dream in a line or two. It goes into the Grimoire's Dreams.
+   */
+  function dreamCard(m) {
+    if (!C.dreams || !window.SaltCraft) return "";
+    if (state.dreamKept) {
+      return (
+        `<section class="td-card td-card--working" aria-labelledby="td-dream-label"><h2 class="sp-eyebrow td-gold" id="td-dream-label">Last night’s dream</h2>` +
+        `<p>Kept in your Grimoire, with the moon it came under.</p>` +
+        `<div class="sp-actions"><a class="button button--ghost" href="/grimoire/dreams/edit/?id=${encodeURIComponent(state.dreamKept)}">Add symbols and feelings</a></div></section>`
+      );
+    }
+    const prompt = C.dreams.morningDreamPrompt(m.now, {
+      keepsHedge: C.premade.myPractices(m.settings).includes("hedge"),
+      reminderOn: T.dreamReminderOn(storage),
+      dreams: state.dreams
+    });
+    if (!prompt) return "";
+    return (
+      `<section class="td-card td-card--working" aria-labelledby="td-dream-label"><h2 class="sp-eyebrow td-gold" id="td-dream-label">${esc(prompt.title)}</h2>` +
+      `<p class="sp-caption">${esc(prompt.detail)}</p>` +
+      `<div class="sp-field"><label for="td-dream-text">What you remember</label><textarea id="td-dream-text" rows="3" placeholder="Even a fragment: a place, a face, a feeling" data-dream-text></textarea></div>` +
+      (state.dreamProblem ? `<p class="sp-notice" role="status">${esc(state.dreamProblem)}</p>` : "") +
+      `<div class="sp-actions"><button type="button" class="button button--primary" data-dream-keep>Keep it</button>` +
+      `<a class="button button--ghost" href="/grimoire/dreams/edit/">Write it in full</a></div></section>`
+    );
+  }
+
   /** For your practice: a line from each practice kept, your deities, and a working that suits tonight. */
   function practiceCard(m) {
     const { settings, now } = m;
@@ -262,6 +318,25 @@
         ? practiceRow("A working for tonight", working.title, working.summary, T.siteHref({ pathname: "/rituals/premade/[id]", params: { id: working.id } }), false)
         : "") +
       `</section>`
+    );
+  }
+
+  /** A card for the day: one to draw, or the one kept today (the app's CardOfTheDay). Turned off in Today's calendar settings. */
+  function cardOfTheDay(m) {
+    if (!C.daily.drawOnToday(state.settings)) return "";
+    const kept = C.daily.todaysCard(state.readings, m.now);
+    // A spread for the time: the new or full moon, or Samhain (the app's CardOfTheDay too).
+    const time = C.seasonal ? C.seasonal.seasonalSpreads(m.now, { south: C.seasonal.keepsSouthernWheel(state.settings) })[0] : null;
+    const seasonal = time
+      ? `<a class="td-last sp-caption" href="/practice/hedge/readings/draw/?spread=${encodeURIComponent(time.spread)}" aria-label="${esc(`${time.why}. Draw the ${time.label} spread.`)}"><span>${esc(
+          time.why
+        )}: <span class="td-gold">${esc(time.label)}</span> ›</span></a>`
+      : "";
+    if (!kept) return `<a class="td-last sp-caption td-gold" href="/practice/hedge/readings/draw/?spread=daily">Draw a card for the day ›</a>${seasonal}`;
+    const name = `${kept.name}${kept.reversed ? ", reversed" : ""}`;
+    return (
+      `<a class="td-last sp-caption" href="/practice/hedge/readings/reading/?id=${encodeURIComponent(kept.id)}" aria-label="${esc(`Today’s card: ${name}. Opens the reading.`)}">` +
+      `<span>Today’s card: <span class="td-gold">${esc(name)}</span> ›</span></a>${seasonal}`
     );
   }
 
@@ -328,6 +403,25 @@
     );
   }
 
+  /** "Did it work?" once a ritual or spell's look-back day has come; answered on the journal page. */
+  function lookBackCard(m) {
+    let due = [];
+    try {
+      due = C.lookBack.dueLookBacks(state.rituals.journal || [], m.now);
+    } catch {
+      due = [];
+    }
+    if (!due.length) return "";
+    const first = due[0];
+    return (
+      `<section class="td-card td-card--working" aria-label="Did it work?"><div class="td-working-text">` +
+      `<p class="sp-eyebrow td-gold">Did it work?</p>` +
+      `<h2 class="td-card__title">${esc(first.title || "Untitled Ritual")}</h2>` +
+      `<p class="sp-caption">${esc(due.length > 1 ? `Its look-back day has come, and ${due.length - 1} more are waiting.` : "Its look-back day has come. Yes, partly, not yet or no?")}</p>` +
+      `</div><a class="button button--primary" href="/rituals/journal/insights/#did-it-work">Look back</a></section>`
+    );
+  }
+
   const PRINCIPAL = ["New Moon", "First Quarter", "Full Moon", "Last Quarter"];
 
   /** On a new, quarter or full moon: what you did last time the moon looked like this. */
@@ -349,6 +443,28 @@
   // ── Events ─────────────────────────────────────────────────────────────
   T.bindToggles(root);
   root.addEventListener("click", async (event) => {
+    const keep = event.target.closest("[data-dream-keep]");
+    if (keep) {
+      const text = root.querySelector("[data-dream-text]")?.value || "";
+      if (!text.trim()) return;
+      keep.disabled = true;
+      keep.textContent = "Keeping it…";
+      try {
+        const entry = await window.SaltCraft.add(C.dreams.DREAMS, C.dreams.quickDream(text, new Date()));
+        state.dreamKept = entry.id;
+        state.dreamProblem = "";
+        await loadDreams();
+      } catch (error) {
+        console.error(error);
+        state.dreamProblem = "It couldn’t be kept just now. Your words are still here; try again in a moment.";
+        render();
+        const box = root.querySelector("[data-dream-text]");
+        if (box) box.value = text;
+        return;
+      }
+      render();
+      return;
+    }
     const button = event.target.closest("[data-use-location]");
     if (!button) return;
     button.disabled = true;
@@ -372,7 +488,7 @@
     refreshing = true;
     try {
       state.user = user;
-      await Promise.all([loadSettings(), loadRituals(user)]);
+      await Promise.all([loadSettings(), loadRituals(user), loadDreams(), loadReadings()]);
     } finally {
       refreshing = false;
     }

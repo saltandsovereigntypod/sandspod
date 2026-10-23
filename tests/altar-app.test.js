@@ -27,7 +27,7 @@ const taper = (state = {}, extra = {}) => ({
 });
 
 test("the bundle has every module the altar page uses", () => {
-  for (const name of ["livingState", "wax", "flame", "ceromancy", "incense", "offerings", "petitions", "charge", "moonCharge", "attunement", "story", "devotion", "relationship", "companion", "arrange", "tonight", "cabinet", "editor", "geometry", "altarOptions", "ambient", "colors", "dressing", "spellJar", "sachet", "spells", "scrying", "gratitude", "correspondence", "intention", "reading", "layouts", "tonightExplained", "shareCard", "ancestor", "practice", "history", "moon", "holidays", "ritualLifecycle", "ritualRows"]) {
+  for (const name of ["livingState", "wax", "flame", "ceromancy", "incense", "offerings", "offeringArt", "petitions", "charge", "moonCharge", "attunement", "story", "devotion", "relationship", "companion", "arrange", "tonight", "cabinet", "editor", "geometry", "altarOptions", "ambient", "colors", "dressing", "spellJar", "sachet", "spells", "scrying", "gratitude", "correspondence", "intention", "reading", "layouts", "tonightExplained", "shareCard", "ancestor", "practice", "history", "moon", "holidays", "ritualLifecycle", "ritualRows"]) {
     assert.ok(A[name], `SaltCore.altar.${name}`);
   }
   assert.equal(typeof A.searchLibrary, "function");
@@ -177,4 +177,30 @@ test("the altar's sky reads the place saved in this browser", () => {
   const south = ctx.AltarApp.place(store({ "sky.place": JSON.stringify({ latitude: -33.87, longitude: 151.21 }) }));
   assert.equal(A.ambient.moonMirrored(south), true);
   assert.ok(A.ambient.ambientAt(new Date("2026-10-16T09:00:00Z"), south).label);
+});
+
+test("living offerings: what the app sets out and tends is drawn and kept the same on the website", () => {
+  const T0 = Date.parse("2026-10-16T20:00:00Z");
+  const DAY = 24 * HOUR;
+  const bowl = {
+    type: "vessel", vessel: "offering-bowl", altarObjectId: "b1", label: "Offering Bowl",
+    imagePath: "../assets/altar/objects/vessels/offering-bowl/offering-bowl.png",
+    livingState: JSON.stringify({ version: 1, createdAt: iso(T0) })
+  };
+  const water = A.offerings.setOffering(bowl, "water", "Moon water", iso(T0));
+  // The app's state rides in livingState.app, which the site keeps as it is.
+  assert.equal(JSON.parse(water.livingState).app.offering.kind, "water");
+  const left = A.offerings.leaveOffering(water, iso(T0 + 2 * DAY));
+  assert.equal(JSON.parse(left.livingState).app.offering.leftAt, iso(T0 + 2 * DAY));
+  // Drawn: the water lower in the bowl with its tide line, then dried to a ring and a stain.
+  const svg = LivingArt.offeringSvg(A.offeringArt.offeringArt(water, 80, 54, T0 + 2 * DAY), 80, 54, "t");
+  assert.match(svg, /radialGradient id="liquid-t"/);
+  assert.match(svg, /stroke-opacity/);
+  const dry = LivingArt.offeringSvg(A.offeringArt.offeringArt(water, 80, 54, T0 + 6 * DAY), 80, 54, "t");
+  assert.match(dry, /stain-t/);
+  assert.doesNotMatch(dry, /liquid-t/);
+  // The gentle note, and quiet once it's left as it is.
+  const due = A.offerings.offeringsDue([{ id: "a", name: "Brigid", objects: [water] }], T0 + 2 * DAY);
+  assert.equal(A.offerings.tendingNote(due), "The moon water on your Brigid altar is low.");
+  assert.deepEqual(A.offerings.offeringsDue([{ id: "a", name: "Brigid", objects: [left] }], T0 + 3 * DAY), []);
 });

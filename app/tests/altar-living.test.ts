@@ -112,10 +112,11 @@ test('freshness by kind: water goes in a day or two, flowers in a week, stones k
 
 test('the stage look: water sinks, flowers droop, things that keep stay as they are', () => {
   const water = agingLook('water', freshness('water', T0, T0 + 2 * DAY));
-  assert.ok(water.level < 1 && water.opacity < 1 && water.droop === 0);
+  assert.ok(water.level < 1 && water.droop === 0 && water.tint.sepia === 0);
   const flowers = agingLook('flowers', freshness('flowers', T0, T0 + 8 * DAY));
-  assert.ok(flowers.droop > 0);
-  assert.deepEqual(agingLook('coins', freshness('coins', T0, T0 + DAY)), { opacity: 1, droop: 0, level: 1 });
+  assert.ok(flowers.droop > 0 && flowers.tint.saturate < 1);
+  const coins = agingLook('coins', freshness('coins', T0, T0 + DAY));
+  assert.deepEqual([coins.droop, coins.level, coins.tint], [0, 1, { sepia: 0, saturate: 1, brightness: 1 }]);
 });
 
 test('a bowl holds an offering: set out, refreshed, returned to nature, each logged', () => {
