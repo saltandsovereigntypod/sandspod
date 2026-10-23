@@ -1117,7 +1117,7 @@
           "forms": [
             {
               "label": "Sprig",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/copal/copal-sprig.png",
               "type": "herb",
               "herb": "copal",
               "form": "sprig"
@@ -1285,7 +1285,7 @@
           "forms": [
             {
               "label": "Sprig",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/dragons-blood/dragons-blood-sprig.png",
               "type": "herb",
               "herb": "dragons_blood",
               "form": "sprig"
@@ -1373,14 +1373,14 @@
             },
             {
               "label": "Loose",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/foxglove/foxglove-loose.png",
               "type": "herb",
               "herb": "foxglove",
               "form": "loose"
             },
             {
               "label": "Oil",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/foxglove/foxglove-oil.png",
               "type": "oil",
               "herb": "foxglove",
               "form": "oil"
@@ -1407,7 +1407,7 @@
           "forms": [
             {
               "label": "Sprig",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/frankincense/frankincense-sprig.png",
               "type": "herb",
               "herb": "frankincense",
               "form": "sprig"
@@ -1995,7 +1995,7 @@
           "forms": [
             {
               "label": "Sprig",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/myrrh/myrrh-sprig.png",
               "type": "herb",
               "herb": "myrrh",
               "form": "sprig"
@@ -2415,7 +2415,7 @@
           "forms": [
             {
               "label": "Sprig",
-              "image": "",
+              "image": "../assets/altar/objects/herbs/sandalwood/sandalwood-sprig.png",
               "type": "herb",
               "herb": "sandalwood",
               "form": "sprig"
@@ -2896,6 +2896,13 @@
               "type": "crystal",
               "crystal": "amethyst",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/amethyst/amethyst-tumbled.png",
+              "type": "crystal",
+              "crystal": "amethyst",
+              "form": "tumbled"
             }
           ]
         },
@@ -2930,6 +2937,13 @@
               "type": "crystal",
               "crystal": "clear_quartz",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/clear-quartz/clear-quartz-tumbled.png",
+              "type": "crystal",
+              "crystal": "clear_quartz",
+              "form": "tumbled"
             }
           ]
         },
@@ -2947,7 +2961,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/amber/amber-point.png",
               "type": "crystal",
               "crystal": "amber",
               "form": "point"
@@ -3003,10 +3017,17 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/ametrine/ametrine-cluster.png",
               "type": "crystal",
               "crystal": "ametrine",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/ametrine/ametrine-tumbled.png",
+              "type": "crystal",
+              "crystal": "ametrine",
+              "form": "tumbled"
             }
           ]
         },
@@ -3024,7 +3045,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/angelite/angelite-point.png",
               "type": "crystal",
               "crystal": "angelite",
               "form": "point"
@@ -3038,7 +3059,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/angelite/angelite-cluster.png",
               "type": "crystal",
               "crystal": "angelite",
               "form": "cluster"
@@ -3066,7 +3087,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/apache-tear/apache-tear-point.png",
               "type": "crystal",
               "crystal": "apache_tear",
               "form": "point"
@@ -3080,7 +3101,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/apache-tear/apache-tear-cluster.png",
               "type": "crystal",
               "crystal": "apache_tear",
               "form": "cluster"
@@ -3122,7 +3143,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/aquamarine/aquamarine-cluster.png",
               "type": "crystal",
               "crystal": "aquamarine",
               "form": "cluster"
@@ -3149,7 +3170,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/black-tourmaline/black-tourmaline-point.png",
               "type": "crystal",
               "crystal": "black_tourmaline",
               "form": "point"
@@ -3163,7 +3184,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/black-tourmaline/black-tourmaline-cluster.png",
               "type": "crystal",
               "crystal": "black_tourmaline",
               "form": "cluster"
@@ -3191,7 +3212,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/bloodstone/bloodstone-point.png",
               "type": "crystal",
               "crystal": "bloodstone",
               "form": "point"
@@ -3205,7 +3226,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/bloodstone/bloodstone-cluster.png",
               "type": "crystal",
               "crystal": "bloodstone",
               "form": "cluster"
@@ -3232,7 +3253,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/blue-lace-agate/blue-lace-agate-point.png",
               "type": "crystal",
               "crystal": "blue_lace_agate",
               "form": "point"
@@ -3246,7 +3267,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/blue-lace-agate/blue-lace-agate-cluster.png",
               "type": "crystal",
               "crystal": "blue_lace_agate",
               "form": "cluster"
@@ -3274,7 +3295,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/carnelian/carnelian-point.png",
               "type": "crystal",
               "crystal": "carnelian",
               "form": "point"
@@ -3288,7 +3309,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/carnelian/carnelian-cluster.png",
               "type": "crystal",
               "crystal": "carnelian",
               "form": "cluster"
@@ -3316,7 +3337,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/celestite/celestite-point.png",
               "type": "crystal",
               "crystal": "celestite",
               "form": "point"
@@ -3334,6 +3355,13 @@
               "type": "crystal",
               "crystal": "celestite",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/celestite/celestite-tumbled.png",
+              "type": "crystal",
+              "crystal": "celestite",
+              "form": "tumbled"
             }
           ]
         },
@@ -3351,7 +3379,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/chrysocolla/chrysocolla-point.png",
               "type": "crystal",
               "crystal": "chrysocolla",
               "form": "point"
@@ -3365,7 +3393,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/chrysocolla/chrysocolla-cluster.png",
               "type": "crystal",
               "crystal": "chrysocolla",
               "form": "cluster"
@@ -3393,7 +3421,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/chrysoprase/chrysoprase-point.png",
               "type": "crystal",
               "crystal": "chrysoprase",
               "form": "point"
@@ -3407,7 +3435,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/chrysoprase/chrysoprase-cluster.png",
               "type": "crystal",
               "crystal": "chrysoprase",
               "form": "cluster"
@@ -3435,7 +3463,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/citrine/citrine-point.png",
               "type": "crystal",
               "crystal": "citrine",
               "form": "point"
@@ -3449,7 +3477,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/citrine/citrine-cluster.png",
               "type": "crystal",
               "crystal": "citrine",
               "form": "cluster"
@@ -3477,7 +3505,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/emerald/emerald-point.png",
               "type": "crystal",
               "crystal": "emerald",
               "form": "point"
@@ -3495,6 +3523,13 @@
               "type": "crystal",
               "crystal": "emerald",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/emerald/emerald-tumbled.png",
+              "type": "crystal",
+              "crystal": "emerald",
+              "form": "tumbled"
             }
           ]
         },
@@ -3512,7 +3547,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/fluorite/fluorite-point.png",
               "type": "crystal",
               "crystal": "fluorite",
               "form": "point"
@@ -3526,7 +3561,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/fluorite/fluorite-cluster.png",
               "type": "crystal",
               "crystal": "fluorite",
               "form": "cluster"
@@ -3554,7 +3589,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/garnet/garnet-point.png",
               "type": "crystal",
               "crystal": "garnet",
               "form": "point"
@@ -3568,7 +3603,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/garnet/garnet-cluster.png",
               "type": "crystal",
               "crystal": "garnet",
               "form": "cluster"
@@ -3596,7 +3631,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/green-aventurine/green-aventurine-point.png",
               "type": "crystal",
               "crystal": "green_aventurine",
               "form": "point"
@@ -3610,7 +3645,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/green-aventurine/green-aventurine-cluster.png",
               "type": "crystal",
               "crystal": "green_aventurine",
               "form": "cluster"
@@ -3638,7 +3673,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/hematite/hematite-point.png",
               "type": "crystal",
               "crystal": "hematite",
               "form": "point"
@@ -3652,7 +3687,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/hematite/hematite-cluster.png",
               "type": "crystal",
               "crystal": "hematite",
               "form": "cluster"
@@ -3694,10 +3729,17 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/herkimer-diamond/herkimer-diamond-cluster.png",
               "type": "crystal",
               "crystal": "herkimer_diamond",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/herkimer-diamond/herkimer-diamond-tumbled.png",
+              "type": "crystal",
+              "crystal": "herkimer_diamond",
+              "form": "tumbled"
             }
           ]
         },
@@ -3715,7 +3757,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/howlite/howlite-point.png",
               "type": "crystal",
               "crystal": "howlite",
               "form": "point"
@@ -3729,7 +3771,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/howlite/howlite-cluster.png",
               "type": "crystal",
               "crystal": "howlite",
               "form": "cluster"
@@ -3757,7 +3799,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/jade/jade-point.png",
               "type": "crystal",
               "crystal": "jade",
               "form": "point"
@@ -3771,7 +3813,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/jade/jade-cluster.png",
               "type": "crystal",
               "crystal": "jade",
               "form": "cluster"
@@ -3799,7 +3841,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/jet/jet-point.png",
               "type": "crystal",
               "crystal": "jet",
               "form": "point"
@@ -3813,7 +3855,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/jet/jet-cluster.png",
               "type": "crystal",
               "crystal": "jet",
               "form": "cluster"
@@ -3855,7 +3897,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/kyanite/kyanite-cluster.png",
               "type": "crystal",
               "crystal": "kyanite",
               "form": "cluster"
@@ -3883,7 +3925,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/labradorite/labradorite-point.png",
               "type": "crystal",
               "crystal": "labradorite",
               "form": "point"
@@ -3897,7 +3939,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/labradorite/labradorite-cluster.png",
               "type": "crystal",
               "crystal": "labradorite",
               "form": "cluster"
@@ -3925,7 +3967,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/lapis-lazuli/lapis-lazuli-point.png",
               "type": "crystal",
               "crystal": "lapis_lazuli",
               "form": "point"
@@ -3939,7 +3981,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/lapis-lazuli/lapis-lazuli-cluster.png",
               "type": "crystal",
               "crystal": "lapis_lazuli",
               "form": "cluster"
@@ -3967,7 +4009,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/lepidolite/lepidolite-point.png",
               "type": "crystal",
               "crystal": "lepidolite",
               "form": "point"
@@ -3981,7 +4023,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/lepidolite/lepidolite-cluster.png",
               "type": "crystal",
               "crystal": "lepidolite",
               "form": "cluster"
@@ -4008,7 +4050,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/malachite/malachite-point.png",
               "type": "crystal",
               "crystal": "malachite",
               "form": "point"
@@ -4022,7 +4064,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/malachite/malachite-cluster.png",
               "type": "crystal",
               "crystal": "malachite",
               "form": "cluster"
@@ -4050,7 +4092,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/moonstone/moonstone-point.png",
               "type": "crystal",
               "crystal": "moonstone",
               "form": "point"
@@ -4064,7 +4106,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/moonstone/moonstone-cluster.png",
               "type": "crystal",
               "crystal": "moonstone",
               "form": "cluster"
@@ -4092,7 +4134,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/moss-agate/moss-agate-point.png",
               "type": "crystal",
               "crystal": "moss_agate",
               "form": "point"
@@ -4106,7 +4148,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/moss-agate/moss-agate-cluster.png",
               "type": "crystal",
               "crystal": "moss_agate",
               "form": "cluster"
@@ -4134,7 +4176,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/obsidian/obsidian-point.png",
               "type": "crystal",
               "crystal": "obsidian",
               "form": "point"
@@ -4152,6 +4194,13 @@
               "type": "crystal",
               "crystal": "obsidian",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/obsidian/obsidian-tumbled.png",
+              "type": "crystal",
+              "crystal": "obsidian",
+              "form": "tumbled"
             }
           ]
         },
@@ -4169,7 +4218,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/onyx/onyx-point.png",
               "type": "crystal",
               "crystal": "onyx",
               "form": "point"
@@ -4183,7 +4232,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/onyx/onyx-cluster.png",
               "type": "crystal",
               "crystal": "onyx",
               "form": "cluster"
@@ -4211,7 +4260,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/opal/opal-point.png",
               "type": "crystal",
               "crystal": "opal",
               "form": "point"
@@ -4225,7 +4274,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/opal/opal-cluster.png",
               "type": "crystal",
               "crystal": "opal",
               "form": "cluster"
@@ -4253,7 +4302,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/peridot/peridot-point.png",
               "type": "crystal",
               "crystal": "peridot",
               "form": "point"
@@ -4267,7 +4316,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/peridot/peridot-cluster.png",
               "type": "crystal",
               "crystal": "peridot",
               "form": "cluster"
@@ -4295,7 +4344,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/pyrite/pyrite-point.png",
               "type": "crystal",
               "crystal": "pyrite",
               "form": "point"
@@ -4313,6 +4362,13 @@
               "type": "crystal",
               "crystal": "pyrite",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/pyrite/pyrite-tumbled.png",
+              "type": "crystal",
+              "crystal": "pyrite",
+              "form": "tumbled"
             }
           ]
         },
@@ -4330,7 +4386,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/red-jasper/red-jasper-point.png",
               "type": "crystal",
               "crystal": "red_jasper",
               "form": "point"
@@ -4344,7 +4400,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/red-jasper/red-jasper-cluster.png",
               "type": "crystal",
               "crystal": "red_jasper",
               "form": "cluster"
@@ -4372,7 +4428,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/rhodochrosite/rhodochrosite-point.png",
               "type": "crystal",
               "crystal": "rhodochrosite",
               "form": "point"
@@ -4414,7 +4470,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/rhodonite/rhodonite-point.png",
               "type": "crystal",
               "crystal": "rhodonite",
               "form": "point"
@@ -4428,7 +4484,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/rhodonite/rhodonite-cluster.png",
               "type": "crystal",
               "crystal": "rhodonite",
               "form": "cluster"
@@ -4470,10 +4526,17 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/rose-quartz/rose-quartz-cluster.png",
               "type": "crystal",
               "crystal": "rose_quartz",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/rose-quartz/rose-quartz-tumbled.png",
+              "type": "crystal",
+              "crystal": "rose_quartz",
+              "form": "tumbled"
             }
           ]
         },
@@ -4491,7 +4554,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/ruby/ruby-point.png",
               "type": "crystal",
               "crystal": "ruby",
               "form": "point"
@@ -4509,6 +4572,13 @@
               "type": "crystal",
               "crystal": "ruby",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/ruby/ruby-tumbled.png",
+              "type": "crystal",
+              "crystal": "ruby",
+              "form": "tumbled"
             }
           ]
         },
@@ -4526,7 +4596,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/sapphire/sapphire-point.png",
               "type": "crystal",
               "crystal": "sapphire",
               "form": "point"
@@ -4544,6 +4614,13 @@
               "type": "crystal",
               "crystal": "sapphire",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/sapphire/sapphire-tumbled.png",
+              "type": "crystal",
+              "crystal": "sapphire",
+              "form": "tumbled"
             }
           ]
         },
@@ -4579,6 +4656,13 @@
               "type": "crystal",
               "crystal": "selenite",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/selenite/selenite-tumbled.png",
+              "type": "crystal",
+              "crystal": "selenite",
+              "form": "tumbled"
             }
           ]
         },
@@ -4595,7 +4679,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/shungite/shungite-point.png",
               "type": "crystal",
               "crystal": "shungite",
               "form": "point"
@@ -4609,7 +4693,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/shungite/shungite-cluster.png",
               "type": "crystal",
               "crystal": "shungite",
               "form": "cluster"
@@ -4655,6 +4739,13 @@
               "type": "crystal",
               "crystal": "smoky_quartz",
               "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/smoky-quartz/smoky-quartz-tumbled.png",
+              "type": "crystal",
+              "crystal": "smoky_quartz",
+              "form": "tumbled"
             }
           ]
         },
@@ -4672,7 +4763,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/sodalite/sodalite-point.png",
               "type": "crystal",
               "crystal": "sodalite",
               "form": "point"
@@ -4686,7 +4777,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/sodalite/sodalite-cluster.png",
               "type": "crystal",
               "crystal": "sodalite",
               "form": "cluster"
@@ -4714,7 +4805,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/sunstone/sunstone-point.png",
               "type": "crystal",
               "crystal": "sunstone",
               "form": "point"
@@ -4728,7 +4819,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/sunstone/sunstone-cluster.png",
               "type": "crystal",
               "crystal": "sunstone",
               "form": "cluster"
@@ -4756,7 +4847,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/tiger-eye/tiger-eye-point.png",
               "type": "crystal",
               "crystal": "tiger_eye",
               "form": "point"
@@ -4770,7 +4861,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/tiger-eye/tiger-eye-cluster.png",
               "type": "crystal",
               "crystal": "tiger_eye",
               "form": "cluster"
@@ -4798,7 +4889,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/turquoise/turquoise-point.png",
               "type": "crystal",
               "crystal": "turquoise",
               "form": "point"
@@ -4812,7 +4903,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/turquoise/turquoise-cluster.png",
               "type": "crystal",
               "crystal": "turquoise",
               "form": "cluster"
@@ -4840,7 +4931,7 @@
           "forms": [
             {
               "label": "Point",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/unakite/unakite-point.png",
               "type": "crystal",
               "crystal": "unakite",
               "form": "point"
@@ -4854,7 +4945,7 @@
             },
             {
               "label": "Cluster",
-              "image": "",
+              "image": "../assets/altar/objects/crystals/unakite/unakite-cluster.png",
               "type": "crystal",
               "crystal": "unakite",
               "form": "cluster"
