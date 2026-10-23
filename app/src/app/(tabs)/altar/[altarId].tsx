@@ -55,6 +55,7 @@ import { daysSinceRenewal, jarStateOf } from '../../../lib/altar/workings/spellJ
 import { SPELLS_COLLECTION, spellToday, tickSpell, type SpellEntry } from '../../../lib/altar/workings/spells';
 import { AltarOptionsSheet, FlameReadingSheet, IncenseSheet, OfferingSheet } from '../../../components/altar/LivingSheets';
 import { PetitionBoxSheet, WritePetitionSheet } from '../../../components/altar/PetitionSheets';
+import { useCandleAmbience, useCandleFeel } from '../../../lib/altar/feel';
 import { ALTAR_OPTIONS, altarOptionsFor, defaultAltarOptions, type AltarOptions } from '../../../lib/altar/altarOptions';
 import { ambientAt, moonMirrored, nextAmbientCheck } from '../../../lib/altar/ambient';
 import { burnToRead, lastBurn, linkReadingJournal, readingsOf, readingText, recordReading, remnantOf, setRemnant, type ReadingInput } from '../../../lib/altar/ceromancy';
@@ -237,6 +238,8 @@ const newMoonFor = (entries: CraftEntry<AltarOptions>[], id: string | null) => (
 const afterSheetCloses = (open: () => void) => setTimeout(open, Platform.OS === 'ios' ? 450 : 0);
 const MAX_STAGE_WIDTH = 960;
 
+const NO_OBJECTS: import('../../../lib/altar/types').SavedObject[] = [];
+
 export default function AltarEditor() {
   const { altarId, from, deity } = useLocalSearchParams<{ altarId: string; from?: string; deity?: string }>();
   const store = useAltars();
@@ -388,6 +391,11 @@ export default function AltarEditor() {
   // Edits go through a ref so several in one gesture frame build on each other.
   const docRef = useRef<AltarDocument | null>(null);
   docRef.current = doc;
+
+  // A match and a tap as candles are lit, and their crackles and pops while they burn.
+  const feelObjects = doc?.objects ?? NO_OBJECTS;
+  useCandleFeel(sourceId ?? String(altarId), feelObjects);
+  useCandleAmbience(feelObjects);
 
   // A lit candle burns down and goes out on its own while the altar is open.
   const [clock, setClock] = useState(0);

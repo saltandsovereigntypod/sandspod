@@ -1,5 +1,6 @@
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { AccessibilityInfo, Animated, Easing, Image, Platform, StyleSheet, Text, View } from 'react-native';
+import { useIsFocused } from 'expo-router';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Svg, { Circle, Defs, Ellipse, LinearGradient, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
 
@@ -12,6 +13,8 @@ import type { MomentKind } from '../../lib/altar/charge';
 import type { Snap } from '../../lib/altar/arrange';
 import { CandleMarks, CandlePicture, candleGeometry, drawsBurnedDown } from './CandleMarks';
 import { ChargeAura, Moment, SnapGuide } from './StageEffects';
+import { FlameFire, HAS_FIRE } from './FlameFire';
+import { TiltProvider, tiltShift, useTilt, useTiltSource } from './Tilt';
 import { CastShadows, LightPools, NightVeil, useFlameMotion, useShareFlame, WaxGlow, type FlameMotion } from './Lighting';
 import { altarImageSource, candleHerbOverlay, candleOilOverlay, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
 import { DEFAULT_BACKGROUND } from '../../lib/altar/cabinet';
@@ -230,8 +233,12 @@ export function AltarStage(props: Props) {
   const moment = props.moment ?? null;
   const guide = props.guide ?? null;
   const now = props.now;
+  // The phone's tilt, while this altar is on screen.
+  const focused = useIsFocused();
+  const tilt = useTiltSource(focused);
 
   return (
+    <TiltProvider value={tilt}>
     <GestureDetector gesture={gesture}>
       <View
         style={[styles.viewport, { width, height }]}
@@ -250,10 +257,16 @@ export function AltarStage(props: Props) {
             top: -viewport.offsetY,
           }}
         >
-          {background && <Image source={background} style={styles.background} resizeMode="cover" />}
+          {background && (
+            // A touch larger than the stage, so shifting with the tilt never shows its edge.
+            <Animated.View style={[styles.tiltBackground, tiltShift(tilt, 7)]}>
+              <Image source={background} style={styles.fill} resizeMode="cover" />
+            </Animated.View>
+          )}
 
           {sky && <SkyLayer sky={sky} stageWidth={stageWidth} />}
 
+          <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, tiltShift(tilt, 2.5)]}>
           {lit.length > 0 && <CastShadows objects={doc.objects} stageWidth={stageWidth} now={now} />}
 
           {lit.length > 0 && <LightPools objects={lit.map((i) => doc.objects[i])} stageWidth={stageWidth} now={now} />}
@@ -272,6 +285,7 @@ export function AltarStage(props: Props) {
               now={isCandle(doc.objects[index]) || isIncense(doc.objects[index]) ? now : 0}
             />
           ))}
+          </Animated.View>
 
           {!!sky?.darkness && <NightVeil objects={doc.objects} stageWidth={stageWidth} now={now} darkness={sky.darkness} />}
 
@@ -291,6 +305,7 @@ export function AltarStage(props: Props) {
         </View>
       </View>
     </GestureDetector>
+    </TiltProvider>
   );
 }
 
@@ -796,6 +811,8 @@ function Flame({ layout, motion }: { layout: FlameLayout; motion: FlameMotion })
   const [skew] = useState(() => new Animated.Value(0)); // one side fuller than the other
   const [split] = useState(() => new Animated.Value(0)); // now and then the flame parts into tongues
   const [tongues, setTongues] = useState<number[]>([1]);
+  // Each flame's fire turns over in its own way.
+  const [seed] = useState(() => Math.random() * 10);
   // The drawing is fitted into its box (centred), so its foot isn't the box's bottom: turn and stretch it from the foot.
   const [box, setBox] = useState<{ w: number; h: number; foot: number } | null>(null);
   // Reduce motion: a steady flame instead of a flickering one.
@@ -867,8 +884,11 @@ function Flame({ layout, motion }: { layout: FlameLayout; motion: FlameMotion })
   // Tall is thin and short is fat, as a flame keeps about the same body.
   const scaleY = Animated.multiply(tall, tremble);
   const scaleX = tall.interpolate({ inputRange: [0.6, 1, 1.5], outputRange: [1.3, 1, 0.72] });
-  const rotate = lean.interpolate({ inputRange: [-30, 30], outputRange: ['-30deg', '30deg'] });
-  const tipRotate = Animated.add(lean, tipLean).interpolate({ inputRange: [-40, 40], outputRange: ['-40deg', '40deg'] });
+  // Tipping the phone leans the flame the other way, as a real one stays upright.
+  const tilt = useTilt();
+  const leaning = tilt ? Animated.add(lean, tilt.x.interpolate({ inputRange: [-1, 1], outputRange: [14, -14] })) : lean;
+  const rotate = leaning.interpolate({ inputRange: [-45, 45], outputRange: ['-45deg', '45deg'] });
+  const tipRotate = Animated.add(leaning, tipLean).interpolate({ inputRange: [-55, 55], outputRange: ['-55deg', '55deg'] });
   const tipScaleY = Animated.multiply(scaleY, tipTall);
   const skewX = skew.interpolate({ inputRange: [-20, 20], outputRange: ['-20deg', '20deg'] });
   // Turned and stretched from its foot on the wick: shift the foot to the middle, transform, shift back (transformOrigin in pixels breaks animated views on iOS).
@@ -927,20 +947,28 @@ function Flame({ layout, motion }: { layout: FlameLayout; motion: FlameMotion })
         ))}
         {/* The body: a round foot, one side fuller than the other as it moves. */}
         <Animated.View style={[StyleSheet.absoluteFill, { opacity: glow, transform: [{ translateY: pivot }, { rotate }, { skewX }, { scaleY }, { scaleX }, { translateY: -pivot }] }]}>
-          <Svg width="100%" height="100%" viewBox="0 0 10 18">
-            <FlameDefs />
-            <Path d={FLAME_BODY} fill="url(#flame-body)" />
-          </Svg>
+          {HAS_FIRE && box ? (
+            <FlameFire width={box.w} height={box.h} part="body" seed={seed} still={still} />
+          ) : (
+            <Svg width="100%" height="100%" viewBox="0 0 10 18">
+              <FlameDefs />
+              <Path d={FLAME_BODY} fill="url(#flame-body)" />
+            </Svg>
+          )}
         </Animated.View>
         {/* The tip, swinging and stretching on its own, so the flame bends and reaches. */}
         <Animated.View style={[StyleSheet.absoluteFill, { opacity: glow, transform: [{ translateY: pivot }, { rotate: tipRotate }, { scaleY: tipScaleY }, { scaleX }, { translateY: -pivot }] }]}>
-          <Svg width="100%" height="100%" viewBox="0 0 10 18">
-            <FlameDefs />
-            <Path d={FLAME_TONGUE} fill="url(#flame-body)" />
-            {/* Its bright heart, and the darker, cooler hollow round the wick. */}
-            <Path d={FLAME_HEART} fill="url(#flame-core)" />
-            <Ellipse cx={5} cy={15.3} rx={1.25} ry={1.7} fill="rgb(120,70,40)" opacity={0.35} />
-          </Svg>
+          {HAS_FIRE && box ? (
+            <FlameFire width={box.w} height={box.h} part="tip" seed={seed} still={still} />
+          ) : (
+            <Svg width="100%" height="100%" viewBox="0 0 10 18">
+              <FlameDefs />
+              <Path d={FLAME_TONGUE} fill="url(#flame-body)" />
+              {/* Its bright heart, and the darker, cooler hollow round the wick. */}
+              <Path d={FLAME_HEART} fill="url(#flame-core)" />
+              <Ellipse cx={5} cy={15.3} rx={1.25} ry={1.7} fill="rgb(120,70,40)" opacity={0.35} />
+            </Svg>
+          )}
         </Animated.View>
       </View>
     </>
@@ -978,6 +1006,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(226,195,109,0.35)',
   },
   background: { position: 'absolute', left: 0, top: 0, width: '100%', height: '100%' },
+  tiltBackground: { position: 'absolute', left: '-2%', top: '-2%', width: '104%', height: '104%' },
   symbol: { color: colors.cream },
   glow: {
     position: 'absolute',
