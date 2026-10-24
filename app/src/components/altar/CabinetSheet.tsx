@@ -118,8 +118,9 @@ export function CabinetSheet({
       cabinetItemsFor(items, category, search)
         .map((item) => ({ item, forms: placeableForms(item, overrides) }))
         .filter((entry) => entry.forms.length > 0)
-        // Things the Living Library has no page for say a few words of their own (shelf.ts).
-        .map((entry) => ({ ...entry, uses: topUses(cabinetEntry(library, entry.item, entry.forms[0])) || entry.item.description || '' })),
+        // Things the Living Library has no page for say a few words of their own (shelf.ts);
+        // an offering always says what it is, not what its vessel is for.
+        .map((entry) => ({ ...entry, uses: (entry.item.category === 'offerings' && entry.item.description) || topUses(cabinetEntry(library, entry.item, entry.forms[0])) || entry.item.description || '' })),
     [items, category, search, overrides, library],
   );
 
