@@ -8,8 +8,9 @@ import { Icon } from '../../../components/Icon';
 import { altarImageSource } from '../../../lib/altar/assets';
 import { DEFAULT_BACKGROUND } from '../../../lib/altar/cabinet';
 import { confirmAction } from '../../../lib/grimoire/confirm';
-import { altarOfferingsDue } from '../../../lib/altar/burnout';
+import { altarOfferingsDue, altarWateringDue } from '../../../lib/altar/burnout';
 import { tendingNote } from '../../../lib/altar/offerings';
+import { wateringNote } from '../../../lib/altar/pottedPlants';
 import { altarSummary } from '../../../lib/altar/snapshot';
 import { useAltars } from '../../../lib/altar/store';
 import type { SavedAltar } from '../../../lib/altar/types';
@@ -31,7 +32,10 @@ export default function AltarList() {
   const draftSource = draftSourceId ? altars.find((a) => a.id === draftSourceId) : null;
   // Offerings that have gone over on your saved altars (water drying, flowers wilting).
   const due = useMemo(() => altarOfferingsDue(altars, new Date(), 0), [altars]);
-  const note = tendingNote(due);
+  // And potted plants that would like water.
+  const thirsty = useMemo(() => altarWateringDue(altars, new Date(), 0), [altars]);
+  const note = [tendingNote(due), wateringNote(thirsty)].filter(Boolean).join(' ') || null;
+  const tendAltar = due[0]?.altarId ?? thirsty[0]?.altarId ?? '';
 
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
@@ -66,9 +70,9 @@ export default function AltarList() {
 
         {note && (
           <Pressable
-            onPress={() => open(due[0].altarId)}
+            onPress={() => open(tendAltar)}
             accessibilityRole="button"
-            accessibilityHint="Opens the altar, where you can refresh it, give it back or leave it as it is"
+            accessibilityHint="Opens the altar, where you can tend it"
             style={({ pressed }) => [styles.tending, pressed && styles.pressed]}
           >
             <Text style={type.eyebrow}>Tending</Text>

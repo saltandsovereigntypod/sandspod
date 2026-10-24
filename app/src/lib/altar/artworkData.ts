@@ -15,6 +15,7 @@ export const ALTAR_ARTWORK: {
   natural: Record<string, string>;
   frames: Record<string, { image: string; ratio: number | null; opening: { left: number; top: number; width: number; height: number; oval: boolean } | null }>;
   offeringFoods: Record<string, { image: string; ratio: number | null }>;
+  plants: Record<string, Partial<Record<'young' | 'established' | 'lush', string>>>;
   items: Record<'herbs' | 'crystals' | 'deities' | 'tools' | 'vessels', ArtworkItem[]>;
 } = {
   "candleColors": [
@@ -468,6 +469,7 @@ export const ALTAR_ARTWORK: {
       "ratio": 0.6667
     }
   },
+  "plants": {},
   "items": {
     "herbs": [
       {

@@ -75,7 +75,7 @@ export type SavedAltarRow = {
   updated_at: string | null;
 };
 
-export type CabinetCategoryId = 'backgrounds' | 'candles' | 'herbs' | 'crystals' | 'tools' | 'deities' | 'vessels' | 'natural' | 'seasonal';
+export type CabinetCategoryId = 'backgrounds' | 'candles' | 'herbs' | 'crystals' | 'tools' | 'deities' | 'vessels' | 'natural' | 'seasonal' | 'plants';
 
 /** One placeable form of a cabinet item (website cabinet.js `forms`). */
 export type CabinetForm = {

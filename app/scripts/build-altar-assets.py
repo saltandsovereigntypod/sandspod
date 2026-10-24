@@ -6,15 +6,17 @@ the altar works offline and Expo Go / EAS Update downloads stay small, and
 writes src/lib/altar/assetManifest.ts mapping each website path to its copy.
 
 An over-the-air update may carry at most 1000 files, so each herb's and each
-crystal's forms (sprig, loose, oil...; chips, point, cluster, tumbled) are
-packed side by side onto one sheet per item, assets/altar/sheets/<herbs|
-crystals>/<id>.webp, at the same scale as the single copies. The manifest
+crystal's forms (sprig, loose, oil...; chips, point, cluster, tumbled), and
+each potted plant's stages (young, established, lush), are packed side by
+side onto one sheet per item, assets/altar/sheets/<herbs|crystals|plants>/
+<id>.webp, at the same scale as the single copies. The manifest
 records each form's pixel rect on its sheet; lib/altar/assets.ts altarPicture()
 and components/altar/AltarImage.tsx show just that rect. Everything else stays
 one file per picture. Rerun it when new pictures land: it packs whatever is
 there and clears away copies it no longer writes.
 
 Run from app/:  python3 scripts/build-altar-assets.py   (needs Pillow)
+(tests/altar-sheets.test.ts imports it to try packed_group and shelf_layout.)
 """
 import itertools
 import os
@@ -38,6 +40,7 @@ SKIP = {"objects/cloths/black-pentagram.png", "wooden-altar2.png"}
 PACKED_FORMS = {
     "herbs": ("sprig", "loose", "oil", "powder"),
     "crystals": ("chips", "point", "cluster", "tumbled"),
+    "plants": ("young", "established", "lush"),
 }
 # Transparent pixels between cells, so filtering at a cell's edge never picks up its neighbour.
 PAD = 8
@@ -91,85 +94,91 @@ def shrink(path, limit):
     return image, original_size
 
 
-entries = []  # (website path, app file, original size, crop or None)
-groups = {}  # (category, id) -> [(form, rel, path)]
-written = set()
-for path in sorted(SRC.rglob("*")):
-    if not path.is_file() or path.suffix.lower() != ".png":
-        continue
-    rel = path.relative_to(SRC).as_posix()
-    if rel in SKIP:
-        continue
-    group = packed_group(rel)
-    if group:
-        groups.setdefault(group[:2], []).append((group[2], rel, path))
-        continue
-    is_background = rel.startswith("backgrounds/")
-    # Objects at 1024px stay sharp on 3x screens, even zoomed in on the altar.
-    image, original_size = shrink(path, 1600 if is_background else 1024)
-    target = OUT / Path(rel).with_suffix(".webp")
-    target.parent.mkdir(parents=True, exist_ok=True)
-    if is_background:
-        image.convert("RGB").save(target, "WEBP", quality=78, method=4)
-    else:
-        image.save(target, "WEBP", quality=85, method=4)
-    written.add(target)
-    entries.append((f"assets/altar/{rel}", target.relative_to(APP).as_posix(), original_size, None))
+def main():
+    entries = []  # (website path, app file, original size, crop or None)
+    groups = {}  # (category, id) -> [(form, rel, path)]
+    written = set()
+    for path in sorted(SRC.rglob("*")):
+        if not path.is_file() or path.suffix.lower() != ".png":
+            continue
+        rel = path.relative_to(SRC).as_posix()
+        if rel in SKIP:
+            continue
+        group = packed_group(rel)
+        if group:
+            groups.setdefault(group[:2], []).append((group[2], rel, path))
+            continue
+        is_background = rel.startswith("backgrounds/")
+        # Objects at 1024px stay sharp on 3x screens, even zoomed in on the altar.
+        image, original_size = shrink(path, 1600 if is_background else 1024)
+        target = OUT / Path(rel).with_suffix(".webp")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if is_background:
+            image.convert("RGB").save(target, "WEBP", quality=78, method=4)
+        else:
+            image.save(target, "WEBP", quality=85, method=4)
+        written.add(target)
+        entries.append((f"assets/altar/{rel}", target.relative_to(APP).as_posix(), original_size, None))
 
-for (category, item), pictures in sorted(groups.items()):
-    order = PACKED_FORMS[category]
-    pictures.sort(key=lambda p: (order.index(p[0]), p[1]))
-    images = [shrink(path, 1024) for _, _, path in pictures]
-    sheet_w, sheet_h, places = shelf_layout([image.size for image, _ in images])
-    sheet = Image.new("RGBA", (sheet_w, sheet_h), (0, 0, 0, 0))
-    target = SHEETS / category / f"{item}.webp"
-    target.parent.mkdir(parents=True, exist_ok=True)
-    local = target.relative_to(APP).as_posix()
-    for (form, rel, _), (image, original_size), (x, y) in zip(pictures, images, places):
-        sheet.paste(image.convert("RGBA"), (x, y))
-        crop = (x, y, image.size[0], image.size[1], sheet_w, sheet_h)
-        entries.append((f"assets/altar/{rel}", local, original_size, crop))
-    sheet.save(target, "WEBP", quality=85, method=4)
-    written.add(target)
+    for (category, item), pictures in sorted(groups.items()):
+        order = PACKED_FORMS[category]
+        pictures.sort(key=lambda p: (order.index(p[0]), p[1]))
+        images = [shrink(path, 1024) for _, _, path in pictures]
+        sheet_w, sheet_h, places = shelf_layout([image.size for image, _ in images])
+        sheet = Image.new("RGBA", (sheet_w, sheet_h), (0, 0, 0, 0))
+        target = SHEETS / category / f"{item}.webp"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        local = target.relative_to(APP).as_posix()
+        for (form, rel, _), (image, original_size), (x, y) in zip(pictures, images, places):
+            sheet.paste(image.convert("RGBA"), (x, y))
+            crop = (x, y, image.size[0], image.size[1], sheet_w, sheet_h)
+            entries.append((f"assets/altar/{rel}", local, original_size, crop))
+        sheet.save(target, "WEBP", quality=85, method=4)
+        written.add(target)
 
-# Copies from an earlier run that are no longer made (now on a sheet, or gone from the website).
-for stale in OUT.rglob("*.webp"):
-    if stale not in written:
-        stale.unlink()
-for folder in sorted((p for p in OUT.rglob("*") if p.is_dir()), key=lambda p: -len(p.parts)):
-    if not any(folder.iterdir()):
-        folder.rmdir()
+    # Copies from an earlier run that are no longer made (now on a sheet, or gone from the website).
+    for stale in OUT.rglob("*.webp"):
+        if stale not in written:
+            stale.unlink()
+    for folder in sorted((p for p in OUT.rglob("*") if p.is_dir()), key=lambda p: -len(p.parts)):
+        if not any(folder.iterdir()):
+            folder.rmdir()
 
-entries.sort(key=lambda e: e[0])
-files = sorted({local for _, local, _, _ in entries})
-ids = {local: f"f{i}" for i, local in enumerate(files)}
+    entries.sort(key=lambda e: e[0])
+    files = sorted({local for _, local, _, _ in entries})
+    ids = {local: f"f{i}" for i, local in enumerate(files)}
 
-lines = [
-    "// Generated by scripts/build-altar-assets.py. Do not edit by hand.",
-    "// Website asset path (as saved in altar JSON, without ../ or leading /) to",
-    "// the app's bundled WebP copy and the website original's pixel size (the",
-    "// website sizes each object box from the image's natural aspect ratio).",
-    "// Herbs' and crystals' forms share a sheet per item: `crop` is the form's",
-    "// pixel rect on it and the sheet's size (show it with lib/altar/assets",
-    "// altarPicture and AltarImage, never the bare source).",
-    "",
-    "export type BundledAltarCrop = { x: number; y: number; w: number; h: number; sheetW: number; sheetH: number };",
-    "",
-]
-for local in files:
-    lines.append(f"const {ids[local]} = require('../../../{local}');")
-lines += [
-    "",
-    "export const bundledAltarAssets: Record<string, { source: number; width: number; height: number; crop?: BundledAltarCrop }> = {",
-]
-for web, local, (w, h), crop in entries:
-    extra = ""
-    if crop:
-        x, y, cw, ch, sw, sh = crop
-        extra = f", crop: {{ x: {x}, y: {y}, w: {cw}, h: {ch}, sheetW: {sw}, sheetH: {sh} }}"
-    lines.append(f"  '{web}': {{ source: {ids[local]}, width: {w}, height: {h}{extra} }},")
-lines += ["};", ""]
-MANIFEST.parent.mkdir(parents=True, exist_ok=True)
-MANIFEST.write_text("\n".join(lines))
-total = sum(os.path.getsize(APP / local) for local in files)
-print(f"{len(entries)} pictures in {len(files)} files ({len(groups)} sheets), {total / 1024 / 1024:.1f} MB")
+    lines = [
+        "// Generated by scripts/build-altar-assets.py. Do not edit by hand.",
+        "// Website asset path (as saved in altar JSON, without ../ or leading /) to",
+        "// the app's bundled WebP copy and the website original's pixel size (the",
+        "// website sizes each object box from the image's natural aspect ratio).",
+        "// Herbs' and crystals' forms, and potted plants' stages, share a sheet per",
+        "// item: `crop` is the picture's pixel rect on it and the sheet's size",
+        "// (show it with lib/altar/assets altarPicture and AltarImage, never the",
+        "// bare source).",
+        "",
+        "export type BundledAltarCrop = { x: number; y: number; w: number; h: number; sheetW: number; sheetH: number };",
+        "",
+    ]
+    for local in files:
+        lines.append(f"const {ids[local]} = require('../../../{local}');")
+    lines += [
+        "",
+        "export const bundledAltarAssets: Record<string, { source: number; width: number; height: number; crop?: BundledAltarCrop }> = {",
+    ]
+    for web, local, (w, h), crop in entries:
+        extra = ""
+        if crop:
+            x, y, cw, ch, sw, sh = crop
+            extra = f", crop: {{ x: {x}, y: {y}, w: {cw}, h: {ch}, sheetW: {sw}, sheetH: {sh} }}"
+        lines.append(f"  '{web}': {{ source: {ids[local]}, width: {w}, height: {h}{extra} }},")
+    lines += ["};", ""]
+    MANIFEST.parent.mkdir(parents=True, exist_ok=True)
+    MANIFEST.write_text("\n".join(lines))
+    total = sum(os.path.getsize(APP / local) for local in files)
+    print(f"{len(entries)} pictures in {len(files)} files ({len(groups)} sheets), {total / 1024 / 1024:.1f} MB")
+
+
+if __name__ == "__main__":
+    main()
