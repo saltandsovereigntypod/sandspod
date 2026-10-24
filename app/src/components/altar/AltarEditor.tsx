@@ -629,8 +629,10 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
 
   // Your own items come from the workshop store, so the spell builder and apothecary see the same list.
   const workshop = useWorkshop();
-  // The festivals that are near, from the calendars you keep, and the season it is bring their seasonal things to the top of the drawer.
-  const near = useMemo(() => seasonalNear(new Date(), holidayChoice(settings)), [settings]);
+  // Where you are: for the sky, and for the Hindu and Kemetic festivals' dates (sunrise, the rising of Sirius).
+  const here = usePlace();
+  // The festivals that are near, from the calendars you keep and the traditional calendars you show, and the season it is bring their seasonal things to the top of the drawer.
+  const near = useMemo(() => seasonalNear(new Date(), holidayChoice(settings), { settings, place: here }), [settings, here]);
   // A photo being chosen and saved for an ancestor frame.
   const [framing, setFraming] = useState(false);
   // A calendar hidden in settings takes its seasonal things out of the cabinet too.
@@ -788,8 +790,7 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
   };
 
   // ── The altar that responds ──────────────────────────────────────────
-  // A minute clock for offerings that age; the sky looks again around sunrise and sunset.
-  const here = usePlace();
+  // A minute clock for offerings that age; the sky looks again around sunrise and sunset (`here`, above).
   const [tick, setTick] = useState(() => Date.now());
   useEffect(() => {
     const timer = setTimeout(() => setTick(Date.now()), Math.min(60_000, nextAmbientCheck(new Date(tick), here)));

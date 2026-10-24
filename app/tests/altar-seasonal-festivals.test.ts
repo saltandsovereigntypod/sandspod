@@ -10,6 +10,7 @@ import { test } from 'node:test';
 import { builtInCabinet, cabinetItemsFor, objectFromForm } from '../src/lib/altar/cabinet.ts';
 import { holdsOfferings, offeringFreshness, perishableItself } from '../src/lib/altar/offerings.ts';
 import {
+  CALENDAR_FESTIVALS,
   festivalLine,
   festivalName,
   festivalsNear,
@@ -41,7 +42,8 @@ test('every festival a seasonal thing names is a real holiday in its calendar, a
       assert.ok(festivalName(f), `${o.id}: ${f.tradition}/${f.holiday}`);
       assert.ok(SEASONAL_TRADITIONS.some((t) => t.calendars.includes(f.tradition)), `${o.id}: ${f.tradition}`);
       // The turning seasons go by the date, not a calendar (seasonNow).
-      if (f.tradition !== 'wheel' && f.tradition !== 'seasons') assert.ok(TRADITIONS.find((t) => t.id === f.tradition)?.holidays.some((h) => h.id === f.holiday), `${o.id}: ${f.holiday}`);
+      if (CALENDAR_FESTIVALS[f.tradition]) assert.ok(CALENDAR_FESTIVALS[f.tradition].some((h) => h.id === f.holiday), `${o.id}: ${f.holiday}`);
+      else if (f.tradition !== 'wheel' && f.tradition !== 'seasons') assert.ok(TRADITIONS.find((t) => t.id === f.tradition)?.holidays.some((h) => h.id === f.holiday), `${o.id}: ${f.holiday}`);
     }
   }
   for (const id of GREEK) {
@@ -136,7 +138,7 @@ test('the drawer: what is near first, then each calendar’s things, each named 
   const items = seasonalCabinetItems(ALL);
   const near = festivalsNear(new Date(2026, 9, 10, 12), hellenic);
   const sections = seasonalSections(items, near);
-  assert.deepEqual(sections.map((s) => s.title), ['For Hekate’s Deipnon', 'For Noumenia', 'For Pyanepsia', 'Wheel of the Year', 'Greek festivals', 'Norse & Heathen', 'Celtic festivals', 'Roman festivals', 'Christian & folk calendar', 'The turning seasons']);
+  assert.deepEqual(sections.map((s) => s.title), ['For Hekate’s Deipnon', 'For Noumenia', 'For Pyanepsia', 'Wheel of the Year', 'Greek festivals', 'Norse & Heathen', 'Celtic festivals', 'Roman festivals', 'Christian & folk calendar', 'Slavic festivals', 'Hindu festivals', 'Kemetic (Egyptian) festivals', 'The turning seasons']);
   assert.deepEqual(sections[0].items.map((i) => i.id), ['seasonal:hekates-deipnon']);
   // The phiale is kept at the Noumenia and the Agathos Daimon; tonight it's under the Noumenia, once.
   assert.deepEqual(sections[1].items.map((i) => i.id), ['seasonal:phiale', 'seasonal:thymiaterion']);
@@ -160,7 +162,7 @@ test('calendar holidays name their festivals, and tonight’s altar sets one out
   assert.deepEqual(festivalsOfHoliday('wheel_south-beltane-2026-9-31'), ['wheel/beltane']);
   assert.deepEqual(festivalsOfHoliday('hellenic-thesmophoria-2026-9-21'), []);
   assert.deepEqual(festivalsOfHoliday('roman-saturnalia-2026-11-17'), ['roman/saturnalia']);
-  assert.deepEqual(festivalsOfHoliday('slavic-kupala-2026-5-23'), []);
+  assert.deepEqual(festivalsOfHoliday('slavic-kupala-2026-5-23'), ['slavic/kupala']);
   assert.deepEqual(seasonalForHoliday('hellenic-pyanepsia-2026-9-17'), ['eiresione', 'pyanepsia-beans']);
   assert.equal(seasonalForHoliday('hellenic_monthly-noumenia-2026-9-11')[0], 'thymiaterion');
   assert.equal(seasonalForHoliday('hellenic_monthly-agathos_daimon-2026-9-12')[0], 'phiale');
