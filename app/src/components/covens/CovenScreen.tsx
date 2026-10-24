@@ -18,7 +18,7 @@ import { WEBSITE_ORIGIN } from '../../lib/altar/assetPaths';
 import { useCoven } from '../../lib/covens/CovenContext';
 import { colors, type } from '../../theme';
 
-export const covenHref = (slug: string, sub = '') => `/more/covens/c/${slug}${sub ? `/${sub}` : ''}` as Href;
+export const covenHref = (slug: string, sub = '') => `/coven/c/${slug}${sub ? `/${sub}` : ''}` as Href;
 
 /** The coven's page on the website (founding, managing and moderation live there for now). */
 export function openOnWebsite(slug: string, tab?: string) {
@@ -50,7 +50,7 @@ export function CovenScreen({
     <MoreScreen
       title={isHome ? coven.snapshot?.coven.name ?? title : title}
       eyebrow={isHome ? eyebrow : coven.snapshot?.coven.name ?? eyebrow}
-      back={isHome ? ('/more/covens' as Href) : back}
+      back={isHome ? ('/coven' as Href) : back}
       backLabel={isHome ? 'Back to Covens' : `Back to ${coven.snapshot?.coven.name ?? 'the coven'}`}
       refreshControl={
         <RefreshControl
@@ -73,7 +73,7 @@ export function CovenScreen({
     return frame(
       <Card>
         <Text style={type.body}>This coven couldn’t be found. It may have closed, or its link may have changed.</Text>
-        <Button label="Find a coven" variant="outline" onPress={() => router.replace('/more/covens' as Href)} />
+        <Button label="Find a coven" variant="outline" onPress={() => router.replace('/coven' as Href)} />
       </Card>,
     );
   if (coven.status === 'offline' && !coven.snapshot)

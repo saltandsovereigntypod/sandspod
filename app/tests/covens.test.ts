@@ -222,7 +222,7 @@ test('rite reminders come a day and an hour before, only for those coming', () =
   ];
   const reminders = riteReminders(rites, now);
   assert.deepEqual(reminders.map((r) => r.key), ['coven-rite-a-day', 'coven-rite-a-hour']);
-  assert.equal(reminders[0].url, '/more/covens/c/moon/ritual/a');
+  assert.equal(reminders[0].url, '/coven/c/moon/ritual/a');
   assert.equal(reminders[0].at.toISOString(), '2026-10-24T20:00:00.000Z');
 });
 

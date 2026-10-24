@@ -181,6 +181,7 @@
       header +
       panels +
       workingCard(m) +
+      `<div data-coven-today>${window.CovenToday?.html?.() || ""}</div>` +
       lookBackCard(m) +
       horizonSection(today) +
       dreamCard(m) +

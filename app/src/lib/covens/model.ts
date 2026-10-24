@@ -21,6 +21,10 @@ export type Coven = {
   application_questions: Question[];
   altar_background: string | null;
   member_limit?: number | null;
+  practice_traditions?: string[];
+  practice_holidays?: string[];
+  practice_custom?: unknown;
+  practice_calendars?: string[];
   founder_id: string | null;
   created_at: string;
   member_count?: number;
@@ -40,6 +44,8 @@ export type Rank = {
   can_schedule_rites?: boolean;
   can_write_book?: boolean;
   can_approve_book?: boolean;
+  can_manage_programs?: boolean;
+  can_view_progress?: boolean;
   is_default?: boolean;
   open_to_applications?: boolean;
 };
@@ -166,12 +172,24 @@ export type Permissions = {
   schedule: boolean;
   writeBook: boolean;
   approveBook: boolean;
+  /** Designs programs, assigns them and mentors, signs off work (initiation and training). */
+  programs: boolean;
+  /** Sees everyone's progress in the coven's programs. */
+  progress: boolean;
   muted: boolean;
   site: boolean;
 };
 
 /** What this person can do in this coven, as the database decides it. */
-export function permissions(args: { coven: Coven | null; membership: Member | null; ranks: Rank[]; userId: string | null; siteModerator?: boolean; now?: number }): Permissions {
+export function permissions(args: {
+  coven: Coven | null;
+  membership: Member | null;
+  ranks: Rank[];
+  userId: string | null;
+  siteModerator?: boolean;
+  grants?: { user_id: string; power: string }[];
+  now?: number;
+}): Permissions {
   const { coven, membership, ranks, userId } = args;
   const active = membership?.status === 'active';
   const rank = active ? ranks.find((r) => r.id === membership!.rank_id) ?? null : null;
@@ -190,9 +208,18 @@ export function permissions(args: { coven: Coven | null; membership: Member | nu
     schedule: has('can_schedule_rites', 'can_manage'),
     writeBook: has('can_write_book', 'can_approve_book', 'can_manage'),
     approveBook: has('can_approve_book', 'can_manage'),
+    ...programPowers(open && active, founder, rank, args.grants ?? [], userId, !!args.siteModerator),
     muted: !!(active && membership!.muted_until && new Date(membership!.muted_until).getTime() > (args.now ?? Date.now())),
     site: !!args.siteModerator,
   };
+}
+
+// Program powers come from the position, from powers given by name (coven_grants), or the founder.
+function programPowers(live: boolean, founder: boolean, rank: Rank | null, grants: { user_id: string; power: string }[], userId: string | null, site: boolean) {
+  const granted = (power: string) => grants.some((g) => g.user_id === userId && g.power === power);
+  const programs = live && (founder || !!(rank?.can_manage || rank?.can_manage_programs) || granted('manage_programs'));
+  const progress = live && (programs || !!rank?.can_view_progress || granted('view_progress'));
+  return { programs: programs || site, progress: progress || site };
 }
 
 /** Agreements that still need this person's signature (current versions only). */
@@ -237,6 +264,8 @@ export function rankPowers(rank: Rank | null): string[] {
   if (rank.can_schedule_rites || rank.can_manage) powers.push('puts rites on the calendar');
   if (rank.can_approve_book || rank.can_manage) powers.push('approves pages in the coven’s book');
   else if (rank.can_write_book) powers.push('writes in the coven’s book');
+  if (rank.can_manage_programs || rank.can_manage) powers.push('manages initiation and training');
+  else if (rank.can_view_progress) powers.push('sees everyone’s progress');
   return powers;
 }
 
@@ -336,6 +365,8 @@ export const RANK_POWERS = [
   { key: 'can_schedule_rites', label: 'Puts rites on the coven’s calendar' },
   { key: 'can_write_book', label: 'Writes in the coven’s Book of Shadows (drafts go for approval)' },
   { key: 'can_approve_book', label: 'Approves pages for the coven’s Book of Shadows' },
+  { key: 'can_manage_programs', label: 'Manages initiation and training (designs programs, chooses who takes them, assigns mentors, signs off work)' },
+  { key: 'can_view_progress', label: 'Sees everyone’s initiation and training progress' },
   { key: 'can_manage', label: 'Leads the coven (edits its pages, positions and details)' },
 ] as const;
 
@@ -479,7 +510,7 @@ export function riteReminders(
     const start = new Date(ritual.scheduled_for).getTime();
     const label = occasionLabel(ritual);
     const when = new Date(start).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
-    const url = `/more/covens/c/${coven.slug}/ritual/${ritual.id}`;
+    const url = `/coven/c/${coven.slug}/ritual/${ritual.id}`;
     const items: [string, number, string][] = [
       ['day', start - 86400000, `Tomorrow at ${when}`],
       ['hour', start - 3600000, `In an hour, at ${when}`],

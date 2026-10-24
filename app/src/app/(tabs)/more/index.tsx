@@ -35,7 +35,6 @@ const GROUPS: { label: string; rows: Row[] }[] = [
         icon: 'community',
         href: '/more/community',
       },
-      { key: 'covens', label: 'Covens', detail: 'Practise with others: gatherings, rites and a shared altar', icon: 'community', href: '/more/covens' as Href },
       { key: 'offer', label: 'Make an offering', detail: 'Share a ritual, dream or story', icon: 'offer', href: '/more/community/offer' },
       { key: 'mine', label: 'My submissions', detail: 'Status and replies', icon: 'letters', href: '/more/community/mine' },
     ],

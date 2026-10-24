@@ -2,8 +2,9 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const SiteNav = require("../js/site-nav.js");
 
-test("the main bar has the app's tabs plus Podcast", () => {
-  assert.deepEqual(SiteNav.TABS.map((tab) => tab.label), ["Today", "Altar", "Grimoire", "Rituals", "Podcast", "More"]);
+test("the main bar has the app's tabs: Practice holds the Grimoire and Rituals", () => {
+  assert.deepEqual(SiteNav.TABS.map((tab) => tab.label), ["Today", "Altar", "Practice", "Coven", "More"]);
+  assert.deepEqual(SiteNav.PRACTICE.map((tab) => tab.label), ["Grimoire", "Rituals"]);
 });
 
 test("each page lights up its own tab", () => {
@@ -12,16 +13,22 @@ test("each page lights up its own tab", () => {
   assert.equal(SiteNav.activeTab("/blog/herbs/sage-history.html"), "podcast");
   assert.equal(SiteNav.activeTab("/altar/"), "altar");
   assert.equal(SiteNav.activeTab("/altar/index.html"), "altar");
-  assert.equal(SiteNav.activeTab("/altar/", "?ritual=1"), "rituals");
-  assert.equal(SiteNav.activeTab("/grimoire/"), "grimoire");
+  assert.equal(SiteNav.activeTab("/altar/", "?ritual=1"), "practice");
+  assert.equal(SiteNav.activeTab("/grimoire/"), "practice");
+  assert.equal(SiteNav.practiceSection("/grimoire/"), "grimoire");
+  assert.equal(SiteNav.practiceSection("/grimoire/dreams/"), "grimoire");
+  assert.equal(SiteNav.practiceSection("/rituals/premade/"), "rituals");
+  assert.equal(SiteNav.practiceSection("/today/"), null);
+  assert.equal(SiteNav.activeTab("/covens/"), "coven");
+  assert.equal(SiteNav.activeTab("/covens/coven/", "?c=moon"), "coven");
   assert.equal(SiteNav.activeTab("/grimoire/community-grimoire.html"), "more");
   assert.equal(SiteNav.activeTab("/privacy.html"), "more");
   assert.equal(SiteNav.activeTab("/submit/"), "more");
   assert.equal(SiteNav.activeTab("/today/"), "today");
   assert.equal(SiteNav.activeTab("/today/holy/", "?ref=wheel-samhain"), "today");
-  assert.equal(SiteNav.activeTab("/rituals/premade/"), "rituals");
-  assert.equal(SiteNav.activeTab("/rituals/journeys/"), "rituals");
-  assert.equal(SiteNav.activeTab("/practice/green/garden/"), "rituals");
+  assert.equal(SiteNav.activeTab("/rituals/premade/"), "practice");
+  assert.equal(SiteNav.activeTab("/rituals/journeys/"), "practice");
+  assert.equal(SiteNav.activeTab("/practice/green/garden/"), "practice");
   assert.equal(SiteNav.activeTab("/help/"), "more");
   assert.equal(SiteNav.activeTab("/more/support/"), "more");
 });

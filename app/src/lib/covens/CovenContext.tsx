@@ -1,4 +1,4 @@
-// One coven's state, shared by its screens (app/(tabs)/more/covens/c/[slug]/):
+// One coven's state, shared by its screens (app/(tabs)/coven/c/[slug]/):
 // the coven, its positions and pages, your membership and signatures, its
 // rituals and rites, and, once a screen asks for them, its gathering and
 // altar. One live connection keeps it all current while any of its screens
@@ -8,6 +8,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 
 import { useSession } from '../session';
 import * as api from './api';
+import { menteesOf, waitingForMe as waitingFor, type Grant, type Mentorship } from './programs';
 import {
   applyChange,
   myTurn,
@@ -55,6 +56,12 @@ type CovenState = {
   setAltar: (update: (list: AltarItem[]) => AltarItem[]) => void;
   loadAltar: () => Promise<void>;
   petitionsVersion: number;
+  grants: Grant[];
+  setGrants: (grants: Grant[]) => void;
+  mentors: Mentorship[];
+  setMentors: (mentors: Mentorship[]) => void;
+  waitingForMe: number;
+  refreshPrograms: () => Promise<void>;
   presence: Presence[];
   track: (place: string) => void;
 };
@@ -76,6 +83,9 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
   const [altar, setAltarState] = useState<AltarItem[] | null>(null);
   const [petitionsVersion, setPetitionsVersion] = useState(0);
   const [presence, setPresence] = useState<Presence[]>([]);
+  const [grants, setGrants] = useState<Grant[]>([]);
+  const [mentors, setMentors] = useState<Mentorship[]>([]);
+  const [waitingForMe, setWaitingForMe] = useState(0);
   const namesRef = useRef(names);
   namesRef.current = names;
   const liveRef = useRef<ReturnType<typeof api.listen> | null>(null);
@@ -112,6 +122,8 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
         setStatus('missing');
         return;
       }
+      const insiderNow = snap.membership?.status === 'active' || !!mine?.siteModerator;
+      setGrants(insiderNow ? await api.fetchGrants(snap.coven.id).catch(() => []) : []);
       setSnapshot(snap);
       setMe(mine);
       if (mine?.profile && userId) setNames((prev) => ({ ...prev, [userId]: mine.profile! }));
@@ -127,8 +139,8 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
   }, [refresh]);
 
   const perms = useMemo(
-    () => permissions({ coven: snapshot?.coven ?? null, membership: snapshot?.membership ?? null, ranks: snapshot?.ranks ?? [], userId, siteModerator: me?.siteModerator }),
-    [snapshot, userId, me?.siteModerator],
+    () => permissions({ coven: snapshot?.coven ?? null, membership: snapshot?.membership ?? null, ranks: snapshot?.ranks ?? [], userId, siteModerator: me?.siteModerator, grants }),
+    [snapshot, userId, me?.siteModerator, grants],
   );
   const unsigned = useMemo(() => (snapshot ? unsignedAgreements(snapshot.documents, snapshot.signatures, userId) : []), [snapshot, userId]);
   const stand = useMemo(() => standing(perms, unsigned, !!me?.banned), [perms, unsigned, me?.banned]);
@@ -138,6 +150,20 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
   useEffect(() => {
     if (insider) void refreshRituals();
   }, [insider, refreshRituals]);
+
+  // Mentors, and work waiting for this person to sign off (for the menu's count).
+  const refreshPrograms = useCallback(async () => {
+    const covenId = snapshot?.coven.id;
+    if (!covenId || !insider) return;
+    const [list, progress] = await Promise.all([api.fetchMentors(covenId).catch(() => [] as Mentorship[]), api.fetchProgress(covenId).catch(() => [])]);
+    setMentors(list);
+    const submitted = progress.filter((p) => p.status === 'submitted' && p.user_id !== userId);
+    const { tasks } = submitted.length ? await api.fetchProgramParts([...new Set(submitted.map((p) => p.program_id))]).catch(() => ({ tasks: [] })) : { tasks: [] };
+    setWaitingForMe(waitingFor(submitted, tasks, { userId, mentees: menteesOf(list, userId), programs: perms.programs }).length);
+  }, [snapshot?.coven.id, insider, userId, perms.programs]);
+  useEffect(() => {
+    void refreshPrograms();
+  }, [refreshPrograms]);
 
   // One live connection while any of this coven's screens is open.
   useEffect(() => {
@@ -239,10 +265,16 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
       setAltar: (update) => setAltarState((list) => update(list ?? [])),
       loadAltar,
       petitionsVersion,
+      grants,
+      setGrants,
+      mentors,
+      setMentors,
+      waitingForMe,
+      refreshPrograms,
       presence,
       track: (place) => liveRef.current?.track(place),
     }),
-    [slug, status, snapshot, me, perms, unsigned, stand, userId, names, loadNames, refresh, rituals, steps, rsvps, marks, refreshRituals, loadMarks, messages, loadMessages, altar, loadAltar, petitionsVersion, presence],
+    [slug, status, snapshot, me, perms, unsigned, stand, userId, names, loadNames, refresh, rituals, steps, rsvps, marks, refreshRituals, loadMarks, messages, loadMessages, altar, loadAltar, petitionsVersion, grants, mentors, waitingForMe, refreshPrograms, presence],
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
