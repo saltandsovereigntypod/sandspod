@@ -14,13 +14,16 @@
 //
 // The Norse and Heathen year has its drinking horn, Yule goat, blót bowl,
 // Odin's sheaf and Midsummer birch; the Celtic year its May bush, bilberries
-// and Brídeóg, which come near at the matching sabbats too. The turning
+// and Brídeóg, which come near at the matching sabbats too; the Roman year its
+// Parentalia tile and black beans for the dead, the februa and mola salsa, the
+// flowers of Flora and Juno, and the tapers, cap, little figures and lamp of
+// the Saturnalia. The turning
 // seasons (snowdrops, blossom, wildflowers, autumn leaves) are for everyone,
 // by the date rather than a calendar, north or south of the equator: the
 // season's thing comes to the top of the drawer, after any festival that's
 // near (seasonalNear).
 //
-// Another calendar's things (Roman, Slavic, …) need only a group in
+// Another calendar's things (Slavic, …) need only a group in
 // SEASONAL_TRADITIONS, entries in SEASONAL_OBJECTS naming its holidays, and
 // their pictures.
 
@@ -101,6 +104,7 @@ export const SEASONAL_TRADITIONS: SeasonalTradition[] = [
     words: ['Celtic', 'Gaelic', 'Irish', 'Scottish', 'fire festival'],
     festivalOf: (id) => CELTIC_OF_SABBAT[holidayKey(id)] ?? holidayKey(id),
   },
+  { id: 'roman', title: 'Roman festivals', calendars: ['roman'], words: ['Roman', 'Rome', 'Religio Romana', 'Latin', 'festival'] },
   // Not a calendar: the season by the date, for everyone (seasonNow).
   { id: 'seasons', title: 'The turning seasons', calendars: ['seasons'], words: ['season', 'seasons', 'the turning seasons', 'nature'] },
 ];
@@ -126,6 +130,7 @@ const hellenic = (...holidays: string[]): FestivalRef[] => holidays.map((holiday
 const monthly = (...holidays: string[]): FestivalRef[] => holidays.map((holiday) => ({ tradition: 'hellenic_monthly', holiday }));
 const norse = (...holidays: string[]): FestivalRef[] => holidays.map((holiday) => ({ tradition: 'norse', holiday }));
 const celtic = (...holidays: string[]): FestivalRef[] => holidays.map((holiday) => ({ tradition: 'celtic', holiday }));
+const roman = (...holidays: string[]): FestivalRef[] => holidays.map((holiday) => ({ tradition: 'roman', holiday }));
 const season = (id: SeasonId): FestivalRef[] => [{ tradition: 'seasons', holiday: id }];
 
 /** In the order each festival's things are shown, the first of each set out on tonight's altar (unless TONIGHT_FIRST says otherwise). */
@@ -256,6 +261,68 @@ export const SEASONAL_OBJECTS: SeasonalObject[] = [
     description: 'Bilberries gathered on the hilltops on the last Sunday of July, as Lughnasadh was kept in Ireland. A good crop promised a good harvest to come.',
   },
 
+  // The Roman year, from the Parentalia in February.
+  {
+    id: 'parentalia-tile', name: 'Parentalia Offering', festivals: roman('parentalia'), deities: ['the Manes', 'Manes', 'di Parentes'], food: 'bread',
+    keywords: ['the dead', 'ancestors', 'tile', 'wreath', 'grain', 'salt', 'bread', 'wine', 'violets', 'the grave'],
+    description: 'A tile wreathed with garlands, a scattering of grain and a few grains of salt, bread soaked in wine and loose violets: the small gifts Ovid says are enough for the dead at the Parentalia.',
+  },
+  {
+    id: 'februa', name: 'Februa', festivals: roman('lupercalia'), deities: ['Faunus', 'Lupercus'],
+    keywords: ['goatskin', 'thongs', 'Luperci', 'the Palatine', 'purification', 'fertility', 'February'],
+    description: 'Strips of goatskin, the februa, with which the Luperci ran round the Palatine at the Lupercalia, striking those they met to purify them and make them fruitful. February takes its name from them.',
+  },
+  {
+    id: 'mola-salsa', name: 'Mola Salsa', festivals: roman('lupercalia', 'vestalia'), deities: ['Vesta'], food: 'bread',
+    keywords: ['spelt', 'salt', 'meal', 'the Vestals', 'Vestal Virgins', 'the hearth', 'sacrifice', 'grain'],
+    description: 'Spelt roasted and ground with salt by the Vestal Virgins and sprinkled over offerings; they made it for the Lupercalia, the Vestalia and the Ides of September.',
+  },
+  {
+    id: 'matronalia-garland', name: 'Garland for Juno', festivals: roman('matronalia'), deities: ['Juno', 'Juno Lucina'], food: 'flowers',
+    keywords: ['garland', 'flowers', 'mothers', 'wives', 'childbirth', 'the Kalends of March', 'women'],
+    description: 'A garland of fresh flowers for Juno Lucina, to whose temple the married women of Rome brought flowers at the Matronalia, on the first of March.',
+  },
+  {
+    id: 'floralia-flowers', name: 'Flowers and Beans of Flora', festivals: roman('floralia'), deities: ['Flora'], food: 'flowers',
+    keywords: ['flowers', 'beans', 'lupins', 'vetches', 'spring', 'blossom', 'plenty', 'games'],
+    description: 'Flowers for Flora, with the beans and lupins that were scattered among the crowds at her Floralia as a sign of plenty.',
+  },
+  {
+    id: 'lemuria-beans', name: 'Black Beans', festivals: roman('lemuria'),
+    keywords: ['beans', 'black beans', 'lemures', 'the restless dead', 'midnight', 'the house', 'ghosts', 'protection'],
+    description: 'Black beans, thrown over the shoulder at midnight at the Lemuria by the head of the house, nine times without looking back, to redeem the household from the restless dead.',
+  },
+  {
+    id: 'neptunalia-boughs', name: 'Leafy Boughs', festivals: roman('neptunalia'), deities: ['Neptune'], food: 'flowers',
+    keywords: ['boughs', 'branches', 'leaves', 'greenery', 'shade', 'umbrae', 'summer', 'water', 'huts'],
+    description: 'Leafy branches, of the kind Romans made into shady huts, the umbrae, to keep the Neptunalia in the height of summer.',
+  },
+  {
+    id: 'saturnalia-cerei', name: 'Saturnalia Tapers', festivals: roman('saturnalia'), deities: ['Saturn'],
+    keywords: ['cerei', 'tapers', 'candles', 'wax', 'gifts', 'light', 'midwinter', 'feasting'],
+    description: 'Wax tapers, the cerei, given as gifts at the Saturnalia and lit through the darkest week of the year.',
+  },
+  {
+    id: 'pileus', name: 'Pileus', festivals: roman('saturnalia'), deities: ['Saturn'],
+    keywords: ['cap', 'felt cap', 'freedom', 'liberty', 'the world turned upside down', 'misrule', 'feasting'],
+    description: 'The felt cap of a freed slave, worn by everyone at the Saturnalia, when the ordinary order was set aside and masters waited on their households.',
+  },
+  {
+    id: 'sigillaria', name: 'Sigillaria', festivals: roman('saturnalia'), deities: ['Saturn'],
+    keywords: ['figurines', 'little figures', 'clay', 'gifts', 'children', 'the market', 'Saturnalia gifts'],
+    description: 'Little figures of clay or wax, given as gifts on the Sigillaria, the last day of the Saturnalia, when a market of them was held in Rome.',
+  },
+  {
+    id: 'lucerna', name: 'Lucerna', festivals: roman('saturnalia'), deities: ['Saturn', 'the Lares', 'Lares'],
+    keywords: ['oil lamp', 'lamp', 'light', 'lararium', 'household gods', 'the hearth', 'gifts', 'clay'],
+    description: 'A clay oil lamp, of the kind lit before the Lares in the household shrine, and given as a gift and set burning at the Saturnalia.',
+  },
+  {
+    id: 'radiate-crown', name: 'Radiate Crown', festivals: roman('sol_invictus'), deities: ['Sol Invictus', 'Sol', 'the Unconquered Sun'],
+    keywords: ['crown', 'sun rays', 'the sun', 'the returning sun', 'midwinter', 'light', 'Dies Natalis'],
+    description: 'The crown of sun rays worn by Sol Invictus, the Unconquered Sun, whose birthday was kept on 25 December as the days began to lengthen.',
+  },
+
   // The turning seasons, for everyone, by the date.
   {
     id: 'snowdrops', name: 'Snowdrops', festivals: season('late_winter'), food: 'flowers',
@@ -292,6 +359,7 @@ const TONIGHT_FIRST: Record<string, string> = {
   'hellenic/noumenia': 'thymiaterion',
   'norse/haustblot': 'odins-sheaf',
   'norse/jol': 'yule-goat',
+  'roman/lupercalia': 'februa',
 };
 
 export const seasonalObject = (id: string) => SEASONAL_OBJECTS.find((o) => o.id === id) ?? null;

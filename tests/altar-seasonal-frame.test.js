@@ -83,6 +83,30 @@ test("the Norse, Celtic and seasonal things join the website's cabinet once pain
   assert.equal(A.offerings.perishableItself({ type: "seasonal", form: "may-bush", label: "May Bush" }), "flowers");
 });
 
+test("the Roman festivals' things join the website's cabinet once painted, near only for those who keep the Roman year", () => {
+  const A = core();
+  const pic = (id) => `../assets/altar/objects/seasonal/${id}/${id}.png`;
+  const artwork = { ...Artwork, seasonal: { ...Artwork.seasonal, pileus: pic("pileus"), "mola-salsa": pic("mola-salsa"), "radiate-crown": pic("radiate-crown") } };
+  const records = cabinetApi(artwork).getSearchRecords();
+  assert.ok(records.find((r) => r.title === "Pileus").aliases.includes("Saturnalia"));
+  assert.ok(records.find((r) => r.title === "Mola Salsa").aliases.includes("Vesta"));
+  assert.ok(records.find((r) => r.title === "Radiate Crown").aliases.includes("Sol Invictus"));
+  // Not offered until painted.
+  assert.ok(!cabinetApi({ ...Artwork, seasonal: {} }).getSearchRecords().some((r) => r.title === "Pileus"));
+  // Near only for the Roman calendar, in its own section after the Celtic festivals.
+  const roman = { traditions: ["roman"], custom: [] };
+  const near = A.seasonal.seasonalNear(new Date(2026, 11, 18, 12), roman);
+  assert.deepEqual([...near.map((n) => n.key)], ["roman/saturnalia", "roman/sol_invictus"]);
+  assert.equal(A.seasonal.festivalWhen(near[0]), "Saturnalia, day 2 of 7.");
+  assert.ok(!A.seasonal.festivalsNear(new Date(2026, 11, 18, 12), null).some((n) => n.key.startsWith("roman/")));
+  const items = A.seasonal.seasonalCabinetItems({ pileus: "p.png", "may-bush": "m.png", "autumn-leaves": "l.png" });
+  assert.deepEqual([...A.seasonal.seasonalSections(items, []).map((s) => s.title)], ["Celtic festivals", "Roman festivals", "The turning seasons"]);
+  assert.equal(A.seasonal.seasonalSections(items, near)[0].title, "For Saturnalia");
+  assert.equal(A.offerings.perishableItself({ type: "seasonal", form: "mola-salsa", label: "Mola Salsa" }), "bread");
+  assert.equal(A.offerings.perishableItself({ type: "seasonal", form: "floralia-flowers", label: "Flowers and Beans of Flora" }), "flowers");
+  assert.equal(A.offerings.perishableItself({ type: "seasonal", form: "lemuria-beans", label: "Black Beans" }), null);
+});
+
 test("the new tools and natural finds with a picture join the website's cabinet", () => {
   const artwork = { ...Artwork, shelfTools: { "singing-bowl": "../assets/altar/objects/tools/singing-bowl/singing-bowl.png" }, natural: { "hag-stone": "../assets/altar/objects/natural/hag-stone/hag-stone.png" } };
   const records = cabinetApi(artwork).getSearchRecords();
