@@ -33,9 +33,11 @@ test("the website's cabinet has an Offerings drawer of foods and filled vessels"
   const app = JSON.parse(JSON.stringify(A.offeringDrawer.offeringCabinetItems(Artwork.offeringFoods, Artwork.items).map((i) => i.id).sort()));
   assert.equal(records.map((r) => r.destination.itemId).sort().join(" "), app.join(" "));
   // A new folder of pictures (once the artwork is rebuilt) joins it; without one, it's absent.
-  assert.ok(!titles.includes("Stones and Shells"));
-  const more = { ...Artwork, offeringFoods: { ...Artwork.offeringFoods, stones: { image: "../assets/altar/objects/offerings/stones/stones.png", ratio: 1 } } };
-  assert.ok(cabinetApi(more).getSearchRecords().some((r) => r.title === "Stones and Shells" && r.destination.category === "offerings"));
+  assert.ok(titles.includes("Stones and Shells"));
+  const { stones, ...rest } = Artwork.offeringFoods;
+  assert.ok(stones);
+  const fewer = { ...Artwork, offeringFoods: rest };
+  assert.ok(!cabinetApi(fewer).getSearchRecords().some((r) => r.title === "Stones and Shells" && r.destination.category === "offerings"));
 });
 
 test("cabinet tiles carry a filled vessel's offering, and placing passes it on", () => {

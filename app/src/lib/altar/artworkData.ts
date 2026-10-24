@@ -448,12 +448,24 @@ export const ALTAR_ARTWORK: {
       "image": "../assets/altar/objects/offerings/bread/bread.png",
       "ratio": 0.6667
     },
+    "coins": {
+      "image": "../assets/altar/objects/offerings/coins/coins.png",
+      "ratio": 0.6667
+    },
     "flowers": {
       "image": "../assets/altar/objects/offerings/flowers/flowers.png",
       "ratio": 0.6667
     },
     "fruit": {
       "image": "../assets/altar/objects/offerings/fruit/fruit.png",
+      "ratio": 0.6667
+    },
+    "grain": {
+      "image": "../assets/altar/objects/offerings/grain/grain.png",
+      "ratio": 0.6667
+    },
+    "harvest": {
+      "image": "../assets/altar/objects/offerings/harvest/harvest.png",
       "ratio": 0.6667
     },
     "honeycomb": {
@@ -464,6 +476,10 @@ export const ALTAR_ARTWORK: {
       "image": "../assets/altar/objects/offerings/meal/meal.png",
       "ratio": 0.6667
     },
+    "stones": {
+      "image": "../assets/altar/objects/offerings/stones/stones.png",
+      "ratio": 0.6667
+    },
     "sweets": {
       "image": "../assets/altar/objects/offerings/sweets/sweets.png",
       "ratio": 0.6667
@@ -471,17 +487,44 @@ export const ALTAR_ARTWORK: {
   },
   "plants": {
     "basil": {
-      "established": "../assets/altar/objects/plants/basil/basil-established.png"
+      "young": "../assets/altar/objects/plants/basil/basil-young.png",
+      "established": "../assets/altar/objects/plants/basil/basil-established.png",
+      "lush": "../assets/altar/objects/plants/basil/basil-lush.png"
+    },
+    "lavender": {
+      "young": "../assets/altar/objects/plants/lavender/lavender-young.png",
+      "established": "../assets/altar/objects/plants/lavender/lavender-established.png",
+      "lush": "../assets/altar/objects/plants/lavender/lavender-lush.png"
+    },
+    "mint": {
+      "young": "../assets/altar/objects/plants/mint/mint-young.png",
+      "established": "../assets/altar/objects/plants/mint/mint-established.png",
+      "lush": "../assets/altar/objects/plants/mint/mint-lush.png"
     },
     "pothos": {
       "young": "../assets/altar/objects/plants/pothos/pothos-young.png",
       "established": "../assets/altar/objects/plants/pothos/pothos-established.png",
       "lush": "../assets/altar/objects/plants/pothos/pothos-lush.png"
     },
+    "rosemary": {
+      "young": "../assets/altar/objects/plants/rosemary/rosemary-young.png",
+      "established": "../assets/altar/objects/plants/rosemary/rosemary-established.png",
+      "lush": "../assets/altar/objects/plants/rosemary/rosemary-lush.png"
+    },
+    "sage": {
+      "young": "../assets/altar/objects/plants/sage/sage-young.png",
+      "established": "../assets/altar/objects/plants/sage/sage-established.png",
+      "lush": "../assets/altar/objects/plants/sage/sage-lush.png"
+    },
     "snake-plant": {
       "young": "../assets/altar/objects/plants/snake-plant/snake-plant-young.png",
       "established": "../assets/altar/objects/plants/snake-plant/snake-plant-established.png",
       "lush": "../assets/altar/objects/plants/snake-plant/snake-plant-lush.png"
+    },
+    "thyme": {
+      "young": "../assets/altar/objects/plants/thyme/thyme-young.png",
+      "established": "../assets/altar/objects/plants/thyme/thyme-established.png",
+      "lush": "../assets/altar/objects/plants/thyme/thyme-lush.png"
     }
   },
   "items": {

@@ -66,8 +66,10 @@ test('the Offerings drawer holds the six painted foods and the filled vessels', 
 
 test('pictures still to come join the drawer with the right kind once their folder is there', () => {
   const pic = (id: string) => ({ image: `../assets/altar/objects/offerings/${id}/${id}.png`, ratio: 0.66 });
-  // Today: none of them.
-  for (const id of ['harvest', 'grain', 'stones', 'coins']) assert.ok(!drawer().some((i) => i.forms[0].form === id), id);
+  // All four are painted now, so they're in the drawer; without their pictures they wouldn't be.
+  for (const id of ['harvest', 'grain', 'stones', 'coins']) assert.ok(drawer().some((i) => i.forms[0].form === id), id);
+  const without = Object.fromEntries(Object.entries(ALTAR_ARTWORK.offeringFoods).filter(([id]) => !['harvest', 'grain', 'stones', 'coins'].includes(id)));
+  for (const id of ['harvest', 'grain', 'stones', 'coins']) assert.ok(!offeringCabinetItems(without, ALTAR_ARTWORK.items).some((i) => i.forms[0].form === id), id);
   const foods = { ...ALTAR_ARTWORK.offeringFoods, harvest: pic('harvest'), grain: pic('grain'), stones: pic('stones'), coins: pic('coins') };
   const items = offeringCabinetItems(foods, ALTAR_ARTWORK.items);
   const kinds = Object.fromEntries(
