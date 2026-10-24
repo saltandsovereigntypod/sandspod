@@ -811,8 +811,9 @@ export const HELP: HelpSection[] = [
         tips: [
           'Fresh offerings age on the altar. A note says when one is ready to be refreshed.',
           'Fruit, bread, sweets, a meal, flowers or honey in the comb are drawn heaped in the bowl, dish, chalice or cauldron, and go over there: bread dries, fruit browns, a meal spoils, flowers wilt and drop their petals.',
+          'For one tap, open the cabinet’s Offerings drawer: bread, fruit, sweets, a meal, cut flowers and honeycomb to set straight on the altar, and a bowl of water, a chalice of wine, a dish of milk or honey already poured. Each is fresh as you place it and goes over from then.',
         ],
-        keywords: ['food offering', 'libation', 'milk and honey', 'wine', 'flowers', 'fresh', 'wilts', 'fruit bowl', 'honeycomb'],
+        keywords: ['food offering', 'libation', 'milk and honey', 'wine', 'flowers', 'fresh', 'wilts', 'fruit bowl', 'honeycomb', 'offerings drawer'],
       },
       {
         id: 'altar-deity-offering',

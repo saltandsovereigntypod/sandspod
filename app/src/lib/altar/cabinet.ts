@@ -9,6 +9,8 @@ import { nextLayer } from './layers.ts';
 import { ensureLivingState } from './livingState.ts';
 import type { AltarBackground, CabinetCategoryId, CabinetForm, CabinetItem, SavedObject } from './types.ts';
 import { ALTAR_ARTWORK } from './artworkData.ts';
+import { offeringCabinetItems } from './offeringDrawer.ts';
+import { offeringKind, setOffering, type OfferingKindId } from './offerings.ts';
 import { pottedCabinetItems } from './pottedPlants.ts';
 import { seasonalCabinetItems } from './seasonal.ts';
 import { glowsWhenPlaced, naturalItems, shelfToolItems } from './shelf.ts';
@@ -23,6 +25,7 @@ export const cabinetCategories: { id: CabinetCategoryId; label: string }[] = [
   { id: 'natural', label: 'Natural' },
   { id: 'seasonal', label: 'Seasonal' },
   { id: 'plants', label: 'Plants' },
+  { id: 'offerings', label: 'Offerings' },
 ];
 
 /**
@@ -190,6 +193,8 @@ export const builtInCabinet: CabinetItem[] = [
   ...naturalItems(ALTAR_ARTWORK.natural ?? {}),
   // Pots for your real houseplants and windowsill herbs, those that have a picture (pottedPlants.ts).
   ...pottedCabinetItems(),
+  // Food, flowers and keepsakes to set straight on the altar, and vessels already filled (offeringDrawer.ts).
+  ...offeringCabinetItems(),
 ];
 
 /** Label of an object placed from a form (cabinet.js renderCabinetTile). */
@@ -320,6 +325,8 @@ export function cabinetSearchAliases(item: CabinetItem): string[] {
             ? ['natural', 'nature', 'found']
           : item.category === 'plants'
             ? ['plant', 'plants', 'houseplant', 'pot', 'potted']
+          : item.category === 'offerings'
+            ? ['offering', 'offerings', 'food', 'libation']
           : item.name === 'Spell Jar'
             ? ['jar', 'spell jar', 'spell jars']
             : [];
@@ -392,5 +399,7 @@ export function objectFromForm(
     ...savedFromBox(box),
     zIndex: String(nextLayer(existing)),
   };
-  return ensureLivingState(object, now);
+  const placed = ensureLivingState(object, now);
+  // A filled vessel from the Offerings drawer is set down with its offering already set out.
+  return form.offering && offeringKind(form.offering) ? setOffering(placed, form.offering as OfferingKindId, form.offeringLabel || '', now) : placed;
 }

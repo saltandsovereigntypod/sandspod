@@ -1,7 +1,7 @@
 // The app's own altar logic for the website's altar (altar/): a candle's life,
 // wax and flame; dressing, carving and ceromancy; offerings, incense,
 // petitions and charges; seasonal things, natural finds and more tools, the
-// ancestor frame and potted plants; the workings (spell jars, sachets, spells,
+// ancestor frame, potted plants and the Offerings drawer; the workings (spell jars, sachets, spells,
 // scrying, gratitude); reading and arranging the altar; tonight's altar and shrines;
 // an object's story; and the share card. Built by scripts/build-core.mjs into
 // js/core/altar.js (window.SaltCore.altar). Keep it to pure modules from
@@ -15,6 +15,7 @@ export * as ceromancy from '../../app/src/lib/altar/ceromancy.ts';
 export * as incense from '../../app/src/lib/altar/incense.ts';
 export * as offerings from '../../app/src/lib/altar/offerings.ts';
 export * as offeringArt from '../../app/src/lib/altar/offeringArt.ts';
+export * as offeringDrawer from '../../app/src/lib/altar/offeringDrawer.ts';
 export * as petitions from '../../app/src/lib/altar/petitions.ts';
 export * as charge from '../../app/src/lib/altar/charge.ts';
 export * as moonCharge from '../../app/src/lib/altar/moonCharge.ts';

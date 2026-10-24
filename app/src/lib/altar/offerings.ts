@@ -3,7 +3,9 @@
 // What a bowl, dish or chalice holds is kept in `livingState.app.offering`;
 // a fresh sprig on the altar is a cut offering of its own (and so is a
 // picture of your own named for something that perishes: "Apples", "Bread"),
-// and a deity's latest food, drink or flower offering ages the same way.
+// and a deity's latest food, drink or flower offering ages the same way, as
+// does food set straight on the altar from the cabinet's Offerings drawer
+// (offeringDrawer.ts), from the moment it's placed.
 // Each kind goes through four stages in real time (fresh, then two of its own,
 // then gone over), drawn on the altar by offeringArt.ts. Every refresh,
 // return, removal and choice to leave it be goes in the object's log. Pure,
@@ -100,6 +102,55 @@ export function kindFromWords(text: string): OfferingKindId | null {
   const pairs = OFFERING_KINDS.flatMap((k) => k.words.map((w) => ({ id: k.id, w }))).sort((a, b) => b.w.length - a.w.length);
   return pairs.find(({ w }) => words.includes(` ${w} `))?.id ?? null;
 }
+
+// ── The Offerings drawer's foods ─────────────────────────────────────────
+// Food, flowers and keepsakes set straight on the altar, each a painted
+// picture of its own (assets/altar/objects/offerings/<id>/<id>.png, the same
+// heaps drawn inside a vessel). Placed as `type: 'offering'` with its id as
+// `form`, it is the offering itself and ages as its kind does from the moment
+// it's placed. One without a picture isn't offered (offeringDrawer.ts), so a
+// new folder of pictures with an id here joins the drawer when the artwork is
+// rebuilt.
+
+export type OfferingFood = {
+  id: string;
+  name: string;
+  kind: OfferingKindId;
+  /** What it is in a sentence ("the bread", "the flowers are wilting"). */
+  what: string;
+  keywords: string[];
+  /** A line for the drawer. */
+  line: string;
+};
+
+export const OFFERING_FOODS: OfferingFood[] = [
+  { id: 'bread', name: 'Bread', kind: 'bread', what: 'bread', keywords: ['loaf', 'grain cake', 'hearth', 'hospitality'],
+    line: 'A loaf for the table of the gods and the dead. It dries at the edges in a day or two and goes stale after.' },
+  { id: 'fruit', name: 'Fruit', kind: 'fruit', what: 'fruit', keywords: ['apple', 'pomegranate', 'grapes', 'figs', 'sweetness'],
+    line: 'Fresh fruit, softening and browning over the best part of a week.' },
+  { id: 'sweets', name: 'Honey Cakes and Sweets', kind: 'sweets', what: 'sweets', keywords: ['honey cakes', 'cakes', 'candy', 'sweetness', 'the fair folk'],
+    line: 'Honey cakes, almonds and sweets. They dry out over a few days and go stale.' },
+  { id: 'meal', name: 'A Cooked Meal', kind: 'cooked', what: 'meal', keywords: ['dumb supper', 'ancestors', 'food', 'feast', 'hospitality'],
+    line: 'A plate from your own table, for the ancestors or a guest unseen. It goes cold, then turns within a day or two.' },
+  { id: 'flowers', name: 'Cut Flowers', kind: 'flowers', what: 'flowers', keywords: ['bouquet', 'posy', 'roses', 'beauty', 'devotion'],
+    line: 'A posy that droops after a few days, wilts in about a week and drops a petal or two.' },
+  { id: 'honeycomb', name: 'Honeycomb', kind: 'honey', what: 'honeycomb', keywords: ['honey', 'bees', 'the hive', 'sweetness', 'love'],
+    line: 'Honey in the comb. It keeps well, but left out it thickens, gathers dust and crusts over.' },
+  // Pictures still to come: each joins the drawer when its folder is added.
+  { id: 'harvest', name: 'Whole Apples and Gourds', kind: 'harvest', what: 'harvest', keywords: ['harvest', 'apples', 'gourds', 'squash', 'Mabon', 'Samhain'],
+    line: 'Whole fruit from the harvest, which keeps far longer than cut fruit: it softens over a couple of weeks.' },
+  { id: 'grain', name: 'Dried Herbs, Grain and Salt', kind: 'dried', what: 'grain', keywords: ['grain', 'salt', 'dried herbs', 'seeds', 'plenty'],
+    line: 'Dried herbs, grain and salt. They keep.' },
+  { id: 'stones', name: 'Stones and Shells', kind: 'stones', what: 'stones', keywords: ['stones', 'shells', 'pebbles', 'the sea', 'the land'],
+    line: 'Stones and shells, given as they are. They keep.' },
+  { id: 'coins', name: 'Coins and Keepsakes', kind: 'coins', what: 'coins', keywords: ['coins', 'keepsakes', 'payment', 'thanks', 'the crossroads'],
+    line: 'Coins and keepsakes, paid in thanks. They keep.' },
+];
+
+export const offeringFood = (id: string) => OFFERING_FOODS.find((f) => f.id === id) ?? null;
+
+/** Which of the Offerings drawer's foods the object is (`type: 'offering'`, its id as its form), or null. */
+export const offeringFoodOf = (object: { type?: string; form?: string }) => (object.type === 'offering' ? offeringFood(String(object.form || '')) : null);
 
 // ── Freshness ─────────────────────────────────────────────────────────────
 
@@ -278,6 +329,9 @@ const LIKENESS = / (silk|artificial|fake|paper|plastic|wax|wooden|ceramic|carved
  * Returns its kind, or null.
  */
 export function perishableItself(object: SavedObject): OfferingKindId | null {
+  // Food from the Offerings drawer is what it was placed as, whatever it's called.
+  const food = offeringFoodOf(object);
+  if (food) return offeringKind(food.kind)?.lifeMs ? food.kind : null;
   // A seasonal thing is food or it keeps, whatever it's called (seasonal.ts).
   const seasonal = seasonalIdOf(object);
   if (seasonal) {
@@ -293,8 +347,12 @@ export function perishableItself(object: SavedObject): OfferingKindId | null {
   return kind && offeringKind(kind)?.lifeMs ? kind : null;
 }
 
-/** The object is the offering itself (a sprig, or something that perishes), not a vessel holding one. */
-export const isOfferingItself = (object: SavedObject) => isFreshSprig(object) || !!perishableItself(object);
+/**
+ * The object is the offering itself (a sprig, something that perishes, or
+ * anything set out from the Offerings drawer, stones and coins too), not a
+ * vessel holding one.
+ */
+export const isOfferingItself = (object: SavedObject) => isFreshSprig(object) || !!offeringFoodOf(object) || !!perishableItself(object);
 
 export type OfferingContents = {
   kind: OfferingKindId;
@@ -315,10 +373,12 @@ export function offeringOf(object: SavedObject): OfferingContents | null {
     return { kind: kind.id, label: String(raw.label || ''), since: String(raw.since || ''), ...(raw.leftAt ? { leftAt: String(raw.leftAt) } : {}) };
   }
   if (raw === null) return null;
-  const itself = isFreshSprig(object) ? 'flowers' : perishableItself(object);
+  // Until it's tended, something that is the offering itself has been out since it was placed.
+  const food = offeringFoodOf(object);
+  const itself = isFreshSprig(object) ? 'flowers' : (food?.kind ?? perishableItself(object));
   if (itself) {
     const placed = placedAtOf(object);
-    return Number.isFinite(placed) ? { kind: itself, label: '', since: new Date(placed).toISOString() } : null;
+    return Number.isFinite(placed) ? { kind: itself, label: food?.what ?? '', since: new Date(placed).toISOString() } : null;
   }
   return null;
 }

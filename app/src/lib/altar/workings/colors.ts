@@ -39,6 +39,11 @@ const KNOWN: Record<string, string> = {
   ruby: '#a3162f', sapphire: '#22408f', opal: '#dfe6e9', howlite: '#eeeeea', lepidolite: '#b49ac6', sodalite: '#2f4f8f',
   unakite: '#9a8a6a', jade: '#4d9a6a', chrysoprase: '#7fc08f', 'apache tear': '#1c1a1a', celestite: '#a9c6e3',
   'herkimer diamond': '#f1f4f6', angelite: '#a9bfe0', ametrine: '#b48ac0',
+  aragonite: '#c4895a', azurite: '#1f3f9a', 'orange calcite': '#e8954a', charoite: '#8a5aa8', danburite: '#f2ece6',
+  'dalmatian jasper': '#e8e0cf', larimar: '#8fcde0', prehnite: '#bcd8a0', 'rutilated quartz': '#e8d9a8',
+  'snowflake obsidian': '#2a2a2c', 'tourmalinated quartz': '#d9dadc', 'ocean jasper': '#9db58a', mookaite: '#b0563f',
+  'pink tourmaline': '#e17aa0', iolite: '#5a5fa8', morganite: '#f2c2b4', amazonite: '#6fc4b4', 'blue apatite': '#2fa0c4',
+  'spirit quartz': '#a68ab8', 'desert rose': '#d4b08c',
   // candle wax colours, for seals
   white: '#f2ede1', black: '#1d1b1a', red: '#a52a2a', green: '#3f7a4a', blue: '#335c99', yellow: '#e2c041', orange: '#d9772b',
   purple: '#6f4a9a', pink: '#e39fb5', gold: '#cfa443', silver: '#bfc3c7', brown: '#6b4a32', grey: '#8a8a8a', indigo: '#3b3a7a',

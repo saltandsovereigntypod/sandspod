@@ -75,7 +75,7 @@ export type SavedAltarRow = {
   updated_at: string | null;
 };
 
-export type CabinetCategoryId = 'backgrounds' | 'candles' | 'herbs' | 'crystals' | 'tools' | 'deities' | 'vessels' | 'natural' | 'seasonal' | 'plants';
+export type CabinetCategoryId = 'backgrounds' | 'candles' | 'herbs' | 'crystals' | 'tools' | 'deities' | 'vessels' | 'natural' | 'seasonal' | 'plants' | 'offerings';
 
 /** One placeable form of a cabinet item (website cabinet.js `forms`). */
 export type CabinetForm = {
@@ -93,6 +93,10 @@ export type CabinetForm = {
   custom?: boolean;
   /** Extra search words for the form (catalogue aliases like "seven day"). */
   aliases?: string[];
+  /** A vessel set down already holding an offering of this kind (offeringDrawer.ts), as "Set out an offering" would. */
+  offering?: string;
+  /** What that offering is ("water", "wine"). */
+  offeringLabel?: string;
 };
 
 export type CabinetItem = {
