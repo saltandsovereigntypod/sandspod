@@ -13,7 +13,8 @@ const cabinetCategories = [
   { id: "vessels", label: "Vessels", icon: "🏺" },
   { id: "natural", label: "Natural", icon: "🪶" },
   { id: "seasonal", label: "Seasonal", icon: "🌾" },
-  { id: "plants", label: "Plants", icon: "🪴" }
+  { id: "plants", label: "Plants", icon: "🪴" },
+  { id: "offerings", label: "Offerings", icon: "🍎" }
 ];
 
 // Candle artwork by form: the vigil candles, and the chime, taper, tea light and pillar painted for each colour.
@@ -138,6 +139,8 @@ function ensureSeasonalCabinetItems() {
   core.seasonal.seasonalCabinetItems(altarArtwork.seasonal || {}).forEach((item) => cabinetItems.push({ ...item, icon: "🌾" }));
   // Pots for your real houseplants (app/src/lib/altar/pottedPlants.ts).
   core.pottedPlants?.pottedCabinetItems(altarArtwork.plants || {}).forEach((item) => cabinetItems.push({ ...item, icon: "🪴" }));
+  // Food, flowers and keepsakes set straight on the altar, and vessels already filled (app/src/lib/altar/offeringDrawer.ts).
+  core.offeringDrawer?.offeringCabinetItems(altarArtwork.offeringFoods || {}, altarArtwork.items || {}).forEach((item) => cabinetItems.push({ ...item, icon: "🍎" }));
 }
 
 // The sabbat that's near (a week before through the day): its things come first.
@@ -160,9 +163,9 @@ if (typeof document !== "undefined" && typeof window.addEventListener === "funct
   else window.addEventListener("load", () => void refreshCabinetSabbat());
 }
 
-/** The drawers in order: Seasonal first while a sabbat is near; Seasonal, Natural and Plants only when they hold something. */
+/** The drawers in order: Seasonal first while a sabbat is near; Seasonal, Natural, Plants and Offerings only when they hold something. */
 function visibleCabinetCategories() {
-  const list = cabinetCategories.filter((category) => (category.id !== "seasonal" && category.id !== "natural" && category.id !== "plants") || cabinetItems.some((item) => item.category === category.id));
+  const list = cabinetCategories.filter((category) => !["seasonal", "natural", "plants", "offerings"].includes(category.id) || cabinetItems.some((item) => item.category === category.id));
   return cabinetSabbat ? [...list.filter((c) => c.id === "seasonal"), ...list.filter((c) => c.id !== "seasonal")] : list;
 }
 
@@ -202,7 +205,7 @@ function placeCabinetDefinition({ itemId, formId } = {}) {
     showAltarToast(availableForms.length ? "Choose a form to place" : "Add a form image before placing this item");
     return true;
   }
-  placeObject({ imagePath: getCabinetDisplayImage(item, form), label: item.forms.length > 1 ? `${item.name} ${form.label}` : item.name, type: form.type || "", herb: form.herb || "", form: form.form || "", color: form.color || "", crystal: form.crystal || "", tool: form.tool || "", vessel: form.vessel || "", deity: form.deity || "", entityId: form.entityId || item.entityId || "" });
+  placeObject({ imagePath: getCabinetDisplayImage(item, form), label: item.forms.length > 1 ? `${item.name} ${form.label}` : item.name, type: form.type || "", herb: form.herb || "", form: form.form || "", color: form.color || "", crystal: form.crystal || "", tool: form.tool || "", vessel: form.vessel || "", deity: form.deity || "", entityId: form.entityId || item.entityId || "", offering: form.offering || "", offeringLabel: form.offeringLabel || "" });
   return true;
 }
 
@@ -321,7 +324,9 @@ function renderCabinetTile(item, form, isMultiForm = false) {
       data-crystal="${form.crystal || ""}"
       data-tool="${form.tool || ""}"
       data-vessel="${form.vessel || ""}"
-      data-deity="${form.deity || ""}">
+      data-deity="${form.deity || ""}"
+      data-offering="${form.offering || ""}"
+      data-offering-label="${form.offeringLabel || ""}">
       <span class="cabinet-tile-image-wrap">
         ${displayImage ? `<img src="${displayImage}" alt="${form.label || item.name} preview" class="cabinet-tile-image" loading="lazy" />` : '<span class="cabinet-form-unavailable">Image unavailable</span>'}
       </span>
@@ -464,7 +469,7 @@ function renderCabinetItems() {
   }
 
   const addCustomItemTile =
-    activeCabinetCategory !== "backgrounds" && activeCabinetCategory !== "seasonal" && activeCabinetCategory !== "natural" && activeCabinetCategory !== "plants"
+    activeCabinetCategory !== "backgrounds" && activeCabinetCategory !== "seasonal" && activeCabinetCategory !== "natural" && activeCabinetCategory !== "plants" && activeCabinetCategory !== "offerings"
       ? `
         <button type="button" class="cabinet-tile cabinet-background-tile" data-add-custom-cabinet-item>
           <span class="cabinet-tile-icon">＋</span>

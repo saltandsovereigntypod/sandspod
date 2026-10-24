@@ -53,8 +53,10 @@ export function CabinetSheet({
   // Near a sabbat the cabinet opens on its seasonal things.
   const [category, setCategory] = useState<string>(() => (near && hasSeasonal ? 'seasonal' : 'candles'));
   // The Seasonal and Natural drawers show once something in them has a picture.
-  // Seasonal, Natural and Plants show once they hold something with a picture.
-  const categories = cabinetCategoriesFor(!!near).filter((c) => (c.id !== 'seasonal' && c.id !== 'natural' && c.id !== 'plants') || items.some((item) => item.category === c.id));
+  // Seasonal, Natural, Plants and Offerings show once they hold something with a picture.
+  const categories = cabinetCategoriesFor(!!near).filter(
+    (c) => (c.id !== 'seasonal' && c.id !== 'natural' && c.id !== 'plants' && c.id !== 'offerings') || items.some((item) => item.category === c.id),
+  );
   const [search, setSearch] = useState('');
   // The form whose picture is being changed (press and hold a built-in tile).
   const [picture, setPicture] = useState<{ item: CabinetItem; form: CabinetForm } | null>(null);
@@ -186,7 +188,7 @@ export function CabinetSheet({
       }
     >
       {shown.length === 0 && <Text style={type.body}>Nothing in this drawer{search ? ' matches that search' : ''}.</Text>}
-      {!!onMakeOwn && category !== 'seasonal' && category !== 'natural' && category !== 'plants' && (
+      {!!onMakeOwn && category !== 'seasonal' && category !== 'natural' && category !== 'plants' && category !== 'offerings' && (
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Make your own item for this drawer"
@@ -231,6 +233,11 @@ export function CabinetSheet({
             </View>
           </View>
         ),
+      )}
+      {category === 'offerings' && (
+        <Text style={type.caption}>
+          Each is set out fresh as you place it and goes over in real time, as the real thing would; tend it from its panel. The filled vessels come already poured or heaped. Any bowl, dish or chalice can still hold something else through Set out an offering.
+        </Text>
       )}
       {category === 'plants' && (
         <Text style={type.caption}>Each pot stands for one of your own plants: set down as many as you keep, then name it, choose the picture that matches it and mark it watered from its panel.</Text>
