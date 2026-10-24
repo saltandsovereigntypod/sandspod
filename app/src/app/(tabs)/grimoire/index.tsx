@@ -1,6 +1,6 @@
 import { router, type Href } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { ActivityIndicator, Image, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '../../../components/Button';
@@ -14,6 +14,7 @@ import { parseCalendarDate, shortDate } from '../../../lib/calendar';
 import { DREAMS, normalizeDream, sortDreams, type DreamEntry } from '../../../lib/craft/hedge/dreams';
 import { countOf, DIVINATION_TITLE, divinationGroups, divinationRoute, wordsLine, type DivinationEntry, type DivinationGroup } from '../../../lib/divination/library';
 import { tarotImages } from '../../../lib/divination/tarotAssets';
+import { TarotArt } from '../../../components/divination/TarotArt';
 import { useCraft } from '../../../lib/craft/store';
 import { DREAM_ROUTES, DREAMS_SHELF, dreamSearchResults, dreamShelfLine, withDreamsShelf } from '../../../lib/grimoire/dreams';
 import { bookTitle, displayPageTitle, mundaneWords } from '../../../lib/grimoire/presentation';
@@ -279,7 +280,7 @@ function DivinationRow({ entry }: { entry: DivinationEntry }) {
       style={({ pressed }) => [styles.shelfEntry, styles.divinationEntry, pressed && styles.pressed]}
     >
       {art ? (
-        <Image source={art} style={styles.thumb} resizeMode="cover" accessible={false} />
+        <TarotArt place={art} style={styles.thumb} />
       ) : (
         <StaveGlyph glyph={entry.glyph ?? ''} kind={entry.kind === 'ogham' ? 'ogham' : 'runes'} size={26} />
       )}
