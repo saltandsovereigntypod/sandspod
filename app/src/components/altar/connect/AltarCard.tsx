@@ -4,11 +4,12 @@
 // name, the moon and the date. Used for the share card and for small pictures
 // of past snapshots in the altar's history.
 
-import { forwardRef } from 'react';
-import Svg, { Circle, Defs, G, Image as SvgImage, LinearGradient, Path, RadialGradient, Rect, Stop, Text as SvgText } from 'react-native-svg';
+import { forwardRef, useId } from 'react';
+import Svg, { Circle, ClipPath, Defs, G, Image as SvgImage, LinearGradient, Path, RadialGradient, Rect, Stop, Text as SvgText } from 'react-native-svg';
 
-import { altarImageSource } from '../../../lib/altar/assets';
+import { altarImageSource, altarPicture, type AltarPicture } from '../../../lib/altar/assets';
 import { moonPath, type CardScene, type ShareCard } from '../../../lib/altar/connect/shareCard';
+import { cropLayout } from '../../../lib/altar/pictureCrop';
 import { colors, fonts } from '../../../theme';
 
 type Props = {
@@ -21,10 +22,32 @@ type Props = {
 
 const isShareCard = (card: CardScene | ShareCard): card is ShareCard => 'name' in card;
 
+/** An object's picture fitted into its rect; one on a sheet clipped to its own part of it. */
+function CardPicture({ picture, rect, id }: { picture: AltarPicture; rect: { x: number; y: number; w: number; h: number }; id: string }) {
+  if (!picture.crop) {
+    return <SvgImage href={picture.source} x={rect.x} y={rect.y} width={rect.w} height={rect.h} preserveAspectRatio="xMidYMid meet" />;
+  }
+  const { clip, sheet } = cropLayout(picture.crop, rect.w, rect.h, 'contain');
+  const x = rect.x + clip.left;
+  const y = rect.y + clip.top;
+  return (
+    <G>
+      <Defs>
+        <ClipPath id={id}>
+          <Rect x={x} y={y} width={clip.width} height={clip.height} />
+        </ClipPath>
+      </Defs>
+      <SvgImage href={picture.source} x={x + sheet.left} y={y + sheet.top} width={sheet.width} height={sheet.height} preserveAspectRatio="none" clipPath={`url(#${id})`} />
+    </G>
+  );
+}
+
 /** The picture. The ref is the Svg (for toDataURL). */
 export const AltarCardSvg = forwardRef<Svg, Props>(function AltarCardSvg({ card, width, label }, ref) {
   const height = (width * card.height) / card.width;
   const bg = altarImageSource(card.background.path);
+  // Clip ids are shared by every SVG on a web page: keep each card's its own.
+  const uid = useId().replace(/[^a-z0-9]/gi, '');
   const share = isShareCard(card) ? card : null;
   const transform = (i: CardScene['items'][number]) => {
     const parts: string[] = [];
@@ -61,12 +84,12 @@ export const AltarCardSvg = forwardRef<Svg, Props>(function AltarCardSvg({ card,
       {card.pools.map((p, i) => (
         <Circle key={`pool-${i}`} cx={p.x} cy={p.y} r={p.r} fill="url(#ac-pool)" />
       ))}
-      {card.items.map((item) => {
-        const source = item.path ? altarImageSource(item.path) : null;
+      {card.items.map((item, index) => {
+        const picture = item.path ? altarPicture(item.path) : null;
         return (
           <G key={item.key} transform={transform(item)} opacity={item.opacity}>
-            {source != null ? (
-              <SvgImage href={source} x={item.rect.x} y={item.rect.y} width={item.rect.w} height={item.rect.h} preserveAspectRatio="xMidYMid meet" />
+            {picture != null ? (
+              <CardPicture picture={picture} rect={item.rect} id={`ac-cell-${uid}-${index}`} />
             ) : item.symbol ? (
               <SvgText x={item.cx} y={item.cy + item.rect.h * 0.18} fontSize={item.rect.w * 0.49} textAnchor="middle" fill={colors.cream}>
                 {item.symbol}

@@ -1,18 +1,19 @@
 // An object's painted picture lit by the candles near it (lib/altar/litShader),
 // drawn over the plain picture once it has loaded, flickering on its own clock.
 
-import { Canvas, Fill, ImageShader, Shader, Skia, useClock, useImage, type DataSourceParam } from '@shopify/react-native-skia';
-import type { ImageSourcePropType } from 'react-native';
+import { Canvas, Fill, ImageShader, Shader, Skia, useClock } from '@shopify/react-native-skia';
 import { useDerivedValue } from 'react-native-reanimated';
 
+import type { AltarPicture } from '../../lib/altar/assets';
 import { LIT_SKSL, lightUniforms, type ObjectLight } from '../../lib/altar/litShader';
+import { useAltarSkiaImage } from './altarSkiaImage';
 
 const effect = Skia.RuntimeEffect.Make(LIT_SKSL);
 
 export const HAS_LIT = !!effect;
 
 export function LitPicture({
-  source,
+  picture,
   width,
   height,
   lights,
@@ -20,7 +21,7 @@ export function LitPicture({
   reach,
   still,
 }: {
-  source: ImageSourcePropType;
+  picture: AltarPicture;
   width: number;
   height: number;
   lights: ObjectLight[];
@@ -28,7 +29,7 @@ export function LitPicture({
   reach: number;
   still: boolean;
 }) {
-  const image = useImage((typeof source === 'number' ? source : !Array.isArray(source) && source && typeof source === 'object' ? source.uri ?? null : null) as DataSourceParam);
+  const image = useAltarSkiaImage(picture);
   const clock = useClock();
   const flat = lightUniforms(lights);
   const count = Math.min(4, lights.length);
