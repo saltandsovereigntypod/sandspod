@@ -518,64 +518,84 @@ const f506 = require('../../../assets/altar/sheets/crystals/turquoise.webp');
 const f507 = require('../../../assets/altar/sheets/crystals/unakite.webp');
 const f508 = require('../../../assets/altar/sheets/herbs/allspice.webp');
 const f509 = require('../../../assets/altar/sheets/herbs/angelica.webp');
-const f510 = require('../../../assets/altar/sheets/herbs/basil.webp');
-const f511 = require('../../../assets/altar/sheets/herbs/bay-leaf.webp');
-const f512 = require('../../../assets/altar/sheets/herbs/belladonna.webp');
-const f513 = require('../../../assets/altar/sheets/herbs/birch.webp');
-const f514 = require('../../../assets/altar/sheets/herbs/black-pepper.webp');
-const f515 = require('../../../assets/altar/sheets/herbs/calendula.webp');
-const f516 = require('../../../assets/altar/sheets/herbs/catnip.webp');
-const f517 = require('../../../assets/altar/sheets/herbs/cedar.webp');
-const f518 = require('../../../assets/altar/sheets/herbs/chamomile.webp');
-const f519 = require('../../../assets/altar/sheets/herbs/cinnamon.webp');
-const f520 = require('../../../assets/altar/sheets/herbs/clove.webp');
-const f521 = require('../../../assets/altar/sheets/herbs/comfrey.webp');
-const f522 = require('../../../assets/altar/sheets/herbs/copal.webp');
-const f523 = require('../../../assets/altar/sheets/herbs/cypress.webp');
-const f524 = require('../../../assets/altar/sheets/herbs/dandelion.webp');
-const f525 = require('../../../assets/altar/sheets/herbs/dittany-of-crete.webp');
-const f526 = require('../../../assets/altar/sheets/herbs/dragons-blood.webp');
-const f527 = require('../../../assets/altar/sheets/herbs/elder.webp');
-const f528 = require('../../../assets/altar/sheets/herbs/foxglove.webp');
-const f529 = require('../../../assets/altar/sheets/herbs/frankincense.webp');
-const f530 = require('../../../assets/altar/sheets/herbs/garlic.webp');
-const f531 = require('../../../assets/altar/sheets/herbs/ginger.webp');
-const f532 = require('../../../assets/altar/sheets/herbs/hawthorn.webp');
-const f533 = require('../../../assets/altar/sheets/herbs/holly.webp');
-const f534 = require('../../../assets/altar/sheets/herbs/hyssop.webp');
-const f535 = require('../../../assets/altar/sheets/herbs/jasmine.webp');
-const f536 = require('../../../assets/altar/sheets/herbs/juniper.webp');
-const f537 = require('../../../assets/altar/sheets/herbs/lavender.webp');
-const f538 = require('../../../assets/altar/sheets/herbs/lemon-balm.webp');
-const f539 = require('../../../assets/altar/sheets/herbs/lemongrass.webp');
-const f540 = require('../../../assets/altar/sheets/herbs/mandrake.webp');
-const f541 = require('../../../assets/altar/sheets/herbs/meadowsweet.webp');
-const f542 = require('../../../assets/altar/sheets/herbs/mint.webp');
-const f543 = require('../../../assets/altar/sheets/herbs/mistletoe.webp');
-const f544 = require('../../../assets/altar/sheets/herbs/mugwort.webp');
-const f545 = require('../../../assets/altar/sheets/herbs/myrrh.webp');
-const f546 = require('../../../assets/altar/sheets/herbs/nettle.webp');
-const f547 = require('../../../assets/altar/sheets/herbs/oak.webp');
-const f548 = require('../../../assets/altar/sheets/herbs/orris-root.webp');
-const f549 = require('../../../assets/altar/sheets/herbs/patchouli.webp');
-const f550 = require('../../../assets/altar/sheets/herbs/peppermint.webp');
-const f551 = require('../../../assets/altar/sheets/herbs/rose.webp');
-const f552 = require('../../../assets/altar/sheets/herbs/rosemary.webp');
-const f553 = require('../../../assets/altar/sheets/herbs/rowan.webp');
-const f554 = require('../../../assets/altar/sheets/herbs/rue.webp');
-const f555 = require('../../../assets/altar/sheets/herbs/saffron.webp');
-const f556 = require('../../../assets/altar/sheets/herbs/sage.webp');
-const f557 = require('../../../assets/altar/sheets/herbs/sandalwood.webp');
-const f558 = require('../../../assets/altar/sheets/herbs/st-johns-wort.webp');
-const f559 = require('../../../assets/altar/sheets/herbs/star-anise.webp');
-const f560 = require('../../../assets/altar/sheets/herbs/thyme.webp');
-const f561 = require('../../../assets/altar/sheets/herbs/valerian.webp');
-const f562 = require('../../../assets/altar/sheets/herbs/vanilla.webp');
-const f563 = require('../../../assets/altar/sheets/herbs/vervain.webp');
-const f564 = require('../../../assets/altar/sheets/herbs/willow.webp');
-const f565 = require('../../../assets/altar/sheets/herbs/wormwood.webp');
-const f566 = require('../../../assets/altar/sheets/herbs/yarrow.webp');
-const f567 = require('../../../assets/altar/sheets/herbs/yew.webp');
+const f510 = require('../../../assets/altar/sheets/herbs/anise.webp');
+const f511 = require('../../../assets/altar/sheets/herbs/basil.webp');
+const f512 = require('../../../assets/altar/sheets/herbs/bay-leaf.webp');
+const f513 = require('../../../assets/altar/sheets/herbs/belladonna.webp');
+const f514 = require('../../../assets/altar/sheets/herbs/birch.webp');
+const f515 = require('../../../assets/altar/sheets/herbs/black-pepper.webp');
+const f516 = require('../../../assets/altar/sheets/herbs/borage.webp');
+const f517 = require('../../../assets/altar/sheets/herbs/calendula.webp');
+const f518 = require('../../../assets/altar/sheets/herbs/cardamom.webp');
+const f519 = require('../../../assets/altar/sheets/herbs/catnip.webp');
+const f520 = require('../../../assets/altar/sheets/herbs/cedar.webp');
+const f521 = require('../../../assets/altar/sheets/herbs/chamomile.webp');
+const f522 = require('../../../assets/altar/sheets/herbs/cinnamon.webp');
+const f523 = require('../../../assets/altar/sheets/herbs/cinquefoil.webp');
+const f524 = require('../../../assets/altar/sheets/herbs/clove.webp');
+const f525 = require('../../../assets/altar/sheets/herbs/comfrey.webp');
+const f526 = require('../../../assets/altar/sheets/herbs/copal.webp');
+const f527 = require('../../../assets/altar/sheets/herbs/cypress.webp');
+const f528 = require('../../../assets/altar/sheets/herbs/damiana.webp');
+const f529 = require('../../../assets/altar/sheets/herbs/dandelion.webp');
+const f530 = require('../../../assets/altar/sheets/herbs/dittany-of-crete.webp');
+const f531 = require('../../../assets/altar/sheets/herbs/dragons-blood.webp');
+const f532 = require('../../../assets/altar/sheets/herbs/elder.webp');
+const f533 = require('../../../assets/altar/sheets/herbs/eucalyptus.webp');
+const f534 = require('../../../assets/altar/sheets/herbs/fennel.webp');
+const f535 = require('../../../assets/altar/sheets/herbs/foxglove.webp');
+const f536 = require('../../../assets/altar/sheets/herbs/frankincense.webp');
+const f537 = require('../../../assets/altar/sheets/herbs/galangal.webp');
+const f538 = require('../../../assets/altar/sheets/herbs/garlic.webp');
+const f539 = require('../../../assets/altar/sheets/herbs/ginger.webp');
+const f540 = require('../../../assets/altar/sheets/herbs/hawthorn.webp');
+const f541 = require('../../../assets/altar/sheets/herbs/heather.webp');
+const f542 = require('../../../assets/altar/sheets/herbs/hibiscus.webp');
+const f543 = require('../../../assets/altar/sheets/herbs/holly.webp');
+const f544 = require('../../../assets/altar/sheets/herbs/honeysuckle.webp');
+const f545 = require('../../../assets/altar/sheets/herbs/hyssop.webp');
+const f546 = require('../../../assets/altar/sheets/herbs/jasmine.webp');
+const f547 = require('../../../assets/altar/sheets/herbs/juniper.webp');
+const f548 = require('../../../assets/altar/sheets/herbs/lavender.webp');
+const f549 = require('../../../assets/altar/sheets/herbs/lemon-balm.webp');
+const f550 = require('../../../assets/altar/sheets/herbs/lemongrass.webp');
+const f551 = require('../../../assets/altar/sheets/herbs/lilac.webp');
+const f552 = require('../../../assets/altar/sheets/herbs/mandrake.webp');
+const f553 = require('../../../assets/altar/sheets/herbs/meadowsweet.webp');
+const f554 = require('../../../assets/altar/sheets/herbs/mint.webp');
+const f555 = require('../../../assets/altar/sheets/herbs/mistletoe.webp');
+const f556 = require('../../../assets/altar/sheets/herbs/mugwort.webp');
+const f557 = require('../../../assets/altar/sheets/herbs/mullein.webp');
+const f558 = require('../../../assets/altar/sheets/herbs/myrrh.webp');
+const f559 = require('../../../assets/altar/sheets/herbs/nettle.webp');
+const f560 = require('../../../assets/altar/sheets/herbs/nutmeg.webp');
+const f561 = require('../../../assets/altar/sheets/herbs/oak.webp');
+const f562 = require('../../../assets/altar/sheets/herbs/orris-root.webp');
+const f563 = require('../../../assets/altar/sheets/herbs/passionflower.webp');
+const f564 = require('../../../assets/altar/sheets/herbs/patchouli.webp');
+const f565 = require('../../../assets/altar/sheets/herbs/peppermint.webp');
+const f566 = require('../../../assets/altar/sheets/herbs/pine.webp');
+const f567 = require('../../../assets/altar/sheets/herbs/red-clover.webp');
+const f568 = require('../../../assets/altar/sheets/herbs/rose.webp');
+const f569 = require('../../../assets/altar/sheets/herbs/rosehip.webp');
+const f570 = require('../../../assets/altar/sheets/herbs/rosemary.webp');
+const f571 = require('../../../assets/altar/sheets/herbs/rowan.webp');
+const f572 = require('../../../assets/altar/sheets/herbs/rue.webp');
+const f573 = require('../../../assets/altar/sheets/herbs/saffron.webp');
+const f574 = require('../../../assets/altar/sheets/herbs/sage.webp');
+const f575 = require('../../../assets/altar/sheets/herbs/sandalwood.webp');
+const f576 = require('../../../assets/altar/sheets/herbs/st-johns-wort.webp');
+const f577 = require('../../../assets/altar/sheets/herbs/star-anise.webp');
+const f578 = require('../../../assets/altar/sheets/herbs/sunflower.webp');
+const f579 = require('../../../assets/altar/sheets/herbs/thyme.webp');
+const f580 = require('../../../assets/altar/sheets/herbs/valerian.webp');
+const f581 = require('../../../assets/altar/sheets/herbs/vanilla.webp');
+const f582 = require('../../../assets/altar/sheets/herbs/vervain.webp');
+const f583 = require('../../../assets/altar/sheets/herbs/violet.webp');
+const f584 = require('../../../assets/altar/sheets/herbs/willow.webp');
+const f585 = require('../../../assets/altar/sheets/herbs/wormwood.webp');
+const f586 = require('../../../assets/altar/sheets/herbs/yarrow.webp');
+const f587 = require('../../../assets/altar/sheets/herbs/yew.webp');
 
 export const bundledAltarAssets: Record<string, { source: number; width: number; height: number; crop?: BundledAltarCrop }> = {
   'assets/altar/backgrounds/autumn-harvest.png': { source: f0, width: 1536, height: 1024 },
@@ -1091,184 +1111,244 @@ export const bundledAltarAssets: Record<string, { source: number; width: number;
   'assets/altar/objects/herbs/angelica/angelica-loose.png': { source: f509, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
   'assets/altar/objects/herbs/angelica/angelica-oil.png': { source: f509, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
   'assets/altar/objects/herbs/angelica/angelica-sprig.png': { source: f509, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/basil/basil-loose.png': { source: f510, width: 800, height: 400, crop: { x: 0, y: 1032, w: 800, h: 400, sheetW: 1330, sheetH: 1432 } },
-  'assets/altar/objects/herbs/basil/basil-oil.png': { source: f510, width: 400, height: 800, crop: { x: 930, y: 0, w: 400, h: 800, sheetW: 1330, sheetH: 1432 } },
-  'assets/altar/objects/herbs/basil/basil-sprig.png': { source: f510, width: 1080, height: 1200, crop: { x: 0, y: 0, w: 922, h: 1024, sheetW: 1330, sheetH: 1432 } },
-  'assets/altar/objects/herbs/bay-leaf/bay-loose.png': { source: f511, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/bay-leaf/bay-oil.png': { source: f511, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/bay-leaf/bay-sprig.png': { source: f511, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/belladonna/belladonna-loose.png': { source: f512, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/belladonna/belladonna-oil.png': { source: f512, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/belladonna/belladonna-sprig.png': { source: f512, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/birch/birch-loose.png': { source: f513, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/birch/birch-oil.png': { source: f513, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/birch/birch-sprig.png': { source: f513, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/black-pepper/black-pepper-loose.png': { source: f514, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/black-pepper/black-pepper-oil.png': { source: f514, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/black-pepper/black-pepper-sprig.png': { source: f514, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/calendula/calendula-loose.png': { source: f515, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/calendula/calendula-oil.png': { source: f515, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/calendula/calendula-sprig.png': { source: f515, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/catnip/catnip-loose.png': { source: f516, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/catnip/catnip-oil.png': { source: f516, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/catnip/catnip-sprig.png': { source: f516, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/cedar/cedar-loose.png': { source: f517, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/cedar/cedar-oil.png': { source: f517, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/cedar/cedar-sprig.png': { source: f517, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/chamomile/chamomile-loose.png': { source: f518, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/chamomile/chamomile-oil.png': { source: f518, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/chamomile/chamomile-sprig.png': { source: f518, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/cinnamon/cinnamon-loose.png': { source: f519, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/cinnamon/cinnamon-oil.png': { source: f519, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/cinnamon/cinnamon-sprig.png': { source: f519, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/clove/clove-loose.png': { source: f520, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/clove/clove-oil.png': { source: f520, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/clove/clove-sprig.png': { source: f520, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/comfrey/comfrey-loose.png': { source: f521, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/comfrey/comfrey-oil.png': { source: f521, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/comfrey/comfrey-sprig.png': { source: f521, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/copal/copal-loose.png': { source: f522, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/copal/copal-oil.png': { source: f522, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/copal/copal-sprig.png': { source: f522, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/cypress/cypress-loose.png': { source: f523, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/cypress/cypress-oil.png': { source: f523, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/cypress/cypress-sprig.png': { source: f523, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dandelion/dandelion-loose.png': { source: f524, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dandelion/dandelion-oil.png': { source: f524, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dandelion/dandelion-sprig.png': { source: f524, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dittany-of-crete/dittany-of-crete-loose.png': { source: f525, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dittany-of-crete/dittany-of-crete-oil.png': { source: f525, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dittany-of-crete/dittany-of-crete-sprig.png': { source: f525, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dragons-blood/dragons-blood-loose.png': { source: f526, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dragons-blood/dragons-blood-oil.png': { source: f526, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dragons-blood/dragons-blood-sprig.png': { source: f526, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/elder/elder-loose.png': { source: f527, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/elder/elder-oil.png': { source: f527, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/elder/elder-sprig.png': { source: f527, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/foxglove/foxglove-loose.png': { source: f528, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1208, sheetH: 1549 } },
-  'assets/altar/objects/herbs/foxglove/foxglove-oil.png': { source: f528, width: 1024, height: 1536, crop: { x: 525, y: 0, w: 683, h: 1024, sheetW: 1208, sheetH: 1549 } },
-  'assets/altar/objects/herbs/foxglove/foxglove-sprig.png': { source: f528, width: 896, height: 1776, crop: { x: 0, y: 0, w: 517, h: 1024, sheetW: 1208, sheetH: 1549 } },
-  'assets/altar/objects/herbs/frankincense/frankincense-loose.png': { source: f529, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/frankincense/frankincense-oil.png': { source: f529, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/frankincense/frankincense-sprig.png': { source: f529, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/garlic/garlic-loose.png': { source: f530, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/garlic/garlic-oil.png': { source: f530, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/garlic/garlic-sprig.png': { source: f530, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/ginger/ginger-loose.png': { source: f531, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/ginger/ginger-oil.png': { source: f531, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/ginger/ginger-sprig.png': { source: f531, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/hawthorn/hawthorn-loose.png': { source: f532, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/hawthorn/hawthorn-oil.png': { source: f532, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/hawthorn/hawthorn-sprig.png': { source: f532, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/anise/anise-loose.png': { source: f510, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/anise/anise-oil.png': { source: f510, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/anise/anise-sprig.png': { source: f510, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/basil/basil-loose.png': { source: f511, width: 800, height: 400, crop: { x: 0, y: 1032, w: 800, h: 400, sheetW: 1330, sheetH: 1432 } },
+  'assets/altar/objects/herbs/basil/basil-oil.png': { source: f511, width: 400, height: 800, crop: { x: 930, y: 0, w: 400, h: 800, sheetW: 1330, sheetH: 1432 } },
+  'assets/altar/objects/herbs/basil/basil-sprig.png': { source: f511, width: 1080, height: 1200, crop: { x: 0, y: 0, w: 922, h: 1024, sheetW: 1330, sheetH: 1432 } },
+  'assets/altar/objects/herbs/bay-leaf/bay-loose.png': { source: f512, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/bay-leaf/bay-oil.png': { source: f512, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/bay-leaf/bay-sprig.png': { source: f512, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/belladonna/belladonna-loose.png': { source: f513, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/belladonna/belladonna-oil.png': { source: f513, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/belladonna/belladonna-sprig.png': { source: f513, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/birch/birch-loose.png': { source: f514, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/birch/birch-oil.png': { source: f514, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/birch/birch-sprig.png': { source: f514, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/black-pepper/black-pepper-loose.png': { source: f515, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/black-pepper/black-pepper-oil.png': { source: f515, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/black-pepper/black-pepper-sprig.png': { source: f515, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/borage/borage-loose.png': { source: f516, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/borage/borage-oil.png': { source: f516, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/borage/borage-sprig.png': { source: f516, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/calendula/calendula-loose.png': { source: f517, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/calendula/calendula-oil.png': { source: f517, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/calendula/calendula-sprig.png': { source: f517, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cardamom/cardamom-loose.png': { source: f518, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cardamom/cardamom-oil.png': { source: f518, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cardamom/cardamom-sprig.png': { source: f518, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/catnip/catnip-loose.png': { source: f519, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/catnip/catnip-oil.png': { source: f519, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/catnip/catnip-sprig.png': { source: f519, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cedar/cedar-loose.png': { source: f520, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/cedar/cedar-oil.png': { source: f520, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/cedar/cedar-sprig.png': { source: f520, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/chamomile/chamomile-loose.png': { source: f521, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/chamomile/chamomile-oil.png': { source: f521, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/chamomile/chamomile-sprig.png': { source: f521, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/cinnamon/cinnamon-loose.png': { source: f522, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/cinnamon/cinnamon-oil.png': { source: f522, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/cinnamon/cinnamon-sprig.png': { source: f522, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/cinquefoil/cinquefoil-loose.png': { source: f523, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cinquefoil/cinquefoil-oil.png': { source: f523, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cinquefoil/cinquefoil-sprig.png': { source: f523, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/clove/clove-loose.png': { source: f524, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/clove/clove-oil.png': { source: f524, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/clove/clove-sprig.png': { source: f524, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/comfrey/comfrey-loose.png': { source: f525, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/comfrey/comfrey-oil.png': { source: f525, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/comfrey/comfrey-sprig.png': { source: f525, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/copal/copal-loose.png': { source: f526, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/copal/copal-oil.png': { source: f526, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/copal/copal-sprig.png': { source: f526, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cypress/cypress-loose.png': { source: f527, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cypress/cypress-oil.png': { source: f527, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cypress/cypress-sprig.png': { source: f527, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/damiana/damiana-loose.png': { source: f528, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/damiana/damiana-oil.png': { source: f528, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/damiana/damiana-sprig.png': { source: f528, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dandelion/dandelion-loose.png': { source: f529, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dandelion/dandelion-oil.png': { source: f529, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dandelion/dandelion-sprig.png': { source: f529, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dittany-of-crete/dittany-of-crete-loose.png': { source: f530, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dittany-of-crete/dittany-of-crete-oil.png': { source: f530, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dittany-of-crete/dittany-of-crete-sprig.png': { source: f530, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dragons-blood/dragons-blood-loose.png': { source: f531, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dragons-blood/dragons-blood-oil.png': { source: f531, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dragons-blood/dragons-blood-sprig.png': { source: f531, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/elder/elder-loose.png': { source: f532, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/elder/elder-oil.png': { source: f532, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/elder/elder-sprig.png': { source: f532, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/eucalyptus/eucalyptus-loose.png': { source: f533, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/eucalyptus/eucalyptus-oil.png': { source: f533, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/eucalyptus/eucalyptus-sprig.png': { source: f533, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/fennel/fennel-loose.png': { source: f534, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/fennel/fennel-oil.png': { source: f534, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/fennel/fennel-sprig.png': { source: f534, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/foxglove/foxglove-loose.png': { source: f535, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1208, sheetH: 1549 } },
+  'assets/altar/objects/herbs/foxglove/foxglove-oil.png': { source: f535, width: 1024, height: 1536, crop: { x: 525, y: 0, w: 683, h: 1024, sheetW: 1208, sheetH: 1549 } },
+  'assets/altar/objects/herbs/foxglove/foxglove-sprig.png': { source: f535, width: 896, height: 1776, crop: { x: 0, y: 0, w: 517, h: 1024, sheetW: 1208, sheetH: 1549 } },
+  'assets/altar/objects/herbs/frankincense/frankincense-loose.png': { source: f536, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/frankincense/frankincense-oil.png': { source: f536, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/frankincense/frankincense-sprig.png': { source: f536, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/galangal/galangal-loose.png': { source: f537, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/galangal/galangal-oil.png': { source: f537, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/galangal/galangal-sprig.png': { source: f537, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/garlic/garlic-loose.png': { source: f538, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/garlic/garlic-oil.png': { source: f538, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/garlic/garlic-sprig.png': { source: f538, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/ginger/ginger-loose.png': { source: f539, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/ginger/ginger-oil.png': { source: f539, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/ginger/ginger-sprig.png': { source: f539, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hawthorn/hawthorn-loose.png': { source: f540, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hawthorn/hawthorn-oil.png': { source: f540, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hawthorn/hawthorn-sprig.png': { source: f540, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/heather/heather-loose.png': { source: f541, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/heather/heather-oil.png': { source: f541, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/heather/heather-sprig.png': { source: f541, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
   'assets/altar/objects/herbs/herb-mix/herb-mix.png': { source: f307, width: 800, height: 400 },
-  'assets/altar/objects/herbs/holly/holly-loose.png': { source: f533, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/holly/holly-oil.png': { source: f533, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/holly/holly-sprig.png': { source: f533, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/hyssop/hyssop-loose.png': { source: f534, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/hyssop/hyssop-oil.png': { source: f534, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/hyssop/hyssop-sprig.png': { source: f534, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hibiscus/hibiscus-loose.png': { source: f542, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hibiscus/hibiscus-oil.png': { source: f542, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hibiscus/hibiscus-sprig.png': { source: f542, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/holly/holly-loose.png': { source: f543, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/holly/holly-oil.png': { source: f543, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/holly/holly-sprig.png': { source: f543, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/honeysuckle/honeysuckle-loose.png': { source: f544, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/honeysuckle/honeysuckle-oil.png': { source: f544, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/honeysuckle/honeysuckle-sprig.png': { source: f544, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hyssop/hyssop-loose.png': { source: f545, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hyssop/hyssop-oil.png': { source: f545, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hyssop/hyssop-sprig.png': { source: f545, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
   'assets/altar/objects/herbs/incense/incense.png': { source: f308, width: 500, height: 1536 },
-  'assets/altar/objects/herbs/jasmine/jasmine-loose.png': { source: f535, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/jasmine/jasmine-oil.png': { source: f535, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/jasmine/jasmine-sprig.png': { source: f535, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/juniper/juniper-loose.png': { source: f536, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1619, sheetH: 1549 } },
-  'assets/altar/objects/herbs/juniper/juniper-oil.png': { source: f536, width: 1024, height: 1536, crop: { x: 936, y: 0, w: 683, h: 1024, sheetW: 1619, sheetH: 1549 } },
-  'assets/altar/objects/herbs/juniper/juniper-sprig.png': { source: f536, width: 1088, height: 1200, crop: { x: 0, y: 0, w: 928, h: 1024, sheetW: 1619, sheetH: 1549 } },
-  'assets/altar/objects/herbs/lavender/lavender-loose.png': { source: f537, width: 800, height: 400, crop: { x: 0, y: 1032, w: 800, h: 400, sheetW: 800, sheetH: 1432 } },
-  'assets/altar/objects/herbs/lavender/lavender-oil.png': { source: f537, width: 400, height: 800, crop: { x: 341, y: 0, w: 400, h: 800, sheetW: 800, sheetH: 1432 } },
-  'assets/altar/objects/herbs/lavender/lavender-sprig.png': { source: f537, width: 500, height: 1536, crop: { x: 0, y: 0, w: 333, h: 1024, sheetW: 800, sheetH: 1432 } },
-  'assets/altar/objects/herbs/lemon-balm/lemon-balm-loose.png': { source: f538, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/lemon-balm/lemon-balm-oil.png': { source: f538, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/lemon-balm/lemon-balm-sprig.png': { source: f538, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/lemongrass/lemongrass-loose.png': { source: f539, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/lemongrass/lemongrass-oil.png': { source: f539, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/lemongrass/lemongrass-sprig.png': { source: f539, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mandrake/mandrake-loose.png': { source: f540, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mandrake/mandrake-oil.png': { source: f540, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mandrake/mandrake-sprig.png': { source: f540, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/meadowsweet/meadowsweet-loose.png': { source: f541, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/meadowsweet/meadowsweet-oil.png': { source: f541, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/meadowsweet/meadowsweet-sprig.png': { source: f541, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mint/mint-loose.png': { source: f542, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mint/mint-oil.png': { source: f542, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mint/mint-sprig.png': { source: f542, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mistletoe/mistletoe-loose.png': { source: f543, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mistletoe/mistletoe-oil.png': { source: f543, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mistletoe/mistletoe-sprig.png': { source: f543, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mugwort/mugwort-loose.png': { source: f544, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 1024, sheetH: 1899 } },
-  'assets/altar/objects/herbs/mugwort/mugwort-oil.png': { source: f544, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 1024, sheetH: 1899 } },
-  'assets/altar/objects/herbs/mugwort/mugwort-powder.png': { source: f544, width: 1536, height: 1024, crop: { x: 0, y: 1216, w: 1024, h: 683, sheetW: 1024, sheetH: 1899 } },
-  'assets/altar/objects/herbs/mugwort/mugwort-sprig.png': { source: f544, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 1024, sheetH: 1899 } },
-  'assets/altar/objects/herbs/myrrh/myrrh-loose.png': { source: f545, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/myrrh/myrrh-oil.png': { source: f545, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/myrrh/myrrh-sprig.png': { source: f545, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/nettle/nettle-loose.png': { source: f546, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/nettle/nettle-oil.png': { source: f546, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/nettle/nettle-sprig.png': { source: f546, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/oak/oak-loose.png': { source: f547, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/oak/oak-oil.png': { source: f547, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/oak/oak-sprig.png': { source: f547, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/orris-root/orris-root-loose.png': { source: f548, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/orris-root/orris-root-oil.png': { source: f548, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/orris-root/orris-root-sprig.png': { source: f548, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/patchouli/patchouli-loose.png': { source: f549, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/patchouli/patchouli-oil.png': { source: f549, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/patchouli/patchouli-sprig.png': { source: f549, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/peppermint/peppermint-loose.png': { source: f550, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/peppermint/peppermint-oil.png': { source: f550, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/peppermint/peppermint-sprig.png': { source: f550, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rose/rose-loose.png': { source: f551, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rose/rose-oil.png': { source: f551, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rose/rose-sprig.png': { source: f551, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rosemary/rosemary-loose.png': { source: f552, width: 800, height: 400, crop: { x: 0, y: 1032, w: 800, h: 400, sheetW: 1024, sheetH: 2123 } },
-  'assets/altar/objects/herbs/rosemary/rosemary-oil.png': { source: f552, width: 400, height: 800, crop: { x: 341, y: 0, w: 400, h: 800, sheetW: 1024, sheetH: 2123 } },
-  'assets/altar/objects/herbs/rosemary/rosemary-powder.png': { source: f552, width: 1536, height: 1024, crop: { x: 0, y: 1440, w: 1024, h: 683, sheetW: 1024, sheetH: 2123 } },
-  'assets/altar/objects/herbs/rosemary/rosemary-sprig.png': { source: f552, width: 500, height: 1536, crop: { x: 0, y: 0, w: 333, h: 1024, sheetW: 1024, sheetH: 2123 } },
-  'assets/altar/objects/herbs/rowan/rowan-loose.png': { source: f553, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rowan/rowan-oil.png': { source: f553, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rowan/rowan-sprig.png': { source: f553, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rue/rue-loose.png': { source: f554, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rue/rue-oil.png': { source: f554, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rue/rue-sprig.png': { source: f554, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/saffron/saffron-loose.png': { source: f555, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/saffron/saffron-oil.png': { source: f555, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/saffron/saffron-sprig.png': { source: f555, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/sage/sage-loose.png': { source: f556, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/sage/sage-oil.png': { source: f556, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/sage/sage-sprig.png': { source: f556, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/sandalwood/sandalwood-loose.png': { source: f557, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/sandalwood/sandalwood-oil.png': { source: f557, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/sandalwood/sandalwood-sprig.png': { source: f557, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/st-johns-wort/st-johns-wort-loose.png': { source: f558, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/st-johns-wort/st-johns-wort-oil.png': { source: f558, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/st-johns-wort/st-johns-wort-sprig.png': { source: f558, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/star-anise/star-anise-loose.png': { source: f559, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/star-anise/star-anise-oil.png': { source: f559, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/star-anise/star-anise-sprig.png': { source: f559, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/thyme/thyme-loose.png': { source: f560, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/thyme/thyme-oil.png': { source: f560, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/thyme/thyme-sprig.png': { source: f560, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/valerian/valerian-loose.png': { source: f561, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/valerian/valerian-oil.png': { source: f561, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/valerian/valerian-sprig.png': { source: f561, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/vanilla/vanilla-loose.png': { source: f562, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/vanilla/vanilla-oil.png': { source: f562, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/vanilla/vanilla-sprig.png': { source: f562, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/vervain/vervain-loose.png': { source: f563, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/vervain/vervain-oil.png': { source: f563, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/vervain/vervain-sprig.png': { source: f563, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/willow/willow-loose.png': { source: f564, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/willow/willow-oil.png': { source: f564, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/willow/willow-sprig.png': { source: f564, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/wormwood/wormwood-loose.png': { source: f565, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/wormwood/wormwood-oil.png': { source: f565, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/wormwood/wormwood-sprig.png': { source: f565, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/yarrow/yarrow-loose.png': { source: f566, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/yarrow/yarrow-oil.png': { source: f566, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/yarrow/yarrow-sprig.png': { source: f566, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/yew/yew-loose.png': { source: f567, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/yew/yew-oil.png': { source: f567, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/yew/yew-sprig.png': { source: f567, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/jasmine/jasmine-loose.png': { source: f546, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/jasmine/jasmine-oil.png': { source: f546, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/jasmine/jasmine-sprig.png': { source: f546, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/juniper/juniper-loose.png': { source: f547, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1619, sheetH: 1549 } },
+  'assets/altar/objects/herbs/juniper/juniper-oil.png': { source: f547, width: 1024, height: 1536, crop: { x: 936, y: 0, w: 683, h: 1024, sheetW: 1619, sheetH: 1549 } },
+  'assets/altar/objects/herbs/juniper/juniper-sprig.png': { source: f547, width: 1088, height: 1200, crop: { x: 0, y: 0, w: 928, h: 1024, sheetW: 1619, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lavender/lavender-loose.png': { source: f548, width: 800, height: 400, crop: { x: 0, y: 1032, w: 800, h: 400, sheetW: 800, sheetH: 1432 } },
+  'assets/altar/objects/herbs/lavender/lavender-oil.png': { source: f548, width: 400, height: 800, crop: { x: 341, y: 0, w: 400, h: 800, sheetW: 800, sheetH: 1432 } },
+  'assets/altar/objects/herbs/lavender/lavender-sprig.png': { source: f548, width: 500, height: 1536, crop: { x: 0, y: 0, w: 333, h: 1024, sheetW: 800, sheetH: 1432 } },
+  'assets/altar/objects/herbs/lemon-balm/lemon-balm-loose.png': { source: f549, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lemon-balm/lemon-balm-oil.png': { source: f549, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lemon-balm/lemon-balm-sprig.png': { source: f549, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lemongrass/lemongrass-loose.png': { source: f550, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lemongrass/lemongrass-oil.png': { source: f550, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lemongrass/lemongrass-sprig.png': { source: f550, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lilac/lilac-loose.png': { source: f551, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lilac/lilac-oil.png': { source: f551, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lilac/lilac-sprig.png': { source: f551, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mandrake/mandrake-loose.png': { source: f552, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mandrake/mandrake-oil.png': { source: f552, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mandrake/mandrake-sprig.png': { source: f552, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/meadowsweet/meadowsweet-loose.png': { source: f553, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/meadowsweet/meadowsweet-oil.png': { source: f553, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/meadowsweet/meadowsweet-sprig.png': { source: f553, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mint/mint-loose.png': { source: f554, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mint/mint-oil.png': { source: f554, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mint/mint-sprig.png': { source: f554, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mistletoe/mistletoe-loose.png': { source: f555, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mistletoe/mistletoe-oil.png': { source: f555, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mistletoe/mistletoe-sprig.png': { source: f555, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mugwort/mugwort-loose.png': { source: f556, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 1024, sheetH: 1899 } },
+  'assets/altar/objects/herbs/mugwort/mugwort-oil.png': { source: f556, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 1024, sheetH: 1899 } },
+  'assets/altar/objects/herbs/mugwort/mugwort-powder.png': { source: f556, width: 1536, height: 1024, crop: { x: 0, y: 1216, w: 1024, h: 683, sheetW: 1024, sheetH: 1899 } },
+  'assets/altar/objects/herbs/mugwort/mugwort-sprig.png': { source: f556, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 1024, sheetH: 1899 } },
+  'assets/altar/objects/herbs/mullein/mullein-loose.png': { source: f557, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mullein/mullein-oil.png': { source: f557, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mullein/mullein-sprig.png': { source: f557, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/myrrh/myrrh-loose.png': { source: f558, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/myrrh/myrrh-oil.png': { source: f558, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/myrrh/myrrh-sprig.png': { source: f558, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/nettle/nettle-loose.png': { source: f559, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/nettle/nettle-oil.png': { source: f559, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/nettle/nettle-sprig.png': { source: f559, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/nutmeg/nutmeg-loose.png': { source: f560, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/nutmeg/nutmeg-oil.png': { source: f560, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/nutmeg/nutmeg-sprig.png': { source: f560, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/oak/oak-loose.png': { source: f561, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/oak/oak-oil.png': { source: f561, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/oak/oak-sprig.png': { source: f561, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/orris-root/orris-root-loose.png': { source: f562, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/orris-root/orris-root-oil.png': { source: f562, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/orris-root/orris-root-sprig.png': { source: f562, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/passionflower/passionflower-loose.png': { source: f563, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/passionflower/passionflower-oil.png': { source: f563, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/passionflower/passionflower-sprig.png': { source: f563, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/patchouli/patchouli-loose.png': { source: f564, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/patchouli/patchouli-oil.png': { source: f564, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/patchouli/patchouli-sprig.png': { source: f564, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/peppermint/peppermint-loose.png': { source: f565, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/peppermint/peppermint-oil.png': { source: f565, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/peppermint/peppermint-sprig.png': { source: f565, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/pine/pine-loose.png': { source: f566, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/pine/pine-oil.png': { source: f566, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/pine/pine-sprig.png': { source: f566, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/red-clover/red-clover-loose.png': { source: f567, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/red-clover/red-clover-oil.png': { source: f567, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/red-clover/red-clover-sprig.png': { source: f567, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rose/rose-loose.png': { source: f568, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rose/rose-oil.png': { source: f568, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rose/rose-sprig.png': { source: f568, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rosehip/rosehip-loose.png': { source: f569, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rosehip/rosehip-oil.png': { source: f569, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rosehip/rosehip-sprig.png': { source: f569, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rosemary/rosemary-loose.png': { source: f570, width: 800, height: 400, crop: { x: 0, y: 1032, w: 800, h: 400, sheetW: 1024, sheetH: 2123 } },
+  'assets/altar/objects/herbs/rosemary/rosemary-oil.png': { source: f570, width: 400, height: 800, crop: { x: 341, y: 0, w: 400, h: 800, sheetW: 1024, sheetH: 2123 } },
+  'assets/altar/objects/herbs/rosemary/rosemary-powder.png': { source: f570, width: 1536, height: 1024, crop: { x: 0, y: 1440, w: 1024, h: 683, sheetW: 1024, sheetH: 2123 } },
+  'assets/altar/objects/herbs/rosemary/rosemary-sprig.png': { source: f570, width: 500, height: 1536, crop: { x: 0, y: 0, w: 333, h: 1024, sheetW: 1024, sheetH: 2123 } },
+  'assets/altar/objects/herbs/rowan/rowan-loose.png': { source: f571, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rowan/rowan-oil.png': { source: f571, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rowan/rowan-sprig.png': { source: f571, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rue/rue-loose.png': { source: f572, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rue/rue-oil.png': { source: f572, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rue/rue-sprig.png': { source: f572, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/saffron/saffron-loose.png': { source: f573, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/saffron/saffron-oil.png': { source: f573, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/saffron/saffron-sprig.png': { source: f573, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sage/sage-loose.png': { source: f574, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sage/sage-oil.png': { source: f574, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sage/sage-sprig.png': { source: f574, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sandalwood/sandalwood-loose.png': { source: f575, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sandalwood/sandalwood-oil.png': { source: f575, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sandalwood/sandalwood-sprig.png': { source: f575, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/st-johns-wort/st-johns-wort-loose.png': { source: f576, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/st-johns-wort/st-johns-wort-oil.png': { source: f576, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/st-johns-wort/st-johns-wort-sprig.png': { source: f576, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/star-anise/star-anise-loose.png': { source: f577, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/star-anise/star-anise-oil.png': { source: f577, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/star-anise/star-anise-sprig.png': { source: f577, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sunflower/sunflower-loose.png': { source: f578, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sunflower/sunflower-oil.png': { source: f578, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sunflower/sunflower-sprig.png': { source: f578, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/thyme/thyme-loose.png': { source: f579, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/thyme/thyme-oil.png': { source: f579, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/thyme/thyme-sprig.png': { source: f579, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/valerian/valerian-loose.png': { source: f580, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/valerian/valerian-oil.png': { source: f580, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/valerian/valerian-sprig.png': { source: f580, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/vanilla/vanilla-loose.png': { source: f581, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/vanilla/vanilla-oil.png': { source: f581, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/vanilla/vanilla-sprig.png': { source: f581, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/vervain/vervain-loose.png': { source: f582, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/vervain/vervain-oil.png': { source: f582, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/vervain/vervain-sprig.png': { source: f582, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/violet/violet-loose.png': { source: f583, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/violet/violet-oil.png': { source: f583, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/violet/violet-sprig.png': { source: f583, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/willow/willow-loose.png': { source: f584, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/willow/willow-oil.png': { source: f584, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/willow/willow-sprig.png': { source: f584, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/wormwood/wormwood-loose.png': { source: f585, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/wormwood/wormwood-oil.png': { source: f585, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/wormwood/wormwood-sprig.png': { source: f585, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/yarrow/yarrow-loose.png': { source: f586, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/yarrow/yarrow-oil.png': { source: f586, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/yarrow/yarrow-sprig.png': { source: f586, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/yew/yew-loose.png': { source: f587, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/yew/yew-oil.png': { source: f587, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/yew/yew-sprig.png': { source: f587, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
   'assets/altar/objects/natural/acorns/acorns.png': { source: f309, width: 1536, height: 1024 },
   'assets/altar/objects/natural/antler/antler.png': { source: f310, width: 1536, height: 1024 },
   'assets/altar/objects/natural/autumn-leaves/autumn-leaves.png': { source: f311, width: 1776, height: 896 },
