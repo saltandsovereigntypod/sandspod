@@ -7,7 +7,7 @@ import { imageRatio } from '../../lib/altar/geometry';
 import { cabinetEntry, topUses } from '../../lib/altar/companion';
 import { cabinetCategoriesFor, cabinetItemsFor, deityPantheon, formImage, formObjectLabel, overrideKey, PANTHEON_GROUPS, placeableForms, shortLabel } from '../../lib/altar/cabinet';
 import { pickImage, type PickedImage } from '../../lib/altar/images';
-import { seasonalSections, type SabbatNear } from '../../lib/altar/seasonal';
+import { festivalWhen, nearWithThings, seasonalSections, type FestivalNear } from '../../lib/altar/seasonal';
 import type { CabinetForm, CabinetItem } from '../../lib/altar/types';
 import type { LibraryEntry } from '../../lib/library';
 import { colors, fonts, radius, space, touch, type } from '../../theme';
@@ -31,8 +31,8 @@ type Props = {
   signedIn?: boolean;
   onSetImage?: (item: CabinetItem, form: CabinetForm, picked: PickedImage) => Promise<void>;
   onRemoveImage?: (item: CabinetItem, form: CabinetForm) => Promise<void>;
-  /** The sabbat that is near (a week before through the day): its seasonal things come first. */
-  near?: SabbatNear | null;
+  /** The festivals that are near (a week before through their last day): their seasonal things come first. */
+  near?: FestivalNear[] | null;
 };
 
 export function CabinetSheet({
@@ -49,12 +49,11 @@ export function CabinetSheet({
   onRemoveImage,
   near = null,
 }: Props) {
-  const hasSeasonal = items.some((item) => item.category === 'seasonal');
-  // Near a sabbat the cabinet opens on its seasonal things.
-  const [category, setCategory] = useState<string>(() => (near && hasSeasonal ? 'seasonal' : 'candles'));
-  // The Seasonal and Natural drawers show once something in them has a picture.
+  // Near a festival with something in the drawer for it, the cabinet opens on its seasonal things.
+  const nearShown = nearWithThings(near, items).length > 0;
+  const [category, setCategory] = useState<string>(() => (nearShown ? 'seasonal' : 'candles'));
   // Seasonal, Natural, Plants and Offerings show once they hold something with a picture.
-  const categories = cabinetCategoriesFor(!!near).filter(
+  const categories = cabinetCategoriesFor(nearShown).filter(
     (c) => (c.id !== 'seasonal' && c.id !== 'natural' && c.id !== 'plants' && c.id !== 'offerings') || items.some((item) => item.category === c.id),
   );
   const [search, setSearch] = useState('');
@@ -119,8 +118,8 @@ export function CabinetSheet({
         .map((item) => ({ item, forms: placeableForms(item, overrides) }))
         .filter((entry) => entry.forms.length > 0)
         // Things the Living Library has no page for say a few words of their own (shelf.ts);
-        // an offering always says what it is, not what its vessel is for.
-        .map((entry) => ({ ...entry, uses: (entry.item.category === 'offerings' && entry.item.description) || topUses(cabinetEntry(library, entry.item, entry.forms[0])) || entry.item.description || '' })),
+        // an offering always says what it is, not what its vessel is for, and a seasonal thing names its festivals.
+        .map((entry) => ({ ...entry, uses: ((entry.item.category === 'offerings' || entry.item.category === 'seasonal') && entry.item.description) || topUses(cabinetEntry(library, entry.item, entry.forms[0])) || entry.item.description || '' })),
     [items, category, search, overrides, library],
   );
 
@@ -277,7 +276,7 @@ export function CabinetSheet({
               );
             })
         : category === 'seasonal'
-          ? // Round the wheel from the sabbat that's coming, "For Samhain" first when it's near.
+          ? // "For Samhain" first for each festival that's near, then each calendar's things through its year.
             seasonalSections(
               singles.map(({ item }) => item),
               near,
@@ -286,10 +285,10 @@ export function CabinetSheet({
                 <Text style={styles.groupTitle} accessibilityRole="header">
                   {section.title}
                 </Text>
-                {section.sabbat === near?.id && (
-                  <Text style={type.caption}>{near.inDays === 0 ? `${near.name} is today.` : `${near.name} is ${near.inDays === 1 ? 'tomorrow' : `in ${near.inDays} days`}.`}</Text>
-                )}
-                <View style={styles.grid}>{singles.filter(({ item }) => section.items.includes(item)).map(singleTile)}</View>
+                {!!section.near && <Text style={type.caption}>{festivalWhen(section.near)}</Text>}
+                <View style={styles.grid}>
+                  {section.items.map((item) => singles.find((entry) => entry.item === item)).filter((entry) => !!entry).map(singleTile)}
+                </View>
               </View>
             ))
           : singles.length > 0 && <View style={styles.grid}>{singles.map(singleTile)}</View>}

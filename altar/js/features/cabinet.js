@@ -123,7 +123,7 @@ const cabinetItems = [
   ...(altarArtwork.items?.vessels || [])
 ];
 
-/* Seasonal things for the sabbats (app/src/lib/altar/seasonal.ts), and the tools
+/* Seasonal things for the festivals (app/src/lib/altar/seasonal.ts), and the tools
    and natural finds the Traditional Library has no page for (shelf.ts), all in
    js/core/altar.js: those with a picture (js/altar-artwork.js). The core loads
    after this file, so they join the cabinet the first time it's drawn, searched
@@ -143,19 +143,22 @@ function ensureSeasonalCabinetItems() {
   core.offeringDrawer?.offeringCabinetItems(altarArtwork.offeringFoods || {}, altarArtwork.items || {}).forEach((item) => cabinetItems.push({ ...item, icon: "🍎" }));
 }
 
-// The sabbat that's near (a week before through the day): its things come first.
-let cabinetSabbat = null;
-let cabinetSabbatChecked = false;
+// The festivals that are near, from the calendars you keep (a week before
+// through their last day; the monthly Greek days only the day before): their things come first.
+let cabinetNear = [];
+let cabinetNearChecked = false;
+/** Whether a near festival has something with a picture in the Seasonal drawer. */
+const cabinetNearShown = () => Boolean(window.SaltCore?.altar?.seasonal?.nearWithThings(cabinetNear, cabinetItems).length);
 async function refreshCabinetSabbat() {
   const core = window.SaltCore?.altar;
-  if (!core?.seasonal || cabinetSabbatChecked) return;
-  cabinetSabbatChecked = true;
+  if (!core?.seasonal || cabinetNearChecked) return;
+  cabinetNearChecked = true;
   let choice = null;
   try { choice = core.holidays.holidayChoice(await window.SaltSettings?.get?.()); } catch { choice = null; }
-  cabinetSabbat = core.seasonal.sabbatNear(new Date(), choice);
+  cabinetNear = core.seasonal.festivalsNear(new Date(), choice);
   ensureSeasonalCabinetItems();
-  // Near a sabbat the cabinet opens on its seasonal things, unless a drawer was asked for.
-  if (cabinetSabbat && !requestedCabinetCategory && activeCabinetCategory === "candles" && cabinetItems.some((item) => item.category === "seasonal")) activeCabinetCategory = "seasonal";
+  // Near a festival the cabinet opens on its seasonal things, unless a drawer was asked for.
+  if (cabinetNearShown() && !requestedCabinetCategory && activeCabinetCategory === "candles") activeCabinetCategory = "seasonal";
   renderCabinet();
 }
 if (typeof document !== "undefined" && typeof window.addEventListener === "function") {
@@ -163,10 +166,10 @@ if (typeof document !== "undefined" && typeof window.addEventListener === "funct
   else window.addEventListener("load", () => void refreshCabinetSabbat());
 }
 
-/** The drawers in order: Seasonal first while a sabbat is near; Seasonal, Natural, Plants and Offerings only when they hold something. */
+/** The drawers in order: Seasonal first while a festival is near; Seasonal, Natural, Plants and Offerings only when they hold something. */
 function visibleCabinetCategories() {
   const list = cabinetCategories.filter((category) => !["seasonal", "natural", "plants", "offerings"].includes(category.id) || cabinetItems.some((item) => item.category === category.id));
-  return cabinetSabbat ? [...list.filter((c) => c.id === "seasonal"), ...list.filter((c) => c.id !== "seasonal")] : list;
+  return cabinetNearShown() ? [...list.filter((c) => c.id === "seasonal"), ...list.filter((c) => c.id !== "seasonal")] : list;
 }
 
 // Narrow public catalogue for shared Settings. Keep cabinet internals private.
@@ -332,6 +335,7 @@ function renderCabinetTile(item, form, isMultiForm = false) {
       </span>
 
       <span class="cabinet-tile-name">${isMultiForm ? form.label : item.name}</span>
+      ${item.category === "seasonal" && item.description ? `<span class="cabinet-tile-festival">${item.description}</span>` : ""}
 
       <span class="cabinet-custom-actions">
         <span data-upload-cabinet-image>${hasOverride ? "Replace Form Image" : "Add Form Image"}</span>
@@ -386,13 +390,11 @@ const closedCabinetPantheons = new Set();
 /* The deity drawer groups statues by pantheon in sections that fold away;
    every other drawer is one grid. A search opens every section. */
 function renderCabinetItemList(items, renderItem) {
-  // The Seasonal drawer round the wheel from the sabbat that's coming, "For Samhain" first when it's near.
+  // The Seasonal drawer: "For Samhain" first for each festival that's near, then each calendar's things through its year.
   const seasonal = window.SaltCore?.altar?.seasonal;
   if (activeCabinetCategory === "seasonal" && seasonal) {
-    return seasonal.seasonalSections(items, cabinetSabbat).map((section) => {
-      const when = cabinetSabbat && section.sabbat === cabinetSabbat.id
-        ? `<p class="cabinet-season-when">${cabinetSabbat.inDays === 0 ? `${cabinetSabbat.name} is today.` : `${cabinetSabbat.name} is ${cabinetSabbat.inDays === 1 ? "tomorrow" : `in ${cabinetSabbat.inDays} days`}.`}</p>`
-        : "";
+    return seasonal.seasonalSections(items, cabinetNear).map((section) => {
+      const when = section.near ? `<p class="cabinet-season-when">${seasonal.festivalWhen(section.near)}</p>` : "";
       return `
         <details class="cabinet-pantheon" open>
           <summary><span>${section.title}</span><span class="cabinet-pantheon-count">${section.items.length}</span></summary>

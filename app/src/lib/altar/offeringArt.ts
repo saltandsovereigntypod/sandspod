@@ -70,6 +70,7 @@ const MOUTHS: Mouth[] = [
   { match: /\/vessels\/bowl\//, ratio: 1024 / 1536, full: { cx: 0.5, cy: 0.335, rx: 0.3, ry: 0.13 }, empty: { cx: 0.5, cy: 0.42, rx: 0.16, ry: 0.065 }, hiddenBelow: 0 },
   { match: /\/vessels\/dish\//, ratio: 1024 / 1536, full: { cx: 0.5, cy: 0.42, rx: 0.29, ry: 0.18 }, empty: { cx: 0.5, cy: 0.45, rx: 0.22, ry: 0.13 }, hiddenBelow: 0 },
   { match: /\/tools\/chalice\//, ratio: 1536 / 1024, full: { cx: 0.5, cy: 0.152, rx: 0.29, ry: 0.033 }, empty: { cx: 0.5, cy: 0.166, rx: 0.2, ry: 0.022 }, hiddenBelow: 0.35 },
+  { match: /\/seasonal\/phiale\//, ratio: 1024 / 1536, full: { cx: 0.5, cy: 0.524, rx: 0.316, ry: 0.216 }, empty: { cx: 0.5, cy: 0.53, rx: 0.2, ry: 0.13 }, hiddenBelow: 0 },
   { match: /\/vessels\/cauldron\//, ratio: 1200 / 1080, full: { cx: 0.5, cy: 0.43, rx: 0.34, ry: 0.045 }, empty: { cx: 0.5, cy: 0.44, rx: 0.26, ry: 0.03 }, hiddenBelow: 0.4 },
 ];
 

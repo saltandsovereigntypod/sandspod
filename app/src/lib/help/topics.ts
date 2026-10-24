@@ -465,18 +465,22 @@ export const HELP: HelpSection[] = [
       },
       {
         id: 'altar-seasonal',
-        title: 'Set out seasonal things for the sabbats',
-        summary: 'Lanterns at Samhain, the Yule log, Brigid’s cross, the harvest’s wheat and apples.',
+        title: 'Set out seasonal things for the festivals',
+        summary: 'Lanterns at Samhain, the Yule log, Brigid’s cross, the eiresione at the Pyanepsia, Hekate’s supper at the month’s end.',
         steps: [
           'Open the cabinet and choose the Seasonal drawer.',
-          'Its things are grouped by sabbat. In the week before a sabbat, and on the day, the drawer comes first and that sabbat’s things are at the top, under "For Samhain" (or whichever is coming).',
+          'Its things are grouped by calendar: the Wheel of the Year, then the Greek festivals. Each one names the festivals it is kept for.',
+          'In the week before a festival from a calendar you keep, and while it runs, the drawer comes first and that festival’s things are at the top, under "For Samhain" (or whichever is coming). The monthly Greek days (the Noumenia, the Agathos Daimon and Hekate’s Deipnon) come round every month, so theirs come to the top only the day before and on the day.',
           'Tap one to place it on the altar.',
         ],
         tips: [
-          'Apples, gourds and a pomegranate are real food: they soften and brown over a couple of weeks, and ask to be tended as other offerings do. The woven and straw things keep.',
-          'On a sabbat night, "Set tonight’s altar" sets out one of its seasonal things too.',
+          'Which festivals count follows the calendars you keep (More, then Settings, then "Calendar & holidays"): the Wheel of the Year unless you choose others. Holidays you add one by one to your own calendar count too.',
+          'Search the drawer by a festival or a god: "Dionysus", "Anthesteria", "Hekate".',
+          'The food ones are real food: apples, gourds and a pomegranate soften and brown over a couple of weeks; the pot of beans, the kykeon, the moon cake and Hekate’s supper go over in a day or two, and ask to be tended as other offerings do. The woven, straw and carved things keep.',
+          'The phiale holds a libation, as a bowl or chalice does.',
+          'On a festival night, "Set tonight’s altar" sets out one of its seasonal things too.',
         ],
-        keywords: ['seasonal', 'sabbat', 'wheel of the year', 'samhain', 'yule', 'imbolc', 'ostara', 'beltane', 'litha', 'lammas', 'mabon', 'pumpkin', 'harvest'],
+        keywords: ['seasonal', 'sabbat', 'wheel of the year', 'samhain', 'yule', 'imbolc', 'ostara', 'beltane', 'litha', 'lammas', 'mabon', 'pumpkin', 'harvest', 'greek', 'hellenic', 'festival', 'pyanepsia', 'anthesteria', 'dionysia', 'eleusinian', 'noumenia', 'deipnon', 'hekate', 'dionysus', 'apollo'],
       },
       {
         id: 'altar-ancestor-frame',

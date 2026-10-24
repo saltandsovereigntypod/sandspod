@@ -109,6 +109,8 @@ export type CabinetItem = {
   customCabinetItemId?: string;
   /** The sabbats a seasonal thing is kept for (seasonal.ts). */
   sabbats?: string[];
+  /** The festivals a seasonal thing is kept for, as "wheel/samhain", "hellenic/pyanepsia" (seasonal.ts). */
+  festivals?: string[];
   /** A line about it, for things the Living Library has no page for (shelf.ts). */
   description?: string;
 };

@@ -157,7 +157,7 @@ if (frameForms.length) {
   tools.sort((a, b) => a.name.localeCompare(b.name));
 }
 
-// Seasonal things for the sabbats (named and tagged in src/lib/altar/seasonal.ts):
+// Seasonal things for the festivals (named and tagged in src/lib/altar/seasonal.ts):
 // every assets/altar/objects/seasonal/<id>/<id>.png.
 const folderPictures = (dir) => {
   const full = path.join(OBJECTS, dir);
