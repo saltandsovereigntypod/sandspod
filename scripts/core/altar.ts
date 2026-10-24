@@ -1,8 +1,8 @@
 // The app's own altar logic for the website's altar (altar/): a candle's life,
 // wax and flame; dressing, carving and ceromancy; offerings, incense,
-// petitions and charges; seasonal things, natural finds and more tools, and the ancestor frame; the
-// workings (spell jars, sachets, spells, scrying,
-// gratitude); reading and arranging the altar; tonight's altar and shrines;
+// petitions and charges; seasonal things, natural finds and more tools, the
+// ancestor frame and potted plants; the workings (spell jars, sachets, spells,
+// scrying, gratitude); reading and arranging the altar; tonight's altar and shrines;
 // an object's story; and the share card. Built by scripts/build-core.mjs into
 // js/core/altar.js (window.SaltCore.altar). Keep it to pure modules from
 // app/src/lib: the altar page turns its objects into the app's saved-object
@@ -29,6 +29,8 @@ export * as cabinet from '../../app/src/lib/altar/cabinet.ts';
 export * as seasonal from '../../app/src/lib/altar/seasonal.ts';
 export * as frame from '../../app/src/lib/altar/frame.ts';
 export * as shelf from '../../app/src/lib/altar/shelf.ts';
+export * as pottedPlants from '../../app/src/lib/altar/pottedPlants.ts';
+export * as pottedSprig from '../../app/src/lib/altar/pottedSprig.ts';
 export * as editor from '../../app/src/lib/altar/editor.ts';
 export * as snapshot from '../../app/src/lib/altar/snapshot.ts';
 export * as altarOptions from '../../app/src/lib/altar/altarOptions.ts';

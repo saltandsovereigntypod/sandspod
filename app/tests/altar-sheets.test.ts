@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import test from 'node:test';
 
@@ -46,6 +47,61 @@ test('every herb and crystal form is on its item’s sheet, inside it', () => {
     assert.deepEqual(webpSize(appFile(entry.source)), { w: sheetW, h: sheetH }, entry.source);
     // The website sizes the object from the original's shape: the cell keeps it.
     assert.ok(Math.abs(h / w - entry.height / entry.width) < 0.01, `${key} is out of shape`);
+  }
+});
+
+test('every potted plant’s stage picture resolves to its plant’s sheet', () => {
+  // Empty until the painter's pictures land and the scripts are run; then each stage is checked.
+  for (const [id, stages] of Object.entries(ALTAR_ARTWORK.plants)) {
+    for (const [stage, image] of Object.entries(stages)) {
+      assert.equal(image, `../assets/altar/objects/plants/${id}/${id}-${stage}.png`);
+      const key = websiteAssetKey(image)!;
+      const entry = bundledAltarAssets[key];
+      assert.ok(entry, `${id} ${stage}: ${key}`);
+      assert.ok(entry.crop, `${key} is not on a sheet`);
+      assert.equal(entry.source.replace(/^(\.\.\/)+/, ''), `assets/altar/sheets/plants/${id}.webp`, key);
+      const { x, y, w, h, sheetW, sheetH } = entry.crop;
+      assert.ok(x >= 0 && y >= 0 && x + w <= sheetW && y + h <= sheetH, `${key} lies off its sheet`);
+    }
+  }
+});
+
+/** The packer's own functions, from Python (null where Python or Pillow isn't installed). */
+function packer(code: string): string | null {
+  const load = ['import importlib.util, json', "spec = importlib.util.spec_from_file_location('packer', 'scripts/build-altar-assets.py')", 'm = importlib.util.module_from_spec(spec)', 'spec.loader.exec_module(m)'];
+  try {
+    return execFileSync('python3', ['-B', '-c', [...load, code].join('\n')], { cwd: new URL('..', import.meta.url), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+  } catch {
+    return null;
+  }
+}
+
+test('the asset script packs each potted plant’s three stages onto one sheet', (t) => {
+  const out = packer(
+    "print(json.dumps([m.packed_group('objects/plants/snake-plant/snake-plant-young.png'), m.packed_group('objects/plants/basil/basil-lush.png'), m.packed_group('objects/plants/basil/basil-wilted.png'), m.packed_group('objects/plants/basil/basil.png'), m.PACKED_FORMS['plants'], m.shelf_layout([(683, 1024), (683, 1024), (600, 1024)])]))",
+  );
+  if (out == null) return t.skip('python3 with Pillow is not installed');
+  const [young, lush, wilted, bare, order, [w, h, places]] = JSON.parse(out) as [unknown, unknown, unknown, unknown, string[], [number, number, [number, number][]]];
+  assert.deepEqual(young, ['plants', 'snake-plant', 'young']);
+  assert.deepEqual(lush, ['plants', 'basil', 'lush']);
+  assert.equal(wilted, null);
+  assert.equal(bare, null);
+  assert.deepEqual(order, ['young', 'established', 'lush']);
+  // Three cells, none overlapping, each with its gap, all on the sheet.
+  const sizes = [
+    [683, 1024],
+    [683, 1024],
+    [600, 1024],
+  ];
+  const rects = places.map(([x, y], i) => ({ x, y, w: sizes[i][0], h: sizes[i][1] }));
+  assert.ok(w <= 4096 && h <= 4096);
+  for (const r of rects) assert.ok(r.x >= 0 && r.y >= 0 && r.x + r.w <= w && r.y + r.h <= h);
+  for (let i = 0; i < rects.length; i++) {
+    for (let j = i + 1; j < rects.length; j++) {
+      const a = rects[i];
+      const b = rects[j];
+      assert.ok(Math.max(b.x - (a.x + a.w), a.x - (b.x + b.w), b.y - (a.y + a.h), a.y - (b.y + b.h)) >= 8);
+    }
   }
 });
 

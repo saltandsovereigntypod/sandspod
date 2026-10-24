@@ -13,6 +13,7 @@ import { getRituals, loadPlans, subscribeRituals } from '../rituals/store';
 import { cachedSettings, subscribeSettings } from '../settings/store';
 import type { RitualPlan } from '../rituals/types';
 import type { OfferingDue } from '../altar/offerings';
+import type { WateringDue } from '../altar/pottedPlants';
 import { syncSkyCalendar } from './calendarStore';
 import { applySchedule, permissionState, remindersSupported, requestPermission, type PermissionState } from './notifier';
 import { anyReminders, buildSchedule, DEFAULT_SETTINGS, normalizeSettings, type ReminderSettings } from './schedule';
@@ -36,6 +37,9 @@ let syncing: Promise<void> = Promise.resolve();
 /** Offerings on your altars that want tending soon (set by the altar keeper). */
 let offeringsDue: OfferingDue[] = [];
 let offeringsKey = '';
+/** Potted plants on your altars that would like water soon (set by the altar keeper). */
+let wateringDue: WateringDue[] = [];
+let wateringKey = '';
 
 function set(patch: Partial<RemindersState>) {
   state = { ...state, ...patch };
@@ -57,7 +61,7 @@ export function syncReminders(): Promise<void> {
       const lookBacks = [...getRituals().journal.map(lookBackReminder), ...getWorkshop().apothecary.map(itemLookBackReminder)].filter(
         (r): r is NonNullable<typeof r> => !!r,
       );
-      const reminders = buildSchedule(state.settings, getRituals().plans, new Date(), undefined, sacredSources(cachedSettings()), lookBacks, offeringsDue);
+      const reminders = buildSchedule(state.settings, getRituals().plans, new Date(), undefined, sacredSources(cachedSettings()), lookBacks, offeringsDue, wateringDue);
       const permission = remindersSupported ? await permissionState() : 'unavailable';
       const scheduled = await applySchedule(permission === 'granted' ? reminders : []);
       set({ permission, scheduled });
@@ -126,6 +130,15 @@ export function setOfferingsDue(due: OfferingDue[]) {
   offeringsKey = key;
   offeringsDue = due;
   if (state.settings.offerings) void syncReminders();
+}
+
+/** The altar keeper's latest list of potted plants that would like water; reschedules when it changes and watering reminders are on. */
+export function setWateringDue(due: WateringDue[]) {
+  const key = due.map((d) => `${d.altarId}:${d.objectId}:${d.dueAt}`).join('|');
+  if (key === wateringKey) return;
+  wateringKey = key;
+  wateringDue = due;
+  if (state.settings.watering) void syncReminders();
 }
 
 export async function updateReminderSettings(change: Partial<ReminderSettings>): Promise<PermissionState> {

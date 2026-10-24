@@ -8,6 +8,7 @@ import type { RitualPlan } from '../rituals/types.ts';
 import { dateKey, devotionFor } from '../craft/solitary/devotion.ts';
 import { sacredReminders, type SacredReminderSource } from '../patron/index.ts';
 import { tendingNote, type OfferingDue } from '../altar/offerings.ts';
+import { wateringNote, type WateringDue } from '../altar/pottedPlants.ts';
 
 export type ReminderSettings = {
   version: 1;
@@ -48,6 +49,10 @@ export type ReminderSettings = {
   offerings: boolean;
   /** Minutes after midnight: offerings that go over during the day are mentioned at this time. */
   offeringsAt: number;
+  /** The potted plants on your altars that would like water. Off unless chosen. */
+  watering: boolean;
+  /** Minutes after midnight. */
+  wateringAt: number;
 };
 
 export const DEFAULT_SETTINGS: ReminderSettings = {
@@ -72,6 +77,8 @@ export const DEFAULT_SETTINGS: ReminderSettings = {
   dreamMorningAt: 7 * 60,
   offerings: false,
   offeringsAt: 18 * 60,
+  watering: false,
+  wateringAt: 9 * 60,
 };
 
 export const PHASE_ORDER: PrincipalPhase[] = ['new', 'firstQuarter', 'full', 'lastQuarter'];
@@ -117,6 +124,8 @@ export function normalizeSettings(raw: unknown): ReminderSettings {
     dreamMorningAt: minuteOfDay(value.dreamMorningAt, DEFAULT_SETTINGS.dreamMorningAt),
     offerings: value.offerings === true,
     offeringsAt: minuteOfDay(value.offeringsAt, DEFAULT_SETTINGS.offeringsAt),
+    watering: value.watering === true,
+    wateringAt: minuteOfDay(value.wateringAt, DEFAULT_SETTINGS.wateringAt),
   };
 }
 
@@ -126,13 +135,13 @@ function minuteOfDay(raw: unknown, fallback: number): number {
 }
 
 export function anyReminders(settings: ReminderSettings): boolean {
-  return settings.rituals || settings.lookBacks || settings.devotionMorning || settings.devotionEvening || settings.sacredDays || settings.dreamMorning || settings.offerings || PHASE_ORDER.some((p) => settings.phases[p]);
+  return settings.rituals || settings.lookBacks || settings.devotionMorning || settings.devotionEvening || settings.sacredDays || settings.dreamMorning || settings.offerings || settings.watering || PHASE_ORDER.some((p) => settings.phases[p]);
 }
 
 export type Reminder = {
   /** Stable per event, so rescheduling never duplicates. */
   key: string;
-  kind: 'moon' | 'ritual' | 'devotion' | 'sacred' | 'dream' | 'lookback' | 'offering';
+  kind: 'moon' | 'ritual' | 'devotion' | 'sacred' | 'dream' | 'lookback' | 'offering' | 'watering';
   at: Date;
   title: string;
   body: string;
@@ -189,6 +198,7 @@ export function buildSchedule(
   sacred: SacredReminderSource[] = [],
   lookBacks: LookBackReminderSource[] = [],
   offerings: OfferingDue[] = [],
+  waterings: WateringDue[] = [],
 ): Reminder[] {
   const horizon = now.getTime() + horizonDays * 86_400_000;
   const reminders: Reminder[] = [];
@@ -344,6 +354,33 @@ export function buildSchedule(
         at: day.at,
         title: day.due.length === 1 ? 'An offering wants tending' : 'Your offerings want tending',
         body: tendingNote(day.due) ?? '',
+        url: oneAltar && first.altarId ? `/altar/${first.altarId}` : '/altar',
+      });
+    }
+  }
+
+  // Potted plants that would like water: one note on each day some do, at your chosen time.
+  if (settings.watering && waterings.length) {
+    const byDay = new Map<string, { at: Date; due: WateringDue[] }>();
+    for (const due of waterings) {
+      const when = new Date(due.dueAt);
+      let at = new Date(when.getFullYear(), when.getMonth(), when.getDate(), Math.floor(settings.wateringAt / 60), settings.wateringAt % 60, 0, 0);
+      // Already past its day: the next time comes round.
+      while (at.getTime() <= now.getTime()) at = new Date(at.getFullYear(), at.getMonth(), at.getDate() + 1, at.getHours(), at.getMinutes(), 0, 0);
+      const key = dateKey(at);
+      const day = byDay.get(key) ?? { at, due: [] };
+      day.due.push(due);
+      byDay.set(key, day);
+    }
+    for (const [key, day] of byDay) {
+      const first = day.due[0];
+      const oneAltar = day.due.every((d) => d.altarId === first.altarId);
+      reminders.push({
+        key: `watering:${key}`,
+        kind: 'watering',
+        at: day.at,
+        title: day.due.length === 1 ? 'A plant would like water' : 'Your plants would like water',
+        body: wateringNote(day.due) ?? '',
         url: oneAltar && first.altarId ? `/altar/${first.altarId}` : '/altar',
       });
     }

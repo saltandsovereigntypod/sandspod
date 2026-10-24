@@ -497,6 +497,25 @@ export const HELP: HelpSection[] = [
         keywords: ['photo frame', 'picture frame', 'ancestor photo', 'memorial', 'in memory', 'beloved dead', 'sepia', 'portrait'],
       },
       {
+        id: 'altar-potted-plants',
+        title: 'Keep your houseplants on the altar',
+        summary: 'A pot for each of your real plants: its name, its water, its harvests and its journal.',
+        steps: [
+          'Open the cabinet, choose Plants, and tap the plant you keep: snake plant, pothos, basil, rosemary, mint, lavender, sage or thyme. Set down as many as you have.',
+          'With it selected, tap "Name it" to give its name, where it lives, its light and how often you water it, and when it was last watered.',
+          'Choose Young, Established or Lush for the picture that matches your plant now. It doesn’t grow on its own.',
+          'Tap "Watered" when you water it. As it runs past its day it droops and dulls a little; watered, it perks up. It never dies.',
+          'For the herbs, tap "Harvest", say how much, and set a fresh sprig on the altar or keep it for a spell jar or sachet.',
+          'Tap "Add to its journal" for a feed, repotting, a new leaf, a cutting or a note. Each entry keeps that day’s moon.',
+        ],
+        tips: [
+          'Reminders → "Remind me when a plant would like water" sends a note on the day one comes due. It is off unless you turn it on.',
+          'Its notes say what it is kept for, and honestly whether it is safe around cats and dogs.',
+          'Signed in, the photo of your plant is kept with your account and shows on the website too. As a guest it stays on this device.',
+        ],
+        keywords: ['plant', 'plants', 'houseplant', 'pot', 'potted', 'water', 'watering', 'harvest', 'snake plant', 'pothos', 'basil', 'rosemary', 'mint', 'lavender', 'sage', 'thyme', 'green witchcraft'],
+      },
+      {
         id: 'altar-make-own-item',
         title: 'Make your own cabinet item',
         summary: 'Add something from your own shelf, with a photo.',

@@ -15,6 +15,7 @@ export const ALTAR_ARTWORK: {
   natural: Record<string, string>;
   frames: Record<string, { image: string; ratio: number | null; opening: { left: number; top: number; width: number; height: number; oval: boolean } | null }>;
   offeringFoods: Record<string, { image: string; ratio: number | null }>;
+  plants: Record<string, Partial<Record<'young' | 'established' | 'lush', string>>>;
   items: Record<'herbs' | 'crystals' | 'deities' | 'tools' | 'vessels', ArtworkItem[]>;
 } = {
   "candleColors": [
@@ -466,6 +467,21 @@ export const ALTAR_ARTWORK: {
     "sweets": {
       "image": "../assets/altar/objects/offerings/sweets/sweets.png",
       "ratio": 0.6667
+    }
+  },
+  "plants": {
+    "basil": {
+      "established": "../assets/altar/objects/plants/basil/basil-established.png"
+    },
+    "pothos": {
+      "young": "../assets/altar/objects/plants/pothos/pothos-young.png",
+      "established": "../assets/altar/objects/plants/pothos/pothos-established.png",
+      "lush": "../assets/altar/objects/plants/pothos/pothos-lush.png"
+    },
+    "snake-plant": {
+      "young": "../assets/altar/objects/plants/snake-plant/snake-plant-young.png",
+      "established": "../assets/altar/objects/plants/snake-plant/snake-plant-established.png",
+      "lush": "../assets/altar/objects/plants/snake-plant/snake-plant-lush.png"
     }
   },
   "items": {
