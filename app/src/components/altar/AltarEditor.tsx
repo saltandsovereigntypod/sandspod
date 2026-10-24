@@ -43,7 +43,7 @@ import {
 } from '../../lib/altar/pottedPlants';
 import { harvestSprig } from '../../lib/altar/pottedSprig';
 import { keepImageOnDevice, pickImage, uploadImage } from '../../lib/altar/images';
-import { festivalsNear, seasonalDescription } from '../../lib/altar/seasonal';
+import { seasonalDescription, seasonalNear } from '../../lib/altar/seasonal';
 import { shelfDescription } from '../../lib/altar/shelf';
 import { RitualPickerSheet, useBeginOnAltar } from './connect/BeginOnAltar';
 import type { AltarRef } from './connect/common';
@@ -629,8 +629,8 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
 
   // Your own items come from the workshop store, so the spell builder and apothecary see the same list.
   const workshop = useWorkshop();
-  // The festivals that are near, from the calendars you keep, bring their seasonal things to the front of the cabinet.
-  const near = useMemo(() => festivalsNear(new Date(), holidayChoice(settings)), [settings]);
+  // The festivals that are near, from the calendars you keep, and the season it is bring their seasonal things to the top of the drawer.
+  const near = useMemo(() => seasonalNear(new Date(), holidayChoice(settings)), [settings]);
   // A photo being chosen and saved for an ancestor frame.
   const [framing, setFraming] = useState(false);
   const allItems = useMemo(() => [...workshop.customItems, ...builtInCabinet], [workshop.customItems]);

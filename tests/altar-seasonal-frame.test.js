@@ -57,6 +57,32 @@ test("the Greek festivals' things join the website's cabinet once painted, found
   assert.equal(A.offerings.perishableItself({ type: "seasonal", form: "kykeon", label: "Kykeon" }), "drink");
 });
 
+test("the Norse, Celtic and seasonal things join the website's cabinet once painted, with the season after any festival near", () => {
+  const A = core();
+  const pic = (id) => `../assets/altar/objects/seasonal/${id}/${id}.png`;
+  const artwork = { ...Artwork, seasonal: { ...Artwork.seasonal, "drinking-horn": pic("drinking-horn"), "may-bush": pic("may-bush"), "autumn-leaves": pic("autumn-leaves") } };
+  const records = cabinetApi(artwork).getSearchRecords();
+  assert.ok(records.find((r) => r.title === "Drinking Horn").aliases.includes("Odin"));
+  assert.ok(records.find((r) => r.title === "May Bush").aliases.includes("Bealtaine"));
+  assert.ok(records.find((r) => r.title === "Autumn Leaves" && r.destination.category === "seasonal").aliases.includes("Autumn"));
+  // Not offered until painted.
+  assert.ok(!cabinetApi({ ...Artwork, seasonal: {} }).getSearchRecords().some((r) => r.title === "May Bush"));
+  // Near: the Celtic year's Bealtaine with the Wheel's Beltane things; Jól only for those who keep the Norse year.
+  const bealtaine = A.seasonal.festivalsNear(new Date(2026, 3, 28, 12), { traditions: ["celtic"], custom: [] });
+  assert.equal(bealtaine[0].name, "Bealtaine");
+  assert.deepEqual([...bealtaine[0].keys], ["celtic/bealtaine", "wheel/beltane"]);
+  assert.deepEqual([...A.seasonal.festivalsNear(new Date(2026, 11, 18), { traditions: ["norse"], custom: [] }).map((n) => n.key)], ["norse/jol"]);
+  // The season, by the date and the hemisphere, after the festival.
+  const items = A.seasonal.seasonalCabinetItems({ "autumn-leaves": "l.png", "pumpkin-lantern": "p.png", "drinking-horn": "h.png" });
+  const near = A.seasonal.seasonalNear(new Date(2026, 9, 27), null);
+  assert.deepEqual([...A.seasonal.seasonalSections(items, near).map((s) => s.title)], ["For Samhain", "This season", "Norse & Heathen"]);
+  assert.equal(A.seasonal.festivalWhen(near[1]), "Autumn, until the end of November.");
+  assert.equal(A.seasonal.seasonNow(new Date(2026, 9, 27), { traditions: ["wheel_south"], custom: [] }).key, "seasons/spring");
+  assert.equal(A.seasonal.nearWithThings(A.seasonal.seasonalNear(new Date(2026, 9, 10), null), items).length, 0);
+  assert.ok(A.offerings.holdsOfferings({ type: "seasonal", form: "drinking-horn" }));
+  assert.equal(A.offerings.perishableItself({ type: "seasonal", form: "may-bush", label: "May Bush" }), "flowers");
+});
+
 test("the new tools and natural finds with a picture join the website's cabinet", () => {
   const artwork = { ...Artwork, shelfTools: { "singing-bowl": "../assets/altar/objects/tools/singing-bowl/singing-bowl.png" }, natural: { "hag-stone": "../assets/altar/objects/natural/hag-stone/hag-stone.png" } };
   const records = cabinetApi(artwork).getSearchRecords();
