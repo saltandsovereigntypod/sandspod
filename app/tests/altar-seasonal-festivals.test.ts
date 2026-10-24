@@ -136,7 +136,7 @@ test('the drawer: what is near first, then each calendar’s things, each named 
   const items = seasonalCabinetItems(ALL);
   const near = festivalsNear(new Date(2026, 9, 10, 12), hellenic);
   const sections = seasonalSections(items, near);
-  assert.deepEqual(sections.map((s) => s.title), ['For Hekate’s Deipnon', 'For Noumenia', 'For Pyanepsia', 'Wheel of the Year', 'Greek festivals', 'Norse & Heathen', 'Celtic festivals', 'Roman festivals', 'The turning seasons']);
+  assert.deepEqual(sections.map((s) => s.title), ['For Hekate’s Deipnon', 'For Noumenia', 'For Pyanepsia', 'Wheel of the Year', 'Greek festivals', 'Norse & Heathen', 'Celtic festivals', 'Roman festivals', 'Christian & folk calendar', 'The turning seasons']);
   assert.deepEqual(sections[0].items.map((i) => i.id), ['seasonal:hekates-deipnon']);
   // The phiale is kept at the Noumenia and the Agathos Daimon; tonight it's under the Noumenia, once.
   assert.deepEqual(sections[1].items.map((i) => i.id), ['seasonal:phiale', 'seasonal:thymiaterion']);

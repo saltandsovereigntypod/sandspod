@@ -341,331 +341,342 @@ const f328 = require('../../../assets/altar/objects/offerings/honeycomb/honeycom
 const f329 = require('../../../assets/altar/objects/offerings/meal/meal.webp');
 const f330 = require('../../../assets/altar/objects/offerings/stones/stones.webp');
 const f331 = require('../../../assets/altar/objects/offerings/sweets/sweets.webp');
-const f332 = require('../../../assets/altar/objects/seasonal/amphiphon/amphiphon.webp');
-const f333 = require('../../../assets/altar/objects/seasonal/apples/apples.webp');
-const f334 = require('../../../assets/altar/objects/seasonal/autumn-leaves/autumn-leaves.webp');
-const f335 = require('../../../assets/altar/objects/seasonal/bilberries/bilberries.webp');
-const f336 = require('../../../assets/altar/objects/seasonal/blossom-branch/blossom-branch.webp');
-const f337 = require('../../../assets/altar/objects/seasonal/brideog/brideog.webp');
-const f338 = require('../../../assets/altar/objects/seasonal/brigids-cross/brigids-cross.webp');
-const f339 = require('../../../assets/altar/objects/seasonal/chous/chous.webp');
-const f340 = require('../../../assets/altar/objects/seasonal/corn-dolly/corn-dolly.webp');
-const f341 = require('../../../assets/altar/objects/seasonal/drinking-horn/drinking-horn.webp');
-const f342 = require('../../../assets/altar/objects/seasonal/eiresione/eiresione.webp');
-const f343 = require('../../../assets/altar/objects/seasonal/evergreen-boughs/evergreen-boughs.webp');
-const f344 = require('../../../assets/altar/objects/seasonal/februa/februa.webp');
-const f345 = require('../../../assets/altar/objects/seasonal/floralia-flowers/floralia-flowers.webp');
-const f346 = require('../../../assets/altar/objects/seasonal/flower-crown/flower-crown.webp');
-const f347 = require('../../../assets/altar/objects/seasonal/gourds/gourds.webp');
-const f348 = require('../../../assets/altar/objects/seasonal/hekates-deipnon/hekates-deipnon.webp');
-const f349 = require('../../../assets/altar/objects/seasonal/hlautbolli/hlautbolli.webp');
-const f350 = require('../../../assets/altar/objects/seasonal/kernos/kernos.webp');
-const f351 = require('../../../assets/altar/objects/seasonal/kykeon/kykeon.webp');
-const f352 = require('../../../assets/altar/objects/seasonal/lemuria-beans/lemuria-beans.webp');
-const f353 = require('../../../assets/altar/objects/seasonal/lucerna/lucerna.webp');
-const f354 = require('../../../assets/altar/objects/seasonal/matronalia-garland/matronalia-garland.webp');
-const f355 = require('../../../assets/altar/objects/seasonal/may-bush/may-bush.webp');
-const f356 = require('../../../assets/altar/objects/seasonal/midsummer-birch/midsummer-birch.webp');
-const f357 = require('../../../assets/altar/objects/seasonal/mola-salsa/mola-salsa.webp');
-const f358 = require('../../../assets/altar/objects/seasonal/neptunalia-boughs/neptunalia-boughs.webp');
-const f359 = require('../../../assets/altar/objects/seasonal/odins-sheaf/odins-sheaf.webp');
-const f360 = require('../../../assets/altar/objects/seasonal/ostara-eggs/ostara-eggs.webp');
-const f361 = require('../../../assets/altar/objects/seasonal/panathenaic-olive/panathenaic-olive.webp');
-const f362 = require('../../../assets/altar/objects/seasonal/parentalia-tile/parentalia-tile.webp');
-const f363 = require('../../../assets/altar/objects/seasonal/phiale/phiale.webp');
-const f364 = require('../../../assets/altar/objects/seasonal/pileus/pileus.webp');
-const f365 = require('../../../assets/altar/objects/seasonal/pomegranate/pomegranate.webp');
-const f366 = require('../../../assets/altar/objects/seasonal/pumpkin-lantern/pumpkin-lantern.webp');
-const f367 = require('../../../assets/altar/objects/seasonal/pyanepsia-beans/pyanepsia-beans.webp');
-const f368 = require('../../../assets/altar/objects/seasonal/radiate-crown/radiate-crown.webp');
-const f369 = require('../../../assets/altar/objects/seasonal/saturnalia-cerei/saturnalia-cerei.webp');
-const f370 = require('../../../assets/altar/objects/seasonal/sigillaria/sigillaria.webp');
-const f371 = require('../../../assets/altar/objects/seasonal/snowdrops/snowdrops.webp');
-const f372 = require('../../../assets/altar/objects/seasonal/summer-wildflowers/summer-wildflowers.webp');
-const f373 = require('../../../assets/altar/objects/seasonal/sun-wheel/sun-wheel.webp');
-const f374 = require('../../../assets/altar/objects/seasonal/thargelos/thargelos.webp');
-const f375 = require('../../../assets/altar/objects/seasonal/theatre-mask/theatre-mask.webp');
-const f376 = require('../../../assets/altar/objects/seasonal/thymiaterion/thymiaterion.webp');
-const f377 = require('../../../assets/altar/objects/seasonal/thyrsus/thyrsus.webp');
-const f378 = require('../../../assets/altar/objects/seasonal/turnip-lantern/turnip-lantern.webp');
-const f379 = require('../../../assets/altar/objects/seasonal/wheat-sheaf/wheat-sheaf.webp');
-const f380 = require('../../../assets/altar/objects/seasonal/yule-goat/yule-goat.webp');
-const f381 = require('../../../assets/altar/objects/seasonal/yule-log/yule-log.webp');
-const f382 = require('../../../assets/altar/objects/tools/altar/altar.webp');
-const f383 = require('../../../assets/altar/objects/tools/ancestor-frame/ancestor-frame-gilt.webp');
-const f384 = require('../../../assets/altar/objects/tools/ancestor-frame/ancestor-frame-wood.webp');
-const f385 = require('../../../assets/altar/objects/tools/athame/athame.webp');
-const f386 = require('../../../assets/altar/objects/tools/bell/bell.webp');
-const f387 = require('../../../assets/altar/objects/tools/besom/besom.webp');
-const f388 = require('../../../assets/altar/objects/tools/black-salt/black-salt.webp');
-const f389 = require('../../../assets/altar/objects/tools/boline/boline.webp');
-const f390 = require('../../../assets/altar/objects/tools/book-of-shadows/book-of-shadows.webp');
-const f391 = require('../../../assets/altar/objects/tools/candle-snuffer/candle-snuffer.webp');
-const f392 = require('../../../assets/altar/objects/tools/chalice/chalice.webp');
-const f393 = require('../../../assets/altar/objects/tools/crystal-ball/crystal-ball.webp');
-const f394 = require('../../../assets/altar/objects/tools/deities/anubis/anubis-statue.webp');
-const f395 = require('../../../assets/altar/objects/tools/deities/aphrodite/aphrodite-statue.webp');
-const f396 = require('../../../assets/altar/objects/tools/deities/apollo/apollo-statue.webp');
-const f397 = require('../../../assets/altar/objects/tools/deities/arianrhod/arianrhod-statue.webp');
-const f398 = require('../../../assets/altar/objects/tools/deities/artemis/artemis-statue.webp');
-const f399 = require('../../../assets/altar/objects/tools/deities/athena/athena-statue.webp');
-const f400 = require('../../../assets/altar/objects/tools/deities/baldur/baldur-statue.webp');
-const f401 = require('../../../assets/altar/objects/tools/deities/bastet/bastet-statue.webp');
-const f402 = require('../../../assets/altar/objects/tools/deities/brigid/brigid-statue.webp');
-const f403 = require('../../../assets/altar/objects/tools/deities/ceres/ceres-statue.webp');
-const f404 = require('../../../assets/altar/objects/tools/deities/cernunnos/cernunnos-statue.webp');
-const f405 = require('../../../assets/altar/objects/tools/deities/cerridwen/cerridwen-statue.webp');
-const f406 = require('../../../assets/altar/objects/tools/deities/dagda/dagda-statue.webp');
-const f407 = require('../../../assets/altar/objects/tools/deities/dazhbog/dazhbog-statue.webp');
-const f408 = require('../../../assets/altar/objects/tools/deities/demeter/demeter-statue.webp');
-const f409 = require('../../../assets/altar/objects/tools/deities/diana/diana-statue.webp');
-const f410 = require('../../../assets/altar/objects/tools/deities/dionysus/dionysus-statue.webp');
-const f411 = require('../../../assets/altar/objects/tools/deities/durga/durga-statue.webp');
-const f412 = require('../../../assets/altar/objects/tools/deities/epona/epona-statue.webp');
-const f413 = require('../../../assets/altar/objects/tools/deities/freyja/freyja-statue.webp');
-const f414 = require('../../../assets/altar/objects/tools/deities/freyr/freyr-statue.webp');
-const f415 = require('../../../assets/altar/objects/tools/deities/frigg/frigg-statue.webp');
-const f416 = require('../../../assets/altar/objects/tools/deities/ganesha/ganesha-statue.webp');
-const f417 = require('../../../assets/altar/objects/tools/deities/hades/hades-statue.webp');
-const f418 = require('../../../assets/altar/objects/tools/deities/hathor/hathor-statue.webp');
-const f419 = require('../../../assets/altar/objects/tools/deities/hekate/hekate-statue.webp');
-const f420 = require('../../../assets/altar/objects/tools/deities/hel/hel-statue.webp');
-const f421 = require('../../../assets/altar/objects/tools/deities/hermes/hermes-statue.webp');
-const f422 = require('../../../assets/altar/objects/tools/deities/hestia/hestia-statue.webp');
-const f423 = require('../../../assets/altar/objects/tools/deities/idunn/idunn-statue.webp');
-const f424 = require('../../../assets/altar/objects/tools/deities/isis/isis-statue.webp');
-const f425 = require('../../../assets/altar/objects/tools/deities/janus/janus-statue.webp');
-const f426 = require('../../../assets/altar/objects/tools/deities/juno/juno-statue.webp');
-const f427 = require('../../../assets/altar/objects/tools/deities/jupiter/jupiter-statue.webp');
-const f428 = require('../../../assets/altar/objects/tools/deities/lada/lada-statue.webp');
-const f429 = require('../../../assets/altar/objects/tools/deities/lilith/lilith-statue.webp');
-const f430 = require('../../../assets/altar/objects/tools/deities/loki/loki-statue.webp');
-const f431 = require('../../../assets/altar/objects/tools/deities/lugh/lugh-statue.webp');
-const f432 = require('../../../assets/altar/objects/tools/deities/manannan/manannan-statue.webp');
-const f433 = require('../../../assets/altar/objects/tools/deities/mars/mars-statue.webp');
-const f434 = require('../../../assets/altar/objects/tools/deities/mercury/mercury-statue.webp');
-const f435 = require('../../../assets/altar/objects/tools/deities/minerva/minerva-statue.webp');
-const f436 = require('../../../assets/altar/objects/tools/deities/mokosh/mokosh-statue.webp');
-const f437 = require('../../../assets/altar/objects/tools/deities/morana/morana-statue.webp');
-const f438 = require('../../../assets/altar/objects/tools/deities/morrigan/morrigan-statue.webp');
-const f439 = require('../../../assets/altar/objects/tools/deities/nyx/nyx-statue.webp');
-const f440 = require('../../../assets/altar/objects/tools/deities/odin/odin-statue.webp');
-const f441 = require('../../../assets/altar/objects/tools/deities/osiris/osiris-statue.webp');
-const f442 = require('../../../assets/altar/objects/tools/deities/persephone/persephone-statue.webp');
-const f443 = require('../../../assets/altar/objects/tools/deities/perun/perun-statue.webp');
-const f444 = require('../../../assets/altar/objects/tools/deities/ra/ra-statue.webp');
-const f445 = require('../../../assets/altar/objects/tools/deities/rhiannon/rhiannon-statue.webp');
-const f446 = require('../../../assets/altar/objects/tools/deities/sekhmet/sekhmet-statue.webp');
-const f447 = require('../../../assets/altar/objects/tools/deities/selene/selene-statue.webp');
-const f448 = require('../../../assets/altar/objects/tools/deities/skadi/skadi-statue.webp');
-const f449 = require('../../../assets/altar/objects/tools/deities/thor/thor-statue.webp');
-const f450 = require('../../../assets/altar/objects/tools/deities/thoth/thoth-statue.webp');
-const f451 = require('../../../assets/altar/objects/tools/deities/tyr/tyr-statue.webp');
-const f452 = require('../../../assets/altar/objects/tools/deities/veles/veles-statue.webp');
-const f453 = require('../../../assets/altar/objects/tools/deities/venus/venus-statue.webp');
-const f454 = require('../../../assets/altar/objects/tools/deities/vesta/vesta-statue.webp');
-const f455 = require('../../../assets/altar/objects/tools/frame-drum/frame-drum.webp');
-const f456 = require('../../../assets/altar/objects/tools/goddess-figure/goddess-figure.webp');
-const f457 = require('../../../assets/altar/objects/tools/grave-dirt/grave-dirt.webp');
-const f458 = require('../../../assets/altar/objects/tools/green-man/green-man.webp');
-const f459 = require('../../../assets/altar/objects/tools/incense-burner/incense-burner.webp');
-const f460 = require('../../../assets/altar/objects/tools/key/key.webp');
-const f461 = require('../../../assets/altar/objects/tools/lantern/lantern.webp');
-const f462 = require('../../../assets/altar/objects/tools/matches/matches.webp');
-const f463 = require('../../../assets/altar/objects/tools/mortar-and-pestle/mortar-and-pestle.webp');
-const f464 = require('../../../assets/altar/objects/tools/ogham-staves/ogham-staves.webp');
-const f465 = require('../../../assets/altar/objects/tools/oil-lamp/oil-lamp.webp');
-const f466 = require('../../../assets/altar/objects/tools/oracle-deck/oracle-deck.webp');
-const f467 = require('../../../assets/altar/objects/tools/pendulum/pendulum.webp');
-const f468 = require('../../../assets/altar/objects/tools/pentacle/pentacle.webp');
-const f469 = require('../../../assets/altar/objects/tools/plaques/altar-plaque.webp');
-const f470 = require('../../../assets/altar/objects/tools/quill-and-ink/quill-and-ink.webp');
-const f471 = require('../../../assets/altar/objects/tools/rattle/rattle.webp');
-const f472 = require('../../../assets/altar/objects/tools/raven-skull/raven-skull.webp');
-const f473 = require('../../../assets/altar/objects/tools/red-cord/red-cord.webp');
-const f474 = require('../../../assets/altar/objects/tools/rune-bag/rune-bag.webp');
-const f475 = require('../../../assets/altar/objects/tools/salt-circle/2E77AAEA-4775-4EB3-9EEF-659AB1218A61.webp');
-const f476 = require('../../../assets/altar/objects/tools/salt-lamp/salt-lamp.webp');
-const f477 = require('../../../assets/altar/objects/tools/scrying-mirror/scrying-mirror.webp');
-const f478 = require('../../../assets/altar/objects/tools/singing-bowl/singing-bowl.webp');
-const f479 = require('../../../assets/altar/objects/tools/stang/stang.webp');
-const f480 = require('../../../assets/altar/objects/tools/tarot-deck/tarot-deck.webp');
-const f481 = require('../../../assets/altar/objects/tools/tea-leaf-cup/tea-leaf-cup.webp');
-const f482 = require('../../../assets/altar/objects/tools/wand/wand.webp');
-const f483 = require('../../../assets/altar/objects/tools/wax-seal/wax-seal.webp');
-const f484 = require('../../../assets/altar/objects/tools/witchs-ladder/witchs-ladder.webp');
-const f485 = require('../../../assets/altar/objects/vessels/bottle/bottle.webp');
-const f486 = require('../../../assets/altar/objects/vessels/bowl/bowl.webp');
-const f487 = require('../../../assets/altar/objects/vessels/cauldron/cauldron.webp');
-const f488 = require('../../../assets/altar/objects/vessels/dish/dish.webp');
-const f489 = require('../../../assets/altar/objects/vessels/incense-bowl/incense-bowl.webp');
-const f490 = require('../../../assets/altar/objects/vessels/offering-bowl/offering-bowl.webp');
-const f491 = require('../../../assets/altar/objects/vessels/oil-bottle/oil-bottle.webp');
-const f492 = require('../../../assets/altar/objects/vessels/spell-jar/spell-jar-2.webp');
-const f493 = require('../../../assets/altar/objects/vessels/spell-jar/spell-jar.webp');
-const f494 = require('../../../assets/altar/objects/vessels/spray-bottle/spray-bottle.webp');
-const f495 = require('../../../assets/altar/objects/vessels/vial/vial.webp');
-const f496 = require('../../../assets/altar/objects/vessels/witch-bottle/witch-bottle.webp');
-const f497 = require('../../../assets/altar/overlays/candle-herb-overlay.webp');
-const f498 = require('../../../assets/altar/overlays/candle-oil-overlay.webp');
-const f499 = require('../../../assets/altar/sheets/crystals/amazonite.webp');
-const f500 = require('../../../assets/altar/sheets/crystals/amber.webp');
-const f501 = require('../../../assets/altar/sheets/crystals/amethyst.webp');
-const f502 = require('../../../assets/altar/sheets/crystals/ametrine.webp');
-const f503 = require('../../../assets/altar/sheets/crystals/angelite.webp');
-const f504 = require('../../../assets/altar/sheets/crystals/apache-tear.webp');
-const f505 = require('../../../assets/altar/sheets/crystals/aquamarine.webp');
-const f506 = require('../../../assets/altar/sheets/crystals/aragonite.webp');
-const f507 = require('../../../assets/altar/sheets/crystals/azurite.webp');
-const f508 = require('../../../assets/altar/sheets/crystals/black-tourmaline.webp');
-const f509 = require('../../../assets/altar/sheets/crystals/bloodstone.webp');
-const f510 = require('../../../assets/altar/sheets/crystals/blue-apatite.webp');
-const f511 = require('../../../assets/altar/sheets/crystals/blue-lace-agate.webp');
-const f512 = require('../../../assets/altar/sheets/crystals/carnelian.webp');
-const f513 = require('../../../assets/altar/sheets/crystals/celestite.webp');
-const f514 = require('../../../assets/altar/sheets/crystals/charoite.webp');
-const f515 = require('../../../assets/altar/sheets/crystals/chrysocolla.webp');
-const f516 = require('../../../assets/altar/sheets/crystals/chrysoprase.webp');
-const f517 = require('../../../assets/altar/sheets/crystals/citrine.webp');
-const f518 = require('../../../assets/altar/sheets/crystals/clear-quartz.webp');
-const f519 = require('../../../assets/altar/sheets/crystals/dalmatian-jasper.webp');
-const f520 = require('../../../assets/altar/sheets/crystals/danburite.webp');
-const f521 = require('../../../assets/altar/sheets/crystals/desert-rose.webp');
-const f522 = require('../../../assets/altar/sheets/crystals/emerald.webp');
-const f523 = require('../../../assets/altar/sheets/crystals/fluorite.webp');
-const f524 = require('../../../assets/altar/sheets/crystals/garnet.webp');
-const f525 = require('../../../assets/altar/sheets/crystals/green-aventurine.webp');
-const f526 = require('../../../assets/altar/sheets/crystals/hematite.webp');
-const f527 = require('../../../assets/altar/sheets/crystals/herkimer-diamond.webp');
-const f528 = require('../../../assets/altar/sheets/crystals/howlite.webp');
-const f529 = require('../../../assets/altar/sheets/crystals/iolite.webp');
-const f530 = require('../../../assets/altar/sheets/crystals/jade.webp');
-const f531 = require('../../../assets/altar/sheets/crystals/jet.webp');
-const f532 = require('../../../assets/altar/sheets/crystals/kyanite.webp');
-const f533 = require('../../../assets/altar/sheets/crystals/labradorite.webp');
-const f534 = require('../../../assets/altar/sheets/crystals/lapis-lazuli.webp');
-const f535 = require('../../../assets/altar/sheets/crystals/larimar.webp');
-const f536 = require('../../../assets/altar/sheets/crystals/lepidolite.webp');
-const f537 = require('../../../assets/altar/sheets/crystals/malachite.webp');
-const f538 = require('../../../assets/altar/sheets/crystals/mookaite.webp');
-const f539 = require('../../../assets/altar/sheets/crystals/moonstone.webp');
-const f540 = require('../../../assets/altar/sheets/crystals/morganite.webp');
-const f541 = require('../../../assets/altar/sheets/crystals/moss-agate.webp');
-const f542 = require('../../../assets/altar/sheets/crystals/obsidian.webp');
-const f543 = require('../../../assets/altar/sheets/crystals/ocean-jasper.webp');
-const f544 = require('../../../assets/altar/sheets/crystals/onyx.webp');
-const f545 = require('../../../assets/altar/sheets/crystals/opal.webp');
-const f546 = require('../../../assets/altar/sheets/crystals/orange-calcite.webp');
-const f547 = require('../../../assets/altar/sheets/crystals/peridot.webp');
-const f548 = require('../../../assets/altar/sheets/crystals/pink-tourmaline.webp');
-const f549 = require('../../../assets/altar/sheets/crystals/prehnite.webp');
-const f550 = require('../../../assets/altar/sheets/crystals/pyrite.webp');
-const f551 = require('../../../assets/altar/sheets/crystals/red-jasper.webp');
-const f552 = require('../../../assets/altar/sheets/crystals/rhodochrosite.webp');
-const f553 = require('../../../assets/altar/sheets/crystals/rhodonite.webp');
-const f554 = require('../../../assets/altar/sheets/crystals/rose-quartz.webp');
-const f555 = require('../../../assets/altar/sheets/crystals/ruby.webp');
-const f556 = require('../../../assets/altar/sheets/crystals/rutilated-quartz.webp');
-const f557 = require('../../../assets/altar/sheets/crystals/sapphire.webp');
-const f558 = require('../../../assets/altar/sheets/crystals/selenite.webp');
-const f559 = require('../../../assets/altar/sheets/crystals/shungite.webp');
-const f560 = require('../../../assets/altar/sheets/crystals/smoky-quartz.webp');
-const f561 = require('../../../assets/altar/sheets/crystals/snowflake-obsidian.webp');
-const f562 = require('../../../assets/altar/sheets/crystals/sodalite.webp');
-const f563 = require('../../../assets/altar/sheets/crystals/spirit-quartz.webp');
-const f564 = require('../../../assets/altar/sheets/crystals/sunstone.webp');
-const f565 = require('../../../assets/altar/sheets/crystals/tiger-eye.webp');
-const f566 = require('../../../assets/altar/sheets/crystals/tourmalinated-quartz.webp');
-const f567 = require('../../../assets/altar/sheets/crystals/turquoise.webp');
-const f568 = require('../../../assets/altar/sheets/crystals/unakite.webp');
-const f569 = require('../../../assets/altar/sheets/herbs/allspice.webp');
-const f570 = require('../../../assets/altar/sheets/herbs/angelica.webp');
-const f571 = require('../../../assets/altar/sheets/herbs/anise.webp');
-const f572 = require('../../../assets/altar/sheets/herbs/basil.webp');
-const f573 = require('../../../assets/altar/sheets/herbs/bay-leaf.webp');
-const f574 = require('../../../assets/altar/sheets/herbs/belladonna.webp');
-const f575 = require('../../../assets/altar/sheets/herbs/birch.webp');
-const f576 = require('../../../assets/altar/sheets/herbs/black-pepper.webp');
-const f577 = require('../../../assets/altar/sheets/herbs/borage.webp');
-const f578 = require('../../../assets/altar/sheets/herbs/calendula.webp');
-const f579 = require('../../../assets/altar/sheets/herbs/cardamom.webp');
-const f580 = require('../../../assets/altar/sheets/herbs/catnip.webp');
-const f581 = require('../../../assets/altar/sheets/herbs/cedar.webp');
-const f582 = require('../../../assets/altar/sheets/herbs/chamomile.webp');
-const f583 = require('../../../assets/altar/sheets/herbs/cinnamon.webp');
-const f584 = require('../../../assets/altar/sheets/herbs/cinquefoil.webp');
-const f585 = require('../../../assets/altar/sheets/herbs/clove.webp');
-const f586 = require('../../../assets/altar/sheets/herbs/comfrey.webp');
-const f587 = require('../../../assets/altar/sheets/herbs/copal.webp');
-const f588 = require('../../../assets/altar/sheets/herbs/cypress.webp');
-const f589 = require('../../../assets/altar/sheets/herbs/damiana.webp');
-const f590 = require('../../../assets/altar/sheets/herbs/dandelion.webp');
-const f591 = require('../../../assets/altar/sheets/herbs/dittany-of-crete.webp');
-const f592 = require('../../../assets/altar/sheets/herbs/dragons-blood.webp');
-const f593 = require('../../../assets/altar/sheets/herbs/elder.webp');
-const f594 = require('../../../assets/altar/sheets/herbs/eucalyptus.webp');
-const f595 = require('../../../assets/altar/sheets/herbs/fennel.webp');
-const f596 = require('../../../assets/altar/sheets/herbs/foxglove.webp');
-const f597 = require('../../../assets/altar/sheets/herbs/frankincense.webp');
-const f598 = require('../../../assets/altar/sheets/herbs/galangal.webp');
-const f599 = require('../../../assets/altar/sheets/herbs/garlic.webp');
-const f600 = require('../../../assets/altar/sheets/herbs/ginger.webp');
-const f601 = require('../../../assets/altar/sheets/herbs/hawthorn.webp');
-const f602 = require('../../../assets/altar/sheets/herbs/heather.webp');
-const f603 = require('../../../assets/altar/sheets/herbs/hibiscus.webp');
-const f604 = require('../../../assets/altar/sheets/herbs/holly.webp');
-const f605 = require('../../../assets/altar/sheets/herbs/honeysuckle.webp');
-const f606 = require('../../../assets/altar/sheets/herbs/hyssop.webp');
-const f607 = require('../../../assets/altar/sheets/herbs/jasmine.webp');
-const f608 = require('../../../assets/altar/sheets/herbs/juniper.webp');
-const f609 = require('../../../assets/altar/sheets/herbs/lavender.webp');
-const f610 = require('../../../assets/altar/sheets/herbs/lemon-balm.webp');
-const f611 = require('../../../assets/altar/sheets/herbs/lemongrass.webp');
-const f612 = require('../../../assets/altar/sheets/herbs/lilac.webp');
-const f613 = require('../../../assets/altar/sheets/herbs/mandrake.webp');
-const f614 = require('../../../assets/altar/sheets/herbs/meadowsweet.webp');
-const f615 = require('../../../assets/altar/sheets/herbs/mint.webp');
-const f616 = require('../../../assets/altar/sheets/herbs/mistletoe.webp');
-const f617 = require('../../../assets/altar/sheets/herbs/mugwort.webp');
-const f618 = require('../../../assets/altar/sheets/herbs/mullein.webp');
-const f619 = require('../../../assets/altar/sheets/herbs/myrrh.webp');
-const f620 = require('../../../assets/altar/sheets/herbs/nettle.webp');
-const f621 = require('../../../assets/altar/sheets/herbs/nutmeg.webp');
-const f622 = require('../../../assets/altar/sheets/herbs/oak.webp');
-const f623 = require('../../../assets/altar/sheets/herbs/orris-root.webp');
-const f624 = require('../../../assets/altar/sheets/herbs/passionflower.webp');
-const f625 = require('../../../assets/altar/sheets/herbs/patchouli.webp');
-const f626 = require('../../../assets/altar/sheets/herbs/peppermint.webp');
-const f627 = require('../../../assets/altar/sheets/herbs/pine.webp');
-const f628 = require('../../../assets/altar/sheets/herbs/red-clover.webp');
-const f629 = require('../../../assets/altar/sheets/herbs/rose.webp');
-const f630 = require('../../../assets/altar/sheets/herbs/rosehip.webp');
-const f631 = require('../../../assets/altar/sheets/herbs/rosemary.webp');
-const f632 = require('../../../assets/altar/sheets/herbs/rowan.webp');
-const f633 = require('../../../assets/altar/sheets/herbs/rue.webp');
-const f634 = require('../../../assets/altar/sheets/herbs/saffron.webp');
-const f635 = require('../../../assets/altar/sheets/herbs/sage.webp');
-const f636 = require('../../../assets/altar/sheets/herbs/sandalwood.webp');
-const f637 = require('../../../assets/altar/sheets/herbs/st-johns-wort.webp');
-const f638 = require('../../../assets/altar/sheets/herbs/star-anise.webp');
-const f639 = require('../../../assets/altar/sheets/herbs/sunflower.webp');
-const f640 = require('../../../assets/altar/sheets/herbs/thyme.webp');
-const f641 = require('../../../assets/altar/sheets/herbs/valerian.webp');
-const f642 = require('../../../assets/altar/sheets/herbs/vanilla.webp');
-const f643 = require('../../../assets/altar/sheets/herbs/vervain.webp');
-const f644 = require('../../../assets/altar/sheets/herbs/violet.webp');
-const f645 = require('../../../assets/altar/sheets/herbs/willow.webp');
-const f646 = require('../../../assets/altar/sheets/herbs/wormwood.webp');
-const f647 = require('../../../assets/altar/sheets/herbs/yarrow.webp');
-const f648 = require('../../../assets/altar/sheets/herbs/yew.webp');
-const f649 = require('../../../assets/altar/sheets/plants/basil.webp');
-const f650 = require('../../../assets/altar/sheets/plants/lavender.webp');
-const f651 = require('../../../assets/altar/sheets/plants/mint.webp');
-const f652 = require('../../../assets/altar/sheets/plants/pothos.webp');
-const f653 = require('../../../assets/altar/sheets/plants/rosemary.webp');
-const f654 = require('../../../assets/altar/sheets/plants/sage.webp');
-const f655 = require('../../../assets/altar/sheets/plants/snake-plant.webp');
-const f656 = require('../../../assets/altar/sheets/plants/thyme.webp');
+const f332 = require('../../../assets/altar/objects/seasonal/advent-wreath/advent-wreath.webp');
+const f333 = require('../../../assets/altar/objects/seasonal/amphiphon/amphiphon.webp');
+const f334 = require('../../../assets/altar/objects/seasonal/apples/apples.webp');
+const f335 = require('../../../assets/altar/objects/seasonal/autumn-leaves/autumn-leaves.webp');
+const f336 = require('../../../assets/altar/objects/seasonal/bilberries/bilberries.webp');
+const f337 = require('../../../assets/altar/objects/seasonal/blossom-branch/blossom-branch.webp');
+const f338 = require('../../../assets/altar/objects/seasonal/brideog/brideog.webp');
+const f339 = require('../../../assets/altar/objects/seasonal/brigids-cross/brigids-cross.webp');
+const f340 = require('../../../assets/altar/objects/seasonal/candlemas-candles/candlemas-candles.webp');
+const f341 = require('../../../assets/altar/objects/seasonal/chous/chous.webp');
+const f342 = require('../../../assets/altar/objects/seasonal/corn-dolly/corn-dolly.webp');
+const f343 = require('../../../assets/altar/objects/seasonal/drinking-horn/drinking-horn.webp');
+const f344 = require('../../../assets/altar/objects/seasonal/easter-lilies/easter-lilies.webp');
+const f345 = require('../../../assets/altar/objects/seasonal/eiresione/eiresione.webp');
+const f346 = require('../../../assets/altar/objects/seasonal/epiphany-chalk/epiphany-chalk.webp');
+const f347 = require('../../../assets/altar/objects/seasonal/evergreen-boughs/evergreen-boughs.webp');
+const f348 = require('../../../assets/altar/objects/seasonal/februa/februa.webp');
+const f349 = require('../../../assets/altar/objects/seasonal/floralia-flowers/floralia-flowers.webp');
+const f350 = require('../../../assets/altar/objects/seasonal/flower-crown/flower-crown.webp');
+const f351 = require('../../../assets/altar/objects/seasonal/gourds/gourds.webp');
+const f352 = require('../../../assets/altar/objects/seasonal/hekates-deipnon/hekates-deipnon.webp');
+const f353 = require('../../../assets/altar/objects/seasonal/herb-bundle/herb-bundle.webp');
+const f354 = require('../../../assets/altar/objects/seasonal/hlautbolli/hlautbolli.webp');
+const f355 = require('../../../assets/altar/objects/seasonal/holly-and-ivy/holly-and-ivy.webp');
+const f356 = require('../../../assets/altar/objects/seasonal/holy-water/holy-water.webp');
+const f357 = require('../../../assets/altar/objects/seasonal/kernos/kernos.webp');
+const f358 = require('../../../assets/altar/objects/seasonal/kykeon/kykeon.webp');
+const f359 = require('../../../assets/altar/objects/seasonal/lammas-loaf/lammas-loaf.webp');
+const f360 = require('../../../assets/altar/objects/seasonal/lemuria-beans/lemuria-beans.webp');
+const f361 = require('../../../assets/altar/objects/seasonal/lucerna/lucerna.webp');
+const f362 = require('../../../assets/altar/objects/seasonal/matronalia-garland/matronalia-garland.webp');
+const f363 = require('../../../assets/altar/objects/seasonal/may-bush/may-bush.webp');
+const f364 = require('../../../assets/altar/objects/seasonal/michaelmas-daisies/michaelmas-daisies.webp');
+const f365 = require('../../../assets/altar/objects/seasonal/midsummer-birch/midsummer-birch.webp');
+const f366 = require('../../../assets/altar/objects/seasonal/mola-salsa/mola-salsa.webp');
+const f367 = require('../../../assets/altar/objects/seasonal/neptunalia-boughs/neptunalia-boughs.webp');
+const f368 = require('../../../assets/altar/objects/seasonal/odins-sheaf/odins-sheaf.webp');
+const f369 = require('../../../assets/altar/objects/seasonal/ostara-eggs/ostara-eggs.webp');
+const f370 = require('../../../assets/altar/objects/seasonal/panathenaic-olive/panathenaic-olive.webp');
+const f371 = require('../../../assets/altar/objects/seasonal/parentalia-tile/parentalia-tile.webp');
+const f372 = require('../../../assets/altar/objects/seasonal/pentecost-peonies/pentecost-peonies.webp');
+const f373 = require('../../../assets/altar/objects/seasonal/phiale/phiale.webp');
+const f374 = require('../../../assets/altar/objects/seasonal/pileus/pileus.webp');
+const f375 = require('../../../assets/altar/objects/seasonal/pomegranate/pomegranate.webp');
+const f376 = require('../../../assets/altar/objects/seasonal/pumpkin-lantern/pumpkin-lantern.webp');
+const f377 = require('../../../assets/altar/objects/seasonal/pyanepsia-beans/pyanepsia-beans.webp');
+const f378 = require('../../../assets/altar/objects/seasonal/radiate-crown/radiate-crown.webp');
+const f379 = require('../../../assets/altar/objects/seasonal/red-eggs/red-eggs.webp');
+const f380 = require('../../../assets/altar/objects/seasonal/saturnalia-cerei/saturnalia-cerei.webp');
+const f381 = require('../../../assets/altar/objects/seasonal/sigillaria/sigillaria.webp');
+const f382 = require('../../../assets/altar/objects/seasonal/snowdrops/snowdrops.webp');
+const f383 = require('../../../assets/altar/objects/seasonal/summer-wildflowers/summer-wildflowers.webp');
+const f384 = require('../../../assets/altar/objects/seasonal/sun-wheel/sun-wheel.webp');
+const f385 = require('../../../assets/altar/objects/seasonal/thargelos/thargelos.webp');
+const f386 = require('../../../assets/altar/objects/seasonal/theatre-mask/theatre-mask.webp');
+const f387 = require('../../../assets/altar/objects/seasonal/thymiaterion/thymiaterion.webp');
+const f388 = require('../../../assets/altar/objects/seasonal/thyrsus/thyrsus.webp');
+const f389 = require('../../../assets/altar/objects/seasonal/turnip-lantern/turnip-lantern.webp');
+const f390 = require('../../../assets/altar/objects/seasonal/wheat-sheaf/wheat-sheaf.webp');
+const f391 = require('../../../assets/altar/objects/seasonal/yule-goat/yule-goat.webp');
+const f392 = require('../../../assets/altar/objects/seasonal/yule-log/yule-log.webp');
+const f393 = require('../../../assets/altar/objects/tools/altar/altar.webp');
+const f394 = require('../../../assets/altar/objects/tools/ancestor-frame/ancestor-frame-gilt.webp');
+const f395 = require('../../../assets/altar/objects/tools/ancestor-frame/ancestor-frame-wood.webp');
+const f396 = require('../../../assets/altar/objects/tools/athame/athame.webp');
+const f397 = require('../../../assets/altar/objects/tools/bell/bell.webp');
+const f398 = require('../../../assets/altar/objects/tools/besom/besom.webp');
+const f399 = require('../../../assets/altar/objects/tools/black-salt/black-salt.webp');
+const f400 = require('../../../assets/altar/objects/tools/boline/boline.webp');
+const f401 = require('../../../assets/altar/objects/tools/book-of-shadows/book-of-shadows.webp');
+const f402 = require('../../../assets/altar/objects/tools/candle-snuffer/candle-snuffer.webp');
+const f403 = require('../../../assets/altar/objects/tools/chalice/chalice.webp');
+const f404 = require('../../../assets/altar/objects/tools/crystal-ball/crystal-ball.webp');
+const f405 = require('../../../assets/altar/objects/tools/deities/anubis/anubis-statue.webp');
+const f406 = require('../../../assets/altar/objects/tools/deities/aphrodite/aphrodite-statue.webp');
+const f407 = require('../../../assets/altar/objects/tools/deities/apollo/apollo-statue.webp');
+const f408 = require('../../../assets/altar/objects/tools/deities/arianrhod/arianrhod-statue.webp');
+const f409 = require('../../../assets/altar/objects/tools/deities/artemis/artemis-statue.webp');
+const f410 = require('../../../assets/altar/objects/tools/deities/athena/athena-statue.webp');
+const f411 = require('../../../assets/altar/objects/tools/deities/baldur/baldur-statue.webp');
+const f412 = require('../../../assets/altar/objects/tools/deities/bastet/bastet-statue.webp');
+const f413 = require('../../../assets/altar/objects/tools/deities/brigid/brigid-statue.webp');
+const f414 = require('../../../assets/altar/objects/tools/deities/ceres/ceres-statue.webp');
+const f415 = require('../../../assets/altar/objects/tools/deities/cernunnos/cernunnos-statue.webp');
+const f416 = require('../../../assets/altar/objects/tools/deities/cerridwen/cerridwen-statue.webp');
+const f417 = require('../../../assets/altar/objects/tools/deities/dagda/dagda-statue.webp');
+const f418 = require('../../../assets/altar/objects/tools/deities/dazhbog/dazhbog-statue.webp');
+const f419 = require('../../../assets/altar/objects/tools/deities/demeter/demeter-statue.webp');
+const f420 = require('../../../assets/altar/objects/tools/deities/diana/diana-statue.webp');
+const f421 = require('../../../assets/altar/objects/tools/deities/dionysus/dionysus-statue.webp');
+const f422 = require('../../../assets/altar/objects/tools/deities/durga/durga-statue.webp');
+const f423 = require('../../../assets/altar/objects/tools/deities/epona/epona-statue.webp');
+const f424 = require('../../../assets/altar/objects/tools/deities/freyja/freyja-statue.webp');
+const f425 = require('../../../assets/altar/objects/tools/deities/freyr/freyr-statue.webp');
+const f426 = require('../../../assets/altar/objects/tools/deities/frigg/frigg-statue.webp');
+const f427 = require('../../../assets/altar/objects/tools/deities/ganesha/ganesha-statue.webp');
+const f428 = require('../../../assets/altar/objects/tools/deities/hades/hades-statue.webp');
+const f429 = require('../../../assets/altar/objects/tools/deities/hathor/hathor-statue.webp');
+const f430 = require('../../../assets/altar/objects/tools/deities/hekate/hekate-statue.webp');
+const f431 = require('../../../assets/altar/objects/tools/deities/hel/hel-statue.webp');
+const f432 = require('../../../assets/altar/objects/tools/deities/hermes/hermes-statue.webp');
+const f433 = require('../../../assets/altar/objects/tools/deities/hestia/hestia-statue.webp');
+const f434 = require('../../../assets/altar/objects/tools/deities/idunn/idunn-statue.webp');
+const f435 = require('../../../assets/altar/objects/tools/deities/isis/isis-statue.webp');
+const f436 = require('../../../assets/altar/objects/tools/deities/janus/janus-statue.webp');
+const f437 = require('../../../assets/altar/objects/tools/deities/juno/juno-statue.webp');
+const f438 = require('../../../assets/altar/objects/tools/deities/jupiter/jupiter-statue.webp');
+const f439 = require('../../../assets/altar/objects/tools/deities/lada/lada-statue.webp');
+const f440 = require('../../../assets/altar/objects/tools/deities/lilith/lilith-statue.webp');
+const f441 = require('../../../assets/altar/objects/tools/deities/loki/loki-statue.webp');
+const f442 = require('../../../assets/altar/objects/tools/deities/lugh/lugh-statue.webp');
+const f443 = require('../../../assets/altar/objects/tools/deities/manannan/manannan-statue.webp');
+const f444 = require('../../../assets/altar/objects/tools/deities/mars/mars-statue.webp');
+const f445 = require('../../../assets/altar/objects/tools/deities/mercury/mercury-statue.webp');
+const f446 = require('../../../assets/altar/objects/tools/deities/minerva/minerva-statue.webp');
+const f447 = require('../../../assets/altar/objects/tools/deities/mokosh/mokosh-statue.webp');
+const f448 = require('../../../assets/altar/objects/tools/deities/morana/morana-statue.webp');
+const f449 = require('../../../assets/altar/objects/tools/deities/morrigan/morrigan-statue.webp');
+const f450 = require('../../../assets/altar/objects/tools/deities/nyx/nyx-statue.webp');
+const f451 = require('../../../assets/altar/objects/tools/deities/odin/odin-statue.webp');
+const f452 = require('../../../assets/altar/objects/tools/deities/osiris/osiris-statue.webp');
+const f453 = require('../../../assets/altar/objects/tools/deities/persephone/persephone-statue.webp');
+const f454 = require('../../../assets/altar/objects/tools/deities/perun/perun-statue.webp');
+const f455 = require('../../../assets/altar/objects/tools/deities/ra/ra-statue.webp');
+const f456 = require('../../../assets/altar/objects/tools/deities/rhiannon/rhiannon-statue.webp');
+const f457 = require('../../../assets/altar/objects/tools/deities/sekhmet/sekhmet-statue.webp');
+const f458 = require('../../../assets/altar/objects/tools/deities/selene/selene-statue.webp');
+const f459 = require('../../../assets/altar/objects/tools/deities/skadi/skadi-statue.webp');
+const f460 = require('../../../assets/altar/objects/tools/deities/thor/thor-statue.webp');
+const f461 = require('../../../assets/altar/objects/tools/deities/thoth/thoth-statue.webp');
+const f462 = require('../../../assets/altar/objects/tools/deities/tyr/tyr-statue.webp');
+const f463 = require('../../../assets/altar/objects/tools/deities/veles/veles-statue.webp');
+const f464 = require('../../../assets/altar/objects/tools/deities/venus/venus-statue.webp');
+const f465 = require('../../../assets/altar/objects/tools/deities/vesta/vesta-statue.webp');
+const f466 = require('../../../assets/altar/objects/tools/frame-drum/frame-drum.webp');
+const f467 = require('../../../assets/altar/objects/tools/goddess-figure/goddess-figure.webp');
+const f468 = require('../../../assets/altar/objects/tools/grave-dirt/grave-dirt.webp');
+const f469 = require('../../../assets/altar/objects/tools/green-man/green-man.webp');
+const f470 = require('../../../assets/altar/objects/tools/incense-burner/incense-burner.webp');
+const f471 = require('../../../assets/altar/objects/tools/key/key.webp');
+const f472 = require('../../../assets/altar/objects/tools/lantern/lantern.webp');
+const f473 = require('../../../assets/altar/objects/tools/matches/matches.webp');
+const f474 = require('../../../assets/altar/objects/tools/mortar-and-pestle/mortar-and-pestle.webp');
+const f475 = require('../../../assets/altar/objects/tools/ogham-staves/ogham-staves.webp');
+const f476 = require('../../../assets/altar/objects/tools/oil-lamp/oil-lamp.webp');
+const f477 = require('../../../assets/altar/objects/tools/oracle-deck/oracle-deck.webp');
+const f478 = require('../../../assets/altar/objects/tools/pendulum/pendulum.webp');
+const f479 = require('../../../assets/altar/objects/tools/pentacle/pentacle.webp');
+const f480 = require('../../../assets/altar/objects/tools/plaques/altar-plaque.webp');
+const f481 = require('../../../assets/altar/objects/tools/quill-and-ink/quill-and-ink.webp');
+const f482 = require('../../../assets/altar/objects/tools/rattle/rattle.webp');
+const f483 = require('../../../assets/altar/objects/tools/raven-skull/raven-skull.webp');
+const f484 = require('../../../assets/altar/objects/tools/red-cord/red-cord.webp');
+const f485 = require('../../../assets/altar/objects/tools/rune-bag/rune-bag.webp');
+const f486 = require('../../../assets/altar/objects/tools/salt-circle/2E77AAEA-4775-4EB3-9EEF-659AB1218A61.webp');
+const f487 = require('../../../assets/altar/objects/tools/salt-lamp/salt-lamp.webp');
+const f488 = require('../../../assets/altar/objects/tools/scrying-mirror/scrying-mirror.webp');
+const f489 = require('../../../assets/altar/objects/tools/singing-bowl/singing-bowl.webp');
+const f490 = require('../../../assets/altar/objects/tools/stang/stang.webp');
+const f491 = require('../../../assets/altar/objects/tools/tarot-deck/tarot-deck.webp');
+const f492 = require('../../../assets/altar/objects/tools/tea-leaf-cup/tea-leaf-cup.webp');
+const f493 = require('../../../assets/altar/objects/tools/wand/wand.webp');
+const f494 = require('../../../assets/altar/objects/tools/wax-seal/wax-seal.webp');
+const f495 = require('../../../assets/altar/objects/tools/witchs-ladder/witchs-ladder.webp');
+const f496 = require('../../../assets/altar/objects/vessels/bottle/bottle.webp');
+const f497 = require('../../../assets/altar/objects/vessels/bowl/bowl.webp');
+const f498 = require('../../../assets/altar/objects/vessels/cauldron/cauldron.webp');
+const f499 = require('../../../assets/altar/objects/vessels/dish/dish.webp');
+const f500 = require('../../../assets/altar/objects/vessels/incense-bowl/incense-bowl.webp');
+const f501 = require('../../../assets/altar/objects/vessels/offering-bowl/offering-bowl.webp');
+const f502 = require('../../../assets/altar/objects/vessels/oil-bottle/oil-bottle.webp');
+const f503 = require('../../../assets/altar/objects/vessels/spell-jar/spell-jar-2.webp');
+const f504 = require('../../../assets/altar/objects/vessels/spell-jar/spell-jar.webp');
+const f505 = require('../../../assets/altar/objects/vessels/spray-bottle/spray-bottle.webp');
+const f506 = require('../../../assets/altar/objects/vessels/vial/vial.webp');
+const f507 = require('../../../assets/altar/objects/vessels/witch-bottle/witch-bottle.webp');
+const f508 = require('../../../assets/altar/overlays/candle-herb-overlay.webp');
+const f509 = require('../../../assets/altar/overlays/candle-oil-overlay.webp');
+const f510 = require('../../../assets/altar/sheets/crystals/amazonite.webp');
+const f511 = require('../../../assets/altar/sheets/crystals/amber.webp');
+const f512 = require('../../../assets/altar/sheets/crystals/amethyst.webp');
+const f513 = require('../../../assets/altar/sheets/crystals/ametrine.webp');
+const f514 = require('../../../assets/altar/sheets/crystals/angelite.webp');
+const f515 = require('../../../assets/altar/sheets/crystals/apache-tear.webp');
+const f516 = require('../../../assets/altar/sheets/crystals/aquamarine.webp');
+const f517 = require('../../../assets/altar/sheets/crystals/aragonite.webp');
+const f518 = require('../../../assets/altar/sheets/crystals/azurite.webp');
+const f519 = require('../../../assets/altar/sheets/crystals/black-tourmaline.webp');
+const f520 = require('../../../assets/altar/sheets/crystals/bloodstone.webp');
+const f521 = require('../../../assets/altar/sheets/crystals/blue-apatite.webp');
+const f522 = require('../../../assets/altar/sheets/crystals/blue-lace-agate.webp');
+const f523 = require('../../../assets/altar/sheets/crystals/carnelian.webp');
+const f524 = require('../../../assets/altar/sheets/crystals/celestite.webp');
+const f525 = require('../../../assets/altar/sheets/crystals/charoite.webp');
+const f526 = require('../../../assets/altar/sheets/crystals/chrysocolla.webp');
+const f527 = require('../../../assets/altar/sheets/crystals/chrysoprase.webp');
+const f528 = require('../../../assets/altar/sheets/crystals/citrine.webp');
+const f529 = require('../../../assets/altar/sheets/crystals/clear-quartz.webp');
+const f530 = require('../../../assets/altar/sheets/crystals/dalmatian-jasper.webp');
+const f531 = require('../../../assets/altar/sheets/crystals/danburite.webp');
+const f532 = require('../../../assets/altar/sheets/crystals/desert-rose.webp');
+const f533 = require('../../../assets/altar/sheets/crystals/emerald.webp');
+const f534 = require('../../../assets/altar/sheets/crystals/fluorite.webp');
+const f535 = require('../../../assets/altar/sheets/crystals/garnet.webp');
+const f536 = require('../../../assets/altar/sheets/crystals/green-aventurine.webp');
+const f537 = require('../../../assets/altar/sheets/crystals/hematite.webp');
+const f538 = require('../../../assets/altar/sheets/crystals/herkimer-diamond.webp');
+const f539 = require('../../../assets/altar/sheets/crystals/howlite.webp');
+const f540 = require('../../../assets/altar/sheets/crystals/iolite.webp');
+const f541 = require('../../../assets/altar/sheets/crystals/jade.webp');
+const f542 = require('../../../assets/altar/sheets/crystals/jet.webp');
+const f543 = require('../../../assets/altar/sheets/crystals/kyanite.webp');
+const f544 = require('../../../assets/altar/sheets/crystals/labradorite.webp');
+const f545 = require('../../../assets/altar/sheets/crystals/lapis-lazuli.webp');
+const f546 = require('../../../assets/altar/sheets/crystals/larimar.webp');
+const f547 = require('../../../assets/altar/sheets/crystals/lepidolite.webp');
+const f548 = require('../../../assets/altar/sheets/crystals/malachite.webp');
+const f549 = require('../../../assets/altar/sheets/crystals/mookaite.webp');
+const f550 = require('../../../assets/altar/sheets/crystals/moonstone.webp');
+const f551 = require('../../../assets/altar/sheets/crystals/morganite.webp');
+const f552 = require('../../../assets/altar/sheets/crystals/moss-agate.webp');
+const f553 = require('../../../assets/altar/sheets/crystals/obsidian.webp');
+const f554 = require('../../../assets/altar/sheets/crystals/ocean-jasper.webp');
+const f555 = require('../../../assets/altar/sheets/crystals/onyx.webp');
+const f556 = require('../../../assets/altar/sheets/crystals/opal.webp');
+const f557 = require('../../../assets/altar/sheets/crystals/orange-calcite.webp');
+const f558 = require('../../../assets/altar/sheets/crystals/peridot.webp');
+const f559 = require('../../../assets/altar/sheets/crystals/pink-tourmaline.webp');
+const f560 = require('../../../assets/altar/sheets/crystals/prehnite.webp');
+const f561 = require('../../../assets/altar/sheets/crystals/pyrite.webp');
+const f562 = require('../../../assets/altar/sheets/crystals/red-jasper.webp');
+const f563 = require('../../../assets/altar/sheets/crystals/rhodochrosite.webp');
+const f564 = require('../../../assets/altar/sheets/crystals/rhodonite.webp');
+const f565 = require('../../../assets/altar/sheets/crystals/rose-quartz.webp');
+const f566 = require('../../../assets/altar/sheets/crystals/ruby.webp');
+const f567 = require('../../../assets/altar/sheets/crystals/rutilated-quartz.webp');
+const f568 = require('../../../assets/altar/sheets/crystals/sapphire.webp');
+const f569 = require('../../../assets/altar/sheets/crystals/selenite.webp');
+const f570 = require('../../../assets/altar/sheets/crystals/shungite.webp');
+const f571 = require('../../../assets/altar/sheets/crystals/smoky-quartz.webp');
+const f572 = require('../../../assets/altar/sheets/crystals/snowflake-obsidian.webp');
+const f573 = require('../../../assets/altar/sheets/crystals/sodalite.webp');
+const f574 = require('../../../assets/altar/sheets/crystals/spirit-quartz.webp');
+const f575 = require('../../../assets/altar/sheets/crystals/sunstone.webp');
+const f576 = require('../../../assets/altar/sheets/crystals/tiger-eye.webp');
+const f577 = require('../../../assets/altar/sheets/crystals/tourmalinated-quartz.webp');
+const f578 = require('../../../assets/altar/sheets/crystals/turquoise.webp');
+const f579 = require('../../../assets/altar/sheets/crystals/unakite.webp');
+const f580 = require('../../../assets/altar/sheets/herbs/allspice.webp');
+const f581 = require('../../../assets/altar/sheets/herbs/angelica.webp');
+const f582 = require('../../../assets/altar/sheets/herbs/anise.webp');
+const f583 = require('../../../assets/altar/sheets/herbs/basil.webp');
+const f584 = require('../../../assets/altar/sheets/herbs/bay-leaf.webp');
+const f585 = require('../../../assets/altar/sheets/herbs/belladonna.webp');
+const f586 = require('../../../assets/altar/sheets/herbs/birch.webp');
+const f587 = require('../../../assets/altar/sheets/herbs/black-pepper.webp');
+const f588 = require('../../../assets/altar/sheets/herbs/borage.webp');
+const f589 = require('../../../assets/altar/sheets/herbs/calendula.webp');
+const f590 = require('../../../assets/altar/sheets/herbs/cardamom.webp');
+const f591 = require('../../../assets/altar/sheets/herbs/catnip.webp');
+const f592 = require('../../../assets/altar/sheets/herbs/cedar.webp');
+const f593 = require('../../../assets/altar/sheets/herbs/chamomile.webp');
+const f594 = require('../../../assets/altar/sheets/herbs/cinnamon.webp');
+const f595 = require('../../../assets/altar/sheets/herbs/cinquefoil.webp');
+const f596 = require('../../../assets/altar/sheets/herbs/clove.webp');
+const f597 = require('../../../assets/altar/sheets/herbs/comfrey.webp');
+const f598 = require('../../../assets/altar/sheets/herbs/copal.webp');
+const f599 = require('../../../assets/altar/sheets/herbs/cypress.webp');
+const f600 = require('../../../assets/altar/sheets/herbs/damiana.webp');
+const f601 = require('../../../assets/altar/sheets/herbs/dandelion.webp');
+const f602 = require('../../../assets/altar/sheets/herbs/dittany-of-crete.webp');
+const f603 = require('../../../assets/altar/sheets/herbs/dragons-blood.webp');
+const f604 = require('../../../assets/altar/sheets/herbs/elder.webp');
+const f605 = require('../../../assets/altar/sheets/herbs/eucalyptus.webp');
+const f606 = require('../../../assets/altar/sheets/herbs/fennel.webp');
+const f607 = require('../../../assets/altar/sheets/herbs/foxglove.webp');
+const f608 = require('../../../assets/altar/sheets/herbs/frankincense.webp');
+const f609 = require('../../../assets/altar/sheets/herbs/galangal.webp');
+const f610 = require('../../../assets/altar/sheets/herbs/garlic.webp');
+const f611 = require('../../../assets/altar/sheets/herbs/ginger.webp');
+const f612 = require('../../../assets/altar/sheets/herbs/hawthorn.webp');
+const f613 = require('../../../assets/altar/sheets/herbs/heather.webp');
+const f614 = require('../../../assets/altar/sheets/herbs/hibiscus.webp');
+const f615 = require('../../../assets/altar/sheets/herbs/holly.webp');
+const f616 = require('../../../assets/altar/sheets/herbs/honeysuckle.webp');
+const f617 = require('../../../assets/altar/sheets/herbs/hyssop.webp');
+const f618 = require('../../../assets/altar/sheets/herbs/jasmine.webp');
+const f619 = require('../../../assets/altar/sheets/herbs/juniper.webp');
+const f620 = require('../../../assets/altar/sheets/herbs/lavender.webp');
+const f621 = require('../../../assets/altar/sheets/herbs/lemon-balm.webp');
+const f622 = require('../../../assets/altar/sheets/herbs/lemongrass.webp');
+const f623 = require('../../../assets/altar/sheets/herbs/lilac.webp');
+const f624 = require('../../../assets/altar/sheets/herbs/mandrake.webp');
+const f625 = require('../../../assets/altar/sheets/herbs/meadowsweet.webp');
+const f626 = require('../../../assets/altar/sheets/herbs/mint.webp');
+const f627 = require('../../../assets/altar/sheets/herbs/mistletoe.webp');
+const f628 = require('../../../assets/altar/sheets/herbs/mugwort.webp');
+const f629 = require('../../../assets/altar/sheets/herbs/mullein.webp');
+const f630 = require('../../../assets/altar/sheets/herbs/myrrh.webp');
+const f631 = require('../../../assets/altar/sheets/herbs/nettle.webp');
+const f632 = require('../../../assets/altar/sheets/herbs/nutmeg.webp');
+const f633 = require('../../../assets/altar/sheets/herbs/oak.webp');
+const f634 = require('../../../assets/altar/sheets/herbs/orris-root.webp');
+const f635 = require('../../../assets/altar/sheets/herbs/passionflower.webp');
+const f636 = require('../../../assets/altar/sheets/herbs/patchouli.webp');
+const f637 = require('../../../assets/altar/sheets/herbs/peppermint.webp');
+const f638 = require('../../../assets/altar/sheets/herbs/pine.webp');
+const f639 = require('../../../assets/altar/sheets/herbs/red-clover.webp');
+const f640 = require('../../../assets/altar/sheets/herbs/rose.webp');
+const f641 = require('../../../assets/altar/sheets/herbs/rosehip.webp');
+const f642 = require('../../../assets/altar/sheets/herbs/rosemary.webp');
+const f643 = require('../../../assets/altar/sheets/herbs/rowan.webp');
+const f644 = require('../../../assets/altar/sheets/herbs/rue.webp');
+const f645 = require('../../../assets/altar/sheets/herbs/saffron.webp');
+const f646 = require('../../../assets/altar/sheets/herbs/sage.webp');
+const f647 = require('../../../assets/altar/sheets/herbs/sandalwood.webp');
+const f648 = require('../../../assets/altar/sheets/herbs/st-johns-wort.webp');
+const f649 = require('../../../assets/altar/sheets/herbs/star-anise.webp');
+const f650 = require('../../../assets/altar/sheets/herbs/sunflower.webp');
+const f651 = require('../../../assets/altar/sheets/herbs/thyme.webp');
+const f652 = require('../../../assets/altar/sheets/herbs/valerian.webp');
+const f653 = require('../../../assets/altar/sheets/herbs/vanilla.webp');
+const f654 = require('../../../assets/altar/sheets/herbs/vervain.webp');
+const f655 = require('../../../assets/altar/sheets/herbs/violet.webp');
+const f656 = require('../../../assets/altar/sheets/herbs/willow.webp');
+const f657 = require('../../../assets/altar/sheets/herbs/wormwood.webp');
+const f658 = require('../../../assets/altar/sheets/herbs/yarrow.webp');
+const f659 = require('../../../assets/altar/sheets/herbs/yew.webp');
+const f660 = require('../../../assets/altar/sheets/plants/basil.webp');
+const f661 = require('../../../assets/altar/sheets/plants/lavender.webp');
+const f662 = require('../../../assets/altar/sheets/plants/mint.webp');
+const f663 = require('../../../assets/altar/sheets/plants/pothos.webp');
+const f664 = require('../../../assets/altar/sheets/plants/rosemary.webp');
+const f665 = require('../../../assets/altar/sheets/plants/sage.webp');
+const f666 = require('../../../assets/altar/sheets/plants/snake-plant.webp');
+const f667 = require('../../../assets/altar/sheets/plants/thyme.webp');
 
 export const bundledAltarAssets: Record<string, { source: number; width: number; height: number; crop?: BundledAltarCrop }> = {
   'assets/altar/backgrounds/autumn-harvest.png': { source: f0, width: 1536, height: 1024 },
@@ -975,499 +986,499 @@ export const bundledAltarAssets: Record<string, { source: number; width: number;
   'assets/altar/objects/candles/votive/yellow-votive.png': { source: f304, width: 1264, height: 1264 },
   'assets/altar/objects/candles/white-candle.PNG': { source: f305, width: 500, height: 1536 },
   'assets/altar/objects/candles/yellow-candle.png': { source: f306, width: 500, height: 1536 },
-  'assets/altar/objects/crystals/amazonite/amazonite-chips.png': { source: f499, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/amazonite/amazonite-tumbled.png': { source: f499, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/amber/amber-chips.png': { source: f500, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/amber/amber-cluster.png': { source: f500, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/amber/amber-point.png': { source: f500, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/amber/amber-tumbled.png': { source: f500, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/amethyst/amethyst-chips.png': { source: f501, width: 800, height: 400, crop: { x: 0, y: 0, w: 800, h: 400, sheetW: 1208, sheetH: 1733 } },
-  'assets/altar/objects/crystals/amethyst/amethyst-cluster.png': { source: f501, width: 800, height: 500, crop: { x: 408, y: 408, w: 800, h: 500, sheetW: 1208, sheetH: 1733 } },
-  'assets/altar/objects/crystals/amethyst/amethyst-point.png': { source: f501, width: 400, height: 800, crop: { x: 0, y: 408, w: 400, h: 800, sheetW: 1208, sheetH: 1733 } },
-  'assets/altar/objects/crystals/amethyst/amethyst-tumbled.png': { source: f501, width: 1776, height: 896, crop: { x: 0, y: 1216, w: 1024, h: 517, sheetW: 1208, sheetH: 1733 } },
-  'assets/altar/objects/crystals/ametrine/ametrine-chips.png': { source: f502, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/ametrine/ametrine-cluster.png': { source: f502, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/ametrine/ametrine-point.png': { source: f502, width: 1024, height: 1536, crop: { x: 0, y: 525, w: 683, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/ametrine/ametrine-tumbled.png': { source: f502, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/angelite/angelite-chips.png': { source: f503, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/angelite/angelite-cluster.png': { source: f503, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/angelite/angelite-point.png': { source: f503, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/angelite/angelite-tumbled.png': { source: f503, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/apache-tear/apache-tear-chips.png': { source: f504, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/apache-tear/apache-tear-cluster.png': { source: f504, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/apache-tear/apache-tear-point.png': { source: f504, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/apache-tear/apache-tear-tumbled.png': { source: f504, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/aquamarine/aquamarine-chips.png': { source: f505, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/aquamarine/aquamarine-cluster.png': { source: f505, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/aquamarine/aquamarine-point.png': { source: f505, width: 1024, height: 1536, crop: { x: 0, y: 525, w: 683, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/aquamarine/aquamarine-tumbled.png': { source: f505, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/aragonite/aragonite-chips.png': { source: f506, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 1733 } },
-  'assets/altar/objects/crystals/aragonite/aragonite-cluster.png': { source: f506, width: 1536, height: 1024, crop: { x: 0, y: 525, w: 1024, h: 683, sheetW: 1024, sheetH: 1733 } },
-  'assets/altar/objects/crystals/aragonite/aragonite-tumbled.png': { source: f506, width: 1776, height: 896, crop: { x: 0, y: 1216, w: 1024, h: 517, sheetW: 1024, sheetH: 1733 } },
-  'assets/altar/objects/crystals/azurite/azurite-chips.png': { source: f507, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 1733 } },
-  'assets/altar/objects/crystals/azurite/azurite-cluster.png': { source: f507, width: 1536, height: 1024, crop: { x: 0, y: 525, w: 1024, h: 683, sheetW: 1024, sheetH: 1733 } },
-  'assets/altar/objects/crystals/azurite/azurite-tumbled.png': { source: f507, width: 1776, height: 896, crop: { x: 0, y: 1216, w: 1024, h: 517, sheetW: 1024, sheetH: 1733 } },
-  'assets/altar/objects/crystals/black-tourmaline/black-tourmaline-chips.png': { source: f508, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/black-tourmaline/black-tourmaline-cluster.png': { source: f508, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/black-tourmaline/black-tourmaline-point.png': { source: f508, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/black-tourmaline/black-tourmaline-tumbled.png': { source: f508, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/bloodstone/bloodstone-chips.png': { source: f509, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/bloodstone/bloodstone-cluster.png': { source: f509, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/bloodstone/bloodstone-point.png': { source: f509, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/bloodstone/bloodstone-tumbled.png': { source: f509, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/blue-apatite/blue-apatite-chips.png': { source: f510, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/blue-apatite/blue-apatite-tumbled.png': { source: f510, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/blue-lace-agate/blue-lace-agate-chips.png': { source: f511, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/blue-lace-agate/blue-lace-agate-cluster.png': { source: f511, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/blue-lace-agate/blue-lace-agate-point.png': { source: f511, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/blue-lace-agate/blue-lace-agate-tumbled.png': { source: f511, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/carnelian/carnelian-chips.png': { source: f512, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/carnelian/carnelian-cluster.png': { source: f512, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/carnelian/carnelian-point.png': { source: f512, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/carnelian/carnelian-tumbled.png': { source: f512, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/celestite/celestite-chips.png': { source: f513, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/celestite/celestite-cluster.png': { source: f513, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/celestite/celestite-point.png': { source: f513, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/celestite/celestite-tumbled.png': { source: f513, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/charoite/charoite-chips.png': { source: f514, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/charoite/charoite-tumbled.png': { source: f514, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/chrysocolla/chrysocolla-chips.png': { source: f515, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/chrysocolla/chrysocolla-cluster.png': { source: f515, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/chrysocolla/chrysocolla-point.png': { source: f515, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/chrysocolla/chrysocolla-tumbled.png': { source: f515, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/chrysoprase/chrysoprase-chips.png': { source: f516, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/chrysoprase/chrysoprase-cluster.png': { source: f516, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/chrysoprase/chrysoprase-point.png': { source: f516, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/chrysoprase/chrysoprase-tumbled.png': { source: f516, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/citrine/citrine-chips.png': { source: f517, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/citrine/citrine-cluster.png': { source: f517, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/citrine/citrine-point.png': { source: f517, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/citrine/citrine-tumbled.png': { source: f517, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/clear-quartz/clear-quartz-chips.png': { source: f518, width: 800, height: 400, crop: { x: 0, y: 0, w: 800, h: 400, sheetW: 1330, sheetH: 1957 } },
-  'assets/altar/objects/crystals/clear-quartz/clear-quartz-cluster.png': { source: f518, width: 1080, height: 1200, crop: { x: 408, y: 408, w: 922, h: 1024, sheetW: 1330, sheetH: 1957 } },
-  'assets/altar/objects/crystals/clear-quartz/clear-quartz-point.png': { source: f518, width: 400, height: 800, crop: { x: 0, y: 408, w: 400, h: 800, sheetW: 1330, sheetH: 1957 } },
-  'assets/altar/objects/crystals/clear-quartz/clear-quartz-tumbled.png': { source: f518, width: 1776, height: 896, crop: { x: 0, y: 1440, w: 1024, h: 517, sheetW: 1330, sheetH: 1957 } },
-  'assets/altar/objects/crystals/dalmatian-jasper/dalmatian-jasper-chips.png': { source: f519, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/dalmatian-jasper/dalmatian-jasper-tumbled.png': { source: f519, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/danburite/danburite-chips.png': { source: f520, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2240 } },
-  'assets/altar/objects/crystals/danburite/danburite-cluster.png': { source: f520, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2240 } },
-  'assets/altar/objects/crystals/danburite/danburite-point.png': { source: f520, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2240 } },
-  'assets/altar/objects/crystals/desert-rose/desert-rose-chips.png': { source: f521, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 1208 } },
-  'assets/altar/objects/crystals/desert-rose/desert-rose-cluster.png': { source: f521, width: 1536, height: 1024, crop: { x: 0, y: 525, w: 1024, h: 683, sheetW: 1024, sheetH: 1208 } },
-  'assets/altar/objects/crystals/emerald/emerald-chips.png': { source: f522, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/emerald/emerald-cluster.png': { source: f522, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/emerald/emerald-point.png': { source: f522, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/emerald/emerald-tumbled.png': { source: f522, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/fluorite/fluorite-chips.png': { source: f523, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/fluorite/fluorite-cluster.png': { source: f523, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/fluorite/fluorite-point.png': { source: f523, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/fluorite/fluorite-tumbled.png': { source: f523, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/garnet/garnet-chips.png': { source: f524, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/garnet/garnet-cluster.png': { source: f524, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/garnet/garnet-point.png': { source: f524, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/garnet/garnet-tumbled.png': { source: f524, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/green-aventurine/green-aventurine-chips.png': { source: f525, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/green-aventurine/green-aventurine-cluster.png': { source: f525, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/green-aventurine/green-aventurine-point.png': { source: f525, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/green-aventurine/green-aventurine-tumbled.png': { source: f525, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/hematite/hematite-chips.png': { source: f526, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/hematite/hematite-cluster.png': { source: f526, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/hematite/hematite-point.png': { source: f526, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/hematite/hematite-tumbled.png': { source: f526, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/herkimer-diamond/herkimer-diamond-chips.png': { source: f527, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/herkimer-diamond/herkimer-diamond-cluster.png': { source: f527, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/herkimer-diamond/herkimer-diamond-point.png': { source: f527, width: 1024, height: 1536, crop: { x: 0, y: 525, w: 683, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/herkimer-diamond/herkimer-diamond-tumbled.png': { source: f527, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/howlite/howlite-chips.png': { source: f528, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/howlite/howlite-cluster.png': { source: f528, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/howlite/howlite-point.png': { source: f528, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/howlite/howlite-tumbled.png': { source: f528, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/iolite/iolite-chips.png': { source: f529, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/iolite/iolite-tumbled.png': { source: f529, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/jade/jade-chips.png': { source: f530, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/jade/jade-cluster.png': { source: f530, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/jade/jade-point.png': { source: f530, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/jade/jade-tumbled.png': { source: f530, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/jet/jet-chips.png': { source: f531, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/jet/jet-cluster.png': { source: f531, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/jet/jet-point.png': { source: f531, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/jet/jet-tumbled.png': { source: f531, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/kyanite/kyanite-chips.png': { source: f532, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/kyanite/kyanite-cluster.png': { source: f532, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/kyanite/kyanite-point.png': { source: f532, width: 1024, height: 1536, crop: { x: 0, y: 525, w: 683, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/kyanite/kyanite-tumbled.png': { source: f532, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/labradorite/labradorite-chips.png': { source: f533, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/labradorite/labradorite-cluster.png': { source: f533, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/labradorite/labradorite-point.png': { source: f533, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/labradorite/labradorite-tumbled.png': { source: f533, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/lapis-lazuli/lapis-lazuli-chips.png': { source: f534, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/lapis-lazuli/lapis-lazuli-cluster.png': { source: f534, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/lapis-lazuli/lapis-lazuli-point.png': { source: f534, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/lapis-lazuli/lapis-lazuli-tumbled.png': { source: f534, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/larimar/larimar-chips.png': { source: f535, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/larimar/larimar-tumbled.png': { source: f535, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/lepidolite/lepidolite-chips.png': { source: f536, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/lepidolite/lepidolite-cluster.png': { source: f536, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/lepidolite/lepidolite-point.png': { source: f536, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/lepidolite/lepidolite-tumbled.png': { source: f536, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/malachite/malachite-chips.png': { source: f537, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/malachite/malachite-cluster.png': { source: f537, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/malachite/malachite-point.png': { source: f537, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/malachite/malachite-tumbled.png': { source: f537, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/mookaite/mookaite-chips.png': { source: f538, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/mookaite/mookaite-tumbled.png': { source: f538, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/moonstone/moonstone-chips.png': { source: f539, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/moonstone/moonstone-cluster.png': { source: f539, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/moonstone/moonstone-point.png': { source: f539, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/moonstone/moonstone-tumbled.png': { source: f539, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/morganite/morganite-chips.png': { source: f540, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/morganite/morganite-tumbled.png': { source: f540, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/moss-agate/moss-agate-chips.png': { source: f541, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/moss-agate/moss-agate-cluster.png': { source: f541, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/moss-agate/moss-agate-point.png': { source: f541, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/moss-agate/moss-agate-tumbled.png': { source: f541, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/obsidian/obsidian-chips.png': { source: f542, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/obsidian/obsidian-cluster.png': { source: f542, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/obsidian/obsidian-point.png': { source: f542, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/obsidian/obsidian-tumbled.png': { source: f542, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/ocean-jasper/ocean-jasper-chips.png': { source: f543, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/ocean-jasper/ocean-jasper-tumbled.png': { source: f543, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/onyx/onyx-chips.png': { source: f544, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/onyx/onyx-cluster.png': { source: f544, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/onyx/onyx-point.png': { source: f544, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/onyx/onyx-tumbled.png': { source: f544, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/opal/opal-chips.png': { source: f545, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/opal/opal-cluster.png': { source: f545, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/opal/opal-point.png': { source: f545, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/opal/opal-tumbled.png': { source: f545, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/orange-calcite/orange-calcite-chips.png': { source: f546, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 1733 } },
-  'assets/altar/objects/crystals/orange-calcite/orange-calcite-cluster.png': { source: f546, width: 1536, height: 1024, crop: { x: 0, y: 525, w: 1024, h: 683, sheetW: 1024, sheetH: 1733 } },
-  'assets/altar/objects/crystals/orange-calcite/orange-calcite-tumbled.png': { source: f546, width: 1776, height: 896, crop: { x: 0, y: 1216, w: 1024, h: 517, sheetW: 1024, sheetH: 1733 } },
-  'assets/altar/objects/crystals/peridot/peridot-chips.png': { source: f547, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/peridot/peridot-cluster.png': { source: f547, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/peridot/peridot-point.png': { source: f547, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/peridot/peridot-tumbled.png': { source: f547, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/pink-tourmaline/pink-tourmaline-chips.png': { source: f548, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2074 } },
-  'assets/altar/objects/crystals/pink-tourmaline/pink-tourmaline-point.png': { source: f548, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2074 } },
-  'assets/altar/objects/crystals/pink-tourmaline/pink-tourmaline-tumbled.png': { source: f548, width: 1776, height: 896, crop: { x: 0, y: 1557, w: 1024, h: 517, sheetW: 1024, sheetH: 2074 } },
-  'assets/altar/objects/crystals/prehnite/prehnite-chips.png': { source: f549, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 1733 } },
-  'assets/altar/objects/crystals/prehnite/prehnite-cluster.png': { source: f549, width: 1536, height: 1024, crop: { x: 0, y: 525, w: 1024, h: 683, sheetW: 1024, sheetH: 1733 } },
-  'assets/altar/objects/crystals/prehnite/prehnite-tumbled.png': { source: f549, width: 1776, height: 896, crop: { x: 0, y: 1216, w: 1024, h: 517, sheetW: 1024, sheetH: 1733 } },
-  'assets/altar/objects/crystals/pyrite/pyrite-chips.png': { source: f550, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/pyrite/pyrite-cluster.png': { source: f550, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/pyrite/pyrite-point.png': { source: f550, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/pyrite/pyrite-tumbled.png': { source: f550, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/red-jasper/red-jasper-chips.png': { source: f551, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/red-jasper/red-jasper-cluster.png': { source: f551, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/red-jasper/red-jasper-point.png': { source: f551, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/red-jasper/red-jasper-tumbled.png': { source: f551, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/rhodochrosite/rhodochrosite-chips.png': { source: f552, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/rhodochrosite/rhodochrosite-cluster.png': { source: f552, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/rhodochrosite/rhodochrosite-point.png': { source: f552, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/rhodochrosite/rhodochrosite-tumbled.png': { source: f552, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/rhodonite/rhodonite-chips.png': { source: f553, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/rhodonite/rhodonite-cluster.png': { source: f553, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/rhodonite/rhodonite-point.png': { source: f553, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/rhodonite/rhodonite-tumbled.png': { source: f553, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/rose-quartz/rose-quartz-chips.png': { source: f554, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/rose-quartz/rose-quartz-cluster.png': { source: f554, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/rose-quartz/rose-quartz-point.png': { source: f554, width: 1024, height: 1536, crop: { x: 0, y: 525, w: 683, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/rose-quartz/rose-quartz-tumbled.png': { source: f554, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/ruby/ruby-chips.png': { source: f555, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/ruby/ruby-cluster.png': { source: f555, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/ruby/ruby-point.png': { source: f555, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/ruby/ruby-tumbled.png': { source: f555, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/rutilated-quartz/rutilated-quartz-chips.png': { source: f556, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2074 } },
-  'assets/altar/objects/crystals/rutilated-quartz/rutilated-quartz-point.png': { source: f556, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2074 } },
-  'assets/altar/objects/crystals/rutilated-quartz/rutilated-quartz-tumbled.png': { source: f556, width: 1776, height: 896, crop: { x: 0, y: 1557, w: 1024, h: 517, sheetW: 1024, sheetH: 2074 } },
-  'assets/altar/objects/crystals/sapphire/sapphire-chips.png': { source: f557, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/sapphire/sapphire-cluster.png': { source: f557, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/sapphire/sapphire-point.png': { source: f557, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/sapphire/sapphire-tumbled.png': { source: f557, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/selenite/selenite-chips.png': { source: f558, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/selenite/selenite-cluster.png': { source: f558, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/selenite/selenite-point.png': { source: f558, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/selenite/selenite-tumbled.png': { source: f558, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/shungite/shungite-chips.png': { source: f559, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/shungite/shungite-cluster.png': { source: f559, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/shungite/shungite-point.png': { source: f559, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/shungite/shungite-tumbled.png': { source: f559, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/smoky-quartz/smoky-quartz-chips.png': { source: f560, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/smoky-quartz/smoky-quartz-cluster.png': { source: f560, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/smoky-quartz/smoky-quartz-point.png': { source: f560, width: 1024, height: 1536, crop: { x: 0, y: 525, w: 683, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/smoky-quartz/smoky-quartz-tumbled.png': { source: f560, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/snowflake-obsidian/snowflake-obsidian-chips.png': { source: f561, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/snowflake-obsidian/snowflake-obsidian-tumbled.png': { source: f561, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
-  'assets/altar/objects/crystals/sodalite/sodalite-chips.png': { source: f562, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/sodalite/sodalite-cluster.png': { source: f562, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/sodalite/sodalite-point.png': { source: f562, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/sodalite/sodalite-tumbled.png': { source: f562, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/spirit-quartz/spirit-quartz-chips.png': { source: f563, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2240 } },
-  'assets/altar/objects/crystals/spirit-quartz/spirit-quartz-cluster.png': { source: f563, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2240 } },
-  'assets/altar/objects/crystals/spirit-quartz/spirit-quartz-point.png': { source: f563, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2240 } },
-  'assets/altar/objects/crystals/sunstone/sunstone-chips.png': { source: f564, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/sunstone/sunstone-cluster.png': { source: f564, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/sunstone/sunstone-point.png': { source: f564, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/sunstone/sunstone-tumbled.png': { source: f564, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/tiger-eye/tiger-eye-chips.png': { source: f565, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/tiger-eye/tiger-eye-cluster.png': { source: f565, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/tiger-eye/tiger-eye-point.png': { source: f565, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/tiger-eye/tiger-eye-tumbled.png': { source: f565, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/tourmalinated-quartz/tourmalinated-quartz-chips.png': { source: f566, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2074 } },
-  'assets/altar/objects/crystals/tourmalinated-quartz/tourmalinated-quartz-point.png': { source: f566, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2074 } },
-  'assets/altar/objects/crystals/tourmalinated-quartz/tourmalinated-quartz-tumbled.png': { source: f566, width: 1776, height: 896, crop: { x: 0, y: 1557, w: 1024, h: 517, sheetW: 1024, sheetH: 2074 } },
-  'assets/altar/objects/crystals/turquoise/turquoise-chips.png': { source: f567, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/turquoise/turquoise-cluster.png': { source: f567, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/turquoise/turquoise-point.png': { source: f567, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/turquoise/turquoise-tumbled.png': { source: f567, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/unakite/unakite-chips.png': { source: f568, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/unakite/unakite-cluster.png': { source: f568, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/unakite/unakite-point.png': { source: f568, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/crystals/unakite/unakite-tumbled.png': { source: f568, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
-  'assets/altar/objects/herbs/allspice/allspice-loose.png': { source: f569, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/allspice/allspice-oil.png': { source: f569, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/allspice/allspice-sprig.png': { source: f569, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/angelica/angelica-loose.png': { source: f570, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/angelica/angelica-oil.png': { source: f570, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/angelica/angelica-sprig.png': { source: f570, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/anise/anise-loose.png': { source: f571, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/anise/anise-oil.png': { source: f571, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/anise/anise-sprig.png': { source: f571, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/basil/basil-loose.png': { source: f572, width: 800, height: 400, crop: { x: 0, y: 1032, w: 800, h: 400, sheetW: 1330, sheetH: 1432 } },
-  'assets/altar/objects/herbs/basil/basil-oil.png': { source: f572, width: 400, height: 800, crop: { x: 930, y: 0, w: 400, h: 800, sheetW: 1330, sheetH: 1432 } },
-  'assets/altar/objects/herbs/basil/basil-sprig.png': { source: f572, width: 1080, height: 1200, crop: { x: 0, y: 0, w: 922, h: 1024, sheetW: 1330, sheetH: 1432 } },
-  'assets/altar/objects/herbs/bay-leaf/bay-loose.png': { source: f573, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/bay-leaf/bay-oil.png': { source: f573, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/bay-leaf/bay-sprig.png': { source: f573, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/belladonna/belladonna-loose.png': { source: f574, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/belladonna/belladonna-oil.png': { source: f574, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/belladonna/belladonna-sprig.png': { source: f574, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/birch/birch-loose.png': { source: f575, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/birch/birch-oil.png': { source: f575, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/birch/birch-sprig.png': { source: f575, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/black-pepper/black-pepper-loose.png': { source: f576, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/black-pepper/black-pepper-oil.png': { source: f576, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/black-pepper/black-pepper-sprig.png': { source: f576, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/borage/borage-loose.png': { source: f577, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/borage/borage-oil.png': { source: f577, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/borage/borage-sprig.png': { source: f577, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/calendula/calendula-loose.png': { source: f578, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/calendula/calendula-oil.png': { source: f578, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/calendula/calendula-sprig.png': { source: f578, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/cardamom/cardamom-loose.png': { source: f579, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/cardamom/cardamom-oil.png': { source: f579, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/cardamom/cardamom-sprig.png': { source: f579, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/catnip/catnip-loose.png': { source: f580, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/catnip/catnip-oil.png': { source: f580, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/catnip/catnip-sprig.png': { source: f580, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/cedar/cedar-loose.png': { source: f581, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/cedar/cedar-oil.png': { source: f581, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/cedar/cedar-sprig.png': { source: f581, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/chamomile/chamomile-loose.png': { source: f582, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/chamomile/chamomile-oil.png': { source: f582, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/chamomile/chamomile-sprig.png': { source: f582, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/cinnamon/cinnamon-loose.png': { source: f583, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/cinnamon/cinnamon-oil.png': { source: f583, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/cinnamon/cinnamon-sprig.png': { source: f583, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
-  'assets/altar/objects/herbs/cinquefoil/cinquefoil-loose.png': { source: f584, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/cinquefoil/cinquefoil-oil.png': { source: f584, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/cinquefoil/cinquefoil-sprig.png': { source: f584, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/clove/clove-loose.png': { source: f585, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/clove/clove-oil.png': { source: f585, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/clove/clove-sprig.png': { source: f585, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/comfrey/comfrey-loose.png': { source: f586, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/comfrey/comfrey-oil.png': { source: f586, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/comfrey/comfrey-sprig.png': { source: f586, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/copal/copal-loose.png': { source: f587, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/copal/copal-oil.png': { source: f587, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/copal/copal-sprig.png': { source: f587, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/cypress/cypress-loose.png': { source: f588, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/cypress/cypress-oil.png': { source: f588, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/cypress/cypress-sprig.png': { source: f588, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/damiana/damiana-loose.png': { source: f589, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/damiana/damiana-oil.png': { source: f589, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/damiana/damiana-sprig.png': { source: f589, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dandelion/dandelion-loose.png': { source: f590, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dandelion/dandelion-oil.png': { source: f590, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dandelion/dandelion-sprig.png': { source: f590, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dittany-of-crete/dittany-of-crete-loose.png': { source: f591, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dittany-of-crete/dittany-of-crete-oil.png': { source: f591, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dittany-of-crete/dittany-of-crete-sprig.png': { source: f591, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dragons-blood/dragons-blood-loose.png': { source: f592, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dragons-blood/dragons-blood-oil.png': { source: f592, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/dragons-blood/dragons-blood-sprig.png': { source: f592, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/elder/elder-loose.png': { source: f593, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/elder/elder-oil.png': { source: f593, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/elder/elder-sprig.png': { source: f593, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/eucalyptus/eucalyptus-loose.png': { source: f594, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/eucalyptus/eucalyptus-oil.png': { source: f594, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/eucalyptus/eucalyptus-sprig.png': { source: f594, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/fennel/fennel-loose.png': { source: f595, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/fennel/fennel-oil.png': { source: f595, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/fennel/fennel-sprig.png': { source: f595, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/foxglove/foxglove-loose.png': { source: f596, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1208, sheetH: 1549 } },
-  'assets/altar/objects/herbs/foxglove/foxglove-oil.png': { source: f596, width: 1024, height: 1536, crop: { x: 525, y: 0, w: 683, h: 1024, sheetW: 1208, sheetH: 1549 } },
-  'assets/altar/objects/herbs/foxglove/foxglove-sprig.png': { source: f596, width: 896, height: 1776, crop: { x: 0, y: 0, w: 517, h: 1024, sheetW: 1208, sheetH: 1549 } },
-  'assets/altar/objects/herbs/frankincense/frankincense-loose.png': { source: f597, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/frankincense/frankincense-oil.png': { source: f597, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/frankincense/frankincense-sprig.png': { source: f597, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/galangal/galangal-loose.png': { source: f598, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/galangal/galangal-oil.png': { source: f598, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/galangal/galangal-sprig.png': { source: f598, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/garlic/garlic-loose.png': { source: f599, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/garlic/garlic-oil.png': { source: f599, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/garlic/garlic-sprig.png': { source: f599, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/ginger/ginger-loose.png': { source: f600, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/ginger/ginger-oil.png': { source: f600, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/ginger/ginger-sprig.png': { source: f600, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/hawthorn/hawthorn-loose.png': { source: f601, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/hawthorn/hawthorn-oil.png': { source: f601, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/hawthorn/hawthorn-sprig.png': { source: f601, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/heather/heather-loose.png': { source: f602, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/heather/heather-oil.png': { source: f602, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/heather/heather-sprig.png': { source: f602, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/crystals/amazonite/amazonite-chips.png': { source: f510, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/amazonite/amazonite-tumbled.png': { source: f510, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/amber/amber-chips.png': { source: f511, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/amber/amber-cluster.png': { source: f511, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/amber/amber-point.png': { source: f511, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/amber/amber-tumbled.png': { source: f511, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/amethyst/amethyst-chips.png': { source: f512, width: 800, height: 400, crop: { x: 0, y: 0, w: 800, h: 400, sheetW: 1208, sheetH: 1733 } },
+  'assets/altar/objects/crystals/amethyst/amethyst-cluster.png': { source: f512, width: 800, height: 500, crop: { x: 408, y: 408, w: 800, h: 500, sheetW: 1208, sheetH: 1733 } },
+  'assets/altar/objects/crystals/amethyst/amethyst-point.png': { source: f512, width: 400, height: 800, crop: { x: 0, y: 408, w: 400, h: 800, sheetW: 1208, sheetH: 1733 } },
+  'assets/altar/objects/crystals/amethyst/amethyst-tumbled.png': { source: f512, width: 1776, height: 896, crop: { x: 0, y: 1216, w: 1024, h: 517, sheetW: 1208, sheetH: 1733 } },
+  'assets/altar/objects/crystals/ametrine/ametrine-chips.png': { source: f513, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/ametrine/ametrine-cluster.png': { source: f513, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/ametrine/ametrine-point.png': { source: f513, width: 1024, height: 1536, crop: { x: 0, y: 525, w: 683, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/ametrine/ametrine-tumbled.png': { source: f513, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/angelite/angelite-chips.png': { source: f514, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/angelite/angelite-cluster.png': { source: f514, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/angelite/angelite-point.png': { source: f514, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/angelite/angelite-tumbled.png': { source: f514, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/apache-tear/apache-tear-chips.png': { source: f515, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/apache-tear/apache-tear-cluster.png': { source: f515, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/apache-tear/apache-tear-point.png': { source: f515, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/apache-tear/apache-tear-tumbled.png': { source: f515, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/aquamarine/aquamarine-chips.png': { source: f516, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/aquamarine/aquamarine-cluster.png': { source: f516, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/aquamarine/aquamarine-point.png': { source: f516, width: 1024, height: 1536, crop: { x: 0, y: 525, w: 683, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/aquamarine/aquamarine-tumbled.png': { source: f516, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/aragonite/aragonite-chips.png': { source: f517, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 1733 } },
+  'assets/altar/objects/crystals/aragonite/aragonite-cluster.png': { source: f517, width: 1536, height: 1024, crop: { x: 0, y: 525, w: 1024, h: 683, sheetW: 1024, sheetH: 1733 } },
+  'assets/altar/objects/crystals/aragonite/aragonite-tumbled.png': { source: f517, width: 1776, height: 896, crop: { x: 0, y: 1216, w: 1024, h: 517, sheetW: 1024, sheetH: 1733 } },
+  'assets/altar/objects/crystals/azurite/azurite-chips.png': { source: f518, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 1733 } },
+  'assets/altar/objects/crystals/azurite/azurite-cluster.png': { source: f518, width: 1536, height: 1024, crop: { x: 0, y: 525, w: 1024, h: 683, sheetW: 1024, sheetH: 1733 } },
+  'assets/altar/objects/crystals/azurite/azurite-tumbled.png': { source: f518, width: 1776, height: 896, crop: { x: 0, y: 1216, w: 1024, h: 517, sheetW: 1024, sheetH: 1733 } },
+  'assets/altar/objects/crystals/black-tourmaline/black-tourmaline-chips.png': { source: f519, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/black-tourmaline/black-tourmaline-cluster.png': { source: f519, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/black-tourmaline/black-tourmaline-point.png': { source: f519, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/black-tourmaline/black-tourmaline-tumbled.png': { source: f519, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/bloodstone/bloodstone-chips.png': { source: f520, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/bloodstone/bloodstone-cluster.png': { source: f520, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/bloodstone/bloodstone-point.png': { source: f520, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/bloodstone/bloodstone-tumbled.png': { source: f520, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/blue-apatite/blue-apatite-chips.png': { source: f521, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/blue-apatite/blue-apatite-tumbled.png': { source: f521, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/blue-lace-agate/blue-lace-agate-chips.png': { source: f522, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/blue-lace-agate/blue-lace-agate-cluster.png': { source: f522, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/blue-lace-agate/blue-lace-agate-point.png': { source: f522, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/blue-lace-agate/blue-lace-agate-tumbled.png': { source: f522, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/carnelian/carnelian-chips.png': { source: f523, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/carnelian/carnelian-cluster.png': { source: f523, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/carnelian/carnelian-point.png': { source: f523, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/carnelian/carnelian-tumbled.png': { source: f523, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/celestite/celestite-chips.png': { source: f524, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/celestite/celestite-cluster.png': { source: f524, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/celestite/celestite-point.png': { source: f524, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/celestite/celestite-tumbled.png': { source: f524, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/charoite/charoite-chips.png': { source: f525, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/charoite/charoite-tumbled.png': { source: f525, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/chrysocolla/chrysocolla-chips.png': { source: f526, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/chrysocolla/chrysocolla-cluster.png': { source: f526, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/chrysocolla/chrysocolla-point.png': { source: f526, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/chrysocolla/chrysocolla-tumbled.png': { source: f526, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/chrysoprase/chrysoprase-chips.png': { source: f527, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/chrysoprase/chrysoprase-cluster.png': { source: f527, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/chrysoprase/chrysoprase-point.png': { source: f527, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/chrysoprase/chrysoprase-tumbled.png': { source: f527, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/citrine/citrine-chips.png': { source: f528, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/citrine/citrine-cluster.png': { source: f528, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/citrine/citrine-point.png': { source: f528, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/citrine/citrine-tumbled.png': { source: f528, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/clear-quartz/clear-quartz-chips.png': { source: f529, width: 800, height: 400, crop: { x: 0, y: 0, w: 800, h: 400, sheetW: 1330, sheetH: 1957 } },
+  'assets/altar/objects/crystals/clear-quartz/clear-quartz-cluster.png': { source: f529, width: 1080, height: 1200, crop: { x: 408, y: 408, w: 922, h: 1024, sheetW: 1330, sheetH: 1957 } },
+  'assets/altar/objects/crystals/clear-quartz/clear-quartz-point.png': { source: f529, width: 400, height: 800, crop: { x: 0, y: 408, w: 400, h: 800, sheetW: 1330, sheetH: 1957 } },
+  'assets/altar/objects/crystals/clear-quartz/clear-quartz-tumbled.png': { source: f529, width: 1776, height: 896, crop: { x: 0, y: 1440, w: 1024, h: 517, sheetW: 1330, sheetH: 1957 } },
+  'assets/altar/objects/crystals/dalmatian-jasper/dalmatian-jasper-chips.png': { source: f530, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/dalmatian-jasper/dalmatian-jasper-tumbled.png': { source: f530, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/danburite/danburite-chips.png': { source: f531, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2240 } },
+  'assets/altar/objects/crystals/danburite/danburite-cluster.png': { source: f531, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2240 } },
+  'assets/altar/objects/crystals/danburite/danburite-point.png': { source: f531, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2240 } },
+  'assets/altar/objects/crystals/desert-rose/desert-rose-chips.png': { source: f532, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 1208 } },
+  'assets/altar/objects/crystals/desert-rose/desert-rose-cluster.png': { source: f532, width: 1536, height: 1024, crop: { x: 0, y: 525, w: 1024, h: 683, sheetW: 1024, sheetH: 1208 } },
+  'assets/altar/objects/crystals/emerald/emerald-chips.png': { source: f533, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/emerald/emerald-cluster.png': { source: f533, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/emerald/emerald-point.png': { source: f533, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/emerald/emerald-tumbled.png': { source: f533, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/fluorite/fluorite-chips.png': { source: f534, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/fluorite/fluorite-cluster.png': { source: f534, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/fluorite/fluorite-point.png': { source: f534, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/fluorite/fluorite-tumbled.png': { source: f534, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/garnet/garnet-chips.png': { source: f535, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/garnet/garnet-cluster.png': { source: f535, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/garnet/garnet-point.png': { source: f535, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/garnet/garnet-tumbled.png': { source: f535, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/green-aventurine/green-aventurine-chips.png': { source: f536, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/green-aventurine/green-aventurine-cluster.png': { source: f536, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/green-aventurine/green-aventurine-point.png': { source: f536, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/green-aventurine/green-aventurine-tumbled.png': { source: f536, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/hematite/hematite-chips.png': { source: f537, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/hematite/hematite-cluster.png': { source: f537, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/hematite/hematite-point.png': { source: f537, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/hematite/hematite-tumbled.png': { source: f537, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/herkimer-diamond/herkimer-diamond-chips.png': { source: f538, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/herkimer-diamond/herkimer-diamond-cluster.png': { source: f538, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/herkimer-diamond/herkimer-diamond-point.png': { source: f538, width: 1024, height: 1536, crop: { x: 0, y: 525, w: 683, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/herkimer-diamond/herkimer-diamond-tumbled.png': { source: f538, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/howlite/howlite-chips.png': { source: f539, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/howlite/howlite-cluster.png': { source: f539, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/howlite/howlite-point.png': { source: f539, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/howlite/howlite-tumbled.png': { source: f539, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/iolite/iolite-chips.png': { source: f540, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/iolite/iolite-tumbled.png': { source: f540, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/jade/jade-chips.png': { source: f541, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/jade/jade-cluster.png': { source: f541, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/jade/jade-point.png': { source: f541, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/jade/jade-tumbled.png': { source: f541, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/jet/jet-chips.png': { source: f542, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/jet/jet-cluster.png': { source: f542, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/jet/jet-point.png': { source: f542, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/jet/jet-tumbled.png': { source: f542, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/kyanite/kyanite-chips.png': { source: f543, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/kyanite/kyanite-cluster.png': { source: f543, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/kyanite/kyanite-point.png': { source: f543, width: 1024, height: 1536, crop: { x: 0, y: 525, w: 683, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/kyanite/kyanite-tumbled.png': { source: f543, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/labradorite/labradorite-chips.png': { source: f544, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/labradorite/labradorite-cluster.png': { source: f544, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/labradorite/labradorite-point.png': { source: f544, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/labradorite/labradorite-tumbled.png': { source: f544, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/lapis-lazuli/lapis-lazuli-chips.png': { source: f545, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/lapis-lazuli/lapis-lazuli-cluster.png': { source: f545, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/lapis-lazuli/lapis-lazuli-point.png': { source: f545, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/lapis-lazuli/lapis-lazuli-tumbled.png': { source: f545, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/larimar/larimar-chips.png': { source: f546, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/larimar/larimar-tumbled.png': { source: f546, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/lepidolite/lepidolite-chips.png': { source: f547, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/lepidolite/lepidolite-cluster.png': { source: f547, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/lepidolite/lepidolite-point.png': { source: f547, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/lepidolite/lepidolite-tumbled.png': { source: f547, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/malachite/malachite-chips.png': { source: f548, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/malachite/malachite-cluster.png': { source: f548, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/malachite/malachite-point.png': { source: f548, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/malachite/malachite-tumbled.png': { source: f548, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/mookaite/mookaite-chips.png': { source: f549, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/mookaite/mookaite-tumbled.png': { source: f549, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/moonstone/moonstone-chips.png': { source: f550, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/moonstone/moonstone-cluster.png': { source: f550, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/moonstone/moonstone-point.png': { source: f550, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/moonstone/moonstone-tumbled.png': { source: f550, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/morganite/morganite-chips.png': { source: f551, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/morganite/morganite-tumbled.png': { source: f551, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/moss-agate/moss-agate-chips.png': { source: f552, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/moss-agate/moss-agate-cluster.png': { source: f552, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/moss-agate/moss-agate-point.png': { source: f552, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/moss-agate/moss-agate-tumbled.png': { source: f552, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/obsidian/obsidian-chips.png': { source: f553, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/obsidian/obsidian-cluster.png': { source: f553, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/obsidian/obsidian-point.png': { source: f553, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/obsidian/obsidian-tumbled.png': { source: f553, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/ocean-jasper/ocean-jasper-chips.png': { source: f554, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/ocean-jasper/ocean-jasper-tumbled.png': { source: f554, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/onyx/onyx-chips.png': { source: f555, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/onyx/onyx-cluster.png': { source: f555, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/onyx/onyx-point.png': { source: f555, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/onyx/onyx-tumbled.png': { source: f555, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/opal/opal-chips.png': { source: f556, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/opal/opal-cluster.png': { source: f556, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/opal/opal-point.png': { source: f556, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/opal/opal-tumbled.png': { source: f556, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/orange-calcite/orange-calcite-chips.png': { source: f557, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 1733 } },
+  'assets/altar/objects/crystals/orange-calcite/orange-calcite-cluster.png': { source: f557, width: 1536, height: 1024, crop: { x: 0, y: 525, w: 1024, h: 683, sheetW: 1024, sheetH: 1733 } },
+  'assets/altar/objects/crystals/orange-calcite/orange-calcite-tumbled.png': { source: f557, width: 1776, height: 896, crop: { x: 0, y: 1216, w: 1024, h: 517, sheetW: 1024, sheetH: 1733 } },
+  'assets/altar/objects/crystals/peridot/peridot-chips.png': { source: f558, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/peridot/peridot-cluster.png': { source: f558, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/peridot/peridot-point.png': { source: f558, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/peridot/peridot-tumbled.png': { source: f558, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/pink-tourmaline/pink-tourmaline-chips.png': { source: f559, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2074 } },
+  'assets/altar/objects/crystals/pink-tourmaline/pink-tourmaline-point.png': { source: f559, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2074 } },
+  'assets/altar/objects/crystals/pink-tourmaline/pink-tourmaline-tumbled.png': { source: f559, width: 1776, height: 896, crop: { x: 0, y: 1557, w: 1024, h: 517, sheetW: 1024, sheetH: 2074 } },
+  'assets/altar/objects/crystals/prehnite/prehnite-chips.png': { source: f560, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 1733 } },
+  'assets/altar/objects/crystals/prehnite/prehnite-cluster.png': { source: f560, width: 1536, height: 1024, crop: { x: 0, y: 525, w: 1024, h: 683, sheetW: 1024, sheetH: 1733 } },
+  'assets/altar/objects/crystals/prehnite/prehnite-tumbled.png': { source: f560, width: 1776, height: 896, crop: { x: 0, y: 1216, w: 1024, h: 517, sheetW: 1024, sheetH: 1733 } },
+  'assets/altar/objects/crystals/pyrite/pyrite-chips.png': { source: f561, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/pyrite/pyrite-cluster.png': { source: f561, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/pyrite/pyrite-point.png': { source: f561, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/pyrite/pyrite-tumbled.png': { source: f561, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/red-jasper/red-jasper-chips.png': { source: f562, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/red-jasper/red-jasper-cluster.png': { source: f562, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/red-jasper/red-jasper-point.png': { source: f562, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/red-jasper/red-jasper-tumbled.png': { source: f562, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/rhodochrosite/rhodochrosite-chips.png': { source: f563, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/rhodochrosite/rhodochrosite-cluster.png': { source: f563, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/rhodochrosite/rhodochrosite-point.png': { source: f563, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/rhodochrosite/rhodochrosite-tumbled.png': { source: f563, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/rhodonite/rhodonite-chips.png': { source: f564, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/rhodonite/rhodonite-cluster.png': { source: f564, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/rhodonite/rhodonite-point.png': { source: f564, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/rhodonite/rhodonite-tumbled.png': { source: f564, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/rose-quartz/rose-quartz-chips.png': { source: f565, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/rose-quartz/rose-quartz-cluster.png': { source: f565, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/rose-quartz/rose-quartz-point.png': { source: f565, width: 1024, height: 1536, crop: { x: 0, y: 525, w: 683, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/rose-quartz/rose-quartz-tumbled.png': { source: f565, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/ruby/ruby-chips.png': { source: f566, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/ruby/ruby-cluster.png': { source: f566, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/ruby/ruby-point.png': { source: f566, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/ruby/ruby-tumbled.png': { source: f566, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/rutilated-quartz/rutilated-quartz-chips.png': { source: f567, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2074 } },
+  'assets/altar/objects/crystals/rutilated-quartz/rutilated-quartz-point.png': { source: f567, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2074 } },
+  'assets/altar/objects/crystals/rutilated-quartz/rutilated-quartz-tumbled.png': { source: f567, width: 1776, height: 896, crop: { x: 0, y: 1557, w: 1024, h: 517, sheetW: 1024, sheetH: 2074 } },
+  'assets/altar/objects/crystals/sapphire/sapphire-chips.png': { source: f568, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/sapphire/sapphire-cluster.png': { source: f568, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/sapphire/sapphire-point.png': { source: f568, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/sapphire/sapphire-tumbled.png': { source: f568, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/selenite/selenite-chips.png': { source: f569, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/selenite/selenite-cluster.png': { source: f569, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/selenite/selenite-point.png': { source: f569, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/selenite/selenite-tumbled.png': { source: f569, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/shungite/shungite-chips.png': { source: f570, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/shungite/shungite-cluster.png': { source: f570, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/shungite/shungite-point.png': { source: f570, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/shungite/shungite-tumbled.png': { source: f570, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/smoky-quartz/smoky-quartz-chips.png': { source: f571, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/smoky-quartz/smoky-quartz-cluster.png': { source: f571, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/smoky-quartz/smoky-quartz-point.png': { source: f571, width: 1024, height: 1536, crop: { x: 0, y: 525, w: 683, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/smoky-quartz/smoky-quartz-tumbled.png': { source: f571, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/snowflake-obsidian/snowflake-obsidian-chips.png': { source: f572, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/snowflake-obsidian/snowflake-obsidian-tumbled.png': { source: f572, width: 1776, height: 896, crop: { x: 1032, y: 0, w: 1024, h: 517, sheetW: 2056, sheetH: 517 } },
+  'assets/altar/objects/crystals/sodalite/sodalite-chips.png': { source: f573, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/sodalite/sodalite-cluster.png': { source: f573, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/sodalite/sodalite-point.png': { source: f573, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/sodalite/sodalite-tumbled.png': { source: f573, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/spirit-quartz/spirit-quartz-chips.png': { source: f574, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2240 } },
+  'assets/altar/objects/crystals/spirit-quartz/spirit-quartz-cluster.png': { source: f574, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2240 } },
+  'assets/altar/objects/crystals/spirit-quartz/spirit-quartz-point.png': { source: f574, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2240 } },
+  'assets/altar/objects/crystals/sunstone/sunstone-chips.png': { source: f575, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/sunstone/sunstone-cluster.png': { source: f575, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/sunstone/sunstone-point.png': { source: f575, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/sunstone/sunstone-tumbled.png': { source: f575, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/tiger-eye/tiger-eye-chips.png': { source: f576, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/tiger-eye/tiger-eye-cluster.png': { source: f576, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/tiger-eye/tiger-eye-point.png': { source: f576, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/tiger-eye/tiger-eye-tumbled.png': { source: f576, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/tourmalinated-quartz/tourmalinated-quartz-chips.png': { source: f577, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2074 } },
+  'assets/altar/objects/crystals/tourmalinated-quartz/tourmalinated-quartz-point.png': { source: f577, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2074 } },
+  'assets/altar/objects/crystals/tourmalinated-quartz/tourmalinated-quartz-tumbled.png': { source: f577, width: 1776, height: 896, crop: { x: 0, y: 1557, w: 1024, h: 517, sheetW: 1024, sheetH: 2074 } },
+  'assets/altar/objects/crystals/turquoise/turquoise-chips.png': { source: f578, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/turquoise/turquoise-cluster.png': { source: f578, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/turquoise/turquoise-point.png': { source: f578, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/turquoise/turquoise-tumbled.png': { source: f578, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/unakite/unakite-chips.png': { source: f579, width: 1776, height: 896, crop: { x: 0, y: 0, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/unakite/unakite-cluster.png': { source: f579, width: 1536, height: 1024, crop: { x: 0, y: 1557, w: 1024, h: 683, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/unakite/unakite-point.png': { source: f579, width: 896, height: 1776, crop: { x: 0, y: 525, w: 517, h: 1024, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/crystals/unakite/unakite-tumbled.png': { source: f579, width: 1776, height: 896, crop: { x: 0, y: 2248, w: 1024, h: 517, sheetW: 1024, sheetH: 2765 } },
+  'assets/altar/objects/herbs/allspice/allspice-loose.png': { source: f580, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/allspice/allspice-oil.png': { source: f580, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/allspice/allspice-sprig.png': { source: f580, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/angelica/angelica-loose.png': { source: f581, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/angelica/angelica-oil.png': { source: f581, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/angelica/angelica-sprig.png': { source: f581, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/anise/anise-loose.png': { source: f582, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/anise/anise-oil.png': { source: f582, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/anise/anise-sprig.png': { source: f582, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/basil/basil-loose.png': { source: f583, width: 800, height: 400, crop: { x: 0, y: 1032, w: 800, h: 400, sheetW: 1330, sheetH: 1432 } },
+  'assets/altar/objects/herbs/basil/basil-oil.png': { source: f583, width: 400, height: 800, crop: { x: 930, y: 0, w: 400, h: 800, sheetW: 1330, sheetH: 1432 } },
+  'assets/altar/objects/herbs/basil/basil-sprig.png': { source: f583, width: 1080, height: 1200, crop: { x: 0, y: 0, w: 922, h: 1024, sheetW: 1330, sheetH: 1432 } },
+  'assets/altar/objects/herbs/bay-leaf/bay-loose.png': { source: f584, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/bay-leaf/bay-oil.png': { source: f584, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/bay-leaf/bay-sprig.png': { source: f584, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/belladonna/belladonna-loose.png': { source: f585, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/belladonna/belladonna-oil.png': { source: f585, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/belladonna/belladonna-sprig.png': { source: f585, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/birch/birch-loose.png': { source: f586, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/birch/birch-oil.png': { source: f586, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/birch/birch-sprig.png': { source: f586, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/black-pepper/black-pepper-loose.png': { source: f587, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/black-pepper/black-pepper-oil.png': { source: f587, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/black-pepper/black-pepper-sprig.png': { source: f587, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/borage/borage-loose.png': { source: f588, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/borage/borage-oil.png': { source: f588, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/borage/borage-sprig.png': { source: f588, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/calendula/calendula-loose.png': { source: f589, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/calendula/calendula-oil.png': { source: f589, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/calendula/calendula-sprig.png': { source: f589, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cardamom/cardamom-loose.png': { source: f590, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cardamom/cardamom-oil.png': { source: f590, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cardamom/cardamom-sprig.png': { source: f590, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/catnip/catnip-loose.png': { source: f591, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/catnip/catnip-oil.png': { source: f591, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/catnip/catnip-sprig.png': { source: f591, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cedar/cedar-loose.png': { source: f592, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/cedar/cedar-oil.png': { source: f592, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/cedar/cedar-sprig.png': { source: f592, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/chamomile/chamomile-loose.png': { source: f593, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/chamomile/chamomile-oil.png': { source: f593, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/chamomile/chamomile-sprig.png': { source: f593, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/cinnamon/cinnamon-loose.png': { source: f594, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/cinnamon/cinnamon-oil.png': { source: f594, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/cinnamon/cinnamon-sprig.png': { source: f594, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 808, sheetH: 1208 } },
+  'assets/altar/objects/herbs/cinquefoil/cinquefoil-loose.png': { source: f595, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cinquefoil/cinquefoil-oil.png': { source: f595, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cinquefoil/cinquefoil-sprig.png': { source: f595, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/clove/clove-loose.png': { source: f596, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/clove/clove-oil.png': { source: f596, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/clove/clove-sprig.png': { source: f596, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/comfrey/comfrey-loose.png': { source: f597, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/comfrey/comfrey-oil.png': { source: f597, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/comfrey/comfrey-sprig.png': { source: f597, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/copal/copal-loose.png': { source: f598, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/copal/copal-oil.png': { source: f598, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/copal/copal-sprig.png': { source: f598, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cypress/cypress-loose.png': { source: f599, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cypress/cypress-oil.png': { source: f599, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/cypress/cypress-sprig.png': { source: f599, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/damiana/damiana-loose.png': { source: f600, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/damiana/damiana-oil.png': { source: f600, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/damiana/damiana-sprig.png': { source: f600, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dandelion/dandelion-loose.png': { source: f601, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dandelion/dandelion-oil.png': { source: f601, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dandelion/dandelion-sprig.png': { source: f601, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dittany-of-crete/dittany-of-crete-loose.png': { source: f602, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dittany-of-crete/dittany-of-crete-oil.png': { source: f602, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dittany-of-crete/dittany-of-crete-sprig.png': { source: f602, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dragons-blood/dragons-blood-loose.png': { source: f603, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dragons-blood/dragons-blood-oil.png': { source: f603, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/dragons-blood/dragons-blood-sprig.png': { source: f603, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/elder/elder-loose.png': { source: f604, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/elder/elder-oil.png': { source: f604, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/elder/elder-sprig.png': { source: f604, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/eucalyptus/eucalyptus-loose.png': { source: f605, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/eucalyptus/eucalyptus-oil.png': { source: f605, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/eucalyptus/eucalyptus-sprig.png': { source: f605, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/fennel/fennel-loose.png': { source: f606, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/fennel/fennel-oil.png': { source: f606, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/fennel/fennel-sprig.png': { source: f606, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/foxglove/foxglove-loose.png': { source: f607, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1208, sheetH: 1549 } },
+  'assets/altar/objects/herbs/foxglove/foxglove-oil.png': { source: f607, width: 1024, height: 1536, crop: { x: 525, y: 0, w: 683, h: 1024, sheetW: 1208, sheetH: 1549 } },
+  'assets/altar/objects/herbs/foxglove/foxglove-sprig.png': { source: f607, width: 896, height: 1776, crop: { x: 0, y: 0, w: 517, h: 1024, sheetW: 1208, sheetH: 1549 } },
+  'assets/altar/objects/herbs/frankincense/frankincense-loose.png': { source: f608, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/frankincense/frankincense-oil.png': { source: f608, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/frankincense/frankincense-sprig.png': { source: f608, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/galangal/galangal-loose.png': { source: f609, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/galangal/galangal-oil.png': { source: f609, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/galangal/galangal-sprig.png': { source: f609, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/garlic/garlic-loose.png': { source: f610, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/garlic/garlic-oil.png': { source: f610, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/garlic/garlic-sprig.png': { source: f610, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/ginger/ginger-loose.png': { source: f611, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/ginger/ginger-oil.png': { source: f611, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/ginger/ginger-sprig.png': { source: f611, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hawthorn/hawthorn-loose.png': { source: f612, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hawthorn/hawthorn-oil.png': { source: f612, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hawthorn/hawthorn-sprig.png': { source: f612, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/heather/heather-loose.png': { source: f613, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/heather/heather-oil.png': { source: f613, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/heather/heather-sprig.png': { source: f613, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
   'assets/altar/objects/herbs/herb-mix/herb-mix.png': { source: f307, width: 800, height: 400 },
-  'assets/altar/objects/herbs/hibiscus/hibiscus-loose.png': { source: f603, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/hibiscus/hibiscus-oil.png': { source: f603, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/hibiscus/hibiscus-sprig.png': { source: f603, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/holly/holly-loose.png': { source: f604, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/holly/holly-oil.png': { source: f604, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/holly/holly-sprig.png': { source: f604, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/honeysuckle/honeysuckle-loose.png': { source: f605, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/honeysuckle/honeysuckle-oil.png': { source: f605, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/honeysuckle/honeysuckle-sprig.png': { source: f605, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/hyssop/hyssop-loose.png': { source: f606, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/hyssop/hyssop-oil.png': { source: f606, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/hyssop/hyssop-sprig.png': { source: f606, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hibiscus/hibiscus-loose.png': { source: f614, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hibiscus/hibiscus-oil.png': { source: f614, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hibiscus/hibiscus-sprig.png': { source: f614, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/holly/holly-loose.png': { source: f615, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/holly/holly-oil.png': { source: f615, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/holly/holly-sprig.png': { source: f615, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/honeysuckle/honeysuckle-loose.png': { source: f616, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/honeysuckle/honeysuckle-oil.png': { source: f616, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/honeysuckle/honeysuckle-sprig.png': { source: f616, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hyssop/hyssop-loose.png': { source: f617, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hyssop/hyssop-oil.png': { source: f617, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/hyssop/hyssop-sprig.png': { source: f617, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
   'assets/altar/objects/herbs/incense/incense.png': { source: f308, width: 500, height: 1536 },
-  'assets/altar/objects/herbs/jasmine/jasmine-loose.png': { source: f607, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/jasmine/jasmine-oil.png': { source: f607, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/jasmine/jasmine-sprig.png': { source: f607, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/juniper/juniper-loose.png': { source: f608, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1619, sheetH: 1549 } },
-  'assets/altar/objects/herbs/juniper/juniper-oil.png': { source: f608, width: 1024, height: 1536, crop: { x: 936, y: 0, w: 683, h: 1024, sheetW: 1619, sheetH: 1549 } },
-  'assets/altar/objects/herbs/juniper/juniper-sprig.png': { source: f608, width: 1088, height: 1200, crop: { x: 0, y: 0, w: 928, h: 1024, sheetW: 1619, sheetH: 1549 } },
-  'assets/altar/objects/herbs/lavender/lavender-loose.png': { source: f609, width: 800, height: 400, crop: { x: 0, y: 1032, w: 800, h: 400, sheetW: 800, sheetH: 1432 } },
-  'assets/altar/objects/herbs/lavender/lavender-oil.png': { source: f609, width: 400, height: 800, crop: { x: 341, y: 0, w: 400, h: 800, sheetW: 800, sheetH: 1432 } },
-  'assets/altar/objects/herbs/lavender/lavender-sprig.png': { source: f609, width: 500, height: 1536, crop: { x: 0, y: 0, w: 333, h: 1024, sheetW: 800, sheetH: 1432 } },
-  'assets/altar/objects/herbs/lemon-balm/lemon-balm-loose.png': { source: f610, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/lemon-balm/lemon-balm-oil.png': { source: f610, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/lemon-balm/lemon-balm-sprig.png': { source: f610, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/lemongrass/lemongrass-loose.png': { source: f611, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/lemongrass/lemongrass-oil.png': { source: f611, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/lemongrass/lemongrass-sprig.png': { source: f611, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/lilac/lilac-loose.png': { source: f612, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/lilac/lilac-oil.png': { source: f612, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/lilac/lilac-sprig.png': { source: f612, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mandrake/mandrake-loose.png': { source: f613, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mandrake/mandrake-oil.png': { source: f613, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mandrake/mandrake-sprig.png': { source: f613, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/meadowsweet/meadowsweet-loose.png': { source: f614, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/meadowsweet/meadowsweet-oil.png': { source: f614, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/meadowsweet/meadowsweet-sprig.png': { source: f614, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mint/mint-loose.png': { source: f615, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mint/mint-oil.png': { source: f615, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mint/mint-sprig.png': { source: f615, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mistletoe/mistletoe-loose.png': { source: f616, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mistletoe/mistletoe-oil.png': { source: f616, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mistletoe/mistletoe-sprig.png': { source: f616, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mugwort/mugwort-loose.png': { source: f617, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 1024, sheetH: 1899 } },
-  'assets/altar/objects/herbs/mugwort/mugwort-oil.png': { source: f617, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 1024, sheetH: 1899 } },
-  'assets/altar/objects/herbs/mugwort/mugwort-powder.png': { source: f617, width: 1536, height: 1024, crop: { x: 0, y: 1216, w: 1024, h: 683, sheetW: 1024, sheetH: 1899 } },
-  'assets/altar/objects/herbs/mugwort/mugwort-sprig.png': { source: f617, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 1024, sheetH: 1899 } },
-  'assets/altar/objects/herbs/mullein/mullein-loose.png': { source: f618, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mullein/mullein-oil.png': { source: f618, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/mullein/mullein-sprig.png': { source: f618, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/myrrh/myrrh-loose.png': { source: f619, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/myrrh/myrrh-oil.png': { source: f619, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/myrrh/myrrh-sprig.png': { source: f619, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/nettle/nettle-loose.png': { source: f620, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/nettle/nettle-oil.png': { source: f620, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/nettle/nettle-sprig.png': { source: f620, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/nutmeg/nutmeg-loose.png': { source: f621, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/nutmeg/nutmeg-oil.png': { source: f621, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/nutmeg/nutmeg-sprig.png': { source: f621, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/oak/oak-loose.png': { source: f622, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/oak/oak-oil.png': { source: f622, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/oak/oak-sprig.png': { source: f622, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/orris-root/orris-root-loose.png': { source: f623, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/orris-root/orris-root-oil.png': { source: f623, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/orris-root/orris-root-sprig.png': { source: f623, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/passionflower/passionflower-loose.png': { source: f624, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/passionflower/passionflower-oil.png': { source: f624, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/passionflower/passionflower-sprig.png': { source: f624, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/patchouli/patchouli-loose.png': { source: f625, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/patchouli/patchouli-oil.png': { source: f625, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/patchouli/patchouli-sprig.png': { source: f625, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/peppermint/peppermint-loose.png': { source: f626, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/peppermint/peppermint-oil.png': { source: f626, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/peppermint/peppermint-sprig.png': { source: f626, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/pine/pine-loose.png': { source: f627, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/pine/pine-oil.png': { source: f627, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/pine/pine-sprig.png': { source: f627, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/red-clover/red-clover-loose.png': { source: f628, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/red-clover/red-clover-oil.png': { source: f628, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/red-clover/red-clover-sprig.png': { source: f628, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rose/rose-loose.png': { source: f629, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rose/rose-oil.png': { source: f629, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rose/rose-sprig.png': { source: f629, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rosehip/rosehip-loose.png': { source: f630, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rosehip/rosehip-oil.png': { source: f630, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rosehip/rosehip-sprig.png': { source: f630, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rosemary/rosemary-loose.png': { source: f631, width: 800, height: 400, crop: { x: 0, y: 1032, w: 800, h: 400, sheetW: 1024, sheetH: 2123 } },
-  'assets/altar/objects/herbs/rosemary/rosemary-oil.png': { source: f631, width: 400, height: 800, crop: { x: 341, y: 0, w: 400, h: 800, sheetW: 1024, sheetH: 2123 } },
-  'assets/altar/objects/herbs/rosemary/rosemary-powder.png': { source: f631, width: 1536, height: 1024, crop: { x: 0, y: 1440, w: 1024, h: 683, sheetW: 1024, sheetH: 2123 } },
-  'assets/altar/objects/herbs/rosemary/rosemary-sprig.png': { source: f631, width: 500, height: 1536, crop: { x: 0, y: 0, w: 333, h: 1024, sheetW: 1024, sheetH: 2123 } },
-  'assets/altar/objects/herbs/rowan/rowan-loose.png': { source: f632, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rowan/rowan-oil.png': { source: f632, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rowan/rowan-sprig.png': { source: f632, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rue/rue-loose.png': { source: f633, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rue/rue-oil.png': { source: f633, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/rue/rue-sprig.png': { source: f633, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/saffron/saffron-loose.png': { source: f634, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/saffron/saffron-oil.png': { source: f634, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/saffron/saffron-sprig.png': { source: f634, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/sage/sage-loose.png': { source: f635, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/sage/sage-oil.png': { source: f635, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/sage/sage-sprig.png': { source: f635, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/sandalwood/sandalwood-loose.png': { source: f636, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/sandalwood/sandalwood-oil.png': { source: f636, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/sandalwood/sandalwood-sprig.png': { source: f636, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/st-johns-wort/st-johns-wort-loose.png': { source: f637, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/st-johns-wort/st-johns-wort-oil.png': { source: f637, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/st-johns-wort/st-johns-wort-sprig.png': { source: f637, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/star-anise/star-anise-loose.png': { source: f638, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/star-anise/star-anise-oil.png': { source: f638, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/star-anise/star-anise-sprig.png': { source: f638, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/sunflower/sunflower-loose.png': { source: f639, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/sunflower/sunflower-oil.png': { source: f639, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/sunflower/sunflower-sprig.png': { source: f639, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/thyme/thyme-loose.png': { source: f640, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/thyme/thyme-oil.png': { source: f640, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/thyme/thyme-sprig.png': { source: f640, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/valerian/valerian-loose.png': { source: f641, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/valerian/valerian-oil.png': { source: f641, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/valerian/valerian-sprig.png': { source: f641, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/vanilla/vanilla-loose.png': { source: f642, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/vanilla/vanilla-oil.png': { source: f642, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/vanilla/vanilla-sprig.png': { source: f642, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/vervain/vervain-loose.png': { source: f643, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/vervain/vervain-oil.png': { source: f643, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/vervain/vervain-sprig.png': { source: f643, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/violet/violet-loose.png': { source: f644, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/violet/violet-oil.png': { source: f644, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/violet/violet-sprig.png': { source: f644, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/willow/willow-loose.png': { source: f645, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/willow/willow-oil.png': { source: f645, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/willow/willow-sprig.png': { source: f645, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/wormwood/wormwood-loose.png': { source: f646, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/wormwood/wormwood-oil.png': { source: f646, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/wormwood/wormwood-sprig.png': { source: f646, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/yarrow/yarrow-loose.png': { source: f647, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/yarrow/yarrow-oil.png': { source: f647, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/yarrow/yarrow-sprig.png': { source: f647, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/yew/yew-loose.png': { source: f648, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/yew/yew-oil.png': { source: f648, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
-  'assets/altar/objects/herbs/yew/yew-sprig.png': { source: f648, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/jasmine/jasmine-loose.png': { source: f618, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/jasmine/jasmine-oil.png': { source: f618, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/jasmine/jasmine-sprig.png': { source: f618, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/juniper/juniper-loose.png': { source: f619, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1619, sheetH: 1549 } },
+  'assets/altar/objects/herbs/juniper/juniper-oil.png': { source: f619, width: 1024, height: 1536, crop: { x: 936, y: 0, w: 683, h: 1024, sheetW: 1619, sheetH: 1549 } },
+  'assets/altar/objects/herbs/juniper/juniper-sprig.png': { source: f619, width: 1088, height: 1200, crop: { x: 0, y: 0, w: 928, h: 1024, sheetW: 1619, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lavender/lavender-loose.png': { source: f620, width: 800, height: 400, crop: { x: 0, y: 1032, w: 800, h: 400, sheetW: 800, sheetH: 1432 } },
+  'assets/altar/objects/herbs/lavender/lavender-oil.png': { source: f620, width: 400, height: 800, crop: { x: 341, y: 0, w: 400, h: 800, sheetW: 800, sheetH: 1432 } },
+  'assets/altar/objects/herbs/lavender/lavender-sprig.png': { source: f620, width: 500, height: 1536, crop: { x: 0, y: 0, w: 333, h: 1024, sheetW: 800, sheetH: 1432 } },
+  'assets/altar/objects/herbs/lemon-balm/lemon-balm-loose.png': { source: f621, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lemon-balm/lemon-balm-oil.png': { source: f621, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lemon-balm/lemon-balm-sprig.png': { source: f621, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lemongrass/lemongrass-loose.png': { source: f622, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lemongrass/lemongrass-oil.png': { source: f622, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lemongrass/lemongrass-sprig.png': { source: f622, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lilac/lilac-loose.png': { source: f623, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lilac/lilac-oil.png': { source: f623, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/lilac/lilac-sprig.png': { source: f623, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mandrake/mandrake-loose.png': { source: f624, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mandrake/mandrake-oil.png': { source: f624, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mandrake/mandrake-sprig.png': { source: f624, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/meadowsweet/meadowsweet-loose.png': { source: f625, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/meadowsweet/meadowsweet-oil.png': { source: f625, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/meadowsweet/meadowsweet-sprig.png': { source: f625, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mint/mint-loose.png': { source: f626, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mint/mint-oil.png': { source: f626, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mint/mint-sprig.png': { source: f626, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mistletoe/mistletoe-loose.png': { source: f627, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mistletoe/mistletoe-oil.png': { source: f627, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mistletoe/mistletoe-sprig.png': { source: f627, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mugwort/mugwort-loose.png': { source: f628, width: 800, height: 400, crop: { x: 0, y: 808, w: 800, h: 400, sheetW: 1024, sheetH: 1899 } },
+  'assets/altar/objects/herbs/mugwort/mugwort-oil.png': { source: f628, width: 400, height: 800, crop: { x: 408, y: 0, w: 400, h: 800, sheetW: 1024, sheetH: 1899 } },
+  'assets/altar/objects/herbs/mugwort/mugwort-powder.png': { source: f628, width: 1536, height: 1024, crop: { x: 0, y: 1216, w: 1024, h: 683, sheetW: 1024, sheetH: 1899 } },
+  'assets/altar/objects/herbs/mugwort/mugwort-sprig.png': { source: f628, width: 400, height: 800, crop: { x: 0, y: 0, w: 400, h: 800, sheetW: 1024, sheetH: 1899 } },
+  'assets/altar/objects/herbs/mullein/mullein-loose.png': { source: f629, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mullein/mullein-oil.png': { source: f629, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/mullein/mullein-sprig.png': { source: f629, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/myrrh/myrrh-loose.png': { source: f630, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/myrrh/myrrh-oil.png': { source: f630, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/myrrh/myrrh-sprig.png': { source: f630, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/nettle/nettle-loose.png': { source: f631, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/nettle/nettle-oil.png': { source: f631, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/nettle/nettle-sprig.png': { source: f631, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/nutmeg/nutmeg-loose.png': { source: f632, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/nutmeg/nutmeg-oil.png': { source: f632, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/nutmeg/nutmeg-sprig.png': { source: f632, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/oak/oak-loose.png': { source: f633, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/oak/oak-oil.png': { source: f633, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/oak/oak-sprig.png': { source: f633, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/orris-root/orris-root-loose.png': { source: f634, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/orris-root/orris-root-oil.png': { source: f634, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/orris-root/orris-root-sprig.png': { source: f634, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/passionflower/passionflower-loose.png': { source: f635, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/passionflower/passionflower-oil.png': { source: f635, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/passionflower/passionflower-sprig.png': { source: f635, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/patchouli/patchouli-loose.png': { source: f636, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/patchouli/patchouli-oil.png': { source: f636, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/patchouli/patchouli-sprig.png': { source: f636, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/peppermint/peppermint-loose.png': { source: f637, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/peppermint/peppermint-oil.png': { source: f637, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/peppermint/peppermint-sprig.png': { source: f637, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/pine/pine-loose.png': { source: f638, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/pine/pine-oil.png': { source: f638, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/pine/pine-sprig.png': { source: f638, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/red-clover/red-clover-loose.png': { source: f639, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/red-clover/red-clover-oil.png': { source: f639, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/red-clover/red-clover-sprig.png': { source: f639, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rose/rose-loose.png': { source: f640, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rose/rose-oil.png': { source: f640, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rose/rose-sprig.png': { source: f640, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rosehip/rosehip-loose.png': { source: f641, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rosehip/rosehip-oil.png': { source: f641, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rosehip/rosehip-sprig.png': { source: f641, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rosemary/rosemary-loose.png': { source: f642, width: 800, height: 400, crop: { x: 0, y: 1032, w: 800, h: 400, sheetW: 1024, sheetH: 2123 } },
+  'assets/altar/objects/herbs/rosemary/rosemary-oil.png': { source: f642, width: 400, height: 800, crop: { x: 341, y: 0, w: 400, h: 800, sheetW: 1024, sheetH: 2123 } },
+  'assets/altar/objects/herbs/rosemary/rosemary-powder.png': { source: f642, width: 1536, height: 1024, crop: { x: 0, y: 1440, w: 1024, h: 683, sheetW: 1024, sheetH: 2123 } },
+  'assets/altar/objects/herbs/rosemary/rosemary-sprig.png': { source: f642, width: 500, height: 1536, crop: { x: 0, y: 0, w: 333, h: 1024, sheetW: 1024, sheetH: 2123 } },
+  'assets/altar/objects/herbs/rowan/rowan-loose.png': { source: f643, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rowan/rowan-oil.png': { source: f643, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rowan/rowan-sprig.png': { source: f643, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rue/rue-loose.png': { source: f644, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rue/rue-oil.png': { source: f644, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/rue/rue-sprig.png': { source: f644, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/saffron/saffron-loose.png': { source: f645, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/saffron/saffron-oil.png': { source: f645, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/saffron/saffron-sprig.png': { source: f645, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sage/sage-loose.png': { source: f646, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sage/sage-oil.png': { source: f646, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sage/sage-sprig.png': { source: f646, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sandalwood/sandalwood-loose.png': { source: f647, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sandalwood/sandalwood-oil.png': { source: f647, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sandalwood/sandalwood-sprig.png': { source: f647, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/st-johns-wort/st-johns-wort-loose.png': { source: f648, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/st-johns-wort/st-johns-wort-oil.png': { source: f648, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/st-johns-wort/st-johns-wort-sprig.png': { source: f648, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/star-anise/star-anise-loose.png': { source: f649, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/star-anise/star-anise-oil.png': { source: f649, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/star-anise/star-anise-sprig.png': { source: f649, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sunflower/sunflower-loose.png': { source: f650, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sunflower/sunflower-oil.png': { source: f650, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/sunflower/sunflower-sprig.png': { source: f650, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/thyme/thyme-loose.png': { source: f651, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/thyme/thyme-oil.png': { source: f651, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/thyme/thyme-sprig.png': { source: f651, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/valerian/valerian-loose.png': { source: f652, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/valerian/valerian-oil.png': { source: f652, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/valerian/valerian-sprig.png': { source: f652, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/vanilla/vanilla-loose.png': { source: f653, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/vanilla/vanilla-oil.png': { source: f653, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/vanilla/vanilla-sprig.png': { source: f653, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/vervain/vervain-loose.png': { source: f654, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/vervain/vervain-oil.png': { source: f654, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/vervain/vervain-sprig.png': { source: f654, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/violet/violet-loose.png': { source: f655, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/violet/violet-oil.png': { source: f655, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/violet/violet-sprig.png': { source: f655, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/willow/willow-loose.png': { source: f656, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/willow/willow-oil.png': { source: f656, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/willow/willow-sprig.png': { source: f656, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/wormwood/wormwood-loose.png': { source: f657, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/wormwood/wormwood-oil.png': { source: f657, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/wormwood/wormwood-sprig.png': { source: f657, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/yarrow/yarrow-loose.png': { source: f658, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/yarrow/yarrow-oil.png': { source: f658, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/yarrow/yarrow-sprig.png': { source: f658, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/yew/yew-loose.png': { source: f659, width: 1776, height: 896, crop: { x: 0, y: 1032, w: 1024, h: 517, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/yew/yew-oil.png': { source: f659, width: 1024, height: 1536, crop: { x: 691, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
+  'assets/altar/objects/herbs/yew/yew-sprig.png': { source: f659, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 1374, sheetH: 1549 } },
   'assets/altar/objects/natural/acorns/acorns.png': { source: f309, width: 1536, height: 1024 },
   'assets/altar/objects/natural/antler/antler.png': { source: f310, width: 1536, height: 1024 },
   'assets/altar/objects/natural/autumn-leaves/autumn-leaves.png': { source: f311, width: 1776, height: 896 },
@@ -1491,195 +1502,206 @@ export const bundledAltarAssets: Record<string, { source: number; width: number;
   'assets/altar/objects/offerings/meal/meal.png': { source: f329, width: 1536, height: 1024 },
   'assets/altar/objects/offerings/stones/stones.png': { source: f330, width: 1536, height: 1024 },
   'assets/altar/objects/offerings/sweets/sweets.png': { source: f331, width: 1536, height: 1024 },
-  'assets/altar/objects/plants/basil/basil-established.png': { source: f649, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/basil/basil-lush.png': { source: f649, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/basil/basil-young.png': { source: f649, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/lavender/lavender-established.png': { source: f650, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/lavender/lavender-lush.png': { source: f650, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/lavender/lavender-young.png': { source: f650, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/mint/mint-established.png': { source: f651, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/mint/mint-lush.png': { source: f651, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/mint/mint-young.png': { source: f651, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/pothos/pothos-established.png': { source: f652, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/pothos/pothos-lush.png': { source: f652, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/pothos/pothos-young.png': { source: f652, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/rosemary/rosemary-established.png': { source: f653, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/rosemary/rosemary-lush.png': { source: f653, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/rosemary/rosemary-young.png': { source: f653, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/sage/sage-established.png': { source: f654, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/sage/sage-lush.png': { source: f654, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/sage/sage-young.png': { source: f654, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/snake-plant/snake-plant-established.png': { source: f655, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/snake-plant/snake-plant-lush.png': { source: f655, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/snake-plant/snake-plant-young.png': { source: f655, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/thyme/thyme-established.png': { source: f656, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/thyme/thyme-lush.png': { source: f656, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/plants/thyme/thyme-young.png': { source: f656, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
-  'assets/altar/objects/seasonal/amphiphon/amphiphon.png': { source: f332, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/apples/apples.png': { source: f333, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/autumn-leaves/autumn-leaves.png': { source: f334, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/bilberries/bilberries.png': { source: f335, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/blossom-branch/blossom-branch.png': { source: f336, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/brideog/brideog.png': { source: f337, width: 1024, height: 1536 },
-  'assets/altar/objects/seasonal/brigids-cross/brigids-cross.png': { source: f338, width: 1264, height: 1264 },
-  'assets/altar/objects/seasonal/chous/chous.png': { source: f339, width: 1264, height: 1264 },
-  'assets/altar/objects/seasonal/corn-dolly/corn-dolly.png': { source: f340, width: 1024, height: 1536 },
-  'assets/altar/objects/seasonal/drinking-horn/drinking-horn.png': { source: f341, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/eiresione/eiresione.png': { source: f342, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/evergreen-boughs/evergreen-boughs.png': { source: f343, width: 1776, height: 896 },
-  'assets/altar/objects/seasonal/februa/februa.png': { source: f344, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/floralia-flowers/floralia-flowers.png': { source: f345, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/flower-crown/flower-crown.png': { source: f346, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/gourds/gourds.png': { source: f347, width: 1776, height: 896 },
-  'assets/altar/objects/seasonal/hekates-deipnon/hekates-deipnon.png': { source: f348, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/hlautbolli/hlautbolli.png': { source: f349, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/kernos/kernos.png': { source: f350, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/kykeon/kykeon.png': { source: f351, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/lemuria-beans/lemuria-beans.png': { source: f352, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/lucerna/lucerna.png': { source: f353, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/matronalia-garland/matronalia-garland.png': { source: f354, width: 1264, height: 1264 },
-  'assets/altar/objects/seasonal/may-bush/may-bush.png': { source: f355, width: 1024, height: 1536 },
-  'assets/altar/objects/seasonal/midsummer-birch/midsummer-birch.png': { source: f356, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/mola-salsa/mola-salsa.png': { source: f357, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/neptunalia-boughs/neptunalia-boughs.png': { source: f358, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/odins-sheaf/odins-sheaf.png': { source: f359, width: 1024, height: 1536 },
-  'assets/altar/objects/seasonal/ostara-eggs/ostara-eggs.png': { source: f360, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/panathenaic-olive/panathenaic-olive.png': { source: f361, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/parentalia-tile/parentalia-tile.png': { source: f362, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/phiale/phiale.png': { source: f363, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/pileus/pileus.png': { source: f364, width: 1264, height: 1264 },
-  'assets/altar/objects/seasonal/pomegranate/pomegranate.png': { source: f365, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/pumpkin-lantern/pumpkin-lantern.png': { source: f366, width: 1264, height: 1264 },
-  'assets/altar/objects/seasonal/pyanepsia-beans/pyanepsia-beans.png': { source: f367, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/radiate-crown/radiate-crown.png': { source: f368, width: 1264, height: 1264 },
-  'assets/altar/objects/seasonal/saturnalia-cerei/saturnalia-cerei.png': { source: f369, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/sigillaria/sigillaria.png': { source: f370, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/snowdrops/snowdrops.png': { source: f371, width: 1264, height: 1264 },
-  'assets/altar/objects/seasonal/summer-wildflowers/summer-wildflowers.png': { source: f372, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/sun-wheel/sun-wheel.png': { source: f373, width: 1264, height: 1264 },
-  'assets/altar/objects/seasonal/thargelos/thargelos.png': { source: f374, width: 1536, height: 1024 },
-  'assets/altar/objects/seasonal/theatre-mask/theatre-mask.png': { source: f375, width: 1264, height: 1264 },
-  'assets/altar/objects/seasonal/thymiaterion/thymiaterion.png': { source: f376, width: 1024, height: 1536 },
-  'assets/altar/objects/seasonal/thyrsus/thyrsus.png': { source: f377, width: 1024, height: 1536 },
-  'assets/altar/objects/seasonal/turnip-lantern/turnip-lantern.png': { source: f378, width: 1264, height: 1264 },
-  'assets/altar/objects/seasonal/wheat-sheaf/wheat-sheaf.png': { source: f379, width: 1024, height: 1536 },
-  'assets/altar/objects/seasonal/yule-goat/yule-goat.png': { source: f380, width: 1264, height: 1264 },
-  'assets/altar/objects/seasonal/yule-log/yule-log.png': { source: f381, width: 1776, height: 896 },
-  'assets/altar/objects/tools/altar/altar.png': { source: f382, width: 1536, height: 1024 },
-  'assets/altar/objects/tools/ancestor-frame/ancestor-frame-gilt.png': { source: f383, width: 1088, height: 1456 },
-  'assets/altar/objects/tools/ancestor-frame/ancestor-frame-wood.png': { source: f384, width: 1088, height: 1456 },
-  'assets/altar/objects/tools/athame/athame.png': { source: f385, width: 800, height: 400 },
-  'assets/altar/objects/tools/bell/bell.png': { source: f386, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/besom/besom.png': { source: f387, width: 896, height: 1776 },
-  'assets/altar/objects/tools/black-salt/black-salt.png': { source: f388, width: 400, height: 800 },
-  'assets/altar/objects/tools/boline/boline.png': { source: f389, width: 896, height: 1776 },
-  'assets/altar/objects/tools/book-of-shadows/book-of-shadows.png': { source: f390, width: 1264, height: 1264 },
-  'assets/altar/objects/tools/candle-snuffer/candle-snuffer.png': { source: f391, width: 1776, height: 896 },
-  'assets/altar/objects/tools/chalice/chalice.png': { source: f392, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/crystal-ball/crystal-ball.png': { source: f393, width: 1264, height: 1264 },
-  'assets/altar/objects/tools/deities/anubis/anubis-statue.png': { source: f394, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/aphrodite/aphrodite-statue.png': { source: f395, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/apollo/apollo-statue.png': { source: f396, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/arianrhod/arianrhod-statue.png': { source: f397, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/artemis/artemis-statue.png': { source: f398, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/athena/athena-statue.png': { source: f399, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/baldur/baldur-statue.png': { source: f400, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/bastet/bastet-statue.png': { source: f401, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/brigid/brigid-statue.png': { source: f402, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/ceres/ceres-statue.png': { source: f403, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/cernunnos/cernunnos-statue.png': { source: f404, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/cerridwen/cerridwen-statue.png': { source: f405, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/dagda/dagda-statue.png': { source: f406, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/dazhbog/dazhbog-statue.png': { source: f407, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/demeter/demeter-statue.png': { source: f408, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/diana/diana-statue.png': { source: f409, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/dionysus/dionysus-statue.png': { source: f410, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/durga/durga-statue.png': { source: f411, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/epona/epona-statue.png': { source: f412, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/freyja/freyja-statue.png': { source: f413, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/freyr/freyr-statue.png': { source: f414, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/frigg/frigg-statue.png': { source: f415, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/ganesha/ganesha-statue.png': { source: f416, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/hades/hades-statue.png': { source: f417, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/hathor/hathor-statue.png': { source: f418, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/hekate/hekate-statue.png': { source: f419, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/hel/hel-statue.png': { source: f420, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/hermes/hermes-statue.png': { source: f421, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/hestia/hestia-statue.png': { source: f422, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/idunn/idunn-statue.png': { source: f423, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/isis/isis-statue.png': { source: f424, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/janus/janus-statue.png': { source: f425, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/juno/juno-statue.png': { source: f426, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/jupiter/jupiter-statue.png': { source: f427, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/lada/lada-statue.png': { source: f428, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/lilith/lilith-statue.png': { source: f429, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/loki/loki-statue.png': { source: f430, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/lugh/lugh-statue.png': { source: f431, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/manannan/manannan-statue.png': { source: f432, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/mars/mars-statue.png': { source: f433, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/mercury/mercury-statue.png': { source: f434, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/minerva/minerva-statue.png': { source: f435, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/mokosh/mokosh-statue.png': { source: f436, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/morana/morana-statue.png': { source: f437, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/morrigan/morrigan-statue.png': { source: f438, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/nyx/nyx-statue.png': { source: f439, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/odin/odin-statue.png': { source: f440, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/osiris/osiris-statue.png': { source: f441, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/persephone/persephone-statue.png': { source: f442, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/perun/perun-statue.png': { source: f443, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/ra/ra-statue.png': { source: f444, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/rhiannon/rhiannon-statue.png': { source: f445, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/sekhmet/sekhmet-statue.png': { source: f446, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/selene/selene-statue.png': { source: f447, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/skadi/skadi-statue.png': { source: f448, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/thor/thor-statue.png': { source: f449, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/thoth/thoth-statue.png': { source: f450, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/tyr/tyr-statue.png': { source: f451, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/veles/veles-statue.png': { source: f452, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/venus/venus-statue.png': { source: f453, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/deities/vesta/vesta-statue.png': { source: f454, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/frame-drum/frame-drum.png': { source: f455, width: 1264, height: 1264 },
-  'assets/altar/objects/tools/goddess-figure/goddess-figure.png': { source: f456, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/grave-dirt/grave-dirt.png': { source: f457, width: 400, height: 800 },
-  'assets/altar/objects/tools/green-man/green-man.png': { source: f458, width: 1264, height: 1264 },
-  'assets/altar/objects/tools/incense-burner/incense-burner.png': { source: f459, width: 1264, height: 1264 },
-  'assets/altar/objects/tools/key/key.png': { source: f460, width: 800, height: 400 },
-  'assets/altar/objects/tools/lantern/lantern.png': { source: f461, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/matches/matches.png': { source: f462, width: 1536, height: 1024 },
-  'assets/altar/objects/tools/mortar-and-pestle/mortar-and-pestle.png': { source: f463, width: 1264, height: 1264 },
-  'assets/altar/objects/tools/ogham-staves/ogham-staves.png': { source: f464, width: 1776, height: 896 },
-  'assets/altar/objects/tools/oil-lamp/oil-lamp.png': { source: f465, width: 1536, height: 1024 },
-  'assets/altar/objects/tools/oracle-deck/oracle-deck.png': { source: f466, width: 1264, height: 1264 },
-  'assets/altar/objects/tools/pendulum/pendulum.png': { source: f467, width: 896, height: 1776 },
-  'assets/altar/objects/tools/pentacle/pentacle.png': { source: f468, width: 1264, height: 1264 },
-  'assets/altar/objects/tools/plaques/altar-plaque.png': { source: f469, width: 1536, height: 1024 },
-  'assets/altar/objects/tools/quill-and-ink/quill-and-ink.png': { source: f470, width: 1536, height: 1024 },
-  'assets/altar/objects/tools/rattle/rattle.png': { source: f471, width: 1536, height: 1024 },
-  'assets/altar/objects/tools/raven-skull/raven-skull.png': { source: f472, width: 800, height: 400 },
-  'assets/altar/objects/tools/red-cord/red-cord.png': { source: f473, width: 1264, height: 1264 },
-  'assets/altar/objects/tools/rune-bag/rune-bag.png': { source: f474, width: 1536, height: 1024 },
-  'assets/altar/objects/tools/salt-circle/2E77AAEA-4775-4EB3-9EEF-659AB1218A61.png': { source: f475, width: 1536, height: 1024 },
-  'assets/altar/objects/tools/salt-lamp/salt-lamp.png': { source: f476, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/scrying-mirror/scrying-mirror.png': { source: f477, width: 1024, height: 1536 },
-  'assets/altar/objects/tools/singing-bowl/singing-bowl.png': { source: f478, width: 1264, height: 1264 },
-  'assets/altar/objects/tools/stang/stang.png': { source: f479, width: 896, height: 1776 },
-  'assets/altar/objects/tools/tarot-deck/tarot-deck.png': { source: f480, width: 1264, height: 1264 },
-  'assets/altar/objects/tools/tea-leaf-cup/tea-leaf-cup.png': { source: f481, width: 1264, height: 1264 },
-  'assets/altar/objects/tools/wand/wand.png': { source: f482, width: 896, height: 1776 },
-  'assets/altar/objects/tools/wax-seal/wax-seal.png': { source: f483, width: 1536, height: 1024 },
-  'assets/altar/objects/tools/witchs-ladder/witchs-ladder.png': { source: f484, width: 896, height: 1776 },
-  'assets/altar/objects/vessels/bottle/bottle.png': { source: f485, width: 1024, height: 1536 },
-  'assets/altar/objects/vessels/bowl/bowl.png': { source: f486, width: 1536, height: 1024 },
-  'assets/altar/objects/vessels/cauldron/cauldron.png': { source: f487, width: 1080, height: 1200 },
-  'assets/altar/objects/vessels/dish/dish.png': { source: f488, width: 1536, height: 1024 },
-  'assets/altar/objects/vessels/incense-bowl/incense-bowl.png': { source: f489, width: 1536, height: 1024 },
-  'assets/altar/objects/vessels/offering-bowl/offering-bowl.png': { source: f490, width: 1536, height: 1024 },
-  'assets/altar/objects/vessels/oil-bottle/oil-bottle.png': { source: f491, width: 1024, height: 1536 },
-  'assets/altar/objects/vessels/spell-jar/spell-jar-2.png': { source: f492, width: 400, height: 800 },
-  'assets/altar/objects/vessels/spell-jar/spell-jar.png': { source: f493, width: 400, height: 800 },
-  'assets/altar/objects/vessels/spray-bottle/spray-bottle.png': { source: f494, width: 1024, height: 1536 },
-  'assets/altar/objects/vessels/vial/vial.png': { source: f495, width: 896, height: 1776 },
-  'assets/altar/objects/vessels/witch-bottle/witch-bottle.png': { source: f496, width: 1024, height: 1536 },
-  'assets/altar/overlays/candle-herb-overlay.png': { source: f497, width: 1024, height: 1536 },
-  'assets/altar/overlays/candle-oil-overlay.png': { source: f498, width: 1024, height: 1536 },
+  'assets/altar/objects/plants/basil/basil-established.png': { source: f660, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/basil/basil-lush.png': { source: f660, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/basil/basil-young.png': { source: f660, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/lavender/lavender-established.png': { source: f661, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/lavender/lavender-lush.png': { source: f661, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/lavender/lavender-young.png': { source: f661, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/mint/mint-established.png': { source: f662, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/mint/mint-lush.png': { source: f662, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/mint/mint-young.png': { source: f662, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/pothos/pothos-established.png': { source: f663, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/pothos/pothos-lush.png': { source: f663, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/pothos/pothos-young.png': { source: f663, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/rosemary/rosemary-established.png': { source: f664, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/rosemary/rosemary-lush.png': { source: f664, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/rosemary/rosemary-young.png': { source: f664, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/sage/sage-established.png': { source: f665, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/sage/sage-lush.png': { source: f665, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/sage/sage-young.png': { source: f665, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/snake-plant/snake-plant-established.png': { source: f666, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/snake-plant/snake-plant-lush.png': { source: f666, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/snake-plant/snake-plant-young.png': { source: f666, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/thyme/thyme-established.png': { source: f667, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/thyme/thyme-lush.png': { source: f667, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/thyme/thyme-young.png': { source: f667, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/seasonal/advent-wreath/advent-wreath.png': { source: f332, width: 1264, height: 1264 },
+  'assets/altar/objects/seasonal/amphiphon/amphiphon.png': { source: f333, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/apples/apples.png': { source: f334, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/autumn-leaves/autumn-leaves.png': { source: f335, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/bilberries/bilberries.png': { source: f336, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/blossom-branch/blossom-branch.png': { source: f337, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/brideog/brideog.png': { source: f338, width: 1024, height: 1536 },
+  'assets/altar/objects/seasonal/brigids-cross/brigids-cross.png': { source: f339, width: 1264, height: 1264 },
+  'assets/altar/objects/seasonal/candlemas-candles/candlemas-candles.png': { source: f340, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/chous/chous.png': { source: f341, width: 1264, height: 1264 },
+  'assets/altar/objects/seasonal/corn-dolly/corn-dolly.png': { source: f342, width: 1024, height: 1536 },
+  'assets/altar/objects/seasonal/drinking-horn/drinking-horn.png': { source: f343, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/easter-lilies/easter-lilies.png': { source: f344, width: 1024, height: 1536 },
+  'assets/altar/objects/seasonal/eiresione/eiresione.png': { source: f345, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/epiphany-chalk/epiphany-chalk.png': { source: f346, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/evergreen-boughs/evergreen-boughs.png': { source: f347, width: 1776, height: 896 },
+  'assets/altar/objects/seasonal/februa/februa.png': { source: f348, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/floralia-flowers/floralia-flowers.png': { source: f349, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/flower-crown/flower-crown.png': { source: f350, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/gourds/gourds.png': { source: f351, width: 1776, height: 896 },
+  'assets/altar/objects/seasonal/hekates-deipnon/hekates-deipnon.png': { source: f352, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/herb-bundle/herb-bundle.png': { source: f353, width: 1024, height: 1536 },
+  'assets/altar/objects/seasonal/hlautbolli/hlautbolli.png': { source: f354, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/holly-and-ivy/holly-and-ivy.png': { source: f355, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/holy-water/holy-water.png': { source: f356, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/kernos/kernos.png': { source: f357, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/kykeon/kykeon.png': { source: f358, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/lammas-loaf/lammas-loaf.png': { source: f359, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/lemuria-beans/lemuria-beans.png': { source: f360, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/lucerna/lucerna.png': { source: f361, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/matronalia-garland/matronalia-garland.png': { source: f362, width: 1264, height: 1264 },
+  'assets/altar/objects/seasonal/may-bush/may-bush.png': { source: f363, width: 1024, height: 1536 },
+  'assets/altar/objects/seasonal/michaelmas-daisies/michaelmas-daisies.png': { source: f364, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/midsummer-birch/midsummer-birch.png': { source: f365, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/mola-salsa/mola-salsa.png': { source: f366, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/neptunalia-boughs/neptunalia-boughs.png': { source: f367, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/odins-sheaf/odins-sheaf.png': { source: f368, width: 1024, height: 1536 },
+  'assets/altar/objects/seasonal/ostara-eggs/ostara-eggs.png': { source: f369, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/panathenaic-olive/panathenaic-olive.png': { source: f370, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/parentalia-tile/parentalia-tile.png': { source: f371, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/pentecost-peonies/pentecost-peonies.png': { source: f372, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/phiale/phiale.png': { source: f373, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/pileus/pileus.png': { source: f374, width: 1264, height: 1264 },
+  'assets/altar/objects/seasonal/pomegranate/pomegranate.png': { source: f375, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/pumpkin-lantern/pumpkin-lantern.png': { source: f376, width: 1264, height: 1264 },
+  'assets/altar/objects/seasonal/pyanepsia-beans/pyanepsia-beans.png': { source: f377, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/radiate-crown/radiate-crown.png': { source: f378, width: 1264, height: 1264 },
+  'assets/altar/objects/seasonal/red-eggs/red-eggs.png': { source: f379, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/saturnalia-cerei/saturnalia-cerei.png': { source: f380, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/sigillaria/sigillaria.png': { source: f381, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/snowdrops/snowdrops.png': { source: f382, width: 1264, height: 1264 },
+  'assets/altar/objects/seasonal/summer-wildflowers/summer-wildflowers.png': { source: f383, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/sun-wheel/sun-wheel.png': { source: f384, width: 1264, height: 1264 },
+  'assets/altar/objects/seasonal/thargelos/thargelos.png': { source: f385, width: 1536, height: 1024 },
+  'assets/altar/objects/seasonal/theatre-mask/theatre-mask.png': { source: f386, width: 1264, height: 1264 },
+  'assets/altar/objects/seasonal/thymiaterion/thymiaterion.png': { source: f387, width: 1024, height: 1536 },
+  'assets/altar/objects/seasonal/thyrsus/thyrsus.png': { source: f388, width: 1024, height: 1536 },
+  'assets/altar/objects/seasonal/turnip-lantern/turnip-lantern.png': { source: f389, width: 1264, height: 1264 },
+  'assets/altar/objects/seasonal/wheat-sheaf/wheat-sheaf.png': { source: f390, width: 1024, height: 1536 },
+  'assets/altar/objects/seasonal/yule-goat/yule-goat.png': { source: f391, width: 1264, height: 1264 },
+  'assets/altar/objects/seasonal/yule-log/yule-log.png': { source: f392, width: 1776, height: 896 },
+  'assets/altar/objects/tools/altar/altar.png': { source: f393, width: 1536, height: 1024 },
+  'assets/altar/objects/tools/ancestor-frame/ancestor-frame-gilt.png': { source: f394, width: 1088, height: 1456 },
+  'assets/altar/objects/tools/ancestor-frame/ancestor-frame-wood.png': { source: f395, width: 1088, height: 1456 },
+  'assets/altar/objects/tools/athame/athame.png': { source: f396, width: 800, height: 400 },
+  'assets/altar/objects/tools/bell/bell.png': { source: f397, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/besom/besom.png': { source: f398, width: 896, height: 1776 },
+  'assets/altar/objects/tools/black-salt/black-salt.png': { source: f399, width: 400, height: 800 },
+  'assets/altar/objects/tools/boline/boline.png': { source: f400, width: 896, height: 1776 },
+  'assets/altar/objects/tools/book-of-shadows/book-of-shadows.png': { source: f401, width: 1264, height: 1264 },
+  'assets/altar/objects/tools/candle-snuffer/candle-snuffer.png': { source: f402, width: 1776, height: 896 },
+  'assets/altar/objects/tools/chalice/chalice.png': { source: f403, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/crystal-ball/crystal-ball.png': { source: f404, width: 1264, height: 1264 },
+  'assets/altar/objects/tools/deities/anubis/anubis-statue.png': { source: f405, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/aphrodite/aphrodite-statue.png': { source: f406, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/apollo/apollo-statue.png': { source: f407, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/arianrhod/arianrhod-statue.png': { source: f408, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/artemis/artemis-statue.png': { source: f409, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/athena/athena-statue.png': { source: f410, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/baldur/baldur-statue.png': { source: f411, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/bastet/bastet-statue.png': { source: f412, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/brigid/brigid-statue.png': { source: f413, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/ceres/ceres-statue.png': { source: f414, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/cernunnos/cernunnos-statue.png': { source: f415, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/cerridwen/cerridwen-statue.png': { source: f416, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/dagda/dagda-statue.png': { source: f417, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/dazhbog/dazhbog-statue.png': { source: f418, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/demeter/demeter-statue.png': { source: f419, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/diana/diana-statue.png': { source: f420, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/dionysus/dionysus-statue.png': { source: f421, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/durga/durga-statue.png': { source: f422, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/epona/epona-statue.png': { source: f423, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/freyja/freyja-statue.png': { source: f424, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/freyr/freyr-statue.png': { source: f425, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/frigg/frigg-statue.png': { source: f426, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/ganesha/ganesha-statue.png': { source: f427, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/hades/hades-statue.png': { source: f428, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/hathor/hathor-statue.png': { source: f429, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/hekate/hekate-statue.png': { source: f430, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/hel/hel-statue.png': { source: f431, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/hermes/hermes-statue.png': { source: f432, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/hestia/hestia-statue.png': { source: f433, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/idunn/idunn-statue.png': { source: f434, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/isis/isis-statue.png': { source: f435, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/janus/janus-statue.png': { source: f436, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/juno/juno-statue.png': { source: f437, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/jupiter/jupiter-statue.png': { source: f438, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/lada/lada-statue.png': { source: f439, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/lilith/lilith-statue.png': { source: f440, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/loki/loki-statue.png': { source: f441, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/lugh/lugh-statue.png': { source: f442, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/manannan/manannan-statue.png': { source: f443, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/mars/mars-statue.png': { source: f444, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/mercury/mercury-statue.png': { source: f445, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/minerva/minerva-statue.png': { source: f446, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/mokosh/mokosh-statue.png': { source: f447, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/morana/morana-statue.png': { source: f448, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/morrigan/morrigan-statue.png': { source: f449, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/nyx/nyx-statue.png': { source: f450, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/odin/odin-statue.png': { source: f451, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/osiris/osiris-statue.png': { source: f452, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/persephone/persephone-statue.png': { source: f453, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/perun/perun-statue.png': { source: f454, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/ra/ra-statue.png': { source: f455, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/rhiannon/rhiannon-statue.png': { source: f456, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/sekhmet/sekhmet-statue.png': { source: f457, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/selene/selene-statue.png': { source: f458, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/skadi/skadi-statue.png': { source: f459, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/thor/thor-statue.png': { source: f460, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/thoth/thoth-statue.png': { source: f461, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/tyr/tyr-statue.png': { source: f462, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/veles/veles-statue.png': { source: f463, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/venus/venus-statue.png': { source: f464, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/deities/vesta/vesta-statue.png': { source: f465, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/frame-drum/frame-drum.png': { source: f466, width: 1264, height: 1264 },
+  'assets/altar/objects/tools/goddess-figure/goddess-figure.png': { source: f467, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/grave-dirt/grave-dirt.png': { source: f468, width: 400, height: 800 },
+  'assets/altar/objects/tools/green-man/green-man.png': { source: f469, width: 1264, height: 1264 },
+  'assets/altar/objects/tools/incense-burner/incense-burner.png': { source: f470, width: 1264, height: 1264 },
+  'assets/altar/objects/tools/key/key.png': { source: f471, width: 800, height: 400 },
+  'assets/altar/objects/tools/lantern/lantern.png': { source: f472, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/matches/matches.png': { source: f473, width: 1536, height: 1024 },
+  'assets/altar/objects/tools/mortar-and-pestle/mortar-and-pestle.png': { source: f474, width: 1264, height: 1264 },
+  'assets/altar/objects/tools/ogham-staves/ogham-staves.png': { source: f475, width: 1776, height: 896 },
+  'assets/altar/objects/tools/oil-lamp/oil-lamp.png': { source: f476, width: 1536, height: 1024 },
+  'assets/altar/objects/tools/oracle-deck/oracle-deck.png': { source: f477, width: 1264, height: 1264 },
+  'assets/altar/objects/tools/pendulum/pendulum.png': { source: f478, width: 896, height: 1776 },
+  'assets/altar/objects/tools/pentacle/pentacle.png': { source: f479, width: 1264, height: 1264 },
+  'assets/altar/objects/tools/plaques/altar-plaque.png': { source: f480, width: 1536, height: 1024 },
+  'assets/altar/objects/tools/quill-and-ink/quill-and-ink.png': { source: f481, width: 1536, height: 1024 },
+  'assets/altar/objects/tools/rattle/rattle.png': { source: f482, width: 1536, height: 1024 },
+  'assets/altar/objects/tools/raven-skull/raven-skull.png': { source: f483, width: 800, height: 400 },
+  'assets/altar/objects/tools/red-cord/red-cord.png': { source: f484, width: 1264, height: 1264 },
+  'assets/altar/objects/tools/rune-bag/rune-bag.png': { source: f485, width: 1536, height: 1024 },
+  'assets/altar/objects/tools/salt-circle/2E77AAEA-4775-4EB3-9EEF-659AB1218A61.png': { source: f486, width: 1536, height: 1024 },
+  'assets/altar/objects/tools/salt-lamp/salt-lamp.png': { source: f487, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/scrying-mirror/scrying-mirror.png': { source: f488, width: 1024, height: 1536 },
+  'assets/altar/objects/tools/singing-bowl/singing-bowl.png': { source: f489, width: 1264, height: 1264 },
+  'assets/altar/objects/tools/stang/stang.png': { source: f490, width: 896, height: 1776 },
+  'assets/altar/objects/tools/tarot-deck/tarot-deck.png': { source: f491, width: 1264, height: 1264 },
+  'assets/altar/objects/tools/tea-leaf-cup/tea-leaf-cup.png': { source: f492, width: 1264, height: 1264 },
+  'assets/altar/objects/tools/wand/wand.png': { source: f493, width: 896, height: 1776 },
+  'assets/altar/objects/tools/wax-seal/wax-seal.png': { source: f494, width: 1536, height: 1024 },
+  'assets/altar/objects/tools/witchs-ladder/witchs-ladder.png': { source: f495, width: 896, height: 1776 },
+  'assets/altar/objects/vessels/bottle/bottle.png': { source: f496, width: 1024, height: 1536 },
+  'assets/altar/objects/vessels/bowl/bowl.png': { source: f497, width: 1536, height: 1024 },
+  'assets/altar/objects/vessels/cauldron/cauldron.png': { source: f498, width: 1080, height: 1200 },
+  'assets/altar/objects/vessels/dish/dish.png': { source: f499, width: 1536, height: 1024 },
+  'assets/altar/objects/vessels/incense-bowl/incense-bowl.png': { source: f500, width: 1536, height: 1024 },
+  'assets/altar/objects/vessels/offering-bowl/offering-bowl.png': { source: f501, width: 1536, height: 1024 },
+  'assets/altar/objects/vessels/oil-bottle/oil-bottle.png': { source: f502, width: 1024, height: 1536 },
+  'assets/altar/objects/vessels/spell-jar/spell-jar-2.png': { source: f503, width: 400, height: 800 },
+  'assets/altar/objects/vessels/spell-jar/spell-jar.png': { source: f504, width: 400, height: 800 },
+  'assets/altar/objects/vessels/spray-bottle/spray-bottle.png': { source: f505, width: 1024, height: 1536 },
+  'assets/altar/objects/vessels/vial/vial.png': { source: f506, width: 896, height: 1776 },
+  'assets/altar/objects/vessels/witch-bottle/witch-bottle.png': { source: f507, width: 1024, height: 1536 },
+  'assets/altar/overlays/candle-herb-overlay.png': { source: f508, width: 1024, height: 1536 },
+  'assets/altar/overlays/candle-oil-overlay.png': { source: f509, width: 1024, height: 1536 },
 };

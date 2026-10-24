@@ -57,7 +57,7 @@ test('each Roman thing has its festivals, keywords and a line about it', () => {
   // After the Celtic festivals, before the turning seasons.
   const order = SEASONAL_TRADITIONS.map((t) => t.id);
   assert.equal(order.indexOf('roman'), order.indexOf('celtic') + 1);
-  assert.equal(order.indexOf('seasons'), order.indexOf('roman') + 1);
+  assert.ok(order.indexOf('seasons') > order.indexOf('roman'));
 });
 
 test('hidden until painted; with a picture each joins "Roman festivals", through the year, found by festival, god and calendar', () => {
@@ -66,7 +66,7 @@ test('hidden until painted; with a picture each joins "Roman festivals", through
   assert.ok(!seasonalSections(seasonalCabinetItems(pictures(['apples'])), []).some((s) => s.title === 'Roman festivals'));
   const items = seasonalCabinetItems(ALL);
   const sections = seasonalSections(items, []);
-  assert.deepEqual(sections.map((s) => s.title).slice(-3), ['Celtic festivals', 'Roman festivals', 'The turning seasons']);
+  assert.deepEqual(sections.map((s) => s.title).slice(-4), ['Celtic festivals', 'Roman festivals', 'Christian & folk calendar', 'The turning seasons']);
   assert.deepEqual(ids(sections.find((s) => s.title === 'Roman festivals')), ROMAN);
 
   const found = (search: string) => cabinetItemsFor(items, 'seasonal', search).map((i) => i.id.replace('seasonal:', ''));
