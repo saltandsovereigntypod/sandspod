@@ -345,3 +345,41 @@ test("the coven's head chooses who schedules rites and who writes and approves t
   }
   assert.doesNotMatch(sql, /for (insert|update|delete|all) to authenticated/, "these change only through the functions");
 });
+
+test("program powers: by position, by name, or as the founder", () => {
+  const ranks2 = [{ id: "pm", level: 3, can_manage_programs: true }, { id: "vp", level: 2, can_view_progress: true }, { id: "pl", level: 1 }];
+  const p = (rankId, grants = [], userId = "u") => L.permissions({ coven, membership: { status: "active", rank_id: rankId }, ranks: ranks2, userId, grants });
+  assert.deepEqual([p("pm").programs, p("pm").progress], [true, true]);
+  assert.deepEqual([p("vp").programs, p("vp").progress], [false, true]);
+  assert.deepEqual([p("pl").programs, p("pl").progress], [false, false]);
+  assert.deepEqual([p("pl", [{ user_id: "u", power: "manage_programs" }]).programs, p("pl", [{ user_id: "u", power: "view_progress" }]).progress], [true, true]);
+  assert.equal(p("pl", [{ user_id: "someone-else", power: "manage_programs" }]).programs, false, "another person's grant isn't mine");
+  assert.ok(L.rankPowers({ can_manage_programs: true }).includes("manages initiation and training"));
+});
+
+test("a coven with its own calendar suggests its own holidays for rites", () => {
+  const vm = require("node:vm");
+  const sb = { window: {}, Intl, TextEncoder, console };
+  sb.window = sb;
+  vm.createContext(sb);
+  vm.runInContext(fs.readFileSync(path.join(root, "js/core/today.js"), "utf8"), sb);
+  vm.runInContext(fs.readFileSync(path.join(root, "js/core/covens.js"), "utf8"), sb);
+  const from = new Date("2026-10-23T12:00:00Z");
+  const days = sb.SaltCore.covens.programs.covenHolidaysBetween({ practice_traditions: ["norse"] }, from, new Date(from.getTime() + 200 * 86400000));
+  const list = L.occasionSuggestions(sb.SaltCore.today, from, 6, days);
+  assert.ok(list.some((s) => s.name === "Winter Nights (Vetrnætur)" && s.occasion === "other"), list.map((s) => s.name).join(", "));
+  assert.ok(!list.some((s) => s.name === "Samhain"), "the Wheel's sabbats give way to the coven's calendar");
+});
+
+test("programs, mentors and grants change only through the database's functions", () => {
+  const sql = fs.readFileSync(path.join(root, "supabase/migrations/20261027000000_coven_programs.sql"), "utf8");
+  for (const table of ["coven_grants", "coven_mentors", "coven_programs", "coven_program_stages", "coven_program_tasks", "coven_program_assignments", "coven_program_enrollments", "coven_program_progress", "coven_program_stage_passes", "coven_program_templates"]) {
+    assert.match(sql, new RegExp(`alter table public\\.${table} enable row level security`), table);
+  }
+  assert.doesNotMatch(sql, /for (insert|update|delete|all) to authenticated/, "no direct writes");
+  const templates = fs.readFileSync(path.join(root, "supabase/migrations/20261027000100_coven_program_templates.sql"), "utf8");
+  for (const id of ["wheel", "wheel_south", "celtic", "norse", "hellenic", "roman", "slavic", "christian"]) {
+    assert.match(templates, new RegExp(`'${id}-initiation'`), `${id} initiation`);
+    assert.match(templates, new RegExp(`'${id}-training'`), `${id} training`);
+  }
+});

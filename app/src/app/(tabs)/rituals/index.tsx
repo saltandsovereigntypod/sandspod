@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
+import { PracticeSwitch } from '../../../components/PracticeSwitch';
 import { Body, Card, List, Notice, RitualScreen, Row, SectionLabel, Title, tell, ui } from '../../../components/rituals/ui';
 import { moonState } from '../../../lib/moon';
 import { useReminders } from '../../../lib/reminders/store';
@@ -42,6 +43,7 @@ export default function RitualsHome() {
 
   return (
     <RitualScreen onRefresh={refresh}>
+      <PracticeSwitch current="rituals" />
       <Title eyebrow={moon.name}>Rituals</Title>
 
       {rituals.status === 'offline' && <Notice>Offline · showing the copy saved on this phone</Notice>}

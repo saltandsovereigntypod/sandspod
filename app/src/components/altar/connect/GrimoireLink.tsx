@@ -54,7 +54,7 @@ export function GrimoireLinkSheet({ visible, object, onClose, onLink, onUnlink }
           {grimoire.status === 'loading' ? 'Opening your Book of Shadows…' : 'Your Book of Shadows lives with your account. Sign in, and its pages can be linked to things on your altar.'}
         </Text>
       ) : choices.length === 0 ? (
-        <Text style={connectStyles.body}>{query ? 'No page has that in its title.' : 'Your Book of Shadows has no pages yet. Write one in the Grimoire tab, then link it here.'}</Text>
+        <Text style={connectStyles.body}>{query ? 'No page has that in its title.' : 'Your Book of Shadows has no pages yet. Write one in Practice → Grimoire, then link it here.'}</Text>
       ) : (
         <>
           {current && (

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
+import { CovenToday } from '../../../components/covens/CovenToday';
 import { CalendarLineList, LeadCalendarLine } from '../../../components/CalendarLines';
 import { Icon } from '../../../components/Icon';
 import { MoonDisc } from '../../../components/MoonDisc';
@@ -189,6 +190,8 @@ export default function Today() {
           </>
         )}
       </View>
+
+      <CovenToday />
 
       <LookBackDue journal={rituals.journal} now={now} />
 

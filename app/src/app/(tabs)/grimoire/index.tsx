@@ -22,6 +22,7 @@ import { grimoireLibraryHref, grimoireShelves, useLibrary, type GrimoireShelf, t
 import { useMySettings } from '../../../lib/settings/store';
 import { pageFacts, pageTypeLabel, tableOfContents } from '../../../lib/grimoire/structure';
 import type { PageRow } from '../../../lib/grimoire/types';
+import { PracticeSwitch } from '../../../components/PracticeSwitch';
 import { useSession } from '../../../lib/session';
 import { colors, fonts, radius, space, type } from '../../../theme';
 
@@ -34,6 +35,7 @@ export default function Grimoire() {
   if (!session) {
     return (
       <Shell>
+        <PracticeSwitch current="grimoire" />
         <Text accessibilityRole="header" style={type.title}>
           Grimoire
         </Text>
@@ -68,6 +70,7 @@ export default function Grimoire() {
         />
       }
     >
+      <PracticeSwitch current="grimoire" />
       <View style={styles.titleRow}>
         <View style={styles.titleText}>
           <Text style={type.eyebrow}>Grimoire</Text>

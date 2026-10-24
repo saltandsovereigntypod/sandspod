@@ -6,6 +6,7 @@ export type IconName =
   | 'grimoire'
   | 'rituals'
   | 'more'
+  | 'coven'
   | 'bell'
   | 'calendar'
   | 'chevron'
@@ -39,6 +40,14 @@ export function Icon({ name, size = 22, color }: Props) {
         </>
       )}
       {name === 'rituals' && <Path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z" {...stroke} />}
+      {name === 'coven' && (
+        <>
+          <Circle cx={12} cy={12} r={8.5} {...stroke} strokeWidth={1.5} />
+          <Circle cx={12} cy={5.6} r={1.7} {...stroke} strokeWidth={1.5} />
+          <Circle cx={6.3} cy={15.3} r={1.7} {...stroke} strokeWidth={1.5} />
+          <Circle cx={17.7} cy={15.3} r={1.7} {...stroke} strokeWidth={1.5} />
+        </>
+      )}
       {name === 'more' && (
         <>
           <Circle cx={5} cy={12} r={1.5} {...stroke} />

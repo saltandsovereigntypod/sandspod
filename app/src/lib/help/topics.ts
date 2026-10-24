@@ -17,11 +17,12 @@ export const HELP: HelpSection[] = [
         steps: [
           'Look at the bar along the bottom of the screen.',
           'Today shows the moon, the holidays and the sky for the day.',
-          'Altar is where you build and tend altars. Grimoire is your Book of Shadows.',
-          'Rituals plans, runs and journals your workings, and holds My practice.',
+          'Altar is where you build and tend altars.',
+          'Practice holds your Grimoire (your Book of Shadows) and Rituals (planning, running and journaling your workings, and My practice). Switch between them at the top.',
+          'Coven is where you find, join and take part in covens: the gathering, rites, the shared altar, initiation and training.',
           'More opens your Sanctuary: the Living Library, Community, settings, backup and support.',
         ],
-        keywords: ['tabs', 'navigation', 'menu', 'bottom bar', 'where is'],
+        keywords: ['tabs', 'navigation', 'menu', 'bottom bar', 'where is', 'practice', 'coven', 'grimoire', 'rituals'],
       },
       {
         id: 'welcome-tour',
@@ -70,7 +71,7 @@ export const HELP: HelpSection[] = [
           'Or open More, then Account, then "Bring it into your account".',
           'Tap "Save a guest backup first" if you want a copy to be safe.',
           'Tap "Bring it into my account". Anything your account already has is kept as it is.',
-          'On the Rituals tab, rituals from before signing in are moved with "Bring them into my account".',
+          'In Practice → Rituals, rituals from before signing in are moved with "Bring them into my account".',
         ],
         tips: ['If anything goes wrong, the guest copy stays on the phone untouched.'],
         href: '/more/guest-data',
@@ -1056,9 +1057,9 @@ export const HELP: HelpSection[] = [
       {
         id: 'grimoire-open-book',
         title: 'Open your Book of Shadows',
-        summary: 'The Grimoire tab holds the book you keep on the website.',
+        summary: 'Practice → Grimoire holds the book you keep on the website.',
         steps: [
-          'Open the Grimoire tab.',
+          'Open Practice → Grimoire.',
           'If you see "Sign in", tap it. The Grimoire needs a Salt & Sovereignty account.',
           'Your pages are listed under "Pages", grouped by section.',
           'Tap a page to read it.',
@@ -1072,7 +1073,7 @@ export const HELP: HelpSection[] = [
         title: 'Switch to plain, everyday language',
         summary: 'Mundane mode shows your book in everyday words.',
         steps: [
-          'Open the Grimoire tab, or any page.',
+          'Open Practice → Grimoire, or any page.',
           'Switch on "Mundane" at the top right.',
           'To always open in plain language, go to More, Settings, Book of Shadows and switch on "Mundane mode by default".',
         ],
@@ -1084,7 +1085,7 @@ export const HELP: HelpSection[] = [
         title: 'Read a page',
         summary: 'A page shows its type, title, date, moon phase and what was on the altar.',
         steps: [
-          'In the Grimoire tab, tap a page under "Pages".',
+          'In Practice → Grimoire, tap a page under "Pages".',
           'Read the title block, then "On the altar" if the page records a working.',
           'Scroll for its text, and "Linked pages" at the end. Tap a linked page to open it.',
         ],
@@ -1173,9 +1174,9 @@ export const HELP: HelpSection[] = [
       {
         id: 'grimoire-shelves',
         title: 'Browse My Practice and Traditional entries in the Grimoire',
-        summary: 'The Grimoire tab also shelves your Living Library.',
+        summary: 'Practice → Grimoire also shelves your Living Library.',
         steps: [
-          'Open the Grimoire tab and look above "Pages".',
+          'Open Practice → Grimoire and look above "Pages".',
           'Type in "Search your Grimoire" to filter.',
           'Tap a shelf such as My Practice, a section, then a group to open it.',
           'Tap an entry to read it. Tap "Back to your Grimoire" to return.',
@@ -1187,7 +1188,7 @@ export const HELP: HelpSection[] = [
         title: 'Add your own notes to a herb, crystal or deity',
         summary: 'The "New entry" button adds a My Practice entry to the Living Library.',
         steps: [
-          'Open the Grimoire tab and tap "New entry".',
+          'Open Practice → Grimoire and tap "New entry".',
           'Choose a category, then search the Library or type a new name.',
           'Fill in the fields, such as Meaning, Uses, Pairs With, Substitutions and Notes.',
           'Tap "Create entry".',
@@ -1230,10 +1231,10 @@ export const HELP: HelpSection[] = [
     topics: [
       {
         id: 'rituals-home',
-        title: 'Find your way around the Rituals tab',
-        summary: 'The Rituals tab gathers planning, beginning, the premade book and your journal.',
+        title: 'Find your way around Practice → Rituals',
+        summary: 'Practice → Rituals gathers planning, beginning, the premade book and your journal.',
         steps: [
-          'Open the Rituals tab.',
+          'Open Practice → Rituals.',
           'The top cards show a ritual under way, and "Your next working".',
           'The list below holds "Begin a ritual", "My practice", "Rituals & spells", "Dedication journeys", "Plan a night", "Build a spell" and "Moon reminders".',
           'Scroll down for your Journal and "Your moon".',
@@ -1465,7 +1466,7 @@ export const HELP: HelpSection[] = [
         title: 'Bring rituals from this phone into your account',
         summary: 'If you kept rituals before signing in, move them across.',
         steps: [
-          'Sign in, then open the Rituals tab.',
+          'Sign in, then open Practice → Rituals.',
           'Find the card "Rituals from this phone".',
           'Tap "Bring them into my account".',
         ],
@@ -2106,7 +2107,7 @@ export const HELP: HelpSection[] = [
         title: 'Make an entry of your own',
         summary: 'Create a custom herb, crystal, candle, deity, tool or vessel.',
         steps: [
-          'Sign in. Open the Grimoire tab and tap "New entry".',
+          'Sign in. Open Practice → Grimoire and tap "New entry".',
           'Choose a category, then type a new name in "Search the Library, or type a new name".',
           'Tap the row that begins "Create".',
           'Fill in your notes and tap "Create entry".',
@@ -2232,6 +2233,61 @@ export const HELP: HelpSection[] = [
   },
 
   // ─── Community ────────────────────────────────────────────────────────
+  {
+    id: 'covens',
+    title: 'Covens',
+    intro: 'Practise with others: find and join a coven, take part, and go through its initiation and training.',
+    topics: [
+      {
+        id: 'covens-join',
+        title: 'Find and join a coven',
+        summary: 'Covens are for adults; each has its own creed, rules and way of joining.',
+        steps: [
+          'Open the Coven tab.',
+          'Tap "Make your coven profile" the first time: the name other members see, and confirming you are 18 or older.',
+          'Search under "Find a coven" and tap "Visit".',
+          'Read the coven’s pages, then tap "Join this coven" or "Apply to join", sign its agreements, and answer its questions.',
+        ],
+        href: '/coven',
+        keywords: ['coven', 'join', 'apply', 'circle', 'group', 'directory'],
+      },
+      {
+        id: 'covens-initiation',
+        title: 'Go through your coven’s initiation or training',
+        summary: 'Each coven designs its own programs: stages of tasks, signed off by you, your mentor or its leaders.',
+        steps: [
+          'Open your coven from the Coven tab and tap "Initiation & training".',
+          'Tap your program under "Your programs" to see each stage and its tasks.',
+          'Do a task, write your response if it asks for one, and tap "Log one", "Mark done" or "Send for sign-off".',
+          'Your mentor or the coven’s leaders sign your work off and confirm each stage. Your next task also shows on Today.',
+        ],
+        keywords: ['initiation', 'training', 'degree', 'year and a day', 'mentor', 'lessons', 'program', 'dedicant'],
+      },
+      {
+        id: 'covens-lead-programs',
+        title: 'Design initiation and training for your coven',
+        summary: 'Start from a ready-made program for your coven’s calendar, or make your own.',
+        steps: [
+          'Open your coven, then "Initiation & training" and "Design and assign" (those the coven’s head allows).',
+          'Tap a ready-made program, or "Make your own initiation". Add stages and tasks, choose who signs each off, and save.',
+          'Open the program, tap "Assign", and choose a person or a whole position. Choose mentors under "Mentors".',
+          'The coven’s head chooses who manages programs and who sees everyone’s progress in Manage → "Initiation & training powers", or on a position.',
+        ],
+        keywords: ['design program', 'assign', 'mentor', 'high priestess', 'leader', 'progress', 'template'],
+      },
+      {
+        id: 'covens-calendar',
+        title: 'Set your coven’s practice calendar',
+        summary: 'The holidays the coven keeps, as you choose your own in Settings.',
+        steps: [
+          'Open your coven, tap "Manage", then "Practice calendar".',
+          'Tick the calendars the coven keeps, and choose single holidays if you only keep some.',
+          'Add the coven’s own days, then tap "Save the calendar".',
+        ],
+        keywords: ['coven calendar', 'holidays', 'sabbats', 'festivals', 'practice calendar'],
+      },
+    ],
+  },
   {
     id: 'community',
     title: 'Community',

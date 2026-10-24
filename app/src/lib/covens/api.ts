@@ -3,6 +3,7 @@
 // decide who may do what; these only ask.
 
 import { supabase } from '../supabase';
+import type { Assignment, Enrollment, Grant, Mentorship, Program, ProgramStage, ProgramTask, ProgramTemplate, StagePass, stagesPayload, TaskProgress } from './programs';
 import type {
   Advancement,
   AltarItem,
@@ -27,7 +28,7 @@ import type {
 } from './model';
 
 const COVEN_FIELDS =
-  'id,slug,name,tagline,description,tradition,tags,meeting_rhythm,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,founder_id,created_at,member_count';
+  'id,slug,name,tagline,description,tradition,tags,meeting_rhythm,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,practice_traditions,practice_holidays,practice_custom,practice_calendars,founder_id,created_at,member_count';
 
 async function run<T>(promise: PromiseLike<{ data: unknown; error: { message: string } | null }>): Promise<T> {
   const { data, error } = await promise;
@@ -243,6 +244,42 @@ export const askPetition = (covenId: string, title: string, body: string, color:
 export const tendPetition = (petitionId: string, note: string) => rpc<Petition>('tend_coven_petition', { p_petition: petitionId, p_note: note.trim() || null });
 export const closePetition = (petitionId: string, status: 'answered' | 'closed', note: string) => rpc<Petition>('close_coven_petition', { p_petition: petitionId, p_status: status, p_note: note.trim() || null });
 
+// ─── Initiation and training ─────────────────────────────────────────────
+
+export const fetchGrants = (covenId: string) => run<Grant[]>(supabase.from('coven_grants').select('coven_id,user_id,power').eq('coven_id', covenId));
+export const setGrant = (covenId: string, userId: string, power: Grant['power'], enabled: boolean) =>
+  rpc<boolean>('set_coven_grant', { p_coven: covenId, p_user: userId, p_power: power, p_enabled: enabled });
+export const fetchMentors = (covenId: string) => run<Mentorship[]>(supabase.from('coven_mentors').select('coven_id,user_id,mentor_id,assigned_at').eq('coven_id', covenId));
+export const setMentor = (covenId: string, userId: string, mentorId: string | null) => rpc('set_coven_mentor', { p_coven: covenId, p_user: userId, p_mentor: mentorId });
+export const fetchPrograms = (covenId: string) => run<Program[]>(supabase.from('coven_programs').select('*').eq('coven_id', covenId).order('position'));
+export async function fetchProgramParts(programIds: string[]): Promise<{ stages: ProgramStage[]; tasks: ProgramTask[] }> {
+  if (!programIds.length) return { stages: [], tasks: [] };
+  const [stages, tasks] = await Promise.all([
+    run<ProgramStage[]>(supabase.from('coven_program_stages').select('*').in('program_id', programIds).order('position')),
+    run<ProgramTask[]>(supabase.from('coven_program_tasks').select('*').in('program_id', programIds).order('position')),
+  ]);
+  return { stages, tasks };
+}
+export const fetchProgramTemplates = () => run<ProgramTemplate[]>(supabase.from('coven_program_templates').select('*').order('position'));
+export const saveProgram = (covenId: string, programId: string | null, program: Record<string, unknown>, stages: ReturnType<typeof stagesPayload>) =>
+  rpc<Program>('save_coven_program', { p_coven: covenId, p_program_id: programId, p_program: program, p_stages: stages });
+export const setProgramStatus = (programId: string, status: Program['status'] | 'deleted') => rpc<Program>('set_coven_program_status', { p_program: programId, p_status: status });
+export const fetchAssignments = (covenId: string) => run<Assignment[]>(supabase.from('coven_program_assignments').select('*').eq('coven_id', covenId));
+export const assignProgram = (programId: string, userId: string | null, rankId: string | null) => rpc<number>('assign_coven_program', { p_program: programId, p_user: userId, p_rank: rankId });
+export const unassignProgram = (assignmentId: string) => rpc<boolean>('unassign_coven_program', { p_assignment: assignmentId });
+export const startProgram = (programId: string) => rpc<Enrollment>('start_coven_program', { p_program: programId });
+export const fetchEnrollments = (covenId: string) => run<Enrollment[]>(supabase.from('coven_program_enrollments').select('*').eq('coven_id', covenId).order('started_at').limit(1000));
+export const fetchProgress = (covenId: string) => run<TaskProgress[]>(supabase.from('coven_program_progress').select('*').eq('coven_id', covenId).limit(5000));
+export const fetchStagePasses = (covenId: string) => run<StagePass[]>(supabase.from('coven_program_stage_passes').select('*').eq('coven_id', covenId).limit(2000));
+export const recordTask = (enrollmentId: string, taskId: string, response: string, count: number) =>
+  rpc<TaskProgress>('record_coven_task', { p_enrollment: enrollmentId, p_task: taskId, p_response: response.trim() || null, p_count: count });
+export const checkTask = (progressId: string, approve: boolean, feedback: string) => rpc<TaskProgress>('check_coven_task', { p_progress: progressId, p_approve: approve, p_feedback: feedback.trim() || null });
+export const passStage = (enrollmentId: string, note: string, override = false) => rpc<Enrollment>('pass_coven_stage', { p_enrollment: enrollmentId, p_note: note.trim() || null, p_override: override });
+export const setEnrollmentStatus = (enrollmentId: string, status: 'active' | 'paused' | 'withdrawn') => rpc<Enrollment>('set_coven_enrollment_status', { p_enrollment: enrollmentId, p_status: status });
+export const saveCalendar = (covenId: string, traditions: string[], holidays: string[], custom: { id: string; name: string; month: number; day: number; meaning: string }[]) =>
+  run<Coven>(supabase.from('covens').update({ practice_traditions: traditions, practice_holidays: holidays, practice_custom: custom }).eq('id', covenId).select(COVEN_FIELDS).single());
+
+
 // ─── Live ────────────────────────────────────────────────────────────────
 
 export type LiveTable = 'coven_messages' | 'coven_altar_items' | 'coven_rituals' | 'coven_ritual_steps' | 'coven_ritual_rsvps' | 'coven_ritual_step_marks' | 'coven_petitions';
@@ -285,4 +322,38 @@ export function listen(
       void supabase.removeChannel(channel);
     },
   };
+}
+
+// ─── Today ───────────────────────────────────────────────────────────────
+
+/** Everything Today's coven section needs, across this person's covens (see today.ts). */
+export async function fetchCovenToday(userId: string): Promise<import('./today').CovenTodayInput | null> {
+  const memberships = await run<Member[]>(supabase.from('coven_members').select('coven_id,user_id,rank_id,status,muted_until,joined_at').eq('user_id', userId).eq('status', 'active'));
+  const ids = memberships.map((m) => m.coven_id);
+  if (!ids.length) return null;
+  const [covens, ranks, grants, rituals, rsvps, enrollments, progress, mentors] = await Promise.all([
+    run<Coven[]>(supabase.from('covens').select(COVEN_FIELDS).in('id', ids).eq('status', 'active')),
+    run<Rank[]>(supabase.from('coven_ranks').select('id,coven_id,name,level,can_manage,can_manage_programs').in('coven_id', ids)),
+    run<Grant[]>(supabase.from('coven_grants').select('coven_id,user_id,power').eq('user_id', userId)).catch(() => [] as Grant[]),
+    run<Ritual[]>(supabase.from('coven_rituals').select('*').in('coven_id', ids).in('status', ['scheduled', 'live']).limit(100)),
+    run<Rsvp[]>(supabase.from('coven_ritual_rsvps').select('*').eq('user_id', userId)).catch(() => [] as Rsvp[]),
+    run<Enrollment[]>(supabase.from('coven_program_enrollments').select('*').in('coven_id', ids).limit(500)).catch(() => [] as Enrollment[]),
+    run<TaskProgress[]>(supabase.from('coven_program_progress').select('*').in('coven_id', ids).limit(3000)).catch(() => [] as TaskProgress[]),
+    run<Mentorship[]>(supabase.from('coven_mentors').select('coven_id,user_id,mentor_id,assigned_at').in('coven_id', ids)).catch(() => [] as Mentorship[]),
+  ]);
+  const live = rituals.filter((r) => r.status === 'live').map((r) => r.id);
+  const programIds = [...new Set([...enrollments.filter((e) => e.user_id === userId).map((e) => e.program_id), ...progress.filter((p) => p.status === 'submitted').map((p) => p.program_id)])];
+  const [steps, programs, parts] = await Promise.all([
+    live.length ? fetchSteps(live) : Promise.resolve([] as RitualStep[]),
+    programIds.length ? run<Program[]>(supabase.from('coven_programs').select('*').in('id', programIds)) : Promise.resolve([] as Program[]),
+    fetchProgramParts(programIds),
+  ]);
+  const programCovens = covens
+    .filter((c) => {
+      const m = memberships.find((x) => x.coven_id === c.id);
+      const rank = ranks.find((r) => r.id === m?.rank_id);
+      return c.founder_id === userId || rank?.can_manage || rank?.can_manage_programs || grants.some((g) => g.coven_id === c.id && g.power === 'manage_programs');
+    })
+    .map((c) => c.id);
+  return { userId, covens, memberships, programCovens, rituals, steps, rsvps, programs, stages: parts.stages, tasks: parts.tasks, enrollments, progress, mentors };
 }

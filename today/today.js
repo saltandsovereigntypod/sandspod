@@ -162,8 +162,8 @@
       `<h1 class="sr-only">Today</h1>` +
       header +
       panels +
-      `<div data-coven-today>${window.CovenToday?.html?.() || ""}</div>` +
       workingCard(m) +
+      `<div data-coven-today>${window.CovenToday?.html?.() || ""}</div>` +
       lookBackCard(m) +
       horizonSection(today) +
       dreamCard(m) +

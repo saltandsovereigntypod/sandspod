@@ -340,12 +340,20 @@ export type CovenCalendar = { practice_traditions?: string[] | null; practice_ho
 
 export const CALENDAR_TRADITIONS = TRADITIONS.filter((t) => t.id !== 'custom' && t.holidays.length).map((t) => ({ id: t.id, name: t.name, description: t.description, holidays: t.holidays.map((h) => ({ id: h.id, name: h.name })) }));
 
-/** The coven's holidays as a HolidayChoice, the same shape as a person's Settings. */
+/**
+ * The coven's holidays as a HolidayChoice, the same shape as a person's
+ * Settings: a calendar with none of its holidays ticked is kept whole; one
+ * with some ticked keeps only those (as "picked"); the coven's own days are
+ * its custom days. (holidaysBetween reads picked and custom days under 'custom'.)
+ */
 export function covenHolidayChoice(coven: CovenCalendar | null | undefined): HolidayChoice {
+  const traditions = (coven?.practice_traditions ?? []).filter(Boolean);
+  const picked = (coven?.practice_holidays ?? []).filter((id) => traditions.includes(id.split('/')[0]));
+  const partial = new Set(picked.map((id) => id.split('/')[0]));
   return {
-    traditions: (coven?.practice_traditions ?? []).filter(Boolean),
+    traditions: [...traditions.filter((id) => !partial.has(id)), 'custom'],
     custom: parseCustomHolidays(coven?.practice_custom ?? []),
-    picked: coven?.practice_holidays?.length ? coven.practice_holidays : undefined,
+    picked,
   };
 }
 

@@ -24,6 +24,7 @@ export default function TabsLayout() {
         <Tabs.Screen name="altar" />
         <Tabs.Screen name="grimoire" />
         <Tabs.Screen name="rituals" />
+        <Tabs.Screen name="coven" />
         <Tabs.Screen name="more" />
       </Tabs>
       <WelcomeTour />
