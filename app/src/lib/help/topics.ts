@@ -16,11 +16,11 @@ export const HELP: HelpSection[] = [
         summary: 'The bar along the bottom of the app holds everything.',
         steps: [
           'Look at the bar along the bottom of the screen.',
-          'Today shows the moon, the holidays and the sky for the day.',
+          'Today shows the moon, the holidays from your calendars, what the day is good for and the sky.',
           'Altar is where you build and tend altars.',
           'Practice holds your Grimoire (your Book of Shadows) and Rituals (planning, running and journaling your workings, and My practice). Switch between them at the top.',
           'Coven is where you find, join and take part in covens: chat, rites, the coven’s altars, initiation and training.',
-          'More opens your Sanctuary: the Living Library, Community, settings, backup and support.',
+          'More opens your Sanctuary: the Living Library, My practice, Moon reminders, Community, settings, backup, "How to use the app" and support.',
         ],
         keywords: ['tabs', 'navigation', 'menu', 'bottom bar', 'where is', 'practice', 'coven', 'grimoire', 'rituals'],
       },
@@ -32,9 +32,22 @@ export const HELP: HelpSection[] = [
           'On the welcome screen, tap "Create your sanctuary" to make an account, or "Sign in" if you already have one.',
           'Sign in with the same account you use on the Salt & Sovereignty website to bring your altars and grimoire with you.',
           'Or choose "Continue as a guest" to start straight away.',
-          'A short tour explains Today, the altar and rituals the first time you arrive. Tap "Next", then "Begin".',
+          'The first time you arrive, a short tour shows each main part of the app. Swipe or tap "Next", then "Begin". Tap "Skip" to leave it.',
         ],
         keywords: ['sign up', 'register', 'log in', 'login', 'guest', 'welcome', 'tour', 'onboarding'],
+      },
+      {
+        id: 'replay-welcome-tour',
+        title: 'Watch the welcome tour again',
+        summary: 'The tour of every main part of the app, whenever you want it.',
+        steps: [
+          'Open More, then "How to use the app". (It is also at the top of More, then Settings.)',
+          'Tap "Watch the welcome tour again".',
+          'Swipe, or tap "Next" and "Back", to move through the pages.',
+          'Tap "Begin" on the last page, or "Skip" at any time, to close it.',
+        ],
+        href: '/more/help',
+        keywords: ['tour', 'intro', 'introduction', 'welcome', 'onboarding', 'replay', 'overview', 'what can it do', 'features'],
       },
       {
         id: 'guest-or-account',
@@ -43,8 +56,8 @@ export const HELP: HelpSection[] = [
         steps: [
           'Open More, then Account. It says "Guest · saved on this device" or "Signed in as" with your email.',
           'As a guest, altars, rituals and settings stay on this phone.',
-          'Signed in, your altars, Book of Shadows, templates, My Practice notes and settings sync with the website.',
-          'Some things need an account: the Grimoire, ritual templates, My Practice entries and My submissions.',
+          'Signed in, your altars, Book of Shadows, ritual journal, templates, practice tools, My Practice notes and settings sync with the website.',
+          'Some things need an account: the Grimoire, ritual templates, My Practice entries, covens and My submissions.',
         ],
         tips: ['Before you remove the app as a guest, save a guest backup from More, Backup and restore.'],
         href: '/more/account',
@@ -156,7 +169,7 @@ export const HELP: HelpSection[] = [
         summary: 'Settings shape your names, altar, Book of Shadows, Library and calendars.',
         steps: [
           'Open More, then Settings.',
-          'Tap a row: Identity, Appearance, Book of Shadows, My practice, Living Library, Companion panel, Living Objects, or "Calendar & holidays".',
+          'Tap a row: Identity, Appearance, Book of Shadows, My practice, My deities, Living Library, Companion panel, Living Objects, or "Calendar & holidays".',
           'Change what you like, then tap "Save changes".',
         ],
         tips: ['Signed in, settings are shared with the website. As a guest they stay on this device.'],
@@ -190,25 +203,12 @@ export const HELP: HelpSection[] = [
         summary: 'See the date, the moon, the sign and the day’s ruling planet at a glance.',
         steps: [
           'Open the Today tab.',
-          'At the top, the date line and the day’s ruler show which planet governs today.',
-          'If you keep a calendar tradition, a line beneath names the day in its way.',
-          'The moon shows tonight’s phase, its sign and how much of it is lit.',
-          'Scroll down for "On the horizon", "Today’s sky", "Correspondences", and a "Reflect" question.',
+          'At the top, the date line and the day’s ruler show which planet governs today. Calendars you keep can name the day in their own way above or below it.',
+          'The moon shows tonight’s phase, its sign and how much of it is lit. Tap it to read about this moon.',
+          'Below come "Your next working", your covens, "On the horizon", "For your practice", "Today’s sky" and "Correspondences".',
+          'At the end, "Set tonight’s altar" and a "Reflect" question.',
         ],
         keywords: ['moon phase', 'date', 'ruler', 'planet of the day', 'home'],
-      },
-      {
-        id: 'today-main-calendar',
-        title: 'Choose which tradition names your day',
-        summary: 'Your main calendar names the day at the top of Today.',
-        steps: [
-          'Open More, then Settings, then "Calendar & holidays".',
-          'Switch on the calendars you keep under "Your calendars".',
-          'If you chose more than one, pick one under "Main calendar".',
-          'Tap "Save changes".',
-        ],
-        href: '/more/settings/calendar',
-        keywords: ['tradition', 'athenian', 'norse', 'roman', 'date line', 'primary calendar'],
       },
       {
         id: 'today-on-the-horizon',
@@ -229,52 +229,26 @@ export const HELP: HelpSection[] = [
         steps: [
           'Open the Today tab on a holiday.',
           'Read the holiday card: its name, the traditions that keep it and its meaning.',
-          'Tap the card to open your calendars and the holidays ahead.',
+          'Tap the card to open the day’s own page: who is honoured, its history, how to keep it today and a working. A holiday without a page opens your calendars and the holidays ahead.',
         ],
         tips: ['The holiday card only appears on days that have a holiday.'],
         href: '/today/calendar',
         keywords: ['sabbat', 'feast day', 'festival', 'wheel of the year'],
       },
       {
-        id: 'choose-calendars',
-        title: 'Choose the calendars and holidays you keep',
-        summary: 'Pick the traditions whose holidays you want to see on Today.',
+        id: 'today-holy-pages',
+        title: 'Read about a moon or holy day, and keep it in your Grimoire',
+        summary: 'Each main moon phase and many holidays have a page of their own.',
         steps: [
-          'Open More, then Settings, then "Calendar & holidays".',
-          'Switch on the calendars you keep, such as Wheel of the Year, Norse & Heathen or Roman.',
-          'Scroll to "The year ahead" to see every holiday for the next twelve months.',
-          'Tap "Save changes".',
+          'On Today, tap the moon, a holiday card, or a tile under "On the horizon".',
+          'Read "Who is honoured, and why", "History", "Keeping it today", "A working" and its correspondences, with "What we know" and "What we don’t".',
+          'Signed in, the page is kept in your Grimoire with room for your own notes. Under "In your Grimoire", tap "Open the page".',
+          'Tap "Open the working" to read its ritual, or "Plan a ritual" to choose a night.',
         ],
-        tips: ['Tap "Hide" on a calendar you never want to see. Tap "Show hidden calendar" in the same place to bring it back.'],
-        href: '/more/settings/calendar',
-        keywords: ['holidays', 'sabbats', 'wheel of the year', 'celtic', 'hellenic', 'slavic', 'christian', 'southern hemisphere'],
-      },
-      {
-        id: 'own-calendar-events',
-        title: 'Add your own events and single holidays',
-        summary: 'Keep your own dates, or pick single holidays from any calendar.',
-        steps: [
-          'Open More, then Settings, then "Calendar & holidays".',
-          'Switch on "Your own calendar".',
-          'Under "Add an event", give it a name, choose how it repeats (Every year, Every month, Every week or Once), then a month and day.',
-          'Tap "Add event", then "Save changes".',
-          'Under "Holidays from other calendars", open a calendar and switch on single holidays without turning on the whole calendar.',
+        tips: [
+          'Tap a herb, crystal or deity under its correspondences to open it in the Living Library.',
         ],
-        href: '/more/settings/calendar',
-        keywords: ['custom holiday', 'birthday', 'anniversary', 'coven gathering', 'dedication day', 'personal date'],
-      },
-      {
-        id: 'today-layout',
-        title: 'Change what Today shows and how it is laid out',
-        summary: 'Show the moon, the holiday or both, one above the other or side by side.',
-        steps: [
-          'Open More, then Settings, then "Calendar & holidays".',
-          'Under "On Today", choose "Moon and holiday", "Moon only" or "Holiday only".',
-          'If you chose both, choose "One above the other" or "Side by side".',
-          'Tap "Save changes".',
-        ],
-        href: '/more/settings/calendar',
-        keywords: ['layout', 'hide moon', 'hide holiday', 'side by side', 'stacked'],
+        keywords: ['holy day', 'holiday page', 'moon page', 'full moon meaning', 'new moon meaning', 'sabbat meaning', 'festival', 'grimoire page', 'what does it mean'],
       },
       {
         id: 'today-sky',
@@ -315,6 +289,35 @@ export const HELP: HelpSection[] = [
         keywords: ['colours', 'colors', 'weekday', 'herbs of the day', 'crystals of the day', 'planetary day'],
       },
       {
+        id: 'today-for-your-practice',
+        title: 'See what Today offers for your practice and your deities',
+        summary: 'A line from each practice you keep, your deities’ days, and a working for tonight.',
+        steps: [
+          'Choose your practices in More, then Settings, then "My practice", and your gods in "My deities".',
+          'On Today, find "For your practice".',
+          'Each line comes from one of your practices or deities, such as tonight’s planting moon or the next tide. On a deity’s holy day its line shows in gold.',
+          'Tap a line to open that tool, or "A working for tonight" to read a premade working that suits the night.',
+        ],
+        keywords: ['practice card', 'deity', 'patron', 'holy day', 'working for tonight', 'suggestion', 'for you'],
+      },
+      {
+        id: 'today-card-of-the-day',
+        title: 'Draw a card for the day',
+        summary: 'A small line on Today opens a one-card draw, and shows the card once you keep it.',
+        steps: [
+          'On Today, tap "Draw a card for the day ›".',
+          'Tap "Shuffle and draw", turn the card over and read what it means.',
+          'Write what you make of it if you like, and tap "Keep this reading".',
+          'Back on Today, the line shows today’s card. Tap it to open the reading.',
+        ],
+        tips: [
+          'Near a new or full moon or a festival, a line beneath offers a spread for it.',
+          'To hide the line, open More, then Settings, then "Calendar & holidays", and switch off "A card for the day".',
+        ],
+        href: '/rituals/divination/draw',
+        keywords: ['daily card', 'card of the day', 'tarot', 'one card', 'today card'],
+      },
+      {
         id: 'today-next-working',
         title: 'Plan or continue a ritual from Today',
         summary: 'The Today screen shows your next planned working, or the one under way.',
@@ -350,6 +353,107 @@ export const HELP: HelpSection[] = [
         ],
         keywords: ['prompt', 'journal prompt', 'reflection', 'last full moon'],
       },
+    ],
+  },
+
+  // ─── Calendars ────────────────────────────────────────────────────────
+  {
+    id: 'calendars',
+    title: 'Calendars and holidays',
+    intro: 'The holidays you keep, your own days, and the moon’s and the old calendars’ ways of counting them.',
+    topics: [
+      {
+        id: 'choose-calendars',
+        title: 'Choose the calendars and holidays you keep',
+        summary: 'Pick the traditions whose holidays you want to see on Today.',
+        steps: [
+          'Open More, then Settings, then "Calendar & holidays".',
+          'Switch on the calendars you keep, such as Wheel of the Year, Norse & Heathen or Roman.',
+          'Scroll to "The year ahead" to see every holiday for the next twelve months.',
+          'Tap "Save changes".',
+        ],
+        tips: ['Tap "Hide" on a calendar you never want to see. Tap "Show hidden calendar" in the same place to bring it back.'],
+        href: '/more/settings/calendar',
+        keywords: ['holidays', 'sabbats', 'wheel of the year', 'celtic', 'hellenic', 'slavic', 'christian', 'southern hemisphere'],
+      },
+      {
+        id: 'today-main-calendar',
+        title: 'Choose which tradition names your day',
+        summary: 'Your main calendar names the day at the top of Today.',
+        steps: [
+          'Open More, then Settings, then "Calendar & holidays".',
+          'Switch on the calendars you keep under "Your calendars".',
+          'If you chose more than one, pick one under "Main calendar".',
+          'Tap "Save changes".',
+        ],
+        href: '/more/settings/calendar',
+        keywords: ['tradition', 'athenian', 'norse', 'roman', 'date line', 'primary calendar'],
+      },
+      {
+        id: 'calendar-count-by-moon',
+        title: 'Count your days by the moon',
+        summary: 'Let Today lead with the moon’s month and the day of it.',
+        steps: [
+          'Open More, then Settings, then "Calendar & holidays".',
+          'Under "Count my days by", choose "The moon". The ordinary date shows beneath it on Today.',
+          'Under "Hemisphere", choose "From my place", "Northern" or "Southern", so the seasons and the moons’ names fit where you are.',
+          'Tap "Save changes".',
+        ],
+        tips: [
+          '"From my place" uses the location you set on the sky screen.',
+        ],
+        href: '/more/settings/calendar',
+        keywords: ['lunar calendar', 'moon months', 'moon date', 'hemisphere', 'southern', 'count days'],
+      },
+      {
+        id: 'calendar-old-calendars',
+        title: 'Show the Athenian, Roman and other old calendars',
+        summary: 'See today’s date as the old calendars counted it, under the date on Today.',
+        steps: [
+          'Open More, then Settings, then "Calendar & holidays".',
+          'Under "Also show", tick the calendars you want: the Attic (Athenian) calendar, Roman days, the Kemetic (Egyptian) calendar, the Coligny calendar (Gaulish), the Old Icelandic calendar, Slavic months and the Old Style, or the Hindu lunar calendar (panchang). Calendars of your path come first.',
+          'Tap "About this calendar" to read where it comes from and how sure we can be. Some have choices of their own.',
+          'Tap "Save changes". On Today, tap one of their lines for more.',
+        ],
+        href: '/more/settings/calendar',
+        keywords: ['attic', 'athenian', 'greek calendar', 'roman', 'kalends', 'kemetic', 'egyptian', 'coligny', 'gaulish', 'icelandic', 'norse', 'slavic', 'hindu', 'panchang', 'traditional calendar', 'old calendar'],
+      },
+      {
+        id: 'own-calendar-events',
+        title: 'Add your own events and single holidays',
+        summary: 'Keep your own dates, or pick single holidays from any calendar.',
+        steps: [
+          'Open More, then Settings, then "Calendar & holidays".',
+          'Switch on "Your own calendar".',
+          'Under "Add an event", give it a name, choose how it repeats (Every year, Every month, Every week or Once), then a month and day.',
+          'Tap "Add event", then "Save changes".',
+          'Under "Holidays from other calendars", open a calendar and switch on single holidays without turning on the whole calendar.',
+        ],
+        href: '/more/settings/calendar',
+        keywords: ['custom holiday', 'birthday', 'anniversary', 'coven gathering', 'dedication day', 'personal date'],
+      },
+      {
+        id: 'today-layout',
+        title: 'Change what Today shows and how it is laid out',
+        summary: 'Show the moon, the holiday or both, one above the other or side by side.',
+        steps: [
+          'Open More, then Settings, then "Calendar & holidays".',
+          'Under "On Today", choose "Moon and holiday", "Moon only" or "Holiday only".',
+          'If you chose both, choose "One above the other" or "Side by side".',
+          'Tap "Save changes".',
+        ],
+        href: '/more/settings/calendar',
+        keywords: ['layout', 'hide moon', 'hide holiday', 'side by side', 'stacked'],
+      },
+    ],
+  },
+
+  // ─── Reminders ────────────────────────────────────────────────────────
+  {
+    id: 'reminders',
+    title: 'Reminders',
+    intro: 'Gentle notes on this phone for the moon, your plans, look-back days, offerings, plants and holy days.',
+    topics: [
       {
         id: 'moon-reminders',
         title: 'Get reminded of the moon',
@@ -364,6 +468,23 @@ export const HELP: HelpSection[] = [
         tips: ['If notifications are off for the app, tap "Open Settings" on that screen to turn them on.'],
         href: '/today/reminders',
         keywords: ['notifications', 'new moon reminder', 'full moon reminder', 'alerts', 'bell'],
+      },
+      {
+        id: 'reminders-everything',
+        title: 'Choose which reminders you get',
+        summary: 'Moon phases, planned rituals, look-back days, offerings, plants, holy days, dreams and devotion: each is off until you turn it on.',
+        steps: [
+          'Open More, then "Moon reminders". (Practice → Rituals has the same row, and Today has "Remind me of the moon".)',
+          'Under "Moon phases", choose the phases you want to hear about.',
+          'Under "Planned rituals", switch on "Remind me before a planned ritual" and "Ask “Did it work?” on look-back days".',
+          'Under "Altar offerings and plants", switch on "Remind me when an offering wants tending" or "Remind me when a plant would like water".',
+          'For your deities’ sacred days, open More, then Settings, then "My deities". For dreams, use "Remind me" in Dreams; for devotion, the Solitary practice’s "Daily devotion".',
+        ],
+        tips: [
+          'Reminders are kept on this phone, and need no account.',
+        ],
+        href: '/more/reminders',
+        keywords: ['notifications', 'alerts', 'reminders', 'offering reminder', 'water reminder', 'look back reminder', 'sacred days', 'bell'],
       },
       {
         id: 'ritual-reminders',
@@ -444,12 +565,12 @@ export const HELP: HelpSection[] = [
         summary: 'The cabinet holds everything you can set on an altar.',
         steps: [
           'On the altar screen, tap "Open the cabinet".',
-          'Choose a drawer: Candles, Herbs, Crystals, Tools, Deities, Vessels, Natural or Seasonal. Or type in "Search the cabinet".',
+          'Choose a drawer: Candles, Herbs, Crystals, Tools, Deities, Vessels, Natural, Seasonal, Plants or Offerings. Or type in "Search the cabinet".',
           'Tap an item to place it in the middle of the altar.',
           'For an item with several forms, tap the form you want.',
         ],
         tips: ['The cabinet shows each item’s best-known uses, so you can choose with meaning.'],
-        keywords: ['cabinet', 'add object', 'place item', 'items', 'tools', 'deity statues', 'vessels'],
+        keywords: ['cabinet', 'drawers', 'add object', 'place item', 'items', 'tools', 'deity statues', 'vessels', 'plants', 'offerings'],
       },
       {
         id: 'altar-natural-and-tools',
@@ -509,6 +630,7 @@ export const HELP: HelpSection[] = [
           'With it selected, tap "Name it" to give its name, where it lives, its light and how often you water it, and when it was last watered.',
           'Choose Young, Established or Lush for the picture that matches your plant now. It doesn’t grow on its own.',
           'Tap "Watered" when you water it. As it runs past its day it droops and dulls a little; watered, it perks up. It never dies.',
+          'Tap "Add a photo" to keep a picture of the real plant with it.',
           'For the herbs, tap "Harvest", say how much, and set a fresh sprig on the altar or keep it for a spell jar or sachet.',
           'Tap "Add to its journal" for a feed, repotting, a new leaf, a cutting or a note. Each entry keeps that day’s moon.',
         ],
@@ -749,6 +871,7 @@ export const HELP: HelpSection[] = [
           'Select a candle and tap "Carve".',
           'Type a short word, such as "Abundance".',
           'Tap "Carve".',
+          'Or, under "Or carve a sigil", tap one of the sigils you kept, or "Make a sigil".',
           'To smooth one away, tap that carving in the list "Carved into it".',
         ],
         tips: ['A carving melts away from the top as the candle burns.'],
@@ -810,7 +933,7 @@ export const HELP: HelpSection[] = [
           'Tap "Set out an offering".',
           'Choose what it is, such as Water, Fruit, Bread or Cut flowers, and optionally type exactly what.',
           'Tap "Set it out".',
-          'Later tap "Refresh", "Return to nature" or "Remove" (reads "Empty the vessel" for a vessel).',
+          'Later tap "Refresh" to set it out fresh, "Leave it be" to let it age without asking, "Return to nature", or "Remove" to empty the vessel.',
         ],
         tips: [
           'Fresh offerings age on the altar. A note says when one is ready to be refreshed.',
@@ -818,6 +941,21 @@ export const HELP: HelpSection[] = [
           'For one tap, open the cabinet’s Offerings drawer: bread, fruit, sweets, a meal, cut flowers and honeycomb to set straight on the altar, and a bowl of water, a chalice of wine, a dish of milk or honey already poured. Each is fresh as you place it and goes over from then.',
         ],
         keywords: ['food offering', 'libation', 'milk and honey', 'wine', 'flowers', 'fresh', 'wilts', 'fruit bowl', 'honeycomb', 'offerings drawer'],
+      },
+      {
+        id: 'altar-offerings-drawer',
+        title: 'Set out food, flowers and drink from the Offerings drawer',
+        summary: 'Offerings ready to place, that freshen and fade in real time.',
+        steps: [
+          'Open the cabinet and choose the Offerings drawer.',
+          'Tap one to place it: bread, fruit, sweets, a meal, cut flowers or honeycomb on their own, or a Bowl of Water, a Chalice of Wine, a Dish of Milk, a Honey Dish, a Bowl of Fruit or a Dish of Bread already filled.',
+          'It is fresh as you place it and goes over from then: bread dries, fruit browns, a meal spoils, flowers wilt and drop their petals.',
+          'Select it to tend it: "Refresh", "Leave it be", "Return to nature" or "Remove".',
+        ],
+        tips: [
+          'Reminders → "Remind me when an offering wants tending" sends one gentle note on a day something on your altars goes over. Offerings you chose to leave be won’t ask.',
+        ],
+        keywords: ['offerings', 'offering drawer', 'food', 'bread', 'fruit', 'flowers', 'wine', 'milk', 'honey', 'water', 'libation', 'goes off', 'ages', 'wilts'],
       },
       {
         id: 'altar-deity-offering',
@@ -1242,6 +1380,7 @@ export const HELP: HelpSection[] = [
         steps: [
           'To make a page from an altar, tap "Record in Grimoire" on the altar screen.',
           'Saving a spell or ritual as a template also puts it in your book.',
+          'A sigil you give a page, and the page of a moon or holy day you open from Today, are added too.',
           'Pages you make on the website appear here when you pull down to refresh.',
         ],
         tips: ['You can add to any page with "Edit".'],
@@ -1250,7 +1389,7 @@ export const HELP: HelpSection[] = [
       {
         id: 'grimoire-shelves',
         title: 'Browse My Practice and Traditional entries in the Grimoire',
-        summary: 'Practice → Grimoire also shelves your Living Library.',
+        summary: 'Practice → Grimoire also shelves your Living Library: My Practice, Dreams and Traditional Information.',
         steps: [
           'Open Practice → Grimoire and look above "Pages".',
           'Type in "Search your Grimoire" to filter.',
@@ -1258,6 +1397,50 @@ export const HELP: HelpSection[] = [
           'Tap an entry to read it. Tap "Back to your Grimoire" to return.',
         ],
         keywords: ['library shelves', 'my practice shelf', 'traditional information', 'herbs shelf'],
+      },
+      {
+        id: 'practice-dream-journal',
+        title: 'Keep a dream journal',
+        summary: 'Write dreams down, with the moon they came under.',
+        steps: [
+          'Open Practice → Grimoire and open the Dreams shelf, then "Open Dreams" (or My practice, then Hedge, then "Dream journal").',
+          'Tap "Write down a dream".',
+          'Type the dream and a title, choose "Which morning?", and add symbols and feelings.',
+          'Optionally mark it Lucid or Recurring, then tap "Keep this dream".',
+        ],
+        tips: [
+          'Tap "Symbols and moons" to see what keeps returning and the phases your dreams cluster in.',
+          'Turn on "Last night’s dream" under Remind me for a gentle morning nudge. In the morning, Today also offers a place to catch a line or two.',
+          'To hide the Dreams shelf, switch off "Show Dreams" in More, then Settings, then "Book of Shadows".',
+        ],
+        href: '/grimoire/dreams',
+        keywords: ['dreams', 'dreamwork', 'symbols', 'lucid', 'recurring dream'],
+      },
+      {
+        id: 'practice-dream-symbols',
+        title: 'Look up common dream symbols',
+        summary: 'Associations to start from; yours matter most.',
+        steps: [
+          'Open Dreams in the Grimoire and tap "Dream symbols" ("Symbols and moons" once you have a few dreams).',
+          'Open a symbol to read its notes and a question to ask yourself.',
+          'See "What keeps returning" for your own repeated symbols.',
+        ],
+        href: '/grimoire/dreams/symbols',
+        keywords: ['dream dictionary', 'dream meaning'],
+      },
+      {
+        id: 'grimoire-divination-pages',
+        title: 'Read about every tarot card, rune and ogham letter',
+        summary: 'The Grimoire’s Traditional Information holds a page for each.',
+        steps: [
+          'Open Practice → Grimoire and open the Traditional Information shelf.',
+          'Open Divination, then Tarot, Runes or Ogham. Tarot is grouped by the Major Arcana and each suit, the runes by their three aettir, the ogham by its four aicmí.',
+          'Tap a card or stave for its picture or letter, its three words and its page.',
+        ],
+        tips: [
+          'They follow the Traditional Information setting in More, then Settings, then "Living Library".',
+        ],
+        keywords: ['tarot meanings', 'card meaning', 'rune meaning', 'ogham meaning', 'futhark', 'major arcana', 'minor arcana'],
       },
       {
         id: 'grimoire-new-entry',
@@ -1312,6 +1495,7 @@ export const HELP: HelpSection[] = [
         steps: [
           'Open Practice → Rituals.',
           'The top cards show a ritual under way, and "Your next working".',
+          'Under "Divination & sigils": "Draw cards, runes or ogham", "Your readings" and "Sigil maker".',
           'The list below holds "Begin a ritual", "My practice", "Rituals & spells", "Dedication journeys", "Plan a night", "Build a spell" and "Moon reminders".',
           'Scroll down for your Journal and "Your moon".',
         ],
@@ -1525,6 +1709,49 @@ export const HELP: HelpSection[] = [
         keywords: ['past rituals', 'history', 'delete entry', 'edit journal'],
       },
       {
+        id: 'ritual-did-it-work',
+        title: 'Say whether a ritual or spell worked',
+        summary: 'Choose a day to look back, and on that day you are asked: did it work?',
+        steps: [
+          'When you journal a ritual, choose a day under "Did it work? Look back". The moon that suits its intention comes first; or choose "In a week", "In a month", "Another day" or "Not needed".',
+          'On that day the question shows on Today and at the top of your Journal under "Did it work?", with a reminder if look-back reminders are on.',
+          'Choose "Yes", "Partly", "Not yet" or "No", write "What happened", and tap "Save the answer". If it is too soon to say, choose when to look again and tap "Keep waiting".',
+          'To answer before the day, open the entry and tap "Say what happened now". Tap "Change the answer" to change it later.',
+        ],
+        tips: [
+          'Readings work the same way: choose a day under "Come back to it" as you keep one.',
+        ],
+        href: '/rituals/journal',
+        keywords: ['did it work', 'look back', 'look-back', 'results', 'outcome', 'follow up', 'success', 'manifest'],
+      },
+      {
+        id: 'apothecary-did-it-work',
+        title: 'Look back on a spell jar, sachet or anything you made',
+        summary: 'What you make in My Apothecary can be asked "Did it work?" too.',
+        steps: [
+          'As you make a spell jar, sachet or something in My Apothecary, keep the look-back day that suits its intention under "Did it work? Look back", or choose another.',
+          'Open Practice → Rituals, then Journal, then "Spell jars & sachets" to see what is "Looking back soon", "Looked back on" and has "No look-back day yet".',
+          'On its day, Today and your Journal ask whether it worked. Tap it to answer, and to read "What went into it".',
+        ],
+        href: '/rituals/apothecary',
+        keywords: ['spell jar', 'sachet', 'charm bag', 'poppet', 'oil', 'apothecary', 'did it work', 'look back'],
+      },
+      {
+        id: 'ritual-what-works',
+        title: 'See what works for you',
+        summary: 'As you answer "Did it work?", your own patterns gather.',
+        steps: [
+          'Open Practice → Rituals, scroll to Journal, and tap "Your moon".',
+          'Scroll to "What works for you".',
+          'Read the lines at the top, then "By moon phase", "By intention", "By day and its planet", "Candle colours", "Herbs and oils" and "Stones".',
+        ],
+        tips: [
+          'A yes counts whole and a partly counts half. Groups with fewer than three answers are early notes, not patterns.',
+        ],
+        href: '/rituals/journal/insights',
+        keywords: ['patterns', 'what works', 'statistics', 'best moon', 'best candle colour', 'results'],
+      },
+      {
         id: 'ritual-your-moon',
         title: 'See the patterns in your practice',
         summary: '"Your moon" shows which moons you work under, and what for.',
@@ -1532,7 +1759,7 @@ export const HELP: HelpSection[] = [
           'Open Rituals, scroll to Journal, and tap "Your moon".',
           'After a few journaled rituals, read the lines that gather at the top.',
           'See "Last" and the moon phase for what you did last time the moon looked like this.',
-          'Check "By phase" and "Still watching for" for results you are waiting on.',
+          'Check "By phase", "What works for you" and "Still watching for" for results you are waiting on.',
         ],
         href: '/rituals/journal/insights',
         keywords: ['insights', 'patterns', 'moon phases chart', 'statistics', 'analytics'],
@@ -1581,6 +1808,34 @@ export const HELP: HelpSection[] = [
         tips: ['Choose your path in Settings, Living Library, My path to put its journeys first.'],
         href: '/rituals/journeys',
         keywords: ['dedication', 'self-dedication', 'path', 'deity journey', 'hekate', 'norse'],
+      },
+      {
+        id: 'journeys-patron',
+        title: 'Read the guide to patron deities',
+        summary: 'What a patron is, how to know if one is calling you, and how to answer.',
+        steps: [
+          'Open Practice → Rituals, then "Dedication journeys", then "Patron deities".',
+          'Read it through, with "What we know, and what we don’t" and "Reading further".',
+          'Tap "My deities" to keep the gods you are getting to know, or "Dedication journeys" to study toward one.',
+        ],
+        href: '/rituals/journeys/patron',
+        keywords: ['patron', 'matron', 'patron deity', 'calling', 'signs from a god', 'deity'],
+      },
+      {
+        id: 'practice-my-deities',
+        title: 'Keep your deities and your patron',
+        summary: 'Name the gods you are exploring, have dedicated to, or keep as your patron. None is required.',
+        steps: [
+          'Open More, then Settings, then "My deities".',
+          'Under "Add a deity", search the Living Library by name or pantheon and tap one, or add one in your own words.',
+          'Under "Yours", choose how close you are to each: Exploring, Dedicated or Patron. Add "Since" and "A note for yourself" if you like.',
+          'Tap "Save changes".',
+        ],
+        tips: [
+          'Switch on "Remind me on their sacred days" for a note on the holy days of your patron and dedicated deities, with a small devotion. Their days show on Today under "For your practice" too.',
+        ],
+        href: '/more/settings/deities',
+        keywords: ['my deities', 'patron', 'dedicated', 'exploring', 'gods', 'goddess', 'sacred days', 'holy days'],
       },
       {
         id: 'journeys-begin',
@@ -1676,6 +1931,71 @@ export const HELP: HelpSection[] = [
           'Tap "Make this my current stage" and confirm "Make it my stage".',
         ],
         keywords: ['go back', 'skip ahead', 'change stage'],
+      },
+    ],
+  },
+
+  // ─── Divination and sigils ────────────────────────────────────────────
+  {
+    id: 'divination',
+    title: 'Divination and sigils',
+    intro: 'Tarot, runes and ogham laid out in their spreads, your readings and the sigil maker. Open to every practice.',
+    topics: [
+      {
+        id: 'practice-draw',
+        title: 'Draw tarot cards, runes or ogham',
+        summary: 'A card for the day, three cards, the Celtic Cross and many more spreads, runes or ogham staves, with what each means; or a spread of your own.',
+        steps: [
+          'On the Rituals home, under Divination & sigils, tap "Draw cards, runes or ogham". On Today, "Draw a card for the day" opens it too.',
+          'Choose Tarot, Runes or Ogham. Tap the spread to see the others, grouped Quick, Classic, Moon & seasons, Deep work and Your spreads, each with a picture of its shape.',
+          'Tap "Shuffle and draw" ("Cast the runes" or "Draw the staves"), then tap each card to turn it over and read what it means in its place, or "Turn them all over". Big spreads scroll sideways; "Look closer" makes them bigger.',
+          'Write what you make of it, choose a day to come back to it, and tap "Keep this reading". It goes into your readings under Divination, and lays out in its shape again when you open it.',
+        ],
+        href: '/rituals/divination/draw',
+        keywords: ['tarot', 'draw a card', 'card of the day', 'daily card', 'celtic cross', 'three card spread', 'rune cast', 'ogham', 'reversed cards', 'blank rune', 'spreads', 'horseshoe', 'tree of life', 'new moon spread', 'full moon spread', 'samhain spread', 'make your own spread', 'custom spread'],
+      },
+      {
+        id: 'divination-own-spread',
+        title: 'Make a spread of your own',
+        summary: 'Name it, give it a shape, and say what each place means.',
+        steps: [
+          'Open Practice → Rituals, tap "Your readings", then "Make a spread". Or, as you draw, tap the spread, then "Make your own".',
+          'Give it a name and what it’s for, then choose what to draw and its shape: a line, a cross, an arc, a circle or a grid.',
+          'Name each place and add a line on how to read it. Tap "Add a place" for another, or "Take this place out".',
+          'Tap "Keep this spread". It is under "Your spreads" when you draw; tap "Change this spread" there to change it, or "Delete this spread".',
+        ],
+        href: '/rituals/divination/spread',
+        keywords: ['custom spread', 'own spread', 'layout', 'positions', 'tarot spread', 'make spread'],
+      },
+      {
+        id: 'practice-readings',
+        title: 'Log a divination reading and come back to it',
+        summary: 'Record cards, runes or other readings, then see how they turned out.',
+        steps: [
+          'On the Rituals home, under Divination & sigils, tap "Your readings", then "Log a reading". Divination is open to every practice.',
+          'Choose a method such as Tarot, Oracle cards, Runes, Tea leaves, Scrying, Pendulum or Ogham.',
+          'Type the question and what came up, and add cards or runes drawn.',
+          'Under "Come back to it", choose a day, then tap "Keep this reading".',
+          'When the day comes, open it and tap "Save what happened".',
+        ],
+        href: '/rituals/divination',
+        keywords: ['tarot', 'runes', 'oracle', 'pendulum', 'divination log', 'look back'],
+      },
+      {
+        id: 'practice-sigil',
+        title: 'Make a sigil',
+        summary: 'A statement of intent made into one mark: from its letters, on a planetary square, or drawn by hand.',
+        steps: [
+          'On the Rituals home, under "Divination & sigils", tap "Sigil maker". It is open to every practice; Eclectic, the altar and the Grimoire open it too.',
+          'Under "Your statement of intent", write it as if it were already so. Switch on "Strike out the vowels too" if you like.',
+          'Under "How to make it", choose "From the letters", "On a planetary square" or "Draw it yourself", then choose how it looks and whether it has "A circle around it".',
+          'Under "Keep it", name it and tap "Keep it with my sigils", or "Give it a page in my Grimoire".',
+        ],
+        tips: [
+          'Sigils you keep are listed under "Your sigils", and wait in the candle’s Carve sheet, ready to carve.',
+        ],
+        href: '/rituals/sigil',
+        keywords: ['sigil', 'sigil maker', 'kamea', 'planetary square', 'chaos magic', 'intent', 'carve a sigil', 'spare'],
       },
     ],
   },
@@ -1813,75 +2133,6 @@ export const HELP: HelpSection[] = [
         ],
         href: '/rituals/craft/kitchen/spells',
         keywords: ['recipes', 'kitchen spells', 'bread spell', 'broth'],
-      },
-      {
-        id: 'practice-dream-journal',
-        title: 'Keep a dream journal',
-        summary: 'Write dreams down, with the moon they came under.',
-        steps: [
-          'Open the Grimoire and tap "Dreams" (or My practice, then Hedge, then "Dream journal").',
-          'Tap "Write down a dream".',
-          'Type the dream and a title, choose "Which morning?", and add symbols and feelings.',
-          'Optionally mark it Lucid or Recurring, then tap "Keep this dream".',
-        ],
-        tips: [
-          'Tap "Symbols and moons" to see what keeps returning and the phases your dreams cluster in.',
-          'Turn on "Last night’s dream" under Remind me for a gentle morning nudge. In the morning, Today also offers a place to catch a line or two.',
-        ],
-        href: '/grimoire/dreams',
-        keywords: ['dreams', 'dreamwork', 'symbols', 'lucid', 'recurring dream'],
-      },
-      {
-        id: 'practice-dream-symbols',
-        title: 'Look up common dream symbols',
-        summary: 'Associations to start from; yours matter most.',
-        steps: [
-          'Open Dreams in the Grimoire and tap "Dream symbols" ("Symbols and moons" once you have a few dreams).',
-          'Open a symbol to read its notes and a question to ask yourself.',
-          'See "What keeps returning" for your own repeated symbols.',
-        ],
-        href: '/grimoire/dreams/symbols',
-        keywords: ['dream dictionary', 'dream meaning'],
-      },
-      {
-        id: 'practice-readings',
-        title: 'Log a divination reading and come back to it',
-        summary: 'Record cards, runes or other readings, then see how they turned out.',
-        steps: [
-          'On the Rituals home, under Divination & sigils, tap "Your readings", then "Log a reading". Divination is open to every practice.',
-          'Choose a method such as Tarot, Oracle cards, Runes, Tea leaves, Scrying, Pendulum or Ogham.',
-          'Type the question and what came up, and add cards or runes drawn.',
-          'Under "Come back to it", choose a day, then tap "Keep this reading".',
-          'When the day comes, open it and tap "Save what happened".',
-        ],
-        href: '/rituals/divination',
-        keywords: ['tarot', 'runes', 'oracle', 'pendulum', 'divination log', 'look back'],
-      },
-      {
-        id: 'practice-draw',
-        title: 'Draw tarot cards, runes or ogham',
-        summary: 'A card for the day, three cards, the Celtic Cross and many more spreads, runes or ogham staves, with what each means; or a spread of your own.',
-        steps: [
-          'On the Rituals home, under Divination & sigils, tap "Draw cards, runes or ogham". On Today, "Draw a card for the day" opens it too.',
-          'Choose Tarot, Runes or Ogham. Tap the spread to see the others, grouped Quick, Classic, Moon & seasons, Deep work and Your spreads, each with a picture of its shape.',
-          'Tap "Shuffle and draw", then tap each card to turn it over and read what it means in its place. Big spreads scroll sideways; "Look closer" makes them bigger.',
-          'Write what you make of it, choose a day to come back to it, and tap "Keep this reading". It goes into your readings under Divination, and lays out in its shape again when you open it.',
-          'To make your own spread, tap the spread, then "Make your own": name it, choose a shape (a line, a cross, an arc, a circle or a grid) and name each place.',
-        ],
-        href: '/rituals/divination/draw',
-        keywords: ['tarot', 'draw a card', 'card of the day', 'daily card', 'celtic cross', 'three card spread', 'rune cast', 'ogham', 'reversed cards', 'blank rune', 'spreads', 'horseshoe', 'tree of life', 'new moon spread', 'full moon spread', 'samhain spread', 'make your own spread', 'custom spread'],
-      },
-      {
-        id: 'practice-sigil',
-        title: 'Make a sigil',
-        summary: 'A statement of intent made into one mark: from its letters, on a planetary square, or drawn by hand.',
-        steps: [
-          'On the Rituals home, under Divination & sigils, tap "Sigil maker". It is open to every practice.',
-          'Write your intent as if it were already so, then choose the letter method, a planetary square or drawing by hand.',
-          'Keep it as a page in your Grimoire, or keep it to carve into a candle on the altar.',
-        ],
-        href: '/rituals/sigil',
-        keywords: ['sigil', 'sigil maker', 'kamea', 'planetary square', 'chaos magic', 'intent', 'carve a sigil'],
       },
       {
         id: 'practice-ancestors',
@@ -2320,7 +2571,7 @@ export const HELP: HelpSection[] = [
     ],
   },
 
-  // ─── Community ────────────────────────────────────────────────────────
+  // ─── Covens ───────────────────────────────────────────────────────────
   {
     id: 'covens',
     title: 'Covens',
@@ -2338,6 +2589,22 @@ export const HELP: HelpSection[] = [
         ],
         href: '/coven',
         keywords: ['coven', 'join', 'apply', 'circle', 'group', 'directory'],
+      },
+      {
+        id: 'covens-found',
+        title: 'Found a coven',
+        summary: 'Start a coven of your own, with its creed, its ways of joining and its positions.',
+        steps: [
+          'Open the Coven tab and tap "Found a coven". Make your coven profile first if asked.',
+          'Give it a "Coven name", a "Web address", "One line about the coven" and "Who you are and how you practise", with its tradition, when you gather and tags if you like.',
+          'Choose "How witches join" (By application, Open or Not yet), whether it is Listed in the "Directory", and "Your title as leader".',
+          'Agree to lead it by the community guidelines, then tap "✦ Found the coven".',
+        ],
+        tips: [
+          'Afterwards, "Manage" holds the coven’s details, its creed, rules and agreements, positions, questions for applicants and practice calendar.',
+        ],
+        href: '/coven/new',
+        keywords: ['start a coven', 'create coven', 'found', 'new coven', 'lead', 'high priestess'],
       },
       {
         id: 'covens-initiation',
@@ -2403,6 +2670,31 @@ export const HELP: HelpSection[] = [
         keywords: ['chat', 'message', 'talk', 'gathering', 'unread', 'phone number', 'direct message', 'dm', 'group', 'notifications', 'mute'],
       },
       {
+        id: 'covens-rituals',
+        title: 'Plan and hold a rite with your coven',
+        summary: 'Rites with steps for each person, held together on the coven’s altar.',
+        steps: [
+          'Open your coven, then "Rituals and rites". Those who can lead rituals tap "Plan a ritual".',
+          'Name it, add its intention and what members should know or bring, choose an occasion and a day from "Coming moons and holidays", then add its steps: what happens, instructions, words to speak and what each step sets on the altar. "Copy steps from one of your rituals" starts from your own.',
+          'Tap "Plan the ritual", then "Put it on the calendar" when it is ready.',
+          'Members answer "Will you be there?": Going, Maybe or Can’t make it. When it begins, tap "Join the ritual"; when a step is yours, "Open the ritual" shows on the coven’s page.',
+          'Whoever leads taps "Start the ritual", moves with "Skip to the next step" or "Back a step", and finishes with "End the ritual".',
+        ],
+        keywords: ['coven ritual', 'group ritual', 'rite', 'esbat', 'sabbat', 'rsvp', 'circle', 'plan ritual'],
+      },
+      {
+        id: 'covens-book',
+        title: 'Write in your coven’s Book of Shadows',
+        summary: 'The coven’s own pages, approved before they go in.',
+        steps: [
+          'Open your coven, then "Book of Shadows". Tap a page to read it.',
+          'Tap "Write a page", give it a title, a section and the page, then tap "Send for approval" or "Save as a draft".',
+          'To change a page, open it and tap "Suggest a change".',
+          'Those who approve pages tap "Approve" or "Send back" under "Waiting for approval".',
+        ],
+        keywords: ['coven book', 'shared grimoire', 'coven pages', 'book of shadows'],
+      },
+      {
         id: 'covens-petitions',
         title: 'Ask your coven to hold a petition',
         summary: 'Each petition gets its own altar, and the coven tends it while it’s open.',
@@ -2429,6 +2721,29 @@ export const HELP: HelpSection[] = [
         keywords: ['positions', 'roles', 'powers', 'permissions', 'access', 'high priestess', 'leader'],
       },
       {
+        id: 'covens-review-members',
+        title: 'Review applications and look after members',
+        summary: 'Approve who joins and who rises, and keep the gathering safe.',
+        steps: [
+          'Open your coven and tap "Review": approve or decline "Applications to join" and "Requests to advance", with a note if you like.',
+          'Tap "Manage", then "Members", and tap a person to change their position, pause their messages, or remove or ban them.',
+          'The coven’s head can hand on leadership from the same place.',
+        ],
+        keywords: ['applications', 'approve', 'decline', 'members', 'ban', 'remove member', 'pause', 'hand on', 'leader'],
+      },
+      {
+        id: 'covens-my-path',
+        title: 'Sign agreements, rise to a higher position, or leave',
+        summary: 'Your place in a coven, from its page.',
+        steps: [
+          'Open your coven and tap "My path".',
+          'Under "Agreements", tap "Read and sign" for any the coven asks of you.',
+          'Under "Rise to a higher position", choose the position, say why you’re ready, and tap "Ask to advance". The coven’s reviewers decide.',
+          'Under "Leaving", tap the button to leave the coven.',
+        ],
+        keywords: ['advance', 'degree', 'position', 'agreements', 'sign', 'leave coven', 'my path'],
+      },
+      {
         id: 'covens-moderation',
         title: 'Moderate covens (Salt & Sovereignty moderators)',
         summary: 'Reports, every coven, site bans and moderators.',
@@ -2442,6 +2757,8 @@ export const HELP: HelpSection[] = [
       },
     ],
   },
+
+  // ─── Community ────────────────────────────────────────────────────────
   {
     id: 'community',
     title: 'Community',

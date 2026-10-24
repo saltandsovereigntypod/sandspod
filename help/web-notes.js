@@ -8,17 +8,19 @@
 (function (global) {
   /** Notes shown under a whole section, before its topics. */
   const SECTION_NOTES = {
-    "getting-started": "On the website, the same tabs sit in the bar at the top of the page on a computer and along the bottom on a phone: Today, Altar, Grimoire, Rituals, Podcast and More. Where a step says tap, click.",
+    "getting-started": "On the website, the same tabs sit in the bar at the top of the page on a computer and along the bottom on a phone: Today, Altar, Practice, Coven and More, with the podcast under the logo. Where a step says tap, click.",
     altar: "On the website, the Altar is its own page (Altar in the bar). Most tools are there under the same names; a few, like turning the phone sideways or the home screen widget, belong to the app alone.",
     grimoire: "On the website, the Grimoire opens your Book of Shadows with the Living Library shelves beside it. Anyone can read the Living Library itself under More → Living Library.",
-    rituals: "On the website, Rituals opens the altar’s Ritual Companion, where you plan, run and journal a ritual.",
+    rituals: "On the website, Practice → Rituals holds the same planner, premade book, journal and Your moon. A ritual can also be run at the altar’s Ritual Companion.",
+    covens: "On the website, covens are under Coven in the bar, with the same pages, altars, chat and programs.",
     widgets: "Widgets live on a phone’s home screen, so they’re only in the app.",
   };
 
   /** Notes for single topics, where the website's steps differ from the app's. */
   const TOPIC_NOTES = {
     "find-your-way-around": "More opens your Sanctuary: settings, My Journey, the Community Grimoire, accessibility and your account.",
-    "welcome-tour": "Open your Sanctuary from Today or More and choose Sign In or Create Account, or carry on as a guest. The same account works in the app.",
+    "replay-welcome-tour": "The welcome tour belongs to the app. On the website, the Altar and the Grimoire each open with a short guide of their own the first time.",
+    "welcome-tour":"Open your Sanctuary from Today or More and choose Sign In or Create Account, or carry on as a guest. The same account works in the app.",
     "guest-or-account": "As a guest, your work stays in this browser. More → Settings → Account & Data says whether you’re signed in.",
     "sign-in-account": "Choose Sign In under More, or Sign In or Create Account in More → Settings → Account & Data.",
     "bring-guest-work": "Sign in in the browser that holds your guest work. More → Settings → Account & Data then shows Guest Sanctuary Found: choose Review Guest Data, download the guest safety backup, and choose Bring Selected Data Into My Account. Your practice tools and planned rituals can come too.",
@@ -33,6 +35,10 @@
     "choose-calendars": "In More → Settings → Calendar & holidays. Your choice is shared with the app when you’re signed in.",
     "own-calendar-events": "In More → Settings → Calendar & holidays, turn on Your own calendar, then use Add an event or Holidays from other calendars.",
     "today-layout": "In More → Settings → Calendar & holidays, under On Today.",
+    "calendar-count-by-moon": "In More → Settings → Calendar & holidays, under Count my days by.",
+    "calendar-old-calendars": "In More → Settings → Calendar & holidays, under Also show.",
+    "practice-my-deities": "In More → Settings → My deities.",
+    "reminders-everything": "Open Reminders. The website turns your choices into calendar events, since a browser can’t ring at a set time.",
     "moon-reminders": "A browser can’t ring at a set time, so the website turns your reminders into calendar events instead. Open Reminders, choose your phases, then download the calendar file or add events to Google Calendar one by one. Your calendar does the reminding.",
     "ritual-reminders": "Open Reminders, keep “Remind me before a planned ritual” on, and download the calendar file again after you plan a new ritual.",
     "sky-to-calendar": "Open Reminders and use “Download holidays, eclipses and moon phases (.ics)”. Event settings choose all day, the exact moment or a set time, and an alert.",
@@ -66,7 +72,10 @@
   const EXACT = {
     "/altar": "/altar/",
     "/grimoire": "/grimoire/",
-    "/rituals": "/altar/?ritual=1",
+    "/rituals": "/rituals/",
+    "/coven": "/covens/",
+    "/coven/new": "/covens/new/",
+    "/coven/moderation": "/covens/moderation/",
     "/today": "/today/",
     "/more": "/?sanctuary=more",
     "/more/settings/practice": "/practice/#choose",
