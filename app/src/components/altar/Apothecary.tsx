@@ -4,7 +4,7 @@
 // Living Library and your other workings, or are simply typed in.
 
 import { useMemo, useState, type ReactNode } from 'react';
-import { ActivityIndicator, Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { Button } from '../Button';
 import {
@@ -20,7 +20,8 @@ import {
   type Ingredient,
 } from '../../lib/altar/apothecary';
 import { isItemDue, itemLookBack, startItemLookBack } from '../../lib/altar/apothecaryLookBack';
-import { altarImageSource } from '../../lib/altar/assets';
+import { altarPicture } from '../../lib/altar/assets';
+import { AltarImage } from './AltarImage';
 import { builtInCabinet, shortLabel } from '../../lib/altar/cabinet';
 import { ITEM_TYPE, isCustomCategory } from '../../lib/altar/custom';
 import { pickImage, type PickedImage } from '../../lib/altar/images';
@@ -54,10 +55,10 @@ export function ApothecarySheet({ visible, onClose, onMake, onEdit, onPlace }: L
         </Text>
       ) : (
         apothecary.map((item) => {
-          const source = altarImageSource(item.imagePath);
+          const picture = altarPicture(item.imagePath);
           return (
             <View key={item.id} style={styles.card}>
-              <View style={styles.cardThumb}>{source && <Image source={source} style={styles.cardImage} resizeMode="contain" />}</View>
+              <View style={styles.cardThumb}>{picture && <AltarImage picture={picture} style={styles.cardImage} resizeMode="contain" />}</View>
               <View style={styles.cardText}>
                 <Text style={type.cardTitle} numberOfLines={1}>
                   {item.name}
@@ -248,7 +249,7 @@ function Editor({ target, altarObjects, onClose, onSaved, onDeleted }: EditorPro
     }
   };
 
-  const imageSource = picked ? altarImageSource(picked.uri) : altarImageSource(item.imagePath);
+  const imagePicture = altarPicture(picked ? picked.uri : item.imagePath);
   const details = DETAIL_FIELDS[item.type] ?? [];
 
   return (
@@ -395,7 +396,7 @@ function Editor({ target, altarObjects, onClose, onSaved, onDeleted }: EditorPro
 
       <Group label="Picture">
         <View style={styles.pictureRow}>
-          <View style={styles.cardThumb}>{imageSource && <Image source={imageSource} style={styles.cardImage} resizeMode="contain" />}</View>
+          <View style={styles.cardThumb}>{imagePicture && <AltarImage picture={imagePicture} style={styles.cardImage} resizeMode="contain" />}</View>
           <View style={{ flex: 1, gap: 6 }}>
             <Button label={picked || !presetImage ? 'Choose another picture' : 'Use your own picture'} variant="outline" onPress={() => void choosePicture()} />
             {(picked || !presetImage) && (

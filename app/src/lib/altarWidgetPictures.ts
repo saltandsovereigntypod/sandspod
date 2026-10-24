@@ -6,8 +6,9 @@ import { Asset } from 'expo-asset';
 import { Directory, File, Paths } from 'expo-file-system';
 import { ImageManipulator, SaveFormat, type ImageRef } from 'expo-image-manipulator';
 
-import { altarImageSource } from './altar/assets';
+import { altarPicture } from './altar/assets';
 import { altarsAt } from './altar/burnout';
+import { pixelRect, type PictureCrop } from './altar/pictureCrop';
 import type { SavedAltar } from './altar/types';
 import { altarPictures, GLASS_EMPTY, type AltarWidgetArt } from './altarWidget';
 
@@ -17,14 +18,23 @@ export function hash(text: string): string {
   return (h >>> 0).toString(36);
 }
 
-/** A local copy of a saved picture path, to shrink. */
-async function localUri(path: string): Promise<string | null> {
-  const source = path === GLASS_EMPTY ? require('../../assets/widget/glass-empty.png') : altarImageSource(path);
-  if (source == null) return null;
+/**
+ * A local copy of a saved picture path, to shrink, and when the app bundles it
+ * on a sheet (a herb's or crystal's form) its rect there, to cut out first.
+ */
+async function localFile(path: string): Promise<{ uri: string; sheet?: PictureCrop } | null> {
+  if (path === GLASS_EMPTY) {
+    const asset = Asset.fromModule(require('../../assets/widget/glass-empty.png'));
+    await asset.downloadAsync();
+    return { uri: asset.localUri ?? asset.uri };
+  }
+  const picture = altarPicture(path);
+  if (picture == null) return null;
+  const { source } = picture;
   if (typeof source === 'number') {
     const asset = Asset.fromModule(source);
     await asset.downloadAsync();
-    return asset.localUri ?? asset.uri;
+    return { uri: asset.localUri ?? asset.uri, sheet: picture.crop };
   }
   const uri = !Array.isArray(source) && typeof source === 'object' ? source.uri : undefined;
   if (!uri || uri.startsWith('data:')) return null;
@@ -33,9 +43,9 @@ async function localUri(path: string): Promise<string | null> {
     if (!dir.exists) dir.create({ intermediates: true, idempotent: true });
     const target = new File(dir, `${hash(uri)}`);
     if (!target.exists) await File.downloadFileAsync(uri, target);
-    return target.uri;
+    return { uri: target.uri };
   }
-  return uri;
+  return { uri };
 }
 
 /** The widget's own artwork: flames, light and the shading behind its words and buttons. */
@@ -90,16 +100,13 @@ export async function preparePictures(root: string, altars: SavedAltar[], scale?
       const file = new File(dir, name);
       try {
         if (!file.exists) {
-          const uri = await localUri(path);
-          if (!uri) continue;
-          let source: string | ImageRef = uri;
-          if (crop) {
-            // Cut out just what this widget size shows (in the picture's own pixels).
-            const full = await ImageManipulator.manipulate(uri).renderAsync();
-            const x = Math.max(0, Math.round(crop.x * full.width));
-            const y = Math.max(0, Math.round(crop.y * full.height));
-            const w = Math.min(full.width - x, Math.round(crop.w * full.width));
-            const h = Math.min(full.height - y, Math.round(crop.h * full.height));
+          const local = await localFile(path);
+          if (!local) continue;
+          let source: string | ImageRef = local.uri;
+          if (crop || local.sheet) {
+            // Cut out just the picture from its sheet, and just what this widget size shows (in the picture's own pixels).
+            const full = await ImageManipulator.manipulate(local.uri).renderAsync();
+            const { x, y, w, h } = pixelRect(full.width, full.height, local.sheet, crop);
             source = await ImageManipulator.manipulate(full).crop({ originX: x, originY: y, width: w, height: h }).renderAsync();
           }
           const image = await ImageManipulator.manipulate(source).resize(height ? { width, height } : { width }).renderAsync();

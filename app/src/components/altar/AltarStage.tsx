@@ -19,7 +19,7 @@ import { HAS_SMOKE, SmokeFire } from './SmokeFire';
 import { glossOf, type ObjectLight } from '../../lib/altar/litShader';
 import { TiltProvider, tiltShift, useTilt, useTiltSource } from './Tilt';
 import { CastShadows, LightPools, NightVeil, objectLights, useFlameMotion, useShareFlame, WaxGlow, type FlameMotion } from './Lighting';
-import { altarImageSource, candleHerbOverlay, candleOilOverlay, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
+import { altarImageSource, altarPicture, candleHerbOverlay, candleOilOverlay, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
 import { DEFAULT_BACKGROUND } from '../../lib/altar/cabinet';
 import type { FlameLayout } from '../../lib/altar/flame';
 import { boxToPixels, displayBox, hitTest, IMAGE_INSET, imageRatio, rotationOf, STAGE_ASPECT } from '../../lib/altar/geometry';
@@ -27,6 +27,7 @@ import { stackOrder } from '../../lib/altar/layers';
 import { candleLife, dressingOverlays, isCandle, isLit } from '../../lib/altar/livingState';
 import { incenseStickArt, offeringArt, tintFilter, tintMatrix, type IncenseStickArt, type OfferingArt } from '../../lib/altar/offeringArt';
 import { AgedPicture, HAS_AGED } from './AgedPicture';
+import { AltarImage } from './AltarImage';
 import { FoodHeap } from './FoodHeap';
 import { FramePhoto } from './FramePhoto';
 import { frameOf, framePhotoRect, framePhotoTint, isFrame } from '../../lib/altar/frame';
@@ -381,7 +382,9 @@ type ArtProps = {
  * in the object panel draws the same thing large.
  */
 export const AltarObjectArt = memo(function AltarObjectArt({ object, width, height, charge = 0, now, lights, lightReach = 0 }: ArtProps) {
-  const source = altarImageSource(object.imagePath);
+  const picture = altarPicture(object.imagePath);
+  // The whole file, for the candles and incense sticks drawn cut down (never on a sheet).
+  const source = picture && !picture.crop ? picture.source : null;
   useImageRatio(object.imagePath);
   const overlays = dressingOverlays(object);
   const flipped = object.flipped === 'true';
@@ -415,7 +418,7 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
   // A stick burns shorter, from its tip, and drops its ash at its foot.
   const stick = incense && now > 0 ? incenseStickArt(object, width, height, now) : null;
   const stickCut = !!source && !!stick && stick.cutPx > 0.25;
-  const paper = isPetitionPaper(object) && !source;
+  const paper = isPetitionPaper(object) && !picture;
   // An offering going over: browning and duller, a flower bowing its head, liquid sinking in its vessel.
   const art = now > 0 ? offeringArt(object, width, height, now, object.imagePath ? imageRatio(String(object.imagePath)) : null) : null;
   const tint = art?.tint ?? null;
@@ -424,7 +427,7 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
   const labelSize = Math.max(8, Math.min(13, width * 0.16));
   // An ancestor frame: the photo of your own in its opening.
   const frame = isFrame(object) ? frameOf(object) : null;
-  const photoRect = frame && source ? framePhotoRect(object, width, height) : null;
+  const photoRect = frame && picture ? framePhotoRect(object, width, height) : null;
 
   return (
     <View pointerEvents="none" style={{ width, height, transform: [{ scaleX: flipped ? -1 : 1 }] }}>
@@ -440,7 +443,7 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
           <CandlePicture source={source} geometry={geometry} style={spent ? styles.spentImage : undefined} />
         ) : source && stickCut && stick ? (
           <StickPicture source={source} stick={stick} ash={ash} />
-        ) : source ? (
+        ) : picture ? (
           // The website's image sits in the button's content box (6px / 1px padding on 80px).
           <View
             style={[
@@ -450,12 +453,12 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
               tint && Platform.OS === 'web' && { filter: tintFilter(tint) },
             ]}
           >
-            <Image source={source} style={[styles.fill, (spent || ash) && styles.spentImage]} resizeMode="contain" />
+            <AltarImage picture={picture} style={[styles.fill, (spent || ash) && styles.spentImage]} resizeMode="contain" />
             {HAS_LIT && !!lights?.length && !spent && !ash && !tint && (
               // Lit by the candles near it, over the plain picture once it has loaded.
               <View pointerEvents="none" style={{ position: 'absolute', left: width * IMAGE_INSET.x, top: width * IMAGE_INSET.y }}>
                 <LitPicture
-                  source={source}
+                  picture={picture}
                   width={width * (1 - IMAGE_INSET.x * 2)}
                   height={height - width * IMAGE_INSET.y * 2}
                   lights={lights}
@@ -468,7 +471,7 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
             {tint && HAS_AGED && (
               // Browned and dulled, the same colour change the web's filter makes.
               <View pointerEvents="none" style={{ position: 'absolute', left: width * IMAGE_INSET.x, top: width * IMAGE_INSET.y }}>
-                <AgedPicture source={source} width={width * (1 - IMAGE_INSET.x * 2)} height={height - width * IMAGE_INSET.y * 2} matrix={tintMatrix(tint)} />
+                <AgedPicture picture={picture} width={width * (1 - IMAGE_INSET.x * 2)} height={height - width * IMAGE_INSET.y * 2} matrix={tintMatrix(tint)} />
               </View>
             )}
           </View>
@@ -487,7 +490,7 @@ export const AltarObjectArt = memo(function AltarObjectArt({ object, width, heig
           </View>
         </View>
       )}
-      {candle && source && geometry && (
+      {candle && picture && geometry && (
         <CandleMarks object={object} width={width} height={height} now={now} uid={String(object.altarObjectId || 'obj')} flipped={flipped} geometry={geometry} />
       )}
       {lit && geometry && <WaxGlow object={object} width={width} height={height} now={now} motion={motion} />}
