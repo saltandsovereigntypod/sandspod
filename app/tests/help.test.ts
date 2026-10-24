@@ -43,3 +43,46 @@ test('search finds by title, keyword and steps, best first', () => {
   assert.deepEqual(searchHelp('zzz', sample), []);
   assert.equal(fold('Book of Shadows!'), 'book of shadows');
 });
+
+test('the guide covers every main feature, in the house voice', () => {
+  const sections = new Set(HELP.map((s) => s.id));
+  for (const id of ['getting-started', 'today', 'calendars', 'reminders', 'altar', 'grimoire', 'rituals', 'journeys', 'divination', 'my-practice', 'living-library', 'covens', 'community', 'sanctuary', 'widgets']) {
+    assert.ok(sections.has(id), `section ${id}`);
+  }
+  const topics = new Map(HELP.flatMap((s) => s.topics.map((t) => [t.id, t] as const)));
+  for (const id of [
+    'replay-welcome-tour',
+    'today-holy-pages',
+    'today-card-of-the-day',
+    'calendar-count-by-moon',
+    'calendar-old-calendars',
+    'reminders-everything',
+    'altar-offerings-drawer',
+    'altar-potted-plants',
+    'altar-seasonal',
+    'altar-tonights-altar',
+    'altar-widget',
+    'altar-crystal-care',
+    'practice-dream-journal',
+    'grimoire-divination-pages',
+    'divination-own-spread',
+    'practice-sigil',
+    'ritual-did-it-work',
+    'apothecary-did-it-work',
+    'ritual-what-works',
+    'journeys-patron',
+    'practice-my-deities',
+    'covens-found',
+    'covens-rituals',
+    'covens-book',
+    'covens-my-path',
+  ]) {
+    assert.ok(topics.has(id), `topic ${id}`);
+  }
+  for (const topic of topics.values()) {
+    const text = [topic.title, topic.summary, ...topic.steps, ...(topic.tips ?? [])].join(' ');
+    assert.doesNotMatch(text, /!/, `${topic.id}: no exclamation marks`);
+    if (topic.href) assert.doesNotMatch(topic.href, /[[\]]/, `${topic.id}: a whole route, not a pattern`);
+  }
+  assert.equal(searchHelp('welcome tour')[0].topic.id, 'replay-welcome-tour');
+});

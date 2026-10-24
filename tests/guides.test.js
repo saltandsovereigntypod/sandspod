@@ -50,6 +50,14 @@ test("How to: app screens map to the website's pages", () => {
   assert.equal(Notes.siteHref("/more/library/closed"), "/library/closed/");
   assert.equal(Notes.siteHref("/today/sky"), "/today/sky/");
   assert.equal(Notes.siteHref("/altar"), "/altar/");
+  assert.equal(Notes.siteHref("/rituals"), "/rituals/");
+  assert.equal(Notes.siteHref("/coven"), "/covens/");
+  assert.equal(Notes.siteHref("/coven/new"), "/covens/new/");
+  assert.equal(Notes.siteHref("/rituals/journeys/patron"), "/rituals/journeys/patron/");
+  // The website's guide is the app's own: its newest topics are in the built bundle.
+  ["replay-welcome-tour", "altar-offerings-drawer", "ritual-did-it-work", "calendar-old-calendars", "covens-rituals"].forEach((id) =>
+    assert.ok(G.help.HELP.some((s) => s.topics.some((t) => t.id === id)), `js/core/guides.js has ${id}; run node scripts/build-core.mjs guides`),
+  );
   // Every note belongs to a real topic or section of the app's guide.
   const topics = new Set(G.help.HELP.flatMap((s) => s.topics.map((t) => t.id)));
   Object.keys(Notes.TOPIC_NOTES).forEach((id) => assert.ok(topics.has(id), `unknown topic ${id}`));
