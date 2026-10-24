@@ -452,6 +452,7 @@
         "ratio": 0.6667
       }
     },
+    "plants": {},
     "items": {
       "herbs": [
         {

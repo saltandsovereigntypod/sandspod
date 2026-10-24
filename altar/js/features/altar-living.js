@@ -5,7 +5,7 @@
    life (lighting, how long it burns, what's left, a fresh candle in a spent
    one's place), dressing and anointing, carving, reading how it burned and
    its remnant; offerings that wilt; incense; petitions; a charge; jars and
-   sachets; spells worked with it; a deity's relationship; its story; where
+   sachets; a potted plant (altar-plants.js); spells worked with it; a deity's relationship; its story; where
    tradition puts it; and Look closer.
 
    Everything is the app's own logic (js/core/altar.js) on the object's saved
@@ -123,6 +123,8 @@
 
     out.push(global.AltarReading?.practiceHtml?.(saved) || "");
     if (core.frame.isFrame(saved)) out.push(frameHtml(saved));
+    // A potted plant: its water, picture, details, notes and journal (altar-plants.js).
+    if (core.pottedPlants?.isPottedPlant(saved)) out.push(global.AltarPlants?.panelHtml?.(saved, now) || "");
     if (tonightWhy) out.push(block("Why it’s here tonight", caption(tonightWhy) + chips([{ label: "Swap it", symbol: "⇄", action: "tonight-swap", hint: `Swap ${label} for something with the same correspondence` }])));
     if (charge) out.push(block(core.charge.chargeLine(charge), caption(core.charge.chargeDetail(charge)), charge.level === "faded" ? " app-block--faded" : ""));
     spells.forEach((entry) => {
@@ -1196,7 +1198,7 @@
   document.addEventListener("click", (event) => {
     const button = event.target.closest("[data-app-living] [data-app-action]");
     if (!button) return;
-    const action = ACTIONS[button.dataset.appAction];
+    const action = ACTIONS[button.dataset.appAction] || global.AltarPlants?.actions?.[button.dataset.appAction];
     if (!action) return;
     event.preventDefault();
     event.stopPropagation();
@@ -1236,7 +1238,10 @@
     if (!objects.length) return;
     tendingNoted.add(id);
     const due = core.offerings.tendingNote(core.offerings.offeringsDue([{ id, name: B().altarName(), objects }], Date.now()), { oneAltar: true });
-    if (due) notice(`${due} Select it to refresh it, give it back, or leave it as it is.`);
+    // And potted plants that would like water.
+    const thirsty = core.pottedPlants?.wateringNote(core.pottedPlants.wateringDue([{ id, name: B().altarName(), objects }], Date.now()), { oneAltar: true });
+    if (due) notice(`${due} Select it to refresh it, give it back, or leave it as it is.${thirsty ? ` ${thirsty}` : ""}`);
+    else if (thirsty) notice(`${thirsty} Select it to mark it watered.`);
   }
 
   function watch() {

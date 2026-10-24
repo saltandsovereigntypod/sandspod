@@ -173,7 +173,7 @@ export default function Reminders() {
       </View>
 
       <View style={ui.gapSmall}>
-        <SectionLabel>Altar offerings</SectionLabel>
+        <SectionLabel>Altar offerings and plants</SectionLabel>
         <Card>
           <Toggle
             label="Remind me when an offering wants tending"
@@ -185,6 +185,18 @@ export default function Reminders() {
             <>
               <TimeStepper minutes={settings.offeringsAt} onChange={(offeringsAt) => void updateReminderSettings({ offeringsAt })} />
               <Body muted>One gentle note on a day something on your altars goes over, at this time. Offerings you’ve chosen to leave as they are won’t ask.</Body>
+            </>
+          )}
+          <Toggle
+            label="Remind me when a plant would like water"
+            detail="The potted plants on your altars, by how often you water each one"
+            value={settings.watering}
+            onChange={(watering) => void updateReminderSettings({ watering })}
+          />
+          {settings.watering && (
+            <>
+              <TimeStepper minutes={settings.wateringAt} onChange={(wateringAt) => void updateReminderSettings({ wateringAt })} />
+              <Body muted>One note on a day a plant comes due, at this time. Mark it watered on the altar and it won’t ask again until its next day.</Body>
             </>
           )}
         </Card>

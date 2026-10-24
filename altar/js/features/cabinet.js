@@ -12,7 +12,8 @@ const cabinetCategories = [
   { id: "deities", label: "Deities", icon: "👑" },
   { id: "vessels", label: "Vessels", icon: "🏺" },
   { id: "natural", label: "Natural", icon: "🪶" },
-  { id: "seasonal", label: "Seasonal", icon: "🌾" }
+  { id: "seasonal", label: "Seasonal", icon: "🌾" },
+  { id: "plants", label: "Plants", icon: "🪴" }
 ];
 
 // Candle artwork by form: the vigil candles, and the chime, taper, tea light and pillar painted for each colour.
@@ -135,6 +136,8 @@ function ensureSeasonalCabinetItems() {
   core.shelf.shelfToolItems(altarArtwork.shelfTools || {}).forEach((item) => cabinetItems.push({ ...item, icon: "🗝️" }));
   core.shelf.naturalItems(altarArtwork.natural || {}).forEach((item) => cabinetItems.push({ ...item, icon: "🪶" }));
   core.seasonal.seasonalCabinetItems(altarArtwork.seasonal || {}).forEach((item) => cabinetItems.push({ ...item, icon: "🌾" }));
+  // Pots for your real houseplants (app/src/lib/altar/pottedPlants.ts).
+  core.pottedPlants?.pottedCabinetItems(altarArtwork.plants || {}).forEach((item) => cabinetItems.push({ ...item, icon: "🪴" }));
 }
 
 // The sabbat that's near (a week before through the day): its things come first.
@@ -157,9 +160,9 @@ if (typeof document !== "undefined" && typeof window.addEventListener === "funct
   else window.addEventListener("load", () => void refreshCabinetSabbat());
 }
 
-/** The drawers in order: Seasonal first while a sabbat is near; Seasonal and Natural only when they hold something. */
+/** The drawers in order: Seasonal first while a sabbat is near; Seasonal, Natural and Plants only when they hold something. */
 function visibleCabinetCategories() {
-  const list = cabinetCategories.filter((category) => (category.id !== "seasonal" && category.id !== "natural") || cabinetItems.some((item) => item.category === category.id));
+  const list = cabinetCategories.filter((category) => (category.id !== "seasonal" && category.id !== "natural" && category.id !== "plants") || cabinetItems.some((item) => item.category === category.id));
   return cabinetSabbat ? [...list.filter((c) => c.id === "seasonal"), ...list.filter((c) => c.id !== "seasonal")] : list;
 }
 
@@ -461,7 +464,7 @@ function renderCabinetItems() {
   }
 
   const addCustomItemTile =
-    activeCabinetCategory !== "backgrounds" && activeCabinetCategory !== "seasonal" && activeCabinetCategory !== "natural"
+    activeCabinetCategory !== "backgrounds" && activeCabinetCategory !== "seasonal" && activeCabinetCategory !== "natural" && activeCabinetCategory !== "plants"
       ? `
         <button type="button" class="cabinet-tile cabinet-background-tile" data-add-custom-cabinet-item>
           <span class="cabinet-tile-icon">＋</span>
