@@ -6,6 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useSyncExternalStore } from 'react';
 
 import { sacredSources } from '../patron';
+import { itemLookBackReminder } from '../altar/apothecaryLookBack';
+import { getWorkshop, subscribeWorkshop } from '../altar/workshop';
 import { lookBackReminder } from '../rituals/lookBack';
 import { getRituals, loadPlans, subscribeRituals } from '../rituals/store';
 import { cachedSettings, subscribeSettings } from '../settings/store';
@@ -51,9 +53,10 @@ export function syncReminders(): Promise<void> {
   syncing = syncing.then(async () => {
     if (!state.loaded) return;
     try {
-      const lookBacks = getRituals()
-        .journal.map(lookBackReminder)
-        .filter((r): r is NonNullable<typeof r> => !!r);
+      // Rituals and spells in the journal, and the spell jars, sachets and the rest of My Apothecary.
+      const lookBacks = [...getRituals().journal.map(lookBackReminder), ...getWorkshop().apothecary.map(itemLookBackReminder)].filter(
+        (r): r is NonNullable<typeof r> => !!r,
+      );
       const reminders = buildSchedule(state.settings, getRituals().plans, new Date(), undefined, sacredSources(cachedSettings()), lookBacks, offeringsDue);
       const permission = remindersSupported ? await permissionState() : 'unavailable';
       const scheduled = await applySchedule(permission === 'granted' ? reminders : []);
@@ -63,6 +66,13 @@ export function syncReminders(): Promise<void> {
     }
   });
   return syncing;
+}
+
+/** Every look-back day waiting to be asked, as one string, to notice when it changes. */
+function lookBackKeys(): string {
+  return [...getRituals().journal.map((entry) => lookBackReminder(entry)?.key ?? ''), ...getWorkshop().apothecary.map((item) => itemLookBackReminder(item)?.key ?? '')]
+    .filter(Boolean)
+    .join(',');
 }
 
 async function start() {
@@ -80,14 +90,19 @@ async function start() {
   subscribeRituals(() => {
     const plans = getRituals().plans;
     // Look-back days change when a ritual is journaled or answered.
-    const lookBacks = getRituals()
-      .journal.map((entry) => lookBackReminder(entry)?.key ?? '')
-      .filter(Boolean)
-      .join(',');
+    const lookBacks = lookBackKeys();
     if (plans !== lastPlans || lookBacks !== lastLookBacks) {
       lastPlans = plans;
       lastLookBacks = lookBacks;
       void syncReminders();
+    }
+  });
+  // A spell jar or sachet's look-back day changes when it's made or answered.
+  subscribeWorkshop(() => {
+    const lookBacks = lookBackKeys();
+    if (lookBacks !== lastLookBacks) {
+      lastLookBacks = lookBacks;
+      if (state.settings.lookBacks) void syncReminders();
     }
   });
   // Your deities' sacred days follow Settings → My deities.

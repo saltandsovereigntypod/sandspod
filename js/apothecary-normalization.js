@@ -33,7 +33,9 @@
       grimoireStatus: record.grimoireStatus || record.grimoire_status || "",
       logToGrimoire: Boolean(record.logToGrimoire ?? record.log_to_grimoire),
       createdAt: record.createdAt || record.created_at || null,
-      updatedAt: record.updatedAt || record.updated_at || record.createdAt || record.created_at || null
+      updatedAt: record.updatedAt || record.updated_at || record.createdAt || record.created_at || null,
+      // The row's metadata, kept whole: "Did it work?" rides in metadata.lookBack (app: lib/altar/apothecaryLookBack.ts).
+      metadata: record.metadata && typeof record.metadata === "object" && !Array.isArray(record.metadata) ? { ...record.metadata } : {}
     };
   }
 

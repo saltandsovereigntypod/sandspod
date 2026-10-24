@@ -1,4 +1,4 @@
-// The app's own logic for the website's draws (/practice/hedge/readings/draw/
+// The app's own logic for the website's draws (/divination/draw/
 // and the laid-out draw on a reading's page): the Rider–Waite–Smith deck and
 // its meanings, the runes and ogham, the spreads and how they're laid out,
 // spreads of your own (`hedge.spreads`), spreads for the time of the moon and

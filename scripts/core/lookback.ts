@@ -5,3 +5,5 @@
 // already load js/core/rituals.js find the same modules there.
 export * as lookBack from '../../app/src/lib/rituals/lookBack.ts';
 export * as whatWorks from '../../app/src/lib/rituals/whatWorks.ts';
+// The same for spell jars, sachets and the rest of My Apothecary (apothecary_items.metadata.lookBack).
+export * as apothecaryLookBack from '../../app/src/lib/altar/apothecaryLookBack.ts';

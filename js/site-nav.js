@@ -56,8 +56,8 @@
   function practiceSection(pathname, search = "") {
     const path = normalPath(pathname);
     if (path.startsWith("/altar/")) return new URLSearchParams(search).get("ritual") ? "rituals" : null;
-    // Rituals holds the planner, premade book, journeys and My practice, as in the app.
-    if (path.startsWith("/rituals/") || path.startsWith("/practice/")) return "rituals";
+    // Rituals holds the planner, premade book, journeys, My practice, divination and the sigil maker, as in the app.
+    if (path.startsWith("/rituals/") || path.startsWith("/practice/") || path.startsWith("/divination/") || path.startsWith("/sigil/")) return "rituals";
     if (path === "/grimoire/" || path.startsWith("/grimoire/dreams/")) return "grimoire";
     return null;
   }

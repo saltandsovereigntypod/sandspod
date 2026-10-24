@@ -3,6 +3,9 @@
  * and the What works for you section of rituals/journal/insights.tsx). The
  * logic is the app's own (SaltCore.rituals.lookBack and .whatWorks); answers
  * are saved into the entry's metadata.lookBack, exactly as the app saves them.
+ * Spell jars, sachets and the rest of My Apothecary get the same card
+ * (kind "apothecary"), saved into apothecary_items.metadata.lookBack
+ * (SaltCore.rituals.apothecaryLookBack, app: components/rituals/ItemDidItWork.tsx).
  *
  * Needs: rituals-ui.js (RitualsUI), rituals-store.js (RitualsStore), js/core/rituals.js.
  */
@@ -14,6 +17,7 @@
   const { esc } = UI;
   const R = () => global.SaltCore.rituals;
   const LB = () => R().lookBack;
+  const AL = () => R().apothecaryLookBack;
 
   const dayWords = (key) => R().calendar.fullDate(key) || key;
 
@@ -55,7 +59,7 @@
   }
 
   /** One entry's look-back: the question when it's due, the answer once given, or the day it's waiting for. */
-  function card(entry, now = new Date(), { title = false } = {}) {
+  function card(entry, now = new Date(), { title = false, kind = "" } = {}) {
     const lookBack = LB().readLookBack(entry);
     const due = LB().isDue(entry, now);
     let summary = "";
@@ -72,7 +76,7 @@
         <div class="sp-actions"><button class="button button--ghost" type="button" data-diw-open>Say what happened now</button></div>`;
     }
     return `
-      <section class="sp-card rt-diw ${due ? "sp-card--gold" : ""}" data-diw="${esc(entry.id)}">
+      <section class="sp-card rt-diw ${due ? "sp-card--gold" : ""}" data-diw="${esc(entry.id)}"${kind ? ` data-diw-kind="${esc(kind)}"` : ""}>
         <p class="sp-eyebrow">Did it work?</p>
         ${title ? `<h3 class="rt-diw__title">${esc(entry.title || "Untitled Ritual")}</h3>` : ""}
         <div data-diw-summary>${summary}</div>
@@ -117,11 +121,17 @@
     </section>`;
   }
 
+  /** A spell jar, sachet or other working's card: the item seen as a journal entry. */
+  function itemCard(item, now = new Date()) {
+    return card(AL().apothecaryWorking(item), now, { title: true, kind: "apothecary" });
+  }
+
   /**
    * Answer from any card inside `root`. `entries()` gives the journal as the
-   * page last read it; `onSaved()` redraws the page.
+   * page last read it; `onSaved()` redraws the page. `items`, when the page
+   * shows My Apothecary's workings: { list() → items, save(item) }.
    */
-  function bind(root, entries, onSaved) {
+  function bind(root, entries, onSaved, items = null) {
     if (!root || root.dataset.diwBound) return;
     root.dataset.diwBound = "1";
     root.addEventListener("click", (event) => {
@@ -158,7 +168,9 @@
       const formEl = event.target.closest("[data-diw-form]");
       if (!formEl) return;
       event.preventDefault();
-      const entry = entries().find((e) => e.id === formEl.dataset.id);
+      const isItem = formEl.closest("[data-diw]")?.dataset.diwKind === "apothecary";
+      const item = isItem && items ? items.list().find((i) => i.id === formEl.dataset.id) : null;
+      const entry = isItem ? (item ? AL().apothecaryWorking(item) : null) : entries().find((e) => e.id === formEl.dataset.id);
       if (!entry) return;
       const pressed = formEl.querySelector('[data-diw-answer][aria-pressed="true"]');
       const answer = pressed ? pressed.dataset.diwAnswer : null;
@@ -178,7 +190,8 @@
       const button = formEl.querySelector("[data-diw-submit]");
       button.disabled = true;
       try {
-        await S.saveJournalMetadata(next);
+        if (isItem) await items.save(AL().itemFromWorking(item, next));
+        else await S.saveJournalMetadata(next);
         UI.say(waiting ? "Kept waiting. It will come back to you then." : "Saved. Thank you for looking back.");
         await onSaved();
       } catch (error) {
@@ -189,5 +202,5 @@
     });
   }
 
-  global.DidItWork = { card, worksSection, bind, lookBackWords };
+  global.DidItWork = { card, itemCard, worksSection, bind, lookBackWords };
 })(window);

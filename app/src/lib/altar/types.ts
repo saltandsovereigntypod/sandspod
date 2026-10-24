@@ -75,7 +75,7 @@ export type SavedAltarRow = {
   updated_at: string | null;
 };
 
-export type CabinetCategoryId = 'backgrounds' | 'candles' | 'herbs' | 'crystals' | 'tools' | 'deities' | 'vessels';
+export type CabinetCategoryId = 'backgrounds' | 'candles' | 'herbs' | 'crystals' | 'tools' | 'deities' | 'vessels' | 'natural' | 'seasonal';
 
 /** One placeable form of a cabinet item (website cabinet.js `forms`). */
 export type CabinetForm = {
@@ -103,6 +103,10 @@ export type CabinetItem = {
   forms: CabinetForm[];
   entityId?: string;
   customCabinetItemId?: string;
+  /** The sabbats a seasonal thing is kept for (seasonal.ts). */
+  sabbats?: string[];
+  /** A line about it, for things the Living Library has no page for (shelf.ts). */
+  description?: string;
 };
 
 export type AltarBackground = {

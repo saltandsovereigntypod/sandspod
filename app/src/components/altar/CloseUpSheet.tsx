@@ -1,6 +1,7 @@
 // Look closer: the selected object drawn large, with everything its life has
 // left on it (a candle burned down, its carvings, dressings, wax and flame;
-// incense smoking; a charge's glow; an offering going over), so the detail
+// incense smoking; a charge's glow; an offering going over; a photo in an
+// ancestor frame, with their name and dates beneath it), so the detail
 // can be seen without zooming the altar. The same drawing as the stage
 // (AltarObjectArt), only bigger, with a few words on what you're seeing.
 
@@ -10,6 +11,7 @@ import Svg, { Defs, Ellipse, RadialGradient, Stop } from 'react-native-svg';
 
 import { altarImageSource } from '../../lib/altar/assets';
 import { chargeDetail, chargeOf } from '../../lib/altar/charge';
+import { frameCaption } from '../../lib/altar/frame';
 import { displayBox } from '../../lib/altar/geometry';
 import { incenseLife, isIncense } from '../../lib/altar/incense';
 import { carvingsOf, dressingsOf, isCandle } from '../../lib/altar/livingState';
@@ -17,7 +19,7 @@ import { freshnessLine, offeringFreshness } from '../../lib/altar/offerings';
 import type { SavedObject } from '../../lib/altar/types';
 import { burnedDownLine, burnProgress, meltLine, waxLook } from '../../lib/altar/wax';
 import { carvingLine } from '../../lib/altar/workings/dressing';
-import { colors, radius, type } from '../../theme';
+import { colors, fonts, radius, type } from '../../theme';
 import { AltarObjectArt } from './AltarStage';
 import { Sheet } from './Sheet';
 
@@ -56,10 +58,13 @@ export function CloseUpSheet({ visible, object, label, background, charge, onClo
   const frameHeight = height + Math.max(110, width * 0.7);
   const backdrop = altarImageSource(background);
   const lines = closeUpLines(object, now);
+  // In memory of…: an ancestor frame's name and dates, like a card set beneath it.
+  const caption = frameCaption(object);
+  const captionWords = caption ? [caption.title, caption.dates].filter(Boolean).join(', ') : '';
 
   return (
     <Sheet visible={visible} eyebrow="Look closer" title={label} onClose={onClose}>
-      <View style={[styles.frame, { height: frameHeight }]} accessible accessibilityRole="image" accessibilityLabel={`${label}, close up. ${lines.join(' ')}`}>
+      <View style={[styles.frame, { height: frameHeight }]} accessible accessibilityRole="image" accessibilityLabel={`${label}, close up. ${captionWords ? `${captionWords}. ` : ''}${lines.join(' ')}`}>
         {backdrop && <Image source={backdrop} style={StyleSheet.absoluteFill} resizeMode="cover" blurRadius={6} />}
         <View style={[StyleSheet.absoluteFill, styles.dim]} />
         <Svg width="100%" height="100%" style={StyleSheet.absoluteFill}>
@@ -75,6 +80,12 @@ export function CloseUpSheet({ visible, object, label, background, charge, onClo
           <AltarObjectArt object={object} width={width} height={height} charge={charge} now={now} />
         </View>
       </View>
+      {caption && (
+        <View style={styles.caption}>
+          <Text style={styles.captionTitle}>{caption.title}</Text>
+          {!!caption.dates && <Text style={type.caption}>{caption.dates}</Text>}
+        </View>
+      )}
       {lines.length > 0 && (
         <View style={styles.lines}>
           {lines.map((line, i) => (
@@ -119,4 +130,6 @@ const styles = StyleSheet.create({
   dim: { backgroundColor: 'rgba(6,8,6,0.45)' },
   object: { position: 'absolute', alignSelf: 'center' },
   lines: { gap: 6 },
+  caption: { alignItems: 'center', gap: 2 },
+  captionTitle: { fontFamily: fonts.displayItalic, fontSize: 21, color: colors.cream, textAlign: 'center' },
 });

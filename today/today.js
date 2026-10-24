@@ -37,6 +37,8 @@
     dreamKept: null,
     dreamProblem: "",
     readings: [],
+    // My Apothecary's workings (spell jars, sachets…), for "Did it work?".
+    apothecary: [],
     message: ""
   };
 
@@ -92,6 +94,22 @@
       };
     } catch {
       state.rituals = { plans: [], journal: [], active: null };
+    }
+  }
+
+  /** Spell jars, sachets and other workings from My Apothecary, for their look-back days (apothecary_items.metadata.lookBack). */
+  async function loadApothecary(user) {
+    const shape = (r) => ({ id: r.id, name: r.name || "", typeLabel: r.typeLabel || r.type_label || "", intention: r.intention || "", createdAt: r.createdAt || r.created_at || "", metadata: r.metadata || {} });
+    try {
+      if (!user || !window.db) {
+        const raw = JSON.parse(storage.getItem("saltAndSovereigntyApothecaryItems") || "[]");
+        state.apothecary = (Array.isArray(raw) ? raw : []).filter((r) => r && r.id).map(shape);
+        return;
+      }
+      const result = await window.db.from("apothecary_items").select("id,name,type_label,intention,created_at,metadata").eq("user_id", user.id);
+      state.apothecary = result.error ? [] : (result.data || []).map(shape);
+    } catch {
+      state.apothecary = [];
     }
   }
 
@@ -329,14 +347,14 @@
     // A spread for the time: the new or full moon, or Samhain (the app's CardOfTheDay too).
     const time = C.seasonal ? C.seasonal.seasonalSpreads(m.now, { south: C.seasonal.keepsSouthernWheel(state.settings) })[0] : null;
     const seasonal = time
-      ? `<a class="td-last sp-caption" href="/practice/hedge/readings/draw/?spread=${encodeURIComponent(time.spread)}" aria-label="${esc(`${time.why}. Draw the ${time.label} spread.`)}"><span>${esc(
+      ? `<a class="td-last sp-caption" href="/divination/draw/?spread=${encodeURIComponent(time.spread)}" aria-label="${esc(`${time.why}. Draw the ${time.label} spread.`)}"><span>${esc(
           time.why
         )}: <span class="td-gold">${esc(time.label)}</span> ›</span></a>`
       : "";
-    if (!kept) return `<a class="td-last sp-caption td-gold" href="/practice/hedge/readings/draw/?spread=daily">Draw a card for the day ›</a>${seasonal}`;
+    if (!kept) return `<a class="td-last sp-caption td-gold" href="/divination/draw/?spread=daily">Draw a card for the day ›</a>${seasonal}`;
     const name = `${kept.name}${kept.reversed ? ", reversed" : ""}`;
     return (
-      `<a class="td-last sp-caption" href="/practice/hedge/readings/reading/?id=${encodeURIComponent(kept.id)}" aria-label="${esc(`Today’s card: ${name}. Opens the reading.`)}">` +
+      `<a class="td-last sp-caption" href="/divination/reading/?id=${encodeURIComponent(kept.id)}" aria-label="${esc(`Today’s card: ${name}. Opens the reading.`)}">` +
       `<span>Today’s card: <span class="td-gold">${esc(name)}</span> ›</span></a>${seasonal}`
     );
   }
@@ -404,11 +422,14 @@
     );
   }
 
-  /** "Did it work?" once a ritual or spell's look-back day has come; answered on the journal page. */
+  /** "Did it work?" once a ritual, spell, spell jar or sachet's look-back day has come; answered on the journal page. */
   function lookBackCard(m) {
     let due = [];
     try {
-      due = C.lookBack.dueLookBacks(state.rituals.journal || [], m.now);
+      due = [
+        ...C.lookBack.dueLookBacks(state.rituals.journal || [], m.now).map((e) => e.title || "Untitled Ritual"),
+        ...C.apothecaryLookBack.dueItems(state.apothecary || [], m.now).map((i) => i.name || i.typeLabel || "Your working")
+      ];
     } catch {
       due = [];
     }
@@ -417,7 +438,7 @@
     return (
       `<section class="td-card td-card--working" aria-label="Did it work?"><div class="td-working-text">` +
       `<p class="sp-eyebrow td-gold">Did it work?</p>` +
-      `<h2 class="td-card__title">${esc(first.title || "Untitled Ritual")}</h2>` +
+      `<h2 class="td-card__title">${esc(first)}</h2>` +
       `<p class="sp-caption">${esc(due.length > 1 ? `Its look-back day has come, and ${due.length - 1} more are waiting.` : "Its look-back day has come. Yes, partly, not yet or no?")}</p>` +
       `</div><a class="button button--primary" href="/rituals/journal/insights/#did-it-work">Look back</a></section>`
     );
@@ -489,7 +510,7 @@
     refreshing = true;
     try {
       state.user = user;
-      await Promise.all([loadSettings(), loadRituals(user), loadDreams(), loadReadings()]);
+      await Promise.all([loadSettings(), loadRituals(user), loadDreams(), loadReadings(), loadApothecary(user)]);
     } finally {
       refreshing = false;
     }

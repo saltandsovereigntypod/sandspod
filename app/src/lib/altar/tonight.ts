@@ -1,12 +1,15 @@
 // "Set tonight's altar": a starter altar from the day itself, built from the
-// cabinet. A holiday brings its traditional things; otherwise the weekday's
-// planet chooses the candle, herb and stone, and a full or new moon adds a
-// touch of its own. Everything can be moved, swapped or removed afterwards.
+// cabinet. A holiday brings its traditional things (and on a sabbat, one of
+// its seasonal things: a pumpkin lantern, the Yule log, Brigid's cross);
+// otherwise the weekday's planet chooses the candle, herb and stone, and a
+// full or new moon adds a touch of its own. Everything can be moved, swapped
+// or removed afterwards.
 
 import { builtInBackgrounds, builtInCabinet, objectFromForm, placeableForms, shortLabel } from './cabinet.ts';
 import { boxHeightFraction, displayBox, NEW_OBJECT_SIZE, withCenter, withRotation, withSize } from './geometry.ts';
 import type { SavedObject } from './types.ts';
 import type { AltarDocument } from './snapshot.ts';
+import { holidayKey, sabbatOfHoliday, seasonalFor } from './seasonal.ts';
 
 type Pick = [itemId: string, form: string];
 
@@ -296,6 +299,9 @@ const SLOTS = {
   tool: { cx: 0.5, depth: 0.97, scale: 1.25, rotate: -12 },
 } satisfies Record<string, Slot>;
 
+/** A sabbat's seasonal thing, between the centrepiece and its candles. */
+const SEASONAL_SLOT: Slot = { cx: 0.5, depth: 0.2, scale: 0.75 };
+
 /** Tea lights (or chime candles) at the front corners, for the full or new moon. */
 const MOON_ARC: Slot[] = [
   { cx: 0.2, depth: 0.95, scale: 0.5 },
@@ -348,8 +354,12 @@ function placed(parts: [Pick, Slot][], surface: [number, number], now: string): 
  */
 export function tonightAltar(date: Date, holidays: { id: string; name: string }[], moon: string): TonightAltar {
   const now = date.toISOString();
+  // Holidays come as "wheel-samhain-2026-9-31" from the calendars (or as a bare "samhain").
   const holidaySet = holidays
-    .map((holiday) => ({ holiday, set: HOLIDAYS.find((h) => h.ids.some((id) => holiday.id === id || holiday.id.startsWith(`${id}_`))) }))
+    .map((holiday) => {
+      const key = holidayKey(holiday.id);
+      return { holiday, set: HOLIDAYS.find((h) => h.ids.some((id) => key === id || key.startsWith(`${id}_`))) };
+    })
     .find((h) => !!h.set);
 
   const theme: Theme = holidaySet?.set ? { ...holidaySet.set.theme, reason: holidaySet.holiday.name } : { ...WEEKDAYS[date.getDay()] };
@@ -367,6 +377,10 @@ export function tonightAltar(date: Date, holidays: { id: string; name: string }[
     [theme.tool, SLOTS.tool],
   ];
   let reason = theme.reason;
+  // A sabbat: one of its seasonal things, the most fitting that has a picture.
+  const sabbat = holidaySet ? sabbatOfHoliday(holidaySet.holiday.id) : null;
+  const seasonal = sabbat ? seasonalFor(sabbat).find((id) => builtInCabinet.some((i) => i.id === `seasonal:${id}` && placeableForms(i).length > 0)) : undefined;
+  if (seasonal) parts.push([[`seasonal:${seasonal}`, seasonal], SEASONAL_SLOT]);
   if (!holidaySet?.set) {
     if (moon === 'Full Moon') {
       MOON_ARC.forEach((slot) => parts.push([c('white', 'tea-light'), slot]));

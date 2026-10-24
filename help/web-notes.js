@@ -106,6 +106,14 @@
     // One Library entry ("/more/library/traditional:herb:rosemary") on its public page.
     const entry = path.match(/^\/(?:more|today|rituals|grimoire|altar)\/library\/([^/]+)$/);
     if (entry && !["closed", "sourcing", "practice"].includes(entry[1])) return `/library/entry/?entity=${encodeURIComponent(decodeURIComponent(entry[1]))}`;
+    // Divination and the sigil maker, open to every practice.
+    const divination = path.match(/^\/rituals\/divination(?:\/([^/]+))?$/);
+    if (divination) {
+      const page = divination[1] || "";
+      if (!page) return "/divination/";
+      return ["draw", "edit", "spread"].includes(page) ? `/divination/${page}/` : `/divination/reading/?id=${encodeURIComponent(decodeURIComponent(page))}`;
+    }
+    if (path === "/rituals/sigil") return "/sigil/";
     if (path === "/rituals/craft") return "/practice/";
     if (path.startsWith("/rituals/craft/")) return `/practice/${path.slice("/rituals/craft/".length)}/`;
     return `${path}/`;

@@ -114,6 +114,7 @@
 
     out.push(`<div><p class="app-living__eyebrow">${esc(eyebrow)}</p><h3 class="app-living__title">${esc(label)}</h3>
       ${attunement.attuned ? `<p class="app-living__attuned">✦ ${esc(attunement.line)}</p>` : ""}
+      ${caption(core.shelf.shelfDescription(saved))}
       ${caption(candleCaption)}</div>`);
     out.push(chips([
       { label: "Look closer", symbol: "◎", action: "closer", hint: `Look closer at ${label}: shown large, with every mark on it` },
@@ -121,6 +122,7 @@
     ]));
 
     out.push(global.AltarReading?.practiceHtml?.(saved) || "");
+    if (core.frame.isFrame(saved)) out.push(frameHtml(saved));
     if (tonightWhy) out.push(block("Why it’s here tonight", caption(tonightWhy) + chips([{ label: "Swap it", symbol: "⇄", action: "tonight-swap", hint: `Swap ${label} for something with the same correspondence` }])));
     if (charge) out.push(block(core.charge.chargeLine(charge), caption(core.charge.chargeDetail(charge)), charge.level === "faded" ? " app-block--faded" : ""));
     spells.forEach((entry) => {
@@ -340,7 +342,7 @@
                 return `<button type="button" class="app-sigil" data-app-action="carve-sigil" data-index="${i}"${done ? " disabled" : ""} aria-label="${esc(done ? `${k.name}, already carved` : `Carve the sigil for ${k.name}`)}">${core.sigil.sigilSvg(k.sigil, { size: 64, id: `carve-sigil-${i}` })}<span>${esc(done ? "Carved" : k.name)}</span></button>`;
               })
               .join("")}</div>`
-          : `<p class="app-caption">Sigils you keep from the <a href="/practice/eclectic/sigil/">sigil maker</a> wait here, ready to carve.</p>`;
+          : `<p class="app-caption">Sigils you keep from the <a href="/sigil/">sigil maker</a> wait here, ready to carve.</p>`;
       }
     };
     let sigils = [];
@@ -598,8 +600,8 @@
     B().openSheet({
       eyebrow: short(saved.label),
       title: "Set out an offering",
-      html: `<p class="app-caption">Water and drink last a day or two, bread a few days, fruit a little longer, cut flowers about a week. Stones, coins and dried herbs keep.</p><div data-kinds></div>
-        <label class="app-field"><span>What the offering is</span><input data-label maxlength="60" placeholder="What exactly (optional): red wine, an apple"></label>
+      html: `<p class="app-caption">Water and drink last a day or two, bread a few days, fruit a little longer, cut flowers about a week, whole apples and gourds a couple of weeks. Food and flowers are drawn in the bowl, and go over there. Stones, coins and dried herbs keep.</p><div data-kinds></div>
+        <label class="app-field"><span>What the offering is</span><input data-label maxlength="60" placeholder="What exactly (optional): red wine, an apple, honey in the comb"></label>
         <button type="button" class="app-button" data-set>Set it out</button>`,
       onMount(body, dialog, close) {
         const draw = () => {
@@ -964,6 +966,111 @@
     });
   }
 
+  // ── An ancestor frame (connect/FrameSheets.tsx) ─────────────────────────
+  function frameHtml(saved) {
+    const core = A();
+    const frame = core.frame.frameOf(saved);
+    const known = !!core.frame.frameArtOf(saved)?.opening;
+    const line = frame.photo
+      ? frame.name ? `In memory of ${frame.name}${frame.dates ? `, ${frame.dates}` : ""}.` : "Add a name and dates to show beneath it."
+      : "Choose a photo of your own to set in the frame. It is cropped to fill the opening.";
+    return `<div class="app-block"><p class="app-living__eyebrow">The photo</p><p class="app-caption">${esc(line)}</p>${known ? "" : `<p class="app-caption">${esc("This frame’s picture has no opening the altar knows of, so the photo can’t be shown in it yet.")}</p>`}${B().chips([
+      { label: frame.photo ? "Change the photo" : "Choose a photo", symbol: "▣", action: "frame-photo" },
+      frame.photo ? { label: "Old sepia", symbol: "☙", action: "frame-aged", pressed: frame.aged, hint: frame.aged ? "Show the photo as it is" : "Give the photo an old sepia look" } : null,
+      { label: frame.name ? "Name and dates" : "Add a name", symbol: "✎", action: "frame-name" },
+      frame.photo ? { label: "Take the photo out", symbol: "⌫", action: "frame-remove" } : null
+    ])}</div>`;
+  }
+
+  const readAsDataUrl = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(new Error("Couldn’t read that picture."));
+    reader.readAsDataURL(file);
+  });
+
+  /** A photo of your own for the frame: uploaded when signed in, as other pictures are; a guest's is kept in the altar itself. */
+  function chooseFramePhoto() {
+    const object = selected();
+    if (!object) return;
+    const id = object.dataset.altarObjectId;
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/png,image/jpeg,image/webp";
+    input.addEventListener("change", async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      if (file.size > 8 * 1024 * 1024) return notice("That picture is too large. Choose one under 8 MB.");
+      notice("Saving the photo.");
+      try {
+        const user = typeof global.getCurrentAssetUser === "function" ? await global.getCurrentAssetUser() : null;
+        const kept = user && typeof global.uploadUserAsset === "function"
+          ? await global.uploadUserAsset(file, A().frame.FRAME_PHOTO_FOLDER, { maxWidth: 1200, maxHeight: 1200 })
+          : { url: await readAsDataUrl(typeof global.compressImageFile === "function" ? await global.compressImageFile(file, { maxWidth: 700, maxHeight: 700 }) : file), path: "" };
+        if (!kept?.url) return;
+        const target = B().objects().find((o) => o.dataset.altarObjectId === id) || object;
+        B().update(target, (o) => A().frame.setFramePhoto(o, kept.url, kept.path || "", nowIso()));
+        schedule();
+        notice(user ? "The photo is in the frame." : "The photo is in the frame, kept with this altar on this device. Sign in to keep it with your account.");
+      } catch (error) {
+        console.error("Frame photo", error);
+        notice("The photo couldn’t be saved. Please try again.");
+      }
+    });
+    input.click();
+  }
+
+  /** Name the frame and give its dates, or take both from one of your Ancestors (FrameNameSheet). */
+  async function openFrameName() {
+    const object = selected();
+    if (!object) return;
+    const core = A();
+    const saved = B().toSaved(object);
+    const frame = core.frame.frameOf(saved);
+    const link = core.livingState.appStateOf(saved).ancestor;
+    let linked = link?.id ? { id: link.id, name: String(link.name || "") } : null;
+    let people = [];
+    try { people = (await global.SaltCraft?.list(core.ancestors.ANCESTORS)) || []; } catch { people = []; }
+    people.sort((a, b) => core.ancestors.normalizeAncestor(a.data).name.localeCompare(core.ancestors.normalizeAncestor(b.data).name));
+    const rows = people.map((entry) => {
+      const caption = core.frame.captionFromAncestor(entry);
+      const detail = [core.ancestors.normalizeAncestor(entry.data).relation, caption.dates].filter(Boolean).join(" · ");
+      return `<button type="button" class="app-row" style="text-align:left;color:inherit;font:inherit;cursor:pointer" aria-pressed="${linked?.id === entry.id}" data-who="${esc(entry.id)}"><span class="app-row__title">${esc(caption.name || "Unnamed")}</span>${detail ? `<span class="app-caption">${esc(detail)}</span>` : ""}</button>`;
+    }).join("");
+    B().openSheet({
+      eyebrow: "Ancestor frame",
+      title: "In memory of",
+      html: `<label class="app-field"><span>Their name</span><input data-name maxlength="80" placeholder="Their name" value="${esc(frame.name)}"></label>
+        <label class="app-field"><span>Their dates</span><input data-dates maxlength="60" placeholder="Their dates (optional): 1932–2019" value="${esc(frame.dates)}"></label>
+        <p class="app-caption">Shown beneath the photo when you look closer.</p>
+        ${people.length ? `<p class="app-living__eyebrow">From your Ancestors</p><div class="app-rows">${rows}</div>` : ""}
+        <button type="button" class="app-button" data-save>Save</button>`,
+      onMount(body, dialog, close) {
+        body.addEventListener("click", (event) => {
+          const who = event.target.closest("[data-who]");
+          if (who) {
+            const entry = people.find((e) => e.id === who.dataset.who);
+            if (!entry) return;
+            const caption = core.frame.captionFromAncestor(entry);
+            body.querySelector("[data-name]").value = caption.name;
+            body.querySelector("[data-dates]").value = caption.dates;
+            linked = caption.ancestor;
+            body.querySelectorAll("[data-who]").forEach((row) => row.setAttribute("aria-pressed", String(row === who)));
+            return;
+          }
+          if (!event.target.closest("[data-save]")) return;
+          const name = body.querySelector("[data-name]").value;
+          const dates = body.querySelector("[data-dates]").value;
+          // Typing a different name unlinks it from the ancestor it was chosen from.
+          const ancestor = linked && linked.name === name.trim() ? linked : null;
+          change((o) => core.frame.setFrameCaption(o, { name, dates, ancestor }, nowIso()));
+          close();
+          notice(name.trim() ? `The frame is named for ${name.trim()}.` : "The name is taken from the frame.");
+        });
+      }
+    });
+  }
+
   // ── Look closer (CloseUpSheet) ──────────────────────────────────────────
   function closeUpLines(saved, t) {
     const core = A();
@@ -996,13 +1103,17 @@
     const saved = B().toSaved(object);
     const lines = closeUpLines(saved, Date.now());
     const label = short(saved.label);
+    // In memory of…: an ancestor frame's name and dates, set beneath it.
+    const memory = A().frame.frameCaption(saved);
+    const memoryWords = memory ? [memory.title, memory.dates].filter(Boolean).join(", ") : "";
     const stage = document.querySelector("[data-altar-stage]");
     const background = stage?.dataset.background || "";
     let refresh = 0;
     B().openSheet({
       eyebrow: "Look closer",
       title: label,
-      html: `<div class="app-closeup" role="img" aria-label="${esc(`${label}, close up. ${lines.join(" ")}`)}" style="position:relative;overflow:hidden;border-radius:14px;${background ? `background:linear-gradient(rgba(5,8,6,.55),rgba(5,8,6,.55)),url('${esc(background)}') center/cover` : "background:#0b0f0c"}"><div data-closeup-stage style="position:relative"></div></div>
+      html: `<div class="app-closeup" role="img" aria-label="${esc(`${label}, close up. ${memoryWords ? `${memoryWords}. ` : ""}${lines.join(" ")}`)}" style="position:relative;overflow:hidden;border-radius:14px;${background ? `background:linear-gradient(rgba(5,8,6,.55),rgba(5,8,6,.55)),url('${esc(background)}') center/cover` : "background:#0b0f0c"}"><div data-closeup-stage style="position:relative"></div></div>
+        ${memory ? `<div class="app-closeup__caption"><p>${esc(memory.title)}</p>${memory.dates ? `<p class="app-caption">${esc(memory.dates)}</p>` : ""}</div>` : ""}
         ${lines.length ? `<div>${lines.map((line) => `<p class="app-caption">${esc(line)}</p>`).join("")}</div>` : ""}`,
       onMount(body) {
         const holder = body.querySelector("[data-closeup-stage]");
@@ -1056,6 +1167,10 @@
     "offering-leave": () => { change((o) => A().offerings.leaveOffering(o, nowIso())); notice("Left as it is. It won’t ask to be tended again until you refresh it."); },
     "offering-end": (button) => endOffering(button.dataset.how),
     offer: openOffering,
+    "frame-photo": chooseFramePhoto,
+    "frame-name": () => void openFrameName(),
+    "frame-aged": () => { const f = A().frame.frameOf(B().toSaved(selected())); change((o) => A().frame.setFrameAged(o, !f.aged, nowIso())); },
+    "frame-remove": () => { change((o) => A().frame.removeFramePhoto(o, nowIso())); notice("The photo is out of the frame."); },
     renew: shakeJar,
     feed: feedSachet,
     carry: () => { const s = A().sachet.sachetStateOf(B().toSaved(selected())); change((o) => A().sachet.setCarried(o, !s?.carried, nowIso())); },

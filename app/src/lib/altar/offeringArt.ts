@@ -1,11 +1,14 @@
-// How an offering's age is drawn on the altar, without new painted art: the
-// picture browning and dulling (a CSS filter on the web, the same colour
-// matrix on the phone), a flower bowing its head and dropping a petal or two,
-// liquid sinking in a bowl, dish, chalice or cauldron until only a tide line
-// and a stain are left, and a stick of incense burning down to a little ash.
+// How an offering's age is drawn on the altar: the picture browning and
+// dulling (a CSS filter on the web, the same colour matrix on the phone), a
+// flower bowing its head and dropping a petal or two, liquid sinking in a
+// bowl, dish, chalice or cauldron until only a tide line and a stain are
+// left, food or flowers heaped in a vessel (a painted heap, clipped to its
+// rim) going over in the same way, and a stick of incense burning down to a
+// little ash.
 // The app (AltarStage) and the website (living-art.js) both draw from this,
 // in the object's box (the website's 80px button). Pure, so it can be tested.
 
+import { ALTAR_ARTWORK } from './artworkData.ts';
 import { pictureBox } from './flame.ts';
 import { incenseFormOf, incenseLife, isIncense } from './incense.ts';
 import { agingLook, isOfferingItself, offeringFreshness, offeringOf, type OfferingKindId, type OfferingLook } from './offerings.ts';
@@ -27,6 +30,29 @@ export type OfferingArt = {
   stain: (Ellipse & { color: string; opacity: number }) | null;
   /** Fallen petals at its foot, in box pixels. */
   petals: (Ellipse & { rotate: number; color: string })[];
+  /** Food or flowers heaped in the vessel, or null. */
+  food: FoodInVessel | null;
+};
+
+/**
+ * A heap of food or flowers in a vessel: its picture's place in the box (in
+ * box pixels, already settled and sunk as it goes over), its colour, and the
+ * outline it's clipped to (everything above the rim, and the mouth itself),
+ * so the front of the rim hides its foot as it would a real heap.
+ */
+export type FoodInVessel = {
+  id: FoodHeapId;
+  image: string;
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+  tint: OfferingTint | null;
+  /** The clip outline as an SVG path, in box pixels. */
+  clip: string;
+  /** The same outline's parts: the mouth (an ellipse) and the top of the clip. */
+  mouth: Ellipse;
+  clipTop: number;
 };
 
 // ── The vessels ──────────────────────────────────────────────────────────
@@ -80,6 +106,61 @@ export function liquidOf(kind: OfferingKindId, label: string, stage: number): Li
   return RED_WINE;
 }
 
+// ── Food and flowers in a vessel ─────────────────────────────────────────
+// Painted heaps without a bowl (assets/altar/objects/offerings/<id>/<id>.png),
+// listed in the artwork data with their shape; one without a picture shows
+// nothing, as before.
+
+export type FoodHeapId = 'fruit' | 'bread' | 'sweets' | 'meal' | 'flowers' | 'honeycomb';
+type FoodPictures = Record<string, { image: string; ratio: number | null }>;
+
+/** Which heap to draw for what's set out, or null (water, wine, honey poured as it is, things that keep). */
+export function foodHeapOf(kind: OfferingKindId, label: string): FoodHeapId | null {
+  if (kind === 'fruit' || kind === 'harvest') return 'fruit';
+  if (kind === 'bread') return 'bread';
+  if (kind === 'sweets') return 'sweets';
+  if (kind === 'cooked') return 'meal';
+  if (kind === 'flowers') return 'flowers';
+  // Honey is poured unless it's in the comb.
+  if (kind === 'honey' && /comb/i.test(label)) return 'honeycomb';
+  return null;
+}
+
+/** How wide the heap is across the vessel's mouth, and how far below the rim's middle line its foot rests. */
+const HEAP_FILL = 0.9;
+const HEAP_FOOT = 0.45;
+
+function foodInVessel(
+  id: FoodHeapId,
+  picture: { image: string; ratio: number | null },
+  mouth: Ellipse,
+  look: OfferingLook,
+): FoodInVessel | null {
+  const ratio = picture.ratio && picture.ratio > 0 ? picture.ratio : 0.75;
+  const width = mouth.rx * 2 * HEAP_FILL;
+  // Fruit softens and slumps, bread shrinks, flowers droop; a meal sinks a little as it spoils.
+  const height = width * ratio * look.sag * (look.droop > 0 ? 1 - look.droop / 140 : 1);
+  const sink = (1 - Math.max(0, Math.min(1, look.level))) * mouth.ry * 0.9;
+  const foot = mouth.cy + mouth.ry * HEAP_FOOT + sink;
+  const top = foot - height;
+  const clipTop = Math.min(top, mouth.cy) - 1;
+  const { cx, cy, rx, ry } = mouth;
+  const { sepia, saturate, brightness } = look.tint;
+  const clip = `M${r1(cx - rx)} ${r1(clipTop)} L${r1(cx + rx)} ${r1(clipTop)} L${r1(cx + rx)} ${r1(cy)} A${r1(rx)} ${r1(ry)} 0 0 1 ${r1(cx - rx)} ${r1(cy)} Z`;
+  return {
+    id,
+    image: picture.image,
+    left: r1(cx - width / 2),
+    top: r1(top),
+    width: r1(width),
+    height: r1(height),
+    tint: sepia > 0.01 || saturate < 0.99 || brightness < 0.99 ? look.tint : null,
+    clip,
+    mouth,
+    clipTop: r1(clipTop),
+  };
+}
+
 // ── Petals ───────────────────────────────────────────────────────────────
 
 function seeded(seed: string): () => number {
@@ -101,6 +182,32 @@ export function petalColor(name: string): string {
   if (has(words, ['marigold', 'marigolds', 'calendula', 'saffron'])) return 'rgb(190,124,48)';
   if (has(words, ['lily', 'lilies', 'jasmine', 'chamomile', 'daisy', 'daisies', 'elder', 'hawthorn', 'yarrow'])) return 'rgb(200,188,158)';
   return 'rgb(168,142,104)';
+}
+
+/** A petal or two fallen at the foot of a flower (or of the vessel holding them). */
+function fallenPetals(
+  object: SavedObject,
+  contents: { label: string } | null,
+  count: number,
+  pic: { left: number; top: number; width: number; height: number },
+  height: number,
+): OfferingArt['petals'] {
+  const random = seeded(String(object.altarObjectId || object.label || 'petal'));
+  const color = petalColor(`${contents?.label || ''} ${object.label || ''} ${object.herb || ''}`);
+  const size = Math.max(1.6, pic.width * 0.075);
+  const out: OfferingArt['petals'] = [];
+  for (let i = 0; i < count; i++) {
+    const side = i === 0 ? 1 : -1;
+    out.push({
+      cx: r1(pic.left + pic.width * (0.5 + side * (0.12 + random() * 0.16))),
+      cy: r1(Math.min(height - size * 0.4, pic.top + pic.height * (0.95 + random() * 0.03))),
+      rx: r1(size * (0.9 + random() * 0.3)),
+      ry: r1(size * (0.5 + random() * 0.15)),
+      rotate: Math.round(-40 + random() * 80),
+      color,
+    });
+  }
+  return out;
 }
 
 // ── The art ──────────────────────────────────────────────────────────────
@@ -126,13 +233,20 @@ const inPicture = (e: Ellipse, pic: { left: number; top: number; width: number; 
  * pixels, or null when nothing shows (not an offering, fresh, or keeps).
  * `ratio` is the picture's height / width when known.
  */
-export function offeringArt(object: SavedObject, width: number, height: number, now: number, ratio?: number | null): OfferingArt | null {
+export function offeringArt(
+  object: SavedObject,
+  width: number,
+  height: number,
+  now: number,
+  ratio?: number | null,
+  foods: FoodPictures = ALTAR_ARTWORK.offeringFoods ?? {},
+): OfferingArt | null {
   if (!(width > 0) || !(height > 0)) return null;
   const fresh = offeringFreshness(object, now);
   if (!fresh || fresh.level === 'lasting') return null;
   const look = agingLook(fresh.kind, fresh);
   const contents = offeringOf(object);
-  const art: OfferingArt = { tint: null, bend: null, liquid: null, tide: null, stain: null, petals: [] };
+  const art: OfferingArt = { tint: null, bend: null, liquid: null, tide: null, stain: null, petals: [], food: null };
 
   if (isOfferingItself(object)) {
     const { sepia, saturate, brightness } = look.tint;
@@ -144,29 +258,27 @@ export function offeringArt(object: SavedObject, width: number, height: number, 
     }
     if (look.petals > 0) {
       const pic = ratio && ratio > 0 ? pictureRect(ratio, width, height) : { left: 0, top: 0, width, height };
-      const random = seeded(String(object.altarObjectId || object.label || 'petal'));
-      const color = petalColor(`${contents?.label || ''} ${object.label || ''} ${object.herb || ''}`);
-      const size = Math.max(1.6, pic.width * 0.075);
-      for (let i = 0; i < look.petals; i++) {
-        const side = i === 0 ? 1 : -1;
-        art.petals.push({
-          cx: r1(pic.left + pic.width * (0.5 + side * (0.12 + random() * 0.16))),
-          cy: r1(Math.min(height - size * 0.4, pic.top + pic.height * (0.95 + random() * 0.03))),
-          rx: r1(size * (0.9 + random() * 0.3)),
-          ry: r1(size * (0.5 + random() * 0.15)),
-          rotate: Math.round(-40 + random() * 80),
-          color,
-        });
-      }
+      art.petals = fallenPetals(object, contents, look.petals, pic, height);
     }
     return art.tint || art.bend || art.petals.length ? art : null;
   }
 
-  // A vessel: the liquid sinks, leaving a tide line and, at the last, a stain.
   const mouth = vesselMouth(object);
-  const liquid = contents ? liquidOf(contents.kind, contents.label, look.stage) : null;
-  if (!mouth || !liquid) return null;
+  if (!mouth || !contents) return null;
   const pic = pictureRect(mouth.ratio, width, height);
+
+  // Food or flowers heaped in it: they go over as the things themselves do, and flowers drop petals beside it.
+  const heap = foodHeapOf(contents.kind, contents.label);
+  const heapPicture = heap ? foods[heap] : null;
+  if (heap && heapPicture?.image) {
+    art.food = foodInVessel(heap, heapPicture, inPicture(mouth.full, pic), look);
+    if (look.petals > 0) art.petals = fallenPetals(object, contents, look.petals, pic, height);
+    return art.food ? art : null;
+  }
+
+  // A vessel of drink: the liquid sinks, leaving a tide line and, at the last, a stain.
+  const liquid = liquidOf(contents.kind, contents.label, look.stage);
+  if (!liquid) return null;
   const level = Math.max(0, Math.min(1, look.level));
   const surface: Ellipse = {
     cx: lerp(mouth.empty.cx, mouth.full.cx, level),

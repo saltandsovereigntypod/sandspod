@@ -21,6 +21,11 @@ import { MoreSheet, type MoreAction } from '../../../components/altar/MoreSheet'
 import { AltarHistorySheet, useAltarSnapshots } from '../../../components/altar/connect/AltarHistorySheet';
 import { AltarRitualOverlay } from '../../../components/altar/connect/AltarRitualOverlay';
 import { AncestorPanelSection, AncestorShrineSheet } from '../../../components/altar/connect/AncestorSheets';
+import { FrameNameSheet, FramePanelSection } from '../../../components/altar/connect/FrameSheets';
+import { FRAME_PHOTO_FOLDER, removeFramePhoto, setFrameAged, setFrameCaption, setFramePhoto } from '../../../lib/altar/frame';
+import { keepImageOnDevice, pickImage, uploadImage } from '../../../lib/altar/images';
+import { sabbatNear } from '../../../lib/altar/seasonal';
+import { shelfDescription } from '../../../lib/altar/shelf';
 import { RitualPickerSheet, useBeginOnAltar } from '../../../components/altar/connect/BeginOnAltar';
 import type { AltarRef } from '../../../components/altar/connect/common';
 import { GrimoireLinkSheet, GrimoirePageLink } from '../../../components/altar/connect/GrimoireLink';
@@ -231,6 +236,7 @@ type SheetName =
   | 'page'
   | 'share'
   | 'history'
+  | 'frame-name'
   | null;
 
 const nowIso = () => new Date().toISOString();
@@ -534,6 +540,10 @@ export default function AltarEditor() {
 
   // Your own items come from the workshop store, so the spell builder and apothecary see the same list.
   const workshop = useWorkshop();
+  // The sabbat that's near brings its seasonal things to the front of the cabinet.
+  const near = useMemo(() => sabbatNear(new Date(), holidayChoice(settings)), [settings]);
+  // A photo being chosen and saved for an ancestor frame.
+  const [framing, setFraming] = useState(false);
   const allItems = useMemo(() => [...workshop.customItems, ...builtInCabinet], [workshop.customItems]);
   const [ownItem, setOwnItem] = useState<{ category: string; item: CabinetItem | null } | null>(null);
   const [working, setWorking] = useState<ApothecaryTarget | null>(null);
@@ -978,6 +988,24 @@ export default function AltarEditor() {
       setNotice(`Couldn’t begin: ${e instanceof Error ? e.message : 'please try again.'}`);
     }
   };
+  /** Choose a photo of your own for a frame (by its id): uploaded when signed in (as the website does), kept on this device for a guest. */
+  const chooseFramePhoto = async (id: string) => {
+    try {
+      const picked = await pickImage();
+      if (!picked) return;
+      setFraming(true);
+      const userId = workshop.userId;
+      const saved = userId ? await uploadImage(userId, picked, FRAME_PHOTO_FOLDER) : { url: await keepImageOnDevice(picked, FRAME_PHOTO_FOLDER), storagePath: '' };
+      const index = indexOfId(id);
+      if (index < 0) return;
+      commit((d) => updateObjects(d, [index], (o) => setFramePhoto(o, saved.url, saved.storagePath, nowIso())));
+      setNotice(userId ? 'The photo is in the frame.' : 'The photo is in the frame. It is kept on this device; sign in to see it on the website too.');
+    } catch (e) {
+      setNotice(e instanceof Error ? e.message : 'The photo couldn’t be saved. Please try again.');
+    } finally {
+      setFraming(false);
+    }
+  };
   const placeFromPractice = (object: import('../../../lib/altar/types').SavedObject) => {
     const index = docRef.current?.objects.length ?? 0;
     commit((d) => addObject(d, object));
@@ -1053,7 +1081,7 @@ export default function AltarEditor() {
             key={selected}
             objectLabel={shortLabel(selectedObject.label)}
             object={selectedObject}
-            glance={selectedEntry ? glanceLine(selectedEntry, settings) : ''}
+            glance={(selectedEntry ? glanceLine(selectedEntry, settings) : '') || shelfDescription(selectedObject)}
             group={groupName(doc, selectedObject)}
             crafted={crafted}
             canPractice={!!selectedInstanceId}
@@ -1073,6 +1101,7 @@ export default function AltarEditor() {
             onAbout={() => setSheet('about')}
             onCloser={() => setSheet('closer')}
             onDone={() => setSelected(null)}
+            framing={framing}
             act={{
               light: () => {
                 const lighting = isCandle(selectedObject) && !isLit(selectedObject) && !candleLife(selectedObject).spent;
@@ -1151,6 +1180,13 @@ export default function AltarEditor() {
                 commit((d) => removeObject(d, selected));
                 setSelected(null);
               },
+              framePhoto: () => void chooseFramePhoto(selectedUid),
+              removeFramePhoto: () => {
+                changeSelected((o) => removeFramePhoto(o, nowIso()));
+                setNotice('The photo is out of the frame.');
+              },
+              frameAged: (aged) => changeSelected((o) => setFrameAged(o, aged, nowIso())),
+              frameName: () => setSheet('frame-name'),
             }}
           />
         ) : doc ? (
@@ -1426,6 +1462,7 @@ export default function AltarEditor() {
           />
           <CabinetSheet
             visible={sheet === 'cabinet'}
+            near={near}
             items={allItems}
             overrides={overrides}
             library={libraryEntries}
@@ -1499,6 +1536,16 @@ export default function AltarEditor() {
             onRemnant={(choice) => {
               changeSelected((o) => setRemnant(o, choice, nowIso()));
               setNotice(choice === 'keep' ? 'The remnant is kept.' : choice === 'bury' ? 'The remnant is to be buried.' : 'The remnant is thrown away.');
+            }}
+          />
+          <FrameNameSheet
+            visible={sheet === 'frame-name' && !!selectedObject}
+            object={selectedObject}
+            onClose={() => setSheet(null)}
+            onSave={(caption) => {
+              changeSelected((o) => setFrameCaption(o, caption, nowIso()));
+              setSheet(null);
+              setNotice(caption.name.trim() ? `The frame is named for ${caption.name.trim()}.` : 'The name is taken from the frame.');
             }}
           />
           <OfferingSheet
@@ -1861,6 +1908,10 @@ type Actions = {
   glow: () => void;
   duplicate: () => void;
   remove: () => void;
+  framePhoto: () => void;
+  removeFramePhoto: () => void;
+  frameAged: (aged: boolean) => void;
+  frameName: () => void;
 };
 
 function ObjectPanel({
@@ -1881,6 +1932,7 @@ function ObjectPanel({
   onAbout,
   onCloser,
   onDone,
+  framing = false,
 }: {
   /** Links to the rest of your practice: ancestors, stones, the Book of Shadows. */
   connect: {
@@ -1910,6 +1962,8 @@ function ObjectPanel({
   /** Open the close-up of it. */
   onCloser: () => void;
   onDone: () => void;
+  /** A photo for an ancestor frame is being chosen and saved. */
+  framing?: boolean;
 }) {
   const candle = isCandle(object);
   const lit = isLit(object);
@@ -1991,6 +2045,14 @@ function ObjectPanel({
         )}
       </ChipRow>
 
+      <FramePanelSection
+        object={object}
+        busy={framing}
+        onChoosePhoto={act.framePhoto}
+        onRemovePhoto={act.removeFramePhoto}
+        onAged={act.frameAged}
+        onName={act.frameName}
+      />
       <AncestorPanelSection object={object} altarId={connect.altarId} onLight={act.light} onBeginRite={connect.onBeginRite} />
       <StonePanelSection object={object} altarName={connect.altarName} lastAltarCare={connect.lastAltarCare} />
       <PlantPanelSection object={object} />

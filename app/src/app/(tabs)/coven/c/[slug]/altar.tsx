@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
 import { CovenScreen } from '../../../../../components/covens/CovenScreen';
 import { CovenAltarView, useReport } from '../../../../../components/covens/ui';
 import { Card, CheckRow, Chips, Field, Notice, Section } from '../../../../../components/more/ui';
 import { websiteAssetKey } from '../../../../../lib/altar/assetPaths';
-import { altarImageSource } from '../../../../../lib/altar/assets';
+import { altarPicture } from '../../../../../lib/altar/assets';
+import { AltarImage } from '../../../../../components/altar/AltarImage';
 import { ALTAR_ARTWORK } from '../../../../../lib/altar/artworkData';
 import * as api from '../../../../../lib/covens/api';
 import { useCoven } from '../../../../../lib/covens/CovenContext';
@@ -204,7 +205,7 @@ export default function CovenAltar() {
             <Field label="Search" value={search} onChangeText={setSearch} placeholder="Rose, protection, chalice…" autoCapitalize="none" />
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.cabinet}>
               {cabinet.map((entry) => {
-                const source = altarImageSource(entry.image);
+                const picture = altarPicture(entry.image);
                 return (
                   <Pressable
                     key={entry.image}
@@ -213,7 +214,7 @@ export default function CovenAltar() {
                     onPress={() => void place({ kind: 'object', image: entry.image, label: entry.name, intention: intention.trim() || null })}
                     style={({ pressed }) => [styles.offering, pressed && styles.pressed]}
                   >
-                    {source && <Image source={source} style={styles.offeringImage} resizeMode="contain" />}
+                    {picture && <AltarImage picture={picture} style={styles.offeringImage} resizeMode="contain" />}
                     <Text style={styles.offeringName} numberOfLines={2}>
                       {entry.name}
                     </Text>

@@ -15,8 +15,9 @@
      clock, the tip swinging on its own, and now and then parting into
      tongues; a puff of smoke when it's put out;
    - incense with its ember, a curling stream and drifting smoke, and ash;
-   - a charged object's breathing glow, an offering going over, a folded
-     petition, and the moment a cleansing or charge plays.
+   - a charged object's breathing glow, an offering going over (food and
+     flowers heaped in a vessel, clipped to its rim), a folded petition,
+     a photo in an ancestor frame, and the moment a cleansing or charge plays.
 
    Reduce motion: everything still.
    ========================================================= */
@@ -464,14 +465,17 @@
   // ── Offerings going over and incense burning down (lib/altar/offeringArt) ─
   /** The liquid sinking in a vessel, its tide line and stain, and fallen petals (AltarStage.tsx OfferingMarks). */
   function offeringSvg(art, width, height, uid) {
-    const { liquid, tide, stain, petals } = art;
-    if (!liquid && !tide && !stain && !petals.length) return "";
+    const { liquid, tide, stain, petals, food } = art;
+    if (!liquid && !tide && !stain && !petals.length && !food) return "";
     const ell = (e, attrs) => `<ellipse cx="${n2(e.cx)}" cy="${n2(e.cy)}" rx="${n2(e.rx)}" ry="${n2(e.ry)}" ${attrs}/>`;
     const defs = [
       liquid ? `<radialGradient id="liquid-${uid}" cx="50%" cy="45%" r="58%"><stop offset="0" stop-color="${liquid.color}" stop-opacity="${liquid.opacity}"/><stop offset="1" stop-color="${liquid.deep}" stop-opacity="${liquid.opacity}"/></radialGradient>` : "",
-      stain ? `<radialGradient id="stain-${uid}" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="${stain.color}" stop-opacity="${n2(stain.opacity * 0.5)}"/><stop offset="0.8" stop-color="${stain.color}" stop-opacity="${stain.opacity}"/><stop offset="1" stop-color="${stain.color}" stop-opacity="0"/></radialGradient>` : ""
+      stain ? `<radialGradient id="stain-${uid}" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="${stain.color}" stop-opacity="${n2(stain.opacity * 0.5)}"/><stop offset="0.8" stop-color="${stain.color}" stop-opacity="${stain.opacity}"/><stop offset="1" stop-color="${stain.color}" stop-opacity="0"/></radialGradient>` : "",
+      food ? `<clipPath id="food-${uid}"><path d="${food.clip}"/></clipPath>` : ""
     ].join("");
     const parts = [
+      // Food or flowers heaped in the vessel, the rim's front hiding its foot, browning as it goes over (FoodHeap.tsx).
+      food ? `<image href="${xmlEsc(food.image)}" x="${n2(food.left)}" y="${n2(food.top)}" width="${n2(food.width)}" height="${n2(food.height)}" preserveAspectRatio="none" clip-path="url(#food-${uid})"${food.tint ? ` style="filter:${core().offeringArt.tintFilter(food.tint)}"` : ""}/>` : "",
       stain ? ell(stain, `fill="url(#stain-${uid})"`) : "",
       tide ? ell(tide, `fill="none" stroke="${tide.color}" stroke-opacity="${tide.opacity}" stroke-width="${tide.stroke}"`) : "",
       liquid ? ell(liquid, `fill="url(#liquid-${uid})"`) : "",
@@ -479,6 +483,20 @@
       ...petals.map((p) => ell(p, `fill="${p.color}" fill-opacity="0.88" stroke="rgb(60,40,30)" stroke-opacity="0.25" stroke-width="0.5" transform="rotate(${p.rotate} ${n2(p.cx)} ${n2(p.cy)})"`))
     ].join("");
     return `<svg class="living-art__marks" width="${n2(width)}" height="${n2(height)}" viewBox="0 0 ${n2(width)} ${n2(height)}" aria-hidden="true"><defs>${defs}</defs>${parts}</svg>`;
+  }
+
+  /** A photo of your own in an ancestor frame's opening, cropped to cover it, sepia if chosen (FramePhoto.tsx). */
+  function framePhotoHtml(saved, width, height) {
+    const A = core();
+    if (!A.frame?.isFrame(saved)) return "";
+    const rect = A.frame.framePhotoRect(saved, width, height);
+    if (!rect) return "";
+    const frame = A.frame.frameOf(saved);
+    const tint = A.frame.framePhotoTint(saved);
+    // A flipped frame still shows the photo the right way round.
+    const unmirror = saved.flipped === "true" ? "transform:scaleX(-1);" : "";
+    const img = frame.photo ? `<img src="${xmlEsc(frame.photo)}" alt="" draggable="false"${tint ? ` style="filter:${A.offeringArt.tintFilter(tint)}"` : ""}>` : "";
+    return `<div class="living-art__photo" style="left:${n2(rect.left)}px;top:${n2(rect.top)}px;width:${n2(rect.width)}px;height:${n2(rect.height)}px;border-radius:${rect.oval ? "50%" : "1px"};${unmirror}">${img}</div>`;
   }
 
   /** A stick burned shorter from its tip (AltarStage.tsx StickPicture). */
@@ -576,8 +594,12 @@
           img.style.transform = `rotate(${n2(art.bend.rotate)}deg) scale(${n2(art.bend.scaleX)}, ${n2(art.bend.scaleY)})`;
         } else img.style.removeProperty("transform");
       }
-      // Liquid sinking in its vessel, the ring it leaves, petals fallen.
+      // Liquid sinking in its vessel, the ring it leaves, petals fallen, food heaped in it.
       layerOf(object, "offering").innerHTML = art ? offeringSvg(art, width, height, uid) : "";
+
+      // An ancestor frame: the photo of your own in its opening.
+      const photoHtml = framePhotoHtml(saved, width, height);
+      if (photoHtml || object.querySelector(':scope > [data-living-art="photo"]')) layerOf(object, "photo").innerHTML = photoHtml;
 
       // A folded petition with no picture of its own.
       if (!img && A.petitions.isPetitionPaper(saved)) {
@@ -757,6 +779,6 @@
   else if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", watch, { once: true });
   else watch();
 
-  global.LivingArt = { render, renderAll, playMoment, candleGeometry, marksSvg, drawsBurnedDown, burnedPictureHtml, offeringSvg, stickPictureHtml, stickAshSvg };
+  global.LivingArt = { render, renderAll, playMoment, candleGeometry, marksSvg, drawsBurnedDown, burnedPictureHtml, offeringSvg, framePhotoHtml, stickPictureHtml, stickAshSvg };
   if (typeof module !== "undefined" && module.exports) module.exports = global.LivingArt;
 })(typeof window !== "undefined" ? window : globalThis);

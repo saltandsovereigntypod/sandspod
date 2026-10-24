@@ -17,6 +17,9 @@ import { journalInsights } from '../../../lib/rituals/insights';
 import { dueLookBacks } from '../../../lib/rituals/lookBack';
 import type { JournalRow } from '../../../lib/rituals/types';
 import { DidItWork } from '../../../components/rituals/DidItWork';
+import { ItemDidItWork } from '../../../components/rituals/ItemDidItWork';
+import { dueItems } from '../../../lib/altar/apothecaryLookBack';
+import { useWorkshop } from '../../../lib/altar/workshop';
 import { currentStep } from '../../../lib/rituals/lifecycle';
 import { nextPlan } from '../../../lib/rituals/plans';
 import { useRituals } from '../../../lib/rituals/store';
@@ -360,9 +363,26 @@ function PracticeCard({ settings, place, now }: { settings: SettingsLike; place:
   );
 }
 
-/** "Did it work?" for a ritual or spell whose look-back day has come. */
+/** "Did it work?" for a ritual or spell whose look-back day has come, or else a spell jar, sachet or other working. */
 function LookBackDue({ journal, now }: { journal: JournalRow[]; now: Date }) {
   const due = useMemo(() => dueLookBacks(journal, now), [journal, now]);
+  const { apothecary } = useWorkshop();
+  const made = useMemo(() => dueItems(apothecary, now), [apothecary, now]);
+  if (!due.length && made.length) {
+    const [item, ...others] = made;
+    return (
+      <View style={styles.lookBack}>
+        <ItemDidItWork key={item.id} item={item} compact />
+        <Pressable
+          accessibilityRole="link"
+          onPress={() => router.navigate(others.length ? '/rituals/apothecary' : { pathname: '/rituals/apothecary/[id]', params: { id: item.id } })}
+          style={({ pressed }) => pressed && { opacity: 0.7 }}
+        >
+          <Text style={[type.caption, styles.center]}>{others.length ? `Open “${item.name}” · ${others.length} more waiting ›` : `Open “${item.name}” ›`}</Text>
+        </Pressable>
+      </View>
+    );
+  }
   if (!due.length) return null;
   const [first, ...more] = due;
   return (
@@ -374,7 +394,9 @@ function LookBackDue({ journal, now }: { journal: JournalRow[]; now: Date }) {
         style={({ pressed }) => pressed && { opacity: 0.7 }}
       >
         <Text style={[type.caption, styles.center]}>
-          {more.length ? `Open “${first.title || 'the entry'}” · ${more.length} more waiting in your journal ›` : `Open “${first.title || 'the entry'}” ›`}
+          {more.length + made.length
+            ? `Open “${first.title || 'the entry'}” · ${more.length + made.length} more waiting in your journal ›`
+            : `Open “${first.title || 'the entry'}” ›`}
         </Text>
       </Pressable>
     </View>
@@ -399,8 +421,8 @@ function CardOfTheDay({ now, south }: { now: Date; south: boolean }) {
         accessibilityLabel={kept ? `Today’s card: ${kept.name}${kept.reversed ? ', reversed' : ''}. Opens the reading.` : 'Draw a card for the day'}
         onPress={() =>
           kept
-            ? router.navigate({ pathname: '/rituals/craft/hedge/readings/[id]', params: { id: kept.id } })
-            : router.navigate({ pathname: '/rituals/craft/hedge/readings/draw', params: { spread: 'daily' } })
+            ? router.navigate({ pathname: '/rituals/divination/[id]', params: { id: kept.id } })
+            : router.navigate({ pathname: '/rituals/divination/draw', params: { spread: 'daily' } })
         }
         style={({ pressed }) => [styles.lastTime, pressed && { opacity: 0.7 }]}
       >
@@ -418,7 +440,7 @@ function CardOfTheDay({ now, south }: { now: Date; south: boolean }) {
         <Pressable
           accessibilityRole="link"
           accessibilityLabel={`${seasonal.why}. Draw the ${seasonal.label} spread.`}
-          onPress={() => router.navigate({ pathname: '/rituals/craft/hedge/readings/draw', params: { spread: seasonal.spread } })}
+          onPress={() => router.navigate({ pathname: '/rituals/divination/draw', params: { spread: seasonal.spread } })}
           style={({ pressed }) => [styles.lastTime, pressed && { opacity: 0.7 }]}
         >
           <Text style={type.caption}>
