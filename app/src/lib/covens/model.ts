@@ -46,6 +46,11 @@ export type Rank = {
   can_approve_book?: boolean;
   can_manage_programs?: boolean;
   can_view_progress?: boolean;
+  /** Altars and chat (each on unless the head turns it off, for starting altars and chat). */
+  can_start_altars?: boolean;
+  can_tend_altars?: boolean;
+  can_keep_altars?: boolean;
+  can_chat?: boolean;
   is_default?: boolean;
   open_to_applications?: boolean;
 };
@@ -90,6 +95,8 @@ export type Ritual = {
   led_by: string | null;
   ended_at: string | null;
   updated_at?: string;
+  /** The altar it's held at; none means the coven's main ritual altar. */
+  altar_id?: string | null;
 };
 export type AltarAction = 'light_candle' | 'place_item' | 'light_all' | 'snuff_all';
 export type RitualStep = {
@@ -109,6 +116,9 @@ export type RitualStep = {
   altar_color: string | null;
   altar_form: string | null;
   altar_label: string | null;
+  altar_image?: string | null;
+  /** Who tends the altar during this step: its person ('assigned'), 'everyone', or only the ritual's 'leader'. */
+  altar_access?: 'assigned' | 'everyone' | 'leader';
 };
 export type Rsvp = { ritual_id: string; coven_id: string; user_id: string; response: 'going' | 'maybe' | 'not_going' };
 export type StepMark = { step_id: string; ritual_id: string; user_id: string };
@@ -176,6 +186,14 @@ export type Permissions = {
   programs: boolean;
   /** Sees everyone's progress in the coven's programs. */
   progress: boolean;
+  /** Starts new altars for the coven. */
+  startAltars: boolean;
+  /** Tends the altars kept for chosen people, the main ritual altar among them. */
+  tendAltars: boolean;
+  /** Keeps every altar: chooses who tends each one, locks it. */
+  keepAltars: boolean;
+  /** Talks in the coven's chat. */
+  chat: boolean;
   muted: boolean;
   site: boolean;
 };
@@ -209,6 +227,11 @@ export function permissions(args: {
     writeBook: has('can_write_book', 'can_approve_book', 'can_manage'),
     approveBook: has('can_approve_book', 'can_manage'),
     ...programPowers(open && active, founder, rank, args.grants ?? [], userId, !!args.siteModerator),
+    // Starting altars and chat are on for a position unless the head turns them off.
+    startAltars: open && active && (founder || !rank || rank.can_start_altars !== false || !!rank.can_keep_altars || !!rank.can_manage),
+    tendAltars: has('can_tend_altars', 'can_keep_altars', 'can_manage'),
+    keepAltars: has('can_keep_altars', 'can_manage'),
+    chat: open && active && (founder || !rank || rank.can_chat !== false || !!rank.can_moderate || !!rank.can_manage),
     muted: !!(active && membership!.muted_until && new Date(membership!.muted_until).getTime() > (args.now ?? Date.now())),
     site: !!args.siteModerator,
   };
@@ -265,6 +288,8 @@ export function rankPowers(rank: Rank | null): string[] {
   if (rank.can_approve_book || rank.can_manage) powers.push('approves pages in the coven’s book');
   else if (rank.can_write_book) powers.push('writes in the coven’s book');
   if (rank.can_manage_programs || rank.can_manage) powers.push('manages initiation and training');
+  if (rank.can_keep_altars || rank.can_manage) powers.push('keeps the coven’s altars');
+  else if (rank.can_tend_altars) powers.push('tends the coven’s altars');
   else if (rank.can_view_progress) powers.push('sees everyone’s progress');
   return powers;
 }
@@ -367,6 +392,10 @@ export const RANK_POWERS = [
   { key: 'can_approve_book', label: 'Approves pages for the coven’s Book of Shadows' },
   { key: 'can_manage_programs', label: 'Manages initiation and training (designs programs, chooses who takes them, assigns mentors, signs off work)' },
   { key: 'can_view_progress', label: 'Sees everyone’s initiation and training progress' },
+  { key: 'can_start_altars', label: 'Starts new altars for the coven' },
+  { key: 'can_tend_altars', label: 'Tends the coven’s altars (the ritual altar, and any kept for chosen people), outside rituals' },
+  { key: 'can_keep_altars', label: 'Keeps the coven’s altars (chooses who tends each one, locks them, clears them away)' },
+  { key: 'can_chat', label: 'Talks in the coven’s chat' },
   { key: 'can_manage', label: 'Leads the coven (edits its pages, positions and details)' },
 ] as const;
 

@@ -40,7 +40,7 @@ const rpc = <T>(name: string, args: Record<string, unknown>) => run<T>(supabase.
 
 // ─── You ─────────────────────────────────────────────────────────────────
 
-export type Me = { profile: Profile | null; siteModerator: boolean; banned: boolean; blocks: string[] };
+export type Me = { profile: Profile | null; siteModerator: boolean; admin?: boolean; banned: boolean; blocks: string[] };
 
 export async function fetchMe(userId: string): Promise<Me> {
   const [profile, roles, ban, blocks] = await Promise.all([
@@ -52,6 +52,7 @@ export async function fetchMe(userId: string): Promise<Me> {
   return {
     profile,
     siteModerator: roles.some((r) => r.role === 'admin' || r.role === 'moderator'),
+    admin: roles.some((r) => r.role === 'admin'),
     banned: !!ban,
     blocks: blocks.map((b) => b.blocked_id),
   };
@@ -212,6 +213,11 @@ export const startRitual = (ritualId: string) => rpc<Ritual>('start_coven_ritual
 export const finishStep = (stepId: string) => rpc<Ritual>('finish_coven_ritual_step', { p_step: stepId });
 export const goToStep = (ritualId: string, stepId: string | null) => rpc<Ritual>('go_to_coven_ritual_step', { p_ritual: ritualId, p_step: stepId });
 export const performStepAction = (stepId: string) => rpc('perform_coven_step_action', { p_step: stepId });
+export const saveRitual = (covenId: string, ritualId: string | null, ritual: Record<string, unknown>, steps: Record<string, unknown>[]) =>
+  rpc<Ritual>('save_coven_ritual', { p_coven: covenId, p_ritual_id: ritualId, p_ritual: ritual, p_steps: steps });
+export const setRitualStatus = (ritualId: string, status: 'draft' | 'scheduled' | 'cancelled' | 'deleted') => rpc<Ritual>('set_coven_ritual_status', { p_ritual: ritualId, p_status: status });
+/** Who can be given a part: members, and whether they've signed the coven's current agreements. */
+export const ritualPeople = (covenId: string) => rpc<{ user_id: string; eligible: boolean }[]>('coven_ritual_people', { p_coven: covenId });
 
 /** Your rites across every coven you're in, with your answers (for phone reminders). */
 export async function fetchMyRites(userId: string): Promise<{ coven: Coven; ritual: Ritual; response: Rsvp['response'] | null }[]> {
@@ -279,6 +285,47 @@ export const setEnrollmentStatus = (enrollmentId: string, status: 'active' | 'pa
 export const saveCalendar = (covenId: string, traditions: string[], holidays: string[], custom: { id: string; name: string; month: number; day: number; meaning: string }[]) =>
   run<Coven>(supabase.from('covens').update({ practice_traditions: traditions, practice_holidays: holidays, practice_custom: custom }).eq('id', covenId).select(COVEN_FIELDS).single());
 
+
+// ─── Site moderation (Salt & Sovereignty's moderators) ──────────────────
+
+export type Report = {
+  id: string;
+  reporter_id: string | null;
+  coven_id: string | null;
+  target_type: string;
+  target_id: string | null;
+  target_user_id: string | null;
+  reason: string;
+  details: string | null;
+  snapshot: string | null;
+  status: 'open' | 'reviewing' | 'resolved' | 'dismissed';
+  resolution_note: string | null;
+  resolved_by: string | null;
+  created_at: string;
+  resolved_at: string | null;
+  covens?: { name: string; slug: string } | null;
+};
+export type Ban = { user_id: string; reason: string | null; banned_by: string | null; created_at: string };
+export type Moderator = { user_id: string; email: string | null; display_name: string | null; role: string };
+
+export const fetchReports = (status: Report['status'] | 'all') => {
+  let query = supabase.from('coven_reports').select('*, covens(name,slug)').order('created_at', { ascending: false }).limit(200);
+  if (status !== 'all') query = query.eq('status', status);
+  return run<Report[]>(query);
+};
+export const resolveReport = (id: string, userId: string, status: Report['status'], note: string) =>
+  run(
+    supabase
+      .from('coven_reports')
+      .update({ status, resolution_note: note.trim() || null, resolved_by: userId, resolved_at: status === 'open' || status === 'reviewing' ? null : new Date().toISOString() })
+      .eq('id', id),
+  );
+export const fetchAllCovens = () => run<Coven[]>(supabase.from('covens').select(COVEN_FIELDS).order('created_at', { ascending: false }).limit(1000));
+export const fetchBans = () => run<Ban[]>(supabase.from('community_bans').select('*').order('created_at', { ascending: false }));
+export const banEveryCoven = (userId: string, by: string, reason: string) => run(supabase.from('community_bans').insert({ user_id: userId, reason: reason.trim() || null, banned_by: by }));
+export const liftBan = (userId: string) => run(supabase.from('community_bans').delete().eq('user_id', userId));
+export const fetchModerators = () => rpc<Moderator[]>('list_community_moderators', {});
+export const setModerator = (email: string, enabled: boolean) => rpc('set_community_moderator', { p_email: email.trim(), p_enabled: enabled });
 
 // ─── Live ────────────────────────────────────────────────────────────────
 

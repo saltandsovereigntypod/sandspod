@@ -281,6 +281,7 @@ export function SaveSheet({
   initialName,
   hasSource,
   signedIn,
+  title = 'Save this altar',
   onClose,
   onSave,
 }: {
@@ -288,6 +289,7 @@ export function SaveSheet({
   initialName: string;
   hasSource: boolean;
   signedIn: boolean;
+  title?: string;
   onClose: () => void;
   onSave: (name: string, asNew: boolean) => Promise<void>;
 }) {
@@ -315,7 +317,7 @@ export function SaveSheet({
   };
 
   return (
-    <Sheet visible={visible} onClose={onClose} eyebrow={signedIn ? 'Saved to your Sanctuary' : 'Saved on this device'} title="Save this altar">
+    <Sheet visible={visible} onClose={onClose} eyebrow={signedIn ? 'Saved to your Sanctuary' : 'Saved on this device'} title={title}>
       <TextInput
         value={name}
         onChangeText={setName}

@@ -32,7 +32,8 @@ function PositionForm({ rank }: { rank: Rank | null }) {
   const [requirements, setRequirements] = useState(rank?.requirements ?? '');
   const [flags, setFlags] = useState<Record<Flag, boolean>>(() => {
     const out = { is_default: !!rank?.is_default, open_to_applications: !!rank?.open_to_applications } as Record<Flag, boolean>;
-    for (const p of RANK_POWERS) out[p.key] = !!rank?.[p.key];
+    // Starting altars and chat are on for a position unless the head turns them off.
+    for (const p of RANK_POWERS) out[p.key] = rank?.[p.key] ?? (p.key === 'can_start_altars' || p.key === 'can_chat');
     return out;
   });
   const [busy, setBusy] = useState(false);

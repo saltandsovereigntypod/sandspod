@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { Text } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
-import { covenHref, CovenScreen, openOnWebsite } from '../../../../../components/covens/CovenScreen';
+import { covenHref, CovenScreen } from '../../../../../components/covens/CovenScreen';
 import { MenuList, MenuRow, Section } from '../../../../../components/more/ui';
 import { useCoven } from '../../../../../lib/covens/CovenContext';
 import { occasionLabel, orderSteps, ritualGroups, riteTime, rsvpSummary, type Ritual } from '../../../../../lib/covens/model';
@@ -12,7 +12,7 @@ export default function Rituals() {
   const coven = useCoven();
   const { live, upcoming, past } = ritualGroups(coven.rituals);
   const drafts = coven.rituals.filter((r) => r.status === 'draft');
-  const canPlan = coven.perms.lead || coven.perms.schedule || coven.perms.site;
+  const canPlan = (coven.perms.lead && coven.standing.ok) || coven.perms.site;
 
   const row = (r: Ritual, detail: string, last: boolean) => (
     <MenuRow key={r.id} label={r.title} detail={detail} last={last} onPress={() => router.push(covenHref(coven.slug, `ritual/${r.id}`))} />
@@ -56,8 +56,8 @@ export default function Rituals() {
       )}
       {canPlan && (
         <Section label="Planning">
-          <Text style={type.caption}>Write rituals, give their steps to people or positions, and put rites on the calendar on the website.</Text>
-          <Button label="Plan on the website" variant="outline" onPress={() => openOnWebsite(coven.slug, 'rituals')} />
+          <Text style={type.caption}>Write a ritual, give its steps to people or positions, choose what each does at the altar, and put it on the calendar.</Text>
+          <Button label="Plan a ritual" onPress={() => router.push(covenHref(coven.slug, 'ritual/plan'))} />
         </Section>
       )}
     </CovenScreen>

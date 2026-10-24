@@ -10,9 +10,10 @@
 import { router, type Href } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import { useState, type ReactNode } from 'react';
-import { ActivityIndicator, RefreshControl, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, RefreshControl, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../Button';
+import { ChatBubble } from './Chat';
 import { Card, MoreScreen, Notice } from '../more/ui';
 import { WEBSITE_ORIGIN } from '../../lib/altar/assetPaths';
 import { useCoven } from '../../lib/covens/CovenContext';
@@ -33,6 +34,7 @@ export function CovenScreen({
   home,
   children,
   onRefresh,
+  chat = true,
 }: {
   title: string;
   eyebrow?: string;
@@ -41,12 +43,15 @@ export function CovenScreen({
   need?: 'public' | 'member' | 'standing' | 'manage' | 'review';
   children: ReactNode;
   onRefresh?: () => Promise<void>;
+  /** The chat bubble (every coven screen but the chat itself). */
+  chat?: boolean;
 }) {
   const coven = useCoven();
   const [pulling, setPulling] = useState(false);
   const back = covenHref(coven.slug);
   const isHome = !!home;
   const frame = (body: ReactNode) => (
+    <View style={styles.fill}>
     <MoreScreen
       title={isHome ? coven.snapshot?.coven.name ?? title : title}
       eyebrow={isHome ? eyebrow : coven.snapshot?.coven.name ?? eyebrow}
@@ -66,6 +71,8 @@ export function CovenScreen({
     >
       {body}
     </MoreScreen>
+    {chat && coven.status === 'ready' && <ChatBubble />}
+    </View>
   );
 
   if (coven.status === 'loading') return frame(<ActivityIndicator color={colors.gold} style={styles.loading} />);
@@ -136,4 +143,5 @@ export function CovenScreen({
 
 const styles = StyleSheet.create({
   loading: { marginTop: 40 },
+  fill: { flex: 1 },
 });
