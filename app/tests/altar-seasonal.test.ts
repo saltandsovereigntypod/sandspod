@@ -86,7 +86,7 @@ test('the Seasonal drawer comes first near a sabbat, with its things "For Samhai
   assert.equal(sections[0].title, 'For Samhain');
   assert.deepEqual(sections[0].items.map((i) => i.id), ['seasonal:pumpkin-lantern', 'seasonal:turnip-lantern', 'seasonal:pomegranate', 'seasonal:apples', 'seasonal:gourds']);
   // Then the rest of the wheel, from Yule; each thing once.
-  assert.deepEqual(sections.map((s) => s.title), ['For Samhain', 'Wheel of the Year', 'Greek festivals', 'Norse & Heathen', 'Celtic festivals', 'The turning seasons']);
+  assert.deepEqual(sections.map((s) => s.title), ['For Samhain', 'Wheel of the Year', 'Greek festivals', 'Norse & Heathen', 'Celtic festivals', 'Roman festivals', 'The turning seasons']);
   assert.equal(sections[1].items[0].id, 'seasonal:yule-log');
   const ids = sections.flatMap((s) => s.items.map((i) => i.id));
   assert.equal(new Set(ids).size, items.length);
