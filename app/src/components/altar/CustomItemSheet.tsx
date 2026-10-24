@@ -1,8 +1,9 @@
 import { useMemo, useState, type ReactNode } from 'react';
-import { ActivityIndicator, Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { Button } from '../Button';
-import { altarImageSource } from '../../lib/altar/assets';
+import { altarPicture } from '../../lib/altar/assets';
+import { AltarImage } from './AltarImage';
 import { CUSTOM_CATEGORIES, FORM_PRESETS, ITEM_TYPE, isCustomCategory, parseKeywords, chosenFromItem, type CustomCategory } from '../../lib/altar/custom';
 import { pickImage } from '../../lib/altar/images';
 import type { CabinetItem } from '../../lib/altar/types';
@@ -135,7 +136,7 @@ function ItemForm({ target, onClose, onSaved }: { target: NonNullable<Props['tar
         <View style={styles.forms}>
           {forms.map((form) => {
             const uri = form.picked?.uri ?? (form.enabled ? form.image : undefined);
-            const source = uri ? altarImageSource(uri) : null;
+            const picture = uri ? altarPicture(uri) : null;
             return (
               <View key={form.label} style={styles.formTile}>
                 <Pressable
@@ -144,7 +145,7 @@ function ItemForm({ target, onClose, onSaved }: { target: NonNullable<Props['tar
                   onPress={() => void choosePicture(form.label)}
                   style={({ pressed }) => [styles.thumb, pressed && { opacity: 0.7 }]}
                 >
-                  {source ? <Image source={source} style={styles.thumbImage} resizeMode="contain" /> : <Text style={styles.plus}>＋</Text>}
+                  {picture ? <AltarImage picture={picture} style={styles.thumbImage} resizeMode="contain" /> : <Text style={styles.plus}>＋</Text>}
                 </Pressable>
                 <Text style={styles.formLabel} numberOfLines={2}>
                   {form.label === 'Place' ? 'Picture' : form.label}

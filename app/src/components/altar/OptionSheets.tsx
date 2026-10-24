@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { Button } from '../Button';
-import { altarImageSource } from '../../lib/altar/assets';
+import { altarImageSource, altarPicture } from '../../lib/altar/assets';
+import { AltarImage } from './AltarImage';
 import { DEFAULT_BACKGROUND_NAME } from '../../lib/altar/customImages';
 import { pickImage, type PickedImage } from '../../lib/altar/images';
 import { confirmAction } from '../../lib/grimoire/confirm';
@@ -174,7 +175,7 @@ export function LayersSheet({
       <View style={styles.list}>
         {order.map((index, position) => {
           const object = doc.objects[index];
-          const source = altarImageSource(object.imagePath);
+          const picture = altarPicture(object.imagePath);
           const name = shortLabel(object.label);
           const state = [isCandle(object) && isLit(object) ? 'lit' : null, object.locked === 'true' ? 'locked' : null]
             .filter(Boolean)
@@ -188,7 +189,7 @@ export function LayersSheet({
                 accessibilityLabel={`Select ${name}${state ? `, ${state}` : ''}. Layer ${position + 1} of ${order.length} from the front.`}
               >
                 <View style={styles.layerThumb}>
-                  {source && <Image source={source} style={styles.layerThumbImage} resizeMode="contain" />}
+                  {picture && <AltarImage picture={picture} style={styles.layerThumbImage} resizeMode="contain" />}
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.layerName} numberOfLines={1}>
@@ -248,7 +249,7 @@ export function DressSheet({
           <Text style={type.body}>Choose a herb or oil from your altar. Loose herbs and oils show on the candle.</Text>
           <View style={styles.list}>
             {ingredients.map(({ o, i }) => {
-              const source = altarImageSource(o.imagePath);
+              const picture = altarPicture(o.imagePath);
               return (
                 <Pressable
                   key={`${o.altarObjectId}-${i}`}
@@ -259,7 +260,7 @@ export function DressSheet({
                 >
                   <View style={styles.layerMain}>
                     <View style={styles.layerThumb}>
-                      {source && <Image source={source} style={styles.layerThumbImage} resizeMode="contain" />}
+                      {picture && <AltarImage picture={picture} style={styles.layerThumbImage} resizeMode="contain" />}
                     </View>
                     <Text style={styles.layerName}>{shortLabel(o.label, 'Ingredient')}</Text>
                   </View>

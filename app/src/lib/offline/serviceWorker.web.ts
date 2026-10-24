@@ -7,14 +7,15 @@ import { bundledAltarAssets } from '../altar/assetManifest';
 // online still shows offline.
 
 function altarArtworkUrls(): string[] {
-  const urls: string[] = [];
+  const urls = new Set<string>();
+  // Herbs' and crystals' forms share a sheet: each file once.
   for (const { source } of Object.values(bundledAltarAssets)) {
     // In the web export a bundled image is { uri, width, height }, though it
     // is typed as the native build's asset number.
     const uri = (source as unknown as { uri?: unknown }).uri;
-    if (typeof uri === 'string') urls.push(uri);
+    if (typeof uri === 'string') urls.add(uri);
   }
-  return urls;
+  return [...urls];
 }
 
 function loadedFileUrls(): string[] {

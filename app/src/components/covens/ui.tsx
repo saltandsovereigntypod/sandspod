@@ -8,7 +8,8 @@ import { Image, PanResponder, StyleSheet, Text, View, type LayoutChangeEvent } f
 import { Button } from '../Button';
 import { Sheet } from '../altar/Sheet';
 import { Chips, Field, Notice } from '../more/ui';
-import { altarImageSource } from '../../lib/altar/assets';
+import { altarImageSource, altarPicture } from '../../lib/altar/assets';
+import { AltarImage } from '../altar/AltarImage';
 import { ALTAR_ARTWORK } from '../../lib/altar/artworkData';
 import { imageRatio } from '../../lib/altar/geometry';
 import * as api from '../../lib/covens/api';
@@ -198,7 +199,7 @@ function AltarPiece({
   ).current;
   const flame = candleState(item, now);
   const [wx, wy] = wickOf(item.image);
-  const source = altarImageSource(item.image);
+  const picture = altarPicture(item.image);
   const label = `${item.label || (item.kind === 'candle' ? 'Candle' : 'Offering')}${item.kind === 'candle' ? (flame.lit ? `, lit, ${flame.minutesLeft} minutes left` : flame.burntOut ? ', burnt down' : ', unlit') : ''}`;
   return (
     <View
@@ -221,7 +222,7 @@ function AltarPiece({
         selected && styles.pieceSelected,
       ]}
     >
-      {source && <Image source={source} style={[styles.pieceImage, flame.burntOut && styles.burnt]} resizeMode="contain" />}
+      {picture && <AltarImage picture={picture} style={[styles.pieceImage, flame.burntOut && styles.burnt]} resizeMode="contain" />}
       {flame.lit && (
         <View pointerEvents="none" style={[styles.flame, { left: wx * w - w * 0.11, top: wy * h - w * 0.42, width: w * 0.22, height: w * 0.46, opacity: 0.55 + 0.45 * flame.remaining }]}>
           <View style={styles.flameCore} />

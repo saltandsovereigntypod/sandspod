@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
-import { ActivityIndicator, Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
-import { altarImageSource, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
+import { altarPicture, useImageRatio, useImageRatioVersion } from '../../lib/altar/assets';
+import { AltarImage } from './AltarImage';
 import { imageRatio } from '../../lib/altar/geometry';
 import { cabinetEntry, topUses } from '../../lib/altar/companion';
 import { cabinetCategoriesFor, cabinetItemsFor, deityPantheon, formImage, formObjectLabel, overrideKey, PANTHEON_GROUPS, placeableForms, shortLabel } from '../../lib/altar/cabinet';
@@ -303,7 +304,7 @@ function Tile({
   onPress: () => void;
   onLongPress?: () => void;
 }) {
-  const source = altarImageSource(image);
+  const picture = altarPicture(image);
   // Heaps of chips and loose herbs are wide and flat: give them a wide frame
   // so they fill the tile instead of sitting small in a square of empty space.
   useImageRatio(image);
@@ -323,7 +324,7 @@ function Tile({
       style={({ pressed }) => [styles.tile, pressed && { opacity: 0.7 }]}
     >
       <View style={[styles.thumb, wide && styles.thumbWide]}>
-        {source && <Image source={source} style={wide ? styles.thumbImageWide : styles.thumbImage} resizeMode="contain" />}
+        {picture && <AltarImage picture={picture} style={wide ? styles.thumbImageWide : styles.thumbImage} resizeMode="contain" />}
       </View>
       <Text style={styles.tileLabel} numberOfLines={2}>
         {label}
