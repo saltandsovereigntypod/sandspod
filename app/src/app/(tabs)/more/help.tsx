@@ -7,6 +7,7 @@ import { Card, Field, MoreScreen, Section } from '../../../components/more/ui';
 import { Expander } from '../../../components/rituals/ui';
 import { SUPPORT_EMAIL } from '../../../lib/community/model';
 import { HELP, searchHelp, type HelpTopic } from '../../../lib/help';
+import { replayWelcomeTour } from '../../../lib/welcomeTour';
 import { colors, type } from '../../../theme';
 
 // How to: a plain guide to everything in the app, by where it lives, with search.
@@ -38,16 +39,21 @@ export default function Help() {
           ))}
         </Section>
       ) : (
-        HELP.map((section) => (
-          <Section key={section.id} label={section.title}>
-            <Text style={type.caption}>{section.intro}</Text>
-            {section.topics.map((topic) => (
-              <Expander key={topic.id} title={topic.title}>
-                <TopicBody topic={topic} />
-              </Expander>
-            ))}
-          </Section>
-        ))
+        <>
+          <View style={styles.row}>
+            <Button label="Watch the welcome tour again" variant="pill" onPress={() => void replayWelcomeTour()} />
+          </View>
+          {HELP.map((section) => (
+            <Section key={section.id} label={section.title}>
+              <Text style={type.caption}>{section.intro}</Text>
+              {section.topics.map((topic) => (
+                <Expander key={topic.id} title={topic.title}>
+                  <TopicBody topic={topic} />
+                </Expander>
+              ))}
+            </Section>
+          ))}
+        </>
       )}
 
       <Card>

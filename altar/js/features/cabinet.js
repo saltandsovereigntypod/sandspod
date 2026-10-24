@@ -144,7 +144,8 @@ function ensureSeasonalCabinetItems() {
 }
 
 // The festivals that are near, from the calendars you keep (a week before
-// through their last day; the monthly Greek days only the day before): their things come first.
+// through their last day; the monthly Greek days only the day before), then the
+// season it is: their things come first in the Seasonal drawer.
 let cabinetNear = [];
 let cabinetNearChecked = false;
 /** Whether a near festival has something with a picture in the Seasonal drawer. */
@@ -155,7 +156,7 @@ async function refreshCabinetSabbat() {
   cabinetNearChecked = true;
   let choice = null;
   try { choice = core.holidays.holidayChoice(await window.SaltSettings?.get?.()); } catch { choice = null; }
-  cabinetNear = core.seasonal.festivalsNear(new Date(), choice);
+  cabinetNear = core.seasonal.seasonalNear(new Date(), choice);
   ensureSeasonalCabinetItems();
   // Near a festival the cabinet opens on its seasonal things, unless a drawer was asked for.
   if (cabinetNearShown() && !requestedCabinetCategory && activeCabinetCategory === "candles") activeCabinetCategory = "seasonal";
