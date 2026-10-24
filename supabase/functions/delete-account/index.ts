@@ -8,7 +8,7 @@ const defaultOrigins = [
   "https://saltandsovereigntypod.github.io"
 ];
 const allowedOrigins = new Set([...(Deno.env.get("ACCOUNT_DELETE_ALLOWED_ORIGINS") || "").split(",").map((value) => value.trim()).filter(Boolean), ...defaultOrigins]);
-const childTables = ["coven_petition_tendings", "coven_petitions", "coven_ritual_rsvps", "coven_ritual_step_marks", "coven_messages", "coven_signatures", "coven_applications", "coven_advancement_requests", "coven_members", "ritual_links", "ritual_session_steps", "ritual_template_steps", "grimoire_page_links", "grimoire_blocks", "library_relations", "object_instance_events", "community_submission_messages"];
+const childTables = ["coven_program_stage_passes", "coven_program_progress", "coven_program_enrollments", "coven_program_assignments", "coven_mentors", "coven_grants", "coven_petition_tendings", "coven_petitions", "coven_ritual_rsvps", "coven_ritual_step_marks", "coven_messages", "coven_signatures", "coven_applications", "coven_advancement_requests", "coven_members", "ritual_links", "ritual_session_steps", "ritual_template_steps", "grimoire_page_links", "grimoire_blocks", "library_relations", "object_instance_events", "community_submission_messages"];
 const parentTables = ["craft_entries", "ritual_plans", "user_rituals", "ritual_sessions", "ritual_templates", "grimoire_pages", "grimoire_sections", "grimoire_books", "object_instances", "living_library_entries", "apothecary_items", "saved_altars", "custom_altar_backgrounds", "custom_cabinet_items", "custom_cabinet_image_overrides", "user_settings", "coven_profiles"];
 
 function response(origin: string, status: number, body: Record<string, unknown>) {
@@ -59,6 +59,9 @@ Deno.serve(async (request) => {
       if (error) throw new Error(`${table}_cleanup_failed`);
       completed.push(table);
     }
+    // Anyone they mentored is left without a mentor until the coven chooses another.
+    const { error: mentorError } = await admin.from("coven_mentors").delete().eq("mentor_id", userId);
+    if (mentorError) throw new Error("coven_mentors_cleanup_failed");
 
     const { data: buckets, error: bucketError } = await admin.storage.listBuckets();
     if (bucketError) throw new Error("storage_inventory_failed");

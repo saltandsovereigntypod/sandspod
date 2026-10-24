@@ -40,6 +40,8 @@ export type Rank = {
   can_schedule_rites?: boolean;
   can_write_book?: boolean;
   can_approve_book?: boolean;
+  can_manage_programs?: boolean;
+  can_view_progress?: boolean;
   is_default?: boolean;
   open_to_applications?: boolean;
 };
@@ -237,6 +239,8 @@ export function rankPowers(rank: Rank | null): string[] {
   if (rank.can_schedule_rites || rank.can_manage) powers.push('puts rites on the calendar');
   if (rank.can_approve_book || rank.can_manage) powers.push('approves pages in the coven’s book');
   else if (rank.can_write_book) powers.push('writes in the coven’s book');
+  if (rank.can_manage_programs || rank.can_manage) powers.push('manages initiation and training');
+  else if (rank.can_view_progress) powers.push('sees everyone’s progress');
   return powers;
 }
 
@@ -336,6 +340,8 @@ export const RANK_POWERS = [
   { key: 'can_schedule_rites', label: 'Puts rites on the coven’s calendar' },
   { key: 'can_write_book', label: 'Writes in the coven’s Book of Shadows (drafts go for approval)' },
   { key: 'can_approve_book', label: 'Approves pages for the coven’s Book of Shadows' },
+  { key: 'can_manage_programs', label: 'Manages initiation and training (designs programs, chooses who takes them, assigns mentors, signs off work)' },
+  { key: 'can_view_progress', label: 'Sees everyone’s initiation and training progress' },
   { key: 'can_manage', label: 'Leads the coven (edits its pages, positions and details)' },
 ] as const;
 

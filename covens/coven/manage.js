@@ -233,6 +233,8 @@
           ${check("can_schedule_rites", "Puts rites on the coven’s calendar")}
           ${check("can_write_book", "Writes in the coven’s Book of Shadows (drafts go for approval)")}
           ${check("can_approve_book", "Approves pages for the coven’s Book of Shadows")}
+          ${check("can_manage_programs", "Manages initiation and training (designs programs, chooses who takes them, assigns mentors, signs off work)")}
+          ${check("can_view_progress", "Sees everyone’s initiation and training progress")}
           ${check("can_manage", "Leads the coven (edits its pages, positions and details)")}
           <div class="sp-actions"><button class="button button--primary button--small" type="submit">${r.id ? "Save" : "Add"}</button>${r.id ? `<button class="button button--ghost button--small" type="button" data-delete-rank="${esc(r.id)}">Delete</button>` : ""}</div>
           ${statusLine()}
@@ -255,6 +257,55 @@
       </form>`;
   }
 
+  const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  /** The coven's practice calendar: the same holiday choices as a person's Settings → Calendar. */
+  function calendarForm(coven) {
+    const traditions = global.SaltCore?.covens?.programs?.CALENDAR_TRADITIONS || [];
+    const chosen = new Set(coven.practice_traditions || []);
+    const picked = new Set(coven.practice_holidays || []);
+    const custom = global.SaltCore?.covens?.holidays?.parseCustomHolidays?.(coven.practice_custom || []) || [];
+    const customRow = (c, i) => `<div class="cv-inline-form" data-custom>
+        <div class="sp-field"><label for="cd-name-${i}">Name</label><input id="cd-name-${i}" name="name" maxlength="80" value="${esc(c.name || "")}" /></div>
+        <div class="sp-field"><label for="cd-month-${i}">Month</label><select id="cd-month-${i}" name="month">${MONTHS.map((m, n) => `<option value="${n}"${n === c.month ? " selected" : ""}>${m}</option>`).join("")}</select></div>
+        <div class="sp-field"><label for="cd-day-${i}">Day</label><input id="cd-day-${i}" name="day" type="number" min="1" max="31" value="${esc(c.day || 1)}" /></div>
+        <div class="sp-field"><label for="cd-meaning-${i}">What it’s for</label><input id="cd-meaning-${i}" name="meaning" maxlength="300" value="${esc(c.meaning || "")}" /></div>
+        <button class="button button--ghost button--small" type="button" data-remove-custom>Remove</button></div>`;
+    return `<form class="sp-card" data-calendar>
+        <h2>The coven’s practice calendar</h2>
+        <p class="sp-caption">The holidays the coven keeps, as members choose theirs in Settings → Calendar. They show on the coven’s page and on members’ Today page, rites can be planned for them, and the ready-made programs for these calendars are suggested first.</p>
+        ${traditions.length ? traditions.map((t) => `<div class="cv-calendar-choice">
+            <label class="cv-check"><input type="checkbox" name="tradition" value="${esc(t.id)}" ${chosen.has(t.id) ? "checked" : ""} /> <span><strong>${esc(t.name)}</strong><br /><span class="sp-caption">${esc(t.description)}</span></span></label>
+            <details class="sp-details"${t.holidays.some((h) => picked.has(`${t.id}/${h.id}`)) ? " open" : ""}><summary>Choose which holidays (all, if none are ticked)</summary>
+              <div class="cv-holiday-picks">${t.holidays.map((h) => `<label class="cv-check"><input type="checkbox" name="holiday" value="${esc(`${t.id}/${h.id}`)}" ${picked.has(`${t.id}/${h.id}`) ? "checked" : ""} /> <span>${esc(h.name)}</span></label>`).join("")}</div>
+            </details>
+          </div>`).join("") : `<p class="sp-notice">The calendars couldn’t load. Please refresh the page.</p>`}
+        <h3>The coven’s own days</h3>
+        <div class="sp-section" data-custom-list>${custom.map(customRow).join("")}</div>
+        <div class="sp-actions"><button class="button button--ghost button--small" type="button" data-add-custom>Add a day</button><button class="button button--primary" type="submit">Save the calendar</button></div>
+        ${statusLine()}
+        <template data-custom-template>${customRow({ name: "", month: 0, day: 1, meaning: "" }, "new")}</template>
+      </form>`;
+  }
+
+  /** Who manages initiation and training, and who sees everyone's progress, by name. */
+  function grantsForm(state, members) {
+    const has = (userId, power) => (state.grants || []).some((g) => g.user_id === userId && g.power === power);
+    const sorted = [...members].filter((m) => m.status === "active" && m.user_id !== state.coven.founder_id).sort((a, b) => UI.nameOf(state.context, a.user_id).localeCompare(UI.nameOf(state.context, b.user_id)));
+    const holders = (flag) => state.ranks.filter((r) => r[flag] || r.can_manage).map((r) => r.name);
+    return `<section class="sp-card" data-grants>
+        <h2>Initiation and training</h2>
+        <p class="sp-caption">Choose who designs the coven’s programs, chooses who takes them, assigns mentors and signs off work; and who may see everyone’s progress. You can give these to whole positions (below, under Positions) or to people by name here. You always can.</p>
+        <p class="sp-caption">By position: manages programs: ${esc(holders("can_manage_programs").join(", ") || "none yet")}; sees progress: ${esc([...new Set([...holders("can_view_progress"), ...holders("can_manage_programs")])].join(", ") || "none yet")}.</p>
+        ${sorted.length ? `<div class="cv-table-wrap"><table class="cv-table"><thead><tr><th>Member</th><th>Manages programs</th><th>Sees everyone’s progress</th></tr></thead><tbody>${sorted
+          .map((m) => `<tr><td>${esc(UI.nameOf(state.context, m.user_id))}</td>
+            <td><input type="checkbox" data-grant="manage_programs" data-user="${esc(m.user_id)}" aria-label="${esc(UI.nameOf(state.context, m.user_id))} manages programs" ${has(m.user_id, "manage_programs") ? "checked" : ""} /></td>
+            <td><input type="checkbox" data-grant="view_progress" data-user="${esc(m.user_id)}" aria-label="${esc(UI.nameOf(state.context, m.user_id))} sees everyone’s progress" ${has(m.user_id, "view_progress") ? "checked" : ""} /></td></tr>`)
+          .join("")}</tbody></table></div>` : `<p class="sp-empty">No other members yet.</p>`}
+        ${statusLine()}
+      </section>`;
+  }
+
   const CovenManage = {
     mount(pane, state, { refresh }) {
       const { coven, perms } = state;
@@ -266,6 +317,8 @@
           <p class="sp-caption">Reviewers can raise members to positions below their own that carry no powers. Only leaders give positions with powers.</p>
           ${[...state.ranks].sort((a, b) => b.level - a.level).map(rankForm).join("")}${rankForm({ level: 1 })}</section>
         ${questionsForm(coven)}
+        ${calendarForm(coven)}
+        <div data-grants-holder></div>
         ${perms.site || (perms.founder && coven.status === "active") ? `<section class="sp-section"><h2>Archive the coven</h2>
           <p class="sp-caption">An archived coven leaves the directory and becomes read-only for its members. ${perms.site ? "" : "Only the site moderators can reopen it."}</p>
           <div class="sp-actions"><button class="button button--ghost" type="button" data-archive>${coven.status === "archived" ? "Reopen the coven" : "Archive the coven"}</button></div>${statusLine()}</section>` : ""}`;
@@ -303,7 +356,7 @@
           event.preventDefault();
           const data = Object.fromEntries(new FormData(form));
           const row = { coven_id: coven.id, name: data.name.trim(), level: Number(data.level) || 1, description: data.description.trim() || null, requirements: data.requirements.trim() || null };
-          for (const flag of ["is_default", "open_to_applications", "can_review", "can_moderate", "can_lead_rituals", "can_schedule_rites", "can_write_book", "can_approve_book", "can_manage"]) row[flag] = Boolean(data[flag]);
+          for (const flag of ["is_default", "open_to_applications", "can_review", "can_moderate", "can_lead_rituals", "can_schedule_rites", "can_write_book", "can_approve_book", "can_manage_programs", "can_view_progress", "can_manage"]) row[flag] = Boolean(data[flag]);
           if (form.dataset.rank) row.id = form.dataset.rank;
           if (await UI.busy(form, form.querySelector("[data-status]"), () => D.saveRank(row))) refresh("manage");
         })
@@ -333,6 +386,44 @@
         const next = L.normalizeQuestions([...list.querySelectorAll("[data-question]")].map((row) => ({ id: row.dataset.question, prompt: row.querySelector("[name=prompt]").value, required: row.querySelector("[name=required]").checked })));
         if (await UI.busy(questions, questions.querySelector("[data-status]"), () => D.updateCoven(coven.id, { application_questions: next }), { done: "Saved." })) refresh("manage");
       });
+
+      const calendar = pane.querySelector("[data-calendar]");
+      const customList = calendar.querySelector("[data-custom-list]");
+      calendar.addEventListener("click", (event) => {
+        if (event.target.closest("[data-remove-custom]")) event.target.closest("[data-custom]").remove();
+        if (event.target.closest("[data-add-custom]")) {
+          if (customList.children.length >= 60) return;
+          customList.appendChild(calendar.querySelector("[data-custom-template]").content.cloneNode(true));
+          customList.lastElementChild?.querySelector("input")?.focus();
+        }
+      });
+      calendar.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const traditions = [...calendar.querySelectorAll("[name=tradition]:checked")].map((i) => i.value);
+        // A holiday counts only under a calendar the coven keeps.
+        const holidays = [...calendar.querySelectorAll("[name=holiday]:checked")].map((i) => i.value).filter((id) => traditions.includes(id.split("/")[0]));
+        const custom = [...customList.querySelectorAll("[data-custom]")]
+          .map((row, i) => ({ id: `coven-${i + 1}-${L.slugify(row.querySelector("[name=name]").value).slice(0, 24)}`, name: row.querySelector("[name=name]").value.trim(), month: Number(row.querySelector("[name=month]").value), day: Number(row.querySelector("[name=day]").value) || 1, meaning: row.querySelector("[name=meaning]").value.trim() }))
+          .filter((c) => c.name);
+        if (await UI.busy(calendar, calendar.querySelector("[data-status]"), () => D.updateCoven(coven.id, { practice_traditions: traditions, practice_holidays: holidays, practice_custom: custom }), { done: "Saved." })) refresh("manage");
+      });
+
+      // Powers by name are the coven head's to give.
+      if (perms.manage || perms.site) {
+        D.members(coven.id).then(async (members) => {
+          await UI.loadNames(state.context, members.map((m) => m.user_id));
+          const holder = pane.querySelector("[data-grants-holder]");
+          if (!holder) return;
+          holder.innerHTML = grantsForm(state, members);
+          holder.querySelectorAll("[data-grant]").forEach((box) =>
+            box.addEventListener("change", async () => {
+              const ok = await UI.busy(box, holder.querySelector("[data-status]"), () => D.setGrant(coven.id, box.dataset.user, box.dataset.grant, box.checked).then(() => true), { done: "Saved." });
+              if (!ok) box.checked = !box.checked;
+              else state.grants = await D.grants(coven.id).catch(() => state.grants);
+            })
+          );
+        }).catch(() => {});
+      }
 
       const archive = pane.querySelector("[data-archive]");
       archive?.addEventListener("click", async () => {

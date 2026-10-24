@@ -19,7 +19,7 @@
 
   const rpc = (name, args) => run(db().rpc(name, args));
 
-  const COVEN_FIELDS = "id,slug,name,tagline,description,tradition,tags,meeting_rhythm,timezone,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,founder_id,created_at,updated_at,member_count";
+  const COVEN_FIELDS = "id,slug,name,tagline,description,tradition,tags,meeting_rhythm,timezone,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,practice_traditions,practice_holidays,practice_custom,practice_calendars,founder_id,created_at,updated_at,member_count";
 
   const CovenData = {
     // --- people -------------------------------------------------------------
@@ -241,6 +241,37 @@
       return run(db().from("ritual_templates").select("id,title,intention,description").eq("user_id", userId).order("updated_at", { ascending: false }).limit(100));
     },
     templateSteps: (templateId) => run(db().from("ritual_template_steps").select("title,instructions,spoken_text,duration_seconds,sort_order").eq("template_id", templateId).order("sort_order", { ascending: true })),
+
+    // --- initiation and training ----------------------------------------------
+    grants: (covenId) => run(db().from("coven_grants").select("coven_id,user_id,power").eq("coven_id", covenId)),
+    setGrant: (covenId, userId, power, enabled) => rpc("set_coven_grant", { p_coven: covenId, p_user: userId, p_power: power, p_enabled: enabled }),
+    mentors: (covenId) => run(db().from("coven_mentors").select("coven_id,user_id,mentor_id,assigned_at").eq("coven_id", covenId)),
+    setMentor: (covenId, userId, mentorId) => rpc("set_coven_mentor", { p_coven: covenId, p_user: userId, p_mentor: mentorId || null }),
+    programs: (covenId) => run(db().from("coven_programs").select("*").eq("coven_id", covenId).order("position", { ascending: true })),
+    async programStages(programIds) {
+      if (!programIds.length) return [];
+      return run(db().from("coven_program_stages").select("*").in("program_id", programIds).order("position", { ascending: true }));
+    },
+    async programTasks(programIds) {
+      if (!programIds.length) return [];
+      return run(db().from("coven_program_tasks").select("*").in("program_id", programIds).order("position", { ascending: true }));
+    },
+    programTemplates: () => run(db().from("coven_program_templates").select("*").order("position", { ascending: true })),
+    copyProgramTemplate: (covenId, templateId) => rpc("copy_coven_program_template", { p_coven: covenId, p_template: templateId }),
+    saveProgram: (covenId, programId, program, stages) => rpc("save_coven_program", { p_coven: covenId, p_program_id: programId || null, p_program: program, p_stages: stages }),
+    setProgramStatus: (programId, status) => rpc("set_coven_program_status", { p_program: programId, p_status: status }),
+    programAssignments: (covenId) => run(db().from("coven_program_assignments").select("*").eq("coven_id", covenId)),
+    assignProgram: (programId, userId, rankId) => rpc("assign_coven_program", { p_program: programId, p_user: userId || null, p_rank: rankId || null }),
+    unassignProgram: (assignmentId) => rpc("unassign_coven_program", { p_assignment: assignmentId }),
+    startProgram: (programId) => rpc("start_coven_program", { p_program: programId }),
+    /** Enrollments this person may see: their own, their mentees', or everyone's with "sees progress". */
+    enrollments: (covenId) => run(db().from("coven_program_enrollments").select("*").eq("coven_id", covenId).order("started_at", { ascending: true }).limit(1000)),
+    progress: (covenId) => run(db().from("coven_program_progress").select("*").eq("coven_id", covenId).limit(5000)),
+    stagePasses: (covenId) => run(db().from("coven_program_stage_passes").select("*").eq("coven_id", covenId).limit(2000)),
+    recordTask: (enrollmentId, taskId, response, count) => rpc("record_coven_task", { p_enrollment: enrollmentId, p_task: taskId, p_response: response || null, p_count: count ?? 1 }),
+    checkTask: (progressId, approve, feedback) => rpc("check_coven_task", { p_progress: progressId, p_approve: approve, p_feedback: feedback || null }),
+    passStage: (enrollmentId, note, override) => rpc("pass_coven_stage", { p_enrollment: enrollmentId, p_note: note || null, p_override: Boolean(override) }),
+    setEnrollmentStatus: (enrollmentId, status) => rpc("set_coven_enrollment_status", { p_enrollment: enrollmentId, p_status: status }),
 
     // --- safety -------------------------------------------------------------
     report: (report) => run(db().from("coven_reports").insert({ ...report, reporter_id: global.getCurrentSaltUser?.()?.id })),

@@ -1,13 +1,14 @@
 /*
  * The site's main bar, shared by every page, laid out like the app's tabs:
- * Today · Altar · Grimoire · Rituals · Podcast · More.
- * Today and Rituals are their own pages (/today/, /rituals/), as in the app.
+ * Today · Altar · Practice · Coven · More.
+ * Practice holds the Grimoire (/grimoire/) and Rituals (/rituals/, with the
+ * practice tools under /practice/), with a Grimoire | Rituals switch at the
+ * top of those pages; the tab returns to whichever was used last. Coven is
+ * /covens/. The podcast is the logo (the home page), as in the app.
  *
  * On computers and iPads it sits in the top header. On phones it moves to the
- * bottom of the screen with five tabs; Podcast is reached from the logo and
- * from More. Today, Rituals and More open the Sanctuary panel or the altar's
- * Ritual Companion; pages without the panel send those tabs to the home page,
- * which opens them on arrival.
+ * bottom of the screen. More opens the Sanctuary panel; pages without the
+ * panel send it to the home page, which opens it on arrival.
  */
 (function (global) {
   const ICONS = {
@@ -16,17 +17,25 @@
     grimoire: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="m12 7 .9 1.9 2.1.3-1.5 1.5.4 2.1-1.9-1-1.9 1 .4-2.1-1.5-1.5 2.1-.3z"/>',
     rituals: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/>',
     podcast: '<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/>',
+    practice: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M15.5 12.4A3.6 3.6 0 0 1 10.6 7.5a3.6 3.6 0 1 0 4.9 4.9Z"/>',
+    coven: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="5.5" r="1.7"/><circle cx="6.2" cy="15.4" r="1.7"/><circle cx="17.8" cy="15.4" r="1.7"/><path d="M12 9.5v2.2l-3.4 2M12 11.7l3.4 2"/>',
     more: '<circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/>'
   };
 
   const TABS = [
     { key: "today", label: "Today", href: "/today/" },
     { key: "altar", label: "Altar", href: "/altar/" },
-    { key: "grimoire", label: "Grimoire", href: "/grimoire/" },
-    { key: "rituals", label: "Rituals", href: "/rituals/" },
-    { key: "podcast", label: "Podcast", href: "/" },
+    { key: "practice", label: "Practice", href: "/grimoire/" },
+    { key: "coven", label: "Coven", href: "/covens/" },
     { key: "more", label: "More", view: "more" }
   ];
+
+  // The two halves of Practice, switched at the top of their pages.
+  const PRACTICE = [
+    { key: "grimoire", label: "Grimoire", href: "/grimoire/" },
+    { key: "rituals", label: "Rituals", href: "/rituals/" }
+  ];
+  const PRACTICE_KEY = "saltPracticeSection";
 
   const PHONE_QUERY = "(max-width: 700px)";
 
@@ -43,16 +52,33 @@
     return path.endsWith("/") || path.includes(".") ? path : `${path}/`;
   }
 
+  /** Which part of Practice a page is: "grimoire", "rituals", or null. */
+  function practiceSection(pathname, search = "") {
+    const path = normalPath(pathname);
+    if (path.startsWith("/altar/")) return new URLSearchParams(search).get("ritual") ? "rituals" : null;
+    // Rituals holds the planner, premade book, journeys and My practice, as in the app.
+    if (path.startsWith("/rituals/") || path.startsWith("/practice/")) return "rituals";
+    if (path === "/grimoire/" || path.startsWith("/grimoire/dreams/")) return "grimoire";
+    return null;
+  }
+
   /** Which tab a page belongs to. */
   function activeTab(pathname, search = "") {
     const path = normalPath(pathname);
-    if (path.startsWith("/altar/")) return new URLSearchParams(search).get("ritual") ? "rituals" : "altar";
+    if (practiceSection(pathname, search)) return "practice";
+    if (path.startsWith("/altar/")) return "altar";
     if (path.startsWith("/today/")) return "today";
-    // Rituals holds the planner, premade book, journeys and My practice, as in the app.
-    if (path.startsWith("/rituals/") || path.startsWith("/practice/")) return "rituals";
-    if (path === "/grimoire/") return "grimoire";
+    if (path.startsWith("/covens/")) return "coven";
     if (path === "/" || path.startsWith("/blog/")) return "podcast";
     return "more";
+  }
+
+  function rememberedPractice() {
+    try {
+      return global.localStorage?.getItem(PRACTICE_KEY) === "rituals" ? "rituals" : "grimoire";
+    } catch {
+      return "grimoire";
+    }
   }
 
   function isHome(pathname) {
@@ -67,7 +93,8 @@
     const attrs = `class="site-tab" data-site-tab="${tab.key}"${tab.key === current ? ' aria-current="page"' : ""}`;
     const inner = `${icon(tab.key)}<span class="site-tab-label">${tab.label}</span>`;
     if (tab.view && hasPanel) return `<button type="button" ${attrs} data-site-tab-view="${tab.view}">${inner}</button>`;
-    const href = tab.view ? `/?sanctuary=${tab.view}` : tab.href;
+    let href = tab.view ? `/?sanctuary=${tab.view}` : tab.href;
+    if (tab.key === "practice") href = PRACTICE.find((p) => p.key === rememberedPractice()).href;
     return `<a href="${href}" ${attrs}>${inner}</a>`;
   }
 
@@ -93,6 +120,20 @@
     nav.insertAdjacentHTML("beforeend", `<div class="site-tabs" role="navigation" aria-label="Main">${TABS.map((tab) => tabMarkup(tab, current, hasPanel)).join("")}</div>`);
     placeTabs(doc);
 
+    doc.querySelectorAll(".practice-switch").forEach((el) => el.remove());
+    const section = practiceSection(loc.pathname, loc.search);
+    if (section) {
+      try {
+        global.localStorage?.setItem(PRACTICE_KEY, section);
+      } catch {
+        // Private windows may refuse; the tab then opens the Grimoire.
+      }
+      header.insertAdjacentHTML(
+        "afterend",
+        `<nav class="practice-switch" aria-label="Practice">${PRACTICE.map((p) => `<a href="${p.href}"${p.key === section ? ' aria-current="page"' : ""}>${p.label}</a>`).join("")}</nav>`
+      );
+    }
+
     header.querySelector(".site-subnav")?.remove();
     if (isHome(loc.pathname)) {
       header.insertAdjacentHTML("beforeend", `<nav class="site-subnav" aria-label="On this page">${PODCAST_SECTIONS.map(([label, hash]) => `<a href="${hash}">${label}</a>`).join("")}</nav>`);
@@ -112,7 +153,7 @@
   }
 
   // While the Sanctuary panel is open, the tab for its view is the lit one.
-  const PANEL_TABS = { welcome: "today", auth: "today", dashboard: "today", rituals: "rituals", more: "more", journey: "more", submissions: "more", settings: "more" };
+  const PANEL_TABS = { welcome: "today", auth: "today", dashboard: "today", rituals: "practice", more: "more", journey: "more", submissions: "more", settings: "more" };
 
   function panelState(doc = document) {
     const panel = doc.querySelector("[data-my-sanctuary-panel]");
@@ -205,7 +246,7 @@
     }
   }
 
-  const api = { TABS, PANEL_TABS, activeTab, isHome, render, install };
+  const api = { TABS, PRACTICE, PANEL_TABS, activeTab, practiceSection, isHome, render, install };
   global.SiteNav = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (typeof document !== "undefined") {

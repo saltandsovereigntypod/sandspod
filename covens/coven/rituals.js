@@ -289,7 +289,8 @@
     pane.innerHTML = `<p class="sp-caption">Opening the planner…</p>`;
     // Who can be given a part: members who have signed the coven's current agreements.
     const [candidates, templates, today] = await Promise.all([D.ritualPeople(state.coven.id).catch(() => []), D.myRitualTemplates(state.context.user?.id).catch(() => []), loadToday()]);
-    const suggestions = L.occasionSuggestions(today, new Date());
+    const covenDays = global.SaltCore?.covens?.programs?.covenHolidaysBetween(state.coven, new Date(), new Date(Date.now() + 200 * 86400000)) || [];
+    const suggestions = L.occasionSuggestions(today, new Date(), 6, covenDays);
     const canSchedule = state.perms.schedule || state.perms.site;
     const keepsSchedule = ritual?.status === "scheduled";
     await UI.loadNames(state.context, candidates.map((c) => c.user_id));
@@ -357,7 +358,7 @@
             <div class="sp-field"><label for="rt-occasion">Occasion (optional)</label><select id="rt-occasion" name="occasion"><option value="">—</option>${L.OCCASIONS.map((o) => `<option value="${o.value}"${o.value === ritual?.occasion ? " selected" : ""}>${esc(o.label)}</option>`).join("")}</select></div>
             <div class="sp-field"><label for="rt-occasion-name">Its name (optional)</label><input id="rt-occasion-name" name="occasion_name" maxlength="80" value="${esc(ritual?.occasion_name || "")}" placeholder="Samhain, Hunter’s Moon…" /></div>
           </div>
-          ${suggestions.length ? `<div class="sp-section"><p class="sp-label">Coming moons and sabbats</p><div class="sp-chips">${suggestions
+          ${suggestions.length ? `<div class="sp-section"><p class="sp-label">Coming moons and ${covenDays.length ? "the coven’s holidays" : "sabbats"}</p><div class="sp-chips">${suggestions
             .map((sg, k) => `<button type="button" class="sp-chip" data-suggest="${k}">${esc(sg.label)} · ${esc(sg.date.toLocaleDateString(undefined, { month: "short", day: "numeric" }))}</button>`)
             .join("")}</div></div>` : ""}
           <div class="sp-grid-2">

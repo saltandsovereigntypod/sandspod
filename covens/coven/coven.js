@@ -21,7 +21,7 @@
   const { header } = global.GuidesUI;
 
   const slug = new URLSearchParams(global.location.search).get("c") || "";
-  const state = { context: null, coven: null, ranks: [], documents: [], membership: null, perms: null, signatures: [], unsigned: [], application: null, advancements: [], pending: { applications: 0, advancements: 0 }, presence: [], rituals: [], ritualSteps: [], rsvps: [], stepMarks: [] };
+  const state = { context: null, coven: null, ranks: [], documents: [], membership: null, perms: null, signatures: [], unsigned: [], application: null, advancements: [], pending: { applications: 0, advancements: 0 }, presence: [], rituals: [], ritualSteps: [], rsvps: [], stepMarks: [], grants: [], mentors: [], programProgress: [], waitingForMe: 0 };
   let live = null;
   let mounted = null;
 
@@ -45,7 +45,9 @@
       D.myAdvancements(coven.id, userId).catch(() => [])
     ]);
     Object.assign(state, { ranks: ranks || [], documents: L.orderDocuments(documents || []), membership, signatures: signatures || [], application, advancements: advancements || [] });
-    state.perms = L.permissions({ coven, membership, ranks: state.ranks, userId, siteModerator: context.siteModerator });
+    const insider = membership?.status === "active" || context.siteModerator;
+    state.grants = insider ? await D.grants(coven.id).catch(() => []) : [];
+    state.perms = L.permissions({ coven, membership, ranks: state.ranks, userId, siteModerator: context.siteModerator, grants: state.grants });
     state.unsigned = userId ? L.unsignedAgreements(state.documents, state.signatures, userId) : state.documents.filter((d) => d.requires_signature);
     state.standing = L.standing(state.perms, state.unsigned, context.banned);
     if (state.perms.review || state.perms.site) {
@@ -58,7 +60,19 @@
       state.rsvps = await D.rsvps(state.rituals.filter((r) => ["scheduled", "live"].includes(r.status)).map((r) => r.id)).catch(() => []);
       await UI.loadNames(context, [...state.rituals.map((r) => r.led_by), ...state.ritualSteps.flatMap((s) => [s.assigned_user_id, s.completed_by])]);
     }
+    if (state.perms.member || state.perms.site) await loadProgramWork();
     if (coven.founder_id) await UI.loadNames(context, [coven.founder_id]);
+  }
+
+  /** Mentors, and work waiting for this person to sign off (for the tab's count). */
+  async function loadProgramWork() {
+    const P = global.SaltCore?.covens?.programs;
+    const [mentors, progress] = await Promise.all([D.mentors(state.coven.id).catch(() => []), D.progress(state.coven.id).catch(() => [])]);
+    state.mentors = mentors;
+    state.programProgress = progress;
+    const submitted = progress.filter((p) => p.status === "submitted" && p.user_id !== state.context.user?.id);
+    const tasks = submitted.length ? await D.programTasks([...new Set(submitted.map((p) => p.program_id))]).catch(() => []) : [];
+    state.waitingForMe = P ? P.waitingForMe(submitted, tasks, { userId: state.context.user?.id, mentees: P.menteesOf(mentors, state.context.user?.id), programs: state.perms.programs }).length : 0;
   }
 
   /** Reload everything and redraw the current tab (after joining, signing…). */
@@ -84,6 +98,7 @@
         { key: "altar", label: "Altar" },
         { key: "book", label: "Book of Shadows" },
         { key: "petitions", label: "Petitions" },
+        { key: "programs", label: "Initiation & training", count: state.waitingForMe || 0 },
         { key: "members", label: "Members" }
       );
     }
@@ -184,7 +199,7 @@
       ${tabBar(tab)}
       <div class="cv-pane" data-pane></div>`;
     const pane = root.querySelector("[data-pane]");
-    const views = { about, join, path, gathering: () => mount(global.CovenChat), rituals: () => mount(global.CovenRituals), book: () => mount(global.CovenBook), petitions: () => mount(global.CovenPetitions), altar: () => mount(global.CovenAltar), members: () => mount(global.CovenMembers), review: () => mount(global.CovenReview), manage: () => mount(global.CovenManage) };
+    const views = { about, join, path, gathering: () => mount(global.CovenChat), rituals: () => mount(global.CovenRituals), book: () => mount(global.CovenBook), petitions: () => mount(global.CovenPetitions), programs: () => mount(global.CovenPrograms), altar: () => mount(global.CovenAltar), members: () => mount(global.CovenMembers), review: () => mount(global.CovenReview), manage: () => mount(global.CovenManage) };
     function mount(module) {
       if (!module) return (pane.innerHTML = `<p class="sp-notice">This part of the coven couldn’t load. Please refresh the page.</p>`);
       mounted = module;
@@ -236,6 +251,7 @@
         </div>
         ${coven.description ? `<div class="cv-doc">${prose(coven.description)}</div>` : ""}
         ${coven.tags?.length ? `<p class="sp-caption">${coven.tags.map(esc).join(" · ")}</p>` : ""}
+        ${calendarLine()}
         <p class="sp-caption">Led by ${esc(coven.founder_id ? UI.nameOf(context, coven.founder_id) : "the coven’s elders")} · founded ${esc(new Date(coven.created_at).toLocaleDateString(undefined, { year: "numeric", month: "long" }))}</p>
         ${!perms.member && coven.status === "active" && coven.joining !== "closed" ? `<div class="sp-actions"><a class="button button--primary" href="${esc(covenHref("join"))}" data-tab="join">${coven.joining === "open" ? "Join this coven" : "Apply to join"}</a></div>` : ""}
         ${coven.joining === "closed" && !perms.member ? `<p class="sp-notice">${esc(join.detail)}</p>` : ""}
@@ -246,6 +262,16 @@
         ${context.user ? `<button class="button button--ghost button--small" type="button" data-report-coven>Report this coven</button>` : ""}
       </div>`;
     pane.querySelector("[data-report-coven]")?.addEventListener("click", () => UI.report({ target_type: "coven", target_id: coven.id, coven_id: coven.id, label: "this coven" }));
+  }
+
+  /** The coven's practice calendar and its next holiday. */
+  function calendarLine() {
+    const P = global.SaltCore?.covens?.programs;
+    const names = P ? P.covenCalendarNames(state.coven) : [];
+    if (!names.length) return "";
+    const next = P.covenNextHoliday(state.coven, new Date());
+    const when = next ? new Date(next.date).toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }) : "";
+    return `<p class="sp-caption">Keeps ${esc(names.join(", "))}${next ? ` · next: ${esc(next.name)}, ${esc(when)}` : ""}</p>`;
   }
 
   // --- signing agreements --------------------------------------------------

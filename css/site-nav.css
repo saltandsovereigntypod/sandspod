@@ -184,3 +184,29 @@ body.has-site-nav .my-sanctuary-card {
 body.has-site-nav .accessibility-trigger {
   width: auto;
 }
+
+/* Practice: the Grimoire | Rituals switch at the top of their pages. */
+.practice-switch {
+  display: flex;
+  gap: 4px;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  margin: 14px auto 0;
+  padding: 4px;
+  border: 1px solid rgba(226, 195, 109, 0.35);
+  border-radius: 999px;
+  background: rgba(12, 21, 16, 0.6);
+}
+.practice-switch a {
+  padding: 7px 18px;
+  border-radius: 999px;
+  color: var(--cream, #f4ecd8);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+.practice-switch a[aria-current="page"] {
+  background: var(--gold, #e2c36d);
+  color: var(--charcoal, #102118);
+  font-weight: 600;
+}
+.practice-switch a:focus-visible { outline: 2px solid var(--gold, #e2c36d); outline-offset: 2px; }

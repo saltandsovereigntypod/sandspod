@@ -129,7 +129,7 @@
    * What this person can do in this coven, as the database decides it.
    * `membership` is their coven_members row (or null), `ranks` the coven's ranks.
    */
-  function permissions({ coven, membership, ranks, userId, siteModerator }) {
+  function permissions({ coven, membership, ranks, userId, siteModerator, grants }) {
     const active = Boolean(membership && membership.status === "active");
     const rank = active ? (ranks || []).find((r) => r.id === membership.rank_id) || null : null;
     const founder = Boolean(userId && coven && coven.founder_id === userId && active);
@@ -137,7 +137,13 @@
     const level = founder ? 1000 : rank ? rank.level : 0;
     const may = (flag) => open && active && (founder || Boolean(rank && (rank.can_manage || rank[flag])));
     const muted = Boolean(active && membership.muted_until && new Date(membership.muted_until) > new Date());
+    // Program powers come from the position, from powers given by name (coven_grants), or the founder.
+    const granted = (power) => (grants || []).some((g) => g.user_id === userId && g.power === power);
+    const programs = open && active && (founder || Boolean(rank && (rank.can_manage || rank.can_manage_programs)) || granted("manage_programs"));
+    const progress = open && active && (programs || Boolean(rank?.can_view_progress) || granted("view_progress"));
     return {
+      programs: programs || Boolean(siteModerator),
+      progress: progress || Boolean(siteModerator),
       member: active,
       founder,
       rank,
@@ -189,6 +195,8 @@
     if (rank?.can_schedule_rites || rank?.can_manage) powers.push("puts rites on the calendar");
     if (rank?.can_approve_book || rank?.can_manage) powers.push("approves pages in the coven’s book");
     else if (rank?.can_write_book) powers.push("writes in the coven’s book");
+    if (rank?.can_manage_programs || rank?.can_manage) powers.push("manages initiation and training");
+    else if (rank?.can_view_progress) powers.push("sees everyone’s progress");
     return powers;
   }
 
@@ -362,14 +370,22 @@
   /**
    * Coming full and new moons and the next sabbats, to suggest dates for a
    * rite. `today` is the site's moon and calendar logic (SaltCore.today).
+   * When the coven keeps its own calendar, `covenHolidays` (its next
+   * holidays, from SaltCore.covens) take the sabbats' place.
    */
-  function occasionSuggestions(today, from = new Date(), count = 6) {
+  function occasionSuggestions(today, from = new Date(), count = 6, covenHolidays = null) {
     if (!today?.moon?.upcomingPhases || !today?.calendar?.nextSabbat) return [];
     const out = today.moon
       .upcomingPhases(from, 12)
       .filter((p) => p.phase === "full" || p.phase === "new")
       .slice(0, 4)
       .map((p) => ({ occasion: p.phase === "full" ? "full_moon" : "new_moon", name: "", label: p.phase === "full" ? "Full moon" : "New moon", date: new Date(p.date) }));
+    if (covenHolidays?.length) {
+      covenHolidays.slice(0, 3).forEach((h) =>
+        out.push({ occasion: (h.traditionIds || []).some((id) => /^wheel/.test(id)) ? "sabbat" : "other", name: h.name, label: h.name, date: new Date(h.date) })
+      );
+      return out.sort((a, b) => a.date - b.date).slice(0, count);
+    }
     let cursor = from;
     for (let i = 0; i < 2; i++) {
       const s = today.calendar.nextSabbat(cursor);
