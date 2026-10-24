@@ -36,6 +36,12 @@
       "expo-font",
       "expo-apple-authentication",
       [
+        "expo-notifications",
+        {
+          "color": "#e2c36d"
+        }
+      ],
+      [
         "expo-splash-screen",
         {
           "image": "./assets/splash-icon.png",

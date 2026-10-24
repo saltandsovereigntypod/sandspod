@@ -135,11 +135,11 @@
 
     // --- gathering ----------------------------------------------------------
     async recentMessages(covenId, limit = 150) {
-      const rows = await run(db().from("coven_messages").select("*").eq("coven_id", covenId).order("created_at", { ascending: false }).limit(limit));
+      const rows = await run(db().from("coven_messages").select("*").eq("coven_id", covenId).is("conversation_id", null).order("created_at", { ascending: false }).limit(limit));
       return (rows || []).reverse();
     },
     olderMessages: async (covenId, before, limit = 100) => {
-      const rows = await run(db().from("coven_messages").select("*").eq("coven_id", covenId).lt("created_at", before).order("created_at", { ascending: false }).limit(limit));
+      const rows = await run(db().from("coven_messages").select("*").eq("coven_id", covenId).is("conversation_id", null).lt("created_at", before).order("created_at", { ascending: false }).limit(limit));
       return (rows || []).reverse();
     },
     send: (covenId, body, replyTo) => run(db().from("coven_messages").insert({ coven_id: covenId, body, reply_to: replyTo || null }).select().single()),
@@ -157,7 +157,10 @@
      */
     live(covenId, { onMessage, onAltar, onRitual, onPetition, onPresence, onStatus } = {}) {
       const channel = db().channel(`coven:${covenId}`, { config: { presence: { key: global.getCurrentSaltUser?.()?.id || "guest" } } });
-      if (onMessage) channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_messages", filter: `coven_id=eq.${covenId}` }, onMessage);
+      if (onMessage) channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_messages", filter: `coven_id=eq.${covenId}` }, (change) => {
+        // One-to-one chats and groups (made in the app) stay out of the gathering.
+        if (!(change.new || change.old || {}).conversation_id) onMessage(change);
+      });
       if (onAltar) {
         channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_altar_items", filter: `coven_id=eq.${covenId}` }, onAltar);
         // Deletes can't be filtered by coven; the page ignores ids it doesn't hold.

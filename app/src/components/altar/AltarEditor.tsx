@@ -1372,7 +1372,7 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
               ) : null}
               <Chip label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} disabled={undo.current.length === 0} />
               <Chip label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} disabled={redo.current.length === 0} />
-              {canTurnScreen && !full ? <Chip label="Full screen" symbol="⤢" accessibilityLabel="Turn the altar sideways to fill the screen" onPress={() => enterFullScreen(true)} /> : null}
+              {!full ? <Chip label="Full screen" symbol="⤢" accessibilityLabel={canTurnScreen ? 'Turn the altar sideways to fill the screen' : 'Fill the screen with the altar'} onPress={() => enterFullScreen(true)} /> : null}
               <Chip label="Zoom in" symbol="+" onPress={() => zoomBy(1.5)} disabled={viewport.zoom >= 4} />
               <Chip label="Zoom out" symbol="−" onPress={() => zoomBy(1 / 1.5)} disabled={viewport.zoom <= 1} />
             </ChipRow>
@@ -1919,6 +1919,13 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
           <Chip label="Undo" symbol="↶" onPress={() => stepHistory(undo, redo)} />
           <Chip label="Redo" symbol="↷" onPress={() => stepHistory(redo, undo)} />
         </View>
+        {shared && !drawerOpen ? (
+          <View pointerEvents="none" style={[styles.fullStatus, { top: Math.max(insets.top, 10) + 52, left: insets.left + 10 }]}>
+            <Text style={styles.fullStatusText} numberOfLines={1} accessibilityLiveRegion="polite">
+              {shared.status}
+            </Text>
+          </View>
+        ) : null}
         {!drawerOpen ? (
           <View style={[styles.fullBar, { right: insets.right + 10, top: Math.max(insets.top, 10) }]}>
             {shared ? (
@@ -2005,7 +2012,18 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
           </Text>
         </View>
         {shared ? (
-          <Button label="Keep a copy" variant="outline" onPress={() => setSheet('save')} disabled={!doc} />
+          <>
+            <Pressable
+              onPress={() => enterFullScreen(true)}
+              disabled={!doc}
+              accessibilityRole="button"
+              accessibilityLabel="Full screen"
+              style={({ pressed }) => [styles.headerButton, styles.fullButton, pressed && { opacity: 0.7 }]}
+            >
+              <Text style={styles.fullButtonText}>⤢</Text>
+            </Pressable>
+            <Button label="Keep a copy" variant="outline" onPress={() => setSheet('save')} disabled={!doc} />
+          </>
         ) : (
           <Button label="Save" variant={dirty ? 'primary' : 'outline'} onPress={() => setSheet('save')} disabled={!doc} />
         )}
@@ -2519,6 +2537,10 @@ const styles = StyleSheet.create({
   danger: { marginTop: 8 },
   centered: { flex: 1, justifyContent: 'center', padding: space.gutter, gap: 14 },
   full: { flex: 1, backgroundColor: '#000000', alignItems: 'center', justifyContent: 'center' },
+  fullStatus: { position: 'absolute', maxWidth: 320, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 999, backgroundColor: 'rgba(0,0,0,0.55)' },
+  fullStatusText: { fontFamily: fonts.body, fontSize: 12, color: colors.cream },
+  fullButton: { width: 40, height: 40, borderWidth: 1, borderColor: colors.hairline, borderRadius: 999 },
+  fullButtonText: { fontSize: 20, color: colors.gold },
   fullBar: { position: 'absolute', flexDirection: 'row', gap: 8 },
   drawer: {
     position: 'absolute',

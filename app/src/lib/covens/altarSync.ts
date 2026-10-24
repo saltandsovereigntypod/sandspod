@@ -377,15 +377,15 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
   }, []);
 
   const others = here.filter((p) => p.user_id !== userId);
+  // What the bar says: saving is automatic, so it shows whether your last
+  // change has reached the coven (or what went wrong). Who's here is shown apart.
   const status = problem
     ? problem
     : sending
-      ? 'Saving for the coven…'
-      : others.length
-        ? `Here with ${others.map((p) => p.name).slice(0, 3).join(', ')}${others.length > 3 ? ` and ${others.length - 3} more` : ''}`
-        : altar?.is_main
-          ? 'The coven’s ritual altar'
-          : 'A coven altar';
+      ? 'Saving…'
+      : access && !access.can_edit
+        ? 'View only'
+        : 'Saved ✓';
 
   const shared = useMemo<SharedAltar>(
     () => ({

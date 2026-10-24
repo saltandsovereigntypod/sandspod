@@ -44,6 +44,9 @@ export function tendedBy(altar: Pick<CovenAltar, 'edit_mode' | 'locked' | 'is_ma
   return altar.is_main ? 'Tended by those the coven’s head chooses' : 'Tended by those its keeper chooses';
 }
 
+/** The petition an altar was set up for, or ''. */
+export const petitionOf = (altar: Pick<CovenAltar, 'extra'>) => (typeof altar.extra?.petition_id === 'string' ? altar.extra.petition_id : '');
+
 export const sortAltars = (altars: CovenAltar[]) =>
   [...altars].sort((a, b) => Number(b.is_main) - Number(a.is_main) || (b.created_at > a.created_at ? 1 : b.created_at < a.created_at ? -1 : 0));
 
