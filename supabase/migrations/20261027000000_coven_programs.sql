@@ -451,9 +451,16 @@ language plpgsql
 security definer
 set search_path = public
 as $$
+declare
+  r record;
 begin
-  delete from public.coven_program_tasks where program_id = p_program and id <> all (p_tasks);
-  delete from public.coven_program_stages where program_id = p_program and id <> all (p_stages);
+  -- One row at a time, by id.
+  for r in select id from public.coven_program_tasks where program_id = p_program and id <> all (p_tasks) loop
+    delete from public.coven_program_tasks where id = r.id;
+  end loop;
+  for r in select id from public.coven_program_stages where program_id = p_program and id <> all (p_stages) loop
+    delete from public.coven_program_stages where id = r.id;
+  end loop;
 end;
 $$;
 
