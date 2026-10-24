@@ -469,7 +469,21 @@ export const ALTAR_ARTWORK: {
       "ratio": 0.6667
     }
   },
-  "plants": {},
+  "plants": {
+    "basil": {
+      "established": "../assets/altar/objects/plants/basil/basil-established.png"
+    },
+    "pothos": {
+      "young": "../assets/altar/objects/plants/pothos/pothos-young.png",
+      "established": "../assets/altar/objects/plants/pothos/pothos-established.png",
+      "lush": "../assets/altar/objects/plants/pothos/pothos-lush.png"
+    },
+    "snake-plant": {
+      "young": "../assets/altar/objects/plants/snake-plant/snake-plant-young.png",
+      "established": "../assets/altar/objects/plants/snake-plant/snake-plant-established.png",
+      "lush": "../assets/altar/objects/plants/snake-plant/snake-plant-lush.png"
+    }
+  },
   "items": {
     "herbs": [
       {
