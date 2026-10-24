@@ -431,12 +431,24 @@
         "image": "../assets/altar/objects/offerings/bread/bread.png",
         "ratio": 0.6667
       },
+      "coins": {
+        "image": "../assets/altar/objects/offerings/coins/coins.png",
+        "ratio": 0.6667
+      },
       "flowers": {
         "image": "../assets/altar/objects/offerings/flowers/flowers.png",
         "ratio": 0.6667
       },
       "fruit": {
         "image": "../assets/altar/objects/offerings/fruit/fruit.png",
+        "ratio": 0.6667
+      },
+      "grain": {
+        "image": "../assets/altar/objects/offerings/grain/grain.png",
+        "ratio": 0.6667
+      },
+      "harvest": {
+        "image": "../assets/altar/objects/offerings/harvest/harvest.png",
         "ratio": 0.6667
       },
       "honeycomb": {
@@ -447,6 +459,10 @@
         "image": "../assets/altar/objects/offerings/meal/meal.png",
         "ratio": 0.6667
       },
+      "stones": {
+        "image": "../assets/altar/objects/offerings/stones/stones.png",
+        "ratio": 0.6667
+      },
       "sweets": {
         "image": "../assets/altar/objects/offerings/sweets/sweets.png",
         "ratio": 0.6667
@@ -454,17 +470,44 @@
     },
     "plants": {
       "basil": {
-        "established": "../assets/altar/objects/plants/basil/basil-established.png"
+        "young": "../assets/altar/objects/plants/basil/basil-young.png",
+        "established": "../assets/altar/objects/plants/basil/basil-established.png",
+        "lush": "../assets/altar/objects/plants/basil/basil-lush.png"
+      },
+      "lavender": {
+        "young": "../assets/altar/objects/plants/lavender/lavender-young.png",
+        "established": "../assets/altar/objects/plants/lavender/lavender-established.png",
+        "lush": "../assets/altar/objects/plants/lavender/lavender-lush.png"
+      },
+      "mint": {
+        "young": "../assets/altar/objects/plants/mint/mint-young.png",
+        "established": "../assets/altar/objects/plants/mint/mint-established.png",
+        "lush": "../assets/altar/objects/plants/mint/mint-lush.png"
       },
       "pothos": {
         "young": "../assets/altar/objects/plants/pothos/pothos-young.png",
         "established": "../assets/altar/objects/plants/pothos/pothos-established.png",
         "lush": "../assets/altar/objects/plants/pothos/pothos-lush.png"
       },
+      "rosemary": {
+        "young": "../assets/altar/objects/plants/rosemary/rosemary-young.png",
+        "established": "../assets/altar/objects/plants/rosemary/rosemary-established.png",
+        "lush": "../assets/altar/objects/plants/rosemary/rosemary-lush.png"
+      },
+      "sage": {
+        "young": "../assets/altar/objects/plants/sage/sage-young.png",
+        "established": "../assets/altar/objects/plants/sage/sage-established.png",
+        "lush": "../assets/altar/objects/plants/sage/sage-lush.png"
+      },
       "snake-plant": {
         "young": "../assets/altar/objects/plants/snake-plant/snake-plant-young.png",
         "established": "../assets/altar/objects/plants/snake-plant/snake-plant-established.png",
         "lush": "../assets/altar/objects/plants/snake-plant/snake-plant-lush.png"
+      },
+      "thyme": {
+        "young": "../assets/altar/objects/plants/thyme/thyme-young.png",
+        "established": "../assets/altar/objects/plants/thyme/thyme-established.png",
+        "lush": "../assets/altar/objects/plants/thyme/thyme-lush.png"
       }
     },
     "items": {
@@ -3906,6 +3949,48 @@
         },
         {
           "category": "crystals",
+          "name": "Amazonite",
+          "icon": "💎",
+          "keywords": [
+            "honest communication",
+            "calm",
+            "courage to speak",
+            "luck",
+            "boundaries"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "amazonite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/amazonite/amazonite-chips.png",
+              "type": "crystal",
+              "crystal": "amazonite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "amazonite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/amazonite/amazonite-tumbled.png",
+              "type": "crystal",
+              "crystal": "amazonite",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Amber",
           "icon": "💎",
           "keywords": [
@@ -4116,6 +4201,89 @@
         },
         {
           "category": "crystals",
+          "name": "Aragonite",
+          "icon": "💎",
+          "keywords": [
+            "grounding",
+            "patience",
+            "stability",
+            "steadiness under stress"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "aragonite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/aragonite/aragonite-chips.png",
+              "type": "crystal",
+              "crystal": "aragonite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "../assets/altar/objects/crystals/aragonite/aragonite-cluster.png",
+              "type": "crystal",
+              "crystal": "aragonite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/aragonite/aragonite-tumbled.png",
+              "type": "crystal",
+              "crystal": "aragonite",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
+          "name": "Azurite",
+          "icon": "💎",
+          "keywords": [
+            "insight",
+            "study",
+            "intuition",
+            "clear thinking",
+            "inner vision"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "azurite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/azurite/azurite-chips.png",
+              "type": "crystal",
+              "crystal": "azurite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "../assets/altar/objects/crystals/azurite/azurite-cluster.png",
+              "type": "crystal",
+              "crystal": "azurite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/azurite/azurite-tumbled.png",
+              "type": "crystal",
+              "crystal": "azurite",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Black Tourmaline",
           "icon": "💎",
           "keywords": [
@@ -4193,6 +4361,48 @@
               "image": "../assets/altar/objects/crystals/bloodstone/bloodstone-tumbled.png",
               "type": "crystal",
               "crystal": "bloodstone",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
+          "name": "Blue Apatite",
+          "icon": "💎",
+          "keywords": [
+            "motivation",
+            "study",
+            "clear communication",
+            "focus",
+            "insight"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "blue_apatite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/blue-apatite/blue-apatite-chips.png",
+              "type": "crystal",
+              "crystal": "blue_apatite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "blue_apatite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/blue-apatite/blue-apatite-tumbled.png",
+              "type": "crystal",
+              "crystal": "blue_apatite",
               "form": "tumbled"
             }
           ]
@@ -4324,6 +4534,47 @@
         },
         {
           "category": "crystals",
+          "name": "Charoite",
+          "icon": "💎",
+          "keywords": [
+            "transformation",
+            "courage in change",
+            "spiritual growth",
+            "release of fear"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "charoite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/charoite/charoite-chips.png",
+              "type": "crystal",
+              "crystal": "charoite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "charoite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/charoite/charoite-tumbled.png",
+              "type": "crystal",
+              "crystal": "charoite",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Chrysocolla",
           "icon": "💎",
           "keywords": [
@@ -4445,6 +4696,118 @@
               "type": "crystal",
               "crystal": "citrine",
               "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
+          "name": "Dalmatian Jasper",
+          "icon": "💎",
+          "keywords": [
+            "playfulness",
+            "loyalty",
+            "grounding",
+            "lightheartedness",
+            "protection"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "dalmatian_jasper",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/dalmatian-jasper/dalmatian-jasper-chips.png",
+              "type": "crystal",
+              "crystal": "dalmatian_jasper",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "dalmatian_jasper",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/dalmatian-jasper/dalmatian-jasper-tumbled.png",
+              "type": "crystal",
+              "crystal": "dalmatian_jasper",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
+          "name": "Danburite",
+          "icon": "💎",
+          "keywords": [
+            "peace",
+            "spiritual connection",
+            "gentleness",
+            "clarity",
+            "calm"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "../assets/altar/objects/crystals/danburite/danburite-point.png",
+              "type": "crystal",
+              "crystal": "danburite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/danburite/danburite-chips.png",
+              "type": "crystal",
+              "crystal": "danburite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "../assets/altar/objects/crystals/danburite/danburite-cluster.png",
+              "type": "crystal",
+              "crystal": "danburite",
+              "form": "cluster"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
+          "name": "Desert Rose",
+          "icon": "💎",
+          "keywords": [
+            "calm",
+            "letting go",
+            "clarity",
+            "endurance",
+            "protection of the home"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "desert_rose",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/desert-rose/desert-rose-chips.png",
+              "type": "crystal",
+              "crystal": "desert_rose",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "../assets/altar/objects/crystals/desert-rose/desert-rose-cluster.png",
+              "type": "crystal",
+              "crystal": "desert_rose",
+              "form": "cluster"
             }
           ]
         },
@@ -4744,6 +5107,48 @@
         },
         {
           "category": "crystals",
+          "name": "Iolite",
+          "icon": "💎",
+          "keywords": [
+            "intuition",
+            "inner vision",
+            "finding your way",
+            "journeying",
+            "clarity"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "iolite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/iolite/iolite-chips.png",
+              "type": "crystal",
+              "crystal": "iolite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "iolite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/iolite/iolite-tumbled.png",
+              "type": "crystal",
+              "crystal": "iolite",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Jade",
           "icon": "💎",
           "keywords": [
@@ -4954,6 +5359,48 @@
         },
         {
           "category": "crystals",
+          "name": "Larimar",
+          "icon": "💎",
+          "keywords": [
+            "calm",
+            "gentle communication",
+            "peace",
+            "emotional ease",
+            "sea magic"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "larimar",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/larimar/larimar-chips.png",
+              "type": "crystal",
+              "crystal": "larimar",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "larimar",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/larimar/larimar-tumbled.png",
+              "type": "crystal",
+              "crystal": "larimar",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Lepidolite",
           "icon": "💎",
           "keywords": [
@@ -5037,6 +5484,48 @@
         },
         {
           "category": "crystals",
+          "name": "Mookaite",
+          "icon": "💎",
+          "keywords": [
+            "vitality",
+            "adventure",
+            "decision-making",
+            "grounding",
+            "steadiness"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "mookaite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/mookaite/mookaite-chips.png",
+              "type": "crystal",
+              "crystal": "mookaite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "mookaite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/mookaite/mookaite-tumbled.png",
+              "type": "crystal",
+              "crystal": "mookaite",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Moonstone",
           "icon": "💎",
           "keywords": [
@@ -5073,6 +5562,48 @@
               "image": "../assets/altar/objects/crystals/moonstone/moonstone-tumbled.png",
               "type": "crystal",
               "crystal": "moonstone",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
+          "name": "Morganite",
+          "icon": "💎",
+          "keywords": [
+            "love",
+            "compassion",
+            "tenderness",
+            "emotional healing",
+            "kindness"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "morganite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/morganite/morganite-chips.png",
+              "type": "crystal",
+              "crystal": "morganite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "morganite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/morganite/morganite-tumbled.png",
+              "type": "crystal",
+              "crystal": "morganite",
               "form": "tumbled"
             }
           ]
@@ -5163,6 +5694,48 @@
         },
         {
           "category": "crystals",
+          "name": "Ocean Jasper",
+          "icon": "💎",
+          "keywords": [
+            "joy",
+            "self-kindness",
+            "calm",
+            "patience",
+            "connection to the sea"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "ocean_jasper",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/ocean-jasper/ocean-jasper-chips.png",
+              "type": "crystal",
+              "crystal": "ocean_jasper",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "ocean_jasper",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/ocean-jasper/ocean-jasper-tumbled.png",
+              "type": "crystal",
+              "crystal": "ocean_jasper",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Onyx",
           "icon": "💎",
           "keywords": [
@@ -5247,6 +5820,48 @@
         },
         {
           "category": "crystals",
+          "name": "Orange Calcite",
+          "icon": "💎",
+          "keywords": [
+            "creativity",
+            "joy",
+            "warmth",
+            "playfulness",
+            "gentle motivation"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "orange_calcite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/orange-calcite/orange-calcite-chips.png",
+              "type": "crystal",
+              "crystal": "orange_calcite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "../assets/altar/objects/crystals/orange-calcite/orange-calcite-cluster.png",
+              "type": "crystal",
+              "crystal": "orange_calcite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/orange-calcite/orange-calcite-tumbled.png",
+              "type": "crystal",
+              "crystal": "orange_calcite",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Peridot",
           "icon": "💎",
           "keywords": [
@@ -5283,6 +5898,90 @@
               "image": "../assets/altar/objects/crystals/peridot/peridot-tumbled.png",
               "type": "crystal",
               "crystal": "peridot",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
+          "name": "Pink Tourmaline",
+          "icon": "💎",
+          "keywords": [
+            "love",
+            "compassion",
+            "emotional healing",
+            "gentleness",
+            "self-love"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "../assets/altar/objects/crystals/pink-tourmaline/pink-tourmaline-point.png",
+              "type": "crystal",
+              "crystal": "pink_tourmaline",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/pink-tourmaline/pink-tourmaline-chips.png",
+              "type": "crystal",
+              "crystal": "pink_tourmaline",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "pink_tourmaline",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/pink-tourmaline/pink-tourmaline-tumbled.png",
+              "type": "crystal",
+              "crystal": "pink_tourmaline",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
+          "name": "Prehnite",
+          "icon": "💎",
+          "keywords": [
+            "calm",
+            "trust",
+            "preparation",
+            "heart healing",
+            "connection with nature"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "prehnite",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/prehnite/prehnite-chips.png",
+              "type": "crystal",
+              "crystal": "prehnite",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "../assets/altar/objects/crystals/prehnite/prehnite-cluster.png",
+              "type": "crystal",
+              "crystal": "prehnite",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/prehnite/prehnite-tumbled.png",
+              "type": "crystal",
+              "crystal": "prehnite",
               "form": "tumbled"
             }
           ]
@@ -5541,6 +6240,48 @@
         },
         {
           "category": "crystals",
+          "name": "Rutilated Quartz",
+          "icon": "💎",
+          "keywords": [
+            "amplifying intention",
+            "energy",
+            "focus",
+            "confidence",
+            "illumination"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "../assets/altar/objects/crystals/rutilated-quartz/rutilated-quartz-point.png",
+              "type": "crystal",
+              "crystal": "rutilated_quartz",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/rutilated-quartz/rutilated-quartz-chips.png",
+              "type": "crystal",
+              "crystal": "rutilated_quartz",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "rutilated_quartz",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/rutilated-quartz/rutilated-quartz-tumbled.png",
+              "type": "crystal",
+              "crystal": "rutilated_quartz",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Sapphire",
           "icon": "💎",
           "keywords": [
@@ -5708,6 +6449,48 @@
         },
         {
           "category": "crystals",
+          "name": "Snowflake Obsidian",
+          "icon": "💎",
+          "keywords": [
+            "balance",
+            "grounding",
+            "patience",
+            "gentle shadow work",
+            "clarity"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "",
+              "type": "crystal",
+              "crystal": "snowflake_obsidian",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/snowflake-obsidian/snowflake-obsidian-chips.png",
+              "type": "crystal",
+              "crystal": "snowflake_obsidian",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "snowflake_obsidian",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/snowflake-obsidian/snowflake-obsidian-tumbled.png",
+              "type": "crystal",
+              "crystal": "snowflake_obsidian",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
           "name": "Sodalite",
           "icon": "💎",
           "keywords": [
@@ -5745,6 +6528,41 @@
               "type": "crystal",
               "crystal": "sodalite",
               "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
+          "name": "Spirit Quartz",
+          "icon": "💎",
+          "keywords": [
+            "community",
+            "harmony",
+            "spiritual connection",
+            "cooperation",
+            "cleansing"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "../assets/altar/objects/crystals/spirit-quartz/spirit-quartz-point.png",
+              "type": "crystal",
+              "crystal": "spirit_quartz",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/spirit-quartz/spirit-quartz-chips.png",
+              "type": "crystal",
+              "crystal": "spirit_quartz",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "../assets/altar/objects/crystals/spirit-quartz/spirit-quartz-cluster.png",
+              "type": "crystal",
+              "crystal": "spirit_quartz",
+              "form": "cluster"
             }
           ]
         },
@@ -5828,6 +6646,48 @@
               "image": "../assets/altar/objects/crystals/tiger-eye/tiger-eye-tumbled.png",
               "type": "crystal",
               "crystal": "tiger_eye",
+              "form": "tumbled"
+            }
+          ]
+        },
+        {
+          "category": "crystals",
+          "name": "Tourmalinated Quartz",
+          "icon": "💎",
+          "keywords": [
+            "protection",
+            "grounding",
+            "clarity",
+            "balance",
+            "clearing"
+          ],
+          "forms": [
+            {
+              "label": "Point",
+              "image": "../assets/altar/objects/crystals/tourmalinated-quartz/tourmalinated-quartz-point.png",
+              "type": "crystal",
+              "crystal": "tourmalinated_quartz",
+              "form": "point"
+            },
+            {
+              "label": "Chips",
+              "image": "../assets/altar/objects/crystals/tourmalinated-quartz/tourmalinated-quartz-chips.png",
+              "type": "crystal",
+              "crystal": "tourmalinated_quartz",
+              "form": "chips"
+            },
+            {
+              "label": "Cluster",
+              "image": "",
+              "type": "crystal",
+              "crystal": "tourmalinated_quartz",
+              "form": "cluster"
+            },
+            {
+              "label": "Tumbled",
+              "image": "../assets/altar/objects/crystals/tourmalinated-quartz/tourmalinated-quartz-tumbled.png",
+              "type": "crystal",
+              "crystal": "tourmalinated_quartz",
               "form": "tumbled"
             }
           ]

@@ -476,7 +476,9 @@ function placeObject(options) {
      apothecaryLogToGrimoire,
      apothecaryGrimoireStatus,
      entityId,
-     instanceId
+     instanceId,
+     offering,
+     offeringLabel
    } = options;
 
   const entityName =
@@ -580,6 +582,13 @@ function placeObject(options) {
   updateObjectPositionPercent(object);
   updateObjectTransform(object);
   makeDraggable(object);
+
+  // A filled vessel from the Offerings drawer is set down with its offering
+  // already set out, as "Set out an offering" would (app/src/lib/altar/offeringDrawer.ts).
+  const offerings = window.SaltCore?.altar?.offerings;
+  if (offering && offerings?.offeringKind(offering) && window.AltarApp?.update) {
+    window.AltarApp.update(object, (saved) => offerings.setOffering(saved, offering, offeringLabel || "", new Date().toISOString()), { undo: false, quiet: true });
+  }
 
   selectObject(object);
   updateEmptyMessage();

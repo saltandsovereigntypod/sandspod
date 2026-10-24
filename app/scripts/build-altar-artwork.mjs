@@ -181,7 +181,9 @@ const shelfTools = Object.fromEntries(Object.entries(folderPictures('tools')).fi
 const natural = folderPictures('natural');
 
 // Food and flowers heaped without a bowl, drawn inside a vessel that holds them
-// (src/lib/altar/offeringArt.ts): assets/altar/objects/offerings/<id>/<id>.png.
+// (src/lib/altar/offeringArt.ts) and set straight on the altar from the
+// cabinet's Offerings drawer (src/lib/altar/offeringDrawer.ts, which names each
+// id and the offering kind it ages as): assets/altar/objects/offerings/<id>/<id>.png.
 const offeringFoods = Object.fromEntries(
   Object.entries(folderPictures('offerings')).map(([id, src]) => [id, { image: src, ratio: ratioOf(`offerings/${id}/${id}.png`) }]),
 );

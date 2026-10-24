@@ -145,7 +145,7 @@
     if (offering && contents) {
       const holds = core.offerings.holdsOfferings(saved);
       const line = contents.leftAt ? `${offering.stage.name}. Left as it is; refresh it whenever you like.` : core.offerings.freshnessLine(offering.kind, offering);
-      out.push(block(`${contents.label || core.offerings.offeringKind(contents.kind)?.label} · ${core.offerings.freshnessWord(offering)}`, caption(line) + chips([
+      out.push(block(`${((l) => l.charAt(0).toUpperCase() + l.slice(1))(contents.label || core.offerings.offeringKind(contents.kind)?.label || "")} · ${core.offerings.freshnessWord(offering)}`, caption(line) + chips([
         offering.level !== "lasting" ? { label: "Refresh", symbol: "↻", action: "offering-refresh", pressed: offering.level === "refresh" } : null,
         offering.level !== "lasting" && offering.level !== "fresh" && !contents.leftAt ? { label: "Leave it be", symbol: "☙", action: "offering-leave", hint: "Leave it as it is, and stop asking to tend it" } : null,
         { label: "Return to nature", symbol: "❧", action: "offering-end", data: { how: "returned" } },

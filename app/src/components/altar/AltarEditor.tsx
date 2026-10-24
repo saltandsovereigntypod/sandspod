@@ -211,6 +211,8 @@ import { holidayChoice, holidaysToday } from '../../lib/holidays';
 import { moonState } from '../../lib/moon';
 import { colors, fonts, space, touch, type } from '../../theme';
 
+const capitalizeFirst = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
 type SheetName =
   | 'about'
   | 'closer'
@@ -2347,7 +2349,7 @@ function ObjectPanel({
 
       {offering && contents ? (
         <View style={styles.living}>
-          <Text style={type.eyebrow}>{`${contents.label || offeringKind(contents.kind)?.label} · ${freshnessWord(offering)}`}</Text>
+          <Text style={type.eyebrow}>{`${capitalizeFirst(contents.label || offeringKind(contents.kind)?.label || '')} · ${freshnessWord(offering)}`}</Text>
           <Text style={type.caption}>{contents.leftAt ? `${offering.stage.name}. Left as it is; refresh it whenever you like.` : freshnessLine(offering.kind, offering)}</Text>
           <ChipRow>
             {offering.level !== 'lasting' && <Chip label="Refresh" symbol="↻" active={offering.level === 'refresh'} onPress={act.refreshOffering} />}

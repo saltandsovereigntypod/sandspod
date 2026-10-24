@@ -186,7 +186,9 @@ if (altarCabinet) {
           tool: item.dataset.tool || "",
           vessel: item.dataset.vessel || "",
           deity: item.dataset.deity || "",
-          entityId: item.dataset.entityId || ""
+          entityId: item.dataset.entityId || "",
+          offering: item.dataset.offering || "",
+          offeringLabel: item.dataset.offeringLabel || ""
         });
         if (!placed) throw new Error("placement_rejected");
         closeAltarCabinetOverlay();
