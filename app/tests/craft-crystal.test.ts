@@ -56,7 +56,8 @@ test('finds care from typed names', () => {
   assert.equal(findCare(null, 'Raw rose quartz')?.key, 'rose_quartz');
   assert.equal(findCare(null, 'quartz point')?.key, 'clear_quartz');
   assert.equal(findCare(null, 'Celestine geode')?.key, 'celestite');
-  assert.equal(findCare(null, 'Pink tourmaline')?.key, 'tourmaline');
+  assert.equal(findCare(null, 'Pink tourmaline')?.key, 'pink_tourmaline');
+  assert.equal(findCare(null, 'Watermelon tourmaline')?.key, 'tourmaline');
   assert.equal(findCare(null, 'Black tourmaline')?.key, 'black_tourmaline');
   assert.equal(findCare(null, 'Mystery rock'), null);
   assert.equal(findCare('selenite', 'whatever')?.key, 'selenite');
