@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
 import {
@@ -23,7 +23,7 @@ import { TAROT_DEEP, TAROT_GROUPS, TAROT_SECTIONS, wordsLine } from '../src/lib/
 
 const wordCount = (text: string) => text.split(/\s+/).filter(Boolean).length;
 const art = (id: string) => new URL(`../../assets/divination/tarot/${id}.webp`, import.meta.url);
-const appArt = (id: string) => new URL(`../assets/divination/tarot/${id}.webp`, import.meta.url);
+const appSheets = readFileSync(new URL('../src/lib/divination/tarotAssets.ts', import.meta.url), 'utf8');
 
 test('every one of the 78 cards has three words and every section written', () => {
   assert.equal(TAROT_DECK.length, 78);
@@ -49,7 +49,7 @@ test('each card runs to a reasonable length, with no section a stub', () => {
 test('card ids match the pictures on the website and in the app', () => {
   for (const card of TAROT_DECK) {
     assert.ok(existsSync(art(card.id)), `website: ${card.id}.webp`);
-    assert.ok(existsSync(appArt(card.id)), `app: ${card.id}.webp`);
+    assert.ok(appSheets.includes(`'${card.id}': { sheet:`), `app: ${card.id} on a sheet`);
   }
 });
 

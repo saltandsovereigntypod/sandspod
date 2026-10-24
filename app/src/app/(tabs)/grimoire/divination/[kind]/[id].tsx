@@ -1,10 +1,11 @@
 import { useLocalSearchParams } from 'expo-router';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { OghamStave, RuneStone } from '../../../../../components/divination/Faces';
 import { Card, MoreScreen, Notice } from '../../../../../components/more/ui';
 import { divinationPage, findDivination, wordsLine } from '../../../../../lib/divination/library';
 import { tarotImages } from '../../../../../lib/divination/tarotAssets';
+import { TarotArt } from '../../../../../components/divination/TarotArt';
 import { useMySettings } from '../../../../../lib/settings/store';
 import { colors, fonts, radius, type } from '../../../../../theme';
 
@@ -35,7 +36,7 @@ export default function DivinationEntryPage() {
         <>
           <View style={styles.figure}>
             {art ? (
-              <Image source={art} style={styles.card} resizeMode="cover" accessibilityIgnoresInvertColors accessibilityLabel={`${entry.name}, Pamela Colman Smith’s picture`} />
+              <TarotArt place={art} style={styles.card} accessibilityLabel={`${entry.name}, Pamela Colman Smith’s picture`} />
             ) : entry.kind === 'runes' ? (
               <RuneStone glyph={entry.glyph ?? ''} size={110} />
             ) : (

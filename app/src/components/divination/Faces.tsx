@@ -4,10 +4,11 @@
 
 import { useFonts } from 'expo-font';
 import { useEffect, useState, type ReactNode } from 'react';
-import { Animated, Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Animated, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 
 import { tarotImages } from '../../lib/divination/tarotAssets';
+import { TarotArt } from './TarotArt';
 import { tarotCard } from '../../lib/divination/tarot';
 import { colors, fonts } from '../../theme';
 
@@ -90,7 +91,7 @@ export function TarotFace({ name, reversed }: { name: string; reversed: boolean 
   return (
     <View style={[styles.card, reversed && styles.upsideDown]}>
       {source ? (
-        <Image source={source} style={styles.fill} resizeMode="cover" accessibilityIgnoresInvertColors />
+        <TarotArt place={source} style={styles.fill} />
       ) : (
         <Text style={styles.cardName}>{name}</Text>
       )}

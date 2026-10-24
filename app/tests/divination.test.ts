@@ -192,12 +192,19 @@ test('a kept draw can be laid out again from its reading', () => {
   assert.equal(drawOfReading({ method: 'runes', drawn: ['The Fool'], cameUp: 'One rune\nThe Fool' }), null);
 });
 
-test('every card has its picture, on the website and bundled in the app', () => {
+test('every card has its picture, on the website and on one of the app’s sheets', () => {
   const manifest = readFileSync(new URL('../src/lib/divination/tarotAssets.ts', import.meta.url), 'utf8');
+  const sheets = [...manifest.matchAll(/require\('\.\.\/\.\.\/\.\.\/(assets\/divination\/tarot-sheets\/[^']+)'\)/g)].map((m) => m[1]);
+  assert.ok(sheets.length >= 6);
+  for (const sheet of sheets) assert.ok(existsSync(new URL(`../${sheet}`, import.meta.url)), sheet);
+  const places = new Set<string>();
   for (const card of TAROT_DECK) {
     assert.ok(existsSync(new URL(`../../assets/divination/tarot/${card.id}.webp`, import.meta.url)), card.id);
-    assert.ok(existsSync(new URL(`../assets/divination/tarot/${card.id}.webp`, import.meta.url)), card.id);
-    assert.ok(manifest.includes(`'${card.id}': require(`), card.id);
+    const m = manifest.match(new RegExp(`'${card.id}': \\{ sheet: sheets\\[(\\d+)\\], col: (\\d+), row: (\\d+) \\}`));
+    assert.ok(m, card.id);
+    const key = m!.slice(1).join(',');
+    assert.ok(!places.has(key), `${card.id} shares a place`);
+    places.add(key);
   }
 });
 
