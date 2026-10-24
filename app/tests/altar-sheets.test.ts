@@ -29,8 +29,9 @@ function webpSize(file: URL): { w: number; h: number } {
   return { w: b.readUInt16LE(26) & 0x3fff, h: b.readUInt16LE(28) & 0x3fff };
 }
 
+// Forms a stone isn't sold in (no picture) aren't offered, so aren't packed.
 const packedForms = (['herbs', 'crystals'] as const).flatMap((category) =>
-  ALTAR_ARTWORK.items[category].flatMap((item) => item.forms.filter((f) => f.form !== 'incense').map((f) => ({ category, name: item.name, image: f.image }))),
+  ALTAR_ARTWORK.items[category].flatMap((item) => item.forms.filter((f) => f.form !== 'incense' && f.image).map((f) => ({ category, name: item.name, image: f.image }))),
 );
 
 test('every herb and crystal form is on its item’s sheet, inside it', () => {
