@@ -28,7 +28,7 @@ const row = (extra: Partial<PracticeRow>): PracticeRow => ({
 
 test('every Traditional Library entry is present, including candle styles and the guide', () => {
   const entries = traditionalEntries();
-  assert.equal(entries.filter((e) => e.type === 'herb').length, 60);
+  assert.equal(entries.filter((e) => e.type === 'herb').length, 80);
   assert.ok(entries.some((e) => e.name === 'Jupiter') && entries.some((e) => e.name === 'Birthday Candle'));
   const names = entries.map((e) => e.name);
   assert.ok(names.includes('Basil'));
