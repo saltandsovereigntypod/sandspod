@@ -546,7 +546,9 @@ function placeObject(options) {
   object.dataset.rotation = "0";
   object.dataset.flipped = "false";
   object.dataset.locked = "false";
-  object.dataset.glowing = "false";
+  // A lamp or lantern is set down glowing, as if lit (app/src/lib/altar/shelf.ts).
+  object.dataset.glowing = window.SaltCore?.altar?.shelf?.glowsWhenPlaced({ type: type || "", tool: tool || "", form: form || "" }) ? "true" : "false";
+  object.classList.toggle("has-glow", object.dataset.glowing === "true");
   object.dataset.lit = "false";
   highestLayer += 1;
   object.style.zIndex = highestLayer;

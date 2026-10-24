@@ -10,7 +10,9 @@ const cabinetCategories = [
   { id: "crystals", label: "Crystals", icon: "💎" },
   { id: "tools", label: "Tools", icon: "🗝️" },
   { id: "deities", label: "Deities", icon: "👑" },
-  { id: "vessels", label: "Vessels", icon: "🏺" }
+  { id: "vessels", label: "Vessels", icon: "🏺" },
+  { id: "natural", label: "Natural", icon: "🪶" },
+  { id: "seasonal", label: "Seasonal", icon: "🌾" }
 ];
 
 // Candle artwork by form: the vigil candles, and the chime, taper, tea light and pillar painted for each colour.
@@ -119,6 +121,48 @@ const cabinetItems = [
   ...(altarArtwork.items?.vessels || [])
 ];
 
+/* Seasonal things for the sabbats (app/src/lib/altar/seasonal.ts), and the tools
+   and natural finds the Traditional Library has no page for (shelf.ts), all in
+   js/core/altar.js: those with a picture (js/altar-artwork.js). The core loads
+   after this file, so they join the cabinet the first time it's drawn, searched
+   or placed from. */
+let seasonalCabinetAdded = false;
+function ensureSeasonalCabinetItems() {
+  if (seasonalCabinetAdded) return;
+  const core = window.SaltCore?.altar;
+  if (!core?.seasonal || !core.shelf) return;
+  seasonalCabinetAdded = true;
+  core.shelf.shelfToolItems(altarArtwork.shelfTools || {}).forEach((item) => cabinetItems.push({ ...item, icon: "🗝️" }));
+  core.shelf.naturalItems(altarArtwork.natural || {}).forEach((item) => cabinetItems.push({ ...item, icon: "🪶" }));
+  core.seasonal.seasonalCabinetItems(altarArtwork.seasonal || {}).forEach((item) => cabinetItems.push({ ...item, icon: "🌾" }));
+}
+
+// The sabbat that's near (a week before through the day): its things come first.
+let cabinetSabbat = null;
+let cabinetSabbatChecked = false;
+async function refreshCabinetSabbat() {
+  const core = window.SaltCore?.altar;
+  if (!core?.seasonal || cabinetSabbatChecked) return;
+  cabinetSabbatChecked = true;
+  let choice = null;
+  try { choice = core.holidays.holidayChoice(await window.SaltSettings?.get?.()); } catch { choice = null; }
+  cabinetSabbat = core.seasonal.sabbatNear(new Date(), choice);
+  ensureSeasonalCabinetItems();
+  // Near a sabbat the cabinet opens on its seasonal things, unless a drawer was asked for.
+  if (cabinetSabbat && !requestedCabinetCategory && activeCabinetCategory === "candles" && cabinetItems.some((item) => item.category === "seasonal")) activeCabinetCategory = "seasonal";
+  renderCabinet();
+}
+if (typeof document !== "undefined" && typeof window.addEventListener === "function") {
+  if (document.readyState === "complete") setTimeout(refreshCabinetSabbat, 0);
+  else window.addEventListener("load", () => void refreshCabinetSabbat());
+}
+
+/** The drawers in order: Seasonal first while a sabbat is near; Seasonal and Natural only when they hold something. */
+function visibleCabinetCategories() {
+  const list = cabinetCategories.filter((category) => (category.id !== "seasonal" && category.id !== "natural") || cabinetItems.some((item) => item.category === category.id));
+  return cabinetSabbat ? [...list.filter((c) => c.id === "seasonal"), ...list.filter((c) => c.id !== "seasonal")] : list;
+}
+
 // Narrow public catalogue for shared Settings. Keep cabinet internals private.
 window.AltarBackgrounds = {
   getAll() {
@@ -141,6 +185,7 @@ function cabinetItemId(item) {
 }
 
 function placeCabinetDefinition({ itemId, formId } = {}) {
+  ensureSeasonalCabinetItems();
   const item = cabinetItems.find((candidate) => cabinetItemId(candidate) === itemId);
   if (!item) { showAltarToast("Cabinet item not found"); return false; }
   const availableForms = partitionCabinetForms(item).availableForms;
@@ -168,6 +213,7 @@ window.AltarCabinet = {
     return { availableForms: partition.availableForms.map((form) => form.form || form.label), missingForms: partition.missingForms.map((form) => form.form || form.label) };
   },
   getSearchRecords() {
+    ensureSeasonalCabinetItems();
     return cabinetItems.filter((item) => item.category !== "backgrounds").flatMap((item, index) => {
       const stableId = cabinetItemId(item);
       const base = `/altar/?placeCabinetItem=${encodeURIComponent(stableId)}`;
@@ -202,7 +248,8 @@ function changeAltarBackground(button) {
 function renderCabinetTabs() {
   if (!cabinetTabs) return;
 
-  cabinetTabs.innerHTML = cabinetCategories
+  ensureSeasonalCabinetItems();
+  cabinetTabs.innerHTML = visibleCabinetCategories()
     .map((category) => `
       <button
         type="button"
@@ -331,6 +378,22 @@ const closedCabinetPantheons = new Set();
 /* The deity drawer groups statues by pantheon in sections that fold away;
    every other drawer is one grid. A search opens every section. */
 function renderCabinetItemList(items, renderItem) {
+  // The Seasonal drawer round the wheel from the sabbat that's coming, "For Samhain" first when it's near.
+  const seasonal = window.SaltCore?.altar?.seasonal;
+  if (activeCabinetCategory === "seasonal" && seasonal) {
+    return seasonal.seasonalSections(items, cabinetSabbat).map((section) => {
+      const when = cabinetSabbat && section.sabbat === cabinetSabbat.id
+        ? `<p class="cabinet-season-when">${cabinetSabbat.inDays === 0 ? `${cabinetSabbat.name} is today.` : `${cabinetSabbat.name} is ${cabinetSabbat.inDays === 1 ? "tomorrow" : `in ${cabinetSabbat.inDays} days`}.`}</p>`
+        : "";
+      return `
+        <details class="cabinet-pantheon" open>
+          <summary><span>${section.title}</span><span class="cabinet-pantheon-count">${section.items.length}</span></summary>
+          ${when}
+          <div class="cabinet-pantheon-grid">${section.items.map(renderItem).join("")}</div>
+        </details>
+      `;
+    }).join("");
+  }
   if (activeCabinetCategory !== "deities") return items.map(renderItem).join("");
 
   const artwork = window.AltarArtwork || {};
@@ -366,6 +429,7 @@ if (typeof document !== "undefined") document.addEventListener("toggle", (event)
 
 function renderCabinetItems() {
   if (!cabinetContent) return;
+  ensureSeasonalCabinetItems();
 
   const search = cabinetSearchTerm.toLowerCase();
 
@@ -397,7 +461,7 @@ function renderCabinetItems() {
   }
 
   const addCustomItemTile =
-    activeCabinetCategory !== "backgrounds"
+    activeCabinetCategory !== "backgrounds" && activeCabinetCategory !== "seasonal" && activeCabinetCategory !== "natural"
       ? `
         <button type="button" class="cabinet-tile cabinet-background-tile" data-add-custom-cabinet-item>
           <span class="cabinet-tile-icon">＋</span>

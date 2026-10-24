@@ -1,7 +1,8 @@
 // "Did it work?" for a ritual or spell: choosing the day to look back
 // (LookBackPicker, in the journal form) and answering when it comes
-// (DidItWork, on the journal entry and on Today). The logic is in
-// lib/rituals/lookBack.ts, shared with the website.
+// (DidItWork, on the journal entry and on Today), for journal entries and for
+// the things made in My Apothecary. The logic is in lib/rituals/lookBack.ts
+// and lib/altar/apothecaryLookBack.ts, shared with the website.
 
 import { useState } from 'react';
 import { View } from 'react-native';
@@ -97,8 +98,13 @@ export function LookBackPicker({
   );
 }
 
-/** The look-back for one entry: the question when it's due, the answer once given, or the day it's waiting for. */
-export function DidItWork({ entry, compact }: { entry: JournalRow; compact?: boolean }) {
+/**
+ * The look-back for one entry: the question when it's due, the answer once
+ * given, or the day it's waiting for. `onSave` saves somewhere other than
+ * the journal: a spell jar or sachet passes its item, seen as an entry
+ * (lib/altar/apothecaryLookBack.ts apothecaryWorking).
+ */
+export function DidItWork({ entry, compact, onSave }: { entry: JournalRow; compact?: boolean; onSave?: (next: JournalRow) => Promise<unknown> }) {
   const lookBack = readLookBack(entry);
   const due = isDue(entry, new Date());
   const [open, setOpen] = useState(false);
@@ -111,7 +117,7 @@ export function DidItWork({ entry, compact }: { entry: JournalRow; compact?: boo
   const save = async (next: JournalRow) => {
     setSaving(true);
     try {
-      await saveJournalMetadata(next);
+      await (onSave ? onSave(next) : saveJournalMetadata(next));
       setOpen(false);
       setAnswer(null);
       setOutcome('');

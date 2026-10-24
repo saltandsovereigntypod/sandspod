@@ -9,6 +9,8 @@ import { nextLayer } from './layers.ts';
 import { ensureLivingState } from './livingState.ts';
 import type { AltarBackground, CabinetCategoryId, CabinetForm, CabinetItem, SavedObject } from './types.ts';
 import { ALTAR_ARTWORK } from './artworkData.ts';
+import { seasonalCabinetItems } from './seasonal.ts';
+import { glowsWhenPlaced, naturalItems, shelfToolItems } from './shelf.ts';
 
 export const cabinetCategories: { id: CabinetCategoryId; label: string }[] = [
   { id: 'candles', label: 'Candles' },
@@ -17,7 +19,18 @@ export const cabinetCategories: { id: CabinetCategoryId; label: string }[] = [
   { id: 'tools', label: 'Tools' },
   { id: 'deities', label: 'Deities' },
   { id: 'vessels', label: 'Vessels' },
+  { id: 'natural', label: 'Natural' },
+  { id: 'seasonal', label: 'Seasonal' },
 ];
+
+/**
+ * The drawers in order: the Seasonal drawer comes first while a sabbat is
+ * near (seasonal.ts sabbatNear), so its things are the first thing you see.
+ */
+export function cabinetCategoriesFor(sabbatIsNear: boolean): { id: CabinetCategoryId; label: string }[] {
+  if (!sabbatIsNear) return cabinetCategories;
+  return [...cabinetCategories.filter((c) => c.id === 'seasonal'), ...cabinetCategories.filter((c) => c.id !== 'seasonal')];
+}
 
 /** Built-in backgrounds (SanctuaryAssetCatalog.getBackgrounds). */
 export const builtInBackgrounds: AltarBackground[] = [
@@ -154,6 +167,8 @@ export const builtInCabinet: CabinetItem[] = [
   }),
   ...fromArtwork(ALTAR_ARTWORK.items.deities),
   ...fromArtwork(ALTAR_ARTWORK.items.tools),
+  // Tools the Library has no page for, those that have a picture (shelf.ts).
+  ...shelfToolItems(ALTAR_ARTWORK.shelfTools ?? {}),
   single('vessels', 'Cauldron', ['transformation', 'fire', 'spellwork'], {
     image: '../assets/altar/objects/vessels/cauldron/cauldron.png',
     type: 'vessel',
@@ -167,6 +182,10 @@ export const builtInCabinet: CabinetItem[] = [
     form: 'standard',
   }),
   ...fromArtwork(ALTAR_ARTWORK.items.vessels),
+  // Seasonal things for the sabbats, those that have a picture (seasonal.ts).
+  ...seasonalCabinetItems(ALTAR_ARTWORK.seasonal ?? {}),
+  // Natural finds: feathers, a hag stone, shells, acorns (shelf.ts).
+  ...naturalItems(ALTAR_ARTWORK.natural ?? {}),
 ];
 
 /** Label of an object placed from a form (cabinet.js renderCabinetTile). */
@@ -291,6 +310,10 @@ export function cabinetSearchAliases(item: CabinetItem): string[] {
         ? ['herb', 'herbs']
         : item.category === 'crystals'
           ? ['crystal', 'crystals']
+          : item.category === 'seasonal'
+            ? ['seasonal', 'sabbat', 'wheel of the year']
+          : item.category === 'natural'
+            ? ['natural', 'nature', 'found']
           : item.name === 'Spell Jar'
             ? ['jar', 'spell jar', 'spell jars']
             : [];
@@ -353,7 +376,8 @@ export function objectFromForm(
     rotation: '0',
     flipped: 'false',
     locked: 'false',
-    glowing: 'false',
+    // A lamp or lantern is set down glowing, as if lit (the Glow it can be turned off with).
+    glowing: glowsWhenPlaced({ type, tool: form.tool, form: form.form }) ? 'true' : 'false',
     lit: 'false',
     livingState: '',
     plaqueText: '',

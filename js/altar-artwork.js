@@ -350,6 +350,108 @@
         "assetPath": "/assets/altar/backgrounds/candlelit-cave.png"
       }
     ],
+    "seasonal": {
+      "apples": "../assets/altar/objects/seasonal/apples/apples.png",
+      "brigids-cross": "../assets/altar/objects/seasonal/brigids-cross/brigids-cross.png",
+      "corn-dolly": "../assets/altar/objects/seasonal/corn-dolly/corn-dolly.png",
+      "evergreen-boughs": "../assets/altar/objects/seasonal/evergreen-boughs/evergreen-boughs.png",
+      "flower-crown": "../assets/altar/objects/seasonal/flower-crown/flower-crown.png",
+      "gourds": "../assets/altar/objects/seasonal/gourds/gourds.png",
+      "ostara-eggs": "../assets/altar/objects/seasonal/ostara-eggs/ostara-eggs.png",
+      "pomegranate": "../assets/altar/objects/seasonal/pomegranate/pomegranate.png",
+      "pumpkin-lantern": "../assets/altar/objects/seasonal/pumpkin-lantern/pumpkin-lantern.png",
+      "sun-wheel": "../assets/altar/objects/seasonal/sun-wheel/sun-wheel.png",
+      "turnip-lantern": "../assets/altar/objects/seasonal/turnip-lantern/turnip-lantern.png",
+      "wheat-sheaf": "../assets/altar/objects/seasonal/wheat-sheaf/wheat-sheaf.png",
+      "yule-log": "../assets/altar/objects/seasonal/yule-log/yule-log.png"
+    },
+    "shelfTools": {
+      "candle-snuffer": "../assets/altar/objects/tools/candle-snuffer/candle-snuffer.png",
+      "crystal-ball": "../assets/altar/objects/tools/crystal-ball/crystal-ball.png",
+      "frame-drum": "../assets/altar/objects/tools/frame-drum/frame-drum.png",
+      "goddess-figure": "../assets/altar/objects/tools/goddess-figure/goddess-figure.png",
+      "green-man": "../assets/altar/objects/tools/green-man/green-man.png",
+      "lantern": "../assets/altar/objects/tools/lantern/lantern.png",
+      "matches": "../assets/altar/objects/tools/matches/matches.png",
+      "ogham-staves": "../assets/altar/objects/tools/ogham-staves/ogham-staves.png",
+      "oil-lamp": "../assets/altar/objects/tools/oil-lamp/oil-lamp.png",
+      "quill-and-ink": "../assets/altar/objects/tools/quill-and-ink/quill-and-ink.png",
+      "rattle": "../assets/altar/objects/tools/rattle/rattle.png",
+      "red-cord": "../assets/altar/objects/tools/red-cord/red-cord.png",
+      "rune-bag": "../assets/altar/objects/tools/rune-bag/rune-bag.png",
+      "salt-lamp": "../assets/altar/objects/tools/salt-lamp/salt-lamp.png",
+      "scrying-mirror": "../assets/altar/objects/tools/scrying-mirror/scrying-mirror.png",
+      "singing-bowl": "../assets/altar/objects/tools/singing-bowl/singing-bowl.png",
+      "stang": "../assets/altar/objects/tools/stang/stang.png",
+      "tea-leaf-cup": "../assets/altar/objects/tools/tea-leaf-cup/tea-leaf-cup.png",
+      "wax-seal": "../assets/altar/objects/tools/wax-seal/wax-seal.png",
+      "witchs-ladder": "../assets/altar/objects/tools/witchs-ladder/witchs-ladder.png"
+    },
+    "natural": {
+      "acorns": "../assets/altar/objects/natural/acorns/acorns.png",
+      "antler": "../assets/altar/objects/natural/antler/antler.png",
+      "autumn-leaves": "../assets/altar/objects/natural/autumn-leaves/autumn-leaves.png",
+      "driftwood": "../assets/altar/objects/natural/driftwood/driftwood.png",
+      "eggshells": "../assets/altar/objects/natural/eggshells/eggshells.png",
+      "feathers": "../assets/altar/objects/natural/feathers/feathers.png",
+      "hag-stone": "../assets/altar/objects/natural/hag-stone/hag-stone.png",
+      "pinecones": "../assets/altar/objects/natural/pinecones/pinecones.png",
+      "pressed-flowers": "../assets/altar/objects/natural/pressed-flowers/pressed-flowers.png",
+      "river-stones": "../assets/altar/objects/natural/river-stones/river-stones.png",
+      "sea-glass": "../assets/altar/objects/natural/sea-glass/sea-glass.png",
+      "seashells": "../assets/altar/objects/natural/seashells/seashells.png",
+      "snakeskin": "../assets/altar/objects/natural/snakeskin/snakeskin.png"
+    },
+    "frames": {
+      "gilt": {
+        "image": "../assets/altar/objects/tools/ancestor-frame/ancestor-frame-gilt.png",
+        "ratio": 1.3382,
+        "opening": {
+          "left": 0.2555,
+          "top": 0.25,
+          "width": 0.4881,
+          "height": 0.5089,
+          "oval": true
+        }
+      },
+      "wood": {
+        "image": "../assets/altar/objects/tools/ancestor-frame/ancestor-frame-wood.png",
+        "ratio": 1.3382,
+        "opening": {
+          "left": 0.2785,
+          "top": 0.2102,
+          "width": 0.4421,
+          "height": 0.5124,
+          "oval": false
+        }
+      }
+    },
+    "offeringFoods": {
+      "bread": {
+        "image": "../assets/altar/objects/offerings/bread/bread.png",
+        "ratio": 0.6667
+      },
+      "flowers": {
+        "image": "../assets/altar/objects/offerings/flowers/flowers.png",
+        "ratio": 0.6667
+      },
+      "fruit": {
+        "image": "../assets/altar/objects/offerings/fruit/fruit.png",
+        "ratio": 0.6667
+      },
+      "honeycomb": {
+        "image": "../assets/altar/objects/offerings/honeycomb/honeycomb.png",
+        "ratio": 0.6667
+      },
+      "meal": {
+        "image": "../assets/altar/objects/offerings/meal/meal.png",
+        "ratio": 0.6667
+      },
+      "sweets": {
+        "image": "../assets/altar/objects/offerings/sweets/sweets.png",
+        "ratio": 0.6667
+      }
+    },
     "items": {
       "herbs": [
         {
@@ -6218,6 +6320,34 @@
               "type": "tool",
               "tool": "altar",
               "form": "standard"
+            }
+          ]
+        },
+        {
+          "category": "tools",
+          "name": "Ancestor Frame",
+          "icon": "🖼️",
+          "keywords": [
+            "ancestors",
+            "remembrance",
+            "the beloved dead",
+            "photo",
+            "memorial"
+          ],
+          "forms": [
+            {
+              "label": "Gilt",
+              "image": "../assets/altar/objects/tools/ancestor-frame/ancestor-frame-gilt.png",
+              "type": "tool",
+              "tool": "ancestor-frame",
+              "form": "gilt"
+            },
+            {
+              "label": "Wood",
+              "image": "../assets/altar/objects/tools/ancestor-frame/ancestor-frame-wood.png",
+              "type": "tool",
+              "tool": "ancestor-frame",
+              "form": "wood"
             }
           ]
         },

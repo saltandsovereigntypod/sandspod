@@ -223,7 +223,7 @@ export function ReadingSheet({ visible, altar, onClose, onPlace }: SheetProps) {
   return (
     <Sheet visible={visible} eyebrow="From your readings" title="Tonight’s card or rune" onClose={onClose}>
       {ready && !tonight ? (
-        <EmptyTool text="Draw a card or a rune and keep it in Hedge → Readings; then it can sit on your altar while you sit with it." label="Open Readings" href="/rituals/craft/hedge/readings" onClose={onClose} />
+        <EmptyTool text="Draw a card or a rune and keep it in Rituals → Divination; then it can sit on your altar while you sit with it." label="Open Readings" href="/rituals/divination" onClose={onClose} />
       ) : tonight && t ? (
         <>
           <View style={connectStyles.gap}>
@@ -263,7 +263,7 @@ export function ReadingPanelSection({ object }: { object: SavedObject }) {
       {!!p.question && <Text style={connectStyles.quote}>{p.question}</Text>}
       {!!p.meaning && <Text style={connectStyles.body}>{p.meaning}</Text>}
       <ChipRow>
-        <Chip label="The reading" onPress={() => router.push(`/rituals/craft/hedge/readings/${entry.id}` as Href)} />
+        <Chip label="The reading" onPress={() => router.push(`/rituals/divination/${entry.id}` as Href)} />
       </ChipRow>
     </PanelSection>
   );

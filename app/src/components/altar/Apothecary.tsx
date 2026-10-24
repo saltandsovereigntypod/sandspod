@@ -19,6 +19,7 @@ import {
   type ApothecaryTypeId,
   type Ingredient,
 } from '../../lib/altar/apothecary';
+import { isItemDue, itemLookBack, startItemLookBack } from '../../lib/altar/apothecaryLookBack';
 import { altarImageSource } from '../../lib/altar/assets';
 import { builtInCabinet, shortLabel } from '../../lib/altar/cabinet';
 import { ITEM_TYPE, isCustomCategory } from '../../lib/altar/custom';
@@ -27,6 +28,8 @@ import type { SavedObject } from '../../lib/altar/types';
 import { deleteApothecary, saveApothecary, useWorkshop } from '../../lib/altar/workshop';
 import { useLibrary } from '../../lib/library';
 import { colors, fonts, radius, touch, type } from '../../theme';
+import type { LookBackPick } from '../rituals/DidItWork';
+import { ItemDidItWork, ItemLookBackPicker } from '../rituals/ItemDidItWork';
 import { Chip, ChipRow } from './Chip';
 import { Sheet } from './Sheet';
 
@@ -65,6 +68,7 @@ export function ApothecarySheet({ visible, onClose, onMake, onEdit, onPlace }: L
                 <Text style={type.caption} numberOfLines={1}>
                   {item.ingredients.map((i) => i.label).join(', ')}
                 </Text>
+                {isItemDue(item, new Date()) && <Text style={[type.caption, styles.due]}>Did it work? Its look-back day has come. Open the recipe to say.</Text>}
                 <ChipRow>
                   <Chip label="Place" symbol="✦" accessibilityLabel={`Place ${item.name} on the altar`} onPress={() => onPlace(item)} />
                   <Chip label="Recipe" symbol="✎" accessibilityLabel={`Open the recipe for ${item.name}`} onPress={() => onEdit(item)} />
@@ -137,6 +141,14 @@ function Editor({ target, altarObjects, onClose, onSaved, onDeleted }: EditorPro
   const [busy, setBusy] = useState<string | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  // "Did it work?": a new working looks back on the day that suits its intention, unless another is chosen.
+  const [lookBack, setLookBack] = useState<{ pick: LookBackPick; custom: string; touched: boolean }>(() => {
+    const current = target.item ? itemLookBack(target.item) : null;
+    if (!target.item) return { pick: 'suggested', custom: '', touched: false };
+    return { pick: current?.date ? current.when : null, custom: current?.when === 'custom' ? current.date : '', touched: false };
+  });
+  // The item as last saved: an answer given here is saved at once, and kept when the recipe is saved.
+  const saved = target.item ? workshop.apothecary.find((a) => a.id === target.item?.id) ?? target.item : null;
 
   const change = (patch: Partial<ApothecaryItem>) => setItem((current) => ({ ...current, ...patch }));
   const presetImage = APOTHECARY_TYPES.some((t) => t.image === item.imagePath);
@@ -212,8 +224,10 @@ function Editor({ target, altarObjects, onClose, onSaved, onDeleted }: EditorPro
     setProblem(null);
     setBusy('Saving to your apothecary…');
     try {
-      const saved = await saveApothecary(workshop.userId, item, picked);
-      onSaved({ item: saved, isNew, fromAltar, replace: isNew && replace && fromAltar.length > 0 });
+      let next: ApothecaryItem = saved ? { ...item, metadata: saved.metadata } : item;
+      if (isNew || lookBack.touched) next = startItemLookBack(next, lookBack.pick, new Date(), lookBack.custom);
+      const kept = await saveApothecary(workshop.userId, next, picked);
+      onSaved({ item: kept, isNew, fromAltar, replace: isNew && replace && fromAltar.length > 0 });
     } catch (e) {
       setProblem(e instanceof Error ? e.message : 'Couldn’t save. Please try again.');
     } finally {
@@ -345,6 +359,20 @@ function Editor({ target, altarObjects, onClose, onSaved, onDeleted }: EditorPro
       <Group label="Notes">
         <Input value={item.notes} onChangeText={(notes) => change({ notes })} placeholder="How you made it, words spoken, where it lives…" label="Notes" multiline />
       </Group>
+
+      {saved && (itemLookBack(saved)?.answer || isItemDue(saved, new Date()) || itemLookBack(saved)?.waited) ? (
+        <ItemDidItWork item={saved} />
+      ) : (
+        <>
+          {saved && <ItemDidItWork item={saved} />}
+          <ItemLookBackPicker
+            item={{ ...item, createdAt: item.createdAt || '' }}
+            value={lookBack.pick}
+            custom={lookBack.custom}
+            onChange={(pick, custom) => setLookBack({ pick, custom, touched: true })}
+          />
+        </>
+      )}
 
       <Group label="Tending">
         <Toggle
@@ -505,5 +533,6 @@ const styles = StyleSheet.create({
   checkOn: { backgroundColor: colors.gold, borderColor: colors.gold },
   pictureRow: { flexDirection: 'row', gap: 12, alignItems: 'center' },
   problem: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.gold },
+  due: { color: colors.gold },
   busy: { flexDirection: 'row', gap: 10, alignItems: 'center', justifyContent: 'center', minHeight: touch },
 });

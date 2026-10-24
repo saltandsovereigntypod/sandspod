@@ -153,6 +153,8 @@ function createMySanctuaryPanel() {
         <h3 class="my-sanctuary-subheading">Practice</h3>
         <nav class="my-sanctuary-links" aria-label="Practice">
           <a href="/practice/">🌿 My practice</a>
+          <a href="/divination/">✧ Divination: cards, runes &amp; ogham</a>
+          <a href="/sigil/">◈ Sigil maker</a>
           <a href="/rituals/journeys/">🕯 Dedication journeys</a>
           <a href="/more/settings/deities/">☾ My deities</a>
           <a href="/practice/cosmic/chart/">✶ Your birth chart</a>

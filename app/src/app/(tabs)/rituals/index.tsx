@@ -80,6 +80,31 @@ export default function RitualsHome() {
         )}
       </Card>
 
+      <View style={ui.gapSmall}>
+        <SectionLabel>Divination &amp; sigils</SectionLabel>
+        <List>
+          <Row
+            icon="wheel"
+            title="Draw cards, runes or ogham"
+            detail="A card for the day, the Celtic Cross and many more spreads, or one of your own"
+            onPress={() => router.push('/rituals/divination/draw')}
+          />
+          <Row
+            icon="grimoire"
+            title="Your readings"
+            detail="Every reading you’ve kept, and the ones to come back to"
+            onPress={() => router.push('/rituals/divination')}
+          />
+          <Row
+            icon="altar"
+            title="Sigil maker"
+            detail="An intent made into one mark, from its letters or a planetary square"
+            last
+            onPress={() => router.push('/rituals/sigil')}
+          />
+        </List>
+      </View>
+
       {laterPlans.length > 0 && (
         <View style={ui.gapSmall}>
           <SectionLabel>Also planned</SectionLabel>

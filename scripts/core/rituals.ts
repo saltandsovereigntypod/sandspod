@@ -16,6 +16,8 @@ export * as insights from '../../app/src/lib/rituals/insights.ts';
 // "Did it work?": look-back days, answers and What works for you.
 export * as lookBack from '../../app/src/lib/rituals/lookBack.ts';
 export * as whatWorks from '../../app/src/lib/rituals/whatWorks.ts';
+// …and for spell jars, sachets and the rest of My Apothecary.
+export * as apothecaryLookBack from '../../app/src/lib/altar/apothecaryLookBack.ts';
 export * as premade from '../../app/src/lib/rituals/premade/index.ts';
 export * as library from '../../app/src/lib/rituals/libraryData.ts';
 export * as traditions from '../../app/src/lib/library/traditions.ts';

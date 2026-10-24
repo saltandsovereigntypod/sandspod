@@ -1,4 +1,4 @@
-// The sigil maker for the website (/practice/eclectic/sigil/): the letter
+// The sigil maker for the website (/sigil/): the letter
 // method, the planetary squares, hand drawing, the saved shape and the
 // Grimoire page it becomes (the same rows as the app's saveSigilPage). Built
 // by scripts/build-core.mjs into js/core/sigil.js (window.SaltCore.sigil).

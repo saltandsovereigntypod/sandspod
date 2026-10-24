@@ -837,8 +837,8 @@
     plant: (id) => `/practice/green/plant/?id=${encodeURIComponent(id)}`,
     ancestors: "/practice/hedge/ancestors/",
     ancestor: (id) => `/practice/hedge/ancestors/person/?id=${encodeURIComponent(id)}`,
-    readings: "/practice/hedge/readings/",
-    reading: (id) => `/practice/hedge/readings/reading/?id=${encodeURIComponent(id)}`,
+    readings: "/divination/",
+    reading: (id) => `/divination/reading/?id=${encodeURIComponent(id)}`,
     grimoirePage: (id) => `/grimoire/?page=${encodeURIComponent(id)}`
   };
   const careSaved = new Map(); // stone id → "Added to its cleansing log in Crystal."
@@ -854,11 +854,13 @@
     if (link) {
       const entry = state.practice.ancestors.find((e) => e.id === link.id);
       const panel = entry ? core.ancestor.ancestorPanel(entry, new Date()) : null;
-      if (!panel) out.push(block("In memory", cap(`A candle for ${link.name || "one remembered"}. Their page in Ancestors isn’t here, or it has been removed.`)));
+      const candle = core.livingState.isCandle(saved);
+      if (!panel) out.push(block("In memory", cap(`${candle ? "A candle" : "Kept here"} for ${link.name || "one remembered"}. Their page in Ancestors isn’t here, or it has been removed.`)));
       else {
         const lit = core.livingState.isLit(saved);
         out.push(block("In memory", `<p>${esc([panel.name, panel.relation].filter(Boolean).join(", "))}</p>${cap([panel.born && `Born ${panel.born}`, panel.died && `died ${panel.died}`].filter(Boolean).join(", "))}${panel.today ? `<p>${esc(`Today: ${panel.today.words.toLowerCase()}.`)}</p>` : ""}${panel.days.filter((d) => d.inDays > 0).map((d) => cap(`${d.when}: ${d.words.charAt(0).toLowerCase()}${d.words.slice(1)}`)).join("")}${panel.loved ? `<p>${esc(`They loved ${panel.loved}.`)}</p>` : ""}${panel.memory ? `<p class="app-living__glance">${esc(panel.memory)}</p>` : ""}${B().chips([
-          { label: lit ? "Their candle is lit" : "Light a candle for them", symbol: "🜂", action: "light", disabled: lit },
+          // An ancestor frame is linked to them too, but only a candle is lit.
+          candle ? { label: lit ? "Their candle is lit" : "Light a candle for them", symbol: "🜂", action: "light", disabled: lit } : null,
           { label: "Begin the candle rite", symbol: "❦", action: "ancestor-rite", data: { id: entry.id }, hint: `Begin the candle rite for ${panel.name || "them"} on this altar` },
           { label: "Their page", href: PAGES.ancestor(entry.id), hint: `${panel.name || "Their"} page in Ancestors` }
         ])}`));

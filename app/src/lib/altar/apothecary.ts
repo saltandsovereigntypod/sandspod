@@ -83,6 +83,11 @@ export type ApothecaryItem = {
   instanceId: string;
   createdAt: string;
   updatedAt: string;
+  /**
+   * The row's `metadata`, kept whole: "Did it work?" rides in metadata.lookBack
+   * (apothecaryLookBack.ts), and anything else written there is never dropped.
+   */
+  metadata?: Record<string, unknown>;
 };
 
 export const DEFAULT_LIVING: ApothecaryLiving = { tending_enabled: true, tending_interval_days: 30, expiration_enabled: false, expiration_days: 180 };
@@ -143,6 +148,7 @@ export function normalizeApothecary(raw: Record<string, unknown>): ApothecaryIte
     instanceId: text(raw.instanceId ?? raw.instance_id),
     createdAt: text(raw.createdAt ?? raw.created_at),
     updatedAt: text(raw.updatedAt ?? raw.updated_at),
+    metadata: raw.metadata && typeof raw.metadata === 'object' && !Array.isArray(raw.metadata) ? { ...(raw.metadata as Record<string, unknown>) } : {},
   };
 }
 
@@ -165,7 +171,7 @@ export function apothecaryRow(userId: string, item: ApothecaryItem, now: string)
     grimoire_entry_id: item.grimoireEntryId || null,
     grimoire_status: item.grimoireStatus || null,
     log_to_grimoire: item.logToGrimoire,
-    metadata: { source: 'altar-apothecary' },
+    metadata: { ...(item.metadata ?? {}), source: 'altar-apothecary' } as Record<string, unknown>,
     updated_at: now,
   };
 }

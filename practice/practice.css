@@ -128,7 +128,7 @@
   .pr-week li { min-width: 0; }
 }
 
-/* The sigil maker (/practice/eclectic/sigil/). */
+/* The sigil maker (/sigil/). */
 .sg-picture { display: inline-block; flex: none; border-radius: 6px; overflow: hidden; line-height: 0; }
 .sg-picture svg { width: 100%; height: 100%; }
 .sg-letters { margin: 0; font-family: "Cormorant Garamond", serif; font-size: 1.8rem; letter-spacing: 0.25em; color: var(--cream, #f4ecd8); }

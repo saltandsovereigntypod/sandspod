@@ -20,17 +20,24 @@
   };
   const JOURNAL = "/?sanctuary=rituals";
   const D = global.DidItWork;
+  const A = R.apothecaryLookBack;
   let current = [];
+  let made = [];
 
   async function render() {
     const main = UI.root();
-    const journal = await S.journal();
+    const [journal, items] = await Promise.all([S.journal(), S.apothecaryItems().catch(() => [])]);
     current = journal;
+    made = items;
     const now = new Date();
     const insights = R.insights.journalInsights(journal, now);
-    const works = R.whatWorks.whatWorks(journal);
+    // Spell jars, sachets and the rest of My Apothecary count too, with their intentions and ingredients.
+    const works = R.whatWorks.whatWorks([...journal, ...A.lookBackWorkings(items)]);
     const due = R.lookBack.dueLookBacks(journal, now);
     const soon = R.lookBack.waitingLookBacks(journal, now).slice(0, 5);
+    const dueMade = A.dueItems(items, now);
+    const soonMade = A.waitingItems(items, now).slice(0, 5);
+    const answeredMade = A.answeredItems(items).slice(0, 5);
     const most = Math.max(1, ...insights.byPhase.map((p) => p.count));
     const last = insights.lastThisPhase;
     const lastWords = last ? last.entry.what_happened_during || last.entry.feelings_after || last.entry.notes || last.entry.intention : null;
@@ -50,9 +57,10 @@
       ${UI.header({ back: { href: "/rituals/", label: "Rituals" }, eyebrow: `${insights.total} ${insights.total === 1 ? "ritual" : "rituals"}`, title: "Your moon" })}
       ${summary}
       ${
-        due.length
+        due.length || dueMade.length
           ? `<section class="sp-section" aria-labelledby="rt-due" id="did-it-work"><h2 class="sp-label" id="rt-due">Did it work?</h2>
-              ${due.map((entry) => D.card(entry, now, { title: true })).join("")}</section>`
+              ${due.map((entry) => D.card(entry, now, { title: true })).join("")}
+              ${dueMade.map((item) => D.itemCard(item, now)).join("")}</section>`
           : ""
       }
       ${D.worksSection(works)}
@@ -60,6 +68,13 @@
         soon.length
           ? `<section class="sp-section" aria-labelledby="rt-soon"><h2 class="sp-label" id="rt-soon">Looking back soon</h2>
               ${soon.map((entry) => D.card(entry, now, { title: true })).join("")}</section>`
+          : ""
+      }
+      ${
+        soonMade.length || answeredMade.length
+          ? `<section class="sp-section" aria-labelledby="rt-made" id="did-it-work-made"><h2 class="sp-label" id="rt-made">Spell jars &amp; sachets</h2>
+              <p class="sp-caption">What you’ve made in My Apothecary, and whether it worked.</p>
+              ${[...soonMade, ...answeredMade].map((item) => D.itemCard(item, now)).join("")}</section>`
           : ""
       }
       ${
@@ -104,7 +119,7 @@
   async function start() {
     await global.SaltPage.ready();
     await UI.attempt(render, "Your journal couldn't be opened");
-    D.bind(UI.root(), () => current, () => UI.attempt(render, "Your journal couldn't be opened"));
+    D.bind(UI.root(), () => current, () => UI.attempt(render, "Your journal couldn't be opened"), { list: () => made, save: S.saveApothecaryMetadata });
     global.SaltPage.onUserChange(() => UI.attempt(render, "Your journal couldn't be opened"));
   }
 

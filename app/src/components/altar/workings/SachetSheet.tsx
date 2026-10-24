@@ -9,7 +9,10 @@ import { Button } from '../../Button';
 import { shortLabel } from '../../../lib/altar/cabinet';
 import { PLANETS, PLANET_DAY, WEEKDAY_NAMES, type Planet } from '../../../lib/altar/reading/correspondence';
 import type { SavedObject } from '../../../lib/altar/types';
+import { startItemLookBack } from '../../../lib/altar/apothecaryLookBack';
 import { saveApothecary, useWorkshop } from '../../../lib/altar/workshop';
+import type { LookBackPick } from '../../rituals/DidItWork';
+import { ItemLookBackPicker, PlacedDidItWork } from '../../rituals/ItemDidItWork';
 import {
   addFilling,
   emptySachet,
@@ -81,6 +84,8 @@ function SachetBuilder({ altar, onPlace, center }: Props) {
   const [kind, setKind] = useState<FillingKind>('herb');
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
+  // "Did it work?": the day that suits its purpose, unless another is chosen.
+  const [lookBack, setLookBack] = useState<{ pick: LookBackPick; custom: string }>({ pick: 'suggested', custom: '' });
   const planet: Planet = bag.planet ?? sachetPlanet(bag.fillings);
 
   const add = (p: Picked) => {
@@ -93,7 +98,7 @@ function SachetBuilder({ altar, onPlace, center }: Props) {
     if (why) return setProblem(why);
     setBusy(true);
     const now = nowIso();
-    let item = sachetItem(bag, now);
+    let item = startItemLookBack(sachetItem(bag, now), lookBack.pick, new Date(now), lookBack.custom);
     try {
       item = await saveApothecary(userId, item, null);
     } catch {
@@ -160,6 +165,12 @@ function SachetBuilder({ altar, onPlace, center }: Props) {
       <Text style={type.caption}>{bag.planet ? 'Your choice.' : 'Chosen from what’s inside; tap another to change it.'}</Text>
 
       <Field label="Name the bag" value={bag.name} onChangeText={(name) => setBag((b) => ({ ...b, name }))} placeholder={`${bag.purpose.trim() || 'Charm'} bag`} maxLength={60} />
+      <ItemLookBackPicker
+        item={{ id: '', name: bag.name || `${bag.purpose.trim()} bag`, intention: bag.purpose, createdAt: '' }}
+        value={lookBack.pick}
+        custom={lookBack.custom}
+        onChange={(pick, custom) => setLookBack({ pick, custom })}
+      />
       {problem && <Text style={sheetStyles.problem}>{problem}</Text>}
       <Button label={busy ? 'Tying…' : 'Tie it and place it'} onPress={tie} disabled={busy} />
     </View>
@@ -212,6 +223,7 @@ export function SachetFeedSheet({ visible, object, onClose, onUpdate }: FeedProp
               Fed {state.feedings.length} time{state.feedings.length === 1 ? '' : 's'}, last on {new Date(state.feedings[state.feedings.length - 1].at).toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })}.
             </Text>
           )}
+          <PlacedDidItWork apothecaryItemId={object.apothecaryItemId} />
         </View>
       )}
     </Sheet>
