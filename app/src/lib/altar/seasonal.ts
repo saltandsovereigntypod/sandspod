@@ -273,7 +273,7 @@ export const SEASONAL_OBJECTS: SeasonalObject[] = [
     description: 'A handful of wildflowers from the meadow and the hedgerow, daisies, poppies, cornflowers and clover, for the season at its fullest.',
   },
   {
-    id: 'autumn-leaves', name: 'Autumn Leaves', festivals: season('autumn'),
+    id: 'autumn-leaves', name: 'Fallen Leaves', festivals: season('autumn'),
     keywords: ['leaves', 'fall', 'oak', 'maple', 'red and gold', 'letting go', 'release', 'harvest', 'the turning year'],
     description: 'Leaves gathered as they turn red and gold, kept as the year leans toward rest and letting go.',
   },

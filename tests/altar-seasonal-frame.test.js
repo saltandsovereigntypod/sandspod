@@ -64,7 +64,7 @@ test("the Norse, Celtic and seasonal things join the website's cabinet once pain
   const records = cabinetApi(artwork).getSearchRecords();
   assert.ok(records.find((r) => r.title === "Drinking Horn").aliases.includes("Odin"));
   assert.ok(records.find((r) => r.title === "May Bush").aliases.includes("Bealtaine"));
-  assert.ok(records.find((r) => r.title === "Autumn Leaves" && r.destination.category === "seasonal").aliases.includes("Autumn"));
+  assert.ok(records.find((r) => r.title === "Fallen Leaves" && r.destination.category === "seasonal").aliases.includes("Autumn"));
   // Not offered until painted.
   assert.ok(!cabinetApi({ ...Artwork, seasonal: {} }).getSearchRecords().some((r) => r.title === "May Bush"));
   // Near: the Celtic year's Bealtaine with the Wheel's Beltane things; Jól only for those who keep the Norse year.
