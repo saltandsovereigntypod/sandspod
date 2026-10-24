@@ -1603,6 +1603,16 @@ body.altar-cabinet-overlay-open {
   text-align: center;
 }
 
+/* The festivals a seasonal thing is kept for, under its name. */
+.altar-cabinet .cabinet-tile-festival {
+  display: block;
+  color: var(--gold, #b9a05d);
+  opacity: 0.85;
+  font-size: 0.7rem;
+  line-height: 1.25;
+  text-align: center;
+}
+
 .altar-cabinet .cabinet-tile-icon {
   display: grid !important;
   place-items: center !important;

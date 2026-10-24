@@ -1,14 +1,17 @@
-// Seasonal things: tagged with their sabbats, first in the cabinet in the week
-// before a sabbat, one set out on tonight's altar on a sabbat night, and the
-// food ones going over as offerings do.
+// Seasonal things on the Wheel of the Year: tagged with their sabbats, first
+// in the cabinet in the week before a sabbat, one set out on tonight's altar on
+// a sabbat night, and the food ones going over as offerings do. (The Greek
+// festivals' are in altar-seasonal-festivals.test.ts.)
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { builtInCabinet, cabinetCategoriesFor, cabinetItemsFor, objectFromForm } from '../src/lib/altar/cabinet.ts';
 import { offeringFreshness, offeringOf, perishableItself } from '../src/lib/altar/offerings.ts';
 import {
+  festivalsNear,
   holidayKey,
   sabbatNear,
+  sabbatsOf,
   sabbatOfHoliday,
   SEASONAL_OBJECTS,
   seasonalCabinetItems,
@@ -26,8 +29,8 @@ const pictures = (ids: string[]) => Object.fromEntries(ids.map((id) => [id, `../
 const ALL = pictures(SEASONAL_OBJECTS.map((o) => o.id));
 
 test('every seasonal thing is tagged with its sabbats, and only those with a picture are offered', () => {
-  for (const o of SEASONAL_OBJECTS) assert.ok(o.sabbats.length >= 1, o.id);
-  const tags = (id: string) => SEASONAL_OBJECTS.find((o) => o.id === id)?.sabbats;
+  for (const o of SEASONAL_OBJECTS) assert.ok(o.festivals.length >= 1, o.id);
+  const tags = (id: string) => sabbatsOf(SEASONAL_OBJECTS.find((o) => o.id === id)!);
   assert.deepEqual(tags('pumpkin-lantern'), ['samhain']);
   assert.deepEqual(tags('yule-log'), ['yule']);
   assert.deepEqual(tags('brigids-cross'), ['imbolc']);
@@ -69,6 +72,7 @@ test('holiday ids from the calendars name their sabbat', () => {
   assert.equal(sabbatOfHoliday('celtic-samhain_gaelic-2026-9-31'), 'samhain');
   assert.equal(sabbatOfHoliday('celtic-lughnasadh-2026-7-1'), 'lammas');
   assert.equal(sabbatOfHoliday('celtic-bealtaine-2026-4-1'), 'beltane');
+  assert.equal(sabbatOfHoliday('celtic-la_fheile_bride-2026-1-1'), 'imbolc');
   assert.equal(sabbatOfHoliday('roman-saturnalia-2026-11-17'), null);
 });
 
@@ -77,16 +81,18 @@ test('the Seasonal drawer comes first near a sabbat, with its things "For Samhai
   assert.equal(cabinetCategoriesFor(true)[0].id, 'seasonal');
   assert.equal(cabinetCategoriesFor(true).length, cabinetCategoriesFor(false).length);
   const items = seasonalCabinetItems(ALL);
-  const near = sabbatNear(new Date(2026, 9, 27), null);
+  const near = festivalsNear(new Date(2026, 9, 27), null);
   const sections = seasonalSections(items, near);
   assert.equal(sections[0].title, 'For Samhain');
   assert.deepEqual(sections[0].items.map((i) => i.id), ['seasonal:pumpkin-lantern', 'seasonal:turnip-lantern', 'seasonal:pomegranate', 'seasonal:apples', 'seasonal:gourds']);
-  // Then round the wheel from Samhain; each thing once.
-  assert.deepEqual(sections.map((s) => s.title), ['For Samhain', 'Yule', 'Imbolc', 'Ostara', 'Beltane', 'Litha', 'Lammas']);
+  // Then the rest of the wheel, from Yule; each thing once.
+  assert.deepEqual(sections.map((s) => s.title), ['For Samhain', 'Wheel of the Year', 'Greek festivals']);
+  assert.equal(sections[1].items[0].id, 'seasonal:yule-log');
   const ids = sections.flatMap((s) => s.items.map((i) => i.id));
   assert.equal(new Set(ids).size, items.length);
-  // Between sabbats, no "For".
-  assert.equal(seasonalSections(items, null)[0].title, 'Samhain');
+  // Between festivals, no "For".
+  assert.equal(seasonalSections(items, null)[0].title, 'Wheel of the Year');
+  assert.equal(seasonalSections(items, [])[0].items[0].id, 'seasonal:pumpkin-lantern');
   // Anything without a sabbat (your own) comes last.
   const own: CabinetItem = { id: 'custom:x', category: 'seasonal', name: 'Mine', keywords: [], forms: [] };
   assert.equal(seasonalSections([...items, own], null).at(-1)?.title, 'Your own');

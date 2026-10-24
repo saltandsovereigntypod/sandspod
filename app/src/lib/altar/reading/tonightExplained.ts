@@ -9,7 +9,7 @@ import { boxHeightFraction, displayBox, objectSize, withCenter, withSize } from 
 import type { TonightAltar } from '../tonight.ts';
 import type { CabinetForm, CabinetItem, SavedObject } from '../types.ts';
 import { resolveAltarEntry } from '../companion.ts';
-import { sabbatName, seasonalIdOf, seasonalObject } from '../seasonal.ts';
+import { festivalName, seasonalIdOf, seasonalObject } from '../seasonal.ts';
 import { correspondenceOf, handleSafe, libraryOr, listing, planetName, planetOfWeekday, planetPossessive, type Planet } from './correspondence.ts';
 
 export type TonightTheme = { planet: Planet | null; holiday: string | null; moon: 'full' | 'new' | null };
@@ -43,10 +43,11 @@ export function whyThisPiece(object: SavedObject, theme: TonightTheme, entries?:
   if (theme.moon === 'new' && object.type === 'candle' && form === 'chime-spell') return `${name}: dark candles for the new moon, the quiet start of the month.`;
   if (theme.moon === 'new' && object.vessel === 'spell-jar') return `${name}: an empty jar for the new moon, ready for something to begin.`;
 
-  // A sabbat's seasonal thing (seasonal.ts).
+  // A festival's seasonal thing (seasonal.ts).
   const seasonal = seasonalObject(seasonalIdOf(object) ?? '');
   if (seasonal) {
-    return theme.holiday ? `${name}: one of the things kept at ${theme.holiday}.` : `${name}: kept at ${listing(seasonal.sabbats.map(sabbatName))}.`;
+    const festivals = seasonal.festivals.map(festivalName).filter(Boolean);
+    return theme.holiday && festivals.includes(theme.holiday) ? `${name}: one of the things kept at ${theme.holiday}.` : `${name}: kept at ${listing(festivals)}.`;
   }
   if (object.type === 'deity') {
     const domains = splitList(plainValue(entry?.traditional?.Domains)).slice(0, 2).map((d) => d.toLowerCase());

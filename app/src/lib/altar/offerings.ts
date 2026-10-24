@@ -13,7 +13,7 @@
 
 import { isCandle, logAppEvent, appStateOf, placedAtOf } from './livingState.ts';
 import { isFrame } from './frame.ts';
-import { seasonalFood, seasonalIdOf } from './seasonal.ts';
+import { seasonalFood, seasonalHolds, seasonalIdOf } from './seasonal.ts';
 import { shelfObjectOf } from './shelf.ts';
 import type { SavedObject } from './types.ts';
 import type { Offering } from './devotion.ts';
@@ -311,7 +311,8 @@ export function agingLook(kind: OfferingKindId, fresh: Freshness): OfferingLook 
 const HOLDERS = new Set(['offering-bowl', 'dish', 'bowl', 'chalice', 'cauldron']);
 
 export function holdsOfferings(object: SavedObject): boolean {
-  return (object.type === 'vessel' && HOLDERS.has(String(object.vessel))) || (object.type === 'tool' && object.tool === 'chalice');
+  // The seasonal phiale holds a libation as the chalice does (seasonal.ts).
+  return (object.type === 'vessel' && HOLDERS.has(String(object.vessel))) || (object.type === 'tool' && object.tool === 'chalice') || seasonalHolds(object);
 }
 
 /** A fresh-cut sprig set on the altar ages like cut flowers. */

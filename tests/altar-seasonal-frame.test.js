@@ -35,6 +35,28 @@ test("seasonal things with a picture join the website's cabinet, found by their 
   assert.ok(!cabinetApi({ ...Artwork, seasonal: {} }).getSearchRecords().some((r) => r.destination.category === "seasonal"));
 });
 
+test("the Greek festivals' things join the website's cabinet once painted, found by festival and god, near only for the calendars kept", () => {
+  const A = core();
+  const artwork = { ...Artwork, seasonal: { ...Artwork.seasonal, thyrsus: "../assets/altar/objects/seasonal/thyrsus/thyrsus.png" } };
+  const records = cabinetApi(artwork).getSearchRecords();
+  const thyrsus = records.find((r) => r.title === "Thyrsus");
+  assert.ok(thyrsus);
+  assert.ok(thyrsus.aliases.includes("Dionysus"));
+  assert.ok(thyrsus.aliases.includes("City Dionysia"));
+  // Not offered until its picture is painted.
+  assert.ok(!cabinetApi({ ...Artwork, seasonal: {} }).getSearchRecords().some((r) => r.title === "Thyrsus"));
+  // The Pyanepsia (17 October 2026) is near a week before, for those who keep the Greek calendar.
+  const keys = (choice) => [...A.seasonal.festivalsNear(new Date(2026, 9, 10, 12), choice).map((n) => n.key)];
+  assert.deepEqual(keys({ traditions: ["hellenic", "hellenic_monthly"], custom: [] }), ["hellenic/deipnon", "hellenic/noumenia", "hellenic/pyanepsia"]);
+  assert.deepEqual(keys(null), []);
+  // The drawer's sections and the tile's festivals, from the same core as the app's.
+  const items = A.seasonal.seasonalCabinetItems({ thyrsus: "t.png", apples: "a.png" });
+  assert.deepEqual([...A.seasonal.seasonalSections(items, []).map((s) => s.title)], ["Wheel of the Year", "Greek festivals"]);
+  assert.equal(items.find((i) => i.id === "seasonal:thyrsus").description, "Lenaia · City Dionysia");
+  assert.ok(A.offerings.holdsOfferings({ type: "seasonal", form: "phiale" }));
+  assert.equal(A.offerings.perishableItself({ type: "seasonal", form: "kykeon", label: "Kykeon" }), "drink");
+});
+
 test("the new tools and natural finds with a picture join the website's cabinet", () => {
   const artwork = { ...Artwork, shelfTools: { "singing-bowl": "../assets/altar/objects/tools/singing-bowl/singing-bowl.png" }, natural: { "hag-stone": "../assets/altar/objects/natural/hag-stone/hag-stone.png" } };
   const records = cabinetApi(artwork).getSearchRecords();

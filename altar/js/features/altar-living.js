@@ -114,7 +114,7 @@
 
     out.push(`<div><p class="app-living__eyebrow">${esc(eyebrow)}</p><h3 class="app-living__title">${esc(label)}</h3>
       ${attunement.attuned ? `<p class="app-living__attuned">✦ ${esc(attunement.line)}</p>` : ""}
-      ${caption(core.shelf.shelfDescription(saved))}
+      ${caption(core.shelf.shelfDescription(saved) || core.seasonal.seasonalDescription(saved))}
       ${caption(candleCaption)}</div>`);
     out.push(chips([
       { label: "Look closer", symbol: "◎", action: "closer", hint: `Look closer at ${label}: shown large, with every mark on it` },

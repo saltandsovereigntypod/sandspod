@@ -29,11 +29,11 @@ export const cabinetCategories: { id: CabinetCategoryId; label: string }[] = [
 ];
 
 /**
- * The drawers in order: the Seasonal drawer comes first while a sabbat is
- * near (seasonal.ts sabbatNear), so its things are the first thing you see.
+ * The drawers in order: the Seasonal drawer comes first while a festival is
+ * near (seasonal.ts festivalsNear), so its things are the first thing you see.
  */
-export function cabinetCategoriesFor(sabbatIsNear: boolean): { id: CabinetCategoryId; label: string }[] {
-  if (!sabbatIsNear) return cabinetCategories;
+export function cabinetCategoriesFor(festivalIsNear: boolean): { id: CabinetCategoryId; label: string }[] {
+  if (!festivalIsNear) return cabinetCategories;
   return [...cabinetCategories.filter((c) => c.id === 'seasonal'), ...cabinetCategories.filter((c) => c.id !== 'seasonal')];
 }
 
@@ -187,7 +187,7 @@ export const builtInCabinet: CabinetItem[] = [
     form: 'standard',
   }),
   ...fromArtwork(ALTAR_ARTWORK.items.vessels),
-  // Seasonal things for the sabbats, those that have a picture (seasonal.ts).
+  // Seasonal things for the festivals, those that have a picture (seasonal.ts).
   ...seasonalCabinetItems(ALTAR_ARTWORK.seasonal ?? {}),
   // Natural finds: feathers, a hag stone, shells, acorns (shelf.ts).
   ...naturalItems(ALTAR_ARTWORK.natural ?? {}),
@@ -320,7 +320,7 @@ export function cabinetSearchAliases(item: CabinetItem): string[] {
         : item.category === 'crystals'
           ? ['crystal', 'crystals']
           : item.category === 'seasonal'
-            ? ['seasonal', 'sabbat', 'wheel of the year']
+            ? ['seasonal', 'festival', 'holiday']
           : item.category === 'natural'
             ? ['natural', 'nature', 'found']
           : item.category === 'plants'
