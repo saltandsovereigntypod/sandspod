@@ -452,8 +452,8 @@ security definer
 set search_path = public
 as $$
 begin
-  delete from public.coven_program_tasks where program_id = p_program and not (id = any (p_tasks));
-  delete from public.coven_program_stages where program_id = p_program and not (id = any (p_stages));
+  delete from public.coven_program_tasks where program_id = p_program and id <> all (p_tasks);
+  delete from public.coven_program_stages where program_id = p_program and id <> all (p_stages);
 end;
 $$;
 
@@ -583,7 +583,7 @@ begin
                     and not exists (select 1 from public.coven_program_stage_passes p where p.enrollment_id = e.id and p.stage_id = s.id)
                   order by s.position limit 1),
       stage_started_at = coalesce(e.stage_started_at, now()), updated_at = now()
-  where e.program_id = saved.id and e.status in ('active', 'paused') and (e.stage_id is null or not (e.stage_id = any (kept_stages)));
+  where e.program_id = saved.id and e.status in ('active', 'paused') and (e.stage_id is null or e.stage_id <> all (kept_stages));
   return saved;
 end;
 $$;
