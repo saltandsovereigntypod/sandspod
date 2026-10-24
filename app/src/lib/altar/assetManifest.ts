@@ -2,9 +2,10 @@
 // Website asset path (as saved in altar JSON, without ../ or leading /) to
 // the app's bundled WebP copy and the website original's pixel size (the
 // website sizes each object box from the image's natural aspect ratio).
-// Herbs' and crystals' forms share a sheet per item: `crop` is the form's
-// pixel rect on it and the sheet's size (show it with lib/altar/assets
-// altarPicture and AltarImage, never the bare source).
+// Herbs' and crystals' forms, and potted plants' stages, share a sheet per
+// item: `crop` is the picture's pixel rect on it and the sheet's size
+// (show it with lib/altar/assets altarPicture and AltarImage, never the
+// bare source).
 
 export type BundledAltarCrop = { x: number; y: number; w: number; h: number; sheetW: number; sheetH: number };
 
@@ -596,6 +597,9 @@ const f584 = require('../../../assets/altar/sheets/herbs/willow.webp');
 const f585 = require('../../../assets/altar/sheets/herbs/wormwood.webp');
 const f586 = require('../../../assets/altar/sheets/herbs/yarrow.webp');
 const f587 = require('../../../assets/altar/sheets/herbs/yew.webp');
+const f588 = require('../../../assets/altar/sheets/plants/basil.webp');
+const f589 = require('../../../assets/altar/sheets/plants/pothos.webp');
+const f590 = require('../../../assets/altar/sheets/plants/snake-plant.webp');
 
 export const bundledAltarAssets: Record<string, { source: number; width: number; height: number; crop?: BundledAltarCrop }> = {
   'assets/altar/backgrounds/autumn-harvest.png': { source: f0, width: 1536, height: 1024 },
@@ -1368,6 +1372,13 @@ export const bundledAltarAssets: Record<string, { source: number; width: number;
   'assets/altar/objects/offerings/honeycomb/honeycomb.png': { source: f325, width: 1536, height: 1024 },
   'assets/altar/objects/offerings/meal/meal.png': { source: f326, width: 1536, height: 1024 },
   'assets/altar/objects/offerings/sweets/sweets.png': { source: f327, width: 1536, height: 1024 },
+  'assets/altar/objects/plants/basil/basil-established.png': { source: f588, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 1024 } },
+  'assets/altar/objects/plants/pothos/pothos-established.png': { source: f589, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/pothos/pothos-lush.png': { source: f589, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/pothos/pothos-young.png': { source: f589, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/snake-plant/snake-plant-established.png': { source: f590, width: 1024, height: 1536, crop: { x: 0, y: 1032, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/snake-plant/snake-plant-lush.png': { source: f590, width: 1024, height: 1536, crop: { x: 0, y: 2064, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
+  'assets/altar/objects/plants/snake-plant/snake-plant-young.png': { source: f590, width: 1024, height: 1536, crop: { x: 0, y: 0, w: 683, h: 1024, sheetW: 683, sheetH: 3088 } },
   'assets/altar/objects/seasonal/apples/apples.png': { source: f328, width: 1536, height: 1024 },
   'assets/altar/objects/seasonal/brigids-cross/brigids-cross.png': { source: f329, width: 1264, height: 1264 },
   'assets/altar/objects/seasonal/corn-dolly/corn-dolly.png': { source: f330, width: 1024, height: 1536 },

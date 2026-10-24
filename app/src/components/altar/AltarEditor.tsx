@@ -23,6 +23,25 @@ import { AltarRitualOverlay } from './connect/AltarRitualOverlay';
 import { AncestorPanelSection, AncestorShrineSheet } from './connect/AncestorSheets';
 import { FrameNameSheet, FramePanelSection } from './connect/FrameSheets';
 import { FRAME_PHOTO_FOLDER, removeFramePhoto, setFrameAged, setFrameCaption, setFramePhoto } from '../../lib/altar/frame';
+import { HarvestSheet, PlantDetailsSheet, PlantJournalSheet, PottedPanelSection } from './connect/PottedSheets';
+import {
+  addJournal,
+  harvestPlant,
+  isPottedPlant,
+  plantTitle,
+  PLANT_PHOTO_FOLDER,
+  removeJournal,
+  removePlantPhoto,
+  setPlantDetails,
+  setPlantPhoto,
+  setPlantStage,
+  thirstOf,
+  waterPlant,
+  wateringDue,
+  wateringNote,
+  type PlantStage,
+} from '../../lib/altar/pottedPlants';
+import { harvestSprig } from '../../lib/altar/pottedSprig';
 import { keepImageOnDevice, pickImage, uploadImage } from '../../lib/altar/images';
 import { sabbatNear } from '../../lib/altar/seasonal';
 import { shelfDescription } from '../../lib/altar/shelf';
@@ -238,6 +257,9 @@ type SheetName =
   | 'share'
   | 'history'
   | 'frame-name'
+  | 'potted-details'
+  | 'potted-harvest'
+  | 'potted-journal'
   | null;
 
 const nowIso = () => new Date().toISOString();
@@ -319,7 +341,10 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
       redo.current = [];
       // Offerings that have gone over while you were away ask, gently, to be tended.
       const due = tendingNote(offeringsDue([{ id: id ?? '', name: altarName, objects: prepared.objects }], Date.now()), { oneAltar: true });
-      if (due) setNotice(`${due} Tap it to refresh it, give it back, or leave it as it is.`);
+      // And potted plants that would like water.
+      const thirsty = wateringNote(wateringDue([{ id: id ?? '', name: altarName, objects: prepared.objects }], Date.now()), { oneAltar: true });
+      if (due) setNotice(`${due} Tap it to refresh it, give it back, or leave it as it is.${thirsty ? ` ${thirsty}` : ''}`);
+      else if (thirsty) setNotice(`${thirsty} Tap it to mark it watered.`);
     };
     if (shared) {
       if (shared.initial) start(shared.initial, shared.key, shared.name);
@@ -791,6 +816,8 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
     for (const object of doc?.objects ?? []) {
       const fresh = offeringFreshness(object, minute * 60_000);
       if (fresh && fresh.level !== 'lasting' && object.altarObjectId) looks[object.altarObjectId] = true;
+      // A potted plant drooping for want of water.
+      if (isPottedPlant(object) && object.altarObjectId && thirstOf(object, minute * 60_000).droop > 0) looks[object.altarObjectId] = true;
     }
     return looks;
   }, [doc, minute]);
@@ -1068,6 +1095,43 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
       setFraming(false);
     }
   };
+  /** A photo of the real plant (by the pot's id), saved as a frame's photo is. */
+  const choosePlantPhoto = async (id: string) => {
+    try {
+      const picked = await pickImage();
+      if (!picked) return;
+      setFraming(true);
+      const userId = workshop.userId;
+      const saved = userId ? await uploadImage(userId, picked, PLANT_PHOTO_FOLDER) : { url: await keepImageOnDevice(picked, PLANT_PHOTO_FOLDER), storagePath: '' };
+      const index = indexOfId(id);
+      if (index < 0) return;
+      commit((d) => updateObjects(d, [index], (o) => setPlantPhoto(o, saved.url, saved.storagePath, nowIso())));
+      setNotice(userId ? 'The photo is kept with it.' : 'The photo is kept with it on this device; sign in to see it on the website too.');
+    } catch (e) {
+      setNotice(e instanceof Error ? e.message : 'The photo couldn’t be saved. Please try again.');
+    } finally {
+      setFraming(false);
+    }
+  };
+  /** A harvest from a potted herb: logged with the moon, and set on the altar as a fresh sprig or kept for a working. */
+  const harvestSelected = (harvest: { amount: string; to: 'altar' | 'working'; note: string }) => {
+    if (selected == null || !selectedObject) return;
+    const plant = selectedObject;
+    const who = plantTitle(plant);
+    const herb = (plant.herb ? String(plant.herb) : 'herb').toLowerCase();
+    setSheet(null);
+    if (harvest.to === 'altar') {
+      const sprig = harvestSprig(plant, doc?.objects ?? [], nowIso());
+      commit((d) => {
+        const logged = updateObjects(d, [selected], (o) => harvestPlant(o, harvest, nowIso()));
+        return sprig ? addObject(logged, sprig) : logged;
+      });
+      setNotice(sprig ? `A fresh sprig of ${herb} from ${who} is on the altar.` : `The harvest is in ${who}’s journal.`);
+      return;
+    }
+    changeSelected((o) => harvestPlant(o, harvest, nowIso()));
+    setNotice(`The harvest is in ${who}’s journal. Add the ${herb} when you fill your spell jar or sachet (Workings).`);
+  };
   const placeFromPractice = (object: import('../../lib/altar/types').SavedObject) => {
     const index = docRef.current?.objects.length ?? 0;
     commit((d) => addObject(d, object));
@@ -1249,6 +1313,17 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
               },
               frameAged: (aged) => changeSelected((o) => setFrameAged(o, aged, nowIso())),
               frameName: () => setSheet('frame-name'),
+              water: () => {
+                changeSelected((o) => waterPlant(o, nowIso()));
+                setNotice(`${plantTitle(selectedObject)} is watered.`);
+              },
+              plantStage: (stage) => changeSelected((o) => setPlantStage(o, stage, nowIso())),
+              plantDetails: () => setSheet('potted-details'),
+              plantPhoto: () => void choosePlantPhoto(selectedUid),
+              removePlantPhoto: () => changeSelected((o) => removePlantPhoto(o, nowIso())),
+              harvest: () => setSheet('potted-harvest'),
+              plantJournal: () => setSheet('potted-journal'),
+              removeJournal: (id) => changeSelected((o) => removeJournal(o, id, nowIso())),
             }}
           />
         ) : doc ? (
@@ -1608,6 +1683,30 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
               changeSelected((o) => setFrameCaption(o, caption, nowIso()));
               setSheet(null);
               setNotice(caption.name.trim() ? `The frame is named for ${caption.name.trim()}.` : 'The name is taken from the frame.');
+            }}
+          />
+          <PlantDetailsSheet
+            visible={sheet === 'potted-details' && !!selectedObject && isPottedPlant(selectedObject)}
+            object={selectedObject}
+            onClose={() => setSheet(null)}
+            onSave={(details) => {
+              changeSelected((o) => setPlantDetails(o, details, nowIso()));
+              setSheet(null);
+            }}
+          />
+          <HarvestSheet
+            visible={sheet === 'potted-harvest' && !!selectedObject && isPottedPlant(selectedObject)}
+            object={selectedObject}
+            onClose={() => setSheet(null)}
+            onSave={harvestSelected}
+          />
+          <PlantJournalSheet
+            visible={sheet === 'potted-journal' && !!selectedObject && isPottedPlant(selectedObject)}
+            object={selectedObject}
+            onClose={() => setSheet(null)}
+            onSave={(entry) => {
+              changeSelected((o) => addJournal(o, entry, nowIso()));
+              setSheet(null);
             }}
           />
           <OfferingSheet
@@ -1987,6 +2086,14 @@ type Actions = {
   removeFramePhoto: () => void;
   frameAged: (aged: boolean) => void;
   frameName: () => void;
+  water: () => void;
+  plantStage: (stage: PlantStage) => void;
+  plantDetails: () => void;
+  plantPhoto: () => void;
+  removePlantPhoto: () => void;
+  harvest: () => void;
+  plantJournal: () => void;
+  removeJournal: (id: string) => void;
 };
 
 function ObjectPanel({
@@ -2127,6 +2234,19 @@ function ObjectPanel({
         onRemovePhoto={act.removeFramePhoto}
         onAged={act.frameAged}
         onName={act.frameName}
+      />
+      <PottedPanelSection
+        object={object}
+        now={now.getTime()}
+        busy={framing}
+        onWater={act.water}
+        onStage={act.plantStage}
+        onDetails={act.plantDetails}
+        onPhoto={act.plantPhoto}
+        onRemovePhoto={act.removePlantPhoto}
+        onHarvest={act.harvest}
+        onJournal={act.plantJournal}
+        onRemoveEntry={act.removeJournal}
       />
       <AncestorPanelSection object={object} altarId={connect.altarId} onLight={act.light} onBeginRite={connect.onBeginRite} />
       <StonePanelSection object={object} altarName={connect.altarName} lastAltarCare={connect.lastAltarCare} />

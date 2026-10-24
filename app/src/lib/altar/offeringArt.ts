@@ -4,13 +4,15 @@
 // bowl, dish, chalice or cauldron until only a tide line and a stain are
 // left, food or flowers heaped in a vessel (a painted heap, clipped to its
 // rim) going over in the same way, and a stick of incense burning down to a
-// little ash.
+// little ash; and a potted plant drooping and dulling for want of water
+// (pottedPlants.ts), more gently than any offering.
 // The app (AltarStage) and the website (living-art.js) both draw from this,
 // in the object's box (the website's 80px button). Pure, so it can be tested.
 
 import { ALTAR_ARTWORK } from './artworkData.ts';
 import { pictureBox } from './flame.ts';
 import { incenseFormOf, incenseLife, isIncense } from './incense.ts';
+import { isPottedPlant, thirstLook } from './pottedPlants.ts';
 import { agingLook, isOfferingItself, offeringFreshness, offeringOf, type OfferingKindId, type OfferingLook } from './offerings.ts';
 import type { SavedObject } from './types.ts';
 
@@ -242,6 +244,14 @@ export function offeringArt(
   foods: FoodPictures = ALTAR_ARTWORK.offeringFoods ?? {},
 ): OfferingArt | null {
   if (!(width > 0) || !(height > 0)) return null;
+  // A pot that would like water sags a little and dulls; it perks up when watered.
+  if (isPottedPlant(object)) {
+    const thirst = thirstLook(object, now);
+    if (!thirst) return null;
+    const { sepia, saturate, brightness } = thirst.tint;
+    const tint = sepia > 0.01 || saturate < 0.99 || brightness < 0.99 ? thirst.tint : null;
+    return { tint, bend: { rotate: 0, scaleX: thirst.widen, scaleY: thirst.sag }, liquid: null, tide: null, stain: null, petals: [], food: null };
+  }
   const fresh = offeringFreshness(object, now);
   if (!fresh || fresh.level === 'lasting') return null;
   const look = agingLook(fresh.kind, fresh);

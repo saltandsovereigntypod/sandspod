@@ -9,6 +9,7 @@ import { nextLayer } from './layers.ts';
 import { ensureLivingState } from './livingState.ts';
 import type { AltarBackground, CabinetCategoryId, CabinetForm, CabinetItem, SavedObject } from './types.ts';
 import { ALTAR_ARTWORK } from './artworkData.ts';
+import { pottedCabinetItems } from './pottedPlants.ts';
 import { seasonalCabinetItems } from './seasonal.ts';
 import { glowsWhenPlaced, naturalItems, shelfToolItems } from './shelf.ts';
 
@@ -21,6 +22,7 @@ export const cabinetCategories: { id: CabinetCategoryId; label: string }[] = [
   { id: 'vessels', label: 'Vessels' },
   { id: 'natural', label: 'Natural' },
   { id: 'seasonal', label: 'Seasonal' },
+  { id: 'plants', label: 'Plants' },
 ];
 
 /**
@@ -186,6 +188,8 @@ export const builtInCabinet: CabinetItem[] = [
   ...seasonalCabinetItems(ALTAR_ARTWORK.seasonal ?? {}),
   // Natural finds: feathers, a hag stone, shells, acorns (shelf.ts).
   ...naturalItems(ALTAR_ARTWORK.natural ?? {}),
+  // Pots for your real houseplants and windowsill herbs, those that have a picture (pottedPlants.ts).
+  ...pottedCabinetItems(),
 ];
 
 /** Label of an object placed from a form (cabinet.js renderCabinetTile). */
@@ -314,6 +318,8 @@ export function cabinetSearchAliases(item: CabinetItem): string[] {
             ? ['seasonal', 'sabbat', 'wheel of the year']
           : item.category === 'natural'
             ? ['natural', 'nature', 'found']
+          : item.category === 'plants'
+            ? ['plant', 'plants', 'houseplant', 'pot', 'potted']
           : item.name === 'Spell Jar'
             ? ['jar', 'spell jar', 'spell jars']
             : [];

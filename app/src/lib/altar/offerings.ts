@@ -267,7 +267,8 @@ export function holdsOfferings(object: SavedObject): boolean {
 export const isFreshSprig = (object: SavedObject) => object.type === 'herb' && object.form === 'sprig';
 
 /** Kinds of thing that are never a perishable offering in themselves, whatever they're called. */
-const NEVER_ITSELF = new Set(['candle', 'herb', 'oil', 'crystal', 'deity', 'apothecary', 'incense', 'cloth']);
+// A potted plant (pottedPlants.ts) is a living thing that wants water, never an offering, whatever it's named.
+const NEVER_ITSELF = new Set(['candle', 'herb', 'oil', 'crystal', 'deity', 'apothecary', 'incense', 'cloth', 'plant']);
 /** Words that mean it's a likeness, not the real thing ("silk roses", "a wooden apple"). */
 const LIKENESS = / (silk|artificial|fake|paper|plastic|wax|wooden|ceramic|carved|brass|statue|figurine|painting|print|picture) /;
 
