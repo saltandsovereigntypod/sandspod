@@ -1,12 +1,14 @@
-import { useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useCallback, useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
-import { CovenScreen } from '../../../../../../components/covens/CovenScreen';
-import { CovenAltarView, Pill, Pills, Spoken, Words } from '../../../../../../components/covens/ui';
+import { CovenScreen, covenHref } from '../../../../../../components/covens/CovenScreen';
+import { Pill, Pills, Spoken, Words } from '../../../../../../components/covens/ui';
 import { Card, Chips, Notice, Section } from '../../../../../../components/more/ui';
 import * as api from '../../../../../../lib/covens/api';
+import { changeAltarOnce, fetchCovenAltars, setRitualAltar, type CovenAltar } from '../../../../../../lib/covens/altarSync';
+import { stepAltarChange } from '../../../../../../lib/covens/ritualAltar';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
 import {
   altarActionButton,
@@ -22,6 +24,12 @@ import {
 } from '../../../../../../lib/covens/model';
 import { syncCovenReminders } from '../../../../../../lib/covens/reminders';
 import { colors, radius, type } from '../../../../../../theme';
+
+const ALTAR_ACCESS = [
+  { value: 'assigned', label: 'Whoever’s step it is' },
+  { value: 'everyone', label: 'Everyone' },
+  { value: 'leader', label: 'Only the leader' },
+] as const;
 
 const ANSWERS = [
   { value: 'going', label: 'Going' },
@@ -45,15 +53,22 @@ export default function RitualScreen() {
   const membership = coven.snapshot?.membership ?? null;
   const mine = stepIsMine(current, membership, coven.userId) && coven.standing.ok;
   const canLead = (coven.perms.lead && coven.standing.ok) || coven.perms.site;
-  const { loadMarks, loadAltar, track } = coven;
+  const { loadMarks, track } = coven;
+  const covenId = coven.snapshot?.coven.id;
+  const [altars, setAltars] = useState<CovenAltar[]>([]);
+  const loadAltars = useCallback(async () => {
+    if (covenId) setAltars(await fetchCovenAltars(covenId).catch(() => []));
+  }, [covenId]);
 
+  useEffect(() => {
+    void loadAltars();
+  }, [loadAltars]);
   useEffect(() => {
     if (!live || !id) return;
     void loadMarks(id);
-    void loadAltar().catch(() => {});
     track('ritual');
     return () => track('coven');
-  }, [live, id, loadMarks, loadAltar, track]);
+  }, [live, id, loadMarks, track]);
 
   const act = async (work: () => Promise<unknown>, after?: () => Promise<unknown>) => {
     setBusy(true);
@@ -90,10 +105,41 @@ export default function RitualScreen() {
     );
   };
 
+  // Held at its own altar, or the coven's main ritual altar.
+  const altar = altars.find((a) => a.id === ritual.altar_id) ?? altars.find((a) => a.is_main) ?? null;
+  const myName = coven.me?.profile?.display_name || 'A member';
+  const doAltarAction = async (step: NonNullable<typeof current>) => {
+    await api.performStepAction(step.id);
+    const done = coven.marks.filter((m) => m.ritual_id === ritual.id).length;
+    const change = stepAltarChange(step, ritual, myName, done, new Date().toISOString());
+    if (change && altar) await changeAltarOnce(altar.id, change);
+  };
+  const setAccess = (stepIndex: number, value: (typeof ALTAR_ACCESS)[number]['value']) =>
+    void act(() => setRitualAltar(ritual.id, ritual.altar_id ?? null, steps.map((s, i) => (i === stepIndex ? value : s.altar_access ?? 'assigned'))));
+
   const doneOnAltar = !!current && coven.marks.some((m) => m.step_id === current.id && m.user_id === coven.userId);
   const sharedAction = current?.altar_action === 'light_candle' || current?.altar_action === 'place_item';
   const showAltarButton = !!current?.altar_action && mine && !(sharedAction && doneOnAltar);
   const at = current ? steps.indexOf(current) : -1;
+  const canSchedule = coven.perms.schedule || coven.perms.site;
+  const confirmCancel = () =>
+    Alert.alert('Cancel this rite?', 'Those going are told it’s off. You can put it back on the calendar later.', [
+      { text: 'Keep it', style: 'cancel' },
+      { text: 'Cancel it', style: 'destructive', onPress: () => void act(() => api.setRitualStatus(ritual.id, 'cancelled')) },
+    ]);
+  const confirmDelete = () =>
+    Alert.alert('Delete this ritual?', 'Its steps and RSVPs go with it.', [
+      { text: 'Keep it', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: () =>
+          void act(async () => {
+            await api.setRitualStatus(ritual.id, 'deleted');
+            router.replace(covenHref(coven.slug, 'rituals'));
+          }),
+      },
+    ]);
   const confirmEnd = () =>
     Alert.alert('End the ritual now?', 'Steps not yet reached are left undone.', [
       { text: 'Keep going', style: 'cancel' },
@@ -131,7 +177,15 @@ export default function RitualScreen() {
           {!!current.spoken_text && <Spoken text={current.spoken_text} />}
           {!!current.duration_minutes && <Text style={type.caption}>About {current.duration_minutes} min</Text>}
           {!!current.altar_action && <Text style={type.caption}>{altarActionNote(current)}</Text>}
-          {showAltarButton && <Button label={altarActionButton(current)} onPress={() => void act(() => api.performStepAction(current.id), () => Promise.all([loadMarks(ritual.id), loadAltar()]))} disabled={busy} />}
+          {showAltarButton && <Button label={altarActionButton(current)} onPress={() => void act(() => doAltarAction(current), () => loadMarks(ritual.id))} disabled={busy} />}
+          {!!altar && <Button label="Go to the altar" variant="outline" onPress={() => router.push(covenHref(coven.slug, `altars/${altar.id}`))} />}
+          <Text style={type.caption}>
+            {current.altar_access === 'everyone'
+              ? 'During this step, everyone can tend the altar.'
+              : current.altar_access === 'leader'
+                ? 'During this step, only the ritual’s leader tends the altar.'
+                : 'During this step, the altar is tended by whoever the step belongs to.'}
+          </Text>
           {sharedAction && doneOnAltar && <Text style={type.caption}>You’ve done this on the altar.</Text>}
           {(mine || canLead) && (
             <Button
@@ -146,12 +200,32 @@ export default function RitualScreen() {
       )}
       {live && !current && <Notice>The ritual is under way.</Notice>}
 
-      {live && coven.altar && (current?.altar_action || coven.altar.length > 0) && (
-        <Section label="The shared altar">
-          <CovenAltarView items={coven.altar} background={coven.snapshot?.coven.altar_background ?? null} />
+      {!!altar && (
+        <Section label="The altar">
+          <Text style={type.body}>Held at {altar.name}.</Text>
+          {!live && <Button label="Open the altar" variant="outline" onPress={() => router.push(covenHref(coven.slug, `altars/${altar.id}`))} />}
+          {canLead && altars.filter((a) => !a.archived_at).length > 1 && (
+            <Chips
+              label="Held at"
+              options={altars.filter((a) => !a.archived_at).map((a) => ({ value: a.id, label: a.name }))}
+              value={altar.id}
+              onChange={(next) => void act(() => setRitualAltar(ritual.id, next, null), loadAltars)}
+            />
+          )}
+          {canLead && <Text style={type.caption}>Its leader and the altar’s keepers can always tend it. For each step below, choose who else can.</Text>}
         </Section>
       )}
 
+      {canLead && !live && ritual.status !== 'done' && (
+        <View style={styles.lead}>
+          <Button label="Edit the ritual" variant="outline" onPress={() => router.push(`${covenHref(coven.slug, 'ritual/plan')}?id=${ritual.id}` as never)} disabled={busy} />
+          {ritual.status === 'draft' && canSchedule && <Button label="Put it on the calendar" variant="outline" onPress={() => void act(() => api.setRitualStatus(ritual.id, 'scheduled'))} disabled={busy} />}
+          {ritual.status === 'scheduled' && <Button label="Back to drafts" variant="text" onPress={() => void act(() => api.setRitualStatus(ritual.id, 'draft'))} disabled={busy} />}
+          {ritual.status === 'cancelled' && canSchedule && <Button label="Put it back on the calendar" variant="outline" onPress={() => void act(() => api.setRitualStatus(ritual.id, 'scheduled'))} disabled={busy} />}
+          {ritual.status === 'scheduled' && <Button label="Cancel the rite" variant="text" onPress={confirmCancel} disabled={busy} />}
+          <Button label="Delete the ritual" variant="text" onPress={confirmDelete} disabled={busy} />
+        </View>
+      )}
       {canLead && (live || ritual.status === 'scheduled' || ritual.status === 'draft') && (
         <View style={styles.lead}>
           {!live && <Button label="Start the ritual" onPress={() => void act(() => api.startRitual(ritual.id))} disabled={busy || !steps.length} />}
@@ -179,6 +253,9 @@ export default function RitualScreen() {
                 {yours && who.kind !== 'everyone' ? ' · yours' : ''}
                 {step.altar_action ? ` · ${altarActionButton(step).toLowerCase()}` : ''}
               </Text>
+              {canLead && (
+                <Chips label={`At the altar during step ${index + 1}`} options={ALTAR_ACCESS} value={step.altar_access ?? 'assigned'} onChange={(v) => setAccess(index, v)} />
+              )}
             </View>
           );
         })}

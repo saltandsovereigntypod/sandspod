@@ -30,7 +30,7 @@ export default function CovenHome() {
   const leads = coven.perms.review || coven.perms.manage || coven.perms.site;
 
   const leave = () =>
-    Alert.alert('Leave this coven?', 'You can ask to come back later. Your words in the gathering stay.', [
+    Alert.alert('Leave this coven?', 'You can ask to come back later. Your words in the chat stay.', [
       { text: 'Stay', style: 'cancel' },
       {
         text: 'Leave',
@@ -88,7 +88,7 @@ export default function CovenHome() {
 
           {coven.perms.member && coven.unsigned.length > 0 && (
             <Card>
-              <Text style={type.body}>The coven has updated its agreements. Sign them to keep taking part in the gathering, the altar and rituals.</Text>
+              <Text style={type.body}>The coven has updated its agreements. Sign them to keep taking part in the chat, the altars and rituals.</Text>
               <Button label="Read and sign" onPress={() => router.push(covenHref(coven.slug, 'join'))} />
             </Card>
           )}
@@ -96,9 +96,9 @@ export default function CovenHome() {
           {insider && (
             <Section label="The coven">
               <MenuList>
-                <MenuRow label="Gathering" detail={presenceLine(coven.presence.length)} icon="letters" onPress={() => router.push(covenHref(coven.slug, 'gathering'))} />
+                <MenuRow label="Chat" detail={presenceLine(coven.presence.length)} icon="letters" onPress={() => router.push(covenHref(coven.slug, 'gathering'))} />
                 <MenuRow label="Rituals and rites" detail={upcoming.length ? `${upcoming.length} on the calendar` : 'Rites and their steps'} icon="moon" onPress={() => router.push(covenHref(coven.slug, 'rituals'))} />
-                <MenuRow label="Shared altar" detail="Light a candle together" icon="altar" onPress={() => router.push(covenHref(coven.slug, 'altar'))} />
+                <MenuRow label="Altars" detail="The ritual altar and others, tended together" icon="altar" onPress={() => router.push(covenHref(coven.slug, 'altar'))} />
                 <MenuRow label="Book of Shadows" detail="The coven’s own pages" icon="library" onPress={() => router.push(covenHref(coven.slug, 'book'))} />
                 <MenuRow label="Petitions" detail="Prayers the circle holds" icon="offer" onPress={() => router.push(covenHref(coven.slug, 'petitions'))} />
                 <MenuRow

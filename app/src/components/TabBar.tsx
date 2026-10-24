@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { Tabs } from 'expo-router/js-tabs';
 
 import { useAltarFullScreen } from '../lib/altarFullScreen';
+import { useUnreadTotal } from '../lib/covens/unread';
 import { lastPracticeSection, rememberPracticeSection } from '../lib/practiceSection';
 import { colors, fonts } from '../theme';
 import { Icon, type IconName } from './Icon';
@@ -22,6 +23,7 @@ const TABS: { key: string; label: string; icon: IconName; routes: string[] }[] =
 
 export function TabBar({ state, navigation, insets }: TabBarProps) {
   const current = state.routes[state.index]?.name;
+  const unread = useUnreadTotal();
   useEffect(() => {
     if (current === 'grimoire' || current === 'rituals') rememberPracticeSection(current);
   }, [current]);
@@ -44,14 +46,21 @@ export function TabBar({ state, navigation, insets }: TabBarProps) {
             accessibilityRole="tab"
             accessibilityState={{ selected: focused }}
             aria-selected={focused}
-            accessibilityLabel={tab.label}
+            accessibilityLabel={tab.key === 'coven' && unread ? `${tab.label}, ${unread} unread ${unread === 1 ? 'message' : 'messages'}` : tab.label}
             style={styles.tab}
             onPress={() => {
               const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
               if (!focused && !event.defaultPrevented) navigation.navigate(route.name, route.params);
             }}
           >
-            <Icon name={tab.icon} color={color} />
+            <View>
+              <Icon name={tab.icon} color={color} />
+              {tab.key === 'coven' && unread > 0 && (
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>{unread > 99 ? '99+' : unread}</Text>
+                </View>
+              )}
+            </View>
             <Text style={[styles.label, { color }]}>{tab.label}</Text>
           </Pressable>
         );
@@ -71,4 +80,6 @@ const styles = StyleSheet.create({
   },
   tab: { flex: 1, minHeight: 48, alignItems: 'center', justifyContent: 'center', gap: 3 },
   label: { fontFamily: fonts.body, fontSize: 11 },
+  badge: { position: 'absolute', top: -4, right: -10, minWidth: 16, height: 16, borderRadius: 8, paddingHorizontal: 4, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.gold },
+  badgeText: { fontFamily: fonts.body, fontSize: 10, color: colors.night, fontWeight: '700' },
 });

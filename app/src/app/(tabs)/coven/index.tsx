@@ -1,5 +1,4 @@
 import { router, type Href } from 'expo-router';
-import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StyleSheet, Text, View } from 'react-native';
 
@@ -7,7 +6,6 @@ import { Button } from '../../../components/Button';
 import { CovenToday } from '../../../components/covens/CovenToday';
 import { Pill, Pills } from '../../../components/covens/ui';
 import { Card, Chips, Field, MenuList, MenuRow, MoreScreen, Notice, Section } from '../../../components/more/ui';
-import { WEBSITE_ORIGIN } from '../../../lib/altar/assetPaths';
 import * as api from '../../../lib/covens/api';
 import { filterDirectory, JOINING, type Coven, type Joining } from '../../../lib/covens/model';
 import { syncCovenReminders } from '../../../lib/covens/reminders';
@@ -56,7 +54,7 @@ export default function Covens() {
       }
     >
       <Text style={type.body}>
-        Find witches to practise with: covens with their own creed, rules and ways, a gathering to talk in and an altar you tend together. Covens are for adults (18+) and follow the community guidelines.
+        Find witches to practise with: covens with their own creed, rules and ways, a chat to talk in and altars you tend together. Covens are for adults (18+) and follow the community guidelines.
       </Text>
 
       {!!session && <CovenToday />}
@@ -86,7 +84,7 @@ export default function Covens() {
               onPress={() => router.push('/coven/new' as Href)}
             />
             {me.data?.siteModerator && (
-              <MenuRow label="Coven moderation" detail="Reports and covens · opens the website" icon="support" last onPress={() => void WebBrowser.openBrowserAsync(`${WEBSITE_ORIGIN}/covens/moderation/`)} />
+              <MenuRow label="Coven moderation" detail="Reports, covens, site bans and moderators" icon="support" last onPress={() => router.push('/coven/moderation' as Href)} />
             )}
           </MenuList>
           {me.data?.banned && <Notice>Your account can’t take part in covens.</Notice>}

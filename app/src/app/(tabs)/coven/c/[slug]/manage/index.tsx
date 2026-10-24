@@ -37,7 +37,7 @@ export default function Manage() {
       }
     };
     if (reopening) return void run();
-    Alert.alert('Archive this coven?', `It leaves the directory, and its gathering and altar become read-only.${coven.perms.site ? '' : ' Only the site moderators can reopen it.'}`, [
+    Alert.alert('Archive this coven?', `It leaves the directory, and its chat and altars become read-only.${coven.perms.site ? '' : ' Only the site moderators can reopen it.'}`, [
       { text: 'Keep it open', style: 'cancel' },
       { text: 'Archive', style: 'destructive', onPress: () => void run() },
     ]);
