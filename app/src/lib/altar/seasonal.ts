@@ -17,7 +17,12 @@
 // and Brídeóg, which come near at the matching sabbats too; the Roman year its
 // Parentalia tile and black beans for the dead, the februa and mola salsa, the
 // flowers of Flora and Juno, and the tapers, cap, little figures and lamp of
-// the Saturnalia. The turning
+// the Saturnalia; the Christian and folk year its Epiphany chalk and blessed
+// water, Candlemas candles, Easter lilies and red eggs, the Lammas loaf, the
+// Assumption's herb bundle, the Advent wreath and the holly and ivy. Someone
+// who hides the Christian calendar in settings (holidays.ts hiddenTraditions)
+// never has its things come near, and the drawer leaves them out
+// (withoutHiddenCalendars). The turning
 // seasons (snowdrops, blossom, wildflowers, autumn leaves) are for everyone,
 // by the date rather than a calendar, north or south of the equator: the
 // season's thing comes to the top of the drawer, after any festival that's
@@ -105,6 +110,8 @@ export const SEASONAL_TRADITIONS: SeasonalTradition[] = [
     festivalOf: (id) => CELTIC_OF_SABBAT[holidayKey(id)] ?? holidayKey(id),
   },
   { id: 'roman', title: 'Roman festivals', calendars: ['roman'], words: ['Roman', 'Rome', 'Religio Romana', 'Latin', 'festival'] },
+  // A calendar someone can hide (holidays.ts HIDEABLE_TRADITIONS): then its things are left out of the drawer (withoutHiddenCalendars).
+  { id: 'christian', title: 'Christian & folk calendar', calendars: ['christian'], words: ['Christian', 'folk custom', 'folk Catholic', 'feast day', 'saint', 'the church year'] },
   // Not a calendar: the season by the date, for everyone (seasonNow).
   { id: 'seasons', title: 'The turning seasons', calendars: ['seasons'], words: ['season', 'seasons', 'the turning seasons', 'nature'] },
 ];
@@ -131,6 +138,7 @@ const monthly = (...holidays: string[]): FestivalRef[] => holidays.map((holiday)
 const norse = (...holidays: string[]): FestivalRef[] => holidays.map((holiday) => ({ tradition: 'norse', holiday }));
 const celtic = (...holidays: string[]): FestivalRef[] => holidays.map((holiday) => ({ tradition: 'celtic', holiday }));
 const roman = (...holidays: string[]): FestivalRef[] => holidays.map((holiday) => ({ tradition: 'roman', holiday }));
+const christian = (...holidays: string[]): FestivalRef[] => holidays.map((holiday) => ({ tradition: 'christian', holiday }));
 const season = (id: SeasonId): FestivalRef[] => [{ tradition: 'seasons', holiday: id }];
 
 /** In the order each festival's things are shown, the first of each set out on tonight's altar (unless TONIGHT_FIRST says otherwise). */
@@ -323,6 +331,64 @@ export const SEASONAL_OBJECTS: SeasonalObject[] = [
     description: 'The crown of sun rays worn by Sol Invictus, the Unconquered Sun, whose birthday was kept on 25 December as the days began to lengthen.',
   },
 
+  // The Christian and folk year, from Epiphany.
+  {
+    id: 'epiphany-chalk', name: 'Epiphany Chalk and Water', festivals: christian('epiphany'), deities: ['the Magi', 'the Three Kings', 'Caspar', 'Melchior', 'Balthasar'],
+    keywords: ['chalk', 'chalking the door', 'C+M+B', 'house blessing', 'the door', 'lintel', 'Twelfth Night', 'Epiphany water', 'blessed water', 'the new year', 'protection'],
+    description: 'Chalk and water blessed at Epiphany, for the old house blessing: the year and the Magi’s initials, C+M+B, are chalked over the door, and the rooms sprinkled with the water to keep the house through the year ahead.',
+  },
+  {
+    id: 'holy-water', name: 'Blessed Water and Salt', festivals: christian('epiphany', 'easter'),
+    keywords: ['holy water', 'blessed water', 'blessed salt', 'salt', 'water', 'Epiphany water', 'Easter water', 'sprinkling', 'house blessing', 'cleansing', 'protection', 'the door'],
+    description: 'Water and salt blessed at Epiphany or on Easter Eve, carried home in a bottle and sprinkled over the house, the garden and the sick, and on anyone setting out from the door.',
+  },
+  {
+    id: 'candlemas-candles', name: 'Candlemas Candles', festivals: christian('candlemas'), deities: ['Mary', 'the Virgin Mary', 'Simeon'],
+    keywords: ['candles', 'beeswax', 'blessed candles', 'light', 'the Presentation', 'the Purification', 'storms', 'weather lore', 'winter', 'the year’s candles'],
+    description: 'Beeswax candles for the year, blessed at Candlemas and kept to be lit in storms, in sickness and at a deathbed. A fair, bright Candlemas was said to mean more winter to come.',
+  },
+  {
+    id: 'easter-lilies', name: 'Easter Lilies', festivals: christian('easter'), food: 'flowers',
+    keywords: ['lilies', 'white lilies', 'trumpet lilies', 'flowers', 'new life', 'spring', 'resurrection', 'white'],
+    description: 'White trumpet lilies, which fill churches and homes at Easter, for new life coming up out of the dark of the year.',
+  },
+  {
+    id: 'red-eggs', name: 'Red Eggs', festivals: christian('easter'), food: 'cooked',
+    keywords: ['eggs', 'red eggs', 'dyed eggs', 'onion skins', 'egg tapping', 'tsougrisma', 'Pascha', 'Orthodox', 'Greek', 'new life', 'luck'],
+    description: 'Eggs dyed red, often with onion skins, as Greek and other Orthodox households do for Easter, then knocked together end to end: the one whose egg stays whole is said to have luck for the year.',
+  },
+  {
+    id: 'pentecost-peonies', name: 'Pentecost Peonies', festivals: christian('pentecost'), food: 'flowers',
+    keywords: ['peonies', 'Pfingstrosen', 'Pentecost roses', 'Whitsun', 'Whitsunday', 'flowers', 'greenery', 'green branches', 'early summer', 'the Holy Spirit'],
+    description: 'Peonies, called Pentecost roses in German for flowering at Whitsun, when houses and churches were decked with fresh green branches and flowers.',
+  },
+  // The Wheel’s Lammas too: when both calendars are kept the day is one festival, and when the Christian one is hidden the loaf stays for the Wheel.
+  {
+    id: 'lammas-loaf', name: 'Lammas Loaf', festivals: [...christian('lammas'), ...wheel('lammas')], food: 'bread',
+    keywords: ['loaf', 'bread', 'first loaf', 'new wheat', 'first harvest', 'Loaf Mass', 'hlafmaesse', 'grain', 'the barn', 'thanksgiving'],
+    description: 'A loaf baked from the first of the new wheat and blessed at Lammas, the loaf-mass. An old English charm has it broken in four and the pieces laid in the corners of the barn to keep the gathered grain.',
+  },
+  {
+    id: 'herb-bundle', name: 'Assumption Herb Bundle', festivals: christian('assumption'), deities: ['Mary', 'the Virgin Mary', 'Our Lady'],
+    keywords: ['herbs', 'herb bundle', 'Kräuterbuschen', 'Krauterbuschen', 'Our Lady of the Herbs', 'mugwort', 'tansy', 'yarrow', 'St John’s wort', 'grain', 'dried herbs', 'healing', 'protection', 'the house'],
+    description: 'A bundle of healing herbs, mugwort, tansy, yarrow and St John’s wort among them, with a few ears of grain, blessed on the Assumption as in Germany, Austria and Poland, then dried and hung in the house to keep it through the year.',
+  },
+  {
+    id: 'michaelmas-daisies', name: 'Michaelmas Daisies and Blackberries', festivals: christian('michaelmas'), deities: ['St Michael', 'Michael the Archangel'], food: 'flowers',
+    keywords: ['asters', 'Michaelmas daisies', 'blackberries', 'brambles', 'autumn', 'the devil', 'protection', 'the last of the harvest', 'flowers', 'berries'],
+    description: 'Michaelmas daisies, the asters that flower about St Michael’s feast, with the last of the blackberries. The old saying goes that none should be picked after today, for the devil, cast out of heaven by Michael, spoils them.',
+  },
+  {
+    id: 'advent-wreath', name: 'Advent Wreath', festivals: christian('advent'),
+    keywords: ['wreath', 'Adventskranz', 'evergreen', 'four candles', 'candles', 'waiting', 'the light', 'the dark of the year', 'winter', 'Sundays'],
+    description: 'A ring of evergreens holding four candles, one more lit on each Sunday of Advent so the light grows week by week toward Christmas. The custom began in Germany in the 1800s.',
+  },
+  {
+    id: 'holly-and-ivy', name: 'Holly and Ivy', festivals: christian('christmas'), food: 'flowers',
+    keywords: ['holly', 'ivy', 'evergreen', 'greenery', 'berries', 'decking the house', 'the twelve days', 'midwinter', 'protection', 'the carol'],
+    description: 'Holly and ivy brought in to deck the house for Christmas, as the old carol sings, and by custom taken down by Twelfth Night, or Candlemas Eve in older use, so no ill luck follows.',
+  },
+
   // The turning seasons, for everyone, by the date.
   {
     id: 'snowdrops', name: 'Snowdrops', festivals: season('late_winter'), food: 'flowers',
@@ -360,6 +426,7 @@ const TONIGHT_FIRST: Record<string, string> = {
   'norse/haustblot': 'odins-sheaf',
   'norse/jol': 'yule-goat',
   'roman/lupercalia': 'februa',
+  'christian/easter': 'easter-lilies',
 };
 
 export const seasonalObject = (id: string) => SEASONAL_OBJECTS.find((o) => o.id === id) ?? null;
@@ -416,19 +483,41 @@ function festivalOrder(key: string): number {
  * with its id as its form. Found by its festivals' names, its gods and its
  * calendar ("sabbat", "Greek").
  */
-export function seasonalCabinetItems(images: Record<string, string>): CabinetItem[] {
-  return SEASONAL_OBJECTS.filter((o) => !!images[o.id]).map((o) => ({
-    id: `seasonal:${o.id}`,
-    category: 'seasonal',
-    name: o.name,
-    keywords: [
-      ...new Set([...o.keywords, ...(o.deities ?? []), ...o.festivals.map(festivalName), ...o.festivals.flatMap((f) => traditionOf(f)?.words ?? [])]),
-    ].filter(Boolean),
-    sabbats: sabbatsOf(o),
-    festivals: o.festivals.map(festivalKey),
-    description: festivalLine(o),
-    forms: [{ label: 'Place', image: images[o.id], type: 'seasonal', form: o.id }],
-  }));
+export function seasonalCabinetItems(images: Record<string, string>, hidden: string[] = []): CabinetItem[] {
+  return SEASONAL_OBJECTS.filter((o) => !!images[o.id])
+    .map((o) => ({ ...o, festivals: o.festivals.filter((f) => !hidden.includes(f.tradition)) }))
+    .filter((o) => o.festivals.length > 0)
+    .map((o) => ({
+      id: `seasonal:${o.id}`,
+      category: 'seasonal',
+      name: o.name,
+      keywords: [
+        ...new Set([...o.keywords, ...(o.deities ?? []), ...o.festivals.map(festivalName), ...o.festivals.flatMap((f) => traditionOf(f)?.words ?? [])]),
+      ].filter(Boolean),
+      sabbats: sabbatsOf(o),
+      festivals: o.festivals.map(festivalKey),
+      description: festivalLine(o),
+      forms: [{ label: 'Place', image: images[o.id], type: 'seasonal', form: o.id }],
+    }));
+}
+
+/**
+ * The cabinet without the seasonal things of the calendars hidden in
+ * settings (holidays.ts hiddenTraditions: the Christian calendar, for those
+ * it hurts): a thing kept only for a hidden calendar's festivals isn't
+ * offered or found at all, and one kept for another calendar's too (the
+ * Lammas loaf, at the Wheel's Lammas) stays as that calendar's thing alone.
+ */
+export function withoutHiddenCalendars(items: CabinetItem[], hidden: string[]): CabinetItem[] {
+  if (!hidden.length) return items;
+  return items.flatMap((item) => {
+    // The website's cabinet has items without forms (its backgrounds).
+    const form = item.category === 'seasonal' && !item.customCabinetItemId ? item.forms?.[0] : undefined;
+    const object = form ? seasonalObject(String(form.form ?? '')) : null;
+    if (!form || !object || !object.festivals.some((f) => hidden.includes(f.tradition))) return [item];
+    const [shown] = seasonalCabinetItems({ [object.id]: form.image || object.id }, hidden);
+    return shown ? [{ ...item, ...shown, forms: item.forms }] : [];
+  });
 }
 
 /** "wheel-samhain-2026-9-31" (or a bare "samhain") → "samhain": a holiday's own id, without its calendar or date. */

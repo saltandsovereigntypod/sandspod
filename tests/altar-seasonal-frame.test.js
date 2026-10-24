@@ -107,6 +107,48 @@ test("the Roman festivals' things join the website's cabinet once painted, near 
   assert.equal(A.offerings.perishableItself({ type: "seasonal", form: "lemuria-beans", label: "Black Beans" }), null);
 });
 
+test("the Christian and folk things join the website's cabinet once painted, near only for those who keep the Christian year", () => {
+  const A = core();
+  const pic = (id) => `../assets/altar/objects/seasonal/${id}/${id}.png`;
+  const artwork = { ...Artwork, seasonal: { ...Artwork.seasonal, "advent-wreath": pic("advent-wreath"), "herb-bundle": pic("herb-bundle"), "holly-and-ivy": pic("holly-and-ivy") } };
+  const records = cabinetApi(artwork).getSearchRecords();
+  assert.ok(records.find((r) => r.title === "Advent Wreath").aliases.includes("Advent Sunday"));
+  assert.ok(records.find((r) => r.title === "Assumption Herb Bundle").aliases.includes("Our Lady"));
+  // Not offered until painted.
+  assert.ok(!cabinetApi({ ...Artwork, seasonal: {} }).getSearchRecords().some((r) => r.title === "Advent Wreath"));
+  // Near only for the Christian calendar, in its own section after the Roman festivals.
+  const christian = { traditions: ["christian"], custom: [] };
+  const near = A.seasonal.seasonalNear(new Date(2026, 11, 20, 12), christian);
+  assert.equal(near[0].key, "christian/christmas");
+  assert.ok(!A.seasonal.festivalsNear(new Date(2026, 11, 20, 12), null).some((n) => n.key.startsWith("christian/")));
+  const items = A.seasonal.seasonalCabinetItems({ pileus: "p.png", "advent-wreath": "a.png", "autumn-leaves": "l.png" });
+  assert.deepEqual([...A.seasonal.seasonalSections(items, []).map((s) => s.title)], ["Roman festivals", "Christian & folk calendar", "The turning seasons"]);
+  assert.equal(A.offerings.perishableItself({ type: "seasonal", form: "lammas-loaf", label: "Lammas Loaf" }), "bread");
+  assert.equal(A.offerings.perishableItself({ type: "seasonal", form: "holly-and-ivy", label: "Holly and Ivy" }), "flowers");
+  assert.equal(A.offerings.perishableItself({ type: "seasonal", form: "advent-wreath", label: "Advent Wreath" }), null);
+});
+
+test("hiding the Christian calendar in settings takes its things out of the website's cabinet, the Lammas loaf staying for the Wheel", async () => {
+  const pic = (id) => `../assets/altar/objects/seasonal/${id}/${id}.png`;
+  const settings = { calendar_traditions: "wheel,christian", calendar_hidden_traditions: "christian" };
+  const sandbox = {
+    location: { search: "" }, dispatchEvent() {}, CustomEvent: class {}, URLSearchParams, console, setTimeout,
+    document: { readyState: "complete", addEventListener() {} }, addEventListener() {}, cabinetTabs: null, cabinetContent: null, activeCabinetCategory: "candles",
+    SaltSettings: { get: async () => settings },
+    SanctuaryAssetCatalog: Catalog,
+    AltarArtwork: { ...Artwork, seasonal: { ...Artwork.seasonal, "advent-wreath": pic("advent-wreath"), "lammas-loaf": pic("lammas-loaf"), pileus: pic("pileus") } },
+    SaltCore: { altar: core() },
+  };
+  sandbox.window = sandbox;
+  vm.runInNewContext(fs.readFileSync("altar/js/features/cabinet.js", "utf8"), sandbox);
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  const records = sandbox.AltarCabinet.getSearchRecords();
+  assert.ok(!records.some((r) => r.title === "Advent Wreath"));
+  assert.ok(records.some((r) => r.title === "Pileus"));
+  const loaf = records.find((r) => r.title === "Lammas Loaf");
+  assert.ok(loaf && loaf.aliases.includes("Lammas") && !loaf.aliases.includes("Christian"));
+});
+
 test("the new tools and natural finds with a picture join the website's cabinet", () => {
   const artwork = { ...Artwork, shelfTools: { "singing-bowl": "../assets/altar/objects/tools/singing-bowl/singing-bowl.png" }, natural: { "hag-stone": "../assets/altar/objects/natural/hag-stone/hag-stone.png" } };
   const records = cabinetApi(artwork).getSearchRecords();

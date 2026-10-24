@@ -155,9 +155,16 @@ async function refreshCabinetSabbat() {
   if (!core?.seasonal || cabinetNearChecked) return;
   cabinetNearChecked = true;
   let choice = null;
-  try { choice = core.holidays.holidayChoice(await window.SaltSettings?.get?.()); } catch { choice = null; }
+  let hidden = [];
+  try {
+    const settings = await window.SaltSettings?.get?.();
+    choice = core.holidays.holidayChoice(settings);
+    hidden = core.holidays.hiddenTraditions(settings);
+  } catch { choice = null; }
   cabinetNear = core.seasonal.seasonalNear(new Date(), choice);
   ensureSeasonalCabinetItems();
+  // A calendar hidden in settings (the Christian one) takes its seasonal things out of the cabinet too.
+  if (hidden.length) cabinetItems.splice(0, cabinetItems.length, ...core.seasonal.withoutHiddenCalendars(cabinetItems, hidden));
   // Near a festival the cabinet opens on its seasonal things, unless a drawer was asked for.
   if (cabinetNearShown() && !requestedCabinetCategory && activeCabinetCategory === "candles") activeCabinetCategory = "seasonal";
   renderCabinet();

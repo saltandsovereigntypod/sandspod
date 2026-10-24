@@ -43,7 +43,7 @@ import {
 } from '../../lib/altar/pottedPlants';
 import { harvestSprig } from '../../lib/altar/pottedSprig';
 import { keepImageOnDevice, pickImage, uploadImage } from '../../lib/altar/images';
-import { seasonalDescription, seasonalNear } from '../../lib/altar/seasonal';
+import { seasonalDescription, seasonalNear, withoutHiddenCalendars } from '../../lib/altar/seasonal';
 import { shelfDescription } from '../../lib/altar/shelf';
 import { RitualPickerSheet, useBeginOnAltar } from './connect/BeginOnAltar';
 import type { AltarRef } from './connect/common';
@@ -207,7 +207,7 @@ import { canTurnScreen, turnScreen } from '../../lib/screenOrientation';
 import { useMySettings } from '../../lib/settings/store';
 import { shrineAltar, tonightAltar } from '../../lib/altar/tonight';
 import { TRADITIONAL_LIBRARY } from '../../lib/library/traditionalData';
-import { holidayChoice, holidaysToday } from '../../lib/holidays';
+import { hiddenTraditions, holidayChoice, holidaysToday } from '../../lib/holidays';
 import { moonState } from '../../lib/moon';
 import { colors, fonts, space, touch, type } from '../../theme';
 
@@ -633,7 +633,12 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
   const near = useMemo(() => seasonalNear(new Date(), holidayChoice(settings)), [settings]);
   // A photo being chosen and saved for an ancestor frame.
   const [framing, setFraming] = useState(false);
-  const allItems = useMemo(() => [...workshop.customItems, ...builtInCabinet], [workshop.customItems]);
+  // A calendar hidden in settings takes its seasonal things out of the cabinet too.
+  const hiddenKey = hiddenTraditions(settings).join(',');
+  const allItems = useMemo(
+    () => withoutHiddenCalendars([...workshop.customItems, ...builtInCabinet], hiddenKey ? hiddenKey.split(',') : []),
+    [workshop.customItems, hiddenKey],
+  );
   const [ownItem, setOwnItem] = useState<{ category: string; item: CabinetItem | null } | null>(null);
   const [working, setWorking] = useState<ApothecaryTarget | null>(null);
 
