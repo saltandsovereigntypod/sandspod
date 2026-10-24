@@ -183,7 +183,7 @@ export const leave = (covenId: string) => rpc('leave_coven', { p_coven: covenId 
 // ─── The gathering ───────────────────────────────────────────────────────
 
 export async function fetchMessages(covenId: string, limit = 150): Promise<Message[]> {
-  const rows = await run<Message[]>(supabase.from('coven_messages').select('*').eq('coven_id', covenId).order('created_at', { ascending: false }).limit(limit));
+  const rows = await run<Message[]>(supabase.from('coven_messages').select('*').eq('coven_id', covenId).is('conversation_id', null).order('created_at', { ascending: false }).limit(limit));
   return rows.reverse();
 }
 export const sendMessage = (covenId: string, body: string) => run<Message>(supabase.from('coven_messages').insert({ coven_id: covenId, body }).select().single());

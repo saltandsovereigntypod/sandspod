@@ -1,9 +1,9 @@
 /*
  * A coven's Petitions: a member asks the circle to hold a petition for them.
- * A candle is set for it on the shared altar, and members tend it (each
- * tending relights the candle) once every twelve hours, with a few words if
- * they like. The person who asked marks it answered or closes it, and its
- * candle leaves the altar. Petitions are seen by the coven's members only.
+ * It gets its own altar (made by ask_coven_petition; the app sets out its
+ * candle and paper), and members tend it once every twelve hours, with a few
+ * words if they like. The person who asked marks it answered or closes it,
+ * and its altar is cleared away. Petitions are seen by the coven's members only.
  */
 (function (global) {
   "use strict";
@@ -63,7 +63,7 @@
     if (!pane) return;
     const open = petitions.filter((p) => p.status === "open");
     const closed = petitions.filter((p) => p.status !== "open");
-    pane.innerHTML = `<p>Ask the circle to hold a petition for you. A candle is set for it on the coven’s altar, and members tend it while it’s open. Only the coven’s members see petitions.</p>
+    pane.innerHTML = `<p>Ask the circle to hold a petition for you. It gets its own altar, with a candle in its colour, and members tend it while it’s open. Only the coven’s members see petitions.</p>
       ${state.standing.ok ? `<details class="sp-details"${open.length ? "" : " open"}><summary>Ask the circle</summary>
         <form class="sp-section" data-ask>
           <div class="sp-field"><label for="pt-title">What would you like held?</label><input id="pt-title" name="title" required maxlength="120" placeholder="Healing for my mother" /></div>
@@ -105,7 +105,7 @@
           const answered = button.dataset.close === "answered";
           const note = answered ? await UI.askText("It’s been answered", "A few words for the circle (optional)", "Mark answered") : null;
           if (note === null && answered) return;
-          if (!answered && !(await UI.confirmAction("Close this petition?", "Its candle leaves the altar.", "Close it"))) return;
+          if (!answered && !(await UI.confirmAction("Close this petition?", "Its altar is cleared away.", "Close it"))) return;
           if (await UI.busy(button, el.querySelector("[data-status]"), () => D.closePetition(id, button.dataset.close, note || null).then(() => true))) {
             await load();
             draw();

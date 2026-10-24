@@ -7,6 +7,8 @@ import { router, type Href } from 'expo-router';
 import { useEffect } from 'react';
 import { Platform } from 'react-native';
 
+import { openThread } from '../covens/unread';
+import { threadKey } from '../covens/unreadCount';
 import type { Reminder } from './schedule';
 
 export const remindersSupported = true;
@@ -15,12 +17,12 @@ const SOURCE = 'sanctuary-reminders';
 const CHANNEL = 'moon-reminders';
 
 Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
+  handleNotification: async (notification) => {
+    // A coven message for the conversation already open in front of you stays quiet.
+    const data = notification.request.content.data as { source?: string; covenId?: string; conversationId?: string | null } | undefined;
+    const here = data?.source === 'coven-chat' && !!data.covenId && openThread() === threadKey(data.covenId, data.conversationId ?? null);
+    return { shouldPlaySound: !here, shouldSetBadge: false, shouldShowBanner: !here, shouldShowList: !here };
+  },
 });
 
 export type PermissionState = 'granted' | 'denied' | 'undetermined' | 'unavailable';
@@ -107,8 +109,8 @@ export function useReminderTaps() {
   useEffect(() => {
     const open = (notification: Notifications.Notification) => {
       const data = notification.request.content.data;
-      // 'coven-rites' are coven rite reminders (lib/covens/reminders.ts).
-      if ((data?.source === SOURCE || data?.source === STEP_SOURCE || data?.source === 'coven-rites') && typeof data.url === 'string') router.push(data.url as Href);
+      // 'coven-rites' are coven rite reminders (lib/covens/reminders.ts); 'coven-chat' a coven message (supabase/functions/coven-notify).
+      if ((data?.source === SOURCE || data?.source === STEP_SOURCE || data?.source === 'coven-rites' || data?.source === 'coven-chat') && typeof data.url === 'string') router.push(data.url as Href);
     };
     try {
       const last = Notifications.getLastNotificationResponse();

@@ -62,7 +62,7 @@ export type CovenDocument = { id: string; coven_id: string; kind: string; title:
 export type Signature = { document_id: string; version: number; user_id: string };
 export type Application = { id: string; coven_id: string; user_id: string; status: 'pending' | 'approved' | 'declined' | 'withdrawn'; answers: Record<string, string>; message: string | null; reviewer_note: string | null; created_at: string; decided_at: string | null };
 export type Advancement = { id: string; coven_id: string; user_id: string; rank_id: string; statement: string | null; status: 'pending' | 'approved' | 'declined' | 'withdrawn'; reviewer_id?: string | null; reviewer_note: string | null; created_at: string; decided_at: string | null };
-export type Message = { id: string; coven_id: string; user_id: string | null; body: string; created_at: string; edited_at: string | null; deleted_at: string | null; deleted_by: string | null };
+export type Message = { id: string; coven_id: string; conversation_id?: string | null; user_id: string | null; body: string; created_at: string; edited_at: string | null; deleted_at: string | null; deleted_by: string | null };
 export type AltarItem = {
   id: string;
   coven_id: string;
@@ -124,7 +124,7 @@ export type Rsvp = { ritual_id: string; coven_id: string; user_id: string; respo
 export type StepMark = { step_id: string; ritual_id: string; user_id: string };
 export type BookPage = { id: string; coven_id: string; title: string; section: string | null; body: string; version: number; author_id: string | null; published_by: string | null; published_at: string };
 export type BookDraft = { id: string; coven_id: string; page_id: string | null; title: string; section: string | null; body: string; author_id: string; status: 'draft' | 'pending' | 'declined' | 'published'; reviewer_id: string | null; reviewer_note: string | null; submitted_at: string | null; updated_at: string };
-export type Petition = { id: string; coven_id: string; user_id: string; title: string; body: string | null; color: string; status: 'open' | 'answered' | 'closed'; outcome_note: string | null; last_tended_at: string | null; created_at: string };
+export type Petition = { id: string; coven_id: string; user_id: string; title: string; body: string | null; color: string; status: 'open' | 'answered' | 'closed'; outcome_note: string | null; last_tended_at: string | null; altar_id?: string | null; created_at: string };
 export type Tending = { id: string; petition_id: string; user_id: string; note: string | null; created_at: string };
 
 export const JOINING: Record<Joining, { label: string; detail: string }> = {

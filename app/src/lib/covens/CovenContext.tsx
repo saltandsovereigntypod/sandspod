@@ -52,6 +52,8 @@ type CovenState = {
   messages: Message[] | null;
   setMessages: (update: (list: Message[]) => Message[]) => void;
   loadMessages: () => Promise<void>;
+  /** Every new or changed message you can read in this coven, the coven chat's and your conversations', as it arrives. */
+  onMessage: (listener: (message: Message, eventType: 'INSERT' | 'UPDATE' | 'DELETE') => void) => () => void;
   altar: AltarItem[] | null;
   setAltar: (update: (list: AltarItem[]) => AltarItem[]) => void;
   loadAltar: () => Promise<void>;
@@ -179,7 +181,9 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
         if (row.user_id) void loadNames([row.user_id as string]);
         switch (change.table) {
           case 'coven_messages':
-            setMessagesState((list) => (list ? applyChange(list, asChange<Message>()) : list));
+            messageListeners.current.forEach((l) => l(row as unknown as Message, change.eventType));
+            // The coven's own chat; conversations are kept by their screens.
+            if (!row.conversation_id) setMessagesState((list) => (list ? applyChange(list, asChange<Message>()) : list));
             break;
           case 'coven_altar_items':
             setAltarState((list) => (list ? applyChange(list, asChange<AltarItem>()) : list));
@@ -212,6 +216,13 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
     };
   }, [snapshot?.coven.id, insider, userId, loadNames]);
 
+  const messageListeners = useRef(new Set<(message: Message, eventType: 'INSERT' | 'UPDATE' | 'DELETE') => void>());
+  const onMessage = useCallback((listener: (message: Message, eventType: 'INSERT' | 'UPDATE' | 'DELETE') => void) => {
+    messageListeners.current.add(listener);
+    return () => {
+      messageListeners.current.delete(listener);
+    };
+  }, []);
   const covenId = snapshot?.coven.id;
   const loadMessages = useCallback(async () => {
     if (!covenId) return;
@@ -261,6 +272,7 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
       messages,
       setMessages: (update) => setMessagesState((list) => update(list ?? [])),
       loadMessages,
+      onMessage,
       altar,
       setAltar: (update) => setAltarState((list) => update(list ?? [])),
       loadAltar,
@@ -274,7 +286,7 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
       presence,
       track: (place) => liveRef.current?.track(place),
     }),
-    [slug, status, snapshot, me, perms, unsigned, stand, userId, names, loadNames, refresh, rituals, steps, rsvps, marks, refreshRituals, loadMarks, messages, loadMessages, altar, loadAltar, petitionsVersion, grants, mentors, waitingForMe, refreshPrograms, presence],
+    [slug, status, snapshot, me, perms, unsigned, stand, userId, names, loadNames, refresh, rituals, steps, rsvps, marks, refreshRituals, loadMarks, messages, loadMessages, onMessage, altar, loadAltar, petitionsVersion, grants, mentors, waitingForMe, refreshPrograms, presence],
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

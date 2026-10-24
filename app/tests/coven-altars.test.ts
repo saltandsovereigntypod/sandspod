@@ -3,7 +3,7 @@ import { test } from 'node:test';
 
 import { diff, documentFromRows, keyed, sceneOf, tendedBy, withObject, withScene, type CovenAltar } from '../src/lib/covens/altarDoc.ts';
 import { circleSpot, stepAltarChange } from '../src/lib/covens/ritualAltar.ts';
-import { countMessage } from '../src/lib/covens/unreadCount.ts';
+import { countMessage, covenTotal } from '../src/lib/covens/unreadCount.ts';
 import { permissions, type Coven, type Member, type Rank } from '../src/lib/covens/model.ts';
 import { candleLife, isLit } from '../src/lib/altar/livingState.ts';
 import type { AltarDocument } from '../src/lib/altar/snapshot.ts';
