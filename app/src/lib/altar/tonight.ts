@@ -1,7 +1,8 @@
 // "Set tonight's altar": a starter altar from the day itself, built from the
 // cabinet. A holiday brings its traditional things (and on a festival with
-// seasonal things, one of them: a pumpkin lantern, the Yule log, Brigid's
-// cross, the eiresione at the Pyanepsia);
+// seasonal things, from any calendar you keep or show, one of them: a pumpkin
+// lantern, the Yule log, Brigid's cross, the eiresione at the Pyanepsia, diya
+// lamps at Diwali, the lamps of the five days upon the year);
 // otherwise the weekday's planet chooses the candle, herb and stone, and a
 // full or new moon adds a touch of its own. Everything can be moved, swapped
 // or removed afterwards.
@@ -10,7 +11,10 @@ import { builtInBackgrounds, builtInCabinet, objectFromForm, placeableForms, sho
 import { boxHeightFraction, displayBox, NEW_OBJECT_SIZE, withCenter, withRotation, withSize } from './geometry.ts';
 import type { SavedObject } from './types.ts';
 import type { AltarDocument } from './snapshot.ts';
-import { holidayKey, seasonalForHoliday } from './seasonal.ts';
+import { festivalsOfHoliday, holidayKey, seasonalForFestival, seasonalForHoliday, type FestivalNear } from './seasonal.ts';
+
+/** A festival running tonight (seasonal.ts festivalsTonight): every festival it is ("wheel/samhain"), and its name. */
+export type TonightFestival = { keys: FestivalNear['keys']; name: FestivalNear['name'] };
 
 type Pick = [itemId: string, form: string];
 
@@ -20,7 +24,12 @@ export type TonightAltar = {
   reason: string;
   /** What was placed, in order. */
   labels: string[];
+  /** The festival whose seasonal thing was set out ("Diwali", "Samhain"), when one was. */
+  festival?: string;
 };
+
+/** A festival's name in a sentence: "Diwali", "the Epagomenal Days". */
+export const festivalInSentence = (name: string) => (/ Days$/.test(name) && !/^the /i.test(name) ? `the ${name}` : name);
 
 /**
  * A theme: what goes where. The altar is laid out like a real one: a
@@ -350,10 +359,18 @@ function placed(parts: [Pick, Slot][], surface: [number, number], now: string): 
 }
 
 /**
- * Tonight's altar for `date`. `holidayIds` are today's holidays (from the
- * calendars chosen in Settings); `moon` is tonight's phase name.
+ * Tonight's altar for `date`. `holidays` are today's holidays (from the
+ * calendars chosen in Settings); `moon` is tonight's phase name; `festivals`
+ * are the festivals running today with seasonal things, from every calendar
+ * kept or shown (seasonal.ts festivalsTonight, as the Seasonal drawer finds
+ * them: the Hindu and Kemetic ones too).
  */
-export function tonightAltar(date: Date, holidays: { id: string; name: string }[], moon: string): TonightAltar {
+export function tonightAltar(
+  date: Date,
+  holidays: { id: string; name: string; traditionIds?: string[] }[],
+  moon: string,
+  festivals: TonightFestival[] = [],
+): TonightAltar {
   const now = date.toISOString();
   // Holidays come as "wheel-samhain-2026-9-31" from the calendars (or as a bare "samhain").
   const holidaySet = holidays
@@ -379,20 +396,45 @@ export function tonightAltar(date: Date, holidays: { id: string; name: string }[
   ];
   let reason = theme.reason;
   // A festival: one of its seasonal things, the most fitting that has a picture
-  // (the holiday whose altar this is first, then any other of tonight's).
-  const festivals = holidaySet ? [holidaySet.holiday, ...holidays.filter((h) => h !== holidaySet.holiday)] : holidays;
-  const seasonal = festivals
-    .flatMap((holiday) => seasonalForHoliday(holiday.id))
-    .find((id) => builtInCabinet.some((i) => i.id === `seasonal:${id}` && placeableForms(i).length > 0));
-  if (seasonal) parts.push([[`seasonal:${seasonal}`, seasonal], SEASONAL_SLOT]);
+  // (the holiday whose altar this is first, then any other of tonight's, from
+  // any calendar). Only one, so the altar isn't crowded.
+  const placeable = (id: string) => builtInCabinet.some((i) => i.id === `seasonal:${id}` && placeableForms(i).length > 0);
+  const themed = holidaySet ? festivalsOfHoliday(holidaySet.holiday.id, holidaySet.holiday.traditionIds) : [];
+  const ofThemed = (f: TonightFestival) => f.keys.some((k) => themed.includes(k));
+  const running = [...festivals.filter(ofThemed), ...festivals.filter((f) => !ofThemed(f))];
+  let seasonal: { id: string; festival: string } | undefined;
+  for (const festival of running) {
+    const id = festival.keys.flatMap(seasonalForFestival).find(placeable);
+    if (id) {
+      seasonal = { id, festival: festival.name };
+      break;
+    }
+  }
+  if (!seasonal) {
+    // Without the festivals (or none of theirs has a picture), from today's holidays themselves.
+    const ordered = holidaySet ? [holidaySet.holiday, ...holidays.filter((h) => h !== holidaySet.holiday)] : holidays;
+    for (const holiday of ordered) {
+      const id = seasonalForHoliday(holiday.id).find(placeable);
+      if (id) {
+        seasonal = { id, festival: holiday.name };
+        break;
+      }
+    }
+  }
+  if (seasonal) {
+    parts.push([[`seasonal:${seasonal.id}`, seasonal.id], SEASONAL_SLOT]);
+    // A festival without an altar of its own (Diwali, Wep Ronpet) is named beside the day's.
+    if (!holidaySet?.set) reason += `, on ${festivalInSentence(seasonal.festival)}`;
+  }
   if (!holidaySet?.set) {
+    // (The moon's own touch would stand where a festival's thing does, so the festival's keeps the spot.)
     if (moon === 'Full Moon') {
       MOON_ARC.forEach((slot) => parts.push([c('white', 'tea-light'), slot]));
-      parts.push([stone('selenite', 'cluster'), MOON_CENTRE]);
+      if (!seasonal) parts.push([stone('selenite', 'cluster'), MOON_CENTRE]);
       reason += ', under the full moon';
     } else if (moon === 'New Moon') {
       parts.push([c('black', 'chime-spell'), MOON_ARC[0]], [c('black', 'chime-spell'), MOON_ARC[1]]);
-      parts.push([vessel('spell-jar'), MOON_CENTRE]);
+      if (!seasonal) parts.push([vessel('spell-jar'), MOON_CENTRE]);
       reason += ', at the new moon';
     }
   }
@@ -410,6 +452,7 @@ export function tonightAltar(date: Date, holidays: { id: string; name: string }[
     },
     reason,
     labels,
+    ...(seasonal ? { festival: seasonal.festival } : {}),
   };
 }
 

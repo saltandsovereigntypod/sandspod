@@ -99,6 +99,23 @@ test("tonight's altar and a shrine are built from the app's own builders", () =>
   assert.match(shrine.reason, /Hecate/);
 });
 
+test("tonight's altar sets out a Hindu or Kemetic festival's thing when that calendar is shown, as the app does", () => {
+  const choice = A.holidays.holidayChoice(null);
+  const open = (date, extra) => {
+    const calendars = { settings: { calendar_extra: extra }, place: null };
+    return A.tonight.tonightAltar(date, A.holidays.holidaysToday(date, choice), "x", A.seasonal.festivalsTonight(date, choice, calendars));
+  };
+  const seasonal = (altar) => altar.doc.objects.filter((o) => o.type === "seasonal").map((o) => o.form);
+  const diwali = new Date(2026, 10, 8, 20);
+  const lit = open(diwali, "hindu");
+  assert.deepEqual(seasonal(lit), ["diya-lamps"]);
+  assert.match(lit.reason, /, on Diwali$/);
+  assert.ok(A.tonightExplained.explainTonight(lit, diwali, null).some((p) => /kept at Diwali\.$/.test(p.why)));
+  assert.deepEqual(seasonal(open(diwali, "")), []);
+  assert.deepEqual(seasonal(open(new Date(2026, 6, 31, 20), "kemetic")), ["epagomenal-lamps"]);
+  assert.deepEqual(seasonal(open(new Date(2026, 7, 4, 20), "kemetic")), ["hetep-table"]);
+});
+
 test("the altar page loads the app's altar after the altar it builds on", () => {
   const html = fs.readFileSync(path.join(root, "altar/index.html"), "utf8");
   const order = ["js/core/storage.js", "../js/core/altar.js", "js/features/app-altar-bridge.js", "js/features/living-art.js", "js/features/altar-living.js", "js/features/altar-workings.js", "js/features/altar-reading.js"].map((src) => html.indexOf(`src="${src}"`));

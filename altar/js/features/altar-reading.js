@@ -351,16 +351,34 @@
     const core = A();
     const night = new Date();
     let choice = null;
-    try { choice = core.holidays.holidayChoice(await global.SaltSettings?.get?.()); } catch { choice = null; }
-    const altar = core.tonight.tonightAltar(night, core.holidays.holidaysToday(night, choice), core.moon.moonState(night).name);
+    let calendars = null;
+    try {
+      const settings = await global.SaltSettings?.get?.();
+      choice = core.holidays.holidayChoice(settings);
+      // The traditional calendars shown in settings (the Hindu and Kemetic festivals), worked out where you are, as the Seasonal drawer does.
+      calendars = { settings, place: savedSkyPlace() };
+    } catch { choice = null; }
+    // Today's festivals from every calendar kept or shown.
+    let festivals = [];
+    try { festivals = core.seasonal.festivalsTonight(night, choice, calendars); } catch { festivals = []; }
+    const altar = core.tonight.tonightAltar(night, core.holidays.holidaysToday(night, choice), core.moon.moonState(night).name, festivals);
     await prepareRatios(altar);
-    const fresh = core.tonight.tonightAltar(night, core.holidays.holidaysToday(night, choice), core.moon.moonState(night).name);
+    const fresh = core.tonight.tonightAltar(night, core.holidays.holidaysToday(night, choice), core.moon.moonState(night).name, festivals);
     B().setDocument(fresh.doc, "Tonight’s Altar");
     state.tonight = { altar: fresh, date: night };
     global.AltarLiving?.setTonight(state.tonight);
     global.currentSavedAltarName = "Tonight’s Altar";
     notice(`Set for ${fresh.reason}. Move, swap or add anything, then Save to keep it.`);
     renderTools();
+  }
+  /** Where you are (Sky's saved place), for the Hindu and Kemetic festivals' dates; null for the calendars' own fallbacks. */
+  function savedSkyPlace() {
+    try {
+      const place = JSON.parse(global.localStorage?.getItem("sky.place") || "null");
+      return place && Number.isFinite(place.latitude) && Number.isFinite(place.longitude) ? { latitude: place.latitude, longitude: place.longitude } : null;
+    } catch {
+      return null;
+    }
   }
   /** Know each picture's shape first, so things stand where they should. */
   async function prepareRatios(altar) {
