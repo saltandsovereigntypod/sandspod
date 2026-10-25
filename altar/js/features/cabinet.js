@@ -150,18 +150,30 @@ let cabinetNear = [];
 let cabinetNearChecked = false;
 /** Whether a near festival has something with a picture in the Seasonal drawer. */
 const cabinetNearShown = () => Boolean(window.SaltCore?.altar?.seasonal?.nearWithThings(cabinetNear, cabinetItems).length);
+/** The place saved in this browser by Today (the app's "sky.place" key), or null: the Hindu festivals follow sunrise and the Kemetic new year Sirius there. */
+function savedPlace() {
+  try {
+    const place = JSON.parse(window.localStorage?.getItem("sky.place") || "null");
+    return place && Number.isFinite(place.latitude) && Number.isFinite(place.longitude) ? { latitude: place.latitude, longitude: place.longitude } : null;
+  } catch {
+    return null;
+  }
+}
 async function refreshCabinetSabbat() {
   const core = window.SaltCore?.altar;
   if (!core?.seasonal || cabinetNearChecked) return;
   cabinetNearChecked = true;
   let choice = null;
   let hidden = [];
+  let calendars = null;
   try {
     const settings = await window.SaltSettings?.get?.();
     choice = core.holidays.holidayChoice(settings);
     hidden = core.holidays.hiddenTraditions(settings);
+    // The traditional calendars shown in settings (the Hindu and Kemetic festivals), worked out where you are.
+    calendars = { settings, place: savedPlace() };
   } catch { choice = null; }
-  cabinetNear = core.seasonal.seasonalNear(new Date(), choice);
+  cabinetNear = core.seasonal.seasonalNear(new Date(), choice, calendars);
   ensureSeasonalCabinetItems();
   // A calendar hidden in settings (the Christian one) takes its seasonal things out of the cabinet too.
   if (hidden.length) cabinetItems.splice(0, cabinetItems.length, ...core.seasonal.withoutHiddenCalendars(cabinetItems, hidden));

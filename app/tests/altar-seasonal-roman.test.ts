@@ -66,7 +66,7 @@ test('hidden until painted; with a picture each joins "Roman festivals", through
   assert.ok(!seasonalSections(seasonalCabinetItems(pictures(['apples'])), []).some((s) => s.title === 'Roman festivals'));
   const items = seasonalCabinetItems(ALL);
   const sections = seasonalSections(items, []);
-  assert.deepEqual(sections.map((s) => s.title).slice(-4), ['Celtic festivals', 'Roman festivals', 'Christian & folk calendar', 'The turning seasons']);
+  assert.deepEqual(sections.map((s) => s.title).slice(-7), ['Celtic festivals', 'Roman festivals', 'Christian & folk calendar', 'Slavic festivals', 'Hindu festivals', 'Kemetic (Egyptian) festivals', 'The turning seasons']);
   assert.deepEqual(ids(sections.find((s) => s.title === 'Roman festivals')), ROMAN);
 
   const found = (search: string) => cabinetItemsFor(items, 'seasonal', search).map((i) => i.id.replace('seasonal:', ''));

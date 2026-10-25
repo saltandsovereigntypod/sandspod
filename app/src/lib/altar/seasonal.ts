@@ -22,17 +22,26 @@
 // Assumption's herb bundle, the Advent wreath and the holly and ivy. Someone
 // who hides the Christian calendar in settings (holidays.ts hiddenTraditions)
 // never has its things come near, and the drawer leaves them out
-// (withoutHiddenCalendars). The turning
+// (withoutHiddenCalendars). The Slavic year has its Marzanna, Kupala wreath,
+// Dziady supper and the didukh, star, kutia and bread and salt of Koliada.
+// The Hindu and Kemetic (Egyptian) festivals come from the traditional
+// calendars (lib/calendars) rather than holidays.ts: Diwali's lamps and
+// rangoli, Holi's colours, Ganesha's modak, the bilva leaves of Maha
+// Shivaratri and the kalash of Navaratri; the Osiris bed, lamps, sistrum and
+// blue lotus of the five days upon the year (one span, as they run), and the
+// offering table of Wep Ronpet. Theirs come near only for someone who shows
+// that calendar in settings (calendarFestivalsBetween). The turning
 // seasons (snowdrops, blossom, wildflowers, autumn leaves) are for everyone,
 // by the date rather than a calendar, north or south of the equator: the
 // season's thing comes to the top of the drawer, after any festival that's
 // near (seasonalNear).
 //
-// Another calendar's things (Slavic, …) need only a group in
-// SEASONAL_TRADITIONS, entries in SEASONAL_OBJECTS naming its holidays, and
-// their pictures.
+// Another calendar's things need only a group in SEASONAL_TRADITIONS,
+// entries in SEASONAL_OBJECTS naming its holidays, and their pictures (and,
+// for a traditional calendar, its festivals' names in CALENDAR_FESTIVALS).
 
 import { startOfDay } from '../calendar.ts';
+import { calendarById, calendarContext, CALENDARS_LIVE, shownCalendars, type Place } from '../calendars/index.ts';
 import { DEFAULT_TRADITIONS, holidaysBetween, TRADITIONS, type HolidayChoice } from '../holidays.ts';
 import type { OfferingKindId } from './offerings.ts';
 import type { CabinetItem, SavedObject } from './types.ts';
@@ -112,9 +121,40 @@ export const SEASONAL_TRADITIONS: SeasonalTradition[] = [
   { id: 'roman', title: 'Roman festivals', calendars: ['roman'], words: ['Roman', 'Rome', 'Religio Romana', 'Latin', 'festival'] },
   // A calendar someone can hide (holidays.ts HIDEABLE_TRADITIONS): then its things are left out of the drawer (withoutHiddenCalendars).
   { id: 'christian', title: 'Christian & folk calendar', calendars: ['christian'], words: ['Christian', 'folk custom', 'folk Catholic', 'feast day', 'saint', 'the church year'] },
+  { id: 'slavic', title: 'Slavic festivals', calendars: ['slavic'], words: ['Slavic', 'Slavonic', 'Rodnovery', 'Slavic Native Faith', 'Polish', 'Ukrainian', 'Belarusian', 'Czech'] },
+  // Traditional calendars (lib/calendars), not holidays.ts: near only while the calendar is shown (calendarFestivalsBetween).
+  { id: 'hindu', title: 'Hindu festivals', calendars: ['hindu', 'calendar:hindu'], words: ['Hindu', 'Hinduism', 'Sanatana Dharma', 'Indian', 'puja', 'festival'] },
+  { id: 'kemetic', title: 'Kemetic (Egyptian) festivals', calendars: ['kemetic', 'calendar:kemetic'], words: ['Kemetic', 'Kemeticism', 'Kemet', 'Egyptian', 'ancient Egypt', 'festival'] },
   // Not a calendar: the season by the date, for everyone (seasonNow).
   { id: 'seasons', title: 'The turning seasons', calendars: ['seasons'], words: ['season', 'seasons', 'the turning seasons', 'nature'] },
 ];
+
+/**
+ * The festivals with seasonal things from the traditional calendars
+ * (lib/calendars, by the calendar's id), each by its id there without the
+ * calendar's prefix ("hindu-diwali" → "diwali"), in the order of the year, as
+ * the drawer names them. The Kemetic "epagomenal" is the five (or six) days
+ * upon the year together, as they run one after another.
+ */
+export const CALENDAR_FESTIVALS: Record<string, { id: string; name: string }[]> = {
+  hindu: [
+    { id: 'maha-shivaratri', name: 'Maha Shivaratri' },
+    { id: 'holika-dahan', name: 'Holika Dahan' },
+    { id: 'holi', name: 'Holi' },
+    { id: 'ganesh-chaturthi', name: 'Ganesh Chaturthi' },
+    { id: 'navaratri', name: 'Navaratri' },
+    { id: 'diwali', name: 'Diwali' },
+  ],
+  kemetic: [
+    { id: 'wep-ronpet', name: 'Wep Ronpet' },
+    { id: 'epagomenal', name: 'Epagomenal Days' },
+    { id: 'birth-osiris', name: 'Birthday of Osiris' },
+    { id: 'birth-horus', name: 'Birthday of Horus' },
+    { id: 'birth-set', name: 'Birthday of Set' },
+    { id: 'birth-isis', name: 'Birthday of Isis' },
+    { id: 'birth-nephthys', name: 'Birthday of Nephthys' },
+  ],
+};
 
 const CELTIC_OF_SABBAT: Record<string, string> = { imbolc: 'la_fheile_bride', beltane: 'bealtaine', lammas: 'lughnasadh', samhain: 'samhain_gaelic' };
 
@@ -139,6 +179,9 @@ const norse = (...holidays: string[]): FestivalRef[] => holidays.map((holiday) =
 const celtic = (...holidays: string[]): FestivalRef[] => holidays.map((holiday) => ({ tradition: 'celtic', holiday }));
 const roman = (...holidays: string[]): FestivalRef[] => holidays.map((holiday) => ({ tradition: 'roman', holiday }));
 const christian = (...holidays: string[]): FestivalRef[] => holidays.map((holiday) => ({ tradition: 'christian', holiday }));
+const slavic = (...holidays: string[]): FestivalRef[] => holidays.map((holiday) => ({ tradition: 'slavic', holiday }));
+const hindu = (...holidays: string[]): FestivalRef[] => holidays.map((holiday) => ({ tradition: 'hindu', holiday }));
+const kemetic = (...holidays: string[]): FestivalRef[] => holidays.map((holiday) => ({ tradition: 'kemetic', holiday }));
 const season = (id: SeasonId): FestivalRef[] => [{ tradition: 'seasons', holiday: id }];
 
 /** In the order each festival's things are shown, the first of each set out on tonight's altar (unless TONIGHT_FIRST says otherwise). */
@@ -389,6 +432,107 @@ export const SEASONAL_OBJECTS: SeasonalObject[] = [
     description: 'Holly and ivy brought in to deck the house for Christmas, as the old carol sings, and by custom taken down by Twelfth Night, or Candlemas Eve in older use, so no ill luck follows.',
   },
 
+  // The Slavic year, from the drowning of Marzanna.
+  {
+    id: 'marzanna', name: 'Marzanna', festivals: slavic('marzanna'),
+    keywords: ['Morana', 'Marzanna', 'Mařena', 'straw effigy', 'effigy', 'straw', 'winter', 'death', 'spring', 'the river', 'drowning', 'sending winter away'],
+    description: 'A straw figure of Marzanna (Morana), winter and death, dressed in rags and ribbons, carried out of the village and burned or drowned in the river to send winter away and let spring in.',
+  },
+  {
+    id: 'kupala-wreath', name: 'Kupala Wreath', festivals: slavic('kupala'), food: 'flowers',
+    keywords: ['wreath', 'vinok', 'wianek', 'flowers', 'herbs', 'the river', 'floating wreaths', 'midsummer', 'St John’s Eve', 'love', 'divination', 'water', 'Ivan Kupala'],
+    description: 'A wreath of wildflowers and herbs woven on Kupala Night and floated down the river, often with a candle in it: where it drifted, and who caught it, was read for love and marriage in the year ahead.',
+  },
+  {
+    id: 'dziady-supper', name: 'Dziady Supper', festivals: slavic('dziady'), food: 'cooked',
+    keywords: ['supper', 'the forefathers', 'the ancestors', 'the dead', 'Forefathers’ Eve', 'memorial meal', 'a place laid', 'food for the dead', 'Belarus', 'All Souls'],
+    description: 'A supper for the forefathers at Dziady: kutia, pancakes and other dishes set out, the first spoonful of each put aside for the souls, and the table left laid overnight so the dead may come and eat.',
+  },
+  {
+    id: 'kutia', name: 'Kutia', festivals: slavic('koliada', 'dziady'), food: 'cooked',
+    keywords: ['kutia', 'kutya', 'kućcia', 'wheat', 'wheat berries', 'honey', 'poppy seed', 'Holy Supper', 'Christmas Eve', 'the ancestors', 'the dead', 'memorial meal'],
+    description: 'Wheat berries cooked and sweetened with honey and poppy seed: the first dish of the Christmas Eve supper, and set out for the dead at Dziady and memorial meals, a spoonful left for the ancestors.',
+  },
+  {
+    id: 'didukh', name: 'Didukh', festivals: slavic('koliada'),
+    keywords: ['didukh', 'sheaf', 'wheat', 'straw', 'grandfather', 'the ancestors', 'Sviat Vechir', 'Holy Supper', 'Christmas Eve', 'Ukrainian', 'the harvest', 'the corner of honour'],
+    description: 'The Ukrainian didukh, “grandfather”: a sheaf of wheat from the harvest, carried into the house on Christmas Eve and stood in the corner of honour, where the spirits of the ancestors are said to stay through the holy days.',
+  },
+  {
+    id: 'koliada-star', name: 'Carollers’ Star', festivals: slavic('koliada'),
+    keywords: ['star', 'carollers', 'carolling', 'koliadki', 'kolędy', 'kolędnicy', 'the Christmas star', 'paper star', 'Christmas Eve', 'the twelve days', 'blessing the house', 'the new year'],
+    description: 'The paper star on a pole, lit from within, that carollers carry from house to house through the Koliada season, singing koliadki for blessings on each household in the year ahead.',
+  },
+  {
+    id: 'bread-and-salt', name: 'Bread and Salt', festivals: slavic('koliada'), food: 'bread',
+    keywords: ['bread', 'salt', 'loaf', 'korovai', 'karavai', 'khleb-sol', 'chleb i sól', 'welcome', 'hospitality', 'guests', 'plenty', 'the threshold'],
+    description: 'The old Slavic welcome: a round loaf with a little dish of salt on top, offered to guests at the door and set on the table at the winter feasts, for hospitality and plenty in the year ahead.',
+  },
+
+  // The Hindu year, from Maha Shivaratri: the customs of a living religion, as households keep them.
+  {
+    id: 'bilva-leaves', name: 'Bilva Leaves', festivals: hindu('maha-shivaratri'), deities: ['Shiva', 'Mahadeva'], food: 'flowers',
+    keywords: ['bilva', 'bel', 'bael', 'bel patra', 'leaves', 'three leaves', 'night vigil', 'the linga', 'puja', 'offering', 'Shivaratri'],
+    description: 'Leaves of the bilva (bael) tree, three to a stem, offered to Shiva with water and milk on the linga through the night vigil of Maha Shivaratri.',
+  },
+  {
+    id: 'holi-colours', name: 'Holi Colours', festivals: hindu('holi'), deities: ['Krishna', 'Radha'],
+    keywords: ['gulal', 'abir', 'coloured powder', 'colours', 'festival of colours', 'spring', 'Holika Dahan', 'play', 'forgiveness', 'Rangwali Holi', 'Dhulandi'],
+    description: 'Bright powdered colours, gulal, thrown and smeared on friends and neighbours alike on the morning of Holi, the festival of colours at the coming of spring, after the bonfire of Holika Dahan the night before.',
+  },
+  {
+    id: 'modak', name: 'Modak', festivals: hindu('ganesh-chaturthi'), deities: ['Ganesha', 'Ganesh', 'Ganapati', 'Vinayaka'], food: 'sweets',
+    keywords: ['modak', 'sweets', 'dumplings', 'coconut', 'jaggery', 'rice flour', 'prasad', 'offering', 'Ganeshotsav', 'Maharashtra'],
+    description: 'Sweet dumplings of rice flour filled with coconut and jaggery, said to be Ganesha’s favourite, made and offered to him at Ganesh Chaturthi, often twenty-one at a time.',
+  },
+  {
+    id: 'kalash', name: 'Kalash', festivals: hindu('navaratri'), deities: ['Durga', 'Devi', 'the Goddess'],
+    keywords: ['kalash', 'kalasha', 'ghata', 'Ghatasthapana', 'water pot', 'brass pot', 'coconut', 'mango leaves', 'barley', 'nine nights', 'puja'],
+    description: 'A brass or copper pot of water crowned with mango leaves and a coconut, set up at Ghatasthapana on the first day of Navaratri, barley sown beside it, and worshipped as the seat of the Goddess through the nine nights.',
+  },
+  {
+    id: 'diya-lamps', name: 'Diya Lamps', festivals: hindu('diwali'), deities: ['Lakshmi'],
+    keywords: ['diya', 'diyas', 'deepa', 'clay lamps', 'oil lamps', 'lamps', 'light', 'Deepavali', 'festival of lights', 'the doorstep', 'welcome'],
+    description: 'Little clay lamps of oil with cotton wicks, lit in rows along doorsteps, windows and walls at Diwali, the festival of lights, to welcome Lakshmi into the home.',
+  },
+  {
+    id: 'rangoli', name: 'Rangoli', festivals: hindu('diwali'), deities: ['Lakshmi'],
+    keywords: ['rangoli', 'kolam', 'coloured powder', 'rice flour', 'petals', 'the threshold', 'the doorstep', 'pattern', 'welcome', 'Deepavali', 'festival of lights'],
+    description: 'A pattern of coloured powder, rice flour or flower petals drawn on the floor at the threshold for Diwali, to welcome guests and Lakshmi into the house. In Tamil Nadu it is the kolam.',
+  },
+  {
+    id: 'marigold-garland', name: 'Marigold Garland', festivals: hindu('diwali', 'navaratri', 'ganesh-chaturthi'), food: 'flowers',
+    keywords: ['marigolds', 'genda', 'garland', 'mala', 'toran', 'flowers', 'the doorway', 'puja', 'orange', 'offering'],
+    description: 'Strings of orange and yellow marigolds hung over doorways and around shrines, and offered at puja: at Diwali, through the nine nights of Navaratri, and when Ganesha is welcomed home at Ganesh Chaturthi.',
+  },
+
+  // The Kemetic year, from Wep Ronpet: from the ancient temple calendars, as Kemetic practice keeps them today.
+  {
+    id: 'hetep-table', name: 'Offering Table', festivals: kemetic('wep-ronpet'), food: 'bread',
+    keywords: ['offering table', 'hetep', 'htp', 'bread', 'loaves', 'offerings', 'the new year', 'opening of the year', 'the dead', 'hospitality'],
+    description: 'An offering table, its top carved with the sign of a loaf on a reed mat that wrote “hetep”, offering, and laid with fresh bread for Wep Ronpet, the opening of the year, as tables were laid for the gods and the dead.',
+  },
+  {
+    id: 'blue-lotus', name: 'Blue Lotus', festivals: kemetic('epagomenal', 'wep-ronpet'), deities: ['Nefertem', 'Ra'], food: 'flowers',
+    keywords: ['lotus', 'blue lotus', 'water lily', 'seshen', 'Nymphaea', 'the Nile', 'rebirth', 'the sun', 'flowers', 'the new year'],
+    description: 'The blue water lily of the Nile, seshen, which opens with the sun and closes at night; in one old account the sun was born from a lotus. Kemetic practice today sets it out as the old year ends and the new one opens.',
+  },
+  {
+    id: 'epagomenal-lamps', name: 'Lamps of the Five Days', festivals: kemetic('epagomenal'), deities: ['Osiris', 'Horus', 'Set', 'Isis', 'Nephthys'],
+    keywords: ['lamps', 'oil lamps', 'five lamps', 'the five days', 'heriu renpet', 'the days upon the year', 'birthdays of the gods', 'protection', 'the year’s end'],
+    description: 'Five lamps, one for each god born on the days upon the year: Osiris, Horus, Set, Isis and Nephthys. The days stood outside the twelve months, and the ancient texts kept them with care and spells of protection.',
+  },
+  {
+    id: 'osiris-bed', name: 'Osiris Bed', festivals: kemetic('birth-osiris'), deities: ['Osiris', 'Wesir'],
+    keywords: ['Osiris bed', 'grain Osiris', 'corn mummy', 'sprouting grain', 'barley', 'earth', 'rebirth', 'the dead', 'the flood', 'Khoiak'],
+    description: 'A frame in the shape of Osiris, filled with earth and sown with grain so that the god sprouts green, as in the Khoiak mysteries and the beds laid in royal tombs; set out for his birthday, the first of the days upon the year.',
+  },
+  {
+    id: 'sistrum', name: 'Sistrum', festivals: kemetic('birth-isis', 'birth-nephthys'), deities: ['Isis', 'Nephthys', 'Hathor', 'Aset', 'Nebet-Het'],
+    keywords: ['sistrum', 'sesheshet', 'rattle', 'music', 'priestess', 'the temple', 'the days upon the year'],
+    description: 'A sacred rattle whose metal rods shiver and ring when it is shaken, played by priestesses to soothe and please the goddesses, Hathor and Isis above all; set out for the birthdays of Isis and Nephthys.',
+  },
+
   // The turning seasons, for everyone, by the date.
   {
     id: 'snowdrops', name: 'Snowdrops', festivals: season('late_winter'), food: 'flowers',
@@ -427,6 +571,8 @@ const TONIGHT_FIRST: Record<string, string> = {
   'norse/jol': 'yule-goat',
   'roman/lupercalia': 'februa',
   'christian/easter': 'easter-lilies',
+  'slavic/koliada': 'didukh',
+  'kemetic/epagomenal': 'epagomenal-lamps',
 };
 
 export const seasonalObject = (id: string) => SEASONAL_OBJECTS.find((o) => o.id === id) ?? null;
@@ -454,6 +600,8 @@ export const festivalKey = (ref: FestivalRef) => `${traditionOf(ref)?.id ?? ref.
 export function festivalName(ref: FestivalRef): string {
   if (ref.tradition === 'wheel') return sabbatName(ref.holiday);
   if (ref.tradition === 'seasons') return SEASONS.find((s) => s.id === ref.holiday)?.name ?? '';
+  const own = CALENDAR_FESTIVALS[ref.tradition];
+  if (own) return own.find((f) => f.id === ref.holiday)?.name ?? '';
   return TRADITIONS.find((t) => t.id === ref.tradition)?.holidays.find((h) => h.id === ref.holiday)?.name ?? '';
 }
 
@@ -472,6 +620,7 @@ function festivalOrder(key: string): number {
   const [group, holiday] = key.split('/');
   if (group === 'wheel') return SABBATS.findIndex((s) => s.id === holiday);
   if (group === 'seasons') return SEASONS.findIndex((s) => s.id === holiday);
+  if (CALENDAR_FESTIVALS[group]) return CALENDAR_FESTIVALS[group].findIndex((f) => f.id === holiday);
   const tradition = SEASONAL_TRADITIONS.find((t) => t.id === group);
   const all = TRADITIONS.filter((t) => tradition?.calendars.includes(t.id)).flatMap((t) => t.holidays.map((h) => h.id));
   return all.indexOf(holiday);
@@ -585,23 +734,84 @@ export const SABBAT_LEAD_DAYS = 7;
 export const MONTHLY_LEAD_DAYS = 1;
 
 /**
+ * The traditional calendars (lib/calendars) shown in settings, and where the
+ * person is: the Hindu festivals follow sunrise and the Kemetic new year the
+ * rising of Sirius, both worked out where you are (or at Ujjain and Cairo).
+ */
+export type CalendarsShown = { settings: Record<string, unknown> | null | undefined; place?: Place | null };
+
+/** A festival from a traditional calendar, in the shape festivalsNear reads; `parts` are the calendar's own ids it covers. */
+export type CalendarFestival = { id: string; name: string; date: Date; days: number; traditionIds: string[]; recurs?: 'monthly' | 'yearly'; parts: string[] };
+
+const addDays = (date: Date, days: number) => new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
+/** How far either side of a window to look in a calendar, for a festival already running (Navaratri's nine nights) and the whole run of the epagomenal days. */
+const CALENDAR_MARGIN_DAYS = 10;
+const EPAGOMENAL_DAY = /^(birth-|epagomenal)/;
+
+/**
+ * The festivals with seasonal things (CALENDAR_FESTIVALS) from the
+ * traditional calendars you show in settings, running at any time from
+ * `from` to `to`, as each calendar works them out: none for a calendar not
+ * shown. The Kemetic days upon the year, which follow one another, come as
+ * one span, "kemetic-epagomenal", from the first through the last.
+ */
+export function calendarFestivalsBetween(from: Date, to: Date, shown?: CalendarsShown | null): CalendarFestival[] {
+  if (!shown || !CALENDARS_LIVE) return [];
+  const first = startOfDay(from);
+  const out: CalendarFestival[] = [];
+  for (const id of shownCalendars(shown.settings).filter((c) => !!CALENDAR_FESTIVALS[c])) {
+    const def = calendarById(id);
+    if (!def) continue;
+    let events;
+    try {
+      events = def.eventsBetween(addDays(first, -CALENDAR_MARGIN_DAYS), addDays(startOfDay(to), CALENDAR_MARGIN_DAYS), calendarContext(shown.settings, shown.place ?? null, id));
+    } catch {
+      // A calendar that can't say leaves the others.
+      continue;
+    }
+    for (const event of [...events].sort((a, b) => a.date.getTime() - b.date.getTime())) {
+      const date = startOfDay(event.date);
+      if (id === 'kemetic' && EPAGOMENAL_DAY.test(holidayKey(event.id))) {
+        const span = out.find((f) => f.id === 'kemetic-epagomenal' && addDays(f.date, f.days).getTime() === date.getTime());
+        if (span) {
+          span.days += 1;
+          span.parts.push(event.id);
+        } else out.push({ id: 'kemetic-epagomenal', name: 'Epagomenal Days', date, days: 1, traditionIds: [id], recurs: 'yearly', parts: [event.id] });
+        continue;
+      }
+      if (!festivalsOfHoliday(event.id, [id]).length) continue;
+      out.push({ id: event.id, name: event.name, date, days: Math.max(1, event.days), traditionIds: [id], recurs: event.recurs ?? 'yearly', parts: [event.id] });
+    }
+  }
+  return out
+    .filter((f) => addDays(f.date, f.days - 1).getTime() >= first.getTime() && f.date.getTime() <= to.getTime())
+    .sort((a, b) => a.date.getTime() - b.date.getTime());
+}
+
+/**
  * The festivals that are near, soonest first: from a week before each
  * through its last day (the monthly days only from the day before), among
  * the calendars you keep (the Wheel of the Year, north or south, when none
- * has been chosen; single holidays picked into your own calendar count too).
- * Only festivals that have seasonal things.
+ * has been chosen; single holidays picked into your own calendar count too),
+ * and the traditional calendars you show (`calendars`: the Hindu and Kemetic
+ * festivals, calendarFestivalsBetween). Only festivals that have seasonal
+ * things.
  */
-export function festivalsNear(now: Date, choice?: HolidayChoice | null): FestivalNear[] {
+export function festivalsNear(now: Date, choice?: HolidayChoice | null, calendars?: CalendarsShown | null): FestivalNear[] {
   const kept: HolidayChoice = choice ? { traditions: choice.traditions, custom: [], picked: choice.picked } : { traditions: DEFAULT_TRADITIONS, custom: [] };
   const today = startOfDay(now);
   const until = new Date(today.getFullYear(), today.getMonth(), today.getDate() + SABBAT_LEAD_DAYS);
   const out: (FestivalNear & { own: Set<string> })[] = [];
   const groupOf = (key: string) => key.split('/')[0];
-  for (const holiday of holidaysBetween(today, until, kept)) {
+  const fromCalendars = calendarFestivalsBetween(today, until, calendars);
+  const holidays: (Pick<CalendarFestival, 'id' | 'name' | 'date' | 'days' | 'traditionIds'> & { recurs?: string; parts?: string[] })[] = holidaysBetween(today, until, kept);
+  const all = fromCalendars.length ? [...holidays, ...fromCalendars].sort((a, b) => a.date.getTime() - b.date.getTime()) : holidays;
+  for (const holiday of all) {
     const inDays = Math.max(0, Math.round((holiday.date.getTime() - today.getTime()) / 86_400_000));
     if (holiday.recurs === 'monthly' && inDays > MONTHLY_LEAD_DAYS) continue;
     const offset = Math.round((today.getTime() - holiday.date.getTime()) / 86_400_000);
-    const keys = festivalsOfHoliday(holiday.id, holiday.traditionIds);
+    // The epagomenal days are the span's festival first, then each god's birthday in it.
+    const keys = [...new Set([holiday.id, ...(holiday.parts ?? [])].flatMap((id) => festivalsOfHoliday(id, holiday.traditionIds)))];
     if (!keys.length) continue;
     // Which of them belong to a calendar this holiday came from (Bealtaine is the Celtic year's own; Beltane the Wheel's).
     const own = keys.filter((k) => holiday.traditionIds.some((c) => c === groupOf(k) || c.startsWith(`${groupOf(k)}_`)));
@@ -659,9 +869,9 @@ export function seasonNow(now: Date, choice?: HolidayChoice | null): FestivalNea
  * (festivalsNear), then the season it is (seasonNow), which never comes
  * before a festival.
  */
-export function seasonalNear(now: Date, choice?: HolidayChoice | null): FestivalNear[] {
+export function seasonalNear(now: Date, choice?: HolidayChoice | null, calendars?: CalendarsShown | null): FestivalNear[] {
   const season = seasonNow(now, choice);
-  return [...festivalsNear(now, choice), ...(season ? [season] : [])];
+  return [...festivalsNear(now, choice, calendars), ...(season ? [season] : [])];
 }
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

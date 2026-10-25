@@ -149,6 +149,56 @@ test("hiding the Christian calendar in settings takes its things out of the webs
   assert.ok(loaf && loaf.aliases.includes("Lammas") && !loaf.aliases.includes("Christian"));
 });
 
+test("the Slavic, Hindu and Kemetic things join the website's cabinet once painted, the Hindu and Kemetic near only while their calendar is shown", () => {
+  const A = core();
+  const pic = (id) => `../assets/altar/objects/seasonal/${id}/${id}.png`;
+  const artwork = { ...Artwork, seasonal: { ...Artwork.seasonal, didukh: pic("didukh"), "diya-lamps": pic("diya-lamps"), "osiris-bed": pic("osiris-bed") } };
+  const records = cabinetApi(artwork).getSearchRecords();
+  assert.ok(records.find((r) => r.title === "Didukh").aliases.includes("Koliada"));
+  assert.ok(records.find((r) => r.title === "Diya Lamps").aliases.includes("Lakshmi"));
+  assert.ok(records.find((r) => r.title === "Osiris Bed").aliases.includes("Birthday of Osiris"));
+  // Not offered until painted.
+  assert.ok(!cabinetApi({ ...Artwork, seasonal: {} }).getSearchRecords().some((r) => r.title === "Didukh"));
+  // In their own sections, after the Christian & folk calendar.
+  const items = A.seasonal.seasonalCabinetItems({ "advent-wreath": "a.png", didukh: "d.png", "diya-lamps": "l.png", "osiris-bed": "o.png", "autumn-leaves": "x.png" });
+  assert.deepEqual([...A.seasonal.seasonalSections(items, []).map((s) => s.title)], ["Christian & folk calendar", "Slavic festivals", "Hindu festivals", "Kemetic (Egyptian) festivals", "The turning seasons"]);
+  // Diwali (8 November 2026) only for someone who shows the Hindu calendar; the days upon the year as one span.
+  const diwali = new Date(2026, 10, 3, 12);
+  assert.equal(A.seasonal.seasonalNear(diwali, null, { settings: { calendar_extra: "hindu" }, place: null })[0].key, "hindu/diwali");
+  assert.ok(!A.seasonal.seasonalNear(diwali, null, { settings: { calendar_extra: "kemetic" }, place: null }).some((n) => n.key.startsWith("hindu/")));
+  assert.ok(!A.seasonal.seasonalNear(diwali, null).some((n) => n.key.startsWith("hindu/")));
+  const span = A.seasonal.festivalsNear(new Date(2026, 6, 25, 12), null, { settings: { calendar_extra: "kemetic" }, place: null })[0];
+  assert.equal(span.key, "kemetic/epagomenal");
+  assert.equal(span.days, 5);
+  assert.equal(A.offerings.perishableItself({ type: "seasonal", form: "kutia", label: "Kutia" }), "cooked");
+  assert.equal(A.offerings.perishableItself({ type: "seasonal", form: "modak", label: "Modak" }), "sweets");
+  assert.equal(A.offerings.perishableItself({ type: "seasonal", form: "blue-lotus", label: "Blue Lotus" }), "flowers");
+  assert.equal(A.offerings.perishableItself({ type: "seasonal", form: "sistrum", label: "Sistrum" }), null);
+});
+
+test("the website's cabinet reads the calendars shown and the saved place for the near festivals", async () => {
+  const pic = (id) => `../assets/altar/objects/seasonal/${id}/${id}.png`;
+  const asked = [];
+  const A = core();
+  const seasonal = { ...A.seasonal, seasonalNear: (now, choice, calendars) => (asked.push(calendars), A.seasonal.seasonalNear(now, choice, calendars)) };
+  const sandbox = {
+    location: { search: "" }, dispatchEvent() {}, CustomEvent: class {}, URLSearchParams, console, setTimeout,
+    document: { readyState: "complete", addEventListener() {} }, addEventListener() {}, cabinetTabs: null, cabinetContent: null, activeCabinetCategory: "candles",
+    localStorage: { getItem: (key) => (key === "sky.place" ? JSON.stringify({ latitude: 19.08, longitude: 72.88, source: "manual" }) : null) },
+    SaltSettings: { get: async () => ({ calendar_traditions: "wheel", calendar_extra: "hindu,kemetic" }) },
+    SanctuaryAssetCatalog: Catalog,
+    AltarArtwork: { ...Artwork, seasonal: { ...Artwork.seasonal, "diya-lamps": pic("diya-lamps") } },
+    SaltCore: { altar: { ...A, seasonal } },
+  };
+  sandbox.window = sandbox;
+  vm.runInNewContext(fs.readFileSync("altar/js/features/cabinet.js", "utf8"), sandbox);
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  assert.equal(asked.length, 1);
+  assert.equal(asked[0].settings.calendar_extra, "hindu,kemetic");
+  assert.deepEqual({ ...asked[0].place }, { latitude: 19.08, longitude: 72.88 });
+  assert.ok(sandbox.AltarCabinet.getSearchRecords().some((r) => r.title === "Diya Lamps"));
+});
+
 test("the new tools and natural finds with a picture join the website's cabinet", () => {
   const artwork = { ...Artwork, shelfTools: { "singing-bowl": "../assets/altar/objects/tools/singing-bowl/singing-bowl.png" }, natural: { "hag-stone": "../assets/altar/objects/natural/hag-stone/hag-stone.png" } };
   const records = cabinetApi(artwork).getSearchRecords();
