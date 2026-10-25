@@ -835,6 +835,16 @@ export function festivalsNear(now: Date, choice?: HolidayChoice | null, calendar
   });
 }
 
+/**
+ * The festivals running today, for tonight's altar: festivalsNear's (the
+ * same calendars, traditional ones and place as the Seasonal drawer) that
+ * fall on the day, or are running on it (Navaratri's nights, the epagomenal
+ * days).
+ */
+export function festivalsTonight(now: Date, choice?: HolidayChoice | null, calendars?: CalendarsShown | null): FestivalNear[] {
+  return festivalsNear(now, choice, calendars).filter((n) => n.inDays === 0 && n.day >= 1);
+}
+
 /** Whether you keep the year south of the equator (the Wheel of the Year, Southern Hemisphere). */
 export const keepsSouth = (choice?: HolidayChoice | null) =>
   !!choice && (choice.traditions.includes('wheel_south') || (choice.picked ?? []).some((id) => id.startsWith('wheel_south/')));

@@ -6,21 +6,30 @@ import { plainValue, splitList } from '../../library/model.ts';
 import type { LibraryEntry } from '../../library/types.ts';
 import { builtInCabinet, objectFromForm, placeableForms, shortLabel } from '../cabinet.ts';
 import { boxHeightFraction, displayBox, objectSize, withCenter, withSize } from '../geometry.ts';
-import type { TonightAltar } from '../tonight.ts';
+import { festivalInSentence, type TonightAltar } from '../tonight.ts';
 import type { CabinetForm, CabinetItem, SavedObject } from '../types.ts';
 import { resolveAltarEntry } from '../companion.ts';
 import { festivalName, seasonalIdOf, seasonalObject } from '../seasonal.ts';
 import { correspondenceOf, handleSafe, libraryOr, listing, planetName, planetOfWeekday, planetPossessive, type Planet } from './correspondence.ts';
 
-export type TonightTheme = { planet: Planet | null; holiday: string | null; moon: 'full' | 'new' | null };
+export type TonightTheme = {
+  planet: Planet | null;
+  holiday: string | null;
+  moon: 'full' | 'new' | null;
+  /** The festival whose seasonal thing is on the altar ("Diwali"), from any calendar. */
+  festival?: string | null;
+};
 
-/** What tonight's altar was set for, read from its reason and date. */
-export function tonightTheme(tonight: Pick<TonightAltar, 'reason'>, date: Date): TonightTheme {
+/** What tonight's altar was set for, read from its reason (and festival) and date. */
+export function tonightTheme(tonight: Pick<TonightAltar, 'reason'> & Partial<Pick<TonightAltar, 'festival'>>, date: Date): TonightTheme {
   const weekday = /’s day:/.test(tonight.reason);
+  const holiday = weekday ? null : tonight.reason;
   return {
     planet: weekday ? planetOfWeekday(date.getDay()) : null,
-    holiday: weekday ? null : tonight.reason,
+    holiday,
     moon: /full moon/.test(tonight.reason) ? 'full' : /new moon/.test(tonight.reason) ? 'new' : null,
+    // Only when the holiday doesn't already name it (Diwali on Mars's day; another calendar's festival on a holiday's night).
+    ...(tonight.festival && tonight.festival !== holiday ? { festival: tonight.festival } : {}),
   };
 }
 
@@ -47,7 +56,10 @@ export function whyThisPiece(object: SavedObject, theme: TonightTheme, entries?:
   const seasonal = seasonalObject(seasonalIdOf(object) ?? '');
   if (seasonal) {
     const festivals = seasonal.festivals.map(festivalName).filter(Boolean);
-    return theme.holiday && festivals.includes(theme.holiday) ? `${name}: one of the things kept at ${theme.holiday}.` : `${name}: kept at ${listing(festivals)}.`;
+    const tonightIs = [theme.festival, theme.holiday].find((f) => !!f && festivals.includes(f));
+    if (tonightIs) return `${name}: one of the things kept at ${festivalInSentence(tonightIs)}.`;
+    if (theme.festival) return `${name}: set out for ${festivalInSentence(theme.festival)}.`;
+    return `${name}: kept at ${listing(festivals.map(festivalInSentence))}.`;
   }
   if (object.type === 'deity') {
     const domains = splitList(plainValue(entry?.traditional?.Domains)).slice(0, 2).map((d) => d.toLowerCase());

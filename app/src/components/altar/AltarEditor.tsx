@@ -43,7 +43,7 @@ import {
 } from '../../lib/altar/pottedPlants';
 import { harvestSprig } from '../../lib/altar/pottedSprig';
 import { keepImageOnDevice, pickImage, uploadImage } from '../../lib/altar/images';
-import { seasonalDescription, seasonalNear, withoutHiddenCalendars } from '../../lib/altar/seasonal';
+import { festivalsTonight, seasonalDescription, seasonalNear, withoutHiddenCalendars } from '../../lib/altar/seasonal';
 import { shelfDescription } from '../../lib/altar/shelf';
 import { RitualPickerSheet, useBeginOnAltar } from './connect/BeginOnAltar';
 import type { AltarRef } from './connect/common';
@@ -305,6 +305,13 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
   const [justSaved, setJustSaved] = useState(false);
   // The altar set by "Tonight's altar", while it's open: why each piece is there, and swaps.
   const [tonight, setTonight] = useState<{ altar: TonightAltar; date: Date } | null>(null);
+  // Where you are: for the sky, and for the Hindu and Kemetic festivals' dates (sunrise, the rising of Sirius).
+  const here = usePlace();
+  // Read when tonight's altar is set, without setting it again when the place arrives.
+  const hereRef = useRef(here);
+  useEffect(() => {
+    hereRef.current = here;
+  }, [here]);
   // The spell timer opened from one object.
   const [spellWith, setSpellWith] = useState<{ uid: string; label: string } | null>(null);
   // A cleansing or charge playing out on the stage, and where a dragged object is settling.
@@ -361,7 +368,10 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
     }
     if (altarId === 'tonight') {
       const night = new Date();
-      const tonight = tonightAltar(night, holidaysToday(night, holidayChoice(settings)), moonState(night).name);
+      const choice = holidayChoice(settings);
+      // Today's festivals from every calendar kept or shown, as the Seasonal drawer finds them (the Hindu and Kemetic ones where you are).
+      const festivals = festivalsTonight(night, choice, { settings, place: hereRef.current });
+      const tonight = tonightAltar(night, holidaysToday(night, choice), moonState(night).name, festivals);
       // Not marked unsaved, so a working draft you already have isn't replaced until you change something here.
       start(tonight.doc, null, 'Tonight’s Altar');
       setTonight({ altar: tonight, date: night });
@@ -629,8 +639,6 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
 
   // Your own items come from the workshop store, so the spell builder and apothecary see the same list.
   const workshop = useWorkshop();
-  // Where you are: for the sky, and for the Hindu and Kemetic festivals' dates (sunrise, the rising of Sirius).
-  const here = usePlace();
   // The festivals that are near, from the calendars you keep and the traditional calendars you show, and the season it is bring their seasonal things to the top of the drawer.
   const near = useMemo(() => seasonalNear(new Date(), holidayChoice(settings), { settings, place: here }), [settings, here]);
   // A photo being chosen and saved for an ancestor frame.

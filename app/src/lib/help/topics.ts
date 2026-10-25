@@ -339,8 +339,12 @@ export const HELP: HelpSection[] = [
           'Move, swap or add anything you like. Tap a piece and "Swap it" for something with the same correspondence.',
           'Tap "Save" to keep it. Tap "Why these pieces" to read why each piece is there.',
         ],
-        tips: ['Tonight’s altar is not kept until you save it.'],
-        keywords: ['starter altar', 'daily altar', 'tonight altar', 'suggested altar'],
+        tips: [
+          'Tonight’s altar is not kept until you save it.',
+          'It works for every calendar you keep or show: on a festival night, or while a festival of several days runs, it sets out one of that festival’s seasonal things, such as diya lamps at Diwali, the kalash at Navaratri, Holi’s colours, or the lamps of the five days during the Epagomenal Days. The Hindu and Kemetic festivals count when you show that calendar under "Also show" in "Calendar & holidays", on the dates it gives where you are.',
+          'When festivals from two calendars share a night, the one whose altar is being set comes first, and only one seasonal thing is set out, so the altar stays uncrowded.',
+        ],
+        keywords: ['starter altar', 'daily altar', 'tonight altar', 'suggested altar', 'festival', 'diwali', 'navaratri', 'holi', 'epagomenal', 'wep ronpet'],
       },
       {
         id: 'today-reflect-prompt',
@@ -604,7 +608,7 @@ export const HELP: HelpSection[] = [
           'The Christian & folk calendar keeps the old household customs: chalk and blessed water for the Epiphany house blessing, Candlemas candles, Easter lilies and red eggs, the Assumption’s herb bundle, Michaelmas daisies, the Advent wreath, and holly and ivy. If you hide the Christian calendar in "Calendar & holidays", its things leave the drawer too, and never come to the top.',
           'The food ones are real food: apples, gourds and a pomegranate soften and brown over a couple of weeks; the bilberries, the pot of beans, the kykeon, the moon cake, Hekate’s supper, the Parentalia offering, the mola salsa, the Lammas loaf, the red eggs, the kutia, the Dziady supper, the bread and salt, the modak and the offering table’s bread go over in a day or few, and ask to be tended as other offerings do. Flowers and cut branches (the May bush, the Midsummer birch, Flora’s flowers, Juno’s garland, the Neptunalia boughs, Easter lilies, Pentecost peonies, Michaelmas daisies, the holly and ivy, the Kupala wreath, the marigolds, the bilva leaves, the blue lotus, snowdrops, blossom and wildflowers) wilt as cut flowers do. The woven, straw and carved things, the Lemuria’s dried black beans, the chalk, candles, blessed water, dried herb bundle and Advent wreath, Marzanna, the didukh and the carollers’ star, the lamps, rangoli, colours and kalash, the Osiris bed and the sistrum, and the autumn leaves, keep.',
           'The phiale and the drinking horn hold a libation, as a bowl or chalice does.',
-          'On a festival night from a calendar you keep, "Set tonight’s altar" sets out one of its seasonal things too.',
+          'On a festival night from any calendar you keep or show, the Hindu and Kemetic ones included, "Set tonight’s altar" sets out one of its seasonal things too, all through a festival of several days. A hidden calendar’s festivals never do.',
         ],
         keywords: ['seasonal', 'sabbat', 'wheel of the year', 'samhain', 'yule', 'imbolc', 'ostara', 'beltane', 'litha', 'lammas', 'mabon', 'pumpkin', 'harvest', 'greek', 'hellenic', 'festival', 'pyanepsia', 'anthesteria', 'dionysia', 'eleusinian', 'noumenia', 'deipnon', 'hekate', 'dionysus', 'apollo', 'norse', 'heathen', 'blót', 'odin', 'celtic', 'irish', 'brigid', 'lughnasadh', 'bealtaine', 'roman', 'saturnalia', 'parentalia', 'lupercalia', 'floralia', 'lemuria', 'vestalia', 'saturn', 'vesta', 'sol invictus', 'christian', 'folk', 'epiphany', 'candlemas', 'easter', 'pentecost', 'assumption', 'michaelmas', 'advent', 'christmas', 'holly', 'house blessing', 'slavic', 'marzanna', 'kupala', 'dziady', 'koliada', 'kutia', 'hindu', 'diwali', 'holi', 'navaratri', 'ganesh chaturthi', 'shivaratri', 'ganesha', 'lakshmi', 'shiva', 'kemetic', 'egyptian', 'epagomenal', 'wep ronpet', 'osiris', 'isis', 'season', 'snowdrops', 'autumn leaves'],
       },
@@ -1035,7 +1039,8 @@ export const HELP: HelpSection[] = [
           'Tap "Swap it" to choose something with the same correspondence.',
           'Tap "Why these pieces" for every piece at once, then "Save" to keep it.',
         ],
-        keywords: ['starter altar', 'daily altar', 'swap', 'suggested pieces'],
+        tips: ['On a festival night from any calendar you keep or show, the festival’s seasonal thing says which festival it is set out for, Diwali or Wep Ronpet as much as Samhain.'],
+        keywords: ['starter altar', 'daily altar', 'swap', 'suggested pieces', 'festival'],
       },
       {
         id: 'altar-widget',
