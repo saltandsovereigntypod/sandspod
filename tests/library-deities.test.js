@@ -26,6 +26,7 @@ const NEW_DEITIES = ["saturn", "flora", "neptune", "faunus", "sol", "zeus", "her
 const MORE_DEITIES = [
   "ares", "hephaestus", "pan", "gaia", "helios", "eros", "asclepius",
   "fortuna", "bacchus", "pluto", "proserpina", "vulcan", "pomona", "bona_dea", "lares_penates", "mithras",
+  "amun", "ptah", "bes", "nut", "neith", "sobek", "khonsu", "taweret",
 ];
 
 test("the website's Library has the new deities, field for field like Jupiter", () => {

@@ -29,6 +29,7 @@ const ALL_NEW = Object.values(NEW_DEITIES).flat();
 const MORE_DEITIES: Record<string, string[]> = {
   Greek: ['ares', 'hephaestus', 'pan', 'gaia', 'helios', 'eros', 'asclepius'],
   Roman: ['fortuna', 'bacchus', 'pluto', 'proserpina', 'vulcan', 'pomona', 'bona_dea', 'lares_penates', 'mithras'],
+  Egyptian: ['amun', 'ptah', 'bes', 'nut', 'neith', 'sobek', 'khonsu', 'taweret'],
 };
 const ALL_MORE = Object.values(MORE_DEITIES).flat();
 const text = (d: Deity, ...fields: string[]) => fields.map((f) => String(d[f] ?? '')).join(' ');
@@ -207,6 +208,10 @@ const MORE_LINKS: [string, string][] = [
   ['roman-volcanalia', 'vulcan'],
   ['roman-compitalia', 'lares_penates'],
   ['roman-caristia', 'lares_penates'],
+  ['kemetic-opet', 'amun'],
+  ['kemetic-opet', 'khonsu'],
+  ['kemetic-valley', 'amun'],
+  ['kemetic-birth-osiris', 'nut'],
 ];
 // Seasonal things kept for festivals that honour them.
 const MORE_SEASONAL: string[] = ['Lares'];
@@ -230,6 +235,15 @@ const MORE_SEARCH: [string, string][] = [
   ['lararium', 'lares_penates'],
   ['Lares', 'lares_penates'],
   ['tauroctony', 'mithras'],
+  ['Karnak', 'amun'],
+  ['Memphis', 'ptah'],
+  ['Sokar', 'ptah'],
+  ['Saqqara', 'bes'],
+  ['Geb', 'nut'],
+  ['Sais', 'neith'],
+  ['Kom Ombo', 'sobek'],
+  ['Bentresh', 'khonsu'],
+  ['hippopotamus', 'taweret'],
 ];
 // Living religions: devotion, not magic.
 const LIVING_PANTHEONS = ['Hindu', 'Shinto', 'Chinese'];

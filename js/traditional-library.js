@@ -9989,6 +9989,350 @@ const TraditionalLibrary = {
 
             tags: ["mysteries", "loyalty", "light", "brotherhood", "sun", "archaeology"]
         },
+
+        amun: {
+            DisplayName: "Amun",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "The hidden power behind creation, kingship, the wind and breath of life, oracles, the protection of the poor",
+
+            SacredSymbols: "Tall double-plumed crown, sceptre, the curved-horned ram’s head, the sacred barque",
+
+            SacredAnimals: "Ram, goose",
+
+            SacredPlants: "None securely attested; lettuce belonged to his fertile form, Amun-Min",
+
+            CandleColors: "Blue, gold, white",
+
+            Crystals: "Lapis lazuli, clear quartz, sodalite, gold-coloured stones",
+
+            Herbs: "Frankincense, myrrh, cedar",
+
+            Offerings: "Bread, beer, fresh water, incense, flowers, a lamp",
+
+            TraditionalWarnings: "Amun’s name means the Hidden One: he was thought to be beyond any image, so approach him with humility rather than certainty. Under Akhenaten his name was hacked from monuments, and his priests later grew so powerful they ruled Upper Egypt; his history is as political as it is religious.",
+
+            Overview: "Amun is the Egyptian god whose name means the Hidden One, a god of Thebes who rose with its kings to become Amun-Ra, king of the gods, in the New Kingdom. He is pictured as a man with a tall crown of two plumes and blue skin, or as a ram with curving horns. With his consort Mut and their son Khonsu he ruled Karnak, the largest temple complex in Egypt, and his oracle at Siwa in the western desert greeted Alexander the Great as the god’s son.",
+
+            TraditionalMeaning: "The unseen source of all things: breath, hidden purpose and a god who, in his hymns, hears the prayers of the poor.",
+
+            DevotionalApproach: "Start here: sit quietly, breathe slowly and offer a cup of fresh water and a little bread to the hidden god, asking to sense what lies behind what you see. Approach him with reverence and trust. Ordinary Egyptians called him the vizier of the poor, so he asks for justice and care for those with little.",
+
+            OfferingNotes: "Offer fresh water, bread, beer, incense or flowers, then, as in Kemetic practice, ‘revert’ the offerings and share them afterwards. Gifts to those in need suit the god of the poor.",
+
+            AltarIdeas: "A blue or gold candle, an image of Amun or a ram, two feathers for his crown, lapis lazuli, a bowl of water and a small boat to stand for his barque. Keep it clean and simple, facing east where you can.",
+
+            CulturalContext: "Amun is honoured today in Kemetic practice, a living religion of revived Egyptian worship. His festivals, Opet and the Beautiful Feast of the Valley, are still kept in Kemetic communities, and the personal prayers to Amun from the workmen’s village of Deir el-Medina show how ordinary people turned to him in trouble.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Amun is honoured at the Opet festival in the second month of the flood season, when his barque travelled from Karnak to Luxor, and at the Beautiful Feast of the Valley, when he crossed the Nile to visit the dead. He is asked for guidance, justice, protection and help in hardship, often through quiet prayer.",
+
+            tags: ["hidden", "kingship", "breath", "oracles", "justice", "creation"]
+        },
+
+        ptah: {
+            DisplayName: "Ptah",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "Creation by thought and word, craftsmen and builders, sculpture, Memphis, prayers heard",
+
+            SacredSymbols: "A sceptre joining the was (power), djed (stability) and ankh (life), the close-fitting blue cap, the ear (on stelae for prayers heard)",
+
+            SacredAnimals: "The Apis bull, his living herald",
+
+            SacredPlants: "None securely attested in Egyptian sources",
+
+            CandleColors: "Blue, green, gold",
+
+            Crystals: "Lapis lazuli, malachite, turquoise, jasper",
+
+            Herbs: "Frankincense, myrrh, cedar",
+
+            Offerings: "Bread, beer, water, incense, something you have made",
+
+            TraditionalWarnings: "The Memphite Theology, which tells how Ptah created the world through his heart and tongue, survives on the Shabaka Stone of about 700 BCE; it claims to copy an older text, but its date is debated. Present it as one Egyptian theology among several.",
+
+            Overview: "Ptah is the creator god of Memphis, Egypt’s ancient capital, and the patron of craftsmen, sculptors and builders. He is pictured as a man wrapped like a mummy, with a close-fitting cap, holding a sceptre of power, stability and life. The Memphite Theology says he created the gods and the world by conceiving them in his heart and speaking them with his tongue; with Sekhmet and Nefertem he formed the Memphite triad.",
+
+            TraditionalMeaning: "Creation through thought and word: the craftsman’s skill, the power of speech and the god who listens.",
+
+            DevotionalApproach: "Start here: make something carefully, then light a candle and dedicate it to him, saying aloud what you meant it to be. Approach him through skilled work and careful words. He asks devotees to think before they speak and to build things that last.",
+
+            OfferingNotes: "Offer bread, beer, water or incense, or a piece of your own handiwork. Workers at Deir el-Medina left stelae carved with ears so that Ptah would hear their prayers; a drawn or carved ear is a fitting gift.",
+
+            AltarIdeas: "A blue or green candle, an image of Ptah or a was sceptre, a djed pillar, lapis lazuli or malachite, tools of your craft and a dish for bread. A workbench or studio suits him.",
+
+            CulturalContext: "Ptah is honoured today in Kemetic practice, a living religion of revived Egyptian worship, especially by makers and artists. The Greeks equated him with Hephaestus, and the name Egypt itself probably comes, through Greek Aigyptos, from Hut-ka-Ptah, the house of Ptah’s ka, a name of Memphis.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Ptah is honoured as Ptah-Sokar at the festival of Sokar in the month of Khoiak, and by craftspeople whenever work is begun or finished. He is asked for skill, creativity, wise speech and to hear the prayers of ordinary people.",
+
+            tags: ["creation", "craft", "speech", "builders", "memphis", "prayer"]
+        },
+
+        bes: {
+            DisplayName: "Bes",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "Protection of the household, childbirth and children, sleep and dreams, music, dance and merriment",
+
+            SacredSymbols: "His lion-maned face with tongue out, feather crown, knife, tambourine, the sa sign of protection",
+
+            SacredAnimals: "Lion (in his features), the snakes he grips to keep them from the home",
+
+            SacredPlants: "None securely attested in Egyptian sources",
+
+            CandleColors: "Orange, gold, red",
+
+            Crystals: "Carnelian, red jasper, citrine, tiger eye",
+
+            Herbs: "Juniper, chamomile, frankincense",
+
+            Offerings: "Beer, bread, music, dancing, laughter, small sweets",
+
+            TraditionalWarnings: "Bes looks fierce on purpose, to frighten away danger; he is a guardian, not a demon. Bes may name a group of similar protective gods rather than one; Egyptian texts use several names for figures that look like him.",
+
+            Overview: "Bes is the Egyptian protector of homes, mothers, children and sleepers, pictured as a dwarf with a lion-like face, his tongue out, wearing a feather crown and often holding a knife or a tambourine. His image appears on beds, headrests, mirrors, cosmetic jars and amulets, warding off snakes, illness and bad dreams. He danced and played music to protect women in childbirth and to make a household merry.",
+
+            TraditionalMeaning: "Joyful protection: a guardian who makes noise and laughter against danger and watches over the vulnerable at night.",
+
+            DevotionalApproach: "Start here: put on music, dance for a minute or laugh with someone you love, and ask him to watch over your home tonight. Approach him with warmth and good humour. He asks devotees to protect children and mothers, guard sleep and keep joy in the house.",
+
+            OfferingNotes: "Offer beer, bread, sweets, music or a dance. Laughter and play in the home are offerings in his spirit, and a small image of him by the bed is a traditional protection.",
+
+            AltarIdeas: "An orange or gold candle, an image or amulet of Bes, a tambourine or drum, carnelian, and a small dish of sweets. Placing him near a bedroom or a child’s room follows ancient custom.",
+
+            CulturalContext: "Bes is honoured today in Kemetic practice, a living religion of revived Egyptian worship, and was one of the most popular gods of ordinary Egyptians, though he had few temples of his own. His image spread across the Mediterranean, and in the Ptolemaic period people came to the Bes chambers at Saqqara, perhaps for healing or dreams.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Bes is honoured at home rather than in temples, with music, dance, beer and sweets, especially around births, children’s milestones and before sleep. He is asked to protect mothers, babies and the household, and to keep away nightmares.",
+
+            tags: ["protection", "household", "childbirth", "children", "music", "sleep"]
+        },
+
+        nut: {
+            DisplayName: "Nut",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "The sky, the stars, the daily rebirth of the sun, motherhood, protection of the dead",
+
+            SacredSymbols: "The arched body covered with stars, the water pot (the sign of her name), outspread wings, the sycamore tree",
+
+            SacredAnimals: "Cow, sow",
+
+            SacredPlants: "Sycamore fig",
+
+            CandleColors: "Dark blue, black, silver",
+
+            Crystals: "Lapis lazuli, sodalite, blue goldstone, moonstone",
+
+            Herbs: "Myrrh, blue lotus, frankincense",
+
+            Offerings: "Fresh water, milk, incense, flowers, time spent under the night sky",
+
+            TraditionalWarnings: "Nut is the sky, not a moon or star goddess in the modern sense: the sun, moon and stars travel through her body. Plutarch’s tale of the five extra days won for her from the moon is a Greek retelling of older Egyptian beliefs about the gods’ births.",
+
+            Overview: "Nut is the Egyptian goddess of the sky, arched over her husband Geb, the earth, with her fingers and toes touching the horizons. Each evening she swallows the sun and each morning gives birth to it again, and the stars travel across her body. Her children, born on the five days added to the year, were Osiris, Horus the Elder, Set, Isis and Nephthys, and she is painted inside coffin lids, spreading over the dead to give them new life.",
+
+            TraditionalMeaning: "Shelter and rebirth: the sky that holds us, a mother who gives birth to the light each day and welcomes the dead into the stars.",
+
+            DevotionalApproach: "Start here: go outside after dark, look up for a few minutes and thank her for the sky over you. Approach her as a vast, sheltering mother. She asks devotees to look up, take the long view and trust that light returns each morning.",
+
+            OfferingNotes: "Offer fresh water, milk or incense, set out under the open sky where possible. Pouring water at the foot of a tree honours her as the goddess of the sycamore, who gives water to the dead.",
+
+            AltarIdeas: "A dark blue candle, a cloth scattered with stars, an image of Nut arched over the earth, lapis lazuli or blue goldstone, and a small water pot. A skylight or a window to the night sky suits her.",
+
+            CulturalContext: "Nut is honoured today in Kemetic practice, a living religion of revived Egyptian worship. The ceilings of royal tombs and temples such as Dendera show her body stretched across the sky, swallowing the sun, and the Pyramid Texts call on her to take the king among the stars that never set.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Nut is honoured on the five days upon the year, when her children were born, and at night under the open sky, with water, milk and incense. She is asked for protection, comfort for the dying and the dead, and help for mothers.",
+
+            tags: ["sky", "stars", "mother", "rebirth", "night", "protection"]
+        },
+
+        neith: {
+            DisplayName: "Neith",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "Creation, hunting and war, weaving, wisdom and judgement, protection of the dead, the city of Sais",
+
+            SacredSymbols: "Two crossed arrows on a shield, the bow, the Red Crown of Lower Egypt, the weaver’s shuttle",
+
+            SacredAnimals: "Cow, the Nile perch (at Esna)",
+
+            SacredPlants: "None securely attested in Egyptian sources",
+
+            CandleColors: "Green, red, white",
+
+            Crystals: "Malachite, jasper, carnelian, labradorite",
+
+            Herbs: "Frankincense, myrrh, flax",
+
+            Offerings: "Fresh water, bread, incense, woven cloth, lamps",
+
+            TraditionalWarnings: "Neith is one of the oldest Egyptian deities, and her roles shifted over three thousand years: early war and hunting goddess, later creator. Plutarch’s report of the veiled inscription at her temple in Sais (“no mortal has lifted my robe”) is a Greek account, and modern occult readings of it go further than the source.",
+
+            Overview: "Neith is an Egyptian goddess of Sais in the Nile Delta, known from the First Dynasty, when queens were named after her. Her emblem is a shield with crossed arrows, and she wears the Red Crown of Lower Egypt. At Esna she was the creator who rose from the primeval waters and gave birth to the sun god Ra; in the Contendings of Horus and Seth the gods write to her for judgement, and with Isis, Nephthys and Serqet she guards the dead.",
+
+            TraditionalMeaning: "Wise strength: the creator and huntress who weaves the world, judges fairly and protects those in her care.",
+
+            DevotionalApproach: "Start here: weave, knit or plait a few rows, or simply tie a cord, and light a lamp for her as you work. Approach her with respect for her great age and wisdom. She asks devotees to act with skill and independence and to judge fairly.",
+
+            OfferingNotes: "Offer fresh water, bread, incense, woven or linen cloth, or a lamp. Herodotus describes a Feast of Lamps at Sais, when people across Egypt lit lamps around their houses all night; a lamp burning safely is a fitting offering.",
+
+            AltarIdeas: "A green or red candle, an image of Neith or a shield with crossed arrows, a small bow, a piece of woven cloth or a shuttle, malachite, and a lamp. Keep it ordered and calm.",
+
+            CulturalContext: "Neith is honoured today in Kemetic practice, a living religion of revived Egyptian worship. The Greeks identified her with Athena, and Plato says the priests of Sais told Solon the story of Atlantis. Late texts from the temple at Esna give her own account of creation.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Neith is honoured at her festival of creation, which the temple of Esna placed on 13 Epiphi, the third month of the harvest season, and with a Feast of Lamps after Herodotus. She is asked for wisdom, fair judgement, protection, skill in weaving and making, and courage.",
+
+            tags: ["creation", "wisdom", "weaving", "hunting", "protection", "judgement"]
+        },
+
+        sobek: {
+            DisplayName: "Sobek",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "The Nile and its waters, crocodiles, fertility of the land, strength, protection from the dangers of the river",
+
+            SacredSymbols: "Crocodile head with the sun disc and plumes, the was sceptre, the ankh",
+
+            SacredAnimals: "Crocodile",
+
+            SacredPlants: "Papyrus, reeds of the riverbank",
+
+            CandleColors: "Green, dark blue, gold",
+
+            Crystals: "Malachite, green jasper, bloodstone, moss agate",
+
+            Herbs: "Papyrus, myrrh, cedar",
+
+            Offerings: "Fresh water, bread, honey cake, wine mixed with honey, incense",
+
+            TraditionalWarnings: "Sobek is the power of the crocodile, feared as well as revered: ancient Egyptians prayed both to him and against crocodiles. Respect real water and wildlife, and never approach crocodiles or other wild animals as an act of devotion.",
+
+            Overview: "Sobek is the Egyptian crocodile god of the Nile, its waters and the fertility they bring, pictured as a crocodile or a man with a crocodile’s head, often crowned with the sun disc as Sobek-Ra. His great cult centres were in the Faiyum oasis, at the city the Greeks called Crocodilopolis, and at Kom Ombo, where he shares a double temple with Horus. Middle Kingdom kings and the female pharaoh Sobekneferu took his name.",
+
+            TraditionalMeaning: "Strength from the waters: the raw power of the river, fertility, protection and the courage to face what lurks below the surface.",
+
+            DevotionalApproach: "Start here: offer a cup of fresh water with a word of thanks for the water you use each day. Approach him with respect for his power. He asks devotees to honour rivers and wetlands, to be strong without being cruel and to protect what is theirs.",
+
+            OfferingNotes: "Offer fresh water, bread, honey cake or wine mixed with honey; Strabo saw priests feeding the sacred crocodile of Crocodilopolis cakes, meat and honeyed wine. Caring for a river or wetland is an offering in his spirit.",
+
+            AltarIdeas: "A green or dark blue candle, a crocodile figure, malachite or green jasper, a bowl of water and a few reeds or papyrus. Placing it near water, or including Nile imagery, suits him.",
+
+            CulturalContext: "Sobek is honoured today in Kemetic practice, a living religion of revived Egyptian worship. Thousands of mummified crocodiles, from hatchlings to great adults, were buried at his sanctuaries, and some can be seen at the Crocodile Museum at Kom Ombo.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Sobek is honoured with water, bread and honey, often at the Nile’s rising in summer and at the new moon. He is asked for strength, protection from danger, fertility of the land and safety on and near water.",
+
+            tags: ["nile", "crocodile", "strength", "fertility", "water", "protection"]
+        },
+
+        khonsu: {
+            DisplayName: "Khonsu",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "The moon and its journey, the passing of time, healing, protection against evil spirits, youth",
+
+            SacredSymbols: "Full moon disc in a crescent, the sidelock of youth, the crook and flail, the menat necklace",
+
+            SacredAnimals: "Falcon, baboon",
+
+            SacredPlants: "None securely attested in Egyptian sources",
+
+            CandleColors: "Silver, white, pale blue",
+
+            Crystals: "Moonstone, selenite, clear quartz, labradorite",
+
+            Herbs: "Myrrh, blue lotus, chamomile",
+
+            Offerings: "Fresh water, milk, bread, incense, prayers for healing",
+
+            TraditionalWarnings: "Early texts show a fierce Khonsu: in the Pyramid Texts’ Cannibal Hymn he helps the king devour the gods. Later he became a gentle healer and the youthful son of Amun and Mut, so read his sources with their dates in mind.",
+
+            Overview: "Khonsu is the Egyptian god of the moon, whose name means the Traveller, for the moon’s journey across the night sky. He is pictured as a young man with the sidelock of youth, wrapped like a mummy, wearing the full moon in a crescent, or with the head of a falcon. In Thebes he was the son of Amun and Mut, with his own temple at Karnak, and a late inscription, the Bentresh Stela, tells how his image travelled abroad to heal a foreign princess.",
+
+            TraditionalMeaning: "Time and healing: the moon’s steady journey, the counting of months and the power to drive out sickness and fear.",
+
+            DevotionalApproach: "Start here: on a clear night, look for the moon, note its phase and ask him for healing for someone who needs it. Approach him with patience; he moves on his own schedule. He asks devotees to keep track of time well and to care for the sick.",
+
+            OfferingNotes: "Offer fresh water, milk, bread or incense, especially at the full moon. Keeping a note of the moon’s phases is a simple devotion to the Traveller.",
+
+            AltarIdeas: "A silver or white candle, a crescent with a full moon disc, moonstone or selenite, a bowl of water and an image of Khonsu or a falcon. A window where the moon can be seen suits him.",
+
+            CulturalContext: "Khonsu is honoured today in Kemetic practice, a living religion of revived Egyptian worship, often with Amun and Mut. At the Opet festival his barque travelled with theirs from Karnak to Luxor, and his temple still stands in the Karnak precinct.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Khonsu is honoured at the full moon and at the Opet festival with the Theban triad, with water, milk and incense. He is asked for healing, protection from harmful spirits, and good timing in the work of the month.",
+
+            tags: ["moon", "time", "healing", "protection", "youth", "night"]
+        },
+
+        taweret: {
+            DisplayName: "Taweret",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "Pregnancy and childbirth, babies and young children, protection of the home, fertility",
+
+            SacredSymbols: "The sa sign of protection, the ankh, a knife, the torch",
+
+            SacredAnimals: "Hippopotamus, with a lion’s paws and a crocodile’s back",
+
+            SacredPlants: "None securely attested in Egyptian sources",
+
+            CandleColors: "Green, white, blue",
+
+            Crystals: "Moonstone, green aventurine, rose quartz, jade",
+
+            Herbs: "Chamomile, lemon balm, myrrh",
+
+            Offerings: "Fresh water, milk, bread, care for mothers and babies",
+
+            TraditionalWarnings: "Taweret looks fierce to frighten off anything that might harm a mother or child. She supports, never replaces, midwives, doctors and good care in pregnancy and birth.",
+
+            Overview: "Taweret, the Great One, is the Egyptian goddess who protected women in pregnancy and childbirth and watched over babies. She is pictured as a pregnant hippopotamus standing upright, with a lion’s paws and a crocodile’s back, resting her hand on the sa sign of protection. Her image appeared on beds, headrests, amulets and magic wands of ivory used to guard mother and child.",
+
+            TraditionalMeaning: "Fierce motherly protection: safe birth, the guarding of the very young and the strength of those who look after them.",
+
+            DevotionalApproach: "Start here: light a candle for someone who is pregnant, giving birth or caring for a small child, and ask her to watch over them. Approach her with warmth and trust. She asks devotees to protect mothers and babies and to support those who care for them.",
+
+            OfferingNotes: "Offer fresh water, milk or bread, or practical help for a new parent. Giving to a maternity or baby charity is an offering in her spirit.",
+
+            AltarIdeas: "A green or white candle, an image or amulet of Taweret, a sa sign or ankh, moonstone or aventurine, and a dish of milk. A shelf in a bedroom or nursery follows ancient custom.",
+
+            CulturalContext: "Taweret is honoured today in Kemetic practice, a living religion of revived Egyptian worship, and was one of the household gods closest to ordinary Egyptians, with Bes. Her figure was also a northern constellation in Egyptian star maps, and her image travelled to Minoan Crete, where it became the ‘Minoan genius’.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Taweret is honoured at home, with water, milk and bread, through pregnancy and birth and in a child’s first years. She is asked for safe childbirth, healthy babies and the protection of the household at night.",
+
+            tags: ["childbirth", "motherhood", "protection", "babies", "fertility", "household"]
+        },
     },
 
     tool: {

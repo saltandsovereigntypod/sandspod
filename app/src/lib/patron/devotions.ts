@@ -1584,6 +1584,179 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     sources: ['Book of the Dead, spell 125 (the Negative Confession)', 'Emily Teeter, The Presentation of Maat (1997)', WEP_RONPET],
   },
 
+  {
+    key: 'amun',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 9, day: 14 },
+        name: 'Opet festival',
+        why: 'Under Thutmose III the Opet festival began on II Akhet 15, when Amun, Mut and Khonsu sailed from Karnak to Luxor. The date is approximate, counted from an early-August new year; the app’s Kemetic calendar works it out from the anchor you choose.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Sit quietly, breathe slowly and greet the hidden god.',
+      'Offer a cup of fresh water and a little bread, then share it afterwards.',
+      'Do one thing for someone with little.',
+      'Ask him one question and listen for what comes.',
+    ],
+    approach:
+      'Amun is approached with reverence and humility, as the hidden god beyond every image and the vizier of the poor.',
+    sources: ['The Opet festival reliefs in the colonnade at Luxor; the Medinet Habu calendar', 'Jan Assmann, The Search for God in Ancient Egypt (2001)', WEP_RONPET],
+  },
+  {
+    key: 'ptah',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 11, day: 24 },
+        name: 'Festival of Sokar',
+        why: 'The festival of Sokar, with whom Ptah was joined as Ptah-Sokar, on IV Akhet 26 in the month of Khoiak, recorded at Medinet Habu. The date is approximate, counted from an early-August new year.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Make or mend something carefully and dedicate it to him.',
+      'Think before you speak once today, as the god who creates by word.',
+      'Draw an ear and ask him to hear one prayer.',
+      'Thank a builder, maker or craftsperson.',
+    ],
+    approach:
+      'Ptah is approached through skilled work and careful speech, as the creator of Memphis who hears prayers.',
+    sources: ['The Shabaka Stone (British Museum EA 498)', 'The festival calendar of Medinet Habu, on the Sokar festival', WEP_RONPET],
+  },
+  {
+    key: 'bes',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 8, day: 20 },
+        name: 'The Festival of Drunkenness',
+        why: 'Hathor’s Festival of Drunkenness (Tekh) on I Akhet 20 was a time of music, dance and merriment, and Bes appears in her company in art. Keeping it for him is a modern pairing; he had no temple festival of his own. The date is approximate.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Put on music and dance for a minute.',
+      'Laugh with someone you love.',
+      'Ask him to watch over your home before you sleep.',
+      'Do one kind thing for a parent or a child.',
+    ],
+    approach:
+      'Bes is approached with warmth and good humour, as the household’s merry guardian.',
+    sources: ['Dimitri Meeks and Christine Favard-Meeks, Daily Life of the Egyptian Gods (1996)', 'Geraldine Pinch, Egyptian Mythology (2002), s.v. Bes', WEP_RONPET],
+  },
+  {
+    key: 'nut',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 7, day: 27 },
+        name: 'The five days upon the year',
+        why: 'The first of the five days added to the year, when Nut’s children were born. The date is approximate, counted back from an early-August new year.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Look up at the night sky for a few minutes.',
+      'Pour a little water at the foot of a tree.',
+      'Thank her for the morning light when you wake.',
+      'Name one person who sheltered you.',
+    ],
+    approach:
+      'Nut is approached as the vast, sheltering sky and mother of the gods.',
+    sources: [EPAGOMENAL_BIRTHS, 'The Book of Nut (Fundamentals of the Course of the Stars), in the cenotaph of Seti I at Abydos'],
+  },
+  {
+    key: 'neith',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 6, day: 9 },
+        name: 'The festival of Neith at Esna',
+        why: 'The temple of Esna kept Neith’s festival of creation on 13 Epiphi (III Shemu 13), when her account of creation was recited. The date is approximate, counted from an early-August new year.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Weave, knit or plait a few rows for her.',
+      'Light a lamp and let it burn safely while you sit with her.',
+      'Make one fair decision with care.',
+      'Do one thing for yourself, independently.',
+    ],
+    approach:
+      'Neith is approached with respect for her great age and wisdom, as creator, huntress and judge.',
+    sources: ['Serge Sauneron, Esna V: Les fêtes religieuses d’Esna (1962)', 'Herodotus 2.62, on the Feast of Lamps at Sais', WEP_RONPET],
+  },
+  {
+    key: 'sobek',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 8, day: 1 },
+        name: 'Wep Ronpet and the rising Nile',
+        why: 'The opening of the year, at the time the Nile’s flood began. Honouring Sobek then, as lord of the waters, is a modern Kemetic choice; no single festival of his can be dated.',
+        basis: 'modern',
+      },
+      {
+        rule: { kind: 'moon', phase: 'new' },
+        name: 'The new moon',
+        why: 'Egyptian temples kept the first day of the lunar month as a feast for their gods. Keeping it for Sobek is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Offer a cup of fresh water with thanks for the water you use.',
+      'Spend a few minutes by a river, pond or canal.',
+      'Stand firm in one thing today.',
+      'Pick up litter near water.',
+    ],
+    approach:
+      'Sobek is approached with respect for his power, as the crocodile of the Nile who protects and gives fertility.',
+    sources: ['Strabo, Geography 17.1.38, on the sacred crocodile of Arsinoe', 'Herodotus 2.69', WEP_RONPET],
+  },
+  {
+    key: 'khonsu',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 9, day: 14 },
+        name: 'Opet festival',
+        why: 'At Opet, Khonsu’s barque sailed with those of Amun and Mut from Karnak to Luxor. The date is approximate, counted from an early-August new year.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'moon', phase: 'full' },
+        name: 'The full moon',
+        why: 'Egyptian temples kept the full moon, the middle of the lunar month, as a feast, and Khonsu is the moon himself.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Look for the moon and note its phase.',
+      'Ask him for healing for someone who is unwell.',
+      'Plan one thing for the month ahead.',
+      'Offer a cup of milk or water by a window at night.',
+    ],
+    approach:
+      'Khonsu is approached with patience, as the moon who travels and the healer of Thebes.',
+    sources: ['The Bentresh Stela (Louvre C 284)', 'Richard A. Parker, The Calendars of Ancient Egypt (1950), on the lunar feasts', WEP_RONPET],
+  },
+  {
+    key: 'taweret',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 7, day: 27 },
+        name: 'The five days upon the year',
+        why: 'The five days on which the gods were born, kept as days to guard against harm. Honouring Taweret, guardian of births, on them is a modern pairing. The date is approximate.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Light a candle for someone who is pregnant or has a new baby.',
+      'Offer practical help to a new parent.',
+      'Ask her to watch over the children in your life tonight.',
+      'Offer a cup of milk with thanks for those who cared for you as a child.',
+    ],
+    approach:
+      'Taweret is approached with warmth and trust, as the fierce protector of mothers and babies.',
+    sources: [EPAGOMENAL_BIRTHS, 'Geraldine Pinch, Magic in Ancient Egypt (1994), on birth amulets and wands'],
+  },
+
   // ─── Norse ────────────────────────────────────────────────────────────
   {
     key: 'odin',

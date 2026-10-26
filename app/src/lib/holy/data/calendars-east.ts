@@ -186,7 +186,7 @@ It was a royal and temple festival first, but also a public holiday: the one tim
       ],
     },
     correspondences: {
-      deities: ['Ra', 'Hathor'],
+      deities: ['Amun', 'Khonsu', 'Ra', 'Hathor'],
       herbs: ['Frankincense', 'Myrrh'],
       crystals: ['Lapis Lazuli', 'Carnelian'],
       colors: ['Gold', 'Blue'],
@@ -279,7 +279,7 @@ Because it followed the moon, its date in the civil calendar moved; the date sho
     ],
     ritual: { premade: 'hedge-ancestor-candle-evening', title: 'A night feast with your dead' },
     correspondences: {
-      deities: ['Hathor', 'Osiris', 'Anubis'],
+      deities: ['Amun', 'Hathor', 'Osiris', 'Anubis'],
       herbs: ['Rose', 'Myrrh', 'Jasmine'],
       crystals: ['Turquoise', 'Lapis Lazuli'],
       colors: ['Blue', 'Gold', 'Green'],
@@ -328,7 +328,7 @@ Modern Kemetics keep the five days as a series of birthdays and as a time of pro
       ],
     },
     correspondences: {
-      deities: ['Osiris', 'Isis', 'Thoth'],
+      deities: ['Osiris', 'Nut', 'Isis', 'Thoth'],
       herbs: ['Myrrh', 'Cedar'],
       crystals: ['Malachite', 'Lapis Lazuli'],
       colors: ['Green', 'White'],
