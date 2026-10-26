@@ -369,6 +369,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A month with the Best and Greatest: the sky-father of Rome, keeper of oaths and right order, learned through Roman prayer, the Ides and a promise you actually keep."
   },
   {
+    "id": "deity-kali",
+    "kind": "deity",
+    "paths": [
+      "hindu"
+    ],
+    "deityRef": "traditional/deity/kali",
+    "title": "Kali: The Mother Beyond Fear",
+    "summary": "A devotional month with Kali as her devotees know her: the Divine Mother of Bengal, sung to by Ramprasad and loved by Ramakrishna. Learn her names and image, her place in the Devi Mahatmya and Shakta devotion, how Kali Puja is kept, and how to offer red hibiscus, a lamp and song at a simple home puja, then decide whether to make a personal vow of devotion."
+  },
+  {
     "id": "deity-lada",
     "kind": "deity",
     "paths": [
