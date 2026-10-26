@@ -150,7 +150,13 @@
       };
 
       const past = decided.filter((a) => a.status !== "pending").slice(0, 30);
-      pane.innerHTML = `<section class="sp-section"><h2>Applications to join</h2>${applications.length ? applications.map(appCard).join("") : `<p class="sp-empty">No applications are waiting.</p>`}</section>
+      // Phone notes for new requests here (Reminders → Coven requests), as the app's Review screen shows them.
+      const saved = state.perms.review && context.user ? await Promise.resolve(global.SaltSettings?.get?.()).catch(() => null) : null;
+      const wanted = global.SaltCore?.covens?.requests?.requestsWanted?.(saved?.reminders_v2 || "", coven.id) ?? true;
+      const notes = state.perms.review && context.user
+        ? `<p class="sp-caption">Phone notes for new applications here: <strong>${wanted ? "on" : "off"}</strong>. <a href="${esc(UI.href("/reminders/#gd-requests"))}">Change them in Reminders</a> (they ring phones with the app; this page shows the count while it’s open).</p>`
+        : "";
+      pane.innerHTML = `${notes}<section class="sp-section"><h2>Applications to join</h2>${applications.length ? applications.map(appCard).join("") : `<p class="sp-empty">No applications are waiting.</p>`}</section>
         <section class="sp-section"><h2>Requests to advance</h2>${advancements.length ? advancements.map(advCard).join("") : `<p class="sp-empty">No requests are waiting.</p>`}</section>
         ${past.length ? `<details class="sp-details"><summary>Decided applications</summary><div class="sp-list">${past
           .map((a) => `<div class="sp-row"><span class="sp-row__text"><span class="sp-row__title">${esc(profile(a.user_id).display_name || "A witch")} · ${esc(a.status)}</span>

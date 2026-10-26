@@ -17,6 +17,11 @@ export function leadsCoven(standing: Standing, userId: string | null): boolean {
   return p.founder || p.manage || p.lead || p.schedule;
 }
 
+/** Whether you decide this coven's applications and requests to advance (the head, or a position that reviews or leads). */
+export function reviewsCoven(standing: Standing, userId: string | null): boolean {
+  return permissions({ coven: standing.coven, membership: standing.membership, ranks: standing.ranks, userId }).review;
+}
+
 /** Each coven you're in, with its holidays over the next `days` and its rites to come. */
 export function covenSources(standings: Standing[], rites: RiteEntry[], userId: string | null, now: Date, days = 90): CovenSource[] {
   const from = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -26,6 +31,7 @@ export function covenSources(standings: Standing[], rites: RiteEntry[], userId: 
     slug: standing.coven.slug,
     name: standing.coven.name,
     leader: leadsCoven(standing, userId),
+    reviewer: reviewsCoven(standing, userId),
     holidays: covenHolidaysBetween(standing.coven, from, to)
       .filter((h) => h.date.getTime() >= from.getTime())
       .map((h) => ({ baseId: baseIdOf(h.id), name: h.name, date: h.date, days: h.days })),

@@ -9,6 +9,8 @@ import { Card, Chips, Field, MenuList, MenuRow, MoreScreen, Notice, Section } fr
 import * as api from '../../../lib/covens/api';
 import { filterDirectory, JOINING, type Coven, type Joining } from '../../../lib/covens/model';
 import { syncCovenReminders } from '../../../lib/covens/reminders';
+import { pendingLabel } from '../../../lib/covens/requests';
+import { usePendingDetail } from '../../../lib/covens/requestsBadge';
 import { useCachedQuery } from '../../../lib/more/useCachedQuery';
 import { useSession } from '../../../lib/session';
 import { colors, type } from '../../../theme';
@@ -74,7 +76,7 @@ export default function Covens() {
               onPress={() => router.push('/coven/profile' as Href)}
             />
             {(mine.data ?? []).map((c) => (
-              <MenuRow key={c.id} label={c.name} detail={c.tagline ?? 'Your coven'} icon="community" onPress={() => router.push(`/coven/c/${c.slug}` as Href)} />
+              <MyCovenRow key={c.id} coven={c} />
             ))}
             <MenuRow
               label="Found a coven"
@@ -121,6 +123,20 @@ export default function Covens() {
         ))}
       </Section>
     </MoreScreen>
+  );
+}
+
+/** One of your covens, with the requests waiting for you there (if you review them). */
+function MyCovenRow({ coven }: { coven: Coven }) {
+  const waiting = usePendingDetail(coven.id);
+  return (
+    <MenuRow
+      label={coven.name}
+      detail={pendingLabel(waiting) || coven.tagline || 'Your coven'}
+      icon="community"
+      count={(waiting?.applications ?? 0) + (waiting?.advancements ?? 0)}
+      onPress={() => router.push(`/coven/c/${coven.slug}` as Href)}
+    />
   );
 }
 

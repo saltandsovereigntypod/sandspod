@@ -26,6 +26,7 @@
 }
 .cv-tab[aria-current="page"] { background: var(--gold); color: var(--charcoal); }
 .cv-tab:hover:not([aria-current="page"]), .cv-tab:focus-visible { border-color: rgba(226, 195, 109, 0.5); outline: none; }
+.cv-count--row { align-self: center; margin-left: 8px; font-size: 0.75rem; background: var(--gold); color: var(--charcoal, #111); border-radius: 999px; padding: 1px 8px; }
 .cv-tab .cv-count { margin-left: 6px; font-size: 0.75rem; background: rgba(17, 21, 18, 0.6); color: var(--cream); border-radius: 999px; padding: 1px 7px; }
 
 .cv-doc { white-space: pre-wrap; line-height: 1.65; }

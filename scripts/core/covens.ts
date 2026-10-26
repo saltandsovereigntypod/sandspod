@@ -10,3 +10,5 @@ export * as thread from '../../app/src/lib/covens/thread.ts';
 export * as unreadCount from '../../app/src/lib/covens/unreadCount.ts';
 // Coven readings: a spread drawn together in the coven's chat.
 export * as reading from '../../app/src/lib/covens/reading.ts';
+// Applications and requests to advance waiting for reviewers (the Review tab's and coven list's counts).
+export * as requests from '../../app/src/lib/covens/requests.ts';
