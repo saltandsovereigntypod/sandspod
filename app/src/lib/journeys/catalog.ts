@@ -379,6 +379,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A lunar month with Lada, honoured today as the Slavic goddess of love, spring and harmony: an honest look at whether she was ancient, the songs and spring customs she gathers, and a joyful devotion of song, flowers and peace-making."
   },
   {
+    "id": "deity-lakshmi",
+    "kind": "deity",
+    "paths": [
+      "hindu"
+    ],
+    "deityRef": "traditional/deity/lakshmi",
+    "title": "Lakshmi: The Lotus in a Lit House",
+    "summary": "A devotional month with Lakshmi, who rose from the churning of the ocean. Learn her names and image, the Shri Sukta and her stories, how Diwali, Kojagari Purnima and Varalakshmi Vratam are kept, and how to offer a clean home, a lamp and a lotus, then decide whether to make a personal vow of devotion."
+  },
+  {
     "id": "deity-lilith",
     "kind": "deity",
     "paths": [],
