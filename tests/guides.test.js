@@ -55,7 +55,7 @@ test("How to: app screens map to the website's pages", () => {
   assert.equal(Notes.siteHref("/coven/new"), "/covens/new/");
   assert.equal(Notes.siteHref("/rituals/journeys/patron"), "/rituals/journeys/patron/");
   // The website's guide is the app's own: its newest topics are in the built bundle.
-  ["replay-welcome-tour", "altar-offerings-drawer", "ritual-did-it-work", "calendar-old-calendars", "covens-rituals"].forEach((id) =>
+  ["replay-welcome-tour", "ways-to-sign-in", "altar-offerings-drawer", "ritual-did-it-work", "calendar-old-calendars", "covens-rituals"].forEach((id) =>
     assert.ok(G.help.HELP.some((s) => s.topics.some((t) => t.id === id)), `js/core/guides.js has ${id}; run node scripts/build-core.mjs guides`),
   );
   // Every note belongs to a real topic or section of the app's guide.

@@ -142,7 +142,18 @@ async function signOutUser() {
   }, 0);
 }
 
+const SIGN_IN_HINT = "Already have an account? Sign in the way you did before, then add other ways to sign in from More → Settings → Account & Data.";
+
 authForms.forEach((authForm) => {
+  if (!authForm.querySelector("[data-sign-in-hint]")) {
+    const hint = document.createElement("p");
+    hint.className = "sanctuary-sign-in-hint";
+    hint.dataset.signInHint = "";
+    hint.textContent = SIGN_IN_HINT;
+    const status = authForm.querySelector("[data-auth-status]");
+    if (status) status.before(hint);
+    else authForm.append(hint);
+  }
   if (!authForm.querySelector("[data-forgot-password]")) {
     const actions = authForm.querySelector(".sanctuary-auth-actions, .altar-auth-actions") || authForm;
     actions.insertAdjacentHTML("beforeend", '<button class="button button--ghost button--small" type="button" data-forgot-password>Forgot your password?</button>');

@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { Platform } from 'react-native';
 
-import { signInThroughBrowser } from './googleSignIn';
+import { linkThroughBrowser, signInThroughBrowser, type LinkResult } from './googleSignIn';
 import { supabase } from './supabase';
 
 export type AppleSignInResult = 'signed-in' | 'cancelled';
@@ -56,4 +56,26 @@ export async function signInWithApple(): Promise<AppleSignInResult> {
   const name = [credential.fullName?.givenName, credential.fullName?.familyName].filter(Boolean).join(' ');
   if (name) await supabase.auth.updateUser({ data: { full_name: name } });
   return 'signed-in';
+}
+
+/**
+ * Adds this Apple ID to the account that's signed in: the system sheet's
+ * identity token goes to Supabase as a link rather than a sign-in, so the
+ * account and its session stay the same. On Android it uses the browser.
+ */
+export async function linkApple(): Promise<LinkResult> {
+  if (appleInBrowser) return linkThroughBrowser('apple');
+  let credential: AppleAuthentication.AppleAuthenticationCredential;
+  try {
+    credential = await AppleAuthentication.signInAsync({
+      requestedScopes: [AppleAuthentication.AppleAuthenticationScope.EMAIL],
+    });
+  } catch (error) {
+    if ((error as { code?: string }).code === 'ERR_REQUEST_CANCELED') return 'cancelled';
+    throw error;
+  }
+  if (!credential.identityToken) throw new Error('Apple did not return a sign-in token.');
+  const { error } = await supabase.auth.linkIdentity({ provider: 'apple', token: credential.identityToken });
+  if (error) throw error;
+  return 'linked';
 }

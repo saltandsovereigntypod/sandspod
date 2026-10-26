@@ -15,11 +15,15 @@ export default function AuthCallback() {
 
   useEffect(() => {
     if (done || typeof code !== 'string') return;
-    // An already-used code (e.g. Google finished in the in-app browser) just fails quietly.
-    supabase.auth
-      .exchangeCodeForSession(code)
-      .catch(() => {})
-      .finally(() => setDone(true));
+    // An already-used code (e.g. Google finished in the in-app browser) just fails quietly,
+    // as does anything else here: an email-change confirmation must never close the app.
+    let exchange: Promise<unknown>;
+    try {
+      exchange = supabase.auth.exchangeCodeForSession(code);
+    } catch {
+      exchange = Promise.resolve();
+    }
+    exchange.catch(() => {}).finally(() => setDone(true));
   }, [code, done]);
 
   if (!done) return null;

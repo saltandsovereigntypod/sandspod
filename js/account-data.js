@@ -51,13 +51,17 @@
     const providers = new Set((user?.identities || []).map((identity) => identity.provider).filter(Boolean));
     const primary = user?.app_metadata?.provider;
     if (primary) providers.add(primary);
+    if (user?.user_metadata?.password_sign_in === true) providers.add("email");
     const labels = [];
     if (providers.has("email")) labels.push("Email and password");
     if (providers.has("google")) labels.push("Google");
+    if (providers.has("apple")) labels.push("Apple");
     return labels.length ? labels.join(" and ") : "Account sign-in";
   }
 
+  // A password added to an Apple or Google account (js/sign-in-methods.js) counts too.
   function hasPasswordIdentity(user) {
+    if (user?.user_metadata?.password_sign_in === true) return true;
     const providers = new Set((user?.identities || []).map((identity) => identity.provider));
     if (!providers.size && user?.app_metadata?.provider === "email") return true;
     return providers.has("email");

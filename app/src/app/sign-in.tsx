@@ -95,6 +95,9 @@ export default function SignIn() {
             ? 'Your altar, grimoire and rituals will be saved to your account and kept in sync.'
             : 'Use the same account as the Salt & Sovereignty website.'}
         </Text>
+        <Text style={type.caption}>
+          Already have an account? Sign in the way you did before, then add other ways to sign in from More → Account.
+        </Text>
 
         {appleAvailable && appleInBrowser ? (
           <Button label="Continue with Apple" variant="outline" disabled={busy} onPress={continueWithApple} style={styles.submit} />
