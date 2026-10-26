@@ -1,87 +1,80 @@
-# App Store listing (draft)
+# App Store listing: version 1.1.0
 
-Ready to paste into App Store Connect → Salt & Sovereignty (Apple ID 6821416030).
-Character limits are Apple's; counts are noted where they're tight.
+The paste-ready text for App Store Connect → Salt & Sovereignty (Apple ID 6821416030).
+Limits are Apple's; the count of each tight field is in brackets. The step-by-step
+checklist (what goes in which box, privacy label, age rating, review notes,
+screenshots) is in `APP_STORE_SUBMISSION.md` beside this file.
 
-## App information
+## App information (shared by every version)
 
-- **Name:** Salt & Sovereignty
-- **Subtitle** (30 max): `Altar, grimoire & moon rituals` (30)
+- **Name** (30): `Salt & Sovereignty` (18)
+- **Subtitle** (30): `Altar, grimoire & moon rituals` (30)
 - **Primary category:** Lifestyle
-- **Secondary category:** Health & Fitness is a poor fit; use **Reference** (Living Library) or leave empty.
-- **Content rights:** the app shows community writing, so answer "Yes, it contains third-party content" and confirm you have the rights (the Submission Terms grant them).
-- **Privacy Policy URL:** https://saltandsovereignty.com/privacy.html (live once PR #17 is merged and the site deploys)
-- **Support URL:** https://saltandsovereignty.com/#contact
-- **Support email** (App Review contact): ashley.p@saltandsovereignty.com
-- **Price:** USD 4.99 (paid upfront, no in-app purchases)
+- **Secondary category:** Reference (the Living Library, the tarot and rune pages, the holy days of every calendar). Leave it empty if you'd rather.
+- **Content rights:** Yes, the app contains third-party content (Community Grimoire offerings and coven messages), and you have the rights you need (the Submission Terms and the coven guidelines).
+- **Privacy Policy URL:** https://saltandsovereignty.com/privacy.html (live; updated October 26, 2026 on this branch, so deploy the website first)
+- **Support URL:** https://saltandsovereignty.com/#contact (live)
+- **Marketing URL** (optional): https://saltandsovereignty.com/ (live)
+- **Account deletion page** (Apple doesn't ask for it, Google does): https://saltandsovereignty.com/delete-account.html (live)
+- **Price:** USD 4.99, paid up front. No in-app purchases, no subscriptions, no ads. (Pricing and Availability → Price Schedule.)
+- **Copyright:** `2026 Ashley P.` (or your business name)
 
-## Version 1.0
+## Version 1.1.0
 
-**Promotional text** (170 max, can change without a new build):
+**Promotional text** (170; can be changed any time without review):
 
-> A quiet sanctuary for your practice: tend a living altar, keep your Book of Shadows, plan rituals by the moon, and learn from a library of herbs, crystals and deities.
+> A living altar with real candlelight, your Book of Shadows, tarot and sigils, rituals by the moon and every calendar, and covens to practise with. No ads, no tracking.
 
-**Description:**
+(167)
 
-> Salt & Sovereignty is a sanctuary for witchcraft, healing, story and self-reclamation — the companion app to the Salt & Sovereignty podcast.
+**Description** (4000):
+
+> Salt & Sovereignty is a sanctuary for witchcraft, healing, story and self-reclamation: the companion app to the Salt & Sovereignty podcast.
 >
 > TODAY
-> See tonight's moon phase, what the day is traditionally good for, and the rituals you've planned.
+> Tonight's moon, what the day is traditionally good for, the holy days of the calendars you keep, the planetary hours, sunrise, moonrise and the weather where you are, and the rituals you've planned. Tap "Set tonight's altar" for an altar laid for the day.
 >
-> YOUR ALTAR
-> Build a digital altar piece by piece. Arrange candles, crystals, herbs and tools; light and snuff candles, dress them with herbs and oils, and save altars for the work you return to.
+> A LIVING ALTAR
+> Build an altar piece by piece from hundreds of hand-painted things: candles, herbs as sprigs, loose and oils, crystals, deities, ancestor frames, offerings, tools, natural finds, and a Seasonal drawer for the sabbats and the festivals of Greek, Roman, Norse and Heathen, Celtic, Slavic, Hindu, Kemetic, Christian and folk calendars. Candles burn down in real time, with flickering light, smoke, quiet crackles and a gentle tap as you light them. Offerings go over and ask to be tended. Keep your real houseplants on it and water them on time. Tilt your phone for depth, or turn it sideways for a full-screen altar.
 >
 > YOUR GRIMOIRE
-> Keep your Book of Shadows with you. Write pages, organise them into sections, and browse your own practice notes beside traditional correspondences for herbs, crystals, candles, deities and tools.
+> Keep your Book of Shadows: pages, sections, your dreams, and sigils made by the letter method, planetary squares or by hand. Beside them, traditional information on herbs, crystals, candles, deities, every tarot card, rune and ogham letter.
+>
+> DIVINATION
+> Draw from the 1909 Rider–Waite–Smith tarot, cast runes and ogham, and lay spreads in their shape: a card for the day, three cards, the Celtic Cross, Crossroads, dream, sabbat and patron deity spreads, or spreads of your own. Every reading is kept in your log.
 >
 > RITUALS BY THE MOON
-> Plan rituals with a spell builder and planner, add them to your calendar, and get gentle reminders for moon phases and sabbats. Record how each ritual went in your journal.
+> Plan rituals with the planner and spell builder or begin one from the premade book, then follow it step by step. Add them to your calendar and get gentle reminders for moon phases, holy days, offerings, watering and the rituals you've planned. Look back a few days later and note whether it worked, and see what works for you.
 >
-> THE LIVING LIBRARY
-> A growing reference of herbs, crystals, candles, deities, tools and vessels: their traditional uses, correspondences, pairings and warnings — with room for your own notes.
+> YOUR PRACTICE
+> Tools for green, kitchen and hearth, hedge, sea, cosmic, crystal, elemental, folk, solitary and eclectic witchcraft: garden moons, simmer pots, tides, your birth chart, weather workings, ancestor days and daily devotions. Walk a dedication journey with one of 69 deities, each checked against its sources.
+>
+> COVENS
+> Find witches to practise with, or found your own coven: its creed, agreements and positions, a shared altar you tend together, coven rituals with parts for each member, petitions, a book of shadows, initiation and training with mentors, and a chat, with one-to-one and group conversations and notifications. Covens are for adults. Every message has Report and Block, and reports go straight to the Salt & Sovereignty moderators.
 >
 > THE COMMUNITY GRIMOIRE
-> Read pages and Field Notes offered by fellow practitioners, and share your own ritual experiences, dreams and wisdom. Every offering is personally reviewed before it's published.
+> Read pages and Field Notes offered by fellow practitioners, and share your own. Every offering is reviewed before it's published.
+>
+> ON YOUR HOME SCREEN
+> Widgets for your altar (light its candles and tend it from the home screen), tonight's moon, the next holiday, what's coming up, and your next ritual.
 >
 > ONE SANCTUARY, EVERYWHERE
 > Sign in with Apple, Google or email and everything syncs with My Sanctuary on saltandsovereignty.com. Or use it as a guest, with everything kept on your phone. Back up and restore your Sanctuary at any time.
 >
 > No ads. No tracking. Your practice is yours.
 
-**Keywords** (100 max, comma-separated, no spaces needed):
+**Keywords** (100; commas, no spaces; words already in the name and subtitle are left out because Apple counts them anyway):
 
-`witchcraft,witch,grimoire,book of shadows,altar,moon phase,ritual,spell,sabbat,herbs,crystals,pagan` (99)
+`witchcraft,witch,tarot,coven,pagan,wicca,spell,book of shadows,sabbat,herb,crystal,sigil,dream,lunar` (100)
 
-**What's New:** `The first release of Salt & Sovereignty.`
+**What's New in Version 1.1.0** (only shown if 1.0 was released; a first release has no What's New):
 
-## Age rating questionnaire
+> Covens: find or found a coven, with a shared altar, rituals, petitions, initiation and training, and a chat with one-to-one and group conversations.
+> Divination: the Rider–Waite–Smith tarot, runes and ogham, with spreads laid in their shape and a reading log.
+> Sigils, dreams, and "Did it work?" look-backs for your spells and rituals.
+> The altar comes alive: candles that burn down with sound, light and smoke, living offerings, potted plants, ancestor frames, and a Seasonal drawer for the festivals of many traditions.
+> Your practice: tools for every kind of witchcraft, 69 dedication journeys, premade rituals and your birth chart.
+> Reminders for moon phases, holy days, offerings, watering and rituals.
+> Five home screen widgets, including your altar.
 
-Answer "None" to everything except:
-- **User-generated content:** Yes (moderated before publishing; Report and Hide are on every post).
-- **Medical or treatment information:** "Infrequent/Mild" — the Living Library describes traditional herbal uses and includes warnings. This usually lands at **12+**; if Apple's form gives 9+ with these answers, that's fine too.
-
-## App Privacy ("nutrition label")
-
-**Does this app collect data?** Yes. **Used for tracking?** No, for every type.
-
-| Data type | Collected | Linked to the user | Purpose |
-|---|---|---|---|
-| Contact Info → Email Address | Yes | Yes | App Functionality (account) |
-| Contact Info → Name | Yes (optional preferred/magical name; Apple may share a name) | Yes | App Functionality |
-| User Content → Other User Content (altars, grimoire, rituals, notes) | Yes | Yes | App Functionality |
-| User Content → Customer Support (emails, community reports) | Yes | Yes | Customer Support |
-| Identifiers → User ID | Yes | Yes | App Functionality |
-| User Content → Photos or Videos (pictures chosen for your own altar items and apothecary workings, signed in only) | Yes | Yes | App Functionality |
-
-Location is used only on the device (for sunrise and planetary hours) and never leaves it, so it is **not collected**. Everything else (contacts, health, financial, browsing history, search history, usage data, diagnostics, purchases): **Not collected** by the app. Calendar events are written to the device only and are not collected.
-
-## App Review notes
-
-> Sign in is optional: tap "Continue as a guest" on the Welcome screen to use the app without an account. To review syncing, create an account with Sign in with Apple or email on the Sign in screen.
-> Community posts are moderated before publication; every published page and Field Note has Report (emails the moderator), Hide and Hide this person.
-> Account deletion: More → Account → Delete account.
-
-## Screenshots still needed
-
-- iPhone 6.9" (1320 × 2868): Today, Altar, Grimoire page, Rituals planner, Living Library entry, Community Grimoire.
-- iPad 13" (2064 × 2752): only while `ios.supportsTablet` is `true` in `app.json`.
+**Version-level URLs:** none needed beyond the app-level ones above.
