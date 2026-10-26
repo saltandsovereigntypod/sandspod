@@ -627,6 +627,17 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A lunar month with Skaði, the giantess of winter, mountains and the hunt who came to Asgard armed for justice: her father’s death, her ill-matched marriage to Njörðr, her shrines and fields, the ski-god Ullr, and a practice of cold air, wild places and standing your ground."
   },
   {
+    "id": "deity-sol",
+    "kind": "deity",
+    "paths": [
+      "roman",
+      "wheel"
+    ],
+    "deityRef": "traditional/deity/sol",
+    "title": "Sol, the Unconquered Sun",
+    "summary": "A month with Sol, the Roman sun: the old Sol Indiges of the Quirinal, the sun of the Circus and the obelisks, Aurelian’s Sol Invictus and the birthday of 25 December, Horace’s prayer for Rome, and a practice of greeting the dawn."
+  },
+  {
     "id": "deity-thor",
     "kind": "deity",
     "paths": [
