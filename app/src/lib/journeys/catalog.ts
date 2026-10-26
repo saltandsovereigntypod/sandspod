@@ -586,6 +586,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A lunar month with Selene, the Greek goddess who is the moon: her hymns and the story of Endymion, the honest truth about her slim ancient cult, how she was later blended with Artemis and Hekate, and a practice of watching the moon each night, from the first crescent to the full."
   },
   {
+    "id": "deity-shiva",
+    "kind": "deity",
+    "paths": [
+      "hindu"
+    ],
+    "deityRef": "traditional/deity/shiva",
+    "title": "Shiva: The Auspicious One",
+    "summary": "A devotional month with Shiva, Mahadeva, the great god. Learn his names and forms, from Vedic Rudra to the Lord of the Dance, the stories of the Shiva Purana, the saints who sang to him, how Mondays, Pradosh and Maha Shivaratri are kept, and how to offer water and bilva leaves at home, then decide whether to make a personal vow of devotion."
+  },
+  {
     "id": "deity-skadi",
     "kind": "deity",
     "paths": [
