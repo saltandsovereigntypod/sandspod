@@ -32,6 +32,7 @@ const MORE_DEITIES: Record<string, string[]> = {
   Egyptian: ['amun', 'ptah', 'bes', 'nut', 'neith', 'sobek', 'khonsu', 'taweret'],
   Norse: ['njord', 'heimdall', 'sif', 'bragi', 'ullr', 'eir', 'sunna', 'mani', 'norns'],
   'Celtic (Irish)': ['danu', 'aine', 'aengus', 'boann', 'ogma', 'nuada', 'cailleach'],
+  'Celtic (Welsh)': ['gwydion', 'blodeuwedd', 'lleu', 'bran'],
 };
 const ALL_MORE = Object.values(MORE_DEITIES).flat();
 const text = (d: Deity, ...fields: string[]) => fields.map((f) => String(d[f] ?? '')).join(' ');
@@ -223,6 +224,7 @@ const MORE_LINKS: [string, string][] = [
   ['celtic-samhain_gaelic', 'aengus'],
   ['wheel-yule', 'aengus'],
   ['wheel-yule', 'boann'],
+  ['celtic-lughnasadh', 'lleu'],
 ];
 // Seasonal things kept for festivals that honour them.
 const MORE_SEASONAL: string[] = ['Lares', 'Njord'];
@@ -276,6 +278,10 @@ const MORE_SEARCH: [string, string][] = [
   ['silver arm', 'nuada'],
   ['Nodens', 'nuada'],
   ['Beare', 'cailleach'],
+  ['Mabinogi', 'gwydion'],
+  ['Flower-face', 'blodeuwedd'],
+  ['Lleu', 'lleu'],
+  ['Bendigeidfran', 'bran'],
 ];
 // Living religions: devotion, not magic.
 const LIVING_PANTHEONS = ['Hindu', 'Shinto', 'Chinese'];

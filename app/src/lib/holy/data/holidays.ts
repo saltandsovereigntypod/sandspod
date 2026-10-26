@@ -445,7 +445,7 @@ export const HOLIDAY_PAGES: HolyPage[] = [
       ],
     },
     correspondences: {
-      deities: ['Lugh', 'The Dagda'],
+      deities: ['Lugh', 'Lleu Llaw Gyffes', 'The Dagda'],
       herbs: ['Meadowsweet', 'Calendula', 'Yarrow', 'Oak'],
       crystals: ['Citrine', 'Carnelian', 'Peridot'],
       colors: ['Gold', 'Orange', 'Green'],

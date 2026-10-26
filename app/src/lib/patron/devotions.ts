@@ -2619,6 +2619,87 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     sources: ['Donald A. Mackenzie, Scottish Folk-Lore and Folk Life (1935)', 'Gearóid Ó Crualaoich, The Book of the Cailleach (2003)', 'The Lament of the Old Woman of Beare, ed. Donncha Ó hAodha (1989)', HUTTON_STATIONS],
   },
 
+  {
+    key: 'gwydion',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'celtic', id: 'lughnasadh' },
+        name: 'Lughnasadh (Gŵyl Awst)',
+        why: 'No day of Gwydion is recorded. Some modern devotees honour him at Lughnasadh beside his foster-son Lleu; this is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Tell a story aloud as well as you can.',
+      'Read a page of the Mabinogi.',
+      'Teach a young person something you know.',
+      'Own up to the consequences of one of your plans.',
+    ],
+    approach:
+      'Gwydion is approached with respect and open eyes, as the enchanter and storyteller of the Mabinogi.',
+    sources: ['Math fab Mathonwy, the Fourth Branch of the Mabinogi, trans. Sioned Davies, The Mabinogion (2007)', MACNEILL],
+  },
+  {
+    key: 'blodeuwedd',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'beltane' },
+        name: 'Beltane',
+        why: 'Many modern Pagans honour the flower-made woman at Beltane, when oak, broom and meadowsweet come into flower. This is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Sit with a few wild flowers at dusk.',
+      'Listen for owls after dark.',
+      'Name one choice that is truly yours.',
+      'Be honest about something you want.',
+    ],
+    approach:
+      'Blodeuwedd is approached honestly, without excusing or condemning her, as the flower woman who chose for herself and became an owl.',
+    sources: ['Math fab Mathonwy, the Fourth Branch of the Mabinogi, trans. Sioned Davies, The Mabinogion (2007)', HUTTON_TRIUMPH],
+  },
+  {
+    key: 'lleu',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'celtic', id: 'lughnasadh' },
+        name: 'Lughnasadh (Gŵyl Awst)',
+        why: 'The festival of the Irish Lugh, whose name matches Lleu’s. Keeping it for Lleu is a modern custom; the Mabinogi gives him no festival.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Practise a skill you are learning for ten minutes.',
+      'Share a piece of bread with thanks for the harvest.',
+      'Take one step in recovering from a hurt.',
+      'Help someone gain a skill they were denied.',
+    ],
+    approach:
+      'Lleu is approached with steadiness and hope, as the bright one of the skilful hand who came back from betrayal.',
+    sources: ['Math fab Mathonwy, the Fourth Branch of the Mabinogi, trans. Sioned Davies, The Mabinogion (2007)', MACNEILL],
+  },
+  {
+    key: 'bran',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'samhain' },
+        name: 'Samhain',
+        why: 'No day of Bran is recorded. Modern devotees often remember the king whose head feasted with his companions at Samhain, when the dead are honoured; this is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Help someone across a difficulty, as he became a bridge.',
+      'Share a meal generously.',
+      'Put out food for crows or other birds.',
+      'Tell a happy story about someone you have lost.',
+    ],
+    approach:
+      'Bran is approached with respect, as the giant king who served as a bridge and guarded Britain after death.',
+    sources: ['Branwen ferch Llŷr, the Second Branch of the Mabinogi, trans. Sioned Davies, The Mabinogion (2007)', 'Rachel Bromwich (ed.), Trioedd Ynys Prydein: The Triads of the Island of Britain (4th edn, 2014), Triad 37'],
+  },
+
   // ─── Slavic ───────────────────────────────────────────────────────────
   {
     key: 'perun',
