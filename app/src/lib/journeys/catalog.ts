@@ -418,6 +418,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A month with Lugh of the Long Arm, the many-skilled god of Ireland: his arrival at Tara, his victory over Balor, the Gaulish Lugus behind him, the hilltop festival of Lughnasadh, and a self-dedication made with the work of your hands."
   },
   {
+    "id": "deity-maat",
+    "kind": "deity",
+    "paths": [
+      "egyptian"
+    ],
+    "deityRef": "traditional/deity/maat",
+    "title": "Maat: The Feather and the Order",
+    "summary": "A month with Maat, the goddess with the ostrich feather and the order of the world she stands for: truth, justice and balance kept in daily acts. Study her in the creation texts, the teachings of the sages and the weighing of the heart, learn how kings offered her to the gods, keep ten evenings of honest reckoning, and decide whether to dedicate."
+  },
+  {
     "id": "deity-manannan",
     "kind": "deity",
     "paths": [
