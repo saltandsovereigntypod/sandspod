@@ -25,6 +25,7 @@ const NEW_DEITIES = ["saturn", "flora", "neptune", "faunus", "sol", "zeus", "her
 // The rest of the gods people ask for, from the existing pantheons and new traditions. No pictures either.
 const MORE_DEITIES = [
   "ares", "hephaestus", "pan", "gaia", "helios", "eros", "asclepius",
+  "fortuna", "bacchus", "pluto", "proserpina", "vulcan", "pomona", "bona_dea", "lares_penates", "mithras",
 ];
 
 test("the website's Library has the new deities, field for field like Jupiter", () => {

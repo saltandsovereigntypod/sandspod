@@ -9602,6 +9602,393 @@ const TraditionalLibrary = {
 
             tags: ["healing", "medicine", "health", "dreams", "recovery", "doctors"]
         },
+
+        fortuna: {
+            DisplayName: "Fortuna",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "Luck and chance, fate and fortune, prosperity, opportunity, oracles by lot, the turning of circumstances",
+
+            SacredSymbols: "Wheel, cornucopia, ship’s rudder, globe, lots drawn from a chest",
+
+            SacredAnimals: "None securely attested in Roman sources",
+
+            SacredPlants: "None securely attested; the cornucopia’s fruit and grain",
+
+            CandleColors: "Green, gold, purple",
+
+            Crystals: "Aventurine, citrine, pyrite, tiger eye",
+
+            Herbs: "Basil, cinnamon, bay laurel",
+
+            Offerings: "Incense, wine, coins, fruit, a share of good fortune given away",
+
+            TraditionalWarnings: "Fortuna gives and takes away: the Romans honoured her for good luck while knowing her wheel turns. Do not treat her as a promise of winnings, and keep any gambling within your means. Her many cult titles mattered to the Romans, so say which Fortuna you are honouring.",
+
+            Overview: "Fortuna is the Roman goddess of luck and fortune, good and bad, closely matched with the Greek Tyche. She is pictured with a cornucopia for plenty and a rudder for steering lives, sometimes standing on a globe or beside a wheel. Rome honoured her under many titles: Fors Fortuna, the luck of the common people, Fortuna Virilis, Fortuna Redux who brings travellers home, and Fortuna Primigenia, whose oracle at Praeneste gave answers by lots drawn by a child.",
+
+            TraditionalMeaning: "Luck and its turning: gratitude in good times, steadiness in bad, and the humility to know that much of life is not ours to control.",
+
+            DevotionalApproach: "Start here: when something lucky happens, stop, say thank you to Fortuna and give a little of it away, a coin, a kindness or a treat for someone else. Approach her with gratitude and good humour rather than bargaining. She asks devotees to share good fortune and to meet bad fortune with courage.",
+
+            OfferingNotes: "Offer incense, wine, fruit or coins, and pass on part of any windfall to others. Gifts given freely, especially to those with less luck, honour her.",
+
+            AltarIdeas: "A green or gold candle, a small wheel or cornucopia, a rudder or ship, aventurine or citrine, a few coins and a bowl of fruit. A pair of dice or lots can sit there as a reminder of chance.",
+
+            CulturalContext: "Fortuna is honoured today by Roman polytheists, a small living religion, and is popular with modern Pagans. Her temple of Fors Fortuna across the Tiber was said to have been founded by King Servius Tullius, a man of humble birth, and her great sanctuary at Praeneste (Palestrina) still stands in terraces on the hillside.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Roman polytheists honour Fortuna at Fors Fortuna on 24 June, when Romans of every class, the enslaved included, went downriver in garlanded boats to her temples and feasted, and at the Veneralia on 1 April as Fortuna Virilis. She is asked for good luck, safe travel, success in new ventures and the strength to bear reversals.",
+
+            tags: ["luck", "fortune", "chance", "prosperity", "fate", "opportunity"]
+        },
+
+        bacchus: {
+            DisplayName: "Bacchus",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "Wine and the vine, freedom and release, growth and fertility, ecstasy, theatre, the coming of age of young men",
+
+            SacredSymbols: "Thyrsus (a fennel staff tipped with a pine cone), wine cup, ivy and vine wreath, the mask",
+
+            SacredAnimals: "Panther, leopard, goat, bull",
+
+            SacredPlants: "Grapevine, ivy, fig, fennel",
+
+            CandleColors: "Purple, deep red, green",
+
+            Crystals: "Amethyst, garnet, carnelian, agate",
+
+            Herbs: "Grape leaves, ivy, cinnamon",
+
+            Offerings: "Wine or grape juice, honey cakes (liba), grapes, figs, music and dance",
+
+            TraditionalWarnings: "Bacchus is a god of wine, but drunkenness is not devotion: offer wine, drink little or none, and never drive after a libation. In 186 BCE the Senate harshly restricted his Bacchanalia across Italy; the scandal Livy describes is a hostile account, so read it critically.",
+
+            Overview: "Bacchus is the Roman name for the Greek Dionysus, god of wine, ecstasy and theatre, who in Rome merged with Liber Pater, an old Italian god of growth, fertility and freedom (liber means free). Liber was worshipped with Ceres and Libera in the temple on the Aventine from the early Republic. Bacchus is pictured as a youthful god crowned with vine and ivy, carrying the thyrsus, with panthers and satyrs in his train.",
+
+            TraditionalMeaning: "Release and renewal: the joy of the harvest, freedom from care, the courage to grow up and the wild energy that breaks open what is stuck.",
+
+            DevotionalApproach: "Start here: pour a small cup of wine or grape juice for him and listen to music that lifts you, letting go of one worry for the evening. Approach him with joy and with respect for his power to unsettle. He asks devotees to embrace life, free what is bound and keep the festival in its season.",
+
+            OfferingNotes: "Offer wine or grape juice, honey cakes, grapes or figs. At the Liberalia old women sold sweet cakes (liba) and burned a portion for the god on a small altar; baking a honey cake is a fitting offering.",
+
+            AltarIdeas: "A purple or red candle, a cup and a jug, a vine or ivy wreath, a pine cone on a stick for a thyrsus, amethyst and a theatre mask. A bunch of grapes completes it.",
+
+            CulturalContext: "Bacchus and Liber are honoured today by Roman polytheists, a small living religion, often alongside Hellenic devotion to Dionysus. At the Liberalia on 17 March, Ovid says, boys took the toga of manhood (toga virilis), and in some Italian towns a phallus was carried through the fields for fertility. Treat Liber’s old rites and the later Bacchic mysteries as related but distinct.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Roman polytheists honour Liber and Bacchus at the Liberalia on 17 March with honey cakes, wine and garlands, marking young people’s coming of age, and at the grape harvest. He is asked for freedom, joy, fertile vines and gardens and a good passage into adulthood.",
+
+            tags: ["wine", "freedom", "ecstasy", "growth", "theatre", "coming of age"]
+        },
+
+        pluto: {
+            DisplayName: "Pluto",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "The underworld, the dead, the wealth beneath the earth, minerals and seed, endings",
+
+            SacredSymbols: "Keys, a sceptre, the cornucopia of the earth’s wealth, the helmet of invisibility (from Greek myth), the gate",
+
+            SacredAnimals: "Black animals, which Romans offered to the gods below",
+
+            SacredPlants: "Cypress, narcissus",
+
+            CandleColors: "Black, deep purple, dark red",
+
+            Crystals: "Obsidian, jet, onyx, smoky quartz",
+
+            Herbs: "Cypress, myrrh, mint",
+
+            Offerings: "Libations poured into the earth, black beans, myrrh, a portion of food not to be eaten afterwards",
+
+            TraditionalWarnings: "Pluto rules the dead but is not the Christian devil, and the Romans did not think him evil, only grave and unbending. Offerings to the gods below were given wholly to them and not shared afterwards. Approach him with seriousness, and seek support from the living if grief or dark thoughts weigh on you.",
+
+            Overview: "Pluto, or Dis Pater, is the Roman god of the underworld and the dead. Dis comes from dives, rich, like the Greek name Plouton, the wealthy one, because the riches of the earth and the seed that sprouts lie in his realm. He is the Roman Hades, who carried off Proserpina from Sicily to be his queen; Julius Caesar wrote that the Gauls claimed descent from Dis Pater.",
+
+            TraditionalMeaning: "The hidden wealth of endings: death as part of life, the riches of the earth, and respect for the dead and for limits we cannot cross.",
+
+            DevotionalApproach: "Start here: on a quiet evening, pour a little water or wine into the earth and say the names of your dead, asking him to keep them well. Approach him with gravity and respect rather than fear. He asks devotees to accept endings, honour the dead and value what grows from darkness.",
+
+            OfferingNotes: "Pour libations into the ground or a pit, and offer black beans, myrrh or a portion of food that is then buried or left, not eaten. Keep offerings to him separate from those to the gods above.",
+
+            AltarIdeas: "A black or deep purple candle, keys, a dark stone or obsidian, a cypress sprig, a bowl of earth and photographs or names of the dead. Many keep his shrine low, near the floor or outdoors.",
+
+            CulturalContext: "Pluto and Dis Pater are honoured today by Roman polytheists, a small living religion. At the Secular Games (Ludi Saeculares) Dis and Proserpina received night sacrifices of black victims at the Tarentum in the Campus Martius. Three times a year the mundus, a pit Varro called a gateway of the gods below, was opened, and public business stopped.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Roman polytheists honour Dis Pater on the days the mundus was opened, 24 August, 5 October and 8 November, and at the festivals of the dead, with libations into the earth and offerings given wholly to him. He is asked to keep the dead in peace, for the earth’s riches and for courage at endings.",
+
+            tags: ["underworld", "death", "wealth", "ancestors", "endings", "earth"]
+        },
+
+        proserpina: {
+            DisplayName: "Proserpina",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "The underworld, spring and the return of growth, the grain, the dead, the cycle of loss and return",
+
+            SacredSymbols: "Pomegranate, torch, sheaf of grain, flowers she was gathering when taken",
+
+            SacredAnimals: "None securely attested in Roman sources",
+
+            SacredPlants: "Pomegranate, narcissus, poppy, grain, violets",
+
+            CandleColors: "Black, red, green, white",
+
+            Crystals: "Garnet, obsidian, rose quartz, moss agate",
+
+            Herbs: "Mint, poppy seed, violet",
+
+            Offerings: "Pomegranates, grain, spring flowers, honey, libations into the earth",
+
+            TraditionalWarnings: "Her story begins with abduction, and many devotees read it with care for that. The Roman Proserpina is closely tied to the Greek Persephone but had her own Roman cult; keep her distinct, and see the Library’s Persephone entry for the Greek goddess.",
+
+            Overview: "Proserpina is the Roman queen of the underworld, daughter of Ceres, carried off by Dis Pater while gathering flowers near Enna in Sicily, as Ovid and the late poet Claudian tell. Because she ate pomegranate seeds below, she spends part of each year with her husband and part with her mother, and the earth flowers when she returns. Rome took her rites from the Greeks, with Greek priestesses, and identified her with Libera of the Aventine.",
+
+            TraditionalMeaning: "Loss and return: the seed that goes down into darkness and comes back, grief that turns to spring, and sovereignty learned in hard places.",
+
+            DevotionalApproach: "Start here: cut open a pomegranate, set a few seeds aside for her and think of something you lost that has begun to grow again. Approach her with tenderness and respect for both her seasons. She asks devotees to honour their grief, trust the return of growth and rule their own inner world.",
+
+            OfferingNotes: "Offer pomegranates, grain, spring flowers or honey, and pour libations into the earth. Offerings made in autumn can be buried; those in spring set out in the open air.",
+
+            AltarIdeas: "A black and a green candle side by side, a pomegranate, a sheaf of wheat, a torch or lamp, spring flowers and garnet. Some keep two altar cloths and turn them with her seasons.",
+
+            CulturalContext: "Proserpina is honoured today by Roman polytheists, a small living religion, and by many modern Pagans who keep her story at the equinoxes. Cicero records that Rome’s rites of Ceres and Proserpina were Greek in form, led by priestesses from Greek cities of southern Italy. With Dis Pater she received night offerings at the Secular Games.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Roman polytheists honour Proserpina with Ceres at the Cerealia in April and with Dis at the Secular Games, and many mark her descent and return at the autumn and spring equinoxes. She is asked for comfort in grief, renewal after hard times and the peace of the dead.",
+
+            tags: ["underworld", "spring", "return", "grief", "pomegranate", "renewal"]
+        },
+
+        vulcan: {
+            DisplayName: "Vulcan",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "Fire, both destructive and useful, the forge and metalwork, volcanoes, protection from fire",
+
+            SacredSymbols: "Hammer, tongs, anvil, the smith’s felt cap (pileus), flame",
+
+            SacredAnimals: "Small fish offered to him at the Volcanalia",
+
+            SacredPlants: "None securely attested in Roman sources",
+
+            CandleColors: "Red, orange, black",
+
+            Crystals: "Obsidian, carnelian, garnet, hematite",
+
+            Herbs: "Dragon’s blood resin, cinnamon, cedar",
+
+            Offerings: "Incense, wine, a small fire safely tended, offerings burned whole",
+
+            TraditionalWarnings: "Vulcan is fire that can destroy as well as forge: the Romans honoured him above all to keep fire from their homes and granaries. Keep every flame attended and use a safe fire bowl. The ancient Volcanalia threw live fish into the fire; modern devotees use other offerings.",
+
+            Overview: "Vulcan is the Roman god of fire, especially fire that destroys, and of the forge, identified with the Greek Hephaestus. His shrine, the Volcanal, stood in the Roman Forum from the city’s earliest days, and he had his own flamen. He is pictured as a bearded smith with hammer and tongs, wearing a workman’s cap, and his forges were said to lie beneath Etna and the volcanic islands.",
+
+            TraditionalMeaning: "Fire respected: power that must be tended, the skill that turns raw material into tools, and protection from disaster.",
+
+            DevotionalApproach: "Start here: check your smoke alarm or fire blanket, then light a candle and ask him to keep fire in its place in your home. Approach him with respect and caution. He asks devotees to use fire wisely, value skilled work and guard their homes.",
+
+            OfferingNotes: "Offer incense, wine or a small offering burned whole in a safe fire bowl. Fire-safety checks and support for firefighters honour him in spirit.",
+
+            AltarIdeas: "A red or orange candle in a deep holder, a small hammer or tongs, obsidian or carnelian, a piece of metalwork and a fire-safe dish. Keep it away from curtains and shelves.",
+
+            CulturalContext: "Vulcan is honoured today by Roman polytheists, a small living religion. Vitruvius says his temples were best built outside the city walls, to keep fire away. He was the chief god of Ostia, Rome’s port, with a high priest of his own, and after the great fire of 64 CE Domitian set up altars across Rome at which sacrifices were made each Volcanalia.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Roman polytheists honour Vulcan at the Volcanalia on 23 August, in the heat of late summer when granaries were full and fire most feared, with bonfires and offerings burned whole for him. He is asked to protect homes, crops and workplaces from fire and to bless skilled work.",
+
+            tags: ["fire", "forge", "protection", "craft", "volcano", "metalwork"]
+        },
+
+        pomona: {
+            DisplayName: "Pomona",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "Fruit trees and orchards, gardens, grafting and pruning, the ripening of fruit",
+
+            SacredSymbols: "Pruning knife, a basket or platter of fruit, the orchard",
+
+            SacredAnimals: "None securely attested in Roman sources",
+
+            SacredPlants: "Apple, pear, plum, all fruit trees",
+
+            CandleColors: "Green, red, gold",
+
+            Crystals: "Moss agate, green aventurine, carnelian, peridot",
+
+            Herbs: "Apple blossom, rosemary, chamomile",
+
+            Offerings: "Fruit, apple juice or cider, honey, care for trees",
+
+            TraditionalWarnings: "A popular claim that Halloween’s apples come from a Roman festival of Pomona on 1 November has no ancient evidence: no festival day of hers is known. Honour her as the orchard goddess she was.",
+
+            Overview: "Pomona is the Roman goddess of fruit trees and orchards, whose name comes from pomum, fruit. Ovid tells how she cared only for her trees, pruning and watering them, until Vertumnus, god of the changing seasons, won her by coming in disguise as an old woman. She had her own priest, the flamen Pomonalis, and a sacred grove, the Pomonal, on the road to Ostia.",
+
+            TraditionalMeaning: "Patient tending and ripening: the slow work of care that turns blossom into fruit, and love that respects another’s freedom.",
+
+            DevotionalApproach: "Start here: share a piece of fruit with her, eating half and setting half aside under a tree or in the compost, and thank her for it. Approach her through care for growing things. She asks devotees to tend patiently, prune what needs pruning and enjoy the fruit when it comes.",
+
+            OfferingNotes: "Offer fresh fruit, apple juice or cider, honey or the first fruit from a tree. Return offerings to the earth beneath a tree. Planting or caring for a fruit tree is a lasting offering.",
+
+            AltarIdeas: "A green or red candle, a basket of apples or seasonal fruit, a small pruning knife, moss agate and a sprig of blossom in spring. A place in a garden or near a window with a fruit plant suits her.",
+
+            CulturalContext: "Pomona is honoured today by Roman polytheists, a small living religion, and by gardeners and modern Pagans. Her flamen was the least senior of Rome’s fifteen flamens, a sign of how small and local her cult was, yet Ovid’s tale of Vertumnus and Pomona inspired artists from the Renaissance onwards.",
+
+            Traditions: "Roman, Wheel of the Year",
+
+            TraditionNotes: "Roman: Roman polytheists honour Pomona when fruit trees blossom and fruit ripens, with offerings of fruit and care for orchards. She is asked for healthy trees, good harvests and success with grafting and pruning.\n\nWheel of the Year: Many modern Pagans honour her at the apple harvest, around Mabon and Samhain, with apples, cider and orchard blessings.",
+
+            tags: ["orchards", "fruit", "gardens", "harvest", "growth", "patience"]
+        },
+
+        bona_dea: {
+            DisplayName: "Bona Dea",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "Women, healing, fertility, chastity, the protection of the Roman people, wellbeing",
+
+            SacredSymbols: "Cornucopia, a covered wine jar called the honey pot, a snake",
+
+            SacredAnimals: "Harmless snakes kept in her temple",
+
+            SacredPlants: "Healing herbs (myrtle was forbidden in her rites)",
+
+            CandleColors: "White, green, gold",
+
+            Crystals: "Moonstone, rose quartz, jade, clear quartz",
+
+            Herbs: "Chamomile, lemon balm, vervain",
+
+            Offerings: "Milk, honey, healing herbs, wine called milk in her rite, care for women’s health",
+
+            TraditionalWarnings: "Bona Dea’s rites were kept by women, and men were excluded: Clodius caused a scandal in 62 BCE by entering in women’s dress. Modern groups differ on who may join her rites; respect the practice of the group you are with. Myrtle was banned from her temple, so leave it off her altar.",
+
+            Overview: "Bona Dea, the Good Goddess, was a Roman goddess of women, healing and the welfare of the people, whose true name was not to be spoken. Each December the wife of a senior magistrate hosted her night rite at home with the Vestal Virgins, all men having left the house. Her temple on the Aventine kept healing herbs and harmless snakes, and was a place where women, including the poor and the enslaved, came for help.",
+
+            TraditionalMeaning: "Women’s care for one another: healing, protection and the good of the community held in women’s hands.",
+
+            DevotionalApproach: "Start here: set out a cup of milk and some honey and ask her blessing on the health of women you love. Approach her with care and discretion. She asks devotees to look after one another’s health and to respect the spaces people keep for themselves.",
+
+            OfferingNotes: "Offer milk, honey, healing herbs or wine, which her rite called milk, kept in a covered jar. Supporting women’s health charities or caring for a sick friend honours her.",
+
+            AltarIdeas: "A white or green candle, a small covered jar, healing herbs in a dish, moonstone or jade, and a snake figure. Keep the altar quiet and private.",
+
+            CulturalContext: "Bona Dea is honoured today by Roman polytheists, a small living religion, often in women’s groups. Ancient writers linked her to Fauna, kin of Faunus, and Ovid gives 1 May as the founding day of her Aventine temple. Our knowledge comes mostly from male writers, Cicero, Plutarch and Macrobius, who were not allowed to see her rites.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Roman polytheists honour Bona Dea on 1 May, the founding day of her temple, and at her women’s rite in early December, with milk, honey, herbs and wine. She is asked for healing, for women’s health and fertility and for the welfare of the community.",
+
+            tags: ["women", "healing", "fertility", "protection", "community", "mysteries"]
+        },
+
+        lares_penates: {
+            DisplayName: "Lares and Penates",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "The household and its guardians, the family’s food store and goods, crossroads and neighbourhoods, ancestors, safe homecoming",
+
+            SacredSymbols: "The lararium (household shrine), two dancing youths with drinking horn and bowl, the hearth, the store cupboard (penus)",
+
+            SacredAnimals: "The snake painted beneath many lararia, the household’s guardian",
+
+            SacredPlants: "Garlands of flowers, rosemary, bay",
+
+            CandleColors: "White, gold, red",
+
+            Crystals: "Carnelian, jasper, clear quartz, agate",
+
+            Herbs: "Rosemary, bay laurel, thyme",
+
+            Offerings: "Incense, wine, a portion of each meal, salted grain, garlands",
+
+            TraditionalWarnings: "The Lares and Penates are a family’s own guardians, honoured daily and simply, not gods to be called upon for grand workings. Keep their shrine clean and fed, and never leave the lamp burning unattended.",
+
+            Overview: "The Lares are the guardian spirits of the Roman home, the crossroads and the city, and the Penates are the gods of the household store (penus), on whom the family’s food and goods depend. Lares are pictured as two young men dancing, with a drinking horn and a dish, painted or set in the lararium, the household shrine. Virgil’s Aeneas carried Troy’s Penates to Italy, and Rome kept public Penates as the city’s own.",
+
+            TraditionalMeaning: "Home held sacred: daily care for the place and people we live with, gratitude for food on the table and a household watched over.",
+
+            DevotionalApproach: "Start here: at a meal, set a small portion on a dish by a candle or picture for the household gods and thank them for your home. Approach them simply and regularly. They ask for a clean, peaceful house, hospitality and remembrance of those who lived there before you.",
+
+            OfferingNotes: "Offer incense, wine, salted grain and a little of each meal, especially on the first of the month and at family events. In Cato’s day the housekeeper garlanded the hearth and prayed to the Lar on the Kalends, Nones and Ides.",
+
+            AltarIdeas: "A small shelf or niche near the kitchen, with images of the Lares or simple figures, a lamp or candle, an offering dish, a jug, garlands and family photographs. A snake painted or carved beneath stands for the household’s guardian spirit.",
+
+            CulturalContext: "The Lares and Penates are honoured today by Roman polytheists, a small living religion in which household worship is central. Lararia survive in hundreds of houses at Pompeii and Herculaneum. In Plautus’ comedy The Pot of Gold the Lar of the household speaks the prologue, pleased with the daughter who brings him daily incense and garlands.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Roman polytheists honour the Lares and Penates at the household lararium daily and especially on the Kalends, Nones and Ides, at the Compitalia for the Lares of the crossroads, on 1 May for the Lares Praestites and at family events such as births, weddings and homecomings. They are asked to protect the home, keep the store full and watch over the family.",
+
+            tags: ["home", "household", "family", "ancestors", "protection", "hearth"]
+        },
+
+        mithras: {
+            DisplayName: "Mithras",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "Loyalty and contract, salvation in a mystery cult, light, the cosmic order, brotherhood among initiates",
+
+            SacredSymbols: "The tauroctony (Mithras slaying the bull), Phrygian cap, dagger, cave, the torchbearers Cautes and Cautopates",
+
+            SacredAnimals: "Bull, raven, lion, dog, snake, scorpion (all in the bull-slaying scene)",
+
+            SacredPlants: "Ears of wheat and the vine springing from the dying bull, cypress",
+
+            CandleColors: "Red, gold, white",
+
+            Crystals: "Garnet, carnelian, sunstone, clear quartz",
+
+            Herbs: "Frankincense, pine, bay laurel",
+
+            Offerings: "Bread and wine, incense, a shared meal, light",
+
+            TraditionalWarnings: "Almost nothing of the cult’s own teaching survives: what we know comes from carved scenes, temples, inscriptions and hostile Christian writers. Popular claims that Mithras was born of a virgin on 25 December with twelve disciples are modern inventions. The cult’s seven grades were ancient initiations whose rites are lost; no one today holds them by unbroken line.",
+
+            Overview: "Mithras was the god of a Roman mystery cult that spread across the empire from the first to the fourth century CE, especially among soldiers, merchants and imperial officials. Initiates, all men as far as the evidence shows, met in small cave-like temples (mithraea) for a shared meal, before a scene of Mithras in a Phrygian cap slaying a bull. Inscriptions call him Deus Sol Invictus Mithras, the unconquered sun god; he was said to be born from a rock.",
+
+            TraditionalMeaning: "Loyalty and light: faithfulness to one’s word and companions, the passage from darkness to light, and life springing from sacrifice.",
+
+            DevotionalApproach: "Start here: read about a mithraeum, such as those beneath San Clemente in Rome or the London Mithraeum, and light a candle for him, honest that we know only fragments. Approach him with humility about the evidence. He is associated with keeping faith, fellowship and courage in the dark.",
+
+            OfferingNotes: "Offer bread and wine, as shown in the cult’s banquet scenes, or incense and a lit lamp. Sharing a meal with companions is in keeping with what we know of the cult.",
+
+            AltarIdeas: "A red or gold candle, a picture of a tauroctony, a small figure in a Phrygian cap, two candles for the torchbearers, one raised and one lowered, and a dish of bread. A dim, cave-like corner suits him.",
+
+            CulturalContext: "There is no living Mithraic community descended from the ancient cult, which faded in the late fourth century. A few modern Roman polytheists and reconstructionists honour him, building on archaeology. Scholars still debate how far the Roman god owed anything to the Persian Mithra beyond his name.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Some modern Roman polytheists honour Mithras with bread, wine and light, often on Sundays or at the winter solstice, as Sol Invictus Mithras; both are modern choices, since the cult’s own festival calendar is unknown. He is asked for loyalty, courage, fellowship and light in dark places.",
+
+            tags: ["mysteries", "loyalty", "light", "brotherhood", "sun", "archaeology"]
+        },
     },
 
     tool: {

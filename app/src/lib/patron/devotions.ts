@@ -1094,6 +1094,223 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     sources: [PHILOCALUS, 'Steven E. Hijmans, Sol: The Sun in the Art and Religions of Rome (2009)', WEEKDAYS],
   },
 
+  {
+    key: 'fortuna',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 6, day: 24 },
+        name: 'Fors Fortuna',
+        why: 'The festival of Fors Fortuna at her temples across the Tiber, when Romans of every class went downriver in garlanded boats and feasted.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'fixed', month: 4, day: 1 },
+        name: 'Veneralia (Fortuna Virilis)',
+        why: 'The Kalends of April, when women honoured Venus Verticordia and Fortuna Virilis, as Ovid and the Praenestine calendar record.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'When something lucky happens, say thank you and give a little of it away.',
+      'Drop a coin in a charity box in her name.',
+      'Face one setback today with good grace.',
+      'Light a candle before something uncertain and ask her to steer it well.',
+    ],
+    approach:
+      'Fortuna is approached with gratitude and good humour, honoured in good luck and bad, and never treated as a promise of winnings.',
+    sources: [OVID_FASTI + ' (4.133–164; 6.773–786)', ROMAN_FESTIVALS],
+  },
+  {
+    key: 'bacchus',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 3, day: 17 },
+        name: 'Liberalia',
+        why: 'The festival of Liber Pater, with whom Bacchus was merged: old women sold honey cakes and offered part to the god, and boys took the toga of manhood.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Pour a small cup of wine or grape juice for him.',
+      'Put on music that lifts you and let one worry go.',
+      'Bake or buy a honey cake and set a piece aside for him.',
+      'Do one thing that makes you feel free.',
+    ],
+    approach:
+      'Bacchus and Liber are approached with joy and respect for their power to unsettle, with wine offered rather than overindulged.',
+    sources: [OVID_FASTI + ' (3.713–790)', 'Livy 39.8–19, on the Bacchanalia of 186 BCE', ROMAN_FESTIVALS],
+  },
+  {
+    key: 'pluto',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 8, day: 24 },
+        name: 'Mundus patet',
+        why: 'The first of the three days the mundus was opened, which Varro called a gateway of the grim gods below; public business stopped.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'fixed', month: 10, day: 5 },
+        name: 'Mundus patet',
+        why: 'The second opening of the mundus, the pit of the gods below.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'fixed', month: 11, day: 8 },
+        name: 'Mundus patet',
+        why: 'The third opening of the mundus, the pit of the gods below.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Pour a little water into the earth and say the names of your dead.',
+      'Bury a few black beans with a word of respect.',
+      'Accept one ending in your life without fighting it.',
+      'Sit quietly for a few minutes in the dark before sleep.',
+    ],
+    approach:
+      'Pluto is approached with gravity and respect, as the rich lord of the dead, never as a devil.',
+    sources: ['Macrobius, Saturnalia 1.16.16–18, quoting Varro on the mundus', 'Festus, s.v. Mundus (citing Ateius Capito), on the three days', 'Zosimus 2.5, on Dis and Proserpina at the Secular Games', ROMAN_FESTIVALS],
+  },
+  {
+    key: 'proserpina',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 4, day: 19 },
+        name: 'Cerealia',
+        why: 'The last day of the Cerealia, the festival of her mother Ceres, whose story of loss and search Ovid tells at this season.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'mabon' },
+        name: 'The autumn equinox',
+        why: 'Many modern Pagans mark her descent to the underworld at the autumn equinox. This is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Eat a few pomegranate seeds and set some aside for her.',
+      'Name one thing you lost that has begun to grow again.',
+      'Put spring flowers or a sprig of green in water for her.',
+      'Pour a little water into the earth for those who have died.',
+    ],
+    approach:
+      'Proserpina is approached with tenderness, honouring both her seasons, below and above.',
+    sources: [OVID_FASTI + ' (4.393–620)', 'Cicero, Pro Balbo 55, on the Greek priestesses of Ceres', HUTTON_TRIUMPH],
+  },
+  {
+    key: 'vulcan',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 8, day: 23 },
+        name: 'Volcanalia',
+        why: 'The festival of Vulcan in the heat of late summer, when granaries were full and fire most feared, with bonfires and offerings burned whole.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Check your smoke alarm or fire blanket in his name.',
+      'Light a candle in a safe holder and ask him to keep your home safe.',
+      'Make or mend something with care.',
+      'Thank a firefighter or someone who works with fire.',
+    ],
+    approach:
+      'Vulcan is approached with respect and caution, as fire that must be tended and kept in its place.',
+    sources: ['Varro, On the Latin Language 6.20', 'Festus, s.v. Piscatorii ludi, on the fish offered for human lives', 'Vitruvius 1.7.1', ROMAN_FESTIVALS],
+  },
+  {
+    key: 'pomona',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'mabon' },
+        name: 'The apple harvest (Mabon)',
+        why: 'No festival day of Pomona is known. Many modern Pagans and Roman polytheists honour her at the apple harvest; this is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Share a piece of fruit with her and return her half to the earth.',
+      'Water or prune a plant with care.',
+      'Plant a seed or a fruit tree in her name.',
+      'Notice one thing ripening around you.',
+    ],
+    approach:
+      'Pomona is approached through patient care for growing things, as the goddess of the orchard.',
+    sources: ['Ovid, Metamorphoses 14.623–771', 'Festus, s.v. Pomonal and flamen Pomonalis', HUTTON_TRIUMPH],
+  },
+  {
+    key: 'bona_dea',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 5, day: 1 },
+        name: 'The founding of her temple',
+        why: 'Ovid gives 1 May as the founding day of Bona Dea’s temple on the Aventine. Her women’s night rite came in early December, at the house of a senior magistrate.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Set out a cup of milk and some honey with a prayer for the health of women you love.',
+      'Check in on a friend who is unwell.',
+      'Make a cup of herbal tea and drink it slowly, for your own health.',
+      'Keep one confidence faithfully.',
+    ],
+    approach:
+      'Bona Dea is approached with care and discretion, as the goddess of women’s healing and the people’s welfare.',
+    sources: [OVID_FASTI + ' (5.148–158)', 'Macrobius, Saturnalia 1.12.21–29', 'Plutarch, Life of Caesar 9–10', ROMAN_FESTIVALS],
+  },
+  {
+    key: 'lares_penates',
+    sacred: [
+      ...[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month) => ({
+        rule: { kind: 'fixed' as const, month, day: 1 },
+        name: 'The Kalends',
+        why: 'The first of the month, when Cato says the housekeeper garlanded the hearth and prayed to the household Lar, as also on the Nones and Ides.',
+        basis: 'ancient' as const,
+      })),
+      {
+        rule: { kind: 'fixed', month: 5, day: 1 },
+        name: 'Lares Praestites',
+        why: 'Ovid says the altar of the Lares Praestites, the guardian Lares of the city, was dedicated on 1 May.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Set a small portion of a meal before the household shrine.',
+      'Light a candle or lamp at the lararium and greet the household gods.',
+      'Tidy one corner of your home in their honour.',
+      'Say the name of someone who once lived in your family home.',
+    ],
+    approach:
+      'The Lares and Penates are approached simply and often, as the family’s own guardians, with daily care rather than ceremony.',
+    sources: ['Cato, On Agriculture 143', OVID_FASTI + ' (5.129–146)', 'Plautus, The Pot of Gold, prologue', ROMAN_FESTIVALS],
+  },
+  {
+    key: 'mithras',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'roman', id: 'sol_invictus' },
+        name: 'Dies Natalis Solis Invicti',
+        why: 'The birthday of the Unconquered Sun on 25 December, in the Calendar of 354, belongs to Sol Invictus, not to Mithras. Some modern devotees keep it for him because his inscriptions call him Sol Invictus Mithras; this is a modern custom.',
+        basis: 'modern',
+      },
+      {
+        rule: { kind: 'weekday', day: 0 },
+        name: 'Sunday',
+        why: 'The day of the Sun in the planetary week, kept by some modern devotees of the sun god Mithras. The cult’s own calendar is unknown.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Share bread and wine, or bread and juice, with someone.',
+      'Keep your word in one thing today.',
+      'Light a candle in a dark room and sit with it.',
+      'Read about a mithraeum and the people who met there.',
+    ],
+    approach:
+      'Mithras is approached with humility about the evidence, since the cult left no texts of its own.',
+    sources: [PHILOCALUS, 'Manfred Clauss, The Roman Cult of Mithras (2000)', 'Roger Beck, The Religion of the Mithras Cult in the Roman Empire (2006)', WEEKDAYS],
+  },
+
   // ─── Egyptian ─────────────────────────────────────────────────────────
   {
     key: 'isis',

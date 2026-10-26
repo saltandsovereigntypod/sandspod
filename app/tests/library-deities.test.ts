@@ -28,6 +28,7 @@ const ALL_NEW = Object.values(NEW_DEITIES).flat();
 // The rest of the gods people ask for, by pantheon. None has a statue picture either.
 const MORE_DEITIES: Record<string, string[]> = {
   Greek: ['ares', 'hephaestus', 'pan', 'gaia', 'helios', 'eros', 'asclepius'],
+  Roman: ['fortuna', 'bacchus', 'pluto', 'proserpina', 'vulcan', 'pomona', 'bona_dea', 'lares_penates', 'mithras'],
 };
 const ALL_MORE = Object.values(MORE_DEITIES).flat();
 const text = (d: Deity, ...fields: string[]) => fields.map((f) => String(d[f] ?? '')).join(' ');
@@ -200,9 +201,15 @@ const MORE_LINKS: [string, string][] = [
   ['hellenic-panathenaia', 'hephaestus'],
   ['hellenic-pyanepsia', 'helios'],
   ['attic-tetras', 'eros'],
+  ['roman-fors-fortuna', 'fortuna'],
+  ['roman-liberalia', 'bacchus'],
+  ['roman-cerialia', 'proserpina'],
+  ['roman-volcanalia', 'vulcan'],
+  ['roman-compitalia', 'lares_penates'],
+  ['roman-caristia', 'lares_penates'],
 ];
 // Seasonal things kept for festivals that honour them.
-const MORE_SEASONAL: string[] = [];
+const MORE_SEASONAL: string[] = ['Lares'];
 // Other names, festivals and things they keep, each finding them.
 const MORE_SEARCH: [string, string][] = [
   ['Enyalios', 'ares'],
@@ -212,6 +219,17 @@ const MORE_SEARCH: [string, string][] = [
   ['Phaethon', 'helios'],
   ['Psyche', 'eros'],
   ['Epidaurus', 'asclepius'],
+  ['Praeneste', 'fortuna'],
+  ['Liber', 'bacchus'],
+  ['Liberalia', 'bacchus'],
+  ['Dis Pater', 'pluto'],
+  ['Enna', 'proserpina'],
+  ['Volcanalia', 'vulcan'],
+  ['Vertumnus', 'pomona'],
+  ['Good Goddess', 'bona_dea'],
+  ['lararium', 'lares_penates'],
+  ['Lares', 'lares_penates'],
+  ['tauroctony', 'mithras'],
 ];
 // Living religions: devotion, not magic.
 const LIVING_PANTHEONS = ['Hindu', 'Shinto', 'Chinese'];
