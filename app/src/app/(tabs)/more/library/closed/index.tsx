@@ -4,7 +4,9 @@ import { Text } from 'react-native';
 
 import { Card, Chips, Field, MenuList, MenuRow, MoreScreen, Paragraphs, Section } from '../../../../../components/more/ui';
 import { CLOSED_GUIDE_VISIBLE, ClosedNotice } from '../../../../../components/library/ClosedNotice';
+import { ResearchFooter } from '../../../../../components/ResearchNote';
 import {
+  CLOSED_GUIDE_TITLE,
   CLOSED_TRADITIONS,
   closedGroups,
   OPENNESS_DETAIL,
@@ -97,6 +99,8 @@ export default function ClosedTraditionsIndex() {
           </MenuList>
         </Section>
       ))}
+
+      <ResearchFooter page={CLOSED_GUIDE_TITLE} kind="Living Library" />
     </MoreScreen>
   );
 }

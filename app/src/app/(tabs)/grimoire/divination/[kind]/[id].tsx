@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { OghamStave, RuneStone } from '../../../../../components/divination/Faces';
+import { ResearchFooter } from '../../../../../components/ResearchNote';
 import { Card, Chips, MoreScreen, Notice } from '../../../../../components/more/ui';
 import { chosenDeck, deckCardTitle, deckInfo, deckPictureLabel, TAROT_DECKS, type DeckId } from '../../../../../lib/divination/decks';
 import { divinationPage, findDivination, wordsLine } from '../../../../../lib/divination/library';
@@ -69,6 +70,7 @@ export default function DivinationEntryPage() {
               </View>
             ))}
           </Card>
+          <ResearchFooter page={entry.name} kind={page.eyebrow} />
         </>
       )}
     </MoreScreen>

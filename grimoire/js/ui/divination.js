@@ -182,6 +182,7 @@ async function renderDivinationPage(kind, id) {
                 .join("")
             : `<p class="book-section-empty">Traditional Information is turned off in your Living Library settings, so this page is hidden.</p>`
         }
+        ${showTraditional && typeof window !== "undefined" && window.ResearchNote ? window.ResearchNote.footerHtml(entry.name, page.eyebrow) : ""}
       </div>
     </section>
   `;

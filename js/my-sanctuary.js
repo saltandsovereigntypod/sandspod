@@ -170,6 +170,7 @@ function createMySanctuaryPanel() {
         <nav class="my-sanctuary-links" aria-label="Help">
           <a href="/help/">❓ How to use the Sanctuary</a>
           <a href="/more/support/">💚 Support lines</a>
+          <a href="/more/research/">✎ A note on our research</a>
         </nav>
 
         <h3 class="my-sanctuary-subheading">Salt &amp; Sovereignty</h3>

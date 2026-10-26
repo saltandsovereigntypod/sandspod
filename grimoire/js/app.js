@@ -2192,6 +2192,7 @@ async function renderLibraryEntity(entityId) {
           <div class="library-section-heading-row"><h2>Your Journey with ${escapeHtml(entity.name)}</h2></div>
           <p class="book-placeholder">Gathering the connections held in your practice…</p>
         </section>
+        ${!libraryEditMode && window.ResearchNote ? window.ResearchNote.footerHtml(entity.name, entity.category || "Living Library") : ""}
       </div>
     </section>
   `;

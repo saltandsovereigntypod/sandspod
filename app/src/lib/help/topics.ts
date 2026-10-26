@@ -188,6 +188,20 @@ export const HELP: HelpSection[] = [
         ],
         keywords: ['help', 'email', 'privacy', 'terms', 'contact us', 'feedback', 'version'],
       },
+      {
+        id: 'send-a-correction',
+        title: 'Send a correction, note or addition',
+        summary: 'Everything here was researched with care, and notes on anything that looks wrong or missing are always welcome.',
+        steps: [
+          'Open the page you have a note about: a Living Library entry, a deity, a holiday, a dedication journey, a card, rune or stave, or the Closed & living traditions guide.',
+          'Scroll to the foot of the page and tap "Send a note".',
+          'Your mail app opens with the page named in the subject, such as "Note on: Hekate". Write what you’d like to share and send it.',
+          'For a note about the research as a whole, open More, scroll to Help and tap "A note on our research", then "Send a note".',
+        ],
+        tips: ['If your mail app doesn’t open, write to the address shown under the button. Every note is read.'],
+        href: '/more/research',
+        keywords: ['correction', 'mistake', 'wrong', 'error', 'report', 'research', 'sources', 'addition', 'suggest a tradition', 'feedback'],
+      },
     ],
   },
 

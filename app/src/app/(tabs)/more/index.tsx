@@ -122,6 +122,11 @@ export default function More() {
             icon="support"
             onPress={() => router.push('/more/support' as Href)}
           />
+          <MenuRow
+            label="A note on our research"
+            detail="How it was researched, and how to send a correction"
+            onPress={() => router.push('/more/research' as Href)}
+          />
           <MenuRow label="Contact us" detail={SUPPORT_EMAIL} onPress={() => void Linking.openURL(`mailto:${SUPPORT_EMAIL}`)} />
           <MenuRow label="Privacy Policy" onPress={() => void WebBrowser.openBrowserAsync(PRIVACY_URL)} />
           <MenuRow label="Submission Terms" onPress={() => void WebBrowser.openBrowserAsync(TERMS_URL)} />

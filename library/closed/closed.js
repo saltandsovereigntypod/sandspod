@@ -90,7 +90,8 @@
           : ""
       }
       <div data-closed-list>${listHtml()}</div>
-      <p class="sp-caption"><a class="gd-link" href="/library/sourcing/">Sourcing with care</a>: the plants and stones whose buying needs care.</p>`;
+      <p class="sp-caption"><a class="gd-link" href="/library/sourcing/">Sourcing with care</a>: the plants and stones whose buying needs care.</p>
+      ${global.ResearchNote ? global.ResearchNote.footerHtml(TITLE, "Living Library") : ""}`;
 
     const list = root.querySelector("[data-closed-list]");
     root.querySelector("#gd-closed-search")?.addEventListener("input", (event) => {
@@ -146,7 +147,8 @@
         related.length
           ? `<section class="sp-section"><h2 class="sp-label">Related</h2><div class="sp-list">${related.map((r) => rowHtml(r, C.OPENNESS_LABELS[r.openness])).join("")}</div></section>`
           : ""
-      }`;
+      }
+      ${global.ResearchNote ? global.ResearchNote.footerHtml(tradition.name, TITLE) : ""}`;
   }
 
   router((params) => {

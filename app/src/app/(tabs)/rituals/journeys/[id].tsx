@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
 import { LinkedReadings } from '../../../../components/divination/Linked';
+import { ResearchFooter } from '../../../../components/ResearchNote';
 import {
   journeyStyles,
   lengthWords,
@@ -196,6 +197,8 @@ export default function JourneyOverview() {
           ))}
         </Expander>
       )}
+
+      <ResearchFooter page={journey.title} kind="Dedication journey" />
     </RitualScreen>
   );
 }
