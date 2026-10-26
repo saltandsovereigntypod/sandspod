@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '../../../components/Button';
 import { StaveGlyph } from '../../../components/divination/Faces';
+import { KipperFace, LenormandArt } from '../../../components/divination/oracle/OracleFaces';
 import { DreamList, DreamRow } from '../../../components/grimoire/dreams';
 import { MundaneToggle, useMundaneMode } from '../../../components/grimoire/presentation';
 import { FailedChanges } from '../../../components/grimoire/SaveStatus';
@@ -284,6 +285,12 @@ function DivinationRow({ entry }: { entry: DivinationEntry }) {
     >
       {art ? (
         <TarotArt place={art} style={styles.thumb} />
+      ) : entry.kind === 'lenormand' ? (
+        <LenormandArt id={entry.id} style={styles.thumb} />
+      ) : entry.kind === 'kipper' ? (
+        <View style={styles.thumb}>
+          <KipperFace name={entry.name} width={26} />
+        </View>
       ) : (
         <StaveGlyph glyph={entry.glyph ?? ''} kind={entry.kind === 'ogham' ? 'ogham' : 'runes'} size={26} />
       )}

@@ -99,7 +99,8 @@ test('a spread lays out as many as it has places, never the same card twice', ()
   assert.equal(new Set(draw.items.map((d) => d.name)).size, 10);
   assert.ok(draw.items.every((d) => !d.reversed));
   assert.equal(spreadsFor('tarot').length, 17); // the four first drawn, and the spreads added since (divination-spreads.test.ts)
-  for (const s of SPREADS) assert.equal(drawSpread(s, { reversals: true, blankRune: true }, random).items.length, s.positions.length);
+  // Spreads for decks of your own need a deck (tests/oracle-decks.test.ts).
+  for (const s of SPREADS.filter((x) => x.kind !== 'oracle')) assert.equal(drawSpread(s, { reversals: true, blankRune: true }, random).items.length, s.positions.length);
 });
 
 test('reversals come up only when turned on, about half the time, and only for tarot', () => {

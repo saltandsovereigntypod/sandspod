@@ -18,3 +18,5 @@ export * as planSync from '../../app/src/lib/rituals/planSync.ts';
 export * as patron from '../../app/src/lib/patron/index.ts';
 export { PRACTICES, myPractices, practicesValue, practiceName } from '../../app/src/lib/rituals/premade/practices.ts';
 export * as calendars from '../../app/src/lib/calendars/index.ts';
+// Which kinds of draw Divination offers (Settings → My practice).
+export * as divinationKinds from '../../app/src/lib/divination/oracle/kinds.ts';

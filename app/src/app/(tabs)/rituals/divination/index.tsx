@@ -47,6 +47,7 @@ export default function Readings() {
         <Button label="Draw cards, runes or ogham" onPress={() => router.push('/rituals/divination/draw' as Href)} />
         <Button label="Log a reading" variant="outline" onPress={() => router.push('/rituals/divination/edit' as Href)} />
         <Button label="Make a spread" variant="text" onPress={() => router.push('/rituals/divination/spread' as Href)} />
+        <Button label="Your oracle decks" variant="text" onPress={() => router.push('/rituals/divination/decks' as Href)} />
       </View>
 
       {!ready ? (

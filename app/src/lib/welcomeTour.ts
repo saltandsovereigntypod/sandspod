@@ -43,7 +43,7 @@ export const TOUR_PAGES: TourPage[] = [
   {
     icon: { tab: 'wheel' },
     title: 'Cards, runes and sigils',
-    body: 'Draw tarot, runes or ogham in a spread laid out in its shape, and come back to the reading later. The sigil maker turns an intent into one mark, and both are open to every practice.',
+    body: 'Draw tarot, runes, ogham, Lenormand, Kipper or a deck of your own in a spread laid out in its shape, and come back to the reading later. The sigil maker turns an intent into one mark, and both are open to every practice.',
   },
   {
     icon: { tab: 'grimoire' },

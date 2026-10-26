@@ -2,7 +2,7 @@
    GRIMOIRE DIVINATION (Traditional Information)
    File: grimoire/js/ui/divination.js
 
-   Tarot, Runes and Ogham as sibling drop-downs under a Divination heading
+   Tarot, Runes, Ogham, Lenormand and Kipper as sibling drop-downs under a Divination heading
    inside Traditional Information, as the app's Grimoire has them
    (app/src/lib/divination/library.ts, built into
    js/core/divination-library.js). Each card or stave is a row with its
@@ -23,6 +23,8 @@ function divinationCore() {
 /** A row's picture: the card's art, or the rune's or stave's letter. */
 function divinationThumb(entry) {
   if (entry.cardId) return `<img class="divination-thumb" src="/assets/divination/tarot/${escapeHtml(entry.cardId)}.webp" alt="" loading="lazy" />`;
+  if (entry.lenormandId) return `<img class="divination-thumb divination-thumb--lenormand" src="/assets/divination/lenormand/${escapeHtml(entry.lenormandId)}.webp" alt="" loading="lazy" />`;
+  if (entry.kind === "kipper") return `<span class="divination-thumb divination-thumb--kipper" aria-hidden="true">${escapeHtml(entry.glyph || "")}</span>`;
   return `<span class="divination-glyph divination-glyph--${entry.kind}" aria-hidden="true">${escapeHtml(entry.glyph || "")}</span>`;
 }
 
@@ -114,6 +116,10 @@ async function renderDivinationPage(kind, id) {
   const page = core.divinationPage(entry);
   const figure = entry.cardId
     ? `<figure class="book-library-hero-image divination-hero"><img src="/assets/divination/tarot/${escapeHtml(entry.cardId)}.webp" alt="${escapeHtml(`${entry.name}, Pamela Colman Smith’s picture`)}" /></figure>`
+    : entry.lenormandId
+    ? `<figure class="book-library-hero-image divination-hero"><img src="/assets/divination/lenormand/${escapeHtml(entry.lenormandId)}.webp" alt="${escapeHtml(`${entry.name}, the Bruges card of the 1890s`)}" /></figure>`
+    : entry.kind === "kipper"
+    ? `<figure class="divination-hero divination-hero--kipper"><span class="divination-kipper" aria-label="${escapeHtml(`${entry.name}, card ${entry.glyph}`)}"><span class="divination-kipper__number">${escapeHtml(entry.glyph || "")}</span><span class="divination-kipper__name">${escapeHtml(entry.name)}</span><span class="divination-kipper__german">${escapeHtml(page.gloss || "")}</span></span></figure>`
     : `<figure class="divination-hero divination-hero--${entry.kind}"><span class="divination-glyph divination-glyph--${entry.kind}" aria-hidden="true">${escapeHtml(entry.glyph || "")}</span></figure>`;
 
   entryList.innerHTML = `

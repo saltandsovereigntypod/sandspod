@@ -7,17 +7,24 @@
 // centre of its item and a turn in degrees (clockwise, as CSS turns). `laid`
 // moves it all so the top left of the whole is at 0, 0.
 
-export type ItemKind = 'tarot' | 'runes' | 'ogham';
+import { ORACLE_LAYOUTS } from './oracle/spreads.ts';
+
+export type ItemKind = 'tarot' | 'runes' | 'ogham' | 'lenormand' | 'kipper' | 'oracle';
 export type Dims = { w: number; h: number };
 
 export const ITEM: Record<ItemKind, Dims> = {
   tarot: { w: 1, h: 1 / 0.58 },
   runes: { w: 1, h: 1.18 },
   ogham: { w: 1, h: 190 / 52 },
+  // The Bruges Lenormand is a little squarer than a tarot card; the Kipper cards are drawn a little taller.
+  lenormand: { w: 1, h: 1 / 0.68 },
+  kipper: { w: 1, h: 1 / 0.62 },
+  // Decks of your own are laid out as tarot cards are.
+  oracle: { w: 1, h: 1 / 0.58 },
 };
 
 /** The space left between neighbours, in item widths. */
-const GAP: Record<ItemKind, number> = { tarot: 0.2, runes: 0.3, ogham: 0.7 };
+const GAP: Record<ItemKind, number> = { tarot: 0.2, runes: 0.3, ogham: 0.7, lenormand: 0.12, kipper: 0.12, oracle: 0.2 };
 
 export type Slot = { x: number; y: number; rot?: number };
 
@@ -255,7 +262,7 @@ const BUILT: Record<string, () => Built> = {
   'year-ahead': yearAhead,
 };
 
-export const hasOwnLayout = (spreadId: string) => spreadId in BUILT;
+export const hasOwnLayout = (spreadId: string) => spreadId in BUILT || spreadId in ORACLE_LAYOUTS;
 
 // ─── The cast: runes thrown onto a cloth ─────────────────────────────────
 
@@ -386,7 +393,7 @@ export function layoutOf(spread: Layable, cast?: { names: string[]; falls: Fall[
     const { slots, rings } = castSlots(names, falls);
     return laid(spread.kind, slots, [], { rings });
   }
-  const built = BUILT[spread.id]?.();
+  const built = BUILT[spread.id]?.() ?? ORACLE_LAYOUTS[spread.id]?.(ITEM[spread.kind], GAP[spread.kind]);
   if (built && built.slots.length === n) return laid(spread.kind, built.slots, built.crossings ?? []);
   return laid(spread.kind, shapeSlots(spread.kind, spread.shape ?? 'line', n));
 }

@@ -3,15 +3,19 @@
 // Pure, so it can be tested.
 
 import { moonState, type PhaseName } from '../../moon.ts';
+import { KIPPER } from '../../divination/oracle/kipper.ts';
+import { LENORMAND } from '../../divination/oracle/lenormand.ts';
 import { dateFromKey, localDateKey } from '../../rituals/lifecycle.ts';
 
 export const READINGS = 'hedge.readings';
 
-export type ReadingMethod = 'tarot' | 'oracle' | 'runes' | 'tea' | 'scrying' | 'pendulum' | 'ogham' | 'other';
+export type ReadingMethod = 'tarot' | 'oracle' | 'lenormand' | 'kipper' | 'runes' | 'tea' | 'scrying' | 'pendulum' | 'ogham' | 'other';
 
 export const METHODS: { id: ReadingMethod; label: string }[] = [
   { id: 'tarot', label: 'Tarot' },
   { id: 'oracle', label: 'Oracle cards' },
+  { id: 'lenormand', label: 'Lenormand' },
+  { id: 'kipper', label: 'Kipper' },
   { id: 'runes', label: 'Runes' },
   { id: 'tea', label: 'Tea leaves' },
   { id: 'scrying', label: 'Scrying' },
@@ -38,6 +42,8 @@ export type Reading = {
   outcome: string;
   outcomeDate: string;
   moonPhase: PhaseName;
+  /** For a draw from a deck of your own: the deck's entry id in `hedge.oracleDecks`. Absent otherwise. */
+  deck?: string;
 };
 
 export type ReadingEntry = { id: string; createdAt: string; data: Reading };
@@ -97,6 +103,7 @@ export function normalizeReading(raw: unknown): Reading {
     outcome: str(r.outcome),
     outcomeDate: str(r.outcomeDate),
     moonPhase: (typeof r.moonPhase === 'string' && r.moonPhase ? r.moonPhase : moonForReading(date)) as PhaseName,
+    ...(typeof r.deck === 'string' && r.deck ? { deck: r.deck } : {}),
   };
 }
 
@@ -246,6 +253,8 @@ export function pickList(method: ReadingMethod): string[] | null {
   if (method === 'runes') return ELDER_FUTHARK.map((r) => r.name);
   if (method === 'ogham') return OGHAM.map((o) => o.name);
   if (method === 'tarot') return TAROT;
+  if (method === 'lenormand') return LENORMAND.map((c) => c.name);
+  if (method === 'kipper') return KIPPER.map((c) => c.name);
   return null;
 }
 
@@ -254,5 +263,9 @@ export function glossOf(name: string): string | null {
   const rune = ELDER_FUTHARK.find((r) => r.name === name);
   if (rune) return `${rune.glyph} ${rune.gloss}`;
   const fid = OGHAM.find((o) => o.name === name);
-  return fid ? fid.gloss : null;
+  if (fid) return fid.gloss;
+  const len = LENORMAND.find((c) => c.name === name);
+  if (len) return `${len.number}, ${len.playing}`;
+  const kip = KIPPER.find((c) => c.name === name);
+  return kip ? `${kip.number}` : null;
 }

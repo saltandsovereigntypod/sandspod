@@ -1440,17 +1440,17 @@ export const HELP: HelpSection[] = [
       },
       {
         id: 'grimoire-divination-pages',
-        title: 'Read about every tarot card, rune and ogham letter',
+        title: 'Read about every tarot card, rune, ogham letter, Lenormand and Kipper card',
         summary: 'The Grimoire’s Traditional Information holds a page for each.',
         steps: [
           'Open Practice → Grimoire and open the Traditional Information shelf.',
-          'Open Divination, then Tarot, Runes or Ogham. Tarot is grouped by the Major Arcana and each suit, the runes by their three aettir, the ogham by its four aicmí.',
+          'Open Divination, then Tarot, Runes, Ogham, Lenormand or Kipper. Tarot is grouped by the Major Arcana and each suit, the runes by their three aettir, the ogham by its four aicmí, Lenormand and Kipper twelve cards at a time.',
           'Tap a card or stave for its picture or letter, its three words and its page.',
         ],
         tips: [
           'They follow the Traditional Information setting in More, then Settings, then "Living Library".',
         ],
-        keywords: ['tarot meanings', 'card meaning', 'rune meaning', 'ogham meaning', 'futhark', 'major arcana', 'minor arcana'],
+        keywords: ['tarot meanings', 'card meaning', 'rune meaning', 'ogham meaning', 'futhark', 'major arcana', 'minor arcana', 'lenormand meanings', 'kipper meanings', 'playing card insert'],
       },
       {
         id: 'grimoire-new-entry',
@@ -1949,7 +1949,7 @@ export const HELP: HelpSection[] = [
   {
     id: 'divination',
     title: 'Divination and sigils',
-    intro: 'Tarot, runes and ogham laid out in their spreads, your readings and the sigil maker. Open to every practice.',
+    intro: 'Tarot, runes, ogham, Lenormand, Kipper and decks of your own, laid out in their spreads; your readings and the sigil maker. Open to every practice.',
     topics: [
       {
         id: 'practice-draw',
@@ -1976,6 +1976,52 @@ export const HELP: HelpSection[] = [
         ],
         href: '/rituals/divination/spread',
         keywords: ['custom spread', 'own spread', 'layout', 'positions', 'tarot spread', 'make spread'],
+      },
+      {
+        id: 'divination-lenormand',
+        title: 'Draw Lenormand or Kipper cards',
+        summary: 'Thirty-six cards each: Lenormand read in pairs and lines, Kipper read around the main person, up to the Grand Tableau of all thirty-six.',
+        steps: [
+          'Open the draw screen and choose Lenormand or Kipper.',
+          'Lenormand: one card, a pair, a line of three or five, the 3×3 box, or the Grand Tableau (four rows of eight and four beneath, each place a house). Kipper: three cards, nine, or its Grand Tableau of four rows of nine.',
+          'Turn the cards over and tap each for its meaning. For Lenormand, "Read in pairs" reads each card with the next: the first says what, the second says what kind (Ship then Rider: a journey, soon).',
+          'Big spreads are laid out small to see whole; "Look closer" makes them bigger and scrolls sideways.',
+        ],
+        tips: [
+          'The Lenormand pictures are a Belgian printing of the 1890s. No complete old Kipper printing could be found free to use, so the Kipper cards are drawn in words: number, name and German name.',
+          'Each card has its page in the Grimoire’s Traditional Information, under Divination.',
+        ],
+        href: '/rituals/divination/draw',
+        keywords: ['lenormand', 'petit lenormand', 'kipper', 'kipperkarten', 'grand tableau', 'houses', 'pairs', 'combinations', 'line of three', '3x3', 'box spread', 'main person'],
+      },
+      {
+        id: 'divination-own-decks',
+        title: 'Add an oracle deck of your own',
+        summary: 'Your own deck’s cards, with photos and meanings, to draw from or to log the cards you pull by hand.',
+        steps: [
+          'Open Practice → Rituals, tap "Your readings", then "Your oracle decks", then "Make a deck". Or choose "Your decks" on the draw screen.',
+          'Name it, and add a cover photo if you like. Turn on "Read reversals" if you read cards upside down.',
+          'Add cards one at a time (name, a few words, what it means, a photo of the card), or paste in a whole list, one "Name — meaning" to a line.',
+          'Tap "Keep this deck". On the draw screen, choose "Your decks" and the deck, then any spread: its own, any tarot spread, or one of yours.',
+        ],
+        tips: [
+          'Signed in, decks and their photos are kept with your account and show on the website too. As a guest they stay on this phone.',
+        ],
+        href: '/rituals/divination/decks',
+        keywords: ['oracle deck', 'own deck', 'my deck', 'bring your own deck', 'oracle cards', 'card photos', 'import cards', 'paste list'],
+      },
+      {
+        id: 'divination-physical-pull',
+        title: 'Log the cards you pulled by hand',
+        summary: 'Drew real cards? Pick which card lay in each place, and keep it as a reading.',
+        steps: [
+          'On the draw screen, choose what you drew from (tarot, Lenormand, Kipper or a deck of your own) and the spread you laid.',
+          'Under "How", choose "Log a physical pull".',
+          'For each place in turn, tap the card you drew. Tap a place to take its card out; mark any that came up reversed.',
+          'Tap "Lay it out" to see the spread and the meanings, then keep it like any reading.',
+        ],
+        href: '/rituals/divination/draw',
+        keywords: ['physical pull', 'real cards', 'own deck', 'by hand', 'log cards', 'pulled', 'record spread'],
       },
       {
         id: 'practice-readings',

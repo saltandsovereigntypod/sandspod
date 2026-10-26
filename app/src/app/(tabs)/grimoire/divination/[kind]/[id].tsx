@@ -2,6 +2,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { OghamStave, RuneStone } from '../../../../../components/divination/Faces';
+import { KipperFace, LenormandArt } from '../../../../../components/divination/oracle/OracleFaces';
 import { Card, MoreScreen, Notice } from '../../../../../components/more/ui';
 import { divinationPage, findDivination, wordsLine } from '../../../../../lib/divination/library';
 import { tarotImages } from '../../../../../lib/divination/tarotAssets';
@@ -37,6 +38,12 @@ export default function DivinationEntryPage() {
           <View style={styles.figure}>
             {art ? (
               <TarotArt place={art} style={styles.card} accessibilityLabel={`${entry.name}, Pamela Colman Smith’s picture`} />
+            ) : entry.kind === 'lenormand' ? (
+              <LenormandArt id={entry.id} style={styles.lenormand} accessibilityLabel={`${entry.name}, the Bruges card of the 1890s`} />
+            ) : entry.kind === 'kipper' ? (
+              <View style={styles.kipper} accessible accessibilityRole="image" accessibilityLabel={`${entry.name}, card ${entry.glyph}`}>
+                <KipperFace name={entry.name} width={170} />
+              </View>
             ) : entry.kind === 'runes' ? (
               <RuneStone glyph={entry.glyph ?? ''} size={110} />
             ) : (
@@ -66,6 +73,8 @@ export default function DivinationEntryPage() {
 const styles = StyleSheet.create({
   figure: { alignItems: 'center', paddingVertical: 4 },
   card: { width: '62%', maxWidth: 280, aspectRatio: 0.58, borderRadius: radius.tile, backgroundColor: colors.cream },
+  lenormand: { width: '62%', maxWidth: 280, aspectRatio: 0.68, borderRadius: radius.tile, backgroundColor: colors.cream },
+  kipper: { width: 170, height: 170 / 0.62 },
   words: { fontFamily: fonts.displayItalic, fontSize: 22, lineHeight: 28, color: colors.parchment, textAlign: 'center' },
   center: { textAlign: 'center' },
   field: { gap: 6 },

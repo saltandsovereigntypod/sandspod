@@ -10,9 +10,11 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle, Rect, Text as SvgText } from 'react-native-svg';
 
 import { layoutOfDraw, meaningOf, placeOf, type Draw, type Spread } from '../../lib/divination/draw';
-import { diagramOf, isSimpleRow, layoutOf, type Diagram } from '../../lib/divination/layout';
+import { diagramOf, isSimpleRow, ITEM, layoutOf, type Diagram } from '../../lib/divination/layout';
+import type { OwnDeckData } from '../../lib/divination/oracle/decks';
 import { colors, type } from '../../theme';
 import { CARD_RATIO, CardBack, Flip, OghamStave, RuneStone, TarotFace } from './Faces';
+import { oracleFront } from './oracle/OracleFaces';
 
 type Props = {
   spread: Spread;
@@ -23,6 +25,8 @@ type Props = {
   still: boolean;
   /** The width there is to lay it out in. */
   width: number;
+  /** For a draw from a deck of your own: the deck. */
+  deck?: OwnDeckData | null;
 };
 
 /** What a screen reader hears for one place in the spread. */
@@ -34,9 +38,17 @@ export function placeLabel(spread: Spread, draw: Draw, index: number, revealed: 
 }
 
 /** An item's width in points: the most it grows to, and the least before the table scrolls. */
-const SIZE = { tarot: { max: 110, min: 44 }, runes: { max: 96, min: 36 }, ogham: { max: 52, min: 18 } };
+const SIZE = {
+  tarot: { max: 110, min: 44 },
+  runes: { max: 96, min: 36 },
+  ogham: { max: 52, min: 18 },
+  // The Grand Tableaux are wide: small enough to see whole, with a closer look.
+  lenormand: { max: 110, min: 34 },
+  kipper: { max: 110, min: 34 },
+  oracle: { max: 110, min: 44 },
+};
 
-export function SpreadTable({ spread, draw, revealed, selected, onPress, still, width }: Props) {
+export function SpreadTable({ spread, draw, revealed, selected, onPress, still, width, deck = null }: Props) {
   const [close, setClose] = useState(false);
 
   const one = (index: number, w: number, h: number) => {
@@ -46,7 +58,11 @@ export function SpreadTable({ spread, draw, revealed, selected, onPress, still, 
     const hint = shown ? 'Shows its meaning' : 'Turns it over';
     let back;
     let front;
-    if (spread.kind === 'tarot') {
+    const oracle = oracleFront(spread.kind, item, w, deck);
+    if (oracle) {
+      back = <CardBack />;
+      front = oracle;
+    } else if (spread.kind === 'tarot') {
       back = <CardBack />;
       front = <TarotFace name={item.name} reversed={item.reversed} />;
     } else if (spread.kind === 'runes') {
@@ -69,7 +85,7 @@ export function SpreadTable({ spread, draw, revealed, selected, onPress, still, 
         label={label}
         hint={hint}
         selected={selected === index}
-        radius={spread.kind === 'runes' ? w * 0.42 : spread.kind === 'ogham' ? w * 0.3 : 8}
+        radius={spread.kind === 'runes' ? w * 0.42 : spread.kind === 'ogham' ? w * 0.3 : spread.kind === 'tarot' ? 8 : 6}
       />
     );
   };
@@ -84,6 +100,9 @@ export function SpreadTable({ spread, draw, revealed, selected, onPress, still, 
     if (spread.kind === 'tarot') {
       w = n === 1 ? Math.min(width * 0.56, 220) : Math.min((width - gap * (n - 1)) / n, 150);
       h = w / CARD_RATIO;
+    } else if (spread.kind === 'lenormand' || spread.kind === 'kipper' || spread.kind === 'oracle') {
+      w = n === 1 ? Math.min(width * 0.56, 220) : Math.min((width - gap * (n - 1)) / n, 150);
+      h = w * ITEM[spread.kind].h;
     } else if (spread.kind === 'runes') {
       w = n === 1 ? Math.min(width * 0.34, 120) : Math.min((width - gap * (n - 1)) / n, 96);
       h = w * 1.18;
@@ -155,7 +174,11 @@ export function SpreadTable({ spread, draw, revealed, selected, onPress, still, 
       ) : (
         <View style={styles.center}>{table}</View>
       )}
-      <Text style={[type.caption, styles.legend]}>{draw.items.map((_, i) => `${i + 1} ${placeOf(spread, draw, i)?.name ?? ''}`).join('  ·  ')}</Text>
+      <Text style={[type.caption, styles.legend]}>
+        {draw.items.length > 13
+          ? 'Each place has its own meaning: tap a card to read it there.'
+          : draw.items.map((_, i) => `${i + 1} ${placeOf(spread, draw, i)?.name ?? ''}`).join('  ·  ')}
+      </Text>
       {canCloser && (
         <Pressable accessibilityRole="button" onPress={() => setClose((c) => !c)} style={({ pressed }) => [styles.zoom, pressed && { opacity: 0.7 }]}>
           <Text style={[type.caption, styles.gold]}>{close ? 'See it all at once' : 'Look closer (scrolls sideways)'}</Text>

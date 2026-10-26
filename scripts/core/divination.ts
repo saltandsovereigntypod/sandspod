@@ -14,3 +14,10 @@ export * as layout from '../../app/src/lib/divination/layout.ts';
 export * as custom from '../../app/src/lib/divination/custom.ts';
 export * as seasonal from '../../app/src/lib/divination/seasonal.ts';
 export * as links from '../../app/src/lib/divination/links.ts';
+// Lenormand and Kipper (and the Lenormand pairs), decks of your own
+// (`hedge.oracleDecks`), and which kinds the draw page offers.
+export * as lenormand from '../../app/src/lib/divination/oracle/lenormand.ts';
+export * as kipper from '../../app/src/lib/divination/oracle/kipper.ts';
+export * as pairs from '../../app/src/lib/divination/oracle/pairs.ts';
+export * as decks from '../../app/src/lib/divination/oracle/decks.ts';
+export * as kinds from '../../app/src/lib/divination/oracle/kinds.ts';
