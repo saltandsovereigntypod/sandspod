@@ -62,7 +62,7 @@ export type CovenDocument = { id: string; coven_id: string; kind: string; title:
 export type Signature = { document_id: string; version: number; user_id: string };
 export type Application = { id: string; coven_id: string; user_id: string; status: 'pending' | 'approved' | 'declined' | 'withdrawn'; answers: Record<string, string>; message: string | null; reviewer_note: string | null; created_at: string; decided_at: string | null };
 export type Advancement = { id: string; coven_id: string; user_id: string; rank_id: string; statement: string | null; status: 'pending' | 'approved' | 'declined' | 'withdrawn'; reviewer_id?: string | null; reviewer_note: string | null; created_at: string; decided_at: string | null };
-export type Message = { id: string; coven_id: string; conversation_id?: string | null; user_id: string | null; body: string; created_at: string; edited_at: string | null; deleted_at: string | null; deleted_by: string | null };
+export type Message = { id: string; coven_id: string; conversation_id?: string | null; user_id: string | null; body: string; reply_to?: string | null; created_at: string; edited_at: string | null; deleted_at: string | null; deleted_by: string | null };
 export type AltarItem = {
   id: string;
   coven_id: string;

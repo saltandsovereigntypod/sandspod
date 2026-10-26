@@ -9,7 +9,7 @@
   const R = global.SaltCore.rituals;
 
   const id = new URLSearchParams(global.location.search).get("id");
-  const state = { plan: null, templates: [], altars: [], active: null, busy: false };
+  const state = { plan: null, templates: [], altars: [], active: null, busy: false, readings: [] };
 
   const planTemplate = () => R.plans.planTemplate(state.plan, state.templates);
 
@@ -38,6 +38,27 @@
                 .join("")}</div>`
             : ""
         }
+      </section>`;
+  }
+
+  /** Readings drawn before this working, and the button to draw one (the app's LinkedReadings on the plan). */
+  function beforeYouBegin() {
+    const plan = state.plan;
+    const Ln = R.linked;
+    if (!Ln || plan.doneAt) return "";
+    const mine = Ln.linkedReadings(state.readings, "plan", plan.id);
+    const link = { kind: "plan", id: plan.id, title: plan.title };
+    return `
+      <section class="sp-section" aria-labelledby="rt-before">
+        <h2 class="sp-label" id="rt-before">Before you begin</h2>
+        ${
+          mine.length
+            ? `<div class="sp-list">${mine
+                .map((e) => UI.row({ href: `/divination/reading/?id=${encodeURIComponent(e.id)}`, title: e.data.question || Ln.cardsLine(e.data).split("\n")[0] || "A reading", detail: e.data.drawn.join(", ") }))
+                .join("")}</div>`
+            : `<p class="sp-muted">Three cards before a working: the working itself, what to watch for, and the likely outcome. It waits beside “Did it work?” when you look back.</p>`
+        }
+        <div class="sp-actions"><a class="button button--ghost" href="/divination/draw/${Ln.drawQuery(link)}">Draw before you begin</a></div>
       </section>`;
   }
 
@@ -81,6 +102,8 @@
               : ""
         }
       </section>
+
+      ${beforeYouBegin()}
 
       ${connections(template)}
 
@@ -164,12 +187,14 @@
   }
 
   async function load() {
-    const [plans, templates, altars, active] = await Promise.all([
+    const [plans, templates, altars, active, readings] = await Promise.all([
       S.loadPlans(),
       S.templates().catch(() => []),
       S.altars().catch(() => []),
-      S.activeSession().catch(() => null)
+      S.activeSession().catch(() => null),
+      global.SaltCraft && R.readings ? global.SaltCraft.list(R.readings.READINGS).catch(() => []) : []
     ]);
+    state.readings = R.readings ? readings.map((e) => ({ ...e, data: R.readings.normalizeReading(e.data) })) : [];
     state.plan = plans.find((p) => p.id === id) || null;
     state.templates = templates;
     state.altars = altars;

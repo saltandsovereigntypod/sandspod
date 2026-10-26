@@ -26,6 +26,10 @@
   const { esc, prose } = UI;
   const T = () => global.SaltCore?.covens?.thread || null;
   const U = () => global.SaltCore?.covens?.unreadCount || null;
+  // Coven readings (the app's lib/covens/reading.ts): a spread drawn together, kept as chat messages.
+  const RD = () => global.SaltCore?.covens?.reading || null;
+  let readings = new Map();
+  let beginning = false;
 
   let pane = null;
   let state = null;
@@ -199,6 +203,23 @@
       </div>`;
   }
 
+  /** A coven reading under its opening message: the shape, each card in its place, and a button to draw yours (the app's CovenReadingCard). */
+  function readingHtml(reading) {
+    const R = RD();
+    const who = (id) => (id === me() ? "You" : nameOf(id));
+    const mayDraw = state.perms.member && state.standing.ok && state.perms.chat && (!threadId() || canSend(threadId())) && R.canDraw(reading, me());
+    return `<section class="sp-card cv-reading" aria-label="A coven reading">
+        <p class="sp-eyebrow">A coven reading</p>
+        ${reading.question ? `<h3 class="cv-reading__question">${esc(reading.question)}</h3>` : ""}
+        <div class="cv-reading__shape">${R.covenDiagramSvg(reading.members.length, 120)}</div>
+        <ol class="cv-reading__cards">${R.readingLines(reading, who)
+          .map((line) => `<li>${esc(line)}</li>`)
+          .join("")}</ol>
+        <p class="sp-caption">${esc(R.drawnSoFar(reading))}</p>
+        ${mayDraw ? `<div class="sp-actions"><button class="button button--ghost button--small" type="button" data-reading-draw="${esc(reading.id)}">Draw my card</button></div>` : ""}
+      </section>`;
+  }
+
   function bubbleHtml(item) {
     if (item.kind === "time") return `<p class="cv-day">${esc(item.label)}</p>`;
     const m = item.message;
@@ -212,7 +233,7 @@
         ${item.showName ? `<p class="cv-bubble__name">${esc(m.hidden ? "Blocked" : nameOf(m.user_id))}</p>` : ""}
         <div class="cv-bubble__inner">${body}<time class="cv-bubble__time" datetime="${esc(m.created_at)}">${esc(time)}${m.edited_at && !m.deleted_at ? " · edited" : ""}</time></div>
         ${m.hidden ? "" : actions(m)}
-      </article>`;
+      </article>${readings.has(m.id) ? readingHtml(readings.get(m.id)) : ""}`;
   }
 
   function render({ stick } = {}) {
@@ -221,6 +242,7 @@
     const keep = stick || nearBottom(log);
     const group = !threadId() || conversationOf(threadId())?.kind === "group";
     const shown = messages.map((m) => ({ ...m, hidden: state.context.blocks.includes(m.user_id) }));
+    readings = RD() ? new Map(RD().covenReadings(shown).map((r) => [r.id, r])) : new Map();
     const items = T() ? T().threadItems(shown, me(), group) : shown.map((message) => ({ kind: "message", key: message.id, message, mine: message.user_id === me(), first: true, last: true, showName: group }));
     log.innerHTML = items.length ? items.map(bubbleHtml).join("") : `<p class="sp-empty">${threadId() ? "No messages yet. Say hello." : "No one has spoken yet. Light the way."}</p>`;
     if (keep) log.scrollTop = log.scrollHeight;
@@ -243,7 +265,16 @@
     if (!state.perms.chat) return `<p class="sp-notice">Your position doesn’t talk in the coven’s chat. The coven’s head can change that under Manage → Positions.</p>`;
     if (conversationId && !canSend(conversationId)) return `<p class="sp-caption">You’ve left this conversation.</p>`;
     const placeholder = conversationId ? "Message" : "Speak to the coven…";
-    return `<form class="cv-composer" data-composer>
+    const begin = RD()
+      ? beginning
+        ? `<form class="sp-card cv-reading-begin" data-reading-begin>
+            <p class="sp-caption">A card is drawn for the coven as a whole and shared here. Each member who joins draws their own, up to nine.</p>
+            <div class="sp-field"><label for="cv-reading-question">What it’s about (if you like)</label><input id="cv-reading-question" name="question" maxlength="300" placeholder="The coming season, a working, the coven itself" /></div>
+            <div class="sp-actions"><button class="button button--primary button--small" type="submit">Draw the coven’s card and share it</button><button class="button button--ghost button--small" type="button" data-reading-cancel>Not now</button></div>
+          </form>`
+        : `<div class="sp-actions"><button class="button button--ghost button--small" type="button" data-reading-open>Begin a coven reading</button></div>`
+      : "";
+    return `${begin}<form class="cv-composer" data-composer>
         <label class="sr-only" for="cv-message">Message</label>
         <textarea id="cv-message" name="body" maxlength="2000" rows="2" placeholder="${esc(placeholder)}" data-placeholder="${esc(placeholder)}" required></textarea>
         <button class="button button--primary" type="submit">Send</button>
@@ -436,6 +467,42 @@
         textarea.value = "";
         resetComposer();
       }
+    });
+
+    // Coven readings: begin one, or draw your card into one.
+    const sendReading = async (el, body, replyTo) => {
+      const sent = await UI.busy(el, status, () => D.send(state.coven.id, body, replyTo, id));
+      if (!sent) return false;
+      messages = L.applyChange(messages, { eventType: "INSERT", new: sent });
+      previews[id || "coven"] = sent;
+      render({ stick: true });
+      drawList();
+      return true;
+    };
+    holder.querySelector("[data-reading-open]")?.addEventListener("click", () => {
+      beginning = true;
+      drawThread();
+    });
+    holder.querySelector("[data-reading-cancel]")?.addEventListener("click", () => {
+      beginning = false;
+      drawThread();
+    });
+    holder.querySelector("[data-reading-begin]")?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const R = RD();
+      const formEl = event.currentTarget;
+      if (await sendReading(formEl, R.openingBody(formEl.elements.question.value, R.drawCovenCard(null, false)), null)) {
+        beginning = false;
+        drawThread();
+      }
+    });
+    holder.querySelector("[data-log]")?.addEventListener("click", async (event) => {
+      const button = event.target.closest("[data-reading-draw]");
+      if (!button) return;
+      const R = RD();
+      const reading = readings.get(button.dataset.readingDraw);
+      if (!reading || !R.canDraw(reading, me())) return;
+      await sendReading(button, R.cardBody(R.drawCovenCard(reading, false)), reading.id);
     });
 
     holder.querySelector("[data-older]")?.addEventListener("click", async (event) => {

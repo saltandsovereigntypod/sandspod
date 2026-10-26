@@ -17,7 +17,20 @@
   const root = global.document.querySelector("[data-page-root]");
   const DAY = 86400000;
 
-  const state = { route: L.route(global.location.search), journey: null, entries: [], entry: null, settings: {}, cadence: {} };
+  const state = { route: L.route(global.location.search), journey: null, entries: [], entry: null, settings: {}, cadence: {}, readings: [] };
+
+  /** On a deity's journey: the readings drawn for them, and the Patron deity spread to draw (the app's LinkedReadings). */
+  function deityReadings(journey) {
+    const Ln = core().linked;
+    if (journey.kind !== "deity" || !Ln) return "";
+    const link = Ln.deityLink(journey.deityRef, journey.title.split(":")[0]);
+    const mine = Ln.linkedReadings(state.readings, "deity", link.id);
+    return `<section class="sp-section">${label("Readings for this god")}${
+      mine.length
+        ? `<div class="sp-list">${mine.map((e) => row(e.data.question || Ln.cardsLine(e.data).split("\n")[0] || "A reading", `${core().calendar.fullDate(e.data.date) || e.data.date} · ${e.data.drawn.join(", ")}`, `/divination/reading/?id=${encodeURIComponent(e.id)}`)).join("")}</div>`
+        : body("Four cards: what this god asks of you, what they offer, how to honour them, and what stands between you.", true)
+    }<p>${textLink("Draw the Patron deity spread", `/divination/draw/${Ln.drawQuery(link)}`)}</p></section>`;
+  }
 
   // ---------------------------------------------------------------- pieces
 
@@ -222,6 +235,7 @@
       <section class="sp-section">${label("About")}${paragraphs(journey.about)}${
         journey.deityRef ? `<p>${textLink("Open in the Living Library", L.href.library(journey.deityRef))}</p>` : ""
       }</section>
+      ${deityReadings(journey)}
       ${journey.notes.length ? card(`${label("Things to know first")}${bullets(journey.notes)}`, true) : ""}
       ${
         holyDays.length
@@ -866,11 +880,13 @@
     root.setAttribute("aria-busy", "true");
     try {
       await global.SaltPage.ready();
-      const [settings, entries, journey] = await Promise.all([
+      const [settings, entries, journey, readings] = await Promise.all([
         S.settings(),
         S.progressEntries().catch(() => []),
-        state.route.id ? S.loadJourney(state.route.id) : Promise.resolve(null)
+        state.route.id ? S.loadJourney(state.route.id) : Promise.resolve(null),
+        global.SaltCraft && core().READINGS ? global.SaltCraft.list(core().READINGS).catch(() => []) : []
       ]);
+      state.readings = core().normalizeReading ? readings.map((e) => ({ ...e, data: core().normalizeReading(e.data) })) : [];
       state.settings = settings;
       state.cadence = S.cadence(settings);
       state.entries = entries;

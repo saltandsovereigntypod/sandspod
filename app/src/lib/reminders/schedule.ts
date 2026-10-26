@@ -9,6 +9,7 @@ import { dateKey, devotionFor } from '../craft/solitary/devotion.ts';
 import { sacredReminders, type SacredReminderSource } from '../patron/index.ts';
 import { tendingNote, type OfferingDue } from '../altar/offerings.ts';
 import { wateringNote, type WateringDue } from '../altar/pottedPlants.ts';
+import type { DeipnonReminder } from '../deipnon.ts';
 
 export type ReminderSettings = {
   version: 1;
@@ -141,7 +142,7 @@ export function anyReminders(settings: ReminderSettings): boolean {
 export type Reminder = {
   /** Stable per event, so rescheduling never duplicates. */
   key: string;
-  kind: 'moon' | 'ritual' | 'devotion' | 'sacred' | 'dream' | 'lookback' | 'offering' | 'watering';
+  kind: 'moon' | 'ritual' | 'devotion' | 'sacred' | 'dream' | 'lookback' | 'offering' | 'watering' | 'deipnon';
   at: Date;
   title: string;
   body: string;
@@ -199,6 +200,8 @@ export function buildSchedule(
   lookBacks: LookBackReminderSource[] = [],
   offerings: OfferingDue[] = [],
   waterings: WateringDue[] = [],
+  /** Hekate's Deipnon each month (deipnon.ts deipnonReminders), for those who keep it; turned off in Settings → Calendars. */
+  deipna: DeipnonReminder[] = [],
 ): Reminder[] {
   const horizon = now.getTime() + horizonDays * 86_400_000;
   const reminders: Reminder[] = [];
@@ -386,7 +389,17 @@ export function buildSchedule(
     }
   }
 
+  // Hekate's Deipnon, in the morning so there's time to make ready, at the time chosen for sacred days.
+  // It stands in for the Deipnon among Hekate's own sacred days, so the day isn't announced twice.
+  const deipnonDays = new Set<string>();
+  for (const d of deipna) {
+    const at = new Date(d.date.getFullYear(), d.date.getMonth(), d.date.getDate(), Math.floor(settings.sacredAt / 60), settings.sacredAt % 60, 0, 0);
+    deipnonDays.add(dateKey(at));
+    reminders.push({ key: d.key, kind: 'deipnon', at, title: d.title, body: d.body, url: d.url });
+  }
+
   return reminders
+    .filter((r) => !(r.kind === 'sacred' && r.key.startsWith('sacred-hekate:') && deipnonDays.has(r.key.slice('sacred-hekate:'.length))))
     .filter((r) => r.at.getTime() > now.getTime() && r.at.getTime() <= horizon)
     .sort((a, b) => a.at.getTime() - b.at.getTime())
     .slice(0, MAX_REMINDERS);

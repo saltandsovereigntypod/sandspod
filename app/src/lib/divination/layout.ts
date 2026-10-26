@@ -229,6 +229,47 @@ function fiveStaves(): Built {
   return { slots: [{ x: 0, y: -off, rot: 90 }, { x: sx, y: 0 }, { x: 0, y: off, rot: 90 }, { x: -sx, y: 0 }, { x: 0, y: 0 }] };
 }
 
+/**
+ * Three roads meeting where you stand (left, right and the road behind, the
+ * old three-way crossroads), and the guardian's card set apart above, where
+ * the road ahead would run.
+ */
+function crossroads(): Built {
+  const { sx, sy } = steps('tarot');
+  return { slots: [{ x: 0, y: 0 }, { x: -sx, y: 0 }, { x: sx, y: 0 }, { x: 0, y: sy }, { x: 0, y: -(sy + 0.5) }] };
+}
+
+/** The god's side above (what they ask, what they offer), what stands between in the middle, your side below. */
+function patronDeity(): Built {
+  const { sx, sy } = steps('tarot');
+  return { slots: [{ x: -sx / 2, y: 0 }, { x: sx / 2, y: 0 }, { x: 0, y: 2 * sy }, { x: 0, y: sy }] };
+}
+
+/** Four round a circle and one in the middle (index 4 of the ring), in the spread’s own order. */
+function ringAndCentre(order: number[], start = 0): Built {
+  const ring = circleSlots('tarot', 4, { start, centre: true });
+  return { slots: order.map((i) => ring[i]) };
+}
+
+/** The plus: middle, left, right, above, below (crossSlots), in the spread's own order. */
+const plusIn = (order: number[]): Built => {
+  const s = plus('tarot');
+  return { slots: order.map((i) => s[i]) };
+};
+
+/** The id a coven reading is laid out under (lib/covens/reading.ts). */
+export const COVEN_SPREAD = 'coven-reading';
+
+/**
+ * A coven reading: the coven's card in the middle and one for each member
+ * round it, in the order they drew.
+ */
+export function covenSlots(members: number): Slot[] {
+  if (members <= 0) return [{ x: 0, y: 0 }];
+  const all = circleSlots('tarot', members, { start: 0, centre: true });
+  return [all[all.length - 1], ...all.slice(0, -1)];
+}
+
 /** The houses round the wheel: the first just below the eastern horizon (on the left), turning anticlockwise. */
 const wheel = (centre: boolean): Built => ({ slots: circleSlots('tarot', 12, { start: 255, clockwise: false, centre }) });
 
@@ -253,6 +294,21 @@ const BUILT: Record<string, () => Built> = {
   'astro-wheel': () => wheel(false),
   'astro-wheel-centre': () => wheel(true),
   'year-ahead': yearAhead,
+  crossroads,
+  'patron-deity': patronDeity,
+  dream: () => ({ slots: arcSlots('tarot', 3, ITEM.tarot.h * -0.5, 10) }),
+  // The sabbats. Yule: the returning light in the middle of the dark quarters.
+  yule: () => ringAndCentre([3, 2, 4, 1, 0]),
+  imbolc: () => ({ slots: arcSlots('tarot', 4, ITEM.tarot.h * 0.6, 10) }),
+  // Ostara: in balance at the heart, too much and too little to either side, the seed below and what helps it above.
+  ostara: () => plusIn([0, 1, 2, 4, 3]),
+  // Beltane: round the maypole. Litha: the sun in the middle, its rays to the corners.
+  beltane: () => ringAndCentre([0, 1, 2, 3, 4]),
+  litha: () => ringAndCentre([0, 1, 2, 3, 4], 45),
+  // Lammas: the curve of the sickle.
+  lammas: () => ({ slots: arcSlots('tarot', 4) }),
+  // Mabon: thanks above, the two sides of the scales, what to store at the heart, the dark below.
+  mabon: () => plusIn([3, 1, 2, 0, 4]),
 };
 
 export const hasOwnLayout = (spreadId: string) => spreadId in BUILT;
@@ -386,6 +442,8 @@ export function layoutOf(spread: Layable, cast?: { names: string[]; falls: Fall[
     const { slots, rings } = castSlots(names, falls);
     return laid(spread.kind, slots, [], { rings });
   }
+  // A coven reading: the coven's card in the middle, however many members have drawn round it.
+  if (spread.id === COVEN_SPREAD) return laid(spread.kind, covenSlots(n - 1));
   const built = BUILT[spread.id]?.();
   if (built && built.slots.length === n) return laid(spread.kind, built.slots, built.crossings ?? []);
   return laid(spread.kind, shapeSlots(spread.kind, spread.shape ?? 'line', n));
