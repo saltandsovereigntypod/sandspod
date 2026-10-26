@@ -1,0 +1,60 @@
+# What EAS Build uploads. The app in app/ is self-contained, so the website
+# (and its full-size artwork in assets/) stays behind; without this the
+# archive passes EAS's 2 GB limit. This replaces .gitignore for EAS, so the
+# app's own ignores are repeated below.
+
+# The website and repo tooling at the root
+/.claude/
+/.github/
+/account/
+/admin/
+/altar/
+/assets/
+/blog/
+/covens/
+/css/
+/divination/
+/docs/
+/grimoire/
+/help/
+/js/
+/library/
+/more/
+/practice/
+/reminders/
+/rituals/
+/scripts/
+/sigil/
+/submit/
+/supabase/
+/tests/
+/today/
+/*.html
+/script.js
+/posts.json
+/deployment-test.txt
+/CNAME
+
+# From app/.gitignore
+node_modules/
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+.metro-health-check*
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+.DS_Store
+*.pem
+.env*.local
+*.tsbuildinfo
+/app/ios
+/app/android
