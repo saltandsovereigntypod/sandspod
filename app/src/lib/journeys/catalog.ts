@@ -576,6 +576,17 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A lunar month with the Slavic god of thunder, oaks and oaths: what the chronicles really say, how he was honoured, and how to keep a plain, honest devotion to him today."
   },
   {
+    "id": "deity-poseidon",
+    "kind": "deity",
+    "paths": [
+      "hellenic",
+      "roman"
+    ],
+    "deityRef": "traditional/deity/poseidon",
+    "title": "Poseidon: Earth-Shaker, Saviour of Ships",
+    "summary": "A lunar month with Poseidon, lord of the sea, the earthquake and the horse: his Mycenaean roots at Pylos, his wrath in the Odyssey, Sounion, Isthmia and the eighth of the month, and a practice of libations, respect for water and care for the sea."
+  },
+  {
     "id": "deity-ra",
     "kind": "deity",
     "paths": [

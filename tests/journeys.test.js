@@ -48,7 +48,7 @@ test("the app's words for lengths, cadences and steps", () => {
 });
 
 test("the catalog is small, and each journey loads on its own", () => {
-  assert.equal(J.JOURNEY_CATALOG.length, 76);
+  assert.equal(J.JOURNEY_CATALOG.length, 77);
   assert.ok(J.JOURNEY_CATALOG.every((j) => j.id && j.title && j.summary && !("stages" in j)));
   assert.ok(fs.statSync(path.join(root, "js/core/journeys.js")).size < 250 * 1024);
   for (const j of J.JOURNEY_CATALOG) assert.ok(fs.existsSync(path.join(root, "js/core", `journey-${j.id}.js`)), j.id);
