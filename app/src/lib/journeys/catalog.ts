@@ -565,6 +565,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A month with Rhiannon of the Mabinogi: the lady no horse could catch, the bag that could never be filled, her son stolen on May Eve and the years she spent at the horse-block, her birds that sang at Harlech, and the scholarly debates about horse goddesses and sovereignty, with a self-dedication made in birdsong at the turning of the light."
   },
   {
+    "id": "deity-saraswati",
+    "kind": "deity",
+    "paths": [
+      "hindu"
+    ],
+    "deityRef": "traditional/deity/saraswati",
+    "title": "Saraswati: The Flowing Word",
+    "summary": "A devotional month with Saraswati, river of the Rig Veda and goddess of knowledge, speech and music. Learn her names and image, her hymns and history, how Vasant Panchami and the Saraswati Puja of Navaratri are kept, and how to offer white flowers, a lamp and your own study at a simple home puja, then decide whether to make a personal vow of devotion."
+  },
+  {
     "id": "deity-sekhmet",
     "kind": "deity",
     "paths": [

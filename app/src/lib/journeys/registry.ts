@@ -56,6 +56,7 @@ import { JOURNEY as DEITY_PERSEPHONE } from './data/deity-persephone.ts';
 import { JOURNEY as DEITY_PERUN } from './data/deity-perun.ts';
 import { JOURNEY as DEITY_RA } from './data/deity-ra.ts';
 import { JOURNEY as DEITY_RHIANNON } from './data/deity-rhiannon.ts';
+import { JOURNEY as DEITY_SARASWATI } from './data/deity-saraswati.ts';
 import { JOURNEY as DEITY_SEKHMET } from './data/deity-sekhmet.ts';
 import { JOURNEY as DEITY_SELENE } from './data/deity-selene.ts';
 import { JOURNEY as DEITY_SHIVA } from './data/deity-shiva.ts';
@@ -130,6 +131,7 @@ export const JOURNEYS: Journey[] = [
   DEITY_PERUN,
   DEITY_RA,
   DEITY_RHIANNON,
+  DEITY_SARASWATI,
   DEITY_SEKHMET,
   DEITY_SELENE,
   DEITY_SHIVA,
