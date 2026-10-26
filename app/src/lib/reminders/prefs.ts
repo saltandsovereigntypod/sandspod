@@ -71,6 +71,12 @@ export type ReminderPrefs = {
     /** Each coven: on (leaders' are on unless turned off, others' off unless turned on) and how far ahead. */
     perCoven: Record<string, { on?: boolean; days?: number }>;
   };
+  /**
+   * Coven requests, sent to your phone (supabase/functions/coven-notify):
+   * new applications and requests to advance in covens you review (on, unless
+   * turned off for all or for a coven in `off`), and the answer to your own.
+   */
+  requests: { on: boolean; off: string[]; answers: boolean };
 };
 
 export type CrystalCadence = 'full' | 'new' | 'both' | 'weeks';
@@ -103,6 +109,7 @@ export const DEFAULT_PREFS: ReminderPrefs = {
     candles: { relight: false, relightAt: 20 * 60, nearEnd: false, nearEndMinutes: 30, daily: false, dailyAt: 20 * 60 },
   },
   planning: { holidays: false, days: 7, at: 10 * 60, covens: true, leaderDays: 14, perCoven: {} },
+  requests: { on: true, off: [], answers: true },
 };
 
 const obj = (v: unknown): Record<string, unknown> => (v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : {});
@@ -143,6 +150,7 @@ export function normalizePrefs(input: unknown): ReminderPrefs {
   const crystals = obj(t.crystals);
   const candles = obj(t.candles);
   const p = obj(raw.planning);
+  const r = obj(raw.requests);
 
   const calendars: Record<string, HolidayCalendarPrefs> = {};
   for (const [id, value] of Object.entries(obj(h.calendars))) {
@@ -212,6 +220,7 @@ export function normalizePrefs(input: unknown): ReminderPrefs {
       leaderDays: intIn(p.leaderDays, 1, 60, d.planning.leaderDays),
       perCoven,
     },
+    requests: { on: bool(r.on, d.requests.on), off: strings(r.off), answers: bool(r.answers, d.requests.answers) },
   };
 }
 
@@ -325,6 +334,19 @@ export function setHoliday(prefs: ReminderPrefs, group: string, baseId: string, 
   }
   if (!on) off.push(baseId);
   return normalizePrefs({ ...prefs, holidays: { ...prefs.holidays, off, calendars } });
+}
+
+// ── Coven requests ────────────────────────────────────────────────────────
+
+/** Whether new applications and requests to advance in this coven ring your phone (on unless turned off). */
+export const requestsOn = (prefs: ReminderPrefs, covenId: string) => prefs.requests.on && !prefs.requests.off.includes(covenId);
+
+/** Turn one coven's request notes on or off (turning one on also turns them on overall, with the others as they were). */
+export function setRequestsFor(prefs: ReminderPrefs, covenId: string, on: boolean, covenIds: string[] = []): ReminderPrefs {
+  let off = prefs.requests.off.filter((id) => id !== covenId);
+  if (!on) off.push(covenId);
+  else if (!prefs.requests.on) off = [...new Set([...off, ...covenIds.filter((id) => id !== covenId)])];
+  return normalizePrefs({ ...prefs, requests: { ...prefs.requests, on: on || prefs.requests.on, off } });
 }
 
 // ── Words ─────────────────────────────────────────────────────────────────

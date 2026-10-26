@@ -187,7 +187,7 @@ export function setTendingSources(sources: TendingSources) {
 
 /** Your covens, their holidays and rites (covens/reminders.ts); reschedules when they change. */
 export function setCovenSources(covens: CovenSource[]) {
-  const key = JSON.stringify(covens.map((c) => [c.id, c.leader, c.name, c.holidays.map((h) => `${h.baseId}:${h.date.getTime()}`), c.rites.map((r) => `${r.ritual.id}:${r.ritual.status}:${r.ritual.scheduled_for}:${r.response}`)]));
+  const key = JSON.stringify(covens.map((c) => [c.id, c.leader, !!c.reviewer, c.name, c.holidays.map((h) => `${h.baseId}:${h.date.getTime()}`), c.rites.map((r) => `${r.ritual.id}:${r.ritual.status}:${r.ritual.scheduled_for}:${r.response}`)]));
   if (key === covensKey) return;
   covensKey = key;
   set({ covens });

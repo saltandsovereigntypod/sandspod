@@ -3,6 +3,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { Tabs } from 'expo-router/js-tabs';
 
 import { useAltarFullScreen } from '../lib/altarFullScreen';
+import { covenTabCount } from '../lib/covens/requests';
+import { usePendingRequests } from '../lib/covens/requestsBadge';
 import { useUnreadTotal } from '../lib/covens/unread';
 import { lastPracticeSection, rememberPracticeSection } from '../lib/practiceSection';
 import { colors, fonts } from '../theme';
@@ -23,7 +25,9 @@ const TABS: { key: string; label: string; icon: IconName; routes: string[] }[] =
 
 export function TabBar({ state, navigation, insets }: TabBarProps) {
   const current = state.routes[state.index]?.name;
-  const unread = useUnreadTotal();
+  // Unread messages and, for reviewers, applications and requests to advance waiting.
+  const coven = covenTabCount(useUnreadTotal(), usePendingRequests());
+  const unread = coven.count;
   useEffect(() => {
     if (current === 'grimoire' || current === 'rituals') rememberPracticeSection(current);
   }, [current]);
@@ -46,7 +50,7 @@ export function TabBar({ state, navigation, insets }: TabBarProps) {
             accessibilityRole="tab"
             accessibilityState={{ selected: focused }}
             aria-selected={focused}
-            accessibilityLabel={tab.key === 'coven' && unread ? `${tab.label}, ${unread} unread ${unread === 1 ? 'message' : 'messages'}` : tab.label}
+            accessibilityLabel={tab.key === 'coven' && unread ? `${tab.label}, ${coven.label}` : tab.label}
             style={styles.tab}
             onPress={() => {
               const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });

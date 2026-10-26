@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import { Body, Card, Chip, Chips, SectionLabel, Toggle, ui } from '../rituals/ui';
 import { TimeRow } from './parts';
 import { covenPlanning, dayKey } from '../../lib/reminders/plan';
-import { BUNDLE_CHOICES, isPaused, PLAN_DAY_CHOICES, timeLabel, withChange, type ReminderPrefs } from '../../lib/reminders/prefs';
+import { BUNDLE_CHOICES, isPaused, PLAN_DAY_CHOICES, requestsOn, setRequestsFor, timeLabel, withChange, type ReminderPrefs } from '../../lib/reminders/prefs';
 import type { CovenSource } from '../../lib/reminders/plan';
 import type { ReminderSettings } from '../../lib/reminders/schedule';
 
@@ -80,7 +80,45 @@ export function PlanningSection({ prefs, update, covens, signedIn }: Props & { c
           )}
         </Card>
       </View>
+      <RequestsCard prefs={prefs} update={update} covens={covens} signedIn={signedIn} />
     </>
+  );
+}
+
+/** Coven requests: new applications and requests to advance in covens you review, and the answer to your own. */
+function RequestsCard({ prefs, update, covens, signedIn }: Props & { covens: CovenSource[]; signedIn: boolean }) {
+  const reviewing = covens.filter((c) => c.reviewer);
+  const ids = reviewing.map((c) => c.id);
+  return (
+    <View style={ui.gapSmall}>
+      <SectionLabel>Coven requests</SectionLabel>
+      <Card>
+        <Toggle
+          label="Tell me about new applications"
+          detail="A note on your phone when someone asks to join, or to advance, in a coven you review"
+          value={prefs.requests.on}
+          onChange={(on) => update(withChange(prefs, 'requests.on', on))}
+        />
+        {prefs.requests.on &&
+          reviewing.map((coven) => (
+            <Toggle
+              key={coven.id}
+              label={coven.name}
+              detail={requestsOn(prefs, coven.id) ? 'You review it · on' : 'You review it · off'}
+              value={requestsOn(prefs, coven.id)}
+              onChange={(on) => update(setRequestsFor(prefs, coven.id, on, ids))}
+            />
+          ))}
+        {prefs.requests.on && signedIn && !reviewing.length && <Body muted>Covens where you review applications will be listed here.</Body>}
+        <Toggle
+          label="When my own is answered"
+          detail="Your application to a coven, or your request to advance"
+          value={prefs.requests.answers}
+          onChange={(on) => update(withChange(prefs, 'requests.answers', on))}
+        />
+        <Body muted>These come through coven notifications, so they reach a phone that has them turned on (in a coven’s Messages).</Body>
+      </Card>
+    </View>
   );
 }
 

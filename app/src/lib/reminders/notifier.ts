@@ -122,8 +122,10 @@ export function useReminderTaps() {
   useEffect(() => {
     const open = (notification: Notifications.Notification) => {
       const data = notification.request.content.data;
-      // 'coven-rites' are coven rite reminders (lib/covens/reminders.ts); 'coven-chat' a coven message (supabase/functions/coven-notify).
-      if ((data?.source === SOURCE || data?.source === STEP_SOURCE || data?.source === 'coven-rites' || data?.source === 'coven-chat') && typeof data.url === 'string') router.push(data.url as Href);
+      // 'coven-rites' are coven rite reminders (lib/covens/reminders.ts); 'coven-chat' a coven message, 'coven-request' a new
+      // application or request to advance (opens Review) and 'coven-answer' the answer to yours (supabase/functions/coven-notify).
+      const covenNote = data?.source === 'coven-rites' || data?.source === 'coven-chat' || data?.source === 'coven-request' || data?.source === 'coven-answer';
+      if ((data?.source === SOURCE || data?.source === STEP_SOURCE || covenNote) && typeof data.url === 'string') router.push(data.url as Href);
     };
     try {
       const last = Notifications.getLastNotificationResponse();

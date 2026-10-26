@@ -309,6 +309,23 @@
       </div></section>`;
   }
 
+  /** Coven requests: new applications and requests to advance in covens you review, and the answer to your own (as the app's Reminders shows them). */
+  function requestsHtml() {
+    const r = prefs.requests;
+    const reviewing = covens.filter((c) => c.reviewer);
+    const rows = r.on
+      ? reviewing.map((coven) => toggle(slug(`gd-req-${coven.id}`), coven.name, `You review it · ${P.requestsOn(prefs, coven.id) ? "on" : "off"}`, P.requestsOn(prefs, coven.id), `data-req-coven="${esc(coven.id)}"`)).join("") ||
+        (signedIn ? `<p class="sp-caption">Covens where you review applications will be listed here.</p>` : "")
+      : "";
+    return `<section class="sp-section" id="gd-requests" aria-labelledby="gd-requests-label"><h2 class="sp-label" id="gd-requests-label">Coven requests</h2>
+      <div class="sp-card">
+        ${prefToggle("gd-req-on", "Tell me about new applications", "A note on your phone when someone asks to join, or to advance, in a coven you review", "requests.on")}
+        ${rows}
+        ${prefToggle("gd-req-answers", "When my own is answered", "Your application to a coven, or your request to advance", "requests.answers")}
+        <p class="sp-caption">These ring phones with the Salt &amp; Sovereignty app and coven notifications turned on. On the website, a coven’s Review tab and your covens list show what’s waiting while the page is open.</p>
+      </div></section>`;
+  }
+
   const PAUSES = [
     ["Until I turn them back on", null],
     ["A day", 1],
@@ -410,7 +427,7 @@
     root.innerHTML = `${header({ title: "Reminders", eyebrow: "Your reminders", back: "/today/", backLabel: "Back to Today" })}
       <p class="sp-muted">No account needed. Choose what you’d like to hear about, and when: the moon, your rituals, your holidays, tending, and planning.</p>
       <div class="sp-card sp-card--gold"><p>A browser can’t ring at a set time, so here your reminders go into your own calendar, which does the reminding. The Salt &amp; Sovereignty app can remind you on your phone instead.</p></div>
-      ${overviewHtml()}${moonHtml()}${ritualsHtml()}${devotionHtml()}${dreamsHtml()}${holidaysHtml()}${tendingHtml()}${planningHtml()}${quietHtml()}${yourCalendarHtml()}${skyHtml()}`;
+      ${overviewHtml()}${moonHtml()}${ritualsHtml()}${devotionHtml()}${dreamsHtml()}${holidaysHtml()}${tendingHtml()}${planningHtml()}${requestsHtml()}${quietHtml()}${yourCalendarHtml()}${skyHtml()}`;
     if (focus) root.querySelector(focus)?.focus({ preventScroll: true });
   }
 
@@ -468,6 +485,7 @@
       return setPref("tending.crystals.off", t.checked ? off.filter((id) => id !== t.dataset.crystal) : [...off, t.dataset.crystal]);
     }
     if (t.dataset.coven) return setPref(`planning.perCoven.${t.dataset.coven}.on`, t.checked);
+    if (t.dataset.reqCoven) return updatePrefs(P.setRequestsFor(prefs, t.dataset.reqCoven, t.checked, covens.filter((c) => c.reviewer).map((c) => c.id)));
     if (t.hasAttribute("data-pause-on")) return updatePrefs(P.withChange(P.withChange(prefs, "paused", t.checked), "pausedUntil", t.checked ? pauseUntil(7) : ""));
     if (t.dataset.phase) return update({ phases: { ...settings.phases, [t.dataset.phase]: t.checked } });
     if (t.hasAttribute("data-rituals")) return update({ rituals: t.checked });

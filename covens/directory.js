@@ -1,6 +1,8 @@
 /*
  * The coven directory (/covens/): every listed coven, searchable, plus your
- * own covens and applications when signed in, and the way to found one.
+ * own covens and applications when signed in (with the applications and
+ * requests to advance waiting in covens you review, kept current while the
+ * page is open), and the way to found one.
  */
 (function (global) {
   "use strict";
@@ -45,12 +47,21 @@
 
   async function mine() {
     if (!context.user) return "";
-    const [memberships, applications] = await Promise.all([D.myMemberships(context.user.id).catch(() => []), D.myApplications(context.user.id).catch(() => [])]);
+    const [memberships, applications, waiting] = await Promise.all([
+      D.myMemberships(context.user.id).catch(() => []),
+      D.myApplications(context.user.id).catch(() => []),
+      D.pendingForReview ? D.pendingForReview(context.user.id).catch(() => ({})) : {}
+    ]);
+    const R = global.SaltCore?.covens?.requests;
     const pending = applications.filter((a) => a.status === "pending");
     const rows = memberships
       .filter((m) => m.covens)
-      .map((m) => `<a class="sp-row" href="${esc(covenHref(m.covens.slug))}"><span class="sp-row__text"><span class="sp-row__title">${esc(m.covens.name)}</span>
-        <span class="sp-row__detail">${m.covens.status === "active" ? esc(m.covens.tagline || "Your coven") : m.covens.status === "suspended" ? "Paused by the moderators" : "Archived"}</span></span><span class="sp-row__chevron" aria-hidden="true">›</span></a>`)
+      .map((m) => {
+        const count = R ? R.pendingIn(waiting, m.coven_id) : 0;
+        const detail = count ? R.pendingLabel(waiting[m.coven_id]) : m.covens.status === "active" ? m.covens.tagline || "Your coven" : m.covens.status === "suspended" ? "Paused by the moderators" : "Archived";
+        return `<a class="sp-row" href="${esc(covenHref(m.covens.slug))}${count ? "&amp;tab=review" : ""}" data-coven-row="${esc(m.coven_id)}"><span class="sp-row__text"><span class="sp-row__title">${esc(m.covens.name)}</span>
+        <span class="sp-row__detail">${esc(detail)}</span></span>${count ? `<span class="cv-count cv-count--row" aria-label="${count} waiting for review">${count}</span>` : ""}<span class="sp-row__chevron" aria-hidden="true">›</span></a>`;
+      })
       .concat(pending.map((a) => `<a class="sp-row" href="${esc(covenHref(a.covens?.slug || ""))}"><span class="sp-row__text"><span class="sp-row__title">${esc(a.covens?.name || "A coven")}</span><span class="sp-row__detail">Application waiting for review</span></span><span class="sp-row__chevron" aria-hidden="true">›</span></a>`));
     if (!rows.length) return "";
     return `<section class="sp-section"><p class="sp-label">Your covens</p><nav class="sp-list" aria-label="Your covens">${rows.join("")}</nav></section>`;
@@ -73,7 +84,7 @@
         ${context.siteModerator ? `<a class="button button--ghost" href="${esc(href("/covens/moderation/"))}">Moderation</a>` : ""}
       </div>
       <div data-profile hidden></div>
-      ${mineHtml}
+      <div data-mine>${mineHtml}</div>
       <section class="sp-section">
         <p class="sp-label">Find a coven</p>
         <div class="sp-field"><label for="cv-search">Search covens</label>
@@ -102,6 +113,30 @@
       if (!holder.hidden) UI.profileForm(holder, context, { onSaved: () => (toggle.textContent = "Your community profile") });
     });
     drawResults();
+    watchMine();
+  }
+
+  /** While the page is open, keep the counts on your covens current: live once the database sends requests, and every two minutes. */
+  let watching = false;
+  function watchMine() {
+    if (watching || !context.user) return;
+    watching = true;
+    let timer = null;
+    const again = () => {
+      clearTimeout(timer);
+      timer = setTimeout(async () => {
+        const html = await mine().catch(() => null);
+        const holder = root.querySelector("[data-mine]");
+        if (holder && html != null && holder.innerHTML !== html) holder.innerHTML = html;
+      }, 400);
+    };
+    const stop = D.watchRequests ? D.watchRequests(again) : () => {};
+    const every = setInterval(again, 2 * 60 * 1000);
+    global.document.addEventListener("visibilitychange", () => global.document.visibilityState === "visible" && again());
+    global.addEventListener("pagehide", () => {
+      stop();
+      clearInterval(every);
+    });
   }
 
   UI.boot()

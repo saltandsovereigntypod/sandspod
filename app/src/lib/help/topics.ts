@@ -2959,11 +2959,25 @@ export const HELP: HelpSection[] = [
         title: 'Review applications and look after members',
         summary: 'Approve who joins and who rises, and keep the gathering safe.',
         steps: [
-          'Open your coven and tap "Review": approve or decline "Applications to join" and "Requests to advance", with a note if you like.',
+          'Open your coven and tap "Review": approve or decline "Applications to join" and "Requests to advance", with a note if you like. The number on the Coven tab and beside "Review" is how many are waiting.',
           'Tap "Manage", then "Members", and tap a person to change their position, pause their messages, or remove or ban them.',
           'The coven’s head can hand on leadership from the same place.',
         ],
         keywords: ['applications', 'approve', 'decline', 'members', 'ban', 'remove member', 'pause', 'hand on', 'leader'],
+      },
+      {
+        id: 'covens-request-notes',
+        title: 'Hear about new applications and answers',
+        summary: 'A note on your phone when someone asks to join or advance in a coven you review, and when your own is answered.',
+        steps: [
+          'Open Reminders, then "Ritual planning".',
+          'Under "Coven requests", switch on "Tell me about new applications", and turn single covens on or off beneath it. You can also switch it from a coven’s "Review" or its "Messages" settings.',
+          'Switch on "When my own is answered" to hear back about your application or your request to advance. A tap opens the coven.',
+          'These come as coven notifications: turn them on for this phone from a coven’s "Messages", or with "Tell me on this phone when they answer" after applying.',
+        ],
+        tips: ['The website shows the same counts on a coven’s Review tab and your covens list while the page is open, and keeps the same choices under Reminders.', 'Pausing reminders pauses these too.'],
+        href: '/more/reminders?section=planning',
+        keywords: ['applications', 'notification', 'coven requests', 'advance', 'approved', 'declined', 'badge', 'count', 'review'],
       },
       {
         id: 'covens-my-path',

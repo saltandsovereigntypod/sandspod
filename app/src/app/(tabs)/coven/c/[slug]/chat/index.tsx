@@ -26,6 +26,8 @@ import {
   type ConversationMember,
 } from "../../../../../../lib/covens/chat";
 import { useCoven } from "../../../../../../lib/covens/CovenContext";
+import { requestsOn, setRequestsFor } from "../../../../../../lib/reminders/prefs";
+import { useReminderPrefs } from "../../../../../../lib/reminders/usePrefs";
 import { errorMessage, type Message } from "../../../../../../lib/covens/model";
 import {
   covenPushOn,
@@ -244,6 +246,10 @@ function Notifications() {
   const [settings, setSettings] = useState<ChatSettings | null>(null);
   const [device, setDevice] = useState(false);
   const [note, setNote] = useState<string | null>(null);
+  // New applications and requests to advance, for those who review them (kept with the Reminders choices).
+  const reminders = useReminderPrefs();
+  const reviewer = coven.perms.review && reminders.ready;
+  const requests = !!covenId && requestsOn(reminders.prefs, covenId);
 
   useEffect(() => {
     if (!covenId || !coven.userId) return;
@@ -291,8 +297,20 @@ function Notifications() {
           detail="One-to-one chats and groups you’re in"
           value={settings.notify_direct}
           onChange={(v) => void change({ ...settings, notify_direct: v })}
-          last={!device}
+          last={!device && !reviewer}
         />
+        {reviewer && (
+          <SwitchRow
+            label="Tell me about new applications"
+            detail="When someone asks to join or to advance here"
+            value={requests}
+            onChange={(v) => {
+              void reminders.update(setRequestsFor(reminders.prefs, covenId!, v));
+              if (v && !device) void turnOnDevice();
+            }}
+            last={!device}
+          />
+        )}
         {device ? (
           <SwitchRow
             label="On this phone"
@@ -309,7 +327,7 @@ function Notifications() {
             last
           />
         ) : (
-          (settings.notify_coven || settings.notify_direct) && (
+          (settings.notify_coven || settings.notify_direct || (reviewer && requests)) && (
             <Button
               label="Turn on notifications on this phone"
               variant="outline"

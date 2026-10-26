@@ -1,4 +1,5 @@
-// Phone notifications for coven messages: this device's Expo push token,
+// Phone notifications for coven messages, and for applications and requests
+// to advance (and their answers): this device's Expo push token,
 // signed up to you (register_push_token) once you turn them on. Push needs a
 // build of the app that carries Apple's and Google's push setup; older builds
 // still get everything else, and say so here.
@@ -12,6 +13,8 @@ import { supabase } from '../supabase';
 
 const TOKEN_KEY = 'coven.push.token';
 export const MESSAGE_CHANNEL = 'coven-messages';
+/** Android channel for new applications, requests to advance and their answers, made at run time like the others. */
+export const REQUEST_CHANNEL = 'coven-requests';
 
 export type PushResult = { ok: true } | { ok: false; reason: 'denied' | 'unsupported' | 'offline' };
 
@@ -23,6 +26,12 @@ export async function enableCovenPush(): Promise<PushResult> {
       await Notifications.setNotificationChannelAsync(MESSAGE_CHANNEL, {
         name: 'Coven messages',
         importance: Notifications.AndroidImportance.HIGH,
+        lightColor: '#e2c36d',
+      });
+      await Notifications.setNotificationChannelAsync(REQUEST_CHANNEL, {
+        name: 'Coven requests',
+        description: 'Applications and requests to advance in covens you review, and the answers to your own.',
+        importance: Notifications.AndroidImportance.DEFAULT,
         lightColor: '#e2c36d',
       });
     }
@@ -59,4 +68,17 @@ export async function refreshCovenPush(): Promise<void> {
   if (Platform.OS === 'web' || !(await covenPushOn())) return;
   const permission = await Notifications.getPermissionsAsync().catch(() => null);
   if (permission?.granted) await enableCovenPush();
+}
+
+/** Be told when a coven note arrives while the app is open (to count requests again). */
+export function onCovenNote(listener: (source: string) => void): () => void {
+  try {
+    const subscription = Notifications.addNotificationReceivedListener((n) => {
+      const source = n.request.content.data?.source;
+      if (typeof source === 'string' && source.startsWith('coven-')) listener(source);
+    });
+    return () => subscription.remove();
+  } catch {
+    return () => {};
+  }
 }
