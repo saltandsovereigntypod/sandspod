@@ -58,6 +58,8 @@ const MESO_ETCSL = 'The Electronic Text Corpus of Sumerian Literature (Oxford): 
 const MESO_CULTIC = 'Mark E. Cohen, The Cultic Calendars of the Ancient Near East (1993)';
 const BALTIC_SOURCES =
   'Norbertas Vėlius (ed.), Baltų religijos ir mitologijos šaltiniai (Sources of Baltic Religion and Mythology, 1996–2005); on Romuva and Dievturība today, Kaarina Aitamurto and Scott Simpson (eds), Modern Pagan and Native Faith Movements in Central and Eastern Europe (2013)';
+const FINNISH_SOURCES =
+  'Suomen Kansan Vanhat Runot (SKVR), the corpus of old Finnish and Karelian folk poetry: https://skvr.fi/; Anna-Leena Siikala, Mythic Images and Shamanism: A Perspective on Kalevala Poetry (2002)';
 const UGARIT_TEXTS = 'Simon B. Parker (ed.), Ugaritic Narrative Poetry (1997), for the Baal Cycle and the tale of Aqhat';
 
 export const DEITY_DEVOTIONS: DeityDevotion[] = [
@@ -3840,6 +3842,128 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     approach:
       'Mėnulis is approached honestly, as the Moon of the Baltic folk songs who wanes and waxes.',
     sources: [BALTIC_SOURCES],
+  },
+
+  // ─── Finnish and Karelian ────────────────────────────────────────────────
+  {
+    key: 'ukko',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'beltane' },
+        name: 'The spring sowing (Ukko’s cup)',
+        why: 'Agricola wrote in 1551 that Ukko’s cup was drunk at the spring sowing for rain and good crops. The day followed the season; Beltane marks it approximately.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Raise a cup to him when you begin something new.',
+      'Sow a seed or water a plant and ask for good weather.',
+      'Step outside when it rains and thank him.',
+      'Ask plainly for help with one hard thing.',
+    ],
+    approach:
+      'Ukko is approached with respect and plain words, as the god on high of the Finnish songs.',
+    sources: [FINNISH_SOURCES, 'Mikael Agricola, preface to Dauidin Psaltari (1551), on the gods of Häme and Karelia'],
+  },
+  {
+    key: 'mielikki',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 11, day: 1 },
+        name: 'Kekri',
+        why: 'Kekri was the old Finnish feast at the end of the farming year, held in autumn and later moved to All Saints. Honouring the forest mistress then is a modern Suomenusko choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Greet the forest when you enter it.',
+      'Leave a little bread on a stump with thanks.',
+      'Take only what you need from nature today.',
+      'Do one kind thing for an animal.',
+    ],
+    approach:
+      'Mielikki is approached with courtesy and gratitude, as the mistress of the forest’s treasures.',
+    sources: [FINNISH_SOURCES],
+  },
+  {
+    key: 'tapio',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 11, day: 1 },
+        name: 'Kekri',
+        why: 'Kekri was the old Finnish feast at the end of the farming year, held in autumn and later moved to All Saints. Honouring the forest king then is a modern Suomenusko choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Ask leave quietly before you go into a wood.',
+      'Thank him when you come home safely.',
+      'Spend a few minutes beside an old tree.',
+      'Pick up litter in a forest or park.',
+    ],
+    approach:
+      'Tapio is approached with respect for the wild, as the king of the Finnish forest.',
+    sources: [FINNISH_SOURCES, 'Mikael Agricola, preface to Dauidin Psaltari (1551)'],
+  },
+  {
+    key: 'ilmatar',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 2, day: 28 },
+        name: 'Kalevala Day',
+        why: 'Finland’s day of the Kalevala and Finnish culture, which opens with Ilmatar’s creation of the world. A modern national day, not an old festival of hers.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Sit quietly under the open sky for a few minutes.',
+      'Read the first song of the Kalevala.',
+      'Make one gentle beginning today.',
+      'Watch the birds on water.',
+    ],
+    approach:
+      'Ilmatar is approached with patience and wonder, honest that her role as creator owes much to Lönnrot’s Kalevala.',
+    sources: [FINNISH_SOURCES, 'Elias Lönnrot, Kalevala (1849), song 1, trans. Keith Bosley (1989)'],
+  },
+  {
+    key: 'ahti',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'litha' },
+        name: 'Midsummer (Juhannus)',
+        why: 'Finnish midsummer is spent by lakes and the sea. Honouring Ahti then is a modern Suomenusko choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Look at water quietly for a few minutes.',
+      'Thank him for fresh water and fish.',
+      'Keep one stretch of shore or bank clean.',
+      'Use water carefully today.',
+    ],
+    approach:
+      'Ahti is approached with respect for the water, as the king of lakes and seas.',
+    sources: [FINNISH_SOURCES, 'Mikael Agricola, preface to Dauidin Psaltari (1551)'],
+  },
+  {
+    key: 'rauni',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'beltane' },
+        name: 'The spring sowing',
+        why: 'Ukko’s cup was drunk at the spring sowing. Honouring Rauni beside him then is a modern choice; no day of hers is recorded.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Touch a rowan tree and give thanks.',
+      'Hang a sprig of rowan by your door.',
+      'Do one thing to protect your home.',
+      'Offer a little bread beside Ukko’s cup.',
+    ],
+    approach:
+      'Rauni is approached gently and without inventing more than is known, as the rowan goddess beside Ukko.',
+    sources: [FINNISH_SOURCES],
   },
 
   // ─── Jewish folklore and Western occultism ───────────────────────────
