@@ -349,6 +349,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A lunar month with Hestia, goddess of the hearth: her few myths and great honour, the first and last offering, the household fire, and a daily practice you can keep in any kitchen."
   },
   {
+    "id": "deity-horus",
+    "kind": "deity",
+    "paths": [
+      "egyptian"
+    ],
+    "deityRef": "traditional/deity/horus",
+    "title": "Horus: The Falcon Who Is Far Above",
+    "summary": "A month with Heru, the falcon of the sky, the son who avenged his father and the living god of every king. Study his many forms, the long contest with Set, the Eye that was torn and made whole, and his temple at Edfu, keep ten mornings under the open sky, and decide whether to dedicate."
+  },
+  {
     "id": "deity-idunn",
     "kind": "deity",
     "paths": [
@@ -440,6 +450,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A month with Lugh of the Long Arm, the many-skilled god of Ireland: his arrival at Tara, his victory over Balor, the Gaulish Lugus behind him, the hilltop festival of Lughnasadh, and a self-dedication made with the work of your hands."
   },
   {
+    "id": "deity-maat",
+    "kind": "deity",
+    "paths": [
+      "egyptian"
+    ],
+    "deityRef": "traditional/deity/maat",
+    "title": "Maat: The Feather and the Order",
+    "summary": "A month with Maat, the goddess with the ostrich feather and the order of the world she stands for: truth, justice and balance kept in daily acts. Study her in the creation texts, the teachings of the sages and the weighing of the heart, learn how kings offered her to the gods, keep ten evenings of honest reckoning, and decide whether to dedicate."
+  },
+  {
     "id": "deity-manannan",
     "kind": "deity",
     "paths": [
@@ -511,6 +531,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "deityRef": "traditional/deity/morrigan",
     "title": "The Morrigan: The Great Queen",
     "summary": "A month with the Morrigan, Ireland’s Great Queen of battle, prophecy and sovereignty: her names and sisters, her stories by the river and the ford, how little we know of her worship, and how people honour her now, ending in a self-dedication made with your word."
+  },
+  {
+    "id": "deity-nephthys",
+    "kind": "deity",
+    "paths": [
+      "egyptian"
+    ],
+    "deityRef": "traditional/deity/nephthys",
+    "title": "Nephthys: Lady of the House",
+    "summary": "A month with Nebet-Het, the sister who mourned with Isis, the kite whose cry is the sound of grief, and the guardian of the dead at the head of the coffin. Study her name, the Lamentations sung in her voice and how little of her own cult survives, keep ten evening vigils with a lamp, and decide whether to dedicate."
   },
   {
     "id": "deity-neptune",
@@ -637,6 +667,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "deityRef": "traditional/deity/selene",
     "title": "Selene: The Moon Herself",
     "summary": "A lunar month with Selene, the Greek goddess who is the moon: her hymns and the story of Endymion, the honest truth about her slim ancient cult, how she was later blended with Artemis and Hekate, and a practice of watching the moon each night, from the first crescent to the full."
+  },
+  {
+    "id": "deity-set",
+    "kind": "deity",
+    "paths": [
+      "egyptian"
+    ],
+    "deityRef": "traditional/deity/set",
+    "title": "Set: Great of Strength",
+    "summary": "A month with Sutekh, lord of storms, the desert and foreign lands: murderer of Osiris, rival of Horus, and defender of Ra’s boat against the serpent of chaos. Study his whole history, from honoured god of kings to later outcast, keep ten nights at the edge, and decide whether to dedicate."
   },
   {
     "id": "deity-skadi",
