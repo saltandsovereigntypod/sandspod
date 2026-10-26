@@ -5,17 +5,9 @@
 
 import { supabase } from '../supabase';
 import type { Message } from './model';
+import type { Conversation, ConversationMember } from './thread';
 
-export type Conversation = {
-  id: string;
-  coven_id: string;
-  kind: 'direct' | 'group';
-  name: string | null;
-  created_by: string | null;
-  created_at: string;
-  last_message_at: string | null;
-};
-export type ConversationMember = { conversation_id: string; coven_id: string; user_id: string; left_at: string | null; muted: boolean; last_read_at: string | null };
+export type { Conversation, ConversationMember } from './thread';
 export type ChatSettings = { notify_coven: boolean; notify_direct: boolean };
 
 /** The thread a route names: 'coven' is the whole coven's chat. */
@@ -82,13 +74,4 @@ export async function fetchChatSettings(covenId: string, userId: string): Promis
 export const saveChatSettings = (covenId: string, userId: string, settings: ChatSettings) =>
   run(supabase.from('coven_chat_settings').upsert({ user_id: userId, coven_id: covenId, ...settings, updated_at: new Date().toISOString() }, { onConflict: 'user_id,coven_id' }));
 
-/** What a conversation is called for you: the other person, or the group's name. */
-export function conversationTitle(conversation: Conversation, members: ConversationMember[], me: string | null, nameOf: (id: string) => string): string {
-  if (conversation.kind === 'group') return conversation.name || 'Group';
-  const other = members.find((m) => m.conversation_id === conversation.id && m.user_id !== me);
-  return other ? nameOf(other.user_id) : 'Conversation';
-}
-
-/** Who else is in a conversation, still. */
-export const othersIn = (conversationId: string, members: ConversationMember[], me: string | null) =>
-  members.filter((m) => m.conversation_id === conversationId && m.user_id !== me && !m.left_at).map((m) => m.user_id);
+export { conversationTitle, othersIn } from './thread';

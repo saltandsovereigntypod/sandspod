@@ -68,3 +68,8 @@ export * as stones from '../../app/src/lib/craft/crystal/stones.ts';
 export * as stoneCollections from '../../app/src/lib/craft/crystal/collections.ts';
 export * as garden from '../../app/src/lib/craft/green/garden.ts';
 export * as sigil from '../../app/src/lib/sigil/index.ts';
+// Coven altars: the altar as rows and back (the coven altar page and the
+// coven's Altars tab), a ritual step's change to its altar, and a petition's altar.
+export * as covenAltar from '../../app/src/lib/covens/altarDoc.ts';
+export * as ritualAltar from '../../app/src/lib/covens/ritualAltar.ts';
+export * as petitionAltar from '../../app/src/lib/covens/petitionAltar.ts';
