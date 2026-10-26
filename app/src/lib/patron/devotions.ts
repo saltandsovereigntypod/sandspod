@@ -4194,6 +4194,28 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     sources: [ETRUSCAN_SOURCES],
   },
 
+  // ─── Basque ──────────────────────────────────────────────────────────────
+  {
+    key: 'mari',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 5 },
+        name: 'Friday',
+        why: 'In Basque folklore Mari meets her partner Sugaar on Fridays, when storms break, as recorded by José Miguel de Barandiarán.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Keep one promise you made.',
+      'Tell the truth in one moment you might have avoided it.',
+      'Look towards high ground or the sky and greet her.',
+      'Learn a word or two of Euskara.',
+    ],
+    approach:
+      'Mari is approached with respect and plain truth, as the Lady of the Basque mountains known from folklore.',
+    sources: ['José Miguel de Barandiarán, Mitología vasca (1960)', 'Resurrección María de Azkue, Euskalerriaren Yakintza (1935–47)'],
+  },
+
   // ─── Jewish folklore and Western occultism ───────────────────────────
   {
     key: 'lilith',

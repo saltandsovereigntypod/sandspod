@@ -44,6 +44,7 @@ const MORE_DEITIES: Record<string, string[]> = {
   Finnish: ['ukko', 'mielikki', 'tapio', 'ilmatar', 'ahti', 'rauni'],
   'Anglo-Saxon': ['woden', 'thunor', 'frige', 'tiw', 'eostre', 'hreda'],
   Etruscan: ['tinia', 'uni', 'menrva', 'turan', 'fufluns'],
+  Basque: ['mari'],
 };
 const ALL_MORE = Object.values(MORE_DEITIES).flat();
 const text = (d: Deity, ...fields: string[]) => fields.map((f) => String(d[f] ?? '')).join(' ');
@@ -372,6 +373,8 @@ const MORE_SEARCH: [string, string][] = [
   ['Menrva', 'menrva'],
   ['Atunis', 'turan'],
   ['Populonia', 'fufluns'],
+  ['Anboto', 'mari'],
+  ['Sugaar', 'mari'],
 ];
 // Living religions: devotion, not magic.
 const LIVING_PANTHEONS = ['Hindu', 'Shinto', 'Chinese'];

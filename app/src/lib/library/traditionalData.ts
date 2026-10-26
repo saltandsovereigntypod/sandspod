@@ -10095,6 +10095,36 @@ export const TRADITIONAL_LIBRARY: TraditionalLibraryData = {
         "etruria",
         "celebration"
       ]
+    },
+    "mari": {
+      "DisplayName": "Mari",
+      "Category": "Deity",
+      "Pantheon": "Basque",
+      "Domains": "Storms and weather, the mountains and caves, the earth’s riches, truth and the punishment of lies, theft and broken promises",
+      "SacredSymbols": "Her mountain caves, a golden comb, a ball of fire crossing the sky between peaks, a sickle against hail",
+      "SacredAnimals": "Ram, goat, raven, vulture (shapes she takes in folklore)",
+      "SacredPlants": "None securely attested in Basque folklore",
+      "CandleColors": "Red, gold, grey",
+      "Crystals": "Pyrite, garnet, jasper, smoky quartz",
+      "Herbs": "Juniper, thyme, mountain herbs",
+      "Offerings": "Bread, a word of greeting at her cave, honesty and promises kept",
+      "TraditionalWarnings": "Mari is known from Basque folklore collected in the nineteenth and twentieth centuries, above all by José Miguel de Barandiarán; how old the beliefs are, and whether she was once a goddess of pre-Christian worship, is debated. In the tales she punishes liars and the proud, and it is said that one must not turn one’s back on her when leaving her cave. Her caves are real places in the mountains: visit only with care and respect.",
+      "Overview": "Mari is the great female power of Basque folklore, the Lady of the mountains, who lives in caves on peaks such as Anboto, Txindoki and Aizkorri and moves between them as a ball of fire, bringing storms and hail. She is often seen combing her hair with a golden comb at a cave mouth, and meets her partner Sugaar (Maju) on Fridays, when storms break. Folk tales say she rewards honesty and punishes lies, theft, pride and broken promises, and a Basque saying holds that whatever has a name exists.",
+      "TraditionalMeaning": "The truth of the mountain: the force of weather, the earth’s wealth and the demand that we speak honestly and keep our word.",
+      "DevotionalApproach": "Start here: on a Friday, step outside, look towards high ground or a stormy sky, and promise yourself one honest thing you will keep. Approach her with respect and plain truth. She is honoured by honesty, keeping promises, generosity and care for the mountains.",
+      "OfferingNotes": "Offer bread or a quiet greeting at a mountain or cave, and take nothing away. In folklore what pleases her most is honesty, so a promise kept is the truest offering.",
+      "AltarIdeas": "A red or gold candle, a stone from a hillside, a small comb, pyrite or garnet, and a picture of Anboto or another Basque peak.",
+      "CulturalContext": "Mari belongs to the folklore of the Basque people, a living culture with its own language, Euskara, and to the small modern Basque native-faith revival. Learn from Basque sources and communities, such as Barandiarán’s collections, and remember that Basque Catholic tradition and folk belief have long lived side by side.",
+      "Traditions": "Basque",
+      "TraditionNotes": "Basque: People who honour Mari today, in the Basque native-faith revival and in folk custom, greet her on Fridays, when folklore says she meets Sugaar, and at her mountains, with bread and promises kept. She is asked for protection from storms and hail, for truth to come to light and for the land’s wealth.",
+      "tags": [
+        "storms",
+        "mountains",
+        "truth",
+        "caves",
+        "basque",
+        "earth"
+      ]
     }
   },
   "tool": {
