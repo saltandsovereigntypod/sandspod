@@ -317,6 +317,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A lunar month with Hestia, goddess of the hearth: her few myths and great honour, the first and last offering, the household fire, and a daily practice you can keep in any kitchen."
   },
   {
+    "id": "deity-horus",
+    "kind": "deity",
+    "paths": [
+      "egyptian"
+    ],
+    "deityRef": "traditional/deity/horus",
+    "title": "Horus: The Falcon Who Is Far Above",
+    "summary": "A month with Heru, the falcon of the sky, the son who avenged his father and the living god of every king. Study his many forms, the long contest with Set, the Eye that was torn and made whole, and his temple at Edfu, keep ten mornings under the open sky, and decide whether to dedicate."
+  },
+  {
     "id": "deity-idunn",
     "kind": "deity",
     "paths": [

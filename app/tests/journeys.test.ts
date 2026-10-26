@@ -2,7 +2,11 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { TRADITIONS } from '../src/lib/holidays.ts';
+import { JOURNEY_CATALOG } from '../src/lib/journeys/catalog.ts';
+import { journeyForDeityRefIn } from '../src/lib/journeys/lookup.ts';
+import { TRADITIONAL_LIBRARY } from '../src/lib/library/traditionalData.ts';
 import { PATH_TRADITIONS } from '../src/lib/library/traditions.ts';
+import { DEITY_DEVOTIONS } from '../src/lib/patron/devotions.ts';
 import { premadeById } from '../src/lib/rituals/premade/index.ts';
 import {
   deityGroups,
@@ -189,6 +193,37 @@ test('lookups: paths, deities by ref and Library id, by path and search', () => 
   if (groups.some((g) => g.path === 'norse')) assert.equal(groups[0].path, 'norse');
   const mine = pathsMineFirst(['slavic']);
   if (mine.some((j) => j.paths.includes('slavic'))) assert.ok(mine[0].paths.includes('slavic'));
+});
+
+// Egyptian deities whose journeys are offered from their Library page and their patron page
+// (the website finds them in the catalog). Every Library ref and premade in them must resolve.
+const KEMETIC_DEITY_JOURNEYS = ['anubis', 'isis', 'osiris', 'thoth', 'horus'];
+
+test('Egyptian deity journeys: registered, in the catalog, linked from the Library and patron pages', () => {
+  const refOk = (ref: string) => {
+    const [, type, key] = ref.split('/');
+    return !!(TRADITIONAL_LIBRARY as Record<string, Record<string, unknown>>)[type]?.[key];
+  };
+  for (const key of KEMETIC_DEITY_JOURNEYS) {
+    const j = journeyById(`deity-${key}`);
+    assert.ok(j, `deity-${key} is registered`);
+    assert.ok(j.paths.includes('egyptian'), `${key} is on the Egyptian path`);
+    assert.equal(j.deityRef, `traditional/deity/${key}`);
+    assert.ok(TRADITIONAL_LIBRARY.deity[key], `${key} has a Library entry`);
+    assert.equal(journeyForDeityRef(`traditional:deity:${key}`), j, `${key}'s Library page offers the journey`);
+    assert.equal(journeyForDeityRefIn(JOURNEY_CATALOG, j.deityRef)?.id, j.id, `${key} is in the website catalog`);
+    assert.ok(DEITY_DEVOTIONS.some((d) => d.key === key), `${key} has patron devotions`);
+    assert.deepEqual(j.stages.map((s) => s.kind), ['threshold', 'study', 'practice', 'discernment', 'dedication', 'ongoing']);
+    for (const s of j.stages) {
+      for (const l of s.lessons) {
+        assert.ok(l.sections.length >= 3, `${l.id} has its sections`);
+        for (const ref of l.library ?? []) assert.ok(refOk(ref), `${l.id}: ${ref}`);
+        for (const id of l.premade ?? []) assert.ok(premadeById(id), `${l.id}: premade ${id}`);
+      }
+      for (const i of s.rite?.ingredients ?? []) if (i.ref) assert.ok(refOk(i.ref), `${j.id}: ${i.ref}`);
+    }
+    assert.ok(j.sources.length >= 5, `${key} cites its sources`);
+  }
 });
 
 test('every rite turns into a ritual draft with its steps', () => {

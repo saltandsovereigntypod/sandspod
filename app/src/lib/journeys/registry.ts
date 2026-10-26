@@ -32,6 +32,7 @@ import { JOURNEY as DEITY_HEKATE } from './data/deity-hekate.ts';
 import { JOURNEY as DEITY_HEL } from './data/deity-hel.ts';
 import { JOURNEY as DEITY_HERMES } from './data/deity-hermes.ts';
 import { JOURNEY as DEITY_HESTIA } from './data/deity-hestia.ts';
+import { JOURNEY as DEITY_HORUS } from './data/deity-horus.ts';
 import { JOURNEY as DEITY_IDUNN } from './data/deity-idunn.ts';
 import { JOURNEY as DEITY_ISIS } from './data/deity-isis.ts';
 import { JOURNEY as DEITY_JANUS } from './data/deity-janus.ts';
@@ -104,6 +105,7 @@ export const JOURNEYS: Journey[] = [
   DEITY_HEL,
   DEITY_HERMES,
   DEITY_HESTIA,
+  DEITY_HORUS,
   DEITY_IDUNN,
   DEITY_ISIS,
   DEITY_JANUS,
