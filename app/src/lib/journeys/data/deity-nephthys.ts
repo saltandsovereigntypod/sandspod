@@ -178,7 +178,7 @@ Still, many modern devotees find in her a woman who left a harmful place and sta
             },
             {
               heading: 'Nurse of Horus',
-              body: `After Horus was born, Nephthys helped protect and nurse him. Some texts call her the nurse of the king, as Horus on earth, and in temple scenes she suckles or embraces the young king. In the Contendings of Horus and Set and other texts she stands with Isis on Horus's side.
+              body: `After Horus was born, Nephthys helped protect and nurse him. Some texts call her the nurse of the king, as Horus on earth, and in temple scenes she suckles or embraces the young king. In the funerary texts and in the temple scenes of later periods she stands with Isis on Horus's side, never on her husband's.
 
 So her care runs both ways along the line of the family: she mourns and guards the dead father, and she nurses and protects the living son. She is the aunt who is always there.`,
             },

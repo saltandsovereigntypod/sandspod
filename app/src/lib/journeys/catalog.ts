@@ -491,6 +491,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A month with the Morrigan, Ireland’s Great Queen of battle, prophecy and sovereignty: her names and sisters, her stories by the river and the ford, how little we know of her worship, and how people honour her now, ending in a self-dedication made with your word."
   },
   {
+    "id": "deity-nephthys",
+    "kind": "deity",
+    "paths": [
+      "egyptian"
+    ],
+    "deityRef": "traditional/deity/nephthys",
+    "title": "Nephthys: Lady of the House",
+    "summary": "A month with Nebet-Het, the sister who mourned with Isis, the kite whose cry is the sound of grief, and the guardian of the dead at the head of the coffin. Study her name, the Lamentations sung in her voice and how little of her own cult survives, keep ten evening vigils with a lamp, and decide whether to dedicate."
+  },
+  {
     "id": "deity-nyx",
     "kind": "deity",
     "paths": [

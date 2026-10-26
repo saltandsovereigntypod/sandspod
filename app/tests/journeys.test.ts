@@ -197,7 +197,7 @@ test('lookups: paths, deities by ref and Library id, by path and search', () => 
 
 // Egyptian deities whose journeys are offered from their Library page and their patron page
 // (the website finds them in the catalog). Every Library ref and premade in them must resolve.
-const KEMETIC_DEITY_JOURNEYS = ['anubis', 'isis', 'osiris', 'thoth', 'horus', 'set'];
+const KEMETIC_DEITY_JOURNEYS = ['anubis', 'isis', 'osiris', 'thoth', 'horus', 'set', 'nephthys'];
 
 test('Egyptian deity journeys: registered, in the catalog, linked from the Library and patron pages', () => {
   const refOk = (ref: string) => {
