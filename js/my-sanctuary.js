@@ -331,6 +331,15 @@ function createMySanctuaryPanel() {
             </select>
           </label>
 
+          <label>
+            Tarot Deck
+            <select name="tarot_deck">
+              <option value="rws">Rider–Waite–Smith (Pamela Colman Smith, 1909)</option>
+              <option value="marseille">Tarot de Marseille (Nicolas Conver, 1760)</option>
+              <option value="sola-busca">Sola Busca (Italy, about 1491)</option>
+            </select>
+          </label>
+
           <fieldset class="my-sanctuary-settings-group">
             <legend>Living Library Pages</legend>
 

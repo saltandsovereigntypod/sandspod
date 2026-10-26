@@ -1965,6 +1965,19 @@ export const HELP: HelpSection[] = [
         keywords: ['tarot', 'draw a card', 'card of the day', 'daily card', 'celtic cross', 'three card spread', 'rune cast', 'ogham', 'reversed cards', 'blank rune', 'spreads', 'horseshoe', 'tree of life', 'new moon spread', 'full moon spread', 'samhain spread', 'make your own spread', 'custom spread'],
       },
       {
+        id: 'divination-deck',
+        title: 'Choose a tarot deck',
+        summary: 'Draw with the Rider–Waite–Smith, the Tarot de Marseille or the Sola Busca: the same 78 cards and meanings, different pictures.',
+        steps: [
+          'Open More → Settings → Divination and choose a deck, then tap "Save changes". Or, as you draw tarot, tap a deck under "Deck" before you shuffle.',
+          'The Rider–Waite–Smith (Pamela Colman Smith, 1909) is the default. Nicolas Conver’s Tarot de Marseille (1760) numbers Justice VIII and Strength XI, and its numbered cards show only their suit signs. The Sola Busca (Italy, about 1491) names its trumps after heroes of Rome and the Bible and calls its suits batons, cups, swords and coins.',
+          'Where a deck titles a card its own way, its title shows under the card’s name. The meanings stay the same.',
+          'A kept reading remembers the deck it was drawn with and opens in it again. Your Grimoire’s tarot pages show each card in your deck, and the others a tap away.',
+        ],
+        href: '/more/settings/divination',
+        keywords: ['tarot deck', 'deck', 'marseille', 'tarot de marseille', 'conver', 'sola busca', 'rider waite smith', 'rws', 'card pictures', 'change deck'],
+      },
+      {
         id: 'divination-own-spread',
         title: 'Make a spread of your own',
         summary: 'Name it, give it a shape, and say what each place means.',

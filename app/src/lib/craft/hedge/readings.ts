@@ -38,6 +38,8 @@ export type Reading = {
   outcome: string;
   outcomeDate: string;
   moonPhase: PhaseName;
+  /** The tarot deck a draw was made with (divination/decks.ts); missing on readings logged by hand or from before decks. */
+  deck?: string;
 };
 
 export type ReadingEntry = { id: string; createdAt: string; data: Reading };
@@ -97,6 +99,7 @@ export function normalizeReading(raw: unknown): Reading {
     outcome: str(r.outcome),
     outcomeDate: str(r.outcomeDate),
     moonPhase: (typeof r.moonPhase === 'string' && r.moonPhase ? r.moonPhase : moonForReading(date)) as PhaseName,
+    ...(typeof r.deck === 'string' && r.deck ? { deck: r.deck } : {}),
   };
 }
 

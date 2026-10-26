@@ -97,6 +97,7 @@ export function defaultSettings(): Settings {
     default_mundane_mode: false,
     grimoire_page_font: 'classic-serif',
     grimoire_show_dreams: true,
+    tarot_deck: 'rws',
     sync_traditional_library_to_grimoire: false,
     library_layer_order: 'myPractice,traditional,community',
     ...layerFlags('myPractice'),

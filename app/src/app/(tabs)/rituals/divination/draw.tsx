@@ -12,6 +12,7 @@ import { fullDate } from '../../../../lib/calendar';
 import { lookBackFrom, normalizeReading, READINGS } from '../../../../lib/craft/hedge/readings';
 import { addEntry, useCraft } from '../../../../lib/craft/store';
 import { customSpreads, entryIdOfSpread, SPREADS_COLLECTION } from '../../../../lib/divination/custom';
+import { chosenDeck, DECK_SETTING, deckCardTitle, deckInfo, TAROT_DECKS, type DeckId } from '../../../../lib/divination/decks';
 import { todaysCard } from '../../../../lib/divination/daily';
 import {
   CAST_NOTE,
@@ -60,11 +61,18 @@ export default function DrawScreen() {
   const [width, setWidth] = useState(0);
   const [saving, setSaving] = useState(false);
   const [local, setLocal] = useState<Partial<Record<'divination_reversals' | 'divination_blank_rune', boolean>>>({});
+  const [localDeck, setLocalDeck] = useState<DeckId | null>(null);
 
   const options = drawOptions({ ...(settings ?? {}), ...local });
   const setOption = (key: 'divination_reversals' | 'divination_blank_rune', value: boolean) => {
     setLocal((o) => ({ ...o, [key]: value }));
     if (settings) void save({ ...settings, [key]: value });
+  };
+  // The deck to draw with: your setting, changed here in a tap (and kept as your deck).
+  const deck = localDeck ?? chosenDeck(settings);
+  const setDeck = (id: DeckId) => {
+    setLocalDeck(id);
+    if (settings) void save({ ...settings, [DECK_SETTING]: id });
   };
 
   const now = useMemo(() => new Date(), []);
@@ -115,7 +123,7 @@ export default function DrawScreen() {
     if (!draw) return;
     setSaving(true);
     try {
-      const entry = await addEntry(READINGS, readingFromDraw(spread, draw, { question, interpretation, lookBack: chosenLookBack, now: new Date() }));
+      const entry = await addEntry(READINGS, readingFromDraw(spread, draw, { question, interpretation, lookBack: chosenLookBack, now: new Date(), deck }));
       router.replace(`/rituals/divination/${entry.id}` as Href);
     } finally {
       setSaving(false);
@@ -174,6 +182,17 @@ export default function DrawScreen() {
         <>
           <Field label="Your question (if you have one)" value={question} onChange={setQuestion} placeholder={spread.id === 'daily' ? 'What do I need today?' : 'What you want to ask, as you’d ask it'} multiline />
           {spread.kind === 'tarot' && (
+            <View style={ui.gapSmall}>
+              <SectionLabel>Deck</SectionLabel>
+              <Chips>
+                {TAROT_DECKS.map((d) => (
+                  <Chip key={d.id} label={d.name} selected={deck === d.id} onPress={() => deck !== d.id && setDeck(d.id)} />
+                ))}
+              </Chips>
+              <Body muted>{`${deckInfo(deck).made}. ${deckInfo(deck).about}`}</Body>
+            </View>
+          )}
+          {spread.kind === 'tarot' && (
             <Toggle label="Reversed cards" detail="Some cards come up upside down, with their reversed meaning." value={options.reversals} onChange={(v) => setOption('divination_reversals', v)} />
           )}
           {!!base.variant && (
@@ -189,7 +208,7 @@ export default function DrawScreen() {
       {draw && (
         <View style={ui.gap} onLayout={(e) => setWidth(e.nativeEvent.layout.width)}>
           {!!question.trim() && <Text style={[type.cardTitle, { color: colors.parchment }]}>{question.trim()}</Text>}
-          {width > 0 && <SpreadTable spread={spread} draw={draw} revealed={revealed} selected={selected} onPress={press} still={still} width={width} />}
+          {width > 0 && <SpreadTable spread={spread} draw={draw} revealed={revealed} selected={selected} onPress={press} still={still} width={width} deck={deck} />}
           {!allShown && (
             <>
               <Body muted>{draw.items.length === 1 ? 'Tap it to turn it over.' : 'Tap each one to turn it over, in your own time.'}</Body>
@@ -204,6 +223,7 @@ export default function DrawScreen() {
           <SectionLabel>{position && spread.positions.length > 1 ? `${(selected ?? 0) + 1} · ${position.name}` : spread.label}</SectionLabel>
           {position && spread.positions.length > 1 && <Body muted>{position.about}</Body>}
           <Text style={type.cardTitle}>{`${shown.glyph ? `${shown.glyph}  ` : ''}${shown.name}${shown.reversed ? ', reversed' : ''}`}</Text>
+          {!!shown.card && !!deckCardTitle(deck, shown.card.id) && <Body muted>{`In the ${deckInfo(deck).name}: ${deckCardTitle(deck, shown.card.id)}`}</Body>}
           {!!shown.gloss && <Body muted>{shown.gloss}</Body>}
           <Text style={[type.body, { color: colors.gold }]}>{shown.meaning.keywords}</Text>
           <Body>{shown.meaning.text}</Body>

@@ -200,7 +200,8 @@ test('every card has its picture, on the website and on one of the app’s sheet
   const places = new Set<string>();
   for (const card of TAROT_DECK) {
     assert.ok(existsSync(new URL(`../../assets/divination/tarot/${card.id}.webp`, import.meta.url)), card.id);
-    const m = manifest.match(new RegExp(`'${card.id}': \\{ sheet: sheets\\[(\\d+)\\], col: (\\d+), row: (\\d+) \\}`));
+    // The Rider–Waite–Smith's place (the other decks: divination-decks.test.ts).
+    const m = manifest.match(new RegExp(`'${card.id}': \\{ sheet: sheets\\.rws\\[(\\d+)\\], col: (\\d+), row: (\\d+) \\}`));
     assert.ok(m, card.id);
     const key = m!.slice(1).join(',');
     assert.ok(!places.has(key), `${card.id} shares a place`);

@@ -21,6 +21,23 @@ Each was resized to 600 px tall and saved as WebP. File names are the card
 ids in `app/src/lib/divination/tarot.ts` (`00-the-fool`, `cups-07`, …).
 The app bundles copies made by `app/scripts/build-divination-assets.py`.
 
+## Tarot: the other decks, `decks/<deck>/*.webp`
+
+Two more public-domain decks can be chosen instead (Settings → Divination,
+the `tarot_deck` setting), with the same 78 card ids and the same meanings:
+
+- `decks/marseille/`: the Tarot de Marseille after Nicolas Conver (1760), in
+  A. Camoin's printing (Marseille, about 1890–1900), scanned by the
+  Bibliothèque nationale de France (public domain).
+- `decks/sola-busca/`: the Sola Busca tarot, engraved in Italy about 1491 and
+  coloured by hand (PD-Art).
+
+Every card's source file, author or holder and licence is listed in
+`app/assets/divination/decks/marseille/SOURCES.md` and
+`app/assets/divination/decks/sola-busca/SOURCES.md`. Each card is 350 × 600
+px WebP, the scan scaled to 600 px tall and its sides filled with its own
+edge colour, so every deck has the same shape.
+
 The card backs are drawn in code (`app/src/components/divination/Faces.tsx`,
 `practice/hedge/hedge.js`), not taken from any deck.
 

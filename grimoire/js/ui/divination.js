@@ -15,14 +15,33 @@
 
 // The page open in the reader, to mark its row when the contents redraw.
 let activeDivination = null;
+// The tarot deck to show (Settings: tarot_deck), and one looked at on the open page instead.
+let divinationDeck = null;
+let lookingDeck = null;
 
 function divinationCore() {
   return window.SaltCore && window.SaltCore["divination-library"] ? window.SaltCore["divination-library"] : null;
 }
 
-/** A row's picture: the card's art, or the rune's or stave's letter. */
-function divinationThumb(entry) {
-  if (entry.cardId) return `<img class="divination-thumb" src="/assets/divination/tarot/${escapeHtml(entry.cardId)}.webp" alt="" loading="lazy" />`;
+/** The deck chosen in settings, read once (the Rider–Waite–Smith until then). */
+async function loadDivinationDeck(core) {
+  if (divinationDeck) return divinationDeck;
+  try {
+    const settings = typeof getMySettings === "function" ? await getMySettings() : {};
+    divinationDeck = core.decks.chosenDeck(settings);
+  } catch (error) {
+    console.error(error);
+    divinationDeck = core.decks.DEFAULT_DECK;
+  }
+  return divinationDeck;
+}
+
+/** A row's picture: the card's art in your deck, or the rune's or stave's letter. */
+function divinationThumb(entry, core) {
+  if (entry.cardId) {
+    const src = core.decks.deckImagePath(divinationDeck || core.decks.DEFAULT_DECK, entry.cardId);
+    return `<img class="divination-thumb" src="${escapeHtml(src)}" alt="" loading="lazy" />`;
+  }
   return `<span class="divination-glyph divination-glyph--${entry.kind}" aria-hidden="true">${escapeHtml(entry.glyph || "")}</span>`;
 }
 
@@ -35,7 +54,7 @@ function divinationRow(entry, core) {
   return `
     <button type="button" class="book-page-link traditional-library-entity-link divination-link${isActiveDivination(entry) ? " is-active" : ""}" data-divination-entry="${escapeHtml(`${entry.kind}/${entry.id}`)}"
       aria-label="${escapeHtml(`${entry.name}: ${entry.words.join(", ")}`)}">
-      ${divinationThumb(entry)}
+      ${divinationThumb(entry, core)}
       <span class="divination-link__text">
         <span>${escapeHtml(entry.name)}</span>
         <small>${escapeHtml(core.wordsLine(entry.words))}</small>
@@ -89,6 +108,8 @@ function renderDivinationShelf() {
       .join("")}
   `;
   list.appendChild(wrapper);
+  // Once the deck is known, show its pictures.
+  if (!divinationDeck) loadDivinationDeck(core).then((deck) => deck !== core.decks.DEFAULT_DECK && renderDivinationShelf());
 }
 
 /** A card's, rune's or stave's page in the reader, in the Living Library's page style. */
@@ -112,8 +133,19 @@ async function renderDivinationPage(kind, id) {
 
   const showTraditional = typeof shouldShowTraditionalLibrary === "function" ? await shouldShowTraditionalLibrary() : true;
   const page = core.divinationPage(entry);
+  const D = core.decks;
+  const deck = lookingDeck || (await loadDivinationDeck(core));
+  const info = D.deckInfo(deck);
+  const deckTitle = entry.cardId ? D.deckCardTitle(deck, entry.cardId) : null;
+  // Your deck first; the others a tap away, just for this page.
+  const deckChoice = entry.cardId
+    ? `<p class="divination-deck-title">${escapeHtml(deckTitle ? `${info.name}: ${deckTitle}` : `${info.name}, ${info.made}`)}</p>
+       <div class="divination-decks" role="group" aria-label="Deck">${D.TAROT_DECKS.map(
+         (d) => `<button type="button" class="divination-deck" data-divination-deck="${escapeHtml(d.id)}" aria-pressed="${d.id === deck ? "true" : "false"}">${escapeHtml(d.name)}</button>`
+       ).join("")}</div>`
+    : "";
   const figure = entry.cardId
-    ? `<figure class="book-library-hero-image divination-hero"><img src="/assets/divination/tarot/${escapeHtml(entry.cardId)}.webp" alt="${escapeHtml(`${entry.name}, Pamela Colman Smith’s picture`)}" /></figure>`
+    ? `<figure class="book-library-hero-image divination-hero"><img src="${escapeHtml(D.deckImagePath(deck, entry.cardId))}" alt="${escapeHtml(`${entry.name}, ${D.deckPictureLabel(deck)}`)}" /></figure>${deckChoice}`
     : `<figure class="divination-hero divination-hero--${entry.kind}"><span class="divination-glyph divination-glyph--${entry.kind}" aria-hidden="true">${escapeHtml(entry.glyph || "")}</span></figure>`;
 
   entryList.innerHTML = `
@@ -174,9 +206,18 @@ if (typeof document !== "undefined")
       saveLibraryShelfState(`divination-${kind}`, !list.hidden);
       return;
     }
+    const deckButton = event.target.closest("[data-divination-deck]");
+    if (deckButton && activeDivination) {
+      lookingDeck = deckButton.dataset.divinationDeck;
+      const [kind, id] = activeDivination.split("/");
+      await renderDivinationPage(kind, id);
+      document.querySelector(`[data-divination-deck="${lookingDeck}"]`)?.focus();
+      return;
+    }
     const row = event.target.closest("[data-divination-entry]");
     if (row) {
       const [kind, id] = row.dataset.divinationEntry.split("/");
+      lookingDeck = null;
       await renderDivinationPage(kind, id);
     }
   });

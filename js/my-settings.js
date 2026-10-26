@@ -16,6 +16,7 @@ function getDefaultMySettings() {
     
     grimoire_page_font: "classic-serif",
     grimoire_show_dreams: true,
+    tarot_deck: "rws",
 
     sync_traditional_library_to_grimoire: false,
 

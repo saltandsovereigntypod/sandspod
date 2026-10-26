@@ -533,7 +533,7 @@ export function cameUpText(spread: Spread, draw: Draw): string {
 export function readingFromDraw(
   spread: Spread,
   draw: Draw,
-  { question = '', interpretation = '', lookBack, now }: { question?: string; interpretation?: string; lookBack?: string; now: Date },
+  { question = '', interpretation = '', lookBack, now, deck }: { question?: string; interpretation?: string; lookBack?: string; now: Date; deck?: string },
 ): Reading {
   const date = localDateKey(now);
   return {
@@ -547,6 +547,8 @@ export function readingFromDraw(
     outcome: '',
     outcomeDate: '',
     moonPhase: moonForReading(date),
+    // The deck it was drawn with, so it opens in that deck again (tarot only).
+    ...(spread.kind === 'tarot' && deck ? { deck } : {}),
   };
 }
 

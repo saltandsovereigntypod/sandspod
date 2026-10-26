@@ -449,7 +449,7 @@
   }
 
   /** One card, rune or stave that turns over (`act` on press, value = its place). */
-  function flipHtml(spread, d, i, shown, selected, act) {
+  function flipHtml(spread, d, i, shown, selected, act, deck) {
     const item = d.items[i];
     const m = Dv.draw.meaningOf(item);
     let back;
@@ -458,7 +458,7 @@
     if (spread.kind === "tarot") {
       const card = Dv.tarot.tarotCard(item.name);
       back = `<span class="dv-face dv-back">${CARD_BACK}</span>`;
-      front = `<span class="dv-face dv-front dv-card${item.reversed ? " dv-card--reversed" : ""}"><img src="/assets/divination/tarot/${kit.esc(card?.id || "")}.webp" alt="" loading="lazy" /></span>`;
+      front = `<span class="dv-face dv-front dv-card${item.reversed ? " dv-card--reversed" : ""}"><img src="${kit.esc(Dv.decks.deckImagePath(deck || Dv.decks.DEFAULT_DECK, card?.id || ""))}" alt="" loading="lazy" /></span>`;
     } else {
       const cls = spread.kind === "runes" ? "dv-stone" : "dv-stave";
       shape = spread.kind === "runes" ? " dv-flip--stone" : " dv-flip--stave";
@@ -479,8 +479,8 @@
    * every place where the layout puts it, the crossing card turned, the cast
    * on its cloth. Too wide for the page, it scrolls sideways.
    */
-  function tableHtml(spread, d, revealed, selected, act) {
-    const one = (i) => flipHtml(spread, d, i, revealed[i], selected === i, act);
+  function tableHtml(spread, d, revealed, selected, act, deck) {
+    const one = (i) => flipHtml(spread, d, i, revealed[i], selected === i, act, deck);
     const l = Dv.draw.layoutOfDraw(spread, d);
     if (Dv.layout.isSimpleRow(l)) {
       const n = d.items.length;
@@ -552,17 +552,18 @@
   }
 
   /** What one card, rune or stave means, in its place. */
-  function meaningHtml(spread, d, i) {
+  function meaningHtml(spread, d, i, deck) {
     if (i === null || i === undefined || !d.items[i]) return "";
     const m = Dv.draw.meaningOf(d.items[i]);
     if (!m) return "";
+    const title = m.card && deck ? Dv.decks.deckCardTitle(deck, m.card.id) : null;
     const place = spread.positions.length > 1 ? Dv.draw.placeOf(spread, d, i) : null;
     // Its page in the Book of Shadows' Traditional Information, unless that's turned off.
     const more = settings.library_traditional_enabled !== false ? Dv.links?.readMoreHref(m.name) : null;
     return kit.card(
       `${place ? kit.muted(place.about) : ""}<p class="dv-meaning__name">${m.glyph ? `<span class="dv-glyph" aria-hidden="true">${kit.esc(m.glyph)}</span>  ` : ""}${kit.esc(
         itemName(m)
-      )}</p>${m.gloss ? kit.muted(m.gloss) : ""}<p class="dv-meaning__words">${kit.esc(m.meaning.keywords)}</p>${kit.p(m.meaning.text)}${
+      )}</p>${title ? kit.muted(`In the ${Dv.decks.deckInfo(deck).name}: ${title}`) : ""}${m.gloss ? kit.muted(m.gloss) : ""}<p class="dv-meaning__words">${kit.esc(m.meaning.keywords)}</p>${kit.p(m.meaning.text)}${
         more ? `<p class="dv-meaning__more"><a href="${kit.esc(more)}">Read more</a></p>` : ""
       }`,
       { gold: true, label: place ? `${i + 1} · ${place.name}` : spread.label }
@@ -575,13 +576,18 @@
     const found = Dv ? Dv.draw.drawOfReading(r, custom()) : null;
     if (!found) return "";
     const { spread, draw: d } = found;
+    const deck = Dv.decks.deckOfReading(r);
+    const info = Dv.decks.deckInfo(deck);
     return `<section class="sp-section" aria-label="The draw">${tableHtml(
       spread,
       d,
       d.items.map(() => true),
       laid.pick,
-      "laid-pick"
-    )}<div data-laid-meaning>${laid.pick === null ? kit.muted("Tap one for its meaning.") : meaningHtml(spread, d, laid.pick)}</div></section>`;
+      "laid-pick",
+      deck
+    )}${spread.kind === "tarot" ? kit.muted(`Drawn with the ${info.name} (${info.made}).`) : ""}<div data-laid-meaning>${
+      laid.pick === null ? kit.muted("Tap one for its meaning.") : meaningHtml(spread, d, laid.pick, deck)
+    }</div></section>`;
   }
 
   const drawState = { spreadId: null, question: "", draw: null, revealed: [], selected: null, interpretation: "", lookBack: null, saving: false, problem: "", local: {}, picking: false };
@@ -596,6 +602,8 @@
   /** The wheel's card in the middle is a choice on the wheel, not a spread of its own. */
   const baseOf = (spread) => (spread.hidden ? Dv.draw.SPREADS.find((s) => s.variant?.id === spread.id) || spread : spread);
   const drawOptions = () => Dv.draw.drawOptions({ ...settings, ...drawState.local });
+  /** The deck to draw with: your setting, or the one just tapped (kept as your deck too). */
+  const drawDeck = () => Dv.decks.chosenDeck({ ...settings, ...drawState.local });
   const chosenLookBack = (spread) => drawState.lookBack ?? R.lookBackFrom(kit.dateKey(new Date()), spread.lookBackDays);
 
   function drawHintHtml(d) {
@@ -690,6 +698,16 @@
               placeholder: spread.id === "daily" ? "What do I need today?" : "What you want to ask, as you’d ask it"
             }),
             spread.kind === "tarot"
+              ? kit.section(
+                  "Deck",
+                  `${kit.chips(
+                    Dv.decks.TAROT_DECKS.map((x) => kit.chip({ label: x.name, act: "draw-deck", value: x.id, pressed: drawDeck() === x.id })),
+                    "Deck"
+                  )}${kit.muted(`${Dv.decks.deckInfo(drawDeck()).made}. ${Dv.decks.deckInfo(drawDeck()).about}`)}`,
+                  { id: "draw-deck" }
+                )
+              : "",
+            spread.kind === "tarot"
               ? kit.toggle({ id: "draw-reversals", label: "Reversed cards", detail: "Some cards come up upside down, with their reversed meaning.", checked: opts.reversals, change: "draw-option" })
               : "",
             base.variant ? kit.toggle({ id: "draw-variant", label: base.variant.label, checked: spread.id === base.variant.id, change: "draw-variant" }) : "",
@@ -703,8 +721,9 @@
             d,
             drawState.revealed,
             drawState.selected,
-            "draw-turn"
-          )}<div data-draw-hint>${drawHintHtml(d)}</div></section><div data-draw-meaning>${meaningHtml(spread, d, drawState.selected)}</div><div data-draw-after>${drawAfterHtml(spread, d)}</div>`
+            "draw-turn",
+            drawDeck()
+          )}<div data-draw-hint>${drawHintHtml(d)}</div></section><div data-draw-meaning>${meaningHtml(spread, d, drawState.selected, drawDeck())}</div><div data-draw-after>${drawAfterHtml(spread, d)}</div>`
     ].join("");
   }
 
@@ -721,7 +740,7 @@
       else el.removeAttribute("aria-current");
     });
     kit.render(root.querySelector("[data-draw-hint]"), drawHintHtml(d));
-    kit.render(root.querySelector("[data-draw-meaning]"), meaningHtml(spread, d, drawState.selected));
+    kit.render(root.querySelector("[data-draw-meaning]"), meaningHtml(spread, d, drawState.selected, drawDeck()));
     if (after) kit.render(root.querySelector("[data-draw-after]"), drawAfterHtml(spread, d));
   }
 
@@ -1032,6 +1051,16 @@
       // Kept with your settings, so the app draws the same way.
       global.SaltSettings?.patch({ [key]: el.checked }).catch((error) => console.error(error));
     },
+    "draw-deck"(el) {
+      const deck = el.dataset.value;
+      if (!Dv.decks.isDeckId(deck)) return;
+      drawState.local[Dv.decks.DECK_SETTING] = deck;
+      settings = { ...settings, [Dv.decks.DECK_SETTING]: deck };
+      // Your deck from now on, here and in the app.
+      global.SaltSettings?.patch({ [Dv.decks.DECK_SETTING]: deck }).catch((error) => console.error(error));
+      draw();
+      root.querySelector('[data-act="draw-deck"][aria-pressed="true"]')?.focus();
+    },
     "draw-start"() {
       const d = Dv.draw.drawSpread(currentSpread(), drawOptions());
       Object.assign(drawState, { draw: d, revealed: d.items.map(() => false), selected: null, interpretation: "", problem: "" });
@@ -1070,7 +1099,8 @@
         question: drawState.question,
         interpretation: drawState.interpretation,
         lookBack: chosenLookBack(spread),
-        now: new Date()
+        now: new Date(),
+        deck: drawDeck()
       });
       drawState.saving = true;
       drawState.problem = "";
@@ -1091,7 +1121,7 @@
       const found = entry && Dv ? Dv.draw.drawOfReading(entry.data, custom()) : null;
       if (!found) return;
       root.querySelectorAll('[data-act="laid-pick"]').forEach((b) => (Number(b.dataset.value) === laid.pick ? b.setAttribute("aria-current", "true") : b.removeAttribute("aria-current")));
-      kit.render(root.querySelector("[data-laid-meaning]"), laid.pick === null ? kit.muted("Tap one for its meaning.") : meaningHtml(found.spread, found.draw, laid.pick));
+      kit.render(root.querySelector("[data-laid-meaning]"), laid.pick === null ? kit.muted("Tap one for its meaning.") : meaningHtml(found.spread, found.draw, laid.pick, Dv.decks.deckOfReading(entry.data)));
     },
     // Ancestors
     candle() {

@@ -3539,6 +3539,45 @@ body.library-page-open .book-toc .book-toc-section:not(.my-practice-shelf):not(.
   width: min(280px, 62%);
 }
 
+/* The card in your deck, and the other decks a tap away. */
+.divination-deck-title {
+  margin: 0.25rem 0 0.5rem;
+  text-align: center;
+  font-size: 0.92rem;
+  opacity: 0.8;
+}
+
+.divination-decks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.divination-deck {
+  min-height: 36px;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid rgba(185, 160, 93, 0.4);
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.divination-deck[aria-pressed="true"] {
+  border-color: var(--gold);
+  background: rgba(185, 160, 93, 0.18);
+  color: var(--gold);
+}
+
+.divination-deck:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
 .divination-hero--runes,
 .divination-hero--ogham {
   display: grid;
