@@ -62,6 +62,8 @@ const FINNISH_SOURCES =
   'Suomen Kansan Vanhat Runot (SKVR), the corpus of old Finnish and Karelian folk poetry: https://skvr.fi/; Anna-Leena Siikala, Mythic Images and Shamanism: A Perspective on Kalevala Poetry (2002)';
 const AS_SOURCES =
   'Bede, De temporum ratione 15 (725), trans. Faith Wallis, Bede: The Reckoning of Time (1999); Ælfric, De falsis diis; Ronald Hutton, Pagan Britain (2013)';
+const ETRUSCAN_SOURCES =
+  'Nancy Thomson de Grummond and Erika Simon (eds), The Religion of the Etruscans (2006); Jean-René Jannot, Religion in Ancient Etruria (2005)';
 const UGARIT_TEXTS = 'Simon B. Parker (ed.), Ugaritic Narrative Poetry (1997), for the Baal Cycle and the tale of Aqhat';
 
 export const DEITY_DEVOTIONS: DeityDevotion[] = [
@@ -4088,6 +4090,108 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     approach:
       'Hreda is approached with humility, as an English goddess known from one line of Bede.',
     sources: [AS_SOURCES],
+  },
+
+  // ─── Etruscan ────────────────────────────────────────────────────────────
+  {
+    key: 'tinia',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 4 },
+        name: 'Thursday',
+        why: 'Thursday is Jupiter’s day, and Tinia was matched with Jupiter. No Etruscan festival calendar survives; honouring him on Thursdays is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Watch the sky for a few minutes and greet him.',
+      'Use any authority you have fairly today.',
+      'Pour a little wine or water with thanks.',
+      'Look at a picture of the Liver of Piacenza and its gods.',
+    ],
+    approach:
+      'Tinia is approached with reverence and honesty about how little of Etruscan religion survives.',
+    sources: [ETRUSCAN_SOURCES, 'Pliny the Elder, Natural History 2.138–143, on Etruscan lightning lore', WEEKDAYS],
+  },
+  {
+    key: 'uni',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 3, day: 1 },
+        name: 'Matronalia',
+        why: 'The Roman festival of Juno Lucina on 1 March. Uni was matched with Juno; keeping it for her is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Light a candle for a family you belong to.',
+      'Protect someone in your care in one small way.',
+      'Keep faith with an ally.',
+      'Read about the gold tablets of Pyrgi.',
+    ],
+    approach:
+      'Uni is approached with dignity, as the Etruscan queen of the gods and protector of cities.',
+    sources: [ETRUSCAN_SOURCES, 'Livy 5.21–22, on Juno Regina of Veii', 'The Pyrgi Tablets (Museo Nazionale Etrusco di Villa Giulia)'],
+  },
+  {
+    key: 'menrva',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 3, day: 19 },
+        name: 'Quinquatrus',
+        why: 'The Roman festival of Minerva, whose name probably came from Menrva. Keeping it for Menrva is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Learn something new for ten minutes.',
+      'Practise a craft with care.',
+      'Help a young person with something they are learning.',
+      'Think before you act in one hard choice.',
+    ],
+    approach:
+      'Menrva is approached with seriousness and curiosity, as the Etruscan goddess of wisdom and the arts.',
+    sources: [ETRUSCAN_SOURCES, OVID_FASTI + ' (3.809–848)'],
+  },
+  {
+    key: 'turan',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 5 },
+        name: 'Friday',
+        why: 'Friday is the day of Venus, with whom Turan was matched. Honouring her on Fridays is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Set a flower by a mirror and thank her.',
+      'Give a thoughtful gift to someone you love.',
+      'Wear something that makes you feel beautiful.',
+      'Notice one beautiful thing today.',
+    ],
+    approach:
+      'Turan is approached with joy, as the Etruscan lady of love and beauty.',
+    sources: [ETRUSCAN_SOURCES, WEEKDAYS],
+  },
+  {
+    key: 'fufluns',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'mabon' },
+        name: 'The grape harvest',
+        why: 'No Etruscan festival calendar survives. Honouring the wine god at the autumn grape harvest is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Pour a small cup of wine or grape juice for him.',
+      'Share a meal and enjoy it.',
+      'Water a climbing plant or vine.',
+      'Put on music and celebrate one good thing.',
+    ],
+    approach:
+      'Fufluns is approached with joy and moderation, as the Etruscan god of wine and growth.',
+    sources: [ETRUSCAN_SOURCES],
   },
 
   // ─── Jewish folklore and Western occultism ───────────────────────────

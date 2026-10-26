@@ -39,6 +39,7 @@ const MORE_DEITIES = [
   "laima", "perkunas", "saule", "dievas", "zemyna", "menulis",
   "ukko", "mielikki", "tapio", "ilmatar", "ahti", "rauni",
   "woden", "thunor", "frige", "tiw", "eostre", "hreda",
+  "tinia", "uni", "menrva", "turan", "fufluns",
 ];
 
 test("the website's Library has the new deities, field for field like Jupiter", () => {
