@@ -1750,7 +1750,7 @@ export const HOLIDAY_PAGES: HolyPage[] = [
     ],
     ritual: { premade: 'green-hawthorn-may-blossom-blessing' },
     correspondences: {
-      deities: ['Venus', 'Ceres'],
+      deities: ['Flora', 'Venus', 'Ceres'],
       herbs: ['Rose', 'Calendula', 'Jasmine', 'Hawthorn'],
       crystals: ['Rose Quartz', 'Peridot', 'Rhodochrosite'],
       colors: ['Pink', 'Yellow', 'Green', 'Rainbow'],
@@ -1888,7 +1888,7 @@ export const HOLIDAY_PAGES: HolyPage[] = [
       ],
     },
     correspondences: {
-      deities: ['Poseidon', 'Manannán mac Lir'],
+      deities: ['Neptune', 'Poseidon', 'Manannán mac Lir'],
       herbs: ['Willow', 'Mint', 'Lemon Balm'],
       crystals: ['Aquamarine', 'Blue Lace Agate', 'Turquoise'],
       colors: ['Blue', 'Green'],
@@ -1986,7 +1986,7 @@ export const HOLIDAY_PAGES: HolyPage[] = [
       ],
     },
     correspondences: {
-      deities: ['Apollo', 'Ra', 'Dazhbog'],
+      deities: ['Sol', 'Apollo', 'Ra', 'Dazhbog'],
       herbs: ['Frankincense', 'Bay', 'Cinnamon', 'Saffron'],
       crystals: ['Sunstone', 'Citrine', 'Tiger Eye', 'Amber'],
       colors: ['Gold', 'Yellow', 'Orange'],

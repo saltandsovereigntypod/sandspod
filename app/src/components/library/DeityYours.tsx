@@ -30,7 +30,7 @@ export function DeityYours({ entry }: { entry: LibraryEntry }) {
         <Button
           label={`Set a shrine for ${entry.name}`}
           variant="outline"
-          accessibilityHint="Opens a starter altar with their statue, colours, plants and stones"
+          accessibilityHint="Opens a starter altar with their colours, plants and stones, and their statue where there is one"
           onPress={() => router.push({ pathname: '/altar/[altarId]', params: { altarId: 'shrine', deity: key } } as Href)}
         />
         <Button label={mine ? 'My deities' : 'Add to My deities'} variant="text" onPress={() => router.push('/more/settings/deities' as Href)} />

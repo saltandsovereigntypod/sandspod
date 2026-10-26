@@ -48,7 +48,7 @@
         <a class="button button--small button--ghost" href="/more/settings/deities/">${mine ? "My deities" : "Add to My deities"}</a>
         ${journey ? `<a class="button button--small button--ghost" href="/rituals/journeys/?id=${encodeURIComponent(journey.id)}" aria-label="${esc(`Begin a dedication journey: ${journey.title}. Study, practice and a rite of self-dedication`)}">Begin a dedication journey</a>` : ""}
       </div>
-      ${deity.key ? `<p class="deity-yours__hint" id="deity-yours-shrine-hint">Opens a starter altar with their statue, colours, plants and stones.</p>` : ""}
+      ${deity.key ? `<p class="deity-yours__hint" id="deity-yours-shrine-hint">Opens a starter altar with their colours, plants and stones, and their statue where there is one.</p>` : ""}
     </div>`;
   }
 
