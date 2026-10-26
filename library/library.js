@@ -64,6 +64,7 @@
 
   function shell() {
     root.innerHTML = `${header({ title: "Living Library", eyebrow: "Correspondences and lore", back: "/?sanctuary=more", backLabel: "Back to More" })}
+      ${global.ResearchNote ? global.ResearchNote.cardHtml() : ""}
       <div data-guides>${guidesHtml()}</div>
       <div class="sp-field lb-search"><label for="lb-search">Search the Library</label>
         <input id="lb-search" type="search" placeholder="Rosemary, protection, Venus…" autocomplete="off" autocapitalize="none" spellcheck="false" value="${esc(query)}" /></div>
@@ -73,6 +74,7 @@
       <div data-results></div>
       ${state.user ? "" : `<p class="sp-caption lb-center">Sign in to see your own My Practice notes from your Book of Shadows here.</p>`}`;
 
+    global.ResearchNote?.bindCard(root);
     let timer = null;
     root.querySelector("#lb-search").addEventListener("input", (event) => {
       query = event.target.value;

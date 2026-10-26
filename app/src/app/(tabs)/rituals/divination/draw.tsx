@@ -11,9 +11,11 @@ import { SpreadTable } from '../../../../components/divination/Spread';
 import { Body, Card, Chip, Chips, Field, List, Notice, RitualScreen, Row, SectionLabel, Title, Toggle, ui } from '../../../../components/rituals/ui';
 import { useReducedMotion } from '../../../../lib/accessibility/store';
 import { fullDate } from '../../../../lib/calendar';
-import { lookBackFrom, normalizeReading, READINGS } from '../../../../lib/craft/hedge/readings';
+import { DREAMS, normalizeDream, sortDreams } from '../../../../lib/craft/hedge/dreams';
+import { lookBackFrom, normalizeReading, READINGS, type ReadingLink, type ReadingLinkKind } from '../../../../lib/craft/hedge/readings';
 import { addEntry, useCraft } from '../../../../lib/craft/store';
 import { customSpreads, entryIdOfSpread, SPREADS_COLLECTION } from '../../../../lib/divination/custom';
+import { chosenDeck, DECK_SETTING, deckCardTitle, deckInfo, TAROT_DECKS, type DeckId } from '../../../../lib/divination/decks';
 import { todaysCard } from '../../../../lib/divination/daily';
 import {
   CAST_NOTE,
@@ -34,13 +36,17 @@ import {
   type DrawKind,
   type Drawn,
 } from '../../../../lib/divination/draw';
+import { deityLink, linkFromParams, linkKindOfSpread, linkLine, linkQuestion } from '../../../../lib/divination/linked';
 import { DECKS_COLLECTION, ownDeckById, ownDecks } from '../../../../lib/divination/oracle/decks';
 import { KIPPER_NOTE } from '../../../../lib/divination/oracle/kipper';
 import { shownKinds } from '../../../../lib/divination/oracle/kinds';
 import { LENORMAND_NOTE } from '../../../../lib/divination/oracle/lenormand';
 import { keepsSouthernWheel, seasonalSpreads } from '../../../../lib/divination/seasonal';
 import { STAVE_NOTES } from '../../../../lib/divination/staves';
+import { myDeities } from '../../../../lib/patron';
 import { localDateKey } from '../../../../lib/rituals/lifecycle';
+import { upcomingPlans } from '../../../../lib/rituals/plans';
+import { useRituals } from '../../../../lib/rituals/store';
 import { useSession } from '../../../../lib/session';
 import { useMySettings } from '../../../../lib/settings/store';
 import { colors, type } from '../../../../theme';
@@ -52,7 +58,7 @@ const NOTES: Partial<Record<DrawKind, string>> = { ...STAVE_NOTES, lenormand: LE
 // the reading log like any other reading. Or log a pull you made with real
 // cards, picking which card lay in each place.
 export default function DrawScreen() {
-  const params = useLocalSearchParams<{ kind?: string; spread?: string; deck?: string }>();
+  const params = useLocalSearchParams<{ kind?: string; spread?: string; deck?: string; dream?: string; plan?: string; deity?: string; title?: string }>();
   const askedKind = (KINDS.find((k) => k.id === params.kind)?.id ?? (params.deck ? 'oracle' : null)) as DrawKind | null;
   const { session } = useSession();
   const { settings, save } = useMySettings();
@@ -65,7 +71,7 @@ export default function DrawScreen() {
 
   const [kindId, setKindId] = useState<DrawKind>(askedKind ?? spreadById(params.spread)?.kind ?? 'tarot');
   const [deckId, setDeckId] = useState<string | null>(params.deck ?? null);
-  const deck = kindId === 'oracle' ? (ownDeckById(decks, deckId) ?? decks[0] ?? null) : null;
+  const ownDeck = kindId === 'oracle' ? (ownDeckById(decks, deckId) ?? decks[0] ?? null) : null;
   // A spread of your own may not have loaded yet, so the id is kept as asked for.
   const [spreadId, setSpreadId] = useState(params.spread || spreadsFor(kindId)[0].id);
   const resolve = (id: string) => (kindId === 'oracle' ? ownDeckSpreadById(id, custom) : spreadById(id, custom));
@@ -90,11 +96,20 @@ export default function DrawScreen() {
   const [width, setWidth] = useState(0);
   const [saving, setSaving] = useState(false);
   const [local, setLocal] = useState<Partial<Record<'divination_reversals' | 'divination_blank_rune', boolean>>>({});
+  const [localDeck, setLocalDeck] = useState<DeckId | null>(null);
+  // What it's drawn for, if anything: a dream, a planned working, a deity (its own spread chosen).
+  const [link, setLink] = useState<ReadingLink | null>(() => linkFromParams(params));
 
   const options = drawOptions({ ...(settings ?? {}), ...local });
   const setOption = (key: 'divination_reversals' | 'divination_blank_rune', value: boolean) => {
     setLocal((o) => ({ ...o, [key]: value }));
     if (settings) void save({ ...settings, [key]: value });
+  };
+  // The deck to draw with: your setting, changed here in a tap (and kept as your deck).
+  const deck = localDeck ?? chosenDeck(settings);
+  const setDeck = (id: DeckId) => {
+    setLocalDeck(id);
+    if (settings) void save({ ...settings, [DECK_SETTING]: id });
   };
 
   const now = useMemo(() => new Date(), []);
@@ -104,9 +119,9 @@ export default function DrawScreen() {
   const kinds = shownKinds(KINDS, settings, kindId);
   const allShown = !!draw && revealed.every(Boolean);
   const chosenLookBack = lookBack ?? lookBackFrom(today, spread.lookBackDays);
-  const pool = poolFor(kindId, options, deck?.data);
-  const reversible = kindId === 'tarot' || (kindId === 'oracle' && !!deck?.data.reversals);
-  const enough = canDraw(spread, options, deck?.data);
+  const pool = poolFor(kindId, options, ownDeck?.data);
+  const reversible = kindId === 'tarot' || (kindId === 'oracle' && !!ownDeck?.data.reversals);
+  const enough = canDraw(spread, options, ownDeck?.data);
 
   const reset = () => {
     setDraw(null);
@@ -144,7 +159,7 @@ export default function DrawScreen() {
   );
   const editing = entryIdOfSpread(spread.id);
   const start = () => {
-    const next = drawSpread(spread, options, undefined, deck?.data);
+    const next = drawSpread(spread, options, undefined, ownDeck?.data);
     setDraw(next);
     setRevealed(next.items.map(() => false));
     setSelected(null);
@@ -179,20 +194,25 @@ export default function DrawScreen() {
     if (!draw) return;
     setSaving(true);
     try {
-      const entry = await addEntry(READINGS, readingFromDraw(spread, draw, { question, interpretation, lookBack: chosenLookBack, now: new Date(), deck, byHand }));
+      const entry = await addEntry(
+        READINGS,
+        readingFromDraw(spread, draw, { question, interpretation, lookBack: chosenLookBack, now: new Date(), deck, ownDeck, byHand, linkedTo }),
+      );
       router.replace(`/rituals/divination/${entry.id}` as Href);
     } finally {
       setSaving(false);
     }
   };
 
-  const shown = selected !== null && draw && revealed[selected] ? meaningOf(draw.items[selected], deck?.data) : null;
+  const linkKind = linkKindOfSpread(spread.id);
+  const linkedTo = link && link.kind === linkKind ? link : null;
+  const shown = selected !== null && draw && revealed[selected] ? meaningOf(draw.items[selected], ownDeck?.data) : null;
   const position = selected !== null && draw ? placeOf(spread, draw, selected) : null;
-  const ownWithoutCards = kindId === 'oracle' && (!deck || deck.data.cards.length === 0);
+  const ownWithoutCards = kindId === 'oracle' && (!ownDeck || ownDeck.data.cards.length === 0);
 
   return (
     <RitualScreen back="Back">
-      <Title eyebrow="Draw · Divination">{kindId === 'oracle' && deck ? deck.data.name : kind.label}</Title>
+      <Title eyebrow="Draw · Divination">{kindId === 'oracle' && ownDeck ? ownDeck.data.name : kind.label}</Title>
 
       <View style={ui.gapSmall}>
         <SectionLabel>What to draw</SectionLabel>
@@ -204,8 +224,8 @@ export default function DrawScreen() {
         {kindId === 'oracle' && decks.length > 0 && (
           <Chips>
             {decks.map((d) => (
-              <Chip key={d.id} label={d.data.name} selected={deck?.id === d.id} onPress={() => {
-                  if (deck?.id === d.id) return;
+              <Chip key={d.id} label={d.data.name} selected={ownDeck?.id === d.id} onPress={() => {
+                  if (ownDeck?.id === d.id) return;
                   setDeckId(d.id);
                   reset();
                 }} />
@@ -214,15 +234,15 @@ export default function DrawScreen() {
         )}
         {kindId === 'oracle' && (
           <Button
-            label={deck ? 'Your decks and their cards' : 'Make a deck'}
+            label={ownDeck ? 'Your decks and their cards' : 'Make a deck'}
             variant="text"
-            onPress={() => router.push((deck ? '/rituals/divination/decks' : '/rituals/divination/decks/edit') as Href)}
+            onPress={() => router.push((ownDeck ? '/rituals/divination/decks' : '/rituals/divination/decks/edit') as Href)}
           />
         )}
         {ownWithoutCards ? (
           decksReady && (
             <Notice>
-              {deck ? `${deck.data.name} has no cards yet. Add them, or paste in a list, and they’re ready to draw.` : 'Make a deck of your own: name it, add its cards (a photo of each if you like), and draw from it here, or log the cards you pull by hand.'}
+              {ownDeck ? `${ownDeck.data.name} has no cards yet. Add them, or paste in a list, and they’re ready to draw.` : 'Make a deck of your own: name it, add its cards (a photo of each if you like), and draw from it here, or log the cards you pull by hand.'}
             </Notice>
           )
         ) : (
@@ -248,7 +268,7 @@ export default function DrawScreen() {
         !byHand &&
         seasonal.map((s) => (
           <List key={s.spread}>
-            <Row icon={s.spread === 'samhain' ? 'samhain' : 'today'} title={`${s.why}: ${s.label}`} detail="A spread for the time. Tap to choose it." last onPress={() => choose(s.spread)} />
+            <Row icon={s.spread === 'samhain' ? 'samhain' : s.spread.endsWith('-moon') ? 'today' : 'wheel'} title={`${s.why}: ${s.label}`} detail="A spread for the time. Tap to choose it." last onPress={() => choose(s.spread)} />
           </List>
         ))}
 
@@ -264,9 +284,18 @@ export default function DrawScreen() {
         </List>
       )}
 
+      {!draw && !byHand && linkKind && <LinkChooser kind={linkKind} chosen={linkedTo} onChoose={setLink} settings={settings} />}
+      {draw && linkedTo && <Body muted>{linkLine(linkedTo)}</Body>}
+
       {!draw && !ownWithoutCards && (
         <>
-          <Field label="Your question (if you have one)" value={question} onChange={setQuestion} placeholder={spread.id === 'daily' ? 'What do I need today?' : 'What you want to ask, as you’d ask it'} multiline />
+          <Field
+            label="Your question (if you have one)"
+            value={question}
+            onChange={setQuestion}
+            placeholder={linkedTo ? linkQuestion(linkedTo) : spread.id === 'daily' ? 'What do I need today?' : 'What you want to ask, as you’d ask it'}
+            multiline
+          />
           {!spread.cast && (
             <View style={ui.gapSmall}>
               <SectionLabel>How</SectionLabel>
@@ -280,16 +309,27 @@ export default function DrawScreen() {
             </View>
           )}
           {kindId === 'tarot' && (
+            <View style={ui.gapSmall}>
+              <SectionLabel>Deck</SectionLabel>
+              <Chips>
+                {TAROT_DECKS.map((d) => (
+                  <Chip key={d.id} label={d.name} selected={deck === d.id} onPress={() => deck !== d.id && setDeck(d.id)} />
+                ))}
+              </Chips>
+              <Body muted>{`${deckInfo(deck).made}. ${deckInfo(deck).about}`}</Body>
+            </View>
+          )}
+          {kindId === 'tarot' && (
             <Toggle label="Reversed cards" detail="Some cards come up upside down, with their reversed meaning." value={options.reversals} onChange={(v) => setOption('divination_reversals', v)} />
           )}
-          {kindId === 'oracle' && !byHand && !!deck?.data.reversals && <Body muted>This deck is read with reversals: some cards will come up upside down.</Body>}
+          {kindId === 'oracle' && !byHand && !!ownDeck?.data.reversals && <Body muted>This deck is read with reversals: some cards will come up upside down.</Body>}
           {!!base.variant && (
             <Toggle label={base.variant.label} value={spread.id === base.variant.id} onChange={(v) => choose(v ? base.variant!.id : base.id)} />
           )}
           {kindId === 'runes' && (
             <Toggle label="The blank rune" detail="A modern addition to the set, standing for the unknown." value={options.blankRune} onChange={(v) => setOption('divination_blank_rune', v)} />
           )}
-          {!enough && <Notice>{`This spread needs ${spread.positions.length} cards, and ${deck?.data.name ?? 'the deck'} has ${pool.length}. Choose a smaller spread, or add more cards.`}</Notice>}
+          {!enough && <Notice>{`This spread needs ${spread.positions.length} cards, and ${ownDeck?.data.name ?? 'the deck'} has ${pool.length}. Choose a smaller spread, or add more cards.`}</Notice>}
           {byHand ? (
             <>
               <Body muted>Lay out your own cards as the spread says, then pick which card is in each place.</Body>
@@ -305,7 +345,7 @@ export default function DrawScreen() {
       {draw && (
         <View style={ui.gap} onLayout={(e) => setWidth(e.nativeEvent.layout.width)}>
           {!!question.trim() && <Text style={[type.cardTitle, { color: colors.parchment }]}>{question.trim()}</Text>}
-          {width > 0 && <SpreadTable spread={spread} draw={draw} revealed={revealed} selected={selected} onPress={press} still={still} width={width} deck={deck?.data} />}
+          {width > 0 && <SpreadTable spread={spread} draw={draw} revealed={revealed} selected={selected} onPress={press} still={still} width={width} deck={deck} ownDeck={ownDeck?.data} />}
           {!allShown && (
             <>
               <Body muted>{draw.items.length === 1 ? 'Tap it to turn it over.' : 'Tap each one to turn it over, in your own time.'}</Body>
@@ -320,6 +360,7 @@ export default function DrawScreen() {
           <SectionLabel>{position && spread.positions.length > 1 ? `${(selected ?? 0) + 1} · ${position.name}` : spread.label}</SectionLabel>
           {position && spread.positions.length > 1 && <Body muted>{position.about}</Body>}
           <Text style={type.cardTitle}>{`${shown.glyph ? `${shown.glyph}  ` : ''}${shown.name}${shown.reversed ? ', reversed' : ''}`}</Text>
+          {!!shown.card && !!deckCardTitle(deck, shown.card.id) && <Body muted>{`In the ${deckInfo(deck).name}: ${deckCardTitle(deck, shown.card.id)}`}</Body>}
           {!!shown.gloss && <Body muted>{shown.gloss}</Body>}
           {!!shown.meaning.keywords && <Text style={[type.body, { color: colors.gold }]}>{shown.meaning.keywords}</Text>}
           <Body>{shown.meaning.text}</Body>
@@ -334,7 +375,7 @@ export default function DrawScreen() {
               key={i}
               icon="wheel"
               title={`${i + 1}. ${item.name}${item.reversed ? ', reversed' : ''}`}
-              detail={[placeOf(spread, draw, i)?.name, meaningOf(item, deck?.data)?.meaning.keywords].filter(Boolean).join(' · ')}
+              detail={[placeOf(spread, draw, i)?.name, meaningOf(item, ownDeck?.data)?.meaning.keywords].filter(Boolean).join(' · ')}
               last={i === draw.items.length - 1}
               onPress={() => setSelected(i)}
             />
@@ -367,5 +408,49 @@ export default function DrawScreen() {
         </>
       )}
     </RitualScreen>
+  );
+}
+
+/** For a Dream reading, Before a working or Patron deity: which dream, plan or deity it's drawn for (or none). */
+function LinkChooser({
+  kind,
+  chosen,
+  onChoose,
+  settings,
+}: {
+  kind: ReadingLinkKind;
+  chosen: ReadingLink | null;
+  onChoose: (link: ReadingLink | null) => void;
+  settings: Record<string, unknown> | null | undefined;
+}) {
+  const { entries } = useCraft<unknown>(DREAMS);
+  const rituals = useRituals();
+  const choices: ReadingLink[] = useMemo(() => {
+    if (kind === 'dream') return sortDreams(entries.map((e) => ({ ...e, data: normalizeDream(e.data) }))).slice(0, 6).map((e) => ({ kind, id: e.id, title: e.data.title || 'Untitled dream' }));
+    if (kind === 'plan') return upcomingPlans(rituals.plans, new Date()).slice(0, 6).map((p) => ({ kind, id: p.id, title: p.title }));
+    return myDeities(settings).map((d) => deityLink(d.key, d.name));
+  }, [kind, entries, rituals.plans, settings]);
+  const all = chosen && !choices.some((c) => c.id === chosen.id) ? [chosen, ...choices] : choices;
+  const label = kind === 'dream' ? 'The dream it’s for' : kind === 'plan' ? 'The working it’s for' : 'The god it’s for';
+  const none =
+    kind === 'dream'
+      ? 'No dreams written yet. Write one in Grimoire → Dreams, or draw without one.'
+      : kind === 'plan'
+        ? 'No workings planned. Plan one, or draw without one.'
+        : 'No deities kept yet. Add them in Settings → My deities, or draw without one.';
+  return (
+    <View style={ui.gapSmall}>
+      <SectionLabel>{label}</SectionLabel>
+      {all.length ? (
+        <Chips>
+          {all.map((c) => (
+            <Chip key={c.id} label={c.title || c.id} selected={chosen?.id === c.id} onPress={() => onChoose(chosen?.id === c.id ? null : c)} />
+          ))}
+        </Chips>
+      ) : (
+        <Body muted>{none}</Body>
+      )}
+      {!!chosen && <Body muted>{`${linkLine(chosen)}. It will show there too.`}</Body>}
+    </View>
   );
 }

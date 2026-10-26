@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../Button';
+import { ResearchFooter } from '../ResearchNote';
 import { Card, MoreScreen, RichText, Section, Tags } from '../more/ui';
 import { journeyForDeityRef, JOURNEYS_LIVE } from '../../lib/journeys';
 import { correspondences, entryIntro, findByName, useLibrary, type LibraryEntry } from '../../lib/library';
@@ -177,6 +178,8 @@ export function LibraryEntryView({ entryId, back, backLabel, hrefFor, editHref }
           <Tags items={entry.tags} />
         </Section>
       )}
+
+      <ResearchFooter page={entry.name} kind={entry.category || 'Living Library'} />
 
       {!!session && (
         <RelationshipManager

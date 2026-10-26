@@ -185,6 +185,7 @@
       lookBackCard(m) +
       horizonSection(today) +
       dreamCard(m) +
+      deipnonCard(m) +
       practiceCard(m) +
       cardOfTheDay(m) +
       daySkyCard(m) +
@@ -312,6 +313,23 @@
       (state.dreamProblem ? `<p class="sp-notice" role="status">${esc(state.dreamProblem)}</p>` : "") +
       `<div class="sp-actions"><button type="button" class="button button--primary" data-dream-keep>Keep it</button>` +
       `<a class="button button--ghost" href="/grimoire/dreams/edit/">Write it in full</a></div></section>`
+    );
+  }
+
+  /**
+   * On Hekate's Deipnon, the last day of the Attic month, for those who keep the
+   * Hellenic monthly days or hold Hekate as patron (the app's DeipnonCard).
+   * Turned off in Today's calendar settings.
+   */
+  function deipnonCard(m) {
+    const prompt = C.deipnon ? C.deipnon.deipnonToday(m.now, m.settings) : null;
+    if (!prompt) return "";
+    return (
+      `<section class="td-card td-card--working" aria-labelledby="td-deipnon-label"><p class="sp-eyebrow td-gold">Tonight</p>` +
+      `<h2 class="td-card__title" id="td-deipnon-label">${esc(prompt.title)}</h2>` +
+      `<p class="sp-caption">${esc(prompt.detail)}</p>` +
+      `<ul class="td-steps">${prompt.steps.map((step) => `<li>${esc(step)}</li>`).join("")}</ul>` +
+      `<div class="sp-actions"><a class="button button--primary" href="/divination/draw/?spread=${encodeURIComponent(prompt.spread)}">Draw the Crossroads spread</a></div></section>`
     );
   }
 

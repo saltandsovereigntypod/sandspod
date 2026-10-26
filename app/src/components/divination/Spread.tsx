@@ -10,6 +10,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle, Rect, Text as SvgText } from 'react-native-svg';
 
 import { layoutOfDraw, meaningOf, placeOf, type Draw, type Spread } from '../../lib/divination/draw';
+import { type DeckId } from '../../lib/divination/decks';
 import { diagramOf, isSimpleRow, ITEM, layoutOf, type Diagram } from '../../lib/divination/layout';
 import type { OwnDeckData } from '../../lib/divination/oracle/decks';
 import { colors, type } from '../../theme';
@@ -25,8 +26,10 @@ type Props = {
   still: boolean;
   /** The width there is to lay it out in. */
   width: number;
+  /** The tarot deck whose pictures to show. */
+  deck?: DeckId;
   /** For a draw from a deck of your own: the deck. */
-  deck?: OwnDeckData | null;
+  ownDeck?: OwnDeckData | null;
 };
 
 /** What a screen reader hears for one place in the spread. */
@@ -48,7 +51,7 @@ const SIZE = {
   oracle: { max: 110, min: 44 },
 };
 
-export function SpreadTable({ spread, draw, revealed, selected, onPress, still, width, deck = null }: Props) {
+export function SpreadTable({ spread, draw, revealed, selected, onPress, still, width, deck, ownDeck = null }: Props) {
   const [close, setClose] = useState(false);
 
   const one = (index: number, w: number, h: number) => {
@@ -58,13 +61,13 @@ export function SpreadTable({ spread, draw, revealed, selected, onPress, still, 
     const hint = shown ? 'Shows its meaning' : 'Turns it over';
     let back;
     let front;
-    const oracle = oracleFront(spread.kind, item, w, deck);
+    const oracle = oracleFront(spread.kind, item, w, ownDeck);
     if (oracle) {
       back = <CardBack />;
       front = oracle;
     } else if (spread.kind === 'tarot') {
       back = <CardBack />;
-      front = <TarotFace name={item.name} reversed={item.reversed} />;
+      front = <TarotFace name={item.name} reversed={item.reversed} deck={deck} />;
     } else if (spread.kind === 'runes') {
       back = <RuneStone glyph="" size={w} />;
       front = <RuneStone glyph={meaningOf(item)?.glyph ?? ''} size={w} />;

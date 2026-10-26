@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
+import { LinkedReadings } from '../../../../components/divination/Linked';
+import { ResearchFooter } from '../../../../components/ResearchNote';
 import {
   journeyStyles,
   lengthWords,
@@ -15,6 +17,7 @@ import {
 } from '../../../../components/journeys/parts';
 import { Body, Card, confirmAction, Expander, List, RitualScreen, Row, SectionLabel, Title, tell, ui } from '../../../../components/rituals/ui';
 import { shortDate } from '../../../../lib/calendar';
+import { deityLink } from '../../../../lib/divination/linked';
 import {
   currentStage,
   holyDaysBetween,
@@ -134,6 +137,15 @@ export default function JourneyOverview() {
         )}
       </View>
 
+      {journey.kind === 'deity' && (
+        <LinkedReadings
+          link={deityLink(journey.deityRef, journey.title.split(':')[0])}
+          label="Readings for this god"
+          drawLabel="Draw the Patron deity spread"
+          empty="Four cards: what this god asks of you, what they offer, how to honour them, and what stands between you."
+        />
+      )}
+
       {journey.notes.length > 0 && (
         <Card accent>
           <SectionLabel>Things to know first</SectionLabel>
@@ -185,6 +197,8 @@ export default function JourneyOverview() {
           ))}
         </Expander>
       )}
+
+      <ResearchFooter page={journey.title} kind="Dedication journey" />
     </RitualScreen>
   );
 }

@@ -5,6 +5,7 @@ import { Text } from 'react-native';
 import { MenuList, MenuRow, MoreScreen } from '../../../../components/more/ui';
 import { useSession } from '../../../../lib/session';
 import { holidayChoice, TRADITIONS } from '../../../../lib/holidays';
+import { chosenDeck, deckInfo } from '../../../../lib/divination/decks';
 import { layerOrderLabel, type Settings } from '../../../../lib/settings/defaults';
 import { myPractices, practiceName } from '../../../../lib/rituals/premade';
 import { useMySettings } from '../../../../lib/settings/store';
@@ -78,6 +79,12 @@ export default function SettingsIndex() {
           label="Living Objects"
           detail="What an object’s living state shows"
           onPress={() => router.push('/more/settings/objects')}
+        />
+        <MenuRow
+          icon="moon"
+          label="Divination"
+          detail={settings ? `Tarot deck: ${deckInfo(chosenDeck(settings)).name}` : 'Tarot deck, reversed cards'}
+          onPress={() => router.push('/more/settings/divination')}
         />
         <MenuRow
           icon="moon"

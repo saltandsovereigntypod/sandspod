@@ -28,8 +28,8 @@ export type SacredRule =
   | { kind: 'weekday'; day: number }
   /** A moon phase: the new moon (first crescent), the full moon, or the dark moon. */
   | { kind: 'moon'; phase: 'new' | 'full' | 'dark' }
-  /** A day of the Attic lunar month (1 = Noumenia; 'last' = the Deipnon, the last day). */
-  | { kind: 'attic'; day: number | 'last' }
+  /** A day of the Attic lunar month (1 = Noumenia; 'last' = the Deipnon, the last day), in every month or only in `month` ("Gamelion"). */
+  | { kind: 'attic'; day: number | 'last'; month?: string }
   /** A fixed day of the year (month 1–12). */
   | { kind: 'fixed'; month: number; day: number }
   /** A festival already in lib/holidays.ts, by its tradition and id (e.g. 'hellenic', 'thesmophoria'). */

@@ -244,6 +244,7 @@
       `<p class="sp-caption">On the horizon always shows the next moon phase and the next holiday.</p>` +
       `<div class="sp-list">` +
       checkRow("today-draw", "A card for the day", "A small “Draw a card for the day” line, and the card once you’ve kept it.", draft.today_draw !== false, 'data-today-draw="1"') +
+      checkRow("today-deipnon", "Hekate’s Deipnon", "On the last day of each Attic month, if you keep the Hellenic monthly days or Hekate is your patron: a gentle note on Today, and a reminder in the phone app (a website can’t ring).", draft.deipnon_prompt !== false, 'data-today-deipnon="1"') +
       `</div></section>`;
 
     const custom = chosen.has("custom") ? customHolidays(choice.custom) + pickHolidays(choice.picked || [], chosen, hidden) : "";
@@ -409,6 +410,10 @@
     }
     if (input.dataset.todayDraw) {
       set("today_draw", input.checked);
+      return render();
+    }
+    if (input.dataset.todayDeipnon) {
+      set("deipnon_prompt", input.checked);
       return render();
     }
     if (input.dataset.extra) {

@@ -1,11 +1,14 @@
 import { useLocalSearchParams } from 'expo-router';
+import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { OghamStave, RuneStone } from '../../../../../components/divination/Faces';
 import { KipperFace, LenormandArt } from '../../../../../components/divination/oracle/OracleFaces';
-import { Card, MoreScreen, Notice } from '../../../../../components/more/ui';
+import { ResearchFooter } from '../../../../../components/ResearchNote';
+import { Card, Chips, MoreScreen, Notice } from '../../../../../components/more/ui';
+import { chosenDeck, deckCardTitle, deckInfo, deckPictureLabel, TAROT_DECKS, type DeckId } from '../../../../../lib/divination/decks';
 import { divinationPage, findDivination, wordsLine } from '../../../../../lib/divination/library';
-import { tarotImages } from '../../../../../lib/divination/tarotAssets';
+import { deckImages } from '../../../../../lib/divination/tarotAssets';
 import { TarotArt } from '../../../../../components/divination/TarotArt';
 import { useMySettings } from '../../../../../lib/settings/store';
 import { colors, fonts, radius, type } from '../../../../../theme';
@@ -17,6 +20,9 @@ export default function DivinationEntryPage() {
   const { kind, id } = useLocalSearchParams<{ kind: string; id: string }>();
   const { settings } = useMySettings();
   const entry = findDivination(kind, id);
+  // Your deck first; the others a tap away, just for this page.
+  const [looking, setLooking] = useState<DeckId | null>(null);
+  const deck = looking ?? chosenDeck(settings);
 
   if (!entry) {
     return (
@@ -27,7 +33,8 @@ export default function DivinationEntryPage() {
   }
 
   const page = divinationPage(entry);
-  const art = entry.cardId ? tarotImages[entry.cardId] : undefined;
+  const art = entry.cardId ? deckImages[deck][entry.cardId] : undefined;
+  const deckTitle = entry.cardId ? deckCardTitle(deck, entry.cardId) : null;
 
   return (
     <MoreScreen title={entry.name} eyebrow={page.eyebrow} back="/grimoire" backLabel="Back to your Grimoire">
@@ -37,7 +44,7 @@ export default function DivinationEntryPage() {
         <>
           <View style={styles.figure}>
             {art ? (
-              <TarotArt place={art} style={styles.card} accessibilityLabel={`${entry.name}, Pamela Colman Smith’s picture`} />
+              <TarotArt place={art} style={styles.card} accessibilityLabel={`${entry.name}, ${deckPictureLabel(deck)}`} />
             ) : entry.kind === 'lenormand' ? (
               <LenormandArt id={entry.id} style={styles.lenormand} accessibilityLabel={`${entry.name}, the Bruges card of the 1890s`} />
             ) : entry.kind === 'kipper' ? (
@@ -50,6 +57,12 @@ export default function DivinationEntryPage() {
               <OghamStave glyph={entry.glyph ?? ''} width={52} height={200} />
             )}
           </View>
+          {!!art && (
+            <View style={styles.decks}>
+              <Text style={[type.caption, styles.center]}>{deckTitle ? `${deckInfo(deck).name}: ${deckTitle}` : `${deckInfo(deck).name}, ${deckInfo(deck).made}`}</Text>
+              <Chips label="Deck" options={TAROT_DECKS.map((d) => ({ value: d.id, label: d.name }))} value={deck} onChange={setLooking} />
+            </View>
+          )}
           <Text style={styles.words} accessibilityLabel={`In three words: ${entry.words.join(', ')}`}>
             {wordsLine(entry.words)}
           </Text>
@@ -64,6 +77,7 @@ export default function DivinationEntryPage() {
               </View>
             ))}
           </Card>
+          <ResearchFooter page={entry.name} kind={page.eyebrow} />
         </>
       )}
     </MoreScreen>
@@ -77,6 +91,7 @@ const styles = StyleSheet.create({
   kipper: { width: 170, height: 170 / 0.62 },
   words: { fontFamily: fonts.displayItalic, fontSize: 22, lineHeight: 28, color: colors.parchment, textAlign: 'center' },
   center: { textAlign: 'center' },
+  decks: { gap: 8, alignItems: 'center' },
   field: { gap: 6 },
   fieldLabel: { fontFamily: fonts.bodySemi, fontSize: 14, color: colors.gold },
   question: { fontFamily: fonts.displayItalic, fontSize: 20, lineHeight: 26, color: colors.cream },

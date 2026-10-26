@@ -14,7 +14,8 @@ import { Icon } from '../../../components/Icon';
 import { parseCalendarDate, shortDate } from '../../../lib/calendar';
 import { DREAMS, normalizeDream, sortDreams, type DreamEntry } from '../../../lib/craft/hedge/dreams';
 import { countOf, DIVINATION_TITLE, divinationGroups, divinationRoute, wordsLine, type DivinationEntry, type DivinationGroup } from '../../../lib/divination/library';
-import { tarotImages } from '../../../lib/divination/tarotAssets';
+import { deckImages } from '../../../lib/divination/tarotAssets';
+import { chosenDeck, type DeckId } from '../../../lib/divination/decks';
 import { TarotArt } from '../../../components/divination/TarotArt';
 import { useCraft } from '../../../lib/craft/store';
 import { DREAM_ROUTES, DREAMS_SHELF, dreamSearchResults, dreamShelfLine, withDreamsShelf } from '../../../lib/grimoire/dreams';
@@ -234,7 +235,7 @@ function LibraryShelves() {
                 );
               })}
             {shelfOpen && shelf.key === 'traditional' && divination.length > 0 && (
-              <DivinationSection groups={divination} searching={searching} opened={opened} onToggle={(key) => toggle(opened, setOpened, key)} />
+              <DivinationSection groups={divination} searching={searching} opened={opened} onToggle={(key) => toggle(opened, setOpened, key)} deck={chosenDeck(settings)} />
             )}
           </View>
         );
@@ -248,7 +249,7 @@ function LibraryShelves() {
  * drop-downs, each card or stave a row with its picture or letter and its
  * three words, opening its page. Searching opens the ones that match.
  */
-function DivinationSection({ groups, searching, opened, onToggle }: { groups: DivinationGroup[]; searching: boolean; opened: Set<string>; onToggle: (key: string) => void }) {
+function DivinationSection({ groups, searching, opened, onToggle, deck }: { groups: DivinationGroup[]; searching: boolean; opened: Set<string>; onToggle: (key: string) => void; deck: DeckId }) {
   return (
     <View style={styles.pathSection}>
       <Text style={styles.groupTitle}>{DIVINATION_TITLE}</Text>
@@ -263,7 +264,7 @@ function DivinationSection({ groups, searching, opened, onToggle }: { groups: Di
                 <View key={sub.key}>
                   {group.subgroups.length > 1 && <Text style={[type.caption, styles.subgroup]}>{sub.label}</Text>}
                   {sub.entries.map((entry) => (
-                    <DivinationRow key={entry.id} entry={entry} />
+                    <DivinationRow key={entry.id} entry={entry} deck={deck} />
                   ))}
                 </View>
               ))}
@@ -274,8 +275,9 @@ function DivinationSection({ groups, searching, opened, onToggle }: { groups: Di
   );
 }
 
-function DivinationRow({ entry }: { entry: DivinationEntry }) {
-  const art = entry.cardId ? tarotImages[entry.cardId] : undefined;
+function DivinationRow({ entry, deck }: { entry: DivinationEntry; deck: DeckId }) {
+  // The card in your chosen deck (Settings → Divination).
+  const art = entry.cardId ? deckImages[deck][entry.cardId] : undefined;
   return (
     <Pressable
       accessibilityRole="button"

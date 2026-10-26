@@ -2,10 +2,12 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
+import { PreReading } from '../../../../components/divination/Linked';
 import { Connections } from '../../../../components/rituals/Connections';
 import { DidItWork } from '../../../../components/rituals/DidItWork';
 import { Body, Card, Chip, Chips, RitualScreen, SectionLabel, Title, confirmAction, tell, ui } from '../../../../components/rituals/ui';
 import { journalDetail } from '../../../../lib/rituals/format';
+import { readLookBack } from '../../../../lib/rituals/lookBack';
 import { journalConnections } from '../../../../lib/rituals/plans';
 import { deleteJournal, useRituals } from '../../../../lib/rituals/store';
 import type { JournalRow } from '../../../../lib/rituals/types';
@@ -64,6 +66,7 @@ export default function JournalEntry() {
       <Body muted>{journalDetail(entry)}</Body>
 
       <DidItWork key={entry.id} entry={entry} />
+      <PreReading entry={entry} answered={!!readLookBack(entry)?.answer} />
 
       <Connections
         grimoirePageId={links.grimoirePageId}

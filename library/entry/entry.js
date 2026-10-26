@@ -113,7 +113,8 @@
       ${connections}
       <div data-journey></div>
       ${model.tags.length ? section("Tags", chipsHtml(model.tags.map((label) => ({ label, href: null }))), { plain: true }) : ""}
-      ${user ? "" : `<p class="sp-caption">Sign in to keep your own My Practice notes for this entry in your Book of Shadows.</p>`}`;
+      ${user ? "" : `<p class="sp-caption">Sign in to keep your own My Practice notes for this entry in your Book of Shadows.</p>`}
+      ${global.ResearchNote ? global.ResearchNote.footerHtml(model.name, model.category || "Living Library") : ""}`;
   }
 
   /** "Sourcing with care", from the app's notes (js/library.js loads js/core/guides.js for it). */

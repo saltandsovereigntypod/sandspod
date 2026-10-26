@@ -34,7 +34,7 @@
       )}</span><span class="dv-kipper__german">${esc(card?.german ?? "")}</span></span></span>`;
     }
     if (kind === "oracle") {
-      const card = deck ? Dv.decks.ownCard(deck, item.name) : null;
+      const card = deck ? Dv.oracleDecks.ownCard(deck, item.name) : null;
       const photo = card && /^(https?:|data:image\/)/.test(card.photo) ? card.photo : "";
       return `<span class="dv-face dv-front dv-card dv-own${item.reversed ? " dv-card--reversed" : ""}">${
         photo

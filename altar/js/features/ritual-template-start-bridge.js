@@ -138,13 +138,15 @@ async function markHandedOverPlanDone(planId, user) {
   if (error) console.warn("The plan could not be marked as begun.", error);
 }
 
-/** Keep what the app keeps with a session: its ingredients, the premade it came from, the altar it runs on. */
+/** Keep what the app keeps with a session: its ingredients, the premade it came from, the altar it runs on, the plan it was begun from. */
 async function addHandoffToRitualSession(handoff, user) {
   const extra = {};
   if (Array.isArray(handoff.ingredients) && handoff.ingredients.length) extra.ingredients = handoff.ingredients;
   if (handoff.premadeId) extra.premadeId = handoff.premadeId;
   if (handoff.closing) extra.closing = handoff.closing;
   if (handoff.altarId) extra.ranOnAltar = handoff.altarId;
+  // The plan it was begun from, so a reading drawn before it shows beside "Did it work?".
+  if (handoff.planId) extra.planId = handoff.planId;
   if (!Object.keys(extra).length || !activeRitualSession) return;
   activeRitualSession.metadata = { ...(activeRitualSession.metadata || {}), ...extra };
   if (!user) {

@@ -46,6 +46,8 @@
   let myDecks = [];
   // Faces, pairs and logging a physical pull for Lenormand, Kipper and your decks (practice/hedge/oracle.js).
   const Or = global.PracticeOracle || null;
+  // Planned workings still ahead, for drawing Before a working (ritual_plans, and this browser's copy).
+  let plans = [];
   let loaded = false;
 
   async function load() {
@@ -54,14 +56,41 @@
       kit.entries(R.READINGS),
       kit.entries(A.ANCESTORS),
       Dv ? kit.entries(Dv.custom.SPREADS_COLLECTION) : [],
-      Dv?.decks ? kit.entries(Dv.decks.DECKS_COLLECTION) : []
+      Dv?.oracleDecks ? kit.entries(Dv.oracleDecks.DECKS_COLLECTION) : []
     ]);
     mySpreads = s;
-    myDecks = Dv?.decks ? Dv.decks.ownDecks(o) : [];
+    myDecks = Dv?.oracleDecks ? Dv.oracleDecks.ownDecks(o) : [];
     dreams = d.map((e) => ({ ...e, data: D.normalizeDream(e.data) }));
     readings = R.sortReadings(r.map((e) => ({ ...e, data: R.normalizeReading(e.data) })));
     people = a.map((e) => ({ ...e, data: A.normalizeAncestor(e.data) })).sort((x, y) => x.data.name.localeCompare(y.data.name));
+    if (Dv && view === "hedge-draw") plans = await loadPlansAhead();
     loaded = true;
+  }
+
+  /** Plans not yet begun, from today on, soonest first: this browser's and, signed in, the account's. */
+  async function loadPlansAhead() {
+    const today = kit.dateKey(new Date());
+    let list = [];
+    try {
+      const local = JSON.parse(global.localStorage.getItem("rituals.plans.v1") || "[]");
+      if (Array.isArray(local)) list = local.filter((p) => p && p.id && (!p.syncedTo || p.syncedTo === user?.id)).map((p) => ({ id: p.id, date: p.date, time: p.time || "", title: p.title || "", done: !!p.doneAt }));
+    } catch {
+      list = [];
+    }
+    if (user && global.db) {
+      try {
+        const { data } = await global.db.from("ritual_plans").select("id,planned_date,planned_time,title,done_at").eq("user_id", user.id);
+        for (const row of data || []) {
+          if (!list.some((p) => p.id === row.id)) list.push({ id: row.id, date: row.planned_date, time: row.planned_time || "", title: row.title || "", done: !!row.done_at });
+        }
+      } catch (error) {
+        console.warn("Plans could not be read.", error);
+      }
+    }
+    return list
+      .filter((p) => !p.done && String(p.date) >= today)
+      .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`))
+      .slice(0, 6);
   }
   const notFound = (backHtml, title, text) => [backHtml, kit.head({ title }), kit.p(loaded ? text : "Opening…")].join("");
 
@@ -221,6 +250,7 @@
       back,
       kit.head({ eyebrow: `${R.methodLabel(r.method)} · ${fullDate(r.date)}`, title: r.question || "A reading" }),
       kit.muted(`Under a ${r.moonPhase}`),
+      r.linkedTo && Dv ? `<p><a class="pr-link" href="${kit.esc(Dv.linked.linkUrl(r.linkedTo))}">${kit.esc(Dv.linked.linkLine(r.linkedTo))} ›</a></p>` : "",
       laidOutHtml(r),
       r.drawn.length
         ? kit.section(
@@ -465,14 +495,14 @@
     return shown ? `${place}${itemName(d.items[i])}` : `${place}face down`;
   }
 
-  /** One card, rune or stave that turns over (`act` on press, value = its place); `deck` for a deck of your own. */
-  function flipHtml(spread, d, i, shown, selected, act, deck) {
+  /** One card, rune or stave that turns over (`act` on press, value = its place); `deck` the tarot deck, `own` a deck of your own. */
+  function flipHtml(spread, d, i, shown, selected, act, deck, own) {
     const item = d.items[i];
-    const m = Dv.draw.meaningOf(item, deck);
+    const m = Dv.draw.meaningOf(item, own);
     let back;
     let front;
     let shape = "";
-    const oracle = Or ? Or.frontHtml(spread.kind, item, deck) : null;
+    const oracle = Or ? Or.frontHtml(spread.kind, item, own) : null;
     if (oracle) {
       back = `<span class="dv-face dv-back">${CARD_BACK}</span>`;
       front = oracle;
@@ -480,7 +510,7 @@
     } else if (spread.kind === "tarot") {
       const card = Dv.tarot.tarotCard(item.name);
       back = `<span class="dv-face dv-back">${CARD_BACK}</span>`;
-      front = `<span class="dv-face dv-front dv-card${item.reversed ? " dv-card--reversed" : ""}"><img src="/assets/divination/tarot/${kit.esc(card?.id || "")}.webp" alt="" loading="lazy" /></span>`;
+      front = `<span class="dv-face dv-front dv-card${item.reversed ? " dv-card--reversed" : ""}"><img src="${kit.esc(Dv.decks.deckImagePath(deck || Dv.decks.DEFAULT_DECK, card?.id || ""))}" alt="" loading="lazy" /></span>`;
     } else {
       const cls = spread.kind === "runes" ? "dv-stone" : "dv-stave";
       shape = spread.kind === "runes" ? " dv-flip--stone" : " dv-flip--stave";
@@ -508,8 +538,8 @@
    * every place where the layout puts it, the crossing card turned, the cast
    * on its cloth. Too wide for the page, it scrolls sideways.
    */
-  function tableHtml(spread, d, revealed, selected, act, deck) {
-    const one = (i) => flipHtml(spread, d, i, revealed[i], selected === i, act, deck);
+  function tableHtml(spread, d, revealed, selected, act, deck, own) {
+    const one = (i) => flipHtml(spread, d, i, revealed[i], selected === i, act, deck, own);
     const l = Dv.draw.layoutOfDraw(spread, d);
     if (Dv.layout.isSimpleRow(l)) {
       const n = d.items.length;
@@ -581,17 +611,18 @@
   }
 
   /** What one card, rune or stave means, in its place. */
-  function meaningHtml(spread, d, i, deck) {
+  function meaningHtml(spread, d, i, deck, own) {
     if (i === null || i === undefined || !d.items[i]) return "";
-    const m = Dv.draw.meaningOf(d.items[i], deck);
+    const m = Dv.draw.meaningOf(d.items[i], own);
     if (!m) return "";
+    const title = m.card && deck && spread.kind === "tarot" ? Dv.decks.deckCardTitle(deck, m.card.id) : null;
     const place = spread.positions.length > 1 ? Dv.draw.placeOf(spread, d, i) : null;
     // Its page in the Book of Shadows' Traditional Information, unless that's turned off (none for a card of your own).
     const more = settings.library_traditional_enabled !== false && !m.own ? Dv.links?.readMoreHref(m.name) : null;
     return kit.card(
       `${place ? kit.muted(place.about) : ""}<p class="dv-meaning__name">${m.glyph ? `<span class="dv-glyph" aria-hidden="true">${kit.esc(m.glyph)}</span>  ` : ""}${kit.esc(
         itemName(m)
-      )}</p>${m.gloss ? kit.muted(m.gloss) : ""}${m.meaning.keywords ? `<p class="dv-meaning__words">${kit.esc(m.meaning.keywords)}</p>` : ""}${kit.p(m.meaning.text)}${
+      )}</p>${title ? kit.muted(`In the ${Dv.decks.deckInfo(deck).name}: ${title}`) : ""}${m.gloss ? kit.muted(m.gloss) : ""}${m.meaning.keywords ? `<p class="dv-meaning__words">${kit.esc(m.meaning.keywords)}</p>` : ""}${kit.p(m.meaning.text)}${
         more ? `<p class="dv-meaning__more"><a href="${kit.esc(more)}">Read more</a></p>` : ""
       }`,
       { gold: true, label: place ? `${i + 1} · ${place.name}` : spread.label }
@@ -604,15 +635,20 @@
     const found = Dv ? Dv.draw.drawOfReading(r, custom(), myDecks) : null;
     if (!found) return "";
     const { spread, draw: d } = found;
-    const deck = found.deck?.data;
+    const own = found.deck?.data;
+    const deck = Dv.decks.deckOfReading(r);
+    const info = Dv.decks.deckInfo(deck);
     return `<section class="sp-section" aria-label="The draw">${tableHtml(
       spread,
       d,
       d.items.map(() => true),
       laid.pick,
       "laid-pick",
-      deck
-    )}<div data-laid-meaning>${laid.pick === null ? kit.muted("Tap one for its meaning.") : meaningHtml(spread, d, laid.pick, deck)}</div>${Or ? Or.pairsHtml(spread, d) : ""}</section>`;
+      deck,
+      own
+    )}${spread.kind === "tarot" ? kit.muted(`Drawn with the ${info.name} (${info.made}).`) : ""}<div data-laid-meaning>${
+      laid.pick === null ? kit.muted("Tap one for its meaning.") : meaningHtml(spread, d, laid.pick, deck, own)
+    }</div>${Or ? Or.pairsHtml(spread, d) : ""}</section>`;
   }
 
   const drawState = {
@@ -631,8 +667,51 @@
     picking: false,
     byHand: false,
     placed: [],
-    pullQuery: ""
+    pullQuery: "",
+    link: undefined
   };
+  /** What the draw is for, if anything: a dream, a planned working, a deity (`?dream=`, `?plan=`, `?deity=` with `title`). */
+  function drawLink(spread) {
+    if (drawState.link === undefined) {
+      drawState.link = Dv.linked.linkFromParams({ dream: params.get("dream") || "", plan: params.get("plan") || "", deity: params.get("deity") || "", title: params.get("title") || "" });
+    }
+    const kind = Dv.linked.linkKindOfSpread(spread.id);
+    return drawState.link && drawState.link.kind === kind ? drawState.link : null;
+  }
+  /** The dreams, plans or deities a Dream reading, Before a working or Patron deity can be drawn for. */
+  function linkChoices(kind) {
+    if (kind === "dream") return D.sortDreams(dreams).slice(0, 6).map((e) => ({ kind, id: e.id, title: e.data.title || "Untitled dream" }));
+    if (kind === "plan") return plans.map((p) => ({ kind, id: p.id, title: p.title }));
+    return myDeitiesOf(settings).map((d) => Dv.linked.deityLink(d.key, d.name));
+  }
+  /** My deities from settings (as patron/mine.ts reads them), for pages without the patron module. */
+  function myDeitiesOf(s) {
+    try {
+      const list = JSON.parse(typeof s?.my_deities === "string" && s.my_deities ? s.my_deities : "[]");
+      return Array.isArray(list) ? list.filter((d) => d && typeof d.name === "string" && d.name.trim()).map((d) => ({ key: typeof d.key === "string" && d.key ? d.key : null, name: d.name.trim() })) : [];
+    } catch {
+      return [];
+    }
+  }
+  function linkChooserHtml(kind, chosen) {
+    const choices = linkChoices(kind);
+    const all = chosen && !choices.some((c) => c.id === chosen.id) ? [chosen, ...choices] : choices;
+    drawState.choices = all;
+    const label = kind === "dream" ? "The dream it’s for" : kind === "plan" ? "The working it’s for" : "The god it’s for";
+    const none =
+      kind === "dream"
+        ? "No dreams written yet. Write one in Grimoire → Dreams, or draw without one."
+        : kind === "plan"
+          ? "No workings planned. Plan one, or draw without one."
+          : "No deities kept yet. Add them in Settings → My deities, or draw without one.";
+    return kit.section(
+      label,
+      `${all.length ? kit.chips(all.map((c, i) => kit.chip({ label: c.title || c.id, act: "draw-link", value: String(i), pressed: chosen?.id === c.id })), label) : kit.muted(none)}${
+        chosen ? kit.muted(`${Dv.linked.linkLine(chosen)}. It will show there too.`) : ""
+      }`,
+      { id: "draw-link" }
+    );
+  }
   const custom = () => (Dv ? Dv.custom.customSpreads(mySpreads) : []);
   /** What's being drawn: tarot, runes, ogham, Lenormand, Kipper or a deck of your own ("oracle"). */
   function currentKind() {
@@ -646,7 +725,7 @@
   /** The deck of your own being drawn from, if any. */
   function currentDeck() {
     if (currentKind() !== "oracle") return null;
-    return Dv.decks.ownDeckById(myDecks, drawState.deckId) || myDecks[0] || null;
+    return Dv.oracleDecks.ownDeckById(myDecks, drawState.deckId) || myDecks[0] || null;
   }
   const resolveSpread = (spreadId) => (currentKind() === "oracle" ? Dv.draw.ownDeckSpreadById(spreadId, custom()) : Dv.draw.spreadById(spreadId, custom()));
   function currentSpread() {
@@ -662,6 +741,8 @@
     return (base && resolveSpread(base.id)) || spread;
   };
   const drawOptions = () => Dv.draw.drawOptions({ ...settings, ...drawState.local });
+  /** The deck to draw with: your setting, or the one just tapped (kept as your deck too). */
+  const drawDeck = () => Dv.decks.chosenDeck({ ...settings, ...drawState.local });
   const chosenLookBack = (spread) => drawState.lookBack ?? R.lookBackFrom(kit.dateKey(new Date()), spread.lookBackDays);
   const KIND_NOTES = () => ({ ...Dv.staves.STAVE_NOTES, lenormand: Dv.lenormand.LENORMAND_NOTE, kipper: Dv.kipper.KIPPER_NOTE });
 
@@ -752,10 +833,12 @@
     const pool = Dv.draw.poolFor(kindId, opts, deck);
     const deckChips =
       kindId === "oracle"
-        ? `${myDecks.length ? kit.chips(myDecks.map((x) => kit.chip({ label: x.data.name, act: "draw-deck", value: x.id, pressed: deckEntry?.id === x.id })), "Your decks") : ""}${kit.actions([
+        ? `${myDecks.length ? kit.chips(myDecks.map((x) => kit.chip({ label: x.data.name, act: "draw-own-deck", value: x.id, pressed: deckEntry?.id === x.id })), "Your decks") : ""}${kit.actions([
             kit.button({ label: deckEntry ? "Your decks and their cards" : "Make a deck", url: deckEntry ? url.decks : url.deckEdit, ghost: true })
           ])}`
         : "";
+    const linkKind = Dv.linked.linkKindOfSpread(spread.id);
+    const linkedTo = drawLink(spread);
     return [
       back,
       kit.head({ eyebrow: "Draw · Divination", title: kindId === "oracle" && deck ? deck.name : kind.label }),
@@ -789,6 +872,8 @@
             })
           ])
         : "",
+      !d && !drawState.byHand && linkKind ? linkChooserHtml(linkKind, linkedTo) : "",
+      d && linkedTo ? kit.muted(Dv.linked.linkLine(linkedTo)) : "",
       noCards
         ? ""
         : !d
@@ -799,7 +884,7 @@
                 value: drawState.question,
                 input: "draw-question",
                 multiline: true,
-                placeholder: spread.id === "daily" ? "What do I need today?" : "What you want to ask, as you’d ask it"
+                placeholder: linkedTo ? Dv.linked.linkQuestion(linkedTo) : spread.id === "daily" ? "What do I need today?" : "What you want to ask, as you’d ask it"
               }),
               !spread.cast
                 ? kit.section(
@@ -809,6 +894,16 @@
                       "How"
                     ),
                     { id: "draw-how", level: "h3" }
+                  )
+                : "",
+              kindId === "tarot"
+                ? kit.section(
+                    "Deck",
+                    `${kit.chips(
+                      Dv.decks.TAROT_DECKS.map((x) => kit.chip({ label: x.name, act: "draw-deck", value: x.id, pressed: drawDeck() === x.id })),
+                      "Deck"
+                    )}${kit.muted(`${Dv.decks.deckInfo(drawDeck()).made}. ${Dv.decks.deckInfo(drawDeck()).about}`)}`,
+                    { id: "draw-deck" }
                   )
                 : "",
               kindId === "tarot"
@@ -832,8 +927,9 @@
               drawState.revealed,
               drawState.selected,
               "draw-turn",
+              drawDeck(),
               deck
-            )}<div data-draw-hint>${drawHintHtml(d)}</div></section><div data-draw-meaning>${meaningHtml(spread, d, drawState.selected, deck)}</div><div data-draw-after>${drawAfterHtml(spread, d)}</div>`
+            )}<div data-draw-hint>${drawHintHtml(d)}</div></section><div data-draw-meaning>${meaningHtml(spread, d, drawState.selected, drawDeck(), deck)}</div><div data-draw-after>${drawAfterHtml(spread, d)}</div>`
     ].join("");
   }
 
@@ -850,7 +946,7 @@
       else el.removeAttribute("aria-current");
     });
     kit.render(root.querySelector("[data-draw-hint]"), drawHintHtml(d));
-    kit.render(root.querySelector("[data-draw-meaning]"), meaningHtml(spread, d, drawState.selected, currentDeck()?.data));
+    kit.render(root.querySelector("[data-draw-meaning]"), meaningHtml(spread, d, drawState.selected, drawDeck(), currentDeck()?.data));
     if (after) kit.render(root.querySelector("[data-draw-after]"), drawAfterHtml(spread, d));
   }
 
@@ -1079,7 +1175,7 @@
       drawState.kind = kind;
       chooseSpread(Dv.draw.spreadsFor(kind, custom())[0].id);
     },
-    "draw-deck"(el) {
+    "draw-own-deck"(el) {
       if (el.dataset.value === currentDeck()?.id) return;
       drawState.deckId = el.dataset.value;
       Object.assign(drawState, { draw: null, revealed: [], selected: null, placed: [], problem: "" });
@@ -1213,12 +1309,27 @@
     "draw-question"(el) {
       drawState.question = el.value;
     },
+    "draw-link"(el) {
+      const chosen = (drawState.choices || [])[Number(el.dataset.value)] || null;
+      drawState.link = chosen && drawState.link?.id === chosen.id && drawState.link?.kind === chosen.kind ? null : chosen;
+      draw();
+    },
     "draw-option"(el) {
       const key = el.id === "draw-reversals" ? "divination_reversals" : "divination_blank_rune";
       drawState.local[key] = el.checked;
       settings = { ...settings, [key]: el.checked };
       // Kept with your settings, so the app draws the same way.
       global.SaltSettings?.patch({ [key]: el.checked }).catch((error) => console.error(error));
+    },
+    "draw-deck"(el) {
+      const deck = el.dataset.value;
+      if (!Dv.decks.isDeckId(deck)) return;
+      drawState.local[Dv.decks.DECK_SETTING] = deck;
+      settings = { ...settings, [Dv.decks.DECK_SETTING]: deck };
+      // Your deck from now on, here and in the app.
+      global.SaltSettings?.patch({ [Dv.decks.DECK_SETTING]: deck }).catch((error) => console.error(error));
+      draw();
+      root.querySelector('[data-act="draw-deck"][aria-pressed="true"]')?.focus();
     },
     "draw-start"() {
       const d = Dv.draw.drawSpread(currentSpread(), drawOptions(), undefined, currentDeck()?.data);
@@ -1259,8 +1370,10 @@
         interpretation: drawState.interpretation,
         lookBack: chosenLookBack(spread),
         now: new Date(),
-        deck: currentDeck(),
-        byHand: drawState.byHand
+        deck: drawDeck(),
+        ownDeck: currentDeck(),
+        byHand: drawState.byHand,
+        linkedTo: drawLink(spread)
       });
       drawState.saving = true;
       drawState.problem = "";
@@ -1281,7 +1394,7 @@
       const found = entry && Dv ? Dv.draw.drawOfReading(entry.data, custom(), myDecks) : null;
       if (!found) return;
       root.querySelectorAll('[data-act="laid-pick"]').forEach((b) => (Number(b.dataset.value) === laid.pick ? b.setAttribute("aria-current", "true") : b.removeAttribute("aria-current")));
-      kit.render(root.querySelector("[data-laid-meaning]"), laid.pick === null ? kit.muted("Tap one for its meaning.") : meaningHtml(found.spread, found.draw, laid.pick, found.deck?.data));
+      kit.render(root.querySelector("[data-laid-meaning]"), laid.pick === null ? kit.muted("Tap one for its meaning.") : meaningHtml(found.spread, found.draw, laid.pick, Dv.decks.deckOfReading(entry.data), found.deck?.data));
     },
     // Ancestors
     candle() {

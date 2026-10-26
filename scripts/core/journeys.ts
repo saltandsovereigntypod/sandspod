@@ -16,3 +16,6 @@ export { holidayChoice, hiddenTraditions } from '../../app/src/lib/holidays.ts';
 export { blankAnswers, journalPayload } from '../../app/src/lib/rituals/lifecycle.ts';
 export { journalRow, journalLibraryEntry } from '../../app/src/lib/rituals/rows.ts';
 export { libraryItem } from '../../app/src/lib/rituals/planner.ts';
+// The Patron deity spread: readings drawn for a deity (hedge.readings with linkedTo).
+export * as linked from '../../app/src/lib/divination/linked.ts';
+export { READINGS, normalizeReading } from '../../app/src/lib/craft/hedge/readings.ts';

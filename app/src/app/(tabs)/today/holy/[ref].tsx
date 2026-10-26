@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
 import { Card, MoreScreen, Paragraphs, Section, Tags } from '../../../../components/more/ui';
+import { ResearchFooter } from '../../../../components/ResearchNote';
 import { MOON_CALENDAR } from '../../../../lib/calendars/moon';
 import { timeOfDay } from '../../../../lib/calendar';
 import { vocForDay } from '../../../../lib/craft/cosmic/hours';
@@ -129,6 +130,8 @@ export default function HolyDay() {
           ))}
         </Section>
       )}
+
+      <ResearchFooter page={page.title} kind={page.tradition || 'Holy day'} />
     </MoreScreen>
   );
 }

@@ -98,7 +98,7 @@ test('a spread lays out as many as it has places, never the same card twice', ()
   assert.equal(draw.items.length, 10);
   assert.equal(new Set(draw.items.map((d) => d.name)).size, 10);
   assert.ok(draw.items.every((d) => !d.reversed));
-  assert.equal(spreadsFor('tarot').length, 17); // the four first drawn, and the spreads added since (divination-spreads.test.ts)
+  assert.equal(spreadsFor('tarot').length, 28); // the four first drawn, and the spreads added since (divination-spreads.test.ts, divination-crossroads.test.ts)
   // Spreads for decks of your own need a deck (tests/oracle-decks.test.ts).
   for (const s of SPREADS.filter((x) => x.kind !== 'oracle')) assert.equal(drawSpread(s, { reversals: true, blankRune: true }, random).items.length, s.positions.length);
 });
@@ -201,7 +201,8 @@ test('every card has its picture, on the website and on one of the app’s sheet
   const places = new Set<string>();
   for (const card of TAROT_DECK) {
     assert.ok(existsSync(new URL(`../../assets/divination/tarot/${card.id}.webp`, import.meta.url)), card.id);
-    const m = manifest.match(new RegExp(`'${card.id}': \\{ sheet: sheets\\[(\\d+)\\], col: (\\d+), row: (\\d+) \\}`));
+    // The Rider–Waite–Smith's place (the other decks: divination-decks.test.ts).
+    const m = manifest.match(new RegExp(`'${card.id}': \\{ sheet: sheets\\.rws\\[(\\d+)\\], col: (\\d+), row: (\\d+) \\}`));
     assert.ok(m, card.id);
     const key = m!.slice(1).join(',');
     assert.ok(!places.has(key), `${card.id} shares a place`);

@@ -49,6 +49,11 @@ const MACNEILL = 'Máire MacNeill, The Festival of Lughnasa (1962)';
 const HINDU_LIVING =
   'These days belong to a living religion; customs vary by region and family. Gavin Flood, An Introduction to Hinduism (1996); Diana L. Eck, Darśan (1998)';
 
+const ERCHIA =
+  'The sacrificial calendar of the deme of Erchia (SEG 21.541), on sacrifices to Hera and Zeus Teleios for the sacred marriage on 27 Gamelion; see Mikalson, The Sacred and Civil Calendar of the Athenian Year';
+const EPAGOMENAL_BIRTHS =
+  'The five days upon the year and the gods born on them: Pyramid Texts; Papyrus Leiden I 346; Plutarch, On Isis and Osiris 12. Dates here count back from an early-August new year; the app’s Kemetic calendar works them out from the anchor you choose';
+
 export const DEITY_DEVOTIONS: DeityDevotion[] = [
   // ─── Greek ────────────────────────────────────────────────────────────
   {
@@ -460,6 +465,83 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     ],
   },
 
+  {
+    key: 'zeus',
+    sacred: [
+      {
+        rule: { kind: 'attic', month: 'Anthesterion', day: 23 },
+        name: 'Diasia',
+        why: 'The great festival of Zeus Meilichios, the Gentle, outside Athens, with whole families offering cakes shaped like animals as well as sacrifices.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'attic', month: 'Skirophorion', day: 14 },
+        name: 'Dipolieia',
+        why: 'The Athenian festival of Zeus Polieus, guardian of the city, with the old ox-slaying rite of the Bouphonia.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'attic', month: 'Gamelion', day: 27 },
+        name: 'Theogamia, the sacred marriage',
+        why: 'The wedding of Zeus and Hera, kept in the month of marriages with sacrifices to Hera and Zeus Teleios.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Pour a little wine or water as a libation and greet Zeus before anything else.',
+      'Welcome a guest or a stranger well, in honour of Zeus Xenios.',
+      'Keep one promise today and offer it to Zeus Horkios, keeper of oaths.',
+      'Add a little food to a jar for Zeus Ktesios, guardian of the household’s goods.',
+    ],
+    approach:
+      'Zeus is approached with dignity and good faith, through the title that fits the need, as a just king and protector of guests, oaths and households.',
+    sources: [
+      'Thucydides 1.126.6, on the Diasia as the greatest festival of Zeus Meilichios; scholia on Aristophanes, Clouds 408, for its date',
+      PARKE + ', on the Diasia and the Dipolieia',
+      ERCHIA,
+    ],
+  },
+  {
+    key: 'hera',
+    sacred: [
+      {
+        rule: { kind: 'attic', month: 'Gamelion', day: 27 },
+        name: 'Theogamia, the sacred marriage',
+        why: 'The wedding of Hera and Zeus, kept in Gamelion, the month of weddings, with sacrifices to Hera and Zeus Teleios.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Light a candle and name one commitment you mean to keep.',
+      'Offer a flower or a little honey with thanks for a partnership or a family bond.',
+      'Do one thing to support a woman or a mother you know.',
+      'Stand tall in one small way today, as a queen would.',
+    ],
+    approach:
+      'Hera is approached as a queen and protector of women and marriage, honoured in her cults rather than through the jealous wife of myth.',
+    sources: [ERCHIA, 'Pausanias 5.16 on the Heraia at Olympia; 8.22.2 on Hera as Pais, Teleia and Chera at Stymphalos', DEUBNER],
+  },
+  {
+    key: 'poseidon',
+    sacred: [
+      {
+        rule: { kind: 'attic', day: 8 },
+        name: 'The eighth of the month',
+        why: 'In Athens the eighth day of each lunar month belonged to Poseidon and Theseus.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Pour a little fresh water and ask for safe travel for someone on the move.',
+      'Pick up litter from a beach, riverbank or gutter that drains to the sea.',
+      'Stand still for a minute and feel the ground under you, steady.',
+      'Look at water, the sea, a river or a glass, and thank him for it.',
+    ],
+    approach:
+      'Poseidon is approached with respect for the power of the sea and the shaking earth, and with care for the waters he rules.',
+    sources: [ATTIC_MONTHLY, 'Plutarch, Life of Theseus 36, on the eighth day', PARKE],
+  },
+
   // ─── Roman ────────────────────────────────────────────────────────────
   {
     key: 'jupiter',
@@ -734,6 +816,131 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     sources: [OVID_FASTI + ' (4.393–620)', ROMAN_FESTIVALS],
   },
 
+  {
+    key: 'saturn',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'roman', id: 'saturnalia' },
+        name: 'Saturnalia',
+        why: 'Saturn’s festival from 17 December: a public sacrifice and banquet at his temple, then days of feasting, candles, small gifts and the cry “Io Saturnalia”.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'weekday', day: 6 },
+        name: 'Saturday',
+        why: 'Saturday was dies Saturni, Saturn’s day. Honouring him on Saturdays is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Share food with someone, or give a small gift with no reason needed.',
+      'Light a taper (and stay with it) for the light of the Golden Age.',
+      'Sow a few seeds in a pot, for the god of sowing.',
+      'Treat someone who serves you today as an equal and thank them.',
+    ],
+    approach:
+      'Saturn is approached as the generous god of sowing and the Golden Age, not as the grim Saturn of later astrology.',
+    sources: ['Macrobius, Saturnalia 1.7–1.10', ROMAN_FESTIVALS, WEEKDAYS],
+  },
+  {
+    key: 'flora',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'roman', id: 'floralia' },
+        name: 'Floralia',
+        why: 'Flora’s festival and games from 28 April to 3 May, with bright clothes, flowers and scattered beans.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Put a few flowers in water and thank her for them.',
+      'Plant seeds or a flower for bees and butterflies.',
+      'Wear something bright, as Romans did at her festival.',
+      'Stop for a minute at a flowering tree or plant and really look at it.',
+    ],
+    approach:
+      'Flora is approached with delight and colour as the Roman goddess on whose blossom the harvest depends.',
+    sources: [OVID_FASTI + ' (5.183–378 on the Floralia)', ROMAN_FESTIVALS],
+  },
+  {
+    key: 'neptune',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'roman', id: 'neptunalia' },
+        name: 'Neptunalia',
+        why: 'Neptune’s festival on 23 July, in the dry heat of summer, when Romans feasted in shelters of leafy branches.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Pour a cup of fresh water onto a thirsty plant and thank him.',
+      'Save water today in one small way.',
+      'Pick up litter near a river, a drain or the shore.',
+      'Ask him for safe travel for someone crossing water.',
+    ],
+    approach:
+      'Neptune is approached as the Roman god of water, asked for water in drought and safe passage at sea, with care for the waters themselves.',
+    sources: ['Festus, s.v. umbrae, on the Neptunalia shelters', ROMAN_FESTIVALS],
+  },
+  {
+    key: 'faunus',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'roman', id: 'lupercalia' },
+        name: 'Lupercalia',
+        why: 'Ovid ties the Lupercalia of 15 February to Faunus, though which god it honoured is debated. His temple on Tiber Island was dedicated on the Ides, two days before.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'fixed', month: 12, day: 5 },
+        name: 'Faunalia, the Nones of December',
+        why: 'Horace describes the country Faunalia on the Nones of December, with dancing, wine, incense and offerings to Faunus.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Spend a few minutes outdoors, listening.',
+      'Pour a little milk or water at the foot of a tree.',
+      'Play or hum a tune outside.',
+      'Do one kind thing for an animal or a wild place.',
+    ],
+    approach:
+      'Faunus is approached outdoors, with ease and respect, as the god of woods, pastures and flocks.',
+    sources: [OVID_FASTI + ' (2.193–194 and 2.267–452)', 'Horace, Odes 3.18', ROMAN_FESTIVALS],
+  },
+  {
+    key: 'sol',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'roman', id: 'sol_invictus' },
+        name: 'Dies Natalis Solis Invicti',
+        why: 'The birthday of the Unconquered Sun on 25 December, listed in the Roman calendar of 354.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'fixed', month: 8, day: 9 },
+        name: 'Sol Indiges on the Quirinal',
+        why: 'Early Roman calendars mark a sacrifice to Sol Indiges on the Quirinal hill in August.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'weekday', day: 0 },
+        name: 'Sunday',
+        why: 'Sunday was dies Solis, the Sun’s day. Honouring him on Sundays is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Face the sunrise (without looking straight at it) and greet him.',
+      'Light a gold or yellow candle in the morning and stay with it.',
+      'Open the curtains wide and let the light in with thanks.',
+      'Do one thing openly and in good faith, in the light.',
+    ],
+    approach:
+      'Sol is approached with steadiness and gratitude as the Roman sun, honest that his link with the date of Christmas is debated.',
+    sources: [PHILOCALUS, 'Steven E. Hijmans, Sol: The Sun in the Art and Religions of Rome (2009)', WEEKDAYS],
+  },
+
   // ─── Egyptian ─────────────────────────────────────────────────────────
   {
     key: 'isis',
@@ -924,6 +1131,87 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     approach:
       'Ra is approached at sunrise and sunset as the creator and sustainer of order, learning from Kemetic communities rather than modern sun-god imagery.',
     sources: [WEP_RONPET, WEEKDAYS],
+  },
+
+  {
+    key: 'horus',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 7, day: 28 },
+        name: 'Birthday of Horus',
+        why: 'The second of the five days upon the year, the birthday of Horus the Elder. The date is approximate, counted back from an early-August new year.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Draw a wedjat eye and ask him to protect someone you love.',
+      'Offer fresh water and bread and say his name, Heru.',
+      'Stand up for someone treated unfairly.',
+      'Look up at the open sky for a minute and greet the falcon of the sky.',
+    ],
+    approach:
+      'Horus is approached as the falcon of the sky and the rightful heir, knowing which of his forms is meant.',
+    sources: [EPAGOMENAL_BIRTHS, 'The Contendings of Horus and Seth (Papyrus Chester Beatty I)'],
+  },
+  {
+    key: 'set',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 7, day: 29 },
+        name: 'Birthday of Set',
+        why: 'The third of the five days upon the year. Ancient calendars counted it unlucky and best spent quietly. The date is approximate, counted back from an early-August new year.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Do something physically hard and offer the effort to him.',
+      'Face one thing you have been avoiding.',
+      'Watch a storm, or the wind, with respect from somewhere safe.',
+      'Offer a little red wine, juice or water and ask for strength to protect.',
+    ],
+    approach:
+      'Set is approached with honesty and courage, as the strong god who defends Ra’s barque, keeping his complex history in view.',
+    sources: [EPAGOMENAL_BIRTHS, 'Herman te Velde, Seth, God of Confusion (1967)'],
+  },
+  {
+    key: 'nephthys',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 7, day: 31 },
+        name: 'Birthday of Nephthys',
+        why: 'The last of the five days upon the year, the birthday of Nephthys. The date is approximate, counted back from an early-August new year.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Light a lamp in the evening and name someone you have lost.',
+      'Sit with someone who is grieving, or send them a few kind words.',
+      'Offer fresh water and say her name, Nebet-Het.',
+      'Tidy your home with care, for the Lady of the House.',
+    ],
+    approach:
+      'Nephthys is approached gently, as mourner and protector of the dead, beside Isis and with respect for how little of her own cult survives.',
+    sources: [EPAGOMENAL_BIRTHS, 'The Lamentations of Isis and Nephthys (Papyrus Berlin 3008)'],
+  },
+  {
+    key: 'maat',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 8, day: 1 },
+        name: 'Wep Ronpet, the opening of the year',
+        why: 'No festival of Maat is securely known. Many Kemetics renew their commitment to living in maat at the new year, a modern custom; the start of August stands in for the real, star-set date.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Tell the truth in one place where it would be easier not to.',
+      'At the end of the day, note one fair thing you did and one you could do better.',
+      'Put one small thing back in order: a room, a promise, an apology.',
+      'Offer fresh water and say: “I have done maat”.',
+    ],
+    approach:
+      'Maat is approached by living truthfully and fairly every day, as both a goddess and the order she stands for.',
+    sources: ['Book of the Dead, spell 125 (the Negative Confession)', 'Emily Teeter, The Presentation of Maat (1997)', WEP_RONPET],
   },
 
   // ─── Norse ────────────────────────────────────────────────────────────
@@ -1656,6 +1944,129 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     sources: [
       'Hindu Blog, “Each day of the week dedicated to”: https://www.hindu-blog.com/2008/04/each-day-of-week-dedicated-to.html',
       'David Kinsley, Hindu Goddesses (1986)',
+      HINDU_LIVING,
+    ],
+  },
+
+  {
+    key: 'lakshmi',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 5 },
+        name: 'Friday',
+        why: 'Friday is widely kept for Lakshmi and the Goddess in Hindu practice. Her great night, Lakshmi Puja at Diwali, follows the Hindu lunar calendar in October or November.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Clean one part of your home with care, as Hindus do to welcome her.',
+      'Light a small lamp at dusk with respect.',
+      'Give something to someone in need.',
+      'Learn how Hindu communities near you keep Diwali.',
+    ],
+    approach:
+      'Lakshmi belongs to a living religion, so she is approached with cleanliness, gratitude and generosity, learning from Hindu temples, teachers and families.',
+    sources: [
+      'Hindu Blog, “Each day of the week dedicated to”: https://www.hindu-blog.com/2008/04/each-day-of-week-dedicated-to.html',
+      'David Kinsley, Hindu Goddesses (1986)',
+      HINDU_LIVING,
+    ],
+  },
+  {
+    key: 'shiva',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 1 },
+        name: 'Monday',
+        why: 'Monday (Somvar) is kept for Shiva by many Hindus, often with a fast, especially in the month of Shravan. Maha Shivaratri and the monthly Shivaratri and Pradosh follow the Hindu lunar calendar.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Pour a little clean water with respect and sit quietly for a few minutes.',
+      'Sit in stillness for five minutes, as a small meditation.',
+      'Let go of one grudge or attachment.',
+      'Learn how Hindu communities near you keep Maha Shivaratri.',
+    ],
+    approach:
+      'Shiva belongs to a living religion, so he is approached with simplicity and sincerity, learning from Hindu temples, teachers and customs.',
+    sources: [
+      'Hindu Blog, “Each day of the week dedicated to”: https://www.hindu-blog.com/2008/04/each-day-of-week-dedicated-to.html',
+      'Gavin Flood, An Introduction to Hinduism (1996), ch. 7',
+      HINDU_LIVING,
+    ],
+  },
+  {
+    key: 'saraswati',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 4 },
+        name: 'Thursday',
+        why: 'Some devotees, especially students, honour Saraswati on Thursday (Guruvar), the day of the teacher. Her great day, Vasant Panchami, follows the Hindu lunar calendar in January or February.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Study or practise your art with full attention for a while, as an offering.',
+      'Put your books, pens or instrument in order with care.',
+      'Thank a teacher, past or present.',
+      'Learn how Hindu communities near you keep Vasant Panchami.',
+    ],
+    approach:
+      'Saraswati belongs to a living religion, so she is approached with humility and real effort, learning from Hindu temples, teachers and families.',
+    sources: ['David Kinsley, Hindu Goddesses (1986)', HINDU_LIVING],
+  },
+  {
+    key: 'kali',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'dark' },
+        name: 'The new moon (Amavasya)',
+        why: 'Kali is worshipped on new-moon nights, and Kali Puja falls on the new moon of Diwali in Bengal and eastern India.',
+        basis: 'later',
+      },
+      {
+        rule: { kind: 'weekday', day: 2 },
+        name: 'Tuesday',
+        why: 'Tuesday is kept for the fierce forms of the Goddess, including Kali, by many Hindus.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Offer a red flower with respect and ask for courage.',
+      'Light a lamp and sit with one fear you would like to be free of.',
+      'Let go of one bit of pride.',
+      'Listen to a Shyama Sangeet song, or learn how Hindu communities near you keep Kali Puja.',
+    ],
+    approach:
+      'Kali belongs to a living religion, so she is approached as devotees know her, as the loving Divine Mother, learning from Hindu and Shakta teachers and temples.',
+    sources: [
+      'David Kinsley, Hindu Goddesses (1986), ch. 8',
+      'Rachel Fell McDermott, Mother of My Heart, Daughter of My Dreams (2001)',
+      HINDU_LIVING,
+    ],
+  },
+  {
+    key: 'krishna',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 3 },
+        name: 'Wednesday',
+        why: 'In parts of India Wednesday is kept for Krishna, as Vitthal in Maharashtra. His birth festival, Janmashtami, and the Ekadashi fasts follow the Hindu lunar calendar.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Read a few verses of the Bhagavad Gita in a respected translation.',
+      'Listen to or sing a bhajan.',
+      'Do one task well without worrying about the reward.',
+      'Learn how Hindu communities near you keep Janmashtami.',
+    ],
+    approach:
+      'Krishna belongs to a living religion, so he is approached with love and respect, learning from Vaishnava temples, teachers and families.',
+    sources: [
+      'Hindu Blog, “Each day of the week dedicated to”: https://www.hindu-blog.com/2008/04/each-day-of-week-dedicated-to.html',
+      'Edwin F. Bryant (ed.), Krishna: A Sourcebook (2007)',
       HINDU_LIVING,
     ],
   },

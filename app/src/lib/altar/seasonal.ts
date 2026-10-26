@@ -486,12 +486,12 @@ export const SEASONAL_OBJECTS: SeasonalObject[] = [
     description: 'Sweet dumplings of rice flour filled with coconut and jaggery, said to be Ganesha’s favourite, made and offered to him at Ganesh Chaturthi, often twenty-one at a time.',
   },
   {
-    id: 'kalash', name: 'Kalash', festivals: hindu('navaratri'), deities: ['Durga', 'Devi', 'the Goddess'],
+    id: 'kalash', name: 'Kalash', festivals: hindu('navaratri'), deities: ['Durga', 'Devi', 'the Goddess', 'Lakshmi', 'Saraswati'],
     keywords: ['kalash', 'kalasha', 'ghata', 'Ghatasthapana', 'water pot', 'brass pot', 'coconut', 'mango leaves', 'barley', 'nine nights', 'puja'],
     description: 'A brass or copper pot of water crowned with mango leaves and a coconut, set up at Ghatasthapana on the first day of Navaratri, barley sown beside it, and worshipped as the seat of the Goddess through the nine nights.',
   },
   {
-    id: 'diya-lamps', name: 'Diya Lamps', festivals: hindu('diwali'), deities: ['Lakshmi'],
+    id: 'diya-lamps', name: 'Diya Lamps', festivals: hindu('diwali'), deities: ['Lakshmi', 'Kali'],
     keywords: ['diya', 'diyas', 'deepa', 'clay lamps', 'oil lamps', 'lamps', 'light', 'Deepavali', 'festival of lights', 'the doorstep', 'welcome'],
     description: 'Little clay lamps of oil with cotton wicks, lit in rows along doorsteps, windows and walls at Diwali, the festival of lights, to welcome Lakshmi into the home.',
   },

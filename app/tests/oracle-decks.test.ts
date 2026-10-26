@@ -324,7 +324,7 @@ test('readings from your deck, from Lenormand and Kipper, and logged by hand go 
   const now = new Date(2026, 9, 26, 12);
   const three = ownDeckSpreadById('past-present-future')!;
   const d = { spread: three.id, items: [{ name: 'Owl', reversed: true }, { name: 'The Tower', reversed: false }, { name: 'Fox', reversed: false }] };
-  const reading = readingFromDraw(three, d, { now, deck, question: 'Which way?' });
+  const reading = readingFromDraw(three, d, { now, ownDeck: deck, deck: 'rws', question: 'Which way?' });
   assert.equal(reading.method, 'oracle');
   assert.equal(reading.deck, 'deck-1');
   assert.equal(reading.cameUp.split('\n')[0], 'Past, present, future · Wild Unknown Animals');
@@ -339,7 +339,7 @@ test('readings from your deck, from Lenormand and Kipper, and logged by hand go 
   assert.deepEqual(again.draw.items, d.items);
   assert.equal(drawOfReading(kept, [], []), null, 'a deleted deck lays out no longer, but the reading stays');
   // Logged by hand: said so on the first line, and still laid out.
-  const byHand = readingFromDraw(three, d, { now, deck, byHand: true });
+  const byHand = readingFromDraw(three, d, { now, ownDeck: deck, byHand: true });
   assert.equal(byHand.cameUp.split('\n')[0], `Past, present, future · Wild Unknown Animals · ${BY_HAND}`);
   assert.ok(drawOfReading(byHand, [], [deck]));
   // Lenormand and Kipper keep their own method, and no deck.

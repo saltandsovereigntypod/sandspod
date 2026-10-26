@@ -1,5 +1,5 @@
 (function initializeLivingSettingsView(global) {
-  const CATEGORIES = ["identity", "appearance", "book", "practice", "calendar", "library", "companion", "objects", "account"];
+  const CATEGORIES = ["identity", "appearance", "book", "practice", "divination", "calendar", "library", "companion", "objects", "account"];
   // My practice and Calendar & holidays (and My path under Living Library) are the app's;
   // js/settings-more.js fills them, with the app's logic from js/core/guides.js.
   const MORE_SCRIPTS = ["/js/core/guides.js", "/js/settings-more.js"];
@@ -9,7 +9,7 @@
     if (!moreLoading) moreLoading = MORE_SCRIPTS.reduce((chain, src) => chain.then(() => new Promise((resolve, reject) => { if ((src.includes("guides") && global.SaltCore?.guides) || (src.includes("settings-more") && global.SettingsMore)) return resolve(); const script = doc.createElement("script"); script.src = src; script.onload = resolve; script.onerror = reject; doc.head.append(script); })), Promise.resolve()).then(() => true).catch(() => { moreLoading = null; return false; });
     return moreLoading;
   }
-  const categoryForName = (name = "") => name.startsWith("library_") ? "library" : name.startsWith("companion_") ? "companion" : name.startsWith("living_state_") ? "objects" : ["preferred_name", "pronouns", "magical_name", "sanctuary_greeting_name"].includes(name) ? "identity" : ["default_altar_background"].includes(name) ? "appearance" : "book";
+  const categoryForName = (name = "") => name.startsWith("library_") ? "library" : name.startsWith("companion_") ? "companion" : name.startsWith("living_state_") ? "objects" : ["preferred_name", "pronouns", "magical_name", "sanctuary_greeting_name"].includes(name) ? "identity" : ["default_altar_background"].includes(name) ? "appearance" : name === "tarot_deck" ? "divination" : "book";
   function backgroundOptions(items = [], saved = "") {
     const names = [...new Set(items.map((item) => item?.name || item?.background).filter(Boolean))];
     if (saved && !names.includes(saved)) names.unshift(saved);
@@ -45,7 +45,7 @@
     const background = form.querySelector('[name="default_altar_background"]');
     populateBackgroundSelect(background, saved.default_altar_background);
     const nav = document.createElement("nav"); nav.className = "settings-category-nav"; nav.setAttribute("aria-label", "Settings categories");
-    const labels = { identity: "Identity", appearance: "Appearance", book: "Book of Shadows", practice: "My practice", calendar: "Calendar & holidays", library: "Living Library", companion: "Companion", objects: "Living Objects", account: "Account & Data" };
+    const labels = { identity: "Identity", appearance: "Appearance", book: "Book of Shadows", practice: "My practice", divination: "Divination", calendar: "Calendar & holidays", library: "Living Library", companion: "Companion", objects: "Living Objects", account: "Account & Data" };
     CATEGORIES.forEach((category, index) => nav.insertAdjacentHTML("beforeend", `<button class="button button--small button--pill" type="button" data-settings-category="${category}" aria-pressed="${index === 0}">${labels[category]}</button>`));
     form.prepend(nav);
     const buckets = Object.fromEntries(CATEGORIES.map((category) => { const fieldset = document.createElement("fieldset"); fieldset.className = "settings-category"; fieldset.dataset.settingsPanel = category; fieldset.hidden = category !== "identity"; fieldset.innerHTML = `<legend>${labels[category]}</legend>`; form.insertBefore(fieldset, form.querySelector('button[type="submit"]')); return [category, fieldset]; }));

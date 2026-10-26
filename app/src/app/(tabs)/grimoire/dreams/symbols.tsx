@@ -7,13 +7,17 @@ import { Body, Card, Chip, Chips, Expander, SectionLabel, Title, ui } from '../.
 import { shortDate } from '../../../../lib/calendar';
 import { DREAM_SYMBOL_INTRO, DREAM_SYMBOLS } from '../../../../lib/craft/hedge/dreamSymbols';
 import { DREAMS, dreamStats, normalizeDream, phaseClusterNote, phaseCounts, symbolCounts } from '../../../../lib/craft/hedge/dreams';
+import { normalizeReading, READINGS } from '../../../../lib/craft/hedge/readings';
 import { useCraft } from '../../../../lib/craft/store';
+import { dreamReadingDraws } from '../../../../lib/divination/linked';
 import { DREAM_ROUTES } from '../../../../lib/grimoire/dreams';
 import { dateFromKey } from '../../../../lib/rituals/lifecycle';
 import { colors, fonts, type } from '../../../../theme';
 
 export default function DreamSymbols() {
   const { entries } = useCraft<unknown>(DREAMS);
+  const { entries: readingEntries } = useCraft<unknown>(READINGS);
+  const cards = useMemo(() => dreamReadingDraws(readingEntries.map((e) => ({ ...e, data: normalizeReading(e.data) }))), [readingEntries]);
   const dreams = useMemo(() => entries.map((e) => ({ ...e, data: normalizeDream(e.data) })), [entries]);
   const symbols = useMemo(() => symbolCounts(dreams).slice(0, 15), [dreams]);
   const phases = useMemo(() => phaseCounts(dreams), [dreams]);
@@ -77,6 +81,18 @@ export default function DreamSymbols() {
           ) : (
             <Body muted>After a few more dreams you’ll see whether they gather around a phase.</Body>
           )}
+        </View>
+      )}
+
+      {cards.length > 0 && (
+        <View style={ui.gapSmall}>
+          <SectionLabel>Cards that keep coming up</SectionLabel>
+          <Body muted>Across the readings of your dreams (Read this dream, on a dream’s page).</Body>
+          <Chips>
+            {cards.map((c) => (
+              <Chip key={c.name} label={`${c.name} · ${c.count}`} a11yLabel={`${c.name}, in ${c.count} dream readings`} />
+            ))}
+          </Chips>
         </View>
       )}
 
