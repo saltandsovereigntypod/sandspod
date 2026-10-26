@@ -1,5 +1,5 @@
-import { router, type Href } from 'expo-router';
-import { useState } from 'react';
+import { router, useFocusEffect, type Href } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
@@ -24,6 +24,14 @@ export default function JoinCoven() {
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  // Back from making your profile (or anywhere else): look again, so the
+  // new profile counts and the button wakes up.
+  const { refresh } = coven;
+  useFocusEffect(
+    useCallback(() => {
+      void refresh();
+    }, [refresh]),
+  );
 
   if (!snap) return <CovenScreen title="Join" need="public">{null}</CovenScreen>;
   const info = snap.coven;
@@ -33,7 +41,12 @@ export default function JoinCoven() {
   const needsProfile = !coven.me?.profile;
 
   const submit = async () => {
-    if (needsProfile) return router.push('/coven/profile' as Href);
+    if (needsProfile) {
+      // The profile may have been made since this screen last looked.
+      const mine = coven.userId ? await api.fetchMe(coven.userId).catch(() => null) : null;
+      if (!mine?.profile) return router.push('/coven/profile' as Href);
+      coven.setMe(mine);
+    }
     if (coven.unsigned.some((d) => !agreed[d.id])) return setMessage('Read and agree to each agreement first.');
     if (coven.unsigned.length && !signedName.trim()) return setMessage('Sign with your name.');
     if (!member && info.joining === 'application' && missingAnswers(questions, answers).length) return setMessage('Please answer the questions marked required.');
@@ -129,7 +142,7 @@ export default function JoinCoven() {
             <Button
               label={busy ? 'Sending…' : member ? 'Sign' : info.joining === 'open' ? 'Sign and join' : 'Sign and apply'}
               onPress={submit}
-              disabled={busy || needsProfile}
+              disabled={busy}
             />
           )}
         </>
