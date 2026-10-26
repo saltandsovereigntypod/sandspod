@@ -76,6 +76,23 @@ export const HELP: HelpSection[] = [
         keywords: ['log in', 'login', 'apple', 'google', 'password', 'forgot'],
       },
       {
+        id: 'ways-to-sign-in',
+        title: 'Sign in more than one way',
+        summary: 'Add Apple, Google, or an email and password to your account, so every way you sign in opens the same sanctuary.',
+        steps: [
+          'Sign in the way you did before.',
+          'Open More, then Account, and find "Ways to sign in". It lists every sign-in that opens this account.',
+          'Tap "Add Apple", "Add Google" or "Add email and password", and finish signing in with it.',
+          'To stop using one, tap "Remove" beside it, then "Yes, remove". Your last way to sign in always stays.',
+        ],
+        tips: [
+          'If the app says that Apple ID or Google account already has its own Salt & Sovereignty account, you made a second account with it. Sign in with it and delete that account from More → Account first, or write to us and we’ll help bring the two together.',
+          'Ways to sign in are kept with your account, so the website shows the same list.',
+        ],
+        href: '/more/account',
+        keywords: ['link', 'linked', 'connect', 'apple', 'google', 'password', 'two accounts', 'duplicate account', 'merge', 'sign in methods'],
+      },
+      {
         id: 'bring-guest-work',
         title: 'Bring guest work into your account',
         summary: 'If you used the app as a guest first, move that work into your account after signing in.',

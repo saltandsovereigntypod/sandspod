@@ -23,6 +23,7 @@
     "welcome-tour":"Open your Sanctuary from Today or More and choose Sign In or Create Account, or carry on as a guest. The same account works in the app.",
     "guest-or-account": "As a guest, your work stays in this browser. More → Settings → Account & Data says whether you’re signed in.",
     "sign-in-account": "Choose Sign In under More, or Sign In or Create Account in More → Settings → Account & Data.",
+    "ways-to-sign-in": "Open More → Settings → Account & Data and find Ways to Sign In. Choose Add Apple, Add Google or Add Email and Password there, or Remove beside one you no longer use.",
     "bring-guest-work": "Sign in in the browser that holds your guest work. More → Settings → Account & Data then shows Guest Sanctuary Found: choose Review Guest Data, download the guest safety backup, and choose Bring Selected Data Into My Account. Your practice tools and planned rituals can come too.",
     "how-sync-works": "More → Settings → Account & Data shows Cloud status and Last successful sync.",
     "backup-complete": "Open More → Settings → Account & Data and choose Download Complete Backup (as a guest, Download Guest Backup). Export Book of Shadows saves only your book. A file saved on the website restores in the app, and the other way round.",

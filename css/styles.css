@@ -2891,3 +2891,12 @@ body:has(.sanctuary-submission-form) h1 {
   .account-summary-card dl { grid-template-columns: 1fr; }
 }
 @media (max-width: 390px) { .journey-controls { grid-template-columns: 1fr; } .journey-controls label:first-child { grid-column: auto; } }
+
+/* Ways to Sign In (js/sign-in-methods.js) */
+.sign-in-methods-list { display: grid; gap: .6rem; margin: 0 0 .7rem; padding: 0; list-style: none; }
+.sign-in-methods-list li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem; min-width: 0; padding: .65rem; border-radius: .55rem; background: rgba(0, 0, 0, .18); }
+.sign-in-methods-list li > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.sign-in-methods-list small, .account-sign-in-methods small { color: var(--muted); }
+.sign-in-methods-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.sign-in-methods-password { display: grid; gap: .7rem; margin-top: 1rem; }
+.sanctuary-sign-in-hint { font-size: .9rem; color: var(--muted); }

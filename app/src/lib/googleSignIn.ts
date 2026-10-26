@@ -2,6 +2,7 @@ import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 import { Platform } from 'react-native';
 
+import { linkReturn } from './settings/signInMethods';
 import { supabase } from './supabase';
 
 export type GoogleSignInResult = 'signed-in' | 'redirecting' | 'cancelled';
@@ -60,4 +61,36 @@ export async function signInThroughBrowser(provider: 'google' | 'apple'): Promis
     if (!current.session) throw exchangeError;
   }
   return 'signed-in';
+}
+
+export type LinkResult = 'linked' | 'redirecting' | 'cancelled';
+
+/**
+ * Adds Google (or Apple, where Apple opens in the browser) to the account
+ * that's signed in, through the same browser hand-off as signing in.
+ * Throws Supabase's error, with its code, for lib/settings/signInMethods to explain.
+ */
+export async function linkThroughBrowser(provider: 'google' | 'apple'): Promise<LinkResult> {
+  const name = provider === 'google' ? 'Google' : 'Apple';
+  const redirectTo = authReturnUrl();
+  if (Platform.OS === 'web') {
+    const { error } = await supabase.auth.linkIdentity({ provider, options: { redirectTo } });
+    if (error) throw error;
+    return 'redirecting';
+  }
+
+  const { data, error } = await supabase.auth.linkIdentity({ provider, options: { redirectTo, skipBrowserRedirect: true } });
+  if (error) throw error;
+  if (!data.url) throw new Error(`${name} could not be opened.`);
+
+  const result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
+  if (result.type !== 'success') return 'cancelled';
+
+  const back = linkReturn(result.url);
+  if (back.error || back.errorCode)
+    throw Object.assign(new Error(back.errorDescription || back.error || `${name} was not added.`), { code: back.errorCode });
+  if (!back.code) throw new Error(`${name} did not return a sign-in code.`);
+  const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(back.code);
+  if (exchangeError) throw exchangeError;
+  return 'linked';
 }

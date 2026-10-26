@@ -70,6 +70,10 @@ function createMySanctuaryPanel() {
           Open your sanctuary to save your altar, grimoire, rituals, notes, and magical practice across devices.
         </p>
 
+        <p class="my-sanctuary-intro" data-sign-in-hint>
+          Already have an account? Sign in the way you did before, then add other ways to sign in from More → Settings → Account &amp; Data.
+        </p>
+
         <form class="altar-auth-form my-sanctuary-auth-form" data-my-sanctuary-auth-form>
           <label>
             Email

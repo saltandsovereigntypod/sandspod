@@ -1,8 +1,9 @@
-import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { router, type ErrorBoundaryProps } from 'expo-router';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
+import { SignInMethods } from '../../../components/more/SignInMethods';
 import { Card, Field, MenuList, MenuRow, MoreScreen, Notice, Section } from '../../../components/more/ui';
 import { guestPreview } from '../../../lib/backup/migrate';
 import { movingSummary, worthMoving } from '../../../lib/backup/migration';
@@ -82,14 +83,18 @@ export default function Account() {
         </Section>
       )}
 
+      <Section label="Ways to sign in">
+        <SignInMethods user={user} />
+      </Section>
+
       <Section label="Security">
         {hasPasswordIdentity(user) ? (
           <ChangePassword />
         ) : (
           <Card>
             <Text style={type.body}>
-              This account uses Google sign-in. No email and password sign-in is linked, so there is no password to
-              change here.
+              This account signs in with {providerSummary(user)}, so there is no password to change here. To add one,
+              choose “Add email and password” under Ways to sign in.
             </Text>
           </Card>
         )}
@@ -119,15 +124,31 @@ export default function Account() {
 function useRequest() {
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
+  // A change to the account (USER_UPDATED) can arrive while a request is still
+  // settling, and the screen may have closed by then: only touch it while open.
+  const open = useRef(true);
+  useEffect(
+    () => () => {
+      open.current = false;
+    },
+    [],
+  );
   const run = async (pending: string, request: () => Promise<string>, onError?: () => void) => {
     setBusy(true);
     setStatus(pending);
+    let outcome: string;
     try {
-      setStatus(await request());
+      outcome = await request();
     } catch (error) {
-      onError?.();
-      setStatus(error instanceof Error ? error.message : 'That account change could not be completed. Please try again.');
+      try {
+        onError?.();
+      } catch {
+        // Clearing the fields is a nicety; never let it end the request.
+      }
+      outcome = error instanceof Error && error.message ? error.message : 'That account change could not be completed. Please try again.';
     }
+    if (!open.current) return;
+    setStatus(outcome);
     setBusy(false);
   };
   return { busy, status, run };
@@ -242,6 +263,23 @@ function RecoveryLink({ email }: { email: string }) {
         onPress={() => run('Sending a recovery link…', () => requestRecovery(email))}
       />
     </>
+  );
+}
+
+/**
+ * If anything on this screen fails to draw (say, an account change arriving
+ * mid-update), show a calm way back instead of closing the app.
+ */
+export function ErrorBoundary({ retry }: ErrorBoundaryProps) {
+  return (
+    <MoreScreen title="Account" eyebrow="Your Sanctuary account" back="/more" backLabel="Back to More">
+      <Card>
+        <Text style={type.body}>
+          This screen didn’t open properly. Your account and your work are safe; nothing was lost.
+        </Text>
+        <Button label="Try again" onPress={() => void retry()} />
+      </Card>
+    </MoreScreen>
   );
 }
 
