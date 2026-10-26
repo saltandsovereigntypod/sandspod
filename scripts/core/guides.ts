@@ -18,3 +18,5 @@ export * as planSync from '../../app/src/lib/rituals/planSync.ts';
 export * as patron from '../../app/src/lib/patron/index.ts';
 export { PRACTICES, myPractices, practicesValue, practiceName } from '../../app/src/lib/rituals/premade/practices.ts';
 export * as calendars from '../../app/src/lib/calendars/index.ts';
+// Hekate's Deipnon each month, as a calendar reminder for those who keep it.
+export * as deipnon from '../../app/src/lib/deipnon.ts';

@@ -40,3 +40,5 @@ export * as library from '../../app/src/lib/library/model.ts';
 export * as readings from '../../app/src/lib/craft/hedge/readings.ts';
 export * as daily from '../../app/src/lib/divination/daily.ts';
 export * as seasonal from '../../app/src/lib/divination/seasonal.ts';
+// Hekate's Deipnon each month, for those who keep it.
+export * as deipnon from '../../app/src/lib/deipnon.ts';

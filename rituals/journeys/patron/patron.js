@@ -38,7 +38,10 @@
       <header class="jr-title"><p class="sp-eyebrow">A guide</p><h1>${esc(guide.title)}</h1></header>
       <p>${esc(guide.intro)}</p>
       <section class="sp-card"><h2 class="jr-label">Your deities</h2>${yours}
-        <div class="sp-actions"><a class="button button--ghost" href="${L.href.deities()}">My deities</a></div></section>
+        <div class="sp-actions"><a class="button button--ghost" href="${L.href.deities()}">My deities</a>
+          <a class="button button--ghost" href="/divination/draw/${
+            kept.length && core().linked ? core().linked.drawQuery(core().linked.deityLink(kept[0].key, kept[0].name)) : "?spread=patron-deity"
+          }">Draw the Patron deity spread</a></div></section>
       ${guide.sections
         .map(
           (s, i) => `<details class="sp-details"${i === 0 ? " open" : ""}><summary>${esc(s.heading)}</summary><div class="jr-reading">${paras(s.body)}${

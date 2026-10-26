@@ -53,9 +53,11 @@ async function fetchThreadLatest(covenId: string, conversationId: string | null)
   return run<Message[]>(query);
 }
 
-/** Send a message, then let the others' phones know (best effort). */
-export async function sendMessage(covenId: string, conversationId: string | null, body: string): Promise<Message> {
-  const row = await run<Message>(supabase.from('coven_messages').insert({ coven_id: covenId, conversation_id: conversationId, body }).select().single());
+/** Send a message (a reply to another with `replyTo`, as a card drawn into a coven reading is), then let the others' phones know (best effort). */
+export async function sendMessage(covenId: string, conversationId: string | null, body: string, replyTo: string | null = null): Promise<Message> {
+  const row = await run<Message>(
+    supabase.from('coven_messages').insert({ coven_id: covenId, conversation_id: conversationId, body, ...(replyTo ? { reply_to: replyTo } : {}) }).select().single(),
+  );
   void supabase.functions.invoke('coven-notify', { body: { message_id: row.id } }).catch(() => {});
   return row;
 }

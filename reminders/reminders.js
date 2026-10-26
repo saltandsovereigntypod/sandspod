@@ -127,6 +127,11 @@
             ? `For ${esc(sources.map((s) => s.name).join(", "))}, over the next three months.`
             : "Add a patron or dedicated deity in Settings → My deities and their days will come here."
         } <a class="gd-link" href="/more/settings/deities/">My deities</a></p>
+        ${
+          G.deipnon && G.deipnon.offersDeipnon(appSettings)
+            ? `<p class="sp-caption">Hekate’s Deipnon comes each month too, at the same time of day. <a class="gd-link" href="/today/calendar/">Turn it off in Calendars</a></p>`
+            : ""
+        }
       </div></section>`;
   }
 

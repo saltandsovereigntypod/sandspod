@@ -38,7 +38,31 @@ export type Reading = {
   outcome: string;
   outcomeDate: string;
   moonPhase: PhaseName;
+  /** What it was drawn for: a dream, a planned working, a deity. Older readings have none. */
+  linkedTo?: ReadingLink;
+  /** For a reading drawn before a working: whether it bore out, said beside "Did it work?". */
+  matched?: ReadingMatch;
 };
+
+export type ReadingLinkKind = 'dream' | 'plan' | 'deity';
+/** The id of the dream (`hedge.dreams`), the plan (`ritual_plans`) or the deity (its Living Library key, or name), and its title then. */
+export type ReadingLink = { kind: ReadingLinkKind; id: string; title: string };
+export type ReadingMatch = 'yes' | 'partly' | 'no';
+export const MATCHES: { id: ReadingMatch; label: string }[] = [
+  { id: 'yes', label: 'It bore out' },
+  { id: 'partly', label: 'Partly' },
+  { id: 'no', label: 'It didn’t' },
+];
+
+const LINK_KINDS: ReadingLinkKind[] = ['dream', 'plan', 'deity'];
+
+/** A saved link, or undefined when there is none or it is out of shape. */
+export function readLink(raw: unknown): ReadingLink | undefined {
+  if (!raw || typeof raw !== 'object') return undefined;
+  const r = raw as Record<string, unknown>;
+  if (!LINK_KINDS.includes(r.kind as ReadingLinkKind) || typeof r.id !== 'string' || !r.id) return undefined;
+  return { kind: r.kind as ReadingLinkKind, id: r.id, title: typeof r.title === 'string' ? r.title : '' };
+}
 
 export type ReadingEntry = { id: string; createdAt: string; data: Reading };
 
@@ -97,6 +121,8 @@ export function normalizeReading(raw: unknown): Reading {
     outcome: str(r.outcome),
     outcomeDate: str(r.outcomeDate),
     moonPhase: (typeof r.moonPhase === 'string' && r.moonPhase ? r.moonPhase : moonForReading(date)) as PhaseName,
+    ...(readLink(r.linkedTo) ? { linkedTo: readLink(r.linkedTo) } : {}),
+    ...(MATCHES.some((m) => m.id === r.matched) ? { matched: r.matched } : {}),
   };
 }
 

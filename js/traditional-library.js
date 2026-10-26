@@ -8570,6 +8570,737 @@ const TraditionalLibrary = {
 
             tags: ["afterlife", "resurrection", "ancestors", "fertility", "grief", "renewal"]
         },
+
+        saturn: {
+            DisplayName: "Saturn",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "Sowing and seed, agriculture, plenty, the Golden Age, wealth and the public treasury, liberation at midwinter",
+
+            SacredSymbols: "Sickle or pruning hook (falx), woollen bands binding his statue’s feet, wax tapers, the planet Saturn",
+
+            SacredAnimals: "None securely attested in Roman sources",
+
+            SacredPlants: "Grain, the vine, fruit trees",
+
+            CandleColors: "Gold, black, deep blue",
+
+            Crystals: "Garnet, onyx, smoky quartz, jet",
+
+            Herbs: "Myrrh, cypress, bay laurel",
+
+            Offerings: "Wax tapers, grain, figs, honey, a shared feast, gifts given freely",
+
+            TraditionalWarnings: "Roman Saturn is not the gloomy taskmaster of modern astrology, and only partly the Greek Kronos who swallowed his children. The Saturnalia’s licence was a few days’ reversal inside a slave-holding society, so honour its spirit of equality without romanticising it. Never leave tapers burning unattended.",
+
+            Overview: "Saturn is the Roman god of sowing and the seed, remembered as the good king of the Golden Age, when Latium knew no slaves, no private property and no want. He is pictured as an older, bearded man with a sickle or pruning hook, his head covered, and his ancient statue in the Forum had its feet bound with wool, untied only for his festival.",
+
+            TraditionalMeaning: "Plenty shared: the seed that becomes harvest, the memory of a fairer age, and the yearly loosening of ordinary rules so that all sit at one table.",
+
+            DevotionalApproach: "Start here: in late December, light a single taper in a safe holder and share a meal or a small gift with someone outside your usual circle. Approach him with generosity and good humour rather than gloom. He asks for open hands, fair dealing and a seat at the table for everyone.",
+
+            OfferingNotes: "Offer wax tapers, grain, figs or honey, and a portion of a festive meal. Giving freely, especially to those with less, is an offering in his spirit.",
+
+            AltarIdeas: "A lit taper (attended), a sickle or a sprig of grain, a dish of figs, small clay figures like the Saturnalia sigillaria, and gold or deep blue cloth. Set it near the table where you eat together.",
+
+            CulturalContext: "Saturn is honoured today by Roman polytheists, a small living religion. Romans sacrificed to him with the head uncovered, in what they called the Greek rite, unlike most Roman gods; learn such forms from practising Roman polytheists rather than from planetary magic alone.",
+
+            Traditions: "Roman, Hellenic",
+
+            TraditionNotes: "Roman: Saturn is honoured at the Saturnalia from 17 December, when his temple received a public sacrifice and banquet, and households cried “Io Saturnalia”, wore the felt cap of freedom (pileus), lit wax tapers (cerei) and gave small gifts, with masters serving the enslaved for a day. His temple in the Forum held the state treasury, and he was asked for good sowing, plenty and goodwill.\n\nHellenic: As Kronos he is honoured at the Kronia on 12 Hekatombaion, when masters and the enslaved feasted together in memory of the Golden Age.",
+
+            tags: ["harvest", "abundance", "generosity", "golden age", "saturnalia", "liberation"]
+        },
+
+        flora: {
+            DisplayName: "Flora",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "Flowers, blossom, spring, the flowering of grain, vines and fruit trees, youth and pleasure",
+
+            SacredSymbols: "Garlands and crowns of flowers, the flowering bough, bright many-coloured clothing",
+
+            SacredAnimals: "Hares, goats",
+
+            SacredPlants: "All flowering plants, especially roses and spring blossom; flowering grain, vine and olive",
+
+            CandleColors: "Pink, green, yellow, white",
+
+            Crystals: "Rose quartz, green aventurine, moss agate, peridot",
+
+            Herbs: "Rose, honeysuckle, lilac, violet",
+
+            Offerings: "Fresh flowers and garlands, honey, milk, beans, seeds planted in her name",
+
+            TraditionalWarnings: "The ancient Floralia games were famously bawdy, but Flora was also a serious agricultural goddess on whom the year’s crops depended. Some popular flowers, such as lilies, are poisonous to cats, so choose altar flowers with pets in mind.",
+
+            Overview: "Flora is the Roman goddess of flowers and blossom, on whom the flowering of grain, vines and fruit trees depended. She is pictured as a young woman crowned with flowers, scattering blossom, and Ovid makes her the Greek nymph Chloris, wife of the west wind Zephyrus.",
+
+            TraditionalMeaning: "The promise in the blossom: beauty, pleasure and the brief season on which the whole harvest depends.",
+
+            DevotionalApproach: "Start here: put a few fresh flowers in water and thank her for the first blossom you saw this year. Approach her with delight, colour and play rather than solemnity. She asks devotees to notice the season, enjoy it while it lasts and look after what is flowering.",
+
+            OfferingNotes: "Offer fresh flowers, garlands, honey, milk or a handful of beans, or plant seeds for pollinators in her name. Return wilted flowers to the earth or compost rather than the bin.",
+
+            AltarIdeas: "Pink, green or yellow candles, a jar of seasonal flowers, a flower crown, rose quartz or moss agate, and a small dish of beans or seeds.",
+
+            CulturalContext: "Flora is honoured today by Roman polytheists, a small living religion, and loved by many modern Pagans. She had her own flamen, one of Rome’s oldest priesthoods, and her temple stood near the Circus Maximus, so it is respectful to honour her as a Roman goddess rather than a generic spring fairy.",
+
+            Traditions: "Roman, Wheel of the Year",
+
+            TraditionNotes: "Roman: Flora is honoured at the Floralia, from 28 April to 3 May, when people wore bright colours instead of white, hares and goats were set loose in the circus, and beans and other seeds were scattered among the crowd as signs of plenty. She is asked to let the crops flower well and for joy and fertility.\n\nWheel of the Year: Many modern Pagans honour Flora at Beltane, which falls at the end of the Floralia, with flower crowns, garlands and blossom on the altar. A link between the Floralia and May Day customs is often claimed but not proven.",
+
+            tags: ["flowers", "spring", "blossom", "fertility", "joy", "beauty"]
+        },
+
+        neptune: {
+            DisplayName: "Neptune",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "Fresh water and springs, the sea, horses, sailors, summer drought",
+
+            SacredSymbols: "Trident, dolphin, leafy shelters (umbrae) of the Neptunalia, ship",
+
+            SacredAnimals: "Horse, dolphin, bull",
+
+            SacredPlants: "Pine, leafy boughs, reeds",
+
+            CandleColors: "Blue, sea green, white",
+
+            Crystals: "Aquamarine, larimar, blue lace agate, chrysocolla",
+
+            Herbs: "Pine, willow, bladderwrack",
+
+            Offerings: "Wine, fresh water, incense, leafy branches, care for rivers and coasts",
+
+            TraditionalWarnings: "Do not leave offerings in rivers or the sea, where they become litter; pour libations onto the ground or a dish. Take care near open water, and never perform ritual alone on rocks or tidelines.",
+
+            Overview: "Neptune is the Roman god of water, first of springs and fresh water and later, as he was identified with the Greek Poseidon, of the sea and of horses. He is pictured as a powerful bearded man with a trident, often with a dolphin or riding a chariot drawn by sea-horses.",
+
+            TraditionalMeaning: "Water as life and power: the spring in the drought, the sea that carries and endangers, and respect for both.",
+
+            DevotionalApproach: "Start here: on a hot day, pour a cup of fresh water onto a thirsty plant and thank him for water. Approach him with respect for water’s power and gratitude for its gift. He asks devotees to care for rivers, springs and coasts and to treat water with respect.",
+
+            OfferingNotes: "Offer wine or fresh water as a libation into a dish or onto the ground, incense, or a leafy bough. A beach or river clean-up is a fitting modern offering.",
+
+            AltarIdeas: "Blue or sea-green candles, a bowl of fresh water, a trident or dolphin image, shells gathered responsibly, aquamarine or larimar, and a leafy branch in summer.",
+
+            CulturalContext: "Neptune is honoured today by Roman polytheists, a small living religion. He began as a Roman god of fresh water, honoured in the heat of high summer, so it is respectful to keep his Roman character rather than treating him only as Poseidon.",
+
+            Traditions: "Roman, Hellenic",
+
+            TraditionNotes: "Roman: Neptune is honoured at the Neptunalia on 23 July, in the driest weeks of the Roman summer, when people built shelters of leafy branches (umbrae) and feasted in their shade. Sailors offered to him for safe voyages, and he is asked for water, safe passage and calm.\n\nHellenic: As Poseidon, Hellenic polytheists honour him on the eighth day of each lunar month with libations, and ask for safe travel by sea and steady ground.",
+
+            tags: ["water", "sea", "horses", "travel", "summer", "protection"]
+        },
+
+        faunus: {
+            DisplayName: "Faunus",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "Woods and pasture, flocks and herds, herdsmen, fertility, prophetic voices in the forest",
+
+            SacredSymbols: "Goatskin, horns, shepherd’s crook, reed pipes, the sacred grove",
+
+            SacredAnimals: "Goat, wolf, sheep",
+
+            SacredPlants: "Oak, pine, woodland trees and pasture grasses",
+
+            CandleColors: "Green, brown, gold",
+
+            Crystals: "Moss agate, green aventurine, tiger eye, unakite",
+
+            Herbs: "Pine, oak, mint",
+
+            Offerings: "Milk, wine, honey, bread, music played outdoors, care for woods and farm animals",
+
+            TraditionalWarnings: "The ancient Lupercalia, with its sacrifice of goats and a dog and young men running and striking passers-by with goatskin strips, is not to be recreated. Which god the Lupercalia honoured is debated, though Ovid names Faunus.",
+
+            Overview: "Faunus is the Roman god of the woods, the pastures and the flocks, and an old king of Latium who became a god. He is pictured as a wild, horned and goat-legged figure like the Greek Pan, and his voice was heard in the forest as prophecy.",
+
+            TraditionalMeaning: "The wild that feeds us: woodland, pasture and flock, kept fruitful, and the voice heard when you listen in quiet places.",
+
+            DevotionalApproach: "Start here: walk in a wood or field and stand still for a few minutes, listening, then leave the place cleaner than you found it. Approach him outdoors, with ease and some respect for his wildness. He asks devotees to look after animals and wild places.",
+
+            OfferingNotes: "Offer milk, wine, honey or bread outdoors, or a tune played in a wood. Supporting a farm, an animal sanctuary or woodland work suits him.",
+
+            AltarIdeas: "Green or brown candles, an oak or pine sprig, a goat or wolf image, reed pipes, moss agate, and a small dish of milk set outside.",
+
+            CulturalContext: "Faunus is honoured today by Roman polytheists, a small living religion. Virgil tells of his oracle at Albunea, where people slept on the fleeces of sacrificed sheep to hear him in dreams; such rites belong to their setting and are learned about rather than copied.",
+
+            Traditions: "Roman, Hellenic",
+
+            TraditionNotes: "Roman: Faunus is honoured at the Lupercalia on 15 February, at his temple’s anniversary on Tiber Island on the Ides of February, and at the rustic Faunalia on the Nones (5th) of December, when Horace describes country people dancing and offering him wine, a kid and incense. He is asked to protect herds, fields and the countryside.\n\nHellenic: As Pan, god of shepherds and wild places, Hellenic polytheists honour him with milk, honey and music outdoors, and ask for fertility, good pasture and help against panic.",
+
+            tags: ["woods", "flocks", "wild places", "fertility", "prophecy", "lupercalia"]
+        },
+
+        sol: {
+            DisplayName: "Sol",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "The sun, light, sight, the turning year, victory, the returning light after midwinter",
+
+            SacredSymbols: "Radiate crown, four-horse chariot (quadriga), raised right hand, whip, globe",
+
+            SacredAnimals: "Horses",
+
+            SacredPlants: "Bay laurel, heliotrope, sunflower",
+
+            CandleColors: "Gold, yellow, orange, white",
+
+            Crystals: "Sunstone, citrine, amber, tiger eye",
+
+            Herbs: "Frankincense, bay laurel, cinnamon, saffron",
+
+            Offerings: "Frankincense, a lamp at dawn, honey, golden fruit, greeting the sunrise",
+
+            TraditionalWarnings: "Sol Invictus is often said to be the reason Christmas falls on 25 December. That is one scholarly view; others argue the date came from Christian calculation of the Annunciation, so present it as debated. Never look directly at the sun.",
+
+            Overview: "Sol is the Roman sun god, honoured from Rome’s early days as Sol Indiges and, from the emperor Aurelian’s reforms in 274 CE, as Sol Invictus, the Unconquered Sun. He is pictured as a young man with a radiate crown, raising his right hand and driving a chariot drawn by four horses.",
+
+            TraditionalMeaning: "Light that returns: steadfastness, clear sight, and the confidence that the sun comes back after the longest night.",
+
+            DevotionalApproach: "Start here: on a clear morning, stand facing the sunrise (never looking directly at it) and say a short greeting. Approach him with steadiness and gratitude. He asks devotees to rise with the light, act openly and keep going through dark seasons.",
+
+            OfferingNotes: "Offer frankincense, a lit lamp or candle at dawn, honey or golden fruit. Greeting the sunrise each morning is itself a devotion.",
+
+            AltarIdeas: "Gold or yellow candles, a radiate crown or sun-disc image, sunstone or citrine, bay laurel and an east-facing window.",
+
+            CulturalContext: "Sol is honoured today by Roman polytheists, a small living religion, especially at the winter solstice. Sol Invictus was also a title of other sun gods, such as Elagabal of Emesa and Mithras in the mysteries, so it is worth knowing which Sol a source means.",
+
+            Traditions: "Roman, Wheel of the Year",
+
+            TraditionNotes: "Roman: Sol Invictus is honoured on 25 December, the Dies Natalis Solis Invicti in the Roman calendar of 354, as the sun begins to return after the solstice; Aurelian founded his temple and priesthood in Rome, and games for Sol were held every four years. The older Sol Indiges had feasts in August on the Quirinal. He is asked for light, victory and the returning sun, and Sunday (dies Solis) takes its name from him.\n\nWheel of the Year: Modern Pagans greet the reborn sun at Yule and honour solar gods at Litha; some Roman-minded Pagans include Sol Invictus in their Yule rites.",
+
+            tags: ["sun", "light", "victory", "midwinter", "renewal", "sunday"]
+        },
+
+        zeus: {
+            DisplayName: "Zeus",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "Sky, weather and thunder, kingship, justice, oaths, hospitality and guests, suppliants, the household’s goods",
+
+            SacredSymbols: "Thunderbolt, sceptre, eagle, aegis, oak crown",
+
+            SacredAnimals: "Eagle, bull",
+
+            SacredPlants: "Oak, wild olive",
+
+            CandleColors: "White, gold, royal blue, purple",
+
+            Crystals: "Lapis lazuli, sapphire, clear quartz, amethyst",
+
+            Herbs: "Oak, frankincense, bay laurel",
+
+            Offerings: "Libations of wine, frankincense, barley, honey cakes, hospitality to strangers, a kept oath",
+
+            TraditionalWarnings: "Many myths of Zeus’s unions are stories of deception or force. Hellenic polytheists read them in different ways, and devotion to him does not require excusing them. Do not swear by him lightly.",
+
+            Overview: "Zeus is the king of the Greek gods, god of the sky, weather and thunder, of justice, oaths and hospitality. Son of Kronos and Rhea, hidden as a baby on Crete and husband of Hera, he is pictured as a bearded, enthroned king with a thunderbolt and sceptre, an eagle at his side.",
+
+            TraditionalMeaning: "Order kept by justice: the guest protected, the oath honoured, the household provided for and the weak given a hearing.",
+
+            DevotionalApproach: "Start here: offer a stranger or guest real hospitality this week, a meal, a seat or a kind welcome, in honour of Zeus Xenios. Approach him with dignity and good faith, as you would a just ruler. He asks for fair dealing, kept promises and care for guests and those who ask for help.",
+
+            OfferingNotes: "Offer a libation of wine or water at the start of a rite, frankincense, barley or honey cakes. Hospitality, justice and keeping your word are offerings in his name.",
+
+            AltarIdeas: "White or gold candles, an eagle or thunderbolt image, an oak sprig, lapis lazuli and a libation bowl. Many Hellenic polytheists also keep a lidded jar for Zeus Ktesios in the pantry.",
+
+            CulturalContext: "Zeus is honoured today in Hellenic polytheism, a living religion, with many local titles: Ktesios of the household, Xenios of guests, Horkios of oaths, Meilichios the gentle. It is respectful to address the title that fits rather than a single generic sky god.",
+
+            Traditions: "Hellenic, Roman",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists pour him a libation at almost every rite and honour him at the Diasia, the festival of Zeus Meilichios on 23 Anthesterion, at the Dipolieia on 14 Skirophorion, and as Zeus Ktesios with a jar of food offerings kept in the pantry. He is asked for justice, protection of the household, rain and fair weather, and blessing on guests and oaths.\n\nRoman: As Jupiter, Roman polytheists honour him on the Ides of each month and at the Ludi Romani, and invoke him as Optimus Maximus, guardian of oaths and the state.",
+
+            tags: ["sky", "justice", "oaths", "hospitality", "kingship", "thunder"]
+        },
+
+        hera: {
+            DisplayName: "Hera",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "Marriage, wives and women, childbirth, the family, queenship, the cities of Argos and Samos",
+
+            SacredSymbols: "Diadem or tall crown (polos), sceptre topped by a cuckoo, pomegranate, veil",
+
+            SacredAnimals: "Cow, peacock, cuckoo",
+
+            SacredPlants: "Pomegranate, chaste tree (lygos), lily",
+
+            CandleColors: "Royal blue, white, purple, silver",
+
+            Crystals: "Garnet, moonstone, sapphire, rose quartz",
+
+            Herbs: "Myrrh, rose, chaste tree",
+
+            Offerings: "Flowers, incense, honey cakes, wine, woven work, support for women and families",
+
+            TraditionalWarnings: "Myth often shows Hera as jealous and vengeful toward Zeus’s lovers and children. In her cults she was a revered protector of women, marriage and whole cities, so approach her as a queen, not a punchline.",
+
+            Overview: "Hera is the queen of the Greek gods, goddess of marriage, women and the family, and wife and sister of Zeus. She is pictured as a dignified, crowned and veiled woman with a sceptre, and in her famous statue at Argos she held a pomegranate.",
+
+            TraditionalMeaning: "Committed partnership and the dignity of women: loyalty, sovereignty and protection through each stage of life.",
+
+            DevotionalApproach: "Start here: do one thing that honours a commitment you have made, to a partner, a family or yourself. Approach her with respect and some formality, as you would a queen. She asks devotees to keep faith, protect their own dignity and support women and families.",
+
+            OfferingNotes: "Offer flowers, incense, honey cakes or wine, or woven or sewn work. Support for women, mothers and families is a fitting offering.",
+
+            AltarIdeas: "Royal blue or white candles, a pomegranate, peacock feathers, a small crown or diadem, garnet or moonstone, and a veil or piece of fine cloth.",
+
+            CulturalContext: "Hera is honoured today in Hellenic polytheism, a living religion. At Stymphalos she was worshipped as Pais (girl), Teleia (married, fulfilled) and Chera (widowed or separated), a goddess for every stage of a woman’s life, not only for brides.",
+
+            Traditions: "Hellenic, Roman",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists honour Hera in the month of Gamelion, the season of weddings, especially at the Theogamia, the sacred marriage of Zeus and Hera on 27 Gamelion. Her great sanctuaries were at Argos and Samos, and at Olympia women wove her a new robe and girls ran races in her Heraia. She is asked to bless marriages, childbirth, families and women’s lives.\n\nRoman: As Juno, Roman polytheists honour her at the Matronalia on 1 March and on the Kalends of each month, and invoke her as Lucina for safe birth.",
+
+            tags: ["marriage", "women", "family", "queenship", "childbirth", "loyalty"]
+        },
+
+        poseidon: {
+            DisplayName: "Poseidon",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "The sea, earthquakes, horses, springs and fresh water, sailors and fishers",
+
+            SacredSymbols: "Trident, horse, dolphin, pine crown of the Isthmian Games",
+
+            SacredAnimals: "Horse, bull, dolphin",
+
+            SacredPlants: "Pine, wild celery",
+
+            CandleColors: "Blue, sea green, white",
+
+            Crystals: "Aquamarine, larimar, chrysocolla, blue lace agate",
+
+            Herbs: "Pine, bladderwrack, myrrh",
+
+            Offerings: "Libations of wine, fresh water, barley, incense, care for the sea and its shores",
+
+            TraditionalWarnings: "Do not throw offerings into the sea, where they become litter or harm wildlife; pour libations onto the shore or a dish. Respect tides and currents and never perform ritual alone on rocks or in the water.",
+
+            Overview: "Poseidon is the Greek god of the sea, of earthquakes and of horses, called the Earth-Shaker. Brother of Zeus and Hades and husband of the sea goddess Amphitrite, he is pictured as a powerful bearded man with a trident, often with horses or dolphins.",
+
+            TraditionalMeaning: "Power that must be respected: the sea and the shaking earth, and the steadiness to travel and live alongside them.",
+
+            DevotionalApproach: "Start here: on the eighth day of the lunar month, pour a little fresh water or wine and ask for safe travel for someone you love. Approach him with respect and some awe rather than casual familiarity. He asks devotees to respect the sea and to look after it.",
+
+            OfferingNotes: "Offer wine, fresh water, barley or incense, poured onto the shore or into a dish. A beach clean-up or support for sea rescue charities is a fitting offering.",
+
+            AltarIdeas: "Blue or sea-green candles, a trident, horse or dolphin image, a bowl of salt water, responsibly gathered shells, aquamarine or chrysocolla, and a pine sprig.",
+
+            CulturalContext: "Poseidon is honoured today in Hellenic polytheism, a living religion. He was one of the oldest Greek gods, already named in Mycenaean tablets at Pylos, and his temple at Cape Sounion still stands above the sea.",
+
+            Traditions: "Hellenic, Roman",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists honour Poseidon on the eighth day of each lunar month, a day the Athenians gave to him and Theseus, and in the winter month named after him, Poseideon. The Isthmian Games near Corinth were held in his honour. He is asked for calm seas, safe voyages, steady ground and good horses.\n\nRoman: As Neptune, Roman polytheists honour him at the Neptunalia on 23 July with shelters of leafy branches, and ask for water in the summer heat.",
+
+            tags: ["sea", "earthquakes", "horses", "travel", "storms", "protection"]
+        },
+
+        horus: {
+            DisplayName: "Horus",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "The sky, kingship, protection, victory, the rightful heir, healing of the eye",
+
+            SacredSymbols: "Falcon, wedjat eye (Eye of Horus), double crown, winged sun disc",
+
+            SacredAnimals: "Falcon",
+
+            SacredPlants: "Papyrus, lotus",
+
+            CandleColors: "Gold, red, white, blue",
+
+            Crystals: "Lapis lazuli, carnelian, tiger eye, sunstone",
+
+            Herbs: "Frankincense, myrrh, cedar",
+
+            Offerings: "Bread, beer, fresh water, incense, a wedjat amulet, acts of loyalty to family",
+
+            TraditionalWarnings: "Horus is several gods under one name: Horus the Elder, Horus son of Isis, the child Harpocrates and the winged disc of Edfu. Know which form you are addressing. The wedjat eye is an Egyptian protective amulet, not a generic ‘all-seeing eye’.",
+
+            Overview: "Horus, Heru in Egyptian, is the falcon god of the sky and of kingship, whose eyes were the sun and moon. As the son of Isis and Osiris he avenged his father and won the throne from Set, and every living pharaoh ruled as Horus; he is pictured as a falcon or a falcon-headed man wearing the double crown of Egypt.",
+
+            TraditionalMeaning: "Rightful order restored: courage, loyalty to family, healing after injury and the strength to claim what is truly yours.",
+
+            DevotionalApproach: "Start here: draw a wedjat eye by hand and keep it where you need protection, saying a short prayer to him as you finish it. Approach him with confidence and loyalty, especially when you must stand up for what is right. He asks devotees to act with integrity and to defend those who depend on them.",
+
+            OfferingNotes: "Offer bread, beer, fresh water and incense, and refresh liquid offerings rather than letting them stand. Defending someone treated unfairly is an offering in his spirit.",
+
+            AltarIdeas: "Gold, red or white candles, a falcon image, a wedjat eye, a winged sun disc, lapis lazuli or carnelian, and a bowl of fresh water.",
+
+            CulturalContext: "Kemetic practice is a living religion that honours Horus today. His great temple at Edfu still stands, and its walls record his festivals and his victory over Set; learn from Kemetic communities and Egyptian sources rather than later occult ideas of the ‘Aeon of Horus’.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Horus the Elder is honoured on his birthday, the second of the five epagomenal days before Wep Ronpet, and Horus of Edfu at the Feast of the Beautiful Meeting, when Hathor of Dendera travelled upriver to visit him. He is offered bread, beer, water and incense and asked for protection, victory, healing and right rule; the wedjat eye is worn as an amulet of protection and wholeness.",
+
+            tags: ["kingship", "protection", "sky", "victory", "healing", "loyalty"]
+        },
+
+        set: {
+            DisplayName: "Set",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "Storms, the desert, foreign lands, strength, disorder and its necessary limits, defence of Ra’s barque",
+
+            SacredSymbols: "The Set animal, was sceptre, spear, the colour red",
+
+            SacredAnimals: "The Set animal (an unidentified creature with a curved snout and squared ears), donkey, oryx",
+
+            SacredPlants: "None securely attested; modern devotees often choose hardy desert plants",
+
+            CandleColors: "Red, black, ochre",
+
+            Crystals: "Red jasper, obsidian, hematite, smoky quartz",
+
+            Herbs: "Frankincense, myrrh, cedar",
+
+            Offerings: "Red wine or beer, bread, fresh water, incense, honest effort and courage",
+
+            TraditionalWarnings: "Set’s reputation changed over three thousand years, from honoured god of kings to a figure whose images were defaced, so ancient sources disagree. Modern Setian groups such as the Temple of Set (founded 1975) are a modern movement distinct from ancient Egyptian worship, and Set is not the Christian Satan.",
+
+            Overview: "Set, Seth or Sutekh, is the Egyptian god of storms, the desert and foreign lands, and of strength and disorder. He murdered his brother Osiris and fought Horus for the throne, yet he also stood at the prow of Ra’s sun boat each night, spearing the chaos serpent Apep; he is pictured with the head of the unidentified Set animal.",
+
+            TraditionalMeaning: "Strength at the edges: the storm and the desert, disorder that must be faced, and force turned to defend the world rather than wreck it.",
+
+            DevotionalApproach: "Start here: read the story of the Contendings of Horus and Set and of Set defending Ra’s barque against Apep, and sit with how one god can be both. Approach him with honesty, courage and respect for his power rather than fascination with darkness. He asks devotees to face hard things directly and use strength to protect.",
+
+            OfferingNotes: "Offer red wine or beer, bread, water and incense. Physical effort, facing a fear or protecting someone are offerings in his spirit.",
+
+            AltarIdeas: "Red or black candles, a Set-animal image, a spear or was sceptre symbol, red jasper or hematite, and a dish of desert sand.",
+
+            CulturalContext: "Kemetic practice is a living religion, and Kemetic communities differ on how they approach Set. He was honoured at Nubt (Ombos) from early times, chosen as patron by the Ramesside kings (Seti I bore his name), and only in the later periods was he widely cast as an enemy; respect that complexity rather than making him a villain or an edgy icon.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Set’s birthday is the third epagomenal day before Wep Ronpet, which ancient calendars counted unlucky and best spent quietly. Some Kemetics honour him as the defender of Ra’s barque against Apep, with red offerings, bread and beer, and ask for strength, protection in storms and courage in conflict.",
+
+            tags: ["storms", "desert", "strength", "protection", "chaos", "courage"]
+        },
+
+        nephthys: {
+            DisplayName: "Nephthys",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "Mourning, protection of the dead, the household and temple enclosure, night and transition, care for the grieving",
+
+            SacredSymbols: "The hieroglyph of a house with a basket on her head, outstretched winged arms, the canopic jar of the lungs",
+
+            SacredAnimals: "Kite (the bird of prey)",
+
+            SacredPlants: "None securely attested in Egyptian sources",
+
+            CandleColors: "Black, silver, white, blue",
+
+            Crystals: "Obsidian, moonstone, amethyst, jet",
+
+            Herbs: "Myrrh, frankincense, cedar",
+
+            Offerings: "Fresh water, bread, beer, incense, linen, lamps, prayers for the dead",
+
+            TraditionalWarnings: "Little survives of a cult of her own, and much modern lore about Nephthys as a ‘dark’, ‘hidden’ or ‘shadow’ goddess is modern interpretation, not ancient teaching. Grief work with her can sit alongside, never replace, support from people and professionals.",
+
+            Overview: "Nephthys, Nebet-Het (‘Lady of the House’) in Egyptian, is the goddess who mourns and protects the dead. Daughter of Geb and Nut, sister of Isis, Osiris and Set and wife of Set, she wept with Isis over Osiris as one of the two kites and helped restore him; she is pictured as a woman crowned with the hieroglyph of her name.",
+
+            TraditionalMeaning: "Faithful presence in loss: staying with the grieving and the dying, guarding thresholds, and loyalty that chooses the right side.",
+
+            DevotionalApproach: "Start here: light a lamp in the evening and name someone you have lost, letting yourself grieve for a few minutes. Approach her gently and honestly, especially in mourning or at endings. She asks devotees to keep vigil with those who suffer and to honour the dead.",
+
+            OfferingNotes: "Offer fresh water, bread, beer, incense or a strip of clean linen, and refresh liquid offerings rather than letting them stand. Sitting with someone who is grieving is an offering in her spirit.",
+
+            AltarIdeas: "Black, silver or white candles, an image of her with outstretched wings, a lamp, a strip of linen, obsidian or moonstone, and photographs of the dead.",
+
+            CulturalContext: "Kemetic practice is a living religion that honours Nephthys today, usually beside Isis. She guarded coffins and, with Isis, Neith and Serqet, the canopic jars; learn from Kemetic communities and Egyptian funerary texts.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Nephthys is honoured on her birthday, the last of the five epagomenal days before Wep Ronpet, often with the sistrum, and in the month of Khoiak, when the Lamentations of Isis and Nephthys for Osiris were sung. She is asked to protect the dead and the dying, comfort the grieving and guard the home.",
+
+            tags: ["mourning", "the dead", "protection", "grief", "night", "household"]
+        },
+
+        maat: {
+            DisplayName: "Maat",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "Truth, justice, cosmic order, balance, right conduct, the judgement of the dead",
+
+            SacredSymbols: "Ostrich feather, scales of judgement, seated figure with a feather on her head",
+
+            SacredAnimals: "None; the ostrich feather is her sign",
+
+            SacredPlants: "None securely attested in Egyptian sources",
+
+            CandleColors: "White, gold, blue",
+
+            Crystals: "Clear quartz, lapis lazuli, sodalite, jade",
+
+            Herbs: "Frankincense, myrrh, cedar",
+
+            Offerings: "Truthful words and fair actions, fresh water, bread, incense, a feather",
+
+            TraditionalWarnings: "The ‘42 Laws of Maat’ sold as commandments are a modern rewording of the Negative Confession in the Book of the Dead, which is a declaration of innocence spoken by the dead, not a list of rules. Maat is both a goddess and a principle, so honouring her means living truthfully, not only offering to her.",
+
+            Overview: "Maat, also written Ma’at, is the Egyptian goddess and principle of truth, justice and the right order of the world, daughter of Ra. She is pictured as a seated woman with an ostrich feather on her head, and in the Hall of Judgement the heart of the dead was weighed against her feather.",
+
+            TraditionalMeaning: "Living in truth: honesty, fairness and balance kept every day, so that the world and your own life stay in order.",
+
+            DevotionalApproach: "Start here: at the end of the day, write down one place where you were truthful and fair and one where you could do better. Approach her with honesty and steadiness rather than ceremony alone. She asks devotees to speak truly, act justly and restore balance where it has been lost.",
+
+            OfferingNotes: "Offer fresh water, bread and incense, and above all truthful words and fair actions. In temples the king’s central offering was a small figure of Maat herself, a promise to uphold order.",
+
+            AltarIdeas: "White or gold candles, a feather, a small pair of scales, clear quartz or lapis lazuli, and a written statement of the values you mean to live by.",
+
+            CulturalContext: "Kemetic practice is a living religion in which living in maat is central to daily life. Ancient judges and viziers were called priests of Maat, and her ideal shaped Egyptian law and ethics; learn from Kemetic communities rather than treating her only as a feather on a scale.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Maat is honoured every day by living truthfully, and in temple rite the offering of Maat, a small figure of the goddess, is presented to the gods as a pledge to keep order. No festival of hers is securely known; many Kemetics renew their commitment to maat at Wep Ronpet, the new year. She is asked for truth, justice, balance and a light heart at the judgement.",
+
+            tags: ["truth", "justice", "balance", "order", "ethics", "judgement"]
+        },
+
+        lakshmi: {
+            DisplayName: "Lakshmi",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "Wealth, prosperity, good fortune, beauty, auspiciousness, abundance in every sense",
+
+            SacredSymbols: "Lotus, gold coins, pot of plenty (kalash), elephants pouring water",
+
+            SacredAnimals: "Elephants, owl",
+
+            SacredPlants: "Lotus, bilva (bael), rice",
+
+            CandleColors: "Gold, red, pink, yellow",
+
+            Crystals: "Citrine, pyrite, green aventurine, rose quartz",
+
+            Herbs: "Turmeric, saffron, sandalwood",
+
+            Offerings: "Lotus and red or pink flowers, sweets, rice, fruit, ghee lamps, coins, a clean home",
+
+            TraditionalWarnings: "Lakshmi is a living deity in Hindu religious practice. She is not a money charm, and her image and names should not be used in spells or as decoration.",
+
+            Overview: "Lakshmi, also called Shri, is the Hindu goddess of wealth, prosperity, beauty and good fortune, and the consort of Vishnu. She is pictured seated or standing on a lotus, holding lotuses, with gold coins flowing from her hand and elephants pouring water over her.",
+
+            TraditionalMeaning: "Auspicious abundance: prosperity joined with generosity, beauty, order and spiritual wealth.",
+
+            DevotionalApproach: "Start here: learn about her from Hindu sources and Hindu devotees before anything else; respect comes before correspondence. Approach her with cleanliness, gratitude and generosity, following Hindu guidance on puja and prayer rather than improvising. She asks for sincerity and right use of wealth, not a shortcut to riches.",
+
+            OfferingNotes: "Offer lotus or red and pink flowers, sweets, rice, fruit or a lit lamp, placed cleanly and respectfully. Learn which offerings Hindu devotees consider appropriate before improvising.",
+
+            AltarIdeas: "Gold, red or pink candles or, more traditionally, a small oil or ghee lamp (diya), an image or murti of Lakshmi treated with reverence, lotus flowers, a few coins and a clean cloth. Keep it clean and intentional rather than decorative.",
+
+            CulturalContext: "Lakshmi belongs to living Hindu religion with established practices, festivals and theology. Outsiders should approach her carefully, ideally learning from a Hindu teacher, temple or family.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Lakshmi is worshipped above all at Diwali, when homes are cleaned, lit with rows of lamps and decorated with rangoli to welcome her, and Lakshmi Puja is performed with Ganesha on the new-moon night. She is also honoured on Fridays, at Sharad Purnima (Kojagari Lakshmi Puja in Bengal and Odisha) and at Varalakshmi Vratam in the south. The Puranas tell how she rose from the churning of the ocean of milk, and devotees ask her for prosperity, good fortune and well-being for the household.",
+
+            tags: ["prosperity", "wealth", "fortune", "beauty", "abundance", "diwali"]
+        },
+
+        shiva: {
+            DisplayName: "Shiva",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "Transformation and dissolution, asceticism and yoga, meditation, the cosmic dance, grace, liberation",
+
+            SacredSymbols: "Trident (trishula), damaru drum, crescent moon, the river Ganga in his hair, third eye, linga, sacred ash (vibhuti), rudraksha beads",
+
+            SacredAnimals: "Nandi the bull, serpent",
+
+            SacredPlants: "Bilva (bael) leaves, rudraksha, white flowers",
+
+            CandleColors: "White, blue, grey",
+
+            Crystals: "Clear quartz (sphatika), moonstone, black tourmaline, lapis lazuli",
+
+            Herbs: "Bilva, sandalwood, frankincense",
+
+            Offerings: "Water and milk poured over the linga, bilva leaves, white flowers, fruit, sacred ash, lamps",
+
+            TraditionalWarnings: "Shiva is a living deity in Hindu religious practice, and for Shaiva Hindus he is the Supreme God. Datura flowers and fruit offered in some temples are highly poisonous, and bhang is not a requirement of devotion; do not handle or take either.",
+
+            Overview: "Shiva, called Mahadeva (‘the great god’), is a principal Hindu deity of transformation, meditation and grace, the destroyer of ignorance and, for Shaiva Hindus, the Supreme God. He is pictured as an ascetic with matted hair holding the river Ganga and a crescent moon, a third eye and a serpent at his neck, holding a trident and drum, and as Nataraja, lord of the dance.",
+
+            TraditionalMeaning: "Stillness and transformation: the yogi’s inner quiet, the ending that makes renewal possible, and grace freely given.",
+
+            DevotionalApproach: "Start here: learn about him from Hindu sources and Hindu devotees before anything else; respect comes before correspondence. Approach him with simplicity, cleanliness and sincerity, following Hindu guidance on puja and mantra rather than improvising. He is said to be easily pleased by a sincere heart, not by display.",
+
+            OfferingNotes: "Offer clean water, a few bilva leaves, white flowers or fruit, placed cleanly and respectfully. Traditionally tulsi (holy basil) and ketaki flowers are not offered to Shiva; learn which offerings Hindu devotees consider appropriate before improvising.",
+
+            AltarIdeas: "White candles or, more traditionally, an oil or ghee lamp, an image or murti of Shiva or a small linga treated with reverence, bilva leaves, a crescent-moon symbol and a small pot of water.",
+
+            CulturalContext: "Shiva belongs to living Hindu religion, worshipped in homes and temples across India, Nepal, Sri Lanka and the diaspora, with great pilgrimage sites such as Varanasi and the twelve Jyotirlingas. The linga is his aniconic form, revered by devotees as a sign of the formless divine. Outsiders should approach him carefully, ideally learning from a Hindu teacher or temple.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Shiva is worshipped on Mondays, especially in the month of Shravan, at the monthly Pradosh and Shivaratri, and above all at Maha Shivaratri, when devotees fast, keep an all-night vigil, chant ‘Om Namah Shivaya’ and bathe the linga with water, milk and honey and offer bilva leaves. He is worshipped with Parvati and their sons Ganesha and Kartikeya, and devotees ask him for inner peace, the removal of ignorance, protection and liberation.",
+
+            tags: ["transformation", "meditation", "yoga", "grace", "liberation", "shivaratri"]
+        },
+
+        saraswati: {
+            DisplayName: "Saraswati",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "Knowledge, learning, speech, music, the arts, wisdom, the river of inspiration",
+
+            SacredSymbols: "Veena, book (pustaka), prayer beads (mala), white lotus, pot of water",
+
+            SacredAnimals: "Swan (hamsa), peacock",
+
+            SacredPlants: "White lotus, yellow flowers of spring",
+
+            CandleColors: "White, yellow, gold",
+
+            Crystals: "Clear quartz, moonstone, sodalite, fluorite",
+
+            Herbs: "Sandalwood, saffron, jasmine",
+
+            Offerings: "White and yellow flowers, sweets, fruit, books, pens and instruments placed before her, study and practice",
+
+            TraditionalWarnings: "Saraswati is a living deity in Hindu religious practice. She is not a study hack or exam charm, and her image and names should not be used in spells or as decoration.",
+
+            Overview: "Saraswati is the Hindu goddess of knowledge, learning, speech, music and the arts, first praised in the Rigveda as a great river. She is pictured dressed in white, seated on a white lotus and playing the veena, holding a book and prayer beads, with a swan beside her.",
+
+            TraditionalMeaning: "Pure knowledge flowing: learning, clear speech and the arts, pursued with discipline and humility.",
+
+            DevotionalApproach: "Start here: learn about her from Hindu sources and Hindu devotees before anything else; respect comes before correspondence. Approach her with humility, cleanliness and real effort in your studies or art, following Hindu guidance on prayer rather than improvising. She asks for dedication and respect for knowledge and teachers.",
+
+            OfferingNotes: "Offer white or yellow flowers, fruit or sweets, placed cleanly and respectfully, and treat books and instruments with care. Learn which offerings Hindu devotees consider appropriate before improvising.",
+
+            AltarIdeas: "White or yellow candles or, more traditionally, a small oil or ghee lamp, an image or murti of Saraswati treated with reverence, white flowers, a book and an instrument or pen. Keep it clean and uncluttered.",
+
+            CulturalContext: "Saraswati belongs to living Hindu religion and is also honoured by Jains and Buddhists, and as Benzaiten in Japan. Schools, students and musicians across South Asia keep her festival. Outsiders should approach her carefully, ideally learning from a Hindu teacher, temple or family.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Saraswati is worshipped at Vasant Panchami in late winter, when students place books, pens and instruments before her, wear yellow and in many families children write their first letters; and in the last days of Navaratri, as Saraswati Puja and Ayudha Puja in the south, ending with Vijayadashami, a day for beginning learning. Devotees ask her for knowledge, clear speech, wisdom and skill in the arts.",
+
+            tags: ["knowledge", "learning", "music", "arts", "speech", "wisdom"]
+        },
+
+        kali: {
+            DisplayName: "Kali",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "Time and transformation, protection, destruction of ignorance and ego, liberation, the Divine Mother’s fierce love",
+
+            SacredSymbols: "Sword (khadga), severed head, garland of heads, skirt of arms, outstretched tongue, standing on Shiva",
+
+            SacredAnimals: "Jackals, in her cremation-ground imagery",
+
+            SacredPlants: "Red hibiscus (jaba), bilva",
+
+            CandleColors: "Red, deep blue, black",
+
+            Crystals: "Garnet, obsidian, ruby, black tourmaline",
+
+            Herbs: "Hibiscus, sandalwood, frankincense",
+
+            Offerings: "Red hibiscus flowers and garlands, sweets, fruit, lamps, incense, devotional songs",
+
+            TraditionalWarnings: "Kali is a living deity in Hindu religious practice, especially in Shakta traditions. She is not a ‘dark goddess’ of revenge or shadow aesthetics, and tantric forms of her worship require initiation from a qualified guru; do not imitate them.",
+
+            Overview: "Kali is the Hindu Divine Mother in her fierce form, the power of time (kala) that ends all things and frees devotees from ignorance and ego. In the Devi Mahatmya she springs from the brow of Durga to defeat demons; she is pictured dark blue or black, with a garland of heads, a sword and a severed head, her tongue out, standing on Shiva.",
+
+            TraditionalMeaning: "Fierce, protective love: the mother who destroys what binds her children and grants fearlessness and freedom.",
+
+            DevotionalApproach: "Start here: learn about her from Hindu, and especially Bengali and Shakta, sources and devotees before anything else; respect comes before correspondence. Approach her as devotees do, as a loving mother, with humility, cleanliness and sincerity, following Hindu guidance on prayer and mantra rather than improvising. She asks for surrender of ego, not a fearsome aesthetic.",
+
+            OfferingNotes: "Offer red hibiscus flowers, sweets, fruit or a lit lamp, placed cleanly and respectfully. Some temples keep older rites that outsiders should not imitate; home worship uses flowers, food and light.",
+
+            AltarIdeas: "Red or deep blue candles or, more traditionally, an oil lamp, an image or murti of Kali treated with reverence, red hibiscus flowers and a bell. Keep it clean and intentional rather than decorative.",
+
+            CulturalContext: "Kali belongs to living Hindu religion, worshipped above all in Bengal, Assam and Odisha and at great temples such as Kalighat and Dakshineswar. Saints and poets such as Ramprasad Sen and Ramakrishna knew her as a tender mother, and her imagery is read by devotees as symbol: the heads as the ego cut away, her nakedness as freedom from illusion. Outsiders should approach her carefully, ideally learning from a Hindu teacher or temple.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Kali is worshipped at Kali Puja on the new-moon night of Diwali in Bengal and eastern India, with red hibiscus garlands, lamps, sweets and all-night worship, and on new-moon (Amavasya) nights, Tuesdays and Saturdays. She is honoured as the first of the ten Mahavidyas and in Navaratri, and devotees sing Shyama Sangeet to her, asking for protection, courage, the end of fear and liberation.",
+
+            tags: ["protection", "transformation", "mother", "time", "liberation", "devotion"]
+        },
+
+        krishna: {
+            DisplayName: "Krishna",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "Divine love, devotion (bhakti), joy, protection, wisdom, duty, playfulness",
+
+            SacredSymbols: "Flute (bansuri), peacock feather, yellow garment (pitambara), conch, discus (Sudarshana chakra)",
+
+            SacredAnimals: "Cows and calves, peacock",
+
+            SacredPlants: "Tulsi (holy basil), kadamba tree, lotus",
+
+            CandleColors: "Blue, yellow, gold, white",
+
+            Crystals: "Lapis lazuli, sodalite, blue lace agate, clear quartz",
+
+            Herbs: "Tulsi (holy basil), sandalwood, cardamom",
+
+            Offerings: "Tulsi leaves, butter and milk sweets, fruit, flowers, lamps, devotional songs (bhajan and kirtan)",
+
+            TraditionalWarnings: "Krishna is a living deity in Hindu religious practice, worshipped as an avatar of Vishnu and, in many Vaishnava traditions, as the Supreme God himself. His love stories with Radha and the gopis are understood by devotees as images of the soul’s love for God, not as romance or love-spell material.",
+
+            Overview: "Krishna is a Hindu deity of divine love, joy and wisdom, the eighth avatar of Vishnu and, for many devotees, God himself. Born in Mathura and raised among cowherds in Vrindavan, the mischievous butter-thief and flute player became the counsellor of Arjuna in the Bhagavad Gita; he is pictured dark blue, with a peacock feather in his crown and a flute in his hands.",
+
+            TraditionalMeaning: "Love as the way to God: joyful devotion, selfless action and the wisdom of the Bhagavad Gita.",
+
+            DevotionalApproach: "Start here: learn about him from Hindu sources and Hindu devotees before anything else, perhaps by reading a respected translation of the Bhagavad Gita; respect comes before correspondence. Approach him with love, cleanliness and sincerity, following Hindu guidance on puja and chanting rather than improvising. He asks for devotion and right action without attachment to reward.",
+
+            OfferingNotes: "Offer tulsi leaves, fruit, milk sweets or butter, flowers or a lit lamp, placed cleanly and respectfully. Offerings are vegetarian; learn which offerings Hindu devotees consider appropriate before improvising.",
+
+            AltarIdeas: "Blue or yellow candles or, more traditionally, a small ghee lamp, an image or murti of Krishna (often with Radha) treated with reverence, a peacock feather, a flute and a tulsi plant. Keep it clean and loving rather than decorative.",
+
+            CulturalContext: "Krishna belongs to living Hindu religion, worshipped across India and the world, and Vaishnava communities from Vrindavan to the international ISKCON movement welcome respectful visitors to kirtan and festivals. Outsiders should approach him with care, ideally learning from a Hindu teacher, temple or family.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Krishna is worshipped at Krishna Janmashtami, his birth at midnight in late summer, with fasting, songs, a cradle for the infant Krishna and, in Maharashtra, Dahi Handi; at Holi, kept with special joy in Braj; at Govardhan Puja after Diwali with a mountain of food (Annakut); and on Ekadashi fasts. Devotees chant his names, sing bhajans and offer tulsi and sweets, asking for love, devotion, protection and guidance.",
+
+            tags: ["love", "devotion", "joy", "wisdom", "protection", "bhakti"]
+        },
     },
 
     tool: {

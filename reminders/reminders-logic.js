@@ -158,14 +158,43 @@
     }).filter((e) => e.start.getTime() > now.getTime());
   }
 
+  /**
+   * Hekate's Deipnon each month (the app's deipnon reminders), for those who
+   * keep the Hellenic monthly days or hold Hekate as patron, at the time chosen
+   * for sacred days. Turned off in Today's calendar settings (deipnon_prompt).
+   */
+  function deipnonReminderEvents(settings, appSettings, now, G, days = HORIZON.sacred) {
+    if (!G.deipnon) return [];
+    return G.deipnon
+      .deipnonReminders(appSettings || {}, now, days)
+      .map((r) => {
+        const start = new Date(r.date.getFullYear(), r.date.getMonth(), r.date.getDate(), Math.floor(settings.sacredAt / 60), settings.sacredAt % 60);
+        return {
+          key: `reminder-${r.key}`.replace(/[^a-z0-9-]+/gi, "-"),
+          title: r.title,
+          start,
+          end: new Date(start.getTime() + 30 * 60000),
+          allDay: false,
+          notes: `${r.body}\nhttps://saltandsovereignty.com/divination/draw/?spread=crossroads\n${FOOTER}`,
+          alarms: [0],
+        };
+      })
+      .filter((e) => e.start.getTime() > now.getTime());
+  }
+
   /** Every reminder as a calendar event, soonest first. */
   function reminderEvents({ settings, plans, appSettings, now, templateFor }, G) {
+    const deipna = deipnonReminderEvents(settings, appSettings, now, G);
+    const deipnonDays = new Set(deipna.map((e) => isoDay(e.start)));
+    // The Deipnon stands in for itself among Hekate's sacred days, so the day isn't in the calendar twice.
+    const sacred = sacredReminderEvents(settings, appSettings, now, G).filter((e) => !(e.key.startsWith("reminder-sacred-hekate-") && deipnonDays.has(isoDay(e.start))));
     return [
       ...moonReminderEvents(settings, now, G),
       ...ritualReminderEvents(settings, plans, now, G, templateFor),
       ...devotionReminderEvents(settings, now, G),
       ...dreamReminderEvents(settings, now, G),
-      ...sacredReminderEvents(settings, appSettings, now, G),
+      ...sacred,
+      ...deipna,
     ].sort((a, b) => a.start.getTime() - b.start.getTime());
   }
 
@@ -215,7 +244,7 @@
     return before === 60 ? "An hour before" : `${Math.round(before / 60)} hours before`;
   }
 
-  const api = { KEYS, SKY_KINDS, HORIZON, readJson, writeJson, loadReminders, saveReminders, loadCalendar, saveCalendar, clock, minutesLabel, moonReminderEvents, ritualReminderEvents, devotionReminderEvents, dreamReminderEvents, sacredReminderEvents, reminderEvents, skyEvents, sampleEvent, plansFrom, whenLabel, alarmLabel };
+  const api = { KEYS, SKY_KINDS, HORIZON, readJson, writeJson, loadReminders, saveReminders, loadCalendar, saveCalendar, clock, minutesLabel, moonReminderEvents, ritualReminderEvents, devotionReminderEvents, dreamReminderEvents, sacredReminderEvents, deipnonReminderEvents, reminderEvents, skyEvents, sampleEvent, plansFrom, whenLabel, alarmLabel };
   global.RemindersLogic = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

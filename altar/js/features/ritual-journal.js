@@ -251,7 +251,9 @@ async function saveRitualJournal(form, saveMode = "journal") {
     metadata: {
       journalVersion: 1,
       mode: pendingRitualJournalMode,
-      completedSteps: pendingRitualJournalSteps.map((step) => ({ title: step.title, status: step.status, elapsedSeconds: step.elapsed_seconds }))
+      completedSteps: pendingRitualJournalSteps.map((step) => ({ title: step.title, status: step.status, elapsedSeconds: step.elapsed_seconds })),
+      // The plan it was begun from, as the app keeps it, so a reading drawn before it shows beside "Did it work?".
+      ...(typeof session.metadata?.planId === "string" && session.metadata.planId ? { planId: session.metadata.planId } : {})
     }
   };
 
