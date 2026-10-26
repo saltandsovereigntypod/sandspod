@@ -179,7 +179,7 @@ test('journey content: six stages in order, unique ids, refs that resolve', (t) 
 
 // The Roman and Greek journeys added together are held to the full standard strictly: registered,
 // complete, ids unique, and linked to their Library entry, patron devotions and the website catalog.
-const STRICT_DEITY_JOURNEYS = ['saturn', 'flora'];
+const STRICT_DEITY_JOURNEYS = ['saturn', 'flora', 'neptune'];
 
 test('the newer deity journeys are registered, complete, unique and linked', () => {
   const libraryHas = (ref: string) => {

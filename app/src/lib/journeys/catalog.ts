@@ -492,6 +492,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A month with the Morrigan, Ireland’s Great Queen of battle, prophecy and sovereignty: her names and sisters, her stories by the river and the ford, how little we know of her worship, and how people honour her now, ending in a self-dedication made with your word."
   },
   {
+    "id": "deity-neptune",
+    "kind": "deity",
+    "paths": [
+      "roman"
+    ],
+    "deityRef": "traditional/deity/neptune",
+    "title": "Neptune of the Waters",
+    "summary": "A month with Neptune, the Roman god of water before he was lord of the sea: the leafy shelters of the Neptunalia in the summer drought, sailors’ vows and votive tablets, the storm he calms in the Aeneid, and a practice of giving thanks for every cup of water."
+  },
+  {
     "id": "deity-nyx",
     "kind": "deity",
     "paths": [
