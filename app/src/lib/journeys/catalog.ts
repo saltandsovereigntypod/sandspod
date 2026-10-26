@@ -555,6 +555,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A month with Rhiannon of the Mabinogi: the lady no horse could catch, the bag that could never be filled, her son stolen on May Eve and the years she spent at the horse-block, her birds that sang at Harlech, and the scholarly debates about horse goddesses and sovereignty, with a self-dedication made in birdsong at the turning of the light."
   },
   {
+    "id": "deity-saturn",
+    "kind": "deity",
+    "paths": [
+      "roman"
+    ],
+    "deityRef": "traditional/deity/saturn",
+    "title": "Saturn of the Golden Age",
+    "summary": "A month with Saturn, the Roman god of sowing and of the Golden Age: his temple and treasury, his bound feet and bare head, the Saturnalia with its tapers, gifts and shared tables, and an open-handed practice of plenty given away."
+  },
+  {
     "id": "deity-sekhmet",
     "kind": "deity",
     "paths": [

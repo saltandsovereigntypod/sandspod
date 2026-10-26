@@ -2,6 +2,9 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { TRADITIONS } from '../src/lib/holidays.ts';
+import { JOURNEY_CATALOG } from '../src/lib/journeys/catalog.ts';
+import { TRADITIONAL_LIBRARY } from '../src/lib/library/traditionalData.ts';
+import { DEITY_DEVOTIONS } from '../src/lib/patron/devotions.ts';
 import { PATH_TRADITIONS } from '../src/lib/library/traditions.ts';
 import { premadeById } from '../src/lib/rituals/premade/index.ts';
 import {
@@ -171,6 +174,54 @@ test('journey content: six stages in order, unique ids, refs that resolve', (t) 
   for (const j of JOURNEYS) {
     assert.ok(j.stages.length > 0, `${j.id} has stages`);
     assert.ok(Array.isArray(j.holyDays) && Array.isArray(j.notes), `${j.id} lists`);
+  }
+});
+
+// The Roman and Greek journeys added together are held to the full standard strictly: registered,
+// complete, ids unique, and linked to their Library entry, patron devotions and the website catalog.
+const STRICT_DEITY_JOURNEYS = ['saturn'];
+
+test('the newer deity journeys are registered, complete, unique and linked', () => {
+  const libraryHas = (ref: string) => {
+    const [, type, key] = ref.split('/');
+    return !!TRADITIONAL_LIBRARY[type as keyof typeof TRADITIONAL_LIBRARY]?.[key];
+  };
+  const allIds = new Map<string, string>();
+  for (const j of JOURNEYS) {
+    for (const s of j.stages) for (const x of [...s.lessons, ...s.practices]) allIds.set(`${j.id}/${x.id}`, x.id);
+  }
+  const problems = contentProblems();
+  for (const key of STRICT_DEITY_JOURNEYS) {
+    const id = `deity-${key}`;
+    const j = journeyById(id);
+    assert.ok(j, `${id} is registered`);
+    assert.ok(JOURNEY_CATALOG.some((c) => c.id === id), `${id} is in the website catalog`);
+    assert.deepEqual(problems.filter((p) => p.startsWith(`${id}:`) || p.startsWith(`${id}/`)), [], id);
+    // Complete: every stage has something to do, study has lessons, the threshold and dedication have rites.
+    for (const s of j.stages) assert.ok(s.intro && s.days > 0 && (s.lessons.length || s.practices.length || s.rite), `${id} ${s.kind} has content`);
+    assert.ok(j.stages[1].lessons.length >= 4, `${id} has its lessons`);
+    assert.ok(j.stages[0].rite && j.stages[4].rite, `${id} has its rites`);
+    assert.ok(j.stages[3].questions?.length, `${id} has discernment questions`);
+    assert.ok(j.welcome && j.about && j.notes.length && j.sources.length >= 5, `${id} has its welcome, notes and sources`);
+    for (const s of j.stages) {
+      for (const l of s.lessons) {
+        assert.ok(l.sections.length >= 3 && l.knowAndDont.known && l.knowAndDont.unknown && l.inPractice && l.reflect.length, `${id}/${l.id} is complete`);
+        for (const ref of l.library ?? []) assert.ok(libraryHas(ref), `${id}/${l.id}: ${ref}`);
+      }
+      for (const i of s.rite?.ingredients ?? []) if (i.ref) assert.ok(libraryHas(i.ref), `${id} ${s.kind} rite: ${i.ref}`);
+    }
+    // Ids unique: no lesson or practice id is shared with any other journey.
+    const mine = [...allIds].filter(([k]) => k.startsWith(`${id}/`)).map(([, v]) => v);
+    for (const x of mine) {
+      assert.ok(x.startsWith(`${key}-`), `${id}: ${x} is prefixed`);
+      assert.equal([...allIds].filter(([, v]) => v === x).length, 1, `${x} is unique`);
+    }
+    // Linked: the Library entry exists and finds this journey; the patron page has devotions for it.
+    assert.equal(j.deityRef, `traditional/deity/${key}`);
+    assert.ok(libraryHas(j.deityRef!), `${id}: Library entry`);
+    assert.equal(journeyForDeityRef(j.deityRef), j);
+    assert.equal(journeyForDeityRef(`traditional:deity:${key}`), j);
+    assert.ok(DEITY_DEVOTIONS.some((d) => d.key === key), `${id}: patron devotions`);
   }
 });
 
