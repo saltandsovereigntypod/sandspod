@@ -69,6 +69,7 @@ import { JOURNEY as DEITY_TYR } from './data/deity-tyr.ts';
 import { JOURNEY as DEITY_VELES } from './data/deity-veles.ts';
 import { JOURNEY as DEITY_VENUS } from './data/deity-venus.ts';
 import { JOURNEY as DEITY_VESTA } from './data/deity-vesta.ts';
+import { JOURNEY as DEITY_ZEUS } from './data/deity-zeus.ts';
 import { JOURNEY as PATH_CELTIC } from './data/path-celtic.ts';
 import { JOURNEY as PATH_EGYPTIAN } from './data/path-egyptian.ts';
 import { JOURNEY as PATH_HELLENIC } from './data/path-hellenic.ts';
@@ -146,6 +147,7 @@ export const JOURNEYS: Journey[] = [
   DEITY_VELES,
   DEITY_VENUS,
   DEITY_VESTA,
+  DEITY_ZEUS,
   PATH_CELTIC,
   PATH_EGYPTIAN,
   PATH_HELLENIC,

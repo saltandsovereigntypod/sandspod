@@ -698,6 +698,17 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A month with Vesta, the living flame at the centre of Rome and of every Roman house: the hearth, the Vestals, mola salsa, the Vestalia, and the quiet daily care that was her worship."
   },
   {
+    "id": "deity-zeus",
+    "kind": "deity",
+    "paths": [
+      "hellenic",
+      "roman"
+    ],
+    "deityRef": "traditional/deity/zeus",
+    "title": "Zeus: Guest-Friend and King",
+    "summary": "A lunar month with Zeus, father of gods and men: the sky-god of Hesiod and Homer, Zeus of the guest, the oath and the household jar, Olympia and the oak of Dodona, and a practice of libations and real hospitality."
+  },
+  {
     "id": "path-celtic",
     "kind": "path",
     "paths": [
