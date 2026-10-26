@@ -38,6 +38,7 @@ const MORE_DEITIES: Record<string, string[]> = {
   Slavic: ['svarog', 'stribog', 'jarilo', 'zorya', 'rod'],
   Hindu: ['vishnu', 'parvati', 'hanuman', 'rama', 'brahma', 'surya'],
   Wiccan: ['wiccan_goddess', 'horned_god', 'aradia'],
+  Mesopotamian: ['inanna', 'enki', 'ereshkigal', 'shamash', 'nanna', 'marduk', 'nisaba', 'ninkasi'],
 };
 const ALL_MORE = Object.values(MORE_DEITIES).flat();
 const text = (d: Deity, ...fields: string[]) => fields.map((f) => String(d[f] ?? '')).join(' ');
@@ -319,6 +320,19 @@ const MORE_SEARCH: [string, string][] = [
   ['Herne', 'horned_god'],
   ['Holly King', 'horned_god'],
   ['Leland', 'aradia'],
+  ['Ishtar', 'inanna'],
+  ['Enheduanna', 'inanna'],
+  ['Ea', 'enki'],
+  ['Abzu', 'enki'],
+  ['Irkalla', 'ereshkigal'],
+  ['Utu', 'shamash'],
+  ['Hammurabi', 'shamash'],
+  ['Sin', 'nanna'],
+  ['Ur', 'nanna'],
+  ['Enuma Elish', 'marduk'],
+  ['Akitu', 'marduk'],
+  ['scribes', 'nisaba'],
+  ['beer', 'ninkasi'],
 ];
 // Living religions: devotion, not magic.
 const LIVING_PANTHEONS = ['Hindu', 'Shinto', 'Chinese'];

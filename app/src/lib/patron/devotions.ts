@@ -54,6 +54,9 @@ const ERCHIA =
 const EPAGOMENAL_BIRTHS =
   'The five days upon the year and the gods born on them: Pyramid Texts; Papyrus Leiden I 346; Plutarch, On Isis and Osiris 12. Dates here count back from an early-August new year; the app’s Kemetic calendar works them out from the anchor you choose';
 
+const MESO_ETCSL = 'The Electronic Text Corpus of Sumerian Literature (Oxford): https://etcsl.orinst.ox.ac.uk/';
+const MESO_CULTIC = 'Mark E. Cohen, The Cultic Calendars of the Ancient Near East (1993)';
+
 export const DEITY_DEVOTIONS: DeityDevotion[] = [
   // ─── Greek ────────────────────────────────────────────────────────────
   {
@@ -3422,6 +3425,174 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     approach:
       'Aradia is approached with honesty about her uncertain origins, as Leland’s liberator of the oppressed.',
     sources: ['Charles Godfrey Leland, Aradia, or the Gospel of the Witches (1899), ch. 1', HUTTON_TRIUMPH, 'Sabina Magliocco, “Who Was Aradia? The History and Development of a Legend”, The Pomegranate 18 (2002)'],
+  },
+
+  // ─── Mesopotamian ────────────────────────────────────────────────────────
+  {
+    key: 'inanna',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 5 },
+        name: 'Friday',
+        why: 'Friday is the day of the planet Venus, which was Inanna’s star. Honouring her on Fridays is a modern custom; Mesopotamians watched for Venus as morning and evening star.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Look for Venus at dusk or dawn and greet her.',
+      'Read a few lines of a hymn by Enheduanna.',
+      'Say plainly what you want.',
+      'Stand up for yourself or someone else in one thing.',
+    ],
+    approach:
+      'Inanna is approached with courage and honesty, as the queen of heaven, love and war, from texts four thousand years old.',
+    sources: [MESO_ETCSL, 'Betty De Shong Meador, Inanna, Lady of Largest Heart: Poems of the Sumerian High Priestess Enheduanna (2000)'],
+  },
+  {
+    key: 'enki',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'new' },
+        name: 'The first crescent',
+        why: 'Mesopotamian temples kept the first day of the month, at the new crescent, as a feast. Keeping it for Enki is a modern choice; no festival of his can be fixed to our calendar.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Offer a bowl of fresh water.',
+      'Solve one problem cleverly and kindly.',
+      'Learn one new skill or technique.',
+      'Use water carefully today.',
+    ],
+    approach:
+      'Enki is approached with curiosity and respect, as the clever god of fresh water and the arts.',
+    sources: [MESO_ETCSL, 'W. G. Lambert and A. R. Millard, Atra-ḫasīs: The Babylonian Story of the Flood (1969)', MESO_CULTIC],
+  },
+  {
+    key: 'ereshkigal',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'dark' },
+        name: 'The dark of the moon',
+        why: 'At the end of the month, when the moon disappeared, Mesopotamian families made offerings for the dead (kispum). Keeping it for Ereshkigal is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Say the names of people you have lost.',
+      'Pour a little water onto the earth for the dead.',
+      'Let yourself feel your grief for a few minutes.',
+      'Respect one limit you cannot change.',
+    ],
+    approach:
+      'Ereshkigal is approached with respect and without fear, as the rightful queen of the dead.',
+    sources: [MESO_ETCSL, 'Stephanie Dalley, Myths from Mesopotamia (1989), on Nergal and Ereshkigal', MESO_CULTIC],
+  },
+  {
+    key: 'shamash',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 0 },
+        name: 'Sunday',
+        why: 'The day of the Sun in the planetary week. Honouring Shamash on Sundays is a modern custom; Mesopotamian prayers greeted him at sunrise.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Greet the morning sun and ask for fairness today.',
+      'Tell the truth in one hard moment.',
+      'Help someone who has been treated unfairly.',
+      'Keep an honest measure in a deal or a promise.',
+    ],
+    approach:
+      'Shamash is approached with honesty, as the sun who sees all and judges truly.',
+    sources: ['The Shamash Hymn, trans. W. G. Lambert, Babylonian Wisdom Literature (1960)', 'The Code of Hammurabi stele (Louvre Sb 8)', WEEKDAYS],
+  },
+  {
+    key: 'nanna',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'new' },
+        name: 'The first crescent',
+        why: 'Ur kept monthly moon festivals (eš-eš) for Nanna, at the first crescent among other days.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'moon', phase: 'full' },
+        name: 'The full moon',
+        why: 'The full moon, the fifteenth day, was also a monthly feast at Ur and in other cities.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Watch for the first crescent and greet him.',
+      'Keep a note of the moon’s phase today.',
+      'Offer a little milk or a date by a window at night.',
+      'Be patient with one thing that takes time.',
+    ],
+    approach:
+      'Nanna is approached calmly and regularly, as the moon god of Ur who keeps the months.',
+    sources: [MESO_CULTIC, MESO_ETCSL],
+  },
+  {
+    key: 'marduk',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'ostara' },
+        name: 'Akitu, the spring new year',
+        why: 'Babylon’s great new-year festival, the Akitu of Nisannu, began with the first new moon after the spring equinox and lasted twelve days, with the Enuma Elish recited for Marduk. The date here is the equinox, as an approximation.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Put one disordered corner of your life in order.',
+      'Read a few lines of the Enuma Elish.',
+      'Make one fair decision for people who depend on you.',
+      'Face one overwhelming task with a first step.',
+    ],
+    approach:
+      'Marduk is approached with respect for his authority, as Babylon’s king of the gods who made order from chaos.',
+    sources: ['W. G. Lambert, Babylonian Creation Myths (2013)', 'Julye Bidmead, The Akītu Festival (2002)', MESO_CULTIC],
+  },
+  {
+    key: 'nisaba',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'ostara' },
+        name: 'The spring barley harvest',
+        why: 'In Mesopotamia barley was harvested in spring. No festival day of Nisaba can be fixed; honouring her at the spring equinox is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Write something carefully by hand.',
+      'End a piece of writing with “Nisaba be praised”.',
+      'Check one account or record and make it right.',
+      'Give to a library or literacy charity.',
+    ],
+    approach:
+      'Nisaba is approached through study and accuracy, as the goddess of grain and the scribe’s art.',
+    sources: [MESO_ETCSL, 'Jeremy Black and Anthony Green, Gods, Demons and Symbols of Ancient Mesopotamia (1992), s.v. Nisaba'],
+  },
+  {
+    key: 'ninkasi',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'lammas' },
+        name: 'Lammas, the grain harvest',
+        why: 'No festival of Ninkasi is known. Many modern devotees and home brewers raise a cup to her at the grain harvest; this is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Share a drink with a friend and raise it to her.',
+      'Bake or brew something with care.',
+      'Welcome a guest well.',
+      'Sing while you cook.',
+    ],
+    approach:
+      'Ninkasi is approached with gladness and moderation, as the goddess of beer and good company.',
+    sources: ['Miguel Civil, “A Hymn to the Beer Goddess and a Drinking Song”, in Studies Presented to A. Leo Oppenheim (1964)', MESO_ETCSL],
   },
 
   // ─── Jewish folklore and Western occultism ───────────────────────────

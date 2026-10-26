@@ -11967,6 +11967,350 @@ const TraditionalLibrary = {
 
             tags: ["aradia", "moon", "liberation", "witchcraft", "leland", "esbat"]
         },
+
+        inanna: {
+            DisplayName: "Inanna",
+            Category: "Deity",
+
+            Pantheon: "Mesopotamian",
+
+            Domains: "Love and sexual desire, war and courage, justice, the planet Venus, sovereignty and kingship, crossing boundaries",
+
+            SacredSymbols: "Eight-pointed star, the reed-bundle ring-post of her gate, the rosette, the lion-drawn chariot, lapis lazuli",
+
+            SacredAnimals: "Lion",
+
+            SacredPlants: "Date palm, reeds, the huluppu tree of her tale",
+
+            CandleColors: "Red, gold, deep blue",
+
+            Crystals: "Lapis lazuli, carnelian, garnet, gold-coloured stones",
+
+            Herbs: "Cedar, myrrh, date",
+
+            Offerings: "Dates, beer, butter and honey cakes, incense of cedar, songs and hymns",
+
+            TraditionalWarnings: "Inanna, called Ishtar in Akkadian, is fierce as well as loving: she destroys those who defy her, and her love brings Dumuzi to the underworld. The idea of ‘sacred prostitution’ in her temples rests mainly on Herodotus and is now widely doubted by historians.",
+
+            Overview: "Inanna is the Sumerian goddess of love, war and the planet Venus, the queen of heaven of Uruk, known in Akkadian as Ishtar. She took the divine powers (me) from Enki, went down to the underworld and was hung as a corpse on a hook before she was rescued, and gave her husband Dumuzi to take her place. The priestess Enheduanna, daughter of Sargon of Akkad and the first author known by name, wrote hymns to her around 2300 BCE.",
+
+            TraditionalMeaning: "Desire and power without apology: love, courage, boundaries crossed and the journey down into darkness and back.",
+
+            DevotionalApproach: "Start here: watch for Venus as the morning or evening star, the brightest point near the sun, and greet her by name. Approach her with courage and honesty about what you want. She is honoured by passion lived openly, justice defended and the strength to come back from loss.",
+
+            OfferingNotes: "Offer dates, beer, small cakes of butter and honey, or cedar incense, as in ancient temple lists. Reading a hymn of Enheduanna aloud is a fitting offering.",
+
+            AltarIdeas: "A red or gold candle, an eight-pointed star, a lion figure, lapis lazuli and carnelian, a dish of dates and a picture of the Ishtar Gate of Babylon.",
+
+            CulturalContext: "There is no unbroken living Mesopotamian religion; a small number of modern polytheists reconstruct its worship from the cuneiform texts, and the heritage belongs also to the living peoples of Iraq and Syria, including Assyrians and Mandaeans. Never buy unprovenanced antiquities, which fuel the looting of sites.",
+
+            Traditions: "Mesopotamian",
+
+            TraditionNotes: "Mesopotamian: Modern Mesopotamian polytheists honour Inanna when Venus appears as morning or evening star, and some on Fridays, the planet’s day, with dates, beer, cakes and hymns, and retell her descent. She is asked for love, courage, justice and strength to return from dark times.",
+
+            tags: ["love", "war", "venus", "courage", "descent", "sumer"]
+        },
+
+        enki: {
+            DisplayName: "Enki",
+            Category: "Deity",
+
+            Pantheon: "Mesopotamian",
+
+            Domains: "Fresh water and the deep (Abzu), wisdom and cunning, crafts and arts, exorcism and healing, creation of humankind",
+
+            SacredSymbols: "Streams of water with fish flowing from his shoulders, the goat-fish, the vase with flowing water, the number forty",
+
+            SacredAnimals: "Goat-fish, fish",
+
+            SacredPlants: "Reeds of the marsh",
+
+            CandleColors: "Blue, green, silver",
+
+            Crystals: "Aquamarine, lapis lazuli, amazonite, clear quartz",
+
+            Herbs: "Reed, cedar, tamarisk",
+
+            Offerings: "Fresh water, fish, bread, beer, clever work done well",
+
+            TraditionalWarnings: "Enki, Ea in Akkadian, is a trickster as well as a helper: he gets drunk and gives away the divine powers to Inanna, and his affairs in Enki and Ninhursag nearly kill him. Approach him with respect for his intelligence, not as a simple benevolent father.",
+
+            Overview: "Enki is the Sumerian god of fresh water, wisdom and the arts, lord of the Abzu, the sweet waters beneath the earth, whose temple stood at Eridu, perhaps the oldest city of Sumer. He is pictured as a bearded god with streams of water full of fish flowing from his shoulders. In the Atrahasis story he shapes humankind from clay and, when the gods send the flood, warns the wise man Atrahasis to build a boat.",
+
+            TraditionalMeaning: "Wisdom that flows: ingenuity, craft, healing and kindness to humans, with a trickster’s wit.",
+
+            DevotionalApproach: "Start here: offer a bowl of fresh water and solve one problem cleverly and kindly. Approach him with curiosity and respect. He is honoured by learning, by skilled work and by finding ways round hard situations that help people.",
+
+            OfferingNotes: "Offer fresh water, bread, beer or fish. Keeping water clean, and learning a craft, are offerings in his spirit.",
+
+            AltarIdeas: "A blue or green candle, a bowl or vase of flowing water, a goat-fish or fish figure, aquamarine or lapis lazuli, reeds and a lump of clay.",
+
+            CulturalContext: "There is no unbroken living Mesopotamian religion; a small number of modern polytheists reconstruct its worship from the cuneiform texts, and the heritage belongs also to the living peoples of Iraq and Syria, including Assyrians and Mandaeans. Never buy unprovenanced antiquities, which fuel the looting of sites.",
+
+            Traditions: "Mesopotamian",
+
+            TraditionNotes: "Mesopotamian: Modern Mesopotamian polytheists honour Enki with fresh water, bread and beer, often at the new moon and before learning or making something. He is asked for wisdom, craft, healing and help out of difficulty.",
+
+            tags: ["water", "wisdom", "craft", "healing", "creation", "trickster"]
+        },
+
+        ereshkigal: {
+            DisplayName: "Ereshkigal",
+            Category: "Deity",
+
+            Pantheon: "Mesopotamian",
+
+            Domains: "The underworld and the dead, the order of death, grief, the queen who must be honoured",
+
+            SacredSymbols: "The seven gates of the underworld, the dark palace of Ganzir, the throne below",
+
+            SacredAnimals: "None securely attested in Mesopotamian sources",
+
+            SacredPlants: "None securely attested in Mesopotamian sources",
+
+            CandleColors: "Black, deep red, dark blue",
+
+            Crystals: "Obsidian, jet, black tourmaline, lapis lazuli",
+
+            Herbs: "Myrrh, cypress, cedar",
+
+            Offerings: "Water and bread offered for the dead, incense, honesty about grief",
+
+            TraditionalWarnings: "Ereshkigal is the queen of the dead whom Inanna visits in The Descent of Inanna; she is not a demon. The famous Burney Relief, a winged goddess with owls and lions, is sometimes called a picture of her, but scholars disagree whether it shows Ereshkigal, Ishtar or another figure.",
+
+            Overview: "Ereshkigal, Queen of the Great Earth, rules the land of no return beneath the world, called Kur in Sumerian and Irkalla in Akkadian, and is Inanna’s elder sister. When Inanna came down through the seven gates, stripped of her garments and powers, Ereshkigal fixed on her the eye of death and hung her corpse on a hook; later she mourns in what the poem describes as the pains of grief or labour. In another tale the god Nergal comes down to her and becomes her husband and king of the underworld.",
+
+            TraditionalMeaning: "The rightful place of death: grief honoured, limits respected and the dignity of those who dwell below.",
+
+            DevotionalApproach: "Start here: light a dark candle, say the names of people you have lost, and let yourself feel what you feel for a few minutes. Approach her with respect and without fear. She is honoured by honesty about grief, care for the dead and respect for limits.",
+
+            OfferingNotes: "Offer water and bread for the dead, as Mesopotamian families did in the kispum meal, or incense. Pour water onto the earth rather than drinking it.",
+
+            AltarIdeas: "A black or deep red candle, seven small stones for the seven gates, obsidian or jet, a bowl of water, bread and the names of the dead.",
+
+            CulturalContext: "There is no unbroken living Mesopotamian religion; a small number of modern polytheists reconstruct its worship from the cuneiform texts, and the heritage belongs also to the living peoples of Iraq and Syria, including Assyrians and Mandaeans. Never buy unprovenanced antiquities, which fuel the looting of sites.",
+
+            Traditions: "Mesopotamian",
+
+            TraditionNotes: "Mesopotamian: Modern Mesopotamian polytheists honour Ereshkigal at the dark of the moon, when Mesopotamians made offerings to the dead, with water, bread and incense. She is asked to keep the dead in peace and for strength in grief.",
+
+            tags: ["underworld", "death", "grief", "ancestors", "queen", "descent"]
+        },
+
+        shamash: {
+            DisplayName: "Shamash",
+            Category: "Deity",
+
+            Pantheon: "Mesopotamian",
+
+            Domains: "The Sun, justice and law, truth, protection of travellers and the oppressed, divination",
+
+            SacredSymbols: "The saw-toothed blade, the sun disc with four points and wavy rays, the rod and ring of justice",
+
+            SacredAnimals: "None securely attested; his charioteer Bunene drives the sun’s chariot",
+
+            SacredPlants: "Cedar",
+
+            CandleColors: "Gold, yellow, white",
+
+            Crystals: "Sunstone, citrine, carnelian, clear quartz",
+
+            Herbs: "Cedar, juniper, frankincense",
+
+            Offerings: "Bread, beer, cedar incense, honest dealing, justice done",
+
+            TraditionalWarnings: "Shamash, Utu in Sumerian, judges truly: Mesopotamians called on him as witness and judge, so do not ask him to bless a lie or an unfair cause.",
+
+            Overview: "Shamash is the Mesopotamian sun god and judge, Utu in Sumerian, who sees everything as he crosses the sky and judges gods and humans. His great temples were at Sippar and Larsa. At the top of the stele of Hammurabi’s laws the king stands before Shamash on his throne, and in the Epic of Gilgamesh he sends winds to help Gilgamesh and Enkidu defeat Humbaba.",
+
+            TraditionalMeaning: "Light that brings justice: truth, fairness, protection of the weak and clarity in judgement.",
+
+            DevotionalApproach: "Start here: greet the morning sun and ask him to help you deal fairly with someone today. Approach him with honesty. He is honoured by fair judgement, truthfulness and standing up for those treated unjustly.",
+
+            OfferingNotes: "Offer bread, beer or cedar incense at sunrise. Doing justice, keeping fair weights and telling the truth are offerings in his spirit.",
+
+            AltarIdeas: "A gold or yellow candle, a sun disc with wavy rays, a small scale, sunstone or citrine, cedar wood and a copy of a law or promise you mean to keep.",
+
+            CulturalContext: "There is no unbroken living Mesopotamian religion; a small number of modern polytheists reconstruct its worship from the cuneiform texts, and the heritage belongs also to the living peoples of Iraq and Syria, including Assyrians and Mandaeans. Never buy unprovenanced antiquities, which fuel the looting of sites.",
+
+            Traditions: "Mesopotamian",
+
+            TraditionNotes: "Mesopotamian: Modern Mesopotamian polytheists greet Shamash at sunrise, and some on Sundays, with bread, beer and cedar, and call on him when seeking justice. He is asked for fairness, truth, protection on journeys and help for the wronged.",
+
+            tags: ["sun", "justice", "truth", "law", "protection", "fairness"]
+        },
+
+        nanna: {
+            DisplayName: "Nanna",
+            Category: "Deity",
+
+            Pantheon: "Mesopotamian",
+
+            Domains: "The Moon, the months and time, fertility of herds, wisdom, the city of Ur",
+
+            SacredSymbols: "The crescent moon, the moon boat, a lapis lazuli beard, the ziggurat of Ur",
+
+            SacredAnimals: "Bull, whose horns echo the crescent",
+
+            SacredPlants: "None securely attested in Mesopotamian sources",
+
+            CandleColors: "Silver, white, blue",
+
+            Crystals: "Moonstone, lapis lazuli, selenite, clear quartz",
+
+            Herbs: "Cedar, myrrh, chamomile",
+
+            Offerings: "Milk, butter, bread, dates, beer",
+
+            TraditionalWarnings: "Nanna, called Sin in Akkadian (no relation to the English word sin), is a god, not a goddess; the moon in Mesopotamia was male. His cult at Harran lasted into the Islamic period, but modern stories linking him to later religions are speculative.",
+
+            Overview: "Nanna, or Sin, is the Mesopotamian moon god, lord of Ur, whose great ziggurat still stands in southern Iraq. He was father of Inanna and Utu, and was pictured as a bearded god with a lapis lazuli beard, sailing the night sky in his crescent boat. Enheduanna served him as high priestess at Ur, and the last king of Babylon, Nabonidus, was so devoted to Sin of Harran that his priests resented it.",
+
+            TraditionalMeaning: "Time kept by the moon: the months, patient wisdom, fertility of the herds and light in the dark.",
+
+            DevotionalApproach: "Start here: watch for the first thin crescent after the new moon and greet him, then mark the date. Approach him calmly and regularly. He is honoured by keeping good time, patience and care for animals.",
+
+            OfferingNotes: "Offer milk, butter, bread, dates or beer at the new and full moon. Keeping a lunar journal is a simple devotion.",
+
+            AltarIdeas: "A silver or white candle, a crescent or boat shape, a bull figure, moonstone or lapis lazuli, and a dish of milk or dates. A window where the moon is visible suits him.",
+
+            CulturalContext: "There is no unbroken living Mesopotamian religion; a small number of modern polytheists reconstruct its worship from the cuneiform texts, and the heritage belongs also to the living peoples of Iraq and Syria, including Assyrians and Mandaeans. Never buy unprovenanced antiquities, which fuel the looting of sites.",
+
+            Traditions: "Mesopotamian",
+
+            TraditionNotes: "Mesopotamian: Modern Mesopotamian polytheists honour Nanna at the first crescent and the full moon, as Ur kept monthly moon festivals (eš-eš) for him, with milk, butter and dates. He is asked for wisdom, fertility, good timing and safe nights.",
+
+            tags: ["moon", "time", "months", "ur", "fertility", "wisdom"]
+        },
+
+        marduk: {
+            DisplayName: "Marduk",
+            Category: "Deity",
+
+            Pantheon: "Mesopotamian",
+
+            Domains: "Kingship and order, the city of Babylon, victory over chaos, magic of healing and protection, wisdom",
+
+            SacredSymbols: "The spade (marru), the snake-dragon mušḫuššu, the Tablets of Destiny, the ziggurat Etemenanki",
+
+            SacredAnimals: "The mušḫuššu, a snake-dragon with lion’s forelegs and eagle’s hind legs",
+
+            SacredPlants: "None securely attested in Mesopotamian sources",
+
+            CandleColors: "Gold, red, deep blue",
+
+            Crystals: "Lapis lazuli, carnelian, garnet, tiger eye",
+
+            Herbs: "Cedar, myrrh, frankincense",
+
+            Offerings: "Bread, beer, dates, incense, recitation of the Enuma Elish",
+
+            TraditionalWarnings: "Marduk rose to the head of the gods with the power of Babylon, and the Enuma Elish was written in part to justify that. Remember the earlier gods he displaced, and do not treat Tiamat simply as evil; she is the mother of the gods in the same poem.",
+
+            Overview: "Marduk is the god of Babylon who became king of the gods. In the Enuma Elish, the Babylonian creation poem, he defeats Tiamat, the salt-water ocean, splits her body to make heaven and earth, sets the stars and calendar in order and receives fifty names. His temple Esagila and ziggurat Etemenanki, which may lie behind the story of the Tower of Babel, stood at the heart of Babylon, and the mušḫuššu dragon on the Ishtar Gate is his.",
+
+            TraditionalMeaning: "Order won from chaos: just rule, courage in the face of overwhelming forces and the renewal of the year.",
+
+            DevotionalApproach: "Start here: put one disordered corner of your life in order and offer the work to him with a little bread or incense. Approach him with respect for his authority. He is honoured by just leadership, courage and the patient work of making order.",
+
+            OfferingNotes: "Offer bread, beer, dates or incense, especially at the spring new year. Reading part of the Enuma Elish aloud, as priests did at the Akitu festival, is a fitting offering.",
+
+            AltarIdeas: "A gold or red candle, a spade or dragon figure, lapis lazuli and carnelian, a dish of dates and a picture of the Ishtar Gate’s dragons.",
+
+            CulturalContext: "There is no unbroken living Mesopotamian religion; a small number of modern polytheists reconstruct its worship from the cuneiform texts, and the heritage belongs also to the living peoples of Iraq and Syria, including Assyrians and Mandaeans. Never buy unprovenanced antiquities, which fuel the looting of sites.",
+
+            Traditions: "Mesopotamian",
+
+            TraditionNotes: "Mesopotamian: Modern Mesopotamian polytheists honour Marduk at the spring new year, the Akitu of Nisannu, when Babylon’s priests recited the Enuma Elish and the king renewed his rule by taking the god’s hand, with bread, beer, dates and incense. He is asked for order, protection, just leadership and courage.",
+
+            tags: ["kingship", "order", "babylon", "creation", "akitu", "victory"]
+        },
+
+        nisaba: {
+            DisplayName: "Nisaba",
+            Category: "Deity",
+
+            Pantheon: "Mesopotamian",
+
+            Domains: "Grain, writing and scribes, accounting and measurement, knowledge",
+
+            SacredSymbols: "The stylus, the clay tablet, an ear of grain, the measuring rod and line",
+
+            SacredAnimals: "None securely attested in Mesopotamian sources",
+
+            SacredPlants: "Barley, reeds",
+
+            CandleColors: "Gold, green, brown",
+
+            Crystals: "Lapis lazuli, jasper, citrine, clear quartz",
+
+            Herbs: "Barley, reed, cedar",
+
+            Offerings: "Grain or bread, beer, a page of careful writing, an account kept honestly",
+
+            TraditionalWarnings: "Nisaba’s role passed in later centuries to the god Nabu, who became the main patron of scribes in Babylonia and Assyria. Little myth about her survives; she is known mostly from hymns and scribal praise.",
+
+            Overview: "Nisaba is the Sumerian goddess of grain and of writing, the patron of scribes. Many Sumerian literary tablets end with the words “Nisaba be praised”, and hymns call her the one who holds the measuring rod and the tablet of lapis lazuli. Writing in Mesopotamia began with the counting of grain, so her two roles belong together.",
+
+            TraditionalMeaning: "Knowledge that feeds: writing, accurate records, learning and the harvest they help to share.",
+
+            DevotionalApproach: "Start here: write something carefully by hand, a letter, a list or a page of notes, and end it with “Nisaba be praised”. Approach her through study and accuracy. She is honoured by honest records, good learning and grain shared fairly.",
+
+            OfferingNotes: "Offer grain, bread or beer, or a page of careful writing. Supporting literacy or libraries is an offering in her spirit.",
+
+            AltarIdeas: "A gold or green candle, a stylus or pen, a small clay tablet, an ear of barley, lapis lazuli and a notebook.",
+
+            CulturalContext: "There is no unbroken living Mesopotamian religion; a small number of modern polytheists reconstruct its worship from the cuneiform texts, and the heritage belongs also to the living peoples of Iraq and Syria, including Assyrians and Mandaeans. Never buy unprovenanced antiquities, which fuel the looting of sites.",
+
+            Traditions: "Mesopotamian",
+
+            TraditionNotes: "Mesopotamian: Modern Mesopotamian polytheists honour Nisaba when beginning study or writing, and at the barley harvest, which in Mesopotamia came in spring, with grain, bread and careful writing. She is asked for learning, clear records and a good harvest.",
+
+            tags: ["writing", "scribes", "grain", "learning", "knowledge", "harvest"]
+        },
+
+        ninkasi: {
+            DisplayName: "Ninkasi",
+            Category: "Deity",
+
+            Pantheon: "Mesopotamian",
+
+            Domains: "Beer and brewing, hospitality and good cheer, the satisfying of desire",
+
+            SacredSymbols: "The brewing vat, the drinking straw, the bappir loaf",
+
+            SacredAnimals: "None securely attested in Mesopotamian sources",
+
+            SacredPlants: "Barley, dates, honey",
+
+            CandleColors: "Amber, gold, brown",
+
+            Crystals: "Amber, citrine, tiger eye, carnelian",
+
+            Herbs: "Barley, dates, hops (a modern addition)",
+
+            Offerings: "Beer or a non-alcoholic brew, bread, dates, a song while brewing",
+
+            TraditionalWarnings: "Drink responsibly and offer non-alcoholic brews if you prefer: devotion to Ninkasi is about craft and hospitality, not excess. The Hymn to Ninkasi describes brewing, but reading it as a full recipe is a modern interpretation.",
+
+            Overview: "Ninkasi is the Sumerian goddess of beer and brewing. The Hymn to Ninkasi, written down around 1800 BCE, praises her as she bakes the bappir loaf, waters the malt, soaks it in the vat and pours out the filtered beer, “like the onrush of the Tigris and Euphrates”. Beer was a staple of Mesopotamian life, given as rations and offered to the gods.",
+
+            TraditionalMeaning: "Shared joy: craft, hospitality, good company and the work that turns grain into gladness.",
+
+            DevotionalApproach: "Start here: share a drink, beer or something non-alcoholic, with a friend and raise it to her. Approach her with gladness and moderation. She is honoured by careful craft, generous hospitality and good company.",
+
+            OfferingNotes: "Offer beer or a non-alcoholic brew, bread or dates, or sing while you brew or bake. Brewers sometimes dedicate the first glass of a batch to her.",
+
+            AltarIdeas: "An amber or gold candle, a small jar or brewing vessel, ears of barley, dates and amber or citrine.",
+
+            CulturalContext: "There is no unbroken living Mesopotamian religion; a small number of modern polytheists reconstruct its worship from the cuneiform texts, and the heritage belongs also to the living peoples of Iraq and Syria, including Assyrians and Mandaeans. Never buy unprovenanced antiquities, which fuel the looting of sites.",
+
+            Traditions: "Mesopotamian",
+
+            TraditionNotes: "Mesopotamian: Modern Mesopotamian polytheists and many home brewers honour Ninkasi when brewing and at harvest, with beer, bread and dates and the singing of her hymn. She is asked for good brewing, hospitality and good cheer.",
+
+            tags: ["beer", "brewing", "hospitality", "craft", "joy", "barley"]
+        },
     },
 
     tool: {
