@@ -316,6 +316,17 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A lunar month with Hel, the Norse ruler of the realm of the dead: what the sources actually say about her and her hall, the difference between Hel the place and Hel the goddess, and a quiet modern practice built on remembering your own dead."
   },
   {
+    "id": "deity-hera",
+    "kind": "deity",
+    "paths": [
+      "hellenic",
+      "roman"
+    ],
+    "deityRef": "traditional/deity/hera",
+    "title": "Hera: Queen of the Golden Throne",
+    "summary": "A lunar month with Hera, queen of the gods: her great temples at Argos and Samos, the Girl, the Wife and the Widow of Stymphalos, the girls’ races and woven robe of Olympia, the sacred marriage of Gamelion, and a practice of kept commitments and woven work."
+  },
+  {
     "id": "deity-hermes",
     "kind": "deity",
     "paths": [
