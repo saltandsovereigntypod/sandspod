@@ -270,7 +270,7 @@ export const SEASONAL_OBJECTS: SeasonalObject[] = [
 
   // The Norse and Heathen year, from Þorrablót in midwinter.
   {
-    id: 'drinking-horn', name: 'Drinking Horn', festivals: norse('thorrablot', 'disablot', 'sigrblot', 'haustblot', 'vetrnaetur', 'jol'), deities: ['Odin', 'Njörðr', 'Freyr'], vessel: true,
+    id: 'drinking-horn', name: 'Drinking Horn', festivals: norse('thorrablot', 'disablot', 'sigrblot', 'haustblot', 'vetrnaetur', 'jol'), deities: ['Odin', 'Njörðr', 'Njord', 'Freyr'], vessel: true,
     keywords: ['mead', 'ale', 'toast', 'sumbel', 'libation', 'horn', 'bragarfull', 'Njord', 'drink offering'],
     description: 'A horn of mead or ale, passed round at the blót and poured out as an offering. The sagas tell of toasts drunk to Odin for victory, to Njörðr and Freyr for a good year and peace, and to kin gone before.',
   },
@@ -491,7 +491,7 @@ export const SEASONAL_OBJECTS: SeasonalObject[] = [
     description: 'A brass or copper pot of water crowned with mango leaves and a coconut, set up at Ghatasthapana on the first day of Navaratri, barley sown beside it, and worshipped as the seat of the Goddess through the nine nights.',
   },
   {
-    id: 'diya-lamps', name: 'Diya Lamps', festivals: hindu('diwali'), deities: ['Lakshmi', 'Kali'],
+    id: 'diya-lamps', name: 'Diya Lamps', festivals: hindu('diwali'), deities: ['Lakshmi', 'Kali', 'Rama'],
     keywords: ['diya', 'diyas', 'deepa', 'clay lamps', 'oil lamps', 'lamps', 'light', 'Deepavali', 'festival of lights', 'the doorstep', 'welcome'],
     description: 'Little clay lamps of oil with cotton wicks, lit in rows along doorsteps, windows and walls at Diwali, the festival of lights, to welcome Lakshmi into the home.',
   },

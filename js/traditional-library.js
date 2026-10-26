@@ -9301,6 +9301,4822 @@ const TraditionalLibrary = {
 
             tags: ["love", "devotion", "joy", "wisdom", "protection", "bhakti"]
         },
+
+        ares: {
+            DisplayName: "Ares",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "War and battle, courage, raw strength, the fury of combat, the defence of the city",
+
+            SacredSymbols: "Spear, bronze helmet, shield, armour, the burning torch carried before armies",
+
+            SacredAnimals: "Dog, vulture (in later sources)",
+
+            SacredPlants: "None securely attested in Greek sources",
+
+            CandleColors: "Red, black, bronze",
+
+            Crystals: "Bloodstone, red jasper, hematite, carnelian",
+
+            Herbs: "Dragon’s blood resin, black pepper, nettle",
+
+            Offerings: "Wine, incense, bread, a polished blade or old weapon dedicated rather than used, honest physical effort",
+
+            TraditionalWarnings: "Ares is the god of war’s terror as well as its courage: even in Homer the other gods dislike him, and the Greeks honoured him warily. Approach him for courage, discipline and protection, not to stir up anger or harm. Ancient offerings to him sometimes included animal sacrifice; modern devotion uses wine, incense and effort instead.",
+
+            Overview: "Ares is the Greek god of war, son of Zeus and Hera, the blind fury of battle beside Athena’s strategy and skill. He is pictured as a young or bearded warrior in helmet and armour with spear and shield, attended by his sons Phobos and Deimos, Fear and Terror. Homer has him wounded by Diomedes and caught in a golden net with Aphrodite by her husband Hephaestus.",
+
+            TraditionalMeaning: "Courage under pressure: the strength to stand one’s ground, defend others and face fear, and the warning of what happens when that force runs wild.",
+
+            DevotionalApproach: "Start here: do something hard with your body, a run, a long walk or lifting, and offer the effort to him with a cup of wine or water poured out afterwards. Approach him with respect and self-control. He asks for courage, honesty about anger and the discipline to use strength only where it is needed.",
+
+            OfferingNotes: "Offer red wine, incense, bread or a strenuous effort dedicated to him. Veterans and those in protective work sometimes offer a token of their service. Pour libations outside or onto earth rather than drinking them.",
+
+            AltarIdeas: "A red or black candle, a small spear point or toy helmet, bloodstone or hematite, a bronze-coloured cloth and a dish for wine. Keep it orderly, like a soldier’s kit.",
+
+            CulturalContext: "Ares is honoured today in Hellenic polytheism, a living religion, though rarely as a household god. Ancient cult was limited: he had a temple in the Athenian agora (moved there in Roman times), the Areopagus hill bore his name, and in Sparta young men sacrificed puppies to him as Enyalios, according to Pausanias. Learn him from Greek sources, not only through the Roman Mars, who was far more honoured.",
+
+            Traditions: "Hellenic",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists honour Ares with libations of wine, incense and dedicated effort, often on Tuesday (a modern custom from the Latin dies Martis) or before a hard trial. He is asked for courage, protection, discipline and the strength to defend others, and is sometimes honoured alongside Athena or Aphrodite.",
+
+            tags: ["war", "courage", "strength", "protection", "discipline", "conflict"]
+        },
+
+        hephaestus: {
+            DisplayName: "Hephaestus",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "Fire and the forge, smithing, metalwork, craft and invention, sculpture, volcanoes",
+
+            SacredSymbols: "Hammer, tongs, anvil, the craftsman’s felt cap (pilos), the forge fire",
+
+            SacredAnimals: "The donkey he rides in vase paintings of his return to Olympus",
+
+            SacredPlants: "None securely attested in Greek sources",
+
+            CandleColors: "Orange, red, black, bronze",
+
+            Crystals: "Obsidian, hematite, pyrite, carnelian",
+
+            Herbs: "Cedar, pine resin, cinnamon",
+
+            Offerings: "A piece of work you made, incense, wine, oil, the first item from a new project",
+
+            TraditionalWarnings: "His lameness is part of who he is in Greek myth and should be spoken of with respect, not mocked. Keep fire safety in mind: never leave a candle or forge fire unattended, and take care with heat and tools when working in his honour.",
+
+            Overview: "Hephaestus is the Greek god of fire, the forge and craft, the smith of the gods who made Achilles’ shield, the armour and palaces of Olympus and, in Hesiod, the first woman, Pandora. Born lame, he was thrown from Olympus by Hera or by Zeus and landed on Lemnos; he is pictured as a bearded smith in a workman’s cap with hammer and tongs. Homer gives him Aphrodite as wife in the Odyssey and Charis in the Iliad.",
+
+            TraditionalMeaning: "Skill as a sacred gift: patient work with the hands, invention, making beautiful and useful things, and worth that does not depend on looks or ease.",
+
+            DevotionalApproach: "Start here: make or mend something with your hands, however small, and offer the work to him with a lit candle. Approach him as a fellow worker, through care and craftsmanship rather than words alone. He asks for honest effort, patience with your materials and respect for the people who make things.",
+
+            OfferingNotes: "Offer something you made, the first piece of a new project, or incense and wine at your workbench. Keeping your tools clean and sharp is an offering in his spirit.",
+
+            AltarIdeas: "An orange or red candle (attended), a small hammer or tool, a piece of metalwork or pottery, obsidian or pyrite, and a dish of oil. A workbench or desk where you make things suits him better than a separate shelf.",
+
+            CulturalContext: "Hephaestus is honoured today in Hellenic polytheism, a living religion, especially by makers and craftspeople. In Athens his temple, the Hephaisteion above the agora, is one of the best preserved Greek temples, shared with Athena; the city kept the Chalkeia for them both and a torch race at his festival, the Hephaisteia.",
+
+            Traditions: "Hellenic",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists honour Hephaestus at the Chalkeia on the last day of Pyanepsion, the festival of smiths and craftsmen shared with Athena Ergane, and whenever work is begun or finished. Makers dedicate tools and first pieces to him with incense and wine, asking for skill, invention and safe work with fire.",
+
+            tags: ["craft", "fire", "forge", "invention", "work", "making"]
+        },
+
+        pan: {
+            DisplayName: "Pan",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "Shepherds and flocks, wild places, mountains and caves, rustic music, fertility, sudden fear (panic)",
+
+            SacredSymbols: "The panpipes (syrinx), the shepherd’s crook, the pine wreath, the cave",
+
+            SacredAnimals: "Goats, sheep",
+
+            SacredPlants: "Pine, reeds",
+
+            CandleColors: "Green, brown, red",
+
+            Crystals: "Moss agate, tree agate, jasper, green aventurine",
+
+            Herbs: "Pine, thyme, wild mint",
+
+            Offerings: "Milk, honey, cheese, wine, music, pine branches, time spent in wild places",
+
+            TraditionalWarnings: "Pan is a god of the wild, of desire and of sudden terror: he gave us the word panic. Medieval and later images of the Devil borrowed goat features and he is sometimes confused with him, but he is not. Honour him in wild places with care for your own safety and leave them as you found them.",
+
+            Overview: "Pan is the Greek god of shepherds and flocks, born in Arcadia, with the legs and horns of a goat and the body of a man. He wanders mountains and caves playing the syrinx, the reed pipes Ovid says he made from the nymph Syrinx as she turned to reeds. Herodotus tells how he met the runner Pheidippides before Marathon, and the Athenians gave him a cave shrine below the Acropolis in thanks.",
+
+            TraditionalMeaning: "The wild within and around us: untamed nature, music, desire and instinct, and the shiver of awe in lonely places.",
+
+            DevotionalApproach: "Start here: go somewhere green and a little wild, sit quietly, and play or hum a tune for him before you leave. Approach him with playfulness and with respect for the wild. He asks devotees to be at home in their bodies, to look after animals and wild places, and to take fear seriously without being ruled by it.",
+
+            OfferingNotes: "Offer milk, honey, cheese or a little wine poured out in a green place, or music played for him. Choose offerings that will not harm wildlife, and carry out any containers.",
+
+            AltarIdeas: "Green or brown candles, a set of panpipes or a reed, a pine cone or branch, moss agate, a goat figure and a small dish of milk or honey. An outdoor stone or a corner of a garden suits him.",
+
+            CulturalContext: "Pan is honoured today in Hellenic polytheism, a living religion, and loved in modern Paganism. Plutarch’s story that a voice cried “Great Pan is dead” is often quoted, but his cult went on in caves across Greece for centuries. The Romantics, Kenneth Grahame’s The Wind in the Willows and Aleister Crowley’s Hymn to Pan made him central to modern nature spirituality, and he helped shape the Horned God of Wicca.",
+
+            Traditions: "Hellenic, Wheel of the Year",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists honour Pan in caves, mountains and gardens with milk, honey, wine and music, as the Athenians did with sacrifices and a torch race after Marathon. He is asked to protect flocks and pets, to bless the wild and to calm panic.\n\nWheel of the Year: Many modern Pagans honour Pan at Beltane and in the green of spring and summer, as a god of nature, music and joyful desire.",
+
+            tags: ["wild", "nature", "music", "animals", "fertility", "panic"]
+        },
+
+        gaia: {
+            DisplayName: "Gaia",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "The Earth, motherhood of all beings, fertility, oaths, prophecy, the land itself",
+
+            SacredSymbols: "The earth itself, fruit and grain, the omphalos (navel stone), the cornucopia in later art",
+
+            SacredAnimals: "Snakes, and all creatures born of the earth",
+
+            SacredPlants: "Grain, fruit, all growing plants",
+
+            CandleColors: "Green, brown, black",
+
+            Crystals: "Moss agate, jasper, jet, tree agate",
+
+            Herbs: "Mugwort, sage, oak",
+
+            Offerings: "Libations of water, milk or honey poured onto the ground, grain, fruit, care for the land",
+
+            TraditionalWarnings: "Hesiod’s Gaia is no gentle background: she conspires against Ouranos and Kronos and gives birth to monsters as well as gods. The modern Gaia of ecology and goddess spirituality is related but new, so be clear which you mean.",
+
+            Overview: "Gaia, or Ge, is the Earth in Greek religion, the first being after Chaos in Hesiod’s Theogony and mother of the sky Ouranos, the mountains, the sea, the Titans, the Cyclopes and the Hundred-Handers. She gave Kronos the sickle that overthrew Ouranos. The Homeric Hymn to Earth calls her mother of all, and Aeschylus makes her the first prophet at Delphi.",
+
+            TraditionalMeaning: "The ground of all life: the Earth as mother, provider and witness, owed gratitude, care and honest oaths.",
+
+            DevotionalApproach: "Start here: put your hands or bare feet on the ground, thank her for one thing that grew today, and pour a little water onto the soil. Approach her with gratitude and humility. She asks that we care for the land we live on and keep faith with what we swear.",
+
+            OfferingNotes: "Pour libations of water, milk or honey straight onto the earth, or bury a little grain or fruit. Planting, composting and picking up litter are offerings in her spirit.",
+
+            AltarIdeas: "A bowl of soil or a stone from your land, a green or brown candle, moss agate or jasper, grain, fruit and a pot plant. An outdoor altar on bare ground suits her best.",
+
+            CulturalContext: "Gaia is honoured today in Hellenic polytheism, a living religion, and widely in modern Paganism and ecological spirituality. In Athens Ge Kourotrophos, Earth the Nurse of Children, received offerings before many other gods. The scientist James Lovelock’s Gaia hypothesis, named at the suggestion of the novelist William Golding, brought her name into modern environmental thought.",
+
+            Traditions: "Hellenic, Wheel of the Year",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists honour Gaia with libations poured onto the ground and with first offerings as Ge Kourotrophos, and call her to witness oaths, as Homer’s heroes did. She is asked for fertile land, the welfare of children and a stable home.\n\nWheel of the Year: Modern Pagans often honour the Earth as Gaia or the Earth Mother at the spring equinox and the harvest festivals, with planting, gratitude and care for the land.",
+
+            tags: ["earth", "mother", "land", "fertility", "ecology", "oaths"]
+        },
+
+        helios: {
+            DisplayName: "Helios",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "The Sun, sight, light, oaths and witness, the passing of days, healing light",
+
+            SacredSymbols: "The four-horse chariot, the radiant crown, the sun disc, the golden cup in which he sails home",
+
+            SacredAnimals: "Horses, cattle (his sacred herds), the rooster",
+
+            SacredPlants: "Heliotrope, laurel, frankincense",
+
+            CandleColors: "Gold, yellow, orange",
+
+            Crystals: "Sunstone, citrine, amber, tiger eye",
+
+            Herbs: "Frankincense, bay laurel, cinnamon",
+
+            Offerings: "Frankincense, honey, wine, bread, greeting the sunrise",
+
+            TraditionalWarnings: "Helios sees everything, so the Greeks called him to witness oaths: do not swear by him lightly. Never look directly at the Sun, even to honour him.",
+
+            Overview: "Helios is the Sun in Greek religion, son of the Titans Hyperion and Theia and brother of Selene and Eos. Each day he drives his four-horse chariot across the sky and each night sails home round the edge of the world in a golden cup. Because he sees all, he told Demeter who had taken Persephone; in the Odyssey Odysseus’s men die for eating his cattle, and his son Phaethon fell from the sky trying to drive the chariot.",
+
+            TraditionalMeaning: "Light that sees and reveals: truth, clear sight, the faithful rhythm of days and the warmth on which life depends.",
+
+            DevotionalApproach: "Start here: greet the sunrise, or the first daylight you see, with a few words and a pinch of incense. Approach him with honesty, since nothing is hidden from his sight. He asks devotees to live openly, keep their word and value each new day.",
+
+            OfferingNotes: "Offer frankincense, honey, bread or wine at sunrise or noon. Honey and fruit set out in sunlight, then shared or returned to the earth, suit him well.",
+
+            AltarIdeas: "A gold or yellow candle, a sun disc or radiant image, sunstone or citrine, a dish of honey and a sprig of bay. Place it by an east-facing window to catch the morning light.",
+
+            CulturalContext: "Helios is honoured today in Hellenic polytheism, a living religion. He was the great god of Rhodes, where the Colossus stood and the Halieia festival was kept, and in Athens he received offerings with the Horai at the Thargelia and Pyanepsia. Later Greek and Roman writers often merged him with Apollo, but they began as separate gods.",
+
+            Traditions: "Hellenic",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists greet Helios at sunrise with prayer and incense, honour him with the Horai, the Seasons, at the Pyanepsia and Thargelia, and call him to witness oaths. Some keep Sunday for him, a modern custom from the planetary week. He is asked for clear sight, truth, health and a good day’s work.",
+
+            tags: ["sun", "light", "truth", "oaths", "sight", "day"]
+        },
+
+        eros: {
+            DisplayName: "Eros",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "Love and desire, attraction, the bonds between lovers and friends, creative longing, the force that joins all things",
+
+            SacredSymbols: "Bow and arrows, wings, the torch, the lyre",
+
+            SacredAnimals: "Hares and roosters, given as love-gifts in Greek art",
+
+            SacredPlants: "Rose, apple",
+
+            CandleColors: "Pink, red, white",
+
+            Crystals: "Rose quartz, rhodonite, garnet, carnelian",
+
+            Herbs: "Rose, myrtle, cinnamon",
+
+            Offerings: "Roses, honey, sweet wine, love poetry, music",
+
+            TraditionalWarnings: "Desire in Greek poetry can wound as much as it delights: Sappho calls Eros “bittersweet”. Never use him to bend another person’s will; love that is not freely given is not his gift.",
+
+            Overview: "Eros is the Greek god of love and desire. In Hesiod’s Theogony he is one of the first powers, born after Chaos and Earth, loosening the limbs and ruling the minds of gods and people; in later myth he is the winged son of Aphrodite, a boy with bow and arrows. Apuleius’ Latin tale of Cupid and Psyche tells how the soul wins him after long trials.",
+
+            TraditionalMeaning: "Desire as a force that moves the world: love, attraction and longing that draw beings together and spur them to create.",
+
+            DevotionalApproach: "Start here: write down something you love or long for, honestly, and offer it to him with a rose or a drop of honey. Approach him with openness and respect for others’ freedom. He asks devotees to love bravely and kindly and to let desire make them more alive, not less free.",
+
+            OfferingNotes: "Offer roses, honey, sweet wine, music or a love poem, written or read aloud. Acts of kindness between lovers or friends also honour him.",
+
+            AltarIdeas: "A pink or red candle, a small bow or pair of wings, rose quartz, a few rose petals and a dish of honey. Images of Eros and Psyche suit a shrine for love that has grown through trouble.",
+
+            CulturalContext: "Eros is honoured today in Hellenic polytheism, a living religion, often alongside Aphrodite. At Thespiae in Boeotia his oldest image was a rough stone, later joined by a famous statue by Praxiteles, and the city held the Erotidia festival for him. In Athens the fourth day of each month belonged to him with Aphrodite, Hermes and Herakles.",
+
+            Traditions: "Hellenic, Roman",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists honour Eros on the fourth of the lunar month with Aphrodite, with roses, honey and song. He is asked for love, friendship, passion and the courage to pursue what the heart longs for.\n\nRoman: As Cupid or Amor he is honoured in the company of Venus, and the story of Cupid and Psyche, told by Apuleius in the second century, is read as an image of the soul’s journey to love.",
+
+            tags: ["love", "desire", "attraction", "passion", "friendship", "creativity"]
+        },
+
+        asclepius: {
+            DisplayName: "Asclepius",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "Healing and medicine, physicians, recovery, dreams that heal, health of body and mind",
+
+            SacredSymbols: "The staff with a single snake coiled round it (the rod of Asclepius), votive offerings of healed body parts, the sacred spring",
+
+            SacredAnimals: "Snakes, dogs, the rooster",
+
+            SacredPlants: "Herbs of healing, the olive",
+
+            CandleColors: "Blue, white, green",
+
+            Crystals: "Clear quartz, aventurine, amethyst, bloodstone",
+
+            Herbs: "Chamomile, lavender, thyme",
+
+            Offerings: "Honey cakes, incense, thanks after recovery, a token or image of what was healed",
+
+            TraditionalWarnings: "Devotion to Asclepius is never a substitute for medical care. The ancient healing sanctuaries sat alongside physicians, and the Hippocratic oath was sworn in his name; honour him by seeking good treatment as well as by prayer. Socrates’ last words owed him a rooster; modern devotees offer a figure, a feather or a gift to a hospital instead of a living bird.",
+
+            Overview: "Asclepius is the Greek god of healing, son of Apollo and the mortal Coronis, taught medicine by the centaur Chiron. He grew so skilled he raised the dead, and Zeus struck him down with a thunderbolt, afterwards making him a god. He is pictured as a kind, bearded man leaning on a staff with a snake coiled round it, with his daughters Hygieia (Health) and Panacea (Cure-all).",
+
+            TraditionalMeaning: "Healing in body and spirit: care for the sick, the skill of doctors and nurses, patience in recovery and gratitude for health.",
+
+            DevotionalApproach: "Start here: when you or someone you love is unwell, light a blue or white candle, ask him for healing and for wise care, then follow the advice of your doctor. Approach him with trust and with thanks once you recover. He asks devotees to look after their health and to honour those who heal.",
+
+            OfferingNotes: "Offer honey cakes, incense or a small image of what has healed, as ancient pilgrims left clay limbs and eyes. Giving to a hospital, a health charity or blood donation is an offering in his spirit.",
+
+            AltarIdeas: "A blue or white candle, a staff with a snake, clear quartz or aventurine, a bowl of clean water, healing herbs and the names of those you pray for. An image of Hygieia beside him suits a shrine for health.",
+
+            CulturalContext: "Asclepius is honoured today in Hellenic and Roman polytheism, a living tradition, and his rod is still the symbol of medicine. At Epidaurus and many other sanctuaries the sick slept in the abaton hoping for a healing dream (incubation), and stone tablets record their cures. In 420 BCE the poet Sophocles hosted the god’s sacred snake when he came to Athens.",
+
+            Traditions: "Hellenic, Roman",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists honour Asclepius at the Asklepieia on 8 Elaphebolion and the Epidauria during the Eleusinian Mysteries, with honey cakes, incense and thanks for healing. He is asked for recovery, good doctors, sound sleep and healing dreams.\n\nRoman: As Aesculapius he was brought to Rome from Epidaurus in 291 BCE during a plague and given a temple on the Tiber Island, where a hospital still stands; Roman polytheists honour him with thanks for healing and care for the sick.",
+
+            tags: ["healing", "medicine", "health", "dreams", "recovery", "doctors"]
+        },
+
+        fortuna: {
+            DisplayName: "Fortuna",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "Luck and chance, fate and fortune, prosperity, opportunity, oracles by lot, the turning of circumstances",
+
+            SacredSymbols: "Wheel, cornucopia, ship’s rudder, globe, lots drawn from a chest",
+
+            SacredAnimals: "None securely attested in Roman sources",
+
+            SacredPlants: "None securely attested; the cornucopia’s fruit and grain",
+
+            CandleColors: "Green, gold, purple",
+
+            Crystals: "Aventurine, citrine, pyrite, tiger eye",
+
+            Herbs: "Basil, cinnamon, bay laurel",
+
+            Offerings: "Incense, wine, coins, fruit, a share of good fortune given away",
+
+            TraditionalWarnings: "Fortuna gives and takes away: the Romans honoured her for good luck while knowing her wheel turns. Do not treat her as a promise of winnings, and keep any gambling within your means. Her many cult titles mattered to the Romans, so say which Fortuna you are honouring.",
+
+            Overview: "Fortuna is the Roman goddess of luck and fortune, good and bad, closely matched with the Greek Tyche. She is pictured with a cornucopia for plenty and a rudder for steering lives, sometimes standing on a globe or beside a wheel. Rome honoured her under many titles: Fors Fortuna, the luck of the common people, Fortuna Virilis, Fortuna Redux who brings travellers home, and Fortuna Primigenia, whose oracle at Praeneste gave answers by lots drawn by a child.",
+
+            TraditionalMeaning: "Luck and its turning: gratitude in good times, steadiness in bad, and the humility to know that much of life is not ours to control.",
+
+            DevotionalApproach: "Start here: when something lucky happens, stop, say thank you to Fortuna and give a little of it away, a coin, a kindness or a treat for someone else. Approach her with gratitude and good humour rather than bargaining. She asks devotees to share good fortune and to meet bad fortune with courage.",
+
+            OfferingNotes: "Offer incense, wine, fruit or coins, and pass on part of any windfall to others. Gifts given freely, especially to those with less luck, honour her.",
+
+            AltarIdeas: "A green or gold candle, a small wheel or cornucopia, a rudder or ship, aventurine or citrine, a few coins and a bowl of fruit. A pair of dice or lots can sit there as a reminder of chance.",
+
+            CulturalContext: "Fortuna is honoured today by Roman polytheists, a small living religion, and is popular with modern Pagans. Her temple of Fors Fortuna across the Tiber was said to have been founded by King Servius Tullius, a man of humble birth, and her great sanctuary at Praeneste (Palestrina) still stands in terraces on the hillside.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Roman polytheists honour Fortuna at Fors Fortuna on 24 June, when Romans of every class, the enslaved included, went downriver in garlanded boats to her temples and feasted, and at the Veneralia on 1 April as Fortuna Virilis. She is asked for good luck, safe travel, success in new ventures and the strength to bear reversals.",
+
+            tags: ["luck", "fortune", "chance", "prosperity", "fate", "opportunity"]
+        },
+
+        bacchus: {
+            DisplayName: "Bacchus",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "Wine and the vine, freedom and release, growth and fertility, ecstasy, theatre, the coming of age of young men",
+
+            SacredSymbols: "Thyrsus (a fennel staff tipped with a pine cone), wine cup, ivy and vine wreath, the mask",
+
+            SacredAnimals: "Panther, leopard, goat, bull",
+
+            SacredPlants: "Grapevine, ivy, fig, fennel",
+
+            CandleColors: "Purple, deep red, green",
+
+            Crystals: "Amethyst, garnet, carnelian, agate",
+
+            Herbs: "Grape leaves, ivy, cinnamon",
+
+            Offerings: "Wine or grape juice, honey cakes (liba), grapes, figs, music and dance",
+
+            TraditionalWarnings: "Bacchus is a god of wine, but drunkenness is not devotion: offer wine, drink little or none, and never drive after a libation. In 186 BCE the Senate harshly restricted his Bacchanalia across Italy; the scandal Livy describes is a hostile account, so read it critically.",
+
+            Overview: "Bacchus is the Roman name for the Greek Dionysus, god of wine, ecstasy and theatre, who in Rome merged with Liber Pater, an old Italian god of growth, fertility and freedom (liber means free). Liber was worshipped with Ceres and Libera in the temple on the Aventine from the early Republic. Bacchus is pictured as a youthful god crowned with vine and ivy, carrying the thyrsus, with panthers and satyrs in his train.",
+
+            TraditionalMeaning: "Release and renewal: the joy of the harvest, freedom from care, the courage to grow up and the wild energy that breaks open what is stuck.",
+
+            DevotionalApproach: "Start here: pour a small cup of wine or grape juice for him and listen to music that lifts you, letting go of one worry for the evening. Approach him with joy and with respect for his power to unsettle. He asks devotees to embrace life, free what is bound and keep the festival in its season.",
+
+            OfferingNotes: "Offer wine or grape juice, honey cakes, grapes or figs. At the Liberalia old women sold sweet cakes (liba) and burned a portion for the god on a small altar; baking a honey cake is a fitting offering.",
+
+            AltarIdeas: "A purple or red candle, a cup and a jug, a vine or ivy wreath, a pine cone on a stick for a thyrsus, amethyst and a theatre mask. A bunch of grapes completes it.",
+
+            CulturalContext: "Bacchus and Liber are honoured today by Roman polytheists, a small living religion, often alongside Hellenic devotion to Dionysus. At the Liberalia on 17 March, Ovid says, boys took the toga of manhood (toga virilis), and in some Italian towns a phallus was carried through the fields for fertility. Treat Liber’s old rites and the later Bacchic mysteries as related but distinct.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Roman polytheists honour Liber and Bacchus at the Liberalia on 17 March with honey cakes, wine and garlands, marking young people’s coming of age, and at the grape harvest. He is asked for freedom, joy, fertile vines and gardens and a good passage into adulthood.",
+
+            tags: ["wine", "freedom", "ecstasy", "growth", "theatre", "coming of age"]
+        },
+
+        pluto: {
+            DisplayName: "Pluto",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "The underworld, the dead, the wealth beneath the earth, minerals and seed, endings",
+
+            SacredSymbols: "Keys, a sceptre, the cornucopia of the earth’s wealth, the helmet of invisibility (from Greek myth), the gate",
+
+            SacredAnimals: "Black animals, which Romans offered to the gods below",
+
+            SacredPlants: "Cypress, narcissus",
+
+            CandleColors: "Black, deep purple, dark red",
+
+            Crystals: "Obsidian, jet, onyx, smoky quartz",
+
+            Herbs: "Cypress, myrrh, mint",
+
+            Offerings: "Libations poured into the earth, black beans, myrrh, a portion of food not to be eaten afterwards",
+
+            TraditionalWarnings: "Pluto rules the dead but is not the Christian devil, and the Romans did not think him evil, only grave and unbending. Offerings to the gods below were given wholly to them and not shared afterwards. Approach him with seriousness, and seek support from the living if grief or dark thoughts weigh on you.",
+
+            Overview: "Pluto, or Dis Pater, is the Roman god of the underworld and the dead. Dis comes from dives, rich, like the Greek name Plouton, the wealthy one, because the riches of the earth and the seed that sprouts lie in his realm. He is the Roman Hades, who carried off Proserpina from Sicily to be his queen; Julius Caesar wrote that the Gauls claimed descent from Dis Pater.",
+
+            TraditionalMeaning: "The hidden wealth of endings: death as part of life, the riches of the earth, and respect for the dead and for limits we cannot cross.",
+
+            DevotionalApproach: "Start here: on a quiet evening, pour a little water or wine into the earth and say the names of your dead, asking him to keep them well. Approach him with gravity and respect rather than fear. He asks devotees to accept endings, honour the dead and value what grows from darkness.",
+
+            OfferingNotes: "Pour libations into the ground or a pit, and offer black beans, myrrh or a portion of food that is then buried or left, not eaten. Keep offerings to him separate from those to the gods above.",
+
+            AltarIdeas: "A black or deep purple candle, keys, a dark stone or obsidian, a cypress sprig, a bowl of earth and photographs or names of the dead. Many keep his shrine low, near the floor or outdoors.",
+
+            CulturalContext: "Pluto and Dis Pater are honoured today by Roman polytheists, a small living religion. At the Secular Games (Ludi Saeculares) Dis and Proserpina received night sacrifices of black victims at the Tarentum in the Campus Martius. Three times a year the mundus, a pit Varro called a gateway of the gods below, was opened, and public business stopped.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Roman polytheists honour Dis Pater on the days the mundus was opened, 24 August, 5 October and 8 November, and at the festivals of the dead, with libations into the earth and offerings given wholly to him. He is asked to keep the dead in peace, for the earth’s riches and for courage at endings.",
+
+            tags: ["underworld", "death", "wealth", "ancestors", "endings", "earth"]
+        },
+
+        proserpina: {
+            DisplayName: "Proserpina",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "The underworld, spring and the return of growth, the grain, the dead, the cycle of loss and return",
+
+            SacredSymbols: "Pomegranate, torch, sheaf of grain, flowers she was gathering when taken",
+
+            SacredAnimals: "None securely attested in Roman sources",
+
+            SacredPlants: "Pomegranate, narcissus, poppy, grain, violets",
+
+            CandleColors: "Black, red, green, white",
+
+            Crystals: "Garnet, obsidian, rose quartz, moss agate",
+
+            Herbs: "Mint, poppy seed, violet",
+
+            Offerings: "Pomegranates, grain, spring flowers, honey, libations into the earth",
+
+            TraditionalWarnings: "Her story begins with abduction, and many devotees read it with care for that. The Roman Proserpina is closely tied to the Greek Persephone but had her own Roman cult; keep her distinct, and see the Library’s Persephone entry for the Greek goddess.",
+
+            Overview: "Proserpina is the Roman queen of the underworld, daughter of Ceres, carried off by Dis Pater while gathering flowers near Enna in Sicily, as Ovid and the late poet Claudian tell. Because she ate pomegranate seeds below, she spends part of each year with her husband and part with her mother, and the earth flowers when she returns. Rome took her rites from the Greeks, with Greek priestesses, and identified her with Libera of the Aventine.",
+
+            TraditionalMeaning: "Loss and return: the seed that goes down into darkness and comes back, grief that turns to spring, and sovereignty learned in hard places.",
+
+            DevotionalApproach: "Start here: cut open a pomegranate, set a few seeds aside for her and think of something you lost that has begun to grow again. Approach her with tenderness and respect for both her seasons. She asks devotees to honour their grief, trust the return of growth and rule their own inner world.",
+
+            OfferingNotes: "Offer pomegranates, grain, spring flowers or honey, and pour libations into the earth. Offerings made in autumn can be buried; those in spring set out in the open air.",
+
+            AltarIdeas: "A black and a green candle side by side, a pomegranate, a sheaf of wheat, a torch or lamp, spring flowers and garnet. Some keep two altar cloths and turn them with her seasons.",
+
+            CulturalContext: "Proserpina is honoured today by Roman polytheists, a small living religion, and by many modern Pagans who keep her story at the equinoxes. Cicero records that Rome’s rites of Ceres and Proserpina were Greek in form, led by priestesses from Greek cities of southern Italy. With Dis Pater she received night offerings at the Secular Games.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Roman polytheists honour Proserpina with Ceres at the Cerealia in April and with Dis at the Secular Games, and many mark her descent and return at the autumn and spring equinoxes. She is asked for comfort in grief, renewal after hard times and the peace of the dead.",
+
+            tags: ["underworld", "spring", "return", "grief", "pomegranate", "renewal"]
+        },
+
+        vulcan: {
+            DisplayName: "Vulcan",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "Fire, both destructive and useful, the forge and metalwork, volcanoes, protection from fire",
+
+            SacredSymbols: "Hammer, tongs, anvil, the smith’s felt cap (pileus), flame",
+
+            SacredAnimals: "Small fish offered to him at the Volcanalia",
+
+            SacredPlants: "None securely attested in Roman sources",
+
+            CandleColors: "Red, orange, black",
+
+            Crystals: "Obsidian, carnelian, garnet, hematite",
+
+            Herbs: "Dragon’s blood resin, cinnamon, cedar",
+
+            Offerings: "Incense, wine, a small fire safely tended, offerings burned whole",
+
+            TraditionalWarnings: "Vulcan is fire that can destroy as well as forge: the Romans honoured him above all to keep fire from their homes and granaries. Keep every flame attended and use a safe fire bowl. The ancient Volcanalia threw live fish into the fire; modern devotees use other offerings.",
+
+            Overview: "Vulcan is the Roman god of fire, especially fire that destroys, and of the forge, identified with the Greek Hephaestus. His shrine, the Volcanal, stood in the Roman Forum from the city’s earliest days, and he had his own flamen. He is pictured as a bearded smith with hammer and tongs, wearing a workman’s cap, and his forges were said to lie beneath Etna and the volcanic islands.",
+
+            TraditionalMeaning: "Fire respected: power that must be tended, the skill that turns raw material into tools, and protection from disaster.",
+
+            DevotionalApproach: "Start here: check your smoke alarm or fire blanket, then light a candle and ask him to keep fire in its place in your home. Approach him with respect and caution. He asks devotees to use fire wisely, value skilled work and guard their homes.",
+
+            OfferingNotes: "Offer incense, wine or a small offering burned whole in a safe fire bowl. Fire-safety checks and support for firefighters honour him in spirit.",
+
+            AltarIdeas: "A red or orange candle in a deep holder, a small hammer or tongs, obsidian or carnelian, a piece of metalwork and a fire-safe dish. Keep it away from curtains and shelves.",
+
+            CulturalContext: "Vulcan is honoured today by Roman polytheists, a small living religion. Vitruvius says his temples were best built outside the city walls, to keep fire away. He was the chief god of Ostia, Rome’s port, with a high priest of his own, and after the great fire of 64 CE Domitian set up altars across Rome at which sacrifices were made each Volcanalia.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Roman polytheists honour Vulcan at the Volcanalia on 23 August, in the heat of late summer when granaries were full and fire most feared, with bonfires and offerings burned whole for him. He is asked to protect homes, crops and workplaces from fire and to bless skilled work.",
+
+            tags: ["fire", "forge", "protection", "craft", "volcano", "metalwork"]
+        },
+
+        pomona: {
+            DisplayName: "Pomona",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "Fruit trees and orchards, gardens, grafting and pruning, the ripening of fruit",
+
+            SacredSymbols: "Pruning knife, a basket or platter of fruit, the orchard",
+
+            SacredAnimals: "None securely attested in Roman sources",
+
+            SacredPlants: "Apple, pear, plum, all fruit trees",
+
+            CandleColors: "Green, red, gold",
+
+            Crystals: "Moss agate, green aventurine, carnelian, peridot",
+
+            Herbs: "Apple blossom, rosemary, chamomile",
+
+            Offerings: "Fruit, apple juice or cider, honey, care for trees",
+
+            TraditionalWarnings: "A popular claim that Halloween’s apples come from a Roman festival of Pomona on 1 November has no ancient evidence: no festival day of hers is known. Honour her as the orchard goddess she was.",
+
+            Overview: "Pomona is the Roman goddess of fruit trees and orchards, whose name comes from pomum, fruit. Ovid tells how she cared only for her trees, pruning and watering them, until Vertumnus, god of the changing seasons, won her by coming in disguise as an old woman. She had her own priest, the flamen Pomonalis, and a sacred grove, the Pomonal, on the road to Ostia.",
+
+            TraditionalMeaning: "Patient tending and ripening: the slow work of care that turns blossom into fruit, and love that respects another’s freedom.",
+
+            DevotionalApproach: "Start here: share a piece of fruit with her, eating half and setting half aside under a tree or in the compost, and thank her for it. Approach her through care for growing things. She asks devotees to tend patiently, prune what needs pruning and enjoy the fruit when it comes.",
+
+            OfferingNotes: "Offer fresh fruit, apple juice or cider, honey or the first fruit from a tree. Return offerings to the earth beneath a tree. Planting or caring for a fruit tree is a lasting offering.",
+
+            AltarIdeas: "A green or red candle, a basket of apples or seasonal fruit, a small pruning knife, moss agate and a sprig of blossom in spring. A place in a garden or near a window with a fruit plant suits her.",
+
+            CulturalContext: "Pomona is honoured today by Roman polytheists, a small living religion, and by gardeners and modern Pagans. Her flamen was the least senior of Rome’s fifteen flamens, a sign of how small and local her cult was, yet Ovid’s tale of Vertumnus and Pomona inspired artists from the Renaissance onwards.",
+
+            Traditions: "Roman, Wheel of the Year",
+
+            TraditionNotes: "Roman: Roman polytheists honour Pomona when fruit trees blossom and fruit ripens, with offerings of fruit and care for orchards. She is asked for healthy trees, good harvests and success with grafting and pruning.\n\nWheel of the Year: Many modern Pagans honour her at the apple harvest, around Mabon and Samhain, with apples, cider and orchard blessings.",
+
+            tags: ["orchards", "fruit", "gardens", "harvest", "growth", "patience"]
+        },
+
+        bona_dea: {
+            DisplayName: "Bona Dea",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "Women, healing, fertility, chastity, the protection of the Roman people, wellbeing",
+
+            SacredSymbols: "Cornucopia, a covered wine jar called the honey pot, a snake",
+
+            SacredAnimals: "Harmless snakes kept in her temple",
+
+            SacredPlants: "Healing herbs (myrtle was forbidden in her rites)",
+
+            CandleColors: "White, green, gold",
+
+            Crystals: "Moonstone, rose quartz, jade, clear quartz",
+
+            Herbs: "Chamomile, lemon balm, vervain",
+
+            Offerings: "Milk, honey, healing herbs, wine called milk in her rite, care for women’s health",
+
+            TraditionalWarnings: "Bona Dea’s rites were kept by women, and men were excluded: Clodius caused a scandal in 62 BCE by entering in women’s dress. Modern groups differ on who may join her rites; respect the practice of the group you are with. Myrtle was banned from her temple, so leave it off her altar.",
+
+            Overview: "Bona Dea, the Good Goddess, was a Roman goddess of women, healing and the welfare of the people, whose true name was not to be spoken. Each December the wife of a senior magistrate hosted her night rite at home with the Vestal Virgins, all men having left the house. Her temple on the Aventine kept healing herbs and harmless snakes, and was a place where women, including the poor and the enslaved, came for help.",
+
+            TraditionalMeaning: "Women’s care for one another: healing, protection and the good of the community held in women’s hands.",
+
+            DevotionalApproach: "Start here: set out a cup of milk and some honey and ask her blessing on the health of women you love. Approach her with care and discretion. She asks devotees to look after one another’s health and to respect the spaces people keep for themselves.",
+
+            OfferingNotes: "Offer milk, honey, healing herbs or wine, which her rite called milk, kept in a covered jar. Supporting women’s health charities or caring for a sick friend honours her.",
+
+            AltarIdeas: "A white or green candle, a small covered jar, healing herbs in a dish, moonstone or jade, and a snake figure. Keep the altar quiet and private.",
+
+            CulturalContext: "Bona Dea is honoured today by Roman polytheists, a small living religion, often in women’s groups. Ancient writers linked her to Fauna, kin of Faunus, and Ovid gives 1 May as the founding day of her Aventine temple. Our knowledge comes mostly from male writers, Cicero, Plutarch and Macrobius, who were not allowed to see her rites.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Roman polytheists honour Bona Dea on 1 May, the founding day of her temple, and at her women’s rite in early December, with milk, honey, herbs and wine. She is asked for healing, for women’s health and fertility and for the welfare of the community.",
+
+            tags: ["women", "healing", "fertility", "protection", "community", "mysteries"]
+        },
+
+        lares_penates: {
+            DisplayName: "Lares and Penates",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "The household and its guardians, the family’s food store and goods, crossroads and neighbourhoods, ancestors, safe homecoming",
+
+            SacredSymbols: "The lararium (household shrine), two dancing youths with drinking horn and bowl, the hearth, the store cupboard (penus)",
+
+            SacredAnimals: "The snake painted beneath many lararia, the household’s guardian",
+
+            SacredPlants: "Garlands of flowers, rosemary, bay",
+
+            CandleColors: "White, gold, red",
+
+            Crystals: "Carnelian, jasper, clear quartz, agate",
+
+            Herbs: "Rosemary, bay laurel, thyme",
+
+            Offerings: "Incense, wine, a portion of each meal, salted grain, garlands",
+
+            TraditionalWarnings: "The Lares and Penates are a family’s own guardians, honoured daily and simply, not gods to be called upon for grand workings. Keep their shrine clean and fed, and never leave the lamp burning unattended.",
+
+            Overview: "The Lares are the guardian spirits of the Roman home, the crossroads and the city, and the Penates are the gods of the household store (penus), on whom the family’s food and goods depend. Lares are pictured as two young men dancing, with a drinking horn and a dish, painted or set in the lararium, the household shrine. Virgil’s Aeneas carried Troy’s Penates to Italy, and Rome kept public Penates as the city’s own.",
+
+            TraditionalMeaning: "Home held sacred: daily care for the place and people we live with, gratitude for food on the table and a household watched over.",
+
+            DevotionalApproach: "Start here: at a meal, set a small portion on a dish by a candle or picture for the household gods and thank them for your home. Approach them simply and regularly. They ask for a clean, peaceful house, hospitality and remembrance of those who lived there before you.",
+
+            OfferingNotes: "Offer incense, wine, salted grain and a little of each meal, especially on the first of the month and at family events. In Cato’s day the housekeeper garlanded the hearth and prayed to the Lar on the Kalends, Nones and Ides.",
+
+            AltarIdeas: "A small shelf or niche near the kitchen, with images of the Lares or simple figures, a lamp or candle, an offering dish, a jug, garlands and family photographs. A snake painted or carved beneath stands for the household’s guardian spirit.",
+
+            CulturalContext: "The Lares and Penates are honoured today by Roman polytheists, a small living religion in which household worship is central. Lararia survive in hundreds of houses at Pompeii and Herculaneum. In Plautus’ comedy The Pot of Gold the Lar of the household speaks the prologue, pleased with the daughter who brings him daily incense and garlands.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Roman polytheists honour the Lares and Penates at the household lararium daily and especially on the Kalends, Nones and Ides, at the Compitalia for the Lares of the crossroads, on 1 May for the Lares Praestites and at family events such as births, weddings and homecomings. They are asked to protect the home, keep the store full and watch over the family.",
+
+            tags: ["home", "household", "family", "ancestors", "protection", "hearth"]
+        },
+
+        mithras: {
+            DisplayName: "Mithras",
+            Category: "Deity",
+
+            Pantheon: "Roman",
+
+            Domains: "Loyalty and contract, salvation in a mystery cult, light, the cosmic order, brotherhood among initiates",
+
+            SacredSymbols: "The tauroctony (Mithras slaying the bull), Phrygian cap, dagger, cave, the torchbearers Cautes and Cautopates",
+
+            SacredAnimals: "Bull, raven, lion, dog, snake, scorpion (all in the bull-slaying scene)",
+
+            SacredPlants: "Ears of wheat and the vine springing from the dying bull, cypress",
+
+            CandleColors: "Red, gold, white",
+
+            Crystals: "Garnet, carnelian, sunstone, clear quartz",
+
+            Herbs: "Frankincense, pine, bay laurel",
+
+            Offerings: "Bread and wine, incense, a shared meal, light",
+
+            TraditionalWarnings: "Almost nothing of the cult’s own teaching survives: what we know comes from carved scenes, temples, inscriptions and hostile Christian writers. Popular claims that Mithras was born of a virgin on 25 December with twelve disciples are modern inventions. The cult’s seven grades were ancient initiations whose rites are lost; no one today holds them by unbroken line.",
+
+            Overview: "Mithras was the god of a Roman mystery cult that spread across the empire from the first to the fourth century CE, especially among soldiers, merchants and imperial officials. Initiates, all men as far as the evidence shows, met in small cave-like temples (mithraea) for a shared meal, before a scene of Mithras in a Phrygian cap slaying a bull. Inscriptions call him Deus Sol Invictus Mithras, the unconquered sun god; he was said to be born from a rock.",
+
+            TraditionalMeaning: "Loyalty and light: faithfulness to one’s word and companions, the passage from darkness to light, and life springing from sacrifice.",
+
+            DevotionalApproach: "Start here: read about a mithraeum, such as those beneath San Clemente in Rome or the London Mithraeum, and light a candle for him, honest that we know only fragments. Approach him with humility about the evidence. He is associated with keeping faith, fellowship and courage in the dark.",
+
+            OfferingNotes: "Offer bread and wine, as shown in the cult’s banquet scenes, or incense and a lit lamp. Sharing a meal with companions is in keeping with what we know of the cult.",
+
+            AltarIdeas: "A red or gold candle, a picture of a tauroctony, a small figure in a Phrygian cap, two candles for the torchbearers, one raised and one lowered, and a dish of bread. A dim, cave-like corner suits him.",
+
+            CulturalContext: "There is no living Mithraic community descended from the ancient cult, which faded in the late fourth century. A few modern Roman polytheists and reconstructionists honour him, building on archaeology. Scholars still debate how far the Roman god owed anything to the Persian Mithra beyond his name.",
+
+            Traditions: "Roman",
+
+            TraditionNotes: "Roman: Some modern Roman polytheists honour Mithras with bread, wine and light, often on Sundays or at the winter solstice, as Sol Invictus Mithras; both are modern choices, since the cult’s own festival calendar is unknown. He is asked for loyalty, courage, fellowship and light in dark places.",
+
+            tags: ["mysteries", "loyalty", "light", "brotherhood", "sun", "archaeology"]
+        },
+
+        amun: {
+            DisplayName: "Amun",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "The hidden power behind creation, kingship, the wind and breath of life, oracles, the protection of the poor",
+
+            SacredSymbols: "Tall double-plumed crown, sceptre, the curved-horned ram’s head, the sacred barque",
+
+            SacredAnimals: "Ram, goose",
+
+            SacredPlants: "None securely attested; lettuce belonged to his fertile form, Amun-Min",
+
+            CandleColors: "Blue, gold, white",
+
+            Crystals: "Lapis lazuli, clear quartz, sodalite, gold-coloured stones",
+
+            Herbs: "Frankincense, myrrh, cedar",
+
+            Offerings: "Bread, beer, fresh water, incense, flowers, a lamp",
+
+            TraditionalWarnings: "Amun’s name means the Hidden One: he was thought to be beyond any image, so approach him with humility rather than certainty. Under Akhenaten his name was hacked from monuments, and his priests later grew so powerful they ruled Upper Egypt; his history is as political as it is religious.",
+
+            Overview: "Amun is the Egyptian god whose name means the Hidden One, a god of Thebes who rose with its kings to become Amun-Ra, king of the gods, in the New Kingdom. He is pictured as a man with a tall crown of two plumes and blue skin, or as a ram with curving horns. With his consort Mut and their son Khonsu he ruled Karnak, the largest temple complex in Egypt, and his oracle at Siwa in the western desert greeted Alexander the Great as the god’s son.",
+
+            TraditionalMeaning: "The unseen source of all things: breath, hidden purpose and a god who, in his hymns, hears the prayers of the poor.",
+
+            DevotionalApproach: "Start here: sit quietly, breathe slowly and offer a cup of fresh water and a little bread to the hidden god, asking to sense what lies behind what you see. Approach him with reverence and trust. Ordinary Egyptians called him the vizier of the poor, so he asks for justice and care for those with little.",
+
+            OfferingNotes: "Offer fresh water, bread, beer, incense or flowers, then, as in Kemetic practice, ‘revert’ the offerings and share them afterwards. Gifts to those in need suit the god of the poor.",
+
+            AltarIdeas: "A blue or gold candle, an image of Amun or a ram, two feathers for his crown, lapis lazuli, a bowl of water and a small boat to stand for his barque. Keep it clean and simple, facing east where you can.",
+
+            CulturalContext: "Amun is honoured today in Kemetic practice, a living religion of revived Egyptian worship. His festivals, Opet and the Beautiful Feast of the Valley, are still kept in Kemetic communities, and the personal prayers to Amun from the workmen’s village of Deir el-Medina show how ordinary people turned to him in trouble.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Amun is honoured at the Opet festival in the second month of the flood season, when his barque travelled from Karnak to Luxor, and at the Beautiful Feast of the Valley, when he crossed the Nile to visit the dead. He is asked for guidance, justice, protection and help in hardship, often through quiet prayer.",
+
+            tags: ["hidden", "kingship", "breath", "oracles", "justice", "creation"]
+        },
+
+        ptah: {
+            DisplayName: "Ptah",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "Creation by thought and word, craftsmen and builders, sculpture, Memphis, prayers heard",
+
+            SacredSymbols: "A sceptre joining the was (power), djed (stability) and ankh (life), the close-fitting blue cap, the ear (on stelae for prayers heard)",
+
+            SacredAnimals: "The Apis bull, his living herald",
+
+            SacredPlants: "None securely attested in Egyptian sources",
+
+            CandleColors: "Blue, green, gold",
+
+            Crystals: "Lapis lazuli, malachite, turquoise, jasper",
+
+            Herbs: "Frankincense, myrrh, cedar",
+
+            Offerings: "Bread, beer, water, incense, something you have made",
+
+            TraditionalWarnings: "The Memphite Theology, which tells how Ptah created the world through his heart and tongue, survives on the Shabaka Stone of about 700 BCE; it claims to copy an older text, but its date is debated. Present it as one Egyptian theology among several.",
+
+            Overview: "Ptah is the creator god of Memphis, Egypt’s ancient capital, and the patron of craftsmen, sculptors and builders. He is pictured as a man wrapped like a mummy, with a close-fitting cap, holding a sceptre of power, stability and life. The Memphite Theology says he created the gods and the world by conceiving them in his heart and speaking them with his tongue; with Sekhmet and Nefertem he formed the Memphite triad.",
+
+            TraditionalMeaning: "Creation through thought and word: the craftsman’s skill, the power of speech and the god who listens.",
+
+            DevotionalApproach: "Start here: make something carefully, then light a candle and dedicate it to him, saying aloud what you meant it to be. Approach him through skilled work and careful words. He asks devotees to think before they speak and to build things that last.",
+
+            OfferingNotes: "Offer bread, beer, water or incense, or a piece of your own handiwork. Workers at Deir el-Medina left stelae carved with ears so that Ptah would hear their prayers; a drawn or carved ear is a fitting gift.",
+
+            AltarIdeas: "A blue or green candle, an image of Ptah or a was sceptre, a djed pillar, lapis lazuli or malachite, tools of your craft and a dish for bread. A workbench or studio suits him.",
+
+            CulturalContext: "Ptah is honoured today in Kemetic practice, a living religion of revived Egyptian worship, especially by makers and artists. The Greeks equated him with Hephaestus, and the name Egypt itself probably comes, through Greek Aigyptos, from Hut-ka-Ptah, the house of Ptah’s ka, a name of Memphis.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Ptah is honoured as Ptah-Sokar at the festival of Sokar in the month of Khoiak, and by craftspeople whenever work is begun or finished. He is asked for skill, creativity, wise speech and to hear the prayers of ordinary people.",
+
+            tags: ["creation", "craft", "speech", "builders", "memphis", "prayer"]
+        },
+
+        bes: {
+            DisplayName: "Bes",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "Protection of the household, childbirth and children, sleep and dreams, music, dance and merriment",
+
+            SacredSymbols: "His lion-maned face with tongue out, feather crown, knife, tambourine, the sa sign of protection",
+
+            SacredAnimals: "Lion (in his features), the snakes he grips to keep them from the home",
+
+            SacredPlants: "None securely attested in Egyptian sources",
+
+            CandleColors: "Orange, gold, red",
+
+            Crystals: "Carnelian, red jasper, citrine, tiger eye",
+
+            Herbs: "Juniper, chamomile, frankincense",
+
+            Offerings: "Beer, bread, music, dancing, laughter, small sweets",
+
+            TraditionalWarnings: "Bes looks fierce on purpose, to frighten away danger; he is a guardian, not a demon. Bes may name a group of similar protective gods rather than one; Egyptian texts use several names for figures that look like him.",
+
+            Overview: "Bes is the Egyptian protector of homes, mothers, children and sleepers, pictured as a dwarf with a lion-like face, his tongue out, wearing a feather crown and often holding a knife or a tambourine. His image appears on beds, headrests, mirrors, cosmetic jars and amulets, warding off snakes, illness and bad dreams. He danced and played music to protect women in childbirth and to make a household merry.",
+
+            TraditionalMeaning: "Joyful protection: a guardian who makes noise and laughter against danger and watches over the vulnerable at night.",
+
+            DevotionalApproach: "Start here: put on music, dance for a minute or laugh with someone you love, and ask him to watch over your home tonight. Approach him with warmth and good humour. He asks devotees to protect children and mothers, guard sleep and keep joy in the house.",
+
+            OfferingNotes: "Offer beer, bread, sweets, music or a dance. Laughter and play in the home are offerings in his spirit, and a small image of him by the bed is a traditional protection.",
+
+            AltarIdeas: "An orange or gold candle, an image or amulet of Bes, a tambourine or drum, carnelian, and a small dish of sweets. Placing him near a bedroom or a child’s room follows ancient custom.",
+
+            CulturalContext: "Bes is honoured today in Kemetic practice, a living religion of revived Egyptian worship, and was one of the most popular gods of ordinary Egyptians, though he had few temples of his own. His image spread across the Mediterranean, and in the Ptolemaic period people came to the Bes chambers at Saqqara, perhaps for healing or dreams.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Bes is honoured at home rather than in temples, with music, dance, beer and sweets, especially around births, children’s milestones and before sleep. He is asked to protect mothers, babies and the household, and to keep away nightmares.",
+
+            tags: ["protection", "household", "childbirth", "children", "music", "sleep"]
+        },
+
+        nut: {
+            DisplayName: "Nut",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "The sky, the stars, the daily rebirth of the sun, motherhood, protection of the dead",
+
+            SacredSymbols: "The arched body covered with stars, the water pot (the sign of her name), outspread wings, the sycamore tree",
+
+            SacredAnimals: "Cow, sow",
+
+            SacredPlants: "Sycamore fig",
+
+            CandleColors: "Dark blue, black, silver",
+
+            Crystals: "Lapis lazuli, sodalite, blue goldstone, moonstone",
+
+            Herbs: "Myrrh, blue lotus, frankincense",
+
+            Offerings: "Fresh water, milk, incense, flowers, time spent under the night sky",
+
+            TraditionalWarnings: "Nut is the sky, not a moon or star goddess in the modern sense: the sun, moon and stars travel through her body. Plutarch’s tale of the five extra days won for her from the moon is a Greek retelling of older Egyptian beliefs about the gods’ births.",
+
+            Overview: "Nut is the Egyptian goddess of the sky, arched over her husband Geb, the earth, with her fingers and toes touching the horizons. Each evening she swallows the sun and each morning gives birth to it again, and the stars travel across her body. Her children, born on the five days added to the year, were Osiris, Horus the Elder, Set, Isis and Nephthys, and she is painted inside coffin lids, spreading over the dead to give them new life.",
+
+            TraditionalMeaning: "Shelter and rebirth: the sky that holds us, a mother who gives birth to the light each day and welcomes the dead into the stars.",
+
+            DevotionalApproach: "Start here: go outside after dark, look up for a few minutes and thank her for the sky over you. Approach her as a vast, sheltering mother. She asks devotees to look up, take the long view and trust that light returns each morning.",
+
+            OfferingNotes: "Offer fresh water, milk or incense, set out under the open sky where possible. Pouring water at the foot of a tree honours her as the goddess of the sycamore, who gives water to the dead.",
+
+            AltarIdeas: "A dark blue candle, a cloth scattered with stars, an image of Nut arched over the earth, lapis lazuli or blue goldstone, and a small water pot. A skylight or a window to the night sky suits her.",
+
+            CulturalContext: "Nut is honoured today in Kemetic practice, a living religion of revived Egyptian worship. The ceilings of royal tombs and temples such as Dendera show her body stretched across the sky, swallowing the sun, and the Pyramid Texts call on her to take the king among the stars that never set.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Nut is honoured on the five days upon the year, when her children were born, and at night under the open sky, with water, milk and incense. She is asked for protection, comfort for the dying and the dead, and help for mothers.",
+
+            tags: ["sky", "stars", "mother", "rebirth", "night", "protection"]
+        },
+
+        neith: {
+            DisplayName: "Neith",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "Creation, hunting and war, weaving, wisdom and judgement, protection of the dead, the city of Sais",
+
+            SacredSymbols: "Two crossed arrows on a shield, the bow, the Red Crown of Lower Egypt, the weaver’s shuttle",
+
+            SacredAnimals: "Cow, the Nile perch (at Esna)",
+
+            SacredPlants: "None securely attested in Egyptian sources",
+
+            CandleColors: "Green, red, white",
+
+            Crystals: "Malachite, jasper, carnelian, labradorite",
+
+            Herbs: "Frankincense, myrrh, flax",
+
+            Offerings: "Fresh water, bread, incense, woven cloth, lamps",
+
+            TraditionalWarnings: "Neith is one of the oldest Egyptian deities, and her roles shifted over three thousand years: early war and hunting goddess, later creator. Plutarch’s report of the veiled inscription at her temple in Sais (“no mortal has lifted my robe”) is a Greek account, and modern occult readings of it go further than the source.",
+
+            Overview: "Neith is an Egyptian goddess of Sais in the Nile Delta, known from the First Dynasty, when queens were named after her. Her emblem is a shield with crossed arrows, and she wears the Red Crown of Lower Egypt. At Esna she was the creator who rose from the primeval waters and gave birth to the sun god Ra; in the Contendings of Horus and Seth the gods write to her for judgement, and with Isis, Nephthys and Serqet she guards the dead.",
+
+            TraditionalMeaning: "Wise strength: the creator and huntress who weaves the world, judges fairly and protects those in her care.",
+
+            DevotionalApproach: "Start here: weave, knit or plait a few rows, or simply tie a cord, and light a lamp for her as you work. Approach her with respect for her great age and wisdom. She asks devotees to act with skill and independence and to judge fairly.",
+
+            OfferingNotes: "Offer fresh water, bread, incense, woven or linen cloth, or a lamp. Herodotus describes a Feast of Lamps at Sais, when people across Egypt lit lamps around their houses all night; a lamp burning safely is a fitting offering.",
+
+            AltarIdeas: "A green or red candle, an image of Neith or a shield with crossed arrows, a small bow, a piece of woven cloth or a shuttle, malachite, and a lamp. Keep it ordered and calm.",
+
+            CulturalContext: "Neith is honoured today in Kemetic practice, a living religion of revived Egyptian worship. The Greeks identified her with Athena, and Plato says the priests of Sais told Solon the story of Atlantis. Late texts from the temple at Esna give her own account of creation.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Neith is honoured at her festival of creation, which the temple of Esna placed on 13 Epiphi, the third month of the harvest season, and with a Feast of Lamps after Herodotus. She is asked for wisdom, fair judgement, protection, skill in weaving and making, and courage.",
+
+            tags: ["creation", "wisdom", "weaving", "hunting", "protection", "judgement"]
+        },
+
+        sobek: {
+            DisplayName: "Sobek",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "The Nile and its waters, crocodiles, fertility of the land, strength, protection from the dangers of the river",
+
+            SacredSymbols: "Crocodile head with the sun disc and plumes, the was sceptre, the ankh",
+
+            SacredAnimals: "Crocodile",
+
+            SacredPlants: "Papyrus, reeds of the riverbank",
+
+            CandleColors: "Green, dark blue, gold",
+
+            Crystals: "Malachite, green jasper, bloodstone, moss agate",
+
+            Herbs: "Papyrus, myrrh, cedar",
+
+            Offerings: "Fresh water, bread, honey cake, wine mixed with honey, incense",
+
+            TraditionalWarnings: "Sobek is the power of the crocodile, feared as well as revered: ancient Egyptians prayed both to him and against crocodiles. Respect real water and wildlife, and never approach crocodiles or other wild animals as an act of devotion.",
+
+            Overview: "Sobek is the Egyptian crocodile god of the Nile, its waters and the fertility they bring, pictured as a crocodile or a man with a crocodile’s head, often crowned with the sun disc as Sobek-Ra. His great cult centres were in the Faiyum oasis, at the city the Greeks called Crocodilopolis, and at Kom Ombo, where he shares a double temple with Horus. Middle Kingdom kings and the female pharaoh Sobekneferu took his name.",
+
+            TraditionalMeaning: "Strength from the waters: the raw power of the river, fertility, protection and the courage to face what lurks below the surface.",
+
+            DevotionalApproach: "Start here: offer a cup of fresh water with a word of thanks for the water you use each day. Approach him with respect for his power. He asks devotees to honour rivers and wetlands, to be strong without being cruel and to protect what is theirs.",
+
+            OfferingNotes: "Offer fresh water, bread, honey cake or wine mixed with honey; Strabo saw priests feeding the sacred crocodile of Crocodilopolis cakes, meat and honeyed wine. Caring for a river or wetland is an offering in his spirit.",
+
+            AltarIdeas: "A green or dark blue candle, a crocodile figure, malachite or green jasper, a bowl of water and a few reeds or papyrus. Placing it near water, or including Nile imagery, suits him.",
+
+            CulturalContext: "Sobek is honoured today in Kemetic practice, a living religion of revived Egyptian worship. Thousands of mummified crocodiles, from hatchlings to great adults, were buried at his sanctuaries, and some can be seen at the Crocodile Museum at Kom Ombo.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Sobek is honoured with water, bread and honey, often at the Nile’s rising in summer and at the new moon. He is asked for strength, protection from danger, fertility of the land and safety on and near water.",
+
+            tags: ["nile", "crocodile", "strength", "fertility", "water", "protection"]
+        },
+
+        khonsu: {
+            DisplayName: "Khonsu",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "The moon and its journey, the passing of time, healing, protection against evil spirits, youth",
+
+            SacredSymbols: "Full moon disc in a crescent, the sidelock of youth, the crook and flail, the menat necklace",
+
+            SacredAnimals: "Falcon, baboon",
+
+            SacredPlants: "None securely attested in Egyptian sources",
+
+            CandleColors: "Silver, white, pale blue",
+
+            Crystals: "Moonstone, selenite, clear quartz, labradorite",
+
+            Herbs: "Myrrh, blue lotus, chamomile",
+
+            Offerings: "Fresh water, milk, bread, incense, prayers for healing",
+
+            TraditionalWarnings: "Early texts show a fierce Khonsu: in the Pyramid Texts’ Cannibal Hymn he helps the king devour the gods. Later he became a gentle healer and the youthful son of Amun and Mut, so read his sources with their dates in mind.",
+
+            Overview: "Khonsu is the Egyptian god of the moon, whose name means the Traveller, for the moon’s journey across the night sky. He is pictured as a young man with the sidelock of youth, wrapped like a mummy, wearing the full moon in a crescent, or with the head of a falcon. In Thebes he was the son of Amun and Mut, with his own temple at Karnak, and a late inscription, the Bentresh Stela, tells how his image travelled abroad to heal a foreign princess.",
+
+            TraditionalMeaning: "Time and healing: the moon’s steady journey, the counting of months and the power to drive out sickness and fear.",
+
+            DevotionalApproach: "Start here: on a clear night, look for the moon, note its phase and ask him for healing for someone who needs it. Approach him with patience; he moves on his own schedule. He asks devotees to keep track of time well and to care for the sick.",
+
+            OfferingNotes: "Offer fresh water, milk, bread or incense, especially at the full moon. Keeping a note of the moon’s phases is a simple devotion to the Traveller.",
+
+            AltarIdeas: "A silver or white candle, a crescent with a full moon disc, moonstone or selenite, a bowl of water and an image of Khonsu or a falcon. A window where the moon can be seen suits him.",
+
+            CulturalContext: "Khonsu is honoured today in Kemetic practice, a living religion of revived Egyptian worship, often with Amun and Mut. At the Opet festival his barque travelled with theirs from Karnak to Luxor, and his temple still stands in the Karnak precinct.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Khonsu is honoured at the full moon and at the Opet festival with the Theban triad, with water, milk and incense. He is asked for healing, protection from harmful spirits, and good timing in the work of the month.",
+
+            tags: ["moon", "time", "healing", "protection", "youth", "night"]
+        },
+
+        taweret: {
+            DisplayName: "Taweret",
+            Category: "Deity",
+
+            Pantheon: "Egyptian",
+
+            Domains: "Pregnancy and childbirth, babies and young children, protection of the home, fertility",
+
+            SacredSymbols: "The sa sign of protection, the ankh, a knife, the torch",
+
+            SacredAnimals: "Hippopotamus, with a lion’s paws and a crocodile’s back",
+
+            SacredPlants: "None securely attested in Egyptian sources",
+
+            CandleColors: "Green, white, blue",
+
+            Crystals: "Moonstone, green aventurine, rose quartz, jade",
+
+            Herbs: "Chamomile, lemon balm, myrrh",
+
+            Offerings: "Fresh water, milk, bread, care for mothers and babies",
+
+            TraditionalWarnings: "Taweret looks fierce to frighten off anything that might harm a mother or child. She supports, never replaces, midwives, doctors and good care in pregnancy and birth.",
+
+            Overview: "Taweret, the Great One, is the Egyptian goddess who protected women in pregnancy and childbirth and watched over babies. She is pictured as a pregnant hippopotamus standing upright, with a lion’s paws and a crocodile’s back, resting her hand on the sa sign of protection. Her image appeared on beds, headrests, amulets and magic wands of ivory used to guard mother and child.",
+
+            TraditionalMeaning: "Fierce motherly protection: safe birth, the guarding of the very young and the strength of those who look after them.",
+
+            DevotionalApproach: "Start here: light a candle for someone who is pregnant, giving birth or caring for a small child, and ask her to watch over them. Approach her with warmth and trust. She asks devotees to protect mothers and babies and to support those who care for them.",
+
+            OfferingNotes: "Offer fresh water, milk or bread, or practical help for a new parent. Giving to a maternity or baby charity is an offering in her spirit.",
+
+            AltarIdeas: "A green or white candle, an image or amulet of Taweret, a sa sign or ankh, moonstone or aventurine, and a dish of milk. A shelf in a bedroom or nursery follows ancient custom.",
+
+            CulturalContext: "Taweret is honoured today in Kemetic practice, a living religion of revived Egyptian worship, and was one of the household gods closest to ordinary Egyptians, with Bes. Her figure was also a northern constellation in Egyptian star maps, and her image travelled to Minoan Crete, where it became the ‘Minoan genius’.",
+
+            Traditions: "Egyptian",
+
+            TraditionNotes: "Egyptian: In Kemetic practice Taweret is honoured at home, with water, milk and bread, through pregnancy and birth and in a child’s first years. She is asked for safe childbirth, healthy babies and the protection of the household at night.",
+
+            tags: ["childbirth", "motherhood", "protection", "babies", "fertility", "household"]
+        },
+
+        njord: {
+            DisplayName: "Njord",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "The sea and coasts, wind, seafaring and fishing, wealth and prosperity, peace",
+
+            SacredSymbols: "Ship, the shore, bare feet, fishing nets",
+
+            SacredAnimals: "Swans and seabirds, from Snorri’s tale of his marriage to Skadi",
+
+            SacredPlants: "None securely attested in Norse sources",
+
+            CandleColors: "Blue, green, silver",
+
+            Crystals: "Aquamarine, sea glass, blue lace agate, pearl",
+
+            Herbs: "Seaweed, sea salt, juniper",
+
+            Offerings: "Mead or ale, fish, bread, sea water returned to the sea, shells",
+
+            TraditionalWarnings: "Njord is a Vanir god of wealth and peace whose surviving myths are few. Tacitus’ earth goddess Nerthus has a name that matches his, but whether they are related, and how, is debated; do not treat them as simply the same deity.",
+
+            Overview: "Njord is the Norse god of the sea, the winds and seafaring, and of the wealth they bring. One of the Vanir, he came to live among the Æsir as a hostage after their war, with his children Freyr and Freyja, and his hall is Nóatún, ship-town. Snorri tells how the giantess Skadi chose him as husband by his feet, the most beautiful she saw, and how their marriage failed because he could not bear the wolves of her mountains nor she the cries of his seabirds.",
+
+            TraditionalMeaning: "Calm seas and fair dealing: prosperity, safe journeys, generosity and peace between peoples.",
+
+            DevotionalApproach: "Start here: go to the sea or any water if you can, or pour a little salt water into a bowl, and thank him for a safe journey or a full table. Approach him calmly and with generosity. He asks devotees to deal fairly, share their wealth and seek peace.",
+
+            OfferingNotes: "Offer mead, ale, bread or fish, and return a little sea water or a shell to the shore. Never leave plastic or rubbish as an offering at the water’s edge; cleaning a beach honours him.",
+
+            AltarIdeas: "A blue or green candle, a model ship, shells and sea glass, a bowl of salt water and a fishing float. A shelf facing the sea or a window suits him.",
+
+            CulturalContext: "Njord is honoured today in Heathenry, the living revival of Norse and Germanic religion. Snorri says the Yule toasts were drunk to Odin, then to Njord and Freyr for a good year and peace, and many place names in Norway and Sweden, and Njarðvík in Iceland, carry his name.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour Njord at Yule with the toast “til árs ok friðar”, for a good year and peace, and at blóts by the sea, with mead, fish and bread. He is asked for safe voyages, good fishing, fair winds, prosperity and peace.",
+
+            tags: ["sea", "wind", "seafaring", "prosperity", "peace", "vanir"]
+        },
+
+        heimdall: {
+            DisplayName: "Heimdall",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "Watchfulness and guarding, boundaries and thresholds, the rainbow bridge, the ordering of society, the warning horn",
+
+            SacredSymbols: "The horn Gjallarhorn, the rainbow bridge Bifröst, gold teeth",
+
+            SacredAnimals: "Ram (from his by-names), his horse Gulltopp",
+
+            SacredPlants: "None securely attested in Norse sources",
+
+            CandleColors: "White, gold, rainbow colours",
+
+            Crystals: "Clear quartz, rainbow fluorite, labradorite, citrine",
+
+            Herbs: "Juniper, birch, yarrow",
+
+            Offerings: "Mead, bread, a horn of ale, keeping watch, honest work as a guardian",
+
+            TraditionalWarnings: "Much about Heimdall is obscure even to Snorri, who preserved riddling fragments: nine mothers, gold teeth, a horn hidden under Yggdrasil. Modern descriptions often fill gaps with confidence; be honest about what is known.",
+
+            Overview: "Heimdall is the Norse watchman of the gods, who guards the rainbow bridge Bifröst at the edge of heaven. Snorri says he needs less sleep than a bird, sees a hundred leagues by day or night and hears grass grow, and that at Ragnarök he will blow Gjallarhorn and fight Loki to the death of them both. Called the whitest of the gods and son of nine mothers, he appears in the poem Rígsþula as Ríg, who walks among people and fathers the classes of society.",
+
+            TraditionalMeaning: "Watchful guarding: vigilance, protection of boundaries, readiness and the order that holds a community together.",
+
+            DevotionalApproach: "Start here: stand at your front door for a moment, look and listen, and ask him to guard the threshold of your home. Approach him with steadiness. He asks devotees to stay alert, keep their word and look out for others, especially on watch through the night.",
+
+            OfferingNotes: "Offer mead, ale or bread at a threshold or gate. Night-shift workers, guards and carers sometimes dedicate their watch to him; keeping a faithful watch is itself an offering.",
+
+            AltarIdeas: "A white or gold candle, a horn, a rainbow prism or fluorite, a small bridge or gate, and a dish of bread. Set it near the front door or a window that looks out.",
+
+            CulturalContext: "Heimdall is honoured today in Heathenry, the living revival of Norse and Germanic religion. Völuspá opens by asking a hearing from “the greater and lesser children of Heimdall”, meaning all humankind. Learn from the Eddas and from Heathen communities, choosing inclusive groups.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour Heimdall at thresholds and at the turning of the seasons, with mead and bread, and often call on him to open and guard a blót. He is asked for protection, vigilance, clear hearing and a safe watch.",
+
+            tags: ["guardian", "watchfulness", "boundaries", "protection", "order", "bifrost"]
+        },
+
+        sif: {
+            DisplayName: "Sif",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "Family and marriage, the golden-haired wife of Thor, the household, possibly the ripening grain",
+
+            SacredSymbols: "Golden hair, the wedding ring, the full cup",
+
+            SacredAnimals: "None securely attested in Norse sources",
+
+            SacredPlants: "Grain, especially ripe barley and wheat (a modern reading)",
+
+            CandleColors: "Gold, yellow, green",
+
+            Crystals: "Citrine, golden topaz, amber, tiger eye",
+
+            Herbs: "Barley, wheat, chamomile",
+
+            Offerings: "Bread, mead, a lock of hair or golden thread, grain",
+
+            TraditionalWarnings: "Very little is told of Sif. The popular idea that her golden hair stands for fields of grain is a nineteenth-century scholarly suggestion, not something the sources say; it is a reasonable modern devotional reading if you say so.",
+
+            Overview: "Sif is a Norse goddess, wife of Thor and mother of the god Ullr and of Thor’s daughter Thrúd. Snorri tells how Loki cut off her hair as a prank, and Thor forced him to have dwarves forge new hair of real gold that would grow like her own; the same smiths made Odin’s spear and Freyr’s ship. In Lokasenna she alone offers Loki mead in peace.",
+
+            TraditionalMeaning: "Beauty and plenty kept safe: faithful partnership, a household cared for and what was lost restored.",
+
+            DevotionalApproach: "Start here: bake or buy a loaf, brush or braid your hair with care, and thank her for your home and the people in it. Approach her warmly and simply. She asks devotees to tend their households, keep faith in their partnerships and offer peace where there is conflict.",
+
+            OfferingNotes: "Offer bread, mead or grain, or a golden thread or ribbon. Sharing a meal with family or a partner honours her.",
+
+            AltarIdeas: "A gold or yellow candle, a sheaf of wheat or barley, a golden ribbon or comb, citrine or amber, and a small loaf. Set it beside Thor’s if you honour him too.",
+
+            CulturalContext: "Sif is honoured today in Heathenry, the living revival of Norse and Germanic religion, often with Thor at harvest. Her name is related to Old Norse sifjar, kinship by marriage, which may be the oldest clue to who she was.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour Sif at the harvest and at weddings, with bread, grain and mead, often beside Thor. She is asked for a happy marriage, a well-kept home, family bonds and a good harvest.",
+
+            tags: ["family", "marriage", "household", "harvest", "beauty", "kinship"]
+        },
+
+        bragi: {
+            DisplayName: "Bragi",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "Poetry and eloquence, skalds, the welcome of the dead to Valhalla, oaths made over the cup",
+
+            SacredSymbols: "The bragarfull (the cup over which vows were made), runes carved on the tongue, the poet’s voice",
+
+            SacredAnimals: "None securely attested in Norse sources",
+
+            SacredPlants: "None securely attested; apples, through his wife Idunn",
+
+            CandleColors: "Gold, blue, purple",
+
+            Crystals: "Blue lace agate, sodalite, aquamarine, amethyst",
+
+            Herbs: "Mead herbs: meadowsweet, heather, honey",
+
+            Offerings: "Mead, a poem or song, a toast, a promise kept",
+
+            TraditionalWarnings: "Bragi may have grown from a real ninth-century poet, Bragi Boddason the Old, honoured after death; scholars debate it. Vows made over the bragarfull were binding, so do not boast or swear lightly in his name.",
+
+            Overview: "Bragi is the Norse god of poetry and eloquence, husband of Idunn, keeper of the apples of youth. Snorri calls him famous for wisdom and above all for skill in speech, and says poetry is called bragr after him. In the poems Eiríksmál and Hákonarmál he greets dead kings at the doors of Valhalla, and in Lokasenna Loki mocks him as the most cowardly of the gods, a charge Bragi answers with offers of peace.",
+
+            TraditionalMeaning: "The power of words: poetry, honest boasting, promises spoken aloud and the stories that keep memory alive.",
+
+            DevotionalApproach: "Start here: read a poem aloud, or write four lines of your own, and raise a cup to him. Approach him with words and with good company. He asks devotees to speak well, keep their vows and remember the dead in story and song.",
+
+            OfferingNotes: "Offer mead, a poem, a song or a toast. Old sagas tell of the bragarfull, a cup drunk at feasts while making a solemn vow; making only promises you will keep is the best offering.",
+
+            AltarIdeas: "A gold or blue candle, a drinking horn or cup, a notebook of poems, blue lace agate, and an apple for Idunn. Set it where people gather to talk.",
+
+            CulturalContext: "Bragi is honoured today in Heathenry, the living revival of Norse and Germanic religion, especially by poets and storytellers. Heathen gatherings often keep a sumbel, a ritual round of toasts and boasts, in which words spoken over the horn are taken seriously.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour Bragi at sumbel and at Yule, when, the sagas say, vows were made over the bragarfull, with mead, poems and toasts. He is asked for eloquence, inspiration, courage to speak and help in keeping vows.",
+
+            tags: ["poetry", "eloquence", "vows", "storytelling", "music", "memory"]
+        },
+
+        ullr: {
+            DisplayName: "Ullr",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "Hunting and archery, skiing and winter travel, shields, oaths, single combat",
+
+            SacredSymbols: "Bow and arrows, skis or snowshoes, the shield (called Ullr’s ship), a ring sworn on",
+
+            SacredAnimals: "None securely attested in Norse sources",
+
+            SacredPlants: "Yew, from his hall Ýdalir, the yew dales",
+
+            CandleColors: "White, green, brown",
+
+            Crystals: "Clear quartz, snowflake obsidian, moss agate, jasper",
+
+            Herbs: "Yew needles for display only (yew is poisonous), juniper, pine",
+
+            Offerings: "Mead, ale, bread, game or a meal from the hunt, time spent outdoors in winter",
+
+            TraditionalWarnings: "Few stories of Ullr survive, though place names in Norway and Sweden suggest he was once widely worshipped. Every part of the yew tree except the flesh of its berry is highly poisonous: never burn it, eat it or leave it where pets and children can reach it.",
+
+            Overview: "Ullr is the Norse god of hunting, archery and skiing, son of Sif and stepson of Thor. Snorri says he is so good an archer and skier that none can match him, beautiful and a warrior, good to pray to in single combat; poets called the shield Ullr’s ship. His hall is Ýdalir, the yew dales, and an old poem speaks of oaths sworn by Ullr’s ring.",
+
+            TraditionalMeaning: "Skill in the hard season: endurance, focus, self-reliance and joy in winter and the wild.",
+
+            DevotionalApproach: "Start here: go outside on a cold day, walk, run, ski or skate, and offer the effort to him with a cup of something warm poured out afterwards. Approach him with steadiness and sportsmanship. He asks devotees to practise their skills, respect the animals they take and keep their oaths.",
+
+            OfferingNotes: "Offer mead, ale or bread outdoors, or share a meal from a hunt or from local farms. Hunters dedicate their first take and thank the animal; others offer a winter walk in his honour.",
+
+            AltarIdeas: "A white or green candle, a bow or arrow, a small ski or snowshoe, a ring, pine or juniper (not yew within reach), and clear quartz. Snow or frost on the windowsill completes it.",
+
+            CulturalContext: "Ullr is honoured today in Heathenry, the living revival of Norse and Germanic religion, and adopted as a patron of skiers. A third-century inscription on a scabbard fitting from Thorsberg may name him, and Saxo Grammaticus tells of Ollerus, who ruled in Odin’s place for ten years. The skiers’ Ullr festivals in some winter resorts are modern celebrations.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour Ullr in deep winter, often around Þorrablót, with mead and food shared outdoors, and before hunting, archery or skiing. He is asked for skill, endurance, safe winter travel and success in fair contests.",
+
+            tags: ["hunting", "archery", "winter", "skiing", "oaths", "endurance"]
+        },
+
+        eir: {
+            DisplayName: "Eir",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "Healing, medicine, mercy and help",
+
+            SacredSymbols: "Healing herbs, the healer’s hands, the hill of healing (Lyfjaberg)",
+
+            SacredAnimals: "None securely attested in Norse sources",
+
+            SacredPlants: "Healing herbs (a modern association)",
+
+            CandleColors: "Green, white, blue",
+
+            Crystals: "Green aventurine, clear quartz, jade, amethyst",
+
+            Herbs: "Yarrow, chamomile, angelica",
+
+            Offerings: "Herbal tea, water, a donation to health care, kindness to the sick",
+
+            TraditionalWarnings: "Eir is named only briefly: Snorri calls her the best of physicians, and a later poem places her among the maidens on Lyfjaberg, the hill of healing. Nearly all devotion to her is modern; it supports, never replaces, medical care.",
+
+            Overview: "Eir is a Norse goddess of healing, whose name means help or mercy. Snorri lists her among the goddesses as the best of physicians, and the poem Fjölsvinnsmál names her among the maidens who sit with Menglöð on Lyfjaberg, the hill of healing, where the sick who climb it are cured. Her name also appears in a list of valkyries.",
+
+            TraditionalMeaning: "Help when it is needed: healing, comfort for the sick and the skill and mercy of those who care for them.",
+
+            DevotionalApproach: "Start here: make a cup of herbal tea, hold it for a moment and ask her for healing for yourself or someone else, then drink it slowly. Approach her gently. She asks devotees to care for the sick, look after their own health and honour healers.",
+
+            OfferingNotes: "Offer herbal tea, fresh water or healing herbs, or give time or money to people who care for the sick. Thanking a nurse or carer is an offering in her spirit.",
+
+            AltarIdeas: "A green or white candle, a small bundle of dried healing herbs, aventurine or jade, a cup, and the names of those you pray for. A shelf near where you keep medicines can hold her image.",
+
+            CulturalContext: "Eir is honoured today in Heathenry, the living revival of Norse and Germanic religion, especially by nurses, doctors and carers. Because her sources are so slight, Heathens often honour her alongside Frigg and the other goddesses Snorri lists with her.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour Eir in times of illness and recovery, and some at Dísablót among the goddesses, with herbal tea, water and healing herbs. She is asked for healing, comfort, skilled care and strength for carers.",
+
+            tags: ["healing", "medicine", "mercy", "care", "health", "nurses"]
+        },
+
+        sunna: {
+            DisplayName: "Sól",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "The Sun, daylight and warmth, the turning year, life and growth",
+
+            SacredSymbols: "The sun wheel, the sun chariot drawn by horses, the shining disc",
+
+            SacredAnimals: "Horses, her steeds Árvakr and Alsviðr",
+
+            SacredPlants: "Sunflower and marigold (modern associations)",
+
+            CandleColors: "Gold, yellow, orange",
+
+            Crystals: "Sunstone, amber, citrine, carnelian",
+
+            Herbs: "St John’s wort, chamomile, calendula",
+
+            Offerings: "Mead, honey, golden bread, greeting the sunrise",
+
+            TraditionalWarnings: "In Norse myth the Sun is a goddess and the Moon a god, the reverse of many classical associations. Never look straight at the Sun, even in devotion.",
+
+            Overview: "Sól, also called Sunna, is the Norse goddess of the Sun, daughter of Mundilfari and sister of Máni, the Moon. She drives the horses Árvakr and Alsviðr that draw the sun across the sky, chased by the wolf Sköll, who will catch her at Ragnarök; but Vafþrúðnismál says she will first bear a daughter as bright as herself, who will ride her mother’s paths. The Old High German Merseburg charm names Sunna among the goddesses.",
+
+            TraditionalMeaning: "Light that returns: warmth, hope, steady courage in the face of danger and life passed on to the next generation.",
+
+            DevotionalApproach: "Start here: greet the sunrise, or the first daylight you see, and thank her by name. Approach her with gratitude and warmth. She asks devotees to keep going on their daily round, carry light into dark places and pass on what they have to those who follow.",
+
+            OfferingNotes: "Offer mead, honey or golden bread at sunrise or midsummer, set in sunlight before sharing or returning it to the earth.",
+
+            AltarIdeas: "A gold or yellow candle, a sun wheel or a picture of the Trundholm sun chariot, sunstone or amber, a small horse figure and a dish of honey. An east or south window suits her.",
+
+            CulturalContext: "Sól is honoured today in Heathenry, the living revival of Norse and Germanic religion, often at midsummer. The Bronze Age sun chariot from Trundholm in Denmark, a horse drawing a gilded disc, is far older than the Norse myths, but shows how long the north has pictured the sun drawn by a horse.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour Sól at midsummer and at the return of the sun after midwinter, and some on Sundays, with mead, honey and bright bread. She is asked for warmth, health, good growing weather and courage.",
+
+            tags: ["sun", "light", "warmth", "summer", "hope", "growth"]
+        },
+
+        mani: {
+            DisplayName: "Máni",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "The Moon, the counting of time and the months, night journeys, the waxing and waning",
+
+            SacredSymbols: "The crescent and full moon, the moon’s chariot, a pail on a pole (from the tale of Bil and Hjúki)",
+
+            SacredAnimals: "None securely attested in Norse sources",
+
+            SacredPlants: "None securely attested in Norse sources",
+
+            CandleColors: "Silver, white, blue",
+
+            Crystals: "Moonstone, selenite, labradorite, clear quartz",
+
+            Herbs: "Mugwort, chamomile, white willow",
+
+            Offerings: "Mead, water, milk, time spent under the moon",
+
+            TraditionalWarnings: "In Norse myth the Moon is a god and the Sun a goddess, the reverse of the Greek and Roman pattern. Snorri’s tale of Bil and Hjúki carried off by Máni is sometimes said to lie behind the rhyme of Jack and Jill; that link is a nineteenth-century guess.",
+
+            Overview: "Máni is the Norse god of the Moon, son of Mundilfari and brother of Sól, the Sun. Snorri says he steers the moon’s course and rules its waxing and waning, and that he took up from the earth two children, Bil and Hjúki, as they carried a pail of water from a well, so that they follow him across the sky. He is chased by the wolf Hati, who will catch him at Ragnarök.",
+
+            TraditionalMeaning: "Time measured and journeys kept: the steady rhythm of months, guidance in the dark and care for the young.",
+
+            DevotionalApproach: "Start here: look for the moon tonight, note its phase, and thank him for the light he gives in the dark. Approach him calmly. He asks devotees to keep good time, care for children and travellers, and accept the waxing and waning of things.",
+
+            OfferingNotes: "Offer mead, water or milk in moonlight, especially at the full moon. Keeping a note of the moon’s phases is a simple devotion.",
+
+            AltarIdeas: "A silver or white candle, a crescent, moonstone or selenite, a small pail or cup of water, and a night-sky cloth. A window where the moon can be seen suits him.",
+
+            CulturalContext: "Máni is honoured today in Heathenry, the living revival of Norse and Germanic religion, often on Mondays, the Moon’s day, and at the full moon. His name is the root of the Old Norse and English words for moon and month.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour Máni at the full moon and on Mondays, a modern custom from the day’s name, with mead, water and quiet time outdoors at night. He is asked for safe travel by night, the protection of children and help in keeping time.",
+
+            tags: ["moon", "night", "time", "months", "travel", "children"]
+        },
+
+        norns: {
+            DisplayName: "The Norns",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "Fate and destiny, the laws of the world, birth and the shaping of a life, the well beneath the world tree",
+
+            SacredSymbols: "The well of Urðr, the world tree Yggdrasil, threads and spinning, carved staves",
+
+            SacredAnimals: "Swans, which Snorri says swim in the well of Urðr",
+
+            SacredPlants: "The ash tree Yggdrasil",
+
+            CandleColors: "White, grey, black",
+
+            Crystals: "Clear quartz, smoky quartz, jet, labradorite",
+
+            Herbs: "Ash leaves, yew (for display only, poisonous), mugwort",
+
+            Offerings: "Water poured at the roots of a tree, porridge, thread, honest reflection",
+
+            TraditionalWarnings: "Glossing Urðr, Verðandi and Skuld as past, present and future is a modern simplification: their names mean something like what has come to be, what is coming to be and what shall be, or debt. The Norns are not consulted like fortune tellers, and fate in Norse thought was faced with courage, not escaped.",
+
+            Overview: "The Norns are the Norse powers of fate. Völuspá tells of three maidens, Urðr, Verðandi and Skuld, who come from the lake beneath the world tree, carve staves, lay down laws and choose the lives of the children of men; Snorri adds that they water Yggdrasil from the well of Urðr each day so that it will not rot. Other Norns come to each child at birth, and in the Helgi poems they twist the threads of the hero’s fate.",
+
+            TraditionalMeaning: "Fate faced well: the weight of what has happened, the power of each choice now, and courage before what must come.",
+
+            DevotionalApproach: "Start here: pour a cup of water at the roots of a tree and think about one thing in your past that shaped who you are. Approach them with respect and humility. They ask devotees to own their deeds, act well in the present and meet what comes with courage.",
+
+            OfferingNotes: "Offer water poured at the roots of a tree, a little porridge, or a length of thread. In Faroese and Norwegian folk custom, the first porridge given to a mother after childbirth was called the Norns’ porridge.",
+
+            AltarIdeas: "Three candles, white, grey and black, a bowl of water, a spindle or thread, an ash leaf or twig, and smoky quartz. A small carved stave or rune can stand among them.",
+
+            CulturalContext: "The Norns are honoured today in Heathenry, the living revival of Norse and Germanic religion. The idea of wyrd, the Old English cousin of Urðr, carries the same sense of fate woven from what has already happened.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour the Norns at the turning of the year, especially at Winter Nights and Yule, at births and at the ends of things, with water poured at the roots of a tree and porridge. They are asked to look kindly on a newborn child’s life, and for courage and clarity before fate.",
+
+            tags: ["fate", "destiny", "wyrd", "birth", "time", "yggdrasil"]
+        },
+
+        danu: {
+            DisplayName: "Danu",
+            Category: "Deity",
+
+            Pantheon: "Celtic (Irish)",
+
+            Domains: "Ancestral mother of the Tuatha Dé Danann, the land and its fertility, the gods of Ireland",
+
+            SacredSymbols: "The two hills of the Paps of Anu (Dá Chích Anann), the land itself, flowing water",
+
+            SacredAnimals: "None securely attested in Irish sources",
+
+            SacredPlants: "None securely attested; oak and hazel are modern associations",
+
+            CandleColors: "Green, blue, brown",
+
+            Crystals: "Moss agate, Connemara marble, green aventurine, jasper",
+
+            Herbs: "Oak, hazel, meadowsweet",
+
+            Offerings: "Milk, butter, bread, fresh water, care for the land",
+
+            TraditionalWarnings: "The name Danu, in that form, is not found in medieval Irish texts: scholars rebuilt it from Danann, in the name Tuatha Dé Danann, and the evidence is thin and debated. Medieval writers name Anu or Ana, “mother of the gods of Ireland”, and Danand, mother of three gods; whether these are one goddess is uncertain. The popular idea of a great mother goddess of all the Celts is modern.",
+
+            Overview: "Danu is the name now given to the ancestral mother of the Tuatha Dé Danann, the divine people of Irish myth. Cormac’s Glossary, around 900 CE, calls Anu “mother of the gods of Ireland”, who nourished them well, and two rounded hills in County Kerry are still called the Paps of Anu. The Book of Invasions names Danand as mother of Brian, Iuchar and Iucharba, the three gods of skill.",
+
+            TraditionalMeaning: "The mother of a people: the land that feeds and holds a community, ancestry, and belonging to a place.",
+
+            DevotionalApproach: "Start here: pour a little milk or water onto the earth and thank the land you live on for feeding you. Approach her with humility about how little is known. She is honoured by belonging well to a place and caring for it.",
+
+            OfferingNotes: "Offer milk, butter, bread or fresh water poured onto the ground, as was long done in Irish folk custom for the spirits of the land. Planting or protecting native trees is an offering in her spirit.",
+
+            AltarIdeas: "A green or blue candle, a stone or a little soil from a place you love, oak or hazel leaves, a bowl of water and moss agate. A photograph of the Paps of Anu or of local hills suits her.",
+
+            CulturalContext: "Danu is honoured today by Gaelic Polytheists, Celtic Reconstructionists, Druids and many modern Pagans, as part of a living devotion to the Irish gods. Learn from Irish sources and Irish-speaking communities, remembering that the stories belong to a living culture and much of her picture is modern.",
+
+            Traditions: "Celtic",
+
+            TraditionNotes: "Celtic: Celtic polytheists honour Danu, or Anu, as mother of the Tuatha Dé with offerings of milk, butter and bread poured onto the land, often at Samhain, the start of the Gaelic year, and at the Paps of Anu in Kerry. She is asked for the wellbeing of the land, of families and of the community.",
+
+            tags: ["mother", "land", "ancestors", "tuatha de danann", "fertility", "belonging"]
+        },
+
+        aine: {
+            DisplayName: "Áine",
+            Category: "Deity",
+
+            Pantheon: "Celtic (Irish)",
+
+            Domains: "Summer and midsummer, love and fertility, sovereignty, the land of Munster, the fairy hill of Knockainy",
+
+            SacredSymbols: "The hill of Knockainy (Cnoc Áine), midsummer torches of straw (cliars), Lough Gur",
+
+            SacredAnimals: "None securely attested in Irish sources",
+
+            SacredPlants: "Meadowsweet (a modern association), summer flowers, straw for the cliars",
+
+            CandleColors: "Gold, red, green",
+
+            Crystals: "Sunstone, carnelian, citrine, rose quartz",
+
+            Herbs: "Meadowsweet, St John’s wort, honeysuckle",
+
+            Offerings: "Flowers, milk, honey, a torch or candle lit at midsummer",
+
+            TraditionalWarnings: "Áine is a figure of medieval tale and later folklore rather than of recorded pagan worship. She is sometimes called a sun goddess, but that is a modern reading. Her stories include violence against her, as in the tale of King Ailill Ólom, and should be told with care.",
+
+            Overview: "Áine is an Irish goddess and fairy queen of Munster, tied above all to the hill of Knockainy in County Limerick and nearby Lough Gur. In medieval tales she is the daughter of Eogabal of the Tuatha Dé and avenges herself on King Ailill Ólom, who wronged her; in later folklore she is the mother of the poet-earl Gearóid Iarla and a fairy queen who rewards and punishes. Until the nineteenth century people carried burning straw cliars around her hill on Midsummer Eve.",
+
+            TraditionalMeaning: "Summer’s bright power: love, fertility, the sovereignty of the land and justice for those who are wronged.",
+
+            DevotionalApproach: "Start here: on a summer evening, light a candle outdoors or in a window and thank her for the light and the growing season. Approach her with warmth and respect for her power to protect herself. She is honoured by joy in summer, care for the land and standing up for those wronged.",
+
+            OfferingNotes: "Offer flowers, milk or honey, especially at midsummer. Lighting a candle or lantern in place of the old straw torches is a safe way to keep the custom.",
+
+            AltarIdeas: "A gold or red candle, a jar of summer flowers or meadowsweet, sunstone or carnelian, a little straw and a picture of Knockainy or Lough Gur.",
+
+            CulturalContext: "Áine is honoured today by Gaelic Polytheists, Celtic Reconstructionists and modern Pagans, part of a living devotion to the Irish gods and the folklore of the land. Knockainy and Lough Gur are real places with local communities; visit respectfully and learn from Irish folklore collections.",
+
+            Traditions: "Celtic",
+
+            TraditionNotes: "Celtic: Celtic polytheists honour Áine on Midsummer Eve, when her hill of Knockainy once blazed with straw torches carried round it, and through the summer with flowers, milk and honey. She is asked for love, fertility, a good season and justice.",
+
+            tags: ["summer", "midsummer", "love", "sovereignty", "fairy", "munster"]
+        },
+
+        aengus: {
+            DisplayName: "Aengus Óg",
+            Category: "Deity",
+
+            Pantheon: "Celtic (Irish)",
+
+            Domains: "Love and longing, youth, dreams, beauty, poetry, the Brú na Bóinne",
+
+            SacredSymbols: "The Brú na Bóinne (Newgrange), a golden chain linking swans, the harp",
+
+            SacredAnimals: "Swans",
+
+            SacredPlants: "None securely attested in Irish sources",
+
+            CandleColors: "Gold, white, pink",
+
+            Crystals: "Rose quartz, moonstone, clear quartz, rhodonite",
+
+            Herbs: "Rose, apple blossom, meadowsweet",
+
+            Offerings: "Flowers, music, honey, poetry, a dream written down",
+
+            TraditionalWarnings: "Aengus is a figure of medieval Irish literature, written down by Christian scribes; how far the tales reflect pagan worship is debated. The idea that birds came from his kisses is a later embellishment, not found in the medieval texts.",
+
+            Overview: "Aengus Óg, the young Aengus, is the Irish god of love and youth, son of the Dagda and Boann. To hide his conception, the Dagda held the sun still for nine months so that he was conceived and born in a single day. He won the Brú na Bóinne, the great passage tomb of Newgrange, by a clever trick, and in The Dream of Aengus he falls ill with love for a girl seen in a dream, Caer Ibormeith, finds her as a swan at Samhain and flies away with her, singing.",
+
+            TraditionalMeaning: "Love that seeks and finds: longing, dreams, youthful beauty and the courage to follow the heart.",
+
+            DevotionalApproach: "Start here: write down a dream or a longing, then play a piece of music for him and set a flower beside it. Approach him with openness and tenderness. He is honoured by loving faithfully and helping lovers, as he helped Diarmuid and Gráinne.",
+
+            OfferingNotes: "Offer flowers, honey, music or a poem. Helping two people find each other, or writing down your dreams, is an offering in his spirit.",
+
+            AltarIdeas: "A gold or white candle, a swan figure or white feathers, a small harp, rose quartz, flowers and a picture of Newgrange.",
+
+            CulturalContext: "Aengus is honoured today by Gaelic Polytheists, Celtic Reconstructionists and modern Pagans, part of a living devotion to the Irish gods. Newgrange is a Neolithic monument far older than the Gaels and a World Heritage Site; visit it with the guides and respect its rules.",
+
+            Traditions: "Celtic",
+
+            TraditionNotes: "Celtic: Celtic polytheists honour Aengus at Samhain, when he found Caer in swan form, and at the winter solstice, when sunlight enters his Brú at Newgrange, with music, flowers and poetry. He is asked for love, inspiration, healing of heartbreak and dreams that guide.",
+
+            tags: ["love", "youth", "dreams", "swans", "poetry", "beauty"]
+        },
+
+        boann: {
+            DisplayName: "Boann",
+            Category: "Deity",
+
+            Pantheon: "Celtic (Irish)",
+
+            Domains: "The River Boyne, rivers and wells, wisdom, fertility, motherhood, music",
+
+            SacredSymbols: "The well of Segais, hazelnuts of wisdom, the river, the harp",
+
+            SacredAnimals: "Salmon, white cow (her name may mean white cow)",
+
+            SacredPlants: "Hazel",
+
+            CandleColors: "Silver, blue, white",
+
+            Crystals: "Aquamarine, moonstone, clear quartz, Connemara marble",
+
+            Herbs: "Hazel, watercress, meadowsweet",
+
+            Offerings: "Clean water, milk, hazelnuts, music, care for rivers",
+
+            TraditionalWarnings: "Boann is known from medieval place-lore (dindshenchas) and tales written by Christian scribes. Her story is one of daring and injury: the well she defied rose against her. Take care near real rivers and wells, and never take water from springs on private land without asking.",
+
+            Overview: "Boann is the Irish goddess of the River Boyne. The place-lore tells how she defied the secret well of Segais, where the hazelnuts of wisdom fell and the salmon fed on them, by walking round it the wrong way; the waters rose, maimed her and chased her to the sea, becoming the Boyne. By the Dagda she is the mother of Aengus Óg, and at the birth of her sons the harper Uaithne played the three strains of Irish music: sorrow, joy and sleep.",
+
+            TraditionalMeaning: "Wisdom that flows: daring to seek knowledge, the life of rivers and the three moods of music.",
+
+            DevotionalApproach: "Start here: go to a river or stream if you can, or pour clean water into a bowl, and thank her for the water of your area. Approach her with respect for both her daring and its cost. She is honoured by care for rivers and by the pursuit of wisdom.",
+
+            OfferingNotes: "Offer clean water, milk or hazelnuts, or music played by water. Taking part in a river clean-up is an offering in her spirit; never leave anything in a river that could harm it.",
+
+            AltarIdeas: "A silver or blue candle, a bowl of water, hazelnuts or a hazel twig, a salmon figure, aquamarine and a picture of the Boyne valley.",
+
+            CulturalContext: "Boann is honoured today by Gaelic Polytheists, Celtic Reconstructionists and modern Pagans, part of a living devotion to the Irish gods. The Boyne valley holds Newgrange, Knowth and Dowth, the Brú na Bóinne, which the tales connect with her family.",
+
+            Traditions: "Celtic",
+
+            TraditionNotes: "Celtic: Celtic polytheists honour Boann at rivers and wells, with water, milk and hazelnuts, and many at the winter solstice in the Boyne valley, when the sun enters Newgrange. She is asked for wisdom, inspiration, fertility and the health of rivers.",
+
+            tags: ["river", "wisdom", "water", "boyne", "music", "motherhood"]
+        },
+
+        ogma: {
+            DisplayName: "Ogma",
+            Category: "Deity",
+
+            Pantheon: "Celtic (Irish)",
+
+            Domains: "Eloquence and learning, the ogham script, strength and championship, poetry",
+
+            SacredSymbols: "Ogham letters cut on stone or wood, the champion’s weapons, the sword of Tethra",
+
+            SacredAnimals: "None securely attested in Irish sources",
+
+            SacredPlants: "The trees whose names the ogham letters bear, such as birch, rowan and alder (a later tradition)",
+
+            CandleColors: "Gold, brown, green",
+
+            Crystals: "Tiger eye, jasper, clear quartz, sodalite",
+
+            Herbs: "Birch, rowan, hazel",
+
+            Offerings: "Words carefully written, ale, bread, a story told well",
+
+            TraditionalWarnings: "The tree names given to the ogham letters come from medieval scholars’ lists, and the modern ‘Celtic tree calendar’ was invented by Robert Graves in 1948. Ogma’s link with the Gaulish Ogmios, whom Lucian describes leading people by chains from his tongue, is often suggested and still debated.",
+
+            Overview: "Ogma is a champion and man of learning among the Tuatha Dé Danann. Medieval Irish scholars said he invented ogham, the early Irish alphabet of notches cut on stone and wood, as a sign of his skill in speech and letters. In The Second Battle of Mag Tuired he is the strong man who carries firewood for the tyrant Bres, and after the battle he wins the speaking sword of Tethra.",
+
+            TraditionalMeaning: "Strength in words: learning, eloquence, the power of writing and the champion’s courage.",
+
+            DevotionalApproach: "Start here: write a word or your name in ogham, take care over it and offer it to him with a cup of ale or water. Approach him through study and honest speech. He is honoured by learning well, writing truly and using strength for others.",
+
+            OfferingNotes: "Offer ale, bread, carefully written words or a story told well. Learning a little Irish, or supporting Irish-language learning, is a fitting offering.",
+
+            AltarIdeas: "A gold or brown candle, an ogham stave cut in wood, a book or notebook, tiger eye and birch or rowan twigs.",
+
+            CulturalContext: "Ogma is honoured today by Gaelic Polytheists, Celtic Reconstructionists and Druids, part of a living devotion to the Irish gods. Around four hundred ogham stones survive, mostly in Ireland, many bearing names of people and kin groups.",
+
+            Traditions: "Celtic",
+
+            TraditionNotes: "Celtic: Celtic polytheists honour Ogma with written words, ale and bread, often at Lughnasadh beside Lugh, whom he served as champion, and when beginning study or writing. He is asked for eloquence, learning, clarity of speech and strength.",
+
+            tags: ["eloquence", "ogham", "learning", "writing", "strength", "champion"]
+        },
+
+        nuada: {
+            DisplayName: "Nuada",
+            Category: "Deity",
+
+            Pantheon: "Celtic (Irish)",
+
+            Domains: "Kingship and right rule, justice, healing, the sword, sacrifice for the people",
+
+            SacredSymbols: "The silver arm, the sword that none could escape, the crown",
+
+            SacredAnimals: "Dogs (from the temple of the British Nodens at Lydney)",
+
+            SacredPlants: "None securely attested in Irish sources",
+
+            CandleColors: "Silver, white, blue",
+
+            Crystals: "Hematite, clear quartz, silver-coloured stones, labradorite",
+
+            Herbs: "Oak, yarrow, comfrey",
+
+            Offerings: "Ale, bread, silver, honest service to your community",
+
+            TraditionalWarnings: "Nuada is known from medieval Irish tales and pseudo-history written by Christian scholars. His link with the British god Nodens, honoured at a Roman-period healing temple at Lydney Park, and the Welsh Lludd Llaw Ereint, rests on the names and is widely accepted but not certain.",
+
+            Overview: "Nuada Airgetlám, Nuada of the Silver Arm, is king of the Tuatha Dé Danann. He lost his arm in the first battle of Mag Tuired and, because a king had to be unblemished, gave up the throne to Bres, who ruled meanly. The physician Dian Cécht made him an arm of silver and his son Miach restored it to flesh, and Nuada was king again until he stepped aside for Lugh; he fell to Balor in the second battle.",
+
+            TraditionalMeaning: "Just kingship: leadership that serves the people, the humility to step aside for someone better and recovery after loss.",
+
+            DevotionalApproach: "Start here: think of one way you hold responsibility for others and do one thing to serve them better, then raise a cup to him. Approach him with respect for duty. He is honoured by fair dealing, healing after injury and leading for others’ good.",
+
+            OfferingNotes: "Offer ale, bread or a silver coin, and service to your community. Supporting people living with disability or limb loss is a fitting offering.",
+
+            AltarIdeas: "A silver or white candle, a small sword or blade-shaped object, a silver hand or bracelet, hematite and a crown or circlet.",
+
+            CulturalContext: "Nuada is honoured today by Gaelic Polytheists, Celtic Reconstructionists and Druids, part of a living devotion to the Irish gods. His sword was one of the four treasures the Tuatha Dé brought to Ireland, with the Dagda’s cauldron, Lugh’s spear and the stone of Fál.",
+
+            Traditions: "Celtic",
+
+            TraditionNotes: "Celtic: Celtic polytheists honour Nuada with ale, bread and silver, often at Bealtaine, when tradition says the Tuatha Dé came to Ireland, and when taking on responsibility. He is asked for good leadership, justice, healing after loss and the courage to serve.",
+
+            tags: ["kingship", "justice", "healing", "sword", "leadership", "sacrifice"]
+        },
+
+        cailleach: {
+            DisplayName: "The Cailleach",
+            Category: "Deity",
+
+            Pantheon: "Celtic (Irish)",
+
+            Domains: "Winter and storms, old age and wisdom, the shaping of the land, wild deer and cattle, the end of the harvest",
+
+            SacredSymbols: "The staff that brings frost, stones dropped from her apron, the last sheaf of the harvest, mountains and cairns",
+
+            SacredAnimals: "Deer, wild goats, cattle",
+
+            SacredPlants: "Holly, gorse, the last sheaf of grain",
+
+            CandleColors: "Grey, white, blue, black",
+
+            Crystals: "Smoky quartz, snowflake obsidian, granite, jet",
+
+            Herbs: "Holly, mugwort, sage",
+
+            Offerings: "Whisky or milk, oatcakes, a stone added to a cairn, the last sheaf",
+
+            TraditionalWarnings: "The Cailleach is a figure of Gaelic folklore and literature from Ireland, Scotland and the Isle of Man, with many local forms; whether she was a pagan goddess is debated. Modern ‘crone goddess’ readings draw on her but are newer. Respect winter weather in practice, and do not climb her mountains unprepared.",
+
+            Overview: "The Cailleach, the Old Woman or Veiled One, is the great hag of Gaelic tradition, who shaped mountains and islands with stones dropped from her apron and herds the deer. In Scottish folklore she rules winter from Samhain to Bealtaine, striking the ground with frost from her staff, and gives way to spring, sometimes turning to stone. In Ireland she is the Cailleach Bhéarra of the Beara peninsula, and the ninth-century poem The Lament of the Old Woman of Beare mourns her lost youth.",
+
+            TraditionalMeaning: "The wisdom and power of age and winter: endurance, rest, the shaping force of hard seasons and the end that makes room for renewal.",
+
+            DevotionalApproach: "Start here: on a cold or stormy day, sit by a window or fire, honour the weather outside and thank her for the rest that winter brings. Approach her with respect, not sentiment. She is honoured by endurance, honesty about age and change, and care for wild places.",
+
+            OfferingNotes: "Offer whisky, milk or oatcakes, or add a stone to a cairn. In parts of Ireland and Scotland the last sheaf of the harvest was called the cailleach and kept through winter; plaiting a small sheaf honours that custom.",
+
+            AltarIdeas: "A grey or white candle, a stone from a hillside, a staff or stick, holly, smoky quartz and a small plaited sheaf.",
+
+            CulturalContext: "The Cailleach is honoured today by Gaelic Polytheists, Celtic Reconstructionists and many modern Pagans, part of a living devotion rooted in the folklore of Ireland, Scotland and Mann. Places named for her, such as Beinn na Caillich and Ceann Caillí (Hag’s Head), are still part of local tradition.",
+
+            Traditions: "Celtic, Wheel of the Year",
+
+            TraditionNotes: "Celtic: Celtic polytheists honour the Cailleach at Samhain, when winter begins, and at Bealtaine, when her rule ends, with whisky, milk, oatcakes and stones added to cairns. She is asked for endurance through winter, wisdom and protection in storms.\n\nWheel of the Year: Many modern Pagans honour her as the Crone of winter from Samhain to Imbolc, when she gives way to Brigid.",
+
+            tags: ["winter", "crone", "wisdom", "landscape", "storms", "age"]
+        },
+
+        gwydion: {
+            DisplayName: "Gwydion",
+            Category: "Deity",
+
+            Pantheon: "Celtic (Welsh)",
+
+            Domains: "Enchantment and illusion, storytelling and poetry, cunning, shape-shifting, fostering and teaching",
+
+            SacredSymbols: "The storyteller’s voice, the magician’s wand, an oak tree, illusory horses and hounds",
+
+            SacredAnimals: "Swine, deer and wolves (the shapes he was forced to take), eagle",
+
+            SacredPlants: "Oak, broom, meadowsweet",
+
+            CandleColors: "Grey, green, purple",
+
+            Crystals: "Labradorite, fluorite, amethyst, smoky quartz",
+
+            Herbs: "Oak, broom, meadowsweet",
+
+            Offerings: "A story told well, mead, bread, music",
+
+            TraditionalWarnings: "Gwydion is a character in the Fourth Branch of the Mabinogi, medieval Welsh tales written down by Christian authors from older tradition; whether he was ever worshipped as a god is debated. He is no simple hero: his tricks start a war, and he and his brother are punished for a rape their scheme made possible.",
+
+            Overview: "Gwydion son of Dôn is the great enchanter and storyteller of the Fourth Branch of the Mabinogi. He tricks Pryderi out of his magical pigs with conjured horses and hounds, causing a war, and is punished by his uncle Math by being turned with his brother into deer, swine and wolves. He raises his nephew Lleu, outwits Arianrhod’s curses on him, makes the flower woman Blodeuwedd with Math, and at last finds Lleu wounded as an eagle and sings him back to human shape.",
+
+            TraditionalMeaning: "Wit and words that change the world: creativity, cunning, care for the young and the consequences of clever schemes.",
+
+            DevotionalApproach: "Start here: tell a story aloud, old or your own, as well as you can, and offer it to him with a cup of mead or juice. Approach him with respect and open eyes; he is clever, not safe. He is honoured by skilled storytelling, loyalty to those you raise and owning the harm your choices cause.",
+
+            OfferingNotes: "Offer a story, a song, mead or bread. Reading or telling the Mabinogi aloud, in Welsh or translation, is a fitting offering.",
+
+            AltarIdeas: "A grey or green candle, a wand or oak twig, a copy of the Mabinogi, labradorite, and flowers of oak, broom and meadowsweet in season.",
+
+            CulturalContext: "Gwydion is honoured today by Welsh and Brythonic polytheists, Druids and modern Pagans, part of a living devotion to the gods of the Mabinogi. The tales belong to Wales and the Welsh language; learn from Welsh sources and translations, and support Welsh-language culture where you can.",
+
+            Traditions: "Celtic",
+
+            TraditionNotes: "Celtic: Brythonic polytheists and Druids honour Gwydion with stories, poems and mead, especially at Lughnasadh beside his foster-son Lleu, and when teaching or raising the young. He is asked for eloquence, creativity, cunning in hard situations and help in fostering.",
+
+            tags: ["enchantment", "storytelling", "cunning", "shapeshifting", "mabinogi", "fostering"]
+        },
+
+        blodeuwedd: {
+            DisplayName: "Blodeuwedd",
+            Category: "Deity",
+
+            Pantheon: "Celtic (Welsh)",
+
+            Domains: "Flowers and spring, choice and desire, transformation, the owl and the night",
+
+            SacredSymbols: "Flowers of oak, broom and meadowsweet, the owl, the full moon",
+
+            SacredAnimals: "Owl",
+
+            SacredPlants: "Oak flowers, broom, meadowsweet",
+
+            CandleColors: "White, yellow, green, grey",
+
+            Crystals: "Moonstone, citrine, peridot, smoky quartz",
+
+            Herbs: "Meadowsweet, broom flowers, oak",
+
+            Offerings: "Wild flowers, honey, a feather, time spent at dusk",
+
+            TraditionalWarnings: "In the Fourth Branch of the Mabinogi Blodeuwedd plots with her lover to kill her husband, and is turned into an owl as punishment. Modern Pagans often read her as a flower goddess or a woman made for a man who chooses for herself; both are modern readings of a medieval tale, not ancient worship.",
+
+            Overview: "Blodeuwedd, Flower-face, is the woman Math and Gwydion made from the flowers of oak, broom and meadowsweet as a wife for Lleu Llaw Gyffes, whom his mother had cursed never to have a human wife. While Lleu was away she fell in love with Gronw Pebr, and together they learned the one strange way Lleu could be killed. When their plot failed, Gwydion turned her into an owl, shunned by other birds, and the tale says owls are still called blodeuwedd.",
+
+            TraditionalMeaning: "A self of one’s own: the beauty of spring, the hunger to choose, the cost of betrayal and transformation into something wild.",
+
+            DevotionalApproach: "Start here: pick or buy a few wild flowers, sit with them at dusk, and think about one choice that is truly yours. Approach her honestly, without excusing or condemning her. She is honoured by honesty about desire and by respect for the freedom of others.",
+
+            OfferingNotes: "Offer wild flowers, especially those of her making, honey or a found feather. Supporting owl and wildlife conservation is a fitting offering.",
+
+            AltarIdeas: "A white or yellow candle, a jar of broom, meadowsweet or oak flowers in season, an owl figure or found feather, moonstone and a mirror.",
+
+            CulturalContext: "Blodeuwedd is honoured today by Welsh and Brythonic polytheists, Druids and modern Pagans, part of a living devotion to the figures of the Mabinogi, and she inspired Alan Garner’s novel The Owl Service. Learn her story from Welsh sources and translations.",
+
+            Traditions: "Celtic, Wheel of the Year",
+
+            TraditionNotes: "Celtic: Brythonic polytheists and Druids honour Blodeuwedd in flowering time and at dusk, with wild flowers and honey. She is asked for courage in choosing, honesty about desire and the strength to change.\n\nWheel of the Year: Many modern Pagans honour her at Beltane as the flower bride and in autumn as the owl, the two faces of her story.",
+
+            tags: ["flowers", "owl", "choice", "transformation", "spring", "mabinogi"]
+        },
+
+        lleu: {
+            DisplayName: "Lleu Llaw Gyffes",
+            Category: "Deity",
+
+            Pantheon: "Celtic (Welsh)",
+
+            Domains: "Light and skill, many crafts, kingship, endurance, death and restoration",
+
+            SacredSymbols: "The spear, the skilful hand, the oak tree, the eagle",
+
+            SacredAnimals: "Eagle, goat (from the tale of his death)",
+
+            SacredPlants: "Oak",
+
+            CandleColors: "Gold, yellow, green",
+
+            Crystals: "Citrine, sunstone, tiger eye, carnelian",
+
+            Herbs: "Oak, St John’s wort, meadowsweet",
+
+            Offerings: "Bread, mead, the first of a harvest, a skill practised",
+
+            TraditionalWarnings: "Lleu is a figure of the Fourth Branch of the Mabinogi, written down in the medieval period. His name matches the Irish Lugh and the Gaulish Lugus, and most scholars see them as one ancient god, but his Welsh story is very different from Lugh’s; do not simply merge them.",
+
+            Overview: "Lleu Llaw Gyffes, the Bright One of the Skilful Hand, is the son of Arianrhod in the Fourth Branch of the Mabinogi. His mother swore he would have no name, no weapons and no human wife; his uncle Gwydion outwitted the first two oaths, and with Math made Blodeuwedd to answer the third. Betrayed by her and struck by Gronw’s spear, he flew up as a wounded eagle into an oak, where Gwydion found him and sang him down and healed him, and he returned to take back his land.",
+
+            TraditionalMeaning: "Light that endures betrayal: skill, recovery from deep wounds and the patient work of becoming oneself against the odds.",
+
+            DevotionalApproach: "Start here: practise a skill you are learning, however small, and offer it to him with a piece of bread. Approach him with steadiness and hope. He is honoured by perseverance, by using many talents and by recovering well from harm.",
+
+            OfferingNotes: "Offer bread, mead or the first fruit of a harvest, and practise a craft in his name. Helping someone gain a skill they were denied honours him.",
+
+            AltarIdeas: "A gold or yellow candle, a small spear or arrow, an oak leaf or acorn, an eagle feather image, citrine and tools of your craft.",
+
+            CulturalContext: "Lleu is honoured today by Welsh and Brythonic polytheists, Druids and modern Pagans, part of a living devotion to the gods of the Mabinogi. Lugus’ name lies behind Lugdunum (Lyon) and Luguvalium (Carlisle); Lleu’s own story belongs to Gwynedd, where places in the tale such as Nantlle can still be visited.",
+
+            Traditions: "Celtic, Wheel of the Year",
+
+            TraditionNotes: "Celtic: Brythonic polytheists and Druids honour Lleu at Lughnasadh (Gŵyl Awst in Wales) with bread, mead and the first harvest, as kin of the Irish Lugh. He is asked for skill, perseverance and healing after betrayal.\n\nWheel of the Year: Many modern Pagans honour him at Lammas as a god of light and the harvest, and some read his death and return through the turning year.",
+
+            tags: ["light", "skill", "endurance", "restoration", "harvest", "mabinogi"]
+        },
+
+        bran: {
+            DisplayName: "Bran the Blessed",
+            Category: "Deity",
+
+            Pantheon: "Celtic (Welsh)",
+
+            Domains: "Kingship and protection of Britain, leadership as service, hospitality, the wondrous head, ravens",
+
+            SacredSymbols: "The giant king who became a bridge, the head buried under the White Mount, the cauldron of rebirth",
+
+            SacredAnimals: "Raven and crow (his name means crow or raven)",
+
+            SacredPlants: "Alder (a modern association), oak",
+
+            CandleColors: "Black, silver, deep blue",
+
+            Crystals: "Jet, obsidian, hematite, smoky quartz",
+
+            Herbs: "Alder, oak, rosemary",
+
+            Offerings: "Food shared generously, mead, music, care for others on a journey",
+
+            TraditionalWarnings: "Bendigeidfran, Bran the Blessed, is a figure of the Second Branch of the Mabinogi and the Welsh Triads. The legend that Britain falls if the ravens leave the Tower of London is often linked to him, but it is not recorded before the nineteenth century.",
+
+            Overview: "Bendigeidfran son of Llŷr, Bran the Blessed, is the giant king of Britain in the Second Branch of the Mabinogi. When his sister Branwen was mistreated in Ireland he waded across the sea with his army and lay down as a bridge over a river, saying “he who would be a leader, let him be a bridge”. Mortally wounded, he had his head cut off; it spoke, feasted and kept his companions joyful for eighty-seven years before it was buried under the White Mount in London, facing France, to guard Britain from invasion.",
+
+            TraditionalMeaning: "Leadership as service: carrying others across, protection of the land, generosity and the long, joyful remembrance of the dead.",
+
+            DevotionalApproach: "Start here: do one thing that carries someone else across a difficulty, then share a meal or a drink in his honour. Approach him with respect for his size and his sorrow. He is honoured by leading through service, by generous hospitality and by protecting the vulnerable.",
+
+            OfferingNotes: "Offer food shared generously, mead or music. Feeding birds, especially crows and ravens, in winter honours him.",
+
+            AltarIdeas: "A black or silver candle, a raven or crow figure, a small bridge, jet or obsidian, and a bowl for food to share. A picture of Harlech or the Tower of London may suit those who know his story.",
+
+            CulturalContext: "Bran is honoured today by Welsh and Brythonic polytheists, Druids and modern Pagans, part of a living devotion to the figures of the Mabinogi. The Welsh Triads say the burial of his head was one of three fortunate concealments of Britain, undone when Arthur dug it up, trusting his own strength instead.",
+
+            Traditions: "Celtic",
+
+            TraditionNotes: "Celtic: Brythonic polytheists and Druids honour Bran at Samhain, when the dead are close, and at feasts in memory of the Assembly of the Wondrous Head, with shared food, mead and music. He is asked to protect the land, give strength to leaders who serve and comfort the bereaved.",
+
+            tags: ["kingship", "protection", "ravens", "service", "hospitality", "mabinogi"]
+        },
+
+        taranis: {
+            DisplayName: "Taranis",
+            Category: "Deity",
+
+            Pantheon: "Celtic (Gaulish)",
+
+            Domains: "Thunder and storms, the sky, the turning wheel, power and protection",
+
+            SacredSymbols: "The spoked wheel, the thunderbolt, the oak",
+
+            SacredAnimals: "None securely attested in Gaulish sources",
+
+            SacredPlants: "Oak",
+
+            CandleColors: "Blue, grey, white",
+
+            Crystals: "Hematite, labradorite, clear quartz, meteorite or tektite",
+
+            Herbs: "Oak, mistletoe (poisonous; for display only), vervain",
+
+            Offerings: "Beer or mead, bread, a small wheel, storm water collected and poured back to earth",
+
+            TraditionalWarnings: "Almost everything about Taranis is inferred. The Roman poet Lucan names him with Teutates and Esus as a cruel Gaulish god, a hostile outsider’s view, and later Roman commentators disagreed about whether he was Jupiter or Dis Pater. The link between him and the many wheel-bearing sky gods of Roman Gaul is likely but not certain.",
+
+            Overview: "Taranis, whose name means the Thunderer, is a Gaulish god of thunder and the sky, known from Lucan’s poem on the civil war and a handful of inscriptions from Britain to the Danube. Many images from Roman Gaul show a bearded sky god holding a spoked wheel and a thunderbolt, and thousands of small wheel amulets were made in Gaul; scholars commonly connect these with Taranis. His name is related to words for thunder in the Celtic languages, such as Welsh taran.",
+
+            TraditionalMeaning: "The power of the storm and the turning sky: strength, awe, protection and the cycle of seasons.",
+
+            DevotionalApproach: "Start here: during the next storm, stand at a safe window, listen to the thunder and greet him by name. Approach him with awe and caution. He is honoured by respect for the power of weather and by strength used to protect.",
+
+            OfferingNotes: "Offer beer, mead or bread, or a small wheel you have made from twigs or card. Rain water collected in a storm can be poured back onto the earth for him.",
+
+            AltarIdeas: "A blue or grey candle, a spoked wheel, an oak leaf or acorn, hematite or labradorite, and a dish of rain water.",
+
+            CulturalContext: "Taranis is honoured today by Gaulish polytheists, Druids and Celtic Reconstructionists, a small living revival that works mainly from inscriptions, archaeology and Classical writers. Learn from the archaeology and from careful scholarship, and be wary of confident claims about Druid teaching on him.",
+
+            Traditions: "Celtic",
+
+            TraditionNotes: "Celtic: Gaulish polytheists and Druids honour Taranis in storms and at the turning points of the year, often on Thursdays (a modern choice, from his likeness to Jupiter), with beer, mead and wheel offerings. He is asked for protection, strength and safety in storms.",
+
+            tags: ["thunder", "storm", "sky", "wheel", "protection", "strength"]
+        },
+
+        sucellos: {
+            DisplayName: "Sucellos",
+            Category: "Deity",
+
+            Pantheon: "Celtic (Gaulish)",
+
+            Domains: "Abundance and plenty, wine and harvest, protection, the forest, perhaps the dead",
+
+            SacredSymbols: "Long-handled mallet, a small pot or barrel (olla), the wine cask",
+
+            SacredAnimals: "Dog",
+
+            SacredPlants: "Grapevine",
+
+            CandleColors: "Brown, deep red, green",
+
+            Crystals: "Garnet, jasper, smoky quartz, amethyst",
+
+            Herbs: "Grape leaves, oak, hops",
+
+            Offerings: "Wine, beer, bread, a shared meal",
+
+            TraditionalWarnings: "Sucellos is known almost entirely from images and a few inscriptions; we have no myths of him. Interpretations of his mallet, as a tool for striking life or death, for coopering barrels or for marking boundaries, are modern guesses.",
+
+            Overview: "Sucellos, perhaps the Good Striker, is a Gaulish god shown as a mature bearded man in a tunic, holding a long-handled mallet and a small pot, often with a dog at his feet. On a relief from Sarrebourg he stands beside the goddess Nantosuelta, and his images cluster in the Rhône valley and Burgundy, wine country, where his pot may hold wine. Inscriptions to him are known from Gaul and one from Britain.",
+
+            TraditionalMeaning: "Steady plenty: the harvest gathered, the cup filled, the household provided for and protected.",
+
+            DevotionalApproach: "Start here: pour a little wine or juice for him at a shared meal and thank him for having enough. Approach him as a solid, generous elder. He is honoured by providing for others, enjoying the harvest and keeping the household safe.",
+
+            OfferingNotes: "Offer wine, beer, bread or a portion of a shared meal. Giving food to those who need it is an offering in his spirit.",
+
+            AltarIdeas: "A brown or red candle, a small wooden mallet, a pot or jug, a bunch of grapes, a dog figure and garnet. An image of Sucellos with Nantosuelta suits a household shrine.",
+
+            CulturalContext: "Sucellos is honoured today by Gaulish polytheists, Druids and Celtic Reconstructionists, a small living revival that works from archaeology, often with Nantosuelta. Many of his images can be seen in the museums of eastern France.",
+
+            Traditions: "Celtic",
+
+            TraditionNotes: "Celtic: Gaulish polytheists honour Sucellos at the grape and grain harvest, often around the autumn equinox, with wine, beer and bread, and beside Nantosuelta at the household shrine. He is asked for plenty, protection of the home and a good harvest.",
+
+            tags: ["abundance", "wine", "harvest", "protection", "household", "gaul"]
+        },
+
+        belenus: {
+            DisplayName: "Belenus",
+            Category: "Deity",
+
+            Pantheon: "Celtic (Gaulish)",
+
+            Domains: "Healing, light, healing springs, protection of cities, the sun",
+
+            SacredSymbols: "The healing spring, the sun, the horse, votive offerings",
+
+            SacredAnimals: "Horse",
+
+            SacredPlants: "Henbane (belenuntia) is linked to his name by some ancient writers; it is highly poisonous",
+
+            CandleColors: "Gold, yellow, white",
+
+            Crystals: "Citrine, sunstone, amber, clear quartz",
+
+            Herbs: "Chamomile, St John’s wort, calendula",
+
+            Offerings: "Clean water, incense, coins at springs (where permitted), thanks for healing",
+
+            TraditionalWarnings: "Belenus’ name is often linked to Beltane, but most linguists now doubt the connection. Henbane, which some ancient writers named after him, is highly poisonous: never burn, brew or handle it. Devotion to a healing god supports, never replaces, medical care.",
+
+            Overview: "Belenus, or Belenos, is one of the most widely honoured Celtic gods in Roman inscriptions, from Gaul and Noricum to northern Italy, where he was the patron of Aquileia and was said to have defended the city in a siege of 238 CE. The Romans equated him with Apollo as a god of healing and light, and he was honoured at healing springs. The poet Ausonius mentions a Gaulish family of temple-keepers of Belenus at Bayeux.",
+
+            TraditionalMeaning: "Healing light: health, warmth, protection of the community and the return of the sun.",
+
+            DevotionalApproach: "Start here: drink a glass of clean water slowly in sunlight and ask him for health for yourself or someone you love. Approach him with gratitude. He is honoured by care for health, clean water and the wellbeing of the community.",
+
+            OfferingNotes: "Offer clean water, incense or thanks after recovery. Ancient pilgrims left coins and votives at springs; today, leave nothing that harms the water, and give to a health or water charity instead.",
+
+            AltarIdeas: "A gold or yellow candle, a bowl of spring water, a sun disc, a horse figure, citrine or amber, and the names of those you pray for.",
+
+            CulturalContext: "Belenus is honoured today by Gaulish polytheists, Druids and Celtic Reconstructionists, a small living revival, and many modern Pagans honour him at Beltane. Learn from the inscriptions and the history of Aquileia rather than from the confident claims of older books.",
+
+            Traditions: "Celtic, Wheel of the Year",
+
+            TraditionNotes: "Celtic: Gaulish polytheists honour Belenus at healing springs and in summer, with clean water, incense and thanks for health. He is asked for healing, protection of the community and light in dark times.\n\nWheel of the Year: Many modern Pagans honour him at Beltane as a god of fire and returning light, though the link between his name and the festival is doubtful.",
+
+            tags: ["healing", "light", "sun", "springs", "protection", "health"]
+        },
+
+        sulis: {
+            DisplayName: "Sulis",
+            Category: "Deity",
+
+            Pantheon: "Celtic (British)",
+
+            Domains: "The hot springs of Bath, healing, justice for the wronged, wisdom, the sun",
+
+            SacredSymbols: "The sacred hot spring, the gilded bronze head of Sulis Minerva, lead tablets, the ever-burning fire",
+
+            SacredAnimals: "Owl (through Minerva)",
+
+            SacredPlants: "None securely attested",
+
+            CandleColors: "Gold, red, blue",
+
+            Crystals: "Carnelian, citrine, amber, clear quartz",
+
+            Herbs: "Rosemary, sage, bay laurel",
+
+            Offerings: "Clean water, coins at a wishing place (not in the spring itself), prayers for justice and healing",
+
+            TraditionalWarnings: "The Roman Baths at Bath are a protected monument, and coins or objects must not be thrown into the sacred spring. Over a hundred lead tablets there ask Sulis to punish thieves; they show what Romano-Britons asked of her, not a practice to copy against real people.",
+
+            Overview: "Sulis is the goddess of the hot springs at Bath, the only natural hot springs in Britain, which the Romans called Aquae Sulis. They equated her with Minerva and built a great temple and baths around the spring, and her gilded bronze head survives. Over a hundred lead tablets thrown into the spring ask Sulis to find stolen cloaks, rings and coins and punish the thieves, and a Roman writer, Solinus, says a fire burned in her temple that never went out.",
+
+            TraditionalMeaning: "Healing heat from the earth: restoration, justice for small wrongs and the wisdom that sees what is hidden.",
+
+            DevotionalApproach: "Start here: soak in warm water, a bath or even your feet in a bowl, and thank her for healing warmth. Approach her with honesty; she was trusted to see the truth. She is honoured by fair dealing, care for the body and patience about justice.",
+
+            OfferingNotes: "Offer clean warm water, poured onto the earth, or a coin given to a charity or a proper wishing place. Writing down a wrong you have suffered and asking her for justice, without naming curses on anyone, follows the spirit of the tablets.",
+
+            AltarIdeas: "A gold or red candle, a small bowl of warm water, a picture of the gilded head or the great bath, carnelian or citrine, and an owl figure for Minerva.",
+
+            CulturalContext: "Sulis is honoured today by British and Brythonic polytheists, Druids and modern Pagans, part of a small living devotion to the gods of Roman Britain. Her name is probably related to Celtic words for the sun or eye. The Roman Baths museum holds the tablets, the head and the temple remains.",
+
+            Traditions: "Celtic, Roman",
+
+            TraditionNotes: "Celtic: British polytheists and Druids honour Sulis with warm water, coins given to charity and prayers for healing and justice, often at midsummer and when visiting Bath. She is asked for healing, especially of the body, and for the return of what was taken.\n\nRoman: As Sulis Minerva she was honoured by Romans and Britons together; Roman polytheists greet her alongside Minerva at the Quinquatrus in March.",
+
+            tags: ["healing", "springs", "justice", "bath", "sun", "wisdom"]
+        },
+
+        svarog: {
+            DisplayName: "Svarog",
+            Category: "Deity",
+
+            Pantheon: "Slavic",
+
+            Domains: "The heavenly fire and the forge, smithing, the sky, law and order, fatherhood of the sun",
+
+            SacredSymbols: "Hammer and anvil, tongs, fire, the sun his son carries",
+
+            SacredAnimals: "None securely attested in Slavic sources",
+
+            SacredPlants: "Oak (a modern association)",
+
+            CandleColors: "Red, gold, orange",
+
+            Crystals: "Carnelian, garnet, pyrite, hematite",
+
+            Herbs: "Oak, juniper, St John’s wort",
+
+            Offerings: "Bread, kvass or beer, honey, a fire safely kept, something forged or made",
+
+            TraditionalWarnings: "Svarog is named in only one medieval source, a gloss in the Hypatian Chronicle that likens him to the Greek smith Hephaestus and calls Dazhbog the sun his son. The great sky-father of much modern Rodnovery is a modern elaboration; some Rodnover groups also carry nationalist politics, so choose communities with care.",
+
+            Overview: "Svarog is an East Slavic god of fire and the forge. A twelfth-century gloss in the Hypatian Chronicle, translating a Greek chronicle, says that in the time of Svarog tongs fell from the sky and people began to forge weapons, and that his son was the Sun, called Dazhbog. Among the western Slavs, Thietmar of Merseburg names Svarozhich, son of Svarog, as the god of the great temple at Rethra.",
+
+            TraditionalMeaning: "Creative fire: the forge that shapes, the law that orders, and a father’s light passed on.",
+
+            DevotionalApproach: "Start here: light a candle in a safe holder, make or repair something with your hands, and offer the work to him. Approach him with respect for fire and for good work. He is honoured by craft, fairness and keeping the household fire safely.",
+
+            OfferingNotes: "Offer bread, honey, kvass or beer, or something you have made. Keep any flame attended and safe.",
+
+            AltarIdeas: "A red or gold candle in a deep holder, a small hammer or horseshoe, carnelian or pyrite, a loaf of bread and a sun symbol for Dazhbog.",
+
+            CulturalContext: "Svarog is honoured today in Rodnovery, the living Slavic Native Faith, where he is often seen as the heavenly smith and father of the gods. Learn from Slavic communities, choosing inclusive groups, and from careful scholarship on the scant medieval sources.",
+
+            Traditions: "Slavic",
+
+            TraditionNotes: "Slavic: Rodnovers honour Svarog with fire, bread and honey, often at the winter solstice (Koliada) with Dazhbog, and when beginning craft work. He is asked for skill, a safe hearth, order and justice.",
+
+            tags: ["fire", "forge", "craft", "sky", "order", "fatherhood"]
+        },
+
+        stribog: {
+            DisplayName: "Stribog",
+            Category: "Deity",
+
+            Pantheon: "Slavic",
+
+            Domains: "The winds, the air, weather, breath, distribution of good fortune (in some readings)",
+
+            SacredSymbols: "The winds, the bow (in modern iconography), feathers",
+
+            SacredAnimals: "None securely attested in Slavic sources",
+
+            SacredPlants: "None securely attested in Slavic sources",
+
+            CandleColors: "Pale blue, white, grey",
+
+            Crystals: "Clear quartz, blue lace agate, celestite, aquamarine",
+
+            Herbs: "Mint, lavender, birch",
+
+            Offerings: "Bread crumbs or grain scattered to the wind, feathers, a breath of song",
+
+            TraditionalWarnings: "Stribog is known from two lines: the Primary Chronicle lists his idol among the gods Prince Vladimir set up in Kyiv in 980, and The Tale of Igor’s Campaign calls the winds Stribog’s grandsons. Everything else said about him is modern interpretation.",
+
+            Overview: "Stribog is an East Slavic god of the winds. The Primary Chronicle names him among the six gods whose idols Prince Vladimir raised on the hill at Kyiv in 980, before Rus’ became Christian, and the twelfth-century Tale of Igor’s Campaign speaks of the winds, Stribog’s grandsons, blowing arrows from the sea. Scholars disagree about what his name means: perhaps the god who spreads, or shares out, good fortune.",
+
+            TraditionalMeaning: "The moving air: breath, weather, change and the scattering of gifts far and wide.",
+
+            DevotionalApproach: "Start here: go outside on a windy day, breathe deeply and scatter a pinch of crumbs or grain for the birds in his name. Approach him with openness to change. He is honoured by attention to weather, to breath and to sharing.",
+
+            OfferingNotes: "Offer crumbs, grain or seed scattered to the wind, or a song sung outdoors. Choose offerings that are safe for birds.",
+
+            AltarIdeas: "A pale blue or white candle, a feather, a small wind chime, clear quartz and a dish of grain.",
+
+            CulturalContext: "Stribog is honoured today in Rodnovery, the living Slavic Native Faith. Because his sources are so slight, Rodnovers differ widely in how they understand him; learn from Slavic communities, choosing inclusive groups.",
+
+            Traditions: "Slavic",
+
+            TraditionNotes: "Slavic: Rodnovers honour Stribog on windy days and in spring, when the winds turn, with grain scattered to the air and songs. He is asked for good weather, safe travel and the free movement of good fortune.",
+
+            tags: ["wind", "air", "weather", "breath", "change", "sharing"]
+        },
+
+        jarilo: {
+            DisplayName: "Jarilo",
+            Category: "Deity",
+
+            Pantheon: "Slavic",
+
+            Domains: "Spring and its heat, growth and fertility, youth and passion, the death and return of vegetation",
+
+            SacredSymbols: "A white horse, a wreath of flowers, ears of grain, the straw effigy",
+
+            SacredAnimals: "White horse",
+
+            SacredPlants: "Spring flowers, grain, birch",
+
+            CandleColors: "Green, gold, red",
+
+            Crystals: "Green aventurine, peridot, carnelian, citrine",
+
+            Herbs: "Birch, St John’s wort, cornflower",
+
+            Offerings: "Flowers, eggs, bread, dance and song",
+
+            TraditionalWarnings: "Jarilo is known from East Slavic folk customs recorded from the eighteenth and nineteenth centuries, when young people held Yarilo festivals and buried a straw figure of him. Whether he was an ancient god or a figure of folk ritual is debated; reconstructions that make him a great pagan deity are modern.",
+
+            Overview: "Jarilo, or Yarilo, is a Slavic figure of spring heat, youth and fertility, whose name comes from a root meaning spring, fierce or ardent. In Russian and Belarusian villages, folk festivals called Yarilo were held in late spring and early summer, with games, dancing and, at the end, the burial of a straw Yarilo; in Belarus a girl dressed as Yarila rode a white horse with a wreath and ears of grain. Modern scholars and Rodnovers have built a fuller mythology around him.",
+
+            TraditionalMeaning: "Spring’s fierce life: passion, growth, youthful energy and the season that must pass so the harvest can come.",
+
+            DevotionalApproach: "Start here: on a warm spring or summer day, go outside, put flowers in your hair or a jar, and dance or move for a few minutes in the sun. Approach him with joy and energy. He is honoured by enjoying the season, caring for growing things and letting go when it ends.",
+
+            OfferingNotes: "Offer flowers, eggs, bread or a dance. Planting seeds is a fitting offering in spring.",
+
+            AltarIdeas: "A green or gold candle, a wreath of spring flowers, a white horse figure, ears of grain, green aventurine and birch twigs.",
+
+            CulturalContext: "Jarilo is honoured today in Rodnovery, the living Slavic Native Faith, and remembered in Slavic folk tradition. Learn from Slavic folklore collections and communities, choosing inclusive groups.",
+
+            Traditions: "Slavic",
+
+            TraditionNotes: "Slavic: Rodnovers and folk revivalists honour Jarilo in spring and early summer, near Kupala, with flowers, round dances, songs and the burial of a straw Yarilo at season’s end. He is asked for growth, fertility, health and youthful strength.",
+
+            tags: ["spring", "fertility", "youth", "growth", "passion", "folk"]
+        },
+
+        zorya: {
+            DisplayName: "Zorya",
+            Category: "Deity",
+
+            Pantheon: "Slavic",
+
+            Domains: "Dawn and dusk, the morning and evening stars, protection, healing in folk charms",
+
+            SacredSymbols: "The dawn sky, the morning and evening stars, a veil",
+
+            SacredAnimals: "None securely attested in Slavic sources",
+
+            SacredPlants: "None securely attested in Slavic sources",
+
+            CandleColors: "Rose, gold, violet",
+
+            Crystals: "Rose quartz, sunstone, amethyst, moonstone",
+
+            Herbs: "Rose, chamomile, lavender",
+
+            Offerings: "Water left out overnight, flowers, words spoken at dawn or dusk",
+
+            TraditionalWarnings: "Zorya, the dawn, appears as a maiden or as sisters in East Slavic folk charms and folklore recorded from the nineteenth century, not as a goddess with a known cult. Popular modern stories about her guarding a chained hound in the stars come from later retellings and should not be presented as old myth.",
+
+            Overview: "Zorya is the Slavic dawn, imagined in folklore as a maiden or as sisters: Zorya Utrennyaya, the morning dawn, and Zorya Vechernyaya, the evening dawn, often linked to the morning and evening stars. East Slavic healing charms call on Zorya-Zarnitsa, the red maiden, to take away illness, and the nineteenth-century folklorist Alexander Afanasyev gathered many such sayings.",
+
+            TraditionalMeaning: "Thresholds of light: new beginnings, endings made gently, hope and protection at the edges of the day.",
+
+            DevotionalApproach: "Start here: at dawn or dusk, look towards the horizon for a minute and greet her, asking for a good beginning or a peaceful end to the day. Approach her gently. She is honoured by noticing the edges of the day and starting and ending well.",
+
+            OfferingNotes: "Offer flowers, or a cup of water left out overnight and poured out at dawn. Speaking a few words of greeting at sunrise or sunset is the simplest offering.",
+
+            AltarIdeas: "A rose or gold candle for dawn and a violet one for dusk, rose quartz and amethyst, and a few flowers by an east or west window.",
+
+            CulturalContext: "Zorya is honoured today in Rodnovery, the living Slavic Native Faith, and remembered in Slavic folk charms and songs. Learn from Slavic folklore collections and communities, choosing inclusive groups.",
+
+            Traditions: "Slavic",
+
+            TraditionNotes: "Slavic: Rodnovers greet Zorya at dawn and dusk, especially in spring, with flowers and words of greeting, and folk healers long called on her in charms against illness. She is asked for good beginnings, protection and healing.",
+
+            tags: ["dawn", "dusk", "stars", "beginnings", "healing", "protection"]
+        },
+
+        rod: {
+            DisplayName: "Rod",
+            Category: "Deity",
+
+            Pantheon: "Slavic",
+
+            Domains: "Birth and kin, ancestry and family line, fate at birth, the household’s continuity",
+
+            SacredSymbols: "The family line, bread, honey and cheese set out for the Rod and Rozhanitsy, the hearth",
+
+            SacredAnimals: "None securely attested in Slavic sources",
+
+            SacredPlants: "None securely attested in Slavic sources",
+
+            CandleColors: "Red, white, gold",
+
+            Crystals: "Garnet, jasper, amber, smoky quartz",
+
+            Herbs: "Birch, dill, rye",
+
+            Offerings: "Bread, cheese, honey, porridge, remembrance of ancestors",
+
+            TraditionalWarnings: "Rod is known from medieval Russian church sermons that condemn people for setting out bread, cheese and honey for Rod and the Rozhanitsy, the birth spirits. Whether Rod was a god of birth and kin or a supreme creator, as Boris Rybakov argued and many Rodnovers now believe, is debated; the evidence is slight.",
+
+            Overview: "Rod is an East Slavic power of birth and kinship, whose name means kin, clan or birth. Medieval Russian sermons and penitential texts, from the twelfth century on, scold Christians for keeping a second meal for Rod and the Rozhanitsy, spirits who were thought to decide a newborn’s fate. In modern Rodnovery Rod is often honoured as the source of all things and the ancestors.",
+
+            TraditionalMeaning: "The thread of kin: ancestry, birth, the continuity of the family and the fate given at the start of life.",
+
+            DevotionalApproach: "Start here: set out a little bread and honey, say the names of your ancestors as far back as you know them, and thank them for your life. Approach him with gratitude. He is honoured by caring for family, remembering ancestors and welcoming new children.",
+
+            OfferingNotes: "Offer bread, cheese, honey or porridge, set out at a family meal, especially after a birth. Learning and writing down your family’s history is an offering in his spirit.",
+
+            AltarIdeas: "A red or white candle, family photographs, an embroidered cloth, a loaf, a dish of honey and garnet or amber.",
+
+            CulturalContext: "Rod is honoured today in Rodnovery, the living Slavic Native Faith, where he is central to many groups’ beliefs. Some Rodnover groups carry nationalist or ethnic politics around kin and blood; choose inclusive communities and remember that kinship can be chosen as well as born.",
+
+            Traditions: "Slavic",
+
+            TraditionNotes: "Slavic: Rodnovers honour Rod with bread, honey and porridge at births and family gatherings and at the ancestor feasts of Dziady, often with the Rozhanitsy. He is asked to bless the family line, protect children and keep the ancestors near.",
+
+            tags: ["ancestors", "kin", "birth", "family", "fate", "household"]
+        },
+
+        vishnu: {
+            DisplayName: "Vishnu",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "Preservation and protection of the world, dharma (right order), compassion, the avatars who descend to restore balance",
+
+            SacredSymbols: "Conch (shankha), discus (Sudarshana chakra), mace (gada), lotus (padma), the serpent couch of Shesha",
+
+            SacredAnimals: "Garuda, the eagle-like bird who carries him; the serpent Shesha",
+
+            SacredPlants: "Tulsi (holy basil), lotus",
+
+            CandleColors: "Blue, yellow, gold",
+
+            Crystals: "Lapis lazuli, sodalite, clear quartz, citrine",
+
+            Herbs: "Tulsi (holy basil), sandalwood, camphor",
+
+            Offerings: "Tulsi leaves, yellow flowers, fruit, sweets made with milk, lamps, recitation of his thousand names",
+
+            TraditionalWarnings: "Vishnu is a living deity in Hindu religious practice, and for Vaishnava Hindus he is the Supreme God, worshipped directly and through his avatars such as Rama and Krishna. Treat his images and names with reverence; tulsi is sacred to him and is not to be used casually.",
+
+            Overview: "Vishnu is one of the principal Hindu deities, the preserver who sustains the universe and, for Vaishnavas, God himself. He is pictured dark blue, with four arms holding the conch, discus, mace and lotus, resting on the serpent Shesha in the cosmic ocean with Lakshmi at his feet, or riding Garuda. Whenever dharma declines he descends as an avatar; ten are classically named, including Rama, Krishna and Narasimha.",
+
+            TraditionalMeaning: "Steady, loving protection: the order that holds the world together and the compassion that comes down to set things right.",
+
+            DevotionalApproach: "Start here: learn about him from Hindu sources and Hindu devotees before anything else, perhaps by reading about his avatars in a respected translation of the Bhagavata Purana; respect comes before correspondence. Approach him with devotion, cleanliness and sincerity, following Hindu guidance on puja and chanting rather than improvising. He asks for right action and loving devotion.",
+
+            OfferingNotes: "Offer tulsi leaves, yellow flowers, fruit or milk sweets, placed cleanly and respectfully, or a lit lamp. Offerings are vegetarian; learn which offerings Hindu devotees consider appropriate before improvising.",
+
+            AltarIdeas: "Blue or yellow candles or, more traditionally, a small ghee lamp, an image or murti of Vishnu, often with Lakshmi, treated with reverence, a conch, a tulsi plant and a small bell. Keep it clean and loving rather than decorative.",
+
+            CulturalContext: "Vishnu belongs to living Hindu religion, worshipped across India and the world, with great temples such as Tirumala Venkateswara, Srirangam and Badrinath, and in Vaishnava communities from South India to ISKCON. Outsiders should approach him with care, ideally learning from a Hindu teacher, temple or family.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Vishnu is worshipped on Ekadashi, the eleventh lunar day of each fortnight, when many devotees fast, above all on Vaikuntha Ekadashi; on Thursdays in many North Indian homes; and through the festivals of his avatars, such as Rama Navami and Krishna Janmashtami. Devotees chant the Vishnu Sahasranama, his thousand names, and offer tulsi, asking for protection, peace, prosperity and liberation.",
+
+            tags: ["preservation", "protection", "dharma", "avatars", "devotion", "compassion"]
+        },
+
+        parvati: {
+            DisplayName: "Parvati",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "Divine motherhood, love and devotion in marriage, determination and spiritual discipline (tapas), the power of the Goddess (Shakti), the mountains",
+
+            SacredSymbols: "Lotus, the red mark of marriage (sindoor), bangles, the trident she shares with Shiva, the mountain home of Kailash",
+
+            SacredAnimals: "Lion or tiger (in her fierce forms), Nandi the bull, shared with Shiva",
+
+            SacredPlants: "Lotus, bilva (bael), red flowers",
+
+            CandleColors: "Red, green, gold",
+
+            Crystals: "Ruby, garnet, rose quartz, moonstone",
+
+            Herbs: "Turmeric, sandalwood, jasmine",
+
+            Offerings: "Red flowers, bangles, sindoor and turmeric, fruit, sweets, lamps",
+
+            TraditionalWarnings: "Parvati is a living deity in Hindu religious practice, worshipped with Shiva and, in Shakta traditions, as the great Goddess herself, whose fierce forms include Durga and Kali. Items such as sindoor and bangles carry meaning about marriage in Hindu life; offer them with respect rather than as decoration.",
+
+            Overview: "Parvati, the daughter of the mountain, is the Hindu goddess of love, devotion and divine motherhood, wife of Shiva and mother of Ganesha and Kartikeya. Born to Himavan, king of the Himalaya, as the rebirth of Sati, she won the ascetic Shiva through years of fierce spiritual discipline (tapas). She is pictured as a gentle, radiant woman beside Shiva on Mount Kailash, and is worshipped also as Gauri, the fair one, and Annapurna, giver of food.",
+
+            TraditionalMeaning: "Love won through devotion and discipline: steadfastness, the strength of the mother and the Goddess who holds the household and the universe.",
+
+            DevotionalApproach: "Start here: learn about her from Hindu sources and Hindu devotees before anything else; respect comes before correspondence. Approach her with devotion, cleanliness and sincerity, following Hindu guidance on puja rather than improvising. She is honoured by steadfast love, care for family and patient effort toward a good aim.",
+
+            OfferingNotes: "Offer red flowers, fruit, sweets or a lit lamp, placed cleanly and respectfully. Married Hindu women often offer bangles and sindoor at her festivals; learn which offerings Hindu devotees consider appropriate before improvising.",
+
+            AltarIdeas: "Red or green candles or, more traditionally, a small ghee lamp, an image or murti of Parvati, often with Shiva and Ganesha, treated with reverence, red flowers and a small dish of turmeric. Keep it clean and loving rather than decorative.",
+
+            CulturalContext: "Parvati belongs to living Hindu religion, worshipped across India and the world, as Meenakshi at Madurai, as Gauri in Maharashtra and the north, and as Annapurna at Varanasi. Outsiders should approach her with care, ideally learning from a Hindu teacher, temple or family.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Parvati is worshipped with Shiva on Mondays and at Maha Shivaratri, and in her own right at Teej, when married women fast and pray for their husbands’ welfare and unmarried women for a good marriage, at Gauri festivals, on the Tuesdays of Shravan (Mangala Gauri) and at Navaratri. Devotees ask her for a happy marriage, children, family harmony and strength.",
+
+            tags: ["motherhood", "marriage", "devotion", "shakti", "family", "strength"]
+        },
+
+        hanuman: {
+            DisplayName: "Hanuman",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "Devotion and selfless service, strength and courage, protection, perseverance, removal of fear",
+
+            SacredSymbols: "Mace (gada), a mountain carried in one hand, the name of Rama, saffron or vermilion colour",
+
+            SacredAnimals: "Monkeys",
+
+            SacredPlants: "Betel leaves, tulsi (holy basil), the sanjeevani herb of the Ramayana",
+
+            CandleColors: "Orange, red, saffron",
+
+            Crystals: "Carnelian, red jasper, coral, tiger eye",
+
+            Herbs: "Tulsi (holy basil), betel leaf, jasmine",
+
+            Offerings: "Sindoor (vermilion) with oil, jasmine, betel-leaf garlands, bananas, laddoos, recitation of the Hanuman Chalisa",
+
+            TraditionalWarnings: "Hanuman is a living deity in Hindu religious practice, loved as the ideal devotee of Rama. Treat monkeys, often seen near his temples, as wild animals and do not feed them against local rules; and follow the temple’s own customs, which can differ from place to place.",
+
+            Overview: "Hanuman is the Hindu god of devotion, strength and courage, the vanara (monkey) hero of the Ramayana and son of the wind god Vayu. In Rama’s service he leapt across the sea to Lanka, found the captive Sita, set Lanka ablaze with his burning tail, and carried a whole mountain back to bring the healing herb that saved Lakshmana. He is pictured with a monkey’s face, holding a mace and a mountain, or kneeling before Rama, and in one beloved image he opens his chest to show Rama and Sita in his heart.",
+
+            TraditionalMeaning: "Strength in service: courage, loyalty, humility and devotion so complete that nothing seems impossible.",
+
+            DevotionalApproach: "Start here: learn about him from Hindu sources and Hindu devotees before anything else, perhaps by listening to the Hanuman Chalisa with a translation; respect comes before correspondence. Approach him with humility and sincerity, following Hindu guidance on puja and chanting rather than improvising. He asks for courage, discipline and service to others.",
+
+            OfferingNotes: "Offer bananas, laddoos, jasmine or a lit lamp, placed cleanly and respectfully; sindoor mixed with oil is traditionally offered in his temples. Offerings are vegetarian; learn which offerings Hindu devotees consider appropriate before improvising.",
+
+            AltarIdeas: "An orange or red candle or, more traditionally, an oil lamp, an image or murti of Hanuman treated with reverence, often beside Rama and Sita, a small mace, and a garland of flowers or betel leaves. Keep it clean and simple.",
+
+            CulturalContext: "Hanuman belongs to living Hindu religion, worshipped in countless roadside shrines and temples across India and the diaspora, and also loved in Southeast Asian tellings of the Ramayana. Tulsidas’s Hanuman Chalisa, from the sixteenth century, is recited by millions. Outsiders should approach him with care, ideally learning from a Hindu teacher, temple or family.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Hanuman is worshipped on Tuesdays and Saturdays, when devotees visit his temples, offer sindoor and oil and recite the Hanuman Chalisa, and at Hanuman Jayanti, his birthday, which most of North India keeps on the full moon of Chaitra and other regions on other days. Devotees ask him for courage, strength, protection from fear and harm, and devotion to Rama.",
+
+            tags: ["devotion", "strength", "courage", "service", "protection", "ramayana"]
+        },
+
+        rama: {
+            DisplayName: "Rama",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "Righteousness (dharma), ideal kingship, duty and honour, faithfulness, protection of the good",
+
+            SacredSymbols: "Bow and arrows, the royal umbrella, the name “Ram” written or chanted, Rama’s sandals placed on the throne",
+
+            SacredAnimals: "Monkeys of the vanara army, the squirrel of folk tradition",
+
+            SacredPlants: "Tulsi (holy basil)",
+
+            CandleColors: "Blue, gold, saffron",
+
+            Crystals: "Lapis lazuli, sodalite, citrine, clear quartz",
+
+            Herbs: "Tulsi (holy basil), sandalwood, camphor",
+
+            Offerings: "Tulsi leaves, fruit, sweets, lamps, recitation of the Ramayana or the name of Rama",
+
+            TraditionalWarnings: "Rama is a living deity in Hindu religious practice, worshipped as the seventh avatar of Vishnu and, for many, as God himself. In recent decades his name has also been used in Indian politics, including a long and sometimes violent dispute over a site at Ayodhya; approach him through devotion and the epic, with awareness of that history.",
+
+            Overview: "Rama is the hero of the Ramayana, prince of Ayodhya and the seventh avatar of Vishnu, honoured as Maryada Purushottama, the perfect man who keeps every duty. To keep his father’s word he went into fourteen years of exile with his wife Sita and brother Lakshmana; when the demon king Ravana carried Sita to Lanka, Rama won her back with the help of Hanuman and the vanara army. His return to Ayodhya is remembered with lamps at Diwali in much of North India.",
+
+            TraditionalMeaning: "Doing what is right even at great cost: duty, honour, faithfulness and just rule.",
+
+            DevotionalApproach: "Start here: learn about him from Hindu sources and Hindu devotees before anything else, perhaps by reading a respected translation of the Ramayana; respect comes before correspondence. Approach him with devotion and sincerity, following Hindu guidance on puja and chanting rather than improvising. He asks devotees to keep their word, do their duty and protect the vulnerable.",
+
+            OfferingNotes: "Offer tulsi leaves, fruit, sweets or a lit lamp, placed cleanly and respectfully. Offerings are vegetarian; learn which offerings Hindu devotees consider appropriate before improvising.",
+
+            AltarIdeas: "Blue or gold candles or, more traditionally, a small ghee lamp, an image or murti of Rama with Sita, Lakshmana and Hanuman treated with reverence, a small bow, and a tulsi plant. Keep it clean and loving rather than decorative.",
+
+            CulturalContext: "Rama belongs to living Hindu religion, worshipped across India and the world, and the Ramayana is retold across South and Southeast Asia, from Tulsidas’s Ramcharitmanas in Awadhi to the Thai Ramakien. Ramlila plays act his story each autumn. Outsiders should approach him with care, ideally learning from a Hindu teacher, temple or family.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Rama is worshipped at Rama Navami, his birthday on the ninth day of the bright half of Chaitra, with fasting, readings of the Ramayana and the cradling of the infant Rama; at Dussehra (Vijayadashami), when Ramlila ends and effigies of Ravana are burned; and at Diwali, his return to Ayodhya. Devotees chant his name and ask for righteousness, protection, courage and peace in the family.",
+
+            tags: ["dharma", "duty", "kingship", "ramayana", "faithfulness", "devotion"]
+        },
+
+        brahma: {
+            DisplayName: "Brahma",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "Creation of the universe, the Vedas and sacred knowledge, the beginning of cycles of time",
+
+            SacredSymbols: "Four faces looking in the four directions, the Vedas, a water pot (kamandalu), prayer beads, the lotus",
+
+            SacredAnimals: "Hamsa, the swan or goose who carries him",
+
+            SacredPlants: "Lotus",
+
+            CandleColors: "Red, gold, white",
+
+            Crystals: "Clear quartz, ruby, carnelian, citrine",
+
+            Herbs: "Sandalwood, camphor, lotus",
+
+            Offerings: "Flowers, fruit, lamps, recitation, study",
+
+            TraditionalWarnings: "Brahma is a living deity in Hindu religious practice, honoured as the creator in the Trimurti, though he has very few temples of his own. Puranic stories give different reasons for this; follow the customs of Hindu devotees rather than building a separate cult.",
+
+            Overview: "Brahma is the Hindu creator god, the first of the Trimurti with Vishnu the preserver and Shiva the transformer. In the Puranas he is born on a lotus rising from Vishnu’s navel and brings forth the worlds and their beings at the start of each cosmic age. He is pictured with four faces, often bearded, holding the Vedas, a water pot and prayer beads, seated on a lotus or riding a hamsa, with Saraswati, goddess of learning, as his consort.",
+
+            TraditionalMeaning: "The beginning of all things: creation, knowledge and the order of the cosmos.",
+
+            DevotionalApproach: "Start here: learn about him from Hindu sources and Hindu devotees before anything else; respect comes before correspondence. Approach him with reverence and with love of learning, following Hindu guidance on puja rather than improvising. He is honoured by study of sacred knowledge and by creating with care.",
+
+            OfferingNotes: "Offer flowers, fruit or a lit lamp, placed cleanly and respectfully, often together with offerings to Saraswati. Learn which offerings Hindu devotees consider appropriate before improvising.",
+
+            AltarIdeas: "Gold or white candles or, more traditionally, a small ghee lamp, an image or murti of Brahma, perhaps with Saraswati, treated with reverence, a lotus and a book. Keep it clean and simple.",
+
+            CulturalContext: "Brahma belongs to living Hindu religion and is honoured in temple art across India and Southeast Asia, though few temples are dedicated to him; the best known is at Pushkar in Rajasthan, where pilgrims gather at the Kartik Purnima fair. In Thailand, the Erawan Shrine in Bangkok honours him as Phra Phrom. Outsiders should approach him with care, ideally learning from a Hindu teacher, temple or family.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Brahma is honoured above all at Pushkar, where pilgrims bathe in the sacred lake at Kartik Purnima, the full moon of Kartika, and in many temples as part of the Trimurti beside Vishnu and Shiva. Devotees ask him for knowledge, creativity and good beginnings.",
+
+            tags: ["creation", "knowledge", "vedas", "beginnings", "trimurti", "cosmos"]
+        },
+
+        surya: {
+            DisplayName: "Surya",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "The Sun, light and life, health and vitality, the eye of the world, time and the seasons",
+
+            SacredSymbols: "Chariot drawn by seven horses, lotuses held in his hands, the radiant disc, the water offering (arghya)",
+
+            SacredAnimals: "Horses, the seven of his chariot",
+
+            SacredPlants: "Lotus, the arka (crown flower) plant",
+
+            CandleColors: "Gold, orange, red",
+
+            Crystals: "Ruby (his stone in Jyotish), sunstone, citrine, carnelian",
+
+            Herbs: "Red sandalwood, jaggery and rice, red flowers",
+
+            Offerings: "Water poured towards the rising sun (arghya), red flowers, red sandalwood, jaggery and rice, sun salutations",
+
+            TraditionalWarnings: "Surya is a living deity in Hindu religious practice, worshipped since the Vedas. Never look straight at the sun, even during devotion; devotees pour water toward it and look through the falling stream. The arka plant offered at some temples is toxic and should not be handled carelessly.",
+
+            Overview: "Surya is the Hindu god of the Sun, praised in the Rig Veda as the eye of the gods who sees all and gives life to all beings. He rides a golden chariot drawn by seven horses, driven by the charioteer Aruna, the dawn, and holds lotuses in his hands. His great temple at Konark in Odisha, built in the thirteenth century, is itself carved as a vast stone chariot with twenty-four wheels.",
+
+            TraditionalMeaning: "The light that gives life: health, clarity, discipline and gratitude for each new day.",
+
+            DevotionalApproach: "Start here: learn about him from Hindu sources and Hindu devotees before anything else; respect comes before correspondence. Many devotees greet the rising sun by pouring water from a small pot with folded hands; approach him with cleanliness, gratitude and discipline, following Hindu guidance rather than improvising. He is honoured by an early, healthy and orderly life.",
+
+            OfferingNotes: "Offer water poured toward the rising sun, red flowers, red sandalwood or jaggery and rice, placed cleanly and respectfully. Learn which offerings Hindu devotees consider appropriate before improvising.",
+
+            AltarIdeas: "Gold or orange candles or, more traditionally, a small ghee lamp, an image or murti of Surya in his chariot treated with reverence, a small copper water pot (lota) and red flowers, near an east-facing window.",
+
+            CulturalContext: "Surya belongs to living Hindu religion, honoured daily by millions at sunrise and at great festivals such as Chhath Puja in Bihar and eastern Uttar Pradesh, Makar Sankranti and Pongal. Sun temples such as Konark and Modhera are now mostly monuments, but his worship continues in homes, at rivers and in temples of the nine planets (navagraha). Outsiders should approach him with care, ideally learning from a Hindu teacher, temple or family.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Surya is worshipped each morning with arghya, on Sundays, at Makar Sankranti in mid-January when the sun enters Capricorn, at Pongal in Tamil Nadu, at Ratha Saptami, and at Chhath Puja, when devotees stand in rivers to offer arghya to the setting and rising sun. They ask him for health, especially of the eyes and skin, vitality, success and clarity.",
+
+            tags: ["sun", "light", "health", "vitality", "dawn", "chhath"]
+        },
+
+        wiccan_goddess: {
+            DisplayName: "The Goddess of Wicca",
+            Category: "Deity",
+
+            Pantheon: "Wiccan",
+
+            Domains: "The Moon, the Earth and the stars, birth, love and death, the cycle of Maiden, Mother and Crone, the witch’s craft",
+
+            SacredSymbols: "The triple moon (waxing, full and waning), the cup or chalice, the pentacle, the cauldron, the silver crescent",
+
+            SacredAnimals: "Owl, cat, hare, snake, all creatures of the Earth",
+
+            SacredPlants: "Rose, willow, moonflowers, apple, mugwort",
+
+            CandleColors: "Silver, white, red, black",
+
+            Crystals: "Moonstone, selenite, clear quartz, rose quartz",
+
+            Herbs: "Mugwort, jasmine, rose, lavender",
+
+            Offerings: "Wine or juice, cakes, milk, flowers, a candle lit at the full moon",
+
+            TraditionalWarnings: "The Goddess of Wicca is a modern theology, not an unbroken survival: Gerald Gardner’s Wicca appeared in the 1950s, and the Maiden, Mother and Crone come largely from Robert Graves’s The White Goddess (1948). Earlier claims that witches kept an ancient goddess religion through the witch trials, after Margaret Murray, are no longer accepted by historians. None of this makes her less real to those who worship her; say plainly where she comes from.",
+
+            Overview: "The Goddess is the great goddess of modern Wicca, honoured with the Horned God as the two divine powers of nature. She is the Moon and the Earth, seen as Maiden at the waxing moon, Mother at the full and Crone at the waning, and in the Charge of the Goddess, best known in Doreen Valiente’s words, she speaks as the mother of all, whose law is love. Many Wiccans follow Dion Fortune’s saying that all goddesses are one goddess and call her by names such as Aradia, Diana, Isis or Cerridwen.",
+
+            TraditionalMeaning: "The sacred feminine in nature: the turning moon, birth and death and rebirth, love and pleasure as holy, and the wisdom of every age of life.",
+
+            DevotionalApproach: "Start here: at the full moon, light a white or silver candle, read the Charge of the Goddess slowly, and sit for a few minutes in her light. Approach her with love and with honesty about her modern origins. She asks, in the Charge, for mirth and reverence, beauty and strength, power and compassion, honour and humility.",
+
+            OfferingNotes: "Offer wine or juice, cakes, milk or flowers, often shared at the end of a rite as cakes and wine and the rest returned to the earth. Caring for the land and for women at every age honours her.",
+
+            AltarIdeas: "A silver or white candle on the left of the altar, a chalice, a pentacle, a triple-moon symbol, moonstone, seasonal flowers and an image of the Goddess. Many Wiccans set her candle beside one for the Horned God.",
+
+            CulturalContext: "The Goddess is honoured today in Wicca, a living new religious movement and one of the largest forms of modern Paganism, and in goddess spirituality more widely. Traditional Wiccan covens, such as Gardnerian and Alexandrian ones, are entered through their own rites and keep some names and texts private; much eclectic Wicca is learned openly from books and groups. Ronald Hutton’s The Triumph of the Moon tells her history fairly.",
+
+            Traditions: "Wicca, Wheel of the Year",
+
+            TraditionNotes: "Wicca: Wiccans honour the Goddess at the esbats, especially the full moon, often by Drawing Down the Moon and reading the Charge of the Goddess, and through the eight sabbats as she turns from Maiden to Mother to Crone. She is asked for love, guidance, fertility in body and life, and comfort in death.\n\nWheel of the Year: Many Pagans outside Wicca also honour a Great Goddess or triple goddess through the Wheel of the Year, as Maiden at Imbolc, Mother at midsummer and Crone at Samhain.",
+
+            tags: ["goddess", "moon", "earth", "triple goddess", "wicca", "esbat"]
+        },
+
+        horned_god: {
+            DisplayName: "The Horned God",
+            Category: "Deity",
+
+            Pantheon: "Wiccan",
+
+            Domains: "Wild nature and animals, the hunt, the sun and the harvest, death and rebirth, desire and vitality",
+
+            SacredSymbols: "Antlers or horns, the athame or wand, the sun wheel, the sheaf of grain, the Oak King and Holly King",
+
+            SacredAnimals: "Stag, goat, bull, all wild animals",
+
+            SacredPlants: "Oak, holly, ivy, grain, pine",
+
+            CandleColors: "Gold, green, red, brown",
+
+            Crystals: "Tiger eye, carnelian, moss agate, citrine",
+
+            Herbs: "Oak, pine, frankincense, bay laurel",
+
+            Offerings: "Bread, ale or mead, grain, antlers found shed in the woods, time in wild places",
+
+            TraditionalWarnings: "The Horned God is a modern theology drawn from many sources, among them Margaret Murray’s now-rejected theory of a witch-cult god, the Gaulish Cernunnos, the Greek Pan and the English legend of Herne the Hunter. He is not the Devil, though Christian images of the Devil gave him horns too. Never take antlers or bones from living animals or protected places.",
+
+            Overview: "The Horned God is the god of modern Wicca, consort of the Goddess, lord of wild nature, the hunt, the sun and the grain. In the cycle of the sabbats he is born at Yule, grows with the sun, joins the Goddess at Beltane, is cut down with the harvest and goes to the underworld, to be born again; many Wiccans also tell of the Oak King and Holly King who rule the waxing and waning halves of the year. He is pictured antlered or horned, as Cernunnos, Pan or Herne.",
+
+            TraditionalMeaning: "The sacred masculine in nature: wildness, vitality, sacrifice for the life of others, death and return.",
+
+            DevotionalApproach: "Start here: walk somewhere wild or green, find a quiet place, and offer him a piece of bread or a few words of thanks for the life of animals and the harvest. Approach him with respect for the wild. He is honoured by care for animals and wild land, honest strength and acceptance of the cycle of death and rebirth.",
+
+            OfferingNotes: "Offer bread, ale or mead, grain or a share of the harvest, left in a wild place where it will not harm animals. Supporting wildlife and woodland conservation honours him.",
+
+            AltarIdeas: "A gold or green candle on the right of the altar, a pair of antlers or a horned figure, an athame or wand, oak leaves and acorns, a sheaf of grain and tiger eye. Many Wiccans set his candle beside one for the Goddess.",
+
+            CulturalContext: "The Horned God is honoured today in Wicca, a living new religious movement, and by many other modern Pagans. Ronald Hutton traces his modern form through the Romantic love of Pan and Margaret Murray’s writings to Gerald Gardner’s covens; he is real to his worshippers whatever his history.",
+
+            Traditions: "Wicca, Wheel of the Year",
+
+            TraditionNotes: "Wicca: Wiccans honour the Horned God through the eight sabbats, as the child of promise at Yule, the lover at Beltane and the sacrificed grain at Lammas and Mabon, and at Samhain as lord of death and rebirth. He is asked for strength, vitality, protection, fertility and a good harvest.\n\nWheel of the Year: Many Pagans outside Wicca also honour a horned god of the wild or the Oak and Holly Kings at the solstices.",
+
+            tags: ["horned god", "wild", "hunt", "harvest", "rebirth", "wicca"]
+        },
+
+        aradia: {
+            DisplayName: "Aradia",
+            Category: "Deity",
+
+            Pantheon: "Wiccan",
+
+            Domains: "Witchcraft as resistance, freedom for the oppressed, the Moon, teaching and liberation",
+
+            SacredSymbols: "The full moon, the crescent, the witches’ gathering, the cake of meal, salt and honey",
+
+            SacredAnimals: "Cat (from Leland’s tale of Diana and Lucifer)",
+
+            SacredPlants: "Rue, vervain, olive (from the folklore Leland collected)",
+
+            CandleColors: "Silver, white, purple",
+
+            Crystals: "Moonstone, amethyst, selenite, labradorite",
+
+            Herbs: "Vervain, rue (handle with care), lavender",
+
+            Offerings: "Cakes of meal, salt and honey, wine, a candle at the full moon, acts of resistance to injustice",
+
+            TraditionalWarnings: "Aradia comes from Charles Godfrey Leland’s Aradia, or the Gospel of the Witches (1899), said to be a manuscript given him by an Italian informant, Maddalena. Scholars still debate whether it records genuine Tuscan folk belief, was shaped or invented by Maddalena, or by Leland himself. Her name may echo Herodias, whom medieval writers said led night-riding women with Diana. Rue is toxic in quantity and irritates skin.",
+
+            Overview: "Aradia is the daughter of the goddess Diana and of Lucifer, the light-bearer, in Leland’s Gospel of the Witches. Diana sends her to earth to teach witchcraft to the poor and oppressed, so that they can resist their masters, and before she leaves she tells them to gather once a month, “and better it be when the moon is full”, to adore her mother Diana. Doreen Valiente drew on these words for the Charge of the Goddess, and many Wiccans honour Aradia as a name of the Goddess.",
+
+            TraditionalMeaning: "The witch as liberator: freedom for those held down, knowledge shared with the poor, and the Moon as a rallying light.",
+
+            DevotionalApproach: "Start here: at the full moon, light a candle, read the opening chapter of Leland’s Aradia, and do one thing for someone treated unjustly. Approach her with honesty about her uncertain origins. She is honoured by solidarity with the oppressed and by keeping the full-moon gathering.",
+
+            OfferingNotes: "Offer small cakes of meal, salt and honey, as in Leland’s text, wine, or a lit candle at the full moon. Giving time or money to people fighting injustice is an offering in her spirit.",
+
+            AltarIdeas: "A silver or purple candle, a crescent or full-moon image, moonstone or amethyst, a dish of small cakes, a copy of Leland’s Aradia and a cat figure.",
+
+            CulturalContext: "Aradia is honoured today in Wicca, a living new religious movement, and especially in Italian-American and Stregheria traditions, which grew in the late twentieth century, notably through Raven Grimassi. Learn her history from Leland’s text and from scholars such as Ronald Hutton, and from Italian folk Catholicism and folklore with respect.",
+
+            Traditions: "Wicca, Wheel of the Year",
+
+            TraditionNotes: "Wicca: Wiccans honour Aradia at the full-moon esbats, as Leland’s text asks, with cakes and wine, often as a name of the Goddess in the Charge. She is asked for freedom, courage against injustice, and guidance in the craft.\n\nWheel of the Year: Some Pagans also honour her at the sabbats as a teacher and liberator, often beside Diana.",
+
+            tags: ["aradia", "moon", "liberation", "witchcraft", "leland", "esbat"]
+        },
+
+        inanna: {
+            DisplayName: "Inanna",
+            Category: "Deity",
+
+            Pantheon: "Mesopotamian",
+
+            Domains: "Love and sexual desire, war and courage, justice, the planet Venus, sovereignty and kingship, crossing boundaries",
+
+            SacredSymbols: "Eight-pointed star, the reed-bundle ring-post of her gate, the rosette, the lion-drawn chariot, lapis lazuli",
+
+            SacredAnimals: "Lion",
+
+            SacredPlants: "Date palm, reeds, the huluppu tree of her tale",
+
+            CandleColors: "Red, gold, deep blue",
+
+            Crystals: "Lapis lazuli, carnelian, garnet, gold-coloured stones",
+
+            Herbs: "Cedar, myrrh, date",
+
+            Offerings: "Dates, beer, butter and honey cakes, incense of cedar, songs and hymns",
+
+            TraditionalWarnings: "Inanna, called Ishtar in Akkadian, is fierce as well as loving: she destroys those who defy her, and her love brings Dumuzi to the underworld. The idea of ‘sacred prostitution’ in her temples rests mainly on Herodotus and is now widely doubted by historians.",
+
+            Overview: "Inanna is the Sumerian goddess of love, war and the planet Venus, the queen of heaven of Uruk, known in Akkadian as Ishtar. She took the divine powers (me) from Enki, went down to the underworld and was hung as a corpse on a hook before she was rescued, and gave her husband Dumuzi to take her place. The priestess Enheduanna, daughter of Sargon of Akkad and the first author known by name, wrote hymns to her around 2300 BCE.",
+
+            TraditionalMeaning: "Desire and power without apology: love, courage, boundaries crossed and the journey down into darkness and back.",
+
+            DevotionalApproach: "Start here: watch for Venus as the morning or evening star, the brightest point near the sun, and greet her by name. Approach her with courage and honesty about what you want. She is honoured by passion lived openly, justice defended and the strength to come back from loss.",
+
+            OfferingNotes: "Offer dates, beer, small cakes of butter and honey, or cedar incense, as in ancient temple lists. Reading a hymn of Enheduanna aloud is a fitting offering.",
+
+            AltarIdeas: "A red or gold candle, an eight-pointed star, a lion figure, lapis lazuli and carnelian, a dish of dates and a picture of the Ishtar Gate of Babylon.",
+
+            CulturalContext: "There is no unbroken living Mesopotamian religion; a small number of modern polytheists reconstruct its worship from the cuneiform texts, and the heritage belongs also to the living peoples of Iraq and Syria, including Assyrians and Mandaeans. Never buy unprovenanced antiquities, which fuel the looting of sites.",
+
+            Traditions: "Mesopotamian",
+
+            TraditionNotes: "Mesopotamian: Modern Mesopotamian polytheists honour Inanna when Venus appears as morning or evening star, and some on Fridays, the planet’s day, with dates, beer, cakes and hymns, and retell her descent. She is asked for love, courage, justice and strength to return from dark times.",
+
+            tags: ["love", "war", "venus", "courage", "descent", "sumer"]
+        },
+
+        enki: {
+            DisplayName: "Enki",
+            Category: "Deity",
+
+            Pantheon: "Mesopotamian",
+
+            Domains: "Fresh water and the deep (Abzu), wisdom and cunning, crafts and arts, exorcism and healing, creation of humankind",
+
+            SacredSymbols: "Streams of water with fish flowing from his shoulders, the goat-fish, the vase with flowing water, the number forty",
+
+            SacredAnimals: "Goat-fish, fish",
+
+            SacredPlants: "Reeds of the marsh",
+
+            CandleColors: "Blue, green, silver",
+
+            Crystals: "Aquamarine, lapis lazuli, amazonite, clear quartz",
+
+            Herbs: "Reed, cedar, tamarisk",
+
+            Offerings: "Fresh water, fish, bread, beer, clever work done well",
+
+            TraditionalWarnings: "Enki, Ea in Akkadian, is a trickster as well as a helper: he gets drunk and gives away the divine powers to Inanna, and his affairs in Enki and Ninhursag nearly kill him. Approach him with respect for his intelligence, not as a simple benevolent father.",
+
+            Overview: "Enki is the Sumerian god of fresh water, wisdom and the arts, lord of the Abzu, the sweet waters beneath the earth, whose temple stood at Eridu, perhaps the oldest city of Sumer. He is pictured as a bearded god with streams of water full of fish flowing from his shoulders. In the Atrahasis story he shapes humankind from clay and, when the gods send the flood, warns the wise man Atrahasis to build a boat.",
+
+            TraditionalMeaning: "Wisdom that flows: ingenuity, craft, healing and kindness to humans, with a trickster’s wit.",
+
+            DevotionalApproach: "Start here: offer a bowl of fresh water and solve one problem cleverly and kindly. Approach him with curiosity and respect. He is honoured by learning, by skilled work and by finding ways round hard situations that help people.",
+
+            OfferingNotes: "Offer fresh water, bread, beer or fish. Keeping water clean, and learning a craft, are offerings in his spirit.",
+
+            AltarIdeas: "A blue or green candle, a bowl or vase of flowing water, a goat-fish or fish figure, aquamarine or lapis lazuli, reeds and a lump of clay.",
+
+            CulturalContext: "There is no unbroken living Mesopotamian religion; a small number of modern polytheists reconstruct its worship from the cuneiform texts, and the heritage belongs also to the living peoples of Iraq and Syria, including Assyrians and Mandaeans. Never buy unprovenanced antiquities, which fuel the looting of sites.",
+
+            Traditions: "Mesopotamian",
+
+            TraditionNotes: "Mesopotamian: Modern Mesopotamian polytheists honour Enki with fresh water, bread and beer, often at the new moon and before learning or making something. He is asked for wisdom, craft, healing and help out of difficulty.",
+
+            tags: ["water", "wisdom", "craft", "healing", "creation", "trickster"]
+        },
+
+        ereshkigal: {
+            DisplayName: "Ereshkigal",
+            Category: "Deity",
+
+            Pantheon: "Mesopotamian",
+
+            Domains: "The underworld and the dead, the order of death, grief, the queen who must be honoured",
+
+            SacredSymbols: "The seven gates of the underworld, the dark palace of Ganzir, the throne below",
+
+            SacredAnimals: "None securely attested in Mesopotamian sources",
+
+            SacredPlants: "None securely attested in Mesopotamian sources",
+
+            CandleColors: "Black, deep red, dark blue",
+
+            Crystals: "Obsidian, jet, black tourmaline, lapis lazuli",
+
+            Herbs: "Myrrh, cypress, cedar",
+
+            Offerings: "Water and bread offered for the dead, incense, honesty about grief",
+
+            TraditionalWarnings: "Ereshkigal is the queen of the dead whom Inanna visits in The Descent of Inanna; she is not a demon. The famous Burney Relief, a winged goddess with owls and lions, is sometimes called a picture of her, but scholars disagree whether it shows Ereshkigal, Ishtar or another figure.",
+
+            Overview: "Ereshkigal, Queen of the Great Earth, rules the land of no return beneath the world, called Kur in Sumerian and Irkalla in Akkadian, and is Inanna’s elder sister. When Inanna came down through the seven gates, stripped of her garments and powers, Ereshkigal fixed on her the eye of death and hung her corpse on a hook; later she mourns in what the poem describes as the pains of grief or labour. In another tale the god Nergal comes down to her and becomes her husband and king of the underworld.",
+
+            TraditionalMeaning: "The rightful place of death: grief honoured, limits respected and the dignity of those who dwell below.",
+
+            DevotionalApproach: "Start here: light a dark candle, say the names of people you have lost, and let yourself feel what you feel for a few minutes. Approach her with respect and without fear. She is honoured by honesty about grief, care for the dead and respect for limits.",
+
+            OfferingNotes: "Offer water and bread for the dead, as Mesopotamian families did in the kispum meal, or incense. Pour water onto the earth rather than drinking it.",
+
+            AltarIdeas: "A black or deep red candle, seven small stones for the seven gates, obsidian or jet, a bowl of water, bread and the names of the dead.",
+
+            CulturalContext: "There is no unbroken living Mesopotamian religion; a small number of modern polytheists reconstruct its worship from the cuneiform texts, and the heritage belongs also to the living peoples of Iraq and Syria, including Assyrians and Mandaeans. Never buy unprovenanced antiquities, which fuel the looting of sites.",
+
+            Traditions: "Mesopotamian",
+
+            TraditionNotes: "Mesopotamian: Modern Mesopotamian polytheists honour Ereshkigal at the dark of the moon, when Mesopotamians made offerings to the dead, with water, bread and incense. She is asked to keep the dead in peace and for strength in grief.",
+
+            tags: ["underworld", "death", "grief", "ancestors", "queen", "descent"]
+        },
+
+        shamash: {
+            DisplayName: "Shamash",
+            Category: "Deity",
+
+            Pantheon: "Mesopotamian",
+
+            Domains: "The Sun, justice and law, truth, protection of travellers and the oppressed, divination",
+
+            SacredSymbols: "The saw-toothed blade, the sun disc with four points and wavy rays, the rod and ring of justice",
+
+            SacredAnimals: "None securely attested; his charioteer Bunene drives the sun’s chariot",
+
+            SacredPlants: "Cedar",
+
+            CandleColors: "Gold, yellow, white",
+
+            Crystals: "Sunstone, citrine, carnelian, clear quartz",
+
+            Herbs: "Cedar, juniper, frankincense",
+
+            Offerings: "Bread, beer, cedar incense, honest dealing, justice done",
+
+            TraditionalWarnings: "Shamash, Utu in Sumerian, judges truly: Mesopotamians called on him as witness and judge, so do not ask him to bless a lie or an unfair cause.",
+
+            Overview: "Shamash is the Mesopotamian sun god and judge, Utu in Sumerian, who sees everything as he crosses the sky and judges gods and humans. His great temples were at Sippar and Larsa. At the top of the stele of Hammurabi’s laws the king stands before Shamash on his throne, and in the Epic of Gilgamesh he sends winds to help Gilgamesh and Enkidu defeat Humbaba.",
+
+            TraditionalMeaning: "Light that brings justice: truth, fairness, protection of the weak and clarity in judgement.",
+
+            DevotionalApproach: "Start here: greet the morning sun and ask him to help you deal fairly with someone today. Approach him with honesty. He is honoured by fair judgement, truthfulness and standing up for those treated unjustly.",
+
+            OfferingNotes: "Offer bread, beer or cedar incense at sunrise. Doing justice, keeping fair weights and telling the truth are offerings in his spirit.",
+
+            AltarIdeas: "A gold or yellow candle, a sun disc with wavy rays, a small scale, sunstone or citrine, cedar wood and a copy of a law or promise you mean to keep.",
+
+            CulturalContext: "There is no unbroken living Mesopotamian religion; a small number of modern polytheists reconstruct its worship from the cuneiform texts, and the heritage belongs also to the living peoples of Iraq and Syria, including Assyrians and Mandaeans. Never buy unprovenanced antiquities, which fuel the looting of sites.",
+
+            Traditions: "Mesopotamian",
+
+            TraditionNotes: "Mesopotamian: Modern Mesopotamian polytheists greet Shamash at sunrise, and some on Sundays, with bread, beer and cedar, and call on him when seeking justice. He is asked for fairness, truth, protection on journeys and help for the wronged.",
+
+            tags: ["sun", "justice", "truth", "law", "protection", "fairness"]
+        },
+
+        nanna: {
+            DisplayName: "Nanna",
+            Category: "Deity",
+
+            Pantheon: "Mesopotamian",
+
+            Domains: "The Moon, the months and time, fertility of herds, wisdom, the city of Ur",
+
+            SacredSymbols: "The crescent moon, the moon boat, a lapis lazuli beard, the ziggurat of Ur",
+
+            SacredAnimals: "Bull, whose horns echo the crescent",
+
+            SacredPlants: "None securely attested in Mesopotamian sources",
+
+            CandleColors: "Silver, white, blue",
+
+            Crystals: "Moonstone, lapis lazuli, selenite, clear quartz",
+
+            Herbs: "Cedar, myrrh, chamomile",
+
+            Offerings: "Milk, butter, bread, dates, beer",
+
+            TraditionalWarnings: "Nanna, called Sin in Akkadian (no relation to the English word sin), is a god, not a goddess; the moon in Mesopotamia was male. His cult at Harran lasted into the Islamic period, but modern stories linking him to later religions are speculative.",
+
+            Overview: "Nanna, or Sin, is the Mesopotamian moon god, lord of Ur, whose great ziggurat still stands in southern Iraq. He was father of Inanna and Utu, and was pictured as a bearded god with a lapis lazuli beard, sailing the night sky in his crescent boat. Enheduanna served him as high priestess at Ur, and the last king of Babylon, Nabonidus, was so devoted to Sin of Harran that his priests resented it.",
+
+            TraditionalMeaning: "Time kept by the moon: the months, patient wisdom, fertility of the herds and light in the dark.",
+
+            DevotionalApproach: "Start here: watch for the first thin crescent after the new moon and greet him, then mark the date. Approach him calmly and regularly. He is honoured by keeping good time, patience and care for animals.",
+
+            OfferingNotes: "Offer milk, butter, bread, dates or beer at the new and full moon. Keeping a lunar journal is a simple devotion.",
+
+            AltarIdeas: "A silver or white candle, a crescent or boat shape, a bull figure, moonstone or lapis lazuli, and a dish of milk or dates. A window where the moon is visible suits him.",
+
+            CulturalContext: "There is no unbroken living Mesopotamian religion; a small number of modern polytheists reconstruct its worship from the cuneiform texts, and the heritage belongs also to the living peoples of Iraq and Syria, including Assyrians and Mandaeans. Never buy unprovenanced antiquities, which fuel the looting of sites.",
+
+            Traditions: "Mesopotamian",
+
+            TraditionNotes: "Mesopotamian: Modern Mesopotamian polytheists honour Nanna at the first crescent and the full moon, as Ur kept monthly moon festivals (eš-eš) for him, with milk, butter and dates. He is asked for wisdom, fertility, good timing and safe nights.",
+
+            tags: ["moon", "time", "months", "ur", "fertility", "wisdom"]
+        },
+
+        marduk: {
+            DisplayName: "Marduk",
+            Category: "Deity",
+
+            Pantheon: "Mesopotamian",
+
+            Domains: "Kingship and order, the city of Babylon, victory over chaos, magic of healing and protection, wisdom",
+
+            SacredSymbols: "The spade (marru), the snake-dragon mušḫuššu, the Tablets of Destiny, the ziggurat Etemenanki",
+
+            SacredAnimals: "The mušḫuššu, a snake-dragon with lion’s forelegs and eagle’s hind legs",
+
+            SacredPlants: "None securely attested in Mesopotamian sources",
+
+            CandleColors: "Gold, red, deep blue",
+
+            Crystals: "Lapis lazuli, carnelian, garnet, tiger eye",
+
+            Herbs: "Cedar, myrrh, frankincense",
+
+            Offerings: "Bread, beer, dates, incense, recitation of the Enuma Elish",
+
+            TraditionalWarnings: "Marduk rose to the head of the gods with the power of Babylon, and the Enuma Elish was written in part to justify that. Remember the earlier gods he displaced, and do not treat Tiamat simply as evil; she is the mother of the gods in the same poem.",
+
+            Overview: "Marduk is the god of Babylon who became king of the gods. In the Enuma Elish, the Babylonian creation poem, he defeats Tiamat, the salt-water ocean, splits her body to make heaven and earth, sets the stars and calendar in order and receives fifty names. His temple Esagila and ziggurat Etemenanki, which may lie behind the story of the Tower of Babel, stood at the heart of Babylon, and the mušḫuššu dragon on the Ishtar Gate is his.",
+
+            TraditionalMeaning: "Order won from chaos: just rule, courage in the face of overwhelming forces and the renewal of the year.",
+
+            DevotionalApproach: "Start here: put one disordered corner of your life in order and offer the work to him with a little bread or incense. Approach him with respect for his authority. He is honoured by just leadership, courage and the patient work of making order.",
+
+            OfferingNotes: "Offer bread, beer, dates or incense, especially at the spring new year. Reading part of the Enuma Elish aloud, as priests did at the Akitu festival, is a fitting offering.",
+
+            AltarIdeas: "A gold or red candle, a spade or dragon figure, lapis lazuli and carnelian, a dish of dates and a picture of the Ishtar Gate’s dragons.",
+
+            CulturalContext: "There is no unbroken living Mesopotamian religion; a small number of modern polytheists reconstruct its worship from the cuneiform texts, and the heritage belongs also to the living peoples of Iraq and Syria, including Assyrians and Mandaeans. Never buy unprovenanced antiquities, which fuel the looting of sites.",
+
+            Traditions: "Mesopotamian",
+
+            TraditionNotes: "Mesopotamian: Modern Mesopotamian polytheists honour Marduk at the spring new year, the Akitu of Nisannu, when Babylon’s priests recited the Enuma Elish and the king renewed his rule by taking the god’s hand, with bread, beer, dates and incense. He is asked for order, protection, just leadership and courage.",
+
+            tags: ["kingship", "order", "babylon", "creation", "akitu", "victory"]
+        },
+
+        nisaba: {
+            DisplayName: "Nisaba",
+            Category: "Deity",
+
+            Pantheon: "Mesopotamian",
+
+            Domains: "Grain, writing and scribes, accounting and measurement, knowledge",
+
+            SacredSymbols: "The stylus, the clay tablet, an ear of grain, the measuring rod and line",
+
+            SacredAnimals: "None securely attested in Mesopotamian sources",
+
+            SacredPlants: "Barley, reeds",
+
+            CandleColors: "Gold, green, brown",
+
+            Crystals: "Lapis lazuli, jasper, citrine, clear quartz",
+
+            Herbs: "Barley, reed, cedar",
+
+            Offerings: "Grain or bread, beer, a page of careful writing, an account kept honestly",
+
+            TraditionalWarnings: "Nisaba’s role passed in later centuries to the god Nabu, who became the main patron of scribes in Babylonia and Assyria. Little myth about her survives; she is known mostly from hymns and scribal praise.",
+
+            Overview: "Nisaba is the Sumerian goddess of grain and of writing, the patron of scribes. Many Sumerian literary tablets end with the words “Nisaba be praised”, and hymns call her the one who holds the measuring rod and the tablet of lapis lazuli. Writing in Mesopotamia began with the counting of grain, so her two roles belong together.",
+
+            TraditionalMeaning: "Knowledge that feeds: writing, accurate records, learning and the harvest they help to share.",
+
+            DevotionalApproach: "Start here: write something carefully by hand, a letter, a list or a page of notes, and end it with “Nisaba be praised”. Approach her through study and accuracy. She is honoured by honest records, good learning and grain shared fairly.",
+
+            OfferingNotes: "Offer grain, bread or beer, or a page of careful writing. Supporting literacy or libraries is an offering in her spirit.",
+
+            AltarIdeas: "A gold or green candle, a stylus or pen, a small clay tablet, an ear of barley, lapis lazuli and a notebook.",
+
+            CulturalContext: "There is no unbroken living Mesopotamian religion; a small number of modern polytheists reconstruct its worship from the cuneiform texts, and the heritage belongs also to the living peoples of Iraq and Syria, including Assyrians and Mandaeans. Never buy unprovenanced antiquities, which fuel the looting of sites.",
+
+            Traditions: "Mesopotamian",
+
+            TraditionNotes: "Mesopotamian: Modern Mesopotamian polytheists honour Nisaba when beginning study or writing, and at the barley harvest, which in Mesopotamia came in spring, with grain, bread and careful writing. She is asked for learning, clear records and a good harvest.",
+
+            tags: ["writing", "scribes", "grain", "learning", "knowledge", "harvest"]
+        },
+
+        ninkasi: {
+            DisplayName: "Ninkasi",
+            Category: "Deity",
+
+            Pantheon: "Mesopotamian",
+
+            Domains: "Beer and brewing, hospitality and good cheer, the satisfying of desire",
+
+            SacredSymbols: "The brewing vat, the drinking straw, the bappir loaf",
+
+            SacredAnimals: "None securely attested in Mesopotamian sources",
+
+            SacredPlants: "Barley, dates, honey",
+
+            CandleColors: "Amber, gold, brown",
+
+            Crystals: "Amber, citrine, tiger eye, carnelian",
+
+            Herbs: "Barley, dates, hops (a modern addition)",
+
+            Offerings: "Beer or a non-alcoholic brew, bread, dates, a song while brewing",
+
+            TraditionalWarnings: "Drink responsibly and offer non-alcoholic brews if you prefer: devotion to Ninkasi is about craft and hospitality, not excess. The Hymn to Ninkasi describes brewing, but reading it as a full recipe is a modern interpretation.",
+
+            Overview: "Ninkasi is the Sumerian goddess of beer and brewing. The Hymn to Ninkasi, written down around 1800 BCE, praises her as she bakes the bappir loaf, waters the malt, soaks it in the vat and pours out the filtered beer, “like the onrush of the Tigris and Euphrates”. Beer was a staple of Mesopotamian life, given as rations and offered to the gods.",
+
+            TraditionalMeaning: "Shared joy: craft, hospitality, good company and the work that turns grain into gladness.",
+
+            DevotionalApproach: "Start here: share a drink, beer or something non-alcoholic, with a friend and raise it to her. Approach her with gladness and moderation. She is honoured by careful craft, generous hospitality and good company.",
+
+            OfferingNotes: "Offer beer or a non-alcoholic brew, bread or dates, or sing while you brew or bake. Brewers sometimes dedicate the first glass of a batch to her.",
+
+            AltarIdeas: "An amber or gold candle, a small jar or brewing vessel, ears of barley, dates and amber or citrine.",
+
+            CulturalContext: "There is no unbroken living Mesopotamian religion; a small number of modern polytheists reconstruct its worship from the cuneiform texts, and the heritage belongs also to the living peoples of Iraq and Syria, including Assyrians and Mandaeans. Never buy unprovenanced antiquities, which fuel the looting of sites.",
+
+            Traditions: "Mesopotamian",
+
+            TraditionNotes: "Mesopotamian: Modern Mesopotamian polytheists and many home brewers honour Ninkasi when brewing and at harvest, with beer, bread and dates and the singing of her hymn. She is asked for good brewing, hospitality and good cheer.",
+
+            tags: ["beer", "brewing", "hospitality", "craft", "joy", "barley"]
+        },
+
+        asherah: {
+            DisplayName: "Asherah",
+            Category: "Deity",
+
+            Pantheon: "Canaanite",
+
+            Domains: "Motherhood of the gods, the sea, fertility, sacred trees, queenship, nurture",
+
+            SacredSymbols: "The sacred tree or wooden pole (asherah), the stylised palm, the lion (in some debated images)",
+
+            SacredAnimals: "Lion (in images whose identification is debated)",
+
+            SacredPlants: "Sacred trees, especially the palm and the oak or terebinth",
+
+            CandleColors: "Green, blue, gold",
+
+            Crystals: "Green aventurine, jade, aquamarine, moss agate",
+
+            Herbs: "Palm, myrtle, cedar",
+
+            Offerings: "Bread or small cakes, oil, wine, care for a living tree",
+
+            TraditionalWarnings: "Asherah touches living faiths: in the Hebrew Bible her name is also a wooden cult pole that reforming kings cut down, and eighth-century BCE inscriptions from Kuntillet Ajrud and Khirbet el-Qom bless people by “Yahweh and his asherah”. Scholars debate what this meant; approach the subject with respect for Jewish and Christian readers.",
+
+            Overview: "Asherah, Athirat at Ugarit, is the Canaanite mother of the gods, wife of the high god El and mother of their seventy sons, called Lady Athirat of the Sea. In the Baal Cycle from Ugarit she intercedes with El so that Baal can have his palace built. In ancient Israel and Judah her name was given to sacred trees or wooden poles set beside altars, and some scholars think she was once worshipped there as a consort of Yahweh.",
+
+            TraditionalMeaning: "The mother who nurtures and intercedes: fertility, family, the tree of life and quiet, persuasive power.",
+
+            DevotionalApproach: "Start here: care for a tree, water it, sit with your back against it, and thank the mother of the gods for growing things. Approach her with gentleness and respect for her contested history. She is honoured by nurture, family care and speaking up for others.",
+
+            OfferingNotes: "Offer small cakes or bread, oil or wine, set at the foot of a tree or a potted plant. Planting a tree is a lasting offering.",
+
+            AltarIdeas: "A green or blue candle, a small tree or palm in a pot, a wooden pole or carved tree figure, green aventurine and a dish of cakes.",
+
+            CulturalContext: "There is no unbroken living Canaanite religion; it is known from the clay tablets of Ugarit, inscriptions, archaeology and the hostile pages of the Hebrew Bible. A small modern revival, sometimes called Natib Qadish, works from these sources. The lands of Canaan are home to living peoples and faiths today; honour the ancient gods without taking sides in present conflicts or treating Jewish and Christian scripture with contempt.",
+
+            Traditions: "Canaanite",
+
+            TraditionNotes: "Canaanite: Modern Canaanite polytheists honour Asherah, or Athirat, at sacred trees and at the full moon, with cakes, oil and wine, as mother of the gods and of the household. She is asked for fertility, family welfare, nurture and wise counsel.",
+
+            tags: ["mother", "trees", "sea", "fertility", "nurture", "ugarit"]
+        },
+
+        astarte: {
+            DisplayName: "Astarte",
+            Category: "Deity",
+
+            Pantheon: "Canaanite",
+
+            Domains: "Love and desire, war and hunting, the evening star, kingship and protection of cities",
+
+            SacredSymbols: "The star, the crescent and disc, the horse and chariot, the spear and shield",
+
+            SacredAnimals: "Horse, lion, dove (in later sources)",
+
+            SacredPlants: "None securely attested in Canaanite sources",
+
+            CandleColors: "Red, silver, blue",
+
+            Crystals: "Lapis lazuli, carnelian, moonstone, garnet",
+
+            Herbs: "Myrrh, cypress, rose",
+
+            Offerings: "Cakes, wine, incense, flowers",
+
+            TraditionalWarnings: "The Hebrew Bible calls her Ashtoreth, a name many scholars think was given the vowels of the Hebrew word for shame as a polemic. Popular books often merge her with Ishtar, Aphrodite and Asherah; they were related but distinct goddesses.",
+
+            Overview: "Astarte, Ashtart in Phoenician and ʿAthtart at Ugarit, is a Canaanite and Phoenician goddess of love, war, hunting and the evening star, chief goddess of Sidon and Tyre. Egyptians of the New Kingdom honoured her as a warrior goddess on horseback, and Phoenician sailors carried her worship across the Mediterranean to Cyprus, Malta, Carthage and Spain. Greeks often equated her with Aphrodite.",
+
+            TraditionalMeaning: "Fierce love and protection: desire, courage, the defence of home and city, and the evening star.",
+
+            DevotionalApproach: "Start here: watch for the evening star at dusk and greet her, then do one brave or loving thing. Approach her with boldness and respect. She is honoured by courage, loyalty and love freely given.",
+
+            OfferingNotes: "Offer cakes, wine, incense or flowers. Phoenician inscriptions record vows paid to her; keeping a promise is a fitting offering.",
+
+            AltarIdeas: "A red or silver candle, a star or crescent and disc, a horse figure, lapis lazuli or carnelian, flowers and a dish of cakes.",
+
+            CulturalContext: "There is no unbroken living Canaanite religion; it is known from the clay tablets of Ugarit, inscriptions, archaeology and the hostile pages of the Hebrew Bible. A small modern revival, sometimes called Natib Qadish, works from these sources. The lands of Canaan are home to living peoples and faiths today; honour the ancient gods without taking sides in present conflicts or treating Jewish and Christian scripture with contempt.",
+
+            Traditions: "Canaanite",
+
+            TraditionNotes: "Canaanite: Modern Canaanite polytheists honour Astarte at dusk when the evening star shines, and some on Fridays, the day of Venus, with cakes, wine and incense. She is asked for love, courage, protection and success in hard contests.",
+
+            tags: ["love", "war", "evening star", "protection", "phoenicia", "courage"]
+        },
+
+        baal: {
+            DisplayName: "Baal",
+            Category: "Deity",
+
+            Pantheon: "Canaanite",
+
+            Domains: "Storm and rain, fertility of the land, kingship among the gods, victory over sea and death",
+
+            SacredSymbols: "Lightning spear or cedar, raised club, horned helmet, Mount Zaphon",
+
+            SacredAnimals: "Bull",
+
+            SacredPlants: "Cedar, grain, olive",
+
+            CandleColors: "Blue, grey, gold",
+
+            Crystals: "Labradorite, hematite, lapis lazuli, tiger eye",
+
+            Herbs: "Cedar, olive, bay laurel",
+
+            Offerings: "Bread, wine, oil, water poured for rain",
+
+            TraditionalWarnings: "Baal means lord and was a title for several gods; this entry is Baal Hadad, the storm god of Ugarit. He is not the Baal Hammon of Carthage, nor a demon, though the Hebrew Bible, in stories such as Elijah on Mount Carmel, treats his worship as Israel’s great rival. Handle that history with respect for Jewish and Christian readers.",
+
+            Overview: "Baal Hadad is the Canaanite storm god, Rider of the Clouds, who brings the rain on which the dry lands of the Levant depend. In the Baal Cycle from Ugarit he defeats Yamm, the Sea, has a palace of cedar built on Mount Zaphon, and is swallowed by Mot, Death, so that the land withers, until his sister Anat destroys Mot and Baal returns. A famous stele from Ugarit shows him striding with a raised club and a spear sprouting like lightning or a plant.",
+
+            TraditionalMeaning: "Life-giving storm: rain after drought, victory over chaos and death, and the return of fertility.",
+
+            DevotionalApproach: "Start here: when it rains, step outside for a moment, feel it and thank him for the water that feeds the land. Approach him with respect for the power of storms. He is honoured by care for water and land and by courage against chaos.",
+
+            OfferingNotes: "Offer bread, wine or oil, or pour water onto dry ground in the hope of rain. Saving water and caring for soil are offerings in his spirit.",
+
+            AltarIdeas: "A blue or grey candle, a bull figure, a small cedar branch or spear, labradorite, a jug of water and a picture of the Baal stele.",
+
+            CulturalContext: "There is no unbroken living Canaanite religion; it is known from the clay tablets of Ugarit, inscriptions, archaeology and the hostile pages of the Hebrew Bible. A small modern revival, sometimes called Natib Qadish, works from these sources. The lands of Canaan are home to living peoples and faiths today; honour the ancient gods without taking sides in present conflicts or treating Jewish and Christian scripture with contempt.",
+
+            Traditions: "Canaanite",
+
+            TraditionNotes: "Canaanite: Modern Canaanite polytheists honour Baal at the coming of the autumn rains, which Ugarit’s ritual calendar greeted with offerings in the season of the new wine, with bread, wine, oil and water poured on the earth. He is asked for rain, fertility, strength and victory over what threatens life.",
+
+            tags: ["storm", "rain", "fertility", "kingship", "ugarit", "victory"]
+        },
+
+        anat: {
+            DisplayName: "Anat",
+            Category: "Deity",
+
+            Pantheon: "Canaanite",
+
+            Domains: "War and the hunt, fierce loyalty, youth and independence, avenging the dead",
+
+            SacredSymbols: "Spear, shield and battle-axe, the bow she covets in the tale of Aqhat, the atef crown in Egyptian images",
+
+            SacredAnimals: "None securely attested in Canaanite sources",
+
+            SacredPlants: "Grain (from her destruction of Mot)",
+
+            CandleColors: "Red, black, gold",
+
+            Crystals: "Garnet, bloodstone, carnelian, hematite",
+
+            Herbs: "Dragon’s blood resin, cedar, myrrh",
+
+            Offerings: "Bread, wine, red flowers, acts of loyalty",
+
+            TraditionalWarnings: "Anat’s battles in the Ugaritic texts are drenched in blood: she wades in it to her knees and laughs. Honour her for courage, loyalty and the defence of the vulnerable, not as an excuse for violence.",
+
+            Overview: "Anat is the Canaanite warrior goddess of Ugarit, called the maiden, sister and ally of Baal. When Death swallows Baal she searches for him, mourns, and then seizes Mot, splits him with a blade, winnows him, burns him, grinds him and sows him in the field, after which Baal returns. In the tale of Aqhat she desires the young hero’s bow and has him killed. In Egypt the pharaoh Ramesses II honoured her, and Jewish soldiers at Elephantine in the fifth century BCE swore by Anat-Yahu.",
+
+            TraditionalMeaning: "Fierce loyalty: courage, independence, grief turned to action and the defence of those one loves.",
+
+            DevotionalApproach: "Start here: do one brave thing for someone you love, then light a red candle and offer it to her. Approach her with respect for her ferocity. She is honoured by loyalty, courage and refusing to let injustice stand.",
+
+            OfferingNotes: "Offer bread, wine or red flowers. Standing by a friend in trouble, or training the body, are offerings in her spirit.",
+
+            AltarIdeas: "A red or black candle, a small spear or bow, garnet or bloodstone, ears of grain and red flowers.",
+
+            CulturalContext: "There is no unbroken living Canaanite religion; it is known from the clay tablets of Ugarit, inscriptions, archaeology and the hostile pages of the Hebrew Bible. A small modern revival, sometimes called Natib Qadish, works from these sources. The lands of Canaan are home to living peoples and faiths today; honour the ancient gods without taking sides in present conflicts or treating Jewish and Christian scripture with contempt.",
+
+            Traditions: "Canaanite",
+
+            TraditionNotes: "Canaanite: Modern Canaanite polytheists honour Anat at the grain harvest, remembering how she winnowed and sowed Death so that Baal could return, with bread, wine and red flowers. She is asked for courage, protection, independence and justice for the wronged.",
+
+            tags: ["war", "courage", "loyalty", "independence", "ugarit", "justice"]
+        },
+
+        el: {
+            DisplayName: "El",
+            Category: "Deity",
+
+            Pantheon: "Canaanite",
+
+            Domains: "Fatherhood of gods and people, creation, wisdom and old age, kingship and judgement, the divine council",
+
+            SacredSymbols: "The throne, the grey beard, the bull’s horns, the tent at the source of the two rivers",
+
+            SacredAnimals: "Bull (he is called Bull El)",
+
+            SacredPlants: "None securely attested in Canaanite sources",
+
+            CandleColors: "White, gold, grey",
+
+            Crystals: "Clear quartz, lapis lazuli, howlite, smoky quartz",
+
+            Herbs: "Cedar, frankincense, myrrh",
+
+            Offerings: "Bread, wine, oil, a seat kept for the elder at the table",
+
+            TraditionalWarnings: "El is also the ordinary Semitic word for god and appears in the Hebrew Bible as a name of the God of Israel, in names such as Israel and Bethel. Honour the Canaanite El of Ugarit with care not to blur him with, or belittle, the God of Jewish and Christian scripture.",
+
+            Overview: "El is the father of the gods in the Canaanite texts of Ugarit, creator of creatures, Bull El, the aged and kindly father with a grey beard, who lives in a tent at the source of the two rivers and presides over the assembly of the gods. In the Baal Cycle the other gods come to him for permission and judgement, and Asherah is his consort. The later writer Philo of Byblos identified him with the Greek Kronos.",
+
+            TraditionalMeaning: "The wise elder: fatherly care, the authority of age, creation and patient judgement.",
+
+            DevotionalApproach: "Start here: spend time with or think of an elder you respect, then pour a little wine or oil and thank the father of the gods. Approach him with reverence and patience. He is honoured by respect for elders, wise counsel and kindness.",
+
+            OfferingNotes: "Offer bread, wine or oil. Keeping a seat at the table for an elder, or caring for an older person, is an offering in his spirit.",
+
+            AltarIdeas: "A white or gold candle, a small throne or seated figure, a bull’s horn shape, clear quartz and a jug of oil.",
+
+            CulturalContext: "There is no unbroken living Canaanite religion; it is known from the clay tablets of Ugarit, inscriptions, archaeology and the hostile pages of the Hebrew Bible. A small modern revival, sometimes called Natib Qadish, works from these sources. The lands of Canaan are home to living peoples and faiths today; honour the ancient gods without taking sides in present conflicts or treating Jewish and Christian scripture with contempt.",
+
+            Traditions: "Canaanite",
+
+            TraditionNotes: "Canaanite: Modern Canaanite polytheists honour El as head of the divine council, often on Saturdays (a modern choice following Philo of Byblos, who matched him with Kronos), with bread, wine and oil. He is asked for wisdom, good judgement, fatherly care and long life.",
+
+            tags: ["father", "creation", "wisdom", "elders", "judgement", "ugarit"]
+        },
+
+        shapash: {
+            DisplayName: "Shapash",
+            Category: "Deity",
+
+            Pantheon: "Canaanite",
+
+            Domains: "The Sun, sight and truth, messages between gods, guidance of the dead, healing",
+
+            SacredSymbols: "The sun disc, the lamp of the gods",
+
+            SacredAnimals: "None securely attested in Canaanite sources",
+
+            SacredPlants: "None securely attested in Canaanite sources",
+
+            CandleColors: "Gold, yellow, white",
+
+            Crystals: "Sunstone, citrine, amber, carnelian",
+
+            Herbs: "Frankincense, cedar, chamomile",
+
+            Offerings: "Bread, honey, wine, greetings at sunrise and sunset",
+
+            TraditionalWarnings: "In Canaan the Sun was a goddess, Shapash, not a god as in Mesopotamia and Greece. She is known from the Ugaritic texts; much else said of her is modern.",
+
+            Overview: "Shapash is the Canaanite sun goddess of Ugarit, called the lamp of the gods. Because she travels the whole world each day and passes through the underworld each night, she carries messages, sees what is hidden and guides the dead. In the Baal Cycle she helps Anat find and bury Baal’s body, and later rebukes Mot so that he gives way; in Ugaritic charms against snakebite, the healer’s plea is carried to the gods through her.",
+
+            TraditionalMeaning: "Light that goes everywhere: truth, guidance, messages carried faithfully and care for those in darkness.",
+
+            DevotionalApproach: "Start here: greet the sun at rising or setting and ask her to carry a message or a prayer for someone. Approach her with honesty and trust. She is honoured by faithful messages, honest seeing and care for the dying and the dead.",
+
+            OfferingNotes: "Offer bread, honey or wine at sunrise or sunset. Carrying a message faithfully, or visiting someone who is dying, is an offering in her spirit.",
+
+            AltarIdeas: "A gold or yellow candle, a sun disc, a small oil lamp, sunstone or citrine, and a dish of honey by an east or west window.",
+
+            CulturalContext: "There is no unbroken living Canaanite religion; it is known from the clay tablets of Ugarit, inscriptions, archaeology and the hostile pages of the Hebrew Bible. A small modern revival, sometimes called Natib Qadish, works from these sources. The lands of Canaan are home to living peoples and faiths today; honour the ancient gods without taking sides in present conflicts or treating Jewish and Christian scripture with contempt.",
+
+            Traditions: "Canaanite",
+
+            TraditionNotes: "Canaanite: Modern Canaanite polytheists greet Shapash at sunrise and sunset, and some on Sundays, with bread, honey and wine. She is asked for guidance, truth, healing and safe passage for the dead.",
+
+            tags: ["sun", "truth", "guidance", "messenger", "dead", "ugarit"]
+        },
+
+        laima: {
+            DisplayName: "Laima",
+            Category: "Deity",
+
+            Pantheon: "Baltic",
+
+            Domains: "Fate and luck, birth, marriage, the length of life, women and childbirth",
+
+            SacredSymbols: "The linden tree, woven sashes and towels, the spindle, the threads of life",
+
+            SacredAnimals: "Cuckoo (in folklore)",
+
+            SacredPlants: "Linden, rye",
+
+            CandleColors: "White, gold, green",
+
+            Crystals: "Amber, moonstone, clear quartz, green aventurine",
+
+            Herbs: "Linden blossom, rue, chamomile",
+
+            Offerings: "Woven or embroidered cloth, bread, a hen or eggs in old custom (now eggs or bread), flowers",
+
+            TraditionalWarnings: "Laima decides fate in the folk songs, and they often show her refusing to change what she has set; she is not a luck charm to be bargained with. Rue, linked to Baltic weddings, is toxic in quantity and irritates skin.",
+
+            Overview: "Laima is the Baltic goddess of fate, in Latvian and Lithuanian folk songs the one who sets a child’s destiny at birth, guides brides to their marriage and measures the length of life. Latvian dainas show her sitting at the threshold or under a linden tree, sometimes weeping over the hard fate she must give; she is often joined by Dēkla and Kārta. Latvian women gathered in the bathhouse after a birth to give thanks and gifts to Laima.",
+
+            TraditionalMeaning: "Fate met with grace: the shape of a life, luck given at birth, and the courage to live the life one has.",
+
+            DevotionalApproach: "Start here: when a child is born or a friend marries, light a candle and ask Laima to look kindly on their life. Approach her with acceptance and gratitude. She is honoured by care for mothers and children and by living one’s fate well.",
+
+            OfferingNotes: "Offer bread, eggs, flowers or a woven or embroidered cloth. Folk custom gave sashes and towels to Laima at births and weddings; weaving or giving a handmade textile follows it.",
+
+            AltarIdeas: "A white or gold candle, a woven sash or towel, linden leaves or blossom, amber and a small spindle.",
+
+            CulturalContext: "Today these gods are honoured in Romuva, the Lithuanian Baltic faith revived from the 1920s and refounded in 1967, and in Latvian Dievturība, founded in 1925, both small living religions that draw on folk song, custom and the old sources. Much Baltic myth comes from folk songs (Latvian dainas, Lithuanian dainos) collected in the nineteenth and twentieth centuries, and from Christian writers of the thirteenth to seventeenth centuries, some unreliable. Learn from Lithuanian and Latvian communities and their folklore archives.",
+
+            Traditions: "Baltic",
+
+            TraditionNotes: "Baltic: Romuva and Dievturi honour Laima at births, weddings and funerals, and at the winter solstice, when Lithuanian families on Kūčios evening tried to read the year’s fortunes, with bread, eggs and woven gifts. She is asked for a good fate, safe childbirth, happy marriages and luck.",
+
+            tags: ["fate", "luck", "birth", "marriage", "women", "dainas"]
+        },
+
+        perkunas: {
+            DisplayName: "Perkūnas",
+            Category: "Deity",
+
+            Pantheon: "Baltic",
+
+            Domains: "Thunder and lightning, rain and fertility, justice and oaths, the oak, cleansing of evil",
+
+            SacredSymbols: "The axe or hammer, the oak, fire, the thunderbolt, the chariot drawn by goats or horses",
+
+            SacredAnimals: "Goats or horses that draw his chariot (in folk songs)",
+
+            SacredPlants: "Oak",
+
+            CandleColors: "Red, gold, blue",
+
+            Crystals: "Amber, hematite, labradorite, garnet",
+
+            Herbs: "Oak, juniper, rowan",
+
+            Offerings: "Bread, beer or mead, a fire safely kept, oak leaves",
+
+            TraditionalWarnings: "Perkūnas is among the best attested Baltic gods: he is named in a thirteenth-century chronicle gloss and in many folk songs and sayings. Stories of an eternal fire to him beneath Vilnius Cathedral are a later legend, and archaeologists still debate what the remains there show.",
+
+            Overview: "Perkūnas, Pērkons in Latvian, is the Baltic god of thunder, lightning and rain, who rides across the sky in a chariot and strikes devils and evil with his axe or thunderbolts. In a Lithuanian folk song he punishes the Moon for betraying the Sun by cutting him in two. His name is related to the Slavic Perun’s and probably to old words for the oak, his sacred tree.",
+
+            TraditionalMeaning: "Cleansing storm: justice, the defeat of evil, rain that renews the land and oaths kept.",
+
+            DevotionalApproach: "Start here: at the first thunder of the year, step outside safely, listen, and greet him. Approach him with respect and honesty. He is honoured by keeping your word, opposing wrongdoing and caring for oaks and fields.",
+
+            OfferingNotes: "Offer bread, beer or mead, or oak leaves on a safe fire. Folk custom greeted the first spring thunder for strength and health; marking it each year is a simple devotion.",
+
+            AltarIdeas: "A red or gold candle in a deep holder, a small axe, an oak branch or acorns, amber and a bowl for a safe fire.",
+
+            CulturalContext: "Today these gods are honoured in Romuva, the Lithuanian Baltic faith revived from the 1920s and refounded in 1967, and in Latvian Dievturība, founded in 1925, both small living religions that draw on folk song, custom and the old sources. Much Baltic myth comes from folk songs (Latvian dainas, Lithuanian dainos) collected in the nineteenth and twentieth centuries, and from Christian writers of the thirteenth to seventeenth centuries, some unreliable. Learn from Lithuanian and Latvian communities and their folklore archives.",
+
+            Traditions: "Baltic",
+
+            TraditionNotes: "Baltic: Romuva and Dievturi honour Perkūnas at the first spring thunder and at the spring and summer feasts, with fire, bread, beer and oak, and swear solemn oaths by him. He is asked for rain, fertility of the fields, protection from storms and evil, and justice.",
+
+            tags: ["thunder", "storm", "oak", "justice", "rain", "oaths"]
+        },
+
+        saule: {
+            DisplayName: "Saulė",
+            Category: "Deity",
+
+            Pantheon: "Baltic",
+
+            Domains: "The Sun, life and warmth, motherhood, the orphan’s comfort, the turning year and midsummer",
+
+            SacredSymbols: "The sun wheel, the golden apple, the sun’s boat or chariot, the sun-sign woven on sashes",
+
+            SacredAnimals: "Horses that draw her chariot (in folk songs)",
+
+            SacredPlants: "Linden, apple, the flowers and herbs of midsummer",
+
+            CandleColors: "Gold, yellow, red",
+
+            Crystals: "Amber, sunstone, citrine, carnelian",
+
+            Herbs: "St John’s wort, chamomile, oak",
+
+            Offerings: "Bread, cheese, beer, flowers and herbs gathered at midsummer, songs",
+
+            TraditionalWarnings: "Saulė, Saule in Latvian, is a goddess: in Baltic folk songs the Sun is a mother and the Moon her husband. Most of her stories come from folk songs collected in the nineteenth and twentieth centuries, which may hold much older beliefs but cannot be dated.",
+
+            Overview: "Saulė is the Baltic sun goddess, the mother who rides across the sky in a chariot and sails home at night in a golden boat over the sea. Folk songs tell of her daughters, the Sun-maidens, of her marriage to Mėnulis, the Moon, who loved the Morning Star and was punished by Perkūnas, and of her care for orphans, who have no mother but the Sun. Latvian Jāņi and Lithuanian Joninės midsummer nights are full of songs to her.",
+
+            TraditionalMeaning: "The mother who warms all: life, comfort for the motherless, joy in summer and faithful return each day.",
+
+            DevotionalApproach: "Start here: greet the sun in the morning with a few words, and at midsummer gather a handful of flowers and herbs in her honour. Approach her with warmth and gratitude. She is honoured by joy, by kindness to those without family and by keeping the festivals of light.",
+
+            OfferingNotes: "Offer bread, cheese or beer, or flowers and herbs gathered at midsummer. Singing is the most traditional offering of all.",
+
+            AltarIdeas: "A gold or yellow candle, a sun wheel or woven sun sign, amber, a wreath of midsummer flowers and an apple.",
+
+            CulturalContext: "Today these gods are honoured in Romuva, the Lithuanian Baltic faith revived from the 1920s and refounded in 1967, and in Latvian Dievturība, founded in 1925, both small living religions that draw on folk song, custom and the old sources. Much Baltic myth comes from folk songs (Latvian dainas, Lithuanian dainos) collected in the nineteenth and twentieth centuries, and from Christian writers of the thirteenth to seventeenth centuries, some unreliable. Learn from Lithuanian and Latvian communities and their folklore archives.",
+
+            Traditions: "Baltic",
+
+            TraditionNotes: "Baltic: Romuva and Dievturi honour Saulė above all at midsummer, Rasos or Joninės in Lithuania and Jāņi in Latvia, with fires, wreaths, herbs, cheese, beer and all-night singing, and greet her at the solstices. She is asked for warmth, health, fertility and protection for children and orphans.",
+
+            tags: ["sun", "midsummer", "mother", "warmth", "dainas", "light"]
+        },
+
+        dievas: {
+            DisplayName: "Dievas",
+            Category: "Deity",
+
+            Pantheon: "Baltic",
+
+            Domains: "The sky and the divine order, blessing of fields and harvest, fate and justice, the wise elder",
+
+            SacredSymbols: "The sky, the grey cloak and hat of the old man in the songs, the horse he rides down the hill, the sun-and-sky signs woven in sashes",
+
+            SacredAnimals: "Horse",
+
+            SacredPlants: "Rye, oak, linden",
+
+            CandleColors: "White, blue, gold",
+
+            Crystals: "Clear quartz, amber, blue lace agate, celestite",
+
+            Herbs: "Rye, linden blossom, oak",
+
+            Offerings: "Bread, beer, the first of the harvest, songs",
+
+            TraditionalWarnings: "Dievas, Dievs in Latvian, is also the ordinary Lithuanian and Latvian word for God used by Christians today. Folk songs show a sky god walking among farmers, but how much of this is pre-Christian is debated; respect Christian neighbours who use the same name.",
+
+            Overview: "Dievas is the Baltic sky god, whose name shares a root with the Sanskrit deva and the Latin deus. In Latvian dainas Dievs is an old man in a grey cloak who rides down from the sky hill on his horse, blesses the fields, settles disputes and walks among farmers at harvest. Latvian Dievturība, the faith of those who keep Dievs, takes its name from him.",
+
+            TraditionalMeaning: "The order of the world: blessing, fair dealing, the wisdom of age and the harvest well kept.",
+
+            DevotionalApproach: "Start here: look up at the sky for a minute and thank him for the order and blessings of your life. Approach him with humility and gratitude. He is honoured by honest work, fairness, hospitality and care for the land.",
+
+            OfferingNotes: "Offer bread, beer or the first of the harvest, with a song. Welcoming a guest well follows the songs where Dievs comes as a traveller.",
+
+            AltarIdeas: "A white or blue candle, a loaf of rye bread, a sash with woven sky signs, amber, and ears of rye or a linden branch.",
+
+            CulturalContext: "Today these gods are honoured in Romuva, the Lithuanian Baltic faith revived from the 1920s and refounded in 1967, and in Latvian Dievturība, founded in 1925, both small living religions that draw on folk song, custom and the old sources. Much Baltic myth comes from folk songs (Latvian dainas, Lithuanian dainos) collected in the nineteenth and twentieth centuries, and from Christian writers of the thirteenth to seventeenth centuries, some unreliable. Learn from Lithuanian and Latvian communities and their folklore archives.",
+
+            Traditions: "Baltic",
+
+            TraditionNotes: "Baltic: Dievturi and Romuva honour Dievas at the harvest feasts, such as Latvian Miķeļi in late September, and at the solstices, with bread, beer and songs. He is asked for blessing on fields and households, justice and wisdom.",
+
+            tags: ["sky", "order", "harvest", "blessing", "dievturi", "wisdom"]
+        },
+
+        zemyna: {
+            DisplayName: "Žemyna",
+            Category: "Deity",
+
+            Pantheon: "Baltic",
+
+            Domains: "The Earth, fertility of fields and animals, the dead who rest in her, nourishment",
+
+            SacredSymbols: "The earth itself, bread, the grain field, a kiss given to the ground",
+
+            SacredAnimals: "All animals that live on the earth; a piglet in old offering lists",
+
+            SacredPlants: "Rye, grain, flowers of the field",
+
+            CandleColors: "Green, brown, black",
+
+            Crystals: "Moss agate, jasper, amber, tree agate",
+
+            Herbs: "Rye, wormwood (for display), clover",
+
+            Offerings: "Bread, beer poured onto the ground, the first of the harvest, flowers",
+
+            TraditionalWarnings: "Žemyna is known chiefly from a seventeenth-century Prussian Lithuanian account by Matthäus Prätorius, who recorded beer poured to her at feasts, and from later folk custom. Modern reconstructions, especially Marija Gimbutas’s great earth mother, go further than the sources.",
+
+            Overview: "Žemyna is the Lithuanian goddess of the earth, whose name comes from žemė, earth. Prätorius recorded that at feasts Lithuanians poured beer onto the ground for Žemyna, “blossom-raiser”, and prayed for good crops. In folk custom people kissed the earth, did not strike it needlessly, and treated bread, her gift, with reverence, kissing a piece that had fallen.",
+
+            TraditionalMeaning: "The earth as mother: nourishment, fertility, the resting place of the dead and the respect owed to the ground that feeds us.",
+
+            DevotionalApproach: "Start here: pour a little beer, juice or water onto the soil and thank her for the food you ate today. Approach her with respect and gratitude. She is honoured by treating bread and food with care and by looking after the land.",
+
+            OfferingNotes: "Offer bread, beer poured onto the ground, or the first fruit of a garden. Never waste bread; folk custom treated even a crumb with respect.",
+
+            AltarIdeas: "A green or brown candle, a bowl of earth, a loaf of rye bread, ears of grain, field flowers and moss agate.",
+
+            CulturalContext: "Today these gods are honoured in Romuva, the Lithuanian Baltic faith revived from the 1920s and refounded in 1967, and in Latvian Dievturība, founded in 1925, both small living religions that draw on folk song, custom and the old sources. Much Baltic myth comes from folk songs (Latvian dainas, Lithuanian dainos) collected in the nineteenth and twentieth centuries, and from Christian writers of the thirteenth to seventeenth centuries, some unreliable. Learn from Lithuanian and Latvian communities and their folklore archives.",
+
+            Traditions: "Baltic",
+
+            TraditionNotes: "Baltic: Romuva honours Žemyna with beer and bread poured and laid on the earth, at sowing, at the first bread of the harvest and at the feasts of the dead. She is asked for good crops, healthy animals and peace for the dead.",
+
+            tags: ["earth", "fertility", "harvest", "bread", "ancestors", "mother"]
+        },
+
+        menulis: {
+            DisplayName: "Mėnulis",
+            Category: "Deity",
+
+            Pantheon: "Baltic",
+
+            Domains: "The Moon, the measure of time, health and growth, war (in some songs), night journeys",
+
+            SacredSymbols: "The crescent, the moon as a young man or soldier, the stars as his companions",
+
+            SacredAnimals: "None securely attested in Baltic sources",
+
+            SacredPlants: "None securely attested in Baltic sources",
+
+            CandleColors: "Silver, white, pale blue",
+
+            Crystals: "Moonstone, selenite, clear quartz, amber",
+
+            Herbs: "Chamomile, mugwort, birch",
+
+            Offerings: "Bread, water, a greeting at the new moon",
+
+            TraditionalWarnings: "In Baltic folk songs the Moon is a man, Mėnulis or Mēness, and the Sun his wife. His story of unfaithfulness and punishment comes from folk songs; much else is modern reconstruction.",
+
+            Overview: "Mėnulis is the Baltic moon god, Mēness in Latvian, husband of the Sun goddess Saulė. A Lithuanian folk song tells how he left Saulė for Aušrinė, the Morning Star, and Perkūnas cut him in two, which is why the moon wanes and waxes. Latvian songs show him as a soldier or counter of the stars, and folk custom greeted the new moon with a short prayer for health and plenty.",
+
+            TraditionalMeaning: "Time and renewal: the phases of life, new beginnings with each crescent and faults paid for.",
+
+            DevotionalApproach: "Start here: when you see the new crescent, greet him and ask for health and plenty for the month. Approach him with honesty. He is honoured by keeping faith in relationships and making good use of each new beginning.",
+
+            OfferingNotes: "Offer bread or water at the new moon, or simply a spoken greeting, as folk custom did.",
+
+            AltarIdeas: "A silver or white candle, a crescent, moonstone or selenite, and a dish of bread by a window where the moon can be seen.",
+
+            CulturalContext: "Today these gods are honoured in Romuva, the Lithuanian Baltic faith revived from the 1920s and refounded in 1967, and in Latvian Dievturība, founded in 1925, both small living religions that draw on folk song, custom and the old sources. Much Baltic myth comes from folk songs (Latvian dainas, Lithuanian dainos) collected in the nineteenth and twentieth centuries, and from Christian writers of the thirteenth to seventeenth centuries, some unreliable. Learn from Lithuanian and Latvian communities and their folklore archives.",
+
+            Traditions: "Baltic",
+
+            TraditionNotes: "Baltic: Romuva and Dievturi greet Mėnulis at the new moon, as folk custom did, with bread and words asking for health, growth and plenty. He is asked for health, good timing and safe journeys by night.",
+
+            tags: ["moon", "time", "renewal", "health", "dainas", "night"]
+        },
+
+        ukko: {
+            DisplayName: "Ukko",
+            Category: "Deity",
+
+            Pantheon: "Finnish",
+
+            Domains: "The sky and thunder, rain for the crops, protection, the highest god of the Finnish songs",
+
+            SacredSymbols: "The thunder hammer or axe (old stone axes found in fields were called Ukko’s hammers), the sky, the oak",
+
+            SacredAnimals: "None securely attested in Finnish sources",
+
+            SacredPlants: "Oak, rowan",
+
+            CandleColors: "Blue, grey, white",
+
+            Crystals: "Labradorite (spectrolite, found in Finland), hematite, clear quartz, blue lace agate",
+
+            Herbs: "Juniper, birch, oak",
+
+            Offerings: "Beer or mead, bread, a cup raised at sowing, grain",
+
+            TraditionalWarnings: "Agricola wrote in 1551 that Ukko’s cup was drunk at the spring sowing, and complained of the drunkenness that went with it; honour the custom without the excess. Ukko’s name means old man, and in folk prayers he is called ylijumala, god on high.",
+
+            Overview: "Ukko is the Finnish and Karelian god of the sky and thunder, called on in the runo songs as Ukko ylijumala, the god on high, to send rain, give strength and drive away harm. He strikes with lightning from his hammer or axe, and old stone axes turned up by the plough were called his hammers (ukonvasara). Mikael Agricola recorded that at spring sowing people drank Ukko’s cup to bring rain and good crops.",
+
+            TraditionalMeaning: "The sky’s protection: rain that feeds the crops, strength in trouble and a power high above all.",
+
+            DevotionalApproach: "Start here: when you sow seeds in spring or begin something new, raise a cup to him and ask for good weather and help. Approach him with respect and plain words. He is honoured by honest work, care for fields and calling for help when it is truly needed.",
+
+            OfferingNotes: "Offer beer, mead, bread or grain, especially at sowing. Raising a cup in his name at a shared meal follows the old custom of Ukko’s cup.",
+
+            AltarIdeas: "A blue or grey candle, a stone axe or small hammer, a piece of spectrolite or labradorite, oak leaves and a cup.",
+
+            CulturalContext: "Today these powers are honoured in Suomenusko, the small living Finnish native faith revived from the late twentieth century, and remembered in Finnish and Karelian folk tradition. Much of what we know comes from the old runo songs of Karelia and Finland, collected in the nineteenth century; the Kalevala is Elias Lönnrot’s compilation of them (1835, 1849), arranged and partly reshaped by him, so check stories against the original songs where you can. Bishop Mikael Agricola’s 1551 list of the gods of Häme and Karelia is the oldest written source.",
+
+            Traditions: "Finnish",
+
+            TraditionNotes: "Finnish: Suomenusko honours Ukko at the spring sowing with Ukko’s cup (Ukon vakat) of beer or mead, at midsummer and when storms come. He is asked for rain, good crops, protection and strength.",
+
+            tags: ["sky", "thunder", "rain", "protection", "sowing", "kalevala"]
+        },
+
+        mielikki: {
+            DisplayName: "Mielikki",
+            Category: "Deity",
+
+            Pantheon: "Finnish",
+
+            Domains: "The forest and its game, hunters’ luck, healing herbs, the care of forest animals",
+
+            SacredSymbols: "The forest, keys and a basket of the forest’s treasures, the bear",
+
+            SacredAnimals: "Bear, elk, forest birds and animals",
+
+            SacredPlants: "Spruce, birch, berries of the forest",
+
+            CandleColors: "Green, brown, gold",
+
+            Crystals: "Moss agate, green aventurine, tree agate, jade",
+
+            Herbs: "Spruce tips, birch leaves, juniper",
+
+            Offerings: "Bread, butter, honey, a song sung in the forest, care for the woods",
+
+            TraditionalWarnings: "Mielikki appears in the runo songs as the mistress of the forest who gives or withholds game; hunters sang to her with flattering words. Take nothing from the forest that you do not need, and follow local rules on foraging and the right of public access.",
+
+            Overview: "Mielikki is the Finnish mistress of the forest, wife of Tapio, the forest king, who holds the keys to the forest’s storehouse and lets hunters find game when she is pleased. In the songs hunters ask her to dress in her finest and open her treasures, and some songs tell that she made the bear. She is also called on to heal animals and people.",
+
+            TraditionalMeaning: "The forest’s generosity: abundance given with care, kindness to animals and taking only what is needed.",
+
+            DevotionalApproach: "Start here: walk in a wood, greet her softly when you enter, and leave a little bread or a song before you go. Approach her with courtesy and gratitude. She is honoured by taking only what you need and caring for animals and woodland.",
+
+            OfferingNotes: "Offer bread, butter or honey left on a stump, or a song sung in the forest. Choose offerings that will not harm wildlife, and carry out any wrapping.",
+
+            AltarIdeas: "A green or brown candle, a spruce or birch twig, a bear figure, moss agate, a small basket of berries or cones, and a key.",
+
+            CulturalContext: "Today these powers are honoured in Suomenusko, the small living Finnish native faith revived from the late twentieth century, and remembered in Finnish and Karelian folk tradition. Much of what we know comes from the old runo songs of Karelia and Finland, collected in the nineteenth century; the Kalevala is Elias Lönnrot’s compilation of them (1835, 1849), arranged and partly reshaped by him, so check stories against the original songs where you can. Bishop Mikael Agricola’s 1551 list of the gods of Häme and Karelia is the oldest written source.",
+
+            Traditions: "Finnish",
+
+            TraditionNotes: "Finnish: Suomenusko honours Mielikki with Tapio in the forest and at Kekri, the old feast at the end of the farming year, with bread, butter, honey and songs. She is asked for luck in foraging and the hunt, healing, and the health of the forest and its animals.",
+
+            tags: ["forest", "animals", "hunting", "abundance", "healing", "bear"]
+        },
+
+        tapio: {
+            DisplayName: "Tapio",
+            Category: "Deity",
+
+            Pantheon: "Finnish",
+
+            Domains: "The forest and its king, game and hunting, the wilderness, protection of those lost in the woods",
+
+            SacredSymbols: "A beard of lichen and a hat of fir, the forest realm of Tapiola",
+
+            SacredAnimals: "Bear, elk, forest animals",
+
+            SacredPlants: "Spruce, fir, pine, lichen",
+
+            CandleColors: "Dark green, brown, grey",
+
+            Crystals: "Tree agate, moss agate, jasper, smoky quartz",
+
+            Herbs: "Pine, spruce, juniper",
+
+            Offerings: "Bread, beer, the first of a catch or harvest from the forest, quiet respect",
+
+            TraditionalWarnings: "In folk belief the forest could hide people who offended it, and Tapio was asked to let them go. Respect the forest’s real dangers: tell someone where you are going and carry what you need.",
+
+            Overview: "Tapio is the Finnish king of the forest, ruling Tapiola with his wife Mielikki. The runo songs picture him with a beard of lichen and a hat of fir, and hunters asked him to send game their way. Agricola listed Tapio in 1551 as the one who gave game from the forest, and the forest is still sometimes called Tapio’s realm in Finnish poetry.",
+
+            TraditionalMeaning: "The wild forest’s rule: respect for the wilderness, fair taking and safe return.",
+
+            DevotionalApproach: "Start here: before you go into a forest, ask his leave quietly, and thank him when you come out safely. Approach him with respect for the wild. He is honoured by humility in the forest, fair hunting and foraging, and care for old trees.",
+
+            OfferingNotes: "Offer bread or beer at the edge of the forest, or the first berry or mushroom you pick. Folk custom left offerings on a stump or at a special tree.",
+
+            AltarIdeas: "A dark green or brown candle, a piece of lichen or a fir sprig, a small carved animal, tree agate and a cup.",
+
+            CulturalContext: "Today these powers are honoured in Suomenusko, the small living Finnish native faith revived from the late twentieth century, and remembered in Finnish and Karelian folk tradition. Much of what we know comes from the old runo songs of Karelia and Finland, collected in the nineteenth century; the Kalevala is Elias Lönnrot’s compilation of them (1835, 1849), arranged and partly reshaped by him, so check stories against the original songs where you can. Bishop Mikael Agricola’s 1551 list of the gods of Häme and Karelia is the oldest written source.",
+
+            Traditions: "Finnish",
+
+            TraditionNotes: "Finnish: Suomenusko honours Tapio in the forest and at Kekri, the autumn feast that once ended the farming year, with bread, beer and quiet thanks. He is asked for luck in the hunt and forage, protection in the woods and safe return.",
+
+            tags: ["forest", "wilderness", "hunting", "protection", "trees", "kalevala"]
+        },
+
+        ilmatar: {
+            DisplayName: "Ilmatar",
+            Category: "Deity",
+
+            Pantheon: "Finnish",
+
+            Domains: "The air, creation of the world, motherhood, the sea, beginnings",
+
+            SacredSymbols: "The egg from which the world was made, the open sky, the sea, the duck or diving bird",
+
+            SacredAnimals: "Duck or diving bird (scaup or goldeneye in some songs)",
+
+            SacredPlants: "None securely attested in Finnish sources",
+
+            CandleColors: "Pale blue, white, silver",
+
+            Crystals: "Clear quartz, celestite, blue lace agate, moonstone",
+
+            Herbs: "Birch, chamomile, lavender",
+
+            Offerings: "Water, an egg, flowers, quiet time under the open sky",
+
+            TraditionalWarnings: "Ilmatar’s role as the mother of creation owes much to Lönnrot’s arrangement in the Kalevala. In many of the original songs a diving bird lays its eggs on the knee of Väinämöinen himself; Lönnrot gave the part to Ilmatar, the daughter of the air.",
+
+            Overview: "Ilmatar, the daughter of the air, is the mother of creation in the first song of the Kalevala. Growing weary of the empty sky, she sinks to the sea and floats for seven hundred years until a duck nests on her raised knee; when she moves, the eggs break and become the earth, the sky, the sun, the moon and the stars. She is the mother of the singer-sage Väinämöinen.",
+
+            TraditionalMeaning: "Creation from stillness: patience, beginnings, the power of a single movement and the mother of all.",
+
+            DevotionalApproach: "Start here: sit quietly under the open sky or by water and think about something you are waiting to begin. Approach her with patience and wonder. She is honoured by gentle beginnings and care for air, water and birds.",
+
+            OfferingNotes: "Offer water, an egg or flowers. Supporting clean air and bird conservation is an offering in her spirit.",
+
+            AltarIdeas: "A pale blue or white candle, an egg or egg-shaped stone, a feather, clear quartz and a bowl of water.",
+
+            CulturalContext: "Today these powers are honoured in Suomenusko, the small living Finnish native faith revived from the late twentieth century, and remembered in Finnish and Karelian folk tradition. Much of what we know comes from the old runo songs of Karelia and Finland, collected in the nineteenth century; the Kalevala is Elias Lönnrot’s compilation of them (1835, 1849), arranged and partly reshaped by him, so check stories against the original songs where you can. Bishop Mikael Agricola’s 1551 list of the gods of Häme and Karelia is the oldest written source.",
+
+            Traditions: "Finnish",
+
+            TraditionNotes: "Finnish: Suomenusko and readers of the Kalevala honour Ilmatar at beginnings and in spring, with water, eggs and flowers, and on Kalevala Day, 28 February, when Finland celebrates its epic. She is asked for good beginnings, patience and safe birth.",
+
+            tags: ["air", "creation", "beginnings", "mother", "egg", "kalevala"]
+        },
+
+        ahti: {
+            DisplayName: "Ahti",
+            Category: "Deity",
+
+            Pantheon: "Finnish",
+
+            Domains: "The waters, the sea and lakes, fish and fishing, the wealth of the deep",
+
+            SacredSymbols: "The waves, the fishing net, the treasure hall beneath the water",
+
+            SacredAnimals: "Fish, especially pike and salmon",
+
+            SacredPlants: "Water plants, reeds",
+
+            CandleColors: "Blue, green, silver",
+
+            Crystals: "Aquamarine, sea glass, blue lace agate, amazonite",
+
+            Herbs: "Reeds, water mint, juniper",
+
+            Offerings: "Bread, salt, a little beer poured into the water (only what will not pollute), a returned fish",
+
+            TraditionalWarnings: "Never pour anything harmful into lakes or the sea; a few crumbs of bread or a drop of beer is the most that should go into the water, and often a word of thanks is enough. Respect the water’s real dangers: Finland’s lakes are cold and deep.",
+
+            Overview: "Ahti, or Ahto, is the Finnish king of the waters, lord of lakes and seas, who with his wife Vellamo rules the wealth beneath the waves. Fishermen asked him for a good catch in the runo songs, and Agricola listed him in 1551 as the one who brought fish from the water. The name Ahti also belongs to an adventurous hero of the songs, and the Kalevala joins him with Lemminkäinen.",
+
+            TraditionalMeaning: "The generosity of the waters: plenty from lakes and seas, and respect for the deep.",
+
+            DevotionalApproach: "Start here: go to a lake, river or shore, look at the water quietly, and thank him for fish and fresh water. Approach him with respect for the water. He is honoured by keeping waters clean and fishing fairly.",
+
+            OfferingNotes: "Offer a few crumbs of bread or a pinch of salt at the water’s edge, or return an undersized fish. Taking part in a lake or shore clean-up honours him.",
+
+            AltarIdeas: "A blue or green candle, a small fishing float or net, a fish figure, aquamarine and a bowl of lake or tap water.",
+
+            CulturalContext: "Today these powers are honoured in Suomenusko, the small living Finnish native faith revived from the late twentieth century, and remembered in Finnish and Karelian folk tradition. Much of what we know comes from the old runo songs of Karelia and Finland, collected in the nineteenth century; the Kalevala is Elias Lönnrot’s compilation of them (1835, 1849), arranged and partly reshaped by him, so check stories against the original songs where you can. Bishop Mikael Agricola’s 1551 list of the gods of Häme and Karelia is the oldest written source.",
+
+            Traditions: "Finnish",
+
+            TraditionNotes: "Finnish: Suomenusko honours Ahti and Vellamo at lakes and the sea, especially at midsummer and when fishing begins, with bread, salt and thanks. He is asked for good fishing, safe water and clean lakes.",
+
+            tags: ["water", "sea", "lakes", "fishing", "plenty", "kalevala"]
+        },
+
+        rauni: {
+            DisplayName: "Rauni",
+            Category: "Deity",
+
+            Pantheon: "Finnish",
+
+            Domains: "Thunder and the storm’s fertility, the rowan tree, the wife of Ukko",
+
+            SacredSymbols: "The rowan tree and its red berries",
+
+            SacredAnimals: "None securely attested in Finnish sources",
+
+            SacredPlants: "Rowan",
+
+            CandleColors: "Red, orange, green",
+
+            Crystals: "Carnelian, red jasper, garnet, labradorite",
+
+            Herbs: "Rowan (berries cooked only; raw ones are mildly toxic), juniper, birch",
+
+            Offerings: "Bread, beer, rowan berries on a branch, care for a rowan tree",
+
+            TraditionalWarnings: "Rauni is one of the least documented figures of Finnish tradition: she appears in a few scattered sources as Ukko’s wife and is often compared with the Sámi goddess Ráðná. Her name is usually linked to the rowan tree. Most of what is written about her today is modern interpretation.",
+
+            Overview: "Rauni is a Finnish goddess named as the wife of Ukko, the thunder god, and linked with the rowan tree, whose name in old Scandinavian and some Finnish dialects is close to hers. Scholars compare her with Ráðná of the Sámi and with Thor’s rowan in Norse myth; beyond that, little is certain. Rowan was widely planted near Finnish homes for protection.",
+
+            TraditionalMeaning: "Protection and fruitfulness after the storm: the rowan by the door, quiet strength beside thunder.",
+
+            DevotionalApproach: "Start here: find a rowan tree, touch it, and thank her for protection, honest that we know little about her. Approach her gently and without inventing more than is known. She is honoured by care for rowan trees and for the home.",
+
+            OfferingNotes: "Offer bread, beer or a branch of rowan berries. Planting a rowan near your home follows old folk custom.",
+
+            AltarIdeas: "A red or orange candle, a sprig of rowan with berries, carnelian or red jasper, and a small cup beside one for Ukko.",
+
+            CulturalContext: "Today these powers are honoured in Suomenusko, the small living Finnish native faith revived from the late twentieth century, and remembered in Finnish and Karelian folk tradition. Much of what we know comes from the old runo songs of Karelia and Finland, collected in the nineteenth century; the Kalevala is Elias Lönnrot’s compilation of them (1835, 1849), arranged and partly reshaped by him, so check stories against the original songs where you can. Bishop Mikael Agricola’s 1551 list of the gods of Häme and Karelia is the oldest written source.",
+
+            Traditions: "Finnish",
+
+            TraditionNotes: "Finnish: Suomenusko honours Rauni beside Ukko at the spring sowing and when rowans fruit in autumn, with bread, beer and rowan berries. She is asked for protection of the home and fruitful land.",
+
+            tags: ["rowan", "thunder", "protection", "fertility", "home", "sami"]
+        },
+
+        woden: {
+            DisplayName: "Woden",
+            Category: "Deity",
+
+            Pantheon: "Anglo-Saxon",
+
+            Domains: "Wisdom and healing charms, kingship and royal ancestry, poetry, the dead, travel",
+
+            SacredSymbols: "The nine glory-twigs of the Nine Herbs Charm, the spear, the cloak and hat of the wanderer, the earthwork Wansdyke (Woden’s dyke)",
+
+            SacredAnimals: "Ravens and wolves (by comparison with the Norse Odin)",
+
+            SacredPlants: "The nine herbs of the charm: mugwort, plantain, watercress, chamomile, nettle, crab apple, chervil, fennel and lamb’s cress (identifications debated)",
+
+            CandleColors: "Grey, blue, black",
+
+            Crystals: "Smoky quartz, labradorite, hematite, jet",
+
+            Herbs: "Mugwort, plantain, fennel",
+
+            Offerings: "Mead or ale, bread, a poem, learning shared",
+
+            TraditionalWarnings: "Woden is the English form of the god the Norse called Odin, but the Old English sources are few and should not simply be filled from Snorri. Some of the nine herbs of the charm are irritants or toxic in quantity; do not take herbs without good advice.",
+
+            Overview: "Woden is the chief god of the pagan Anglo-Saxons, from whom most of the English royal houses traced their descent. In the Old English Nine Herbs Charm, Woden takes nine glory-twigs and strikes a serpent so that it flies into nine parts, and the poem Maxims I says “Woden made idols”. His name lives on in Wednesday (Wōdnesdæg) and in places such as Wednesbury and the great earthwork Wansdyke.",
+
+            TraditionalMeaning: "Wisdom and healing words: the power of charms and poems, the dignity of ancestry and the courage to seek knowledge.",
+
+            DevotionalApproach: "Start here: on a Wednesday, read the Nine Herbs Charm in translation, raise a cup of mead or juice and ask him for wisdom. Approach him with respect and curiosity. He is honoured by learning, honest speech and care for one’s people.",
+
+            OfferingNotes: "Offer mead, ale or bread, or a poem or piece of learning shared. Planting some of the nine herbs, carefully, honours the charm.",
+
+            AltarIdeas: "A grey or blue candle, a spear or staff, a bundle of nine twigs, smoky quartz, a drinking horn and a copy of the Old English charm.",
+
+            CulturalContext: "Today the Anglo-Saxon gods are honoured in Heathenry, a living religion, especially by followers of Fyrnsidu (the old custom) and Theodism, who work from Old English sources. Very little was written down before the English became Christian: the evidence is a few lines in Bede, charms, poems, royal family trees, the days of the week and place names. Choose inclusive Heathen groups; some misuse Anglo-Saxon heritage for racist ends, which most Heathens reject.",
+
+            Traditions: "Anglo-Saxon",
+
+            TraditionNotes: "Anglo-Saxon: Heathens of the Fyrnsidu and Theodish traditions honour Woden on Wednesdays and at Yule, with mead, bread and poetry, often reading the Nine Herbs Charm. He is asked for wisdom, healing, good leadership and safe journeys.",
+
+            tags: ["wisdom", "healing", "charms", "kingship", "poetry", "heathen"]
+        },
+
+        thunor: {
+            DisplayName: "Thunor",
+            Category: "Deity",
+
+            Pantheon: "Anglo-Saxon",
+
+            Domains: "Thunder and storms, protection of people and farms, strength, the oak",
+
+            SacredSymbols: "The hammer, the oak, the thunderbolt",
+
+            SacredAnimals: "Goats (by comparison with the Norse Thor)",
+
+            SacredPlants: "Oak",
+
+            CandleColors: "Red, gold, grey",
+
+            Crystals: "Hematite, red jasper, labradorite, garnet",
+
+            Herbs: "Oak, juniper, rowan",
+
+            Offerings: "Ale, bread, oak leaves, hard work done for others",
+
+            TraditionalWarnings: "Thunor is the Old English form of Thor, but almost nothing of his myth survives in English; stories of Thor from Iceland are a later and different tradition. A villain named Thunor in the legend of St Mildrith is a man, not the god.",
+
+            Overview: "Thunor is the Anglo-Saxon god of thunder, kin to the Norse Thor and the Old Saxon Thunaer, whom Saxon converts on the Continent were made to renounce by name. His name lives on in Thursday (Þunresdæg) and in English places such as Thundersley, Thursley and Thunderfield, which may once have held his shrines. Ælfric’s sermon On the False Gods names him with Woden and Frige.",
+
+            TraditionalMeaning: "Strength that protects: the storm that clears the air, defence of the household and the dignity of honest labour.",
+
+            DevotionalApproach: "Start here: on a Thursday, do something hard that helps someone else, then raise a cup of ale or water to him. Approach him plainly and warmly. He is honoured by protecting others, keeping your word and working hard.",
+
+            OfferingNotes: "Offer ale, bread or oak leaves, or physical work done for the good of others. Caring for an oak tree honours him.",
+
+            AltarIdeas: "A red or gold candle, a small hammer, oak leaves and acorns, hematite and a cup of ale.",
+
+            CulturalContext: "Today the Anglo-Saxon gods are honoured in Heathenry, a living religion, especially by followers of Fyrnsidu (the old custom) and Theodism, who work from Old English sources. Very little was written down before the English became Christian: the evidence is a few lines in Bede, charms, poems, royal family trees, the days of the week and place names. Choose inclusive Heathen groups; some misuse Anglo-Saxon heritage for racist ends, which most Heathens reject.",
+
+            Traditions: "Anglo-Saxon",
+
+            TraditionNotes: "Anglo-Saxon: Heathens honour Thunor on Thursdays and in storms, with ale, bread and oak, and call on him to hallow and protect a gathering. He is asked for protection, strength, good weather for crops and safety in storms.",
+
+            tags: ["thunder", "storm", "protection", "strength", "oak", "heathen"]
+        },
+
+        frige: {
+            DisplayName: "Frige",
+            Category: "Deity",
+
+            Pantheon: "Anglo-Saxon",
+
+            Domains: "Love and marriage, the household, women’s work and wisdom, motherhood",
+
+            SacredSymbols: "The distaff and spindle, the household keys, the hearth",
+
+            SacredAnimals: "None securely attested in Old English sources",
+
+            SacredPlants: "Flax, birch",
+
+            CandleColors: "White, blue, silver",
+
+            Crystals: "Moonstone, blue lace agate, clear quartz, amber",
+
+            Herbs: "Flax, lady’s mantle, yarrow",
+
+            Offerings: "Bread, mead, spun or woven thread, a well-kept home",
+
+            TraditionalWarnings: "Frige is the Old English form of the goddess the Norse called Frigg; whether she was also once the same as Freyja is debated. Old English evidence is limited to Friday (Frīgedæg), Ælfric’s sermon and a few uncertain place names.",
+
+            Overview: "Frige is an Anglo-Saxon goddess of love, marriage and the household, kin to the Norse Frigg, Odin’s wife. Friday, Frīgedæg, is named after her, translating the Latin day of Venus, and the late Anglo-Saxon homilist Ælfric names her among the gods the heathens worshipped. Elsewhere in the Germanic world, the Lombard origin legend tells how Frea outwitted Godan, her husband.",
+
+            TraditionalMeaning: "The household held in wisdom: love, marriage, the work of hands and quiet foresight.",
+
+            DevotionalApproach: "Start here: on a Friday, tidy one part of your home, spin or knit a few rows or simply light a candle at the table and thank her for your household. Approach her with warmth. She is honoured by care for family, faithful love and wise management of the home.",
+
+            OfferingNotes: "Offer bread, mead or a length of spun or woven thread. A meal shared at home is an offering in her spirit.",
+
+            AltarIdeas: "A white or blue candle, a distaff or spindle, a bunch of keys, moonstone and a small loaf.",
+
+            CulturalContext: "Today the Anglo-Saxon gods are honoured in Heathenry, a living religion, especially by followers of Fyrnsidu (the old custom) and Theodism, who work from Old English sources. Very little was written down before the English became Christian: the evidence is a few lines in Bede, charms, poems, royal family trees, the days of the week and place names. Choose inclusive Heathen groups; some misuse Anglo-Saxon heritage for racist ends, which most Heathens reject.",
+
+            Traditions: "Anglo-Saxon",
+
+            TraditionNotes: "Anglo-Saxon: Heathens honour Frige on Fridays and at Modraniht, the Mothers’ Night Bede records at the start of the year, with bread, mead and spinning. She is asked for love, a happy marriage, family wellbeing and wisdom in running the home.",
+
+            tags: ["love", "marriage", "household", "spinning", "women", "heathen"]
+        },
+
+        tiw: {
+            DisplayName: "Tiw",
+            Category: "Deity",
+
+            Pantheon: "Anglo-Saxon",
+
+            Domains: "Justice and law, war and courage, oaths, the guiding star",
+
+            SacredSymbols: "The Tīr rune (ᛏ), shaped like an arrow or spear, the guiding star",
+
+            SacredAnimals: "None securely attested in Old English sources",
+
+            SacredPlants: "None securely attested in Old English sources",
+
+            CandleColors: "Red, white, blue",
+
+            Crystals: "Hematite, bloodstone, clear quartz, sodalite",
+
+            Herbs: "Oak, yarrow, juniper",
+
+            Offerings: "Ale or mead, bread, an oath kept, fair dealing",
+
+            TraditionalWarnings: "Tiw is the Old English form of the god the Norse called Týr. Apart from Tuesday (Tīwesdæg) and a few place names such as Tysoe and Tuesley, almost nothing of him survives in English; the rune poem’s Tīr may name him or simply a star.",
+
+            Overview: "Tiw is the Anglo-Saxon god of war and justice, kin to the Norse Týr, who gave his hand to bind the wolf Fenrir. Tuesday, Tīwesdæg, is named after him, matching the Latin day of Mars. The Old English Rune Poem says of the rune Tīr that it is a token that keeps faith well with princes and never fails on its course through the night.",
+
+            TraditionalMeaning: "Justice that holds steady: courage, fair law, honour in conflict and faithfulness like a guiding star.",
+
+            DevotionalApproach: "Start here: on a Tuesday, keep one promise that costs you something, then raise a cup to him. Approach him with honesty and steadiness. He is honoured by fair dealing, courage and keeping oaths.",
+
+            OfferingNotes: "Offer ale, mead or bread, or an oath faithfully kept. Serving on a jury or helping settle a dispute fairly honours him.",
+
+            AltarIdeas: "A red or white candle, the Tīr rune carved on wood, a small spear or arrow, hematite and a cup.",
+
+            CulturalContext: "Today the Anglo-Saxon gods are honoured in Heathenry, a living religion, especially by followers of Fyrnsidu (the old custom) and Theodism, who work from Old English sources. Very little was written down before the English became Christian: the evidence is a few lines in Bede, charms, poems, royal family trees, the days of the week and place names. Choose inclusive Heathen groups; some misuse Anglo-Saxon heritage for racist ends, which most Heathens reject.",
+
+            Traditions: "Anglo-Saxon",
+
+            TraditionNotes: "Anglo-Saxon: Heathens honour Tiw on Tuesdays and when oaths are sworn or disputes settled, with ale, mead and bread. He is asked for justice, courage, fair outcomes and steadfastness.",
+
+            tags: ["justice", "law", "courage", "oaths", "war", "heathen"]
+        },
+
+        eostre: {
+            DisplayName: "Eostre",
+            Category: "Deity",
+
+            Pantheon: "Anglo-Saxon",
+
+            Domains: "Spring and the dawn (by her name), the month of April, new beginnings",
+
+            SacredSymbols: "The dawn, the spring month Eosturmonath",
+
+            SacredAnimals: "None in the sources; the hare is a modern association",
+
+            SacredPlants: "None in the sources; spring flowers are a modern association",
+
+            CandleColors: "Pale yellow, green, pink",
+
+            Crystals: "Rose quartz, green aventurine, citrine, moonstone",
+
+            Herbs: "Primrose, violet, birch",
+
+            Offerings: "Spring flowers, eggs, bread, greeting the dawn",
+
+            TraditionalWarnings: "Bede is the only early source for Eostre: in 725 he wrote that April, Eosturmonath, was named after a goddess Eostre, in whose honour feasts were once held, and that the name passed to Easter. Some scholars doubt she existed; Jacob Grimm built a German Ostara on Bede in 1835. Her hares, eggs and the story of a bird turned into a hare are modern, from the nineteenth and twentieth centuries.",
+
+            Overview: "Eostre is an Anglo-Saxon goddess known only from one sentence of the monk Bede, who wrote that the month Eosturmonath, roughly April, was named after her, and that the English now called the Easter season by her name. Her name comes from a root meaning dawn or east, like the Greek Eos. Inscriptions to mother goddesses called the Austriahenae, found in Germany in 1958, may or may not be related.",
+
+            TraditionalMeaning: "The coming of the light: spring, dawn and new beginnings, held honestly as a single line of evidence.",
+
+            DevotionalApproach: "Start here: get up early one spring morning, watch the dawn and greet her, honest that we know almost nothing about her. Approach her with gratitude for spring. She is honoured by welcoming new beginnings and noticing the returning light.",
+
+            OfferingNotes: "Offer spring flowers, eggs or bread at dawn. Modern Pagans often decorate eggs for her; that is a new custom, freely chosen.",
+
+            AltarIdeas: "A pale yellow or green candle, spring flowers, an egg, rose quartz and an east-facing window.",
+
+            CulturalContext: "Today the Anglo-Saxon gods are honoured in Heathenry, a living religion, especially by followers of Fyrnsidu (the old custom) and Theodism, who work from Old English sources. Very little was written down before the English became Christian: the evidence is a few lines in Bede, charms, poems, royal family trees, the days of the week and place names. Choose inclusive Heathen groups; some misuse Anglo-Saxon heritage for racist ends, which most Heathens reject.",
+
+            Traditions: "Anglo-Saxon, Wheel of the Year",
+
+            TraditionNotes: "Anglo-Saxon: Heathens of the Fyrnsidu tradition honour Eostre in Eosturmonath, around the spring equinox and April, with feasts, flowers and greetings at dawn, following Bede. She is asked for renewal, hope and good beginnings.\n\nWheel of the Year: Modern Pagans name the spring equinox Ostara after Grimm’s Ostara and Bede’s Eostre, and keep it with eggs, flowers and the hare, all modern customs.",
+
+            tags: ["spring", "dawn", "beginnings", "ostara", "bede", "renewal"]
+        },
+
+        hreda: {
+            DisplayName: "Hreda",
+            Category: "Deity",
+
+            Pantheon: "Anglo-Saxon",
+
+            Domains: "The month of March and its sacrifices, possibly victory or glory",
+
+            SacredSymbols: "The month Hrethmonath",
+
+            SacredAnimals: "None in the sources",
+
+            SacredPlants: "None in the sources",
+
+            CandleColors: "Red, gold, green",
+
+            Crystals: "Carnelian, garnet, citrine, jasper",
+
+            Herbs: "Birch, nettle, early spring greens",
+
+            Offerings: "Bread, ale, early spring greens, honesty about how little is known",
+
+            TraditionalWarnings: "Hreda, or Hrēþe, is known from one line of Bede alone, who wrote that March, Hrethmonath, was named after a goddess Hreda, to whom sacrifices were made in that month. Nothing else is recorded; her name may be related to Old English hrēþ, glory or victory, but this is uncertain. Anything more is modern.",
+
+            Overview: "Hreda is an Anglo-Saxon goddess named only by Bede in his work on time-reckoning of 725, where he lists the old English months and says that Hrethmonath, roughly March, took its name from the goddess Hreda, to whom the English offered sacrifices in that month before they became Christian. Her name may mean glory or victory, or relate to something else entirely.",
+
+            TraditionalMeaning: "The stirring of the year: the effort of early spring, honoured with honesty about a single line of evidence.",
+
+            DevotionalApproach: "Start here: at the start of March, offer a little bread and ale and thank her for the turning of the year, saying plainly that you know only her name. Approach her with humility. She is honoured by keeping the old month and by not inventing more than is known.",
+
+            OfferingNotes: "Offer bread, ale or early spring greens at the start of March. Bede says only that sacrifices were made; modern devotees use simple food offerings.",
+
+            AltarIdeas: "A red or gold candle, early spring greens or birch twigs, carnelian and a small cup.",
+
+            CulturalContext: "Today the Anglo-Saxon gods are honoured in Heathenry, a living religion, especially by followers of Fyrnsidu (the old custom) and Theodism, who work from Old English sources. Very little was written down before the English became Christian: the evidence is a few lines in Bede, charms, poems, royal family trees, the days of the week and place names. Choose inclusive Heathen groups; some misuse Anglo-Saxon heritage for racist ends, which most Heathens reject.",
+
+            Traditions: "Anglo-Saxon",
+
+            TraditionNotes: "Anglo-Saxon: Heathens of the Fyrnsidu tradition honour Hreda in Hrethmonath, March, with bread and ale, as Bede says the English once did. She is asked for strength in the turning of the year and success in what is begun.",
+
+            tags: ["march", "spring", "bede", "victory", "months", "heathen"]
+        },
+
+        tinia: {
+            DisplayName: "Tinia",
+            Category: "Deity",
+
+            Pantheon: "Etruscan",
+
+            Domains: "The sky and lightning, kingship among the gods, boundaries, the signs read by the haruspices",
+
+            SacredSymbols: "The thunderbolt, the sceptre, the regions of the sky divided for reading lightning",
+
+            SacredAnimals: "None securely attested in Etruscan sources",
+
+            SacredPlants: "None securely attested in Etruscan sources",
+
+            CandleColors: "Blue, white, gold",
+
+            Crystals: "Clear quartz, labradorite, lapis lazuli, hematite",
+
+            Herbs: "Oak, bay laurel, frankincense",
+
+            Offerings: "Wine, bread, incense, watching the sky with care",
+
+            TraditionalWarnings: "Tinia is the Etruscan sky god, matched with the Greek Zeus and Roman Jupiter, but his own myths are mostly lost. Roman writers say the Etruscans held that Tinia hurled three kinds of lightning, the most dreadful only with the counsel of other gods; this comes through Roman eyes.",
+
+            Overview: "Tinia is the chief god of the Etruscans, lord of the sky and lightning. With Uni and Menrva he formed a triad that may lie behind Rome’s Capitoline triad of Jupiter, Juno and Minerva. His name appears on the bronze Liver of Piacenza, a model used by haruspices to read the will of the gods, and on engraved mirrors, where he is shown as a bearded king with a thunderbolt, sometimes giving birth to Menrva from his head.",
+
+            TraditionalMeaning: "Order in the sky: authority used with counsel, signs read with care and the boundaries that hold a city together.",
+
+            DevotionalApproach: "Start here: watch the sky for a few minutes, noting clouds, weather and light, and greet him. Approach him with reverence and with honesty about how little survives. He is honoured by just authority and by careful attention to signs.",
+
+            OfferingNotes: "Offer wine, bread or incense. Many modern devotees honour him alongside Jupiter, with Roman forms of offering.",
+
+            AltarIdeas: "A blue or white candle, a thunderbolt shape, a picture of an Etruscan mirror or the Liver of Piacenza, clear quartz and a cup of wine.",
+
+            CulturalContext: "There is no living Etruscan religion; it faded under Roman rule, though Roman haruspices kept parts of the Etruscan discipline into late antiquity. A few modern polytheists honour the Etruscan gods, usually alongside Roman practice. What we know comes from inscriptions in a language only partly understood, labelled scenes on bronze mirrors, temples and tombs, and Roman writers; much is uncertain.",
+
+            Traditions: "Etruscan",
+
+            TraditionNotes: "Etruscan: The few modern Etruscan polytheists honour Tinia, often on Thursdays (a modern choice from Jupiter’s day) and at the Ides with Jupiter, with wine, bread and incense. He is asked for order, protection, wise authority and clear signs.",
+
+            tags: ["sky", "lightning", "kingship", "signs", "etruria", "order"]
+        },
+
+        uni: {
+            DisplayName: "Uni",
+            Category: "Deity",
+
+            Pantheon: "Etruscan",
+
+            Domains: "Queenship, protection of cities, marriage and birth, adoption, alliance",
+
+            SacredSymbols: "The queen’s diadem and sceptre, the gold tablets of Pyrgi, the temple at Veii",
+
+            SacredAnimals: "None securely attested in Etruscan sources",
+
+            SacredPlants: "None securely attested in Etruscan sources",
+
+            CandleColors: "White, gold, deep blue",
+
+            Crystals: "Moonstone, garnet, lapis lazuli, clear quartz",
+
+            Herbs: "Myrrh, lily, myrtle",
+
+            Offerings: "Wine, cakes, flowers, protection given to those in your care",
+
+            TraditionalWarnings: "Uni corresponds to the Roman Juno and the Greek Hera, but she was also equated with the Phoenician Astarte in the bilingual gold tablets from Pyrgi. Her Etruscan myths are known mainly from mirror scenes; much else is borrowed from Greek and Roman sources.",
+
+            Overview: "Uni is the Etruscan queen of the gods, consort of Tinia and protector of cities. Around 500 BCE Thefarie Velianas, ruler of Caere, dedicated a temple to her at Pyrgi with gold tablets in Etruscan and Phoenician, the second naming her as Astarte. Livy tells how the Romans, besieging Veii in 396 BCE, invited its Uni to come to Rome as Juno Regina, and an engraved mirror shows her suckling the grown Hercle, Hercules, as a sign of adoption.",
+
+            TraditionalMeaning: "Protective queenship: guardianship of a people, marriage and birth, and the bonds of adoption and alliance.",
+
+            DevotionalApproach: "Start here: light a candle for a family you belong to, by birth, marriage or choice, and ask her to protect it. Approach her with dignity. She is honoured by protecting those in your care and by keeping alliances faithfully.",
+
+            OfferingNotes: "Offer wine, cakes or flowers. Supporting adoptive and foster families is an offering in her spirit.",
+
+            AltarIdeas: "A white or gold candle, a crown or diadem, a picture of the Pyrgi tablets, moonstone or garnet, and flowers.",
+
+            CulturalContext: "There is no living Etruscan religion; it faded under Roman rule, though Roman haruspices kept parts of the Etruscan discipline into late antiquity. A few modern polytheists honour the Etruscan gods, usually alongside Roman practice. What we know comes from inscriptions in a language only partly understood, labelled scenes on bronze mirrors, temples and tombs, and Roman writers; much is uncertain.",
+
+            Traditions: "Etruscan",
+
+            TraditionNotes: "Etruscan: The few modern Etruscan polytheists honour Uni with Juno at the Matronalia on 1 March and on the Kalends, with wine, cakes and flowers. She is asked to protect families and cities, bless marriages and births and keep alliances true.",
+
+            tags: ["queen", "protection", "marriage", "adoption", "etruria", "alliance"]
+        },
+
+        menrva: {
+            DisplayName: "Menrva",
+            Category: "Deity",
+
+            Pantheon: "Etruscan",
+
+            Domains: "Wisdom and counsel, war and protection, crafts and the arts, the growth of young people",
+
+            SacredSymbols: "Helmet, spear and aegis, the owl, the engraved mirror",
+
+            SacredAnimals: "Owl (by comparison with Athena and Minerva)",
+
+            SacredPlants: "Olive (by comparison with Athena)",
+
+            CandleColors: "Blue, silver, white",
+
+            Crystals: "Sodalite, lapis lazuli, clear quartz, hematite",
+
+            Herbs: "Olive leaf, sage, bay laurel",
+
+            Offerings: "Olive oil, wine, incense, skilled work, study",
+
+            TraditionalWarnings: "Menrva matches the Greek Athena and Roman Minerva, and Rome probably took Minerva’s name from her. But Etruscan mirrors also show stories with her that are not Greek, so do not assume every Athena myth applies.",
+
+            Overview: "Menrva is the Etruscan goddess of wisdom, war and the arts, one of the most popular figures on engraved bronze mirrors. They show her armed with helmet and aegis, being born from Tinia’s head, protecting heroes such as Hercle and Perse (Perseus), and sometimes overseeing the care of a child. Votive offerings to her were found at the sanctuary of Portonaccio at Veii.",
+
+            TraditionalMeaning: "Wisdom that protects: good counsel, skill, the education of the young and courage guided by thought.",
+
+            DevotionalApproach: "Start here: spend ten minutes learning something or practising a craft, then light a candle and offer it to her. Approach her with seriousness and curiosity. She is honoured by learning, skilled work and protecting the young.",
+
+            OfferingNotes: "Offer olive oil, wine or incense, or a piece of skilled work. Supporting education is an offering in her spirit.",
+
+            AltarIdeas: "A blue or silver candle, a small helmet or owl, a picture of an Etruscan mirror showing Menrva, sodalite and an olive branch.",
+
+            CulturalContext: "There is no living Etruscan religion; it faded under Roman rule, though Roman haruspices kept parts of the Etruscan discipline into late antiquity. A few modern polytheists honour the Etruscan gods, usually alongside Roman practice. What we know comes from inscriptions in a language only partly understood, labelled scenes on bronze mirrors, temples and tombs, and Roman writers; much is uncertain.",
+
+            Traditions: "Etruscan",
+
+            TraditionNotes: "Etruscan: The few modern Etruscan polytheists honour Menrva with Minerva at the Quinquatrus in March, with olive oil, wine and incense, and when beginning study or craft. She is asked for wisdom, skill, protection and good guidance of the young.",
+
+            tags: ["wisdom", "war", "craft", "learning", "etruria", "protection"]
+        },
+
+        turan: {
+            DisplayName: "Turan",
+            Category: "Deity",
+
+            Pantheon: "Etruscan",
+
+            Domains: "Love and beauty, desire, youth, the flourishing of life",
+
+            SacredSymbols: "Wings, the mirror, the flowering branch, jewellery",
+
+            SacredAnimals: "Swan, dove (on mirrors)",
+
+            SacredPlants: "Flowers, especially roses (a modern association), myrtle",
+
+            CandleColors: "Pink, red, white",
+
+            Crystals: "Rose quartz, rhodonite, pearl, garnet",
+
+            Herbs: "Rose, myrtle, jasmine",
+
+            Offerings: "Flowers, perfume, jewellery, honey",
+
+            TraditionalWarnings: "Turan corresponds to the Greek Aphrodite and the Roman Venus, but her name may mean lady or mistress and she had her own Etruscan character. Most of what we know is from labelled scenes on mirrors.",
+
+            Overview: "Turan is the Etruscan goddess of love and beauty, often shown on engraved bronze mirrors as a winged young woman, adorned with jewellery, attended by doves or swans and by her lover Atunis (Adonis). Dedications to her were found at the port sanctuary of Gravisca. Her name may mean the lady.",
+
+            TraditionalMeaning: "Beauty and love as blessings: desire, adornment, delight and the flourishing of life.",
+
+            DevotionalApproach: "Start here: put on something beautiful or set a flower by a mirror, and thank her for one thing you love. Approach her with joy. She is honoured by kindness in love, care for beauty and delight in the world.",
+
+            OfferingNotes: "Offer flowers, perfume, honey or a small piece of jewellery. Many Etruscan mirrors were wedding or love gifts; giving a thoughtful gift honours her.",
+
+            AltarIdeas: "A pink or red candle, a hand mirror, a dove or swan figure, rose quartz and fresh flowers.",
+
+            CulturalContext: "There is no living Etruscan religion; it faded under Roman rule, though Roman haruspices kept parts of the Etruscan discipline into late antiquity. A few modern polytheists honour the Etruscan gods, usually alongside Roman practice. What we know comes from inscriptions in a language only partly understood, labelled scenes on bronze mirrors, temples and tombs, and Roman writers; much is uncertain.",
+
+            Traditions: "Etruscan",
+
+            TraditionNotes: "Etruscan: The few modern Etruscan polytheists honour Turan, often on Fridays with Venus (a modern choice), with flowers, perfume and honey. She is asked for love, beauty, harmony and joy.",
+
+            tags: ["love", "beauty", "desire", "youth", "etruria", "joy"]
+        },
+
+        fufluns: {
+            DisplayName: "Fufluns",
+            Category: "Deity",
+
+            Pantheon: "Etruscan",
+
+            Domains: "Wine and the vine, growth and vegetation, joy and celebration, the life of plants",
+
+            SacredSymbols: "The vine and ivy wreath, the drinking cup, the thyrsus",
+
+            SacredAnimals: "Panther (by comparison with Dionysus)",
+
+            SacredPlants: "Grapevine, ivy",
+
+            CandleColors: "Purple, green, red",
+
+            Crystals: "Amethyst, garnet, green aventurine, agate",
+
+            Herbs: "Grape leaves, ivy, cinnamon",
+
+            Offerings: "Wine or grape juice, grapes, bread, music",
+
+            TraditionalWarnings: "Fufluns matches the Greek Dionysus and Roman Bacchus, but his name is not Greek and may relate to budding or growth. Offer wine without overindulging, and offer grape juice if you do not drink.",
+
+            Overview: "Fufluns is the Etruscan god of wine, vegetation and joy. Mirrors show him as a young god wreathed in vines, with his mother Semla (Semele) and his partner Areatha (Ariadne), much as Greek art shows Dionysus. The city of Populonia, Pupluna in Etruscan, may have been named after him.",
+
+            TraditionalMeaning: "Joyful growth: the vine’s abundance, celebration and the energy of living things.",
+
+            DevotionalApproach: "Start here: pour a small cup of wine or grape juice for him and share a meal with someone, enjoying it. Approach him with joy and moderation. He is honoured by celebration, by care for growing things and by the vine harvest.",
+
+            OfferingNotes: "Offer wine or grape juice, grapes or bread, and music. Tending a vine or any climbing plant honours him.",
+
+            AltarIdeas: "A purple or green candle, a vine or ivy wreath, a cup, a bunch of grapes and amethyst.",
+
+            CulturalContext: "There is no living Etruscan religion; it faded under Roman rule, though Roman haruspices kept parts of the Etruscan discipline into late antiquity. A few modern polytheists honour the Etruscan gods, usually alongside Roman practice. What we know comes from inscriptions in a language only partly understood, labelled scenes on bronze mirrors, temples and tombs, and Roman writers; much is uncertain.",
+
+            Traditions: "Etruscan",
+
+            TraditionNotes: "Etruscan: The few modern Etruscan polytheists honour Fufluns at the grape harvest and with Liber at the Liberalia in March, with wine, grapes and music. He is asked for abundance, joy and healthy vines and gardens.",
+
+            tags: ["wine", "vine", "growth", "joy", "etruria", "celebration"]
+        },
+
+        mari: {
+            DisplayName: "Mari",
+            Category: "Deity",
+
+            Pantheon: "Basque",
+
+            Domains: "Storms and weather, the mountains and caves, the earth’s riches, truth and the punishment of lies, theft and broken promises",
+
+            SacredSymbols: "Her mountain caves, a golden comb, a ball of fire crossing the sky between peaks, a sickle against hail",
+
+            SacredAnimals: "Ram, goat, raven, vulture (shapes she takes in folklore)",
+
+            SacredPlants: "None securely attested in Basque folklore",
+
+            CandleColors: "Red, gold, grey",
+
+            Crystals: "Pyrite, garnet, jasper, smoky quartz",
+
+            Herbs: "Juniper, thyme, mountain herbs",
+
+            Offerings: "Bread, a word of greeting at her cave, honesty and promises kept",
+
+            TraditionalWarnings: "Mari is known from Basque folklore collected in the nineteenth and twentieth centuries, above all by José Miguel de Barandiarán; how old the beliefs are, and whether she was once a goddess of pre-Christian worship, is debated. In the tales she punishes liars and the proud, and it is said that one must not turn one’s back on her when leaving her cave. Her caves are real places in the mountains: visit only with care and respect.",
+
+            Overview: "Mari is the great female power of Basque folklore, the Lady of the mountains, who lives in caves on peaks such as Anboto, Txindoki and Aizkorri and moves between them as a ball of fire, bringing storms and hail. She is often seen combing her hair with a golden comb at a cave mouth, and meets her partner Sugaar (Maju) on Fridays, when storms break. Folk tales say she rewards honesty and punishes lies, theft, pride and broken promises, and a Basque saying holds that whatever has a name exists.",
+
+            TraditionalMeaning: "The truth of the mountain: the force of weather, the earth’s wealth and the demand that we speak honestly and keep our word.",
+
+            DevotionalApproach: "Start here: on a Friday, step outside, look towards high ground or a stormy sky, and promise yourself one honest thing you will keep. Approach her with respect and plain truth. She is honoured by honesty, keeping promises, generosity and care for the mountains.",
+
+            OfferingNotes: "Offer bread or a quiet greeting at a mountain or cave, and take nothing away. In folklore what pleases her most is honesty, so a promise kept is the truest offering.",
+
+            AltarIdeas: "A red or gold candle, a stone from a hillside, a small comb, pyrite or garnet, and a picture of Anboto or another Basque peak.",
+
+            CulturalContext: "Mari belongs to the folklore of the Basque people, a living culture with its own language, Euskara, and to the small modern Basque native-faith revival. Learn from Basque sources and communities, such as Barandiarán’s collections, and remember that Basque Catholic tradition and folk belief have long lived side by side.",
+
+            Traditions: "Basque",
+
+            TraditionNotes: "Basque: People who honour Mari today, in the Basque native-faith revival and in folk custom, greet her on Fridays, when folklore says she meets Sugaar, and at her mountains, with bread and promises kept. She is asked for protection from storms and hail, for truth to come to light and for the land’s wealth.",
+
+            tags: ["storms", "mountains", "truth", "caves", "basque", "earth"]
+        },
+
+        amaterasu: {
+            DisplayName: "Amaterasu",
+            Category: "Deity",
+
+            Pantheon: "Shinto",
+
+            Domains: "The sun and its light, the order of heaven, rice and weaving, the imperial ancestor, renewal",
+
+            SacredSymbols: "The sacred mirror (Yata no Kagami), the sun, the rice field, the rebuilt shrine of Ise",
+
+            SacredAnimals: "Rooster, whose crowing helped call her from the cave",
+
+            SacredPlants: "Rice, sakaki",
+
+            CandleColors: "White, gold, red",
+
+            Crystals: "Clear quartz, sunstone, citrine, pearl",
+
+            Herbs: "Sakaki, rice, hinoki (Japanese cypress)",
+
+            Offerings: "Rice, salt, water, sake, coins at the shrine, sincere gratitude",
+
+            TraditionalWarnings: "Amaterasu Ōmikami is a living kami of Shinto, enshrined at Ise Jingū, Japan’s most sacred shrine. Before 1945 her role as ancestor of the imperial line was used by State Shinto to support nationalism and war; many Japanese and others remain wary of that history, so speak of it with care. Treat shrine objects such as ofuda and the mirror with reverence, not as decoration.",
+
+            Overview: "Amaterasu Ōmikami is the kami of the sun, the great kami who shines in heaven, born when the creator Izanagi washed his left eye. The Kojiki of 712 tells how, offended by her brother Susanoo, she hid in the Rock Cave of Heaven and the world went dark, until the other kami gathered with roosters, a mirror and the laughing dance of Ame-no-Uzume to draw her out. She is enshrined in the Inner Shrine at Ise, which is rebuilt every twenty years.",
+
+            TraditionalMeaning: "Light that returns: sincerity, gratitude, order and renewal, and the community joined in calling back the sun.",
+
+            DevotionalApproach: "Start here: learn how people visit a shrine and, if you can, visit one. At a shrine, people bow at the torii gate, rinse their hands and mouth at the water basin, drop a coin in the offering box, ring the bell if there is one, and bow twice, clap twice and bow once (some shrines keep other forms). Approach her with sincerity (makoto) and a clean heart. Shinto asks no creed of visitors; gratitude and good conduct matter most.",
+
+            OfferingNotes: "At a shrine, offer a coin and a bow. At a home kamidana, families place rice, salt and water each morning, and sake on special days, with fresh sakaki. Ask a shrine’s priests how to set up and care for a kamidana and its ofuda.",
+
+            AltarIdeas: "A kamidana, a small shelf above eye level, holding an ofuda (paper talisman) from Ise or a local shrine, sakaki branches, and small dishes of rice, salt and water. Keep it clean, high and simple, and replace the ofuda each year at the shrine.",
+
+            CulturalContext: "Amaterasu belongs to Shinto, the living religion of Japan, kept at some 80,000 shrines by priests (kannushi) and shrine maidens (miko) and by ordinary families. Visitors of any background are welcome at most shrines; Shinto has no conversion and no creed. To go further, visit a shrine, ask its priests, or contact a shrine outside Japan such as Tsubaki Grand Shrine of America.",
+
+            Traditions: "Shinto",
+
+            TraditionNotes: "Shinto: Amaterasu is honoured at Ise Jingū above all, at the Kannamesai in October, when the year’s first rice is offered, and at the Niinamesai on 23 November, and many people visit shrines in the first days of the year (hatsumōde). Families honour her daily at the kamidana with rice, salt and water, giving thanks for light, harvest and the life of the community.",
+
+            tags: ["sun", "light", "ise", "renewal", "harvest", "shinto"]
+        },
+
+        inari: {
+            DisplayName: "Inari",
+            Category: "Deity",
+
+            Pantheon: "Shinto",
+
+            Domains: "Rice and the harvest, food and plenty, business and prosperity, foxes and their messengers, craft and industry",
+
+            SacredSymbols: "Rows of vermilion torii gates, the wish-fulfilling jewel, the rice sheaf, stone foxes holding keys or jewels in their mouths",
+
+            SacredAnimals: "Fox (kitsune), Inari’s messenger, not Inari himself or herself",
+
+            SacredPlants: "Rice",
+
+            CandleColors: "Red, white, gold",
+
+            Crystals: "Carnelian, citrine, clear quartz, red jasper",
+
+            Herbs: "Rice, sakaki, cedar",
+
+            Offerings: "Rice, sake, aburaage (fried tofu), coins, a torii gate dedicated in thanks at the shrine",
+
+            TraditionalWarnings: "Inari is a living kami of Shinto, also honoured in Japanese Buddhism, and appears as male, female or neither in different places. The foxes at Inari shrines are messengers; Western stories that treat Inari as a fox trickster misunderstand the tradition. Do not climb on, touch or move shrine statues and torii.",
+
+            Overview: "Inari Ōkami is the kami of rice, food and prosperity, honoured at more shrines than any other kami in Japan; around a third of all shrines are Inari shrines. The head shrine, Fushimi Inari Taisha in Kyoto, climbs Mount Inari through thousands of vermilion torii, each given by a person or business in thanks. Stone foxes guard the shrines as Inari’s messengers, often holding a key to the rice store or a jewel in their mouths.",
+
+            TraditionalMeaning: "Plenty that sustains: food on the table, honest prosperity, the success of work and gratitude for both.",
+
+            DevotionalApproach: "Start here: learn how people visit a shrine and, if you can, visit an Inari shrine. At a shrine, people bow at the torii gate, rinse their hands and mouth at the water basin, drop a coin in the offering box, ring the bell if there is one, and bow twice, clap twice and bow once (some shrines keep other forms). Approach Inari with sincerity and thanks, especially for food and livelihood. Shinto asks no creed of visitors; gratitude and good conduct matter most.",
+
+            OfferingNotes: "At a shrine, offer a coin, and many leave aburaage or sake as Inari shrines allow. Businesses dedicate torii in thanks for success. At home, rice, salt and water before an Inari ofuda follow custom; ask the shrine’s priests how to care for it.",
+
+            AltarIdeas: "A kamidana holding an ofuda from an Inari shrine, a pair of small fox figures, sakaki, and dishes of rice, salt, water and sake. Keep it clean and high, and return old ofuda to the shrine each year.",
+
+            CulturalContext: "Inari belongs to Shinto, the living religion of Japan, and is also honoured in Japanese Buddhism, as at Toyokawa Inari temple. Shrines from Fushimi to small rooftop shrines on office buildings welcome respectful visitors of any background. To go further, visit a shrine or ask its priests.",
+
+            Traditions: "Shinto",
+
+            TraditionNotes: "Shinto: Inari is honoured on Hatsuuma, the first Day of the Horse in February, when Inari first descended to Mount Inari, at Fushimi’s Hitakisai fire festival in November, and at the rice harvest. People pray for good harvests, business success, safety at work and the prosperity of their families.",
+
+            tags: ["rice", "prosperity", "foxes", "business", "harvest", "shinto"]
+        },
+
+        susanoo: {
+            DisplayName: "Susanoo",
+            Category: "Deity",
+
+            Pantheon: "Shinto",
+
+            Domains: "Storms and the sea, protection against plague and misfortune, courage, the land of Izumo, poetry",
+
+            SacredSymbols: "The sword Kusanagi taken from the serpent’s tail, the eight-layered fence of his poem, the Gion festival floats",
+
+            SacredAnimals: "The eight-headed serpent Yamata no Orochi, which he slew",
+
+            SacredPlants: "Cucumber (avoided by some Gion devotees during the festival), rice",
+
+            CandleColors: "Blue, grey, red",
+
+            Crystals: "Labradorite, hematite, aquamarine, smoky quartz",
+
+            Herbs: "Sakaki, rice, cypress",
+
+            Offerings: "Rice, salt, water, sake, coins at the shrine",
+
+            TraditionalWarnings: "Susanoo is a living kami of Shinto, unruly in heaven but a hero and protector on earth. At Yasaka Shrine in Kyoto he was long identified with Gozu Tennō, a plague deity of Buddhist and folk tradition; the two were separated by law after 1868. Approach him with respect for his power.",
+
+            Overview: "Susanoo-no-Mikoto is the kami of storms and the sea, born when Izanagi washed his nose, the brother of Amaterasu and Tsukuyomi. His rampages in heaven drove Amaterasu into the cave and he was cast out. Coming down to Izumo, he slew the eight-headed serpent Yamata no Orochi, found the sword Kusanagi in its tail, married the princess Kushinada-hime and sang the poem said to be Japan’s first waka.",
+
+            TraditionalMeaning: "Wild strength turned to protection: courage, the taming of disaster and the sincere change of heart.",
+
+            DevotionalApproach: "Start here: learn how people visit a shrine and, if you can, visit one of his, such as a Yasaka, Hikawa or Susa shrine. At a shrine, people bow at the torii gate, rinse their hands and mouth at the water basin, drop a coin in the offering box, ring the bell if there is one, and bow twice, clap twice and bow once (some shrines keep other forms). Approach him with sincerity and respect. Shinto asks no creed of visitors; gratitude and good conduct matter most.",
+
+            OfferingNotes: "At a shrine, offer a coin and a bow. At home, rice, salt and water before an ofuda from one of his shrines follow custom; ask the priests how to care for it.",
+
+            AltarIdeas: "A kamidana holding an ofuda from a Yasaka or Hikawa shrine, sakaki, and dishes of rice, salt and water. Keep it clean and high.",
+
+            CulturalContext: "Susanoo belongs to Shinto, the living religion of Japan, honoured at Yasaka Shrine in Kyoto, the Hikawa shrines around Tokyo and Susa Shrine in Izumo, among many others. Visitors of any background are welcome at most shrines. To go further, visit a shrine or ask its priests.",
+
+            Traditions: "Shinto",
+
+            TraditionNotes: "Shinto: Susanoo is honoured above all at the Gion Matsuri of Yasaka Shrine through July, begun in 869 to ask for relief from plague, with the great procession of floats on 17 July, and at summer festivals across Japan. People pray for protection from illness and disaster, for courage and for good marriages, after his marriage in Izumo.",
+
+            tags: ["storm", "sea", "protection", "courage", "izumo", "shinto"]
+        },
+
+        tsukuyomi: {
+            DisplayName: "Tsukuyomi",
+            Category: "Deity",
+
+            Pantheon: "Shinto",
+
+            Domains: "The moon and night, the counting of months, the calendar, the tides",
+
+            SacredSymbols: "The moon, the night sky",
+
+            SacredAnimals: "None traditionally named",
+
+            SacredPlants: "Susuki (pampas grass) of the autumn moon-viewing, rice",
+
+            CandleColors: "Silver, white, pale blue",
+
+            Crystals: "Moonstone, selenite, clear quartz, pearl",
+
+            Herbs: "Susuki grass, rice, sakaki",
+
+            Offerings: "Rice, water, sake, dumplings (tsukimi dango) at the autumn moon",
+
+            TraditionalWarnings: "Tsukuyomi-no-Mikoto is a living kami of Shinto, but the classics tell little of him and he has relatively few shrines. Autumn moon-viewing (tsukimi) is a seasonal custom for everyone rather than a rite for him alone.",
+
+            Overview: "Tsukuyomi is the kami of the moon, born when Izanagi washed his right eye, the brother of Amaterasu and Susanoo. The Nihon Shoki tells how he killed the food kami Ukemochi in disgust at how she produced food, so that Amaterasu refused ever to see him again, and that is why day and night are apart. He is enshrined at Tsukiyomi-no-miya, a sanctuary of the Ise Inner Shrine, and at a few other shrines.",
+
+            TraditionalMeaning: "The quiet measure of time: night, reflection, the months and the rhythm of tides.",
+
+            DevotionalApproach: "Start here: on a clear night, look at the moon for a few minutes in quiet gratitude, and if you can, visit one of his shrines. At a shrine, people bow at the torii gate, rinse their hands and mouth at the water basin, drop a coin in the offering box, ring the bell if there is one, and bow twice, clap twice and bow once (some shrines keep other forms). Approach him with calm and sincerity. Shinto asks no creed of visitors; gratitude and good conduct matter most.",
+
+            OfferingNotes: "At a shrine, offer a coin and a bow. At the autumn moon-viewing, families set out dumplings, susuki grass and seasonal produce under the moon; this is a seasonal custom you may join.",
+
+            AltarIdeas: "A kamidana with an ofuda from a Tsukiyomi shrine, sakaki, rice, salt and water; and at the autumn moon a dish of dumplings and a vase of susuki by a window.",
+
+            CulturalContext: "Tsukuyomi belongs to Shinto, the living religion of Japan. His shrines at Ise, and the Tsukiyomi Shrine near Matsunoo in Kyoto, welcome respectful visitors. To go further, visit a shrine or ask its priests.",
+
+            Traditions: "Shinto",
+
+            TraditionNotes: "Shinto: Tsukuyomi is honoured at his shrines’ festivals and, by many, at the autumn moon-viewing (Jūgoya) on the fifteenth night of the eighth month of the old lunar calendar, with dumplings and susuki grass. People pray for calm, good timing and safety at night and at sea.",
+
+            tags: ["moon", "night", "time", "tides", "tsukimi", "shinto"]
+        },
+
+        benzaiten: {
+            DisplayName: "Benzaiten",
+            Category: "Deity",
+
+            Pantheon: "Shinto",
+
+            Domains: "Music and the arts, eloquence and learning, water and the sea, wealth and good fortune",
+
+            SacredSymbols: "The biwa (lute), the wish-fulfilling jewel, water and islands, the coiled white snake",
+
+            SacredAnimals: "White snake, dragon (her messengers)",
+
+            SacredPlants: "Lotus",
+
+            CandleColors: "White, pink, gold",
+
+            Crystals: "Pearl, moonstone, rose quartz, clear quartz",
+
+            Herbs: "Lotus, sandalwood, sakaki",
+
+            Offerings: "Coins (often washed in her spring for blessing), music, eggs or sake at snake-day festivals where shrines allow",
+
+            TraditionalWarnings: "Benzaiten came to Japan with Buddhism as the Indian goddess Sarasvatī, and is honoured in both Buddhist temples and Shinto shrines. After 1868 the government separated Buddhism and Shinto, and many of her shrines were rededicated to the kami Ichikishimahime; you may find her under either name. She is a living figure of devotion, not a generic luck goddess.",
+
+            Overview: "Benzaiten is the Japanese goddess of music, eloquence, water and wealth, who came from India as Sarasvatī through the Buddhist Sutra of Golden Light. She is pictured as a beautiful woman playing the biwa, sometimes with eight arms bearing weapons and a jewel, and is the only woman among the Seven Lucky Gods (Shichifukujin). Her three great sanctuaries are on the islands of Enoshima, Itsukushima (Miyajima) and Chikubushima.",
+
+            TraditionalMeaning: "Flowing gifts: music, eloquence, learning and the wealth that flows like water.",
+
+            DevotionalApproach: "Start here: learn how people visit a shrine or temple and, if you can, visit one of hers. At a shrine, people bow at the torii gate, rinse their hands and mouth at the water basin, drop a coin in the offering box, ring the bell if there is one, and bow twice, clap twice and bow once (some shrines keep other forms). At temples, people bow with hands together rather than clapping. Approach her with gratitude and sincerity, and practise your art.",
+
+            OfferingNotes: "At a shrine or temple, offer a coin and a bow; at Zeniarai Benzaiten in Kamakura people wash coins in her spring. Musicians and performers often visit her before a performance. Follow each shrine’s or temple’s own customs.",
+
+            AltarIdeas: "A small shelf with an ofuda or image from one of her shrines or temples, a dish of water, a lotus or white flower, and an instrument or something from your art. Keep it clean and simple.",
+
+            CulturalContext: "Benzaiten belongs to living Japanese religion, both Buddhist and Shinto, and is also honoured as the Hindu Sarasvatī in India; see the Library’s Saraswati entry. Shrines and temples welcome respectful visitors of any background. To go further, visit one or ask its priests.",
+
+            Traditions: "Shinto",
+
+            TraditionNotes: "Shinto: Benzaiten is honoured on snake days (mi no hi), which come every twelve days, at the festivals of her island shrines, and in the first days of the year, when many people make the pilgrimage to the Seven Lucky Gods. People pray for skill in music and the arts, eloquence, success in study and prosperity.",
+
+            tags: ["music", "arts", "eloquence", "water", "fortune", "shinto"]
+        },
+
+        hachiman: {
+            DisplayName: "Hachiman",
+            Category: "Deity",
+
+            Pantheon: "Shinto",
+
+            Domains: "Protection, archery and warriors, the nation and its communities, victory, fishing and farming in older cults",
+
+            SacredSymbols: "The bow and arrows, the mounted archery of yabusame, the character hachi (eight) drawn as two doves",
+
+            SacredAnimals: "Doves, his messengers",
+
+            SacredPlants: "None traditionally named",
+
+            CandleColors: "Red, white, gold",
+
+            Crystals: "Hematite, carnelian, clear quartz, red jasper",
+
+            Herbs: "Sakaki, cedar, rice",
+
+            Offerings: "Rice, salt, water, sake, coins at the shrine",
+
+            TraditionalWarnings: "Hachiman is a living kami of Shinto, long also honoured in Buddhism as Hachiman Daibosatsu. As a god of warriors he was honoured by the samurai and later used in wartime nationalism; most of those who pray to him today ask for protection, safety and success in life.",
+
+            Overview: "Hachiman is the kami of protection and archery, identified with the ancient Emperor Ōjin and honoured at more shrines than any kami except Inari. His head shrine is Usa Jingū in Kyushu, and he was carried to Iwashimizu Hachimangū near Kyoto and to Tsurugaoka Hachimangū in Kamakura, the shrine of the Minamoto warrior clan. Doves are his messengers, and the character for eight in his name is often drawn as a pair of doves.",
+
+            TraditionalMeaning: "Protection of one’s people: courage, discipline, safety for families and communities, and success won fairly.",
+
+            DevotionalApproach: "Start here: learn how people visit a shrine and, if you can, visit a Hachiman shrine. At a shrine, people bow at the torii gate, rinse their hands and mouth at the water basin, drop a coin in the offering box, ring the bell if there is one, and bow twice, clap twice and bow once (some shrines keep other forms). Approach him with sincerity and respect. Shinto asks no creed of visitors; gratitude and good conduct matter most.",
+
+            OfferingNotes: "At a shrine, offer a coin and a bow. Many people buy an omamori (protective amulet) for safety on the road or in examinations and return it to a shrine after a year.",
+
+            AltarIdeas: "A kamidana holding an ofuda from a Hachiman shrine, sakaki, and dishes of rice, salt and water. Keep it clean and high.",
+
+            CulturalContext: "Hachiman belongs to Shinto, the living religion of Japan, with tens of thousands of shrines, many of them village guardian shrines. Visitors of any background are welcome. To go further, visit a shrine or ask its priests.",
+
+            Traditions: "Shinto",
+
+            TraditionNotes: "Shinto: Hachiman is honoured at the great September festivals of his shrines, the Iwashimizu-sai on 15 September and Tsurugaoka Hachimangū’s Reitaisai with its mounted archery, and at the Hōjō-e, when living creatures are released. People pray for protection of family and community, safe travel, success and victory in fair contests.",
+
+            tags: ["protection", "archery", "warriors", "community", "doves", "shinto"]
+        },
+
+        mazu: {
+            DisplayName: "Mazu",
+            Category: "Deity",
+
+            Pantheon: "Chinese",
+
+            Domains: "Protection at sea, sailors and fishing families, safe journeys, mercy, the communities of the Chinese coast and diaspora",
+
+            SacredSymbols: "The red lantern on the shore, the ceremonial tablet and crown of the Empress of Heaven, the procession palanquin",
+
+            SacredAnimals: "Her two guardians, Thousand-Mile Eye and Wind-Following Ear (spirit generals, not animals)",
+
+            SacredPlants: "None traditionally named",
+
+            CandleColors: "Red, gold, blue",
+
+            Crystals: "Aquamarine, red coral (sustainably sourced), pearl, clear quartz",
+
+            Herbs: "Sandalwood, incense, flowers",
+
+            Offerings: "Incense, flowers, fruit, tea, red candles, vegetarian food or temple-approved offerings",
+
+            TraditionalWarnings: "Mazu is a living goddess of Chinese folk religion and Daoism, worshipped by millions, especially in Fujian, Taiwan and among overseas Chinese. Follow the customs of her temples, which differ by place, and treat images, palanquins and incense burners with respect.",
+
+            Overview: "Mazu is the goddess of the sea, honoured as a protector of sailors and fishing families. Tradition says she was born as Lin Moniang on Meizhou Island in Fujian in the tenth century, and that she saved family members at sea in a trance before dying young and being worshipped as a goddess. Emperors granted her ever higher titles, until in 1684 she became Tianhou, the Empress of Heaven; she is attended by two guardian spirits, Thousand-Mile Eye and Wind-Following Ear.",
+
+            TraditionalMeaning: "Mercy on the waters: safe passage, care for those far from home and the protection of whole communities.",
+
+            DevotionalApproach: "Start here: learn about her from her temples and devotees, and if you can, visit a Mazu temple. At a Chinese temple, people usually light incense, often three sticks, bow holding it at the forehead, and place it in the burner, moving from the main hall to the side altars in the order the temple shows. Approach her with respect and gratitude, especially before a journey. Her worship is kept by communities, so join in as a guest.",
+
+            OfferingNotes: "Offer incense, flowers, fruit or tea, set out as the temple shows. Many temples ask for vegetarian offerings at the main altar; follow what the temple does rather than improvising.",
+
+            AltarIdeas: "A small shelf with an image of Mazu treated with reverence, an incense burner, a pair of red candles or lamps, flowers and fruit. Keep it clean and high, and change offerings often.",
+
+            CulturalContext: "Mazu belongs to the living folk religion and Daoism of southern China, Taiwan and the Chinese diaspora; her belief and customs are on UNESCO’s list of intangible cultural heritage. Hundreds of thousands of people walk with her image on Taiwan’s great spring pilgrimages, such as the nine-day Dajia procession. To go further, visit a Mazu temple and ask its keepers.",
+
+            Traditions: "Chinese",
+
+            TraditionNotes: "Chinese: Mazu is honoured on her birthday, the twenty-third day of the third lunar month, with temple festivals, opera and pilgrimages, and at the anniversary of her ascent in the ninth month. Fishing families and travellers visit her temples before voyages and ask for safety at sea, protection of the family and peace in the community.",
+
+            tags: ["sea", "protection", "travel", "mercy", "taiwan", "fujian"]
+        },
+
+        zao_jun: {
+            DisplayName: "Zao Jun",
+            Category: "Deity",
+
+            Pantheon: "Chinese",
+
+            Domains: "The kitchen and the household, the family’s conduct, the hearth fire, good fortune for the home",
+
+            SacredSymbols: "His paper image above the stove, the hearth, sweets for his lips, the New Year couplets",
+
+            SacredAnimals: "The horse he rides to heaven (in paper images)",
+
+            SacredPlants: "None traditionally named",
+
+            CandleColors: "Red, gold, yellow",
+
+            Crystals: "Carnelian, citrine, red jasper, clear quartz",
+
+            Herbs: "Incense, malt sugar, rice",
+
+            Offerings: "Malt-sugar sweets (tanggua), sticky rice cakes, fruit, tea, incense",
+
+            TraditionalWarnings: "Zao Jun, the Stove Lord or Kitchen God, is a living household god of Chinese folk religion. Never leave candles or incense burning unattended near a stove.",
+
+            Overview: "Zao Jun is the Kitchen God, who watches over each household from his paper image above the stove. On the twenty-third or twenty-fourth day of the twelfth lunar month, a week before the New Year, he rises to heaven to report on the family’s conduct to the Jade Emperor; families offer him sweets so that he will say sweet things, burn his old image to send him on his way, and paste up a new one at New Year.",
+
+            TraditionalMeaning: "The home watched over: kindness at the family table, honest conduct and a warm, well-fed household.",
+
+            DevotionalApproach: "Start here: learn about him from Chinese families and temples. Keep your kitchen clean and peaceful, and at the Little New Year, if you follow the custom, offer him a sweet. Approach him with respect and good humour. His worship belongs to the household, so it is learned best from those who keep it.",
+
+            OfferingNotes: "Offer malt-sugar sweets, sticky rice cake, fruit, tea or incense, set before his image by the stove. Follow your family’s or your community’s customs, which differ between north and south.",
+
+            AltarIdeas: "A paper image of Zao Jun and his wife above the stove, a small incense holder, a dish for sweets, and red paper couplets at New Year. Keep it clean and safe from heat.",
+
+            CulturalContext: "Zao Jun belongs to the living folk religion of Chinese families in China, Taiwan, Southeast Asia and the diaspora. The Little New Year sacrifice to the Kitchen God is a long-standing custom; in northern China it falls on the twenty-third of the twelfth month, in the south often on the twenty-fourth. To go further, ask families and temples who keep it.",
+
+            Traditions: "Chinese",
+
+            TraditionNotes: "Chinese: Zao Jun is honoured at the Little New Year (Xiaonian), the twenty-third or twenty-fourth of the twelfth lunar month, with sweets and incense before his journey to heaven, and welcomed back at New Year with a new image. Families ask him for a peaceful, prosperous household and a good report.",
+
+            tags: ["kitchen", "household", "family", "new year", "hearth", "conduct"]
+        },
+
+        change: {
+            DisplayName: "Chang’e",
+            Category: "Deity",
+
+            Pantheon: "Chinese",
+
+            Domains: "The moon, longing and reunion, immortality, beauty, the Mid-Autumn Festival",
+
+            SacredSymbols: "The full moon, the Jade Rabbit with its mortar, the cassia tree, the mooncake",
+
+            SacredAnimals: "The Jade Rabbit who pounds the elixir on the moon",
+
+            SacredPlants: "Cassia (osmanthus), which grows on the moon in legend",
+
+            CandleColors: "Silver, white, gold",
+
+            Crystals: "Moonstone, pearl, selenite, jade",
+
+            Herbs: "Osmanthus, tea, chrysanthemum",
+
+            Offerings: "Mooncakes, round fruit such as pomelos, osmanthus wine or tea, incense under the full moon",
+
+            TraditionalWarnings: "Chang’e, also written Chang-o or Heng’e, is above all a figure of legend and of the Mid-Autumn Festival rather than of temple worship, though families have long made offerings to the moon at the festival. Versions of her story differ, so share them as stories rather than a single doctrine.",
+
+            Overview: "Chang’e is the lady in the moon of Chinese legend. In the best-known telling her husband, the archer Hou Yi, shot down nine of the ten suns that were scorching the earth and was given an elixir of immortality; Chang’e drank it, in some versions to keep it from a thief, and floated up to the moon, where she lives with the Jade Rabbit. At the Mid-Autumn Festival families gather to look at the full moon and eat mooncakes.",
+
+            TraditionalMeaning: "Longing and reunion: families gathered under one moon, those far away remembered, and beauty touched with sorrow.",
+
+            DevotionalApproach: "Start here: at the Mid-Autumn Festival, share mooncakes or round fruit with family or friends, look at the full moon together and think of someone far away. Approach her through the festival as Chinese families keep it, learning from them. She is honoured by reunion, gratitude and remembering those absent.",
+
+            OfferingNotes: "Families set out mooncakes, pomelos and other round fruit, tea and incense on a table facing the moon. Join in as your hosts do, or keep a small table yourself, simply and respectfully.",
+
+            AltarIdeas: "A small table facing the moon with mooncakes, round fruit, a pot of tea, a vase of osmanthus or chrysanthemum, and a rabbit figure or lantern.",
+
+            CulturalContext: "Chang’e belongs to living Chinese culture and folk religion, and the Mid-Autumn Festival is kept by Chinese, Vietnamese and other communities around the world. China named its lunar exploration programme after her. To go further, celebrate the festival with families who keep it.",
+
+            Traditions: "Chinese",
+
+            TraditionNotes: "Chinese: Chang’e is remembered at the Mid-Autumn Festival on the fifteenth day of the eighth lunar month, when families gather, admire the moon, carry lanterns and set out mooncakes and round fruit, and some make offerings to the moon. People wish for family reunion, harmony and a full life.",
+
+            tags: ["moon", "mid-autumn", "reunion", "longing", "legend", "family"]
+        },
+
+        tudigong: {
+            DisplayName: "Tudigong",
+            Category: "Deity",
+
+            Pantheon: "Chinese",
+
+            Domains: "The local land and soil, the neighbourhood and village, farming and business, protection of a place and its people",
+
+            SacredSymbols: "The small roadside or street-corner shrine, the old man with a white beard and a staff or gold ingot",
+
+            SacredAnimals: "None traditionally named",
+
+            SacredPlants: "None traditionally named",
+
+            CandleColors: "Red, gold, brown",
+
+            Crystals: "Jasper, citrine, tiger eye, moss agate",
+
+            Herbs: "Incense, tea, rice",
+
+            Offerings: "Incense, tea, fruit, cakes, rice, a little wine",
+
+            TraditionalWarnings: "Tudigong, the Lord of the Soil and the Ground, is a living god of Chinese folk religion, honoured at countless small shrines. Each shrine belongs to its place and its neighbours; leave offerings only where it is welcome and tidy up after yourself.",
+
+            Overview: "Tudigong is the Earth God of Chinese folk religion, the guardian of a particular village, street, field or building, also called Fude Zhengshen, the Upright God of Fortune and Virtue. He is pictured as a kindly old man with a white beard, often with his wife Tudipo, and his small shrines stand by fields, at street corners and in shops and homes. In the heavenly order he is a local official, the god people turn to first for everyday help.",
+
+            TraditionalMeaning: "The goodness of a place: neighbourliness, honest dealing, fertile land and everyday protection.",
+
+            DevotionalApproach: "Start here: learn about him from Chinese communities and temples, and notice the shrine nearest you if there is one. At a Chinese temple, people usually light incense, often three sticks, bow holding it at the forehead, and place it in the burner, moving from the main hall to the side altars in the order the temple shows. Approach him as a respected local elder. He is honoured by care for your neighbourhood and fairness in business.",
+
+            OfferingNotes: "Offer incense, tea, fruit or cakes at his shrine, as local people do. Shopkeepers in Taiwan and southern China often make offerings to him on the second and sixteenth of each lunar month; follow the customs of the place.",
+
+            AltarIdeas: "A small shelf or floor shrine with an image of Tudigong treated with reverence, an incense burner, a cup of tea and a dish of fruit. Keep it clean and tended.",
+
+            CulturalContext: "Tudigong belongs to the living folk religion of China, Taiwan, Southeast Asia and the diaspora, kept by families, shopkeepers and villages. To go further, visit a temple or local shrine and ask those who keep it.",
+
+            Traditions: "Chinese",
+
+            TraditionNotes: "Chinese: Tudigong is honoured on his birthday, the second day of the second lunar month, with incense, food and local festivities, and by many businesses on the second and sixteenth of every lunar month. People ask him for a good harvest, prosperous business, safety for the neighbourhood and peace at home.",
+
+            tags: ["earth", "place", "neighbourhood", "business", "protection", "folk"]
+        },
+
+        jade_emperor: {
+            DisplayName: "The Jade Emperor",
+            Category: "Deity",
+
+            Pantheon: "Chinese",
+
+            Domains: "Rule of heaven, justice and order among gods and people, reward and punishment, the turning of the year",
+
+            SacredSymbols: "The imperial robes and flat-topped crown with hanging beads, the jade tablet, the heavenly court",
+
+            SacredAnimals: "None traditionally named",
+
+            SacredPlants: "Sugarcane (offered at his birthday in Hokkien communities)",
+
+            CandleColors: "Gold, yellow, red",
+
+            Crystals: "Jade, citrine, clear quartz, gold-coloured stones",
+
+            Herbs: "Incense, tea, sugarcane",
+
+            Offerings: "Incense, tea, fruit, sweets, sugarcane, vegetarian dishes",
+
+            TraditionalWarnings: "The Jade Emperor, Yuhuang Dadi, is a living god of Chinese folk religion and Daoism. In Daoist theology he ranks below the Three Pure Ones; folk religion sees him as ruler of heaven. Approach him through the forms temples use.",
+
+            Overview: "The Jade Emperor is the ruler of heaven in Chinese folk religion, presiding over a celestial court that mirrors the old imperial government, with gods as his officials. He was given imperial honours by the Song emperor Zhenzong in the early eleventh century, and in popular stories he receives the Kitchen God’s report each New Year and sets the order of the zodiac animals.",
+
+            TraditionalMeaning: "Heavenly order: justice, good conduct rewarded and the harmony of heaven, earth and people.",
+
+            DevotionalApproach: "Start here: learn about him from Chinese and Daoist temples and devotees. At a Chinese temple, people usually light incense, often three sticks, bow holding it at the forehead, and place it in the burner, moving from the main hall to the side altars in the order the temple shows. Approach him with reverence and with honest conduct, since he sees how people live. His worship is kept by temples and families, so join in as a guest.",
+
+            OfferingNotes: "Offer incense, tea, fruit, sweets or vegetarian dishes, as temples show. At his birthday many Hokkien families set a high table outdoors with sugarcane, fruit and sweets at midnight; follow their customs.",
+
+            AltarIdeas: "Temples hold his image in the main hall, often on an upper floor. At home, a simple incense burner facing the open sky, as many families use for Heaven, is the common form.",
+
+            CulturalContext: "The Jade Emperor belongs to the living folk religion and Daoism of China, Taiwan, Southeast Asia and the diaspora. To go further, visit a Daoist or folk temple and ask its keepers.",
+
+            Traditions: "Chinese",
+
+            TraditionNotes: "Chinese: The Jade Emperor is honoured on his birthday, the ninth day of the first lunar month, especially by Hokkien communities, who make offerings to Heaven from midnight with sugarcane, fruit and sweets, and at New Year when the gods return. People ask him for blessing in the new year, justice and protection for the family.",
+
+            tags: ["heaven", "order", "justice", "new year", "daoism", "folk"]
+        },
+
+        guanyin: {
+            DisplayName: "Guanyin",
+            Category: "Deity",
+
+            Pantheon: "Chinese",
+
+            Domains: "Compassion and mercy, hearing the cries of the world, protection from harm, the gift of children, comfort in suffering",
+
+            SacredSymbols: "The vase of pure water and willow branch, the lotus, the white robe, the thousand arms and eyes",
+
+            SacredAnimals: "None traditionally named; she sometimes rides a dragon or stands on a fish",
+
+            SacredPlants: "Lotus, willow",
+
+            CandleColors: "White, gold, pale blue",
+
+            Crystals: "Jade, clear quartz, moonstone, rose quartz",
+
+            Herbs: "Sandalwood, lotus, jasmine",
+
+            Offerings: "Flowers, fruit, clean water, incense, vegetarian food, kindness to all beings",
+
+            TraditionalWarnings: "Guanyin is a bodhisattva, the Chinese form of Avalokiteśvara, venerated in Buddhism and also in Daoism and folk religion; Buddhists do not regard her as a goddess. Offerings to her are vegetarian, and her images are not ornaments. Follow the customs of the temple or teacher you learn from.",
+
+            Overview: "Guanyin, she who perceives the sounds of the world, is the bodhisattva of compassion, the Chinese form of the Indian Avalokiteśvara. Pictured in early Chinese art as male, she came to be shown as a woman in white from around the tenth century, holding a vase of pure water and a willow branch; the legend of Princess Miaoshan tells of her selfless life. Her island of Putuo Shan off Zhejiang is a great pilgrimage site, and she is honoured as Kannon in Japan, Gwaneum in Korea and Quan Âm in Vietnam.",
+
+            TraditionalMeaning: "Compassion that hears: mercy, comfort for those who suffer and the vow to help all beings.",
+
+            DevotionalApproach: "Start here: learn about her from Buddhist teachers and temples, and if you can, visit a temple. At Buddhist temples people bow with palms together and offer incense, flowers or fruit. Approach her with compassion and sincerity; many recite her name, and the most fitting devotion is kindness to others.",
+
+            OfferingNotes: "Offer flowers, fruit, clean water or incense, always vegetarian, placed cleanly before her image. Learn which offerings and recitations a temple or teacher considers appropriate before improvising.",
+
+            AltarIdeas: "An image of Guanyin treated with reverence, set high and clean, a small cup of clean water, flowers, fruit and an incense burner. Keep meat and alcohol away from her altar.",
+
+            CulturalContext: "Guanyin belongs to living Buddhism and to Chinese folk religion and Daoism, honoured across East and Southeast Asia and the diaspora. Buddhist temples welcome respectful visitors. To go further, ask at a Buddhist temple or learn from a Buddhist teacher.",
+
+            Traditions: "Chinese",
+
+            TraditionNotes: "Chinese: Guanyin is honoured on the nineteenth days of the second, sixth and ninth lunar months, her birth, enlightenment and leaving home, with temple visits, vegetarian meals, chanting and the release of living creatures, and many keep vegetarian days in her honour. People ask her for compassion, protection, healing, children and comfort in grief.",
+
+            tags: ["compassion", "mercy", "bodhisattva", "protection", "healing", "buddhism"]
+        },
     },
 
     tool: {

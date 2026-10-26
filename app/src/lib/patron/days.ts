@@ -4,6 +4,7 @@ import { startOfDay } from '../calendar.ts';
 import { holidaysBetween } from '../holidays.ts';
 import { nextPhase } from '../moon.ts';
 import { atticDate } from '../traditionDay.ts';
+import { lunarDates } from './lunisolar.ts';
 import type { DeityDevotion, SacredDay, SacredRule } from './types.ts';
 
 const DAY = 86_400_000;
@@ -44,6 +45,8 @@ export function ruleDates(rule: SacredRule, from: Date, days: number): Date[] {
       }
       return out;
     }
+    case 'lunisolar':
+      return lunarDates(rule.month, rule.day, start, end);
     case 'holiday': {
       const prefix = `${rule.tradition}-${rule.id}-`;
       return holidaysBetween(start, addDays(end, -1), { traditions: [rule.tradition], custom: [], picked: [] })
