@@ -48,7 +48,7 @@ test("the app's words for lengths, cadences and steps", () => {
 });
 
 test("the catalog is small, and each journey loads on its own", () => {
-  assert.equal(J.JOURNEY_CATALOG.length, 70);
+  assert.equal(J.JOURNEY_CATALOG.length, 71);
   assert.ok(J.JOURNEY_CATALOG.every((j) => j.id && j.title && j.summary && !("stages" in j)));
   assert.ok(fs.statSync(path.join(root, "js/core/journeys.js")).size < 250 * 1024);
   for (const j of J.JOURNEY_CATALOG) assert.ok(fs.existsSync(path.join(root, "js/core", `journey-${j.id}.js`)), j.id);
@@ -56,7 +56,7 @@ test("the catalog is small, and each journey loads on its own", () => {
   assert.equal(J.lookup.journeyForDeityRefIn(J.JOURNEY_CATALOG, "traditional:deity:hekate").id, "deity-hekate");
   assert.equal(J.lookup.searchJourneysIn(J.JOURNEY_CATALOG, "hekate")[0].id, "deity-hekate");
   // The Egyptian deities' Library and patron pages find their journeys in the catalog.
-  for (const key of ["horus"]) {
+  for (const key of ["horus", "set"]) {
     assert.equal(J.lookup.journeyForDeityRefIn(J.JOURNEY_CATALOG, `traditional/deity/${key}`)?.id, `deity-${key}`, key);
   }
 });

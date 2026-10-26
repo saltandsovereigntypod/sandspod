@@ -586,6 +586,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A lunar month with Selene, the Greek goddess who is the moon: her hymns and the story of Endymion, the honest truth about her slim ancient cult, how she was later blended with Artemis and Hekate, and a practice of watching the moon each night, from the first crescent to the full."
   },
   {
+    "id": "deity-set",
+    "kind": "deity",
+    "paths": [
+      "egyptian"
+    ],
+    "deityRef": "traditional/deity/set",
+    "title": "Set: Great of Strength",
+    "summary": "A month with Sutekh, lord of storms, the desert and foreign lands: murderer of Osiris, rival of Horus, and defender of Ra’s boat against the serpent of chaos. Study his whole history, from honoured god of kings to later outcast, keep ten nights at the edge, and decide whether to dedicate."
+  },
+  {
     "id": "deity-skadi",
     "kind": "deity",
     "paths": [

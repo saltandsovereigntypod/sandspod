@@ -58,6 +58,7 @@ import { JOURNEY as DEITY_RA } from './data/deity-ra.ts';
 import { JOURNEY as DEITY_RHIANNON } from './data/deity-rhiannon.ts';
 import { JOURNEY as DEITY_SEKHMET } from './data/deity-sekhmet.ts';
 import { JOURNEY as DEITY_SELENE } from './data/deity-selene.ts';
+import { JOURNEY as DEITY_SET } from './data/deity-set.ts';
 import { JOURNEY as DEITY_SKADI } from './data/deity-skadi.ts';
 import { JOURNEY as DEITY_THOR } from './data/deity-thor.ts';
 import { JOURNEY as DEITY_THOTH } from './data/deity-thoth.ts';
@@ -131,6 +132,7 @@ export const JOURNEYS: Journey[] = [
   DEITY_RHIANNON,
   DEITY_SEKHMET,
   DEITY_SELENE,
+  DEITY_SET,
   DEITY_SKADI,
   DEITY_THOR,
   DEITY_THOTH,
