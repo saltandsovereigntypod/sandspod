@@ -70,6 +70,7 @@
 
   root.innerHTML = `${header({ title: "How to", eyebrow: "Help", back: "/?sanctuary=more", backLabel: "Back to More" })}
     <p class="sp-caption">The guide is written for the app. Where the website works differently, a note says how.</p>
+    <div class="sp-actions"><a class="button button--ghost" href="/today/?welcome=1" data-replay-welcome>Watch the welcome again</a></div>
     <div class="sp-field"><label for="gd-help-search">Search the guide</label>
       <input id="gd-help-search" type="search" placeholder="e.g. carve a candle, birth chart, backup" autocomplete="off" spellcheck="false" /></div>
     <p class="sr-only" role="status" aria-live="polite" data-help-status></p>
