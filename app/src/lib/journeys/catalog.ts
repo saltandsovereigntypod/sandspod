@@ -212,6 +212,17 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A month with Epona, the Gaulish goddess of horses, mules and donkeys who rode with the Roman cavalry from Britain to the Danube: her images and inscriptions, her stable shrines garlanded with roses, her feast on 18 December, and a self-dedication made through real care for animals."
   },
   {
+    "id": "deity-flora",
+    "kind": "deity",
+    "paths": [
+      "roman",
+      "wheel"
+    ],
+    "deityRef": "traditional/deity/flora",
+    "title": "Flora of the Blossom",
+    "summary": "A month with Flora, the Roman goddess on whose blossom the harvest depends: her old flamen and her temple by the Circus, Ovid’s Flora who was once Chloris, the bright and bawdy Floralia, and a practice of noticing, tending and giving flowers."
+  },
+  {
     "id": "deity-freyja",
     "kind": "deity",
     "paths": [

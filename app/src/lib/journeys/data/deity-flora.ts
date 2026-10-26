@@ -114,7 +114,7 @@ It is a self-dedication, not an initiation. Flora had her own priest in Rome, th
             {
               heading: 'An old goddess',
               body:
-                'Flora is not a late invention. She was one of the fifteen gods in Rome with a flamen, a personal priest; hers was one of the twelve “lesser” flamens, which were among the oldest priesthoods in the city. Varro says she was one of the gods to whom the Sabine king Titus Tatius vowed altars (On the Latin Language 5.74). And a bronze tablet from Agnone in Samnium, written in Oscan, the language of the Samnites, lists offerings to a goddess called Flusa, connected with Ceres: Flora under another name.\n\nThat puts her among the gods shared by many peoples of ancient Italy, not just Rome.',
+                'Flora is not a late invention. She was one of the fifteen gods in Rome with a flamen, a personal priest; hers was one of the twelve “lesser” flamens, which were among the oldest priesthoods in the city. Varro says she was one of the gods to whom the Sabine king Titus Tatius vowed altars (On the Latin Language 5.74). And a bronze tablet from Agnone in Samnium, written in Oscan, the language of the Samnites, lists offerings to a goddess called Fluusa, “of Ceres”: Flora under another name.\n\nThat puts her among the gods shared by many peoples of ancient Italy, not just Rome.',
             },
             {
               heading: 'Her temples',
