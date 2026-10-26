@@ -10333,6 +10333,393 @@ const TraditionalLibrary = {
 
             tags: ["childbirth", "motherhood", "protection", "babies", "fertility", "household"]
         },
+
+        njord: {
+            DisplayName: "Njord",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "The sea and coasts, wind, seafaring and fishing, wealth and prosperity, peace",
+
+            SacredSymbols: "Ship, the shore, bare feet, fishing nets",
+
+            SacredAnimals: "Swans and seabirds, from Snorri’s tale of his marriage to Skadi",
+
+            SacredPlants: "None securely attested in Norse sources",
+
+            CandleColors: "Blue, green, silver",
+
+            Crystals: "Aquamarine, sea glass, blue lace agate, pearl",
+
+            Herbs: "Seaweed, sea salt, juniper",
+
+            Offerings: "Mead or ale, fish, bread, sea water returned to the sea, shells",
+
+            TraditionalWarnings: "Njord is a Vanir god of wealth and peace whose surviving myths are few. Tacitus’ earth goddess Nerthus has a name that matches his, but whether they are related, and how, is debated; do not treat them as simply the same deity.",
+
+            Overview: "Njord is the Norse god of the sea, the winds and seafaring, and of the wealth they bring. One of the Vanir, he came to live among the Æsir as a hostage after their war, with his children Freyr and Freyja, and his hall is Nóatún, ship-town. Snorri tells how the giantess Skadi chose him as husband by his feet, the most beautiful she saw, and how their marriage failed because he could not bear the wolves of her mountains nor she the cries of his seabirds.",
+
+            TraditionalMeaning: "Calm seas and fair dealing: prosperity, safe journeys, generosity and peace between peoples.",
+
+            DevotionalApproach: "Start here: go to the sea or any water if you can, or pour a little salt water into a bowl, and thank him for a safe journey or a full table. Approach him calmly and with generosity. He asks devotees to deal fairly, share their wealth and seek peace.",
+
+            OfferingNotes: "Offer mead, ale, bread or fish, and return a little sea water or a shell to the shore. Never leave plastic or rubbish as an offering at the water’s edge; cleaning a beach honours him.",
+
+            AltarIdeas: "A blue or green candle, a model ship, shells and sea glass, a bowl of salt water and a fishing float. A shelf facing the sea or a window suits him.",
+
+            CulturalContext: "Njord is honoured today in Heathenry, the living revival of Norse and Germanic religion. Snorri says the Yule toasts were drunk to Odin, then to Njord and Freyr for a good year and peace, and many place names in Norway and Sweden, and Njarðvík in Iceland, carry his name.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour Njord at Yule with the toast “til árs ok friðar”, for a good year and peace, and at blóts by the sea, with mead, fish and bread. He is asked for safe voyages, good fishing, fair winds, prosperity and peace.",
+
+            tags: ["sea", "wind", "seafaring", "prosperity", "peace", "vanir"]
+        },
+
+        heimdall: {
+            DisplayName: "Heimdall",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "Watchfulness and guarding, boundaries and thresholds, the rainbow bridge, the ordering of society, the warning horn",
+
+            SacredSymbols: "The horn Gjallarhorn, the rainbow bridge Bifröst, gold teeth",
+
+            SacredAnimals: "Ram (from his by-names), his horse Gulltopp",
+
+            SacredPlants: "None securely attested in Norse sources",
+
+            CandleColors: "White, gold, rainbow colours",
+
+            Crystals: "Clear quartz, rainbow fluorite, labradorite, citrine",
+
+            Herbs: "Juniper, birch, yarrow",
+
+            Offerings: "Mead, bread, a horn of ale, keeping watch, honest work as a guardian",
+
+            TraditionalWarnings: "Much about Heimdall is obscure even to Snorri, who preserved riddling fragments: nine mothers, gold teeth, a horn hidden under Yggdrasil. Modern descriptions often fill gaps with confidence; be honest about what is known.",
+
+            Overview: "Heimdall is the Norse watchman of the gods, who guards the rainbow bridge Bifröst at the edge of heaven. Snorri says he needs less sleep than a bird, sees a hundred leagues by day or night and hears grass grow, and that at Ragnarök he will blow Gjallarhorn and fight Loki to the death of them both. Called the whitest of the gods and son of nine mothers, he appears in the poem Rígsþula as Ríg, who walks among people and fathers the classes of society.",
+
+            TraditionalMeaning: "Watchful guarding: vigilance, protection of boundaries, readiness and the order that holds a community together.",
+
+            DevotionalApproach: "Start here: stand at your front door for a moment, look and listen, and ask him to guard the threshold of your home. Approach him with steadiness. He asks devotees to stay alert, keep their word and look out for others, especially on watch through the night.",
+
+            OfferingNotes: "Offer mead, ale or bread at a threshold or gate. Night-shift workers, guards and carers sometimes dedicate their watch to him; keeping a faithful watch is itself an offering.",
+
+            AltarIdeas: "A white or gold candle, a horn, a rainbow prism or fluorite, a small bridge or gate, and a dish of bread. Set it near the front door or a window that looks out.",
+
+            CulturalContext: "Heimdall is honoured today in Heathenry, the living revival of Norse and Germanic religion. Völuspá opens by asking a hearing from “the greater and lesser children of Heimdall”, meaning all humankind. Learn from the Eddas and from Heathen communities, choosing inclusive groups.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour Heimdall at thresholds and at the turning of the seasons, with mead and bread, and often call on him to open and guard a blót. He is asked for protection, vigilance, clear hearing and a safe watch.",
+
+            tags: ["guardian", "watchfulness", "boundaries", "protection", "order", "bifrost"]
+        },
+
+        sif: {
+            DisplayName: "Sif",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "Family and marriage, the golden-haired wife of Thor, the household, possibly the ripening grain",
+
+            SacredSymbols: "Golden hair, the wedding ring, the full cup",
+
+            SacredAnimals: "None securely attested in Norse sources",
+
+            SacredPlants: "Grain, especially ripe barley and wheat (a modern reading)",
+
+            CandleColors: "Gold, yellow, green",
+
+            Crystals: "Citrine, golden topaz, amber, tiger eye",
+
+            Herbs: "Barley, wheat, chamomile",
+
+            Offerings: "Bread, mead, a lock of hair or golden thread, grain",
+
+            TraditionalWarnings: "Very little is told of Sif. The popular idea that her golden hair stands for fields of grain is a nineteenth-century scholarly suggestion, not something the sources say; it is a reasonable modern devotional reading if you say so.",
+
+            Overview: "Sif is a Norse goddess, wife of Thor and mother of the god Ullr and of Thor’s daughter Thrúd. Snorri tells how Loki cut off her hair as a prank, and Thor forced him to have dwarves forge new hair of real gold that would grow like her own; the same smiths made Odin’s spear and Freyr’s ship. In Lokasenna she alone offers Loki mead in peace.",
+
+            TraditionalMeaning: "Beauty and plenty kept safe: faithful partnership, a household cared for and what was lost restored.",
+
+            DevotionalApproach: "Start here: bake or buy a loaf, brush or braid your hair with care, and thank her for your home and the people in it. Approach her warmly and simply. She asks devotees to tend their households, keep faith in their partnerships and offer peace where there is conflict.",
+
+            OfferingNotes: "Offer bread, mead or grain, or a golden thread or ribbon. Sharing a meal with family or a partner honours her.",
+
+            AltarIdeas: "A gold or yellow candle, a sheaf of wheat or barley, a golden ribbon or comb, citrine or amber, and a small loaf. Set it beside Thor’s if you honour him too.",
+
+            CulturalContext: "Sif is honoured today in Heathenry, the living revival of Norse and Germanic religion, often with Thor at harvest. Her name is related to Old Norse sifjar, kinship by marriage, which may be the oldest clue to who she was.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour Sif at the harvest and at weddings, with bread, grain and mead, often beside Thor. She is asked for a happy marriage, a well-kept home, family bonds and a good harvest.",
+
+            tags: ["family", "marriage", "household", "harvest", "beauty", "kinship"]
+        },
+
+        bragi: {
+            DisplayName: "Bragi",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "Poetry and eloquence, skalds, the welcome of the dead to Valhalla, oaths made over the cup",
+
+            SacredSymbols: "The bragarfull (the cup over which vows were made), runes carved on the tongue, the poet’s voice",
+
+            SacredAnimals: "None securely attested in Norse sources",
+
+            SacredPlants: "None securely attested; apples, through his wife Idunn",
+
+            CandleColors: "Gold, blue, purple",
+
+            Crystals: "Blue lace agate, sodalite, aquamarine, amethyst",
+
+            Herbs: "Mead herbs: meadowsweet, heather, honey",
+
+            Offerings: "Mead, a poem or song, a toast, a promise kept",
+
+            TraditionalWarnings: "Bragi may have grown from a real ninth-century poet, Bragi Boddason the Old, honoured after death; scholars debate it. Vows made over the bragarfull were binding, so do not boast or swear lightly in his name.",
+
+            Overview: "Bragi is the Norse god of poetry and eloquence, husband of Idunn, keeper of the apples of youth. Snorri calls him famous for wisdom and above all for skill in speech, and says poetry is called bragr after him. In the poems Eiríksmál and Hákonarmál he greets dead kings at the doors of Valhalla, and in Lokasenna Loki mocks him as the most cowardly of the gods, a charge Bragi answers with offers of peace.",
+
+            TraditionalMeaning: "The power of words: poetry, honest boasting, promises spoken aloud and the stories that keep memory alive.",
+
+            DevotionalApproach: "Start here: read a poem aloud, or write four lines of your own, and raise a cup to him. Approach him with words and with good company. He asks devotees to speak well, keep their vows and remember the dead in story and song.",
+
+            OfferingNotes: "Offer mead, a poem, a song or a toast. Old sagas tell of the bragarfull, a cup drunk at feasts while making a solemn vow; making only promises you will keep is the best offering.",
+
+            AltarIdeas: "A gold or blue candle, a drinking horn or cup, a notebook of poems, blue lace agate, and an apple for Idunn. Set it where people gather to talk.",
+
+            CulturalContext: "Bragi is honoured today in Heathenry, the living revival of Norse and Germanic religion, especially by poets and storytellers. Heathen gatherings often keep a sumbel, a ritual round of toasts and boasts, in which words spoken over the horn are taken seriously.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour Bragi at sumbel and at Yule, when, the sagas say, vows were made over the bragarfull, with mead, poems and toasts. He is asked for eloquence, inspiration, courage to speak and help in keeping vows.",
+
+            tags: ["poetry", "eloquence", "vows", "storytelling", "music", "memory"]
+        },
+
+        ullr: {
+            DisplayName: "Ullr",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "Hunting and archery, skiing and winter travel, shields, oaths, single combat",
+
+            SacredSymbols: "Bow and arrows, skis or snowshoes, the shield (called Ullr’s ship), a ring sworn on",
+
+            SacredAnimals: "None securely attested in Norse sources",
+
+            SacredPlants: "Yew, from his hall Ýdalir, the yew dales",
+
+            CandleColors: "White, green, brown",
+
+            Crystals: "Clear quartz, snowflake obsidian, moss agate, jasper",
+
+            Herbs: "Yew needles for display only (yew is poisonous), juniper, pine",
+
+            Offerings: "Mead, ale, bread, game or a meal from the hunt, time spent outdoors in winter",
+
+            TraditionalWarnings: "Few stories of Ullr survive, though place names in Norway and Sweden suggest he was once widely worshipped. Every part of the yew tree except the flesh of its berry is highly poisonous: never burn it, eat it or leave it where pets and children can reach it.",
+
+            Overview: "Ullr is the Norse god of hunting, archery and skiing, son of Sif and stepson of Thor. Snorri says he is so good an archer and skier that none can match him, beautiful and a warrior, good to pray to in single combat; poets called the shield Ullr’s ship. His hall is Ýdalir, the yew dales, and an old poem speaks of oaths sworn by Ullr’s ring.",
+
+            TraditionalMeaning: "Skill in the hard season: endurance, focus, self-reliance and joy in winter and the wild.",
+
+            DevotionalApproach: "Start here: go outside on a cold day, walk, run, ski or skate, and offer the effort to him with a cup of something warm poured out afterwards. Approach him with steadiness and sportsmanship. He asks devotees to practise their skills, respect the animals they take and keep their oaths.",
+
+            OfferingNotes: "Offer mead, ale or bread outdoors, or share a meal from a hunt or from local farms. Hunters dedicate their first take and thank the animal; others offer a winter walk in his honour.",
+
+            AltarIdeas: "A white or green candle, a bow or arrow, a small ski or snowshoe, a ring, pine or juniper (not yew within reach), and clear quartz. Snow or frost on the windowsill completes it.",
+
+            CulturalContext: "Ullr is honoured today in Heathenry, the living revival of Norse and Germanic religion, and adopted as a patron of skiers. A third-century inscription on a scabbard fitting from Thorsberg may name him, and Saxo Grammaticus tells of Ollerus, who ruled in Odin’s place for ten years. The skiers’ Ullr festivals in some winter resorts are modern celebrations.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour Ullr in deep winter, often around Þorrablót, with mead and food shared outdoors, and before hunting, archery or skiing. He is asked for skill, endurance, safe winter travel and success in fair contests.",
+
+            tags: ["hunting", "archery", "winter", "skiing", "oaths", "endurance"]
+        },
+
+        eir: {
+            DisplayName: "Eir",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "Healing, medicine, mercy and help",
+
+            SacredSymbols: "Healing herbs, the healer’s hands, the hill of healing (Lyfjaberg)",
+
+            SacredAnimals: "None securely attested in Norse sources",
+
+            SacredPlants: "Healing herbs (a modern association)",
+
+            CandleColors: "Green, white, blue",
+
+            Crystals: "Green aventurine, clear quartz, jade, amethyst",
+
+            Herbs: "Yarrow, chamomile, angelica",
+
+            Offerings: "Herbal tea, water, a donation to health care, kindness to the sick",
+
+            TraditionalWarnings: "Eir is named only briefly: Snorri calls her the best of physicians, and a later poem places her among the maidens on Lyfjaberg, the hill of healing. Nearly all devotion to her is modern; it supports, never replaces, medical care.",
+
+            Overview: "Eir is a Norse goddess of healing, whose name means help or mercy. Snorri lists her among the goddesses as the best of physicians, and the poem Fjölsvinnsmál names her among the maidens who sit with Menglöð on Lyfjaberg, the hill of healing, where the sick who climb it are cured. Her name also appears in a list of valkyries.",
+
+            TraditionalMeaning: "Help when it is needed: healing, comfort for the sick and the skill and mercy of those who care for them.",
+
+            DevotionalApproach: "Start here: make a cup of herbal tea, hold it for a moment and ask her for healing for yourself or someone else, then drink it slowly. Approach her gently. She asks devotees to care for the sick, look after their own health and honour healers.",
+
+            OfferingNotes: "Offer herbal tea, fresh water or healing herbs, or give time or money to people who care for the sick. Thanking a nurse or carer is an offering in her spirit.",
+
+            AltarIdeas: "A green or white candle, a small bundle of dried healing herbs, aventurine or jade, a cup, and the names of those you pray for. A shelf near where you keep medicines can hold her image.",
+
+            CulturalContext: "Eir is honoured today in Heathenry, the living revival of Norse and Germanic religion, especially by nurses, doctors and carers. Because her sources are so slight, Heathens often honour her alongside Frigg and the other goddesses Snorri lists with her.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour Eir in times of illness and recovery, and some at Dísablót among the goddesses, with herbal tea, water and healing herbs. She is asked for healing, comfort, skilled care and strength for carers.",
+
+            tags: ["healing", "medicine", "mercy", "care", "health", "nurses"]
+        },
+
+        sunna: {
+            DisplayName: "Sól",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "The Sun, daylight and warmth, the turning year, life and growth",
+
+            SacredSymbols: "The sun wheel, the sun chariot drawn by horses, the shining disc",
+
+            SacredAnimals: "Horses, her steeds Árvakr and Alsviðr",
+
+            SacredPlants: "Sunflower and marigold (modern associations)",
+
+            CandleColors: "Gold, yellow, orange",
+
+            Crystals: "Sunstone, amber, citrine, carnelian",
+
+            Herbs: "St John’s wort, chamomile, calendula",
+
+            Offerings: "Mead, honey, golden bread, greeting the sunrise",
+
+            TraditionalWarnings: "In Norse myth the Sun is a goddess and the Moon a god, the reverse of many classical associations. Never look straight at the Sun, even in devotion.",
+
+            Overview: "Sól, also called Sunna, is the Norse goddess of the Sun, daughter of Mundilfari and sister of Máni, the Moon. She drives the horses Árvakr and Alsviðr that draw the sun across the sky, chased by the wolf Sköll, who will catch her at Ragnarök; but Vafþrúðnismál says she will first bear a daughter as bright as herself, who will ride her mother’s paths. The Old High German Merseburg charm names Sunna among the goddesses.",
+
+            TraditionalMeaning: "Light that returns: warmth, hope, steady courage in the face of danger and life passed on to the next generation.",
+
+            DevotionalApproach: "Start here: greet the sunrise, or the first daylight you see, and thank her by name. Approach her with gratitude and warmth. She asks devotees to keep going on their daily round, carry light into dark places and pass on what they have to those who follow.",
+
+            OfferingNotes: "Offer mead, honey or golden bread at sunrise or midsummer, set in sunlight before sharing or returning it to the earth.",
+
+            AltarIdeas: "A gold or yellow candle, a sun wheel or a picture of the Trundholm sun chariot, sunstone or amber, a small horse figure and a dish of honey. An east or south window suits her.",
+
+            CulturalContext: "Sól is honoured today in Heathenry, the living revival of Norse and Germanic religion, often at midsummer. The Bronze Age sun chariot from Trundholm in Denmark, a horse drawing a gilded disc, is far older than the Norse myths, but shows how long the north has pictured the sun drawn by a horse.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour Sól at midsummer and at the return of the sun after midwinter, and some on Sundays, with mead, honey and bright bread. She is asked for warmth, health, good growing weather and courage.",
+
+            tags: ["sun", "light", "warmth", "summer", "hope", "growth"]
+        },
+
+        mani: {
+            DisplayName: "Máni",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "The Moon, the counting of time and the months, night journeys, the waxing and waning",
+
+            SacredSymbols: "The crescent and full moon, the moon’s chariot, a pail on a pole (from the tale of Bil and Hjúki)",
+
+            SacredAnimals: "None securely attested in Norse sources",
+
+            SacredPlants: "None securely attested in Norse sources",
+
+            CandleColors: "Silver, white, blue",
+
+            Crystals: "Moonstone, selenite, labradorite, clear quartz",
+
+            Herbs: "Mugwort, chamomile, white willow",
+
+            Offerings: "Mead, water, milk, time spent under the moon",
+
+            TraditionalWarnings: "In Norse myth the Moon is a god and the Sun a goddess, the reverse of the Greek and Roman pattern. Snorri’s tale of Bil and Hjúki carried off by Máni is sometimes said to lie behind the rhyme of Jack and Jill; that link is a nineteenth-century guess.",
+
+            Overview: "Máni is the Norse god of the Moon, son of Mundilfari and brother of Sól, the Sun. Snorri says he steers the moon’s course and rules its waxing and waning, and that he took up from the earth two children, Bil and Hjúki, as they carried a pail of water from a well, so that they follow him across the sky. He is chased by the wolf Hati, who will catch him at Ragnarök.",
+
+            TraditionalMeaning: "Time measured and journeys kept: the steady rhythm of months, guidance in the dark and care for the young.",
+
+            DevotionalApproach: "Start here: look for the moon tonight, note its phase, and thank him for the light he gives in the dark. Approach him calmly. He asks devotees to keep good time, care for children and travellers, and accept the waxing and waning of things.",
+
+            OfferingNotes: "Offer mead, water or milk in moonlight, especially at the full moon. Keeping a note of the moon’s phases is a simple devotion.",
+
+            AltarIdeas: "A silver or white candle, a crescent, moonstone or selenite, a small pail or cup of water, and a night-sky cloth. A window where the moon can be seen suits him.",
+
+            CulturalContext: "Máni is honoured today in Heathenry, the living revival of Norse and Germanic religion, often on Mondays, the Moon’s day, and at the full moon. His name is the root of the Old Norse and English words for moon and month.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour Máni at the full moon and on Mondays, a modern custom from the day’s name, with mead, water and quiet time outdoors at night. He is asked for safe travel by night, the protection of children and help in keeping time.",
+
+            tags: ["moon", "night", "time", "months", "travel", "children"]
+        },
+
+        norns: {
+            DisplayName: "The Norns",
+            Category: "Deity",
+
+            Pantheon: "Norse",
+
+            Domains: "Fate and destiny, the laws of the world, birth and the shaping of a life, the well beneath the world tree",
+
+            SacredSymbols: "The well of Urðr, the world tree Yggdrasil, threads and spinning, carved staves",
+
+            SacredAnimals: "Swans, which Snorri says swim in the well of Urðr",
+
+            SacredPlants: "The ash tree Yggdrasil",
+
+            CandleColors: "White, grey, black",
+
+            Crystals: "Clear quartz, smoky quartz, jet, labradorite",
+
+            Herbs: "Ash leaves, yew (for display only, poisonous), mugwort",
+
+            Offerings: "Water poured at the roots of a tree, porridge, thread, honest reflection",
+
+            TraditionalWarnings: "Glossing Urðr, Verðandi and Skuld as past, present and future is a modern simplification: their names mean something like what has come to be, what is coming to be and what shall be, or debt. The Norns are not consulted like fortune tellers, and fate in Norse thought was faced with courage, not escaped.",
+
+            Overview: "The Norns are the Norse powers of fate. Völuspá tells of three maidens, Urðr, Verðandi and Skuld, who come from the lake beneath the world tree, carve staves, lay down laws and choose the lives of the children of men; Snorri adds that they water Yggdrasil from the well of Urðr each day so that it will not rot. Other Norns come to each child at birth, and in the Helgi poems they twist the threads of the hero’s fate.",
+
+            TraditionalMeaning: "Fate faced well: the weight of what has happened, the power of each choice now, and courage before what must come.",
+
+            DevotionalApproach: "Start here: pour a cup of water at the roots of a tree and think about one thing in your past that shaped who you are. Approach them with respect and humility. They ask devotees to own their deeds, act well in the present and meet what comes with courage.",
+
+            OfferingNotes: "Offer water poured at the roots of a tree, a little porridge, or a length of thread. In Faroese and Norwegian folk custom, the first porridge given to a mother after childbirth was called the Norns’ porridge.",
+
+            AltarIdeas: "Three candles, white, grey and black, a bowl of water, a spindle or thread, an ash leaf or twig, and smoky quartz. A small carved stave or rune can stand among them.",
+
+            CulturalContext: "The Norns are honoured today in Heathenry, the living revival of Norse and Germanic religion. The idea of wyrd, the Old English cousin of Urðr, carries the same sense of fate woven from what has already happened.",
+
+            Traditions: "Norse",
+
+            TraditionNotes: "Norse: Heathens honour the Norns at the turning of the year, especially at Winter Nights and Yule, at births and at the ends of things, with water poured at the roots of a tree and porridge. They are asked to look kindly on a newborn child’s life, and for courage and clarity before fate.",
+
+            tags: ["fate", "destiny", "wyrd", "birth", "time", "yggdrasil"]
+        },
     },
 
     tool: {

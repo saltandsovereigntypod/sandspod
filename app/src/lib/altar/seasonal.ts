@@ -270,7 +270,7 @@ export const SEASONAL_OBJECTS: SeasonalObject[] = [
 
   // The Norse and Heathen year, from Þorrablót in midwinter.
   {
-    id: 'drinking-horn', name: 'Drinking Horn', festivals: norse('thorrablot', 'disablot', 'sigrblot', 'haustblot', 'vetrnaetur', 'jol'), deities: ['Odin', 'Njörðr', 'Freyr'], vessel: true,
+    id: 'drinking-horn', name: 'Drinking Horn', festivals: norse('thorrablot', 'disablot', 'sigrblot', 'haustblot', 'vetrnaetur', 'jol'), deities: ['Odin', 'Njörðr', 'Njord', 'Freyr'], vessel: true,
     keywords: ['mead', 'ale', 'toast', 'sumbel', 'libation', 'horn', 'bragarfull', 'Njord', 'drink offering'],
     description: 'A horn of mead or ale, passed round at the blót and poured out as an offering. The sagas tell of toasts drunk to Odin for victory, to Njörðr and Freyr for a good year and peace, and to kin gone before.',
   },

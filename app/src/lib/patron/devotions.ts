@@ -2054,6 +2054,199 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     sources: ['Snorri Sturluson, Skáldskaparmál 1–3; Haustlöng'],
   },
 
+  {
+    key: 'njord',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'norse', id: 'jol' },
+        name: 'Yule',
+        why: 'Snorri says the Yule toasts were drunk to Odin, then to Njord and Freyr “for a good year and peace”.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Pour a little salt water or ale into a bowl and thank him for a safe journey.',
+      'Pick up litter from a beach, riverbank or gutter.',
+      'Share something you have with someone who has less.',
+      'Make peace in one small quarrel.',
+    ],
+    approach:
+      'Njord is approached calmly and generously, as the Vanir god of the sea, prosperity and peace.',
+    sources: [HAKONAR, 'Snorri Sturluson, Gylfaginning 23', 'Tacitus, Germania 40, on Nerthus'],
+  },
+  {
+    key: 'heimdall',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'norse', id: 'vetrnaetur' },
+        name: 'Winter Nights',
+        why: 'No festival of Heimdall is recorded. Some modern Heathens greet the guardian of thresholds at the year’s turning points, such as Winter Nights; this is modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Stand at your front door for a moment, look and listen.',
+      'Check that the people in your care are safe tonight.',
+      'Keep one promise faithfully.',
+      'Listen carefully to someone, as he hears the grass grow.',
+    ],
+    approach:
+      'Heimdall is approached with steadiness, as the watchman of the gods and guardian of boundaries.',
+    sources: ['Snorri Sturluson, Gylfaginning 27', 'Völuspá 1 and 46; Rígsþula', ICELANDIC_CAL],
+  },
+  {
+    key: 'sif',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'norse', id: 'haustblot' },
+        name: 'Haustblót',
+        why: 'Many modern Heathens honour Sif with Thor at the autumn harvest blót. This is modern custom; her link with grain is a modern reading.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Brush or braid your hair with care and thank her.',
+      'Share bread with your family or household.',
+      'Do one thing to look after your home.',
+      'Offer peace where there is tension.',
+    ],
+    approach:
+      'Sif is approached warmly and simply, as the golden-haired goddess of family and household.',
+    sources: ['Snorri Sturluson, Skáldskaparmál 35, on Sif’s hair', 'Lokasenna 53', ICELANDIC_CAL],
+  },
+  {
+    key: 'bragi',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'norse', id: 'jol' },
+        name: 'Yule',
+        why: 'The sagas tell of vows made at Yule over the bragarfull, the chieftain’s cup.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Read a poem aloud.',
+      'Write four lines of your own.',
+      'Make one promise you will keep, and say it aloud.',
+      'Tell a story about someone you have lost.',
+    ],
+    approach:
+      'Bragi is approached with words and good company, as the god of poetry and vows.',
+    sources: ['Helgakviða Hjörvarðssonar, prose after stanza 30, on vows at Yule over the bragarfull', 'Snorri Sturluson, Skáldskaparmál 10', 'Eiríksmál; Hákonarmál'],
+  },
+  {
+    key: 'ullr',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'norse', id: 'thorrablot' },
+        name: 'Þorrablót',
+        why: 'No festival of Ullr is recorded. Many modern Heathens honour the winter hunter and skier in the depth of winter; this is modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Go outside on a cold day and walk, run or ski for him.',
+      'Practise a skill with focus for ten minutes.',
+      'Thank the animal or farmer behind a meal.',
+      'Keep a fair contest fair.',
+    ],
+    approach:
+      'Ullr is approached with steadiness and sportsmanship, as the archer and skier of the winter.',
+    sources: ['Snorri Sturluson, Gylfaginning 31', 'Grímnismál 5; Atlakviða 30', 'Saxo Grammaticus, Gesta Danorum 3, on Ollerus'],
+  },
+  {
+    key: 'eir',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'norse', id: 'disablot' },
+        name: 'Dísablót',
+        why: 'No festival of Eir is recorded. Some modern Heathens honour her among the goddesses at Dísablót; this is modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Make a cup of herbal tea and ask for healing for someone.',
+      'Do one thing for your own health today.',
+      'Thank a nurse, doctor or carer.',
+      'Check in on someone who is unwell.',
+    ],
+    approach:
+      'Eir is approached gently, as the best of healers, honest that almost all we know of her is a line or two in Snorri.',
+    sources: ['Snorri Sturluson, Gylfaginning 35', 'Fjölsvinnsmál 38'],
+  },
+  {
+    key: 'sunna',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'norse', id: 'midsummer' },
+        name: 'Midsummer',
+        why: 'The height of the sun’s power. Honouring Sól at midsummer is modern Heathen custom; no ancient festival of hers is recorded.',
+        basis: 'modern',
+      },
+      {
+        rule: { kind: 'weekday', day: 0 },
+        name: 'Sunday',
+        why: 'Sunday is the sun’s day (Old Norse sunnudagr). Honouring Sól on Sundays is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Greet the first daylight you see by name.',
+      'Spend a few minutes in the sun, if there is any.',
+      'Set a dish of honey in the light for her.',
+      'Do one thing to pass something good on to someone younger.',
+    ],
+    approach:
+      'Sól is approached with gratitude and warmth, as the Sun who drives her horses across the sky each day.',
+    sources: ['Snorri Sturluson, Gylfaginning 11', 'Vafþrúðnismál 47', 'The Second Merseburg Charm', WEEKDAYS],
+  },
+  {
+    key: 'mani',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'full' },
+        name: 'The full moon',
+        why: 'Many modern Heathens honour Máni at the full moon. This is modern custom.',
+        basis: 'modern',
+      },
+      {
+        rule: { kind: 'weekday', day: 1 },
+        name: 'Monday',
+        why: 'Monday is the moon’s day (Old Norse mánadagr). Honouring Máni on Mondays is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Look for the moon tonight and note its phase.',
+      'Offer a cup of water or milk on a windowsill at night.',
+      'Plan the month ahead.',
+      'Ask him to watch over someone travelling tonight.',
+    ],
+    approach:
+      'Máni is approached calmly, as the Moon who keeps time and carries the children Bil and Hjúki.',
+    sources: ['Snorri Sturluson, Gylfaginning 11', 'Vafþrúðnismál 23', WEEKDAYS],
+  },
+  {
+    key: 'norns',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'norse', id: 'vetrnaetur' },
+        name: 'Winter Nights',
+        why: 'The start of winter and of the old Icelandic year. Honouring the Norns at the year’s turning is modern Heathen custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Pour a cup of water at the roots of a tree.',
+      'Think about one thing in your past that shaped you.',
+      'Make one choice today with care, knowing it will shape what comes.',
+      'Spin, twist or knot a thread while you sit with them.',
+    ],
+    approach:
+      'The Norns are approached with respect and humility, as the powers of fate who water the world tree.',
+    sources: ['Völuspá 19–20', 'Snorri Sturluson, Gylfaginning 15–16', 'Helgakviða Hundingsbana I 2–4', ICELANDIC_CAL],
+  },
+
   // ─── Celtic ───────────────────────────────────────────────────────────
   {
     key: 'brigid',

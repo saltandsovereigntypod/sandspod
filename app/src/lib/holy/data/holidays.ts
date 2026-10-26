@@ -797,7 +797,7 @@ export const HOLIDAY_PAGES: HolyPage[] = [
       ],
     },
     correspondences: {
-      deities: ['Odin', 'Frigg', 'Freyr', 'Thor', 'Baldur'],
+      deities: ['Odin', 'Frigg', 'Freyr', 'Njord', 'Thor', 'Baldur'],
       herbs: ['Juniper', 'Holly', 'Mistletoe', 'Birch', 'Cinnamon'],
       crystals: ['Garnet', 'Amber', 'Bloodstone', 'Clear Quartz'],
       colors: ['Red', 'Green', 'Gold', 'White'],

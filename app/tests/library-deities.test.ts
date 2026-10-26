@@ -30,6 +30,7 @@ const MORE_DEITIES: Record<string, string[]> = {
   Greek: ['ares', 'hephaestus', 'pan', 'gaia', 'helios', 'eros', 'asclepius'],
   Roman: ['fortuna', 'bacchus', 'pluto', 'proserpina', 'vulcan', 'pomona', 'bona_dea', 'lares_penates', 'mithras'],
   Egyptian: ['amun', 'ptah', 'bes', 'nut', 'neith', 'sobek', 'khonsu', 'taweret'],
+  Norse: ['njord', 'heimdall', 'sif', 'bragi', 'ullr', 'eir', 'sunna', 'mani', 'norns'],
 };
 const ALL_MORE = Object.values(MORE_DEITIES).flat();
 const text = (d: Deity, ...fields: string[]) => fields.map((f) => String(d[f] ?? '')).join(' ');
@@ -212,9 +213,14 @@ const MORE_LINKS: [string, string][] = [
   ['kemetic-opet', 'khonsu'],
   ['kemetic-valley', 'amun'],
   ['kemetic-birth-osiris', 'nut'],
+  ['norse-jol', 'njord'],
+  ['icelandic-heyannir', 'sif'],
+  ['icelandic-tvimanudur', 'sif'],
+  ['icelandic-aukanaetur', 'sunna'],
+  ['icelandic-aukanaetur', 'mani'],
 ];
 // Seasonal things kept for festivals that honour them.
-const MORE_SEASONAL: string[] = ['Lares'];
+const MORE_SEASONAL: string[] = ['Lares', 'Njord'];
 // Other names, festivals and things they keep, each finding them.
 const MORE_SEARCH: [string, string][] = [
   ['Enyalios', 'ares'],
@@ -244,6 +250,17 @@ const MORE_SEARCH: [string, string][] = [
   ['Kom Ombo', 'sobek'],
   ['Bentresh', 'khonsu'],
   ['hippopotamus', 'taweret'],
+  ['Skadi', 'njord'],
+  ['Gjallarhorn', 'heimdall'],
+  ['Bifröst', 'heimdall'],
+  ['golden hair', 'sif'],
+  ['bragarfull', 'bragi'],
+  ['skiing', 'ullr'],
+  ['Lyfjaberg', 'eir'],
+  ['Sunna', 'sunna'],
+  ['Hjúki', 'mani'],
+  ['Urðr', 'norns'],
+  ['Skuld', 'norns'],
 ];
 // Living religions: devotion, not magic.
 const LIVING_PANTHEONS = ['Hindu', 'Shinto', 'Chinese'];
