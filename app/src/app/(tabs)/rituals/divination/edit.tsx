@@ -15,6 +15,7 @@ import {
   moonForReading,
   normalizeReading,
   OGHAM,
+  pickList,
   READINGS,
   searchTarot,
   type Reading,
@@ -26,6 +27,8 @@ import { useSession } from '../../../../lib/session';
 const CAME_UP_HINT: Record<string, string> = {
   tarot: 'The spread, positions, reversals, what struck you',
   oracle: 'The deck, the cards, the words or images',
+  lenormand: 'The spread, the cards in order, the pairs that struck you',
+  kipper: 'Where the main person lay, and what was near them',
   runes: 'How they fell, which landed face up, reversed (merkstave)',
   tea: 'Shapes near the rim (soon) or the bottom (later), and where the handle points',
   scrying: 'What you saw in the water, mirror, glass or flame',
@@ -133,9 +136,9 @@ function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
         <Body muted>{`Moon: ${reading.moonPhase}`}</Body>
       </View>
 
-      {(reading.method === 'runes' || reading.method === 'ogham' || reading.method === 'tarot') && (
+      {(reading.method === 'runes' || reading.method === 'ogham' || reading.method === 'tarot' || reading.method === 'lenormand' || reading.method === 'kipper') && (
         <View style={ui.gapSmall}>
-          <SectionLabel>{reading.method === 'tarot' ? 'Cards drawn' : reading.method === 'runes' ? 'Runes drawn' : 'Staves drawn'}</SectionLabel>
+          <SectionLabel>{reading.method === 'runes' ? 'Runes drawn' : reading.method === 'ogham' ? 'Staves drawn' : 'Cards drawn'}</SectionLabel>
           {reading.drawn.length > 0 && (
             <>
               <Body muted>In the order drawn. Tap one to take it out.</Body>
@@ -165,6 +168,15 @@ function Form({ existing }: { existing: CraftEntry<unknown> | null }) {
               {ELDER_FUTHARK.filter((r) => !reading.drawn.includes(r.name)).map((r) => (
                 <Chip key={r.name} label={r.name} a11yLabel={`Add ${r.name}, ${r.gloss}`} onPress={() => toggleDrawn(r.name)} />
               ))}
+            </Chips>
+          )}
+          {(reading.method === 'lenormand' || reading.method === 'kipper') && (
+            <Chips>
+              {(pickList(reading.method) ?? [])
+                .filter((n) => !reading.drawn.includes(n))
+                .map((n) => (
+                  <Chip key={n} label={n} a11yLabel={`Add ${n}`} onPress={() => toggleDrawn(n)} />
+                ))}
             </Chips>
           )}
           {reading.method === 'ogham' && (

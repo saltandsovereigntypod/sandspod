@@ -21,6 +21,7 @@ import {
 import { Button } from "../../../../../../components/Button";
 import {
   Composer,
+  confirmBlock,
   ThreadRow,
   useMessageActions,
 } from "../../../../../../components/covens/Chat";
@@ -34,6 +35,10 @@ import {
   SwitchRow,
 } from "../../../../../../components/more/ui";
 import * as api from "../../../../../../lib/covens/api";
+import {
+  blockedPartner,
+  withBlock,
+} from "../../../../../../lib/covens/blocking";
 import {
   addToGroup,
   conversationTitle,
@@ -192,9 +197,17 @@ export default function Thread() {
           : "Everyone in the coven";
       })();
   const mine = members.find((m) => m.user_id === coven.userId);
+  // A one-to-one chat with someone you've blocked stays quiet until you unblock them.
+  const partnerBlocked = blockedPartner(
+    conversation,
+    members,
+    coven.userId,
+    blocked,
+  );
   const canTalk =
     coven.standing.ok &&
     coven.perms.chat &&
+    !partnerBlocked &&
     (!conversationId || (!!mine && !mine.left_at));
 
   const send = async (body: string, replyTo: string | null = null) => {
@@ -319,7 +332,9 @@ export default function Thread() {
           onSend={send}
           disabled={!canTalk}
           note={
-            !coven.standing.ok
+            partnerBlocked
+              ? `You’ve blocked ${coven.nameOf(partnerBlocked)}. To write here again, unblock them from ⓘ.`
+              : !coven.standing.ok
               ? coven.standing.reasons[0]
               : !coven.perms.chat
                 ? "Your position doesn’t talk in the chat here. The coven’s head decides who does."
@@ -334,6 +349,21 @@ export default function Thread() {
           members={members}
           onClose={() => setInfo(false)}
           onChanged={(next) => setMembers(next)}
+          onReport={(person) => {
+            setInfo(false);
+            // Let the info sheet finish closing before the report sheet opens.
+            setTimeout(
+              () =>
+                actions.report({
+                  target_type: "member",
+                  target_id: person,
+                  coven_id: conversation.coven_id,
+                  target_user_id: person,
+                  label: coven.nameOf(person),
+                }),
+              Platform.OS === "ios" ? 450 : 0,
+            );
+          }}
         />
       )}
       {actions.sheet}
@@ -347,12 +377,15 @@ function ConversationInfo({
   members,
   onClose,
   onChanged,
+  onReport,
 }: {
   visible: boolean;
   conversation: Conversation;
   members: ConversationMember[];
   onClose: () => void;
   onChanged: (members: ConversationMember[]) => void;
+  /** Report someone in this conversation to the site's moderators. */
+  onReport: (userId: string) => void;
 }) {
   const coven = useCoven();
   const mine = members.find((m) => m.user_id === coven.userId);
@@ -373,6 +406,18 @@ function ConversationInfo({
   const reload = async () => {
     const { members: people } = await fetchConversations(conversation.coven_id);
     onChanged(people.filter((m) => m.conversation_id === conversation.id));
+  };
+  const blocks = coven.me?.blocks ?? [];
+  const block = async (userId: string, on: boolean) => {
+    setMessage(null);
+    try {
+      if (on) await api.block(coven.userId!, userId);
+      else await api.unblock(coven.userId!, userId);
+      if (coven.me)
+        coven.setMe({ ...coven.me, blocks: withBlock(coven.me.blocks, userId, on) });
+    } catch (error) {
+      setMessage(errorMessage(error));
+    }
   };
   const act = async (work: () => Promise<unknown>) => {
     setMessage(null);
@@ -409,11 +454,36 @@ function ConversationInfo({
           ? `${inIt.length} in this group`
           : "In this conversation"}
       </Text>
-      {inIt.map((m) => (
-        <Text key={m.user_id} style={type.body}>
-          {m.user_id === coven.userId ? "You" : coven.nameOf(m.user_id)}
-        </Text>
-      ))}
+      {inIt.map((m) =>
+        m.user_id === coven.userId ? (
+          <Text key={m.user_id} style={type.body}>
+            You
+          </Text>
+        ) : (
+          <View key={m.user_id} style={styles.person}>
+            <Text style={[type.body, styles.personName]}>
+              {coven.nameOf(m.user_id)}
+            </Text>
+            <Button
+              label="Report"
+              variant="text"
+              onPress={() => onReport(m.user_id)}
+            />
+            <Button
+              label={blocks.includes(m.user_id) ? "Unblock" : "Block"}
+              variant="text"
+              onPress={() =>
+                blocks.includes(m.user_id)
+                  ? void block(m.user_id, false)
+                  : confirmBlock(
+                      coven.nameOf(m.user_id),
+                      () => void block(m.user_id, true),
+                    )
+              }
+            />
+          </View>
+        ),
+      )}
       {conversation.kind === "group" &&
         (adding ? (
           <>
@@ -491,6 +561,8 @@ function ConversationInfo({
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.ground },
   fill: { flex: 1 },
+  person: { flexDirection: "row", alignItems: "center", flexWrap: "wrap" },
+  personName: { flex: 1, minWidth: 120 },
   header: {
     flexDirection: "row",
     alignItems: "center",

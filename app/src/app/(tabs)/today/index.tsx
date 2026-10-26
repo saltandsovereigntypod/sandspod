@@ -126,7 +126,7 @@ export default function Today() {
       label={moonReminders ? 'Moon reminders on' : 'Remind me of the moon'}
       accessibilityHint="Choose which moon phases to be reminded of"
       icon={<Icon name="bell" size={16} color={colors.gold} />}
-      onPress={() => router.navigate('/today/reminders')}
+      onPress={() => router.navigate({ pathname: '/today/reminders', params: { section: 'moon' } })}
     />
   );
 

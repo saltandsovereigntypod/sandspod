@@ -21,6 +21,23 @@ Each was resized to 600 px tall and saved as WebP. File names are the card
 ids in `app/src/lib/divination/tarot.ts` (`00-the-fool`, `cups-07`, …).
 The app bundles copies made by `app/scripts/build-divination-assets.py`.
 
+## Tarot: the other decks, `decks/<deck>/*.webp`
+
+Two more public-domain decks can be chosen instead (Settings → Divination,
+the `tarot_deck` setting), with the same 78 card ids and the same meanings:
+
+- `decks/marseille/`: the Tarot de Marseille after Nicolas Conver (1760), in
+  A. Camoin's printing (Marseille, about 1890–1900), scanned by the
+  Bibliothèque nationale de France (public domain).
+- `decks/sola-busca/`: the Sola Busca tarot, engraved in Italy about 1491 and
+  coloured by hand (PD-Art).
+
+Every card's source file, author or holder and licence is listed in
+`app/assets/divination/decks/marseille/SOURCES.md` and
+`app/assets/divination/decks/sola-busca/SOURCES.md`. Each card is 350 × 600
+px WebP, the scan scaled to 600 px tall and its sides filled with its own
+edge colour, so every deck has the same shape.
+
 The card backs are drawn in code (`app/src/components/divination/Faces.tsx`,
 `practice/hedge/hedge.js`), not taken from any deck.
 
@@ -38,3 +55,24 @@ Written for Salt & Sovereignty, after the divinatory meanings in A. E.
 Waite's *The Pictorial Key to the Tarot* (1910, public domain), the Old
 English, Norwegian and Icelandic rune poems, and the medieval ogham
 word-lists, with the modern readings most people use today.
+
+## Lenormand: `lenormand/*.webp`
+
+The thirty-six cards of a Petit Lenormand published by Geûens-Seaux of
+Bruges, about 1895–1901, scanned by the Bibliothèque nationale de France
+(Gallica btv1b10529584r) and shared on Wikimedia Commons as public domain
+(anonymous art published before 1931; faithful scans of two-dimensional
+public-domain work). Downloaded in October 2026 from `upload.wikimedia.org`.
+The full account, and how the files were made, is in
+`app/assets/divination/decks/lenormand/SOURCES.md`.
+
+## Kipper
+
+No pictures: no complete public-domain printing could be found, so the
+cards are drawn in words. See `app/assets/divination/decks/kipper/SOURCES.md`.
+
+## Decks of your own
+
+Photos of your own cards are yours: uploaded to your account's own folder
+(`user-assets/<you>/oracle-decks/`) when you're signed in, as the altar's
+photos are, and kept on your device otherwise.

@@ -7,6 +7,9 @@
 // the same functions (grimoire/js/ui/divination.js via
 // js/core/divination-library.js). Pure.
 
+import { kipperById } from './oracle/kipper.ts';
+import { lenormandById } from './oracle/lenormand.ts';
+import { kipperPage, kipperSubgroups, lenormandPage, lenormandSubgroups, ORACLE_NOTES } from './oracle/library.ts';
 import { BLANK_RUNE, FEDA, RUNES, type Stave } from './staves.ts';
 import { divinationRoute, divinationWebPath, readMoreHref, refForDrawn, staveId, type DivinationKind, type DivinationRef } from './links.ts';
 import { STAVE_SECTIONS, staveDeep } from './stavesDeep.ts';
@@ -25,8 +28,10 @@ export type DivinationEntry = {
   words: ThreeWords;
   /** A tarot card's id, for its picture. */
   cardId: string | null;
-  /** A rune's or a stave's letter (empty for the blank rune). */
+  /** A rune's or a stave's letter (empty for the blank rune); a Lenormand card's playing card ("9♥"); a Kipper card's number. */
   glyph: string | null;
+  /** A Lenormand card's id, for its picture (absent for the rest). */
+  lenormandId?: string | null;
 };
 
 export type DivinationSubgroup = { key: string; label: string; entries: DivinationEntry[] };
@@ -35,12 +40,13 @@ export type DivinationGroup = { kind: DivinationKind; label: string; note: strin
 /** The Grimoire's heading for the three drop-downs. */
 export const DIVINATION_TITLE = 'Divination';
 
-export const DIVINATION_LABELS: Record<DivinationKind, string> = { tarot: 'Tarot', runes: 'Runes', ogham: 'Ogham' };
+export const DIVINATION_LABELS: Record<DivinationKind, string> = { tarot: 'Tarot', runes: 'Runes', ogham: 'Ogham', lenormand: 'Lenormand', kipper: 'Kipper' };
 
 const NOTES: Record<DivinationKind, string> = {
-  tarot: 'The Rider–Waite–Smith deck of 1909: Pamela Colman Smith’s pictures, A. E. Waite’s meanings.',
+  tarot: 'A. E. Waite’s meanings, with the pictures of your deck: Pamela Colman Smith’s Rider–Waite–Smith of 1909 (the default), Nicolas Conver’s Tarot de Marseille of 1760, or the Sola Busca of about 1491. Choose in Settings → Divination.',
   runes: 'The twenty-four runes of the Elder Futhark, and the modern blank rune.',
   ogham: 'The twenty feda of the ogham, in their four aicmí.',
+  ...ORACLE_NOTES,
 };
 
 const fromCard = (card: TarotCard): DivinationEntry => ({
@@ -90,6 +96,8 @@ export function allDivinationGroups(): DivinationGroup[] {
         { key: 'ailme', label: 'Aicme Ailme', entries: FEDA.slice(15, 20).map((f) => fromStave('ogham', f)) },
       ],
     },
+    { kind: 'lenormand', label: DIVINATION_LABELS.lenormand, note: NOTES.lenormand, subgroups: lenormandSubgroups() },
+    { kind: 'kipper', label: DIVINATION_LABELS.kipper, note: NOTES.kipper, subgroups: kipperSubgroups() },
   ];
   return groupsCache;
 }
@@ -113,6 +121,8 @@ export type DivinationPage = {
 
 /** An entry's page: its place, and its sections in order (empty ones left out). */
 export function divinationPage(entry: DivinationEntry): DivinationPage {
+  if (entry.kind === 'lenormand') return { entry, ...lenormandPage(lenormandById(entry.id)!) };
+  if (entry.kind === 'kipper') return { entry, ...kipperPage(kipperById(entry.id)!) };
   if (entry.kind === 'tarot') {
     const deep = tarotDeep(entry.id)!;
     const n = Number(entry.id.slice(0, 2));

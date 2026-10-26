@@ -45,7 +45,7 @@ const GROUPS: { label: string; rows: Row[] }[] = [
       { key: 'library', label: 'Living Library', detail: 'Herbs, crystals, candles, deities', icon: 'library', href: '/more/library' },
       { key: 'practice', label: 'My practice', detail: 'Tools for your craft', icon: 'journey', href: '/rituals/craft' },
       { key: 'chart', label: 'Your birth chart', detail: 'Big three, planets, houses and aspects', icon: 'moon', href: '/rituals/craft/cosmic/chart' },
-      { key: 'moon-reminders', label: 'Moon reminders', detail: 'Phases and planned rituals', icon: 'moon', href: MOON_REMINDERS_HREF },
+      { key: 'moon-reminders', label: 'Reminders', detail: 'Moon, rituals, holidays, tending and planning', icon: 'moon', href: MOON_REMINDERS_HREF },
       { key: 'altar', label: 'Altar', detail: 'Your saved altars', icon: 'altar', href: ALTAR_HREF },
     ],
   },
@@ -121,6 +121,11 @@ export default function More() {
             detail="Crisis, grief and other support lines"
             icon="support"
             onPress={() => router.push('/more/support' as Href)}
+          />
+          <MenuRow
+            label="A note on our research"
+            detail="How it was researched, and how to send a correction"
+            onPress={() => router.push('/more/research' as Href)}
           />
           <MenuRow label="Contact us" detail={SUPPORT_EMAIL} onPress={() => void Linking.openURL(`mailto:${SUPPORT_EMAIL}`)} />
           <MenuRow label="Privacy Policy" onPress={() => void WebBrowser.openBrowserAsync(PRIVACY_URL)} />

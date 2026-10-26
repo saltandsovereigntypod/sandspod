@@ -3,10 +3,12 @@
 // light (no page text) so the draw screens can link to a page without
 // loading every page. Pure.
 
+import { KIPPER } from './oracle/kipper.ts';
+import { LENORMAND } from './oracle/lenormand.ts';
 import { BLANK_RUNE, FEDA, RUNES } from './staves.ts';
 import { TAROT_DECK } from './tarot.ts';
 
-export type DivinationKind = 'tarot' | 'runes' | 'ogham';
+export type DivinationKind = 'tarot' | 'runes' | 'ogham' | 'lenormand' | 'kipper';
 export type DivinationRef = { kind: DivinationKind; id: string };
 
 /** "nGéadal" → "ngeadal", "Blank rune" → "blank-rune". */
@@ -24,6 +26,10 @@ export function refForDrawn(name: string): DivinationRef | null {
   if (card) return { kind: 'tarot', id: card.id };
   if (name === BLANK_RUNE.name || RUNES.some((r) => r.name === name)) return { kind: 'runes', id: staveId(name) };
   if (FEDA.some((f) => f.name === name)) return { kind: 'ogham', id: staveId(name) };
+  const len = LENORMAND.find((c) => c.name === name);
+  if (len) return { kind: 'lenormand', id: len.id };
+  const kip = KIPPER.find((c) => c.name === name);
+  if (kip) return { kind: 'kipper', id: kip.id };
   return null;
 }
 

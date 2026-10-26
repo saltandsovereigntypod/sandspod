@@ -7,7 +7,8 @@
  * These controls have no `name`, so the Settings form's own Save never
  * touches them; each change is saved straight away, keeping every other
  * setting (the website's and the app's) as it is. Keys and values are the
- * app's: my_practice, calendar_*, today_show, today_layout, library_path*.
+ * app's: my_practice, calendar_*, today_show, today_layout, library_path*,
+ * divination_hidden_kinds.
  */
 (function (global) {
   "use strict";
@@ -133,7 +134,20 @@
     const chosen = G.myPractices(settings);
     return `<p class="my-sanctuary-intro">What kind of witch you are, alongside My path (the traditions you keep). Choose as many as fit. Rituals &amp; spells puts workings for your practice first, and your path (Living Library) adds the traditions you keep.</p>
       ${group("How you practise", G.PRACTICES.map((p) => check(`data-practice="${esc(p.id)}"`, p.name, p.about, chosen.includes(p.id))).join(""))}
-      ${group("My deities", `<p class="my-sanctuary-intro">Your patron, the gods you’ve dedicated to, and those you’re getting to know.</p><p><a class="button button--ghost" href="${MY_DEITIES_HREF}">Open My deities</a></p>`)}`;
+      ${group("My deities", `<p class="my-sanctuary-intro">Your patron, the gods you’ve dedicated to, and those you’re getting to know.</p><p><a class="button button--ghost" href="${MY_DEITIES_HREF}">Open My deities</a></p>`)}
+      ${drawKindsHtml(settings, G)}`;
+  }
+
+  /** Which kinds of draw Divination offers (the app's Settings → My practice → Divination: what to draw). */
+  function drawKindsHtml(settings, G) {
+    const K = G.divinationKinds;
+    if (!K) return "";
+    const hidden = K.hiddenKinds(settings);
+    return group(
+      "Divination: what to draw",
+      K.KIND_CHOICES.map((k) => check(`data-draw-kind="${esc(k.id)}"`, k.label, k.detail, !hidden.includes(k.id))).join(""),
+      "The kinds the draw page offers. Hide the ones you don’t use; your readings with them are kept."
+    );
   }
 
   // ------------------------------------------------------------- My path (Living Library)
@@ -389,6 +403,10 @@
       if (t.dataset.practice) {
         const chosen = G.myPractices(settings);
         return save({ my_practice: G.practicesValue(t.checked ? [...chosen, t.dataset.practice] : chosen.filter((p) => p !== t.dataset.practice)) }, "practice");
+      }
+      if (t.dataset.drawKind && G.divinationKinds) {
+        const K = G.divinationKinds;
+        return save({ [K.HIDDEN_KINDS_KEY]: K.withKindShown(settings, t.dataset.drawKind, t.checked) }, "practice");
       }
       if (t.dataset.path) {
         const next = new Set(G.traditions.myPath(settings).traditions);

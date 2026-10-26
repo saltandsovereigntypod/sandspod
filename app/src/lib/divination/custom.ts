@@ -22,11 +22,11 @@ export type CustomSpreadData = {
 
 export type CustomSpreadEntry = { id: string; data: CustomSpreadData };
 
-const KINDS: DrawKind[] = ['tarot', 'runes', 'ogham'];
+const KINDS: DrawKind[] = ['tarot', 'runes', 'ogham', 'lenormand', 'kipper', 'oracle'];
 const str = (v: unknown, max: number) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 
 /** What each place is called when you leave it blank: "Card 2", "Rune 2", "Stave 2". */
-export const placeWord = (kind: DrawKind) => (kind === 'tarot' ? 'Card' : kind === 'runes' ? 'Rune' : 'Stave');
+export const placeWord = (kind: DrawKind) => (kind === 'runes' ? 'Rune' : kind === 'ogham' ? 'Stave' : 'Card');
 
 export function blankCustomSpread(kind: DrawKind = 'tarot'): CustomSpreadData {
   return { name: '', kind, detail: '', shape: 'line', positions: [{ name: '', about: '' }, { name: '', about: '' }, { name: '', about: '' }] };
