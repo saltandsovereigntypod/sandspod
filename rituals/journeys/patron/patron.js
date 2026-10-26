@@ -53,7 +53,8 @@
         <h2 class="jr-label">Known</h2>${paras(guide.knowAndDont.known)}
         <h2 class="jr-label">Not known</h2>${paras(guide.knowAndDont.unknown)}</div></details>
       ${guide.further.length ? `<details class="sp-details"><summary>Reading further</summary><div class="jr-reading">${guide.further.map((f) => `<p class="sp-muted">${esc(f)}</p>`).join("")}</div></details>` : ""}
-      <div class="sp-actions"><a class="button button--ghost" href="${L.href.home()}">Dedication journeys</a></div>`;
+      <div class="sp-actions"><a class="button button--ghost" href="${L.href.home()}">Dedication journeys</a></div>
+      ${global.ResearchNote ? global.ResearchNote.footerHtml(guide.title, "Patron deities guide") : ""}`;
     root.setAttribute("aria-busy", "false");
   }
 

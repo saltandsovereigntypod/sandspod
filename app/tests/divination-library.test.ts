@@ -86,11 +86,11 @@ test('every rune and stave has three words and its sections, at a reasonable len
   for (const name of ['Gebo', 'Hagalaz', 'Nauthiz', 'Isa', 'Jera', 'Eihwaz', 'Sowilo', 'Ingwaz', 'Dagaz']) assert.equal(RUNES_DEEP[name].reversed, undefined, name);
 });
 
-test('the drop-downs: Tarot by Major Arcana then suit, Runes by aett, Ogham by aicme', () => {
+test('the drop-downs: Tarot by Major Arcana then suit, Runes by aett, Ogham by aicme, then Lenormand and Kipper', () => {
   const groups = allDivinationGroups();
-  assert.deepEqual(groups.map((g) => g.label), ['Tarot', 'Runes', 'Ogham']);
+  assert.deepEqual(groups.map((g) => g.label), ['Tarot', 'Runes', 'Ogham', 'Lenormand', 'Kipper']);
   assert.deepEqual(TAROT_GROUPS.map((g) => g.label), ['Major Arcana', 'Wands', 'Cups', 'Swords', 'Pentacles']);
-  assert.deepEqual(groups.map(countOf), [78, 25, 20]);
+  assert.deepEqual(groups.map(countOf), [78, 25, 20, 36, 36]);
   assert.equal(groups[0].subgroups[0].entries[0].name, 'The Fool');
   assert.equal(groups[0].subgroups[4].entries[13].name, 'King of Pentacles');
   assert.deepEqual(groups[1].subgroups.map((s) => s.entries[0].name), ['Fehu', 'Hagalaz', 'Tiwaz', 'Blank rune']);
@@ -116,7 +116,7 @@ test('a page has its place and its sections; the blank rune and ogham leave out 
 
 test('search finds cards and staves by name, words and page, accents or not', () => {
   const names = (q: string) => divinationGroups(q).flatMap((g) => g.subgroups.flatMap((s) => s.entries.map((e) => e.name)));
-  assert.equal(divinationGroups('').length, 3);
+  assert.equal(divinationGroups('').length, 5);
   assert.ok(names('tower').includes('The Tower'));
   assert.deepEqual(names('the tower upheaval'), ['The Tower']);
   assert.ok(names('cups').includes('Seven of Cups'));
@@ -126,8 +126,9 @@ test('search finds cards and staves by name, words and page, accents or not', ()
   assert.ok(names('salmon knowledge').includes('Coll'));
   assert.ok(names('aurochs').includes('Uruz'));
   assert.deepEqual(divinationGroups('zzzz-nothing'), []);
-  // The empty groups go.
-  assert.deepEqual(divinationGroups('tower').map((g) => g.label), ['Tarot']);
+  // The empty groups go (Lenormand has a Tower of its own).
+  assert.deepEqual(divinationGroups('tower').map((g) => g.label), ['Tarot', 'Lenormand']);
+  assert.deepEqual(divinationGroups('aurochs').map((g) => g.label), ['Runes']);
 });
 
 test('from a drawn card or stave to its page, in the app and on the website', () => {

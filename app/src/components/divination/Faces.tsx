@@ -1,4 +1,5 @@
-// The faces of what's drawn: Pamela Colman Smith's tarot cards, their backs,
+// The faces of what's drawn: tarot cards in the deck chosen (Pamela Colman
+// Smith's, Conver's Marseille or the Sola Busca), their backs,
 // runes carved on stones and ogham cut along wooden staves, and the flip
 // that turns one over. No new art: the runes and ogham are their own letters.
 
@@ -7,7 +8,8 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { Animated, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 
-import { tarotImages } from '../../lib/divination/tarotAssets';
+import { deckImages } from '../../lib/divination/tarotAssets';
+import { DEFAULT_DECK, type DeckId } from '../../lib/divination/decks';
 import { TarotArt } from './TarotArt';
 import { tarotCard } from '../../lib/divination/tarot';
 import { colors, fonts } from '../../theme';
@@ -84,10 +86,10 @@ export function Flip({
   );
 }
 
-/** A Rider–Waite–Smith card, upside down when reversed. */
-export function TarotFace({ name, reversed }: { name: string; reversed: boolean }) {
+/** A card from the deck given (the Rider–Waite–Smith unless said), upside down when reversed. */
+export function TarotFace({ name, reversed, deck = DEFAULT_DECK }: { name: string; reversed: boolean; deck?: DeckId }) {
   const card = tarotCard(name);
-  const source = card ? tarotImages[card.id] : undefined;
+  const source = card ? deckImages[deck][card.id] : undefined;
   return (
     <View style={[styles.card, reversed && styles.upsideDown]}>
       {source ? (

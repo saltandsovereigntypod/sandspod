@@ -97,6 +97,7 @@ export function defaultSettings(): Settings {
     default_mundane_mode: false,
     grimoire_page_font: 'classic-serif',
     grimoire_show_dreams: true,
+    tarot_deck: 'rws',
     sync_traditional_library_to_grimoire: false,
     library_layer_order: 'myPractice,traditional,community',
     ...layerFlags('myPractice'),
@@ -153,6 +154,8 @@ export function defaultSettings(): Settings {
     living_state_show_future_tending: true,
     living_state_show_remaining: true,
     living_state_show_recent_activity: true,
+    // Holiday, tending and planning reminders, quiet hours and the pause, as JSON ('' until first chosen): lib/reminders/prefs.ts.
+    reminders_v2: '',
   };
 }
 

@@ -1,45 +1,33 @@
-// Phone reminders for coven rites you've said you'll come to (or might):
-// the day before and an hour before. They're kept apart from the moon and
-// ritual reminders (their own `source`), so neither clears the other, and a
-// tap opens the rite (lib/reminders/notifier.ts handles taps for both).
+// Phone reminders for your covens: rites you've said you'll come to (or
+// might), the day before and an hour before; and, for covens you lead,
+// time to plan a ritual for the coven's holidays and to prepare its rites
+// (Reminders → Ritual planning). This reads your covens and hands them to
+// the reminders (lib/reminders/store.ts), which schedule them with
+// everything else, so quiet hours, the pause and the phone's limit hold for
+// them too, and a tap opens the rite or the coven.
 // The web build uses reminders.web.ts, which schedules nothing.
 
-import * as Notifications from 'expo-notifications';
-import { Platform } from 'react-native';
-
 import { permissionState, requestPermission } from '../reminders/notifier';
-import { fetchMyRites } from './api';
+import { covenSources } from '../reminders/covens';
+import { setCovenSources } from '../reminders/store';
+import { fetchMyRites, fetchMyStandings } from './api';
 import { riteReminders } from './model';
 
 export const COVEN_REMINDER_SOURCE = 'coven-rites';
-const CHANNEL = 'moon-reminders';
 
-/** Replace this app's coven rite reminders with the ones due now. Returns how many are set. */
+/** Read your covens and their rites and hand them to the reminders. Returns how many rite reminders are set. */
 export async function syncCovenReminders(userId: string | null, { ask = false } = {}): Promise<number> {
   try {
-    const existing = await Notifications.getAllScheduledNotificationsAsync();
-    await Promise.all(
-      existing.filter((n) => n.content.data?.source === COVEN_REMINDER_SOURCE).map((n) => Notifications.cancelScheduledNotificationAsync(n.identifier)),
-    );
-    if (!userId) return 0;
-    const reminders = riteReminders(await fetchMyRites(userId));
-    if (!reminders.length) return 0;
-    const permission = ask ? await requestPermission() : await permissionState();
-    if (permission !== 'granted') return 0;
-    let set = 0;
-    for (const reminder of reminders) {
-      try {
-        await Notifications.scheduleNotificationAsync({
-          identifier: reminder.key,
-          content: { title: reminder.title, body: reminder.body, data: { source: COVEN_REMINDER_SOURCE, url: reminder.url } },
-          trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: reminder.at, ...(Platform.OS === 'android' ? { channelId: CHANNEL } : {}) },
-        });
-        set += 1;
-      } catch {
-        // One bad date shouldn't stop the rest.
-      }
+    if (!userId) {
+      setCovenSources([]);
+      return 0;
     }
-    return set;
+    const [rites, standings] = await Promise.all([fetchMyRites(userId), fetchMyStandings(userId).catch(() => [])]);
+    setCovenSources(covenSources(standings, rites, userId, new Date()));
+    const count = riteReminders(rites).length;
+    if (!count) return 0;
+    const permission = ask ? await requestPermission() : await permissionState();
+    return permission === 'granted' ? count : 0;
   } catch {
     // Offline or notifications unavailable: the rite still shows in the app.
     return 0;

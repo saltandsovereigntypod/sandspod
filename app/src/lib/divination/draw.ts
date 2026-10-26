@@ -6,10 +6,15 @@ import { LOOK_BACK_CHOICES, lookBackFrom, moonForReading, type Reading, type Rea
 import { localDateKey } from '../rituals/lifecycle.ts';
 import { DAILY_LABEL } from './daily.ts';
 import { layoutOf, RINGS, type Fall, type Laid, type Ring, type Shape } from './layout.ts';
+import { ownCard, ownMeaning, type OwnCard, type OwnDeckData, type OwnDeckEntry } from './oracle/decks.ts';
+import { KIPPER, type KipperCard } from './oracle/kipper.ts';
+import { LENORMAND, type LenormandCard } from './oracle/lenormand.ts';
+import { asOwnDeck, ORACLE_SPREADS } from './oracle/spreads.ts';
 import { BLANK_RUNE, FEDA, RUNES, type Stave } from './staves.ts';
 import { TAROT_DECK, type Meaning, type TarotCard } from './tarot.ts';
 
-export type DrawKind = 'tarot' | 'runes' | 'ogham';
+/** What is drawn: tarot, runes, ogham, the Lenormand and Kipper decks, or a deck of your own ('oracle'). */
+export type DrawKind = 'tarot' | 'runes' | 'ogham' | 'lenormand' | 'kipper' | 'oracle';
 
 export type Position = { name: string; about: string };
 
@@ -557,11 +562,30 @@ export const SPREADS: Spread[] = [
     ],
     lookBackDays: 30,
   },
+  // Lenormand, Kipper and decks of your own (oracle/spreads.ts).
+  ...ORACLE_SPREADS,
 ];
 
-/** The spreads to choose from for a kind: the built-in ones, then your own (`custom`, from customSpreads). */
-export const spreadsFor = (kind: DrawKind, custom: Spread[] = []) => [...SPREADS, ...custom].filter((s) => s.kind === kind && !s.hidden);
+/**
+ * The spreads to choose from for a kind: the built-in ones, then your own
+ * (`custom`, from customSpreads). A deck of your own takes its own spreads
+ * first, then every tarot spread and spread of your own for cards.
+ */
+export const spreadsFor = (kind: DrawKind, custom: Spread[] = []) =>
+  kind === 'oracle' ? ownDeckSpreads(custom) : [...SPREADS, ...custom].filter((s) => s.kind === kind && !s.hidden);
 export const spreadById = (id: string | null | undefined, custom: Spread[] = []): Spread | null => [...SPREADS, ...custom].find((s) => s.id === id) ?? null;
+
+/** Every spread a deck of your own can be drawn into, made over for it. */
+export function ownDeckSpreads(custom: Spread[] = []): Spread[] {
+  const all = [...SPREADS, ...custom].filter((s) => (s.kind === 'oracle' || s.kind === 'tarot') && !s.hidden);
+  return [...all.filter((s) => s.kind === 'oracle'), ...all.filter((s) => s.kind !== 'oracle')].map(asOwnDeck);
+}
+
+/** A spread by id, made over for a deck of your own (the wheel's centre card too). */
+export function ownDeckSpreadById(id: string | null | undefined, custom: Spread[] = []): Spread | null {
+  const s = spreadById(id, custom);
+  return s && (s.kind === 'oracle' || s.kind === 'tarot') ? asOwnDeck(s) : null;
+}
 
 /** A kind's spreads in their groups, in order, leaving out empty groups. */
 export function groupedSpreads(kind: DrawKind, custom: Spread[] = []): { group: (typeof GROUPS)[number]; spreads: Spread[] }[] {
@@ -573,6 +597,9 @@ export const KINDS: { id: DrawKind; label: string; action: string }[] = [
   { id: 'tarot', label: 'Tarot', action: 'Shuffle and draw' },
   { id: 'runes', label: 'Runes', action: 'Cast the runes' },
   { id: 'ogham', label: 'Ogham', action: 'Draw the staves' },
+  { id: 'lenormand', label: 'Lenormand', action: 'Shuffle and draw' },
+  { id: 'kipper', label: 'Kipper', action: 'Shuffle and draw' },
+  { id: 'oracle', label: 'Your decks', action: 'Shuffle and draw' },
 ];
 
 /** The draw's choices, kept in settings so the app and the website agree. */
@@ -611,17 +638,27 @@ export function shuffle<T>(items: readonly T[], random: () => number = secureRan
 export type Drawn = { name: string; reversed: boolean; fall?: Fall };
 export type Draw = { spread: string; items: Drawn[] };
 
-/** The names that can come up for a kind. */
-export function poolFor(kind: DrawKind, options: DrawOptions): string[] {
+/** The names that can come up for a kind (for a deck of your own, its cards). */
+export function poolFor(kind: DrawKind, options: DrawOptions, deck?: OwnDeckData | null): string[] {
   if (kind === 'tarot') return TAROT_DECK.map((c) => c.name);
   if (kind === 'runes') return [...RUNES.map((r) => r.name), ...(options.blankRune ? [BLANK_RUNE.name] : [])];
+  if (kind === 'lenormand') return LENORMAND.map((c) => c.name);
+  if (kind === 'kipper') return KIPPER.map((c) => c.name);
+  if (kind === 'oracle') return deck ? deck.cards.map((c) => c.name) : [];
   return FEDA.map((f) => f.name);
 }
 
-/** Shuffle the whole deck or bag and lay out as many as the spread needs. Reversals are tarot only. */
-export function drawSpread(spread: Spread, options: DrawOptions, random: () => number = secureRandom): Draw {
-  const pool = shuffle(poolFor(spread.kind, options), random);
-  const items: Drawn[] = pool.slice(0, spread.positions.length).map((name) => ({ name, reversed: spread.kind === 'tarot' && options.reversals && random() < 0.5 }));
+/** Whether cards come up reversed: tarot when you've chosen reversals, a deck of your own when it's set to. Never Lenormand or Kipper. */
+const reverses = (kind: DrawKind, options: DrawOptions, deck?: OwnDeckData | null) => (kind === 'tarot' && options.reversals) || (kind === 'oracle' && !!deck?.reversals);
+
+/** Whether there are enough cards to fill a spread (a deck of your own may be small). */
+export const canDraw = (spread: Spread, options: DrawOptions, deck?: OwnDeckData | null) => poolFor(spread.kind, options, deck).length >= spread.positions.length;
+
+/** Shuffle the whole deck or bag and lay out as many as the spread needs. */
+export function drawSpread(spread: Spread, options: DrawOptions, random: () => number = secureRandom, deck?: OwnDeckData | null): Draw {
+  const pool = shuffle(poolFor(spread.kind, options, deck), random);
+  const reversing = reverses(spread.kind, options, deck);
+  const items: Drawn[] = pool.slice(0, spread.positions.length).map((name) => ({ name, reversed: reversing && random() < 0.5 }));
   if (spread.cast) for (const item of items) item.fall = castFall(random);
   return { spread: spread.id, items };
 }
@@ -666,9 +703,29 @@ export function layoutOfDraw(spread: Spread, draw: Draw | null): Laid {
   return layoutOf(spread);
 }
 
-export type DrawnMeaning = { name: string; glyph: string | null; card: TarotCard | null; reversed: boolean; meaning: Meaning; gloss: string | null };
+export type DrawnMeaning = {
+  name: string;
+  glyph: string | null;
+  card: TarotCard | null;
+  reversed: boolean;
+  meaning: Meaning;
+  gloss: string | null;
+  lenormand?: LenormandCard;
+  kipper?: KipperCard;
+  /** A card from a deck of your own. */
+  own?: OwnCard;
+};
 
-export function meaningOf(item: Drawn): DrawnMeaning | null {
+/** What a drawn card, rune or stave means; `deck` for a card from a deck of your own. */
+export function meaningOf(item: Drawn, deck?: OwnDeckData | null): DrawnMeaning | null {
+  if (deck) {
+    const mine = ownCard(deck, item.name);
+    return mine ? { name: mine.name, glyph: null, card: null, reversed: item.reversed, meaning: ownMeaning(mine, item.reversed), gloss: null, own: mine } : null;
+  }
+  const len = LENORMAND.find((c) => c.name === item.name);
+  if (len) return { name: len.name, glyph: null, card: null, reversed: false, meaning: len.meaning, gloss: `${len.number} · ${len.playingName}`, lenormand: len };
+  const kip = KIPPER.find((c) => c.name === item.name);
+  if (kip) return { name: kip.name, glyph: null, card: null, reversed: false, meaning: kip.meaning, gloss: `${kip.number} · ${kip.german}`, kipper: kip };
   const card = TAROT_DECK.find((c) => c.name === item.name);
   if (card) return { name: card.name, glyph: null, card, reversed: item.reversed, meaning: item.reversed ? card.reversed : card.upright, gloss: null };
   const stave: Stave | undefined = [...RUNES, ...FEDA, BLANK_RUNE].find((s) => s.name === item.name);
@@ -677,37 +734,69 @@ export function meaningOf(item: Drawn): DrawnMeaning | null {
 }
 
 /** One line of "What came up": "Past: The Tower, reversed (upheaval delayed, …)". */
-export function drawnLine(position: Position | null, item: Drawn, single: boolean): string {
-  const m = meaningOf(item);
+export function drawnLine(position: Position | null, item: Drawn, single: boolean, deck?: OwnDeckData | null): string {
+  const m = meaningOf(item, deck);
   const name = `${item.name}${item.reversed ? ', reversed' : ''}`;
   const words = m ? ` (${m.meaning.keywords})` : '';
   return single || !position ? `${name}${words}` : `${position.name}: ${name}${words}`;
 }
 
-/** "What came up" for a draw: the spread's name, then each card in its place. */
-export function cameUpText(spread: Spread, draw: Draw): string {
+/** Between the spread's name and the deck's, or "pulled by hand", on the first line of "What came up". */
+const NOTE = ' · ';
+export const BY_HAND = 'pulled by hand';
+
+/**
+ * "What came up" for a draw: the spread's name (with your deck's name, and
+ * "pulled by hand" for a draw logged from real cards), then each card in its place.
+ */
+export function cameUpText(spread: Spread, draw: Draw, { deck, byHand = false }: { deck?: OwnDeckData | null; byHand?: boolean } = {}): string {
   const single = spread.positions.length === 1;
-  return [spread.label, ...draw.items.map((item, i) => drawnLine(placeOf(spread, draw, i), item, single))].join('\n');
+  const head = [spread.label, deck ? deck.name : null, byHand ? BY_HAND : null].filter(Boolean).join(NOTE);
+  return [head, ...draw.items.map((item, i) => drawnLine(placeOf(spread, draw, i), item, single, deck))].join('\n');
 }
 
 /** The reading a draw becomes, in the reading log's own shape. */
 export function readingFromDraw(
   spread: Spread,
   draw: Draw,
-  { question = '', interpretation = '', lookBack, now, linkedTo }: { question?: string; interpretation?: string; lookBack?: string; now: Date; linkedTo?: ReadingLink | null },
+  {
+    question = '',
+    interpretation = '',
+    lookBack,
+    now,
+    deck,
+    ownDeck,
+    byHand = false,
+    linkedTo,
+  }: {
+    question?: string;
+    interpretation?: string;
+    lookBack?: string;
+    now: Date;
+    /** The tarot deck it was drawn with. */
+    deck?: string;
+    /** For a draw from a deck of your own: the deck. */
+    ownDeck?: OwnDeckEntry | null;
+    byHand?: boolean;
+    linkedTo?: ReadingLink | null;
+  },
 ): Reading {
   const date = localDateKey(now);
+  const own = spread.kind === 'oracle' ? (ownDeck ?? null) : null;
   return {
     date,
     method: spread.kind,
+    ...(own ? { deck: own.id } : {}),
     question: question.trim(),
     drawn: draw.items.map((d) => d.name),
-    cameUp: cameUpText(spread, draw),
+    cameUp: cameUpText(spread, draw, { deck: own?.data, byHand }),
     interpretation: interpretation.trim(),
     lookBack: lookBack ?? lookBackFrom(date, spread.lookBackDays),
     outcome: '',
     outcomeDate: '',
     moonPhase: moonForReading(date),
+    // The deck it was drawn with, so it opens in that deck again (tarot only).
+    ...(spread.kind === 'tarot' && deck ? { deck } : {}),
     ...(linkedTo ? { linkedTo } : {}),
   };
 }
@@ -717,12 +806,21 @@ export function readingFromDraw(
  * the reading's page can lay it out again. Null for readings logged by hand
  * or edited out of shape.
  */
-export function drawOfReading(reading: Pick<Reading, 'method' | 'drawn' | 'cameUp'>, custom: Spread[] = []): { spread: Spread; draw: Draw } | null {
+export function drawOfReading(
+  reading: Pick<Reading, 'method' | 'drawn' | 'cameUp' | 'deck'>,
+  custom: Spread[] = [],
+  decks: OwnDeckEntry[] = [],
+): { spread: Spread; draw: Draw; deck: OwnDeckEntry | null } | null {
   const lines = reading.cameUp.split('\n');
-  const spread = [...SPREADS, ...custom].find((s) => s.kind === reading.method && s.label === lines[0] && s.positions.length === reading.drawn.length);
+  const head = lines[0] ?? '';
+  const deck = reading.method === 'oracle' ? (decks.find((d) => d.id === reading.deck) ?? null) : null;
+  if (reading.method === 'oracle' && !deck) return null;
+  const candidates = reading.method === 'oracle' ? ownDeckSpreads(custom) : [...SPREADS, ...custom].filter((s) => s.kind === reading.method);
+  const spread = candidates.find((s) => (head === s.label || head.startsWith(`${s.label}${NOTE}`)) && s.positions.length === reading.drawn.length);
   if (!spread) return null;
-  const items: Drawn[] = reading.drawn.map((name, i) => ({ name, reversed: spread.kind === 'tarot' && (lines[i + 1] ?? '').includes(`${name}, reversed`) }));
-  const pool = poolFor(spread.kind, { reversals: true, blankRune: true });
+  const reversible = spread.kind === 'tarot' || spread.kind === 'oracle';
+  const items: Drawn[] = reading.drawn.map((name, i) => ({ name, reversed: reversible && (lines[i + 1] ?? '').includes(`${name}, reversed`) }));
+  const pool = poolFor(spread.kind, { reversals: true, blankRune: true }, deck?.data);
   if (!items.every((item) => pool.includes(item.name))) return null;
   if (spread.cast) {
     // Where each rune fell is the start of its line: "Near the centre, face up: Fehu (…)".
@@ -733,7 +831,7 @@ export function drawOfReading(reading: Pick<Reading, 'method' | 'drawn' | 'cameU
       item.fall = fall;
     }
   }
-  return { spread, draw: { spread: spread.id, items } };
+  return { spread, draw: { spread: spread.id, items }, deck };
 }
 
 const ALL_FALLS: Fall[] = RINGS.flatMap((ring) => [true, false].map((up) => ({ ring, up })));
