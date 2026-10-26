@@ -2,7 +2,7 @@
    GRIMOIRE DIVINATION (Traditional Information)
    File: grimoire/js/ui/divination.js
 
-   Tarot, Runes and Ogham as sibling drop-downs under a Divination heading
+   Tarot, Runes, Ogham, Lenormand and Kipper as sibling drop-downs under a Divination heading
    inside Traditional Information, as the app's Grimoire has them
    (app/src/lib/divination/library.ts, built into
    js/core/divination-library.js). Each card or stave is a row with its
@@ -15,14 +15,35 @@
 
 // The page open in the reader, to mark its row when the contents redraw.
 let activeDivination = null;
+// The tarot deck to show (Settings: tarot_deck), and one looked at on the open page instead.
+let divinationDeck = null;
+let lookingDeck = null;
 
 function divinationCore() {
   return window.SaltCore && window.SaltCore["divination-library"] ? window.SaltCore["divination-library"] : null;
 }
 
-/** A row's picture: the card's art, or the rune's or stave's letter. */
-function divinationThumb(entry) {
-  if (entry.cardId) return `<img class="divination-thumb" src="/assets/divination/tarot/${escapeHtml(entry.cardId)}.webp" alt="" loading="lazy" />`;
+/** The deck chosen in settings, read once (the Rider–Waite–Smith until then). */
+async function loadDivinationDeck(core) {
+  if (divinationDeck) return divinationDeck;
+  try {
+    const settings = typeof getMySettings === "function" ? await getMySettings() : {};
+    divinationDeck = core.decks.chosenDeck(settings);
+  } catch (error) {
+    console.error(error);
+    divinationDeck = core.decks.DEFAULT_DECK;
+  }
+  return divinationDeck;
+}
+
+/** A row's picture: the card's art in your deck, or the rune's or stave's letter. */
+function divinationThumb(entry, core) {
+  if (entry.cardId) {
+    const src = core.decks.deckImagePath(divinationDeck || core.decks.DEFAULT_DECK, entry.cardId);
+    return `<img class="divination-thumb" src="${escapeHtml(src)}" alt="" loading="lazy" />`;
+  }
+  if (entry.lenormandId) return `<img class="divination-thumb divination-thumb--lenormand" src="/assets/divination/lenormand/${escapeHtml(entry.lenormandId)}.webp" alt="" loading="lazy" />`;
+  if (entry.kind === "kipper") return `<span class="divination-thumb divination-thumb--kipper" aria-hidden="true">${escapeHtml(entry.glyph || "")}</span>`;
   return `<span class="divination-glyph divination-glyph--${entry.kind}" aria-hidden="true">${escapeHtml(entry.glyph || "")}</span>`;
 }
 
@@ -35,7 +56,7 @@ function divinationRow(entry, core) {
   return `
     <button type="button" class="book-page-link traditional-library-entity-link divination-link${isActiveDivination(entry) ? " is-active" : ""}" data-divination-entry="${escapeHtml(`${entry.kind}/${entry.id}`)}"
       aria-label="${escapeHtml(`${entry.name}: ${entry.words.join(", ")}`)}">
-      ${divinationThumb(entry)}
+      ${divinationThumb(entry, core)}
       <span class="divination-link__text">
         <span>${escapeHtml(entry.name)}</span>
         <small>${escapeHtml(core.wordsLine(entry.words))}</small>
@@ -89,6 +110,8 @@ function renderDivinationShelf() {
       .join("")}
   `;
   list.appendChild(wrapper);
+  // Once the deck is known, show its pictures.
+  if (!divinationDeck) loadDivinationDeck(core).then((deck) => deck !== core.decks.DEFAULT_DECK && renderDivinationShelf());
 }
 
 /** A card's, rune's or stave's page in the reader, in the Living Library's page style. */
@@ -112,8 +135,23 @@ async function renderDivinationPage(kind, id) {
 
   const showTraditional = typeof shouldShowTraditionalLibrary === "function" ? await shouldShowTraditionalLibrary() : true;
   const page = core.divinationPage(entry);
+  const D = core.decks;
+  const deck = lookingDeck || (await loadDivinationDeck(core));
+  const info = D.deckInfo(deck);
+  const deckTitle = entry.cardId ? D.deckCardTitle(deck, entry.cardId) : null;
+  // Your deck first; the others a tap away, just for this page.
+  const deckChoice = entry.cardId
+    ? `<p class="divination-deck-title">${escapeHtml(deckTitle ? `${info.name}: ${deckTitle}` : `${info.name}, ${info.made}`)}</p>
+       <div class="divination-decks" role="group" aria-label="Deck">${D.TAROT_DECKS.map(
+         (d) => `<button type="button" class="divination-deck" data-divination-deck="${escapeHtml(d.id)}" aria-pressed="${d.id === deck ? "true" : "false"}">${escapeHtml(d.name)}</button>`
+       ).join("")}</div>`
+    : "";
   const figure = entry.cardId
-    ? `<figure class="book-library-hero-image divination-hero"><img src="/assets/divination/tarot/${escapeHtml(entry.cardId)}.webp" alt="${escapeHtml(`${entry.name}, Pamela Colman Smith’s picture`)}" /></figure>`
+    ? `<figure class="book-library-hero-image divination-hero"><img src="${escapeHtml(D.deckImagePath(deck, entry.cardId))}" alt="${escapeHtml(`${entry.name}, ${D.deckPictureLabel(deck)}`)}" /></figure>${deckChoice}`
+    : entry.lenormandId
+    ? `<figure class="book-library-hero-image divination-hero"><img src="/assets/divination/lenormand/${escapeHtml(entry.lenormandId)}.webp" alt="${escapeHtml(`${entry.name}, the Bruges card of the 1890s`)}" /></figure>`
+    : entry.kind === "kipper"
+    ? `<figure class="divination-hero divination-hero--kipper"><span class="divination-kipper" aria-label="${escapeHtml(`${entry.name}, card ${entry.glyph}`)}"><span class="divination-kipper__number">${escapeHtml(entry.glyph || "")}</span><span class="divination-kipper__name">${escapeHtml(entry.name)}</span><span class="divination-kipper__german">${escapeHtml(page.gloss || "")}</span></span></figure>`
     : `<figure class="divination-hero divination-hero--${entry.kind}"><span class="divination-glyph divination-glyph--${entry.kind}" aria-hidden="true">${escapeHtml(entry.glyph || "")}</span></figure>`;
 
   entryList.innerHTML = `
@@ -150,6 +188,7 @@ async function renderDivinationPage(kind, id) {
                 .join("")
             : `<p class="book-section-empty">Traditional Information is turned off in your Living Library settings, so this page is hidden.</p>`
         }
+        ${showTraditional && typeof window !== "undefined" && window.ResearchNote ? window.ResearchNote.footerHtml(entry.name, page.eyebrow) : ""}
       </div>
     </section>
   `;
@@ -174,9 +213,18 @@ if (typeof document !== "undefined")
       saveLibraryShelfState(`divination-${kind}`, !list.hidden);
       return;
     }
+    const deckButton = event.target.closest("[data-divination-deck]");
+    if (deckButton && activeDivination) {
+      lookingDeck = deckButton.dataset.divinationDeck;
+      const [kind, id] = activeDivination.split("/");
+      await renderDivinationPage(kind, id);
+      document.querySelector(`[data-divination-deck="${lookingDeck}"]`)?.focus();
+      return;
+    }
     const row = event.target.closest("[data-divination-entry]");
     if (row) {
       const [kind, id] = row.dataset.divinationEntry.split("/");
+      lookingDeck = null;
       await renderDivinationPage(kind, id);
     }
   });

@@ -32,7 +32,8 @@ import {
   disableCovenPush,
   enableCovenPush,
 } from "../../../../../../lib/covens/push";
-import { listTime, previewLine } from "../../../../../../lib/covens/thread";
+import { blockedPreview } from "../../../../../../lib/covens/blocking";
+import { listTime } from "../../../../../../lib/covens/thread";
 import { refreshUnread, useUnread } from "../../../../../../lib/covens/unread";
 import { colors, fonts, radius, type } from "../../../../../../theme";
 
@@ -110,6 +111,7 @@ export default function Messages() {
   const open = (thread: string) =>
     router.push(covenHref(coven.slug, `chat/${thread}`));
   const canTalk = coven.standing.ok && coven.perms.chat;
+  const blocks = coven.me?.blocks ?? [];
 
   return (
     <CovenScreen title="Messages" need="member" chat={false} onRefresh={load}>
@@ -123,11 +125,12 @@ export default function Messages() {
       <View style={styles.list} accessibilityRole="list">
         <ThreadRow
           title={coven.snapshot?.coven.name ?? "The coven"}
-          detail={previewLine(
+          detail={blockedPreview(
             previews[COVEN_THREAD],
             coven.userId,
             coven.nameOf,
             true,
+            blocks,
           )}
           time={listTime(previews[COVEN_THREAD]?.created_at)}
           covenId={covenId}
@@ -140,11 +143,12 @@ export default function Messages() {
           <ThreadRow
             key={c.id}
             title={conversationTitle(c, members, coven.userId, coven.nameOf)}
-            detail={previewLine(
+            detail={blockedPreview(
               previews[c.id],
               coven.userId,
               coven.nameOf,
               c.kind === "group",
+              blocks,
             )}
             time={listTime(previews[c.id]?.created_at ?? c.last_message_at)}
             covenId={covenId}

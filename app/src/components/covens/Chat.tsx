@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { covenHref } from './CovenScreen';
 import { useReport } from './ui';
 import * as api from '../../lib/covens/api';
+import { withBlock } from '../../lib/covens/blocking';
 import { useCoven } from '../../lib/covens/CovenContext';
 import type { Message } from '../../lib/covens/model';
 import type { ThreadItem } from '../../lib/covens/thread';
@@ -70,14 +71,14 @@ export function useMessageActions(onRemoved: (id: string) => void, onProblem: (m
         buttons.push({ text: 'Report', onPress: () => report.open({ target_type: 'message', target_id: m.id, coven_id: m.coven_id, target_user_id: m.user_id, label: `${name}’s message` }) });
         buttons.push({
           text: `Block ${name}`,
-          onPress: async () => {
+          onPress: () => confirmBlock(name, async () => {
             try {
               await api.block(coven.userId!, m.user_id!);
-              if (coven.me) coven.setMe({ ...coven.me, blocks: [...coven.me.blocks, m.user_id!] });
+              if (coven.me) coven.setMe({ ...coven.me, blocks: withBlock(coven.me.blocks, m.user_id!, true) });
             } catch (error) {
               onProblem(error instanceof Error ? error.message : 'That didn’t work. Please try again.');
             }
-          },
+          }),
         });
       }
       buttons.push({ text: 'Cancel', style: 'cancel' });
@@ -85,7 +86,15 @@ export function useMessageActions(onRemoved: (id: string) => void, onProblem: (m
     },
     [coven, report, onRemoved, onProblem],
   );
-  return { open, sheet: report.sheet };
+  return { open, report: report.open, sheet: report.sheet };
+}
+
+/** Ask before blocking, and say what it does. */
+export function confirmBlock(name: string, block: () => void) {
+  Alert.alert(`Block ${name}?`, 'You won’t see their messages in any coven or get notifications from them, and neither of you can start a conversation with the other. They aren’t told.', [
+    { text: 'Cancel', style: 'cancel' },
+    { text: 'Block', style: 'destructive', onPress: block },
+  ]);
 }
 
 /** One row of a thread: a time between runs, or a bubble. */

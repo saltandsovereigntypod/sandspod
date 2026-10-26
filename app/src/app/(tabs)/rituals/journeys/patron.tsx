@@ -3,6 +3,7 @@ import { View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
 import { drawFor } from '../../../../components/divination/Linked';
+import { ResearchFooter } from '../../../../components/ResearchNote';
 import { Body, Card, Expander, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
 import { deityLink } from '../../../../lib/divination/linked';
 import { PATRON_GUIDE, myDeities, levelLabel } from '../../../../lib/patron';
@@ -83,6 +84,8 @@ export default function PatronGuide() {
       <View style={ui.actions}>
         <Button label="Dedication journeys" variant="outline" onPress={() => router.push('/rituals/journeys')} />
       </View>
+
+      <ResearchFooter page={guide.title} kind="Patron deities guide" />
     </RitualScreen>
   );
 }

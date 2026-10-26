@@ -2,8 +2,9 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { CLOSED_GUIDE_VISIBLE, ClosedNotice } from '../../../../../components/library/ClosedNotice';
+import { ResearchFooter } from '../../../../../components/ResearchNote';
 import { Card, MenuList, MenuRow, MoreScreen, Paragraphs, Section, Tags } from '../../../../../components/more/ui';
-import { closedById, GROUP_LABELS, OPENNESS_DETAIL, OPENNESS_LABELS, relatedTo } from '../../../../../lib/library/closed';
+import { CLOSED_GUIDE_TITLE, closedById, GROUP_LABELS, OPENNESS_DETAIL, OPENNESS_LABELS, relatedTo } from '../../../../../lib/library/closed';
 import { colors, fonts, type } from '../../../../../theme';
 
 const paragraphs = (text: string) => text.split(/\n\s*\n|\n/).map((p) => p.trim()).filter(Boolean);
@@ -124,6 +125,8 @@ export default function ClosedTraditionPage() {
           </MenuList>
         </Section>
       )}
+
+      <ResearchFooter page={tradition.name} kind={CLOSED_GUIDE_TITLE} />
     </MoreScreen>
   );
 }

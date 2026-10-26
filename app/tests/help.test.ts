@@ -5,7 +5,8 @@ import { test } from 'node:test';
 import { fold, HELP, searchHelp, type HelpSection } from '../src/lib/help/index.ts';
 
 const screen = (href: string) => {
-  const base = `src/app/(tabs)${href.replace(/\/$/, '')}`;
+  // A page within a screen (?section=holidays) is still that screen.
+  const base = `src/app/(tabs)${href.split('?')[0].replace(/\/$/, '')}`;
   return existsSync(`${base}.tsx`) || existsSync(`${base}/index.tsx`);
 };
 

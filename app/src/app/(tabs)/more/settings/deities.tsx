@@ -8,7 +8,9 @@ import { SettingsForm } from '../../../../components/more/SettingsForm';
 import { TimeStepper } from '../../../../components/rituals/TimeStepper';
 import { Toggle } from '../../../../components/rituals/ui';
 import { remindersSupported } from '../../../../lib/reminders/notifier';
-import { updateReminderSettings, useReminders } from '../../../../lib/reminders/store';
+import { calendarOn, PATRON_GROUP_ID, withCalendarOn, withChange } from '../../../../lib/reminders/prefs';
+import { useReminders } from '../../../../lib/reminders/store';
+import { useReminderPrefs } from '../../../../lib/reminders/usePrefs';
 import { traditionalEntries } from '../../../../lib/library/model';
 import { deitiesValue, LEVELS, MY_DEITIES_KEY, myDeities, withDeity, withoutDeity, type DeityLevel, type MyDeity } from '../../../../lib/patron/mine';
 import { colors, fonts, type } from '../../../../theme';
@@ -128,20 +130,21 @@ export default function DeitySettings() {
   );
 }
 
-/** Reminders on the sacred days of patron and dedicated deities, kept with the other reminders on this phone. */
+/** Reminders on the sacred days of patron and dedicated deities: their calendar among the holiday reminders (Reminders → Holidays). */
 function SacredReminders() {
-  const { settings, permission } = useReminders();
-  if (!remindersSupported) return null;
+  const { permission } = useReminders();
+  const { prefs, update, ready, settings } = useReminderPrefs();
+  if (!remindersSupported || !ready) return null;
+  const on = prefs.holidays.on && calendarOn(prefs, PATRON_GROUP_ID);
+  // Holiday reminders off until now: these alone, not every calendar at once.
+  const turn = (next: boolean) => void update(withCalendarOn(prefs, settings, PATRON_GROUP_ID, next));
   return (
     <Card>
-      <Toggle
-        label="Remind me on their sacred days"
-        detail="For your patron and dedicated deities, with a small devotion for the day"
-        value={settings.sacredDays}
-        onChange={(on) => void updateReminderSettings({ sacredDays: on })}
-      />
-      {settings.sacredDays && <TimeStepper minutes={settings.sacredAt} onChange={(minutes) => void updateReminderSettings({ sacredAt: minutes })} />}
-      {permission === 'denied' && settings.sacredDays && <Text style={type.caption}>Notifications are off for this app. Turn them on in your phone’s Settings to hear these.</Text>}
+      <Toggle label="Remind me on their sacred days" detail="For your patron and dedicated deities, with a small devotion for the day" value={on} onChange={turn} />
+      {on && <TimeStepper minutes={prefs.holidays.at} onChange={(minutes) => void update(withChange(prefs, 'holidays.at', minutes))} />}
+      {on && <Text style={type.caption}>At the time chosen for holiday reminders. Choose how far ahead, and which of your other calendars remind you, in Reminders → Holidays.</Text>}
+      <Button label="Holiday reminders" variant="text" onPress={() => router.push({ pathname: '/more/reminders', params: { section: 'holidays' } })} />
+      {permission === 'denied' && on && <Text style={type.caption}>Notifications are off for this app. Turn them on in your phone’s Settings to hear these.</Text>}
     </Card>
   );
 }

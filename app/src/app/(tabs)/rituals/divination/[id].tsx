@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
+import { PairsCard } from '../../../../components/divination/oracle/Pairs';
 import { ReadMore } from '../../../../components/divination/ReadMore';
 import { SpreadTable } from '../../../../components/divination/Spread';
 import { Body, Card, Chip, Chips, Field, RitualScreen, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
@@ -11,8 +12,10 @@ import { fullDate } from '../../../../lib/calendar';
 import { glossOf, methodLabel, normalizeReading, READINGS } from '../../../../lib/craft/hedge/readings';
 import { updateEntry, useCraft } from '../../../../lib/craft/store';
 import { customSpreads, SPREADS_COLLECTION } from '../../../../lib/divination/custom';
+import { deckCardTitle, deckInfo, deckOfReading, type DeckId } from '../../../../lib/divination/decks';
 import { drawOfReading, meaningOf, placeOf } from '../../../../lib/divination/draw';
 import { linkLine, linkRoute } from '../../../../lib/divination/linked';
+import { DECKS_COLLECTION, ownDecks } from '../../../../lib/divination/oracle/decks';
 import { localDateKey } from '../../../../lib/rituals/lifecycle';
 import { type } from '../../../../theme';
 
@@ -28,7 +31,9 @@ export default function ReadingPage() {
   const still = useReducedMotion();
   // Your own spreads too, so a reading drawn from one lays out in its shape.
   const { entries: mine } = useCraft<unknown>(SPREADS_COLLECTION);
-  const laid = useMemo(() => (reading ? drawOfReading(reading, customSpreads(mine)) : null), [reading, mine]);
+  // And your own decks, so a draw from one shows its cards.
+  const { entries: deckEntries } = useCraft<unknown>(DECKS_COLLECTION);
+  const laid = useMemo(() => (reading ? drawOfReading(reading, customSpreads(mine), ownDecks(deckEntries)) : null), [reading, mine, deckEntries]);
 
   if (!raw || !reading) {
     return (
@@ -39,6 +44,8 @@ export default function ReadingPage() {
     );
   }
 
+  // Shown in the deck it was drawn with, whatever deck you've chosen since.
+  const deck = deckOfReading(reading);
   const today = localDateKey(new Date());
   const due = !!reading.lookBack && reading.lookBack <= today && !reading.outcome.trim();
   const writing = outcome !== null || due;
@@ -73,9 +80,13 @@ export default function ReadingPage() {
               onPress={(i) => setPicked(picked === i ? null : i)}
               still={still}
               width={width}
+              deck={deck}
+              ownDeck={laid.deck?.data}
             />
           )}
-          <DrawnMeaning laid={laid} picked={picked} />
+          {laid.spread.kind === 'tarot' && <Body muted>{`Drawn with the ${deckInfo(deck).name} (${deckInfo(deck).made}).`}</Body>}
+          <DrawnMeaning laid={laid} picked={picked} deck={deck} />
+          {laid.spread.kind === 'lenormand' && <PairsCard spread={laid.spread} draw={laid.draw} />}
         </View>
       )}
 
@@ -133,19 +144,20 @@ export default function ReadingPage() {
 }
 
 /** The meaning of the card, rune or stave tapped in a kept draw. */
-function DrawnMeaning({ laid, picked }: { laid: NonNullable<ReturnType<typeof drawOfReading>>; picked: number | null }) {
+function DrawnMeaning({ laid, picked, deck }: { laid: NonNullable<ReturnType<typeof drawOfReading>>; picked: number | null; deck: DeckId }) {
   if (picked === null) return <Body muted>Tap one for its meaning.</Body>;
   const item = laid.draw.items[picked];
-  const m = item ? meaningOf(item) : null;
+  const m = item ? meaningOf(item, laid.deck?.data) : null;
   if (!m) return null;
   const place = laid.spread.positions.length > 1 ? placeOf(laid.spread, laid.draw, picked) : null;
   return (
     <Card accent>
       <SectionLabel>{place ? `${picked + 1} · ${place.name}` : laid.spread.label}</SectionLabel>
       <Text style={type.cardTitle}>{`${m.glyph ? `${m.glyph}  ` : ''}${m.name}${m.reversed ? ', reversed' : ''}`}</Text>
-      <Text style={[type.body, ui.gold]}>{m.meaning.keywords}</Text>
+      {!!m.card && !!deckCardTitle(deck, m.card.id) && <Body muted>{`In the ${deckInfo(deck).name}: ${deckCardTitle(deck, m.card.id)}`}</Body>}
+      {!!m.meaning.keywords && <Text style={[type.body, ui.gold]}>{m.meaning.keywords}</Text>}
       <Body>{m.meaning.text}</Body>
-      <ReadMore name={m.name} />
+      {!m.own && <ReadMore name={m.name} />}
     </Card>
   );
 }
