@@ -36,6 +36,7 @@ const MORE_DEITIES = [
   "wiccan_goddess", "horned_god", "aradia",
   "inanna", "enki", "ereshkigal", "shamash", "nanna", "marduk", "nisaba", "ninkasi",
   "asherah", "astarte", "baal", "anat", "el", "shapash",
+  "laima", "perkunas", "saule", "dievas", "zemyna", "menulis",
 ];
 
 test("the website's Library has the new deities, field for field like Jupiter", () => {

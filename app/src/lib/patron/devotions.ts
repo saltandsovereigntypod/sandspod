@@ -56,6 +56,8 @@ const EPAGOMENAL_BIRTHS =
 
 const MESO_ETCSL = 'The Electronic Text Corpus of Sumerian Literature (Oxford): https://etcsl.orinst.ox.ac.uk/';
 const MESO_CULTIC = 'Mark E. Cohen, The Cultic Calendars of the Ancient Near East (1993)';
+const BALTIC_SOURCES =
+  'Norbertas Vėlius (ed.), Baltų religijos ir mitologijos šaltiniai (Sources of Baltic Religion and Mythology, 1996–2005); on Romuva and Dievturība today, Kaarina Aitamurto and Scott Simpson (eds), Modern Pagan and Native Faith Movements in Central and Eastern Europe (2013)';
 const UGARIT_TEXTS = 'Simon B. Parker (ed.), Ugaritic Narrative Poetry (1997), for the Baal Cycle and the tale of Aqhat';
 
 export const DEITY_DEVOTIONS: DeityDevotion[] = [
@@ -3716,6 +3718,128 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     approach:
       'Shapash is approached with honesty and trust, as the sun goddess who carries messages and guides the dead.',
     sources: [UGARIT_TEXTS, WEEKDAYS],
+  },
+
+  // ─── Baltic ──────────────────────────────────────────────────────────────
+  {
+    key: 'laima',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'yule' },
+        name: 'The winter solstice (Kūčios)',
+        why: 'Lithuanian families on Kūčios, Christmas Eve, tried to read the year’s fortunes, and Romuva keeps the solstice as Kalėdos. Honouring Laima, who sets fate, at this time is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Light a candle for a newborn or a newly married friend.',
+      'Weave, knit or tie a few rows of thread for her.',
+      'Accept one thing in your life you cannot change.',
+      'Sit for a few minutes under a linden or any tree.',
+    ],
+    approach:
+      'Laima is approached with acceptance and gratitude, as the goddess who sets fate at birth in the Baltic folk songs.',
+    sources: [BALTIC_SOURCES, 'Krišjānis Barons, Latvju dainas (1894–1915), the Laima songs'],
+  },
+  {
+    key: 'perkunas',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'ostara' },
+        name: 'The spring equinox and first thunder',
+        why: 'Folk custom greeted the first thunder of spring for strength and health, and Romuva keeps a spring equinox feast. The date of the first thunder varies; using the equinox is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Listen to the next storm from a safe place and greet him.',
+      'Keep your word in one thing today.',
+      'Stand against one small wrong.',
+      'Touch an oak tree and thank him.',
+    ],
+    approach:
+      'Perkūnas is approached with respect and honesty, as the Baltic thunder god who strikes evil and keeps oaths.',
+    sources: [BALTIC_SOURCES, 'The Slavonic Malalas Chronicle gloss of 1261, on Perkūnas and the Baltic gods'],
+  },
+  {
+    key: 'saule',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 6, day: 23 },
+        name: 'Midsummer Eve (Rasos, Joninės, Jāņi)',
+        why: 'The great midsummer night of Lithuania and Latvia, kept with fires, wreaths, herbs and all-night songs to the Sun, as recorded in folk tradition.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Greet the sun in the morning with a few words.',
+      'Sing a song, any song, for her.',
+      'Be kind to someone without family nearby.',
+      'Weave a small wreath of flowers or herbs.',
+    ],
+    approach:
+      'Saulė is approached with warmth and gratitude, as the mother Sun of the Baltic folk songs.',
+    sources: [BALTIC_SOURCES, 'Krišjānis Barons, Latvju dainas (1894–1915), the sun songs'],
+  },
+  {
+    key: 'dievas',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 9, day: 29 },
+        name: 'Miķeļi, the harvest feast',
+        why: 'The Latvian end-of-harvest feast on Michaelmas, which Dievturi keep for Dievs and the gods of the harvest. The date is Christian; the harvest customs are folk tradition.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Look up at the sky for a minute and give thanks.',
+      'Welcome a guest well.',
+      'Share bread with someone.',
+      'Settle one small dispute fairly.',
+    ],
+    approach:
+      'Dievas is approached with humility and gratitude, as the sky god of the Baltic folk songs, with respect for Christians who use the same name for God.',
+    sources: [BALTIC_SOURCES, 'Krišjānis Barons, Latvju dainas (1894–1915), the songs of Dievs'],
+  },
+  {
+    key: 'zemyna',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'lammas' },
+        name: 'The first bread of the harvest',
+        why: 'Prätorius records beer poured to Žemyna at feasts for good crops, and folk custom honoured the first bread. Keeping Lammas for her is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Pour a little drink onto the soil with thanks for your food.',
+      'Treat bread with care, wasting none today.',
+      'Kiss the ground or touch it with respect.',
+      'Plant something or tend a garden.',
+    ],
+    approach:
+      'Žemyna is approached with respect and gratitude, as the Lithuanian earth goddess who raises the blossoms.',
+    sources: [BALTIC_SOURCES, 'Matthäus Prätorius, Deliciae Prussicae (c. 1690s), on offerings to Žemyna'],
+  },
+  {
+    key: 'menulis',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'new' },
+        name: 'The new moon',
+        why: 'Lithuanian and Latvian folk custom greeted the new moon with a short prayer for health and plenty.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Greet the new crescent when you see it.',
+      'Make one fresh start this month.',
+      'Keep faith with someone you love.',
+      'Offer a piece of bread at a window at night.',
+    ],
+    approach:
+      'Mėnulis is approached honestly, as the Moon of the Baltic folk songs who wanes and waxes.',
+    sources: [BALTIC_SOURCES],
   },
 
   // ─── Jewish folklore and Western occultism ───────────────────────────

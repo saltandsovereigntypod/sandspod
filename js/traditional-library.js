@@ -12569,6 +12569,264 @@ const TraditionalLibrary = {
 
             tags: ["sun", "truth", "guidance", "messenger", "dead", "ugarit"]
         },
+
+        laima: {
+            DisplayName: "Laima",
+            Category: "Deity",
+
+            Pantheon: "Baltic",
+
+            Domains: "Fate and luck, birth, marriage, the length of life, women and childbirth",
+
+            SacredSymbols: "The linden tree, woven sashes and towels, the spindle, the threads of life",
+
+            SacredAnimals: "Cuckoo (in folklore)",
+
+            SacredPlants: "Linden, rye",
+
+            CandleColors: "White, gold, green",
+
+            Crystals: "Amber, moonstone, clear quartz, green aventurine",
+
+            Herbs: "Linden blossom, rue, chamomile",
+
+            Offerings: "Woven or embroidered cloth, bread, a hen or eggs in old custom (now eggs or bread), flowers",
+
+            TraditionalWarnings: "Laima decides fate in the folk songs, and they often show her refusing to change what she has set; she is not a luck charm to be bargained with. Rue, linked to Baltic weddings, is toxic in quantity and irritates skin.",
+
+            Overview: "Laima is the Baltic goddess of fate, in Latvian and Lithuanian folk songs the one who sets a child’s destiny at birth, guides brides to their marriage and measures the length of life. Latvian dainas show her sitting at the threshold or under a linden tree, sometimes weeping over the hard fate she must give; she is often joined by Dēkla and Kārta. Latvian women gathered in the bathhouse after a birth to give thanks and gifts to Laima.",
+
+            TraditionalMeaning: "Fate met with grace: the shape of a life, luck given at birth, and the courage to live the life one has.",
+
+            DevotionalApproach: "Start here: when a child is born or a friend marries, light a candle and ask Laima to look kindly on their life. Approach her with acceptance and gratitude. She is honoured by care for mothers and children and by living one’s fate well.",
+
+            OfferingNotes: "Offer bread, eggs, flowers or a woven or embroidered cloth. Folk custom gave sashes and towels to Laima at births and weddings; weaving or giving a handmade textile follows it.",
+
+            AltarIdeas: "A white or gold candle, a woven sash or towel, linden leaves or blossom, amber and a small spindle.",
+
+            CulturalContext: "Today these gods are honoured in Romuva, the Lithuanian Baltic faith revived from the 1920s and refounded in 1967, and in Latvian Dievturība, founded in 1925, both small living religions that draw on folk song, custom and the old sources. Much Baltic myth comes from folk songs (Latvian dainas, Lithuanian dainos) collected in the nineteenth and twentieth centuries, and from Christian writers of the thirteenth to seventeenth centuries, some unreliable. Learn from Lithuanian and Latvian communities and their folklore archives.",
+
+            Traditions: "Baltic",
+
+            TraditionNotes: "Baltic: Romuva and Dievturi honour Laima at births, weddings and funerals, and at the winter solstice, when Lithuanian families on Kūčios evening tried to read the year’s fortunes, with bread, eggs and woven gifts. She is asked for a good fate, safe childbirth, happy marriages and luck.",
+
+            tags: ["fate", "luck", "birth", "marriage", "women", "dainas"]
+        },
+
+        perkunas: {
+            DisplayName: "Perkūnas",
+            Category: "Deity",
+
+            Pantheon: "Baltic",
+
+            Domains: "Thunder and lightning, rain and fertility, justice and oaths, the oak, cleansing of evil",
+
+            SacredSymbols: "The axe or hammer, the oak, fire, the thunderbolt, the chariot drawn by goats or horses",
+
+            SacredAnimals: "Goats or horses that draw his chariot (in folk songs)",
+
+            SacredPlants: "Oak",
+
+            CandleColors: "Red, gold, blue",
+
+            Crystals: "Amber, hematite, labradorite, garnet",
+
+            Herbs: "Oak, juniper, rowan",
+
+            Offerings: "Bread, beer or mead, a fire safely kept, oak leaves",
+
+            TraditionalWarnings: "Perkūnas is among the best attested Baltic gods: he is named in a thirteenth-century chronicle gloss and in many folk songs and sayings. Stories of an eternal fire to him beneath Vilnius Cathedral are a later legend, and archaeologists still debate what the remains there show.",
+
+            Overview: "Perkūnas, Pērkons in Latvian, is the Baltic god of thunder, lightning and rain, who rides across the sky in a chariot and strikes devils and evil with his axe or thunderbolts. In a Lithuanian folk song he punishes the Moon for betraying the Sun by cutting him in two. His name is related to the Slavic Perun’s and probably to old words for the oak, his sacred tree.",
+
+            TraditionalMeaning: "Cleansing storm: justice, the defeat of evil, rain that renews the land and oaths kept.",
+
+            DevotionalApproach: "Start here: at the first thunder of the year, step outside safely, listen, and greet him. Approach him with respect and honesty. He is honoured by keeping your word, opposing wrongdoing and caring for oaks and fields.",
+
+            OfferingNotes: "Offer bread, beer or mead, or oak leaves on a safe fire. Folk custom greeted the first spring thunder for strength and health; marking it each year is a simple devotion.",
+
+            AltarIdeas: "A red or gold candle in a deep holder, a small axe, an oak branch or acorns, amber and a bowl for a safe fire.",
+
+            CulturalContext: "Today these gods are honoured in Romuva, the Lithuanian Baltic faith revived from the 1920s and refounded in 1967, and in Latvian Dievturība, founded in 1925, both small living religions that draw on folk song, custom and the old sources. Much Baltic myth comes from folk songs (Latvian dainas, Lithuanian dainos) collected in the nineteenth and twentieth centuries, and from Christian writers of the thirteenth to seventeenth centuries, some unreliable. Learn from Lithuanian and Latvian communities and their folklore archives.",
+
+            Traditions: "Baltic",
+
+            TraditionNotes: "Baltic: Romuva and Dievturi honour Perkūnas at the first spring thunder and at the spring and summer feasts, with fire, bread, beer and oak, and swear solemn oaths by him. He is asked for rain, fertility of the fields, protection from storms and evil, and justice.",
+
+            tags: ["thunder", "storm", "oak", "justice", "rain", "oaths"]
+        },
+
+        saule: {
+            DisplayName: "Saulė",
+            Category: "Deity",
+
+            Pantheon: "Baltic",
+
+            Domains: "The Sun, life and warmth, motherhood, the orphan’s comfort, the turning year and midsummer",
+
+            SacredSymbols: "The sun wheel, the golden apple, the sun’s boat or chariot, the sun-sign woven on sashes",
+
+            SacredAnimals: "Horses that draw her chariot (in folk songs)",
+
+            SacredPlants: "Linden, apple, the flowers and herbs of midsummer",
+
+            CandleColors: "Gold, yellow, red",
+
+            Crystals: "Amber, sunstone, citrine, carnelian",
+
+            Herbs: "St John’s wort, chamomile, oak",
+
+            Offerings: "Bread, cheese, beer, flowers and herbs gathered at midsummer, songs",
+
+            TraditionalWarnings: "Saulė, Saule in Latvian, is a goddess: in Baltic folk songs the Sun is a mother and the Moon her husband. Most of her stories come from folk songs collected in the nineteenth and twentieth centuries, which may hold much older beliefs but cannot be dated.",
+
+            Overview: "Saulė is the Baltic sun goddess, the mother who rides across the sky in a chariot and sails home at night in a golden boat over the sea. Folk songs tell of her daughters, the Sun-maidens, of her marriage to Mėnulis, the Moon, who loved the Morning Star and was punished by Perkūnas, and of her care for orphans, who have no mother but the Sun. Latvian Jāņi and Lithuanian Joninės midsummer nights are full of songs to her.",
+
+            TraditionalMeaning: "The mother who warms all: life, comfort for the motherless, joy in summer and faithful return each day.",
+
+            DevotionalApproach: "Start here: greet the sun in the morning with a few words, and at midsummer gather a handful of flowers and herbs in her honour. Approach her with warmth and gratitude. She is honoured by joy, by kindness to those without family and by keeping the festivals of light.",
+
+            OfferingNotes: "Offer bread, cheese or beer, or flowers and herbs gathered at midsummer. Singing is the most traditional offering of all.",
+
+            AltarIdeas: "A gold or yellow candle, a sun wheel or woven sun sign, amber, a wreath of midsummer flowers and an apple.",
+
+            CulturalContext: "Today these gods are honoured in Romuva, the Lithuanian Baltic faith revived from the 1920s and refounded in 1967, and in Latvian Dievturība, founded in 1925, both small living religions that draw on folk song, custom and the old sources. Much Baltic myth comes from folk songs (Latvian dainas, Lithuanian dainos) collected in the nineteenth and twentieth centuries, and from Christian writers of the thirteenth to seventeenth centuries, some unreliable. Learn from Lithuanian and Latvian communities and their folklore archives.",
+
+            Traditions: "Baltic",
+
+            TraditionNotes: "Baltic: Romuva and Dievturi honour Saulė above all at midsummer, Rasos or Joninės in Lithuania and Jāņi in Latvia, with fires, wreaths, herbs, cheese, beer and all-night singing, and greet her at the solstices. She is asked for warmth, health, fertility and protection for children and orphans.",
+
+            tags: ["sun", "midsummer", "mother", "warmth", "dainas", "light"]
+        },
+
+        dievas: {
+            DisplayName: "Dievas",
+            Category: "Deity",
+
+            Pantheon: "Baltic",
+
+            Domains: "The sky and the divine order, blessing of fields and harvest, fate and justice, the wise elder",
+
+            SacredSymbols: "The sky, the grey cloak and hat of the old man in the songs, the horse he rides down the hill, the sun-and-sky signs woven in sashes",
+
+            SacredAnimals: "Horse",
+
+            SacredPlants: "Rye, oak, linden",
+
+            CandleColors: "White, blue, gold",
+
+            Crystals: "Clear quartz, amber, blue lace agate, celestite",
+
+            Herbs: "Rye, linden blossom, oak",
+
+            Offerings: "Bread, beer, the first of the harvest, songs",
+
+            TraditionalWarnings: "Dievas, Dievs in Latvian, is also the ordinary Lithuanian and Latvian word for God used by Christians today. Folk songs show a sky god walking among farmers, but how much of this is pre-Christian is debated; respect Christian neighbours who use the same name.",
+
+            Overview: "Dievas is the Baltic sky god, whose name shares a root with the Sanskrit deva and the Latin deus. In Latvian dainas Dievs is an old man in a grey cloak who rides down from the sky hill on his horse, blesses the fields, settles disputes and walks among farmers at harvest. Latvian Dievturība, the faith of those who keep Dievs, takes its name from him.",
+
+            TraditionalMeaning: "The order of the world: blessing, fair dealing, the wisdom of age and the harvest well kept.",
+
+            DevotionalApproach: "Start here: look up at the sky for a minute and thank him for the order and blessings of your life. Approach him with humility and gratitude. He is honoured by honest work, fairness, hospitality and care for the land.",
+
+            OfferingNotes: "Offer bread, beer or the first of the harvest, with a song. Welcoming a guest well follows the songs where Dievs comes as a traveller.",
+
+            AltarIdeas: "A white or blue candle, a loaf of rye bread, a sash with woven sky signs, amber, and ears of rye or a linden branch.",
+
+            CulturalContext: "Today these gods are honoured in Romuva, the Lithuanian Baltic faith revived from the 1920s and refounded in 1967, and in Latvian Dievturība, founded in 1925, both small living religions that draw on folk song, custom and the old sources. Much Baltic myth comes from folk songs (Latvian dainas, Lithuanian dainos) collected in the nineteenth and twentieth centuries, and from Christian writers of the thirteenth to seventeenth centuries, some unreliable. Learn from Lithuanian and Latvian communities and their folklore archives.",
+
+            Traditions: "Baltic",
+
+            TraditionNotes: "Baltic: Dievturi and Romuva honour Dievas at the harvest feasts, such as Latvian Miķeļi in late September, and at the solstices, with bread, beer and songs. He is asked for blessing on fields and households, justice and wisdom.",
+
+            tags: ["sky", "order", "harvest", "blessing", "dievturi", "wisdom"]
+        },
+
+        zemyna: {
+            DisplayName: "Žemyna",
+            Category: "Deity",
+
+            Pantheon: "Baltic",
+
+            Domains: "The Earth, fertility of fields and animals, the dead who rest in her, nourishment",
+
+            SacredSymbols: "The earth itself, bread, the grain field, a kiss given to the ground",
+
+            SacredAnimals: "All animals that live on the earth; a piglet in old offering lists",
+
+            SacredPlants: "Rye, grain, flowers of the field",
+
+            CandleColors: "Green, brown, black",
+
+            Crystals: "Moss agate, jasper, amber, tree agate",
+
+            Herbs: "Rye, wormwood (for display), clover",
+
+            Offerings: "Bread, beer poured onto the ground, the first of the harvest, flowers",
+
+            TraditionalWarnings: "Žemyna is known chiefly from a seventeenth-century Prussian Lithuanian account by Matthäus Prätorius, who recorded beer poured to her at feasts, and from later folk custom. Modern reconstructions, especially Marija Gimbutas’s great earth mother, go further than the sources.",
+
+            Overview: "Žemyna is the Lithuanian goddess of the earth, whose name comes from žemė, earth. Prätorius recorded that at feasts Lithuanians poured beer onto the ground for Žemyna, “blossom-raiser”, and prayed for good crops. In folk custom people kissed the earth, did not strike it needlessly, and treated bread, her gift, with reverence, kissing a piece that had fallen.",
+
+            TraditionalMeaning: "The earth as mother: nourishment, fertility, the resting place of the dead and the respect owed to the ground that feeds us.",
+
+            DevotionalApproach: "Start here: pour a little beer, juice or water onto the soil and thank her for the food you ate today. Approach her with respect and gratitude. She is honoured by treating bread and food with care and by looking after the land.",
+
+            OfferingNotes: "Offer bread, beer poured onto the ground, or the first fruit of a garden. Never waste bread; folk custom treated even a crumb with respect.",
+
+            AltarIdeas: "A green or brown candle, a bowl of earth, a loaf of rye bread, ears of grain, field flowers and moss agate.",
+
+            CulturalContext: "Today these gods are honoured in Romuva, the Lithuanian Baltic faith revived from the 1920s and refounded in 1967, and in Latvian Dievturība, founded in 1925, both small living religions that draw on folk song, custom and the old sources. Much Baltic myth comes from folk songs (Latvian dainas, Lithuanian dainos) collected in the nineteenth and twentieth centuries, and from Christian writers of the thirteenth to seventeenth centuries, some unreliable. Learn from Lithuanian and Latvian communities and their folklore archives.",
+
+            Traditions: "Baltic",
+
+            TraditionNotes: "Baltic: Romuva honours Žemyna with beer and bread poured and laid on the earth, at sowing, at the first bread of the harvest and at the feasts of the dead. She is asked for good crops, healthy animals and peace for the dead.",
+
+            tags: ["earth", "fertility", "harvest", "bread", "ancestors", "mother"]
+        },
+
+        menulis: {
+            DisplayName: "Mėnulis",
+            Category: "Deity",
+
+            Pantheon: "Baltic",
+
+            Domains: "The Moon, the measure of time, health and growth, war (in some songs), night journeys",
+
+            SacredSymbols: "The crescent, the moon as a young man or soldier, the stars as his companions",
+
+            SacredAnimals: "None securely attested in Baltic sources",
+
+            SacredPlants: "None securely attested in Baltic sources",
+
+            CandleColors: "Silver, white, pale blue",
+
+            Crystals: "Moonstone, selenite, clear quartz, amber",
+
+            Herbs: "Chamomile, mugwort, birch",
+
+            Offerings: "Bread, water, a greeting at the new moon",
+
+            TraditionalWarnings: "In Baltic folk songs the Moon is a man, Mėnulis or Mēness, and the Sun his wife. His story of unfaithfulness and punishment comes from folk songs; much else is modern reconstruction.",
+
+            Overview: "Mėnulis is the Baltic moon god, Mēness in Latvian, husband of the Sun goddess Saulė. A Lithuanian folk song tells how he left Saulė for Aušrinė, the Morning Star, and Perkūnas cut him in two, which is why the moon wanes and waxes. Latvian songs show him as a soldier or counter of the stars, and folk custom greeted the new moon with a short prayer for health and plenty.",
+
+            TraditionalMeaning: "Time and renewal: the phases of life, new beginnings with each crescent and faults paid for.",
+
+            DevotionalApproach: "Start here: when you see the new crescent, greet him and ask for health and plenty for the month. Approach him with honesty. He is honoured by keeping faith in relationships and making good use of each new beginning.",
+
+            OfferingNotes: "Offer bread or water at the new moon, or simply a spoken greeting, as folk custom did.",
+
+            AltarIdeas: "A silver or white candle, a crescent, moonstone or selenite, and a dish of bread by a window where the moon can be seen.",
+
+            CulturalContext: "Today these gods are honoured in Romuva, the Lithuanian Baltic faith revived from the 1920s and refounded in 1967, and in Latvian Dievturība, founded in 1925, both small living religions that draw on folk song, custom and the old sources. Much Baltic myth comes from folk songs (Latvian dainas, Lithuanian dainos) collected in the nineteenth and twentieth centuries, and from Christian writers of the thirteenth to seventeenth centuries, some unreliable. Learn from Lithuanian and Latvian communities and their folklore archives.",
+
+            Traditions: "Baltic",
+
+            TraditionNotes: "Baltic: Romuva and Dievturi greet Mėnulis at the new moon, as folk custom did, with bread and words asking for health, growth and plenty. He is asked for health, good timing and safe journeys by night.",
+
+            tags: ["moon", "time", "renewal", "health", "dainas", "night"]
+        },
     },
 
     tool: {
