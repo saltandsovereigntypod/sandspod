@@ -48,6 +48,7 @@ const MORE_DEITIES: Record<string, string[]> = {
   Etruscan: ['tinia', 'uni', 'menrva', 'turan', 'fufluns'],
   Basque: ['mari'],
   Shinto: ['amaterasu', 'inari', 'susanoo', 'tsukuyomi', 'benzaiten', 'hachiman'],
+  Chinese: ['mazu', 'zao_jun', 'change', 'tudigong', 'jade_emperor', 'guanyin'],
 };
 const ALL_MORE = Object.values(MORE_DEITIES).flat();
 const text = (d: Deity, ...fields: string[]) => fields.map((f) => String(d[f] ?? '')).join(' ');
@@ -388,6 +389,14 @@ const MORE_SEARCH: [string, string][] = [
   ['Seven Lucky Gods', 'benzaiten'],
   ['Sarasvatī', 'benzaiten'],
   ['Usa', 'hachiman'],
+  ['Tianhou', 'mazu'],
+  ['Kitchen God', 'zao_jun'],
+  ['Mid-Autumn', 'change'],
+  ['Jade Rabbit', 'change'],
+  ['Earth God', 'tudigong'],
+  ['Yuhuang', 'jade_emperor'],
+  ['Avalokiteśvara', 'guanyin'],
+  ['Kannon', 'guanyin'],
 ];
 // Living religions: devotion, not magic.
 const LIVING_PANTHEONS = ['Hindu', 'Shinto', 'Chinese'];
@@ -514,4 +523,5 @@ test('the lunisolar calendar gives the published festival dates, leap months inc
 
 test('the Closed & living traditions guide covers the living traditions added here', () => {
   assert.equal(closedById('shinto')?.openness, 'debated');
+  assert.equal(closedById('daoist-priesthood')?.openness, 'initiatory');
 });

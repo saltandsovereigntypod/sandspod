@@ -66,6 +66,8 @@ const ETRUSCAN_SOURCES =
   'Nancy Thomson de Grummond and Erika Simon (eds), The Religion of the Etruscans (2006); Jean-René Jannot, Religion in Ancient Etruria (2005)';
 const SHINTO_LIVING =
   'These days belong to a living religion; customs vary by shrine and region. John Breen and Mark Teeuwen, A New History of Shinto (2010); Jinja Honchō (Association of Shinto Shrines): https://www.jinjahoncho.or.jp/en/';
+const CHINESE_LIVING =
+  'These days belong to a living religion and follow the lunar calendar; customs vary by region and temple. Adam Yuet Chau, Miraculous Response: Doing Popular Religion in Contemporary China (2006); Stephan Feuchtwang, Popular Religion in China: The Imperial Metaphor (2001)';
 const UGARIT_TEXTS = 'Simon B. Parker (ed.), Ugaritic Narrative Poetry (1997), for the Baal Cycle and the tale of Aqhat';
 
 export const DEITY_DEVOTIONS: DeityDevotion[] = [
@@ -4350,6 +4352,140 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     approach:
       'Hachiman belongs to a living religion, so he is approached with sincerity and respect, learning from shrines and their priests.',
     sources: [SHINTO_LIVING, 'Iwashimizu Hachimangū: https://www.iwashimizu.or.jp/', 'Tsurugaoka Hachimangū: https://www.hachimangu.or.jp/'],
+  },
+
+  // ─── Chinese folk religion and Daoism ────────────────────────────────────
+  {
+    key: 'mazu',
+    sacred: [
+      {
+        rule: { kind: 'lunisolar', month: 3, day: 23 },
+        name: 'Mazu’s birthday',
+        why: 'The twenty-third day of the third lunar month, Mazu’s birthday, kept with temple festivals, opera and pilgrimages, above all in Fujian and Taiwan.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Ask her to watch over someone who is travelling.',
+      'Light a lamp in a window for those far from home.',
+      'Thank the people who bring food from the sea.',
+      'Learn about the Mazu temple nearest you.',
+    ],
+    approach:
+      'Mazu belongs to a living religion, so she is approached with respect and gratitude, learning from her temples and the communities who keep them.',
+    sources: [CHINESE_LIVING, 'UNESCO, Mazu belief and customs (inscribed 2009): https://ich.unesco.org/en/RL/mazu-belief-and-customs-00227'],
+  },
+  {
+    key: 'zao_jun',
+    sacred: [
+      {
+        rule: { kind: 'lunisolar', month: 12, day: 23 },
+        name: 'Little New Year (Xiaonian)',
+        why: 'The twenty-third day of the twelfth lunar month, when, in northern custom, the Kitchen God rises to heaven to report on the household; in the south it is often the twenty-fourth.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Clean the kitchen with care.',
+      'Say something kind at the family table.',
+      'Share something sweet with your household.',
+      'Cook a simple meal for someone.',
+    ],
+    approach:
+      'Zao Jun belongs to a living religion, so he is approached with respect and good humour, learning from the families and temples who keep his customs.',
+    sources: [CHINESE_LIVING],
+  },
+  {
+    key: 'change',
+    sacred: [
+      {
+        rule: { kind: 'lunisolar', month: 8, day: 15 },
+        name: 'Mid-Autumn Festival',
+        why: 'The fifteenth day of the eighth lunar month, when families gather under the full moon, eat mooncakes and tell the story of Chang’e.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Look at the moon and think of someone far away.',
+      'Call or write to a relative you miss.',
+      'Share a round fruit or a sweet with your family.',
+      'Tell the story of Chang’e and the Jade Rabbit.',
+    ],
+    approach:
+      'Chang’e is honoured through the Mid-Autumn Festival as Chinese families keep it, with reunion, gratitude and remembrance of those far away.',
+    sources: [CHINESE_LIVING],
+  },
+  {
+    key: 'tudigong',
+    sacred: [
+      {
+        rule: { kind: 'lunisolar', month: 2, day: 2 },
+        name: 'Tudigong’s birthday',
+        why: 'The second day of the second lunar month, the Earth God’s birthday, kept with offerings at his shrines; it is also the day the dragon raises its head.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Greet the local shrine or the ground of your home with respect.',
+      'Do one thing for your neighbourhood.',
+      'Deal fairly in business today.',
+      'Offer a cup of tea with thanks for the place you live.',
+    ],
+    approach:
+      'Tudigong belongs to a living religion, so he is approached as a respected local elder, learning from the communities who keep his shrines.',
+    sources: [CHINESE_LIVING],
+  },
+  {
+    key: 'jade_emperor',
+    sacred: [
+      {
+        rule: { kind: 'lunisolar', month: 1, day: 9 },
+        name: 'The Jade Emperor’s birthday',
+        why: 'The ninth day of the first lunar month, the Jade Emperor’s birthday, kept especially by Hokkien communities with offerings to Heaven from midnight.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Look up at the sky and give thanks for the year’s blessings.',
+      'Act honestly in one thing, as if heaven were watching.',
+      'Offer a cup of tea or a piece of fruit with respect.',
+      'Learn about a Daoist or folk temple near you.',
+    ],
+    approach:
+      'The Jade Emperor belongs to a living religion, so he is approached with reverence and honest conduct, learning from temples and devotees.',
+    sources: [CHINESE_LIVING],
+  },
+  {
+    key: 'guanyin',
+    sacred: [
+      {
+        rule: { kind: 'lunisolar', month: 2, day: 19 },
+        name: 'Guanyin’s birthday',
+        why: 'The nineteenth day of the second lunar month, kept as Guanyin’s birthday with temple visits and vegetarian meals.',
+        basis: 'later',
+      },
+      {
+        rule: { kind: 'lunisolar', month: 6, day: 19 },
+        name: 'Guanyin’s enlightenment',
+        why: 'The nineteenth day of the sixth lunar month, kept as the day of Guanyin’s enlightenment.',
+        basis: 'later',
+      },
+      {
+        rule: { kind: 'lunisolar', month: 9, day: 19 },
+        name: 'Guanyin’s leaving home',
+        why: 'The nineteenth day of the ninth lunar month, kept as the day Guanyin left home for the religious life.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Do one kind thing for someone who is suffering.',
+      'Eat vegetarian today in her honour.',
+      'Offer a cup of clean water and a flower with respect.',
+      'Listen fully to someone who needs to be heard.',
+    ],
+    approach:
+      'Guanyin belongs to living Buddhism and folk religion, so she is approached with compassion and sincerity, learning from Buddhist temples and teachers.',
+    sources: [CHINESE_LIVING, 'Chün-fang Yü, Kuan-yin: The Chinese Transformation of Avalokiteśvara (2001)'],
   },
 
   // ─── Jewish folklore and Western occultism ───────────────────────────

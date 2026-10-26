@@ -384,4 +384,66 @@ export const OTHER: ClosedTradition[] = [
     ],
     community: ["Jinja Honchō (Association of Shinto Shrines)", "Tsubaki Grand Shrine of America"],
   },
+  {
+    id: 'daoist-priesthood',
+    name: "Daoist priesthood and ritual",
+    aka: ["Daoism", "Taoism", "Daoshi", "Zhengyi", "Quanzhen", "Celestial Masters", "Chinese temple religion"],
+    group: 'other',
+    openness: 'initiatory',
+    peoples:
+      "Daoist priests (daoshi) of the Zhengyi (Orthodox Unity) tradition, often hereditary and living at home, in Taiwan, southern China, Hong Kong and the diaspora; and monastic Quanzhen (Complete Perfection) Daoists, based at monasteries such as the White Cloud Temple in Beijing. The temples they serve belong to local communities.",
+    summary:
+      "Chinese temple religion is open to everyone who comes respectfully. The Daoist priesthood that performs its great rituals is entered by ordination in a lineage, receiving registers and scriptures from a master.",
+    sections: [
+      {
+        heading: "What Daoism is",
+        body:
+          "Daoism grew from the teachings of the Daodejing and the Zhuangzi and became an organised religion with the Celestial Masters in the second century CE. It has its own vast canon of scriptures, the Daozang, its own gods, among them the Three Pure Ones and the Jade Emperor, and its own priests, monasteries and temples. The old division between “philosophical” and “religious” Daoism is now widely seen as too simple.\n\nChinese folk religion, the worship of local gods such as Mazu, Tudigong and the Kitchen God, overlaps with Daoism and with Buddhism. Many temples are run by lay committees and call in Daoist priests for great rituals.",
+      },
+      {
+        heading: "Ordination and registers",
+        body:
+          "Zhengyi priests receive a register (lu) at ordination, a document that names the spirit generals and officers under their command, from a master in their lineage; many are trained within priestly families. Quanzhen Daoists take vows and live in monasteries. In mainland China the China Taoist Association has certified clergy since the 1950s. A priest’s ritual knowledge, his scriptures and the talismans he writes are passed on within the lineage.",
+      },
+      {
+        heading: "What priests do",
+        body:
+          "Daoist priests perform the jiao, great rituals of cosmic renewal held by temple communities, rites for the dead, blessings and exorcisms, often with music and in ritual dress. Ordinary people take part in temple life by offering incense, consulting oracle blocks and fortune sticks, joining processions and festivals, and hiring priests when needed.",
+      },
+    ],
+    howPeopleComeIn:
+      "Through a master in a lineage, usually after years of study and service; Zhengyi priests are often trained within families, and Quanzhen Daoists enter a monastery. Some masters accept non-Chinese students; the master decides.",
+    openAndClosed:
+      "Open: visiting temples, offering incense, joining festivals, reading the Daodejing and Zhuangzi in good translations, and arts such as taiji and qigong taught publicly. Initiatory: ordination, the registers and their contents, priestly ritual and talismans, which are given within lineages.",
+    myths: [
+      {
+        myth: "Daoism is only a philosophy of going with the flow.",
+        truth: "It is also a living religion with priests, monasteries, temples, scriptures and rituals.",
+      },
+      {
+        myth: "You can be ordained as a Daoist priest online.",
+        truth: "Ordination is given in person by a master in a lineage; certificates sold online are not recognised by Daoist bodies.",
+      },
+      {
+        myth: "Chinese folk religion is the same thing as Daoism.",
+        truth: "They overlap, and with Buddhism too, but the worship of local gods is broader than Daoism and many temples are run by lay communities.",
+      },
+    ],
+    please: [
+      "Please don’t buy Daoist ordinations or priestly titles online.",
+      "Please don’t copy, sell or improvise talismans (fu) or registers.",
+      "Please don’t use temple images, gods’ names or ancestral tablets as décor.",
+      "Please follow each temple’s customs about offerings, photography and where visitors may go.",
+    ],
+    learn:
+      "Visit temples respectfully, read good translations and scholarship, and if you want to go further, look for a teacher in an established lineage and take time to know them.",
+    reading: [
+      "Kristofer Schipper, The Taoist Body (1993)",
+      "Isabelle Robinet, Taoism: Growth of a Religion (1997)",
+      "Livia Kohn (ed.), Daoism Handbook (2000)",
+      "Russell Kirkland, Taoism: The Enduring Tradition (2004)",
+      "Adam Yuet Chau, Miraculous Response: Doing Popular Religion in Contemporary China (2006)",
+    ],
+    community: ["China Taoist Association", "Hong Kong Taoist Association"],
+  },
 ];

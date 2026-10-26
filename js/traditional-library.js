@@ -13859,6 +13859,264 @@ const TraditionalLibrary = {
 
             tags: ["protection", "archery", "warriors", "community", "doves", "shinto"]
         },
+
+        mazu: {
+            DisplayName: "Mazu",
+            Category: "Deity",
+
+            Pantheon: "Chinese",
+
+            Domains: "Protection at sea, sailors and fishing families, safe journeys, mercy, the communities of the Chinese coast and diaspora",
+
+            SacredSymbols: "The red lantern on the shore, the ceremonial tablet and crown of the Empress of Heaven, the procession palanquin",
+
+            SacredAnimals: "Her two guardians, Thousand-Mile Eye and Wind-Following Ear (spirit generals, not animals)",
+
+            SacredPlants: "None traditionally named",
+
+            CandleColors: "Red, gold, blue",
+
+            Crystals: "Aquamarine, red coral (sustainably sourced), pearl, clear quartz",
+
+            Herbs: "Sandalwood, incense, flowers",
+
+            Offerings: "Incense, flowers, fruit, tea, red candles, vegetarian food or temple-approved offerings",
+
+            TraditionalWarnings: "Mazu is a living goddess of Chinese folk religion and Daoism, worshipped by millions, especially in Fujian, Taiwan and among overseas Chinese. Follow the customs of her temples, which differ by place, and treat images, palanquins and incense burners with respect.",
+
+            Overview: "Mazu is the goddess of the sea, honoured as a protector of sailors and fishing families. Tradition says she was born as Lin Moniang on Meizhou Island in Fujian in the tenth century, and that she saved family members at sea in a trance before dying young and being worshipped as a goddess. Emperors granted her ever higher titles, until in 1684 she became Tianhou, the Empress of Heaven; she is attended by two guardian spirits, Thousand-Mile Eye and Wind-Following Ear.",
+
+            TraditionalMeaning: "Mercy on the waters: safe passage, care for those far from home and the protection of whole communities.",
+
+            DevotionalApproach: "Start here: learn about her from her temples and devotees, and if you can, visit a Mazu temple. At a Chinese temple, people usually light incense, often three sticks, bow holding it at the forehead, and place it in the burner, moving from the main hall to the side altars in the order the temple shows. Approach her with respect and gratitude, especially before a journey. Her worship is kept by communities, so join in as a guest.",
+
+            OfferingNotes: "Offer incense, flowers, fruit or tea, set out as the temple shows. Many temples ask for vegetarian offerings at the main altar; follow what the temple does rather than improvising.",
+
+            AltarIdeas: "A small shelf with an image of Mazu treated with reverence, an incense burner, a pair of red candles or lamps, flowers and fruit. Keep it clean and high, and change offerings often.",
+
+            CulturalContext: "Mazu belongs to the living folk religion and Daoism of southern China, Taiwan and the Chinese diaspora; her belief and customs are on UNESCO’s list of intangible cultural heritage. Hundreds of thousands of people walk with her image on Taiwan’s great spring pilgrimages, such as the nine-day Dajia procession. To go further, visit a Mazu temple and ask its keepers.",
+
+            Traditions: "Chinese",
+
+            TraditionNotes: "Chinese: Mazu is honoured on her birthday, the twenty-third day of the third lunar month, with temple festivals, opera and pilgrimages, and at the anniversary of her ascent in the ninth month. Fishing families and travellers visit her temples before voyages and ask for safety at sea, protection of the family and peace in the community.",
+
+            tags: ["sea", "protection", "travel", "mercy", "taiwan", "fujian"]
+        },
+
+        zao_jun: {
+            DisplayName: "Zao Jun",
+            Category: "Deity",
+
+            Pantheon: "Chinese",
+
+            Domains: "The kitchen and the household, the family’s conduct, the hearth fire, good fortune for the home",
+
+            SacredSymbols: "His paper image above the stove, the hearth, sweets for his lips, the New Year couplets",
+
+            SacredAnimals: "The horse he rides to heaven (in paper images)",
+
+            SacredPlants: "None traditionally named",
+
+            CandleColors: "Red, gold, yellow",
+
+            Crystals: "Carnelian, citrine, red jasper, clear quartz",
+
+            Herbs: "Incense, malt sugar, rice",
+
+            Offerings: "Malt-sugar sweets (tanggua), sticky rice cakes, fruit, tea, incense",
+
+            TraditionalWarnings: "Zao Jun, the Stove Lord or Kitchen God, is a living household god of Chinese folk religion. Never leave candles or incense burning unattended near a stove.",
+
+            Overview: "Zao Jun is the Kitchen God, who watches over each household from his paper image above the stove. On the twenty-third or twenty-fourth day of the twelfth lunar month, a week before the New Year, he rises to heaven to report on the family’s conduct to the Jade Emperor; families offer him sweets so that he will say sweet things, burn his old image to send him on his way, and paste up a new one at New Year.",
+
+            TraditionalMeaning: "The home watched over: kindness at the family table, honest conduct and a warm, well-fed household.",
+
+            DevotionalApproach: "Start here: learn about him from Chinese families and temples. Keep your kitchen clean and peaceful, and at the Little New Year, if you follow the custom, offer him a sweet. Approach him with respect and good humour. His worship belongs to the household, so it is learned best from those who keep it.",
+
+            OfferingNotes: "Offer malt-sugar sweets, sticky rice cake, fruit, tea or incense, set before his image by the stove. Follow your family’s or your community’s customs, which differ between north and south.",
+
+            AltarIdeas: "A paper image of Zao Jun and his wife above the stove, a small incense holder, a dish for sweets, and red paper couplets at New Year. Keep it clean and safe from heat.",
+
+            CulturalContext: "Zao Jun belongs to the living folk religion of Chinese families in China, Taiwan, Southeast Asia and the diaspora. The Little New Year sacrifice to the Kitchen God is a long-standing custom; in northern China it falls on the twenty-third of the twelfth month, in the south often on the twenty-fourth. To go further, ask families and temples who keep it.",
+
+            Traditions: "Chinese",
+
+            TraditionNotes: "Chinese: Zao Jun is honoured at the Little New Year (Xiaonian), the twenty-third or twenty-fourth of the twelfth lunar month, with sweets and incense before his journey to heaven, and welcomed back at New Year with a new image. Families ask him for a peaceful, prosperous household and a good report.",
+
+            tags: ["kitchen", "household", "family", "new year", "hearth", "conduct"]
+        },
+
+        change: {
+            DisplayName: "Chang’e",
+            Category: "Deity",
+
+            Pantheon: "Chinese",
+
+            Domains: "The moon, longing and reunion, immortality, beauty, the Mid-Autumn Festival",
+
+            SacredSymbols: "The full moon, the Jade Rabbit with its mortar, the cassia tree, the mooncake",
+
+            SacredAnimals: "The Jade Rabbit who pounds the elixir on the moon",
+
+            SacredPlants: "Cassia (osmanthus), which grows on the moon in legend",
+
+            CandleColors: "Silver, white, gold",
+
+            Crystals: "Moonstone, pearl, selenite, jade",
+
+            Herbs: "Osmanthus, tea, chrysanthemum",
+
+            Offerings: "Mooncakes, round fruit such as pomelos, osmanthus wine or tea, incense under the full moon",
+
+            TraditionalWarnings: "Chang’e, also written Chang-o or Heng’e, is above all a figure of legend and of the Mid-Autumn Festival rather than of temple worship, though families have long made offerings to the moon at the festival. Versions of her story differ, so share them as stories rather than a single doctrine.",
+
+            Overview: "Chang’e is the lady in the moon of Chinese legend. In the best-known telling her husband, the archer Hou Yi, shot down nine of the ten suns that were scorching the earth and was given an elixir of immortality; Chang’e drank it, in some versions to keep it from a thief, and floated up to the moon, where she lives with the Jade Rabbit. At the Mid-Autumn Festival families gather to look at the full moon and eat mooncakes.",
+
+            TraditionalMeaning: "Longing and reunion: families gathered under one moon, those far away remembered, and beauty touched with sorrow.",
+
+            DevotionalApproach: "Start here: at the Mid-Autumn Festival, share mooncakes or round fruit with family or friends, look at the full moon together and think of someone far away. Approach her through the festival as Chinese families keep it, learning from them. She is honoured by reunion, gratitude and remembering those absent.",
+
+            OfferingNotes: "Families set out mooncakes, pomelos and other round fruit, tea and incense on a table facing the moon. Join in as your hosts do, or keep a small table yourself, simply and respectfully.",
+
+            AltarIdeas: "A small table facing the moon with mooncakes, round fruit, a pot of tea, a vase of osmanthus or chrysanthemum, and a rabbit figure or lantern.",
+
+            CulturalContext: "Chang’e belongs to living Chinese culture and folk religion, and the Mid-Autumn Festival is kept by Chinese, Vietnamese and other communities around the world. China named its lunar exploration programme after her. To go further, celebrate the festival with families who keep it.",
+
+            Traditions: "Chinese",
+
+            TraditionNotes: "Chinese: Chang’e is remembered at the Mid-Autumn Festival on the fifteenth day of the eighth lunar month, when families gather, admire the moon, carry lanterns and set out mooncakes and round fruit, and some make offerings to the moon. People wish for family reunion, harmony and a full life.",
+
+            tags: ["moon", "mid-autumn", "reunion", "longing", "legend", "family"]
+        },
+
+        tudigong: {
+            DisplayName: "Tudigong",
+            Category: "Deity",
+
+            Pantheon: "Chinese",
+
+            Domains: "The local land and soil, the neighbourhood and village, farming and business, protection of a place and its people",
+
+            SacredSymbols: "The small roadside or street-corner shrine, the old man with a white beard and a staff or gold ingot",
+
+            SacredAnimals: "None traditionally named",
+
+            SacredPlants: "None traditionally named",
+
+            CandleColors: "Red, gold, brown",
+
+            Crystals: "Jasper, citrine, tiger eye, moss agate",
+
+            Herbs: "Incense, tea, rice",
+
+            Offerings: "Incense, tea, fruit, cakes, rice, a little wine",
+
+            TraditionalWarnings: "Tudigong, the Lord of the Soil and the Ground, is a living god of Chinese folk religion, honoured at countless small shrines. Each shrine belongs to its place and its neighbours; leave offerings only where it is welcome and tidy up after yourself.",
+
+            Overview: "Tudigong is the Earth God of Chinese folk religion, the guardian of a particular village, street, field or building, also called Fude Zhengshen, the Upright God of Fortune and Virtue. He is pictured as a kindly old man with a white beard, often with his wife Tudipo, and his small shrines stand by fields, at street corners and in shops and homes. In the heavenly order he is a local official, the god people turn to first for everyday help.",
+
+            TraditionalMeaning: "The goodness of a place: neighbourliness, honest dealing, fertile land and everyday protection.",
+
+            DevotionalApproach: "Start here: learn about him from Chinese communities and temples, and notice the shrine nearest you if there is one. At a Chinese temple, people usually light incense, often three sticks, bow holding it at the forehead, and place it in the burner, moving from the main hall to the side altars in the order the temple shows. Approach him as a respected local elder. He is honoured by care for your neighbourhood and fairness in business.",
+
+            OfferingNotes: "Offer incense, tea, fruit or cakes at his shrine, as local people do. Shopkeepers in Taiwan and southern China often make offerings to him on the second and sixteenth of each lunar month; follow the customs of the place.",
+
+            AltarIdeas: "A small shelf or floor shrine with an image of Tudigong treated with reverence, an incense burner, a cup of tea and a dish of fruit. Keep it clean and tended.",
+
+            CulturalContext: "Tudigong belongs to the living folk religion of China, Taiwan, Southeast Asia and the diaspora, kept by families, shopkeepers and villages. To go further, visit a temple or local shrine and ask those who keep it.",
+
+            Traditions: "Chinese",
+
+            TraditionNotes: "Chinese: Tudigong is honoured on his birthday, the second day of the second lunar month, with incense, food and local festivities, and by many businesses on the second and sixteenth of every lunar month. People ask him for a good harvest, prosperous business, safety for the neighbourhood and peace at home.",
+
+            tags: ["earth", "place", "neighbourhood", "business", "protection", "folk"]
+        },
+
+        jade_emperor: {
+            DisplayName: "The Jade Emperor",
+            Category: "Deity",
+
+            Pantheon: "Chinese",
+
+            Domains: "Rule of heaven, justice and order among gods and people, reward and punishment, the turning of the year",
+
+            SacredSymbols: "The imperial robes and flat-topped crown with hanging beads, the jade tablet, the heavenly court",
+
+            SacredAnimals: "None traditionally named",
+
+            SacredPlants: "Sugarcane (offered at his birthday in Hokkien communities)",
+
+            CandleColors: "Gold, yellow, red",
+
+            Crystals: "Jade, citrine, clear quartz, gold-coloured stones",
+
+            Herbs: "Incense, tea, sugarcane",
+
+            Offerings: "Incense, tea, fruit, sweets, sugarcane, vegetarian dishes",
+
+            TraditionalWarnings: "The Jade Emperor, Yuhuang Dadi, is a living god of Chinese folk religion and Daoism. In Daoist theology he ranks below the Three Pure Ones; folk religion sees him as ruler of heaven. Approach him through the forms temples use.",
+
+            Overview: "The Jade Emperor is the ruler of heaven in Chinese folk religion, presiding over a celestial court that mirrors the old imperial government, with gods as his officials. He was given imperial honours by the Song emperor Zhenzong in the early eleventh century, and in popular stories he receives the Kitchen God’s report each New Year and sets the order of the zodiac animals.",
+
+            TraditionalMeaning: "Heavenly order: justice, good conduct rewarded and the harmony of heaven, earth and people.",
+
+            DevotionalApproach: "Start here: learn about him from Chinese and Daoist temples and devotees. At a Chinese temple, people usually light incense, often three sticks, bow holding it at the forehead, and place it in the burner, moving from the main hall to the side altars in the order the temple shows. Approach him with reverence and with honest conduct, since he sees how people live. His worship is kept by temples and families, so join in as a guest.",
+
+            OfferingNotes: "Offer incense, tea, fruit, sweets or vegetarian dishes, as temples show. At his birthday many Hokkien families set a high table outdoors with sugarcane, fruit and sweets at midnight; follow their customs.",
+
+            AltarIdeas: "Temples hold his image in the main hall, often on an upper floor. At home, a simple incense burner facing the open sky, as many families use for Heaven, is the common form.",
+
+            CulturalContext: "The Jade Emperor belongs to the living folk religion and Daoism of China, Taiwan, Southeast Asia and the diaspora. To go further, visit a Daoist or folk temple and ask its keepers.",
+
+            Traditions: "Chinese",
+
+            TraditionNotes: "Chinese: The Jade Emperor is honoured on his birthday, the ninth day of the first lunar month, especially by Hokkien communities, who make offerings to Heaven from midnight with sugarcane, fruit and sweets, and at New Year when the gods return. People ask him for blessing in the new year, justice and protection for the family.",
+
+            tags: ["heaven", "order", "justice", "new year", "daoism", "folk"]
+        },
+
+        guanyin: {
+            DisplayName: "Guanyin",
+            Category: "Deity",
+
+            Pantheon: "Chinese",
+
+            Domains: "Compassion and mercy, hearing the cries of the world, protection from harm, the gift of children, comfort in suffering",
+
+            SacredSymbols: "The vase of pure water and willow branch, the lotus, the white robe, the thousand arms and eyes",
+
+            SacredAnimals: "None traditionally named; she sometimes rides a dragon or stands on a fish",
+
+            SacredPlants: "Lotus, willow",
+
+            CandleColors: "White, gold, pale blue",
+
+            Crystals: "Jade, clear quartz, moonstone, rose quartz",
+
+            Herbs: "Sandalwood, lotus, jasmine",
+
+            Offerings: "Flowers, fruit, clean water, incense, vegetarian food, kindness to all beings",
+
+            TraditionalWarnings: "Guanyin is a bodhisattva, the Chinese form of Avalokiteśvara, venerated in Buddhism and also in Daoism and folk religion; Buddhists do not regard her as a goddess. Offerings to her are vegetarian, and her images are not ornaments. Follow the customs of the temple or teacher you learn from.",
+
+            Overview: "Guanyin, she who perceives the sounds of the world, is the bodhisattva of compassion, the Chinese form of the Indian Avalokiteśvara. Pictured in early Chinese art as male, she came to be shown as a woman in white from around the tenth century, holding a vase of pure water and a willow branch; the legend of Princess Miaoshan tells of her selfless life. Her island of Putuo Shan off Zhejiang is a great pilgrimage site, and she is honoured as Kannon in Japan, Gwaneum in Korea and Quan Âm in Vietnam.",
+
+            TraditionalMeaning: "Compassion that hears: mercy, comfort for those who suffer and the vow to help all beings.",
+
+            DevotionalApproach: "Start here: learn about her from Buddhist teachers and temples, and if you can, visit a temple. At Buddhist temples people bow with palms together and offer incense, flowers or fruit. Approach her with compassion and sincerity; many recite her name, and the most fitting devotion is kindness to others.",
+
+            OfferingNotes: "Offer flowers, fruit, clean water or incense, always vegetarian, placed cleanly before her image. Learn which offerings and recitations a temple or teacher considers appropriate before improvising.",
+
+            AltarIdeas: "An image of Guanyin treated with reverence, set high and clean, a small cup of clean water, flowers, fruit and an incense burner. Keep meat and alcohol away from her altar.",
+
+            CulturalContext: "Guanyin belongs to living Buddhism and to Chinese folk religion and Daoism, honoured across East and Southeast Asia and the diaspora. Buddhist temples welcome respectful visitors. To go further, ask at a Buddhist temple or learn from a Buddhist teacher.",
+
+            Traditions: "Chinese",
+
+            TraditionNotes: "Chinese: Guanyin is honoured on the nineteenth days of the second, sixth and ninth lunar months, her birth, enlightenment and leaving home, with temple visits, vegetarian meals, chanting and the release of living creatures, and many keep vegetarian days in her honour. People ask her for compassion, protection, healing, children and comfort in grief.",
+
+            tags: ["compassion", "mercy", "bodhisattva", "protection", "healing", "buddhism"]
+        },
     },
 
     tool: {
