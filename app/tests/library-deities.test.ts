@@ -42,6 +42,7 @@ const MORE_DEITIES: Record<string, string[]> = {
   Canaanite: ['asherah', 'astarte', 'baal', 'anat', 'el', 'shapash'],
   Baltic: ['laima', 'perkunas', 'saule', 'dievas', 'zemyna', 'menulis'],
   Finnish: ['ukko', 'mielikki', 'tapio', 'ilmatar', 'ahti', 'rauni'],
+  'Anglo-Saxon': ['woden', 'thunor', 'frige', 'tiw', 'eostre', 'hreda'],
 };
 const ALL_MORE = Object.values(MORE_DEITIES).flat();
 const text = (d: Deity, ...fields: string[]) => fields.map((f) => String(d[f] ?? '')).join(' ');
@@ -242,6 +243,7 @@ const MORE_LINKS: [string, string][] = [
   ['hindu-navaratri', 'rama'],
   ['wheel-samhain', 'horned_god'],
   ['wheel-yule', 'horned_god'],
+  ['wheel-ostara', 'eostre'],
 ];
 // Seasonal things kept for festivals that honour them.
 const MORE_SEASONAL: string[] = ['Lares', 'Njord', 'Rama'];
@@ -356,6 +358,14 @@ const MORE_SEARCH: [string, string][] = [
   ['Vellamo', 'ahti'],
   ['rowan', 'rauni'],
   ['Suomenusko', 'ukko'],
+  ['Nine Herbs Charm', 'woden'],
+  ['Wednesday', 'woden'],
+  ['Thursley', 'thunor'],
+  ['Frīgedæg', 'frige'],
+  ['Tīwesdæg', 'tiw'],
+  ['Eosturmonath', 'eostre'],
+  ['Hrethmonath', 'hreda'],
+  ['Fyrnsidu', 'hreda'],
 ];
 // Living religions: devotion, not magic.
 const LIVING_PANTHEONS = ['Hindu', 'Shinto', 'Chinese'];

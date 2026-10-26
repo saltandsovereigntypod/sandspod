@@ -73,6 +73,7 @@ export const HOLIDAY_PAGES: HolyPage[] = [
     ],
     ritual: { premade: 'wicca-ostara-seed-and-egg' },
     correspondences: {
+      deities: ['Eostre'],
       herbs: ['Lemon Balm', 'Mint', 'Dandelion', 'Calendula'],
       crystals: ['Rose Quartz', 'Green Aventurine', 'Moss Agate', 'Aquamarine'],
       colors: ['Green', 'Yellow', 'Pink', 'White'],

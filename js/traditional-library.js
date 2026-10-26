@@ -13085,6 +13085,264 @@ const TraditionalLibrary = {
 
             tags: ["rowan", "thunder", "protection", "fertility", "home", "sami"]
         },
+
+        woden: {
+            DisplayName: "Woden",
+            Category: "Deity",
+
+            Pantheon: "Anglo-Saxon",
+
+            Domains: "Wisdom and healing charms, kingship and royal ancestry, poetry, the dead, travel",
+
+            SacredSymbols: "The nine glory-twigs of the Nine Herbs Charm, the spear, the cloak and hat of the wanderer, the earthwork Wansdyke (Woden’s dyke)",
+
+            SacredAnimals: "Ravens and wolves (by comparison with the Norse Odin)",
+
+            SacredPlants: "The nine herbs of the charm: mugwort, plantain, watercress, chamomile, nettle, crab apple, chervil, fennel and lamb’s cress (identifications debated)",
+
+            CandleColors: "Grey, blue, black",
+
+            Crystals: "Smoky quartz, labradorite, hematite, jet",
+
+            Herbs: "Mugwort, plantain, fennel",
+
+            Offerings: "Mead or ale, bread, a poem, learning shared",
+
+            TraditionalWarnings: "Woden is the English form of the god the Norse called Odin, but the Old English sources are few and should not simply be filled from Snorri. Some of the nine herbs of the charm are irritants or toxic in quantity; do not take herbs without good advice.",
+
+            Overview: "Woden is the chief god of the pagan Anglo-Saxons, from whom most of the English royal houses traced their descent. In the Old English Nine Herbs Charm, Woden takes nine glory-twigs and strikes a serpent so that it flies into nine parts, and the poem Maxims I says “Woden made idols”. His name lives on in Wednesday (Wōdnesdæg) and in places such as Wednesbury and the great earthwork Wansdyke.",
+
+            TraditionalMeaning: "Wisdom and healing words: the power of charms and poems, the dignity of ancestry and the courage to seek knowledge.",
+
+            DevotionalApproach: "Start here: on a Wednesday, read the Nine Herbs Charm in translation, raise a cup of mead or juice and ask him for wisdom. Approach him with respect and curiosity. He is honoured by learning, honest speech and care for one’s people.",
+
+            OfferingNotes: "Offer mead, ale or bread, or a poem or piece of learning shared. Planting some of the nine herbs, carefully, honours the charm.",
+
+            AltarIdeas: "A grey or blue candle, a spear or staff, a bundle of nine twigs, smoky quartz, a drinking horn and a copy of the Old English charm.",
+
+            CulturalContext: "Today the Anglo-Saxon gods are honoured in Heathenry, a living religion, especially by followers of Fyrnsidu (the old custom) and Theodism, who work from Old English sources. Very little was written down before the English became Christian: the evidence is a few lines in Bede, charms, poems, royal family trees, the days of the week and place names. Choose inclusive Heathen groups; some misuse Anglo-Saxon heritage for racist ends, which most Heathens reject.",
+
+            Traditions: "Anglo-Saxon",
+
+            TraditionNotes: "Anglo-Saxon: Heathens of the Fyrnsidu and Theodish traditions honour Woden on Wednesdays and at Yule, with mead, bread and poetry, often reading the Nine Herbs Charm. He is asked for wisdom, healing, good leadership and safe journeys.",
+
+            tags: ["wisdom", "healing", "charms", "kingship", "poetry", "heathen"]
+        },
+
+        thunor: {
+            DisplayName: "Thunor",
+            Category: "Deity",
+
+            Pantheon: "Anglo-Saxon",
+
+            Domains: "Thunder and storms, protection of people and farms, strength, the oak",
+
+            SacredSymbols: "The hammer, the oak, the thunderbolt",
+
+            SacredAnimals: "Goats (by comparison with the Norse Thor)",
+
+            SacredPlants: "Oak",
+
+            CandleColors: "Red, gold, grey",
+
+            Crystals: "Hematite, red jasper, labradorite, garnet",
+
+            Herbs: "Oak, juniper, rowan",
+
+            Offerings: "Ale, bread, oak leaves, hard work done for others",
+
+            TraditionalWarnings: "Thunor is the Old English form of Thor, but almost nothing of his myth survives in English; stories of Thor from Iceland are a later and different tradition. A villain named Thunor in the legend of St Mildrith is a man, not the god.",
+
+            Overview: "Thunor is the Anglo-Saxon god of thunder, kin to the Norse Thor and the Old Saxon Thunaer, whom Saxon converts on the Continent were made to renounce by name. His name lives on in Thursday (Þunresdæg) and in English places such as Thundersley, Thursley and Thunderfield, which may once have held his shrines. Ælfric’s sermon On the False Gods names him with Woden and Frige.",
+
+            TraditionalMeaning: "Strength that protects: the storm that clears the air, defence of the household and the dignity of honest labour.",
+
+            DevotionalApproach: "Start here: on a Thursday, do something hard that helps someone else, then raise a cup of ale or water to him. Approach him plainly and warmly. He is honoured by protecting others, keeping your word and working hard.",
+
+            OfferingNotes: "Offer ale, bread or oak leaves, or physical work done for the good of others. Caring for an oak tree honours him.",
+
+            AltarIdeas: "A red or gold candle, a small hammer, oak leaves and acorns, hematite and a cup of ale.",
+
+            CulturalContext: "Today the Anglo-Saxon gods are honoured in Heathenry, a living religion, especially by followers of Fyrnsidu (the old custom) and Theodism, who work from Old English sources. Very little was written down before the English became Christian: the evidence is a few lines in Bede, charms, poems, royal family trees, the days of the week and place names. Choose inclusive Heathen groups; some misuse Anglo-Saxon heritage for racist ends, which most Heathens reject.",
+
+            Traditions: "Anglo-Saxon",
+
+            TraditionNotes: "Anglo-Saxon: Heathens honour Thunor on Thursdays and in storms, with ale, bread and oak, and call on him to hallow and protect a gathering. He is asked for protection, strength, good weather for crops and safety in storms.",
+
+            tags: ["thunder", "storm", "protection", "strength", "oak", "heathen"]
+        },
+
+        frige: {
+            DisplayName: "Frige",
+            Category: "Deity",
+
+            Pantheon: "Anglo-Saxon",
+
+            Domains: "Love and marriage, the household, women’s work and wisdom, motherhood",
+
+            SacredSymbols: "The distaff and spindle, the household keys, the hearth",
+
+            SacredAnimals: "None securely attested in Old English sources",
+
+            SacredPlants: "Flax, birch",
+
+            CandleColors: "White, blue, silver",
+
+            Crystals: "Moonstone, blue lace agate, clear quartz, amber",
+
+            Herbs: "Flax, lady’s mantle, yarrow",
+
+            Offerings: "Bread, mead, spun or woven thread, a well-kept home",
+
+            TraditionalWarnings: "Frige is the Old English form of the goddess the Norse called Frigg; whether she was also once the same as Freyja is debated. Old English evidence is limited to Friday (Frīgedæg), Ælfric’s sermon and a few uncertain place names.",
+
+            Overview: "Frige is an Anglo-Saxon goddess of love, marriage and the household, kin to the Norse Frigg, Odin’s wife. Friday, Frīgedæg, is named after her, translating the Latin day of Venus, and the late Anglo-Saxon homilist Ælfric names her among the gods the heathens worshipped. Elsewhere in the Germanic world, the Lombard origin legend tells how Frea outwitted Godan, her husband.",
+
+            TraditionalMeaning: "The household held in wisdom: love, marriage, the work of hands and quiet foresight.",
+
+            DevotionalApproach: "Start here: on a Friday, tidy one part of your home, spin or knit a few rows or simply light a candle at the table and thank her for your household. Approach her with warmth. She is honoured by care for family, faithful love and wise management of the home.",
+
+            OfferingNotes: "Offer bread, mead or a length of spun or woven thread. A meal shared at home is an offering in her spirit.",
+
+            AltarIdeas: "A white or blue candle, a distaff or spindle, a bunch of keys, moonstone and a small loaf.",
+
+            CulturalContext: "Today the Anglo-Saxon gods are honoured in Heathenry, a living religion, especially by followers of Fyrnsidu (the old custom) and Theodism, who work from Old English sources. Very little was written down before the English became Christian: the evidence is a few lines in Bede, charms, poems, royal family trees, the days of the week and place names. Choose inclusive Heathen groups; some misuse Anglo-Saxon heritage for racist ends, which most Heathens reject.",
+
+            Traditions: "Anglo-Saxon",
+
+            TraditionNotes: "Anglo-Saxon: Heathens honour Frige on Fridays and at Modraniht, the Mothers’ Night Bede records at the start of the year, with bread, mead and spinning. She is asked for love, a happy marriage, family wellbeing and wisdom in running the home.",
+
+            tags: ["love", "marriage", "household", "spinning", "women", "heathen"]
+        },
+
+        tiw: {
+            DisplayName: "Tiw",
+            Category: "Deity",
+
+            Pantheon: "Anglo-Saxon",
+
+            Domains: "Justice and law, war and courage, oaths, the guiding star",
+
+            SacredSymbols: "The Tīr rune (ᛏ), shaped like an arrow or spear, the guiding star",
+
+            SacredAnimals: "None securely attested in Old English sources",
+
+            SacredPlants: "None securely attested in Old English sources",
+
+            CandleColors: "Red, white, blue",
+
+            Crystals: "Hematite, bloodstone, clear quartz, sodalite",
+
+            Herbs: "Oak, yarrow, juniper",
+
+            Offerings: "Ale or mead, bread, an oath kept, fair dealing",
+
+            TraditionalWarnings: "Tiw is the Old English form of the god the Norse called Týr. Apart from Tuesday (Tīwesdæg) and a few place names such as Tysoe and Tuesley, almost nothing of him survives in English; the rune poem’s Tīr may name him or simply a star.",
+
+            Overview: "Tiw is the Anglo-Saxon god of war and justice, kin to the Norse Týr, who gave his hand to bind the wolf Fenrir. Tuesday, Tīwesdæg, is named after him, matching the Latin day of Mars. The Old English Rune Poem says of the rune Tīr that it is a token that keeps faith well with princes and never fails on its course through the night.",
+
+            TraditionalMeaning: "Justice that holds steady: courage, fair law, honour in conflict and faithfulness like a guiding star.",
+
+            DevotionalApproach: "Start here: on a Tuesday, keep one promise that costs you something, then raise a cup to him. Approach him with honesty and steadiness. He is honoured by fair dealing, courage and keeping oaths.",
+
+            OfferingNotes: "Offer ale, mead or bread, or an oath faithfully kept. Serving on a jury or helping settle a dispute fairly honours him.",
+
+            AltarIdeas: "A red or white candle, the Tīr rune carved on wood, a small spear or arrow, hematite and a cup.",
+
+            CulturalContext: "Today the Anglo-Saxon gods are honoured in Heathenry, a living religion, especially by followers of Fyrnsidu (the old custom) and Theodism, who work from Old English sources. Very little was written down before the English became Christian: the evidence is a few lines in Bede, charms, poems, royal family trees, the days of the week and place names. Choose inclusive Heathen groups; some misuse Anglo-Saxon heritage for racist ends, which most Heathens reject.",
+
+            Traditions: "Anglo-Saxon",
+
+            TraditionNotes: "Anglo-Saxon: Heathens honour Tiw on Tuesdays and when oaths are sworn or disputes settled, with ale, mead and bread. He is asked for justice, courage, fair outcomes and steadfastness.",
+
+            tags: ["justice", "law", "courage", "oaths", "war", "heathen"]
+        },
+
+        eostre: {
+            DisplayName: "Eostre",
+            Category: "Deity",
+
+            Pantheon: "Anglo-Saxon",
+
+            Domains: "Spring and the dawn (by her name), the month of April, new beginnings",
+
+            SacredSymbols: "The dawn, the spring month Eosturmonath",
+
+            SacredAnimals: "None in the sources; the hare is a modern association",
+
+            SacredPlants: "None in the sources; spring flowers are a modern association",
+
+            CandleColors: "Pale yellow, green, pink",
+
+            Crystals: "Rose quartz, green aventurine, citrine, moonstone",
+
+            Herbs: "Primrose, violet, birch",
+
+            Offerings: "Spring flowers, eggs, bread, greeting the dawn",
+
+            TraditionalWarnings: "Bede is the only early source for Eostre: in 725 he wrote that April, Eosturmonath, was named after a goddess Eostre, in whose honour feasts were once held, and that the name passed to Easter. Some scholars doubt she existed; Jacob Grimm built a German Ostara on Bede in 1835. Her hares, eggs and the story of a bird turned into a hare are modern, from the nineteenth and twentieth centuries.",
+
+            Overview: "Eostre is an Anglo-Saxon goddess known only from one sentence of the monk Bede, who wrote that the month Eosturmonath, roughly April, was named after her, and that the English now called the Easter season by her name. Her name comes from a root meaning dawn or east, like the Greek Eos. Inscriptions to mother goddesses called the Austriahenae, found in Germany in 1958, may or may not be related.",
+
+            TraditionalMeaning: "The coming of the light: spring, dawn and new beginnings, held honestly as a single line of evidence.",
+
+            DevotionalApproach: "Start here: get up early one spring morning, watch the dawn and greet her, honest that we know almost nothing about her. Approach her with gratitude for spring. She is honoured by welcoming new beginnings and noticing the returning light.",
+
+            OfferingNotes: "Offer spring flowers, eggs or bread at dawn. Modern Pagans often decorate eggs for her; that is a new custom, freely chosen.",
+
+            AltarIdeas: "A pale yellow or green candle, spring flowers, an egg, rose quartz and an east-facing window.",
+
+            CulturalContext: "Today the Anglo-Saxon gods are honoured in Heathenry, a living religion, especially by followers of Fyrnsidu (the old custom) and Theodism, who work from Old English sources. Very little was written down before the English became Christian: the evidence is a few lines in Bede, charms, poems, royal family trees, the days of the week and place names. Choose inclusive Heathen groups; some misuse Anglo-Saxon heritage for racist ends, which most Heathens reject.",
+
+            Traditions: "Anglo-Saxon, Wheel of the Year",
+
+            TraditionNotes: "Anglo-Saxon: Heathens of the Fyrnsidu tradition honour Eostre in Eosturmonath, around the spring equinox and April, with feasts, flowers and greetings at dawn, following Bede. She is asked for renewal, hope and good beginnings.\n\nWheel of the Year: Modern Pagans name the spring equinox Ostara after Grimm’s Ostara and Bede’s Eostre, and keep it with eggs, flowers and the hare, all modern customs.",
+
+            tags: ["spring", "dawn", "beginnings", "ostara", "bede", "renewal"]
+        },
+
+        hreda: {
+            DisplayName: "Hreda",
+            Category: "Deity",
+
+            Pantheon: "Anglo-Saxon",
+
+            Domains: "The month of March and its sacrifices, possibly victory or glory",
+
+            SacredSymbols: "The month Hrethmonath",
+
+            SacredAnimals: "None in the sources",
+
+            SacredPlants: "None in the sources",
+
+            CandleColors: "Red, gold, green",
+
+            Crystals: "Carnelian, garnet, citrine, jasper",
+
+            Herbs: "Birch, nettle, early spring greens",
+
+            Offerings: "Bread, ale, early spring greens, honesty about how little is known",
+
+            TraditionalWarnings: "Hreda, or Hrēþe, is known from one line of Bede alone, who wrote that March, Hrethmonath, was named after a goddess Hreda, to whom sacrifices were made in that month. Nothing else is recorded; her name may be related to Old English hrēþ, glory or victory, but this is uncertain. Anything more is modern.",
+
+            Overview: "Hreda is an Anglo-Saxon goddess named only by Bede in his work on time-reckoning of 725, where he lists the old English months and says that Hrethmonath, roughly March, took its name from the goddess Hreda, to whom the English offered sacrifices in that month before they became Christian. Her name may mean glory or victory, or relate to something else entirely.",
+
+            TraditionalMeaning: "The stirring of the year: the effort of early spring, honoured with honesty about a single line of evidence.",
+
+            DevotionalApproach: "Start here: at the start of March, offer a little bread and ale and thank her for the turning of the year, saying plainly that you know only her name. Approach her with humility. She is honoured by keeping the old month and by not inventing more than is known.",
+
+            OfferingNotes: "Offer bread, ale or early spring greens at the start of March. Bede says only that sacrifices were made; modern devotees use simple food offerings.",
+
+            AltarIdeas: "A red or gold candle, early spring greens or birch twigs, carnelian and a small cup.",
+
+            CulturalContext: "Today the Anglo-Saxon gods are honoured in Heathenry, a living religion, especially by followers of Fyrnsidu (the old custom) and Theodism, who work from Old English sources. Very little was written down before the English became Christian: the evidence is a few lines in Bede, charms, poems, royal family trees, the days of the week and place names. Choose inclusive Heathen groups; some misuse Anglo-Saxon heritage for racist ends, which most Heathens reject.",
+
+            Traditions: "Anglo-Saxon",
+
+            TraditionNotes: "Anglo-Saxon: Heathens of the Fyrnsidu tradition honour Hreda in Hrethmonath, March, with bread and ale, as Bede says the English once did. She is asked for strength in the turning of the year and success in what is begun.",
+
+            tags: ["march", "spring", "bede", "victory", "months", "heathen"]
+        },
     },
 
     tool: {

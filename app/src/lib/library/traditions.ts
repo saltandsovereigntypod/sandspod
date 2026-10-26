@@ -29,12 +29,13 @@ export const PATH_TRADITIONS: PathTradition[] = [
   { id: 'canaanite', name: 'Canaanite' },
   { id: 'baltic', name: 'Baltic' },
   { id: 'finnish', name: 'Finnish' },
+  { id: 'anglo-saxon', name: 'Anglo-Saxon' },
 ];
 
 // Calendars that map onto a tradition of the same family.
 const CALENDAR_TO_PATH: Record<string, string> = { wheel_south: 'wheel', hellenic_monthly: 'hellenic' };
 // A deity's pantheon when the entry has no `Traditions` field.
-const PANTHEON_TO_PATH: Record<string, string> = { greek: 'hellenic', roman: 'roman', norse: 'norse', celtic: 'celtic', welsh: 'celtic', irish: 'celtic', gaulish: 'celtic', slavic: 'slavic', egyptian: 'egyptian', hindu: 'hindu', wiccan: 'wicca', mesopotamian: 'mesopotamian', canaanite: 'canaanite', baltic: 'baltic', finnish: 'finnish' };
+const PANTHEON_TO_PATH: Record<string, string> = { greek: 'hellenic', roman: 'roman', norse: 'norse', celtic: 'celtic', welsh: 'celtic', irish: 'celtic', gaulish: 'celtic', slavic: 'slavic', egyptian: 'egyptian', hindu: 'hindu', wiccan: 'wicca', mesopotamian: 'mesopotamian', canaanite: 'canaanite', baltic: 'baltic', finnish: 'finnish', 'anglo-saxon': 'anglo-saxon' };
 
 const byName = new Map(PATH_TRADITIONS.map((t) => [t.name.toLowerCase(), t.id]));
 const known = new Set(PATH_TRADITIONS.map((t) => t.id));

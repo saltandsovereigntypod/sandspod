@@ -60,6 +60,8 @@ const BALTIC_SOURCES =
   'Norbertas Vėlius (ed.), Baltų religijos ir mitologijos šaltiniai (Sources of Baltic Religion and Mythology, 1996–2005); on Romuva and Dievturība today, Kaarina Aitamurto and Scott Simpson (eds), Modern Pagan and Native Faith Movements in Central and Eastern Europe (2013)';
 const FINNISH_SOURCES =
   'Suomen Kansan Vanhat Runot (SKVR), the corpus of old Finnish and Karelian folk poetry: https://skvr.fi/; Anna-Leena Siikala, Mythic Images and Shamanism: A Perspective on Kalevala Poetry (2002)';
+const AS_SOURCES =
+  'Bede, De temporum ratione 15 (725), trans. Faith Wallis, Bede: The Reckoning of Time (1999); Ælfric, De falsis diis; Ronald Hutton, Pagan Britain (2013)';
 const UGARIT_TEXTS = 'Simon B. Parker (ed.), Ugaritic Narrative Poetry (1997), for the Baal Cycle and the tale of Aqhat';
 
 export const DEITY_DEVOTIONS: DeityDevotion[] = [
@@ -3964,6 +3966,128 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     approach:
       'Rauni is approached gently and without inventing more than is known, as the rowan goddess beside Ukko.',
     sources: [FINNISH_SOURCES],
+  },
+
+  // ─── Anglo-Saxon ─────────────────────────────────────────────────────────
+  {
+    key: 'woden',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 3 },
+        name: 'Wednesday',
+        why: 'Wednesday is Wōdnesdæg, Woden’s day, in Old English. Honouring him on Wednesdays is a modern Heathen custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Read a few lines of the Nine Herbs Charm in translation.',
+      'Learn one new thing and share it.',
+      'Raise a cup to your ancestors.',
+      'Write or read a short poem.',
+    ],
+    approach:
+      'Woden is approached with respect and curiosity, as the chief god of the Anglo-Saxons, without filling the gaps from Norse sources too freely.',
+    sources: [WEEKDAYS, AS_SOURCES, 'The Nine Herbs Charm (Lacnunga, British Library Harley MS 585)'],
+  },
+  {
+    key: 'thunor',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 4 },
+        name: 'Thursday',
+        why: 'Thursday is Þunresdæg, Thunor’s day, in Old English. Honouring him on Thursdays is a modern Heathen custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Do something hard that helps someone else.',
+      'Raise a cup of ale or water to him.',
+      'Touch an oak and thank him for protection.',
+      'Keep your word in one thing today.',
+    ],
+    approach:
+      'Thunor is approached plainly and warmly, as the English thunder god who protects people and farms.',
+    sources: [WEEKDAYS, AS_SOURCES],
+  },
+  {
+    key: 'frige',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 5 },
+        name: 'Friday',
+        why: 'Friday is Frīgedæg, Frige’s day, in Old English. Honouring her on Fridays is a modern Heathen custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Tidy one part of your home and thank her.',
+      'Spin, knit or sew a few rows.',
+      'Share a meal at home with someone you love.',
+      'Plan one thing ahead with care.',
+    ],
+    approach:
+      'Frige is approached with warmth, as the English goddess of love and the household.',
+    sources: [WEEKDAYS, AS_SOURCES, 'Bede, De temporum ratione 15, on Modranecht'],
+  },
+  {
+    key: 'tiw',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 2 },
+        name: 'Tuesday',
+        why: 'Tuesday is Tīwesdæg, Tiw’s day, in Old English. Honouring him on Tuesdays is a modern Heathen custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Keep a promise that costs you something.',
+      'Deal fairly in one dispute.',
+      'Carve or draw the Tīr rune and think about faithfulness.',
+      'Find a bright star and think of steadiness.',
+    ],
+    approach:
+      'Tiw is approached with honesty and steadiness, as the English god of justice and oaths.',
+    sources: [WEEKDAYS, AS_SOURCES, 'The Old English Rune Poem, stanza Tīr'],
+  },
+  {
+    key: 'eostre',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'ostara' },
+        name: 'Eosturmonath (the spring equinox)',
+        why: 'Bede says the English once held feasts for Eostre in Eosturmonath, roughly April. He gives no day; modern Pagans keep the spring equinox as Ostara.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Watch a spring dawn and greet her.',
+      'Put spring flowers in water.',
+      'Begin one new thing.',
+      'Read Bede’s sentence about her and think about how little we know.',
+    ],
+    approach:
+      'Eostre is approached with gratitude for spring and honesty that one sentence of Bede is all we have.',
+    sources: [AS_SOURCES, 'Jacob Grimm, Deutsche Mythologie (1835), ch. 13, on Ostara', HUTTON_STATIONS],
+  },
+  {
+    key: 'hreda',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 3, day: 1 },
+        name: 'Hrethmonath',
+        why: 'Bede says March, Hrethmonath, was named after Hreda, to whom the English offered sacrifices in that month. He gives no day; the first of March marks the month.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Offer a little bread and ale at the start of March.',
+      'Begin a piece of spring work.',
+      'Say plainly that you know only her name, and honour her anyway.',
+      'Notice the first green shoots.',
+    ],
+    approach:
+      'Hreda is approached with humility, as an English goddess known from one line of Bede.',
+    sources: [AS_SOURCES],
   },
 
   // ─── Jewish folklore and Western occultism ───────────────────────────
