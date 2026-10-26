@@ -21,6 +21,8 @@
 
   const COVEN_FIELDS = "id,slug,name,tagline,description,tradition,tags,meeting_rhythm,timezone,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,practice_traditions,practice_holidays,practice_custom,practice_calendars,founder_id,created_at,updated_at,member_count";
 
+  const ALTAR_FIELDS = "id,coven_id,name,is_main,edit_mode,locked,background,background_name,groups,active_group_id,extra,archived_at,created_by,updated_by,created_at,updated_at";
+
   const CovenData = {
     // --- people -------------------------------------------------------------
     async myProfile(userId) {
@@ -142,29 +144,115 @@
       const rows = await run(db().from("coven_messages").select("*").eq("coven_id", covenId).is("conversation_id", null).lt("created_at", before).order("created_at", { ascending: false }).limit(limit));
       return (rows || []).reverse();
     },
-    send: (covenId, body, replyTo) => run(db().from("coven_messages").insert({ coven_id: covenId, body, reply_to: replyTo || null }).select().single()),
+    /** Send to the coven's chat (or a conversation), then let the others' phones know, as the app does (best effort). */
+    async send(covenId, body, replyTo, conversationId) {
+      const row = await run(db().from("coven_messages").insert({ coven_id: covenId, conversation_id: conversationId || null, body, reply_to: replyTo || null }).select().single());
+      try {
+        Promise.resolve(db().functions?.invoke?.("coven-notify", { body: { message_id: row.id } })).catch(() => {});
+      } catch {
+        // Phones hear about it another time; the message is sent.
+      }
+      return row;
+    },
+
+    // --- conversations: one-to-one chats and groups inside a coven (app/src/lib/covens/chat.ts) ---
+    async conversations(covenId) {
+      const [conversations, members] = await Promise.all([
+        run(db().from("coven_conversations").select("*").eq("coven_id", covenId).order("last_message_at", { ascending: false, nullsFirst: false })),
+        run(db().from("coven_conversation_members").select("conversation_id,coven_id,user_id,left_at,muted,last_read_at").eq("coven_id", covenId))
+      ]);
+      return { conversations: conversations || [], members: members || [] };
+    },
+    async thread(covenId, conversationId, limit = 200) {
+      let query = db().from("coven_messages").select("*").eq("coven_id", covenId).order("created_at", { ascending: false }).limit(limit);
+      query = conversationId ? query.eq("conversation_id", conversationId) : query.is("conversation_id", null);
+      return ((await run(query)) || []).reverse();
+    },
+    async latestMessage(covenId, conversationId) {
+      let query = db().from("coven_messages").select("*").eq("coven_id", covenId).order("created_at", { ascending: false }).limit(1);
+      query = conversationId ? query.eq("conversation_id", conversationId) : query.is("conversation_id", null);
+      return ((await run(query)) || [])[0] || null;
+    },
+    async unreadSince(covenId, conversationId, userId, since) {
+      let query = db().from("coven_messages").select("id", { count: "exact", head: true }).eq("coven_id", covenId).gt("created_at", since).neq("user_id", userId).is("deleted_at", null);
+      query = conversationId ? query.eq("conversation_id", conversationId) : query.is("conversation_id", null);
+      const { count, error } = await query;
+      if (error) throw error;
+      return count || 0;
+    },
+    openDirect: (covenId, userId) => rpc("coven_open_direct", { p_coven: covenId, p_user: userId }),
+    createGroup: (covenId, name, userIds) => rpc("coven_create_group", { p_coven: covenId, p_name: name, p_users: userIds }),
+    addToGroup: (conversationId, userIds) => rpc("coven_add_to_group", { p_conversation: conversationId, p_users: userIds }),
+    leaveConversation: (conversationId) => rpc("coven_leave_conversation", { p_conversation: conversationId }),
+    muteConversation: (conversationId, muted) => rpc("coven_set_conversation", { p_conversation: conversationId, p_muted: muted, p_read: false }),
+    markConversationRead: (conversationId) => rpc("coven_set_conversation", { p_conversation: conversationId, p_muted: null, p_read: true }),
     editMessage: (id, body) => rpc("edit_coven_message", { p_message: id, p_body: body }),
     removeMessage: (id) => rpc("remove_coven_message", { p_message: id }),
 
-    altarItems: (covenId) => run(db().from("coven_altar_items").select("*").eq("coven_id", covenId).order("z", { ascending: true })),
-    placeOnAltar: (item) => run(db().from("coven_altar_items").insert(item).select().single()),
-    tendAltarItem: (id, changes) => run(db().from("coven_altar_items").update(changes).eq("id", id).select().single()),
-    clearAltarItem: (id) => run(db().from("coven_altar_items").delete().eq("id", id)),
+    // --- coven altars: whole altars, shared (20261028000000_coven_altars.sql; app/src/lib/covens/altarSync.ts) ---
+    ALTAR_FIELDS,
+    altars: (covenId) => run(db().from("coven_altars").select(ALTAR_FIELDS).eq("coven_id", covenId).order("created_at", { ascending: false })),
+    altar: (altarId) => run(db().from("coven_altars").select(ALTAR_FIELDS).eq("id", altarId).maybeSingle()),
+    altarObjects: (altarId) => run(db().from("coven_altar_objects").select("altar_id,object_key,coven_id,position,data,updated_by").eq("altar_id", altarId)),
+    async altarCounts(covenId) {
+      const rows = await run(db().from("coven_altar_objects").select("altar_id").eq("coven_id", covenId).limit(10000));
+      const counts = {};
+      (rows || []).forEach((r) => (counts[r.altar_id] = (counts[r.altar_id] || 0) + 1));
+      return counts;
+    },
+    altarEditors: (altarId) => run(db().from("coven_altar_editors").select("id,altar_id,coven_id,user_id,rank_id,active").eq("altar_id", altarId)),
+    createAltar: (covenId, name, editMode) => rpc("create_coven_altar", { p_coven: covenId, p_name: name, p_edit_mode: editMode }),
+    setAltar: (altarId, name, editMode, locked) => rpc("set_coven_altar", { p_altar: altarId, p_name: name, p_edit_mode: editMode, p_locked: locked }),
+    setAltarEditor: (altarId, who, enabled) => rpc("set_coven_altar_editor", { p_altar: altarId, p_user: who.userId || null, p_rank: who.rankId || null, p_enabled: enabled }),
+    archiveAltar: (altarId, archived) => rpc("archive_coven_altar", { p_altar: altarId, p_archived: archived }),
+    altarAccess: (altarId) => rpc("coven_altar_access", { p_altar: altarId }),
+    setRitualAltar: (ritualId, altarId, access) => rpc("set_coven_ritual_altar", { p_ritual: ritualId, p_altar: altarId || null, p_access: access || null }),
+    /** Write what changed on an altar: the scene to coven_altars, each object to its own row (altarSync.ts write). */
+    async writeAltarChanges(altar, changes, positions, objects) {
+      let top = Math.max(0, ...positions.values());
+      for (const change of changes) {
+        if (change.kind === "scene") {
+          await run(db().from("coven_altars").update({ background: change.scene.background, background_name: change.scene.backgroundName, groups: change.scene.groups, active_group_id: change.scene.activeGroupId, extra: change.scene.extra }).eq("id", altar.id));
+        } else if (change.data == null) {
+          await run(db().from("coven_altar_objects").delete().eq("altar_id", altar.id).eq("object_key", change.key));
+          positions.delete(change.key);
+        } else {
+          let position = positions.get(change.key);
+          if (position == null) {
+            // New things go on top of what's there, in the order they sit on the altar.
+            const index = objects.findIndex((o) => String(o.altarObjectId || "") === change.key);
+            position = Math.max(top + 1, index);
+            top = position;
+            positions.set(change.key, position);
+          }
+          await run(db().from("coven_altar_objects").upsert({ altar_id: altar.id, object_key: change.key, coven_id: altar.coven_id, position, data: change.data }, { onConflict: "altar_id,object_key" }));
+        }
+      }
+    },
+    /** Load an altar, change it with one of the app's pure functions, and save what changed (a ritual step, a petition). */
+    async changeAltarOnce(altarId, change) {
+      const A = global.SaltCore?.altar?.covenAltar;
+      if (!A) throw new Error("The altar’s tools didn’t load. Please refresh the page.");
+      const [altar, rows] = await Promise.all([CovenData.altar(altarId), CovenData.altarObjects(altarId)]);
+      if (!altar) throw new Error("That altar was not found.");
+      const doc = A.documentFromRows(altar, rows || []);
+      const saved = new Map(doc.objects.map((o) => [A.keyOf(o), JSON.stringify(o)]));
+      const positions = new Map((rows || []).map((r) => [r.object_key, r.position]));
+      const next = A.keyed(change(doc));
+      await CovenData.writeAltarChanges(altar, A.diff(next, saved, JSON.stringify(A.sceneOf(doc))), positions, next.objects);
+    },
 
     /**
-     * Live updates for one coven: chat messages, altar items and rituals as
+     * Live updates for one coven: chat messages, its altars and rituals as
      * they change, and who else is here. Returns { track(state), close() }.
      */
     live(covenId, { onMessage, onAltar, onRitual, onPetition, onPresence, onStatus } = {}) {
       const channel = db().channel(`coven:${covenId}`, { config: { presence: { key: global.getCurrentSaltUser?.()?.id || "guest" } } });
-      if (onMessage) channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_messages", filter: `coven_id=eq.${covenId}` }, (change) => {
-        // One-to-one chats and groups (made in the app) stay out of the gathering.
-        if (!(change.new || change.old || {}).conversation_id) onMessage(change);
-      });
+      // The coven's chat and your conversations (row-level security sends only what you may read).
+      if (onMessage) channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_messages", filter: `coven_id=eq.${covenId}` }, onMessage);
       if (onAltar) {
-        channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_altar_items", filter: `coven_id=eq.${covenId}` }, onAltar);
-        // Deletes can't be filtered by coven; the page ignores ids it doesn't hold.
-        channel.on("postgres_changes", { event: "DELETE", schema: "public", table: "coven_altar_items" }, onAltar);
+        channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_altars", filter: `coven_id=eq.${covenId}` }, onAltar);
+        channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_altar_objects", filter: `coven_id=eq.${covenId}` }, onAltar);
       }
       if (onRitual) {
         channel.on("postgres_changes", { event: "*", schema: "public", table: "coven_rituals", filter: `coven_id=eq.${covenId}` }, (change) => onRitual("ritual", change));

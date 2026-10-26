@@ -24,8 +24,9 @@
   let state = null;
   let api = null;
   let editing = false;
-  let altarItems = [];
-  let altarFor = null;
+  let marksFor_ = null;
+  // The coven's altars, for "Held at" (loaded once per visit to the tab).
+  let altars = null;
 
   const params = () => new URLSearchParams(global.location.search);
   const ritualHref = (id, extra = "") => `${api.covenHref("rituals")}&ritual=${encodeURIComponent(id)}${extra}`;
@@ -52,6 +53,13 @@
     }
     return todayLoading;
   }
+
+  // Who may tend the ritual's altar during each step (coven_ritual_steps.altar_access), as in the app.
+  const ALTAR_ACCESS = [
+    { value: "assigned", label: "Whoever’s step it is" },
+    { value: "everyone", label: "Everyone" },
+    { value: "leader", label: "Only the leader" }
+  ];
 
   const ACTION_SHORT = { light_candle: "🕯 Lights a candle", place_item: "✦ Places on the altar", light_all: "🕯 Lights the altar", snuff_all: "Puts out the candles" };
 
@@ -130,8 +138,49 @@
           <div class="cv-step__title"><h3>${esc(step.title)}</h3>
             <div class="cv-meta">${assigneeHtml(step)}${step.duration_minutes ? `<span class="cv-pill">${step.duration_minutes} min</span>` : ""}${step.altar_action ? `<span class="cv-pill">${esc(ACTION_SHORT[step.altar_action])}</span>` : ""}${current ? `<span class="cv-pill cv-pill--warn">Now</span>` : ""}${done ? `<span class="cv-pill">Done${step.completed_by ? ` · ${esc(nameOf(step.completed_by))}` : ""}</span>` : ""}</div></div></div>
         ${hasWords ? (yours || current ? words : `<details class="sp-details"><summary>Read along</summary>${words}</details>`) : ""}
+        ${accessHtml(step, index, ritual)}
         <span class="sr-only">Step ${index + 1} of ${total}</span>
       </li>`;
+  }
+
+  /** For those who lead: who else may tend the altar while this step is under way. */
+  function accessHtml(step, index, ritual) {
+    if (!(state.perms.lead || state.perms.site) || ["done", "cancelled"].includes(ritual.status)) return "";
+    const value = step.altar_access || "assigned";
+    return `<div class="sp-field cv-access"><label for="acc-${esc(step.id)}">At the altar during step ${index + 1}</label>
+        <select id="acc-${esc(step.id)}" data-access="${index}">${ALTAR_ACCESS.map((a) => `<option value="${a.value}"${a.value === value ? " selected" : ""}>${esc(a.label)}</option>`).join("")}</select></div>`;
+  }
+
+  /** The altar a ritual is held at: its own, or the coven's main ritual altar. */
+  const altarOf = (ritual) => (altars || []).find((a) => a.id === ritual.altar_id) || (altars || []).find((a) => a.is_main) || null;
+
+  function altarSection(ritual) {
+    if (!altars) return `<section class="sp-section" aria-label="The altar" data-altar-section><p class="sp-caption">Finding the ritual’s altar…</p></section>`;
+    const altar = altarOf(ritual);
+    if (!altar) return "";
+    const leader = state.perms.lead || state.perms.site;
+    const choices = altars.filter((a) => !a.archived_at);
+    const live = ritual.status === "live";
+    return `<section class="sp-section" aria-label="The altar" data-altar-section>
+        <p class="sp-label">The altar</p>
+        <p>Held at ${esc(altar.name)}.</p>
+        ${live ? `<div data-ritual-altar></div>` : `<div class="sp-actions"><a class="button button--ghost button--small" href="${esc(UI.href(`/altar/?covenAltar=${encodeURIComponent(altar.id)}&c=${encodeURIComponent(state.coven.slug)}`))}">Open the altar</a></div>`}
+        ${leader && !live && choices.length > 1 ? `<div class="sp-field"><label for="held-at">Hold it at</label><select id="held-at" data-held-at>${choices.map((a) => `<option value="${esc(a.id)}"${a.id === altar.id ? " selected" : ""}>${esc(a.name)}</option>`).join("")}</select></div>` : ""}
+        ${leader ? `<p class="sp-caption">Its leader and the altar’s keepers can always tend it. For each step below, choose who else can.</p>` : ""}
+        ${statusLine()}
+      </section>`;
+  }
+
+  async function loadAltars() {
+    if (altars) return;
+    try {
+      const list = await D.altars(state.coven.id);
+      altars = (list || []).sort((a, b) => Number(b.is_main) - Number(a.is_main));
+    } catch {
+      altars = [];
+    }
+    const id = params().get("ritual");
+    if (pane && id && !editing) draw();
   }
 
   function nowCard(ritual, steps) {
@@ -170,13 +219,11 @@
     return `<div class="cv-altar-action"><p class="sp-caption">${esc(L.altarActionNote(step))} ${esc(lit)}</p>${button ? `<div class="sp-actions">${button}</div>` : ""}</div>`;
   }
 
-  async function loadAltar(ritual) {
-    if (altarFor === ritual.id) return;
-    altarFor = ritual.id;
-    const [items, marks] = await Promise.all([D.altarItems(state.coven.id).catch(() => []), D.stepMarks(ritual.id).catch(() => [])]);
-    altarItems = items;
-    state.stepMarks = marks;
-    await UI.loadNames(state.context, items.flatMap((i) => [i.placed_by, i.lit_by]));
+  /** Who has done this ritual's altar actions (each lights their own candle on a whole-coven step). */
+  async function loadMarks(ritual) {
+    if (marksFor_ === ritual.id) return;
+    marksFor_ = ritual.id;
+    state.stepMarks = await D.stepMarks(ritual.id).catch(() => []);
     if (pane && params().get("ritual") === ritual.id) draw();
   }
 
@@ -201,7 +248,7 @@
       </header>
       ${rsvpBlock(ritual)}
       ${ritual.status === "live" ? nowCard(ritual, steps) : ""}
-      ${ritual.status === "live" ? `<section class="sp-section" aria-label="The shared altar"><p class="sp-label">The shared altar</p><div data-ritual-altar></div></section>` : ""}
+      ${["cancelled", "done"].includes(ritual.status) ? "" : altarSection(ritual)}
       ${leader && ritual.status !== "live" ? `<div class="sp-actions">
           ${ritual.status !== "cancelled" ? `<button class="button button--primary" type="button" data-start ${steps.length ? "" : "disabled"}>${ritual.status === "done" ? "Perform it again" : "Begin the ritual"}</button>` : ""}
           <a class="button button--ghost" href="${esc(editHref(ritual.id))}" data-tab="rituals">Edit</a>
@@ -213,14 +260,34 @@
         ${steps.length ? `<ol class="cv-steps">${steps.map((s, i) => stepCard(s, i, steps.length, ritual)).join("")}</ol>` : `<p class="sp-empty">No steps yet.</p>`}
       </section>`;
 
+    loadAltars();
     if (ritual.status === "live") {
+      loadMarks(ritual);
       const holder = pane.querySelector("[data-ritual-altar]");
-      if (altarFor === ritual.id) global.CovenAltar?.preview?.(holder, altarItems, state);
-      else {
+      const altar = altarOf(ritual);
+      if (holder && altar) {
         holder.innerHTML = `<p class="sp-caption">Setting the altar…</p>`;
-        loadAltar(ritual);
+        global.CovenAltar?.preview?.(holder, altar.id, state);
       }
     }
+    pane.querySelector("[data-held-at]")?.addEventListener("change", async (event) => {
+      const select = event.currentTarget;
+      const saved = await UI.busy(select, status(select), () => D.setRitualAltar(ritual.id, select.value, null));
+      if (saved) {
+        apply("ritual", { eventType: "UPDATE", new: saved });
+        draw();
+      }
+    });
+    pane.querySelectorAll("[data-access]").forEach((select) =>
+      select.addEventListener("change", async () => {
+        const at = Number(select.dataset.access);
+        const access = steps.map((s, i) => (i === at ? select.value : s.altar_access || "assigned"));
+        const ok = await UI.busy(select, status(pane.querySelector("[data-altar-section]") || select), () => D.setRitualAltar(ritual.id, ritual.altar_id || null, access).then(() => true), { done: "Saved." });
+        if (ok) {
+          state.ritualSteps = state.ritualSteps.map((s) => (s.ritual_id === ritual.id && steps[at]?.id === s.id ? { ...s, altar_access: select.value } : s));
+        } else select.value = steps[at]?.altar_access || "assigned";
+      })
+    );
     const status = (button) => (button.closest("[data-now], .sp-card") || pane).querySelector("[data-status]");
     pane.querySelectorAll("[data-rsvp]").forEach((button) =>
       button.addEventListener("click", async () => {
@@ -243,10 +310,21 @@
     });
     pane.querySelector("[data-altar-act]")?.addEventListener("click", async (event) => {
       const button = event.currentTarget;
-      const done = await UI.busy(button, status(button), () => D.performStepAction(button.dataset.altarAct));
+      const step = steps.find((s) => s.id === button.dataset.altarAct);
+      // As the app does (ritual/[id].tsx): mark the step, then set the change on the ritual's altar.
+      const done = await UI.busy(button, status(button), async () => {
+        const already = (state.stepMarks || []).filter((m) => m.ritual_id === ritual.id).length;
+        await D.performStepAction(button.dataset.altarAct);
+        const core = await UI.altarCore();
+        const altar = altarOf(ritual);
+        const name = state.context.profile?.display_name || "A member";
+        const change = step && core.ritualAltar.stepAltarChange(step, ritual, name, already, new Date().toISOString());
+        if (change && altar) await D.changeAltarOnce(altar.id, change);
+        return true;
+      });
       if (!done) return;
-      altarFor = null;
-      await loadAltar(ritual);
+      marksFor_ = null;
+      await loadMarks(ritual);
     });
     const act = async (button, work) => {
       const saved = await UI.busy(button, status(button), work);
@@ -518,12 +596,21 @@
     return list();
   }
 
-  /** Live altar changes, for the altar shown during a ritual. */
+  /** Live altar changes: refresh the still picture of the ritual's altar while it's under way (gathered, as several may tend at once). */
+  let altarTimer = null;
   function onAltarChange(change) {
-    if (!altarFor) return;
-    altarItems = L.applyChange(altarItems, change);
-    const holder = pane?.querySelector("[data-ritual-altar]");
-    if (holder) global.CovenAltar?.preview?.(holder, altarItems, state);
+    const row = change?.new && Object.keys(change.new).length ? change.new : change?.old;
+    if (!pane || !row) return;
+    // A coven_altars row (renamed, cleared away): read the list again when it's next shown.
+    if ("is_main" in row) altars = null;
+    const ritual = state.rituals.find((r) => r.id === params().get("ritual"));
+    const altar = ritual && ritual.status === "live" ? altarOf(ritual) : null;
+    if (!altar || (row.altar_id || row.id) !== altar.id) return;
+    global.clearTimeout(altarTimer);
+    altarTimer = global.setTimeout(() => {
+      const holder = pane?.querySelector("[data-ritual-altar]");
+      if (holder) global.CovenAltar?.preview?.(holder, altar.id, state);
+    }, 800);
   }
 
   /** coven.js passes every live ritual change here (it keeps state.rituals current). */
@@ -546,7 +633,9 @@
   function unmount() {
     pane = null;
     editing = false;
-    altarFor = null;
+    marksFor_ = null;
+    altars = null;
+    global.clearTimeout(altarTimer);
   }
 
   global.CovenRituals = { mount, unmount, onChange, onAltarChange };

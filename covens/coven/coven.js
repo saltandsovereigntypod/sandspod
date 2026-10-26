@@ -3,9 +3,10 @@
  *
  * Everyone sees About: the coven's creed, rules, requirements, agreements
  * and positions. Seekers sign the agreements and join or apply under Join.
- * Members get the Gathering (live chat, covens/coven/chat.js), Rituals
- * (steps given to members or positions, run live, covens/coven/rituals.js), the Altar
- * (shared and live, covens/coven/altar.js), Members and My path (their
+ * Members get Messages (the coven's chat and their own conversations,
+ * covens/coven/chat.js), Rituals (steps given to members or positions, run
+ * live, covens/coven/rituals.js), Altars (whole altars, shared and live:
+ * covens/coven/altar.js lists them, the altar page tends them), Members and My path (their
  * position, agreements and requests to advance). Reviewers get Review and
  * leaders Manage (covens/coven/manage.js). Site moderators see every tab.
  */
@@ -93,9 +94,9 @@
     if (insider) {
       const live = state.rituals.some((r) => r.status === "live");
       list.push(
-        { key: "gathering", label: "Gathering" },
+        { key: "gathering", label: "Messages" },
         { key: "rituals", label: live ? "Rituals · now" : "Rituals" },
-        { key: "altar", label: "Altar" },
+        { key: "altar", label: "Altars" },
         { key: "book", label: "Book of Shadows" },
         { key: "petitions", label: "Petitions" },
         { key: "programs", label: "Initiation & training", count: state.waitingForMe || 0 },
@@ -494,6 +495,8 @@
       }
       connect();
       draw(currentTab());
+      // Count unread messages for the Messages tab, whichever tab is open.
+      global.CovenChat?.prime?.(state);
     })
     .catch((error) => {
       console.error(error);

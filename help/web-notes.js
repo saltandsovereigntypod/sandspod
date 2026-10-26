@@ -12,14 +12,14 @@
     altar: "On the website, the Altar is its own page (Altar in the bar). Most tools are there under the same names; a few, like turning the phone sideways or the home screen widget, belong to the app alone.",
     grimoire: "On the website, the Grimoire opens your Book of Shadows with the Living Library shelves beside it. Anyone can read the Living Library itself under More → Living Library.",
     rituals: "On the website, Practice → Rituals holds the same planner, premade book, journal and Your moon. A ritual can also be run at the altar’s Ritual Companion.",
-    covens: "On the website, covens are under Coven in the bar, with the same pages, altars, chat and programs.",
+    covens: "On the website, covens are under Coven in the bar, with the same pages, altars, messages and programs. Where a step says tap, click.",
     widgets: "Widgets live on a phone’s home screen, so they’re only in the app.",
   };
 
   /** Notes for single topics, where the website's steps differ from the app's. */
   const TOPIC_NOTES = {
     "find-your-way-around": "More opens your Sanctuary: settings, My Journey, the Community Grimoire, accessibility and your account.",
-    "replay-welcome-tour": "The welcome tour belongs to the app. On the website, the Altar and the Grimoire each open with a short guide of their own the first time.",
+    "replay-welcome-tour": "The website opens a welcome on Today the first time you visit: one page for each main part of the Sanctuary. Choose “Watch the welcome again” at the top of How to. The Altar and the Grimoire also have their own “How This Works”.",
     "welcome-tour":"Open your Sanctuary from Today or More and choose Sign In or Create Account, or carry on as a guest. The same account works in the app.",
     "guest-or-account": "As a guest, your work stays in this browser. More → Settings → Account & Data says whether you’re signed in.",
     "sign-in-account": "Choose Sign In under More, or Sign In or Create Account in More → Settings → Account & Data.",
@@ -62,6 +62,10 @@
     "altar-full-screen": "Not on the website: a computer screen is already wide. On a phone, use the app.",
     "altar-widget": "Only in the app.",
     "altar-widget-cleansing": "Only in the app.",
+    "covens-altars": "Open your coven and choose the Altars tab. “Open the altar” opens it in the Altar page’s own editor, with a bar over it saying who else is there and whether your changes are saved. “Keep a copy” (or Save) puts a copy among your own altars. Keepers choose who tends it under “Who tends it”. The Altar page fills the window, so there’s no full screen button.",
+    "covens-chat": "Open your coven and choose the Messages tab: the coven’s chat first, then your conversations. “New message” starts one, and Details mutes, adds people or leaves. Phone notifications are chosen in the app; a browser can’t ring when you’re away.",
+    "covens-petitions": "Open your coven and choose the Petitions tab. “Open its altar” opens the petition’s altar on the Altar page.",
+    "covens-rituals": "Open your coven and choose the Rituals tab. A ritual’s page says which altar it’s held at; those who lead choose another and who may tend it at each step.",
     "community-browse": "Open More, then Community Grimoire.",
     "community-offer": "Open More, then Offer to the Sanctuary.",
     "community-my-submissions": "Open More, then My Submissions.",

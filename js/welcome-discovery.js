@@ -1,10 +1,14 @@
 (function initializeWelcomeDiscovery(global) {
   const DAILY_REFLECTION_KEY = "saltAndSovereigntyDailyThresholdReflection";
   const DESTINATION_KEY = "saltAndSovereigntySanctuaryDestination";
-  const GUIDE_VERSION = "1.2.5";
+  // Bumped when a guide changes, so everyone sees the new one once. The
+  // welcome mirrors the app's tour (app/src/lib/welcomeTour.ts TOUR_SEEN_KEY "welcome.tour.v2").
+  const GUIDE_VERSION = "1.3.0";
+  const GUIDE_VERSIONS = { altar: GUIDE_VERSION, grimoire: GUIDE_VERSION, welcome: "2" };
   const GUIDE_KEYS = {
     altar: "saltAndSovereigntyAltarGuideVersion",
-    grimoire: "saltAndSovereigntyGrimoireGuideVersion"
+    grimoire: "saltAndSovereigntyGrimoireGuideVersion",
+    welcome: "saltAndSovereigntyWelcomeTourVersion"
   };
 
   const REFLECTIONS = [
@@ -21,31 +25,87 @@
   ];
 
   const GUIDES = {
-    altar: {
-      label: "Digital Altar",
+    // The welcome: one page for each main part of the Sanctuary, as the app's
+    // welcome tour (app/src/lib/welcomeTour.ts TOUR_PAGES, in the same order),
+    // in the website's words. Shown once on Today, and again from How to.
+    welcome: {
+      label: "Welcome to the Sanctuary",
+      finish: "Begin",
       steps: [
-        ["A space for your practice", "The Digital Altar is a flexible place to arrange meaningful objects, explore correspondences, and hold personal ritual work. Nothing here is required."],
-        ["Choose what belongs", "Open the Cabinet for altar objects or My Apothecary for crafted items. Place only what supports the practice you are tending."],
+        ["Each day begins on Today", "Tonight’s moon and its sign, the holidays from the calendars you keep, and what the day is good for. Click the moon or a holiday to read what it means and how to keep it."],
+        ["Your altar, piece by piece", "On the Altar, open the Cabinet’s drawers for candles, herbs, crystals, tools, deities, vessels, natural finds and offerings. Click anything you place to learn its correspondences."],
+        ["An altar that keeps time", "Candles and incense burn in real time, offerings freshen and fade, and pots for your real houseplants ask for water. Before a festival you keep, the Seasonal drawer brings its things to the top."],
+        ["Workings at the altar", "Build a spell jar or a sachet, fold a petition under a candle, or keep a spell over days. “Set tonight’s altar” on Today starts one for you."],
+        ["Rituals by the moon", "In Practice → Rituals, begin a premade ritual or spell, or plan your own for the right night and run it step by step. Journal it afterwards, and on the day you chose it asks: did it work?"],
+        ["Cards, runes and sigils", "Draw tarot, runes or ogham in a spread laid out in its shape, and come back to the reading later. The sigil maker turns an intent into one mark, and both are open to every practice."],
+        ["Your Book of Shadows", "Practice → Grimoire keeps your pages beside the Living Library: herbs, crystals, deities and candle colours with their traditional lore. Your dreams live there too, with pages for the holidays and moons."],
+        ["Your practice, your path", "My practice gathers tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft. Dedication journeys, patron deities and the Closed & living traditions guide help you walk a path with care."],
+        ["Calendars and reminders", "Keep the holidays of the calendars you follow, count your days by the moon, and show old calendars such as the Athenian or the Roman. Reminders turn the moon, your plans and your look-back days into calendar events."],
+        ["Practise with a coven", "Find or found a coven under Coven. Tend its altars together, talk in its messages, hold rites as a circle, and walk its initiation and training."],
+        ["Yours on every screen", "Sign in and your altars, Book of Shadows, rituals and settings stay in step with the Salt & Sovereignty app. As a guest, everything stays in this browser."],
+        ["Every step, when you need it", "More → How to explains each of these with the real buttons, and has a search. You can watch this welcome again from there."]
+      ]
+    },
+    altar: {
+      label: "The Altar",
+      steps: [
+        ["A space for your practice", "The Altar is a flexible place to arrange meaningful objects, explore correspondences, and hold personal ritual work. Nothing here is required."],
+        ["Choose what belongs", "Open the Cabinet’s drawers for candles, herbs, crystals, tools, deities, vessels, natural finds, potted plants and offerings. Before a festival you keep, the Seasonal drawer brings its things to the top. My Apothecary holds what you’ve made."],
         ["Work with objects", "Select an object to move, resize, rotate, layer, lock, duplicate, or remove it when those actions apply. The bottom toolbar shows the most useful actions; See More holds the rest."],
-        ["Meet the Companion", "The Companion explains the selected object through Current State, Traditional Information, My Practice, Relationships, and History & Activity."],
-        ["Follow guided actions", "Object actions can light or dress candles, cleanse or charge crystals, record dedications and offerings, and edit your own practice information."],
-        ["Begin a ritual", "Start freely or use a Ritual Template. Completed Ritual Sessions can become journal entries connected to your Book of Shadows and Living Library."],
-        ["Return to your work", "Guest work stays in this browser and may be lost if its data is cleared. A Sanctuary account can save supported altar, ritual, Library, and apothecary work to the cloud for supported devices."]
+        ["An altar that keeps time", "Candles and incense burn down in real time, offerings freshen and fade, and potted plants ask for water. Select something to light, dress, carve, cleanse, charge or tend it. The Companion explains it through Current State, Traditional Information, My Practice, Relationships, and History & Activity."],
+        ["Workings", "Build a spell jar or a sachet, fold a petition under a candle, keep a spell over days, scry, or fill a gratitude bowl. “Set tonight’s altar” on Today lays out a starter for the day’s planet, moon or holiday."],
+        ["Begin a ritual", "Start freely or use a Ritual Template. A completed Ritual Session becomes a journal entry connected to your Book of Shadows and Living Library, and on the day you choose it asks: did it work?"],
+        ["Return to your work", "Save keeps this altar among your own; Library opens the others. Guest work stays in this browser and may be lost if its data is cleared. Signed in, your altars are the same in the app. Your coven’s altars open here too, from Coven → Altars."]
       ]
     },
     grimoire: {
       label: "Book of Shadows",
       steps: [
-        ["A living record", "The Book of Shadows holds pages, ritual journals, and the Living Library—the canonical collection of herbs, crystals, deities, tools, practices, and other entities."],
+        ["A living record", "The Book of Shadows holds your pages, ritual journals and dreams beside the Living Library: the herbs, crystals, deities, tools and practices, each with its traditional lore."],
         ["Independent knowledge layers", "My Practice, Traditional Information, and Community Grimoire are separate layers on the same entity. Hiding a layer changes what you see, not the identity of the entity or your saved notes."],
         ["When Traditional is hidden", "Traditional entities and pages stay out of view, while My Practice and enabled Community content can remain visible. The internal Traditional Library can still help link a new My Practice entry."],
         ["Create My Practice", "Choose a category, search for a canonical Traditional entry, and add your own layer to that entity. If no match belongs, create a completely custom entity instead."],
         ["Keep building connections", "Every entity page can add or edit My Practice. Relationships connect related entries, while Rituals, Templates, Spells, and Apothecary records remain available in their existing sections."],
-        ["Rituals become records", "A completed Ritual Session can create or update a ritual journal and Book of Shadows page, retaining the altar and Living Library connections that were actually recorded."],
-        ["Read in your own language", "Mundane Mode offers less overtly magical wording. Guest work remains in this browser; a Sanctuary account can cloud-save supported Book, Library, ritual, and practice data across supported devices."]
+        ["Dreams, cards and runes", "Your dreams have their own shelf, with a dictionary of symbols. Tarot, rune and ogham pages read like a book, and readings you draw in Practice → Rituals come back to them. A completed Ritual Session can become a page of its own."],
+        ["Read in your own language", "Mundane Mode offers less overtly magical wording. Guest work remains in this browser; signed in, your Book, Library, rituals and practice are the same in the Salt & Sovereignty app."]
       ]
     }
   };
+
+  /** Storage that may refuse (private windows, blocked site data): reads come back empty, writes are dropped. */
+  function safeStorage(storage) {
+    return {
+      getItem(key) {
+        try {
+          return storage?.getItem(key) ?? null;
+        } catch {
+          return null;
+        }
+      },
+      setItem(key, value) {
+        try {
+          storage?.setItem(key, value);
+        } catch {
+          // Nothing to keep it in; the guide may show again next time.
+        }
+      },
+      removeItem(key) {
+        try {
+          storage?.removeItem(key);
+        } catch {
+          // As above.
+        }
+      }
+    };
+  }
+
+  function pageStorage() {
+    try {
+      return safeStorage(global.localStorage);
+    } catch {
+      return safeStorage(null);
+    }
+  }
 
   function getLocalDateKey(date = new Date()) {
     const year = date.getFullYear();
@@ -103,26 +163,32 @@
   }
 
   function isGuideComplete(storage, kind) {
-    return Boolean(GUIDE_KEYS[kind]) && storage.getItem(GUIDE_KEYS[kind]) === GUIDE_VERSION;
+    return Boolean(GUIDE_KEYS[kind]) && safeStorage(storage).getItem(GUIDE_KEYS[kind]) === GUIDE_VERSIONS[kind];
   }
 
   function completeGuide(storage, kind) {
     if (!GUIDE_KEYS[kind]) return false;
-    storage.setItem(GUIDE_KEYS[kind], GUIDE_VERSION);
+    safeStorage(storage).setItem(GUIDE_KEYS[kind], GUIDE_VERSIONS[kind]);
     return true;
+  }
+
+  /** Whether the welcome should open by itself: the first visit to Today, or ?welcome=1 (How to's "Watch the welcome again"). */
+  function shouldOpenWelcome(storage, search = "") {
+    if (new URLSearchParams(search).get("welcome") === "1") return true;
+    return !isGuideComplete(storage, "welcome");
   }
 
   function renderDailyThresholdReflection() {
     const target = document.querySelector("[data-threshold-question]");
     if (!target) return;
-    target.textContent = selectDailyReflection(localStorage).text;
+    target.textContent = selectDailyReflection(pageStorage()).text;
   }
 
   let activeGuide = null;
 
   function openGuide(kind, { manual = false, opener = document.activeElement } = {}) {
     const guide = GUIDES[kind];
-    if (!guide || activeGuide || (!manual && isGuideComplete(localStorage, kind))) return false;
+    if (!guide || activeGuide || (!manual && isGuideComplete(pageStorage(), kind))) return false;
 
     let stepIndex = 0;
     const modal = document.createElement("div");
@@ -132,7 +198,7 @@
       <button class="tool-guide-backdrop" type="button" data-guide-close aria-label="Close guide"></button>
       <section class="tool-guide-card" role="dialog" aria-modal="true" aria-labelledby="tool-guide-title" tabindex="-1">
         <button class="tool-guide-close" type="button" data-guide-close>Close</button>
-        <p class="eyebrow">How This Works · ${guide.label}</p>
+        <p class="eyebrow">${kind === "welcome" ? guide.label : `How This Works · ${guide.label}`}</p>
         <p class="tool-guide-progress" data-guide-progress></p>
         <h2 id="tool-guide-title" data-guide-title></h2>
         <p data-guide-copy></p>
@@ -157,12 +223,12 @@
       title.textContent = heading;
       copy.textContent = body;
       back.disabled = stepIndex === 0;
-      next.textContent = stepIndex === guide.steps.length - 1 ? "Finish" : "Next";
+      next.textContent = stepIndex === guide.steps.length - 1 ? guide.finish || "Finish" : "Next";
     }
 
     function closeGuide() {
       if (!activeGuide) return;
-      completeGuide(localStorage, kind);
+      completeGuide(pageStorage(), kind);
       document.removeEventListener("keydown", handleKeydown);
       modal.remove();
       document.body.classList.remove("tool-guide-open");
@@ -217,7 +283,9 @@
       ? "grimoire"
       : document.body.classList.contains("altar-page")
         ? "altar"
-        : null;
+        : document.querySelector("[data-welcome-tour]")
+          ? "welcome"
+          : null;
     if (!kind) return;
 
     document.addEventListener("click", (event) => {
@@ -225,13 +293,25 @@
       if (button) openGuide(kind, { manual: true, opener: button });
     });
 
+    // The welcome opens by itself the first time someone reaches Today.
+    if (kind === "welcome" && shouldOpenWelcome(pageStorage(), global.location?.search || "")) {
+      const forced = new URLSearchParams(global.location.search).get("welcome") === "1";
+      if (forced) {
+        const url = new URL(global.location.href);
+        url.searchParams.delete("welcome");
+        global.history?.replaceState?.(global.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+      }
+      global.setTimeout(() => openGuide("welcome", { manual: forced }), 400);
+    }
   }
 
   const api = {
     DAILY_REFLECTION_KEY,
     DESTINATION_KEY,
     GUIDE_VERSION,
+    GUIDE_VERSIONS,
     GUIDE_KEYS,
+    GUIDES,
     REFLECTIONS,
     getLocalDateKey,
     selectDailyReflection,
@@ -240,6 +320,8 @@
     consumeDestination,
     isGuideComplete,
     completeGuide,
+    shouldOpenWelcome,
+    safeStorage,
     renderDailyThresholdReflection,
     openGuide
   };
@@ -248,9 +330,11 @@
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 
   if (typeof document !== "undefined") {
-    document.addEventListener("DOMContentLoaded", () => {
+    const start = () => {
       renderDailyThresholdReflection();
       initializeGuides();
-    });
+    };
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
+    else start();
   }
 })(typeof window !== "undefined" ? window : globalThis);

@@ -1,8 +1,20 @@
 // How a conversation reads, like a phone's messages: bubbles grouped into runs
 // from the same person (their name over the first one, in a group), and a
-// time between runs when a while has passed. Pure, so it can be tested.
+// time between runs when a while has passed; and what a conversation is
+// called. Pure, so it can be tested (and built into js/core/covens.js).
 
 import type { Message } from './model.ts';
+
+export type Conversation = {
+  id: string;
+  coven_id: string;
+  kind: 'direct' | 'group';
+  name: string | null;
+  created_by: string | null;
+  created_at: string;
+  last_message_at: string | null;
+};
+export type ConversationMember = { conversation_id: string; coven_id: string; user_id: string; left_at: string | null; muted: boolean; last_read_at: string | null };
 
 export type ThreadItem =
   | { kind: 'time'; key: string; label: string }
@@ -71,3 +83,14 @@ export function listTime(iso: string | null | undefined, now: Date = new Date())
   if (now.getTime() - at.getTime() < 6 * 86_400_000) return at.toLocaleDateString(undefined, { weekday: 'short' });
   return at.toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
 }
+
+/** What a conversation is called for you: the other person, or the group's name. */
+export function conversationTitle(conversation: Conversation, members: ConversationMember[], me: string | null, nameOf: (id: string) => string): string {
+  if (conversation.kind === 'group') return conversation.name || 'Group';
+  const other = members.find((m) => m.conversation_id === conversation.id && m.user_id !== me);
+  return other ? nameOf(other.user_id) : 'Conversation';
+}
+
+/** Who else is in a conversation, still. */
+export const othersIn = (conversationId: string, members: ConversationMember[], me: string | null) =>
+  members.filter((m) => m.conversation_id === conversationId && m.user_id !== me && !m.left_at).map((m) => m.user_id);
