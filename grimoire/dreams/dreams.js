@@ -12,7 +12,7 @@
   const root = kit?.root();
   if (!kit || !core || !root) return;
 
-  const { dreams: D, dreamSymbols: DS, calendar, meanings } = core;
+  const { dreams: D, dreamSymbols: DS, calendar, meanings, readings: R, linked: L } = core;
   const view = root.dataset.view;
   const params = new URLSearchParams(global.location.search);
   const id = params.get("id");
@@ -29,12 +29,39 @@
   const supportLink = () => kit.support();
   let user = null;
   let dreams = [];
+  // Readings drawn for a dream (Dream reading, hedge.readings with linkedTo), shown on its page and in the patterns.
+  let readings = [];
   let loaded = false;
 
   async function load() {
-    const d = await kit.entries(D.DREAMS);
+    const [d, r] = await Promise.all([kit.entries(D.DREAMS), R && L ? kit.entries(R.READINGS) : []]);
     dreams = d.map((e) => ({ ...e, data: D.normalizeDream(e.data) }));
+    readings = R ? r.map((e) => ({ ...e, data: R.normalizeReading(e.data) })) : [];
     loaded = true;
+  }
+
+  /** A dream's readings, and the button to draw one (the app's LinkedReadings). */
+  function dreamReadingsHtml(entry) {
+    if (!L) return "";
+    const link = { kind: "dream", id: entry.id, title: entry.data.title };
+    const mine = L.linkedReadings(readings, "dream", entry.id);
+    return kit.section(
+      "Readings of this dream",
+      `${
+        mine.length
+          ? kit.list(
+              mine.map((e) =>
+                kit.row({
+                  url: `/divination/reading/?id=${encodeURIComponent(e.id)}`,
+                  title: e.data.question || L.cardsLine(e.data).split("\n")[0] || "A reading",
+                  detail: kit.join([shortDay(e.data.date), e.data.drawn.join(", ")])
+                })
+              )
+            )
+          : kit.muted("Three cards for a dream that stays with you: what it shows, what it stirs in you, and what it asks of you.")
+      }${kit.actions([kit.button({ label: "Read this dream", url: `/divination/draw/${L.drawQuery(link)}`, ghost: true })])}`,
+      { id: "readings" }
+    );
   }
   const notFound = (backHtml, title, text) => [backHtml, kit.head({ title }), kit.p(loaded ? text : "Opening…")].join("");
 
@@ -106,6 +133,7 @@
           )
         : "",
       kit.actions([kit.button({ label: "Edit", url: url.dreamEdit(entry.id), ghost: true })]),
+      dreamReadingsHtml(entry),
       supportLink()
     ].join("");
   }
@@ -185,6 +213,7 @@
     const stats = D.dreamStats(dreams);
     const note = D.phaseClusterNote(dreams);
     const most = Math.max(1, ...phases.map((p) => p.count));
+    const cards = L ? L.dreamReadingDraws(readings) : [];
     return [
       kit.back(url.dreams, "Dreams"),
       kit.head({ eyebrow: "Your dreams", title: "Symbols and moons" }),
@@ -210,6 +239,15 @@
               })
               .join("")}</ul>`,
             { id: "returning" }
+          )
+        : "",
+      cards.length
+        ? kit.section(
+            "Cards that keep coming up",
+            `${kit.muted("Across the readings of your dreams (Read this dream, on a dream’s page).")}${kit.chips(
+              cards.map((c) => kit.chip({ label: `${c.name} · ${c.count}`, a11y: `${c.name}, in ${c.count} dream readings` }))
+            )}`,
+            { id: "cards" }
           )
         : "",
       stats.total

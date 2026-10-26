@@ -6,9 +6,13 @@
  * Google Calendar link. Pure: every function takes the app's modules (`G`)
  * and the time, so it can be tested under node.
  *
- * Choices are kept in this browser under the app's own keys and shapes
- * ("reminders.settings.v1", "calendar.settings.v1"), as the app keeps them
- * on the phone.
+ * The moon, ritual, devotion and dream choices are kept in this browser
+ * under the app's own keys and shapes ("reminders.settings.v1",
+ * "calendar.settings.v1"), as the app keeps them on the phone. Holidays,
+ * tending, ritual planning, quiet hours and the pause are Sanctuary settings
+ * (`reminders_v2`, the app's lib/reminders/prefs.ts), shared with the app;
+ * their events come from the app's own lib/reminders/plan.ts, so the same
+ * choices make the same reminders on the phone and in the calendar file.
  */
 (function (global) {
   const KEYS = Object.freeze({ reminders: "reminders.settings.v1", calendar: "calendar.settings.v1", plans: "rituals.plans.v1" });
@@ -147,26 +151,61 @@
     }));
   }
 
-  /** Your deities' sacred days (Settings → My deities) at your time of day. */
-  function sacredReminderEvents(settings, appSettings, now, G, days = HORIZON.sacred) {
-    if (!settings.sacredDays) return [];
-    const sources = G.patron.sacredSources(appSettings || {});
-    if (!sources.length) return [];
-    return G.patron.sacredReminders(sources, now, days).map((r) => {
-      const start = new Date(r.date.getFullYear(), r.date.getMonth(), r.date.getDate(), Math.floor(settings.sacredAt / 60), settings.sacredAt % 60);
-      return { key: `reminder-sacred-${r.key}-${isoDay(start)}`.replace(/[^a-z0-9-]+/gi, "-"), title: r.title, start, end: new Date(start.getTime() + 30 * 60000), allDay: false, notes: `${r.body}\n${FOOTER}`, alarms: [0] };
-    }).filter((e) => e.start.getTime() > now.getTime());
+  /** The synced choices (holidays, tending, planning, quiet hours, the pause), or worked out from the older ones before they're saved. */
+  const loadPrefs = (appSettings, settings, G) => G.reminderPrefs.readPrefs(appSettings || {}, settings || null);
+
+  /** The settings change that saves them, for SaltSettings.patch: the same JSON the app writes. */
+  const prefsPatch = (prefs, G) => ({ [G.reminderPrefs.PREFS_KEY]: G.reminderPrefs.prefsValue(prefs) });
+
+  /** How long each kind of event sits in the calendar. */
+  const EVENT_MINUTES = { holiday: 30, deipnon: 30, sacred: 30, planning: 30, coven: 15 };
+
+  /** An app reminder as a calendar event with an alert at its time. */
+  function eventOf(r) {
+    return {
+      key: `reminder-${r.key}`.replace(/[^a-z0-9-]+/gi, "-"),
+      title: r.title,
+      start: r.at,
+      end: new Date(r.at.getTime() + (EVENT_MINUTES[r.kind] || 15) * 60000),
+      allDay: false,
+      // The Deipnon's reminder offers the Crossroads spread, as Today does.
+      notes: [r.body, r.kind === "deipnon" ? "https://saltandsovereignty.com/divination/draw/?spread=crossroads" : "", FOOTER].filter(Boolean).join("\n"),
+      alarms: [0],
+      kind: r.kind,
+    };
   }
 
-  /** Every reminder as a calendar event, soonest first. */
-  function reminderEvents({ settings, plans, appSettings, now, templateFor }, G) {
-    return [
-      ...moonReminderEvents(settings, now, G),
-      ...ritualReminderEvents(settings, plans, now, G, templateFor),
-      ...devotionReminderEvents(settings, now, G),
-      ...dreamReminderEvents(settings, now, G),
-      ...sacredReminderEvents(settings, appSettings, now, G),
-    ].sort((a, b) => a.start.getTime() - b.start.getTime());
+  /**
+   * Holidays (the Deipnon and your deities' sacred days among them), tending,
+   * ritual planning and your covens' rites: the app's own reminders
+   * (plan.ts calendarReminders), with quiet hours and the pause kept, over
+   * the next three months.
+   */
+  function preferenceEvents({ settings, prefs, appSettings, plans, sources, covens, place, now }, G, days = HORIZON.sacred) {
+    return G.reminderPlan
+      .calendarReminders({ appSettings: appSettings || {}, legacy: settings, prefs: prefs || loadPrefs(appSettings, settings, G), plans: plans || [], sources: sources || undefined, covens: covens || [], place: place || null, now, horizonDays: days })
+      .map(eventOf);
+  }
+
+  /** Your deities' sacred days, as they come among the holiday reminders. */
+  function sacredReminderEvents(settings, appSettings, now, G, days = HORIZON.sacred) {
+    return preferenceEvents({ settings, appSettings, now }, G, days).filter((e) => e.kind === "sacred");
+  }
+
+  /** Hekate's Deipnon each month, as it comes among the holiday reminders (turned off with deipnon_prompt, or picked off). */
+  function deipnonReminderEvents(settings, appSettings, now, G, days = HORIZON.sacred) {
+    return preferenceEvents({ settings, appSettings, now }, G, days).filter((e) => e.kind === "deipnon");
+  }
+
+  /** Every reminder as a calendar event, soonest first; nothing while paused. */
+  function reminderEvents({ settings, plans, appSettings, now, templateFor, prefs, sources, covens, place }, G) {
+    const chosen = prefs || loadPrefs(appSettings, settings, G);
+    const fromPrefs = preferenceEvents({ settings, prefs: chosen, appSettings, plans, sources, covens, place, now }, G);
+    const device = [...moonReminderEvents(settings, now, G), ...ritualReminderEvents(settings, plans, now, G, templateFor), ...devotionReminderEvents(settings, now, G), ...dreamReminderEvents(settings, now, G)];
+    const paused = G.reminderPrefs.isPaused(chosen, now);
+    const until = chosen.pausedUntil ? new Date(`${chosen.pausedUntil}T00:00:00`) : null;
+    const kept = paused ? (until ? device.filter((e) => e.start.getTime() >= until.getTime()) : []) : device;
+    return [...kept, ...fromPrefs].sort((a, b) => a.start.getTime() - b.start.getTime());
   }
 
   /** Holidays, eclipses and moon phases, laid out by your event settings (the app's downloadSky). */
@@ -215,7 +254,7 @@
     return before === 60 ? "An hour before" : `${Math.round(before / 60)} hours before`;
   }
 
-  const api = { KEYS, SKY_KINDS, HORIZON, readJson, writeJson, loadReminders, saveReminders, loadCalendar, saveCalendar, clock, minutesLabel, moonReminderEvents, ritualReminderEvents, devotionReminderEvents, dreamReminderEvents, sacredReminderEvents, reminderEvents, skyEvents, sampleEvent, plansFrom, whenLabel, alarmLabel };
+  const api = { KEYS, SKY_KINDS, HORIZON, readJson, writeJson, loadReminders, saveReminders, loadCalendar, saveCalendar, loadPrefs, prefsPatch, eventOf, preferenceEvents, clock, minutesLabel, moonReminderEvents, ritualReminderEvents, devotionReminderEvents, dreamReminderEvents, sacredReminderEvents, deipnonReminderEvents, reminderEvents, skyEvents, sampleEvent, plansFrom, whenLabel, alarmLabel };
   global.RemindersLogic = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

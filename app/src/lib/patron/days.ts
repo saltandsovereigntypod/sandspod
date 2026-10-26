@@ -26,7 +26,7 @@ export function ruleDates(rule: SacredRule, from: Date, days: number): Date[] {
         if (rule.kind === 'fixed' && d.getMonth() + 1 === rule.month && d.getDate() === rule.day) out.push(d);
         if (rule.kind === 'attic') {
           const a = atticDate(d);
-          if (a && (rule.day === 'last' ? a.last : a.day === rule.day)) out.push(d);
+          if (a && (!rule.month || a.month === rule.month) && (rule.day === 'last' ? a.last : a.day === rule.day)) out.push(d);
         }
       }
       return out;

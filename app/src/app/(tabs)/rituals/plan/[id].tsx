@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
+import { LinkedReadings } from '../../../../components/divination/Linked';
 import { Connections } from '../../../../components/rituals/Connections';
 import { Body, Card, RitualScreen, SectionLabel, Title, confirmAction, tell, ui } from '../../../../components/rituals/ui';
 import { useGrimoire } from '../../../../lib/grimoire/store';
@@ -16,9 +17,10 @@ import {
 } from '../../../../lib/reminders/calendarStore';
 import { remindersSupported } from '../../../../lib/reminders/notifier';
 import { useReminders } from '../../../../lib/reminders/store';
+import { withPlanId } from '../../../../lib/divination/linked';
 import { planSky, planWhen } from '../../../../lib/rituals/format';
 import { planTemplate } from '../../../../lib/rituals/plans';
-import { savePlan, saveTemplate, startRitual, useRituals } from '../../../../lib/rituals/store';
+import { savePlan, saveTemplate, startRitual, updateActive, useRituals } from '../../../../lib/rituals/store';
 import { useSession } from '../../../../lib/session';
 
 function leadWords(minutes: number): string {
@@ -66,6 +68,8 @@ export default function PlanView() {
       if (template) await startRitual({ kind: 'template', template });
       else if (plan.draft) await startRitual({ kind: 'draft', draft: plan.draft });
       else await startRitual({ kind: 'free', title: plan.title, intention: plan.intention ?? '' });
+      // The plan goes with it, so a reading drawn before it can sit beside "Did it work?".
+      await updateActive((session) => ({ ...session, metadata: withPlanId(session.metadata, plan.id) }));
       // Done, not deleted: its calendar event stays as a record of the night.
       await savePlan({ ...plan, doneAt: new Date().toISOString() });
       router.replace('/rituals/run');
@@ -118,6 +122,15 @@ export default function PlanView() {
         {!!plan.draft && !session && <Body muted>Sign in to keep this spell as a template in your account.</Body>}
       </Card>
 
+      {!plan.doneAt && (
+        <LinkedReadings
+          link={{ kind: 'plan', id: plan.id, title: plan.title }}
+          label="Before you begin"
+          drawLabel="Draw before you begin"
+          empty="Three cards before a working: the working itself, what to watch for, and the likely outcome. It waits beside “Did it work?” when you look back."
+        />
+      )}
+
       <Connections
         templateId={template?.id}
         templateTitle={template?.title}
@@ -136,7 +149,7 @@ export default function PlanView() {
               ? `We'll remind you ${leadWords(reminders.settings.ritualLeadMinutes)} before.`
               : 'Ritual reminders are off.'}
         </Body>
-        <Button label="Reminder settings" variant="text" onPress={() => router.push('/rituals/reminders')} />
+        <Button label="Reminder settings" variant="text" onPress={() => router.push({ pathname: '/rituals/reminders', params: { section: 'moon' } })} />
       </Card>
 
       <Card>

@@ -447,6 +447,8 @@ export function journalPayload(input: {
   const context = session?.context_snapshot ?? {};
   const steps = session?.session_steps ?? [];
   const ingredients = Array.isArray(session?.metadata?.ingredients) ? session?.metadata?.ingredients : undefined;
+  // The plan it was begun from, so a reading drawn before it shows beside "Did it work?".
+  const planId = typeof session?.metadata?.planId === 'string' ? session.metadata.planId : undefined;
 
   return {
     id,
@@ -486,6 +488,7 @@ export function journalPayload(input: {
       app: 'mobile',
       completedSteps: steps.map((s) => ({ title: s.title, status: s.status, elapsedSeconds: s.elapsed_seconds })),
       ...(ingredients ? { ingredients } : {}),
+      ...(planId ? { planId } : {}),
     },
     created_at: existing?.created_at ?? now.toISOString(),
     updated_at: now.toISOString(),

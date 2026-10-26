@@ -8,3 +8,5 @@ export * as holidays from '../../app/src/lib/holidays.ts';
 export * as today from '../../app/src/lib/covens/today.ts';
 export * as thread from '../../app/src/lib/covens/thread.ts';
 export * as unreadCount from '../../app/src/lib/covens/unreadCount.ts';
+// Coven readings: a spread drawn together in the coven's chat.
+export * as reading from '../../app/src/lib/covens/reading.ts';

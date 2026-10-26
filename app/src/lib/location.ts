@@ -82,6 +82,12 @@ const subscribe = (listener: () => void) => {
   return () => listeners.delete(listener);
 };
 
+/** The saved place outside React (for reminders), once read from the device. */
+export async function readPlace(): Promise<SavedPlace | null> {
+  await load();
+  return state;
+}
+
 export function usePlace(): SavedPlace | null {
   useEffect(() => {
     void load();

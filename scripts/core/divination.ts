@@ -15,3 +15,5 @@ export * as custom from '../../app/src/lib/divination/custom.ts';
 export * as seasonal from '../../app/src/lib/divination/seasonal.ts';
 export * as links from '../../app/src/lib/divination/links.ts';
 export * as decks from '../../app/src/lib/divination/decks.ts';
+// Readings drawn for a dream, a planned working or a deity.
+export * as linked from '../../app/src/lib/divination/linked.ts';

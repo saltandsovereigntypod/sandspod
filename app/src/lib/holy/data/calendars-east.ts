@@ -375,7 +375,7 @@ See the Birthday of Osiris page for the five days as a whole.`,
       ],
     },
     correspondences: {
-      deities: ['Ra', 'Isis', 'Osiris'],
+      deities: ['Horus', 'Ra', 'Isis', 'Osiris'],
       herbs: ['Frankincense', 'Cinnamon'],
       crystals: ['Tiger Eye', 'Carnelian', 'Lapis Lazuli'],
       colors: ['Gold', 'Blue', 'Red'],
@@ -422,7 +422,7 @@ Modern Kemetic practice varies: some treat the day as a time to stay in and keep
       ],
     },
     correspondences: {
-      deities: ['Ra', 'Osiris'],
+      deities: ['Set', 'Ra', 'Osiris'],
       herbs: ['Black Pepper', 'Juniper'],
       crystals: ['Red Jasper', 'Hematite', 'Obsidian'],
       colors: ['Red', 'Black'],
@@ -515,7 +515,7 @@ As the last day before Wep Ronpet, it was the very edge of the old year, the end
       ],
     },
     correspondences: {
-      deities: ['Isis', 'Osiris', 'Anubis'],
+      deities: ['Nephthys', 'Isis', 'Osiris', 'Anubis'],
       herbs: ['Myrrh', 'Cypress'],
       crystals: ['Obsidian', 'Jet', 'Smoky Quartz'],
       colors: ['Black', 'Silver', 'Purple'],

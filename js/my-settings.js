@@ -116,7 +116,10 @@ function getDefaultMySettings() {
     living_state_show_future_tending: true,
     living_state_show_remaining: true,
     living_state_show_recent_activity: true,
-    
+
+    // Holiday, tending and planning reminders, quiet hours and the pause, as JSON ("" until first chosen).
+    // The app's lib/reminders/prefs.ts reads and writes it; the website's Reminders page too.
+    reminders_v2: ""
   };
 }
 

@@ -13,6 +13,7 @@ import { updateEntry, useCraft } from '../../../../lib/craft/store';
 import { customSpreads, SPREADS_COLLECTION } from '../../../../lib/divination/custom';
 import { deckCardTitle, deckInfo, deckOfReading, type DeckId } from '../../../../lib/divination/decks';
 import { drawOfReading, meaningOf, placeOf } from '../../../../lib/divination/draw';
+import { linkLine, linkRoute } from '../../../../lib/divination/linked';
 import { localDateKey } from '../../../../lib/rituals/lifecycle';
 import { type } from '../../../../theme';
 
@@ -60,6 +61,9 @@ export default function ReadingPage() {
     <RitualScreen back="Back">
       <Title eyebrow={`${methodLabel(reading.method)} · ${fullDate(reading.date) ?? reading.date}`}>{reading.question || 'A reading'}</Title>
       <Body muted>{`Under a ${reading.moonPhase}`}</Body>
+      {reading.linkedTo && (
+        <Button label={`${linkLine(reading.linkedTo)} ›`} variant="text" onPress={() => router.push(linkRoute(reading.linkedTo!) as Href)} />
+      )}
 
       {laid && (
         <View style={ui.gap} onLayout={(e) => setWidth(e.nativeEvent.layout.width)}>

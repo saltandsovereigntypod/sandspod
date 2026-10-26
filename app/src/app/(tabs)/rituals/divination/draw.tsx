@@ -9,7 +9,8 @@ import { SpreadTable } from '../../../../components/divination/Spread';
 import { Body, Card, Chip, Chips, Field, List, Notice, RitualScreen, Row, SectionLabel, Title, Toggle, ui } from '../../../../components/rituals/ui';
 import { useReducedMotion } from '../../../../lib/accessibility/store';
 import { fullDate } from '../../../../lib/calendar';
-import { lookBackFrom, normalizeReading, READINGS } from '../../../../lib/craft/hedge/readings';
+import { DREAMS, normalizeDream, sortDreams } from '../../../../lib/craft/hedge/dreams';
+import { lookBackFrom, normalizeReading, READINGS, type ReadingLink, type ReadingLinkKind } from '../../../../lib/craft/hedge/readings';
 import { addEntry, useCraft } from '../../../../lib/craft/store';
 import { customSpreads, entryIdOfSpread, SPREADS_COLLECTION } from '../../../../lib/divination/custom';
 import { chosenDeck, DECK_SETTING, deckCardTitle, deckInfo, TAROT_DECKS, type DeckId } from '../../../../lib/divination/decks';
@@ -29,9 +30,13 @@ import {
   type Draw,
   type DrawKind,
 } from '../../../../lib/divination/draw';
+import { deityLink, linkFromParams, linkKindOfSpread, linkLine, linkQuestion } from '../../../../lib/divination/linked';
 import { keepsSouthernWheel, seasonalSpreads } from '../../../../lib/divination/seasonal';
 import { STAVE_NOTES } from '../../../../lib/divination/staves';
+import { myDeities } from '../../../../lib/patron';
 import { localDateKey } from '../../../../lib/rituals/lifecycle';
+import { upcomingPlans } from '../../../../lib/rituals/plans';
+import { useRituals } from '../../../../lib/rituals/store';
 import { useSession } from '../../../../lib/session';
 import { useMySettings } from '../../../../lib/settings/store';
 import { colors, type } from '../../../../theme';
@@ -39,7 +44,7 @@ import { colors, type } from '../../../../theme';
 // Draw cards, cast runes or draw ogham staves, turn them over, read what each
 // means, and keep the draw in the reading log like any other reading.
 export default function DrawScreen() {
-  const params = useLocalSearchParams<{ kind?: string; spread?: string }>();
+  const params = useLocalSearchParams<{ kind?: string; spread?: string; dream?: string; plan?: string; deity?: string; title?: string }>();
   const first = spreadById(params.spread) ?? spreadsFor((KINDS.find((k) => k.id === params.kind)?.id ?? 'tarot') as DrawKind)[0];
   const { session } = useSession();
   const { settings, save } = useMySettings();
@@ -62,6 +67,8 @@ export default function DrawScreen() {
   const [saving, setSaving] = useState(false);
   const [local, setLocal] = useState<Partial<Record<'divination_reversals' | 'divination_blank_rune', boolean>>>({});
   const [localDeck, setLocalDeck] = useState<DeckId | null>(null);
+  // What it's drawn for, if anything: a dream, a planned working, a deity (its own spread chosen).
+  const [link, setLink] = useState<ReadingLink | null>(() => linkFromParams(params));
 
   const options = drawOptions({ ...(settings ?? {}), ...local });
   const setOption = (key: 'divination_reversals' | 'divination_blank_rune', value: boolean) => {
@@ -123,13 +130,15 @@ export default function DrawScreen() {
     if (!draw) return;
     setSaving(true);
     try {
-      const entry = await addEntry(READINGS, readingFromDraw(spread, draw, { question, interpretation, lookBack: chosenLookBack, now: new Date(), deck }));
+      const entry = await addEntry(READINGS, readingFromDraw(spread, draw, { question, interpretation, lookBack: chosenLookBack, now: new Date(), deck, linkedTo }));
       router.replace(`/rituals/divination/${entry.id}` as Href);
     } finally {
       setSaving(false);
     }
   };
 
+  const linkKind = linkKindOfSpread(spread.id);
+  const linkedTo = link && link.kind === linkKind ? link : null;
   const shown = selected !== null && draw && revealed[selected] ? meaningOf(draw.items[selected]) : null;
   const position = selected !== null && draw ? placeOf(spread, draw, selected) : null;
 
@@ -162,7 +171,7 @@ export default function DrawScreen() {
       {!draw &&
         seasonal.map((s) => (
           <List key={s.spread}>
-            <Row icon={s.spread === 'samhain' ? 'samhain' : 'today'} title={`${s.why}: ${s.label}`} detail="A spread for the time. Tap to choose it." last onPress={() => choose(s.spread)} />
+            <Row icon={s.spread === 'samhain' ? 'samhain' : s.spread.endsWith('-moon') ? 'today' : 'wheel'} title={`${s.why}: ${s.label}`} detail="A spread for the time. Tap to choose it." last onPress={() => choose(s.spread)} />
           </List>
         ))}
 
@@ -178,9 +187,18 @@ export default function DrawScreen() {
         </List>
       )}
 
+      {!draw && linkKind && <LinkChooser kind={linkKind} chosen={linkedTo} onChoose={setLink} settings={settings} />}
+      {draw && linkedTo && <Body muted>{linkLine(linkedTo)}</Body>}
+
       {!draw && (
         <>
-          <Field label="Your question (if you have one)" value={question} onChange={setQuestion} placeholder={spread.id === 'daily' ? 'What do I need today?' : 'What you want to ask, as you’d ask it'} multiline />
+          <Field
+            label="Your question (if you have one)"
+            value={question}
+            onChange={setQuestion}
+            placeholder={linkedTo ? linkQuestion(linkedTo) : spread.id === 'daily' ? 'What do I need today?' : 'What you want to ask, as you’d ask it'}
+            multiline
+          />
           {spread.kind === 'tarot' && (
             <View style={ui.gapSmall}>
               <SectionLabel>Deck</SectionLabel>
@@ -270,5 +288,49 @@ export default function DrawScreen() {
         </>
       )}
     </RitualScreen>
+  );
+}
+
+/** For a Dream reading, Before a working or Patron deity: which dream, plan or deity it's drawn for (or none). */
+function LinkChooser({
+  kind,
+  chosen,
+  onChoose,
+  settings,
+}: {
+  kind: ReadingLinkKind;
+  chosen: ReadingLink | null;
+  onChoose: (link: ReadingLink | null) => void;
+  settings: Record<string, unknown> | null | undefined;
+}) {
+  const { entries } = useCraft<unknown>(DREAMS);
+  const rituals = useRituals();
+  const choices: ReadingLink[] = useMemo(() => {
+    if (kind === 'dream') return sortDreams(entries.map((e) => ({ ...e, data: normalizeDream(e.data) }))).slice(0, 6).map((e) => ({ kind, id: e.id, title: e.data.title || 'Untitled dream' }));
+    if (kind === 'plan') return upcomingPlans(rituals.plans, new Date()).slice(0, 6).map((p) => ({ kind, id: p.id, title: p.title }));
+    return myDeities(settings).map((d) => deityLink(d.key, d.name));
+  }, [kind, entries, rituals.plans, settings]);
+  const all = chosen && !choices.some((c) => c.id === chosen.id) ? [chosen, ...choices] : choices;
+  const label = kind === 'dream' ? 'The dream it’s for' : kind === 'plan' ? 'The working it’s for' : 'The god it’s for';
+  const none =
+    kind === 'dream'
+      ? 'No dreams written yet. Write one in Grimoire → Dreams, or draw without one.'
+      : kind === 'plan'
+        ? 'No workings planned. Plan one, or draw without one.'
+        : 'No deities kept yet. Add them in Settings → My deities, or draw without one.';
+  return (
+    <View style={ui.gapSmall}>
+      <SectionLabel>{label}</SectionLabel>
+      {all.length ? (
+        <Chips>
+          {all.map((c) => (
+            <Chip key={c.id} label={c.title || c.id} selected={chosen?.id === c.id} onPress={() => onChoose(chosen?.id === c.id ? null : c)} />
+          ))}
+        </Chips>
+      ) : (
+        <Body muted>{none}</Body>
+      )}
+      {!!chosen && <Body muted>{`${linkLine(chosen)}. It will show there too.`}</Body>}
+    </View>
   );
 }

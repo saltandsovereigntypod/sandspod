@@ -21,6 +21,47 @@
 
   const dayWords = (key) => R().calendar.fullDate(key) || key;
 
+  // Readings drawn before a working (Before a working, hedge.readings with linkedTo a plan),
+  // shown beside the working's "Did it work?" (app: components/divination/Linked.tsx PreReading).
+  let readings = [];
+  async function loadReadings() {
+    const RD = R().readings;
+    if (!global.SaltCraft || !RD) return [];
+    try {
+      readings = (await global.SaltCraft.list(RD.READINGS)).map((e) => ({ ...e, data: RD.normalizeReading(e.data) }));
+    } catch (error) {
+      console.warn("Readings could not be read.", error);
+      readings = [];
+    }
+    return readings;
+  }
+
+  function preReadingHtml(entry, answered) {
+    const Ln = R().linked;
+    const pre = Ln ? Ln.preReadingOf(readings, entry) : null;
+    if (!pre) return "";
+    const lines = Ln.cardsLine(pre.data)
+      .split("\n")
+      .map((line) => `<p>${esc(line)}</p>`)
+      .join("");
+    return `
+      <div class="rt-diw__pre" data-pre="${esc(pre.id)}">
+        <p class="sp-eyebrow">Drawn before you began</p>
+        <p class="sp-caption">${esc(`Before a working · ${dayWords(pre.data.date)}`)}</p>
+        ${lines}
+        ${pre.data.interpretation ? `<p class="sp-muted">${esc(pre.data.interpretation)}</p>` : ""}
+        ${
+          answered
+            ? `<p>Now that you know how it went, did the reading bear out?</p>
+               <div class="sp-chips" role="group" aria-label="Did the reading bear out?">${R()
+                 .readings.MATCHES.map((m) => UI.chip(m.label, { pressed: pre.data.matched === m.id, attrs: `data-pre-match="${m.id}"` }))
+                 .join("")}</div>`
+            : `<p class="sp-caption">When you say whether it worked, you can say whether the reading bore out too.</p>`
+        }
+        <p><a class="rt-text-link" href="/divination/reading/?id=${encodeURIComponent(pre.id)}">Open the reading</a></p>
+      </div>`;
+  }
+
   function lookBackWords(lookBack) {
     const moon = lookBack.when === "full_moon" || lookBack.when === "new_moon";
     return moon ? `${LB().whenWords(lookBack.when)} (${dayWords(lookBack.date)})` : `on ${dayWords(lookBack.date)}`;
@@ -81,6 +122,7 @@
         ${title ? `<h3 class="rt-diw__title">${esc(entry.title || "Untitled Ritual")}</h3>` : ""}
         <div data-diw-summary>${summary}</div>
         ${form(entry, { due, now, title: false })}
+        ${kind ? "" : preReadingHtml(entry, !!lookBack?.answer)}
       </section>`;
   }
 
@@ -117,6 +159,7 @@
       ${group("Candle colours", works.byCandle)}
       ${group("Herbs and oils", works.byHerb)}
       ${group("Stones", works.byCrystal)}
+      ${preReadingLine() ? `<p class="sp-muted">${esc(preReadingLine())}</p>` : ""}
       <p class="sp-caption">A yes counts whole and a partly counts half. Groups with fewer than three answers are early notes, not patterns.</p>
     </section>`;
   }
@@ -134,9 +177,26 @@
   function bind(root, entries, onSaved, items = null) {
     if (!root || root.dataset.diwBound) return;
     root.dataset.diwBound = "1";
-    root.addEventListener("click", (event) => {
+    root.addEventListener("click", async (event) => {
       const card = event.target.closest("[data-diw]");
       if (!card) return;
+      const match = event.target.closest("[data-pre-match]");
+      if (match) {
+        const pre = readings.find((e) => e.id === match.closest("[data-pre]")?.dataset.pre);
+        if (!pre || !global.SaltCraft) return;
+        const next = { ...pre.data };
+        if (next.matched === match.dataset.preMatch) delete next.matched;
+        else next.matched = match.dataset.preMatch;
+        try {
+          await global.SaltCraft.update(R().readings.READINGS, pre.id, next);
+          pre.data = next;
+          await onSaved();
+        } catch (error) {
+          console.error(error);
+          UI.say("That couldn't be saved. Please try again.", "problem");
+        }
+        return;
+      }
       const formEl = card.querySelector("[data-diw-form]");
       if (event.target.closest("[data-diw-open]")) {
         formEl.hidden = false;
@@ -202,5 +262,8 @@
     });
   }
 
-  global.DidItWork = { card, itemCard, worksSection, bind, lookBackWords };
+  /** How often readings drawn before a working bore out, for What works for you. */
+  const preReadingLine = () => (R().linked ? R().linked.preReadingLine(readings) : null);
+
+  global.DidItWork = { card, itemCard, worksSection, bind, lookBackWords, loadReadings, preReadingLine };
 })(window);

@@ -40,6 +40,7 @@ import { addEntry, useCraft } from '../../../lib/craft/store';
 import { DREAM_ROUTES } from '../../../lib/grimoire/dreams';
 import { normalizeReading, READINGS } from '../../../lib/craft/hedge/readings';
 import { drawOnToday, todaysCard } from '../../../lib/divination/daily';
+import { deipnonToday } from '../../../lib/deipnon';
 import { keepsSouthernWheel, seasonalSpreads } from '../../../lib/divination/seasonal';
 import { deityLines } from '../../../lib/patron';
 import { hasHolyPage, holyRef, moonRef, principalRef } from '../../../lib/holy';
@@ -125,7 +126,7 @@ export default function Today() {
       label={moonReminders ? 'Moon reminders on' : 'Remind me of the moon'}
       accessibilityHint="Choose which moon phases to be reminded of"
       icon={<Icon name="bell" size={16} color={colors.gold} />}
-      onPress={() => router.navigate('/today/reminders')}
+      onPress={() => router.navigate({ pathname: '/today/reminders', params: { section: 'moon' } })}
     />
   );
 
@@ -210,6 +211,7 @@ export default function Today() {
       </View>
 
       <DreamCapture settings={settings} now={clock} reminderOn={reminders.settings.dreamMorning} />
+      <DeipnonCard settings={settings} now={clock} />
       <PracticeCard settings={settings} place={place} now={clock} />
       {drawOnToday(settings) && <CardOfTheDay now={clock} south={keepsSouthernWheel(settings)} />}
       <DaySky today={today} sky={sky} here={here} now={clock} />
@@ -399,6 +401,31 @@ function LookBackDue({ journal, now }: { journal: JournalRow[]; now: Date }) {
             : `Open “${first.title || 'the entry'}” ›`}
         </Text>
       </Pressable>
+    </View>
+  );
+}
+
+/**
+ * On Hekate's Deipnon, the last day of the Attic month, for those who keep
+ * the Hellenic monthly days or hold Hekate as patron: clear the house, leave
+ * her supper, draw the Crossroads. Turned off in Settings → Calendars.
+ */
+function DeipnonCard({ settings, now }: { settings: SettingsLike; now: Date }) {
+  const day = now.toDateString();
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- once a day, and when settings change
+  const prompt = useMemo(() => deipnonToday(now, settings), [day, settings]);
+  if (!prompt) return null;
+  return (
+    <View style={styles.working}>
+      <View style={styles.workingText}>
+        <Text style={[type.eyebrow, styles.gold]}>Tonight</Text>
+        <Text style={type.cardTitle}>{prompt.title}</Text>
+        <Text style={type.caption}>{prompt.detail}</Text>
+        {prompt.steps.map((step) => (
+          <Text key={step} style={type.body}>{`•  ${step}`}</Text>
+        ))}
+      </View>
+      <Button label="Draw the Crossroads spread" onPress={() => router.navigate({ pathname: '/rituals/divination/draw', params: { spread: prompt.spread } })} />
     </View>
   );
 }

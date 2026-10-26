@@ -35,11 +35,13 @@ export default function RitualsHome() {
   const stepIndex = active && step ? active.session_steps.findIndex((s) => s.id === step.id) : -1;
 
   const moonChoices = PHASE_ORDER.filter((p) => reminders.settings.phases[p]).length;
-  const reminderDetail = moonChoices
-    ? `${moonChoices} moon ${moonChoices === 1 ? 'phase' : 'phases'}${reminders.settings.rituals ? ' and planned rituals' : ''}`
-    : reminders.settings.rituals
-      ? 'Before planned rituals'
-      : 'Off';
+  const reminderDetail = `${
+    moonChoices
+      ? `${moonChoices} moon ${moonChoices === 1 ? 'phase' : 'phases'}${reminders.settings.rituals ? ' and planned rituals' : ''}`
+      : reminders.settings.rituals
+        ? 'Before planned rituals'
+        : 'Moon off'
+  } · holidays, tending, planning`;
 
   return (
     <RitualScreen onRefresh={refresh}>
@@ -153,7 +155,7 @@ export default function RitualsHome() {
         )}
         <Row icon="calendar" title="Plan a night" detail="Moon phase and weekday for your intention" onPress={() => router.push('/rituals/planner')} />
         <Row icon="altar" title="Build a spell" detail="Ingredients from the Library, steps to follow" onPress={() => router.push('/rituals/spell')} />
-        <Row icon="bell" title="Moon reminders" detail={reminderDetail} last onPress={() => router.push('/rituals/reminders')} />
+        <Row icon="bell" title="Reminders" detail={reminderDetail} last onPress={() => router.push('/rituals/reminders')} />
       </List>
 
       <View style={ui.gapSmall}>

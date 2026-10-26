@@ -19,7 +19,8 @@
       S.loadPlans(),
       S.journal().catch(() => []),
       S.activeSession().catch(() => null),
-      S.apothecaryItems().catch(() => [])
+      S.apothecaryItems().catch(() => []),
+      D.loadReadings()
     ]);
     made = items;
 

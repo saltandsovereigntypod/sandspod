@@ -26,7 +26,7 @@
 
   async function render() {
     const main = UI.root();
-    const [journal, items] = await Promise.all([S.journal(), S.apothecaryItems().catch(() => [])]);
+    const [journal, items] = await Promise.all([S.journal(), S.apothecaryItems().catch(() => []), D.loadReadings()]);
     current = journal;
     made = items;
     const now = new Date();

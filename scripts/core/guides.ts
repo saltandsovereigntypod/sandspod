@@ -18,3 +18,13 @@ export * as planSync from '../../app/src/lib/rituals/planSync.ts';
 export * as patron from '../../app/src/lib/patron/index.ts';
 export { PRACTICES, myPractices, practicesValue, practiceName } from '../../app/src/lib/rituals/premade/practices.ts';
 export * as calendars from '../../app/src/lib/calendars/index.ts';
+// Hekate's Deipnon each month, as a calendar reminder for those who keep it.
+export * as deipnon from '../../app/src/lib/deipnon.ts';
+// Holidays, tending, ritual planning, quiet hours and the pause: the synced
+// reminder choices (`reminders_v2`) and the reminders they make, the same as the app's.
+export * as reminderPrefs from '../../app/src/lib/reminders/prefs.ts';
+export * as reminderHolidays from '../../app/src/lib/reminders/holidays.ts';
+export * as reminderPlan from '../../app/src/lib/reminders/plan.ts';
+export * as reminderSources from '../../app/src/lib/reminders/sources.ts';
+export * as reminderCovens from '../../app/src/lib/reminders/covens.ts';
+export * as altarSnapshot from '../../app/src/lib/altar/snapshot.ts';
