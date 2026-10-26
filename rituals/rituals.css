@@ -109,6 +109,8 @@ a.sp-chip { display: inline-flex; align-items: center; }
 .rt-diw__title { margin: 0; font-size: 1.1rem; }
 .rt-diw__form { display: grid; gap: 10px; }
 .rt-diw__form[hidden], .rt-diw [hidden] { display: none; }
+.rt-diw__pre { display: grid; gap: 6px; border-top: 1px solid rgba(226, 195, 109, 0.2); padding-top: 10px; }
+.rt-diw__pre p { margin: 0; }
 .rt-works { display: grid; gap: 2px; }
 .rt-works__label { width: 150px; }
 .rt-bar__track.is-faint > span { opacity: 0.45; }

@@ -56,6 +56,7 @@
 .td-card { background: var(--td-surface); border: 1px solid var(--td-hair); border-radius: 20px; padding: 16px; display: grid; gap: 8px; }
 .td-card--working { border-color: rgba(226, 195, 109, 0.24); gap: 14px; }
 .td-card__title { font-family: "Cormorant Garamond", serif; font-weight: 600; font-size: 1.45rem; line-height: 1.2; margin: 0; color: var(--cream); }
+.td-steps { margin: 0.25rem 0 0; padding-left: 1.2rem; display: grid; gap: 0.35rem; }
 .td-card .button { justify-self: start; }
 .td-working-text { display: grid; gap: 3px; }
 .td-good-for { color: var(--td-parchment); line-height: 1.6; }

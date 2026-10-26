@@ -2,7 +2,7 @@
 // the reading a draw becomes in the Hedge reading log (`hedge.readings`, the
 // same shape as a reading logged by hand). Pure; the randomness comes in.
 
-import { LOOK_BACK_CHOICES, lookBackFrom, moonForReading, type Reading } from '../craft/hedge/readings.ts';
+import { LOOK_BACK_CHOICES, lookBackFrom, moonForReading, type Reading, type ReadingLink } from '../craft/hedge/readings.ts';
 import { localDateKey } from '../rituals/lifecycle.ts';
 import { DAILY_LABEL } from './daily.ts';
 import { layoutOf, RINGS, type Fall, type Laid, type Ring, type Shape } from './layout.ts';
@@ -228,6 +228,109 @@ export const SPREADS: Spread[] = [
     lookBackDays: 90,
   },
   {
+    id: 'yule',
+    group: 'moon',
+    kind: 'tarot',
+    label: 'Yule: the returning light',
+    detail: 'Five cards for the longest night: what the dark has taught you, and the small light coming back.',
+    positions: [
+      { name: 'What the dark has taught', about: 'What the long nights have shown you this year.' },
+      { name: 'What to rest', about: 'What needs to lie still until spring.' },
+      { name: 'The returning light', about: 'What is beginning to grow again in you.' },
+      { name: 'What to keep warm', about: 'What to tend through the cold months.' },
+      { name: 'A gift for the new sun', about: 'What you can offer the year as the days lengthen.' },
+    ],
+    lookBackDays: 90,
+  },
+  {
+    id: 'imbolc',
+    group: 'moon',
+    kind: 'tarot',
+    label: 'Imbolc: the first stirring',
+    detail: 'Four cards for Brigid’s day, when the ewes come into milk: what is waking, and how to tend it.',
+    positions: [
+      { name: 'What is stirring', about: 'What is waking under the frost.' },
+      { name: 'What to clear', about: 'What to sweep out, as the house is cleaned for spring.' },
+      { name: 'The hearth fire', about: 'What keeps you warm and makes things.' },
+      { name: 'The first step', about: 'Something small to begin before the thaw.' },
+    ],
+    lookBackDays: 30,
+  },
+  {
+    id: 'ostara',
+    group: 'moon',
+    kind: 'tarot',
+    label: 'Ostara: day and night in balance',
+    detail: 'Five cards at the spring equinox: what is in balance, what is not, and the seeds to sow.',
+    positions: [
+      { name: 'What is in balance', about: 'Where your life is even, light and dark held fairly.' },
+      { name: 'What has too much', about: 'What is taking more than its share.' },
+      { name: 'What has too little', about: 'What needs more of your time and care.' },
+      { name: 'The seed to sow', about: 'What to plant now, while the earth is turning green.' },
+      { name: 'What will help it grow', about: 'Sun, rain, or a hand to tend it.' },
+    ],
+    lookBackDays: 90,
+  },
+  {
+    id: 'beltane',
+    group: 'moon',
+    kind: 'tarot',
+    label: 'Beltane: the fire and the flowering',
+    detail: 'Five cards round the maypole at the height of spring: passion, union and what is in full flower.',
+    positions: [
+      { name: 'What is in flower', about: 'What is at its most alive in your life now.' },
+      { name: 'What kindles you', about: 'The fire: desire, delight and drive.' },
+      { name: 'What wants joining', about: 'A bond, a partnership, or two parts of you to bring together.' },
+      { name: 'What to leap over', about: 'What to leave behind as you jump the Beltane fire.' },
+      { name: 'The heart of the dance', about: 'What all of it turns around.' },
+    ],
+    lookBackDays: 90,
+  },
+  {
+    id: 'litha',
+    group: 'moon',
+    kind: 'tarot',
+    label: 'Litha: the sun at its height',
+    detail: 'Five cards at the summer solstice, the longest day: your strength, what is ripening, and the turn toward the waning year.',
+    positions: [
+      { name: 'Your strength', about: 'Where you shine brightest now.' },
+      { name: 'What is ripening', about: 'What is growing toward harvest.' },
+      { name: 'What the light shows', about: 'What the long day makes plain.' },
+      { name: 'As the days shorten', about: 'What to carry into the waning half of the year.' },
+      { name: 'The sun at the centre', about: 'What lies at the heart of your summer.' },
+    ],
+    lookBackDays: 90,
+  },
+  {
+    id: 'lammas',
+    group: 'moon',
+    kind: 'tarot',
+    label: 'Lammas: the first harvest',
+    detail: 'Four cards for the first loaf: what has ripened, what it cost, what to share and what to save as seed.',
+    positions: [
+      { name: 'What has ripened', about: 'What your work has brought to fruit.' },
+      { name: 'What it cost', about: 'What was cut down, or given up, to bring it in.' },
+      { name: 'What to share', about: 'What to break and pass round, in thanks.' },
+      { name: 'What to keep as seed', about: 'What to save for next year’s sowing.' },
+    ],
+    lookBackDays: 90,
+  },
+  {
+    id: 'mabon',
+    group: 'moon',
+    kind: 'tarot',
+    label: 'Mabon: the second harvest',
+    detail: 'Five cards at the autumn equinox, when day and night stand even again: give thanks, weigh the year, and make ready for the dark.',
+    positions: [
+      { name: 'What to give thanks for', about: 'The year’s good gifts.' },
+      { name: 'On one side of the scales', about: 'What has gone well, or been given.' },
+      { name: 'On the other side', about: 'What has been hard, or taken.' },
+      { name: 'What to store away', about: 'What to keep for the winter.' },
+      { name: 'Making ready for the dark', about: 'What the coming dark half asks you to prepare.' },
+    ],
+    lookBackDays: 90,
+  },
+  {
     id: 'year-ahead',
     group: 'moon',
     kind: 'tarot',
@@ -266,6 +369,64 @@ export const SPREADS: Spread[] = [
       { name: 'What it protects', about: 'What it has been doing for you all along.' },
       { name: 'What hiding it costs', about: 'What keeping it down takes from you.' },
       { name: 'How to welcome it back', about: 'A kind way to let it be part of you.' },
+    ],
+    lookBackDays: 30,
+  },
+  {
+    id: 'crossroads',
+    group: 'deep',
+    kind: 'tarot',
+    label: 'The crossroads',
+    detail: 'Five cards for a place where roads meet: where you stand, the roads to either side, the road behind, and a word from the one who keeps the crossroads.',
+    positions: [
+      { name: 'Where you stand', about: 'You, here, at the meeting of the roads.' },
+      { name: 'The road to the left', about: 'One way on, and what lies down it.' },
+      { name: 'The road to the right', about: 'The other way on, and what lies down it.' },
+      { name: 'The road behind', about: 'What you leave behind you, whichever way you go.' },
+      {
+        name: 'What the guardian would have you know',
+        about: 'A word from the keeper of the crossroads. Many hear Hekate here, with her torches and her keys; hear whoever guards the ways for you.',
+      },
+    ],
+    lookBackDays: 30,
+  },
+  {
+    id: 'dream',
+    group: 'deep',
+    kind: 'tarot',
+    label: 'Dream reading',
+    detail: 'Three cards for a dream that stays with you: what it shows, what it stirs in you, and what it asks.',
+    positions: [
+      { name: 'What the dream shows', about: 'What it is about, under its pictures.' },
+      { name: 'What it stirs in you', about: 'The feeling it leaves, and where that comes from.' },
+      { name: 'What it asks of you', about: 'What to do, or attend to, now that you are awake.' },
+    ],
+    lookBackDays: 30,
+  },
+  {
+    id: 'before-working',
+    group: 'quick',
+    kind: 'tarot',
+    label: 'Before a working',
+    detail: 'Three cards to draw before a ritual or spell: the working itself, what to watch for, and how it is likely to go.',
+    positions: [
+      { name: 'The working itself', about: 'The working as it stands, and what you bring to it.' },
+      { name: 'What to watch for', about: 'What could help or hinder it, inside you or around you.' },
+      { name: 'The likely outcome', about: 'How it is likely to go if you begin as you are.' },
+    ],
+    lookBackDays: 30,
+  },
+  {
+    id: 'patron-deity',
+    group: 'deep',
+    kind: 'tarot',
+    label: 'Patron deity',
+    detail: 'Four cards for one of your deities, a patron or one you’re coming to know: what they ask, what they offer, how to honour them, and what stands between you.',
+    positions: [
+      { name: 'What this god asks of me', about: 'What they would have from you, now.' },
+      { name: 'What they offer', about: 'What they hold out to you, if you will take it.' },
+      { name: 'How to honour them', about: 'An offering, a practice, or a way of living that would please them.' },
+      { name: 'What stands between us', about: 'What gets in the way, on your side or in your life.' },
     ],
     lookBackDays: 30,
   },
@@ -533,7 +694,7 @@ export function cameUpText(spread: Spread, draw: Draw): string {
 export function readingFromDraw(
   spread: Spread,
   draw: Draw,
-  { question = '', interpretation = '', lookBack, now }: { question?: string; interpretation?: string; lookBack?: string; now: Date },
+  { question = '', interpretation = '', lookBack, now, linkedTo }: { question?: string; interpretation?: string; lookBack?: string; now: Date; linkedTo?: ReadingLink | null },
 ): Reading {
   const date = localDateKey(now);
   return {
@@ -547,6 +708,7 @@ export function readingFromDraw(
     outcome: '',
     outcomeDate: '',
     moonPhase: moonForReading(date),
+    ...(linkedTo ? { linkedTo } : {}),
   };
 }
 

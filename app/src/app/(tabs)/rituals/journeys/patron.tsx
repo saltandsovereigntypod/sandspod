@@ -2,7 +2,9 @@ import { router } from 'expo-router';
 import { View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
+import { drawFor } from '../../../../components/divination/Linked';
 import { Body, Card, Expander, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
+import { deityLink } from '../../../../lib/divination/linked';
 import { PATRON_GUIDE, myDeities, levelLabel } from '../../../../lib/patron';
 import { useMySettings } from '../../../../lib/settings/store';
 
@@ -38,6 +40,15 @@ export default function PatronGuide() {
         )}
         <View style={ui.actions}>
           <Button label="My deities" variant="outline" onPress={() => router.push('/more/settings/deities')} />
+          <Button
+            label="Draw the Patron deity spread"
+            variant="text"
+            onPress={() =>
+              mine.length
+                ? drawFor(deityLink(mine[0].key, mine[0].name))
+                : router.push({ pathname: '/rituals/divination/draw', params: { spread: 'patron-deity' } })
+            }
+          />
         </View>
       </Card>
 

@@ -5,6 +5,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useSyncExternalStore } from 'react';
 
+import { deipnonReminders, offersDeipnon } from '../deipnon';
 import { sacredSources } from '../patron';
 import { itemLookBackReminder } from '../altar/apothecaryLookBack';
 import { getWorkshop, subscribeWorkshop } from '../altar/workshop';
@@ -16,7 +17,7 @@ import type { OfferingDue } from '../altar/offerings';
 import type { WateringDue } from '../altar/pottedPlants';
 import { syncSkyCalendar } from './calendarStore';
 import { applySchedule, permissionState, remindersSupported, requestPermission, type PermissionState } from './notifier';
-import { anyReminders, buildSchedule, DEFAULT_SETTINGS, normalizeSettings, type ReminderSettings } from './schedule';
+import { anyReminders, buildSchedule, DEFAULT_SETTINGS, DEVOTION_DAYS, normalizeSettings, type ReminderSettings } from './schedule';
 
 const SETTINGS_KEY = 'reminders.settings.v1';
 
@@ -61,7 +62,9 @@ export function syncReminders(): Promise<void> {
       const lookBacks = [...getRituals().journal.map(lookBackReminder), ...getWorkshop().apothecary.map(itemLookBackReminder)].filter(
         (r): r is NonNullable<typeof r> => !!r,
       );
-      const reminders = buildSchedule(state.settings, getRituals().plans, new Date(), undefined, sacredSources(cachedSettings()), lookBacks, offeringsDue, wateringDue);
+      const now = new Date();
+      const deipna = deipnonReminders(cachedSettings(), now, DEVOTION_DAYS + 1);
+      const reminders = buildSchedule(state.settings, getRituals().plans, now, undefined, sacredSources(cachedSettings()), lookBacks, offeringsDue, wateringDue, deipna);
       const permission = remindersSupported ? await permissionState() : 'unavailable';
       const scheduled = await applySchedule(permission === 'granted' ? reminders : []);
       set({ permission, scheduled });
@@ -109,13 +112,18 @@ async function start() {
       if (state.settings.lookBacks) void syncReminders();
     }
   });
-  // Your deities' sacred days follow Settings → My deities.
+  // Your deities' sacred days follow Settings → My deities; Hekate's Deipnon follows them and your calendars.
+  const deipnonKey = () => String(offersDeipnon(cachedSettings()));
   let lastDeities = String(cachedSettings()?.my_deities ?? '');
+  let lastDeipnon = deipnonKey();
   subscribeSettings(() => {
     const deities = String(cachedSettings()?.my_deities ?? '');
-    if (deities !== lastDeities) {
+    const deipnon = deipnonKey();
+    if (deities !== lastDeities || deipnon !== lastDeipnon) {
+      const changedDeipnon = deipnon !== lastDeipnon;
       lastDeities = deities;
-      if (state.settings.sacredDays) void syncReminders();
+      lastDeipnon = deipnon;
+      if (state.settings.sacredDays || changedDeipnon) void syncReminders();
     }
   });
   // Top up the rolling window every time the app opens.

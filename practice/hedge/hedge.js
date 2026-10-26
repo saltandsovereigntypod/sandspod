@@ -41,6 +41,8 @@
   let people = [];
   // Spreads of your own (`hedge.spreads`), on the pages that draw.
   let mySpreads = [];
+  // Planned workings still ahead, for drawing Before a working (ritual_plans, and this browser's copy).
+  let plans = [];
   let loaded = false;
 
   async function load() {
@@ -49,7 +51,34 @@
     dreams = d.map((e) => ({ ...e, data: D.normalizeDream(e.data) }));
     readings = R.sortReadings(r.map((e) => ({ ...e, data: R.normalizeReading(e.data) })));
     people = a.map((e) => ({ ...e, data: A.normalizeAncestor(e.data) })).sort((x, y) => x.data.name.localeCompare(y.data.name));
+    if (Dv && view === "hedge-draw") plans = await loadPlansAhead();
     loaded = true;
+  }
+
+  /** Plans not yet begun, from today on, soonest first: this browser's and, signed in, the account's. */
+  async function loadPlansAhead() {
+    const today = kit.dateKey(new Date());
+    let list = [];
+    try {
+      const local = JSON.parse(global.localStorage.getItem("rituals.plans.v1") || "[]");
+      if (Array.isArray(local)) list = local.filter((p) => p && p.id && (!p.syncedTo || p.syncedTo === user?.id)).map((p) => ({ id: p.id, date: p.date, time: p.time || "", title: p.title || "", done: !!p.doneAt }));
+    } catch {
+      list = [];
+    }
+    if (user && global.db) {
+      try {
+        const { data } = await global.db.from("ritual_plans").select("id,planned_date,planned_time,title,done_at").eq("user_id", user.id);
+        for (const row of data || []) {
+          if (!list.some((p) => p.id === row.id)) list.push({ id: row.id, date: row.planned_date, time: row.planned_time || "", title: row.title || "", done: !!row.done_at });
+        }
+      } catch (error) {
+        console.warn("Plans could not be read.", error);
+      }
+    }
+    return list
+      .filter((p) => !p.done && String(p.date) >= today)
+      .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`))
+      .slice(0, 6);
   }
   const notFound = (backHtml, title, text) => [backHtml, kit.head({ title }), kit.p(loaded ? text : "Opening…")].join("");
 
@@ -208,6 +237,7 @@
       back,
       kit.head({ eyebrow: `${R.methodLabel(r.method)} · ${fullDate(r.date)}`, title: r.question || "A reading" }),
       kit.muted(`Under a ${r.moonPhase}`),
+      r.linkedTo && Dv ? `<p><a class="pr-link" href="${kit.esc(Dv.linked.linkUrl(r.linkedTo))}">${kit.esc(Dv.linked.linkLine(r.linkedTo))} ›</a></p>` : "",
       laidOutHtml(r),
       r.drawn.length
         ? kit.section(
@@ -584,7 +614,49 @@
     )}<div data-laid-meaning>${laid.pick === null ? kit.muted("Tap one for its meaning.") : meaningHtml(spread, d, laid.pick)}</div></section>`;
   }
 
-  const drawState = { spreadId: null, question: "", draw: null, revealed: [], selected: null, interpretation: "", lookBack: null, saving: false, problem: "", local: {}, picking: false };
+  const drawState = { spreadId: null, question: "", draw: null, revealed: [], selected: null, interpretation: "", lookBack: null, saving: false, problem: "", local: {}, picking: false, link: undefined };
+  /** What the draw is for, if anything: a dream, a planned working, a deity (`?dream=`, `?plan=`, `?deity=` with `title`). */
+  function drawLink(spread) {
+    if (drawState.link === undefined) {
+      drawState.link = Dv.linked.linkFromParams({ dream: params.get("dream") || "", plan: params.get("plan") || "", deity: params.get("deity") || "", title: params.get("title") || "" });
+    }
+    const kind = Dv.linked.linkKindOfSpread(spread.id);
+    return drawState.link && drawState.link.kind === kind ? drawState.link : null;
+  }
+  /** The dreams, plans or deities a Dream reading, Before a working or Patron deity can be drawn for. */
+  function linkChoices(kind) {
+    if (kind === "dream") return D.sortDreams(dreams).slice(0, 6).map((e) => ({ kind, id: e.id, title: e.data.title || "Untitled dream" }));
+    if (kind === "plan") return plans.map((p) => ({ kind, id: p.id, title: p.title }));
+    return myDeitiesOf(settings).map((d) => Dv.linked.deityLink(d.key, d.name));
+  }
+  /** My deities from settings (as patron/mine.ts reads them), for pages without the patron module. */
+  function myDeitiesOf(s) {
+    try {
+      const list = JSON.parse(typeof s?.my_deities === "string" && s.my_deities ? s.my_deities : "[]");
+      return Array.isArray(list) ? list.filter((d) => d && typeof d.name === "string" && d.name.trim()).map((d) => ({ key: typeof d.key === "string" && d.key ? d.key : null, name: d.name.trim() })) : [];
+    } catch {
+      return [];
+    }
+  }
+  function linkChooserHtml(kind, chosen) {
+    const choices = linkChoices(kind);
+    const all = chosen && !choices.some((c) => c.id === chosen.id) ? [chosen, ...choices] : choices;
+    drawState.choices = all;
+    const label = kind === "dream" ? "The dream it’s for" : kind === "plan" ? "The working it’s for" : "The god it’s for";
+    const none =
+      kind === "dream"
+        ? "No dreams written yet. Write one in Grimoire → Dreams, or draw without one."
+        : kind === "plan"
+          ? "No workings planned. Plan one, or draw without one."
+          : "No deities kept yet. Add them in Settings → My deities, or draw without one.";
+    return kit.section(
+      label,
+      `${all.length ? kit.chips(all.map((c, i) => kit.chip({ label: c.title || c.id, act: "draw-link", value: String(i), pressed: chosen?.id === c.id })), label) : kit.muted(none)}${
+        chosen ? kit.muted(`${Dv.linked.linkLine(chosen)}. It will show there too.`) : ""
+      }`,
+      { id: "draw-link" }
+    );
+  }
   const custom = () => (Dv ? Dv.custom.customSpreads(mySpreads) : []);
   function currentSpread() {
     if (!drawState.spreadId) {
@@ -656,6 +728,8 @@
     const base = baseOf(spread);
     const seasonal = spread.kind === "tarot" && !d ? Dv.seasonal.seasonalSpreads(new Date(), { south: Dv.seasonal.keepsSouthernWheel(settings) }).filter((s) => s.spread !== spread.id) : [];
     const editing = Dv.custom.entryIdOfSpread(spread.id);
+    const linkKind = Dv.linked.linkKindOfSpread(spread.id);
+    const linkedTo = drawLink(spread);
     return [
       back,
       kit.head({ eyebrow: "Draw · Divination", title: kind.label }),
@@ -679,6 +753,8 @@
             })
           ])
         : "",
+      !d && linkKind ? linkChooserHtml(linkKind, linkedTo) : "",
+      d && linkedTo ? kit.muted(Dv.linked.linkLine(linkedTo)) : "",
       !d
         ? [
             kit.field({
@@ -687,7 +763,7 @@
               value: drawState.question,
               input: "draw-question",
               multiline: true,
-              placeholder: spread.id === "daily" ? "What do I need today?" : "What you want to ask, as you’d ask it"
+              placeholder: linkedTo ? Dv.linked.linkQuestion(linkedTo) : spread.id === "daily" ? "What do I need today?" : "What you want to ask, as you’d ask it"
             }),
             spread.kind === "tarot"
               ? kit.toggle({ id: "draw-reversals", label: "Reversed cards", detail: "Some cards come up upside down, with their reversed meaning.", checked: opts.reversals, change: "draw-option" })
@@ -1025,6 +1101,11 @@
     "draw-question"(el) {
       drawState.question = el.value;
     },
+    "draw-link"(el) {
+      const chosen = (drawState.choices || [])[Number(el.dataset.value)] || null;
+      drawState.link = chosen && drawState.link?.id === chosen.id && drawState.link?.kind === chosen.kind ? null : chosen;
+      draw();
+    },
     "draw-option"(el) {
       const key = el.id === "draw-reversals" ? "divination_reversals" : "divination_blank_rune";
       drawState.local[key] = el.checked;
@@ -1070,7 +1151,8 @@
         question: drawState.question,
         interpretation: drawState.interpretation,
         lookBack: chosenLookBack(spread),
-        now: new Date()
+        now: new Date(),
+        linkedTo: drawLink(spread)
       });
       drawState.saving = true;
       drawState.problem = "";

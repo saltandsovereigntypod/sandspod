@@ -14,6 +14,10 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Sheet } from "../../../../../../components/altar/Sheet";
+import {
+  BeginCovenReading,
+  CovenReadingCard,
+} from "../../../../../../components/covens/CovenReading";
 import { Button } from "../../../../../../components/Button";
 import {
   Composer,
@@ -50,7 +54,16 @@ import {
   type Member,
   type Message,
 } from "../../../../../../lib/covens/model";
+import {
+  cardBody,
+  covenReadings,
+  drawCovenCard,
+  openingBody,
+  type CovenReading,
+} from "../../../../../../lib/covens/reading";
 import { threadItems } from "../../../../../../lib/covens/thread";
+import { drawOptions } from "../../../../../../lib/divination/draw";
+import { useMySettings } from "../../../../../../lib/settings/store";
 import { markRead } from "../../../../../../lib/covens/unread";
 import { colors, fonts, type } from "../../../../../../theme";
 
@@ -70,6 +83,7 @@ export default function Thread() {
   const [message, setMessage] = useState<string | null>(null);
   const [info, setInfo] = useState(false);
   const { loadMessages, onMessage, loadNames } = coven;
+  const { settings } = useMySettings();
 
   // The coven's chat lives in the coven's state; a conversation is loaded here.
   useEffect(() => {
@@ -134,6 +148,11 @@ export default function Thread() {
       ).reverse(),
     [raw, blocked, coven.userId, group],
   );
+  // Coven readings in this thread, by their opening message, with the cards drawn into them so far.
+  const readings = useMemo(() => {
+    const list = covenReadings(chatMessages(raw ?? [], blocked));
+    return new Map(list.map((r) => [r.id, r]));
+  }, [raw, blocked]);
   const actions = useMessageActions((id) => {
     const gone = (list: Message[]) =>
       list.map((x) =>
@@ -178,11 +197,11 @@ export default function Thread() {
     coven.perms.chat &&
     (!conversationId || (!!mine && !mine.left_at));
 
-  const send = async (body: string) => {
+  const send = async (body: string, replyTo: string | null = null) => {
     if (!covenId) return false;
     setMessage(null);
     try {
-      const row = await sendMessage(covenId, conversationId, body);
+      const row = await sendMessage(covenId, conversationId, body, replyTo);
       if (conversationId)
         setOwn((list) =>
           list && !list.some((m) => m.id === row.id) ? [...list, row] : list,
@@ -196,6 +215,13 @@ export default function Thread() {
       setMessage(errorMessage(error));
       return false;
     }
+  };
+
+  const reversals = drawOptions(settings).reversals;
+  const beginReading = (question: string) =>
+    send(openingBody(question, drawCovenCard(null, reversals)));
+  const drawInto = async (reading: CovenReading) => {
+    await send(cardBody(drawCovenCard(reading, reversals)), reading.id);
   };
 
   return (
@@ -251,13 +277,28 @@ export default function Thread() {
             inverted
             data={items}
             keyExtractor={(item) => item.key}
-            renderItem={({ item }) => (
-              <ThreadRow
-                item={item}
-                nameOf={(id) => coven.nameOf(id)}
-                onLongPress={actions.open}
-              />
-            )}
+            renderItem={({ item }) => {
+              const reading =
+                item.kind === "message" ? readings.get(item.message.id) : undefined;
+              return (
+                <>
+                  <ThreadRow
+                    item={item}
+                    nameOf={(id) => coven.nameOf(id)}
+                    onLongPress={actions.open}
+                  />
+                  {reading && (
+                    <CovenReadingCard
+                      reading={reading}
+                      me={coven.userId}
+                      nameOf={(id) => coven.nameOf(id)}
+                      onDraw={drawInto}
+                      canTalk={canTalk}
+                    />
+                  )}
+                </>
+              );
+            }}
             contentContainerStyle={styles.list}
             keyboardDismissMode="interactive"
             keyboardShouldPersistTaps="handled"
@@ -273,6 +314,7 @@ export default function Thread() {
           />
         )}
         {message && <Notice>{message}</Notice>}
+        {canTalk && <BeginCovenReading onBegin={beginReading} />}
         <Composer
           onSend={send}
           disabled={!canTalk}

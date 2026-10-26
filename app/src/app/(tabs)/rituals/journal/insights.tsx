@@ -6,6 +6,9 @@ import { MoonDisc } from '../../../../components/MoonDisc';
 import { Body, Card, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
 import { lookBackWorkings } from '../../../../lib/altar/apothecaryLookBack';
 import { useWorkshop } from '../../../../lib/altar/workshop';
+import { normalizeReading, READINGS } from '../../../../lib/craft/hedge/readings';
+import { useCraft } from '../../../../lib/craft/store';
+import { preReadingLine } from '../../../../lib/divination/linked';
 import { journalDetail } from '../../../../lib/rituals/format';
 import { journalInsights } from '../../../../lib/rituals/insights';
 import { useRituals } from '../../../../lib/rituals/store';
@@ -32,6 +35,9 @@ export default function JournalInsights() {
   // Spell jars, sachets and the rest of My Apothecary count too, with their intentions and ingredients.
   const { apothecary } = useWorkshop();
   const works = useMemo(() => whatWorks([...rituals.journal, ...lookBackWorkings(apothecary)]), [rituals.journal, apothecary]);
+  // How often the readings drawn before a working bore out (Before a working, beside "Did it work?").
+  const { entries: readingEntries } = useCraft<unknown>(READINGS);
+  const preLine = useMemo(() => preReadingLine(readingEntries.map((e) => ({ ...e, data: normalizeReading(e.data) }))), [readingEntries]);
   const most = Math.max(1, ...insights.byPhase.map((p) => p.count));
   const last = insights.lastThisPhase;
   const lastWords = last ? last.entry.what_happened_during || last.entry.feelings_after || last.entry.notes || last.entry.intention : null;
@@ -116,6 +122,7 @@ export default function JournalInsights() {
               ))}
               {!!works.caveat && <Body muted>{works.caveat}</Body>}
             </Card>
+            {!!preLine && <Body muted>{preLine}</Body>}
             <WorksGroup title="By moon phase" tallies={works.byPhase} />
             <WorksGroup title="By intention" tallies={works.byIntention} />
             <WorksGroup title="By day and its planet" tallies={works.byDay} />
