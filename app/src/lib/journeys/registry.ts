@@ -41,7 +41,10 @@ import { JOURNEY as DEITY_ISIS } from './data/deity-isis.ts';
 import { JOURNEY as DEITY_JANUS } from './data/deity-janus.ts';
 import { JOURNEY as DEITY_JUNO } from './data/deity-juno.ts';
 import { JOURNEY as DEITY_JUPITER } from './data/deity-jupiter.ts';
+import { JOURNEY as DEITY_KALI } from './data/deity-kali.ts';
+import { JOURNEY as DEITY_KRISHNA } from './data/deity-krishna.ts';
 import { JOURNEY as DEITY_LADA } from './data/deity-lada.ts';
+import { JOURNEY as DEITY_LAKSHMI } from './data/deity-lakshmi.ts';
 import { JOURNEY as DEITY_LILITH } from './data/deity-lilith.ts';
 import { JOURNEY as DEITY_LOKI } from './data/deity-loki.ts';
 import { JOURNEY as DEITY_LUGH } from './data/deity-lugh.ts';
@@ -63,10 +66,12 @@ import { JOURNEY as DEITY_PERUN } from './data/deity-perun.ts';
 import { JOURNEY as DEITY_POSEIDON } from './data/deity-poseidon.ts';
 import { JOURNEY as DEITY_RA } from './data/deity-ra.ts';
 import { JOURNEY as DEITY_RHIANNON } from './data/deity-rhiannon.ts';
+import { JOURNEY as DEITY_SARASWATI } from './data/deity-saraswati.ts';
 import { JOURNEY as DEITY_SATURN } from './data/deity-saturn.ts';
 import { JOURNEY as DEITY_SEKHMET } from './data/deity-sekhmet.ts';
 import { JOURNEY as DEITY_SELENE } from './data/deity-selene.ts';
 import { JOURNEY as DEITY_SET } from './data/deity-set.ts';
+import { JOURNEY as DEITY_SHIVA } from './data/deity-shiva.ts';
 import { JOURNEY as DEITY_SKADI } from './data/deity-skadi.ts';
 import { JOURNEY as DEITY_SOL } from './data/deity-sol.ts';
 import { JOURNEY as DEITY_THOR } from './data/deity-thor.ts';
@@ -125,7 +130,10 @@ export const JOURNEYS: Journey[] = [
   DEITY_JANUS,
   DEITY_JUNO,
   DEITY_JUPITER,
+  DEITY_KALI,
+  DEITY_KRISHNA,
   DEITY_LADA,
+  DEITY_LAKSHMI,
   DEITY_LILITH,
   DEITY_LOKI,
   DEITY_LUGH,
@@ -147,10 +155,12 @@ export const JOURNEYS: Journey[] = [
   DEITY_POSEIDON,
   DEITY_RA,
   DEITY_RHIANNON,
+  DEITY_SARASWATI,
   DEITY_SATURN,
   DEITY_SEKHMET,
   DEITY_SELENE,
   DEITY_SET,
+  DEITY_SHIVA,
   DEITY_SKADI,
   DEITY_SOL,
   DEITY_THOR,

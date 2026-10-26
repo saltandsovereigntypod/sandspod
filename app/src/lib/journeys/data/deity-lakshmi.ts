@@ -1,0 +1,572 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-lakshmi',
+  kind: 'deity',
+  paths: ['hindu'],
+  deityRef: 'traditional/deity/lakshmi',
+  title: 'Lakshmi: The Lotus in a Lit House',
+  summary:
+    'A devotional month with Lakshmi, who rose from the churning of the ocean. Learn her names and image, the Shri Sukta and her stories, how Diwali, Kojagari Purnima and Varalakshmi Vratam are kept, and how to offer a clean home, a lamp and a lotus, then decide whether to make a personal vow of devotion.',
+  welcome: `This journey spends about a lunar month learning about Lakshmi and offering her simple devotion (bhakti) at home. She is worshipped in nearly every Hindu household, in temples across India and the diaspora, and above all on the new-moon night of Diwali, when homes are cleaned, lit with lamps and opened to welcome her.
+
+You will learn her names and image, the hymns and stories about her in the Vedas and Puranas, how she has been worshipped from the old Buddhist stupas to Shri Vaishnava temples, how her festivals are kept, and how to make a small home puja with a lamp, a lotus or red flower, rice and sweets. For five evenings, the length of the Diwali festival, you will light lamps for her. At the end you may make a personal vow of devotion, or not.
+
+Please read this plainly. This is not an initiation. Formal initiation (dīkṣā) and mantras traditionally given by a guru are not offered here and cannot be given by an app. Nothing here is "magic", a money charm or a spell; it is devotion. The best thing this journey can do is send you to a temple, a Diwali celebration or a Hindu friend's home, to learn from the people whose religion this is.`,
+  about: `Lakshmi (Lakṣmī), also called Shri (Śrī), is the Hindu goddess of prosperity, good fortune, beauty and auspiciousness, and the consort of Vishnu. Her names are explained as "the auspicious mark" (lakṣmī) and "radiance, splendour, well-being" (śrī); Shri is still written before names and at the top of documents as a sign of the auspicious. She is pictured on a lotus, holding lotuses, with gold coins falling from one hand and often with two elephants pouring water over her (Gaja Lakshmi). An early hymn to her, the Shri Sukta, is appended to the Rig Veda; the Puranas tell how she rose from the churning of the ocean of milk and chose Vishnu, and how she comes to earth with him as Sita, Rukmini and Padmavati. For the Shri Vaishnava tradition of South India she is the compassionate mother who brings devotees to God. Her worship is everywhere today: on Fridays, at Diwali's Lakshmi Puja, at Kojagari Purnima in Bengal and Odisha, at Varalakshmi Vratam in the south, and in the lamp lit at dusk in countless homes.`,
+  notes: [
+    'Hinduism is a living religion. Lakshmi belongs first to the Hindu families, temples and teachers who worship her. This journey is a respectful introduction and an invitation to learn from them, not a replacement.',
+    'Dīkṣā (formal initiation) and mantras traditionally given by a guru are not offered here. Where Hindu prayers are mentioned, the app gives its own English words. Learn Sanskrit prayers, and their pronunciation and proper use, from a priest, teacher or family.',
+    'This is devotion, not magic. Lakshmi is not a money charm. Please do not use her, her image or her names in spells, "abundance" rituals or as décor.',
+    'In Hindu teaching, prosperity (artha) is a good aim of life when it is pursued with dharma, right conduct, and shared. This journey keeps that frame: cleanliness, gratitude, honest work and generosity, not shortcuts to wealth.',
+    'Offerings are vegetarian: no meat, fish, eggs or alcohol. Ganesha is honoured first in almost every Lakshmi puja, and this journey follows that custom.',
+    'Treat her image with care: keep it raised, clean and out of bathrooms; do not put it on shoes, floor mats or anything you sit on.',
+    'The app can show the Hindu lunar calendar (panchang): tick it under "Also show" in "Calendar & holidays". It marks Diwali (Lakshmi Puja), Purnima and Amavasya. Kojagari Purnima, Varalakshmi Vratam and Dhanteras you will find in a printed panchang. Panchangs, regions and countries can differ by a day; confirm with your local temple.',
+    'Safety: some kumkum and sindoor powders have been found to contain lead; buy lead-free and keep them from children. Rows of diyas need heatproof plates and constant attention, and rangoli powder and loose clothing catch fire easily.',
+  ],
+  holyDays: [],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'A Clean Threshold',
+      intro:
+        'Begin by learning who Lakshmi is, clean the place where her shrine will stand, and offer a first simple puja: a lamp at dusk, a flower, a little rice and a sweet. In Hindu homes she is welcomed into clean, lit houses, so cleaning is where devotion to her starts.',
+      days: 3,
+      lessons: [
+        {
+          id: 'lakshmi-who',
+          title: 'Shri, the Auspicious',
+          summary: 'Her names, her image and what it shows, and what Hindus mean by the prosperity she gives.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Her names',
+              body: `Lakshmi (Lakṣmī) comes from a Sanskrit word for a mark or sign, and is usually explained as "she who is the auspicious sign" of good fortune. Her other great name, Shri (Śrī), means radiance, splendour, beauty and well-being together. That is why Shri is written before the names of gods, people and places, and at the head of a letter, a wedding card or an account book: it marks the thing as auspicious.
+
+She has many more names. Padma and Kamala mean "lotus"; Padmavati and Kamalasana, "she of the lotus" and "she who sits on a lotus". Haripriya is "beloved of Hari", that is Vishnu; Narayani is "Narayana's". Mahalakshmi, "great Lakshmi", is the name of many of her temples. In Kolhapur she is affectionately called Ambabai, "Mother".`,
+            },
+            {
+              heading: 'Reading her image',
+              body: `Lakshmi is usually shown seated or standing on a pink lotus, dressed in red and gold, with four arms. Two hands hold lotuses. One is turned down in the gesture of giving, often with gold coins falling from it; one is raised, palm out, in the gesture that says "do not fear". Very often two white elephants stand on either side, pouring water over her from pots held in their trunks: this form is Gaja Lakshmi, "Lakshmi with elephants", one of the oldest images in Indian art. In Bengal and eastern India an owl (pecha) is shown as her companion.
+
+The lotus is the key. It grows from mud and opens clean above the water, and in Hindu imagery it stands for purity, beauty and things unfolding as they should. Modern teachers read her four arms as the four aims of life (dharma, artha, kama, moksha) and the owl as wealth's danger of blindness; these readings are popular and helpful, and are later than the image itself.`,
+            },
+            {
+              heading: 'Prosperity with dharma',
+              body: `Hindu thought names four aims of a human life: dharma (right conduct and duty), artha (wealth and worldly success), kama (pleasure and love) and moksha (liberation). Artha is not shameful. A household needs it, and Lakshmi gives it. But it is meant to be sought within dharma and shared. Her prosperity includes food in the kitchen, health, children, harmony in the family, beauty, courage and wisdom, not only money.
+
+A story in the Vishnu Purana makes the point. The god Indra, proud of his power, carelessly lets his elephant trample a garland given to him by the sage Durvasa. Durvasa curses him, and Shri leaves the three worlds: the gods grow weak and the world grows poor until she is brought back. Prosperity, the story says, does not stay with arrogance.`,
+            },
+            {
+              heading: 'Starting in the right place',
+              body: `It is easy, especially in the West, to meet Lakshmi first as a picture on a "money altar" or in a manifestation post. For Hindus she is the Mother, Vishnu's beloved and the grace of God in the world, worshipped with love every day. That should shape how you come to her: learn first, ask before you join in, and treat her image as you would treat something holy of your own.
+
+Hindu communities are often warmly welcoming, and Diwali in particular is a festival people love to share. If you can, go and see one: in a temple, a community hall, or a friend's lit-up home.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Her names Lakshmi and Shri, her lotus iconography and the Gaja Lakshmi form, her role as Vishnu’s consort, the four aims of life, and the Vishnu Purana story of Durvasa’s curse are well attested in Hindu texts and living practice.',
+            unknown:
+              'How a Vedic idea of śrī, splendour and good fortune, became one great goddess is reconstructed from scattered evidence. Readings of each detail of her image (the four arms as the four aims, the owl as a warning) are modern teaching rather than ancient doctrine.',
+          },
+          inPractice:
+            'Find an image of Lakshmi you can treat with care: a framed print or a small murti (sacred image) from a Hindu shop or temple store. Learn to say her name: LUCK-shmee, with the stress on the first syllable. Write "Shri" at the top of the first page of your journal.',
+          reflect: [
+            'What does prosperity mean to you when it is more than money?',
+            'What do you already assume about Lakshmi that you might need to unlearn?',
+          ],
+          further: [
+            'David Kinsley, Hindu Goddesses: Visions of the Divine Feminine in the Hindu Religious Tradition (1986), ch. 2',
+            'Constantina Rhodes Bailly, Invoking Lakshmi: The Goddess of Wealth in Song and Ceremony (2010)',
+          ],
+          library: ['traditional/deity/lakshmi', 'traditional/deity/ganesha'],
+        },
+      ],
+      practices: [
+        {
+          id: 'lakshmi-shrine',
+          title: 'Clean, then set up a small shrine',
+          instructions: `Before anything else, clean. Choose one room, or one corner of a room, and clean it properly: sweep, dust, wash the floor, clear the clutter. Hindus clean the whole house before Diwali to welcome her, and many say she will not stay where there is dirt and disorder.
+
+Then choose a raised place for her shrine: a shelf or small table, never the floor, and never a bathroom. Many families keep the shrine in the north-east of the home; do so if you can. Lay a fresh red or yellow cloth. Set her image at the back, with a small image of Ganesha beside her if you have one, as at Diwali (families differ on which side). In front, place a diya (oil lamp) on a heatproof plate, an incense holder, a dish for flowers, a small bowl of uncooked rice, a plate for sweets and a cup of clean water.
+
+Keep it clean every day. Take your shoes off before you approach it.`,
+          times: 1,
+          prompt: 'What did you clean, and how did the room feel afterwards?',
+        },
+      ],
+      rite: {
+        title: 'First Lamp for Lakshmi',
+        summary: 'A first short puja at dusk: wash, honour Ganesha, light the lamp, offer a flower, rice and a sweet to Lakshmi, greet her in your own words, and share the sweet.',
+        minutes: 15,
+        ingredients: [
+          { name: 'Lakshmi’s image', ref: 'traditional/deity/lakshmi' },
+          { name: 'A small image of Ganesha, if you have one', ref: 'traditional/deity/ganesha', optional: true },
+          { name: 'A diya (small oil lamp) with ghee or sesame oil and a cotton wick, on a heatproof plate' },
+          { name: 'A lotus, or a red or pink flower such as a rose', ref: 'traditional/herb/rose' },
+          { name: 'A small bowl of uncooked rice', ref: 'traditional/vessel/bowl' },
+          { name: 'A small sweet, such as a laddoo or a piece of jaggery', ref: 'traditional/vessel/dish' },
+          { name: 'A cup of clean water', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'Sandalwood incense and a holder', ref: 'traditional/herb/sandalwood', optional: true },
+          { name: 'A small bell', ref: 'traditional/tool/bell', optional: true },
+        ],
+        preparation:
+          'Do this at dusk, when lamps are lit in Hindu homes. Bathe or wash your hands, feet and face, and put on clean clothes. Remove your shoes. Clean the shrine. Do not eat meat or drink alcohol beforehand. Unwrap the sweet without tasting it. Sit on a mat or cushion before the image.',
+        steps: [
+          {
+            title: 'Settle',
+            instructions: 'Sit quietly before her. Join your palms at your chest and take a few slow breaths as the light outside fades.',
+            minutes: 2,
+          },
+          {
+            title: 'Ganesha first',
+            instructions: 'Ring the bell gently. Almost every Lakshmi puja begins with Ganesha. Bow to him, and offer him a grain of rice or a petal.',
+            spoken: 'Ganesha, remover of obstacles, I bow to you first.',
+          },
+          {
+            title: 'Light the lamp',
+            instructions: 'Light the diya, then the incense. In many homes the evening lamp itself is greeted as Lakshmi’s presence.',
+            light: true,
+          },
+          {
+            title: 'Offer',
+            instructions:
+              'Offer water by holding the cup up a little and setting it down. Place the flower at her feet, then a pinch of rice, then the sweet. Flowers are offered whole and unsmelled; food is offered untasted.',
+            spoken: 'Lakshmi, lotus-born, mother of good fortune,\nI bow to you.\nAccept this water, this flower, this rice and this sweet.',
+          },
+          {
+            title: 'Greet her',
+            instructions: 'Tell her simply who you are and why you have come: to learn, and to keep a clean and grateful house.',
+            minutes: 3,
+          },
+          {
+            title: 'Sit',
+            instructions: 'Look at her image in the lamplight, then close your eyes for a few minutes.',
+            minutes: 4,
+            timed: true,
+          },
+          {
+            title: 'Close',
+            instructions:
+              'Bow with joined palms. Let the lamp burn while you are present, then put it out gently by covering it rather than blowing it out. Take the sweet as prasad.',
+            snuff: true,
+            spoken: 'Thank you, Mother. I will come again.',
+          },
+        ],
+        closing:
+          'Eat the sweet, or share it: what has been offered comes back as prasad, her grace. Keep the rice in a jar and add it to your cooking at the end of the week, or give it to birds. Return the flower to a plant pot or garden when it wilts. Write a few lines in your journal.',
+        safety:
+          'Set the diya and incense on a heatproof plate away from curtains, cloth and paper, and never leave them unattended. Keep flame, smoke and sweets away from pets and children.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'Hymns, Stories and Temples',
+      intro:
+        'Three lessons: the Shri Sukta and her stories; how her worship grew and where it is kept; and Diwali and her other festivals. Light the lamp at dusk and offer a flower before you study each day.',
+      days: 12,
+      lessons: [
+        {
+          id: 'lakshmi-stories',
+          title: 'From the Ocean of Milk',
+          summary: 'The Shri Sukta, the churning of the ocean, her births beside Vishnu, and a story of grace.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'The Shri Sukta',
+              body: `The oldest long hymn to her is the Shri Sukta, the "hymn to Shri". It is one of the khilas, hymns handed down as an appendix to the Rig Veda, placed after Book 5. It is still recited at Lakshmi pujas, and especially on Fridays and at Diwali.
+
+The hymn calls on a golden goddess, radiant as the moon, who stands on a lotus and is woken by the trumpeting of elephants. It asks her to come and stay, bringing cattle, horses, grain, gold and children, and to drive away Alakshmi, "not-Lakshmi": hunger, thirst, poverty and misfortune. In the app's own paraphrase, it ends by asking for prosperity that does not leave. Learn its Sanskrit, if you want to, from a priest or teacher; its recitation has its own rules.`,
+            },
+            {
+              heading: 'The churning of the ocean',
+              body: `Her best-loved story is the samudra manthan, the churning of the ocean of milk, told in the Mahabharata, the Vishnu Purana (Book 1, chapter 9), the Bhagavata Purana (Book 8) and elsewhere. In the Vishnu Purana it follows Durvasa's curse. The gods, weakened since Shri left them, make a truce with the asuras (titans) and churn the cosmic ocean together for the nectar of immortality, using Mount Mandara as the churning stick and the great serpent Vasuki as the rope. Vishnu, as the tortoise Kurma, holds the mountain up on his back.
+
+Many things rise from the ocean: first a terrible poison, which Shiva drinks to save the worlds; then the wish-fulfilling cow, the wish-granting tree, the moon, and at last Lakshmi herself, seated on a lotus, radiant. The gods and the sages praise her; the elephants of the quarters bathe her; and she chooses Vishnu, placing her garland on him. Then Dhanvantari, the physician of the gods, rises with the pot of nectar.`,
+            },
+            {
+              heading: 'Always beside Vishnu',
+              body: `In the Puranas, whenever Vishnu comes to earth, Lakshmi comes too. When he is Rama, she is Sita; when he is Krishna, she is Rukmini, his chief queen; at Tirumala in Andhra Pradesh, where he is Venkateshvara, she is Padmavati, whose own temple stands at Tiruchanur nearby. Some traditions also see Radha as a form of her. She is shown pressing his feet as he lies on the serpent Shesha, or seated on his lap as Lakshmi-Narayana, or living in his chest, marked by the curl of hair called Shrivatsa.
+
+In Bengal, as you may know from the Durga journey, she is also Durga's daughter, who comes home with her mother at Durga Puja. These pictures sit together without strain; Hindu storytelling holds many of them at once.`,
+            },
+            {
+              heading: 'A story of grace',
+              body: `A story told of the teacher Adi Shankara, who probably lived in the eighth century, shows what devotees hope for from her. As a boy he went begging for food and came to the house of a woman so poor she had nothing to give but a single dried amla, an Indian gooseberry. She gave it to him in shame. Moved by her generosity, he sang a hymn to Lakshmi on the spot, and golden amlas rained down on her house. The hymn, the Kanakadhara Stotram ("stream of gold"), is still sung.
+
+The story is a legend, and the hymn's attribution to Shankara is traditional. Its teaching is plain: Lakshmi's gold falls where generosity is, even the generosity of the poor.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The Shri Sukta is a khila hymn handed down with the Rig Veda and recited today. The churning of the ocean is told in the Mahabharata, Vishnu Purana and Bhagavata Purana, with Lakshmi rising from it and choosing Vishnu. Sita, Rukmini and Padmavati as her forms, and the Kanakadhara legend, are widespread in living tradition.',
+            unknown:
+              'The Shri Sukta is hard to date; it is later than most of the Rig Veda. The versions of the churning differ in the order and list of treasures. Whether Shankara composed the Kanakadhara Stotram, and the facts of his life, are uncertain.',
+          },
+          inPractice:
+            'Each day of this study stage, tell one of her stories aloud in your own words before her lamp. Note which text it comes from. Read the churning in H. H. Wilson’s public-domain translation of the Vishnu Purana, Book 1, chapter 9. If you have a Hindu friend, ask which stories of Lakshmi their family tells.',
+          reflect: [
+            'Shri left the gods because of Indra’s carelessness. Where has carelessness cost you something good?',
+            'The poor woman gave her one gooseberry. What could you give, out of little, that would matter?',
+          ],
+          further: [
+            'H. H. Wilson, trans., The Vishnu Purana (1840; public domain), Book 1, chapter 9',
+            'Constantina Rhodes Bailly, Invoking Lakshmi (2010), with translations of the Shri Sukta and Kanakadhara Stotram',
+          ],
+          library: ['traditional/deity/lakshmi', 'traditional/deity/shiva', 'traditional/deity/krishna'],
+        },
+        {
+          id: 'lakshmi-history',
+          title: 'Gaja Lakshmi to Shri Vaishnavism',
+          summary: 'Her early images, her place in Shri Vaishnava devotion, and her great temples.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'Early images',
+              body: `Some of the earliest images of Lakshmi are on Buddhist monuments. On the railings and gateways of the stupas at Bharhut and Sanchi, carved around the second and first centuries BCE, a goddess sits or stands on a lotus while two elephants pour water over her. She appears on coins of the same period too. She was a goddess of good fortune loved by many communities, Buddhist, Jain and Hindu, before the Puranas told her full story.
+
+The idea of śrī, splendour and fortune, is older still. A story in the Shatapatha Brahmana tells how Shri came forth from the creator Prajapati, so radiant that the gods wanted to take her qualities from her. By the time of the epics and Puranas she has become one great goddess and the wife of Vishnu.`,
+            },
+            {
+              heading: 'Shri Vaishnavism',
+              body: `In South India the Shri Vaishnava tradition, taught by Ramanuja (traditionally 1017–1137) and his successors, gives Lakshmi a special role. Vishnu is the Supreme God, and Shri is inseparable from him; she is the purushakara, the one who intercedes. A devotee approaches God through her, as a child might ask its mother to speak to its father. Her compassion opens the way, and his grace receives.
+
+The Tamil poet-saints called the Alvars sang of her and of Vishnu centuries before Ramanuja, and later teachers such as Vedanta Desika wrote hymns to her. In Shri Vaishnava temples, devotees often visit her shrine before Vishnu's. Pancharatra texts, the ritual scriptures of Vishnu's temples, include one named for her, the Lakshmi Tantra.`,
+            },
+            {
+              heading: 'Temples',
+              body: `Her best-known temples include the Mahalakshmi (Ambabai) temple at Kolhapur in Maharashtra, counted among the seats of the Goddess, whose oldest parts date from the Chalukya period; the Mahalaxmi temple on the seafront in Mumbai; and the Padmavati temple at Tiruchanur near Tirupati, where pilgrims to Venkateshvara go to her first. Nearly every Vishnu temple has a shrine for her, and the Lakshmi Narayan temple in Delhi, opened in 1939, is visited by huge crowds at Diwali. Modern Ashtalakshmi temples, such as the one by the sea in Chennai, honour her eight forms.
+
+Temple custom is simple to follow. Remove your shoes. Offer flowers, a coconut or sweets through the priest, who will return some as prasad. Many women offer her a sari or bangles on Fridays.`,
+            },
+            {
+              heading: 'Lakshmi in the house',
+              body: `For many Hindus Lakshmi lives less in temples than in the home. Women of the house are often called its Lakshmi; a new bride is welcomed as Lakshmi entering, sometimes by gently tipping over a measure of rice at the threshold with her foot. Rice, the staple food, is treated as her gift and not wasted. Many families draw small footprints at the door, her feet walking in.
+
+Many families light a lamp at the shrine or doorway at dusk, saying that she visits at that hour. In Bengal and Odisha, women keep Lakshmi pujas on Thursdays, with a small pot of rice as her seat, and read a vow-story (vrata katha) in Bengali or Odia. These customs differ by region and family, and the best way to learn them is to ask.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Gaja Lakshmi images at Bharhut and Sanchi, the Shatapatha Brahmana story of Shri, the Shri Vaishnava doctrine of Lakshmi as purushakara, the Lakshmi Tantra, and the temples named are documented. Household customs around rice, the threshold and the evening lamp are widely observed.',
+            unknown:
+              'Whether the early lotus-goddess images were already called Lakshmi or Shri is not certain. Ramanuja’s traditional dates are disputed. Household customs vary greatly, and most are hard to date.',
+          },
+          inPractice:
+            'Find the nearest Hindu temple with a shrine to Lakshmi; most Vishnu temples have one. Visit if you can, on a Friday evening, and notice how people greet her. At home, try not to waste rice this week; cook only what you will eat, and give the rest away.',
+          reflect: [
+            'The Shri Vaishnavas come to God through Lakshmi’s compassion. Who has opened a door for you?',
+            'Which ordinary things in your home do you treat as gifts, and which do you waste?',
+          ],
+          further: [
+            'Vasudha Narayanan, The Way and the Goal: Expressions of Devotion in the Early Srivaisnava Tradition (1987)',
+            'John Stratton Hawley and Donna Marie Wulff, eds., Devī: Goddesses of India (1996)',
+          ],
+          library: ['traditional/deity/lakshmi', 'traditional/tool/bell'],
+        },
+        {
+          id: 'lakshmi-festivals',
+          title: 'Diwali and Her Other Nights',
+          summary: 'The five days of Diwali, Lakshmi Puja, Kojagari Purnima, Varalakshmi Vratam and her Fridays.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'Five days of lamps',
+              body: `Diwali (Deepavali, "row of lamps") is celebrated by Hindus, Sikhs, Jains and some Buddhists, with different stories in different places: Rama's return to Ayodhya, Krishna's victory over the demon Narakasura, Lakshmi's birth from the ocean, the release of Mahavira or of Guru Hargobind. In much of North and West India it runs for five days around the new moon of Kartika (by the reckoning that counts months from full moon to full moon), in October or November.
+
+Dhanteras, the first day, honours Dhanvantari and Lakshmi; many families buy something new of metal, often a steel or brass vessel or a little silver. Naraka Chaturdashi, or Choti Diwali, comes next, with an early ritual bath. The third night, the new moon itself, is Lakshmi Puja. The fourth day is Govardhan Puja and, in Maharashtra and Gujarat, Padwa and the new year. The fifth is Bhai Dooj, when sisters honour their brothers.`,
+            },
+            {
+              heading: 'Lakshmi Puja',
+              body: `On the new-moon night the house has been cleaned, rangoli patterns drawn at the door, and lamps set along windowsills and steps. At an auspicious time in the evening, the family worships Ganesha and Lakshmi together, often with Kubera, the treasurer of the gods, and Saraswati. Offerings include lotus and marigold flowers, sweets, puffed rice and sugar candies (kheel-batashe), coins and new account books. Gujarati and Marwari business families keep Chopda Puja, blessing the new year's ledgers with "Shubh" and "Labh", "auspicious" and "profit", written at the top.
+
+Doors and windows are often left open, and lamps kept burning, so that she can enter. Then sweets are shared, gifts are exchanged, and there are fireworks. In Bengal, Assam and Odisha, the same night is Kali Puja instead; Lakshmi's great night in Bengal comes earlier, at Kojagari.`,
+            },
+            {
+              heading: 'Kojagari and Varalakshmi',
+              body: `Kojagari Lakshmi Puja falls on the full moon of Ashvin (Sharad Purnima), the bright night after Durga Puja, and is kept above all in Bengal, Odisha and Assam. The name is explained from the question "ko jāgarti?", "who is awake?": Lakshmi is said to go from house to house that night, blessing those who stay awake. Families keep vigil, draw alpana patterns in rice paste, and offer her rice, coconut sweets and fruit.
+
+In Karnataka, Andhra Pradesh, Telangana and Tamil Nadu, married women keep Varalakshmi Vratam, "the vow to Lakshmi who grants boons", on the Friday before the full moon of Shravana, in July or August. A kalash (water pot) is dressed as the goddess with a face, a sari and jewellery, and worshipped for the well-being of the family. Women tie a sacred yellow thread on their wrists and share sweets and gifts with neighbours.`,
+            },
+            {
+              heading: 'Fridays and dusk',
+              body: `Friday (Shukravar) is her day across much of India. Many women fast lightly, wear red or white, cook sweet food, and light the lamp with special care. In Maharashtra, Thursdays of the month of Margashirsha are kept with a Lakshmi vrat, and in Odisha the Thursdays of the same month are Manabasa Gurubar, when the house is cleaned and a measure of new rice is worshipped as her.
+
+And every evening is hers in a small way. The lamp lit at dusk at the shrine or the door is, in many homes, the first and simplest worship of Lakshmi. If you keep only one thing from this journey, it could be that.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The five days of Diwali and Lakshmi Puja on the Kartika new moon, Chopda Puja, Kali Puja on the same night in eastern India, Kojagari Lakshmi Puja on Ashvin Purnima, Varalakshmi Vratam, her Fridays, and Margashirsha Thursdays in Maharashtra and Odisha are widely kept and documented.',
+            unknown:
+              'The origins of Diwali are many and its stories differ by region and community; there is no single "real" Diwali story. The explanation of Kojagari as "who is awake?" is traditional. Family customs, and which days are kept, vary widely.',
+          },
+          inPractice:
+            'Mark the next Diwali and Kojagari Purnima from a panchang, the app’s Hindu calendar, or a temple website. If you live near a Hindu community, look for a Diwali celebration at a temple or community centre and go. Read the premade "Welcoming Lakshmi at Diwali" to see how a home Lakshmi Puja can be kept.',
+          reflect: [
+            'What would it mean to clean your whole house to welcome a guest you love?',
+            'Kojagari asks, "who is awake?" What would it mean to be awake for good things when they come?',
+          ],
+          further: [
+            'Diana L. Eck, India: A Sacred Geography (2012)',
+            'C. J. Fuller, The Camphor Flame: Popular Hinduism and Society in India (1992; revised 2004), on festivals',
+          ],
+          library: ['traditional/deity/lakshmi', 'traditional/deity/kali', 'traditional/candle/gold'],
+          premade: ['folk-lakshmi-diwali'],
+        },
+      ],
+      practices: [
+        {
+          id: 'lakshmi-daily-lamp',
+          title: 'A lamp at dusk each day',
+          instructions:
+            'Each evening at dusk, tidy the shrine and the room around it, wash, light the diya and offer a flower and a cup of water. Bow before you sit down to study.',
+          times: 12,
+          every: 'day',
+          prompt: 'One line: what did you have today that you are grateful for?',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Five Evenings of Lamps',
+      intro:
+        'For five evenings, the length of Diwali, you will light lamps for Lakshmi and offer to her, each evening with its own theme from the festival. If you can, keep these evenings over Diwali itself; otherwise keep them over any five evenings ending on a Friday. First read the lesson on honouring her at home.',
+      days: 5,
+      lessons: [
+        {
+          id: 'lakshmi-today',
+          title: 'Honouring Her at Home Today',
+          summary: 'Her offerings and how to prepare them, her days, words and mantras, customs of respect, and the sensitive points.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'Lotus, rice and sweets',
+              body: `Lakshmi's flower is the lotus. If you can find one, from an Indian grocer or a flower market at Diwali, it is the finest offering; otherwise red and pink flowers, roses and marigolds are traditional. Rice is hers: a small bowl of uncooked rice, a few grains offered with the flowers, or rice tinted with turmeric (akshata, "unbroken" rice). Coins, especially new or silver ones, are placed before her at Diwali and kept with the family's savings afterwards.
+
+Her foods are sweet and rich: kheer (rice pudding), laddoos, coconut sweets, and in Bengal the puffed-rice sweets and naru of Kojagari. All offerings are vegetarian and offered untasted. Many families light a ghee lamp for her, and keep her shrine scented with sandalwood.`,
+            },
+            {
+              heading: 'Her days',
+              body: `Friday is her day; many devotees fast lightly or eat only sweet, simple food, and light her lamp with special care. Purnima, the full moon, is also kept for her by many families, especially Kojagari in Ashvin. Her great night is Diwali's new moon. Varalakshmi Vratam, Margashirsha Thursdays and Manabasa Gurubar are regional vows; if you are near a community that keeps them, ask if you may watch or help.
+
+And she is honoured at beginnings of every kind of prosperity: a first salary, opening a shop, moving into a house (griha pravesh), a wedding. Many people offer her the first earnings of a new job.`,
+            },
+            {
+              heading: 'Words and mantras',
+              body: `Hindus pray to Lakshmi in their own words, in bhajans and aratis such as the widely sung "Om Jai Lakshmi Mata", in stotras such as the Shri Sukta and the Kanakadhara Stotram, and with mantras. Short name-mantras of Lakshmi are widely heard. Some mantras, though, are traditionally given by a guru, with instruction in how and when to say them; and mantras for wealth sold online, promising quick riches, are not how her devotees understand her. Neither is given here.
+
+You can pray freely in your own language and say her names: Lakshmi, Shri, Padma, Kamala, Mahalakshmi, Narayani. If you want to recite in Sanskrit, ask a priest, teacher or Hindu friend; pronunciation matters, and so does knowing what is appropriate for you.`,
+            },
+            {
+              heading: 'Customs of respect, and sensitive points',
+              body: `Remove your shoes before her shrine. Offer with the right hand or both hands, food untasted and flowers unsmelled. Keep meat, eggs and alcohol away from the shrine. Keep her image raised, clean and out of bathrooms. Many Hindus treat money itself with respect as hers: they do not step on a note or coin, and touch it to the forehead if they drop it. Many avoid lending or spending at dusk on Fridays and at Diwali, so that she does not "leave the house"; these are family customs, not rules for you.
+
+The most sensitive point with Lakshmi is commercial. Her image is sold in the West on candles and "money spells", and some Hindus find this deeply hurtful. Generosity, not acquisition, is the sign of her devotees: Diwali is a season of giving to the poor, to workers and to temples. Above all, go to a temple, or to a Diwali celebration, and learn from people.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The lotus, red flowers, rice, coins and sweets as her offerings, Friday and Purnima devotion, the popular arati "Om Jai Lakshmi Mata", the recitation of the Shri Sukta, and customs of respect toward money are widespread in living practice.',
+            unknown:
+              'There is no single correct home puja; customs differ by family, region and tradition. Many household rules about money and dusk are local and hard to date.',
+          },
+          inPractice:
+            'Find a lotus or red flowers for the first and last evenings, and some coins you can set aside. Buy or make a sweet for the third evening. Plan one gift to someone in need during these five days.',
+          reflect: [
+            'Why do you think generosity, not acquisition, is the sign of Lakshmi’s devotees?',
+            'Where have you seen her image used carelessly, and how did it feel to notice it?',
+          ],
+          further: [
+            'Diana L. Eck, Darśan: Seeing the Divine Image in India (1981)',
+            'C. J. Fuller, The Camphor Flame (1992; revised 2004)',
+          ],
+          library: ['traditional/deity/lakshmi', 'traditional/herb/sandalwood', 'traditional/candle/gold'],
+          premade: ['folk-diya-gayatri'],
+        },
+      ],
+      practices: [
+        {
+          id: 'lakshmi-five-evenings',
+          title: 'Five evenings of lamps',
+          instructions: `Each evening at dusk: tidy and clean the room, wash, ring the bell, bow to Ganesha, light the diya and incense, and offer water, a flower, a few grains of rice and a little sweet to Lakshmi. Light more lamps each evening, one more each night, set safely at the shrine, a window or the door. Then sit with the evening's theme for ten minutes and write.
+
+Evening 1, Dhanteras: what you already have. Clean something you own and use, and give thanks for it. Evening 2, Naraka Chaturdashi: clearing out. Remove one thing from your home that you do not need, and give it away. Evening 3, Lakshmi Puja: welcome. Draw a simple rangoli or a pair of footprints at the door, set out coins before her, and keep the fuller puja (see the premade "Welcoming Lakshmi at Diwali"). Evening 4, Govardhan and Annakut: food. Cook something and share it. Evening 5, Bhai Dooj: kin. Honour a brother, sister, cousin or friend who is like family.
+
+On the last evening, give your planned gift to someone in need, and share a sweet with the household.`,
+          times: 5,
+          every: 'day',
+          prompt: 'What did tonight’s lamp show you about what you have and what you can give?',
+          premade: 'folk-lakshmi-diwali',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'After the Lamps',
+      intro:
+        'Take a few days with only the evening lamp. Reread your journal. A vow of devotion is one good outcome; so is pausing, learning more at a temple first, or finding that your path lies elsewhere. Any of these is an honest answer, and honesty is a kind of cleanliness too.',
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'lakshmi-reread',
+          title: 'Read your journal back',
+          instructions:
+            'Read your journal from the first lamp. Note what drew you, what surprised you, and what you learned from people rather than from screens. Then answer the questions below.',
+          times: 1,
+          prompt: 'What has this month taught you about Lakshmi, and about what you call wealth?',
+        },
+      ],
+      questions: [
+        'Are you drawn to Lakshmi herself, as Hindus worship her, or to the idea of a goddess who brings money? Be honest; only the first is what this vow is for.',
+        'Can you keep a small, clean daily practice (a lamp at dusk, a flower, a tidy shrine) and the customs of respect through an ordinary year?',
+        'Have you visited a temple or a Diwali celebration, or spoken with Hindu devotees? If not, would it be better to do that before any vow?',
+        'Would learning from a Hindu teacher or community, in time, serve your devotion better than a self-made vow? A vow now does not stop you doing that later.',
+        'If you decide to wait, or stop, can you offer her a last lamp with thanks? That is a good ending too.',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'A Vow of Devotion',
+      intro:
+        'If you choose to go on, this is a personal vow of devotion to Lakshmi, made in a simple puja. It is not dīkṣā, not an initiation into any Hindu tradition or lineage, and does not replace one; it does not make you a member of a sampradaya or give you anything a guru gives. It is your own promise of bhakti. A Friday, a Purnima, Kojagari or Diwali itself are fitting days.',
+      days: 1,
+      lessons: [],
+      practices: [],
+      rite: {
+        title: 'Vow of Devotion to Lakshmi',
+        summary: 'A full home puja at dusk with lamps, lotus or red flowers, rice, coins and sweets, honouring Ganesha first, your own vow (sankalpa) of devotion, arati and the sharing of prasad.',
+        minutes: 45,
+        ingredients: [
+          { name: 'Lakshmi’s image, cleaned and garlanded if you can', ref: 'traditional/deity/lakshmi' },
+          { name: 'A small image of Ganesha', ref: 'traditional/deity/ganesha', optional: true },
+          { name: 'A fresh red cloth for the shrine' },
+          { name: 'Several diyas with ghee or oil and cotton wicks, on heatproof plates' },
+          { name: 'A plate for the arati lamp' },
+          { name: 'Lotus flowers, or red or pink flowers and marigolds', ref: 'traditional/herb/rose' },
+          { name: 'Sandalwood paste or a little sandalwood oil', ref: 'traditional/herb/sandalwood' },
+          { name: 'Incense and a holder', ref: 'traditional/tool/incense_burner' },
+          { name: 'Uncooked rice, a little tinted with turmeric if you like', ref: 'traditional/vessel/bowl' },
+          { name: 'A few coins' },
+          { name: 'Kheer or another vegetarian sweet, and fruit', ref: 'traditional/vessel/dish' },
+          { name: 'A cup of clean water', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'A small bell', ref: 'traditional/tool/bell', optional: true },
+          { name: 'Your vow, written on clean paper' },
+        ],
+        preparation: `During the day, clean the house, or at least the rooms you live in, as for Diwali. Write your vow. Keep it honest and keepable: what you will do (a lamp at dusk, a clean shrine, her Fridays, a temple visit, Diwali each year), what you will give (a regular gift to those in need is a fitting part of a vow to her), for how long (a year is common), and what you ask of her for your household.
+
+Bathe, dress in clean clothes (red or white if you like), and remove your shoes. Clean the shrine and lay the fresh cloth. Draw a small rangoli or a pair of footprints at the door. Prepare the sweet without tasting it.`,
+        steps: [
+          {
+            title: 'Begin with Ganesha',
+            instructions: 'At dusk, sit before the shrine. Join your palms and breathe. Ring the bell. Offer Ganesha a flower and a few grains of rice.',
+            spoken: 'Ganesha, remover of obstacles, I bow to you first.',
+          },
+          {
+            title: 'Light the lamps',
+            instructions: 'Light the diyas one by one, at the shrine, then at a window or the door. Light the incense. Touch a little sandalwood paste to the base of her image or its frame.',
+            light: true,
+            minutes: 3,
+          },
+          {
+            title: 'Flowers, rice and coins',
+            instructions:
+              'Offer the flowers one at a time, saying one of her names with each. Offer a pinch of rice, then set the coins before her.',
+            spoken: 'Lakshmi. Shri. Padma. Kamala. Mahalakshmi. Narayani. Haripriya…',
+            minutes: 5,
+          },
+          {
+            title: 'Food and water',
+            instructions: 'Set the sweet and fruit before her, with the cup of water. Sprinkle a few drops of water around the food.',
+            spoken: 'Mother, this food is yours.\nAccept it, and let it come back to us as your grace.',
+          },
+          {
+            title: 'The vow',
+            instructions:
+              'Take a little water in your right palm. Read your vow aloud, slowly. Let the water fall onto the plate beneath her, as a sign that the intention is made. Place the paper at her feet.',
+            minutes: 5,
+          },
+          {
+            title: 'Ask for her presence',
+            instructions: 'Ask her to stay in your home, not only as money but as health, harmony, beauty and a generous heart.',
+            spoken: 'Lakshmi, lotus-born,\nstay in this house\nas health, as kindness, as enough to share.\nWhere there is plenty, keep us generous;\nwhere there is little, keep us grateful.',
+          },
+          {
+            title: 'Arati',
+            instructions:
+              'Light the arati lamp from a diya. Wave it slowly in clockwise circles before her, from her feet to her face, while you sing or hum. Then pass your hands over the flame and touch them to your eyes and the top of your head.',
+            minutes: 3,
+          },
+          {
+            title: 'Sit with her',
+            instructions: 'Sit in silence before her in the lamplight.',
+            minutes: 8,
+          },
+          {
+            title: 'Close and share prasad',
+            instructions:
+              'Bow with joined palms. Take a little sweet as prasad and share the rest with others. Let the lamps burn while you are present, then cover them gently.',
+            snuff: true,
+            spoken: 'Thank you, Mother. You are welcome in this house. I will keep my word.',
+          },
+        ],
+        closing:
+          'Keep your vow folded near her shrine and read it each Diwali. Keep the coins with your savings for the year. Share the prasad, and make your first gift to someone in need within the week. Return flowers to the earth. Write the date in your journal, under "Shri". If you can, visit a temple in the coming week.',
+        safety:
+          'Keep every diya, the arati lamp and incense on heatproof plates, away from cloth, rangoli powder, garlands, hair and loose sleeves, and never leave them unattended. If you use camphor for arati, burn only a small piece on a metal plate, keep it from children and pets, and never eat it. Keep sweets with chocolate, raisins or xylitol away from dogs and cats.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'A Lit House',
+      intro:
+        'After the vow, devotion is daily and yearly: a lamp at dusk, a clean shrine, her Fridays, Diwali and Kojagari, generosity, temple visits, and a yearly renewal of your vow.',
+      days: 365,
+      lessons: [],
+      practices: [
+        {
+          id: 'lakshmi-daily',
+          title: 'The lamp at dusk',
+          instructions: 'Each evening, tidy the shrine, light the lamp, offer a flower and water, and bow.',
+          times: 365,
+          every: 'day',
+        },
+        {
+          id: 'lakshmi-fridays',
+          title: 'A Friday or full moon each month',
+          instructions:
+            'On a Friday or the Purnima each month, offer a fuller puja with a lotus or red flowers, rice and a sweet, and give something to someone in need. Check dates in a panchang.',
+          times: 12,
+          every: 'month',
+          prompt: 'What did you share this month, and what came back to you?',
+        },
+        {
+          id: 'lakshmi-diwali',
+          title: 'Diwali and Kojagari',
+          instructions: `Each year, keep Diwali: clean the house, draw a rangoli, light lamps for five evenings, and keep Lakshmi Puja on the new moon, honouring Ganesha first. Visit a temple or community celebration if you can, and give generously in the season. If you wish, keep Kojagari Purnima too, staying up a while in the moonlight with her lamp.`,
+          times: 2,
+          every: 'holy-day',
+          prompt: 'What did the festival, and the people you kept it with, teach you this year?',
+        },
+        {
+          id: 'lakshmi-renewal',
+          title: 'Yearly renewal',
+          instructions:
+            'On the anniversary of your vow, or at Diwali, reread it, write it anew, and repeat the vow puja. Change it honestly. If you are ending it, offer a last lamp and sweet with thanks, take down the shrine with care, and give the image to a temple.',
+          times: 1,
+          prompt: 'What has a year with Lakshmi changed in how you see what you have?',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'Shri Sukta, a khila (appendix) hymn of the Rig Veda after Book 5, paraphrased; translated in Constantina Rhodes Bailly, Invoking Lakshmi: The Goddess of Wealth in Song and Ceremony (2010)',
+    'H. H. Wilson, trans., The Vishnu Purana (London, 1840; public domain), Book 1, chapters 8–9, for Durvasa’s curse and the churning of the ocean, paraphrased; Bhagavata Purana, Book 8, for the churning',
+    'Shatapatha Brahmana 11.4.3 for Shri coming forth from Prajapati, paraphrased',
+    'David Kinsley, Hindu Goddesses (1986), ch. 2; John Stratton Hawley and Donna Marie Wulff, eds., Devī: Goddesses of India (1996)',
+    'Vasudha Narayanan, The Way and the Goal (1987), on Shri in Shri Vaishnavism',
+    'C. J. Fuller, The Camphor Flame (1992); Diana L. Eck, Darśan (1981) and India: A Sacred Geography (2012)',
+  ],
+};

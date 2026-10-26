@@ -411,6 +411,26 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A month with the Best and Greatest: the sky-father of Rome, keeper of oaths and right order, learned through Roman prayer, the Ides and a promise you actually keep."
   },
   {
+    "id": "deity-kali",
+    "kind": "deity",
+    "paths": [
+      "hindu"
+    ],
+    "deityRef": "traditional/deity/kali",
+    "title": "Kali: The Mother Beyond Fear",
+    "summary": "A devotional month with Kali as her devotees know her: the Divine Mother of Bengal, sung to by Ramprasad and loved by Ramakrishna. Learn her names and image, her place in the Devi Mahatmya and Shakta devotion, how Kali Puja is kept, and how to offer red hibiscus, a lamp and song at a simple home puja, then decide whether to make a personal vow of devotion."
+  },
+  {
+    "id": "deity-krishna",
+    "kind": "deity",
+    "paths": [
+      "hindu"
+    ],
+    "deityRef": "traditional/deity/krishna",
+    "title": "Krishna: The Flute in Vrindavan",
+    "summary": "A devotional month with Krishna, the butter thief of Vrindavan and the teacher of the Bhagavad Gita. Learn his stories in the Bhagavata Purana and the Mahabharata, the saints who sang to him, how Janmashtami, Holi and the Ekadashis are kept, and how to offer tulsi, butter and song at a simple home puja, then decide whether to make a personal vow of devotion."
+  },
+  {
     "id": "deity-lada",
     "kind": "deity",
     "paths": [
@@ -419,6 +439,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "deityRef": "traditional/deity/lada",
     "title": "Lada, Harmony of Spring",
     "summary": "A lunar month with Lada, honoured today as the Slavic goddess of love, spring and harmony: an honest look at whether she was ancient, the songs and spring customs she gathers, and a joyful devotion of song, flowers and peace-making."
+  },
+  {
+    "id": "deity-lakshmi",
+    "kind": "deity",
+    "paths": [
+      "hindu"
+    ],
+    "deityRef": "traditional/deity/lakshmi",
+    "title": "Lakshmi: The Lotus in a Lit House",
+    "summary": "A devotional month with Lakshmi, who rose from the churning of the ocean. Learn her names and image, the Shri Sukta and her stories, how Diwali, Kojagari Purnima and Varalakshmi Vratam are kept, and how to offer a clean home, a lamp and a lotus, then decide whether to make a personal vow of devotion."
   },
   {
     "id": "deity-lilith",
@@ -638,6 +668,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A month with Rhiannon of the Mabinogi: the lady no horse could catch, the bag that could never be filled, her son stolen on May Eve and the years she spent at the horse-block, her birds that sang at Harlech, and the scholarly debates about horse goddesses and sovereignty, with a self-dedication made in birdsong at the turning of the light."
   },
   {
+    "id": "deity-saraswati",
+    "kind": "deity",
+    "paths": [
+      "hindu"
+    ],
+    "deityRef": "traditional/deity/saraswati",
+    "title": "Saraswati: The Flowing Word",
+    "summary": "A devotional month with Saraswati, river of the Rig Veda and goddess of knowledge, speech and music. Learn her names and image, her hymns and history, how Vasant Panchami and the Saraswati Puja of Navaratri are kept, and how to offer white flowers, a lamp and your own study at a simple home puja, then decide whether to make a personal vow of devotion."
+  },
+  {
     "id": "deity-saturn",
     "kind": "deity",
     "paths": [
@@ -677,6 +717,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "deityRef": "traditional/deity/set",
     "title": "Set: Great of Strength",
     "summary": "A month with Sutekh, lord of storms, the desert and foreign lands: murderer of Osiris, rival of Horus, and defender of Ra’s boat against the serpent of chaos. Study his whole history, from honoured god of kings to later outcast, keep ten nights at the edge, and decide whether to dedicate."
+  },
+  {
+    "id": "deity-shiva",
+    "kind": "deity",
+    "paths": [
+      "hindu"
+    ],
+    "deityRef": "traditional/deity/shiva",
+    "title": "Shiva: The Auspicious One",
+    "summary": "A devotional month with Shiva, Mahadeva, the great god. Learn his names and forms, from Vedic Rudra to the Lord of the Dance, the stories of the Shiva Purana, the saints who sang to him, how Mondays, Pradosh and Maha Shivaratri are kept, and how to offer water and bilva leaves at home, then decide whether to make a personal vow of devotion."
   },
   {
     "id": "deity-skadi",

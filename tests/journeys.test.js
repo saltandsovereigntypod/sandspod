@@ -48,7 +48,7 @@ test("the app's words for lengths, cadences and steps", () => {
 });
 
 test("the catalog is small, and each journey loads on its own", () => {
-  assert.equal(J.JOURNEY_CATALOG.length, 81);
+  assert.equal(J.JOURNEY_CATALOG.length, 86);
   assert.ok(J.JOURNEY_CATALOG.every((j) => j.id && j.title && j.summary && !("stages" in j)));
   assert.ok(fs.statSync(path.join(root, "js/core/journeys.js")).size < 250 * 1024);
   for (const j of J.JOURNEY_CATALOG) assert.ok(fs.existsSync(path.join(root, "js/core", `journey-${j.id}.js`)), j.id);
@@ -164,6 +164,21 @@ test("the deity card on a Library page: your patron, a shrine, My deities and th
   assert.match(stranger, /Drawn to Grandmother Oak\?/);
   assert.match(stranger, /Add to My deities/);
   assert.doesNotMatch(stranger, /shrine=/);
+});
+
+test("each Hindu deity's Library and patron card offers its devotional journey, built for the website", () => {
+  for (const key of ["ganesha", "durga", "lakshmi", "shiva", "saraswati", "kali", "krishna"]) {
+    const id = `deity-${key}`;
+    const entry = J.lookup.journeyForDeityRefIn(J.JOURNEY_CATALOG, `traditional:deity:${key}`);
+    assert.equal(entry && entry.id, id, key);
+    assert.deepEqual([...entry.paths], ["hindu"]);
+    const html = DeityYours.markup(J, {}, { key, name: key });
+    assert.match(html, new RegExp(`/rituals/journeys/\\?id=${id}"`), key);
+    const journey = loadCore(`journey-${id}`)[`journey-${id}`].journey;
+    assert.equal(journey.id, id);
+    assert.match(journey.welcome, /This is not an initiation/);
+    assert.equal(journey.stages.length, 6);
+  }
 });
 
 test("the pages load what they need, and the altar takes a shrine", () => {
