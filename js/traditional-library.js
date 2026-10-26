@@ -13601,6 +13601,264 @@ const TraditionalLibrary = {
 
             tags: ["storms", "mountains", "truth", "caves", "basque", "earth"]
         },
+
+        amaterasu: {
+            DisplayName: "Amaterasu",
+            Category: "Deity",
+
+            Pantheon: "Shinto",
+
+            Domains: "The sun and its light, the order of heaven, rice and weaving, the imperial ancestor, renewal",
+
+            SacredSymbols: "The sacred mirror (Yata no Kagami), the sun, the rice field, the rebuilt shrine of Ise",
+
+            SacredAnimals: "Rooster, whose crowing helped call her from the cave",
+
+            SacredPlants: "Rice, sakaki",
+
+            CandleColors: "White, gold, red",
+
+            Crystals: "Clear quartz, sunstone, citrine, pearl",
+
+            Herbs: "Sakaki, rice, hinoki (Japanese cypress)",
+
+            Offerings: "Rice, salt, water, sake, coins at the shrine, sincere gratitude",
+
+            TraditionalWarnings: "Amaterasu Ōmikami is a living kami of Shinto, enshrined at Ise Jingū, Japan’s most sacred shrine. Before 1945 her role as ancestor of the imperial line was used by State Shinto to support nationalism and war; many Japanese and others remain wary of that history, so speak of it with care. Treat shrine objects such as ofuda and the mirror with reverence, not as decoration.",
+
+            Overview: "Amaterasu Ōmikami is the kami of the sun, the great kami who shines in heaven, born when the creator Izanagi washed his left eye. The Kojiki of 712 tells how, offended by her brother Susanoo, she hid in the Rock Cave of Heaven and the world went dark, until the other kami gathered with roosters, a mirror and the laughing dance of Ame-no-Uzume to draw her out. She is enshrined in the Inner Shrine at Ise, which is rebuilt every twenty years.",
+
+            TraditionalMeaning: "Light that returns: sincerity, gratitude, order and renewal, and the community joined in calling back the sun.",
+
+            DevotionalApproach: "Start here: learn how people visit a shrine and, if you can, visit one. At a shrine, people bow at the torii gate, rinse their hands and mouth at the water basin, drop a coin in the offering box, ring the bell if there is one, and bow twice, clap twice and bow once (some shrines keep other forms). Approach her with sincerity (makoto) and a clean heart. Shinto asks no creed of visitors; gratitude and good conduct matter most.",
+
+            OfferingNotes: "At a shrine, offer a coin and a bow. At a home kamidana, families place rice, salt and water each morning, and sake on special days, with fresh sakaki. Ask a shrine’s priests how to set up and care for a kamidana and its ofuda.",
+
+            AltarIdeas: "A kamidana, a small shelf above eye level, holding an ofuda (paper talisman) from Ise or a local shrine, sakaki branches, and small dishes of rice, salt and water. Keep it clean, high and simple, and replace the ofuda each year at the shrine.",
+
+            CulturalContext: "Amaterasu belongs to Shinto, the living religion of Japan, kept at some 80,000 shrines by priests (kannushi) and shrine maidens (miko) and by ordinary families. Visitors of any background are welcome at most shrines; Shinto has no conversion and no creed. To go further, visit a shrine, ask its priests, or contact a shrine outside Japan such as Tsubaki Grand Shrine of America.",
+
+            Traditions: "Shinto",
+
+            TraditionNotes: "Shinto: Amaterasu is honoured at Ise Jingū above all, at the Kannamesai in October, when the year’s first rice is offered, and at the Niinamesai on 23 November, and many people visit shrines in the first days of the year (hatsumōde). Families honour her daily at the kamidana with rice, salt and water, giving thanks for light, harvest and the life of the community.",
+
+            tags: ["sun", "light", "ise", "renewal", "harvest", "shinto"]
+        },
+
+        inari: {
+            DisplayName: "Inari",
+            Category: "Deity",
+
+            Pantheon: "Shinto",
+
+            Domains: "Rice and the harvest, food and plenty, business and prosperity, foxes and their messengers, craft and industry",
+
+            SacredSymbols: "Rows of vermilion torii gates, the wish-fulfilling jewel, the rice sheaf, stone foxes holding keys or jewels in their mouths",
+
+            SacredAnimals: "Fox (kitsune), Inari’s messenger, not Inari himself or herself",
+
+            SacredPlants: "Rice",
+
+            CandleColors: "Red, white, gold",
+
+            Crystals: "Carnelian, citrine, clear quartz, red jasper",
+
+            Herbs: "Rice, sakaki, cedar",
+
+            Offerings: "Rice, sake, aburaage (fried tofu), coins, a torii gate dedicated in thanks at the shrine",
+
+            TraditionalWarnings: "Inari is a living kami of Shinto, also honoured in Japanese Buddhism, and appears as male, female or neither in different places. The foxes at Inari shrines are messengers; Western stories that treat Inari as a fox trickster misunderstand the tradition. Do not climb on, touch or move shrine statues and torii.",
+
+            Overview: "Inari Ōkami is the kami of rice, food and prosperity, honoured at more shrines than any other kami in Japan; around a third of all shrines are Inari shrines. The head shrine, Fushimi Inari Taisha in Kyoto, climbs Mount Inari through thousands of vermilion torii, each given by a person or business in thanks. Stone foxes guard the shrines as Inari’s messengers, often holding a key to the rice store or a jewel in their mouths.",
+
+            TraditionalMeaning: "Plenty that sustains: food on the table, honest prosperity, the success of work and gratitude for both.",
+
+            DevotionalApproach: "Start here: learn how people visit a shrine and, if you can, visit an Inari shrine. At a shrine, people bow at the torii gate, rinse their hands and mouth at the water basin, drop a coin in the offering box, ring the bell if there is one, and bow twice, clap twice and bow once (some shrines keep other forms). Approach Inari with sincerity and thanks, especially for food and livelihood. Shinto asks no creed of visitors; gratitude and good conduct matter most.",
+
+            OfferingNotes: "At a shrine, offer a coin, and many leave aburaage or sake as Inari shrines allow. Businesses dedicate torii in thanks for success. At home, rice, salt and water before an Inari ofuda follow custom; ask the shrine’s priests how to care for it.",
+
+            AltarIdeas: "A kamidana holding an ofuda from an Inari shrine, a pair of small fox figures, sakaki, and dishes of rice, salt, water and sake. Keep it clean and high, and return old ofuda to the shrine each year.",
+
+            CulturalContext: "Inari belongs to Shinto, the living religion of Japan, and is also honoured in Japanese Buddhism, as at Toyokawa Inari temple. Shrines from Fushimi to small rooftop shrines on office buildings welcome respectful visitors of any background. To go further, visit a shrine or ask its priests.",
+
+            Traditions: "Shinto",
+
+            TraditionNotes: "Shinto: Inari is honoured on Hatsuuma, the first Day of the Horse in February, when Inari first descended to Mount Inari, at Fushimi’s Hitakisai fire festival in November, and at the rice harvest. People pray for good harvests, business success, safety at work and the prosperity of their families.",
+
+            tags: ["rice", "prosperity", "foxes", "business", "harvest", "shinto"]
+        },
+
+        susanoo: {
+            DisplayName: "Susanoo",
+            Category: "Deity",
+
+            Pantheon: "Shinto",
+
+            Domains: "Storms and the sea, protection against plague and misfortune, courage, the land of Izumo, poetry",
+
+            SacredSymbols: "The sword Kusanagi taken from the serpent’s tail, the eight-layered fence of his poem, the Gion festival floats",
+
+            SacredAnimals: "The eight-headed serpent Yamata no Orochi, which he slew",
+
+            SacredPlants: "Cucumber (avoided by some Gion devotees during the festival), rice",
+
+            CandleColors: "Blue, grey, red",
+
+            Crystals: "Labradorite, hematite, aquamarine, smoky quartz",
+
+            Herbs: "Sakaki, rice, cypress",
+
+            Offerings: "Rice, salt, water, sake, coins at the shrine",
+
+            TraditionalWarnings: "Susanoo is a living kami of Shinto, unruly in heaven but a hero and protector on earth. At Yasaka Shrine in Kyoto he was long identified with Gozu Tennō, a plague deity of Buddhist and folk tradition; the two were separated by law after 1868. Approach him with respect for his power.",
+
+            Overview: "Susanoo-no-Mikoto is the kami of storms and the sea, born when Izanagi washed his nose, the brother of Amaterasu and Tsukuyomi. His rampages in heaven drove Amaterasu into the cave and he was cast out. Coming down to Izumo, he slew the eight-headed serpent Yamata no Orochi, found the sword Kusanagi in its tail, married the princess Kushinada-hime and sang the poem said to be Japan’s first waka.",
+
+            TraditionalMeaning: "Wild strength turned to protection: courage, the taming of disaster and the sincere change of heart.",
+
+            DevotionalApproach: "Start here: learn how people visit a shrine and, if you can, visit one of his, such as a Yasaka, Hikawa or Susa shrine. At a shrine, people bow at the torii gate, rinse their hands and mouth at the water basin, drop a coin in the offering box, ring the bell if there is one, and bow twice, clap twice and bow once (some shrines keep other forms). Approach him with sincerity and respect. Shinto asks no creed of visitors; gratitude and good conduct matter most.",
+
+            OfferingNotes: "At a shrine, offer a coin and a bow. At home, rice, salt and water before an ofuda from one of his shrines follow custom; ask the priests how to care for it.",
+
+            AltarIdeas: "A kamidana holding an ofuda from a Yasaka or Hikawa shrine, sakaki, and dishes of rice, salt and water. Keep it clean and high.",
+
+            CulturalContext: "Susanoo belongs to Shinto, the living religion of Japan, honoured at Yasaka Shrine in Kyoto, the Hikawa shrines around Tokyo and Susa Shrine in Izumo, among many others. Visitors of any background are welcome at most shrines. To go further, visit a shrine or ask its priests.",
+
+            Traditions: "Shinto",
+
+            TraditionNotes: "Shinto: Susanoo is honoured above all at the Gion Matsuri of Yasaka Shrine through July, begun in 869 to ask for relief from plague, with the great procession of floats on 17 July, and at summer festivals across Japan. People pray for protection from illness and disaster, for courage and for good marriages, after his marriage in Izumo.",
+
+            tags: ["storm", "sea", "protection", "courage", "izumo", "shinto"]
+        },
+
+        tsukuyomi: {
+            DisplayName: "Tsukuyomi",
+            Category: "Deity",
+
+            Pantheon: "Shinto",
+
+            Domains: "The moon and night, the counting of months, the calendar, the tides",
+
+            SacredSymbols: "The moon, the night sky",
+
+            SacredAnimals: "None traditionally named",
+
+            SacredPlants: "Susuki (pampas grass) of the autumn moon-viewing, rice",
+
+            CandleColors: "Silver, white, pale blue",
+
+            Crystals: "Moonstone, selenite, clear quartz, pearl",
+
+            Herbs: "Susuki grass, rice, sakaki",
+
+            Offerings: "Rice, water, sake, dumplings (tsukimi dango) at the autumn moon",
+
+            TraditionalWarnings: "Tsukuyomi-no-Mikoto is a living kami of Shinto, but the classics tell little of him and he has relatively few shrines. Autumn moon-viewing (tsukimi) is a seasonal custom for everyone rather than a rite for him alone.",
+
+            Overview: "Tsukuyomi is the kami of the moon, born when Izanagi washed his right eye, the brother of Amaterasu and Susanoo. The Nihon Shoki tells how he killed the food kami Ukemochi in disgust at how she produced food, so that Amaterasu refused ever to see him again, and that is why day and night are apart. He is enshrined at Tsukiyomi-no-miya, a sanctuary of the Ise Inner Shrine, and at a few other shrines.",
+
+            TraditionalMeaning: "The quiet measure of time: night, reflection, the months and the rhythm of tides.",
+
+            DevotionalApproach: "Start here: on a clear night, look at the moon for a few minutes in quiet gratitude, and if you can, visit one of his shrines. At a shrine, people bow at the torii gate, rinse their hands and mouth at the water basin, drop a coin in the offering box, ring the bell if there is one, and bow twice, clap twice and bow once (some shrines keep other forms). Approach him with calm and sincerity. Shinto asks no creed of visitors; gratitude and good conduct matter most.",
+
+            OfferingNotes: "At a shrine, offer a coin and a bow. At the autumn moon-viewing, families set out dumplings, susuki grass and seasonal produce under the moon; this is a seasonal custom you may join.",
+
+            AltarIdeas: "A kamidana with an ofuda from a Tsukiyomi shrine, sakaki, rice, salt and water; and at the autumn moon a dish of dumplings and a vase of susuki by a window.",
+
+            CulturalContext: "Tsukuyomi belongs to Shinto, the living religion of Japan. His shrines at Ise, and the Tsukiyomi Shrine near Matsunoo in Kyoto, welcome respectful visitors. To go further, visit a shrine or ask its priests.",
+
+            Traditions: "Shinto",
+
+            TraditionNotes: "Shinto: Tsukuyomi is honoured at his shrines’ festivals and, by many, at the autumn moon-viewing (Jūgoya) on the fifteenth night of the eighth month of the old lunar calendar, with dumplings and susuki grass. People pray for calm, good timing and safety at night and at sea.",
+
+            tags: ["moon", "night", "time", "tides", "tsukimi", "shinto"]
+        },
+
+        benzaiten: {
+            DisplayName: "Benzaiten",
+            Category: "Deity",
+
+            Pantheon: "Shinto",
+
+            Domains: "Music and the arts, eloquence and learning, water and the sea, wealth and good fortune",
+
+            SacredSymbols: "The biwa (lute), the wish-fulfilling jewel, water and islands, the coiled white snake",
+
+            SacredAnimals: "White snake, dragon (her messengers)",
+
+            SacredPlants: "Lotus",
+
+            CandleColors: "White, pink, gold",
+
+            Crystals: "Pearl, moonstone, rose quartz, clear quartz",
+
+            Herbs: "Lotus, sandalwood, sakaki",
+
+            Offerings: "Coins (often washed in her spring for blessing), music, eggs or sake at snake-day festivals where shrines allow",
+
+            TraditionalWarnings: "Benzaiten came to Japan with Buddhism as the Indian goddess Sarasvatī, and is honoured in both Buddhist temples and Shinto shrines. After 1868 the government separated Buddhism and Shinto, and many of her shrines were rededicated to the kami Ichikishimahime; you may find her under either name. She is a living figure of devotion, not a generic luck goddess.",
+
+            Overview: "Benzaiten is the Japanese goddess of music, eloquence, water and wealth, who came from India as Sarasvatī through the Buddhist Sutra of Golden Light. She is pictured as a beautiful woman playing the biwa, sometimes with eight arms bearing weapons and a jewel, and is the only woman among the Seven Lucky Gods (Shichifukujin). Her three great sanctuaries are on the islands of Enoshima, Itsukushima (Miyajima) and Chikubushima.",
+
+            TraditionalMeaning: "Flowing gifts: music, eloquence, learning and the wealth that flows like water.",
+
+            DevotionalApproach: "Start here: learn how people visit a shrine or temple and, if you can, visit one of hers. At a shrine, people bow at the torii gate, rinse their hands and mouth at the water basin, drop a coin in the offering box, ring the bell if there is one, and bow twice, clap twice and bow once (some shrines keep other forms). At temples, people bow with hands together rather than clapping. Approach her with gratitude and sincerity, and practise your art.",
+
+            OfferingNotes: "At a shrine or temple, offer a coin and a bow; at Zeniarai Benzaiten in Kamakura people wash coins in her spring. Musicians and performers often visit her before a performance. Follow each shrine’s or temple’s own customs.",
+
+            AltarIdeas: "A small shelf with an ofuda or image from one of her shrines or temples, a dish of water, a lotus or white flower, and an instrument or something from your art. Keep it clean and simple.",
+
+            CulturalContext: "Benzaiten belongs to living Japanese religion, both Buddhist and Shinto, and is also honoured as the Hindu Sarasvatī in India; see the Library’s Saraswati entry. Shrines and temples welcome respectful visitors of any background. To go further, visit one or ask its priests.",
+
+            Traditions: "Shinto",
+
+            TraditionNotes: "Shinto: Benzaiten is honoured on snake days (mi no hi), which come every twelve days, at the festivals of her island shrines, and in the first days of the year, when many people make the pilgrimage to the Seven Lucky Gods. People pray for skill in music and the arts, eloquence, success in study and prosperity.",
+
+            tags: ["music", "arts", "eloquence", "water", "fortune", "shinto"]
+        },
+
+        hachiman: {
+            DisplayName: "Hachiman",
+            Category: "Deity",
+
+            Pantheon: "Shinto",
+
+            Domains: "Protection, archery and warriors, the nation and its communities, victory, fishing and farming in older cults",
+
+            SacredSymbols: "The bow and arrows, the mounted archery of yabusame, the character hachi (eight) drawn as two doves",
+
+            SacredAnimals: "Doves, his messengers",
+
+            SacredPlants: "None traditionally named",
+
+            CandleColors: "Red, white, gold",
+
+            Crystals: "Hematite, carnelian, clear quartz, red jasper",
+
+            Herbs: "Sakaki, cedar, rice",
+
+            Offerings: "Rice, salt, water, sake, coins at the shrine",
+
+            TraditionalWarnings: "Hachiman is a living kami of Shinto, long also honoured in Buddhism as Hachiman Daibosatsu. As a god of warriors he was honoured by the samurai and later used in wartime nationalism; most of those who pray to him today ask for protection, safety and success in life.",
+
+            Overview: "Hachiman is the kami of protection and archery, identified with the ancient Emperor Ōjin and honoured at more shrines than any kami except Inari. His head shrine is Usa Jingū in Kyushu, and he was carried to Iwashimizu Hachimangū near Kyoto and to Tsurugaoka Hachimangū in Kamakura, the shrine of the Minamoto warrior clan. Doves are his messengers, and the character for eight in his name is often drawn as a pair of doves.",
+
+            TraditionalMeaning: "Protection of one’s people: courage, discipline, safety for families and communities, and success won fairly.",
+
+            DevotionalApproach: "Start here: learn how people visit a shrine and, if you can, visit a Hachiman shrine. At a shrine, people bow at the torii gate, rinse their hands and mouth at the water basin, drop a coin in the offering box, ring the bell if there is one, and bow twice, clap twice and bow once (some shrines keep other forms). Approach him with sincerity and respect. Shinto asks no creed of visitors; gratitude and good conduct matter most.",
+
+            OfferingNotes: "At a shrine, offer a coin and a bow. Many people buy an omamori (protective amulet) for safety on the road or in examinations and return it to a shrine after a year.",
+
+            AltarIdeas: "A kamidana holding an ofuda from a Hachiman shrine, sakaki, and dishes of rice, salt and water. Keep it clean and high.",
+
+            CulturalContext: "Hachiman belongs to Shinto, the living religion of Japan, with tens of thousands of shrines, many of them village guardian shrines. Visitors of any background are welcome. To go further, visit a shrine or ask its priests.",
+
+            Traditions: "Shinto",
+
+            TraditionNotes: "Shinto: Hachiman is honoured at the great September festivals of his shrines, the Iwashimizu-sai on 15 September and Tsurugaoka Hachimangū’s Reitaisai with its mounted archery, and at the Hōjō-e, when living creatures are released. People pray for protection of family and community, safe travel, success and victory in fair contests.",
+
+            tags: ["protection", "archery", "warriors", "community", "doves", "shinto"]
+        },
     },
 
     tool: {

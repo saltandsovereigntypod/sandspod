@@ -41,6 +41,7 @@ const MORE_DEITIES = [
   "woden", "thunor", "frige", "tiw", "eostre", "hreda",
   "tinia", "uni", "menrva", "turan", "fufluns",
   "mari",
+  "amaterasu", "inari", "susanoo", "tsukuyomi", "benzaiten", "hachiman",
 ];
 
 test("the website's Library has the new deities, field for field like Jupiter", () => {

@@ -318,4 +318,70 @@ export const OTHER: ClosedTradition[] = [
     ],
     related: ['native-american-first-nations', 'sami', 'mexican-andean'],
   },
+  {
+    id: 'shinto',
+    name: "Shinto",
+    aka: ["Shintō", "Kami no michi", "Shrine Shinto", "Jinja Shinto", "Kannushi"],
+    group: 'other',
+    openness: 'debated',
+    peoples:
+      "The people of Japan and the Japanese diaspora. Japan has some 80,000 shrines, most of them linked to the Association of Shinto Shrines (Jinja Honchō), and there are a few shrines abroad, in Hawaii, North America and Europe.",
+    summary:
+      "Japan’s living religion of the kami, kept at shrines and in homes. Anyone may visit a shrine and pray; priests are trained and certified; and people disagree about what it means for someone outside Japan to practise Shinto.",
+    sections: [
+      {
+        heading: "What Shinto is",
+        body:
+          "Shinto is the worship of the kami: gods of the myths such as Amaterasu, the spirits of mountains, rivers and trees, ancestors and the guardian kami of each locality. It has no founder and no single scripture, though the Kojiki (712) and Nihon Shoki (720) tell the myths. It centres on shrines, festivals (matsuri), purification (harae) and sincerity of heart (makoto).\n\nMost Japanese people take part in shrine life, at New Year, at a baby’s first shrine visit, at festivals and for blessings, often without calling themselves religious, and many also take part in Buddhism. For over a thousand years kami and buddhas were worshipped together.",
+      },
+      {
+        heading: "History and the state",
+        body:
+          "In 1868 the Meiji government separated Shinto from Buddhism, and until 1945 it organised shrine worship as State Shinto, used to support emperor worship, nationalism and war. The Allied Shinto Directive of 1945 ended state support, and shrines became private religious bodies. Debates about nationalism, including visits by politicians to Yasukuni Shrine, continue in Japan and its neighbours; most shrine life is local and community-based.",
+      },
+      {
+        heading: "Priests and shrines",
+        body:
+          "Shrine priests (kannushi) train at Kokugakuin or Kōgakkan University or through shrine programmes, and are certified by Jinja Honchō or their own shrine bodies. Many shrines are kept by hereditary priestly families. Shrine maidens (miko) assist at rites. Priests perform the shrine’s rites; ordinary people take part by visiting, praying, giving offerings and joining festivals.",
+      },
+    ],
+    howPeopleComeIn:
+      "Most people belong to shrine life through family and the local shrine, from a baby’s first visit to festivals and New Year. There is no conversion or creed. Some people outside Japan keep a kamidana with an ofuda from a shrine and visit shrines abroad; a very few non-Japanese have trained and serve as priests.",
+    openAndClosed:
+      "Open: visiting shrines, praying, receiving omamori and ofuda, joining festivals, keeping a kamidana, and learning from priests, many of whom welcome sincere interest. Debated: some Japanese priests and scholars hold that Shinto cannot be separated from Japan’s land, language and communities, while others, and shrines such as Tsubaki Grand Shrine of America, welcome non-Japanese practitioners. Closed: the shrine’s rites are performed by priests, and the inner sanctuaries are for priests alone.",
+    myths: [
+      {
+        myth: "Shinto is simply Japanese nature worship.",
+        truth: "Reverence for nature is part of it, but so are shrines, festivals, ancestors, purification, community and a long history shared with Buddhism and the state.",
+      },
+      {
+        myth: "You have to be Japanese to visit a shrine.",
+        truth: "Shrines welcome respectful visitors of any background, and there is no test of belief.",
+      },
+      {
+        myth: "Shinto today is the same as wartime State Shinto.",
+        truth: "State Shinto was a government system ended in 1945; shrines today are private religious bodies, though debates about nationalism continue.",
+      },
+      {
+        myth: "Ofuda and omamori are lucky charms anyone can make.",
+        truth: "They are consecrated at a shrine; homemade copies are not the same, and old ones are returned to a shrine to be burned.",
+      },
+    ],
+    please: [
+      "Please follow each shrine’s rules, including where photographs are not allowed.",
+      "Please don’t make or sell your own ofuda, or call yourself a Shinto priest without training.",
+      "Please don’t use torii, kami names or shrine imagery as decoration or branding.",
+      "Please ask before visiting a shrine while in mourning: in Japanese custom, families often stay away for a time after a death.",
+    ],
+    learn:
+      "Visit shrines with an open mind, read history by Japanese and other scholars, and ask the priests at a shrine near you or abroad. If you would like a kamidana, ask a shrine for an ofuda and how to care for it.",
+    reading: [
+      "John Breen and Mark Teeuwen, A New History of Shinto (2010)",
+      "Helen Hardacre, Shinto: A History (2017)",
+      "Inoue Nobutaka (ed.), Shinto: A Short History (2003)",
+      "Stuart D. B. Picken, Essentials of Shinto (1994)",
+      "Motohisa Yamakage, The Essence of Shinto (2006)",
+    ],
+    community: ["Jinja Honchō (Association of Shinto Shrines)", "Tsubaki Grand Shrine of America"],
+  },
 ];

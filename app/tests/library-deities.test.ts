@@ -13,6 +13,8 @@ import { entryTraditions, PATH_TRADITIONS } from '../src/lib/library/traditions.
 import { TRADITIONAL_LIBRARY } from '../src/lib/library/traditionalData.ts';
 import { ruleDates, upcomingSacred } from '../src/lib/patron/days.ts';
 import { DEITY_DEVOTIONS } from '../src/lib/patron/devotions.ts';
+import { lunarDates } from '../src/lib/patron/lunisolar.ts';
+import { closedById } from '../src/lib/library/closed/index.ts';
 
 type Deity = Record<string, string | string[]>;
 const deities = TRADITIONAL_LIBRARY.deity as unknown as Record<string, Deity>;
@@ -45,6 +47,7 @@ const MORE_DEITIES: Record<string, string[]> = {
   'Anglo-Saxon': ['woden', 'thunor', 'frige', 'tiw', 'eostre', 'hreda'],
   Etruscan: ['tinia', 'uni', 'menrva', 'turan', 'fufluns'],
   Basque: ['mari'],
+  Shinto: ['amaterasu', 'inari', 'susanoo', 'tsukuyomi', 'benzaiten', 'hachiman'],
 };
 const ALL_MORE = Object.values(MORE_DEITIES).flat();
 const text = (d: Deity, ...fields: string[]) => fields.map((f) => String(d[f] ?? '')).join(' ');
@@ -375,6 +378,16 @@ const MORE_SEARCH: [string, string][] = [
   ['Populonia', 'fufluns'],
   ['Anboto', 'mari'],
   ['Sugaar', 'mari'],
+  ['Ise', 'amaterasu'],
+  ['kamidana', 'amaterasu'],
+  ['Fushimi', 'inari'],
+  ['kitsune', 'inari'],
+  ['Orochi', 'susanoo'],
+  ['Gion', 'susanoo'],
+  ['moon-viewing', 'tsukuyomi'],
+  ['Seven Lucky Gods', 'benzaiten'],
+  ['Sarasvatī', 'benzaiten'],
+  ['Usa', 'hachiman'],
 ];
 // Living religions: devotion, not magic.
 const LIVING_PANTHEONS = ['Hindu', 'Shinto', 'Chinese'];
@@ -478,4 +491,27 @@ test('the rest of the gods: sacred days and devotions for the patron page', () =
     assert.ok(d.sources.length > 0 && d.devotions.length >= 4 && d.approach.trim(), key);
     for (const day of d.sacred) assert.ok(day.why.trim() && day.name.trim(), key);
   }
+});
+
+test('the lunisolar calendar gives the published festival dates, leap months included', () => {
+  const on = (month: number, day: number, year: number) =>
+    lunarDates(month, day, new Date(year, 0, 1), new Date(year + 1, 0, 1)).map((d) => `${d.getMonth() + 1}/${d.getDate()}`);
+  // Lunar New Year.
+  assert.deepEqual(on(1, 1, 2023), ['1/22']);
+  assert.deepEqual(on(1, 1, 2025), ['1/29']);
+  assert.deepEqual(on(1, 1, 2026), ['2/17']);
+  assert.deepEqual(on(1, 1, 2027), ['2/6']);
+  // Mid-Autumn, including 2025, the year of a leap sixth month, and 2023, of a leap second.
+  assert.deepEqual(on(8, 15, 2023), ['9/29']);
+  assert.deepEqual(on(8, 15, 2025), ['10/6']);
+  assert.deepEqual(on(8, 15, 2026), ['9/25']);
+  // Dragon Boat and the twelfth month, which falls in the next Gregorian year.
+  assert.deepEqual(on(5, 5, 2026), ['6/19']);
+  assert.deepEqual(on(12, 23, 2024), ['2/2']);
+  // A patron rule of this kind falls once a year.
+  assert.equal(ruleDates({ kind: 'lunisolar', month: 3, day: 23 }, new Date(2026, 0, 1), 365).length, 1);
+});
+
+test('the Closed & living traditions guide covers the living traditions added here', () => {
+  assert.equal(closedById('shinto')?.openness, 'debated');
 });

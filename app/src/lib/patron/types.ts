@@ -32,6 +32,8 @@ export type SacredRule =
   | { kind: 'attic'; day: number | 'last'; month?: string }
   /** A fixed day of the year (month 1–12). */
   | { kind: 'fixed'; month: number; day: number }
+  /** A day of the East Asian lunisolar calendar (month 1–12, never the leap month), worked out by lib/patron/lunisolar.ts: 8/15 is the Mid-Autumn Festival. */
+  | { kind: 'lunisolar'; month: number; day: number }
   /** A festival already in lib/holidays.ts, by its tradition and id (e.g. 'hellenic', 'thesmophoria'). */
   | { kind: 'holiday'; tradition: string; id: string };
 

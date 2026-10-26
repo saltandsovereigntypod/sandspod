@@ -64,6 +64,8 @@ const AS_SOURCES =
   'Bede, De temporum ratione 15 (725), trans. Faith Wallis, Bede: The Reckoning of Time (1999); Ælfric, De falsis diis; Ronald Hutton, Pagan Britain (2013)';
 const ETRUSCAN_SOURCES =
   'Nancy Thomson de Grummond and Erika Simon (eds), The Religion of the Etruscans (2006); Jean-René Jannot, Religion in Ancient Etruria (2005)';
+const SHINTO_LIVING =
+  'These days belong to a living religion; customs vary by shrine and region. John Breen and Mark Teeuwen, A New History of Shinto (2010); Jinja Honchō (Association of Shinto Shrines): https://www.jinjahoncho.or.jp/en/';
 const UGARIT_TEXTS = 'Simon B. Parker (ed.), Ugaritic Narrative Poetry (1997), for the Baal Cycle and the tale of Aqhat';
 
 export const DEITY_DEVOTIONS: DeityDevotion[] = [
@@ -4214,6 +4216,140 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     approach:
       'Mari is approached with respect and plain truth, as the Lady of the Basque mountains known from folklore.',
     sources: ['José Miguel de Barandiarán, Mitología vasca (1960)', 'Resurrección María de Azkue, Euskalerriaren Yakintza (1935–47)'],
+  },
+
+  // ─── Shinto ──────────────────────────────────────────────────────────────
+  {
+    key: 'amaterasu',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 1, day: 1 },
+        name: 'Hatsumōde, the first shrine visit',
+        why: 'In the first days of the year most people in Japan visit a shrine to give thanks and pray for the year ahead, and Ise is among the most visited.',
+        basis: 'later',
+      },
+      {
+        rule: { kind: 'fixed', month: 10, day: 17 },
+        name: 'Kannamesai',
+        why: 'Ise Jingū’s greatest festival, from 15 to 17 October, when the year’s first rice is offered to Amaterasu.',
+        basis: 'later',
+      },
+      {
+        rule: { kind: 'fixed', month: 11, day: 23 },
+        name: 'Niinamesai',
+        why: 'The harvest festival, when new rice is offered to the kami at shrines across Japan; today also Labour Thanksgiving Day.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Greet the morning sun with a bow and a word of thanks.',
+      'Offer fresh water and a little rice at your kamidana, if you keep one.',
+      'Clean one part of your home carefully.',
+      'Learn how to visit a shrine respectfully.',
+    ],
+    approach:
+      'Amaterasu belongs to a living religion, so she is approached with sincerity and gratitude, learning from shrines and their priests.',
+    sources: [SHINTO_LIVING, 'Kojiki (712), trans. Gustav Heldt (2014)', 'Ise Jingū: https://www.isejingu.or.jp/en/'],
+  },
+  {
+    key: 'inari',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 11, day: 8 },
+        name: 'Hitakisai',
+        why: 'Fushimi Inari Taisha’s fire festival on 8 November, giving thanks for the harvest with bonfires of prayer sticks. Inari’s other great day, Hatsuuma, the first Day of the Horse in February, follows the twelve-day cycle and is not worked out here.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Give thanks for the food you eat today.',
+      'Offer a little rice or a grain of thanks for your livelihood.',
+      'Work honestly and well at one task, and dedicate the effort.',
+      'Learn how to visit a shrine respectfully.',
+    ],
+    approach:
+      'Inari belongs to a living religion, so Inari is approached with sincerity and thanks, learning from shrines and their priests.',
+    sources: [SHINTO_LIVING, 'Karen A. Smyers, The Fox and the Jewel: Shared and Private Meanings in Contemporary Japanese Inari Worship (1999)', 'Fushimi Inari Taisha: https://inari.jp/en/'],
+  },
+  {
+    key: 'susanoo',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 7, day: 17 },
+        name: 'Gion Matsuri',
+        why: 'The great float procession of Yasaka Shrine’s Gion Matsuri, which runs through July and was begun in 869 to ask relief from plague.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Ask for protection for someone who is unwell.',
+      'Turn one burst of temper into something useful.',
+      'Read the story of Yamata no Orochi.',
+      'Learn how to visit a shrine respectfully.',
+    ],
+    approach:
+      'Susanoo belongs to a living religion, so he is approached with sincerity and respect, learning from shrines and their priests.',
+    sources: [SHINTO_LIVING, 'Kojiki (712), trans. Gustav Heldt (2014)', 'Yasaka Shrine: https://www.yasaka-jinja.or.jp/en/'],
+  },
+  {
+    key: 'tsukuyomi',
+    sacred: [
+      {
+        rule: { kind: 'lunisolar', month: 8, day: 15 },
+        name: 'Jūgoya, the autumn moon-viewing',
+        why: 'The fifteenth night of the eighth month of the old lunar calendar, when people in Japan view the full autumn moon with dumplings and susuki grass. It is a seasonal custom for everyone; honouring Tsukuyomi then is a natural, modern pairing.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Look at the moon for a few minutes in quiet gratitude.',
+      'Offer a little water or rice by a window at night.',
+      'Plan the month ahead calmly.',
+      'Learn how to visit a shrine respectfully.',
+    ],
+    approach:
+      'Tsukuyomi belongs to a living religion, so he is approached with calm and sincerity, learning from shrines and their priests.',
+    sources: [SHINTO_LIVING, 'Nihon Shoki (720), trans. W. G. Aston (1896)'],
+  },
+  {
+    key: 'benzaiten',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 1, day: 1 },
+        name: 'The Seven Lucky Gods pilgrimage',
+        why: 'In the first days of the year many people visit the shrines and temples of the Seven Lucky Gods, of whom Benzaiten is the only woman. Her own snake days (mi no hi) come every twelve days and are not worked out here.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Play, sing or practise your art for ten minutes.',
+      'Speak kindly and clearly in one conversation.',
+      'Offer a little fresh water with thanks.',
+      'Learn how to visit a shrine or temple respectfully.',
+    ],
+    approach:
+      'Benzaiten belongs to living Japanese religion, Buddhist and Shinto, so she is approached with gratitude and sincerity, learning from shrines, temples and their priests.',
+    sources: [SHINTO_LIVING, 'Catherine Ludvik, From Sarasvatī to Benzaiten (2001)'],
+  },
+  {
+    key: 'hachiman',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 9, day: 15 },
+        name: 'Iwashimizu-sai',
+        why: 'The great festival of Iwashimizu Hachimangū on 15 September; Tsurugaoka Hachimangū’s festival, with mounted archery, falls on the days around it.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Ask for protection for your family and neighbours.',
+      'Do one disciplined thing well.',
+      'Watch for doves and greet them as his messengers.',
+      'Learn how to visit a shrine respectfully.',
+    ],
+    approach:
+      'Hachiman belongs to a living religion, so he is approached with sincerity and respect, learning from shrines and their priests.',
+    sources: [SHINTO_LIVING, 'Iwashimizu Hachimangū: https://www.iwashimizu.or.jp/', 'Tsurugaoka Hachimangū: https://www.hachimangu.or.jp/'],
   },
 
   // ─── Jewish folklore and Western occultism ───────────────────────────
