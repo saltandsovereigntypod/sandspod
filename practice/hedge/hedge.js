@@ -623,7 +623,7 @@
       `${place ? kit.muted(place.about) : ""}<p class="dv-meaning__name">${m.glyph ? `<span class="dv-glyph" aria-hidden="true">${kit.esc(m.glyph)}</span>  ` : ""}${kit.esc(
         itemName(m)
       )}</p>${title ? kit.muted(`In the ${Dv.decks.deckInfo(deck).name}: ${title}`) : ""}${m.gloss ? kit.muted(m.gloss) : ""}${m.meaning.keywords ? `<p class="dv-meaning__words">${kit.esc(m.meaning.keywords)}</p>` : ""}${kit.p(m.meaning.text)}${
-        more ? `<p class="dv-meaning__more"><a href="${kit.esc(more)}">Read more</a></p>` : ""
+        more ? `<p class="dv-meaning__more"><a href="${kit.esc(more)}" target="_blank" rel="noopener">Read more</a></p>` : ""
       }`,
       { gold: true, label: place ? `${i + 1} · ${place.name}` : spread.label }
     );
