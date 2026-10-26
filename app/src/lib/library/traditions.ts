@@ -29,7 +29,7 @@ export const PATH_TRADITIONS: PathTradition[] = [
 // Calendars that map onto a tradition of the same family.
 const CALENDAR_TO_PATH: Record<string, string> = { wheel_south: 'wheel', hellenic_monthly: 'hellenic' };
 // A deity's pantheon when the entry has no `Traditions` field.
-const PANTHEON_TO_PATH: Record<string, string> = { greek: 'hellenic', roman: 'roman', norse: 'norse', celtic: 'celtic', welsh: 'celtic', irish: 'celtic', gaulish: 'celtic', slavic: 'slavic', egyptian: 'egyptian', hindu: 'hindu' };
+const PANTHEON_TO_PATH: Record<string, string> = { greek: 'hellenic', roman: 'roman', norse: 'norse', celtic: 'celtic', welsh: 'celtic', irish: 'celtic', gaulish: 'celtic', slavic: 'slavic', egyptian: 'egyptian', hindu: 'hindu', wiccan: 'wicca' };
 
 const byName = new Map(PATH_TRADITIONS.map((t) => [t.name.toLowerCase(), t.id]));
 const known = new Set(PATH_TRADITIONS.map((t) => t.id));

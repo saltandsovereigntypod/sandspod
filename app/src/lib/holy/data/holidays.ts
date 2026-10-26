@@ -271,7 +271,7 @@ export const HOLIDAY_PAGES: HolyPage[] = [
     ],
     ritual: { premade: 'wicca-samhain-dumb-supper' },
     correspondences: {
-      deities: ['Hekate', 'The Morrigan', 'Cerridwen', 'Hel', 'Hades', 'Persephone'],
+      deities: ['Hekate', 'The Morrigan', 'Cerridwen', 'The Horned God', 'Hel', 'Hades', 'Persephone'],
       herbs: ['Mugwort', 'Rosemary', 'Sage', 'Yew', 'Wormwood', 'Rowan'],
       crystals: ['Obsidian', 'Jet', 'Smoky Quartz', 'Black Tourmaline', 'Onyx'],
       colors: ['Black', 'Orange', 'Purple', 'Silver'],
@@ -311,7 +311,7 @@ export const HOLIDAY_PAGES: HolyPage[] = [
     ],
     ritual: { premade: 'wicca-yule-log-sun-vigil' },
     correspondences: {
-      deities: ['Frigg', 'Odin', 'Baldur', 'Ra', 'Dazhbog', 'Aengus Óg', 'Boann'],
+      deities: ['Frigg', 'Odin', 'Baldur', 'Ra', 'Dazhbog', 'The Horned God', 'Aengus Óg', 'Boann'],
       herbs: ['Holly', 'Mistletoe', 'Juniper', 'Cedar', 'Cinnamon', 'Frankincense'],
       crystals: ['Garnet', 'Ruby', 'Bloodstone', 'Clear Quartz', 'Sunstone'],
       colors: ['Red', 'Green', 'Gold', 'White'],

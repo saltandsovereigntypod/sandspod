@@ -3356,6 +3356,74 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     sources: ['Rig Veda 1.50 and 1.115, hymns to Surya', HINDU_LIVING],
   },
 
+  // ─── Wiccan ──────────────────────────────────────────────────────────────
+  {
+    key: 'wiccan_goddess',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'full' },
+        name: 'The full-moon esbat',
+        why: 'Wiccans honour the Goddess at the esbats, above all at the full moon, a practice set down in Gardnerian Wicca in the 1950s and drawing on Leland’s Aradia.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Read a few lines of the Charge of the Goddess.',
+      'Look for the moon tonight and greet her.',
+      'Do one kind thing for a woman of another generation.',
+      'Take a few minutes to enjoy something beautiful, as an act of worship.',
+    ],
+    approach:
+      'The Goddess is approached with love and with honesty about her modern origins in Gardner’s Wicca and Graves’s triple goddess.',
+    sources: [HUTTON_TRIUMPH, 'Doreen Valiente, The Charge of the Goddess (1950s; in The Charge of the Goddess, 2000)', 'Robert Graves, The White Goddess (1948)'],
+  },
+  {
+    key: 'horned_god',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'yule' },
+        name: 'Yule',
+        why: 'In the Wiccan Wheel of the Year the God is reborn with the sun at the winter solstice. This is modern Wiccan theology.',
+        basis: 'modern',
+      },
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'samhain' },
+        name: 'Samhain',
+        why: 'At Samhain Wiccans honour the God as lord of death and the underworld, before his rebirth at Yule. This is modern Wiccan theology.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Walk somewhere wild or green and give thanks.',
+      'Leave a piece of bread in a wild place where it will not harm animals.',
+      'Do one thing for wildlife or woodland.',
+      'Light a gold candle and name what you are ready to let die back.',
+    ],
+    approach:
+      'The Horned God is approached with respect for the wild, honest that his modern form was shaped in the twentieth century.',
+    sources: [HUTTON_TRIUMPH, 'Janet and Stewart Farrar, Eight Sabbats for Witches (1981)', HUTTON_STATIONS],
+  },
+  {
+    key: 'aradia',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'full' },
+        name: 'The full moon',
+        why: 'In Leland’s Aradia she tells her followers to gather once a month, “and better it be when the moon is full”.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Read a page of Leland’s Aradia at the full moon.',
+      'Do one thing for someone treated unjustly.',
+      'Bake or share a small cake with salt and honey.',
+      'Share something you know with someone who has been kept from learning it.',
+    ],
+    approach:
+      'Aradia is approached with honesty about her uncertain origins, as Leland’s liberator of the oppressed.',
+    sources: ['Charles Godfrey Leland, Aradia, or the Gospel of the Witches (1899), ch. 1', HUTTON_TRIUMPH, 'Sabina Magliocco, “Who Was Aradia? The History and Development of a Legend”, The Pomegranate 18 (2002)'],
+  },
+
   // ─── Jewish folklore and Western occultism ───────────────────────────
   {
     key: 'lilith',

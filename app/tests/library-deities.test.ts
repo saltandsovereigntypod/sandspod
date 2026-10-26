@@ -37,6 +37,7 @@ const MORE_DEITIES: Record<string, string[]> = {
   'Celtic (British)': ['sulis'],
   Slavic: ['svarog', 'stribog', 'jarilo', 'zorya', 'rod'],
   Hindu: ['vishnu', 'parvati', 'hanuman', 'rama', 'brahma', 'surya'],
+  Wiccan: ['wiccan_goddess', 'horned_god', 'aradia'],
 };
 const ALL_MORE = Object.values(MORE_DEITIES).flat();
 const text = (d: Deity, ...fields: string[]) => fields.map((f) => String(d[f] ?? '')).join(' ');
@@ -235,6 +236,8 @@ const MORE_LINKS: [string, string][] = [
   ['hindu-maha-shivaratri', 'parvati'],
   ['hindu-diwali', 'rama'],
   ['hindu-navaratri', 'rama'],
+  ['wheel-samhain', 'horned_god'],
+  ['wheel-yule', 'horned_god'],
 ];
 // Seasonal things kept for festivals that honour them.
 const MORE_SEASONAL: string[] = ['Lares', 'Njord', 'Rama'];
@@ -311,6 +314,11 @@ const MORE_SEARCH: [string, string][] = [
   ['Pushkar', 'brahma'],
   ['Chhath', 'surya'],
   ['Konark', 'surya'],
+  ['Maiden, Mother and Crone', 'wiccan_goddess'],
+  ['Charge of the Goddess', 'wiccan_goddess'],
+  ['Herne', 'horned_god'],
+  ['Holly King', 'horned_god'],
+  ['Leland', 'aradia'],
 ];
 // Living religions: devotion, not magic.
 const LIVING_PANTHEONS = ['Hindu', 'Shinto', 'Chinese'];

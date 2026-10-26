@@ -33,6 +33,7 @@ const MORE_DEITIES = [
   "taranis", "sucellos", "belenus", "sulis",
   "svarog", "stribog", "jarilo", "zorya", "rod",
   "vishnu", "parvati", "hanuman", "rama", "brahma", "surya",
+  "wiccan_goddess", "horned_god", "aradia",
 ];
 
 test("the website's Library has the new deities, field for field like Jupiter", () => {
