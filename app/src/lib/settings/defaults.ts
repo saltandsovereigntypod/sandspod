@@ -153,6 +153,8 @@ export function defaultSettings(): Settings {
     living_state_show_future_tending: true,
     living_state_show_remaining: true,
     living_state_show_recent_activity: true,
+    // Holiday, tending and planning reminders, quiet hours and the pause, as JSON ('' until first chosen): lib/reminders/prefs.ts.
+    reminders_v2: '',
   };
 }
 
