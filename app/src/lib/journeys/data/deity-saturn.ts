@@ -1,0 +1,529 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-saturn',
+  kind: 'deity',
+  paths: ['roman'],
+  deityRef: 'traditional/deity/saturn',
+  title: 'Saturn of the Golden Age',
+  summary:
+    'A month with Saturn, the Roman god of sowing and of the Golden Age: his temple and treasury, his bound feet and bare head, the Saturnalia with its tapers, gifts and shared tables, and an open-handed practice of plenty given away.',
+  welcome: `This journey runs about a lunar month. You will learn who Saturn was to the Romans, why his rites were done with the head bare when almost every other Roman god was approached veiled, what the Saturnalia actually involved, and how people honour him today. There is a nine-day practice of giving and sharing, and at the end you may make a self-dedication.
+
+It is a self-dedication, not an initiation. Saturn had no flamen of his own, and his public cult was run by the state priests and magistrates. Nobody can make you a priest of his from an app, and modern groups that keep priesthoods have their own processes. What remains open to everyone is the household side of his festival, which was the side most Romans knew best.
+
+You can begin at any time of year. If you can, time it so that the dedication falls in the Saturnalia, from 17 December.`,
+  about: `Saturn is the Roman god of sowing and of the seed, and the king of the Golden Age. Roman writers told how he came to Latium as an exile, was welcomed by Janus, taught the people to farm, and ruled an age without slaves, private property or want. His temple at the foot of the Capitol was one of the oldest in Rome and held the state treasury. His statue there carried a pruning hook and had its feet bound with wool, and the wool was loosed for his festival. Unusually, Romans sacrificed to him with the head uncovered, in what they called the Greek rite. His festival, the Saturnalia, began on 17 December and became the best-loved holiday of the Roman year: a public sacrifice and banquet, then days of feasting, gambling, candles, small gifts, and masters waiting on the enslaved at table. Greek writers matched him with Kronos, and much of the darker myth people know comes from there; later astrology made him the cold planet of limits and melancholy. Today Roman polytheists keep the Saturnalia, light tapers and give gifts, and honour him as a god of plenty shared.`,
+  notes: [
+    'Roman Saturn and astrological Saturn are different figures. The grim planet of limits, delay and melancholy comes from Hellenistic and later astrology. The journey teaches the Roman god and says where the planetary one fits.',
+    'Saturn was matched with the Greek Kronos, who castrated his father and swallowed his children. Those stories belong to Greek myth and Latin poetry, not to Roman temple cult. The journey says which is which.',
+    'The Saturnalia’s licence was a few days of reversal inside a society built on slavery. Honour its spirit of equality without pretending it was a holiday of freedom for the people it briefly served.',
+    'Wax tapers were his gift. Never leave a candle burning unattended, and keep them away from greenery and decorations, which in December are everywhere.',
+    'Modern Roman polytheism is small and varied. The gods of Rome belong to anyone who approaches them with respect, whatever their ancestry.',
+  ],
+  holyDays: ['saturnalia'],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'A taper and an open hand',
+      intro:
+        'Before study, a greeting. Saturn was approached in the Greek rite, with the head bare, so this first rite already looks a little different from other Roman rites. Janus comes first, as he did in every Roman prayer, and as he did in Saturn’s own story, when he welcomed the exiled god to Latium.',
+      days: 2,
+      lessons: [],
+      practices: [
+        {
+          id: 'saturn-threshold-seed',
+          title: 'Hold a seed',
+          instructions:
+            'On each of the two days, take a seed, a grain of wheat, a bean or a dried pea, and hold it for a few minutes. Saturn’s name was linked by the Romans with satus, sowing. Think about what this small thing could become, and how little it asks to begin.',
+          times: 2,
+          every: 'day',
+          prompt: 'What in my life is still a seed? What would it need to be sown?',
+        },
+      ],
+      rite: {
+        title: 'Greeting Saturn',
+        summary: 'A short introduction in the Greek rite: washed hands, head bare, Janus first, then a wax taper, grain and a few words to Saturn.',
+        minutes: 20,
+        ingredients: [
+          { name: 'A bowl of clean water and a towel', ref: 'traditional/vessel/bowl' },
+          { name: 'A wax taper or plain candle in a stable holder', ref: 'traditional/candle/gold' },
+          { name: 'Frankincense, a few grains', ref: 'traditional/herb/frankincense' },
+          { name: 'An incense burner or a heatproof dish with sand', ref: 'traditional/tool/incense_burner' },
+          { name: 'A small dish of grain, or a few dried figs', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'A small cup of wine (or grape juice)', ref: 'traditional/tool/chalice' },
+          { name: 'A sprig of wheat or a few ears of grain', optional: true },
+        ],
+        preparation:
+          'Clear a small space on the table where you eat: Saturn belongs at the shared table. Set out the taper, burner, dish and cup. Read the words through until you can say them without stumbling, because Roman prayer took its words seriously. Do not cover your head for this rite.',
+        steps: [
+          {
+            title: 'Wash',
+            instructions: 'Wash your hands in the clean water and dry them. Leave your head uncovered. Most Roman gods were approached with a fold of cloth drawn over the head; Saturn, with Hercules at his Great Altar, was one of the exceptions, honoured in what the Romans called the Greek rite.',
+          },
+          {
+            title: 'Janus first',
+            instructions: 'Drop a few grains of incense on the burner. Janus is called first in Roman prayer, and in the story it was Janus who received Saturn when he came to Italy.',
+            spoken: 'Father Janus, who welcomed Saturn to this land,\nreceive this incense, and open the way.',
+          },
+          {
+            title: 'Light the taper',
+            instructions: 'Light the taper. Wax tapers, cerei, were the gift friends gave each other at the Saturnalia.',
+            spoken: 'Saturn, sower, lord of the Golden Age,\nor by whatever name it is right to call you:\nthis light is for you.',
+            light: true,
+          },
+          {
+            title: 'Offer grain and wine',
+            instructions: 'Set the dish of grain or figs before the taper, and pour a little wine beside it.',
+            spoken: 'Saturn, be honoured by this grain and this wine.\nI ask nothing tonight but to come to know you,\nand to learn what you gave.',
+          },
+          {
+            title: 'Sit at the table',
+            instructions: 'Sit quietly for a few minutes at the table with the taper. Think of the people you have shared food with this week.',
+            minutes: 3,
+          },
+          {
+            title: 'Vesta last',
+            instructions: 'Name Vesta, goddess of the hearth, last, as Romans closed their prayers. Then put out the taper.',
+            spoken: 'Vesta, keeper of the hearth, be honoured, last as always.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Leave the grain and wine until the next day, then scatter the grain on earth for the birds or put it in the compost, and pour the wine onto soil. Write down the date: you have begun.',
+        safety:
+          'Never leave a taper or incense unattended, and keep them away from paper, cloth and greenery. Use a stable holder and a heatproof surface. Keep incense smoke away from birds and anyone with asthma. Grapes, raisins and wine are toxic to dogs and cats, so keep the dish out of their reach.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'The god of the seed and the treasury',
+      intro:
+        'Five lessons, about two days each. They go from who Saturn was to the Romans, to his temple and his unusual rite, to the Saturnalia in detail, to how people keep him now, and finally to the hard parts: the slaves at the feast, the Greek myths and the cold planet.',
+      days: 10,
+      lessons: [
+        {
+          id: 'saturn-who',
+          title: 'Who Saturn is',
+          summary: 'The god of sowing, the exile who came to Latium, and the king of the Golden Age.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'The sower',
+              body:
+                'Roman writers explained Saturn’s name from satus, “sowing”. Varro, the great first-century BC antiquarian, says so in his book on the Latin language. Modern linguists are not sure he was right; some think the name came into Latin from Etruscan. But the Romans understood him as the god of the seed put into the ground, and of the plenty that came from it.\n\nHis image showed it. Saturn was pictured as an older, bearded man, often with a fold of his cloak over his head, holding a falx: a curved pruning hook or sickle, the tool of the vineyard and the harvest. The Romans told stories to explain the tool, but its plain sense is agricultural.',
+            },
+            {
+              heading: 'The exile in Latium',
+              body:
+                'The best-known Roman story of Saturn is told by Virgil in the eighth book of the Aeneid (8.314–336) and by Ovid in the Fasti (1.233–238). Driven from heaven by Jupiter, Saturn came by ship to Italy. Janus, king of the land, welcomed him. Saturn gathered the scattered people of the hills, gave them laws and taught them to farm, and the land was called Latium, Virgil says, because he had lain hidden (latere) there.\n\nA settlement called Saturnia was said to have stood on the Capitoline Hill, and the Romans sometimes called Italy itself Saturnia tellus, “Saturn’s land”. This is one of the few native Roman myths about a god, and it puts Saturn at the very start of Roman civilisation.',
+            },
+            {
+              heading: 'The Golden Age',
+              body:
+                'Under Saturn’s rule, the story went, there was no want. Later writers add that there were no slaves and no private property: everything was held in common, and nobody needed to fence a field. The Golden Age, the Saturnia regna, “Saturn’s reign”, became the Roman image of a lost world of plenty and fairness.\n\nVirgil’s fourth Eclogue, written around 40 BC, imagines it coming back: “redeunt Saturnia regna”, “Saturn’s reign returns” (4.6). The phrase echoed through Latin poetry and later European thought. It is the heart of what Saturn meant: not gloom, but the memory of a fairer age and the hope of another.',
+            },
+            {
+              heading: 'His family and his signs',
+              body:
+                'Saturn’s partner in Roman cult was Ops, goddess of plenty and resources, whose festival, the Opalia, fell on 19 December, in the middle of the Saturnalia. Old priestly formulas also pair him with a goddess called Lua, a power of loosing and destruction, about whom almost nothing is known.\n\nHis signs are the pruning hook, ears of grain, the vine and fruit trees, wax tapers, and the woollen bands on his statue’s feet. No animal is securely his in Roman sources. Modern devotees add the gold of the Golden Age and the deep blue or black of the planet named after him.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The Golden Age story, Janus’s welcome and the naming of Latium are told by Virgil (Aeneid 8.314–336) and Ovid (Fasti 1.233–238). Varro (On the Latin Language 5.64) gives the link with satus. Macrobius’s Saturnalia, written around AD 430, gathers the Roman lore about him in its first book (1.7–1.10). Ops and the Opalia are in the calendars.',
+            unknown:
+              'The real origin of Saturn and his name is uncertain. Whether the Golden Age story is old Italian tradition or a learned borrowing from Greek myths of Kronos’ reign is debated; it is probably some of each. Lua is barely more than a name.',
+          },
+          inPractice:
+            'Keep a small dish of grain or seeds on your table this month as Saturn’s sign. When you eat, look at it and remember that every meal began as something sown.',
+          reflect: [
+            'What would a “golden age” look like in your own household or street?',
+            'How does it feel to meet a god whose central story is about plenty shared rather than power won?',
+          ],
+          further: [
+            'Virgil, Aeneid 8.314–336 and Eclogue 4 (public-domain translations on Project Gutenberg)',
+            'Macrobius, Saturnalia 1.7–1.10, trans. Robert A. Kaster (Loeb, 2011)',
+          ],
+          library: ['traditional/deity/saturn', 'traditional/deity/janus'],
+        },
+        {
+          id: 'saturn-temple',
+          title: 'The temple, the treasury and the Greek rite',
+          summary: 'His temple at the foot of the Capitol, the state treasury inside it, his bound statue, and why he was honoured with the head bare.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The temple in the Forum',
+              body:
+                'The temple of Saturn stood at the foot of the Capitoline Hill, at the western end of the Roman Forum. Livy dates its dedication to 497 BC (2.21), which would make it one of the oldest temples in Rome. It was rebuilt several times. The eight great columns that still stand in the Forum belong to its last rebuilding in late antiquity, and the inscription on them records that the Senate and People of Rome restored it after a fire.\n\nInside the temple’s podium was the aerarium, the treasury of the Roman state, where public money and the official records were kept. Nobody is quite sure why the treasury was Saturn’s. Ancient writers guessed it was because in his age there was no theft, or because he taught the use of coin. It suits a god of plenty and of the common store.',
+            },
+            {
+              heading: 'The bound feet',
+              body:
+                'Saturn’s cult statue in the temple was hollow and, according to Pliny the Elder, filled with olive oil. Its feet were bound with woollen bands all year. At the Saturnalia the bands were loosed, and the god was, for a few days, free.\n\nMacrobius records the custom and some ancient explanations: that the god is bound for most of the year and released at his time, or that the bands stand for the way the seed lies bound in the earth until it grows. Nobody knows the original meaning. What is clear is the pattern of the festival: what is bound is loosed, and what is usually forbidden is allowed.',
+            },
+            {
+              heading: 'The Greek rite',
+              body:
+                'Roman ritual was full of small, exact rules, and one of the most noticeable was the covered head. A Roman praying or sacrificing drew a fold of the toga up over the back of the head. For a few gods this was reversed. Saturn and Hercules at the Ara Maxima were honoured with the head uncovered, a manner the Romans called the Greek rite (ritus Graecus). Macrobius and the lexicographer Festus both mention it.\n\nRomans offered their own reasons. One was that Saturn’s cult had been founded before the Roman custom of veiling, by Greeks who came with Hercules; another, that Saturn himself is pictured with his head covered, so his worshippers uncover theirs. Modern Roman polytheists usually keep the rule: bare head for Saturn, veiled head for most others.',
+            },
+            {
+              heading: 'A story about heads and lights',
+              body:
+                'Macrobius tells a strange and rather lovely story (Saturnalia 1.7.28–31). In early times, he says, an oracle told the old inhabitants of Italy to send “heads” to Dis and a “light” to Saturn, and they took it to mean human sacrifice. Hercules, passing through, taught them to read the oracle differently: to offer clay masks instead of heads, and to light candles for Saturn, because the Greek word phota can mean “men” or “lights”. From this, Macrobius says, came the custom of sending wax tapers at the Saturnalia.\n\nThe story is late and learned, and nobody should take it as history. But it shows how Romans of the fourth and fifth centuries understood their own custom: the candle given at Saturn’s feast as a gentler, wiser offering in place of a cruel one.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Livy (2.21) gives the dedication; the standing columns and the inscription survive. The treasury in his temple is well attested. Pliny (Natural History 15.32) mentions the oil in the statue, and Macrobius (1.8.5) the woollen bands. The Greek rite for Saturn is given by Macrobius (1.8.2) and Festus.',
+            unknown:
+              'Why the treasury was in Saturn’s temple, why his feet were bound, and why he was honoured in the Greek rite are not recorded from the time the customs began; the ancient explanations are later guesses. The heads-and-lights story is a learned aetiology, not evidence of early practice.',
+          },
+          inPractice:
+            'Practise the bare-headed form until it feels natural, and notice the difference if you also honour gods who are approached veiled. Tie a woollen thread loosely around the base of whatever image or symbol you use for Saturn; you will untie it at the Saturnalia. That is a modern home adaptation of the temple custom, not an ancient one.',
+          reflect: [
+            'What in your life is bound for most of the year, and what would it mean to loose it for a few days?',
+            'Why might a people keep its common treasure in the house of the god of plenty?',
+          ],
+          further: [
+            'Livy, History of Rome 2.21 (public-domain translations on Project Gutenberg)',
+            'Mary Beard, John North and Simon Price, Religions of Rome (1998), vol. 1',
+          ],
+          library: ['traditional/deity/saturn', 'traditional/herb/frankincense', 'traditional/candle/gold'],
+        },
+        {
+          id: 'saturn-saturnalia',
+          title: 'The Saturnalia',
+          summary: '“The best of days”: the public sacrifice and banquet, the cry of Io Saturnalia, the felt caps, tapers and little figures, and the masters at table.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'The best of days',
+              body:
+                'The poet Catullus, joking about a terrible book a friend sent him as a present, calls the Saturnalia “optimo dierum”, “the best of days” (Catullus 14.15). Most Romans would have agreed. The festival began on 17 December. Officially it was one day, then three under Augustus, and later five, but in practice, Macrobius says, people kept seven, and the fair of the Sigillaria ran on afterwards.\n\nIt opened with public religion. There was a sacrifice at Saturn’s temple, with the god’s woollen bands loosed, and a public banquet. Livy says that in 217 BC, in the darkest days of the war with Hannibal, the festival was renewed: a feast for the gods was laid on couches, a public banquet held, and the cry “Io Saturnalia” was raised all day and night throughout the city (22.1.19–20).',
+            },
+            {
+              heading: 'The household feast',
+              body:
+                'Then the festival moved into the houses. The formal toga was put away and people wore the synthesis, a loose, colourful dinner garment. Many wore the pilleus, the felt cap of a freed slave, as a sign of the holiday’s freedom. Gambling with dice, normally forbidden, was allowed. Schools closed. Households chose a mock king of the feast by lot, who gave silly orders to everyone; Tacitus records the young Nero being chosen for this at a family Saturnalia (Annals 13.15).\n\nMost famously, the order of the household was turned over. Masters served the enslaved at table, or dined with them as equals. Macrobius and other writers describe it, and the second-century Greek writer Lucian imagines Kronos himself laying down the rules of the feast. The writer Seneca grumbles that the whole city goes wild in December; Pliny the Younger built a soundproof room in his villa so that he could work while his household made the noise of the Saturnalia.',
+            },
+            {
+              heading: 'Tapers and little figures',
+              body:
+                'Gifts were part of the festival. The two classic ones were cerei, wax tapers, and sigillaria, little pottery figures sold at a special market, the Sigillaria, which took its name from them. Friends exchanged small presents of every kind: the poet Martial wrote two whole books of short verses to go with Saturnalia gifts, from writing tablets and dice to lamps, cheap trinkets and food (Epigrams 13 and 14).\n\nThe spirit of the giving mattered more than its cost. A taper or a clay figure was a token. Gifts went in all directions, to friends, clients, patrons and the household, and the generosity was itself the point: open hands, for a few days, in the god’s honour.',
+            },
+            {
+              heading: 'Keeping a modern Saturnalia',
+              body:
+                'Roman polytheists today keep the Saturnalia from 17 December, usually for several days. A common pattern is a formal offering to Saturn on the 17th, bare-headed, with incense, wine and grain, and the woollen thread on his image untied. Then come candles, small and often silly gifts, a shared meal where everyone is served equally and the cook does not wait on the guests, games, and the greeting “Io Saturnalia”.\n\nMany add an offering to Ops on the 19th, and a gift to people who serve others all year: a food bank, a cleaners’ or care workers’ fund, a tip that is more than expected. That last custom is modern, but it is faithful to what the festival did. Christmas has absorbed some of the same customs, which is why the Saturnalia can feel familiar; how far the one shaped the other is debated.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Catullus 14, Livy 22.1, Seneca (Letters 18), Pliny the Younger (Letters 2.17), Martial (Epigrams 13 and 14), Tacitus (Annals 13.15) and above all Macrobius (Saturnalia 1.7–1.11) describe the festival. The dates, the cry, the gifts, the dice and the role-reversal are well attested.',
+            unknown:
+              'How widely masters really served the enslaved, and how much of it was ritual gesture, is unclear. Customs varied between households and centuries. Direct descent of particular Christmas customs from the Saturnalia is often claimed and hard to prove.',
+          },
+          inPractice:
+            'Put 17–23 December in your calendar now. Buy or make a few small tapers to give as gifts, and plan one meal during the festival where everyone is served alike and the usual host sits down.',
+          reflect: [
+            'Who serves you all year, and how could you serve them for a day?',
+            'What would you loose, if you had one week when the ordinary rules were suspended?',
+          ],
+          further: [
+            'Macrobius, Saturnalia 1.7–1.11, trans. Robert A. Kaster (Loeb, 2011)',
+            'Martial, Epigrams 14, the Apophoreta (public-domain translations on Project Gutenberg)',
+            'Fanny Dolansky, “Celebrating the Saturnalia: Religious Ritual and Roman Domestic Life”, in A Companion to Families in the Greek and Roman Worlds (2011)',
+          ],
+          library: ['traditional/deity/saturn', 'traditional/candle/gold'],
+          premade: ['kitchen-family-meal-blessing'],
+        },
+        {
+          id: 'saturn-today',
+          title: 'Honouring Saturn today',
+          summary: 'Modern Roman polytheism, the household Saturn through the year, and how to set up his shrine.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'Who keeps him now',
+              body:
+                'Saturn is honoured today mainly by Roman polytheists, people practising the Religio Romana or Cultus Deorum, a small reconstructed religion with groups in Italy, organisations such as Nova Roma, and many solitary practitioners. For most of them he is a god of one great festival, the Saturnalia, and of the year’s sowing, rather than of daily devotion.\n\nYou will also meet Saturn in modern astrology and planetary magic, as the planet of Saturday, discipline, boundaries and time. That tradition descends from Hellenistic astrology, not from Roman temple cult. It is a real tradition and useful in its own right, but it pictures a very different being, and it is worth keeping the two apart in your mind.',
+            },
+            {
+              heading: 'Saturn through the year',
+              body:
+                'Outside December, a household Saturn has three natural moments. At sowing, whenever you plant seeds, in a garden, a window box or a pot of herbs, a few grains and a word to the god of the seed are fitting. When money comes in or goes out in a way that matters, the god of the treasury may be thanked. And whenever you share what you have, especially with someone outside your usual circle, you are doing what his festival celebrated.\n\nSaturday, dies Saturni, is his by name. Honouring him on Saturdays is a modern custom, not an ancient one, but many devotees like a small weekly moment: a taper lit at the evening meal.',
+            },
+            {
+              heading: 'Setting up his shrine',
+              body:
+                'Saturn belongs near the table where you eat together, rather than in a private corner. You need a stable candle holder for tapers, an incense burner, a small dish for grain or fruit, and a cup. For an image, use a small statue, a picture of his temple’s columns, a sickle or pruning hook (kept safely), or a few ears of wheat. Add a dish of figs or dried fruit, a small clay figure in memory of the sigillaria, and gold or deep blue cloth.\n\nTie a loose woollen thread around the base of the image, to be untied at the Saturnalia. Keep a jar of grain there too, so that whatever you plant during the year can be blessed from it.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'The Saturnalia is well documented, and modern Roman polytheist groups publish their calendars and practice. Saturday’s name from dies Saturni is certain. The planetary Saturn of astrology is documented from Hellenistic astrological texts onward.',
+            unknown:
+              'We know little about household devotion to Saturn outside the Saturnalia; there is no ancient evidence for a weekly or monthly cult of him at home. The everyday practices here are modern, built on his known character as god of sowing, plenty and the shared feast.',
+          },
+          inPractice:
+            'Set up his shrine near your table this week. Plant a few seeds in a pot in his name, with a pinch of grain from the shrine and a word of thanks.',
+          reflect: [
+            'Where in your home do people actually eat together, and is there room there for a god?',
+            'Which Saturn did you arrive knowing: the planet, the Titan, or the god of the Golden Age?',
+          ],
+          further: [
+            'John Scheid, An Introduction to Roman Religion (2003)',
+            'Nova Roma’s published calendar and religious guides (novaroma.org)',
+          ],
+          library: ['traditional/tool/altar', 'traditional/vessel/offering_bowl', 'traditional/crystal/garnet', 'traditional/crystal/onyx', 'traditional/herb/cypress'],
+          premade: ['folk-lararium-offering', 'green-seed-blessing-before-sowing', 'cosmic-saturday-saturn-boundaries'],
+        },
+        {
+          id: 'saturn-hard',
+          title: 'Slaves at the feast, a devouring Titan and a cold planet',
+          summary: 'The festival’s place in a slave society, the Greek myths of Kronos, the Saturn of North Africa, and the melancholy planet.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'A holiday inside a slave society',
+              body:
+                'The Saturnalia’s reversal of master and slave is the part of the festival people most remember, and it should be read honestly. For a few days the enslaved were served and could speak freely; then the ordinary order of Roman life, in which human beings were owned, came straight back. Many historians see the festival as a safety valve that made the system easier to bear, rather than a challenge to it. The poet Horace imagines his own slave Davus using the “December liberty” to tell him home truths (Satires 2.7), and the joke depends on everyone knowing that liberty would end.\n\nThe Golden Age story says that under Saturn there were no slaves at all. Many modern devotees take that as the real teaching: the festival remembers an age of equality, and honours the god best by working for one, not by playing at it for a week.',
+            },
+            {
+              heading: 'Kronos who swallowed his children',
+              body:
+                'Greek writers matched Saturn with Kronos, the Titan who castrated his father Ouranos and swallowed his own children until Zeus escaped him (Hesiod, Theogony 154–210 and 453–506). Roman poets took the identification over, which is how Saturn came to be the father of Jupiter, Juno, Neptune and Pluto in Latin literature. Goya’s famous painting of Saturn devouring his son belongs to this tradition.\n\nThe Greeks also had a gentler Kronos: the king of the golden race of men in Hesiod’s Works and Days, and the god of the Kronia, an Athenian festival in midsummer where masters and slaves feasted together. Roman Saturn shares much with that side of him. Whether you use the darker myths in devotion is your choice. They are not part of his Roman cult.',
+            },
+            {
+              heading: 'The Saturn of North Africa',
+              body:
+                'In Roman North Africa, Saturn was one of the greatest gods of all. Thousands of stelae dedicated to Saturnus survive from what is now Tunisia and Algeria. He was largely the old Punic god Baal Hammon under a Roman name: a lord of heaven and of the harvest, honoured on high places. Baal Hammon’s cult at Carthage is linked to the tophet, a sanctuary full of urns holding the cremated remains of infants and young animals. Whether these were child sacrifices, as Greek and Roman writers claimed, or a cemetery for children who died young, is one of the most argued questions in ancient history.\n\nYou do not need to resolve it to honour the Roman god of the Golden Age. It is honest to know that the name Saturn covered more than one god, and that one of them stands in very dark evidence.',
+            },
+            {
+              heading: 'The cold planet',
+              body:
+                'In Hellenistic astrology the planet Saturn, slowest of the visible planets, became the “greater malefic”: cold, dry, the bringer of delay, hardship, old age and death. Medieval and Renaissance writers made him the planet of melancholy, and also of deep study and contemplation. That is the Saturn of modern planetary magic, of Saturday workings for boundaries and banishing.\n\nNone of that is in the Roman cult, where he is a generous god of sowing and feasting. Devotees who work with both usually treat them as two faces of a name, and are careful not to bring the planet’s gloom to the Saturnalia table.',
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Horace (Satires 2.7) and Macrobius describe the slaves’ liberty at the Saturnalia. Hesiod gives the Kronos myths, and Accius (quoted by Macrobius 1.7.36–37) links the Kronia with the Saturnalia. African dedications to Saturn are catalogued in Marcel Leglay’s Saturne africain (1961–66). The astrological Saturn is set out in Ptolemy’s Tetrabiblos and studied in Klibansky, Panofsky and Saxl’s Saturn and Melancholy.',
+            unknown:
+              'How the enslaved themselves experienced the Saturnalia is almost unrecorded. The meaning of the Carthaginian tophet is unresolved. How early Roman Saturn was influenced by Kronos is debated.',
+          },
+          inPractice:
+            'Find out who in your area works for people who are exploited or underpaid, and plan to give to them during the Saturnalia. Decide now whether the Greek myths of Kronos have any place on your shrine.',
+          reflect: [
+            'How do you honour a festival that grew up inside an unjust society?',
+            'Where in your own life do the cold planet and the generous god meet?',
+          ],
+          further: [
+            'H. S. Versnel, Inconsistencies in Greek and Roman Religion II: Transition and Reversal in Myth and Ritual (1993)',
+            'Raymond Klibansky, Erwin Panofsky and Fritz Saxl, Saturn and Melancholy (1964)',
+          ],
+          library: ['traditional/deity/saturn', 'traditional/crystal/jet', 'traditional/candle/black'],
+        },
+      ],
+      practices: [
+        {
+          id: 'saturn-study-sharing',
+          title: 'Notice what is shared',
+          instructions:
+            'Through the study stage, note each day one thing that was shared with you or that you shared: food, time, a lift, a tool, a kindness. Saturn’s age was one in which everything was held in common.',
+          times: 10,
+          every: 'day',
+          prompt: 'What was shared today, and who did the sharing? Was anyone left out?',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Nine days of open hands',
+      intro:
+        'Nine days of giving, each one marked with a taper at the table. Popular custom stretched the Saturnalia to seven days, and nine-day periods were used in Roman religion for other rites; here nine frames a practice, not a claim about ancient custom.',
+      days: 9,
+      lessons: [],
+      practices: [
+        {
+          id: 'saturn-nine-days',
+          title: 'A taper and a gift',
+          instructions:
+            'Each evening: wash your hands and leave your head bare. Give a grain of incense to Janus. Light a taper for Saturn and set a pinch of grain on his dish, saying: “Saturn, sower, be honoured. As you gave, I give.” Then name aloud one thing you gave away that day: food, money, time, an object, attention, a seat at your table. Make it something real, however small. Sit with the taper for a few minutes, name Vesta last, and put the light out.\n\nIf one day you gave nothing, say so plainly, and give twice the next day.',
+          times: 9,
+          every: 'day',
+          prompt: 'What did I give today, and to whom? Did it cost me anything? What did it change?',
+        },
+        {
+          id: 'saturn-shared-table',
+          title: 'A table where all are served alike',
+          instructions:
+            'Once in the nine days, share a meal with others in the spirit of the Saturnalia. Whoever usually serves sits down and is served. Everyone gets the same. Before eating, set a little of the food and a cup of wine or juice aside for Saturn, bare-headed, and say: “Io Saturnalia: Saturn, be honoured at this table.” If you live alone, invite someone who would not usually be at your table, or take a meal to someone.',
+          times: 1,
+          prompt: 'Who sat at the table, and who served? How did it feel to change places?',
+          premade: 'kitchen-family-meal-blessing',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'Weighing the harvest',
+      intro:
+        'A few days to stop and decide. Saturn is the god of one great festival and of the seed in the ground, and he asks for generosity more than daily ritual. Stopping, pausing, or choosing another god or path is a good outcome.',
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'saturn-discern-write',
+          title: 'Write it out',
+          instructions: 'Answer the questions below in your journal, a few each day. Read back your nine days of giving before you start.',
+          times: 3,
+          every: 'day',
+          prompt: 'What am I actually drawn to here: the god, the festival, the idea of a golden age, or the planet?',
+        },
+      ],
+      questions: [
+        'Did the nine days of giving feel like devotion, or like a chore with a candle attached? Either answer is useful.',
+        'Can I keep the Saturnalia every December, and a small sign of him at the table through the year?',
+        'Am I comfortable with the bare-headed Greek rite and the Roman forms around it?',
+        'How do I feel about the festival’s place in a slave society, and about the darker gods who shared his name?',
+        'Am I drawn to Saturn himself, or to another god of the Roman household, Janus, Ops, Ceres or Vesta, who might fit better?',
+        'Would I rather keep the Saturnalia without dedicating? That is a perfectly good choice.',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'The dedication',
+      intro:
+        'If you have decided to go ahead, hold this at your table, ideally on 17 December, the first day of the Saturnalia, or on a Saturday, or on the day you sow seeds. It is a self-dedication, not an initiation, and it does not make you a priest. You are dedicating yourself as a devotee who keeps his festival and his open hand.',
+      days: 1,
+      lessons: [],
+      practices: [],
+      rite: {
+        title: 'Self-dedication to Saturn',
+        summary: 'Hands washed and head bare, Janus first, a new taper, the woollen thread untied, a spoken dedication, offerings of grain, figs, honey and wine, a gift given, and Vesta last.',
+        minutes: 40,
+        ingredients: [
+          { name: 'A bowl of clean water and a towel', ref: 'traditional/vessel/bowl' },
+          { name: 'Clean clothes, ideally something bright or festive' },
+          { name: 'A new wax taper in a stable holder', ref: 'traditional/candle/gold' },
+          { name: 'Frankincense and an incense burner', ref: 'traditional/tool/incense_burner' },
+          { name: 'Wine or grape juice in a cup', ref: 'traditional/tool/chalice' },
+          { name: 'A dish of grain, a few figs and a little honey', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'Your image of Saturn with the woollen thread tied round it' },
+          { name: 'A small gift to give away: a taper, a clay figure, a coin or a donation' },
+          { name: 'Your written dedication' },
+          { name: 'A few seeds and a pot of soil', optional: true },
+        ],
+        preparation:
+          'Clean the table and the shrine. Write your dedication: who you are, that you dedicate yourself to Saturn as a devotee, for how long (a year is wise), and what you will do: keep the Saturnalia, give freely, bless what you sow, and remember the Golden Age by working for a fairer one. Decide on the gift you will give, and to whom. Read the dedication aloud until it flows.',
+        steps: [
+          {
+            title: 'Wash, head bare',
+            instructions: 'Wash your hands and face. Put on clean clothes. Leave your head uncovered, as for the Greek rite.',
+          },
+          {
+            title: 'Janus first',
+            instructions: 'Put a few grains of incense on the burner for Janus.',
+            spoken: 'Father Janus, who welcomed Saturn to Latium,\nopen the way, and receive this incense.',
+          },
+          {
+            title: 'The new taper',
+            instructions: 'Light the new taper before Saturn’s image. Add more incense.',
+            spoken: 'Saturn, sower, lord of the Golden Age,\ngod of the seed and of the common store,\nor by whatever name it is right to call you:\nI offer you this light and this incense,\nand I pray good prayers,\nthat you may be willing and favourable\nto me, my house and my household.',
+            light: true,
+          },
+          {
+            title: 'Loose the bands',
+            instructions: 'Untie the woollen thread from the base of his image and lay it on the shrine.',
+            spoken: 'As your bonds are loosed, so let my hands be open.',
+          },
+          {
+            title: 'Read the dedication',
+            instructions: 'Read your dedication aloud, clearly and in full. If you stumble on a word, stop and begin it again from the start.',
+            minutes: 5,
+          },
+          {
+            title: 'Offer',
+            instructions: 'Set grain, a fig and a drizzle of honey on his dish, and pour wine beside it. If you have seeds, press them into the pot of soil.',
+            spoken: 'Saturn, be honoured by this grain, this fruit, this honey and this wine.\nAs I have spoken, so I will do.',
+          },
+          {
+            title: 'Give',
+            instructions: 'Set the gift you will give away on the shrine for a moment, then put it by the door to take with you, or make the donation now.',
+            spoken: 'What I have, I share, in your honour.',
+          },
+          {
+            title: 'Sit at the table',
+            instructions: 'Sit quietly by the taper.',
+            minutes: 5,
+            timed: true,
+          },
+          {
+            title: 'Vesta last',
+            instructions: 'Name Vesta, and put out the taper.',
+            spoken: 'Vesta, keeper of the hearth, be honoured. Io Saturnalia. It is done.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Give the gift within a day. Share a meal with someone if you can, with everyone served alike. Leave Saturn’s portion until the next day, then put it on earth or in the compost. Tie the woollen thread back on his image after the festival, ready to be loosed again next year. Note the date for your rededication.',
+        safety:
+          'Never leave the taper or incense unattended, and keep them well away from decorations and greenery. Use a heatproof surface. Grapes, raisins, wine and dried figs in quantity are harmful to dogs and cats; keep the dish out of their reach. Honey should not be given to babies under a year old.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'Plenty shared through the year',
+      intro:
+        'Saturn’s ongoing worship is mostly yearly, with the Saturnalia at its centre, and steady in between: a word at sowing, a taper on a Saturday if you wish, and an open hand whenever you can.',
+      days: 4,
+      lessons: [],
+      practices: [
+        {
+          id: 'saturn-ongoing-weekly',
+          title: 'A Saturday taper',
+          instructions:
+            'If you like a weekly rhythm, light a taper at the Saturday evening meal, bare-headed, with a pinch of grain and a word to Saturn, and name one thing you shared that week. This is a modern custom based on the weekday’s name.',
+          times: 52,
+          every: 'week',
+          prompt: 'What did I share this week, and what was shared with me?',
+        },
+        {
+          id: 'saturn-ongoing-sowing',
+          title: 'Blessing what you sow',
+          instructions:
+            'Whenever you sow seeds, in the garden, a window box or a pot, take a pinch of grain from his shrine, scatter it with them, and ask Saturn to let them grow well.',
+          times: 4,
+          every: 'month',
+          prompt: 'What did I plant, and what am I hoping for?',
+          premade: 'green-seed-blessing-before-sowing',
+        },
+        {
+          id: 'saturn-ongoing-saturnalia',
+          title: 'The Saturnalia',
+          instructions:
+            'From 17 December: on the first day, a bare-headed offering of incense, wine and grain, and his woollen thread untied. Then tapers, small gifts, games and a shared table where all are served alike, with “Io Saturnalia”. Give to people who serve others all year. Add an offering to Ops on the 19th. Rededicate on the 17th, reading last year’s dedication and saying honestly how you kept it.',
+          times: 1,
+          every: 'holy-day',
+          prompt: 'What did this year’s Saturnalia loose in me, and what did I give?',
+          premade: 'folk-lararium-offering',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'Virgil, Aeneid 8.314–336, Saturn in Latium (Latin, The Latin Library: https://www.thelatinlibrary.com/vergil/aen8.shtml); Eclogue 4.6, “redeunt Saturnia regna” (https://www.thelatinlibrary.com/vergil/ec4.shtml); translations original',
+    'Ovid, Fasti 1.233–238 (Latin, The Latin Library: https://www.thelatinlibrary.com/ovid/ovid.fasti1.shtml)',
+    'Catullus 14.15, “Saturnalibus, optimo dierum” (Latin, The Latin Library: https://www.thelatinlibrary.com/catullus.shtml)',
+    'Macrobius, Saturnalia 1.7–1.11, on the festival, the Greek rite, the woollen bands and the tapers (paraphrased; trans. Robert A. Kaster, Loeb, 2011)',
+    'Livy, History of Rome 2.21 and 22.1.19–20; Tacitus, Annals 13.15; Pliny the Elder, Natural History 15.32; Varro, On the Latin Language 5.64 (paraphrased)',
+    'Seneca, Letters 18; Pliny the Younger, Letters 2.17; Martial, Epigrams 13–14; Horace, Satires 2.7 (paraphrased)',
+    'Hesiod, Theogony 154–210 and 453–506, on Kronos (paraphrased)',
+    'H. S. Versnel, Inconsistencies in Greek and Roman Religion II: Transition and Reversal in Myth and Ritual (Brill, 1993)',
+    'Fanny Dolansky, “Celebrating the Saturnalia: Religious Ritual and Roman Domestic Life”, in Beryl Rawson (ed.), A Companion to Families in the Greek and Roman Worlds (Wiley-Blackwell, 2011)',
+    'Marcel Leglay, Saturne africain (Paris, 1961–66)',
+    'Raymond Klibansky, Erwin Panofsky and Fritz Saxl, Saturn and Melancholy (London, 1964)',
+  ],
+};

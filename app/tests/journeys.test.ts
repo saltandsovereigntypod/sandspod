@@ -2,7 +2,11 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { TRADITIONS } from '../src/lib/holidays.ts';
+import { JOURNEY_CATALOG } from '../src/lib/journeys/catalog.ts';
+import { journeyForDeityRefIn } from '../src/lib/journeys/lookup.ts';
+import { TRADITIONAL_LIBRARY } from '../src/lib/library/traditionalData.ts';
 import { PATH_TRADITIONS } from '../src/lib/library/traditions.ts';
+import { DEITY_DEVOTIONS } from '../src/lib/patron/devotions.ts';
 import { premadeById } from '../src/lib/rituals/premade/index.ts';
 import {
   deityGroups,
@@ -174,6 +178,54 @@ test('journey content: six stages in order, unique ids, refs that resolve', (t) 
   }
 });
 
+// The Roman and Greek journeys added together are held to the full standard strictly: registered,
+// complete, ids unique, and linked to their Library entry, patron devotions and the website catalog.
+const STRICT_DEITY_JOURNEYS = ['saturn', 'flora', 'neptune', 'faunus', 'sol', 'zeus', 'hera', 'poseidon'];
+
+test('the newer deity journeys are registered, complete, unique and linked', () => {
+  const libraryHas = (ref: string) => {
+    const [, type, key] = ref.split('/');
+    return !!TRADITIONAL_LIBRARY[type as keyof typeof TRADITIONAL_LIBRARY]?.[key];
+  };
+  const allIds = new Map<string, string>();
+  for (const j of JOURNEYS) {
+    for (const s of j.stages) for (const x of [...s.lessons, ...s.practices]) allIds.set(`${j.id}/${x.id}`, x.id);
+  }
+  const problems = contentProblems();
+  for (const key of STRICT_DEITY_JOURNEYS) {
+    const id = `deity-${key}`;
+    const j = journeyById(id);
+    assert.ok(j, `${id} is registered`);
+    assert.ok(JOURNEY_CATALOG.some((c) => c.id === id), `${id} is in the website catalog`);
+    assert.deepEqual(problems.filter((p) => p.startsWith(`${id}:`) || p.startsWith(`${id}/`)), [], id);
+    // Complete: every stage has something to do, study has lessons, the threshold and dedication have rites.
+    for (const s of j.stages) assert.ok(s.intro && s.days > 0 && (s.lessons.length || s.practices.length || s.rite), `${id} ${s.kind} has content`);
+    assert.ok(j.stages[1].lessons.length >= 4, `${id} has its lessons`);
+    assert.ok(j.stages[0].rite && j.stages[4].rite, `${id} has its rites`);
+    assert.ok(j.stages[3].questions?.length, `${id} has discernment questions`);
+    assert.ok(j.welcome && j.about && j.notes.length && j.sources.length >= 5, `${id} has its welcome, notes and sources`);
+    for (const s of j.stages) {
+      for (const l of s.lessons) {
+        assert.ok(l.sections.length >= 3 && l.knowAndDont.known && l.knowAndDont.unknown && l.inPractice && l.reflect.length, `${id}/${l.id} is complete`);
+        for (const ref of l.library ?? []) assert.ok(libraryHas(ref), `${id}/${l.id}: ${ref}`);
+      }
+      for (const i of s.rite?.ingredients ?? []) if (i.ref) assert.ok(libraryHas(i.ref), `${id} ${s.kind} rite: ${i.ref}`);
+    }
+    // Ids unique: no lesson or practice id is shared with any other journey.
+    const mine = [...allIds].filter(([k]) => k.startsWith(`${id}/`)).map(([, v]) => v);
+    for (const x of mine) {
+      assert.ok(x.startsWith(`${key}-`), `${id}: ${x} is prefixed`);
+      assert.equal([...allIds].filter(([, v]) => v === x).length, 1, `${x} is unique`);
+    }
+    // Linked: the Library entry exists and finds this journey; the patron page has devotions for it.
+    assert.equal(j.deityRef, `traditional/deity/${key}`);
+    assert.ok(libraryHas(j.deityRef!), `${id}: Library entry`);
+    assert.equal(journeyForDeityRef(j.deityRef), j);
+    assert.equal(journeyForDeityRef(`traditional:deity:${key}`), j);
+    assert.ok(DEITY_DEVOTIONS.some((d) => d.key === key), `${id}: patron devotions`);
+  }
+});
+
 test('lookups: paths, deities by ref and Library id, by path and search', () => {
   assert.ok(pathJourneys().every((j) => j.kind === 'path'));
   const deity = JOURNEYS.find((j) => j.kind === 'deity' && j.deityRef);
@@ -189,6 +241,37 @@ test('lookups: paths, deities by ref and Library id, by path and search', () => 
   if (groups.some((g) => g.path === 'norse')) assert.equal(groups[0].path, 'norse');
   const mine = pathsMineFirst(['slavic']);
   if (mine.some((j) => j.paths.includes('slavic'))) assert.ok(mine[0].paths.includes('slavic'));
+});
+
+// Egyptian deities whose journeys are offered from their Library page and their patron page
+// (the website finds them in the catalog). Every Library ref and premade in them must resolve.
+const KEMETIC_DEITY_JOURNEYS = ['anubis', 'isis', 'osiris', 'thoth', 'horus', 'set', 'nephthys', 'maat'];
+
+test('Egyptian deity journeys: registered, in the catalog, linked from the Library and patron pages', () => {
+  const refOk = (ref: string) => {
+    const [, type, key] = ref.split('/');
+    return !!(TRADITIONAL_LIBRARY as Record<string, Record<string, unknown>>)[type]?.[key];
+  };
+  for (const key of KEMETIC_DEITY_JOURNEYS) {
+    const j = journeyById(`deity-${key}`);
+    assert.ok(j, `deity-${key} is registered`);
+    assert.ok(j.paths.includes('egyptian'), `${key} is on the Egyptian path`);
+    assert.equal(j.deityRef, `traditional/deity/${key}`);
+    assert.ok(TRADITIONAL_LIBRARY.deity[key], `${key} has a Library entry`);
+    assert.equal(journeyForDeityRef(`traditional:deity:${key}`), j, `${key}'s Library page offers the journey`);
+    assert.equal(journeyForDeityRefIn(JOURNEY_CATALOG, j.deityRef)?.id, j.id, `${key} is in the website catalog`);
+    assert.ok(DEITY_DEVOTIONS.some((d) => d.key === key), `${key} has patron devotions`);
+    assert.deepEqual(j.stages.map((s) => s.kind), ['threshold', 'study', 'practice', 'discernment', 'dedication', 'ongoing']);
+    for (const s of j.stages) {
+      for (const l of s.lessons) {
+        assert.ok(l.sections.length >= 3, `${l.id} has its sections`);
+        for (const ref of l.library ?? []) assert.ok(refOk(ref), `${l.id}: ${ref}`);
+        for (const id of l.premade ?? []) assert.ok(premadeById(id), `${l.id}: premade ${id}`);
+      }
+      for (const i of s.rite?.ingredients ?? []) if (i.ref) assert.ok(refOk(i.ref), `${j.id}: ${i.ref}`);
+    }
+    assert.ok(j.sources.length >= 5, `${key} cites its sources`);
+  }
 });
 
 test('every rite turns into a ritual draft with its steps', () => {
@@ -412,4 +495,138 @@ test('the catalog matches every journey (run scripts/gen-journeys-index.mjs if n
     deityGroupsIn(JOURNEY_CATALOG, ['hellenic']).map((g) => g.journeys.map((j) => j.id)),
     deityGroups(['hellenic']).map((g) => g.journeys.map((j) => j.id)),
   );
+});
+
+// ------------------------------------------------------------- Hindu deities
+
+const HINDU_DEITIES = ['ganesha', 'durga', 'lakshmi', 'shiva', 'saraswati', 'kali', 'krishna'];
+const hinduJourneys = () => JOURNEYS.filter((j) => j.kind === 'deity' && j.paths.includes('hindu'));
+
+/** Every piece of text a journey shows, with where it comes from. */
+function journeyTexts(j: Journey): { where: string; text: string }[] {
+  const out: { where: string; text: string }[] = [];
+  const add = (where: string, text: string | undefined) => {
+    if (text) out.push({ where: `${j.id}/${where}`, text });
+  };
+  add('title', j.title);
+  add('summary', j.summary);
+  add('welcome', j.welcome);
+  add('about', j.about);
+  j.notes.forEach((n, i) => add(`note ${i}`, n));
+  for (const s of j.stages) {
+    add(`${s.kind} intro`, s.intro);
+    (s.questions ?? []).forEach((q, i) => add(`${s.kind} question ${i}`, q));
+    for (const l of s.lessons) {
+      add(l.id, l.summary);
+      for (const sec of l.sections) add(`${l.id}/${sec.heading}`, sec.body);
+      add(`${l.id}/known`, l.knowAndDont.known);
+      add(`${l.id}/unknown`, l.knowAndDont.unknown);
+      add(`${l.id}/inPractice`, l.inPractice);
+      l.reflect.forEach((r, i) => add(`${l.id}/reflect ${i}`, r));
+    }
+    for (const p of s.practices) {
+      add(p.id, p.instructions);
+      add(`${p.id}/prompt`, p.prompt);
+    }
+    if (s.rite) {
+      const r = s.rite;
+      for (const t of [r.title, r.summary, r.preparation, r.closing, r.safety]) add(`${s.kind} rite`, t);
+      for (const i of r.ingredients) add(`${s.kind} rite ingredient`, i.name);
+      for (const st of r.steps) {
+        add(`${s.kind} rite/${st.title}`, st.instructions);
+        add(`${s.kind} rite/${st.title} spoken`, st.spoken);
+      }
+    }
+  }
+  return out;
+}
+
+test('each Hindu journey belongs to a Hindu deity in the Library, offered on its Library and patron pages', () => {
+  const deities = TRADITIONAL_LIBRARY.deity as Record<string, { Pantheon?: string }>;
+  // Newer Library entries (Vishnu, Rama and others) wait for journeys of their own.
+  for (const key of HINDU_DEITIES) assert.equal(deities[key]?.Pantheon, 'Hindu', `${key} is a Hindu deity in the Library`);
+  for (const key of HINDU_DEITIES) {
+    const j = journeyForDeityRef(`traditional/deity/${key}`);
+    assert.ok(j, `a journey for ${key}`);
+    assert.equal(j.id, `deity-${key}`);
+    assert.deepEqual(j.paths, ['hindu']);
+    assert.equal(journeyForDeityRef(`traditional:deity:${key}`), j, 'found by Library id too');
+    assert.ok(DEITY_DEVOTIONS.some((d) => d.key === key), `a patron page for ${key}`);
+  }
+  assert.equal(hinduJourneys().length, HINDU_DEITIES.length);
+});
+
+test('Hindu journeys: every Library ref resolves, and every premade exists', () => {
+  const lib = TRADITIONAL_LIBRARY as unknown as Record<string, Record<string, unknown>>;
+  const resolves = (ref: string) => {
+    const [source, type, key] = ref.split('/');
+    return source === 'traditional' && !!lib[type]?.[key];
+  };
+  const problems: string[] = [];
+  for (const j of hinduJourneys()) {
+    if (!resolves(j.deityRef!)) problems.push(`${j.id}: ${j.deityRef}`);
+    for (const s of j.stages) {
+      for (const l of s.lessons) {
+        for (const ref of l.library ?? []) if (!resolves(ref)) problems.push(`${j.id}/${l.id}: ${ref}`);
+        for (const id of l.premade ?? []) if (!premadeById(id)) problems.push(`${j.id}/${l.id}: premade ${id}`);
+      }
+      for (const p of s.practices) if (p.premade && !premadeById(p.premade)) problems.push(`${j.id}/${p.id}: premade ${p.premade}`);
+      for (const i of s.rite?.ingredients ?? []) if (i.ref && !resolves(i.ref)) problems.push(`${j.id} ${s.kind} rite: ${i.ref}`);
+    }
+  }
+  assert.deepEqual(problems, []);
+});
+
+test('Hindu journeys are devotion: no spell or magic framing, no initiation, vegetarian offerings', () => {
+  // These words may appear only where the text turns them away ("not magic", "do not use her in spells",
+  // "it is easy to meet her first as…").
+  const magicWords = /\b(spells?|spellwork|magic\w*|witch\w*|hex(es)?|sigils?|manifest\w*|charms?|amulets?|talismans?|occult\w*)\b/i;
+  const disavows = /\b(not|no|never|nothing|don['’]t|instead|rather than|idea of|it is easy|offen\w*|hurt\w*|careless\w*|fantasy)\b/i;
+  // Words of another practice that have no place here at all.
+  const foreign = /\b(cast(ing)? (a |the )?circle|call(ing)? the quarters|esbats?|sabbats?|book of shadows|athame|wiccan?|banishing|so mote it be|blessed be|correspondences?)\b/i;
+  const problems: string[] = [];
+  for (const j of hinduJourneys()) {
+    for (const { where, text } of journeyTexts(j)) {
+      for (const sentence of text.split(/(?<=[.?!;:])\s+|\n+/)) {
+        if (magicWords.test(sentence) && !disavows.test(sentence)) problems.push(`${where}: “${sentence.trim()}”`);
+        if (foreign.test(sentence)) problems.push(`${where}: “${sentence.trim()}”`);
+      }
+    }
+    // Plain about what it is not.
+    assert.match(j.welcome, /This is not an initiation/, `${j.id} welcome`);
+    assert.match(j.welcome, /it is devotion/, `${j.id} welcome`);
+    assert.ok(j.notes.some((n) => /devotion, not magic/.test(n)), `${j.id} notes say devotion, not magic`);
+    assert.ok(j.notes.some((n) => /Hinduism is a living religion/.test(n)), `${j.id} notes say it is a living religion`);
+    const dedication = j.stages.find((s) => s.kind === 'dedication')!;
+    assert.match(dedication.intro, /not dīkṣā, not an initiation/, `${j.id} dedication`);
+    assert.match(dedication.rite!.title, /^Vow of Devotion to /, `${j.id} dedication rite is a vow of devotion`);
+    // Every journey sends people to living teachers and temples.
+    assert.match(`${j.welcome} ${j.notes.join(' ')}`, /temple/, `${j.id} points to temples`);
+    assert.match(`${j.welcome} ${j.notes.join(' ')}`, /teacher/, `${j.id} points to teachers`);
+    // Offerings are vegetarian.
+    for (const s of j.stages) {
+      for (const i of s.rite?.ingredients ?? []) {
+        if (/\b(meat|fish|eggs?|wine|alcohol|blood|animal)\b/i.test(i.name)) problems.push(`${j.id} ${s.kind} rite ingredient: ${i.name}`);
+      }
+    }
+  }
+  assert.deepEqual(problems, []);
+});
+
+test('Hindu journeys name their scriptures and keep the shape of the others', () => {
+  const scripture = /Purana|Bhagavad Gita|Devi Mahatmya|Rig Veda|Mahabharata|Upanishad|Ramayana/;
+  for (const j of hinduJourneys()) {
+    assert.match(j.about + j.sources.join(' '), scripture, `${j.id} names its scriptures`);
+    assert.equal(j.holyDays.length, 0, `${j.id}: Hindu festivals follow the panchang, not the holiday list`);
+    const study = j.stages.find((s) => s.kind === 'study')!;
+    assert.equal(study.lessons.length, 3, `${j.id}: three study lessons`);
+    for (const s of j.stages) {
+      for (const l of s.lessons) {
+        assert.ok(l.sections.length >= 3, `${j.id}/${l.id} sections`);
+        assert.ok(l.knowAndDont.known && l.knowAndDont.unknown, `${j.id}/${l.id} says what is and isn't known`);
+      }
+    }
+    assert.ok(j.stages.find((s) => s.kind === 'discernment')!.questions!.length >= 5, `${j.id} discernment questions`);
+    assert.ok(j.sources.length >= 5, `${j.id} sources`);
+  }
 });

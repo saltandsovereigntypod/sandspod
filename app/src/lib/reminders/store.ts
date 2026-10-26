@@ -1,46 +1,63 @@
-// Reminder choices live on the device, so they work without an account.
-// Whenever the choices or the planned rituals change, the next weeks of
-// reminders are rescheduled from scratch.
+// Reminder choices: the moon, planned rituals, devotions and dreams live on
+// the device (`reminders.settings.v1`), so they work without an account; the
+// newer kinds (holidays, tending, ritual planning, quiet hours and the pause)
+// live in Sanctuary settings (`reminders_v2`, prefs.ts) and follow you to the
+// website. Whenever the choices, your calendars, your altars or your covens
+// change, and every time the app comes to the front, the next weeks of
+// reminders are worked out again (plan.ts) and rescheduled from scratch, so
+// the phone's limit is a rolling window rather than a wall.
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useSyncExternalStore } from 'react';
+import { AppState } from 'react-native';
 
-import { deipnonReminders, offersDeipnon } from '../deipnon';
-import { sacredSources } from '../patron';
+import { offersDeipnon } from '../deipnon';
 import { itemLookBackReminder } from '../altar/apothecaryLookBack';
 import { getWorkshop, subscribeWorkshop } from '../altar/workshop';
+import { readPlace } from '../location';
 import { lookBackReminder } from '../rituals/lookBack';
 import { getRituals, loadPlans, subscribeRituals } from '../rituals/store';
 import { cachedSettings, subscribeSettings } from '../settings/store';
 import type { RitualPlan } from '../rituals/types';
-import type { OfferingDue } from '../altar/offerings';
-import type { WateringDue } from '../altar/pottedPlants';
 import { syncSkyCalendar } from './calendarStore';
 import { applySchedule, permissionState, remindersSupported, requestPermission, type PermissionState } from './notifier';
-import { anyReminders, buildSchedule, DEFAULT_SETTINGS, DEVOTION_DAYS, normalizeSettings, type ReminderSettings } from './schedule';
+import { anyPlanned, planReminders, type CovenSource } from './plan';
+import { PREFS_KEY, readPrefs, type ReminderPrefs } from './prefs';
+import { anyReminders, DEFAULT_SETTINGS, normalizeSettings, type ReminderSettings } from './schedule';
+import { EMPTY_SOURCES, type TendingSources } from './sources';
 
 const SETTINGS_KEY = 'reminders.settings.v1';
 
 type RemindersState = {
   loaded: boolean;
   settings: ReminderSettings;
+  /** The synced choices (prefs.ts), as read from settings (or worked out from the older ones). */
+  prefs: ReminderPrefs;
   permission: PermissionState;
   /** How many reminders are waiting on this phone. */
   scheduled: number;
+  /** The altars, plants, crystals and candles the tending reminders are about. */
+  sources: TendingSources;
+  /** Your covens, for planning reminders and rites. */
+  covens: CovenSource[];
 };
 
-let state: RemindersState = { loaded: false, settings: DEFAULT_SETTINGS, permission: 'undetermined', scheduled: 0 };
+let state: RemindersState = {
+  loaded: false,
+  settings: DEFAULT_SETTINGS,
+  prefs: readPrefs(null, DEFAULT_SETTINGS),
+  permission: 'undetermined',
+  scheduled: 0,
+  sources: EMPTY_SOURCES,
+  covens: [],
+};
 const listeners = new Set<() => void>();
 let started = false;
 let lastPlans: RitualPlan[] | null = null;
 let lastLookBacks = '';
 let syncing: Promise<void> = Promise.resolve();
-/** Offerings on your altars that want tending soon (set by the altar keeper). */
-let offeringsDue: OfferingDue[] = [];
-let offeringsKey = '';
-/** Potted plants on your altars that would like water soon (set by the altar keeper). */
-let wateringDue: WateringDue[] = [];
-let wateringKey = '';
+let sourcesKey = '';
+let covensKey = '';
 
 function set(patch: Partial<RemindersState>) {
   state = { ...state, ...patch };
@@ -53,6 +70,9 @@ const subscribe = (listener: () => void) => {
 };
 const snapshot = () => state;
 
+/** The prefs as settings hold them now. */
+const currentPrefs = () => readPrefs(cachedSettings(), state.settings);
+
 /** Reschedule everything. Serialized so two quick changes can't interleave. */
 export function syncReminders(): Promise<void> {
   syncing = syncing.then(async () => {
@@ -62,12 +82,22 @@ export function syncReminders(): Promise<void> {
       const lookBacks = [...getRituals().journal.map(lookBackReminder), ...getWorkshop().apothecary.map(itemLookBackReminder)].filter(
         (r): r is NonNullable<typeof r> => !!r,
       );
-      const now = new Date();
-      const deipna = deipnonReminders(cachedSettings(), now, DEVOTION_DAYS + 1);
-      const reminders = buildSchedule(state.settings, getRituals().plans, now, undefined, sacredSources(cachedSettings()), lookBacks, offeringsDue, wateringDue, deipna);
+      const prefs = currentPrefs();
+      const place = await readPlace().catch(() => null);
+      const reminders = planReminders({
+        appSettings: cachedSettings(),
+        legacy: state.settings,
+        prefs,
+        plans: getRituals().plans,
+        lookBacks,
+        sources: state.sources,
+        covens: state.covens,
+        place: place ? { latitude: place.latitude, longitude: place.longitude } : null,
+        now: new Date(),
+      });
       const permission = remindersSupported ? await permissionState() : 'unavailable';
       const scheduled = await applySchedule(permission === 'granted' ? reminders : []);
-      set({ permission, scheduled });
+      set({ permission, scheduled, prefs });
     } catch {
       // Scheduling is best effort; the settings are still saved.
     }
@@ -82,6 +112,17 @@ function lookBackKeys(): string {
     .join(',');
 }
 
+/** The settings the reminders read, as one string, to notice when any of them changes. */
+function settingsKey(): string {
+  const s = cachedSettings();
+  if (!s) return '';
+  return [PREFS_KEY, 'my_deities', 'deipnon_prompt', 'calendar_traditions', 'calendar_picked_holidays', 'calendar_custom_holidays', 'calendar_hidden_traditions', 'calendar_extra', 'calendar_hemisphere']
+    .map((key) => `${key}=${String(s[key] ?? '')}`)
+    .concat(Object.keys(s).filter((k) => k.startsWith('calendar_opt_')).sort().map((k) => `${k}=${String(s[k])}`))
+    .concat(String(offersDeipnon(s)))
+    .join('|');
+}
+
 async function start() {
   if (started) return;
   started = true;
@@ -92,7 +133,7 @@ async function start() {
     // Keep the defaults.
   }
   await loadPlans();
-  set({ loaded: true });
+  set({ loaded: true, prefs: currentPrefs() });
   lastPlans = getRituals().plans;
   subscribeRituals(() => {
     const plans = getRituals().plans;
@@ -112,41 +153,55 @@ async function start() {
       if (state.settings.lookBacks) void syncReminders();
     }
   });
-  // Your deities' sacred days follow Settings → My deities; Hekate's Deipnon follows them and your calendars.
-  const deipnonKey = () => String(offersDeipnon(cachedSettings()));
-  let lastDeities = String(cachedSettings()?.my_deities ?? '');
-  let lastDeipnon = deipnonKey();
+  // Holidays follow your calendars, your deities, the Deipnon and the reminder choices themselves.
+  let lastSettings = settingsKey();
   subscribeSettings(() => {
-    const deities = String(cachedSettings()?.my_deities ?? '');
-    const deipnon = deipnonKey();
-    if (deities !== lastDeities || deipnon !== lastDeipnon) {
-      const changedDeipnon = deipnon !== lastDeipnon;
-      lastDeities = deities;
-      lastDeipnon = deipnon;
-      if (state.settings.sacredDays || changedDeipnon) void syncReminders();
-    }
+    const next = settingsKey();
+    if (next === lastSettings) return;
+    lastSettings = next;
+    set({ prefs: currentPrefs() });
+    void syncReminders();
   });
-  // Top up the rolling window every time the app opens.
+  // Top up the rolling window every time the app opens or comes back to the front.
+  AppState.addEventListener('change', (next) => {
+    if (next === 'active') void syncReminders();
+  });
   await syncReminders();
   void syncSkyCalendar(state.settings.phases);
 }
 
-/** The altar keeper's latest list of offerings that want tending; reschedules when it changes and offering reminders are on. */
-export function setOfferingsDue(due: OfferingDue[]) {
-  const key = due.map((d) => `${d.altarId}:${d.objectId}:${d.dueAt}`).join('|');
-  if (key === offeringsKey) return;
-  offeringsKey = key;
-  offeringsDue = due;
-  if (state.settings.offerings) void syncReminders();
+/** The altar keeper's latest view of your altars and stones; reschedules when it changes. */
+export function setTendingSources(sources: TendingSources) {
+  const key = JSON.stringify([
+    sources.altars.map((a) => `${a.id}:${a.name}`),
+    sources.plants.map((p) => `${p.id}:${p.dueAt}:${p.lastWatered}:${p.who}`),
+    sources.offerings.map((d) => `${d.altarId}:${d.objectId}:${d.dueAt}`),
+    sources.crystals.map((c) => `${c.id}:${c.key}:${c.name}`),
+    sources.candles.map((c) => `${c.id}:${c.lit}:${c.burnoutAt}:${c.working}`),
+  ]);
+  if (key === sourcesKey) return;
+  sourcesKey = key;
+  set({ sources });
+  void syncReminders();
 }
 
-/** The altar keeper's latest list of potted plants that would like water; reschedules when it changes and watering reminders are on. */
-export function setWateringDue(due: WateringDue[]) {
-  const key = due.map((d) => `${d.altarId}:${d.objectId}:${d.dueAt}`).join('|');
-  if (key === wateringKey) return;
-  wateringKey = key;
-  wateringDue = due;
-  if (state.settings.watering) void syncReminders();
+/** Your covens, their holidays and rites (covens/reminders.ts); reschedules when they change. */
+export function setCovenSources(covens: CovenSource[]) {
+  const key = JSON.stringify(covens.map((c) => [c.id, c.leader, !!c.reviewer, c.name, c.holidays.map((h) => `${h.baseId}:${h.date.getTime()}`), c.rites.map((r) => `${r.ritual.id}:${r.ritual.status}:${r.ritual.scheduled_for}:${r.response}`)]));
+  if (key === covensKey) return;
+  covensKey = key;
+  set({ covens });
+  void syncReminders();
+}
+
+/** Ask for notifications if something is now chosen that could ring. */
+async function askIfNeeded(settings: ReminderSettings, prefs: ReminderPrefs): Promise<PermissionState> {
+  let permission = state.permission;
+  if (remindersSupported && (anyReminders(settings) || anyPlanned(prefs)) && permission !== 'granted') {
+    permission = await requestPermission();
+    set({ permission });
+  }
+  return permission;
 }
 
 export async function updateReminderSettings(change: Partial<ReminderSettings>): Promise<PermissionState> {
@@ -157,13 +212,17 @@ export async function updateReminderSettings(change: Partial<ReminderSettings>):
   } catch {
     // Still applied for this session.
   }
-  let permission = state.permission;
-  if (remindersSupported && anyReminders(settings) && permission !== 'granted') {
-    permission = await requestPermission();
-    set({ permission });
-  }
+  const permission = await askIfNeeded(settings, currentPrefs());
   await syncReminders();
   if (change.phases) void syncSkyCalendar(settings.phases);
+  return permission;
+}
+
+/** After the synced prefs were saved (screens save them with the rest of settings): ask for notifications if needed, and reschedule. */
+export async function remindersPrefsChanged(prefs: ReminderPrefs): Promise<PermissionState> {
+  set({ prefs });
+  const permission = await askIfNeeded(state.settings, prefs);
+  await syncReminders();
   return permission;
 }
 

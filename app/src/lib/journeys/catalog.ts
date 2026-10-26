@@ -212,6 +212,27 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A month with Epona, the Gaulish goddess of horses, mules and donkeys who rode with the Roman cavalry from Britain to the Danube: her images and inscriptions, her stable shrines garlanded with roses, her feast on 18 December, and a self-dedication made through real care for animals."
   },
   {
+    "id": "deity-faunus",
+    "kind": "deity",
+    "paths": [
+      "roman"
+    ],
+    "deityRef": "traditional/deity/faunus",
+    "title": "Faunus of the Woods",
+    "summary": "A month with Faunus, the Roman god of woods, pasture and flocks: the old king of Latium who became a god, the voices heard in the forest, Horace’s country feast on the Nones of December, the Lupercalia told honestly, and a practice of listening outdoors and caring for animals."
+  },
+  {
+    "id": "deity-flora",
+    "kind": "deity",
+    "paths": [
+      "roman",
+      "wheel"
+    ],
+    "deityRef": "traditional/deity/flora",
+    "title": "Flora of the Blossom",
+    "summary": "A month with Flora, the Roman goddess on whose blossom the harvest depends: her old flamen and her temple by the Circus, Ovid’s Flora who was once Chloris, the bright and bawdy Floralia, and a practice of noticing, tending and giving flowers."
+  },
+  {
     "id": "deity-freyja",
     "kind": "deity",
     "paths": [
@@ -295,6 +316,17 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A lunar month with Hel, the Norse ruler of the realm of the dead: what the sources actually say about her and her hall, the difference between Hel the place and Hel the goddess, and a quiet modern practice built on remembering your own dead."
   },
   {
+    "id": "deity-hera",
+    "kind": "deity",
+    "paths": [
+      "hellenic",
+      "roman"
+    ],
+    "deityRef": "traditional/deity/hera",
+    "title": "Hera: Queen of the Golden Throne",
+    "summary": "A lunar month with Hera, queen of the gods: her great temples at Argos and Samos, the Girl, the Wife and the Widow of Stymphalos, the girls’ races and woven robe of Olympia, the sacred marriage of Gamelion, and a practice of kept commitments and woven work."
+  },
+  {
     "id": "deity-hermes",
     "kind": "deity",
     "paths": [
@@ -315,6 +347,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "deityRef": "traditional/deity/hestia",
     "title": "Hestia: The Fire at the Centre",
     "summary": "A lunar month with Hestia, goddess of the hearth: her few myths and great honour, the first and last offering, the household fire, and a daily practice you can keep in any kitchen."
+  },
+  {
+    "id": "deity-horus",
+    "kind": "deity",
+    "paths": [
+      "egyptian"
+    ],
+    "deityRef": "traditional/deity/horus",
+    "title": "Horus: The Falcon Who Is Far Above",
+    "summary": "A month with Heru, the falcon of the sky, the son who avenged his father and the living god of every king. Study his many forms, the long contest with Set, the Eye that was torn and made whole, and his temple at Edfu, keep ten mornings under the open sky, and decide whether to dedicate."
   },
   {
     "id": "deity-idunn",
@@ -369,6 +411,26 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A month with the Best and Greatest: the sky-father of Rome, keeper of oaths and right order, learned through Roman prayer, the Ides and a promise you actually keep."
   },
   {
+    "id": "deity-kali",
+    "kind": "deity",
+    "paths": [
+      "hindu"
+    ],
+    "deityRef": "traditional/deity/kali",
+    "title": "Kali: The Mother Beyond Fear",
+    "summary": "A devotional month with Kali as her devotees know her: the Divine Mother of Bengal, sung to by Ramprasad and loved by Ramakrishna. Learn her names and image, her place in the Devi Mahatmya and Shakta devotion, how Kali Puja is kept, and how to offer red hibiscus, a lamp and song at a simple home puja, then decide whether to make a personal vow of devotion."
+  },
+  {
+    "id": "deity-krishna",
+    "kind": "deity",
+    "paths": [
+      "hindu"
+    ],
+    "deityRef": "traditional/deity/krishna",
+    "title": "Krishna: The Flute in Vrindavan",
+    "summary": "A devotional month with Krishna, the butter thief of Vrindavan and the teacher of the Bhagavad Gita. Learn his stories in the Bhagavata Purana and the Mahabharata, the saints who sang to him, how Janmashtami, Holi and the Ekadashis are kept, and how to offer tulsi, butter and song at a simple home puja, then decide whether to make a personal vow of devotion."
+  },
+  {
     "id": "deity-lada",
     "kind": "deity",
     "paths": [
@@ -377,6 +439,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "deityRef": "traditional/deity/lada",
     "title": "Lada, Harmony of Spring",
     "summary": "A lunar month with Lada, honoured today as the Slavic goddess of love, spring and harmony: an honest look at whether she was ancient, the songs and spring customs she gathers, and a joyful devotion of song, flowers and peace-making."
+  },
+  {
+    "id": "deity-lakshmi",
+    "kind": "deity",
+    "paths": [
+      "hindu"
+    ],
+    "deityRef": "traditional/deity/lakshmi",
+    "title": "Lakshmi: The Lotus in a Lit House",
+    "summary": "A devotional month with Lakshmi, who rose from the churning of the ocean. Learn her names and image, the Shri Sukta and her stories, how Diwali, Kojagari Purnima and Varalakshmi Vratam are kept, and how to offer a clean home, a lamp and a lotus, then decide whether to make a personal vow of devotion."
   },
   {
     "id": "deity-lilith",
@@ -406,6 +478,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "deityRef": "traditional/deity/lugh",
     "title": "Lugh: Master of All Arts",
     "summary": "A month with Lugh of the Long Arm, the many-skilled god of Ireland: his arrival at Tara, his victory over Balor, the Gaulish Lugus behind him, the hilltop festival of Lughnasadh, and a self-dedication made with the work of your hands."
+  },
+  {
+    "id": "deity-maat",
+    "kind": "deity",
+    "paths": [
+      "egyptian"
+    ],
+    "deityRef": "traditional/deity/maat",
+    "title": "Maat: The Feather and the Order",
+    "summary": "A month with Maat, the goddess with the ostrich feather and the order of the world she stands for: truth, justice and balance kept in daily acts. Study her in the creation texts, the teachings of the sages and the weighing of the heart, learn how kings offered her to the gods, keep ten evenings of honest reckoning, and decide whether to dedicate."
   },
   {
     "id": "deity-manannan",
@@ -481,6 +563,26 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A month with the Morrigan, Ireland’s Great Queen of battle, prophecy and sovereignty: her names and sisters, her stories by the river and the ford, how little we know of her worship, and how people honour her now, ending in a self-dedication made with your word."
   },
   {
+    "id": "deity-nephthys",
+    "kind": "deity",
+    "paths": [
+      "egyptian"
+    ],
+    "deityRef": "traditional/deity/nephthys",
+    "title": "Nephthys: Lady of the House",
+    "summary": "A month with Nebet-Het, the sister who mourned with Isis, the kite whose cry is the sound of grief, and the guardian of the dead at the head of the coffin. Study her name, the Lamentations sung in her voice and how little of her own cult survives, keep ten evening vigils with a lamp, and decide whether to dedicate."
+  },
+  {
+    "id": "deity-neptune",
+    "kind": "deity",
+    "paths": [
+      "roman"
+    ],
+    "deityRef": "traditional/deity/neptune",
+    "title": "Neptune of the Waters",
+    "summary": "A month with Neptune, the Roman god of water before he was lord of the sea: the leafy shelters of the Neptunalia in the summer drought, sailors’ vows and votive tablets, the storm he calms in the Aeneid, and a practice of giving thanks for every cup of water."
+  },
+  {
     "id": "deity-nyx",
     "kind": "deity",
     "paths": [
@@ -534,6 +636,17 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A lunar month with the Slavic god of thunder, oaks and oaths: what the chronicles really say, how he was honoured, and how to keep a plain, honest devotion to him today."
   },
   {
+    "id": "deity-poseidon",
+    "kind": "deity",
+    "paths": [
+      "hellenic",
+      "roman"
+    ],
+    "deityRef": "traditional/deity/poseidon",
+    "title": "Poseidon: Earth-Shaker, Saviour of Ships",
+    "summary": "A lunar month with Poseidon, lord of the sea, the earthquake and the horse: his Mycenaean roots at Pylos, his wrath in the Odyssey, Sounion, Isthmia and the eighth of the month, and a practice of libations, respect for water and care for the sea."
+  },
+  {
     "id": "deity-ra",
     "kind": "deity",
     "paths": [
@@ -553,6 +666,26 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "deityRef": "traditional/deity/rhiannon",
     "title": "Rhiannon: The Lady on the White Horse",
     "summary": "A month with Rhiannon of the Mabinogi: the lady no horse could catch, the bag that could never be filled, her son stolen on May Eve and the years she spent at the horse-block, her birds that sang at Harlech, and the scholarly debates about horse goddesses and sovereignty, with a self-dedication made in birdsong at the turning of the light."
+  },
+  {
+    "id": "deity-saraswati",
+    "kind": "deity",
+    "paths": [
+      "hindu"
+    ],
+    "deityRef": "traditional/deity/saraswati",
+    "title": "Saraswati: The Flowing Word",
+    "summary": "A devotional month with Saraswati, river of the Rig Veda and goddess of knowledge, speech and music. Learn her names and image, her hymns and history, how Vasant Panchami and the Saraswati Puja of Navaratri are kept, and how to offer white flowers, a lamp and your own study at a simple home puja, then decide whether to make a personal vow of devotion."
+  },
+  {
+    "id": "deity-saturn",
+    "kind": "deity",
+    "paths": [
+      "roman"
+    ],
+    "deityRef": "traditional/deity/saturn",
+    "title": "Saturn of the Golden Age",
+    "summary": "A month with Saturn, the Roman god of sowing and of the Golden Age: his temple and treasury, his bound feet and bare head, the Saturnalia with its tapers, gifts and shared tables, and an open-handed practice of plenty given away."
   },
   {
     "id": "deity-sekhmet",
@@ -576,6 +709,26 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A lunar month with Selene, the Greek goddess who is the moon: her hymns and the story of Endymion, the honest truth about her slim ancient cult, how she was later blended with Artemis and Hekate, and a practice of watching the moon each night, from the first crescent to the full."
   },
   {
+    "id": "deity-set",
+    "kind": "deity",
+    "paths": [
+      "egyptian"
+    ],
+    "deityRef": "traditional/deity/set",
+    "title": "Set: Great of Strength",
+    "summary": "A month with Sutekh, lord of storms, the desert and foreign lands: murderer of Osiris, rival of Horus, and defender of Ra’s boat against the serpent of chaos. Study his whole history, from honoured god of kings to later outcast, keep ten nights at the edge, and decide whether to dedicate."
+  },
+  {
+    "id": "deity-shiva",
+    "kind": "deity",
+    "paths": [
+      "hindu"
+    ],
+    "deityRef": "traditional/deity/shiva",
+    "title": "Shiva: The Auspicious One",
+    "summary": "A devotional month with Shiva, Mahadeva, the great god. Learn his names and forms, from Vedic Rudra to the Lord of the Dance, the stories of the Shiva Purana, the saints who sang to him, how Mondays, Pradosh and Maha Shivaratri are kept, and how to offer water and bilva leaves at home, then decide whether to make a personal vow of devotion."
+  },
+  {
     "id": "deity-skadi",
     "kind": "deity",
     "paths": [
@@ -584,6 +737,17 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "deityRef": "traditional/deity/skadi",
     "title": "Skadi, Lady of the Snowshoes",
     "summary": "A lunar month with Skaði, the giantess of winter, mountains and the hunt who came to Asgard armed for justice: her father’s death, her ill-matched marriage to Njörðr, her shrines and fields, the ski-god Ullr, and a practice of cold air, wild places and standing your ground."
+  },
+  {
+    "id": "deity-sol",
+    "kind": "deity",
+    "paths": [
+      "roman",
+      "wheel"
+    ],
+    "deityRef": "traditional/deity/sol",
+    "title": "Sol, the Unconquered Sun",
+    "summary": "A month with Sol, the Roman sun: the old Sol Indiges of the Quirinal, the sun of the Circus and the obelisks, Aurelian’s Sol Invictus and the birthday of 25 December, Horace’s prayer for Rome, and a practice of greeting the dawn."
   },
   {
     "id": "deity-thor",
@@ -644,6 +808,17 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "deityRef": "traditional/deity/vesta",
     "title": "Vesta of the Hearth",
     "summary": "A month with Vesta, the living flame at the centre of Rome and of every Roman house: the hearth, the Vestals, mola salsa, the Vestalia, and the quiet daily care that was her worship."
+  },
+  {
+    "id": "deity-zeus",
+    "kind": "deity",
+    "paths": [
+      "hellenic",
+      "roman"
+    ],
+    "deityRef": "traditional/deity/zeus",
+    "title": "Zeus: Guest-Friend and King",
+    "summary": "A lunar month with Zeus, father of gods and men: the sky-god of Hesiod and Homer, Zeus of the guest, the oath and the household jar, Olympia and the oak of Dodona, and a practice of libations and real hospitality."
   },
   {
     "id": "path-celtic",

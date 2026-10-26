@@ -1,0 +1,556 @@
+import type { Journey } from '../types';
+
+export const JOURNEY: Journey = {
+  id: 'deity-hera',
+  kind: 'deity',
+  paths: ['hellenic', 'roman'],
+  deityRef: 'traditional/deity/hera',
+  title: 'Hera: Queen of the Golden Throne',
+  summary:
+    'A lunar month with Hera, queen of the gods: her great temples at Argos and Samos, the Girl, the Wife and the Widow of Stymphalos, the girls’ races and woven robe of Olympia, the sacred marriage of Gamelion, and a practice of kept commitments and woven work.',
+  welcome: `This is a month of study and devotion with Hera, the Greek queen of the gods, goddess of marriage, of women and of the cities that were hers. Most people meet her as the jealous wife of the myths. The people who built her temples knew a different goddess: a great queen honoured at every stage of a woman’s life, whose sanctuaries at Argos and Samos were among the largest in Greece.
+
+It is a self-dedication, not an initiation. Hera had priestesses and colleges of women who served her, like the Sixteen Women of Olympia; nothing here makes you one of them. What it offers is a month of learning who she actually was in cult, keeping her customs carefully, and deciding at the end whether to go on.
+
+You do not need to be a woman, married or wanting to be to begin. Hera is a goddess of commitment and of dignity, and those belong to everyone. You will need a bowl of water, a small lamp or candle, a cup for libations, and something to weave, sew or mend.`,
+  about: `Hera was the queen of the Greek gods, daughter of Kronos and Rhea and wife and sister of Zeus. Her name already appears on a Mycenaean tablet from Pylos beside his, more than three thousand years ago. In Homer she is “golden-throned”, “white-armed” and “ox-eyed”, proud, clever and fierce in defence of her favourite cities. Her great sanctuaries were the Heraion near Argos, where Polykleitos made her gold and ivory statue holding a pomegranate and a sceptre topped by a cuckoo, and the Heraion of Samos, built where she was said to have been born under a chaste-tree. At Olympia her temple is older than Zeus’s, and girls ran races and women wove her a new robe every four years. At Stymphalos she was honoured as Pais, the girl; Teleia, the fulfilled wife; and Chera, the widow or woman alone. Athenians celebrated her marriage to Zeus in the month of Gamelion, the season of weddings. The Romans honoured her as Juno. Today Hellenic polytheists honour her as queen and as the goddess of committed bonds of every kind, and this journey is honest about both the queen of cult and the jealous wife of myth.`,
+  notes: [
+    'The myths often show Hera persecuting Zeus’s lovers and children. In her cults she was a revered protector of women, marriage and whole cities. The journey keeps both in view and does not make her a punchline.',
+    'Hera is a goddess of marriage, but her own marriage in myth is not a model. If you are in a relationship where you are frightened, controlled or hurt, please talk to someone you trust or a domestic abuse service such as Refuge (UK) or the National Domestic Violence Hotline (US). Devotion is not a substitute for safety.',
+    'In antiquity some of her rites were for women only. Modern groups differ: many welcome all women, trans women included, and some open everything to everyone. The home practice here is open to anyone; if you join a group, follow its custom.',
+    'Ancient worship of Hera included the sacrifice of cows. Modern home practice uses libations, flowers, cakes, incense and woven work, and nothing here asks for more.',
+    'Greek religion was never one tradition. Practices here come from Argos, Samos, Olympia, Stymphalos, Plataea and Athens, and modern groups differ. That is normal.',
+  ],
+  holyDays: ['noumenia', 'matronalia'],
+  stages: [
+    {
+      kind: 'threshold',
+      title: 'Before the golden throne',
+      intro:
+        'Hera is a queen, and Greeks came before her with some formality: clean, well dressed, with flowers and a libation. So the journey begins with a small, dignified introduction at a clean table. You are only saying who you are. Nothing is promised yet.',
+      days: 2,
+      lessons: [],
+      practices: [
+        {
+          id: 'hera-threshold-bonds',
+          title: 'Name your bonds',
+          instructions:
+            'Before the opening rite, write down the commitments that hold your life together: a partner, family, friends, a household, a promise to yourself, a work or cause you are bound to. Hera was the goddess of the bond that is chosen and kept. Notice which ones are strong, and which are fraying.',
+          times: 1,
+          prompt: 'Which of my bonds do I keep best? Which am I neglecting?',
+        },
+      ],
+      rite: {
+        title: 'An introduction to the queen',
+        summary:
+          'A short Greek-style introduction: purify your hands, begin with Hestia, then greet Hera by her old titles with flowers and a libation.',
+        minutes: 20,
+        ingredients: [
+          { name: 'A bowl of fresh water for khernips', ref: 'traditional/vessel/bowl' },
+          { name: 'A match, or a sprig of bay to quench in it', ref: 'traditional/herb/bay' },
+          { name: 'A tealight, oil lamp or electric candle' },
+          { name: 'A few fresh flowers in a small vase', ref: 'traditional/herb/rose' },
+          { name: 'A cup of wine mixed with water, or milk with honey', ref: 'traditional/tool/chalice' },
+          { name: 'A dish to pour into', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'A pomegranate, or a picture of one', optional: true },
+          { name: 'A little myrrh or frankincense on a heatproof burner', ref: 'traditional/herb/myrrh', optional: true },
+        ],
+        preparation:
+          'Clean a table or shelf and lay a cloth on it. Set the lamp, the flowers, the cup and the dish there, with the pomegranate if you have one. Wash your face and hands in ordinary water first, and wear something you feel dignified in. A queen is met in good clothes.',
+        steps: [
+          {
+            title: 'Make khernips',
+            instructions:
+              'Light the match or the tip of the bay sprig and plunge it into the bowl of water. This is khernips, the purified water of Greek ritual. Wash your hands in it and touch a few drops to your face.',
+            spoken: 'With clean hands I come before the queen.',
+          },
+          {
+            title: 'Begin with Hestia',
+            instructions:
+              'Light the lamp. In Greek custom every rite begins with Hestia, the goddess of the hearth. Pour a drop of your libation into the dish for her.',
+            spoken: 'Hestia, first and last, keeper of this house: I begin with you.',
+            light: true,
+          },
+          {
+            title: 'Call Hera',
+            instructions:
+              'Stand before the flowers. Raise your hands, palms up. If you are using incense, add a few grains now. Speak slowly and clearly, as you would to a queen.',
+            spoken:
+              'Hera, golden-throned, queen of the immortal gods, lady of Argos and Samos, Teleia who fulfils: I am [your name]. I have heard of you in Homer and in the stories of your temples. I come to learn who you are. Be gracious to me as I learn.',
+            minutes: 2,
+          },
+          {
+            title: 'Pour for her',
+            instructions:
+              'Pour most of the libation into the dish. Then sit quietly for a few minutes with the lamp and the flowers. Notice what comes, and let nothing come if nothing does.',
+            minutes: 4,
+            timed: true,
+          },
+          {
+            title: 'Close with Hestia',
+            instructions: 'Pour the last drop for Hestia. Thank both goddesses and put out the lamp.',
+            spoken: 'Hestia, last as you were first, thank you. Hera, queen, thank you.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Pour the dish onto earth or a plant pot. Keep the flowers on the shrine while they are fresh. Pour the khernips away outside or down the sink with thanks. Write a few lines about how it felt to come before a queen.',
+        safety:
+          'Never leave a flame unattended, and keep it away from cloth and flowers. Quench the khernips match fully. Myrrh and frankincense smoke can trouble people with asthma and small pets. Lilies are deadly to cats; choose your flowers with your animals in mind.',
+      },
+    },
+    {
+      kind: 'study',
+      title: 'The queen and her cities',
+      intro:
+        'Ten days of reading, one lesson every two or three days. You will meet Hera in Homer and Hesiod, then visit her great temples at Argos and Samos, then learn how she was honoured through every stage of life, then see how she is honoured today. Read the short Homeric Hymn to Hera aloud once during this stage.',
+      days: 10,
+      lessons: [
+        {
+          id: 'hera-who',
+          title: 'Who Hera is',
+          summary: 'Her family and name, the Hera of Homer, her children, and her signs.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'Queen of the gods',
+              body: `Hera is one of the six children of Kronos and Rhea, swallowed by her father and freed by Zeus. In Hesiod’s Theogony she is the last of Zeus’s wives and the one who stays; with him she bears Hebe, goddess of youth; Ares, the war god; and Eileithyia, goddess of childbirth. Hesiod also says that she bore Hephaistos alone, without union, in anger at Zeus (927–929).
+
+Her name is old. A Linear B tablet from Pylos, written around 1200 BCE, lists offerings to Zeus and to e-ra, Hera, side by side. What the name means is uncertain: some link it to hora, “season” or “the right time”, others to the word that gives “hero”. She was a great goddess long before Homer made her Zeus’s quarrelsome wife.`,
+            },
+            {
+              heading: 'Homer’s Hera',
+              body: `In the Iliad she is “white-armed”, “golden-throned” and boopis, “ox-eyed” or “cow-eyed”, a title of great beauty with an echo of the cattle of her Argive pastures. She is proud and formidable, Zeus’s equal in will if not in strength. She fights for the Greeks against Troy, plots against Zeus, and once, in a famous scene, borrows Aphrodite’s embroidered band to seduce him on Mount Ida so that he sleeps while the Greeks rally. As they lie together, the earth sends up fresh grass, dewy lotus, crocus and hyacinth beneath them (14.346–351).
+
+The short Homeric Hymn to Hera calls her “queen of the deathless gods”, “surpassing all in beauty”, whom all the blessed gods on Olympus “reverence and honour even as Zeus”. That is the Hera of the hymn: not a scold, but a queen equal in honour to the king.`,
+            },
+            {
+              heading: 'Mother and stepmother',
+              body: `Hera’s own children are mixed blessings: Ares the war god, whom she is said to have loved little; Hephaistos, whom she threw from Olympus because he was lame (Iliad 18.395–397); Hebe, who served the gods and married Herakles; and Eileithyia, who could hold back or release a birth. That last power made Hera herself a goddess called on in childbirth.
+
+Towards Zeus’s other children she is a terrible stepmother. She delays the birth of Herakles, sends snakes to his cradle and drives him mad; she pursues Leto, Io and Semele. Herakles’ name may even mean “glory of Hera”. These stories are central to how most people know her. Lesson five, in the practice stage, takes them on directly.`,
+            },
+            {
+              heading: 'Her signs',
+              body: `Her signs are the diadem or tall crown called a polos, the sceptre, the veil, and the pomegranate. Her animals are the cow, the cuckoo, and the peacock, which was kept in her sanctuary on Samos; Ovid says she set the hundred eyes of her watchman Argus in its tail (Metamorphoses 1.722–723). Her plants are the pomegranate, the chaste-tree or lygos under which she was born, and the lily. Her colours, in modern practice, are royal blue, white and purple.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Hesiod (Theogony 921–929) gives her children. Hera appears as e-ra on the Pylos tablet Tn 316. Her Homeric epithets are fixed and frequent, and the Ida scene is Iliad 14.153–353. The Homeric Hymn to Hera (Hymn 12) is short and complete.',
+            unknown:
+              'The meaning of her name and her origins before Homer are uncertain. Some scholars think she was once a great goddess in her own right, perhaps of Argos, who was later married to Zeus in myth; this is plausible but not provable.',
+          },
+          inPractice:
+            'Hellenic polytheists often read a hymn at the start of a rite. Learn the Homeric Hymn to Hera; it is only a few lines. Choose two of her titles to use this month: Basileia, queen, and Teleia, the fulfilled, are a good pair.',
+          reflect: [
+            'Which Hera did you arrive knowing: the jealous wife or the queen? How does the hymn’s Hera sit beside her?',
+            'What does it mean to be someone’s equal in honour, if not in power?',
+          ],
+          further: [
+            'Homeric Hymn 12, To Hera, trans. H. G. Evelyn-White (1914), free on Project Gutenberg',
+            'Homer, Iliad 14, trans. Samuel Butler or A. T. Murray, free on Project Gutenberg',
+            'Joan V. O’Brien, The Transformation of Hera (1993)',
+          ],
+          library: ['traditional/deity/hera', 'traditional/deity/zeus', 'traditional/deity/juno'],
+        },
+        {
+          id: 'hera-temples',
+          title: 'Argos and Samos',
+          summary: 'Her two great sanctuaries: Polykleitos’s statue, the spring where she became a girl again, the chaste-tree and the Tonaia.',
+          minutes: 7,
+          sections: [
+            {
+              heading: 'The Argive Heraion',
+              body: `Hera’s oldest great sanctuary stood on a hillside between Argos and Mycenae, in the plain that Homer calls “horse-pasturing Argos”. In the Iliad she names Argos, Sparta and Mycenae as the three cities she loves best (4.51–52). The Heraion was the religious centre of the whole region, with a procession from Argos to the temple at her festival.
+
+After an old temple burned in 423 BCE, a new one was built, and the sculptor Polykleitos made her cult statue of gold and ivory. Pausanias saw it: she sits on a throne, wearing a crown carved with the Graces and the Seasons, holding a pomegranate in one hand and in the other a sceptre with a cuckoo on top. The cuckoo, he says, is because Zeus courted her in the shape of a cuckoo; of the pomegranate he will say nothing, because its story is a sacred secret (2.17.4).`,
+            },
+            {
+              heading: 'The spring of Kanathos',
+              body: `Pausanias also records that near Nauplia was a spring called Kanathos, where, the Argives said, Hera bathed every year and became a virgin again. He calls this a secret story told in their mysteries (2.38.2–3).
+
+The story suggests a yearly rite in which Hera’s image was bathed and renewed, as statues were in other Greek festivals. It also points to something deeper in her cult: the idea that she passes through the stages of a woman’s life, girl, bride, wife, and returns to the beginning. Lesson three follows that thread.`,
+            },
+            {
+              heading: 'Samos and the chaste-tree',
+              body: `The island of Samos claimed Hera’s birth. Pausanias says the Samians believed she was born by the river Imbrasos under a lygos, a chaste-tree, which still grew in the sanctuary in his day (7.4.4). The Heraion of Samos grew into one of the largest temples of the Greek world, and excavators have found thousands of offerings there: figurines, bronze vessels, carved wooden objects, even pomegranates modelled in clay, and objects from Egypt and the Near East brought by sailors.
+
+Samos had a festival called the Tonaia. According to a local historian quoted by Athenaeus, Hera’s image was once stolen and found on the shore, bound in lygos branches; each year her image was taken to the shore, purified and offered cakes, in memory of it (15.672). Peacocks were kept in her sanctuary, and appeared on the island’s coins.`,
+            },
+            {
+              heading: 'What the temples tell us',
+              body: `Hera was not only a goddess of brides. At Argos and Samos she was the great goddess of the place, its protector and its pride, honoured by men as well as women, with huge temples and processions. Her sanctuaries received gifts from sailors, warriors and rulers.
+
+For a modern devotee this widens the picture. You can come to Hera for a marriage or a commitment, but also for your city or community, for the dignity of your own place in the world, and for the courage to defend what is yours.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Pausanias (2.17, 2.38.2–3, 7.4.4) describes the Argive Heraion, Polykleitos’s statue, Kanathos and the Samian lygos. Iliad 4.51–52 names her three cities. Excavations at both Heraia have produced rich evidence. Athenaeus 15.672 preserves the Tonaia story from Menodotus of Samos.',
+            unknown:
+              'What the pomegranate meant, and what was done at Kanathos, were secret and remain unknown. The Tonaia story is a late explanation of a rite; what the binding with lygos meant is debated.',
+          },
+          inPractice:
+            'If you can find one, keep a pomegranate on your shrine this month, and replace it when it begins to spoil. If not, a picture of Polykleitos’s Hera or a cuckoo will do.',
+          reflect: [
+            'What place, city or community would you ask Hera to protect?',
+            'What in you would you like to renew, as Hera was renewed at the spring?',
+          ],
+          further: [
+            'Pausanias, Description of Greece 2.17 and 7.4, trans. W. H. S. Jones (1918)',
+            'Walter Burkert, Greek Religion (1985), section on Hera',
+          ],
+          library: ['traditional/deity/hera', 'traditional/crystal/garnet', 'traditional/herb/myrrh'],
+        },
+        {
+          id: 'hera-stages',
+          title: 'Girl, Wife and Woman Alone',
+          summary: 'Hera of every stage of life: Stymphalos, the races and robe of Olympia, the reconciliation of the Daedala, and the sacred marriage of Gamelion.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'Pais, Teleia, Chera',
+              body: `At Stymphalos in Arcadia, Pausanias says, an ancient founder named Temenos raised Hera and set up three sanctuaries to her: one to Hera Pais, the Girl, while she was still a maiden; one to Hera Teleia, the Fulfilled or Married, when she married Zeus; and one to Hera Chera, the Widow or the Woman Alone, when she quarrelled with Zeus and came back to Stymphalos (8.22.2).
+
+Chera can mean a widow, but also a woman parted from her husband. So here is a Hera honoured as a girl, as a wife, and as a woman on her own after a marriage breaks. She is a goddess for every stage of a woman’s life, not only for brides. Many modern devotees take great comfort from Hera Chera.`,
+            },
+            {
+              heading: 'The Heraia at Olympia',
+              body: `At Olympia, every four years, a college of Sixteen Women wove a new robe, a peplos, for Hera, and held races for girls in her honour. Pausanias describes them: the girls ran in three age groups, with their hair loose, a tunic reaching just above the knee and the right shoulder bare to the breast. They ran on the Olympic track, shortened by a sixth. Winners received a crown of olive and a share of the cow sacrificed to Hera, and could set up painted images of themselves (5.16.2–4).
+
+Her temple at Olympia is older than Zeus’s great temple there. The Heraia shows Hera as the goddess of girls growing up strong, and of women working together, weaving and organising her festival.`,
+            },
+            {
+              heading: 'The Daedala',
+              body: `At Plataea, in Boeotia, a festival called the Daedala told a story of quarrel and reconciliation. Hera, angry with Zeus, had left him and gone away. On advice, Zeus dressed a wooden statue as a bride and had it carried in procession, as if he were marrying again. Hera rushed down, tore the veil from the “bride”, found a block of wood, laughed, and was reconciled. The festival, Pausanias says, renewed this with wooden images carried up Mount Kithairon and burned on a great altar (9.3.1–8).
+
+It is a story about a marriage in trouble that is mended with a joke and a gesture, not by force. That, too, is Hera: the goddess of a bond that survives a quarrel.`,
+            },
+            {
+              heading: 'Gamelion and the sacred marriage',
+              body: `In Athens, the winter month of Gamelion, around January, took its name from gamos, marriage, and was the favourite season for weddings. Near the end of it, on the 27th, came the Theogamia, the marriage of the gods, honouring Zeus and Hera. A local sacrificial calendar from the deme of Erchia records sacrifices to Hera and Zeus Teleios on that day.
+
+Before a wedding, Greek families made proteleia, preliminary offerings, to Hera Teleia among other gods. She was the goddess who brought a marriage to its telos, its fulfilment. Modern Hellenists keep the Theogamia as a festival of committed love, and many bless partnerships of every kind under Hera Teleia.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Pausanias gives Stymphalos (8.22.2), the Heraia at Olympia (5.16.2–4) and the Daedala at Plataea (9.3.1–8). The month name Gamelion and its weddings are well attested; the Erchia calendar records the sacrifice on 27 Gamelion. Proteleia to Hera before weddings are mentioned in several sources.',
+            unknown:
+              'How old the Stymphalian triple cult was is uncertain; Pausanias reports a local foundation legend. Whether the Athenian Theogamia was a major public festival or a smaller observance is debated. Modern inclusive practice is a modern choice.',
+          },
+          inPractice:
+            'Decide which of the three Heras speaks most to where you are now: Pais, Teleia or Chera. Use that title in your prayers for the rest of the journey. Mark 27 Gamelion in your calendar for next winter.',
+          reflect: [
+            'Which stage of life are you in, and what would honouring Hera there look like?',
+            'The Daedala mends a quarrel with laughter. Is there a bond in your life that a gesture could mend?',
+          ],
+          further: [
+            'Pausanias, Description of Greece 5.16, 8.22 and 9.3, trans. W. H. S. Jones (1918)',
+            'Jon D. Mikalson, The Sacred and Civil Calendar of the Athenian Year (1975)',
+          ],
+          library: ['traditional/deity/hera', 'traditional/deity/zeus', 'traditional/crystal/moonstone'],
+        },
+        {
+          id: 'hera-today',
+          title: 'Hera today, and a shrine of your own',
+          summary: 'Hellenic polytheism, Hera as goddess of commitment, the Roman Juno, and how to set up her shrine.',
+          minutes: 6,
+          sections: [
+            {
+              heading: 'Who honours her now',
+              body: `Hera is honoured today mainly by Hellenic polytheists, sometimes called Hellenismos, who try to reconstruct ancient Greek religion from the evidence. They honour her in Gamelion and at the Theogamia, at weddings and anniversaries, and as queen beside Zeus at the household shrine. Groups like YSEE in Greece and Hellenion in the United States, and many solitary practitioners, keep her festivals.
+
+Many modern devotees see her as the goddess of committed partnership of every kind: marriages, civil partnerships, same-sex marriages, long friendships, the bond of a family that chose each other. They also honour her as a goddess of women’s dignity and sovereignty, and of women alone, as at Stymphalos. These are modern readings of an ancient goddess, made with care.`,
+            },
+            {
+              heading: 'Hera and Juno',
+              body: `The Romans honoured Hera as Juno, but Juno had her own Italian history: Juno Lucina of childbirth, Juno Moneta on the Capitol, Juno Sospita of Lanuvium, the Kalends of every month, and the women’s festival of the Matronalia on 1 March. If you are drawn to the Roman forms, the app has a separate journey for Juno. Many people honour both, as different faces of the queen, and some keep the Matronalia for Hera too.`,
+            },
+            {
+              heading: 'Setting up her shrine',
+              body: `A Hellenic household shrine usually honours several gods, with Hestia at the hearth. Hera can be given a place beside Zeus or a small shrine of her own, ideally somewhere dignified and orderly. You need a lamp or candle, a cup for libations, a dish, a small vase for flowers and a bowl for khernips. For her image, use a statue, a crown or diadem, a peacock feather, a pomegranate, or a picture of the Argive or Samian Heraion. Royal blue, white and purple are modern colours for her; garnet and moonstone modern stones.
+
+Keep the shrine beautiful and well kept. A piece of fine cloth, a veil or something you have woven or embroidered suits her, in memory of the robe the Sixteen Women wove at Olympia.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Modern Hellenic groups and their festival calendars are documented. Juno’s Roman cults and the Matronalia are well attested in Ovid’s Fasti and the calendars.',
+            unknown:
+              'Ancient household cult of Hera is poorly documented; she was honoured mostly in public sanctuaries and at weddings. Her modern colours and stones are modern. Modern readings of her as goddess of all committed bonds are modern, if well founded.',
+          },
+          inPractice:
+            'Set up her place this week with a lamp, flowers and something woven, sewn or embroidered. If you have a partner or a close friend, tell them what you are doing.',
+          reflect: [
+            'What does a committed bond look like in your life, whatever its shape?',
+            'Where could you bring more dignity and order into your home?',
+          ],
+          further: [
+            'Drew Campbell, Old Stones, New Temples (2000), on Hellenic reconstructionism',
+            'Ovid, Fasti 3.167–258, on Juno and the Matronalia (Frazer’s Loeb translation on LacusCurtius)',
+          ],
+          library: ['traditional/tool/altar', 'traditional/candle/blue', 'traditional/candle/white', 'traditional/deity/juno', 'traditional/herb/rose'],
+          premade: ['folk-khernips-libation', 'kitchen-housewarming-blessing'],
+        },
+      ],
+      practices: [
+        {
+          id: 'hera-study-hymn',
+          title: 'Read her hymn aloud',
+          instructions:
+            'Once in this stage, read the Homeric Hymn to Hera (Hymn 12) and the Ida scene of Iliad 14 aloud, standing, by your lamp.',
+          times: 1,
+          prompt: 'Which line stayed with you? Write it down and say why.',
+        },
+        {
+          id: 'hera-study-weave',
+          title: 'Begin a woven work',
+          instructions:
+            'Start a small piece of woven, sewn, knitted, embroidered or mended work for Hera: a strip of cloth, a square, a ribbon, a mended garment. It does not need to be skilled. Work on it a little each week; you will offer it at your dedication.',
+          times: 1,
+          prompt: 'What did I choose to make, and why?',
+        },
+      ],
+    },
+    {
+      kind: 'practice',
+      title: 'Nine days of the kept bond',
+      intro:
+        'Nine days of a short daily offering and a commitment honoured, then a lesson on her offerings and the hard parts of her myths. Hera is a goddess of the bond that is kept, so the practice is to keep one.',
+      days: 12,
+      lessons: [
+        {
+          id: 'hera-offerings',
+          title: 'Offerings, the jealous queen, and the hard parts',
+          summary:
+            'What to give Hera and how, how to read the myths of her jealousy, and why a goddess of marriage does not ask anyone to stay in harm.',
+          minutes: 8,
+          sections: [
+            {
+              heading: 'What she received',
+              body: `In her great sanctuaries Hera received the sacrifice of cows, the animal of the Argive plain, and the hecatombs of her festivals. Her offerings also included cakes, wine, incense, flowers and garlands, and a great many dedicated objects: figurines, jewellery, mirrors, pomegranates in clay, bronze and wood. And she received woven work: the peplos of Olympia, and robes and textiles given by women at many sanctuaries.
+
+In modern home practice: libations of wine mixed with water or milk with honey, flowers, honey cakes, incense such as myrrh or frankincense, a pomegranate, and something you have made with your hands. Hera is a sky goddess as well as a queen, so her offerings are shared: the god’s portion is hers, and the rest of the cake and the cup is yours.`,
+            },
+            {
+              heading: 'The jealous wife',
+              body: `In myth, Hera persecutes Zeus’s lovers and their children: Io turned into a cow and tormented by a gadfly, Leto refused a place to give birth, Semele tricked into her death, Herakles driven mad. Most people today know her through these stories, and as the nagging wife of comedy.
+
+Two things are worth holding together. First, the stories are real parts of Greek myth, and Hera in them is often cruel to people who had no choice in what Zeus did to them. You do not have to admire that. Second, they are stories about a wronged queen in a marriage where her husband is constantly unfaithful and often violent. Many modern devotees read them as the anger of a woman whose dignity is attacked, turned on the wrong target. Some take from them a warning: anger at a betrayal is just, but it belongs with the betrayer.`,
+            },
+            {
+              heading: 'Not a cage',
+              body: `Hera is the goddess of marriage, and of the commitment that holds through hard times. That does not mean she asks anyone to stay in a relationship that harms them. The ancient Hera herself left Zeus, according to the Stymphalians and the Plataeans, and was honoured as Chera, the woman alone.
+
+If you are frightened, controlled or hurt by a partner, your safety comes first, and leaving can be the most dignified thing you ever do. Please reach out to someone you trust or a domestic abuse service such as Refuge (UK) or the National Domestic Violence Hotline (US). Hera Chera is a goddess for that too.`,
+            },
+            {
+              heading: 'Queen, not punchline',
+              body: `It is common to make Hera the butt of the joke: the shrew, the jealous wife, the killjoy. Hellenic polytheists generally find that disrespectful, and the ancient evidence of her cult supports them: whole cities built temples to her, and the girls of Olympia ran for her.
+
+Approach her as a queen. Speak to her formally, keep your promises to her, keep her shrine in good order, and do not ask her for petty revenge on a rival or an ex. Ask her instead for dignity, for strength in your commitments, and for the wisdom to know which bonds to keep.`,
+            },
+          ],
+          knowAndDont: {
+            known:
+              'Cow sacrifices, woven robes and many dedicated objects to Hera are attested by Pausanias and excavation at Argos, Samos and Olympia. The myths of her persecutions are told in Homer, Hesiod, the tragedians, Apollodorus and Ovid. The Stymphalian Chera and the Plataean quarrel come from Pausanias.',
+            unknown:
+              'How ordinary Greeks reconciled the jealous Hera of myth with the queen of their temples is a matter of interpretation. The modern reading of her anger as a wronged woman’s is modern.',
+          },
+          inPractice:
+            'This week, give her one offering of something you made: a cake you baked, a few rows of your woven work, flowers you grew. Decide what you will do with the myths of jealousy.',
+          reflect: [
+            'Where in your life has anger at a betrayal gone to the wrong person?',
+            'Which of your bonds should you keep through hard times, and which, if any, should you leave?',
+          ],
+          further: [
+            'Joan V. O’Brien, The Transformation of Hera (1993)',
+            'Robert Parker, On Greek Religion (2011)',
+          ],
+          library: ['traditional/deity/hera', 'traditional/vessel/offering_bowl', 'traditional/herb/rose'],
+          premade: ['folk-khernips-libation', 'kitchen-honey-sweetening-cake'],
+        },
+      ],
+      practices: [
+        {
+          id: 'hera-nine-days',
+          title: 'Nine days of the kept bond',
+          instructions:
+            'Before you begin, choose one commitment to honour actively for nine days: calling a parent, doing your share at home without being asked, a promise to yourself about rest or work, time given to a friend. For nine days, at about the same time, do this. Wash your hands. Light the lamp and say a word to Hestia. Greet Hera by your chosen title, Pais, Teleia or Chera. Pour a little wine, milk or water into her dish, and say aloud what you did for your commitment that day. Work on your woven piece for a few minutes if you can. Put out the light, and pour the dish onto earth in the morning.',
+          times: 9,
+          every: 'day',
+          prompt: 'What did I do for my commitment today? What did it cost me, and what did it give?',
+          premade: 'folk-khernips-libation',
+        },
+        {
+          id: 'hera-practice-honour',
+          title: 'Honour a bond out loud',
+          instructions:
+            'Once in this stage, tell someone in a committed bond with you, a partner, a friend, a family member, specifically what they mean to you and what you will keep doing for them. If you are on your own, write a letter to yourself honouring the commitment you have made to your own life.',
+          times: 1,
+          prompt: 'What did I say, and how was it received?',
+        },
+      ],
+    },
+    {
+      kind: 'discernment',
+      title: 'At the spring of Kanathos',
+      intro: `Hera renewed herself each year at the spring of Kanathos. Take a few days to look honestly at this month, and at what in you needs renewing. A dedication is a commitment, and Hera is the goddess of commitments; it is only worth making if you mean it.
+
+Stopping here is a good outcome. So is pausing, or deciding that another goddess, another path or no dedication at all is right for you. Hera Chera was honoured for leaving too.`,
+      days: 3,
+      lessons: [],
+      practices: [
+        {
+          id: 'hera-discern-water',
+          title: 'Wash and decide',
+          instructions:
+            'On one of the three days, wash your face slowly in fresh water, in memory of Kanathos, and then sit and answer the questions below in your journal.',
+          times: 1,
+          prompt: 'What did I wash away, and what is left that I want to keep?',
+        },
+      ],
+      questions: [
+        'Did I keep the nine days because I wanted to, or because I felt I had to?',
+        'Am I drawn to Hera herself, or mainly to the idea of a goddess of marriage? Is that enough for me?',
+        'Can I keep a regular offering, her festivals and my commitments, in my life as it is now, for a year?',
+        'Am I at peace with how I hold the myths of her jealousy, and with her as queen rather than punchline?',
+        'Is any relationship in my life harming me? If so, am I looking for help as well as devotion?',
+        'Would I be relieved or disappointed if I decided to wait? What does that tell me?',
+      ],
+    },
+    {
+      kind: 'dedication',
+      title: 'The dedication before the queen',
+      intro: `If you have chosen to go on, make your dedication on a day that suits her: a Noumenia, 27 Gamelion, a wedding anniversary, or 1 March if you also honour Juno. This is a self-dedication, a promise you make on your own behalf. It is not an initiation, and it does not make you a priestess or one of the Sixteen Women.
+
+Ancient Greeks rarely dedicated themselves to one god alone. Your promise can sit beside honouring Zeus, Hestia and others.`,
+      days: 1,
+      lessons: [],
+      practices: [],
+      rite: {
+        title: 'Self-dedication to Hera',
+        summary:
+          'Purification, Hestia first, Hera called by her titles, your promise, a woven work and a pomegranate laid before her, a libation and honey cake, and silence in her presence.',
+        minutes: 60,
+        ingredients: [
+          { name: 'A bowl of fresh water and a match or bay sprig for khernips', ref: 'traditional/vessel/bowl' },
+          { name: 'A lamp, tealight or electric candle' },
+          { name: 'Fresh flowers', ref: 'traditional/herb/rose' },
+          { name: 'A cup of wine mixed with water, or milk with honey', ref: 'traditional/tool/chalice' },
+          { name: 'A dish to pour into', ref: 'traditional/vessel/offering_bowl' },
+          { name: 'A honey cake or a piece of good bread with honey' },
+          { name: 'Your woven, sewn or mended work' },
+          { name: 'A pomegranate', optional: true },
+          { name: 'A little myrrh on a heatproof burner', ref: 'traditional/herb/myrrh', optional: true },
+          { name: 'Your written promise on a card' },
+        ],
+        preparation:
+          'During the day, clean your home and her shrine properly. Finish or tidy your woven work. Write your promise in your own words: simple and doable, for example to honour her at each Noumenia, to keep the Theogamia, to honour my commitments and leave what harms me, and to treat my own dignity and others’ as sacred. Bathe, and dress in your best clothes. A queen is met dressed well.',
+        steps: [
+          {
+            title: 'Purify',
+            instructions:
+              'Make khernips by quenching the flame in the water. Wash your hands and touch your face. Sprinkle a few drops over the woven work and the flowers.',
+            spoken: 'With clean hands I come before the golden throne.',
+          },
+          {
+            title: 'Begin with Hestia',
+            instructions: 'Light the lamp. Pour a drop of the libation for Hestia.',
+            spoken: 'Hestia, first and last, I begin with you.',
+            light: true,
+          },
+          {
+            title: 'Call Hera',
+            instructions:
+              'Stand with your palms raised. Add incense if you are using it. Speak her titles slowly.',
+            spoken:
+              'Hera, golden-throned, queen of the deathless gods, whom all the blessed on Olympus honour even as Zeus; lady of Argos and Samos; Pais, Teleia and Chera, girl, wife and woman alone: hear me. This month I have learned your story and kept my bonds as best I could. Now I come before you to make a promise.',
+            minutes: 2,
+          },
+          {
+            title: 'Make your promise',
+            instructions:
+              'Read your promise aloud. Then pour most of the libation into the dish, and set the honey cake beside it.',
+            spoken: 'This is my promise, made freely. Let it be fulfilled, Teleia, as you fulfil.',
+          },
+          {
+            title: 'Lay down your work',
+            instructions:
+              'Lay your woven or sewn work before her image, as the women of Olympia gave her a robe. Set the pomegranate beside it if you have one.',
+            spoken: 'Queen Hera, this is the work of my hands. Accept it.',
+          },
+          {
+            title: 'Sit in her presence',
+            instructions: 'Sit upright by the lamp in silence, as you would in a queen’s hall. Let whatever comes come.',
+            minutes: 7,
+            timed: true,
+          },
+          {
+            title: 'Close with Hestia',
+            instructions: 'Pour the last drop for Hestia. Thank both goddesses and put out the lamp.',
+            spoken: 'Hestia, last as you were first. Hera, it is done.',
+            snuff: true,
+          },
+        ],
+        closing:
+          'Eat some of the honey cake yourself, and share it with someone you are bound to if you can. Leave her portion until the next day, then return it to earth or compost. Keep the woven work on her shrine for the year, and your written promise with it. Write in your journal what you promised.',
+        safety:
+          'Never leave a flame unattended, and keep it well away from cloth, flowers and woven work. Myrrh smoke can trouble people with asthma and small pets. Grapes, raisins and wine are toxic to dogs and cats; lilies are deadly to cats. Keep honey from babies under a year old.',
+      },
+    },
+    {
+      kind: 'ongoing',
+      title: 'The queen through the year',
+      intro: `Your relationship with Hera now lives in your commitments and in the year. Greet her at each Noumenia with the household gods. Keep the Theogamia in Gamelion, and, if you honour Juno too, the Matronalia on 1 March. Bring her flowers on anniversaries, and work on something woven for her through the year.
+
+Once a year, on the anniversary of your dedication, read your promise again and renew it, change it, or set it down with thanks. If a bond in your life ends, bring that to her too, as Chera.`,
+      days: 30,
+      lessons: [],
+      practices: [
+        {
+          id: 'hera-ongoing-noumenia',
+          title: 'Greet the new month',
+          instructions:
+            'At each Noumenia, the first crescent, give incense and a libation to the household gods, including Hera, and name one commitment you will honour that month.',
+          times: 12,
+          every: 'month',
+          premade: 'folk-noumenia-blessing',
+          prompt: 'Which bond will I tend this month?',
+        },
+        {
+          id: 'hera-ongoing-festivals',
+          title: 'Keep her festivals',
+          instructions:
+            'Keep the Theogamia on 27 Gamelion (around January) with flowers, a libation and a shared meal in honour of committed love, and any anniversaries that matter to you. Add a little to her woven work each season.',
+          times: 2,
+          every: 'holy-day',
+          prompt: 'What did this festival ask of me this year?',
+        },
+        {
+          id: 'hera-ongoing-rededicate',
+          title: 'Yearly rededication',
+          instructions:
+            'On your dedication anniversary, repeat the dedication rite with your promise rewritten for the coming year, and offer the year’s woven work.',
+          times: 1,
+          every: 'holy-day',
+          prompt: 'What has a year with Hera taught me about my commitments? What will I promise now?',
+        },
+      ],
+    },
+  ],
+  sources: [
+    'Homeric Hymn 12, To Hera, trans. H. G. Evelyn-White, Hesiod, the Homeric Hymns and Homerica (1914), Project Gutenberg #348: https://www.gutenberg.org/ebooks/348 (quoted: “queen of the deathless gods”; “surpassing all in beauty”; “reverence and honour even as Zeus”)',
+    'Hesiod, Theogony 921–929, trans. H. G. Evelyn-White (1914), Project Gutenberg #348 (paraphrased)',
+    'Homer, Iliad 4.51–52, 14.153–353 and 18.395–397, trans. Samuel Butler, Project Gutenberg (paraphrased)',
+    'Pausanias, Description of Greece 2.17.4, 2.38.2–3, 5.16.2–4, 7.4.4, 8.22.2 and 9.3.1–8, trans. W. H. S. Jones (1918) (paraphrased)',
+    'Athenaeus, Deipnosophists 15.672, the Samian Tonaia from Menodotus (paraphrased)',
+    'Ovid, Metamorphoses 1.722–723, Argus’s eyes in the peacock’s tail (paraphrased)',
+    'Linear B tablet PY Tn 316, offerings to Zeus and Hera at Pylos',
+    'The sacrificial calendar of Erchia (SEG 21.541), 27 Gamelion; Jon D. Mikalson, The Sacred and Civil Calendar of the Athenian Year (1975)',
+    'Walter Burkert, Greek Religion (1985); Robert Parker, On Greek Religion (2011)',
+    'Joan V. O’Brien, The Transformation of Hera (Lanham, 1993)',
+  ],
+};

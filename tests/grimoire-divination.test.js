@@ -22,8 +22,8 @@ function loadCore(name) {
 test("the shared bundle has a page for every card, rune and stave", () => {
   const D = loadCore("divination-library");
   const groups = D.allDivinationGroups();
-  assert.equal(groups.map((g) => g.label).join(), "Tarot,Runes,Ogham");
-  assert.equal(groups.map((g) => D.countOf(g)).join(), "78,25,20");
+  assert.equal(groups.map((g) => g.label).join(), "Tarot,Runes,Ogham,Lenormand,Kipper");
+  assert.equal(groups.map((g) => D.countOf(g)).join(), "78,25,20,36,36");
   assert.equal(groups[0].subgroups.map((s) => s.label).join(), "Major Arcana,Wands,Cups,Swords,Pentacles");
   for (const entry of D.allDivinationEntries()) {
     assert.equal(entry.words.length, 3, entry.name);
@@ -65,7 +65,7 @@ test("the Sanctuary search finds cards and staves, and opens their pages", () =>
   const D = loadCore("divination-library");
   assert.equal(S.GROUP_LABELS.divination, "Divination");
   const results = S.createDivinationResults(D);
-  assert.equal(results.length, 123);
+  assert.equal(results.length, 195);
   S.buildIndex({ divination: results });
   const tower = S.search("the tower")[0];
   assert.equal(tower.title, "The Tower");
@@ -85,6 +85,6 @@ test("a drawn card's meaning links to its page, unless Traditional Information i
   assert.equal(Dv.links.readMoreHref("Úr"), "/grimoire/?divination=ogham/ur");
   assert.equal(Dv.links.readMoreHref("Nobody"), null);
   const hedge = read("practice/hedge/hedge.js");
-  assert.match(hedge, /settings\.library_traditional_enabled !== false \? Dv\.links\?\.readMoreHref\(m\.name\) : null/);
+  assert.match(hedge, /settings\.library_traditional_enabled !== false && !m\.own \? Dv\.links\?\.readMoreHref\(m\.name\) : null/);
   assert.match(hedge, />Read more<\/a>/);
 });

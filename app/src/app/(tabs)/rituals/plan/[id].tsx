@@ -149,7 +149,7 @@ export default function PlanView() {
               ? `We'll remind you ${leadWords(reminders.settings.ritualLeadMinutes)} before.`
               : 'Ritual reminders are off.'}
         </Body>
-        <Button label="Reminder settings" variant="text" onPress={() => router.push('/rituals/reminders')} />
+        <Button label="Reminder settings" variant="text" onPress={() => router.push({ pathname: '/rituals/reminders', params: { section: 'moon' } })} />
       </Card>
 
       <Card>

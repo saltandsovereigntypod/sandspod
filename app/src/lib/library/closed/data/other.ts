@@ -318,4 +318,132 @@ export const OTHER: ClosedTradition[] = [
     ],
     related: ['native-american-first-nations', 'sami', 'mexican-andean'],
   },
+  {
+    id: 'shinto',
+    name: "Shinto",
+    aka: ["Shintō", "Kami no michi", "Shrine Shinto", "Jinja Shinto", "Kannushi"],
+    group: 'other',
+    openness: 'debated',
+    peoples:
+      "The people of Japan and the Japanese diaspora. Japan has some 80,000 shrines, most of them linked to the Association of Shinto Shrines (Jinja Honchō), and there are a few shrines abroad, in Hawaii, North America and Europe.",
+    summary:
+      "Japan’s living religion of the kami, kept at shrines and in homes. Anyone may visit a shrine and pray; priests are trained and certified; and people disagree about what it means for someone outside Japan to practise Shinto.",
+    sections: [
+      {
+        heading: "What Shinto is",
+        body:
+          "Shinto is the worship of the kami: gods of the myths such as Amaterasu, the spirits of mountains, rivers and trees, ancestors and the guardian kami of each locality. It has no founder and no single scripture, though the Kojiki (712) and Nihon Shoki (720) tell the myths. It centres on shrines, festivals (matsuri), purification (harae) and sincerity of heart (makoto).\n\nMost Japanese people take part in shrine life, at New Year, at a baby’s first shrine visit, at festivals and for blessings, often without calling themselves religious, and many also take part in Buddhism. For over a thousand years kami and buddhas were worshipped together.",
+      },
+      {
+        heading: "History and the state",
+        body:
+          "In 1868 the Meiji government separated Shinto from Buddhism, and until 1945 it organised shrine worship as State Shinto, used to support emperor worship, nationalism and war. The Allied Shinto Directive of 1945 ended state support, and shrines became private religious bodies. Debates about nationalism, including visits by politicians to Yasukuni Shrine, continue in Japan and its neighbours; most shrine life is local and community-based.",
+      },
+      {
+        heading: "Priests and shrines",
+        body:
+          "Shrine priests (kannushi) train at Kokugakuin or Kōgakkan University or through shrine programmes, and are certified by Jinja Honchō or their own shrine bodies. Many shrines are kept by hereditary priestly families. Shrine maidens (miko) assist at rites. Priests perform the shrine’s rites; ordinary people take part by visiting, praying, giving offerings and joining festivals.",
+      },
+    ],
+    howPeopleComeIn:
+      "Most people belong to shrine life through family and the local shrine, from a baby’s first visit to festivals and New Year. There is no conversion or creed. Some people outside Japan keep a kamidana with an ofuda from a shrine and visit shrines abroad; a very few non-Japanese have trained and serve as priests.",
+    openAndClosed:
+      "Open: visiting shrines, praying, receiving omamori and ofuda, joining festivals, keeping a kamidana, and learning from priests, many of whom welcome sincere interest. Debated: some Japanese priests and scholars hold that Shinto cannot be separated from Japan’s land, language and communities, while others, and shrines such as Tsubaki Grand Shrine of America, welcome non-Japanese practitioners. Closed: the shrine’s rites are performed by priests, and the inner sanctuaries are for priests alone.",
+    myths: [
+      {
+        myth: "Shinto is simply Japanese nature worship.",
+        truth: "Reverence for nature is part of it, but so are shrines, festivals, ancestors, purification, community and a long history shared with Buddhism and the state.",
+      },
+      {
+        myth: "You have to be Japanese to visit a shrine.",
+        truth: "Shrines welcome respectful visitors of any background, and there is no test of belief.",
+      },
+      {
+        myth: "Shinto today is the same as wartime State Shinto.",
+        truth: "State Shinto was a government system ended in 1945; shrines today are private religious bodies, though debates about nationalism continue.",
+      },
+      {
+        myth: "Ofuda and omamori are lucky charms anyone can make.",
+        truth: "They are consecrated at a shrine; homemade copies are not the same, and old ones are returned to a shrine to be burned.",
+      },
+    ],
+    please: [
+      "Please follow each shrine’s rules, including where photographs are not allowed.",
+      "Please don’t make or sell your own ofuda, or call yourself a Shinto priest without training.",
+      "Please don’t use torii, kami names or shrine imagery as decoration or branding.",
+      "Please ask before visiting a shrine while in mourning: in Japanese custom, families often stay away for a time after a death.",
+    ],
+    learn:
+      "Visit shrines with an open mind, read history by Japanese and other scholars, and ask the priests at a shrine near you or abroad. If you would like a kamidana, ask a shrine for an ofuda and how to care for it.",
+    reading: [
+      "John Breen and Mark Teeuwen, A New History of Shinto (2010)",
+      "Helen Hardacre, Shinto: A History (2017)",
+      "Inoue Nobutaka (ed.), Shinto: A Short History (2003)",
+      "Stuart D. B. Picken, Essentials of Shinto (1994)",
+      "Motohisa Yamakage, The Essence of Shinto (2006)",
+    ],
+    community: ["Jinja Honchō (Association of Shinto Shrines)", "Tsubaki Grand Shrine of America"],
+  },
+  {
+    id: 'daoist-priesthood',
+    name: "Daoist priesthood and ritual",
+    aka: ["Daoism", "Taoism", "Daoshi", "Zhengyi", "Quanzhen", "Celestial Masters", "Chinese temple religion"],
+    group: 'other',
+    openness: 'initiatory',
+    peoples:
+      "Daoist priests (daoshi) of the Zhengyi (Orthodox Unity) tradition, often hereditary and living at home, in Taiwan, southern China, Hong Kong and the diaspora; and monastic Quanzhen (Complete Perfection) Daoists, based at monasteries such as the White Cloud Temple in Beijing. The temples they serve belong to local communities.",
+    summary:
+      "Chinese temple religion is open to everyone who comes respectfully. The Daoist priesthood that performs its great rituals is entered by ordination in a lineage, receiving registers and scriptures from a master.",
+    sections: [
+      {
+        heading: "What Daoism is",
+        body:
+          "Daoism grew from the teachings of the Daodejing and the Zhuangzi and became an organised religion with the Celestial Masters in the second century CE. It has its own vast canon of scriptures, the Daozang, its own gods, among them the Three Pure Ones and the Jade Emperor, and its own priests, monasteries and temples. The old division between “philosophical” and “religious” Daoism is now widely seen as too simple.\n\nChinese folk religion, the worship of local gods such as Mazu, Tudigong and the Kitchen God, overlaps with Daoism and with Buddhism. Many temples are run by lay committees and call in Daoist priests for great rituals.",
+      },
+      {
+        heading: "Ordination and registers",
+        body:
+          "Zhengyi priests receive a register (lu) at ordination, a document that names the spirit generals and officers under their command, from a master in their lineage; many are trained within priestly families. Quanzhen Daoists take vows and live in monasteries. In mainland China the China Taoist Association has certified clergy since the 1950s. A priest’s ritual knowledge, his scriptures and the talismans he writes are passed on within the lineage.",
+      },
+      {
+        heading: "What priests do",
+        body:
+          "Daoist priests perform the jiao, great rituals of cosmic renewal held by temple communities, rites for the dead, blessings and exorcisms, often with music and in ritual dress. Ordinary people take part in temple life by offering incense, consulting oracle blocks and fortune sticks, joining processions and festivals, and hiring priests when needed.",
+      },
+    ],
+    howPeopleComeIn:
+      "Through a master in a lineage, usually after years of study and service; Zhengyi priests are often trained within families, and Quanzhen Daoists enter a monastery. Some masters accept non-Chinese students; the master decides.",
+    openAndClosed:
+      "Open: visiting temples, offering incense, joining festivals, reading the Daodejing and Zhuangzi in good translations, and arts such as taiji and qigong taught publicly. Initiatory: ordination, the registers and their contents, priestly ritual and talismans, which are given within lineages.",
+    myths: [
+      {
+        myth: "Daoism is only a philosophy of going with the flow.",
+        truth: "It is also a living religion with priests, monasteries, temples, scriptures and rituals.",
+      },
+      {
+        myth: "You can be ordained as a Daoist priest online.",
+        truth: "Ordination is given in person by a master in a lineage; certificates sold online are not recognised by Daoist bodies.",
+      },
+      {
+        myth: "Chinese folk religion is the same thing as Daoism.",
+        truth: "They overlap, and with Buddhism too, but the worship of local gods is broader than Daoism and many temples are run by lay communities.",
+      },
+    ],
+    please: [
+      "Please don’t buy Daoist ordinations or priestly titles online.",
+      "Please don’t copy, sell or improvise talismans (fu) or registers.",
+      "Please don’t use temple images, gods’ names or ancestral tablets as décor.",
+      "Please follow each temple’s customs about offerings, photography and where visitors may go.",
+    ],
+    learn:
+      "Visit temples respectfully, read good translations and scholarship, and if you want to go further, look for a teacher in an established lineage and take time to know them.",
+    reading: [
+      "Kristofer Schipper, The Taoist Body (1993)",
+      "Isabelle Robinet, Taoism: Growth of a Religion (1997)",
+      "Livia Kohn (ed.), Daoism Handbook (2000)",
+      "Russell Kirkland, Taoism: The Enduring Tradition (2004)",
+      "Adam Yuet Chau, Miraculous Response: Doing Popular Religion in Contemporary China (2006)",
+    ],
+    community: ["China Taoist Association", "Hong Kong Taoist Association"],
+  },
 ];

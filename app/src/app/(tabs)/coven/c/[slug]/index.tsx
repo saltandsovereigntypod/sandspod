@@ -10,6 +10,8 @@ import { Card, MenuList, MenuRow, Notice, Section } from '../../../../../compone
 import { WEBSITE_ORIGIN } from '../../../../../lib/altar/assetPaths';
 import * as api from '../../../../../lib/covens/api';
 import { useCoven } from '../../../../../lib/covens/CovenContext';
+import { pendingLabel } from '../../../../../lib/covens/requests';
+import { usePendingDetail } from '../../../../../lib/covens/requestsBadge';
 import { errorMessage, JOINING, KIND_LABELS, occasionLabel, orderDocuments, rankPowers, ritualGroups, riteTime } from '../../../../../lib/covens/model';
 import { covenCalendarNames, covenNextHoliday } from '../../../../../lib/covens/programs';
 import { useSession } from '../../../../../lib/session';
@@ -199,9 +201,20 @@ export default function CovenHome() {
 function LeaderRows() {
   const coven = useCoven();
   const { review, manage, site } = coven.perms;
+  const waiting = usePendingDetail(review ? coven.snapshot?.coven.id : null);
+  const count = (waiting?.applications ?? 0) + (waiting?.advancements ?? 0);
   return (
     <>
-      {(review || site) && <MenuRow label="Review" detail="Applications and requests to advance" icon="offer" last={!(manage || site)} onPress={() => router.push(covenHref(coven.slug, 'review'))} />}
+      {(review || site) && (
+        <MenuRow
+          label="Review"
+          detail={pendingLabel(waiting) || 'Applications and requests to advance'}
+          icon="offer"
+          count={count}
+          last={!(manage || site)}
+          onPress={() => router.push(covenHref(coven.slug, 'review'))}
+        />
+      )}
       {(manage || site) && <MenuRow label="Manage" detail="Details, pages, positions and questions" icon="settings" last onPress={() => router.push(covenHref(coven.slug, 'manage'))} />}
     </>
   );

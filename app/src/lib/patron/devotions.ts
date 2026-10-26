@@ -54,6 +54,22 @@ const ERCHIA =
 const EPAGOMENAL_BIRTHS =
   'The five days upon the year and the gods born on them: Pyramid Texts; Papyrus Leiden I 346; Plutarch, On Isis and Osiris 12. Dates here count back from an early-August new year; the app’s Kemetic calendar works them out from the anchor you choose';
 
+const MESO_ETCSL = 'The Electronic Text Corpus of Sumerian Literature (Oxford): https://etcsl.orinst.ox.ac.uk/';
+const MESO_CULTIC = 'Mark E. Cohen, The Cultic Calendars of the Ancient Near East (1993)';
+const BALTIC_SOURCES =
+  'Norbertas Vėlius (ed.), Baltų religijos ir mitologijos šaltiniai (Sources of Baltic Religion and Mythology, 1996–2005); on Romuva and Dievturība today, Kaarina Aitamurto and Scott Simpson (eds), Modern Pagan and Native Faith Movements in Central and Eastern Europe (2013)';
+const FINNISH_SOURCES =
+  'Suomen Kansan Vanhat Runot (SKVR), the corpus of old Finnish and Karelian folk poetry: https://skvr.fi/; Anna-Leena Siikala, Mythic Images and Shamanism: A Perspective on Kalevala Poetry (2002)';
+const AS_SOURCES =
+  'Bede, De temporum ratione 15 (725), trans. Faith Wallis, Bede: The Reckoning of Time (1999); Ælfric, De falsis diis; Ronald Hutton, Pagan Britain (2013)';
+const ETRUSCAN_SOURCES =
+  'Nancy Thomson de Grummond and Erika Simon (eds), The Religion of the Etruscans (2006); Jean-René Jannot, Religion in Ancient Etruria (2005)';
+const SHINTO_LIVING =
+  'These days belong to a living religion; customs vary by shrine and region. John Breen and Mark Teeuwen, A New History of Shinto (2010); Jinja Honchō (Association of Shinto Shrines): https://www.jinjahoncho.or.jp/en/';
+const CHINESE_LIVING =
+  'These days belong to a living religion and follow the lunar calendar; customs vary by region and temple. Adam Yuet Chau, Miraculous Response: Doing Popular Religion in Contemporary China (2006); Stephan Feuchtwang, Popular Religion in China: The Imperial Metaphor (2001)';
+const UGARIT_TEXTS = 'Simon B. Parker (ed.), Ugaritic Narrative Poetry (1997), for the Baal Cycle and the tale of Aqhat';
+
 export const DEITY_DEVOTIONS: DeityDevotion[] = [
   // ─── Greek ────────────────────────────────────────────────────────────
   {
@@ -542,6 +558,159 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     sources: [ATTIC_MONTHLY, 'Plutarch, Life of Theseus 36, on the eighth day', PARKE],
   },
 
+  {
+    key: 'ares',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 2 },
+        name: 'Tuesday',
+        why: 'Tuesday was dies Martis in Latin, the day of the planet Mars, whom the Romans equated with Ares. Honouring Ares on Tuesdays is a modern custom; no Athenian festival of his is known.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Do something physically hard and offer the effort to him.',
+      'Pour a little wine or water outside and ask for courage for one thing you fear.',
+      'Name one anger you are carrying and decide what to do with it.',
+      'Stand up for someone who cannot stand up for themselves.',
+    ],
+    approach:
+      'Ares is approached with respect and self-control, for courage and protection, honest that the Greeks themselves honoured him warily.',
+    sources: [WEEKDAYS, 'Pausanias 3.14.9, on Spartan sacrifices to Enyalios', 'Homer, Iliad 5.855–906'],
+  },
+  {
+    key: 'hephaestus',
+    sacred: [
+      {
+        rule: { kind: 'attic', month: 'Pyanepsion', day: 'last' },
+        name: 'Chalkeia',
+        why: 'The Athenian festival of smiths and craftsmen on the last day of Pyanepsion, kept for Hephaestus and Athena Ergane, Athena of the workers.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Make or mend one small thing with your hands.',
+      'Clean and care for a tool you use often.',
+      'Light a candle at your workbench or desk before you begin.',
+      'Thank someone whose craft you rely on.',
+    ],
+    approach:
+      'Hephaestus is approached through honest work and craft, as the patient maker of the gods.',
+    sources: [PARKE + ', on the Chalkeia', 'Harpocration and the Suda, s.v. Chalkeia', DEUBNER],
+  },
+  {
+    key: 'pan',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'beltane' },
+        name: 'Beltane',
+        why: 'Many modern Pagans honour Pan at Beltane, in the green of spring. This is a modern custom: Herodotus says the Athenians gave Pan yearly sacrifices and a torch race after Marathon, but the day is not known.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Spend a few minutes outside somewhere green and listen.',
+      'Play or hum a tune for him.',
+      'Pour a little milk or honey onto the ground in a garden or park.',
+      'Do something kind for an animal.',
+    ],
+    approach:
+      'Pan is approached with playfulness and respect for the wild, in green places rather than indoors where possible.',
+    sources: ['Herodotus 6.105, on Pheidippides and the Athenian cult of Pan', HUTTON_TRIUMPH],
+  },
+  {
+    key: 'gaia',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'ostara' },
+        name: 'The spring equinox',
+        why: 'Modern Pagans often honour the Earth Mother as the land greens in spring. This is a modern custom; no Athenian festival day of Ge alone is securely known, though she received offerings as Ge Kourotrophos before many others.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Put your hands on the ground and thank her for one thing that grew.',
+      'Pour a little water onto soil or a plant with a word of thanks.',
+      'Pick up litter from one patch of ground.',
+      'Plant a seed or care for a houseplant in her name.',
+    ],
+    approach:
+      'Gaia is approached with gratitude and humility, as the Earth herself, and honoured by caring for the land.',
+    sources: ['Hesiod, Theogony 116–187', 'Homeric Hymn 30, To Earth the Mother of All', HUTTON_TRIUMPH],
+  },
+  {
+    key: 'helios',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'hellenic', id: 'pyanepsia' },
+        name: 'Pyanepsia',
+        why: 'Apollo’s autumn harvest festival, when the eiresione, an olive branch hung with wool and fruit, was carried in procession; a scholiast says it and the Thargelia also honoured Helios and the Horai, the Seasons.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'weekday', day: 0 },
+        name: 'Sunday',
+        why: 'Sunday is the day of the Sun in the planetary week (Latin dies Solis). Honouring Helios on Sundays is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Greet the first daylight you see with a few words.',
+      'Burn a pinch of frankincense at sunrise or noon.',
+      'Keep one promise today, with him as your witness.',
+      'Spend a few minutes in daylight and notice its warmth.',
+    ],
+    approach:
+      'Helios is approached openly and honestly, as the all-seeing Sun who witnesses oaths.',
+    sources: ['Scholia on Aristophanes, Knights 729 and Wealth 1054, on Helios and the Horai at the Pyanepsia and Thargelia', 'Homer, Iliad 3.277; Homeric Hymn to Demeter 62–89', WEEKDAYS],
+  },
+  {
+    key: 'eros',
+    sacred: [
+      {
+        rule: { kind: 'attic', day: 4 },
+        name: 'The fourth of the month',
+        why: 'In Athens the fourth day of each lunar month belonged to Eros, with Aphrodite, Hermes and Herakles.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Offer a rose or a drop of honey and name something you love.',
+      'Tell someone plainly that you love or value them.',
+      'Read or write a few lines of love poetry.',
+      'Do one thing for the sake of a creative longing.',
+    ],
+    approach:
+      'Eros is approached with openness and with respect for other people’s freedom, as the power that draws beings together.',
+    sources: [ATTIC_MONTHLY, 'Pausanias 9.27, on Eros at Thespiae', 'Hesiod, Theogony 120–122'],
+  },
+  {
+    key: 'asclepius',
+    sacred: [
+      {
+        rule: { kind: 'attic', month: 'Elaphebolion', day: 8 },
+        name: 'Asklepieia',
+        why: 'The Athenian festival of Asclepius on 8 Elaphebolion, the first day of the City Dionysia.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'attic', month: 'Boedromion', day: 18 },
+        name: 'Epidauria',
+        why: 'The day during the Eleusinian Mysteries (the 17th or 18th; sources differ) that remembered Asclepius’ arrival at Athens; later tradition said he came late to be initiated.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Light a candle for someone who is unwell.',
+      'Do one thing for your own health today.',
+      'Thank a doctor, nurse or carer.',
+      'Write down a dream and what it might be telling you about your wellbeing.',
+    ],
+    approach:
+      'Asclepius is approached with trust and thanks, alongside good medical care, never instead of it.',
+    sources: [PARKE + ', on the Asklepieia and the Epidauria', 'Philostratus, Life of Apollonius 4.18, on the Epidauria', 'Inscriptiones Graecae IV² 1, 121–124, the healing records of Epidaurus'],
+  },
+
   // ─── Roman ────────────────────────────────────────────────────────────
   {
     key: 'jupiter',
@@ -941,6 +1110,223 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     sources: [PHILOCALUS, 'Steven E. Hijmans, Sol: The Sun in the Art and Religions of Rome (2009)', WEEKDAYS],
   },
 
+  {
+    key: 'fortuna',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 6, day: 24 },
+        name: 'Fors Fortuna',
+        why: 'The festival of Fors Fortuna at her temples across the Tiber, when Romans of every class went downriver in garlanded boats and feasted.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'fixed', month: 4, day: 1 },
+        name: 'Veneralia (Fortuna Virilis)',
+        why: 'The Kalends of April, when women honoured Venus Verticordia and Fortuna Virilis, as Ovid and the Praenestine calendar record.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'When something lucky happens, say thank you and give a little of it away.',
+      'Drop a coin in a charity box in her name.',
+      'Face one setback today with good grace.',
+      'Light a candle before something uncertain and ask her to steer it well.',
+    ],
+    approach:
+      'Fortuna is approached with gratitude and good humour, honoured in good luck and bad, and never treated as a promise of winnings.',
+    sources: [OVID_FASTI + ' (4.133–164; 6.773–786)', ROMAN_FESTIVALS],
+  },
+  {
+    key: 'bacchus',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 3, day: 17 },
+        name: 'Liberalia',
+        why: 'The festival of Liber Pater, with whom Bacchus was merged: old women sold honey cakes and offered part to the god, and boys took the toga of manhood.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Pour a small cup of wine or grape juice for him.',
+      'Put on music that lifts you and let one worry go.',
+      'Bake or buy a honey cake and set a piece aside for him.',
+      'Do one thing that makes you feel free.',
+    ],
+    approach:
+      'Bacchus and Liber are approached with joy and respect for their power to unsettle, with wine offered rather than overindulged.',
+    sources: [OVID_FASTI + ' (3.713–790)', 'Livy 39.8–19, on the Bacchanalia of 186 BCE', ROMAN_FESTIVALS],
+  },
+  {
+    key: 'pluto',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 8, day: 24 },
+        name: 'Mundus patet',
+        why: 'The first of the three days the mundus was opened, which Varro called a gateway of the grim gods below; public business stopped.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'fixed', month: 10, day: 5 },
+        name: 'Mundus patet',
+        why: 'The second opening of the mundus, the pit of the gods below.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'fixed', month: 11, day: 8 },
+        name: 'Mundus patet',
+        why: 'The third opening of the mundus, the pit of the gods below.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Pour a little water into the earth and say the names of your dead.',
+      'Bury a few black beans with a word of respect.',
+      'Accept one ending in your life without fighting it.',
+      'Sit quietly for a few minutes in the dark before sleep.',
+    ],
+    approach:
+      'Pluto is approached with gravity and respect, as the rich lord of the dead, never as a devil.',
+    sources: ['Macrobius, Saturnalia 1.16.16–18, quoting Varro on the mundus', 'Festus, s.v. Mundus (citing Ateius Capito), on the three days', 'Zosimus 2.5, on Dis and Proserpina at the Secular Games', ROMAN_FESTIVALS],
+  },
+  {
+    key: 'proserpina',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 4, day: 19 },
+        name: 'Cerealia',
+        why: 'The last day of the Cerealia, the festival of her mother Ceres, whose story of loss and search Ovid tells at this season.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'mabon' },
+        name: 'The autumn equinox',
+        why: 'Many modern Pagans mark her descent to the underworld at the autumn equinox. This is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Eat a few pomegranate seeds and set some aside for her.',
+      'Name one thing you lost that has begun to grow again.',
+      'Put spring flowers or a sprig of green in water for her.',
+      'Pour a little water into the earth for those who have died.',
+    ],
+    approach:
+      'Proserpina is approached with tenderness, honouring both her seasons, below and above.',
+    sources: [OVID_FASTI + ' (4.393–620)', 'Cicero, Pro Balbo 55, on the Greek priestesses of Ceres', HUTTON_TRIUMPH],
+  },
+  {
+    key: 'vulcan',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 8, day: 23 },
+        name: 'Volcanalia',
+        why: 'The festival of Vulcan in the heat of late summer, when granaries were full and fire most feared, with bonfires and offerings burned whole.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Check your smoke alarm or fire blanket in his name.',
+      'Light a candle in a safe holder and ask him to keep your home safe.',
+      'Make or mend something with care.',
+      'Thank a firefighter or someone who works with fire.',
+    ],
+    approach:
+      'Vulcan is approached with respect and caution, as fire that must be tended and kept in its place.',
+    sources: ['Varro, On the Latin Language 6.20', 'Festus, s.v. Piscatorii ludi, on the fish offered for human lives', 'Vitruvius 1.7.1', ROMAN_FESTIVALS],
+  },
+  {
+    key: 'pomona',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'mabon' },
+        name: 'The apple harvest (Mabon)',
+        why: 'No festival day of Pomona is known. Many modern Pagans and Roman polytheists honour her at the apple harvest; this is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Share a piece of fruit with her and return her half to the earth.',
+      'Water or prune a plant with care.',
+      'Plant a seed or a fruit tree in her name.',
+      'Notice one thing ripening around you.',
+    ],
+    approach:
+      'Pomona is approached through patient care for growing things, as the goddess of the orchard.',
+    sources: ['Ovid, Metamorphoses 14.623–771', 'Festus, s.v. Pomonal and flamen Pomonalis', HUTTON_TRIUMPH],
+  },
+  {
+    key: 'bona_dea',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 5, day: 1 },
+        name: 'The founding of her temple',
+        why: 'Ovid gives 1 May as the founding day of Bona Dea’s temple on the Aventine. Her women’s night rite came in early December, at the house of a senior magistrate.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Set out a cup of milk and some honey with a prayer for the health of women you love.',
+      'Check in on a friend who is unwell.',
+      'Make a cup of herbal tea and drink it slowly, for your own health.',
+      'Keep one confidence faithfully.',
+    ],
+    approach:
+      'Bona Dea is approached with care and discretion, as the goddess of women’s healing and the people’s welfare.',
+    sources: [OVID_FASTI + ' (5.148–158)', 'Macrobius, Saturnalia 1.12.21–29', 'Plutarch, Life of Caesar 9–10', ROMAN_FESTIVALS],
+  },
+  {
+    key: 'lares_penates',
+    sacred: [
+      ...[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month) => ({
+        rule: { kind: 'fixed' as const, month, day: 1 },
+        name: 'The Kalends',
+        why: 'The first of the month, when Cato says the housekeeper garlanded the hearth and prayed to the household Lar, as also on the Nones and Ides.',
+        basis: 'ancient' as const,
+      })),
+      {
+        rule: { kind: 'fixed', month: 5, day: 1 },
+        name: 'Lares Praestites',
+        why: 'Ovid says the altar of the Lares Praestites, the guardian Lares of the city, was dedicated on 1 May.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Set a small portion of a meal before the household shrine.',
+      'Light a candle or lamp at the lararium and greet the household gods.',
+      'Tidy one corner of your home in their honour.',
+      'Say the name of someone who once lived in your family home.',
+    ],
+    approach:
+      'The Lares and Penates are approached simply and often, as the family’s own guardians, with daily care rather than ceremony.',
+    sources: ['Cato, On Agriculture 143', OVID_FASTI + ' (5.129–146)', 'Plautus, The Pot of Gold, prologue', ROMAN_FESTIVALS],
+  },
+  {
+    key: 'mithras',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'roman', id: 'sol_invictus' },
+        name: 'Dies Natalis Solis Invicti',
+        why: 'The birthday of the Unconquered Sun on 25 December, in the Calendar of 354, belongs to Sol Invictus, not to Mithras. Some modern devotees keep it for him because his inscriptions call him Sol Invictus Mithras; this is a modern custom.',
+        basis: 'modern',
+      },
+      {
+        rule: { kind: 'weekday', day: 0 },
+        name: 'Sunday',
+        why: 'The day of the Sun in the planetary week, kept by some modern devotees of the sun god Mithras. The cult’s own calendar is unknown.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Share bread and wine, or bread and juice, with someone.',
+      'Keep your word in one thing today.',
+      'Light a candle in a dark room and sit with it.',
+      'Read about a mithraeum and the people who met there.',
+    ],
+    approach:
+      'Mithras is approached with humility about the evidence, since the cult left no texts of its own.',
+    sources: [PHILOCALUS, 'Manfred Clauss, The Roman Cult of Mithras (2000)', 'Roger Beck, The Religion of the Mithras Cult in the Roman Empire (2006)', WEEKDAYS],
+  },
+
   // ─── Egyptian ─────────────────────────────────────────────────────────
   {
     key: 'isis',
@@ -1212,6 +1598,179 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     approach:
       'Maat is approached by living truthfully and fairly every day, as both a goddess and the order she stands for.',
     sources: ['Book of the Dead, spell 125 (the Negative Confession)', 'Emily Teeter, The Presentation of Maat (1997)', WEP_RONPET],
+  },
+
+  {
+    key: 'amun',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 9, day: 14 },
+        name: 'Opet festival',
+        why: 'Under Thutmose III the Opet festival began on II Akhet 15, when Amun, Mut and Khonsu sailed from Karnak to Luxor. The date is approximate, counted from an early-August new year; the app’s Kemetic calendar works it out from the anchor you choose.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Sit quietly, breathe slowly and greet the hidden god.',
+      'Offer a cup of fresh water and a little bread, then share it afterwards.',
+      'Do one thing for someone with little.',
+      'Ask him one question and listen for what comes.',
+    ],
+    approach:
+      'Amun is approached with reverence and humility, as the hidden god beyond every image and the vizier of the poor.',
+    sources: ['The Opet festival reliefs in the colonnade at Luxor; the Medinet Habu calendar', 'Jan Assmann, The Search for God in Ancient Egypt (2001)', WEP_RONPET],
+  },
+  {
+    key: 'ptah',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 11, day: 24 },
+        name: 'Festival of Sokar',
+        why: 'The festival of Sokar, with whom Ptah was joined as Ptah-Sokar, on IV Akhet 26 in the month of Khoiak, recorded at Medinet Habu. The date is approximate, counted from an early-August new year.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Make or mend something carefully and dedicate it to him.',
+      'Think before you speak once today, as the god who creates by word.',
+      'Draw an ear and ask him to hear one prayer.',
+      'Thank a builder, maker or craftsperson.',
+    ],
+    approach:
+      'Ptah is approached through skilled work and careful speech, as the creator of Memphis who hears prayers.',
+    sources: ['The Shabaka Stone (British Museum EA 498)', 'The festival calendar of Medinet Habu, on the Sokar festival', WEP_RONPET],
+  },
+  {
+    key: 'bes',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 8, day: 20 },
+        name: 'The Festival of Drunkenness',
+        why: 'Hathor’s Festival of Drunkenness (Tekh) on I Akhet 20 was a time of music, dance and merriment, and Bes appears in her company in art. Keeping it for him is a modern pairing; he had no temple festival of his own. The date is approximate.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Put on music and dance for a minute.',
+      'Laugh with someone you love.',
+      'Ask him to watch over your home before you sleep.',
+      'Do one kind thing for a parent or a child.',
+    ],
+    approach:
+      'Bes is approached with warmth and good humour, as the household’s merry guardian.',
+    sources: ['Dimitri Meeks and Christine Favard-Meeks, Daily Life of the Egyptian Gods (1996)', 'Geraldine Pinch, Egyptian Mythology (2002), s.v. Bes', WEP_RONPET],
+  },
+  {
+    key: 'nut',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 7, day: 27 },
+        name: 'The five days upon the year',
+        why: 'The first of the five days added to the year, when Nut’s children were born. The date is approximate, counted back from an early-August new year.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Look up at the night sky for a few minutes.',
+      'Pour a little water at the foot of a tree.',
+      'Thank her for the morning light when you wake.',
+      'Name one person who sheltered you.',
+    ],
+    approach:
+      'Nut is approached as the vast, sheltering sky and mother of the gods.',
+    sources: [EPAGOMENAL_BIRTHS, 'The Book of Nut (Fundamentals of the Course of the Stars), in the cenotaph of Seti I at Abydos'],
+  },
+  {
+    key: 'neith',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 6, day: 9 },
+        name: 'The festival of Neith at Esna',
+        why: 'The temple of Esna kept Neith’s festival of creation on 13 Epiphi (III Shemu 13), when her account of creation was recited. The date is approximate, counted from an early-August new year.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Weave, knit or plait a few rows for her.',
+      'Light a lamp and let it burn safely while you sit with her.',
+      'Make one fair decision with care.',
+      'Do one thing for yourself, independently.',
+    ],
+    approach:
+      'Neith is approached with respect for her great age and wisdom, as creator, huntress and judge.',
+    sources: ['Serge Sauneron, Esna V: Les fêtes religieuses d’Esna (1962)', 'Herodotus 2.62, on the Feast of Lamps at Sais', WEP_RONPET],
+  },
+  {
+    key: 'sobek',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 8, day: 1 },
+        name: 'Wep Ronpet and the rising Nile',
+        why: 'The opening of the year, at the time the Nile’s flood began. Honouring Sobek then, as lord of the waters, is a modern Kemetic choice; no single festival of his can be dated.',
+        basis: 'modern',
+      },
+      {
+        rule: { kind: 'moon', phase: 'new' },
+        name: 'The new moon',
+        why: 'Egyptian temples kept the first day of the lunar month as a feast for their gods. Keeping it for Sobek is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Offer a cup of fresh water with thanks for the water you use.',
+      'Spend a few minutes by a river, pond or canal.',
+      'Stand firm in one thing today.',
+      'Pick up litter near water.',
+    ],
+    approach:
+      'Sobek is approached with respect for his power, as the crocodile of the Nile who protects and gives fertility.',
+    sources: ['Strabo, Geography 17.1.38, on the sacred crocodile of Arsinoe', 'Herodotus 2.69', WEP_RONPET],
+  },
+  {
+    key: 'khonsu',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 9, day: 14 },
+        name: 'Opet festival',
+        why: 'At Opet, Khonsu’s barque sailed with those of Amun and Mut from Karnak to Luxor. The date is approximate, counted from an early-August new year.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'moon', phase: 'full' },
+        name: 'The full moon',
+        why: 'Egyptian temples kept the full moon, the middle of the lunar month, as a feast, and Khonsu is the moon himself.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Look for the moon and note its phase.',
+      'Ask him for healing for someone who is unwell.',
+      'Plan one thing for the month ahead.',
+      'Offer a cup of milk or water by a window at night.',
+    ],
+    approach:
+      'Khonsu is approached with patience, as the moon who travels and the healer of Thebes.',
+    sources: ['The Bentresh Stela (Louvre C 284)', 'Richard A. Parker, The Calendars of Ancient Egypt (1950), on the lunar feasts', WEP_RONPET],
+  },
+  {
+    key: 'taweret',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 7, day: 27 },
+        name: 'The five days upon the year',
+        why: 'The five days on which the gods were born, kept as days to guard against harm. Honouring Taweret, guardian of births, on them is a modern pairing. The date is approximate.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Light a candle for someone who is pregnant or has a new baby.',
+      'Offer practical help to a new parent.',
+      'Ask her to watch over the children in your life tonight.',
+      'Offer a cup of milk with thanks for those who cared for you as a child.',
+    ],
+    approach:
+      'Taweret is approached with warmth and trust, as the fierce protector of mothers and babies.',
+    sources: [EPAGOMENAL_BIRTHS, 'Geraldine Pinch, Magic in Ancient Egypt (1994), on birth amulets and wands'],
   },
 
   // ─── Norse ────────────────────────────────────────────────────────────
@@ -1511,6 +2070,199 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     sources: ['Snorri Sturluson, Skáldskaparmál 1–3; Haustlöng'],
   },
 
+  {
+    key: 'njord',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'norse', id: 'jol' },
+        name: 'Yule',
+        why: 'Snorri says the Yule toasts were drunk to Odin, then to Njord and Freyr “for a good year and peace”.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Pour a little salt water or ale into a bowl and thank him for a safe journey.',
+      'Pick up litter from a beach, riverbank or gutter.',
+      'Share something you have with someone who has less.',
+      'Make peace in one small quarrel.',
+    ],
+    approach:
+      'Njord is approached calmly and generously, as the Vanir god of the sea, prosperity and peace.',
+    sources: [HAKONAR, 'Snorri Sturluson, Gylfaginning 23', 'Tacitus, Germania 40, on Nerthus'],
+  },
+  {
+    key: 'heimdall',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'norse', id: 'vetrnaetur' },
+        name: 'Winter Nights',
+        why: 'No festival of Heimdall is recorded. Some modern Heathens greet the guardian of thresholds at the year’s turning points, such as Winter Nights; this is modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Stand at your front door for a moment, look and listen.',
+      'Check that the people in your care are safe tonight.',
+      'Keep one promise faithfully.',
+      'Listen carefully to someone, as he hears the grass grow.',
+    ],
+    approach:
+      'Heimdall is approached with steadiness, as the watchman of the gods and guardian of boundaries.',
+    sources: ['Snorri Sturluson, Gylfaginning 27', 'Völuspá 1 and 46; Rígsþula', ICELANDIC_CAL],
+  },
+  {
+    key: 'sif',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'norse', id: 'haustblot' },
+        name: 'Haustblót',
+        why: 'Many modern Heathens honour Sif with Thor at the autumn harvest blót. This is modern custom; her link with grain is a modern reading.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Brush or braid your hair with care and thank her.',
+      'Share bread with your family or household.',
+      'Do one thing to look after your home.',
+      'Offer peace where there is tension.',
+    ],
+    approach:
+      'Sif is approached warmly and simply, as the golden-haired goddess of family and household.',
+    sources: ['Snorri Sturluson, Skáldskaparmál 35, on Sif’s hair', 'Lokasenna 53', ICELANDIC_CAL],
+  },
+  {
+    key: 'bragi',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'norse', id: 'jol' },
+        name: 'Yule',
+        why: 'The sagas tell of vows made at Yule over the bragarfull, the chieftain’s cup.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Read a poem aloud.',
+      'Write four lines of your own.',
+      'Make one promise you will keep, and say it aloud.',
+      'Tell a story about someone you have lost.',
+    ],
+    approach:
+      'Bragi is approached with words and good company, as the god of poetry and vows.',
+    sources: ['Helgakviða Hjörvarðssonar, prose after stanza 30, on vows at Yule over the bragarfull', 'Snorri Sturluson, Skáldskaparmál 10', 'Eiríksmál; Hákonarmál'],
+  },
+  {
+    key: 'ullr',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'norse', id: 'thorrablot' },
+        name: 'Þorrablót',
+        why: 'No festival of Ullr is recorded. Many modern Heathens honour the winter hunter and skier in the depth of winter; this is modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Go outside on a cold day and walk, run or ski for him.',
+      'Practise a skill with focus for ten minutes.',
+      'Thank the animal or farmer behind a meal.',
+      'Keep a fair contest fair.',
+    ],
+    approach:
+      'Ullr is approached with steadiness and sportsmanship, as the archer and skier of the winter.',
+    sources: ['Snorri Sturluson, Gylfaginning 31', 'Grímnismál 5; Atlakviða 30', 'Saxo Grammaticus, Gesta Danorum 3, on Ollerus'],
+  },
+  {
+    key: 'eir',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'norse', id: 'disablot' },
+        name: 'Dísablót',
+        why: 'No festival of Eir is recorded. Some modern Heathens honour her among the goddesses at Dísablót; this is modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Make a cup of herbal tea and ask for healing for someone.',
+      'Do one thing for your own health today.',
+      'Thank a nurse, doctor or carer.',
+      'Check in on someone who is unwell.',
+    ],
+    approach:
+      'Eir is approached gently, as the best of healers, honest that almost all we know of her is a line or two in Snorri.',
+    sources: ['Snorri Sturluson, Gylfaginning 35', 'Fjölsvinnsmál 38'],
+  },
+  {
+    key: 'sunna',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'norse', id: 'midsummer' },
+        name: 'Midsummer',
+        why: 'The height of the sun’s power. Honouring Sól at midsummer is modern Heathen custom; no ancient festival of hers is recorded.',
+        basis: 'modern',
+      },
+      {
+        rule: { kind: 'weekday', day: 0 },
+        name: 'Sunday',
+        why: 'Sunday is the sun’s day (Old Norse sunnudagr). Honouring Sól on Sundays is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Greet the first daylight you see by name.',
+      'Spend a few minutes in the sun, if there is any.',
+      'Set a dish of honey in the light for her.',
+      'Do one thing to pass something good on to someone younger.',
+    ],
+    approach:
+      'Sól is approached with gratitude and warmth, as the Sun who drives her horses across the sky each day.',
+    sources: ['Snorri Sturluson, Gylfaginning 11', 'Vafþrúðnismál 47', 'The Second Merseburg Charm', WEEKDAYS],
+  },
+  {
+    key: 'mani',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'full' },
+        name: 'The full moon',
+        why: 'Many modern Heathens honour Máni at the full moon. This is modern custom.',
+        basis: 'modern',
+      },
+      {
+        rule: { kind: 'weekday', day: 1 },
+        name: 'Monday',
+        why: 'Monday is the moon’s day (Old Norse mánadagr). Honouring Máni on Mondays is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Look for the moon tonight and note its phase.',
+      'Offer a cup of water or milk on a windowsill at night.',
+      'Plan the month ahead.',
+      'Ask him to watch over someone travelling tonight.',
+    ],
+    approach:
+      'Máni is approached calmly, as the Moon who keeps time and carries the children Bil and Hjúki.',
+    sources: ['Snorri Sturluson, Gylfaginning 11', 'Vafþrúðnismál 23', WEEKDAYS],
+  },
+  {
+    key: 'norns',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'norse', id: 'vetrnaetur' },
+        name: 'Winter Nights',
+        why: 'The start of winter and of the old Icelandic year. Honouring the Norns at the year’s turning is modern Heathen custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Pour a cup of water at the roots of a tree.',
+      'Think about one thing in your past that shaped you.',
+      'Make one choice today with care, knowing it will shape what comes.',
+      'Spin, twist or knot a thread while you sit with them.',
+    ],
+    approach:
+      'The Norns are approached with respect and humility, as the powers of fate who water the world tree.',
+    sources: ['Völuspá 19–20', 'Snorri Sturluson, Gylfaginning 15–16', 'Helgakviða Hundingsbana I 2–4', ICELANDIC_CAL],
+  },
+
   // ─── Celtic ───────────────────────────────────────────────────────────
   {
     key: 'brigid',
@@ -1736,6 +2488,321 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     ],
   },
 
+  {
+    key: 'danu',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'celtic', id: 'samhain_gaelic' },
+        name: 'Samhain',
+        why: 'The start of the Gaelic year. No day of Danu or Anu is recorded; honouring the mother of the Tuatha Dé at Samhain is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Pour a little milk or water onto the earth with thanks for the land.',
+      'Learn the old name of a hill, river or townland near you.',
+      'Plant or care for a native tree.',
+      'Say the names of your grandmothers.',
+    ],
+    approach:
+      'Danu is approached with humility about how little is known, as the ancestral mother of the gods of Ireland.',
+    sources: ['Sanas Cormaic (Cormac’s Glossary), s.v. Ana', 'Lebor Gabála Érenn, on Danand', 'Dáithí Ó hÓgáin, Myth, Legend and Romance (1990), s.v. Anu and Danann'],
+  },
+  {
+    key: 'aine',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 6, day: 23 },
+        name: 'Midsummer Eve',
+        why: 'Until the nineteenth century people carried burning straw cliars round Áine’s hill of Knockainy on St John’s Eve, a custom recorded in local folklore.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Light a candle in the window on a summer evening for her.',
+      'Put fresh flowers in water and thank her for the season.',
+      'Stand up for someone who has been wronged.',
+      'Spend a few minutes in the evening light.',
+    ],
+    approach:
+      'Áine is approached with warmth, as the summer goddess and fairy queen of Knockainy, known through tale and folklore.',
+    sources: ['David Fitzgerald, “Popular Tales of Ireland”, Revue Celtique 4 (1879–80), on the cliars at Knockainy', 'Dáithí Ó hÓgáin, Myth, Legend and Romance (1990), s.v. Áine', HUTTON_STATIONS],
+  },
+  {
+    key: 'aengus',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'celtic', id: 'samhain_gaelic' },
+        name: 'Samhain',
+        why: 'In The Dream of Aengus, Caer Ibormeith takes swan form every other Samhain, and it is then that Aengus finds her and flies away with her.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Write down a dream or a longing.',
+      'Play or listen to a love song for him.',
+      'Help two people who should meet to find each other.',
+      'Tell someone what they mean to you.',
+    ],
+    approach:
+      'Aengus is approached with openness and tenderness, as the young god of love and dreams.',
+    sources: ['Aislinge Óenguso (The Dream of Aengus), ed. Francis Shaw (1934)', 'Tochmarc Étaíne, on Aengus’ birth and the Brú'],
+  },
+  {
+    key: 'boann',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'yule' },
+        name: 'The winter solstice',
+        why: 'At the winter solstice the rising sun enters Newgrange, the Brú na Bóinne in Boann’s valley. The monument’s alignment is Neolithic; honouring Boann then is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Pour clean water into a bowl and thank her for the water you use.',
+      'Spend a few minutes by a river or stream.',
+      'Eat a few hazelnuts and learn one new thing.',
+      'Listen to a piece of music for sorrow, one for joy or one for sleep.',
+    ],
+    approach:
+      'Boann is approached with respect for her daring, as the goddess of the Boyne and seeker of wisdom.',
+    sources: ['The Metrical Dindshenchas, “Boand I and II”, ed. Edward Gwynn (1906–35)', 'Táin Bó Fraích, on Uaithne’s three strains'],
+  },
+  {
+    key: 'ogma',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'celtic', id: 'lughnasadh' },
+        name: 'Lughnasadh',
+        why: 'Lugh’s festival. No day of Ogma is recorded; honouring Lugh’s champion beside him is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Write your name or a word in ogham.',
+      'Learn one word of Irish.',
+      'Speak plainly and truthfully in one hard conversation.',
+      'Read a few pages of something difficult.',
+    ],
+    approach:
+      'Ogma is approached through study and honest speech, as the champion and man of learning of the Tuatha Dé.',
+    sources: [CMT, 'Auraicept na nÉces (The Scholars’ Primer), on Ogma and ogham', 'Lucian, Heracles 1–7, on Ogmios', MACNEILL],
+  },
+  {
+    key: 'nuada',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'celtic', id: 'bealtaine' },
+        name: 'Bealtaine',
+        why: 'The Book of Invasions says the Tuatha Dé came to Ireland at Bealtaine. No day of Nuada himself is recorded; honouring their king then is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Do one thing to serve the people you are responsible for.',
+      'Raise a cup to someone who leads well.',
+      'Step aside for someone better suited to a task.',
+      'Take one step in your own recovery from a loss.',
+    ],
+    approach:
+      'Nuada is approached with respect for duty, as the king who lost and regained his arm and stepped aside for Lugh.',
+    sources: [CMT, 'Lebor Gabála Érenn, on the coming of the Tuatha Dé', 'R. E. M. and T. V. Wheeler, Report on the Excavation of the Prehistoric, Roman and Post-Roman Site in Lydney Park (1932)'],
+  },
+  {
+    key: 'cailleach',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'celtic', id: 'samhain_gaelic' },
+        name: 'Samhain',
+        why: 'In Scottish folklore the Cailleach rules winter from Samhain, striking the ground with frost from her staff.',
+        basis: 'later',
+      },
+      {
+        rule: { kind: 'holiday', tradition: 'celtic', id: 'bealtaine' },
+        name: 'Bealtaine',
+        why: 'In Scottish folklore her rule ends at Bealtaine, when she casts away her staff or turns to stone.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Watch the weather for a few minutes and honour its power.',
+      'Rest properly, as winter rests.',
+      'Add a stone to a cairn or a pile on a walk.',
+      'Listen to an older person’s story.',
+    ],
+    approach:
+      'The Cailleach is approached with respect rather than sentiment, as the old woman of winter who shaped the land.',
+    sources: ['Donald A. Mackenzie, Scottish Folk-Lore and Folk Life (1935)', 'Gearóid Ó Crualaoich, The Book of the Cailleach (2003)', 'The Lament of the Old Woman of Beare, ed. Donncha Ó hAodha (1989)', HUTTON_STATIONS],
+  },
+
+  {
+    key: 'gwydion',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'celtic', id: 'lughnasadh' },
+        name: 'Lughnasadh (Gŵyl Awst)',
+        why: 'No day of Gwydion is recorded. Some modern devotees honour him at Lughnasadh beside his foster-son Lleu; this is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Tell a story aloud as well as you can.',
+      'Read a page of the Mabinogi.',
+      'Teach a young person something you know.',
+      'Own up to the consequences of one of your plans.',
+    ],
+    approach:
+      'Gwydion is approached with respect and open eyes, as the enchanter and storyteller of the Mabinogi.',
+    sources: ['Math fab Mathonwy, the Fourth Branch of the Mabinogi, trans. Sioned Davies, The Mabinogion (2007)', MACNEILL],
+  },
+  {
+    key: 'blodeuwedd',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'beltane' },
+        name: 'Beltane',
+        why: 'Many modern Pagans honour the flower-made woman at Beltane, when oak, broom and meadowsweet come into flower. This is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Sit with a few wild flowers at dusk.',
+      'Listen for owls after dark.',
+      'Name one choice that is truly yours.',
+      'Be honest about something you want.',
+    ],
+    approach:
+      'Blodeuwedd is approached honestly, without excusing or condemning her, as the flower woman who chose for herself and became an owl.',
+    sources: ['Math fab Mathonwy, the Fourth Branch of the Mabinogi, trans. Sioned Davies, The Mabinogion (2007)', HUTTON_TRIUMPH],
+  },
+  {
+    key: 'lleu',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'celtic', id: 'lughnasadh' },
+        name: 'Lughnasadh (Gŵyl Awst)',
+        why: 'The festival of the Irish Lugh, whose name matches Lleu’s. Keeping it for Lleu is a modern custom; the Mabinogi gives him no festival.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Practise a skill you are learning for ten minutes.',
+      'Share a piece of bread with thanks for the harvest.',
+      'Take one step in recovering from a hurt.',
+      'Help someone gain a skill they were denied.',
+    ],
+    approach:
+      'Lleu is approached with steadiness and hope, as the bright one of the skilful hand who came back from betrayal.',
+    sources: ['Math fab Mathonwy, the Fourth Branch of the Mabinogi, trans. Sioned Davies, The Mabinogion (2007)', MACNEILL],
+  },
+  {
+    key: 'bran',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'samhain' },
+        name: 'Samhain',
+        why: 'No day of Bran is recorded. Modern devotees often remember the king whose head feasted with his companions at Samhain, when the dead are honoured; this is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Help someone across a difficulty, as he became a bridge.',
+      'Share a meal generously.',
+      'Put out food for crows or other birds.',
+      'Tell a happy story about someone you have lost.',
+    ],
+    approach:
+      'Bran is approached with respect, as the giant king who served as a bridge and guarded Britain after death.',
+    sources: ['Branwen ferch Llŷr, the Second Branch of the Mabinogi, trans. Sioned Davies, The Mabinogion (2007)', 'Rachel Bromwich (ed.), Trioedd Ynys Prydein: The Triads of the Island of Britain (4th edn, 2014), Triad 37'],
+  },
+
+  {
+    key: 'taranis',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 4 },
+        name: 'Thursday',
+        why: 'Thursday was Jupiter’s day in the Roman week, and Taranis was often likened to Jupiter. Honouring him on Thursdays is a modern custom; no Gaulish calendar day of his is known.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Listen to the next storm from a safe place and greet him.',
+      'Make a small wheel from twigs or card.',
+      'Pour a little rain water back onto the earth.',
+      'Use your strength today to protect someone.',
+    ],
+    approach:
+      'Taranis is approached with awe and caution, honest that he is known from a few inscriptions and a hostile Roman poet.',
+    sources: ['Lucan, Pharsalia 1.444–446, with the Berne scholia', 'Miranda Green, The Gods of the Celts (1986), on the wheel god', WEEKDAYS],
+  },
+  {
+    key: 'sucellos',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'mabon' },
+        name: 'The autumn equinox',
+        why: 'The grape and grain harvest. No Gaulish festival of Sucellos is known; honouring him at harvest is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Pour a little wine or juice at a shared meal and thank him for enough.',
+      'Give food to someone who needs it.',
+      'Do one thing to keep your household safe.',
+      'Take your dog, or a neighbour’s, for a walk in his name.',
+    ],
+    approach:
+      'Sucellos is approached as a solid, generous elder, known from images rather than myths.',
+    sources: ['Miranda Green, Dictionary of Celtic Myth and Legend (1992), s.v. Sucellus and Nantosuelta', 'The Sarrebourg relief (Musée de la Cour d’Or, Metz)'],
+  },
+  {
+    key: 'belenus',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'beltane' },
+        name: 'Beltane',
+        why: 'Many modern Pagans honour Belenus at Beltane. The link between his name and the festival is doubted by most linguists, and no Gaulish festival day of his is known; this is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Drink a glass of clean water slowly in sunlight.',
+      'Ask him for health for someone you love.',
+      'Do one thing for your own health today.',
+      'Give to a clean-water charity.',
+    ],
+    approach:
+      'Belenus is approached with gratitude, as a widely honoured Celtic god of healing and light.',
+    sources: ['Herodian 8.3, on Belenus at the siege of Aquileia', 'Ausonius, Commemoratio Professorum Burdigalensium 4 and 10', HUTTON_TRIUMPH],
+  },
+  {
+    key: 'sulis',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'litha' },
+        name: 'Midsummer',
+        why: 'No festival day of Sulis is known. Some modern devotees honour her at midsummer, her name being probably related to words for the sun; this is a modern custom.',
+        basis: 'modern',
+      },
+      {
+        rule: { kind: 'fixed', month: 3, day: 19 },
+        name: 'Quinquatrus',
+        why: 'The Roman festival of Minerva, with whom Sulis was joined at Bath. Keeping it for Sulis Minerva is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Soak your hands or feet in warm water and thank her.',
+      'Write down a wrong you have suffered and leave it with her.',
+      'Deal fairly in one thing today.',
+      'Give a coin to charity in her name.',
+    ],
+    approach:
+      'Sulis is approached with honesty, as the goddess of the hot springs who sees the truth and heals.',
+    sources: ['R. S. O. Tomlin, “The Curse Tablets”, in B. Cunliffe (ed.), The Temple of Sulis Minerva at Bath II (1988)', 'Solinus, Collectanea 22.10', OVID_FASTI + ' (3.809–848)'],
+  },
+
   // ─── Slavic ───────────────────────────────────────────────────────────
   {
     key: 'perun',
@@ -1890,6 +2957,107 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     approach:
       'Morana is approached at endings and the turn of the seasons through living folk custom, never as a substitute for support in grief.',
     sources: [DLUGOSZ_MARZANNA, RYAN],
+  },
+
+  {
+    key: 'svarog',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'slavic', id: 'koliada' },
+        name: 'Koliada',
+        why: 'The winter solstice feast, when many Rodnovers honour the heavenly smith and his son the sun. This is modern Rodnover custom; no medieval source gives Svarog a day.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Light a candle safely and make or mend something by hand.',
+      'Offer a piece of bread and honey at the hearth or stove.',
+      'Deal fairly in one thing today.',
+      'Check that your home’s fires and stoves are safe.',
+    ],
+    approach:
+      'Svarog is approached with respect for fire and good work, honest that he is named in a single medieval gloss.',
+    sources: ['The Hypatian Chronicle, s.a. 1114, gloss on John Malalas', 'Thietmar of Merseburg, Chronicon 6.23, on Svarozhich at Rethra', RYAN],
+  },
+  {
+    key: 'stribog',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'slavic', id: 'marzanna' },
+        name: 'The Drowning of Marzanna',
+        why: 'The spring rite that sends winter away, when the winds turn. Honouring Stribog then is a modern Rodnover custom; his sources give him no day.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Stand in the wind for a minute and breathe deeply.',
+      'Scatter a few crumbs or seeds for the birds.',
+      'Open a window and let fresh air through your home.',
+      'Share something good with someone far away.',
+    ],
+    approach:
+      'Stribog is approached with openness to change, honest that he is known from only two medieval lines.',
+    sources: ['The Primary Chronicle, s.a. 980', 'The Tale of Igor’s Campaign', IVANITS],
+  },
+  {
+    key: 'jarilo',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'slavic', id: 'kupala' },
+        name: 'Kupala Night',
+        why: 'Folk Yarilo festivals were held in late spring and early summer, near Kupala and St Peter’s Day, ending with the burial of a straw Yarilo, as recorded in the eighteenth and nineteenth centuries.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Put flowers in a jar or your hair and enjoy the season.',
+      'Dance or move for a few minutes in the sun.',
+      'Plant a seed or water something growing.',
+      'Let go of something whose season has ended.',
+    ],
+    approach:
+      'Jarilo is approached with joy and energy, as the spirit of spring heat known from folk festivals.',
+    sources: [IVANITS, 'Vladimir Propp, Russian Agrarian Festivals (1963; trans. 1993)', RYAN],
+  },
+  {
+    key: 'zorya',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'ostara' },
+        name: 'The spring equinox',
+        why: 'The year’s dawn. Honouring Zorya then is a modern custom; in folklore she is greeted at every daybreak and dusk.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Look towards the horizon at dawn or dusk and greet her.',
+      'Leave a cup of water out overnight and pour it out at sunrise.',
+      'Begin one thing well today.',
+      'End the day by letting go of one worry.',
+    ],
+    approach:
+      'Zorya is approached gently, as the dawn of East Slavic folk charms.',
+    sources: ['Alexander Afanasyev, Poeticheskie vozzreniya slavyan na prirodu (1865–69)', RYAN],
+  },
+  {
+    key: 'rod',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'slavic', id: 'dziady' },
+        name: 'Dziady',
+        why: 'The autumn feast of the ancestors. Honouring Rod then is a modern Rodnover custom; the medieval sermons that mention the meal for Rod and the Rozhanitsy do not give it a pagan date.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Say the names of your ancestors as far back as you know them.',
+      'Set out a little bread and honey at a family meal.',
+      'Write down one story from your family’s past.',
+      'Welcome a new child, or their parents, with a small gift.',
+    ],
+    approach:
+      'Rod is approached with gratitude for kin, honest that the medieval evidence is slight and that kinship can be chosen as well as born.',
+    sources: ['The Sermon of a Certain Christ-Lover (Slovo nekoego khristolyubtsa), on offerings to Rod and the Rozhanitsy', IVANITS, RYAN],
   },
 
   // ─── Hindu ────────────────────────────────────────────────────────────
@@ -2069,6 +3237,1255 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
       'Edwin F. Bryant (ed.), Krishna: A Sourcebook (2007)',
       HINDU_LIVING,
     ],
+  },
+
+  {
+    key: 'vishnu',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 4 },
+        name: 'Thursday',
+        why: 'Thursday is widely kept for Vishnu in North Indian homes, with a fast or puja. His great days, the Ekadashis of each fortnight, follow the Hindu lunar calendar and appear in the app’s Hindu calendar.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Offer a tulsi leaf or a flower with a short prayer.',
+      'Light a small lamp with respect.',
+      'Read about one of his avatars from a Hindu source.',
+      'Do one thing to protect someone or keep the peace.',
+    ],
+    approach:
+      'Vishnu belongs to a living religion, so he is approached with devotion and cleanliness, learning from Hindu temples, teachers and families.',
+    sources: ['Edwin F. Bryant (trans.), Krishna: The Beautiful Legend of God (Bhagavata Purana Book X) (2003)', HINDU_LIVING],
+  },
+  {
+    key: 'parvati',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 1 },
+        name: 'Monday',
+        why: 'Monday is kept for Shiva and Parvati together, and many women keep Monday fasts for them. Her own festivals, Teej and the Gauri festivals, follow the Hindu lunar calendar.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Offer a red flower with a prayer for your family.',
+      'Light a small lamp with respect.',
+      'Keep at one hard, good thing a little longer today.',
+      'Learn how Hindu communities near you keep Teej or Navaratri.',
+    ],
+    approach:
+      'Parvati belongs to a living religion, so she is approached with devotion and sincerity, learning from Hindu temples, teachers and families.',
+    sources: ['David Kinsley, Hindu Goddesses (1986), ch. on Parvati', HINDU_LIVING],
+  },
+  {
+    key: 'hanuman',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 2 },
+        name: 'Tuesday',
+        why: 'Tuesday is Hanuman’s day across much of India, when devotees visit his temples and recite the Hanuman Chalisa.',
+        basis: 'later',
+      },
+      {
+        rule: { kind: 'weekday', day: 6 },
+        name: 'Saturday',
+        why: 'Saturday is also kept for Hanuman, who is said to protect devotees from the troubles of Shani (Saturn).',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Listen to the Hanuman Chalisa with a translation.',
+      'Do one act of service without wanting thanks.',
+      'Face one fear with courage.',
+      'Offer a banana or a flower with respect.',
+    ],
+    approach:
+      'Hanuman belongs to a living religion, so he is approached with humility and sincerity, learning from Hindu temples, teachers and families.',
+    sources: ['Philip Lutgendorf, Hanuman’s Tale: The Messages of a Divine Monkey (2007)', HINDU_LIVING],
+  },
+  {
+    key: 'rama',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 2 },
+        name: 'Tuesday, with Hanuman',
+        why: 'Rama has no weekday of his own in most traditions; many devotees remember him on Tuesdays and Saturdays in the worship of Hanuman, his greatest devotee. His birthday, Rama Navami, falls on the ninth of the bright half of Chaitra (March or April) by the Hindu lunar calendar.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Say or write the name “Ram” a few times with attention.',
+      'Read a passage of the Ramayana.',
+      'Keep your word in one thing today, however small.',
+      'Light a small lamp with respect.',
+    ],
+    approach:
+      'Rama belongs to a living religion, so he is approached with devotion and sincerity, learning from Hindu temples, teachers and families.',
+    sources: ['Robert P. Goldman et al. (trans.), The Rāmāyaṇa of Vālmīki (Princeton, 1984–2017)', 'Philip Lutgendorf, The Life of a Text: Performing the Rāmcaritmānas of Tulsidas (1991)', HINDU_LIVING],
+  },
+  {
+    key: 'brahma',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'full' },
+        name: 'Purnima, the full moon',
+        why: 'Brahma’s great day is Kartik Purnima, the full moon of Kartika (October or November), when pilgrims bathe in the lake at Pushkar. The full moon is marked here each month as a reminder; it is a day of vows in many Hindu homes.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Read or study something worthwhile for a few minutes.',
+      'Begin one new thing with care.',
+      'Offer a flower with a short prayer.',
+      'Learn about the Pushkar fair from Hindu sources.',
+    ],
+    approach:
+      'Brahma belongs to a living religion, so he is approached with reverence and love of learning, following Hindu temples, teachers and families.',
+    sources: ['Wendy Doniger O’Flaherty (trans.), Hindu Myths (1975)', HINDU_LIVING],
+  },
+  {
+    key: 'surya',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 0 },
+        name: 'Sunday (Ravivar)',
+        why: 'Sunday, Ravivar, is the Sun’s day in the Hindu week, kept by many with a fast or arghya for Surya.',
+        basis: 'later',
+      },
+      {
+        rule: { kind: 'fixed', month: 1, day: 14 },
+        name: 'Makar Sankranti',
+        why: 'The day the sun enters sidereal Capricorn, usually 14 or 15 January, kept across India with holy dips, kites, sesame sweets and, in Tamil Nadu, Pongal. Confirm the day with a local panchang.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Pour a little water toward the rising sun with folded hands.',
+      'Get up a little earlier and greet the day.',
+      'Spend a few minutes in morning light.',
+      'Learn how Hindu communities near you keep Chhath or Sankranti.',
+    ],
+    approach:
+      'Surya belongs to a living religion, so he is approached with gratitude and discipline, learning from Hindu temples, teachers and families.',
+    sources: ['Rig Veda 1.50 and 1.115, hymns to Surya', HINDU_LIVING],
+  },
+
+  // ─── Wiccan ──────────────────────────────────────────────────────────────
+  {
+    key: 'wiccan_goddess',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'full' },
+        name: 'The full-moon esbat',
+        why: 'Wiccans honour the Goddess at the esbats, above all at the full moon, a practice set down in Gardnerian Wicca in the 1950s and drawing on Leland’s Aradia.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Read a few lines of the Charge of the Goddess.',
+      'Look for the moon tonight and greet her.',
+      'Do one kind thing for a woman of another generation.',
+      'Take a few minutes to enjoy something beautiful, as an act of worship.',
+    ],
+    approach:
+      'The Goddess is approached with love and with honesty about her modern origins in Gardner’s Wicca and Graves’s triple goddess.',
+    sources: [HUTTON_TRIUMPH, 'Doreen Valiente, The Charge of the Goddess (1950s; in The Charge of the Goddess, 2000)', 'Robert Graves, The White Goddess (1948)'],
+  },
+  {
+    key: 'horned_god',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'yule' },
+        name: 'Yule',
+        why: 'In the Wiccan Wheel of the Year the God is reborn with the sun at the winter solstice. This is modern Wiccan theology.',
+        basis: 'modern',
+      },
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'samhain' },
+        name: 'Samhain',
+        why: 'At Samhain Wiccans honour the God as lord of death and the underworld, before his rebirth at Yule. This is modern Wiccan theology.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Walk somewhere wild or green and give thanks.',
+      'Leave a piece of bread in a wild place where it will not harm animals.',
+      'Do one thing for wildlife or woodland.',
+      'Light a gold candle and name what you are ready to let die back.',
+    ],
+    approach:
+      'The Horned God is approached with respect for the wild, honest that his modern form was shaped in the twentieth century.',
+    sources: [HUTTON_TRIUMPH, 'Janet and Stewart Farrar, Eight Sabbats for Witches (1981)', HUTTON_STATIONS],
+  },
+  {
+    key: 'aradia',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'full' },
+        name: 'The full moon',
+        why: 'In Leland’s Aradia she tells her followers to gather once a month, “and better it be when the moon is full”.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Read a page of Leland’s Aradia at the full moon.',
+      'Do one thing for someone treated unjustly.',
+      'Bake or share a small cake with salt and honey.',
+      'Share something you know with someone who has been kept from learning it.',
+    ],
+    approach:
+      'Aradia is approached with honesty about her uncertain origins, as Leland’s liberator of the oppressed.',
+    sources: ['Charles Godfrey Leland, Aradia, or the Gospel of the Witches (1899), ch. 1', HUTTON_TRIUMPH, 'Sabina Magliocco, “Who Was Aradia? The History and Development of a Legend”, The Pomegranate 18 (2002)'],
+  },
+
+  // ─── Mesopotamian ────────────────────────────────────────────────────────
+  {
+    key: 'inanna',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 5 },
+        name: 'Friday',
+        why: 'Friday is the day of the planet Venus, which was Inanna’s star. Honouring her on Fridays is a modern custom; Mesopotamians watched for Venus as morning and evening star.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Look for Venus at dusk or dawn and greet her.',
+      'Read a few lines of a hymn by Enheduanna.',
+      'Say plainly what you want.',
+      'Stand up for yourself or someone else in one thing.',
+    ],
+    approach:
+      'Inanna is approached with courage and honesty, as the queen of heaven, love and war, from texts four thousand years old.',
+    sources: [MESO_ETCSL, 'Betty De Shong Meador, Inanna, Lady of Largest Heart: Poems of the Sumerian High Priestess Enheduanna (2000)'],
+  },
+  {
+    key: 'enki',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'new' },
+        name: 'The first crescent',
+        why: 'Mesopotamian temples kept the first day of the month, at the new crescent, as a feast. Keeping it for Enki is a modern choice; no festival of his can be fixed to our calendar.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Offer a bowl of fresh water.',
+      'Solve one problem cleverly and kindly.',
+      'Learn one new skill or technique.',
+      'Use water carefully today.',
+    ],
+    approach:
+      'Enki is approached with curiosity and respect, as the clever god of fresh water and the arts.',
+    sources: [MESO_ETCSL, 'W. G. Lambert and A. R. Millard, Atra-ḫasīs: The Babylonian Story of the Flood (1969)', MESO_CULTIC],
+  },
+  {
+    key: 'ereshkigal',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'dark' },
+        name: 'The dark of the moon',
+        why: 'At the end of the month, when the moon disappeared, Mesopotamian families made offerings for the dead (kispum). Keeping it for Ereshkigal is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Say the names of people you have lost.',
+      'Pour a little water onto the earth for the dead.',
+      'Let yourself feel your grief for a few minutes.',
+      'Respect one limit you cannot change.',
+    ],
+    approach:
+      'Ereshkigal is approached with respect and without fear, as the rightful queen of the dead.',
+    sources: [MESO_ETCSL, 'Stephanie Dalley, Myths from Mesopotamia (1989), on Nergal and Ereshkigal', MESO_CULTIC],
+  },
+  {
+    key: 'shamash',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 0 },
+        name: 'Sunday',
+        why: 'The day of the Sun in the planetary week. Honouring Shamash on Sundays is a modern custom; Mesopotamian prayers greeted him at sunrise.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Greet the morning sun and ask for fairness today.',
+      'Tell the truth in one hard moment.',
+      'Help someone who has been treated unfairly.',
+      'Keep an honest measure in a deal or a promise.',
+    ],
+    approach:
+      'Shamash is approached with honesty, as the sun who sees all and judges truly.',
+    sources: ['The Shamash Hymn, trans. W. G. Lambert, Babylonian Wisdom Literature (1960)', 'The Code of Hammurabi stele (Louvre Sb 8)', WEEKDAYS],
+  },
+  {
+    key: 'nanna',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'new' },
+        name: 'The first crescent',
+        why: 'Ur kept monthly moon festivals (eš-eš) for Nanna, at the first crescent among other days.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'moon', phase: 'full' },
+        name: 'The full moon',
+        why: 'The full moon, the fifteenth day, was also a monthly feast at Ur and in other cities.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Watch for the first crescent and greet him.',
+      'Keep a note of the moon’s phase today.',
+      'Offer a little milk or a date by a window at night.',
+      'Be patient with one thing that takes time.',
+    ],
+    approach:
+      'Nanna is approached calmly and regularly, as the moon god of Ur who keeps the months.',
+    sources: [MESO_CULTIC, MESO_ETCSL],
+  },
+  {
+    key: 'marduk',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'ostara' },
+        name: 'Akitu, the spring new year',
+        why: 'Babylon’s great new-year festival, the Akitu of Nisannu, began with the first new moon after the spring equinox and lasted twelve days, with the Enuma Elish recited for Marduk. The date here is the equinox, as an approximation.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Put one disordered corner of your life in order.',
+      'Read a few lines of the Enuma Elish.',
+      'Make one fair decision for people who depend on you.',
+      'Face one overwhelming task with a first step.',
+    ],
+    approach:
+      'Marduk is approached with respect for his authority, as Babylon’s king of the gods who made order from chaos.',
+    sources: ['W. G. Lambert, Babylonian Creation Myths (2013)', 'Julye Bidmead, The Akītu Festival (2002)', MESO_CULTIC],
+  },
+  {
+    key: 'nisaba',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'ostara' },
+        name: 'The spring barley harvest',
+        why: 'In Mesopotamia barley was harvested in spring. No festival day of Nisaba can be fixed; honouring her at the spring equinox is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Write something carefully by hand.',
+      'End a piece of writing with “Nisaba be praised”.',
+      'Check one account or record and make it right.',
+      'Give to a library or literacy charity.',
+    ],
+    approach:
+      'Nisaba is approached through study and accuracy, as the goddess of grain and the scribe’s art.',
+    sources: [MESO_ETCSL, 'Jeremy Black and Anthony Green, Gods, Demons and Symbols of Ancient Mesopotamia (1992), s.v. Nisaba'],
+  },
+  {
+    key: 'ninkasi',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'lammas' },
+        name: 'Lammas, the grain harvest',
+        why: 'No festival of Ninkasi is known. Many modern devotees and home brewers raise a cup to her at the grain harvest; this is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Share a drink with a friend and raise it to her.',
+      'Bake or brew something with care.',
+      'Welcome a guest well.',
+      'Sing while you cook.',
+    ],
+    approach:
+      'Ninkasi is approached with gladness and moderation, as the goddess of beer and good company.',
+    sources: ['Miguel Civil, “A Hymn to the Beer Goddess and a Drinking Song”, in Studies Presented to A. Leo Oppenheim (1964)', MESO_ETCSL],
+  },
+
+  // ─── Canaanite and Levantine ─────────────────────────────────────────────
+  {
+    key: 'asherah',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'full' },
+        name: 'The full moon',
+        why: 'Ugaritic ritual texts mark days of the lunar month, including the full moon, with offerings to the gods. Keeping the full moon for Athirat is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Water a tree or a plant and thank her.',
+      'Speak up kindly for someone in your family.',
+      'Offer a small cake or a little oil at the foot of a tree.',
+      'Sit for a few minutes with your back against a tree.',
+    ],
+    approach:
+      'Asherah is approached with gentleness, as the mother of the gods, and with respect for how her history touches Jewish and Christian scripture.',
+    sources: [UGARIT_TEXTS, 'William G. Dever, Did God Have a Wife? (2005)', 'Judith M. Hadley, The Cult of Asherah in Ancient Israel and Judah (2000)'],
+  },
+  {
+    key: 'astarte',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 5 },
+        name: 'Friday',
+        why: 'Friday is the day of the planet Venus, Astarte’s star. Honouring her on Fridays is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Watch for the evening star and greet her.',
+      'Do one brave or loving thing today.',
+      'Keep a promise you made.',
+      'Offer a flower or a little incense.',
+    ],
+    approach:
+      'Astarte is approached with boldness and respect, as the Phoenician goddess of love, war and the evening star.',
+    sources: [UGARIT_TEXTS, 'David T. Sugimoto (ed.), Transformation of a Goddess: Ishtar – Astarte – Aphrodite (2014)', WEEKDAYS],
+  },
+  {
+    key: 'baal',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'mabon' },
+        name: 'The autumn rains',
+        why: 'In the Levant the rains return in autumn, and Ugarit’s ritual calendar made offerings at the new wine in that season. Keeping the autumn equinox for Baal is a modern approximation.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'When it rains, step outside and thank him.',
+      'Pour a little water onto dry ground.',
+      'Save water in one way today.',
+      'Face one thing that feels like chaos with courage.',
+    ],
+    approach:
+      'Baal is approached with respect for the power of storms, as the rain-bringer of Ugarit who overcame Sea and Death.',
+    sources: [UGARIT_TEXTS, 'Mark S. Smith, The Ugaritic Baal Cycle, vol. 1 (1994)', 'Dennis Pardee, Ritual and Cult at Ugarit (2002)'],
+  },
+  {
+    key: 'anat',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'lammas' },
+        name: 'The grain harvest',
+        why: 'The Baal Cycle tells how Anat winnowed and sowed Death like grain. Honouring her at harvest is a modern choice; no festival of hers can be dated.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Do one brave thing for someone you love.',
+      'Train your body for a few minutes.',
+      'Refuse to let one small injustice stand.',
+      'Offer a red flower with thanks for a loyal friend.',
+    ],
+    approach:
+      'Anat is approached with respect for her ferocity, honouring her loyalty and courage rather than her violence.',
+    sources: [UGARIT_TEXTS, 'Neal H. Walls, The Goddess Anat in Ugaritic Myth (1992)'],
+  },
+  {
+    key: 'el',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 6 },
+        name: 'Saturday',
+        why: 'Saturday is Saturn’s day, and Philo of Byblos matched El with Kronos, the Greek Saturn. Honouring El on Saturdays is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Spend time with, or think of, an elder you respect.',
+      'Pour a little oil or wine with thanks.',
+      'Give careful counsel to someone who asks.',
+      'Be patient in one judgement today.',
+    ],
+    approach:
+      'El is approached with reverence and patience, as the aged father of the Ugaritic gods, with care not to blur him with the God of the Hebrew Bible.',
+    sources: [UGARIT_TEXTS, 'Mark S. Smith, The Origins of Biblical Monotheism (2001)', 'Philo of Byblos, Phoenician History, in Eusebius, Preparation for the Gospel 1.10'],
+  },
+  {
+    key: 'shapash',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 0 },
+        name: 'Sunday',
+        why: 'The day of the Sun in the planetary week. Honouring Shapash on Sundays is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Greet the sun at rising or setting.',
+      'Carry a message faithfully for someone.',
+      'Visit or write to someone who is ill or dying.',
+      'See one situation honestly, as it is.',
+    ],
+    approach:
+      'Shapash is approached with honesty and trust, as the sun goddess who carries messages and guides the dead.',
+    sources: [UGARIT_TEXTS, WEEKDAYS],
+  },
+
+  // ─── Baltic ──────────────────────────────────────────────────────────────
+  {
+    key: 'laima',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'yule' },
+        name: 'The winter solstice (Kūčios)',
+        why: 'Lithuanian families on Kūčios, Christmas Eve, tried to read the year’s fortunes, and Romuva keeps the solstice as Kalėdos. Honouring Laima, who sets fate, at this time is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Light a candle for a newborn or a newly married friend.',
+      'Weave, knit or tie a few rows of thread for her.',
+      'Accept one thing in your life you cannot change.',
+      'Sit for a few minutes under a linden or any tree.',
+    ],
+    approach:
+      'Laima is approached with acceptance and gratitude, as the goddess who sets fate at birth in the Baltic folk songs.',
+    sources: [BALTIC_SOURCES, 'Krišjānis Barons, Latvju dainas (1894–1915), the Laima songs'],
+  },
+  {
+    key: 'perkunas',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'ostara' },
+        name: 'The spring equinox and first thunder',
+        why: 'Folk custom greeted the first thunder of spring for strength and health, and Romuva keeps a spring equinox feast. The date of the first thunder varies; using the equinox is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Listen to the next storm from a safe place and greet him.',
+      'Keep your word in one thing today.',
+      'Stand against one small wrong.',
+      'Touch an oak tree and thank him.',
+    ],
+    approach:
+      'Perkūnas is approached with respect and honesty, as the Baltic thunder god who strikes evil and keeps oaths.',
+    sources: [BALTIC_SOURCES, 'The Slavonic Malalas Chronicle gloss of 1261, on Perkūnas and the Baltic gods'],
+  },
+  {
+    key: 'saule',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 6, day: 23 },
+        name: 'Midsummer Eve (Rasos, Joninės, Jāņi)',
+        why: 'The great midsummer night of Lithuania and Latvia, kept with fires, wreaths, herbs and all-night songs to the Sun, as recorded in folk tradition.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Greet the sun in the morning with a few words.',
+      'Sing a song, any song, for her.',
+      'Be kind to someone without family nearby.',
+      'Weave a small wreath of flowers or herbs.',
+    ],
+    approach:
+      'Saulė is approached with warmth and gratitude, as the mother Sun of the Baltic folk songs.',
+    sources: [BALTIC_SOURCES, 'Krišjānis Barons, Latvju dainas (1894–1915), the sun songs'],
+  },
+  {
+    key: 'dievas',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 9, day: 29 },
+        name: 'Miķeļi, the harvest feast',
+        why: 'The Latvian end-of-harvest feast on Michaelmas, which Dievturi keep for Dievs and the gods of the harvest. The date is Christian; the harvest customs are folk tradition.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Look up at the sky for a minute and give thanks.',
+      'Welcome a guest well.',
+      'Share bread with someone.',
+      'Settle one small dispute fairly.',
+    ],
+    approach:
+      'Dievas is approached with humility and gratitude, as the sky god of the Baltic folk songs, with respect for Christians who use the same name for God.',
+    sources: [BALTIC_SOURCES, 'Krišjānis Barons, Latvju dainas (1894–1915), the songs of Dievs'],
+  },
+  {
+    key: 'zemyna',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'lammas' },
+        name: 'The first bread of the harvest',
+        why: 'Prätorius records beer poured to Žemyna at feasts for good crops, and folk custom honoured the first bread. Keeping Lammas for her is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Pour a little drink onto the soil with thanks for your food.',
+      'Treat bread with care, wasting none today.',
+      'Kiss the ground or touch it with respect.',
+      'Plant something or tend a garden.',
+    ],
+    approach:
+      'Žemyna is approached with respect and gratitude, as the Lithuanian earth goddess who raises the blossoms.',
+    sources: [BALTIC_SOURCES, 'Matthäus Prätorius, Deliciae Prussicae (c. 1690s), on offerings to Žemyna'],
+  },
+  {
+    key: 'menulis',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'new' },
+        name: 'The new moon',
+        why: 'Lithuanian and Latvian folk custom greeted the new moon with a short prayer for health and plenty.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Greet the new crescent when you see it.',
+      'Make one fresh start this month.',
+      'Keep faith with someone you love.',
+      'Offer a piece of bread at a window at night.',
+    ],
+    approach:
+      'Mėnulis is approached honestly, as the Moon of the Baltic folk songs who wanes and waxes.',
+    sources: [BALTIC_SOURCES],
+  },
+
+  // ─── Finnish and Karelian ────────────────────────────────────────────────
+  {
+    key: 'ukko',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'beltane' },
+        name: 'The spring sowing (Ukko’s cup)',
+        why: 'Agricola wrote in 1551 that Ukko’s cup was drunk at the spring sowing for rain and good crops. The day followed the season; Beltane marks it approximately.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Raise a cup to him when you begin something new.',
+      'Sow a seed or water a plant and ask for good weather.',
+      'Step outside when it rains and thank him.',
+      'Ask plainly for help with one hard thing.',
+    ],
+    approach:
+      'Ukko is approached with respect and plain words, as the god on high of the Finnish songs.',
+    sources: [FINNISH_SOURCES, 'Mikael Agricola, preface to Dauidin Psaltari (1551), on the gods of Häme and Karelia'],
+  },
+  {
+    key: 'mielikki',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 11, day: 1 },
+        name: 'Kekri',
+        why: 'Kekri was the old Finnish feast at the end of the farming year, held in autumn and later moved to All Saints. Honouring the forest mistress then is a modern Suomenusko choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Greet the forest when you enter it.',
+      'Leave a little bread on a stump with thanks.',
+      'Take only what you need from nature today.',
+      'Do one kind thing for an animal.',
+    ],
+    approach:
+      'Mielikki is approached with courtesy and gratitude, as the mistress of the forest’s treasures.',
+    sources: [FINNISH_SOURCES],
+  },
+  {
+    key: 'tapio',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 11, day: 1 },
+        name: 'Kekri',
+        why: 'Kekri was the old Finnish feast at the end of the farming year, held in autumn and later moved to All Saints. Honouring the forest king then is a modern Suomenusko choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Ask leave quietly before you go into a wood.',
+      'Thank him when you come home safely.',
+      'Spend a few minutes beside an old tree.',
+      'Pick up litter in a forest or park.',
+    ],
+    approach:
+      'Tapio is approached with respect for the wild, as the king of the Finnish forest.',
+    sources: [FINNISH_SOURCES, 'Mikael Agricola, preface to Dauidin Psaltari (1551)'],
+  },
+  {
+    key: 'ilmatar',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 2, day: 28 },
+        name: 'Kalevala Day',
+        why: 'Finland’s day of the Kalevala and Finnish culture, which opens with Ilmatar’s creation of the world. A modern national day, not an old festival of hers.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Sit quietly under the open sky for a few minutes.',
+      'Read the first song of the Kalevala.',
+      'Make one gentle beginning today.',
+      'Watch the birds on water.',
+    ],
+    approach:
+      'Ilmatar is approached with patience and wonder, honest that her role as creator owes much to Lönnrot’s Kalevala.',
+    sources: [FINNISH_SOURCES, 'Elias Lönnrot, Kalevala (1849), song 1, trans. Keith Bosley (1989)'],
+  },
+  {
+    key: 'ahti',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'litha' },
+        name: 'Midsummer (Juhannus)',
+        why: 'Finnish midsummer is spent by lakes and the sea. Honouring Ahti then is a modern Suomenusko choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Look at water quietly for a few minutes.',
+      'Thank him for fresh water and fish.',
+      'Keep one stretch of shore or bank clean.',
+      'Use water carefully today.',
+    ],
+    approach:
+      'Ahti is approached with respect for the water, as the king of lakes and seas.',
+    sources: [FINNISH_SOURCES, 'Mikael Agricola, preface to Dauidin Psaltari (1551)'],
+  },
+  {
+    key: 'rauni',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'beltane' },
+        name: 'The spring sowing',
+        why: 'Ukko’s cup was drunk at the spring sowing. Honouring Rauni beside him then is a modern choice; no day of hers is recorded.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Touch a rowan tree and give thanks.',
+      'Hang a sprig of rowan by your door.',
+      'Do one thing to protect your home.',
+      'Offer a little bread beside Ukko’s cup.',
+    ],
+    approach:
+      'Rauni is approached gently and without inventing more than is known, as the rowan goddess beside Ukko.',
+    sources: [FINNISH_SOURCES],
+  },
+
+  // ─── Anglo-Saxon ─────────────────────────────────────────────────────────
+  {
+    key: 'woden',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 3 },
+        name: 'Wednesday',
+        why: 'Wednesday is Wōdnesdæg, Woden’s day, in Old English. Honouring him on Wednesdays is a modern Heathen custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Read a few lines of the Nine Herbs Charm in translation.',
+      'Learn one new thing and share it.',
+      'Raise a cup to your ancestors.',
+      'Write or read a short poem.',
+    ],
+    approach:
+      'Woden is approached with respect and curiosity, as the chief god of the Anglo-Saxons, without filling the gaps from Norse sources too freely.',
+    sources: [WEEKDAYS, AS_SOURCES, 'The Nine Herbs Charm (Lacnunga, British Library Harley MS 585)'],
+  },
+  {
+    key: 'thunor',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 4 },
+        name: 'Thursday',
+        why: 'Thursday is Þunresdæg, Thunor’s day, in Old English. Honouring him on Thursdays is a modern Heathen custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Do something hard that helps someone else.',
+      'Raise a cup of ale or water to him.',
+      'Touch an oak and thank him for protection.',
+      'Keep your word in one thing today.',
+    ],
+    approach:
+      'Thunor is approached plainly and warmly, as the English thunder god who protects people and farms.',
+    sources: [WEEKDAYS, AS_SOURCES],
+  },
+  {
+    key: 'frige',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 5 },
+        name: 'Friday',
+        why: 'Friday is Frīgedæg, Frige’s day, in Old English. Honouring her on Fridays is a modern Heathen custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Tidy one part of your home and thank her.',
+      'Spin, knit or sew a few rows.',
+      'Share a meal at home with someone you love.',
+      'Plan one thing ahead with care.',
+    ],
+    approach:
+      'Frige is approached with warmth, as the English goddess of love and the household.',
+    sources: [WEEKDAYS, AS_SOURCES, 'Bede, De temporum ratione 15, on Modranecht'],
+  },
+  {
+    key: 'tiw',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 2 },
+        name: 'Tuesday',
+        why: 'Tuesday is Tīwesdæg, Tiw’s day, in Old English. Honouring him on Tuesdays is a modern Heathen custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Keep a promise that costs you something.',
+      'Deal fairly in one dispute.',
+      'Carve or draw the Tīr rune and think about faithfulness.',
+      'Find a bright star and think of steadiness.',
+    ],
+    approach:
+      'Tiw is approached with honesty and steadiness, as the English god of justice and oaths.',
+    sources: [WEEKDAYS, AS_SOURCES, 'The Old English Rune Poem, stanza Tīr'],
+  },
+  {
+    key: 'eostre',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'ostara' },
+        name: 'Eosturmonath (the spring equinox)',
+        why: 'Bede says the English once held feasts for Eostre in Eosturmonath, roughly April. He gives no day; modern Pagans keep the spring equinox as Ostara.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Watch a spring dawn and greet her.',
+      'Put spring flowers in water.',
+      'Begin one new thing.',
+      'Read Bede’s sentence about her and think about how little we know.',
+    ],
+    approach:
+      'Eostre is approached with gratitude for spring and honesty that one sentence of Bede is all we have.',
+    sources: [AS_SOURCES, 'Jacob Grimm, Deutsche Mythologie (1835), ch. 13, on Ostara', HUTTON_STATIONS],
+  },
+  {
+    key: 'hreda',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 3, day: 1 },
+        name: 'Hrethmonath',
+        why: 'Bede says March, Hrethmonath, was named after Hreda, to whom the English offered sacrifices in that month. He gives no day; the first of March marks the month.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Offer a little bread and ale at the start of March.',
+      'Begin a piece of spring work.',
+      'Say plainly that you know only her name, and honour her anyway.',
+      'Notice the first green shoots.',
+    ],
+    approach:
+      'Hreda is approached with humility, as an English goddess known from one line of Bede.',
+    sources: [AS_SOURCES],
+  },
+
+  // ─── Etruscan ────────────────────────────────────────────────────────────
+  {
+    key: 'tinia',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 4 },
+        name: 'Thursday',
+        why: 'Thursday is Jupiter’s day, and Tinia was matched with Jupiter. No Etruscan festival calendar survives; honouring him on Thursdays is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Watch the sky for a few minutes and greet him.',
+      'Use any authority you have fairly today.',
+      'Pour a little wine or water with thanks.',
+      'Look at a picture of the Liver of Piacenza and its gods.',
+    ],
+    approach:
+      'Tinia is approached with reverence and honesty about how little of Etruscan religion survives.',
+    sources: [ETRUSCAN_SOURCES, 'Pliny the Elder, Natural History 2.138–143, on Etruscan lightning lore', WEEKDAYS],
+  },
+  {
+    key: 'uni',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 3, day: 1 },
+        name: 'Matronalia',
+        why: 'The Roman festival of Juno Lucina on 1 March. Uni was matched with Juno; keeping it for her is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Light a candle for a family you belong to.',
+      'Protect someone in your care in one small way.',
+      'Keep faith with an ally.',
+      'Read about the gold tablets of Pyrgi.',
+    ],
+    approach:
+      'Uni is approached with dignity, as the Etruscan queen of the gods and protector of cities.',
+    sources: [ETRUSCAN_SOURCES, 'Livy 5.21–22, on Juno Regina of Veii', 'The Pyrgi Tablets (Museo Nazionale Etrusco di Villa Giulia)'],
+  },
+  {
+    key: 'menrva',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 3, day: 19 },
+        name: 'Quinquatrus',
+        why: 'The Roman festival of Minerva, whose name probably came from Menrva. Keeping it for Menrva is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Learn something new for ten minutes.',
+      'Practise a craft with care.',
+      'Help a young person with something they are learning.',
+      'Think before you act in one hard choice.',
+    ],
+    approach:
+      'Menrva is approached with seriousness and curiosity, as the Etruscan goddess of wisdom and the arts.',
+    sources: [ETRUSCAN_SOURCES, OVID_FASTI + ' (3.809–848)'],
+  },
+  {
+    key: 'turan',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 5 },
+        name: 'Friday',
+        why: 'Friday is the day of Venus, with whom Turan was matched. Honouring her on Fridays is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Set a flower by a mirror and thank her.',
+      'Give a thoughtful gift to someone you love.',
+      'Wear something that makes you feel beautiful.',
+      'Notice one beautiful thing today.',
+    ],
+    approach:
+      'Turan is approached with joy, as the Etruscan lady of love and beauty.',
+    sources: [ETRUSCAN_SOURCES, WEEKDAYS],
+  },
+  {
+    key: 'fufluns',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'mabon' },
+        name: 'The grape harvest',
+        why: 'No Etruscan festival calendar survives. Honouring the wine god at the autumn grape harvest is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Pour a small cup of wine or grape juice for him.',
+      'Share a meal and enjoy it.',
+      'Water a climbing plant or vine.',
+      'Put on music and celebrate one good thing.',
+    ],
+    approach:
+      'Fufluns is approached with joy and moderation, as the Etruscan god of wine and growth.',
+    sources: [ETRUSCAN_SOURCES],
+  },
+
+  // ─── Basque ──────────────────────────────────────────────────────────────
+  {
+    key: 'mari',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 5 },
+        name: 'Friday',
+        why: 'In Basque folklore Mari meets her partner Sugaar on Fridays, when storms break, as recorded by José Miguel de Barandiarán.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Keep one promise you made.',
+      'Tell the truth in one moment you might have avoided it.',
+      'Look towards high ground or the sky and greet her.',
+      'Learn a word or two of Euskara.',
+    ],
+    approach:
+      'Mari is approached with respect and plain truth, as the Lady of the Basque mountains known from folklore.',
+    sources: ['José Miguel de Barandiarán, Mitología vasca (1960)', 'Resurrección María de Azkue, Euskalerriaren Yakintza (1935–47)'],
+  },
+
+  // ─── Shinto ──────────────────────────────────────────────────────────────
+  {
+    key: 'amaterasu',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 1, day: 1 },
+        name: 'Hatsumōde, the first shrine visit',
+        why: 'In the first days of the year most people in Japan visit a shrine to give thanks and pray for the year ahead, and Ise is among the most visited.',
+        basis: 'later',
+      },
+      {
+        rule: { kind: 'fixed', month: 10, day: 17 },
+        name: 'Kannamesai',
+        why: 'Ise Jingū’s greatest festival, from 15 to 17 October, when the year’s first rice is offered to Amaterasu.',
+        basis: 'later',
+      },
+      {
+        rule: { kind: 'fixed', month: 11, day: 23 },
+        name: 'Niinamesai',
+        why: 'The harvest festival, when new rice is offered to the kami at shrines across Japan; today also Labour Thanksgiving Day.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Greet the morning sun with a bow and a word of thanks.',
+      'Offer fresh water and a little rice at your kamidana, if you keep one.',
+      'Clean one part of your home carefully.',
+      'Learn how to visit a shrine respectfully.',
+    ],
+    approach:
+      'Amaterasu belongs to a living religion, so she is approached with sincerity and gratitude, learning from shrines and their priests.',
+    sources: [SHINTO_LIVING, 'Kojiki (712), trans. Gustav Heldt (2014)', 'Ise Jingū: https://www.isejingu.or.jp/en/'],
+  },
+  {
+    key: 'inari',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 11, day: 8 },
+        name: 'Hitakisai',
+        why: 'Fushimi Inari Taisha’s fire festival on 8 November, giving thanks for the harvest with bonfires of prayer sticks. Inari’s other great day, Hatsuuma, the first Day of the Horse in February, follows the twelve-day cycle and is not worked out here.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Give thanks for the food you eat today.',
+      'Offer a little rice or a grain of thanks for your livelihood.',
+      'Work honestly and well at one task, and dedicate the effort.',
+      'Learn how to visit a shrine respectfully.',
+    ],
+    approach:
+      'Inari belongs to a living religion, so Inari is approached with sincerity and thanks, learning from shrines and their priests.',
+    sources: [SHINTO_LIVING, 'Karen A. Smyers, The Fox and the Jewel: Shared and Private Meanings in Contemporary Japanese Inari Worship (1999)', 'Fushimi Inari Taisha: https://inari.jp/en/'],
+  },
+  {
+    key: 'susanoo',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 7, day: 17 },
+        name: 'Gion Matsuri',
+        why: 'The great float procession of Yasaka Shrine’s Gion Matsuri, which runs through July and was begun in 869 to ask relief from plague.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Ask for protection for someone who is unwell.',
+      'Turn one burst of temper into something useful.',
+      'Read the story of Yamata no Orochi.',
+      'Learn how to visit a shrine respectfully.',
+    ],
+    approach:
+      'Susanoo belongs to a living religion, so he is approached with sincerity and respect, learning from shrines and their priests.',
+    sources: [SHINTO_LIVING, 'Kojiki (712), trans. Gustav Heldt (2014)', 'Yasaka Shrine: https://www.yasaka-jinja.or.jp/en/'],
+  },
+  {
+    key: 'tsukuyomi',
+    sacred: [
+      {
+        rule: { kind: 'lunisolar', month: 8, day: 15 },
+        name: 'Jūgoya, the autumn moon-viewing',
+        why: 'The fifteenth night of the eighth month of the old lunar calendar, when people in Japan view the full autumn moon with dumplings and susuki grass. It is a seasonal custom for everyone; honouring Tsukuyomi then is a natural, modern pairing.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Look at the moon for a few minutes in quiet gratitude.',
+      'Offer a little water or rice by a window at night.',
+      'Plan the month ahead calmly.',
+      'Learn how to visit a shrine respectfully.',
+    ],
+    approach:
+      'Tsukuyomi belongs to a living religion, so he is approached with calm and sincerity, learning from shrines and their priests.',
+    sources: [SHINTO_LIVING, 'Nihon Shoki (720), trans. W. G. Aston (1896)'],
+  },
+  {
+    key: 'benzaiten',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 1, day: 1 },
+        name: 'The Seven Lucky Gods pilgrimage',
+        why: 'In the first days of the year many people visit the shrines and temples of the Seven Lucky Gods, of whom Benzaiten is the only woman. Her own snake days (mi no hi) come every twelve days and are not worked out here.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Play, sing or practise your art for ten minutes.',
+      'Speak kindly and clearly in one conversation.',
+      'Offer a little fresh water with thanks.',
+      'Learn how to visit a shrine or temple respectfully.',
+    ],
+    approach:
+      'Benzaiten belongs to living Japanese religion, Buddhist and Shinto, so she is approached with gratitude and sincerity, learning from shrines, temples and their priests.',
+    sources: [SHINTO_LIVING, 'Catherine Ludvik, From Sarasvatī to Benzaiten (2001)'],
+  },
+  {
+    key: 'hachiman',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 9, day: 15 },
+        name: 'Iwashimizu-sai',
+        why: 'The great festival of Iwashimizu Hachimangū on 15 September; Tsurugaoka Hachimangū’s festival, with mounted archery, falls on the days around it.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Ask for protection for your family and neighbours.',
+      'Do one disciplined thing well.',
+      'Watch for doves and greet them as his messengers.',
+      'Learn how to visit a shrine respectfully.',
+    ],
+    approach:
+      'Hachiman belongs to a living religion, so he is approached with sincerity and respect, learning from shrines and their priests.',
+    sources: [SHINTO_LIVING, 'Iwashimizu Hachimangū: https://www.iwashimizu.or.jp/', 'Tsurugaoka Hachimangū: https://www.hachimangu.or.jp/'],
+  },
+
+  // ─── Chinese folk religion and Daoism ────────────────────────────────────
+  {
+    key: 'mazu',
+    sacred: [
+      {
+        rule: { kind: 'lunisolar', month: 3, day: 23 },
+        name: 'Mazu’s birthday',
+        why: 'The twenty-third day of the third lunar month, Mazu’s birthday, kept with temple festivals, opera and pilgrimages, above all in Fujian and Taiwan.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Ask her to watch over someone who is travelling.',
+      'Light a lamp in a window for those far from home.',
+      'Thank the people who bring food from the sea.',
+      'Learn about the Mazu temple nearest you.',
+    ],
+    approach:
+      'Mazu belongs to a living religion, so she is approached with respect and gratitude, learning from her temples and the communities who keep them.',
+    sources: [CHINESE_LIVING, 'UNESCO, Mazu belief and customs (inscribed 2009): https://ich.unesco.org/en/RL/mazu-belief-and-customs-00227'],
+  },
+  {
+    key: 'zao_jun',
+    sacred: [
+      {
+        rule: { kind: 'lunisolar', month: 12, day: 23 },
+        name: 'Little New Year (Xiaonian)',
+        why: 'The twenty-third day of the twelfth lunar month, when, in northern custom, the Kitchen God rises to heaven to report on the household; in the south it is often the twenty-fourth.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Clean the kitchen with care.',
+      'Say something kind at the family table.',
+      'Share something sweet with your household.',
+      'Cook a simple meal for someone.',
+    ],
+    approach:
+      'Zao Jun belongs to a living religion, so he is approached with respect and good humour, learning from the families and temples who keep his customs.',
+    sources: [CHINESE_LIVING],
+  },
+  {
+    key: 'change',
+    sacred: [
+      {
+        rule: { kind: 'lunisolar', month: 8, day: 15 },
+        name: 'Mid-Autumn Festival',
+        why: 'The fifteenth day of the eighth lunar month, when families gather under the full moon, eat mooncakes and tell the story of Chang’e.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Look at the moon and think of someone far away.',
+      'Call or write to a relative you miss.',
+      'Share a round fruit or a sweet with your family.',
+      'Tell the story of Chang’e and the Jade Rabbit.',
+    ],
+    approach:
+      'Chang’e is honoured through the Mid-Autumn Festival as Chinese families keep it, with reunion, gratitude and remembrance of those far away.',
+    sources: [CHINESE_LIVING],
+  },
+  {
+    key: 'tudigong',
+    sacred: [
+      {
+        rule: { kind: 'lunisolar', month: 2, day: 2 },
+        name: 'Tudigong’s birthday',
+        why: 'The second day of the second lunar month, the Earth God’s birthday, kept with offerings at his shrines; it is also the day the dragon raises its head.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Greet the local shrine or the ground of your home with respect.',
+      'Do one thing for your neighbourhood.',
+      'Deal fairly in business today.',
+      'Offer a cup of tea with thanks for the place you live.',
+    ],
+    approach:
+      'Tudigong belongs to a living religion, so he is approached as a respected local elder, learning from the communities who keep his shrines.',
+    sources: [CHINESE_LIVING],
+  },
+  {
+    key: 'jade_emperor',
+    sacred: [
+      {
+        rule: { kind: 'lunisolar', month: 1, day: 9 },
+        name: 'The Jade Emperor’s birthday',
+        why: 'The ninth day of the first lunar month, the Jade Emperor’s birthday, kept especially by Hokkien communities with offerings to Heaven from midnight.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Look up at the sky and give thanks for the year’s blessings.',
+      'Act honestly in one thing, as if heaven were watching.',
+      'Offer a cup of tea or a piece of fruit with respect.',
+      'Learn about a Daoist or folk temple near you.',
+    ],
+    approach:
+      'The Jade Emperor belongs to a living religion, so he is approached with reverence and honest conduct, learning from temples and devotees.',
+    sources: [CHINESE_LIVING],
+  },
+  {
+    key: 'guanyin',
+    sacred: [
+      {
+        rule: { kind: 'lunisolar', month: 2, day: 19 },
+        name: 'Guanyin’s birthday',
+        why: 'The nineteenth day of the second lunar month, kept as Guanyin’s birthday with temple visits and vegetarian meals.',
+        basis: 'later',
+      },
+      {
+        rule: { kind: 'lunisolar', month: 6, day: 19 },
+        name: 'Guanyin’s enlightenment',
+        why: 'The nineteenth day of the sixth lunar month, kept as the day of Guanyin’s enlightenment.',
+        basis: 'later',
+      },
+      {
+        rule: { kind: 'lunisolar', month: 9, day: 19 },
+        name: 'Guanyin’s leaving home',
+        why: 'The nineteenth day of the ninth lunar month, kept as the day Guanyin left home for the religious life.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Do one kind thing for someone who is suffering.',
+      'Eat vegetarian today in her honour.',
+      'Offer a cup of clean water and a flower with respect.',
+      'Listen fully to someone who needs to be heard.',
+    ],
+    approach:
+      'Guanyin belongs to living Buddhism and folk religion, so she is approached with compassion and sincerity, learning from Buddhist temples and teachers.',
+    sources: [CHINESE_LIVING, 'Chün-fang Yü, Kuan-yin: The Chinese Transformation of Avalokiteśvara (2001)'],
   },
 
   // ─── Jewish folklore and Western occultism ───────────────────────────

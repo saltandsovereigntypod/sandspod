@@ -97,6 +97,17 @@ export async function fetchMyCovens(userId: string): Promise<Coven[]> {
   return rows.map((r) => r.covens).filter((c): c is Coven => !!c);
 }
 
+/** Your covens with your place in each (membership and the coven's positions), for planning reminders. */
+export async function fetchMyStandings(userId: string): Promise<{ coven: Coven; membership: Member; ranks: Rank[] }[]> {
+  const rows = await run<(Member & { covens: Coven | null })[]>(
+    supabase.from('coven_members').select(`coven_id,user_id,rank_id,status,muted_until,joined_at,covens(${COVEN_FIELDS})`).eq('user_id', userId).eq('status', 'active'),
+  );
+  const mine = rows.filter((r) => !!r.covens);
+  if (!mine.length) return [];
+  const ranks = await run<Rank[]>(supabase.from('coven_ranks').select('*').in('coven_id', mine.map((r) => r.coven_id)));
+  return mine.map(({ covens, ...membership }) => ({ coven: covens!, membership, ranks: ranks.filter((k) => k.coven_id === membership.coven_id) }));
+}
+
 export type CovenSnapshot = {
   coven: Coven;
   ranks: Rank[];
@@ -164,19 +175,39 @@ export function fetchApplications(covenId: string, status: Application['status']
   if (status !== 'all') query = query.eq('status', status);
   return run<Application[]>(query);
 }
-export const decideApplication = (id: string, approve: boolean, note: string) => rpc('decide_coven_application', { p_application: id, p_approve: approve, p_note: note.trim() || null });
+/**
+ * Let the coven-notify edge function ring phones about a request (best
+ * effort): just made, it tells the coven's reviewers; just decided, it tells
+ * the one who asked. The website does the same (covens/coven-data.js).
+ */
+export function notifyRequest(kind: 'application' | 'advancement', row: unknown) {
+  const id = (row as { id?: string } | null)?.id;
+  if (!id) return;
+  void supabase.functions.invoke('coven-notify', { body: kind === 'application' ? { application_id: id } : { advancement_id: id } }).catch(() => {});
+}
+async function andNotify<T>(kind: 'application' | 'advancement', call: Promise<T>): Promise<T> {
+  const row = await call;
+  notifyRequest(kind, row);
+  return row;
+}
+
+export const decideApplication = (id: string, approve: boolean, note: string) =>
+  andNotify('application', rpc('decide_coven_application', { p_application: id, p_approve: approve, p_note: note.trim() || null }));
 export const fetchAdvancements = (covenId: string) =>
   run<Advancement[]>(supabase.from('coven_advancement_requests').select('*').eq('coven_id', covenId).eq('status', 'pending').order('created_at'));
 export const fetchMyAdvancements = (covenId: string, userId: string) =>
   run<Advancement[]>(supabase.from('coven_advancement_requests').select('*').eq('coven_id', covenId).eq('user_id', userId).order('created_at', { ascending: false }).limit(20));
-export const requestAdvancement = (covenId: string, rankId: string, statement: string) => rpc('request_coven_advancement', { p_coven: covenId, p_rank: rankId, p_statement: statement.trim() || null });
+export const requestAdvancement = (covenId: string, rankId: string, statement: string) =>
+  andNotify('advancement', rpc('request_coven_advancement', { p_coven: covenId, p_rank: rankId, p_statement: statement.trim() || null }));
 export const withdrawAdvancement = (id: string) => rpc('withdraw_coven_request', { p_kind: 'advancement', p_id: id });
-export const decideAdvancement = (id: string, approve: boolean, note: string) => rpc('decide_coven_advancement', { p_request: id, p_approve: approve, p_note: note.trim() || null });
+export const decideAdvancement = (id: string, approve: boolean, note: string) =>
+  andNotify('advancement', rpc('decide_coven_advancement', { p_request: id, p_approve: approve, p_note: note.trim() || null }));
 
 export const fetchMembers = (covenId: string) => run<Member[]>(supabase.from('coven_members').select('*').eq('coven_id', covenId).eq('status', 'active').order('joined_at'));
 export const sign = (documentId: string, signedName: string) => run(supabase.from('coven_signatures').insert({ document_id: documentId, signed_name: signedName }));
 export const join = (covenId: string) => rpc('join_coven', { p_coven: covenId });
-export const apply = (covenId: string, answers: Record<string, string>, message: string) => rpc('apply_to_coven', { p_coven: covenId, p_answers: answers, p_message: message.trim() || null });
+export const apply = (covenId: string, answers: Record<string, string>, message: string) =>
+  andNotify('application', rpc('apply_to_coven', { p_coven: covenId, p_answers: answers, p_message: message.trim() || null }));
 export const withdrawApplication = (id: string) => rpc('withdraw_coven_request', { p_kind: 'application', p_id: id });
 export const leave = (covenId: string) => rpc('leave_coven', { p_coven: covenId });
 

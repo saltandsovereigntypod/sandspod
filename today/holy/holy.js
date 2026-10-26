@@ -160,7 +160,8 @@
         : "") +
       section("What we know", paras(page.knowAndDont.known)) +
       section("What we don’t", paras(page.knowAndDont.unknown)) +
-      (page.sources.length ? section("Sources", `<ul class="td-sources">${page.sources.map((s) => `<li>${source(s)}</li>`).join("")}</ul>`) : "");
+      (page.sources.length ? section("Sources", `<ul class="td-sources">${page.sources.map((s) => `<li>${source(s)}</li>`).join("")}</ul>`) : "") +
+      (window.ResearchNote ? window.ResearchNote.footerHtml(page.title, page.tradition || "Holy day") : "");
   }
 
   function setGrimoire(html) {

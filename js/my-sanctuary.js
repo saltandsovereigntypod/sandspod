@@ -170,6 +170,7 @@ function createMySanctuaryPanel() {
         <nav class="my-sanctuary-links" aria-label="Help">
           <a href="/help/">❓ How to use the Sanctuary</a>
           <a href="/more/support/">💚 Support lines</a>
+          <a href="/more/research/">✎ A note on our research</a>
         </nav>
 
         <h3 class="my-sanctuary-subheading">Salt &amp; Sovereignty</h3>
@@ -328,6 +329,15 @@ function createMySanctuaryPanel() {
               <option value="dark-academia">Dark Academia</option>
               <option value="soft-journal">Soft Journal</option>
               <option value="handwritten">Handwritten</option>
+            </select>
+          </label>
+
+          <label>
+            Tarot Deck
+            <select name="tarot_deck">
+              <option value="rws">Rider–Waite–Smith (Pamela Colman Smith, 1909)</option>
+              <option value="marseille">Tarot de Marseille (Nicolas Conver, 1760)</option>
+              <option value="sola-busca">Sola Busca (Italy, about 1491)</option>
             </select>
           </label>
 

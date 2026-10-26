@@ -1,6 +1,6 @@
 import { router, useFocusEffect, type Href } from 'expo-router';
-import { useCallback, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
 import { covenHref, CovenScreen } from '../../../../../components/covens/CovenScreen';
@@ -8,6 +8,7 @@ import { Words } from '../../../../../components/covens/ui';
 import { Card, CheckRow, Field, Notice, Section } from '../../../../../components/more/ui';
 import * as api from '../../../../../lib/covens/api';
 import { useCoven } from '../../../../../lib/covens/CovenContext';
+import { covenPushOn, enableCovenPush } from '../../../../../lib/covens/push';
 import { errorMessage, KIND_LABELS, missingAnswers } from '../../../../../lib/covens/model';
 import { type } from '../../../../../theme';
 
@@ -91,6 +92,7 @@ export default function JoinCoven() {
             </View>
           ))}
           <Button label="Withdraw my application" variant="outline" onPress={withdraw} disabled={busy} />
+          <AnswerOnPhone />
         </Card>
         {message && <Notice>{message}</Notice>}
       </CovenScreen>
@@ -150,6 +152,18 @@ export default function JoinCoven() {
       {message && <Notice>{message}</Notice>}
     </CovenScreen>
   );
+}
+
+/** On a phone not yet signed up for coven notes: a way to hear the answer there (supabase/functions/coven-notify). */
+function AnswerOnPhone() {
+  const [state, setState] = useState<'unknown' | 'off' | 'on' | 'failed'>('unknown');
+  useEffect(() => {
+    if (Platform.OS === 'web') return;
+    void covenPushOn().then((on) => setState(on ? 'on' : 'off'));
+  }, []);
+  if (state === 'unknown' || state === 'on') return null;
+  if (state === 'failed') return <Text style={type.caption}>Notifications couldn’t be turned on here. You’ll still see the answer on this page.</Text>;
+  return <Button label="Tell me on this phone when they answer" variant="text" onPress={() => void enableCovenPush().then((r) => setState(r.ok ? 'on' : 'failed'))} />;
 }
 
 const styles = StyleSheet.create({

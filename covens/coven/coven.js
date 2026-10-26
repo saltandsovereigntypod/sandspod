@@ -9,6 +9,8 @@
  * covens/coven/altar.js lists them, the altar page tends them), Members and My path (their
  * position, agreements and requests to advance). Reviewers get Review and
  * leaders Manage (covens/coven/manage.js). Site moderators see every tab.
+ * Review counts the applications and requests to advance waiting (never
+ * your own), kept current while the page is open (SaltCore.covens.requests).
  */
 (function (global) {
   "use strict";
@@ -51,10 +53,7 @@
     state.perms = L.permissions({ coven, membership, ranks: state.ranks, userId, siteModerator: context.siteModerator, grants: state.grants });
     state.unsigned = userId ? L.unsignedAgreements(state.documents, state.signatures, userId) : state.documents.filter((d) => d.requires_signature);
     state.standing = L.standing(state.perms, state.unsigned, context.banned);
-    if (state.perms.review || state.perms.site) {
-      const [apps, advs] = await Promise.all([D.applications(coven.id).catch(() => []), D.advancements(coven.id).catch(() => [])]);
-      state.pending = { applications: apps.length, advancements: advs.length };
-    }
+    if (state.perms.review || state.perms.site) await countPending();
     if (state.perms.member || state.perms.site) {
       state.rituals = await D.rituals(coven.id).catch(() => []);
       state.ritualSteps = await D.ritualSteps(state.rituals.map((r) => r.id)).catch(() => []);
@@ -63,6 +62,43 @@
     }
     if (state.perms.member || state.perms.site) await loadProgramWork();
     if (coven.founder_id) await UI.loadNames(context, [coven.founder_id]);
+  }
+
+  /** Applications and requests to advance waiting for review here, leaving out your own (as the app counts them). */
+  async function countPending() {
+    const { coven, context } = state;
+    const [apps, advs] = await Promise.all([D.applications(coven.id).catch(() => []), D.advancements(coven.id).catch(() => [])]);
+    const R = global.SaltCore?.covens?.requests;
+    const me = context.user?.id || null;
+    state.pending = R
+      ? R.countPending(apps, advs, [coven.id], me)[coven.id]
+      : { applications: apps.filter((a) => a.user_id !== me).length, advancements: advs.filter((a) => a.user_id !== me).length };
+  }
+
+  /** While the page is open: count again when a request is made or decided (live, once the database sends them), and every two minutes. */
+  let watching = null;
+  function watchPending() {
+    if (watching || !(state.perms.review || state.perms.site) || !state.context.user) return;
+    let timer = null;
+    const again = () => {
+      clearTimeout(timer);
+      timer = setTimeout(async () => {
+        const before = state.pending.applications + state.pending.advancements;
+        await countPending().catch(() => {});
+        if (before === state.pending.applications + state.pending.advancements) return;
+        const bar = root.querySelector(".cv-tabs");
+        if (bar) bar.outerHTML = tabBar(currentTab());
+      }, 400);
+    };
+    const stop = D.watchRequests ? D.watchRequests(again) : () => {};
+    const every = setInterval(again, 2 * 60 * 1000);
+    const onVisible = () => doc.visibilityState === "visible" && again();
+    doc.addEventListener("visibilitychange", onVisible);
+    watching = () => {
+      stop();
+      clearInterval(every);
+      doc.removeEventListener("visibilitychange", onVisible);
+    };
   }
 
   /** Mentors, and work waiting for this person to sign off (for the tab's count). */
@@ -482,7 +518,10 @@
     global.scrollTo(0, 0);
   });
   global.addEventListener("popstate", () => state.coven && draw(currentTab()));
-  global.addEventListener("pagehide", () => live?.close());
+  global.addEventListener("pagehide", () => {
+    live?.close();
+    watching?.();
+  });
 
   UI.boot()
     .then(async (context) => {
@@ -495,6 +534,7 @@
       }
       connect();
       draw(currentTab());
+      watchPending();
       // Count unread messages for the Messages tab, whichever tab is open.
       global.CovenChat?.prime?.(state);
     })

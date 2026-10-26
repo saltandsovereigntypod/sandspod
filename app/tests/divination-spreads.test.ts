@@ -171,7 +171,8 @@ test('the nine-rune cast: each rune falls in a ring, face up or down, laid out w
 });
 
 test('kept readings of the new spreads lay out again, and old ones still do', () => {
-  for (const s of SPREADS) {
+  // Every spread but those for decks of your own, which need a deck (tests/oracle-decks.test.ts).
+  for (const s of SPREADS.filter((x) => x.kind !== 'oracle')) {
     const draw = drawSpread(s, { reversals: true, blankRune: false }, seeded(s.positions.length * 7));
     const reading = readingFromDraw(s, draw, { now: new Date(2026, 9, 23) });
     assert.equal(reading.cameUp.split('\n')[0], s.label);

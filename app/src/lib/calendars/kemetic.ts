@@ -229,6 +229,15 @@ function yearEvents(year: number, ctx: CalendarContext): CalendarEvent[] {
   if (newMoon.getTime() < at(11, 1).getTime()) {
     out.push(ev('valley', 'Beautiful Feast of the Valley', 'At the new moon of II Shemu, Amun crossed the Nile from Karnak to visit the temples of the west bank at Thebes, and families feasted with their dead at the tombs, through the night with flowers and music. Lunar, so the day here is approximate.', newMoon));
   }
+  // At Edfu a living falcon was crowned as Horus's image for the year on
+  // I Peret 1, and Hathor of Dendera arrived for the Beautiful Meeting at the
+  // new moon of III Shemu, staying fourteen days (the Edfu festival calendar).
+  out.push(ev('falcon', 'Coronation of the Sacred Falcon', 'At Edfu, on I Peret 1, a living falcon was chosen and crowned as the image of Horus for the coming year, shown to the people at the temple window, as the king was Horus on earth.', at(5, 1)));
+  const shemu3 = at(11, 1);
+  const meetingMoon = startOfDay(nextPhase(addDays(shemu3, -1), 'new'));
+  if (meetingMoon.getTime() < at(12, 1).getTime()) {
+    out.push(ev('beautiful-meeting', 'Beautiful Meeting of Horus and Hathor', 'Hathor sailed upriver from Dendera to visit Horus at Edfu, arriving at the new moon of III Shemu: a fourteen-day festival of their marriage, with processions, offerings to the ancestral gods and public feasting. Lunar, so the days here are approximate.', meetingMoon, 14));
+  }
   for (let i = 0; i < length - 360; i++) {
     const e = EPAGOMENAL[i] ?? SIXTH_DAY;
     out.push(ev(e.id, e.name, e.meaning, addDays(start, 360 + i)));

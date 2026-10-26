@@ -250,7 +250,8 @@
           : ""
       }
       ${section("The six stages", list(stages))}
-      ${journey.sources.length ? `<details class="sp-details"><summary>Sources</summary>${bullets(journey.sources)}</details>` : ""}`,
+      ${journey.sources.length ? `<details class="sp-details"><summary>Sources</summary>${bullets(journey.sources)}</details>` : ""}
+      ${global.ResearchNote ? global.ResearchNote.footerHtml(journey.title, "Dedication journey") : ""}`,
       journey.title
     );
     on("begin", begin);

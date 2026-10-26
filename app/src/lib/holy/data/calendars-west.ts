@@ -364,7 +364,7 @@ Augustine, quoting Varro, describes a cruder country form of the feast at Lavini
     ],
     ritual: { premade: 'kitchen-honey-sweetening-cake', title: 'Honey cakes for Liber' },
     correspondences: {
-      deities: ['Liber Pater', 'Libera', 'Ceres', 'Dionysus'],
+      deities: ['Liber Pater', 'Bacchus', 'Libera', 'Ceres', 'Dionysus'],
       herbs: ['Bay'],
       crystals: ['Amethyst'],
       colors: ['Purple Candle', 'Green Candle'],
@@ -535,7 +535,7 @@ Ovid also says Ceres is happy with little: a little spelt, a pinch of salt, grai
     ],
     ritual: { premade: 'green-seed-blessing-before-sowing', title: 'Seed blessing for Ceres' },
     correspondences: {
-      deities: ['Ceres', 'Liber Pater', 'Libera', 'Demeter', 'Persephone'],
+      deities: ['Ceres', 'Liber Pater', 'Libera', 'Proserpina', 'Demeter', 'Persephone'],
       herbs: ['Calendula', 'Meadowsweet', 'Frankincense'],
       crystals: ['Citrine', 'Moss Agate'],
       colors: ['White Candle', 'Gold Candle', 'Green Candle'],

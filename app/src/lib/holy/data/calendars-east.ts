@@ -186,7 +186,7 @@ It was a royal and temple festival first, but also a public holiday: the one tim
       ],
     },
     correspondences: {
-      deities: ['Ra', 'Hathor'],
+      deities: ['Amun', 'Khonsu', 'Ra', 'Hathor'],
       herbs: ['Frankincense', 'Myrrh'],
       crystals: ['Lapis Lazuli', 'Carnelian'],
       colors: ['Gold', 'Blue'],
@@ -279,7 +279,7 @@ Because it followed the moon, its date in the civil calendar moved; the date sho
     ],
     ritual: { premade: 'hedge-ancestor-candle-evening', title: 'A night feast with your dead' },
     correspondences: {
-      deities: ['Hathor', 'Osiris', 'Anubis'],
+      deities: ['Amun', 'Hathor', 'Osiris', 'Anubis'],
       herbs: ['Rose', 'Myrrh', 'Jasmine'],
       crystals: ['Turquoise', 'Lapis Lazuli'],
       colors: ['Blue', 'Gold', 'Green'],
@@ -290,6 +290,102 @@ Because it followed the moon, its date in the civil calendar moved; the date sho
       'https://en.wikipedia.org/wiki/Beautiful_Festival_of_the_Valley',
       'S. Schott, Das schöne Fest vom Wüstentale (Wiesbaden, 1953)',
       'L. Bell, “The New Kingdom ‘Divine’ Temple: The Example of Luxor”, in B. Shafer (ed.), Temples of Ancient Egypt (1997)',
+    ],
+  },
+  {
+    ref: 'kemetic-falcon',
+    title: 'Coronation of the Sacred Falcon',
+    aka: ['Installation of the Living Falcon'],
+    tradition: 'Kemetic (ancient Egyptian)',
+    summary:
+      'On the first day of the season of Peret, the temple of Horus at Edfu chose a living falcon and crowned it as the god’s image for the coming year.',
+    honours:
+      'Horus of Behdet, the falcon god of Edfu, and through him the kingship: the king was Horus on earth, and the crowned falcon stood for both.',
+    history: `The walls of the Ptolemaic temple of Horus at Edfu, built between 237 and 57 BCE, describe a festival at the start of the second season, Peret. A falcon was chosen from the birds raised at the temple, brought before the image of Horus, and crowned. It was then shown to the people from a window above the temple gateway, given offerings and installed as the god’s living image for a year, much as a king was crowned.
+
+The rite joined three ideas: the falcon as Horus, Horus as king, and the new season as a renewal of order. Like the other animal cults of late Egypt, it had a harder side too: many falcons were mummified and buried as offerings by pilgrims.
+
+The date shown here is I Peret 1 by the calendar you have chosen, and so a modern alignment.`,
+    knowAndDont: {
+      known: 'The festival, its date at the start of Peret, the choosing and crowning of the falcon and its appearance at the temple window, from the Edfu inscriptions.',
+      unknown: 'How long the festival lasted and how it was staged in detail; whether similar rites were kept at other falcon temples; how far back before the Ptolemaic period it goes.',
+    },
+    celebrate: [
+      'Greet Horus at sunrise with fresh water and bread.',
+      'Draw a falcon or a wedjat eye and set it on your shrine for the coming year.',
+      'Take up one responsibility you have been putting off, as a new season’s pledge.',
+      'Watch for birds of prey, or give to a raptor rescue or conservation group.',
+    ],
+    ritual: {
+      title: 'Crowning the year’s falcon',
+      outline: [
+        'Wash your hands and face, and set a shrine with water, bread, incense and an image of a falcon.',
+        'Light the incense and greet Horus as the falcon far above.',
+        'Lift the falcon image toward the light of a window and say what you will protect this year.',
+        'Offer the water and bread, and sit a few minutes with the sky in view.',
+        'Close, and eat or share the bread later.',
+      ],
+    },
+    correspondences: {
+      deities: ['Horus', 'Hathor', 'Ra'],
+      herbs: ['Frankincense', 'Myrrh', 'Cedar'],
+      crystals: ['Lapis Lazuli', 'Carnelian', 'Tiger Eye'],
+      colors: ['Gold', 'White', 'Blue'],
+      foods: ['Bread', 'Beer', 'Dates'],
+      symbols: ['The falcon', 'The double crown', 'The window of appearances'],
+    },
+    sources: [
+      'Barbara Watterson, The House of Horus at Edfu: Ritual in an Ancient Egyptian Temple (1998)',
+      'H. W. Fairman, “Worship and Festivals in an Egyptian Temple”, Bulletin of the John Rylands Library 37 (1954)',
+      'https://en.wikipedia.org/wiki/Temple_of_Edfu',
+    ],
+  },
+  {
+    ref: 'kemetic-beautiful-meeting',
+    title: 'Beautiful Meeting of Horus and Hathor',
+    aka: ['Feast of the Beautiful Meeting', 'Festival of the Beautiful Reunion'],
+    tradition: 'Kemetic (ancient Egyptian)',
+    summary:
+      'Each summer Hathor sailed upriver from Dendera to visit Horus at Edfu, arriving at the new moon of the third harvest month, for a fourteen-day festival of their marriage.',
+    honours:
+      'Hathor of Dendera and Horus of Edfu as wife and husband, their child, and the ancestral gods buried at Edfu’s sacred necropolis.',
+    history: `The festival calendars on the walls of Edfu and Dendera describe the Beautiful Meeting. Hathor’s image left her temple at Dendera in her barque and travelled more than 150 kilometres up the Nile, stopping at towns along the way. Horus came out to meet her near Edfu at the new moon of III Shemu, and the two gods spent about fourteen days together.
+
+The festival mixed a divine marriage with victory and renewal: processions between the temple and the sacred necropolis, offerings to the ancestral gods buried there, rites against the enemies of Horus, and great public feasting, with food and drink handed out to the people. At its end Hathor sailed home to Dendera.
+
+Because it followed the moon, its date moved in the civil calendar; the days shown here begin at the computed new moon in III Shemu, and so are approximate.`,
+    knowAndDont: {
+      known: 'The journey from Dendera to Edfu, the timing by the new moon of III Shemu, the length of the stay, the visits to the necropolis and the public feasting, from the Edfu and Dendera inscriptions.',
+      unknown: 'How old the festival is before the Ptolemaic temples that record it; how ordinary people along the river took part; the exact lunar day, which the Egyptians counted from the vanishing of the old crescent.',
+    },
+    celebrate: [
+      'Share a festive meal with music, flowers and good company.',
+      'Make an offering to Horus and Hathor together, side by side.',
+      'Visit someone you love who lives at a distance, or plan to.',
+      'Remember the old ones of your family, as the gods at Edfu remembered theirs.',
+    ],
+    ritual: {
+      title: 'The meeting at the shrine',
+      outline: [
+        'Set images of Horus and Hathor apart on your shrine, with water, bread, flowers and incense.',
+        'Light the incense and greet Hathor, then bring her image to stand beside Horus.',
+        'Offer bread, drink and flowers to both, and play or sing something joyful.',
+        'Share food with someone afterwards, as Edfu fed its people.',
+        'Close, and keep the two images together for the days of the festival.',
+      ],
+    },
+    correspondences: {
+      deities: ['Horus', 'Hathor'],
+      herbs: ['Rose', 'Myrrh', 'Frankincense'],
+      crystals: ['Turquoise', 'Lapis Lazuli', 'Carnelian'],
+      colors: ['Gold', 'Turquoise', 'Red'],
+      foods: ['Bread', 'Beer or wine', 'Fruit', 'Honey cakes'],
+      symbols: ['The sacred barque', 'The sistrum', 'The winged disc'],
+    },
+    sources: [
+      'Barbara Watterson, The House of Horus at Edfu: Ritual in an Ancient Egyptian Temple (1998)',
+      'Maurice Alliot, Le culte d’Horus à Edfou au temps des Ptolémées (Cairo, 1949–54)',
+      'https://en.wikipedia.org/wiki/Temple_of_Edfu',
     ],
   },
   {
@@ -328,7 +424,7 @@ Modern Kemetics keep the five days as a series of birthdays and as a time of pro
       ],
     },
     correspondences: {
-      deities: ['Osiris', 'Isis', 'Thoth'],
+      deities: ['Osiris', 'Nut', 'Isis', 'Thoth'],
       herbs: ['Myrrh', 'Cedar'],
       crystals: ['Malachite', 'Lapis Lazuli'],
       colors: ['Green', 'White'],

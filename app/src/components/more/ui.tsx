@@ -116,6 +116,7 @@ export function MenuRow({
   last,
   accessibilityLabel,
   disabled,
+  count,
 }: {
   label: string;
   detail?: string;
@@ -124,6 +125,8 @@ export function MenuRow({
   last?: boolean;
   accessibilityLabel?: string;
   disabled?: boolean;
+  /** A small gold count before the chevron (requests waiting), shown when above 0. */
+  count?: number;
 }) {
   const t = useAccessibleText();
   return (
@@ -144,6 +147,11 @@ export function MenuRow({
         <Text style={t(styles.rowTitle)}>{label}</Text>
         {!!detail && <Text style={type.caption}>{detail}</Text>}
       </View>
+      {!!count && count > 0 && (
+        <View style={styles.count}>
+          <Text style={styles.countText}>{count > 99 ? '99+' : count}</Text>
+        </View>
+      )}
       {!!onPress && <Icon name="chevron" size={16} color={colors.tabInactive} />}
     </Pressable>
   );
@@ -380,6 +388,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   rowText: { flex: 1, gap: 2 },
+  count: { minWidth: 22, height: 22, borderRadius: 11, paddingHorizontal: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.gold },
+  countText: { fontFamily: fonts.body, fontSize: 12, color: colors.night, fontWeight: '700' },
   rowTitle: { fontFamily: fonts.display, fontSize: 20, lineHeight: 24, color: colors.cream },
   switchLabel: { fontFamily: fonts.body, fontSize: 15, lineHeight: 21, color: colors.cream },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },

@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
+import { ResearchCard } from '../../../../components/ResearchNote';
 import { Chips, Field, MenuList, MenuRow, MoreScreen, Notice } from '../../../../components/more/ui';
 import { hasMyPractice, LIBRARY_TYPES, pathEntryIds, searchLibrary, typeLabel, useLibrary } from '../../../../lib/library';
 import { CLOSED_GUIDE_LIVE, SOURCING_NOTES } from '../../../../lib/library/closed';
@@ -42,6 +43,7 @@ export default function LibraryIndex() {
 
   return (
     <MoreScreen title="Living Library" eyebrow="Correspondences and lore" back="/more" backLabel="Back to More">
+      <ResearchCard />
       <MenuList>
         <MenuRow
           label="Sourcing with care"

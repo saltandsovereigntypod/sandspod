@@ -9,11 +9,13 @@ import { Platform } from 'react-native';
 
 import { openThread } from '../covens/unread';
 import { threadKey } from '../covens/unreadCount';
+import { CHANNELS, channelOf } from './channels';
 import type { Reminder } from './schedule';
 
 export const remindersSupported = true;
 
 const SOURCE = 'sanctuary-reminders';
+/** The first channel, kept for the ritual step timer and coven rites (and so older reminders keep their place in Settings). */
 const CHANNEL = 'moon-reminders';
 
 Notifications.setNotificationHandler({
@@ -37,14 +39,24 @@ export async function permissionState(): Promise<PermissionState> {
   }
 }
 
+let channelsMade = false;
+
+/**
+ * One Android channel for each kind of reminder, so each can be muted or
+ * given its own sound in the phone's settings. Made at run time (no native
+ * build needed). Android 13+ only shows the permission prompt once a channel exists.
+ */
 async function ensureChannel() {
-  if (Platform.OS !== 'android') return;
-  // Android 13+ only shows the permission prompt once a channel exists.
-  await Notifications.setNotificationChannelAsync(CHANNEL, {
-    name: 'Moon and ritual reminders',
-    importance: Notifications.AndroidImportance.HIGH,
-    lightColor: '#e2c36d',
-  });
+  if (Platform.OS !== 'android' || channelsMade) return;
+  for (const channel of CHANNELS) {
+    await Notifications.setNotificationChannelAsync(channel.id, {
+      name: channel.name,
+      description: channel.description,
+      importance: channel.quiet ? Notifications.AndroidImportance.DEFAULT : Notifications.AndroidImportance.HIGH,
+      lightColor: '#e2c36d',
+    });
+  }
+  channelsMade = true;
 }
 
 export async function requestPermission(): Promise<PermissionState> {
@@ -64,7 +76,8 @@ export async function applySchedule(reminders: Reminder[]): Promise<number> {
   const existing = await Notifications.getAllScheduledNotificationsAsync();
   await Promise.all(
     existing
-      .filter((n) => n.content.data?.source === SOURCE)
+      // Coven rites used to be scheduled on their own ('coven-rites'); they come with the rest now.
+      .filter((n) => n.content.data?.source === SOURCE || n.content.data?.source === 'coven-rites')
       .map((n) => Notifications.cancelScheduledNotificationAsync(n.identifier)),
   );
   if (!reminders.length || (await permissionState()) !== 'granted') return 0;
@@ -75,7 +88,7 @@ export async function applySchedule(reminders: Reminder[]): Promise<number> {
       await Notifications.scheduleNotificationAsync({
         identifier: reminder.key,
         content: { title: reminder.title, body: reminder.body, data: { source: SOURCE, url: reminder.url } },
-        trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: reminder.at, channelId: CHANNEL },
+        trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: reminder.at, channelId: channelOf(reminder.kind) },
       });
       set += 1;
     } catch {
@@ -109,8 +122,10 @@ export function useReminderTaps() {
   useEffect(() => {
     const open = (notification: Notifications.Notification) => {
       const data = notification.request.content.data;
-      // 'coven-rites' are coven rite reminders (lib/covens/reminders.ts); 'coven-chat' a coven message (supabase/functions/coven-notify).
-      if ((data?.source === SOURCE || data?.source === STEP_SOURCE || data?.source === 'coven-rites' || data?.source === 'coven-chat') && typeof data.url === 'string') router.push(data.url as Href);
+      // 'coven-rites' are coven rite reminders (lib/covens/reminders.ts); 'coven-chat' a coven message, 'coven-request' a new
+      // application or request to advance (opens Review) and 'coven-answer' the answer to yours (supabase/functions/coven-notify).
+      const covenNote = data?.source === 'coven-rites' || data?.source === 'coven-chat' || data?.source === 'coven-request' || data?.source === 'coven-answer';
+      if ((data?.source === SOURCE || data?.source === STEP_SOURCE || covenNote) && typeof data.url === 'string') router.push(data.url as Href);
     };
     try {
       const last = Notifications.getLastNotificationResponse();

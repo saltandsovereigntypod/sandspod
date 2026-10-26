@@ -106,6 +106,16 @@ test('festivals on their civil-calendar days', () => {
   assert.deepEqual(ii_shemu.kind === 'month' && [ii_shemu.month, ii_shemu.season], [10, 2]);
 });
 
+test('Edfu festivals of Horus: the Sacred Falcon on I Peret 1, the Beautiful Meeting at the new moon of III Shemu', () => {
+  // I Peret 1 is 1 Tobi in the Coptic calendar, 9 January 2027.
+  const winter = KEMETIC_CALENDAR.eventsBetween(new Date(2026, 11, 1), new Date(2027, 1, 1), ctx('coptic'));
+  assert.deepEqual(winter.filter((e) => e.id === 'kemetic-falcon').map((e) => `${ymd(e.date)}x${e.days}`), ['2027-01-09x1']);
+  const meeting = KEMETIC_CALENDAR.eventsBetween(new Date(2026, 5, 1), new Date(2026, 8, 1), ctx('coptic')).find((e) => e.id === 'kemetic-beautiful-meeting')!;
+  assert.equal(meeting.days, 14);
+  const iii_shemu = kemeticDay(meeting.date, ctx('coptic'));
+  assert.deepEqual(iii_shemu.kind === 'month' && [iii_shemu.month, iii_shemu.season], [11, 2]);
+});
+
 test('the calendar is honest about being a modern alignment', () => {
   assert.equal(KEMETIC_CALENDAR.confidence, 'reconstructed');
   assert.deepEqual(KEMETIC_CALENDAR.choices?.[0].options.map((o) => o.value), ['sirius', 'coptic', 'aug1']);

@@ -183,7 +183,7 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
           />
           <SwitchRow
             label="Hekate’s Deipnon"
-            detail="On the last day of each Attic month, if you keep the Hellenic monthly days or Hekate is your patron: a gentle note on Today, and a reminder in the phone app."
+            detail="On the last day of each Attic month, if you keep the Hellenic monthly days or Hekate is your patron: a gentle note on Today, and a reminder in the phone app (choose when in Reminders → Holidays). Off turns off both."
             value={draft.deipnon_prompt !== false}
             onChange={(on) => set('deipnon_prompt', on)}
             last

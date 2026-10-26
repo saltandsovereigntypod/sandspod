@@ -19,6 +19,21 @@
 
   const rpc = (name, args) => run(db().rpc(name, args));
 
+  /**
+   * Let the coven-notify edge function ring phones about a request (best
+   * effort), as the app does (app/src/lib/covens/api.ts notifyRequest): just
+   * made, it tells the coven's reviewers; just decided, the one who asked.
+   */
+  function notifyRequest(kind, row) {
+    if (!row?.id) return row;
+    try {
+      Promise.resolve(db().functions?.invoke?.("coven-notify", { body: kind === "application" ? { application_id: row.id } : { advancement_id: row.id } })).catch(() => {});
+    } catch {
+      // Phones hear about it another time; the request is made.
+    }
+    return row;
+  }
+
   const COVEN_FIELDS = "id,slug,name,tagline,description,tradition,tags,meeting_rhythm,timezone,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,practice_traditions,practice_holidays,practice_custom,practice_calendars,founder_id,created_at,updated_at,member_count";
 
   const ALTAR_FIELDS = "id,coven_id,name,is_main,edit_mode,locked,background,background_name,groups,active_group_id,extra,archived_at,created_by,updated_by,created_at,updated_at";
@@ -103,7 +118,7 @@
     },
     members: (covenId) => run(db().from("coven_members").select("*").eq("coven_id", covenId).order("joined_at", { ascending: true })),
     join: (covenId) => rpc("join_coven", { p_coven: covenId }),
-    apply: (covenId, answers, message) => rpc("apply_to_coven", { p_coven: covenId, p_answers: answers, p_message: message || null }),
+    apply: async (covenId, answers, message) => notifyRequest("application", await rpc("apply_to_coven", { p_coven: covenId, p_answers: answers, p_message: message || null })),
     withdraw: (kind, id) => rpc("withdraw_coven_request", { p_kind: kind, p_id: id }),
     leave: (covenId) => rpc("leave_coven", { p_coven: covenId }),
     transfer: (covenId, userId) => rpc("transfer_coven", { p_coven: covenId, p_user: userId }),
@@ -126,14 +141,48 @@
       if (status !== "all") query = query.eq("status", status);
       return run(query);
     },
-    decideApplication: (id, approve, note) => rpc("decide_coven_application", { p_application: id, p_approve: approve, p_note: note || null }),
+    decideApplication: async (id, approve, note) => notifyRequest("application", await rpc("decide_coven_application", { p_application: id, p_approve: approve, p_note: note || null })),
     async myAdvancements(covenId, userId) {
       if (!userId) return [];
       return run(db().from("coven_advancement_requests").select("*").eq("coven_id", covenId).eq("user_id", userId).order("created_at", { ascending: false }).limit(20));
     },
     advancements: (covenId) => run(db().from("coven_advancement_requests").select("*").eq("coven_id", covenId).eq("status", "pending").order("created_at", { ascending: true })),
-    requestAdvancement: (covenId, rankId, statement) => rpc("request_coven_advancement", { p_coven: covenId, p_rank: rankId, p_statement: statement || null }),
-    decideAdvancement: (id, approve, note) => rpc("decide_coven_advancement", { p_request: id, p_approve: approve, p_note: note || null }),
+    requestAdvancement: async (covenId, rankId, statement) => notifyRequest("advancement", await rpc("request_coven_advancement", { p_coven: covenId, p_rank: rankId, p_statement: statement || null })),
+    decideAdvancement: async (id, approve, note) => notifyRequest("advancement", await rpc("decide_coven_advancement", { p_request: id, p_approve: approve, p_note: note || null })),
+    /**
+     * Applications and requests to advance waiting in each coven you review
+     * (never your own), counted as the app counts them (SaltCore.covens.requests).
+     * Optionally only `covenIds`; returns {} when there's nothing to review.
+     */
+    async pendingForReview(userId, covenIds) {
+      const R = global.SaltCore?.covens?.requests;
+      const L = global.CovenLogic;
+      if (!userId || !R || !L) return {};
+      let mine = ((await run(db().from("coven_members").select(`coven_id,user_id,status,rank_id,muted_until,covens(${COVEN_FIELDS})`).eq("user_id", userId).eq("status", "active"))) || []).filter((m) => m.covens);
+      if (covenIds) mine = mine.filter((m) => covenIds.includes(m.coven_id));
+      if (!mine.length) return {};
+      const ranks = (await run(db().from("coven_ranks").select("*").in("coven_id", mine.map((m) => m.coven_id)))) || [];
+      const reviewing = mine.filter((m) => L.permissions({ coven: m.covens, membership: m, ranks: ranks.filter((r) => r.coven_id === m.coven_id), userId }).review).map((m) => m.coven_id);
+      if (!reviewing.length) return {};
+      const [apps, advs] = await Promise.all([
+        run(db().from("coven_applications").select("coven_id,user_id").eq("status", "pending").in("coven_id", reviewing)),
+        run(db().from("coven_advancement_requests").select("coven_id,user_id").eq("status", "pending").in("coven_id", reviewing))
+      ]);
+      return R.countPending(apps || [], advs || [], reviewing, userId);
+    },
+    /** Be told when an application or request to advance is made or decided (once the database sends them live). */
+    watchRequests(onChange) {
+      try {
+        const channel = db()
+          .channel(`coven-requests-${Math.random().toString(36).slice(2)}`)
+          .on("postgres_changes", { event: "*", schema: "public", table: "coven_applications" }, onChange)
+          .on("postgres_changes", { event: "*", schema: "public", table: "coven_advancement_requests" }, onChange)
+          .subscribe();
+        return () => db().removeChannel(channel);
+      } catch {
+        return () => {};
+      }
+    },
 
     // --- gathering ----------------------------------------------------------
     async recentMessages(covenId, limit = 150) {
