@@ -39,6 +39,7 @@ const MORE_DEITIES: Record<string, string[]> = {
   Hindu: ['vishnu', 'parvati', 'hanuman', 'rama', 'brahma', 'surya'],
   Wiccan: ['wiccan_goddess', 'horned_god', 'aradia'],
   Mesopotamian: ['inanna', 'enki', 'ereshkigal', 'shamash', 'nanna', 'marduk', 'nisaba', 'ninkasi'],
+  Canaanite: ['asherah', 'astarte', 'baal', 'anat', 'el', 'shapash'],
 };
 const ALL_MORE = Object.values(MORE_DEITIES).flat();
 const text = (d: Deity, ...fields: string[]) => fields.map((f) => String(d[f] ?? '')).join(' ');
@@ -333,6 +334,13 @@ const MORE_SEARCH: [string, string][] = [
   ['Akitu', 'marduk'],
   ['scribes', 'nisaba'],
   ['beer', 'ninkasi'],
+  ['Athirat', 'asherah'],
+  ['Ashtart', 'astarte'],
+  ['Hadad', 'baal'],
+  ['Zaphon', 'baal'],
+  ['Aqhat', 'anat'],
+  ['Bull El', 'el'],
+  ['lamp of the gods', 'shapash'],
 ];
 // Living religions: devotion, not magic.
 const LIVING_PANTHEONS = ['Hindu', 'Shinto', 'Chinese'];

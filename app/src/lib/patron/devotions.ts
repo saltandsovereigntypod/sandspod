@@ -56,6 +56,7 @@ const EPAGOMENAL_BIRTHS =
 
 const MESO_ETCSL = 'The Electronic Text Corpus of Sumerian Literature (Oxford): https://etcsl.orinst.ox.ac.uk/';
 const MESO_CULTIC = 'Mark E. Cohen, The Cultic Calendars of the Ancient Near East (1993)';
+const UGARIT_TEXTS = 'Simon B. Parker (ed.), Ugaritic Narrative Poetry (1997), for the Baal Cycle and the tale of Aqhat';
 
 export const DEITY_DEVOTIONS: DeityDevotion[] = [
   // ─── Greek ────────────────────────────────────────────────────────────
@@ -3593,6 +3594,128 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     approach:
       'Ninkasi is approached with gladness and moderation, as the goddess of beer and good company.',
     sources: ['Miguel Civil, “A Hymn to the Beer Goddess and a Drinking Song”, in Studies Presented to A. Leo Oppenheim (1964)', MESO_ETCSL],
+  },
+
+  // ─── Canaanite and Levantine ─────────────────────────────────────────────
+  {
+    key: 'asherah',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'full' },
+        name: 'The full moon',
+        why: 'Ugaritic ritual texts mark days of the lunar month, including the full moon, with offerings to the gods. Keeping the full moon for Athirat is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Water a tree or a plant and thank her.',
+      'Speak up kindly for someone in your family.',
+      'Offer a small cake or a little oil at the foot of a tree.',
+      'Sit for a few minutes with your back against a tree.',
+    ],
+    approach:
+      'Asherah is approached with gentleness, as the mother of the gods, and with respect for how her history touches Jewish and Christian scripture.',
+    sources: [UGARIT_TEXTS, 'William G. Dever, Did God Have a Wife? (2005)', 'Judith M. Hadley, The Cult of Asherah in Ancient Israel and Judah (2000)'],
+  },
+  {
+    key: 'astarte',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 5 },
+        name: 'Friday',
+        why: 'Friday is the day of the planet Venus, Astarte’s star. Honouring her on Fridays is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Watch for the evening star and greet her.',
+      'Do one brave or loving thing today.',
+      'Keep a promise you made.',
+      'Offer a flower or a little incense.',
+    ],
+    approach:
+      'Astarte is approached with boldness and respect, as the Phoenician goddess of love, war and the evening star.',
+    sources: [UGARIT_TEXTS, 'David T. Sugimoto (ed.), Transformation of a Goddess: Ishtar – Astarte – Aphrodite (2014)', WEEKDAYS],
+  },
+  {
+    key: 'baal',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'mabon' },
+        name: 'The autumn rains',
+        why: 'In the Levant the rains return in autumn, and Ugarit’s ritual calendar made offerings at the new wine in that season. Keeping the autumn equinox for Baal is a modern approximation.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'When it rains, step outside and thank him.',
+      'Pour a little water onto dry ground.',
+      'Save water in one way today.',
+      'Face one thing that feels like chaos with courage.',
+    ],
+    approach:
+      'Baal is approached with respect for the power of storms, as the rain-bringer of Ugarit who overcame Sea and Death.',
+    sources: [UGARIT_TEXTS, 'Mark S. Smith, The Ugaritic Baal Cycle, vol. 1 (1994)', 'Dennis Pardee, Ritual and Cult at Ugarit (2002)'],
+  },
+  {
+    key: 'anat',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'lammas' },
+        name: 'The grain harvest',
+        why: 'The Baal Cycle tells how Anat winnowed and sowed Death like grain. Honouring her at harvest is a modern choice; no festival of hers can be dated.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Do one brave thing for someone you love.',
+      'Train your body for a few minutes.',
+      'Refuse to let one small injustice stand.',
+      'Offer a red flower with thanks for a loyal friend.',
+    ],
+    approach:
+      'Anat is approached with respect for her ferocity, honouring her loyalty and courage rather than her violence.',
+    sources: [UGARIT_TEXTS, 'Neal H. Walls, The Goddess Anat in Ugaritic Myth (1992)'],
+  },
+  {
+    key: 'el',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 6 },
+        name: 'Saturday',
+        why: 'Saturday is Saturn’s day, and Philo of Byblos matched El with Kronos, the Greek Saturn. Honouring El on Saturdays is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Spend time with, or think of, an elder you respect.',
+      'Pour a little oil or wine with thanks.',
+      'Give careful counsel to someone who asks.',
+      'Be patient in one judgement today.',
+    ],
+    approach:
+      'El is approached with reverence and patience, as the aged father of the Ugaritic gods, with care not to blur him with the God of the Hebrew Bible.',
+    sources: [UGARIT_TEXTS, 'Mark S. Smith, The Origins of Biblical Monotheism (2001)', 'Philo of Byblos, Phoenician History, in Eusebius, Preparation for the Gospel 1.10'],
+  },
+  {
+    key: 'shapash',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 0 },
+        name: 'Sunday',
+        why: 'The day of the Sun in the planetary week. Honouring Shapash on Sundays is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Greet the sun at rising or setting.',
+      'Carry a message faithfully for someone.',
+      'Visit or write to someone who is ill or dying.',
+      'See one situation honestly, as it is.',
+    ],
+    approach:
+      'Shapash is approached with honesty and trust, as the sun goddess who carries messages and guides the dead.',
+    sources: [UGARIT_TEXTS, WEEKDAYS],
   },
 
   // ─── Jewish folklore and Western occultism ───────────────────────────
