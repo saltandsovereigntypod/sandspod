@@ -3223,6 +3223,139 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     ],
   },
 
+  {
+    key: 'vishnu',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 4 },
+        name: 'Thursday',
+        why: 'Thursday is widely kept for Vishnu in North Indian homes, with a fast or puja. His great days, the Ekadashis of each fortnight, follow the Hindu lunar calendar and appear in the app’s Hindu calendar.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Offer a tulsi leaf or a flower with a short prayer.',
+      'Light a small lamp with respect.',
+      'Read about one of his avatars from a Hindu source.',
+      'Do one thing to protect someone or keep the peace.',
+    ],
+    approach:
+      'Vishnu belongs to a living religion, so he is approached with devotion and cleanliness, learning from Hindu temples, teachers and families.',
+    sources: ['Edwin F. Bryant (trans.), Krishna: The Beautiful Legend of God (Bhagavata Purana Book X) (2003)', HINDU_LIVING],
+  },
+  {
+    key: 'parvati',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 1 },
+        name: 'Monday',
+        why: 'Monday is kept for Shiva and Parvati together, and many women keep Monday fasts for them. Her own festivals, Teej and the Gauri festivals, follow the Hindu lunar calendar.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Offer a red flower with a prayer for your family.',
+      'Light a small lamp with respect.',
+      'Keep at one hard, good thing a little longer today.',
+      'Learn how Hindu communities near you keep Teej or Navaratri.',
+    ],
+    approach:
+      'Parvati belongs to a living religion, so she is approached with devotion and sincerity, learning from Hindu temples, teachers and families.',
+    sources: ['David Kinsley, Hindu Goddesses (1986), ch. on Parvati', HINDU_LIVING],
+  },
+  {
+    key: 'hanuman',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 2 },
+        name: 'Tuesday',
+        why: 'Tuesday is Hanuman’s day across much of India, when devotees visit his temples and recite the Hanuman Chalisa.',
+        basis: 'later',
+      },
+      {
+        rule: { kind: 'weekday', day: 6 },
+        name: 'Saturday',
+        why: 'Saturday is also kept for Hanuman, who is said to protect devotees from the troubles of Shani (Saturn).',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Listen to the Hanuman Chalisa with a translation.',
+      'Do one act of service without wanting thanks.',
+      'Face one fear with courage.',
+      'Offer a banana or a flower with respect.',
+    ],
+    approach:
+      'Hanuman belongs to a living religion, so he is approached with humility and sincerity, learning from Hindu temples, teachers and families.',
+    sources: ['Philip Lutgendorf, Hanuman’s Tale: The Messages of a Divine Monkey (2007)', HINDU_LIVING],
+  },
+  {
+    key: 'rama',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 2 },
+        name: 'Tuesday, with Hanuman',
+        why: 'Rama has no weekday of his own in most traditions; many devotees remember him on Tuesdays and Saturdays in the worship of Hanuman, his greatest devotee. His birthday, Rama Navami, falls on the ninth of the bright half of Chaitra (March or April) by the Hindu lunar calendar.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Say or write the name “Ram” a few times with attention.',
+      'Read a passage of the Ramayana.',
+      'Keep your word in one thing today, however small.',
+      'Light a small lamp with respect.',
+    ],
+    approach:
+      'Rama belongs to a living religion, so he is approached with devotion and sincerity, learning from Hindu temples, teachers and families.',
+    sources: ['Robert P. Goldman et al. (trans.), The Rāmāyaṇa of Vālmīki (Princeton, 1984–2017)', 'Philip Lutgendorf, The Life of a Text: Performing the Rāmcaritmānas of Tulsidas (1991)', HINDU_LIVING],
+  },
+  {
+    key: 'brahma',
+    sacred: [
+      {
+        rule: { kind: 'moon', phase: 'full' },
+        name: 'Purnima, the full moon',
+        why: 'Brahma’s great day is Kartik Purnima, the full moon of Kartika (October or November), when pilgrims bathe in the lake at Pushkar. The full moon is marked here each month as a reminder; it is a day of vows in many Hindu homes.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Read or study something worthwhile for a few minutes.',
+      'Begin one new thing with care.',
+      'Offer a flower with a short prayer.',
+      'Learn about the Pushkar fair from Hindu sources.',
+    ],
+    approach:
+      'Brahma belongs to a living religion, so he is approached with reverence and love of learning, following Hindu temples, teachers and families.',
+    sources: ['Wendy Doniger O’Flaherty (trans.), Hindu Myths (1975)', HINDU_LIVING],
+  },
+  {
+    key: 'surya',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 0 },
+        name: 'Sunday (Ravivar)',
+        why: 'Sunday, Ravivar, is the Sun’s day in the Hindu week, kept by many with a fast or arghya for Surya.',
+        basis: 'later',
+      },
+      {
+        rule: { kind: 'fixed', month: 1, day: 14 },
+        name: 'Makar Sankranti',
+        why: 'The day the sun enters sidereal Capricorn, usually 14 or 15 January, kept across India with holy dips, kites, sesame sweets and, in Tamil Nadu, Pongal. Confirm the day with a local panchang.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Pour a little water toward the rising sun with folded hands.',
+      'Get up a little earlier and greet the day.',
+      'Spend a few minutes in morning light.',
+      'Learn how Hindu communities near you keep Chhath or Sankranti.',
+    ],
+    approach:
+      'Surya belongs to a living religion, so he is approached with gratitude and discipline, learning from Hindu temples, teachers and families.',
+    sources: ['Rig Veda 1.50 and 1.115, hymns to Surya', HINDU_LIVING],
+  },
+
   // ─── Jewish folklore and Western occultism ───────────────────────────
   {
     key: 'lilith',

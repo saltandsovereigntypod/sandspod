@@ -11580,6 +11580,264 @@ const TraditionalLibrary = {
 
             tags: ["ancestors", "kin", "birth", "family", "fate", "household"]
         },
+
+        vishnu: {
+            DisplayName: "Vishnu",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "Preservation and protection of the world, dharma (right order), compassion, the avatars who descend to restore balance",
+
+            SacredSymbols: "Conch (shankha), discus (Sudarshana chakra), mace (gada), lotus (padma), the serpent couch of Shesha",
+
+            SacredAnimals: "Garuda, the eagle-like bird who carries him; the serpent Shesha",
+
+            SacredPlants: "Tulsi (holy basil), lotus",
+
+            CandleColors: "Blue, yellow, gold",
+
+            Crystals: "Lapis lazuli, sodalite, clear quartz, citrine",
+
+            Herbs: "Tulsi (holy basil), sandalwood, camphor",
+
+            Offerings: "Tulsi leaves, yellow flowers, fruit, sweets made with milk, lamps, recitation of his thousand names",
+
+            TraditionalWarnings: "Vishnu is a living deity in Hindu religious practice, and for Vaishnava Hindus he is the Supreme God, worshipped directly and through his avatars such as Rama and Krishna. Treat his images and names with reverence; tulsi is sacred to him and is not to be used casually.",
+
+            Overview: "Vishnu is one of the principal Hindu deities, the preserver who sustains the universe and, for Vaishnavas, God himself. He is pictured dark blue, with four arms holding the conch, discus, mace and lotus, resting on the serpent Shesha in the cosmic ocean with Lakshmi at his feet, or riding Garuda. Whenever dharma declines he descends as an avatar; ten are classically named, including Rama, Krishna and Narasimha.",
+
+            TraditionalMeaning: "Steady, loving protection: the order that holds the world together and the compassion that comes down to set things right.",
+
+            DevotionalApproach: "Start here: learn about him from Hindu sources and Hindu devotees before anything else, perhaps by reading about his avatars in a respected translation of the Bhagavata Purana; respect comes before correspondence. Approach him with devotion, cleanliness and sincerity, following Hindu guidance on puja and chanting rather than improvising. He asks for right action and loving devotion.",
+
+            OfferingNotes: "Offer tulsi leaves, yellow flowers, fruit or milk sweets, placed cleanly and respectfully, or a lit lamp. Offerings are vegetarian; learn which offerings Hindu devotees consider appropriate before improvising.",
+
+            AltarIdeas: "Blue or yellow candles or, more traditionally, a small ghee lamp, an image or murti of Vishnu, often with Lakshmi, treated with reverence, a conch, a tulsi plant and a small bell. Keep it clean and loving rather than decorative.",
+
+            CulturalContext: "Vishnu belongs to living Hindu religion, worshipped across India and the world, with great temples such as Tirumala Venkateswara, Srirangam and Badrinath, and in Vaishnava communities from South India to ISKCON. Outsiders should approach him with care, ideally learning from a Hindu teacher, temple or family.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Vishnu is worshipped on Ekadashi, the eleventh lunar day of each fortnight, when many devotees fast, above all on Vaikuntha Ekadashi; on Thursdays in many North Indian homes; and through the festivals of his avatars, such as Rama Navami and Krishna Janmashtami. Devotees chant the Vishnu Sahasranama, his thousand names, and offer tulsi, asking for protection, peace, prosperity and liberation.",
+
+            tags: ["preservation", "protection", "dharma", "avatars", "devotion", "compassion"]
+        },
+
+        parvati: {
+            DisplayName: "Parvati",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "Divine motherhood, love and devotion in marriage, determination and spiritual discipline (tapas), the power of the Goddess (Shakti), the mountains",
+
+            SacredSymbols: "Lotus, the red mark of marriage (sindoor), bangles, the trident she shares with Shiva, the mountain home of Kailash",
+
+            SacredAnimals: "Lion or tiger (in her fierce forms), Nandi the bull, shared with Shiva",
+
+            SacredPlants: "Lotus, bilva (bael), red flowers",
+
+            CandleColors: "Red, green, gold",
+
+            Crystals: "Ruby, garnet, rose quartz, moonstone",
+
+            Herbs: "Turmeric, sandalwood, jasmine",
+
+            Offerings: "Red flowers, bangles, sindoor and turmeric, fruit, sweets, lamps",
+
+            TraditionalWarnings: "Parvati is a living deity in Hindu religious practice, worshipped with Shiva and, in Shakta traditions, as the great Goddess herself, whose fierce forms include Durga and Kali. Items such as sindoor and bangles carry meaning about marriage in Hindu life; offer them with respect rather than as decoration.",
+
+            Overview: "Parvati, the daughter of the mountain, is the Hindu goddess of love, devotion and divine motherhood, wife of Shiva and mother of Ganesha and Kartikeya. Born to Himavan, king of the Himalaya, as the rebirth of Sati, she won the ascetic Shiva through years of fierce spiritual discipline (tapas). She is pictured as a gentle, radiant woman beside Shiva on Mount Kailash, and is worshipped also as Gauri, the fair one, and Annapurna, giver of food.",
+
+            TraditionalMeaning: "Love won through devotion and discipline: steadfastness, the strength of the mother and the Goddess who holds the household and the universe.",
+
+            DevotionalApproach: "Start here: learn about her from Hindu sources and Hindu devotees before anything else; respect comes before correspondence. Approach her with devotion, cleanliness and sincerity, following Hindu guidance on puja rather than improvising. She is honoured by steadfast love, care for family and patient effort toward a good aim.",
+
+            OfferingNotes: "Offer red flowers, fruit, sweets or a lit lamp, placed cleanly and respectfully. Married Hindu women often offer bangles and sindoor at her festivals; learn which offerings Hindu devotees consider appropriate before improvising.",
+
+            AltarIdeas: "Red or green candles or, more traditionally, a small ghee lamp, an image or murti of Parvati, often with Shiva and Ganesha, treated with reverence, red flowers and a small dish of turmeric. Keep it clean and loving rather than decorative.",
+
+            CulturalContext: "Parvati belongs to living Hindu religion, worshipped across India and the world, as Meenakshi at Madurai, as Gauri in Maharashtra and the north, and as Annapurna at Varanasi. Outsiders should approach her with care, ideally learning from a Hindu teacher, temple or family.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Parvati is worshipped with Shiva on Mondays and at Maha Shivaratri, and in her own right at Teej, when married women fast and pray for their husbands’ welfare and unmarried women for a good marriage, at Gauri festivals, on the Tuesdays of Shravan (Mangala Gauri) and at Navaratri. Devotees ask her for a happy marriage, children, family harmony and strength.",
+
+            tags: ["motherhood", "marriage", "devotion", "shakti", "family", "strength"]
+        },
+
+        hanuman: {
+            DisplayName: "Hanuman",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "Devotion and selfless service, strength and courage, protection, perseverance, removal of fear",
+
+            SacredSymbols: "Mace (gada), a mountain carried in one hand, the name of Rama, saffron or vermilion colour",
+
+            SacredAnimals: "Monkeys",
+
+            SacredPlants: "Betel leaves, tulsi (holy basil), the sanjeevani herb of the Ramayana",
+
+            CandleColors: "Orange, red, saffron",
+
+            Crystals: "Carnelian, red jasper, coral, tiger eye",
+
+            Herbs: "Tulsi (holy basil), betel leaf, jasmine",
+
+            Offerings: "Sindoor (vermilion) with oil, jasmine, betel-leaf garlands, bananas, laddoos, recitation of the Hanuman Chalisa",
+
+            TraditionalWarnings: "Hanuman is a living deity in Hindu religious practice, loved as the ideal devotee of Rama. Treat monkeys, often seen near his temples, as wild animals and do not feed them against local rules; and follow the temple’s own customs, which can differ from place to place.",
+
+            Overview: "Hanuman is the Hindu god of devotion, strength and courage, the vanara (monkey) hero of the Ramayana and son of the wind god Vayu. In Rama’s service he leapt across the sea to Lanka, found the captive Sita, set Lanka ablaze with his burning tail, and carried a whole mountain back to bring the healing herb that saved Lakshmana. He is pictured with a monkey’s face, holding a mace and a mountain, or kneeling before Rama, and in one beloved image he opens his chest to show Rama and Sita in his heart.",
+
+            TraditionalMeaning: "Strength in service: courage, loyalty, humility and devotion so complete that nothing seems impossible.",
+
+            DevotionalApproach: "Start here: learn about him from Hindu sources and Hindu devotees before anything else, perhaps by listening to the Hanuman Chalisa with a translation; respect comes before correspondence. Approach him with humility and sincerity, following Hindu guidance on puja and chanting rather than improvising. He asks for courage, discipline and service to others.",
+
+            OfferingNotes: "Offer bananas, laddoos, jasmine or a lit lamp, placed cleanly and respectfully; sindoor mixed with oil is traditionally offered in his temples. Offerings are vegetarian; learn which offerings Hindu devotees consider appropriate before improvising.",
+
+            AltarIdeas: "An orange or red candle or, more traditionally, an oil lamp, an image or murti of Hanuman treated with reverence, often beside Rama and Sita, a small mace, and a garland of flowers or betel leaves. Keep it clean and simple.",
+
+            CulturalContext: "Hanuman belongs to living Hindu religion, worshipped in countless roadside shrines and temples across India and the diaspora, and also loved in Southeast Asian tellings of the Ramayana. Tulsidas’s Hanuman Chalisa, from the sixteenth century, is recited by millions. Outsiders should approach him with care, ideally learning from a Hindu teacher, temple or family.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Hanuman is worshipped on Tuesdays and Saturdays, when devotees visit his temples, offer sindoor and oil and recite the Hanuman Chalisa, and at Hanuman Jayanti, his birthday, which most of North India keeps on the full moon of Chaitra and other regions on other days. Devotees ask him for courage, strength, protection from fear and harm, and devotion to Rama.",
+
+            tags: ["devotion", "strength", "courage", "service", "protection", "ramayana"]
+        },
+
+        rama: {
+            DisplayName: "Rama",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "Righteousness (dharma), ideal kingship, duty and honour, faithfulness, protection of the good",
+
+            SacredSymbols: "Bow and arrows, the royal umbrella, the name “Ram” written or chanted, Rama’s sandals placed on the throne",
+
+            SacredAnimals: "Monkeys of the vanara army, the squirrel of folk tradition",
+
+            SacredPlants: "Tulsi (holy basil)",
+
+            CandleColors: "Blue, gold, saffron",
+
+            Crystals: "Lapis lazuli, sodalite, citrine, clear quartz",
+
+            Herbs: "Tulsi (holy basil), sandalwood, camphor",
+
+            Offerings: "Tulsi leaves, fruit, sweets, lamps, recitation of the Ramayana or the name of Rama",
+
+            TraditionalWarnings: "Rama is a living deity in Hindu religious practice, worshipped as the seventh avatar of Vishnu and, for many, as God himself. In recent decades his name has also been used in Indian politics, including a long and sometimes violent dispute over a site at Ayodhya; approach him through devotion and the epic, with awareness of that history.",
+
+            Overview: "Rama is the hero of the Ramayana, prince of Ayodhya and the seventh avatar of Vishnu, honoured as Maryada Purushottama, the perfect man who keeps every duty. To keep his father’s word he went into fourteen years of exile with his wife Sita and brother Lakshmana; when the demon king Ravana carried Sita to Lanka, Rama won her back with the help of Hanuman and the vanara army. His return to Ayodhya is remembered with lamps at Diwali in much of North India.",
+
+            TraditionalMeaning: "Doing what is right even at great cost: duty, honour, faithfulness and just rule.",
+
+            DevotionalApproach: "Start here: learn about him from Hindu sources and Hindu devotees before anything else, perhaps by reading a respected translation of the Ramayana; respect comes before correspondence. Approach him with devotion and sincerity, following Hindu guidance on puja and chanting rather than improvising. He asks devotees to keep their word, do their duty and protect the vulnerable.",
+
+            OfferingNotes: "Offer tulsi leaves, fruit, sweets or a lit lamp, placed cleanly and respectfully. Offerings are vegetarian; learn which offerings Hindu devotees consider appropriate before improvising.",
+
+            AltarIdeas: "Blue or gold candles or, more traditionally, a small ghee lamp, an image or murti of Rama with Sita, Lakshmana and Hanuman treated with reverence, a small bow, and a tulsi plant. Keep it clean and loving rather than decorative.",
+
+            CulturalContext: "Rama belongs to living Hindu religion, worshipped across India and the world, and the Ramayana is retold across South and Southeast Asia, from Tulsidas’s Ramcharitmanas in Awadhi to the Thai Ramakien. Ramlila plays act his story each autumn. Outsiders should approach him with care, ideally learning from a Hindu teacher, temple or family.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Rama is worshipped at Rama Navami, his birthday on the ninth day of the bright half of Chaitra, with fasting, readings of the Ramayana and the cradling of the infant Rama; at Dussehra (Vijayadashami), when Ramlila ends and effigies of Ravana are burned; and at Diwali, his return to Ayodhya. Devotees chant his name and ask for righteousness, protection, courage and peace in the family.",
+
+            tags: ["dharma", "duty", "kingship", "ramayana", "faithfulness", "devotion"]
+        },
+
+        brahma: {
+            DisplayName: "Brahma",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "Creation of the universe, the Vedas and sacred knowledge, the beginning of cycles of time",
+
+            SacredSymbols: "Four faces looking in the four directions, the Vedas, a water pot (kamandalu), prayer beads, the lotus",
+
+            SacredAnimals: "Hamsa, the swan or goose who carries him",
+
+            SacredPlants: "Lotus",
+
+            CandleColors: "Red, gold, white",
+
+            Crystals: "Clear quartz, ruby, carnelian, citrine",
+
+            Herbs: "Sandalwood, camphor, lotus",
+
+            Offerings: "Flowers, fruit, lamps, recitation, study",
+
+            TraditionalWarnings: "Brahma is a living deity in Hindu religious practice, honoured as the creator in the Trimurti, though he has very few temples of his own. Puranic stories give different reasons for this; follow the customs of Hindu devotees rather than building a separate cult.",
+
+            Overview: "Brahma is the Hindu creator god, the first of the Trimurti with Vishnu the preserver and Shiva the transformer. In the Puranas he is born on a lotus rising from Vishnu’s navel and brings forth the worlds and their beings at the start of each cosmic age. He is pictured with four faces, often bearded, holding the Vedas, a water pot and prayer beads, seated on a lotus or riding a hamsa, with Saraswati, goddess of learning, as his consort.",
+
+            TraditionalMeaning: "The beginning of all things: creation, knowledge and the order of the cosmos.",
+
+            DevotionalApproach: "Start here: learn about him from Hindu sources and Hindu devotees before anything else; respect comes before correspondence. Approach him with reverence and with love of learning, following Hindu guidance on puja rather than improvising. He is honoured by study of sacred knowledge and by creating with care.",
+
+            OfferingNotes: "Offer flowers, fruit or a lit lamp, placed cleanly and respectfully, often together with offerings to Saraswati. Learn which offerings Hindu devotees consider appropriate before improvising.",
+
+            AltarIdeas: "Gold or white candles or, more traditionally, a small ghee lamp, an image or murti of Brahma, perhaps with Saraswati, treated with reverence, a lotus and a book. Keep it clean and simple.",
+
+            CulturalContext: "Brahma belongs to living Hindu religion and is honoured in temple art across India and Southeast Asia, though few temples are dedicated to him; the best known is at Pushkar in Rajasthan, where pilgrims gather at the Kartik Purnima fair. In Thailand, the Erawan Shrine in Bangkok honours him as Phra Phrom. Outsiders should approach him with care, ideally learning from a Hindu teacher, temple or family.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Brahma is honoured above all at Pushkar, where pilgrims bathe in the sacred lake at Kartik Purnima, the full moon of Kartika, and in many temples as part of the Trimurti beside Vishnu and Shiva. Devotees ask him for knowledge, creativity and good beginnings.",
+
+            tags: ["creation", "knowledge", "vedas", "beginnings", "trimurti", "cosmos"]
+        },
+
+        surya: {
+            DisplayName: "Surya",
+            Category: "Deity",
+
+            Pantheon: "Hindu",
+
+            Domains: "The Sun, light and life, health and vitality, the eye of the world, time and the seasons",
+
+            SacredSymbols: "Chariot drawn by seven horses, lotuses held in his hands, the radiant disc, the water offering (arghya)",
+
+            SacredAnimals: "Horses, the seven of his chariot",
+
+            SacredPlants: "Lotus, the arka (crown flower) plant",
+
+            CandleColors: "Gold, orange, red",
+
+            Crystals: "Ruby (his stone in Jyotish), sunstone, citrine, carnelian",
+
+            Herbs: "Red sandalwood, jaggery and rice, red flowers",
+
+            Offerings: "Water poured towards the rising sun (arghya), red flowers, red sandalwood, jaggery and rice, sun salutations",
+
+            TraditionalWarnings: "Surya is a living deity in Hindu religious practice, worshipped since the Vedas. Never look straight at the sun, even during devotion; devotees pour water toward it and look through the falling stream. The arka plant offered at some temples is toxic and should not be handled carelessly.",
+
+            Overview: "Surya is the Hindu god of the Sun, praised in the Rig Veda as the eye of the gods who sees all and gives life to all beings. He rides a golden chariot drawn by seven horses, driven by the charioteer Aruna, the dawn, and holds lotuses in his hands. His great temple at Konark in Odisha, built in the thirteenth century, is itself carved as a vast stone chariot with twenty-four wheels.",
+
+            TraditionalMeaning: "The light that gives life: health, clarity, discipline and gratitude for each new day.",
+
+            DevotionalApproach: "Start here: learn about him from Hindu sources and Hindu devotees before anything else; respect comes before correspondence. Many devotees greet the rising sun by pouring water from a small pot with folded hands; approach him with cleanliness, gratitude and discipline, following Hindu guidance rather than improvising. He is honoured by an early, healthy and orderly life.",
+
+            OfferingNotes: "Offer water poured toward the rising sun, red flowers, red sandalwood or jaggery and rice, placed cleanly and respectfully. Learn which offerings Hindu devotees consider appropriate before improvising.",
+
+            AltarIdeas: "Gold or orange candles or, more traditionally, a small ghee lamp, an image or murti of Surya in his chariot treated with reverence, a small copper water pot (lota) and red flowers, near an east-facing window.",
+
+            CulturalContext: "Surya belongs to living Hindu religion, honoured daily by millions at sunrise and at great festivals such as Chhath Puja in Bihar and eastern Uttar Pradesh, Makar Sankranti and Pongal. Sun temples such as Konark and Modhera are now mostly monuments, but his worship continues in homes, at rivers and in temples of the nine planets (navagraha). Outsiders should approach him with care, ideally learning from a Hindu teacher, temple or family.",
+
+            Traditions: "Hindu",
+
+            TraditionNotes: "Hindu: Surya is worshipped each morning with arghya, on Sundays, at Makar Sankranti in mid-January when the sun enters Capricorn, at Pongal in Tamil Nadu, at Ratha Saptami, and at Chhath Puja, when devotees stand in rivers to offer arghya to the setting and rising sun. They ask him for health, especially of the eyes and skin, vitality, success and clarity.",
+
+            tags: ["sun", "light", "health", "vitality", "dawn", "chhath"]
+        },
     },
 
     tool: {
