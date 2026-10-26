@@ -2700,6 +2700,93 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     sources: ['Branwen ferch Llŷr, the Second Branch of the Mabinogi, trans. Sioned Davies, The Mabinogion (2007)', 'Rachel Bromwich (ed.), Trioedd Ynys Prydein: The Triads of the Island of Britain (4th edn, 2014), Triad 37'],
   },
 
+  {
+    key: 'taranis',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 4 },
+        name: 'Thursday',
+        why: 'Thursday was Jupiter’s day in the Roman week, and Taranis was often likened to Jupiter. Honouring him on Thursdays is a modern custom; no Gaulish calendar day of his is known.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Listen to the next storm from a safe place and greet him.',
+      'Make a small wheel from twigs or card.',
+      'Pour a little rain water back onto the earth.',
+      'Use your strength today to protect someone.',
+    ],
+    approach:
+      'Taranis is approached with awe and caution, honest that he is known from a few inscriptions and a hostile Roman poet.',
+    sources: ['Lucan, Pharsalia 1.444–446, with the Berne scholia', 'Miranda Green, The Gods of the Celts (1986), on the wheel god', WEEKDAYS],
+  },
+  {
+    key: 'sucellos',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'mabon' },
+        name: 'The autumn equinox',
+        why: 'The grape and grain harvest. No Gaulish festival of Sucellos is known; honouring him at harvest is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Pour a little wine or juice at a shared meal and thank him for enough.',
+      'Give food to someone who needs it.',
+      'Do one thing to keep your household safe.',
+      'Take your dog, or a neighbour’s, for a walk in his name.',
+    ],
+    approach:
+      'Sucellos is approached as a solid, generous elder, known from images rather than myths.',
+    sources: ['Miranda Green, Dictionary of Celtic Myth and Legend (1992), s.v. Sucellus and Nantosuelta', 'The Sarrebourg relief (Musée de la Cour d’Or, Metz)'],
+  },
+  {
+    key: 'belenus',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'beltane' },
+        name: 'Beltane',
+        why: 'Many modern Pagans honour Belenus at Beltane. The link between his name and the festival is doubted by most linguists, and no Gaulish festival day of his is known; this is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Drink a glass of clean water slowly in sunlight.',
+      'Ask him for health for someone you love.',
+      'Do one thing for your own health today.',
+      'Give to a clean-water charity.',
+    ],
+    approach:
+      'Belenus is approached with gratitude, as a widely honoured Celtic god of healing and light.',
+    sources: ['Herodian 8.3, on Belenus at the siege of Aquileia', 'Ausonius, Commemoratio Professorum Burdigalensium 4 and 10', HUTTON_TRIUMPH],
+  },
+  {
+    key: 'sulis',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'litha' },
+        name: 'Midsummer',
+        why: 'No festival day of Sulis is known. Some modern devotees honour her at midsummer, her name being probably related to words for the sun; this is a modern custom.',
+        basis: 'modern',
+      },
+      {
+        rule: { kind: 'fixed', month: 3, day: 19 },
+        name: 'Quinquatrus',
+        why: 'The Roman festival of Minerva, with whom Sulis was joined at Bath. Keeping it for Sulis Minerva is a modern choice.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Soak your hands or feet in warm water and thank her.',
+      'Write down a wrong you have suffered and leave it with her.',
+      'Deal fairly in one thing today.',
+      'Give a coin to charity in her name.',
+    ],
+    approach:
+      'Sulis is approached with honesty, as the goddess of the hot springs who sees the truth and heals.',
+    sources: ['R. S. O. Tomlin, “The Curse Tablets”, in B. Cunliffe (ed.), The Temple of Sulis Minerva at Bath II (1988)', 'Solinus, Collectanea 22.10', OVID_FASTI + ' (3.809–848)'],
+  },
+
   // ─── Slavic ───────────────────────────────────────────────────────────
   {
     key: 'perun',

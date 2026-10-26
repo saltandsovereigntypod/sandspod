@@ -33,6 +33,8 @@ const MORE_DEITIES: Record<string, string[]> = {
   Norse: ['njord', 'heimdall', 'sif', 'bragi', 'ullr', 'eir', 'sunna', 'mani', 'norns'],
   'Celtic (Irish)': ['danu', 'aine', 'aengus', 'boann', 'ogma', 'nuada', 'cailleach'],
   'Celtic (Welsh)': ['gwydion', 'blodeuwedd', 'lleu', 'bran'],
+  'Celtic (Gaulish)': ['taranis', 'sucellos', 'belenus'],
+  'Celtic (British)': ['sulis'],
 };
 const ALL_MORE = Object.values(MORE_DEITIES).flat();
 const text = (d: Deity, ...fields: string[]) => fields.map((f) => String(d[f] ?? '')).join(' ');
@@ -282,6 +284,11 @@ const MORE_SEARCH: [string, string][] = [
   ['Flower-face', 'blodeuwedd'],
   ['Lleu', 'lleu'],
   ['Bendigeidfran', 'bran'],
+  ['Thunderer', 'taranis'],
+  ['Nantosuelta', 'sucellos'],
+  ['Aquileia', 'belenus'],
+  ['Aquae Sulis', 'sulis'],
+  ['Sulis Minerva', 'sulis'],
 ];
 // Living religions: devotion, not magic.
 const LIVING_PANTHEONS = ['Hindu', 'Shinto', 'Chinese'];

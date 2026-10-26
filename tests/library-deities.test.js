@@ -30,6 +30,7 @@ const MORE_DEITIES = [
   "njord", "heimdall", "sif", "bragi", "ullr", "eir", "sunna", "mani", "norns",
   "danu", "aine", "aengus", "boann", "ogma", "nuada", "cailleach",
   "gwydion", "blodeuwedd", "lleu", "bran",
+  "taranis", "sucellos", "belenus", "sulis",
 ];
 
 test("the website's Library has the new deities, field for field like Jupiter", () => {
