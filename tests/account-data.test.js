@@ -84,7 +84,7 @@ test("reset page and account UI preserve accessible security controls", () => {
   assert.match(page, /autocomplete="new-password"/);
   assert.match(page, /aria-live="polite"/);
   assert.match(reset, /PASSWORD_RECOVERY/);
-  assert.match(ui, /This account currently uses Google sign-in/);
+  assert.match(ui, /so there is no password to change here\. To add one, choose Add Email and Password under Ways to Sign In/);
   assert.match(ui, /Delete Account — Not Yet Configured/);
   assert.match(ui, /data-prepare-guest-clear/);
 });

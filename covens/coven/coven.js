@@ -39,20 +39,12 @@
     state.coven = coven;
     if (!coven) return;
     const userId = context.user?.id;
-    const [ranks, documents, membership, signatures, application, advancements] = await Promise.all([
-      D.ranks(coven.id),
-      D.documents(coven.id),
-      D.membership(coven.id, userId).catch(() => null),
-      D.mySignatures(coven.id, userId).catch(() => []),
+    const [, application, advancements] = await Promise.all([
+      UI.loadAccess(state),
       D.myCovenApplication(coven.id, userId).catch(() => null),
       D.myAdvancements(coven.id, userId).catch(() => [])
     ]);
-    Object.assign(state, { ranks: ranks || [], documents: L.orderDocuments(documents || []), membership, signatures: signatures || [], application, advancements: advancements || [] });
-    const insider = membership?.status === "active" || context.siteModerator;
-    state.grants = insider ? await D.grants(coven.id).catch(() => []) : [];
-    state.perms = L.permissions({ coven, membership, ranks: state.ranks, userId, siteModerator: context.siteModerator, grants: state.grants });
-    state.unsigned = userId ? L.unsignedAgreements(state.documents, state.signatures, userId) : state.documents.filter((d) => d.requires_signature);
-    state.standing = L.standing(state.perms, state.unsigned, context.banned);
+    Object.assign(state, { application, advancements: advancements || [] });
     if (state.perms.review || state.perms.site) await countPending();
     if (state.perms.member || state.perms.site) {
       state.rituals = await D.rituals(coven.id).catch(() => []);

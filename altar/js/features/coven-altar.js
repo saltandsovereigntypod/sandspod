@@ -20,6 +20,10 @@
    draft saving (storage.js persistWorkingAltarDraft) sends changes to
    the coven instead, and "Save" keeps a copy among your own altars.
    Rows ⇄ document come from the app (js/core/altar.js covenAltar).
+
+   The coven's Messages open in a small window over the altar (a
+   button in the corner, with what you haven't read), as in the app:
+   covens/coven/chat-panel.js, loaded below once the altar is open.
    ========================================================= */
 
 (function initializeCovenAltar(global) {
@@ -405,6 +409,14 @@
       checkAccess();
       if (payload.new.updated_by !== me.id) receiveScene(core().sceneFromAltar(payload.new));
     });
+    // Deleted by its keeper while you're here (deletes can't be filtered either).
+    channel.on("postgres_changes", { event: "DELETE", schema: "public", table: "coven_altars" }, (payload) => {
+      if (payload.old?.id !== altarId) return;
+      access = { can_edit: false, keeper: false, ritual_id: null, reason: "This altar has been deleted." };
+      unwritten.clear();
+      unsent.clear();
+      message(`Its keeper has deleted this altar. <a href="${esc(covenHref())}">Back to the coven’s altars</a>`);
+    });
     ["coven_rituals", "coven_ritual_steps", "coven_altar_editors", "coven_members"].forEach((table) =>
       channel.on("postgres_changes", { event: "*", schema: "public", table, filter: `coven_id=eq.${altar.coven_id}` }, () => checkAccess())
     );
@@ -443,7 +455,40 @@
     const profile = await db().from("coven_profiles").select("display_name").eq("user_id", me.id).maybeSingle();
     myName = profile?.data?.display_name || "A member";
     await checkAccess();
-    if (await load()) connect();
+    if (await load()) {
+      connect();
+      loadChat().catch((error) => console.warn("The coven's messages couldn't open here.", error));
+    }
+  }
+
+  // ── The coven's Messages, in a small window over the altar ──────────────
+  // covens/coven/chat-panel.js, with the coven scripts it needs, loaded only here.
+  const CHAT_STYLES = ["/css/sanctuary-pages.css", "/covens/covens.css"];
+  const CHAT_SCRIPTS = ["/covens/coven-logic.js", "/covens/coven-data.js", "/covens/coven-ui.js", "/js/core/covens.js", "/covens/coven/chat.js", "/covens/coven/chat-panel.js"];
+  const resolve = (path) => global.SaltEnvironment?.resolvePath?.(path) || path;
+
+  function addScript(path) {
+    return new Promise((done, fail) => {
+      const script = document.createElement("script");
+      script.src = resolve(path);
+      script.onload = done;
+      script.onerror = () => fail(new Error(`${path} didn't load`));
+      document.head.appendChild(script);
+    });
+  }
+
+  async function loadChat() {
+    if (!slug) return;
+    CHAT_STYLES.forEach((path) => {
+      if (document.querySelector(`link[href="${resolve(path)}"]`)) return;
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = resolve(path);
+      document.head.appendChild(link);
+    });
+    // In order: each needs the ones before it.
+    for (const path of CHAT_SCRIPTS) await addScript(path);
+    await global.CovenAltarChat?.start({ covenSlug: slug, altarId });
   }
 
   // Leaving the altar sends anything still waiting.

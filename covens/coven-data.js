@@ -254,6 +254,8 @@
     setAltar: (altarId, name, editMode, locked) => rpc("set_coven_altar", { p_altar: altarId, p_name: name, p_edit_mode: editMode, p_locked: locked }),
     setAltarEditor: (altarId, who, enabled) => rpc("set_coven_altar_editor", { p_altar: altarId, p_user: who.userId || null, p_rank: who.rankId || null, p_enabled: enabled }),
     archiveAltar: (altarId, archived) => rpc("archive_coven_altar", { p_altar: altarId, p_archived: archived }),
+    /** Delete an altar for good, with everything on it (its keepers only; rituals held there go back to the main altar). */
+    deleteAltar: (altarId) => rpc("delete_coven_altar", { p_altar: altarId }),
     altarAccess: (altarId) => rpc("coven_altar_access", { p_altar: altarId }),
     setRitualAltar: (ritualId, altarId, access) => rpc("set_coven_ritual_altar", { p_ritual: ritualId, p_altar: altarId || null, p_access: access || null }),
     /** Write what changed on an altar: the scene to coven_altars, each object to its own row (altarSync.ts write). */

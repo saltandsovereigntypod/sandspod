@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { AltarEditor } from '../../../../../../../components/altar/AltarEditor';
-import { ChatBubble } from '../../../../../../../components/covens/Chat';
+import { AltarChat } from '../../../../../../../components/covens/ChatPanel';
 import { CovenScreen, covenHref } from '../../../../../../../components/covens/CovenScreen';
 import { useCovenAltar } from '../../../../../../../lib/covens/altarSync';
 import { useCoven } from '../../../../../../../lib/covens/CovenContext';
@@ -11,7 +11,7 @@ import { colors, radius, type } from '../../../../../../../theme';
 
 // One of the coven's altars, open in the whole altar editor and shared live:
 // who else is here, whether you can tend it right now (and why not), and the
-// coven's chat over the top.
+// coven's chat in a small window over the altar (ChatPanel.tsx).
 export default function CovenAltarScreen() {
   const { altarId } = useLocalSearchParams<{ altarId: string }>();
   const coven = useCoven();
@@ -45,10 +45,10 @@ export default function CovenAltarScreen() {
           <Pressable
             onPress={() => router.push(covenHref(coven.slug, `altars/${altarId}/access`))}
             accessibilityRole="button"
-            accessibilityLabel={keeper ? 'Choose who tends this altar' : 'Who tends this altar'}
+            accessibilityLabel={keeper ? 'Keeper’s choices: who tends this altar, clearing it away or deleting it' : 'Who tends this altar'}
             style={({ pressed }) => [styles.link, pressed && styles.pressed]}
           >
-            <Text style={styles.linkText}>{keeper ? 'Who tends it' : 'Who tends it?'}</Text>
+            <Text style={styles.linkText}>{keeper ? 'Keeper’s choices' : 'Who tends it?'}</Text>
           </Pressable>
         )}
       </View>
@@ -65,7 +65,7 @@ export default function CovenAltarScreen() {
     <AltarEditor
       shared={shared}
       header={header}
-      overlay={<ChatBubble />}
+      overlay={<AltarChat />}
       onBack={() => (router.canGoBack() ? router.back() : router.replace(covenHref(coven.slug, 'altar')))}
     />
   );

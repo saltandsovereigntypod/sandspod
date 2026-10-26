@@ -11,6 +11,8 @@ type UserLike = {
   email?: string | null;
   identities?: { provider?: string }[] | null;
   app_metadata?: { provider?: string } | null;
+  /** password_sign_in: a password added to an Apple or Google account (lib/settings/signInMethods). */
+  user_metadata?: { password_sign_in?: unknown } | null;
   last_sign_in_at?: string | null;
 };
 
@@ -18,6 +20,7 @@ export function providerSummary(user: UserLike | null | undefined): string {
   const providers = new Set((user?.identities || []).map((identity) => identity.provider).filter(Boolean));
   const primary = user?.app_metadata?.provider;
   if (primary) providers.add(primary);
+  if (user?.user_metadata?.password_sign_in === true) providers.add('email');
   const labels: string[] = [];
   if (providers.has('email')) labels.push('Email and password');
   if (providers.has('google')) labels.push('Google');
@@ -25,8 +28,9 @@ export function providerSummary(user: UserLike | null | undefined): string {
   return labels.length ? labels.join(' and ') : 'Account sign-in';
 }
 
-/** Google-only accounts have no password to change. */
+/** Apple- or Google-only accounts have no password to change, until one is added. */
 export function hasPasswordIdentity(user: UserLike | null | undefined): boolean {
+  if (user?.user_metadata?.password_sign_in === true) return true;
   const providers = new Set((user?.identities || []).map((identity) => identity.provider));
   if (!providers.size && user?.app_metadata?.provider === 'email') return true;
   return providers.has('email');

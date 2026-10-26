@@ -75,6 +75,30 @@
     missing.forEach((id) => context.names.has(id) || context.names.set(id, { user_id: id, display_name: "A witch" }));
   }
 
+  /**
+   * What you may do in a coven, into `state` (which holds context and coven):
+   * its positions, pages, your membership, signatures and powers, then perms,
+   * the agreements you haven't signed and whether you're in good standing.
+   * The coven's page and the chat window over a coven altar both use this.
+   */
+  async function loadAccess(state) {
+    const { context, coven } = state;
+    const userId = context.user?.id;
+    const [ranks, documents, membership, signatures] = await Promise.all([
+      D.ranks(coven.id),
+      D.documents(coven.id),
+      D.membership(coven.id, userId).catch(() => null),
+      D.mySignatures(coven.id, userId).catch(() => [])
+    ]);
+    Object.assign(state, { ranks: ranks || [], documents: L.orderDocuments(documents || []), membership, signatures: signatures || [] });
+    const insider = membership?.status === "active" || context.siteModerator;
+    state.grants = insider ? await D.grants(coven.id).catch(() => []) : [];
+    state.perms = L.permissions({ coven, membership, ranks: state.ranks, userId, siteModerator: context.siteModerator, grants: state.grants });
+    state.unsigned = userId ? L.unsignedAgreements(state.documents, state.signatures, userId) : state.documents.filter((d) => d.requires_signature);
+    state.standing = L.standing(state.perms, state.unsigned, context.banned);
+    return state;
+  }
+
   const nameOf = (context, userId) => context.names.get(userId)?.display_name || "A witch";
 
   function signInCard(what) {
@@ -225,5 +249,5 @@
     return altarCoreLoading;
   }
 
-  global.CovenUI = { esc, prose, href, setStatus, busy, boot, loadNames, nameOf, signInCard, bannedCard, profileForm, report, confirmAction, askText, altarCore };
+  global.CovenUI = { esc, prose, href, setStatus, busy, boot, loadAccess, loadNames, nameOf, signInCard, bannedCard, profileForm, report, confirmAction, askText, altarCore };
 })(window);

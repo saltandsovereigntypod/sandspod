@@ -16,6 +16,9 @@
  * After sending, the coven-notify function tells the others' phones.
  *
  * Address: ?tab=gathering (the coven's chat) or &thread=<conversation id>.
+ * The same Messages open in a small window over a coven altar
+ * (covens/coven/chat-panel.js): mount(el, state, { panel: true }) keeps the
+ * thread shown to itself, and onTotal tells the altar's chat button the count.
  */
 (function (global) {
   "use strict";
@@ -50,7 +53,12 @@
 
   const me = () => state?.context.user?.id || null;
   const nameOf = (id) => UI.nameOf(state.context, id);
-  const threadId = () => new URLSearchParams(global.location.search).get("thread") || null;
+  // In the small window over a coven altar (covens/coven/chat-panel.js) the
+  // thread shown is kept here instead of in the address, which is the altar's.
+  let panel = false;
+  let panelThread = null;
+  let totalListener = null;
+  const threadId = () => (panel ? panelThread : new URLSearchParams(global.location.search).get("thread") || null);
   const key = (conversationId) => (U() ? U().threadKey(state.coven.id, conversationId) : conversationId ? `${state.coven.id}:${conversationId}` : state.coven.id);
   const conversationOf = (id) => conversations.find((c) => c.id === id) || null;
   const myRow = (id) => members.find((m) => m.conversation_id === id && m.user_id === me()) || null;
@@ -79,6 +87,7 @@
   const total = () => (U() ? U().covenTotal(counts, state.coven.id) : Object.values(counts).reduce((a, b) => a + b, 0));
 
   function showTotal() {
+    totalListener?.(total());
     const tab = global.document.querySelector('.cv-tab[data-tab="gathering"]');
     if (!tab) return;
     let badge = tab.querySelector(".cv-count");
@@ -412,7 +421,11 @@
   // --- wiring ----------------------------------------------------------------------
 
   function go(id) {
-    global.history.pushState(null, "", threadHref(id));
+    if (panel) {
+      // The window keeps its own place; the altar's address stays as it is.
+      panelThread = id || null;
+      pane?.classList.remove("is-choosing");
+    } else global.history.pushState(null, "", threadHref(id));
     infoOpen = false;
     editing = null;
     drawThread();
@@ -580,6 +593,9 @@
     pane = el;
     state = s;
     api = a || api;
+    // { panel: true }: the small window over a coven altar, starting on the coven's chat.
+    if (Boolean(a?.panel) !== panel) panelThread = null;
+    panel = Boolean(a?.panel);
     editing = null;
     picking = null;
     infoOpen = false;
@@ -637,5 +653,11 @@
     picking = null;
   }
 
-  global.CovenChat = { mount, unmount, onChange, onPresence: presence, onStatus, prime };
+  /** Told the unread count whenever it changes (the chat button over a coven altar). */
+  function onTotal(listener) {
+    totalListener = listener;
+    if (state?.coven) listener(total());
+  }
+
+  global.CovenChat = { mount, unmount, onChange, onPresence: presence, onStatus, prime, onTotal, current: () => (state ? threadId() : null) };
 })(window);
