@@ -11,12 +11,12 @@ import { kipperById } from './oracle/kipper.ts';
 import { lenormandById } from './oracle/lenormand.ts';
 import { kipperPage, kipperSubgroups, lenormandPage, lenormandSubgroups, ORACLE_NOTES } from './oracle/library.ts';
 import { BLANK_RUNE, FEDA, RUNES, type Stave } from './staves.ts';
-import { divinationRoute, divinationWebPath, readMoreHref, refForDrawn, staveId, type DivinationKind, type DivinationRef } from './links.ts';
+import { divinationReadingRoute, divinationRoute, divinationWebPath, readMoreHref, refForDrawn, staveId, type DivinationKind, type DivinationRef } from './links.ts';
 import { STAVE_SECTIONS, staveDeep } from './stavesDeep.ts';
 import type { TarotCard } from './tarot.ts';
 import { TAROT_GROUPS, TAROT_SECTIONS, tarotDeep, wordsLine, type ThreeWords } from './tarotDeep.ts';
 
-export { divinationRoute, divinationWebPath, readMoreHref, refForDrawn, staveId, wordsLine };
+export { divinationReadingRoute, divinationRoute, divinationWebPath, readMoreHref, refForDrawn, staveId, wordsLine };
 export type { DivinationKind, DivinationRef };
 export type { ThreeWords };
 

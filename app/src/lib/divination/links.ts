@@ -36,6 +36,9 @@ export function refForDrawn(name: string): DivinationRef | null {
 /** Where an entry's page is in the app's Grimoire. */
 export const divinationRoute = (ref: DivinationRef) => `/grimoire/divination/${ref.kind}/${encodeURIComponent(ref.id)}`;
 
+/** The same page opened from a reading, on top of it, so Back returns to the reading. */
+export const divinationReadingRoute = (ref: DivinationRef) => `/rituals/divination/card/${ref.kind}/${encodeURIComponent(ref.id)}`;
+
 /** Where an entry's page is in the website's Book of Shadows. */
 export const divinationWebPath = (ref: DivinationRef) => `/grimoire/?divination=${ref.kind}/${encodeURIComponent(ref.id)}`;
 

@@ -8,6 +8,7 @@ import {
   countOf,
   divinationGroups,
   divinationPage,
+  divinationReadingRoute,
   divinationRoute,
   divinationWebPath,
   entryForDrawn,
@@ -137,6 +138,8 @@ test('from a drawn card or stave to its page, in the app and on the website', ()
   assert.equal(staveId('Blank rune'), 'blank-rune');
   const tower = entryForDrawn('The Tower')!;
   assert.equal(divinationRoute(tower), '/grimoire/divination/tarot/16-the-tower');
+  // From a reading the page opens on top of it, so Back returns to the reading.
+  assert.equal(divinationReadingRoute(tower), '/rituals/divination/card/tarot/16-the-tower');
   assert.equal(divinationWebPath(tower), '/grimoire/?divination=tarot/16-the-tower');
   assert.equal(parseDivinationParam('tarot/16-the-tower')?.name, 'The Tower');
   assert.equal(parseDivinationParam('ogham%2Fngeadal')?.name, 'nGéadal');
