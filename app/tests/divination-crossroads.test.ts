@@ -238,12 +238,13 @@ test('the Deipnon falls on the last day of each Attic month, the day before the 
   assert.ok(!isDeipnon(new Date(days[0].getTime() + 39 * 3_600_000)));
 });
 
-test('the Deipnon is offered to those who keep the monthly days or hold Hekate as patron, and can be turned off', () => {
+test('the Deipnon is offered to those who keep the monthly days or hold Hekate as patron or are dedicated to her, and can be turned off', () => {
   assert.equal(offersDeipnon(hellenic), true);
   assert.equal(offersDeipnon({ calendar_traditions: 'wheel,custom', calendar_picked_holidays: 'hellenic_monthly/deipnon' }), true);
   assert.equal(offersDeipnon(hekate('patron')), true);
   assert.equal(hekateIsPatron({ my_deities: JSON.stringify([{ key: null, name: 'Hecate', level: 'patron' }]) }), true);
-  assert.equal(offersDeipnon(hekate('dedicated')), false);
+  assert.equal(offersDeipnon(hekate('dedicated')), true);
+  assert.equal(offersDeipnon(hekate('exploring')), false);
   assert.equal(offersDeipnon({ calendar_traditions: 'wheel,hellenic' }), false);
   assert.equal(offersDeipnon(null), false);
   assert.equal(offersDeipnon({ ...hellenic, deipnon_prompt: false }), false);

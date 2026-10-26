@@ -18,8 +18,8 @@ export const DEIPNON_SPREAD = 'crossroads';
 
 const isHekate = (d: { key: string | null; name: string }) => d.key === 'hekate' || /^he[ck]ate$/i.test(d.name.trim());
 
-/** Whether you hold Hekate as a patron (My deities). */
-export const hekateIsPatron = (settings: SettingsLike) => myDeities(settings).some((d) => d.level === 'patron' && isHekate(d));
+/** Whether you hold Hekate as a patron, or are dedicated to her (My deities). */
+export const hekateIsPatron = (settings: SettingsLike) => myDeities(settings).some((d) => (d.level === 'patron' || d.level === 'dedicated') && isHekate(d));
 
 /** Whether you keep the Hellenic monthly days, whole or the Deipnon picked into your own calendar. */
 export function keepsHellenicMonthly(settings: SettingsLike): boolean {
