@@ -162,6 +162,21 @@ test("the deity card on a Library page: your patron, a shrine, My deities and th
   assert.doesNotMatch(stranger, /shrine=/);
 });
 
+test("each Hindu deity's Library and patron card offers its devotional journey, built for the website", () => {
+  for (const key of ["ganesha", "durga", "lakshmi", "shiva", "saraswati", "kali", "krishna"]) {
+    const id = `deity-${key}`;
+    const entry = J.lookup.journeyForDeityRefIn(J.JOURNEY_CATALOG, `traditional:deity:${key}`);
+    assert.equal(entry && entry.id, id, key);
+    assert.deepEqual([...entry.paths], ["hindu"]);
+    const html = DeityYours.markup(J, {}, { key, name: key });
+    assert.match(html, new RegExp(`/rituals/journeys/\\?id=${id}"`), key);
+    const journey = loadCore(`journey-${id}`)[`journey-${id}`].journey;
+    assert.equal(journey.id, id);
+    assert.match(journey.welcome, /This is not an initiation/);
+    assert.equal(journey.stages.length, 6);
+  }
+});
+
 test("the pages load what they need, and the altar takes a shrine", () => {
   const page = fs.readFileSync(path.join(root, "rituals/journeys/index.html"), "utf8");
   for (const src of ["/js/salt-store.js", "/js/core/journeys.js", "/rituals/js/rituals-logic.js", "/rituals/journeys/journeys-store.js"]) assert.ok(page.includes(`src="${src}"`), src);

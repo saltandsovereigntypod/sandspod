@@ -21,7 +21,7 @@ Please read this plainly. This is not an initiation. Formal initiation (dīkṣ�
     'His stories have many versions in different texts and regions. This journey gives the main variants and says where each comes from; none is the "one true" story.',
     'Offerings are vegetarian: no meat, fish, eggs or alcohol. Most families do not offer tulsi (holy basil) to Ganesha.',
     'Do not put his image on shoes, floor mats, bathroom items or anything you sit on; it gives real offence.',
-    'The app’s calendar does not yet list Hindu festivals. Ganesh Chaturthi and the monthly Chaturthis follow the lunar calendar; check a Hindu panchang (almanac) or your local temple.',
+    'The app can show the Hindu lunar calendar (panchang): tick it under "Also show" in "Calendar & holidays". It marks Ganesh Chaturthi and the monthly Vinayaka and Sankashti Chaturthis. Panchangs, regions and countries can differ by a day; confirm with your local temple.',
     'Safety: Plaster of Paris images with chemical paints pollute water; choose natural clay and immerse at home. Keep lamps and camphor attended. Modak and laddoos are sweets for people, not pets.',
   ],
   holyDays: [],

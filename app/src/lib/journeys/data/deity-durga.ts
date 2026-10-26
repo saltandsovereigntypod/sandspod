@@ -20,7 +20,7 @@ Please read this plainly. This is not an initiation. Formal initiation (dīkṣ�
     'This is devotion, not magic. Please do not use Durga, her image or her names in spells, curses or "warrior goddess" aesthetics.',
     'Offerings here are vegetarian: no meat, fish, eggs or alcohol. Some Shakta temples have historically offered animal sacrifice (bali), and a few still do; many households use a pumpkin, ash gourd or sugarcane instead. This app never includes animal sacrifice.',
     'Treat her image with care: keep it raised, clean and out of bathrooms; do not put it on clothing you sit on, on shoes, or on the floor.',
-    'The app’s calendar does not yet list Hindu festivals. Navaratri dates follow the lunar calendar and move each year; check a Hindu panchang (almanac) or your local temple.',
+    'The app can show the Hindu lunar calendar (panchang): tick it under "Also show" in "Calendar & holidays". It marks the start of Sharad Navaratri. Chaitra Navaratri, Durga Ashtami and the days of Durga Puja you will find in a printed panchang. Navaratri moves each year, and panchangs, regions and countries can differ by a day; confirm with your local temple.',
     'Safety: some sindoor and kumkum powders have been found to contain lead. Buy lead-free, never eat it, and keep it from children. Ghee lamps, camphor and incense need a heatproof plate and constant attention.',
   ],
   holyDays: [],
