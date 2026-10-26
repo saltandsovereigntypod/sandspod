@@ -25,6 +25,11 @@ const NEW_DEITIES: Record<string, string[]> = {
   Hindu: ['lakshmi', 'shiva', 'saraswati', 'kali', 'krishna'],
 };
 const ALL_NEW = Object.values(NEW_DEITIES).flat();
+// The rest of the gods people ask for, by pantheon. None has a statue picture either.
+const MORE_DEITIES: Record<string, string[]> = {
+  Greek: ['ares', 'hephaestus', 'pan', 'gaia', 'helios', 'eros', 'asclepius'],
+};
+const ALL_MORE = Object.values(MORE_DEITIES).flat();
 const text = (d: Deity, ...fields: string[]) => fields.map((f) => String(d[f] ?? '')).join(' ');
 
 test('every new deity is in the Library with every field the others have', () => {
@@ -47,7 +52,7 @@ test('every new deity is in the Library with every field the others have', () =>
       assert.doesNotMatch(JSON.stringify(d), /!/, `${key}: no exclamation marks`);
     }
   }
-  assert.equal(Object.keys(deities).length, 61 + ALL_NEW.length);
+  assert.equal(Object.keys(deities).length, 61 + ALL_NEW.length + ALL_MORE.length);
 });
 
 test('deity ids are unique, in the source as well as the data', () => {
@@ -186,4 +191,128 @@ test('each has sacred days and devotions for the patron page', () => {
   assert.equal(gamelion.length, 1);
   assert.ok(gamelion[0].getMonth() <= 1, String(gamelion[0]));
   assert.ok(ruleDates({ kind: 'attic', day: 8 }, from, 365).length >= 12);
+});
+
+// ─── The rest of the gods people ask for ────────────────────────────────
+
+// Festival pages that name them, so each links to its Library page.
+const MORE_LINKS: [string, string][] = [
+  ['hellenic-panathenaia', 'hephaestus'],
+  ['hellenic-pyanepsia', 'helios'],
+  ['attic-tetras', 'eros'],
+];
+// Seasonal things kept for festivals that honour them.
+const MORE_SEASONAL: string[] = [];
+// Other names, festivals and things they keep, each finding them.
+const MORE_SEARCH: [string, string][] = [
+  ['Enyalios', 'ares'],
+  ['Chalkeia', 'hephaestus'],
+  ['syrinx', 'pan'],
+  ['Kourotrophos', 'gaia'],
+  ['Phaethon', 'helios'],
+  ['Psyche', 'eros'],
+  ['Epidaurus', 'asclepius'],
+];
+// Living religions: devotion, not magic.
+const LIVING_PANTHEONS = ['Hindu', 'Shinto', 'Chinese'];
+
+test('the rest of the gods: every field, in the right pantheon, with no picture of their own', () => {
+  const older = Object.entries(deities).filter(([key]) => !ALL_NEW.includes(key) && !ALL_MORE.includes(key) && key !== 'lilith');
+  const fields = new Set(older.flatMap(([, d]) => Object.keys(d)));
+  for (const [pantheon, keys] of Object.entries(MORE_DEITIES)) {
+    for (const key of keys) {
+      const d = deities[key];
+      assert.ok(d, `${key} is missing`);
+      for (const field of fields) {
+        const value = d[field];
+        assert.ok(Array.isArray(value) ? value.length : String(value ?? '').trim(), `${key} has no ${field}`);
+      }
+      assert.deepEqual(Object.keys(d).filter((f) => !fields.has(f)), [], `${key} has fields the others don't`);
+      assert.equal(d.Category, 'Deity');
+      assert.equal(d.Pantheon, pantheon, key);
+      assert.match(String(d.DevotionalApproach), /^Start here: /, key);
+      assert.equal((d.tags as string[]).length, 6, `${key} tags`);
+      assert.ok(String(d.Overview).length > 120 && String(d.CulturalContext).length > 120, key);
+      assert.doesNotMatch(JSON.stringify(d), /!/, `${key}: no exclamation marks`);
+      assert.equal(d.image, undefined, key);
+    }
+  }
+  assert.equal(new Set(ALL_MORE).size, ALL_MORE.length);
+  for (const key of ALL_MORE) assert.ok(!ALL_NEW.includes(key), key);
+});
+
+test('the rest of the gods: the app holds what the website holds', () => {
+  const source = readFileSync(new URL('../../js/traditional-library.js', import.meta.url), 'utf8');
+  const context: { TraditionalLibrary?: { deity: Record<string, Deity> } } = {};
+  vm.runInNewContext(`${source}\nthis.TraditionalLibrary = TraditionalLibrary;`, context);
+  for (const key of ALL_MORE) assert.deepEqual(JSON.parse(JSON.stringify(context.TraditionalLibrary!.deity[key])), deities[key], key);
+});
+
+test('the rest of the gods: a note for each tradition named, and living religions honoured as living', () => {
+  const known = new Set(PATH_TRADITIONS.map((t) => t.name));
+  for (const key of ALL_MORE) {
+    const d = deities[key];
+    const listed = String(d.Traditions).split(',').map((t) => t.trim());
+    for (const name of listed) assert.ok(known.has(name), `${key}: ${name}`);
+    assert.equal(entryTraditions(d, 'deity').length, listed.length, key);
+    const labels = String(d.TraditionNotes).split('\n\n').map((p) => p.slice(0, p.indexOf(':')));
+    assert.deepEqual(labels, listed, key);
+    assert.match(String(d.CulturalContext), /living/, key);
+  }
+  for (const key of ALL_MORE.filter((k) => LIVING_PANTHEONS.includes(String(deities[k].Pantheon)))) {
+    const d = deities[key];
+    // Devotion, not magic: no spellwork or claims of initiation in how they are honoured.
+    assert.doesNotMatch(text(d, 'DevotionalApproach', 'OfferingNotes', 'AltarIdeas', 'TraditionNotes', 'Overview', 'TraditionalMeaning'), /spell|magic|initiat|working/i, key);
+  }
+  for (const key of MORE_DEITIES.Hindu ?? []) {
+    const d = deities[key];
+    assert.equal(d.Traditions, 'Hindu');
+    assert.match(String(d.TraditionalWarnings), /living deity in Hindu religious practice/, key);
+    assert.match(String(d.DevotionalApproach), /learn about (him|her) from Hindu.*sources/, key);
+    assert.match(String(d.CulturalContext), /Hindu teacher/, key);
+    assert.match(String(d.AltarIdeas), /murti/, key);
+  }
+});
+
+test('the rest of the gods: festival pages link to them and search finds them', () => {
+  const entries = traditionalEntries();
+  for (const [ref, key] of MORE_LINKS) {
+    const page = holyPage(ref);
+    assert.ok(page, ref);
+    const linked = (page.correspondences.deities ?? []).map((name) => findByName(entries, name)?.id);
+    assert.ok(linked.includes(`traditional:deity:${key}`), `${ref} → ${key}`);
+  }
+  const gods = new Set(SEASONAL_OBJECTS.flatMap((o) => o.deities ?? []));
+  for (const name of MORE_SEASONAL) assert.ok(gods.has(name), name);
+  for (const key of ALL_MORE) {
+    const name = String(deities[key].DisplayName);
+    assert.equal(searchLibrary(entries, name)[0]?.id, `traditional:deity:${key}`, name);
+    assert.equal(findByName(entries, name)?.id, `traditional:deity:${key}`, name);
+  }
+  for (const [query, key] of MORE_SEARCH) {
+    assert.ok(searchLibrary(entries, query, { type: 'deity' }).some((e) => e.id === `traditional:deity:${key}`), `${query} → ${key}`);
+  }
+});
+
+test('the rest of the gods: no cabinet tile or broken picture, and a shrine that still sets', () => {
+  const pictured = new Set(Object.values(ALTAR_ARTWORK.items.deities ?? {}).flatMap((d: unknown) => (d as { forms?: { deity?: string }[] }).forms?.map((f) => f.deity) ?? []));
+  for (const key of ALL_MORE) {
+    assert.ok(!pictured.has(key), `${key} has no statue yet`);
+    assert.ok(!builtInCabinet.some((i) => i.category === 'deities' && i.forms?.some((f) => f.deity === key)), `${key} in the cabinet`);
+    const shrine = shrineAltar(key, String(deities[key].DisplayName), deities[key] as Record<string, unknown>, new Date(2026, 9, 26));
+    assert.ok(shrine.doc.objects.length >= 8, key);
+    assert.ok(!shrine.doc.objects.some((o) => o.type === 'deity'), key);
+    for (const o of shrine.doc.objects) assert.ok(String(o.imagePath ?? '').trim(), `${key}: ${o.label}`);
+  }
+});
+
+test('the rest of the gods: sacred days and devotions for the patron page', () => {
+  const from = new Date(2026, 0, 1);
+  for (const key of ALL_MORE) {
+    const d = DEITY_DEVOTIONS.find((x) => x.key === key);
+    assert.ok(d, `${key} has no devotion`);
+    assert.ok(upcomingSacred(d, from, 400).length > 0, key);
+    assert.ok(d.sources.length > 0 && d.devotions.length >= 4 && d.approach.trim(), key);
+    for (const day of d.sacred) assert.ok(day.why.trim() && day.name.trim(), key);
+  }
 });

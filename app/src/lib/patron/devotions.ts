@@ -542,6 +542,159 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     sources: [ATTIC_MONTHLY, 'Plutarch, Life of Theseus 36, on the eighth day', PARKE],
   },
 
+  {
+    key: 'ares',
+    sacred: [
+      {
+        rule: { kind: 'weekday', day: 2 },
+        name: 'Tuesday',
+        why: 'Tuesday was dies Martis in Latin, the day of the planet Mars, whom the Romans equated with Ares. Honouring Ares on Tuesdays is a modern custom; no Athenian festival of his is known.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Do something physically hard and offer the effort to him.',
+      'Pour a little wine or water outside and ask for courage for one thing you fear.',
+      'Name one anger you are carrying and decide what to do with it.',
+      'Stand up for someone who cannot stand up for themselves.',
+    ],
+    approach:
+      'Ares is approached with respect and self-control, for courage and protection, honest that the Greeks themselves honoured him warily.',
+    sources: [WEEKDAYS, 'Pausanias 3.14.9, on Spartan sacrifices to Enyalios', 'Homer, Iliad 5.855–906'],
+  },
+  {
+    key: 'hephaestus',
+    sacred: [
+      {
+        rule: { kind: 'attic', month: 'Pyanepsion', day: 'last' },
+        name: 'Chalkeia',
+        why: 'The Athenian festival of smiths and craftsmen on the last day of Pyanepsion, kept for Hephaestus and Athena Ergane, Athena of the workers.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Make or mend one small thing with your hands.',
+      'Clean and care for a tool you use often.',
+      'Light a candle at your workbench or desk before you begin.',
+      'Thank someone whose craft you rely on.',
+    ],
+    approach:
+      'Hephaestus is approached through honest work and craft, as the patient maker of the gods.',
+    sources: [PARKE + ', on the Chalkeia', 'Harpocration and the Suda, s.v. Chalkeia', DEUBNER],
+  },
+  {
+    key: 'pan',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'beltane' },
+        name: 'Beltane',
+        why: 'Many modern Pagans honour Pan at Beltane, in the green of spring. This is a modern custom: Herodotus says the Athenians gave Pan yearly sacrifices and a torch race after Marathon, but the day is not known.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Spend a few minutes outside somewhere green and listen.',
+      'Play or hum a tune for him.',
+      'Pour a little milk or honey onto the ground in a garden or park.',
+      'Do something kind for an animal.',
+    ],
+    approach:
+      'Pan is approached with playfulness and respect for the wild, in green places rather than indoors where possible.',
+    sources: ['Herodotus 6.105, on Pheidippides and the Athenian cult of Pan', HUTTON_TRIUMPH],
+  },
+  {
+    key: 'gaia',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'ostara' },
+        name: 'The spring equinox',
+        why: 'Modern Pagans often honour the Earth Mother as the land greens in spring. This is a modern custom; no Athenian festival day of Ge alone is securely known, though she received offerings as Ge Kourotrophos before many others.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Put your hands on the ground and thank her for one thing that grew.',
+      'Pour a little water onto soil or a plant with a word of thanks.',
+      'Pick up litter from one patch of ground.',
+      'Plant a seed or care for a houseplant in her name.',
+    ],
+    approach:
+      'Gaia is approached with gratitude and humility, as the Earth herself, and honoured by caring for the land.',
+    sources: ['Hesiod, Theogony 116–187', 'Homeric Hymn 30, To Earth the Mother of All', HUTTON_TRIUMPH],
+  },
+  {
+    key: 'helios',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'hellenic', id: 'pyanepsia' },
+        name: 'Pyanepsia',
+        why: 'Apollo’s autumn harvest festival, when the eiresione, an olive branch hung with wool and fruit, was carried in procession; a scholiast says it and the Thargelia also honoured Helios and the Horai, the Seasons.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'weekday', day: 0 },
+        name: 'Sunday',
+        why: 'Sunday is the day of the Sun in the planetary week (Latin dies Solis). Honouring Helios on Sundays is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Greet the first daylight you see with a few words.',
+      'Burn a pinch of frankincense at sunrise or noon.',
+      'Keep one promise today, with him as your witness.',
+      'Spend a few minutes in daylight and notice its warmth.',
+    ],
+    approach:
+      'Helios is approached openly and honestly, as the all-seeing Sun who witnesses oaths.',
+    sources: ['Scholia on Aristophanes, Knights 729 and Wealth 1054, on Helios and the Horai at the Pyanepsia and Thargelia', 'Homer, Iliad 3.277; Homeric Hymn to Demeter 62–89', WEEKDAYS],
+  },
+  {
+    key: 'eros',
+    sacred: [
+      {
+        rule: { kind: 'attic', day: 4 },
+        name: 'The fourth of the month',
+        why: 'In Athens the fourth day of each lunar month belonged to Eros, with Aphrodite, Hermes and Herakles.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Offer a rose or a drop of honey and name something you love.',
+      'Tell someone plainly that you love or value them.',
+      'Read or write a few lines of love poetry.',
+      'Do one thing for the sake of a creative longing.',
+    ],
+    approach:
+      'Eros is approached with openness and with respect for other people’s freedom, as the power that draws beings together.',
+    sources: [ATTIC_MONTHLY, 'Pausanias 9.27, on Eros at Thespiae', 'Hesiod, Theogony 120–122'],
+  },
+  {
+    key: 'asclepius',
+    sacred: [
+      {
+        rule: { kind: 'attic', month: 'Elaphebolion', day: 8 },
+        name: 'Asklepieia',
+        why: 'The Athenian festival of Asclepius on 8 Elaphebolion, the first day of the City Dionysia.',
+        basis: 'ancient',
+      },
+      {
+        rule: { kind: 'attic', month: 'Boedromion', day: 18 },
+        name: 'Epidauria',
+        why: 'The day during the Eleusinian Mysteries (the 17th or 18th; sources differ) that remembered Asclepius’ arrival at Athens; later tradition said he came late to be initiated.',
+        basis: 'ancient',
+      },
+    ],
+    devotions: [
+      'Light a candle for someone who is unwell.',
+      'Do one thing for your own health today.',
+      'Thank a doctor, nurse or carer.',
+      'Write down a dream and what it might be telling you about your wellbeing.',
+    ],
+    approach:
+      'Asclepius is approached with trust and thanks, alongside good medical care, never instead of it.',
+    sources: [PARKE + ', on the Asklepieia and the Epidauria', 'Philostratus, Life of Apollonius 4.18, on the Epidauria', 'Inscriptiones Graecae IV² 1, 121–124, the healing records of Epidaurus'],
+  },
+
   // ─── Roman ────────────────────────────────────────────────────────────
   {
     key: 'jupiter',

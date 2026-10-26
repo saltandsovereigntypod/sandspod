@@ -9301,6 +9301,307 @@ const TraditionalLibrary = {
 
             tags: ["love", "devotion", "joy", "wisdom", "protection", "bhakti"]
         },
+
+        ares: {
+            DisplayName: "Ares",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "War and battle, courage, raw strength, the fury of combat, the defence of the city",
+
+            SacredSymbols: "Spear, bronze helmet, shield, armour, the burning torch carried before armies",
+
+            SacredAnimals: "Dog, vulture (in later sources)",
+
+            SacredPlants: "None securely attested in Greek sources",
+
+            CandleColors: "Red, black, bronze",
+
+            Crystals: "Bloodstone, red jasper, hematite, carnelian",
+
+            Herbs: "Dragon’s blood resin, black pepper, nettle",
+
+            Offerings: "Wine, incense, bread, a polished blade or old weapon dedicated rather than used, honest physical effort",
+
+            TraditionalWarnings: "Ares is the god of war’s terror as well as its courage: even in Homer the other gods dislike him, and the Greeks honoured him warily. Approach him for courage, discipline and protection, not to stir up anger or harm. Ancient offerings to him sometimes included animal sacrifice; modern devotion uses wine, incense and effort instead.",
+
+            Overview: "Ares is the Greek god of war, son of Zeus and Hera, the blind fury of battle beside Athena’s strategy and skill. He is pictured as a young or bearded warrior in helmet and armour with spear and shield, attended by his sons Phobos and Deimos, Fear and Terror. Homer has him wounded by Diomedes and caught in a golden net with Aphrodite by her husband Hephaestus.",
+
+            TraditionalMeaning: "Courage under pressure: the strength to stand one’s ground, defend others and face fear, and the warning of what happens when that force runs wild.",
+
+            DevotionalApproach: "Start here: do something hard with your body, a run, a long walk or lifting, and offer the effort to him with a cup of wine or water poured out afterwards. Approach him with respect and self-control. He asks for courage, honesty about anger and the discipline to use strength only where it is needed.",
+
+            OfferingNotes: "Offer red wine, incense, bread or a strenuous effort dedicated to him. Veterans and those in protective work sometimes offer a token of their service. Pour libations outside or onto earth rather than drinking them.",
+
+            AltarIdeas: "A red or black candle, a small spear point or toy helmet, bloodstone or hematite, a bronze-coloured cloth and a dish for wine. Keep it orderly, like a soldier’s kit.",
+
+            CulturalContext: "Ares is honoured today in Hellenic polytheism, a living religion, though rarely as a household god. Ancient cult was limited: he had a temple in the Athenian agora (moved there in Roman times), the Areopagus hill bore his name, and in Sparta young men sacrificed puppies to him as Enyalios, according to Pausanias. Learn him from Greek sources, not only through the Roman Mars, who was far more honoured.",
+
+            Traditions: "Hellenic",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists honour Ares with libations of wine, incense and dedicated effort, often on Tuesday (a modern custom from the Latin dies Martis) or before a hard trial. He is asked for courage, protection, discipline and the strength to defend others, and is sometimes honoured alongside Athena or Aphrodite.",
+
+            tags: ["war", "courage", "strength", "protection", "discipline", "conflict"]
+        },
+
+        hephaestus: {
+            DisplayName: "Hephaestus",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "Fire and the forge, smithing, metalwork, craft and invention, sculpture, volcanoes",
+
+            SacredSymbols: "Hammer, tongs, anvil, the craftsman’s felt cap (pilos), the forge fire",
+
+            SacredAnimals: "The donkey he rides in vase paintings of his return to Olympus",
+
+            SacredPlants: "None securely attested in Greek sources",
+
+            CandleColors: "Orange, red, black, bronze",
+
+            Crystals: "Obsidian, hematite, pyrite, carnelian",
+
+            Herbs: "Cedar, pine resin, cinnamon",
+
+            Offerings: "A piece of work you made, incense, wine, oil, the first item from a new project",
+
+            TraditionalWarnings: "His lameness is part of who he is in Greek myth and should be spoken of with respect, not mocked. Keep fire safety in mind: never leave a candle or forge fire unattended, and take care with heat and tools when working in his honour.",
+
+            Overview: "Hephaestus is the Greek god of fire, the forge and craft, the smith of the gods who made Achilles’ shield, the armour and palaces of Olympus and, in Hesiod, the first woman, Pandora. Born lame, he was thrown from Olympus by Hera or by Zeus and landed on Lemnos; he is pictured as a bearded smith in a workman’s cap with hammer and tongs. Homer gives him Aphrodite as wife in the Odyssey and Charis in the Iliad.",
+
+            TraditionalMeaning: "Skill as a sacred gift: patient work with the hands, invention, making beautiful and useful things, and worth that does not depend on looks or ease.",
+
+            DevotionalApproach: "Start here: make or mend something with your hands, however small, and offer the work to him with a lit candle. Approach him as a fellow worker, through care and craftsmanship rather than words alone. He asks for honest effort, patience with your materials and respect for the people who make things.",
+
+            OfferingNotes: "Offer something you made, the first piece of a new project, or incense and wine at your workbench. Keeping your tools clean and sharp is an offering in his spirit.",
+
+            AltarIdeas: "An orange or red candle (attended), a small hammer or tool, a piece of metalwork or pottery, obsidian or pyrite, and a dish of oil. A workbench or desk where you make things suits him better than a separate shelf.",
+
+            CulturalContext: "Hephaestus is honoured today in Hellenic polytheism, a living religion, especially by makers and craftspeople. In Athens his temple, the Hephaisteion above the agora, is one of the best preserved Greek temples, shared with Athena; the city kept the Chalkeia for them both and a torch race at his festival, the Hephaisteia.",
+
+            Traditions: "Hellenic",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists honour Hephaestus at the Chalkeia on the last day of Pyanepsion, the festival of smiths and craftsmen shared with Athena Ergane, and whenever work is begun or finished. Makers dedicate tools and first pieces to him with incense and wine, asking for skill, invention and safe work with fire.",
+
+            tags: ["craft", "fire", "forge", "invention", "work", "making"]
+        },
+
+        pan: {
+            DisplayName: "Pan",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "Shepherds and flocks, wild places, mountains and caves, rustic music, fertility, sudden fear (panic)",
+
+            SacredSymbols: "The panpipes (syrinx), the shepherd’s crook, the pine wreath, the cave",
+
+            SacredAnimals: "Goats, sheep",
+
+            SacredPlants: "Pine, reeds",
+
+            CandleColors: "Green, brown, red",
+
+            Crystals: "Moss agate, tree agate, jasper, green aventurine",
+
+            Herbs: "Pine, thyme, wild mint",
+
+            Offerings: "Milk, honey, cheese, wine, music, pine branches, time spent in wild places",
+
+            TraditionalWarnings: "Pan is a god of the wild, of desire and of sudden terror: he gave us the word panic. Medieval and later images of the Devil borrowed goat features and he is sometimes confused with him, but he is not. Honour him in wild places with care for your own safety and leave them as you found them.",
+
+            Overview: "Pan is the Greek god of shepherds and flocks, born in Arcadia, with the legs and horns of a goat and the body of a man. He wanders mountains and caves playing the syrinx, the reed pipes Ovid says he made from the nymph Syrinx as she turned to reeds. Herodotus tells how he met the runner Pheidippides before Marathon, and the Athenians gave him a cave shrine below the Acropolis in thanks.",
+
+            TraditionalMeaning: "The wild within and around us: untamed nature, music, desire and instinct, and the shiver of awe in lonely places.",
+
+            DevotionalApproach: "Start here: go somewhere green and a little wild, sit quietly, and play or hum a tune for him before you leave. Approach him with playfulness and with respect for the wild. He asks devotees to be at home in their bodies, to look after animals and wild places, and to take fear seriously without being ruled by it.",
+
+            OfferingNotes: "Offer milk, honey, cheese or a little wine poured out in a green place, or music played for him. Choose offerings that will not harm wildlife, and carry out any containers.",
+
+            AltarIdeas: "Green or brown candles, a set of panpipes or a reed, a pine cone or branch, moss agate, a goat figure and a small dish of milk or honey. An outdoor stone or a corner of a garden suits him.",
+
+            CulturalContext: "Pan is honoured today in Hellenic polytheism, a living religion, and loved in modern Paganism. Plutarch’s story that a voice cried “Great Pan is dead” is often quoted, but his cult went on in caves across Greece for centuries. The Romantics, Kenneth Grahame’s The Wind in the Willows and Aleister Crowley’s Hymn to Pan made him central to modern nature spirituality, and he helped shape the Horned God of Wicca.",
+
+            Traditions: "Hellenic, Wheel of the Year",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists honour Pan in caves, mountains and gardens with milk, honey, wine and music, as the Athenians did with sacrifices and a torch race after Marathon. He is asked to protect flocks and pets, to bless the wild and to calm panic.\n\nWheel of the Year: Many modern Pagans honour Pan at Beltane and in the green of spring and summer, as a god of nature, music and joyful desire.",
+
+            tags: ["wild", "nature", "music", "animals", "fertility", "panic"]
+        },
+
+        gaia: {
+            DisplayName: "Gaia",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "The Earth, motherhood of all beings, fertility, oaths, prophecy, the land itself",
+
+            SacredSymbols: "The earth itself, fruit and grain, the omphalos (navel stone), the cornucopia in later art",
+
+            SacredAnimals: "Snakes, and all creatures born of the earth",
+
+            SacredPlants: "Grain, fruit, all growing plants",
+
+            CandleColors: "Green, brown, black",
+
+            Crystals: "Moss agate, jasper, jet, tree agate",
+
+            Herbs: "Mugwort, sage, oak",
+
+            Offerings: "Libations of water, milk or honey poured onto the ground, grain, fruit, care for the land",
+
+            TraditionalWarnings: "Hesiod’s Gaia is no gentle background: she conspires against Ouranos and Kronos and gives birth to monsters as well as gods. The modern Gaia of ecology and goddess spirituality is related but new, so be clear which you mean.",
+
+            Overview: "Gaia, or Ge, is the Earth in Greek religion, the first being after Chaos in Hesiod’s Theogony and mother of the sky Ouranos, the mountains, the sea, the Titans, the Cyclopes and the Hundred-Handers. She gave Kronos the sickle that overthrew Ouranos. The Homeric Hymn to Earth calls her mother of all, and Aeschylus makes her the first prophet at Delphi.",
+
+            TraditionalMeaning: "The ground of all life: the Earth as mother, provider and witness, owed gratitude, care and honest oaths.",
+
+            DevotionalApproach: "Start here: put your hands or bare feet on the ground, thank her for one thing that grew today, and pour a little water onto the soil. Approach her with gratitude and humility. She asks that we care for the land we live on and keep faith with what we swear.",
+
+            OfferingNotes: "Pour libations of water, milk or honey straight onto the earth, or bury a little grain or fruit. Planting, composting and picking up litter are offerings in her spirit.",
+
+            AltarIdeas: "A bowl of soil or a stone from your land, a green or brown candle, moss agate or jasper, grain, fruit and a pot plant. An outdoor altar on bare ground suits her best.",
+
+            CulturalContext: "Gaia is honoured today in Hellenic polytheism, a living religion, and widely in modern Paganism and ecological spirituality. In Athens Ge Kourotrophos, Earth the Nurse of Children, received offerings before many other gods. The scientist James Lovelock’s Gaia hypothesis, named at the suggestion of the novelist William Golding, brought her name into modern environmental thought.",
+
+            Traditions: "Hellenic, Wheel of the Year",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists honour Gaia with libations poured onto the ground and with first offerings as Ge Kourotrophos, and call her to witness oaths, as Homer’s heroes did. She is asked for fertile land, the welfare of children and a stable home.\n\nWheel of the Year: Modern Pagans often honour the Earth as Gaia or the Earth Mother at the spring equinox and the harvest festivals, with planting, gratitude and care for the land.",
+
+            tags: ["earth", "mother", "land", "fertility", "ecology", "oaths"]
+        },
+
+        helios: {
+            DisplayName: "Helios",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "The Sun, sight, light, oaths and witness, the passing of days, healing light",
+
+            SacredSymbols: "The four-horse chariot, the radiant crown, the sun disc, the golden cup in which he sails home",
+
+            SacredAnimals: "Horses, cattle (his sacred herds), the rooster",
+
+            SacredPlants: "Heliotrope, laurel, frankincense",
+
+            CandleColors: "Gold, yellow, orange",
+
+            Crystals: "Sunstone, citrine, amber, tiger eye",
+
+            Herbs: "Frankincense, bay laurel, cinnamon",
+
+            Offerings: "Frankincense, honey, wine, bread, greeting the sunrise",
+
+            TraditionalWarnings: "Helios sees everything, so the Greeks called him to witness oaths: do not swear by him lightly. Never look directly at the Sun, even to honour him.",
+
+            Overview: "Helios is the Sun in Greek religion, son of the Titans Hyperion and Theia and brother of Selene and Eos. Each day he drives his four-horse chariot across the sky and each night sails home round the edge of the world in a golden cup. Because he sees all, he told Demeter who had taken Persephone; in the Odyssey Odysseus’s men die for eating his cattle, and his son Phaethon fell from the sky trying to drive the chariot.",
+
+            TraditionalMeaning: "Light that sees and reveals: truth, clear sight, the faithful rhythm of days and the warmth on which life depends.",
+
+            DevotionalApproach: "Start here: greet the sunrise, or the first daylight you see, with a few words and a pinch of incense. Approach him with honesty, since nothing is hidden from his sight. He asks devotees to live openly, keep their word and value each new day.",
+
+            OfferingNotes: "Offer frankincense, honey, bread or wine at sunrise or noon. Honey and fruit set out in sunlight, then shared or returned to the earth, suit him well.",
+
+            AltarIdeas: "A gold or yellow candle, a sun disc or radiant image, sunstone or citrine, a dish of honey and a sprig of bay. Place it by an east-facing window to catch the morning light.",
+
+            CulturalContext: "Helios is honoured today in Hellenic polytheism, a living religion. He was the great god of Rhodes, where the Colossus stood and the Halieia festival was kept, and in Athens he received offerings with the Horai at the Thargelia and Pyanepsia. Later Greek and Roman writers often merged him with Apollo, but they began as separate gods.",
+
+            Traditions: "Hellenic",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists greet Helios at sunrise with prayer and incense, honour him with the Horai, the Seasons, at the Pyanepsia and Thargelia, and call him to witness oaths. Some keep Sunday for him, a modern custom from the planetary week. He is asked for clear sight, truth, health and a good day’s work.",
+
+            tags: ["sun", "light", "truth", "oaths", "sight", "day"]
+        },
+
+        eros: {
+            DisplayName: "Eros",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "Love and desire, attraction, the bonds between lovers and friends, creative longing, the force that joins all things",
+
+            SacredSymbols: "Bow and arrows, wings, the torch, the lyre",
+
+            SacredAnimals: "Hares and roosters, given as love-gifts in Greek art",
+
+            SacredPlants: "Rose, apple",
+
+            CandleColors: "Pink, red, white",
+
+            Crystals: "Rose quartz, rhodonite, garnet, carnelian",
+
+            Herbs: "Rose, myrtle, cinnamon",
+
+            Offerings: "Roses, honey, sweet wine, love poetry, music",
+
+            TraditionalWarnings: "Desire in Greek poetry can wound as much as it delights: Sappho calls Eros “bittersweet”. Never use him to bend another person’s will; love that is not freely given is not his gift.",
+
+            Overview: "Eros is the Greek god of love and desire. In Hesiod’s Theogony he is one of the first powers, born after Chaos and Earth, loosening the limbs and ruling the minds of gods and people; in later myth he is the winged son of Aphrodite, a boy with bow and arrows. Apuleius’ Latin tale of Cupid and Psyche tells how the soul wins him after long trials.",
+
+            TraditionalMeaning: "Desire as a force that moves the world: love, attraction and longing that draw beings together and spur them to create.",
+
+            DevotionalApproach: "Start here: write down something you love or long for, honestly, and offer it to him with a rose or a drop of honey. Approach him with openness and respect for others’ freedom. He asks devotees to love bravely and kindly and to let desire make them more alive, not less free.",
+
+            OfferingNotes: "Offer roses, honey, sweet wine, music or a love poem, written or read aloud. Acts of kindness between lovers or friends also honour him.",
+
+            AltarIdeas: "A pink or red candle, a small bow or pair of wings, rose quartz, a few rose petals and a dish of honey. Images of Eros and Psyche suit a shrine for love that has grown through trouble.",
+
+            CulturalContext: "Eros is honoured today in Hellenic polytheism, a living religion, often alongside Aphrodite. At Thespiae in Boeotia his oldest image was a rough stone, later joined by a famous statue by Praxiteles, and the city held the Erotidia festival for him. In Athens the fourth day of each month belonged to him with Aphrodite, Hermes and Herakles.",
+
+            Traditions: "Hellenic, Roman",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists honour Eros on the fourth of the lunar month with Aphrodite, with roses, honey and song. He is asked for love, friendship, passion and the courage to pursue what the heart longs for.\n\nRoman: As Cupid or Amor he is honoured in the company of Venus, and the story of Cupid and Psyche, told by Apuleius in the second century, is read as an image of the soul’s journey to love.",
+
+            tags: ["love", "desire", "attraction", "passion", "friendship", "creativity"]
+        },
+
+        asclepius: {
+            DisplayName: "Asclepius",
+            Category: "Deity",
+
+            Pantheon: "Greek",
+
+            Domains: "Healing and medicine, physicians, recovery, dreams that heal, health of body and mind",
+
+            SacredSymbols: "The staff with a single snake coiled round it (the rod of Asclepius), votive offerings of healed body parts, the sacred spring",
+
+            SacredAnimals: "Snakes, dogs, the rooster",
+
+            SacredPlants: "Herbs of healing, the olive",
+
+            CandleColors: "Blue, white, green",
+
+            Crystals: "Clear quartz, aventurine, amethyst, bloodstone",
+
+            Herbs: "Chamomile, lavender, thyme",
+
+            Offerings: "Honey cakes, incense, thanks after recovery, a token or image of what was healed",
+
+            TraditionalWarnings: "Devotion to Asclepius is never a substitute for medical care. The ancient healing sanctuaries sat alongside physicians, and the Hippocratic oath was sworn in his name; honour him by seeking good treatment as well as by prayer. Socrates’ last words owed him a rooster; modern devotees offer a figure, a feather or a gift to a hospital instead of a living bird.",
+
+            Overview: "Asclepius is the Greek god of healing, son of Apollo and the mortal Coronis, taught medicine by the centaur Chiron. He grew so skilled he raised the dead, and Zeus struck him down with a thunderbolt, afterwards making him a god. He is pictured as a kind, bearded man leaning on a staff with a snake coiled round it, with his daughters Hygieia (Health) and Panacea (Cure-all).",
+
+            TraditionalMeaning: "Healing in body and spirit: care for the sick, the skill of doctors and nurses, patience in recovery and gratitude for health.",
+
+            DevotionalApproach: "Start here: when you or someone you love is unwell, light a blue or white candle, ask him for healing and for wise care, then follow the advice of your doctor. Approach him with trust and with thanks once you recover. He asks devotees to look after their health and to honour those who heal.",
+
+            OfferingNotes: "Offer honey cakes, incense or a small image of what has healed, as ancient pilgrims left clay limbs and eyes. Giving to a hospital, a health charity or blood donation is an offering in his spirit.",
+
+            AltarIdeas: "A blue or white candle, a staff with a snake, clear quartz or aventurine, a bowl of clean water, healing herbs and the names of those you pray for. An image of Hygieia beside him suits a shrine for health.",
+
+            CulturalContext: "Asclepius is honoured today in Hellenic and Roman polytheism, a living tradition, and his rod is still the symbol of medicine. At Epidaurus and many other sanctuaries the sick slept in the abaton hoping for a healing dream (incubation), and stone tablets record their cures. In 420 BCE the poet Sophocles hosted the god’s sacred snake when he came to Athens.",
+
+            Traditions: "Hellenic, Roman",
+
+            TraditionNotes: "Hellenic: Hellenic polytheists honour Asclepius at the Asklepieia on 8 Elaphebolion and the Epidauria during the Eleusinian Mysteries, with honey cakes, incense and thanks for healing. He is asked for recovery, good doctors, sound sleep and healing dreams.\n\nRoman: As Aesculapius he was brought to Rome from Epidaurus in 291 BCE during a plague and given a temple on the Tiber Island, where a hospital still stands; Roman polytheists honour him with thanks for healing and care for the sick.",
+
+            tags: ["healing", "medicine", "health", "dreams", "recovery", "doctors"]
+        },
     },
 
     tool: {
