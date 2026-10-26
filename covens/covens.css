@@ -186,3 +186,52 @@
 .cv-tasks { display: grid; gap: 10px; }
 .cv-holiday-picks { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 6px 14px; margin: 8px 0 4px; }
 .cv-calendar-choice { display: grid; gap: 4px; padding: 10px 0; border-top: 1px solid var(--line); }
+
+/* --- messages: the coven's chat and your conversations (covens/coven/chat.js) --- */
+.cv-messages { display: grid; gap: 14px; grid-template-columns: 260px minmax(0, 1fr); align-items: start; }
+@media (max-width: 760px) { .cv-messages { grid-template-columns: 1fr; } }
+.cv-messages__list, .cv-messages__thread { display: grid; gap: 10px; min-width: 0; }
+.cv-threads { display: grid; gap: 6px; }
+.cv-thread {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; padding: 10px 12px; border: 1px solid var(--line);
+  border-radius: 12px; color: var(--cream); text-decoration: none; position: relative;
+}
+.cv-thread:hover, .cv-thread:focus-visible { border-color: var(--gold); }
+.cv-thread.is-current { border-color: var(--gold); background: rgba(185, 160, 93, 0.12); }
+.cv-thread__title { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cv-thread__time { color: var(--muted); font-size: 0.78rem; }
+.cv-thread__preview { grid-column: 1 / -1; color: var(--muted); font-size: 0.88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 28px; }
+.cv-thread .cv-count { position: absolute; right: 10px; bottom: 9px; font-size: 0.75rem; background: var(--gold); color: var(--charcoal, #111); border-radius: 999px; padding: 1px 7px; }
+.cv-thread-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.cv-thread-head h2 { margin: 0; }
+.cv-chat--bubbles { gap: 2px; }
+.cv-bubble { display: grid; justify-items: start; gap: 2px; max-width: 78%; position: relative; }
+.cv-bubble.is-first { margin-top: 6px; }
+.cv-bubble--mine { justify-self: end; justify-items: end; }
+.cv-bubble__name { margin: 0 0 0 10px; font-size: 0.78rem; color: var(--gold); font-weight: 600; }
+.cv-bubble__inner { background: rgba(255, 255, 255, 0.07); border: 1px solid var(--line); border-radius: 16px; padding: 7px 12px; display: grid; gap: 2px; }
+.cv-bubble--mine .cv-bubble__inner { background: rgba(185, 160, 93, 0.28); border-color: rgba(226, 195, 109, 0.45); }
+.cv-bubble__inner .cv-msg__body { margin: 0; }
+.cv-bubble__time { color: var(--muted); font-size: 0.7rem; justify-self: end; }
+.cv-bubble .cv-msg__actions { position: static; display: none; }
+.cv-bubble:hover .cv-msg__actions, .cv-bubble:focus-within .cv-msg__actions { display: flex; }
+@media (hover: none) { .cv-bubble .cv-msg__actions { display: flex; } }
+.cv-thread-info { display: grid; gap: 6px; }
+
+/* --- the coven's altars (covens/coven/altar.js) ------------------------------------ */
+.cv-altars { display: grid; gap: 14px; }
+.cv-altar-card { display: grid; gap: 10px; }
+.cv-altar-card__head h3 { margin: 0 0 4px; }
+.cv-still-link { display: block; text-decoration: none; color: inherit; }
+.cv-still {
+  position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden;
+  border: 1px solid rgba(226, 195, 109, 0.35); background: radial-gradient(ellipse at 50% 85%, #2b2418 0%, #141a15 55%, #0b0e0c 100%);
+  background-size: cover; background-position: center;
+}
+.cv-still-link:hover .cv-still, .cv-still-link:focus-visible .cv-still { border-color: var(--gold); }
+.cv-still__item { position: absolute; aspect-ratio: 1; transform: translate(-50%, -50%) rotate(var(--rot, 0deg)); display: grid; place-items: center; pointer-events: none; }
+.cv-still__item img { width: 100%; height: 100%; object-fit: contain; }
+.cv-still__item .cv-flame { width: 14%; top: 8%; }
+.cv-chosen { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.cv-access { max-width: 320px; }
+.cv-altar-card .cv-still-link { max-width: 640px; }

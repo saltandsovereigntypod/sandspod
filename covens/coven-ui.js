@@ -201,5 +201,29 @@
     });
   }
 
-  global.CovenUI = { esc, prose, href, setStatus, busy, boot, loadNames, nameOf, signInCard, bannedCard, profileForm, report, confirmAction, askText };
+  /**
+   * The app's altar logic (js/core/altar.js, SaltCore.altar), loaded once when
+   * a coven page first needs it: the coven's altars, a ritual step's candle, a
+   * petition's altar. It's large, so pages that never touch an altar skip it.
+   */
+  let altarCoreLoading = null;
+  function altarCore() {
+    if (global.SaltCore?.altar?.covenAltar) return Promise.resolve(global.SaltCore.altar);
+    if (!altarCoreLoading) {
+      altarCoreLoading = new Promise((resolve, reject) => {
+        const script = doc.createElement("script");
+        script.src = href("/js/core/altar.js");
+        script.async = true;
+        script.onload = () => (global.SaltCore?.altar ? resolve(global.SaltCore.altar) : reject(new Error("The altar’s tools didn’t load. Please refresh the page.")));
+        script.onerror = () => {
+          altarCoreLoading = null;
+          reject(new Error("The altar’s tools didn’t load. Check your connection and try again."));
+        };
+        doc.head.appendChild(script);
+      });
+    }
+    return altarCoreLoading;
+  }
+
+  global.CovenUI = { esc, prose, href, setStatus, busy, boot, loadNames, nameOf, signInCard, bannedCard, profileForm, report, confirmAction, askText, altarCore };
 })(window);

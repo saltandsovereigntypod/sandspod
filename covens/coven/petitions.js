@@ -1,6 +1,6 @@
 /*
  * A coven's Petitions: a member asks the circle to hold a petition for them.
- * It gets its own altar (made by ask_coven_petition; the app sets out its
+ * It gets its own altar (made by ask_coven_petition; this page and the app set out its
  * candle and paper), and members tend it once every twelve hours, with a few
  * words if they like. The person who asked marks it answered or closes it,
  * and its altar is cleared away. Petitions are seen by the coven's members only.
@@ -23,6 +23,25 @@
   const nameOf = (id) => UI.nameOf(state.context, id);
   const statusLine = () => `<p class="cv-status" role="status" aria-live="polite" data-status></p>`;
   const SWATCH = { white: "#f4efe2", black: "#1b1b1b", red: "#b3261e", orange: "#e07b24", yellow: "#e8c547", green: "#2f7d44", blue: "#2f5fa8", indigo: "#3b2f7a", purple: "#6b3fa0", pink: "#e58fb4", magenta: "#b0277a", brown: "#6b4426", grey: "#8a8a8a", silver: "#c9ccd1", gold: "#c9a64a", rainbow: "linear-gradient(135deg,#e53935,#fb8c00,#fdd835,#43a047,#1e88e5,#8e24aa)" };
+
+  /**
+   * Set out or tend a petition's own altar with the app's rules
+   * (SaltCore.altar.petitionAltar). A kindness, not the record: if the altar
+   * can't be changed (its keeper locked it, say), the petition still stands.
+   */
+  async function onAltar(p, make) {
+    if (!p?.altar_id) return "";
+    try {
+      const core = await UI.altarCore();
+      await D.changeAltarOnce(p.altar_id, make(core.petitionAltar, new Date().toISOString()));
+      return "";
+    } catch (error) {
+      return ` Its altar couldn’t be changed: ${L.errorMessage(error)}`;
+    }
+  }
+
+  const altarLink = (p) => UI.href(`/altar/?covenAltar=${encodeURIComponent(p.altar_id)}&c=${encodeURIComponent(state.coven.slug)}`);
+  let message = "";
 
   async function load() {
     petitions = await D.petitions(state.coven.id).catch(() => []);
@@ -53,6 +72,7 @@
             : `<p class="sp-caption">${held.some((t) => t.user_id === me()) ? "You’ve tended it. Its candle is burning for you; you can tend it again later." : state.standing.ok ? "" : esc(state.standing.reasons.join(" "))}</p>`}
             ${statusLine()}</form>` : ""}
         <div class="sp-actions">
+          ${p.status === "open" && p.altar_id ? `<a class="button button--ghost button--small" href="${esc(altarLink(p))}">Open its altar</a>` : ""}
           ${p.status === "open" && closer ? `<button class="button button--ghost button--small" type="button" data-close="answered">${asker ? "It’s been answered" : "Mark answered"}</button><button class="button button--ghost button--small" type="button" data-close="closed">Close it</button>` : ""}
           ${asker ? "" : `<button class="button button--ghost button--small" type="button" data-report>Report</button>`}
         </div>
@@ -74,6 +94,7 @@
           <div class="sp-actions"><button class="button button--primary" type="submit">Ask the circle</button></div>
           ${statusLine()}
         </form></details>` : `<p class="sp-notice">${esc(state.standing.reasons.join(" "))}</p>`}
+      ${message ? `<p class="sp-notice" role="status">${esc(message)}</p>` : ""}
       <section class="sp-section"><h2>Being held</h2>${open.length ? open.map(card).join("") : `<p class="sp-empty">No petitions are open.</p>`}</section>
       ${closed.length ? `<section class="sp-section"><div class="sp-actions"><button class="button button--ghost button--small" type="button" data-toggle-closed>${showClosed ? "Hide" : "Show"} answered and closed (${closed.length})</button></div>${showClosed ? closed.slice(0, 30).map(card).join("") : ""}</section>` : ""}`;
 
@@ -82,6 +103,8 @@
       event.preventDefault();
       const saved = await UI.busy(ask, ask.querySelector("[data-status]"), () => D.askPetition(state.coven.id, ask.elements.title.value.trim(), ask.elements.body.value.trim(), ask.elements.color.value));
       if (!saved) return;
+      const problem = await onAltar(saved, (P, now) => P.seedPetitionAltar(saved, now));
+      message = `The circle is holding it. Its candle is lit on its own altar.${problem}`;
       await load();
       draw();
     });
@@ -97,6 +120,9 @@
         event.preventDefault();
         const saved = await UI.busy(form, form.querySelector("[data-status]"), () => D.tendPetition(id, form.elements.note?.value));
         if (!saved) return;
+        const name = state.context.profile?.display_name || "A member";
+        const problem = await onAltar(p, (P, now) => P.tendPetitionAltar(p, name, now));
+        message = `You tended “${p.title}”. A candle burns in your name beside it.${problem}`;
         await load();
         draw();
       });
@@ -119,6 +145,7 @@
   async function mount(el, s) {
     pane = el;
     state = s;
+    message = "";
     pane.innerHTML = `<p class="sp-caption">Gathering the petitions…</p>`;
     await load();
     if (pane !== el) return;

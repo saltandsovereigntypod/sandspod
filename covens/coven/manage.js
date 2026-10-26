@@ -217,6 +217,7 @@
   function rankForm(r) {
     const id = r.id || "new";
     const check = (name, label) => `<label class="cv-check"><input type="checkbox" name="${name}" ${r[name] ? "checked" : ""} /> <span>${label}</span></label>`;
+    const power = (p) => `<label class="cv-check"><input type="checkbox" name="${p.key}" ${L.powerOn(r, p) ? "checked" : ""} /> <span>${esc(p.label)}</span></label>`;
     return `<details class="sp-details"${r.id ? "" : " open"}><summary>${r.id ? `${esc(r.name)} · level ${r.level}` : "Add a position"}</summary>
         <form class="sp-section" data-rank="${esc(r.id || "")}">
           <div class="sp-grid-2">
@@ -227,15 +228,7 @@
           <div class="sp-field"><label for="r-req-${id}">What it asks of someone (shown to those who apply for it)</label><textarea id="r-req-${id}" name="requirements" maxlength="2000">${esc(r.requirements || "")}</textarea></div>
           ${check("is_default", "New members begin here")}
           ${check("open_to_applications", "Members can apply to rise to it")}
-          ${check("can_review", "Reviews applications and requests to advance")}
-          ${check("can_moderate", "Moderates the gathering (removes messages, pauses or removes members)")}
-          ${check("can_lead_rituals", "Leads the coven’s rituals (plans them, gives out their steps, begins them)")}
-          ${check("can_schedule_rites", "Puts rites on the coven’s calendar")}
-          ${check("can_write_book", "Writes in the coven’s Book of Shadows (drafts go for approval)")}
-          ${check("can_approve_book", "Approves pages for the coven’s Book of Shadows")}
-          ${check("can_manage_programs", "Manages initiation and training (designs programs, chooses who takes them, assigns mentors, signs off work)")}
-          ${check("can_view_progress", "Sees everyone’s initiation and training progress")}
-          ${check("can_manage", "Leads the coven (edits its pages, positions and details)")}
+          ${L.RANK_POWERS.map((p) => power(p)).join("")}
           <div class="sp-actions"><button class="button button--primary button--small" type="submit">${r.id ? "Save" : "Add"}</button>${r.id ? `<button class="button button--ghost button--small" type="button" data-delete-rank="${esc(r.id)}">Delete</button>` : ""}</div>
           ${statusLine()}
         </form></details>`;
@@ -356,7 +349,7 @@
           event.preventDefault();
           const data = Object.fromEntries(new FormData(form));
           const row = { coven_id: coven.id, name: data.name.trim(), level: Number(data.level) || 1, description: data.description.trim() || null, requirements: data.requirements.trim() || null };
-          for (const flag of ["is_default", "open_to_applications", "can_review", "can_moderate", "can_lead_rituals", "can_schedule_rites", "can_write_book", "can_approve_book", "can_manage_programs", "can_view_progress", "can_manage"]) row[flag] = Boolean(data[flag]);
+          for (const flag of ["is_default", "open_to_applications", ...L.RANK_POWERS.map((p) => p.key)]) row[flag] = Boolean(data[flag]);
           if (form.dataset.rank) row.id = form.dataset.rank;
           if (await UI.busy(form, form.querySelector("[data-status]"), () => D.saveRank(row))) refresh("manage");
         })

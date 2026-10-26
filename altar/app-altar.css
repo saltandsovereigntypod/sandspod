@@ -253,3 +253,18 @@ a.app-chip { text-decoration: none; }
 .app-sigil:hover, .app-sigil:focus-visible { border-color: var(--gold); }
 .app-sigil:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .app-sigil[disabled] { opacity: .55; cursor: default; }
+
+
+/* A coven altar, shared (js/features/coven-altar.js). */
+.coven-altar-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 12px; margin: 0 0 12px; padding: 12px 16px; border: 1px solid rgba(226, 195, 109, 0.45); border-radius: 16px; background: rgba(185, 160, 93, 0.1); }
+.coven-altar-bar h2 { margin: 2px 0; font-size: 1.4rem; }
+.coven-altar-bar p { margin: 2px 0; }
+.coven-altar-bar__status { color: var(--gold); font-weight: 600; }
+.coven-altar-bar__here, .coven-altar-bar__reason { font-size: 0.92rem; opacity: 0.85; }
+.coven-altar-bar__actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.is-coven-view-only .altar-stage .altar-object { pointer-events: none; }
+.is-coven-view-only .altar-action-bar,
+.is-coven-view-only .altar-toolbar,
+.is-coven-view-only [data-open-cabinet-overlay],
+.is-coven-view-only [data-open-apothecary-overlay] { display: none !important; }
+.coven-altar-bar [hidden] { display: none !important; }

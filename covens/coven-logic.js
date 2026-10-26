@@ -155,6 +155,12 @@
       schedule: open && active && (founder || Boolean(rank && (rank.can_schedule_rites || rank.can_manage))),
       writeBook: open && active && (founder || Boolean(rank && (rank.can_write_book || rank.can_approve_book || rank.can_manage))),
       approveBook: open && active && (founder || Boolean(rank && (rank.can_approve_book || rank.can_manage))),
+      // Altars and chat (20261028000000_coven_altars.sql). Starting altars and
+      // chat are on for a position unless the head turns them off.
+      startAltars: open && active && (founder || !rank || rank.can_start_altars !== false || Boolean(rank.can_keep_altars) || Boolean(rank.can_manage)),
+      tendAltars: open && active && (founder || Boolean(rank && (rank.can_tend_altars || rank.can_keep_altars || rank.can_manage))),
+      keepAltars: open && active && (founder || Boolean(rank && (rank.can_keep_altars || rank.can_manage))),
+      chat: open && active && (founder || !rank || rank.can_chat !== false || Boolean(rank.can_moderate) || Boolean(rank.can_manage)),
       muted,
       site: Boolean(siteModerator),
       status: membership?.status || null
@@ -196,9 +202,31 @@
     if (rank?.can_approve_book || rank?.can_manage) powers.push("approves pages in the coven’s book");
     else if (rank?.can_write_book) powers.push("writes in the coven’s book");
     if (rank?.can_manage_programs || rank?.can_manage) powers.push("manages initiation and training");
+    if (rank?.can_keep_altars || rank?.can_manage) powers.push("keeps the coven’s altars");
+    else if (rank?.can_tend_altars) powers.push("tends the coven’s altars");
     else if (rank?.can_view_progress) powers.push("sees everyone’s progress");
     return powers;
   }
+
+  /** Every power a position can carry, as the head chooses them (the app's RANK_POWERS). */
+  const RANK_POWERS = [
+    { key: "can_review", label: "Reviews applications and requests to advance" },
+    { key: "can_moderate", label: "Moderates the gathering (removes messages, pauses or removes members)" },
+    { key: "can_lead_rituals", label: "Leads the coven’s rituals (plans them, gives out their steps, begins them)" },
+    { key: "can_schedule_rites", label: "Puts rites on the coven’s calendar" },
+    { key: "can_write_book", label: "Writes in the coven’s Book of Shadows (drafts go for approval)" },
+    { key: "can_approve_book", label: "Approves pages for the coven’s Book of Shadows" },
+    { key: "can_manage_programs", label: "Manages initiation and training (designs programs, chooses who takes them, assigns mentors, signs off work)" },
+    { key: "can_view_progress", label: "Sees everyone’s initiation and training progress" },
+    { key: "can_start_altars", label: "Starts new altars for the coven", on: true },
+    { key: "can_tend_altars", label: "Tends the coven’s altars (the ritual altar, and any kept for chosen people), outside rituals" },
+    { key: "can_keep_altars", label: "Keeps the coven’s altars (chooses who tends each one, locks them, clears them away)" },
+    { key: "can_chat", label: "Talks in the coven’s chat", on: true },
+    { key: "can_manage", label: "Leads the coven (edits its pages, positions and details)" }
+  ];
+
+  /** Whether a position's form shows a power ticked: the saved value, or the database's default for a new one. */
+  const powerOn = (rank, power) => (rank?.[power.key] == null ? Boolean(power.on) : Boolean(rank[power.key]));
 
   /** The directory's search and filters. */
   function filterDirectory(covens, { query = "", joining = "all" } = {}) {
@@ -554,6 +582,8 @@
     grantableRanks,
     advancementOptions,
     rankPowers,
+    RANK_POWERS,
+    powerOn,
     filterDirectory,
     candleState,
     candleImage,
