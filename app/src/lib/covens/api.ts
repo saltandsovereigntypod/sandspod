@@ -97,6 +97,17 @@ export async function fetchMyCovens(userId: string): Promise<Coven[]> {
   return rows.map((r) => r.covens).filter((c): c is Coven => !!c);
 }
 
+/** Your covens with your place in each (membership and the coven's positions), for planning reminders. */
+export async function fetchMyStandings(userId: string): Promise<{ coven: Coven; membership: Member; ranks: Rank[] }[]> {
+  const rows = await run<(Member & { covens: Coven | null })[]>(
+    supabase.from('coven_members').select(`coven_id,user_id,rank_id,status,muted_until,joined_at,covens(${COVEN_FIELDS})`).eq('user_id', userId).eq('status', 'active'),
+  );
+  const mine = rows.filter((r) => !!r.covens);
+  if (!mine.length) return [];
+  const ranks = await run<Rank[]>(supabase.from('coven_ranks').select('*').in('coven_id', mine.map((r) => r.coven_id)));
+  return mine.map(({ covens, ...membership }) => ({ coven: covens!, membership, ranks: ranks.filter((k) => k.coven_id === membership.coven_id) }));
+}
+
 export type CovenSnapshot = {
   coven: Coven;
   ranks: Rank[];

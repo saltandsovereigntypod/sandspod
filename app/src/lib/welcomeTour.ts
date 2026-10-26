@@ -58,7 +58,7 @@ export const TOUR_PAGES: TourPage[] = [
   {
     icon: { tab: 'calendar' },
     title: 'Calendars and reminders',
-    body: 'Keep the holidays of the calendars you follow, count your days by the moon, and show old calendars such as the Athenian or the Roman. Reminders can ring for the moon, your plans and your look-back days.',
+    body: 'Keep the holidays of the calendars you follow, count your days by the moon, and show old calendars such as the Athenian or the Roman. Reminders can ring for the moon and your plans, the holidays you choose, tending your plants, altar, offerings, crystals and candles, and planning a ritual for your holidays and your coven, each as you like it.',
   },
   {
     icon: { tab: 'coven' },

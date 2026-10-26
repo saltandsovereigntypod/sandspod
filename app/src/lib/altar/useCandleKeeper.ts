@@ -1,8 +1,9 @@
 // Puts out candles (and incense) on your saved altars when their life runs
 // out, as the website does, records moon charges for crystals and moon water
 // that sat through a Full Moon, and saves the altar so it syncs. It also
-// tells the reminders which offerings will want tending and which potted
-// plants will want water (if you asked for those reminders). Runs when the
+// tells the reminders about your altars and stones: which offerings will want
+// tending, which potted plants will want water, your crystals and your
+// candles (reminders/sources.ts), for the tending reminders you choose. Runs when the
 // app opens or comes to the front, when your altars change, and at the next burnout.
 
 import { useEffect, useRef, useState } from 'react';
@@ -10,8 +11,10 @@ import { AppState } from 'react-native';
 
 import { useCraft } from '../craft/store';
 import { ALTAR_OPTIONS, altarOptionsFor, type AltarOptions } from './altarOptions';
-import { altarOfferingsDue, altarWateringDue, nextAltarBurnout, settleAltars } from './burnout';
-import { setOfferingsDue, setWateringDue } from '../reminders/store';
+import { nextAltarBurnout, settleAltars } from './burnout';
+import { STONES } from '../craft/crystal/collections';
+import { tendingSources } from '../reminders/sources';
+import { setTendingSources } from '../reminders/store';
 import { useAltars } from './store';
 
 export function useCandleKeeper() {
@@ -19,6 +22,7 @@ export function useCandleKeeper() {
   const [wake, setWake] = useState(0);
   const busy = useRef(false);
   const { entries: optionEntries, ready: optionsReady } = useCraft<AltarOptions>(ALTAR_OPTIONS);
+  const { entries: stones } = useCraft<{ key?: string | null; name?: string }>(STONES);
 
   useEffect(() => {
     const sub = AppState.addEventListener('change', (next) => {
@@ -29,8 +33,7 @@ export function useCandleKeeper() {
 
   useEffect(() => {
     if (status === 'loading' || status === 'idle' || busy.current) return;
-    setOfferingsDue(altarOfferingsDue(altars, new Date()));
-    setWateringDue(altarWateringDue(altars, new Date()));
+    setTendingSources(tendingSources(altars, stones, new Date()));
     const changed = settleAltars(altars, new Date().toISOString(), {
       // Moon charges wait until each altar's options are known (New Moons are its choice).
       moon: optionsReady,
@@ -55,5 +58,5 @@ export function useCandleKeeper() {
     if (next == null) return;
     const timer = setTimeout(() => setWake((w) => w + 1), Math.min(Math.max(0, next - Date.now()) + 1000, 6 * 60 * 60 * 1000));
     return () => clearTimeout(timer);
-  }, [altars, save, status, wake, optionEntries, optionsReady]);
+  }, [altars, save, status, wake, optionEntries, optionsReady, stones]);
 }

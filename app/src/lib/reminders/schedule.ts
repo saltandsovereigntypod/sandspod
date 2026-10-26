@@ -139,10 +139,29 @@ export function anyReminders(settings: ReminderSettings): boolean {
   return settings.rituals || settings.lookBacks || settings.devotionMorning || settings.devotionEvening || settings.sacredDays || settings.dreamMorning || settings.offerings || settings.watering || PHASE_ORDER.some((p) => settings.phases[p]);
 }
 
+/** What a reminder is about (plan.ts adds holidays, tending, planning, coven rites and the day's summary). */
+export type ReminderKind =
+  | 'moon'
+  | 'ritual'
+  | 'devotion'
+  | 'sacred'
+  | 'dream'
+  | 'lookback'
+  | 'offering'
+  | 'watering'
+  | 'deipnon'
+  | 'holiday'
+  | 'altar'
+  | 'crystal'
+  | 'candle'
+  | 'planning'
+  | 'coven'
+  | 'summary';
+
 export type Reminder = {
   /** Stable per event, so rescheduling never duplicates. */
   key: string;
-  kind: 'moon' | 'ritual' | 'devotion' | 'sacred' | 'dream' | 'lookback' | 'offering' | 'watering' | 'deipnon';
+  kind: ReminderKind;
   at: Date;
   title: string;
   body: string;
@@ -202,6 +221,8 @@ export function buildSchedule(
   waterings: WateringDue[] = [],
   /** Hekate's Deipnon each month (deipnon.ts deipnonReminders), for those who keep it; turned off in Settings → Calendars. */
   deipna: DeipnonReminder[] = [],
+  /** At most this many (plan.ts asks for all and chooses for itself). */
+  cap: number = MAX_REMINDERS,
 ): Reminder[] {
   const horizon = now.getTime() + horizonDays * 86_400_000;
   const reminders: Reminder[] = [];
@@ -402,5 +423,5 @@ export function buildSchedule(
     .filter((r) => !(r.kind === 'sacred' && r.key.startsWith('sacred-hekate:') && deipnonDays.has(r.key.slice('sacred-hekate:'.length))))
     .filter((r) => r.at.getTime() > now.getTime() && r.at.getTime() <= horizon)
     .sort((a, b) => a.at.getTime() - b.at.getTime())
-    .slice(0, MAX_REMINDERS);
+    .slice(0, cap);
 }
