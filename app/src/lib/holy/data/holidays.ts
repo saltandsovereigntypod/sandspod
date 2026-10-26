@@ -2121,7 +2121,7 @@ export const HOLIDAY_PAGES: HolyPage[] = [
     ],
     ritual: { premade: 'folk-dziady-meal' },
     correspondences: {
-      deities: ['Veles', 'Mokosh'],
+      deities: ['Veles', 'Mokosh', 'Rod'],
       herbs: ['Rosemary', 'Juniper', 'Birch'],
       crystals: ['Jet', 'Smoky Quartz', 'Amber'],
       colors: ['White', 'Black', 'Red'],
@@ -2171,7 +2171,7 @@ export const HOLIDAY_PAGES: HolyPage[] = [
       ],
     },
     correspondences: {
-      deities: ['Dazhbog', 'Veles'],
+      deities: ['Dazhbog', 'Svarog', 'Veles'],
       herbs: ['Juniper', 'Birch', 'Holly'],
       crystals: ['Garnet', 'Amber', 'Clear Quartz'],
       colors: ['Red', 'Gold', 'White'],

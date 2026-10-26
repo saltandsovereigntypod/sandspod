@@ -11365,6 +11365,221 @@ const TraditionalLibrary = {
 
             tags: ["healing", "springs", "justice", "bath", "sun", "wisdom"]
         },
+
+        svarog: {
+            DisplayName: "Svarog",
+            Category: "Deity",
+
+            Pantheon: "Slavic",
+
+            Domains: "The heavenly fire and the forge, smithing, the sky, law and order, fatherhood of the sun",
+
+            SacredSymbols: "Hammer and anvil, tongs, fire, the sun his son carries",
+
+            SacredAnimals: "None securely attested in Slavic sources",
+
+            SacredPlants: "Oak (a modern association)",
+
+            CandleColors: "Red, gold, orange",
+
+            Crystals: "Carnelian, garnet, pyrite, hematite",
+
+            Herbs: "Oak, juniper, St John’s wort",
+
+            Offerings: "Bread, kvass or beer, honey, a fire safely kept, something forged or made",
+
+            TraditionalWarnings: "Svarog is named in only one medieval source, a gloss in the Hypatian Chronicle that likens him to the Greek smith Hephaestus and calls Dazhbog the sun his son. The great sky-father of much modern Rodnovery is a modern elaboration; some Rodnover groups also carry nationalist politics, so choose communities with care.",
+
+            Overview: "Svarog is an East Slavic god of fire and the forge. A twelfth-century gloss in the Hypatian Chronicle, translating a Greek chronicle, says that in the time of Svarog tongs fell from the sky and people began to forge weapons, and that his son was the Sun, called Dazhbog. Among the western Slavs, Thietmar of Merseburg names Svarozhich, son of Svarog, as the god of the great temple at Rethra.",
+
+            TraditionalMeaning: "Creative fire: the forge that shapes, the law that orders, and a father’s light passed on.",
+
+            DevotionalApproach: "Start here: light a candle in a safe holder, make or repair something with your hands, and offer the work to him. Approach him with respect for fire and for good work. He is honoured by craft, fairness and keeping the household fire safely.",
+
+            OfferingNotes: "Offer bread, honey, kvass or beer, or something you have made. Keep any flame attended and safe.",
+
+            AltarIdeas: "A red or gold candle in a deep holder, a small hammer or horseshoe, carnelian or pyrite, a loaf of bread and a sun symbol for Dazhbog.",
+
+            CulturalContext: "Svarog is honoured today in Rodnovery, the living Slavic Native Faith, where he is often seen as the heavenly smith and father of the gods. Learn from Slavic communities, choosing inclusive groups, and from careful scholarship on the scant medieval sources.",
+
+            Traditions: "Slavic",
+
+            TraditionNotes: "Slavic: Rodnovers honour Svarog with fire, bread and honey, often at the winter solstice (Koliada) with Dazhbog, and when beginning craft work. He is asked for skill, a safe hearth, order and justice.",
+
+            tags: ["fire", "forge", "craft", "sky", "order", "fatherhood"]
+        },
+
+        stribog: {
+            DisplayName: "Stribog",
+            Category: "Deity",
+
+            Pantheon: "Slavic",
+
+            Domains: "The winds, the air, weather, breath, distribution of good fortune (in some readings)",
+
+            SacredSymbols: "The winds, the bow (in modern iconography), feathers",
+
+            SacredAnimals: "None securely attested in Slavic sources",
+
+            SacredPlants: "None securely attested in Slavic sources",
+
+            CandleColors: "Pale blue, white, grey",
+
+            Crystals: "Clear quartz, blue lace agate, celestite, aquamarine",
+
+            Herbs: "Mint, lavender, birch",
+
+            Offerings: "Bread crumbs or grain scattered to the wind, feathers, a breath of song",
+
+            TraditionalWarnings: "Stribog is known from two lines: the Primary Chronicle lists his idol among the gods Prince Vladimir set up in Kyiv in 980, and The Tale of Igor’s Campaign calls the winds Stribog’s grandsons. Everything else said about him is modern interpretation.",
+
+            Overview: "Stribog is an East Slavic god of the winds. The Primary Chronicle names him among the six gods whose idols Prince Vladimir raised on the hill at Kyiv in 980, before Rus’ became Christian, and the twelfth-century Tale of Igor’s Campaign speaks of the winds, Stribog’s grandsons, blowing arrows from the sea. Scholars disagree about what his name means: perhaps the god who spreads, or shares out, good fortune.",
+
+            TraditionalMeaning: "The moving air: breath, weather, change and the scattering of gifts far and wide.",
+
+            DevotionalApproach: "Start here: go outside on a windy day, breathe deeply and scatter a pinch of crumbs or grain for the birds in his name. Approach him with openness to change. He is honoured by attention to weather, to breath and to sharing.",
+
+            OfferingNotes: "Offer crumbs, grain or seed scattered to the wind, or a song sung outdoors. Choose offerings that are safe for birds.",
+
+            AltarIdeas: "A pale blue or white candle, a feather, a small wind chime, clear quartz and a dish of grain.",
+
+            CulturalContext: "Stribog is honoured today in Rodnovery, the living Slavic Native Faith. Because his sources are so slight, Rodnovers differ widely in how they understand him; learn from Slavic communities, choosing inclusive groups.",
+
+            Traditions: "Slavic",
+
+            TraditionNotes: "Slavic: Rodnovers honour Stribog on windy days and in spring, when the winds turn, with grain scattered to the air and songs. He is asked for good weather, safe travel and the free movement of good fortune.",
+
+            tags: ["wind", "air", "weather", "breath", "change", "sharing"]
+        },
+
+        jarilo: {
+            DisplayName: "Jarilo",
+            Category: "Deity",
+
+            Pantheon: "Slavic",
+
+            Domains: "Spring and its heat, growth and fertility, youth and passion, the death and return of vegetation",
+
+            SacredSymbols: "A white horse, a wreath of flowers, ears of grain, the straw effigy",
+
+            SacredAnimals: "White horse",
+
+            SacredPlants: "Spring flowers, grain, birch",
+
+            CandleColors: "Green, gold, red",
+
+            Crystals: "Green aventurine, peridot, carnelian, citrine",
+
+            Herbs: "Birch, St John’s wort, cornflower",
+
+            Offerings: "Flowers, eggs, bread, dance and song",
+
+            TraditionalWarnings: "Jarilo is known from East Slavic folk customs recorded from the eighteenth and nineteenth centuries, when young people held Yarilo festivals and buried a straw figure of him. Whether he was an ancient god or a figure of folk ritual is debated; reconstructions that make him a great pagan deity are modern.",
+
+            Overview: "Jarilo, or Yarilo, is a Slavic figure of spring heat, youth and fertility, whose name comes from a root meaning spring, fierce or ardent. In Russian and Belarusian villages, folk festivals called Yarilo were held in late spring and early summer, with games, dancing and, at the end, the burial of a straw Yarilo; in Belarus a girl dressed as Yarila rode a white horse with a wreath and ears of grain. Modern scholars and Rodnovers have built a fuller mythology around him.",
+
+            TraditionalMeaning: "Spring’s fierce life: passion, growth, youthful energy and the season that must pass so the harvest can come.",
+
+            DevotionalApproach: "Start here: on a warm spring or summer day, go outside, put flowers in your hair or a jar, and dance or move for a few minutes in the sun. Approach him with joy and energy. He is honoured by enjoying the season, caring for growing things and letting go when it ends.",
+
+            OfferingNotes: "Offer flowers, eggs, bread or a dance. Planting seeds is a fitting offering in spring.",
+
+            AltarIdeas: "A green or gold candle, a wreath of spring flowers, a white horse figure, ears of grain, green aventurine and birch twigs.",
+
+            CulturalContext: "Jarilo is honoured today in Rodnovery, the living Slavic Native Faith, and remembered in Slavic folk tradition. Learn from Slavic folklore collections and communities, choosing inclusive groups.",
+
+            Traditions: "Slavic",
+
+            TraditionNotes: "Slavic: Rodnovers and folk revivalists honour Jarilo in spring and early summer, near Kupala, with flowers, round dances, songs and the burial of a straw Yarilo at season’s end. He is asked for growth, fertility, health and youthful strength.",
+
+            tags: ["spring", "fertility", "youth", "growth", "passion", "folk"]
+        },
+
+        zorya: {
+            DisplayName: "Zorya",
+            Category: "Deity",
+
+            Pantheon: "Slavic",
+
+            Domains: "Dawn and dusk, the morning and evening stars, protection, healing in folk charms",
+
+            SacredSymbols: "The dawn sky, the morning and evening stars, a veil",
+
+            SacredAnimals: "None securely attested in Slavic sources",
+
+            SacredPlants: "None securely attested in Slavic sources",
+
+            CandleColors: "Rose, gold, violet",
+
+            Crystals: "Rose quartz, sunstone, amethyst, moonstone",
+
+            Herbs: "Rose, chamomile, lavender",
+
+            Offerings: "Water left out overnight, flowers, words spoken at dawn or dusk",
+
+            TraditionalWarnings: "Zorya, the dawn, appears as a maiden or as sisters in East Slavic folk charms and folklore recorded from the nineteenth century, not as a goddess with a known cult. Popular modern stories about her guarding a chained hound in the stars come from later retellings and should not be presented as old myth.",
+
+            Overview: "Zorya is the Slavic dawn, imagined in folklore as a maiden or as sisters: Zorya Utrennyaya, the morning dawn, and Zorya Vechernyaya, the evening dawn, often linked to the morning and evening stars. East Slavic healing charms call on Zorya-Zarnitsa, the red maiden, to take away illness, and the nineteenth-century folklorist Alexander Afanasyev gathered many such sayings.",
+
+            TraditionalMeaning: "Thresholds of light: new beginnings, endings made gently, hope and protection at the edges of the day.",
+
+            DevotionalApproach: "Start here: at dawn or dusk, look towards the horizon for a minute and greet her, asking for a good beginning or a peaceful end to the day. Approach her gently. She is honoured by noticing the edges of the day and starting and ending well.",
+
+            OfferingNotes: "Offer flowers, or a cup of water left out overnight and poured out at dawn. Speaking a few words of greeting at sunrise or sunset is the simplest offering.",
+
+            AltarIdeas: "A rose or gold candle for dawn and a violet one for dusk, rose quartz and amethyst, and a few flowers by an east or west window.",
+
+            CulturalContext: "Zorya is honoured today in Rodnovery, the living Slavic Native Faith, and remembered in Slavic folk charms and songs. Learn from Slavic folklore collections and communities, choosing inclusive groups.",
+
+            Traditions: "Slavic",
+
+            TraditionNotes: "Slavic: Rodnovers greet Zorya at dawn and dusk, especially in spring, with flowers and words of greeting, and folk healers long called on her in charms against illness. She is asked for good beginnings, protection and healing.",
+
+            tags: ["dawn", "dusk", "stars", "beginnings", "healing", "protection"]
+        },
+
+        rod: {
+            DisplayName: "Rod",
+            Category: "Deity",
+
+            Pantheon: "Slavic",
+
+            Domains: "Birth and kin, ancestry and family line, fate at birth, the household’s continuity",
+
+            SacredSymbols: "The family line, bread, honey and cheese set out for the Rod and Rozhanitsy, the hearth",
+
+            SacredAnimals: "None securely attested in Slavic sources",
+
+            SacredPlants: "None securely attested in Slavic sources",
+
+            CandleColors: "Red, white, gold",
+
+            Crystals: "Garnet, jasper, amber, smoky quartz",
+
+            Herbs: "Birch, dill, rye",
+
+            Offerings: "Bread, cheese, honey, porridge, remembrance of ancestors",
+
+            TraditionalWarnings: "Rod is known from medieval Russian church sermons that condemn people for setting out bread, cheese and honey for Rod and the Rozhanitsy, the birth spirits. Whether Rod was a god of birth and kin or a supreme creator, as Boris Rybakov argued and many Rodnovers now believe, is debated; the evidence is slight.",
+
+            Overview: "Rod is an East Slavic power of birth and kinship, whose name means kin, clan or birth. Medieval Russian sermons and penitential texts, from the twelfth century on, scold Christians for keeping a second meal for Rod and the Rozhanitsy, spirits who were thought to decide a newborn’s fate. In modern Rodnovery Rod is often honoured as the source of all things and the ancestors.",
+
+            TraditionalMeaning: "The thread of kin: ancestry, birth, the continuity of the family and the fate given at the start of life.",
+
+            DevotionalApproach: "Start here: set out a little bread and honey, say the names of your ancestors as far back as you know them, and thank them for your life. Approach him with gratitude. He is honoured by caring for family, remembering ancestors and welcoming new children.",
+
+            OfferingNotes: "Offer bread, cheese, honey or porridge, set out at a family meal, especially after a birth. Learning and writing down your family’s history is an offering in his spirit.",
+
+            AltarIdeas: "A red or white candle, family photographs, an embroidered cloth, a loaf, a dish of honey and garnet or amber.",
+
+            CulturalContext: "Rod is honoured today in Rodnovery, the living Slavic Native Faith, where he is central to many groups’ beliefs. Some Rodnover groups carry nationalist or ethnic politics around kin and blood; choose inclusive communities and remember that kinship can be chosen as well as born.",
+
+            Traditions: "Slavic",
+
+            TraditionNotes: "Slavic: Rodnovers honour Rod with bread, honey and porridge at births and family gatherings and at the ancestor feasts of Dziady, often with the Rozhanitsy. He is asked to bless the family line, protect children and keep the ancestors near.",
+
+            tags: ["ancestors", "kin", "birth", "family", "fate", "household"]
+        },
     },
 
     tool: {

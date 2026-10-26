@@ -2943,6 +2943,107 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     sources: [DLUGOSZ_MARZANNA, RYAN],
   },
 
+  {
+    key: 'svarog',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'slavic', id: 'koliada' },
+        name: 'Koliada',
+        why: 'The winter solstice feast, when many Rodnovers honour the heavenly smith and his son the sun. This is modern Rodnover custom; no medieval source gives Svarog a day.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Light a candle safely and make or mend something by hand.',
+      'Offer a piece of bread and honey at the hearth or stove.',
+      'Deal fairly in one thing today.',
+      'Check that your home’s fires and stoves are safe.',
+    ],
+    approach:
+      'Svarog is approached with respect for fire and good work, honest that he is named in a single medieval gloss.',
+    sources: ['The Hypatian Chronicle, s.a. 1114, gloss on John Malalas', 'Thietmar of Merseburg, Chronicon 6.23, on Svarozhich at Rethra', RYAN],
+  },
+  {
+    key: 'stribog',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'slavic', id: 'marzanna' },
+        name: 'The Drowning of Marzanna',
+        why: 'The spring rite that sends winter away, when the winds turn. Honouring Stribog then is a modern Rodnover custom; his sources give him no day.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Stand in the wind for a minute and breathe deeply.',
+      'Scatter a few crumbs or seeds for the birds.',
+      'Open a window and let fresh air through your home.',
+      'Share something good with someone far away.',
+    ],
+    approach:
+      'Stribog is approached with openness to change, honest that he is known from only two medieval lines.',
+    sources: ['The Primary Chronicle, s.a. 980', 'The Tale of Igor’s Campaign', IVANITS],
+  },
+  {
+    key: 'jarilo',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'slavic', id: 'kupala' },
+        name: 'Kupala Night',
+        why: 'Folk Yarilo festivals were held in late spring and early summer, near Kupala and St Peter’s Day, ending with the burial of a straw Yarilo, as recorded in the eighteenth and nineteenth centuries.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Put flowers in a jar or your hair and enjoy the season.',
+      'Dance or move for a few minutes in the sun.',
+      'Plant a seed or water something growing.',
+      'Let go of something whose season has ended.',
+    ],
+    approach:
+      'Jarilo is approached with joy and energy, as the spirit of spring heat known from folk festivals.',
+    sources: [IVANITS, 'Vladimir Propp, Russian Agrarian Festivals (1963; trans. 1993)', RYAN],
+  },
+  {
+    key: 'zorya',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'ostara' },
+        name: 'The spring equinox',
+        why: 'The year’s dawn. Honouring Zorya then is a modern custom; in folklore she is greeted at every daybreak and dusk.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Look towards the horizon at dawn or dusk and greet her.',
+      'Leave a cup of water out overnight and pour it out at sunrise.',
+      'Begin one thing well today.',
+      'End the day by letting go of one worry.',
+    ],
+    approach:
+      'Zorya is approached gently, as the dawn of East Slavic folk charms.',
+    sources: ['Alexander Afanasyev, Poeticheskie vozzreniya slavyan na prirodu (1865–69)', RYAN],
+  },
+  {
+    key: 'rod',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'slavic', id: 'dziady' },
+        name: 'Dziady',
+        why: 'The autumn feast of the ancestors. Honouring Rod then is a modern Rodnover custom; the medieval sermons that mention the meal for Rod and the Rozhanitsy do not give it a pagan date.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Say the names of your ancestors as far back as you know them.',
+      'Set out a little bread and honey at a family meal.',
+      'Write down one story from your family’s past.',
+      'Welcome a new child, or their parents, with a small gift.',
+    ],
+    approach:
+      'Rod is approached with gratitude for kin, honest that the medieval evidence is slight and that kinship can be chosen as well as born.',
+    sources: ['The Sermon of a Certain Christ-Lover (Slovo nekoego khristolyubtsa), on offerings to Rod and the Rozhanitsy', IVANITS, RYAN],
+  },
+
   // ─── Hindu ────────────────────────────────────────────────────────────
   {
     key: 'ganesha',

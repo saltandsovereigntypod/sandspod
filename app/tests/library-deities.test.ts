@@ -35,6 +35,7 @@ const MORE_DEITIES: Record<string, string[]> = {
   'Celtic (Welsh)': ['gwydion', 'blodeuwedd', 'lleu', 'bran'],
   'Celtic (Gaulish)': ['taranis', 'sucellos', 'belenus'],
   'Celtic (British)': ['sulis'],
+  Slavic: ['svarog', 'stribog', 'jarilo', 'zorya', 'rod'],
 };
 const ALL_MORE = Object.values(MORE_DEITIES).flat();
 const text = (d: Deity, ...fields: string[]) => fields.map((f) => String(d[f] ?? '')).join(' ');
@@ -227,6 +228,8 @@ const MORE_LINKS: [string, string][] = [
   ['wheel-yule', 'aengus'],
   ['wheel-yule', 'boann'],
   ['celtic-lughnasadh', 'lleu'],
+  ['slavic-dziady', 'rod'],
+  ['slavic-koliada', 'svarog'],
 ];
 // Seasonal things kept for festivals that honour them.
 const MORE_SEASONAL: string[] = ['Lares', 'Njord'];
@@ -289,6 +292,11 @@ const MORE_SEARCH: [string, string][] = [
   ['Aquileia', 'belenus'],
   ['Aquae Sulis', 'sulis'],
   ['Sulis Minerva', 'sulis'],
+  ['Svarozhich', 'svarog'],
+  ['Igor', 'stribog'],
+  ['Yarilo', 'jarilo'],
+  ['dawn', 'zorya'],
+  ['Rozhanitsy', 'rod'],
 ];
 // Living religions: devotion, not magic.
 const LIVING_PANTHEONS = ['Hindu', 'Shinto', 'Chinese'];
