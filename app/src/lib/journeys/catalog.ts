@@ -212,6 +212,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A month with Epona, the Gaulish goddess of horses, mules and donkeys who rode with the Roman cavalry from Britain to the Danube: her images and inscriptions, her stable shrines garlanded with roses, her feast on 18 December, and a self-dedication made through real care for animals."
   },
   {
+    "id": "deity-faunus",
+    "kind": "deity",
+    "paths": [
+      "roman"
+    ],
+    "deityRef": "traditional/deity/faunus",
+    "title": "Faunus of the Woods",
+    "summary": "A month with Faunus, the Roman god of woods, pasture and flocks: the old king of Latium who became a god, the voices heard in the forest, Horace’s country feast on the Nones of December, the Lupercalia told honestly, and a practice of listening outdoors and caring for animals."
+  },
+  {
     "id": "deity-flora",
     "kind": "deity",
     "paths": [
