@@ -83,6 +83,8 @@ export const setAltar = (altarId: string, name: string, editMode: CovenAltar['ed
 export const setAltarEditor = (altarId: string, who: { userId?: string | null; rankId?: string | null }, enabled: boolean) =>
   call<boolean>('set_coven_altar_editor', { p_altar: altarId, p_user: who.userId ?? null, p_rank: who.rankId ?? null, p_enabled: enabled });
 export const archiveAltar = (altarId: string, archived: boolean) => call<boolean>('archive_coven_altar', { p_altar: altarId, p_archived: archived });
+/** Delete an altar for good, with everything on it (its keepers only; rituals held there go back to the main altar). */
+export const deleteAltar = (altarId: string) => call<boolean>('delete_coven_altar', { p_altar: altarId });
 export const altarAccess = (altarId: string) => call<AltarAccess>('coven_altar_access', { p_altar: altarId });
 export const setRitualAltar = (ritualId: string, altarId: string | null, access: ('assigned' | 'everyone' | 'leader')[] | null) =>
   call('set_coven_ritual_altar', { p_ritual: ritualId, p_altar: altarId, p_access: access });
@@ -257,6 +259,10 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
       setAltar(payload.new);
       void checkAccess();
       if (payload.new.updated_by !== userId) receiveScene(sceneFromAltar(payload.new));
+    });
+    // Deleted by its keeper while you're here (deletes can't be filtered either).
+    channel.on('postgres_changes' as never, { event: 'DELETE', schema: 'public', table: 'coven_altars' } as never, (payload: { old: Partial<CovenAltar> }) => {
+      if (payload.old.id === altarId) setMissing(true);
     });
     for (const table of ['coven_rituals', 'coven_ritual_steps', 'coven_altar_editors', 'coven_members']) {
       channel.on('postgres_changes' as never, { event: '*', schema: 'public', table, filter: `coven_id=eq.${covenId}` } as never, () => void checkAccess());

@@ -1993,7 +1993,7 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
       <SafeAreaView edges={['top']} style={styles.safe}>
         <View style={styles.centered}>
           <Text style={type.cardTitle}>This altar isn’t here</Text>
-          <Text style={type.body}>{shared ? 'It may have been cleared away by its keeper.' : 'It may have been deleted, or it’s saved to another account.'}</Text>
+          <Text style={type.body}>{shared ? 'Its keeper may have cleared it away or deleted it.' : 'It may have been deleted, or it’s saved to another account.'}</Text>
           <Button label={shared ? 'Back to the coven’s altars' : 'Back to your altars'} variant="outline" onPress={() => (onBack ? onBack() : router.back())} />
         </View>
       </SafeAreaView>

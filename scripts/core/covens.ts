@@ -12,3 +12,5 @@ export * as unreadCount from '../../app/src/lib/covens/unreadCount.ts';
 export * as reading from '../../app/src/lib/covens/reading.ts';
 // Applications and requests to advance waiting for reviewers (the Review tab's and coven list's counts).
 export * as requests from '../../app/src/lib/covens/requests.ts';
+// A coven altar's chat window and deleting an altar for good (who may, and the words asked first).
+export * as altarPanel from '../../app/src/lib/covens/altarPanel.ts';

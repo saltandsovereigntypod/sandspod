@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { covenHref } from './CovenScreen';
 import { useReport } from './ui';
 import * as api from '../../lib/covens/api';
+import { badgeLabel, chatButtonLabel } from '../../lib/covens/altarPanel';
 import { withBlock } from '../../lib/covens/blocking';
 import { useCoven } from '../../lib/covens/CovenContext';
 import type { Message } from '../../lib/covens/model';
@@ -18,8 +19,12 @@ import { colors, fonts, radius, type } from '../../theme';
 // right, a box at the bottom to write in, and a bubble button on every coven
 // screen that opens your conversations.
 
-/** The chat button on every coven screen, with how many messages you haven't read. */
-export function ChatBubble() {
+/**
+ * The chat button on every coven screen, with how many messages you haven't
+ * read. It opens Messages, or `onPress` instead (a coven altar opens its small
+ * chat window over the altar).
+ */
+export function ChatBubble({ onPress }: { onPress?: () => void } = {}) {
   const coven = useCoven();
   const insets = useSafeAreaInsets();
   const covenId = coven.snapshot?.coven.id ?? null;
@@ -27,9 +32,9 @@ export function ChatBubble() {
   if (!covenId || !(coven.perms.member || coven.perms.site)) return null;
   return (
     <Pressable
-      onPress={() => router.push(covenHref(coven.slug, 'chat'))}
+      onPress={onPress ?? (() => router.push(covenHref(coven.slug, 'chat')))}
       accessibilityRole="button"
-      accessibilityLabel={`Messages${unread ? `, ${unread} unread` : ''}`}
+      accessibilityLabel={chatButtonLabel(unread, false)}
       style={({ pressed }) => [styles.fab, { bottom: 16 + Math.max(0, insets.bottom - 34) }, pressed && styles.pressed]}
     >
       <Text style={styles.fabIcon} accessibilityElementsHidden importantForAccessibility="no">
@@ -38,7 +43,7 @@ export function ChatBubble() {
       <Text style={styles.fabLabel}>Messages</Text>
       {unread > 0 && (
         <View style={styles.badge}>
-          <Text style={styles.badgeText}>{unread > 99 ? '99+' : unread}</Text>
+          <Text style={styles.badgeText}>{badgeLabel(unread)}</Text>
         </View>
       )}
     </Pressable>

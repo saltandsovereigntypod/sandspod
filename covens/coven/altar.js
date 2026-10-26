@@ -7,7 +7,8 @@
  * themselves.
  *
  * Here: start an altar, and "Who tends it" (its name, who may tend it, a
- * lock, chosen people and positions, clearing it away and bringing it back).
+ * lock, chosen people and positions, clearing it away and bringing it back,
+ * and deleting it for good).
  * The database decides every change (coven_altar_can_edit and the
  * set_coven_altar* functions); this page only asks and shows why not.
  * Rules shared with the app come from js/core/altar.js (SaltCore.altar.covenAltar),
@@ -130,6 +131,30 @@
     el.innerHTML = names.length ? `<span class="cv-presence__dot" aria-hidden="true"></span> Looking at the altars: ${names.map(esc).join(", ")}` : "";
   }
 
+  // --- deleting an altar for good -----------------------------------------------
+
+  // The app's rules and words (lib/covens/altarPanel.ts, via js/core/covens.js), with these if it hasn't loaded.
+  const P = () => global.SaltCore?.covens?.altarPanel || null;
+  const deleteWords = (name) =>
+    P()?.deleteAltarWords(name) || {
+      title: `Delete ${name || "this altar"}?`,
+      body: "This removes the altar and everything on it for the whole coven. This can’t be undone.",
+      confirm: "Delete the altar",
+      gentler: "Clearing it away hides it instead, and its keepers can bring it back."
+    };
+
+  /** For an altar's keepers: delete it for good, beside the gentler clearing away. */
+  function deleteHtml(altar, access) {
+    if (altar.is_main) return "";
+    const check = P() ? P().canDeleteAltar(altar, access) : { ok: Boolean(access?.keeper) && !access?.ritual_id, reason: null };
+    const words = deleteWords(altar.name);
+    return `<div class="sp-section">
+        <p class="sp-label">Delete it for good</p>
+        <p class="sp-caption">${esc(words.body)} ${esc(words.gentler)}</p>
+        ${check.ok ? `<div class="sp-actions"><button class="button button--ghost button--small" type="button" data-delete-altar>Delete this altar</button></div><p class="cv-status" role="status" aria-live="polite" data-delete-status></p>` : check.reason ? `<p class="sp-caption">${esc(check.reason)}</p>` : ""}
+      </div>`;
+  }
+
   // --- who tends it -------------------------------------------------------------
 
   async function tendsPanel(holder, altar) {
@@ -170,7 +195,8 @@
         <div class="cv-chosen">${active.filter((m) => m.user_id !== state.context.user?.id).map((m) => `<label class="cv-check"><input type="checkbox" data-editor-user="${esc(m.user_id)}"${chosenPerson(m.user_id) ? " checked" : ""} /> <span>${esc(UI.nameOf(state.context, m.user_id))}</span></label>`).join("") || `<span class="sp-caption">No one else yet.</span>`}</div>
         <p class="cv-status" role="status" aria-live="polite" data-chosen-status></p>
       </div>
-      ${altar.is_main ? "" : `<div class="sp-actions"><button class="button button--ghost button--small" type="button" data-archive="${altar.archived_at ? "0" : "1"}">${altar.archived_at ? "Bring it back" : "Clear it away"}</button></div><p class="cv-status" role="status" aria-live="polite" data-archive-status></p>`}`;
+      ${altar.is_main ? "" : `<div class="sp-actions"><button class="button button--ghost button--small" type="button" data-archive="${altar.archived_at ? "0" : "1"}">${altar.archived_at ? "Bring it back" : "Clear it away"}</button></div><p class="cv-status" role="status" aria-live="polite" data-archive-status></p>`}
+      ${deleteHtml(altar, access)}`;
 
     const form = holder.querySelector("[data-altar-settings]");
     form.addEventListener("change", (event) => {
@@ -193,6 +219,14 @@
         if (!ok) box.checked = !box.checked;
       })
     );
+    holder.querySelector("[data-delete-altar]")?.addEventListener("click", async (event) => {
+      const words = deleteWords(altar.name);
+      if (!(await UI.confirmAction(words.title, words.body, words.confirm))) return;
+      const ok = await UI.busy(event.currentTarget, holder.querySelector("[data-delete-status]"), () => D.deleteAltar(altar.id).then(() => true));
+      if (!ok) return;
+      open = "";
+      await reload();
+    });
     holder.querySelector("[data-archive]")?.addEventListener("click", async (event) => {
       const archive = event.currentTarget.dataset.archive === "1";
       if (archive && !(await UI.confirmAction(`Clear away ${altar.name}?`, "It leaves the coven’s altars. Its keepers can bring it back.", "Clear it away"))) return;

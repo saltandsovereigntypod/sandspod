@@ -1,6 +1,6 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Text } from 'react-native';
+import { ActivityIndicator, Alert, Text } from 'react-native';
 
 import { Button } from '../../../../../../../components/Button';
 import { CovenScreen, covenHref } from '../../../../../../../components/covens/CovenScreen';
@@ -9,6 +9,7 @@ import * as api from '../../../../../../../lib/covens/api';
 import {
   altarAccess,
   archiveAltar,
+  deleteAltar,
   fetchAltarEditors,
   setAltar,
   setAltarEditor,
@@ -19,6 +20,7 @@ import {
   type AltarEditor,
   type CovenAltar,
 } from '../../../../../../../lib/covens/altarSync';
+import { canDeleteAltar, deleteAltarWords } from '../../../../../../../lib/covens/altarPanel';
 import { useCoven } from '../../../../../../../lib/covens/CovenContext';
 import { errorMessage, type Member } from '../../../../../../../lib/covens/model';
 import { supabase } from '../../../../../../../lib/supabase';
@@ -27,7 +29,8 @@ import { colors, type } from '../../../../../../../theme';
 // Who tends one of the coven's altars. Its keepers (the coven's head, those
 // whose position keeps altars, and whoever started it) name it, choose who
 // tends it outside rituals (everyone, chosen people and positions, or only
-// its keepers), lock it, or clear it away. Everyone else sees who tends it.
+// its keepers), lock it, clear it away (kept, so it can be brought back) or
+// delete it for good. Everyone else sees who tends it.
 // During a ritual, the ritual's steps decide instead (set on the ritual).
 export default function AltarAccessScreen() {
   const { altarId } = useLocalSearchParams<{ altarId: string }>();
@@ -79,6 +82,29 @@ export default function AltarAccessScreen() {
       setMessage(errorMessage(error));
     }
     setBusy(false);
+  };
+
+  const confirmDelete = () => {
+    if (!altar) return;
+    const words = deleteAltarWords(altar.name);
+    Alert.alert(words.title, words.body, [
+      { text: 'Keep it', style: 'cancel' },
+      {
+        text: words.confirm,
+        style: 'destructive',
+        onPress: async () => {
+          setBusy(true);
+          setMessage(null);
+          try {
+            await deleteAltar(altar.id);
+            router.replace(covenHref(coven.slug, 'altar'));
+          } catch (error) {
+            setMessage(errorMessage(error));
+            setBusy(false);
+          }
+        },
+      },
+    ]);
   };
 
   if (!altar || !access) {
@@ -166,6 +192,18 @@ export default function AltarAccessScreen() {
                 disabled={busy}
               />
             ))}
+          {!altar.is_main && (
+            <Section label="Delete it for good">
+              <Text style={type.caption}>
+                {deleteAltarWords(altar.name).body} {deleteAltarWords(altar.name).gentler}
+              </Text>
+              {canDeleteAltar(altar, access).ok ? (
+                <Button label="Delete this altar" variant="outline" onPress={confirmDelete} disabled={busy} />
+              ) : (
+                !!canDeleteAltar(altar, access).reason && <Text style={type.caption}>{canDeleteAltar(altar, access).reason}</Text>
+              )}
+            </Section>
+          )}
         </>
       )}
       {!keeper && altar.edit_mode === 'chosen' && (
