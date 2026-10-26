@@ -2472,6 +2472,153 @@ export const DEITY_DEVOTIONS: DeityDevotion[] = [
     ],
   },
 
+  {
+    key: 'danu',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'celtic', id: 'samhain_gaelic' },
+        name: 'Samhain',
+        why: 'The start of the Gaelic year. No day of Danu or Anu is recorded; honouring the mother of the Tuatha Dé at Samhain is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Pour a little milk or water onto the earth with thanks for the land.',
+      'Learn the old name of a hill, river or townland near you.',
+      'Plant or care for a native tree.',
+      'Say the names of your grandmothers.',
+    ],
+    approach:
+      'Danu is approached with humility about how little is known, as the ancestral mother of the gods of Ireland.',
+    sources: ['Sanas Cormaic (Cormac’s Glossary), s.v. Ana', 'Lebor Gabála Érenn, on Danand', 'Dáithí Ó hÓgáin, Myth, Legend and Romance (1990), s.v. Anu and Danann'],
+  },
+  {
+    key: 'aine',
+    sacred: [
+      {
+        rule: { kind: 'fixed', month: 6, day: 23 },
+        name: 'Midsummer Eve',
+        why: 'Until the nineteenth century people carried burning straw cliars round Áine’s hill of Knockainy on St John’s Eve, a custom recorded in local folklore.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Light a candle in the window on a summer evening for her.',
+      'Put fresh flowers in water and thank her for the season.',
+      'Stand up for someone who has been wronged.',
+      'Spend a few minutes in the evening light.',
+    ],
+    approach:
+      'Áine is approached with warmth, as the summer goddess and fairy queen of Knockainy, known through tale and folklore.',
+    sources: ['David Fitzgerald, “Popular Tales of Ireland”, Revue Celtique 4 (1879–80), on the cliars at Knockainy', 'Dáithí Ó hÓgáin, Myth, Legend and Romance (1990), s.v. Áine', HUTTON_STATIONS],
+  },
+  {
+    key: 'aengus',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'celtic', id: 'samhain_gaelic' },
+        name: 'Samhain',
+        why: 'In The Dream of Aengus, Caer Ibormeith takes swan form every other Samhain, and it is then that Aengus finds her and flies away with her.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Write down a dream or a longing.',
+      'Play or listen to a love song for him.',
+      'Help two people who should meet to find each other.',
+      'Tell someone what they mean to you.',
+    ],
+    approach:
+      'Aengus is approached with openness and tenderness, as the young god of love and dreams.',
+    sources: ['Aislinge Óenguso (The Dream of Aengus), ed. Francis Shaw (1934)', 'Tochmarc Étaíne, on Aengus’ birth and the Brú'],
+  },
+  {
+    key: 'boann',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'wheel', id: 'yule' },
+        name: 'The winter solstice',
+        why: 'At the winter solstice the rising sun enters Newgrange, the Brú na Bóinne in Boann’s valley. The monument’s alignment is Neolithic; honouring Boann then is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Pour clean water into a bowl and thank her for the water you use.',
+      'Spend a few minutes by a river or stream.',
+      'Eat a few hazelnuts and learn one new thing.',
+      'Listen to a piece of music for sorrow, one for joy or one for sleep.',
+    ],
+    approach:
+      'Boann is approached with respect for her daring, as the goddess of the Boyne and seeker of wisdom.',
+    sources: ['The Metrical Dindshenchas, “Boand I and II”, ed. Edward Gwynn (1906–35)', 'Táin Bó Fraích, on Uaithne’s three strains'],
+  },
+  {
+    key: 'ogma',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'celtic', id: 'lughnasadh' },
+        name: 'Lughnasadh',
+        why: 'Lugh’s festival. No day of Ogma is recorded; honouring Lugh’s champion beside him is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Write your name or a word in ogham.',
+      'Learn one word of Irish.',
+      'Speak plainly and truthfully in one hard conversation.',
+      'Read a few pages of something difficult.',
+    ],
+    approach:
+      'Ogma is approached through study and honest speech, as the champion and man of learning of the Tuatha Dé.',
+    sources: [CMT, 'Auraicept na nÉces (The Scholars’ Primer), on Ogma and ogham', 'Lucian, Heracles 1–7, on Ogmios', MACNEILL],
+  },
+  {
+    key: 'nuada',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'celtic', id: 'bealtaine' },
+        name: 'Bealtaine',
+        why: 'The Book of Invasions says the Tuatha Dé came to Ireland at Bealtaine. No day of Nuada himself is recorded; honouring their king then is a modern custom.',
+        basis: 'modern',
+      },
+    ],
+    devotions: [
+      'Do one thing to serve the people you are responsible for.',
+      'Raise a cup to someone who leads well.',
+      'Step aside for someone better suited to a task.',
+      'Take one step in your own recovery from a loss.',
+    ],
+    approach:
+      'Nuada is approached with respect for duty, as the king who lost and regained his arm and stepped aside for Lugh.',
+    sources: [CMT, 'Lebor Gabála Érenn, on the coming of the Tuatha Dé', 'R. E. M. and T. V. Wheeler, Report on the Excavation of the Prehistoric, Roman and Post-Roman Site in Lydney Park (1932)'],
+  },
+  {
+    key: 'cailleach',
+    sacred: [
+      {
+        rule: { kind: 'holiday', tradition: 'celtic', id: 'samhain_gaelic' },
+        name: 'Samhain',
+        why: 'In Scottish folklore the Cailleach rules winter from Samhain, striking the ground with frost from her staff.',
+        basis: 'later',
+      },
+      {
+        rule: { kind: 'holiday', tradition: 'celtic', id: 'bealtaine' },
+        name: 'Bealtaine',
+        why: 'In Scottish folklore her rule ends at Bealtaine, when she casts away her staff or turns to stone.',
+        basis: 'later',
+      },
+    ],
+    devotions: [
+      'Watch the weather for a few minutes and honour its power.',
+      'Rest properly, as winter rests.',
+      'Add a stone to a cairn or a pile on a walk.',
+      'Listen to an older person’s story.',
+    ],
+    approach:
+      'The Cailleach is approached with respect rather than sentiment, as the old woman of winter who shaped the land.',
+    sources: ['Donald A. Mackenzie, Scottish Folk-Lore and Folk Life (1935)', 'Gearóid Ó Crualaoich, The Book of the Cailleach (2003)', 'The Lament of the Old Woman of Beare, ed. Donncha Ó hAodha (1989)', HUTTON_STATIONS],
+  },
+
   // ─── Slavic ───────────────────────────────────────────────────────────
   {
     key: 'perun',
