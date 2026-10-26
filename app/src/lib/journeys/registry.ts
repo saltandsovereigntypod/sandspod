@@ -38,6 +38,7 @@ import { JOURNEY as DEITY_JANUS } from './data/deity-janus.ts';
 import { JOURNEY as DEITY_JUNO } from './data/deity-juno.ts';
 import { JOURNEY as DEITY_JUPITER } from './data/deity-jupiter.ts';
 import { JOURNEY as DEITY_KALI } from './data/deity-kali.ts';
+import { JOURNEY as DEITY_KRISHNA } from './data/deity-krishna.ts';
 import { JOURNEY as DEITY_LADA } from './data/deity-lada.ts';
 import { JOURNEY as DEITY_LAKSHMI } from './data/deity-lakshmi.ts';
 import { JOURNEY as DEITY_LILITH } from './data/deity-lilith.ts';
@@ -114,6 +115,7 @@ export const JOURNEYS: Journey[] = [
   DEITY_JUNO,
   DEITY_JUPITER,
   DEITY_KALI,
+  DEITY_KRISHNA,
   DEITY_LADA,
   DEITY_LAKSHMI,
   DEITY_LILITH,

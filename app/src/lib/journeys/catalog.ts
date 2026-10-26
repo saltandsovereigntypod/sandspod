@@ -379,6 +379,16 @@ export const JOURNEY_CATALOG: JourneyLike[] = [
     "summary": "A devotional month with Kali as her devotees know her: the Divine Mother of Bengal, sung to by Ramprasad and loved by Ramakrishna. Learn her names and image, her place in the Devi Mahatmya and Shakta devotion, how Kali Puja is kept, and how to offer red hibiscus, a lamp and song at a simple home puja, then decide whether to make a personal vow of devotion."
   },
   {
+    "id": "deity-krishna",
+    "kind": "deity",
+    "paths": [
+      "hindu"
+    ],
+    "deityRef": "traditional/deity/krishna",
+    "title": "Krishna: The Flute in Vrindavan",
+    "summary": "A devotional month with Krishna, the butter thief of Vrindavan and the teacher of the Bhagavad Gita. Learn his stories in the Bhagavata Purana and the Mahabharata, the saints who sang to him, how Janmashtami, Holi and the Ekadashis are kept, and how to offer tulsi, butter and song at a simple home puja, then decide whether to make a personal vow of devotion."
+  },
+  {
     "id": "deity-lada",
     "kind": "deity",
     "paths": [
