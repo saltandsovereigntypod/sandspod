@@ -522,20 +522,22 @@
     const v = m.view;
     if (v === "roles") {
       pane.querySelectorAll("[data-picker-cast]").forEach((holder) => {
-        const role = m.plan.roles.find((r) => r.id === holder.dataset.pickerCast);
-        if (!role) return;
+        const roleId = holder.dataset.pickerCast;
+        // The plan is replaced on each change, so read the role afresh every time.
+        const role = () => m.plan.roles.find((r) => r.id === roleId) || { id: roleId, cast: [] };
+        if (!m.plan.roles.some((r) => r.id === roleId)) return;
         Pk.create(holder, {
-          id: `cast-${role.id}`,
+          id: `cast-${roleId}`,
           label: "Played by",
           placeholder: "A person or a position",
           empty: "No one yet",
-          chips: () => P().cleanAssignees(role.cast).map((a) => ({ key: P().assigneeKey(a), label: whoLabel(P().assigneeKey(a)) })),
+          chips: () => P().cleanAssignees(role().cast).map((a) => ({ key: P().assigneeKey(a), label: whoLabel(P().assigneeKey(a)) })),
           search: (q, picked) => P().searchEntries(P().whoEntries(ctx.state.ranks, m.people), q, { limit: 8, picked, suggestions: P().whoSuggestions(P().whoEntries(ctx.state.ranks, m.people)) }),
           onAdd: (entry) => {
             const a = P().assigneeFromKey(entry.key);
-            if (a) m.plan = B().castRole(m.plan, role.id, a.kind === "coven" ? [a] : [...role.cast.filter((c) => c.kind !== "coven"), a]);
+            if (a) m.plan = B().castRole(m.plan, roleId, a.kind === "coven" ? [a] : [...role().cast.filter((c) => c.kind !== "coven"), a]);
           },
-          onRemove: (key) => (m.plan = B().castRole(m.plan, role.id, role.cast.filter((a) => P().assigneeKey(a) !== key)))
+          onRemove: (key) => (m.plan = B().castRole(m.plan, roleId, role().cast.filter((a) => P().assigneeKey(a) !== key)))
         });
       });
       return;
