@@ -170,6 +170,13 @@ export function pageTitlePatch(ctx: Ctx, page: PageRow, title: string): UpdateOp
   return { kind: 'update', table: 'grimoire_pages', id: page.id, patch: { title: clean, updated_at: ctx.now } };
 }
 
+/** Files a page in another section (or none, loose), at the end of it. */
+export function pageSectionPatch(snapshot: GrimoireSnapshot, ctx: Ctx, page: PageRow, sectionId: string | null): UpdateOp | null {
+  if ((page.section_id ?? null) === sectionId) return null;
+  const siblings = snapshot.pages.filter((p) => p.book_id === page.book_id && (p.section_id ?? null) === sectionId);
+  return { kind: 'update', table: 'grimoire_pages', id: page.id, patch: { section_id: sectionId, sort_order: nextOrder(siblings), updated_at: ctx.now } };
+}
+
 export function blockInsert(
   snapshot: GrimoireSnapshot,
   ctx: Ctx,
