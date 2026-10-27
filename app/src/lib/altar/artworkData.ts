@@ -7004,6 +7004,26 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Bacchus Statue",
+        "keywords": [
+          "wine and the vine",
+          "freedom and release",
+          "growth and fertility",
+          "ecstasy",
+          "theatre"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/bacchus/bacchus-statue.png",
+            "type": "deity",
+            "deity": "bacchus",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Baldur Statue",
         "keywords": [
           "light",
@@ -7038,6 +7058,26 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/bastet/bastet-statue.png",
             "type": "deity",
             "deity": "bastet",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Bona Dea Statue",
+        "keywords": [
+          "women",
+          "healing",
+          "fertility",
+          "chastity",
+          "wellbeing"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/bona_dea/bona_dea-statue.png",
+            "type": "deity",
+            "deity": "bona_dea",
             "form": "statue"
           }
         ]
@@ -7256,6 +7296,65 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/eros/eros-statue.png",
             "type": "deity",
             "deity": "eros",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Faunus Statue",
+        "keywords": [
+          "woods and pasture",
+          "flocks and herds",
+          "herdsmen",
+          "fertility"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/faunus/faunus-statue.png",
+            "type": "deity",
+            "deity": "faunus",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Flora Statue",
+        "keywords": [
+          "flowers",
+          "blossom",
+          "spring",
+          "the flowering of grain",
+          "vines and fruit trees"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/flora/flora-statue.png",
+            "type": "deity",
+            "deity": "flora",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Fortuna Statue",
+        "keywords": [
+          "luck and chance",
+          "fate and fortune",
+          "prosperity",
+          "opportunity",
+          "oracles by lot"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/fortuna/fortuna-statue.png",
+            "type": "deity",
+            "deity": "fortuna",
             "form": "statue"
           }
         ]
@@ -7641,6 +7740,23 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Lares and Penates Statue",
+        "keywords": [
+          "ancestors",
+          "safe homecoming"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/lares_penates/lares_penates-statue.png",
+            "type": "deity",
+            "deity": "lares_penates",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Loki Statue",
         "keywords": [
           "change",
@@ -7761,6 +7877,26 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Mithras Statue",
+        "keywords": [
+          "loyalty and contract",
+          "salvation in a mystery cult",
+          "light",
+          "the cosmic order",
+          "brotherhood among initiates"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/mithras/mithras-statue.png",
+            "type": "deity",
+            "deity": "mithras",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Mokosh Statue",
         "keywords": [
           "spinning",
@@ -7795,6 +7931,26 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/morana/morana-statue.png",
             "type": "deity",
             "deity": "morana",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Neptune Statue",
+        "keywords": [
+          "fresh water and springs",
+          "the sea",
+          "horses",
+          "sailors",
+          "summer drought"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/neptune/neptune-statue.png",
+            "type": "deity",
+            "deity": "neptune",
             "form": "statue"
           }
         ]
@@ -7920,6 +8076,45 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Pluto Statue",
+        "keywords": [
+          "the underworld",
+          "the dead",
+          "the wealth beneath the earth",
+          "minerals and seed",
+          "endings"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/pluto/pluto-statue.png",
+            "type": "deity",
+            "deity": "pluto",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Pomona Statue",
+        "keywords": [
+          "fruit trees and orchards",
+          "gardens",
+          "grafting and pruning",
+          "the ripening of fruit"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/pomona/pomona-statue.png",
+            "type": "deity",
+            "deity": "pomona",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Poseidon Statue",
         "keywords": [
           "the sea",
@@ -7934,6 +8129,25 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/poseidon/poseidon-statue.png",
             "type": "deity",
             "deity": "poseidon",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Proserpina Statue",
+        "keywords": [
+          "the underworld",
+          "the grain",
+          "the dead",
+          "the cycle of loss and return"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/proserpina/proserpina-statue.png",
+            "type": "deity",
+            "deity": "proserpina",
             "form": "statue"
           }
         ]
@@ -7974,6 +8188,26 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/rhiannon/rhiannon-statue.png",
             "type": "deity",
             "deity": "rhiannon",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Saturn Statue",
+        "keywords": [
+          "sowing and seed",
+          "agriculture",
+          "plenty",
+          "the golden age",
+          "liberation at midwinter"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/saturn/saturn-statue.png",
+            "type": "deity",
+            "deity": "saturn",
             "form": "statue"
           }
         ]
@@ -8034,6 +8268,26 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/skadi/skadi-statue.png",
             "type": "deity",
             "deity": "skadi",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Sol Statue",
+        "keywords": [
+          "the sun",
+          "light",
+          "sight",
+          "the turning year",
+          "victory"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/sol/sol-statue.png",
+            "type": "deity",
+            "deity": "sol",
             "form": "statue"
           }
         ]
@@ -8194,6 +8448,26 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/vesta/vesta-statue.png",
             "type": "deity",
             "deity": "vesta",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Vulcan Statue",
+        "keywords": [
+          "fire",
+          "both destructive and useful",
+          "the forge and metalwork",
+          "volcanoes",
+          "protection from fire"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/vulcan/vulcan-statue.png",
+            "type": "deity",
+            "deity": "vulcan",
             "form": "statue"
           }
         ]
