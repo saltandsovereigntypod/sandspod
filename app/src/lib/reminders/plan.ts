@@ -13,6 +13,7 @@
 
 import { altarPhrase, tendingNote, type OfferingDue } from '../altar/offerings.ts';
 import { wateringNote, type WateringDue } from '../altar/pottedPlants.ts';
+import { taskReminders, type RitualTask } from '../covens/contributions.ts';
 import { occasionLabel, riteReminders, type Ritual, type Rsvp } from '../covens/model.ts';
 import { CLEANSE_METHODS, findCare } from '../craft/crystal/care.ts';
 import { upcomingPhases } from '../moon.ts';
@@ -39,6 +40,8 @@ export type CovenSource = {
   holidays: { baseId: string; name: string; date: Date; days: number }[];
   /** Its rites to come, with your answer. */
   rites: { ritual: Pick<Ritual, 'id' | 'title' | 'status' | 'scheduled_for' | 'occasion' | 'occasion_name'>; response: Rsvp['response'] | null }[];
+  /** What you're asked to write, place or do before its rites (contributions.ts ritualTasks); the app only, for now. */
+  tasks?: RitualTask[];
 };
 
 export type PlanInput = {
@@ -172,6 +175,13 @@ function covenReminders(prefs: ReminderPrefs, covens: CovenSource[], now: Date):
     covens.flatMap((c) => c.rites.map((r) => ({ coven: { name: c.name, slug: c.slug }, ritual: r.ritual as Ritual, response: r.response }))),
     now.getTime(),
   ).map((r) => ({ ...r, kind: 'coven' as const }));
+  // Two days before a rite: what you're asked to bring to it.
+  for (const coven of covens) {
+    const tasks = coven.tasks ?? [];
+    if (!tasks.length) continue;
+    const ritualCoven = Object.fromEntries(tasks.map((t) => [t.ritualId, coven.id]));
+    out.push(...taskReminders(tasks, { [coven.id]: { name: coven.name, slug: coven.slug } }, ritualCoven, now.getTime()).map((r) => ({ ...r, kind: 'coven' as const })));
+  }
   for (const coven of covens) {
     const { on, days } = covenPlanning(prefs, coven);
     if (!on) continue;

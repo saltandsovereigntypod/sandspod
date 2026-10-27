@@ -6,6 +6,7 @@
 import { permissions, type Coven, type Member, type Rank, type Ritual, type Rsvp } from '../covens/model.ts';
 import { covenHolidaysBetween } from '../covens/programs.ts';
 import { baseIdOf } from './holidays.ts';
+import type { RitualTask } from '../covens/contributions.ts';
 import type { CovenSource } from './plan.ts';
 
 export type Standing = { coven: Coven; membership: Member | null; ranks: Rank[] };
@@ -23,7 +24,7 @@ export function reviewsCoven(standing: Standing, userId: string | null): boolean
 }
 
 /** Each coven you're in, with its holidays over the next `days` and its rites to come. */
-export function covenSources(standings: Standing[], rites: RiteEntry[], userId: string | null, now: Date, days = 90): CovenSource[] {
+export function covenSources(standings: Standing[], rites: RiteEntry[], userId: string | null, now: Date, days = 90, tasks: (RitualTask & { covenId: string })[] = []): CovenSource[] {
   const from = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const to = new Date(from.getFullYear(), from.getMonth(), from.getDate() + days);
   return standings.map((standing) => ({
@@ -36,5 +37,6 @@ export function covenSources(standings: Standing[], rites: RiteEntry[], userId: 
       .filter((h) => h.date.getTime() >= from.getTime())
       .map((h) => ({ baseId: baseIdOf(h.id), name: h.name, date: h.date, days: h.days })),
     rites: rites.filter((r) => r.coven.id === standing.coven.id).map(({ ritual, response }) => ({ ritual, response })),
+    tasks: tasks.filter((t) => t.covenId === standing.coven.id),
   }));
 }

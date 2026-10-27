@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
@@ -10,6 +10,8 @@ import { Card, MenuList, MenuRow, Notice, Section } from '../../../../../compone
 import { WEBSITE_ORIGIN } from '../../../../../lib/altar/assetPaths';
 import * as api from '../../../../../lib/covens/api';
 import { useCoven } from '../../../../../lib/covens/CovenContext';
+import { ritualTasks } from '../../../../../lib/covens/contributions';
+import { assigneesOf } from '../../../../../lib/covens/picker';
 import { pendingLabel } from '../../../../../lib/covens/requests';
 import { usePendingDetail } from '../../../../../lib/covens/requestsBadge';
 import { errorMessage, JOINING, KIND_LABELS, occasionLabel, orderDocuments, rankPowers, ritualGroups, riteTime } from '../../../../../lib/covens/model';
@@ -30,6 +32,16 @@ export default function CovenHome() {
   const next = upcoming.find((r) => r.scheduled_for && new Date(r.scheduled_for).getTime() > Date.now() - 3600000);
 
   const leads = coven.perms.review || coven.perms.manage || coven.perms.site;
+  // What you're asked to write, place or do before the coven's rites.
+  const [written, setWritten] = useState<{ step_id: string }[]>([]);
+  const askingAhead = coven.steps.some((s) => (s.contribution as { timing?: string } | null)?.timing === 'ahead');
+  useEffect(() => {
+    if (coven.userId && askingAhead) api.fetchMyContributions(coven.userId).then(setWritten).catch(() => setWritten([]));
+  }, [coven.userId, askingAhead, coven.rituals]);
+  const tasks = useMemo(
+    () => (coven.standing.ok ? ritualTasks(coven.rituals, coven.steps, written.map((w) => ({ step_id: w.step_id, mine: true })), snap?.membership ?? null, coven.userId, assigneesOf) : []),
+    [coven.standing.ok, coven.rituals, coven.steps, written, snap?.membership, coven.userId],
+  );
 
   const leave = () =>
     Alert.alert('Leave this coven?', 'You can ask to come back later. Your words in the chat stay.', [
@@ -85,6 +97,15 @@ export default function CovenHome() {
               <Text style={type.cardTitle}>{next.title}</Text>
               <Text style={type.caption}>{[riteTime(next.scheduled_for), occasionLabel(next)].filter(Boolean).join(' · ')}</Text>
               <Button label="See the rite" variant="outline" onPress={() => router.push(covenHref(coven.slug, `ritual/${next.id}`))} />
+            </Card>
+          )}
+
+          {tasks.length > 0 && (
+            <Card>
+              <Text style={type.eyebrow}>Before the rite</Text>
+              {tasks.slice(0, 4).map((task) => (
+                <MenuRow key={task.stepId} label={task.title} detail={task.scheduledFor ? riteTime(task.scheduledFor) : task.stepTitle} icon="letters" onPress={() => router.push(covenHref(coven.slug, `ritual/${task.ritualId}`))} />
+              ))}
             </Card>
           )}
 

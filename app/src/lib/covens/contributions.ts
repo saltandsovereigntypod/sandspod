@@ -243,7 +243,7 @@ export function seesParticipation(viewers: Assignee[], membership: Pick<Member, 
 }
 
 /** Expected and done for a step from the rows the reader can count (a planner's preview; the database's count is the real one). */
-export function summarise(step: { id: string; assignees: Assignee[] }, members: Pick<Member, 'user_id' | 'rank_id' | 'status'>[], written: { step_id: string; user_id: string | null }[]): ParticipationRow {
+export function summarise(step: { id: string; assignees: Assignee[] }, members: { user_id: string; rank_id: string | null; status: string }[], written: { step_id: string; user_id: string | null }[]): ParticipationRow {
   const expected = membersAmong(step.assignees, members.filter((m) => m.status === 'active'));
   const done = [...new Set(written.filter((w) => w.step_id === step.id && w.user_id && expected.includes(w.user_id)).map((w) => w.user_id as string))];
   return { step_id: step.id, expected: expected.length, done: done.length, done_users: done, waiting_users: expected.filter((id) => !done.includes(id)) };

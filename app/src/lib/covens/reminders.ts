@@ -1,7 +1,8 @@
 // Phone reminders for your covens: rites you've said you'll come to (or
 // might), the day before and an hour before; and, for covens you lead,
 // time to plan a ritual for the coven's holidays and to prepare its rites
-// (Reminders → Ritual planning). This reads your covens and hands them to
+// (Reminders → Ritual planning); and what a rite asks you to write or bring
+// ahead of time, two days before it. This reads your covens and hands them to
 // the reminders (lib/reminders/store.ts), which schedule them with
 // everything else, so quiet hours, the pause and the phone's limit hold for
 // them too, and a tap opens the rite or the coven.
@@ -10,8 +11,10 @@
 import { permissionState, requestPermission } from '../reminders/notifier';
 import { covenSources } from '../reminders/covens';
 import { setCovenSources } from '../reminders/store';
-import { fetchMyRites, fetchMyStandings } from './api';
+import { fetchMyContributions, fetchMyRites, fetchMyStandings, fetchSteps } from './api';
+import { ritualTasks } from './contributions';
 import { riteReminders } from './model';
+import { assigneesOf } from './picker';
 
 export const COVEN_REMINDER_SOURCE = 'coven-rites';
 
@@ -23,7 +26,13 @@ export async function syncCovenReminders(userId: string | null, { ask = false } 
       return 0;
     }
     const [rites, standings] = await Promise.all([fetchMyRites(userId), fetchMyStandings(userId).catch(() => [])]);
-    setCovenSources(covenSources(standings, rites, userId, new Date()));
+    // What you're asked to write or bring before each rite, reminded two days ahead.
+    const [steps, mine] = await Promise.all([fetchSteps(rites.map((r) => r.ritual.id)).catch(() => []), fetchMyContributions(userId).catch(() => [])]);
+    const done = mine.map((c) => ({ step_id: c.step_id, mine: true }));
+    const tasks = standings.flatMap((st) =>
+      ritualTasks(rites.filter((r) => r.coven.id === st.coven.id).map((r) => r.ritual), steps, done, st.membership, userId, assigneesOf).map((t) => ({ ...t, covenId: st.coven.id })),
+    );
+    setCovenSources(covenSources(standings, rites, userId, new Date(), 90, tasks));
     const count = riteReminders(rites).length;
     if (!count) return 0;
     const permission = ask ? await requestPermission() : await permissionState();

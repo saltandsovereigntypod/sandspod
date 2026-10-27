@@ -1,21 +1,23 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
 import { CovenScreen, covenHref } from '../../../../../../components/covens/CovenScreen';
+import { StepEditor } from '../../../../../../components/covens/StepEditor';
 import { Card, Chips, Field, Notice, Section } from '../../../../../../components/more/ui';
+import { itemIndex, itemSuggestions } from '../../../../../../lib/altar/itemIndex';
+import { useAltars } from '../../../../../../lib/altar/store';
 import * as api from '../../../../../../lib/covens/api';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
-import { CANDLE_COLORS, CANDLE_FORMS, errorMessage, OCCASIONS, orderSteps } from '../../../../../../lib/covens/model';
+import { errorMessage, OCCASIONS, orderSteps, type Petition } from '../../../../../../lib/covens/model';
+import { whoEntries, whoSuggestions } from '../../../../../../lib/covens/picker';
 import {
-  ALTAR_ACTIONS,
   blankStep,
   draftFromStep,
   fromFields,
   occasionSuggestions,
   plannerProblem,
-  searchPlaceable,
   stepsFromTemplate,
   stepsPayload,
   suggestionTime,
@@ -29,13 +31,14 @@ import { useRituals } from '../../../../../../lib/rituals/store';
 import { colors, radius, type } from '../../../../../../theme';
 
 const NO_OCCASION = { value: '', label: 'None' } as const;
-const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 // Plan a coven ritual, or change one, as on the website: its name, intention
 // and what to bring, its occasion and time (with the coming moons and the
 // coven's holidays to choose from), whether it's on the coven's calendar or a
-// draft, and its steps: what happens, whose step it is (the whole coven, a
-// position, or one person), the words, and what the step does at the altar.
+// draft, and its steps (components/covens/StepEditor.tsx): each one's action,
+// name, directions and words, who does it (any mix of the whole coven,
+// positions and people), its items, what it does at the altar, and anything
+// it asks of people.
 // For those who lead the coven's rituals; putting rites on the calendar is for
 // those the coven's head allows.
 export default function PlanRitual() {
@@ -62,6 +65,29 @@ export default function PlanRitual() {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [copyFrom, setCopyFrom] = useState(false);
+  // Each step's own key, so moving one keeps what's typed in its fields with it.
+  const [keys, setKeys] = useState<number[]>(() => steps.map((_, i) => i));
+  const [counter, setCounter] = useState(1000);
+  const nextKey = () => {
+    setCounter((c) => c + 1);
+    return counter;
+  };
+  const altars = useAltars();
+  const [petitions, setPetitions] = useState<Petition[]>([]);
+  useEffect(() => {
+    if (covenId) api.fetchPetitions(covenId).then(setPetitions).catch(() => setPetitions([]));
+  }, [covenId]);
+  // Everything the altar knows (your own things that are kept online, too) and the coven's open petitions.
+  const itemList = useMemo(
+    () =>
+      itemIndex({
+        own: altars.customItems.filter((item) => item.forms.some((f) => /^https:/.test(f.image))),
+        overrides: altars.overrides,
+        petitions: petitions.filter((p) => p.status === 'open'),
+      }),
+    [altars.customItems, altars.overrides, petitions],
+  );
+  const suggestItems = useCallback((queries?: string[]) => itemSuggestions(itemList, queries), [itemList]);
 
   useEffect(() => {
     if (!covenId) return;
@@ -76,6 +102,8 @@ export default function PlanRitual() {
   }, [covenId]);
 
   const named = useMemo(() => (people ?? []).map((p) => ({ ...p, name: coven.nameOf(p.id) })).sort((a, b) => a.name.localeCompare(b.name)), [people, coven]);
+  const whoList = useMemo(() => whoEntries(ranks, named), [ranks, named]);
+  const whoSuggest = useMemo(() => whoSuggestions(whoList), [whoList]);
   const suggestions = useMemo(() => {
     const from = new Date();
     const covenDays = covenHolidaysBetween(coven.snapshot?.coven ?? null, from, new Date(from.getTime() + 200 * 86400000));
@@ -98,12 +126,15 @@ export default function PlanRitual() {
   }
 
   const change = (index: number, patch: Partial<DraftStep>) => setSteps((list) => list.map((s, i) => (i === index ? { ...s, ...patch } : s)));
-  const move = (index: number, by: number) =>
-    setSteps((list) => {
-      const next = [...list];
-      [next[index], next[index + by]] = [next[index + by], next[index]];
-      return next;
-    });
+  const swap = <T,>(list: T[], index: number, by: number) => {
+    const next = [...list];
+    [next[index], next[index + by]] = [next[index + by], next[index]];
+    return next;
+  };
+  const move = (index: number, by: number) => {
+    setSteps((list) => swap(list, index, by));
+    setKeys((list) => swap(list, index, by));
+  };
 
   const save = async () => {
     if (!covenId) return;
@@ -128,12 +159,6 @@ export default function PlanRitual() {
     setBusy(false);
   };
 
-  const whoOptions = [
-    { value: '', label: 'The whole coven' },
-    ...ranks.map((r) => ({ value: `rank:${r.id}`, label: `Every ${r.name}` })),
-    ...named.filter((p) => p.eligible).map((p) => ({ value: `user:${p.id}`, label: p.name })),
-  ];
-  const whoValue = (s: DraftStep) => (s.assigned_user_id ? `user:${s.assigned_user_id}` : s.assigned_rank_id ? `rank:${s.assigned_rank_id}` : '');
 
   return (
     <CovenScreen title={ritual ? 'Edit the ritual' : 'Plan a ritual'}>
@@ -198,7 +223,10 @@ export default function PlanRitual() {
                   variant="outline"
                   onPress={() => {
                     const added = stepsFromTemplate(t.ritual_template_steps ?? []);
-                    setSteps((list) => [...list.filter((s) => s.title.trim()), ...added]);
+                    const kept = steps.filter((s) => s.title.trim());
+                    setSteps([...kept, ...added]);
+                    setKeys([...keys.filter((_, j) => steps[j]?.title.trim()), ...added.map((_, j) => counter + j)]);
+                    setCounter((c) => c + added.length);
                     if (!title.trim()) setTitle(t.title);
                     if (!intention.trim() && t.intention) setIntention(t.intention);
                     setCopyFrom(false);
@@ -213,77 +241,35 @@ export default function PlanRitual() {
       </Card>
 
       {!people && <ActivityIndicator color={colors.gold} />}
-      {steps.map((s, i) => {
-        const blocked = unassignablePart(s, named, coven.nameOf);
-        const found = s.altar_action === 'place_item' ? searchPlaceable(s.altar_label && !s.altar_image ? s.altar_label : '') : [];
-        return (
-          <Card key={i}>
-            <View style={styles.row}>
-              <Text style={[type.eyebrow, styles.grow]}>Step {i + 1}</Text>
-              <Button label="↑" variant="text" onPress={() => move(i, -1)} disabled={i === 0} />
-              <Button label="↓" variant="text" onPress={() => move(i, 1)} disabled={i === steps.length - 1} />
-              <Button label="Remove" variant="text" onPress={() => setSteps((list) => list.filter((_, j) => j !== i))} />
-            </View>
-            <Field label="What happens" value={s.title} onChangeText={(v) => change(i, { title: v })} maxLength={120} placeholder="Cast the circle" />
-            <Chips
-              label={`Whose step ${i + 1} is`}
-              options={blocked ? [...whoOptions, { value: whoValue(s), label: `${coven.nameOf(s.assigned_user_id)} (can’t take a part)` }] : whoOptions}
-              value={whoValue(s)}
-              onChange={(v) => {
-                const [kind, value] = v.split(':');
-                change(i, { assigned_user_id: kind === 'user' ? value : null, assigned_rank_id: kind === 'rank' ? value : null });
-              }}
-            />
-            {!!blocked && <Notice>{blocked}</Notice>}
-            <Field
-              label="Minutes (optional)"
-              value={s.duration_minutes == null ? '' : String(s.duration_minutes)}
-              onChangeText={(v) => change(i, { duration_minutes: v.trim() === '' ? null : Math.max(0, Math.min(240, Math.round(Number(v) || 0))) })}
-              keyboardType="number-pad"
-            />
-            <Field label="Instructions (shown to them when the step comes)" value={s.instructions} onChangeText={(v) => change(i, { instructions: v })} multiline maxLength={4000} />
-            <Field label="Words to speak (optional)" value={s.spoken_text} onChangeText={(v) => change(i, { spoken_text: v })} multiline maxLength={4000} />
-            <Chips label={`At the altar, step ${i + 1}`} options={ALTAR_ACTIONS} value={s.altar_action} onChange={(v) => change(i, { altar_action: v })} />
-            {s.altar_action === 'light_candle' && (
-              <>
-                <Chips label="Candle colour" options={CANDLE_COLORS.map((c) => ({ value: c, label: cap(c) }))} value={s.altar_color as (typeof CANDLE_COLORS)[number]} onChange={(v) => change(i, { altar_color: v })} />
-                <Chips label="Candle" options={CANDLE_FORMS.map((f) => ({ value: f.id, label: f.label }))} value={s.altar_form as (typeof CANDLE_FORMS)[number]['id']} onChange={(v) => change(i, { altar_form: v })} />
-                <Text style={type.caption}>
-                  {s.assigned_user_id || s.assigned_rank_id ? 'Whoever this step belongs to lights it when the step comes.' : 'Each member lights their own when the step comes, and the candles gather in a circle.'}
-                </Text>
-              </>
-            )}
-            {s.altar_action === 'place_item' && (
-              <>
-                {s.altar_image ? (
-                  <View style={styles.row}>
-                    <Text style={[type.body, styles.grow]}>Places: {s.altar_label || 'an offering'}</Text>
-                    <Button label="Choose another" variant="text" onPress={() => change(i, { altar_image: '', altar_label: '' })} />
-                  </View>
-                ) : (
-                  <>
-                    <Field label="What is placed" value={s.altar_label} onChangeText={(v) => change(i, { altar_label: v })} placeholder="Search: apple, rose, salt, bowl…" />
-                    <View style={styles.wrap}>
-                      {found.map((p) => (
-                        <Pressable
-                          key={p.image}
-                          accessibilityRole="button"
-                          accessibilityLabel={`Place ${p.name}`}
-                          onPress={() => change(i, { altar_image: p.image, altar_label: p.name })}
-                          style={({ pressed }) => [styles.chip, pressed && styles.pressed]}
-                        >
-                          <Text style={styles.chipText}>{p.name}</Text>
-                        </Pressable>
-                      ))}
-                    </View>
-                  </>
-                )}
-              </>
-            )}
-          </Card>
-        );
-      })}
-      <Button label="Add a step" variant="outline" onPress={() => setSteps((list) => [...list, blankStep()])} />
+      {steps.map((s, i) => (
+        <StepEditor
+          key={keys[i]}
+          index={i}
+          count={steps.length}
+          step={s}
+          onChange={(patch) => change(i, patch)}
+          onMove={(by) => move(i, by)}
+          onRemove={() => {
+            setSteps((list) => list.filter((_, j) => j !== i));
+            setKeys((list) => list.filter((_, j) => j !== i));
+          }}
+          who={whoList}
+          whoSuggest={whoSuggest}
+          items={itemList}
+          itemSuggest={suggestItems}
+          ranks={ranks}
+          nameOf={coven.nameOf}
+          blocked={unassignablePart(s, named, coven.nameOf)}
+        />
+      ))}
+      <Button
+        label="Add a step"
+        variant="outline"
+        onPress={() => {
+          setSteps((list) => [...list, blankStep()]);
+          setKeys((list) => [...list, nextKey()]);
+        }}
+      />
       {message && <Notice>{message}</Notice>}
       <Button label={busy ? 'Saving…' : ritual ? 'Save the ritual' : 'Plan the ritual'} onPress={() => void save()} disabled={busy} />
     </CovenScreen>

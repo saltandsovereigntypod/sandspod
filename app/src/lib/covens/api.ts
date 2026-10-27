@@ -21,11 +21,14 @@ import type {
   ReportReason,
   Ritual,
   RitualStep,
+  RitualSettings,
   Rsvp,
   Signature,
   StepMark,
   Tending,
 } from './model';
+import type { Contribution, ParticipationRow } from './contributions';
+import type { Assignee } from './picker';
 
 const COVEN_FIELDS =
   'id,slug,name,tagline,description,tradition,tags,meeting_rhythm,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,practice_traditions,practice_holidays,practice_custom,practice_calendars,founder_id,created_at,member_count';
@@ -249,6 +252,26 @@ export const saveRitual = (covenId: string, ritualId: string | null, ritual: Rec
 export const setRitualStatus = (ritualId: string, status: 'draft' | 'scheduled' | 'cancelled' | 'deleted') => rpc<Ritual>('set_coven_ritual_status', { p_ritual: ritualId, p_status: status });
 /** Who can be given a part: members, and whether they've signed the coven's current agreements. */
 export const ritualPeople = (covenId: string) => rpc<{ user_id: string; eligible: boolean }[]>('coven_ritual_people', { p_coven: covenId });
+
+// What steps ask of people (contributions.ts; …_coven_ritual_contributions.sql).
+// Others' come sealed and unnamed as they should, through the database's function.
+
+/** A ritual's contributions as you may see them. */
+export const fetchContributions = (ritualId: string) => rpc<Contribution[]>('coven_ritual_contributions_for', { p_ritual: ritualId }).then((rows) => rows ?? []);
+/** Your own, across your covens (for what you have to do before a rite). */
+export const fetchMyContributions = (userId: string) =>
+  run<{ id: string; step_id: string; ritual_id: string; status: string }[]>(supabase.from('coven_ritual_contributions').select('id,step_id,ritual_id,status').eq('user_id', userId).limit(500));
+export const saveContribution = (stepId: string, body: string, items: unknown[], isPrivate: boolean, anonymous: boolean) =>
+  rpc<Contribution>('save_coven_ritual_contribution', { p_step: stepId, p_body: body.trim(), p_items: items, p_private: isPrivate, p_anonymous: anonymous });
+export const removeContribution = (id: string) => rpc<boolean>('remove_coven_ritual_contribution', { p_contribution: id });
+export const offerContribution = (id: string) => rpc<{ contribution: Contribution; petition: Petition | null }>('offer_coven_ritual_contribution', { p_contribution: id });
+export const supportContribution = (id: string, kind: 'candle' | 'holding', on: boolean) => rpc<number>('support_coven_ritual_contribution', { p_contribution: id, p_kind: kind, p_on: on });
+export const tendContribution = (id: string, status: 'held' | 'answered' | 'closed', note: string) =>
+  rpc<Contribution>('tend_coven_ritual_contribution', { p_contribution: id, p_status: status, p_note: note.trim() || null });
+/** How many have done each step's asking, and (for those allowed) who has and hasn't. */
+export const fetchParticipation = (ritualId: string) => rpc<ParticipationRow[]>('coven_ritual_participation', { p_ritual: ritualId }).then((rows) => rows ?? []);
+export const fetchRitualSettings = (covenId: string) => run<RitualSettings | null>(supabase.from('coven_ritual_settings').select('coven_id,participation_viewers').eq('coven_id', covenId).maybeSingle());
+export const setParticipationViewers = (covenId: string, viewers: Assignee[]) => rpc<RitualSettings>('set_coven_participation_viewers', { p_coven: covenId, p_viewers: viewers });
 
 /** Your rites across every coven you're in, with your answers (for phone reminders). */
 export async function fetchMyRites(userId: string): Promise<{ coven: Coven; ritual: Ritual; response: Rsvp['response'] | null }[]> {
