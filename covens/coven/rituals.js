@@ -483,6 +483,7 @@
         ${ritual.status !== "live" && yours.length ? `<p class="sp-notice">${yours.length === 1 ? "One step is yours" : `${yours.length} steps are yours`}: ${yours.map((s) => esc(s.title)).join(", ")}. When the ritual reaches ${yours.length === 1 ? "it" : "each one"}, it will show up here for you.</p>` : ""}
       </header>
       ${rsvpBlock(ritual)}
+      <div data-attendance></div>
       ${aheadHtml(ritual, steps)}
       ${ritual.status === "live" ? nowCard(ritual, steps) : ""}
       ${["cancelled", "done"].includes(ritual.status) ? "" : altarSection(ritual)}
@@ -500,6 +501,7 @@
     loadAltars();
     loadContributions(ritual);
     wireContributions(ritual, steps);
+    loadAttendance(ritual);
     if (ritual.status === "live") {
       loadMarks(ritual);
       const holder = pane.querySelector("[data-ritual-altar]");
@@ -995,6 +997,90 @@
     });
   }
 
+  // --- attendance (the members' record, covens/coven/record.js) --------------
+  // Opening a ritual while it's under way counts you as there; "Can't make it"
+  // can carry a note for the leaders, who see who sent word and who was there,
+  // and can correct it. As the app's ritual/[id].tsx.
+
+  let attendanceFor_ = null;
+  let attendancePeople_ = null;
+  const presenceSent = new Set();
+
+  async function loadAttendance(ritual, fresh) {
+    const holder = pane?.querySelector("[data-attendance]");
+    const R = global.SaltCore?.covens?.record;
+    if (!holder || !R || ritual.status === "draft" || ritual.status === "cancelled") return;
+    if (ritual.status === "live" && state.perms.member && !presenceSent.has(ritual.id)) {
+      presenceSent.add(ritual.id);
+      if (await D.recordPresence(ritual.id)) fresh = true;
+    }
+    if (fresh || attendanceFor_?.id !== ritual.id) attendanceFor_ = { id: ritual.id, rows: await D.attendance(ritual.id).catch(() => []) };
+    const leads = (state.perms.lead && state.standing?.ok) || state.perms.site;
+    const held = ritual.status === "live" || ritual.status === "done";
+    if (leads && held && !attendancePeople_) attendancePeople_ = (await D.members(state.coven.id).catch(() => [])).filter((m) => m.status === "active").map((m) => m.user_id);
+    const rows = attendanceFor_.rows;
+    await UI.loadNames(state.context, [...rows.map((r) => r.user_id), ...(leads && held ? attendancePeople_ || [] : [])]);
+    const live = pane?.querySelector("[data-attendance]");
+    if (!live || params().get("ritual") !== ritual.id) return;
+    const rowOf = (userId) => rows.find((r) => r.user_id === userId);
+    const mine = rowOf(me());
+    const sum = L.rsvpSummary(state.rsvps, ritual.id, me());
+    const open = ritual.status === "scheduled" || ritual.status === "live";
+    const excuse = (userId, row) => `<button class="button button--ghost button--small" type="button" data-excuse="${esc(userId)}" data-excused="${row?.excused ? "false" : "true"}">${row?.excused ? "Not excused" : "Excuse the absence"}</button>`;
+    const parts = [];
+    if (open && sum.mine === "not_going" && state.perms.member && state.standing?.ok) {
+      parts.push(`<form class="sp-card" data-apology>
+          <div class="sp-field"><label for="apology-note">A note for the leaders (optional)</label>
+            <textarea id="apology-note" name="note" maxlength="${R.APOLOGY_MAX}">${esc(mine?.apology || "")}</textarea></div>
+          <p class="sp-caption">Only those who lead the coven’s rituals see it.</p>
+          <div class="sp-actions"><button class="button button--ghost button--small" type="submit">${mine?.apology ? "Change the note" : "Send the note"}</button>
+            ${mine?.apology ? `<button class="button button--ghost button--small" type="button" data-take-back>Take it back</button>` : ""}</div>${statusLine()}</form>`);
+    }
+    if (leads && open && sum.notGoing.length) {
+      parts.push(`<section class="sp-card"><p class="sp-label">Can’t make it</p><div class="sp-list">${sum.notGoing
+        .map((r) => {
+          const row = rowOf(r.user_id);
+          return `<div class="sp-row"><span class="sp-row__text"><span class="sp-row__title">${esc(nameOf(r.user_id))}</span>${row?.apology ? `<span class="sp-row__detail">“${esc(row.apology)}”</span>` : ""}${row?.excused ? `<span class="sp-row__detail">Excused</span>` : ""}</span>${excuse(r.user_id, row)}</div>`;
+        })
+        .join("")}</div>${statusLine()}</section>`);
+    }
+    if (leads && held && attendancePeople_?.length) {
+      parts.push(`<section class="sp-card"><p class="sp-label">Who was there</p>
+          <p class="sp-caption">Someone counts as there when they open the ritual while it’s under way. Correct it for anyone who joined in person.</p>
+          <div class="sp-list">${attendancePeople_
+            .map((userId) => {
+              const row = rowOf(userId);
+              const stood = R.attendedAs({ status: ritual.status, held_at: ritual.scheduled_for || new Date().toISOString() }, row, "1970-01-01T00:00:00Z");
+              return `<div class="sp-row"><span class="sp-row__text"><span class="sp-row__title">${esc(nameOf(userId))}</span><span class="sp-row__detail">${esc(R.ATTENDED_LABEL[stood === "under_way" ? "missed" : stood])}${row?.marked_by ? " (marked)" : ""}</span></span>
+                <span class="sp-actions">${row?.present === true
+                  ? `<button class="button button--ghost button--small" type="button" data-mark="${esc(userId)}" data-present="false">Wasn’t there</button>`
+                  : `<button class="button button--ghost button--small" type="button" data-mark="${esc(userId)}" data-present="true">Was there in person</button>${excuse(userId, row)}`}</span></div>`;
+            })
+            .join("")}</div>${statusLine()}</section>`);
+    }
+    live.innerHTML = parts.join("");
+    const again = () => loadAttendance(ritual, true);
+    const statusOf = (el) => el.closest(".sp-card")?.querySelector("[data-status]");
+    const form = live.querySelector("[data-apology]");
+    form?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (await UI.busy(form, form.querySelector("[data-status]"), () => D.sendApology(ritual.id, form.elements.note.value).then(() => true), { done: "Sent." })) again();
+    });
+    form?.querySelector("[data-take-back]")?.addEventListener("click", async (event) => {
+      if (await UI.busy(event.currentTarget, form.querySelector("[data-status]"), () => D.sendApology(ritual.id, null).then(() => true))) again();
+    });
+    live.querySelectorAll("[data-excuse]").forEach((b) =>
+      b.addEventListener("click", async () => {
+        if (await UI.busy(b, statusOf(b), () => D.excuseAbsence(ritual.id, b.dataset.excuse, b.dataset.excused === "true").then(() => true))) again();
+      })
+    );
+    live.querySelectorAll("[data-mark]").forEach((b) =>
+      b.addEventListener("click", async () => {
+        if (await UI.busy(b, statusOf(b), () => D.markAttendance(ritual.id, b.dataset.mark, b.dataset.present === "true").then(() => true))) again();
+      })
+    );
+  }
+
   // --- drawing and live changes ---------------------------------------------
 
   function navigate(href) {
@@ -1061,6 +1147,8 @@
     pane = null;
     editing = false;
     marksFor_ = null;
+    attendanceFor_ = null;
+    attendancePeople_ = null;
     altars = null;
     contribKey_ = null;
     contribEditing.clear();
