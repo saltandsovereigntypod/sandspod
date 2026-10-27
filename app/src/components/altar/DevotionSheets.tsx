@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { Animated, Easing, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Animated, Easing, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Svg, { Ellipse, Path } from 'react-native-svg';
 
 import { Button } from '../Button';
@@ -36,6 +36,9 @@ import {
 } from '../../lib/altar/devotion';
 import type { SavedObject } from '../../lib/altar/types';
 import { deityName, offeringSteps, type OfferingStep } from '../../lib/altar/relationship';
+import { altarGifts, withGiftTypes, type AltarGift } from '../../lib/altar/offerFromAltar';
+import { altarPicture } from '../../lib/altar/assets';
+import { AltarImage } from './AltarImage';
 import { useReducedMotion } from '../../lib/accessibility/store';
 import { colors, fonts, radius, touch, type } from '../../theme';
 import { Chip, ChipRow } from './Chip';
@@ -232,7 +235,8 @@ type DeityProps = {
   index: number | null;
   objects: SavedObject[];
   onClose: () => void;
-  onOffer: (index: number, input: OfferingInput) => void;
+  /** Things from the altar given as the offering, and whether to set them at the presence's feet. */
+  onOffer: (index: number, input: OfferingInput, gifts: AltarGift[], atFeet: boolean) => void;
   onUpdate: (index: number, offeringId: string, input: OfferingUpdate) => void;
   onReason: (index: number, reason: string, notes: string) => void;
   /** Save (or clear, with null) the offering the home screen widget records for this presence. */
@@ -255,14 +259,14 @@ export function DeitySheet({ mode, index, objects, onClose, onOffer, onUpdate, o
         ) : mode === 'reason' ? (
           <ReasonForm key={`r-${index}`} object={object} onSave={(reason, notes) => onReason(index, reason, notes)} />
         ) : (
-          <OfferingManager key={`o-${index}`} object={object} objects={objects} onOffer={(input) => onOffer(index, input)} onUpdate={(id, input) => onUpdate(index, id, input)} />
+          <OfferingManager key={`o-${index}`} object={object} objects={objects} onOffer={(input, gifts, atFeet) => onOffer(index, input, gifts, atFeet)} onUpdate={(id, input) => onUpdate(index, id, input)} />
         )
       )}
     </Sheet>
   );
 }
 
-function OfferingManager({ object, objects, onOffer, onUpdate }: { object: SavedObject; objects: SavedObject[]; onOffer: (input: OfferingInput) => void; onUpdate: (id: string, input: OfferingUpdate) => void }) {
+function OfferingManager({ object, objects, onOffer, onUpdate }: { object: SavedObject; objects: SavedObject[]; onOffer: (input: OfferingInput, gifts: AltarGift[], atFeet: boolean) => void; onUpdate: (id: string, input: OfferingUpdate) => void }) {
   const offerings = offeringsOf(object, nowIso());
   const [editing, setEditing] = useState<Offering | 'new' | null>(offerings.length ? null : 'new');
 
@@ -284,10 +288,12 @@ function OfferingManager({ object, objects, onOffer, onUpdate }: { object: Saved
   );
 }
 
-function NewOffering({ object, objects, onSave }: { object: SavedObject; objects: SavedObject[]; onSave: (input: OfferingInput) => void }) {
-  const supports = supportsOn(objects, object);
+function NewOffering({ object, objects, onSave }: { object: SavedObject; objects: SavedObject[]; onSave: (input: OfferingInput, gifts: AltarGift[], atFeet: boolean) => void }) {
+  const gifts = altarGifts(objects, object);
+  const name = deityName(object);
   const [types, setTypes] = useState<string[]>([]);
-  const [picked, setPicked] = useState<string[]>([]);
+  const [given, setGiven] = useState<string[]>([]);
+  const [atFeet, setAtFeet] = useState(false);
   const [customItems, setCustomItems] = useState('');
   const [intention, setIntention] = useState('');
   const [message, setMessage] = useState('');
@@ -297,16 +303,23 @@ function NewOffering({ object, objects, onSave }: { object: SavedObject; objects
   const [responseNotes, setResponseNotes] = useState('');
   // Making it: a short guided moment before it is recorded.
   const [making, setMaking] = useState(false);
-  const chosen = supports.filter((s) => picked.includes(s.id));
-  const input = (): OfferingInput => ({ types, supports: chosen, customItems, intention, message, status, customStatus, response, responseNotes, occurredAt: nowIso() });
+  const chosenGifts = gifts.filter((g) => given.includes(g.id));
+  const input = (): OfferingInput => ({ types, supports: [], customItems, intention, message, status, customStatus, response, responseNotes, occurredAt: nowIso() });
+  // Choosing something from the altar fills in what kind of offering it is (a honeycomb is food).
+  const toggleGift = (id: string) => {
+    const next = given.includes(id) ? given.filter((x) => x !== id) : [...given, id];
+    setGiven(next);
+    if (!given.includes(id)) setTypes((prev) => withGiftTypes(prev, gifts.filter((g) => g.id === id), OFFERING_TYPES));
+  };
+  const save = () => onSave(input(), chosenGifts, atFeet && chosenGifts.length > 0);
 
   if (making) {
-    const items = [...chosen.map((s) => shortLabel(s.label)), ...customItems.split(',').map((v) => v.trim()).filter(Boolean)];
+    const items = [...chosenGifts.map((g) => g.label), ...customItems.split(',').map((v) => v.trim()).filter(Boolean)];
     return (
       <GuidedOffering
-        steps={offeringSteps({ types, items, message, name: deityName(object) })}
+        steps={offeringSteps({ types, items, message, name })}
         onBack={() => setMaking(false)}
-        onGiven={() => onSave(input())}
+        onGiven={save}
       />
     );
   }
@@ -314,28 +327,67 @@ function NewOffering({ object, objects, onSave }: { object: SavedObject; objects
   return (
     <View style={styles.form}>
       <Text style={type.caption}>Record the devotional meaning and state of this offering, without treating interpretation as fact.</Text>
-      <Group label="1. Offering types">
+      <Group label="From your altar">
+        {gifts.length ? (
+          <>
+            <Text style={type.caption}>{`Choose what you’re giving ${name} from what’s already on this altar.`}</Text>
+            <View style={styles.gifts}>
+              {gifts.map((g) => (
+                <GiftTile key={g.id} gift={g} chosen={given.includes(g.id)} onPress={() => toggleGift(g.id)} />
+              ))}
+            </View>
+            {chosenGifts.length > 0 && (
+              <ChipRow>
+                <Chip label={`Set ${chosenGifts.length === 1 ? 'it' : 'them'} at ${name}’s feet`} active={atFeet} onPress={() => setAtFeet((v) => !v)} />
+              </ChipRow>
+            )}
+          </>
+        ) : (
+          <Text style={type.caption}>Nothing else is on this altar yet. Set out food, drink, flowers or anything you’d give, and it can be chosen here.</Text>
+        )}
+      </Group>
+      <Group label="Something else">
+        <Input value={customItems} onChange={setCustomItems} placeholder="Anything not on the altar, separated by commas" />
+      </Group>
+      <Group label="Offering types">
         <Options options={OFFERING_TYPES} values={types} onToggle={(t) => setTypes((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]))} />
       </Group>
-      <Group label="2. Specific offerings">
-        <Supports supports={supports} picked={picked} onChange={setPicked} />
-        <Input value={customItems} onChange={setCustomItems} placeholder="Other offerings, separated by commas" />
-      </Group>
-      <Group label="3. Intention">
+      <Group label="Intention">
         <Input value={intention} onChange={setIntention} placeholder="Gratitude, petition, devotion, celebration…" />
         <Input value={message} onChange={setMessage} placeholder="Optional prayer or message" multiline />
       </Group>
-      <Group label="4. Offering status">
+      <Group label="Offering status">
         <Options options={OFFERING_STATUSES} value={status} onChange={setStatus} />
         {status === 'Custom' && <Input value={customStatus} onChange={setCustomStatus} placeholder="Custom status" />}
       </Group>
-      <Group label="5. Perceived response">
+      <Group label="Perceived response">
         <Options options={RESPONSES} value={response} onChange={setResponse} />
         <Input value={responseNotes} onChange={setResponseNotes} placeholder="Optional personal interpretation" multiline />
       </Group>
       <Button label="Make the offering" disabled={status === 'Custom' && !customStatus.trim()} onPress={() => setMaking(true)} accessibilityHint="A short guided moment, then it is recorded" />
-      <Button label="Just record it" variant="outline" disabled={status === 'Custom' && !customStatus.trim()} onPress={() => onSave(input())} />
+      <Button label="Just record it" variant="outline" disabled={status === 'Custom' && !customStatus.trim()} onPress={save} />
     </View>
+  );
+}
+
+/** Something on the altar, by its picture, to choose as (part of) an offering. */
+function GiftTile({ gift, chosen, onPress }: { gift: AltarGift; chosen: boolean; onPress: () => void }) {
+  const picture = altarPicture(gift.imagePath);
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="checkbox"
+      accessibilityLabel={gift.label}
+      accessibilityState={{ checked: chosen }}
+      style={({ pressed }) => [styles.gift, chosen && styles.giftChosen, pressed && { opacity: 0.7 }]}
+    >
+      <View style={styles.giftThumb}>
+        {picture ? <AltarImage picture={picture} style={styles.giftImage} resizeMode="contain" /> : <Text style={styles.giftSymbol}>{gift.fallbackSymbol || '✦'}</Text>}
+      </View>
+      <Text style={[styles.giftLabel, chosen && styles.giftLabelChosen]} numberOfLines={2}>
+        {gift.label}
+      </Text>
+    </Pressable>
   );
 }
 
@@ -607,6 +659,14 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   multiline: { minHeight: 80, textAlignVertical: 'top' },
+  gifts: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  gift: { width: 92, minHeight: touch, alignItems: 'center', gap: 4, padding: 6, borderRadius: radius.button, borderWidth: 1, borderColor: colors.hairline, backgroundColor: colors.ground },
+  giftChosen: { borderColor: colors.gold, backgroundColor: colors.surfaceRaised },
+  giftThumb: { width: 64, height: 64, alignItems: 'center', justifyContent: 'center' },
+  giftImage: { width: 64, height: 64 },
+  giftSymbol: { fontSize: 30, color: colors.parchment },
+  giftLabel: { fontFamily: fonts.body, fontSize: 13, lineHeight: 17, color: colors.parchment, textAlign: 'center' },
+  giftLabelChosen: { color: colors.cream },
   moment: { alignItems: 'center', gap: 10, paddingVertical: 12, borderRadius: radius.tile, borderWidth: 1, borderColor: colors.hairline, backgroundColor: colors.surfaceRaised, paddingHorizontal: 16 },
   momentTitle: { fontFamily: fonts.display, fontSize: 26, color: colors.cream },
   momentLine: { fontFamily: fonts.displayItalic, fontSize: 18, lineHeight: 25, color: colors.parchment, textAlign: 'center' },

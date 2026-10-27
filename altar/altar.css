@@ -839,6 +839,12 @@
 .object-workflow-options span { display: block; height: 100%; padding: 0.6rem; border: 1px solid rgba(185,160,93,.25); border-radius: .65rem; cursor: pointer; }
 .object-workflow-options input:checked + span { border-color: var(--gold); background: rgba(185,160,93,.16); }
 .object-workflow-muted { opacity: .72; }
+.object-workflow-gifts { grid-template-columns: repeat(auto-fill, minmax(6.2rem, 1fr)); }
+.object-workflow-gifts span { display: grid; justify-items: center; gap: .3rem; text-align: center; }
+.object-workflow-gifts img { width: 4rem; height: 4rem; object-fit: contain; }
+.object-workflow-gifts b { font-size: 2rem; line-height: 4rem; font-weight: normal; }
+.object-workflow-gifts small { font-size: .82rem; line-height: 1.25; }
+.object-workflow-feet { display: flex; gap: .5rem; align-items: center; margin-top: .6rem; }
 .object-workflow-intention { margin: 0; color: var(--cream); font-family: Georgia, serif; font-size: 1.08rem; line-height: 1.5; }
 .object-workflow-intention-entry { border-color: rgba(185,160,93,.55) !important; background: rgba(185,160,93,.1) !important; }
 .relationship-manager-table { display: grid; gap: .35rem; }

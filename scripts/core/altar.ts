@@ -16,6 +16,9 @@ export * as incense from '../../app/src/lib/altar/incense.ts';
 export * as offerings from '../../app/src/lib/altar/offerings.ts';
 export * as offeringArt from '../../app/src/lib/altar/offeringArt.ts';
 export * as offeringDrawer from '../../app/src/lib/altar/offeringDrawer.ts';
+// Offering what's already on the altar to a presence, and everything on an altar written down for the Grimoire.
+export * as offerFromAltar from '../../app/src/lib/altar/offerFromAltar.ts';
+export * as altarRecord from '../../app/src/lib/altar/altarRecord.ts';
 export * as petitions from '../../app/src/lib/altar/petitions.ts';
 export * as charge from '../../app/src/lib/altar/charge.ts';
 export * as moonCharge from '../../app/src/lib/altar/moonCharge.ts';

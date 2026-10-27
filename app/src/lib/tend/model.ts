@@ -159,6 +159,8 @@ export type TendRecord = {
   at: number;
   /** When it was last tended from the list (ISO), or ''. */
   tendedAt: string;
+  /** How many times it has been tended from the list (absent on records from before it was counted). */
+  times?: number;
   /** Words added to it, oldest first. */
   words: { at: string; text: string }[];
   /** How it ended, once it did. */
@@ -217,6 +219,7 @@ export function normalizeRecord(raw: unknown): TendRecord | null {
     remind: r.remind === true,
     at: Number.isInteger(at) && at >= 0 && at < 1440 ? at : defaultReminderAt(kind),
     tendedAt: typeof r.tendedAt === 'string' ? r.tendedAt : '',
+    ...(Number.isInteger(r.times) && (r.times as number) > 0 ? { times: r.times } : {}),
     words: Array.isArray(r.words) ? r.words.filter((w) => w && typeof w.text === 'string' && typeof w.at === 'string').slice(-WORDS_MAX) : [],
     ended,
   };
@@ -230,7 +233,9 @@ export function newRecord(item: Pick<Tendable, 'key' | 'kind' | 'title' | 'sourc
 /** Tended from the list just now, with a word if one was added. */
 export function recordTended(record: TendRecord, now: Date, word = ''): TendRecord {
   const text = word.trim().slice(0, WORD_MAX);
-  return { ...record, tendedAt: now.toISOString(), words: text ? [...record.words, { at: now.toISOString(), text }].slice(-WORDS_MAX) : record.words };
+  // Older records weren't counted: they count from one tending, or from the words added since.
+  const before = record.times ?? (record.tendedAt ? Math.max(1, record.words.length) : 0);
+  return { ...record, tendedAt: now.toISOString(), times: before + 1, words: text ? [...record.words, { at: now.toISOString(), text }].slice(-WORDS_MAX) : record.words };
 }
 
 export function recordEnded(record: TendRecord, how: TendEnd, note: string, now: Date, pageId?: string): TendRecord {

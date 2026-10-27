@@ -533,6 +533,9 @@ const STILL_OUT = new Set(['', 'offered', 'present-on-altar']);
 
 /** What kind of thing an offering record is, from its types and the words of its items. */
 export function deityOfferingKind(offering: Pick<Offering, 'types' | 'items' | 'message'>): OfferingKindId | null {
+  // Things given from the altar say what they are (a honeycomb is honey, whatever it's called).
+  const own = (offering.items ?? []).map((i) => offeringKind(String(i?.kind || ''))).find((k) => k?.lifeMs);
+  if (own) return own.id;
   const words = [...(offering.items ?? []).map((i) => i.label), offering.message ?? ''].join(' ');
   const named = kindFromWords(words);
   if (named) return named;

@@ -637,7 +637,7 @@ function approximateMoonPhase(date = new Date()) {
 
 // A recorded working as page blocks: only what was filled in, except What I
 // Did, Results and Reflection, kept for writing later. (app lib/grimoire/altarImport.ts)
-function buildWorkingBlocks(groupedItems, details, dateText) {
+function buildWorkingBlocks(groupedItems, details, dateText, record = []) {
   const d = typeof details === "string" ? { intention: details } : details || {};
   const v = (value) => String(value || "").trim();
   const blocks = [
@@ -656,7 +656,10 @@ function buildWorkingBlocks(groupedItems, details, dateText) {
   ].filter(Boolean);
   if (timing.length) blocks.push({ type: "heading", content: "Timing" }, { type: "correspondence", content: timing.join("\n") });
   section("Deities and Spirits", "text", d.deities);
-  if (groupedItems.length) {
+  if (Array.isArray(record) && record.length) {
+    // Everything on the altar written down, with its petitions (app lib/altar/altarRecord.ts).
+    blocks.push({ type: "heading", content: "Items from the Altar" }, ...record.map((b) => ({ type: String(b.type || "text"), content: String(b.content ?? "") })));
+  } else if (groupedItems.length) {
     blocks.push({ type: "heading", content: "Items from the Altar" });
     groupedItems.forEach((group) => {
       blocks.push({ type: "heading", content: group.groupLabel }, { type: "ingredient_list", content: group.content });
@@ -724,7 +727,7 @@ async function createRitualPageFromAltarImport(ritual, details = "") {
   pages.push(page);
   currentPage = page;
 
-  const ritualBlocks = buildWorkingBlocks(groupedItems, details, formatDate(new Date().toISOString()));
+  const ritualBlocks = buildWorkingBlocks(groupedItems, details, formatDate(new Date().toISOString()), ritual.record);
 
   const rows = ritualBlocks.map((block, index) => ({
     user_id: user.id,

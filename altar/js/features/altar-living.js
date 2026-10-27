@@ -669,7 +669,8 @@
       const items = offering.items || [];
       return core.devotion.recordOffering(done, {
         types: offering.types || [],
-        supports: items.filter((i) => !i.custom).map((i) => ({ id: String(i.id || i.label), label: i.label })),
+        gifts: items.filter((i) => i.fromAltar),
+        supports: items.filter((i) => !i.custom && !i.fromAltar).map((i) => ({ id: String(i.id || i.label), label: i.label })),
         customItems: items.filter((i) => i.custom).map((i) => i.label).join(", "),
         intention: offering.intention || "",
         message: "A fresh offering in place of the last.",
