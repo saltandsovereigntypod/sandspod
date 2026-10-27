@@ -24,3 +24,5 @@ export * as kipper from '../../app/src/lib/divination/oracle/kipper.ts';
 export * as pairs from '../../app/src/lib/divination/oracle/pairs.ts';
 export * as oracleDecks from '../../app/src/lib/divination/oracle/decks.ts';
 export * as kinds from '../../app/src/lib/divination/oracle/kinds.ts';
+// A draw not yet kept, held in this browser so a reload doesn't lose it.
+export * as draft from '../../app/src/lib/divination/drawDraft.ts';

@@ -670,6 +670,99 @@
     pullQuery: "",
     link: undefined
   };
+  /*
+   * A draw not yet kept, held in this browser only (js/core/divination.js
+   * `draft`, the app's lib/divination/drawDraft.ts): saved on every change, so
+   * a reload or leaving the page doesn't lose it, and offered back when the
+   * page opens for no draw in particular. Cleared once kept, let go, or set
+   * aside for a new draw.
+   */
+  const DF = Dv?.draft || null;
+  const drawDraft = { decided: false, restored: null, owned: false, kept: false, last: undefined };
+  const draftStore = {
+    read() {
+      try {
+        return global.localStorage.getItem(DF.DRAW_DRAFT_KEY);
+      } catch {
+        return null;
+      }
+    },
+    write(text) {
+      try {
+        if (text) global.localStorage.setItem(DF.DRAW_DRAFT_KEY, text);
+      } catch {
+        // Storage full or blocked: the draw is still on the page.
+      }
+    },
+    clear() {
+      try {
+        global.localStorage.removeItem(DF.DRAW_DRAFT_KEY);
+      } catch {
+        // Nothing more to do.
+      }
+    }
+  };
+  /** The draw as it stands, in the draft's shape. */
+  function draftStateNow() {
+    const spread = currentSpread();
+    return {
+      kind: currentKind(),
+      spread: spread.id,
+      ownDeck: currentDeck()?.id ?? null,
+      deck: drawDeck(),
+      question: drawState.question,
+      link: drawLink(spread),
+      options: drawOptions(),
+      byHand: drawState.byHand,
+      placed: drawState.placed,
+      draw: drawState.draw,
+      revealed: drawState.revealed,
+      selected: drawState.selected,
+      interpretation: drawState.interpretation,
+      lookBack: drawState.lookBack
+    };
+  }
+  /** Once the spreads and decks are in: is there a draw left from before to offer back? */
+  function decideDraft() {
+    if (!DF || drawDraft.decided) return;
+    drawDraft.decided = true;
+    if (DF.opensOwnDraw(Object.fromEntries(params))) return;
+    const raw = draftStore.read();
+    if (!raw) return;
+    const stored = DF.parseDraft(raw);
+    const found = stored && DF.isFreshDraft(stored, new Date()) ? DF.restoreDraft(stored, { custom: custom(), decks: myDecks }) : null;
+    // Too old, or its spread, deck or cards are gone: let it go quietly.
+    if (!found) draftStore.clear();
+    drawDraft.restored = found;
+  }
+  /** After anything on the page: save the draw if it changed, or clear it once it's been set aside. */
+  function noteDraft() {
+    if (!DF || !drawDraft.decided || drawDraft.kept) return;
+    const key = DF.draftKey(draftStateNow());
+    if (key === drawDraft.last) return;
+    drawDraft.last = key;
+    if (key) {
+      // A new draw of its own takes the old one's place.
+      drawDraft.owned = true;
+      drawDraft.restored = null;
+      draftStore.write(DF.stampDraft(key, new Date()));
+    } else if (drawDraft.owned) {
+      drawDraft.owned = false;
+      draftStore.clear();
+    }
+  }
+  function draftOfferHtml() {
+    const found = drawDraft.restored;
+    if (!found || drawState.draw || drawState.placed.some(Boolean)) return "";
+    return kit.card(
+      `<h2 class="sp-label">Pick up where you left off?</h2>${kit.p(DF.draftSummary(found, new Date()))}${kit.muted("A draw you hadn’t kept yet is still here, just as you left it.")}${kit.actions([
+        kit.button({ label: "Carry on", act: "draft-carry-on", primary: true }),
+        kit.textButton({ label: "Let it go", act: "draft-let-go" })
+      ])}`,
+      { gold: true }
+    );
+  }
+
   /** What the draw is for, if anything: a dream, a planned working, a deity (`?dream=`, `?plan=`, `?deity=` with `title`). */
   function drawLink(spread) {
     if (drawState.link === undefined) {
@@ -842,6 +935,7 @@
     return [
       back,
       kit.head({ eyebrow: "Draw · Divination", title: kindId === "oracle" && deck ? deck.name : kind.label }),
+      draftOfferHtml(),
       kit.section(
         "What to draw",
         `${kit.chips(
@@ -1306,6 +1400,38 @@
         draw();
       }
     },
+    "draft-carry-on"() {
+      const found = drawDraft.restored;
+      if (!found) return;
+      const d = found.draft;
+      Object.assign(drawState, {
+        kind: d.kind,
+        deckId: found.ownDeck?.id ?? null,
+        spreadId: found.spread.id,
+        question: d.question,
+        link: d.link,
+        local: { ...drawState.local, divination_reversals: d.options.reversals, divination_blank_rune: d.options.blankRune, [Dv.decks.DECK_SETTING]: d.deck },
+        byHand: d.byHand,
+        placed: d.placed,
+        draw: d.draw,
+        revealed: d.revealed,
+        selected: d.selected,
+        interpretation: d.interpretation,
+        lookBack: d.lookBack,
+        picking: false,
+        problem: "",
+        pullQuery: ""
+      });
+      drawDraft.restored = null;
+      draw();
+      root.querySelector('[data-act="draw-turn"], #draw-question')?.focus();
+    },
+    "draft-let-go"() {
+      drawDraft.restored = null;
+      draftStore.clear();
+      draw();
+      root.querySelector("#draw-question")?.focus();
+    },
     "draw-question"(el) {
       drawState.question = el.value;
     },
@@ -1380,6 +1506,8 @@
       refreshDraw({ after: true });
       try {
         const entry = await kit.add(R.READINGS, data);
+        drawDraft.kept = true;
+        if (DF) draftStore.clear();
         kit.go(url.reading(entry.id));
       } catch (error) {
         drawState.saving = false;
@@ -1463,10 +1591,14 @@
     }
   });
 
+  // After each tap or keystroke on the draw page, the draw not yet kept is saved (or cleared).
+  if (view === "hedge-draw") for (const type of ["click", "input", "change"]) root.addEventListener(type, () => noteDraft());
+
   kit.start(async (who) => {
     user = who;
     settings = await kit.settings();
     await load();
+    if (view === "hedge-draw" && Dv) decideDraft();
     draw();
   });
 
