@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams, type Href } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -27,6 +27,7 @@ import {
   type TaskProgress,
 } from '../../../../../../lib/covens/programs';
 import { usePrograms } from '../../../../../../lib/covens/usePrograms';
+import { studyLinks, withoutStudyLinks } from '../../../../../../lib/grimoire/coven';
 import { colors, fonts, radius, type } from '../../../../../../theme';
 
 const date = (value: string | null | undefined) => (value ? new Date(value).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : '');
@@ -250,7 +251,11 @@ function TaskRow({
         </View>
       </View>
       {!later && <Words text={task.instructions} />}
-      {!later && !!task.resources && <Text style={type.caption}>Resources: {task.resources}</Text>}
+      {!later && !!withoutStudyLinks(task.resources) && <Text style={type.caption}>Resources: {withoutStudyLinks(task.resources)}</Text>}
+      {!later &&
+        studyLinks(task.resources).map((link) => (
+          <Button key={link.id} label={`Study: ${link.title}`} variant="outline" onPress={() => router.push(`/coven/c/${coven.slug}/book/${link.id}` as Href)} />
+        ))}
       {!!row?.response && !canWork && (
         <View style={styles.response}>
           <Text style={type.caption}>{self ? 'What you wrote' : `What ${personName} wrote`}</Text>
