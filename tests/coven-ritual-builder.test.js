@@ -71,7 +71,7 @@ test("the pages call the same functions as the app, and the builder loads before
   const builder = read("covens/coven/builder.js");
   for (const needle of ["builderPayload", "ritualPayload", "draftFromTemplate", "stepsFromLibrary", "global.CovenPicker", "partsOf", 'btn("Save as a draft", "save"', "scriptHtml"]) assert.ok(builder.includes(needle), needle);
   const rituals = read("covens/coven/rituals.js");
-  for (const needle of ["CovenBuilder.open", "covenRitePageOps", "D.tickPrep", "D.castVote", "D.nextTurn", "snuffNamed", "placeOffering", "D.setRecordNotes", "saveBookDraft"]) assert.ok(rituals.includes(needle), needle);
+  for (const needle of ["CovenBuilder.open", "covenRitePageOps", "D.tickPrep", "D.castVote", "D.nextTurn", "snuffNamed", "placeOffering", "D.setRecordNotes", "D.saveGathering"]) assert.ok(rituals.includes(needle), needle);
   assert.match(read("covens/coven/book.js"), /Ritual records/);
   assert.match(read("covens/covens.css"), /@media print/);
   // The migration the app and the website both rely on.
