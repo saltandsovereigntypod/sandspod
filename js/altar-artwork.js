@@ -6977,6 +6977,26 @@
       "deities": [
         {
           "category": "deities",
+          "name": "Amun Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "kingship",
+            "the wind and breath of life",
+            "oracles",
+            "the protection of the poor"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/amun/amun-statue.png",
+              "type": "deity",
+              "deity": "amun",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
           "name": "Anubis Statue",
           "icon": "🗝️",
           "keywords": [
@@ -7145,6 +7165,27 @@
         },
         {
           "category": "deities",
+          "name": "Bacchus Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "wine and the vine",
+            "freedom and release",
+            "growth and fertility",
+            "ecstasy",
+            "theatre"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/bacchus/bacchus-statue.png",
+              "type": "deity",
+              "deity": "bacchus",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
           "name": "Baldur Statue",
           "icon": "🗝️",
           "keywords": [
@@ -7181,6 +7222,48 @@
               "image": "../assets/altar/objects/tools/deities/bastet/bastet-statue.png",
               "type": "deity",
               "deity": "bastet",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Bes Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "protection of the household",
+            "childbirth and children",
+            "sleep and dreams",
+            "music",
+            "dance and merriment"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/bes/bes-statue.png",
+              "type": "deity",
+              "deity": "bes",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Bona Dea Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "women",
+            "healing",
+            "fertility",
+            "chastity",
+            "wellbeing"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/bona_dea/bona_dea-statue.png",
+              "type": "deity",
+              "deity": "bona_dea",
               "form": "statue"
             }
           ]
@@ -7410,6 +7493,68 @@
               "image": "../assets/altar/objects/tools/deities/eros/eros-statue.png",
               "type": "deity",
               "deity": "eros",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Faunus Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "woods and pasture",
+            "flocks and herds",
+            "herdsmen",
+            "fertility"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/faunus/faunus-statue.png",
+              "type": "deity",
+              "deity": "faunus",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Flora Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "flowers",
+            "blossom",
+            "spring",
+            "the flowering of grain",
+            "vines and fruit trees"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/flora/flora-statue.png",
+              "type": "deity",
+              "deity": "flora",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Fortuna Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "luck and chance",
+            "fate and fortune",
+            "prosperity",
+            "opportunity",
+            "oracles by lot"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/fortuna/fortuna-statue.png",
+              "type": "deity",
+              "deity": "fortuna",
               "form": "statue"
             }
           ]
@@ -7689,6 +7834,27 @@
         },
         {
           "category": "deities",
+          "name": "Horus Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "the sky",
+            "kingship",
+            "protection",
+            "victory",
+            "the rightful heir"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/horus/horus-statue.png",
+              "type": "deity",
+              "deity": "horus",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
           "name": "Idunn Statue",
           "icon": "🗝️",
           "keywords": [
@@ -7794,6 +7960,26 @@
         },
         {
           "category": "deities",
+          "name": "Khonsu Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "the moon and its journey",
+            "the passing of time",
+            "healing",
+            "youth"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/khonsu/khonsu-statue.png",
+              "type": "deity",
+              "deity": "khonsu",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
           "name": "Lada Statue",
           "icon": "🗝️",
           "keywords": [
@@ -7808,6 +7994,24 @@
               "image": "../assets/altar/objects/tools/deities/lada/lada-statue.png",
               "type": "deity",
               "deity": "lada",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Lares and Penates Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "ancestors",
+            "safe homecoming"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/lares_penates/lares_penates-statue.png",
+              "type": "deity",
+              "deity": "lares_penates",
               "form": "statue"
             }
           ]
@@ -7850,6 +8054,27 @@
               "image": "../assets/altar/objects/tools/deities/lugh/lugh-statue.png",
               "type": "deity",
               "deity": "lugh",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Maat Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "truth",
+            "justice",
+            "cosmic order",
+            "balance",
+            "right conduct"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/maat/maat-statue.png",
+              "type": "deity",
+              "deity": "maat",
               "form": "statue"
             }
           ]
@@ -7940,6 +8165,27 @@
         },
         {
           "category": "deities",
+          "name": "Mithras Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "loyalty and contract",
+            "salvation in a mystery cult",
+            "light",
+            "the cosmic order",
+            "brotherhood among initiates"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/mithras/mithras-statue.png",
+              "type": "deity",
+              "deity": "mithras",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
           "name": "Mokosh Statue",
           "icon": "🗝️",
           "keywords": [
@@ -7976,6 +8222,89 @@
               "image": "../assets/altar/objects/tools/deities/morana/morana-statue.png",
               "type": "deity",
               "deity": "morana",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Neith Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "creation",
+            "hunting and war",
+            "weaving",
+            "wisdom and judgement",
+            "protection of the dead"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/neith/neith-statue.png",
+              "type": "deity",
+              "deity": "neith",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Nephthys Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "mourning",
+            "protection of the dead",
+            "night and transition",
+            "care for the grieving"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/nephthys/nephthys-statue.png",
+              "type": "deity",
+              "deity": "nephthys",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Neptune Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "fresh water and springs",
+            "the sea",
+            "horses",
+            "sailors",
+            "summer drought"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/neptune/neptune-statue.png",
+              "type": "deity",
+              "deity": "neptune",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Nut Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "the sky",
+            "the stars",
+            "the daily rebirth of the sun",
+            "motherhood",
+            "protection of the dead"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/nut/nut-statue.png",
+              "type": "deity",
+              "deity": "nut",
               "form": "statue"
             }
           ]
@@ -8107,6 +8436,47 @@
         },
         {
           "category": "deities",
+          "name": "Pluto Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "the underworld",
+            "the dead",
+            "the wealth beneath the earth",
+            "minerals and seed",
+            "endings"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/pluto/pluto-statue.png",
+              "type": "deity",
+              "deity": "pluto",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Pomona Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "fruit trees and orchards",
+            "gardens",
+            "grafting and pruning",
+            "the ripening of fruit"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/pomona/pomona-statue.png",
+              "type": "deity",
+              "deity": "pomona",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
           "name": "Poseidon Statue",
           "icon": "🗝️",
           "keywords": [
@@ -8122,6 +8492,47 @@
               "image": "../assets/altar/objects/tools/deities/poseidon/poseidon-statue.png",
               "type": "deity",
               "deity": "poseidon",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Proserpina Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "the underworld",
+            "the grain",
+            "the dead",
+            "the cycle of loss and return"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/proserpina/proserpina-statue.png",
+              "type": "deity",
+              "deity": "proserpina",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Ptah Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "creation by thought and word",
+            "craftsmen and builders",
+            "sculpture",
+            "memphis",
+            "prayers heard"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/ptah/ptah-statue.png",
+              "type": "deity",
+              "deity": "ptah",
               "form": "statue"
             }
           ]
@@ -8170,6 +8581,27 @@
         },
         {
           "category": "deities",
+          "name": "Saturn Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "sowing and seed",
+            "agriculture",
+            "plenty",
+            "the golden age",
+            "liberation at midwinter"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/saturn/saturn-statue.png",
+              "type": "deity",
+              "deity": "saturn",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
           "name": "Sekhmet Statue",
           "icon": "🗝️",
           "keywords": [
@@ -8212,6 +8644,27 @@
         },
         {
           "category": "deities",
+          "name": "Set Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "storms",
+            "the desert",
+            "foreign lands",
+            "strength",
+            "defence of ra’s barque"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/set/set-statue.png",
+              "type": "deity",
+              "deity": "set",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
           "name": "Skadi Statue",
           "icon": "🗝️",
           "keywords": [
@@ -8227,6 +8680,67 @@
               "image": "../assets/altar/objects/tools/deities/skadi/skadi-statue.png",
               "type": "deity",
               "deity": "skadi",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Sobek Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "the nile and its waters",
+            "crocodiles",
+            "fertility of the land",
+            "strength"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/sobek/sobek-statue.png",
+              "type": "deity",
+              "deity": "sobek",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Sol Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "the sun",
+            "light",
+            "sight",
+            "the turning year",
+            "victory"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/sol/sol-statue.png",
+              "type": "deity",
+              "deity": "sol",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Taweret Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "pregnancy and childbirth",
+            "babies and young children",
+            "protection of the home",
+            "fertility"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/taweret/taweret-statue.png",
+              "type": "deity",
+              "deity": "taweret",
               "form": "statue"
             }
           ]
@@ -8395,6 +8909,27 @@
               "image": "../assets/altar/objects/tools/deities/vesta/vesta-statue.png",
               "type": "deity",
               "deity": "vesta",
+              "form": "statue"
+            }
+          ]
+        },
+        {
+          "category": "deities",
+          "name": "Vulcan Statue",
+          "icon": "🗝️",
+          "keywords": [
+            "fire",
+            "both destructive and useful",
+            "the forge and metalwork",
+            "volcanoes",
+            "protection from fire"
+          ],
+          "forms": [
+            {
+              "label": "Place",
+              "image": "../assets/altar/objects/tools/deities/vulcan/vulcan-statue.png",
+              "type": "deity",
+              "deity": "vulcan",
               "form": "statue"
             }
           ]
