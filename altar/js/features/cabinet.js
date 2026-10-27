@@ -412,7 +412,7 @@ const closedCabinetPantheons = new Set();
 function renderCabinetItemList(items, renderItem) {
   // The Seasonal drawer: "For Samhain" first for each festival that's near, then each calendar's things through its year.
   const seasonal = window.SaltCore?.altar?.seasonal;
-  if (activeCabinetCategory === "seasonal" && seasonal) {
+  if (activeCabinetCategory === "seasonal" && seasonal && !cabinetSearchTerm.trim()) {
     return seasonal.seasonalSections(items, cabinetNear).map((section) => {
       const when = section.near ? `<p class="cabinet-season-when">${seasonal.festivalWhen(section.near)}</p>` : "";
       return `
@@ -424,7 +424,7 @@ function renderCabinetItemList(items, renderItem) {
       `;
     }).join("");
   }
-  if (activeCabinetCategory !== "deities") return items.map(renderItem).join("");
+  if (activeCabinetCategory !== "deities" || cabinetSearchTerm.trim()) return items.map(renderItem).join("");
 
   const artwork = window.AltarArtwork || {};
   const order = [...(artwork.pantheonGroups || []), "Your own"];
@@ -461,7 +461,14 @@ function renderCabinetItems() {
   if (!cabinetContent) return;
   ensureSeasonalCabinetItems();
 
-  const search = cabinetSearchTerm.toLowerCase();
+  const search = cabinetSearchTerm.toLowerCase().trim();
+  // A search looks in every drawer at once (as the app's cabinet and the coven ritual planner's
+  // Items picker, lib/altar/itemIndex.ts): every word must fit, names that start with it first.
+  const words = search.split(/\s+/).filter(Boolean);
+  const rank = (item) => {
+    const name = String(item.name || "").toLowerCase();
+    return name === search ? 0 : name.startsWith(search) ? 1 : name.split(/\s+/).some((w) => w.startsWith(words[0] || "")) ? 2 : 3;
+  };
 
   const customBackgrounds =
     activeCabinetCategory === "backgrounds" && typeof customAltarBackgroundsCache !== "undefined"
@@ -474,16 +481,17 @@ function renderCabinetItems() {
       : [];
 
   const items = [...customBackgrounds, ...customCabinetItems, ...cabinetItems].filter((item) => {
-    const matchesCategory = item.category === activeCabinetCategory;
+    const matchesCategory = words.length ? item.category !== "backgrounds" || activeCabinetCategory === "backgrounds" : item.category === activeCabinetCategory;
     const searchable = [
       item.name,
       item.category,
       ...(item.keywords || []),
-      ...(item.grimoireKeywords || [])
+      ...(item.grimoireKeywords || []),
+      ...(item.forms || []).flatMap((form) => [form.label, form.form, form.color, ...(form.aliases || [])])
     ].join(" ").toLowerCase();
 
-    return matchesCategory && searchable.includes(search);
-  }).sort((a, b) => String(a.name).localeCompare(String(b.name)));
+    return matchesCategory && words.every((word) => searchable.includes(word));
+  }).sort((a, b) => (words.length ? rank(a) - rank(b) : 0) || String(a.name).localeCompare(String(b.name)));
 
   if (items.length === 0 && activeCabinetCategory !== "backgrounds") {
     cabinetContent.innerHTML = `<p class="cabinet-empty">No cabinet items found.</p>`;
@@ -491,7 +499,7 @@ function renderCabinetItems() {
   }
 
   const addCustomItemTile =
-    activeCabinetCategory !== "backgrounds" && activeCabinetCategory !== "seasonal" && activeCabinetCategory !== "natural" && activeCabinetCategory !== "plants" && activeCabinetCategory !== "offerings"
+    !words.length && activeCabinetCategory !== "backgrounds" && activeCabinetCategory !== "seasonal" && activeCabinetCategory !== "natural" && activeCabinetCategory !== "plants" && activeCabinetCategory !== "offerings"
       ? `
         <button type="button" class="cabinet-tile cabinet-background-tile" data-add-custom-cabinet-item>
           <span class="cabinet-tile-icon">＋</span>

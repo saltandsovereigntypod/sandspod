@@ -358,6 +358,20 @@
     },
     performStepAction: (stepId) => rpc("perform_coven_step_action", { p_step: stepId }),
 
+    // --- what steps ask of people (as the app's lib/covens/api.ts) --------------
+    // Others' come sealed and unnamed as they should, through the database's function.
+    contributions: (ritualId) => rpc("coven_ritual_contributions_for", { p_ritual: ritualId }).then((rows) => rows || []),
+    myContributions: (userId) => run(db().from("coven_ritual_contributions").select("id,step_id,ritual_id,status").eq("user_id", userId).limit(500)),
+    saveContribution: (stepId, body, items, isPrivate, anonymous) =>
+      rpc("save_coven_ritual_contribution", { p_step: stepId, p_body: String(body || "").trim(), p_items: items || [], p_private: Boolean(isPrivate), p_anonymous: Boolean(anonymous) }),
+    removeContribution: (id) => rpc("remove_coven_ritual_contribution", { p_contribution: id }),
+    offerContribution: (id) => rpc("offer_coven_ritual_contribution", { p_contribution: id }),
+    supportContribution: (id, kind, on) => rpc("support_coven_ritual_contribution", { p_contribution: id, p_kind: kind, p_on: on }),
+    tendContribution: (id, status, note) => rpc("tend_coven_ritual_contribution", { p_contribution: id, p_status: status, p_note: String(note || "").trim() || null }),
+    participation: (ritualId) => rpc("coven_ritual_participation", { p_ritual: ritualId }).then((rows) => rows || []),
+    ritualSettings: (covenId) => run(db().from("coven_ritual_settings").select("coven_id,participation_viewers").eq("coven_id", covenId).maybeSingle()),
+    setParticipationViewers: (covenId, viewers) => rpc("set_coven_participation_viewers", { p_coven: covenId, p_viewers: viewers }),
+
     // --- the coven's Book of Shadows -------------------------------------------
     bookPages: (covenId) => run(db().from("coven_book_pages").select("*").eq("coven_id", covenId).order("title", { ascending: true }).limit(500)),
     bookDrafts: (covenId) => run(db().from("coven_book_drafts").select("*").eq("coven_id", covenId).neq("status", "published").order("updated_at", { ascending: false }).limit(200)),

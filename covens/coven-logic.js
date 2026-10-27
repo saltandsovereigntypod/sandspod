@@ -334,22 +334,40 @@
 
   // --- coven rituals ------------------------------------------------------------
 
-  /** Whose a ritual step is: a person, everyone in a position, or the whole coven. */
-  function stepAssignee(step, ranks, nameOf) {
-    if (step?.assigned_user_id) return { kind: "person", label: nameOf ? nameOf(step.assigned_user_id) : "A member" };
-    if (step?.assigned_rank_id) {
-      const rank = (ranks || []).find((r) => r.id === step.assigned_rank_id);
-      return { kind: "rank", label: rank ? `Every ${rank.name}` : "A position" };
-    }
-    return { kind: "everyone", label: "The whole coven" };
+  /**
+   * Who a step is for, as a list of { kind: "coven" | "rank" | "user", id }
+   * (the app's lib/covens/picker.ts assigneesOf): its own list, or for steps
+   * planned before there was one, its one person or position, or the whole coven.
+   */
+  function stepAssignees(step) {
+    const list = (Array.isArray(step?.assignees) ? step.assignees : []).filter((a) => a && ["coven", "rank", "user"].includes(a.kind) && (a.kind === "coven" || a.id));
+    if (list.some((a) => a.kind === "coven")) return [{ kind: "coven", id: "coven" }];
+    if (list.length) return list;
+    if (step?.assigned_user_id) return [{ kind: "user", id: step.assigned_user_id }];
+    if (step?.assigned_rank_id) return [{ kind: "rank", id: step.assigned_rank_id }];
+    return [{ kind: "coven", id: "coven" }];
   }
 
-  /** Mirrors public.coven_step_is_mine: by name, by position, or everyone's. */
+  /** Whose a ritual step is: a person, everyone in a position, the whole coven, or several of these. */
+  function stepAssignee(step, ranks, nameOf) {
+    const label = (a) => {
+      if (a.kind === "user") return nameOf ? nameOf(a.id) : "A member";
+      if (a.kind === "rank") {
+        const rank = (ranks || []).find((r) => r.id === a.id);
+        return rank ? `Every ${rank.name}` : "A position";
+      }
+      return "The whole coven";
+    };
+    const list = stepAssignees(step);
+    const labels = list.map(label);
+    if (list.length > 1) return { kind: "several", label: `${labels.slice(0, -1).join(", ")} and ${labels[labels.length - 1]}` };
+    return { kind: list[0].kind === "user" ? "person" : list[0].kind === "rank" ? "rank" : "everyone", label: labels[0] };
+  }
+
+  /** Mirrors public.coven_step_is_mine: among its people, by name or position, or everyone's. */
   function stepIsMine(step, membership, userId) {
     if (!step || !userId || membership?.status !== "active") return false;
-    if (step.assigned_user_id) return step.assigned_user_id === userId;
-    if (step.assigned_rank_id) return step.assigned_rank_id === membership.rank_id;
-    return true;
+    return stepAssignees(step).some((a) => a.kind === "coven" || (a.kind === "user" && a.id === userId) || (a.kind === "rank" && Boolean(membership.rank_id) && a.id === membership.rank_id));
   }
 
   /**
@@ -358,11 +376,12 @@
    * public.save_coven_ritual insists). `people` is [{ id, eligible }].
    */
   function unassignablePart(step, people, nameOf) {
-    if (!step?.assigned_user_id) return "";
-    const person = (people || []).find((p) => p.id === step.assigned_user_id);
-    const name = nameOf ? nameOf(step.assigned_user_id) : "This member";
-    if (!person) return `${name} is no longer a member. Give this step to someone else.`;
-    if (!person.eligible) return `${name} hasn’t signed the coven’s current agreements, so can’t be given a part. Give this step to someone else.`;
+    for (const a of stepAssignees(step).filter((x) => x.kind === "user")) {
+      const person = (people || []).find((p) => p.id === a.id);
+      const name = nameOf ? nameOf(a.id) : "This member";
+      if (!person) return `${name} is no longer a member. Give this step to someone else.`;
+      if (!person.eligible) return `${name} hasn’t signed the coven’s current agreements, so can’t be given a part. Give this step to someone else.`;
+    }
     return "";
   }
 
@@ -436,8 +455,17 @@
     { value: "light_candle", label: "Light a candle on the shared altar" },
     { value: "place_item", label: "Place something on the shared altar" },
     { value: "light_all", label: "Light every candle on the altar" },
-    { value: "snuff_all", label: "Put out the altar’s candles" }
+    { value: "snuff_all", label: "Put out the altar’s candles" },
+    { value: "release_papers", label: "Release the papers" }
   ];
+
+  /** What a step sets down: its items' names, or on older steps its one item. */
+  function stepItemsLabel(step) {
+    const names = (Array.isArray(step?.items) ? step.items : []).map((i) => i && i.name).filter(Boolean);
+    if (!names.length) return step?.altar_label || "";
+    if (names.length > 3) return `${names.slice(0, 3).join(", ")} and ${names.length - 3} more`;
+    return names.length === 1 ? names[0] : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+  }
 
   /** The button that does a step's altar action, for whoever it belongs to. */
   function altarActionButton(step, done) {
@@ -445,20 +473,22 @@
     if (done) return "";
     return {
       light_candle: "Light your candle",
-      place_item: `Place ${step.altar_label || "your offering"} on the altar`,
+      place_item: `Place ${stepItemsLabel(step) || "your offering"} on the altar`,
       light_all: "Light the altar’s candles",
-      snuff_all: "Put out the candles"
+      snuff_all: "Put out the candles",
+      release_papers: "Release the papers"
     }[step.altar_action] || "";
   }
 
   function altarActionNote(step) {
     if (!step?.altar_action) return "";
-    const who = step.assigned_user_id || step.assigned_rank_id ? "" : " Each member lights their own, and the candles gather in a circle.";
+    const who = stepAssignees(step).some((a) => a.kind === "coven") ? " Each member lights their own, and the candles gather in a circle." : "";
     return {
       light_candle: `Lights a ${step.altar_color || "white"} candle on the shared altar.${step.altar_action === "light_candle" ? who : ""}`,
-      place_item: `Places ${step.altar_label || "an offering"} on the shared altar.`,
+      place_item: `Places ${stepItemsLabel(step) || "an offering"} on the shared altar.`,
       light_all: "Lights every candle on the shared altar.",
-      snuff_all: "Puts out the candles on the shared altar."
+      snuff_all: "Puts out the candles on the shared altar.",
+      release_papers: "The folded papers on the altar are burned, buried or released, each as its step said."
     }[step.altar_action];
   }
 
@@ -595,7 +625,9 @@
     errorMessage,
     relativeTime,
     stepAssignee,
+    stepAssignees,
     stepIsMine,
+    stepItemsLabel,
     unassignablePart,
     OCCASIONS,
     occasionLabel,

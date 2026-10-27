@@ -84,7 +84,9 @@ export const blankStep = (): DraftStep => ({
 export const deityName = (label: string) => label.replace(/\s+(statue|figure|idol|icon)\b.*$/i, '').trim();
 
 export function draftFromStep(step: RitualStep): DraftStep {
-  const items = cleanStepItems(step.items);
+  const saved = cleanStepItems(step.items);
+  // A step planned before items: its one picture becomes its item.
+  const items = !saved.length && step.altar_action === 'place_item' && step.altar_image ? [{ key: `legacy|${step.altar_image}`, name: step.altar_label || 'Offering', image: step.altar_image, category: '' }] : saved;
   const deity = items.find((i) => i.category === 'deities');
   return {
     ...blankStep(),

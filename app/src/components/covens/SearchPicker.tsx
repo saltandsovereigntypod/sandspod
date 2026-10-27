@@ -10,8 +10,9 @@ export type PickerChip = { key: string; label: string; image?: string; note?: st
 
 // The one search picker (lib/covens/picker.ts), as the website's twin
 // (covens/coven/picker.js): type to find, tap to add, and each pick shows as
-// a chip with a picture (for items) that you can take away. Search only: when
-// nothing is typed it shows a few suggestions, never the whole list.
+// a chip with a picture (for items) that you can take away. Search only: while
+// the search is in use with nothing typed it shows a few suggestions, never
+// the whole list.
 export function SearchPicker({
   label,
   hint,
@@ -43,10 +44,12 @@ export function SearchPicker({
   empty?: string;
 }) {
   const [query, setQuery] = useState('');
+  // Suggestions only while the search is in use; otherwise just the chips.
+  const [focused, setFocused] = useState(false);
   const picked = useMemo(() => chips.map((c) => c.key), [chips]);
   const found = useMemo(
-    () => (search ? search(query, picked) : searchEntries(entries, query, { limit, picked, suggestions })).slice(0, limit),
-    [search, entries, query, picked, suggestions, limit],
+    () => (!query.trim() && !focused ? [] : (search ? search(query, picked) : searchEntries(entries, query, { limit, picked, suggestions })).slice(0, limit)),
+    [search, entries, query, picked, suggestions, limit, focused],
   );
   const full = max != null && chips.length >= max;
 
@@ -76,6 +79,9 @@ export function SearchPicker({
         <TextInput
           value={query}
           onChangeText={setQuery}
+          onFocus={() => setFocused(true)}
+          // Later than a tap on a suggestion, which blurs the field first.
+          onBlur={() => setTimeout(() => setFocused(false), 250)}
           placeholder={placeholder}
           placeholderTextColor="rgba(202,191,157,0.6)"
           accessibilityLabel={`Search for ${label.toLowerCase()}`}
