@@ -20,7 +20,7 @@
 import { cleanStepItems, type StepItem } from '../altar/stepItems.ts';
 import { cleanContribution, type RitualTask } from './contributions.ts';
 import type { Rank, RitualStep } from './model.ts';
-import { assigneeFromKey, assigneeKey, assigneeLabel, andList, cleanAssignees, includesMember, legacyColumns, WHOLE_COVEN, type Assignee } from './picker.ts';
+import { assigneeFromKey, assigneeKey, assigneeLabel, andList, cleanAssignees, includesMember, legacyColumns, WHOLE_COVEN, type Assignee, type PickEntry } from './picker.ts';
 import { blankStep, draftFromStep, plannerProblem, stepsPayload, type Candidate, type DraftStep } from './draft.ts';
 import { actionOf, type StepAction } from './stepActions.ts';
 import { cleanFieldSpecs, cleanValues, fieldsFor, fieldSummary, namesIn, whoIn, type FieldSpec, type FieldValues, type ThingKind } from './fields.ts';
@@ -312,6 +312,11 @@ export function whoLabel(key: string, ctx: WhoContext): string {
   if (!a) return '';
   if (a.kind === 'rank') return ctx.ranks.find((r) => r.id === a.id)?.name ?? 'A position';
   return assigneeLabel(a, ctx.ranks, ctx.nameOf);
+}
+
+/** The gathering's roles for the WHO picker, before positions and people. */
+export function roleEntries(roles: PlanRole[]): PickEntry[] {
+  return roles.map((r) => ({ key: `role:${r.id}`, label: r.name, detail: 'Role in this gathering', keywords: ['role', 'part'], group: 'role' }));
 }
 
 /** A role with who plays it: "High Priestess (Rowan)", or "High Priestess (no one yet)". */

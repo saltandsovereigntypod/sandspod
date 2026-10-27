@@ -4,43 +4,67 @@ import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-nati
 
 import { Button } from '../../../../../../components/Button';
 import { CovenScreen, covenHref } from '../../../../../../components/covens/CovenScreen';
-import { StepEditor } from '../../../../../../components/covens/StepEditor';
-import { Card, Chips, Field, Notice, Section } from '../../../../../../components/more/ui';
+import { Outline } from '../../../../../../components/covens/builder/Outline';
+import { AfterwardsPanel, ChecklistPanel, CustomActionForm, RolesPanel, SectionsPanel } from '../../../../../../components/covens/builder/Panels';
+import { ScriptView } from '../../../../../../components/covens/builder/ScriptView';
+import { StepFocus } from '../../../../../../components/covens/builder/StepFocus';
+import { Card, Chips, Field, MenuList, MenuRow, Notice, Section } from '../../../../../../components/more/ui';
 import { itemIndex, itemSuggestions } from '../../../../../../lib/altar/itemIndex';
 import { useAltars } from '../../../../../../lib/altar/store';
 import * as api from '../../../../../../lib/covens/api';
-import { useCoven } from '../../../../../../lib/covens/CovenContext';
-import { errorMessage, OCCASIONS, orderSteps, type Petition } from '../../../../../../lib/covens/model';
-import { whoEntries, whoSuggestions } from '../../../../../../lib/covens/picker';
 import {
-  blankStep,
-  draftFromStep,
-  fromFields,
-  occasionSuggestions,
-  plannerProblem,
-  stepsFromTemplate,
-  stepsPayload,
-  suggestionTime,
-  toFields,
-  unassignablePart,
-  type Candidate,
-  type DraftStep,
-} from '../../../../../../lib/covens/planner';
+  blankBuilderStep,
+  blankPlan,
+  builderPayload,
+  builderProblem,
+  builderStepFrom,
+  builderWarnings,
+  cleanCustomAction,
+  cleanPlan,
+  defaultSectionFor,
+  freshSteps,
+  GATHERING_KINDS,
+  insertStep,
+  libraryStep,
+  moveStep,
+  namedThings,
+  orderBySections,
+  roleEntries,
+  ritualPayload,
+  shortId,
+  specsOf,
+  stepsFromLibrary,
+  whoLabel as whoLabelOf,
+  withFieldColumns,
+  type BuilderStep,
+  type CustomAction,
+  type GatheringKind,
+  type RitualPlan,
+} from '../../../../../../lib/covens/builder';
+import { useCoven } from '../../../../../../lib/covens/CovenContext';
+import { errorMessage, OCCASIONS, orderSteps, type BookPage, type Petition } from '../../../../../../lib/covens/model';
+import { whoEntries, whoSuggestions } from '../../../../../../lib/covens/picker';
+import { fromFields, occasionSuggestions, stepsFromTemplate, suggestionTime, toFields, unassignablePart, type Candidate } from '../../../../../../lib/covens/planner';
 import { covenHolidaysBetween } from '../../../../../../lib/covens/programs';
+import { buildScript } from '../../../../../../lib/covens/script';
+import { draftFromTemplate, RITUAL_TEMPLATES } from '../../../../../../lib/covens/templates';
 import { useRituals } from '../../../../../../lib/rituals/store';
 import { colors, radius, type } from '../../../../../../theme';
 
 const NO_OCCASION = { value: '', label: 'None' } as const;
 
-// Plan a coven ritual, or change one, as on the website: its name, intention
-// and what to bring, its occasion and time (with the coming moons and the
-// coven's holidays to choose from), whether it's on the coven's calendar or a
-// draft, and its steps (components/covens/StepEditor.tsx): each one's action,
-// name, directions and words, who does it (any mix of the whole coven,
-// positions and people), its items, what it does at the altar, and anything
-// it asks of people.
-// For those who lead the coven's rituals; putting rites on the calendar is for
-// those the coven's head allows.
+type View_ = 'start' | 'outline' | 'details' | 'roles' | 'sections' | 'prep' | 'after' | 'preview' | 'action' | { step: string };
+
+// The coven ritual builder (lib/covens/builder.ts), as on the website
+// (covens/coven/builder.js). A gathering, a rite or a meeting, starts from a
+// ready-made template, a copy of one of the coven's rituals, one of the
+// coven's own templates, or nothing, and is shown as an OUTLINE: its sections
+// with one-line step cards. Each step opens on its own (components/covens/
+// builder/StepFocus.tsx); roles, the checklist for before, what happens
+// afterwards, and the sections themselves each have their own panel. The
+// preview reads the whole script, or the run-through for you.
+// For those who lead the coven's rituals; putting rites on the calendar is
+// for those the coven's head allows.
 export default function PlanRitual() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const coven = useCoven();
@@ -50,8 +74,12 @@ export default function PlanRitual() {
   const canLead = (coven.perms.lead && coven.standing.ok) || coven.perms.site;
   const canSchedule = coven.perms.schedule || coven.perms.site;
   const keepsSchedule = ritual?.status === 'scheduled';
-  const { templates } = useRituals();
+  const { templates: ownRituals } = useRituals();
 
+  const initialKind: GatheringKind = ritual?.kind === 'meeting' ? 'meeting' : 'rite';
+  const [kind, setKind] = useState<GatheringKind>(initialKind);
+  const [plan, setPlan] = useState<RitualPlan>(() => cleanPlan(ritual?.plan, initialKind));
+  const [steps, setSteps] = useState<BuilderStep[]>(() => (ritual ? orderBySections(orderSteps(coven.steps, ritual.id).map((s) => builderStepFrom(s, cleanPlan(ritual.plan, initialKind))), cleanPlan(ritual.plan, initialKind).sections) : []));
   const [title, setTitle] = useState(ritual?.title ?? '');
   const [intention, setIntention] = useState(ritual?.intention ?? '');
   const [description, setDescription] = useState(ritual?.description ?? '');
@@ -59,36 +87,26 @@ export default function PlanRitual() {
   const [occasionName, setOccasionName] = useState(ritual?.occasion_name ?? '');
   const [date, setDate] = useState(toFields(ritual?.scheduled_for).date);
   const [time, setTime] = useState(toFields(ritual?.scheduled_for).time);
-  const [status, setStatus] = useState<'scheduled' | 'draft'>(ritual ? (ritual.status === 'draft' || !(canSchedule || keepsSchedule) ? 'draft' : 'scheduled') : canSchedule ? 'scheduled' : 'draft');
-  const [steps, setSteps] = useState<DraftStep[]>(() => (ritual ? orderSteps(coven.steps, ritual.id).map(draftFromStep) : [blankStep()]));
+  const [view, setView] = useState<View_>(ritual ? 'outline' : 'start');
   const [people, setPeople] = useState<Candidate[] | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const [copyFrom, setCopyFrom] = useState(false);
-  // Each step's own key, so moving one keeps what's typed in its fields with it.
-  const [keys, setKeys] = useState<number[]>(() => steps.map((_, i) => i));
-  const [counter, setCounter] = useState(1000);
-  const nextKey = () => {
-    setCounter((c) => c + 1);
-    return counter;
-  };
-  const altars = useAltars();
+  const [library, setLibrary] = useState<api.LibraryRow[]>([]);
+  const [pages, setPages] = useState<BookPage[]>([]);
   const [petitions, setPetitions] = useState<Petition[]>([]);
-  useEffect(() => {
-    if (covenId) api.fetchPetitions(covenId).then(setPetitions).catch(() => setPetitions([]));
-  }, [covenId]);
-  // Everything the altar knows (your own things that are kept online, too) and the coven's open petitions.
-  const itemList = useMemo(
-    () =>
-      itemIndex({
-        own: altars.customItems.filter((item) => item.forms.some((f) => /^https:/.test(f.image))),
-        overrides: altars.overrides,
-        petitions: petitions.filter((p) => p.status === 'open'),
-      }),
-    [altars.customItems, altars.overrides, petitions],
-  );
-  const suggestItems = useCallback((queries?: string[]) => itemSuggestions(itemList, queries), [itemList]);
+  const [previewMode, setPreviewMode] = useState<'script' | 'run'>('script');
+  const [actionDraft, setActionDraft] = useState<{ name: string; section?: string; directions: string; words: string; minutes: number | null; fields: CustomAction['fields'] } | null>(null);
+  const altars = useAltars();
 
+  const loadLibrary = useCallback(async () => {
+    if (covenId) setLibrary(await api.fetchLibrary(covenId));
+  }, [covenId]);
+  useEffect(() => {
+    if (!covenId) return;
+    void api.fetchLibrary(covenId).then(setLibrary);
+    api.fetchBookPages(covenId).then(setPages).catch(() => setPages([]));
+    api.fetchPetitions(covenId).then(setPetitions).catch(() => setPetitions([]));
+  }, [covenId]);
   useEffect(() => {
     if (!covenId) return;
     api
@@ -101,18 +119,36 @@ export default function PlanRitual() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- once per coven
   }, [covenId]);
 
+  const custom = useMemo(() => library.filter((l) => l.kind === 'action').map((l) => cleanCustomAction(l.id, l.body)).filter((a): a is CustomAction => !!a), [library]);
+  const blocks = useMemo(() => library.filter((l) => l.kind === 'block'), [library]);
+  const savedTemplates = useMemo(() => library.filter((l) => l.kind === 'template'), [library]);
+  const itemList = useMemo(
+    () => itemIndex({ own: altars.customItems.filter((item) => item.forms.some((f) => /^https:/.test(f.image))), overrides: altars.overrides, petitions: petitions.filter((p) => p.status === 'open') }),
+    [altars.customItems, altars.overrides, petitions],
+  );
+  const suggestItems = useCallback((queries?: string[]) => itemSuggestions(itemList, queries), [itemList]);
   const named = useMemo(() => (people ?? []).map((p) => ({ ...p, name: coven.nameOf(p.id) })).sort((a, b) => a.name.localeCompare(b.name)), [people, coven]);
-  const whoList = useMemo(() => whoEntries(ranks, named), [ranks, named]);
-  const whoSuggest = useMemo(() => whoSuggestions(whoList), [whoList]);
+  const who = useMemo(() => [...roleEntries(plan.roles), ...whoEntries(ranks, named)], [plan.roles, ranks, named]);
+  const whoSuggest = useMemo(() => [...plan.roles.map((r) => `role:${r.id}`), ...whoSuggestions(whoEntries(ranks, named))], [plan.roles, ranks, named]);
+  const ctx = useMemo(() => ({ roles: plan.roles, ranks, nameOf: coven.nameOf }), [plan.roles, ranks, coven.nameOf]);
+  const whoLabel = useCallback((key: string) => whoLabelOf(key, ctx), [ctx]);
   const suggestions = useMemo(() => {
     const from = new Date();
-    const covenDays = covenHolidaysBetween(coven.snapshot?.coven ?? null, from, new Date(from.getTime() + 200 * 86400000));
-    return occasionSuggestions(from, 6, covenDays);
+    return occasionSuggestions(from, 6, covenHolidaysBetween(coven.snapshot?.coven ?? null, from, new Date(from.getTime() + 200 * 86400000)));
   }, [coven.snapshot?.coven]);
+  const ordered = useMemo(() => orderBySections(steps, plan.sections), [steps, plan.sections]);
+  const problems = useMemo(() => {
+    const out: Record<string, string> = {};
+    for (const s of ordered) {
+      const blocked = unassignablePart(withFieldColumns(s, plan, custom), named, coven.nameOf);
+      if (blocked) out[s.key] = blocked;
+    }
+    return out;
+  }, [ordered, plan, custom, named, coven.nameOf]);
 
   if (!canLead) {
     return (
-      <CovenScreen title="Plan a ritual">
+      <CovenScreen title="Plan a gathering">
         <Text style={type.body}>Only those who lead the coven’s rituals plan them. The coven’s head decides who does.</Text>
       </CovenScreen>
     );
@@ -125,22 +161,42 @@ export default function PlanRitual() {
     );
   }
 
-  const change = (index: number, patch: Partial<DraftStep>) => setSteps((list) => list.map((s, i) => (i === index ? { ...s, ...patch } : s)));
-  const swap = <T,>(list: T[], index: number, by: number) => {
-    const next = [...list];
-    [next[index], next[index + by]] = [next[index + by], next[index]];
-    return next;
+  const change = (key: string, patch: Partial<BuilderStep>) => setSteps((list) => list.map((s) => (s.key === key ? { ...s, ...patch } : s)));
+  const addStep = (section: string) => {
+    const step = blankBuilderStep(section);
+    setSteps((list) => insertStep(plan, list, step, section));
+    setView({ step: step.key });
   };
-  const move = (index: number, by: number) => {
-    setSteps((list) => swap(list, index, by));
-    setKeys((list) => swap(list, index, by));
+  const begin = (next: { kind: GatheringKind; plan: RitualPlan; steps: BuilderStep[]; title?: string; intention?: string; description?: string; occasion?: string; occasionName?: string }) => {
+    setKind(next.kind);
+    setPlan(next.plan);
+    setSteps(orderBySections(next.steps, next.plan.sections));
+    if (next.title !== undefined) setTitle(next.title);
+    if (next.intention) setIntention(next.intention);
+    if (next.description) setDescription(next.description);
+    if (next.occasion !== undefined) setOccasion(next.occasion);
+    if (next.occasionName !== undefined) setOccasionName(next.occasionName);
+    setView('outline');
   };
+  const keep = async (work: () => Promise<unknown>, done: string) => {
+    setBusy(true);
+    setMessage(null);
+    try {
+      await work();
+      await loadLibrary();
+      setMessage(done);
+    } catch (error) {
+      setMessage(errorMessage(error));
+    }
+    setBusy(false);
+  };
+  const saveBlock = (list: BuilderStep[], name: string) => covenId && void keep(() => api.saveLibrary(covenId, null, 'block', name, { steps: list.map(libraryStep) }), `“${name}” is kept with the coven’s blocks.`);
 
-  const save = async () => {
+  const save = async (as: 'draft' | 'scheduled') => {
     if (!covenId) return;
     const when = fromFields(date, time);
     if (when instanceof Error) return setMessage(when.message);
-    const problem = plannerProblem(title, steps, named, coven.nameOf);
+    const problem = builderProblem(title, plan, steps, named, coven.nameOf, custom);
     if (problem) return setMessage(problem);
     setBusy(true);
     setMessage(null);
@@ -148,8 +204,8 @@ export default function PlanRitual() {
       const saved = await api.saveRitual(
         covenId,
         ritual?.id ?? null,
-        { title: title.trim(), intention: intention.trim(), description: description.trim(), scheduled_for: when, status, occasion, occasion_name: occasionName.trim() },
-        stepsPayload(steps),
+        ritualPayload({ title, intention, description, scheduled_for: when, status: as, occasion, occasion_name: occasionName }, kind, plan),
+        builderPayload(plan, steps, custom) as unknown as Record<string, unknown>[],
       );
       await coven.refreshRituals();
       router.replace(covenHref(coven.slug, `ritual/${saved.id}`));
@@ -159,17 +215,222 @@ export default function PlanRitual() {
     setBusy(false);
   };
 
+  const back = <Button label="Back to the outline" variant="text" onPress={() => setView('outline')} />;
+  const screenTitle = ritual ? `Edit ${kind === 'meeting' ? 'the meeting' : 'the rite'}` : kind === 'meeting' ? 'Plan a meeting' : 'Plan a rite';
 
-  return (
-    <CovenScreen title={ritual ? 'Edit the ritual' : 'Plan a ritual'}>
-      <Card>
-        <Field label="Ritual" value={title} onChangeText={setTitle} maxLength={120} placeholder="Full moon rite" />
-        <Field label="Intention (optional)" value={intention} onChangeText={setIntention} maxLength={500} />
-        <Field label="What members should know or bring (optional)" value={description} onChangeText={setDescription} multiline maxLength={4000} />
-        <Chips label="Occasion" options={[NO_OCCASION, ...OCCASIONS]} value={occasion} onChange={setOccasion} />
-        <Field label="Its name (optional)" value={occasionName} onChangeText={setOccasionName} maxLength={80} placeholder="Samhain, Hunter’s Moon…" />
-        {suggestions.length > 0 && (
-          <Section label="Coming moons and holidays">
+  // ── Start from ──────────────────────────────────────────────────────────
+  if (view === 'start') {
+    const ready = RITUAL_TEMPLATES.filter((t) => t.kind === kind);
+    const copies = coven.rituals.filter((r) => (r.kind ?? 'rite') === kind).slice(0, 12);
+    return (
+      <CovenScreen title="Plan a gathering">
+        <Chips label="What kind of gathering" options={GATHERING_KINDS} value={kind} onChange={(k) => { setKind(k); setPlan(blankPlan(k)); }} />
+        <Text style={type.caption}>{GATHERING_KINDS.find((k) => k.value === kind)?.detail}</Text>
+        <Button label={kind === 'meeting' ? 'Start with an empty agenda' : 'Start with an empty outline'} variant="outline" onPress={() => begin({ kind, plan: blankPlan(kind), steps: [] })} />
+        <Section label="Ready-made">
+          <MenuList>
+            {ready.map((t, i) => (
+              <MenuRow key={t.id} label={t.name} detail={`${t.tradition} · ${t.summary}`} last={i === ready.length - 1} onPress={() => begin(draftFromTemplate(t))} />
+            ))}
+          </MenuList>
+        </Section>
+        {savedTemplates.length > 0 && (
+          <Section label="The coven’s own templates">
+            <MenuList>
+              {savedTemplates.map((t, i) => {
+                const body = t.body as { kind?: GatheringKind; plan?: unknown; steps?: unknown; intention?: string; description?: string; occasion?: string; occasion_name?: string };
+                return (
+                  <MenuRow
+                    key={t.id}
+                    label={t.title}
+                    last={i === savedTemplates.length - 1}
+                    onPress={() => {
+                      const k = body.kind === 'meeting' ? 'meeting' : 'rite';
+                      const p = cleanPlan(body.plan, k);
+                      begin({ kind: k, plan: p, steps: stepsFromLibrary(body.steps, p), title: t.title, intention: body.intention, description: body.description, occasion: body.occasion ?? '', occasionName: body.occasion_name ?? '' });
+                    }}
+                  />
+                );
+              })}
+            </MenuList>
+          </Section>
+        )}
+        {copies.length > 0 && (
+          <Section label="A copy of one of the coven’s">
+            <MenuList>
+              {copies.map((r, i) => (
+                <MenuRow
+                  key={r.id}
+                  label={r.title}
+                  last={i === copies.length - 1}
+                  onPress={() => {
+                    const k = r.kind === 'meeting' ? 'meeting' : 'rite';
+                    const p = cleanPlan(r.plan, k);
+                    begin({ kind: k, plan: p, steps: freshSteps(orderSteps(coven.steps, r.id).map((s) => builderStepFrom(s, p))), title: r.title, intention: r.intention ?? '', description: r.description ?? '', occasion: r.occasion ?? '', occasionName: r.occasion_name ?? '' });
+                  }}
+                />
+              ))}
+            </MenuList>
+          </Section>
+        )}
+        {ownRituals.length > 0 && (
+          <Section label="One of your own rituals">
+            <MenuList>
+              {ownRituals.slice(0, 12).map((t, i) => (
+                <MenuRow
+                  key={t.id}
+                  label={t.title}
+                  last={i === Math.min(ownRituals.length, 12) - 1}
+                  onPress={() => {
+                    const p = blankPlan(kind);
+                    const work = defaultSectionFor('', p.sections);
+                    begin({ kind, plan: p, steps: stepsFromTemplate(t.ritual_template_steps ?? []).map((s) => ({ ...blankBuilderStep(work), ...s, key: shortId('k') })), title: t.title, intention: t.intention ?? '' });
+                  }}
+                />
+              ))}
+            </MenuList>
+          </Section>
+        )}
+      </CovenScreen>
+    );
+  }
+
+  // ── One step ────────────────────────────────────────────────────────────
+  if (typeof view === 'object') {
+    const index = ordered.findIndex((s) => s.key === view.step);
+    const step = ordered[index];
+    if (!step) return <CovenScreen title="A step">{back}</CovenScreen>;
+    return (
+      <CovenScreen title={step.title.trim() || 'A new step'}>
+        {back}
+        <StepFocus
+          key={step.key}
+          step={step}
+          number={index + 1}
+          plan={plan}
+          onChange={(patch) => change(step.key, patch)}
+          onDone={() => setView('outline')}
+          onRemove={() => {
+            setSteps((list) => list.filter((s) => s.key !== step.key));
+            setView('outline');
+          }}
+          onDuplicate={() => {
+            const copy = { ...step, id: null, key: shortId('k') };
+            setSteps((list) => insertStep(plan, list, copy, step.section, step.key));
+            setView({ step: copy.key });
+          }}
+          onSaveBlock={() => saveBlock([step], step.title.trim() || 'A step')}
+          onMakeAction={() => {
+            setActionDraft({ name: step.title, section: step.section, directions: step.instructions, words: step.spoken_text, minutes: step.duration_minutes, fields: specsOf(step, custom) });
+            setView('action');
+          }}
+          onPickBlock={(blockId) => {
+            const block = blocks.find((b) => b.id === blockId);
+            if (!block) return;
+            const added = stepsFromLibrary((block.body as { steps?: unknown }).steps, plan, step.section);
+            setSteps((list) => {
+              let next = list;
+              let after = step.key;
+              for (const s of added) {
+                next = insertStep(plan, next, s, step.section, after);
+                after = s.key;
+              }
+              return next.filter((s) => s.key !== step.key);
+            });
+            setView('outline');
+          }}
+          who={who}
+          whoSuggest={whoSuggest}
+          whoLabel={whoLabel}
+          items={itemList}
+          itemSuggest={suggestItems}
+          custom={custom}
+          blocks={blocks.map((b) => ({ id: b.id, title: b.title }))}
+          named={namedThings(ordered, custom, index)}
+          pages={pages}
+          blocked={problems[step.key] ?? ''}
+        />
+        {message && <Notice>{message}</Notice>}
+      </CovenScreen>
+    );
+  }
+
+  const setFromPanel = (next: { plan: RitualPlan; steps?: BuilderStep[] }) => {
+    setPlan(next.plan);
+    if (next.steps) setSteps(next.steps);
+  };
+
+  if (view === 'roles')
+    return (
+      <CovenScreen title="Roles">
+        {back}
+        <RolesPanel plan={plan} steps={steps} kind={kind} who={who} whoSuggest={whoSuggest} whoLabel={whoLabel} onChange={setFromPanel} />
+      </CovenScreen>
+    );
+  if (view === 'sections')
+    return (
+      <CovenScreen title="Sections">
+        {back}
+        <SectionsPanel plan={plan} steps={steps} onChange={setFromPanel} onSaveBlock={(sectionId) => saveBlock(ordered.filter((s) => s.section === sectionId), plan.sections.find((s) => s.id === sectionId)?.name ?? 'Steps')} />
+        {message && <Notice>{message}</Notice>}
+      </CovenScreen>
+    );
+  if (view === 'prep')
+    return (
+      <CovenScreen title="Before the rite">
+        {back}
+        <ChecklistPanel plan={plan} onChange={setFromPanel} />
+      </CovenScreen>
+    );
+  if (view === 'after')
+    return (
+      <CovenScreen title="Afterwards">
+        {back}
+        <AfterwardsPanel plan={plan} onChange={setFromPanel} />
+      </CovenScreen>
+    );
+  if (view === 'action' && actionDraft)
+    return (
+      <CovenScreen title="One of the coven’s own">
+        <CustomActionForm
+          plan={plan}
+          initial={actionDraft}
+          onCancel={() => setView('outline')}
+          onSave={(a) => {
+            if (!covenId) return;
+            void keep(() => api.saveLibrary(covenId, null, 'action', a.name, a as unknown as Record<string, unknown>), `“${a.name}” is now one of the coven’s own.`).then(() => setView('outline'));
+          }}
+        />
+        {message && <Notice>{message}</Notice>}
+      </CovenScreen>
+    );
+  if (view === 'preview') {
+    const script = buildScript({ title: title || 'This gathering', kind, plan, steps: ordered.map((s) => withFieldColumns(s, plan, custom)), ctx: { ranks, nameOf: coven.nameOf }, custom, pages, viewer: { membership: coven.snapshot?.membership ?? null, userId: coven.userId } });
+    return (
+      <CovenScreen title={previewMode === 'script' ? 'The script' : 'Your run-through'}>
+        {back}
+        <Chips label="Read it as" options={[{ value: 'script', label: 'The whole script' }, { value: 'run', label: 'Your run-through' }] as const} value={previewMode} onChange={setPreviewMode} />
+        <ScriptView script={script} mode={previewMode} />
+      </CovenScreen>
+    );
+  }
+
+  // ── Details ─────────────────────────────────────────────────────────────
+  if (view === 'details') {
+    return (
+      <CovenScreen title="Details">
+        {back}
+        <Card>
+          <Field label={kind === 'meeting' ? 'The meeting' : 'The rite'} value={title} onChangeText={setTitle} maxLength={120} placeholder={kind === 'meeting' ? 'Autumn business meeting' : 'Full moon rite'} />
+          <Field label="Intention (optional)" value={intention} onChangeText={setIntention} maxLength={500} />
+          <Field label="What members should know or bring (optional)" value={description} onChangeText={setDescription} multiline maxLength={4000} />
+          <Chips label="Kind of gathering" options={GATHERING_KINDS} value={kind} onChange={setKind} />
+        </Card>
+        <Card>
+          <Text style={type.eyebrow}>Occasion</Text>
+          <Chips label="Occasion" options={[NO_OCCASION, ...OCCASIONS]} value={occasion} onChange={setOccasion} />
+          <Field label="Its name (optional)" value={occasionName} onChangeText={setOccasionName} maxLength={80} placeholder="Samhain, Hunter’s Moon…" />
+          {suggestions.length > 0 && (
             <View style={styles.wrap}>
               {suggestions.map((sg) => (
                 <Pressable
@@ -192,86 +453,66 @@ export default function PlanRitual() {
                 </Pressable>
               ))}
             </View>
-          </Section>
-        )}
-        <View style={styles.row}>
-          <View style={styles.grow}>
-            <Field label="Date" value={date} onChangeText={setDate} placeholder="2026-10-31" autoCorrect={false} />
+          )}
+          <View style={styles.row}>
+            <View style={styles.grow}>
+              <Field label="Date" value={date} onChangeText={setDate} placeholder="2026-10-31" autoCorrect={false} />
+            </View>
+            <View style={styles.grow}>
+              <Field label="Time (your time)" value={time} onChangeText={setTime} placeholder="19:30" autoCorrect={false} />
+            </View>
           </View>
-          <View style={styles.grow}>
-            <Field label="Time (your time)" value={time} onChangeText={setTime} placeholder="19:30" autoCorrect={false} />
-          </View>
-        </View>
-        <Chips
-          label="Show it"
-          options={canSchedule || keepsSchedule ? ([{ value: 'scheduled', label: 'On the coven’s calendar' }, { value: 'draft', label: 'Only to ritual leaders (draft)' }] as const) : ([{ value: 'draft', label: 'Only to ritual leaders (draft)' }] as const)}
-          value={status}
-          onChange={setStatus}
+        </Card>
+        <Button
+          label="Keep this as one of the coven’s templates"
+          variant="outline"
+          disabled={busy || !title.trim()}
+          onPress={() =>
+            covenId &&
+            void keep(
+              () => api.saveLibrary(covenId, null, 'template', title, { kind, intention, description, occasion, occasion_name: occasionName, plan, steps: ordered.map(libraryStep) }),
+              `“${title.trim()}” is kept with the coven’s templates.`,
+            )
+          }
         />
-        {!canSchedule && (
-          <Text style={type.caption}>
-            {keepsSchedule ? 'You can change this rite, but only those the coven’s head allows can move it on the calendar.' : 'Only those the coven’s head allows can put rites on the calendar. Save it as a draft and they can schedule it.'}
-          </Text>
-        )}
-        {templates.length > 0 &&
-          (copyFrom ? (
-            <Section label="Copy the steps of one of your rituals">
-              {templates.slice(0, 12).map((t) => (
-                <Button
-                  key={t.id}
-                  label={t.title}
-                  variant="outline"
-                  onPress={() => {
-                    const added = stepsFromTemplate(t.ritual_template_steps ?? []);
-                    const kept = steps.filter((s) => s.title.trim());
-                    setSteps([...kept, ...added]);
-                    setKeys([...keys.filter((_, j) => steps[j]?.title.trim()), ...added.map((_, j) => counter + j)]);
-                    setCounter((c) => c + added.length);
-                    if (!title.trim()) setTitle(t.title);
-                    if (!intention.trim() && t.intention) setIntention(t.intention);
-                    setCopyFrom(false);
-                    setMessage(`${added.length} ${added.length === 1 ? 'step' : 'steps'} copied. Choose whose each one is.`);
-                  }}
-                />
-              ))}
-            </Section>
-          ) : (
-            <Button label="Copy steps from one of your rituals" variant="text" onPress={() => setCopyFrom(true)} />
-          ))}
-      </Card>
+        {message && <Notice>{message}</Notice>}
+      </CovenScreen>
+    );
+  }
+
+  // ── The outline ─────────────────────────────────────────────────────────
+  const warnings = builderWarnings(plan, steps, custom);
+  const rolesLine = plan.roles.length ? plan.roles.map((r) => `${r.name}${r.cast.length ? '' : ' (no one yet)'}`).join(', ') : 'None yet';
+  const afterLine = [plan.afterwards.hold_hours ? `Altar left for ${plan.afterwards.hold_hours} hours` : '', plan.afterwards.notes ? 'Notes' : '', plan.afterwards.follow_up ? 'A follow-up' : ''].filter(Boolean).join(' · ') || 'Nothing set';
+  const whenLine = [date ? `${date}${time ? ` ${time}` : ''}` : 'No date yet', occasionName || OCCASIONS.find((o) => o.value === occasion)?.label || ''].filter(Boolean).join(' · ');
+  return (
+    <CovenScreen title={screenTitle}>
+      <MenuList>
+        <MenuRow label={title.trim() || 'Name it'} detail={whenLine} onPress={() => setView('details')} />
+        <MenuRow label="Roles" detail={rolesLine} onPress={() => setView('roles')} />
+        <MenuRow label={kind === 'meeting' ? 'Before the meeting' : 'Before the rite'} detail={plan.checklist.length ? plan.checklist.map((c) => c.text).join(' · ') : 'Nothing to do yet'} onPress={() => setView('prep')} />
+        <MenuRow label="Afterwards" detail={afterLine} onPress={() => setView('after')} />
+        <MenuRow label="Sections" detail={plan.sections.map((s) => s.name).join(' · ')} last onPress={() => setView('sections')} />
+      </MenuList>
 
       {!people && <ActivityIndicator color={colors.gold} />}
-      {steps.map((s, i) => (
-        <StepEditor
-          key={keys[i]}
-          index={i}
-          count={steps.length}
-          step={s}
-          onChange={(patch) => change(i, patch)}
-          onMove={(by) => move(i, by)}
-          onRemove={() => {
-            setSteps((list) => list.filter((_, j) => j !== i));
-            setKeys((list) => list.filter((_, j) => j !== i));
-          }}
-          who={whoList}
-          whoSuggest={whoSuggest}
-          items={itemList}
-          itemSuggest={suggestItems}
-          ranks={ranks}
-          nameOf={coven.nameOf}
-          blocked={unassignablePart(s, named, coven.nameOf)}
-        />
+      <Outline plan={plan} steps={steps} ctx={ctx} custom={custom} problems={problems} onOpen={(key) => setView({ step: key })} onAdd={addStep} onMove={(key, by) => setSteps((list) => moveStep(plan, list, key, by))} />
+
+      {warnings.map((w) => (
+        <Notice key={w} tone="muted">
+          {w}
+        </Notice>
       ))}
-      <Button
-        label="Add a step"
-        variant="outline"
-        onPress={() => {
-          setSteps((list) => [...list, blankStep()]);
-          setKeys((list) => [...list, nextKey()]);
-        }}
-      />
+      {ordered.length > 0 && <Button label="Read it through" variant="outline" onPress={() => setView('preview')} />}
+      {!canSchedule && (
+        <Text style={type.caption}>
+          {keepsSchedule ? 'You can change this rite, but only those the coven’s head allows can move it on the calendar.' : 'Only those the coven’s head allows can put rites on the calendar. Save it as a draft and they can schedule it.'}
+        </Text>
+      )}
       {message && <Notice>{message}</Notice>}
-      <Button label={busy ? 'Saving…' : ritual ? 'Save the ritual' : 'Plan the ritual'} onPress={() => void save()} disabled={busy} />
+      {(canSchedule || keepsSchedule) && <Button label={busy ? 'Saving…' : 'Save it on the coven’s calendar'} onPress={() => void save('scheduled')} disabled={busy} />}
+      <Button label={busy ? 'Saving…' : 'Save as a draft'} variant={canSchedule || keepsSchedule ? 'outline' : 'primary'} onPress={() => void save('draft')} disabled={busy} />
+      {ritual?.status === 'scheduled' && <Text style={type.caption}>It is on the coven’s calendar now. Saving it as a draft takes it off.</Text>}
     </CovenScreen>
   );
 }
@@ -280,7 +521,7 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   grow: { flex: 1 },
   wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  chip: { paddingVertical: 8, paddingHorizontal: 12, borderRadius: radius.chip, borderWidth: 1, borderColor: colors.hairline },
+  chip: { paddingVertical: 8, paddingHorizontal: 12, borderRadius: radius.chip, borderWidth: 1, borderColor: colors.hairline, minHeight: 40, justifyContent: 'center' },
   chipText: { ...type.caption, color: colors.cream },
   pressed: { opacity: 0.7 },
 });
