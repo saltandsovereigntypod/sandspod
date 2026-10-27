@@ -257,3 +257,25 @@ test('the altar: several items set down, sealed papers, and the papers released'
   assert.equal(paperCount(released), 1, 'the kept one stays');
   assert.ok(stepAltarChange({ altar_action: 'release_papers', altar_color: null, altar_form: null, altar_label: null, altar_image: null, title: 'Burn' }, { title: 'S' }, 'A', 0, now));
 });
+
+test('a petition a ritual made gets its candle and paper the first time anyone opens or tends it, once', async () => {
+  const { petitionsToSeed, seedPetitionAltar, tendWithSeed } = await import('../src/lib/covens/petitionAltar.ts');
+  const { isPetitionPaper } = await import('../src/lib/altar/petitions.ts');
+  const now = '2026-10-31T21:00:00.000Z';
+  const bare = { objects: [], background: '', backgroundName: '', groups: [], activeGroupId: null } as unknown as AltarDocument;
+  const petition = { id: 'p1', title: 'Healing for Mara', color: 'white', body: null };
+  const tended = tendWithSeed(petition, 'Ash', now)(bare);
+  assert.equal(tended.objects.filter(isPetitionPaper).length, 1, 'its paper is set out');
+  assert.equal(tended.objects.filter((o) => o.label === 'Candle for Healing for Mara').length, 1, 'and its candle');
+  assert.ok(tended.objects.some((o) => o.label === 'Ash’s candle'), 'beside the tender’s candle');
+  const again = seedPetitionAltar(petition, now)(tendWithSeed(petition, 'Wren', now)(tended));
+  assert.equal(again.objects.filter(isPetitionPaper).length, 1, 'never twice');
+  assert.deepEqual(
+    petitionsToSeed([
+      { id: 'a', status: 'open', altar_id: 'x', source_ritual_id: 'r' },
+      { id: 'b', status: 'open', altar_id: 'y', source_ritual_id: null },
+      { id: 'c', status: 'closed', altar_id: 'z', source_ritual_id: 'r' },
+    ]).map((p) => p.id),
+    ['a'],
+  );
+});

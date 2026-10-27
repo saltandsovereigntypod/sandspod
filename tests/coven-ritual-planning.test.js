@@ -76,6 +76,16 @@ test("the planner, the ritual and the coven page use the shared logic and the sa
   assert.match(read("covens/coven/coven.js"), /tasksBanner/);
 });
 
+test("a petition a ritual made gets its altar set when anyone opens the petitions or tends it", () => {
+  const P = global.SaltCore.altar.petitionAltar;
+  assert.equal(typeof P.tendWithSeed, "function");
+  assert.deepEqual(P.petitionsToSeed([{ id: "a", status: "open", altar_id: "x", source_ritual_id: "r" }, { id: "b", status: "open", altar_id: "y" }]).map((p) => p.id), ["a"]);
+  const source = read("covens/coven/petitions.js");
+  assert.match(source, /seedBare\(\)/);
+  assert.match(source, /P\.tendWithSeed\(p, name, now\)/);
+  assert.match(read("app/src/app/(tabs)/coven/c/[slug]/petitions.tsx"), /petitionsToSeed\(list\)/);
+});
+
 test("the cabinet's search looks in every drawer", () => {
   const source = read("altar/js/features/cabinet.js");
   assert.match(source, /A search looks in every drawer/);

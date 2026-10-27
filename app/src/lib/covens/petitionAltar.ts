@@ -143,3 +143,23 @@ export function tendPetitionAltar(
     return next;
   };
 }
+
+/**
+ * Tending, with the petition's own candle and paper set out first if they
+ * aren't there yet: a petition a ritual made (its writer's contribution,
+ * offered as the step ended) gets its altar ready the first time anyone
+ * tends it or opens the coven's petitions.
+ */
+export function tendWithSeed(
+  petition: Pick<Petition, "id" | "title" | "color" | "body">,
+  person: string,
+  now: string,
+) {
+  const seed = seedPetitionAltar(petition, now);
+  const tend = tendPetitionAltar(petition, person, now);
+  return (doc: AltarDocument): AltarDocument => tend(seed(doc));
+}
+
+/** Petitions whose altars may still be bare: open ones a ritual made (seedPetitionAltar does nothing where they're set). */
+export const petitionsToSeed = <T extends Pick<Petition, "status" | "altar_id"> & { source_ritual_id?: string | null }>(list: T[]): T[] =>
+  list.filter((p) => p.status === "open" && !!p.altar_id && !!p.source_ritual_id);

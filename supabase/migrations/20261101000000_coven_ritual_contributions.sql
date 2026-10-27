@@ -650,6 +650,12 @@ $$;
 -- an altar of its own (as ask_coven_petition makes). Held among the ritual's
 -- contributions instead when it's sealed or nameless (a coven petition is read
 -- by the whole coven), or the writer already has three petitions held.
+-- Its candle and folded paper are altar objects the pages build with the
+-- app's own rules (lib/covens/petitionAltar.ts seedPetitionAltar), so they
+-- are set by whoever's page gets there first: the writer offering it, or,
+-- when it was offered as the step ended, anyone in good standing opening the
+-- coven's petitions or tending it (source_ritual_id marks the ones to check;
+-- setting them is skipped where they're already there).
 create or replace function public.coven_contribution_to_petition(p_contribution uuid)
 returns public.coven_ritual_contributions
 language plpgsql
