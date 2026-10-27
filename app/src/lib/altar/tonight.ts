@@ -491,7 +491,8 @@ function cabinetMatches(category: string, values: string[], skip: Set<string> = 
  * and an offering bowl in front. Everything can be moved or swapped.
  */
 export function shrineAltar(key: string, name: string, record: Record<string, unknown> | null, date: Date): TonightAltar {
-  const statue = `deities:${STATUE_ID[key] ?? key}-statue`;
+  // The cabinet names a statue from the deity's display name (Bona Dea Statue: deities:bona-dea-statue), so find it by the deity it places.
+  const statue = builtInCabinet.find((i) => i.category === 'deities' && i.forms?.some((f) => f.deity === key))?.id ?? `deities:${STATUE_ID[key] ?? key}-statue`;
   const colours = listOf(record?.CandleColors).map((c) => `candles:${slug(c.replace(/\bcandles?\b/gi, ''))}-candle`).filter((id, i, all) => inCabinet(id) && all.indexOf(id) === i);
   const plants = cabinetMatches('herbs', [...listOf(record?.SacredPlants), ...listOf(record?.Herbs)], NOT_ON_SHRINES);
   const stones = cabinetMatches('crystals', listOf(record?.Crystals));
