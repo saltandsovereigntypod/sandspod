@@ -207,7 +207,8 @@ function ArrangedHome({ mundane }: { mundane: boolean }) {
 
     if (isPages) {
       const list = pagesOf(item.key);
-      if (searching && !list.length) return null;
+      // Empty sections stay out of the way, except while customising (where pages are added and filed).
+      if (!list.length && (searching || !customising)) return null;
       return (
         <HomePartFrame
           key={item.key}
