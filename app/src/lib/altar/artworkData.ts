@@ -6844,6 +6844,25 @@ export const ALTAR_ARTWORK: {
     "deities": [
       {
         "category": "deities",
+        "name": "Amun Statue",
+        "keywords": [
+          "kingship",
+          "the wind and breath of life",
+          "oracles",
+          "the protection of the poor"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/amun/amun-statue.png",
+            "type": "deity",
+            "deity": "amun",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Anubis Statue",
         "keywords": [
           "death",
@@ -7058,6 +7077,26 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/bastet/bastet-statue.png",
             "type": "deity",
             "deity": "bastet",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Bes Statue",
+        "keywords": [
+          "protection of the household",
+          "childbirth and children",
+          "sleep and dreams",
+          "music",
+          "dance and merriment"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/bes/bes-statue.png",
+            "type": "deity",
+            "deity": "bes",
             "form": "statue"
           }
         ]
@@ -7621,6 +7660,26 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Horus Statue",
+        "keywords": [
+          "the sky",
+          "kingship",
+          "protection",
+          "victory",
+          "the rightful heir"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/horus/horus-statue.png",
+            "type": "deity",
+            "deity": "horus",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Idunn Statue",
         "keywords": [
           "youth",
@@ -7721,6 +7780,25 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Khonsu Statue",
+        "keywords": [
+          "the moon and its journey",
+          "the passing of time",
+          "healing",
+          "youth"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/khonsu/khonsu-statue.png",
+            "type": "deity",
+            "deity": "khonsu",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Lada Statue",
         "keywords": [
           "love",
@@ -7791,6 +7869,26 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/lugh/lugh-statue.png",
             "type": "deity",
             "deity": "lugh",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Maat Statue",
+        "keywords": [
+          "truth",
+          "justice",
+          "cosmic order",
+          "balance",
+          "right conduct"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/maat/maat-statue.png",
+            "type": "deity",
+            "deity": "maat",
             "form": "statue"
           }
         ]
@@ -7937,6 +8035,45 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Neith Statue",
+        "keywords": [
+          "creation",
+          "hunting and war",
+          "weaving",
+          "wisdom and judgement",
+          "protection of the dead"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/neith/neith-statue.png",
+            "type": "deity",
+            "deity": "neith",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Nephthys Statue",
+        "keywords": [
+          "mourning",
+          "protection of the dead",
+          "night and transition",
+          "care for the grieving"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/nephthys/nephthys-statue.png",
+            "type": "deity",
+            "deity": "nephthys",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Neptune Statue",
         "keywords": [
           "fresh water and springs",
@@ -7951,6 +8088,26 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/neptune/neptune-statue.png",
             "type": "deity",
             "deity": "neptune",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Nut Statue",
+        "keywords": [
+          "the sky",
+          "the stars",
+          "the daily rebirth of the sun",
+          "motherhood",
+          "protection of the dead"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/nut/nut-statue.png",
+            "type": "deity",
+            "deity": "nut",
             "form": "statue"
           }
         ]
@@ -8154,6 +8311,26 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Ptah Statue",
+        "keywords": [
+          "creation by thought and word",
+          "craftsmen and builders",
+          "sculpture",
+          "memphis",
+          "prayers heard"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/ptah/ptah-statue.png",
+            "type": "deity",
+            "deity": "ptah",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Ra Statue",
         "keywords": [
           "the sun",
@@ -8254,6 +8431,26 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Set Statue",
+        "keywords": [
+          "storms",
+          "the desert",
+          "foreign lands",
+          "strength",
+          "defence of ra’s barque"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/set/set-statue.png",
+            "type": "deity",
+            "deity": "set",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Skadi Statue",
         "keywords": [
           "winter",
@@ -8274,6 +8471,25 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Sobek Statue",
+        "keywords": [
+          "the nile and its waters",
+          "crocodiles",
+          "fertility of the land",
+          "strength"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/sobek/sobek-statue.png",
+            "type": "deity",
+            "deity": "sobek",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Sol Statue",
         "keywords": [
           "the sun",
@@ -8288,6 +8504,25 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/sol/sol-statue.png",
             "type": "deity",
             "deity": "sol",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Taweret Statue",
+        "keywords": [
+          "pregnancy and childbirth",
+          "babies and young children",
+          "protection of the home",
+          "fertility"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/taweret/taweret-statue.png",
+            "type": "deity",
+            "deity": "taweret",
             "form": "statue"
           }
         ]
