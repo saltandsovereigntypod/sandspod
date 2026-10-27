@@ -250,7 +250,7 @@ test('the Deipnon is the owner’s version', () => {
   assert.match(d.steps[0].spoken_text, /Link your coven’s prayer/);
   assert.equal(builderWarnings(d.plan, d.steps).length, 1);
   const payload = builderPayload(d.plan, d.steps);
-  assert.ok(payload[4].items.some((i) => i.name === 'Key'));
+  assert.ok(payload[4].items.some((i) => i.name === 'Crossroads'));
 });
 
 test('the script has every word and who says it; the run-through marks your parts', () => {

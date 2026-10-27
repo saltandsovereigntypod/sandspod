@@ -9,7 +9,8 @@ An over-the-air update may carry at most 1000 files, so each herb's and each
 crystal's forms (sprig, loose, oil...; chips, point, cluster, tumbled), and
 each potted plant's stages (young, established, lush), are packed side by
 side onto one sheet per item, assets/altar/sheets/<herbs|crystals|plants>/
-<id>.webp, at the same scale as the single copies. The manifest
+<id>.webp, at the same scale as the single copies; the deity statues go four
+to a sheet (assets/altar/sheets/deities/<first key>.webp). The manifest
 records each form's pixel rect on its sheet; lib/altar/assets.ts altarPicture()
 and components/altar/AltarImage.tsx show just that rect. Everything else stays
 one file per picture. Rerun it when new pictures land: it packs whatever is
@@ -42,6 +43,10 @@ PACKED_FORMS = {
     "crystals": ("chips", "point", "cluster", "tumbled"),
     "plants": ("young", "established", "lush"),
 }
+# Deity statues (objects/tools/deities/<key>/<key>-statue.png) are packed too,
+# a few to a sheet in alphabetical order of key: assets/altar/sheets/deities/<first key>.webp.
+STATUE_RE = re.compile(r"^objects/tools/deities/([a-z0-9_-]+)/\1-statue\.png$")
+STATUES_PER_SHEET = 4
 # Transparent pixels between cells, so filtering at a cell's edge never picks up its neighbour.
 PAD = 8
 # Keep sheets within every phone's largest texture.
@@ -98,11 +103,19 @@ def main():
     entries = []  # (website path, app file, original size, crop or None)
     groups = {}  # (category, id) -> [(form, rel, path)]
     written = set()
+    statues = sorted(p.relative_to(SRC).as_posix() for p in SRC.rglob("*-statue.png") if STATUE_RE.match(p.relative_to(SRC).as_posix()))
+    statue_sheet = {}
+    for i, rel in enumerate(statues):
+        first = STATUE_RE.match(statues[i - i % STATUES_PER_SHEET]).group(1)
+        statue_sheet[rel] = first
     for path in sorted(SRC.rglob("*")):
         if not path.is_file() or path.suffix.lower() != ".png":
             continue
         rel = path.relative_to(SRC).as_posix()
         if rel in SKIP:
+            continue
+        if rel in statue_sheet:
+            groups.setdefault(("deities", statue_sheet[rel]), []).append(("statue", rel, path))
             continue
         group = packed_group(rel)
         if group:
@@ -121,7 +134,7 @@ def main():
         entries.append((f"assets/altar/{rel}", target.relative_to(APP).as_posix(), original_size, None))
 
     for (category, item), pictures in sorted(groups.items()):
-        order = PACKED_FORMS[category]
+        order = PACKED_FORMS.get(category, ("statue",))
         pictures.sort(key=lambda p: (order.index(p[0]), p[1]))
         images = [shrink(path, 1024) for _, _, path in pictures]
         sheet_w, sheet_h, places = shelf_layout([image.size for image, _ in images])
@@ -154,7 +167,8 @@ def main():
         "// the app's bundled WebP copy and the website original's pixel size (the",
         "// website sizes each object box from the image's natural aspect ratio).",
         "// Herbs' and crystals' forms, and potted plants' stages, share a sheet per",
-        "// item: `crop` is the picture's pixel rect on it and the sheet's size",
+        "// item, and deity statues go four to a sheet: `crop` is the picture's",
+        "// pixel rect on it and the sheet's size",
         "// (show it with lib/altar/assets altarPicture and AltarImage, never the",
         "// bare source).",
         "",
