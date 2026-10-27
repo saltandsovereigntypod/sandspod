@@ -47,6 +47,20 @@
     petitions = await D.petitions(state.coven.id).catch(() => []);
     tendings = await D.petitionTendings(petitions.map((p) => p.id)).catch(() => []);
     await UI.loadNames(state.context, [...petitions.map((p) => p.user_id), ...tendings.map((t) => t.user_id)]);
+    seedBare();
+  }
+
+  // A petition a ritual made as its step ended has a bare altar until someone sets its candle and paper
+  // (the app's petitionAltar.ts petitionsToSeed; setting them is skipped where they're already there).
+  const seeded = new Set();
+  async function seedBare() {
+    if (!state.standing?.ok) return;
+    const core = await UI.altarCore().catch(() => null);
+    if (!core?.petitionAltar?.petitionsToSeed) return;
+    for (const p of core.petitionAltar.petitionsToSeed(petitions).filter((x) => !seeded.has(x.id))) {
+      seeded.add(p.id);
+      D.changeAltarOnce(p.altar_id, core.petitionAltar.seedPetitionAltar(p, new Date().toISOString())).catch(() => seeded.delete(p.id));
+    }
   }
 
   function card(p) {
@@ -121,7 +135,7 @@
         const saved = await UI.busy(form, form.querySelector("[data-status]"), () => D.tendPetition(id, form.elements.note?.value));
         if (!saved) return;
         const name = state.context.profile?.display_name || "A member";
-        const problem = await onAltar(p, (P, now) => P.tendPetitionAltar(p, name, now));
+        const problem = await onAltar(p, (P, now) => P.tendWithSeed(p, name, now));
         message = `You tended “${p.title}”. A candle burns in your name beside it.${problem}`;
         await load();
         draw();

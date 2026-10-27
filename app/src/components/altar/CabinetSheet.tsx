@@ -7,6 +7,7 @@ import { imageRatio } from '../../lib/altar/geometry';
 import { cabinetEntry, topUses } from '../../lib/altar/companion';
 import { cabinetCategoriesFor, cabinetItemsFor, deityPantheon, formImage, formObjectLabel, overrideKey, PANTHEON_GROUPS, placeableForms, shortLabel } from '../../lib/altar/cabinet';
 import { pickImage, type PickedImage } from '../../lib/altar/images';
+import { cabinetFormOf, itemIndex, searchItems } from '../../lib/altar/itemIndex';
 import { festivalWhen, nearWithThings, seasonalSections, type FestivalNear } from '../../lib/altar/seasonal';
 import type { CabinetForm, CabinetItem } from '../../lib/altar/types';
 import type { LibraryEntry } from '../../lib/library';
@@ -123,6 +124,19 @@ export function CabinetSheet({
     [items, category, search, overrides, library],
   );
 
+  // A search looks in every drawer at once (lib/altar/itemIndex.ts, as the coven ritual planner's Items picker).
+  const index = useMemo(() => itemIndex({ cabinet: items, overrides }), [items, overrides]);
+  const searching = !!search.trim();
+  const found = useMemo(
+    () =>
+      searching
+        ? searchItems(index, search, { limit: 60 })
+            .map((entry) => ({ entry, place: cabinetFormOf(entry.key, items) }))
+            .filter((x): x is { entry: (typeof x)['entry']; place: NonNullable<(typeof x)['place']> } => !!x.place)
+        : [],
+    [index, search, searching, items],
+  );
+
   // Items with just one form share a grid of tiles (deities are grouped by pantheon).
   const singles = shown.filter(({ item, forms }) => forms.length === 1 && !item.customCabinetItemId);
   const singleTile = ({ item, forms, uses }: (typeof shown)[number]) => (
@@ -152,7 +166,7 @@ export function CabinetSheet({
           <TextInput
             value={search}
             onChangeText={setSearch}
-            placeholder="Search the cabinet"
+            placeholder="Search every drawer: red taper, rosemary, Hekate…"
             placeholderTextColor={colors.tabInactive}
             accessibilityLabel="Search the cabinet"
             style={styles.search}
@@ -187,8 +201,26 @@ export function CabinetSheet({
         </View>
       }
     >
-      {shown.length === 0 && <Text style={type.body}>Nothing in this drawer{search ? ' matches that search' : ''}.</Text>}
-      {!!onMakeOwn && category !== 'seasonal' && category !== 'natural' && category !== 'plants' && category !== 'offerings' && (
+      {searching && (
+        <>
+          <Text style={type.caption}>{found.length ? `Found in every drawer${found.length === 60 ? ' (the first 60)' : ''}.` : 'Nothing in the cabinet matches that. Try another word.'}</Text>
+          <View style={styles.grid}>
+            {found.map(({ entry, place }) => (
+              <Tile
+                key={entry.key}
+                label={entry.label}
+                uses={entry.detail}
+                spoken={`Place ${entry.label}`}
+                image={formImage(place.item, place.form, overrides)}
+                onPress={() => placeIt(place.item, place.form)}
+                onLongPress={choosePicture(place.item, place.form)}
+              />
+            ))}
+          </View>
+        </>
+      )}
+      {!searching && shown.length === 0 && <Text style={type.body}>Nothing in this drawer.</Text>}
+      {!searching && !!onMakeOwn && category !== 'seasonal' && category !== 'natural' && category !== 'plants' && category !== 'offerings' && (
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Make your own item for this drawer"
@@ -202,7 +234,7 @@ export function CabinetSheet({
           </View>
         </Pressable>
       )}
-      {shown.map(({ item, forms, uses }) =>
+      {!searching && shown.map(({ item, forms, uses }) =>
         forms.length === 1 && !item.customCabinetItemId ? null : (
           <View key={item.id} style={styles.group}>
             <View style={styles.groupHead}>
@@ -234,15 +266,17 @@ export function CabinetSheet({
           </View>
         ),
       )}
-      {category === 'offerings' && (
+      {!searching && category === 'offerings' && (
         <Text style={type.caption}>
           Each is set out fresh as you place it and goes over in real time, as the real thing would; tend it from its panel. The filled vessels come already poured or heaped. Any bowl, dish or chalice can still hold something else through Set out an offering.
         </Text>
       )}
-      {category === 'plants' && (
+      {!searching && category === 'plants' && (
         <Text style={type.caption}>Each pot stands for one of your own plants: set down as many as you keep, then name it, choose the picture that matches it and mark it watered from its panel.</Text>
       )}
-      {category === 'deities'
+      {searching
+        ? null
+        : category === 'deities'
         ? [...PANTHEON_GROUPS, 'Your own']
             .map((pantheon) => ({ pantheon, list: singles.filter(({ item }) => deityPantheon(item) === pantheon) }))
             .filter(({ list }) => list.length > 0)

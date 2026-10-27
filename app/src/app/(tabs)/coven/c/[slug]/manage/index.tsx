@@ -58,7 +58,8 @@ export default function Manage() {
             <MenuRow label="Positions" detail={`${snap.ranks.length} ${snap.ranks.length === 1 ? 'position' : 'positions'} and their powers`} icon="community" onPress={() => go('positions')} />
             <MenuRow label="Questions for applicants" detail={questions ? `${questions} ${questions === 1 ? 'question' : 'questions'}` : 'None yet'} icon="letters" onPress={() => go('questions')} />
             <MenuRow label="Practice calendar" detail={calendar.length ? calendar.join(', ') : 'The holidays the coven keeps'} icon="moon" last={!(coven.perms.manage || coven.perms.site)} onPress={() => go('calendar')} />
-            {(coven.perms.manage || coven.perms.site) && <MenuRow label="Initiation & training powers" detail="Who manages programs, and who sees everyone’s progress" icon="journey" last onPress={() => go('powers')} />}
+            {(coven.perms.manage || coven.perms.site) && <MenuRow label="Initiation & training powers" detail="Who manages programs, and who sees everyone’s progress" icon="journey" last={!(coven.perms.founder || coven.perms.site)} onPress={() => go('powers')} />}
+            {(coven.perms.founder || coven.perms.site) && <MenuRow label="Ritual participation" detail="Who sees how many have written for a step, and who hasn’t" icon="community" last onPress={() => go('participation')} />}
           </MenuList>
           <Section label="People">
             <MenuList>

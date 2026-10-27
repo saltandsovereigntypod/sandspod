@@ -39,8 +39,9 @@ import {
   type Tending,
 } from "../../../../../lib/covens/model";
 import {
+  petitionsToSeed,
   seedPetitionAltar,
-  tendPetitionAltar,
+  tendWithSeed,
 } from "../../../../../lib/covens/petitionAltar";
 import { colors, type } from "../../../../../theme";
 
@@ -50,6 +51,9 @@ import { colors, type } from "../../../../../theme";
 // their name on its altar and lights the petition's candle again. The person
 // who asked (or a moderator) marks it answered or closes it, and its altar is
 // cleared away with it.
+// Petitions whose altars have been checked this session.
+const seeded = new Set<string>();
+
 export default function Petitions() {
   const coven = useCoven();
   const report = useReport(coven.userId);
@@ -78,6 +82,13 @@ export default function Petitions() {
         .catch(() => [] as Tending[]);
       setPetitions(list);
       setTendings(tended);
+      // A petition a ritual made as its step ended has a bare altar until someone sets its candle and paper.
+      if (canAct) {
+        for (const p of petitionsToSeed(list).filter((x) => !seeded.has(x.id))) {
+          seeded.add(p.id);
+          void changeAltarOnce(p.altar_id!, seedPetitionAltar(p, new Date().toISOString())).catch(() => seeded.delete(p.id));
+        }
+      }
       void loadNames([
         ...list.map((p) => p.user_id),
         ...tended.map((t) => t.user_id),
@@ -85,7 +96,7 @@ export default function Petitions() {
     } catch (error) {
       setMessage(errorMessage(error));
     }
-  }, [covenId, loadNames]);
+  }, [covenId, loadNames, canAct]);
 
   useEffect(() => {
     void load();
@@ -139,7 +150,7 @@ export default function Petitions() {
       await api.tendPetition(p.id, writing === p.id ? note : "");
       const problem = await onAltar(
         p,
-        tendPetitionAltar(p, myName, new Date().toISOString()),
+        tendWithSeed(p, myName, new Date().toISOString()),
       );
       setWriting(null);
       setNote("");

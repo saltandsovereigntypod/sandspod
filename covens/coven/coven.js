@@ -51,6 +51,8 @@
       state.ritualSteps = await D.ritualSteps(state.rituals.map((r) => r.id)).catch(() => []);
       state.rsvps = await D.rsvps(state.rituals.filter((r) => ["scheduled", "live"].includes(r.status)).map((r) => r.id)).catch(() => []);
       await UI.loadNames(context, [...state.rituals.map((r) => r.led_by), ...state.ritualSteps.flatMap((s) => [s.assigned_user_id, s.completed_by])]);
+      // What you've written for rites ahead of time (so the banner knows what's still to do).
+      if (userId && state.ritualSteps.some((s) => s.contribution?.timing === "ahead")) state.myContributions = await D.myContributions(userId).catch(() => []);
     }
     if (state.perms.member || state.perms.site) await loadProgramWork();
     if (coven.founder_id) await UI.loadNames(context, [coven.founder_id]);
@@ -175,9 +177,22 @@
     const params = new URLSearchParams(global.location.search);
     const here = currentTab() === "rituals" && params.get("ritual") === turn?.ritual.id;
     doc.title = `${turn ? "✦ Your turn · " : ""}${state.coven.name} | Salt & Sovereignty`;
-    if (!turn || here) return soonBanner();
+    if (!turn || here) return `${tasksBanner()}${soonBanner()}`;
     return `<div class="cv-banner cv-banner--turn" role="status"><p><strong>✦ It’s your turn in ${esc(turn.ritual.title)}:</strong> ${esc(turn.step.title)}.
       <a href="${esc(covenHref("rituals"))}&amp;ritual=${esc(encodeURIComponent(turn.ritual.id))}" data-tab="rituals">Open your step</a></p></div>`;
+  }
+
+  /** What a rite asks you to write or bring ahead of time (the app's contributions.ts ritualTasks), as the app's coven page shows it. */
+  function tasksBanner() {
+    const C = global.SaltCore?.covens?.contributions;
+    const P = global.SaltCore?.covens?.picker;
+    if (!C || !P || !state.perms.member || !state.standing?.ok) return "";
+    const done = (state.myContributions || []).map((c) => ({ step_id: c.step_id, mine: true }));
+    const tasks = C.ritualTasks(state.rituals, state.ritualSteps, done, state.membership, state.context.user?.id, P.assigneesOf);
+    if (!tasks.length) return "";
+    const t = tasks[0];
+    return `<div class="cv-banner cv-banner--turn" role="status"><p><strong>Before the rite:</strong> ${esc(t.title)}${tasks.length > 1 ? `, and ${tasks.length - 1} more` : ""}.
+      <a href="${esc(covenHref("rituals"))}&amp;ritual=${esc(encodeURIComponent(t.ritualId))}" data-tab="rituals">Open the rite</a></p></div>`;
   }
 
   /** Rites on the calendar in the next day, with this member's answer. */

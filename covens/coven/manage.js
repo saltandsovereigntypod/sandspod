@@ -318,6 +318,12 @@
         ${questionsForm(coven)}
         ${calendarForm(coven)}
         <div data-grants-holder></div>
+        ${perms.founder || perms.site ? `<section class="sp-card" data-participation>
+          <h2>Ritual participation</h2>
+          <p class="sp-caption">When a step asks people to write, place or do something, some may see how many have, and who has and hasn’t. They never see what anyone wrote, and private ones stay sealed. You, as the coven’s head, always see it. Choose positions and people who see it too.</p>
+          <div data-participation-picker><p class="sp-caption">Loading…</p></div>
+          <div class="sp-actions"><button class="button button--primary button--small" type="button" data-save-participation>Save</button></div>
+          ${statusLine()}</section>` : ""}
         ${perms.site || (perms.founder && coven.status === "active") ? `<section class="sp-section"><h2>Archive the coven</h2>
           <p class="sp-caption">An archived coven leaves the directory and becomes read-only for its members. ${perms.site ? "" : "Only the site moderators can reopen it."}</p>
           <div class="sp-actions"><button class="button button--ghost" type="button" data-archive>${coven.status === "archived" ? "Reopen the coven" : "Archive the coven"}</button></div>${statusLine()}</section>` : ""}`;
@@ -422,6 +428,31 @@
             })
           );
         }).catch(() => {});
+      }
+
+      // Who sees ritual participation: the head chooses (as the app's manage/participation.tsx).
+      const participation = pane.querySelector("[data-participation]");
+      const P = global.SaltCore?.covens?.picker;
+      if (participation && P && global.CovenPicker) {
+        Promise.all([D.members(coven.id).catch(() => []), D.ritualSettings(coven.id).catch(() => null)]).then(async ([members, settings]) => {
+          await UI.loadNames(state.context, members.map((m) => m.user_id));
+          let viewers = P.cleanAssignees(settings?.participation_viewers || []);
+          const entries = P.whoEntries(state.ranks, members.filter((m) => m.status === "active" && m.user_id !== coven.founder_id).map((m) => ({ id: m.user_id, name: UI.nameOf(state.context, m.user_id) })), { coven: false });
+          const nameOf = (id) => UI.nameOf(state.context, id);
+          global.CovenPicker.create(participation.querySelector("[data-participation-picker]"), {
+            id: "participation-viewers",
+            label: "Who also sees participation",
+            placeholder: "Maiden, Elder, Rowan…",
+            empty: "Only you.",
+            chips: () => viewers.map((a) => ({ key: P.assigneeKey(a), label: P.assigneeLabel(a, state.ranks, nameOf) })),
+            search: (q, picked) => P.searchEntries(entries, q, { limit: 8, picked, suggestions: P.whoSuggestions(entries, 3) }),
+            onAdd: (entry) => (viewers = P.cleanAssignees([...viewers, P.assigneeFromKey(entry.key)])),
+            onRemove: (key) => (viewers = viewers.filter((a) => P.assigneeKey(a) !== key))
+          });
+          participation.querySelector("[data-save-participation]").addEventListener("click", (event) =>
+            UI.busy(event.currentTarget, participation.querySelector("[data-status]"), () => D.setParticipationViewers(coven.id, viewers), { done: "Saved." })
+          );
+        });
       }
 
       const archive = pane.querySelector("[data-archive]");

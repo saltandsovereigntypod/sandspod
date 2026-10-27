@@ -1,14 +1,20 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
 import { CovenScreen, covenHref } from '../../../../../../components/covens/CovenScreen';
+import { ContributionList, MyContribution, Participation } from '../../../../../../components/covens/Contributions';
 import { Pill, Pills, Spoken, Words } from '../../../../../../components/covens/ui';
 import { Card, Chips, Notice, Section } from '../../../../../../components/more/ui';
 import * as api from '../../../../../../lib/covens/api';
 import { changeAltarOnce, fetchCovenAltars, setRitualAltar, type CovenAltar } from '../../../../../../lib/covens/altarSync';
-import { stepAltarChange } from '../../../../../../lib/covens/ritualAltar';
+import { itemIndex } from '../../../../../../lib/altar/itemIndex';
+import { useAltars } from '../../../../../../lib/altar/store';
+import { cleanContribution, contributionLabel, type Contribution, type ParticipationRow, type Reader } from '../../../../../../lib/covens/contributions';
+import { seedPetitionAltar } from '../../../../../../lib/covens/petitionAltar';
+import { offerPaper, paperCount, stepAltarChange } from '../../../../../../lib/covens/ritualAltar';
+import { actionForStep } from '../../../../../../lib/covens/stepActions';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
 import {
   altarActionButton,
@@ -19,6 +25,7 @@ import {
   riteTime,
   rsvpSummary,
   stepAssignee,
+  stepItemsLabel,
   stepIsMine,
   type Rsvp,
 } from '../../../../../../lib/covens/model';
@@ -30,6 +37,7 @@ const ALTAR_ACCESS = [
   { value: 'everyone', label: 'Everyone' },
   { value: 'leader', label: 'Only the leader' },
 ] as const;
+const CHOSEN = { value: 'chosen', label: 'Chosen people' } as const;
 
 const ANSWERS = [
   { value: 'going', label: 'Going' },
@@ -38,9 +46,12 @@ const ANSWERS = [
 ] as const;
 
 // One rite: when it is and who's coming, its steps and who each belongs to,
-// and, while it's under way, the step in progress. When the step is yours
-// you do your part (and anything it asks of the shared altar) and finish it;
-// those who lead rituals start it, step back or ahead, and end it.
+// what you're asked to bring or write before it, and, while it's under way,
+// the step in progress. When the step is yours you do your part (and anything
+// it asks of the shared altar, or of you) and finish it; those who lead
+// rituals start it, step back or ahead, and end it. What others wrote shows as
+// each step allows (contributions.ts), and the coven's head, and those the
+// head chooses, see who has taken part.
 export default function RitualScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const coven = useCoven();
@@ -63,6 +74,30 @@ export default function RitualScreen() {
   useEffect(() => {
     void loadAltars();
   }, [loadAltars]);
+
+  // What people brought to each step, and who has (for those allowed to see it).
+  const [contributions, setContributions] = useState<Contribution[]>([]);
+  const [participation, setParticipation] = useState<ParticipationRow[]>([]);
+  const asking = steps.some((s) => !!s.contribution);
+  const [version, setVersion] = useState(0);
+  const loadContributions = useCallback(async () => setVersion((v) => v + 1), []);
+  const currentId = coven.rituals.find((r) => r.id === id)?.current_step_id ?? null;
+  const { loadNames } = coven;
+  useEffect(() => {
+    if (!id || !asking) return;
+    let off = false;
+    void Promise.all([api.fetchContributions(id).catch(() => [] as Contribution[]), api.fetchParticipation(id).catch(() => [] as ParticipationRow[])]).then(([list, rows]) => {
+      if (off) return;
+      setContributions(list);
+      setParticipation(rows);
+      void loadNames(list.flatMap((c) => [c.user_id, ...(c.supporters ?? [])]).concat(rows.flatMap((r) => [...(r.done_users ?? []), ...(r.waiting_users ?? [])])));
+    });
+    return () => {
+      off = true;
+    };
+  }, [id, asking, currentId, version, loadNames]);
+  const altarStore = useAltars();
+  const itemList = useMemo(() => itemIndex({ own: altarStore.customItems.filter((item) => item.forms.some((f) => /^https:/.test(f.image))), overrides: altarStore.overrides }), [altarStore.customItems, altarStore.overrides]);
   useEffect(() => {
     if (!live || !id) return;
     void loadMarks(id);
@@ -114,8 +149,41 @@ export default function RitualScreen() {
     const change = stepAltarChange(step, ritual, myName, done, new Date().toISOString());
     if (change && altar) await changeAltarOnce(altar.id, change);
   };
-  const setAccess = (stepIndex: number, value: (typeof ALTAR_ACCESS)[number]['value']) =>
+  const setAccess = (stepIndex: number, value: (typeof ALTAR_ACCESS)[number]['value'] | 'chosen') =>
     void act(() => setRitualAltar(ritual.id, ritual.altar_id ?? null, steps.map((s, i) => (i === stepIndex ? value : s.altar_access ?? 'assigned'))));
+
+  const reader: Reader = { userId: coven.userId, member: coven.perms.member || coven.perms.site, leads: canLead };
+  const mineFor = (stepId: string) => contributions.find((c) => c.step_id === stepId && c.mine);
+  const othersFor = (stepId: string) => contributions.filter((c) => c.step_id === stepId && !c.mine);
+  const rowFor = (stepId: string) => participation.find((r) => r.step_id === stepId);
+  const oneDone = (stepId: string) => (rowFor(stepId)?.done ?? 0) > 0 || contributions.some((c) => c.step_id === stepId);
+  const writeContribution = (stepId: string) => (body: string, items: unknown[], isPrivate: boolean, anonymous: boolean) =>
+    void act(() => api.saveContribution(stepId, body, items, isPrivate, anonymous), loadContributions);
+  // Offering sets a folded paper on the ritual's altar for something written (sealed and nameless as it should be),
+  // and a petition the coven will hold gets its own altar's candle and paper.
+  const offer = (c: Contribution) =>
+    void act(async () => {
+      const done = await api.offerContribution(c.id);
+      const now = new Date().toISOString();
+      const label = contributionLabel({ ...c, mine: false, user_id: c.anonymous ? null : c.user_id }, coven.nameOf);
+      if (altar && ['petition', 'intention', 'gratitude', 'vow', 'ancestor', 'question', 'reflection'].includes(c.kind) && c.visibility !== 'me') {
+        await changeAltarOnce(altar.id, (doc) => offerPaper({ id: c.id, fate: c.fate }, label, paperCount(doc), now)(doc)).catch(() => undefined);
+      }
+      if (done.petition?.altar_id) await changeAltarOnce(done.petition.altar_id, seedPetitionAltar(done.petition, now)).catch(() => undefined);
+    }, loadContributions);
+  const removeContribution = (c: Contribution) => void act(() => api.removeContribution(c.id), loadContributions);
+  const support = (c: Contribution, kind: 'candle' | 'holding', on: boolean) => void act(() => api.supportContribution(c.id, kind, on), loadContributions);
+  const tend = (c: Contribution, status: 'held' | 'answered' | 'closed', note: string) => void act(() => api.tendContribution(c.id, status, note), loadContributions);
+  const askOf = (step: (typeof steps)[number]) => cleanContribution(step.contribution);
+  // Before the rite: steps asking something ahead of time that are yours, or the coven's one no one has written yet.
+  const ahead = steps.filter((s) => {
+    const ask = askOf(s);
+    if (!ask || ask.timing !== 'ahead' || !coven.standing.ok) return false;
+    if (stepIsMine(s, membership, coven.userId)) return ask.mode === 'each' || !!mineFor(s.id) || !oneDone(s.id);
+    return ask.mode === 'one' && canLead && (!!mineFor(s.id) || !oneDone(s.id));
+  });
+  const currentAsk = current ? askOf(current) : null;
+  const canWriteCurrent = !!current && !!currentAsk && coven.standing.ok && (mine || (currentAsk.mode === 'one' && canLead)) && (currentAsk.mode === 'each' || !!mineFor(current.id) || !oneDone(current.id));
 
   const doneOnAltar = !!current && coven.marks.some((m) => m.step_id === current.id && m.user_id === coven.userId);
   const sharedAction = current?.altar_action === 'light_candle' || current?.altar_action === 'place_item';
@@ -176,7 +244,28 @@ export default function RitualScreen() {
           <Words text={current.instructions} />
           {!!current.spoken_text && <Spoken text={current.spoken_text} />}
           {!!current.duration_minutes && <Text style={type.caption}>About {current.duration_minutes} min</Text>}
+          {!!current.items?.length && <Text style={type.caption}>Items: {stepItemsLabel(current)}</Text>}
           {!!current.altar_action && <Text style={type.caption}>{altarActionNote(current)}</Text>}
+          {!!currentAsk && canWriteCurrent && (
+            <MyContribution
+              key={mineFor(current.id)?.updated_at ?? 'new'}
+              ask={currentAsk}
+              mine={mineFor(current.id)}
+              canWrite
+              canOffer
+              forCoven={currentAsk.mode === 'one'}
+              items={itemList}
+              busy={busy}
+              onSave={writeContribution(current.id)}
+              onRemove={() => mineFor(current.id) && removeContribution(mineFor(current.id)!)}
+              onOffer={() => mineFor(current.id) && offer(mineFor(current.id)!)}
+            />
+          )}
+          {!!currentAsk && currentAsk.mode === 'one' && canLead && !oneDone(current.id) && !mine && <Notice>No one has done this for the coven yet. You can do it now, above.</Notice>}
+          {!!currentAsk && <Participation row={rowFor(current.id)} ask={currentAsk} nameOf={coven.nameOf} />}
+          {!!currentAsk && (
+            <ContributionList list={othersFor(current.id)} reader={reader} nameOf={coven.nameOf} busy={busy} onSupport={support} onTend={tend} />
+          )}
           {showAltarButton && <Button label={altarActionButton(current)} onPress={() => void act(() => doAltarAction(current), () => loadMarks(ritual.id))} disabled={busy} />}
           {!!altar && <Button label="Go to the altar" variant="outline" onPress={() => router.push(covenHref(coven.slug, `altars/${altar.id}`))} />}
           <Text style={type.caption}>
@@ -184,7 +273,9 @@ export default function RitualScreen() {
               ? 'During this step, everyone can tend the altar.'
               : current.altar_access === 'leader'
                 ? 'During this step, only the ritual’s leader tends the altar.'
-                : 'During this step, the altar is tended by whoever the step belongs to.'}
+                : current.altar_access === 'chosen'
+                  ? 'During this step, the people the leader chose tend the altar.'
+                  : 'During this step, the altar is tended by whoever the step belongs to.'}
           </Text>
           {sharedAction && doneOnAltar && <Text style={type.caption}>You’ve done this on the altar.</Text>}
           {(mine || canLead) && (
@@ -199,6 +290,29 @@ export default function RitualScreen() {
         </Card>
       )}
       {live && !current && <Notice>The ritual is under way.</Notice>}
+
+      {!live && ritual.status === 'scheduled' && ahead.length > 0 && (
+        <Section label="Before the rite">
+          {ahead.map((s) => (
+            <Card key={s.id}>
+              <Text style={type.caption}>For step {steps.indexOf(s) + 1}: {s.title}</Text>
+              <MyContribution
+                key={mineFor(s.id)?.updated_at ?? 'new'}
+                ask={askOf(s)!}
+                mine={mineFor(s.id)}
+                canWrite
+                canOffer={false}
+                forCoven={askOf(s)!.mode === 'one'}
+                items={itemList}
+                busy={busy}
+                onSave={writeContribution(s.id)}
+                onRemove={() => mineFor(s.id) && removeContribution(mineFor(s.id)!)}
+                onOffer={() => undefined}
+              />
+            </Card>
+          ))}
+        </Section>
+      )}
 
       {!!altar && (
         <Section label="The altar">
@@ -252,9 +366,22 @@ export default function RitualScreen() {
                 {who.label}
                 {yours && who.kind !== 'everyone' ? ' · yours' : ''}
                 {step.altar_action ? ` · ${altarActionButton(step).toLowerCase()}` : ''}
+                {!step.altar_action && actionForStep(step) && !step.title.includes(actionForStep(step)!.name) ? ` · ${actionForStep(step)!.name.toLowerCase()}` : ''}
               </Text>
+              {!!step.items?.length && <Text style={type.caption}>Items: {stepItemsLabel(step)}</Text>}
+              {!!askOf(step) && !now && (
+                <>
+                  <Participation row={rowFor(step.id)} ask={askOf(step)!} nameOf={coven.nameOf} />
+                  <ContributionList list={contributions.filter((c) => c.step_id === step.id && (ritual.status === 'done' || c.mine || c.status !== 'written'))} reader={reader} nameOf={coven.nameOf} busy={busy} onSupport={support} onTend={tend} />
+                </>
+              )}
               {canLead && (
-                <Chips label={`At the altar during step ${index + 1}`} options={ALTAR_ACCESS} value={step.altar_access ?? 'assigned'} onChange={(v) => setAccess(index, v)} />
+                <Chips
+                  label={`At the altar during step ${index + 1}`}
+                  options={step.altar_tenders?.length ? [...ALTAR_ACCESS, CHOSEN] : ALTAR_ACCESS}
+                  value={step.altar_access ?? 'assigned'}
+                  onChange={(v) => setAccess(index, v)}
+                />
               )}
             </View>
           );

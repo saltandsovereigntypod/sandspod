@@ -179,7 +179,7 @@ test("the coven page has Messages and Altars, and its live channel carries conve
   assert.doesNotMatch(data, /coven_altar_items/, "the earlier single altar is gone from the website");
   assert.doesNotMatch(read("covens/coven/rituals.js"), /altarItems/);
   assert.match(read("covens/coven/petitions.js"), /seedPetitionAltar/);
-  assert.match(read("covens/coven/petitions.js"), /tendPetitionAltar/);
+  assert.match(read("covens/coven/petitions.js"), /tendWithSeed/, "tending sets the candle in the tender’s name (petitionAltar.ts tendWithSeed, which also sets out a bare altar)");
   assert.match(read("covens/coven/rituals.js"), /stepAltarChange/);
   assert.match(read("covens/coven/rituals.js"), /setRitualAltar/);
 });

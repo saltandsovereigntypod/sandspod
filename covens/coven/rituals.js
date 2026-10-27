@@ -1,13 +1,19 @@
 /*
  * A coven's Rituals tab: rituals the coven performs together.
  *
- * Each step belongs to one member, to everyone in a position, or to the whole
- * coven. While a ritual is under way the current step is shared live; whoever
- * it belongs to sees its full instructions and the words to speak, and marks
- * it finished so the ritual moves on. Those who lead rituals (the founder,
+ * Each step is for any mix of the whole coven, positions and people (chosen
+ * with the search picker, covens/coven/picker.js), is made from an action
+ * (the app's lib/covens/stepActions.ts, through js/core/covens.js), and can
+ * use the altar's things and ask something of people: written, placed or
+ * done, ahead of time or during the step (lib/covens/contributions.ts). While
+ * a ritual is under way the current step is shared live; whoever it is for
+ * sees its directions and the words to speak, does their part, and marks it
+ * finished so the ritual moves on. Those who lead rituals (the founder,
  * positions that lead or moderate the coven, and positions given "leads
  * rituals") plan, start and steer them. The database checks all of it
- * (supabase/migrations/…_coven_rituals.sql).
+ * (supabase/migrations/…_coven_rituals.sql and …_coven_ritual_contributions.sql),
+ * and the app's ritual screens (app/src/app/(tabs)/coven/c/[slug]/ritual/)
+ * save the same shapes.
  *
  * Views, by address: ?tab=rituals (the list), &ritual=<id> (one ritual,
  * live when under way) and &edit=<id|new> (the planner).
@@ -37,6 +43,20 @@
   const statusLine = () => `<p class="cv-status" role="status" aria-live="polite" data-status></p>`;
   const me = () => state.context.user?.id;
   const marksFor = (step) => (state.stepMarks || []).filter((m) => m.step_id === step.id);
+  // The app's own planning logic (js/core/covens.js): the picker, the actions, and what steps ask.
+  const P = () => global.SaltCore?.covens?.picker;
+  const A = () => global.SaltCore?.covens?.stepActions;
+  const C = () => global.SaltCore?.covens?.contributions;
+  const askOf = (step) => (C() ? C().cleanContribution(step?.contribution) : null);
+  const leaderNow = () => Boolean((state.perms.lead && state.standing.ok) || state.perms.site);
+  const reader = () => ({ userId: me(), member: Boolean(state.perms.member || state.perms.site), leads: leaderNow() });
+  const WRITTEN = ["petition", "intention", "gratitude", "vow", "ancestor", "question", "reflection"];
+  const STATUS_WORDS = { written: "Written", offered: "Offered", burned: "Burned", buried: "Buried", released: "Released", held: "Held by the coven", answered: "Answered", closed: "Closed" };
+  // What people brought to this ritual's steps, and who has (for those allowed), loaded once per ritual and step.
+  let contribKey_ = null;
+  // Steps whose contribution is being written or changed, and the items chosen for it.
+  const contribEditing = new Set();
+  const contribItems = {};
 
   // The site's moon and calendar logic is large, so it loads only for the planner.
   let todayLoading = null;
@@ -61,7 +81,7 @@
     { value: "leader", label: "Only the leader" }
   ];
 
-  const ACTION_SHORT = { light_candle: "🕯 Lights a candle", place_item: "✦ Places on the altar", light_all: "🕯 Lights the altar", snuff_all: "Puts out the candles" };
+  const ACTION_SHORT = { light_candle: "🕯 Lights a candle", place_item: "✦ Places on the altar", light_all: "🕯 Lights the altar", snuff_all: "Puts out the candles", release_papers: "Releases the papers" };
 
   function when(ritual) {
     if (ritual.status === "live") return "Under way now";
@@ -138,6 +158,8 @@
           <div class="cv-step__title"><h3>${esc(step.title)}</h3>
             <div class="cv-meta">${assigneeHtml(step)}${step.duration_minutes ? `<span class="cv-pill">${step.duration_minutes} min</span>` : ""}${step.altar_action ? `<span class="cv-pill">${esc(ACTION_SHORT[step.altar_action])}</span>` : ""}${current ? `<span class="cv-pill cv-pill--warn">Now</span>` : ""}${done ? `<span class="cv-pill">Done${step.completed_by ? ` · ${esc(nameOf(step.completed_by))}` : ""}</span>` : ""}</div></div></div>
         ${hasWords ? (yours || current ? words : `<details class="sp-details"><summary>Read along</summary>${words}</details>`) : ""}
+        ${step.items?.length ? `<p class="sp-caption">Items: ${esc(L.stepItemsLabel(step))}</p>` : ""}
+        ${askOf(step) && !current ? `${participationHtml(step)}${contributionList(contributionsOf(step).filter((c) => ritual.status === "done" || c.mine || c.status !== "written"))}` : ""}
         ${accessHtml(step, index, ritual)}
         <span class="sr-only">Step ${index + 1} of ${total}</span>
       </li>`;
@@ -147,8 +169,9 @@
   function accessHtml(step, index, ritual) {
     if (!(state.perms.lead || state.perms.site) || ["done", "cancelled"].includes(ritual.status)) return "";
     const value = step.altar_access || "assigned";
+    const options = step.altar_tenders?.length ? [...ALTAR_ACCESS, { value: "chosen", label: "Chosen people" }] : ALTAR_ACCESS;
     return `<div class="sp-field cv-access"><label for="acc-${esc(step.id)}">At the altar during step ${index + 1}</label>
-        <select id="acc-${esc(step.id)}" data-access="${index}">${ALTAR_ACCESS.map((a) => `<option value="${a.value}"${a.value === value ? " selected" : ""}>${esc(a.label)}</option>`).join("")}</select></div>`;
+        <select id="acc-${esc(step.id)}" data-access="${index}">${options.map((a) => `<option value="${a.value}"${a.value === value ? " selected" : ""}>${esc(a.label)}</option>`).join("")}</select></div>`;
   }
 
   /** The altar a ritual is held at: its own, or the coven's main ritual altar. */
@@ -196,7 +219,9 @@
         <p class="sp-caption">${yours ? (who.kind === "person" ? "This step is yours." : `This step is for ${esc(who.label.toLowerCase())}${who.kind === "everyone" ? "" : ", and you are one"}.`) : `${esc(who.label)} leads this step.`}${step.duration_minutes ? ` About ${step.duration_minutes} minutes.` : ""}</p>
         ${step.instructions ? `<div class="cv-doc">${prose(step.instructions)}</div>` : ""}
         ${step.spoken_text ? `<p class="sp-label">Words to speak</p><blockquote class="cv-doc cv-spoken">${prose(step.spoken_text)}</blockquote>` : ""}
+        ${step.items?.length ? `<p class="sp-caption">Items: ${esc(L.stepItemsLabel(step))}</p>` : ""}
         ${altarActionHtml(step, yours)}
+        ${nowAskHtml(step, yours)}
         <div class="sp-actions">
           ${canFinish ? `<button class="button button--primary" type="button" data-finish="${esc(step.id)}">${yours ? "I’ve finished this step" : "Finish this step"}${index === steps.length - 1 ? " and close the ritual" : ""}</button>` : ""}
           ${state.perms.lead || state.perms.site ? `${index > 0 ? `<button class="button button--ghost button--small" type="button" data-goto="${esc(steps[index - 1].id)}">Back a step</button>` : ""}
@@ -219,12 +244,223 @@
     return `<div class="cv-altar-action"><p class="sp-caption">${esc(L.altarActionNote(step))} ${esc(lit)}</p>${button ? `<div class="sp-actions">${button}</div>` : ""}</div>`;
   }
 
+  // --- what steps ask of people -------------------------------------------------
+
+  const contributionsOf = (step) => (state.contributions || []).filter((c) => c.step_id === step.id && !c.mine);
+  const mineFor = (step) => (state.contributions || []).find((c) => c.step_id === step.id && c.mine);
+  const rowFor = (step) => (state.participation || []).find((r) => r.step_id === step.id);
+  const oneDone = (step) => (rowFor(step)?.done || 0) > 0 || (state.contributions || []).some((c) => c.step_id === step.id);
+
+  /** Whether this person can write a step's asking now: theirs, or the coven's one that no one has done yet (the leader may step in). */
+  function canContribute(step, ask, yours) {
+    if (!ask || !state.standing.ok) return false;
+    if (!(yours || (ask.mode === "one" && leaderNow()))) return false;
+    return ask.mode === "each" || Boolean(mineFor(step)) || !oneDone(step);
+  }
+
+  /** Your own part in a step that asks something, as the app's components/covens/Contributions.tsx MyContribution. */
+  function contributionBox(step, ask, { canOffer }) {
+    const mine = mineFor(step);
+    const kind = (C().CONTRIBUTION_KINDS || []).find((k) => k.id === ask.kind) || { verb: "write", noun: "words" };
+    const task = C().contributionTask({ kind: ask.kind, mode: ask.mode });
+    const id = esc(step.id);
+    if (mine && mine.status !== "written") {
+      return `<div class="cv-contrib"><p class="sp-label">${esc(task)}</p>
+        <p class="sp-caption">${esc(STATUS_WORDS[mine.status] || "")}${mine.private ? " · private" : ""}${mine.support_count ? ` · ${mine.support_count} holding it` : ""}</p>
+        ${mine.body ? `<div class="cv-doc">${prose(mine.body)}</div>` : ""}</div>`;
+    }
+    const editing = !mine || contribEditing.has(step.id);
+    const head = `<p class="sp-label">${esc(task)}</p>${ask.prompt ? `<p>${esc(ask.prompt)}</p>` : ""}<p class="sp-caption">${esc(C().contributionNote(ask))}</p>`;
+    if (!editing) {
+      return `<div class="cv-contrib">${head}
+        ${mine.body ? `<div class="cv-doc">${prose(mine.body)}</div>` : ""}
+        ${(mine.items || []).length ? `<p class="sp-caption">${esc(mine.items.map((i) => i.name).join(", "))}</p>` : ""}
+        <p class="sp-caption">${mine.private ? "Private. " : ""}${mine.anonymous ? "Without your name. " : ""}${canOffer ? "Offer it now, or it is offered when the step ends." : "It is offered when its step comes."}</p>
+        <div class="sp-actions">${canOffer ? `<button class="button button--primary button--small" type="button" data-offer="${esc(mine.id)}">Offer it</button>` : ""}
+          <button class="button button--ghost button--small" type="button" data-contrib-edit="${id}">Change it</button>
+          <button class="button button--ghost button--small" type="button" data-contrib-remove="${esc(mine.id)}">Take it back</button></div></div>`;
+    }
+    if (!contribItems[step.id]) contribItems[step.id] = [...(mine?.items || [])];
+    return `<form class="cv-contrib" data-contrib-form="${id}">${head}
+        ${kind.verb === "place" ? `<div data-contrib-items="${id}"></div>` : ""}
+        <div class="sp-field"><label for="cb-${id}">${esc(kind.verb === "write" ? `Your ${kind.noun}` : "A note (optional)")}</label>
+          ${kind.verb === "write" ? `<textarea id="cb-${id}" name="body" maxlength="2000">${esc(mine?.body || "")}</textarea>` : `<input id="cb-${id}" name="body" maxlength="2000" value="${esc(mine?.body || "")}"${kind.id === "card" ? ` placeholder="The card you drew"` : ""} />`}</div>
+        ${kind.verb === "write" ? `<label class="cv-check"><input type="checkbox" name="private"${mine?.private ? " checked" : ""} /><span>Keep mine private. It still takes part. On the altar it shows sealed, and no one else reads it, the leaders included. Others can still hold it for you.</span></label>` : ""}
+        ${kind.verb === "write" && ask.visibility === "coven" ? `<label class="cv-check"><input type="checkbox" name="anonymous"${mine?.anonymous ? " checked" : ""} /><span>Leave my name off. Others see it without knowing it’s yours.</span></label>` : ""}
+        <div class="sp-actions"><button class="button button--primary button--small" type="submit">${mine ? "Save the changes" : "Save it"}</button>
+          ${mine ? `<button class="button button--ghost button--small" type="button" data-contrib-cancel="${id}">Cancel</button>` : ""}</div>
+      </form>`;
+  }
+
+  /** What others brought to a step, as this person may see it (sealed, nameless and held, as each should be). */
+  function contributionList(list) {
+    if (!list.length || !C()) return "";
+    const r = reader();
+    return `<ul class="cv-contribs">${list
+      .map((c) => {
+        const label = C().contributionLabel(c, nameOf);
+        const readable = C().canRead({ ...c, owner: c.mine ? me() : null }, r) && c.body;
+        const holders = c.mine && c.supporters?.length ? P().andList(c.supporters.map(nameOf)) : "";
+        const tend = C().ownerActions(c);
+        return `<li class="cv-contribs__item" data-contribution="${esc(c.id)}"><p>${esc(label)}</p>
+          ${readable ? `<div class="cv-doc">${prose(c.body)}</div>` : c.private ? `<p class="sp-caption">Sealed. Only its writer reads it.</p>` : ""}
+          <p class="sp-caption">${esc(STATUS_WORDS[c.status] || "")}${c.support_count ? ` · ${c.support_count} holding it` : ""}${holders ? ` · ${esc(holders)}` : ""}${c.outcome_note && readable ? ` · ${esc(c.outcome_note)}` : ""}</p>
+          ${C().canSupport({ ...c, owner: null }, r) ? `<div class="sp-actions"><button class="button button--ghost button--small" type="button" data-support="${esc(c.id)}" data-on="${c.supported_by_me ? "" : "1"}" aria-pressed="${Boolean(c.supported_by_me)}">${c.supported_by_me ? "You’re holding this" : "Hold this for them"}</button></div>` : ""}
+          ${tend.length ? `<div class="sp-field"><label for="tn-${esc(c.id)}">A note (optional)</label><input id="tn-${esc(c.id)}" data-tend-note maxlength="1000" /></div>
+            <div class="sp-actions">${tend.map((a) => `<button class="button button--ghost button--small" type="button" data-tend="${esc(c.id)}" data-to="${a}">${a === "held" ? "Keep holding it" : a === "answered" ? "It’s answered" : "Close it"}</button>`).join("")}</div>` : ""}
+        </li>`;
+      })
+      .join("")}</ul>`;
+  }
+
+  /** "14 of 20 have written", and who has and hasn't for those allowed to see it (never what they wrote). */
+  function participationHtml(step) {
+    const ask = askOf(step);
+    const row = rowFor(step);
+    if (!ask || !row) return "";
+    const names = row.done_users || row.waiting_users ? C().participationNames(row, nameOf) : null;
+    return `<div class="cv-participation"><p class="sp-caption">${esc(C().participationLine(row, ask))}</p>
+      ${names?.done ? `<p class="sp-caption">Done: ${esc(names.done)}</p>` : ""}${names?.waiting ? `<p class="sp-caption">Not yet: ${esc(names.waiting)}</p>` : ""}</div>`;
+  }
+
+  /** The step under way: your part in what it asks, who has done theirs, and what others brought. */
+  function nowAskHtml(step, yours) {
+    const ask = askOf(step);
+    if (!ask) return "";
+    const can = canContribute(step, ask, yours);
+    return `${can ? contributionBox(step, ask, { canOffer: true }) : ""}
+      ${ask.mode === "one" && leaderNow() && !oneDone(step) && !yours ? `<p class="sp-notice">No one has done this for the coven yet. You can do it now, above.</p>` : ""}
+      ${participationHtml(step)}${contributionList(contributionsOf(step))}`;
+  }
+
+  /** Before the rite: what you're asked to write or bring ahead of time. */
+  function aheadHtml(ritual, steps) {
+    if (ritual.status !== "scheduled" || !C()) return "";
+    const ahead = steps.filter((s) => {
+      const ask = askOf(s);
+      return ask && ask.timing === "ahead" && canContribute(s, ask, mine(s));
+    });
+    if (!ahead.length) return "";
+    return `<section class="sp-section" aria-label="Before the rite"><h2>Before the rite</h2>${ahead
+      .map((s) => `<div class="sp-card" data-ahead="${esc(s.id)}"><p class="sp-caption">For step ${steps.indexOf(s) + 1}: ${esc(s.title)}</p>${contributionBox(s, askOf(s), { canOffer: false })}${statusLine()}</div>`)
+      .join("")}</section>`;
+  }
+
+  async function loadContributions(ritual) {
+    const key = `${ritual.id}:${ritual.current_step_id || ""}:${ritual.status}`;
+    if (contribKey_ === key) return;
+    contribKey_ = key;
+    if (!stepsOf(ritual).some((s) => s.contribution)) {
+      state.contributions = [];
+      state.participation = [];
+      return;
+    }
+    const [list, rows] = await Promise.all([D.contributions(ritual.id).catch(() => []), D.participation(ritual.id).catch(() => [])]);
+    state.contributions = list;
+    state.participation = rows;
+    // Kept for the coven's "before the rite" banner (coven.js tasksBanner).
+    state.myContributions = [...(state.myContributions || []).filter((c) => c.ritual_id !== ritual.id), ...list.filter((c) => c.mine).map((c) => ({ id: c.id, step_id: c.step_id, ritual_id: c.ritual_id, status: c.status }))];
+    const ids = [...list.flatMap((c) => [c.user_id, ...(c.supporters || [])]), ...rows.flatMap((r) => [...(r.done_users || []), ...(r.waiting_users || [])])].filter(Boolean);
+    if (ids.length) await UI.loadNames(state.context, ids);
+    if (pane && params().get("ritual") === ritual.id && !editing) draw();
+  }
+
   /** Who has done this ritual's altar actions (each lights their own candle on a whole-coven step). */
   async function loadMarks(ritual) {
     if (marksFor_ === ritual.id) return;
     marksFor_ = ritual.id;
     state.stepMarks = await D.stepMarks(ritual.id).catch(() => []);
     if (pane && params().get("ritual") === ritual.id) draw();
+  }
+
+  /** The buttons and forms of what steps ask (writing, offering, holding, tending). */
+  function wireContributions(ritual, steps) {
+    const statusOf = (el) => (el.closest("[data-now], .sp-card, .cv-step") || pane).querySelector("[data-status]") || pane.querySelector("[data-status]");
+    const again = async () => {
+      contribKey_ = null;
+      await loadContributions(ritual);
+    };
+    // Items for something placed, through the ITEMS picker (lib/altar/itemIndex.ts, in js/core/altar.js).
+    pane.querySelectorAll("[data-contrib-items]").forEach(async (holder) => {
+      const stepId = holder.dataset.contribItems;
+      const core = await UI.altarCore().catch(() => null);
+      if (!core || !global.CovenPicker) return;
+      const index = core.itemIndex.itemIndex();
+      global.CovenPicker.create(holder, {
+        id: `ci-${stepId}`,
+        label: "What you place",
+        placeholder: "A candle in your colour, bread, a flower…",
+        chips: () => contribItems[stepId].map((i) => ({ key: i.key, label: i.name, image: i.image })),
+        search: (q, picked) => core.itemIndex.searchItems(index, q, { limit: 6, picked }),
+        onAdd: (entry) => (contribItems[stepId] = [...contribItems[stepId], core.itemIndex.stepItemOf(entry)].slice(0, 6)),
+        onRemove: (key) => (contribItems[stepId] = contribItems[stepId].filter((i) => i.key !== key))
+      });
+    });
+    pane.querySelectorAll("[data-contrib-form]").forEach((form) =>
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const step = steps.find((s) => s.id === form.dataset.contribForm);
+        const ask = askOf(step);
+        const body = form.elements.body?.value || "";
+        const items = contribItems[step.id] || [];
+        const problem = C().contributionProblem(ask, body, items);
+        if (problem) return UI.setStatus(statusOf(form), problem, true);
+        const saved = await UI.busy(form, statusOf(form), () => D.saveContribution(step.id, body, items, form.elements.private?.checked, form.elements.anonymous?.checked));
+        if (!saved) return;
+        contribEditing.delete(step.id);
+        delete contribItems[step.id];
+        await again();
+      })
+    );
+    pane.querySelectorAll("[data-contrib-edit]").forEach((button) =>
+      button.addEventListener("click", () => {
+        contribEditing.add(button.dataset.contribEdit);
+        draw();
+      })
+    );
+    pane.querySelectorAll("[data-contrib-cancel]").forEach((button) =>
+      button.addEventListener("click", () => {
+        contribEditing.delete(button.dataset.contribCancel);
+        delete contribItems[button.dataset.contribCancel];
+        draw();
+      })
+    );
+    pane.querySelectorAll("[data-contrib-remove]").forEach((button) =>
+      button.addEventListener("click", async () => {
+        if (await UI.busy(button, statusOf(button), () => D.removeContribution(button.dataset.contribRemove).then(() => true))) await again();
+      })
+    );
+    // Offering: a folded paper on the ritual's altar for something written (sealed and nameless as it should be),
+    // and a petition the coven will hold gets its own altar's candle and paper, as in the app.
+    pane.querySelectorAll("[data-offer]").forEach((button) =>
+      button.addEventListener("click", async () => {
+        const c = (state.contributions || []).find((x) => x.id === button.dataset.offer);
+        const done = await UI.busy(button, statusOf(button), async () => {
+          const offered = await D.offerContribution(c.id);
+          const core = await UI.altarCore();
+          const altar = altarOf(ritual);
+          const now = new Date().toISOString();
+          const label = C().contributionLabel({ ...c, mine: false, user_id: c.anonymous ? null : c.user_id }, nameOf);
+          if (altar && WRITTEN.includes(c.kind) && c.visibility !== "me") {
+            await D.changeAltarOnce(altar.id, (doc) => core.ritualAltar.offerPaper({ id: c.id, fate: c.fate }, label, core.ritualAltar.paperCount(doc), now)(doc)).catch(() => {});
+          }
+          if (offered?.petition?.altar_id) await D.changeAltarOnce(offered.petition.altar_id, core.petitionAltar.seedPetitionAltar(offered.petition, now)).catch(() => {});
+          return true;
+        });
+        if (done) await again();
+      })
+    );
+    pane.querySelectorAll("[data-support]").forEach((button) =>
+      button.addEventListener("click", async () => {
+        if (await UI.busy(button, statusOf(button), () => D.supportContribution(button.dataset.support, "holding", Boolean(button.dataset.on)).then(() => true))) await again();
+      })
+    );
+    pane.querySelectorAll("[data-tend]").forEach((button) =>
+      button.addEventListener("click", async () => {
+        const note = button.closest("[data-contribution]")?.querySelector("[data-tend-note]")?.value || "";
+        if (await UI.busy(button, statusOf(button), () => D.tendContribution(button.dataset.tend, button.dataset.to, note))) await again();
+      })
+    );
   }
 
   function detail(id) {
@@ -247,6 +483,7 @@
         ${ritual.status !== "live" && yours.length ? `<p class="sp-notice">${yours.length === 1 ? "One step is yours" : `${yours.length} steps are yours`}: ${yours.map((s) => esc(s.title)).join(", ")}. When the ritual reaches ${yours.length === 1 ? "it" : "each one"}, it will show up here for you.</p>` : ""}
       </header>
       ${rsvpBlock(ritual)}
+      ${aheadHtml(ritual, steps)}
       ${ritual.status === "live" ? nowCard(ritual, steps) : ""}
       ${["cancelled", "done"].includes(ritual.status) ? "" : altarSection(ritual)}
       ${leader && ritual.status !== "live" ? `<div class="sp-actions">
@@ -261,6 +498,8 @@
       </section>`;
 
     loadAltars();
+    loadContributions(ritual);
+    wireContributions(ritual, steps);
     if (ritual.status === "live") {
       loadMarks(ritual);
       const holder = pane.querySelector("[data-ritual-altar]");
@@ -366,64 +605,102 @@
     if (!(state.perms.lead || state.perms.site)) return detail(id);
     pane.innerHTML = `<p class="sp-caption">Opening the planner…</p>`;
     // Who can be given a part: members who have signed the coven's current agreements.
-    const [candidates, templates, today] = await Promise.all([D.ritualPeople(state.coven.id).catch(() => []), D.myRitualTemplates(state.context.user?.id).catch(() => []), loadToday()]);
+    const [candidates, templates, today, core, petitions] = await Promise.all([
+      D.ritualPeople(state.coven.id).catch(() => []),
+      D.myRitualTemplates(state.context.user?.id).catch(() => []),
+      loadToday(),
+      UI.altarCore().catch(() => null),
+      D.petitions(state.coven.id).catch(() => [])
+    ]);
     const covenDays = global.SaltCore?.covens?.programs?.covenHolidaysBetween(state.coven, new Date(), new Date(Date.now() + 200 * 86400000)) || [];
     const suggestions = L.occasionSuggestions(today, new Date(), 6, covenDays);
     const canSchedule = state.perms.schedule || state.perms.site;
     const keepsSchedule = ritual?.status === "scheduled";
     await UI.loadNames(state.context, candidates.map((c) => c.user_id));
     if (!pane || !editing) return;
-    const blank = () => ({ title: "", instructions: "", spoken_text: "", duration_minutes: null, assigned_user_id: null, assigned_rank_id: null, altar_action: "", altar_color: "white", altar_form: "votive", altar_image: "", altar_label: "" });
-    let steps = ritual ? stepsOf(ritual).map((s) => ({ ...blank(), ...s, altar_action: s.altar_action || "", altar_color: s.altar_color || "white", altar_form: s.altar_form || "votive" })) : [blank()];
-    const cabinet = Object.entries(global.AltarArtwork?.items || {}).map(([shelf, items]) => ({
-      shelf,
-      items: items.flatMap((item) => (item.forms || []).filter((f) => f.image).map((f) => ({ name: item.forms.filter((x) => x.image).length > 1 ? `${item.name} · ${f.label}` : item.name, image: L.sitePath(f.image) })))
-    }));
-    const altarFields = (s, i) => {
-      const action = s.altar_action || "";
-      const actionSelect = `<div class="sp-field"><label for="st-act-${i}">On the shared altar</label><select id="st-act-${i}" name="altar_action">${L.ALTAR_ACTIONS.map((a) => `<option value="${a.value}"${a.value === action ? " selected" : ""}>${esc(a.label)}</option>`).join("")}</select></div>`;
-      if (action === "light_candle") {
-        return `${actionSelect}<div class="sp-grid-2">
-          <div class="sp-field"><label for="st-col-${i}">Candle colour</label><select id="st-col-${i}" name="altar_color">${L.CANDLE_COLORS.map((c) => `<option value="${c}"${c === s.altar_color ? " selected" : ""}>${esc(c[0].toUpperCase() + c.slice(1))}</option>`).join("")}</select></div>
-          <div class="sp-field"><label for="st-form-${i}">Candle</label><select id="st-form-${i}" name="altar_form">${L.CANDLE_FORMS.map((f) => `<option value="${f.id}"${f.id === s.altar_form ? " selected" : ""}>${esc(f.label)}</option>`).join("")}</select></div></div>
-          <p class="sp-caption">${s.assigned_user_id || s.assigned_rank_id ? "Whoever this step belongs to lights it when the step comes." : "Each member lights their own when the step comes, and the candles gather in a circle."}</p>`;
-      }
-      if (action === "place_item") {
-        return `${actionSelect}<div class="sp-field"><label for="st-img-${i}">What is placed</label><select id="st-img-${i}" name="altar_image"><option value="">Choose…</option>${cabinet
-          .map((c) => `<optgroup label="${esc(c.shelf[0].toUpperCase() + c.shelf.slice(1))}">${c.items.map((it) => `<option value="${esc(it.image)}" data-name="${esc(it.name)}"${it.image === s.altar_image ? " selected" : ""}>${esc(it.name)}</option>`).join("")}</optgroup>`)
-          .join("")}</select></div>`;
-      }
-      return actionSelect;
-    };
+    const I = core?.itemIndex;
+    const blank = () => ({ title: "", instructions: "", spoken_text: "", duration_minutes: null, assigned_user_id: null, assigned_rank_id: null, assignees: [], action: "", deity: "", items: [], contribution: null,
+      altar_action: "", altar_color: "white", altar_form: "votive", altar_image: "", altar_label: "", altar_access: "assigned", altar_tenders: [] });
+    // A saved step as the planner edits it (the app's planner.ts draftFromStep): its people, items and asking, and
+    // for steps planned before items, their one picture as an item.
+    let steps = ritual
+      ? stepsOf(ritual).map((s) => {
+          const saved = Array.isArray(s.items) ? s.items : [];
+          const items = !saved.length && s.altar_action === "place_item" && s.altar_image ? [{ key: `legacy|${s.altar_image}`, name: s.altar_label || "Offering", image: s.altar_image, category: "" }] : saved;
+          const deity = items.find((i) => i.category === "deities");
+          return { ...blank(), ...s, items, assignees: L.stepAssignees(s), altar_action: s.altar_action || "", altar_color: s.altar_color || "white", altar_form: s.altar_form || "votive",
+            altar_access: s.altar_access || "assigned", altar_tenders: s.altar_tenders || [], contribution: askOf(s), action: s.action || "", deity: deity ? deity.name.replace(/\s+(statue|figure|idol|icon)\b.*$/i, "") : "" };
+        })
+      : [blank()];
     const ranks = [...state.ranks].sort((a, b) => b.level - a.level);
     const people = candidates.map((c) => ({ id: c.user_id, name: nameOf(c.user_id), eligible: Boolean(c.eligible) })).sort((a, b) => a.name.localeCompare(b.name));
-
-    const assignValue = (s) => (s.assigned_user_id ? `user:${s.assigned_user_id}` : s.assigned_rank_id ? `rank:${s.assigned_rank_id}` : "");
-    const assignOptions = (s) => {
-      const value = assignValue(s);
-      const opt = (v, label, disabled) => `<option value="${esc(v)}"${v === value ? " selected" : ""}${disabled ? " disabled" : ""}>${esc(label)}</option>`;
-      const gone = s.assigned_user_id && !people.some((p) => p.id === s.assigned_user_id) ? opt(`user:${s.assigned_user_id}`, `${nameOf(s.assigned_user_id)} (no longer a member)`, true) : "";
-      return `${opt("", "The whole coven")}
-        <optgroup label="Everyone in a position">${ranks.map((r) => opt(`rank:${r.id}`, `Every ${r.name}`)).join("")}</optgroup>
-        <optgroup label="One person">${people.map((p) => opt(`user:${p.id}`, p.eligible ? p.name : `${p.name} (needs to re-sign)`, !p.eligible)).join("")}${gone}</optgroup>`;
-    };
+    const whoList = P() ? P().whoEntries(state.ranks, people) : [];
+    const whoSuggest = P() ? P().whoSuggestions(whoList) : [];
+    // Everything the altar knows, and the coven's open petitions (the ITEMS picker).
+    const itemList = I ? I.itemIndex({ petitions: (petitions || []).filter((x) => x.status === "open") }) : [];
     const blockedPart = (s) => L.unassignablePart(s, people, nameOf);
+    const choosing = new Set(ritual ? [] : [0]);
+    const actionLabel = (a) => (A() ? A().actionLabel(a) : a.name);
+    const opt = (value, label, current) => `<option value="${esc(value)}"${value === current ? " selected" : ""}>${esc(label)}</option>`;
+    const select = (name, id, label, options, current) => `<div class="sp-field"><label for="${id}">${esc(label)}</label><select id="${id}" name="${name}">${options.map((o) => opt(o.value, o.label, current)).join("")}</select></div>`;
 
-    const stepHtml = (s, i) => `<li class="sp-card cv-step-edit" data-index="${i}">
+    const actionChooser = (s, i) => `<div class="cv-action-chooser" data-action-chooser>
+        <p class="sp-caption">Choosing one fills in its name, directions and words. You can change any of them after.</p>
+        <div class="sp-field"><label for="st-aq-${i}">Find an action</label><input id="st-aq-${i}" type="search" data-action-query placeholder="circle, candle, libation…" autocomplete="off" /></div>
+        <div class="sp-chips" role="group" aria-label="Kinds of action">${(A()?.ACTION_GROUPS || []).map((g) => `<button type="button" class="sp-chip" data-action-group="${g.id}">${esc(g.label)}</button>`).join("")}</div>
+        <div class="sp-chips" data-action-list></div>
+        <div class="sp-actions"><button class="button button--ghost button--small" type="button" data-action-id="">Something else (write your own)</button>
+          ${s.title.trim() || s.action ? `<button class="button button--ghost button--small" type="button" data-action-cancel>Cancel</button>` : ""}</div></div>`;
+
+    const askFields = (s, i) => {
+      const ask = s.contribution;
+      const kinds = C()?.CONTRIBUTION_KINDS || [];
+      const kindSelect = select("ask_kind", `st-ak-${i}`, "Ask something of people", [{ value: "", label: "Nothing" }, ...kinds.map((k) => ({ value: k.id, label: k.label }))], ask?.kind || "");
+      if (!ask) return kindSelect;
+      const writes = (kinds.find((k) => k.id === ask.kind) || {}).verb === "write";
+      const detail = (list, value) => esc((list.find((x) => x.value === value) || {}).detail || "");
+      return `${kindSelect}<div class="sp-grid-2">
+          ${select("ask_mode", `st-am-${i}`, "Asked of", C().CONTRIBUTION_MODES, ask.mode)}
+          ${select("ask_timing", `st-at-${i}`, "When", C().CONTRIBUTION_TIMINGS, ask.timing)}</div>
+        <p class="sp-caption">${detail(C().CONTRIBUTION_TIMINGS, ask.timing)}</p>
+        ${writes ? `<div class="sp-grid-2">${select("ask_visibility", `st-av-${i}`, "Who can read it", C().CONTRIBUTION_VISIBILITY, ask.visibility)}
+          ${select("ask_fate", `st-af-${i}`, "What becomes of it", C().CONTRIBUTION_FATES.filter((f) => f.value !== "petition" || ask.kind === "petition"), ask.fate)}</div>
+          <p class="sp-caption">${detail(C().CONTRIBUTION_VISIBILITY, ask.visibility)} Anyone can also mark their own private. ${detail(C().CONTRIBUTION_FATES, ask.fate)}</p>` : ""}
+        <div class="sp-field"><label for="st-ap-${i}">A line for them (optional)</label><input id="st-ap-${i}" name="ask_prompt" maxlength="280" value="${esc(ask.prompt || "")}" placeholder="What are you grateful for?" /></div>
+        <p class="sp-caption">They will see: ${esc(C().contributionNote(ask))}</p>`;
+    };
+
+    const stepHtml = (s, i) => {
+      const action = A()?.actionOf(s.action);
+      const effects = A()?.ALTAR_EFFECTS || L.ALTAR_ACTIONS;
+      const effect = effects.find((e) => e.value === (s.altar_action || "")) || effects[0];
+      const access = [{ value: "assigned", label: "Whoever does the step" }, ...ALTAR_ACCESS.slice(1), { value: "chosen", label: "Chosen people" }];
+      return `<li class="sp-card cv-step-edit" data-index="${i}">
         <div class="cv-inline-form"><p class="sp-label">Step ${i + 1}</p><span class="cv-grow"></span>
           <button class="button button--ghost button--small" type="button" data-move="-1" ${i === 0 ? "disabled" : ""} aria-label="Move step ${i + 1} up">↑</button>
           <button class="button button--ghost button--small" type="button" data-move="1" ${i === steps.length - 1 ? "disabled" : ""} aria-label="Move step ${i + 1} down">↓</button>
           <button class="button button--ghost button--small" type="button" data-remove aria-label="Remove step ${i + 1}">Remove</button></div>
-        <div class="sp-field"><label for="st-title-${i}">What happens</label><input id="st-title-${i}" name="title" maxlength="120" required value="${esc(s.title)}" placeholder="Cast the circle" /></div>
-        <div class="sp-grid-2">
-          <div class="sp-field"><label for="st-who-${i}">Whose step</label><select id="st-who-${i}" name="assign"${blockedPart(s) ? ` aria-describedby="st-who-note-${i}"` : ""}>${assignOptions(s)}</select>
-            ${blockedPart(s) ? `<p class="cv-status is-error" id="st-who-note-${i}">${esc(blockedPart(s))}</p>` : ""}</div>
-          <div class="sp-field"><label for="st-min-${i}">Minutes (optional)</label><input id="st-min-${i}" name="duration_minutes" type="number" min="0" max="240" value="${esc(s.duration_minutes ?? "")}" /></div>
-        </div>
-        <div class="sp-field"><label for="st-ins-${i}">Instructions (shown to them when the step comes)</label><textarea id="st-ins-${i}" name="instructions" maxlength="4000">${esc(s.instructions || "")}</textarea></div>
+        <div class="sp-field"><p class="sp-label">Action</p>
+          ${choosing.has(i) ? actionChooser(s, i) : `<div class="cv-inline-form"><span>${esc(action ? actionLabel(action) : s.title.trim() ? "Your own" : "None chosen")}</span><span class="cv-grow"></span>
+            <button class="button button--ghost button--small" type="button" data-choose-action>${action ? "Change" : "Choose an action"}</button></div>`}</div>
+        ${action?.deity ? `<div data-picker-deity></div>` : ""}
+        <div class="sp-field"><label for="st-title-${i}">Step name</label><input id="st-title-${i}" name="title" maxlength="120" value="${esc(s.title)}" placeholder="Cast the circle" />
+          <p class="sp-caption">A few words, as it shows in the list of steps.</p></div>
+        <div class="sp-field"><label for="st-ins-${i}">Directions</label><textarea id="st-ins-${i}" name="instructions" maxlength="4000">${esc(s.instructions || "")}</textarea>
+          <p class="sp-caption">What the person doing it does. They see this when the step comes.</p></div>
         <div class="sp-field"><label for="st-say-${i}">Words to speak (optional)</label><textarea id="st-say-${i}" name="spoken_text" maxlength="4000">${esc(s.spoken_text || "")}</textarea></div>
-        ${altarFields(s, i)}
+        <div data-picker-who></div>
+        <p class="cv-status is-error" data-blocked>${esc(blockedPart(s))}</p>
+        <div class="sp-field"><label for="st-min-${i}">Minutes (optional)</label><input id="st-min-${i}" name="duration_minutes" type="number" min="0" max="240" value="${esc(s.duration_minutes ?? "")}" /></div>
+        <div data-picker-items></div>
+        <div class="sp-grid-2">
+          ${select("altar_action", `st-act-${i}`, "On the altar", effects, s.altar_action || "")}
+          ${select("altar_access", `st-acc-${i}`, "Who tends the altar during it", access, s.altar_access || "assigned")}</div>
+        <p class="sp-caption">${esc(effect.detail || "")}</p>
+        ${s.altar_access === "chosen" ? `<div data-picker-tenders></div>` : ""}
+        ${askFields(s, i)}
       </li>`;
+    };
 
     pane.innerHTML = `<p><a class="sp-back" href="${esc(ritual ? ritualHref(ritual.id) : api.covenHref("rituals"))}" data-tab="rituals">← ${ritual ? "Back to the ritual" : "All rituals"}</a></p>
       <form class="sp-section" data-ritual-form>
@@ -464,28 +741,129 @@
         s.instructions = li.querySelector("[name=instructions]").value;
         s.spoken_text = li.querySelector("[name=spoken_text]").value;
         const minutes = li.querySelector("[name=duration_minutes]").value;
-        s.duration_minutes = minutes === "" ? null : Number(minutes);
-        const [kind, value] = li.querySelector("[name=assign]").value.split(":");
-        s.assigned_user_id = kind === "user" ? value : null;
-        s.assigned_rank_id = kind === "rank" ? value : null;
+        s.duration_minutes = minutes === "" ? null : Math.max(0, Math.min(240, Math.round(Number(minutes) || 0)));
         s.altar_action = li.querySelector("[name=altar_action]").value;
-        s.altar_color = li.querySelector("[name=altar_color]")?.value || s.altar_color;
-        s.altar_form = li.querySelector("[name=altar_form]")?.value || s.altar_form;
-        const image = li.querySelector("[name=altar_image]");
-        if (image) {
-          s.altar_image = image.value;
-          s.altar_label = image.selectedOptions[0]?.dataset.name || "";
+        s.altar_access = li.querySelector("[name=altar_access]").value;
+        const kind = li.querySelector("[name=ask_kind]")?.value || "";
+        if (!kind || !C()) s.contribution = null;
+        else if (!s.contribution || s.contribution.kind !== kind) s.contribution = C().defaultContribution(kind, s.contribution ? { mode: s.contribution.mode, timing: s.contribution.timing } : {});
+        else {
+          for (const f of ["mode", "timing", "visibility", "fate"]) {
+            const el = li.querySelector(`[name=ask_${f}]`);
+            if (el) s.contribution[f] = el.value;
+          }
+          s.contribution.prompt = li.querySelector("[name=ask_prompt]")?.value || "";
+          s.contribution = C().cleanContribution(s.contribution);
         }
       });
     };
-    const drawSteps = () => (holder.innerHTML = steps.map(stepHtml).join(""));
+    // Who a step is for, the people who tend the altar, its deity and its items: the search pickers (covens/coven/picker.js).
+    const whoChips = (list) => (P() ? P().cleanAssignees(list) : []).map((a) => ({ key: P().assigneeKey(a), label: P().assigneeLabel(a, state.ranks, nameOf) }));
+    const addWho = (list, entry) => {
+      const a = P().assigneeFromKey(entry.key);
+      if (!a) return list;
+      return P().cleanAssignees(a.kind === "coven" ? [a] : [...list.filter((x) => x.kind !== "coven"), a]);
+    };
+    const mountPickers = (li, i) => {
+      const s = steps[i];
+      if (!global.CovenPicker || !P()) return;
+      const action = A()?.actionOf(s.action);
+      global.CovenPicker.create(li.querySelector("[data-picker-who]"), {
+        id: `st-who-${i}`,
+        label: "Who does it",
+        hint: "Positions, people, or the whole coven, in any mix.",
+        placeholder: "Initiate, High Priestess, Rowan…",
+        empty: "The whole coven",
+        chips: () => whoChips(s.assignees),
+        search: (q, picked) => P().searchEntries(whoList, q, { limit: 8, picked, suggestions: whoSuggest }),
+        onAdd: (entry) => {
+          s.assignees = addWho(s.assignees, entry);
+          li.querySelector("[data-blocked]").textContent = blockedPart(s);
+        },
+        onRemove: (key) => {
+          s.assignees = s.assignees.filter((a) => P().assigneeKey(a) !== key);
+          li.querySelector("[data-blocked]").textContent = blockedPart(s);
+        }
+      });
+      const tenders = li.querySelector("[data-picker-tenders]");
+      if (tenders) {
+        global.CovenPicker.create(tenders, {
+          id: `st-tend-${i}`,
+          label: "Tended by",
+          placeholder: "Maiden, Rowan…",
+          empty: "No one chosen yet.",
+          chips: () => whoChips(s.altar_tenders),
+          search: (q, picked) => P().searchEntries(whoList, q, { limit: 8, picked, suggestions: whoSuggest }),
+          onAdd: (entry) => (s.altar_tenders = addWho(s.altar_tenders, entry)),
+          onRemove: (key) => (s.altar_tenders = s.altar_tenders.filter((a) => P().assigneeKey(a) !== key))
+        });
+      }
+      if (!I) {
+        li.querySelector("[data-picker-items]").innerHTML = `<p class="sp-caption">The altar’s things couldn’t load. Refresh the page to add items.</p>`;
+        return;
+      }
+      global.CovenPicker.create(li.querySelector("[data-picker-items]"), {
+        id: `st-items-${i}`,
+        label: "Items",
+        hint: "What the step uses, or sets on the altar. Type to find candles, herbs, crystals, offerings, deities and tools.",
+        placeholder: "White candle, rosemary, bread…",
+        chips: () => s.items.map((it) => ({ key: it.key, label: it.name, image: it.image })),
+        search: (q, picked) => I.searchItems(itemList, q, { limit: 8, picked, suggestions: I.itemSuggestions(itemList, action?.suggestItems) }),
+        onAdd: (entry) => (s.items = [...s.items, I.stepItemOf(entry)].slice(0, 24)),
+        onRemove: (key) => (s.items = s.items.filter((it) => it.key !== key))
+      });
+      const deity = li.querySelector("[data-picker-deity]");
+      if (deity && action) {
+        global.CovenPicker.create(deity, {
+          id: `st-deity-${i}`,
+          label: "Which deity",
+          placeholder: "Hekate, Brigid, Freyja…",
+          empty: "No deity chosen yet.",
+          max: 1,
+          chips: () => s.items.filter((it) => it.category === "deities").map((it) => ({ key: it.key, label: it.name, image: it.image })),
+          search: (q, picked) => I.searchItems(itemList, q, { limit: 6, picked, categories: ["deities"] }),
+          onAdd: (entry) => {
+            read();
+            const name = entry.label.replace(/\s+(statue|figure|idol|icon)\b.*$/i, "");
+            Object.assign(s, A().refillDeity(s, action, s.deity, name), { deity: name, items: [I.stepItemOf(entry), ...s.items.filter((it) => it.category !== "deities")] });
+            drawSteps();
+          },
+          onRemove: () => {
+            read();
+            Object.assign(s, A().refillDeity(s, action, s.deity, ""), { deity: "", items: s.items.filter((it) => it.category !== "deities") });
+            drawSteps();
+          }
+        });
+      }
+    };
+    const drawActions = (li, i, group) => {
+      const list = li.querySelector("[data-action-list]");
+      if (!list || !A()) return;
+      const query = li.querySelector("[data-action-query]")?.value || "";
+      const found = query.trim() ? A().searchActions(query) : group ? A().STEP_ACTIONS.filter((a) => a.group === group) : [];
+      list.innerHTML = found.map((a) => `<button type="button" class="sp-chip${a.id === steps[i].action ? " is-active" : ""}" data-action-id="${esc(a.id)}">${esc(actionLabel(a))}</button>`).join("");
+      li.querySelectorAll("[data-action-group]").forEach((b) => b.setAttribute("aria-pressed", String(!query.trim() && b.dataset.actionGroup === group)));
+    };
+    const drawSteps = () => {
+      holder.innerHTML = steps.map(stepHtml).join("");
+      holder.querySelectorAll("[data-index]").forEach((li) => {
+        const i = Number(li.dataset.index);
+        mountPickers(li, i);
+        if (choosing.has(i)) drawActions(li, i, A()?.actionOf(steps[i].action)?.group || "");
+      });
+    };
     drawSteps();
-    // Choosing someone else clears the warning.
+    // Choices that change what the step shows draw it again.
     holder.addEventListener("change", (event) => {
-      if (!["assign", "altar_action"].includes(event.target.name)) return;
+      if (!["altar_action", "altar_access", "ask_kind", "ask_mode", "ask_timing", "ask_visibility", "ask_fate"].includes(event.target.name)) return;
       read();
       drawSteps();
       holder.querySelector(`#${CSS.escape(event.target.id)}`)?.focus();
+    });
+    holder.addEventListener("input", (event) => {
+      if (!event.target.matches("[data-action-query]")) return;
+      const li = event.target.closest("[data-index]");
+      drawActions(li, Number(li.dataset.index), "");
     });
 
     holder.addEventListener("click", (event) => {
@@ -497,13 +875,45 @@
         read();
         const j = i + Number(move.dataset.move);
         [steps[i], steps[j]] = [steps[j], steps[i]];
+        const wasI = choosing.has(i);
+        const wasJ = choosing.has(j);
+        choosing.delete(i);
+        choosing.delete(j);
+        if (wasI) choosing.add(j);
+        if (wasJ) choosing.add(i);
         drawSteps();
         holder.querySelector(`[data-index="${j}"] [data-move="${move.dataset.move}"]`)?.focus();
       }
       if (event.target.closest("[data-remove]")) {
         read();
         steps.splice(i, 1);
+        const after = [...choosing].filter((k) => k !== i).map((k) => (k > i ? k - 1 : k));
+        choosing.clear();
+        after.forEach((k) => choosing.add(k));
         drawSteps();
+      }
+      if (event.target.closest("[data-choose-action]")) {
+        read();
+        choosing.add(i);
+        drawSteps();
+        holder.querySelector(`[data-index="${i}"] [data-action-query]`)?.focus();
+      }
+      if (event.target.closest("[data-action-cancel]")) {
+        read();
+        choosing.delete(i);
+        drawSteps();
+      }
+      const group = event.target.closest("[data-action-group]");
+      if (group) drawActions(li, i, group.dataset.actionGroup);
+      const pick = event.target.closest("[data-action-id]");
+      if (pick) {
+        read();
+        choosing.delete(i);
+        const action = A()?.actionOf(pick.dataset.actionId);
+        if (action) Object.assign(steps[i], A().applyAction(action, { deity: steps[i].deity }));
+        else steps[i].action = "";
+        drawSteps();
+        holder.querySelector(`[data-index="${i}"] [name=title]`)?.focus();
       }
     });
     form.querySelectorAll("[data-suggest]").forEach((chip) =>
@@ -518,6 +928,7 @@
     form.querySelector("[data-add-step]").addEventListener("click", () => {
       read();
       steps.push(blank());
+      choosing.add(steps.length - 1);
       drawSteps();
       holder.querySelector(`[data-index="${steps.length - 1}"] input`)?.focus();
     });
@@ -540,13 +951,15 @@
       event.preventDefault();
       read();
       const kept = steps.filter((s) => String(s.title).trim());
-      const noItem = kept.findIndex((s) => s.altar_action === "place_item" && !s.altar_image);
+      const noItem = kept.findIndex((s) => s.altar_action === "place_item" && !s.altar_image && !(s.items || []).some((it) => it.image));
       if (noItem >= 0) return UI.setStatus(form.querySelector("[data-status]"), `Step ${noItem + 1}: choose what is placed on the altar.`, true);
       const blocked = kept.findIndex((s) => blockedPart(s));
       if (blocked >= 0) {
         drawSteps();
         return UI.setStatus(form.querySelector("[data-status]"), `Step ${blocked + 1}: ${blockedPart(kept[blocked])}`, true);
       }
+      const noTenders = kept.findIndex((s) => s.altar_access === "chosen" && !(s.altar_tenders || []).length);
+      if (noTenders >= 0) return UI.setStatus(form.querySelector("[data-status]"), `Step ${noTenders + 1}: choose who tends the altar during it.`, true);
       const fields = {
         title: form.elements.ritual_title.value.trim(),
         intention: form.elements.ritual_intention.value.trim(),
@@ -556,9 +969,23 @@
         occasion: form.elements.occasion.value,
         occasion_name: form.elements.occasion_name.value.trim()
       };
-      const payload = kept.map((s) => ({ id: s.id || null, title: s.title.trim(), instructions: s.instructions || "", spoken_text: s.spoken_text || "", duration_minutes: s.duration_minutes, assigned_user_id: s.assigned_user_id, assigned_rank_id: s.assigned_rank_id,
-        altar_action: s.altar_action || "", altar_color: s.altar_action === "light_candle" ? s.altar_color : "", altar_form: s.altar_action === "light_candle" ? s.altar_form : "",
-        altar_image: s.altar_action === "place_item" ? s.altar_image : "", altar_label: s.altar_action === "place_item" ? s.altar_label : "" }));
+      // The same shapes as the app's planner.ts stepsPayload.
+      const payload = kept.map((s) => {
+        const assignees = P() ? P().cleanAssignees(L.stepAssignees(s)) : [];
+        const items = I ? I.cleanStepItems(s.items) : s.items || [];
+        const candle = I ? I.stepCandle(items, { color: s.altar_color, form: s.altar_form }) : { color: s.altar_color, form: s.altar_form };
+        const placing = s.altar_action === "place_item";
+        const lighting = s.altar_action === "light_candle";
+        return {
+          id: s.id || null, title: s.title.trim(), instructions: s.instructions || "", spoken_text: s.spoken_text || "", duration_minutes: s.duration_minutes,
+          ...(P() ? P().legacyColumns(assignees) : { assigned_user_id: s.assigned_user_id, assigned_rank_id: s.assigned_rank_id }),
+          assignees, action: s.action || null, items, contribution: askOf(s),
+          altar_action: s.altar_action || "", altar_color: lighting ? candle.color : "", altar_form: lighting ? candle.form : "",
+          altar_image: placing ? (items.length ? (items.find((it) => it.image) || {}).image || "" : s.altar_image) : "",
+          altar_label: placing ? (items.length ? L.stepItemsLabel({ items }).slice(0, 80) : s.altar_label) : "",
+          altar_access: s.altar_access || "assigned", altar_tenders: s.altar_access === "chosen" ? P().cleanAssignees(s.altar_tenders) : []
+        };
+      });
       const saved = await UI.busy(form, form.querySelector("[data-status]"), () => D.saveRitual(state.coven.id, ritual?.id, fields, payload));
       if (!saved) return;
       apply("ritual", { eventType: ritual ? "UPDATE" : "INSERT", new: saved });
@@ -635,6 +1062,8 @@
     editing = false;
     marksFor_ = null;
     altars = null;
+    contribKey_ = null;
+    contribEditing.clear();
     global.clearTimeout(altarTimer);
   }
 
