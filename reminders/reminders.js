@@ -50,6 +50,8 @@
   let prefs = L.loadPrefs({}, settings, G);
   let sources = null;
   let covens = [];
+  // What you asked to be reminded of on your To tend list (/today/tend/).
+  let tend = [];
   const P = G.reminderPrefs;
 
   const now = () => new Date();
@@ -364,7 +366,7 @@
   }
 
   function yourCalendarHtml() {
-    const events = L.reminderEvents({ settings, plans, appSettings, now: now(), templateFor, prefs, sources, covens }, G);
+    const events = L.reminderEvents({ settings, plans, appSettings, now: now(), templateFor, prefs, sources, covens, tend }, G);
     return `<section class="sp-section" aria-labelledby="gd-file"><h2 class="sp-label" id="gd-file">Into your calendar</h2>
       <div class="sp-card sp-card--gold">
         <p role="status" aria-live="polite">${events.length ? `${events.length} ${events.length === 1 ? "reminder is" : "reminders are"} ready for your calendar, each with its alerts.` : "Choose something above and its reminders will gather here."}</p>
@@ -453,7 +455,7 @@
 
   function download(kind) {
     const at = now();
-    const events = kind === "sky" ? L.skyEvents({ calendar, phases: settings.phases, appSettings, now: at }, G) : L.reminderEvents({ settings, plans, appSettings, now: at, templateFor, prefs, sources, covens }, G);
+    const events = kind === "sky" ? L.skyEvents({ calendar, phases: settings.phases, appSettings, now: at }, G) : L.reminderEvents({ settings, plans, appSettings, now: at, templateFor, prefs, sources, covens, tend }, G);
     if (!events.length) return;
     const blob = new Blob([G.calendarEvent.toIcs(events, at)], { type: "text/calendar;charset=utf-8" });
     const url = URL.createObjectURL(blob);
@@ -639,10 +641,19 @@
     plans = await loadPlans(user);
     prefs = L.loadPrefs(appSettings, settings, G);
     render();
-    const [found, mine] = await Promise.all([loadSources(user).catch(() => null), loadCovens(user).catch(() => [])]);
+    const [found, mine, asked] = await Promise.all([loadSources(user).catch(() => null), loadCovens(user).catch(() => []), loadTend().catch(() => [])]);
     sources = found || { altars: [], plants: [], offerings: [], crystals: [], candles: [] };
     covens = mine || [];
+    tend = asked || [];
     render();
+  }
+
+  /** Your To tend list's choices (craft collection `tend.rhythms`): those with a reminder ring by their rhythm. */
+  async function loadTend() {
+    const T = G.tendModel;
+    if (!T || !global.SaltCraft) return [];
+    const entries = await global.SaltCraft.list(T.TEND_COLLECTION);
+    return entries.map((e) => T.normalizeRecord(e.data)).filter((r) => r && r.remind && !r.ended);
   }
 
   /** Your altars (signed in: your account's; otherwise this browser's) and My stones, for the tending reminders. */

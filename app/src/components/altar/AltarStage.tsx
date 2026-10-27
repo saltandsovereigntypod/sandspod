@@ -66,6 +66,8 @@ type Props = {
   selected: number | null;
   /** When dressing a candle, candles are highlighted and tapping one picks it. */
   highlightCandles?: boolean;
+  /** "Find mine": these objects (by altarObjectId) are lit up. */
+  highlightKeys?: string[];
   onSelect: (index: number | null) => void;
   onGestureStart: (index: number) => void;
   onMove: (index: number, cx: number, cy: number) => void;
@@ -104,7 +106,7 @@ type Active =
   | null;
 
 export function AltarStage(props: Props) {
-  const { doc, width, viewport, selected, highlightCandles } = props;
+  const { doc, width, viewport, selected, highlightCandles, highlightKeys } = props;
   const height = width / STAGE_ASPECT;
   const stageWidth = width * viewport.zoom;
   const stageHeight = height * viewport.zoom;
@@ -288,7 +290,7 @@ export function AltarStage(props: Props) {
               object={doc.objects[index]}
               stageWidth={stageWidth}
               selected={selected === index}
-              highlighted={!!highlightCandles && isCandle(doc.objects[index])}
+              highlighted={(!!highlightCandles && isCandle(doc.objects[index])) || (!!highlightKeys?.length && highlightKeys.includes(String(doc.objects[index].altarObjectId || '')))}
               ratioVersion={ratioVersion}
               charge={charges[String(doc.objects[index].altarObjectId)] ?? 0}
               now={isCandle(doc.objects[index]) || isIncense(doc.objects[index]) || aging[String(doc.objects[index].altarObjectId)] ? now : 0}

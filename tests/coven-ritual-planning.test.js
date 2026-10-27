@@ -82,7 +82,8 @@ test("a petition a ritual made gets its altar set when anyone opens the petition
   assert.deepEqual(P.petitionsToSeed([{ id: "a", status: "open", altar_id: "x", source_ritual_id: "r" }, { id: "b", status: "open", altar_id: "y" }]).map((p) => p.id), ["a"]);
   const source = read("covens/coven/petitions.js");
   assert.match(source, /seedBare\(\)/);
-  assert.match(source, /P\.tendWithSeed\(p, name, now\)/);
+  // With who tended it, so "Find mine" knows the candle is theirs.
+  assert.match(source, /P\.tendWithSeed\(p, name, now, me\(\) \|\| ""\)/);
   assert.match(read("app/src/app/(tabs)/coven/c/[slug]/petitions.tsx"), /petitionsToSeed\(list\)/);
 });
 

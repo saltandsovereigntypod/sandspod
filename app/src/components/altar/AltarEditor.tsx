@@ -16,6 +16,8 @@ import {
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AboutSheet } from './AboutSheet';
+import { AltarListing } from '../tend/AltarListing';
+import type { WhoseContext } from '../../lib/tend/altar';
 import { AltarStage, clampViewport, type AgingLooks, type ChargeGlows, type StageMoment, type StageSky, type Viewport } from './AltarStage';
 import { MoreSheet, type MoreAction } from './MoreSheet';
 import { AltarHistorySheet, useAltarSnapshots } from './connect/AltarHistorySheet';
@@ -280,7 +282,7 @@ const NO_OBJECTS: import('../../lib/altar/types').SavedObject[] = [];
  * copy among your own altars instead, and everything else works as it does at
  * home. `header` and `overlay` add the coven's own controls (who's here, chat).
  */
-export function AltarEditor({ shared, header, overlay, onBack }: { shared?: SharedAltar; header?: ReactNode; overlay?: ReactNode; onBack?: () => void } = {}) {
+export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared?: SharedAltar; header?: ReactNode; overlay?: ReactNode; onBack?: () => void; whose?: WhoseContext | null } = {}) {
   const params = useLocalSearchParams<{ altarId: string; from?: string; deity?: string }>();
   const altarId = shared ? `coven:${shared.key}` : params.altarId;
   const { from, deity } = params;
@@ -294,6 +296,8 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
   const [name, setName] = useState('My Altar');
   const [missing, setMissing] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
+  // "Find mine": your own things on a coven altar, lit up (components/tend/AltarListing.tsx).
+  const [highlight, setHighlight] = useState<string[] | null>(null);
   const [sheet, setSheet] = useState<SheetName>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const [viewport, setViewport] = useState<Viewport>({ zoom: 1, offsetX: 0, offsetY: 0 });
@@ -1181,6 +1185,7 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
             width={stageWidth}
             viewport={viewport}
             selected={selected}
+            highlightKeys={highlight ?? undefined}
             onSelect={setSelected}
             onGestureStart={pushUndo}
             onMove={(i, cx, cy) => {
@@ -1410,6 +1415,7 @@ export function AltarEditor({ shared, header, overlay, onBack }: { shared?: Shar
               {altarSummary(doc)}. Tap something on the altar to tend it. Drag to move it, pinch to resize and twist to
               turn it.{viewport.zoom > 1 ? ' Drag an empty spot to look around.' : ''}
             </Text>
+            <AltarListing doc={doc} personal={!shared} whose={whose ?? null} highlighting={highlight !== null} onHighlight={setHighlight} onSelect={setSelected} />
             {doc.objects.length > 0 && (
               <ChipRow>
                 {confirmClear ? (

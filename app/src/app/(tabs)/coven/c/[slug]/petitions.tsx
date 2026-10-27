@@ -150,7 +150,7 @@ export default function Petitions() {
       await api.tendPetition(p.id, writing === p.id ? note : "");
       const problem = await onAltar(
         p,
-        tendWithSeed(p, myName, new Date().toISOString()),
+        tendWithSeed(p, myName, new Date().toISOString(), coven.userId ?? ""),
       );
       setWriting(null);
       setNote("");

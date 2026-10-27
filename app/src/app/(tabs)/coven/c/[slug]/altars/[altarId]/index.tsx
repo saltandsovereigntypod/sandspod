@@ -1,11 +1,13 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { AltarEditor } from '../../../../../../../components/altar/AltarEditor';
 import { AltarChat } from '../../../../../../../components/covens/ChatPanel';
 import { CovenScreen, covenHref } from '../../../../../../../components/covens/CovenScreen';
+import * as api from '../../../../../../../lib/covens/api';
 import { useCovenAltar } from '../../../../../../../lib/covens/altarSync';
+import type { WhoseContext } from '../../../../../../../lib/tend/altar';
 import { useCoven } from '../../../../../../../lib/covens/CovenContext';
 import { colors, radius, type } from '../../../../../../../theme';
 
@@ -18,11 +20,33 @@ export default function CovenAltarScreen() {
   const me = coven.userId ? { userId: coven.userId, name: coven.me?.profile?.display_name || 'A member' } : null;
   const { shared, altar, access, others } = useCovenAltar(String(altarId ?? ''), me);
   const { track } = coven;
+  const covenId = coven.snapshot?.coven.id;
 
   useEffect(() => {
     track(`altar:${altarId}`);
     return () => track('coven');
   }, [altarId, track]);
+
+  // "Find mine": your own papers by their ids, and the coven's petitions by who asked them.
+  const [mine, setMine] = useState<{ contributions: string[]; petitions: WhoseContext['petitions'] } | null>(null);
+  const { loadNames } = coven;
+  useEffect(() => {
+    if (!coven.userId || !covenId) return;
+    let alive = true;
+    void Promise.all([api.fetchMyContributions(coven.userId).catch(() => []), api.fetchPetitions(covenId).catch(() => [])]).then(([contributions, petitions]) => {
+      if (!alive) return;
+      void loadNames(petitions.map((p) => p.user_id));
+      setMine({ contributions: contributions.map((c) => c.id), petitions: Object.fromEntries(petitions.map((p) => [p.id, { userId: p.user_id, title: p.title }])) });
+    });
+    return () => {
+      alive = false;
+    };
+  }, [coven.userId, covenId, loadNames]);
+  const myName = coven.me?.profile?.display_name || '';
+  const whose = useMemo<WhoseContext | null>(
+    () => (mine && coven.userId ? { userId: coven.userId, myName, myContributions: mine.contributions, petitions: mine.petitions, nameOf: coven.nameOf } : null),
+    [mine, coven.userId, myName, coven.nameOf],
+  );
 
   if (coven.status !== 'ready' || !(coven.perms.member || coven.perms.site)) {
     return (
@@ -64,6 +88,7 @@ export default function CovenAltarScreen() {
   return (
     <AltarEditor
       shared={shared}
+      whose={whose}
       header={header}
       overlay={<AltarChat />}
       onBack={() => (router.canGoBack() ? router.back() : router.replace(covenHref(coven.slug, 'altar')))}

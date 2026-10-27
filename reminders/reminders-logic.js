@@ -181,9 +181,9 @@
    * (plan.ts calendarReminders), with quiet hours and the pause kept, over
    * the next three months.
    */
-  function preferenceEvents({ settings, prefs, appSettings, plans, sources, covens, place, now }, G, days = HORIZON.sacred) {
+  function preferenceEvents({ settings, prefs, appSettings, plans, sources, covens, tend, place, now }, G, days = HORIZON.sacred) {
     return G.reminderPlan
-      .calendarReminders({ appSettings: appSettings || {}, legacy: settings, prefs: prefs || loadPrefs(appSettings, settings, G), plans: plans || [], sources: sources || undefined, covens: covens || [], place: place || null, now, horizonDays: days })
+      .calendarReminders({ appSettings: appSettings || {}, legacy: settings, prefs: prefs || loadPrefs(appSettings, settings, G), plans: plans || [], sources: sources || undefined, covens: covens || [], tend: tend || [], place: place || null, now, horizonDays: days })
       .map(eventOf);
   }
 
@@ -198,9 +198,9 @@
   }
 
   /** Every reminder as a calendar event, soonest first; nothing while paused. */
-  function reminderEvents({ settings, plans, appSettings, now, templateFor, prefs, sources, covens, place }, G) {
+  function reminderEvents({ settings, plans, appSettings, now, templateFor, prefs, sources, covens, tend, place }, G) {
     const chosen = prefs || loadPrefs(appSettings, settings, G);
-    const fromPrefs = preferenceEvents({ settings, prefs: chosen, appSettings, plans, sources, covens, place, now }, G);
+    const fromPrefs = preferenceEvents({ settings, prefs: chosen, appSettings, plans, sources, covens, tend, place, now }, G);
     const device = [...moonReminderEvents(settings, now, G), ...ritualReminderEvents(settings, plans, now, G, templateFor), ...devotionReminderEvents(settings, now, G), ...dreamReminderEvents(settings, now, G)];
     const paused = G.reminderPrefs.isPaused(chosen, now);
     const until = chosen.pausedUntil ? new Date(`${chosen.pausedUntil}T00:00:00`) : null;

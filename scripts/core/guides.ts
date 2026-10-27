@@ -28,5 +28,7 @@ export * as reminderPrefs from '../../app/src/lib/reminders/prefs.ts';
 export * as reminderHolidays from '../../app/src/lib/reminders/holidays.ts';
 export * as reminderPlan from '../../app/src/lib/reminders/plan.ts';
 export * as reminderSources from '../../app/src/lib/reminders/sources.ts';
+// Reminders asked for on your To tend list (craft collection `tend.rhythms`).
+export * as tendModel from '../../app/src/lib/tend/model.ts';
 export * as reminderCovens from '../../app/src/lib/reminders/covens.ts';
 export * as altarSnapshot from '../../app/src/lib/altar/snapshot.ts';

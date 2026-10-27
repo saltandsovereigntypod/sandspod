@@ -312,15 +312,103 @@
       <div class="coven-altar-bar__actions">
         <a class="button button--small button--pill" href="${esc(covenHref())}">← Back to the coven</a>
         <button class="button button--small button--pill" type="button" data-coven-altar-copy>Keep a copy</button>
-      </div>`;
+        <button class="button button--small button--pill" type="button" data-coven-altar-mine aria-pressed="false" hidden>Find mine</button>
+        <button class="button button--small button--pill" type="button" data-coven-altar-list aria-expanded="false">What’s here</button>
+      </div>
+      <div class="coven-altar-bar__list" data-coven-altar-listing hidden></div>`;
     workspace.insertAdjacentElement("beforebegin", bar);
     bar.querySelector("[data-coven-altar-copy]").addEventListener("click", keepCopy);
+    bar.querySelector("[data-coven-altar-mine]").addEventListener("click", toggleMine);
+    bar.querySelector("[data-coven-altar-list]").addEventListener("click", toggleList);
+    bar.querySelector("[data-coven-altar-listing]").addEventListener("click", (event) => {
+      const row = event.target.closest("[data-object-key]");
+      const el = row && app()?.findById(row.dataset.objectKey);
+      if (!el) return;
+      global.selectObject?.(el);
+      el.scrollIntoView?.({ block: "nearest", behavior: "smooth" });
+    });
     const hero = document.querySelector(".altar-hero");
     if (hero) {
       hero.querySelector("h1").textContent = "A Coven Altar";
       hero.querySelector("p:not(.eyebrow)").textContent = "Tended together. Everyone here sees it change as it happens, and changes save for the coven by themselves.";
     }
   }
+
+  // ── Find mine, and what's here ─────────────────────────────────────────
+  // With twenty people's candles and papers on one altar: light up your own,
+  // or see everything as a list with whose it is, as far as you may know
+  // (the app's lib/tend/altar.ts, SaltCore.altar.tendAltar). A private or
+  // unnamed paper never shows a name; yours are found by their ids.
+  let whose = null;
+  let finding = false;
+  let listing = false;
+
+  async function loadWhose() {
+    if (!me || !altar) return;
+    try {
+      const [mine, petitions] = await Promise.all([
+        db().from("coven_ritual_contributions").select("id").eq("user_id", me.id).limit(500),
+        db().from("coven_petitions").select("id,user_id,title").eq("coven_id", altar.coven_id).limit(1000)
+      ]);
+      const owners = [...new Set((petitions.data || []).map((p) => p.user_id))].filter((id) => id !== me.id);
+      const profiles = owners.length ? await db().from("coven_profiles").select("user_id,display_name").in("user_id", owners) : { data: [] };
+      const names = Object.fromEntries((profiles.data || []).map((p) => [p.user_id, p.display_name || "A member"]));
+      whose = {
+        userId: me.id,
+        myName,
+        myContributions: (mine.data || []).map((c) => c.id),
+        petitions: Object.fromEntries((petitions.data || []).map((p) => [p.id, { userId: p.user_id, title: p.title }])),
+        nameOf: (id) => names[id] || "A member"
+      };
+      const button = bar?.querySelector("[data-coven-altar-mine]");
+      if (button) button.hidden = false;
+    } catch {
+      /* the altar still works; Find mine waits for another visit */
+    }
+  }
+
+  function rowsNow() {
+    const T = global.SaltCore?.altar?.tendAltar;
+    if (!T || !app()) return [];
+    return T.altarListing(stageDocument(), whose || { userId: null, myName: "", myContributions: [], petitions: {}, nameOf: () => "" });
+  }
+
+  function drawMine() {
+    const rows = rowsNow();
+    const keys = new Set(finding ? rows.filter((r) => r.mine).map((r) => r.key) : []);
+    app()?.objects().forEach((el) => el.classList.toggle("is-mine-found", keys.has(el.dataset.altarObjectId || "")));
+    const holder = bar?.querySelector("[data-coven-altar-listing]");
+    if (!holder) return;
+    const T = global.SaltCore?.altar?.tendAltar;
+    const KIND = { candle: "Candle", paper: "Paper", offering: "Offering", plant: "Plant", other: "" };
+    holder.hidden = !listing && !finding;
+    holder.innerHTML =
+      (finding && T ? `<p class="coven-altar-bar__here">${esc(T.mineLine(rows))}</p>` : "") +
+      (listing
+        ? `<ul class="coven-altar-list">${rows
+            .map((r) => `<li><button type="button" class="coven-altar-list__row${r.mine ? " is-mine" : ""}" data-object-key="${esc(r.key)}"><strong>${esc(r.label)}</strong><span>${esc([KIND[r.kind], r.lit ? "burning" : "", r.whose].filter(Boolean).join(" · "))}</span></button></li>`)
+            .join("")}</ul>`
+        : "");
+  }
+
+  function toggleMine(event) {
+    finding = !finding;
+    event.currentTarget.setAttribute("aria-pressed", String(finding));
+    event.currentTarget.textContent = finding ? "Stop finding mine" : "Find mine";
+    drawMine();
+  }
+
+  function toggleList(event) {
+    listing = !listing;
+    event.currentTarget.setAttribute("aria-expanded", String(listing));
+    event.currentTarget.textContent = listing ? "Hide the list" : "What’s here";
+    drawMine();
+  }
+
+  // Keep the list and the lit-up things in step as the altar changes.
+  document.addEventListener("app-altar:changed", () => {
+    if (finding || listing) drawMine();
+  });
 
   async function keepCopy() {
     if (typeof saveAltar !== "function" || !altar) return;
@@ -457,6 +545,7 @@
     await checkAccess();
     if (await load()) {
       connect();
+      loadWhose();
       loadChat().catch((error) => console.warn("The coven's messages couldn't open here.", error));
     }
   }

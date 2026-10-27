@@ -25,6 +25,7 @@ import { anyPlanned, planReminders, type CovenSource } from './plan';
 import { PREFS_KEY, readPrefs, type ReminderPrefs } from './prefs';
 import { anyReminders, DEFAULT_SETTINGS, normalizeSettings, type ReminderSettings } from './schedule';
 import { EMPTY_SOURCES, type TendingSources } from './sources';
+import type { TendRecord } from '../tend/model';
 
 const SETTINGS_KEY = 'reminders.settings.v1';
 
@@ -40,6 +41,8 @@ type RemindersState = {
   sources: TendingSources;
   /** Your covens, for planning reminders and rites. */
   covens: CovenSource[];
+  /** Your To tend list's choices, for the reminders asked of it. */
+  tend: TendRecord[];
 };
 
 let state: RemindersState = {
@@ -50,6 +53,7 @@ let state: RemindersState = {
   scheduled: 0,
   sources: EMPTY_SOURCES,
   covens: [],
+  tend: [],
 };
 const listeners = new Set<() => void>();
 let started = false;
@@ -58,6 +62,7 @@ let lastLookBacks = '';
 let syncing: Promise<void> = Promise.resolve();
 let sourcesKey = '';
 let covensKey = '';
+let tendKey = '';
 
 function set(patch: Partial<RemindersState>) {
   state = { ...state, ...patch };
@@ -92,6 +97,7 @@ export function syncReminders(): Promise<void> {
         lookBacks,
         sources: state.sources,
         covens: state.covens,
+        tend: state.tend,
         place: place ? { latitude: place.latitude, longitude: place.longitude } : null,
         now: new Date(),
       });
@@ -192,6 +198,28 @@ export function setCovenSources(covens: CovenSource[]) {
   covensKey = key;
   set({ covens });
   void syncReminders();
+}
+
+/** Your To tend list's choices (lib/tend/store.ts); reschedules when a reminder, rhythm or hour changes. */
+export function setTendSources(records: TendRecord[]) {
+  const asked = records.filter((r) => r.remind && !r.ended);
+  const key = JSON.stringify(asked.map((r) => [r.key, r.title, r.at, r.rhythm, r.tendedAt.slice(0, 10)]));
+  if (key === tendKey) return;
+  tendKey = key;
+  set({ tend: asked });
+  void syncReminders();
+}
+
+/** After a reminder is asked for on the To tend list: ask for notifications if they aren't allowed yet. */
+export async function askForTendReminders(): Promise<PermissionState> {
+  await start();
+  let permission = state.permission;
+  if (remindersSupported && permission !== 'granted') {
+    permission = await requestPermission();
+    set({ permission });
+  }
+  await syncReminders();
+  return permission;
 }
 
 /** Ask for notifications if something is now chosen that could ring. */

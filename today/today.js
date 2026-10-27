@@ -182,6 +182,7 @@
       panels +
       workingCard(m) +
       `<div data-coven-today>${window.CovenToday?.html?.() || ""}</div>` +
+      `<div data-tend-today>${window.TendToday?.html?.() || ""}</div>` +
       lookBackCard(m) +
       horizonSection(today) +
       dreamCard(m) +

@@ -73,6 +73,8 @@ export * as sigil from '../../app/src/lib/sigil/index.ts';
 export * as covenAltar from '../../app/src/lib/covens/altarDoc.ts';
 export * as ritualAltar from '../../app/src/lib/covens/ritualAltar.ts';
 export * as petitionAltar from '../../app/src/lib/covens/petitionAltar.ts';
+// "Find mine" on a coven altar: what's on it and whose, as far as you may know (the To tend list's altar logic).
+export * as tendAltar from '../../app/src/lib/tend/altar.ts';
 // Everything the altar knows, as one list to search (the coven ritual
 // planner's Items picker and the cabinet's search bar).
 export * as itemIndex from '../../app/src/lib/altar/itemIndex.ts';
