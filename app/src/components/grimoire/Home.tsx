@@ -44,7 +44,7 @@ export function Disclosure({ label, note, count, open, heading, onPress }: { lab
 /**
  * One part of the home. Normally just its heading and, when open, what's in
  * it. While customising, a quiet row under the heading moves it, hides it
- * and renames it, and what's in it stays closed so the whole home fits.
+ * and renames it; opened, its pages can be put in order and filed.
  */
 export function HomePartFrame({
   item,
@@ -124,11 +124,12 @@ export function HomePartFrame({
               }}
             />
           )}
+          <SmallButton label={item.open ? 'Close' : 'Open'} hint={`${item.open ? 'Close' : 'Open'} ${item.title} to order and file its pages`} onPress={onToggle} />
           {onHide && <SmallButton label={item.hidden ? 'Show' : 'Hide'} hint={`${item.hidden ? 'Show' : 'Hide'} ${item.title}`} onPress={() => onHide(!item.hidden)} />}
           {extraControls}
         </View>
       )}
-      {!customising && item.open && children}
+      {item.open && children}
     </View>
   );
 }

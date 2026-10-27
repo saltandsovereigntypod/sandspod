@@ -9,6 +9,7 @@ import { arrangeHome, emptyLayout } from '../src/lib/grimoire/layout.ts';
 import { blockMarkup, canEditSubmission, decide, editedBlocks, shareCredit, submissionBlocks, submissionLine, submissionText, type SubmissionBlock } from '../src/lib/grimoire/submissions.ts';
 import type { BlockRow, GrimoireSnapshot } from '../src/lib/grimoire/types.ts';
 import { stepWords } from '../src/lib/covens/script.ts';
+import { bookAnswerNote, bookNote } from '../../supabase/functions/coven-notify/requests.ts';
 
 const viewer = (extra: Partial<GrimoireViewer> = {}): GrimoireViewer => ({ userId: 'u', member: true, rankId: 'initiate', head: false, site: false, writeBook: false, approveBook: false, goodStanding: true, ...extra });
 const elders = [{ kind: 'rank' as const, id: 'elder' }];
@@ -152,4 +153,15 @@ test('words linked from a page someone can’t open never show', () => {
   const step = { spoken_text: 'own words', details: { book_page_id: 'p1' } };
   assert.deepEqual(stepWords(step, [{ id: 'p1', title: '', body: '', hidden: true }]), { words: '', fromBook: 'A page you can’t open' });
   assert.deepEqual(stepWords(step, []), { words: 'own words' });
+});
+
+test('a suggestion rings those who approve it, and its answer the sharer', () => {
+  assert.deepEqual(bookNote({ covenName: 'Moon Circle', covenSlug: 'moon', who: 'Rowan', title: 'Moon water', changes: false, shared: true }), {
+    title: 'The Book · Moon Circle',
+    body: 'Rowan suggested “Moon water” from their own grimoire',
+    url: '/coven/c/moon/book/review',
+  });
+  assert.match(bookNote({ covenName: 'M', covenSlug: 'm', who: 'R', title: 'Prayer', changes: true, shared: false }).body, /changes to “Prayer”/);
+  assert.equal(bookAnswerNote({ covenName: 'M', covenSlug: 'm', title: 'Prayer', status: 'approved', pageId: 'p1' }).url, '/coven/c/m/book/p1');
+  assert.equal(bookAnswerNote({ covenName: 'M', covenSlug: 'm', title: 'Prayer', status: 'returned', note: 'Shorter, please' }).body, '“Prayer” was sent back to you to change. “Shorter, please”');
 });

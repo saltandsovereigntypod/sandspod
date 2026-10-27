@@ -1147,6 +1147,10 @@ begin
     alter table public.coven_request_notices drop constraint if exists coven_request_notices_request_kind_check;
     alter table public.coven_request_notices add constraint coven_request_notices_request_kind_check
       check (request_kind in ('application', 'advancement', 'grimoire_submission'));
+    -- A suggestion can be sent back and sent again, so its events carry when ('new:<time>').
+    alter table public.coven_request_notices drop constraint if exists coven_request_notices_event_check;
+    alter table public.coven_request_notices add constraint coven_request_notices_event_check
+      check (event in ('new', 'answer') or (request_kind = 'grimoire_submission' and char_length(event) <= 60));
   end if;
 end;
 $$;
