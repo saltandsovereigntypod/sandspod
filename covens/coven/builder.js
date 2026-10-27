@@ -13,7 +13,12 @@
  * Roles, the checklist, afterwards and the sections have panels of their own;
  * the preview reads the whole script or your run-through.
  *
- *   CovenBuilder.open(pane, { state, ritual, backHref, onSaved })
+ *   CovenBuilder.open(pane, { state, ritual, kind?, backHref, onSaved })
+ *
+ * A meeting has a panel of its own (lib/covens/meetings.ts): who it is for,
+ * its Chair and Secretary, its chat's lead time and length, which meetings
+ * it follows on from and who reads its minutes; it chooses from meeting
+ * steps only, and a rite never sees them.
  */
 (function (global) {
   "use strict";
@@ -31,6 +36,7 @@
   const P = () => core().picker;
   const A = () => core().stepActions;
   const C = () => core().contributions;
+  const M = () => core().meetings;
 
   let pane = null;
   let ctx = null;
@@ -59,7 +65,7 @@
       pane.innerHTML = `<p class="sp-notice">The builder couldn’t load. Refresh the page to try again.</p>`;
       return;
     }
-    const kind = ritual?.kind === "meeting" ? "meeting" : "rite";
+    const kind = ritual ? (ritual.kind === "meeting" ? "meeting" : "rite") : options.kind === "meeting" ? "meeting" : "rite";
     const plan = B().cleanPlan(ritual?.plan, kind);
     const saved = ritual ? L.orderSteps(state.ritualSteps, ritual.id) : [];
     m = {
@@ -86,18 +92,23 @@
       more: false,
       choosing: null,
       group: "",
-      actionDraft: null
+      actionDraft: null,
+      // A meeting kept to some (none: the whole coven), and the coven's default for who reads its chat afterwards.
+      audience: P() ? P().cleanAssignees(ritual?.audience) : [],
+      chatDefaults: null
     };
-    const [people, library, pages, own, altarCore, petitions, today] = await Promise.all([
+    const [people, library, pages, own, altarCore, petitions, today, chatDefaults] = await Promise.all([
       D.ritualPeople(state.coven.id).catch(() => []),
       D.ritualLibrary(state.coven.id).catch(() => []),
       D.bookPages(state.coven.id).catch(() => []),
       D.myRitualTemplates(state.context.user?.id).catch(() => []),
       UI.altarCore().catch(() => null),
       D.petitions(state.coven.id).catch(() => []),
-      loadToday()
+      loadToday(),
+      global.CovenMeeting?.fetchDefaults ? global.CovenMeeting.fetchDefaults(state.coven.id).catch(() => null) : Promise.resolve(null)
     ]);
     if (pane !== el) return;
+    m.chatDefaults = chatDefaults;
     await UI.loadNames(state.context, people.map((p) => p.user_id));
     m.people = people.map((p) => ({ id: p.user_id, name: nameOf(p.user_id), eligible: Boolean(p.eligible) })).sort((a, b) => a.name.localeCompare(b.name));
     m.library = library;
@@ -150,6 +161,7 @@
       : v === "after" ? afterHtml()
       : v === "preview" ? previewHtml()
       : v === "action" ? actionHtml()
+      : v === "meeting" ? meetingHtml()
       : stepHtml(v.step);
     pane.innerHTML = `<div class="cv-builder">${html}</div>`;
     mount();
@@ -195,6 +207,7 @@
       <h2>${m.ritual ? `Edit ${m.kind === "meeting" ? "the meeting" : "the rite"}` : m.kind === "meeting" ? "Plan a meeting" : "Plan a rite"}</h2>
       <nav class="sp-list" aria-label="About it">
         ${summaryRow(m.fields.title.trim() || "Name it", when, "details")}
+        ${m.kind === "meeting" ? summaryRow("Who it’s for, and how it runs", `${m.audience.length ? P().assigneesLabel(m.audience, ctx.state.ranks, nameOf) : "Everyone in the coven"} · chair, secretary, chat, minutes`, "meeting") : ""}
         ${summaryRow("Roles", m.plan.roles.length ? m.plan.roles.map((r) => `${r.name}${r.cast.length ? "" : " (no one yet)"}`).join(", ") : "None yet", "roles")}
         ${summaryRow(m.kind === "meeting" ? "Before the meeting" : "Before the rite", m.plan.checklist.length ? m.plan.checklist.map((c) => c.text).join(" · ") : "Nothing to do yet", "prep")}
         ${summaryRow("Afterwards", after, "after")}
@@ -303,9 +316,9 @@
     const hold = a.hold_hours ? String(a.hold_hours) : "";
     const choices = B().HOLD_CHOICES.some((h) => h.value === hold) ? B().HOLD_CHOICES : [...B().HOLD_CHOICES, { value: hold, label: `${hold} hours` }];
     return `${back()}<h2>Afterwards</h2>
-      <div class="sp-card"><p class="sp-label">Leave the altar untouched</p>
+      ${m.kind === "meeting" ? "" : `<div class="sp-card"><p class="sp-label">Leave the altar untouched</p>
         <div class="sp-chips">${choices.map((h) => chip(h.label, "hold", attr({ value: h.value }), hold === h.value)).join("")}</div>
-        <p class="sp-caption">For that long after the rite no one tends or clears the ritual’s altar, its keepers included. Then its leader is reminded to clear it.</p></div>
+        <p class="sp-caption">For that long after the rite no one tends or clears the ritual’s altar, its keepers included. Then its leader is reminded to clear it.</p></div>`}
       <div class="sp-card"><div class="sp-field"><label for="af-notes">Notes for afterwards</label><textarea id="af-notes" maxlength="2000" data-after="notes" placeholder="Leave the offerings at the crossroads overnight.">${esc(a.notes)}</textarea></div></div>
       <div class="sp-card"><div class="sp-field"><label for="af-follow">A follow-up reminder (optional)</label><input id="af-follow" maxlength="200" data-after="follow_text" value="${esc(a.follow_up?.text || "")}" placeholder="Keep the Noumenia today" /></div>
         <div class="sp-field"><label for="af-hours">Hours after the rite</label><input id="af-hours" type="number" min="1" max="1440" data-after="follow_hours" value="${esc(a.follow_up?.after_hours || 24)}" /></div>
@@ -339,18 +352,52 @@
       <div class="sp-actions">${btn("Keep it for the coven", "action-save", "", "button--primary")}${btn("Cancel", "view", 'data-view="outline"')}</div>${statusLine()}`;
   }
 
+  const LEADS = [0, 5, 10, 15, 30, 60];
+  const LENGTHS = [30, 45, 60, 90, 120, 180];
+  const lengthWord = (n) => (n < 60 ? `${n} min` : n % 60 ? `${Math.floor(n / 60)}½ hours` : n === 60 ? "1 hour" : `${n / 60} hours`);
+
+  /** A meeting's own settings (the app's MeetingPanel in components/covens/builder/Panels.tsx). */
+  function meetingHtml() {
+    const s = M().meetingSettings(m.plan);
+    const chair = M().meetingRoleId(m.plan, "chair");
+    const secretary = M().meetingRoleId(m.plan, "secretary");
+    const leads = LEADS.includes(s.lead_minutes) ? LEADS : [...LEADS, s.lead_minutes];
+    const lengths = LENGTHS.includes(s.length_minutes) ? LENGTHS : [...LENGTHS, s.length_minutes];
+    const history = M().historyLabel(M().historyKeys(m.ritual?.chat_readers, m.chatDefaults), m.plan, ctx.state.ranks, nameOf);
+    return `${back()}<h2>How the meeting runs</h2>
+      <div class="sp-card"><p class="sp-label">Who it’s for</p><div data-picker-audience></div>
+        <p class="sp-caption">${m.audience.length ? "No one else sees this meeting: not its agenda, votes, notes, actions, chat or minutes. Those cast in its roles, whoever plans it and the coven’s head always do." : "Everyone in the coven sees it. Choose positions or people to keep it to them."}</p></div>
+      ${m.plan.roles.length ? `<div class="sp-card"><p class="sp-label">The Chair</p>
+          <div class="sp-chips">${m.plan.roles.map((r) => chip(r.name, "meeting-role", attr({ which: "chair_role", id: r.id }), chair === r.id)).join("")}</div>
+          <p class="sp-caption">Whoever plays this role moves the meeting on, gives the floor, calls votes and opens or closes the chat.</p>
+          <p class="sp-label">The Secretary</p>
+          <div class="sp-chips">${m.plan.roles.map((r) => chip(r.name, "meeting-role", attr({ which: "secretary_role", id: r.id }), secretary === r.id)).join("")}</div>
+          <p class="sp-caption">Whoever plays this role keeps the notes for each item, adds the actions, and writes the minutes.</p></div>`
+        : `<p class="sp-notice">Add a Chair and a Secretary under Roles, and they will run the meeting and keep its notes.</p>`}
+      <div class="sp-card"><p class="sp-label">The meeting’s chat opens</p>
+        <div class="sp-chips">${leads.map((n) => chip(n ? `${n} min before` : "At the start", "meeting-set", attr({ key: "lead_minutes", value: n }), s.lead_minutes === n)).join("")}</div>
+        <p class="sp-label">It runs for about</p>
+        <div class="sp-chips">${lengths.map((n) => chip(lengthWord(n), "meeting-set", attr({ key: "length_minutes", value: n }), s.length_minutes === n)).join("")}</div>
+        <p class="sp-caption">The meeting has its own chat, apart from the coven’s. Those it is for can write in it from then until the meeting ends; the Chair can open it early, close it, or keep it open a while longer.</p>
+        <p class="sp-caption">Afterwards, the whole chat is read by: ${esc(history.charAt(0).toLowerCase() + history.slice(1))}. The coven’s head chooses this, on the meeting’s page. Everyone else has the minutes.</p></div>
+      <div class="sp-card"><p class="sp-label">The minutes are read by</p>
+        <div class="sp-chips">${chip("Those it is for", "meeting-set", attr({ key: "minutes_view", value: "audience" }), s.minutes_view === "audience")}${chip("The whole coven", "meeting-set", attr({ key: "minutes_view", value: "coven" }), s.minutes_view === "coven")}</div>
+        <div class="sp-field"><label for="mt-series">Which meetings it follows on from</label><input id="mt-series" maxlength="60" data-meeting-series value="${esc(m.plan.meeting?.series || "")}" placeholder="${esc(s.series)}" />
+          <p class="sp-caption">Actions not yet done carry forward to the next meeting with the same name here.</p></div></div>`;
+  }
+
   // --- one step ------------------------------------------------------------------
 
   function chooserHtml(step, number) {
     const query = m.choosing?.query || "";
-    const found = query.trim() ? A().searchActions(query) : m.group ? A().STEP_ACTIONS.filter((a) => a.group === m.group) : [];
+    const found = query.trim() ? A().searchActions(query, m.kind) : m.group ? A().searchActions("", m.kind).filter((a) => a.group === m.group) : [];
     const fresh = !step.title.trim() && !step.action;
     const own = custom().filter((c) => !query.trim() || c.name.toLowerCase().includes(query.trim().toLowerCase()));
     return `<p class="sp-eyebrow">Step ${number}${sectionName(step) ? ` · ${esc(sectionName(step))}` : ""}</p>
       <h2>What happens here?</h2>
       <p class="sp-caption">Choose what the step is. It fills in a name and words you can change.</p>
-      <div class="sp-field"><label for="ch-q">Find one</label><input id="ch-q" type="search" autocomplete="off" data-chooser-query value="${esc(query)}" placeholder="quarters, candle, libation, vote…" /></div>
-      <div class="sp-chips" role="group" aria-label="Kinds of step">${A().ACTION_GROUPS.map((g) => chip(g.label, "group", attr({ group: g.id }), m.group === g.id && !query.trim())).join("")}</div>
+      <div class="sp-field"><label for="ch-q">Find one</label><input id="ch-q" type="search" autocomplete="off" data-chooser-query value="${esc(query)}" placeholder="${m.kind === "meeting" ? "motion, report, election, round…" : "quarters, candle, libation, vote…"}" /></div>
+      <div class="sp-chips" role="group" aria-label="Kinds of step">${A().groupsFor(m.kind).map((g) => chip(g.label, "group", attr({ group: g.id }), m.group === g.id && !query.trim())).join("")}</div>
       <div class="cv-choices" data-chooser-list>${found.map((a) => `<button type="button" class="cv-choice" data-act="pick-action" data-id="${esc(a.id)}">${esc(A().actionLabel(a))}</button>`).join("")}</div>
       ${own.length ? `<p class="sp-label">The coven’s own</p><div class="cv-choices">${own.map((c) => `<button type="button" class="cv-choice" data-act="pick-custom" data-id="${esc(c.id)}">${esc(c.name)}</button>`).join("")}</div>` : ""}
       ${fresh && blocks().length ? `<p class="sp-label">The coven’s saved blocks</p><div class="cv-choices">${blocks().map((b) => `<button type="button" class="cv-choice" data-act="pick-block" data-id="${esc(b.id)}">${esc(b.title)}</button>`).join("")}</div>` : ""}
@@ -464,6 +511,7 @@
           case "deity":
           case "items":
           case "who":
+          case "pages":
             return `<div data-field-picker="${esc(spec.key)}"></div>`;
           case "parts": {
             const parts = F().partsOf(spec, values, specs);
@@ -542,6 +590,26 @@
       });
       return;
     }
+    if (v === "meeting") {
+      const holder = pane.querySelector("[data-picker-audience]");
+      if (holder) {
+        const entries = P().whoEntries(ctx.state.ranks, m.people);
+        Pk.create(holder, {
+          id: "mt-audience",
+          label: "Who it’s for",
+          placeholder: "The High Priestess, Elders, the Maiden…",
+          empty: "Everyone in the coven",
+          chips: () => m.audience.map((a) => ({ key: P().assigneeKey(a), label: whoLabel(P().assigneeKey(a)) })),
+          search: (q, picked) => P().searchEntries(entries, q, { limit: 8, picked, suggestions: P().whoSuggestions(entries) }),
+          onAdd: (entry) => {
+            const a = P().assigneeFromKey(entry.key);
+            if (a) m.audience = a.kind === "coven" ? [] : P().cleanAssignees([...m.audience, a]);
+          },
+          onRemove: (key) => (m.audience = m.audience.filter((a) => P().assigneeKey(a) !== key))
+        });
+      }
+      return;
+    }
     if (typeof v !== "object" || m.choosing?.key === v.step) return;
     const step = stepByKey(v.step);
     if (!step) return;
@@ -615,6 +683,20 @@
           onAdd: (entry) => setField(spec.key, spec.single ? [entry.key] : [...(value(spec.key) || []), entry.key]),
           onRemove: (key) => setField(spec.key, (value(spec.key) || []).filter((k) => k !== key))
         });
+      } else if (spec.type === "pages") {
+        const open = () => m.pages.filter((p) => !p.hidden);
+        const titleOf = (id) => (open().find((p) => p.id === id) || {}).title || "A page you can’t open";
+        Pk.create(holder, {
+          id: `fp-${spec.key}`,
+          label: spec.label,
+          hint: spec.hint,
+          placeholder: "Find a page of the coven’s Book",
+          empty: open().length ? "None linked yet." : "The coven’s Book has no pages you can open yet.",
+          chips: () => (value(spec.key) || []).map((pid) => ({ key: pid, label: titleOf(pid) })),
+          search: (q, picked) => P().searchEntries(open().map((p) => ({ key: p.id, label: p.title, detail: p.section || "The coven’s Book", keywords: ["page", "book"] })), q, { limit: 8, picked }),
+          onAdd: (entry) => setField(spec.key, [...(value(spec.key) || []), entry.key]),
+          onRemove: (key) => setField(spec.key, (value(spec.key) || []).filter((k) => k !== key))
+        });
       } else if (spec.type === "items" && m.I) {
         Pk.create(holder, {
           id: `fp-${spec.key}`,
@@ -679,10 +761,11 @@
       if (f.after === "follow_text") m.plan = { ...m.plan, afterwards: { ...a, follow_up: el.value.trim() ? { text: el.value, after_hours: a.follow_up?.after_hours || 24 } : null } };
       if (f.after === "follow_hours" && a.follow_up) m.plan = { ...m.plan, afterwards: { ...a, follow_up: { ...a.follow_up, after_hours: Math.max(1, Math.min(1440, Math.round(Number(el.value) || 1))) } } };
     } else if (f.actionDraft) m.actionDraft[f.actionDraft] = el.value;
+    else if (el.matches("[data-meeting-series]")) m.plan = { ...m.plan, meeting: { ...(m.plan.meeting || {}), series: el.value } };
     else if (el.matches("[data-chooser-query]")) {
       m.choosing.query = el.value;
       const list = pane.querySelector("[data-chooser-list]");
-      const found = el.value.trim() ? A().searchActions(el.value) : m.group ? A().STEP_ACTIONS.filter((a) => a.group === m.group) : [];
+      const found = el.value.trim() ? A().searchActions(el.value, m.kind) : m.group ? A().searchActions("", m.kind).filter((a) => a.group === m.group) : [];
       if (list) list.innerHTML = found.map((a) => `<button type="button" class="cv-choice" data-act="pick-action" data-id="${esc(a.id)}">${esc(A().actionLabel(a))}</button>`).join("");
     } else if (el.matches("[data-page-query]")) {
       const list = pane.querySelector("[data-page-list]");
@@ -842,6 +925,12 @@
       }
       case "hold":
         m.plan = { ...m.plan, afterwards: { ...m.plan.afterwards, hold_hours: d.value ? Number(d.value) : null } };
+        return redraw();
+      case "meeting-role":
+        m.plan = { ...m.plan, meeting: { ...(m.plan.meeting || {}), [d.which]: d.id } };
+        return redraw();
+      case "meeting-set":
+        m.plan = { ...m.plan, meeting: { ...(m.plan.meeting || {}), [d.key]: d.key === "minutes_view" ? d.value : Number(d.value) } };
         return redraw();
       case "preview-mode":
         m.previewMode = d.mode;
@@ -1013,7 +1102,8 @@
     const fields = B().ritualPayload(
       { title: m.fields.title, intention: m.fields.intention, description: m.fields.description, scheduled_for: L.fromLocalInput(m.fields.when), status: as, occasion: m.fields.occasion, occasion_name: m.fields.occasion_name },
       m.kind,
-      m.plan
+      m.plan,
+      m.kind === "meeting" ? m.audience : undefined
     );
     const saved = await UI.busy(el, pane.querySelector("[data-status]"), () => D.saveRitual(ctx.state.coven.id, m.ritual?.id, fields, B().builderPayload(m.plan, m.steps, custom())));
     if (saved) ctx.onSaved(saved);

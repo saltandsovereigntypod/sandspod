@@ -143,7 +143,7 @@
     const memberships = await rows(db.from("coven_members").select("coven_id,user_id,rank_id,status").eq("user_id", userId).eq("status", "active"));
     const ids = memberships.map((m) => m.coven_id);
     if (!ids.length) return null;
-    const [covens, tendings, petitions, contributions, upcoming, mentorships, checkins, me] = await Promise.all([
+    const [covens, tendings, petitions, contributions, upcoming, mentorships, checkins, me, actions] = await Promise.all([
       rows(db.from("covens").select("id,slug,name").in("id", ids).eq("status", "active")),
       quiet(rows(db.from("coven_petition_tendings").select("petition_id,user_id,note,created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(1000))),
       quiet(rows(db.from("coven_petitions").select("id,coven_id,user_id,title,body,color,status,last_tended_at,altar_id,source_ritual_id,created_at").in("coven_id", ids).eq("status", "open").limit(1000))),
@@ -151,12 +151,14 @@
       quiet(rows(db.from("coven_rituals").select("id,coven_id,title,status,scheduled_for,created_at").in("coven_id", ids).in("status", ["scheduled", "live"]).limit(200))),
       quiet(rows(db.from("coven_mentors").select("coven_id,user_id,mentor_id,assigned_at").eq("mentor_id", userId))),
       quiet(rows(db.from("coven_mentor_checkins").select("coven_id,user_id,mentor_id,met_on").eq("mentor_id", userId).order("met_on", { ascending: false }).limit(1000))),
-      quiet(rows(db.from("coven_profiles").select("user_id,display_name").eq("user_id", userId)))
+      quiet(rows(db.from("coven_profiles").select("user_id,display_name").eq("user_id", userId))),
+      // Actions agreed at the coven's meetings (yours are picked out by the list's own logic).
+      quiet(rows(db.from("coven_meeting_actions").select("id,ritual_id,coven_id,body,assignees,due_on,status,created_at").in("coven_id", ids).eq("status", "open").limit(1000)))
     ]);
     const tended = new Set(tendings.map((t) => t.petition_id));
     const mine = petitions.filter((p) => p.user_id === userId || tended.has(p.id));
     const known = new Set(upcoming.map((r) => r.id));
-    const wanted = [...new Set([...contributions.map((c) => c.ritual_id), ...mine.map((p) => p.source_ritual_id || "")])].filter((id) => id && !known.has(id));
+    const wanted = [...new Set([...contributions.map((c) => c.ritual_id), ...mine.map((p) => p.source_ritual_id || ""), ...actions.map((a) => a.ritual_id)])].filter((id) => id && !known.has(id));
     const [earlier, steps] = await Promise.all([
       wanted.length ? quiet(rows(db.from("coven_rituals").select("id,coven_id,title,status,scheduled_for,created_at").in("id", wanted.slice(0, 200)))) : [],
       upcoming.length ? quiet(rows(db.from("coven_ritual_steps").select("id,ritual_id,title,contribution,assignees,assigned_user_id,assigned_rank_id").in("ritual_id", upcoming.map((r) => r.id)))) : []
@@ -175,6 +177,7 @@
       steps,
       mentorships,
       checkins,
+      actions,
       nameOf: (id) => names[id] || "A member",
       myName: me[0]?.display_name || "A member"
     };
@@ -349,6 +352,14 @@
     return "The check-in is logged.";
   }
 
+  /** An action from a coven meeting, done (its meeting sees it too), as the app's tend store. */
+  async function done(state, item) {
+    const C = core();
+    await rpc("set_coven_meeting_action", { p_action: item.ref.actionId, p_status: "done" });
+    await saveRecord(state, item, (r) => C.model.recordTended(r, new Date()));
+    return "Marked done. The meeting’s Chair and Secretary see it too.";
+  }
+
   async function practice(state, item, note) {
     const C = core();
     const journey = state.journeys.find((j) => j.entryId === item.ref.entryId);
@@ -397,5 +408,5 @@
     return change.remind ? "Saved. Its reminder rings on your phone, and joins the calendar file on Reminders." : "Saved.";
   }
 
-  global.TendData = { load, ensureCore, tend, end, write, checkin, practice, answer, setRhythm };
+  global.TendData = { load, ensureCore, tend, end, write, checkin, done, practice, answer, setRhythm };
 })(window);

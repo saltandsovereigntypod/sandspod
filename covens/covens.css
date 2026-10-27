@@ -400,3 +400,20 @@
 .cv-grimoire-file { margin: 0 0.75rem 0.6rem; font: inherit; font-size: 0.85rem; }
 .cv-grimoire-editor textarea { width: 100%; font: inherit; }
 .cv-grimoire-block { display: grid; gap: 0.5rem; }
+
+/* --- a meeting (covens/coven/meeting.js): its page, with its own chat beside it ---------- */
+.cv-meeting { display: grid; gap: 18px; grid-template-columns: minmax(0, 1fr) minmax(280px, 380px); align-items: start; }
+.cv-meeting__main { display: grid; gap: 14px; min-width: 0; }
+.cv-meeting__chat { position: sticky; top: 12px; display: grid; gap: 10px; }
+.cv-meeting__log { height: min(52vh, 520px); }
+.cv-meeting__fold { display: none; }
+.cv-meeting__folded { display: block; }
+.cv-floor { display: grid; gap: 6px; padding: 10px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.cv-floor[data-speaking="true"] { border-color: var(--gold); }
+.cv-over { color: var(--gold); }
+@media (max-width: 900px) {
+  .cv-meeting { grid-template-columns: 1fr; }
+  .cv-meeting__chat { position: static; order: -1; }
+  .cv-meeting__fold { display: inline; }
+  .cv-meeting__folded { display: none; }
+}
