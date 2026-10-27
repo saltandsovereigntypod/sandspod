@@ -3676,3 +3676,87 @@ body.library-page-open .book-toc .book-toc-section:not(.my-practice-shelf):not(.
   font-size: 1.35rem;
   font-style: italic;
 }
+
+/* =========================================================
+   THE HOME AS YOU ARRANGE IT (js/ui/layout.js) AND SUGGESTING A PAGE (js/ui/suggest.js)
+   ========================================================= */
+
+.grimoire-layout-bar {
+  display: grid;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.grimoire-layout-bar label,
+.grimoire-suggest-form label {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: rgba(244, 236, 216, 0.72);
+}
+
+.grimoire-layout-bar select,
+.grimoire-layout-file,
+.grimoire-suggest-form select,
+.grimoire-suggest-form textarea {
+  font: inherit;
+  font-size: 0.9rem;
+  color: inherit;
+  background: rgba(244, 236, 216, 0.06);
+  border: 1px solid rgba(244, 236, 216, 0.16);
+  border-radius: 0.6rem;
+  padding: 0.4rem 0.55rem;
+}
+
+.grimoire-layout-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.grimoire-layout-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.35rem 0 0.5rem;
+}
+
+.grimoire-layout-controls button {
+  min-height: 2rem;
+  min-width: 2rem;
+  padding: 0 0.6rem;
+  border: 1px solid rgba(244, 236, 216, 0.16);
+  border-radius: 999px;
+  color: var(--gold);
+  background: rgba(244, 236, 216, 0.04);
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.grimoire-layout-controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+.book-toc-section.is-layout-hidden,
+[data-layout-key].is-layout-hidden {
+  opacity: 0.5;
+}
+
+.grimoire-layout-file {
+  margin: 0.25rem 0 0.4rem;
+  max-width: 100%;
+}
+
+.grimoire-suggest {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(31, 26, 18, 0.15);
+}
+
+.grimoire-suggest-form {
+  display: grid;
+  gap: 0.75rem;
+}
