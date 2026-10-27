@@ -60,8 +60,10 @@ test("who may read what, as the database decides", () => {
 test("the planner, the ritual and the coven page use the shared logic and the same calls as the app", () => {
   const html = read("covens/coven/index.html");
   assert.ok(html.indexOf("/covens/coven/picker.js") < html.indexOf("/covens/coven/rituals.js"), "the picker loads before the rituals tab");
-  const rituals = read("covens/coven/rituals.js");
-  for (const needle of ["CovenPicker.create", "applyAction", "assignees", "contribution: askOf(s)", "altar_tenders", "D.saveContribution", "D.offerContribution", "D.supportContribution", "D.tendContribution", "offerPaper", "seedPetitionAltar", "Before the rite"]) {
+  assert.ok(html.indexOf("/covens/coven/builder.js") < html.indexOf("/covens/coven/rituals.js"), "the builder loads before the rituals tab");
+  // The planner is the builder now (covens/coven/builder.js), saving the app's shapes through builderPayload.
+  const rituals = read("covens/coven/rituals.js") + read("covens/coven/builder.js");
+  for (const needle of ["CovenPicker.create", "applyAction", "assignees", "builderPayload", "altar_tenders", "D.saveContribution", "D.offerContribution", "D.supportContribution", "D.tendContribution", "offerPaper", "seedPetitionAltar", "Before the rite"]) {
     assert.ok(rituals.includes(needle), needle);
   }
   const data = read("covens/coven-data.js");

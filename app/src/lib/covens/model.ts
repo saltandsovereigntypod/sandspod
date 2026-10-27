@@ -5,7 +5,7 @@
 
 import { assigneesLabel, assigneesOf, includesMember, type Assignee } from './picker.ts';
 import type { StepContribution } from './contributions.ts';
-import type { StepItem } from '../altar/itemIndex.ts';
+import type { StepItem } from '../altar/stepItems.ts';
 
 export type Joining = 'open' | 'application' | 'closed';
 
@@ -101,6 +101,11 @@ export type Ritual = {
   updated_at?: string;
   /** The altar it's held at; none means the coven's main ritual altar. */
   altar_id?: string | null;
+  started_at?: string | null;
+  /** A rite or a meeting (builder.ts). */
+  kind?: 'rite' | 'meeting' | null;
+  /** Its sections, roles, checklist and afterwards (builder.ts RitualPlan, as saved). */
+  plan?: unknown;
 };
 /** What a step does on the shared altar (stepActions.ts ALTAR_EFFECTS); the first four are the originals. */
 export type AltarAction = 'light_candle' | 'place_item' | 'light_all' | 'snuff_all' | 'release_papers';
@@ -134,6 +139,16 @@ export type RitualStep = {
   items?: StepItem[] | null;
   /** What the step asks of people (contributions.ts), or null. */
   contribution?: StepContribution | null;
+  /** The builder's section, roles, turn mode and details (builder.ts); empty on older steps. */
+  section?: string | null;
+  roles?: string[] | null;
+  turn_mode?: 'together' | 'in_turn' | 'assigned' | 'on_behalf' | null;
+  details?: unknown;
+  /** A one-at-a-time step under way: whose turns, in order, and how far along. */
+  turn_order?: string[] | null;
+  turn_at?: number | null;
+  /** A vote's result once it has closed: { counts, total, closed_at }. */
+  outcome?: { counts?: Record<string, number>; total?: number; closed_at?: string } | null;
 };
 /** The coven's ritual settings (coven_ritual_settings): who, beyond the head, sees participation. */
 export type RitualSettings = { coven_id: string; participation_viewers: Assignee[] };

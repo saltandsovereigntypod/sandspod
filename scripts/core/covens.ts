@@ -21,3 +21,11 @@ export * as stepActions from '../../app/src/lib/covens/stepActions.ts';
 export * as contributions from '../../app/src/lib/covens/contributions.ts';
 // The members' record: attendance, studies, mentoring and the gentle flags.
 export * as record from '../../app/src/lib/covens/record.ts';
+// The ritual builder: sections, roles, steps that know what they are (their
+// fields), ready-made templates, and the script, votes and record.
+export * as builder from '../../app/src/lib/covens/builder.ts';
+export * as fields from '../../app/src/lib/covens/fields.ts';
+export * as templates from '../../app/src/lib/covens/templates.ts';
+export * as script from '../../app/src/lib/covens/script.ts';
+export * as draft from '../../app/src/lib/covens/draft.ts';
+export { newId } from '../../app/src/lib/grimoire/ids.ts';
