@@ -642,7 +642,7 @@ async function deleteSavedAltar(altarId) {
   if (!altar) return;
 
   const confirmed = window.confirm(
-    `Delete "${altar.name || "Untitled Altar"}"? This cannot be undone.`
+    `Delete "${altar.name || "Untitled Altar"}" for good? This cannot be undone.\n\nEverything on it goes. Your Grimoire pages made from this altar stay in your Grimoire. If you only want it out of the way, cancel and choose Archive instead: it keeps everything and rests until you restore it.`
   );
 
   if (!confirmed) return;
@@ -671,6 +671,50 @@ async function deleteSavedAltar(altarId) {
   await renderSavedAltarsManager();
   showAltarToast("Altar deleted");
 }
+
+// Archive: the altar is kept whole (its things, petitions and history) but
+// set aside to rest, at the bottom of the list, until it's restored. The flag
+// lives in the altar's own data (altar_data.archived, archivedAt), as the app
+// keeps it (lib/altar/archive.ts).
+async function setSavedAltarArchived(altarId, archived) {
+  const savedAltars = await getSavedAltars();
+  const altar = savedAltars.find((savedAltar) => savedAltar.id === altarId);
+
+  if (!altar) return;
+
+  if (archived && !window.confirm(`Archive "${altar.name || "Untitled Altar"}"?\n\nEverything on it is kept: its things, petitions and history. It moves to Archived altars and rests from reminders, tending nudges and the To tend list until you restore it.`)) return;
+
+  const now = new Date().toISOString();
+  const flag = { archived, archivedAt: archived ? now : "" };
+  const user = await ensureAltarUser();
+
+  if (!user) {
+    Object.assign(altar, flag);
+    storeLocalSavedAltars(savedAltars);
+  } else {
+    const { data, error: readError } = await db.from(ALTAR_CLOUD_TABLE).select("altar_data").eq("id", altarId).eq("user_id", user.id).single();
+    const { error } = readError
+      ? { error: readError }
+      : await db
+          .from(ALTAR_CLOUD_TABLE)
+          .update({ altar_data: { ...(data?.altar_data || {}), ...flag }, updated_at: now })
+          .eq("id", altarId)
+          .eq("user_id", user.id);
+
+    if (error) {
+      console.error(error);
+      showAltarToast(archived ? "Archive failed" : "Restore failed");
+      return;
+    }
+  }
+
+  // The altar open now keeps the flag on its next save.
+  if (window.currentSavedAltarId === altarId) window.altarExtraFields = { ...(window.altarExtraFields || {}), ...flag };
+  await renderSavedAltarsManager();
+  showAltarToast(archived ? "Altar archived. It rests until you restore it." : "Altar restored");
+}
+
+const ARCHIVED_OPEN_KEY = "saltAndSovereigntyArchivedAltarsOpen";
 
 const savedAltarsManager = document.createElement("div");
 savedAltarsManager.className = "saved-altars-modal";
@@ -744,35 +788,51 @@ async function renderSavedAltarsManager() {
     return;
   }
 
-  savedAltarsList.innerHTML = savedAltars
-    .map((altar) => {
-      const date = formatSavedAltarDate(altar);
-      const summary = getSavedAltarSummary(altar);
-      const backgroundName = altar.backgroundName || "Custom altar";
+  const isArchived = (altar) => altar.archived === true;
+  const active = savedAltars.filter((altar) => !isArchived(altar));
+  const archived = savedAltars.filter(isArchived).sort((a, b) => String(b.archivedAt || "").localeCompare(String(a.archivedAt || "")));
+  let open = false;
+  try { open = localStorage.getItem(ARCHIVED_OPEN_KEY) === "open"; } catch { /* per device, when it can be kept */ }
 
-      return `
-        <article class="saved-altar-row saved-altar-card" data-saved-altar-id="${altar.id}">
-          <div class="saved-altar-symbol" aria-hidden="true">🕯</div>
+  const card = (altar) => {
+    const date = formatSavedAltarDate(altar);
+    const summary = getSavedAltarSummary(altar);
+    const backgroundName = altar.backgroundName || "Custom altar";
 
-          <div class="saved-altar-body">
-            <p class="eyebrow">${backgroundName}</p>
-            <h3>${altar.name || "Untitled Altar"}</h3>
-            <p>${summary}</p>
-            <p class="saved-altar-date">Saved ${date}</p>
-          </div>
+    return `
+      <article class="saved-altar-row saved-altar-card" data-saved-altar-id="${altar.id}">
+        <div class="saved-altar-symbol" aria-hidden="true">🕯</div>
 
-          <div class="saved-altar-actions">
-            <button type="button" data-saved-action="load">Load</button>
-            <button type="button" data-saved-action="rename">Rename</button>
-            <button type="button" data-saved-action="delete">Delete</button>
-            <button type="button" disabled title="Coming soon">Duplicate</button>
-            <button type="button" disabled title="Coming soon">Favorite</button>
-            <button type="button" disabled title="Coming soon">Share</button>
-          </div>
-        </article>
-      `;
-    })
-    .join("");
+        <div class="saved-altar-body">
+          <p class="eyebrow">${backgroundName}</p>
+          <h3>${altar.name || "Untitled Altar"}</h3>
+          <p>${summary}</p>
+          <p class="saved-altar-date">Saved ${date}</p>
+        </div>
+
+        <div class="saved-altar-actions">
+          <button type="button" data-saved-action="load">Load</button>
+          <button type="button" data-saved-action="rename">Rename</button>
+          <button type="button" data-saved-action="${isArchived(altar) ? "restore" : "archive"}">${isArchived(altar) ? "Restore" : "Archive"}</button>
+          <button type="button" data-saved-action="delete">Delete</button>
+          <button type="button" disabled title="Coming soon">Duplicate</button>
+          <button type="button" disabled title="Coming soon">Favorite</button>
+          <button type="button" disabled title="Coming soon">Share</button>
+        </div>
+      </article>
+    `;
+  };
+
+  savedAltarsList.innerHTML = active.map(card).join("") + (archived.length
+    ? `<details class="saved-altars-archived" data-archived-altars ${open ? "open" : ""}>
+        <summary>Archived altars (${archived.length})</summary>
+        <p class="saved-altars-archived-note">Kept whole and resting: no reminders, nudges or To tend items until you restore them.</p>
+        ${archived.map(card).join("")}
+      </details>`
+    : "");
+  savedAltarsList.querySelector("[data-archived-altars]")?.addEventListener("toggle", (event) => {
+    try { localStorage.setItem(ARCHIVED_OPEN_KEY, event.target.open ? "open" : "closed"); } catch { /* per device, when it can be kept */ }
+  });
 }
 
 async function openSavedAltarsManager() {

@@ -19,6 +19,8 @@ export * as offeringDrawer from '../../app/src/lib/altar/offeringDrawer.ts';
 // Offering what's already on the altar to a presence, and everything on an altar written down for the Grimoire.
 export * as offerFromAltar from '../../app/src/lib/altar/offerFromAltar.ts';
 export * as altarRecord from '../../app/src/lib/altar/altarRecord.ts';
+// Archived altars: set aside, kept whole, resting from reminders and the To tend list.
+export * as archive from '../../app/src/lib/altar/archive.ts';
 export * as petitions from '../../app/src/lib/altar/petitions.ts';
 export * as charge from '../../app/src/lib/altar/charge.ts';
 export * as moonCharge from '../../app/src/lib/altar/moonCharge.ts';

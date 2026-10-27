@@ -51,3 +51,21 @@ test("the Grimoire puts the altar's record under Items from the Altar", () => {
   assert.deepEqual(JSON.parse(JSON.stringify(sandbox.result.slice(at + 1, at + 3))), [{ type: "heading", content: "Petitions" }, { type: "quote", content: "Words" }]);
   assert.ok(!sandbox.result.some((b) => b.content === "Candles"));
 });
+
+test("an archived altar rests on the website too: off the To tend list, and the saved list offers Archive and Restore", () => {
+  const sandbox = { console };
+  sandbox.window = sandbox;
+  vm.runInNewContext(fs.readFileSync("js/core/tend.js", "utf8"), sandbox);
+  const T = sandbox.SaltCore.tend;
+  const sprig = { type: "herb", form: "sprig", label: "Bay Sprig", altarObjectId: "bay", livingState: living };
+  const now = new Date("2026-10-27T12:00:00Z");
+  const altars = [{ id: "a1", name: "Healing", objects: [sprig] }, { id: "a2", name: "Old", objects: [sprig], archived: true }];
+  const items = T.gather.altarTendables({ altars, petitions: [] }, now);
+  assert.ok(items.length > 0);
+  assert.ok(items.every((i) => i.ref.altarId !== "a2"));
+  assert.equal(T.card.tendCard([], []).pressing, false);
+  const storage = fs.readFileSync("altar/js/core/storage.js", "utf8");
+  assert.match(storage, /Archived altars \(\$\{archived.length\}\)/);
+  assert.match(storage, /Your Grimoire pages made from this altar stay in your Grimoire/);
+  assert.match(fs.readFileSync("altar/js/core/events.js", "utf8"), /case "restore":/);
+});

@@ -136,6 +136,7 @@ import { TendSheet } from './TendSheet';
 import { saveTendingBlend, useWorkshop } from '../../lib/altar/workshop';
 import { newId } from '../../lib/altar/uid';
 import { giveFromAltar } from '../../lib/altar/offerFromAltar';
+import { ARCHIVE_WORDS, isArchived, withArchived } from '../../lib/altar/archive';
 import { Chip, ChipRow } from './Chip';
 import { WidgetSheet } from './WidgetSheet';
 import { BackgroundSheet, DressSheet, LayersSheet, SaveSheet } from './OptionSheets';
@@ -618,6 +619,20 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
     else if (outcome === 'saved') setNotice('Saved to your Sanctuary.');
     else if (outcome === 'pending') setNotice('Saved on this device. It will reach your Sanctuary when you’re back online.');
     else setNotice('Saved on this device, but your account didn’t accept it. See your altar list to try again.');
+  };
+
+  // Archive: kept whole (with any changes made here) but set aside to rest; or restored.
+  const archivedNow = isArchived(sourceId ? store.altars.find((a) => a.id === sourceId) : null);
+  const setArchived = async (archive: boolean) => {
+    if (!doc || !sourceId) return;
+    const next = { ...doc, extra: withArchived(doc.extra, archive, nowIso()) };
+    const { outcome } = await store.save({ id: sourceId, name, doc: next });
+    if (outcome === 'failed') return setNotice('Your account didn’t take that change. It’s kept on this phone to try again.');
+    await store.clearDraft();
+    if (archive) return router.back();
+    commit(() => next, false);
+    setBaseline(next);
+    setNotice(ARCHIVE_WORDS.restored(name));
   };
 
   const removeAltar = async () => {
@@ -1455,13 +1470,21 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
             )}
             {sourceId && !shared && (
               <View style={styles.danger}>
+                {archivedNow && <Text style={type.caption}>This altar is archived. It rests from reminders, tending nudges and the To tend list until you restore it.</Text>}
                 {confirmDelete ? (
-                  <ChipRow>
-                    <Chip label="Delete this altar for good" tone="danger" onPress={removeAltar} />
-                    <Chip label="Keep it" onPress={() => setConfirmDelete(false)} />
-                  </ChipRow>
+                  <>
+                    <Text style={type.caption}>{ARCHIVE_WORDS.deleteBody}</Text>
+                    <ChipRow>
+                      <Chip label="Delete this altar for good" tone="danger" onPress={removeAltar} />
+                      {!archivedNow && <Chip label="Archive it instead" onPress={() => void setArchived(true)} />}
+                      <Chip label="Keep it" onPress={() => setConfirmDelete(false)} />
+                    </ChipRow>
+                  </>
                 ) : (
-                  <Chip label="Delete altar" tone="danger" onPress={() => setConfirmDelete(true)} />
+                  <ChipRow>
+                    <Chip label={archivedNow ? 'Restore altar' : 'Archive altar'} onPress={() => void setArchived(!archivedNow)} />
+                    <Chip label="Delete altar" tone="danger" onPress={() => setConfirmDelete(true)} />
+                  </ChipRow>
                 )}
               </View>
             )}

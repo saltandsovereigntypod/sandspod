@@ -26,6 +26,7 @@ import { incenseLife, isIncense } from './altar/incense.ts';
 import { agingLook, isOfferingItself, offeringFreshness } from './altar/offerings.ts';
 import { apothecaryStateOf, candleLife, dressingOverlays, isCandle, isLit, lightCandle, readLivingState, snuffCandle } from './altar/livingState.ts';
 import { documentFromAltar, type AltarDocument } from './altar/snapshot.ts';
+import { activeAltars } from './altar/archive.ts';
 import type { SavedAltar, SavedObject } from './altar/types.ts';
 import { burnDown } from './altar/wax.ts';
 
@@ -577,7 +578,9 @@ export function widgetAltar(altar: SavedAltar, image: (path: string) => string, 
  * Which altars fill the widget's places: the ones you put there, in order,
  * then the rest by most recently saved, so a new widget always shows something.
  */
-export function slotAltars(altars: SavedAltar[], chosen: (string | null)[]): SavedAltar[] {
+export function slotAltars(all: SavedAltar[], chosen: (string | null)[]): SavedAltar[] {
+  // An archived altar keeps its place but leaves the widget until it's restored.
+  const altars = activeAltars(all);
   const byId = new Map(altars.map((a) => [a.id, a]));
   const slots: (SavedAltar | null)[] = Array.from({ length: ALTAR_WIDGET_SLOTS }, (_, i) => byId.get(chosen[i] ?? '') ?? null);
   const used = new Set(slots.filter(Boolean).map((a) => a!.id));
