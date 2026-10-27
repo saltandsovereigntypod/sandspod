@@ -3,6 +3,10 @@
 // website's covens/coven-logic.js; the database decides who may do what
 // (supabase/migrations/…_covens.sql and the migrations after it).
 
+import { assigneesLabel, assigneesOf, includesMember, type Assignee } from './picker.ts';
+import type { StepContribution } from './contributions.ts';
+import type { StepItem } from '../altar/itemIndex.ts';
+
 export type Joining = 'open' | 'application' | 'closed';
 
 export type Coven = {
@@ -98,7 +102,8 @@ export type Ritual = {
   /** The altar it's held at; none means the coven's main ritual altar. */
   altar_id?: string | null;
 };
-export type AltarAction = 'light_candle' | 'place_item' | 'light_all' | 'snuff_all';
+/** What a step does on the shared altar (stepActions.ts ALTAR_EFFECTS); the first four are the originals. */
+export type AltarAction = 'light_candle' | 'place_item' | 'light_all' | 'snuff_all' | 'release_papers';
 export type RitualStep = {
   id: string;
   ritual_id: string;
@@ -118,8 +123,20 @@ export type RitualStep = {
   altar_label: string | null;
   altar_image?: string | null;
   /** Who tends the altar during this step: its person ('assigned'), 'everyone', or only the ritual's 'leader'. */
-  altar_access?: 'assigned' | 'everyone' | 'leader';
+  altar_access?: 'assigned' | 'everyone' | 'leader' | 'chosen';
+  /** With altar_access 'chosen': the positions and people who tend the altar during the step. */
+  altar_tenders?: Assignee[] | null;
+  /** Who does the step: any mix of the whole coven, positions and people (picker.ts). Empty on older steps, which use assigned_user_id / assigned_rank_id. */
+  assignees?: Assignee[] | null;
+  /** The action it was made from (stepActions.ts), or null. */
+  action?: string | null;
+  /** What the step uses or sets down, from the altar's things (itemIndex.ts). */
+  items?: StepItem[] | null;
+  /** What the step asks of people (contributions.ts), or null. */
+  contribution?: StepContribution | null;
 };
+/** The coven's ritual settings (coven_ritual_settings): who, beyond the head, sees participation. */
+export type RitualSettings = { coven_id: string; participation_viewers: Assignee[] };
 export type Rsvp = { ritual_id: string; coven_id: string; user_id: string; response: 'going' | 'maybe' | 'not_going' };
 export type StepMark = { step_id: string; ritual_id: string; user_id: string };
 export type BookPage = { id: string; coven_id: string; title: string; section: string | null; body: string; version: number; author_id: string | null; published_by: string | null; published_at: string };
@@ -442,20 +459,18 @@ export function chatMessages(messages: Message[], blocked: string[]): (Message &
 
 export const orderSteps = (steps: RitualStep[], ritualId?: string) => steps.filter((s) => !ritualId || s.ritual_id === ritualId).sort((a, b) => a.position - b.position);
 
-export function stepIsMine(step: RitualStep | undefined, membership: Member | null, userId: string | null): boolean {
-  if (!step || !userId || membership?.status !== 'active') return false;
-  if (step.assigned_user_id) return step.assigned_user_id === userId;
-  if (step.assigned_rank_id) return step.assigned_rank_id === membership.rank_id;
-  return true;
+/** Mirrors public.coven_step_is_mine: among its people (or, on older steps, its one person or position), or everyone's. */
+export function stepIsMine(step: Pick<RitualStep, 'assignees' | 'assigned_user_id' | 'assigned_rank_id'> | undefined, membership: Member | null, userId: string | null): boolean {
+  if (!step) return false;
+  return includesMember(assigneesOf(step), membership, userId);
 }
 
-export function stepAssignee(step: RitualStep, ranks: Rank[], nameOf: (id: string) => string): { kind: 'person' | 'rank' | 'everyone'; label: string } {
-  if (step.assigned_user_id) return { kind: 'person', label: nameOf(step.assigned_user_id) };
-  if (step.assigned_rank_id) {
-    const rank = ranks.find((r) => r.id === step.assigned_rank_id);
-    return { kind: 'rank', label: rank ? `Every ${rank.name}` : 'A position' };
-  }
-  return { kind: 'everyone', label: 'The whole coven' };
+export function stepAssignee(step: Pick<RitualStep, 'assignees' | 'assigned_user_id' | 'assigned_rank_id'>, ranks: Rank[], nameOf: (id: string) => string): { kind: 'person' | 'rank' | 'everyone' | 'several'; label: string } {
+  const list = assigneesOf(step);
+  const label = assigneesLabel(list, ranks, nameOf);
+  if (list.length > 1) return { kind: 'several', label };
+  const one = list[0];
+  return { kind: one.kind === 'user' ? 'person' : one.kind === 'rank' ? 'rank' : 'everyone', label };
 }
 
 export function ritualGroups(rituals: Ritual[]) {
@@ -493,31 +508,43 @@ export function rsvpSummary(rsvps: Rsvp[], ritualId: string, userId: string | nu
   };
 }
 
-export function altarActionButton(step: Pick<RitualStep, 'altar_action' | 'altar_label'>): string {
+/** What a step sets down: its items' names, or on older steps its one item. */
+export function stepItemsLabel(step: Pick<RitualStep, 'altar_label' | 'items'>): string {
+  const names = (step.items ?? []).map((i) => i.name).filter(Boolean);
+  if (names.length) return names.length > 3 ? `${names.slice(0, 3).join(', ')} and ${names.length - 3} more` : names.length === 1 ? names[0] : `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
+  return step.altar_label || '';
+}
+
+export function altarActionButton(step: Pick<RitualStep, 'altar_action' | 'altar_label' | 'items'>): string {
   switch (step.altar_action) {
     case 'light_candle':
       return 'Light your candle';
     case 'place_item':
-      return `Place ${step.altar_label || 'your offering'} on the altar`;
+      return `Place ${stepItemsLabel(step) || 'your offering'} on the altar`;
     case 'light_all':
       return 'Light the altar’s candles';
     case 'snuff_all':
       return 'Put out the candles';
+    case 'release_papers':
+      return 'Release the papers';
     default:
       return '';
   }
 }
 
-export function altarActionNote(step: Pick<RitualStep, 'altar_action' | 'altar_color' | 'altar_label' | 'assigned_user_id' | 'assigned_rank_id'>): string {
+export function altarActionNote(step: Pick<RitualStep, 'altar_action' | 'altar_color' | 'altar_label' | 'assigned_user_id' | 'assigned_rank_id' | 'assignees' | 'items'>): string {
+  const everyone = assigneesOf(step).some((a) => a.kind === 'coven');
   switch (step.altar_action) {
     case 'light_candle':
-      return `Lights a ${step.altar_color || 'white'} candle on the shared altar.${step.assigned_user_id || step.assigned_rank_id ? '' : ' Each member lights their own, and the candles gather in a circle.'}`;
+      return `Lights a ${step.altar_color || 'white'} candle on the shared altar.${everyone ? ' Each member lights their own, and the candles gather in a circle.' : ''}`;
     case 'place_item':
-      return `Places ${step.altar_label || 'an offering'} on the shared altar.`;
+      return `Places ${stepItemsLabel(step) || 'an offering'} on the shared altar.`;
     case 'light_all':
       return 'Lights every candle on the shared altar.';
     case 'snuff_all':
       return 'Puts out the candles on the shared altar.';
+    case 'release_papers':
+      return 'The folded papers on the altar are burned, buried or released, each as its step said.';
     default:
       return '';
   }
