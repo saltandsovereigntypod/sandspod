@@ -31,3 +31,6 @@ export * as draft from '../../app/src/lib/covens/draft.ts';
 export { newId } from '../../app/src/lib/grimoire/ids.ts';
 // Paths in the coven: shares of how the coven practises and whom it honours, never who.
 export * as paths from '../../app/src/lib/covens/paths.ts';
+// Meetings: who a meeting is for, its own chat's window and who reads it
+// afterwards, motions and elections, actions carried forward, the minutes.
+export * as meetings from '../../app/src/lib/covens/meetings.ts';

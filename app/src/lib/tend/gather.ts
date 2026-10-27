@@ -19,7 +19,7 @@ import { documentFromAltar } from '../altar/snapshot.ts';
 import type { SavedAltar, SavedObject } from '../altar/types.ts';
 import { itemLookBack, type ApothecaryLike } from '../altar/apothecaryLookBack.ts';
 import { cleanContribution, contributionNote, kindOf, ownerActions, ritualTasks, type ContributionFate, type ContributionKind, type ContributionStatus, type ContributionVisibility } from '../covens/contributions.ts';
-import { assigneesOf } from '../covens/picker.ts';
+import { assigneesOf, cleanAssignees, includesMember } from '../covens/picker.ts';
 import { CHECKIN_DAYS } from '../covens/record.ts';
 import { readLookBack } from '../rituals/lookBack.ts';
 import type { TendEnd, Tendable, TendAction } from './model.ts';
@@ -211,6 +211,8 @@ export type StepRow = { id: string; ritual_id: string; title: string; contributi
 export type MembershipRow = { coven_id: string; user_id: string; rank_id: string | null; status: 'active' | 'left' | 'removed' | 'banned' };
 export type MentorshipRow = { coven_id: string; user_id: string; mentor_id: string; assigned_at: string };
 export type CheckinRow = { coven_id: string; user_id: string; mentor_id: string; met_on: string };
+/** An action agreed at a coven meeting (coven_meeting_actions; lib/covens/meetings.ts MeetingAction). */
+export type MeetingActionRow = { id: string; ritual_id: string; coven_id: string; body: string; assignees: unknown; due_on: string | null; status: string; created_at: string };
 
 export type CovenPart = {
   userId: string;
@@ -226,6 +228,8 @@ export type CovenPart = {
   /** Mentorships where you are the mentor, and your check-ins. */
   mentorships: MentorshipRow[];
   checkins: CheckinRow[];
+  /** Open actions from your covens' meetings (yours are picked out here). */
+  actions?: MeetingActionRow[];
   nameOf: (userId: string) => string;
 };
 
@@ -333,6 +337,35 @@ export function covenTendables(part: CovenPart, now: Date): Tendable[] {
         ref: { stepId: task.stepId, ritualId: task.ritualId, kind: ask.kind, visibility: ask.visibility },
       });
     }
+  }
+
+  // What you agreed to do at a meeting, until it's done (lib/covens/meetings.ts).
+  for (const a of part.actions ?? []) {
+    if (a.status !== 'open') continue;
+    const coven = covenOf(a.coven_id);
+    const membership = part.memberships.find((m) => m.coven_id === a.coven_id && m.user_id === part.userId) ?? null;
+    const who = cleanAssignees(a.assignees);
+    if (!coven || !who.length || !includesMember(who, membership, part.userId)) continue;
+    const ritual = ritualOf(a.ritual_id);
+    const due = a.due_on ? fromKey(a.due_on.slice(0, 10)) : null;
+    out.push({
+      key: `action:${a.id}`,
+      kind: 'action',
+      group: 'coven',
+      title: shorten(a.body.replace(/\s+/g, ' ').trim(), 90),
+      detail: due ? `Due ${shortDay(due.getTime())}` : 'No date set',
+      source: ritual ? where(a.coven_id, ritual) : `${where(a.coven_id)} · a meeting`,
+      // A day before it's due, as its reminder rings.
+      dueAt: due ? due.getTime() - DAY : null,
+      tendedAt: null,
+      actions: ['done', 'open'],
+      ends: [],
+      private: false,
+      keywords: ['action', 'meeting', coven.name],
+      href: covenHref(coven.slug, `ritual/${a.ritual_id}`),
+      webHref: covenWeb(coven.slug, 'rituals', `&ritual=${encodeURIComponent(a.ritual_id)}`),
+      ref: { actionId: a.id, ritualId: a.ritual_id, covenId: a.coven_id },
+    });
   }
 
   // Mentees waiting for a check-in (every six weeks or so).

@@ -69,7 +69,7 @@ export function stepWords(step: Pick<BuilderStep, 'spoken_text' | 'details'>, pa
   return { words: step.spoken_text ?? '' };
 }
 
-function facts(specs: FieldSpec[], values: Record<string, unknown>, ctx: WhoContext): string[] {
+function facts(specs: FieldSpec[], values: Record<string, unknown>, ctx: WhoContext, pageTitle: (id: string) => string = () => 'A page of the Book'): string[] {
   const out: string[] = [];
   for (const s of specs) {
     const v = values[s.key];
@@ -81,6 +81,7 @@ function facts(specs: FieldSpec[], values: Record<string, unknown>, ctx: WhoCont
     else if (s.type === 'who') shown = (v as string[]).map((k) => whoLabel(k, ctx)).join(', ');
     else if (s.type === 'items') shown = (v as { name: string }[]).map((i) => i.name).join(', ');
     else if (s.type === 'list') shown = (v as string[]).join(', ');
+    else if (s.type === 'pages') shown = (v as string[]).map(pageTitle).join(', ');
     else shown = String(v);
     out.push(`${s.label}: ${shown}`);
   }
@@ -153,7 +154,10 @@ export function buildScript(input: {
           who,
           how: TURN_MODES.find((t) => t.value === step.turn_mode)?.label ?? '',
           directions: step.instructions.trim(),
-          facts: facts(specs, values, ctx),
+          facts: facts(specs, values, ctx, (id) => {
+            const page = input.pages?.find((p) => p.id === id);
+            return page ? (page.hidden ? HIDDEN_PAGE : page.title) : 'A page of the Book';
+          }),
           lines,
           minutes: step.duration_minutes,
           asks: asksLine(step),

@@ -58,6 +58,8 @@ export default function Rituals() {
         <Section label="Planning">
           <Text style={type.caption}>Write a ritual, give its steps to people or positions, choose what each does at the altar, and put it on the calendar.</Text>
           <Button label="Plan a ritual" onPress={() => router.push(covenHref(coven.slug, 'ritual/plan'))} />
+          <Text style={type.caption}>Or a meeting: an agenda, motions and votes, actions, its own chat, and minutes kept in the coven’s Book. It can be kept to the coven’s officers.</Text>
+          <Button label="Plan a meeting" variant="outline" onPress={() => router.push(`${covenHref(coven.slug, 'ritual/plan')}?kind=meeting` as never)} />
         </Section>
       )}
     </CovenScreen>

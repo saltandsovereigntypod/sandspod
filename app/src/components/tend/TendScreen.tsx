@@ -44,6 +44,7 @@ export const KIND_MARK: Record<ListItem['kind'], string> = {
   lookback: '?',
   'coven-task': '✎',
   checkin: '☉',
+  action: '✓',
 };
 
 /** Its own endings, and letting it go from the list (it won't ask again). */
@@ -184,6 +185,11 @@ function TendPanel({ item, ctx, onDone }: { item: ListItem; ctx: TendContext; on
         <>
           <Field label="A note from your check-in (optional)" value={word} onChange={setWord} multiline />
           <Button label={busy ? 'Logging…' : 'We met today'} disabled={busy} onPress={() => void run(() => act.checkin(item, word), true)} />
+        </>
+      ) : item.kind === 'action' ? (
+        <>
+          <Body muted>Agreed at a coven meeting. Mark it done here or on the meeting’s page.</Body>
+          <Button label={busy ? 'A moment…' : 'It’s done'} disabled={busy} onPress={() => void run(() => act.done(item), true)} />
         </>
       ) : item.kind === 'journey' && has('practice') ? (
         <>

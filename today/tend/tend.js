@@ -18,7 +18,7 @@
     return;
   }
 
-  const MARK = { petition: "✉", candle: "🕯", offering: "❦", plant: "❧", "coven-petition": "✦", contribution: "✧", journey: "☽", lookback: "?", "coven-task": "✎", checkin: "☉" };
+  const MARK = { petition: "✉", candle: "🕯", offering: "❦", plant: "❧", "coven-petition": "✦", contribution: "✧", journey: "☽", lookback: "?", "coven-task": "✎", checkin: "☉", action: "✓" };
   const HOURS = [7 * 60, 9 * 60, 12 * 60, 18 * 60, 20 * 60, 21 * 60];
   const hourLabel = (m) => new Date(2000, 0, 1, Math.floor(m / 60), m % 60).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
 
@@ -95,6 +95,8 @@
         <div class="sp-actions"><button class="button" type="submit">Write it</button></div></form>`;
     } else if (item.kind === "checkin") {
       tendPart = `<form data-checkin class="tn-form"><div class="sp-field"><label for="tn-note">A note from your check-in (optional)</label><textarea id="tn-note" name="note"></textarea></div><div class="sp-actions"><button class="button" type="submit">We met today</button></div></form>`;
+    } else if (item.kind === "action") {
+      tendPart = `<form data-done class="tn-form"><p class="sp-caption">Agreed at a coven meeting. Mark it done here or on the meeting’s page.</p><div class="sp-actions"><button class="button" type="submit">It’s done</button></div></form>`;
     } else if (item.kind === "journey" && has("practice")) {
       tendPart = `<form data-practice class="tn-form"><div class="sp-field"><label for="tn-note">A note (optional)</label><textarea id="tn-note" name="note"></textarea></div><div class="sp-actions"><button class="button" type="submit">Done for today</button></div></form>`;
     } else {
@@ -215,6 +217,7 @@
     if (form.matches("[data-end]")) return act(() => D.end(state, item, ui.ending, String(data.get("note") || ""), data.get("keep") === "on"), true);
     if (form.matches("[data-write]")) return act(() => D.write(state, item, String(data.get("body") || ""), data.get("sealed") === "on"), true);
     if (form.matches("[data-checkin]")) return act(() => D.checkin(state, item, String(data.get("note") || "")), true);
+    if (form.matches("[data-done]")) return act(() => D.done(state, item), true);
     if (form.matches("[data-practice]")) return act(() => D.practice(state, item, String(data.get("note") || "")), true);
     if (form.matches("[data-answer]")) {
       const answer = data.get("answer");

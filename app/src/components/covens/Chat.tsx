@@ -50,8 +50,13 @@ export function ChatBubble({ onPress }: { onPress?: () => void } = {}) {
   );
 }
 
-/** Press and hold a message: remove (yours, or as a moderator), report, or block its writer. */
-export function useMessageActions(onRemoved: (id: string) => void, onProblem: (message: string) => void) {
+/**
+ * Press and hold a message: remove (yours, or as a moderator), report, or
+ * block its writer. A meeting's own chat passes how its messages are removed
+ * and reported (`options`); the coven's chat uses the defaults.
+ */
+export function useMessageActions(onRemoved: (id: string) => void, onProblem: (message: string) => void, options: { remove?: (id: string) => Promise<unknown>; reportType?: string } = {}) {
+  const { remove = api.removeMessage, reportType = 'message' } = options;
   const coven = useCoven();
   const report = useReport(coven.userId);
   const open = useCallback(
@@ -65,7 +70,7 @@ export function useMessageActions(onRemoved: (id: string) => void, onProblem: (m
           style: 'destructive',
           onPress: async () => {
             try {
-              await api.removeMessage(m.id);
+              await remove(m.id);
               onRemoved(m.id);
             } catch (error) {
               onProblem(error instanceof Error ? error.message : 'That message couldn’t be removed.');
@@ -73,7 +78,7 @@ export function useMessageActions(onRemoved: (id: string) => void, onProblem: (m
           },
         });
       if (!mine && m.user_id) {
-        buttons.push({ text: 'Report', onPress: () => report.open({ target_type: 'message', target_id: m.id, coven_id: m.coven_id, target_user_id: m.user_id, label: `${name}’s message` }) });
+        buttons.push({ text: 'Report', onPress: () => report.open({ target_type: reportType, target_id: m.id, coven_id: m.coven_id, target_user_id: m.user_id, label: `${name}’s message` }) });
         buttons.push({
           text: `Block ${name}`,
           onPress: () => confirmBlock(name, async () => {
@@ -89,7 +94,7 @@ export function useMessageActions(onRemoved: (id: string) => void, onProblem: (m
       buttons.push({ text: 'Cancel', style: 'cancel' });
       Alert.alert(name, m.body.slice(0, 140), buttons);
     },
-    [coven, report, onRemoved, onProblem],
+    [coven, report, onRemoved, onProblem, remove, reportType],
   );
   return { open, report: report.open, sheet: report.sheet };
 }

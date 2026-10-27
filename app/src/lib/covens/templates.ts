@@ -11,7 +11,7 @@
 // Pure, so it can be tested.
 
 import { defaultContribution, type ContributionKind, type StepContribution } from './contributions.ts';
-import { blankBuilderStep, type Afterwards, type BuilderStep, type GatheringKind, type PlanSection, type PrepRemind, type RitualPlan, type StepDetails, type TurnMode } from './builder.ts';
+import { blankBuilderStep, type Afterwards, type MeetingSettings, type BuilderStep, type GatheringKind, type PlanSection, type PrepRemind, type RitualPlan, type StepDetails, type TurnMode } from './builder.ts';
 import { WHOLE_COVEN } from './picker.ts';
 import { actionOf, applyAction, type AltarEffect } from './stepActions.ts';
 import type { FieldValues } from './fields.ts';
@@ -49,6 +49,8 @@ export type RitualTemplate = {
   roles: { id: string; name: string }[];
   checklist?: { text: string; remind?: PrepRemind }[];
   afterwards?: Partial<Afterwards>;
+  /** A meeting's settings (role ids are the template's own). */
+  meeting?: MeetingSettings;
   steps: TStep[];
 };
 
@@ -310,11 +312,40 @@ export const RITUAL_TEMPLATES: RitualTemplate[] = [
     ],
   },
   {
-    id: 'business_meeting',
-    name: 'Coven business meeting',
+    id: 'officials_meeting',
+    name: 'Officials’ meeting',
     kind: 'meeting',
     tradition: 'Meeting',
-    summary: 'An agenda, reports, discussion and a vote, with minutes kept in the coven’s Book.',
+    summary: 'For the coven’s officers only: last time’s actions, reports, motions and what comes next, with private minutes.',
+    note: 'Choose who it is for (the High Priestess, the Elders, the Maiden) under Who it’s for. No one else sees it, its chat or its minutes.',
+    sections: [
+      { id: 'opening', name: 'Opening' },
+      { id: 'reports', name: 'Reports' },
+      { id: 'business', name: 'Business' },
+      { id: 'closing', name: 'Closing' },
+    ],
+    roles: [{ id: 'chair', name: 'Chair' }, { id: 'secretary', name: 'Secretary' }, { id: 'treasurer', name: 'Treasurer' }],
+    checklist: [{ text: 'Read the last minutes and your outstanding actions.', remind: 'day' }],
+    meeting: { lead_minutes: 15, length_minutes: 60, chair_role: 'chair', secretary_role: 'secretary', series: 'officials', minutes_view: 'audience' },
+    steps: [
+      { a: 'open_meeting', s: 'opening', r: ['chair'] },
+      { a: 'roll_call', s: 'opening', r: ['secretary'] },
+      { a: 'approve_minutes', s: 'opening', r: ['chair'], f: { motion: 'That the minutes of the last meeting are a fair record.', ballot: 'open' } },
+      { a: 'review_actions', s: 'reports', r: ['secretary'] },
+      { a: 'officer_report', s: 'reports', r: ['treasurer'], f: { from: ['role:treasurer'], topic: 'The coven’s funds' } },
+      { a: 'agenda_item', s: 'business', r: ['chair'], f: { item: '[The first item]', presenter: ['role:chair'] } },
+      { a: 'motion', s: 'business', r: ['chair'], f: { motion: '[Write the motion here.]', proposer: ['role:chair'], ballot: 'open', threshold: 'simple' } },
+      { a: 'open_floor', s: 'business', r: ['chair'] },
+      { a: 'set_next_meeting', s: 'closing', r: ['secretary'] },
+      { a: 'close_meeting', s: 'closing', r: ['chair'] },
+    ],
+  },
+  {
+    id: 'business_meeting',
+    name: 'Full coven business meeting',
+    kind: 'meeting',
+    tradition: 'Meeting',
+    summary: 'The whole coven: reports, discussion, motions and votes, with minutes kept in the coven’s Book.',
     sections: [
       { id: 'opening', name: 'Opening' },
       { id: 'reports', name: 'Reports' },
@@ -322,17 +353,122 @@ export const RITUAL_TEMPLATES: RitualTemplate[] = [
       { id: 'other', name: 'Any other business' },
       { id: 'closing', name: 'Closing' },
     ],
-    roles: [{ id: 'chair', name: 'Chair' }, { id: 'secretary', name: 'Secretary' }, { id: 'treasurer', name: 'Treasurer' }],
+    roles: [{ id: 'chair', name: 'Chair' }, { id: 'secretary', name: 'Secretary' }, { id: 'treasurer', name: 'Treasurer' }, { id: 'timekeeper', name: 'Timekeeper' }],
     checklist: [{ text: 'Read the agenda and the last minutes.', remind: 'day' }],
-    afterwards: { notes: 'The Secretary saves the minutes to the coven’s Book.' },
+    afterwards: { notes: 'The minutes are kept in the coven’s Book under Meeting minutes.' },
+    meeting: { lead_minutes: 15, length_minutes: 90, chair_role: 'chair', secretary_role: 'secretary', series: 'business', minutes_view: 'coven' },
     steps: [
       { a: 'open_meeting', s: 'opening', r: ['chair'] },
-      { a: 'read_minutes', s: 'opening', r: ['secretary'], f: { taker: ['role:secretary'] } },
+      { a: 'roll_call', s: 'opening', r: ['secretary'] },
+      { a: 'approve_minutes', s: 'opening', r: ['chair'], f: { motion: 'That the minutes of the last meeting are a fair record.', ballot: 'open' } },
+      { a: 'review_actions', s: 'reports', r: ['secretary'] },
       { a: 'officer_report', s: 'reports', r: ['treasurer'], f: { from: ['role:treasurer'], topic: 'The coven’s funds' } },
       { a: 'agenda_item', s: 'business', r: ['chair'], f: { item: 'The first item', presenter: ['role:chair'] } },
       { a: 'discussion', s: 'business', r: ['chair'], turn: 'together' },
-      { a: 'vote', s: 'business', r: ['chair'], f: { motion: '[Write the motion here.]', ballot: 'open' } },
+      { a: 'motion', s: 'business', r: ['chair'], f: { motion: '[Write the motion here.]', proposer: ['role:chair'], ballot: 'open', threshold: 'simple' } },
+      { a: 'vote', s: 'business', r: ['chair'], f: { motion: '[Write the question here.]', ballot: 'open' } },
+      { a: 'announcement', s: 'other', r: ['chair'], f: { news: '[Anything the coven should know.]' } },
       { a: 'any_other_business', s: 'other', r: ['chair'] },
+      { a: 'set_next_meeting', s: 'closing', r: ['secretary'] },
+      { a: 'close_meeting', s: 'closing', r: ['chair'] },
+    ],
+  },
+  {
+    id: 'rite_planning',
+    name: 'Planning meeting for a rite',
+    kind: 'meeting',
+    tradition: 'Meeting',
+    summary: 'Shape a coming rite together: its intention, who takes which part, what to gather, and who does what before it.',
+    sections: [
+      { id: 'opening', name: 'Opening' },
+      { id: 'rite', name: 'The rite' },
+      { id: 'parts', name: 'Who does what' },
+      { id: 'closing', name: 'Closing' },
+    ],
+    roles: [{ id: 'chair', name: 'Chair' }, { id: 'secretary', name: 'Secretary' }, { id: 'lead', name: 'Ritual lead' }],
+    meeting: { lead_minutes: 15, length_minutes: 60, chair_role: 'chair', secretary_role: 'secretary', series: 'rite-planning', minutes_view: 'audience' },
+    steps: [
+      { a: 'open_meeting', s: 'opening', r: ['chair'] },
+      { a: 'round', s: 'opening', r: ['chair'], turn: 'in_turn', f: { question: 'What would you like this rite to hold?' } },
+      { a: 'agenda_item', s: 'rite', r: ['lead'], f: { item: 'The intention and the shape of the rite', presenter: ['role:lead'] } },
+      { a: 'discussion', s: 'rite', r: ['chair'], turn: 'together', f: { question: 'Which tradition’s words, and which of our own?' } },
+      { a: 'agenda_item', s: 'parts', r: ['lead'], f: { item: 'Who takes which part', presenter: ['role:lead'] } },
+      { a: 'agenda_item', s: 'parts', r: ['chair'], f: { item: 'What to gather, and who brings it', presenter: ['role:chair'] } },
+      { a: 'vote', s: 'parts', r: ['chair'], f: { motion: 'Which date suits us best?', options: ['[A first date]', '[A second date]'], ballot: 'open' } },
+      { a: 'set_next_meeting', s: 'closing', r: ['secretary'] },
+      { a: 'close_meeting', s: 'closing', r: ['chair'] },
+    ],
+  },
+  {
+    id: 'elections',
+    name: 'Elections',
+    kind: 'meeting',
+    tradition: 'Meeting',
+    summary: 'Electing the coven’s officers: each position on its own secret ballot, with the results in the minutes.',
+    note: 'Name your coven’s own positions. The Chair runs the election; if they are standing, choose someone else to chair it.',
+    sections: [
+      { id: 'opening', name: 'Opening' },
+      { id: 'elections', name: 'Elections' },
+      { id: 'closing', name: 'Closing' },
+    ],
+    roles: [{ id: 'chair', name: 'Chair' }, { id: 'secretary', name: 'Secretary' }],
+    checklist: [{ text: 'If you are standing, think about what you would say.', remind: 'day' }],
+    meeting: { lead_minutes: 15, length_minutes: 60, chair_role: 'chair', secretary_role: 'secretary', series: 'elections', minutes_view: 'coven' },
+    steps: [
+      { a: 'open_meeting', s: 'opening', r: ['chair'] },
+      { a: 'roll_call', s: 'opening', r: ['secretary'] },
+      { a: 'announcement', s: 'opening', r: ['chair'], f: { news: 'The positions open, who is standing, and how the voting works.' } },
+      { a: 'election', s: 'elections', r: ['chair'], f: { position: 'Treasurer', candidates: ['[A candidate]'], ballot: 'secret' } },
+      { a: 'election', s: 'elections', r: ['chair'], f: { position: 'Secretary', candidates: ['[A candidate]'], ballot: 'secret' } },
+      { a: 'election', s: 'elections', r: ['chair'], f: { position: '[Another position]', candidates: ['[A candidate]'], ballot: 'secret' } },
+      { a: 'announcement', s: 'closing', r: ['chair'], t: 'The results', f: { news: 'Read the results and thank everyone who stood.' } },
+      { a: 'close_meeting', s: 'closing', r: ['chair'] },
+    ],
+  },
+  {
+    id: 'treasury_review',
+    name: 'Treasury and budget review',
+    kind: 'meeting',
+    tradition: 'Meeting',
+    summary: 'The accounts, the year’s budget and any spending to approve, with the Treasurer’s papers linked from the Book.',
+    sections: [
+      { id: 'opening', name: 'Opening' },
+      { id: 'accounts', name: 'The accounts' },
+      { id: 'budget', name: 'The budget' },
+      { id: 'closing', name: 'Closing' },
+    ],
+    roles: [{ id: 'chair', name: 'Chair' }, { id: 'treasurer', name: 'Treasurer' }, { id: 'secretary', name: 'Secretary' }],
+    checklist: [{ text: 'Look over the accounts the Treasurer has shared.', remind: 'day' }],
+    meeting: { lead_minutes: 15, length_minutes: 60, chair_role: 'chair', secretary_role: 'secretary', series: 'treasury', minutes_view: 'audience' },
+    steps: [
+      { a: 'open_meeting', s: 'opening', r: ['chair'] },
+      { a: 'review_actions', s: 'opening', r: ['secretary'] },
+      { a: 'officer_report', s: 'accounts', r: ['treasurer'], f: { from: ['role:treasurer'], topic: 'The accounts since we last met' } },
+      { a: 'discussion', s: 'budget', r: ['chair'], turn: 'together', f: { question: 'What do we need to spend on in the coming months?' } },
+      { a: 'motion', s: 'budget', r: ['treasurer'], f: { motion: 'That the coven adopts the budget as presented.', proposer: ['role:treasurer'], ballot: 'open', threshold: 'two_thirds' } },
+      { a: 'set_next_meeting', s: 'closing', r: ['secretary'] },
+      { a: 'close_meeting', s: 'closing', r: ['chair'] },
+    ],
+  },
+  {
+    id: 'study_checkin',
+    name: 'Study circle check-in',
+    kind: 'meeting',
+    tradition: 'Meeting',
+    summary: 'A short check-in for those studying together: where each is, what is hard, and what to read next.',
+    sections: [
+      { id: 'opening', name: 'Opening' },
+      { id: 'checkin', name: 'Check-in' },
+      { id: 'closing', name: 'Closing' },
+    ],
+    roles: [{ id: 'chair', name: 'Facilitator' }, { id: 'secretary', name: 'Note taker' }],
+    meeting: { lead_minutes: 10, length_minutes: 45, chair_role: 'chair', secretary_role: 'secretary', series: 'study', minutes_view: 'audience' },
+    steps: [
+      { a: 'open_meeting', s: 'opening', r: ['chair'] },
+      { a: 'review_actions', s: 'opening', r: ['secretary'], t: 'What we each said we would do' },
+      { a: 'round', s: 'checkin', r: ['chair'], turn: 'in_turn', f: { question: 'Where are you in your study, and what is hard just now?' } },
+      { a: 'discussion', s: 'checkin', r: ['chair'], turn: 'together', f: { question: 'What should we read or practise next?' } },
+      { a: 'set_next_meeting', s: 'closing', r: ['secretary'] },
       { a: 'close_meeting', s: 'closing', r: ['chair'] },
     ],
   },
@@ -409,6 +545,7 @@ export function draftFromTemplate(template: RitualTemplate): {
     afterwards: { hold_hours: template.afterwards?.hold_hours ?? null, notes: template.afterwards?.notes ?? '', follow_up: template.afterwards?.follow_up ?? null },
     template: template.id,
   };
+  if (template.meeting) plan.meeting = { ...template.meeting };
   const steps = template.steps.map((t, i) => {
     const action = actionOf(t.a);
     const base = blankBuilderStep(t.s, `k-${template.id.slice(0, 20)}-${i + 1}`);
