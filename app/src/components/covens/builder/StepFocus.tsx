@@ -10,6 +10,7 @@ import {
   TURN_MODES,
   type BuilderStep,
   type CustomAction,
+  type GatheringKind,
   type NamedThing,
   type RitualPlan,
 } from '../../../lib/covens/builder';
@@ -17,7 +18,7 @@ import { CONTRIBUTION_FATES, CONTRIBUTION_KINDS, CONTRIBUTION_TIMINGS, CONTRIBUT
 import { ALTAR_ACCESS } from '../../../lib/covens/draft';
 import { cleanValues, partsOf, type FieldValues } from '../../../lib/covens/fields';
 import { assigneeFromKey, assigneeKey, cleanAssignees, type Assignee, type PickEntry } from '../../../lib/covens/picker';
-import { ACTION_GROUPS, actionLabel, ALTAR_EFFECTS, applyAction, searchActions, type ActionGroup, type StepAction } from '../../../lib/covens/stepActions';
+import { actionLabel, ALTAR_EFFECTS, applyAction, groupsFor, searchActions, type ActionGroup, type StepAction } from '../../../lib/covens/stepActions';
 import { HIDDEN_PAGE } from '../../../lib/grimoire/access';
 import { colors, fonts, radius, touch, type } from '../../../theme';
 import { Button } from '../../Button';
@@ -56,7 +57,9 @@ export function StepFocus({
   named,
   pages,
   blocked,
+  kind,
 }: {
+  kind?: GatheringKind;
   step: BuilderStep;
   number: number;
   plan: RitualPlan;
@@ -85,13 +88,13 @@ export function StepFocus({
   const [more, setMore] = useState(false);
   const [linking, setLinking] = useState(false);
   const [pageQuery, setPageQuery] = useState('');
-  const found = useMemo(() => (query.trim() ? searchActions(query) : group ? searchActions('').filter((a) => a.group === group) : []), [query, group]);
+  const found = useMemo(() => (query.trim() ? searchActions(query, kind) : group ? searchActions('', kind).filter((a) => a.group === group) : []), [query, group, kind]);
   const specs = specsOf(step, custom);
   const values = cleanValues(specs, step.details.fields);
   // Each part (a direction) has its own words, so the step's own aren't asked for.
   const partsSpec = specs.find((x) => x.type === 'parts');
   const partsWords = !!partsSpec && partsOf(partsSpec, values, specs).length > 0;
-  const fieldCtx: FieldContext = { who, whoSuggest, whoLabel, items, named, actionId: step.action };
+  const fieldCtx: FieldContext = { who, whoSuggest, whoLabel, items, named, actionId: step.action, pages };
   const setFields = (next: FieldValues) => onChange({ details: { ...step.details, fields: next } });
   const sectionName = plan.sections.find((s) => s.id === step.section)?.name ?? '';
 
@@ -134,13 +137,13 @@ export function StepFocus({
         <TextInput
           value={query}
           onChangeText={setQuery}
-          placeholder="Find one: quarters, candle, libation, vote…"
+          placeholder={kind === 'meeting' ? 'Find one: motion, report, election, round…' : 'Find one: quarters, candle, libation, vote…'}
           placeholderTextColor="rgba(202,191,157,0.6)"
           accessibilityLabel="Find what the step is"
           autoCorrect={false}
           style={styles.input}
         />
-        {!query.trim() && <Chips label="Kinds of step" options={ACTION_GROUPS.map((g) => ({ value: g.id, label: g.label }))} value={group as ActionGroup} onChange={(g) => setGroup(g === group ? '' : g)} />}
+        {!query.trim() && <Chips label="Kinds of step" options={groupsFor(kind).map((g) => ({ value: g.id, label: g.label }))} value={group as ActionGroup} onChange={(g) => setGroup(g === group ? '' : g)} />}
         <View style={styles.list}>
           {found.map((a) => (
             <Pressable key={a.id} accessibilityRole="button" accessibilityLabel={actionLabel(a)} onPress={() => choose(a)} style={({ pressed }) => [styles.option, pressed && styles.pressed]}>

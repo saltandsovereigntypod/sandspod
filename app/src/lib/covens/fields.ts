@@ -21,7 +21,8 @@ export type FieldType =
   | 'who'
   | 'parts'
   | 'list'
-  | 'ref';
+  | 'ref'
+  | 'pages';
 
 /** The kinds of named thing a step can make, for later steps to refer to. */
 export type ThingKind = 'candle' | 'offering' | 'thing';
@@ -85,6 +86,12 @@ export const QUARTER_ORDER = [
   { value: 'widdershins', label: 'Widdershins (anticlockwise)' },
   { value: 'listed', label: 'As listed' },
 ];
+/** What a motion or vote needs to pass (meetings.ts motionResult). */
+export const THRESHOLDS = [
+  { value: 'simple', label: 'A simple majority (more for than against)' },
+  { value: 'two_thirds', label: 'Two-thirds of those voting for or against' },
+  { value: 'unanimous', label: 'Everyone voting is for it (unanimous)' },
+];
 export const BALLOTS = [
   { value: 'open', label: 'Open (everyone sees who voted how)' },
   { value: 'secret', label: 'Secret (only the totals are shown)' },
@@ -92,6 +99,11 @@ export const BALLOTS = [
 
 const COLOURS = ['white', 'black', 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'purple', 'pink', 'magenta', 'brown', 'grey', 'silver', 'gold'];
 export const COLOUR_OPTIONS: FieldOption[] = COLOURS.map((c) => ({ value: c, label: c[0].toUpperCase() + c.slice(1) }));
+
+const VOTE_RULES: FieldSpec[] = [
+  { key: 'threshold', type: 'choice', label: 'To pass it needs', options: THRESHOLDS, hint: 'Abstentions don’t count either way. A simple majority if you leave it.' },
+  { key: 'quorum', type: 'number', label: 'Quorum (votes needed for it to count)', min: 0, max: 500, hint: 'Leave it empty for no quorum.' },
+];
 
 const QUARTER_FIELDS: FieldSpec[] = [
   { key: 'directions', type: 'multi', label: 'Which directions', options: DIRECTIONS, essential: true },
@@ -139,20 +151,58 @@ export const ACTION_FIELDS: Record<string, FieldSpec[]> = {
   prayer: [{ key: 'prayer', type: 'text', label: 'Which prayer', placeholder: 'Our opening prayer', essential: true }],
   read_aloud: [{ key: 'source', type: 'text', label: 'What is read', placeholder: 'The Charge of the Goddess', essential: true }],
   vote: [
-    { key: 'motion', type: 'long', label: 'The motion', placeholder: 'That the coven meets on the first Saturday of each month.', essential: true },
+    { key: 'motion', type: 'long', label: 'The question', placeholder: 'That the coven meets on the first Saturday of each month.', essential: true },
     { key: 'options', type: 'list', label: 'The answers', hint: 'One per line. For, Against and Abstain if you leave it empty.', essential: true },
-    { key: 'voters', type: 'who', label: 'Who may vote', hint: 'Roles, positions or people. Everyone in the coven if you leave it empty.', essential: true },
+    { key: 'voters', type: 'who', label: 'Who may vote', hint: 'Roles, positions or people. Everyone the gathering is for if you leave it empty.', essential: true },
     { key: 'ballot', type: 'choice', label: 'Open or secret', options: BALLOTS, essential: true },
+    ...VOTE_RULES,
+  ],
+  motion: [
+    { key: 'motion', type: 'long', label: 'The motion', placeholder: 'That the coven buys a new altar cloth from the treasury.', essential: true },
+    { key: 'proposer', type: 'who', label: 'Proposed by', single: true, essential: true },
+    { key: 'seconder', type: 'who', label: 'Seconded by (if agreed ahead)', single: true, hint: 'Leave it empty and anyone at the meeting can second it there.' },
+    { key: 'voters', type: 'who', label: 'Who may vote', hint: 'Everyone the meeting is for if you leave it empty.', essential: true },
+    { key: 'ballot', type: 'choice', label: 'Open or secret', options: BALLOTS, essential: true },
+    ...VOTE_RULES,
+  ],
+  approve_minutes: [
+    { key: 'motion', type: 'long', label: 'The motion', placeholder: 'That the minutes of the last meeting are a fair record.', essential: true },
+    { key: 'pages', type: 'pages', label: 'The minutes', hint: 'The page of the coven’s Book to approve.' },
+    { key: 'voters', type: 'who', label: 'Who may vote', hint: 'Everyone the meeting is for if you leave it empty.' },
+    { key: 'ballot', type: 'choice', label: 'Open or secret', options: BALLOTS },
+    ...VOTE_RULES,
+  ],
+  election: [
+    { key: 'position', type: 'text', label: 'The position', placeholder: 'Treasurer', essential: true },
+    { key: 'candidates', type: 'list', label: 'The candidates', hint: 'One per line. Abstain is always an answer too.', essential: true },
+    { key: 'voters', type: 'who', label: 'Who may vote', hint: 'Everyone the meeting is for if you leave it empty.', essential: true },
+    { key: 'ballot', type: 'choice', label: 'Open or secret', options: BALLOTS, essential: true },
+    { key: 'quorum', type: 'number', label: 'Quorum (votes needed for it to count)', min: 0, max: 500, hint: 'Leave it empty for no quorum.' },
+  ],
+  announcement: [
+    { key: 'news', type: 'long', label: 'The announcement', placeholder: 'The Samhain rite moves to the 2nd.', essential: true },
+    { key: 'from', type: 'who', label: 'Who gives it', single: true },
+  ],
+  round: [{ key: 'question', type: 'text', label: 'What each person speaks to', placeholder: 'How are you arriving tonight?', essential: true }],
+  open_floor: [{ key: 'prompt', type: 'text', label: 'A line to open it', placeholder: 'Anything on your mind for the coven?' }],
+  set_next_meeting: [
+    { key: 'date', type: 'text', label: 'Date', placeholder: '2026-12-05', essential: true },
+    { key: 'time', type: 'text', label: 'Time', placeholder: '19:30', essential: true },
+    { key: 'place', type: 'text', label: 'Where', placeholder: 'Rowan’s house, or online', essential: true },
+    { key: 'notes', type: 'long', label: 'Anything more' },
   ],
   agenda_item: [
     { key: 'item', type: 'text', label: 'The item', placeholder: 'Plans for Samhain', essential: true },
     { key: 'presenter', type: 'who', label: 'Who brings it', single: true, essential: true },
     { key: 'notes', type: 'long', label: 'Notes for the agenda' },
+    { key: 'pages', type: 'pages', label: 'Pages from the coven’s Book', hint: 'Papers to read before or during the item.' },
   ],
   discussion: [{ key: 'question', type: 'long', label: 'The question', placeholder: 'How do we welcome new members?', essential: true }],
   officer_report: [
     { key: 'from', type: 'who', label: 'Who reports', single: true, essential: true },
     { key: 'topic', type: 'text', label: 'On what', placeholder: 'The coven’s funds', essential: true },
+    { key: 'pages', type: 'pages', label: 'Pages from the coven’s Book', hint: 'The report itself, the accounts, anything to look at.' },
+    { key: 'summary', type: 'long', label: 'A summary for the agenda' },
   ],
   read_minutes: [{ key: 'taker', type: 'who', label: 'Who reads them', single: true }],
   study: [{ key: 'source', type: 'text', label: 'What is studied', placeholder: 'A chapter, a text, a practice', essential: true }],
@@ -170,7 +220,7 @@ export function cleanFieldSpecs(raw: unknown): FieldSpec[] {
   const out: FieldSpec[] = [];
   for (const r of raw) {
     const f = r as Partial<FieldSpec> | null;
-    if (!f || (!FIELD_TYPES.some((t) => t.value === f.type) && f.type !== 'parts' && f.type !== 'ref')) continue;
+    if (!f || (!FIELD_TYPES.some((t) => t.value === f.type) && f.type !== 'parts' && f.type !== 'ref' && f.type !== 'pages')) continue;
     const label = String(f.label ?? '').trim().slice(0, 80);
     if (!label) continue;
     let key = String(f.key ?? '').trim().replace(/[^a-z0-9_]/gi, '_').toLowerCase().slice(0, 30) || label.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 30);
@@ -211,6 +261,7 @@ export function cleanValue(spec: FieldSpec, raw: unknown): FieldValue {
     }
     case 'multi':
     case 'list':
+    case 'pages':
     case 'who': {
       if (!Array.isArray(raw)) return typeof raw === 'string' && raw ? [raw.slice(0, 200)] : null;
       const list = [...new Set(raw.filter((x): x is string => typeof x === 'string' && !!x.trim()).map((x) => x.trim().slice(0, 200)))];
@@ -287,10 +338,13 @@ export function defaultPartWords(actionId: string, part: string): string {
   return '';
 }
 
-/** The answers on a vote: its own list, or For, Against and Abstain. */
+/** The answers on a vote: its own list; an election's candidates and Abstain; or For, Against and Abstain. Mirrors public.coven_vote_options. */
 export function voteOptions(values: FieldValues): string[] {
   const list = (Array.isArray(values.options) ? values.options : []) as string[];
-  return list.length >= 2 ? list.slice(0, 12) : ['For', 'Against', 'Abstain'];
+  if (list.length >= 2) return list.slice(0, 12);
+  const candidates = (Array.isArray(values.candidates) ? values.candidates : []) as string[];
+  if (candidates.length) return [...candidates.slice(0, 12), 'Abstain'];
+  return ['For', 'Against', 'Abstain'];
 }
 
 /** Names a step's fields give to things (a candle, an offering), for later steps. */
@@ -336,6 +390,7 @@ export function fieldBits(specs: FieldSpec[], values: FieldValues, whoLabel: (ke
     else if (s.type === 'who') bits.push((v as string[]).map(whoLabel).join(', '));
     else if (s.type === 'items') bits.push((v as FieldItem[]).map((i) => i.name).join(', '));
     else if (s.type === 'list') bits.push((v as string[]).join(' / '));
+    else if (s.type === 'pages') bits.push((v as string[]).length === 1 ? 'a page from the Book' : `${(v as string[]).length} pages from the Book`);
     else if (s.type === 'number') bits.push(`${s.label.toLowerCase()} ${v}`);
     else if (s.type === 'long') bits.push(String(v).split(/\n/)[0].slice(0, 60));
     else if (s.type === 'colour') bits.push(String(v));

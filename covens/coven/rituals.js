@@ -179,7 +179,7 @@
           <span class="button button--primary button--small">Join the ritual</span></article></a>`;
       })
       .join("");
-    pane.innerHTML = `<div class="sp-actions">${state.perms.lead || state.perms.site ? `<a class="button button--primary" href="${esc(editHref("new"))}" data-tab="rituals">✦ Plan a gathering</a>` : ""}</div>
+    pane.innerHTML = `<div class="sp-actions">${state.perms.lead || state.perms.site ? `<a class="button button--primary" href="${esc(editHref("new"))}" data-tab="rituals">✦ Plan a gathering</a><a class="button button--ghost" href="${esc(`${editHref("new")}&kind=meeting`)}" data-tab="rituals">Plan a meeting</a>` : ""}</div>
       ${liveCards}
       ${section("Coming up", groups.upcoming)}
       ${state.perms.lead || state.perms.site ? section("Drafts", groups.drafts) : ""}
@@ -661,6 +661,11 @@
       pane.innerHTML = `<p class="sp-notice">That ritual isn’t here any more.</p><p><a class="sp-back" href="${esc(api.covenHref("rituals"))}" data-tab="rituals">← All rituals</a></p>`;
       return;
     }
+    // A meeting has its own page (covens/coven/meeting.js, the app's MeetingScreen).
+    if (ritual.kind === "meeting" && global.CovenMeeting) {
+      return global.CovenMeeting.draw(pane, ritual, { state, api, editHref, navigate, reloadSteps });
+    }
+    global.CovenMeeting?.stop?.();
     const steps = stepsOf(ritual);
     const leader = state.perms.lead || state.perms.site;
     const yours = steps.filter(mine);
@@ -891,6 +896,7 @@
     global.CovenBuilder.open(pane, {
       state,
       ritual,
+      kind: params().get("kind"),
       backHref: ritual ? ritualHref(ritual.id) : api.covenHref("rituals"),
       onSaved: async (saved) => {
         apply("ritual", { eventType: ritual ? "UPDATE" : "INSERT", new: saved });
@@ -1055,6 +1061,7 @@
 
   function unmount() {
     if (editing) global.CovenBuilder?.close?.();
+    global.CovenMeeting?.stop?.();
     pane = null;
     extras_ = null;
     extrasKey_ = null;

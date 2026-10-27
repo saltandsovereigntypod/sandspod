@@ -14,6 +14,7 @@ import { documentFromAltar } from '../altar/snapshot';
 import { useWorkshop } from '../altar/workshop';
 import { addEntry, updateEntry, useCraft, type CraftEntry } from '../craft/store';
 import * as api from '../covens/api';
+import { setActionStatus } from '../covens/meetingApi';
 import { changeAltarOnce } from '../covens/altarSync';
 import { tendWithSeed } from '../covens/petitionAltar';
 import { todayIso } from '../covens/record';
@@ -233,6 +234,21 @@ export function useTendActions(ctx: TendContext) {
     [covens, remember],
   );
 
+  /** An action from a coven meeting, done (its meeting sees it too). */
+  const done = useCallback(
+    async (item: ListItem): Promise<Outcome> => {
+      try {
+        await setActionStatus(item.ref.actionId, 'done');
+        void covens.refresh();
+        await remember(item, (r) => recordTended(r, new Date()));
+        return { ok: true, message: 'Marked done. The meeting’s Chair and Secretary see it too.' };
+      } catch (error) {
+        return fail(error);
+      }
+    },
+    [covens, remember],
+  );
+
   /** A journey's practice, done for today. */
   const practice = useCallback(
     async (item: ListItem, note: string): Promise<Outcome> => {
@@ -266,7 +282,7 @@ export function useTendActions(ctx: TendContext) {
     [remember],
   );
 
-  return { tend, end, write, checkin, practice, setRhythm };
+  return { tend, end, write, checkin, done, practice, setRhythm };
 }
 
 export type { CovenPart };

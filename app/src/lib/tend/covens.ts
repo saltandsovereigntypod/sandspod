@@ -23,7 +23,7 @@ export async function fetchTendCovens(userId: string): Promise<Rows | null> {
   const memberships = await rows<CovenPart['memberships'][number]>(supabase.from('coven_members').select('coven_id,user_id,rank_id,status').eq('user_id', userId).eq('status', 'active'));
   const ids = memberships.map((m) => m.coven_id);
   if (!ids.length) return null;
-  const [covens, tendings, petitions, contributions, upcoming, mentorships, checkins, me] = await Promise.all([
+  const [covens, tendings, petitions, contributions, upcoming, mentorships, checkins, me, actions] = await Promise.all([
     rows<CovenPart['covens'][number]>(supabase.from('covens').select('id,slug,name').in('id', ids).eq('status', 'active')),
     quiet(rows<CovenPart['tendings'][number]>(supabase.from('coven_petition_tendings').select('petition_id,user_id,note,created_at').eq('user_id', userId).order('created_at', { ascending: false }).limit(1000))),
     quiet(rows<CovenPart['petitions'][number]>(supabase.from('coven_petitions').select('id,coven_id,user_id,title,body,color,status,last_tended_at,altar_id,source_ritual_id,created_at').in('coven_id', ids).eq('status', 'open').limit(1000))),
@@ -32,12 +32,13 @@ export async function fetchTendCovens(userId: string): Promise<Rows | null> {
     quiet(rows<CovenPart['mentorships'][number]>(supabase.from('coven_mentors').select('coven_id,user_id,mentor_id,assigned_at').eq('mentor_id', userId))),
     quiet(rows<CovenPart['checkins'][number]>(supabase.from('coven_mentor_checkins').select('coven_id,user_id,mentor_id,met_on').eq('mentor_id', userId).order('met_on', { ascending: false }).limit(1000))),
     quiet(rows<{ user_id: string; display_name: string | null }>(supabase.from('coven_profiles').select('user_id,display_name').eq('user_id', userId))),
+    quiet(rows<NonNullable<CovenPart['actions']>[number]>(supabase.from('coven_meeting_actions').select('id,ritual_id,coven_id,body,assignees,due_on,status,created_at').in('coven_id', ids).eq('status', 'open').limit(1000))),
   ]);
   const tended = new Set(tendings.map((t) => t.petition_id));
   const mine = petitions.filter((p) => p.user_id === userId || tended.has(p.id));
   // The rituals your petitions and contributions came from, for where each began.
   const known = new Set(upcoming.map((r) => r.id));
-  const wanted = [...new Set([...contributions.map((c) => c.ritual_id), ...mine.map((p) => p.source_ritual_id ?? '')])].filter((id) => id && !known.has(id));
+  const wanted = [...new Set([...contributions.map((c) => c.ritual_id), ...mine.map((p) => p.source_ritual_id ?? ''), ...actions.map((a) => a.ritual_id)])].filter((id) => id && !known.has(id));
   const [earlier, steps] = await Promise.all([
     wanted.length ? quiet(rows<CovenPart['rituals'][number]>(supabase.from('coven_rituals').select('id,coven_id,title,status,scheduled_for,created_at').in('id', wanted.slice(0, 200)))) : Promise.resolve([]),
     upcoming.length
@@ -58,6 +59,7 @@ export async function fetchTendCovens(userId: string): Promise<Rows | null> {
     steps,
     mentorships,
     checkins,
+    actions,
     names,
     myName: me[0]?.display_name || 'A member',
   };
