@@ -28,6 +28,7 @@ export const SHELF_TOOLS: ShelfObject[] = [
   { id: 'matches', name: 'Matches', group: 'Candle care', keywords: ['fire', 'lighting', 'candles'], description: 'Plain matches, often kept for the altar alone, to light its candles and incense.' },
   // Ritual
   { id: 'stang', name: 'Stang', group: 'Ritual', keywords: ['traditional witchcraft', 'the horned one', 'crossroads', 'staff'], description: 'A forked staff of traditional witchcraft, set up as an altar of its own at the edge of a circle.' },
+  { id: 'crossroads', name: 'Crossroads', group: 'Ritual', keywords: ['crossroads', 'Hekate', 'Deipnon', 'the dark moon', 'thresholds'], description: 'A stone where three roads meet, with a key and a torch at its foot. For Hekate, the Deipnon at the dark moon, and any threshold you stand at.' },
   { id: 'frame-drum', name: 'Frame Drum', group: 'Ritual', keywords: ['drumming', 'trance', 'journeying', 'rhythm'], description: 'A hand drum for raising energy and for the steady beat of a journey.' },
   { id: 'rattle', name: 'Rattle', group: 'Ritual', keywords: ['clearing', 'calling', 'spirits', 'rhythm'], description: 'Shaken to clear a space, to call in spirits, or to keep the rhythm of a working.' },
   { id: 'singing-bowl', name: 'Singing Bowl', group: 'Ritual', keywords: ['sound', 'cleansing', 'meditation', 'tone'], description: 'A bowl that rings when struck or circled, its tone used to cleanse a space and settle the mind.' },

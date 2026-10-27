@@ -13,7 +13,7 @@ const pics = (dir: string, ids: string[]) => Object.fromEntries(ids.map((id) => 
 const NOW = '2026-10-23T19:00:00.000Z';
 
 test('every new tool and natural find has a name, a group and a description in a sentence or two', () => {
-  assert.equal(SHELF_TOOLS.length, 20);
+  assert.equal(SHELF_TOOLS.length, 21);
   assert.equal(NATURAL_OBJECTS.length, 13);
   for (const o of [...SHELF_TOOLS, ...NATURAL_OBJECTS]) {
     assert.ok(o.name && o.group && o.keywords.length, o.id);

@@ -51,6 +51,24 @@ test('every herb and crystal form is on its item’s sheet, inside it', () => {
   }
 });
 
+test('every deity statue is on a shared statue sheet, four at most to a sheet', () => {
+  const statues = ALTAR_ARTWORK.items.deities.flatMap((item) => item.forms.map((f) => f.image));
+  assert.ok(statues.length >= 60);
+  const perSheet = new Map<string, number>();
+  for (const image of statues) {
+    const key = websiteAssetKey(image)!;
+    const entry = bundledAltarAssets[key];
+    assert.ok(entry, key);
+    assert.ok(entry.crop, `${key} is not on a sheet`);
+    assert.match(entry.source, /assets\/altar\/sheets\/deities\/[a-z0-9_-]+\.webp$/, key);
+    const { x, y, w, h, sheetW, sheetH } = entry.crop;
+    assert.ok(x >= 0 && y >= 0 && x + w <= sheetW && y + h <= sheetH, `${key} lies off its sheet`);
+    assert.ok(Math.abs(h / w - entry.height / entry.width) < 0.01, `${key} is out of shape`);
+    perSheet.set(entry.source, (perSheet.get(entry.source) ?? 0) + 1);
+  }
+  for (const [sheet, n] of perSheet) assert.ok(n <= 4, `${sheet} holds ${n}`);
+});
+
 test('every potted plant’s stage picture resolves to its plant’s sheet', () => {
   // Empty until the painter's pictures land and the scripts are run; then each stage is checked.
   for (const [id, stages] of Object.entries(ALTAR_ARTWORK.plants)) {
@@ -131,7 +149,7 @@ test('everything else is still a picture of its own', () => {
     ...Object.values(ALTAR_ARTWORK.natural),
     ...Object.values(ALTAR_ARTWORK.seasonal),
     ...ALTAR_ARTWORK.backgrounds.map((b) => b.assetPath),
-    ...(['deities', 'tools', 'vessels'] as const).flatMap((c) => ALTAR_ARTWORK.items[c].flatMap((i) => i.forms.map((f) => f.image))),
+    ...(['tools', 'vessels'] as const).flatMap((c) => ALTAR_ARTWORK.items[c].flatMap((i) => i.forms.map((f) => f.image))),
     '../assets/altar/objects/herbs/incense/incense.png',
     '../assets/altar/objects/herbs/herb-mix/herb-mix.png',
     '../assets/altar/objects/candles/votive/red-votive.png',

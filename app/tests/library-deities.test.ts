@@ -177,19 +177,27 @@ test('search finds them by name, other names and what they keep', () => {
   assert.ok(first('epagomenal').includes('horus'));
 });
 
-test('without a statue picture: no cabinet tile, no broken picture, and a shrine that still sets', () => {
+/** A god's cabinet tile and shrine: a statue where there is a picture of one, otherwise no tile and an offering bowl at the centre. */
+function checkStatueOrBowl(key: string) {
   const pictured = new Set(Object.values(ALTAR_ARTWORK.items.deities ?? {}).flatMap((d: unknown) => (d as { forms?: { deity?: string }[] }).forms?.map((f) => f.deity) ?? []));
+  const inCabinet = builtInCabinet.some((i) => i.category === 'deities' && i.forms?.some((f) => f.deity === key));
+  const shrine = shrineAltar(key, String(deities[key].DisplayName), deities[key] as Record<string, unknown>, new Date(2026, 9, 26));
+  assert.ok(shrine.doc.objects.length >= 8, key);
+  for (const o of shrine.doc.objects) assert.ok(String(o.imagePath ?? '').trim(), `${key}: ${o.label}`);
+  // The cabinet's Deities drawer only holds deities it has pictures for, and the shrine sets the statue when there is one.
+  assert.equal(inCabinet, pictured.has(key), `${key} in the cabinet`);
+  assert.equal(
+    shrine.doc.objects.some((o) => o.type === 'deity'),
+    pictured.has(key),
+    `${key}: statue on the shrine`,
+  );
+}
+
+test('with or without a statue picture: a cabinet tile only with one, no broken picture, and a shrine that still sets', () => {
   for (const key of ALL_NEW) {
     // The Library entries carry no picture of their own.
     assert.equal(deities[key].image, undefined, key);
-    assert.ok(!pictured.has(key), `${key} has no statue yet`);
-    // The cabinet's Deities drawer only holds deities it has pictures for.
-    assert.ok(!builtInCabinet.some((i) => i.category === 'deities' && i.forms?.some((f) => f.deity === key)), `${key} in the cabinet`);
-    // Their shrine centres on an offering bowl instead of a statue, and everything set out has a picture.
-    const shrine = shrineAltar(key, String(deities[key].DisplayName), deities[key] as Record<string, unknown>, new Date(2026, 9, 26));
-    assert.ok(shrine.doc.objects.length >= 8, key);
-    assert.ok(!shrine.doc.objects.some((o) => o.type === 'deity'), key);
-    for (const o of shrine.doc.objects) assert.ok(String(o.imagePath ?? '').trim(), `${key}: ${o.label}`);
+    checkStatueOrBowl(key);
   }
   // A deity with a statue still gets it.
   const osiris = shrineAltar('osiris', 'Osiris', deities.osiris as Record<string, unknown>, new Date(2026, 9, 26));
@@ -479,16 +487,8 @@ test('the rest of the gods: festival pages link to them and search finds them', 
   }
 });
 
-test('the rest of the gods: no cabinet tile or broken picture, and a shrine that still sets', () => {
-  const pictured = new Set(Object.values(ALTAR_ARTWORK.items.deities ?? {}).flatMap((d: unknown) => (d as { forms?: { deity?: string }[] }).forms?.map((f) => f.deity) ?? []));
-  for (const key of ALL_MORE) {
-    assert.ok(!pictured.has(key), `${key} has no statue yet`);
-    assert.ok(!builtInCabinet.some((i) => i.category === 'deities' && i.forms?.some((f) => f.deity === key)), `${key} in the cabinet`);
-    const shrine = shrineAltar(key, String(deities[key].DisplayName), deities[key] as Record<string, unknown>, new Date(2026, 9, 26));
-    assert.ok(shrine.doc.objects.length >= 8, key);
-    assert.ok(!shrine.doc.objects.some((o) => o.type === 'deity'), key);
-    for (const o of shrine.doc.objects) assert.ok(String(o.imagePath ?? '').trim(), `${key}: ${o.label}`);
-  }
+test('the rest of the gods: a cabinet tile only with a statue, no broken picture, and a shrine that still sets', () => {
+  for (const key of ALL_MORE) checkStatueOrBowl(key);
 });
 
 test('the rest of the gods: sacred days and devotions for the patron page', () => {

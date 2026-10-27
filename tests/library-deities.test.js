@@ -64,9 +64,13 @@ test("the new deities show as Library entries and open by reference", () => {
   }
 });
 
-test("the website's cabinet has no statue tile for them", () => {
+// A statue tile in the website's cabinet exactly when the god has a statue picture.
+const hasStatue = (key) => fs.existsSync(path.join(__dirname, "..", "assets/altar/objects/tools/deities", key, `${key}-statue.png`));
+const statueTile = (artwork, key) => new RegExp(`"deity": "${key}"`).test(artwork);
+
+test("the website's cabinet has a statue tile for them only where there is a statue picture", () => {
   const artwork = read("js/altar-artwork.js");
-  for (const key of NEW_DEITIES) assert.doesNotMatch(artwork, new RegExp(`"deity": "${key}"`), key);
+  for (const key of NEW_DEITIES) assert.equal(statueTile(artwork, key), hasStatue(key), key);
 });
 
 test("the website's patron page and holy days know them", () => {
@@ -98,14 +102,14 @@ test("the rest of the gods: every field, unique ids and names, and no picture", 
   assert.equal(new Set(names).size, names.length);
 });
 
-test("the rest of the gods: Library entries, no statue tile, and patron days on the website", () => {
+test("the rest of the gods: Library entries, a statue tile only with a picture, and patron days on the website", () => {
   const entries = L.buildEntries(core, DATA, [], {});
   const artwork = read("js/altar-artwork.js");
   const today = sandboxWith(["js/core/today.js"]).SaltCore.today;
   const devotions = new Map(today.patron.DEITY_DEVOTIONS.map((d) => [d.key, d]));
   for (const key of MORE_DEITIES) {
     assert.equal(L.findEntry(core, entries, `traditional/deity/${key}`)?.id, `traditional:deity:${key}`, key);
-    assert.doesNotMatch(artwork, new RegExp(`"deity": "${key}"`), key);
+    assert.equal(statueTile(artwork, key), hasStatue(key), key);
     const d = devotions.get(key);
     assert.ok(d && d.sacred.length && d.devotions.length, key);
     assert.ok(today.patron.upcomingSacred(d, new Date(2026, 0, 1), 400).length > 0, key);

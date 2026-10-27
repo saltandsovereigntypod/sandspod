@@ -62,8 +62,8 @@ const RITE: PlanSection[] = [
   { id: 'afterwards', name: 'Afterwards' },
 ];
 
-// A key stands for the crossroads until there is a picture of one.
-const CROSSROADS_MARKER = { key: 'tools:key|standard', name: 'Key', image: '/assets/altar/objects/tools/key/key.png', category: 'tools' };
+// The painted crossroads stone (a shelf tool, lib/altar/shelf.ts) marks the crossroads.
+const CROSSROADS_MARKER = { key: 'tools:crossroads|standard', name: 'Crossroads', image: '/assets/altar/objects/tools/crossroads/crossroads.png', category: 'tools' };
 
 const LINK_PRAYER = '[Link your coven’s prayer from the Book here, or write it in.]';
 
@@ -131,7 +131,7 @@ export const RITUAL_TEMPLATES: RitualTemplate[] = [
       { a: 'light_candle', s: 'opening', t: 'Light Hekate’s candle', r: ['hps'], f: { candle: 'Hekate’s candle', colour: 'black' }, d: 'Light Hekate’s candle and let the flame settle before you speak.', w: 'Hail Hekate, guide. Hail Hekate, guardian. Hail Hekate, gatekeeper.' },
       { a: 'cleanse', s: 'opening', r: ['hps'], turn: 'together', f: { method: 'khernips' }, d: 'Light a bay leaf or a sprig of rosemary and quench it in a bowl of water. Each person washes their hands in it and touches a few drops to their face. (Khernips is the cleansing water of Hellenic practice; choose another way if you prefer.)' },
       { a: 'write_intention', s: 'work', t: 'Write what you are releasing', r: ['all'], turn: 'together', d: 'Each person writes what they are letting go of from the past moon’s cycle, and folds the paper.', ask: 'intention', askWith: { timing: 'live', visibility: 'leader', fate: 'altar', prompt: 'What are you releasing from the past moon’s cycle?' } },
-      { a: 'lay_crossroads', s: 'work', r: ['hps'], f: { name: 'The crossroads', marker: [CROSSROADS_MARKER] }, d: 'Lay out the crossroads on the altar. Until the coven has a crossroads picture, a key stands for it (change it to anything your coven uses).' },
+      { a: 'lay_crossroads', s: 'work', r: ['hps'], f: { name: 'The crossroads', marker: [CROSSROADS_MARKER] }, d: 'Lay out the crossroads on the altar. The crossroads stone stands for it (change it to anything your coven uses).' },
       { a: 'place_offering', s: 'work', t: 'Offerings at the crossroads', r: ['all'], turn: 'in_turn', f: { to: 'Hekate', where: 'At the crossroads', name: 'The crossroads offerings' }, d: 'The High Priestess invites each member in turn to bring their offering and set it at the crossroads.', w: '', ask: 'offering', askWith: { timing: 'live' } },
       { a: 'snuff_candle', s: 'closing', t: 'Put out Hekate’s candle', r: ['hps'], f: { candle: 'Hekate’s candle' }, d: 'Put out Hekate’s candle with a snuffer or your fingers, and thank her.' },
       { a: 'prayer', s: 'closing', t: 'Closing prayer', r: ['all'], turn: 'together', f: { prayer: 'Our closing prayer' }, d: 'Say the coven’s closing prayer together.', w: LINK_PRAYER },

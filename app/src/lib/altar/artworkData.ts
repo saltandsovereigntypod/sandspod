@@ -303,7 +303,136 @@ export const ALTAR_ARTWORK: {
     "hathor": "Egyptian",
     "sekhmet": "Egyptian",
     "ra": "Egyptian",
-    "osiris": "Egyptian"
+    "osiris": "Egyptian",
+    "saturn": "Roman",
+    "flora": "Roman",
+    "neptune": "Roman",
+    "faunus": "Roman",
+    "sol": "Roman",
+    "zeus": "Greek",
+    "hera": "Greek",
+    "poseidon": "Greek",
+    "horus": "Egyptian",
+    "set": "Egyptian",
+    "nephthys": "Egyptian",
+    "maat": "Egyptian",
+    "lakshmi": "Hindu",
+    "shiva": "Hindu",
+    "saraswati": "Hindu",
+    "kali": "Hindu",
+    "krishna": "Hindu",
+    "ares": "Greek",
+    "hephaestus": "Greek",
+    "pan": "Greek",
+    "gaia": "Greek",
+    "helios": "Greek",
+    "eros": "Greek",
+    "asclepius": "Greek",
+    "fortuna": "Roman",
+    "bacchus": "Roman",
+    "pluto": "Roman",
+    "proserpina": "Roman",
+    "vulcan": "Roman",
+    "pomona": "Roman",
+    "bona_dea": "Roman",
+    "lares_penates": "Roman",
+    "mithras": "Roman",
+    "amun": "Egyptian",
+    "ptah": "Egyptian",
+    "bes": "Egyptian",
+    "nut": "Egyptian",
+    "neith": "Egyptian",
+    "sobek": "Egyptian",
+    "khonsu": "Egyptian",
+    "taweret": "Egyptian",
+    "njord": "Norse",
+    "heimdall": "Norse",
+    "sif": "Norse",
+    "bragi": "Norse",
+    "ullr": "Norse",
+    "eir": "Norse",
+    "sunna": "Norse",
+    "mani": "Norse",
+    "norns": "Norse",
+    "danu": "Celtic",
+    "aine": "Celtic",
+    "aengus": "Celtic",
+    "boann": "Celtic",
+    "ogma": "Celtic",
+    "nuada": "Celtic",
+    "cailleach": "Celtic",
+    "gwydion": "Celtic",
+    "blodeuwedd": "Celtic",
+    "lleu": "Celtic",
+    "bran": "Celtic",
+    "taranis": "Celtic",
+    "sucellos": "Celtic",
+    "belenus": "Celtic",
+    "sulis": "Celtic",
+    "svarog": "Slavic",
+    "stribog": "Slavic",
+    "jarilo": "Slavic",
+    "zorya": "Slavic",
+    "rod": "Slavic",
+    "vishnu": "Hindu",
+    "parvati": "Hindu",
+    "hanuman": "Hindu",
+    "rama": "Hindu",
+    "brahma": "Hindu",
+    "surya": "Hindu",
+    "wiccan_goddess": "Other",
+    "horned_god": "Other",
+    "aradia": "Other",
+    "inanna": "Other",
+    "enki": "Other",
+    "ereshkigal": "Other",
+    "shamash": "Other",
+    "nanna": "Other",
+    "marduk": "Other",
+    "nisaba": "Other",
+    "ninkasi": "Other",
+    "asherah": "Other",
+    "astarte": "Other",
+    "baal": "Other",
+    "anat": "Other",
+    "el": "Other",
+    "shapash": "Other",
+    "laima": "Other",
+    "perkunas": "Other",
+    "saule": "Other",
+    "dievas": "Other",
+    "zemyna": "Other",
+    "menulis": "Other",
+    "ukko": "Other",
+    "mielikki": "Other",
+    "tapio": "Other",
+    "ilmatar": "Other",
+    "ahti": "Other",
+    "rauni": "Other",
+    "woden": "Other",
+    "thunor": "Other",
+    "frige": "Other",
+    "tiw": "Other",
+    "eostre": "Other",
+    "hreda": "Other",
+    "tinia": "Other",
+    "uni": "Other",
+    "menrva": "Other",
+    "turan": "Other",
+    "fufluns": "Other",
+    "mari": "Other",
+    "amaterasu": "Other",
+    "inari": "Other",
+    "susanoo": "Other",
+    "tsukuyomi": "Other",
+    "benzaiten": "Other",
+    "hachiman": "Other",
+    "mazu": "Other",
+    "zao_jun": "Other",
+    "change": "Other",
+    "tudigong": "Other",
+    "jade_emperor": "Other",
+    "guanyin": "Other"
   },
   "backgrounds": [
     {
@@ -451,6 +580,7 @@ export const ALTAR_ARTWORK: {
   },
   "shelfTools": {
     "candle-snuffer": "../assets/altar/objects/tools/candle-snuffer/candle-snuffer.png",
+    "crossroads": "../assets/altar/objects/tools/crossroads/crossroads.png",
     "crystal-ball": "../assets/altar/objects/tools/crystal-ball/crystal-ball.png",
     "frame-drum": "../assets/altar/objects/tools/frame-drum/frame-drum.png",
     "goddess-figure": "../assets/altar/objects/tools/goddess-figure/goddess-figure.png",
@@ -6774,6 +6904,26 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Ares Statue",
+        "keywords": [
+          "war and battle",
+          "courage",
+          "raw strength",
+          "the fury of combat",
+          "the defence of the city"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/ares/ares-statue.png",
+            "type": "deity",
+            "deity": "ares",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Arianrhod Statue",
         "keywords": [
           "destiny",
@@ -6808,6 +6958,26 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/artemis/artemis-statue.png",
             "type": "deity",
             "deity": "artemis",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Asclepius Statue",
+        "keywords": [
+          "healing and medicine",
+          "physicians",
+          "recovery",
+          "dreams that heal",
+          "health of body and mind"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/asclepius/asclepius-statue.png",
+            "type": "deity",
+            "deity": "asclepius",
             "form": "statue"
           }
         ]
@@ -7074,6 +7244,24 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Eros Statue",
+        "keywords": [
+          "love and desire",
+          "attraction",
+          "creative longing"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/eros/eros-statue.png",
+            "type": "deity",
+            "deity": "eros",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Freyja Statue",
         "keywords": [
           "love",
@@ -7128,6 +7316,26 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/frigg/frigg-statue.png",
             "type": "deity",
             "deity": "frigg",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Gaia Statue",
+        "keywords": [
+          "the earth",
+          "motherhood of all beings",
+          "fertility",
+          "oaths",
+          "prophecy"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/gaia/gaia-statue.png",
+            "type": "deity",
+            "deity": "gaia",
             "form": "statue"
           }
         ]
@@ -7208,6 +7416,66 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/hel/hel-statue.png",
             "type": "deity",
             "deity": "hel",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Helios Statue",
+        "keywords": [
+          "the sun",
+          "sight",
+          "light",
+          "oaths and witness",
+          "the passing of days"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/helios/helios-statue.png",
+            "type": "deity",
+            "deity": "helios",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Hephaestus Statue",
+        "keywords": [
+          "fire and the forge",
+          "smithing",
+          "metalwork",
+          "craft and invention",
+          "sculpture"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/hephaestus/hephaestus-statue.png",
+            "type": "deity",
+            "deity": "hephaestus",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Hera Statue",
+        "keywords": [
+          "marriage",
+          "wives and women",
+          "childbirth",
+          "the family",
+          "queenship"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/hera/hera-statue.png",
+            "type": "deity",
+            "deity": "hera",
             "form": "statue"
           }
         ]
@@ -7592,6 +7860,26 @@ export const ALTAR_ARTWORK: {
       },
       {
         "category": "deities",
+        "name": "Pan Statue",
+        "keywords": [
+          "shepherds and flocks",
+          "wild places",
+          "mountains and caves",
+          "rustic music",
+          "fertility"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/pan/pan-statue.png",
+            "type": "deity",
+            "deity": "pan",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
         "name": "Persephone Statue",
         "keywords": [
           "the underworld",
@@ -7626,6 +7914,26 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/perun/perun-statue.png",
             "type": "deity",
             "deity": "perun",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Poseidon Statue",
+        "keywords": [
+          "the sea",
+          "earthquakes",
+          "horses",
+          "springs and fresh water",
+          "sailors and fishers"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/poseidon/poseidon-statue.png",
+            "type": "deity",
+            "deity": "poseidon",
             "form": "statue"
           }
         ]
@@ -7886,6 +8194,26 @@ export const ALTAR_ARTWORK: {
             "image": "../assets/altar/objects/tools/deities/vesta/vesta-statue.png",
             "type": "deity",
             "deity": "vesta",
+            "form": "statue"
+          }
+        ]
+      },
+      {
+        "category": "deities",
+        "name": "Zeus Statue",
+        "keywords": [
+          "sky",
+          "weather and thunder",
+          "kingship",
+          "justice",
+          "oaths"
+        ],
+        "forms": [
+          {
+            "label": "Place",
+            "image": "../assets/altar/objects/tools/deities/zeus/zeus-statue.png",
+            "type": "deity",
+            "deity": "zeus",
             "form": "statue"
           }
         ]
