@@ -535,7 +535,7 @@
     draw(currentTab());
     global.scrollTo(0, 0);
   });
-  global.addEventListener("popstate", () => state.coven && draw(currentTab()));
+  global.addEventListener("popstate", () => state.coven && !global.CovenBuilder?.onPop?.() && draw(currentTab()));
   global.addEventListener("pagehide", () => {
     live?.close();
     watching?.();

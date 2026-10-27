@@ -1,4 +1,4 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams, useNavigation } from 'expo-router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -148,16 +148,34 @@ export default function PlanRitual() {
     return out;
   }, [ordered, plan, custom, named, coven.nameOf]);
 
+  // Inside a step or panel, Back (the arrow, Android's back, a swipe) goes
+  // to the outline rather than out of the planner.
+  const inner = view !== 'start' && view !== 'outline';
+  const toOutline = useCallback(() => {
+    setView('outline');
+    setMessage(null);
+  }, []);
+  const navigation = useNavigation();
+  useEffect(() => {
+    navigation.setOptions({ gestureEnabled: !inner });
+    if (!inner) return;
+    return navigation.addListener('beforeRemove', (e) => {
+      e.preventDefault();
+      toOutline();
+    });
+  }, [navigation, inner, toOutline]);
+  const backTo = inner ? { onBack: toOutline, backLabel: 'Back to the outline' } : {};
+
   if (!canLead) {
     return (
-      <CovenScreen title="Plan a gathering">
+      <CovenScreen title="Plan a gathering" {...backTo}>
         <Text style={type.body}>Only those who lead the coven’s rituals plan them. The coven’s head decides who does.</Text>
       </CovenScreen>
     );
   }
   if (ritual?.status === 'live') {
     return (
-      <CovenScreen title="Edit the ritual">
+      <CovenScreen title="Edit the ritual" {...backTo}>
         <Text style={type.body}>This ritual is under way. End it before changing it.</Text>
       </CovenScreen>
     );
@@ -222,7 +240,7 @@ export default function PlanRitual() {
     setBusy(false);
   };
 
-  const back = <Button label="Back to the outline" variant="text" onPress={() => setView('outline')} />;
+  const back = <Button label="← Back to the outline" variant="outline" onPress={toOutline} />;
   const screenTitle = ritual ? `Edit ${kind === 'meeting' ? 'the meeting' : 'the rite'}` : kind === 'meeting' ? 'Plan a meeting' : 'Plan a rite';
 
   // ── Start from ──────────────────────────────────────────────────────────
@@ -230,7 +248,7 @@ export default function PlanRitual() {
     const ready = RITUAL_TEMPLATES.filter((t) => t.kind === kind);
     const copies = coven.rituals.filter((r) => (r.kind ?? 'rite') === kind).slice(0, 12);
     return (
-      <CovenScreen title="Plan a gathering">
+      <CovenScreen title="Plan a gathering" {...backTo}>
         <Chips label="What kind of gathering" options={GATHERING_KINDS} value={kind} onChange={(k) => { setKind(k); setPlan(blankPlan(k)); }} />
         <Text style={type.caption}>{GATHERING_KINDS.find((k) => k.value === kind)?.detail}</Text>
         <Button label={kind === 'meeting' ? 'Start with an empty agenda' : 'Start with an empty outline'} variant="outline" onPress={() => begin({ kind, plan: blankPlan(kind), steps: [] })} />
@@ -329,9 +347,9 @@ export default function PlanRitual() {
   if (typeof view === 'object') {
     const index = ordered.findIndex((s) => s.key === view.step);
     const step = ordered[index];
-    if (!step) return <CovenScreen title="A step">{back}</CovenScreen>;
+    if (!step) return <CovenScreen title="A step" {...backTo}>{back}</CovenScreen>;
     return (
-      <CovenScreen title={step.title.trim() || 'A new step'}>
+      <CovenScreen title={step.title.trim() || 'A new step'} {...backTo}>
         {back}
         <StepFocus
           key={step.key}
@@ -392,14 +410,14 @@ export default function PlanRitual() {
 
   if (view === 'roles')
     return (
-      <CovenScreen title="Roles">
+      <CovenScreen title="Roles" {...backTo}>
         {back}
         <RolesPanel plan={plan} steps={steps} kind={kind} who={who} whoSuggest={whoSuggest} whoLabel={whoLabel} onChange={setFromPanel} />
       </CovenScreen>
     );
   if (view === 'sections')
     return (
-      <CovenScreen title="Sections">
+      <CovenScreen title="Sections" {...backTo}>
         {back}
         <SectionsPanel plan={plan} steps={steps} onChange={setFromPanel} onSaveBlock={(sectionId) => saveBlock(ordered.filter((s) => s.section === sectionId), plan.sections.find((s) => s.id === sectionId)?.name ?? 'Steps')} />
         {message && <Notice>{message}</Notice>}
@@ -407,21 +425,21 @@ export default function PlanRitual() {
     );
   if (view === 'prep')
     return (
-      <CovenScreen title="Before the rite">
+      <CovenScreen title="Before the rite" {...backTo}>
         {back}
         <ChecklistPanel plan={plan} onChange={setFromPanel} />
       </CovenScreen>
     );
   if (view === 'after')
     return (
-      <CovenScreen title="Afterwards">
+      <CovenScreen title="Afterwards" {...backTo}>
         {back}
         <AfterwardsPanel plan={plan} onChange={setFromPanel} />
       </CovenScreen>
     );
   if (view === 'action' && actionDraft)
     return (
-      <CovenScreen title="One of the coven’s own">
+      <CovenScreen title="One of the coven’s own" {...backTo}>
         <CustomActionForm
           plan={plan}
           initial={actionDraft}
@@ -437,7 +455,7 @@ export default function PlanRitual() {
   if (view === 'preview') {
     const script = buildScript({ title: title || 'This gathering', kind, plan, steps: ordered.map((s) => withFieldColumns(s, plan, custom)), ctx: { ranks, nameOf: coven.nameOf }, custom, pages, viewer: { membership: coven.snapshot?.membership ?? null, userId: coven.userId } });
     return (
-      <CovenScreen title={previewMode === 'script' ? 'The script' : 'Your run-through'}>
+      <CovenScreen title={previewMode === 'script' ? 'The script' : 'Your run-through'} {...backTo}>
         {back}
         <Chips label="Read it as" options={[{ value: 'script', label: 'The whole script' }, { value: 'run', label: 'Your run-through' }] as const} value={previewMode} onChange={setPreviewMode} />
         <ScriptView script={script} mode={previewMode} />
@@ -448,7 +466,7 @@ export default function PlanRitual() {
   // ── Details ─────────────────────────────────────────────────────────────
   if (view === 'details') {
     return (
-      <CovenScreen title="Details">
+      <CovenScreen title="Details" {...backTo}>
         {back}
         <Card>
           <Field label={kind === 'meeting' ? 'The meeting' : 'The rite'} value={title} onChangeText={setTitle} maxLength={120} placeholder={kind === 'meeting' ? 'Autumn business meeting' : 'Full moon rite'} />
@@ -516,7 +534,7 @@ export default function PlanRitual() {
   const afterLine = [plan.afterwards.hold_hours ? `Altar left for ${plan.afterwards.hold_hours} hours` : '', plan.afterwards.notes ? 'Notes' : '', plan.afterwards.follow_up ? 'A follow-up' : ''].filter(Boolean).join(' · ') || 'Nothing set';
   const whenLine = [date ? `${date}${time ? ` ${time}` : ''}` : 'No date yet', occasionName || OCCASIONS.find((o) => o.value === occasion)?.label || ''].filter(Boolean).join(' · ');
   return (
-    <CovenScreen title={screenTitle}>
+    <CovenScreen title={screenTitle} {...backTo}>
       <MenuList>
         <MenuRow label={title.trim() || 'Name it'} detail={whenLine} onPress={() => setView('details')} />
         <MenuRow label="Roles" detail={rolesLine} onPress={() => setView('roles')} />
