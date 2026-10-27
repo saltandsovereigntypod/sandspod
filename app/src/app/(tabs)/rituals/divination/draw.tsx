@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams, type Href } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
@@ -17,6 +17,8 @@ import { addEntry, useCraft } from '../../../../lib/craft/store';
 import { customSpreads, entryIdOfSpread, SPREADS_COLLECTION } from '../../../../lib/divination/custom';
 import { chosenDeck, DECK_SETTING, deckCardTitle, deckInfo, TAROT_DECKS, type DeckId } from '../../../../lib/divination/decks';
 import { todaysCard } from '../../../../lib/divination/daily';
+import { clearDrawDraft, loadDrawDraft, saveDrawDraft } from '../../../../lib/divination/draftStore';
+import { draftKey, draftSummary, isFreshDraft, opensOwnDraw, restoreDraft, stampDraft, type DrawDraft } from '../../../../lib/divination/drawDraft';
 import {
   CAST_NOTE,
   canDraw,
@@ -64,7 +66,7 @@ export default function DrawScreen() {
   const { settings, save } = useMySettings();
   const still = useReducedMotion();
   const { entries } = useCraft<unknown>(READINGS);
-  const { entries: mine } = useCraft<unknown>(SPREADS_COLLECTION);
+  const { entries: mine, ready: spreadsReady } = useCraft<unknown>(SPREADS_COLLECTION);
   const custom = useMemo(() => customSpreads(mine), [mine]);
   const { entries: deckEntries, ready: decksReady } = useCraft<unknown>(DECKS_COLLECTION);
   const decks = useMemo(() => ownDecks(deckEntries), [deckEntries]);
@@ -99,6 +101,32 @@ export default function DrawScreen() {
   const [localDeck, setLocalDeck] = useState<DeckId | null>(null);
   // What it's drawn for, if anything: a dream, a planned working, a deity (its own spread chosen).
   const [link, setLink] = useState<ReadingLink | null>(() => linkFromParams(params));
+
+  // A draw left unkept (the screen left, or the app closed), offered back
+  // when the screen opens for no draw in particular. On this device only.
+  const [opensOwn] = useState(() => opensOwnDraw(params));
+  const [stored, setStored] = useState<DrawDraft | null | undefined>(opensOwn ? null : undefined);
+  const [offerOpen, setOfferOpen] = useState(true);
+  useEffect(() => {
+    if (opensOwn) return;
+    let live = true;
+    void loadDrawDraft().then((d) => {
+      if (!live) return;
+      if (d && !isFreshDraft(d, new Date())) {
+        void clearDrawDraft();
+        d = null;
+      }
+      setStored(d);
+    });
+    return () => {
+      live = false;
+    };
+  }, [opensOwn]);
+  const restored = useMemo(() => (stored && spreadsReady && decksReady ? restoreDraft(stored, { custom, decks }) : null), [stored, spreadsReady, decksReady, custom, decks]);
+  // Its spread, deck or cards are gone: let it go quietly.
+  const lost = !!stored && spreadsReady && decksReady && !restored;
+  const owned = useRef(false);
+  const keptIt = useRef(false);
 
   const options = drawOptions({ ...(settings ?? {}), ...local });
   const setOption = (key: 'divination_reversals' | 'divination_blank_rune', value: boolean) => {
@@ -198,6 +226,8 @@ export default function DrawScreen() {
         READINGS,
         readingFromDraw(spread, draw, { question, interpretation, lookBack: chosenLookBack, now: new Date(), deck, ownDeck, byHand, linkedTo }),
       );
+      keptIt.current = true;
+      await clearDrawDraft();
       router.replace(`/rituals/divination/${entry.id}` as Href);
     } finally {
       setSaving(false);
@@ -210,9 +240,68 @@ export default function DrawScreen() {
   const position = selected !== null && draw ? placeOf(spread, draw, selected) : null;
   const ownWithoutCards = kindId === 'oracle' && (!ownDeck || ownDeck.data.cards.length === 0);
 
+  // The draw as it stands, saved on every change and cleared once it's
+  // kept or deliberately set aside (a new spread, Start again).
+  const key = draftKey({ kind: kindId, spread: spread.id, ownDeck: ownDeck?.id ?? null, deck, question, link: linkedTo, options, byHand, placed, draw, revealed, selected, interpretation, lookBack });
+  // A new draw of its own takes the old one's place.
+  if (key && offerOpen) setOfferOpen(false);
+  useEffect(() => {
+    if (keptIt.current) return;
+    if (key) {
+      owned.current = true;
+      const text = stampDraft(key, new Date());
+      if (text) saveDrawDraft(text);
+    } else if (owned.current) {
+      owned.current = false;
+      void clearDrawDraft();
+    }
+  }, [key]);
+  useEffect(() => {
+    if (lost && offerOpen) void clearDrawDraft();
+  }, [lost, offerOpen]);
+  const offer = offerOpen && !key ? restored : null;
+  const carryOn = () => {
+    if (!restored) return;
+    const { draft, spread: s, ownDeck: od } = restored;
+    setKindId(draft.kind);
+    setDeckId(od?.id ?? null);
+    setSpreadId(s.id);
+    setSettled(true);
+    setQuestion(draft.question);
+    setLink(draft.link);
+    setLocal({ divination_reversals: draft.options.reversals, divination_blank_rune: draft.options.blankRune });
+    setLocalDeck(draft.deck);
+    setByHand(draft.byHand);
+    setPlaced(draft.placed);
+    setDraw(draft.draw);
+    setRevealed(draft.revealed);
+    setSelected(draft.selected);
+    setInterpretation(draft.interpretation);
+    setLookBack(draft.lookBack);
+    setPicking(false);
+    setOfferOpen(false);
+  };
+  const letGo = () => {
+    setOfferOpen(false);
+    setStored(null);
+    void clearDrawDraft();
+  };
+
   return (
     <RitualScreen back="Back">
       <Title eyebrow="Draw · Divination">{kindId === 'oracle' && ownDeck ? ownDeck.data.name : kind.label}</Title>
+
+      {offer && (
+        <Card accent>
+          <SectionLabel>Pick up where you left off?</SectionLabel>
+          <Body>{draftSummary(offer, now)}</Body>
+          <Body muted>A draw you hadn’t kept yet is still here, just as you left it.</Body>
+          <View style={ui.actions}>
+            <Button label="Carry on" onPress={carryOn} />
+            <Button label="Let it go" variant="text" onPress={letGo} />
+          </View>
+        </Card>
+      )}
 
       <View style={ui.gapSmall}>
         <SectionLabel>What to draw</SectionLabel>
