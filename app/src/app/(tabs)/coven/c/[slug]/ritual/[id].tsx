@@ -5,6 +5,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../../../../../components/Button';
 import { CovenScreen, covenHref } from '../../../../../../components/covens/CovenScreen';
 import { ContributionList, MyContribution, Participation } from '../../../../../../components/covens/Contributions';
+import { ApologyNote } from '../../../../../../components/covens/Record';
 import { Pill, Pills, Spoken, Words } from '../../../../../../components/covens/ui';
 import { Card, Chips, Notice, Section } from '../../../../../../components/more/ui';
 import * as api from '../../../../../../lib/covens/api';
@@ -29,6 +30,7 @@ import {
   stepIsMine,
   type Rsvp,
 } from '../../../../../../lib/covens/model';
+import { ATTENDED_LABEL, attendedAs, type AttendanceRow } from '../../../../../../lib/covens/record';
 import { syncCovenReminders } from '../../../../../../lib/covens/reminders';
 import { colors, radius, type } from '../../../../../../theme';
 
@@ -105,6 +107,39 @@ export default function RitualScreen() {
     return () => track('coven');
   }, [live, id, loadMarks, track]);
 
+  // Attendance (the members' record): opening a ritual while it's under way
+  // counts you as there; "Can't make it" can carry a note for the leaders,
+  // who see who sent word and who was there, and can correct it.
+  const [attendance, setAttendance] = useState<AttendanceRow[]>([]);
+  const [people, setPeople] = useState<string[]>([]);
+  const [attendanceVersion, setAttendanceVersion] = useState(0);
+  const isMember = coven.perms.member;
+  const leads = (coven.perms.lead && coven.standing.ok) || coven.perms.site;
+  useEffect(() => {
+    if (!live || !id || !isMember) return;
+    void api.recordPresence(id).then((row) => row && setAttendanceVersion((v) => v + 1));
+  }, [live, id, isMember]);
+  const ritualStatus = coven.rituals.find((r) => r.id === id)?.status;
+  useEffect(() => {
+    if (!id || !ritualStatus || ritualStatus === 'draft') return;
+    let off = false;
+    void api.fetchAttendance(id).catch(() => [] as AttendanceRow[]).then((rows) => {
+      if (off) return;
+      setAttendance(rows);
+      void loadNames(rows.map((r) => r.user_id));
+    });
+    return () => {
+      off = true;
+    };
+  }, [id, ritualStatus, attendanceVersion, loadNames]);
+  useEffect(() => {
+    if (!leads || !covenId || (ritualStatus !== 'live' && ritualStatus !== 'done')) return;
+    void api.fetchMembers(covenId).then((list) => {
+      setPeople(list.map((m) => m.user_id));
+      void loadNames(list.map((m) => m.user_id));
+    }).catch(() => {});
+  }, [leads, covenId, ritualStatus, loadNames]);
+
   const act = async (work: () => Promise<unknown>, after?: () => Promise<unknown>) => {
     setBusy(true);
     setMessage(null);
@@ -127,6 +162,11 @@ export default function RitualScreen() {
   }
 
   const answers = rsvpSummary(coven.rsvps, ritual.id, coven.userId);
+  const myAttendance = attendance.find((a) => a.user_id === coven.userId);
+  const attendanceOf = (userId: string) => attendance.find((a) => a.user_id === userId);
+  const withNotes = answers.notGoing.map((r) => ({ userId: r.user_id, row: attendanceOf(r.user_id) }));
+  const changeAttendance = (work: () => Promise<unknown>) => void act(work, async () => setAttendanceVersion((v) => v + 1));
+  const heldAt = ritual.scheduled_for ?? new Date().toISOString();
   const answer = async (response: Rsvp['response']) => {
     const next = response === answers.mine ? null : response;
     await act(
@@ -231,6 +271,42 @@ export default function RitualScreen() {
             {[`${answers.going.length} going`, answers.maybe.length ? `${answers.maybe.length} maybe` : '', answers.notGoing.length ? `${answers.notGoing.length} can’t make it` : ''].filter(Boolean).join(' · ')}
           </Text>
           {answers.going.length > 0 && <Text style={type.caption}>Going: {answers.going.map((r) => coven.nameOf(r.user_id)).join(', ')}</Text>}
+          {answers.mine === 'not_going' && coven.perms.member && coven.standing.ok && (
+            <ApologyNote key={myAttendance?.apology ?? ''} sent={myAttendance?.apology ?? null} busy={busy} onSend={(note) => changeAttendance(() => api.sendApology(ritual.id, note))} />
+          )}
+          {leads &&
+            withNotes.map(({ userId, row }) => (
+              <View key={userId} style={styles.sent}>
+                <Text style={type.caption}>
+                  {coven.nameOf(userId)} can’t make it{row?.apology ? `: “${row.apology}”` : '.'}
+                  {row?.excused ? ' Excused.' : ''}
+                </Text>
+                <Button label={row?.excused ? 'Not excused' : 'Excuse the absence'} variant="text" disabled={busy} onPress={() => changeAttendance(() => api.excuseAbsence(ritual.id, userId, !row?.excused))} />
+              </View>
+            ))}
+        </Section>
+      )}
+
+      {leads && (ritual.status === 'live' || ritual.status === 'done') && people.length > 0 && (
+        <Section label="Who was there">
+          <Text style={type.caption}>Someone counts as there when they open the ritual while it’s under way. Correct it for anyone who joined in person.</Text>
+          {people.map((userId) => {
+            const row = attendanceOf(userId);
+            const state = attendedAs({ status: ritual.status, held_at: heldAt }, row, '1970-01-01T00:00:00Z');
+            return (
+              <View key={userId} style={styles.sent}>
+                <Text style={type.body}>
+                  {coven.nameOf(userId)} · {ATTENDED_LABEL[state === 'under_way' ? 'missed' : state]}
+                  {row?.marked_by ? ' (marked)' : ''}
+                </Text>
+                <View style={styles.lead}>
+                  {row?.present !== true && <Button label="Was there in person" variant="text" disabled={busy} onPress={() => changeAttendance(() => api.markAttendance(ritual.id, userId, true))} />}
+                  {row?.present === true && <Button label="Wasn’t there" variant="text" disabled={busy} onPress={() => changeAttendance(() => api.markAttendance(ritual.id, userId, false))} />}
+                  {row?.present !== true && <Button label={row?.excused ? 'Not excused' : 'Excuse the absence'} variant="text" disabled={busy} onPress={() => changeAttendance(() => api.excuseAbsence(ritual.id, userId, !row?.excused))} />}
+                </View>
+              </View>
+            );
+          })}
         </Section>
       )}
 
@@ -393,6 +469,7 @@ export default function RitualScreen() {
 
 const styles = StyleSheet.create({
   lead: { gap: 10 },
+  sent: { gap: 2 },
   step: { gap: 2, paddingVertical: 8, paddingHorizontal: 12, borderRadius: radius.tile, borderWidth: 1, borderColor: colors.hairline },
   stepNow: { borderColor: colors.gold },
 });

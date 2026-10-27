@@ -2960,6 +2960,23 @@ export const HELP: HelpSection[] = [
         keywords: ['petition', 'prayer request', 'hold', 'tend', 'candle', 'circle'],
       },
       {
+        id: 'covens-record',
+        title: 'Keep track of who is taking part',
+        summary: 'The members’ record: every rite each member came to, their studies and their mentoring, for the coven’s head and those they choose.',
+        steps: [
+          'Open your coven and tap "Members", then "Members’ record" (or Manage → "Members’ record").',
+          'Everyone is listed least active first, with how many rituals they came to, when they last took part, their studies and their mentor. Choose how far back to look, and narrow it to positions or people under "Only these".',
+          'Tap someone for every ritual since they joined, whether they were there, sent word or were excused, their studies, their mentoring, and private notes only the record’s keepers read.',
+          'Someone counts as there when they open the ritual while it’s under way. Tap "Was there in person" or "Wasn’t there" to correct it, and "Excuse the absence" when they sent word.',
+          'The coven’s head chooses who else keeps the record, and whether mentees read their mentor’s check-ins, at the foot of the record.',
+        ],
+        tips: [
+          'Every member sees their own under My path → "My standing", without the leaders’ notes. Mentors log their check-ins there too.',
+          'The record never shows what anyone wrote, or their one-to-one and group conversations: only counts and kinds.',
+        ],
+        keywords: ['attendance', 'participation', 'record', 'standing', 'inactive', 'revoke membership', 'remove member', 'mentor check-in', 'excused', 'can’t make it'],
+      },
+      {
         id: 'covens-powers',
         title: 'Decide what each position in your coven can do',
         summary: 'The coven’s head decides who can do everything: positions carry the powers.',

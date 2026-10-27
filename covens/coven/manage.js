@@ -22,8 +22,10 @@
   // --- Members -------------------------------------------------------------
 
   const CovenMembers = {
-    async mount(pane, state, { refresh }) {
+    async mount(pane, state, { refresh, covenHref }) {
       pane.innerHTML = `<p class="sp-caption">Gathering the members…</p>`;
+      const keepsRecord = Boolean(global.CovenRecordAccess?.seesRecord(state));
+      const recordHref = (userId) => `${covenHref("record")}${userId ? `&member=${encodeURIComponent(userId)}` : ""}`;
       const [members, signatures] = await Promise.all([D.members(state.coven.id).catch(() => []), state.perms.review || state.perms.site ? D.covenSignatures(state.coven.id).catch(() => []) : Promise.resolve(null)]);
       await UI.loadNames(state.context, members.map((m) => m.user_id));
       const { perms, context, coven } = state;
@@ -56,12 +58,13 @@
                   <button class="button button--ghost button--small" type="submit" data-act="banned">Ban from coven</button>` : ""}
                 ${perms.founder || perms.site ? `<button class="button button--ghost button--small" type="submit" data-act="transfer">Hand on leadership</button>` : ""}
               </form>${statusLine()}` : ""}
-              ${m.user_id !== me ? `<div class="sp-actions"><button class="button button--ghost button--small" type="button" data-report-member>Report</button></div>` : ""}
+              ${m.user_id !== me || keepsRecord ? `<div class="sp-actions">${keepsRecord ? `<a class="button button--ghost button--small" href="${esc(recordHref(m.user_id))}" data-tab="record">Their record</a>` : ""}${m.user_id !== me ? `<button class="button button--ghost button--small" type="button" data-report-member>Report</button>` : ""}</div>` : ""}
             </div></details>`;
       };
 
       const formerCount = members.length - active.length;
-      pane.innerHTML = `<section class="sp-section"><h2>${active.length} member${active.length === 1 ? "" : "s"}</h2>${active.map(row).join("")}</section>
+      pane.innerHTML = `${keepsRecord ? `<p class="sp-caption"><a href="${esc(recordHref())}" data-tab="record">Members’ record</a>: who has been taking part and who hasn’t.</p>` : ""}${state.perms.member ? `<p class="sp-caption">Your own standing is under <a href="${esc(covenHref("path"))}" data-tab="path">My path</a>.</p>` : ""}
+        <section class="sp-section"><h2>${active.length} member${active.length === 1 ? "" : "s"}</h2>${active.map(row).join("")}</section>
         ${formerCount && (perms.moderate || perms.site) ? `<details class="sp-details"><summary>Former members (${formerCount})</summary><div class="sp-list">${members
           .filter((m) => m.status !== "active")
           .map((m) => `<div class="sp-row"><span class="sp-row__text"><span class="sp-row__title">${esc(UI.nameOf(context, m.user_id))}</span><span class="sp-row__detail">${esc({ left: "Left", removed: "Removed", banned: "Banned from the coven" }[m.status] || m.status)}</span></span>

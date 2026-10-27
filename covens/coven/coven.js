@@ -7,7 +7,9 @@
  * covens/coven/chat.js), Rituals (steps given to members or positions, run
  * live, covens/coven/rituals.js), Altars (whole altars, shared and live:
  * covens/coven/altar.js lists them, the altar page tends them), Members and My path (their
- * position, agreements and requests to advance). Reviewers get Review and
+ * position, agreements, requests to advance and their own standing). Those
+ * who keep the members' record get Members' record (covens/coven/record.js).
+ * Reviewers get Review and
  * leaders Manage (covens/coven/manage.js). Site moderators see every tab.
  * Review counts the applications and requests to advance waiting (never
  * your own), kept current while the page is open (SaltCore.covens.requests).
@@ -55,6 +57,8 @@
       if (userId && state.ritualSteps.some((s) => s.contribution?.timing === "ahead")) state.myContributions = await D.myContributions(userId).catch(() => []);
     }
     if (state.perms.member || state.perms.site) await loadProgramWork();
+    // Who keeps the members' record (the head chooses; covens/coven/record.js).
+    if (state.perms.member || state.perms.site) state.recordSettings = await D.recordSettings(coven.id).catch(() => null);
     if (coven.founder_id) await UI.loadNames(context, [coven.founder_id]);
   }
 
@@ -132,6 +136,7 @@
         { key: "programs", label: "Initiation & training", count: state.waitingForMe || 0 },
         { key: "members", label: "Members" }
       );
+      if (global.CovenRecordAccess?.seesRecord(state)) list.push({ key: "record", label: "Members’ record" });
     }
     if (perms.member) list.push({ key: "path", label: "My path", count: state.unsigned.length });
     if (perms.review || perms.site) list.push({ key: "review", label: "Review", count: state.pending.applications + state.pending.advancements });
@@ -243,7 +248,7 @@
       ${tabBar(tab)}
       <div class="cv-pane" data-pane></div>`;
     const pane = root.querySelector("[data-pane]");
-    const views = { about, join, path, gathering: () => mount(global.CovenChat), rituals: () => mount(global.CovenRituals), book: () => mount(global.CovenBook), petitions: () => mount(global.CovenPetitions), programs: () => mount(global.CovenPrograms), altar: () => mount(global.CovenAltar), members: () => mount(global.CovenMembers), review: () => mount(global.CovenReview), manage: () => mount(global.CovenManage) };
+    const views = { about, join, path, gathering: () => mount(global.CovenChat), rituals: () => mount(global.CovenRituals), book: () => mount(global.CovenBook), petitions: () => mount(global.CovenPetitions), programs: () => mount(global.CovenPrograms), altar: () => mount(global.CovenAltar), members: () => mount(global.CovenMembers), record: () => mount(global.CovenRecord), review: () => mount(global.CovenReview), manage: () => mount(global.CovenManage) };
     function mount(module) {
       if (!module) return (pane.innerHTML = `<p class="sp-notice">This part of the coven couldn’t load. Please refresh the page.</p>`);
       mounted = module;
@@ -439,11 +444,14 @@
           ${powers.length ? `<p class="sp-caption">Your position ${esc(powers.join(", "))}.</p>` : ""}
           <p class="sp-caption">Member since ${esc(new Date(state.membership.joined_at).toLocaleDateString())}${perms.muted ? ` · messages paused until ${esc(new Date(state.membership.muted_until).toLocaleString())}` : ""}</p>
         </div></section>
+      <details class="sp-details" data-standing-details><summary>My standing: your rituals, studies and mentoring, as the coven’s leaders see them</summary><div data-standing></div></details>
       <section class="sp-section"><h2>Agreements</h2><div data-signer></div></section>
       <section class="sp-section"><h2>Rise to a higher position</h2><div data-advance></div></section>
       ${perms.founder ? "" : `<section class="sp-section"><h2>Leaving</h2><div class="sp-actions"><button class="button button--ghost" type="button" data-leave>Leave ${esc(coven.name)}</button></div><p class="cv-status" role="status" aria-live="polite" data-leave-status></p></section>`}`;
 
     signer(pane.querySelector("[data-signer]"), () => refresh("path"));
+    const standing = pane.querySelector("[data-standing-details]");
+    standing.addEventListener("toggle", () => standing.open && !standing.dataset.loaded && (standing.dataset.loaded = "1") && global.CovenStanding?.mount(standing.querySelector("[data-standing]"), state));
 
     const advance = pane.querySelector("[data-advance]");
     const history = advancements.filter((a) => a.status !== "pending").slice(0, 5);

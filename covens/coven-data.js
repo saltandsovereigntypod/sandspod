@@ -372,6 +372,24 @@
     ritualSettings: (covenId) => run(db().from("coven_ritual_settings").select("coven_id,participation_viewers").eq("coven_id", covenId).maybeSingle()),
     setParticipationViewers: (covenId, viewers) => rpc("set_coven_participation_viewers", { p_coven: covenId, p_viewers: viewers }),
 
+    // --- the members' record (as the app's lib/covens/api.ts) --------------------
+    recordSettings: (covenId) => run(db().from("coven_ritual_settings").select("coven_id,record_viewers,mentees_see_checkins").eq("coven_id", covenId).maybeSingle()),
+    setRecordViewers: (covenId, viewers, menteesSeeCheckins) => rpc("set_coven_record_viewers", { p_coven: covenId, p_viewers: viewers, p_mentees_see_checkins: Boolean(menteesSeeCheckins) }),
+    recordOverview: (covenId, since) => rpc("coven_member_record_overview", { p_coven: covenId, p_since: since || null }),
+    memberRecord: (covenId, userId) => rpc("coven_member_record", { p_coven: covenId, p_user: userId }),
+    /** Called when you open a ritual that's under way (once is enough; quietly does nothing before the database has it). */
+    recordPresence: (ritualId) => rpc("record_coven_ritual_presence", { p_ritual: ritualId }).catch(() => null),
+    attendance: (ritualId) => run(db().from("coven_ritual_attendance").select("ritual_id,coven_id,user_id,present,joined_at,marked_by,apology,apology_at,excused").eq("ritual_id", ritualId)),
+    markAttendance: (ritualId, userId, present) => rpc("mark_coven_ritual_attendance", { p_ritual: ritualId, p_user: userId, p_present: present }),
+    sendApology: (ritualId, note) => rpc("send_coven_ritual_apology", { p_ritual: ritualId, p_note: String(note || "").trim() || null }),
+    excuseAbsence: (ritualId, userId, excused) => rpc("excuse_coven_ritual_absence", { p_ritual: ritualId, p_user: userId, p_excused: Boolean(excused) }),
+    logCheckin: (covenId, userId, metOn, note) => rpc("log_coven_mentor_checkin", { p_coven: covenId, p_user: userId, p_met_on: metOn, p_note: String(note || "").trim() || null }),
+    removeCheckin: (id) => rpc("remove_coven_mentor_checkin", { p_checkin: id }),
+    addMemberNote: (covenId, userId, body) => rpc("add_coven_member_note", { p_coven: covenId, p_user: userId, p_body: String(body || "").trim() }),
+    removeMemberNote: (id) => rpc("remove_coven_member_note", { p_note: id }),
+    /** Remove or ban someone, keeping the reason with their record. */
+    removeMember: (covenId, userId, status, reason) => rpc("remove_coven_member", { p_coven: covenId, p_user: userId, p_status: status, p_reason: String(reason || "").trim() || null }),
+
     // --- the coven's Book of Shadows -------------------------------------------
     bookPages: (covenId) => run(db().from("coven_book_pages").select("*").eq("coven_id", covenId).order("title", { ascending: true }).limit(500)),
     bookDrafts: (covenId) => run(db().from("coven_book_drafts").select("*").eq("coven_id", covenId).neq("status", "published").order("updated_at", { ascending: false }).limit(200)),

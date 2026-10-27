@@ -1,14 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { router } from 'expo-router';
+
 import { Sheet } from '../../../../../components/altar/Sheet';
 import { Button } from '../../../../../components/Button';
-import { CovenScreen } from '../../../../../components/covens/CovenScreen';
+import { covenHref, CovenScreen } from '../../../../../components/covens/CovenScreen';
 import { Pill, Pills, useReport } from '../../../../../components/covens/ui';
 import { Card, Chips, MenuList, MenuRow, Notice, Section } from '../../../../../components/more/ui';
 import * as api from '../../../../../lib/covens/api';
 import { useCoven } from '../../../../../lib/covens/CovenContext';
 import { actsOn, errorMessage, grantableRanks, unsignedAgreements, type Member, type Signature } from '../../../../../lib/covens/model';
+import { seesRecord, type RecordSettings } from '../../../../../lib/covens/record';
 import { colors, type } from '../../../../../theme';
 
 const PAUSES = [
@@ -35,6 +38,7 @@ export default function Members() {
   const [pause, setPause] = useState<(typeof PAUSES)[number]['value']>('24');
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [recordSettings, setRecordSettings] = useState<RecordSettings | null>(null);
 
   const load = useCallback(async () => {
     if (!covenId) return;
@@ -51,6 +55,9 @@ export default function Members() {
   useEffect(() => {
     void load();
   }, [load]);
+  useEffect(() => {
+    if (covenId) void api.fetchRecordSettings(covenId).then(setRecordSettings).catch(() => {});
+  }, [covenId]);
 
   const info = coven.snapshot?.coven;
   const founder = info?.founder_id;
@@ -87,6 +94,7 @@ export default function Members() {
       { text: label, style: 'destructive', onPress: () => void act(work, done) },
     ]);
 
+  const keepsRecord = seesRecord({ founder: perms.founder, site: perms.site, settings: recordSettings, membership: coven.snapshot?.membership, userId: coven.userId });
   const selected = open;
   const name = selected ? coven.nameOf(selected.user_id) : '';
   const manageable = !!selected && !!info && actsOn(selected, perms, info, ranks, coven.userId) && keeper;
@@ -97,6 +105,17 @@ export default function Members() {
     <CovenScreen title="Members" onRefresh={load}>
       {!members && <ActivityIndicator color={colors.gold} style={styles.loading} />}
       {members && <Text style={type.caption}>{active.length} {active.length === 1 ? 'member' : 'members'} · tap someone for more</Text>}
+      {members && coven.perms.member && (
+        <MenuList>
+          {keepsRecord && <MenuRow label="Members’ record" detail="Who has been taking part and who hasn’t" icon="community" onPress={() => router.push(covenHref(coven.slug, 'record'))} />}
+          <MenuRow label="My standing" detail="Your own record, as the coven’s leaders see it" icon="journey" last onPress={() => router.push(covenHref(coven.slug, 'standing'))} />
+        </MenuList>
+      )}
+      {members && !coven.perms.member && coven.perms.site && (
+        <MenuList>
+          <MenuRow label="Members’ record" detail="Who has been taking part and who hasn’t" icon="community" last onPress={() => router.push(covenHref(coven.slug, 'record'))} />
+        </MenuList>
+      )}
       {message && !open && <Notice>{message}</Notice>}
       {active.map((m) => {
         const me = m.user_id === coven.userId;
@@ -155,6 +174,16 @@ export default function Members() {
               Joined {new Date(selected.joined_at).toLocaleDateString()}
               {muted ? ` · messages paused until ${new Date(selected.muted_until!).toLocaleString()}` : ''}
             </Text>
+            {keepsRecord && (
+              <Button
+                label="Their record"
+                variant="outline"
+                onPress={() => {
+                  setOpen(null);
+                  router.push(covenHref(coven.slug, `record/${selected.user_id}`));
+                }}
+              />
+            )}
             {manageable && grantable.length > 0 && (perms.review || perms.site) && (
               <Section label="Position">
                 <Chips label="Position" options={grantable.map((r) => ({ value: r.id, label: r.name }))} value={rankId} onChange={setRankId} />
