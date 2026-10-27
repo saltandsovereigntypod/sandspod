@@ -14,3 +14,8 @@ export * as reading from '../../app/src/lib/covens/reading.ts';
 export * as requests from '../../app/src/lib/covens/requests.ts';
 // A coven altar's chat window and deleting an altar for good (who may, and the words asked first).
 export * as altarPanel from '../../app/src/lib/covens/altarPanel.ts';
+// Coven ritual planning: the one search picker (WHO and its ranking), the
+// step actions, and what a step asks of people and who may read it.
+export * as picker from '../../app/src/lib/covens/picker.ts';
+export * as stepActions from '../../app/src/lib/covens/stepActions.ts';
+export * as contributions from '../../app/src/lib/covens/contributions.ts';

@@ -4,11 +4,12 @@
 // and work waiting for you to sign off. Shared by the app's Today screen and
 // the website's (as SaltCore.covens.today). Each client loads the rows.
 
+import { assigneesOf, includesMember } from './picker.ts';
 import { covenHolidaysBetween, enrollmentSummary, menteesOf, programOutline, waitingForMe, type CovenCalendar, type Enrollment, type Mentorship, type Program, type ProgramStage, type ProgramTask, type TaskProgress } from './programs.ts';
 
 type Coven = CovenCalendar & { id: string; slug: string; name: string; founder_id?: string | null };
 type Ritual = { id: string; coven_id: string; title: string; status: string; scheduled_for: string | null; current_step_id: string | null; occasion?: string | null; occasion_name?: string | null };
-type Step = { id: string; ritual_id: string; assigned_user_id: string | null; assigned_rank_id: string | null; title: string };
+type Step = { id: string; ritual_id: string; assigned_user_id: string | null; assigned_rank_id: string | null; assignees?: unknown; title: string };
 type Rsvp = { ritual_id: string; user_id: string; response: 'going' | 'maybe' | 'not_going' };
 type Membership = { coven_id: string; user_id: string; rank_id: string | null; status: string };
 
@@ -51,12 +52,8 @@ const when = (iso: string, now: Date) => {
   return d.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }) + ` at ${time}`;
 };
 
-function stepIsMine(step: Step, membership: Membership | undefined, userId: string) {
-  if (!membership || membership.status !== 'active') return false;
-  if (step.assigned_user_id) return step.assigned_user_id === userId;
-  if (step.assigned_rank_id) return step.assigned_rank_id === membership.rank_id;
-  return true;
-}
+// Its people (picker.ts), or for older steps its one person or position.
+const stepIsMine = (step: Step, membership: Membership | undefined, userId: string) => includesMember(assigneesOf(step), membership ?? null, userId);
 
 export function covenTodayItems(input: CovenTodayInput, now = new Date()): CovenTodayItem[] {
   const { userId } = input;

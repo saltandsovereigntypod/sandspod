@@ -86,7 +86,7 @@ export const archiveAltar = (altarId: string, archived: boolean) => call<boolean
 /** Delete an altar for good, with everything on it (its keepers only; rituals held there go back to the main altar). */
 export const deleteAltar = (altarId: string) => call<boolean>('delete_coven_altar', { p_altar: altarId });
 export const altarAccess = (altarId: string) => call<AltarAccess>('coven_altar_access', { p_altar: altarId });
-export const setRitualAltar = (ritualId: string, altarId: string | null, access: ('assigned' | 'everyone' | 'leader')[] | null) =>
+export const setRitualAltar = (ritualId: string, altarId: string | null, access: ('assigned' | 'everyone' | 'leader' | 'chosen')[] | null) =>
   call('set_coven_ritual_altar', { p_ritual: ritualId, p_altar: altarId, p_access: access });
 
 // ─── The document, as rows ──────────────────────────────────────────────
