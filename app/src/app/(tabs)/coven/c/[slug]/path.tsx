@@ -89,6 +89,10 @@ export default function MyPath() {
             </Text>
           </Card>
 
+          <MenuList>
+            <MenuRow label="My standing" detail="Your rituals, studies and mentoring, as the coven’s leaders see them" icon="journey" last onPress={() => router.push(covenHref(coven.slug, 'standing'))} />
+          </MenuList>
+
           <Section label="Agreements">
             {coven.unsigned.length ? (
               <>
