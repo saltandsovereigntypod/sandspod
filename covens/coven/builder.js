@@ -378,7 +378,9 @@
     const writes = ask && (kinds.find((k) => k.id === ask.kind) || {}).verb === "write";
     const effects = A().ALTAR_EFFECTS;
     const effect = effects.find((e) => e.value === (step.altar_action || "")) || effects[0];
-    const linked = step.details.book_page_id ? m.pages.find((p) => p.id === step.details.book_page_id) || { title: step.details.book_page_title || "A page of the Book" } : null;
+    // A linked page you can't open (or that's gone) shows only that; its title stays with those who can (as the app's StepFocus).
+    const linkedPage = step.details.book_page_id ? m.pages.find((p) => p.id === step.details.book_page_id) : null;
+    const linked = step.details.book_page_id ? (linkedPage && !linkedPage.hidden ? linkedPage : { title: (linkedPage && linkedPage.hidden) || m.pages.length ? global.SaltCore.grimoire.access.HIDDEN_PAGE : step.details.book_page_title || "A page of the Book" }) : null;
     const blocked = problems()[step.key];
     const access = [{ value: "assigned", label: "Whoever does the step" }, { value: "everyone", label: "Everyone" }, { value: "leader", label: "Only the leader" }, { value: "chosen", label: "Chosen people" }];
     return `${back()}<p class="sp-eyebrow">Step ${index + 1}${sectionName(step) ? ` · ${esc(sectionName(step))}` : ""}</p>
@@ -427,6 +429,7 @@
   function pageChoices(query) {
     const q = String(query || "").trim().toLowerCase();
     return m.pages
+      .filter((p) => !p.hidden)
       .filter((p) => !q || `${p.title} ${p.section || ""}`.toLowerCase().includes(q))
       .slice(0, 8)
       .map((p) => `<button type="button" class="cv-choice" data-act="link-page" data-id="${esc(p.id)}">${esc(p.title)}${p.section ? ` <span class="sp-caption">· ${esc(p.section)}</span>` : ""}</button>`)

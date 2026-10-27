@@ -17,6 +17,7 @@ import {
   isTransient,
   pageInsert,
   pageLinkInsert,
+  pageSectionPatch,
   pageTitlePatch,
   reorder,
   retryDelay,
@@ -37,10 +38,11 @@ import { newId } from './ids';
 import { openSectionIn, pageBlocks } from './structure';
 import type { BlockRow, BlockType, BookRow, GrimoireSnapshot, PageLinkRow, PageRow, SectionRow } from './types';
 
-const cacheKey = (userId: string) => `grimoire.snapshot.${userId}`;
-const pendingKey = (userId: string) => `grimoire.pending.${userId}`;
+// Keyed by person (and, for a coven's book, by coven too: see GrimoireSource.key).
+const cacheKey = (base: string) => `grimoire.snapshot.${base}`;
+const pendingKey = (base: string) => `grimoire.pending.${base}`;
 /** The section last open in the Grimoire, kept on this device. */
-const openSectionKey = (userId: string) => `grimoire.openSection.${userId}`;
+const openSectionKey = (base: string) => `grimoire.openSection.${base}`;
 
 type Status = 'idle' | 'loading' | 'ready' | 'offline' | 'error';
 
@@ -64,6 +66,10 @@ export type GrimoireActions = {
   /** The section being viewed (a page's section, or null for the top level), as the website's activeSectionId. */
   setOpenSection: (sectionId: string | null) => void;
   renamePage: (pageId: string, title: string) => void;
+  /** Moves a page up or down among the pages of its section (its own order). */
+  movePage: (pageId: string, direction: 'up' | 'down') => void;
+  /** Files a page in a section (a folder of your own), or none. */
+  filePage: (pageId: string, sectionId: string | null) => void;
   deletePage: (pageId: string) => void;
   addBlock: (pageId: string, type: BlockType) => string | null;
   /** Appends a template's blocks to an existing page without removing anything. */
@@ -120,7 +126,32 @@ async function fetchSnapshot(): Promise<GrimoireSnapshot> {
   };
 }
 
-type SendResult = { ok: true } | { ok: false; retry: boolean; message: string };
+export type SendResult = { ok: true } | { ok: false; retry: boolean; message: string };
+
+/**
+ * Where a book lives. Your own grimoire reads and writes the grimoire_*
+ * tables; a coven's book (lib/grimoire/covenStore.ts) the coven_grimoire_*
+ * ones, through a checked function. The same store, editor and screens work
+ * on either.
+ */
+export type GrimoireSource = {
+  /** Keeps this book's copy and unsent changes apart on the phone: '' for your own, 'coven.<id>' for a coven's. */
+  key: string;
+  fetch: () => Promise<GrimoireSnapshot>;
+  send: (op: Op) => Promise<SendResult>;
+  /** Whether More → Account shows this book's saving (your own only). */
+  report: boolean;
+};
+
+/** The result of a Supabase call, as the queue reads it. */
+export function sendResult(op: Op, response: { error: { code?: string; message?: string } | null; status: number }): SendResult {
+  if (!response.error) return { ok: true };
+  const error: SendError = { status: response.status, code: response.error.code, message: response.error.message };
+  if (alreadyApplied(op, error)) return { ok: true };
+  return { ok: false, retry: isTransient(error), message: error.message ?? 'Not saved' };
+}
+
+const PERSONAL: GrimoireSource = { key: '', fetch: fetchSnapshot, send: sendOp, report: true };
 
 async function sendOp(op: Op): Promise<SendResult> {
   try {
@@ -131,18 +162,19 @@ async function sendOp(op: Op): Promise<SendResult> {
         : op.kind === 'update'
           ? await table.update(op.patch).eq('id', op.id)
           : await table.delete().eq('id', op.id);
-    if (!response.error) return { ok: true };
-    const error: SendError = { status: response.status, code: response.error.code, message: response.error.message };
-    if (alreadyApplied(op, error)) return { ok: true };
-    return { ok: false, retry: isTransient(error), message: error.message ?? 'Not saved' };
+    return sendResult(op, response);
   } catch (e) {
     return { ok: false, retry: true, message: e instanceof Error ? e.message : String(e) };
   }
 }
 
-export function GrimoireProvider({ children }: { children: ReactNode }) {
+export function GrimoireProvider({ children, source = PERSONAL }: { children: ReactNode; source?: GrimoireSource }) {
   const { session } = useSession();
   const userId = session?.user.id ?? null;
+  // Where this book's copy is kept on the phone: per person, and per coven for a coven's book.
+  const base = userId ? (source.key ? `${userId}.${source.key}` : userId) : null;
+  const sourceRef = useRef(source);
+  // A provider keeps its source (a coven's book remounts per coven).
   const [snapshot, setSnapshot] = useState<GrimoireSnapshot | null>(null);
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
@@ -168,8 +200,10 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
     setFailed(failedRef.current);
   }, []);
 
+  const baseRef = useRef<string | null>(base);
+
   const persist = useCallback(async () => {
-    const id = userRef.current;
+    const id = baseRef.current;
     if (!id) return;
     try {
       // The queue first: it's the part that can't be fetched again.
@@ -197,7 +231,7 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
       let waiting = false;
       while (queueRef.current.length && userRef.current === owner) {
         const op = queueRef.current[0];
-        const result = await sendOp(op);
+        const result = await sourceRef.current.send(op);
         if (userRef.current !== owner) return;
         const drop = () => {
           const at = queueRef.current.indexOf(op);
@@ -269,7 +303,7 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
     setError(null);
     await flush();
     try {
-      const fresh = await fetchSnapshot();
+      const fresh = await sourceRef.current.fetch();
       if (userRef.current !== owner) return;
       // Anything not yet saved stays on top of what the server sent.
       snapRef.current = applyOps(fresh, [...queueRef.current, ...failedRef.current.map((f) => f.op)]);
@@ -285,6 +319,7 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     userRef.current = userId;
+    baseRef.current = base;
     snapRef.current = null;
     queueRef.current = [];
     failedRef.current = [];
@@ -295,9 +330,9 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
     publish();
     setStatus('idle');
     setSync('idle');
-    if (!userId) return;
+    if (!userId || !base) return;
     let active = true;
-    AsyncStorage.getItem(openSectionKey(userId))
+    AsyncStorage.getItem(openSectionKey(base))
       .then((saved) => {
         // Unless a section was opened while this was being read.
         if (!active || openSectionRef.current !== undefined || !saved) return;
@@ -305,7 +340,7 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
         setOpenSectionId(saved);
       })
       .catch(() => {});
-    Promise.all([AsyncStorage.getItem(cacheKey(userId)), AsyncStorage.getItem(pendingKey(userId))])
+    Promise.all([AsyncStorage.getItem(cacheKey(base)), AsyncStorage.getItem(pendingKey(base))])
       .then(([cached, pending]) => {
         if (!active) return;
         if (pending) {
@@ -324,10 +359,11 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
       active = false;
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [userId, refresh, publish]);
+  }, [userId, base, refresh, publish]);
 
   // More → Account shows whether changes are reaching the account.
-  useEffect(() => reportSync('grimoire', userId, sync), [userId, sync]);
+  const report = source.report;
+  useEffect(() => (report ? reportSync('grimoire', userId, sync) : undefined), [report, userId, sync]);
 
   // Try again as soon as the app comes back to the foreground.
   useEffect(() => {
@@ -343,7 +379,7 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
     const findBlock = (id: string) => snap()?.blocks.find((b) => b.id === id) ?? null;
     const findPage = (id: string) => snap()?.pages.find((p) => p.id === id) ?? null;
     const openSection = (sectionId: string | null) => {
-      const id = userRef.current;
+      const id = baseRef.current;
       if (!id || openSectionRef.current === sectionId) return;
       openSectionRef.current = sectionId;
       setOpenSectionId(sectionId);
@@ -422,6 +458,21 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
       renamePage(pageId, title) {
         const page = findPage(pageId);
         const op = page ? pageTitlePatch(ctx(), page, title) : null;
+        if (op) commit([op]);
+      },
+      movePage(pageId, direction) {
+        const s = snap();
+        const page = findPage(pageId);
+        if (!s || !page) return;
+        const siblings = s.pages
+          .filter((p) => p.book_id === page.book_id && (p.section_id ?? null) === (page.section_id ?? null))
+          .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0) || (a.created_at ?? '').localeCompare(b.created_at ?? ''));
+        commit(sortOrderOps('grimoire_pages', reorder(siblings, pageId, direction)));
+      },
+      filePage(pageId, sectionId) {
+        const s = snap();
+        const page = findPage(pageId);
+        const op = s && page ? pageSectionPatch(s, ctx(), page, sectionId) : null;
         if (op) commit([op]);
       },
       deletePage(pageId) {

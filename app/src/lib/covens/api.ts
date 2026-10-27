@@ -9,7 +9,6 @@ import type {
   AltarItem,
   Application,
   CovenDraft,
-  BookDraft,
   BookPage,
   Coven,
   CovenDocument,
@@ -32,6 +31,10 @@ import type { Assignee } from './picker';
 import type { AttendanceRow, Checkin, MemberRecord, RecordOverview, RecordSettings } from './record';
 import type { RitualRecord } from './script';
 import { readOverview, type PathsSettings } from './paths';
+import type { Access } from '../grimoire/access';
+import type { Gathering } from '../grimoire/coven';
+import type { PageVersion } from '../grimoire/history';
+import type { ReviewDecision, Submission, SubmissionBlock } from '../grimoire/submissions';
 
 const COVEN_FIELDS =
   'id,slug,name,tagline,description,tradition,tags,meeting_rhythm,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,practice_traditions,practice_holidays,practice_custom,practice_calendars,founder_id,created_at,member_count';
@@ -368,12 +371,102 @@ export async function fetchRecentlyEnded(userId: string): Promise<(Ritual & { co
 
 // ─── The coven's Book of Shadows ─────────────────────────────────────────
 
-export const fetchBookPages = (covenId: string) => run<BookPage[]>(supabase.from('coven_book_pages').select('*').eq('coven_id', covenId).order('title').limit(500));
-export const fetchBookDrafts = (covenId: string) =>
-  run<BookDraft[]>(supabase.from('coven_book_drafts').select('*').eq('coven_id', covenId).neq('status', 'published').order('updated_at', { ascending: false }).limit(200));
-export const saveBookDraft = (covenId: string, draftId: string | null, pageId: string | null, fields: { title: string; section: string; body: string }, submit: boolean) =>
-  rpc<BookDraft>('save_coven_book_draft', { p_coven: covenId, p_draft: draftId, p_page: pageId, p_title: fields.title.trim(), p_section: fields.section.trim() || null, p_body: fields.body, p_submit: submit });
-export const reviewBookDraft = (draftId: string, approve: boolean, note: string) => rpc<BookDraft>('review_coven_book_draft', { p_draft: draftId, p_approve: approve, p_note: note.trim() || null });
+// The book itself (pages, blocks, sections) is read and written by the
+// grimoire store (lib/grimoire/covenStore.tsx); these are the rest
+// (supabase/migrations/20261106000000_coven_grimoire.sql).
+
+/**
+ * The pages the ritual builder links words from, as plain text, only those
+ * you can open. Pages named in `ids` that you can't open come back marked
+ * hidden (shown as "A page you can't open").
+ */
+export const fetchBookPages = (covenId: string, ids: string[] = []) =>
+  rpc<BookPage[]>('coven_grimoire_page_texts', { p_coven: covenId, p_ids: ids.length ? ids : null }).then((rows) => (rows ?? []).sort((a, b) => a.title.localeCompare(b.title)));
+
+/** The coven's book and its sections you can see (for choosing where a suggestion goes). */
+export async function fetchBookSections(covenId: string): Promise<{ bookId: string; sections: { id: string; title: string; shelf: string | null; sort_order: number }[] }> {
+  const book = await rpc<{ id: string }>('open_coven_grimoire', { p_coven: covenId });
+  const sections = await run<{ id: string; title: string; shelf: string | null; sort_order: number }[]>(
+    supabase.from('coven_grimoire_sections').select('id,title,shelf,sort_order').eq('book_id', book.id).order('sort_order'),
+  );
+  return { bookId: book.id, sections };
+}
+
+/** Suggestions for the coven's book you may see (your own, and those you approve). */
+export const fetchSubmissions = (covenId: string) =>
+  run<Submission[]>(supabase.from('coven_grimoire_submissions').select('*').eq('coven_id', covenId).order('updated_at', { ascending: false }).limit(200)).catch(() => [] as Submission[]);
+/** Your suggestions in every coven (for a page of your own grimoire). */
+export const fetchMySubmissions = (userId: string) =>
+  run<Submission[]>(supabase.from('coven_grimoire_submissions').select('*').eq('submitted_by', userId).order('updated_at', { ascending: false }).limit(200)).catch(() => [] as Submission[]);
+
+/** A suggestion (rings those who approve it), or the answer to one (rings whoever shared it). */
+export function notifyBook(row: unknown) {
+  const id = (row as { id?: string } | null)?.id;
+  const status = (row as { status?: string } | null)?.status;
+  if (!id || status === 'draft') return;
+  void supabase.functions.invoke('coven-notify', { body: { grimoire_submission_id: id } }).catch(() => {});
+}
+
+export async function submitPage(input: {
+  covenId: string;
+  sectionId: string | null;
+  pageId?: string | null;
+  title: string;
+  pageType?: string | null;
+  blocks: SubmissionBlock[];
+  note?: string;
+  sourcePageId?: string | null;
+  submissionId?: string | null;
+  send?: boolean;
+}): Promise<Submission> {
+  const row = await rpc<Submission>('submit_coven_grimoire_page', {
+    p_coven: input.covenId,
+    p_section: input.sectionId,
+    p_page: input.pageId ?? null,
+    p_title: input.title.trim(),
+    p_page_type: input.pageType ?? null,
+    p_blocks: input.blocks,
+    p_note: input.note?.trim() || null,
+    p_source_page: input.sourcePageId ?? null,
+    p_submission: input.submissionId ?? null,
+    p_send: input.send ?? true,
+  });
+  notifyBook(row);
+  return row;
+}
+
+export async function reviewSubmission(id: string, decision: ReviewDecision, note: string, changes: { title?: string; sectionId?: string | null; blocks?: SubmissionBlock[] } = {}): Promise<Submission> {
+  const row = await rpc<Submission>('review_coven_grimoire_submission', {
+    p_submission: id,
+    p_decision: decision,
+    p_note: note.trim() || null,
+    p_title: changes.title?.trim() || null,
+    p_section: changes.sectionId ?? null,
+    p_blocks: changes.blocks ?? null,
+  });
+  notifyBook(row);
+  return row;
+}
+
+export const removeSubmission = (id: string) => rpc('remove_coven_grimoire_submission', { p_submission: id });
+export const setBookAccess = (kind: 'book' | 'section' | 'page', id: string, access: Access) => rpc<Access>('set_coven_grimoire_access', { p_kind: kind, p_id: id, p_access: access });
+export const setBookLayout = (bookId: string, layout: Record<string, unknown>) => rpc('set_coven_grimoire_layout', { p_book: bookId, p_layout: layout });
+export const fetchVersions = (pageId: string) =>
+  run<PageVersion[]>(supabase.from('coven_grimoire_versions').select('*').eq('page_id', pageId).order('saved_at', { ascending: false }).limit(100));
+export const restoreVersion = (versionId: string) => rpc('restore_coven_grimoire_version', { p_version: versionId });
+
+/** What the ritual builder saves into the Book: a rite, an agenda, a record or minutes, once per gathering. */
+export async function saveGathering(covenId: string, ritualId: string, what: Gathering, title: string, blocks: unknown[]): Promise<{ status: string; page_id: string | null; submission_id?: string }> {
+  const result = await rpc<{ status: string; page_id: string | null; submission_id?: string }>('save_coven_grimoire_gathering', {
+    p_coven: covenId,
+    p_ritual: ritualId,
+    p_what: what,
+    p_title: title.slice(0, 200),
+    p_blocks: blocks,
+  });
+  if (result.submission_id) notifyBook({ id: result.submission_id, status: result.status });
+  return result;
+}
 
 // ─── Petitions ───────────────────────────────────────────────────────────
 

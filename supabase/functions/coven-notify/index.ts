@@ -1,5 +1,5 @@
 import { createClient, type SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
-import { answerNote, isFresh, requestNote, reviewersOf, wantsNotice, type Note } from "./requests.ts";
+import { answerNote, bookAnswerNote, bookNote, isFresh, requestNote, reviewersOf, wantsNotice, type Note } from "./requests.ts";
 
 // Phone notifications for covens: a new message, a new application or
 // request to advance, and the answer to one.
@@ -17,6 +17,13 @@ import { answerNote, isFresh, requestNote, reviewersOf, wantsNotice, type Note }
 // the reviewer who just decided it, it tells the one who asked. Each rings
 // once (coven_request_notices, when that table exists), only while fresh,
 // and only for those whose Reminders choices want it (requests.ts wantsNotice).
+//
+// { grimoire_submission_id }: a suggestion for a coven's Book of Shadows
+// (supabase/migrations/20261106000000_coven_grimoire.sql). Called by whoever
+// just sent it, it tells those who approve that part of the book
+// (coven_grimoire_submission_approvers), never the sharer; called by the one
+// who just decided it, it tells the sharer. Once each, while fresh, and only
+// for those whose Reminders choices want coven requests.
 
 const EXPO_PUSH = "https://exp.host/--/api/v2/push/send";
 
@@ -41,9 +48,11 @@ Deno.serve(async (request) => {
   let messageId = "";
   let requestId = "";
   let requestKind: "application" | "advancement" = "application";
+  let submissionId = "";
   try {
     const payload = (await request.json()) || {};
     messageId = String(payload.message_id || "");
+    if (payload.grimoire_submission_id) submissionId = String(payload.grimoire_submission_id);
     if (payload.application_id) requestId = String(payload.application_id);
     else if (payload.advancement_id) {
       requestId = String(payload.advancement_id);
@@ -54,6 +63,10 @@ Deno.serve(async (request) => {
   }
   const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   const admin = createClient(url, service, { auth: { persistSession: false } });
+  if (submissionId) {
+    if (!UUID.test(submissionId)) return reply(400, { error: "bad_request" });
+    return bookSubmission(admin, sender, submissionId);
+  }
   if (requestId) {
     if (!UUID.test(requestId)) return reply(400, { error: "bad_request" });
     return covenRequest(admin, sender, requestKind, requestId);
@@ -212,6 +225,74 @@ async function covenRequest(admin: SupabaseClient, caller: string, kind: "applic
     channelId: "coven-requests",
     threadId: `requests:${r.coven_id}`,
     data: { source, url: note.url, covenId: r.coven_id, kind, requestId: id },
+  }));
+  return reply(200, { sent: await push(admin, notes) });
+}
+
+/** A suggestion for a coven's Book (to those who approve it), or the answer to one (to whoever suggested it). */
+async function bookSubmission(admin: SupabaseClient, caller: string, id: string) {
+  const { data: row } = await admin
+    .from("coven_grimoire_submissions")
+    .select("id,coven_id,page_id,source_page_id,title,status,submitted_by,reviewer_id,reviewer_note,published_page_id,submitted_at,updated_at")
+    .eq("id", id)
+    .maybeSingle();
+  if (!row) return reply(404, { error: "not_found" });
+  const s = row as { coven_id: string; page_id: string | null; source_page_id: string | null; title: string; status: string; submitted_by: string; reviewer_id: string | null; reviewer_note: string | null; published_page_id: string | null; submitted_at: string | null; updated_at: string };
+
+  // Only the sharer rings for a new one, and only the one who decided it for the answer.
+  let event: "new" | "answer";
+  if (s.status === "pending" && s.submitted_by === caller) {
+    if (!isFresh(s.submitted_at)) return reply(409, { error: "too_old" });
+    event = "new";
+  } else if (["approved", "returned", "declined"].includes(s.status) && s.reviewer_id === caller && s.submitted_by !== caller) {
+    if (!isFresh(s.updated_at)) return reply(409, { error: "too_old" });
+    event = "answer";
+  } else return reply(404, { error: "not_found" });
+
+  // Once each (a page sent back and sent again rings again: its event key carries when).
+  const claimEvent = event === "new" ? `new:${s.submitted_at}` : `${s.status}:${s.updated_at}`;
+  const { error: claim } = await admin.from("coven_request_notices").insert({ request_kind: "grimoire_submission", request_id: id, event: claimEvent.slice(0, 60) });
+  if (claim?.code === "23505") return reply(409, { error: "already_sent" });
+
+  const { data: coven } = await admin.from("covens").select("name,slug,status").eq("id", s.coven_id).single();
+  if (!coven || coven.status !== "active") return reply(404, { error: "not_found" });
+
+  let recipients: string[];
+  let note: Note;
+  if (event === "new") {
+    const [{ data: approvers }, { data: profile }] = await Promise.all([
+      admin.rpc("coven_grimoire_submission_approvers", { p_submission: id }),
+      admin.from("coven_profiles").select("display_name").eq("user_id", s.submitted_by).maybeSingle(),
+    ]);
+    recipients = [...new Set(((approvers as string[] | null) || []).map(String))].filter((u) => u !== s.submitted_by);
+    if (recipients.length) {
+      const { data: blocks } = await admin.from("user_blocks").select("blocker_id").eq("blocked_id", s.submitted_by).in("blocker_id", recipients);
+      const blocking = new Set((blocks || []).map((b) => b.blocker_id));
+      recipients = recipients.filter((u) => !blocking.has(u));
+    }
+    note = bookNote({ covenName: coven.name, covenSlug: coven.slug, who: profile?.display_name || "Someone", title: s.title, changes: !!s.page_id, shared: !!s.source_page_id });
+  } else {
+    recipients = [s.submitted_by];
+    note = bookAnswerNote({ covenName: coven.name, covenSlug: coven.slug, title: s.title, status: s.status as "approved" | "returned" | "declined", note: s.reviewer_note, pageId: s.published_page_id });
+  }
+  if (!recipients.length) return reply(200, { sent: 0 });
+
+  const { data: settings } = await admin.from("user_settings").select("user_id,reminders:settings->>reminders_v2").in("user_id", recipients);
+  const saved = new Map((settings || []).map((x: { user_id: string; reminders: string | null }) => [x.user_id, x.reminders]));
+  const now = new Date();
+  const listeners = recipients.filter((u) => wantsNotice(saved.get(u) ?? null, event, s.coven_id, now));
+  if (!listeners.length) return reply(200, { sent: 0 });
+
+  const { data: tokens } = await admin.from("push_tokens").select("token,user_id").in("user_id", listeners);
+  if (!tokens?.length) return reply(200, { sent: 0 });
+  const notes: Push[] = tokens.map((t) => ({
+    to: t.token,
+    title: note.title,
+    body: note.body,
+    sound: "default",
+    channelId: "coven-requests",
+    threadId: `book:${s.coven_id}`,
+    data: { source: event === "new" ? "coven-book" : "coven-book-answer", url: note.url, covenId: s.coven_id, submissionId: id },
   }));
   return reply(200, { sent: await push(admin, notes) });
 }

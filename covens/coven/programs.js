@@ -35,6 +35,38 @@
   const params = () => new URLSearchParams(global.location.search);
   const statusLine = () => `<p class="cv-status" role="status" aria-live="polite" data-status></p>`;
   const link = (extra) => `${helpers.covenHref("programs")}${extra ? `&${extra}` : ""}`;
+  // Study material: pages of the coven's Book a task links to ([[book:<id>|Title]], SaltCore.grimoire.coven).
+  const GC = () => global.SaltCore?.grimoire?.coven;
+  const studyText = (text) => (GC() ? GC().withoutStudyLinks(text) : String(text || ""));
+  const studyButtons = (text) => {
+    const links = GC() ? GC().studyLinks(text) : [];
+    return links.length
+      ? `<div class="sp-actions">${links.map((l) => `<a class="button button--ghost button--small" href="${esc(`${helpers.covenHref("book")}&page=${encodeURIComponent(l.id)}`)}" data-tab="book">Study: ${esc(l.title)}</a>`).join("")}</div>`
+      : "";
+  };
+  let studyPages = null;
+  if (typeof document !== "undefined") {
+    document.addEventListener("focusin", async (event) => {
+      const select = event.target.closest?.("[data-study-link]");
+      if (!select || select.dataset.filled || !state) return;
+      select.dataset.filled = "1";
+      studyPages = studyPages || (await global.CovenData.bookPages(state.coven.id).catch(() => []));
+      const list = studyPages.filter((p) => !p.hidden).sort((a, b) => Number(b.section === "Study material") - Number(a.section === "Study material") || a.title.localeCompare(b.title));
+      select.innerHTML = `<option value="">Choose a page…</option>${list.map((p) => `<option value="${esc(p.id)}">${esc(p.section ? `${p.title} · ${p.section}` : p.title)}</option>`).join("")}`;
+    });
+    document.addEventListener("change", (event) => {
+      const select = event.target.closest?.("[data-study-link]");
+      if (!select || !select.value || !GC()) return;
+      const page = (studyPages || []).find((p) => p.id === select.value);
+      const area = select.closest(".sp-field")?.querySelector('textarea[name="resources"]');
+      if (page && area) {
+        const linkText = GC().studyLink(page);
+        if (!area.value.includes(linkText)) area.value = `${area.value.trim()}${area.value.trim() ? "\n" : ""}${linkText}`;
+        area.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+      select.value = "";
+    });
+  }
   const outline = (programId) => P().programOutline(programId, data.stages, data.tasks);
   const program = (id) => data.programs.find((p) => p.id === id);
   const mentorOf = (userId) => P().mentorOf(state.mentors || [], userId);
@@ -162,7 +194,7 @@
           <div class="cv-task__head"><span class="cv-task__mark" aria-hidden="true">${st.state === "approved" ? "✓" : st.state === "submitted" ? "…" : "○"}</span>
             <div><h4>${esc(t.title)}${t.optional ? ` <span class="sp-muted">(optional)</span>` : ""}</h4>
               <p class="sp-caption">${esc(P().kindLabel(t.kind))}${t.times > 1 ? ` · ${t.times} times` : ""}${t.minutes ? ` · about ${t.minutes} min` : ""}${holiday ? ` · ${esc(holiday)}` : ""} · signed off by ${esc(P().checkedByLabel(t.checked_by).toLowerCase())} · <strong>${esc(st.label)}</strong></p></div></div>
-          ${stageState === "later" ? "" : `${t.instructions ? `<div class="cv-doc">${prose(t.instructions)}</div>` : ""}${t.resources ? `<p class="sp-caption"><strong>Resources:</strong> ${prose(t.resources)}</p>` : ""}`}
+          ${stageState === "later" ? "" : `${t.instructions ? `<div class="cv-doc">${prose(t.instructions)}</div>` : ""}${studyText(t.resources) ? `<p class="sp-caption"><strong>Resources:</strong> ${prose(studyText(t.resources))}</p>` : ""}${studyButtons(t.resources)}`}
           ${row?.response ? `<div class="cv-response"><p class="sp-caption">${self ? "What you wrote" : `What ${esc(nameOf(person))} wrote`}</p><div class="cv-doc">${prose(row.response)}</div></div>` : ""}
           ${row?.feedback ? `<p class="cv-feedback"><strong>${row.status === "returned" ? "Sent back" : "Note"}${row.checked_by ? ` from ${esc(nameOf(row.checked_by))}` : ""}:</strong> ${esc(row.feedback)}</p>` : ""}
           ${canWork ? `<form class="sp-section" data-work="${esc(t.id)}">
@@ -413,7 +445,8 @@
           <div class="sp-field"><label>Kind<select name="kind">${opt(P().TASK_KINDS, t.kind)}</select></label></div>
         </div>
         <div class="sp-field"><label>Instructions<textarea name="instructions" rows="4" maxlength="8000">${esc(t.instructions || "")}</textarea></label></div>
-        <div class="sp-field"><label>Resources (books, links, people to ask)<textarea name="resources" rows="2" maxlength="4000">${esc(t.resources || "")}</textarea></label></div>
+        <div class="sp-field"><label>Resources (books, links, people to ask)<textarea name="resources" rows="2" maxlength="4000">${esc(t.resources || "")}</textarea></label>
+          <label class="sp-caption">Link a page of the coven’s Book (it shows as a button that opens it)<select data-study-link><option value="">Choose a page…</option></select></label></div>
         <div class="sp-grid-2">
           <div class="sp-field"><label>Times to do it<input name="times" type="number" min="1" max="400" value="${esc(t.times || 1)}" /></label></div>
           <div class="sp-field"><label>About how long (minutes)<input name="minutes" type="number" min="0" max="1440" value="${esc(t.minutes ?? "")}" /></label></div>
@@ -572,6 +605,7 @@
     pane = el;
     state = covenState;
     helpers = tools;
+    studyPages = null;
     pane.innerHTML = `<p class="sp-caption">Gathering the coven’s programs…</p>`;
     pane.addEventListener("click", onClick);
     global.addEventListener("popstate", draw);

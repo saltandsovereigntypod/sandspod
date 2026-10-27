@@ -18,13 +18,14 @@ import { ALTAR_ACCESS } from '../../../lib/covens/draft';
 import { cleanValues, partsOf, type FieldValues } from '../../../lib/covens/fields';
 import { assigneeFromKey, assigneeKey, cleanAssignees, type Assignee, type PickEntry } from '../../../lib/covens/picker';
 import { ACTION_GROUPS, actionLabel, ALTAR_EFFECTS, applyAction, searchActions, type ActionGroup, type StepAction } from '../../../lib/covens/stepActions';
+import { HIDDEN_PAGE } from '../../../lib/grimoire/access';
 import { colors, fonts, radius, touch, type } from '../../../theme';
 import { Button } from '../../Button';
 import { Card, Chips, Field, Notice, Section } from '../../more/ui';
 import { SearchPicker } from '../SearchPicker';
 import { FieldRenderer, MultiChips, type FieldContext } from './FieldRenderer';
 
-type BookPageLike = { id: string; title: string; section: string | null };
+type BookPageLike = { id: string; title: string; section: string | null; hidden?: boolean };
 
 // One step, on its own (ritual/plan.tsx opens it from the outline): what it
 // is (an action, or one of the coven's own), its name, who does it and how
@@ -115,8 +116,10 @@ export function StepFocus({
   const ask = step.contribution;
   const setAsk = (patch: Partial<StepContribution>) => ask && onChange({ contribution: { ...ask, ...patch } });
   const writes = ask ? kindOf(ask.kind).verb === 'write' : false;
-  const linked = step.details.book_page_id ? pages.find((p) => p.id === step.details.book_page_id) ?? { id: step.details.book_page_id, title: step.details.book_page_title ?? 'A page of the Book', section: null } : null;
-  const pageMatches = pages.filter((p) => !pageQuery.trim() || `${p.title} ${p.section ?? ''}`.toLowerCase().includes(pageQuery.trim().toLowerCase())).slice(0, 8);
+  // A linked page you can't open (or that's gone) shows only that; its title stays with those who can.
+  const linkedPage = step.details.book_page_id ? pages.find((p) => p.id === step.details.book_page_id) : undefined;
+  const linked = step.details.book_page_id ? (linkedPage && !linkedPage.hidden ? linkedPage : { id: step.details.book_page_id, title: linkedPage?.hidden || pages.length ? HIDDEN_PAGE : (step.details.book_page_title ?? 'A page of the Book'), section: null }) : null;
+  const pageMatches = pages.filter((p) => !p.hidden).filter((p) => !pageQuery.trim() || `${p.title} ${p.section ?? ''}`.toLowerCase().includes(pageQuery.trim().toLowerCase())).slice(0, 8);
   const effect = ALTAR_EFFECTS.find((e) => e.value === step.altar_action) ?? ALTAR_EFFECTS[0];
 
   if (choosing) {

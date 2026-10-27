@@ -14,6 +14,7 @@
 // Pure, so it can be tested; the website uses the same (js/core/covens.js).
 
 import { moonState } from '../moon.ts';
+import { HIDDEN_PAGE } from '../grimoire/access.ts';
 import { applyOps, ensureBook, nextOrder, sectionInsert, type Op } from '../grimoire/edits.ts';
 import type { GrimoireSnapshot } from '../grimoire/types.ts';
 import { kindOf } from './contributions.ts';
@@ -49,7 +50,8 @@ export type Script = {
 
 export type Viewer = { membership: { status: string; rank_id: string | null } | null; userId: string | null } | null;
 
-type BookPageLike = { id: string; title: string; body: string };
+/** A page of the coven's Book as the builder reads it; `hidden` when it's there but this viewer can't open it. */
+type BookPageLike = { id: string; title: string; body: string; hidden?: boolean };
 
 /** Whether a WHO key (a role, a position, a person, the whole coven) takes in this viewer. */
 function keyIncludes(key: string, plan: Pick<RitualPlan, 'roles'>, viewer: Viewer): boolean {
@@ -62,6 +64,7 @@ function keyIncludes(key: string, plan: Pick<RitualPlan, 'roles'>, viewer: Viewe
 export function stepWords(step: Pick<BuilderStep, 'spoken_text' | 'details'>, pages: BookPageLike[] = []): { words: string; fromBook?: string } {
   const id = step.details.book_page_id;
   const page = id ? pages.find((p) => p.id === id) : null;
+  if (page?.hidden) return { words: '', fromBook: HIDDEN_PAGE };
   if (page) return { words: page.body, fromBook: page.title };
   return { words: step.spoken_text ?? '' };
 }
@@ -137,7 +140,8 @@ export function buildScript(input: {
           }
         } else {
           const { words, fromBook } = stepWords(step, input.pages);
-          if (words.trim()) {
+          // Words from a page this viewer can't open: only that there are some.
+          if (words.trim() || fromBook === HIDDEN_PAGE) {
             const together = step.turn_mode === 'together';
             lines.push({ who: speakers.length ? speakers.join(' and ') : together ? 'Everyone' : who, words: words.trim(), mine: together ? !!viewer?.userId : mine, ...(fromBook ? { fromBook } : {}) });
           }

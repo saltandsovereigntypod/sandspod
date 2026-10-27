@@ -7,8 +7,10 @@ import { SigilPicture } from '../sigil/SigilPicture';
 import { blockMetadata, blockSource } from '../../lib/grimoire/structure';
 import type { BlockRow, PageRow } from '../../lib/grimoire/types';
 import { fonts } from '../../theme';
+import { HIDDEN_PAGE } from '../../lib/grimoire/access';
 import { faceText, usePageFace } from './presentation';
 import { RichText } from './RichText';
+import { useGrimoireScope } from './scope';
 
 // Ink colors for text printed on the parchment page.
 export const ink = {
@@ -24,6 +26,7 @@ export const ink = {
 type Props = { block: BlockRow; pages: PageRow[] };
 
 export function BlockView({ block, pages }: Props) {
+  const scope = useGrimoireScope();
   const source = blockSource(block);
   const meta = blockMetadata(block);
   const face = usePageFace();
@@ -95,7 +98,8 @@ export function BlockView({ block, pages }: Props) {
     }
     case 'page_link': {
       const target = pages.find((p) => p.id === meta.target_page_id);
-      if (!target) return null;
+      // In a coven's book a missing page is one this person can't open: say only that.
+      if (!target) return scope.kind === 'coven' && meta.target_page_id ? <Text style={styles.caption}>{HIDDEN_PAGE}</Text> : null;
       const label = typeof meta.label === 'string' && meta.label ? meta.label : target.title;
       return <PageLinkButton page={target} label={`Turn to ${label}`} />;
     }
@@ -131,10 +135,11 @@ export function Ornament() {
 }
 
 export function PageLinkButton({ page, label }: { page: PageRow; label: string }) {
+  const scope = useGrimoireScope();
   return (
     <Pressable
       accessibilityRole="link"
-      onPress={() => router.push({ pathname: '/grimoire/[pageId]', params: { pageId: page.id } })}
+      onPress={() => router.push(scope.page(page.id))}
       style={({ pressed }) => [styles.pageLink, pressed && { opacity: 0.7 }]}
     >
       <Text style={styles.pageLinkText}>{label}</Text>
