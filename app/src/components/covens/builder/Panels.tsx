@@ -16,10 +16,12 @@ import {
   ROLE_SUGGESTIONS,
   type BuilderStep,
   type GatheringKind,
+  type MeetingSettings,
   type RitualPlan,
 } from '../../../lib/covens/builder';
+import { meetingRoleId, meetingSettings } from '../../../lib/covens/meetings';
 import { FIELD_TYPES, optionsFromLines, type FieldSpec, type FieldType } from '../../../lib/covens/fields';
-import { assigneeFromKey, assigneeKey, cleanAssignees, type PickEntry } from '../../../lib/covens/picker';
+import { assigneeFromKey, assigneeKey, cleanAssignees, type Assignee, type PickEntry } from '../../../lib/covens/picker';
 import { type } from '../../../theme';
 import { Button } from '../../Button';
 import { Card, Chips, Field, Notice } from '../../more/ui';
@@ -157,17 +159,17 @@ export function ChecklistPanel({ plan, onChange }: { plan: RitualPlan; onChange:
   );
 }
 
-export function AfterwardsPanel({ plan, onChange }: { plan: RitualPlan; onChange: Change }) {
+export function AfterwardsPanel({ plan, kind = 'rite', onChange }: { plan: RitualPlan; kind?: GatheringKind; onChange: Change }) {
   const a = plan.afterwards;
   const set = (patch: Partial<RitualPlan['afterwards']>) => onChange({ plan: { ...plan, afterwards: { ...a, ...patch } } });
   const hold = a.hold_hours ? String(a.hold_hours) : '';
   return (
     <View style={styles.gap}>
-      <Card>
+      {kind !== 'meeting' && <Card>
         <Text style={type.eyebrow}>Leave the altar untouched</Text>
         <Chips label="Leave the altar untouched" options={HOLD_CHOICES.some((h) => h.value === hold) ? HOLD_CHOICES : [...HOLD_CHOICES, { value: hold, label: `${hold} hours` }]} value={hold} onChange={(v) => set({ hold_hours: v ? Number(v) : null })} />
         <Text style={type.caption}>For that long after the rite no one tends or clears the ritual’s altar, its keepers included. Then its leader is reminded to clear it.</Text>
-      </Card>
+      </Card>}
       <Card>
         <Field label="Notes for afterwards" value={a.notes} onChangeText={(v) => set({ notes: v })} multiline maxLength={2000} placeholder="Leave the offerings at the crossroads overnight." />
       </Card>
@@ -182,6 +184,102 @@ export function AfterwardsPanel({ plan, onChange }: { plan: RitualPlan; onChange
           />
         )}
         <Text style={type.caption}>Everyone in the coven is reminded, on the app.</Text>
+      </Card>
+    </View>
+  );
+}
+
+const LEAD_CHOICES = [0, 5, 10, 15, 30, 60].map((n) => ({ value: String(n), label: n ? `${n} min before` : 'At the start' }));
+const LENGTH_CHOICES = [30, 45, 60, 90, 120, 180].map((n) => ({ value: String(n), label: n < 60 ? `${n} min` : n % 60 ? `${Math.floor(n / 60)}½ hours` : n === 60 ? '1 hour' : `${n / 60} hours` }));
+const MINUTES_VIEW = [
+  { value: 'audience', label: 'Those it is for' },
+  { value: 'coven', label: 'The whole coven' },
+] as const;
+
+/**
+ * A meeting's own settings (meetings.ts): who it is for, its Chair and
+ * Secretary, when its chat opens and how long it runs, which meetings it
+ * follows on from, and who reads its minutes. Only meetings show this.
+ */
+export function MeetingPanel({
+  plan,
+  audience,
+  onAudience,
+  who,
+  whoSuggest,
+  whoLabel,
+  historyLine,
+  onChange,
+}: {
+  plan: RitualPlan;
+  audience: Assignee[];
+  onAudience: (next: Assignee[]) => void;
+  who: PickEntry[];
+  whoSuggest: string[];
+  whoLabel: (key: string) => string;
+  /** Who reads the whole chat afterwards, as it stands. */
+  historyLine: string;
+  onChange: Change;
+}) {
+  const s = meetingSettings(plan);
+  const set = (patch: Partial<MeetingSettings>) => onChange({ plan: { ...plan, meeting: { ...(plan.meeting ?? {}), ...patch } } });
+  const entries = who.filter((e) => !e.key.startsWith('role:'));
+  const roleOptions = plan.roles.map((r) => ({ value: r.id, label: r.name }));
+  return (
+    <View style={styles.gap}>
+      <Card>
+        <Text style={type.eyebrow}>Who it’s for</Text>
+        <SearchPicker
+          label="Who it’s for"
+          chips={audience.map((a) => ({ key: assigneeKey(a), label: whoLabel(assigneeKey(a)) }))}
+          entries={entries}
+          suggestions={whoSuggest.filter((k) => !k.startsWith('role:'))}
+          onAdd={(entry) => {
+            const a = assigneeFromKey(entry.key);
+            if (a) onAudience(a.kind === 'coven' ? [] : cleanAssignees([...audience, a]));
+          }}
+          onRemove={(key) => onAudience(audience.filter((a) => assigneeKey(a) !== key))}
+          placeholder="The High Priestess, Elders, the Maiden…"
+          empty="Everyone in the coven"
+        />
+        <Text style={type.caption}>
+          {audience.length
+            ? 'No one else sees this meeting: not its agenda, votes, notes, actions, chat or minutes. Those cast in its roles, whoever plans it and the coven’s head always do.'
+            : 'Everyone in the coven sees it. Choose positions or people to keep it to them.'}
+        </Text>
+      </Card>
+      {plan.roles.length > 0 && (
+        <Card>
+          <Text style={type.eyebrow}>The Chair</Text>
+          <Chips label="The Chair" options={roleOptions} value={meetingRoleId(plan, 'chair') ?? ''} onChange={(v) => set({ chair_role: v })} />
+          <Text style={type.caption}>Whoever plays this role moves the meeting on, gives the floor, calls votes and opens or closes the chat.</Text>
+          <Text style={type.eyebrow}>The Secretary</Text>
+          <Chips label="The Secretary" options={roleOptions} value={meetingRoleId(plan, 'secretary') ?? ''} onChange={(v) => set({ secretary_role: v })} />
+          <Text style={type.caption}>Whoever plays this role keeps the notes for each item, adds the actions, and writes the minutes.</Text>
+        </Card>
+      )}
+      {!plan.roles.length && <Notice tone="muted">Add a Chair and a Secretary under Roles, and they will run the meeting and keep its notes.</Notice>}
+      <Card>
+        <Text style={type.eyebrow}>The meeting’s chat opens</Text>
+        <Chips label="The meeting’s chat opens" options={LEAD_CHOICES.some((c) => c.value === String(s.lead_minutes)) ? LEAD_CHOICES : [...LEAD_CHOICES, { value: String(s.lead_minutes), label: `${s.lead_minutes} min before` }]} value={String(s.lead_minutes)} onChange={(v) => set({ lead_minutes: Number(v) })} />
+        <Text style={type.eyebrow}>It runs for about</Text>
+        <Chips label="It runs for about" options={LENGTH_CHOICES.some((c) => c.value === String(s.length_minutes)) ? LENGTH_CHOICES : [...LENGTH_CHOICES, { value: String(s.length_minutes), label: `${s.length_minutes} min` }]} value={String(s.length_minutes)} onChange={(v) => set({ length_minutes: Number(v) })} />
+        <Text style={type.caption}>
+          The meeting has its own chat, apart from the coven’s. Those it is for can write in it from then until the meeting ends; the Chair can open it early, close it, or keep it open a while longer.
+        </Text>
+        <Text style={type.caption}>Afterwards, the whole chat is read by: {historyLine}. The coven’s head chooses this, on the meeting’s page. Everyone else has the minutes.</Text>
+      </Card>
+      <Card>
+        <Text style={type.eyebrow}>The minutes are read by</Text>
+        <Chips label="The minutes are read by" options={MINUTES_VIEW} value={s.minutes_view} onChange={(v) => set({ minutes_view: v })} />
+        <Field
+          label="Which meetings it follows on from"
+          hint="Actions not yet done carry forward to the next meeting with the same name here."
+          value={plan.meeting?.series ?? ''}
+          onChangeText={(v) => set({ series: v })}
+          maxLength={60}
+          placeholder={s.series}
+        />
       </Card>
     </View>
   );

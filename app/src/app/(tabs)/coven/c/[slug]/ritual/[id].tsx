@@ -6,6 +6,7 @@ import { Button } from '../../../../../../components/Button';
 import { CovenScreen, covenHref } from '../../../../../../components/covens/CovenScreen';
 import { ContributionList, MyContribution, Participation } from '../../../../../../components/covens/Contributions';
 import { ApologyNote } from '../../../../../../components/covens/Record';
+import { MeetingScreen } from '../../../../../../components/covens/meeting/MeetingScreen';
 import { PrepList, RecordCard, StepLines, TurnBox, VoteBox } from '../../../../../../components/covens/builder/LiveParts';
 import { Pill, Pills, Spoken, Words } from '../../../../../../components/covens/ui';
 import { Card, Chips, Notice, Section } from '../../../../../../components/more/ui';
@@ -60,7 +61,15 @@ const ANSWERS = [
 // rituals start it, step back or ahead, and end it. What others wrote shows as
 // each step allows (contributions.ts), and the coven's head, and those the
 // head chooses, see who has taken part.
-export default function RitualScreen() {
+export default function GatheringScreen() {
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const coven = useCoven();
+  // A meeting has its own screen (components/covens/meeting/MeetingScreen.tsx).
+  if (coven.rituals.find((r) => r.id === id)?.kind === 'meeting') return <MeetingScreen key={id} ritualId={id} />;
+  return <RitualScreen />;
+}
+
+function RitualScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const coven = useCoven();
   const [busy, setBusy] = useState(false);

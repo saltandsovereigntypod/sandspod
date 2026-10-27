@@ -5,7 +5,7 @@ import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-nati
 import { Button } from '../../../../../../components/Button';
 import { CovenScreen, covenHref } from '../../../../../../components/covens/CovenScreen';
 import { Outline } from '../../../../../../components/covens/builder/Outline';
-import { AfterwardsPanel, ChecklistPanel, CustomActionForm, RolesPanel, SectionsPanel } from '../../../../../../components/covens/builder/Panels';
+import { AfterwardsPanel, ChecklistPanel, CustomActionForm, MeetingPanel, RolesPanel, SectionsPanel } from '../../../../../../components/covens/builder/Panels';
 import { ScriptView } from '../../../../../../components/covens/builder/ScriptView';
 import { StepFocus } from '../../../../../../components/covens/builder/StepFocus';
 import { Card, Chips, Field, MenuList, MenuRow, Notice, Section } from '../../../../../../components/more/ui';
@@ -43,7 +43,9 @@ import {
 } from '../../../../../../lib/covens/builder';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
 import { errorMessage, OCCASIONS, orderSteps, type BookPage, type Petition } from '../../../../../../lib/covens/model';
-import { whoEntries, whoSuggestions } from '../../../../../../lib/covens/picker';
+import { assigneesLabel, cleanAssignees, whoEntries, whoSuggestions, type Assignee } from '../../../../../../lib/covens/picker';
+import { fetchMeetingDefaults } from '../../../../../../lib/covens/meetingApi';
+import { historyKeys, historyLabel } from '../../../../../../lib/covens/meetings';
 import { fromFields, occasionSuggestions, stepsFromTemplate, suggestionTime, toFields, unassignablePart, type Candidate } from '../../../../../../lib/covens/planner';
 import { covenHolidaysBetween } from '../../../../../../lib/covens/programs';
 import { buildScript } from '../../../../../../lib/covens/script';
@@ -53,7 +55,7 @@ import { colors, radius, type } from '../../../../../../theme';
 
 const NO_OCCASION = { value: '', label: 'None' } as const;
 
-type View_ = 'start' | 'outline' | 'details' | 'roles' | 'sections' | 'prep' | 'after' | 'preview' | 'action' | { step: string };
+type View_ = 'start' | 'outline' | 'details' | 'roles' | 'sections' | 'prep' | 'after' | 'preview' | 'action' | 'meeting' | { step: string };
 
 // The coven ritual builder (lib/covens/builder.ts), as on the website
 // (covens/coven/builder.js). A gathering, a rite or a meeting, starts from a
@@ -66,7 +68,7 @@ type View_ = 'start' | 'outline' | 'details' | 'roles' | 'sections' | 'prep' | '
 // For those who lead the coven's rituals; putting rites on the calendar is
 // for those the coven's head allows.
 export default function PlanRitual() {
-  const { id } = useLocalSearchParams<{ id?: string }>();
+  const { id, kind: kindParam } = useLocalSearchParams<{ id?: string; kind?: string }>();
   const coven = useCoven();
   const ritual = id ? coven.rituals.find((r) => r.id === id) ?? null : null;
   const covenId = coven.snapshot?.coven.id;
@@ -76,7 +78,10 @@ export default function PlanRitual() {
   const keepsSchedule = ritual?.status === 'scheduled';
   const { templates: ownRituals } = useRituals();
 
-  const initialKind: GatheringKind = ritual?.kind === 'meeting' ? 'meeting' : 'rite';
+  const initialKind: GatheringKind = ritual ? (ritual.kind === 'meeting' ? 'meeting' : 'rite') : kindParam === 'meeting' ? 'meeting' : 'rite';
+  // A meeting kept to some (meetings.ts): none is the whole coven.
+  const [audience, setAudience] = useState<Assignee[]>(() => cleanAssignees(ritual?.audience));
+  const [chatDefaults, setChatDefaults] = useState<string[] | null>(null);
   const [kind, setKind] = useState<GatheringKind>(initialKind);
   const [plan, setPlan] = useState<RitualPlan>(() => cleanPlan(ritual?.plan, initialKind));
   const [steps, setSteps] = useState<BuilderStep[]>(() => (ritual ? orderBySections(orderSteps(coven.steps, ritual.id).map((s) => builderStepFrom(s, cleanPlan(ritual.plan, initialKind))), cleanPlan(ritual.plan, initialKind).sections) : []));
@@ -106,6 +111,7 @@ export default function PlanRitual() {
     void api.fetchLibrary(covenId).then(setLibrary);
     api.fetchBookPages(covenId).then(setPages).catch(() => setPages([]));
     api.fetchPetitions(covenId).then(setPetitions).catch(() => setPetitions([]));
+    void fetchMeetingDefaults(covenId).then(setChatDefaults);
   }, [covenId]);
   useEffect(() => {
     if (!covenId) return;
@@ -204,7 +210,7 @@ export default function PlanRitual() {
       const saved = await api.saveRitual(
         covenId,
         ritual?.id ?? null,
-        ritualPayload({ title, intention, description, scheduled_for: when, status: as, occasion, occasion_name: occasionName }, kind, plan),
+        ritualPayload({ title, intention, description, scheduled_for: when, status: as, occasion, occasion_name: occasionName }, kind, plan, kind === 'meeting' ? audience : undefined),
         builderPayload(plan, steps, custom) as unknown as Record<string, unknown>[],
       );
       await coven.refreshRituals();
@@ -349,6 +355,7 @@ export default function PlanRitual() {
           named={namedThings(ordered, custom, index)}
           pages={pages}
           blocked={problems[step.key] ?? ''}
+          kind={kind}
         />
         {message && <Notice>{message}</Notice>}
       </CovenScreen>
@@ -386,7 +393,23 @@ export default function PlanRitual() {
     return (
       <CovenScreen title="Afterwards">
         {back}
-        <AfterwardsPanel plan={plan} onChange={setFromPanel} />
+        <AfterwardsPanel plan={plan} kind={kind} onChange={setFromPanel} />
+      </CovenScreen>
+    );
+  if (view === 'meeting')
+    return (
+      <CovenScreen title="How the meeting runs">
+        {back}
+        <MeetingPanel
+          plan={plan}
+          audience={audience}
+          onAudience={setAudience}
+          who={who}
+          whoSuggest={whoSuggest}
+          whoLabel={whoLabel}
+          historyLine={historyLabel(historyKeys(ritual?.chat_readers, chatDefaults), plan, ranks, coven.nameOf).replace(/^./, (c) => c.toLowerCase())}
+          onChange={setFromPanel}
+        />
       </CovenScreen>
     );
   if (view === 'action' && actionDraft)
@@ -489,6 +512,7 @@ export default function PlanRitual() {
     <CovenScreen title={screenTitle}>
       <MenuList>
         <MenuRow label={title.trim() || 'Name it'} detail={whenLine} onPress={() => setView('details')} />
+        {kind === 'meeting' && <MenuRow label="Who it’s for, and how it runs" detail={`${audience.length ? assigneesLabel(audience, ranks, coven.nameOf) : 'Everyone in the coven'} · chair, secretary, chat, minutes`} onPress={() => setView('meeting')} />}
         <MenuRow label="Roles" detail={rolesLine} onPress={() => setView('roles')} />
         <MenuRow label={kind === 'meeting' ? 'Before the meeting' : 'Before the rite'} detail={plan.checklist.length ? plan.checklist.map((c) => c.text).join(' · ') : 'Nothing to do yet'} onPress={() => setView('prep')} />
         <MenuRow label="Afterwards" detail={afterLine} onPress={() => setView('after')} />

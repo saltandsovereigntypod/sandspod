@@ -106,6 +106,12 @@ export type Ritual = {
   kind?: 'rite' | 'meeting' | null;
   /** Its sections, roles, checklist and afterwards (builder.ts RitualPlan, as saved). */
   plan?: unknown;
+  /** A meeting kept to some (meetings.ts): a list of {kind, id}; null is the whole coven. */
+  audience?: Assignee[] | null;
+  /** Who reads a meeting's whole chat afterwards, as the coven's head chose (meetings.ts historyKeys); null follows the coven's default. */
+  chat_readers?: string[] | null;
+  created_by?: string | null;
+  created_at?: string;
 };
 /** What a step does on the shared altar (stepActions.ts ALTAR_EFFECTS); the first four are the originals. */
 export type AltarAction = 'light_candle' | 'place_item' | 'light_all' | 'snuff_all' | 'release_papers';
@@ -122,6 +128,8 @@ export type RitualStep = {
   assigned_rank_id: string | null;
   completed_at: string | null;
   completed_by: string | null;
+  /** When it was reached in the live ritual (a meeting item's time is counted from it). */
+  started_at?: string | null;
   altar_action: AltarAction | null;
   altar_color: string | null;
   altar_form: string | null;

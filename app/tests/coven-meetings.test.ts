@@ -10,6 +10,7 @@ import { voteOptions } from '../src/lib/covens/fields.ts';
 import { draftFromTemplate, RITUAL_TEMPLATES, templateOf } from '../src/lib/covens/templates.ts';
 import { groupsFor, searchActions } from '../src/lib/covens/stepActions.ts';
 import { tallyVotes } from '../src/lib/covens/script.ts';
+import { covenTendables } from '../src/lib/tend/gather.ts';
 import {
   actionDueLine,
   actionRemindAt,
@@ -277,4 +278,31 @@ test('a meeting is saved with who it is for; a rite never is', () => {
   assert.equal(ritualPayload(fields, 'rite', plan, [{ kind: 'rank', id: 'elder' }]).audience, null);
   assert.equal('audience' in ritualPayload(fields, 'meeting', plan), false, 'left out, the saved one is kept');
   assert.deepEqual(cleanPlan({ ...plan, meeting: { lead_minutes: '999', length_minutes: 2, chair_role: 'nope', minutes_view: 'everyone', series: '  x ' } }, 'meeting').meeting, { lead_minutes: 240, length_minutes: 5, series: 'x' });
+});
+
+test('an action agreed at a meeting lands on its people’s To tend list until it is done', () => {
+  const part = {
+    userId: 'rowan',
+    covens: [{ id: 'cv', slug: 'oak', name: 'Oak Coven' }],
+    memberships: [{ coven_id: 'cv', user_id: 'rowan', rank_id: 'initiate', status: 'active' as const }],
+    petitions: [],
+    tendings: [],
+    contributions: [],
+    rituals: [{ id: 'm1', coven_id: 'cv', title: 'Elders’ meeting', status: 'done', scheduled_for: '2026-12-05T19:00:00Z' }],
+    steps: [],
+    mentorships: [],
+    checkins: [],
+    actions: [
+      { id: 'a1', ritual_id: 'm1', coven_id: 'cv', body: 'Book the hall', assignees: [{ kind: 'user', id: 'rowan' }], due_on: '2026-12-10', status: 'open', created_at: '' },
+      { id: 'a2', ritual_id: 'm1', coven_id: 'cv', body: 'Not mine', assignees: [{ kind: 'rank', id: 'elder' }], due_on: null, status: 'open', created_at: '' },
+      { id: 'a3', ritual_id: 'm1', coven_id: 'cv', body: 'Done already', assignees: [{ kind: 'user', id: 'rowan' }], due_on: null, status: 'done', created_at: '' },
+    ],
+    nameOf,
+  };
+  const items = covenTendables(part, new Date(2026, 11, 1));
+  assert.deepEqual(items.map((i) => i.key), ['action:a1']);
+  assert.equal(items[0].kind, 'action');
+  assert.deepEqual(items[0].actions, ['done', 'open']);
+  assert.equal(items[0].dueAt, new Date(2026, 11, 9).getTime(), 'a day before it is due');
+  assert.match(items[0].href, /ritual\/m1$/);
 });

@@ -102,7 +102,7 @@ export function TurnBox({
 }
 
 /** A vote under way: the motion, the answers to choose from, and the count as it may be shown. */
-export function VoteBox({ motion, options, row, secret, canVote, steers, busy, nameOf, onVote, onClose }: { motion: string; options: string[]; row: VoteRow | undefined; secret: boolean; canVote: boolean; steers: boolean; busy: boolean; nameOf: (id: string) => string; onVote: (choice: string) => void; onClose: () => void }) {
+export function VoteBox({ motion, options, row, secret, canVote, steers, busy, nameOf, onVote, onClose, result }: { motion: string; options: string[]; row: VoteRow | undefined; secret: boolean; canVote: boolean; steers: boolean; busy: boolean; nameOf: (id: string) => string; onVote: (choice: string) => void; onClose: () => void; /** The result in words once closed (a meeting's motion: its threshold and quorum). */ result?: (counts: Record<string, number>) => string }) {
   const closed = !!row?.closed;
   const counts = row?.counts ?? null;
   return (
@@ -120,7 +120,7 @@ export function VoteBox({ motion, options, row, secret, canVote, steers, busy, n
         !closed && <Text style={type.caption}>This vote is for those named on it.</Text>
       )}
       <Text style={type.caption}>{row ? `${row.total} ${row.total === 1 ? 'vote' : 'votes'} cast.` : ''}</Text>
-      {counts && <Text style={type.body}>{closed ? voteResult(tallyVotes(options, Object.entries(counts).flatMap(([choice, n]) => Array.from({ length: n }, () => ({ choice }))))) : options.map((o) => `${o}: ${counts[o] ?? 0}`).join(' · ')}</Text>}
+      {counts && <Text style={type.body}>{closed && result ? result(counts) : closed ? voteResult(tallyVotes(options, Object.entries(counts).flatMap(([choice, n]) => Array.from({ length: n }, () => ({ choice }))))) : options.map((o) => `${o}: ${counts[o] ?? 0}`).join(' · ')}</Text>}
       {!secret && !!row?.ballots?.length && <Text style={type.caption}>{row.ballots.map((b) => `${nameOf(b.user_id)}: ${b.choice}`).join(' · ')}</Text>}
       {steers && !closed && <Button label="Close the vote" variant="text" onPress={onClose} disabled={busy} />}
     </Card>

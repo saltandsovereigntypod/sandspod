@@ -3,7 +3,8 @@
 // a pot that would like water, a coven petition you asked or have held, what
 // you wrote in a coven ritual and are still holding, a journey's practice for
 // today, a "Did it work?" whose day has come, what a rite asks you to write
-// before it, a mentee waiting for a check-in. Each one is tended by its own
+// before it, a mentee waiting for a check-in, an action agreed at a coven
+// meeting. Each one is tended by its own
 // source's tending (gather.ts says how), so the altar and everything else
 // stay as they are everywhere.
 //
@@ -31,7 +32,8 @@ export type TendKind =
   | 'journey'
   | 'lookback'
   | 'coven-task'
-  | 'checkin';
+  | 'checkin'
+  | 'action';
 
 /** What can be done from the list, each by its own source's tending. */
 export type TendAction =
@@ -45,6 +47,7 @@ export type TendAction =
   | 'answer' // "Did it work?"
   | 'write' // write what a rite asks of you
   | 'checkin' // log a mentor's check-in
+  | 'done' // an action from a coven meeting, done
   | 'open'; // open it where it lives
 
 /** How something ends. */
@@ -100,6 +103,7 @@ export const KIND_LABEL: Record<TendKind, { label: string; plural: string; one: 
   lookback: { label: 'Did it work?', plural: 'Did it work?', one: 'look-back', many: 'look-backs' },
   'coven-task': { label: 'Before the rite', plural: 'Before the rite', one: 'task before a rite', many: 'tasks before a rite' },
   checkin: { label: 'Mentor check-in', plural: 'Mentor check-ins', one: 'mentor check-in', many: 'mentor check-ins' },
+  action: { label: 'From a meeting', plural: 'From meetings', one: 'action from a meeting', many: 'actions from meetings' },
 };
 
 // ─── Rhythms ─────────────────────────────────────────────────────────────

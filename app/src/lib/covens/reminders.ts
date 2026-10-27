@@ -2,7 +2,8 @@
 // might), the day before and an hour before; and, for covens you lead,
 // time to plan a ritual for the coven's holidays and to prepare its rites
 // (Reminders → Ritual planning); and what a rite asks you to write or bring
-// ahead of time, two days before it. This reads your covens and hands them to
+// ahead of time, two days before it; and actions agreed at a meeting, the
+// day before each is due. This reads your covens and hands them to
 // the reminders (lib/reminders/store.ts), which schedule them with
 // everything else, so quiet hours, the pause and the phone's limit hold for
 // them too, and a tap opens the rite or the coven.
@@ -13,6 +14,8 @@ import { covenSources } from '../reminders/covens';
 import { setCovenSources } from '../reminders/store';
 import { fetchMyContributions, fetchMyPrepTicks, fetchMyRites, fetchMyStandings, fetchRecentlyEnded, fetchSteps } from './api';
 import { afterwardsTasks, prepTasks } from './builder';
+import { fetchOpenActions } from './meetingApi';
+import { actionTasks } from './meetings';
 import { ritualTasks } from './contributions';
 import { riteReminders } from './model';
 import { assigneesOf } from './picker';
@@ -33,12 +36,15 @@ export async function syncCovenReminders(userId: string | null, { ask = false } 
     // The checklist before each rite you're coming to, and after a rite: clearing the altar (its leader) and any follow-up.
     const [ticks, ended] = await Promise.all([fetchMyPrepTicks(userId), fetchRecentlyEnded(userId).catch(() => [])]);
     const coming = rites.filter((r) => r.response === 'going' || r.response === 'maybe');
+    const actions = await fetchOpenActions(standings.map((st) => st.coven.id));
+    const titleOf = (id: string) => rites.find((r) => r.ritual.id === id)?.ritual.title ?? '';
     const tasks = standings.flatMap((st) => {
       const here = (list: typeof rites) => list.filter((r) => r.coven.id === st.coven.id);
       return [
         ...ritualTasks(here(rites).map((r) => r.ritual), steps, done, st.membership, userId, assigneesOf),
         ...prepTasks(here(coming).map((r) => r.ritual), ticks),
         ...afterwardsTasks(ended.filter((r) => r.coven_id === st.coven.id), userId),
+        ...actionTasks(actions.filter((a) => a.coven_id === st.coven.id), () => st.membership, userId, titleOf),
       ].map((t) => ({ ...t, covenId: st.coven.id }));
     });
     setCovenSources(covenSources(standings, rites, userId, new Date(), 90, tasks));

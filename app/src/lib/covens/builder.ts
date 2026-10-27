@@ -586,11 +586,15 @@ export function ritualPayload(
   kind: GatheringKind,
   plan: RitualPlan,
   audience?: Assignee[] | null,
-) {
-  const base = { ...fields, title: fields.title.trim(), intention: fields.intention.trim(), description: fields.description.trim(), occasion_name: fields.occasion_name.trim(), kind, plan: cleanPlan(plan, kind) };
+): ReturnType<typeof basePayload> & { audience?: Assignee[] | null } {
+  const base = basePayload(fields, kind, plan);
   if (audience === undefined) return base;
   const list = kind === 'meeting' ? cleanAssignees(audience ?? []) : [];
   return { ...base, audience: list.length && !list.some((a) => a.kind === 'coven') ? list : null };
+}
+
+function basePayload(fields: { title: string; intention: string; description: string; scheduled_for: string | null; status: string; occasion: string; occasion_name: string }, kind: GatheringKind, plan: RitualPlan) {
+  return { ...fields, title: fields.title.trim(), intention: fields.intention.trim(), description: fields.description.trim(), occasion_name: fields.occasion_name.trim(), kind, plan: cleanPlan(plan, kind) };
 }
 
 /** What stops the gathering being saved, or ''. */

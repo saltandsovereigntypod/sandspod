@@ -18,6 +18,8 @@ export type FieldContext = {
   /** Things named by earlier steps, for "which candle". */
   named: NamedThing[];
   actionId: string;
+  /** Pages of the coven's Book this person can open, for papers a report or an item links. */
+  pages?: { id: string; title: string; section: string | null; hidden?: boolean }[];
 };
 
 /** Toggle chips for "any of" choices. */
@@ -201,6 +203,24 @@ export function FieldRenderer({ specs, values, onChange, ctx, only }: { specs: F
                   </View>
                 ))}
               </View>
+            );
+          }
+          case 'pages': {
+            const list = (Array.isArray(v) ? v : []) as string[];
+            const pages = (ctx.pages ?? []).filter((p) => !p.hidden);
+            const titleOf = (id: string) => pages.find((p) => p.id === id)?.title ?? 'A page you can’t open';
+            return (
+              <SearchPicker
+                key={spec.key}
+                label={spec.label}
+                hint={spec.hint}
+                chips={list.map((id) => ({ key: id, label: titleOf(id) }))}
+                entries={pages.map((p) => ({ key: p.id, label: p.title, detail: p.section ?? 'The coven’s Book', keywords: ['page', 'book'] }))}
+                onAdd={(entry) => set(spec.key, [...list, entry.key])}
+                onRemove={(key) => set(spec.key, list.filter((k) => k !== key))}
+                placeholder="Find a page of the coven’s Book"
+                empty={pages.length ? 'None linked yet.' : 'The coven’s Book has no pages you can open yet.'}
+              />
             );
           }
           case 'ref': {
