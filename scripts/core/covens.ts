@@ -29,3 +29,5 @@ export * as templates from '../../app/src/lib/covens/templates.ts';
 export * as script from '../../app/src/lib/covens/script.ts';
 export * as draft from '../../app/src/lib/covens/draft.ts';
 export { newId } from '../../app/src/lib/grimoire/ids.ts';
+// Paths in the coven: shares of how the coven practises and whom it honours, never who.
+export * as paths from '../../app/src/lib/covens/paths.ts';

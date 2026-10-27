@@ -31,6 +31,7 @@ import type { Contribution, ParticipationRow } from './contributions';
 import type { Assignee } from './picker';
 import type { AttendanceRow, Checkin, MemberRecord, RecordOverview, RecordSettings } from './record';
 import type { RitualRecord } from './script';
+import { readOverview, type PathsSettings } from './paths';
 
 const COVEN_FIELDS =
   'id,slug,name,tagline,description,tradition,tags,meeting_rhythm,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,practice_traditions,practice_holidays,practice_custom,practice_calendars,founder_id,created_at,member_count';
@@ -336,6 +337,15 @@ export const removeMemberNote = (id: string) => rpc<boolean>('remove_coven_membe
 /** Remove or ban someone, keeping the reason with their record. */
 export const removeMember = (covenId: string, userId: string, status: 'removed' | 'banned', reason: string) =>
   rpc<Member>('remove_coven_member', { p_coven: covenId, p_user: userId, p_status: status, p_reason: reason.trim() || null });
+
+// ─── Paths in the coven (supabase/migrations/20261105000000_coven_paths_overview.sql) ───
+
+/** Whether the head shows the overview to the whole coven (null before the database has it). */
+export const fetchPathsSettings = (covenId: string) =>
+  run<PathsSettings | null>(supabase.from('coven_ritual_settings').select('coven_id,paths_visible_to_all').eq('coven_id', covenId).maybeSingle());
+export const setPathsVisible = (covenId: string, visible: boolean) => rpc<PathsSettings>('set_coven_paths_visible', { p_coven: covenId, p_visible: visible });
+/** Only counts, never who: the database leaves out anyone fewer than three share. */
+export const fetchPathsOverview = (covenId: string) => rpc<unknown>('coven_paths_overview', { p_coven: covenId }).then(readOverview);
 
 export async function fetchMyRites(userId: string): Promise<{ coven: Coven; ritual: Ritual; response: Rsvp['response'] | null }[]> {
   const covens = await fetchMyCovens(userId);

@@ -59,6 +59,8 @@
     if (state.perms.member || state.perms.site) await loadProgramWork();
     // Who keeps the members' record (the head chooses; covens/coven/record.js).
     if (state.perms.member || state.perms.site) state.recordSettings = await D.recordSettings(coven.id).catch(() => null);
+    // Whether the head shows Paths in the coven to everyone (covens/coven/paths.js).
+    if (state.perms.member || state.perms.site) state.pathsSettings = await D.pathsSettings(coven.id).catch(() => null);
     if (coven.founder_id) await UI.loadNames(context, [coven.founder_id]);
   }
 
@@ -137,6 +139,7 @@
         { key: "members", label: "Members" }
       );
       if (global.CovenRecordAccess?.seesRecord(state)) list.push({ key: "record", label: "Members’ record" });
+      if (global.CovenPathsAccess?.seesPaths(state)) list.push({ key: "paths", label: "Paths in the coven" });
     }
     if (perms.member) list.push({ key: "path", label: "My path", count: state.unsigned.length });
     if (perms.review || perms.site) list.push({ key: "review", label: "Review", count: state.pending.applications + state.pending.advancements });
@@ -248,7 +251,7 @@
       ${tabBar(tab)}
       <div class="cv-pane" data-pane></div>`;
     const pane = root.querySelector("[data-pane]");
-    const views = { about, join, path, gathering: () => mount(global.CovenChat), rituals: () => mount(global.CovenRituals), book: () => mount(global.CovenBook), petitions: () => mount(global.CovenPetitions), programs: () => mount(global.CovenPrograms), altar: () => mount(global.CovenAltar), members: () => mount(global.CovenMembers), record: () => mount(global.CovenRecord), review: () => mount(global.CovenReview), manage: () => mount(global.CovenManage) };
+    const views = { about, join, path, gathering: () => mount(global.CovenChat), rituals: () => mount(global.CovenRituals), book: () => mount(global.CovenBook), petitions: () => mount(global.CovenPetitions), programs: () => mount(global.CovenPrograms), altar: () => mount(global.CovenAltar), members: () => mount(global.CovenMembers), record: () => mount(global.CovenRecord), paths: () => mount(global.CovenPaths), review: () => mount(global.CovenReview), manage: () => mount(global.CovenManage) };
     function mount(module) {
       if (!module) return (pane.innerHTML = `<p class="sp-notice">This part of the coven couldn’t load. Please refresh the page.</p>`);
       mounted = module;

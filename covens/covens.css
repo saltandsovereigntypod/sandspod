@@ -368,3 +368,13 @@
   .cv-spoken { border-left-color: #999; }
   .cv-script h3, .cv-script__who, .sp-caption { color: #333 !important; }
 }
+/* --- paths in the coven (covens/coven/paths.js) -------------------------------- */
+.cv-shares { display: grid; gap: 12px; }
+.cv-share { display: grid; gap: 5px; }
+.cv-share__labels { display: flex; align-items: baseline; gap: 12px; }
+.cv-share__name { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.cv-share__pct { color: var(--gold); font-variant-numeric: tabular-nums; }
+.cv-share__track { height: 10px; border-radius: 999px; background: rgba(244, 236, 216, 0.1); overflow: hidden; }
+.cv-share__track > span { display: block; height: 100%; background: var(--gold); border-radius: inherit; }
+.cv-share--other .cv-share__name { color: var(--muted); font-style: italic; }
+.cv-share--other .cv-share__track > span { background: var(--fern); }

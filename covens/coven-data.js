@@ -400,6 +400,10 @@
     setRecordViewers: (covenId, viewers, menteesSeeCheckins) => rpc("set_coven_record_viewers", { p_coven: covenId, p_viewers: viewers, p_mentees_see_checkins: Boolean(menteesSeeCheckins) }),
     recordOverview: (covenId, since) => rpc("coven_member_record_overview", { p_coven: covenId, p_since: since || null }),
     memberRecord: (covenId, userId) => rpc("coven_member_record", { p_coven: covenId, p_user: userId }),
+    // --- paths in the coven (only counts, never who; as the app's lib/covens/api.ts) ---
+    pathsSettings: (covenId) => run(db().from("coven_ritual_settings").select("coven_id,paths_visible_to_all").eq("coven_id", covenId).maybeSingle()),
+    setPathsVisible: (covenId, visible) => rpc("set_coven_paths_visible", { p_coven: covenId, p_visible: Boolean(visible) }),
+    pathsOverview: (covenId) => rpc("coven_paths_overview", { p_coven: covenId }),
     /** Called when you open a ritual that's under way (once is enough; quietly does nothing before the database has it). */
     recordPresence: (ritualId) => rpc("record_coven_ritual_presence", { p_ritual: ritualId }).catch(() => null),
     attendance: (ritualId) => run(db().from("coven_ritual_attendance").select("ritual_id,coven_id,user_id,present,joined_at,marked_by,apology,apology_at,excused").eq("ritual_id", ritualId)),
