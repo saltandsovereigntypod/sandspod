@@ -156,6 +156,7 @@ export type ReminderKind =
   | 'candle'
   | 'planning'
   | 'coven'
+  | 'tend'
   | 'summary';
 
 export type Reminder = {

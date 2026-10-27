@@ -135,7 +135,7 @@
         const saved = await UI.busy(form, form.querySelector("[data-status]"), () => D.tendPetition(id, form.elements.note?.value));
         if (!saved) return;
         const name = state.context.profile?.display_name || "A member";
-        const problem = await onAltar(p, (P, now) => P.tendWithSeed(p, name, now));
+        const problem = await onAltar(p, (P, now) => P.tendWithSeed(p, name, now, me() || ""));
         message = `You tended “${p.title}”. A candle burns in your name beside it.${problem}`;
         await load();
         draw();

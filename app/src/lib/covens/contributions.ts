@@ -190,10 +190,11 @@ export function canName(c: Row, reader: Reader): boolean {
  * How it's called on the altar and in the list: "Rowan’s petition",
  * "Rowan’s petition (private)", "a private petition", "a petition", "Your petition".
  */
-export function contributionLabel(c: Pick<Contribution, 'kind' | 'private' | 'mine'> & { user_id: string | null }, nameOf: (id: string) => string): string {
+export function contributionLabel(c: Pick<Contribution, 'kind' | 'private' | 'mine'> & { user_id: string | null } & Partial<Pick<Contribution, 'anonymous' | 'visibility'>>, nameOf: (id: string) => string): string {
   const noun = kindOf(c.kind).noun;
   if (c.mine) return `Your ${noun}${c.private ? ' (private)' : ''}`;
-  if (c.user_id) return `${nameOf(c.user_id)}’s ${noun}${c.private ? ' (private)' : ''}`;
+  // Never a name it shouldn't carry: anonymous, or written for the coven without names.
+  if (c.user_id && !c.anonymous && c.visibility !== 'coven_unnamed') return `${nameOf(c.user_id)}’s ${noun}${c.private ? ' (private)' : ''}`;
   return c.private ? `A private ${noun}` : `A ${noun}`.replace(/^A ([aeiou])/i, 'An $1');
 }
 

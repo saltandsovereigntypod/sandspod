@@ -24,6 +24,7 @@ import { holidayItems, shortMeaning, type HolidayItem } from './holidays.ts';
 import { holidayOn, isPaused, leadsOf, readPrefs, type LegacyReminders, type ReminderPrefs, type Repeat } from './prefs.ts';
 import { buildSchedule, HORIZON_DAYS, MAX_REMINDERS, type LookBackReminderSource, type Reminder, type ReminderKind, type ReminderSettings } from './schedule.ts';
 import { EMPTY_SOURCES, type CrystalSource, type TendingSources } from './sources.ts';
+import { tendReminders, type TendRecord } from '../tend/model.ts';
 
 type SettingsLike = Record<string, unknown> | null | undefined;
 
@@ -55,6 +56,8 @@ export type PlanInput = {
   lookBacks?: LookBackReminderSource[];
   sources?: TendingSources;
   covens?: CovenSource[];
+  /** Your To tend list's choices (`tend.rhythms`): those with a reminder ring by their rhythm. */
+  tend?: TendRecord[];
   place?: Place | null;
   now: Date;
   horizonDays?: number;
@@ -442,7 +445,7 @@ function candleReminders(prefs: ReminderPrefs, sources: TendingSources, now: Dat
 export const isUrgent = (r: Pick<Reminder, 'kind' | 'key'>) => r.kind === 'ritual' || r.kind === 'coven' || r.key.startsWith('candle-end:') || r.key.startsWith('moon-exact:');
 
 /** Gathered into the day's note when there are many: everything but the moon, rituals, rites and the daily practices. */
-const GATHERED = new Set<ReminderKind>(['holiday', 'deipnon', 'sacred', 'planning', 'lookback', 'offering', 'watering', 'altar', 'crystal', 'candle']);
+const GATHERED = new Set<ReminderKind>(['holiday', 'deipnon', 'sacred', 'planning', 'lookback', 'offering', 'watering', 'altar', 'crystal', 'candle', 'tend']);
 
 const PRIORITY: Record<ReminderKind, number> = {
   ritual: 5,
@@ -459,6 +462,7 @@ const PRIORITY: Record<ReminderKind, number> = {
   altar: 2,
   crystal: 2,
   candle: 2,
+  tend: 2,
   devotion: 1,
   dream: 1,
 };
@@ -548,6 +552,8 @@ export function calendarReminders(input: PlanInput): Reminder[] {
     ...offeringReminders(prefs, sources, now, horizonDays),
     ...crystalReminders(prefs, sources, now, horizonDays),
     ...candleReminders(prefs, sources, now, horizonDays),
+    // What you chose to be reminded of on your To tend list, by its rhythm.
+    ...tendReminders(input.tend ?? [], now, Math.min(TENDING_DAYS, horizonDays)).map((r): Reminder => ({ ...r, kind: 'tend' })),
   ];
   return settle(list, prefs, now, horizonDays);
 }

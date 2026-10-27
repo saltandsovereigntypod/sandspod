@@ -109,6 +109,7 @@ export function tendPetitionAltar(
   petition: Pick<Petition, "color">,
   person: string,
   now: string,
+  personId = "",
 ) {
   return (doc: AltarDocument): AltarDocument => {
     const lit = doc.objects
@@ -135,7 +136,8 @@ export function tendPetitionAltar(
         ),
         label: `${person}’s candle`,
       },
-      { tendedBy: person },
+      // Their name, and (so "Find mine" knows it's theirs) who they are.
+      personId ? { tendedBy: person, tendedById: personId } : { tendedBy: person },
       now,
       false,
     );
@@ -154,9 +156,10 @@ export function tendWithSeed(
   petition: Pick<Petition, "id" | "title" | "color" | "body">,
   person: string,
   now: string,
+  personId = "",
 ) {
   const seed = seedPetitionAltar(petition, now);
-  const tend = tendPetitionAltar(petition, person, now);
+  const tend = tendPetitionAltar(petition, person, now, personId);
   return (doc: AltarDocument): AltarDocument => tend(seed(doc));
 }
 

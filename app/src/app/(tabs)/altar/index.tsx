@@ -68,6 +68,16 @@ export default function AltarList() {
 
         <Button label="Build a new altar" onPress={() => open('new')} />
 
+        <Pressable
+          onPress={() => router.push('/altar/tend')}
+          accessibilityRole="link"
+          accessibilityHint="Everything you tend, from every altar, coven and journey, in one list"
+          style={({ pressed }) => [styles.tending, pressed && styles.pressed]}
+        >
+          <Text style={type.eyebrow}>To tend</Text>
+          <Text style={type.body}>Every petition, candle, offering and plant you tend, and what you hold in your covens, in one list.</Text>
+        </Pressable>
+
         {note && (
           <Pressable
             onPress={() => open(tendAltar)}
