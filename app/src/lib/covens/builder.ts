@@ -39,8 +39,38 @@ export type PrepItem = { id: string; text: string; remind: PrepRemind };
 export type FollowUp = { text: string; after_hours: number };
 export type Afterwards = { hold_hours: number | null; notes: string; follow_up: FollowUp | null };
 
+/**
+ * A meeting's own settings (meetings.ts): how long before the start its chat
+ * opens, how long it runs, which roles are its Chair and Secretary (those
+ * called so when none is chosen), which meetings it follows on from (for
+ * actions carried forward), and who reads its minutes.
+ */
+export type MeetingSettings = { lead_minutes?: number; length_minutes?: number; chair_role?: string; secretary_role?: string; series?: string; minutes_view?: 'audience' | 'coven' };
+
 /** The gathering's plan (coven_rituals.plan). */
-export type RitualPlan = { sections: PlanSection[]; roles: PlanRole[]; checklist: PrepItem[]; afterwards: Afterwards; template?: string };
+export type RitualPlan = { sections: PlanSection[]; roles: PlanRole[]; checklist: PrepItem[]; afterwards: Afterwards; template?: string; meeting?: MeetingSettings };
+
+/** Steps that are voted on: a vote, a motion, an election, approving the last minutes (public.coven_is_vote_action). */
+export const VOTE_ACTIONS = ['vote', 'motion', 'election', 'approve_minutes'];
+export const isVoteAction = (id: string | null | undefined) => VOTE_ACTIONS.includes(id ?? '');
+
+/** A meeting's settings cleaned as public.coven_clean_plan keeps them (roles must be the plan's). */
+export function cleanMeetingSettings(raw: unknown, roles: Pick<PlanRole, 'id'>[]): MeetingSettings | undefined {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return undefined;
+  const m = raw as Record<string, unknown>;
+  const out: MeetingSettings = {};
+  const whole = (v: unknown, digits: number) => (typeof v === 'number' || typeof v === 'string') && new RegExp(`^[0-9]{1,${digits}}$`).test(String(v)) ? Number(v) : null;
+  const lead = whole(m.lead_minutes, 3);
+  if (lead != null) out.lead_minutes = Math.min(240, lead);
+  const length = whole(m.length_minutes, 4);
+  if (length != null) out.length_minutes = Math.max(5, Math.min(720, length));
+  if (typeof m.chair_role === 'string' && roles.some((r) => r.id === m.chair_role)) out.chair_role = m.chair_role;
+  if (typeof m.secretary_role === 'string' && roles.some((r) => r.id === m.secretary_role)) out.secretary_role = m.secretary_role;
+  const series = typeof m.series === 'string' ? m.series.trim().slice(0, 60) : '';
+  if (series) out.series = series;
+  if (m.minutes_view === 'audience' || m.minutes_view === 'coven') out.minutes_view = m.minutes_view;
+  return out;
+}
 
 export type TurnMode = 'together' | 'in_turn' | 'assigned' | 'on_behalf';
 
@@ -152,6 +182,8 @@ export function cleanPlan(raw: unknown, kind: GatheringKind = 'rite'): RitualPla
     },
   };
   if (p.template) plan.template = text(p.template, 60);
+  const meeting = cleanMeetingSettings(p.meeting, roles);
+  if (meeting) plan.meeting = meeting;
   return plan;
 }
 
@@ -162,10 +194,10 @@ export function defaultSectionFor(actionId: string | null | undefined, sections:
   const wanted: string[] = (() => {
     if (!a) return [];
     if (a.group === 'meeting') {
-      if (a.id === 'open_meeting') return ['opening'];
-      if (a.id === 'read_minutes' || a.id === 'officer_report') return ['reports', 'business'];
-      if (a.id === 'any_other_business') return ['other', 'business'];
-      if (a.id === 'close_meeting') return ['closing'];
+      if (a.id === 'open_meeting' || a.id === 'roll_call' || a.id === 'approve_minutes' || a.id === 'round') return ['opening'];
+      if (a.id === 'read_minutes' || a.id === 'officer_report' || a.id === 'review_actions') return ['reports', 'business'];
+      if (a.id === 'any_other_business' || a.id === 'open_floor' || a.id === 'announcement') return ['other', 'business'];
+      if (a.id === 'close_meeting' || a.id === 'set_next_meeting') return ['closing'];
       return ['business', 'work'];
     }
     if (a.group === 'opening') return ['opening'];
@@ -384,7 +416,7 @@ export function stepWho(step: BuilderStep, plan: Pick<RitualPlan, 'roles'>, spec
   const fieldRoles = fieldKeys.filter((k) => k.startsWith('role:')).map((k) => k.slice(5));
   const fieldPeople = fieldKeys.map((k) => (k.startsWith('role:') ? null : assigneeFromKey(k))).filter((a): a is Assignee => !!a);
   // Voters may vote; they don't lead the step.
-  const votersOnly = step.action === 'vote';
+  const votersOnly = isVoteAction(step.action);
   const roles = [...new Set([...step.roles, ...(votersOnly ? [] : fieldRoles)])].filter((r) => plan.roles.some((x) => x.id === r));
   const named = cleanAssignees([...step.assignees, ...(votersOnly ? [] : fieldPeople)]);
   const assignees = cleanAssignees([...named, ...rolePeople(plan, roles)]);
@@ -544,9 +576,21 @@ export function builderPayload(plan: RitualPlan, steps: BuilderStep[], custom: C
   });
 }
 
-/** The ritual's own fields for save_coven_ritual, with its kind and plan. */
-export function ritualPayload(fields: { title: string; intention: string; description: string; scheduled_for: string | null; status: string; occasion: string; occasion_name: string }, kind: GatheringKind, plan: RitualPlan) {
-  return { ...fields, title: fields.title.trim(), intention: fields.intention.trim(), description: fields.description.trim(), occasion_name: fields.occasion_name.trim(), kind, plan: cleanPlan(plan, kind) };
+/**
+ * The ritual's own fields for save_coven_ritual, with its kind and plan, and
+ * for a meeting who it is for (`audience`: null or empty is the whole coven;
+ * left out, the saved one is kept).
+ */
+export function ritualPayload(
+  fields: { title: string; intention: string; description: string; scheduled_for: string | null; status: string; occasion: string; occasion_name: string },
+  kind: GatheringKind,
+  plan: RitualPlan,
+  audience?: Assignee[] | null,
+) {
+  const base = { ...fields, title: fields.title.trim(), intention: fields.intention.trim(), description: fields.description.trim(), occasion_name: fields.occasion_name.trim(), kind, plan: cleanPlan(plan, kind) };
+  if (audience === undefined) return base;
+  const list = kind === 'meeting' ? cleanAssignees(audience ?? []) : [];
+  return { ...base, audience: list.length && !list.some((a) => a.kind === 'coven') ? list : null };
 }
 
 /** What stops the gathering being saved, or ''. */
@@ -563,8 +607,10 @@ export function builderProblem(title: string, plan: RitualPlan, steps: BuilderSt
       if (!person.eligible) return `${role.name}: ${nameOf(a.id)} hasn’t signed the coven’s current agreements, so can’t be given a part.`;
     }
   }
-  const vote = ordered.findIndex((s) => s.action === 'vote' && !String((s.details.fields ?? {}).motion ?? '').trim());
+  const vote = ordered.findIndex((s) => isVoteAction(s.action) && s.action !== 'election' && !String((s.details.fields ?? {}).motion ?? '').trim());
   if (vote >= 0) return `Step ${vote + 1}: write the motion to be voted on.`;
+  const election = ordered.findIndex((s) => s.action === 'election' && (!String((s.details.fields ?? {}).position ?? '').trim() || !(Array.isArray((s.details.fields ?? {}).candidates) && ((s.details.fields ?? {}).candidates as unknown[]).length)));
+  if (election >= 0) return `Step ${election + 1}: name the position and at least one candidate.`;
   return '';
 }
 

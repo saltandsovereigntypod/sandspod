@@ -141,15 +141,24 @@ export const STEP_ACTIONS: StepAction[] = [
   { id: 'feast', group: 'closing', name: 'Feast', directions: 'Share food and talk. This is part of the ritual too.', effect: '', minutes: 30, keywords: ['feast', 'food', 'potluck', 'share'] },
 
   // ── Meetings ─────────────────────────────────────────────────────────
-  { id: 'open_meeting', group: 'meeting', name: 'Open the meeting', directions: 'Welcome everyone. Note who is here and who sent apologies, and go over the agenda.', effect: '', minutes: 3, keywords: ['open', 'meeting', 'welcome', 'apologies', 'agenda'] },
+  { id: 'open_meeting', group: 'meeting', name: 'Call to order', label: 'Call to order (open the meeting)', directions: 'Welcome everyone, say that the meeting is open, and go over the agenda.', effect: '', minutes: 3, keywords: ['open', 'meeting', 'welcome', 'call to order', 'agenda'] },
+  { id: 'roll_call', group: 'meeting', name: 'Roll call', label: 'Roll call (who is here)', directions: 'Note who is here and who sent apologies. The Secretary marks anyone who joined in person.', effect: '', minutes: 3, keywords: ['roll call', 'attendance', 'apologies', 'present'] },
+  { id: 'approve_minutes', group: 'meeting', name: 'Approve the last minutes', directions: 'Ask whether the minutes of the last meeting are a fair record, take any corrections, then vote to approve them.', effect: '', minutes: 5, keywords: ['minutes', 'approve', 'last meeting', 'record'] },
   { id: 'read_minutes', group: 'meeting', name: 'The last minutes', label: 'Read the last minutes', directions: 'Read or sum up the minutes of the last meeting, and ask whether they are a fair record.', effect: '', minutes: 5, keywords: ['minutes', 'record', 'last meeting'] },
+  { id: 'review_actions', group: 'meeting', name: 'Outstanding actions', label: 'Review outstanding actions', directions: 'Go through what was agreed last time and is not done yet. Mark what is done, and agree new dates for the rest.', effect: '', minutes: 5, keywords: ['actions', 'outstanding', 'follow up', 'carried forward', 'matters arising'] },
   { id: 'officer_report', group: 'meeting', name: 'A report', label: 'A report (from an officer or working group)', directions: 'The one reporting speaks briefly. Questions follow.', effect: '', minutes: 5, keywords: ['report', 'treasurer', 'officer', 'update'] },
-  { id: 'agenda_item', group: 'meeting', name: 'Agenda item', directions: 'Introduce the item, hear from those who want to speak, and note what is agreed.', effect: '', minutes: 10, keywords: ['agenda', 'item', 'business', 'topic'] },
-  { id: 'discussion', group: 'meeting', name: 'Discussion', directions: 'Put the question to the group. Let each person speak once before anyone speaks twice.', effect: '', minutes: 15, keywords: ['discuss', 'discussion', 'talk', 'question'] },
-  { id: 'vote', group: 'meeting', name: 'Vote', label: 'A vote on a motion', directions: 'Read the motion. Allow a moment for questions, then everyone who may vote chooses one answer. The result is recorded.', effect: '', minutes: 5, keywords: ['vote', 'motion', 'ballot', 'decide', 'decision'] },
+  { id: 'agenda_item', group: 'meeting', name: 'Agenda item', label: 'A discussion item', directions: 'Introduce the item, hear from those who want to speak, and note what is agreed.', effect: '', minutes: 10, keywords: ['agenda', 'item', 'business', 'topic', 'discussion'] },
+  { id: 'discussion', group: 'meeting', name: 'Discussion', label: 'An open question to discuss', directions: 'Put the question to the group. Let each person speak once before anyone speaks twice.', effect: '', minutes: 15, keywords: ['discuss', 'discussion', 'talk', 'question'] },
+  { id: 'motion', group: 'meeting', name: 'A motion', label: 'A motion (proposed, seconded, amended, voted on)', directions: 'The proposer reads the motion. Someone seconds it, amendments are heard, then the Chair calls the vote.', effect: '', minutes: 10, keywords: ['motion', 'propose', 'second', 'amend', 'resolution', 'decide'] },
+  { id: 'vote', group: 'meeting', name: 'Vote', label: 'A vote on a question', directions: 'Read the question. Allow a moment for questions, then everyone who may vote chooses one answer. The result is recorded.', effect: '', minutes: 5, keywords: ['vote', 'motion', 'ballot', 'decide', 'decision'] },
+  { id: 'election', group: 'meeting', name: 'An election', label: 'An election (a position and its candidates)', directions: 'Name the position and the candidates. Each may speak briefly, then the Chair calls the vote.', effect: '', minutes: 10, keywords: ['election', 'elect', 'candidate', 'position', 'office', 'ballot'] },
+  { id: 'announcement', group: 'meeting', name: 'An announcement', directions: 'Share the news briefly. Questions can wait for the open floor.', effect: '', minutes: 3, keywords: ['announcement', 'news', 'notice'] },
+  { id: 'round', group: 'meeting', name: 'A round', label: 'A round or check-in (one at a time)', directions: 'Go round the meeting. Each person speaks in turn, or passes.', effect: '', minutes: 10, keywords: ['round', 'check-in', 'check in', 'go round', 'each person'] },
+  { id: 'open_floor', group: 'meeting', name: 'Open floor', directions: 'Anyone may raise something. Ask for the floor, and the Chair gives it in turn.', effect: '', minutes: 10, keywords: ['open floor', 'questions', 'raise'] },
   { id: 'study', group: 'meeting', name: 'Study together', directions: 'Read the passage or chapter aloud in turns, then talk about what stood out to each of you.', effect: '', minutes: 30, keywords: ['study', 'reading', 'book', 'learn', 'class'] },
   { id: 'any_other_business', group: 'meeting', name: 'Any other business', directions: 'Ask whether anyone has something to raise that is not on the agenda.', effect: '', minutes: 5, keywords: ['other business', 'aob'] },
-  { id: 'close_meeting', group: 'meeting', name: 'Close the meeting', directions: 'Thank everyone, agree the date of the next meeting, and close.', effect: '', minutes: 2, keywords: ['close', 'end', 'meeting', 'next meeting'] },
+  { id: 'set_next_meeting', group: 'meeting', name: 'The next meeting', label: 'Set the next meeting', directions: 'Agree when and where the next meeting is.', effect: '', minutes: 2, keywords: ['next meeting', 'date', 'when', 'where'] },
+  { id: 'close_meeting', group: 'meeting', name: 'Adjourn', label: 'Adjourn (close the meeting)', directions: 'Thank everyone, and close the meeting.', effect: '', minutes: 2, keywords: ['close', 'end', 'meeting', 'adjourn'] },
 ];
 
 /** Something not in the list: a blank step. */
@@ -208,19 +217,32 @@ export function actionForStep(step: { action?: string | null; altar_action?: str
   }
 }
 
-/** Search the actions (by name, group and keywords); an empty search lists them all in their groups. */
-export function searchActions(query: string): StepAction[] {
+/**
+ * The kinds of step a gathering chooses from: a rite leaves out the meeting's
+ * own; a meeting starts with them and keeps the words and opening ones (a
+ * prayer, grounding) for those who open a meeting that way.
+ */
+export function groupsFor(kind?: 'rite' | 'meeting' | null): (typeof ACTION_GROUPS)[number][] {
+  if (kind === 'meeting') return ['meeting', 'opening', 'words'].map((id) => ACTION_GROUPS.find((g) => g.id === id)!);
+  if (kind === 'rite') return ACTION_GROUPS.filter((g) => g.id !== 'meeting');
+  return ACTION_GROUPS;
+}
+
+/** Search the actions (by name, group and keywords); an empty search lists them all in their groups. With a kind, only its groups. */
+export function searchActions(query: string, kind?: 'rite' | 'meeting' | null): StepAction[] {
+  const groups = new Set(groupsFor(kind).map((g) => g.id));
+  const list = STEP_ACTIONS.filter((a) => groups.has(a.group));
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
-  if (!words.length) return STEP_ACTIONS;
-  return STEP_ACTIONS.filter((a) => {
+  if (!words.length) return list;
+  return list.filter((a) => {
     const hay = [a.label ?? a.name, a.name, ACTION_GROUPS.find((g) => g.id === a.group)?.label ?? '', ...(a.keywords ?? [])].join(' ').toLowerCase();
     return words.every((w) => hay.includes(w));
   });
 }
 
 /** The actions in their groups, for a list. */
-export function actionsByGroup(list: StepAction[] = STEP_ACTIONS): { group: (typeof ACTION_GROUPS)[number]; actions: StepAction[] }[] {
-  return ACTION_GROUPS.map((group) => ({ group, actions: list.filter((a) => a.group === group.id) })).filter((g) => g.actions.length > 0);
+export function actionsByGroup(list: StepAction[] = STEP_ACTIONS, kind?: 'rite' | 'meeting' | null): { group: (typeof ACTION_GROUPS)[number]; actions: StepAction[] }[] {
+  return groupsFor(kind).map((group) => ({ group, actions: list.filter((a) => a.group === group.id) })).filter((g) => g.actions.length > 0);
 }
 
 /** An action's name in a list ("Call a quarter: Air in the East"). */
