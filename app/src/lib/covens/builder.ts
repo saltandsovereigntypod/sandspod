@@ -24,6 +24,7 @@ import { assigneeFromKey, assigneeKey, assigneeLabel, andList, cleanAssignees, i
 import { blankStep, draftFromStep, plannerProblem, stepsPayload, type Candidate, type DraftStep } from './draft.ts';
 import { actionOf, type StepAction } from './stepActions.ts';
 import { cleanFieldSpecs, cleanValues, fieldsFor, fieldSummary, namesIn, whoIn, type FieldSpec, type FieldValues, type ThingKind } from './fields.ts';
+import { cleanNoticeWho } from './notices.ts';
 
 export type GatheringKind = 'rite' | 'meeting';
 
@@ -48,7 +49,16 @@ export type Afterwards = { hold_hours: number | null; notes: string; follow_up: 
 export type MeetingSettings = { lead_minutes?: number; length_minutes?: number; chair_role?: string; secretary_role?: string; series?: string; minutes_view?: 'audience' | 'coven' };
 
 /** The gathering's plan (coven_rituals.plan). */
-export type RitualPlan = { sections: PlanSection[]; roles: PlanRole[]; checklist: PrepItem[]; afterwards: Afterwards; template?: string; meeting?: MeetingSettings };
+export type RitualPlan = {
+  sections: PlanSection[];
+  roles: PlanRole[];
+  checklist: PrepItem[];
+  afterwards: Afterwards;
+  template?: string;
+  meeting?: MeetingSettings;
+  /** Who hears about it when it is put on the calendar, moved or taken off (notices.ts WHO keys); none follows the coven's rules. */
+  notify?: string[];
+};
 
 /** Steps that are voted on: a vote, a motion, an election, approving the last minutes (public.coven_is_vote_action). */
 export const VOTE_ACTIONS = ['vote', 'motion', 'election', 'approve_minutes'];
@@ -184,6 +194,8 @@ export function cleanPlan(raw: unknown, kind: GatheringKind = 'rite'): RitualPla
   if (p.template) plan.template = text(p.template, 60);
   const meeting = cleanMeetingSettings(p.meeting, roles);
   if (meeting) plan.meeting = meeting;
+  const notify = cleanNoticeWho(p.notify, roles);
+  if (notify.length) plan.notify = notify;
   return plan;
 }
 
@@ -321,7 +333,14 @@ export function removeRole(plan: RitualPlan, steps: BuilderStep[], id: string): 
     return v;
   };
   return {
-    plan: { ...plan, roles: plan.roles.filter((r) => r.id !== id) },
+    plan: (() => {
+      const next: RitualPlan = { ...plan, roles: plan.roles.filter((r) => r.id !== id) };
+      // Who hears about it no longer names the role (and follows the coven's rules if that was all).
+      const notify = plan.notify?.filter((k) => k !== key);
+      if (notify?.length) next.notify = notify;
+      else delete next.notify;
+      return next;
+    })(),
     steps: steps.map((s) => ({
       ...s,
       roles: s.roles.filter((r) => r !== id),

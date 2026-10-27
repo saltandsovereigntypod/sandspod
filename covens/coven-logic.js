@@ -153,6 +153,8 @@
       moderate: may("can_moderate"),
       lead: open && active && (founder || Boolean(rank && (rank.can_lead_rituals || rank.can_moderate || rank.can_manage))),
       schedule: open && active && (founder || Boolean(rank && (rank.can_schedule_rites || rank.can_manage))),
+      // Chooses who hears about gatherings (20261108000000_coven_gathering_notices.sql).
+      notices: open && active && (founder || Boolean(rank && (rank.can_set_gathering_notices || rank.can_manage))),
       writeBook: open && active && (founder || Boolean(rank && (rank.can_write_book || rank.can_approve_book || rank.can_manage))),
       approveBook: open && active && (founder || Boolean(rank && (rank.can_approve_book || rank.can_manage))),
       // Altars and chat (20261028000000_coven_altars.sql). Starting altars and
@@ -199,6 +201,7 @@
     if (rank?.can_moderate) powers.push("keeps the gathering safe");
     if (rank?.can_lead_rituals || rank?.can_moderate || rank?.can_manage) powers.push("leads rituals");
     if (rank?.can_schedule_rites || rank?.can_manage) powers.push("puts rites on the calendar");
+    if (rank?.can_set_gathering_notices || rank?.can_manage) powers.push("chooses who hears about gatherings");
     if (rank?.can_approve_book || rank?.can_manage) powers.push("approves pages in the coven’s book");
     else if (rank?.can_write_book) powers.push("writes in the coven’s book");
     if (rank?.can_manage_programs || rank?.can_manage) powers.push("manages initiation and training");
@@ -214,6 +217,7 @@
     { key: "can_moderate", label: "Moderates the gathering (removes messages, pauses or removes members)" },
     { key: "can_lead_rituals", label: "Leads the coven’s rituals (plans them, gives out their steps, begins them)" },
     { key: "can_schedule_rites", label: "Puts rites on the coven’s calendar" },
+    { key: "can_set_gathering_notices", label: "Chooses who hears about the coven’s gatherings (for each kind of rite or meeting, and for one)" },
     { key: "can_write_book", label: "Writes in the coven’s Book of Shadows (drafts go for approval)" },
     { key: "can_approve_book", label: "Approves pages for the coven’s Book of Shadows" },
     { key: "can_manage_programs", label: "Manages initiation and training (designs programs, chooses who takes them, assigns mentors, signs off work)" },

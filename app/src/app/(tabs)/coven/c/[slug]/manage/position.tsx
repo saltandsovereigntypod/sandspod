@@ -7,7 +7,7 @@ import { CovenScreen } from '../../../../../../components/covens/CovenScreen';
 import { CheckRow, Field, Notice, Section } from '../../../../../../components/more/ui';
 import * as api from '../../../../../../lib/covens/api';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
-import { errorMessage, RANK_POWERS, type Rank } from '../../../../../../lib/covens/model';
+import { errorMessage, RANK_POWERS, savableRankFlags, type Rank } from '../../../../../../lib/covens/model';
 import { type } from '../../../../../../theme';
 
 type Flag = 'is_default' | 'open_to_applications' | (typeof RANK_POWERS)[number]['key'];
@@ -47,7 +47,7 @@ function PositionForm({ rank }: { rank: Rank | null }) {
     setBusy(true);
     setMessage(null);
     try {
-      await api.saveRank({ ...(rank ? { id: rank.id } : {}), coven_id: coven.snapshot!.coven.id, name: name.trim(), level: n, description: description.trim() || null, requirements: requirements.trim() || null, ...flags });
+      await api.saveRank({ ...(rank ? { id: rank.id } : {}), coven_id: coven.snapshot!.coven.id, name: name.trim(), level: n, description: description.trim() || null, requirements: requirements.trim() || null, ...savableRankFlags(flags, coven.snapshot!.ranks) });
       await coven.refresh();
       if (router.canGoBack()) router.back();
       else setMessage('Saved.');

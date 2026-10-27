@@ -1,5 +1,6 @@
 import { createClient, type SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 import { answerNote, bookAnswerNote, bookNote, isFresh, requestNote, reviewersOf, wantsNotice, type Note } from "./requests.ts";
+import { cleanNote, gatheringEvent, gatheringNote, manualEvent, validZone, wantsGathering, type SentNotice } from "./gatherings.ts";
 
 // Phone notifications for covens: a new message, a new application or
 // request to advance, and the answer to one.
@@ -24,6 +25,25 @@ import { answerNote, bookAnswerNote, bookNote, isFresh, requestNote, reviewersOf
 // (coven_grimoire_submission_approvers), never the sharer; called by the one
 // who just decided it, it tells the sharer. Once each, while fresh, and only
 // for those whose Reminders choices want coven requests.
+//
+// { ritual_id, time_zone? }: a coven gathering (rite or meeting) was just
+// saved, put on or taken off the calendar, or deleted. Called by whoever did
+// it (someone who leads or schedules the coven's rituals), it works out what
+// changed since the last note (gatherings.ts gatheringEvent) and tells those
+// who should hear (public.coven_gathering_notice_recipients: the gathering's
+// own choice, the coven's rules, else everyone it is for), never the caller,
+// nor anyone who has blocked them (as for requests), and only those whose
+// Reminders choices want coven gatherings. A move also reaches everyone told
+// before; a cancellation only those who heard. Each note is claimed once
+// (coven_gathering_notices). time_zone is the caller's, for the date's words
+// when the coven has none.
+//
+// { ritual_id, manual: true, note?, who? }: "Send a notification" on a
+// scheduled gathering's page, by those coven_gathering_may_send allows (those
+// with 'notices', the coven's moderators and head, and whoever planned it).
+// Its 'scheduled' note if it was never announced, else a reminder; the note
+// (up to 200 characters) is a second line; who (WHO keys) changes who it goes
+// to for this send only. One by hand per gathering each half hour (429).
 
 const EXPO_PUSH = "https://exp.host/--/api/v2/push/send";
 
@@ -49,10 +69,19 @@ Deno.serve(async (request) => {
   let requestId = "";
   let requestKind: "application" | "advancement" = "application";
   let submissionId = "";
+  let ritualId = "";
+  let timeZone = "";
+  let manual: { note: string; who: string[] | null } | null = null;
   try {
     const payload = (await request.json()) || {};
     messageId = String(payload.message_id || "");
     if (payload.grimoire_submission_id) submissionId = String(payload.grimoire_submission_id);
+    if (payload.ritual_id) ritualId = String(payload.ritual_id);
+    if (typeof payload.time_zone === "string") timeZone = payload.time_zone.slice(0, 64);
+    if (payload.manual === true) {
+      const who = Array.isArray(payload.who) ? payload.who.filter((k: unknown) => typeof k === "string").slice(0, 40).map((k: string) => k.slice(0, 80)) : null;
+      manual = { note: cleanNote(payload.note), who: who && who.length ? who : null };
+    }
     if (payload.application_id) requestId = String(payload.application_id);
     else if (payload.advancement_id) {
       requestId = String(payload.advancement_id);
@@ -63,6 +92,10 @@ Deno.serve(async (request) => {
   }
   const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   const admin = createClient(url, service, { auth: { persistSession: false } });
+  if (ritualId) {
+    if (!UUID.test(ritualId)) return reply(400, { error: "bad_request" });
+    return covenGathering(admin, verifier, sender, ritualId, timeZone, manual);
+  }
   if (submissionId) {
     if (!UUID.test(submissionId)) return reply(400, { error: "bad_request" });
     return bookSubmission(admin, sender, submissionId);
@@ -295,4 +328,118 @@ async function bookSubmission(admin: SupabaseClient, caller: string, id: string)
     data: { source: event === "new" ? "coven-book" : "coven-book-answer", url: note.url, covenId: s.coven_id, submissionId: id },
   }));
   return reply(200, { sent: await push(admin, notes) });
+}
+
+/** A gathering put on the calendar, moved, or taken off it (gatherings.ts), to those who should hear. */
+async function covenGathering(admin: SupabaseClient, caller: SupabaseClient, sender: string, id: string, plannerZone: string, manual: { note: string; who: string[] | null } | null) {
+  type Row = { coven_id: string; title: string; kind: string | null; status: string; scheduled_for: string | null };
+  const { data: found } = await admin.from("coven_rituals").select("coven_id,title,kind,status,scheduled_for").eq("id", id).maybeSingle();
+  let ritual = found as Row | null;
+  if (!ritual && manual) return reply(404, { error: "not_found" });
+  if (!ritual) {
+    // Deleted: what it left behind, and only the one who deleted it rings for it.
+    const { data: removed } = await admin.from("coven_gathering_removed").select("coven_id,title,kind,scheduled_for,removed_by").eq("ritual_id", id).maybeSingle();
+    if (!removed || removed.removed_by !== sender) return reply(404, { error: "not_found" });
+    ritual = { coven_id: removed.coven_id, title: removed.title, kind: removed.kind, status: "deleted", scheduled_for: removed.scheduled_for };
+  }
+  const covenId = ritual.coven_id;
+
+  if (manual) {
+    // By hand: those coven_gathering_may_send allows (asked as the caller).
+    const { data: may } = await caller.rpc("coven_gathering_may_send", { p_ritual: id });
+    if (may !== true) return reply(403, { error: "not_allowed" });
+  } else {
+    // Only those who lead or schedule the coven's rituals ring for its gatherings (asked as the caller).
+    const [{ data: leads }, { data: schedules }] = await Promise.all([
+      caller.rpc("coven_permission", { target: covenId, permission: "lead" }),
+      caller.rpc("coven_permission", { target: covenId, permission: "schedule" }),
+    ]);
+    if (leads !== true && schedules !== true) return reply(403, { error: "not_allowed" });
+  }
+
+  const { data: coven } = await admin.from("covens").select("name,slug,status,timezone").eq("id", covenId).single();
+  if (!coven || coven.status !== "active") return reply(404, { error: "not_found" });
+
+  // Before coven_gathering_notices exists (20261108000000_coven_gathering_notices.sql), nothing is sent.
+  const { data: notices, error: noticesError } = await admin.from("coven_gathering_notices").select("seq,event,scheduled_for,recipients").eq("ritual_id", id).order("seq");
+  if (noticesError) return reply(503, { error: "not_ready" });
+  const sent = (notices || []) as SentNotice[];
+  const byHand = manual ? manualEvent(ritual, sent) : null;
+  if (manual && !byHand) return reply(409, { error: "not_scheduled" });
+  const what = byHand ? { event: byHand.event, heard: [] as string[], previous: null } : gatheringEvent(ritual.status === "deleted" ? null : ritual, sent);
+  if (!what) return reply(200, { sent: 0 });
+
+  let recipients: string[] = what.heard;
+  if (what.event !== "cancelled") {
+    // By hand, a one-off choice of who (checked by the database) stands in for the usual one.
+    const { data: now } = await admin.rpc("coven_gathering_notice_recipients", { p_ritual: id, p_who: manual?.who ?? null });
+    recipients = [...new Set([...what.heard, ...((now as string[] | null) || []).map(String)])];
+  }
+  // Still active in the coven, never the one who made the change, nor anyone who has blocked them.
+  recipients = recipients.filter((u) => u !== sender);
+  if (recipients.length) {
+    const [{ data: active }, { data: blocks }] = await Promise.all([
+      admin.from("coven_members").select("user_id").eq("coven_id", covenId).eq("status", "active").in("user_id", recipients),
+      admin.from("user_blocks").select("blocker_id").eq("blocked_id", sender).in("blocker_id", recipients),
+    ]);
+    const activeSet = new Set((active || []).map((m) => m.user_id));
+    const blocking = new Set((blocks || []).map((b) => b.blocker_id));
+    recipients = recipients.filter((u) => activeSet.has(u) && !blocking.has(u));
+  }
+
+  // Once each: the next number for this gathering; a call racing this one is refused.
+  const seq = sent.reduce((n, x) => Math.max(n, x.seq), 0) + 1;
+  const { error: claim } = await admin.from("coven_gathering_notices").insert({
+    ritual_id: id,
+    seq,
+    coven_id: covenId,
+    event: what.event,
+    scheduled_for: what.event === "cancelled" ? what.previous : ritual.scheduled_for,
+    recipients,
+    sent_by: sender,
+    manual: !!manual,
+    note: manual?.note || null,
+  });
+  // One by hand each half hour (limit_manual_coven_gathering_notices).
+  if (claim?.code === "PT429") return reply(429, { error: "too_soon" });
+  if (claim?.code === "23505") return reply(409, { error: "already_sent" });
+  if (claim) return reply(503, { error: "not_ready" });
+  if (!recipients.length) return reply(200, { sent: 0 });
+
+  // Their own choices (Reminders → Coven gatherings), saved with their settings.
+  const { data: settings } = await admin.from("user_settings").select("user_id,reminders:settings->>reminders_v2").in("user_id", recipients);
+  const saved = new Map((settings || []).map((x: { user_id: string; reminders: string | null }) => [x.user_id, x.reminders]));
+  const now = new Date();
+  const listeners = recipients.filter((u) => wantsGathering(saved.get(u) ?? null, covenId, now));
+  let delivered = 0;
+  if (listeners.length) {
+    const { data: tokens } = await admin.from("push_tokens").select("token,user_id").in("user_id", listeners);
+    if (tokens?.length) {
+      const note = gatheringNote({
+        event: what.event,
+        kind: ritual.kind,
+        title: ritual.title,
+        covenName: coven.name,
+        covenSlug: coven.slug,
+        ritualId: id,
+        scheduledFor: ritual.scheduled_for,
+        previous: what.previous,
+        zones: { coven: validZone(coven.timezone) ? coven.timezone : null, planner: plannerZone || null },
+        now,
+        note: manual?.note,
+      });
+      const notes: Push[] = tokens.map((t) => ({
+        to: t.token,
+        title: note.title,
+        body: note.body,
+        sound: "default",
+        channelId: "coven-gatherings",
+        threadId: `gatherings:${covenId}`,
+        data: { source: "coven-gathering", url: note.url, covenId, ritualId: id, event: what.event },
+      }));
+      delivered = await push(admin, notes);
+    }
+  }
+  await admin.from("coven_gathering_notices").update({ sent_at: new Date().toISOString() }).eq("ritual_id", id).eq("seq", seq);
+  return reply(200, { sent: delivered, event: what.event, recipients: recipients.length });
 }

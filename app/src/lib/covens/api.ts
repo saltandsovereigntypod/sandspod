@@ -28,6 +28,7 @@ import type {
 } from './model';
 import type { Contribution, ParticipationRow } from './contributions';
 import type { Assignee } from './picker';
+import type { NoticePreview, NoticeRule } from './notices';
 import type { AttendanceRow, Checkin, MemberRecord, RecordOverview, RecordSettings } from './record';
 import type { RitualRecord } from './script';
 import { readOverview, type PathsSettings } from './paths';
@@ -253,9 +254,60 @@ export const startRitual = (ritualId: string) => rpc<Ritual>('start_coven_ritual
 export const finishStep = (stepId: string) => rpc<Ritual>('finish_coven_ritual_step', { p_step: stepId });
 export const goToStep = (ritualId: string, stepId: string | null) => rpc<Ritual>('go_to_coven_ritual_step', { p_ritual: ritualId, p_step: stepId });
 export const performStepAction = (stepId: string) => rpc('perform_coven_step_action', { p_step: stepId });
+/**
+ * Let the coven-notify edge function tell the coven about a gathering (best
+ * effort): put on the calendar, moved, or taken off it. It works out what
+ * changed itself, so this is called after every save and change of status.
+ * The website does the same (covens/coven-data.js).
+ */
+export function notifyGathering(ritualId: string | null | undefined) {
+  if (!ritualId) return;
+  let zone = '';
+  try {
+    zone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? '';
+  } catch {
+    // The date is given in UTC instead.
+  }
+  void supabase.functions.invoke('coven-notify', { body: { ritual_id: ritualId, time_zone: zone } }).catch(() => {});
+}
 export const saveRitual = (covenId: string, ritualId: string | null, ritual: Record<string, unknown>, steps: Record<string, unknown>[]) =>
-  rpc<Ritual>('save_coven_ritual', { p_coven: covenId, p_ritual_id: ritualId, p_ritual: ritual, p_steps: steps });
-export const setRitualStatus = (ritualId: string, status: 'draft' | 'scheduled' | 'cancelled' | 'deleted') => rpc<Ritual>('set_coven_ritual_status', { p_ritual: ritualId, p_status: status });
+  rpc<Ritual>('save_coven_ritual', { p_coven: covenId, p_ritual_id: ritualId, p_ritual: ritual, p_steps: steps }).then((saved) => {
+    notifyGathering(saved?.id);
+    return saved;
+  });
+export const setRitualStatus = (ritualId: string, status: 'draft' | 'scheduled' | 'cancelled' | 'deleted') =>
+  rpc<Ritual>('set_coven_ritual_status', { p_ritual: ritualId, p_status: status }).then((saved) => {
+    notifyGathering(ritualId);
+    return saved;
+  });
+
+// Who hears about the coven's gatherings (notices.ts; …_coven_gathering_notices.sql).
+/** The coven's rules by kind of gathering; none before the migration is applied. */
+export const fetchNoticeRules = (covenId: string) =>
+  run<NoticeRule[]>(supabase.from('coven_gathering_notice_rules').select('coven_id,scope,who,updated_by,updated_at').eq('coven_id', covenId)).catch(() => [] as NoticeRule[]);
+/** Before sending one by hand: how many it goes to (with a one-off choice of who), whether it was announced, when the next may go. */
+export const previewNotice = (ritualId: string, who: string[] | null) => rpc<NoticePreview>('coven_gathering_notice_preview', { p_ritual: ritualId, p_who: who && who.length ? who : null });
+/** "Send a notification": its scheduled note or a reminder, with a short note of your own. Resolves with what the edge function said, errors included. */
+export async function sendNotice(ritualId: string, note: string, who: string[] | null): Promise<{ error?: string; sent?: number; recipients?: number; event?: string } | null> {
+  let zone = '';
+  try {
+    zone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? '';
+  } catch {
+    // UTC instead.
+  }
+  try {
+    const { data, error } = await supabase.functions.invoke('coven-notify', { body: { ritual_id: ritualId, manual: true, note, who: who && who.length ? who : null, time_zone: zone } });
+    if (!error) return (data as { sent?: number; recipients?: number; event?: string }) ?? {};
+    // A refusal (too soon, not allowed) comes back as the function's own answer.
+    const context = (error as { context?: { json?: () => Promise<unknown> } }).context;
+    const body = context?.json ? await context.json().catch(() => null) : null;
+    return (body as { error?: string } | null) ?? { error: 'failed' };
+  } catch {
+    return null;
+  }
+}
+/** Set the coven's rule for a kind of gathering; an empty list takes it away. */
+export const setNoticeRule = (covenId: string, scope: string, who: string[]) => rpc<NoticeRule | null>('set_coven_gathering_notice_rule', { p_coven: covenId, p_scope: scope, p_who: who });
 /** Who can be given a part: members, and whether they've signed the coven's current agreements. */
 export const ritualPeople = (covenId: string) => rpc<{ user_id: string; eligible: boolean }[]>('coven_ritual_people', { p_coven: covenId });
 

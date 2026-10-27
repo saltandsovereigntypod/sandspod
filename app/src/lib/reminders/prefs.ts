@@ -77,6 +77,13 @@ export type ReminderPrefs = {
    * turned off for all or for a coven in `off`), and the answer to your own.
    */
   requests: { on: boolean; off: string[]; answers: boolean };
+  /**
+   * Coven gatherings, sent to your phone (supabase/functions/coven-notify
+   * gatherings.ts): a rite or meeting put on a coven's calendar, moved, or
+   * taken off it, when the coven's choices say you should hear. On, unless
+   * turned off for all or for a coven in `off`.
+   */
+  gatherings: { on: boolean; off: string[] };
 };
 
 export type CrystalCadence = 'full' | 'new' | 'both' | 'weeks';
@@ -110,6 +117,7 @@ export const DEFAULT_PREFS: ReminderPrefs = {
   },
   planning: { holidays: false, days: 7, at: 10 * 60, covens: true, leaderDays: 14, perCoven: {} },
   requests: { on: true, off: [], answers: true },
+  gatherings: { on: true, off: [] },
 };
 
 const obj = (v: unknown): Record<string, unknown> => (v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : {});
@@ -151,6 +159,7 @@ export function normalizePrefs(input: unknown): ReminderPrefs {
   const candles = obj(t.candles);
   const p = obj(raw.planning);
   const r = obj(raw.requests);
+  const g = obj(raw.gatherings);
 
   const calendars: Record<string, HolidayCalendarPrefs> = {};
   for (const [id, value] of Object.entries(obj(h.calendars))) {
@@ -221,6 +230,7 @@ export function normalizePrefs(input: unknown): ReminderPrefs {
       perCoven,
     },
     requests: { on: bool(r.on, d.requests.on), off: strings(r.off), answers: bool(r.answers, d.requests.answers) },
+    gatherings: { on: bool(g.on, d.gatherings.on), off: strings(g.off) },
   };
 }
 
@@ -347,6 +357,19 @@ export function setRequestsFor(prefs: ReminderPrefs, covenId: string, on: boolea
   if (!on) off.push(covenId);
   else if (!prefs.requests.on) off = [...new Set([...off, ...covenIds.filter((id) => id !== covenId)])];
   return normalizePrefs({ ...prefs, requests: { ...prefs.requests, on: on || prefs.requests.on, off } });
+}
+
+// ── Coven gatherings ──────────────────────────────────────────────────────
+
+/** Whether a coven's gatherings (put on its calendar, moved, taken off) ring your phone (on unless turned off). */
+export const gatheringsOn = (prefs: ReminderPrefs, covenId: string) => prefs.gatherings.on && !prefs.gatherings.off.includes(covenId);
+
+/** Turn one coven's gathering notes on or off (turning one on also turns them on overall, with the others as they were). */
+export function setGatheringsFor(prefs: ReminderPrefs, covenId: string, on: boolean, covenIds: string[] = []): ReminderPrefs {
+  let off = prefs.gatherings.off.filter((id) => id !== covenId);
+  if (!on) off.push(covenId);
+  else if (!prefs.gatherings.on) off = [...new Set([...off, ...covenIds.filter((id) => id !== covenId)])];
+  return normalizePrefs({ ...prefs, gatherings: { on: on || prefs.gatherings.on, off } });
 }
 
 // ── Words ─────────────────────────────────────────────────────────────────

@@ -34,3 +34,7 @@ export * as paths from '../../app/src/lib/covens/paths.ts';
 // Meetings: who a meeting is for, its own chat's window and who reads it
 // afterwards, motions and elections, actions carried forward, the minutes.
 export * as meetings from '../../app/src/lib/covens/meetings.ts';
+// Who hears about a gathering (the coven's rules, a gathering's own choice),
+// and the phone notes' words and what changed (coven-notify's gatherings.ts).
+export * as notices from '../../app/src/lib/covens/notices.ts';
+export * as gatheringNotes from '../../supabase/functions/coven-notify/gatherings.ts';

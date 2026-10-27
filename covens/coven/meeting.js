@@ -211,6 +211,7 @@
     const stick = !log || log.scrollHeight - log.scrollTop - log.clientHeight < 60;
     pane.innerHTML = html();
     mountPickers();
+    mountSend();
     const next = pane.querySelector("[data-mt-log]");
     if (next && stick) next.scrollTop = next.scrollHeight;
     global.scrollTo(0, y);
@@ -309,7 +310,8 @@
           ${!live && leads() ? `<a class="button button--ghost" href="${esc(ctx.editHref(ritual.id))}" data-tab="rituals">Edit the meeting</a>` : ""}
           ${!live && leads() && ritual.status === "draft" && (state().perms.schedule || state().perms.site) ? btn("Put it on the calendar", "status", 'data-to="scheduled"') : ""}
           ${!live && leads() && ritual.status === "scheduled" ? btn("Cancel the meeting", "status", 'data-to="cancelled"') : ""}
-        </div>${!live && !leads() && pw.steers ? `<p class="sp-caption">Those who lead the coven’s rituals start the meeting; then you chair it.</p>` : ""}${statusLine()}` : ""}`;
+        </div>${!live && !leads() && pw.steers ? `<p class="sp-caption">Those who lead the coven’s rituals start the meeting; then you chair it.</p>` : ""}${statusLine()}` : ""}
+      ${!live && ritual.status === "scheduled" ? `<div data-mt-send></div>` : ""}`;
 
     return `<p><a class="sp-back" href="${esc(ctx.api.covenHref("rituals"))}" data-tab="rituals">← All rituals</a></p>
       <div class="cv-meeting">
@@ -454,6 +456,21 @@
         : `<p class="sp-caption">You have the minutes, in the coven’s Book.</p>`}
       ${pw.steers && ritual.status !== "cancelled" ? `<div class="sp-actions">${!a.open ? btn(ritual.status === "done" ? "Open it again for a while" : "Open the chat now", "chat", 'data-what="open"') : `${btn("Close the chat", "chat", 'data-what="close"')}${btn("Fifteen minutes more", "chat", 'data-what="extend"')}`}</div>` : ""}
       ${statusLine()}`;
+  }
+
+  // --- sending a notification by hand (covens/coven/notices.js) --------------------
+
+  // Kept across the page's re-renders, so a half-written note survives live updates.
+  let sendBox = null;
+  function mountSend() {
+    const slot = pane.querySelector("[data-mt-send]");
+    if (!slot || !global.CovenNotices) return;
+    if (!sendBox || sendBox.dataset.ritual !== ritual.id) {
+      sendBox = document.createElement("div");
+      sendBox.dataset.ritual = ritual.id;
+      global.CovenNotices.sendPanel(sendBox, state(), ritual);
+    }
+    slot.replaceWith(sendBox);
   }
 
   // --- pickers ---------------------------------------------------------------

@@ -15,6 +15,8 @@ const TOKEN_KEY = 'coven.push.token';
 export const MESSAGE_CHANNEL = 'coven-messages';
 /** Android channel for new applications, requests to advance and their answers, made at run time like the others. */
 export const REQUEST_CHANNEL = 'coven-requests';
+/** Android channel for rites and meetings put on a coven's calendar, moved or taken off it. */
+export const GATHERING_CHANNEL = 'coven-gatherings';
 
 export type PushResult = { ok: true } | { ok: false; reason: 'denied' | 'unsupported' | 'offline' };
 
@@ -31,6 +33,12 @@ export async function enableCovenPush(): Promise<PushResult> {
       await Notifications.setNotificationChannelAsync(REQUEST_CHANNEL, {
         name: 'Coven requests',
         description: 'Applications and requests to advance in covens you review, and the answers to your own.',
+        importance: Notifications.AndroidImportance.DEFAULT,
+        lightColor: '#e2c36d',
+      });
+      await Notifications.setNotificationChannelAsync(GATHERING_CHANNEL, {
+        name: 'Coven gatherings',
+        description: 'Rites and meetings put on your covens’ calendars, moved, or taken off them.',
         importance: Notifications.AndroidImportance.DEFAULT,
         lightColor: '#e2c36d',
       });

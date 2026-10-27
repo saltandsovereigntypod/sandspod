@@ -311,6 +311,21 @@
       </div></section>`;
   }
 
+  /** Coven gatherings: a rite or meeting put on a coven's calendar, moved or taken off it (as the app's Reminders shows them). */
+  function gatheringsHtml() {
+    const g = prefs.gatherings;
+    const rows = g.on
+      ? covens.map((coven) => toggle(slug(`gd-gath-${coven.id}`), coven.name, P.gatheringsOn(prefs, coven.id) ? "On" : "Off", P.gatheringsOn(prefs, coven.id), `data-gath-coven="${esc(coven.id)}"`)).join("") ||
+        `<p class="sp-caption">${signedIn ? "Your covens will be listed here once they’ve loaded." : "Sign in to hear about your covens."}</p>`
+      : "";
+    return `<section class="sp-section" id="gd-gatherings" aria-labelledby="gd-gatherings-label"><h2 class="sp-label" id="gd-gatherings-label">Coven gatherings</h2>
+      <div class="sp-card">
+        ${prefToggle("gd-gath-on", "Tell me about my covens’ gatherings", "A note on your phone when a rite or meeting you’re asked to hear about goes on the calendar, moves, or comes off it", "gatherings.on")}
+        ${rows}
+        <p class="sp-caption">Each coven chooses who hears about which gatherings. These ring phones with the Salt &amp; Sovereignty app and coven notifications turned on.</p>
+      </div></section>`;
+  }
+
   /** Coven requests: new applications and requests to advance in covens you review, and the answer to your own (as the app's Reminders shows them). */
   function requestsHtml() {
     const r = prefs.requests;
@@ -429,7 +444,7 @@
     root.innerHTML = `${header({ title: "Reminders", eyebrow: "Your reminders", back: "/today/", backLabel: "Back to Today" })}
       <p class="sp-muted">No account needed. Choose what you’d like to hear about, and when: the moon, your rituals, your holidays, tending, and planning.</p>
       <div class="sp-card sp-card--gold"><p>A browser can’t ring at a set time, so here your reminders go into your own calendar, which does the reminding. The Salt &amp; Sovereignty app can remind you on your phone instead.</p></div>
-      ${overviewHtml()}${moonHtml()}${ritualsHtml()}${devotionHtml()}${dreamsHtml()}${holidaysHtml()}${tendingHtml()}${planningHtml()}${requestsHtml()}${quietHtml()}${yourCalendarHtml()}${skyHtml()}`;
+      ${overviewHtml()}${moonHtml()}${ritualsHtml()}${devotionHtml()}${dreamsHtml()}${holidaysHtml()}${tendingHtml()}${planningHtml()}${gatheringsHtml()}${requestsHtml()}${quietHtml()}${yourCalendarHtml()}${skyHtml()}`;
     if (focus) root.querySelector(focus)?.focus({ preventScroll: true });
   }
 
@@ -487,6 +502,7 @@
       return setPref("tending.crystals.off", t.checked ? off.filter((id) => id !== t.dataset.crystal) : [...off, t.dataset.crystal]);
     }
     if (t.dataset.coven) return setPref(`planning.perCoven.${t.dataset.coven}.on`, t.checked);
+    if (t.dataset.gathCoven) return updatePrefs(P.setGatheringsFor(prefs, t.dataset.gathCoven, t.checked, covens.map((c) => c.id)));
     if (t.dataset.reqCoven) return updatePrefs(P.setRequestsFor(prefs, t.dataset.reqCoven, t.checked, covens.filter((c) => c.reviewer).map((c) => c.id)));
     if (t.hasAttribute("data-pause-on")) return updatePrefs(P.withChange(P.withChange(prefs, "paused", t.checked), "pausedUntil", t.checked ? pauseUntil(7) : ""));
     if (t.dataset.phase) return update({ phases: { ...settings.phases, [t.dataset.phase]: t.checked } });
