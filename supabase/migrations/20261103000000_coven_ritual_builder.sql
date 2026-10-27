@@ -399,7 +399,7 @@ begin
     end if;
     turn := coalesce(nullif(step->>'turn_mode', ''), 'assigned');
     if turn not in ('together', 'in_turn', 'assigned', 'on_behalf') then raise exception 'Step %: unknown choice for how it is done.', n; end if;
-    step_details := case when jsonb_typeof(step->'details') = 'object' then step->'details' - 'vote_voters' else '{}'::jsonb end;
+    step_details := case when jsonb_typeof(step->'details') = 'object' then (step->'details') - 'vote_voters' else '{}'::jsonb end;
     if octet_length(step_details::text) > 20000 then raise exception 'Step %: there is too much in it.', n; end if;
     -- A vote keeps who may vote: those its fields name (everyone when none; no one while its roles are uncast).
     if step->>'action' = 'vote' and jsonb_typeof(step_details->'fields'->'voters') = 'array' and jsonb_array_length(step_details->'fields'->'voters') > 0 then
