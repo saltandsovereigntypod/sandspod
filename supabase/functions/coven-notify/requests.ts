@@ -84,3 +84,19 @@ export function answerNote(args: { kind: 'application' | 'advancement'; approved
     ? { title: args.covenName, body: `You’re now ${rank}.${note}`, url: coven }
     : { title: args.covenName, body: `Your request to become ${rank} wasn’t granted this time.${note}`, url: `${coven}/path` };
 }
+
+/** The note to those who approve for that part of the coven's Book: "Rowan suggested a page". */
+export function bookNote(args: { covenName: string; covenSlug: string; who: string; title: string; changes: boolean; shared: boolean }): Note {
+  const what = args.changes ? `changes to “${clip(args.title, 80)}”` : args.shared ? `“${clip(args.title, 80)}” from their own grimoire` : `a page, “${clip(args.title, 80)}”`;
+  return { title: `The Book · ${args.covenName}`, body: `${args.who} suggested ${what}`, url: `/coven/c/${args.covenSlug}/book/review` };
+}
+
+/** The note to whoever suggested it, once it's decided (with the approver's note, if any). */
+export function bookAnswerNote(args: { covenName: string; covenSlug: string; title: string; status: 'approved' | 'returned' | 'declined'; note?: string | null; pageId?: string | null }): Note {
+  const note = args.note?.trim() ? ` “${clip(args.note.trim())}”` : '';
+  const book = `/coven/c/${args.covenSlug}/book`;
+  const title = clip(args.title, 80);
+  if (args.status === 'approved') return { title: args.covenName, body: `“${title}” is in the coven’s Book, shared by you.${note}`, url: args.pageId ? `${book}/${args.pageId}` : book };
+  if (args.status === 'returned') return { title: args.covenName, body: `“${title}” was sent back to you to change.${note}`, url: `${book}/review` };
+  return { title: args.covenName, body: `“${title}” wasn’t taken into the coven’s Book.${note}`, url: `${book}/review` };
+}

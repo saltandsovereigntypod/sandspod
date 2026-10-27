@@ -32,10 +32,11 @@ export default function RitualScript() {
   const kind: GatheringKind = ritual?.kind === 'meeting' ? 'meeting' : 'rite';
   const plan = useMemo(() => cleanPlan(ritual?.plan, kind), [ritual?.plan, kind]);
   const steps = useMemo(() => orderSteps(coven.steps, id).map((s) => builderStepFrom(s, plan)), [coven.steps, id, plan]);
-  const linksBook = steps.some((s) => !!s.details.book_page_id);
+  // Linked pages you can't open come back marked, so the script says only that.
+  const linkedKey = steps.map((s) => s.details.book_page_id).filter(Boolean).join(',');
   useEffect(() => {
-    if (covenId && linksBook) api.fetchBookPages(covenId).then(setPages).catch(() => setPages([]));
-  }, [covenId, linksBook]);
+    if (covenId && linkedKey) api.fetchBookPages(covenId, linkedKey.split(',')).then(setPages).catch(() => setPages([]));
+  }, [covenId, linkedKey]);
 
   if (!ritual) {
     return (

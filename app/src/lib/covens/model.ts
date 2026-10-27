@@ -154,7 +154,8 @@ export type RitualStep = {
 export type RitualSettings = { coven_id: string; participation_viewers: Assignee[] };
 export type Rsvp = { ritual_id: string; coven_id: string; user_id: string; response: 'going' | 'maybe' | 'not_going' };
 export type StepMark = { step_id: string; ritual_id: string; user_id: string };
-export type BookPage = { id: string; coven_id: string; title: string; section: string | null; body: string; version: number; author_id: string | null; published_by: string | null; published_at: string };
+/** A page of the coven's Book as the ritual builder reads it (coven_grimoire_page_texts); `hidden` when it's there but closed to you. */
+export type BookPage = { id: string; coven_id: string; title: string; section: string | null; body: string; version: number; author_id: string | null; published_by: string | null; published_at: string; hidden?: boolean };
 export type BookDraft = { id: string; coven_id: string; page_id: string | null; title: string; section: string | null; body: string; author_id: string; status: 'draft' | 'pending' | 'declined' | 'published'; reviewer_id: string | null; reviewer_note: string | null; submitted_at: string | null; updated_at: string };
 export type Petition = { id: string; coven_id: string; user_id: string; title: string; body: string | null; color: string; status: 'open' | 'answered' | 'closed'; outcome_note: string | null; last_tended_at: string | null; altar_id?: string | null; source_ritual_id?: string | null; source_step_id?: string | null; created_at: string };
 export type Tending = { id: string; petition_id: string; user_id: string; note: string | null; created_at: string };

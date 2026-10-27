@@ -418,12 +418,72 @@
     removeMember: (covenId, userId, status, reason) => rpc("remove_coven_member", { p_coven: covenId, p_user: userId, p_status: status, p_reason: String(reason || "").trim() || null }),
 
     // --- the coven's Book of Shadows -------------------------------------------
-    bookPages: (covenId) => run(db().from("coven_book_pages").select("*").eq("coven_id", covenId).order("title", { ascending: true }).limit(500)),
-    bookDrafts: (covenId) => run(db().from("coven_book_drafts").select("*").eq("coven_id", covenId).neq("status", "published").order("updated_at", { ascending: false }).limit(200)),
-    saveBookDraft: (covenId, draftId, pageId, fields, submit) =>
-      rpc("save_coven_book_draft", { p_coven: covenId, p_draft: draftId || null, p_page: pageId || null, p_title: fields.title, p_section: fields.section || null, p_body: fields.body || "", p_submit: Boolean(submit) }),
-    reviewBookDraft: (draftId, approve, note) => rpc("review_coven_book_draft", { p_draft: draftId, p_approve: approve, p_note: note || null }),
-    removeBookEntry: (kind, id) => rpc("remove_coven_book_entry", { p_kind: kind, p_id: id }),
+    // The same model as a personal grimoire (coven_grimoire_*), as the app's
+    // lib/grimoire/covenStore.tsx and lib/covens/api.ts read and write it
+    // (supabase/migrations/20261106000000_coven_grimoire.sql).
+    /**
+     * The pages the ritual builder links words from, as plain text, only those
+     * you can open; pages named in `ids` that you can't come back marked hidden.
+     */
+    bookPages: (covenId, ids) =>
+      rpc("coven_grimoire_page_texts", { p_coven: covenId, p_ids: ids && ids.length ? ids : null }).then((rows) => (rows || []).sort((a, b) => a.title.localeCompare(b.title))),
+    /** The book (made with its shelves the first time it's opened) and everything in it you can open. */
+    async grimoire(covenId) {
+      const book = await rpc("open_coven_grimoire", { p_coven: covenId });
+      const [sections, pages, blocks, links] = await Promise.all([
+        run(db().from("coven_grimoire_sections").select("*").eq("book_id", book.id)),
+        run(db().from("coven_grimoire_pages").select("*").eq("book_id", book.id)),
+        run(db().from("coven_grimoire_blocks").select("*").eq("book_id", book.id)),
+        run(db().from("coven_grimoire_page_links").select("*").eq("book_id", book.id))
+      ]);
+      return { fetchedAt: new Date().toISOString(), books: [book], sections: sections || [], pages: pages || [], blocks: blocks || [], links: links || [] };
+    },
+    /** One of the grimoire's operations (SaltCore.grimoire.edits), checked by the database. */
+    grimoireOp: (covenId, op) => rpc("apply_coven_grimoire_op", { p_coven: covenId, p_op: global.SaltCore.grimoire.coven.covenOpPayload(op) }),
+    setBookAccess: (kind, id, access) => rpc("set_coven_grimoire_access", { p_kind: kind, p_id: id, p_access: access }),
+    setBookLayout: (bookId, layout) => rpc("set_coven_grimoire_layout", { p_book: bookId, p_layout: layout }),
+    pageVersions: (pageId) => run(db().from("coven_grimoire_versions").select("*").eq("page_id", pageId).order("saved_at", { ascending: false }).limit(100)),
+    restoreVersion: (versionId) => rpc("restore_coven_grimoire_version", { p_version: versionId }),
+    bookSubmissions: (covenId) => run(db().from("coven_grimoire_submissions").select("*").eq("coven_id", covenId).order("updated_at", { ascending: false }).limit(200)).catch(() => []),
+    /** A suggestion rings those who approve it; its answer, whoever shared it (best effort). */
+    notifyBook(row) {
+      if (!row?.id || row.status === "draft") return row;
+      try {
+        Promise.resolve(db().functions?.invoke?.("coven-notify", { body: { grimoire_submission_id: row.id } })).catch(() => {});
+      } catch {
+        // Phones hear about it another time.
+      }
+      return row;
+    },
+    submitPage: (input) =>
+      rpc("submit_coven_grimoire_page", {
+        p_coven: input.covenId,
+        p_section: input.sectionId || null,
+        p_page: input.pageId || null,
+        p_title: String(input.title || "").trim(),
+        p_page_type: input.pageType || null,
+        p_blocks: input.blocks || [],
+        p_note: String(input.note || "").trim() || null,
+        p_source_page: input.sourcePageId || null,
+        p_submission: input.submissionId || null,
+        p_send: input.send !== false
+      }).then((row) => CovenData.notifyBook(row)),
+    reviewSubmission: (id, decision, note, changes = {}) =>
+      rpc("review_coven_grimoire_submission", {
+        p_submission: id,
+        p_decision: decision,
+        p_note: String(note || "").trim() || null,
+        p_title: changes.title ? String(changes.title).trim() : null,
+        p_section: changes.sectionId || null,
+        p_blocks: changes.blocks || null
+      }).then((row) => CovenData.notifyBook(row)),
+    removeSubmission: (id) => rpc("remove_coven_grimoire_submission", { p_submission: id }),
+    /** What the ritual builder saves onto its shelf: 'rite' | 'agenda' | 'record' | 'minutes', once per gathering. */
+    saveGathering: (covenId, ritualId, what, title, blocks) =>
+      rpc("save_coven_grimoire_gathering", { p_coven: covenId, p_ritual: ritualId, p_what: what, p_title: String(title || "").slice(0, 200), p_blocks: blocks || [] }).then((result) => {
+        if (result?.submission_id) CovenData.notifyBook({ id: result.submission_id, status: result.status });
+        return result;
+      }),
 
     // --- petitions ---------------------------------------------------------------
     petitions: (covenId) => run(db().from("coven_petitions").select("*").eq("coven_id", covenId).order("created_at", { ascending: false }).limit(1000)),

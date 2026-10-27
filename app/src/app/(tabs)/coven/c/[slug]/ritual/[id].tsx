@@ -17,7 +17,8 @@ import { cleanContribution, contributionLabel, type Contribution, type Participa
 import { seedPetitionAltar } from '../../../../../../lib/covens/petitionAltar';
 import { clearNamed, nameNewThings, offerPaper, paperCount, placeOffering, snuffNamed, stepAltarChange } from '../../../../../../lib/covens/ritualAltar';
 import { builderStepFrom, cleanPlan, holdActive, holdLine, holdUntil, linkedEffect, roleLabel, stepThingName, type GatheringKind } from '../../../../../../lib/covens/builder';
-import { buildScript, mayVote, recordText, scriptText, voteOptions, type RitualRecord } from '../../../../../../lib/covens/script';
+import { buildScript, mayVote, recordBlocks, scriptText, voteOptions, type RitualRecord } from '../../../../../../lib/covens/script';
+import { recordPageBlocks, textBlocks, type Gathering } from '../../../../../../lib/grimoire/coven';
 import { useGrimoire } from '../../../../../../lib/grimoire/store';
 import { actionForStep } from '../../../../../../lib/covens/stepActions';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
@@ -152,10 +153,11 @@ export default function RitualScreen() {
   const plan = cleanPlan(ritualNow?.plan, kind);
   const builderSteps = steps.map((s) => builderStepFrom(s, plan));
   const [pages, setPages] = useState<BookPage[]>([]);
-  const linksBook = builderSteps.some((s) => !!s.details.book_page_id);
+  // Linked pages you can't open come back marked, so the script says only that.
+  const linkedKey = builderSteps.map((s) => s.details.book_page_id).filter(Boolean).join(',');
   useEffect(() => {
-    if (covenId && linksBook) api.fetchBookPages(covenId).then(setPages).catch(() => setPages([]));
-  }, [covenId, linksBook]);
+    if (covenId && linkedKey) api.fetchBookPages(covenId, linkedKey.split(',')).then(setPages).catch(() => setPages([]));
+  }, [covenId, linkedKey]);
   const [prepRows, setPrepRows] = useState<api.PrepRow[]>([]);
   const [votes, setVotes] = useState<api.VoteRow[]>([]);
   const [record, setRecord] = useState<RitualRecord | null>(null);
@@ -300,11 +302,13 @@ export default function RitualScreen() {
   const until = holdUntil(ritual.ended_at, plan);
   const expected = answers.going.length + answers.maybe.length;
   const canBook = (coven.perms.writeBook && coven.standing.ok) || coven.perms.site;
-  const toBook = (section: string, pageTitle: string, body: string) => {
+  // Onto the Book's own shelf (Rites, Meeting minutes, Ritual records); saving again updates the same page.
+  const toBook = (what: Gathering, pageTitle: string, blocks: unknown[]) => {
     if (!covenId) return;
+    const shelf = what === 'rite' ? 'Rites' : what === 'record' ? 'Ritual records' : 'Meeting minutes';
     void act(async () => {
-      const draft = await api.saveBookDraft(covenId, null, null, { title: pageTitle.slice(0, 120), section, body }, true);
-      setMessage(draft.status === 'published' ? `It is in the coven’s Book, under ${section}.` : 'Sent to those who approve the Book’s pages.');
+      const saved = await api.saveGathering(covenId, ritual.id, what, pageTitle, blocks);
+      setMessage(saved.status === 'published' ? `It is in the coven’s Book, under ${shelf}.` : 'Sent to those who approve the Book’s pages.');
     });
   };
   // Before the rite: steps asking something ahead of time that are yours, or the coven's one no one has written yet.
@@ -528,13 +532,13 @@ export default function RitualScreen() {
       {wasThere && grimoireReady && <Text style={type.caption}>A copy is in your grimoire, under Coven rites.</Text>}
       {canBook && steps.length > 0 && (
         <View style={styles.row}>
-          <Button label={kind === 'meeting' ? 'Save the agenda to the Book' : 'Save the rite to the Book'} variant="outline" disabled={busy} onPress={() => toBook(kind === 'meeting' ? 'Meetings' : 'Rites', ritual.title, scriptText(script))} />
+          <Button label={kind === 'meeting' ? 'Save the agenda to the Book' : 'Save the rite to the Book'} variant="outline" disabled={busy} onPress={() => toBook(kind === 'meeting' ? 'agenda' : 'rite', ritual.title, textBlocks(scriptText(script)))} />
           {ritual.status === 'done' && record && (
             <Button
               label={kind === 'meeting' ? 'Save the minutes to the Book' : 'Save the record to the Book'}
               variant="outline"
               disabled={busy}
-              onPress={() => toBook(kind === 'meeting' ? 'Minutes' : 'Ritual records', `${ritual.title} · ${new Date(record.held_at ?? record.ended_at ?? Date.now()).toLocaleDateString()}`, recordText(record, coven.nameOf))}
+              onPress={() => toBook(kind === 'meeting' ? 'minutes' : 'record', `${ritual.title} · ${new Date(record.held_at ?? record.ended_at ?? Date.now()).toLocaleDateString()}`, recordPageBlocks(recordBlocks(record, coven.nameOf)))}
             />
           )}
         </View>

@@ -74,7 +74,8 @@
     const plan = planOf(ritual);
     const steps = builderSteps(ritual);
     const [pages, prep, votes, record] = await Promise.all([
-      steps.some((s) => s.details.book_page_id) ? D.bookPages(state.coven.id).catch(() => []) : Promise.resolve(extras_?.pages || []),
+      // Linked pages you can't open come back marked, so the script says only that.
+      steps.some((s) => s.details.book_page_id) ? D.bookPages(state.coven.id, steps.map((s) => s.details.book_page_id).filter(Boolean)).catch(() => []) : Promise.resolve(extras_?.pages || []),
       plan.checklist.length ? D.ritualPrep(ritual.id) : Promise.resolve([]),
       stepsOf(ritual).some((s) => s.action === "vote") ? D.ritualVotes(ritual.id) : Promise.resolve([]),
       ritual.status === "done" ? D.ritualRecord(ritual.id) : Promise.resolve(null)
@@ -860,11 +861,14 @@
         const record = extrasFor(ritual).record;
         const script = scriptOf(ritual);
         const asRecord = button.dataset.toBook === "record";
-        const section = asRecord ? (kind === "meeting" ? "Minutes" : "Ritual records") : kind === "meeting" ? "Meetings" : "Rites";
+        // Onto the Book's own shelf; saving again updates the same page (as the app's ritual/[id].tsx).
+        const what = asRecord ? (kind === "meeting" ? "minutes" : "record") : kind === "meeting" ? "agenda" : "rite";
+        const shelf = what === "rite" ? "Rites" : what === "record" ? "Ritual records" : "Meeting minutes";
         const title = asRecord && record ? `${ritual.title} · ${new Date(record.held_at || record.ended_at || Date.now()).toLocaleDateString()}` : ritual.title;
-        const body = asRecord && record ? S().recordText(record, nameOf) : S().scriptText(script);
-        const saved = await UI.busy(button, statusOf(button), () => D.saveBookDraft(state.coven.id, null, null, { title: title.slice(0, 120), section, body }, true));
-        if (saved) UI.setStatus(statusOf(button), saved.status === "published" ? `It is in the coven’s Book, under ${section}.` : "Sent to those who approve the Book’s pages.");
+        const G = global.SaltCore.grimoire.coven;
+        const blocks = asRecord && record ? G.recordPageBlocks(S().recordBlocks(record, nameOf)) : G.textBlocks(S().scriptText(script));
+        const saved = await UI.busy(button, statusOf(button), () => D.saveGathering(state.coven.id, ritual.id, what, title, blocks));
+        if (saved) UI.setStatus(statusOf(button), saved.status === "published" ? `It is in the coven’s Book, under ${shelf}.` : "Sent to those who approve the Book’s pages.");
       })
     );
   }

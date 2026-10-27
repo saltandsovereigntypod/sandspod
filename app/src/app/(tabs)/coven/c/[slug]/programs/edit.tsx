@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 import { Sheet } from '../../../../../../components/altar/Sheet';
@@ -28,6 +28,8 @@ import {
   type ProgramKind,
 } from '../../../../../../lib/covens/programs';
 import { usePrograms, type ProgramData } from '../../../../../../lib/covens/usePrograms';
+import type { BookPage } from '../../../../../../lib/covens/model';
+import { studyLink, studyLinks } from '../../../../../../lib/grimoire/coven';
 import { colors, radius, type } from '../../../../../../theme';
 
 type Head = { kind: ProgramKind; title: string; summary: string; description: string; award_rank_id: string | null; self_enroll: boolean; template_id: string | null };
@@ -242,6 +244,7 @@ function TaskEditor({ task, onChange, onMove, onRemove }: { task: DraftTask; onC
       <Chips label="Kind" options={TASK_KINDS} value={task.kind} onChange={(kind) => onChange({ kind })} />
       <Field label="Instructions" value={task.instructions ?? ''} onChangeText={(instructions) => onChange({ instructions })} multiline maxLength={8000} />
       <Field label="Resources (books, links, people to ask)" value={task.resources ?? ''} onChangeText={(resources) => onChange({ resources })} multiline maxLength={4000} />
+      <StudyLinker resources={task.resources ?? ''} onChange={(resources) => onChange({ resources })} />
       <Field label="Times to do it" value={String(task.times)} onChangeText={(v) => onChange({ times: Math.max(1, Math.min(400, Number(v.replace(/[^0-9]/g, '')) || 1)) })} keyboardType="number-pad" maxLength={3} />
       <Field
         label="About how long (minutes)"
@@ -282,3 +285,33 @@ const styles = StyleSheet.create({
   stageHead: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   holidays: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, borderRadius: radius.tile },
 });
+
+/** Links a page of the coven's Book (its Study material first, or any page) into a task's resources. */
+function StudyLinker({ resources, onChange }: { resources: string; onChange: (resources: string) => void }) {
+  const coven = useCoven();
+  const covenId = coven.snapshot?.coven.id;
+  const [pages, setPages] = useState<BookPage[] | null>(null);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (open && covenId && !pages) api.fetchBookPages(covenId).then(setPages).catch(() => setPages([]));
+  }, [open, covenId, pages]);
+  const linked = studyLinks(resources);
+  if (!open) return <Button label={linked.length ? `Pages of the Book linked: ${linked.length}` : 'Link a page of the coven’s Book'} variant="text" onPress={() => setOpen(true)} />;
+  const list = (pages ?? []).filter((p) => !p.hidden).sort((a, b) => Number(b.section === 'Study material') - Number(a.section === 'Study material') || a.title.localeCompare(b.title));
+  const toggle = (page: BookPage, on: boolean) => {
+    const link = studyLink(page);
+    const rest = resources.split(link).join('').replace(/\n{3,}/g, '\n\n').trim();
+    onChange(on ? `${rest}${rest ? '\n' : ''}${link}` : rest);
+  };
+  return (
+    <View style={styles.gap}>
+      <Text style={type.caption}>Linked pages show as buttons that open them in the coven’s Book.</Text>
+      {!pages && <ActivityIndicator color={colors.gold} />}
+      {pages && !list.length && <Text style={type.caption}>The coven’s Book has no pages yet.</Text>}
+      {list.slice(0, 30).map((p) => (
+        <CheckRow key={p.id} label={p.section ? `${p.title} · ${p.section}` : p.title} value={linked.some((l) => l.id === p.id)} onChange={(on) => toggle(p, on)} />
+      ))}
+      <Button label="Done" variant="text" onPress={() => setOpen(false)} />
+    </View>
+  );
+}
