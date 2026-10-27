@@ -2,13 +2,15 @@ import { Text } from 'react-native';
 
 import { MenuList, Section, SwitchRow } from '../../../../components/more/ui';
 import { SettingsForm } from '../../../../components/more/SettingsForm';
+import { COUNT_ME_KEY, countsMe } from '../../../../lib/covens/paths';
 import { hiddenKinds, HIDDEN_KINDS_KEY, KIND_CHOICES, withKindShown } from '../../../../lib/divination/oracle/kinds';
 import { myPractices, PRACTICES, practicesValue } from '../../../../lib/rituals/premade';
 import { type } from '../../../../theme';
 
 // What kind of witch you are, alongside My path (the traditions you keep).
 // It puts the premade rituals and spells that suit your practice first.
-// Also which kinds of draw Divination offers.
+// Also which kinds of draw Divination offers, and whether you're counted in
+// your covens' Paths in the coven (lib/covens/paths.ts).
 export default function PracticeSettings() {
   return (
     <SettingsForm title="My practice">
@@ -34,6 +36,20 @@ export default function PracticeSettings() {
                     last={index === PRACTICES.length - 1}
                   />
                 ))}
+              </MenuList>
+            </Section>
+            <Section label="Your covens">
+              <Text style={type.caption}>
+                Covens can see what share of their members practise each way, keep each path and honour each deity, never who. Anything fewer than three share is gathered under Other.
+              </Text>
+              <MenuList>
+                <SwitchRow
+                  label="Count me in my covens’ paths overview"
+                  detail="Off: your practice, path and deities are left out of every coven’s count."
+                  value={countsMe(draft)}
+                  onChange={(on) => set(COUNT_ME_KEY, on)}
+                  last
+                />
               </MenuList>
             </Section>
             <Section label="Divination: what to draw">

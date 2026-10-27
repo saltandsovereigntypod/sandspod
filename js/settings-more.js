@@ -8,7 +8,7 @@
  * touches them; each change is saved straight away, keeping every other
  * setting (the website's and the app's) as it is. Keys and values are the
  * app's: my_practice, calendar_*, today_show, today_layout, library_path*,
- * divination_hidden_kinds.
+ * divination_hidden_kinds, coven_paths_count_me.
  */
 (function (global) {
   "use strict";
@@ -135,7 +135,21 @@
     return `<p class="my-sanctuary-intro">What kind of witch you are, alongside My path (the traditions you keep). Choose as many as fit. Rituals &amp; spells puts workings for your practice first, and your path (Living Library) adds the traditions you keep.</p>
       ${group("How you practise", G.PRACTICES.map((p) => check(`data-practice="${esc(p.id)}"`, p.name, p.about, chosen.includes(p.id))).join(""))}
       ${group("My deities", `<p class="my-sanctuary-intro">Your patron, the gods you’ve dedicated to, and those you’re getting to know.</p><p><a class="button button--ghost" href="${MY_DEITIES_HREF}">Open My deities</a></p>`)}
+      ${covenPathsHtml(settings)}
       ${drawKindsHtml(settings, G)}`;
+  }
+
+  // Whether you're counted in your covens' Paths in the coven (the app's
+  // lib/covens/paths.ts COUNT_ME_KEY; on unless turned off).
+  const COVEN_PATHS_KEY = "coven_paths_count_me";
+  const countsInCovens = (settings) => settings?.[COVEN_PATHS_KEY] !== false && settings?.[COVEN_PATHS_KEY] !== "false";
+
+  function covenPathsHtml(settings) {
+    return group(
+      "Your covens",
+      check("data-coven-paths", "Count me in my covens’ paths overview", "Off: your practice, path and deities are left out of every coven’s count.", countsInCovens(settings)),
+      "Covens can see what share of their members practise each way, keep each path and honour each deity, never who. Anything fewer than three share is gathered under Other."
+    );
   }
 
   /** Which kinds of draw Divination offers (the app's Settings → My practice → Divination: what to draw). */
@@ -404,6 +418,7 @@
         const chosen = G.myPractices(settings);
         return save({ my_practice: G.practicesValue(t.checked ? [...chosen, t.dataset.practice] : chosen.filter((p) => p !== t.dataset.practice)) }, "practice");
       }
+      if (t.hasAttribute("data-coven-paths")) return save({ [COVEN_PATHS_KEY]: t.checked }, "practice");
       if (t.dataset.drawKind && G.divinationKinds) {
         const K = G.divinationKinds;
         return save({ [K.HIDDEN_KINDS_KEY]: K.withKindShown(settings, t.dataset.drawKind, t.checked) }, "practice");

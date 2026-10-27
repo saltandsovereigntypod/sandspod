@@ -2977,6 +2977,21 @@ export const HELP: HelpSection[] = [
         keywords: ['attendance', 'participation', 'record', 'standing', 'inactive', 'revoke membership', 'remove member', 'mentor check-in', 'excused', 'can’t make it'],
       },
       {
+        id: 'covens-paths',
+        title: 'See the paths in your coven',
+        summary: 'What share of the coven practises each way, keeps each path and honours each deity as patron or otherwise, never who.',
+        steps: [
+          'Open your coven and tap "Manage", then "Paths in the coven". If the coven’s head shows it to everyone, it’s on the coven’s page under "The coven" too.',
+          'Each bar is a share of those who have said: how they practise (Settings → My practice), their path (Settings → Living Library → My path) and their deities (Settings → My deities), as patrons, as deities dedicated to, and honoured in any way.',
+          'The coven’s head always sees it, as do those who keep the members’ record. The head can switch on "Show it to the whole coven" at the foot of it.',
+        ],
+        tips: [
+          'It never shows who keeps what. Anything fewer than three share is gathered under "Other (fewer than 3)", and nothing shows until five members have shared.',
+          'To be left out of every coven’s count, open Settings → My practice and turn off "Count me in my covens’ paths overview".',
+        ],
+        keywords: ['paths', 'traditions', 'patron', 'deities', 'percentage', 'green witch', 'overview', 'anonymous', 'privacy', 'statistics'],
+      },
+      {
         id: 'covens-powers',
         title: 'Decide what each position in your coven can do',
         summary: 'The coven’s head decides who can do everything: positions carry the powers.',

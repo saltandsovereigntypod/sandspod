@@ -21,3 +21,5 @@ export * as stepActions from '../../app/src/lib/covens/stepActions.ts';
 export * as contributions from '../../app/src/lib/covens/contributions.ts';
 // The members' record: attendance, studies, mentoring and the gentle flags.
 export * as record from '../../app/src/lib/covens/record.ts';
+// Paths in the coven: shares of how the coven practises and whom it honours, never who.
+export * as paths from '../../app/src/lib/covens/paths.ts';

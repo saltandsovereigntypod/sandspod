@@ -66,7 +66,8 @@ export default function Manage() {
               <MenuRow label="Review" detail="Applications and requests to advance" icon="offer" onPress={() => router.push(covenHref(coven.slug, 'review'))} />
               <MenuRow label="Initiation & training" detail="Design programs, assign them and mentors" icon="journey" onPress={() => router.push(covenHref(coven.slug, 'programs/design'))} />
               <MenuRow label="Members" detail="Positions, pauses, removing and handing on" icon="account" onPress={() => router.push(covenHref(coven.slug, 'members'))} />
-              <MenuRow label="Members’ record" detail="Who has been taking part and who hasn’t: rituals, studies, mentoring" icon="community" last onPress={() => router.push(covenHref(coven.slug, 'record'))} />
+              <MenuRow label="Members’ record" detail="Who has been taking part and who hasn’t: rituals, studies, mentoring" icon="community" onPress={() => router.push(covenHref(coven.slug, 'record'))} />
+              <MenuRow label="Paths in the coven" detail="How the coven practises and whom it honours, as shares, never who" icon="journey" last onPress={() => router.push(covenHref(coven.slug, 'paths'))} />
             </MenuList>
           </Section>
           {(coven.perms.site || (coven.perms.founder && info.status === 'active')) && (
