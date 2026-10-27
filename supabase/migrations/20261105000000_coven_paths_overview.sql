@@ -115,7 +115,7 @@ as $$
   select coalesce(array_agg(id order by id), '{}'::text[])
   from unnest(array['wicca', 'celtic', 'norse', 'hellenic', 'roman', 'slavic', 'christian', 'egyptian', 'hindu', 'mesopotamian',
                     'canaanite', 'baltic', 'finnish', 'anglo-saxon', 'etruscan', 'basque', 'shinto', 'chinese']) as id
-  where id = any ((select ids from chosen)) and not id = any ((select ids from hidden));
+  where id = any (coalesce((select ids from chosen), '{}'::text[])) and not (id = any (coalesce((select ids from hidden), '{}'::text[])));
 $$;
 
 -- My deities: each once, keyed by its Living Library key or its own name
