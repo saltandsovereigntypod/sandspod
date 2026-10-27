@@ -23,7 +23,7 @@ export const ALTAR_EFFECTS: { value: AltarEffect; label: string; detail: string 
   { value: 'release_papers', label: 'Release the papers', detail: 'The folded papers set down earlier in the ritual are burned, buried or released, each as its step said.' },
 ];
 
-export type ActionGroup = 'opening' | 'fire' | 'offerings' | 'words' | 'work' | 'closing';
+export type ActionGroup = 'opening' | 'fire' | 'offerings' | 'words' | 'work' | 'closing' | 'meeting';
 
 export const ACTION_GROUPS: { id: ActionGroup; label: string }[] = [
   { id: 'opening', label: 'Opening' },
@@ -32,6 +32,7 @@ export const ACTION_GROUPS: { id: ActionGroup; label: string }[] = [
   { id: 'words', label: 'Words and sound' },
   { id: 'work', label: 'The work' },
   { id: 'closing', label: 'Closing' },
+  { id: 'meeting', label: 'Meetings' },
 ];
 
 export type StepAction = {
@@ -84,6 +85,8 @@ export const STEP_ACTIONS: StepAction[] = [
   { id: 'call_quarters', group: 'opening', name: 'Call the quarters', label: 'Call all four quarters', directions: 'Turn to each direction in turn, East, South, West and North, and call its element into the circle. Light each quarter’s candle as you go if you have them.', words: 'Powers of the East, of Air; powers of the South, of Fire; powers of the West, of Water; powers of the North, of Earth: we call you to this circle. Hail and welcome.', effect: 'light_all', minutes: 4, keywords: ['quarters', 'elements', 'watchtowers', 'directions'] },
   { id: 'welcome_deity', group: 'opening', name: 'Welcome {deity}', label: 'Welcome a deity', directions: 'Face the altar and the image of {deity}. Speak your welcome and, if you like, light a candle or set down an offering for them.', words: '{deity}, we welcome you to this circle. Be with us tonight, and bless the work we do in your name.', effect: '', minutes: 2, deity: true, keywords: ['god', 'goddess', 'deity', 'invoke', 'invite'] },
   { id: 'welcome_ancestors', group: 'opening', name: 'Welcome the ancestors', directions: 'Turn to the ancestor frame or an empty chair. Invite the beloved dead to be with the circle. Each person may speak a name aloud.', words: 'Ancestors of blood and of spirit, those who came before us: you are remembered, and you are welcome here.', effect: '', minutes: 3, asks: 'ancestor', ask: { timing: 'live' }, suggestItems: ['ancestor frame', 'white candle'], keywords: ['ancestors', 'beloved dead', 'names'] },
+  { id: 'cleanse', group: 'opening', name: 'Cleanse', label: 'Cleanse (choose how: khernips, smoke, salt water, sound…)', directions: 'Cleanse the space and everyone in it, in the way this step names. Go slowly, so each person is included.', effect: '', minutes: 3, keywords: ['cleanse', 'purify', 'khernips', 'smoke', 'salt', 'sound', 'water', 'wash'] },
+  { id: 'prayer', group: 'opening', name: 'Say a prayer', label: 'A prayer (spoken alone or together)', directions: 'Speak the prayer slowly. When it is said together, the one leading begins and everyone joins in.', effect: '', minutes: 2, keywords: ['prayer', 'pray', 'invocation', 'hymn', 'blessing'] },
   { id: 'welcome_land', group: 'opening', name: 'Welcome the spirits of the land', directions: 'Turn outward to the land you stand on. Greet the spirits of the place, thank them for holding the circle, and pour a little water or set down a small offering for them.', words: 'Spirits of this land, of stone and root and water, we greet you as guests. Thank you for holding us tonight.', effect: '', minutes: 2, keywords: ['land', 'spirits', 'place', 'genius loci'] },
 
   // ── Candles and fire ─────────────────────────────────────────────────
@@ -99,6 +102,7 @@ export const STEP_ACTIONS: StepAction[] = [
   { id: 'pour_libation', group: 'offerings', name: 'Pour a libation', directions: 'Pour a little wine, mead, milk or water into the libation bowl or onto the earth, and say who it is for.', words: 'To those who hold us: drink, and be honoured.', effect: 'place_item', minutes: 2, suggestItems: ['chalice', 'wine', 'mead', 'libation bowl'], keywords: ['libation', 'pour', 'wine', 'drink'] },
   { id: 'burn_incense', group: 'offerings', name: 'Burn incense', directions: 'Light the incense and let its smoke rise as an offering.', words: 'Let this smoke rise with our prayers.', effect: 'place_item', minutes: 1, suggestItems: ['incense', 'frankincense'], keywords: ['incense', 'smoke', 'resin'] },
   { id: 'cakes_ale', group: 'offerings', name: 'Cakes and ale', directions: 'Bless the cakes and the drink. Set a portion aside for the gods and the land, then pass them round the circle so each person eats and drinks.', words: 'May you never hunger. May you never thirst.', effect: 'place_item', minutes: 8, suggestItems: ['bread', 'cake', 'chalice', 'mead'], keywords: ['cakes', 'ale', 'bread', 'wine', 'share'] },
+  { id: 'lay_crossroads', group: 'offerings', name: 'Lay out the crossroads', directions: 'Set the crossroads on the altar: a crossroads picture, three roads marked out, or whatever stands for it in your coven. Offerings are set there.', effect: 'place_item', minutes: 2, suggestItems: ['key', 'path', 'crossroads'], keywords: ['crossroads', 'trivia', 'roads', 'hekate'] },
   { id: 'toast_blessing', group: 'offerings', name: 'Toast and blessing', directions: 'Raise the cup and speak a blessing. Each person may add their own, then drink.', words: 'To the gods, to the land, to the ones beside us.', effect: '', minutes: 4, suggestItems: ['chalice'], keywords: ['toast', 'blessing', 'cup'] },
 
   // ── Words and sound ──────────────────────────────────────────────────
@@ -133,7 +137,19 @@ export const STEP_ACTIONS: StepAction[] = [
   { id: 'farewell_deity', group: 'closing', name: 'Farewell to {deity}', label: 'Farewell the deity', directions: 'Face the altar and thank {deity} for being with the circle.', words: '{deity}, thank you for your presence and your blessing. Go if you must, stay if you will. Hail and farewell.', effect: '', minutes: 1, deity: true, keywords: ['farewell', 'thank', 'deity', 'god', 'goddess'] },
   { id: 'ground_energy', group: 'closing', name: 'Ground the energy', directions: 'Have everyone place their palms on the floor or the earth and let any extra energy drain away. Eat something if you feel light-headed.', effect: '', minutes: 3, keywords: ['ground', 'earth', 'settle'] },
   { id: 'open_circle', group: 'closing', name: 'Open the circle', directions: 'Walk the circle widdershins (anticlockwise), drawing the circle’s light back into your athame or hand.', words: 'The circle is open, but unbroken. Merry meet, and merry part, and merry meet again.', effect: '', minutes: 2, suggestItems: ['athame'], keywords: ['open', 'close', 'circle', 'merry meet'] },
+  { id: 'clear_offerings', group: 'closing', name: 'Clear the offerings', directions: 'Gather what was set down earlier with care, to be left out, buried, or disposed of as your coven does.', effect: '', minutes: 3, keywords: ['clear', 'offerings', 'remove', 'dispose'] },
   { id: 'feast', group: 'closing', name: 'Feast', directions: 'Share food and talk. This is part of the ritual too.', effect: '', minutes: 30, keywords: ['feast', 'food', 'potluck', 'share'] },
+
+  // ── Meetings ─────────────────────────────────────────────────────────
+  { id: 'open_meeting', group: 'meeting', name: 'Open the meeting', directions: 'Welcome everyone. Note who is here and who sent apologies, and go over the agenda.', effect: '', minutes: 3, keywords: ['open', 'meeting', 'welcome', 'apologies', 'agenda'] },
+  { id: 'read_minutes', group: 'meeting', name: 'The last minutes', label: 'Read the last minutes', directions: 'Read or sum up the minutes of the last meeting, and ask whether they are a fair record.', effect: '', minutes: 5, keywords: ['minutes', 'record', 'last meeting'] },
+  { id: 'officer_report', group: 'meeting', name: 'A report', label: 'A report (from an officer or working group)', directions: 'The one reporting speaks briefly. Questions follow.', effect: '', minutes: 5, keywords: ['report', 'treasurer', 'officer', 'update'] },
+  { id: 'agenda_item', group: 'meeting', name: 'Agenda item', directions: 'Introduce the item, hear from those who want to speak, and note what is agreed.', effect: '', minutes: 10, keywords: ['agenda', 'item', 'business', 'topic'] },
+  { id: 'discussion', group: 'meeting', name: 'Discussion', directions: 'Put the question to the group. Let each person speak once before anyone speaks twice.', effect: '', minutes: 15, keywords: ['discuss', 'discussion', 'talk', 'question'] },
+  { id: 'vote', group: 'meeting', name: 'Vote', label: 'A vote on a motion', directions: 'Read the motion. Allow a moment for questions, then everyone who may vote chooses one answer. The result is recorded.', effect: '', minutes: 5, keywords: ['vote', 'motion', 'ballot', 'decide', 'decision'] },
+  { id: 'study', group: 'meeting', name: 'Study together', directions: 'Read the passage or chapter aloud in turns, then talk about what stood out to each of you.', effect: '', minutes: 30, keywords: ['study', 'reading', 'book', 'learn', 'class'] },
+  { id: 'any_other_business', group: 'meeting', name: 'Any other business', directions: 'Ask whether anyone has something to raise that is not on the agenda.', effect: '', minutes: 5, keywords: ['other business', 'aob'] },
+  { id: 'close_meeting', group: 'meeting', name: 'Close the meeting', directions: 'Thank everyone, agree the date of the next meeting, and close.', effect: '', minutes: 2, keywords: ['close', 'end', 'meeting', 'next meeting'] },
 ];
 
 /** Something not in the list: a blank step. */

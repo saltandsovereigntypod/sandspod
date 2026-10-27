@@ -22,7 +22,7 @@ export type ContributionVerb = 'write' | 'place' | 'do';
 export type ContributionKind = 'petition' | 'intention' | 'gratitude' | 'vow' | 'ancestor' | 'question' | 'reflection' | 'offering' | 'candle' | 'light_candle' | 'libation' | 'card';
 export type ContributionTiming = 'ahead' | 'live';
 export type ContributionVisibility = 'me' | 'leader' | 'coven' | 'coven_unnamed';
-export type ContributionFate = 'keep' | 'burn' | 'bury' | 'release' | 'petition';
+export type ContributionFate = 'keep' | 'burn' | 'bury' | 'release' | 'petition' | 'altar';
 export type ContributionStatus = 'written' | 'offered' | 'burned' | 'buried' | 'released' | 'held' | 'answered' | 'closed';
 
 /** What a step asks (coven_ritual_steps.contribution). */
@@ -104,6 +104,7 @@ export const CONTRIBUTION_FATES: { value: ContributionFate; label: string; detai
   { value: 'bury', label: 'Buried', detail: 'Set on the altar folded, and buried when the papers are released (or when the ritual ends).' },
   { value: 'release', label: 'Released', detail: 'Set on the altar folded, and released to the wind when the papers are released (or when the ritual ends).' },
   { value: 'petition', label: 'Becomes a coven petition', detail: 'After it is offered, the coven holds it as a petition and can tend it after the ritual.' },
+  { value: 'altar', label: 'Left on the altar', detail: 'Set on the altar folded, and left there after the rite until the altar is cleared.' },
 ];
 
 /** What a step asks, for the kind chosen: its usual reader and fate, written ahead for written things, each person their own. */
@@ -154,7 +155,7 @@ export function contributionNote(c: StepContribution): string {
   const read = k.verb !== 'write'
     ? ''
     : { me: 'Only you will read it.', leader: 'Only you and those who lead the coven’s rituals will read it.', coven: 'The whole coven can read it, with your name.', coven_unnamed: 'The whole coven can read it, without your name.' }[c.visibility];
-  const fate = k.verb !== 'write' ? '' : { keep: 'It is kept with the ritual.', burn: 'It will be burned on the altar.', bury: 'It will be buried.', release: 'It will be released.', petition: 'Afterwards the coven holds it as a petition.' }[c.fate];
+  const fate = k.verb !== 'write' ? '' : { keep: 'It is kept with the ritual.', burn: 'It will be burned on the altar.', bury: 'It will be buried.', release: 'It will be released.', petition: 'Afterwards the coven holds it as a petition.', altar: 'It will be left on the altar after the rite.' }[c.fate];
   return [c.mode === 'one' && k.verb !== 'write' ? '' : who, read, fate, k.verb === 'write' ? 'You can also mark yours private: it still takes part, sealed.' : ''].filter(Boolean).join(' ');
 }
 
@@ -251,7 +252,19 @@ export function summarise(step: { id: string; assignees: Assignee[] }, members: 
 
 // ─── Tasks ahead of time ─────────────────────────────────────────────────
 
-export type RitualTask = { ritualId: string; stepId: string; title: string; ritualTitle: string; stepTitle: string; scheduledFor: string | null; mine: boolean };
+export type RitualTask = {
+  ritualId: string;
+  stepId: string;
+  title: string;
+  ritualTitle: string;
+  stepTitle: string;
+  scheduledFor: string | null;
+  mine: boolean;
+  /** Remind this many hours before the rite (two days when not given). */
+  hoursBefore?: number;
+  /** Remind at this time instead (things after a rite: clearing the altar, a follow-up). */
+  at?: string;
+};
 
 /**
  * What a person has to do before a rite: each step asking something ahead of
@@ -285,13 +298,14 @@ export function ritualTasks(
 export function taskReminders(tasks: RitualTask[], covens: Record<string, { name: string; slug: string }>, ritualCoven: Record<string, string>, now: number = Date.now()) {
   const out: { key: string; at: Date; title: string; body: string; url: string }[] = [];
   for (const task of tasks) {
-    if (!task.scheduledFor) continue;
-    const start = new Date(task.scheduledFor).getTime();
-    const at = start - 2 * 86400000;
+    if (!task.scheduledFor && !task.at) continue;
+    const hours = task.hoursBefore ?? 48;
+    const at = task.at ? new Date(task.at).getTime() : new Date(task.scheduledFor!).getTime() - hours * 3600000;
     if (at <= now) continue;
     const coven = covens[ritualCoven[task.ritualId]];
     if (!coven) continue;
-    out.push({ key: `coven-task-${task.stepId}`, at: new Date(at), title: task.title, body: `${coven.name}’s rite is in two days. ${task.stepTitle}.`, url: `/coven/c/${coven.slug}/ritual/${task.ritualId}` });
+    const lead = task.at ? '' : hours >= 48 ? `${coven.name}’s rite is in two days. ` : hours >= 24 ? `${coven.name}’s rite is tomorrow. ` : `${coven.name}’s rite is in an hour. `;
+    out.push({ key: `coven-task-${task.stepId}`, at: new Date(at), title: task.title, body: `${lead}${task.stepTitle}.`, url: `/coven/c/${coven.slug}/ritual/${task.ritualId}` });
   }
   return out;
 }

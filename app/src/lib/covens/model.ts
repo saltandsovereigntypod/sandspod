@@ -5,7 +5,7 @@
 
 import { assigneesLabel, assigneesOf, includesMember, type Assignee } from './picker.ts';
 import type { StepContribution } from './contributions.ts';
-import type { StepItem } from '../altar/itemIndex.ts';
+import type { StepItem } from '../altar/stepItems.ts';
 
 export type Joining = 'open' | 'application' | 'closed';
 
