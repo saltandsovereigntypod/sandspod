@@ -1,13 +1,15 @@
+import { router } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
-import { CovenScreen } from '../../../../../components/covens/CovenScreen';
+import { CovenScreen, covenHref } from '../../../../../components/covens/CovenScreen';
 import { Pill, Words, useReport } from '../../../../../components/covens/ui';
 import { Card, Field, MenuList, MenuRow, Notice, Section } from '../../../../../components/more/ui';
 import * as api from '../../../../../lib/covens/api';
 import { useCoven } from '../../../../../lib/covens/CovenContext';
 import { bookSections, errorMessage, relativeTime, type BookDraft, type BookPage } from '../../../../../lib/covens/model';
+import { recordMoon, recordText, type RitualRecord } from '../../../../../lib/covens/script';
 import { colors, type } from '../../../../../theme';
 
 type Editing = { draftId: string | null; pageId: string | null; title: string; section: string; body: string };
@@ -24,6 +26,9 @@ export default function CovenBook() {
   const [pages, setPages] = useState<BookPage[] | null>(null);
   const [drafts, setDrafts] = useState<BookDraft[]>([]);
   const [open, setOpen] = useState<string | null>(null);
+  // What the coven's gatherings left behind (kept by the database when each ends).
+  const [records, setRecords] = useState<RitualRecord[]>([]);
+  const [openRecord, setOpenRecord] = useState<string | null>(null);
   const [editing, setEditing] = useState<Editing | null>(null);
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
@@ -35,10 +40,11 @@ export default function CovenBook() {
   const load = useCallback(async () => {
     if (!covenId) return;
     try {
-      const [nextPages, nextDrafts] = await Promise.all([api.fetchBookPages(covenId), api.fetchBookDrafts(covenId).catch(() => [] as BookDraft[])]);
+      const [nextPages, nextDrafts, nextRecords] = await Promise.all([api.fetchBookPages(covenId), api.fetchBookDrafts(covenId).catch(() => [] as BookDraft[]), api.fetchRecords(covenId)]);
       setPages(nextPages);
       setDrafts(nextDrafts);
-      void loadNames([...nextPages.map((p) => p.author_id), ...nextDrafts.map((d) => d.author_id)]);
+      setRecords(nextRecords);
+      void loadNames([...nextPages.map((p) => p.author_id), ...nextDrafts.map((d) => d.author_id), ...nextRecords.flatMap((r) => [...r.attendees, r.led_by])]);
     } catch (error) {
       setMessage(errorMessage(error));
     }
@@ -80,6 +86,7 @@ export default function CovenBook() {
   const mine = drafts.filter((d) => d.author_id === coven.userId && d.status !== 'published');
   const waiting = canApprove ? drafts.filter((d) => d.status === 'pending') : [];
   const page = pages?.find((p) => p.id === open) ?? null;
+  const record = records.find((r) => r.ritual_id === openRecord) ?? null;
 
   if (editing) {
     return (
@@ -94,6 +101,19 @@ export default function CovenBook() {
           <Button label="Cancel" variant="text" onPress={() => setEditing(null)} />
         </View>
         {message && <Notice>{message}</Notice>}
+      </CovenScreen>
+    );
+  }
+
+  if (record) {
+    return (
+      <CovenScreen title={record.title} onRefresh={load}>
+        <Pill label={record.kind === 'meeting' ? 'Meeting' : 'Ritual record'} />
+        <Words text={recordText(record, coven.nameOf)} />
+        <View style={styles.row}>
+          <Button label={record.kind === 'meeting' ? 'Open the meeting' : 'Open the ritual'} variant="outline" onPress={() => router.push(covenHref(coven.slug, `ritual/${record.ritual_id}`))} />
+          <Button label="Back to the book" variant="text" onPress={() => setOpenRecord(null)} />
+        </View>
       </CovenScreen>
     );
   }
@@ -134,6 +154,22 @@ export default function CovenBook() {
             </MenuList>
           </Section>
         ))}
+
+      {records.length > 0 && (
+        <Section label="Ritual records">
+          <MenuList>
+            {records.slice(0, 40).map((r, i) => (
+              <MenuRow
+                key={r.ritual_id}
+                label={r.title}
+                detail={[r.held_at || r.ended_at ? new Date(r.held_at ?? r.ended_at!).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : '', recordMoon(r), `${r.attendees.length} there`].filter(Boolean).join(' · ')}
+                last={i === Math.min(records.length, 40) - 1}
+                onPress={() => setOpenRecord(r.ritual_id)}
+              />
+            ))}
+          </MenuList>
+        </Section>
+      )}
 
       {waiting.length > 0 && (
         <Section label="Waiting for approval">

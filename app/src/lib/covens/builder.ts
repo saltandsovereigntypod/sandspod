@@ -715,6 +715,9 @@ export function holdUntil(endedAt: string | null | undefined, plan: RitualPlan):
   return new Date(new Date(endedAt).getTime() + plan.afterwards.hold_hours * 3600000);
 }
 
+/** Whether the altar's quiet time is still going. */
+export const holdActive = (until: Date | null, now: number = Date.now()) => !!until && until.getTime() > now;
+
 /** "Left untouched until 9pm tomorrow", for the ritual and the altar. */
 export function holdLine(until: Date | null, now: number = Date.now()): string {
   if (!until) return '';
