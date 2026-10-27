@@ -8,6 +8,7 @@ import { Outline } from '../../../../../../components/covens/builder/Outline';
 import { AfterwardsPanel, ChecklistPanel, CustomActionForm, MeetingPanel, RolesPanel, SectionsPanel } from '../../../../../../components/covens/builder/Panels';
 import { ScriptView } from '../../../../../../components/covens/builder/ScriptView';
 import { StepFocus } from '../../../../../../components/covens/builder/StepFocus';
+import { NoticeWho } from '../../../../../../components/covens/NoticeWho';
 import { Card, Chips, Field, MenuList, MenuRow, Notice, Section } from '../../../../../../components/more/ui';
 import { itemIndex, itemSuggestions } from '../../../../../../lib/altar/itemIndex';
 import { useAltars } from '../../../../../../lib/altar/store';
@@ -43,6 +44,7 @@ import {
 } from '../../../../../../lib/covens/builder';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
 import { errorMessage, OCCASIONS, orderSteps, type BookPage, type Petition } from '../../../../../../lib/covens/model';
+import { noticeLabelOptions, type NoticeRule } from '../../../../../../lib/covens/notices';
 import { assigneesLabel, cleanAssignees, whoEntries, whoSuggestions, type Assignee } from '../../../../../../lib/covens/picker';
 import { fetchMeetingDefaults } from '../../../../../../lib/covens/meetingApi';
 import { historyKeys, historyLabel } from '../../../../../../lib/covens/meetings';
@@ -102,6 +104,7 @@ export default function PlanRitual() {
   const [pages, setPages] = useState<BookPage[]>([]);
   const [petitions, setPetitions] = useState<Petition[]>([]);
   const [previewMode, setPreviewMode] = useState<'script' | 'run'>('script');
+  const [rules, setRules] = useState<NoticeRule[]>([]);
   const [actionDraft, setActionDraft] = useState<{ name: string; section?: string; directions: string; words: string; minutes: number | null; fields: CustomAction['fields'] } | null>(null);
   const altars = useAltars();
 
@@ -114,6 +117,7 @@ export default function PlanRitual() {
     api.fetchBookPages(covenId).then(setPages).catch(() => setPages([]));
     api.fetchPetitions(covenId).then(setPetitions).catch(() => setPetitions([]));
     void fetchMeetingDefaults(covenId).then(setChatDefaults);
+    void api.fetchNoticeRules(covenId).then(setRules);
   }, [covenId]);
   useEffect(() => {
     if (!covenId) return;
@@ -145,6 +149,7 @@ export default function PlanRitual() {
     return occasionSuggestions(from, 6, covenHolidaysBetween(coven.snapshot?.coven ?? null, from, new Date(from.getTime() + 200 * 86400000)));
   }, [coven.snapshot?.coven]);
   const ordered = useMemo(() => orderBySections(steps, plan.sections), [steps, plan.sections]);
+  const labelOptions = useMemo(() => noticeLabelOptions(RITUAL_TEMPLATES, coven.rituals), [coven.rituals]);
   const problems = useMemo(() => {
     const out: Record<string, string> = {};
     for (const s of ordered) {
@@ -247,6 +252,31 @@ export default function PlanRitual() {
   };
 
   const back = <Button label="← Back to the outline" variant="outline" onPress={toOutline} />;
+  // Who hears about it (components/covens/NoticeWho.tsx): a rite's Details, a meeting's panel.
+  const noticeCard = (
+    <NoticeWho
+      plan={plan}
+      kind={kind}
+      occasion={occasion}
+      occasionName={occasionName}
+      audience={kind === 'meeting' ? audience : undefined}
+      rules={rules}
+      words={{ ranks, nameOf: coven.nameOf }}
+      names={labelOptions.names}
+      series={labelOptions.series}
+      who={who}
+      whoSuggest={whoSuggest}
+      canChoose={coven.perms.notices || coven.perms.site}
+      onChange={(notify) =>
+        setPlan((p) => {
+          const next = { ...p };
+          if (notify) next.notify = notify;
+          else delete next.notify;
+          return next;
+        })
+      }
+    />
+  );
   const screenTitle = ritual ? `Edit ${kind === 'meeting' ? 'the meeting' : 'the rite'}` : kind === 'meeting' ? 'Plan a meeting' : 'Plan a rite';
 
   // ── Start from ──────────────────────────────────────────────────────────
@@ -458,6 +488,7 @@ export default function PlanRitual() {
           historyLine={historyLabel(historyKeys(ritual?.chat_readers, chatDefaults), plan, ranks, coven.nameOf).replace(/^./, (c) => c.toLowerCase())}
           onChange={setFromPanel}
         />
+        {noticeCard}
       </CovenScreen>
     );
   if (view === 'action' && actionDraft)
@@ -534,6 +565,7 @@ export default function PlanRitual() {
             </View>
           </View>
         </Card>
+        {kind === 'rite' && noticeCard}
         <Button
           label="Keep this as one of the coven’s templates"
           variant="outline"

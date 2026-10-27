@@ -123,8 +123,9 @@ export function useReminderTaps() {
     const open = (notification: Notifications.Notification) => {
       const data = notification.request.content.data;
       // 'coven-rites' are coven rite reminders (lib/covens/reminders.ts); 'coven-chat' a coven message, 'coven-request' a new
-      // application or request to advance (opens Review) and 'coven-answer' the answer to yours (supabase/functions/coven-notify).
-      const covenNote = data?.source === 'coven-rites' || data?.source === 'coven-chat' || data?.source === 'coven-request' || data?.source === 'coven-answer';
+      // application or request to advance (opens Review) and 'coven-answer' the answer to yours (supabase/functions/coven-notify);
+      // 'coven-gathering' a rite or meeting put on the calendar, moved or taken off it (opens it, or the coven's rituals).
+      const covenNote = data?.source === 'coven-rites' || data?.source === 'coven-chat' || data?.source === 'coven-request' || data?.source === 'coven-answer' || data?.source === 'coven-gathering';
       if ((data?.source === SOURCE || data?.source === STEP_SOURCE || covenNote) && typeof data.url === 'string') router.push(data.url as Href);
     };
     try {

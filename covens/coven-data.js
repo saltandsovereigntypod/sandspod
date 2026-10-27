@@ -20,6 +20,27 @@
   const rpc = (name, args) => run(db().rpc(name, args));
 
   /**
+   * Let the coven-notify edge function tell the coven about a gathering (best
+   * effort), as the app does (app/src/lib/covens/api.ts notifyGathering): put
+   * on the calendar, moved, or taken off it. It works out what changed itself,
+   * so this follows every save and change of status.
+   */
+  function notifyGathering(ritualId) {
+    if (!ritualId) return;
+    let zone = "";
+    try {
+      zone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+    } catch {
+      // The date is given in UTC instead.
+    }
+    try {
+      Promise.resolve(db().functions?.invoke?.("coven-notify", { body: { ritual_id: ritualId, time_zone: zone } })).catch(() => {});
+    } catch {
+      // The gathering is saved; phones hear another time.
+    }
+  }
+
+  /**
    * Let the coven-notify edge function ring phones about a request (best
    * effort), as the app does (app/src/lib/covens/api.ts notifyRequest): just
    * made, it tells the coven's reviewers; just decided, the one who asked.
@@ -339,13 +360,45 @@
       if (!ids.length) return [];
       return run(db().from("coven_ritual_steps").select("*").in("ritual_id", ids).order("position", { ascending: true }));
     },
-    saveRitual: (covenId, ritualId, ritual, steps) => rpc("save_coven_ritual", { p_coven: covenId, p_ritual_id: ritualId || null, p_ritual: ritual, p_steps: steps }),
+    saveRitual: (covenId, ritualId, ritual, steps) =>
+      rpc("save_coven_ritual", { p_coven: covenId, p_ritual_id: ritualId || null, p_ritual: ritual, p_steps: steps }).then((saved) => {
+        notifyGathering(saved?.id);
+        return saved;
+      }),
     /** Active members, and whether each can be given a ritual part (signed the current agreements). */
     ritualPeople: (covenId) => rpc("coven_ritual_people", { p_coven: covenId }),
     startRitual: (ritualId) => rpc("start_coven_ritual", { p_ritual: ritualId }),
     finishStep: (stepId) => rpc("finish_coven_ritual_step", { p_step: stepId }),
     goToStep: (ritualId, stepId) => rpc("go_to_coven_ritual_step", { p_ritual: ritualId, p_step: stepId || null }),
-    setRitualStatus: (ritualId, status) => rpc("set_coven_ritual_status", { p_ritual: ritualId, p_status: status }),
+    setRitualStatus: (ritualId, status) =>
+      rpc("set_coven_ritual_status", { p_ritual: ritualId, p_status: status }).then((saved) => {
+        notifyGathering(ritualId);
+        return saved;
+      }),
+    // Who hears about the coven's gatherings (lib/covens/notices.ts; …_coven_gathering_notices.sql).
+    /** The coven's rules by kind of gathering; none before the migration is applied. */
+    noticeRules: (covenId) => run(db().from("coven_gathering_notice_rules").select("coven_id,scope,who,updated_by,updated_at").eq("coven_id", covenId)).then((rows) => rows || []).catch(() => []),
+    /** Before sending one by hand: how many it goes to (with a one-off choice of who), whether it was announced, when the next may go. */
+    previewNotice: (ritualId, who) => rpc("coven_gathering_notice_preview", { p_ritual: ritualId, p_who: who && who.length ? who : null }),
+    /** "Send a notification" (as the app's sendNotice): what the edge function said back, refusals included; null when it couldn't be reached. */
+    async sendNotice(ritualId, note, who) {
+      let zone = "";
+      try {
+        zone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      } catch {
+        // UTC instead.
+      }
+      try {
+        const { data, error } = await db().functions.invoke("coven-notify", { body: { ritual_id: ritualId, manual: true, note: note || "", who: who && who.length ? who : null, time_zone: zone } });
+        if (!error) return data || {};
+        const body = error.context?.json ? await error.context.json().catch(() => null) : null;
+        return body || { error: "failed" };
+      } catch {
+        return null;
+      }
+    },
+    /** Set the coven's rule for a kind of gathering; an empty list takes it away. */
+    setNoticeRule: (covenId, scope, who) => rpc("set_coven_gathering_notice_rule", { p_coven: covenId, p_scope: scope, p_who: who || [] }),
     async rsvps(ritualIds) {
       const ids = [...new Set((ritualIds || []).filter(Boolean))];
       if (!ids.length) return [];

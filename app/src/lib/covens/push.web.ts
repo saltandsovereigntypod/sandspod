@@ -2,6 +2,7 @@
 
 export const MESSAGE_CHANNEL = 'coven-messages';
 export const REQUEST_CHANNEL = 'coven-requests';
+export const GATHERING_CHANNEL = 'coven-gatherings';
 export type PushResult = { ok: true } | { ok: false; reason: 'denied' | 'unsupported' | 'offline' };
 export const enableCovenPush = async (): Promise<PushResult> => ({ ok: false, reason: 'unsupported' });
 export const disableCovenPush = async (): Promise<void> => {};

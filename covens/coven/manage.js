@@ -320,6 +320,7 @@
           ${[...state.ranks].sort((a, b) => b.level - a.level).map(rankForm).join("")}${rankForm({ level: 1 })}</section>
         ${questionsForm(coven)}
         ${calendarForm(coven)}
+        <section class="sp-section"><h2>Gathering notifications</h2><div data-notice-rules></div></section>
         <div data-grants-holder></div>
         ${perms.founder || perms.site ? `<section class="sp-card" data-participation>
           <h2>Ritual participation</h2>
@@ -367,6 +368,8 @@
           const data = Object.fromEntries(new FormData(form));
           const row = { coven_id: coven.id, name: data.name.trim(), level: Number(data.level) || 1, description: data.description.trim() || null, requirements: data.requirements.trim() || null };
           for (const flag of ["is_default", "open_to_applications", ...L.RANK_POWERS.map((p) => p.key)]) row[flag] = Boolean(data[flag]);
+          // A power the database doesn't have yet (its migration not applied) is left out while it's off.
+          if (!row.can_set_gathering_notices && state.ranks.length && !state.ranks.some((r) => "can_set_gathering_notices" in r)) delete row.can_set_gathering_notices;
           if (form.dataset.rank) row.id = form.dataset.rank;
           if (await UI.busy(form, form.querySelector("[data-status]"), () => D.saveRank(row))) refresh("manage");
         })
@@ -434,6 +437,9 @@
           );
         }).catch(() => {});
       }
+
+      // Who hears about the coven's gatherings (covens/coven/notices.js; the app's manage/notices.tsx).
+      global.CovenNotices?.rulesPanel(pane.querySelector("[data-notice-rules]"), state);
 
       // Who sees ritual participation: the head chooses (as the app's manage/participation.tsx).
       const participation = pane.querySelector("[data-participation]");

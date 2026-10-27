@@ -102,9 +102,11 @@
       actionDraft: null,
       // A meeting kept to some (none: the whole coven), and the coven's default for who reads its chat afterwards.
       audience: P() ? P().cleanAssignees(ritual?.audience) : [],
-      chatDefaults: null
+      chatDefaults: null,
+      // The coven's rules for who hears about its gatherings (covens/coven/notices.js).
+      noticeRules: []
     };
-    const [people, library, pages, own, altarCore, petitions, today, chatDefaults] = await Promise.all([
+    const [people, library, pages, own, altarCore, petitions, today, chatDefaults, noticeRules] = await Promise.all([
       D.ritualPeople(state.coven.id).catch(() => []),
       D.ritualLibrary(state.coven.id).catch(() => []),
       D.bookPages(state.coven.id).catch(() => []),
@@ -112,10 +114,12 @@
       UI.altarCore().catch(() => null),
       D.petitions(state.coven.id).catch(() => []),
       loadToday(),
-      global.CovenMeeting?.fetchDefaults ? global.CovenMeeting.fetchDefaults(state.coven.id).catch(() => null) : Promise.resolve(null)
+      global.CovenMeeting?.fetchDefaults ? global.CovenMeeting.fetchDefaults(state.coven.id).catch(() => null) : Promise.resolve(null),
+      D.noticeRules ? D.noticeRules(state.coven.id) : Promise.resolve([])
     ]);
     if (pane !== el) return;
     m.chatDefaults = chatDefaults;
+    m.noticeRules = noticeRules || [];
     await UI.loadNames(state.context, people.map((p) => p.user_id));
     m.people = people.map((p) => ({ id: p.user_id, name: nameOf(p.user_id), eligible: Boolean(p.eligible) })).sort((a, b) => a.name.localeCompare(b.name));
     m.library = library;
@@ -276,6 +280,7 @@
         ${m.suggestions?.length ? `<div class="sp-chips">${m.suggestions.map((sg, k) => chip(`${sg.label} · ${sg.date.toLocaleDateString(undefined, { month: "short", day: "numeric" })}`, "suggest", attr({ index: k }), false)).join("")}</div>` : ""}
         <div class="sp-field"><label for="bd-when">When (your time)</label><input id="bd-when" type="datetime-local" data-bind="when" value="${esc(f.when)}" /></div>
       </div>
+      ${m.kind === "rite" ? `<div data-notice-card></div>` : ""}
       <div class="sp-actions">${btn("Keep this as one of the coven’s templates", "keep-template", "", "button--ghost")}</div>
       ${statusLine()}`;
   }
@@ -400,7 +405,8 @@
       <div class="sp-card"><p class="sp-label">The minutes are read by</p>
         <div class="sp-chips">${chip("Those it is for", "meeting-set", attr({ key: "minutes_view", value: "audience" }), s.minutes_view === "audience")}${chip("The whole coven", "meeting-set", attr({ key: "minutes_view", value: "coven" }), s.minutes_view === "coven")}</div>
         <div class="sp-field"><label for="mt-series">Which meetings it follows on from</label><input id="mt-series" maxlength="60" data-meeting-series value="${esc(m.plan.meeting?.series || "")}" placeholder="${esc(s.series)}" />
-          <p class="sp-caption">Actions not yet done carry forward to the next meeting with the same name here.</p></div></div>`;
+          <p class="sp-caption">Actions not yet done carry forward to the next meeting with the same name here.</p></div></div>
+      <div data-notice-card></div>`;
   }
 
   // --- one step ------------------------------------------------------------------
@@ -581,7 +587,30 @@
 
   // --- pickers -----------------------------------------------------------------
 
+  /** "Who hears about it" (covens/coven/notices.js): a rite's Details, a meeting's panel. */
+  function mountNotice() {
+    const holder = pane.querySelector("[data-notice-card]");
+    if (!holder || !global.CovenNotices) return;
+    global.CovenNotices.whoCard(holder, {
+      state: ctx.state,
+      getPlan: () => m.plan,
+      kind: m.kind,
+      occasion: m.fields.occasion,
+      occasionName: m.fields.occasion_name,
+      audience: m.kind === "meeting" ? m.audience : undefined,
+      rules: m.noticeRules,
+      people: m.people,
+      onChange: (notify) => {
+        const next = { ...m.plan };
+        if (notify) next.notify = notify;
+        else delete next.notify;
+        m.plan = next;
+      }
+    });
+  }
+
   function mount() {
+    mountNotice();
     const Pk = global.CovenPicker;
     if (!Pk || !P()) return;
     const v = m.view;

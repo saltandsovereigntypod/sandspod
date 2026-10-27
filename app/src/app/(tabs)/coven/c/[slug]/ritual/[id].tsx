@@ -7,6 +7,7 @@ import { CovenScreen, covenHref } from '../../../../../../components/covens/Cove
 import { ContributionList, MyContribution, Participation } from '../../../../../../components/covens/Contributions';
 import { ApologyNote } from '../../../../../../components/covens/Record';
 import { MeetingScreen } from '../../../../../../components/covens/meeting/MeetingScreen';
+import { SendNotice } from '../../../../../../components/covens/SendNotice';
 import { PrepList, RecordCard, StepLines, TurnBox, VoteBox } from '../../../../../../components/covens/builder/LiveParts';
 import { Pill, Pills, Spoken, Words } from '../../../../../../components/covens/ui';
 import { Card, Chips, Notice, Section } from '../../../../../../components/more/ui';
@@ -602,6 +603,7 @@ function RitualScreen() {
           <Button label="Delete the ritual" variant="text" onPress={confirmDelete} disabled={busy} />
         </View>
       )}
+      {ritual.status === 'scheduled' && <SendNotice ritual={ritual} />}
       {canLead && (live || ritual.status === 'scheduled' || ritual.status === 'draft') && (
         <View style={styles.lead}>
           {!live && <Button label="Start the ritual" onPress={() => void act(() => api.startRitual(ritual.id))} disabled={busy || !steps.length} />}

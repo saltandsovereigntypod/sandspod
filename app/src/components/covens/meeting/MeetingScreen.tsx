@@ -8,6 +8,7 @@ import { Composer, ThreadRow, useMessageActions } from '../Chat';
 import { CovenScreen, covenHref } from '../CovenScreen';
 import { ApologyNote } from '../Record';
 import { SearchPicker } from '../SearchPicker';
+import { SendNotice } from '../SendNotice';
 import { Pill, Pills, Words } from '../ui';
 import { PrepList, StepLines, TurnBox, VoteBox } from '../builder/LiveParts';
 import * as api from '../../../lib/covens/api';
@@ -467,6 +468,7 @@ export function MeetingScreen({ ritualId }: { ritualId: string }) {
           {!live && leads && ritual.status === 'scheduled' && <Button label="Cancel the meeting" variant="text" disabled={busy} onPress={() => void act(() => api.setRitualStatus(ritual.id, 'cancelled'))} />}
         </View>
       )}
+      {!live && ritual.status === 'scheduled' && <SendNotice ritual={ritual} />}
     </View>
   );
 

@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import { Body, Card, Chip, Chips, SectionLabel, Toggle, ui } from '../rituals/ui';
 import { TimeRow } from './parts';
 import { covenPlanning, dayKey } from '../../lib/reminders/plan';
-import { BUNDLE_CHOICES, isPaused, PLAN_DAY_CHOICES, requestsOn, setRequestsFor, timeLabel, withChange, type ReminderPrefs } from '../../lib/reminders/prefs';
+import { BUNDLE_CHOICES, gatheringsOn, isPaused, PLAN_DAY_CHOICES, requestsOn, setGatheringsFor, setRequestsFor, timeLabel, withChange, type ReminderPrefs } from '../../lib/reminders/prefs';
 import type { CovenSource } from '../../lib/reminders/plan';
 import type { ReminderSettings } from '../../lib/reminders/schedule';
 
@@ -80,8 +80,39 @@ export function PlanningSection({ prefs, update, covens, signedIn }: Props & { c
           )}
         </Card>
       </View>
+      <GatheringsCard prefs={prefs} update={update} covens={covens} signedIn={signedIn} />
       <RequestsCard prefs={prefs} update={update} covens={covens} signedIn={signedIn} />
     </>
+  );
+}
+
+/** Coven gatherings: a rite or meeting put on a coven's calendar, moved or taken off it (each coven chooses who hears). */
+function GatheringsCard({ prefs, update, covens, signedIn }: Props & { covens: CovenSource[]; signedIn: boolean }) {
+  const ids = covens.map((c) => c.id);
+  return (
+    <View style={ui.gapSmall}>
+      <SectionLabel>Coven gatherings</SectionLabel>
+      <Card>
+        <Toggle
+          label="Tell me about my covens’ gatherings"
+          detail="A note on your phone when a rite or meeting you’re asked to hear about goes on the calendar, moves, or comes off it"
+          value={prefs.gatherings.on}
+          onChange={(on) => update(withChange(prefs, 'gatherings.on', on))}
+        />
+        {prefs.gatherings.on &&
+          covens.map((coven) => (
+            <Toggle
+              key={coven.id}
+              label={coven.name}
+              detail={gatheringsOn(prefs, coven.id) ? 'On' : 'Off'}
+              value={gatheringsOn(prefs, coven.id)}
+              onChange={(on) => update(setGatheringsFor(prefs, coven.id, on, ids))}
+            />
+          ))}
+        {prefs.gatherings.on && !covens.length && <Body muted>{signedIn ? 'Your covens will be listed here once they’ve loaded.' : 'Sign in to hear about your covens.'}</Body>}
+        <Body muted>Each coven chooses who hears about which gatherings. These come through coven notifications, so they reach a phone that has them turned on (in a coven’s Messages).</Body>
+      </Card>
+    </View>
   );
 }
 

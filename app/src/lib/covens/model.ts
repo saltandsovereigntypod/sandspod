@@ -46,6 +46,8 @@ export type Rank = {
   can_moderate?: boolean;
   can_lead_rituals?: boolean;
   can_schedule_rites?: boolean;
+  /** Chooses who hears about the coven's gatherings (notices.ts), for the coven and for each gathering. */
+  can_set_gathering_notices?: boolean;
   can_write_book?: boolean;
   can_approve_book?: boolean;
   can_manage_programs?: boolean;
@@ -221,6 +223,8 @@ export type Permissions = {
   moderate: boolean;
   lead: boolean;
   schedule: boolean;
+  /** Chooses who hears when a gathering is put on the calendar, moved or taken off (notices.ts). */
+  notices: boolean;
   writeBook: boolean;
   approveBook: boolean;
   /** Designs programs, assigns them and mentors, signs off work (initiation and training). */
@@ -265,6 +269,7 @@ export function permissions(args: {
     moderate: has('can_moderate', 'can_manage'),
     lead: has('can_lead_rituals', 'can_moderate', 'can_manage'),
     schedule: has('can_schedule_rites', 'can_manage'),
+    notices: has('can_set_gathering_notices', 'can_manage'),
     writeBook: has('can_write_book', 'can_approve_book', 'can_manage'),
     approveBook: has('can_approve_book', 'can_manage'),
     ...programPowers(open && active, founder, rank, args.grants ?? [], userId, !!args.siteModerator),
@@ -326,6 +331,7 @@ export function rankPowers(rank: Rank | null): string[] {
   if (rank.can_moderate) powers.push('keeps the gathering safe');
   if (rank.can_lead_rituals || rank.can_moderate || rank.can_manage) powers.push('leads rituals');
   if (rank.can_schedule_rites || rank.can_manage) powers.push('puts rites on the calendar');
+  if (rank.can_set_gathering_notices || rank.can_manage) powers.push('chooses who hears about gatherings');
   if (rank.can_approve_book || rank.can_manage) powers.push('approves pages in the coven’s book');
   else if (rank.can_write_book) powers.push('writes in the coven’s book');
   if (rank.can_manage_programs || rank.can_manage) powers.push('manages initiation and training');
@@ -429,6 +435,7 @@ export const RANK_POWERS = [
   { key: 'can_moderate', label: 'Moderates the gathering (removes messages, pauses or removes members)' },
   { key: 'can_lead_rituals', label: 'Leads the coven’s rituals (plans them, gives out their steps, begins them)' },
   { key: 'can_schedule_rites', label: 'Puts rites on the coven’s calendar' },
+  { key: 'can_set_gathering_notices', label: 'Chooses who hears about the coven’s gatherings (for each kind of rite or meeting, and for one)' },
   { key: 'can_write_book', label: 'Writes in the coven’s Book of Shadows (drafts go for approval)' },
   { key: 'can_approve_book', label: 'Approves pages for the coven’s Book of Shadows' },
   { key: 'can_manage_programs', label: 'Manages initiation and training (designs programs, chooses who takes them, assigns mentors, signs off work)' },
@@ -439,6 +446,18 @@ export const RANK_POWERS = [
   { key: 'can_chat', label: 'Talks in the coven’s chat' },
   { key: 'can_manage', label: 'Leads the coven (edits its pages, positions and details)' },
 ] as const;
+
+/**
+ * A position's powers as they can be saved: a power the database doesn't
+ * have yet (its migration not applied, seen from the coven's positions as
+ * loaded) is left out while it is off, so saving still works.
+ */
+export function savableRankFlags<T extends Record<string, boolean>>(flags: T, loaded: Partial<Rank>[]): Partial<T> {
+  const out: Partial<T> = { ...flags };
+  const newer = ['can_set_gathering_notices'] as const;
+  for (const key of newer) if (!flags[key] && loaded.length && !loaded.some((r) => key in r)) delete out[key];
+  return out;
+}
 
 export function missingAnswers(questions: Question[], answers: Record<string, string>): Question[] {
   return (questions ?? []).filter((q) => q.required && !String(answers[q.id] ?? '').trim());

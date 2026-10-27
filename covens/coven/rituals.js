@@ -184,7 +184,15 @@
       ${section("Coming up", groups.upcoming)}
       ${state.perms.lead || state.perms.site ? section("Drafts", groups.drafts) : ""}
       ${section("Past rituals", groups.past)}
-      ${state.rituals.length ? "" : `<p class="sp-empty">The coven hasn’t planned a ritual yet.${state.perms.lead ? " Plan the first one, and give each step to the people who will lead it." : ""}</p>`}`;
+      ${state.rituals.length ? "" : `<p class="sp-empty">The coven hasn’t planned a ritual yet.${state.perms.lead ? " Plan the first one, and give each step to the people who will lead it." : ""}</p>`}
+      ${(state.perms.notices || state.perms.site) && !(state.perms.manage || state.perms.site) ? `<details class="sp-section" data-notice-rules><summary>Gathering notifications</summary><div data-notice-rules-body></div></details>` : ""}`;
+    const rulesBox = pane.querySelector("[data-notice-rules]");
+    rulesBox?.addEventListener("toggle", () => {
+      if (rulesBox.open && !rulesBox.dataset.loaded) {
+        rulesBox.dataset.loaded = "1";
+        global.CovenNotices?.rulesPanel(rulesBox.querySelector("[data-notice-rules-body]"), state);
+      }
+    });
   }
 
   function rsvpWord(ritual) {
@@ -696,10 +704,12 @@
           ${ritual.status === "draft" && (state.perms.schedule || state.perms.site) && ritual.scheduled_for ? `<button class="button button--ghost" type="button" data-status-to="scheduled">Put it on the calendar</button>` : ""}
           <button class="button button--ghost" type="button" data-status-to="deleted">Delete</button>
         </div>${statusLine()}` : ""}
+      ${ritual.status === "scheduled" ? `<div data-send-notice></div>` : ""}
       <section class="sp-section"><h2>Steps</h2>
         ${steps.length ? `<ol class="cv-steps">${steps.map((s, i) => stepCard(s, i, steps.length, ritual)).join("")}</ol>` : `<p class="sp-empty">No steps yet.</p>`}
       </section>`;
 
+    global.CovenNotices?.sendPanel(pane.querySelector("[data-send-notice]"), state, ritual);
     loadAltars();
     loadContributions(ritual);
     wireContributions(ritual, steps);
