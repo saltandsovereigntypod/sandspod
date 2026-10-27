@@ -35,6 +35,8 @@ export function CovenScreen({
   children,
   onRefresh,
   chat = true,
+  onBack,
+  backLabel,
 }: {
   title: string;
   eyebrow?: string;
@@ -45,6 +47,9 @@ export function CovenScreen({
   onRefresh?: () => Promise<void>;
   /** The chat bubble (every coven screen but the chat itself). */
   chat?: boolean;
+  /** Overrides Back (the planner's inner views go back to its outline). */
+  onBack?: () => void;
+  backLabel?: string;
 }) {
   const coven = useCoven();
   const [pulling, setPulling] = useState(false);
@@ -56,7 +61,8 @@ export function CovenScreen({
       title={isHome ? coven.snapshot?.coven.name ?? title : title}
       eyebrow={isHome ? eyebrow : coven.snapshot?.coven.name ?? eyebrow}
       back={isHome ? ('/coven' as Href) : back}
-      backLabel={isHome ? 'Back to Covens' : `Back to ${coven.snapshot?.coven.name ?? 'the coven'}`}
+      backLabel={backLabel ?? (isHome ? 'Back to Covens' : `Back to ${coven.snapshot?.coven.name ?? 'the coven'}`)}
+      onBack={onBack}
       refreshControl={
         <RefreshControl
           refreshing={pulling}

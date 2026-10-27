@@ -28,6 +28,7 @@ export function MoreScreen({
   eyebrow,
   back,
   backLabel = 'Back',
+  onBack,
   children,
   refreshControl,
 }: {
@@ -36,6 +37,8 @@ export function MoreScreen({
   /** Where "back" goes when there's no history (deep links, web reloads). */
   back?: Href;
   backLabel?: string;
+  /** Overrides what "back" does (a screen with its own inner views). */
+  onBack?: () => void;
   children: ReactNode;
   refreshControl?: ReactElement<React.ComponentProps<typeof RefreshControl>>;
 }) {
@@ -48,7 +51,7 @@ export function MoreScreen({
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={backLabel}
-            onPress={() => (router.canGoBack() ? router.back() : router.replace(back))}
+            onPress={() => (onBack ? onBack() : router.canGoBack() ? router.back() : router.replace(back))}
             style={styles.back}
             hitSlop={6}
           >

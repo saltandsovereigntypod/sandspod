@@ -35,6 +35,10 @@
   let pane = null;
   let ctx = null;
   let m = null;
+  // Inside a step or panel the browser's Back goes to the outline: an extra
+  // history entry stands for the inner view while it is open.
+  let innerPushed = false;
+  let swallowPop = false;
 
   const statusLine = () => `<p class="cv-status" role="status" aria-live="polite" data-status></p>`;
   const nameOf = (id) => UI.nameOf(ctx.state.context, id);
@@ -50,6 +54,8 @@
   // --- opening -----------------------------------------------------------------
 
   async function open(el, options) {
+    innerPushed = false;
+    swallowPop = false;
     pane = el;
     ctx = options;
     const state = ctx.state;
@@ -135,7 +141,7 @@
   // --- drawing -----------------------------------------------------------------
 
   function back() {
-    return `<p><button class="sp-back cv-linkish" type="button" data-act="view" data-view="outline">← Back to the outline</button></p>`;
+    return `<div class="sp-actions"><button class="button button--ghost" type="button" data-act="view" data-view="outline">← Back to the outline</button></div>`;
   }
 
   function draw() {
@@ -153,6 +159,15 @@
       : v === "action" ? actionHtml()
       : stepHtml(v.step);
     pane.innerHTML = `<div class="cv-builder">${html}</div>`;
+    const inner = v !== "start" && v !== "outline";
+    if (inner && !innerPushed) {
+      global.history.pushState({ covenBuilder: true }, "", global.location.href);
+      innerPushed = true;
+    } else if (!inner && innerPushed) {
+      innerPushed = false;
+      swallowPop = true;
+      global.history.back();
+    }
     mount();
   }
 
@@ -1037,10 +1052,25 @@
     el.addEventListener("click", onClick);
   }
 
+  // coven.js asks first on the browser's Back; true means the builder took it.
+  function onPop() {
+    if (swallowPop) {
+      swallowPop = false;
+      return true;
+    }
+    if (!innerPushed || !m || !pane?.querySelector(".cv-builder")) return false;
+    innerPushed = false;
+    m.view = "outline";
+    draw();
+    return true;
+  }
+
   function close() {
+    if (innerPushed) global.history.replaceState(null, "", global.location.href);
+    innerPushed = false;
     pane = null;
     m = null;
   }
 
-  global.CovenBuilder = { open: (el, options) => { if (el.dataset.builder !== "on") { attach(el); el.dataset.builder = "on"; } return open(el, options); }, close, scriptHtml: (script, mode) => scriptHtml(script, mode) };
+  global.CovenBuilder = { onPop, open: (el, options) => { if (el.dataset.builder !== "on") { attach(el); el.dataset.builder = "on"; } return open(el, options); }, close, scriptHtml: (script, mode) => scriptHtml(script, mode) };
 })(window);
