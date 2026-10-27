@@ -84,6 +84,7 @@
       itemList: [],
       I: null,
       more: false,
+      tidying: false,
       choosing: null,
       group: "",
       actionDraft: null
@@ -168,6 +169,7 @@
       ${savedTemplates().length ? `<section class="sp-section"><h3>The coven’s own templates</h3><nav class="sp-list">${savedTemplates().map((t) => row(t.title, "", "saved-template", attr({ id: t.id }))).join("")}</nav></section>` : ""}
       ${copies.length ? `<section class="sp-section"><h3>A copy of one of the coven’s</h3><nav class="sp-list">${copies.map((r) => row(r.title, L.occasionLabel(r), "copy", attr({ id: r.id }))).join("")}</nav></section>` : ""}
       ${m.ownRituals.length ? `<section class="sp-section"><h3>One of your own rituals</h3><nav class="sp-list">${m.ownRituals.slice(0, 12).map((t) => row(t.title, "", "own", attr({ id: t.id }))).join("")}</nav></section>` : ""}
+      ${m.library.length ? `<section class="sp-section"><h3>The coven’s library</h3><div class="sp-actions">${btn(m.tidying ? "Done tidying" : "Remove saved templates, blocks or actions", "tidy")}</div>${m.tidying ? `<div class="sp-list">${m.library.map((l) => `<div class="sp-row"><span class="sp-row__text"><span class="sp-row__title">${esc(l.title)}</span><span class="sp-row__detail">${l.kind === "template" ? "Template" : l.kind === "block" ? "Block of steps" : "Action"}</span></span>${btn("Remove", "library-remove", attr({ id: l.id }))}</div>`).join("")}</div>` : ""}</section>` : ""}
       ${statusLine()}`;
   }
 
@@ -791,6 +793,17 @@
         m.fields.when = L.toLocalInput(L.suggestionTime(sg));
         if (!m.fields.title.trim()) m.fields.title = sg.occasion === "sabbat" ? `${sg.name} rite` : `${sg.label} esbat`;
         return redraw();
+      }
+      case "tidy":
+        m.tidying = !m.tidying;
+        return redraw();
+      case "library-remove": {
+        const l = m.library.find((x) => x.id === d.id);
+        if (!l) return;
+        const what = l.kind === "template" ? "template" : l.kind === "block" ? "block" : "action";
+        if (!global.confirm(`Remove “${l.title}”?\n\nThis takes the ${what} out of the coven’s library. Gatherings already planned from it stay as they are.`)) return;
+        if (await keep(el, () => D.removeRitualLibrary(l.id), `“${l.title}” is removed.`)) redraw();
+        return;
       }
       case "keep-template":
         if (!m.fields.title.trim()) return setStatus("Give it a name first.", true);
