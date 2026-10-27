@@ -156,7 +156,8 @@ export type Offering = {
   id: string;
   occurredAt: string;
   types: string[];
-  items: { id?: string; label: string; custom?: boolean }[];
+  /** What was given: things on the altar (fromAltar, with their picture, form and kind), altar supports, and things written in. */
+  items: { id?: string; label: string; custom?: boolean; fromAltar?: boolean; imagePath?: string; form?: string; objectType?: string; kind?: string }[];
   intention: string;
   message: string;
   status: string;
@@ -176,6 +177,10 @@ export const statusValue = (status: string, custom: string) => (status === 'Cust
 
 export type OfferingInput = {
   types: string[];
+  /** Things on the altar given as the offering (offerFromAltar.ts giftItem), recorded first. */
+  gifts?: Offering['items'];
+  /** The record's id, when the caller needs to know it (to link the things given back to it). */
+  id?: string;
   supports: Support[];
   customItems: string;
   intention: string;
@@ -193,10 +198,10 @@ export function recordOffering(object: SavedObject, input: OfferingInput, now: s
   const status = statusValue(input.status, input.customStatus);
   const custom = input.customItems.split(',').map((v) => v.trim()).filter(Boolean).map((label) => ({ label, custom: true }));
   const record: Offering = {
-    id: newId(),
+    id: input.id || newId(),
     occurredAt: input.occurredAt,
     types: input.types.map(slug),
-    items: [...input.supports, ...custom],
+    items: [...(input.gifts ?? []), ...input.supports, ...custom],
     intention: str(input.intention),
     message: str(input.message),
     status,

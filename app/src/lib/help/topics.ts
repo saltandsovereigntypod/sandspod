@@ -1366,10 +1366,11 @@ export const HELP: HelpSection[] = [
         steps: [
           'With nothing selected, scroll to the bottom of the altar tools.',
           'To empty it, tap "Clear altar", then "Take everything off". Tap "Keep it" to cancel.',
-          'To remove a saved altar entirely, tap "Delete altar", then "Delete this altar for good".',
+          'To set a saved altar aside, tap "Archive altar" here, or "Archive" under it in your list of altars. It keeps everything and moves to "Archived altars" at the bottom of the list, resting from reminders and the To tend list until you tap "Restore".',
+          'To remove a saved altar entirely, tap "Delete altar", then "Delete this altar for good". Your Grimoire pages made from it stay in your Grimoire.',
         ],
         tips: ['Clearing can be undone with "Undo" before you leave. Deleting cannot.'],
-        keywords: ['remove altar', 'start over', 'empty', 'erase'],
+        keywords: ['remove altar', 'start over', 'empty', 'erase', 'archive', 'restore', 'hide altar'],
       },
     ],
   },

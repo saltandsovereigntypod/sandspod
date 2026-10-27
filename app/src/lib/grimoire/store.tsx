@@ -54,7 +54,7 @@ export type GrimoireActions = {
   deleteSection: (sectionId: string) => void;
   createPage: (input: { title: string; sectionId: string | null; templateKey: string }) => string | null;
   /** A ritual page from a group on the altar (the website's altar import), filed under the open section. */
-  createRitualFromAltar: (input: { title: string; purpose: string | WorkingDetails; items: AltarRitualItem[] }) => string | null;
+  createRitualFromAltar: (input: { title: string; purpose: string | WorkingDetails; items: AltarRitualItem[]; record?: { type: string; content: string }[] }) => string | null;
   /** Keep a holy-day or moon page in the Grimoire, under its own section ("Holy Days", "The Moon"), tagged so it's found again. */
   saveHolyPage: (input: { ref: string; title: string; sectionTitle: string; blocks: { type: string; content: string }[] }) => string | null;
   /** Your copy of a coven rite you were at, under "Coven rites" (once; returns the page, new or kept). */
@@ -378,7 +378,7 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
         openSection(sectionId);
         return id;
       },
-      createRitualFromAltar({ title, purpose, items }) {
+      createRitualFromAltar({ title, purpose, items, record }) {
         const s = snap();
         if (!s || !userRef.current) return null;
         const { bookId, ops } = ensureBook(s, ctx(), newId);
@@ -388,7 +388,7 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
         const page = altarRitualOps(
           applyOps(s, ops),
           ctx(),
-          { id, bookId, sectionId, title, purpose, items, dateText: ritualDateText(new Date()) },
+          { id, bookId, sectionId, title, purpose, items, record, dateText: ritualDateText(new Date()) },
           newId,
         );
         commit([...ops, ...page]);

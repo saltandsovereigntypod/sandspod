@@ -10,6 +10,7 @@
 // (the database shows no one else's), so a sealed one is only ever on its
 // writer's list.
 
+import { activeAltars } from '../altar/archive.ts';
 import { candleLife, isCandle, isLit, parseLivingState } from '../altar/livingState.ts';
 import { offeringsDue } from '../altar/offerings.ts';
 import { isOpen, releaseDue, type Petition } from '../altar/petitions.ts';
@@ -49,7 +50,8 @@ const objectKey = (altarId: string, objectId: string) => `${altarId}:${objectId}
 
 export function altarTendables({ altars, petitions }: AltarPart, now: Date): Tendable[] {
   const out: Tendable[] = [];
-  const docs = altars.map((a) => ({ altar: a, doc: documentFromAltar(a) }));
+  // An archived altar rests: nothing on it (nor its petitions) is on the list until it's restored.
+  const docs = activeAltars(altars).map((a) => ({ altar: a, doc: documentFromAltar(a) }));
   const findAltar = (id: string) => docs.find((d) => d.altar.id === id);
   const underPetition = new Set<string>();
 

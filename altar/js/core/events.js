@@ -738,6 +738,14 @@ savedAltarsManager.addEventListener("click", (event) => {
     case "delete":
       deleteSavedAltar(altarId);
       break;
+
+    case "archive":
+      setSavedAltarArchived(altarId, true);
+      break;
+
+    case "restore":
+      setSavedAltarArchived(altarId, false);
+      break;
   }
 });
 

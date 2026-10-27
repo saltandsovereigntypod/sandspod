@@ -136,6 +136,7 @@ export default function PlanView() {
         templateTitle={template?.title}
         altarId={template?.linked_altar_id}
         altars={rituals.altars}
+        altarsKnown={!!rituals.fetchedAt}
         date={plan.date}
         ingredients={plan.ingredients}
       />

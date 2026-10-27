@@ -72,6 +72,7 @@ export default function JournalEntry() {
         grimoirePageId={links.grimoirePageId}
         altarId={links.altarId}
         altars={rituals.altars}
+        altarsKnown={!!rituals.fetchedAt}
         templateId={links.templateId}
         templateTitle={template?.title}
         date={links.date}

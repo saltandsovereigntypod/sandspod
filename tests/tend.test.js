@@ -35,7 +35,8 @@ test("the website gathers and orders the list as the app does", () => {
 test("rhythms and endings keep the app's shapes", () => {
   const item = { key: "petition:p1", kind: "petition", title: "For a new home", source: "Your altar · Hearth", href: "/altar/a" };
   const record = T.model.recordTended(T.model.newRecord(item), NOW, "Lit for it");
-  assert.deepEqual(Object.keys(record).sort(), ["at", "ended", "href", "key", "kind", "remind", "rhythm", "source", "tendedAt", "title", "words"]);
+  assert.deepEqual(Object.keys(record).sort(), ["at", "ended", "href", "key", "kind", "remind", "rhythm", "source", "tendedAt", "times", "title", "words"]);
+  assert.equal(record.times, 1);
   assert.equal(T.model.dueOf({ ...item, dueAt: null, tendedAt: null }, record, NOW).state, "later");
   const page = T.model.endingPage(item, record, "answered", "We found it.", NOW);
   assert.equal(page.sectionTitle, "How it went");

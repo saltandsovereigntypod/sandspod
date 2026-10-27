@@ -111,6 +111,7 @@ export default function TemplateView() {
         grimoirePageId={template.grimoire_page_id}
         altarId={template.linked_altar_id}
         altars={rituals.altars}
+        altarsKnown={!!rituals.fetchedAt}
         ingredients={ingredients}
       />
 
