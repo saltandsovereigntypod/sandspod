@@ -48,6 +48,7 @@ import { fromFields, occasionSuggestions, stepsFromTemplate, suggestionTime, toF
 import { covenHolidaysBetween } from '../../../../../../lib/covens/programs';
 import { buildScript } from '../../../../../../lib/covens/script';
 import { draftFromTemplate, RITUAL_TEMPLATES } from '../../../../../../lib/covens/templates';
+import { confirmAction } from '../../../../../../lib/grimoire/confirm';
 import { useRituals } from '../../../../../../lib/rituals/store';
 import { colors, radius, type } from '../../../../../../theme';
 
@@ -92,6 +93,7 @@ export default function PlanRitual() {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [library, setLibrary] = useState<api.LibraryRow[]>([]);
+  const [tidying, setTidying] = useState(false);
   const [pages, setPages] = useState<BookPage[]>([]);
   const [petitions, setPetitions] = useState<Petition[]>([]);
   const [previewMode, setPreviewMode] = useState<'script' | 'run'>('script');
@@ -189,6 +191,11 @@ export default function PlanRitual() {
       setMessage(errorMessage(error));
     }
     setBusy(false);
+  };
+  const removeKept = async (row: api.LibraryRow) => {
+    const what = row.kind === 'template' ? 'template' : row.kind === 'block' ? 'block' : 'action';
+    if (!(await confirmAction(`Remove “${row.title}”?`, `This takes the ${what} out of the coven’s library. Gatherings already planned from it stay as they are.`, 'Remove'))) return;
+    void keep(() => api.removeLibrary(row.id), `“${row.title}” is removed.`);
   };
   const saveBlock = (list: BuilderStep[], name: string) => covenId && void keep(() => api.saveLibrary(covenId, null, 'block', name, { steps: list.map(libraryStep) }), `“${name}” is kept with the coven’s blocks.`);
 
@@ -289,6 +296,29 @@ export default function PlanRitual() {
                 />
               ))}
             </MenuList>
+          </Section>
+        )}
+        {library.length > 0 && (
+          <Section label="The coven’s library">
+            <Button
+              label={tidying ? 'Done tidying' : 'Remove saved templates, blocks or actions'}
+              variant="outline"
+              onPress={() => setTidying((t) => !t)}
+            />
+            {tidying && (
+              <MenuList>
+                {library.map((row) => (
+                  <View key={row.id} style={[styles.row, styles.tidyRow]}>
+                    <View style={styles.grow}>
+                      <Text style={type.body}>{row.title}</Text>
+                      <Text style={type.caption}>{row.kind === 'template' ? 'Template' : row.kind === 'block' ? 'Block of steps' : 'Action'}</Text>
+                    </View>
+                    <Button label="Remove" variant="text" disabled={busy} onPress={() => void removeKept(row)} />
+                  </View>
+                ))}
+              </MenuList>
+            )}
+            {message && <Notice>{message}</Notice>}
           </Section>
         )}
       </CovenScreen>
@@ -524,4 +554,5 @@ const styles = StyleSheet.create({
   chip: { paddingVertical: 8, paddingHorizontal: 12, borderRadius: radius.chip, borderWidth: 1, borderColor: colors.hairline, minHeight: 40, justifyContent: 'center' },
   chipText: { ...type.caption, color: colors.cream },
   pressed: { opacity: 0.7 },
+  tidyRow: { paddingVertical: 10, paddingHorizontal: 14 },
 });
