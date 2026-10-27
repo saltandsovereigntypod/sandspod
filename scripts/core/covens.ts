@@ -19,3 +19,5 @@ export * as altarPanel from '../../app/src/lib/covens/altarPanel.ts';
 export * as picker from '../../app/src/lib/covens/picker.ts';
 export * as stepActions from '../../app/src/lib/covens/stepActions.ts';
 export * as contributions from '../../app/src/lib/covens/contributions.ts';
+// The members' record: attendance, studies, mentoring and the gentle flags.
+export * as record from '../../app/src/lib/covens/record.ts';

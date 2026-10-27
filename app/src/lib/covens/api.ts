@@ -29,6 +29,7 @@ import type {
 } from './model';
 import type { Contribution, ParticipationRow } from './contributions';
 import type { Assignee } from './picker';
+import type { AttendanceRow, Checkin, MemberRecord, RecordOverview, RecordSettings } from './record';
 
 const COVEN_FIELDS =
   'id,slug,name,tagline,description,tradition,tags,meeting_rhythm,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,practice_traditions,practice_holidays,practice_custom,practice_calendars,founder_id,created_at,member_count';
@@ -274,6 +275,29 @@ export const fetchRitualSettings = (covenId: string) => run<RitualSettings | nul
 export const setParticipationViewers = (covenId: string, viewers: Assignee[]) => rpc<RitualSettings>('set_coven_participation_viewers', { p_coven: covenId, p_viewers: viewers });
 
 /** Your rites across every coven you're in, with your answers (for phone reminders). */
+// ─── The members' record (supabase/migrations/20261102000000_coven_member_record.sql) ───
+
+export const fetchRecordSettings = (covenId: string) =>
+  run<RecordSettings | null>(supabase.from('coven_ritual_settings').select('coven_id,record_viewers,mentees_see_checkins').eq('coven_id', covenId).maybeSingle());
+export const setRecordViewers = (covenId: string, viewers: Assignee[], menteesSeeCheckins: boolean) =>
+  rpc<RecordSettings>('set_coven_record_viewers', { p_coven: covenId, p_viewers: viewers, p_mentees_see_checkins: menteesSeeCheckins });
+export const fetchRecordOverview = (covenId: string, since: string | null) => rpc<RecordOverview>('coven_member_record_overview', { p_coven: covenId, p_since: since });
+export const fetchMemberRecord = (covenId: string, userId: string) => rpc<MemberRecord>('coven_member_record', { p_coven: covenId, p_user: userId });
+/** Called when you open a ritual that's under way (once is enough; quietly does nothing before the database has it). */
+export const recordPresence = (ritualId: string) => rpc<AttendanceRow | null>('record_coven_ritual_presence', { p_ritual: ritualId }).catch(() => null);
+export const fetchAttendance = (ritualId: string) => run<AttendanceRow[]>(supabase.from('coven_ritual_attendance').select('ritual_id,coven_id,user_id,present,joined_at,marked_by,apology,apology_at,excused').eq('ritual_id', ritualId));
+export const markAttendance = (ritualId: string, userId: string, present: boolean | null) => rpc<AttendanceRow>('mark_coven_ritual_attendance', { p_ritual: ritualId, p_user: userId, p_present: present });
+export const sendApology = (ritualId: string, note: string | null) => rpc<AttendanceRow>('send_coven_ritual_apology', { p_ritual: ritualId, p_note: note?.trim() || null });
+export const excuseAbsence = (ritualId: string, userId: string, excused: boolean) => rpc<AttendanceRow>('excuse_coven_ritual_absence', { p_ritual: ritualId, p_user: userId, p_excused: excused });
+export const logCheckin = (covenId: string, userId: string, metOn: string, note: string) =>
+  rpc<Checkin>('log_coven_mentor_checkin', { p_coven: covenId, p_user: userId, p_met_on: metOn, p_note: note.trim() || null });
+export const removeCheckin = (id: string) => rpc<boolean>('remove_coven_mentor_checkin', { p_checkin: id });
+export const addMemberNote = (covenId: string, userId: string, body: string) => rpc('add_coven_member_note', { p_coven: covenId, p_user: userId, p_body: body.trim() });
+export const removeMemberNote = (id: string) => rpc<boolean>('remove_coven_member_note', { p_note: id });
+/** Remove or ban someone, keeping the reason with their record. */
+export const removeMember = (covenId: string, userId: string, status: 'removed' | 'banned', reason: string) =>
+  rpc<Member>('remove_coven_member', { p_coven: covenId, p_user: userId, p_status: status, p_reason: reason.trim() || null });
+
 export async function fetchMyRites(userId: string): Promise<{ coven: Coven; ritual: Ritual; response: Rsvp['response'] | null }[]> {
   const covens = await fetchMyCovens(userId);
   if (!covens.length) return [];
