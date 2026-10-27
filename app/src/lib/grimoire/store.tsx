@@ -29,6 +29,7 @@ import {
   type SendError,
 } from './edits';
 import { holyPageOps } from './holyOps';
+import { covenRitePageOps, findCovenRitePage, type RitualRecord } from '../covens/script';
 import { sigilPageOps } from './sigilOps';
 import type { Sigil } from '../sigil/sigil';
 import { altarRitualOps, ritualDateText, type AltarRitualItem, type WorkingDetails } from './altarImport';
@@ -53,9 +54,11 @@ export type GrimoireActions = {
   deleteSection: (sectionId: string) => void;
   createPage: (input: { title: string; sectionId: string | null; templateKey: string }) => string | null;
   /** A ritual page from a group on the altar (the website's altar import), filed under the open section. */
-  createRitualFromAltar: (input: { title: string; purpose: string | WorkingDetails; items: AltarRitualItem[] }) => string | null;
+  createRitualFromAltar: (input: { title: string; purpose: string | WorkingDetails; items: AltarRitualItem[]; record?: { type: string; content: string }[] }) => string | null;
   /** Keep a holy-day or moon page in the Grimoire, under its own section ("Holy Days", "The Moon"), tagged so it's found again. */
   saveHolyPage: (input: { ref: string; title: string; sectionTitle: string; blocks: { type: string; content: string }[] }) => string | null;
+  /** Your copy of a coven rite you were at, under "Coven rites" (once; returns the page, new or kept). */
+  saveCovenRite: (input: { ritualId: string; covenName: string; record: RitualRecord; nameOf: (id: string) => string }) => string | null;
   /** A sigil as its own page, in the given section (or the open one when undefined). */
   saveSigilPage: (input: { sigil: Sigil; title?: string; sectionId?: string | null }) => string | null;
   /** The section being viewed (a page's section, or null for the top level), as the website's activeSectionId. */
@@ -375,7 +378,7 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
         openSection(sectionId);
         return id;
       },
-      createRitualFromAltar({ title, purpose, items }) {
+      createRitualFromAltar({ title, purpose, items, record }) {
         const s = snap();
         if (!s || !userRef.current) return null;
         const { bookId, ops } = ensureBook(s, ctx(), newId);
@@ -385,7 +388,7 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
         const page = altarRitualOps(
           applyOps(s, ops),
           ctx(),
-          { id, bookId, sectionId, title, purpose, items, dateText: ritualDateText(new Date()) },
+          { id, bookId, sectionId, title, purpose, items, record, dateText: ritualDateText(new Date()) },
           newId,
         );
         commit([...ops, ...page]);
@@ -395,6 +398,15 @@ export function GrimoireProvider({ children }: { children: ReactNode }) {
         const s = snap();
         if (!s || !userRef.current) return null;
         const { id, ops } = holyPageOps(s, ctx(), input, newId);
+        commit(ops);
+        return id;
+      },
+      saveCovenRite(input) {
+        const s = snap();
+        if (!s || !userRef.current) return null;
+        const kept = findCovenRitePage(s.pages, input.ritualId);
+        if (kept) return kept.id;
+        const { id, ops } = covenRitePageOps(s, ctx(), input, newId);
         commit(ops);
         return id;
       },

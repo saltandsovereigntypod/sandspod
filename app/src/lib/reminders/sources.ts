@@ -6,6 +6,7 @@
 // altar simply isn't here any more, so its reminders stop. Pure; the website
 // reaches it through js/core/altar.js.
 
+import { activeAltars } from '../altar/archive.ts';
 import { candleLife, isCandle, isLit, parseLivingState } from '../altar/livingState.ts';
 import { offeringsDue, type OfferingDue } from '../altar/offerings.ts';
 import { isPottedPlant, kindOf, pottedOf, thirstOf } from '../altar/pottedPlants.ts';
@@ -86,7 +87,8 @@ function candleName(object: SavedObject, life: { form: string }): string {
 export function tendingSources(altars: SavedAltar[], stones: StoneEntry[], now: Date, days = 14): TendingSources {
   const at = now.getTime();
   const out: TendingSources = { altars: [], plants: [], offerings: [], crystals: [], candles: [] };
-  const docs = altars.map((altar) => ({ id: altar.id, name: String(altar.name || '').trim(), objects: documentFromAltar(altar).objects }));
+  // Archived altars rest from reminders until they're restored.
+  const docs = activeAltars(altars).map((altar) => ({ id: altar.id, name: String(altar.name || '').trim(), objects: documentFromAltar(altar).objects }));
   for (const altar of docs) {
     out.altars.push({ id: altar.id, name: altar.name });
     for (const object of altar.objects) {

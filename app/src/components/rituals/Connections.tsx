@@ -4,6 +4,8 @@
 import { router } from 'expo-router';
 import { View } from 'react-native';
 
+import { linkedAltar } from '../../lib/altar/archive';
+import { useAltars } from '../../lib/altar/store';
 import { fullDate } from '../../lib/calendar';
 import { refToParam } from '../../lib/rituals/format';
 import type { AltarSummary } from '../../lib/rituals/store';
@@ -13,14 +15,20 @@ type Props = {
   grimoirePageId?: string | null;
   altarId?: string | null;
   altars?: AltarSummary[];
+  /** The altars have been read from your account (or device), so one that isn't among them was deleted. */
+  altarsKnown?: boolean;
   templateId?: string | null;
   templateTitle?: string | null;
   date?: string | null;
   ingredients?: { ref: string; name: string }[];
 };
 
-export function Connections({ grimoirePageId, altarId, altars = [], templateId, templateTitle, date, ingredients = [] }: Props) {
-  const altarName = altarId ? altars.find((a) => a.id === altarId)?.name ?? 'Your altar' : null;
+export function Connections({ grimoirePageId, altarId, altars = [], altarsKnown = false, templateId, templateTitle, date, ingredients = [] }: Props) {
+  const store = useAltars();
+  const storeKnown = store.status === 'ready';
+  // A deleted altar's rituals and pages are kept; the link says so instead of opening nothing.
+  const altar = linkedAltar(altarId, [...altars, ...store.altars], altarsKnown && storeKnown);
+  const altarName = altar?.name ?? null;
   const dateText = date ? fullDate(date) : null;
   const any = grimoirePageId || altarId || templateId || dateText || ingredients.length;
   if (!any) return null;
@@ -36,7 +44,8 @@ export function Connections({ grimoirePageId, altarId, altars = [], templateId, 
             onPress={() => router.push({ pathname: '/grimoire/[pageId]', params: { pageId: grimoirePageId } })}
           />
         )}
-        {!!altarId && (
+        {!!altarId && altar?.deleted && <Chip label={altar.name} a11yLabel="This altar was deleted. Its ritual and pages are kept." />}
+        {!!altarId && !altar?.deleted && (
           <Chip
             label={altarName ?? 'Altar'}
             a11yLabel={`Open the altar ${altarName}`}

@@ -93,7 +93,13 @@ export type WorkingDetails = {
  * filled in appear, except What I Did, Results and Reflection, which are kept
  * so they can be written later. (grimoire/js/app.js buildWorkingBlocks)
  */
-export function altarRitualBlocks(items: AltarRitualItem[], details: WorkingDetails | string, dateText: string): { type: string; content: string }[] {
+export function altarRitualBlocks(
+  items: AltarRitualItem[],
+  details: WorkingDetails | string,
+  dateText: string,
+  /** Everything on the altar written down (altar/altarRecord.ts), in place of the plain list of items. */
+  record: { type: string; content: string }[] = [],
+): { type: string; content: string }[] {
   const d: WorkingDetails = typeof details === 'string' ? { intention: details } : details;
   const v = (value: string | undefined) => (value ?? '').trim();
   const blocks: { type: string; content: string }[] = [
@@ -113,7 +119,9 @@ export function altarRitualBlocks(items: AltarRitualItem[], details: WorkingDeta
   if (timing.length) blocks.push({ type: 'heading', content: 'Timing' }, { type: 'correspondence', content: timing.join('\n') });
   section('Deities and Spirits', 'text', d.deities);
   const groups = groupAltarItems(items);
-  if (groups.length) {
+  if (record.length) {
+    blocks.push({ type: 'heading', content: 'Items from the Altar' }, ...record.map((b) => ({ type: String(b.type), content: String(b.content ?? '') })));
+  } else if (groups.length) {
     blocks.push({ type: 'heading', content: 'Items from the Altar' });
     for (const group of groups) {
       blocks.push({ type: 'heading', content: group.groupLabel }, { type: 'ingredient_list', content: group.content });
@@ -152,6 +160,8 @@ export function altarRitualOps(
     purpose: string | WorkingDetails;
     items: AltarRitualItem[];
     dateText: string;
+    /** Everything on the altar written down (altar/altarRecord.ts). */
+    record?: { type: string; content: string }[];
   },
   makeId: () => string,
 ): InsertOp[] {
@@ -172,7 +182,7 @@ export function altarRitualOps(
       sort_order: nextOrder(siblings),
     },
   };
-  const blocks = altarRitualBlocks(input.items, input.purpose, input.dateText).map((block, index): InsertOp => {
+  const blocks = altarRitualBlocks(input.items, input.purpose, input.dateText, input.record).map((block, index): InsertOp => {
     const id = makeId();
     return {
       kind: 'insert',

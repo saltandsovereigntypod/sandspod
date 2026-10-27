@@ -1,5 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Image, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -8,9 +9,9 @@ import { Icon } from '../../../components/Icon';
 import { altarImageSource } from '../../../lib/altar/assets';
 import { DEFAULT_BACKGROUND } from '../../../lib/altar/cabinet';
 import { confirmAction } from '../../../lib/grimoire/confirm';
+import { archiveSave, ARCHIVE_WORDS, splitArchived } from '../../../lib/altar/archive';
 import { altarOfferingsDue, altarWateringDue } from '../../../lib/altar/burnout';
-import { tendingNote } from '../../../lib/altar/offerings';
-import { wateringNote } from '../../../lib/altar/pottedPlants';
+import { tendCard } from '../../../lib/tend/card';
 import { altarSummary } from '../../../lib/altar/snapshot';
 import { useAltars } from '../../../lib/altar/store';
 import type { SavedAltar } from '../../../lib/altar/types';
@@ -26,7 +27,7 @@ function savedDate(altar: SavedAltar): string {
 
 export default function AltarList() {
   const { session } = useSession();
-  const { altars, draft, draftSourceId, status, refresh, signedIn, sync, pendingCount } = useAltars();
+  const { altars, draft, draftSourceId, status, refresh, signedIn, sync, pendingCount, save } = useAltars();
   const [pulling, setPulling] = useState(false);
   const open = (altarId: string) => router.push({ pathname: '/altar/[altarId]', params: { altarId } });
   const draftSource = draftSourceId ? altars.find((a) => a.id === draftSourceId) : null;
@@ -34,8 +35,33 @@ export default function AltarList() {
   const due = useMemo(() => altarOfferingsDue(altars, new Date(), 0), [altars]);
   // And potted plants that would like water.
   const thirsty = useMemo(() => altarWateringDue(altars, new Date(), 0), [altars]);
-  const note = [tendingNote(due), wateringNote(thirsty)].filter(Boolean).join(' ') || null;
-  const tendAltar = due[0]?.altarId ?? thirsty[0]?.altarId ?? '';
+  // One "To tend" card: the most pressing thing when something wants tending, else what the list holds.
+  const card = tendCard(due, thirsty);
+  const { active, archived } = useMemo(() => splitArchived(altars), [altars]);
+  const [showArchived, setShowArchived] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
+  useEffect(() => {
+    AsyncStorage.getItem(ARCHIVED_OPEN_KEY)
+      .then((v) => setShowArchived(v === 'open'))
+      .catch(() => undefined);
+  }, []);
+  const toggleArchived = () => {
+    const next = !showArchived;
+    setShowArchived(next);
+    void AsyncStorage.setItem(ARCHIVED_OPEN_KEY, next ? 'open' : 'closed').catch(() => undefined);
+  };
+  const setArchived = async (altar: SavedAltar, archive: boolean) => {
+    if (archive) {
+      const ok = await confirmAction(
+        `Archive ${altar.name || 'this altar'}?`,
+        'Everything on it is kept: its things, petitions and history. It moves to Archived altars and rests from reminders, tending nudges, the To tend list and the widget until you restore it.',
+        ARCHIVE_WORDS.archive,
+      );
+      if (!ok) return;
+    }
+    const result = await save(archiveSave(altar, archive, new Date().toISOString()));
+    setNotice(result.outcome === 'failed' ? 'Your account didn’t take that change. It’s kept on this phone to try again.' : archive ? ARCHIVE_WORDS.archived(altar.name) : ARCHIVE_WORDS.restored(altar.name));
+  };
 
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
@@ -68,27 +94,25 @@ export default function AltarList() {
 
         <Button label="Build a new altar" onPress={() => open('new')} />
 
-        <Pressable
-          onPress={() => router.push('/altar/tend')}
-          accessibilityRole="link"
-          accessibilityHint="Everything you tend, from every altar, coven and journey, in one list"
-          style={({ pressed }) => [styles.tending, pressed && styles.pressed]}
-        >
-          <Text style={type.eyebrow}>To tend</Text>
-          <Text style={type.body}>Every petition, candle, offering and plant you tend, and what you hold in your covens, in one list.</Text>
-        </Pressable>
-
-        {note && (
+        <View style={[styles.tending, card.pressing && styles.tendingDue]}>
           <Pressable
-            onPress={() => open(tendAltar)}
-            accessibilityRole="button"
-            accessibilityHint="Opens the altar, where you can tend it"
-            style={({ pressed }) => [styles.tending, pressed && styles.pressed]}
+            onPress={() => router.push('/altar/tend')}
+            accessibilityRole="link"
+            accessibilityHint="Everything you tend, from every altar, coven and journey, in one list"
+            style={({ pressed }) => [styles.tendingBody, pressed && styles.pressed]}
           >
-            <Text style={type.eyebrow}>Tending</Text>
-            <Text style={type.body}>{note}</Text>
+            <Text style={type.eyebrow}>To tend</Text>
+            <Text style={type.body}>{card.body}</Text>
           </Pressable>
-        )}
+          {card.altarId && (
+            <Button
+              label={card.altarName ? `Open ${card.altarName}` : 'Open the altar'}
+              variant="text"
+              onPress={() => open(card.altarId!)}
+              accessibilityHint="Opens the altar, where you can tend it"
+            />
+          )}
+        </View>
 
         {draft && (draft.objects?.length ?? 0) > 0 && (
           <Pressable
@@ -129,11 +153,39 @@ export default function AltarList() {
           </View>
         )}
 
+        {!!notice && (
+          <Text style={[type.caption, styles.notice]} accessibilityLiveRegion="polite">
+            {notice}
+          </Text>
+        )}
+
         <View style={styles.list}>
-          {altars.map((altar) => (
-            <AltarCard key={altar.id} altar={altar} onPress={() => open(altar.id)} />
+          {active.map((altar) => (
+            <AltarCard key={altar.id} altar={altar} onPress={() => open(altar.id)} action={ARCHIVE_WORDS.archive} onAction={() => void setArchived(altar, true)} />
           ))}
         </View>
+
+        {archived.length > 0 && (
+          <View style={styles.list}>
+            <Pressable
+              onPress={toggleArchived}
+              accessibilityRole="button"
+              accessibilityState={{ expanded: showArchived }}
+              style={({ pressed }) => [styles.archivedHead, pressed && styles.pressed]}
+            >
+              <Text style={type.eyebrow}>{ARCHIVE_WORDS.section(archived.length)}</Text>
+              <Text style={styles.archivedToggle}>{showArchived ? 'Hide' : 'Show'}</Text>
+            </Pressable>
+            {showArchived && (
+              <>
+                <Text style={type.caption}>Kept whole and resting: no reminders, nudges or To tend items until you restore them.</Text>
+                {archived.map((altar) => (
+                  <AltarCard key={altar.id} altar={altar} muted onPress={() => open(altar.id)} action={ARCHIVE_WORDS.restore} onAction={() => void setArchived(altar, false)} />
+                ))}
+              </>
+            )}
+          </View>
+        )}
 
         {!session && (
           <View style={styles.card}>
@@ -181,32 +233,46 @@ function RefusedChanges() {
   );
 }
 
-function AltarCard({ altar, onPress }: { altar: SavedAltar; onPress: () => void }) {
+/** Whether the Archived altars section is open, on this device. */
+const ARCHIVED_OPEN_KEY = 'altar.archivedOpen';
+
+function AltarCard({ altar, onPress, action, onAction, muted }: { altar: SavedAltar; onPress: () => void; action: string; onAction: () => void; muted?: boolean }) {
   const source = altarImageSource(altar.background || DEFAULT_BACKGROUND);
   const date = savedDate(altar);
   const summary = altarSummary(altar);
   return (
-    <Pressable
-      onPress={onPress}
-      accessibilityRole="button"
-      accessibilityLabel={`${altar.name || 'Untitled altar'}. ${summary}.${date ? ` Saved ${date}.` : ''}`}
-      style={({ pressed }) => [styles.altar, pressed && styles.pressed]}
-    >
-      <View style={styles.thumb}>{source && <Image source={source} style={styles.thumbImage} resizeMode="cover" />}</View>
-      <View style={styles.altarText}>
-        <Text style={type.eyebrow} numberOfLines={1}>
-          {altar.backgroundName || 'Custom altar'}
-        </Text>
-        <Text style={styles.altarName} numberOfLines={2}>
-          {altar.name || 'Untitled altar'}
-        </Text>
-        <Text style={type.caption} numberOfLines={1}>
-          {summary}
-          {date ? ` · ${date}` : ''}
-        </Text>
-      </View>
-      <Icon name="chevron" size={16} color={colors.tabInactive} />
-    </Pressable>
+    <View style={[styles.altarRow, muted && styles.muted]}>
+      <Pressable
+        onPress={onPress}
+        accessibilityRole="button"
+        accessibilityLabel={`${altar.name || 'Untitled altar'}${muted ? ', archived' : ''}. ${summary}.${date ? ` Saved ${date}.` : ''}`}
+        style={({ pressed }) => [styles.altar, pressed && styles.pressed]}
+      >
+        <View style={styles.thumb}>{source && <Image source={source} style={styles.thumbImage} resizeMode="cover" />}</View>
+        <View style={styles.altarText}>
+          <Text style={type.eyebrow} numberOfLines={1}>
+            {altar.backgroundName || 'Custom altar'}
+          </Text>
+          <Text style={styles.altarName} numberOfLines={2}>
+            {altar.name || 'Untitled altar'}
+          </Text>
+          <Text style={type.caption} numberOfLines={1}>
+            {summary}
+            {date ? ` · ${date}` : ''}
+          </Text>
+        </View>
+        <Icon name="chevron" size={16} color={colors.tabInactive} />
+      </Pressable>
+      <Pressable
+        onPress={onAction}
+        accessibilityRole="button"
+        accessibilityLabel={`${action} ${altar.name || 'this altar'}`}
+        hitSlop={8}
+        style={({ pressed }) => [styles.altarAction, pressed && styles.pressed]}
+      >
+        <Text style={styles.altarActionText}>{action}</Text>
+      </Pressable>
+    </View>
   );
 }
 
@@ -227,6 +293,14 @@ const styles = StyleSheet.create({
   },
   list: { gap: 12 },
   tending: { backgroundColor: colors.surface, borderRadius: radius.card, padding: 18, gap: 4, borderLeftWidth: 2, borderLeftColor: colors.goldLine },
+  tendingDue: { borderLeftColor: colors.gold },
+  tendingBody: { gap: 4 },
+  archivedHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: 44 },
+  archivedToggle: { fontFamily: fonts.body, fontSize: 15, color: colors.gold },
+  altarRow: { gap: 2 },
+  muted: { opacity: 0.8 },
+  altarAction: { alignSelf: 'flex-end', minHeight: 36, justifyContent: 'center', paddingHorizontal: 8 },
+  altarActionText: { fontFamily: fonts.body, fontSize: 14, color: colors.tabInactive },
   altar: {
     flexDirection: 'row',
     alignItems: 'center',

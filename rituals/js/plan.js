@@ -22,6 +22,8 @@
     if (template) parts.push(`<li><a href="/altar/?editRitualTemplate=${encodeURIComponent(template.id)}">The template: ${esc(template.title)}</a></li>`);
     if (template?.grimoire_page_id) parts.push(`<li><a href="/grimoire/?page=${encodeURIComponent(template.grimoire_page_id)}">Its page in your Book of Shadows</a></li>`);
     if (altar) parts.push(`<li>Linked altar: ${esc(altar.name)}</li>`);
+    // A deleted altar's rituals are kept; say so rather than leave a gap.
+    else if (altarId && state.altarsKnown) parts.push(`<li>This altar was deleted</li>`);
     if (!parts.length && !ingredients.length) return "";
     return `
       <section class="sp-card" aria-labelledby="rt-connected">
@@ -190,14 +192,15 @@
     const [plans, templates, altars, active, readings] = await Promise.all([
       S.loadPlans(),
       S.templates().catch(() => []),
-      S.altars().catch(() => []),
+      S.altars().catch(() => null),
       S.activeSession().catch(() => null),
       global.SaltCraft && R.readings ? global.SaltCraft.list(R.readings.READINGS).catch(() => []) : []
     ]);
     state.readings = R.readings ? readings.map((e) => ({ ...e, data: R.readings.normalizeReading(e.data) })) : [];
     state.plan = plans.find((p) => p.id === id) || null;
     state.templates = templates;
-    state.altars = altars;
+    state.altars = altars || [];
+    state.altarsKnown = Array.isArray(altars);
     state.active = active;
     render();
   }

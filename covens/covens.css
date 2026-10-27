@@ -315,3 +315,66 @@
 .cv-contribs { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .cv-contribs__item { display: grid; gap: 4px; }
 .cv-participation { display: grid; gap: 2px; }
+
+/* --- the ritual builder (covens/coven/builder.js) ------------------------------ */
+.cv-builder { display: grid; gap: 18px; }
+.cv-builder h2 { margin: 0; }
+.cv-linkish { background: none; border: 0; padding: 8px 0; color: var(--gold); font: inherit; cursor: pointer; text-align: left; min-height: 44px; }
+.cv-linkish:hover, .cv-linkish:focus-visible { text-decoration: underline; outline: none; }
+.cv-row-button { min-height: 56px; }
+.cv-outline { display: grid; gap: 22px; }
+.cv-outline__section { display: grid; gap: 8px; }
+.cv-outline__head { display: flex; align-items: baseline; gap: 10px; }
+.cv-outline__head h3 { margin: 0; font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); flex: 1; }
+.cv-outline__steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.cv-outline__step { display: flex; align-items: stretch; border: 1px solid var(--line); border-radius: 14px; background: rgba(20, 34, 25, 0.6); }
+.cv-outline__step.is-warn { border-color: rgba(243, 160, 110, 0.7); }
+.cv-outline__open { flex: 1; display: grid; gap: 2px; min-height: 64px; padding: 10px 14px; background: none; border: 0; color: var(--cream); font: inherit; text-align: left; cursor: pointer; border-radius: 14px 0 0 14px; }
+.cv-outline__open:hover, .cv-outline__open:focus-visible { background: rgba(185, 160, 93, 0.1); outline: none; }
+.cv-outline__title { font-size: 1.02rem; line-height: 1.4; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.cv-outline__n { color: var(--gold); font-weight: 600; }
+.cv-outline__arrows { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 6px; }
+.cv-outline__arrows .button { min-width: 44px; }
+.cv-choices { display: grid; gap: 6px; }
+.cv-choice { min-height: 44px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 12px; background: transparent; color: var(--cream); font: inherit; text-align: left; cursor: pointer; }
+.cv-choice:hover, .cv-choice:focus-visible { border-color: var(--gold); outline: none; }
+.cv-builder .cv-swatch { width: 40px; height: 40px; background: var(--swatch, #888); }
+.cv-part { display: grid; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; }
+.cv-part h4 { margin: 0; }
+.cv-roles { display: grid; gap: 4px; }
+
+/* The script, the run-through, and the live step's words. */
+.cv-script { display: grid; gap: 22px; }
+.cv-script h3 { font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+.cv-script h4 { margin: 0; }
+.cv-script__list { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
+.cv-script__list .is-mine { color: var(--gold); }
+.cv-script__step { display: grid; gap: 6px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; margin-bottom: 10px; }
+.cv-script__step.is-mine { border-color: var(--gold); background: rgba(185, 160, 93, 0.08); }
+.cv-script__line { display: grid; gap: 4px; }
+.cv-script__who { margin: 0; font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+.cv-script__line.is-mine .cv-script__who { color: var(--gold); }
+.cv-script__line.is-mine .cv-spoken { border-left-width: 4px; }
+.cv-turn, .cv-vote { display: grid; gap: 8px; border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+.cv-turn.is-mine { border-color: var(--gold); background: rgba(185, 160, 93, 0.14); }
+.cv-turn__who { font-size: 1.2rem; margin: 0; }
+.cv-prep { display: grid; gap: 2px; padding: 6px 0; }
+
+@media print {
+  .site-header, .site-footer, nav, .cv-tabs, .cv-no-print, .sp-actions, .cv-chat-bubble { display: none !important; }
+  body, .sp-page, .cv-script { background: #fff !important; color: #000 !important; }
+  .cv-script__step { border-color: #999; break-inside: avoid; }
+  .cv-script__step.is-mine { background: #f3ecd6 !important; }
+  .cv-spoken { border-left-color: #999; }
+  .cv-script h3, .cv-script__who, .sp-caption { color: #333 !important; }
+}
+/* --- paths in the coven (covens/coven/paths.js) -------------------------------- */
+.cv-shares { display: grid; gap: 12px; }
+.cv-share { display: grid; gap: 5px; }
+.cv-share__labels { display: flex; align-items: baseline; gap: 12px; }
+.cv-share__name { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.cv-share__pct { color: var(--gold); font-variant-numeric: tabular-nums; }
+.cv-share__track { height: 10px; border-radius: 999px; background: rgba(244, 236, 216, 0.1); overflow: hidden; }
+.cv-share__track > span { display: block; height: 100%; background: var(--gold); border-radius: inherit; }
+.cv-share--other .cv-share__name { color: var(--muted); font-style: italic; }
+.cv-share--other .cv-share__track > span { background: var(--fern); }

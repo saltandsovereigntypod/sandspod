@@ -215,7 +215,38 @@ function altarObjectToRitualItem(object) {
   };
 }
 
-function sendCurrentGroupToGrimoire() {
+// Everything on the altar (or the group) written down for the Grimoire page:
+// each thing under its kind with all that was written about it, then this
+// altar's petitions, open and finished since it was last recorded
+// (js/core/altar.js altarRecord, shared with the app). [] when it can't be read.
+async function altarRecordFor(objects, groupOnly) {
+  const core = window.SaltCore?.altar;
+  const B = window.AltarApp;
+  if (!core?.altarRecord || !B) return [];
+  try {
+    const altarId = B.altarId() || null;
+    const list = async (collection) => {
+      try { return (await window.SaltCraft?.list(collection)) || []; } catch { return []; }
+    };
+    const [petitions, tendings, history] = altarId ? await Promise.all([list("altar.petitions"), list("tend.rhythms"), list("altar.history")]) : [[], [], []];
+    const blocks = core.altarRecord.altarRecordBlocks(objects.map(B.toSaved), {
+      now: new Date(),
+      altarId,
+      petitions,
+      tendings: tendings.map((e) => e.data),
+      since: altarId ? core.altarRecord.lastRecordedAt(history, altarId) : "",
+      allObjects: B.doc().objects,
+      groupOnly
+    });
+    if (altarId && !groupOnly) window.SaltCraft?.add("altar.history", { altarId, text: core.altarRecord.RECORDED_LINE, at: new Date().toISOString(), recorded: true }).catch(() => {});
+    return blocks;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+async function sendCurrentGroupToGrimoire() {
   const activeGroup = chooseActiveGroup();
   if (!activeGroup) return;
 
@@ -230,7 +261,8 @@ function sendCurrentGroupToGrimoire() {
     id: activeGroup.id,
     name: activeGroup.name,
     createdAt: activeGroup.createdAt,
-    items: groupObjects.map(altarObjectToRitualItem)
+    items: groupObjects.map(altarObjectToRitualItem),
+    record: await altarRecordFor(groupObjects, true)
   };
 
   localStorage.setItem(
@@ -243,7 +275,7 @@ function sendCurrentGroupToGrimoire() {
 
 // Record everything on the altar as a page in the Grimoire, for a spell or
 // working done without the ritual builder (the group version, for the whole altar).
-function sendAltarToGrimoire() {
+async function sendAltarToGrimoire() {
   const objects = Array.from(altarStage.querySelectorAll(".altar-object"));
 
   if (objects.length === 0) {
@@ -255,7 +287,8 @@ function sendAltarToGrimoire() {
     id: `altar-${Date.now()}`,
     name: "Altar Working",
     createdAt: new Date().toISOString(),
-    items: objects.map(altarObjectToRitualItem)
+    items: objects.map(altarObjectToRitualItem),
+    record: await altarRecordFor(objects, false)
   };
 
   localStorage.setItem(ALTAR_GRIMOIRE_HANDOFF_KEY, JSON.stringify(handoff));

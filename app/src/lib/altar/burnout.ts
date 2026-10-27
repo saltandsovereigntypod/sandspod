@@ -3,6 +3,7 @@
 
 import { nextBurnout, settleAltar, settleCandles } from './editor.ts';
 import { incenseLife, isIncense } from './incense.ts';
+import { activeAltars } from './archive.ts';
 import { candleLife } from './livingState.ts';
 import { offeringsDue, type OfferingDue } from './offerings.ts';
 import { wateringDue, type WateringDue } from './pottedPlants.ts';
@@ -63,12 +64,13 @@ export function burnoutTimes(altars: SavedAltar[], now: Date, days = 7, limit = 
 
 /** Offerings on these altars that want tending now or will within `days`, soonest first (for reminders). */
 export function altarOfferingsDue(altars: SavedAltar[], now: Date, days = 14): OfferingDue[] {
-  const docs = altars.map((altar) => ({ id: altar.id, name: altar.name, objects: documentFromAltar(altar).objects }));
+  // An archived altar rests: it asks for nothing until it's restored.
+  const docs = activeAltars(altars).map((altar) => ({ id: altar.id, name: altar.name, objects: documentFromAltar(altar).objects }));
   return offeringsDue(docs, now.getTime(), now.getTime() + days * 86_400_000);
 }
 
 /** Potted plants on these altars that would like water now or will within `days`, soonest first (for reminders and the Tending card). */
 export function altarWateringDue(altars: SavedAltar[], now: Date, days = 14): WateringDue[] {
-  const docs = altars.map((altar) => ({ id: altar.id, name: altar.name, objects: documentFromAltar(altar).objects }));
+  const docs = activeAltars(altars).map((altar) => ({ id: altar.id, name: altar.name, objects: documentFromAltar(altar).objects }));
   return wateringDue(docs, now.getTime(), now.getTime() + days * 86_400_000);
 }

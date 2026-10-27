@@ -423,14 +423,48 @@
       }});
       return;
     }
-    openWorkflowModal({ title: `Offering for ${object.dataset.label || "Selected Deity"}`, intro: "Record the devotional meaning and current state of this offering without treating interpretation as objective fact.", submitLabel: "Record Offering", content: `<section><h3>1. Offering types</h3>${optionCards("types", ["Herbs", "Crystals", "Oils", "Apothecary items", "Incense", "Candles", "Food", "Drink", "Flowers", "Coins", "Written prayer", "Song or music", "Devotional act", "Other"], true)}</section><section><h3>2. Specific offerings</h3>${supportCards(object)}<label>Other offerings<input name="customItems" placeholder="Comma-separated"></label></section><section><h3>3. Intention</h3><input name="intention" placeholder="Gratitude, petition, devotion, celebration…"><textarea name="message" rows="3" placeholder="Optional prayer or message"></textarea></section><section><h3>4. Offering status</h3>${optionCards("status", statuses, false, "offered")}<input name="customStatus" placeholder="Custom status"></section><section><h3>5. Perceived response</h3>${optionCards("response", ["Not yet known", "Accepted", "Neutral", "Declined", "Strong presence felt", "Personal interpretation"])}<textarea name="responseNotes" rows="3" placeholder="Optional personal interpretation"></textarea></section><label>Offered at<input type="datetime-local" name="occurredAt" value="${localDateTime()}"></label>`, async onSubmit(data, form) {
+    // From your altar: everything else on it, by its picture, to give as the offering itself
+    // (js/core/altar.js offerFromAltar, shared with the app). "Something else" stays for anything not on the altar.
+    const gifting = window.SaltCore?.altar?.offerFromAltar && window.AltarApp;
+    const presenceName = gifting ? window.SaltCore.altar.relationship.deityName(window.AltarApp.toSaved(object)) : (object.dataset.label || "this presence");
+    const gifts = gifting ? window.SaltCore.altar.offerFromAltar.altarGifts(window.AltarApp.doc().objects, window.AltarApp.toSaved(object)) : [];
+    const giftCards = gifts.length
+      ? `<p class="object-workflow-muted">Choose what you’re giving ${escapeHtml(presenceName)} from what’s already on this altar.</p><div class="object-workflow-options object-workflow-gifts">${gifts.map((gift) => `<label><input type="checkbox" name="gifts" value="${escapeHtml(gift.id)}" data-offering-type="${escapeHtml(gift.offeringType.toLowerCase().replace(/[^a-z0-9]+/g, "-"))}"><span>${gift.imagePath ? `<img src="${escapeHtml(gift.imagePath)}" alt="" loading="lazy">` : `<b aria-hidden="true">${escapeHtml(gift.fallbackSymbol || "✦")}</b>`}<small>${escapeHtml(gift.label)}</small></span></label>`).join("")}</div><label class="object-workflow-feet" data-gift-feet hidden><input type="checkbox" name="atFeet" value="yes"> Set them at ${escapeHtml(presenceName)}’s feet</label>`
+      : `<p class="object-workflow-muted">Nothing else is on this altar yet. Set out food, drink, flowers or anything you’d give, and it can be chosen here.</p>`;
+    openWorkflowModal({ title: `Offering for ${object.dataset.label || "Selected Deity"}`, intro: "Record the devotional meaning and current state of this offering without treating interpretation as objective fact.", submitLabel: "Record Offering", content: `<section><h3>From your altar</h3>${giftCards}</section><section><h3>Something else</h3><label>Anything not on the altar<input name="customItems" placeholder="Comma-separated"></label></section><section><h3>Offering types</h3>${optionCards("types", ["Herbs", "Crystals", "Oils", "Apothecary items", "Incense", "Candles", "Food", "Drink", "Flowers", "Coins", "Written prayer", "Song or music", "Devotional act", "Other"], true)}</section><section><h3>Intention</h3><input name="intention" placeholder="Gratitude, petition, devotion, celebration…"><textarea name="message" rows="3" placeholder="Optional prayer or message"></textarea></section><section><h3>Offering status</h3>${optionCards("status", statuses, false, "offered")}<input name="customStatus" placeholder="Custom status"></section><section><h3>Perceived response</h3>${optionCards("response", ["Not yet known", "Accepted", "Neutral", "Declined", "Strong presence felt", "Personal interpretation"])}<textarea name="responseNotes" rows="3" placeholder="Optional personal interpretation"></textarea></section><label>Offered at<input type="datetime-local" name="occurredAt" value="${localDateTime()}"></label>`, async onSubmit(data, form) {
       const occurredAt = toIso(data.get("occurredAt")); if (!occurredAt) return false;
       const custom = String(data.get("customItems") || "").split(",").map((value) => value.trim()).filter(Boolean).map((label) => ({ label, custom: true }));
       const status = data.get("status") === "custom" ? String(data.get("customStatus") || "").trim() : data.get("status");
-      const record = { id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), occurredAt, types: selectedValues(data, "types"), items: [...selectedSupportRecords(form), ...custom], intention: String(data.get("intention") || "").trim(), message: String(data.get("message") || "").trim(), status, perceivedResponse: data.get("response") || "", responseNotes: String(data.get("responseNotes") || "").trim() };
+      const chosen = new Set(data.getAll("gifts").map(String));
+      const given = gifts.filter((gift) => chosen.has(gift.id));
+      if (given.length && gifting) {
+        const B = window.AltarApp;
+        const before = B.doc().objects;
+        const index = B.objects().indexOf(object);
+        if (index < 0) return false;
+        const input = { types: selectedValues(data, "types"), supports: [], customItems: custom.map((c) => c.label).join(", "), intention: String(data.get("intention") || "").trim(), message: String(data.get("message") || "").trim(), status: data.get("status") === "custom" ? "Custom" : String(status || ""), customStatus: String(data.get("customStatus") || ""), response: String(data.get("response") || ""), responseNotes: String(data.get("responseNotes") || "").trim(), occurredAt };
+        const result = window.SaltCore.altar.offerFromAltar.giveFromAltar(before, index, input, given, { atFeet: data.get("atFeet") === "yes" }, new Date().toISOString());
+        B.applyObjects(before, result.objects);
+        const altarId = B.altarId();
+        if (altarId) window.SaltCraft?.add("altar.history", { altarId, text: result.line, at: new Date().toISOString() }).catch(() => {});
+        showToast(`${result.line} Recorded.`);
+        return;
+      }
+      const record = { id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), occurredAt, types: selectedValues(data, "types"), items: [...custom], intention: String(data.get("intention") || "").trim(), message: String(data.get("message") || "").trim(), status, perceivedResponse: data.get("response") || "", responseNotes: String(data.get("responseNotes") || "").trim() };
       snapshot(); setLivingDeityState(object, { lastOfferingAt: occurredAt, offeringStatus: status, offeringRecord: record });
       showToast(`Offering recorded for ${object.dataset.label || "selected deity"}.`);
     }});
+    // Choosing something from the altar ticks the kind of offering it is (a honeycomb is food).
+    const modal = document.querySelector("[data-object-action-modal]");
+    modal?.addEventListener("change", (event) => {
+      if (event.target.name !== "gifts") return;
+      if (event.target.checked) {
+        const box = modal.querySelector(`input[name="types"][value="${event.target.dataset.offeringType}"]`);
+        if (box) box.checked = true;
+      }
+      const feet = modal.querySelector("[data-gift-feet]");
+      if (feet) feet.hidden = !modal.querySelector('input[name="gifts"]:checked');
+    });
   }
 
   async function saveCraftedLifecycle(object, stateValues, instanceValues = null) {

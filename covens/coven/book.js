@@ -7,7 +7,10 @@
  * (supabase/migrations/…_coven_rites_book_petitions.sql).
  *
  * Views, by address: ?tab=book (the contents), &page=<id>, &write=new,
- * &write=<draft id>, &change=<page id> and &queue (drafts and approvals).
+ * &write=<draft id>, &change=<page id>, &queue (drafts and approvals) and
+ * &record=<ritual id> (what a gathering left behind: who was there, the steps,
+ * how many took part, its leader's notes; kept by the database when it ends,
+ * as the app's book.tsx shows them).
  */
 (function (global) {
   "use strict";
@@ -22,6 +25,8 @@
   let api = null;
   let pages = [];
   let drafts = [];
+  let records = [];
+  const S = () => global.SaltCore?.covens?.script;
 
   const params = () => new URLSearchParams(global.location.search);
   const bookHref = (extra = "") => `${api.covenHref("book")}${extra}`;
@@ -33,10 +38,11 @@
   const pending = () => drafts.filter((d) => d.status === "pending");
 
   async function load() {
-    const [p, d] = await Promise.all([D.bookPages(state.coven.id).catch(() => []), D.bookDrafts(state.coven.id).catch(() => [])]);
+    const [p, d, r] = await Promise.all([D.bookPages(state.coven.id).catch(() => []), D.bookDrafts(state.coven.id).catch(() => []), D.ritualRecords(state.coven.id)]);
     pages = p;
     drafts = d;
-    await UI.loadNames(state.context, [...pages.flatMap((x) => [x.author_id, x.published_by]), ...drafts.flatMap((x) => [x.author_id, x.reviewer_id])]);
+    records = r || [];
+    await UI.loadNames(state.context, [...pages.flatMap((x) => [x.author_id, x.published_by]), ...drafts.flatMap((x) => [x.author_id, x.reviewer_id]), ...records.flatMap((x) => [...(x.attendees || []), x.led_by])]);
   }
 
   function back(label = "The coven’s book") {
@@ -61,7 +67,26 @@
                 <span class="sp-row__detail">${p.author_id ? `By ${esc(nameOf(p.author_id))} · ` : ""}${esc(L.relativeTime(p.published_at))}</span></span><span class="sp-row__chevron" aria-hidden="true">›</span></a>`)
               .join("")}</nav></section>`)
             .join("")
-        : `<p class="sp-empty">The coven’s book is empty.${canWrite() ? " Write its first page." : ""}</p>`}`;
+        : `<p class="sp-empty">The coven’s book is empty.${canWrite() ? " Write its first page." : ""}</p>`}
+      ${records.length ? `<section class="sp-section"><h2>Ritual records</h2><nav class="sp-list" aria-label="Ritual records">${records
+        .slice(0, 40)
+        .map((r) => {
+          const date = r.held_at || r.ended_at;
+          const detail = [date ? new Date(date).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" }) : "", S() ? S().recordMoon(r) : "", `${(r.attendees || []).length} there`].filter(Boolean).join(" · ");
+          return `<a class="sp-row" href="${esc(bookHref(`&record=${encodeURIComponent(r.ritual_id)}`))}" data-tab="book"><span class="sp-row__text"><span class="sp-row__title">${esc(r.title)}</span><span class="sp-row__detail">${esc(detail)}</span></span><span class="sp-row__chevron" aria-hidden="true">›</span></a>`;
+        })
+        .join("")}</nav></section>` : ""}`;
+  }
+
+  // --- what a gathering left behind ------------------------------------------------
+
+  function record(ritualId) {
+    const r = records.find((x) => x.ritual_id === ritualId);
+    if (!r || !S()) return (pane.innerHTML = `${back()}<p class="sp-notice">That record isn’t here.</p>`);
+    pane.innerHTML = `${back()}
+      <article class="sp-section"><p class="sp-eyebrow">${r.kind === "meeting" ? "Meeting" : "Ritual record"}</p><h2>${esc(r.title)}</h2>
+        <div class="cv-doc cv-book-page">${prose(S().recordText(r, nameOf))}</div></article>
+      <div class="sp-actions"><a class="button button--ghost" href="${esc(`${api.covenHref("rituals")}&ritual=${encodeURIComponent(r.ritual_id)}`)}" data-tab="rituals">${r.kind === "meeting" ? "Open the meeting" : "Open the ritual"}</a></div>`;
   }
 
   // --- one page --------------------------------------------------------------
@@ -205,6 +230,7 @@
     if (p.get("write")) return writer({ draftId: p.get("write") });
     if (p.get("change")) return writer({ pageId: p.get("change") });
     if (p.get("queue")) return queue();
+    if (p.get("record")) return record(p.get("record"));
     return contents();
   }
 

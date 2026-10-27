@@ -135,6 +135,8 @@ import { ApothecaryEditor, ApothecarySheet, type ApothecaryTarget, type SavedWor
 import { TendSheet } from './TendSheet';
 import { saveTendingBlend, useWorkshop } from '../../lib/altar/workshop';
 import { newId } from '../../lib/altar/uid';
+import { giveFromAltar } from '../../lib/altar/offerFromAltar';
+import { ARCHIVE_WORDS, isArchived, withArchived } from '../../lib/altar/archive';
 import { Chip, ChipRow } from './Chip';
 import { WidgetSheet } from './WidgetSheet';
 import { BackgroundSheet, DressSheet, LayersSheet, SaveSheet } from './OptionSheets';
@@ -211,6 +213,8 @@ import { shrineAltar, tonightAltar } from '../../lib/altar/tonight';
 import { TRADITIONAL_LIBRARY } from '../../lib/library/traditionalData';
 import { hiddenTraditions, holidayChoice, holidaysToday } from '../../lib/holidays';
 import { moonState } from '../../lib/moon';
+import { altarRecordBlocks, lastRecordedAt, RECORDED_LINE, type PetitionTending } from '../../lib/altar/altarRecord';
+import { TEND_COLLECTION } from '../../lib/tend/model';
 import { colors, fonts, space, touch, type } from '../../theme';
 
 const capitalizeFirst = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
@@ -617,6 +621,20 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
     else setNotice('Saved on this device, but your account didn’t accept it. See your altar list to try again.');
   };
 
+  // Archive: kept whole (with any changes made here) but set aside to rest; or restored.
+  const archivedNow = isArchived(sourceId ? store.altars.find((a) => a.id === sourceId) : null);
+  const setArchived = async (archive: boolean) => {
+    if (!doc || !sourceId) return;
+    const next = { ...doc, extra: withArchived(doc.extra, archive, nowIso()) };
+    const { outcome } = await store.save({ id: sourceId, name, doc: next });
+    if (outcome === 'failed') return setNotice('Your account didn’t take that change. It’s kept on this phone to try again.');
+    await store.clearDraft();
+    if (archive) return router.back();
+    commit(() => next, false);
+    setBaseline(next);
+    setNotice(ARCHIVE_WORDS.restored(name));
+  };
+
   const removeAltar = async () => {
     if (!sourceId) return;
     try {
@@ -790,14 +808,28 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
     [doc, selectedObject],
   );
   const grimoireTitle = doc && selectedObject ? groupName(doc, selectedObject) : name;
+  const { entries: tendEntries } = useCraft<PetitionTending>(TEND_COLLECTION);
+  const { entries: historyEntries } = useCraft<unknown>('altar.history');
   const createRitualPage = (details: WorkingDetails, title: string) => {
     if (!doc || !groupItems.length) return;
-    const pageId = grimoire.actions.createRitualFromAltar({ title: title || grimoireTitle, purpose: details, items: groupItems });
+    // Everything on it written down, with this altar's petitions (open, and finished since it was last recorded).
+    const objects = selectedObject?.groupId ? doc.objects.filter((o) => o.groupId === selectedObject.groupId) : doc.objects;
+    const record = altarRecordBlocks(objects, {
+      now: new Date(),
+      altarId: sourceId,
+      petitions: petitionEntries,
+      tendings: tendEntries.map((e) => e.data),
+      since: sourceId ? lastRecordedAt(historyEntries, sourceId) : '',
+      allObjects: doc.objects,
+      groupOnly: !!selectedObject?.groupId,
+    });
+    const pageId = grimoire.actions.createRitualFromAltar({ title: title || grimoireTitle, purpose: details, items: groupItems, record });
     setSheet(null);
     if (!pageId) {
       setNotice('Your Grimoire hasn’t loaded yet. Open it once while online, then try again.');
       return;
     }
+    if (sourceId && !selectedObject?.groupId) void addEntry('altar.history', { altarId: sourceId, text: RECORDED_LINE, at: nowIso(), recorded: true });
     router.push({ pathname: '/grimoire/edit/[pageId]', params: { pageId } });
   };
 
@@ -921,7 +953,8 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
       const items = offering.items ?? [];
       return recordOffering(done, {
         types: offering.types ?? [],
-        supports: items.filter((i) => !i.custom).map((i) => ({ id: String(i.id || i.label), label: i.label })),
+        gifts: items.filter((i) => i.fromAltar),
+        supports: items.filter((i) => !i.custom && !i.fromAltar).map((i) => ({ id: String(i.id || i.label), label: i.label })),
         customItems: items.filter((i) => i.custom).map((i) => i.label).join(', '),
         intention: offering.intention || '',
         message: 'A fresh offering in place of the last.',
@@ -1437,13 +1470,21 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
             )}
             {sourceId && !shared && (
               <View style={styles.danger}>
+                {archivedNow && <Text style={type.caption}>This altar is archived. It rests from reminders, tending nudges and the To tend list until you restore it.</Text>}
                 {confirmDelete ? (
-                  <ChipRow>
-                    <Chip label="Delete this altar for good" tone="danger" onPress={removeAltar} />
-                    <Chip label="Keep it" onPress={() => setConfirmDelete(false)} />
-                  </ChipRow>
+                  <>
+                    <Text style={type.caption}>{ARCHIVE_WORDS.deleteBody}</Text>
+                    <ChipRow>
+                      <Chip label="Delete this altar for good" tone="danger" onPress={removeAltar} />
+                      {!archivedNow && <Chip label="Archive it instead" onPress={() => void setArchived(true)} />}
+                      <Chip label="Keep it" onPress={() => setConfirmDelete(false)} />
+                    </ChipRow>
+                  </>
                 ) : (
-                  <Chip label="Delete altar" tone="danger" onPress={() => setConfirmDelete(true)} />
+                  <ChipRow>
+                    <Chip label={archivedNow ? 'Restore altar' : 'Archive altar'} onPress={() => void setArchived(!archivedNow)} />
+                    <Chip label="Delete altar" tone="danger" onPress={() => setConfirmDelete(true)} />
+                  </ChipRow>
                 )}
               </View>
             )}
@@ -1564,10 +1605,21 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
             index={selected}
             objects={doc.objects}
             onClose={() => setDeityMode(null)}
-            onOffer={(index, input) => {
-              commit((d) => updateObjects(d, [index], (o) => recordOffering(o, input, nowIso())));
+            onOffer={(index, input, gifts, atFeet) => {
+              const at = nowIso();
+              if (!gifts.length) {
+                commit((d) => updateObjects(d, [index], (o) => recordOffering(o, input, at)));
+                setDeityMode(null);
+                setNotice('Offering recorded.');
+                return;
+              }
+              // Things from the altar: kept by name in the record, each marked as offered, and set at the feet if chosen.
+              const offering = { ...input, id: newId() };
+              const given = giveFromAltar(doc.objects, index, offering, gifts, { atFeet }, at);
+              commit((d) => ({ ...d, objects: giveFromAltar(d.objects, index, offering, gifts, { atFeet }, at).objects }));
               setDeityMode(null);
-              setNotice('Offering recorded.');
+              logAltar(given.line);
+              setNotice(`${given.line} Recorded.`);
             }}
             onUpdate={(index, id, input) => {
               commit((d) => updateObjects(d, [index], (o) => updateOffering(o, id, input, nowIso())));

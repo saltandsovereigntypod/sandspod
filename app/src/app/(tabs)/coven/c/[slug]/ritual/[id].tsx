@@ -1,11 +1,12 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
 import { CovenScreen, covenHref } from '../../../../../../components/covens/CovenScreen';
 import { ContributionList, MyContribution, Participation } from '../../../../../../components/covens/Contributions';
 import { ApologyNote } from '../../../../../../components/covens/Record';
+import { PrepList, RecordCard, StepLines, TurnBox, VoteBox } from '../../../../../../components/covens/builder/LiveParts';
 import { Pill, Pills, Spoken, Words } from '../../../../../../components/covens/ui';
 import { Card, Chips, Notice, Section } from '../../../../../../components/more/ui';
 import * as api from '../../../../../../lib/covens/api';
@@ -14,7 +15,10 @@ import { itemIndex } from '../../../../../../lib/altar/itemIndex';
 import { useAltars } from '../../../../../../lib/altar/store';
 import { cleanContribution, contributionLabel, type Contribution, type ParticipationRow, type Reader } from '../../../../../../lib/covens/contributions';
 import { seedPetitionAltar } from '../../../../../../lib/covens/petitionAltar';
-import { offerPaper, paperCount, stepAltarChange } from '../../../../../../lib/covens/ritualAltar';
+import { clearNamed, nameNewThings, offerPaper, paperCount, placeOffering, snuffNamed, stepAltarChange } from '../../../../../../lib/covens/ritualAltar';
+import { builderStepFrom, cleanPlan, holdActive, holdLine, holdUntil, linkedEffect, roleLabel, stepThingName, type GatheringKind } from '../../../../../../lib/covens/builder';
+import { buildScript, mayVote, recordText, scriptText, voteOptions, type RitualRecord } from '../../../../../../lib/covens/script';
+import { useGrimoire } from '../../../../../../lib/grimoire/store';
 import { actionForStep } from '../../../../../../lib/covens/stepActions';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
 import {
@@ -28,6 +32,7 @@ import {
   stepAssignee,
   stepItemsLabel,
   stepIsMine,
+  type BookPage,
   type Rsvp,
 } from '../../../../../../lib/covens/model';
 import { ATTENDED_LABEL, attendedAs, type AttendanceRow } from '../../../../../../lib/covens/record';
@@ -140,6 +145,57 @@ export default function RitualScreen() {
     }).catch(() => {});
   }, [leads, covenId, ritualStatus, loadNames]);
 
+  // The builder's parts: the plan (roles, checklist, afterwards), the words
+  // from the coven's Book, the checklist's ticks, votes, and the record.
+  const ritualNow = coven.rituals.find((r) => r.id === id);
+  const kind: GatheringKind = ritualNow?.kind === 'meeting' ? 'meeting' : 'rite';
+  const plan = cleanPlan(ritualNow?.plan, kind);
+  const builderSteps = steps.map((s) => builderStepFrom(s, plan));
+  const [pages, setPages] = useState<BookPage[]>([]);
+  const linksBook = builderSteps.some((s) => !!s.details.book_page_id);
+  useEffect(() => {
+    if (covenId && linksBook) api.fetchBookPages(covenId).then(setPages).catch(() => setPages([]));
+  }, [covenId, linksBook]);
+  const [prepRows, setPrepRows] = useState<api.PrepRow[]>([]);
+  const [votes, setVotes] = useState<api.VoteRow[]>([]);
+  const [record, setRecord] = useState<RitualRecord | null>(null);
+  const [extrasVersion, setExtrasVersion] = useState(0);
+  const loadExtras = useCallback(async () => setExtrasVersion((v) => v + 1), []);
+  const hasPrep = plan.checklist.length > 0;
+  const hasVotes = steps.some((s) => s.action === 'vote');
+  const currentTurnAt = steps.find((s) => s.id === currentId)?.turn_at ?? 0;
+  useEffect(() => {
+    if (!id) return;
+    let off = false;
+    void Promise.all([
+      hasPrep ? api.fetchPrep(id) : Promise.resolve([] as api.PrepRow[]),
+      hasVotes ? api.fetchVotes(id) : Promise.resolve([] as api.VoteRow[]),
+      ritualStatus === 'done' ? api.fetchRecord(id) : Promise.resolve(null),
+    ]).then(([prep, v, rec]) => {
+      if (off) return;
+      setPrepRows(prep);
+      setVotes(v);
+      setRecord(rec);
+      void loadNames([...prep.flatMap((r) => r.users ?? []), ...v.flatMap((r) => (r.ballots ?? []).map((b) => b.user_id)), ...(rec?.attendees ?? []), rec?.led_by]);
+    });
+    return () => {
+      off = true;
+    };
+  }, [id, hasPrep, hasVotes, ritualStatus, currentId, currentTurnAt, extrasVersion, loadNames]);
+  // Your own copy in your grimoire, under Coven rites, once you were there.
+  const grimoire = useGrimoire();
+  const covenName = coven.snapshot?.coven.name ?? 'The coven';
+  const wasThere = !!record && !!coven.userId && record.attendees.includes(coven.userId);
+  const { saveCovenRite } = grimoire.actions;
+  const grimoireReady = grimoire.canEdit && !!grimoire.snapshot;
+  const nameOfCoven = coven.nameOf;
+  const keptRite = useRef<string | null>(null);
+  useEffect(() => {
+    if (!wasThere || !grimoireReady || !record || keptRite.current === record.ritual_id) return;
+    keptRite.current = record.ritual_id;
+    saveCovenRite({ ritualId: record.ritual_id, covenName, record, nameOf: nameOfCoven });
+  }, [wasThere, grimoireReady, record, covenName, saveCovenRite, nameOfCoven]);
+
   const act = async (work: () => Promise<unknown>, after?: () => Promise<unknown>) => {
     setBusy(true);
     setMessage(null);
@@ -186,8 +242,18 @@ export default function RitualScreen() {
   const doAltarAction = async (step: NonNullable<typeof current>) => {
     await api.performStepAction(step.id);
     const done = coven.marks.filter((m) => m.ritual_id === ritual.id).length;
-    const change = stepAltarChange(step, ritual, myName, done, new Date().toISOString());
-    if (change && altar) await changeAltarOnce(altar.id, change);
+    const now = new Date().toISOString();
+    const change = stepAltarChange(step, ritual, myName, done, now);
+    // What it sets down carries the name the step gives it, for later steps to find.
+    const thing = step.altar_action === 'place_item' ? stepThingName(step) : '';
+    if (change && altar) await changeAltarOnce(altar.id, thing ? nameNewThings(change, thing, now) : change);
+  };
+  // A later step on something named earlier: put out Hekate’s candle, clear the crossroads offerings.
+  const doLinked = async (step: NonNullable<typeof current>) => {
+    const link = linkedEffect(step);
+    if (!link || !altar) return;
+    await changeAltarOnce(altar.id, link.kind === 'snuff' ? snuffNamed(link.name, new Date().toISOString()) : clearNamed(link.name));
+    setMessage(link.kind === 'snuff' ? `${link.name === '*' ? 'Every candle' : link.name} is out.` : `${link.name} cleared from the altar.`);
   };
   const setAccess = (stepIndex: number, value: (typeof ALTAR_ACCESS)[number]['value'] | 'chosen') =>
     void act(() => setRitualAltar(ritual.id, ritual.altar_id ?? null, steps.map((s, i) => (i === stepIndex ? value : s.altar_access ?? 'assigned'))));
@@ -209,12 +275,38 @@ export default function RitualScreen() {
       if (altar && ['petition', 'intention', 'gratitude', 'vow', 'ancestor', 'question', 'reflection'].includes(c.kind) && c.visibility !== 'me') {
         await changeAltarOnce(altar.id, (doc) => offerPaper({ id: c.id, fate: c.fate }, label, paperCount(doc), now)(doc)).catch(() => undefined);
       }
+      // Something placed (an offering, a candle) is set on the altar, named as its step names it.
+      const placed = steps.find((s) => s.id === c.step_id);
+      if (altar && placed && (c.kind === 'offering' || c.kind === 'candle') && c.items?.length) {
+        const count = coven.marks.filter((m) => m.ritual_id === ritual.id).length + contributions.filter((x) => x.status !== 'written').length;
+        await changeAltarOnce(altar.id, placeOffering(c.items, label, stepThingName(placed), `${ritual.title} · ${placed.title}`, count, now)).catch(() => undefined);
+      }
       if (done.petition?.altar_id) await changeAltarOnce(done.petition.altar_id, seedPetitionAltar(done.petition, now)).catch(() => undefined);
     }, loadContributions);
   const removeContribution = (c: Contribution) => void act(() => api.removeContribution(c.id), loadContributions);
   const support = (c: Contribution, kind: 'candle' | 'holding', on: boolean) => void act(() => api.supportContribution(c.id, kind, on), loadContributions);
   const tend = (c: Contribution, status: 'held' | 'answered' | 'closed', note: string) => void act(() => api.tendContribution(c.id, status, note), loadContributions);
   const askOf = (step: (typeof steps)[number]) => cleanContribution(step.contribution);
+  const viewer = { membership, userId: coven.userId };
+  const script = buildScript({ title: ritual.title, kind, plan, steps: builderSteps, ctx: { ranks: coven.snapshot?.ranks ?? [], nameOf: coven.nameOf }, pages, viewer });
+  const scriptStep = (stepId: string) => script.sections.flatMap((x) => x.steps).find((x) => x.key === stepId);
+  const steers = canLead || ritual.led_by === coven.userId;
+  const currentBuilder = builderSteps.find((s) => s.key === current?.id);
+  const inTurn = current?.turn_mode === 'in_turn';
+  const turnOrderNow = current?.turn_order ?? [];
+  const turnNow = inTurn ? turnOrderNow[current?.turn_at ?? 0] ?? null : null;
+  const waitingTurn = inTurn && turnOrderNow.length > 0 && turnNow !== coven.userId && !steers;
+  const voteRow = (stepId: string) => votes.find((v) => v.step_id === stepId);
+  const until = holdUntil(ritual.ended_at, plan);
+  const expected = answers.going.length + answers.maybe.length;
+  const canBook = (coven.perms.writeBook && coven.standing.ok) || coven.perms.site;
+  const toBook = (section: string, pageTitle: string, body: string) => {
+    if (!covenId) return;
+    void act(async () => {
+      const draft = await api.saveBookDraft(covenId, null, null, { title: pageTitle.slice(0, 120), section, body }, true);
+      setMessage(draft.status === 'published' ? `It is in the coven’s Book, under ${section}.` : 'Sent to those who approve the Book’s pages.');
+    });
+  };
   // Before the rite: steps asking something ahead of time that are yours, or the coven's one no one has written yet.
   const ahead = steps.filter((s) => {
     const ask = askOf(s);
@@ -223,7 +315,7 @@ export default function RitualScreen() {
     return ask.mode === 'one' && canLead && (!!mineFor(s.id) || !oneDone(s.id));
   });
   const currentAsk = current ? askOf(current) : null;
-  const canWriteCurrent = !!current && !!currentAsk && coven.standing.ok && (mine || (currentAsk.mode === 'one' && canLead)) && (currentAsk.mode === 'each' || !!mineFor(current.id) || !oneDone(current.id));
+  const canWriteCurrent = !!current && !!currentAsk && coven.standing.ok && (mine || (currentAsk.mode === 'one' && canLead)) && (currentAsk.mode === 'each' || !!mineFor(current.id) || !oneDone(current.id)) && !waitingTurn;
 
   const doneOnAltar = !!current && coven.marks.some((m) => m.step_id === current.id && m.user_id === coven.userId);
   const sharedAction = current?.altar_action === 'light_candle' || current?.altar_action === 'place_item';
@@ -259,10 +351,31 @@ export default function RitualScreen() {
       <Pills>
         <Pill label={live ? 'Under way' : ritual.status === 'scheduled' ? 'On the calendar' : ritual.status === 'done' ? 'Done' : ritual.status === 'cancelled' ? 'Cancelled' : 'Draft'} tone={live ? 'gold' : undefined} />
         {!!occasionLabel(ritual) && <Pill label={occasionLabel(ritual)} />}
+        {kind === 'meeting' && <Pill label="Meeting" />}
       </Pills>
       {!!ritual.scheduled_for && <Text style={type.caption}>{riteTime(ritual.scheduled_for)}</Text>}
       {!!ritual.intention && <Text style={type.body}>Intention: {ritual.intention}</Text>}
       <Words text={ritual.description} />
+      {plan.roles.length > 0 && (
+        <Section label="Roles">
+          {plan.roles.map((r) => (
+            <Text key={r.id} style={type.body}>
+              {roleLabel(r, { ranks: coven.snapshot?.ranks ?? [], nameOf: coven.nameOf })}
+            </Text>
+          ))}
+        </Section>
+      )}
+      {steps.length > 0 && (
+        <View style={styles.row}>
+          <Button label="The script" variant="outline" onPress={() => router.push(`${covenHref(coven.slug, 'ritual/script')}?id=${ritual.id}&mode=script` as never)} />
+          <Button label="Your run-through" variant="outline" onPress={() => router.push(`${covenHref(coven.slug, 'ritual/script')}?id=${ritual.id}&mode=run` as never)} />
+        </View>
+      )}
+      {hasPrep && ritual.status !== 'done' && ritual.status !== 'cancelled' && (
+        <Section label={kind === 'meeting' ? 'Before the meeting' : 'Before the rite'}>
+          <PrepList items={plan.checklist} rows={prepRows} expected={expected} canTick={coven.perms.member && coven.standing.ok} busy={busy} nameOf={coven.nameOf} onTick={(item, done) => void act(() => api.tickPrep(ritual.id, item, done), loadExtras)} />
+        </Section>
+      )}
 
       {ritual.status === 'scheduled' && (
         <Section label="Will you be there?">
@@ -318,7 +431,42 @@ export default function RitualScreen() {
           </Text>
           <Text style={type.cardTitle}>{current.title}</Text>
           <Words text={current.instructions} />
-          {!!current.spoken_text && <Spoken text={current.spoken_text} />}
+          {scriptStep(current.id) ? <StepLines step={scriptStep(current.id)!} /> : !!current.spoken_text && <Spoken text={current.spoken_text} />}
+          {inTurn && (
+            <TurnBox
+              order={turnOrderNow}
+              at={current.turn_at ?? 0}
+              me={coven.userId}
+              steers={steers}
+              busy={busy}
+              nameOf={coven.nameOf}
+              onDone={() => void act(() => api.nextTurn(current.id))}
+              onSkip={() => void act(() => api.nextTurn(current.id, true))}
+              onRestart={() => void act(() => api.restartTurns(current.id))}
+            />
+          )}
+          {current.action === 'vote' && currentBuilder && (
+            <VoteBox
+              motion={String((currentBuilder.details.fields ?? {}).motion ?? '')}
+              options={voteOptions(currentBuilder.details.fields ?? {})}
+              row={voteRow(current.id)}
+              secret={(currentBuilder.details.fields ?? {}).ballot === 'secret'}
+              canVote={coven.standing.ok && mayVote(currentBuilder, plan, viewer)}
+              steers={steers}
+              busy={busy}
+              nameOf={coven.nameOf}
+              onVote={(choice) => void act(() => api.castVote(current.id, choice), loadExtras)}
+              onClose={() => void act(() => api.closeVote(current.id), loadExtras)}
+            />
+          )}
+          {!!linkedEffect(current) && !!altar && (mine || canLead) && (
+            <Button
+              label={linkedEffect(current)!.kind === 'snuff' ? `Put out ${linkedEffect(current)!.name === '*' ? 'every candle' : linkedEffect(current)!.name}` : `Clear ${linkedEffect(current)!.name}`}
+              variant="outline"
+              onPress={() => void act(() => doLinked(current))}
+              disabled={busy}
+            />
+          )}
           {!!current.duration_minutes && <Text style={type.caption}>About {current.duration_minutes} min</Text>}
           {!!current.items?.length && <Text style={type.caption}>Items: {stepItemsLabel(current)}</Text>}
           {!!current.altar_action && <Text style={type.caption}>{altarActionNote(current)}</Text>}
@@ -366,6 +514,31 @@ export default function RitualScreen() {
         </Card>
       )}
       {live && !current && <Notice>The ritual is under way.</Notice>}
+
+      {ritual.status === 'done' && (!!until || !!plan.afterwards.notes) && (
+        <Section label="Afterwards">
+          {!!until && <Text style={type.body}>{holdLine(until)}</Text>}
+          {!!plan.afterwards.notes && <Words text={plan.afterwards.notes} />}
+          {canLead && !!altar && holdActive(until) && <Button label="End the quiet time now" variant="text" onPress={() => void act(() => api.releaseAltarHold(altar.id))} disabled={busy} />}
+        </Section>
+      )}
+      {ritual.status === 'done' && record && (
+        <RecordCard key={record.notes ?? ''} record={record} nameOf={coven.nameOf} canNote={steers} busy={busy} onNotes={(notes) => void act(() => api.setRecordNotes(ritual.id, notes), loadExtras)} />
+      )}
+      {wasThere && grimoireReady && <Text style={type.caption}>A copy is in your grimoire, under Coven rites.</Text>}
+      {canBook && steps.length > 0 && (
+        <View style={styles.row}>
+          <Button label={kind === 'meeting' ? 'Save the agenda to the Book' : 'Save the rite to the Book'} variant="outline" disabled={busy} onPress={() => toBook(kind === 'meeting' ? 'Meetings' : 'Rites', ritual.title, scriptText(script))} />
+          {ritual.status === 'done' && record && (
+            <Button
+              label={kind === 'meeting' ? 'Save the minutes to the Book' : 'Save the record to the Book'}
+              variant="outline"
+              disabled={busy}
+              onPress={() => toBook(kind === 'meeting' ? 'Minutes' : 'Ritual records', `${ritual.title} · ${new Date(record.held_at ?? record.ended_at ?? Date.now()).toLocaleDateString()}`, recordText(record, coven.nameOf))}
+            />
+          )}
+        </View>
+      )}
 
       {!live && ritual.status === 'scheduled' && ahead.length > 0 && (
         <Section label="Before the rite">
@@ -468,6 +641,7 @@ export default function RitualScreen() {
 }
 
 const styles = StyleSheet.create({
+  row: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   lead: { gap: 10 },
   sent: { gap: 2 },
   step: { gap: 2, paddingVertical: 8, paddingHorizontal: 12, borderRadius: radius.tile, borderWidth: 1, borderColor: colors.hairline },

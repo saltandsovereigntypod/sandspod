@@ -11,6 +11,8 @@ export * as gather from '../../app/src/lib/tend/gather.ts';
 export * as altar from '../../app/src/lib/tend/altar.ts';
 export * as petitions from '../../app/src/lib/altar/petitions.ts';
 export * as snapshot from '../../app/src/lib/altar/snapshot.ts';
+export * as archive from '../../app/src/lib/altar/archive.ts';
+export * as card from '../../app/src/lib/tend/card.ts';
 export * as lookBack from '../../app/src/lib/rituals/lookBack.ts';
 export * as apothecaryLookBack from '../../app/src/lib/altar/apothecaryLookBack.ts';
 export * as record from '../../app/src/lib/covens/record.ts';

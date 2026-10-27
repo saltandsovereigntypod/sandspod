@@ -9,7 +9,7 @@ import { builtInCabinet, objectFromForm } from '../altar/cabinet.ts';
 import { addObject, lightAll, moveObject, removeObject, snuffAll, updateObjects } from '../altar/editor.ts';
 import { displayBox } from '../altar/geometry.ts';
 import { cabinetFormOf, cleanStepItems, type StepItem } from '../altar/itemIndex.ts';
-import { appStateOf, lightCandle, setAppState } from '../altar/livingState.ts';
+import { appStateOf, lightCandle, setAppState, snuffCandle } from '../altar/livingState.ts';
 import { petitionObject, type Petition as PaperPetition } from '../altar/petitions.ts';
 import type { AltarDocument } from '../altar/snapshot.ts';
 import type { CabinetForm, CabinetItem, SavedObject } from '../altar/types.ts';
@@ -50,6 +50,50 @@ function setDown(doc: AltarDocument, chosen: { item: CabinetItem; form: CabinetF
   const box = displayBox(object);
   const placed = moveObject(added, index, box.cx, box.cy);
   return light ? updateObjects(placed, [index], (o) => lightCandle(o, now)) : placed;
+}
+
+/** The name a ritual gave a thing it set down (appState.ritualThing), or its label. */
+const thingName = (o: SavedObject): string => {
+  const own = appStateOf(o).ritualThing;
+  return typeof own === 'string' && own ? own : String(o.label ?? '');
+};
+
+/** Mark what a step sets down with the name the step gives it, so later steps can find it ("Hekate’s candle", "The crossroads offerings"). */
+export function nameNewThings(change: (doc: AltarDocument) => AltarDocument, name: string, now: string) {
+  return (doc: AltarDocument): AltarDocument => {
+    const before = doc.objects.length;
+    const next = change(doc);
+    if (!name.trim() || next.objects.length <= before) return next;
+    return updateObjects(next, next.objects.map((_, i) => i).filter((i) => i >= before), (o) => setAppState(o, { ritualThing: name.trim() }, now, false));
+  };
+}
+
+/** Put out the candles named so by an earlier step (or every candle, for "*"). */
+export function snuffNamed(name: string, now: string) {
+  return (doc: AltarDocument): AltarDocument => {
+    if (name === '*') return snuffAll(doc, now);
+    const indices = doc.objects.map((o, i) => (thingName(o) === name ? i : -1)).filter((i) => i >= 0);
+    return indices.length ? updateObjects(doc, indices, (o) => snuffCandle(o, now)) : doc;
+  };
+}
+
+/** Take away what an earlier step set down under this name. */
+export function clearNamed(name: string) {
+  return (doc: AltarDocument): AltarDocument => {
+    let next = doc;
+    for (let i = next.objects.length - 1; i >= 0; i--) if (thingName(next.objects[i]) === name) next = removeObject(next, i);
+    return next;
+  };
+}
+
+/** What a person offers in a step that asks each to place something: their items set down, named with the step's thing. */
+export function placeOffering(items: unknown, label: string, thing: string, note: string, count: number, now: string) {
+  const chosen = cleanStepItems(items).map((it) => ({ it, form: itemForm(it) })).filter((x) => !!x.form);
+  return (doc: AltarDocument): AltarDocument =>
+    chosen.reduce((next, { it, form }, i) => {
+      const placed = setDown(next, form!, `${label}: ${it.name}`.slice(0, 80), note, circleSpot(count + i), now, false);
+      return thing.trim() ? updateObjects(placed, [placed.objects.length - 1], (o) => setAppState(o, { ritualThing: thing.trim() }, now, false)) : placed;
+    }, doc);
 }
 
 /**

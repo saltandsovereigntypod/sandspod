@@ -11,7 +11,9 @@ import { WEBSITE_ORIGIN } from '../../../../../lib/altar/assetPaths';
 import * as api from '../../../../../lib/covens/api';
 import { useCoven } from '../../../../../lib/covens/CovenContext';
 import { ritualTasks } from '../../../../../lib/covens/contributions';
+import { seesPaths, type PathsSettings } from '../../../../../lib/covens/paths';
 import { assigneesOf } from '../../../../../lib/covens/picker';
+import type { RecordSettings } from '../../../../../lib/covens/record';
 import { pendingLabel } from '../../../../../lib/covens/requests';
 import { usePendingDetail } from '../../../../../lib/covens/requestsBadge';
 import { errorMessage, JOINING, KIND_LABELS, occasionLabel, orderDocuments, rankPowers, ritualGroups, riteTime } from '../../../../../lib/covens/model';
@@ -38,6 +40,22 @@ export default function CovenHome() {
   useEffect(() => {
     if (coven.userId && askingAhead) api.fetchMyContributions(coven.userId).then(setWritten).catch(() => setWritten([]));
   }, [coven.userId, askingAhead, coven.rituals]);
+  // Paths in the coven, for those it's open to (the head, the record's keepers, or everyone when the head shows it).
+  const [pathsAccess, setPathsAccess] = useState<{ record: RecordSettings | null; paths: PathsSettings | null } | null>(null);
+  const covenId = info?.id;
+  useEffect(() => {
+    if (!covenId || !insider) return;
+    let off = false;
+    void Promise.all([api.fetchRecordSettings(covenId).catch(() => null), api.fetchPathsSettings(covenId).catch(() => null)]).then(([record, paths]) => {
+      if (!off) setPathsAccess({ record, paths });
+    });
+    return () => {
+      off = true;
+    };
+  }, [covenId, insider]);
+  const showPaths =
+    !!pathsAccess &&
+    seesPaths({ founder: coven.perms.founder, site: coven.perms.site, member: coven.perms.member, record: pathsAccess.record, paths: pathsAccess.paths, membership: snap?.membership, userId: coven.userId });
   const tasks = useMemo(
     () => (coven.standing.ok ? ritualTasks(coven.rituals, coven.steps, written.map((w) => ({ step_id: w.step_id, mine: true })), snap?.membership ?? null, coven.userId, assigneesOf) : []),
     [coven.standing.ok, coven.rituals, coven.steps, written, snap?.membership, coven.userId],
@@ -130,7 +148,8 @@ export default function CovenHome() {
                   icon="journey"
                   onPress={() => router.push(covenHref(coven.slug, 'programs'))}
                 />
-                <MenuRow label="Members" detail="Who’s in the circle" icon="community" last onPress={() => router.push(covenHref(coven.slug, 'members'))} />
+                <MenuRow label="Members" detail="Who’s in the circle" icon="community" last={!showPaths} onPress={() => router.push(covenHref(coven.slug, 'members'))} />
+                {showPaths && <MenuRow label="Paths in the coven" detail="How the coven practises and whom it honours" icon="journey" last onPress={() => router.push(covenHref(coven.slug, 'paths'))} />}
               </MenuList>
             </Section>
           )}

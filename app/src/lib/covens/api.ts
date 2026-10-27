@@ -30,6 +30,8 @@ import type {
 import type { Contribution, ParticipationRow } from './contributions';
 import type { Assignee } from './picker';
 import type { AttendanceRow, Checkin, MemberRecord, RecordOverview, RecordSettings } from './record';
+import type { RitualRecord } from './script';
+import { readOverview, type PathsSettings } from './paths';
 
 const COVEN_FIELDS =
   'id,slug,name,tagline,description,tradition,tags,meeting_rhythm,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,practice_traditions,practice_holidays,practice_custom,practice_calendars,founder_id,created_at,member_count';
@@ -274,6 +276,44 @@ export const fetchParticipation = (ritualId: string) => rpc<ParticipationRow[]>(
 export const fetchRitualSettings = (covenId: string) => run<RitualSettings | null>(supabase.from('coven_ritual_settings').select('coven_id,participation_viewers').eq('coven_id', covenId).maybeSingle());
 export const setParticipationViewers = (covenId: string, viewers: Assignee[]) => rpc<RitualSettings>('set_coven_participation_viewers', { p_coven: covenId, p_viewers: viewers });
 
+// ─── The ritual builder (supabase/migrations/20261103000000_coven_ritual_builder.sql) ───
+// Each quietly returns nothing before the database has it.
+
+/** The coven's templates, its own actions and saved blocks of steps. */
+export type LibraryRow = { id: string; coven_id: string; kind: 'template' | 'action' | 'block'; title: string; body: Record<string, unknown>; updated_at: string };
+export const fetchLibrary = (covenId: string) =>
+  run<LibraryRow[]>(supabase.from('coven_ritual_library').select('id,coven_id,kind,title,body,updated_at').eq('coven_id', covenId).order('title').limit(300)).catch(() => [] as LibraryRow[]);
+export const saveLibrary = (covenId: string, id: string | null, kind: LibraryRow['kind'], title: string, body: Record<string, unknown>) =>
+  rpc<LibraryRow>('save_coven_ritual_library', { p_coven: covenId, p_id: id, p_kind: kind, p_title: title.trim(), p_body: body });
+export const removeLibrary = (id: string) => rpc<boolean>('remove_coven_ritual_library', { p_id: id });
+
+/** The checklist: how many have ticked each thing, whether you have, and who (for those who see participation). */
+export type PrepRow = { item_id: string; done: number; mine: boolean; users: string[] | null };
+export const fetchPrep = (ritualId: string) => rpc<PrepRow[]>('coven_ritual_prep', { p_ritual: ritualId }).then((rows) => rows ?? []).catch(() => [] as PrepRow[]);
+export const tickPrep = (ritualId: string, itemId: string, done: boolean) => rpc<boolean>('tick_coven_ritual_prep', { p_ritual: ritualId, p_item: itemId, p_done: done });
+/** Your own ticks, across your covens (for reminders). */
+export const fetchMyPrepTicks = (userId: string) =>
+  run<{ ritual_id: string; item_id: string }[]>(supabase.from('coven_ritual_prep_ticks').select('ritual_id,item_id').eq('user_id', userId).limit(1000)).catch(() => []);
+
+/** A ritual's votes as you may see them. */
+export type VoteRow = { step_id: string; counts: Record<string, number> | null; total: number; mine: string | null; ballots: { user_id: string; choice: string }[] | null; closed: boolean };
+export const fetchVotes = (ritualId: string) => rpc<VoteRow[]>('coven_ritual_votes_for', { p_ritual: ritualId }).then((rows) => rows ?? []).catch(() => [] as VoteRow[]);
+export const castVote = (stepId: string, choice: string) => rpc<boolean>('cast_coven_ritual_vote', { p_step: stepId, p_choice: choice });
+export const closeVote = (stepId: string) => rpc('close_coven_ritual_vote', { p_step: stepId });
+
+/** One at a time: the one whose turn it is is done, or the leader moves on (skip) or starts the turns again. */
+export const nextTurn = (stepId: string, skip = false) => rpc<RitualStep>('next_coven_ritual_turn', { p_step: stepId, p_skip: skip });
+export const restartTurns = (stepId: string) => rpc<RitualStep>('set_coven_ritual_turns', { p_step: stepId, p_order: null });
+
+/** The altar's quiet time after a rite, ended early. */
+export const releaseAltarHold = (altarId: string) => rpc('release_coven_altar_hold', { p_altar: altarId });
+
+/** What gatherings left behind (counts, never anyone's words). */
+export const fetchRecords = (covenId: string) =>
+  run<RitualRecord[]>(supabase.from('coven_ritual_records').select('*').eq('coven_id', covenId).order('ended_at', { ascending: false }).limit(200)).catch(() => [] as RitualRecord[]);
+export const fetchRecord = (ritualId: string) => run<RitualRecord | null>(supabase.from('coven_ritual_records').select('*').eq('ritual_id', ritualId).maybeSingle()).catch(() => null);
+export const setRecordNotes = (ritualId: string, notes: string) => rpc<RitualRecord>('set_coven_ritual_record_notes', { p_ritual: ritualId, p_notes: notes });
+
 /** Your rites across every coven you're in, with your answers (for phone reminders). */
 // ─── The members' record (supabase/migrations/20261102000000_coven_member_record.sql) ───
 
@@ -298,6 +338,15 @@ export const removeMemberNote = (id: string) => rpc<boolean>('remove_coven_membe
 export const removeMember = (covenId: string, userId: string, status: 'removed' | 'banned', reason: string) =>
   rpc<Member>('remove_coven_member', { p_coven: covenId, p_user: userId, p_status: status, p_reason: reason.trim() || null });
 
+// ─── Paths in the coven (supabase/migrations/20261105000000_coven_paths_overview.sql) ───
+
+/** Whether the head shows the overview to the whole coven (null before the database has it). */
+export const fetchPathsSettings = (covenId: string) =>
+  run<PathsSettings | null>(supabase.from('coven_ritual_settings').select('coven_id,paths_visible_to_all').eq('coven_id', covenId).maybeSingle());
+export const setPathsVisible = (covenId: string, visible: boolean) => rpc<PathsSettings>('set_coven_paths_visible', { p_coven: covenId, p_visible: visible });
+/** Only counts, never who: the database leaves out anyone fewer than three share. */
+export const fetchPathsOverview = (covenId: string) => rpc<unknown>('coven_paths_overview', { p_coven: covenId }).then(readOverview);
+
 export async function fetchMyRites(userId: string): Promise<{ coven: Coven; ritual: Ritual; response: Rsvp['response'] | null }[]> {
   const covens = await fetchMyCovens(userId);
   if (!covens.length) return [];
@@ -306,6 +355,15 @@ export async function fetchMyRites(userId: string): Promise<{ coven: Coven; ritu
   );
   const answers = await run<Rsvp[]>(supabase.from('coven_ritual_rsvps').select('*').eq('user_id', userId)).catch(() => [] as Rsvp[]);
   return rituals.map((ritual) => ({ coven: covens.find((c) => c.id === ritual.coven_id)!, ritual, response: answers.find((a) => a.ritual_id === ritual.id)?.response ?? null }));
+}
+
+/** Gatherings ended in the last week across your covens (for reminders after a rite: clearing the altar, a follow-up). */
+export async function fetchRecentlyEnded(userId: string): Promise<(Ritual & { coven_id: string })[]> {
+  const covens = await fetchMyCovens(userId);
+  if (!covens.length) return [];
+  return run<Ritual[]>(
+    supabase.from('coven_rituals').select('*').in('coven_id', covens.map((c) => c.id)).eq('status', 'done').gte('ended_at', new Date(Date.now() - 8 * 86400000).toISOString()).limit(100),
+  ).catch(() => [] as Ritual[]);
 }
 
 // ─── The coven's Book of Shadows ─────────────────────────────────────────
