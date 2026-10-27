@@ -16,6 +16,9 @@ function getDefaultMySettings() {
     
     grimoire_page_font: "classic-serif",
     grimoire_show_dreams: true,
+    // The Grimoire home as arranged (order, hidden, names, open, page sort), as JSON ("" until first arranged).
+    // The app's lib/grimoire/layout.ts and the website's grimoire/js/ui/layout.js read and write it.
+    grimoire_layout: "",
     tarot_deck: "rws",
 
     sync_traditional_library_to_grimoire: false,
