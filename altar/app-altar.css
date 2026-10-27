@@ -268,3 +268,13 @@ a.app-chip { text-decoration: none; }
 .is-coven-view-only [data-open-cabinet-overlay],
 .is-coven-view-only [data-open-apothecary-overlay] { display: none !important; }
 .coven-altar-bar [hidden] { display: none !important; }
+/* Find mine and What's here on a coven altar (coven-altar.js). */
+.coven-altar-bar__list { flex-basis: 100%; }
+.coven-altar-list { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 4px; max-height: 320px; overflow-y: auto; }
+.coven-altar-list__row { display: grid; gap: 2px; width: 100%; text-align: left; padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(244, 236, 216, 0.14); background: transparent; color: inherit; font: inherit; cursor: pointer; }
+.coven-altar-list__row span { font-size: 0.88rem; opacity: 0.85; }
+.coven-altar-list__row.is-mine { border-color: var(--gold); }
+.altar-object.is-mine-found { outline: 2px solid var(--gold, #e2c36d); outline-offset: 3px; border-radius: 10px; box-shadow: 0 0 18px rgba(226, 195, 109, 0.55); }
+.altar-hero__tend a { color: var(--gold); text-decoration: none; }
+.altar-hero__tend a:hover, .altar-hero__tend a:focus-visible { text-decoration: underline; }
+body.is-coven-altar .altar-hero__tend { display: none; }

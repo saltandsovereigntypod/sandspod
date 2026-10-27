@@ -164,3 +164,22 @@ a.td-tag:hover { background: rgba(226, 195, 109, 0.16); }
 .td-coven-icon { flex: none; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(226, 195, 109, 0.5); display: grid; place-items: center; color: var(--gold, #e2c36d); }
 .td-coven-item--turn .td-coven-icon { background: var(--gold, #e2c36d); color: var(--charcoal, #102118); }
 .td-coven-item span > .sp-caption { display: inline; }
+
+/* To tend (/today/tend/) and Today's "To tend today" card. */
+.tn-head { display: grid; gap: 6px; }
+.tn-title { font-family: "Cormorant Garamond", serif; font-size: 2.2rem; margin: 0; }
+.tn-group { margin: 12px 0 0; }
+.tn-item { display: grid; gap: 10px; padding: 14px; }
+.tn-item--ending { border-color: var(--gold, #e2c36d); }
+.tn-item__head { display: flex; gap: 12px; align-items: flex-start; background: none; border: 0; padding: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; width: 100%; }
+.tn-item__text { display: grid; gap: 2px; min-width: 0; }
+.tn-item__text strong { overflow-wrap: anywhere; }
+.tn-mark { flex: none; width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(226, 195, 109, 0.4); display: grid; place-items: center; color: var(--gold, #e2c36d); }
+.tn-private { color: #8fa684; }
+.tn-panel { display: grid; gap: 12px; padding-top: 4px; }
+.tn-form { display: grid; gap: 10px; }
+.tn-check { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.tn-radio input { margin: 0 4px 0 0; }
+.td-tend-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.td-tend-list a { display: flex; gap: 12px; align-items: flex-start; padding: 8px 4px; color: inherit; text-decoration: none; border-radius: 12px; }
+.td-tend-list a:hover, .td-tend-list a:focus-visible { background: rgba(226, 195, 109, 0.08); }

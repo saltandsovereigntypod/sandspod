@@ -89,17 +89,17 @@ export type Tendable = {
   ref: Record<string, string>;
 };
 
-export const KIND_LABEL: Record<TendKind, { label: string; plural: string }> = {
-  petition: { label: 'Petition', plural: 'Petitions' },
-  candle: { label: 'Candle', plural: 'Candles' },
-  offering: { label: 'Offering', plural: 'Offerings' },
-  plant: { label: 'Plant', plural: 'Plants' },
-  'coven-petition': { label: 'Coven petition', plural: 'Coven petitions' },
-  contribution: { label: 'From a coven ritual', plural: 'From coven rituals' },
-  journey: { label: 'Journey', plural: 'Journeys' },
-  lookback: { label: 'Did it work?', plural: 'Did it work?' },
-  'coven-task': { label: 'Before the rite', plural: 'Before the rite' },
-  checkin: { label: 'Mentor check-in', plural: 'Mentor check-ins' },
+export const KIND_LABEL: Record<TendKind, { label: string; plural: string; one: string; many: string }> = {
+  petition: { label: 'Petition', plural: 'Petitions', one: 'petition', many: 'petitions' },
+  candle: { label: 'Candle', plural: 'Candles', one: 'candle', many: 'candles' },
+  offering: { label: 'Offering', plural: 'Offerings', one: 'offering', many: 'offerings' },
+  plant: { label: 'Plant', plural: 'Plants', one: 'plant', many: 'plants' },
+  'coven-petition': { label: 'Coven petition', plural: 'Coven petitions', one: 'coven petition', many: 'coven petitions' },
+  contribution: { label: 'From a coven ritual', plural: 'From coven rituals', one: 'thing you hold from a ritual', many: 'things you hold from rituals' },
+  journey: { label: 'Journey', plural: 'Journeys', one: 'journey practice', many: 'journey practices' },
+  lookback: { label: 'Did it work?', plural: 'Did it work?', one: 'look-back', many: 'look-backs' },
+  'coven-task': { label: 'Before the rite', plural: 'Before the rite', one: 'task before a rite', many: 'tasks before a rite' },
+  checkin: { label: 'Mentor check-in', plural: 'Mentor check-ins', one: 'mentor check-in', many: 'mentor check-ins' },
 };
 
 // ─── Rhythms ─────────────────────────────────────────────────────────────
@@ -393,7 +393,7 @@ export const GROUP_FILTERS: { value: 'all' | TendGroup; label: string }[] = [
 export function todaySummary(list: { today: ListItem[]; ongoing: ListItem[] }, top = 3): { count: number; ongoing: number; line: string; top: ListItem[] } {
   const counts = new Map<TendKind, number>();
   for (const i of list.today) counts.set(i.kind, (counts.get(i.kind) ?? 0) + 1);
-  const parts = [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([kind, n]) => `${n} ${(n === 1 ? KIND_LABEL[kind].label : KIND_LABEL[kind].plural).toLowerCase()}`);
+  const parts = [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([kind, n]) => `${n} ${n === 1 ? KIND_LABEL[kind].one : KIND_LABEL[kind].many}`);
   const line = !list.today.length
     ? list.ongoing.length
       ? `Nothing wants tending today. ${list.ongoing.length} ${list.ongoing.length === 1 ? 'thing is' : 'things are'} in your keeping.`
