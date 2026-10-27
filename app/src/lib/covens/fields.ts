@@ -315,7 +315,12 @@ export function whoIn(specs: FieldSpec[], values: FieldValues): string[] {
  * The step's one-line summary for the outline: its name, then what its
  * fields say ("Call the quarters · East: Rowan, South: Ash").
  */
-export function fieldSummary(specs: FieldSpec[], values: FieldValues, whoLabel: (key: string) => string): string {
+export function fieldSummary(specs: FieldSpec[], values: FieldValues, whoLabel: (key: string) => string, title = ''): string {
+  return fieldBits(specs, values, whoLabel, title).join(' · ');
+}
+
+/** The pieces of the summary, leaving out any the step's name already says ("Light Hekate’s candle" needn't repeat "Hekate’s candle"). */
+export function fieldBits(specs: FieldSpec[], values: FieldValues, whoLabel: (key: string) => string, title = ''): string[] {
   const bits: string[] = [];
   for (const s of specs) {
     const v = values[s.key];
@@ -336,5 +341,7 @@ export function fieldSummary(specs: FieldSpec[], values: FieldValues, whoLabel: 
     else if (s.type === 'colour') bits.push(String(v));
     else bits.push(String(v));
   }
-  return bits.filter(Boolean).join(' · ');
+  const plain = (t: string) => t.toLowerCase().replace(/[’']/g, '').replace(/\s+/g, ' ').trim();
+  const named = plain(title);
+  return bits.filter((b) => b && (!named || (!named.includes(plain(b)) && !plain(b).includes(named))));
 }

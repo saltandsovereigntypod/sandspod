@@ -15,7 +15,7 @@ import {
 } from '../../../lib/covens/builder';
 import { CONTRIBUTION_FATES, CONTRIBUTION_KINDS, CONTRIBUTION_TIMINGS, CONTRIBUTION_VISIBILITY, contributionNote, defaultContribution, kindOf, type ContributionKind, type StepContribution } from '../../../lib/covens/contributions';
 import { ALTAR_ACCESS } from '../../../lib/covens/draft';
-import { cleanValues, type FieldValues } from '../../../lib/covens/fields';
+import { cleanValues, partsOf, type FieldValues } from '../../../lib/covens/fields';
 import { assigneeFromKey, assigneeKey, cleanAssignees, type Assignee, type PickEntry } from '../../../lib/covens/picker';
 import { ACTION_GROUPS, actionLabel, ALTAR_EFFECTS, applyAction, searchActions, type ActionGroup, type StepAction } from '../../../lib/covens/stepActions';
 import { colors, fonts, radius, touch, type } from '../../../theme';
@@ -87,6 +87,9 @@ export function StepFocus({
   const found = useMemo(() => (query.trim() ? searchActions(query) : group ? searchActions('').filter((a) => a.group === group) : []), [query, group]);
   const specs = specsOf(step, custom);
   const values = cleanValues(specs, step.details.fields);
+  // Each part (a direction) has its own words, so the step's own aren't asked for.
+  const partsSpec = specs.find((x) => x.type === 'parts');
+  const partsWords = !!partsSpec && partsOf(partsSpec, values, specs).length > 0;
   const fieldCtx: FieldContext = { who, whoSuggest, whoLabel, items, named, actionId: step.action };
   const setFields = (next: FieldValues) => onChange({ details: { ...step.details, fields: next } });
   const sectionName = plan.sections.find((s) => s.id === step.section)?.name ?? '';
@@ -216,7 +219,7 @@ export function StepFocus({
         </Card>
       )}
 
-      <Card>
+      {!partsWords && <Card>
         <Text style={type.eyebrow}>Words</Text>
         {linked ? (
           <>
@@ -255,7 +258,7 @@ export function StepFocus({
               ))}
           </>
         )}
-      </Card>
+      </Card>}
 
       <Button label={more ? 'Fewer options' : 'More options'} variant="outline" onPress={() => setMore(!more)} />
       {more && (

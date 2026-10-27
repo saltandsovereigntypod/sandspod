@@ -404,8 +404,8 @@ export function stepWhoLabel(step: Pick<BuilderStep, 'roles' | 'assignees'>, ctx
 /** The step's card line in the outline: "Call the quarters · East: Rowan, South: Ash". */
 export function stepSummary(step: BuilderStep, ctx: WhoContext, custom: CustomAction[] = []): string {
   const specs = specsOf(step, custom);
-  const fields = fieldSummary(specs, cleanValues(specs, step.details.fields), (k) => whoLabel(k, ctx));
   const title = step.title.trim() || 'A step';
+  const fields = fieldSummary(specs, cleanValues(specs, step.details.fields), (k) => whoLabel(k, ctx), title);
   return fields ? `${title} · ${fields}` : title;
 }
 
