@@ -381,7 +381,7 @@
     removeBookEntry: (kind, id) => rpc("remove_coven_book_entry", { p_kind: kind, p_id: id }),
 
     // --- petitions ---------------------------------------------------------------
-    petitions: (covenId) => run(db().from("coven_petitions").select("*").eq("coven_id", covenId).order("created_at", { ascending: false }).limit(100)),
+    petitions: (covenId) => run(db().from("coven_petitions").select("*").eq("coven_id", covenId).order("created_at", { ascending: false }).limit(1000)),
     async petitionTendings(petitionIds) {
       const ids = [...new Set((petitionIds || []).filter(Boolean))];
       if (!ids.length) return [];

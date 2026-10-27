@@ -672,8 +672,7 @@ declare
 begin
   select * into c from public.coven_ritual_contributions where id = p_contribution for update;
   if c.id is null or c.fate <> 'petition' or c.petition_id is not null then return c; end if;
-  if c.private or c.anonymous or c.visibility <> 'coven' or coalesce(btrim(c.body), '') = ''
-     or (select count(*) from public.coven_petitions where coven_id = c.coven_id and user_id = c.user_id and status = 'open') >= 3 then
+  if c.private or c.anonymous or c.visibility <> 'coven' or coalesce(btrim(c.body), '') = '' then
     update public.coven_ritual_contributions set status = 'held', updated_at = now() where id = c.id returning * into c;
     return c;
   end if;
@@ -1055,5 +1054,35 @@ begin
       alter publication supabase_realtime add table public.coven_ritual_settings;
     end if;
   end if;
+end;
+$$;
+
+-- No limit on petitions: asking the circle no longer stops at three open ones.
+create or replace function public.ask_coven_petition(p_coven uuid, p_title text, p_body text default null, p_color text default 'white')
+returns public.coven_petitions
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  p public.coven_petitions;
+  scene public.coven_altars;
+  altar uuid;
+begin
+  if not public.coven_in_good_standing(p_coven) then
+    raise exception 'You need to be a member in good standing (with the agreements signed) to ask the circle.';
+  end if;
+  insert into public.coven_petitions (coven_id, user_id, title, body, color)
+  values (p_coven, auth.uid(), btrim(p_title), nullif(btrim(p_body), ''), coalesce(nullif(p_color, ''), 'white'))
+  returning * into p;
+  select * into scene from public.coven_altars where coven_id = p_coven and is_main;
+  perform set_config('coven.altar_keeper', 'on', true);
+  insert into public.coven_altars (coven_id, name, is_main, edit_mode, created_by, background, background_name, extra)
+  values (p_coven, left('Petition: ' || btrim(p_title), 80), false, 'members', auth.uid(),
+          coalesce(scene.background, ''), coalesce(scene.background_name, ''), jsonb_build_object('petition_id', p.id))
+  returning id into altar;
+  perform set_config('coven.altar_keeper', 'off', true);
+  update public.coven_petitions set altar_id = altar where id = p.id returning * into p;
+  return p;
 end;
 $$;

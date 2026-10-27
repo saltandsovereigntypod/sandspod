@@ -295,7 +295,7 @@ export const reviewBookDraft = (draftId: string, approve: boolean, note: string)
 
 // ─── Petitions ───────────────────────────────────────────────────────────
 
-export const fetchPetitions = (covenId: string) => run<Petition[]>(supabase.from('coven_petitions').select('*').eq('coven_id', covenId).order('created_at', { ascending: false }).limit(100));
+export const fetchPetitions = (covenId: string) => run<Petition[]>(supabase.from('coven_petitions').select('*').eq('coven_id', covenId).order('created_at', { ascending: false }).limit(1000));
 export async function fetchTendings(petitionIds: string[]): Promise<Tending[]> {
   if (!petitionIds.length) return [];
   return run(supabase.from('coven_petition_tendings').select('*').in('petition_id', petitionIds).order('created_at', { ascending: false }).limit(1000));
