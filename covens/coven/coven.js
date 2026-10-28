@@ -124,12 +124,22 @@
   /** Mentors, and work waiting for this person to sign off (for the tab's count). */
   async function loadProgramWork() {
     const P = global.SaltCore?.covens?.programs;
-    const [mentors, progress] = await Promise.all([D.mentors(state.coven.id).catch(() => []), D.progress(state.coven.id).catch(() => [])]);
+    const K = global.SaltCore?.covens;
+    const [mentors, progress, attempts, unread] = await Promise.all([
+      D.mentors(state.coven.id).catch(() => []),
+      D.progress(state.coven.id).catch(() => []),
+      D.attempts ? D.attempts(state.coven.id) : Promise.resolve([]),
+      D.programUnread ? D.programUnread(state.coven.id) : Promise.resolve([])
+    ]);
     state.mentors = mentors;
     state.programProgress = progress;
     const submitted = progress.filter((p) => p.status === "submitted" && p.user_id !== state.context.user?.id);
     const tasks = submitted.length ? await D.programTasks([...new Set(submitted.map((p) => p.program_id))]).catch(() => []) : [];
-    state.waitingForMe = P ? P.waitingForMe(submitted, tasks, { userId: state.context.user?.id, mentees: P.menteesOf(mentors, state.context.user?.id), programs: state.perms.programs }).length : 0;
+    const who = P ? { userId: state.context.user?.id, mentees: P.menteesOf(mentors, state.context.user?.id), programs: state.perms.programs } : null;
+    // Work to sign off, tests to score, and new messages on training steps.
+    state.waitingForMe = P
+      ? P.waitingForMe(submitted, tasks, who).length + (K?.quiz ? K.quiz.attemptsToScore(attempts, who).length : 0) + (K?.training ? K.training.unreadTotal(unread) : 0)
+      : 0;
   }
 
   /** Reload everything and redraw the current tab (after joining, signing…). */
@@ -310,7 +320,7 @@
     return `<section class="sp-section"><h2>Positions</h2><div class="sp-list">${ranks
       .map((r) => {
         const powers = L.rankPowers(r);
-        return `<div class="sp-row"><span class="sp-row__text"><span class="sp-row__title">${esc(r.name)}${r.is_default ? " · where new members begin" : ""}${r.open_to_applications ? " · open to apply" : ""}</span>
+        return `<div class="sp-row"><span class="sp-row__text"><span class="sp-row__title">${esc(r.name)}${r.is_default ? " · where new members begin" : ""}${(r.applications_open ?? r.open_to_applications) ? " · open to apply" : ""}${r.seat_limit != null ? ` · up to ${esc(r.seat_limit)} may hold it` : ""}</span>
           ${r.description ? `<span class="sp-row__detail">${esc(r.description)}</span>` : ""}
           ${r.requirements ? `<span class="sp-row__detail">Asks: ${esc(r.requirements)}</span>` : ""}
           ${powers.length ? `<span class="sp-row__detail">This position ${esc(powers.join(", "))}.</span>` : ""}
@@ -339,6 +349,7 @@
         ${!perms.member && coven.status === "active" && coven.joining !== "closed" ? `<div class="sp-actions"><a class="button button--primary" href="${esc(covenHref("join"))}" data-tab="join">${coven.joining === "open" ? "Join this coven" : "Apply to join"}</a></div>` : ""}
         ${coven.joining === "closed" && !perms.member ? `<p class="sp-notice">${esc(join.detail)}</p>` : ""}
       </div>
+      ${perms.member ? `<div data-open-positions></div>` : ""}
       ${state.documents.length ? `<section class="sp-section"><h2>Our ways</h2>${state.documents.map(documentSection).join("")}</section>` : ""}
       ${positions()}
       ${LU ? LU.aboutHtml(state) : ""}
@@ -346,6 +357,8 @@
         ${context.user ? `<button class="button button--ghost button--small" type="button" data-report-coven>Report this coven</button>` : ""}
       </div>`;
     pane.querySelector("[data-report-coven]")?.addEventListener("click", () => UI.report({ target_type: "coven", target_id: coven.id, coven_id: coven.id, label: "this coven" }));
+    // Open positions above you, with what they ask (covens/coven/positions.js); Apply opens My standing.
+    global.CovenPositions?.card(pane.querySelector("[data-open-positions]"), state, { covenHref });
   }
 
   /** The coven's practice calendar and its next holiday. */
@@ -498,11 +511,25 @@
     if (pending) {
       advance.innerHTML = `<div class="sp-card"><p>You’ve asked to become <strong>${esc(rankName(pending.rank_id))}</strong>. The coven’s reviewers will decide.</p>
           ${pending.statement ? `<div class="cv-doc">${prose(pending.statement)}</div>` : ""}
+          <div data-pending-checklist></div>
           <div class="sp-actions"><button class="button button--ghost" type="button" data-withdraw>Withdraw this request</button></div>
           <p class="cv-status" role="status" aria-live="polite" data-status></p></div>${historyHtml}`;
       const button = advance.querySelector("[data-withdraw]");
       button.addEventListener("click", async () => {
         if (await UI.busy(button, advance.querySelector("[data-status]"), () => D.withdraw("advancement", pending.id).then(() => true))) refresh("path");
+      });
+      if (global.CovenPositions) D.checklist(pending.id).then((checks) => {
+        const holder = advance.querySelector("[data-pending-checklist]");
+        if (holder) holder.innerHTML = global.CovenPositions.checklistHtml(checks);
+      });
+    } else if (global.CovenPositions && state.positionsOverview !== null) {
+      // Open positions with what they ask and Apply; before the database has them, the older form below.
+      advance.innerHTML = `<div data-open-here><p class="sp-caption">Gathering the open positions…</p></div>${historyHtml}`;
+      const chosen = new URLSearchParams(global.location.search).get("apply");
+      global.CovenPositions.card(advance.querySelector("[data-open-here]"), state, { applyHere: true, chosen, covenHref, onApplied: () => refresh("path") }).then((overview) => {
+        if (overview) return;
+        state.positionsOverview = null;
+        path(pane);
       });
     } else if (!options.length) {
       advance.innerHTML = `<p class="sp-caption">No higher positions are open to apply for right now.</p>${historyHtml}`;

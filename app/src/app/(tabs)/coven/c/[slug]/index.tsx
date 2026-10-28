@@ -6,6 +6,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../../../../components/Button';
 import { covenHref, CovenScreen } from '../../../../../components/covens/CovenScreen';
 import { DisclosureCard, LineageSection, useDisclosure } from '../../../../../components/covens/lineage';
+import { OpenPositionsHere } from '../../../../../components/covens/Positions';
 import { Pill, Pills, Words, useReport } from '../../../../../components/covens/ui';
 import { Card, MenuList, MenuRow, Notice, Section } from '../../../../../components/more/ui';
 import { WEBSITE_ORIGIN } from '../../../../../lib/altar/assetPaths';
@@ -161,6 +162,8 @@ export default function CovenHome() {
             </Card>
           )}
 
+          <OpenPositionsHere />
+
           {insider && (
             <Section label="The coven">
               <MenuList>
@@ -171,7 +174,12 @@ export default function CovenHome() {
                 <MenuRow label="Petitions" detail="Prayers the circle holds" icon="offer" onPress={() => router.push(covenHref(coven.slug, 'petitions'))} />
                 <MenuRow
                   label="Initiation & training"
-                  detail={coven.waitingForMe ? `${coven.waitingForMe} waiting for you to sign off` : 'Your path, and those you mentor'}
+                  detail={
+                    [coven.waitingForMe ? `${coven.waitingForMe} waiting for you` : '', coven.trainingUnread ? `${coven.trainingUnread} new message${coven.trainingUnread === 1 ? '' : 's'}` : '']
+                      .filter(Boolean)
+                      .join(' · ') || 'Your path, and those you mentor'
+                  }
+                  count={coven.waitingForMe + coven.trainingUnread}
                   icon="journey"
                   onPress={() => router.push(covenHref(coven.slug, 'programs'))}
                 />
@@ -221,6 +229,7 @@ export default function CovenHome() {
                   {rankPowers(rank).length > 0 && <Text style={type.caption}>This position {rankPowers(rank).join(', ')}.</Text>}
                   {!!rank.requirements && <Text style={type.caption}>Requirements: {rank.requirements}</Text>}
                   {!!copiedFrom(lineage?.copies, 'rank', rank.id) && <Text style={type.caption}>{copiedFrom(lineage?.copies, 'rank', rank.id)}</Text>}
+                  {rank.seat_limit != null && <Text style={type.caption}>Up to {rank.seat_limit} may hold it.</Text>}
                 </Card>
               ))}
               {coven.perms.member && <Text style={type.caption}>To ask to rise to a higher position, open My standing.</Text>}

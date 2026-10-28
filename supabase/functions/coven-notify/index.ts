@@ -4,6 +4,8 @@ import { cleanNote, gatheringEvent, gatheringNote, manualEvent, validZone, wants
 import { acceptedNote, invitedNote, wantsInvitation } from "./invitations.ts";
 import { leadershipNote, lineageAudience, lineageNote, overridesNote, overrideWords, type LeadershipEventKind, type LineageEventKind, type Note as LineageNote } from "./lineage.ts";
 import { FRESH_MINUTES } from "./requests.ts";
+import { openedNote, wantsPosition } from "./positions.ts";
+import { trainingNote, wantsTraining } from "./training.ts";
 
 // Phone notifications for covens: a new message, a new application or
 // request to advance, and the answer to one; a personal invitation, and its
@@ -72,6 +74,25 @@ import { FRESH_MINUTES } from "./requests.ts";
 // Its 'scheduled' note if it was never announced, else a reminder; the note
 // (up to 200 characters) is a second line; who (WHO keys) changes who it goes
 // to for this send only. One by hand per gathering each half hour (429).
+//
+// { rank_id, event: 'opened', time_zone? }: a position just opened for
+// applications (supabase/migrations/20261110000000_coven_open_positions.sql,
+// open_coven_position). Called by the leader who opened it, while they may
+// still open positions there, within a few minutes of opening it. It tells
+// those the leader chose (public.coven_position_opening_recipients: everyone
+// below the position in good standing, or only those who already meet what
+// it asks), never the leader, nor anyone who has blocked them, and only those
+// whose Reminders choices want positions (positions.ts wantsPosition). Once
+// per opening (coven_position_openings.notified_at). time_zone is the
+// caller's, for the closing date's words when the coven has none.
+//
+// { program_thread_message_id }: a message on a step of a coven program
+// (supabase/migrations/20261110000100_coven_courses.sql). Called by whoever
+// just wrote it, it tells those who follow that step's conversation
+// (public.coven_program_thread_people: the trainee, their mentor, whoever
+// else has written, or else those who run the coven's programs), never the
+// writer nor anyone blocking them, and only those whose "Training messages"
+// choice wants it (training.ts wantsTraining). Once each (notified_at), while fresh.
 
 const EXPO_PUSH = "https://exp.host/--/api/v2/push/send";
 
@@ -108,11 +129,13 @@ Deno.serve(async (request) => {
   let requestKind: "application" | "advancement" = "application";
   let submissionId = "";
   let invitationId = "";
+  let programMessageId = "";
   let ritualId = "";
   let timeZone = "";
   let manual: { note: string; who: string[] | null } | null = null;
   let lineageCoven = "";
   let leadershipCoven = "";
+  let rankId = "";
   try {
     const payload = (await request.json()) || {};
     messageId = String(payload.message_id || "");
@@ -120,7 +143,9 @@ Deno.serve(async (request) => {
     if (payload.leadership_coven_id) leadershipCoven = String(payload.leadership_coven_id);
     if (payload.grimoire_submission_id) submissionId = String(payload.grimoire_submission_id);
     if (payload.invitation_id) invitationId = String(payload.invitation_id);
+    if (payload.program_thread_message_id) programMessageId = String(payload.program_thread_message_id);
     if (payload.ritual_id) ritualId = String(payload.ritual_id);
+    if (payload.rank_id && payload.event === "opened") rankId = String(payload.rank_id);
     if (typeof payload.time_zone === "string") timeZone = payload.time_zone.slice(0, 64);
     if (payload.manual === true) {
       const who = Array.isArray(payload.who) ? payload.who.filter((k: unknown) => typeof k === "string").slice(0, 40).map((k: string) => k.slice(0, 80)) : null;
@@ -152,9 +177,17 @@ Deno.serve(async (request) => {
     }
     return reply(200, { sent });
   }
+  if (rankId) {
+    if (!UUID.test(rankId)) return reply(400, { error: "bad_request" });
+    return positionOpened(admin, verifier, sender, rankId, timeZone);
+  }
   if (ritualId) {
     if (!UUID.test(ritualId)) return reply(400, { error: "bad_request" });
     return covenGathering(admin, verifier, sender, ritualId, timeZone, manual);
+  }
+  if (programMessageId) {
+    if (!UUID.test(programMessageId)) return reply(400, { error: "bad_request" });
+    return covenTrainingMessage(admin, sender, programMessageId);
   }
   if (invitationId) {
     if (!UUID.test(invitationId)) return reply(400, { error: "bad_request" });
@@ -444,6 +477,64 @@ async function covenInvitation(admin: SupabaseClient, caller: string, id: string
   return reply(200, { sent: await push(admin, notes) });
 }
 
+/** A message on a step of a coven program, to those who follow that step's conversation. */
+async function covenTrainingMessage(admin: SupabaseClient, sender: string, id: string) {
+  const { data: row, error } = await admin
+    .from("coven_program_messages")
+    .select("id,enrollment_id,task_id,coven_id,trainee_id,author_id,body,created_at,deleted_at,notified_at")
+    .eq("id", id)
+    .maybeSingle();
+  // Before 20261110000100_coven_courses.sql there is nothing to send.
+  if (error) return reply(503, { error: "not_ready" });
+  const m = row as { enrollment_id: string; task_id: string; coven_id: string; trainee_id: string; author_id: string | null; body: string | null; created_at: string; deleted_at: string | null; notified_at: string | null } | null;
+  // Only the writer rings, once, for a fresh message.
+  if (!m || m.author_id !== sender || m.deleted_at || !m.body) return reply(404, { error: "not_found" });
+  if (Date.now() - new Date(m.created_at).getTime() > 5 * 60 * 1000) return reply(409, { error: "too_old" });
+  const { data: claimed } = await admin.from("coven_program_messages").update({ notified_at: new Date().toISOString() }).eq("id", id).is("notified_at", null).select("id");
+  if (!claimed?.length) return reply(409, { error: "already_sent" });
+
+  const [{ data: people }, { data: coven }, { data: task }, { data: enrollment }, { data: profile }] = await Promise.all([
+    admin.rpc("coven_program_thread_people", { p_enrollment: m.enrollment_id, p_task: m.task_id }),
+    admin.from("covens").select("name,slug,status").eq("id", m.coven_id).single(),
+    admin.from("coven_program_tasks").select("title,program_id").eq("id", m.task_id).maybeSingle(),
+    admin.from("coven_program_enrollments").select("program_id").eq("id", m.enrollment_id).maybeSingle(),
+    admin.from("coven_profiles").select("display_name").eq("user_id", sender).maybeSingle(),
+  ]);
+  if (!coven || coven.status !== "active" || !task) return reply(404, { error: "not_found" });
+  let recipients = [...new Set(((people as string[] | null) || []).map(String))].filter((u) => u !== sender);
+  if (recipients.length) {
+    const { data: blocks } = await admin.from("user_blocks").select("blocker_id").eq("blocked_id", sender).in("blocker_id", recipients);
+    const blocking = new Set((blocks || []).map((b) => b.blocker_id));
+    recipients = recipients.filter((u) => !blocking.has(u));
+  }
+  if (!recipients.length) return reply(200, { sent: 0 });
+
+  // Their own choices (Notifications & reminders → Covens → Training messages), saved with their settings.
+  const { data: settings } = await admin.from("user_settings").select("user_id,reminders:settings->>reminders_v2").in("user_id", recipients);
+  const saved = new Map((settings || []).map((x: { user_id: string; reminders: string | null }) => [x.user_id, x.reminders]));
+  const now = new Date();
+  const listeners = recipients.filter((u) => wantsTraining(saved.get(u) ?? null, now));
+  if (!listeners.length) return reply(200, { sent: 0 });
+
+  const { data: tokens } = await admin.from("push_tokens").select("token,user_id").in("user_id", listeners);
+  if (!tokens?.length) return reply(200, { sent: 0 });
+  const who = profile?.display_name || "Someone";
+  const programId = (enrollment as { program_id?: string } | null)?.program_id || task.program_id;
+  const notes: Push[] = tokens.map((t) => {
+    const note = trainingNote({ covenSlug: coven.slug, who, taskTitle: task.title, body: m.body!, programId, taskId: m.task_id, traineeId: m.trainee_id, toTrainee: t.user_id === m.trainee_id });
+    return {
+      to: t.token,
+      title: note.title,
+      body: note.body,
+      sound: "default",
+      channelId: "coven-messages",
+      threadId: `training:${m.enrollment_id}:${m.task_id}`,
+      data: { source: "coven-training", url: note.url, covenId: m.coven_id, enrollmentId: m.enrollment_id, taskId: m.task_id },
+    };
+  });
+  return reply(200, { sent: await push(admin, notes) });
+}
+
 /** A gathering put on the calendar, moved, or taken off it (gatherings.ts), to those who should hear. */
 async function covenGathering(admin: SupabaseClient, caller: SupabaseClient, sender: string, id: string, plannerZone: string, manual: { note: string; who: string[] | null } | null) {
   type Row = { coven_id: string; title: string; kind: string | null; status: string; scheduled_for: string | null };
@@ -727,4 +818,81 @@ async function leadershipEvent(admin: SupabaseClient, caller: string | null, id:
     ? [row.to_user ?? "", typeof row.detail?.second === "string" ? row.detail.second : ""]
     : (await activeMembers(admin, row.coven_id)).filter((u) => u !== row.from_user || row.event === "handed_on");
   return ringPeople(admin, caller, people, row.coven_id, "new", note, "coven-leadership", { event: row.event });
+}
+
+/** A position opened for applications (positions.ts), to those the leader chose. */
+async function positionOpened(admin: SupabaseClient, caller: SupabaseClient, sender: string, rankId: string, openerZone: string) {
+  type Rank = { id: string; coven_id: string; name: string; applications_open: boolean; seat_limit: number | null; applications_close_at: string | null; opening_note: string | null };
+  const { data: found } = await admin.from("coven_ranks").select("id,coven_id,name,applications_open,seat_limit,applications_close_at,opening_note").eq("id", rankId).maybeSingle();
+  const rank = found as Rank | null;
+  if (!rank) return reply(404, { error: "not_found" });
+  // Only those who may open positions there (asked as the caller).
+  const { data: may } = await caller.rpc("coven_may_open_positions", { p_coven: rank.coven_id });
+  if (may !== true) return reply(403, { error: "not_allowed" });
+
+  // Its latest opening: this caller's, fresh, and not yet sent. Before the migration, nothing is sent.
+  const { data: openings, error: openingsError } = await admin
+    .from("coven_position_openings")
+    .select("id,opened_by,opened_at,audience,notified_at")
+    .eq("rank_id", rankId)
+    .order("opened_at", { ascending: false })
+    .limit(1);
+  if (openingsError) return reply(503, { error: "not_ready" });
+  const opening = openings?.[0] as { id: string; opened_by: string | null; opened_at: string; audience: string; notified_at: string | null } | undefined;
+  if (!opening || opening.opened_by !== sender) return reply(404, { error: "not_found" });
+  if (opening.notified_at) return reply(409, { error: "already_sent" });
+  if (!isFresh(opening.opened_at)) return reply(409, { error: "too_old" });
+  if (opening.audience === "none" || !rank.applications_open) return reply(200, { sent: 0 });
+
+  // Once each: the first call claims it; a call racing this one finds it claimed.
+  const { data: claimed } = await admin.from("coven_position_openings").update({ notified_at: new Date().toISOString() }).eq("id", opening.id).is("notified_at", null).select("id");
+  if (!claimed?.length) return reply(409, { error: "already_sent" });
+
+  const [{ data: coven }, { data: audience }, { data: held }] = await Promise.all([
+    admin.from("covens").select("name,slug,status,timezone").eq("id", rank.coven_id).single(),
+    admin.rpc("coven_position_opening_recipients", { p_opening: opening.id }),
+    admin.rpc("coven_rank_holder_count", { p_rank: rankId }),
+  ]);
+  if (!coven || coven.status !== "active") return reply(404, { error: "not_found" });
+  // Never the leader, nor anyone who has blocked them (the database leaves them out as well).
+  let recipients = [...new Set(((audience as string[] | null) || []).map(String))].filter((u) => u !== sender);
+  if (recipients.length) {
+    const { data: blocks } = await admin.from("user_blocks").select("blocker_id").eq("blocked_id", sender).in("blocker_id", recipients);
+    const blocking = new Set((blocks || []).map((b) => b.blocker_id));
+    recipients = recipients.filter((u) => !blocking.has(u));
+  }
+
+  // Their own choices (Notifications & reminders → Covens → Positions opening), saved with their settings.
+  let delivered = 0;
+  if (recipients.length) {
+    const { data: settings } = await admin.from("user_settings").select("user_id,reminders:settings->>reminders_v2").in("user_id", recipients);
+    const saved = new Map((settings || []).map((x: { user_id: string; reminders: string | null }) => [x.user_id, x.reminders]));
+    const now = new Date();
+    const listeners = recipients.filter((u) => wantsPosition(saved.get(u) ?? null, rank.coven_id, now));
+    const { data: tokens } = listeners.length ? await admin.from("push_tokens").select("token,user_id").in("user_id", listeners) : { data: [] };
+    if (tokens?.length) {
+      const note = openedNote({
+        rankName: rank.name,
+        covenName: coven.name,
+        covenSlug: coven.slug,
+        placesLeft: rank.seat_limit == null ? null : Math.max(0, rank.seat_limit - Number(held ?? 0)),
+        closeAt: rank.applications_close_at,
+        note: rank.opening_note,
+        zone: coven.timezone || openerZone || null,
+        now,
+      });
+      const notes: Push[] = tokens.map((t: { token: string }) => ({
+        to: t.token,
+        title: note.title,
+        body: note.body,
+        sound: "default",
+        channelId: "coven-requests",
+        threadId: `positions:${rank.coven_id}`,
+        data: { source: "coven-position", url: note.url, covenId: rank.coven_id, rankId },
+      }));
+      delivered = await push(admin, notes);
+    }
+  }
+  await admin.from("coven_position_openings").update({ recipients: recipients.length }).eq("id", opening.id);
+  return reply(200, { sent: delivered, recipients: recipients.length });
 }

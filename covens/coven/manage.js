@@ -155,8 +155,9 @@
         return `<article class="sp-card">
             <h3>${esc(profile(a.user_id).display_name || "A witch")} → ${esc(rankName(a.rank_id))}</h3>
             <p class="sp-caption">Asked ${esc(L.relativeTime(a.created_at))}</p>
-            ${wanted?.requirements ? `<p class="sp-caption">The position asks: ${esc(wanted.requirements)}</p>` : ""}
-            ${a.statement ? `<div class="cv-doc">${prose(a.statement)}</div>` : ""}
+            <div data-adv-extra="${esc(a.id)}"></div>
+            ${wanted?.requirements ? `<p class="sp-caption">In their words, the position asks</p><div class="cv-doc">${prose(wanted.requirements)}</div>` : ""}
+            <p><strong>Why they’re ready</strong><br />${prose(a.statement || "—")}</p>
             ${decision("advancement", a.id)}
           </article>`;
       };
@@ -180,11 +181,22 @@
           event.preventDefault();
           const approve = event.submitter?.dataset.approve === "1";
           const note = form.elements.note.value;
-          const call = form.dataset.decide === "application" ? D.decideApplication : D.decideAdvancement;
-          if (await UI.busy(form, form.querySelector("[data-status]"), () => call(form.dataset.id, approve, note))) refresh("review");
+          if (form.dataset.decide === "advancement") {
+            // Full, or something still to tick (covens/coven/positions.js reviewPanel).
+            if (approve && form.dataset.blocked) return UI.setStatus(form.querySelector("[data-status]"), form.closest("article")?.querySelector("[data-block]")?.textContent || "This can’t be approved yet.", true);
+            const ticks = JSON.parse(form.dataset.ticks || "[]");
+            if (await UI.busy(form, form.querySelector("[data-status]"), () => D.decideAdvancement(form.dataset.id, approve, note, ticks))) refresh("review");
+            return;
+          }
+          if (await UI.busy(form, form.querySelector("[data-status]"), () => D.decideApplication(form.dataset.id, approve, note))) refresh("review");
         })
       );
       pane.querySelectorAll("[data-report-app]").forEach((button) => button.addEventListener("click", () => UI.report({ target_type: "application", target_id: button.dataset.reportApp, target_user_id: button.dataset.user, coven_id: coven.id, label: "this application" })));
+      // Each request's checklist, ticks, answers and places left (as the app's Review).
+      if (advancements.length && global.CovenPositions) {
+        const overview = await D.positionsOverview(coven.id);
+        advancements.forEach((a) => global.CovenPositions.reviewPanel(pane.querySelector(`[data-adv-extra="${CSS.escape(a.id)}"]`), state, a, overview?.holders ?? null));
+      }
     }
   };
 
@@ -236,20 +248,21 @@
     const id = r.id || "new";
     const check = (name, label) => `<label class="cv-check"><input type="checkbox" name="${name}" ${r[name] ? "checked" : ""} /> <span>${label}</span></label>`;
     const power = (p) => `<label class="cv-check"><input type="checkbox" name="${p.key}" ${L.powerOn(r, p) ? "checked" : ""} /> <span>${esc(p.label)}</span></label>`;
-    return `<details class="sp-details"${r.id ? "" : " open"}><summary>${r.id ? `${esc(r.name)} · level ${r.level}` : "Add a position"}</summary>
+    return `<details class="sp-details"${r.id ? "" : " open"}${r.id ? ` data-rank-details="${esc(r.id)}"` : ""}><summary>${r.id ? `${esc(r.name)} · level ${r.level}<span class="sp-caption" data-rank-status="${esc(r.id)}"></span>` : "Add a position"}</summary>
         <form class="sp-section" data-rank="${esc(r.id || "")}">
           <div class="sp-grid-2">
             <div class="sp-field"><label for="r-name-${id}">Name</label><input id="r-name-${id}" name="name" required maxlength="60" value="${esc(r.name || "")}" /></div>
             <div class="sp-field"><label for="r-level-${id}">Seniority (1 is newest; higher is more senior)</label><input id="r-level-${id}" name="level" type="number" min="1" max="99" required value="${esc(r.level || 1)}" /></div>
           </div>
           <div class="sp-field"><label for="r-desc-${id}">What this position is</label><textarea id="r-desc-${id}" name="description" maxlength="1000">${esc(r.description || "")}</textarea></div>
-          <div class="sp-field"><label for="r-req-${id}">What it asks of someone (shown to those who apply for it)</label><textarea id="r-req-${id}" name="requirements" maxlength="2000">${esc(r.requirements || "")}</textarea></div>
+          <div class="sp-field"><label for="r-req-${id}">What it asks, in your own words (shown to those who could apply, beside the requirements below)</label><textarea id="r-req-${id}" name="requirements" maxlength="2000">${esc(r.requirements || "")}</textarea></div>
           ${check("is_default", "New members begin here")}
-          ${check("open_to_applications", "Members can apply to rise to it")}
+          ${r.id ? "" : `<p class="sp-caption">Once it’s added, you can open it for applications, choose its places and what it asks.</p>`}
           ${L.RANK_POWERS.map((p) => power(p)).join("")}
           <div class="sp-actions"><button class="button button--primary button--small" type="submit">${r.id ? "Save" : "Add"}</button>${r.id ? `<button class="button button--ghost button--small" type="button" data-delete-rank="${esc(r.id)}">Delete</button>` : ""}</div>
           ${statusLine()}
-        </form></details>`;
+        </form>
+        ${r.id ? `<div class="sp-section" data-position-panel="${esc(r.id)}"><p class="sp-caption">Loading its places and what it asks…</p></div>` : ""}</details>`;
   }
 
   function questionsForm(coven) {
@@ -378,7 +391,8 @@
           event.preventDefault();
           const data = Object.fromEntries(new FormData(form));
           const row = { coven_id: coven.id, name: data.name.trim(), level: Number(data.level) || 1, description: data.description.trim() || null, requirements: data.requirements.trim() || null };
-          for (const flag of ["is_default", "open_to_applications", ...L.RANK_POWERS.map((p) => p.key)]) row[flag] = Boolean(data[flag]);
+          // Opening it for applications is its own section (covens/coven/positions.js), not a checkbox here.
+          for (const flag of ["is_default", ...L.RANK_POWERS.map((p) => p.key)]) row[flag] = Boolean(data[flag]);
           // A power the database doesn't have yet (its migration not applied) is left out while it's off.
           if (!row.can_set_gathering_notices && state.ranks.length && !state.ranks.some((r) => "can_set_gathering_notices" in r)) delete row.can_set_gathering_notices;
           if (form.dataset.rank) row.id = form.dataset.rank;
@@ -391,6 +405,29 @@
           if (await UI.busy(button, button.closest("form").querySelector("[data-status]"), () => D.deleteRank(button.dataset.deleteRank).then(() => true))) refresh("manage");
         })
       );
+
+      // Each position's places, opening and what it asks, drawn when its details open; its status chip now.
+      pane.querySelectorAll("[data-rank-details]").forEach((details) =>
+        details.addEventListener("toggle", () => {
+          const panel = details.querySelector("[data-position-panel]");
+          if (!details.open || !panel || panel.dataset.loaded) return;
+          panel.dataset.loaded = "1";
+          const rank = state.ranks.find((r) => r.id === details.dataset.rankDetails);
+          if (rank && global.CovenPositions) global.CovenPositions.leaderPanel(panel, state, rank, { refresh });
+        })
+      );
+      const S = global.SaltCore?.covens?.positions;
+      if (S)
+        D.members(coven.id)
+          .then((members) => {
+            const held = {};
+            members.filter((m) => m.status === "active" && m.rank_id).forEach((m) => (held[m.rank_id] = (held[m.rank_id] || 0) + 1));
+            state.ranks.forEach((r) => {
+              const el = pane.querySelector(`[data-rank-status="${CSS.escape(r.id)}"]`);
+              if (el) el.textContent = ` · ${S.positionStatus(r, held[r.id] || 0).label}`;
+            });
+          })
+          .catch(() => {});
 
       const questions = pane.querySelector("[data-questions]");
       const list = questions.querySelector("[data-question-list]");

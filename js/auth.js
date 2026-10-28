@@ -255,8 +255,27 @@ db.auth.onAuthStateChange((event, session) => {
   announceModeratorState();
 });
 
+// Pages register their saltAuthReady listeners in scripts that load after this
+// one. When sign-in resolves before such a script has arrived (a slow network,
+// many scripts), the event has already gone and the page never learns who is
+// signed in (the Grimoire then showed an empty book). A listener added after
+// the event fired is called with it straight away instead.
+let saltAuthReadyDetail = null;
+const saltAddDocumentListener = document.addEventListener.bind(document);
+document.addEventListener = function addEventListener(type, listener, options) {
+  saltAddDocumentListener(type, listener, options);
+  if (type !== "saltAuthReady" || !saltAuthReadyDetail || !listener) return;
+  const detail = saltAuthReadyDetail;
+  queueMicrotask(() => {
+    const event = new CustomEvent("saltAuthReady", { detail });
+    if (typeof listener === "function") listener.call(document, event);
+    else listener.handleEvent?.(event);
+  });
+};
+
 getCurrentUser().then((user) => {
   saltAuthResolved = true;
+  saltAuthReadyDetail = { user };
   document.dispatchEvent(
     new CustomEvent("saltAuthReady", {
       detail: { user }

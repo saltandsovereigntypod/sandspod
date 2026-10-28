@@ -26,6 +26,29 @@ export const hasHolyPage = (id: string) => !!holyPage(holyRef(id));
 /** The page ref for the moon as it is: the dark moon in the day or so either side of new. */
 export const moonRef = (moon: Pick<MoonState, 'name' | 'illumination'>): string => moonRefFor(moon, byRef.has('moon-dark'));
 
+// The calendars each Living Library tradition keeps (their pages' ref prefixes).
+const TRADITION_REFS: Record<string, string[]> = {
+  wheel: ['wheel'],
+  wicca: ['wheel'],
+  celtic: ['celtic', 'coligny'],
+  norse: ['norse', 'icelandic'],
+  hellenic: ['hellenic', 'hellenic_monthly', 'attic'],
+  roman: ['roman'],
+  slavic: ['slavic'],
+  christian: ['christian'],
+  egyptian: ['kemetic'],
+  hindu: ['hindu'],
+};
+
+/** A tradition's holy-day pages (Living Library tradition ids: 'hellenic', 'norse', …), the main calendar's first, matching a search if given. */
+export function holyDaysFor(tradition: string, query = ''): HolyPage[] {
+  const prefixes = TRADITION_REFS[tradition] ?? [];
+  const q = query.trim().toLowerCase();
+  return prefixes.flatMap((prefix) =>
+    HOLY_PAGES.filter((p) => p.ref.startsWith(`${prefix}-`) && (!q || [p.title, ...(p.aka ?? []), p.summary].some((t) => t.toLowerCase().includes(q)))),
+  );
+}
+
 /** The Grimoire section a page is kept in. */
 export const grimoireSection = (page: HolyPage) => (page.ref.startsWith('moon-') ? 'The Moon' : 'Holy Days');
 

@@ -42,3 +42,9 @@ for (const name of entries) {
   );
   console.log(`js/core/${name}.js`);
 }
+
+// The ready-made coven programs (every course lesson) as data the app and the
+// coven pages fetch only when needed: js/core/course-programs.json.
+if (!only.length || only.includes('courses')) {
+  execFileSync(process.execPath, ['--experimental-strip-types', '--disable-warning=ExperimentalWarning', 'scripts/build-course-programs.mjs'], { cwd: root, stdio: 'inherit' });
+}

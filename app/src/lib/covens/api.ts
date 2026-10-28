@@ -16,6 +16,7 @@ import type {
   Message,
   Petition,
   Profile,
+  Question,
   Rank,
   ReportReason,
   Ritual,
@@ -32,7 +33,13 @@ import type { NoticePreview, NoticeRule } from './notices';
 import type { AttendanceRow, Checkin, MemberRecord, RecordOverview, RecordSettings } from './record';
 import type { RitualRecord } from './script';
 import { readOverview, type PathsSettings } from './paths';
+import { readChecks, readOverview as readPositionsOverview, type Audience, type RequirementCheck, type RequirementItem } from './positions';
 import type { Invitation, InviteLink, InvitePerson, InvitePreview } from './invites';
+import { copyPlan } from './courseCopy';
+import type { CourseProgram } from './courses/index';
+import type { Answers, Attempt, CovenQuiz, DraftQuiz, QuizStanding } from './quiz';
+import { FILE_BUCKET, filePath, type DocRead, type DraftDoc, type FileType, type ProgramDoc, type ProgramMessage, type TaskDocLink, type ThreadUnread } from './training';
+import { newId } from '../grimoire/ids';
 import type { Access } from '../grimoire/access';
 import type { Gathering } from '../grimoire/coven';
 import type { PageVersion } from '../grimoire/history';
@@ -213,11 +220,50 @@ export const fetchAdvancements = (covenId: string) =>
   run<Advancement[]>(supabase.from('coven_advancement_requests').select('*').eq('coven_id', covenId).eq('status', 'pending').order('created_at'));
 export const fetchMyAdvancements = (covenId: string, userId: string) =>
   run<Advancement[]>(supabase.from('coven_advancement_requests').select('*').eq('coven_id', covenId).eq('user_id', userId).order('created_at', { ascending: false }).limit(20));
-export const requestAdvancement = (covenId: string, rankId: string, statement: string) =>
-  andNotify('advancement', rpc('request_coven_advancement', { p_coven: covenId, p_rank: rankId, p_statement: statement.trim() || null }));
+/** Ask to rise to a position; answers to its own questions go only when it has some (so it still works before the open positions migration). */
+export const requestAdvancement = (covenId: string, rankId: string, statement: string, answers?: Record<string, string>) =>
+  andNotify('advancement', rpc('request_coven_advancement', { p_coven: covenId, p_rank: rankId, p_statement: statement.trim() || null, ...(answers && Object.keys(answers).length ? { p_answers: answers } : {}) }));
 export const withdrawAdvancement = (id: string) => rpc('withdraw_coven_request', { p_kind: 'advancement', p_id: id });
-export const decideAdvancement = (id: string, approve: boolean, note: string) =>
-  andNotify('advancement', rpc('decide_coven_advancement', { p_request: id, p_approve: approve, p_note: note.trim() || null }));
+/** Decide a request; `checked` are the custom items and mentor's approval ticked (sent only when there are some). */
+export const decideAdvancement = (id: string, approve: boolean, note: string, checked?: string[]) =>
+  andNotify('advancement', rpc('decide_coven_advancement', { p_request: id, p_approve: approve, p_note: note.trim() || null, ...(checked && checked.length ? { p_checked: checked } : {}) }));
+
+// ─── Open positions (positions.ts; …_coven_open_positions.sql) ───────────
+
+/** How many hold each position, and each open to you with your checklist; null before the migration. */
+export const fetchPositionsOverview = (covenId: string) =>
+  rpc<unknown>('coven_positions_overview', { p_coven: covenId }).then(readPositionsOverview).catch(() => null);
+/** What a position asks of someone (yourself, or anyone for reviewers). */
+export const fetchEligibility = (rankId: string, userId?: string) => rpc<unknown>('coven_rank_eligibility', { p_rank: rankId, ...(userId ? { p_user: userId } : {}) }).then(readChecks);
+/** A request's checklist as it stands, ticks included; [] before the migration. */
+export const fetchChecklist = (requestId: string) => rpc<unknown>('coven_advancement_checklist', { p_request: requestId }).then(readChecks).catch(() => [] as RequirementCheck[]);
+/** Before opening: how many each choice of who hears would reach. */
+export const previewPositionNotice = (rankId: string) => rpc<{ everyone: number; eligible: number }>('coven_position_notice_preview', { p_rank: rankId });
+/**
+ * Let the coven-notify edge function tell people a position has opened
+ * (best effort; once per opening, by the leader who opened it). The website
+ * does the same (covens/coven-data.js).
+ */
+export function notifyPositionOpened(rankId: string) {
+  let zone = '';
+  try {
+    zone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? '';
+  } catch {
+    // UTC instead.
+  }
+  void supabase.functions.invoke('coven-notify', { body: { rank_id: rankId, event: 'opened', time_zone: zone } }).catch(() => {});
+}
+export type OpenResult = { rank: Rank; opening_id: string | null; notify: boolean; closed_full: boolean };
+/** Open a position (or change one that's open), and ring phones when it's a new opening with someone to tell. */
+export const openPosition = (rankId: string, places: number | null, note: string, closeAt: string | null, notify: Audience) =>
+  rpc<OpenResult>('open_coven_position', { p_rank: rankId, p_seat_limit: places, p_note: note.trim() || null, p_close_at: closeAt, p_notify: notify }).then((out) => {
+    if (out?.notify) notifyPositionOpened(rankId);
+    return out;
+  });
+export const closePosition = (rankId: string) => rpc<Rank>('close_coven_position', { p_rank: rankId });
+export const setPositionPlaces = (rankId: string, places: number | null) => rpc<Rank>('set_coven_position_places', { p_rank: rankId, p_seat_limit: places });
+export const saveRankRequirements = (rankId: string, items: RequirementItem[], questions: Question[]) =>
+  rpc<Rank>('save_coven_rank_requirements', { p_rank: rankId, p_items: items, p_questions: questions });
 
 export const fetchMembers = (covenId: string) => run<Member[]>(supabase.from('coven_members').select('*').eq('coven_id', covenId).eq('status', 'active').order('joined_at'));
 export const sign = (documentId: string, signedName: string) => run(supabase.from('coven_signatures').insert({ document_id: documentId, signed_name: signedName }));
@@ -621,6 +667,97 @@ export const recordTask = (enrollmentId: string, taskId: string, response: strin
 export const checkTask = (progressId: string, approve: boolean, feedback: string) => rpc<TaskProgress>('check_coven_task', { p_progress: progressId, p_approve: approve, p_feedback: feedback.trim() || null });
 export const passStage = (enrollmentId: string, note: string, override = false) => rpc<Enrollment>('pass_coven_stage', { p_enrollment: enrollmentId, p_note: note.trim() || null, p_override: override });
 export const setEnrollmentStatus = (enrollmentId: string, status: 'active' | 'paused' | 'withdrawn') => rpc<Enrollment>('set_coven_enrollment_status', { p_enrollment: enrollmentId, p_status: status });
+// ─── Lessons, tests, practice and each step's conversation ──────────────
+// (supabase/migrations/20261110000100_coven_courses.sql; the website's twin is covens/coven-data.js)
+
+/** The coven's lessons and which step each is on, and lessons read by these people. Before the migration, none. */
+export async function fetchTraining(covenId: string, userIds: string[]): Promise<{ docs: ProgramDoc[]; links: TaskDocLink[]; reads: DocRead[] }> {
+  const [docs, links, reads] = await Promise.all([
+    run<ProgramDoc[]>(supabase.from('coven_program_documents').select('*').eq('coven_id', covenId).order('title').limit(2000)).catch(() => [] as ProgramDoc[]),
+    run<TaskDocLink[]>(supabase.from('coven_program_task_documents').select('*').eq('coven_id', covenId).limit(5000)).catch(() => [] as TaskDocLink[]),
+    userIds.length
+      ? run<DocRead[]>(supabase.from('coven_program_doc_reads').select('*').eq('coven_id', covenId).in('user_id', userIds).limit(5000)).catch(() => [] as DocRead[])
+      : Promise.resolve([] as DocRead[]),
+  ]);
+  return { docs, links, reads };
+}
+export const saveDoc = (covenId: string, id: string | null, doc: DraftDoc) =>
+  rpc<ProgramDoc>('save_coven_program_document', { p_coven: covenId, p_id: id, p_doc: { ...doc, title: doc.title.trim(), summary: doc.summary.trim() } });
+export async function deleteDoc(id: string) {
+  const removed = await rpc<ProgramDoc>('delete_coven_program_document', { p_id: id });
+  if (removed?.file_path) await supabase.storage.from(FILE_BUCKET).remove([removed.file_path]).catch(() => undefined);
+  return removed;
+}
+export const markDocRead = (docId: string, read: boolean) => rpc<boolean>('mark_coven_doc_read', { p_document: docId, p_read: read });
+/** Put a lesson's file in the coven's private folder. */
+export async function uploadLessonFile(covenId: string, body: Blob | ArrayBuffer | Uint8Array, type: FileType, name: string) {
+  const path = filePath(covenId, newId(), type);
+  const { error } = await supabase.storage.from(FILE_BUCKET).upload(path, body as Blob, { contentType: type, upsert: false });
+  if (error) throw new Error(error.message);
+  return { file_path: path, file_name: name.slice(0, 200), file_type: type };
+}
+/** A link to a lesson's file that works for an hour (the bucket is private). */
+export async function lessonFileUrl(path: string): Promise<string> {
+  const { data, error } = await supabase.storage.from(FILE_BUCKET).createSignedUrl(path, 3600);
+  if (error || !data?.signedUrl) throw new Error(error?.message || 'That file couldn’t be opened.');
+  return data.signedUrl;
+}
+
+/** The coven's tests in full, for those who manage programs (the table is theirs alone). */
+export const fetchQuizzes = (covenId: string) => run<CovenQuiz[]>(supabase.from('coven_program_quizzes').select('*').eq('coven_id', covenId).limit(1000)).catch(() => [] as CovenQuiz[]);
+/** A test as this person may see it (without the key for those taking it). */
+export const quizView = (quizId: string, enrollmentId: string | null) => rpc<CovenQuiz | null>('coven_quiz_view', { p_quiz: quizId, p_enrollment: enrollmentId });
+export const saveQuiz = (covenId: string, id: string | null, quiz: DraftQuiz) => rpc<CovenQuiz>('save_coven_program_quiz', { p_coven: covenId, p_id: id, p_quiz: quiz });
+export const fetchAttempts = (covenId: string) =>
+  run<Attempt[]>(supabase.from('coven_quiz_attempts').select('*').eq('coven_id', covenId).order('submitted_at', { ascending: false }).limit(2000)).catch(() => [] as Attempt[]);
+export const quizStanding = (enrollmentId: string, taskId: string) => rpc<QuizStanding | null>('coven_quiz_standing', { p_enrollment: enrollmentId, p_task: taskId });
+export const submitQuiz = (enrollmentId: string, taskId: string, answers: Answers) => rpc<Attempt>('submit_coven_quiz', { p_enrollment: enrollmentId, p_task: taskId, p_answers: answers });
+export const scoreQuiz = (attemptId: string, scores: Record<string, { points: number; comment: string }>, feedback: string, final: boolean) =>
+  rpc<Attempt>('score_coven_quiz', { p_attempt: attemptId, p_scores: scores, p_feedback: feedback.trim() || null, p_final: final });
+export const allowRetake = (enrollmentId: string, taskId: string) => rpc<QuizStanding>('allow_coven_quiz_retake', { p_enrollment: enrollmentId, p_task: taskId });
+
+export const logPractice = (enrollmentId: string, taskId: string, on: string, minutes: number, note: string) =>
+  rpc<TaskProgress>('log_coven_practice', { p_enrollment: enrollmentId, p_task: taskId, p_on: on, p_minutes: minutes, p_note: note.trim() || null });
+export const removePractice = (enrollmentId: string, taskId: string, index: number) => rpc<TaskProgress>('remove_coven_practice', { p_enrollment: enrollmentId, p_task: taskId, p_index: index });
+
+export const fetchProgramMessages = (enrollmentId: string, taskId: string) =>
+  run<ProgramMessage[]>(supabase.from('coven_program_messages').select('*').eq('enrollment_id', enrollmentId).eq('task_id', taskId).order('created_at').limit(500));
+export async function postProgramMessage(enrollmentId: string, taskId: string, body: string, attemptId: string | null = null) {
+  const saved = await rpc<ProgramMessage>('post_coven_program_message', { p_enrollment: enrollmentId, p_task: taskId, p_body: body.trim(), p_attempt: attemptId });
+  // Phones hear about it (best effort): the trainee, or those who oversee them.
+  if (saved?.id) void supabase.functions.invoke('coven-notify', { body: { program_thread_message_id: saved.id } }).catch(() => {});
+  return saved;
+}
+/** New messages on a step as they're written (row-level security keeps it to those who may read it). */
+export function listenProgramThread(enrollmentId: string, onNew: () => void): () => void {
+  const channel = supabase.channel(`coven-training:${enrollmentId}:${Math.random().toString(36).slice(2, 8)}`);
+  channel.on('postgres_changes' as never, { event: '*', schema: 'public', table: 'coven_program_messages', filter: `enrollment_id=eq.${enrollmentId}` } as never, () => onNew());
+  channel.subscribe();
+  return () => void supabase.removeChannel(channel);
+}
+export const removeProgramMessage = (id: string) => rpc<boolean>('remove_coven_program_message', { p_message: id });
+export const readProgramThread = (enrollmentId: string, taskId: string) => rpc<boolean>('read_coven_program_thread', { p_enrollment: enrollmentId, p_task: taskId }).catch(() => false);
+export const programUnread = (covenId: string) =>
+  rpc<ThreadUnread[]>('coven_program_unread', { p_coven: covenId })
+    .then((rows) => rows || [])
+    .catch(() => [] as ThreadUnread[]);
+
+/**
+ * Copy a ready-made course program into the coven: its lessons and tests
+ * (those already copied are kept as the coven has them), then the program as
+ * a draft. `onStep` hears how far it's come.
+ */
+export async function copyCourseProgram(covenId: string, program: CourseProgram, awardRankId: string | null, onStep?: (done: number, of: number) => void): Promise<Program> {
+  const plan = copyPlan(program, awardRankId);
+  const of = plan.batches.length + 1;
+  for (let i = 0; i < plan.batches.length; i += 1) {
+    onStep?.(i, of);
+    await rpc('import_coven_course', { p_coven: covenId, p_docs: plan.batches[i].docs, p_quizzes: plan.batches[i].quizzes });
+  }
+  onStep?.(of - 1, of);
+  return rpc<Program>('save_coven_program', { p_coven: covenId, p_program_id: null, p_program: plan.head, p_stages: plan.stages });
+}
+
 export const saveCalendar = (covenId: string, traditions: string[], holidays: string[], custom: { id: string; name: string; month: number; day: number; meaning: string }[]) =>
   run<Coven>(supabase.from('covens').update({ practice_traditions: traditions, practice_holidays: holidays, practice_custom: custom }).eq('id', covenId).select(COVEN_FIELDS).single());
 

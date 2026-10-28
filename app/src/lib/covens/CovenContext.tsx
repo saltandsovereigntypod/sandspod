@@ -11,6 +11,8 @@ import * as api from './api';
 import { withAncestor, type Lineage } from './lineage';
 import { fetchLineage, notifyLineage } from './lineageApi';
 import { menteesOf, waitingForMe as waitingFor, type Grant, type Mentorship } from './programs';
+import { attemptsToScore } from './quiz';
+import { unreadTotal } from './training';
 import {
   applyChange,
   myTurn,
@@ -68,6 +70,8 @@ type CovenState = {
   mentors: Mentorship[];
   setMentors: (mentors: Mentorship[]) => void;
   waitingForMe: number;
+  /** Unread messages on the training steps you follow. */
+  trainingUnread: number;
   refreshPrograms: () => Promise<void>;
   presence: Presence[];
   track: (place: string) => void;
@@ -94,6 +98,7 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
   const [grants, setGrants] = useState<Grant[]>([]);
   const [mentors, setMentors] = useState<Mentorship[]>([]);
   const [waitingForMe, setWaitingForMe] = useState(0);
+  const [trainingUnread, setTrainingUnread] = useState(0);
   const namesRef = useRef(names);
   namesRef.current = names;
   const liveRef = useRef<ReturnType<typeof api.listen> | null>(null);
@@ -180,11 +185,19 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
   const refreshPrograms = useCallback(async () => {
     const covenId = snapshot?.coven.id;
     if (!covenId || !insider) return;
-    const [list, progress] = await Promise.all([api.fetchMentors(covenId).catch(() => [] as Mentorship[]), api.fetchProgress(covenId).catch(() => [])]);
+    const [list, progress, attempts, unread] = await Promise.all([
+      api.fetchMentors(covenId).catch(() => [] as Mentorship[]),
+      api.fetchProgress(covenId).catch(() => []),
+      api.fetchAttempts(covenId),
+      api.programUnread(covenId),
+    ]);
     setMentors(list);
     const submitted = progress.filter((p) => p.status === 'submitted' && p.user_id !== userId);
     const { tasks } = submitted.length ? await api.fetchProgramParts([...new Set(submitted.map((p) => p.program_id))]).catch(() => ({ tasks: [] })) : { tasks: [] };
-    setWaitingForMe(waitingFor(submitted, tasks, { userId, mentees: menteesOf(list, userId), programs: perms.programs }).length);
+    const who = { userId, mentees: menteesOf(list, userId), programs: perms.programs };
+    // Work to sign off, and tests to score.
+    setWaitingForMe(waitingFor(submitted, tasks, who).length + attemptsToScore(attempts, who).length);
+    setTrainingUnread(unreadTotal(unread));
   }, [snapshot?.coven.id, insider, userId, perms.programs]);
   useEffect(() => {
     void refreshPrograms();
@@ -307,11 +320,12 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
       mentors,
       setMentors,
       waitingForMe,
+      trainingUnread,
       refreshPrograms,
       presence,
       track: (place) => liveRef.current?.track(place),
     }),
-    [slug, status, snapshot, me, lineage, refreshLineage, perms, unsigned, stand, userId, names, loadNames, refresh, rituals, steps, rsvps, marks, refreshRituals, loadMarks, messages, loadMessages, onMessage, altar, loadAltar, petitionsVersion, grants, mentors, waitingForMe, refreshPrograms, presence],
+    [slug, status, snapshot, me, lineage, refreshLineage, perms, unsigned, stand, userId, names, loadNames, refresh, rituals, steps, rsvps, marks, refreshRituals, loadMarks, messages, loadMessages, onMessage, altar, loadAltar, petitionsVersion, grants, mentors, waitingForMe, trainingUnread, refreshPrograms, presence],
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

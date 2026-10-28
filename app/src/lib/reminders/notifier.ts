@@ -125,7 +125,8 @@ export function useReminderTaps() {
       // 'coven-rites' are coven rite reminders (lib/covens/reminders.ts); 'coven-chat' a coven message, 'coven-request' a new
       // application or request to advance (opens Review) and 'coven-answer' the answer to yours (supabase/functions/coven-notify);
       // 'coven-gathering' a rite or meeting put on the calendar, moved or taken off it (opens it, or the coven's rituals);
-      // 'coven-invitation' an invitation to a coven (opens it), 'coven-invitation-accepted' one you sent, accepted (the coven's members).
+      // 'coven-invitation' an invitation to a coven (opens it), 'coven-invitation-accepted' one you sent, accepted (the coven's members);
+      // 'coven-position' a position opened for applications (opens My standing, where its Apply is).
       const covenNote =
         data?.source === 'coven-rites' ||
         data?.source === 'coven-chat' ||
@@ -133,7 +134,10 @@ export function useReminderTaps() {
         data?.source === 'coven-answer' ||
         data?.source === 'coven-gathering' ||
         data?.source === 'coven-invitation' ||
-        data?.source === 'coven-invitation-accepted';
+        data?.source === 'coven-invitation-accepted' ||
+        data?.source === 'coven-position' ||
+        // a message on a step of a coven program (opens the step)
+        data?.source === 'coven-training';
       if ((data?.source === SOURCE || data?.source === STEP_SOURCE || covenNote) && typeof data.url === 'string') router.push(data.url as Href);
     };
     try {

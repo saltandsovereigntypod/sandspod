@@ -3,12 +3,13 @@
 // your next initiation or training task, and work waiting for you to sign
 // off. What to show is lib/covens/today.ts, shared with the website.
 
-import { router } from 'expo-router';
+import { router, useSegments, type Href } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { covenHref } from './CovenScreen';
 import { programHref } from './programs';
 import * as api from '../../lib/covens/api';
+import { hasHolyPage, holyRef } from '../../lib/holy';
 import { covenHolidaysSoon, covenTodayItems, type CovenTodayItem } from '../../lib/covens/today';
 import { useCachedQuery } from '../../lib/more/useCachedQuery';
 import { useSession } from '../../lib/session';
@@ -16,7 +17,14 @@ import { colors, fonts, radius, type } from '../../theme';
 
 const ICON: Record<CovenTodayItem['kind'], string> = { turn: '✦', live: '☾', holiday: '❋', rite: '☽', task: '✧', review: '✓' };
 
-function open(item: CovenTodayItem) {
+/** A holiday's own page (what it is and how to keep it), inside the tab you're in; else the coven. */
+function openHoliday(id: string, covenSlug: string, inCovenTab: boolean) {
+  if (!hasHolyPage(id)) return router.push(covenHref(covenSlug));
+  router.push({ pathname: inCovenTab ? '/coven/holy/[ref]' : '/today/holy/[ref]', params: { ref: holyRef(id) } } as Href);
+}
+
+function open(item: CovenTodayItem, inCovenTab: boolean) {
+  if (item.target.holiday) return openHoliday(item.target.holiday, item.covenSlug, inCovenTab);
   if (item.target.ritual) return router.push(covenHref(item.covenSlug, `ritual/${item.target.ritual}`));
   if (item.target.program) return router.push(programHref(item.covenSlug, item.target.program));
   if (item.target.programs) return router.push(covenHref(item.covenSlug, 'programs'));
@@ -33,6 +41,7 @@ export function useCovenToday() {
 
 export function CovenToday({ showEmpty = false }: { showEmpty?: boolean }) {
   const data = useCovenToday();
+  const inCovenTab = useSegments().includes('coven');
   if (!data) return null;
   const now = new Date();
   const items = covenTodayItems(data, now);
@@ -48,7 +57,7 @@ export function CovenToday({ showEmpty = false }: { showEmpty?: boolean }) {
           key={`${item.kind}-${i}`}
           accessibilityRole="button"
           accessibilityLabel={`${item.title}. ${item.detail}${many ? `. ${item.covenName}` : ''}`}
-          onPress={() => open(item)}
+          onPress={() => open(item, inCovenTab)}
           style={({ pressed }) => [styles.row, pressed && styles.pressed]}
         >
           <View style={[styles.icon, item.kind === 'turn' && styles.iconOn]}>
@@ -62,7 +71,7 @@ export function CovenToday({ showEmpty = false }: { showEmpty?: boolean }) {
         </Pressable>
       ))}
       {soon.map(({ coven, holiday }) => (
-        <Pressable key={`${coven.id}-${holiday.id}-${holiday.date.toISOString()}`} accessibilityRole="button" onPress={() => router.push(covenHref(coven.slug))} style={({ pressed }) => [styles.row, pressed && styles.pressed]}>
+        <Pressable key={`${coven.id}-${holiday.id}-${holiday.date.toISOString()}`} accessibilityRole="button" onPress={() => openHoliday(holiday.id, coven.slug, inCovenTab)} style={({ pressed }) => [styles.row, pressed && styles.pressed]}>
           <View style={styles.icon}>
             <Text style={styles.iconText}>❋</Text>
           </View>

@@ -207,8 +207,39 @@
       return run(db().from("coven_advancement_requests").select("*").eq("coven_id", covenId).eq("user_id", userId).order("created_at", { ascending: false }).limit(20));
     },
     advancements: (covenId) => run(db().from("coven_advancement_requests").select("*").eq("coven_id", covenId).eq("status", "pending").order("created_at", { ascending: true })),
-    requestAdvancement: async (covenId, rankId, statement) => notifyRequest("advancement", await rpc("request_coven_advancement", { p_coven: covenId, p_rank: rankId, p_statement: statement || null })),
-    decideAdvancement: async (id, approve, note) => notifyRequest("advancement", await rpc("decide_coven_advancement", { p_request: id, p_approve: approve, p_note: note || null })),
+    /** Answers to the position's own questions go only when there are some, as the app sends them. */
+    requestAdvancement: async (covenId, rankId, statement, answers) =>
+      notifyRequest("advancement", await rpc("request_coven_advancement", { p_coven: covenId, p_rank: rankId, p_statement: statement || null, ...(answers && Object.keys(answers).length ? { p_answers: answers } : {}) })),
+    /** `checked`: the custom items and mentor's approval ticked (sent only when there are some). */
+    decideAdvancement: async (id, approve, note, checked) =>
+      notifyRequest("advancement", await rpc("decide_coven_advancement", { p_request: id, p_approve: approve, p_note: note || null, ...(checked && checked.length ? { p_checked: checked } : {}) })),
+
+    // Open positions (SaltCore.covens.positions; …_coven_open_positions.sql), as the app's api.ts.
+    /** How many hold each position, and each open to you with your checklist; null before the migration. */
+    positionsOverview: (covenId) => rpc("coven_positions_overview", { p_coven: covenId }).then((raw) => global.SaltCore?.covens?.positions?.readOverview(raw) ?? null).catch(() => null),
+    checklist: (requestId) => rpc("coven_advancement_checklist", { p_request: requestId }).then((raw) => global.SaltCore?.covens?.positions?.readChecks(raw) ?? []).catch(() => []),
+    positionNoticePreview: (rankId) => rpc("coven_position_notice_preview", { p_rank: rankId }),
+    /** Open a position (or change an open one); a new opening with someone to tell rings phones, once (coven-notify). */
+    async openPosition(rankId, places, note, closeAt, notify) {
+      const out = await rpc("open_coven_position", { p_rank: rankId, p_seat_limit: places, p_note: (note || "").trim() || null, p_close_at: closeAt, p_notify: notify });
+      if (out?.notify) {
+        let zone = "";
+        try {
+          zone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+        } catch {
+          // UTC instead.
+        }
+        try {
+          Promise.resolve(db().functions?.invoke?.("coven-notify", { body: { rank_id: rankId, event: "opened", time_zone: zone } })).catch(() => {});
+        } catch {
+          // It's open; phones aren't told this time.
+        }
+      }
+      return out;
+    },
+    closePosition: (rankId) => rpc("close_coven_position", { p_rank: rankId }),
+    setPositionPlaces: (rankId, places) => rpc("set_coven_position_places", { p_rank: rankId, p_seat_limit: places }),
+    saveRankRequirements: (rankId, items, questions) => rpc("save_coven_rank_requirements", { p_rank: rankId, p_items: items, p_questions: questions }),
     /**
      * Applications and requests to advance waiting in each coven you review
      * (never your own), counted as the app counts them (SaltCore.covens.requests).
@@ -625,6 +656,66 @@
     checkTask: (progressId, approve, feedback) => rpc("check_coven_task", { p_progress: progressId, p_approve: approve, p_feedback: feedback || null }),
     passStage: (enrollmentId, note, override) => rpc("pass_coven_stage", { p_enrollment: enrollmentId, p_note: note || null, p_override: Boolean(override) }),
     setEnrollmentStatus: (enrollmentId, status) => rpc("set_coven_enrollment_status", { p_enrollment: enrollmentId, p_status: status }),
+
+    // --- lessons, tests, practice and each step's conversation ---------------
+    // (supabase/migrations/20261110000100_coven_courses.sql; the app's twin is app/src/lib/covens/api.ts)
+    programDocs: (covenId) => run(db().from("coven_program_documents").select("*").eq("coven_id", covenId).order("title", { ascending: true }).limit(2000)).catch(() => []),
+    taskDocs: (covenId) => run(db().from("coven_program_task_documents").select("*").eq("coven_id", covenId).limit(5000)).catch(() => []),
+    docReads: (covenId, userIds) =>
+      userIds.length ? run(db().from("coven_program_doc_reads").select("*").eq("coven_id", covenId).in("user_id", userIds).limit(5000)).catch(() => []) : Promise.resolve([]),
+    saveDoc: (covenId, id, doc) => rpc("save_coven_program_document", { p_coven: covenId, p_id: id || null, p_doc: doc }),
+    async deleteDoc(id) {
+      const removed = await rpc("delete_coven_program_document", { p_id: id });
+      if (removed?.file_path) await db().storage.from("coven-program-files").remove([removed.file_path]).catch(() => {});
+      return removed;
+    },
+    markDocRead: (docId, read) => rpc("mark_coven_doc_read", { p_document: docId, p_read: read }),
+    async uploadLessonFile(covenId, file, type) {
+      const path = global.SaltCore.covens.training.filePath(covenId, global.SaltCore.covens.newId(), type);
+      const { error } = await db().storage.from("coven-program-files").upload(path, file, { contentType: type, upsert: false });
+      if (error) throw error;
+      return { file_path: path, file_name: String(file.name || "lesson").slice(0, 200), file_type: type };
+    },
+    async lessonFileUrl(path) {
+      const { data, error } = await db().storage.from("coven-program-files").createSignedUrl(path, 3600);
+      if (error || !data?.signedUrl) throw error || new Error("That file couldn’t be opened.");
+      return data.signedUrl;
+    },
+    quizzes: (covenId) => run(db().from("coven_program_quizzes").select("*").eq("coven_id", covenId).limit(1000)).catch(() => []),
+    quizView: (quizId, enrollmentId) => rpc("coven_quiz_view", { p_quiz: quizId, p_enrollment: enrollmentId || null }),
+    saveQuiz: (covenId, id, quiz) => rpc("save_coven_program_quiz", { p_coven: covenId, p_id: id || null, p_quiz: quiz }),
+    attempts: (covenId) => run(db().from("coven_quiz_attempts").select("*").eq("coven_id", covenId).order("submitted_at", { ascending: false }).limit(2000)).catch(() => []),
+    quizStanding: (enrollmentId, taskId) => rpc("coven_quiz_standing", { p_enrollment: enrollmentId, p_task: taskId }),
+    submitQuiz: (enrollmentId, taskId, answers) => rpc("submit_coven_quiz", { p_enrollment: enrollmentId, p_task: taskId, p_answers: answers }),
+    scoreQuiz: (attemptId, scores, feedback, final) => rpc("score_coven_quiz", { p_attempt: attemptId, p_scores: scores, p_feedback: feedback || null, p_final: Boolean(final) }),
+    allowRetake: (enrollmentId, taskId) => rpc("allow_coven_quiz_retake", { p_enrollment: enrollmentId, p_task: taskId }),
+    logPractice: (enrollmentId, taskId, on, minutes, note) => rpc("log_coven_practice", { p_enrollment: enrollmentId, p_task: taskId, p_on: on, p_minutes: minutes, p_note: note || null }),
+    removePractice: (enrollmentId, taskId, index) => rpc("remove_coven_practice", { p_enrollment: enrollmentId, p_task: taskId, p_index: index }),
+    programMessages: (enrollmentId, taskId) => run(db().from("coven_program_messages").select("*").eq("enrollment_id", enrollmentId).eq("task_id", taskId).order("created_at", { ascending: true }).limit(500)),
+    async postProgramMessage(enrollmentId, taskId, body, attemptId) {
+      const saved = await rpc("post_coven_program_message", { p_enrollment: enrollmentId, p_task: taskId, p_body: String(body || "").trim(), p_attempt: attemptId || null });
+      // Phones hear about it (best effort), as the app does.
+      try {
+        if (saved?.id) Promise.resolve(db().functions?.invoke?.("coven-notify", { body: { program_thread_message_id: saved.id } })).catch(() => {});
+      } catch {
+        // The message is saved; phones hear another time.
+      }
+      return saved;
+    },
+    removeProgramMessage: (id) => rpc("remove_coven_program_message", { p_message: id }),
+    readProgramThread: (enrollmentId, taskId) => rpc("read_coven_program_thread", { p_enrollment: enrollmentId, p_task: taskId }).catch(() => false),
+    programUnread: (covenId) => rpc("coven_program_unread", { p_coven: covenId }).then((rows) => rows || []).catch(() => []),
+    /** Copy a ready-made course program in: lessons and tests a few at a time, then the program as a draft (SaltCore.covens.courseCopy). */
+    async copyCourseProgram(covenId, program, awardRankId, onStep) {
+      const plan = global.SaltCore.covens.courseCopy.copyPlan(program, awardRankId || null);
+      const of = plan.batches.length + 1;
+      for (let i = 0; i < plan.batches.length; i += 1) {
+        onStep?.(i, of);
+        await rpc("import_coven_course", { p_coven: covenId, p_docs: plan.batches[i].docs, p_quizzes: plan.batches[i].quizzes });
+      }
+      onStep?.(of - 1, of);
+      return rpc("save_coven_program", { p_coven: covenId, p_program_id: null, p_program: plan.head, p_stages: plan.stages });
+    },
 
     // --- safety -------------------------------------------------------------
     report: (report) => run(db().from("coven_reports").insert({ ...report, reporter_id: global.getCurrentSaltUser?.()?.id })),

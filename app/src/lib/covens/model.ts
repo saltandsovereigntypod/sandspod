@@ -59,6 +59,15 @@ export type Rank = {
   can_chat?: boolean;
   is_default?: boolean;
   open_to_applications?: boolean;
+  /** Open positions (positions.ts; …_coven_open_positions.sql): taking applications, how many may hold it, why and until when. */
+  applications_open?: boolean;
+  seat_limit?: number | null;
+  opening_note?: string | null;
+  applications_close_at?: string | null;
+  opened_at?: string | null;
+  /** What it asks (positions.ts RequirementItem[]), and the questions it asks people who apply. */
+  requirement_items?: unknown;
+  application_questions?: unknown;
 };
 
 export type Member = { coven_id: string; user_id: string; rank_id: string | null; status: 'active' | 'left' | 'removed' | 'banned'; muted_until: string | null; joined_at: string };
@@ -67,7 +76,22 @@ export type Question = { id: string; prompt: string; required: boolean };
 export type CovenDocument = { id: string; coven_id: string; kind: string; title: string; body: string; visibility: 'public' | 'members'; requires_signature: boolean; published: boolean; position: number; version: number };
 export type Signature = { document_id: string; version: number; user_id: string };
 export type Application = { id: string; coven_id: string; user_id: string; status: 'pending' | 'approved' | 'declined' | 'withdrawn'; answers: Record<string, string>; message: string | null; reviewer_note: string | null; created_at: string; decided_at: string | null };
-export type Advancement = { id: string; coven_id: string; user_id: string; rank_id: string; statement: string | null; status: 'pending' | 'approved' | 'declined' | 'withdrawn'; reviewer_id?: string | null; reviewer_note: string | null; created_at: string; decided_at: string | null };
+export type Advancement = {
+  id: string;
+  coven_id: string;
+  user_id: string;
+  rank_id: string;
+  statement: string | null;
+  status: 'pending' | 'approved' | 'declined' | 'withdrawn';
+  reviewer_id?: string | null;
+  reviewer_note: string | null;
+  created_at: string;
+  decided_at: string | null;
+  /** Answers to the position's own questions, by question id. */
+  answers?: Record<string, string>;
+  /** What the decider ticked: { requirement id: { by, at } }. */
+  checked?: Record<string, unknown>;
+};
 export type Message = { id: string; coven_id: string; conversation_id?: string | null; user_id: string | null; body: string; reply_to?: string | null; created_at: string; edited_at: string | null; deleted_at: string | null; deleted_by: string | null };
 export type AltarItem = {
   id: string;
@@ -351,9 +375,11 @@ export function grantableRanks(ranks: Rank[], perms: Permissions): Rank[] {
   });
 }
 
-/** Positions this member could apply to rise to. */
-export function advancementOptions(ranks: Rank[], perms: Permissions): Rank[] {
-  return ranks.filter((r) => r.open_to_applications && r.level > perms.level).sort((a, b) => a.level - b.level);
+/** Positions this member could apply to rise to: open (the old checkbox counts), above them, and not past their closing date. Places are counted by positions.ts openPositions. */
+export function advancementOptions(ranks: Rank[], perms: Permissions, now: number = Date.now()): Rank[] {
+  return ranks
+    .filter((r) => (r.applications_open ?? r.open_to_applications) && !r.is_default && r.level > perms.level && !(r.applications_close_at && Date.parse(r.applications_close_at) <= now))
+    .sort((a, b) => a.level - b.level);
 }
 
 /** Whether this person can act on that member (raise, pause, remove): never yourself, the founder, or anyone at or above you. */

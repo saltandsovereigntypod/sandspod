@@ -315,15 +315,30 @@
   /** Covens: their gatherings and applications together (as the app's Notifications & reminders → Covens), under one heading. */
   function covensHtml() {
     return `<section class="sp-section" id="gd-covens" aria-labelledby="gd-covens-label"><h2 class="sp-label" id="gd-covens-label">Covens</h2>
-      <p class="sp-caption">Each coven’s chat notifications ring in the app, and are chosen there under Settings → Notifications &amp; reminders → Covens, or from a coven’s Messages.</p></section>${gatheringsHtml()}${requestsHtml()}${invitationsHtml()}`;
+      <p class="sp-caption">Each coven’s chat notifications ring in the app, and are chosen there under Settings → Notifications &amp; reminders → Covens, or from a coven’s Messages.</p></section>${gatheringsHtml()}${positionsHtml()}${requestsHtml()}${invitationsHtml()}`;
+  }
+
+  /** Positions opening: a coven's leaders open a position you could apply for (as the app's Notifications & reminders → Covens shows it). */
+  function positionsHtml() {
+    const rows = prefs.positions.on
+      ? covens.map((coven) => toggle(slug(`gd-pos-${coven.id}`), coven.name, P.positionsOn(prefs, coven.id) ? "On" : "Off", P.positionsOn(prefs, coven.id), `data-pos-coven="${esc(coven.id)}"`)).join("") ||
+        `<p class="sp-caption">${signedIn ? "Your covens will be listed here once they’ve loaded." : "Sign in to hear about your covens."}</p>`
+      : "";
+    return `<section class="sp-section" id="gd-positions" aria-labelledby="gd-positions-label"><h2 class="sp-label" id="gd-positions-label">Positions opening</h2>
+      <div class="sp-card">
+        ${prefToggle("gd-pos-on", "Tell me when positions open", "A note on your phone when a coven’s leaders open a position you could apply for, and choose to tell you", "positions.on")}
+        ${rows}
+        <p class="sp-caption">These ring phones with the Salt &amp; Sovereignty app and coven notifications turned on. On the website, open positions show on the coven’s page and under My standing.</p>
+      </div></section>`;
   }
 
   /** Coven invitations: someone invites you, and someone accepts yours (as the app's Notifications & reminders → Covens shows them). */
   function invitationsHtml() {
-    return `<section class="sp-section" id="gd-invitations" aria-labelledby="gd-invitations-label"><h2 class="sp-label" id="gd-invitations-label">Coven invitations</h2>
+    return `<section class="sp-section" id="gd-invitations" aria-labelledby="gd-invitations-label"><h2 class="sp-label" id="gd-invitations-label">Coven invitations and training</h2>
       <div class="sp-card">
         ${prefToggle("gd-inv-on", "Invitations", "A note on your phone when someone invites you to a coven", "invitations.on")}
         ${prefToggle("gd-inv-accepted", "When my invitation is accepted", "Someone you invited joins the coven", "invitations.accepted")}
+        ${prefToggle("gd-training-on", "Training messages", "A message on a step of your training, from your mentor or the coven’s leaders, or from someone you mentor", "training.on")}
         <p class="sp-caption">These ring phones with the Salt &amp; Sovereignty app and coven notifications turned on. On the website, invitations to you wait at the top of My covens.</p>
       </div></section>`;
   }
@@ -519,6 +534,7 @@
       return setPref("tending.crystals.off", t.checked ? off.filter((id) => id !== t.dataset.crystal) : [...off, t.dataset.crystal]);
     }
     if (t.dataset.coven) return setPref(`planning.perCoven.${t.dataset.coven}.on`, t.checked);
+    if (t.dataset.posCoven) return updatePrefs(P.setPositionsFor(prefs, t.dataset.posCoven, t.checked, covens.map((c) => c.id)));
     if (t.dataset.gathCoven) return updatePrefs(P.setGatheringsFor(prefs, t.dataset.gathCoven, t.checked, covens.map((c) => c.id)));
     if (t.dataset.reqCoven) return updatePrefs(P.setRequestsFor(prefs, t.dataset.reqCoven, t.checked, covens.filter((c) => c.reviewer).map((c) => c.id)));
     if (t.hasAttribute("data-pause-on")) return updatePrefs(P.withChange(P.withChange(prefs, "paused", t.checked), "pausedUntil", t.checked ? pauseUntil(7) : ""));
