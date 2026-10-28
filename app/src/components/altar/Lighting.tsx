@@ -6,14 +6,14 @@
 
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
-import Svg, { Circle, Defs, Ellipse, LinearGradient, Mask, RadialGradient, Rect, Stop } from 'react-native-svg';
+import Svg, { Circle, ClipPath, Defs, Ellipse, G, LinearGradient, Mask, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
 
 import { pictureBox } from '../../lib/altar/flame';
 import { boxToPixels, candleLightRadius, displayBox, IMAGE_INSET, imageRatio, rotationOf, STAGE_ASPECT } from '../../lib/altar/geometry';
 import type { ObjectLight } from '../../lib/altar/litShader';
 import { isCandle, isLit } from '../../lib/altar/livingState';
 import type { SavedObject } from '../../lib/altar/types';
-import { candleGeometry } from './CandleMarks';
+import { candleGeometry, silhouettePath } from './CandleMarks';
 
 
 // ── The flames' motion, shared ────────────────────────────────────────────
@@ -262,19 +262,28 @@ export function WaxGlow({ object, width, height, now, motion }: { object: SavedO
   const depth = Math.min(bottom - surface, Math.max(half * 2.6, (bottom - surface) * 0.45));
   if (!(depth > 2)) return null;
   const id = `wax-glow-${uidOf(object)}-${Math.round(width)}`;
+  // A figure glows only inside its own outline: its head and body, not a cylinder round it.
+  const outline = burn.outline ? silhouettePath(burn.outline, pic) : '';
+  const left = outline ? 0 : cx - half;
+  const top = outline ? 0 : surface - rim;
+  const boxWidth = outline ? width : half * 2;
+  const boxHeight = outline ? height : depth + rim;
+  const glowLeft = outline ? cx - half * 1.6 : 0;
+  const glowTop = outline ? surface - rim : 0;
+  const glowWidth = outline ? half * 3.2 : half * 2;
   return (
     <Animated.View
       pointerEvents="none"
       style={{
         position: 'absolute',
-        left: cx - half,
-        top: surface - rim,
-        width: half * 2,
-        height: depth + rim,
+        left,
+        top,
+        width: boxWidth,
+        height: boxHeight,
         opacity: motion.glow.interpolate({ inputRange: [0.7, 1], outputRange: [0.5, 1] }),
       }}
     >
-      <Svg width={half * 2} height={depth + rim}>
+      <Svg width={boxWidth} height={boxHeight}>
         <Defs>
           <LinearGradient id={`${id}-down`} x1="0" y1="0" x2="0" y2="1">
             <Stop offset="0" stopColor="rgb(255,222,150)" stopOpacity={0.62} />
@@ -287,10 +296,17 @@ export function WaxGlow({ object, width, height, now, motion }: { object: SavedO
             <Stop offset="1" stopColor="rgb(255,255,255)" stopOpacity={0.25} />
           </LinearGradient>
           <Mask id={`${id}-mask`}>
-            <Rect x={0} y={0} width={half * 2} height={depth + rim} fill={`url(#${id}-across)`} />
+            <Rect x={glowLeft} y={glowTop} width={glowWidth} height={depth + rim} fill={`url(#${id}-across)`} />
           </Mask>
+          {outline ? (
+            <ClipPath id={`${id}-outline`}>
+              <Path d={outline} />
+            </ClipPath>
+          ) : null}
         </Defs>
-        <Rect x={0} y={0} width={half * 2} height={depth + rim} fill={`url(#${id}-down)`} mask={`url(#${id}-mask)`} rx={half * 0.25} />
+        <G clipPath={outline ? `url(#${id}-outline)` : undefined}>
+          <Rect x={glowLeft} y={glowTop} width={glowWidth} height={depth + rim} fill={`url(#${id}-down)`} mask={`url(#${id}-mask)`} rx={outline ? 0 : half * 0.25} />
+        </G>
       </Svg>
     </Animated.View>
   );

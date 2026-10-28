@@ -419,7 +419,7 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
 });
 
 /** A figure's outline from its measured edges (wax.ts FIGURE_OUTLINES): down its right side and back up its left. */
-function silhouettePath(edges: [number, number][], pic: { left: number; top: number; width: number; height: number }): string {
+export function silhouettePath(edges: [number, number][], pic: { left: number; top: number; width: number; height: number }): string {
   const last = edges.length - 1;
   const mid = pic.left + pic.width / 2;
   const at = (i: number, side: 0 | 1) => `${(mid + edges[i][side] * pic.width).toFixed(1)} ${(pic.top + (i / last) * pic.height).toFixed(1)}`;

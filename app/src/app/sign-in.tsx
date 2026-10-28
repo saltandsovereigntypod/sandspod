@@ -1,5 +1,5 @@
 import * as AppleAuthentication from 'expo-apple-authentication';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams, type Href } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,10 +9,13 @@ import { appleInBrowser, appleSignInAvailable, signInWithApple } from '../lib/ap
 import { signInWithGoogle } from '../lib/googleSignIn';
 import { requestRecovery } from '../lib/settings/account';
 import { supabase } from '../lib/supabase';
+import { afterSignIn } from '../lib/covens/invites';
 import { colors, fonts, radius, touch, type } from '../theme';
 
 export default function SignIn() {
-  const { mode } = useLocalSearchParams<{ mode?: string }>();
+  const { mode, next } = useLocalSearchParams<{ mode?: string; next?: string }>();
+  // Where to go once signed in: an invitation brings you back to it; otherwise Today.
+  const done = () => router.replace(afterSignIn(next) as Href);
   const creating = mode === 'create';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +33,7 @@ export default function SignIn() {
     try {
       const result = await signInWithApple();
       setBusy(false);
-      if (result === 'signed-in') router.replace('/today');
+      if (result === 'signed-in') done();
     } catch (error) {
       setBusy(false);
       setMessage(error instanceof Error ? error.message : 'Apple sign-in did not finish. Please try again.');
@@ -42,7 +45,7 @@ export default function SignIn() {
     setMessage(null);
     try {
       const result = await signInWithGoogle();
-      if (result === 'signed-in') router.replace('/today');
+      if (result === 'signed-in') done();
       // 'redirecting' means the web page is leaving for Google, so stay busy.
       if (result !== 'redirecting') setBusy(false);
     } catch (error) {
@@ -77,7 +80,7 @@ export default function SignIn() {
     if (error) {
       setMessage(error.message);
     } else if (data.session) {
-      router.replace('/today');
+      done();
     } else {
       setMessage('Check your email to confirm your account, then sign in.');
     }

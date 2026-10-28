@@ -268,6 +268,24 @@ export function CovensSection({ prefs, update, userId }: Props & { userId: strin
               andDevice(on);
             }}
           />
+          <Toggle
+            label="Invitations"
+            detail="Someone invites you to a coven"
+            value={prefs.invitations.on}
+            onChange={(on) => {
+              update(withChange(prefs, 'invitations.on', on));
+              andDevice(on);
+            }}
+          />
+          <Toggle
+            label="When my invitation is accepted"
+            detail="Someone you invited joins the coven"
+            value={prefs.invitations.accepted}
+            onChange={(on) => {
+              update(withChange(prefs, 'invitations.accepted', on));
+              andDevice(on);
+            }}
+          />
           <Body muted>Each coven chooses who hears about which gatherings. Mute a single conversation from its ⓘ button in the coven’s Messages.</Body>
         </Card>
       </View>

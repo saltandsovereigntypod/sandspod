@@ -175,5 +175,7 @@ test('nothing on reads as Nothing', () => {
   prefs = setGatheringsFor(prefs, 'c1', false);
   const [row] = covenNotifyRows([{ id: 'c1', slug: 'a', name: 'A' }], { ...prefs, requests: { ...prefs.requests, answers: false } }, { c1: { notify_coven: false, notify_direct: false } });
   assert.equal(row.summary, 'Nothing');
-  assert.equal(wantsCovenPush([row], { ...prefs, requests: { ...prefs.requests, answers: false } }), false);
+  assert.equal(wantsCovenPush([row], { ...prefs, requests: { ...prefs.requests, answers: false }, invitations: { on: false, accepted: false } }), false);
+  // Invitations to you are reason enough to sign the phone up.
+  assert.equal(wantsCovenPush([row], { ...prefs, requests: { ...prefs.requests, answers: false } }), true);
 });

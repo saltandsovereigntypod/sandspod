@@ -638,6 +638,8 @@
       const burn = geo?.burn;
       const pic = geo?.pic;
       overlays.forEach((overlay) => {
+        // A figure's dressing is drawn in its marks, inside its outline: the painted overlay would glow round it as a box.
+        overlay.style.display = burn?.outline ? "none" : "";
         if (!burn || !pic || burn.mode === "glass" || burn.mode === "none") {
           overlay.style.removeProperty("clip-path");
           return;

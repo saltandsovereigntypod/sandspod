@@ -2,14 +2,16 @@
  * The coven directory (/covens/), in two tabs as the app's Coven tab has them
  * (app/src/app/(tabs)/coven/index.tsx), switched by js/segmented-switch.js:
  *
- *   My covens:    "Your covens" from Today (today/coven-today.js), then a card
+ *   My covens:    invitations sent to you (Accept or Decline), then
+ *                 "Your covens" from Today (today/coven-today.js), then a card
  *                 for each coven you belong to (your position, unread messages
  *                 in its chat, its next gathering, and the applications and
  *                 requests to advance waiting in covens you review, kept
  *                 current while the page is open), and your applications still
  *                 waiting for an answer.
- *   Find a coven: every listed coven, searchable, your community profile, and
- *                 the way to found one.
+ *   Find a coven: "Have an invite?" (a code or link opens covens/join/), every
+ *                 listed coven, searchable, your community profile, and the
+ *                 way to found one.
  *
  * It opens on My covens when you belong to a coven and on Find a coven when you
  * don't; after that on the tab last used in this browser (or ?tab=mine|find).
@@ -26,6 +28,8 @@
   const { esc, href } = UI;
   const { header } = global.GuidesUI;
   const tabsCore = () => global.SaltCore?.covens?.screenTabs;
+  const invitesCore = () => global.SaltCore?.covens?.invites;
+  const PENDING_KEY = "coven.invite.pending";
 
   let context = null;
   let covens = [];
@@ -91,16 +95,20 @@
 
   async function loadMine() {
     if (!context.user) {
-      mineData = { memberships: [], pending: [], waiting: {} };
+      mineData = { memberships: [], pending: [], waiting: {}, invitations: [] };
       return;
     }
-    const [memberships, applications, waiting] = await Promise.all([
+    const [memberships, applications, waiting, invited] = await Promise.all([
       D.myMemberships(context.user.id).catch(() => []),
       D.myApplications(context.user.id).catch(() => []),
-      D.pendingForReview ? D.pendingForReview(context.user.id).catch(() => ({})) : {}
+      D.pendingForReview ? D.pendingForReview(context.user.id).catch(() => ({})) : {},
+      D.myInvitations(context.user.id).catch(() => [])
     ]);
     const mine = memberships.filter((m) => m.covens);
-    mineData = { memberships: mine, pending: applications.filter((a) => a.status === "pending" && !mine.some((m) => m.coven_id === a.coven_id)), waiting };
+    const I = invitesCore();
+    const invitations = I ? I.openInvitations((invited || []).filter((i) => i.covens), mine.map((m) => m.coven_id)) : [];
+    await UI.loadNames(context, invitations.map((i) => i.invited_by));
+    mineData = { memberships: mine, pending: applications.filter((a) => a.status === "pending" && !mine.some((m) => m.coven_id === a.coven_id)), waiting, invitations };
     unread = await loadUnread(mine);
   }
 
@@ -121,6 +129,34 @@
         ${next ? `<p class="sp-caption">${esc(next)}</p>` : ""}
         ${requests ? `<p class="sp-caption cv-gold">${esc(requests)}<span class="cv-count cv-count--row" aria-hidden="true">${count}</span></p>` : ""}
       </article></a>`;
+  }
+
+  /** Invitations sent to you, each with Accept and Decline (as the app's My covens has them). */
+  function invitationsHtml() {
+    const I = invitesCore();
+    const list = mineData?.invitations || [];
+    if (!I || !list.length) return "";
+    return `<section class="sp-section"><p class="sp-label">Invitations</p>${list
+      .map((i) => `<article class="sp-card cv-invite-card" data-invitation="${esc(i.id)}">
+          <h3>${esc(i.covens.name)}</h3>
+          ${i.covens.tagline ? `<p class="sp-muted">${esc(i.covens.tagline)}</p>` : ""}
+          <p>${esc(I.invitationLine(i.invited_by ? UI.nameOf(context, i.invited_by) : null, i.message))}</p>
+          <div class="sp-actions"><button class="button button--primary" type="button" data-invite-accept="${esc(i.id)}">Accept</button><button class="button button--ghost" type="button" data-invite-decline="${esc(i.id)}">Decline</button></div>
+          <p class="cv-status" role="status" aria-live="polite" data-invite-status></p>
+        </article>`)
+      .join("")}</section>`;
+  }
+
+  /** An invitation opened before signing in (covens/join/ remembers it). */
+  function pendingInviteHtml() {
+    let path = "";
+    try {
+      path = global.localStorage.getItem(PENDING_KEY) || "";
+    } catch {
+      path = "";
+    }
+    if (!context.user || !/^\/covens\/join\/\?(code|invitation)=[A-Za-z0-9-]+$/.test(path)) return "";
+    return `<div class="cv-banner"><p>You opened an invitation to a coven. <a href="${esc(href(path))}&amp;accept=1">Go back to it</a></p></div>`;
   }
 
   function mineHtml() {
@@ -170,7 +206,8 @@
     const content =
       tab === "mine"
         ? signedIn
-          ? `<div data-coven-today>${global.CovenToday?.html?.() || ""}</div>
+          ? `<div data-invitations>${invitationsHtml()}</div>
+            <div data-coven-today>${global.CovenToday?.html?.() || ""}</div>
             <div data-mine>${mineHtml()}</div>
             ${moderation ? `<div class="sp-actions">${moderation}</div>` : ""}`
           : UI.signInCard("see the covens you belong to")
@@ -181,6 +218,13 @@
             ${moderation}
           </div>
           <div data-profile hidden></div>
+          <form class="sp-section" data-invite-code>
+            <p class="sp-label">Have an invite?</p>
+            <div class="sp-field"><label for="cv-invite-code">Invite code or link</label>
+              <input id="cv-invite-code" name="code" autocomplete="off" autocapitalize="characters" placeholder="Paste the link, or type the code" /></div>
+            <div class="sp-actions"><button class="button button--ghost" type="submit">Open the invitation</button></div>
+            <p class="cv-status" role="status" aria-live="polite" data-code-status></p>
+          </form>
           <section class="sp-section">
             <p class="sp-label">Find a coven</p>
             <div class="sp-field"><label for="cv-search">Search covens</label>
@@ -195,6 +239,7 @@
           </section>`;
     root.innerHTML = `${header({ title: "Covens", eyebrow: "Circles to practise with", back: "/?sanctuary=more", backLabel: "Back to More" })}
       ${context.banned ? UI.bannedCard() : ""}
+      ${pendingInviteHtml()}
       ${SW.html(tabs)}
       ${SW.panel(tabs, `<div class="cv-tab-panel">${content}</div>`)}`;
 
@@ -222,6 +267,29 @@
     const holder = root.querySelector("[data-mine]");
     const html = mineHtml();
     if (holder && holder.innerHTML !== html) holder.innerHTML = html;
+    const invites = root.querySelector("[data-invitations]");
+    const list = invitationsHtml();
+    if (invites && invites.innerHTML !== list) invites.innerHTML = list;
+  }
+
+  /** Accept or decline an invitation; when the coven's agreements (or your profile) come first, its invitation page opens. */
+  async function answerInvitation(button, id, accept) {
+    const card = button.closest("[data-invitation]");
+    const status = card?.querySelector("[data-invite-status]");
+    const I = invitesCore();
+    const row = (mineData?.invitations || []).find((i) => i.id === id);
+    button.disabled = true;
+    UI.setStatus(status, accept ? "Joining…" : "Working…");
+    try {
+      await D.respondToInvitation(id, accept);
+      if (accept && row) return global.location.assign(covenHref(row.covens.slug));
+      await loadMine();
+      redrawMine();
+    } catch (error) {
+      if (accept && I && (I.needsAgreements(error) || I.needsProfile(error))) return global.location.assign(href(`/covens/join/?invitation=${encodeURIComponent(id)}&accept=1`));
+      UI.setStatus(status, I ? I.inviteError(error) : L.errorMessage(error), true);
+      button.disabled = false;
+    }
   }
 
   async function draw() {
@@ -267,6 +335,19 @@
   }
   root.addEventListener("click", (event) => {
     if (event.target.closest("[data-go-find]")) setTab("find", { focus: true });
+    const accept = event.target.closest("[data-invite-accept]");
+    if (accept) void answerInvitation(accept, accept.dataset.inviteAccept, true);
+    const decline = event.target.closest("[data-invite-decline]");
+    if (decline) void answerInvitation(decline, decline.dataset.inviteDecline, false);
+  });
+  // "Have an invite?": a code or a whole link opens its invitation page.
+  root.addEventListener("submit", (event) => {
+    const form = event.target.closest("[data-invite-code]");
+    if (!form) return;
+    event.preventDefault();
+    const code = invitesCore()?.parseInviteCode(form.elements.code.value);
+    if (!code) return UI.setStatus(form.querySelector("[data-code-status]"), "That doesn’t look like an invite code or link. A code is ten letters and numbers.", true);
+    global.location.assign(href(`/covens/join/?code=${encodeURIComponent(code)}`));
   });
   // Your covens' rites and positions arrive from today/coven-today.js after the page draws.
   global.addEventListener("covenTodayLoaded", () => {

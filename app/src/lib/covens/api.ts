@@ -32,6 +32,7 @@ import type { NoticePreview, NoticeRule } from './notices';
 import type { AttendanceRow, Checkin, MemberRecord, RecordOverview, RecordSettings } from './record';
 import type { RitualRecord } from './script';
 import { readOverview, type PathsSettings } from './paths';
+import type { Invitation, InviteLink, InvitePerson, InvitePreview } from './invites';
 import type { Access } from '../grimoire/access';
 import type { Gathering } from '../grimoire/coven';
 import type { PageVersion } from '../grimoire/history';
@@ -225,6 +226,58 @@ export const apply = (covenId: string, answers: Record<string, string>, message:
   andNotify('application', rpc('apply_to_coven', { p_coven: covenId, p_answers: answers, p_message: message.trim() || null }));
 export const withdrawApplication = (id: string) => rpc('withdraw_coven_request', { p_kind: 'application', p_id: id });
 export const leave = (covenId: string) => rpc('leave_coven', { p_coven: covenId });
+
+// ─── Invitations (invites.ts; …_coven_invitations.sql) ───────────────────
+
+/** Whether you may invite people to this coven, and whether its members may; null before the database has invitations. */
+export const fetchInviteSettings = (covenId: string) =>
+  rpc<{ may_invite: boolean; members_can_invite: boolean }>('coven_invite_settings', { p_coven: covenId }).catch(() => null);
+/** The leaders' choice: members in good standing may invite people too. */
+export const setMembersCanInvite = (covenId: string, on: boolean) => run(supabase.from('covens').update({ members_can_invite: on }).eq('id', covenId));
+export const fetchInviteLinks = (covenId: string) =>
+  run<InviteLink[]>(supabase.from('coven_invite_links').select('*').eq('coven_id', covenId).order('created_at', { ascending: false }).limit(200));
+export const createInviteLink = (covenId: string, days: number | null, uses: number | null, note = '') =>
+  rpc<InviteLink>('create_coven_invite_link', { p_coven: covenId, p_expires_in_days: days, p_max_uses: uses, p_note: note.trim() || null });
+export const revokeInviteLink = (linkId: string) => rpc<InviteLink>('revoke_coven_invite_link', { p_link: linkId });
+/** What a code shows to anyone, signed in or not. */
+export const previewInvite = (code: string) => rpc<InvitePreview>('coven_invite_preview', { p_code: code });
+export const acceptInviteLink = (code: string) => rpc<Member>('accept_coven_invite_link', { p_code: code });
+export const searchInvitable = (covenId: string, query: string) =>
+  rpc<InvitePerson[]>('search_invitable_people', { p_coven: covenId, p_query: query.trim() }).then((rows) => rows ?? []);
+/** Invitations waiting in a coven (managers, reviewers and those who sent them see them). */
+export const fetchCovenInvitations = (covenId: string) =>
+  run<Invitation[]>(supabase.from('coven_invitations').select('*').eq('coven_id', covenId).eq('status', 'pending').order('created_at', { ascending: false }).limit(200));
+/** Invitations sent to you and still waiting, with the coven each is for. */
+export const fetchMyInvitations = (userId: string) =>
+  run<(Invitation & { covens: { name: string; slug: string; tagline: string | null; tradition: string | null } | null })[]>(
+    supabase.from('coven_invitations').select('*,covens(name,slug,tagline,tradition)').eq('user_id', userId).eq('status', 'pending').order('created_at', { ascending: false }).limit(50),
+  );
+/** One invitation sent to you, with its coven. */
+export const fetchInvitation = (id: string) =>
+  run<(Invitation & { covens: { name: string; slug: string; tagline: string | null; tradition: string | null } | null }) | null>(
+    supabase.from('coven_invitations').select('*,covens(name,slug,tagline,tradition)').eq('id', id).maybeSingle(),
+  );
+/**
+ * Let the coven-notify edge function ring phones about an invitation (best
+ * effort): just sent, it tells the person invited; just accepted, the one who
+ * sent it. The website does the same (covens/coven-data.js).
+ */
+export function notifyInvitation(row: unknown) {
+  const id = (row as { id?: string } | null)?.id;
+  if (!id) return;
+  void supabase.functions.invoke('coven-notify', { body: { invitation_id: id } }).catch(() => {});
+}
+export const inviteToCoven = (covenId: string, userId: string, message: string) =>
+  rpc<Invitation>('invite_to_coven', { p_coven: covenId, p_user: userId, p_message: message.trim() || null }).then((row) => {
+    notifyInvitation(row);
+    return row;
+  });
+export const respondToInvitation = (id: string, accept: boolean) =>
+  rpc<Invitation>('respond_to_coven_invitation', { p_invitation: id, p_accept: accept }).then((row) => {
+    if (accept) notifyInvitation(row);
+    return row;
+  });
+export const revokeInvitation = (id: string) => rpc<Invitation>('revoke_coven_invitation', { p_invitation: id });
 
 // ─── The gathering ───────────────────────────────────────────────────────
 
