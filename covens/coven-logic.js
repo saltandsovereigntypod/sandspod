@@ -190,8 +190,11 @@
   }
 
   /** Positions this member could apply to rise to. */
-  function advancementOptions(ranks, perms) {
-    return [...(ranks || [])].filter((r) => r.open_to_applications && r.level > perms.level).sort((a, b) => a.level - b.level);
+  /** Open (the old checkbox counts), above them, not past the closing date. As the app's model.ts; places are counted by SaltCore.covens.positions. */
+  function advancementOptions(ranks, perms, now = Date.now()) {
+    return [...(ranks || [])]
+      .filter((r) => (r.applications_open ?? r.open_to_applications) && !r.is_default && r.level > perms.level && !(r.applications_close_at && Date.parse(r.applications_close_at) <= now))
+      .sort((a, b) => a.level - b.level);
   }
 
   function rankPowers(rank) {

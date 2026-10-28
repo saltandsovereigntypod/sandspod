@@ -4,11 +4,13 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
 import { CovenScreen } from '../../../../../components/covens/CovenScreen';
+import { Checklist } from '../../../../../components/covens/Positions';
 import { Words, useReport } from '../../../../../components/covens/ui';
-import { Card, Field, MenuList, MenuRow, Notice, Section } from '../../../../../components/more/ui';
+import { Card, CheckRow, Field, MenuList, MenuRow, Notice, Section } from '../../../../../components/more/ui';
 import * as api from '../../../../../lib/covens/api';
 import { useCoven } from '../../../../../lib/covens/CovenContext';
 import { errorMessage, normalizeQuestions, relativeTime, unsignedAgreements, type Advancement, type Application, type Signature } from '../../../../../lib/covens/model';
+import { placesLeft, placesLine, rankQuestions, untickedLabels, withTicks, type RequirementCheck } from '../../../../../lib/covens/positions';
 import { refreshRequests } from '../../../../../lib/covens/requestsBadge';
 import { colors, type } from '../../../../../theme';
 
@@ -25,6 +27,10 @@ export default function Review() {
   const [past, setPast] = useState<Application[]>([]);
   const [signatures, setSignatures] = useState<Signature[]>([]);
   const [notes, setNotes] = useState<Record<string, string>>({});
+  // Each request's checklist, what's ticked here, and how many hold each position.
+  const [checks, setChecks] = useState<Record<string, RequirementCheck[]>>({});
+  const [ticks, setTicks] = useState<Record<string, string[]>>({});
+  const [holders, setHolders] = useState<Record<string, number> | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
@@ -41,6 +47,9 @@ export default function Review() {
       setAdvs(requests);
       setSignatures(sigs);
       setPast(all.filter((a) => a.status !== 'pending').slice(0, 30));
+      const [lists, overview] = await Promise.all([Promise.all(requests.map((r) => api.fetchChecklist(r.id))), api.fetchPositionsOverview(covenId)]);
+      setChecks(Object.fromEntries(requests.map((r, i) => [r.id, lists[i]])));
+      setHolders(overview?.holders ?? null);
       await loadNames([...pending, ...requests, ...all].map((r) => r.user_id));
       void refreshRequests();
     } catch (error) {
@@ -57,7 +66,7 @@ export default function Review() {
     setMessage(null);
     try {
       if (kind === 'application') await api.decideApplication(id, approve, notes[id] ?? '');
-      else await api.decideAdvancement(id, approve, notes[id] ?? '');
+      else await api.decideAdvancement(id, approve, notes[id] ?? '', ticks[id] ?? []);
       setMessage(approve ? 'Approved.' : 'Declined.');
       await Promise.all([load(), coven.refresh()]);
     } catch (error) {
@@ -69,11 +78,12 @@ export default function Review() {
   const snap = coven.snapshot;
   const questions = normalizeQuestions(snap?.coven.application_questions ?? []);
   const rankName = (id: string) => snap?.ranks.find((r) => r.id === id)?.name ?? 'a position';
-  const decision = (kind: 'application' | 'advancement', id: string) => (
+  const decision = (kind: 'application' | 'advancement', id: string, block?: string | null) => (
     <>
       <Field label="Note to them (optional)" value={notes[id] ?? ''} onChangeText={(text) => setNotes((prev) => ({ ...prev, [id]: text }))} multiline maxLength={2000} />
+      {!!block && <Text style={type.caption}>{block}</Text>}
       <View style={styles.row}>
-        <Button label="Approve" onPress={() => void decide(kind, id, true)} disabled={busy} />
+        <Button label="Approve" onPress={() => void decide(kind, id, true)} disabled={busy || !!block} />
         <Button label="Decline" variant="outline" onPress={() => void decide(kind, id, false)} disabled={busy} />
       </View>
     </>
@@ -137,15 +147,56 @@ export default function Review() {
           {!advs.length && <Text style={type.caption}>No requests are waiting.</Text>}
           {advs.map((a) => {
             const wanted = snap?.ranks.find((r) => r.id === a.rank_id);
+            const ticked = ticks[a.id] ?? [];
+            const list = withTicks(checks[a.id] ?? [], ticked);
+            const held = holders?.[a.rank_id];
+            const left = wanted && held != null ? placesLeft(wanted, held) : null;
+            const mentorsThem = coven.mentors.some((m) => m.user_id === a.user_id && m.mentor_id === coven.userId);
+            const toTick = (checks[a.id] ?? []).filter((c) => !c.auto && c.status !== 'met');
+            const unticked = untickedLabels(checks[a.id] ?? [], ticked);
+            const block = left === 0 ? `${rankName(a.rank_id)} is full. Give it more places under Manage → Positions, or decline this request.` : unticked.length ? `Tick what it asks before approving: ${unticked.join('; ')}.` : null;
             return (
               <Card key={a.id}>
                 <Text style={type.cardTitle}>
                   {coven.nameOf(a.user_id)} → {rankName(a.rank_id)}
                 </Text>
-                <Text style={type.caption}>Asked {relativeTime(a.created_at)}</Text>
-                {!!wanted?.requirements && <Text style={type.caption}>The position asks: {wanted.requirements}</Text>}
-                <Words text={a.statement} />
-                {decision('advancement', a.id)}
+                <Text style={type.caption}>
+                  Asked {relativeTime(a.created_at)}
+                  {wanted && held != null ? ` · ${placesLine(wanted, held)}` : ''}
+                </Text>
+                <Checklist checks={list} />
+                {toTick.map((c) => {
+                  const may = c.kind !== 'mentor_approval' || coven.perms.manage || coven.perms.site || mentorsThem;
+                  return may ? (
+                    <CheckRow
+                      key={c.id}
+                      label={c.kind === 'mentor_approval' ? 'Their mentor approves' : `Confirmed: ${c.label}`}
+                      value={ticked.includes(c.id)}
+                      onChange={(on) => setTicks((prev) => ({ ...prev, [a.id]: on ? [...ticked, c.id] : ticked.filter((x) => x !== c.id) }))}
+                    />
+                  ) : (
+                    <Text key={c.id} style={type.caption}>
+                      Their mentor or the coven’s leaders give their mentor’s approval.
+                    </Text>
+                  );
+                })}
+                {!!wanted?.requirements && (
+                  <View style={styles.answer}>
+                    <Text style={type.caption}>In their words, the position asks</Text>
+                    <Words text={wanted.requirements} />
+                  </View>
+                )}
+                {rankQuestions(wanted).map((q) => (
+                  <View key={q.id} style={styles.answer}>
+                    <Text style={type.caption}>{q.prompt}</Text>
+                    <Words text={a.answers?.[q.id] || '—'} />
+                  </View>
+                ))}
+                <View style={styles.answer}>
+                  <Text style={type.caption}>Why they’re ready</Text>
+                  <Words text={a.statement || '—'} />
+                </View>
+                {decision('advancement', a.id, block)}
               </Card>
             );
           })}

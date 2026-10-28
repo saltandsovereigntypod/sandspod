@@ -41,5 +41,9 @@ export * as gatheringNotes from '../../supabase/functions/coven-notify/gathering
 // Invitations: invite codes and links, a new link's choices, how a link
 // stands, and the words (covens/join/, the Invite tab, My covens).
 export * as invites from '../../app/src/lib/covens/invites.ts';
+// Open positions: places, opening, what a position asks and the checklist
+// (covens/coven/positions.js), and the phone note when one opens (coven-notify's positions.ts).
+export * as positions from '../../app/src/lib/covens/positions.ts';
+export * as positionNotes from '../../supabase/functions/coven-notify/positions.ts';
 // The Covens page's two tabs (My covens | Find a coven) and which opens first.
 export * as screenTabs from '../../app/src/lib/screenTabs.ts';

@@ -9,7 +9,7 @@ import { autosaveNote, createAutosave, type AutosaveState } from '../src/lib/set
 import { dreamPromptOnToday, settingsHref, tabOf } from '../src/lib/settings/links.ts';
 import { migrateMundane } from '../src/lib/grimoire/mundaneSetting.ts';
 import { covenNotifyRows, covensLine, wantsCovenPush } from '../src/lib/reminders/covenNotifications.ts';
-import { normalizePrefs, setGatheringsFor, setRequestsFor } from '../src/lib/reminders/prefs.ts';
+import { normalizePrefs, setGatheringsFor, setPositionsFor, setRequestsFor } from '../src/lib/reminders/prefs.ts';
 
 type S = { a?: string; b?: boolean };
 
@@ -154,15 +154,16 @@ test('coven notifications are gathered per coven from where each is kept', () =>
   let prefs = normalizePrefs({});
   prefs = setGatheringsFor(prefs, 'c1', false, ['c1', 'c2']);
   prefs = setRequestsFor(prefs, 'c2', true, ['c2']);
+  prefs = setPositionsFor(prefs, 'c2', false, ['c1', 'c2']);
   const rows = covenNotifyRows(covens, prefs, { c1: { notify_coven: true, notify_direct: false } });
   assert.deepEqual(
-    rows.map((r) => [r.name, r.chat, r.conversations, r.gatherings, r.applications]),
+    rows.map((r) => [r.name, r.chat, r.conversations, r.gatherings, r.positions, r.applications]),
     [
-      ['Ash', true, false, false, null],
-      ['Willow', null, null, true, true],
+      ['Ash', true, false, false, true, null],
+      ['Willow', null, null, true, false, true],
     ],
   );
-  assert.equal(rows[0].summary, 'Chat');
+  assert.equal(rows[0].summary, 'Chat, positions');
   assert.equal(rows[1].summary, 'Gatherings, applications');
   assert.equal(wantsCovenPush(rows, prefs), true);
   assert.equal(covensLine(rows, true, true), '2 covens · on this phone');
@@ -173,6 +174,7 @@ test('coven notifications are gathered per coven from where each is kept', () =>
 test('nothing on reads as Nothing', () => {
   let prefs = normalizePrefs({});
   prefs = setGatheringsFor(prefs, 'c1', false);
+  prefs = setPositionsFor(prefs, 'c1', false);
   const [row] = covenNotifyRows([{ id: 'c1', slug: 'a', name: 'A' }], { ...prefs, requests: { ...prefs.requests, answers: false } }, { c1: { notify_coven: false, notify_direct: false } });
   assert.equal(row.summary, 'Nothing');
   assert.equal(wantsCovenPush([row], { ...prefs, requests: { ...prefs.requests, answers: false }, invitations: { on: false, accepted: false } }), false);
