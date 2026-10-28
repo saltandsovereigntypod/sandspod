@@ -16,7 +16,7 @@ import { imageRatio } from '../../lib/altar/geometry';
 import { candleLifeForm, carvingMark, carvingsOf, dressingsOf, isLit } from '../../lib/altar/livingState';
 import { RING } from '../../lib/sigil/geometry';
 import type { SavedObject } from '../../lib/altar/types';
-import { burnDown, burnProgress, LOW_FORMS, waxLook, type BurnDown } from '../../lib/altar/wax';
+import { burnDown, burnProgress, FIGURE_FORMS, halfAt, LOW_FORMS, waxLook, type BurnDown } from '../../lib/altar/wax';
 import { ingredientColor, waxColor } from '../../lib/altar/workings/colors';
 import { carvingRemaining } from '../../lib/altar/workings/dressing';
 import { fonts } from '../../theme';
@@ -36,6 +36,8 @@ const HALF_WIDTH: Record<string, number> = {
   novena: 0.3,
   figure: 0.22,
 };
+/** A figure's head, about, for figures without a measured shape. */
+const FIGURE_HEAD = 0.07;
 
 /** Fixed spots for herb flecks, so they don't jump about between renders: [x across the wax -1..1, y down the body 0..1]. */
 const FLECKS: [number, number][] = [
@@ -168,16 +170,19 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
   const flame = geo.flame;
   const cx = (flame.centerX / 100) * width;
   let half: number;
+  let crown: number; // half the wax's width at its top now (a figure's head or shoulders; a cylinder's whole width)
   let surface: number; // the top of the wax now
   let bottom: number;
   let carveTop: number; // where carving starts on the candle as it was new
   if (burn && pic) {
     half = burn.half * pic.width;
+    crown = halfAt(burn, burn.waxTop, (cx - pic.left) / pic.width - 0.5) * pic.width;
     surface = pic.top + burn.waxTop * pic.height;
     bottom = pic.top + burn.bottom * pic.height;
     carveTop = pic.top + ((burn.mode === 'cap' ? burn.capEnd : burn.top) + 0.03) * pic.height;
   } else {
     half = (HALF_WIDTH[form] ?? 0.2) * width;
+    crown = FIGURE_FORMS.has(form) ? FIGURE_HEAD * width : half;
     surface = Math.max(2, ((flame.flameTop + flame.flameHeight) / 100) * height + 1);
     bottom = height * 0.93;
     carveTop = surface + (bottom - surface) * 0.06;
@@ -185,7 +190,10 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
   const body = Math.max(1, bottom - surface);
   // A carving's letters above this line have melted (cap: the kept top covers the body's old top).
   const goneLine = burn && pic ? surface + (burn.mode === 'cap' ? (burn.capEnd - burn.top) * pic.height : 0) : surface;
-  const rim = Math.max(1.2, half * 0.2); // the ellipse depth of the wax's top
+  const rim = Math.max(1.2, crown * 0.2); // the ellipse depth of the wax's top
+  // A figure's marks stay inside its outline (measured from the painting), so nothing hangs off it like a cylinder.
+  const outline = burn?.outline && pic ? silhouettePath(burn.outline, pic) : '';
+  const inside = outline ? `url(#outline-${uid})` : undefined;
   const waxHex = waxColor(String(object.color || 'white'));
   const cut = incision(waxHex);
   const drip = dripLook(waxHex, lit);
@@ -227,6 +235,11 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
           <Stop offset="0.8" stopColor="rgb(30,26,22)" stopOpacity={0.15} />
           <Stop offset="1" stopColor="rgb(30,26,22)" stopOpacity={0} />
         </LinearGradient>
+        {outline ? (
+          <ClipPath id={`outline-${uid}`}>
+            <Path d={outline} />
+          </ClipPath>
+        ) : null}
       </Defs>
 
       {/* In glass: the wax has sunk, leaving the glass above it empty. */}
@@ -246,13 +259,16 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
       {/* Burned away from the head: a soft melted top, and the wick. */}
       {burn?.mode === 'crop' && burn.drop > 0 && (
         <>
-          <Ellipse cx={cx} cy={surface} rx={half} ry={rim} fill={mix(waxHex, [255, 255, 255], 0.2)} />
-          <Line x1={cx} y1={surface - rim * 1.8} x2={cx} y2={surface} stroke="rgb(30,20,14)" strokeWidth={Math.max(0.8, half * 0.06)} strokeLinecap="round" />
+          <G clipPath={inside}>
+            <Ellipse cx={cx} cy={surface} rx={crown} ry={rim} fill={mix(waxHex, [255, 255, 255], 0.2)} />
+          </G>
+          <Line x1={cx} y1={surface - rim * 1.8} x2={cx} y2={surface} stroke="rgb(30,20,14)" strokeWidth={Math.max(0.8, crown * 0.06)} strokeLinecap="round" />
         </>
       )}
+      <G clipPath={inside}>
 
       {/* Oil: a sheen down one side of the wax. */}
-      {oil && <Rect x={cx - half * 0.85} y={surface + body * 0.04} width={half * 0.9} height={body * 0.9} rx={half * 0.4} fill={`url(#sheen-${uid})`} />}
+      {oil && <Rect x={cx - half * 0.72} y={surface + body * 0.06} width={half * 0.55} height={body * 0.86} rx={half * 0.27} fill={`url(#sheen-${uid})`} opacity={0.6} />}
 
       {/* Herbs: flecks pressed into the wax, in their own colours. */}
       {herbs.length > 0 &&
@@ -350,43 +366,45 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
       {/* Wax its burns have left: a tunnel round the wick, or a wide pool. */}
       {wax.kind === 'tunnel' && (
         <>
-          <Ellipse cx={cx} cy={surface + rim * 0.3} rx={half * 0.95} ry={rim} fill={mix(waxHex, [255, 248, 236], 0.45)} opacity={0.6} />
-          <Ellipse cx={cx} cy={surface + rim * 0.45} rx={half * (0.34 + 0.22 * wax.amount)} ry={rim * (0.55 + 0.2 * wax.amount)} fill="rgb(40,20,10)" opacity={0.55 + 0.3 * wax.amount} />
+          <Ellipse cx={cx} cy={surface + rim * 0.3} rx={crown * 0.95} ry={rim} fill={mix(waxHex, [255, 248, 236], 0.45)} opacity={0.6} />
+          <Ellipse cx={cx} cy={surface + rim * 0.45} rx={crown * (0.34 + 0.22 * wax.amount)} ry={rim * (0.55 + 0.2 * wax.amount)} fill="rgb(40,20,10)" opacity={0.55 + 0.3 * wax.amount} />
         </>
       )}
       {wax.kind === 'pool' && (
         <>
-          <Ellipse cx={cx} cy={surface + rim * 0.35} rx={half * 0.94} ry={rim * 0.95} fill={mix(waxHex, [255, 250, 236], 0.55)} opacity={0.5 + 0.3 * wax.amount} stroke="rgb(255,252,240)" strokeOpacity={0.65} strokeWidth={Math.max(0.5, half * 0.04)} />
-          <Ellipse cx={cx - half * 0.3} cy={surface + rim * 0.2} rx={half * 0.28} ry={rim * 0.3} fill="rgb(255,255,250)" opacity={0.55} />
+          <Ellipse cx={cx} cy={surface + rim * 0.35} rx={crown * 0.94} ry={rim * 0.95} fill={mix(waxHex, [255, 250, 236], 0.55)} opacity={0.5 + 0.3 * wax.amount} stroke="rgb(255,252,240)" strokeOpacity={0.65} strokeWidth={Math.max(0.5, crown * 0.04)} />
+          <Ellipse cx={cx - crown * 0.3} cy={surface + rim * 0.2} rx={crown * 0.28} ry={rim * 0.3} fill="rgb(255,255,250)" opacity={0.55} />
         </>
       )}
 
-      {/* Lit: the top glows and a pool of molten wax gathers under the flame. */}
+      {/* Lit: the top glows (a figure's only inside its outline) and a pool of molten wax gathers under the flame. */}
       {lit && wax.melt > 0 && (
         <>
-          <Rect x={cx - half} y={surface} width={half * 2} height={Math.min(body, Math.max(rim * 3, body * 0.16))} fill={`url(#glow-${uid})`} opacity={(lightness(waxHex) < 0.32 ? 0.22 : 0.4) + 0.3 * wax.melt} />
-          <Ellipse cx={cx} cy={surface + rim * 0.35} rx={half * (0.45 + 0.5 * wax.melt)} ry={rim * (0.55 + 0.45 * wax.melt)} fill={`url(#pool-${uid})`} opacity={0.6 + 0.4 * wax.melt} />
+          {(outline || !FIGURE_FORMS.has(form)) && <Rect x={cx - (outline ? half * 1.6 : crown)} y={surface} width={(outline ? half * 1.6 : crown) * 2} height={Math.min(body, Math.max(rim * 3, body * 0.16))} rx={crown * 0.5} fill={`url(#glow-${uid})`} opacity={(lightness(waxHex) < 0.32 ? 0.22 : 0.4) + 0.3 * wax.melt} />}
+          <Ellipse cx={cx} cy={surface + rim * 0.35} rx={crown * (0.45 + 0.5 * wax.melt)} ry={rim * (0.55 + 0.45 * wax.melt)} fill={`url(#pool-${uid})`} opacity={0.6 + 0.4 * wax.melt} />
         </>
       )}
 
       {/* Drips: the candle's own wax run down from the top, each ending in a bead. */}
       {wax.drips > 0 &&
         DRIPS.slice(0, wax.drips).map(([dx, len], i) => {
-          const x = cx + dx * half * 0.84;
+          const x = cx + dx * crown * (form === 'seven-knob' ? 0.6 : 0.84); // knobs: in from the narrow necks
           const l = Math.min(body * 0.7, body * (0.08 + 0.26 * len * Math.max(wax.amount, wax.melt * 0.7)));
-          const w = Math.max(1.1, half * 0.17);
+          const w = Math.max(1.1, crown * 0.17);
           const r = w * 0.62; // the bead at its end
-          const top = surface + rim * (0.3 + 0.3 * (1 - Math.abs(dx)));
-          const end = top + l;
-          const d = `M ${x - w * 0.55} ${top} C ${x - w * 0.5} ${top + l * 0.4} ${x - w * 0.3} ${end - r * 1.6} ${x - r} ${end} A ${r} ${r} 0 1 0 ${x + r} ${end} C ${x + w * 0.3} ${end - r * 1.6} ${x + w * 0.5} ${top + l * 0.4} ${x + w * 0.55} ${top} Z`;
+          const from = surface + rim * (0.3 + 0.3 * (1 - Math.abs(dx)));
+          const end = from + l;
+          const d = `M ${x - w * 0.55} ${from} C ${x - w * 0.5} ${from + l * 0.4} ${x - w * 0.3} ${end - r * 1.6} ${x - r} ${end} A ${r} ${r} 0 1 0 ${x + r} ${end} C ${x + w * 0.3} ${end - r * 1.6} ${x + w * 0.5} ${from + l * 0.4} ${x + w * 0.55} ${from} Z`;
           return (
             <G key={`d${i}`}>
               <Path d={d} fill={drip.fill} stroke={drip.edge} strokeOpacity={0.45} strokeWidth={Math.max(0.3, w * 0.08)} />
-              <Path d={`M ${x - w * 0.18} ${top + w * 0.6} L ${x - w * 0.14} ${end - r * 0.4}`} stroke={drip.shine} strokeOpacity={0.35} strokeWidth={Math.max(0.3, w * 0.14)} strokeLinecap="round" />
+              <Path d={`M ${x - w * 0.18} ${from + w * 0.6} L ${x - w * 0.14} ${end - r * 0.4}`} stroke={drip.shine} strokeOpacity={0.35} strokeWidth={Math.max(0.3, w * 0.14)} strokeLinecap="round" />
               <Ellipse cx={x - r * 0.3} cy={end - r * 0.15} rx={r * 0.28} ry={r * 0.22} fill={drip.shine} opacity={0.4} />
             </G>
           );
         })}
+
+      </G>
 
       {/* Burned down: its remnant of wax, spread at the foot. */}
       {wax.kind === 'remnant' && wax.amount > 0 && (
@@ -399,6 +417,16 @@ export const CandleMarks = memo(function CandleMarks({ object, width, height, no
     </Svg>
   );
 });
+
+/** A figure's outline from its measured edges (wax.ts FIGURE_OUTLINES): down its right side and back up its left. */
+function silhouettePath(edges: [number, number][], pic: { left: number; top: number; width: number; height: number }): string {
+  const last = edges.length - 1;
+  const mid = pic.left + pic.width / 2;
+  const at = (i: number, side: 0 | 1) => `${(mid + edges[i][side] * pic.width).toFixed(1)} ${(pic.top + (i / last) * pic.height).toFixed(1)}`;
+  const right = edges.map((_, i) => at(i, 1));
+  const left = edges.map((_, i) => at(last - i, 0));
+  return `M ${[...right, ...left].join(' L ')} Z`;
+}
 
 const styles = StyleSheet.create({
   clip: { position: 'absolute', overflow: 'hidden' },

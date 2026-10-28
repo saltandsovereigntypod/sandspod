@@ -148,6 +148,12 @@ export type CandleShape = {
   capEnd: number;
   /** How much of the picture's height it can burn away in all. */
   maxDrop: number;
+  /**
+   * Figures: the left and right edges of the wax at each 40th of the picture's
+   * height (FIGURE_OUTLINES), so the melted top, the glow and the pool sit on
+   * the head or shoulders instead of a cylinder the figure isn't.
+   */
+  outline?: [number, number][];
 };
 
 const shape = (mode: BurnDownMode, top: number, bottom: number, half: number, capEnd: number, keep: number): CandleShape => ({
@@ -158,6 +164,21 @@ const shape = (mode: BurnDownMode, top: number, bottom: number, half: number, ca
   capEnd,
   maxDrop: Math.max(0, bottom - (mode === 'cap' ? capEnd : top) - keep),
 });
+
+// Measured from the painted figures (every colour is the same shape): the
+// left and right edges of the wax at each 40th of the picture's height, top to
+// bottom, from the picture's middle, as fractions of its width.
+const FIGURE_OUTLINES: Record<string, [number, number][]> = {
+  figure: [[0.0, 0.0], [0.0, 0.0], [-0.014, 0.004], [-0.018, -0.001], [-0.018, 0.002], [-0.102, 0.086], [-0.128, 0.111], [-0.14, 0.122], [-0.141, 0.124], [-0.133, 0.115], [-0.111, 0.093], [-0.111, 0.094], [-0.175, 0.156], [-0.206, 0.187], [-0.223, 0.204], [-0.232, 0.213], [-0.239, 0.219], [-0.244, 0.225], [-0.25, 0.231], [-0.253, 0.234], [-0.257, 0.238], [-0.258, 0.239], [-0.251, 0.234], [-0.171, 0.153], [-0.172, 0.153], [-0.175, 0.154], [-0.176, 0.156], [-0.178, 0.157], [-0.181, 0.159], [-0.182, 0.16], [-0.184, 0.162], [-0.185, 0.162], [-0.188, 0.163], [-0.191, 0.165], [-0.203, 0.173], [-0.223, 0.194], [-0.223, 0.194], [-0.171, 0.149], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0]],
+  'figure-male': [[0.0, 0.0], [0.0, 0.0], [-0.005, 0.013], [-0.02, 0.026], [-0.074, 0.078], [-0.074, 0.08], [-0.071, 0.076], [-0.053, 0.059], [-0.08, 0.086], [-0.185, 0.191], [-0.208, 0.214], [-0.21, 0.216], [-0.208, 0.214], [-0.208, 0.214], [-0.208, 0.214], [-0.212, 0.218], [-0.212, 0.22], [-0.21, 0.216], [-0.204, 0.212], [-0.2, 0.206], [-0.194, 0.202], [-0.177, 0.185], [-0.134, 0.142], [-0.127, 0.132], [-0.117, 0.123], [-0.113, 0.119], [-0.111, 0.119], [-0.115, 0.121], [-0.115, 0.121], [-0.109, 0.115], [-0.102, 0.107], [-0.094, 0.1], [-0.086, 0.094], [-0.09, 0.096], [-0.119, 0.123], [-0.187, 0.191], [-0.189, 0.192], [-0.175, 0.181], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0]],
+  'figure-female': [[0.0, 0.0], [0.0, 0.0], [-0.013, 0.013], [-0.015, 0.009], [-0.069, 0.063], [-0.092, 0.088], [-0.1, 0.098], [-0.103, 0.103], [-0.111, 0.113], [-0.127, 0.132], [-0.165, 0.169], [-0.173, 0.177], [-0.173, 0.175], [-0.173, 0.173], [-0.173, 0.175], [-0.181, 0.179], [-0.189, 0.185], [-0.192, 0.187], [-0.194, 0.189], [-0.198, 0.192], [-0.198, 0.194], [-0.185, 0.185], [-0.162, 0.163], [-0.16, 0.162], [-0.16, 0.162], [-0.16, 0.162], [-0.16, 0.162], [-0.16, 0.162], [-0.16, 0.162], [-0.16, 0.162], [-0.16, 0.162], [-0.16, 0.162], [-0.16, 0.162], [-0.162, 0.162], [-0.163, 0.163], [-0.171, 0.173], [-0.208, 0.212], [-0.198, 0.202], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0]],
+  'figure-couple': [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [-0.09, -0.075], [-0.122, -0.023], [-0.137, 0.072], [-0.133, 0.089], [-0.124, 0.115], [-0.135, 0.119], [-0.181, 0.124], [-0.204, 0.135], [-0.204, 0.15], [-0.197, 0.154], [-0.185, 0.15], [-0.173, 0.138], [-0.173, 0.147], [-0.171, 0.131], [-0.171, 0.141], [-0.173, 0.154], [-0.172, 0.159], [-0.166, 0.154], [-0.162, 0.149], [-0.157, 0.144], [-0.153, 0.143], [-0.15, 0.144], [-0.15, 0.147], [-0.152, 0.15], [-0.153, 0.154], [-0.154, 0.159], [-0.156, 0.165], [-0.157, 0.171], [-0.159, 0.179], [-0.182, 0.207], [-0.2, 0.226], [-0.2, 0.226], [-0.173, 0.201], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0]],
+};
+
+/** Figure candles: shaped like people, not cylinders. */
+export const FIGURE_FORMS = new Set(Object.keys(FIGURE_OUTLINES));
+
+const figure = (form: string, top: number, bottom: number, half: number, keep: number): CandleShape => ({ ...shape('crop', top, bottom, half, 0, keep), outline: FIGURE_OUTLINES[form] });
 
 /** Measured from the painted candles (assets/altar/objects/candles). */
 const SHAPES: Record<string, CandleShape> = {
@@ -170,12 +191,31 @@ const SHAPES: Record<string, CandleShape> = {
   birthday: shape('cap', 0.09, 0.955, 0.06, 0.12, 0.07),
   'double-action': shape('crop', 0.075, 0.955, 0.2, 0, 0.12),
   reversible: shape('crop', 0.075, 0.93, 0.2, 0, 0.12),
-  figure: shape('crop', 0.05, 0.92, 0.17, 0, 0.14),
-  'figure-male': shape('crop', 0.05, 0.92, 0.17, 0, 0.14),
-  'figure-female': shape('crop', 0.05, 0.92, 0.17, 0, 0.14),
-  'figure-couple': shape('crop', 0.15, 0.92, 0.3, 0, 0.14),
+  figure: figure('figure', 0.05, 0.92, 0.17, 0.14),
+  'figure-male': figure('figure-male', 0.05, 0.92, 0.17, 0.14),
+  'figure-female': figure('figure-female', 0.05, 0.92, 0.17, 0.14),
+  'figure-couple': figure('figure-couple', 0.15, 0.92, 0.17, 0.14),
   novena: shape('glass', 0.11, 0.95, 0.2, 0, 0.05),
   jar: shape('glass', 0.33, 0.88, 0.25, 0, 0.05),
+}
+
+/**
+ * Half the wax's width just under `y` (a fraction of the picture's height),
+ * about the wick at `wick` (from the picture's middle, a fraction of its
+ * width): the widest it gets in the next 4% down, to its nearer edge, so a
+ * figure's melted top spans its head (or, burned lower, its shoulders) and
+ * stays on it. Cylinders: their measured half.
+ */
+export function halfAt(s: CandleShape, y: number, wick = 0): number {
+  const o = s.outline;
+  if (!o?.length) return s.half;
+  const last = o.length - 1;
+  let widest = 0;
+  for (let i = Math.max(0, Math.floor(y * last)); i <= Math.min(last, Math.ceil((y + 0.04) * last)); i++) {
+    const [left, right] = o[i];
+    widest = Math.max(widest, Math.min(wick - left, right - wick));
+  }
+  return Math.max(0.03, Math.min(s.half * 1.4, widest));
 }
 
 /** The shape of a candle form's wax, or null for the small cups and floating candles (nothing to burn down). */
