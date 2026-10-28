@@ -1,0 +1,11 @@
+// Cloudflare: the website as static files. The build command
+// (node scripts/cloudflare-build.mjs) copies the site into dist/, and
+// `npx wrangler deploy` publishes it. _headers in dist/ sets cache times.
+{
+  "name": "saltandsovereignty",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "auto-trailing-slash"
+  }
+}
