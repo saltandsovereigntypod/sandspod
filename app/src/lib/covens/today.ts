@@ -39,7 +39,7 @@ export type CovenTodayItem = {
   title: string;
   detail: string;
   /** What to open: a ritual, a program, or the coven's Initiation & training for sign-offs. */
-  target: { ritual?: string; program?: string; programs?: boolean };
+  target: { ritual?: string; program?: string; programs?: boolean; /** A holiday's id, for its holy-day page. */ holiday?: string };
 };
 
 const DAY = 86400000;
@@ -78,7 +78,7 @@ export function covenTodayItems(input: CovenTodayInput, now = new Date()): Coven
   const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   for (const c of input.covens) {
     for (const h of covenHolidaysBetween(c, startOfDay, new Date(startOfDay.getTime() + DAY - 1))) {
-      out.push({ kind: 'holiday', covenSlug: c.slug, covenName: c.name, title: `${c.name} keeps ${h.name} today`, detail: h.meaning ? h.meaning.split('. ')[0].replace(/\.$/, '') + '.' : '', target: {} });
+      out.push({ kind: 'holiday', covenSlug: c.slug, covenName: c.name, title: `${c.name} keeps ${h.name} today`, detail: h.meaning ? h.meaning.split('. ')[0].replace(/\.$/, '') + '.' : '', target: { holiday: h.id } });
     }
   }
 
