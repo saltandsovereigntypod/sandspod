@@ -79,7 +79,7 @@ export default function TemplateEditor() {
 
   return (
     <RitualScreen back={existing ? existing.title : 'Templates'}>
-      <Title eyebrow="Book of Shadows">{existing ? 'Edit template' : 'New template'}</Title>
+      <Title eyebrow="Grimoire">{existing ? 'Edit template' : 'New template'}</Title>
 
       <Card>
         <SectionLabel>The ritual</SectionLabel>
@@ -185,7 +185,7 @@ export default function TemplateEditor() {
 
       {!!problem && <Notice>{problem}</Notice>}
       <View style={ui.actions}>
-        <Button label={saving ? 'Saving into your Book of Shadows…' : existing ? 'Save changes' : 'Save template'} disabled={saving} onPress={save} />
+        <Button label={saving ? 'Saving into your Grimoire…' : existing ? 'Save changes' : 'Save template'} disabled={saving} onPress={save} />
         {!!existing && <Button label="Archive template" variant="text" onPress={archive} />}
       </View>
     </RitualScreen>

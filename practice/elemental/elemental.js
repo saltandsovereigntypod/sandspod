@@ -21,7 +21,7 @@
     const guide = B.balance.ELEMENT_GUIDES[today.element];
     const routes = ["/practice/elemental/balance/", "/practice/elemental/weather/"];
     root.innerHTML = [
-      h.head("My practice", "Elemental", { href: links.hub, label: "My practice" }),
+      h.head("Craft tools", "Elemental", { href: links.hub, label: "Craft tools" }),
       about ? h.muted(about) : "",
       h.card(`${h.label(`Today · ${sunOrMoon(today.planet) ? `the ${today.planet}’s` : `${today.planet}’s`} day`)}${h.cardTitle(`A ${today.element.toLowerCase()} day`)}${h.muted(guide.qualities)}`, { gold: true }),
       h.section("Tools", h.list(tools.map((tool, i) => h.row({ href: routes[i], title: tool.title, detail: tool.detail })), "Elemental tools")),

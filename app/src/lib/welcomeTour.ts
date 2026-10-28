@@ -43,17 +43,17 @@ export const TOUR_PAGES: TourPage[] = [
   {
     icon: { tab: 'wheel' },
     title: 'Cards, runes and sigils',
-    body: 'Draw tarot, runes, ogham, Lenormand, Kipper or a deck of your own in a spread laid out in its shape, and come back to the reading later. The sigil maker turns an intent into one mark, and both are open to every practice.',
+    body: 'Rituals → Divination draws tarot, runes, ogham, Lenormand, Kipper or a deck of your own in a spread laid out in its shape, and you can come back to the reading later. The sigil maker turns an intent into one mark, and both are open to every practice.',
   },
   {
     icon: { tab: 'grimoire' },
-    title: 'Your Book of Shadows',
-    body: 'Practice → Grimoire keeps your pages beside the Living Library: herbs, crystals, deities and candle colours with their traditional lore. Your dreams live there too, with pages for the holidays and moons.',
+    title: 'Your Grimoire',
+    body: 'Practice → Grimoire keeps your pages, with the Living Library as a section of it: herbs, crystals, deities and candle colours with their traditional lore. Your dreams live there too, with pages for the holidays and moons.',
   },
   {
     icon: { more: 'journey' },
     title: 'Your practice, your path',
-    body: 'My practice gathers tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft. Dedication journeys, patron deities and the Closed & living traditions guide help you walk a path with care.',
+    body: 'Craft tools gathers tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft. Dedication journeys, patron deities and the Closed & living traditions guide help you walk a path with care.',
   },
   {
     icon: { tab: 'calendar' },
@@ -68,7 +68,7 @@ export const TOUR_PAGES: TourPage[] = [
   {
     icon: { more: 'account' },
     title: 'Yours on every screen',
-    body: 'Sign in and your altars, Book of Shadows, rituals and settings stay in step with the Salt & Sovereignty website. As a guest, everything stays on this phone.',
+    body: 'Sign in and your altars, Grimoire, rituals and settings stay in step with the Salt & Sovereignty website. As a guest, everything stays on this phone.',
   },
   {
     icon: { more: 'search' },

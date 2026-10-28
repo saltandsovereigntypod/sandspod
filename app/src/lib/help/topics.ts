@@ -18,9 +18,9 @@ export const HELP: HelpSection[] = [
           'Look at the bar along the bottom of the screen.',
           'Today shows the moon, the holidays from your calendars and what is yours to do today. Switch to "Sky & Lore" at the top for the sky, the day’s correspondences, what is on the horizon and what suits your practice.',
           'Altar is where you build and tend altars.',
-          'Practice holds your Grimoire (your Book of Shadows) and Rituals (planning, running and journaling your workings, and My practice). Switch between them at the top.',
+          'Practice holds your Grimoire (your own book and the Living Library) and Rituals (doing, learning and recording your workings, with Divination and Craft tools). Switch between them at the top.',
           'Coven is where you find, join and take part in covens: Messages, rites, the coven’s altars, initiation and training. Switch between "My covens" and "Find a coven" at the top.',
-          'More opens your Sanctuary: the Living Library, My practice, Reminders, Community, settings, backup, "How to use the app" and support.',
+          'More opens your Sanctuary: search, Community, My chronicle, Reminders, settings, backup, "How to use the app" and support.',
         ],
         keywords: ['tabs', 'navigation', 'menu', 'bottom bar', 'where is', 'practice', 'coven', 'grimoire', 'rituals'],
       },
@@ -56,7 +56,7 @@ export const HELP: HelpSection[] = [
         steps: [
           'Open More, then Account. It says "Guest · saved on this device" or "Signed in as" with your email.',
           'As a guest, altars, rituals and settings stay on this phone.',
-          'Signed in, your altars, Book of Shadows, ritual journal, templates, practice tools, My Practice notes and settings sync with the website.',
+          'Signed in, your altars, Grimoire, ritual journal, templates, practice tools, My Practice notes and settings sync with the website.',
           'Some things need an account: the Grimoire, ritual templates, My Practice entries, covens and My submissions.',
         ],
         tips: ['Before you remove the app as a guest, save a guest backup from More, Backup and restore.'],
@@ -131,7 +131,7 @@ export const HELP: HelpSection[] = [
         steps: [
           'Open More, then "Backup and restore".',
           'Under "Back up", tap "Save complete backup". As a guest the button reads "Save guest backup".',
-          'To save only your Book of Shadows, tap "Export Book of Shadows".',
+          'To save only your Grimoire, tap "Export Grimoire".',
           'Choose where to keep the file. The same file restores on the website.',
         ],
         tips: ['A backup can hold names, spiritual writing, ritual records and images, so keep it somewhere private.'],
@@ -155,11 +155,11 @@ export const HELP: HelpSection[] = [
       {
         id: 'search-everything',
         title: 'Search your whole practice',
-        summary: 'One search covers the Living Library, your grimoire, your ritual journal and your templates.',
+        summary: 'One search covers the Living Library, your Grimoire, your ritual journal and templates, your readings and your dreams.',
         steps: [
           'Open More and tap "Search your practice".',
           'Type at least two letters, such as a herb, an intention or a moon phase.',
-          'Look under Living Library, Your grimoire, Ritual journal and Ritual templates.',
+          'Look under Living Library, Your Grimoire, Ritual journal, Ritual templates, Divination readings and Dreams.',
           'Tap a result to open it.',
         ],
         href: '/more/search',
@@ -183,10 +183,10 @@ export const HELP: HelpSection[] = [
       {
         id: 'open-settings',
         title: 'Open your settings',
-        summary: 'Settings shape your names, altar, Book of Shadows, Library and calendars.',
+        summary: 'Settings shape your names, altar, Grimoire, Library and calendars.',
         steps: [
           'Open More, then Settings.',
-          'Tap a row: Identity, Appearance, Book of Shadows, My practice, My deities, Living Library, Companion panel, Living Objects, or "Calendar & holidays".',
+          'Tap a row: Identity, Appearance, Grimoire, Your crafts, My deities, Living Library, Companion panel, Living Objects, or "Calendar & holidays".',
           'Change what you like, then tap "Save changes".',
         ],
         tips: ['Signed in, settings are shared with the website. As a guest they stay on this device.'],
@@ -328,7 +328,7 @@ export const HELP: HelpSection[] = [
         title: 'See what Today offers for your practice and your deities',
         summary: 'A line from each practice you keep, your deities’ days, and a working for tonight.',
         steps: [
-          'Choose your practices in More, then Settings, then "My practice", and your gods in "My deities".',
+          'Choose your crafts in More, then Settings, then "Your crafts", and your gods in "My deities".',
           'On Today, choose "Sky & Lore" at the top and find "For your practice".',
           'Each line comes from one of your practices or deities, such as tonight’s planting moon or the next tide. On a deity’s holy day its line shows in gold.',
           'Tap a line to open that tool, or "A working for tonight" to read a premade working that suits the night.',
@@ -1180,7 +1180,7 @@ export const HELP: HelpSection[] = [
       },
       {
         id: 'altar-apothecary',
-        title: 'Make something new in My Apothecary',
+        title: 'Make something new in your Apothecary',
         summary: 'Record a jar, oil, sachet or other working as a recipe you can place on the altar.',
         steps: [
           'With nothing selected, tap "Apothecary".',
@@ -1188,11 +1188,11 @@ export const HELP: HelpSection[] = [
           'Choose what you are making, name it, and add ingredients from the altar, cabinet, Library or your apothecary.',
           'Add an intention, notes, and choose tending reminders if you want them.',
           'Under "Did it work? Look back", keep the day that suits its intention or choose another.',
-          'Tap "Save to My Apothecary and place it".',
+          'Tap "Save to your Apothecary and place it".',
         ],
         tips: [
           'In the Apothecary list, tap "Place" to put one on the altar or "Recipe" to open its recipe.',
-          'On its look-back day you’re asked whether it worked: on Today, in the journal under "Spell jars & sachets", and with a reminder if look-back reminders are on. Answers count in What works for you.',
+          'On its look-back day you’re asked whether it worked: on Today, in the journal under "Apothecary: jars & sachets", and with a reminder if look-back reminders are on. Answers count in What works for you.',
         ],
         keywords: ['recipe', 'oil', 'tincture', 'blend', 'potion', 'crafted item', 'workshop', 'did it work', 'look back', 'spell jar', 'sachet'],
       },
@@ -1347,7 +1347,7 @@ export const HELP: HelpSection[] = [
       {
         id: 'altar-record-grimoire',
         title: 'Record an altar or group in your Grimoire',
-        summary: 'Turn what you set up into a page in your Book of Shadows.',
+        summary: 'Turn what you set up into a page in your Grimoire.',
         steps: [
           'Sign in, then with nothing selected tap "Record in Grimoire". To record a group, select one of its objects and tap "Send group to Grimoire".',
           'Name the working and choose its type.',
@@ -1358,7 +1358,7 @@ export const HELP: HelpSection[] = [
       },
       {
         id: 'altar-link-page',
-        title: 'Link an object to a page in your Book of Shadows',
+        title: 'Link an object to a page in your Grimoire',
         summary: 'Open a page from an object with one tap.',
         steps: [
           'Select an object.',
@@ -1388,11 +1388,11 @@ export const HELP: HelpSection[] = [
   {
     id: 'grimoire',
     title: 'Grimoire',
-    intro: 'Your Book of Shadows: pages you write, and the Living Library beside them.',
+    intro: 'Your Grimoire: pages you write, your dreams, and the Living Library as a section of it.',
     topics: [
       {
         id: 'grimoire-open-book',
-        title: 'Open your Book of Shadows',
+        title: 'Open your Grimoire',
         summary: 'Practice → Grimoire holds the book you keep on the website.',
         steps: [
           'Open Practice → Grimoire.',
@@ -1411,7 +1411,7 @@ export const HELP: HelpSection[] = [
         steps: [
           'Open Practice → Grimoire, or any page.',
           'Switch on "Mundane" at the top right.',
-          'To always open in plain language, go to More, Settings, Book of Shadows and switch on "Mundane mode by default".',
+          'To always open in plain language, go to More, Settings, Grimoire and switch on "Mundane mode by default".',
         ],
         href: '/more/settings/book',
         keywords: ['plain language', 'discreet', 'hidden', 'non-magical words', 'privacy mode'],
@@ -1525,7 +1525,7 @@ export const HELP: HelpSection[] = [
         title: 'Keep a dream journal',
         summary: 'Write dreams down, with the moon they came under.',
         steps: [
-          'Open Practice → Grimoire and open the Dreams shelf, then "Open Dreams" (or My practice, then Hedge, then "Dream journal").',
+          'Open Practice → Grimoire and open the Dreams shelf, then "Open Dreams" (or Craft tools, then Hedge, then "Dream journal").',
           'Tap "Write down a dream".',
           'Type the dream and a title, choose "Which morning?", and add symbols and feelings.',
           'Optionally mark it Lucid or Recurring, then tap "Keep this dream".',
@@ -1533,7 +1533,7 @@ export const HELP: HelpSection[] = [
         tips: [
           'Tap "Symbols and moons" to see what keeps returning and the phases your dreams cluster in.',
           'Turn on "Last night’s dream" under Remind me for a gentle morning nudge. In the morning, Today also offers a place to catch a line or two.',
-          'To hide the Dreams shelf, switch off "Show Dreams" in More, then Settings, then "Book of Shadows".',
+          'To hide the Dreams shelf, switch off "Show Dreams" in More, then Settings, then "Grimoire".',
         ],
         href: '/grimoire/dreams',
         keywords: ['dreams', 'dreamwork', 'symbols', 'lucid', 'recurring dream'],
@@ -1560,6 +1560,7 @@ export const HELP: HelpSection[] = [
           'Tap a card or stave for its picture or letter, its three words and its page.',
         ],
         tips: [
+          'Rituals → Divination → "Card meanings" opens the same pages, with a search.',
           'They follow the Traditional Information setting in More, then Settings, then "Living Library".',
         ],
         keywords: ['tarot meanings', 'card meaning', 'rune meaning', 'ogham meaning', 'futhark', 'major arcana', 'minor arcana', 'lenormand meanings', 'kipper meanings', 'playing card insert'],
@@ -1567,9 +1568,9 @@ export const HELP: HelpSection[] = [
       {
         id: 'grimoire-new-entry',
         title: 'Add your own notes to a herb, crystal or deity',
-        summary: 'The "New entry" button adds a My Practice entry to the Living Library.',
+        summary: 'The "New Library note" button adds a My Practice entry to the Living Library.',
         steps: [
-          'Open Practice → Grimoire and tap "New entry".',
+          'Open Practice → Grimoire and tap "New Library note".',
           'Choose a category, then search the Library or type a new name.',
           'Fill in the fields, such as Meaning, Uses, Pairs With, Substitutions and Notes.',
           'Tap "Create entry".',
@@ -1578,11 +1579,24 @@ export const HELP: HelpSection[] = [
         keywords: ['my practice entry', 'personal notes', 'custom herb', 'custom crystal', 'new practice entry'],
       },
       {
+        id: 'grimoire-share-page',
+        title: 'Share a page with a coven or the Sanctuary',
+        summary: 'Share… on a page offers both ways to share it.',
+        steps: [
+          'Open Practice → Grimoire and tap a page.',
+          'Tap "Share…".',
+          'Tap "Suggest to a coven" to send a copy to a coven’s book, for those who approve its pages.',
+          'Or tap "Make an offering" to offer it to the Community Grimoire. The form starts with the page’s title and words, for you to change before you send it.',
+        ],
+        tips: ['Your own page is never changed by either.'],
+        keywords: ['share', 'suggest to a coven', 'coven book', 'offering', 'community grimoire', 'publish a page'],
+      },
+      {
         id: 'grimoire-page-font',
         title: 'Change the font on your pages',
-        summary: 'Pick the look of the writing in your Book of Shadows.',
+        summary: 'Pick the look of the writing in your Grimoire.',
         steps: [
-          'Open More, then Settings, then "Book of Shadows".',
+          'Open More, then Settings, then "Grimoire".',
           'Under "Page font", choose Classic Serif, Dark Academia, Soft Journal or Handwritten.',
           'Tap "Save changes".',
         ],
@@ -1592,9 +1606,9 @@ export const HELP: HelpSection[] = [
       {
         id: 'grimoire-traditional-pages-setting',
         title: 'Keep Traditional Library pages in your book on the website',
-        summary: 'A setting for people who use the website’s Book of Shadows too.',
+        summary: 'A setting for people who use the website’s Grimoire too.',
         steps: [
-          'Open More, then Settings, then "Book of Shadows".',
+          'Open More, then Settings, then "Grimoire".',
           'Switch on "Add Traditional Library pages".',
           'Tap "Save changes".',
         ],
@@ -1613,13 +1627,13 @@ export const HELP: HelpSection[] = [
       {
         id: 'rituals-home',
         title: 'Find your way around Practice → Rituals',
-        summary: 'Practice → Rituals gathers planning, beginning, the premade book and your journal.',
+        summary: 'Practice → Rituals gathers what you do, what you learn and what you record.',
         steps: [
           'Open Practice → Rituals.',
           'The top cards show a ritual under way, and "Your next working".',
-          'Under "Divination & sigils": "Draw cards, runes or ogham", "Your readings" and "Sigil maker".',
-          'The list below holds "Begin a ritual", "My practice", "Rituals & spells", "Dedication journeys", "Plan a night", "Build a spell" and "Reminders".',
-          'Scroll down for your Journal and "Your moon".',
+          'Under Do: "Begin a ritual", "Plan a ritual", "Build a spell", "Sigil maker" and "Divination".',
+          'Under Learn: "Workings library", "Dedication journeys" and "Craft tools".',
+          'Under Record: your latest rituals, "Record a ritual", Journal, "Your moon" and Apothecary.',
         ],
         href: '/rituals',
         keywords: ['rituals', 'workings', 'spells', 'overview'],
@@ -1629,7 +1643,7 @@ export const HELP: HelpSection[] = [
         title: 'Plan a ritual for the right night',
         summary: 'Choose an intention and the app finds nights whose moon and weekday suit it.',
         steps: [
-          'Open Rituals and tap "Plan a night" (the screen is called "Find the night").',
+          'Open Rituals and, under Do, tap "Plan a ritual" (the screen is called "Find the night").',
           'Under "What is it for?", choose an intention such as Protection, Prosperity, Love or Healing.',
           'Tap a night under "Best nights in the next month", or step to a night of your own with "−7", "‹", "›" and "+7".',
           'Choose a time and "Which ritual?" (a template, or "Decide later"), and optionally add a name.',
@@ -1771,7 +1785,7 @@ export const HELP: HelpSection[] = [
         title: 'Find a ritual or spell in the premade book',
         summary: 'Workings for the Wheel of the Year, folk ways and every practice.',
         steps: [
-          'Open Rituals and tap "Rituals & spells".',
+          'Open Rituals and, under Learn, tap "Workings library".',
           'Look at "For you tonight", then search or filter by Kind, Practice, Intention or Path.',
           'Tap a working to read its summary, safety notes, what you will need and steps.',
           'Tap "Begin this ritual", "Begin on an altar" or "Plan a night for it".',
@@ -1785,7 +1799,7 @@ export const HELP: HelpSection[] = [
         title: 'Check what you need for a premade working',
         summary: 'Each working lists its ingredients and links them to the Library.',
         steps: [
-          'Open a working in "Rituals & spells".',
+          'Open a working in the Workings library.',
           'Read the ingredient check, then "You’ll need".',
           'Tap an underlined ingredient to open it in the Living Library.',
         ],
@@ -1796,7 +1810,7 @@ export const HELP: HelpSection[] = [
         title: 'Change your ritual reminders',
         summary: 'Reminders live with the moon reminders.',
         steps: [
-          'Open a plan and tap "Reminder settings", or open Rituals, tap "Reminders", then "Moon and rituals".',
+          'Open a plan and tap "Reminder settings", or open More, tap "Reminders", then "Moon and rituals".',
           'Under "Planned rituals", switch "Remind me before a planned ritual" on or off.',
           'Choose how long before.',
         ],
@@ -1849,10 +1863,10 @@ export const HELP: HelpSection[] = [
       {
         id: 'apothecary-did-it-work',
         title: 'Look back on a spell jar, sachet or anything you made',
-        summary: 'What you make in My Apothecary can be asked "Did it work?" too.',
+        summary: 'What you make in your Apothecary can be asked "Did it work?" too.',
         steps: [
-          'As you make a spell jar, sachet or something in My Apothecary, keep the look-back day that suits its intention under "Did it work? Look back", or choose another.',
-          'Open Practice → Rituals, then Journal, then "Spell jars & sachets" to see what is "Looking back soon", "Looked back on" and has "No look-back day yet".',
+          'As you make a spell jar, sachet or something in your Apothecary, keep the look-back day that suits its intention under "Did it work? Look back", or choose another.',
+          'Open Practice → Rituals and, under Record, tap Apothecary (or Journal, then "Apothecary: jars & sachets") to see what is "Looking back soon", "Looked back on" and has "No look-back day yet".',
           'On its day, Today and your Journal ask whether it worked. Tap it to answer, and to read "What went into it".',
         ],
         href: '/rituals/apothecary',
@@ -2068,7 +2082,7 @@ export const HELP: HelpSection[] = [
         title: 'Draw tarot cards, runes or ogham',
         summary: 'A card for the day, three cards, the Celtic Cross and many more spreads, runes or ogham staves, with what each means; or a spread of your own.',
         steps: [
-          'On the Rituals home, under Divination & sigils, tap "Draw cards, runes or ogham". On Today, "Draw a card for the day" opens it too.',
+          'On the Rituals home, under Do, tap "Divination", then "Draw cards, runes or ogham". On Today, "Draw a card for the day" opens it too.',
           'Choose Tarot, Runes or Ogham. Tap the spread to see the others, grouped Quick, Classic, Moon & seasons, Deep work and Your spreads, each with a picture of its shape.',
           'Tap "Shuffle and draw" ("Cast the runes" or "Draw the staves"), then tap each card to turn it over and read what it means in its place, or "Turn them all over". Big spreads scroll sideways; "Look closer" makes them bigger.',
           'Write what you make of it, choose a day to come back to it, and tap "Keep this reading". It goes into your readings under Divination, and lays out in its shape again when you open it.',
@@ -2094,7 +2108,7 @@ export const HELP: HelpSection[] = [
         title: 'Make a spread of your own',
         summary: 'Name it, give it a shape, and say what each place means.',
         steps: [
-          'Open Practice → Rituals, tap "Your readings", then "Make a spread". Or, as you draw, tap the spread, then "Make your own".',
+          'Open Practice → Rituals, tap "Divination", then "Make a spread". Or, as you draw, tap the spread, then "Make your own".',
           'Give it a name and what it’s for, then choose what to draw and its shape: a line, a cross, an arc, a circle or a grid.',
           'Name each place and add a line on how to read it. Tap "Add a place" for another, or "Take this place out".',
           'Tap "Keep this spread". It is under "Your spreads" when you draw; tap "Change this spread" there to change it, or "Delete this spread".',
@@ -2124,7 +2138,7 @@ export const HELP: HelpSection[] = [
         title: 'Add an oracle deck of your own',
         summary: 'Your own deck’s cards, with photos and meanings, to draw from or to log the cards you pull by hand.',
         steps: [
-          'Open Practice → Rituals, tap "Your readings", then "Your oracle decks", then "Make a deck". Or choose "Your decks" on the draw screen.',
+          'Open Practice → Rituals, tap "Divination", then "Your oracle decks", then "Make a deck". Or choose "Your decks" on the draw screen.',
           'Name it, and add a cover photo if you like. Turn on "Read reversals" if you read cards upside down.',
           'Add cards one at a time (name, a few words, what it means, a photo of the card), or paste in a whole list, one "Name — meaning" to a line.',
           'Tap "Keep this deck". On the draw screen, choose "Your decks" and the deck, then any spread: its own, any tarot spread, or one of yours.',
@@ -2219,7 +2233,7 @@ export const HELP: HelpSection[] = [
         title: 'Log a divination reading and come back to it',
         summary: 'Record cards, runes or other readings, then see how they turned out.',
         steps: [
-          'On the Rituals home, under Divination & sigils, tap "Your readings", then "Log a reading". Divination is open to every practice.',
+          'On the Rituals home, under Do, tap "Divination", then "Log a reading". Your readings are listed below it. Divination is open to every practice.',
           'Choose a method such as Tarot, Oracle cards, Runes, Tea leaves, Scrying, Pendulum or Ogham.',
           'Type the question and what came up, and add cards or runes drawn.',
           'Under "Come back to it", choose a day, then tap "Keep this reading".',
@@ -2233,7 +2247,7 @@ export const HELP: HelpSection[] = [
         title: 'Make a sigil',
         summary: 'A statement of intent made into one mark: from its letters, on a planetary square, or drawn by hand.',
         steps: [
-          'On the Rituals home, under "Divination & sigils", tap "Sigil maker". It is open to every practice; Eclectic, the altar and the Grimoire open it too.',
+          'On the Rituals home, under Do, tap "Sigil maker", beside "Build a spell". It is open to every practice; Eclectic, the altar and the Grimoire open it too.',
           'Under "Your statement of intent", write it as if it were already so. Switch on "Strike out the vowels too" if you like.',
           'Under "How to make it", choose "From the letters", "On a planetary square" or "Draw it yourself", then choose how it looks and whether it has "A circle around it".',
           'Under "Keep it", name it and tap "Keep it with my sigils", or "Give it a page in my Grimoire".',
@@ -2247,10 +2261,10 @@ export const HELP: HelpSection[] = [
     ],
   },
 
-  // ─── My practice ──────────────────────────────────────────────────────
+  // ─── Craft tools (the section id stays 'my-practice') ─────────────────
   {
     id: 'my-practice',
-    title: 'My practice',
+    title: 'Craft tools',
     intro: 'Ten practices, each with its own tools. Choose yours to put them first.',
     topics: [
       {
@@ -2258,7 +2272,7 @@ export const HELP: HelpSection[] = [
         title: 'Choose how you practise',
         summary: 'Pick as many practices as fit; their tools and workings come first.',
         steps: [
-          'Open More, then Settings, then "My practice".',
+          'Open More, then Settings, then "Your crafts".',
           'Switch on the practices you keep: Eclectic, Green, Kitchen & hearth, Hedge, Solitary, Cosmic & celestial, Crystal, Elemental, Sea, or Traditional & folk.',
           'Tap "Save changes".',
         ],
@@ -2269,10 +2283,10 @@ export const HELP: HelpSection[] = [
       {
         id: 'practice-hub',
         title: 'Open the tools for your practice',
-        summary: 'My practice lists each kind of craft and its tools.',
+        summary: 'Craft tools lists each kind of craft and its tools.',
         steps: [
-          'Open Rituals and tap "My practice". (From More, tap "My practice" under Practice.)',
-          'Tap one of your practices under "Your practice", or any under "Other practices".',
+          'Open Rituals and, under Learn, tap "Craft tools".',
+          'Tap one of your crafts under "Your crafts", or any under "Other practices".',
           'Tap a tool on that practice’s page.',
           'Tap its premade workings row, such as "Green workings", for rituals and spells made for it.',
         ],
@@ -2284,7 +2298,7 @@ export const HELP: HelpSection[] = [
         title: 'Plant by the moon',
         summary: 'What to sow, tend and harvest tonight.',
         steps: [
-          'Open My practice, then Green, then "Planting by the moon".',
+          'Open Craft tools, then Green, then "Planting by the moon".',
           'Read tonight’s phase, what suits it and why.',
           'Look at "The moon’s sign" and "The next fourteen nights".',
           'Tap "Log it in My garden" or "What’s in season now".',
@@ -2297,7 +2311,7 @@ export const HELP: HelpSection[] = [
         title: 'See what is in season now',
         summary: 'Herbs to sow and gather this month where you are.',
         steps: [
-          'Open My practice, then Green, then "In season now".',
+          'Open Craft tools, then Green, then "In season now".',
           'Choose "Northern" or "Southern" under Hemisphere if needed.',
           'Tap a month to look elsewhere in the year.',
           'Tap a herb to open its Living Library page.',
@@ -2310,7 +2324,7 @@ export const HELP: HelpSection[] = [
         title: 'Keep a magical garden',
         summary: 'Track your plants, sowings and harvests.',
         steps: [
-          'Open My practice, then Green, then "My garden".',
+          'Open Craft tools, then Green, then "My garden".',
           'Tap "Add a plant".',
           'Name it, optionally link it to its Living Library herb, and say where it grows.',
           'Choose "Sowed as seed" or "Planted", and the date, then tap "Add to my garden".',
@@ -2335,7 +2349,7 @@ export const HELP: HelpSection[] = [
         title: 'Look up a pantry ingredient’s correspondences',
         summary: 'Salt, honey, cinnamon and the rest of the cupboard.',
         steps: [
-          'Open My practice, then "Kitchen & hearth", then "Pantry correspondences".',
+          'Open Craft tools, then "Kitchen & hearth", then "Pantry correspondences".',
           'Search, or choose a Shelf, an Element, or "Good for…".',
           'Tap an item to read its lore, how to use it and "Take care".',
           'Tap "Open … in the Library" when it has a full entry.',
@@ -2348,7 +2362,7 @@ export const HELP: HelpSection[] = [
         title: 'Make a simmer pot',
         summary: 'A pot for your home from what you have, for an intention and a season.',
         steps: [
-          'Open My practice, then "Kitchen & hearth", then "Simmer pot".',
+          'Open Craft tools, then "Kitchen & hearth", then "Simmer pot".',
           'Under "What’s it for?", choose an intention, then a Season.',
           'Read the ingredients and "At the stove".',
           'Tap "Begin as a ritual" to be guided through it.',
@@ -2361,7 +2375,7 @@ export const HELP: HelpSection[] = [
         title: 'Do housework by the moon',
         summary: 'Which tasks suit tonight.',
         steps: [
-          'Open My practice, then "Kitchen & hearth", then "Home by the moon".',
+          'Open Craft tools, then "Kitchen & hearth", then "Home by the moon".',
           'Read the part of the moon’s month and its list of tasks.',
           'Tick tasks off as you do them.',
           'Tap a working under "Workings that suit tonight".',
@@ -2374,7 +2388,7 @@ export const HELP: HelpSection[] = [
         title: 'Use the kitchen spell book',
         summary: 'Recipes as workings: breads, broths, washes and blessings.',
         steps: [
-          'Open My practice, then "Kitchen & hearth", then "Kitchen spell book".',
+          'Open Craft tools, then "Kitchen & hearth", then "Kitchen spell book".',
           'Search, or choose a "For" intention.',
           'Tap a recipe to read ingredients, method and the words to say.',
         ],
@@ -2386,7 +2400,7 @@ export const HELP: HelpSection[] = [
         title: 'Remember your ancestors and the beloved dead',
         summary: 'Keep the people you carry, with their days and a candle to light.',
         steps: [
-          'Open My practice, then Hedge, then "Ancestors".',
+          'Open Craft tools, then Hedge, then "Ancestors".',
           'Tap "Add someone".',
           'Type their name and who they are to you, add born and died dates, and what they loved.',
           'Tap "Remember them".',
@@ -2426,7 +2440,7 @@ export const HELP: HelpSection[] = [
         title: 'Read your birth chart',
         summary: 'Your sun, moon and rising, and what touches them today.',
         steps: [
-          'Open More and tap "Your birth chart". (Or My practice, Cosmic & celestial, "My chart".)',
+          'Open Rituals, then Craft tools, then "Cosmic & celestial", then "My chart".',
           'Read "Your big three": Sun, Moon and rising.',
           'See "What touches your chart today" and "The Moon in your signs".',
           'Open "The rest of your chart" for planets, houses and aspects.',
@@ -2439,7 +2453,7 @@ export const HELP: HelpSection[] = [
         title: 'Find the planetary hour for your working',
         summary: 'Today’s hours and the void-of-course moon.',
         steps: [
-          'Open My practice, then "Cosmic & celestial", then "Planetary hours".',
+          'Open Craft tools, then "Cosmic & celestial", then "Planetary hours".',
           'Read "Now" for the current hour and what it suits.',
           'Under "Find the next hour of", tap a planet to see its next hours this week.',
           'Scroll for the day and night hours.',
@@ -2453,7 +2467,7 @@ export const HELP: HelpSection[] = [
         title: 'Keep a collection of stones and track their cleansing',
         summary: 'Your collection, and when each stone was last cleansed.',
         steps: [
-          'Open My practice, then Crystal, then "My stones".',
+          'Open Craft tools, then Crystal, then "My stones".',
           'Tap "Add a stone", search the Library or type your own name, and choose its form.',
           'Add where it came from and what it is working on, then tap "Save stone".',
           'Under "When stones fall due", choose how often cleansing is due.',
@@ -2478,7 +2492,7 @@ export const HELP: HelpSection[] = [
         title: 'Check which stones are safe in water, sun and salt',
         summary: 'Some stones dissolve, fade or are toxic.',
         steps: [
-          'Open My practice, then Crystal, then "Stone care".',
+          'Open Craft tools, then Crystal, then "Stone care".',
           'Read "Reading the badges".',
           'Type in "Find a stone" or use the filters.',
           'Open a stone to see its hardness, notes and safe cleansing methods.',
@@ -2491,7 +2505,7 @@ export const HELP: HelpSection[] = [
         title: 'See the balance of the elements in your work',
         summary: 'Earth, air, fire and water in what you use.',
         steps: [
-          'Open My practice, then Elemental, then "Elements in your work".',
+          'Open Craft tools, then Elemental, then "Elements in your work".',
           'Read "Your balance" and which element lags behind.',
           'Tap "Begin" a suggested rite, or "Read it first".',
           'Open "How this is worked out" for the details.',
@@ -2504,7 +2518,7 @@ export const HELP: HelpSection[] = [
         title: 'Plan around the weather',
         summary: 'Rain, wind, storm and clear skies for the next three days.',
         steps: [
-          'Open My practice, then Elemental, then "Weather for working".',
+          'Open Craft tools, then Elemental, then "Weather for working".',
           'Tap "Use my location", or "Enter it by hand".',
           'Read each day and tap a suggested working.',
           'Pull down to refresh the forecast.',
@@ -2518,7 +2532,7 @@ export const HELP: HelpSection[] = [
         title: 'Follow the tides',
         summary: 'Springs and neaps anywhere; high and low water for US coasts.',
         steps: [
-          'Open My practice, then Sea, then "Tides".',
+          'Open Craft tools, then Sea, then "Tides".',
           'Read "By the moon, everywhere" and "Springs and neaps ahead".',
           'For high and low water on a US coast, tap "Choose a station".',
           'Choose "Feet" or "Metres".',
@@ -2544,7 +2558,7 @@ export const HELP: HelpSection[] = [
         title: 'Log shells, sea glass and driftwood',
         summary: 'Record where the tide left them and what you will ask of them.',
         steps: [
-          'Open My practice, then Sea, then "Shore finds".',
+          'Open Craft tools, then Sea, then "Shore finds".',
           'Tap "Log a find".',
           'Choose what it is, such as Shell, Sea glass, Hagstone or Driftwood, then its colour, where and when.',
           'Add what it is for and notes, then tap "Save find".',
@@ -2557,7 +2571,7 @@ export const HELP: HelpSection[] = [
         title: 'Read the folk calendar',
         summary: 'Old customs through the year, and a way to keep each now.',
         steps: [
-          'Open My practice, then "Traditional & folk", then "Folk calendar".',
+          'Open Craft tools, then "Traditional & folk", then "Folk calendar".',
           'Read "The next 30 days".',
           'Tap a month under "Through the year".',
           'Open a custom to read what people did and "Keeping it now".',
@@ -2570,7 +2584,7 @@ export const HELP: HelpSection[] = [
         title: 'Write down local lore',
         summary: 'A notebook for the lore of where you live.',
         steps: [
-          'Open My practice, then "Traditional & folk", then "Local lore".',
+          'Open Craft tools, then "Traditional & folk", then "Local lore".',
           'Tap "Write down some lore".',
           'Choose what kind: Place, Spirit or being, Story, Custom, Saying, or Plant or creature lore.',
           'Add a title, where, the lore itself and who told you, then tap "Keep this lore".',
@@ -2583,7 +2597,7 @@ export const HELP: HelpSection[] = [
         title: 'Read weather lore for the month',
         summary: 'Old sayings with a plain note on whether the weather bears them out.',
         steps: [
-          'Open My practice, then "Traditional & folk", then "Weather lore".',
+          'Open Craft tools, then "Traditional & folk", then "Weather lore".',
           'Tap a month to read its sayings.',
           'South of the equator, tap "Use my location" and switch on "Follow my seasons".',
         ],
@@ -2595,7 +2609,7 @@ export const HELP: HelpSection[] = [
         title: 'Keep a daily devotion',
         summary: 'A few minutes in the morning and at night, gently kept.',
         steps: [
-          'Open My practice, then Solitary, then "Daily devotion".',
+          'Open Craft tools, then Solitary, then "Daily devotion".',
           'Read the prompt for this morning or evening.',
           'Tap "I kept my morning practice" or "I kept my evening practice".',
           'Optionally write "A note for today" and tap "Save note".',
@@ -2609,7 +2623,7 @@ export const HELP: HelpSection[] = [
         title: 'Write your own correspondences',
         summary: 'What things mean to you, beside the Library’s meanings.',
         steps: [
-          'Open My practice, then Eclectic, then "My correspondences".',
+          'Open Craft tools, then Eclectic, then "My correspondences".',
           'Tap "Add a correspondence".',
           'Name the thing, or pick it from the Library to see the traditional view beside yours.',
           'Write what it means to you. Optionally add element, planet, day, colour and where it came from.',
@@ -2623,7 +2637,7 @@ export const HELP: HelpSection[] = [
         title: 'Borrow a tool from every path',
         summary: 'The Eclectic page offers one tool from each practice, changing daily.',
         steps: [
-          'Open My practice, then Eclectic.',
+          'Open Craft tools, then Eclectic.',
           'Scroll to "From every path".',
           'Tap a tool to open that practice.',
         ],
@@ -2635,7 +2649,7 @@ export const HELP: HelpSection[] = [
         title: 'Learn whose land you are on',
         summary: 'A prompt to learn the Indigenous history of where you practise.',
         steps: [
-          'Open My practice, then Green, Hedge, or "Traditional & folk".',
+          'Open Craft tools, then Green, Hedge, or "Traditional & folk".',
           'Scroll to the card "Whose land are you on?".',
           'Tap "Open the Native Land map" to look up your place in your browser.',
         ],
@@ -2656,12 +2670,12 @@ export const HELP: HelpSection[] = [
         title: 'Browse and search the Living Library',
         summary: 'Find an entry by name, meaning or tradition.',
         steps: [
-          'Open More and tap "Living Library".',
+          'Open Practice → Grimoire and tap "Living Library".',
           'Type in "Search the Library".',
           'Choose a filter under "Show": All, My path, My Practice, Herbs, Crystals, Candles, Deities, Tools or Vessels.',
           'Tap an entry to open it.',
         ],
-        href: '/more/library',
+        href: '/grimoire/library',
         keywords: ['library', 'herbs', 'crystals', 'deities', 'correspondences', 'lookup'],
       },
       {
@@ -2693,12 +2707,12 @@ export const HELP: HelpSection[] = [
         title: 'Make an entry of your own',
         summary: 'Create a custom herb, crystal, candle, deity, tool or vessel.',
         steps: [
-          'Sign in. Open Practice → Grimoire and tap "New entry".',
+          'Sign in. Open Practice → Grimoire and tap "New Library note".',
           'Choose a category, then type a new name in "Search the Library, or type a new name".',
           'Tap the row that begins "Create".',
           'Fill in your notes and tap "Create entry".',
         ],
-        keywords: ['custom entry', 'add herb', 'new entry', 'own deity'],
+        keywords: ['custom entry', 'add herb', 'new entry', 'library note', 'own deity'],
       },
       {
         id: 'library-relationships',
@@ -2781,13 +2795,13 @@ export const HELP: HelpSection[] = [
         title: 'Read about sourcing with care',
         summary: 'Plants, resins and stones to buy thoughtfully, and what to use instead.',
         steps: [
-          'Open More, then "Living Library".',
+          'Open Practice → Grimoire, then "Living Library".',
           'Tap "Sourcing with care".',
           'Search the notes. Each says "Why care" and "Instead".',
           'Tap "Open its Library page" to read the entry.',
         ],
         tips: ['An entry with a concern shows a "Sourcing with care" card near the top.'],
-        href: '/more/library/sourcing',
+        href: '/grimoire/library/sourcing',
         keywords: ['white sage', 'palo santo', 'sandalwood', 'ethical', 'endangered', 'sustainable'],
       },
       {
@@ -2795,13 +2809,13 @@ export const HELP: HelpSection[] = [
         title: 'Read the Closed & living traditions guide',
         summary: 'What the app doesn’t teach, and why.',
         steps: [
-          'Open More, then "Living Library", then "Closed & living traditions".',
+          'Open Practice → Grimoire, then "Living Library", then "Closed & living traditions".',
           'Read "What closed means and why it matters".',
           'Search, or filter by openness, then tap a tradition.',
           'Read its sections, "How people come in", "Myths → truth" and "How to learn".',
         ],
         tips: ['Tap "Send a correction" at the top of any entry to email us.'],
-        href: '/more/library/closed',
+        href: '/grimoire/library/closed',
         keywords: ['closed practice', 'cultural appropriation', 'initiatory', 'hoodoo', 'voodoo', 'santeria', 'indigenous', 'respect'],
       },
       {
@@ -3007,12 +3021,12 @@ export const HELP: HelpSection[] = [
         summary: 'What share of the coven practises each way, keeps each path and honours each deity as patron or otherwise, never who.',
         steps: [
           'Open your coven and tap "Manage", then "Paths in the coven". If the coven’s head shows it to everyone, it’s on the coven’s page under "The coven" too.',
-          'Each bar is a share of those who have said: how they practise (Settings → My practice), their path (Settings → Living Library → My path) and their deities (Settings → My deities), as patrons, as deities dedicated to, and honoured in any way.',
+          'Each bar is a share of those who have said: how they practise (Settings → Your crafts), their path (Settings → Living Library → My path) and their deities (Settings → My deities), as patrons, as deities dedicated to, and honoured in any way.',
           'The coven’s head always sees it, as do those who keep the members’ record. The head can switch on "Show it to the whole coven" at the foot of it.',
         ],
         tips: [
           'It never shows who keeps what. Anything fewer than three share is gathered under "Other (fewer than 3)", and nothing shows until five members have shared.',
-          'To be left out of every coven’s count, open Settings → My practice and turn off "Count me in my covens’ paths overview".',
+          'To be left out of every coven’s count, open Settings → Your crafts and turn off "Count me in my covens’ paths overview".',
         ],
         keywords: ['paths', 'traditions', 'patron', 'deities', 'percentage', 'green witch', 'overview', 'anonymous', 'privacy', 'statistics'],
       },
@@ -3132,7 +3146,10 @@ export const HELP: HelpSection[] = [
           'Tick that it is your own work, and that you agree to the Submission Terms.',
           'Tap "✦ Offer to the Sanctuary".',
         ],
-        tips: ['Your "Magical name" in Settings, Identity can be used instead of your preferred name.'],
+        tips: [
+          'Your "Magical name" in Settings, Identity can be used instead of your preferred name.',
+          'To offer a page you’ve written, open it in your Grimoire, tap "Share…", then "Make an offering".',
+        ],
         href: '/more/community/offer',
         keywords: ['submit', 'contribute', 'share a ritual', 'publish', 'story', 'dream experience'],
       },
@@ -3172,17 +3189,17 @@ export const HELP: HelpSection[] = [
     topics: [
       {
         id: 'sanctuary-journey',
-        title: 'Read My Journey',
+        title: 'Read My chronicle',
         summary: 'A chronicle of your practice, drawn from what you keep.',
         steps: [
-          'Open More and tap "My Journey".',
+          'Open More and tap "My chronicle".',
           'Search the chronicle, and choose what to "Show", the "Order" and "Group by" Month or Year.',
           'Tap an item to open it.',
           'Scroll for "First Pages", "Recorded Patterns" and "Recent Threads".',
         ],
-        tips: ['My Journey is not a measure of progress. Quiet chapters count too.'],
+        tips: ['My chronicle is not a measure of progress. Quiet chapters count too.'],
         href: '/more/journey',
-        keywords: ['chronicle', 'timeline', 'history', 'milestones', 'first pages'],
+        keywords: ['chronicle', 'my journey', 'timeline', 'history', 'milestones', 'first pages'],
       },
       {
         id: 'sanctuary-identity',

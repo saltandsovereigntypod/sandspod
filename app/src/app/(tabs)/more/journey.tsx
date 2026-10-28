@@ -19,13 +19,14 @@ import {
   type Grouping,
 } from '../../../lib/chronicle';
 import { useGrimoire } from '../../../lib/grimoire/store';
+import { MY_CHRONICLE } from '../../../lib/names';
 import { libraryHref, useLibrary } from '../../../lib/library';
 import { useRituals } from '../../../lib/rituals/store';
 import { useMySettings } from '../../../lib/settings/store';
 import { colors, fonts, radius, touch, type } from '../../../theme';
 
 const INTRO =
-  'Every practice tells a story. Some chapters are full of rituals, discoveries, and devotion. Others are quieter, marked only by a journal entry, an offering, or the lighting of a candle. My Journey is not a measure of progress. It gathers the threads of your practice so you can remember how your path unfolded.';
+  'Every practice tells a story. Some chapters are full of rituals, discoveries, and devotion. Others are quieter, marked only by a journal entry, an offering, or the lighting of a candle. My chronicle is not a measure of progress. It gathers the threads of your practice so you can remember how your path unfolded.';
 
 const DIRECTIONS = [
   { value: 'newest', label: 'Newest first' },
@@ -52,7 +53,7 @@ function hrefFor(target: ChronicleTarget): Href {
   }
 }
 
-/** My Journey: the Sanctuary's personal chronicle (the website's My Sanctuary → My Journey). */
+/** My chronicle (once My Journey): the Sanctuary's personal chronicle (the website's My Sanctuary → My Journey). */
 export default function Journey() {
   const [query, setQuery] = useState('');
   const deferred = useDeferredValue(query);
@@ -101,7 +102,7 @@ export default function Journey() {
   const nameOf = (entityId: string) => entries.find((entry) => entry.id === entityId)?.name;
 
   return (
-    <MoreScreen title="My Journey" eyebrow="A Personal Chronicle" back="/more" backLabel="Back to More">
+    <MoreScreen title={MY_CHRONICLE} eyebrow="A Personal Chronicle" back="/more" backLabel="Back to More">
       <Text style={type.body}>{INTRO}</Text>
 
       {all.length > 0 ? (
@@ -166,7 +167,7 @@ export default function Journey() {
         <Section>
           <Text style={type.body}>Your recorded journey begins with the first thing you choose to keep.</Text>
           <MenuList>
-            <MenuRow label="Open Book of Shadows" onPress={() => router.push('/grimoire')} />
+            <MenuRow label="Open your Grimoire" onPress={() => router.push('/grimoire')} />
             <MenuRow label="Visit the Altar" onPress={() => router.push('/altar')} />
             <MenuRow label="Create or Open a Ritual" last onPress={() => router.push('/rituals')} />
           </MenuList>

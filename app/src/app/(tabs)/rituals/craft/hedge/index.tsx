@@ -51,8 +51,8 @@ export default function HedgePractice() {
   ].sort((a, b) => a.inDays - b.inDays);
 
   return (
-    <RitualScreen back="My practice">
-      <Title eyebrow="My practice">Hedge</Title>
+    <RitualScreen back="Craft tools">
+      <Title eyebrow="Craft tools">Hedge</Title>
       {!!about && <Body muted>{about}</Body>}
 
       <Card accent>

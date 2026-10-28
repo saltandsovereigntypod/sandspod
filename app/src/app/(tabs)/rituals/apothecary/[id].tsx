@@ -40,7 +40,7 @@ export default function ApothecaryItemPage() {
           <Body>{item.notes}</Body>
         </Card>
       )}
-      <Body muted>To change the recipe or place it, open My Apothecary on the altar.</Body>
+      <Body muted>To change the recipe or place it, open Apothecary on the altar.</Body>
     </RitualScreen>
   );
 }

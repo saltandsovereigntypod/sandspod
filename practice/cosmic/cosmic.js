@@ -34,7 +34,7 @@
     const routes = [CHART_URL, "/practice/cosmic/hours/"];
 
     root.innerHTML = [
-      h.head("My practice", "Cosmic & celestial", { href: links.hub, label: "My practice" }),
+      h.head("Craft tools", "Cosmic & celestial", { href: links.hub, label: "Craft tools" }),
       about ? h.muted(about) : "",
       h.notice(problem),
       hour

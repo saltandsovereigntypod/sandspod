@@ -33,7 +33,7 @@
     const routes = ["/practice/folk/calendar/", LORE_URL, "/practice/folk/weather/"];
 
     root.innerHTML = [
-      h.head("My practice", "Traditional & folk", { href: links.hub, label: "My practice" }),
+      h.head("Craft tools", "Traditional & folk", { href: links.hub, label: "Craft tools" }),
       about ? h.muted(about) : "",
       h.notice(problem),
       next

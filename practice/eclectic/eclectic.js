@@ -32,8 +32,8 @@
     const picks = C.sampler(new Date());
     const workings = premade.PREMADE.filter((p) => p.practices.includes("eclectic"));
     return [
-      kit.back(kit.href.hub, "My practice"),
-      kit.head({ eyebrow: "My practice", title: "Eclectic", lede: about }),
+      kit.back(kit.href.hub, "Craft tools"),
+      kit.head({ eyebrow: "Craft tools", title: "Eclectic", lede: about }),
       kit.section(
         "Tools",
         kit.list(practices.CRAFT_TOOLS.eclectic.map((t, i) => kit.row({ url: i === 0 ? url.list : "/sigil/", title: t.title, detail: i === 0 && entries.length ? `${entries.length} of your own · ${t.detail.toLowerCase()}` : t.detail }))),

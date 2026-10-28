@@ -72,8 +72,8 @@
       }
       ${
         soonMade.length || answeredMade.length
-          ? `<section class="sp-section" aria-labelledby="rt-made" id="did-it-work-made"><h2 class="sp-label" id="rt-made">Spell jars &amp; sachets</h2>
-              <p class="sp-caption">What you’ve made in My Apothecary, and whether it worked.</p>
+          ? `<section class="sp-section" aria-labelledby="rt-made" id="did-it-work-made"><h2 class="sp-label" id="rt-made">Apothecary: jars &amp; sachets</h2>
+              <p class="sp-caption">What you’ve made in your Apothecary, and whether it worked.</p>
               ${[...soonMade, ...answeredMade].map((item) => D.itemCard(item, now)).join("")}</section>`
           : ""
       }

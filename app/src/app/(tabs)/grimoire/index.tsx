@@ -4,20 +4,18 @@ import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, T
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '../../../components/Button';
-import { StaveGlyph } from '../../../components/divination/Faces';
-import { KipperFace, LenormandArt } from '../../../components/divination/oracle/OracleFaces';
+import { DivinationMeanings } from '../../../components/divination/Meanings';
 import { DreamList, DreamRow } from '../../../components/grimoire/dreams';
 import { CustomiseBar, Disclosure, HomePartFrame, PageList, SectionPicker, SmallButton, SortAndFilter, SortNote } from '../../../components/grimoire/Home';
 import { MundaneToggle, useMundaneMode } from '../../../components/grimoire/presentation';
 import { FailedChanges } from '../../../components/grimoire/SaveStatus';
 import { usePersonalLayout } from '../../../components/grimoire/useLayout';
-import { Field } from '../../../components/more/ui';
+import { Field, MenuList, MenuRow } from '../../../components/more/ui';
+import { NEW_LIBRARY_NOTE } from '../../../lib/names';
 import { Icon } from '../../../components/Icon';
 import { DREAMS, normalizeDream, sortDreams, type DreamEntry } from '../../../lib/craft/hedge/dreams';
-import { countOf, DIVINATION_TITLE, divinationGroups, divinationRoute, wordsLine, type DivinationEntry, type DivinationGroup } from '../../../lib/divination/library';
-import { deckImages } from '../../../lib/divination/tarotAssets';
-import { chosenDeck, type DeckId } from '../../../lib/divination/decks';
-import { TarotArt } from '../../../components/divination/TarotArt';
+import { countOf, divinationGroups } from '../../../lib/divination/library';
+import { chosenDeck } from '../../../lib/divination/decks';
 import { useCraft } from '../../../lib/craft/store';
 import { confirmAction } from '../../../lib/grimoire/confirm';
 import { DREAM_ROUTES, DREAMS_SHELF, dreamSearchResults, dreamShelfLine } from '../../../lib/grimoire/dreams';
@@ -57,12 +55,13 @@ export default function Grimoire() {
           Grimoire
         </Text>
         <View style={styles.card}>
-          <Text style={type.cardTitle}>Your Book of Shadows</Text>
+          <Text style={type.cardTitle}>Your Grimoire</Text>
           <Text style={type.body}>
             Sign in with your Salt &amp; Sovereignty account to open the book you keep on the website.
           </Text>
           <Button label="Sign in" onPress={() => router.push('/sign-in')} />
         </View>
+        <LibraryLink />
         <GuestDreams />
       </Shell>
     );
@@ -97,8 +96,10 @@ export default function Grimoire() {
 
       <View style={styles.actions}>
         <Button label="New page" onPress={() => router.push('/grimoire/new-page')} style={styles.action} />
-        <Button label="New entry" variant="outline" onPress={() => router.push('/grimoire/practice')} style={styles.action} />
+        <Button label={NEW_LIBRARY_NOTE} variant="outline" onPress={() => router.push('/grimoire/practice')} style={styles.action} />
       </View>
+
+      <LibraryLink />
 
       <FailedChanges />
 
@@ -253,7 +254,7 @@ function ArrangedHome({ mundane }: { mundane: boolean }) {
     return (
       <HomePartFrame key={item.key} {...frame} item={searching ? { ...item, open: true } : item} count={total}>
         {shelf && <ShelfBody shelf={shelf} searching={searching} opened={opened} onToggle={toggleOpened} />}
-        {holdsDivination && <DivinationSection groups={divination} searching={searching} opened={opened} onToggle={toggleOpened} deck={chosenDeck(settings)} />}
+        {holdsDivination && <DivinationMeanings groups={divination} searching={searching} opened={opened} onToggle={toggleOpened} deck={chosenDeck(settings)} />}
       </HomePartFrame>
     );
   };
@@ -337,67 +338,21 @@ function ShelfBody({ shelf, searching, opened, onToggle }: { shelf: GrimoireShel
 }
 
 /**
- * Traditional Information → Divination: Tarot, Runes and Ogham as sibling
- * drop-downs, each card or stave a row with its picture or letter and its
- * three words, opening its page. Searching opens the ones that match.
+ * The Living Library, a section of your Grimoire: every herb, crystal,
+ * candle and deity with your My Practice notes, searchable and filtered.
+ * (It was More → Living Library; that route brings you here now.)
  */
-function DivinationSection({ groups, searching, opened, onToggle, deck }: { groups: DivinationGroup[]; searching: boolean; opened: Set<string>; onToggle: (key: string) => void; deck: DeckId }) {
+function LibraryLink() {
   return (
-    <View style={styles.pathSection}>
-      <Text style={styles.groupTitle}>{DIVINATION_TITLE}</Text>
-      {groups.map((group) => {
-        const key = `traditional:divination:${group.kind}`;
-        const open = searching || opened.has(key);
-        return (
-          <View key={key} style={styles.list}>
-            <Disclosure label={group.label} note={open && !searching ? group.note : undefined} count={countOf(group)} open={open} onPress={() => onToggle(key)} />
-            {open &&
-              group.subgroups.map((sub) => (
-                <View key={sub.key}>
-                  {group.subgroups.length > 1 && <Text style={[type.caption, styles.subgroup]}>{sub.label}</Text>}
-                  {sub.entries.map((entry) => (
-                    <DivinationRow key={entry.id} entry={entry} deck={deck} />
-                  ))}
-                </View>
-              ))}
-          </View>
-        );
-      })}
-    </View>
-  );
-}
-
-function DivinationRow({ entry, deck }: { entry: DivinationEntry; deck: DeckId }) {
-  // The card in your chosen deck (Settings → Divination).
-  const art = entry.cardId ? deckImages[deck][entry.cardId] : undefined;
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={`${entry.name}: ${entry.words.join(', ')}`}
-      onPress={() => router.push(divinationRoute(entry) as Href)}
-      style={({ pressed }) => [styles.shelfEntry, styles.divinationEntry, pressed && styles.pressed]}
-    >
-      {art ? (
-        <TarotArt place={art} style={styles.thumb} />
-      ) : entry.kind === 'lenormand' ? (
-        <LenormandArt id={entry.id} style={styles.thumb} />
-      ) : entry.kind === 'kipper' ? (
-        <View style={styles.thumb}>
-          <KipperFace name={entry.name} width={26} />
-        </View>
-      ) : (
-        <StaveGlyph glyph={entry.glyph ?? ''} kind={entry.kind === 'ogham' ? 'ogham' : 'runes'} size={26} />
-      )}
-      <View style={styles.grow}>
-        <Text style={styles.rowTitle} numberOfLines={1}>
-          {entry.name}
-        </Text>
-        <Text style={type.caption} numberOfLines={1}>
-          {wordsLine(entry.words)}
-        </Text>
-      </View>
-      <Icon name="chevron" size={14} color={colors.tabInactive} />
-    </Pressable>
+    <MenuList>
+      <MenuRow
+        label="Living Library"
+        detail="Search herbs, crystals, candles, deities and your My Practice notes"
+        icon="library"
+        last
+        onPress={() => router.push('/grimoire/library')}
+      />
+    </MenuList>
   );
 }
 

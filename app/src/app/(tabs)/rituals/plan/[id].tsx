@@ -81,7 +81,7 @@ export default function PlanView() {
       const saved = await saveTemplate(plan.draft);
       await savePlanWithCalendar({ ...plan, templateId: saved.id, draft: null });
       void grimoire.refresh();
-      tell('Saved', 'The spell is now a template in your account and your Book of Shadows.');
+      tell('Saved', 'The spell is now a template in your account and your Grimoire.');
     }, "Couldn't save");
 
   const setCalendar = (on: boolean) =>

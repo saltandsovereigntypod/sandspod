@@ -36,8 +36,8 @@ export default function SeaPractice() {
   };
 
   return (
-    <RitualScreen back="My practice">
-      <Title eyebrow="My practice">Sea</Title>
+    <RitualScreen back="Craft tools">
+      <Title eyebrow="Craft tools">Sea</Title>
       {!!about && <Body muted>{about}</Body>}
 
       <Card accent>

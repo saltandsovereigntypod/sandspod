@@ -24,8 +24,8 @@ export default function ApothecaryLookBacks() {
 
   return (
     <RitualScreen back="Back">
-      <Title eyebrow="Did it work?">Spell jars &amp; sachets</Title>
-      <Body muted>The spell jars, sachets, poppets, oils and other workings you’ve made in My Apothecary, and whether they worked.</Body>
+      <Title eyebrow="Jars & sachets">Apothecary</Title>
+      <Body muted>The spell jars, sachets, poppets, oils and other workings you’ve made in your Apothecary, and whether they worked.</Body>
 
       {status === 'loading' && !apothecary.length ? (
         <Body muted>Opening…</Body>

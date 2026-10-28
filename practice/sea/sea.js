@@ -110,7 +110,7 @@
     const { shortDate } = B.calendar;
 
     root.innerHTML = [
-      h.head("My practice", "Sea", { href: links.hub, label: "My practice" }),
+      h.head("Craft tools", "Sea", { href: links.hub, label: "Craft tools" }),
       about ? h.muted(about) : "",
       h.notice(problem),
       h.card(

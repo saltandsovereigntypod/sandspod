@@ -13,7 +13,7 @@ import { type } from '../../../../theme';
 // your covens' Paths in the coven (lib/covens/paths.ts).
 export default function PracticeSettings() {
   return (
-    <SettingsForm title="My practice">
+    <SettingsForm title="Your crafts">
       {(draft, set) => {
         const chosen = myPractices(draft);
         const toggle = (id: string, on: boolean) =>
@@ -23,7 +23,7 @@ export default function PracticeSettings() {
           <>
             <Section label="How you practise">
               <Text style={type.caption}>
-                Choose as many as fit. Rituals & spells puts workings for your practice first, and your path (Settings → Living Library) adds the traditions you keep.
+                Choose as many as fit. The Workings library puts workings for your practice first, and your path (Settings → Living Library) adds the traditions you keep.
               </Text>
               <MenuList>
                 {PRACTICES.map((p, index) => (

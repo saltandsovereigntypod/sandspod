@@ -72,7 +72,7 @@ export default function Journal() {
         <List>
           <Row
             icon="altar"
-            title="Spell jars & sachets"
+            title="Apothecary: jars & sachets"
             detail={withLookBack ? `Did they work? ${withLookBack} with a look-back day` : 'Did they work? Choose a day to look back'}
             last
             onPress={() => router.push('/rituals/apothecary')}

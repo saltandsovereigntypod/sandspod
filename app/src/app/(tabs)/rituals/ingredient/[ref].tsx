@@ -15,7 +15,7 @@ export default function Ingredient() {
   if (!item) {
     return (
       <RitualScreen back="Back">
-        <Title>Library</Title>
+        <Title eyebrow="From the Living Library">Not found</Title>
         <Body>This entry isn't in the app's Library yet.</Body>
       </RitualScreen>
     );
@@ -28,7 +28,7 @@ export default function Ingredient() {
 
   return (
     <RitualScreen back="Back">
-      <Title eyebrow={`Library · ${item.type}`}>{item.name}</Title>
+      <Title eyebrow={`From the Living Library · ${item.type}`}>{item.name}</Title>
       <Body muted>{[item.planet, item.element].filter(Boolean).join(' · ')}</Body>
       <Body>{item.uses}</Body>
 

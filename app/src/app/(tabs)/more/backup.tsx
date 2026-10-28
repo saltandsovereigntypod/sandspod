@@ -124,7 +124,7 @@ export default function BackupScreen() {
         <Card>
           <Text style={type.body}>
             {userId
-              ? 'Save a copy of everything this account keeps in the Sanctuary: settings, altars, Book of Shadows, Library, rituals and your offerings.'
+              ? 'Save a copy of everything this account keeps in the Sanctuary: settings, altars, Grimoire, Library, rituals and your offerings.'
               : 'Guest work lives only on this device unless you take a backup with you.'}
           </Text>
           <Button
@@ -132,7 +132,7 @@ export default function BackupScreen() {
             disabled={busy}
             onPress={() => save('complete')}
           />
-          <Button label="Export Book of Shadows" variant="outline" disabled={busy} onPress={() => save('book')} />
+          <Button label="Export Grimoire" variant="outline" disabled={busy} onPress={() => save('book')} />
           <Text style={type.caption}>
             Backup files can hold names, spiritual writing, ritual records and images. Keep them somewhere private. The
             same file restores on the website.
