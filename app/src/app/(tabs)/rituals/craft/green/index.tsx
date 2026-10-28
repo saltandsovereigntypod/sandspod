@@ -28,8 +28,8 @@ export default function GreenPractice() {
   ];
 
   return (
-    <RitualScreen back="My practice">
-      <Title eyebrow="My practice">Green</Title>
+    <RitualScreen back="Craft tools">
+      <Title eyebrow="Craft tools">Green</Title>
       {!!about && <Body muted>{about}</Body>}
 
       <Card accent>

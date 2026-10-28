@@ -66,8 +66,7 @@
       : `<section class="sp-card sp-card--gold">
           <p class="sp-eyebrow">Your next working</p>
           <h2>Nothing planned yet</h2>
-          <p class="sp-muted">Choose an intention and we'll find the right night.</p>
-          <div class="sp-actions"><a class="button button--primary" href="/rituals/planner/">Plan a ritual</a></div>
+          <p class="sp-muted">Tap “Plan a ritual” below, and we’ll find the right night.</p>
         </section>`;
 
     const laterList = later.length
@@ -77,17 +76,30 @@
           .join("")}</div></section>`
       : "";
 
-    const tools = `
-      <nav class="sp-list" aria-label="Rituals">
-        ${UI.row({ href: "/altar/?ritual=1", title: "Begin a ritual", detail: "From one of your templates, or a quiet working of your own" })}
-        ${UI.row({ href: "/rituals/premade/", title: "Rituals & spells", detail: `${R.premade.PREMADE.length} premade workings for every practice and path` })}
-        ${UI.row({ href: "/rituals/planner/", title: "Plan a night", detail: "Moon phase and weekday for your intention" })}
-        ${UI.row({ href: "/rituals/spell/", title: "Build a spell", detail: "Ingredients from the Library, steps to follow" })}
-        ${UI.row({ href: "/rituals/journeys/", title: "Dedication journeys", detail: "Study, practice and a rite of self-dedication, for each path and god" })}
-        ${UI.row({ href: "/practice/", title: "My practice", detail: "Tools for your craft: garden, hearth, dreams, stars, stones, tides and more" })}
-        ${UI.row({ href: "/reminders/", title: "Reminders & calendar", detail: "Moon phases, planned rituals, devotions and sacred days in your calendar" })}
-      </nav>`;
+    // Do, Learn and Record, as the app's Rituals home. Reminders are in your Sanctuary's settings.
+    const doList = `
+      <section class="sp-section" aria-labelledby="rt-do">
+        <h2 class="sp-label" id="rt-do">Do</h2>
+        <nav class="sp-list" aria-label="Do">
+          ${UI.row({ href: "/altar/?ritual=1", title: "Begin a ritual", detail: "From one of your templates, or a quiet working of your own" })}
+          ${UI.row({ href: "/rituals/planner/", title: "Plan a ritual", detail: "The moon phase and weekday for your intention" })}
+          ${UI.row({ href: "/rituals/spell/", title: "Build a spell", detail: "Ingredients from the Library, steps to follow" })}
+          ${UI.row({ href: "/sigil/", title: "Sigil maker", detail: "An intent made into one mark, from its letters or a planetary square" })}
+          ${UI.row({ href: "/divination/", title: "Divination", detail: "Draw cards, runes or ogham · your readings, decks and card meanings" })}
+        </nav>
+      </section>`;
+    const learnList = `
+      <section class="sp-section" aria-labelledby="rt-learn">
+        <h2 class="sp-label" id="rt-learn">Learn</h2>
+        <nav class="sp-list" aria-label="Learn">
+          ${UI.row({ href: "/rituals/premade/", title: "Workings library", detail: `${R.premade.PREMADE.length} premade rituals and spells for every practice and path` })}
+          ${UI.row({ href: "/rituals/journeys/", title: "Dedication journeys", detail: "Study, practice and a rite of self-dedication, for each path and god" })}
+          ${UI.row({ href: "/practice/", title: "Craft tools", detail: "Tools for your craft: garden, hearth, dreams, stars, stones, tides and more" })}
+        </nav>
+      </section>`;
 
+    // Spell jars, sachets and the rest, with whether they worked (the journal's moon page keeps them).
+    const apothecaryRow = UI.row({ href: "/rituals/journal/insights/#did-it-work-made", title: "Apothecary", detail: "Jars & sachets, and whether they worked" });
     const journalList = entries.length
       ? `<div class="sp-list">${entries
           .slice(0, 5)
@@ -98,27 +110,21 @@
           href: "/rituals/journal/insights/",
           title: "Your moon",
           detail: insight.lines[0] || "Which moons you work under, what for, and what works for you"
-        })}</div>`
-      : `<section class="sp-card"><p>Rituals you finish at the altar or in the app are kept in your journal.</p></section>`;
+        })}${apothecaryRow}</div>`
+      : `<section class="sp-card"><p>Rituals you finish at the altar or in the app are kept in your journal.</p></section>
+        <div class="sp-list">${apothecaryRow}</div>`;
 
     main.innerHTML = `
       ${UI.header({ back: null, eyebrow: moon.name, title: "Rituals" })}
       ${activeCard}
       ${dueCards}
       ${nextCard}
-      <section class="sp-section" aria-labelledby="rt-divination">
-        <h2 class="sp-label" id="rt-divination">Divination &amp; sigils</h2>
-        <nav class="sp-list" aria-label="Divination and sigils">
-          ${UI.row({ href: "/divination/draw/", title: "Draw cards, runes or ogham", detail: "A card for the day, the Celtic Cross and many more spreads, or one of your own" })}
-          ${UI.row({ href: "/divination/", title: "Your readings", detail: "Every reading you’ve kept, and the ones to come back to" })}
-          ${UI.row({ href: "/sigil/", title: "Sigil maker", detail: "An intent made into one mark, from its letters or a planetary square" })}
-        </nav>
-      </section>
       ${laterList}
-      ${tools}
+      ${doList}
+      ${learnList}
       <section class="sp-section" aria-labelledby="rt-journal">
         <div class="rt-head-row">
-          <h2 class="sp-label" id="rt-journal">Journal</h2>
+          <h2 class="sp-label" id="rt-journal">Record</h2>
           <a class="rt-text-link" href="/?sanctuary=rituals">Record a ritual</a>
         </div>
         ${journalList}

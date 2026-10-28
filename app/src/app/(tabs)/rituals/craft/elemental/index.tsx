@@ -18,8 +18,8 @@ export default function ElementalPractice() {
   const guide = ELEMENT_GUIDES[today.element];
 
   return (
-    <RitualScreen back="My practice">
-      <Title eyebrow="My practice">Elemental</Title>
+    <RitualScreen back="Craft tools">
+      <Title eyebrow="Craft tools">Elemental</Title>
       {!!about && <Body muted>{about}</Body>}
 
       <Card accent>

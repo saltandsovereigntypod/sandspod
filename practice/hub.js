@@ -1,5 +1,5 @@
 /*
- * My practice (/practice/): a page of tools for each of the ten kinds of
+ * Craft tools (/practice/): a page of tools for each of the ten kinds of
  * practice, the ones chosen in My practice (the `my_practice` setting,
  * shared with the app) first. The practices can be chosen here too.
  */
@@ -27,18 +27,17 @@
       kit.toggle({ id: `practice-${p.id}`, label: p.name, detail: p.about, checked: mine.includes(p.id), change: "choose" })
     ).join("");
     return [
-      kit.head({ eyebrow: "Tools for your craft", title: "My practice" }),
+      kit.head({ eyebrow: "Tools for your craft", title: "Craft tools" }),
       chosen.length
-        ? kit.section("Your practice", kit.list(chosen.map(practiceRow)), { id: "yours" })
-        : kit.muted("Choose your practice below (or in the app under Settings → My practice) to put its tools first. Every practice’s tools are open to you either way."),
+        ? kit.section("Your crafts", kit.list(chosen.map(practiceRow)), { id: "yours" })
+        : kit.muted("Choose your crafts below (or in the app under Settings → Your crafts) to put their tools first. Every practice’s tools are open to you either way."),
       kit.section(chosen.length ? "Other practices" : "Practices", kit.list(others.map(practiceRow)), { id: "others" }),
       kit.list([
-        kit.row({ url: "/rituals/journeys/", title: "Dedication journeys", detail: "A guided path to dedicating yourself to a tradition or a god" }),
-        kit.row({ url: kit.href.premadeList(null), title: "Premade rituals & spells", detail: "Workings for every practice, yours first" })
+        kit.row({ url: kit.href.premadeList(null), title: "Workings library", detail: "Premade rituals and spells for every practice, yours first" })
       ]),
       kit.details(
-        "Choose my practice",
-        `${kit.caption("Choose as many as fit. Rituals & spells puts workings for your practice first, and your path (the traditions you keep) adds its own.")}<fieldset class="sp-section" style="border:0;padding:0;margin:0"><legend class="pr-visually-hidden">How you practise</legend>${chooser}</fieldset>${kit.notice(
+        "Choose your crafts",
+        `${kit.caption("Choose as many as fit. The Workings library puts workings for your crafts first, and your path (the traditions you keep) adds its own.")}<fieldset class="sp-section" style="border:0;padding:0;margin:0"><legend class="pr-visually-hidden">How you practise</legend>${chooser}</fieldset>${kit.notice(
           state.message,
           { live: true }
         )}${kit.caption(state.user ? "Saved with your account, so the app sees it too." : "Saved in this browser. Sign in to keep it with your account and the app.")}`,

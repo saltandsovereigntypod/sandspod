@@ -18,7 +18,7 @@ import {
 import { colors, fonts, type } from '../../../theme';
 
 const WHAT_HAPPENS = [
-  'Your settings, altars, Book of Shadows, Living Library, Apothecary, rituals and uploaded images are deleted.',
+  'Your settings, altars, Grimoire, Living Library, Apothecary, rituals and uploaded images are deleted.',
   'Offerings that were never published, and your messages about them, are deleted.',
   'Your coven profile, memberships, signatures, applications, petitions, and every message you wrote in a coven’s chat or your conversations are deleted, along with this phone’s notification sign-up.',
   'Published Community Grimoire pages stay, but your name and account are removed from them. A coven you founded stays for its members, without you as its founder.',

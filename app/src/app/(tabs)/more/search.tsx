@@ -4,6 +4,9 @@ import { StyleSheet, Text, TextInput } from 'react-native';
 
 import { MenuList, MenuRow, MoreScreen, Section } from '../../../components/more/ui';
 import { useGrimoire } from '../../../lib/grimoire/store';
+import { DREAMS, normalizeDream } from '../../../lib/craft/hedge/dreams';
+import { normalizeReading, READINGS } from '../../../lib/craft/hedge/readings';
+import { useCraft } from '../../../lib/craft/store';
 import { libraryHref, useLibrary } from '../../../lib/library';
 import { useRituals } from '../../../lib/rituals/store';
 import { searchEverything, type SearchHit, type SearchKind } from '../../../lib/search';
@@ -11,9 +14,11 @@ import { colors, fonts, radius, touch, type } from '../../../theme';
 
 const GROUPS: { kind: SearchKind; label: string }[] = [
   { kind: 'library', label: 'Living Library' },
-  { kind: 'page', label: 'Your grimoire' },
+  { kind: 'page', label: 'Your Grimoire' },
   { kind: 'journal', label: 'Ritual journal' },
   { kind: 'template', label: 'Ritual templates' },
+  { kind: 'reading', label: 'Divination readings' },
+  { kind: 'dream', label: 'Dreams' },
 ];
 
 // Results open inside the More tab, so Back comes straight back to the search.
@@ -25,26 +30,34 @@ function hrefFor(hit: SearchHit): Href {
       return { pathname: '/more/page/[pageId]', params: { pageId: hit.id } };
     case 'journal':
       return { pathname: '/more/journal/[id]', params: { id: hit.id } };
+    case 'reading':
+      return { pathname: '/more/reading/[id]', params: { id: hit.id } };
+    case 'dream':
+      return { pathname: '/more/dream/[id]', params: { id: hit.id } };
     default:
       return { pathname: '/more/templates/[id]', params: { id: hit.id } };
   }
 }
 
-/** One search across the Living Library, grimoire pages, ritual journal and templates. */
+/** One search across the Living Library, grimoire pages, ritual journal and templates, readings and dreams. */
 export default function Search() {
   const [query, setQuery] = useState('');
   const deferred = useDeferredValue(query);
   const { entries } = useLibrary();
   const { snapshot } = useGrimoire();
   const { journal, templates } = useRituals();
+  const { entries: readingRows } = useCraft<unknown>(READINGS);
+  const { entries: dreamRows } = useCraft<unknown>(DREAMS);
+  const readings = useMemo(() => readingRows.map((e) => ({ ...e, data: normalizeReading(e.data) })), [readingRows]);
+  const dreams = useMemo(() => dreamRows.map((e) => ({ ...e, data: normalizeDream(e.data) })), [dreamRows]);
 
   const hits = useMemo(
     () =>
       searchEverything(
-        { library: entries, pages: snapshot?.pages ?? [], blocks: snapshot?.blocks ?? [], journal, templates },
+        { library: entries, pages: snapshot?.pages ?? [], blocks: snapshot?.blocks ?? [], journal, templates, readings, dreams },
         deferred,
       ),
-    [entries, snapshot, journal, templates, deferred],
+    [entries, snapshot, journal, templates, readings, dreams, deferred],
   );
   const total = GROUPS.reduce((sum, g) => sum + hits[g.kind].length, 0);
   const searching = deferred.trim().length >= 2;
@@ -64,7 +77,7 @@ export default function Search() {
         style={styles.input}
       />
       {!searching && (
-        <Text style={type.caption}>Finds herbs, crystals and deities in the Living Library, and anything you’ve written in your grimoire, journal or templates.</Text>
+        <Text style={type.caption}>Finds herbs, crystals and deities in the Living Library, and anything you’ve written in your Grimoire, journal, templates, readings or dreams.</Text>
       )}
       {searching && total === 0 && <Text style={type.body}>{`Nothing found for “${deferred.trim()}”.`}</Text>}
       {GROUPS.filter((g) => hits[g.kind].length > 0).map((group) => (

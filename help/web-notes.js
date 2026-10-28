@@ -10,7 +10,7 @@
   const SECTION_NOTES = {
     "getting-started": "On the website, the same tabs sit in the bar at the top of the page on a computer and along the bottom on a phone: Today, Altar, Practice, Coven and More, with the podcast under the logo. Where a step says tap, click.",
     altar: "On the website, the Altar is its own page (Altar in the bar). Most tools are there under the same names; a few, like turning the phone sideways or the home screen widget, belong to the app alone.",
-    grimoire: "On the website, the Grimoire opens your Book of Shadows with the Living Library shelves beside it. Anyone can read the Living Library itself under More → Living Library.",
+    grimoire: "On the website, the Grimoire opens your own book with the Living Library shelves beside it. Anyone can read the Living Library itself under More → Living Library.",
     rituals: "On the website, Practice → Rituals holds the same planner, premade book, journal and Your moon. A ritual can also be run at the altar’s Ritual Companion.",
     covens: "On the website, covens are under Coven in the bar, with the same pages, altars, messages and programs. Where a step says tap, click.",
     widgets: "Widgets live on a phone’s home screen, so they’re only in the app.",
@@ -101,6 +101,11 @@
     "/more/library": "/library/",
     "/more/library/closed": "/library/closed/",
     "/more/library/sourcing": "/library/sourcing/",
+    // The app's Living Library is a section of the Grimoire; the website's is its public Library.
+    "/grimoire/library": "/library/",
+    "/grimoire/library/closed": "/library/closed/",
+    "/grimoire/library/sourcing": "/library/sourcing/",
+    "/rituals/divination/meanings": "/grimoire/",
     "/more/support": "/more/support/",
     "/more/research": "/more/research/",
     "/more/settings/deities": "/more/settings/deities/",

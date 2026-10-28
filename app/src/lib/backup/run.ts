@@ -62,7 +62,7 @@ export async function exportBackup(
   kind: 'complete' | 'book' | 'safety' | 'guest' = 'complete',
 ): Promise<ExportResult> {
   try {
-    onProgress(kind === 'book' ? 'Gathering Book of Shadows pages…' : 'Gathering your Sanctuary…');
+    onProgress(kind === 'book' ? 'Gathering Grimoire pages…' : 'Gathering your Sanctuary…');
     const backup = await gatherBackup(userId, onProgress, kind === 'book');
     if (!backup.manifest.complete)
       return { ok: false, message: `The backup is partial and was not saved. ${backup.manifest.warnings.join(' ')}` };

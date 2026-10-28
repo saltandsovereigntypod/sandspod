@@ -43,7 +43,7 @@
     const routes = [STONES_URL, careUrl()];
 
     root.innerHTML = [
-      h.head("My practice", "Crystal", { href: links.hub, label: "My practice" }),
+      h.head("Craft tools", "Crystal", { href: links.hub, label: "Craft tools" }),
       about ? h.muted(about) : "",
       h.notice(problem),
       h.card(

@@ -32,8 +32,8 @@ export default function CrystalPractice() {
   ];
 
   return (
-    <RitualScreen back="My practice">
-      <Title eyebrow="My practice">Crystal</Title>
+    <RitualScreen back="Craft tools">
+      <Title eyebrow="Craft tools">Crystal</Title>
       {!!about && <Body muted>{about}</Body>}
 
       <Card accent>

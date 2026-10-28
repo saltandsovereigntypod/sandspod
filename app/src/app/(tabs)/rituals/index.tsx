@@ -4,51 +4,36 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
 import { PracticeSwitch } from '../../../components/PracticeSwitch';
-import { covenHref } from '../../../components/covens/CovenScreen';
-import { useCovenToday } from '../../../components/covens/CovenToday';
+import { NextWorking } from '../../../components/rituals/NextWorking';
 import { Body, Card, List, Notice, RitualScreen, Row, SectionLabel, Title, tell, ui } from '../../../components/rituals/ui';
-import { nextCovenRite, nextWorkingFirst } from '../../../lib/covens/today';
 import { moonState } from '../../../lib/moon';
-import { useReminders } from '../../../lib/reminders/store';
-import { PHASE_ORDER } from '../../../lib/reminders/schedule';
+import { APOTHECARY, APOTHECARY_SUBTITLE, CRAFT_TOOLS, WORKINGS_LIBRARY } from '../../../lib/names';
 import { currentStep } from '../../../lib/rituals/lifecycle';
-import { journalDetail, planSky, planWhen } from '../../../lib/rituals/format';
+import { journalDetail, planWhen } from '../../../lib/rituals/format';
 import { journalInsights } from '../../../lib/rituals/insights';
 import { JOURNEYS_LIVE } from '../../../lib/journeys';
 import { PREMADE } from '../../../lib/rituals/premade';
-import { planStart, sortJournal, upcomingPlans } from '../../../lib/rituals/plans';
+import { sortJournal, upcomingPlans } from '../../../lib/rituals/plans';
 import { bringDeviceRitualsToAccount, refresh, useRituals } from '../../../lib/rituals/store';
 import { useSession } from '../../../lib/session';
 import { type } from '../../../theme';
 
+// The Rituals home: what's under way and next, then three groups — Do, Learn
+// and Record. Reminders live in Settings (More); the website's Rituals page
+// (rituals/js/home.js) is grouped the same way.
 export default function RitualsHome() {
   const { session } = useSession();
   const rituals = useRituals();
-  const reminders = useReminders();
   const [moving, setMoving] = useState(false);
   const now = new Date();
   const moon = moonState(now);
 
   const journal = useMemo(() => sortJournal(rituals.journal), [rituals.journal]);
   const insight = useMemo(() => journalInsights(rituals.journal, new Date()), [rituals.journal]);
-  const plans = upcomingPlans(rituals.plans, now);
-  const [next, ...laterPlans] = plans;
-  // A coven's rite or meeting counts as your next working too, whichever comes first.
-  const covenToday = useCovenToday();
-  const rite = nextCovenRite(covenToday, now);
-  const first = nextWorkingFirst(next ? planStart(next) : null, rite);
+  const laterPlans = upcomingPlans(rituals.plans, now).slice(1);
   const active = rituals.active;
   const step = active ? currentStep(active) : null;
   const stepIndex = active && step ? active.session_steps.findIndex((s) => s.id === step.id) : -1;
-
-  const moonChoices = PHASE_ORDER.filter((p) => reminders.settings.phases[p]).length;
-  const reminderDetail = `${
-    moonChoices
-      ? `${moonChoices} moon ${moonChoices === 1 ? 'phase' : 'phases'}${reminders.settings.rituals ? ' and planned rituals' : ''}`
-      : reminders.settings.rituals
-        ? 'Before planned rituals'
-        : 'Moon off'
-  } · holidays, tending, planning`;
 
   return (
     <RitualScreen onRefresh={refresh}>
@@ -70,59 +55,7 @@ export default function RitualsHome() {
         </Card>
       )}
 
-      <Card accent>
-        <Text style={[type.eyebrow, ui.gold]}>Your next working</Text>
-        {first === 'rite' && rite ? (
-          <>
-            <Text style={type.cardTitle}>{rite.title}</Text>
-            <Body muted>{rite.detail}</Body>
-            {next && <Body muted>{`Then your own: ${next.title}, ${planWhen(next, now)}`}</Body>}
-            <Button label={rite.meeting ? 'See the meeting' : 'See the rite'} variant="outline" onPress={() => router.push(covenHref(rite.covenSlug, `ritual/${rite.ritualId}`))} />
-          </>
-        ) : next ? (
-          <>
-            <Text style={type.cardTitle}>{next.title}</Text>
-            <Body muted>{`${planWhen(next, now)} · ${planSky(next)}`}</Body>
-            {rite && <Body muted>{`Then with ${rite.covenName}: ${rite.title}`}</Body>}
-            <Button
-              label="Open the plan"
-              variant="outline"
-              onPress={() => router.push({ pathname: '/rituals/plan/[id]', params: { id: next.id } })}
-            />
-          </>
-        ) : (
-          <>
-            <Text style={type.cardTitle}>Nothing planned yet</Text>
-            <Body muted>Choose an intention and we'll find the right night.</Body>
-            <Button label="Plan a ritual" onPress={() => router.push('/rituals/planner')} />
-          </>
-        )}
-      </Card>
-
-      <View style={ui.gapSmall}>
-        <SectionLabel>Divination &amp; sigils</SectionLabel>
-        <List>
-          <Row
-            icon="wheel"
-            title="Draw cards, runes or ogham"
-            detail="A card for the day, the Celtic Cross and many more spreads, or one of your own"
-            onPress={() => router.push('/rituals/divination/draw')}
-          />
-          <Row
-            icon="grimoire"
-            title="Your readings"
-            detail="Every reading you’ve kept, and the ones to come back to"
-            onPress={() => router.push('/rituals/divination')}
-          />
-          <Row
-            icon="altar"
-            title="Sigil maker"
-            detail="An intent made into one mark, from its letters or a planetary square"
-            last
-            onPress={() => router.push('/rituals/sigil')}
-          />
-        </List>
-      </View>
+      <NextWorking now={now} variant="rituals" />
 
       {laterPlans.length > 0 && (
         <View style={ui.gapSmall}>
@@ -142,40 +75,62 @@ export default function RitualsHome() {
         </View>
       )}
 
-      <List>
-        <Row
-          title="Begin a ritual"
-          detail="From one of your templates, or a quiet working of your own"
-          onPress={() => router.push('/rituals/templates')}
-        />
-        <Row
-          icon="wheel"
-          title="My practice"
-          detail="Tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft"
-          onPress={() => router.push('/rituals/craft')}
-        />
-        <Row
-          icon="grimoire"
-          title="Rituals & spells"
-          detail={`${PREMADE.length} premade workings for every practice and path`}
-          onPress={() => router.push('/rituals/premade')}
-        />
-        {JOURNEYS_LIVE && (
+      <View style={ui.gapSmall}>
+        <SectionLabel>Do</SectionLabel>
+        <List>
+          <Row
+            title="Begin a ritual"
+            detail="From one of your templates, or a quiet working of your own"
+            onPress={() => router.push('/rituals/templates')}
+          />
+          <Row icon="calendar" title="Plan a ritual" detail="The moon phase and weekday for your intention" onPress={() => router.push('/rituals/planner')} />
+          <Row icon="altar" title="Build a spell" detail="Ingredients from the Library, steps to follow" onPress={() => router.push('/rituals/spell')} />
+          <Row
+            icon="altar"
+            title="Sigil maker"
+            detail="An intent made into one mark, from its letters or a planetary square"
+            onPress={() => router.push('/rituals/sigil')}
+          />
           <Row
             icon="wheel"
-            title="Dedication journeys"
-            detail="Study, practice and a rite of self-dedication to a path or a god"
-            onPress={() => router.push('/rituals/journeys')}
+            title="Divination"
+            detail="Draw cards, runes or ogham · your readings, decks and card meanings"
+            last
+            onPress={() => router.push('/rituals/divination')}
           />
-        )}
-        <Row icon="calendar" title="Plan a night" detail="Moon phase and weekday for your intention" onPress={() => router.push('/rituals/planner')} />
-        <Row icon="altar" title="Build a spell" detail="Ingredients from the Library, steps to follow" onPress={() => router.push('/rituals/spell')} />
-        <Row icon="bell" title="Reminders" detail={reminderDetail} last onPress={() => router.push('/rituals/reminders')} />
-      </List>
+        </List>
+      </View>
+
+      <View style={ui.gapSmall}>
+        <SectionLabel>Learn</SectionLabel>
+        <List>
+          <Row
+            icon="grimoire"
+            title={WORKINGS_LIBRARY}
+            detail={`${PREMADE.length} premade rituals and spells for every practice and path`}
+            onPress={() => router.push('/rituals/premade')}
+          />
+          {JOURNEYS_LIVE && (
+            <Row
+              icon="wheel"
+              title="Dedication journeys"
+              detail="Study, practice and a rite of self-dedication to a path or a god"
+              onPress={() => router.push('/rituals/journeys')}
+            />
+          )}
+          <Row
+            icon="wheel"
+            title={CRAFT_TOOLS}
+            detail="Tools for green, kitchen, hedge, cosmic, crystal, sea and folk craft"
+            last
+            onPress={() => router.push('/rituals/craft')}
+          />
+        </List>
+      </View>
 
       <View style={ui.gapSmall}>
         <View style={styles.headRow}>
-          <SectionLabel>Journal</SectionLabel>
+          <SectionLabel>Record</SectionLabel>
           <Button label="Record a ritual" variant="text" onPress={() => router.push('/rituals/journal/new')} />
         </View>
         {journal.length === 0 ? (
@@ -196,17 +151,25 @@ export default function RitualsHome() {
             ))}
           </List>
         )}
-        {journal.length > 5 && <Button label={`See all ${journal.length} rituals`} variant="outline" onPress={() => router.push('/rituals/journal')} />}
-        {journal.length > 0 && (
-          <List>
+        <List>
+          {journal.length > 0 && (
             <Row
+              icon="grimoire"
+              title="Journal"
+              detail={journal.length > 5 ? `All ${journal.length} rituals you’ve kept` : 'Every ritual you’ve kept, and what worked'}
+              onPress={() => router.push('/rituals/journal')}
+            />
+          )}
+          {journal.length > 0 && (
+            <Row
+              icon="today"
               title="Your moon"
               detail={insight.lines[0] ?? 'Which moons you work under, and what for'}
-              last
               onPress={() => router.push('/rituals/journal/insights')}
             />
-          </List>
-        )}
+          )}
+          <Row icon="altar" title={APOTHECARY} detail={APOTHECARY_SUBTITLE} last onPress={() => router.push('/rituals/apothecary')} />
+        </List>
       </View>
 
       {!session && (

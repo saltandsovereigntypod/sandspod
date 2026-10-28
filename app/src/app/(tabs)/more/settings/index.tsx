@@ -42,13 +42,13 @@ export default function SettingsIndex() {
         />
         <MenuRow
           icon="community"
-          label="Book of Shadows"
+          label="Grimoire"
           detail="Mundane mode, page font"
           onPress={() => router.push('/more/settings/book')}
         />
         <MenuRow
           icon="journey"
-          label="My practice"
+          label="Your crafts"
           detail={practiceSummary(settings)}
           onPress={() => router.push('/more/settings/practice')}
         />

@@ -112,7 +112,7 @@ export function PracticeEditor({ entryId, back, backLabel, hrefFor }: Props) {
 
   return (
     <MoreScreen
-      title={editing ? editing.name : 'New entry'}
+      title={editing ? editing.name : 'New Library note'}
       eyebrow={editing ? `My Practice · ${editing.category}` : 'My Practice'}
       back={back}
       backLabel={backLabel}

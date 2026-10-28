@@ -2,7 +2,6 @@ import { router, type Href } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
-import { Button } from '../../../../components/Button';
 import { Body, Card, Chip, Chips, Field, List, RitualScreen, Row, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
 import { fullDate, relativeDay } from '../../../../lib/calendar';
 import {
@@ -43,12 +42,20 @@ export default function Readings() {
   return (
     <RitualScreen back="Back">
       <Title eyebrow={all.length ? `${all.length} ${all.length === 1 ? 'reading' : 'readings'}` : 'For every practice'}>Divination</Title>
-      <View style={ui.actions}>
-        <Button label="Draw cards, runes or ogham" onPress={() => router.push('/rituals/divination/draw' as Href)} />
-        <Button label="Log a reading" variant="outline" onPress={() => router.push('/rituals/divination/edit' as Href)} />
-        <Button label="Make a spread" variant="text" onPress={() => router.push('/rituals/divination/spread' as Href)} />
-        <Button label="Your oracle decks" variant="text" onPress={() => router.push('/rituals/divination/decks' as Href)} />
-      </View>
+      {/* The Divination hub: Draw · Readings · Decks · Card meanings, then your readings below. */}
+      <List>
+        <Row
+          icon="wheel"
+          title="Draw cards, runes or ogham"
+          detail="A card for the day, the Celtic Cross and many more spreads, or one of your own"
+          onPress={() => router.push('/rituals/divination/draw' as Href)}
+        />
+        <Row icon="grimoire" title="Log a reading" detail="One you did by hand: what you asked, what came up" onPress={() => router.push('/rituals/divination/edit' as Href)} />
+        <Row icon="wheel" title="Your oracle decks" detail="Make a deck of your own, and draw from it" onPress={() => router.push('/rituals/divination/decks' as Href)} />
+        <Row icon="grimoire" title="Card meanings" detail="Tarot, runes, ogham, Lenormand and Kipper, as in your Grimoire" onPress={() => router.push('/rituals/divination/meanings' as Href)} />
+        <Row icon="altar" title="Make a spread" detail="Lay out positions of your own" last onPress={() => router.push('/rituals/divination/spread' as Href)} />
+      </List>
+      <SectionLabel>Your readings</SectionLabel>
 
       {!ready ? (
         <Body muted>Opening…</Body>

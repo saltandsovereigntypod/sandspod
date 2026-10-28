@@ -1,13 +1,15 @@
 // One search across someone's whole practice: the Living Library, their
-// grimoire pages, their ritual journal and their ritual templates. Pure, so
-// what it finds can be tested.
+// grimoire pages, their ritual journal and templates, their divination
+// readings and their dreams. Pure, so what it finds can be tested.
 
 import type { BlockRow, PageRow } from './grimoire/types.ts';
 import { searchLibrary } from './library/model.ts';
 import type { LibraryEntry } from './library/types.ts';
+import { methodLabel, sortReadings, type ReadingEntry } from './craft/hedge/readings.ts';
+import { searchDreams, sortDreams, type DreamEntry } from './craft/hedge/dreams.ts';
 import type { JournalRow, TemplateRow } from './rituals/types.ts';
 
-export type SearchKind = 'library' | 'page' | 'journal' | 'template';
+export type SearchKind = 'library' | 'page' | 'journal' | 'template' | 'reading' | 'dream';
 
 export type SearchHit = { kind: SearchKind; id: string; title: string; detail: string };
 
@@ -17,6 +19,10 @@ export type SearchSources = {
   blocks: BlockRow[];
   journal: JournalRow[];
   templates: TemplateRow[];
+  /** Divination readings (craft collection `hedge.readings`), normalised. */
+  readings?: ReadingEntry[];
+  /** Dreams (craft collection `hedge.dreams`), normalised. */
+  dreams?: DreamEntry[];
 };
 
 /** Rich text as plain words (the grimoire stores some blocks as HTML). */
@@ -66,7 +72,7 @@ const JOURNAL_FIELDS: (keyof JournalRow)[] = [
 /** Everything matching `query`, grouped by where it lives; titles that match come first. */
 export function searchEverything(sources: SearchSources, query: string, perKind = 8): Record<SearchKind, SearchHit[]> {
   const needle = query.trim().toLowerCase();
-  const empty = { library: [], page: [], journal: [], template: [] };
+  const empty = { library: [], page: [], journal: [], template: [], reading: [], dream: [] };
   if (needle.length < 2) return empty;
   const byTitle = (a: SearchHit & { titled: boolean }, b: SearchHit & { titled: boolean }) => Number(b.titled) - Number(a.titled);
   const finish = (hits: (SearchHit & { titled: boolean })[]) =>
@@ -117,5 +123,26 @@ export function searchEverything(sources: SearchSources, query: string, perKind 
     }),
   );
 
-  return { library, page: pages, journal, template: templates };
+  const readings = finish(
+    sortReadings(sources.readings ?? []).flatMap((entry) => {
+      const d = entry.data;
+      const titled = (d.question ?? '').toLowerCase().includes(needle) || d.drawn.some((name) => name.toLowerCase().includes(needle));
+      const body = titled ? null : firstMatch([d.cameUp, d.interpretation, d.outcome], needle);
+      if (!titled && !body) return [];
+      const drawn = d.drawn.slice(0, 3).join(', ');
+      return [{ kind: 'reading' as const, id: entry.id, title: d.question || 'A reading', detail: body ?? [methodLabel(d.method), d.date, drawn].filter(Boolean).join(' · '), titled }];
+    }),
+  );
+
+  // Dreams match as the Grimoire's own search does (title, the dream, feelings and symbols), newest first.
+  const dreams = finish(
+    sortDreams(searchDreams(sources.dreams ?? [], query)).map((entry) => {
+      const d = entry.data;
+      const titled = (d.title ?? '').toLowerCase().includes(needle);
+      const body = titled ? null : firstMatch([d.dream, d.feelings, d.symbols.join(', ')], needle);
+      return { kind: 'dream' as const, id: entry.id, title: d.title || 'Untitled dream', detail: body ?? [d.date, d.moonPhase].filter(Boolean).join(' · '), titled };
+    }),
+  );
+
+  return { library, page: pages, journal, template: templates, reading: readings, dream: dreams };
 }

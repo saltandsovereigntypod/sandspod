@@ -43,7 +43,7 @@ export default function PremadeBook() {
 
   return (
     <RitualScreen back="Rituals">
-      <Title eyebrow="Premade">Rituals & spells</Title>
+      <Title eyebrow="Premade rituals & spells">Workings library</Title>
       <Body muted>
         Workings from the Wheel of the Year, the old folk ways and every kind of practice, written for you to begin, plan, or make your own.
       </Body>
@@ -57,7 +57,7 @@ export default function PremadeBook() {
             ))}
           </List>
           {!ctx.practices.length && (
-            <Body muted>Choose your practice in Settings → My practice and these will follow it.</Body>
+            <Body muted>Choose your crafts in Settings → Your crafts and these will follow them.</Body>
           )}
         </View>
       )}

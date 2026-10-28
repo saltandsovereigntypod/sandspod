@@ -34,8 +34,8 @@ export default function CosmicPractice() {
   const details = [bigThree, hour ? `${hour.planet} hour until ${timeOfDay(hour.end)}` : null];
 
   return (
-    <RitualScreen back="My practice">
-      <Title eyebrow="My practice">Cosmic & celestial</Title>
+    <RitualScreen back="Craft tools">
+      <Title eyebrow="Craft tools">Cosmic & celestial</Title>
       {!!about && <Body muted>{about}</Body>}
 
       {hour && (

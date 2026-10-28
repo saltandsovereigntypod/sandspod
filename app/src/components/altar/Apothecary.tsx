@@ -47,7 +47,7 @@ type ListProps = {
 export function ApothecarySheet({ visible, onClose, onMake, onEdit, onPlace }: ListProps) {
   const { apothecary } = useWorkshop();
   return (
-    <Sheet visible={visible} eyebrow="My Apothecary" title="Your workings" onClose={onClose}>
+    <Sheet visible={visible} eyebrow="Apothecary · jars & sachets" title="Your workings" onClose={onClose}>
       <Button label="Make something new" onPress={onMake} />
       {apothecary.length === 0 ? (
         <Text style={type.body}>
@@ -99,7 +99,7 @@ type EditorProps = {
 export function ApothecaryEditor(props: EditorProps) {
   const { target, onClose } = props;
   return (
-    <Sheet visible={!!target} eyebrow="My Apothecary" title={target?.item ? target.item.name : 'Make something new'} onClose={onClose}>
+    <Sheet visible={!!target} eyebrow="Apothecary · jars & sachets" title={target?.item ? target.item.name : 'Make something new'} onClose={onClose}>
       {target && <Editor key={target.item?.id ?? 'new'} {...props} target={target} />}
     </Sheet>
   );
@@ -421,7 +421,7 @@ function Editor({ target, altarObjects, onClose, onSaved, onDeleted }: EditorPro
         </View>
       ) : (
         <>
-          <Button label={isNew ? 'Save to My Apothecary and place it' : 'Save changes'} onPress={() => void save()} />
+          <Button label={isNew ? 'Save to your Apothecary and place it' : 'Save changes'} onPress={() => void save()} />
           {!isNew &&
             (confirmDelete ? (
               <>
@@ -432,7 +432,7 @@ function Editor({ target, altarObjects, onClose, onSaved, onDeleted }: EditorPro
                 <Text style={type.caption}>It leaves your apothecary and Living Library. Copies on your altars are taken off too.</Text>
               </>
             ) : (
-              <Button label="Delete from My Apothecary" variant="text" onPress={() => setConfirmDelete(true)} />
+              <Button label="Delete from your Apothecary" variant="text" onPress={() => setConfirmDelete(true)} />
             ))}
         </>
       )}

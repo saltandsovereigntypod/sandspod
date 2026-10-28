@@ -19,8 +19,8 @@ export default function EclecticPractice() {
   const workings = useMemo(() => PREMADE.filter((p) => p.practices.includes('eclectic')), []);
 
   return (
-    <RitualScreen back="My practice">
-      <Title eyebrow="My practice">Eclectic</Title>
+    <RitualScreen back="Craft tools">
+      <Title eyebrow="Craft tools">Eclectic</Title>
       {!!about && <Body muted>{about}</Body>}
 
       <View style={ui.gapSmall}>

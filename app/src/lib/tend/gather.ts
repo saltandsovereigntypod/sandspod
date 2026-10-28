@@ -489,7 +489,7 @@ export function lookBackTendables(journal: JournalLike[], apothecary: Apothecary
       group: 'rituals',
       title: `Did “${item.name || 'your working'}” work?`,
       detail: day ? `Look back ${shortDay(day.getTime())}` : 'Look back',
-      source: `My Apothecary${item.typeLabel ? ` · ${item.typeLabel}` : ''}`,
+      source: `Apothecary${item.typeLabel ? ` · ${item.typeLabel}` : ''}`,
       dueAt: day ? day.getTime() : null,
       tendedAt: null,
       actions: ['answer', 'open'],

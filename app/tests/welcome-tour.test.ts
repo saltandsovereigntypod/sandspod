@@ -16,7 +16,7 @@ test('the welcome tour: one calm page per main feature, ending at How to', () =>
     assert.doesNotMatch(page.body + page.title, /!/, `${page.title}: no exclamation marks`);
   }
   const all = TOUR_PAGES.map((p) => `${p.title} ${p.body}`).join(' ');
-  for (const feature of ['Today', 'cabinet', 'Seasonal', 'houseplants', 'offerings', 'spell jar', 'petition', 'tonight’s altar', 'widget', 'did it work', 'tarot', 'runes', 'ogham', 'sigil', 'Grimoire', 'Living Library', 'dreams', 'My practice', 'Dedication journeys', 'patron', 'Closed & living traditions', 'calendars', 'Reminders', 'coven', 'website', 'guest']) {
+  for (const feature of ['Today', 'cabinet', 'Seasonal', 'houseplants', 'offerings', 'spell jar', 'petition', 'tonight’s altar', 'widget', 'did it work', 'tarot', 'runes', 'ogham', 'sigil', 'Grimoire', 'Living Library', 'dreams', 'Craft tools', 'Dedication journeys', 'patron', 'Closed & living traditions', 'calendars', 'Reminders', 'coven', 'website', 'guest']) {
     assert.ok(all.toLowerCase().includes(feature.toLowerCase()), `the tour mentions ${feature}`);
   }
   // The last page sends people to the guide by its real name on the More screen.

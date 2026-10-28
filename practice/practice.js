@@ -1,6 +1,6 @@
 /*
- * PracticeKit: shared pieces for the My practice pages (/practice/…), the
- * website's copy of the app's Rituals → My practice. Every practice's pages
+ * PracticeKit: shared pieces for the Craft tools pages (/practice/…), the
+ * website's copy of the app's Rituals → Craft tools. Every practice's pages
  * use it, whichever bundle of app logic they load.
  *
  *   PracticeKit.start(async (user) => { … draw the page … })

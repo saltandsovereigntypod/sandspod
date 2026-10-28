@@ -29,8 +29,8 @@
     const guide = H.TIDE_GUIDES[H.homeTide(new Date())];
     const paths = { "Pantry correspondences": "pantry", "Simmer pot": "simmer", "Home by the moon": "moon", "Kitchen spell book": "spells" };
     return [
-      kit.back(kit.href.hub, "My practice"),
-      kit.head({ eyebrow: "My practice", title: practice?.name ?? "Kitchen & hearth", lede: practice?.about }),
+      kit.back(kit.href.hub, "Craft tools"),
+      kit.head({ eyebrow: "Craft tools", title: practice?.name ?? "Kitchen & hearth", lede: practice?.about }),
       kit.card(kit.p(guide.summary), { gold: true, label: `In the house tonight · ${guide.label}` }),
       kit.section("Tools", kit.list(practices.CRAFT_TOOLS.kitchen.map((t) => kit.row({ url: kit.href.tool("kitchen", paths[t.title]), title: t.title, detail: t.detail }))), { id: "tools" }),
       kit.list([kit.row({ url: kit.href.premadeList("kitchen"), title: "Premade workings", detail: "Every ritual and spell, filter by Kitchen & hearth" })])
@@ -303,7 +303,7 @@
         ].join("")
       ),
       `<div data-results>${bookResults()}</div>`,
-      kit.list([kit.row({ url: kit.href.premadeList(null), title: "All premade workings", detail: "Rituals & spells for every practice" })])
+      kit.list([kit.row({ url: kit.href.premadeList(null), title: "All premade workings", detail: "From the Workings library, for every practice" })])
     ].join("");
   }
 
