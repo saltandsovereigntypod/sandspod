@@ -63,7 +63,7 @@ export default function CovenAltarScreen() {
       <View style={styles.row}>
         <Text style={[type.caption, styles.grow]} numberOfLines={2}>
           {others.length ? `Here now: ${others.map((p) => p.name).join(', ')}` : 'No one else is here right now.'}
-          {altar?.archived_at ? ' · Cleared away' : ''}
+          {altar?.archived_at ? ' · Archived' : ''}
         </Text>
         {(keeper || altar?.is_main) && (
           <Pressable

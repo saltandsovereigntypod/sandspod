@@ -253,7 +253,7 @@
               : h.muted("Nothing logged yet.")
           ),
           h.list(linkRows),
-          h.actions([h.button("Edit stone", { variant: "ghost", href: editUrl(entry.id) }), h.button("Remove from my collection", { variant: "text", attrs: { "data-action": "remove" } })])
+          h.actions([h.button("Edit stone", { variant: "ghost", href: editUrl(entry.id) }), h.button("Delete from my collection", { variant: "text", attrs: { "data-action": "remove" } })])
         ].join("")
       );
     };
@@ -324,7 +324,7 @@
           }
         },
         remove: async () => {
-          if (!PB.confirmAction(`Remove ${stone.name}?`, "It and its care history will be deleted from your collection.")) return;
+          if (!PB.confirmAction(`Delete ${stone.name}?`, "It and its care history are deleted from your collection. This can’t be undone.")) return;
           try {
             await window.SaltCraft.remove(C.STONES, entry.id);
             window.location.href = STONES_URL;

@@ -175,7 +175,7 @@ export default function Petitions() {
         setMessage(
           status === "answered"
             ? "Marked answered. Blessed be."
-            : "Closed. Its altar is cleared away.",
+            : "Closed. Its altar is archived.",
         );
         await load();
       } catch (error) {
@@ -185,7 +185,7 @@ export default function Petitions() {
     };
     Alert.alert(
       status === "answered" ? "Mark it answered?" : "Close this petition?",
-      `The circle stops tending “${p.title}”, and its altar is cleared away. It stays among the past petitions.`,
+      `The circle stops tending “${p.title}”, and its altar is archived. It stays among the past petitions.`,
       [
         { text: "Not yet", style: "cancel" },
         {

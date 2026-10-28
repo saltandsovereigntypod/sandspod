@@ -3,7 +3,7 @@
  * It gets its own altar (made by ask_coven_petition; this page and the app set out its
  * candle and paper), and members tend it once every twelve hours, with a few
  * words if they like. The person who asked marks it answered or closes it,
- * and its altar is cleared away. Petitions are seen by the coven's members only.
+ * and its altar is archived. Petitions are seen by the coven's members only.
  */
 (function (global) {
   "use strict";
@@ -145,7 +145,7 @@
           const answered = button.dataset.close === "answered";
           const note = answered ? await UI.askText("It’s been answered", "A few words for the circle (optional)", "Mark answered") : null;
           if (note === null && answered) return;
-          if (!answered && !(await UI.confirmAction("Close this petition?", "Its altar is cleared away.", "Close it"))) return;
+          if (!answered && !(await UI.confirmAction("Close this petition?", "Its altar is archived.", "Close it"))) return;
           if (await UI.busy(button, el.querySelector("[data-status]"), () => D.closePetition(id, button.dataset.close, note || null).then(() => true))) {
             await load();
             draw();

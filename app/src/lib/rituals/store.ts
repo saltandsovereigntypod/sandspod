@@ -574,6 +574,27 @@ export async function archiveTemplate(id: string) {
   void writeJson(snapshotKey(userId), snapshotOf());
 }
 
+export type ArchivedTemplate = { id: string; title: string; intention: string | null; updated_at: string };
+
+/** Your archived templates, newest first: archived ones are kept, so they can be restored. */
+export async function fetchArchivedTemplates(): Promise<ArchivedTemplate[]> {
+  if (!state.userId) return [];
+  const result = await supabase
+    .from('ritual_templates')
+    .select('id,title,intention,updated_at')
+    .eq('status', 'archived')
+    .order('updated_at', { ascending: false });
+  throwIf(result);
+  return (result.data ?? []) as ArchivedTemplate[];
+}
+
+/** Bring an archived template back into your list (here and on the website). */
+export async function restoreTemplate(id: string) {
+  if (!state.userId) return;
+  throwIf(await supabase.from('ritual_templates').update({ status: 'active' }).eq('id', id));
+  await refresh();
+}
+
 // ---------------------------------------------------------------- plans
 
 async function writePlans(plans: RitualPlan[]) {

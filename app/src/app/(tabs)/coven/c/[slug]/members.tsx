@@ -108,7 +108,7 @@ export default function Members() {
       {members && coven.perms.member && (
         <MenuList>
           {keepsRecord && <MenuRow label="Members’ record" detail="Who has been taking part and who hasn’t" icon="community" onPress={() => router.push(covenHref(coven.slug, 'record'))} />}
-          <MenuRow label="My standing" detail="Your own record, as the coven’s leaders see it" icon="journey" last onPress={() => router.push(covenHref(coven.slug, 'standing'))} />
+          <MenuRow label="Your record" detail="Your own record, as the coven’s leaders see it" icon="journey" last onPress={() => router.push(covenHref(coven.slug, 'standing'))} />
         </MenuList>
       )}
       {members && !coven.perms.member && coven.perms.site && (

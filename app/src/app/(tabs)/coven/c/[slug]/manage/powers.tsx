@@ -45,7 +45,7 @@ export default function ManagePowers() {
   const sorted = (members ?? []).filter((m) => m.user_id !== founder).sort((a, b) => coven.nameOf(a.user_id).localeCompare(coven.nameOf(b.user_id)));
 
   return (
-    <CovenScreen title="Initiation & training" need="manage" onRefresh={load}>
+    <CovenScreen title="Who runs training" need="manage" onRefresh={load}>
       <Text style={type.body}>Choose who designs the coven’s programs, chooses who takes them, assigns mentors and signs off work; and who may see everyone’s progress. You always can.</Text>
       <Text style={type.caption}>
         By position: manages programs: {byPosition('can_manage_programs').join(', ') || 'none yet'}; sees progress: {byPosition('can_view_progress').join(', ') || 'none yet'}. Change these under Positions.

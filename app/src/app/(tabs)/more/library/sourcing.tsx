@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../../../components/Button';
 import { Card, Field, MoreScreen, Paragraphs } from '../../../../components/more/ui';
 import { libraryHref, useLibrary } from '../../../../lib/library';
-import { closedById, CLOSED_GUIDE_LIVE, fold, sourcingNotes } from '../../../../lib/library/closed';
+import { closedById, fold, sourcingNotes } from '../../../../lib/library/closed';
 import { colors, fonts, type } from '../../../../theme';
 
 // Sourcing with care: the plants, resins and stones whose buying raises real
@@ -45,7 +45,7 @@ export default function SourcingScreen() {
       </Text>
       {shown.map((note) => {
         const entry = note.ref ? entries.find((e) => e.traditionalRef === note.ref || e.id === note.ref) : undefined;
-        const tradition = CLOSED_GUIDE_LIVE ? closedById(note.tradition) : null;
+        const tradition = closedById(note.tradition);
         return (
           <Card key={note.ref ?? note.name}>
             <Text accessibilityRole="header" style={type.cardTitle}>

@@ -51,7 +51,7 @@ export const pathsMineFirst = (mine: string[] = [], list: Journey[] = JOURNEYS):
 export const searchJourneys = (query: string, list: Journey[] = JOURNEYS): Journey[] => searchJourneysIn(list, query);
 
 /**
- * Whether the journeys show in the app. Off until every journey has had its
- * fact-check pass; the screens exist, but nothing links to them.
+ * @deprecated Always on: journeys are live. Kept only until the Rituals home
+ * and Craft hub (owned by another change) drop their checks; then delete it.
  */
 export const JOURNEYS_LIVE = true;

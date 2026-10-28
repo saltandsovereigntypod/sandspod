@@ -98,7 +98,7 @@ export default function StoneDetail() {
   };
 
   const remove = async () => {
-    if (!(await confirmAction(`Remove ${stone.name}?`, 'It and its care history will be deleted from your collection.', 'Remove'))) return;
+    if (!(await confirmAction(`Delete ${stone.name}?`, 'It and its care history are deleted from your collection. This can’t be undone.', 'Delete'))) return;
     await removeEntry(STONES, entry.id);
     router.back();
   };
@@ -221,7 +221,7 @@ export default function StoneDetail() {
 
       <View style={ui.actions}>
         <Button label="Edit stone" variant="outline" onPress={() => router.push({ pathname: '/rituals/craft/crystal/stone-edit', params: { id: entry.id } } as Href)} />
-        <Button label="Remove from my collection" variant="text" onPress={() => void remove()} />
+        <Button label="Delete from my collection" variant="text" onPress={() => void remove()} />
       </View>
     </RitualScreen>
   );

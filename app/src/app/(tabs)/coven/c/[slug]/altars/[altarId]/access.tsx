@@ -20,8 +20,9 @@ import {
   type AltarEditor,
   type CovenAltar,
 } from '../../../../../../../lib/covens/altarSync';
-import { canDeleteAltar, deleteAltarWords } from '../../../../../../../lib/covens/altarPanel';
+import { archiveAltarWords, canDeleteAltar, deleteAltarWords } from '../../../../../../../lib/covens/altarPanel';
 import { useCoven } from '../../../../../../../lib/covens/CovenContext';
+import { confirmAction } from '../../../../../../../lib/grimoire/confirm';
 import { errorMessage, type Member } from '../../../../../../../lib/covens/model';
 import { supabase } from '../../../../../../../lib/supabase';
 import { colors, type } from '../../../../../../../theme';
@@ -29,7 +30,7 @@ import { colors, type } from '../../../../../../../theme';
 // Who tends one of the coven's altars. Its keepers (the coven's head, those
 // whose position keeps altars, and whoever started it) name it, choose who
 // tends it outside rituals (everyone, chosen people and positions, or only
-// its keepers), lock it, clear it away (kept, so it can be brought back) or
+// its keepers), lock it, archive it (kept, so it can be restored) or
 // delete it for good. Everyone else sees who tends it.
 // During a ritual, the ritual's steps decide instead (set on the ritual).
 export default function AltarAccessScreen() {
@@ -178,17 +179,19 @@ export default function AltarAccessScreen() {
 
           {!altar.is_main &&
             (altar.archived_at ? (
-              <Button label="Bring this altar back" variant="outline" onPress={() => void act(() => archiveAltar(altar.id, false), 'It’s back among the coven’s altars.')} disabled={busy} />
+              <Button label="Restore this altar" variant="outline" onPress={() => void act(() => archiveAltar(altar.id, false), archiveAltarWords(altar.name).restored)} disabled={busy} />
             ) : (
               <Button
-                label="Clear this altar away"
+                label="Archive this altar"
                 variant="text"
-                onPress={() =>
+                onPress={async () => {
+                  const words = archiveAltarWords(altar.name);
+                  if (!(await confirmAction(words.title, words.body, words.confirm))) return;
                   void act(async () => {
                     await archiveAltar(altar.id, true);
                     router.replace(covenHref(coven.slug, 'altar'));
-                  })
-                }
+                  });
+                }}
                 disabled={busy}
               />
             ))}

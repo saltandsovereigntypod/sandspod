@@ -99,7 +99,7 @@
     return saved;
   }
 
-  /** Remove a plan, as the app's Remove plan does (its own row in ritual_plans). */
+  /** Remove a plan, as the app's Delete plan does (its own row in ritual_plans). */
   async function removePlan(plan) {
     writePlans(localPlans().filter((p) => p.id !== plan.id));
     const account = user();
