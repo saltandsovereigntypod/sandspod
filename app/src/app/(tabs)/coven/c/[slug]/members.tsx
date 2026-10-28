@@ -111,7 +111,8 @@ export default function Members() {
   const isBlocked = !!selected && blocked.has(selected.user_id);
   const headMember = (members ?? []).find((m) => m.user_id === founder && m.status === 'active');
   const youHandOn = founder === coven.userId;
-  const keep = handOnDefault(ranks, ranks.find((r) => r.id === headMember?.rank_id), youHandOn);
+  const holding = (rankId: string) => (members ?? []).filter((m) => m.status === 'active' && m.rank_id === rankId).length;
+  const keep = handOnDefault(ranks, ranks.find((r) => r.id === headMember?.rank_id), youHandOn, holding);
   const stepOptions = stepDownOptions(ranks);
   const stepRank = ranks.find((r) => r.id === stepTo) ?? null;
   const visitingFrom = (m: Member) => (m as Member & { visiting_from?: string | null }).visiting_from;

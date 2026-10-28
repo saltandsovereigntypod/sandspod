@@ -1,7 +1,7 @@
 /*
  * Covens: daughter covens and leadership, every read and write, as the app
  * makes them (app/src/lib/covens/lineageApi.ts;
- * supabase/migrations/20261110000000_coven_lineage.sql). Reads come back null
+ * supabase/migrations/20261112000000_coven_lineage.sql). Reads come back null
  * or empty before that migration is applied. Needs window.db.
  */
 (function (global) {

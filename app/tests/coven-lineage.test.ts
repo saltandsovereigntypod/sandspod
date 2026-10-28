@@ -108,6 +108,10 @@ test('handing on: the old head never keeps the power to lead', () => {
   assert.equal(handOnDefault(noElder, noElder[1]).words, 'You keep the title High Priestess, without the power to lead the coven.');
   assert.equal(handOnDefault(RANKS, RANKS[2], false).words, 'Its current head becomes Elder, without the power to lead the coven.');
   assert.equal(handOnDefault(RANKS, RANKS[0]).words, 'You stay Seeker.');
+  // Elder with every place held (open positions' seat_limit): their own position without the lead, as coven_hand_on does.
+  const full = RANKS.map((r) => (r.id === 'e' ? { ...r, seat_limit: 1 } : r));
+  assert.equal(handOnDefault(full, full[2], true, () => 1).words, 'You keep the title High Priestess, without the power to lead the coven.');
+  assert.equal(handOnDefault(full, full[2], true, () => 0).rank?.id, 'e');
   assert.deepEqual(stepDownOptions(RANKS).map((r) => r.id), ['e', 's']);
   const words = handOnSummary({ name: 'Rowan', covenName: 'Moon Circle', choice: 'step_down', keepWords: '', stepTo: RANKS[0] });
   assert.equal(words, 'Rowan becomes the head of Moon Circle, with every power over it. You step down to Seeker. Only one person leads the coven; the new head can give more powers later.');

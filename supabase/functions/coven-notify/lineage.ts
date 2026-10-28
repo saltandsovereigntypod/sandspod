@@ -1,7 +1,7 @@
 // Daughter covens and leadership: who hears, and what the note says. Pure (no
 // Deno or Supabase), so the app's tests check it (app/tests/coven-lineage.test.ts).
 //
-// Lineage (coven_lineage_events, supabase/migrations/20261110000000_coven_lineage.sql):
+// Lineage (coven_lineage_events, supabase/migrations/20261112000000_coven_lineage.sql):
 //   'requested'          → the mother coven's head (and heads above it)
 //   'approved'           → whoever asked, the new head, and the mother's leaders
 //   'declined'           → whoever asked
@@ -94,6 +94,8 @@ const TABLE_WORDS: Record<string, string> = {
   coven_grimoire_pages: 'a Book page',
   coven_ritual_library: 'a ritual template',
   coven_succession: 'the succession plan',
+  coven_program_documents: 'a lesson',
+  coven_program_quizzes: 'a test',
 };
 const OP_WORDS: Record<string, string> = { insert: 'added', update: 'changed', delete: 'removed' };
 

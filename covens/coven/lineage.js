@@ -64,7 +64,7 @@
     if (!Lx) return "";
     const youHandOn = state.coven.founder_id === state.context.user?.id;
     const headRow = state.ranks.find((r) => r.id === state.headMembership?.rank_id) || (youHandOn ? state.perms.rank : null);
-    const keep = Lx.handOnDefault(state.ranks, headRow, youHandOn);
+    const keep = Lx.handOnDefault(state.ranks, headRow, youHandOn, (rankId) => (state.activeMembers || []).filter((m) => m.rank_id === rankId).length);
     const steps = Lx.stepDownOptions(state.ranks);
     return `<fieldset class="cv-handon" data-handon hidden>
         <legend>Hand on leadership to ${esc(UI.nameOf(state.context, member.user_id))}</legend>
@@ -85,7 +85,7 @@
     const name = UI.nameOf(state.context, member.user_id);
     const youHandOn = state.coven.founder_id === state.context.user?.id;
     const headRow = state.ranks.find((r) => r.id === state.headMembership?.rank_id) || (youHandOn ? state.perms.rank : null);
-    const keep = Lx.handOnDefault(state.ranks, headRow, youHandOn);
+    const keep = Lx.handOnDefault(state.ranks, headRow, youHandOn, (rankId) => (state.activeMembers || []).filter((m) => m.rank_id === rankId).length);
     const words = () => {
       const choice = form.elements.old_head.value;
       const stepTo = state.ranks.find((r) => r.id === form.elements.step_to?.value) || null;

@@ -41,7 +41,7 @@ import { trainingNote, wantsTraining } from "./training.ts";
 // whose Reminders choices want invitations (invitations.ts wantsInvitation).
 //
 // { lineage_coven_id }: daughter covens
-// (supabase/migrations/20261110000000_coven_lineage.sql). Called by whoever
+// (supabase/migrations/20261112000000_coven_lineage.sql). Called by whoever
 // just asked to found a daughter, decided a request, copied or pushed
 // something, appointed a daughter's head, asked for or gave a release, or
 // (as a mother coven's head) changed something in a daughter. It sends the

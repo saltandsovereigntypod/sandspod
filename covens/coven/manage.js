@@ -34,6 +34,7 @@
       const me = context.user?.id;
       // The head's own membership, for what they keep when they hand on (covens/coven/lineage.js).
       state.headMembership = members.find((m) => m.user_id === coven.founder_id && m.status === "active") || null;
+      state.activeMembers = members.filter((m) => m.status === "active");
       const LU = global.CovenLineageUI;
       const levelOf = (m) => (m.user_id === coven.founder_id ? 1000 : state.ranks.find((r) => r.id === m.rank_id)?.level || 0);
       const active = members.filter((m) => m.status === "active").sort((a, b) => levelOf(b) - levelOf(a) || new Date(a.joined_at) - new Date(b.joined_at));

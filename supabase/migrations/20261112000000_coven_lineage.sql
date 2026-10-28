@@ -1,6 +1,8 @@
 -- NOT YET APPLIED. Daughter covens (hiving), the mother coven's authority
 -- over its daughters, carrying material across, and three leadership fixes.
--- Needs every coven migration before it (through 20261109000000_coven_invitations.sql).
+-- Needs every coven migration before it (through 20261110000100_coven_courses.sql:
+-- open positions' seats and requirements are kept when positions are copied,
+-- handed on or changed here).
 -- Additive and safe to run again (paste it whole).
 --
 -- * Lineage: covens.mother_coven_id and hived_at link a daughter coven to the
@@ -40,16 +42,19 @@
 --   where each came from). A daughter copies what its mother shares
 --   (coven_shared_with_daughters) when it likes, as a new copy; the mother's
 --   head may push an update over a daughter's copy after seeing what changes.
---   coven_copy_course_extras is an empty hook the training-courses work fills
---   in to copy its own tables with a program.
+--   coven_copy_course_extras carries the training-courses tables with a
+--   program (its lessons and tests, never anyone's reads, attempts or scores);
+--   a copied position's requirements are matched to the daughter's copies.
 -- * Leadership: handing on moves the old head out of the leading power (to
 --   Elder, or their position without it, or a position they choose), so two
 --   people never both lead. A succession plan (a successor and a second),
 --   "the head can't be reached" reports to site moderators, and what happens
 --   to covens someone leads when they delete their account
 --   (coven_hand_on_departing, called by the delete-account function).
--- * Phone notes: coven-notify { lineage_event_id }, { lineage_overrides:
---   coven id } and { leadership_event_id } (each claimed once by notified_at).
+-- * Phone notes: coven-notify { lineage_coven_id } and { leadership_coven_id }
+--   send the caller's fresh lines in that coven's logs (each claimed once by
+--   notified_at); delete-account sends { leadership_event_ids } with the
+--   service key.
 
 -- ---------------------------------------------------------------------------
 -- Columns
@@ -310,6 +315,9 @@ begin
   if p_rank is not null then
     if not public.coven_can_grant(p_coven, p_rank) or not (site_moderator or public.coven_permission(p_coven, 'review')) then
       raise exception 'You cannot grant that position.';
+    end if;
+    if p_rank is distinct from target.rank_id and target.status = 'active' then
+      perform public.coven_rank_take_seat(p_rank);
     end if;
   end if;
   if (p_status is not null or p_muted_until is not null or p_clear_mute)
@@ -748,7 +756,7 @@ create table if not exists public.coven_shared_with_daughters (
 create table if not exists public.coven_copied_items (
   id uuid primary key default gen_random_uuid(),
   coven_id uuid not null references public.covens (id) on delete cascade,
-  kind text not null check (kind in ('document', 'rank', 'program', 'book_section', 'book_page', 'ritual_library', 'calendar')),
+  kind text not null,
   item_id uuid not null,
   from_coven_id uuid references public.covens (id) on delete set null,
   from_coven_name text not null,
@@ -758,6 +766,10 @@ create table if not exists public.coven_copied_items (
   pushed_at timestamptz
 );
 
+-- (Lessons and tests come across with a program: coven_copy_course_extras.)
+alter table public.coven_copied_items drop constraint if exists coven_copied_items_kind_check;
+alter table public.coven_copied_items add constraint coven_copied_items_kind_check
+  check (kind in ('document', 'rank', 'program', 'book_section', 'book_page', 'ritual_library', 'calendar', 'lesson', 'quiz'));
 create index if not exists coven_copied_items_coven_idx on public.coven_copied_items (coven_id, kind, item_id);
 create index if not exists coven_copied_items_from_idx on public.coven_copied_items (coven_id, kind, from_item_id, copied_at desc);
 
@@ -1113,25 +1125,198 @@ as $$
   values (p_coven, p_kind, p_item, p_from_coven, (select name from public.covens where id = p_from_coven), p_from_item, auth.uid());
 $$;
 
--- The hook for the training-courses tables: called after a program is copied
--- (or pushed) into a daughter, with the stages and tasks it now has. p_map:
--- { "stages": { old id: new id }, "tasks": { old id: new id } }. It copies
--- nothing yet; the courses work replaces it to carry its own tables across
--- (lesson documents, quizzes) the same way, never anyone's answers or progress.
+-- The training-courses tables (20261110000100_coven_courses.sql), carried
+-- with a program copied (or pushed) into a daughter: each task's lessons
+-- (coven_program_documents, linked by coven_program_task_documents) and its
+-- test (coven_program_quizzes, coven_program_tasks.quiz_id). p_map:
+-- { "stages": { old id: new id }, "tasks": { old id: new id } }. A lesson or
+-- test the daughter's task already has as a copy of the same one is brought
+-- up to date (a push); otherwise a new copy is made, or, for a ready-made
+-- course's lesson or test the daughter already has (same source_id), that one
+-- is used. Never anyone's reads, attempts, scores, messages or progress. A
+-- lesson's file stays in the mother coven's storage (files are kept under
+-- each coven's own folder), so a copy comes without it and says so.
+-- Anything later added to the courses tables is copied here too.
 create or replace function public.coven_copy_course_extras(p_from_program uuid, p_to_program uuid, p_map jsonb)
 returns void
 language plpgsql
 security definer
 set search_path = public
 as $$
+declare
+  to_coven uuid := (select coven_id from public.coven_programs where id = p_to_program);
+  from_coven uuid := (select coven_id from public.coven_programs where id = p_from_program);
+  pair record;
+  src_task public.coven_program_tasks;
+  dst_task public.coven_program_tasks;
+  q public.coven_program_quizzes;
+  q_to uuid;
+  doc public.coven_program_documents;
+  link record;
+  d_to uuid;
+  kept uuid[];
+  file_words text;
 begin
-  return;
+  if to_coven is null or from_coven is null or to_coven = from_coven then return; end if;
+  for pair in select key::uuid as old_id, (value #>> '{}')::uuid as new_id from jsonb_each(coalesce(p_map->'tasks', '{}'::jsonb)) loop
+    select * into src_task from public.coven_program_tasks where id = pair.old_id;
+    select * into dst_task from public.coven_program_tasks where id = pair.new_id;
+    continue when src_task.id is null or dst_task.id is null;
+
+    -- Its test.
+    q_to := null;
+    if src_task.quiz_id is not null then
+      select * into q from public.coven_program_quizzes where id = src_task.quiz_id;
+      if q.id is not null then
+        if dst_task.quiz_id is not null and exists (
+          select 1 from public.coven_copied_items k where k.coven_id = to_coven and k.kind = 'quiz' and k.item_id = dst_task.quiz_id and k.from_item_id = q.id) then
+          q_to := dst_task.quiz_id;
+          update public.coven_program_quizzes
+          set title = q.title, intro = q.intro, pass_percent = q.pass_percent, retakes = q.retakes, wait_hours = q.wait_hours, questions = q.questions, updated_at = now()
+          where id = q_to;
+        elsif q.source_id is not null then
+          select id into q_to from public.coven_program_quizzes where coven_id = to_coven and source_id = q.source_id;
+        end if;
+        if q_to is null then
+          insert into public.coven_program_quizzes (coven_id, title, intro, pass_percent, retakes, wait_hours, questions, source_id, created_by)
+          values (to_coven, q.title, q.intro, q.pass_percent, q.retakes, q.wait_hours, q.questions, q.source_id, auth.uid())
+          returning id into q_to;
+          perform public.coven_note_copy(to_coven, 'quiz', q_to, from_coven, q.id);
+        end if;
+      end if;
+    end if;
+    update public.coven_program_tasks set quiz_id = q_to where id = dst_task.id and quiz_id is distinct from q_to;
+
+    -- Its lessons, in order.
+    kept := '{}';
+    for link in select l.document_id, l.position from public.coven_program_task_documents l where l.task_id = src_task.id order by l.position loop
+      select * into doc from public.coven_program_documents where id = link.document_id;
+      continue when doc.id is null;
+      d_to := null;
+      select l.document_id into d_to from public.coven_program_task_documents l
+      join public.coven_copied_items k on k.coven_id = to_coven and k.kind = 'lesson' and k.item_id = l.document_id and k.from_item_id = doc.id
+      where l.task_id = dst_task.id limit 1;
+      file_words := case when doc.file_path is not null
+        then E'\n\n(This lesson has a file' || coalesce(' (' || doc.file_name || ')', '') || ' in '
+             || coalesce((select name from public.covens where id = from_coven), 'the mother coven') || '. Files aren’t copied: ask its head for it.)'
+        else '' end;
+      if d_to is not null then
+        update public.coven_program_documents
+        set title = doc.title, summary = doc.summary, minutes = doc.minutes, body = left(doc.body || file_words, 60000), updated_at = now()
+        where id = d_to;
+      else
+        if doc.source_id is not null then
+          select id into d_to from public.coven_program_documents where coven_id = to_coven and source_id = doc.source_id;
+        end if;
+        if d_to is null then
+          insert into public.coven_program_documents (coven_id, title, summary, minutes, body, source_id, created_by)
+          values (to_coven, doc.title, doc.summary, doc.minutes, left(doc.body || file_words, 60000), doc.source_id, auth.uid())
+          returning id into d_to;
+          perform public.coven_note_copy(to_coven, 'lesson', d_to, from_coven, doc.id);
+        end if;
+      end if;
+      insert into public.coven_program_task_documents (task_id, document_id, coven_id, position)
+      values (dst_task.id, d_to, to_coven, link.position)
+      on conflict (task_id, document_id) do update set position = excluded.position;
+      kept := kept || d_to;
+    end loop;
+    -- Lessons the mother's step no longer has come off the daughter's step (the lessons themselves stay).
+    delete from public.coven_program_task_documents l where l.task_id = dst_task.id and l.document_id <> all(kept)
+      and exists (select 1 from public.coven_copied_items k where k.coven_id = to_coven and k.kind = 'lesson' and k.item_id = l.document_id);
+  end loop;
 end;
 $$;
 
 -- ---------------------------------------------------------------------------
 -- Copying, one thing at a time (each notes where it came from)
 -- ---------------------------------------------------------------------------
+
+-- The coven's latest copy of something (by the original's id), if it has one.
+create or replace function public.coven_copied_id(p_coven uuid, p_kind text, p_from uuid)
+returns uuid
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select k.item_id from public.coven_copied_items k
+  where k.coven_id = p_coven and k.kind = p_kind and k.from_item_id = p_from
+  order by k.copied_at desc limit 1;
+$$;
+
+-- What a copied position asks (open positions' requirement_items), with each
+-- position, program or page it names swapped for the coven's own copy of it,
+-- or left out when the coven has none (p_drop; otherwise kept as it is for a
+-- later pass, coven_remap_copied_ranks, once the rest has come across).
+create or replace function public.coven_remap_requirements(p_coven uuid, p_items jsonb, p_drop boolean default true)
+returns jsonb
+language plpgsql
+stable
+security definer
+set search_path = public
+as $$
+declare
+  item jsonb;
+  out jsonb := '[]'::jsonb;
+  ref text;
+  v_kind text;
+  mine uuid;
+begin
+  if p_items is null or jsonb_typeof(p_items) <> 'array' then return '[]'::jsonb; end if;
+  for item in select x from jsonb_array_elements(p_items) x loop
+    if jsonb_typeof(item) <> 'object' then continue; end if;
+    ref := case when item ? 'rank_id' then 'rank_id' when item ? 'program_id' then 'program_id' when item ? 'document_id' then 'document_id' end;
+    if ref is null then
+      out := out || jsonb_build_array(item);
+      continue;
+    end if;
+    v_kind := case ref when 'rank_id' then 'rank' when 'program_id' then 'program' else 'document' end;
+    begin
+      mine := (item->>ref)::uuid;
+    exception when others then
+      continue;
+    end;
+    if not exists (
+      select 1 from public.coven_ranks where v_kind = 'rank' and id = mine and coven_id = p_coven
+      union all select 1 from public.coven_programs where v_kind = 'program' and id = mine and coven_id = p_coven
+      union all select 1 from public.coven_documents where v_kind = 'document' and id = mine and coven_id = p_coven
+    ) then
+      mine := public.coven_copied_id(p_coven, v_kind, mine);
+    end if;
+    if mine is not null then
+      out := out || jsonb_build_array(item || jsonb_build_object(ref, mine));
+    elsif not p_drop then
+      out := out || jsonb_build_array(item);
+    end if;
+  end loop;
+  return out;
+end;
+$$;
+
+-- After a founding or a push: every copied position's requirements, matched again
+-- (a program or page it names may have come across after the position did).
+create or replace function public.coven_remap_copied_ranks(p_coven uuid)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  r record;
+  remapped jsonb;
+begin
+  perform set_config('coven.copying', 'on', true);
+  for r in select x.id, x.requirement_items from public.coven_ranks x
+           where x.coven_id = p_coven and x.requirement_items <> '[]'::jsonb
+             and exists (select 1 from public.coven_copied_items k where k.coven_id = p_coven and k.kind = 'rank' and k.item_id = x.id) loop
+    remapped := public.coven_remap_requirements(p_coven, r.requirement_items);
+    if remapped is distinct from r.requirement_items then
+      update public.coven_ranks set requirement_items = remapped where id = r.id;
+    end if;
+  end loop;
+  perform set_config('coven.copying', 'off', true);
+end;
+$$;
 
 -- A page: creed, rules, requirements or an agreement. Agreements arrive as
 -- drafts, so the daughter reads and adopts them itself.
@@ -1171,8 +1356,13 @@ begin
   select to_jsonb(r), r.coven_id into src, from_coven from public.coven_ranks r where r.id = p_rank;
   if src is null then return null; end if;
   perform set_config('coven.copying', 'on', true);
+  -- The position's own settings come across; an opening in the mother (its
+  -- closing date and note) doesn't. What it asks is matched to the
+  -- daughter's copies (coven_remap_requirements).
   src := public.coven_strip_refs(src, array['id', 'coven_id'])
-    || jsonb_build_object('id', made, 'coven_id', p_to, 'is_default', p_default, 'created_at', now(), 'updated_at', now());
+    || jsonb_build_object('id', made, 'coven_id', p_to, 'is_default', p_default, 'created_at', now(), 'updated_at', now(),
+         'applications_close_at', null, 'opening_note', null, 'opened_at', null,
+         'requirement_items', public.coven_remap_requirements(p_to, src->'requirement_items', false));
   insert into public.coven_ranks select * from jsonb_populate_record(null::public.coven_ranks, src);
   perform set_config('coven.copying', 'off', true);
   perform public.coven_note_copy(p_to, 'rank', made, from_coven, p_rank);
@@ -1224,7 +1414,7 @@ begin
         t_to := dst_tasks[j];
         perform public.coven_overwrite_row('coven_program_tasks', t_to,
           public.coven_strip_refs(to_jsonb(t_from), array['id']) - 'id' - 'stage_id' - 'program_id' - 'coven_id' - 'created_at' || jsonb_build_object('updated_at', now()),
-          array['id', 'stage_id', 'program_id', 'coven_id', 'created_at']);
+          array['id', 'stage_id', 'program_id', 'coven_id', 'created_at', 'quiz_id']);
       else
         t_to := gen_random_uuid();
         insert into public.coven_program_tasks
@@ -1426,8 +1616,10 @@ language plpgsql
 security definer
 set search_path = public
 as $$
+declare
+  made uuid;
 begin
-  return case p_kind
+  made := case p_kind
     when 'document' then public.coven_copy_document(p_item, p_to)
     when 'rank' then public.coven_copy_rank(p_item, p_to)
     when 'program' then public.coven_copy_program(p_item, p_to)
@@ -1436,6 +1628,8 @@ begin
     when 'ritual_library' then public.coven_copy_library(p_item, p_to)
     when 'calendar' then public.coven_copy_calendar(p_from, p_to)
   end;
+  if p_kind = 'rank' then perform public.coven_remap_copied_ranks(p_to); end if;
+  return made;
 end;
 $$;
 
@@ -1530,6 +1724,7 @@ begin
     perform public.coven_copy_calendar(p_from, p_to);
     counts := counts || jsonb_build_object('calendar', 1);
   end if;
+  perform public.coven_remap_copied_ranks(p_to);
   return counts;
 end;
 $$;
@@ -2123,7 +2318,12 @@ begin
     update public.coven_documents x set title = s.title, body = s.body from public.coven_documents s where s.id = p_item and x.id = target;
   elsif p_kind = 'rank' then
     select public.coven_strip_refs(to_jsonb(r), array['id']) into src from public.coven_ranks r where r.id = p_item;
-    perform public.coven_overwrite_row('coven_ranks', target, src, array['id', 'coven_id', 'created_at', 'is_default', 'level', 'open_to_applications']);
+    -- Its opening stays the daughter's own (open or not, closing date, note).
+    perform set_config('coven.copying', 'on', true);
+    perform public.coven_overwrite_row('coven_ranks', target, src, array['id', 'coven_id', 'created_at', 'is_default', 'level', 'open_to_applications',
+      'applications_open', 'applications_close_at', 'opening_note', 'opened_at', 'requirement_items']);
+    update public.coven_ranks set requirement_items = public.coven_remap_requirements(d.id, src->'requirement_items') where id = target;
+    perform set_config('coven.copying', 'off', true);
   elsif p_kind = 'program' then
     select public.coven_strip_refs(to_jsonb(r), array['id']) into src from public.coven_programs r where r.id = p_item;
     perform public.coven_overwrite_row('coven_programs', target, src || jsonb_build_object('updated_at', now()),
@@ -2311,7 +2511,8 @@ declare
   t text;
 begin
   foreach t in array array['covens', 'coven_ranks', 'coven_members', 'coven_documents', 'coven_applications', 'coven_advancement_requests',
-                           'coven_programs', 'coven_rituals', 'coven_grimoire_pages', 'coven_ritual_library', 'coven_succession'] loop
+                           'coven_programs', 'coven_rituals', 'coven_grimoire_pages', 'coven_ritual_library', 'coven_succession',
+                           'coven_program_documents', 'coven_program_quizzes'] loop
     if exists (select 1 from information_schema.tables where table_schema = 'public' and table_name = t) then
       execute format('drop trigger if exists %I on public.%I', t || '_mother_log', t);
       execute format('create trigger %I after insert or update or delete on public.%I for each row execute function public.coven_log_ancestor_change()', t || '_mother_log', t);
@@ -2360,6 +2561,9 @@ begin
     select * into target from public.coven_ranks where id = p_old_rank and coven_id = p_coven;
     if target.id is null then raise exception 'Choose a position of this coven.'; end if;
     if target.can_manage then raise exception 'Choose a position that doesn''t lead the coven. The new head can give more later.'; end if;
+    if target.id is distinct from old_member.rank_id then
+      perform public.coven_rank_take_seat(target.id);
+    end if;
   end if;
 
   lead_rank := case when old_rank.can_manage then old_rank.id
@@ -2376,6 +2580,10 @@ begin
       update public.coven_members set rank_id = target.id where coven_id = p_coven and user_id = old_head;
     elsif old_rank.id is not null and old_rank.can_manage then
       select * into target from public.coven_ranks where coven_id = p_coven and lower(btrim(name)) = 'elder' and not can_manage order by level desc limit 1;
+      -- Elder, unless all its places are taken (open positions' seat_limit).
+      if target.id is not null and target.seat_limit is not null and public.coven_rank_holder_count(target.id) >= target.seat_limit then
+        target := null;
+      end if;
       if target.id is not null then
         update public.coven_members set rank_id = target.id where coven_id = p_coven and user_id = old_head;
       else
@@ -2383,6 +2591,7 @@ begin
         made := gen_random_uuid();
         perform set_config('coven.copying', 'on', true);
         src := to_jsonb(old_rank) || jsonb_build_object('id', made, 'can_manage', false, 'is_default', false, 'open_to_applications', false,
+          'applications_open', false, 'seat_limit', null, 'applications_close_at', null, 'opening_note', null, 'opened_at', null,
           'level', greatest(1, least(99, old_rank.level - 1)), 'created_at', now(), 'updated_at', now(),
           'description', left(coalesce(old_rank.description || ' ', '') || 'Stepped back from leading the coven.', 1000));
         insert into public.coven_ranks select * from jsonb_populate_record(null::public.coven_ranks, src);
@@ -2656,6 +2865,9 @@ revoke execute on function
   public.coven_overwrite_row(text, uuid, jsonb, text[]),
   public.coven_note_copy(uuid, text, uuid, uuid, uuid),
   public.coven_copy_course_extras(uuid, uuid, jsonb),
+  public.coven_copied_id(uuid, text, uuid),
+  public.coven_remap_requirements(uuid, jsonb, boolean),
+  public.coven_remap_copied_ranks(uuid),
   public.coven_copy_document(uuid, uuid),
   public.coven_copy_rank(uuid, uuid, boolean),
   public.coven_program_body(uuid, uuid),

@@ -2,7 +2,7 @@
 // screens show, and the small rules they share, free of React and Supabase
 // so they can be tested (tests/coven-lineage.test.ts). The website uses the
 // same module (js/core/covens.js → SaltCore.covens.lineage). The database
-// decides who may do what (supabase/migrations/20261110000000_coven_lineage.sql).
+// decides who may do what (supabase/migrations/20261112000000_coven_lineage.sql).
 //
 // A daughter coven hives from a mother coven. The mother coven's head (and
 // the head of every coven above it) has full head powers in the daughter,
@@ -285,6 +285,8 @@ const TABLE_WORDS: Record<string, string> = {
   coven_grimoire_pages: 'a Book page',
   coven_ritual_library: 'a ritual template',
   coven_succession: 'the succession plan',
+  coven_program_documents: 'a lesson',
+  coven_program_quizzes: 'a test',
 };
 
 const OP_WORDS: Record<string, string> = { insert: 'added', update: 'changed', delete: 'removed' };
@@ -342,15 +344,18 @@ export function eventLine(e: LineageEvent, nameOf: (id: string | null | undefine
 export type OldHeadChoice = 'keep' | 'step_down';
 
 /**
- * What the head who hands on keeps, by default: Elder when the coven has it,
- * else their own position without the power to lead (or as it is, when it
- * doesn't lead). Mirrors coven_hand_on.
+ * What the head who hands on keeps, by default: Elder when the coven has it
+ * and it has a place left (held: how many hold a position now), else their
+ * own position without the power to lead (or as it is, when it doesn't
+ * lead). Mirrors coven_hand_on.
  */
-export function handOnDefault(ranks: Rank[], oldRank: Rank | null | undefined, you = true): { rank: Rank | null; words: string } {
+export function handOnDefault(ranks: Rank[], oldRank: Rank | null | undefined, you = true, held?: (rankId: string) => number): { rank: Rank | null; words: string } {
   const who = you ? 'You' : 'Its current head';
   const s = you ? '' : 's';
   if (!oldRank || !oldRank.can_manage) return { rank: oldRank ?? null, words: oldRank ? `${who} stay${s} ${oldRank.name}.` : `${who} stay${s} a member.` };
-  const elder = ranks.find((r) => r.name.trim().toLowerCase() === 'elder' && !r.can_manage) ?? null;
+  const found = ranks.find((r) => r.name.trim().toLowerCase() === 'elder' && !r.can_manage) ?? null;
+  const limit = (found as (Rank & { seat_limit?: number | null }) | null)?.seat_limit;
+  const elder = found && limit != null && held && held(found.id) >= limit ? null : found;
   if (elder) return { rank: elder, words: `${who} become${s} ${elder.name}, without the power to lead the coven.` };
   return { rank: oldRank, words: `${who} keep${s} the title ${oldRank.name}, without the power to lead the coven.` };
 }

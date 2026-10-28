@@ -1,5 +1,5 @@
 // Supabase calls for daughter covens and leadership (lineage.ts;
-// supabase/migrations/20261110000000_coven_lineage.sql), the same calls the
+// supabase/migrations/20261112000000_coven_lineage.sql), the same calls the
 // website makes (covens/coven/lineage.js). The database decides who may.
 // Reads come back null or empty before that migration is applied.
 
