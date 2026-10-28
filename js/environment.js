@@ -39,7 +39,10 @@
     const developmentDomain = hostname === "dev.saltandsovereignty.com";
     const githubPages = hostname === "saltandsovereigntypod.github.io" && (pathname === "/sandspod-dev" || pathname.startsWith("/sandspod-dev/"));
     const local = hostname === "localhost" || hostname === "127.0.0.1" || hostname === "[::1]";
-    const recognized = production || developmentDomain || githubPages || local;
+    // Cloudflare's own addresses for the site and its previews
+    // (saltandsovereignty.saltandsovereignty.workers.dev, <version>-saltandsovereignty.…).
+    const cloudflare = /^([a-z0-9-]+-)?saltandsovereignty\.saltandsovereignty\.workers\.dev$/.test(hostname);
+    const recognized = production || developmentDomain || githubPages || local || cloudflare;
     const name = production ? "production" : recognized ? (local ? "local-development" : "development") : "unrecognized";
     const project = production ? LIVE_PROJECT : recognized ? PROJECTS.development : null;
     const basePath = githubPages ? "/sandspod-dev/" : "/";
