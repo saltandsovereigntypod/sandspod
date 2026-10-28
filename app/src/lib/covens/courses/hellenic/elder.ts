@@ -647,7 +647,7 @@ You are an elder, not a therapist, doctor, lawyer or the voice of the gods.
           kind: 'study',
           instructions: `1. Re-read any lesson you're unsure of.
 2. Take the test. The choice questions are scored at once; the written answers are scored by your mentor or the High Priestess or High Priest.
-3. You need 80% to pass. If you don't pass, read the explanations, talk it through, and try again.`,
+3. You need 80% to pass. If you don't pass, look at the questions you missed, talk it through, and try again.`,
           times: 1,
           response: 'none',
           checked_by: 'mentor',

@@ -60,3 +60,7 @@ export * as quiz from '../../app/src/lib/covens/quiz.ts';
 export * as training from '../../app/src/lib/covens/training.ts';
 export * as courseCopy from '../../app/src/lib/covens/courseCopy.ts';
 export * as trainingNotes from '../../supabase/functions/coven-notify/training.ts';
+// Waiting lists for full positions: who is in line and the words
+// (covens/coven/queue.js), and the phone notes (coven-notify's queue.ts).
+export * as queue from '../../app/src/lib/covens/queue.ts';
+export * as queueNotes from '../../supabase/functions/coven-notify/queue.ts';

@@ -1,6 +1,6 @@
 -- NOT YET APPLIED. Daughter covens (hiving), the mother coven's authority
 -- over its daughters, carrying material across, and three leadership fixes.
--- Needs every coven migration before it (through 20261110000100_coven_courses.sql:
+-- Needs every coven migration before it (through 20261111000100_coven_test_keys_and_waiting_lists.sql:
 -- open positions' seats and requirements are kept when positions are copied,
 -- handed on or changed here).
 -- Additive and safe to run again (paste it whole).

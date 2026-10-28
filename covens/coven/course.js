@@ -1,8 +1,9 @@
 /*
  * The teaching side of a coven's programs, on the website (the app's
  * programs/lesson, test, score, thread, library, lesson-edit and quiz-edit
- * screens): lessons and the lesson reader, tests (taking one, the result with
- * explanations, the attempts, scoring), practice logged a session at a time
+ * screens): lessons and the lesson reader, tests (taking one, the result,
+ * with the right answers and explanations once passed, the attempts,
+ * scoring), practice logged a session at a time
  * with a timer, the conversation on each step, the coven's own lessons and
  * tests, and the ready-made course programs to copy in.
  *
@@ -264,9 +265,10 @@
     return answers;
   }
 
-  function attemptHtml(a, { showRubric }) {
+  function attemptHtml(a, { showRubric, self }) {
     const Q = K().quiz;
-    return `<ol class="cv-result">${Q.attemptLines(a)
+    const hidden = Q.keyLine(a, Boolean(self));
+    return `${hidden ? `<p class="sp-caption" data-key-hidden>${esc(hidden)}</p>` : ""}<ol class="cv-result">${Q.attemptLines(a)
       .map((line) => {
         const q = line.question;
         return `<li class="cv-result__line${line.right === true ? " is-right" : line.right === false ? " is-wrong" : ""}">
@@ -311,10 +313,10 @@
           <h2>${esc(quiz.title)}</h2><p class="cv-score">${esc(Q.scoreLine(viewing))}</p>
           <p class="sp-caption">Handed in ${esc(when(viewing.submitted_at))} · ${viewing.pass_percent}% to pass${viewing.scored_by && final ? ` · scored by ${esc(ctx.nameOf(viewing.scored_by))}` : ""}</p></header>
         ${viewing.status === "passed" ? `<p class="sp-notice">Passed. This step is done.</p>` : ""}
-        ${viewing.status === "failed" && self ? `<p class="sp-notice">${esc(can.line || "Not passed this time.")} Read the explanations below, and ask your mentor about anything unclear.</p>` : ""}
+        ${viewing.status === "failed" && self ? `<p class="sp-notice">${esc(can.line || "Not passed this time.")} See which questions to look at again below, and ask your mentor about anything unclear.</p>` : ""}
         ${!final ? `<p class="sp-notice">${self ? "The choice questions are scored. Your written answers are with your mentor or the coven’s leaders, who will score them." : "Written answers are waiting to be scored."}</p>` : ""}
         ${viewing.feedback && final ? `<div class="sp-card"><p class="sp-label">A note from ${esc(viewing.scored_by ? ctx.nameOf(viewing.scored_by) : "your mentor")}</p><div class="cv-doc">${prose(viewing.feedback)}</div></div>` : ""}
-        ${attemptHtml(viewing, { showRubric: !self })}
+        ${attemptHtml(viewing, { showRubric: !self, self })}
         <div class="sp-actions">${mayScore && !final ? `<a class="button button--primary" href="${esc(ctx.link(`score=${viewing.id}`))}" data-go>Score it</a>` : ""}${talk}</div>`;
       return;
     }
@@ -432,7 +434,7 @@
           <div class="sp-actions"><button class="button button--primary" type="submit" data-final="1">Give the result</button><button class="button button--ghost" type="submit" data-final="0">Save for later</button></div>` : ""}
         ${statusLine()}</form>
       <p><a href="${esc(ctx.link(`thread=${a.task_id}&e=${a.enrollment_id}`))}" data-go>Talk with ${esc(ctx.nameOf(a.user_id))} about it</a></p>
-      <h3>The whole attempt</h3>${attemptHtml(a, { showRubric: true })}`;
+      <h3>The whole attempt</h3>${attemptHtml(a, { showRubric: true, self: false })}`;
     const form = ctx.pane.querySelector("[data-score]");
     const typed = () => Object.fromEntries(writtenQs.map(({ q }) => [q.id, { points: form.elements[`points-${q.id}`]?.value ?? String(a.manual_scores[q.id]?.points ?? ""), comment: form.elements[`comment-${q.id}`]?.value ?? "" }]));
     const total = () => {
@@ -633,7 +635,7 @@
           .map((o, k) => `<div class="cv-option-edit"><label class="cv-check"><input type="${q.type === "multi" ? "checkbox" : "radio"}" name="correct-${i}" value="${k}"${(q.correct || []).includes(k) ? " checked" : ""} /> <span>Right</span></label>
             ${q.type === "truefalse" ? `<span>${esc(o)}</span>` : `<input name="option" data-k="${k}" maxlength="500" value="${esc(o)}" aria-label="Answer ${k + 1}" />${(q.options || []).length > 2 ? `<button class="button button--ghost button--small" type="button" data-drop-option="${i}:${k}">Remove</button>` : ""}`}</div>`)
           .join("")}${q.type !== "truefalse" && (q.options || []).length < 12 ? `<button class="button button--ghost button--small" type="button" data-add-option="${i}">Add an answer</button>` : ""}</div>` : ""}
-        <div class="sp-field"><label>Explanation, shown after they answer (teach the point again)<textarea name="explanation" rows="2" maxlength="4000">${esc(q.explanation || "")}</textarea></label></div>
+        <div class="sp-field"><label>Explanation, shown once they’ve passed the test (teach the point again)<textarea name="explanation" rows="2" maxlength="4000">${esc(q.explanation || "")}</textarea></label></div>
         ${Q.isChoice(q) ? "" : `<div class="sp-field"><label>Scoring guide: what a full-marks answer includes<textarea name="rubric" rows="2" maxlength="4000">${esc(q.rubric || "")}</textarea></label></div>`}
         <div class="sp-actions"><button class="button button--ghost button--small" type="button" data-move-q="${i}:-1">Move up</button><button class="button button--ghost button--small" type="button" data-move-q="${i}:1">Move down</button><button class="button button--ghost button--small" type="button" data-drop-q="${i}">Remove question</button></div>
       </fieldset>`;

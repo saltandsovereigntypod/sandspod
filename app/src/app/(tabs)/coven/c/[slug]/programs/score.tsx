@@ -134,7 +134,7 @@ export default function ScoreTest() {
       {message && <Notice>{message}</Notice>}
       <Button label={`Talk with ${coven.nameOf(attempt.user_id)} about it`} variant="text" onPress={() => router.push(threadHref(coven.slug, attempt.enrollment_id, attempt.task_id))} />
       <Text style={type.eyebrow}>The whole attempt</Text>
-      <AttemptResult attempt={attempt} showRubric />
+      <AttemptResult attempt={attempt} showRubric self={false} />
     </CovenScreen>
   );
 }

@@ -1,0 +1,518 @@
+/* =========================================================
+   THE ALTAR PAGE, AS THE APP HAS IT
+   The calm header, the stage with its side column, and the one toolbar
+   (altar/js/ui/altar-toolbar.js). Loaded last, so it settles the layout the
+   older sheets (altar.css, companion-layout.css, workspace-panel.css,
+   mobile-toolbar.css) fought over. Tokens from the app (app/src/theme.ts).
+   ========================================================= */
+
+body.altar-page {
+  --app-ground: #0c1510;
+  --app-surface: #142219;
+  --app-raised: #1c2e22;
+  --app-cream: #f4ecd8;
+  --app-parchment: #e6dcc2;
+  --app-muted: #cabf9d;
+  --app-gold: #e2c36d;
+  --app-gold-deep: #b9a05d;
+  --app-ink: #102118;
+  --app-hairline: rgba(244, 236, 216, 0.12);
+  --app-gold-line: rgba(226, 195, 109, 0.28);
+  --app-danger: #e8a58f;
+  --app-radius-button: 12px;
+  --app-radius-card: 20px;
+  --app-radius-tile: 16px;
+  --app-touch: 44px;
+  --app-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --app-display: "Cormorant Garamond", Georgia, serif;
+  --app-body: "Source Serif 4", Georgia, serif;
+}
+
+body.altar-page .altar-main {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 28px 32px 64px;
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+
+body.altar-page .altar-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px 24px;
+  max-width: none;
+  margin: 0 0 20px;
+  text-align: left;
+}
+
+body.altar-page .altar-hero__text { min-width: 0; }
+
+body.altar-page .altar-hero .eyebrow {
+  margin: 0 0 6px;
+  color: var(--app-muted);
+  font-family: var(--app-body);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  text-align: left;
+}
+
+body.altar-page .altar-hero h1 {
+  margin: 0;
+  color: var(--app-cream);
+  font-family: var(--app-display);
+  font-size: clamp(2.125rem, 3.4vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1.05;
+  text-align: left;
+}
+
+body.altar-page .altar-hero p.altar-hero__line {
+  max-width: 60ch;
+  margin: 6px 0 0;
+  color: var(--app-parchment);
+  font-family: var(--app-body);
+  font-size: 15px;
+  line-height: 22px;
+  text-align: left;
+}
+
+body.altar-page .altar-hero__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--app-touch);
+}
+
+body.altar-page .altar-scope .seg-switch {
+  margin: 0;
+  max-width: none;
+}
+
+body.altar-page .altar-scope .seg-switch button {
+  min-height: 36px;
+  font-family: var(--app-body);
+  font-size: 14px;
+}
+
+body.altar-page .altar-scope .seg-switch button:focus-visible {
+  outline: 2px solid var(--app-gold);
+  outline-offset: 2px;
+}
+
+.altar-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--app-touch);
+  max-width: min(18rem, 100%);
+  padding: 0 12px 0 16px;
+  border: 1px solid var(--app-gold-line);
+  border-radius: var(--app-radius-button);
+  background: var(--app-raised);
+  color: var(--app-cream);
+  font: 600 15px/1.2 var(--app-body);
+  cursor: pointer;
+  animation: altar-rise 0.24s var(--app-ease);
+  transition: border-color 0.16s ease, background-color 0.16s ease;
+}
+
+.altar-picker[hidden] { display: none !important; }
+.altar-picker:hover { border-color: var(--app-gold); }
+.altar-picker:focus-visible { outline: 2px solid var(--app-gold); outline-offset: 2px; }
+
+.altar-picker__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.altar-picker .altar-icon { color: var(--app-gold); }
+
+body.altar-page .altar-hero__tend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: var(--app-touch);
+  padding: 0 4px;
+  color: var(--app-gold);
+  font-family: var(--app-body);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+body.altar-page .altar-hero__tend:hover,
+body.altar-page .altar-hero__tend:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+body.is-coven-altar .altar-hero__tend { display: none; }
+
+/* ── Stage and side column ──────────────────────────────── */
+
+body.altar-page .altar-workspace {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-areas: "stage" "side" !important;
+  gap: 16px !important;
+  align-items: start !important;
+}
+
+body.altar-page .altar-workspace > .altar-stage-wrap {
+  grid-area: stage !important;
+  grid-column: auto !important;
+  grid-row: auto !important;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  border: 1px solid var(--app-gold-line);
+  border-radius: var(--app-radius-card);
+  background: var(--app-ground);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.38);
+}
+
+body.altar-page .altar-stage {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 0;
+  /* Holds the stage's shape and colour while its picture loads. */
+  background-color: #141a14;
+}
+
+/* A column, not a grid: the older sheets give the Companion grid areas that would split it. */
+body.altar-page .altar-side {
+  grid-area: side;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  body.altar-page .altar-workspace {
+    grid-template-columns: minmax(0, 1fr) 384px !important;
+    grid-template-areas: "stage side" !important;
+    gap: 24px !important;
+  }
+}
+
+/* The selected object's actions, under the stage only while something is selected. */
+body.altar-page .altar-stage-wrap > .altar-action-bar {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 10px 12px;
+  border: 0;
+  border-top: 1px solid var(--app-hairline);
+  border-radius: 0;
+  background: rgba(12, 21, 16, 0.92);
+}
+
+body.altar-page .altar-stage-wrap > .altar-action-bar:not(.has-object-selection) { display: none !important; }
+
+body.altar-page .app-altar-notice {
+  margin: 0;
+  padding: 10px 16px;
+  border-top: 1px solid var(--app-hairline);
+  font-family: var(--app-body);
+  font-size: 14px;
+}
+
+/* The selected object's actions as calm chips: words only, as the app has them. */
+body.altar-page .altar-action-bar .altar-toolbar.is-in-action-bar button {
+  min-width: 0;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--app-hairline);
+  border-radius: 999px;
+  background: var(--app-raised);
+  color: var(--app-cream);
+  font: 400 14px/1.2 var(--app-body);
+  transition: border-color 0.16s ease, background-color 0.16s ease;
+}
+
+body.altar-page .altar-action-bar .altar-toolbar.is-in-action-bar button:hover { border-color: var(--app-gold-line); background: #22382a; }
+body.altar-page .altar-action-bar .altar-toolbar.is-in-action-bar button:focus-visible { outline: 2px solid var(--app-gold); outline-offset: 2px; }
+body.altar-page .altar-action-bar .altar-toolbar.is-in-action-bar button > span[aria-hidden="true"]:first-child { display: none; }
+
+body.altar-page .altar-stage-wrap > .altar-action-bar .altar-toolbar.is-in-action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+body.altar-page .altar-action-bar .altar-object-actions-visible > button,
+body.altar-page .altar-action-bar .altar-object-actions-more-wrap > button {
+  flex-direction: row;
+  width: auto;
+  min-height: 40px !important;
+  line-height: 1.2 !important;
+}
+
+body.altar-page .altar-action-bar .altar-object-actions-more-wrap { margin: 0; }
+
+body.altar-page .altar-action-bar .altar-object-actions-visible {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* The Companion (the selected object's page), above the tools while it has something to show. */
+body.altar-page .altar-side > .altar-workspace-panel {
+  order: -1;
+  display: none;
+  width: 100%;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: min(72vh, 44rem);
+  flex-direction: column;
+  border: 1px solid var(--app-gold-line);
+  border-radius: var(--app-radius-card);
+  background: var(--app-surface);
+  box-shadow: none;
+}
+
+body.altar-page.altar-companion-open .altar-side > .altar-workspace-panel {
+  display: flex;
+  animation: altar-rise 0.24s var(--app-ease);
+}
+
+body.altar-page.altar-companion-minimized .altar-side > .altar-workspace-panel { display: none !important; }
+
+body.altar-page .altar-side .altar-workspace-panel-inner,
+body.altar-page .altar-side .altar-workspace-panel-inner > .altar-companion-panel:not(.altar-living-state-panel) {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  height: auto !important;
+  min-height: 0;
+}
+
+body.altar-page .altar-side .altar-workspace-panel-inner > .altar-companion-panel > .altar-companion-inner {
+  flex: 1 1 auto;
+  height: auto !important;
+  min-height: 0;
+}
+
+@media (max-width: 1023px) {
+  body.altar-page .altar-side > .altar-workspace-panel { max-height: min(75dvh, 40rem); }
+}
+
+/* ── The toolbar ────────────────────────────────────────── */
+
+.altar-tools {
+  display: grid;
+  gap: 18px;
+  padding: 16px;
+  border: 1px solid var(--app-hairline);
+  border-radius: var(--app-radius-card);
+  background: rgba(20, 34, 25, 0.72);
+  font-family: var(--app-body);
+}
+
+.altar-tools [hidden],
+.altar-more__menu[hidden] { display: none !important; }
+
+.altar-tools__quick {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.altar-tools__spacer { flex: 1 1 auto; }
+
+.altar-tools__group { display: grid; gap: 8px; }
+
+.altar-tools__label {
+  margin: 0;
+  color: var(--app-muted);
+  font-family: var(--app-body);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.altar-tools__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.altar-tools__intention {
+  margin: 0;
+  color: var(--app-cream);
+  font-family: var(--app-display);
+  font-size: 1.2rem;
+  font-style: italic;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.altar-tools__caption {
+  margin: 0;
+  color: var(--app-muted);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.altar-tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--app-touch);
+  margin: 0;
+  padding: 0 14px;
+  border: 1px solid var(--app-hairline);
+  border-radius: 999px;
+  background: var(--app-raised);
+  color: var(--app-cream);
+  font: 400 14px/1.2 var(--app-body);
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: border-color 0.16s ease, background-color 0.16s ease, opacity 0.16s ease, transform 0.12s ease;
+}
+
+.altar-tool .altar-icon { color: var(--app-gold); }
+.altar-tool:hover:not(:disabled) { border-color: var(--app-gold-line); background: #22382a; }
+.altar-tool:active:not(:disabled) { transform: scale(0.97); }
+.altar-tool:focus-visible { outline: 2px solid var(--app-gold); outline-offset: 2px; }
+.altar-tool:disabled { opacity: 0.45; cursor: default; }
+
+.altar-tool--icon {
+  width: var(--app-touch);
+  padding: 0;
+}
+
+.altar-tool--primary {
+  border-color: var(--app-gold);
+  background: transparent;
+  color: var(--app-gold);
+  font-weight: 600;
+}
+
+.altar-tool--primary:hover:not(:disabled) { background: rgba(226, 195, 109, 0.12); border-color: var(--app-gold); }
+
+.altar-tool--wide {
+  border-color: var(--app-gold);
+  background: var(--app-gold);
+  color: var(--app-ink);
+  font-weight: 600;
+}
+
+.altar-tool--wide .altar-icon { color: var(--app-ink); }
+.altar-tool--wide:hover:not(:disabled) { background: #ead07f; border-color: #ead07f; }
+.altar-tool--danger span:not(.altar-icon) { color: var(--app-danger); }
+
+.altar-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+}
+
+.altar-icon svg { width: 100%; height: 100%; }
+.altar-icon--small { width: 16px; height: 16px; }
+
+/* More */
+.altar-more { position: relative; }
+.altar-more.is-open > .altar-tool { border-color: var(--app-gold); }
+
+.altar-more__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 80;
+  display: grid;
+  gap: 2px;
+  width: max-content;
+  min-width: 15rem;
+  max-width: calc(100vw - 32px);
+  padding: 8px;
+  border: 1px solid var(--app-gold-line);
+  border-radius: var(--app-radius-tile);
+  background: rgba(20, 34, 25, 0.98);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
+  scroll-margin: 16px 0 96px;
+  transform-origin: top right;
+  animation: altar-menu 0.16s var(--app-ease);
+}
+
+.altar-more__label {
+  margin: 0;
+  padding: 10px 12px 4px;
+  color: var(--app-muted);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.altar-more__label:first-child { padding-top: 4px; }
+
+.altar-more__menu [role="menuitem"] {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: var(--app-touch);
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--app-radius-button);
+  background: transparent;
+  color: var(--app-cream);
+  font: 400 15px/1.2 var(--app-body);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.14s ease;
+}
+
+.altar-more__menu [role="menuitem"] .altar-icon { color: var(--app-gold); }
+.altar-more__menu [role="menuitem"]:hover,
+.altar-more__menu [role="menuitem"]:focus-visible { background: var(--app-raised); outline: none; }
+.altar-more__menu [role="menuitem"]:focus-visible { box-shadow: inset 0 0 0 1px var(--app-gold); }
+.altar-more__menu .is-danger span:not(.altar-icon) { color: var(--app-danger); }
+
+/* A copy of the toolbar in full screen's drawer. */
+.altar-full-drawer .altar-tools { padding: 0; border: 0; background: transparent; }
+
+@keyframes altar-rise {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes altar-menu {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ── Phones ─────────────────────────────────────────────── */
+
+@media (max-width: 700px) {
+  body.altar-page .altar-main { padding: 16px 16px 112px; }
+  body.altar-page .altar-hero { margin-bottom: 16px; gap: 12px; }
+  body.altar-page .altar-hero__controls { width: 100%; gap: 8px; }
+  body.altar-page .altar-scope { flex: 0 0 auto; }
+  .altar-picker { flex: 1 1 10rem; justify-content: space-between; max-width: none; }
+  body.altar-page .altar-workspace > .altar-stage-wrap { border-radius: var(--app-radius-tile); }
+  .altar-tools { padding: 14px 12px; gap: 16px; }
+  .altar-tools__quick { gap: 6px; }
+  .altar-tools__quick .altar-tool:not(.altar-tool--icon) { padding: 0 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .altar-picker,
+  .altar-more__menu,
+  body.altar-page.altar-companion-open .altar-side > .altar-workspace-panel { animation: none; }
+  .altar-tool,
+  .altar-picker { transition: none; }
+}

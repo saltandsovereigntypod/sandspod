@@ -34,12 +34,11 @@ test("missing Cabinet form actions retain upload identity without broken images"
   assert.match(custom, /button--image-action[\s\S]+\$\{existing \? "Manage" : "Add"} \$\{formLabel} Image[\s\S]+name="form_image_/);
 });
 
-test("Altar toolbar keeps minimize separate from the right-side action group", () => {
+test("Altar header is calm: title, a short line, Personal | Coven, the picker and a compact To tend", () => {
   const html = read("altar/index.html");
-  const ui = read("altar/js/ui/ui.js");
-  const css = read("altar/altar.css");
-  assert.match(html, /altar-workspace-tools[\s\S]+altar-workspace-tool-group[\s\S]+data-open-cabinet-overlay[\s\S]+data-open-apothecary-overlay[\s\S]+data-tool-guide="altar"[\s\S]+data-open-sanctuary-search/);
-  assert.match(ui, /button--icon button--pill altar-companion-toggle/);
-  assert.match(ui, /altarWorkspaceTools\.prepend\(companionToggle\)/);
-  assert.match(css, /\.altar-workspace-tool-group[\s\S]+justify-content: flex-end[\s\S]+margin-left: auto/);
+  const hero = html.match(/<section class="altar-hero"[\s\S]+?<\/section>/)?.[0] || "";
+  assert.match(hero, /data-altar-scope[\s\S]+data-altar-picker[\s\S]+altar-hero__tend/);
+  assert.doesNotMatch(hero, /data-open-cabinet-overlay|data-open-apothecary-overlay|data-tool-guide|data-open-sanctuary-search/);
+  // The old companion "−" button no longer sits in the header.
+  assert.doesNotMatch(read("altar/js/ui/ui.js"), /altar-companion-toggle/);
 });
