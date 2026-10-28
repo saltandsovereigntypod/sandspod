@@ -235,7 +235,8 @@ async function initGrimoire() {
     if (requestedDivination && typeof renderDivinationPage === "function") {
       renderWelcomeState();
       renderShelf();
-      await renderDivinationPage(requestedDivination.kind, requestedDivination.id);
+      // A card drawn with another deck opens in that deck (&deck=marseille).
+      await renderDivinationPage(requestedDivination.kind, requestedDivination.id, { deck: requestedView.get("deck") });
       renderLivingLibraryShelves();
     } else if (requestedEntityId && typeof Library !== "undefined" && Library.getEntity(requestedEntityId)) {
       renderWelcomeState();

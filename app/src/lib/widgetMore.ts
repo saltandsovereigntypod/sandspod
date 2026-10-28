@@ -28,7 +28,7 @@ export type WidgetMore = {
   /** Your settings, for the moon days your path keeps. */
   settings?: SettingsLike;
   /** The card you've drawn today (divination/daily.ts), for today only. */
-  card?: { name: string; reversed: boolean } | null;
+  card?: { name: string; reversed: boolean; title?: string | null } | null;
   /** Your covens' holidays, worked out once for a whole timeline (covenHolidaysAhead). */
   covenHolidays?: CovenHoliday[];
   /** When the timeline was made (its first day), for what's only known today. */
@@ -241,4 +241,5 @@ export function moonObservance(day: Date, settings: SettingsLike, todaysHolidays
 }
 
 /** "The Star, reversed". */
-export const cardWords = (card: WidgetMore['card']) => (card?.name ? `${card.name}${card.reversed ? ', reversed' : ''}` : '');
+// The card's name in the deck it was drawn with where it differs ("XI · La Force"), short enough for a widget.
+export const cardWords = (card: WidgetMore['card']) => (card?.name ? `${card.title || card.name}${card.reversed ? ', reversed' : ''}` : '');

@@ -2073,12 +2073,12 @@ export const HELP: HelpSection[] = [
       {
         id: 'divination-deck',
         title: 'Choose a tarot deck',
-        summary: 'Draw with the Rider–Waite–Smith, the Tarot de Marseille or the Sola Busca: the same 78 cards and meanings, different pictures.',
+        summary: 'Draw with the Rider–Waite–Smith, the Tarot de Marseille or the Sola Busca: the same 78 cards, each deck with its own pictures and its own way of reading them.',
         steps: [
           'Open More → Settings → Divination and choose a deck, then tap "Save changes". Or, as you draw tarot, tap a deck under "Deck" before you shuffle.',
           'The Rider–Waite–Smith (Pamela Colman Smith, 1909) is the default. Nicolas Conver’s Tarot de Marseille (1760) numbers Justice VIII and Strength XI, and its numbered cards show only their suit signs. The Sola Busca (Italy, about 1491) names its trumps after heroes of Rome and the Bible and calls its suits batons, cups, swords and coins.',
-          'Where a deck titles a card its own way, its title shows under the card’s name. The meanings stay the same.',
-          'A kept reading remembers the deck it was drawn with and opens in it again. Your Grimoire’s tarot pages show each card in your deck, and the others a tap away.',
+          'Each deck reads its cards in its own way. The Rider–Waite–Smith keeps A. E. Waite’s meanings; the Tarot de Marseille is read as French cartomancy and Marseille readers read it, its numbered cards by number and suit; the Sola Busca has a reading of its own too. Where a deck titles a card its own way, its title shows under the card’s name, and a card a deck has no reading of its own for yet reads as Waite’s, and says so.',
+          'A kept reading remembers the deck it was drawn with and opens in it again, with that deck’s meanings. Your Grimoire’s tarot pages show each card in your deck, leading with that deck’s reading and then the Rider–Waite–Smith’s in depth, with the other decks a tap away.',
         ],
         href: '/more/settings/divination',
         keywords: ['tarot deck', 'deck', 'marseille', 'tarot de marseille', 'conver', 'sola busca', 'rider waite smith', 'rws', 'card pictures', 'change deck'],

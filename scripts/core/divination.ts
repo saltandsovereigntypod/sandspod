@@ -15,6 +15,8 @@ export * as custom from '../../app/src/lib/divination/custom.ts';
 export * as seasonal from '../../app/src/lib/divination/seasonal.ts';
 export * as links from '../../app/src/lib/divination/links.ts';
 export * as decks from '../../app/src/lib/divination/decks.ts';
+// Each deck's own meanings (the Marseille's and the Sola Busca's; Waite's for the Rider–Waite–Smith).
+export * as deckMeanings from '../../app/src/lib/divination/deckMeanings/index.ts';
 // Readings drawn for a dream, a planned working or a deity.
 export * as linked from '../../app/src/lib/divination/linked.ts';
 // Lenormand and Kipper (and the Lenormand pairs), decks of your own

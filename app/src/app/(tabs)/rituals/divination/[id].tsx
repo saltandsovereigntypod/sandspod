@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 
 import { Button } from '../../../../components/Button';
 import { PairsCard } from '../../../../components/divination/oracle/Pairs';
+import { DeckReadingLines } from '../../../../components/divination/DeckReading';
 import { ReadMore } from '../../../../components/divination/ReadMore';
 import { SpreadTable } from '../../../../components/divination/Spread';
 import { Body, Card, Chip, Chips, Field, RitualScreen, SectionLabel, Title, ui } from '../../../../components/rituals/ui';
@@ -12,7 +13,7 @@ import { fullDate } from '../../../../lib/calendar';
 import { glossOf, methodLabel, normalizeReading, READINGS } from '../../../../lib/craft/hedge/readings';
 import { updateEntry, useCraft } from '../../../../lib/craft/store';
 import { customSpreads, SPREADS_COLLECTION } from '../../../../lib/divination/custom';
-import { deckCardTitle, deckInfo, deckOfReading, type DeckId } from '../../../../lib/divination/decks';
+import { deckInfo, deckOfReading, type DeckId } from '../../../../lib/divination/decks';
 import { drawOfReading, meaningOf, placeOf } from '../../../../lib/divination/draw';
 import { linkLine, linkRoute } from '../../../../lib/divination/linked';
 import { DECKS_COLLECTION, ownDecks } from '../../../../lib/divination/oracle/decks';
@@ -147,17 +148,19 @@ export default function ReadingPage() {
 function DrawnMeaning({ laid, picked, deck }: { laid: NonNullable<ReturnType<typeof drawOfReading>>; picked: number | null; deck: DeckId }) {
   if (picked === null) return <Body muted>Tap one for its meaning.</Body>;
   const item = laid.draw.items[picked];
-  const m = item ? meaningOf(item, laid.deck?.data) : null;
+  // Read in the deck it was drawn with: that deck's own meaning where it has one.
+  const tarotDeck = laid.spread.kind === 'tarot' ? deck : null;
+  const m = item ? meaningOf(item, laid.deck?.data, tarotDeck) : null;
   if (!m) return null;
   const place = laid.spread.positions.length > 1 ? placeOf(laid.spread, laid.draw, picked) : null;
   return (
     <Card accent>
       <SectionLabel>{place ? `${picked + 1} · ${place.name}` : laid.spread.label}</SectionLabel>
       <Text style={type.cardTitle}>{`${m.glyph ? `${m.glyph}  ` : ''}${m.name}${m.reversed ? ', reversed' : ''}`}</Text>
-      {!!m.card && !!deckCardTitle(deck, m.card.id) && <Body muted>{`In the ${deckInfo(deck).name}: ${deckCardTitle(deck, m.card.id)}`}</Body>}
+      <DeckReadingLines reading={m.inDeck} />
       {!!m.meaning.keywords && <Text style={[type.body, ui.gold]}>{m.meaning.keywords}</Text>}
       <Body>{m.meaning.text}</Body>
-      {!m.own && <ReadMore name={m.name} />}
+      {!m.own && <ReadMore name={m.name} deck={tarotDeck} />}
     </Card>
   );
 }

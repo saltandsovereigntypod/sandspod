@@ -383,7 +383,7 @@
         )}: <span class="td-gold">${esc(time.label)}</span> ›</span></a>`
       : "";
     if (!kept) return `<a class="td-last sp-caption td-gold" href="/divination/draw/?spread=daily">Draw a card for the day ›</a>${seasonal}`;
-    const name = `${kept.name}${kept.reversed ? ", reversed" : ""}`;
+    const name = C.daily.todaysCardLabel(kept);
     return (
       `<a class="td-last sp-caption" href="/divination/reading/?id=${encodeURIComponent(kept.id)}" aria-label="${esc(`Today’s card: ${name}. Opens the reading.`)}">` +
       `<span>Today’s card: <span class="td-gold">${esc(name)}</span> ›</span></a>${seasonal}`

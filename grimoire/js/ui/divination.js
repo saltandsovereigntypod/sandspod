@@ -10,7 +10,10 @@
    like Dreams: never a row in grimoire_sections or the Living Library, so
    nothing is saved. Follows the Traditional Information setting, since it
    lives inside that shelf. The draw pages link here with
-   /grimoire/?divination=tarot/16-the-tower.
+   /grimoire/?divination=tarot/16-the-tower, and &deck=marseille for a card
+   drawn with another deck. A tarot card in a deck with its own reading
+   leads with that reading, then the Rider–Waite–Smith's in-depth page,
+   labelled as that tradition (the app's card page).
    ========================================================= */
 
 // The page open in the reader, to mark its row when the contents redraw.
@@ -114,9 +117,10 @@ function renderDivinationShelf() {
   if (!divinationDeck) loadDivinationDeck(core).then((deck) => deck !== core.decks.DEFAULT_DECK && renderDivinationShelf());
 }
 
-/** A card's, rune's or stave's page in the reader, in the Living Library's page style. */
-async function renderDivinationPage(kind, id) {
+/** A card's, rune's or stave's page in the reader, in the Living Library's page style; `deck` a tarot deck to open it in. */
+async function renderDivinationPage(kind, id, { deck: drawnWith } = {}) {
   const core = divinationCore();
+  if (core && core.decks.isDeckId(drawnWith)) lookingDeck = drawnWith;
   if (!core || typeof entryList === "undefined" || !entryList) return;
   const entry = core.findDivination(kind, id);
   if (!entry) return;
@@ -139,6 +143,30 @@ async function renderDivinationPage(kind, id) {
   const deck = lookingDeck || (await loadDivinationDeck(core));
   const info = D.deckInfo(deck);
   const deckTitle = entry.cardId ? D.deckCardTitle(deck, entry.cardId) : null;
+  // The deck's own reading, when it has one for this card; else a word that what follows is Waite's.
+  const M = core.deckMeanings;
+  const own = entry.cardId && M ? M.deckPage(deck, entry.cardId) : null;
+  const fallback = entry.cardId && M && !own ? M.readingSource(M.deckMeaning(deck, entry.cardId)) : null;
+  const wordsHtml = `<p class="book-library-intro divination-words" aria-label="${escapeHtml(`In three words: ${entry.words.join(", ")}`)}">${escapeHtml(core.wordsLine(entry.words))}</p>`;
+  const ownHtml = own
+    ? `<section class="book-library-layer divination-deck-reading">
+         <h2>${escapeHtml(own.heading)}</h2>
+         ${own.about ? `<p class="divination-gloss">${escapeHtml(own.about)}</p>` : ""}
+         ${own.sections
+           .map(
+             (s) => `<section class="divination-section divination-section--deck-${s.key}">
+                       <h3>${escapeHtml(s.label)}</h3>
+                       ${s.keywords ? `<p class="divination-deck-words">${escapeHtml(s.keywords)}</p>` : ""}
+                       <p>${escapeHtml(s.text)}</p>
+                     </section>`
+           )
+           .join("")}
+       </section>
+       <h2 class="divination-tradition">${escapeHtml(M.RWS_TRADITION)}</h2>
+       ${wordsHtml}`
+    : fallback
+    ? `<p class="divination-gloss">${escapeHtml(fallback)}</p>`
+    : "";
   // Your deck first; the others a tap away, just for this page.
   const deckChoice = entry.cardId
     ? `<p class="divination-deck-title">${escapeHtml(deckTitle ? `${info.name}: ${deckTitle}` : `${info.name}, ${info.made}`)}</p>
@@ -167,13 +195,14 @@ async function renderDivinationPage(kind, id) {
         ${
           showTraditional
             ? `${figure}
-               <p class="book-library-intro divination-words" aria-label="${escapeHtml(`In three words: ${entry.words.join(", ")}`)}">${escapeHtml(core.wordsLine(entry.words))}</p>
+               ${own ? "" : wordsHtml}
                ${page.gloss ? `<p class="divination-gloss">${escapeHtml(page.gloss)}</p>` : ""}`
             : ""
         }
         <div class="book-reader-divider">✦ ☽ ✦ ☾ ✦</div>
       </header>
       <div class="book-reader-body book-library-body">
+        ${showTraditional ? ownHtml : ""}
         ${
           showTraditional
             ? page.sections

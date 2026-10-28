@@ -5,8 +5,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { OghamStave, RuneStone } from '../../../../../components/divination/Faces';
 import { KipperFace, LenormandArt } from '../../../../../components/divination/oracle/OracleFaces';
 import { ResearchFooter } from '../../../../../components/ResearchNote';
-import { Card, Chips, MoreScreen, Notice } from '../../../../../components/more/ui';
-import { chosenDeck, deckCardTitle, deckInfo, deckPictureLabel, TAROT_DECKS, type DeckId } from '../../../../../lib/divination/decks';
+import { Card, Chips, MoreScreen, Notice, Section } from '../../../../../components/more/ui';
+import { deckMeaning, deckPage, readingSource, RWS_TRADITION } from '../../../../../lib/divination/deckMeanings';
+import { chosenDeck, deckCardTitle, deckInfo, deckPictureLabel, isDeckId, TAROT_DECKS, type DeckId } from '../../../../../lib/divination/decks';
 import { divinationPage, findDivination, wordsLine } from '../../../../../lib/divination/library';
 import { deckImages } from '../../../../../lib/divination/tarotAssets';
 import { TarotArt } from '../../../../../components/divination/TarotArt';
@@ -15,14 +16,18 @@ import { colors, fonts, radius, type } from '../../../../../theme';
 
 // A tarot card, rune or ogham stave from the Grimoire's Traditional
 // Information → Divination: its picture or letter, its three words, and the
-// page in sections. As on the website's Book of Shadows.
+// page in sections. A tarot card in a deck with its own reading (the Tarot
+// de Marseille, the Sola Busca) leads with that reading, and the
+// Rider–Waite–Smith's in-depth page follows, labelled as that tradition.
+// Opened from a reading, it shows the deck the reading was drawn with
+// (`deck`). As on the website's Book of Shadows.
 export default function DivinationEntryPage() {
-  const { kind, id } = useLocalSearchParams<{ kind: string; id: string }>();
+  const { kind, id, deck: drawnWith } = useLocalSearchParams<{ kind: string; id: string; deck?: string }>();
   const { settings } = useMySettings();
   const entry = findDivination(kind, id);
-  // Your deck first; the others a tap away, just for this page.
+  // The deck it was drawn with, or your deck; the others a tap away, just for this page.
   const [looking, setLooking] = useState<DeckId | null>(null);
-  const deck = looking ?? chosenDeck(settings);
+  const deck = looking ?? (isDeckId(drawnWith) ? drawnWith : chosenDeck(settings));
 
   if (!entry) {
     return (
@@ -35,6 +40,9 @@ export default function DivinationEntryPage() {
   const page = divinationPage(entry);
   const art = entry.cardId ? deckImages[deck][entry.cardId] : undefined;
   const deckTitle = entry.cardId ? deckCardTitle(deck, entry.cardId) : null;
+  // The deck's own reading, when it has one for this card; else a word that what follows is Waite's.
+  const own = entry.cardId ? deckPage(deck, entry.cardId) : null;
+  const fallback = entry.cardId && !own ? readingSource(deckMeaning(deck, entry.cardId)) : null;
 
   return (
     <MoreScreen title={entry.name} eyebrow={page.eyebrow} back="/grimoire" backLabel="Back to your Grimoire">
@@ -63,10 +71,39 @@ export default function DivinationEntryPage() {
               <Chips label="Deck" options={TAROT_DECKS.map((d) => ({ value: d.id, label: d.name }))} value={deck} onChange={setLooking} />
             </View>
           )}
-          <Text style={styles.words} accessibilityLabel={`In three words: ${entry.words.join(', ')}`}>
-            {wordsLine(entry.words)}
-          </Text>
+          {!own && (
+            <Text style={styles.words} accessibilityLabel={`In three words: ${entry.words.join(', ')}`}>
+              {wordsLine(entry.words)}
+            </Text>
+          )}
           {!!page.gloss && <Text style={[type.caption, styles.center]}>{page.gloss}</Text>}
+          {own && (
+            <Section label={own.heading}>
+              {!!own.about && <Text style={type.caption}>{own.about}</Text>}
+              <Card tone="gold">
+                {own.sections.map((section) => (
+                  <View key={section.key} style={styles.field}>
+                    <Text accessibilityRole="header" style={styles.fieldLabel}>
+                      {section.label}
+                    </Text>
+                    {!!section.keywords && <Text style={[type.body, styles.keywords]}>{section.keywords}</Text>}
+                    <Text style={section.key === 'note' ? type.caption : type.body}>{section.text}</Text>
+                  </View>
+                ))}
+              </Card>
+            </Section>
+          )}
+          {!!fallback && <Notice tone="muted">{fallback}</Notice>}
+          {own && (
+            <Text accessibilityRole="header" style={type.eyebrow}>
+              {RWS_TRADITION}
+            </Text>
+          )}
+          {own && (
+            <Text style={styles.wordsSmall} accessibilityLabel={`In three words: ${entry.words.join(', ')}`}>
+              {wordsLine(entry.words)}
+            </Text>
+          )}
           <Card>
             {page.sections.map((section) => (
               <View key={section.key} style={styles.field}>
@@ -90,6 +127,8 @@ const styles = StyleSheet.create({
   lenormand: { width: '62%', maxWidth: 280, aspectRatio: 0.68, borderRadius: radius.tile, backgroundColor: colors.cream },
   kipper: { width: 170, height: 170 / 0.62 },
   words: { fontFamily: fonts.displayItalic, fontSize: 22, lineHeight: 28, color: colors.parchment, textAlign: 'center' },
+  wordsSmall: { fontFamily: fonts.displayItalic, fontSize: 18, lineHeight: 24, color: colors.parchment },
+  keywords: { color: colors.gold },
   center: { textAlign: 'center' },
   decks: { gap: 8, alignItems: 'center' },
   field: { gap: 6 },

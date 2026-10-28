@@ -6,5 +6,7 @@
 // (window.SaltCore["divination-library"]). Kept apart from divination.js so
 // the draw pages don't load every page's text.
 export * from '../../app/src/lib/divination/library.ts';
-// The tarot decks, so a card's page shows it in the deck chosen in settings.
+// The tarot decks, so a card's page shows it in the deck chosen in settings,
+// leading with that deck's own reading.
 export * as decks from '../../app/src/lib/divination/decks.ts';
+export * as deckMeanings from '../../app/src/lib/divination/deckMeanings/index.ts';
