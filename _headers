@@ -1,0 +1,19 @@
+# Cloudflare Pages: how long browsers may keep files (ignored by GitHub Pages).
+# Pages, scripts and styles are checked again often, so a release shows up
+# within minutes; pictures, sounds and fonts rarely change and are kept longer.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/js/*
+  Cache-Control: public, max-age=600, stale-while-revalidate=86400
+
+/css/*
+  Cache-Control: public, max-age=600, stale-while-revalidate=86400
+
+/assets/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=2592000
