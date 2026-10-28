@@ -69,7 +69,7 @@ export function GrimoirePageScreen({ pageId, extras }: { pageId: string; extras?
         )}
       </View>
 
-      <ScrollView contentContainerStyle={styles.scroll} alwaysBounceHorizontal={false}>
+      <ScrollView contentContainerStyle={styles.scroll} alwaysBounceHorizontal={false} keyboardShouldPersistTaps="handled">
         {!page ? (
           <Text style={[type.body, styles.missing]}>
             {scope.kind === 'coven' ? 'This page isn’t in the coven’s book, or isn’t open to you.' : 'This page couldn’t be found. It may have been removed on the website.'}

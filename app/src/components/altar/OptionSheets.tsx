@@ -237,37 +237,59 @@ export function DressSheet({
   doc: AltarDocument;
   candle: number | null;
   onClose: () => void;
-  onDress: (ingredient: number) => void;
+  /** Every ticked ingredient (indices into doc.objects), applied together. */
+  onDress: (ingredients: number[]) => void;
 }) {
   const ingredients = doc.objects.map((o, i) => ({ o, i })).filter(({ o, i }) => i !== candle && canDressWith(o));
+  // Tick as many as you like, then dress the candle with them all at once.
+  const [ticked, setTicked] = useState<number[]>([]);
+  // Fresh ticks each time it opens, or for another candle.
+  const openFor = visible ? candle : null;
+  const [lastOpenFor, setLastOpenFor] = useState(openFor);
+  if (lastOpenFor !== openFor) {
+    setLastOpenFor(openFor);
+    setTicked([]);
+  }
+  const toggle = (i: number) => setTicked((list) => (list.includes(i) ? list.filter((x) => x !== i) : [...list, i]));
+  const chosen = ticked.filter((i) => ingredients.some((x) => x.i === i));
   return (
     <Sheet visible={visible} onClose={onClose} eyebrow="Dress the candle" title="Anoint and adorn">
       {ingredients.length === 0 ? (
         <Text style={type.body}>Place a loose herb or an oil on the altar first, then dress the candle with it.</Text>
       ) : (
         <>
-          <Text style={type.body}>Choose a herb or oil from your altar. Loose herbs and oils show on the candle.</Text>
+          <Text style={type.body}>Tick the herbs and oils from your altar to dress it with, as many as you like. Loose herbs and oils show on the candle.</Text>
           <View style={styles.list}>
             {ingredients.map(({ o, i }) => {
               const picture = altarPicture(o.imagePath);
+              const on = chosen.includes(i);
               return (
                 <Pressable
                   key={`${o.altarObjectId}-${i}`}
-                  onPress={() => onDress(i)}
-                  accessibilityRole="button"
+                  onPress={() => toggle(i)}
+                  accessibilityRole="checkbox"
+                  accessibilityState={{ checked: on }}
                   accessibilityLabel={`Dress with ${shortLabel(o.label, 'ingredient')}`}
-                  style={({ pressed }) => [styles.layer, pressed && { opacity: 0.7 }]}
+                  style={({ pressed }) => [styles.layer, on && styles.layerSelected, pressed && { opacity: 0.7 }]}
                 >
                   <View style={styles.layerMain}>
                     <View style={styles.layerThumb}>
                       {picture && <AltarImage picture={picture} style={styles.layerThumbImage} resizeMode="contain" />}
                     </View>
-                    <Text style={styles.layerName}>{shortLabel(o.label, 'Ingredient')}</Text>
+                    <Text style={[styles.layerName, { flex: 1 }]}>{shortLabel(o.label, 'Ingredient')}</Text>
+                  </View>
+                  <View style={styles.layerButton}>
+                    <Text style={styles.layerArrow}>{on ? '✓' : ''}</Text>
                   </View>
                 </Pressable>
               );
             })}
           </View>
+          <Button
+            label={chosen.length > 1 ? `Dress the candle with these ${chosen.length}` : 'Dress the candle'}
+            disabled={chosen.length === 0}
+            onPress={() => onDress(chosen)}
+          />
         </>
       )}
     </Sheet>

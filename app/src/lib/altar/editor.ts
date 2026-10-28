@@ -9,6 +9,7 @@ import {
   candleLife,
   carveCandle,
   dressCandle,
+  dressCandleWithAll,
   ensureLivingState,
   freshCandle,
   lightCandle,
@@ -141,6 +142,15 @@ export function dressObject(doc: AltarDocument, candleIndex: number, ingredientI
   const ingredient = doc.objects[ingredientIndex];
   if (!candle || !ingredient) return doc;
   const next = dressCandle(candle, ingredient, now);
+  return next === candle ? doc : replace(doc, new Map([[candleIndex, next]]));
+}
+
+/** Dress the candle with every ticked ingredient on the altar, as one change (one undo). */
+export function dressObjectWith(doc: AltarDocument, candleIndex: number, ingredientIndices: number[], now: string): AltarDocument {
+  const candle = doc.objects[candleIndex];
+  if (!candle) return doc;
+  const ingredients = ingredientIndices.filter((i) => i !== candleIndex).map((i) => doc.objects[i]).filter((o): o is SavedObject => !!o);
+  const next = dressCandleWithAll(candle, ingredients, now);
   return next === candle ? doc : replace(doc, new Map([[candleIndex, next]]));
 }
 

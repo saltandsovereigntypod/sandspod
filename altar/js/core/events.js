@@ -40,6 +40,7 @@ function openAltarCabinetOverlay() {
 function closeAltarCabinetOverlay() {
   const overlay = document.querySelector("[data-altar-cabinet-overlay]");
   if (!overlay) return;
+  if (typeof noteCabinetPlacement === "function" && !overlay.hidden) noteCabinetPlacement("");
 
   overlay.classList.remove("is-visible");
   overlay.classList.add("is-closing");
@@ -191,7 +192,9 @@ if (altarCabinet) {
           offeringLabel: item.dataset.offeringLabel || ""
         });
         if (!placed) throw new Error("placement_rejected");
-        closeAltarCabinetOverlay();
+        // The cabinet stays open, on the same drawer and place, until Done:
+        // tap again for another, each its own undo.
+        if (typeof noteCabinetPlacement === "function") noteCabinetPlacement(item.dataset.label || "");
         return true;
       } catch (error) {
         console.warn("Cabinet placement failed.", { code: "placement_failed" });
@@ -232,6 +235,11 @@ document.addEventListener("click", (event) => {
 
   if (closeCabinetButton) {
     closeAltarCabinetOverlay();
+  }
+
+  if (event.target.closest("[data-cabinet-undo]")) {
+    undoAltarChange();
+    if (typeof noteCabinetPlacement === "function") noteCabinetPlacement("");
   }
 
   if (openApothecaryButton) {

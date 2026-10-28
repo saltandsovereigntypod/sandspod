@@ -414,3 +414,36 @@ export function objectFromForm(
   // A filled vessel from the Offerings drawer is set down with its offering already set out.
   return form.offering && offeringKind(form.offering) ? setOffering(placed, form.offering as OfferingKindId, form.offeringLabel || '', now) : placed;
 }
+
+/** How far apart things set down one after another sit (stage fractions; the stage is 16:9, so this is a short diagonal step). */
+export const PLACE_NUDGE = { x: 0.035, y: 0.06 };
+
+/**
+ * Where the next thing from the cabinet is set down: the middle of what's in
+ * view, unless something already sits there, then a small step aside (rings
+ * outward, right and down first), so things placed one after another don't
+ * stack exactly on top of each other. `taken` are the visual centres of what's
+ * on the altar (displayBox in the app, the objects' positions on the website,
+ * which uses this through js/core/altar.js).
+ */
+export function nudgedCenter(center: { cx: number; cy: number }, taken: { cx: number; cy: number }[]): { cx: number; cy: number } {
+  const near = (cx: number, cy: number) => taken.some((t) => Math.abs(t.cx - cx) < PLACE_NUDGE.x / 2 && Math.abs(t.cy - cy) < PLACE_NUDGE.y / 2);
+  const inside = (cx: number, cy: number) => cx >= 0.06 && cx <= 0.94 && cy >= 0.08 && cy <= 0.92;
+  for (let ring = 0; ring <= 6; ring += 1) {
+    const steps: [number, number][] =
+      ring === 0
+        ? [[0, 0]]
+        : [[ring, ring], [-ring, ring], [ring, -ring], [-ring, -ring], [ring, 0], [0, ring], [-ring, 0], [0, -ring]];
+    for (const [dx, dy] of steps) {
+      const cx = center.cx + dx * PLACE_NUDGE.x;
+      const cy = center.cy + dy * PLACE_NUDGE.y;
+      if (inside(cx, cy) && !near(cx, cy)) return { cx, cy };
+    }
+  }
+  return center;
+}
+
+/** How many of a thing are on the altar, by the label it's placed with ("on the altar ×2" in the cabinet). */
+export function countOnAltar(objects: { label?: string }[], label: string): number {
+  return objects.reduce((n, o) => n + (o.label === label ? 1 : 0), 0);
+}

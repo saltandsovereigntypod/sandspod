@@ -175,7 +175,9 @@ export default function PlanRitual() {
       toOutline();
     });
   }, [navigation, inner, toOutline]);
-  const backTo = inner ? { onBack: toOutline, backLabel: 'Back to the outline' } : {};
+  // Each view (the outline, a step, roles…) opens at its top, and the outline comes back where you left it.
+  const scrollKey = typeof view === 'object' ? `step:${view.step}` : view;
+  const backTo = inner ? { onBack: toOutline, backLabel: 'Back to the outline', scrollKey } : { scrollKey };
 
   if (!canLead) {
     return (
@@ -476,7 +478,7 @@ export default function PlanRitual() {
     );
   if (view === 'meeting')
     return (
-      <CovenScreen title="How the meeting runs">
+      <CovenScreen title="How the meeting runs" scrollKey={scrollKey}>
         {back}
         <MeetingPanel
           plan={plan}

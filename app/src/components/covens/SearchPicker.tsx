@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { altarPicture } from '../../lib/altar/assets';
@@ -46,6 +46,10 @@ export function SearchPicker({
   const [query, setQuery] = useState('');
   // Suggestions only while the search is in use; otherwise just the chips.
   const [focused, setFocused] = useState(false);
+  // Picking one keeps the suggestions open for the next (a tap on the web blurs
+  // the field first), so choosing several doesn't fold the list away under you.
+  const pickedAt = useRef(0);
+  const input = useRef<TextInput>(null);
   const picked = useMemo(() => chips.map((c) => c.key), [chips]);
   const found = useMemo(
     () => (!query.trim() && !focused ? [] : (search ? search(query, picked) : searchEntries(entries, query, { limit, picked, suggestions })).slice(0, limit)),
@@ -77,11 +81,16 @@ export function SearchPicker({
       </View>
       {!full && (
         <TextInput
+          ref={input}
           value={query}
           onChangeText={setQuery}
           onFocus={() => setFocused(true)}
           // Later than a tap on a suggestion, which blurs the field first.
-          onBlur={() => setTimeout(() => setFocused(false), 250)}
+          onBlur={() =>
+            setTimeout(() => {
+              if (Date.now() - pickedAt.current > 400) setFocused(false);
+            }, 250)
+          }
           placeholder={placeholder}
           placeholderTextColor="rgba(202,191,157,0.6)"
           accessibilityLabel={`Search for ${label.toLowerCase()}`}
@@ -102,8 +111,11 @@ export function SearchPicker({
                 accessibilityRole="button"
                 accessibilityLabel={`Add ${entry.label}${entry.detail ? `, ${entry.detail}` : ''}`}
                 onPress={() => {
+                  pickedAt.current = Date.now();
                   onAdd(entry);
                   setQuery('');
+                  // Back in the field (the web blurred it), so it folds away as usual once you're done.
+                  if (!full && (max == null || chips.length + 1 < max)) input.current?.focus();
                 }}
                 style={({ pressed }) => [styles.result, pressed && styles.pressed]}
               >

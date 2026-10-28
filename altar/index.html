@@ -119,10 +119,16 @@
         <div class="altar-cabinet-tabs" data-cabinet-tabs></div>
     
         <div class="altar-cabinet-content" data-cabinet-content></div>
-    
+
         <p class="altar-note">
-          Click an object to place it. Some items include forms like sprig, loose, powder, oil, point, or polished.
+          Click an object to place it, and again for another; the cabinet stays open until you choose Done. Some items include forms like sprig, loose, powder, oil, point, or polished.
         </p>
+
+        <div class="altar-cabinet-bar" data-cabinet-bar>
+          <p class="altar-cabinet-added" data-cabinet-added aria-live="polite"></p>
+          <button type="button" class="button button--tiny altar-cabinet-undo" data-cabinet-undo hidden>Undo</button>
+          <button type="button" class="button button--primary altar-cabinet-done" data-close-cabinet-overlay>Done</button>
+        </div>
       </aside>
     </div>
 

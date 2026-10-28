@@ -130,7 +130,14 @@
         <h2 id="object-action-title">${escapeHtml(title)}</h2>
         ${description ? `<p>${escapeHtml(description)}</p>` : ""}
         <form data-object-action-form>
-          ${fields.map((field) => `
+          ${fields.map((field) => field.type === "checkboxes" ? `
+            <fieldset class="object-action-checks">
+              <legend>${escapeHtml(field.label)}</legend>
+              ${(field.options || []).map((option) => `
+                <label class="object-action-check"><input type="checkbox" name="${escapeHtml(field.name)}" value="${escapeHtml(option.value)}"> ${escapeHtml(option.label)}</label>
+              `).join("")}
+            </fieldset>
+          ` : `
             <label>
               ${escapeHtml(field.label)}
               ${field.type === "select" ? `
@@ -261,22 +268,28 @@
       showToast("Place a loose herb or oil on the altar first");
       return;
     }
+    // Tick as many herbs and oils as you like; they all go on together.
     openActionModal({
       title: "Dress Candle",
       fields: [{
-        name: "ingredient", label: "Herb or oil", type: "select",
+        name: "ingredient", label: "Herbs and oils on the altar", type: "checkboxes",
         options: ingredients.map((item, index) => ({
           value: String(index), label: item.dataset.label || item.dataset.herb || "Ingredient"
         }))
       }],
-      submitLabel: "Add Dressing",
+      submitLabel: "Dress the candle",
       onSubmit(formData) {
-        const ingredient = ingredients[Number(formData.get("ingredient"))];
-        if (!ingredient) return false;
+        const chosen = formData.getAll("ingredient").map((value) => ingredients[Number(value)]).filter(Boolean);
+        if (!chosen.length) {
+          showToast("Tick a herb or oil first");
+          return false;
+        }
         snapshot();
-        beginCandleDressing(ingredient);
-        dressCandle(candle);
-        showToast("Candle dressed");
+        chosen.forEach((ingredient) => {
+          beginCandleDressing(ingredient);
+          dressCandle(candle);
+        });
+        showToast(chosen.length > 1 ? `Candle dressed with ${chosen.length}` : "Candle dressed");
         return true;
       }
     });
