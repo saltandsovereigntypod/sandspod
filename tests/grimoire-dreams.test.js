@@ -14,6 +14,7 @@ function loadCore(name) {
   const sandbox = { window: {}, console, TextEncoder, Intl, Date, Math };
   sandbox.window.window = sandbox.window;
   vm.createContext(sandbox);
+  vm.runInContext(read("js/traditional-library.js"), sandbox); // read by the bundles (scripts/build-core.mjs)
   vm.runInContext(read(`js/core/${name}.js`), sandbox);
   return sandbox.SaltCore[name];
 }

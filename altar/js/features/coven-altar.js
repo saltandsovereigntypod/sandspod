@@ -174,7 +174,7 @@
       const stage = altarStage;
       stage.dataset.background = scene.background || "";
       stage.dataset.backgroundName = scene.backgroundName || "";
-      stage.style.backgroundImage = scene.background ? `url("${scene.background}")` : "";
+      stage.style.backgroundImage = scene.background ? `url("${window.SanctuaryAssetCatalog?.displayPath?.(scene.background) || scene.background}")` : "";
       altarGroups = Array.isArray(scene.groups) ? scene.groups : [];
       activeGroupId = scene.activeGroupId || null;
       global.altarExtraFields = scene.extra && typeof scene.extra === "object" ? scene.extra : {};

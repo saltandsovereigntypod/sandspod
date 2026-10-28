@@ -52,7 +52,9 @@
   /** A still picture of an altar: its setting and what's on it, where it stands. */
   function previewHtml(altar, rows, { label } = {}) {
     const list = [...(rows || [])].sort((a, b) => a.position - b.position).map((r) => r.data || {});
-    const background = altar.background ? ` style="background-image:url('${esc(picture(altar.background))}')"` : "";
+    // The stock backgrounds' WebP twins, a tenth the size (js/sanctuary-asset-catalog.js displayPath).
+    const shown = String(altar.background || "").replace(/(\/assets\/altar\/backgrounds\/)([\w-]+)\.png$/, "$1$2.webp");
+    const background = altar.background ? ` style="background-image:url('${esc(picture(shown))}')"` : "";
     const items = list
       .map((o) => {
         const left = Number(o.leftPercent);

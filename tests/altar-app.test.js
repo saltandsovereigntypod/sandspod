@@ -10,6 +10,7 @@ const vm = require("node:vm");
 
 const root = path.join(__dirname, "..");
 global.window = global;
+vm.runInThisContext(fs.readFileSync(path.join(root, "js/traditional-library.js"), "utf8"));
 vm.runInThisContext(fs.readFileSync(path.join(root, "js/core/altar.js"), "utf8"));
 const A = global.SaltCore.altar;
 const Candle = require("../altar/js/features/candle-lifecycle.js");

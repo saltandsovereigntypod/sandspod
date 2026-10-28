@@ -234,7 +234,9 @@
   function altarCore() {
     if (global.SaltCore?.altar?.covenAltar) return Promise.resolve(global.SaltCore.altar);
     if (!altarCoreLoading) {
-      altarCoreLoading = new Promise((resolve, reject) => {
+      // js/core/altar.js reads the Traditional Library (js/traditional-library.js), so that comes first.
+      const library = global.SaltScripts?.traditionalLibrary() || Promise.resolve();
+      altarCoreLoading = library.then(() => new Promise((resolve, reject) => {
         const script = doc.createElement("script");
         script.src = href("/js/core/altar.js");
         script.async = true;
@@ -244,6 +246,9 @@
           reject(new Error("The altar’s tools didn’t load. Check your connection and try again."));
         };
         doc.head.appendChild(script);
+      }), (error) => {
+        altarCoreLoading = null;
+        throw new Error("The altar’s tools didn’t load. Check your connection and try again.", { cause: error });
       });
     }
     return altarCoreLoading;

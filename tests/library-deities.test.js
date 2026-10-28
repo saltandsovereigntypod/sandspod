@@ -11,7 +11,9 @@ function sandboxWith(files, extra = "") {
   const box = { window: {}, TextEncoder, Intl };
   box.window = box;
   vm.createContext(box);
-  for (const file of files) vm.runInContext(read(file), box);
+  // The bundles read the Traditional Library from the page's own script (scripts/build-core.mjs), so it comes first.
+  const ordered = files.includes("js/traditional-library.js") ? ["js/traditional-library.js", ...files.filter((f) => f !== "js/traditional-library.js")] : ["js/traditional-library.js", ...files];
+  for (const file of ordered) vm.runInContext(read(file), box);
   if (extra) vm.runInContext(extra, box);
   return box;
 }

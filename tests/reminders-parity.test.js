@@ -9,6 +9,7 @@ const path = require("node:path");
 const vm = require("node:vm");
 
 global.window = globalThis;
+vm.runInThisContext(fs.readFileSync(path.join(__dirname, "../js/traditional-library.js"), "utf8"));
 vm.runInThisContext(fs.readFileSync(path.join(__dirname, "../js/core/guides.js"), "utf8"));
 const G = globalThis.SaltCore.guides;
 const R = require("../reminders/reminders-logic.js");

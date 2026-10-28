@@ -11,7 +11,7 @@ const Artwork = require("../js/altar-artwork.js");
 function core() {
   const sandbox = { console };
   sandbox.window = sandbox;
-  vm.runInNewContext(fs.readFileSync("js/core/altar.js", "utf8"), sandbox);
+  vm.runInNewContext(fs.readFileSync("js/traditional-library.js", "utf8") + "\n" + fs.readFileSync("js/core/altar.js", "utf8"), sandbox);
   return sandbox.SaltCore.altar;
 }
 

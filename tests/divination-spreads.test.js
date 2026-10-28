@@ -7,6 +7,7 @@ const vm = require("node:vm");
 // The draws as the site loads them (js/core/divination.js and today.js set window.SaltCore).
 global.window = globalThis;
 vm.runInThisContext(fs.readFileSync(path.join(__dirname, "../js/core/divination.js"), "utf8"));
+vm.runInThisContext(fs.readFileSync(path.join(__dirname, "../js/traditional-library.js"), "utf8"));
 vm.runInThisContext(fs.readFileSync(path.join(__dirname, "../js/core/today.js"), "utf8"));
 const Dv = globalThis.SaltCore.divination;
 const T = globalThis.SaltCore.today;

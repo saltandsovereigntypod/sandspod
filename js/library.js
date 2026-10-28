@@ -986,7 +986,12 @@ const LibrarySourcing = (function (global) {
   function watch() {
     if (typeof MutationObserver === "undefined" || !document.body) return;
     const scan = () => document.querySelectorAll(".book-library-entity-page").forEach((page) => decorate(page));
-    new MutationObserver(scan).observe(document.body, { childList: true, subtree: true });
+    // Every change anywhere on the page lands here, so look once a frame at most.
+    const later = typeof requestAnimationFrame === "function" ? requestAnimationFrame : (fn) => setTimeout(fn, 16);
+    let queued = 0;
+    new MutationObserver(() => {
+      if (!queued) queued = later(() => ((queued = 0), scan()));
+    }).observe(document.body, { childList: true, subtree: true });
     scan();
   }
 

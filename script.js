@@ -48,9 +48,16 @@ if (navToggle && navLinks) {
 }
 
 if (header) {
+  // Passive and once a frame at most, so scrolling never waits on it.
+  let scrolledFrame = 0;
   window.addEventListener("scroll", () => {
-    header.classList.toggle("is-scrolled", window.scrollY > 12);
-  });
+    if (scrolledFrame) return;
+    scrolledFrame = requestAnimationFrame(() => {
+      scrolledFrame = 0;
+      const scrolled = window.scrollY > 12;
+      if (header.classList.contains("is-scrolled") !== scrolled) header.classList.toggle("is-scrolled", scrolled);
+    });
+  }, { passive: true });
 }
 
 const revealItems = document.querySelectorAll(".reveal");
