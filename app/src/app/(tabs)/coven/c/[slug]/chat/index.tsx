@@ -9,31 +9,19 @@ import {
   covenHref,
 } from "../../../../../../components/covens/CovenScreen";
 import {
-  Card,
   Notice,
   Section,
-  SwitchRow,
 } from "../../../../../../components/more/ui";
 import {
   conversationTitle,
   COVEN_THREAD,
-  fetchChatSettings,
   fetchConversations,
   fetchPreviews,
-  saveChatSettings,
-  type ChatSettings,
   type Conversation,
   type ConversationMember,
 } from "../../../../../../lib/covens/chat";
 import { useCoven } from "../../../../../../lib/covens/CovenContext";
-import { requestsOn, setRequestsFor } from "../../../../../../lib/reminders/prefs";
-import { useReminderPrefs } from "../../../../../../lib/reminders/usePrefs";
 import { errorMessage, type Message } from "../../../../../../lib/covens/model";
-import {
-  covenPushOn,
-  disableCovenPush,
-  enableCovenPush,
-} from "../../../../../../lib/covens/push";
 import { blockedPreview } from "../../../../../../lib/covens/blocking";
 import { listTime } from "../../../../../../lib/covens/thread";
 import { refreshUnread, useUnread } from "../../../../../../lib/covens/unread";
@@ -239,104 +227,17 @@ function ThreadRow({
   );
 }
 
-// Phone notifications for this coven, on this device.
+// Phone notifications for this coven live in Settings → Notifications &
+// reminders → Covens (opened here, inside the Coven tab).
 function Notifications() {
-  const coven = useCoven();
-  const covenId = coven.snapshot?.coven.id;
-  const [settings, setSettings] = useState<ChatSettings | null>(null);
-  const [device, setDevice] = useState(false);
-  const [note, setNote] = useState<string | null>(null);
-  // New applications and requests to advance, for those who review them (kept with the Reminders choices).
-  const reminders = useReminderPrefs();
-  const reviewer = coven.perms.review && reminders.ready;
-  const requests = !!covenId && requestsOn(reminders.prefs, covenId);
-
-  useEffect(() => {
-    if (!covenId || !coven.userId) return;
-    void fetchChatSettings(covenId, coven.userId).then(setSettings);
-    void covenPushOn().then(setDevice);
-  }, [covenId, coven.userId]);
-
-  const change = async (next: ChatSettings) => {
-    if (!covenId || !coven.userId) return;
-    setSettings(next);
-    setNote(null);
-    try {
-      await saveChatSettings(covenId, coven.userId, next);
-    } catch (error) {
-      setNote(errorMessage(error));
-    }
-    if ((next.notify_coven || next.notify_direct) && !device)
-      await turnOnDevice();
-  };
-  const turnOnDevice = async () => {
-    const result = await enableCovenPush();
-    setDevice(result.ok);
-    if (!result.ok)
-      setNote(
-        result.reason === "denied"
-          ? "Notifications are turned off for this app in your phone’s Settings. Turn them on there, then try again."
-          : result.reason === "offline"
-            ? "Couldn’t reach your account. Check your connection and try again."
-            : "Your choices are saved. Phone notifications start with the next version of the app from the App Store or Google Play.",
-      );
-  };
-
-  if (!settings) return null;
   return (
     <Section label="Phone notifications">
-      <Card>
-        <SwitchRow
-          label="The coven’s chat"
-          detail="New messages to everyone in the coven"
-          value={settings.notify_coven}
-          onChange={(v) => void change({ ...settings, notify_coven: v })}
-        />
-        <SwitchRow
-          label="Your conversations"
-          detail="One-to-one chats and groups you’re in"
-          value={settings.notify_direct}
-          onChange={(v) => void change({ ...settings, notify_direct: v })}
-          last={!device && !reviewer}
-        />
-        {reviewer && (
-          <SwitchRow
-            label="Tell me about new applications"
-            detail="When someone asks to join or to advance here"
-            value={requests}
-            onChange={(v) => {
-              void reminders.update(setRequestsFor(reminders.prefs, covenId!, v));
-              if (v && !device) void turnOnDevice();
-            }}
-            last={!device}
-          />
-        )}
-        {device ? (
-          <SwitchRow
-            label="On this phone"
-            detail="Turn off to stop all coven notifications here"
-            value
-            onChange={() =>
-              void disableCovenPush().then(() => {
-                setDevice(false);
-                setNote(
-                  "This phone won’t get coven notifications. Turn either switch back on to start again.",
-                );
-              })
-            }
-            last
-          />
-        ) : (
-          (settings.notify_coven || settings.notify_direct || (reviewer && requests)) && (
-            <Button
-              label="Turn on notifications on this phone"
-              variant="outline"
-              onPress={() => void turnOnDevice()}
-            />
-          )
-        )}
-      </Card>
-      {note && <Text style={type.caption}>{note}</Text>}
+      <Button
+        label="Notification settings ›"
+        variant="outline"
+        accessibilityHint="The coven’s chat, your conversations, its gatherings and applications, and this phone"
+        onPress={() => router.push({ pathname: "/coven/settings/notifications", params: { section: "covens" } })}
+      />
       <Text style={type.caption}>
         Mute a single conversation from its ⓘ button.
       </Text>

@@ -1,4 +1,4 @@
-import { router, type Href } from 'expo-router';
+import { router, usePathname, type Href } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../Button';
@@ -6,12 +6,15 @@ import { Card } from '../more/ui';
 import type { LibraryEntry } from '../../lib/library';
 import { TRADITIONAL_LIBRARY } from '../../lib/library/traditionalData';
 import { deitiesValue, findDeity, LEVELS, MY_DEITIES_KEY, myDeities, withDeity } from '../../lib/patron/mine';
+import { settingsHref } from '../../lib/settings/links';
 import { useMySettings } from '../../lib/settings/store';
 import { colors, fonts, type } from '../../theme';
 
 /** On a deity's Library page: where they stand in your practice, a shrine for them, and the patron guide. */
 export function DeityYours({ entry }: { entry: LibraryEntry }) {
   const { settings } = useMySettings();
+  // My deities opens in the tab you're reading in, so Back returns to this page.
+  const pathname = usePathname();
   const key = entry.id.split(':').pop() ?? '';
   const mine = findDeity(myDeities(settings), key, entry.name);
   const level = mine ? LEVELS.find((l) => l.value === mine.level) : null;
@@ -33,7 +36,7 @@ export function DeityYours({ entry }: { entry: LibraryEntry }) {
           accessibilityHint="Opens a starter altar with their colours, plants and stones, and their statue where there is one"
           onPress={() => router.push({ pathname: '/altar/[altarId]', params: { altarId: 'shrine', deity: key } } as Href)}
         />
-        <Button label={mine ? 'My deities' : 'Add to My deities'} variant="text" onPress={() => router.push('/more/settings/deities' as Href)} />
+        <Button label={mine ? 'My deities' : 'Add to My deities'} variant="text" onPress={() => router.push(settingsHref('deities', pathname) as Href)} />
       </View>
     </Card>
   );

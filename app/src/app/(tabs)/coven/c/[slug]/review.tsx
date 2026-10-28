@@ -1,17 +1,15 @@
+import { router } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
 import { CovenScreen } from '../../../../../components/covens/CovenScreen';
 import { Words, useReport } from '../../../../../components/covens/ui';
-import { Card, Field, MenuList, MenuRow, Notice, Section, SwitchRow } from '../../../../../components/more/ui';
+import { Card, Field, MenuList, MenuRow, Notice, Section } from '../../../../../components/more/ui';
 import * as api from '../../../../../lib/covens/api';
 import { useCoven } from '../../../../../lib/covens/CovenContext';
 import { errorMessage, normalizeQuestions, relativeTime, unsignedAgreements, type Advancement, type Application, type Signature } from '../../../../../lib/covens/model';
-import { enableCovenPush } from '../../../../../lib/covens/push';
 import { refreshRequests } from '../../../../../lib/covens/requestsBadge';
-import { useReminderPrefs } from '../../../../../lib/reminders/usePrefs';
-import { requestsOn, setRequestsFor } from '../../../../../lib/reminders/prefs';
 import { colors, type } from '../../../../../theme';
 
 const STATUS: Record<string, string> = { approved: 'Approved', declined: 'Declined', withdrawn: 'Withdrawn', pending: 'Waiting' };
@@ -29,7 +27,6 @@ export default function Review() {
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const reminders = useReminderPrefs();
 
   const load = useCallback(async () => {
     if (!covenId) return;
@@ -85,17 +82,12 @@ export default function Review() {
   return (
     <CovenScreen title="Review" need="review" onRefresh={load}>
       {message && <Notice>{message}</Notice>}
-      {covenId && coven.perms.review && reminders.ready && coven.userId && (
+      {covenId && coven.perms.review && coven.userId && (
         <MenuList>
-          <SwitchRow
-            label="Tell me about new applications"
-            detail="A note on your phone when someone asks to join or to advance here. Also under Reminders → Ritual planning."
-            value={requestsOn(reminders.prefs, covenId)}
-            onChange={(on) => {
-              void reminders.update(setRequestsFor(reminders.prefs, covenId, on));
-              // This phone signs up for coven notes, if it hasn't yet.
-              if (on) void enableCovenPush();
-            }}
+          <MenuRow
+            label="Notification settings ›"
+            detail="New applications here, and the rest of this coven’s notifications"
+            onPress={() => router.push({ pathname: '/coven/settings/notifications', params: { section: 'covens' } })}
             last
           />
         </MenuList>

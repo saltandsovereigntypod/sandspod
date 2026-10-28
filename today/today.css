@@ -187,3 +187,4 @@ a.td-tag:hover { background: rgba(226, 195, 109, 0.16); }
 /* The two tabs, Today and Sky & Lore (js/segmented-switch.js): each lays out as the page does. */
 .td-page .seg-switch { margin-bottom: 0; }
 .td-tab { display: grid; gap: 22px; min-width: 0; }
+.td-customise { text-align: center; margin: 1.25rem 0 0.5rem; }

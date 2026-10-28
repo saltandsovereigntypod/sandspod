@@ -1,4 +1,4 @@
-// Reminders → Holidays: holiday reminders on or off, when, how far ahead, and
+// Notifications & reminders → Holidays: holiday reminders on or off, when, how far ahead, and
 // each calendar; and a calendar's own page, with every holiday in it to pick
 // or leave, searchable, all or none at once, and each holiday's own timing.
 
@@ -28,7 +28,7 @@ export function HolidaysSection({ prefs, update, settings, open }: Props) {
       <Card>
         <Toggle
           label="Remind me of my holidays"
-          detail="From the calendars you keep and show in Settings → Calendar & holidays, Hekate’s Deipnon, and your deities’ sacred days"
+          detail="From the calendars you keep and show in Settings → Calendars & holidays, Hekate’s Deipnon, and your deities’ sacred days"
           value={h.on}
           onChange={(on) => update(withChange(prefs, 'holidays.on', on))}
         />
@@ -65,7 +65,7 @@ export function HolidaysSection({ prefs, update, settings, open }: Props) {
                 })}
               </List>
             ) : (
-              <Body muted>No calendars yet. Choose the ones you keep in Settings → Calendar & holidays, and they’ll come here.</Body>
+              <Body muted>No calendars yet. Choose the ones you keep in Settings → Calendars & holidays, and they’ll come here.</Body>
             )}
           </View>
         </>

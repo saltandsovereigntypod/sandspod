@@ -1,4 +1,4 @@
-import type { Href } from 'expo-router';
+import { router, usePathname, type Href } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -13,18 +13,8 @@ import { customRepeat, HIDEABLE_TRADITIONS, hiddenTraditions, holidayChoice, hol
 import { primaryTradition } from '../../../../lib/traditionDay';
 import { newId } from '../../../../lib/altar/uid';
 import type { Settings } from '../../../../lib/settings/defaults';
+import { settingsHref } from '../../../../lib/settings/links';
 import { colors, fonts, type } from '../../../../theme';
-
-const SHOW_OPTIONS = [
-  { value: 'both', label: 'Moon and holiday' },
-  { value: 'moon', label: 'Moon only' },
-  { value: 'holiday', label: 'Holiday only' },
-] as const;
-
-const LAYOUT_OPTIONS = [
-  { value: 'stacked', label: 'One above the other' },
-  { value: 'side', label: 'Side by side' },
-] as const;
 
 const REPEAT_OPTIONS = [
   { value: 'yearly', label: 'Every year' },
@@ -60,7 +50,7 @@ export default function CalendarSettings() {
   return <CalendarSettingsScreen />;
 }
 
-/** Also opened from Today's holiday card, inside the Today tab (then Back returns to Today). */
+/** Opened under Settings, or inside another tab (its settings/[page] copy). */
 export function CalendarSettingsScreen({ back }: { back?: Href }) {
   return (
     <SettingsForm title="Calendar & holidays" back={back} after={(draft) => <YearAhead draft={draft} />}>
@@ -95,14 +85,14 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
     if (draft.calendar_primary === id) set('calendar_primary', '');
   };
 
-  const show = (draft.today_show as string) || 'both';
+  const pathname = usePathname();
   const mainOptions = shown.filter((t) => chosen.has(t.id)).map((t) => ({ value: t.id, label: t.name }));
 
   return (
     <>
       <Text style={type.body}>Choose the calendars you keep. Their holidays show on Today on the day, with what they mean, and On the horizon shows the next one.</Text>
 
-      {CALENDARS_LIVE && <CalendarCounting draft={draft} set={(key, value) => set(key, value)} />}
+      {CALENDARS_LIVE && <CalendarCounting draft={draft} set={(key, value) => set(key, value)} hemisphere={false} />}
 
       <Section label="Your calendars">
         <MenuList>
@@ -163,32 +153,16 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
         </Section>
       )}
 
-      <Section label="On Today">
-        <Chips label="Show on Today" options={SHOW_OPTIONS} value={show as (typeof SHOW_OPTIONS)[number]['value']} onChange={(v) => set('today_show', v)} />
-        {show === 'both' && (
-          <Chips
-            label="Layout"
-            options={LAYOUT_OPTIONS}
-            value={(draft.today_layout as (typeof LAYOUT_OPTIONS)[number]['value']) || 'stacked'}
-            onChange={(v) => set('today_layout', v)}
-          />
-        )}
-        <Text style={type.caption}>On the horizon always shows the next moon phase and the next holiday.</Text>
-        <MenuList>
-          <SwitchRow
-            label="A card for the day"
-            detail="A small “Draw a card for the day” line, and the card once you’ve kept it."
-            value={draft.today_draw !== false}
-            onChange={(on) => set('today_draw', on)}
-          />
-          <SwitchRow
-            label="Hekate’s Deipnon"
-            detail="On the last day of each Attic month, if you keep the Hellenic monthly days or Hekate is your patron: a gentle note on Today, and a reminder in the phone app (choose when in Reminders → Holidays). Off turns off both."
-            value={draft.deipnon_prompt !== false}
-            onChange={(on) => set('deipnon_prompt', on)}
-            last
-          />
-        </MenuList>
+      <Section label="Elsewhere">
+        <Text style={type.caption}>What Today shows (the moon and holiday, a card for the day, Hekate’s Deipnon) is in Settings → Today, and your hemisphere in Location & hemisphere.</Text>
+        <View style={styles.hiddenRow}>
+          <Pressable accessibilityRole="link" onPress={() => router.push(settingsHref('today', pathname))} hitSlop={8} style={({ pressed }) => [styles.hide, pressed && { opacity: 0.6 }]}>
+            <Text style={styles.hideLabel}>Today ›</Text>
+          </Pressable>
+          <Pressable accessibilityRole="link" onPress={() => router.push(settingsHref('location', pathname))} hitSlop={8} style={({ pressed }) => [styles.hide, pressed && { opacity: 0.6 }]}>
+            <Text style={styles.hideLabel}>Location & hemisphere ›</Text>
+          </Pressable>
+        </View>
       </Section>
 
       {chosen.has('custom') && (
@@ -202,8 +176,8 @@ function CalendarForm({ draft, set }: { draft: Settings; set: <K extends keyof S
   );
 }
 
-/** Every holiday from the chosen calendars for the next twelve months (below Save). */
-function YearAhead({ draft }: { draft: Settings }) {
+/** Every holiday from the chosen calendars for the next twelve months (below the settings, and on Today's Holidays ahead). */
+export function YearAhead({ draft }: { draft: Settings }) {
   const place = usePlace();
   const calendarKey = calendarSettingsKey(draft);
   const year = useMemo(() => {
@@ -264,7 +238,7 @@ function CustomHolidays({ list, onChange }: { list: CustomHoliday[]; onChange: (
     setName('');
     setDay('');
     setMeaning('');
-    setMessage('Added. Save changes to keep it.');
+    setMessage('Added.');
   };
 
   return (

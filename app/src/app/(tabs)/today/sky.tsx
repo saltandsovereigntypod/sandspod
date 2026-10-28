@@ -1,12 +1,14 @@
+import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../components/Button';
-import { Card, Field, MoreScreen, Notice, Section } from '../../../components/more/ui';
+import { Card, MoreScreen, Section } from '../../../components/more/ui';
 import { eclipseMeaning, MOON_IN_SIGN, planetInSign, PHASE_GOOD_FOR, VOID_OF_COURSE_MEANING } from '../../../lib/astro/meanings';
 import { retrogradesBetween } from '../../../lib/astro/planets';
 import { dateFrom, relativeDay, timeOfDay } from '../../../lib/calendar';
-import { askDeviceLocation, clearPlace, setManualPlace, usePlace } from '../../../lib/location';
+import { usePlace } from '../../../lib/location';
+import { settingsHref } from '../../../lib/settings/links';
 import { moonState } from '../../../lib/moon';
 import { eclipseLabel, placeSky, skyNow } from '../../../lib/sky';
 import { colors, fonts, radius, type } from '../../../theme';
@@ -135,48 +137,16 @@ export default function SkyScreen() {
         ) : (
           <Text style={type.body}>Add your location for sunrise, sunset, moonrise and planetary hours.</Text>
         )}
-        <LocationForm hasPlace={!!place} source={place?.source} />
+        <Text style={type.caption}>
+          {place ? `Your place is ${place.source === 'device' ? 'from your phone' : 'set by hand'}, and stays on this phone.` : 'Your place stays on this phone and is never sent anywhere.'}
+        </Text>
+        <Button
+          label={place ? 'Change your location' : 'Add your location'}
+          variant="outline"
+          onPress={() => router.push(settingsHref('location', '/today'))}
+        />
       </Section>
     </MoreScreen>
-  );
-}
-
-function LocationForm({ hasPlace, source }: { hasPlace: boolean; source?: 'device' | 'manual' }) {
-  const [latitude, setLatitude] = useState('');
-  const [longitude, setLongitude] = useState('');
-  const [message, setMessage] = useState<string | null>(null);
-
-  const findMine = async () => {
-    setMessage('Finding where you are…');
-    const result = await askDeviceLocation();
-    setMessage(
-      result === 'ok'
-        ? 'Location set. It stays on this phone.'
-        : result === 'denied'
-          ? 'Location wasn’t allowed. You can allow it in your phone’s Settings, or enter it below.'
-          : 'Using your phone’s location arrives with the next app update. For now, enter it below.',
-    );
-  };
-  const saveManual = () => {
-    const ok = setManualPlace(Number(latitude.replace(',', '.')), Number(longitude.replace(',', '.')));
-    setMessage(ok ? 'Location saved. It stays on this phone.' : 'Enter a latitude from -90 to 90 and a longitude from -180 to 180 (west and south are negative).');
-  };
-
-  return (
-    <Card>
-      <Text style={type.cardTitle}>Your location</Text>
-      <Text style={type.caption}>
-        {hasPlace
-          ? `Set ${source === 'device' ? 'from your phone' : 'by hand'}. It stays on this phone, rounded to about a kilometre, and is never sent anywhere.`
-          : 'Used only on this phone to work out the sky where you are. It is never sent anywhere.'}
-      </Text>
-      <Button label="Use my location" variant="outline" onPress={() => void findMine()} />
-      <Field label="Latitude" value={latitude} onChangeText={setLatitude} keyboardType="numbers-and-punctuation" placeholder="e.g. 52.52" />
-      <Field label="Longitude" value={longitude} onChangeText={setLongitude} keyboardType="numbers-and-punctuation" placeholder="e.g. 13.40 (west is negative)" />
-      <Button label="Save location" variant="outline" onPress={saveManual} />
-      {hasPlace && <Button label="Forget my location" variant="text" onPress={clearPlace} />}
-      {!!message && <Notice>{message}</Notice>}
-    </Card>
   );
 }
 

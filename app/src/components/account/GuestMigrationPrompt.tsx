@@ -28,7 +28,7 @@ export function GuestMigrationPrompt() {
       if (await isDismissed(userId, preview.fingerprint)) return;
       const title = 'Bring your guest work with you?';
       const message =
-        'This device still holds what you made as a guest. You can move it into your account now, or later from More → Account.';
+        'This device still holds what you made as a guest. You can move it into your account now, or later from More → Settings → Account.';
       const review = () => router.push('/more/guest-data');
       if (Platform.OS === 'web') {
         const ask = (globalThis as { confirm?: (text: string) => boolean }).confirm;

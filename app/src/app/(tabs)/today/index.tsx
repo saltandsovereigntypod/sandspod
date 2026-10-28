@@ -44,6 +44,7 @@ import { practiceToday } from '../../../lib/craft/today';
 import { DREAMS, morningDreamPrompt, normalizeDream, quickDream } from '../../../lib/craft/hedge/dreams';
 import { addEntry, useCraft } from '../../../lib/craft/store';
 import { DREAM_ROUTES } from '../../../lib/grimoire/dreams';
+import { dreamPromptOnToday } from '../../../lib/settings/links';
 import { normalizeReading, READINGS } from '../../../lib/craft/hedge/readings';
 import { drawOnToday, todaysCard, todaysCardLabel } from '../../../lib/divination/daily';
 import { deipnonToday } from '../../../lib/deipnon';
@@ -262,6 +263,14 @@ export default function Today() {
             <Text style={styles.promptText}>{today.prompt}</Text>
           </View>
           <LastTimeLine journal={rituals.journal} now={clock} />
+          <Pressable
+            accessibilityRole="link"
+            accessibilityHint="Choose what Today shows"
+            onPress={() => router.navigate('/today/settings/today')}
+            style={styles.customise}
+          >
+            <Text style={[type.caption, styles.gold, styles.center]}>Customise Today ›</Text>
+          </Pressable>
         </>
       ) : (
         <>
@@ -299,7 +308,7 @@ function DreamCapture({ settings, now, reminderOn }: { settings: SettingsLike; n
   const [saving, setSaving] = useState(false);
   const dreams = useMemo(() => entries.map((e) => ({ ...e, data: normalizeDream(e.data) })), [entries]);
   const keepsHedge = myPractices(settings).includes('hedge');
-  const prompt = morningDreamPrompt(now, { keepsHedge, reminderOn, dreams: kept ? [] : dreams });
+  const prompt = dreamPromptOnToday(settings) ? morningDreamPrompt(now, { keepsHedge, reminderOn, dreams: kept ? [] : dreams }) : null;
 
   if (kept) {
     return (
@@ -361,7 +370,7 @@ function PracticeCard({ settings, place, now }: { settings: SettingsLike; place:
 
   if (!practices.length && !deities.length) {
     return (
-      <Pressable accessibilityRole="link" onPress={() => router.navigate('/more/settings/practice')} style={styles.working}>
+      <Pressable accessibilityRole="link" onPress={() => router.navigate('/today/settings/practice')} style={styles.working}>
         <Text style={[type.eyebrow, styles.gold]}>For your practice</Text>
         <Text style={type.body}>Choose the practices you keep, green, kitchen, hedge, cosmic and more, and Today will offer something from each.</Text>
       </Pressable>
@@ -463,7 +472,7 @@ function LookBackDue({ journal, now }: { journal: JournalRow[]; now: Date }) {
 /**
  * On Hekate's Deipnon, the last day of the Attic month, for those who keep
  * the Hellenic monthly days or hold Hekate as patron: clear the house, leave
- * her supper, draw the Crossroads. Turned off in Settings → Calendars.
+ * her supper, draw the Crossroads. Turned off in Settings → Today.
  */
 function DeipnonCard({ settings, now }: { settings: SettingsLike; now: Date }) {
   const day = now.toDateString();
@@ -485,7 +494,7 @@ function DeipnonCard({ settings, now }: { settings: SettingsLike; now: Date }) {
   );
 }
 
-/** A card for the day: one to draw, or the one you've kept today. Turned off in Settings → Calendars. */
+/** A card for the day: one to draw, or the one you've kept today. Turned off in Settings → Today. */
 function CardOfTheDay({ now, south }: { now: Date; south: boolean }) {
   const { entries } = useCraft<unknown>(READINGS);
   const day = now.toDateString();
@@ -658,7 +667,9 @@ function DaySky({ today, sky, here, now }: { today: TodayModel; sky: Sky; here: 
           )}
         </>
       ) : (
-        <Text style={type.caption}>Add your location on the Sky screen for sunrise, moonrise and planetary hours.</Text>
+        <Pressable accessibilityRole="link" onPress={() => router.navigate('/today/settings/location')}>
+          <Text style={[type.caption, styles.gold]}>Add your location in Settings for sunrise, moonrise and planetary hours ›</Text>
+        </Pressable>
       )}
       <Button label="The sky today" variant="outline" onPress={() => router.navigate('/today/sky')} />
     </View>
@@ -799,6 +810,7 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   workingText: { gap: 3 },
+  customise: { minHeight: 44, justifyContent: 'center' },
   dreamActions: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 10 },
   practiceRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingTop: 12, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.goldLine },
   practiceText: { flex: 1, gap: 2 },

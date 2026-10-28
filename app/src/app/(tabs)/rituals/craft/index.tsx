@@ -49,7 +49,7 @@ export default function CraftHub() {
             onPress={() => router.push('/rituals/journeys')}
           />
         )}
-        <Row icon="grimoire" title="Choose my practice" detail="Settings → My practice" last onPress={() => router.push('/more/settings/practice')} />
+        <Row icon="grimoire" title="Choose my practice" detail="Settings → My practice" last onPress={() => router.push('/rituals/settings/practice')} />
       </List>
     </RitualScreen>
   );

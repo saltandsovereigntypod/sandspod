@@ -1,14 +1,16 @@
 /*
- * The app's settings the website's Settings view was missing: My practice,
- * Calendar & holidays (with what Today shows), and My path in Living
+ * The app's settings the website's Settings view was missing: Your crafts,
+ * Calendars & holidays, Today (what it shows), Location & hemisphere, what
+ * Divination offers to draw, Covens & privacy, and My path in Living
  * Library. Loaded by js/settings-view.js when Settings opens, with the
  * app's own logic (js/core/guides.js).
  *
  * These controls have no `name`, so the Settings form's own Save never
  * touches them; each change is saved straight away, keeping every other
  * setting (the website's and the app's) as it is. Keys and values are the
- * app's: my_practice, calendar_*, today_show, today_layout, library_path*,
- * divination_hidden_kinds, coven_paths_count_me.
+ * app's: my_practice, calendar_*, today_show, today_layout, today_draw,
+ * deipnon_prompt, today_dream_prompt, library_path*, divination_hidden_kinds,
+ * coven_paths_count_me.
  */
 (function (global) {
   "use strict";
@@ -134,9 +136,54 @@
     const chosen = G.myPractices(settings);
     return `<p class="my-sanctuary-intro">What kind of witch you are, alongside My path (the traditions you keep). Choose as many as fit. Rituals &amp; spells puts workings for your practice first, and your path (Living Library) adds the traditions you keep.</p>
       ${group("How you practise", G.PRACTICES.map((p) => check(`data-practice="${esc(p.id)}"`, p.name, p.about, chosen.includes(p.id))).join(""))}
-      ${group("My deities", `<p class="my-sanctuary-intro">Your patron, the gods you’ve dedicated to, and those you’re getting to know.</p><p><a class="button button--ghost" href="${MY_DEITIES_HREF}">Open My deities</a></p>`)}
+      <p class="settings-more-detail">Your deities are under My deities, what to draw under Divination, and whether covens count you under Covens &amp; privacy.</p>`;
+  }
+
+  // ------------------------------------------------------------- Covens & privacy
+
+  function covensHtml(settings) {
+    return `${group("Your coven profile", `<p class="settings-more-detail">The name, pronouns and few words other members see. It’s under Coven → Find a coven.</p><p><a class="button button--ghost" href="/covens/?tab=find">Open your coven profile</a></p>`)}
       ${covenPathsHtml(settings)}
-      ${drawKindsHtml(settings, G)}`;
+      ${group("Notifications", `<p class="settings-more-detail">Coven gatherings and applications are chosen with your other reminders; chat notifications ring in the app.</p><p><a class="button button--ghost" href="/reminders/#gd-covens">Coven notifications</a></p>`)}`;
+  }
+
+  // ------------------------------------------------------------- Today
+
+  /** What Today shows (the app's Settings → Today), with the same keys. */
+  function todayHtml(settings) {
+    const show = settings.today_show || "both";
+    const dream = settings.today_dream_prompt !== false && settings.today_dream_prompt !== "false";
+    return `${group(
+      "The moon and the day’s holiday",
+      `${chips("todayShow", SHOW_OPTIONS, show, "Show on Today")}
+        ${show === "both" ? `<p class="settings-more-check__label">Layout</p>${chips("todayLayout", LAYOUT_OPTIONS, settings.today_layout || "stacked", "Layout")}` : ""}
+        <p class="settings-more-detail">On the horizon, under Sky &amp; Lore, always shows the next moon phase and the next holiday.</p>`,
+    )}
+      ${group(
+        "Also on Today",
+        `${check("data-today-draw", "A card for the day", "A small “Draw a card for the day” line, and the card once you’ve kept it.", settings.today_draw !== false)}
+        ${check("data-today-deipnon", "Hekate’s Deipnon", "On the last day of each Attic month, if you keep the Hellenic monthly days or Hekate is your patron: a gentle note on Today, and a reminder in the phone app. Off turns off both.", settings.deipnon_prompt !== false)}
+        ${check("data-today-dream", "Last night’s dream", "In the morning, if you keep a dream journal: a line to catch last night’s dream before it fades.", dream)}`,
+      )}`;
+  }
+
+  // ------------------------------------------------------------- Location & hemisphere
+
+  function locationHtml(settings, G) {
+    const K = G.calendars;
+    const place = readPlace();
+    const hemisphere = settings[K.HEMISPHERE_KEY] || "auto";
+    return `${group(
+      "Your location",
+      `<p class="settings-more-detail">${esc(place ? "Your place is set in this browser, and never sent anywhere." : "No place is set in this browser yet. It is kept here only, and never sent anywhere.")}</p>
+        <p><a class="button button--ghost" href="/today/sky/">${place ? "Change it on The sky today" : "Add it on The sky today"}</a></p>`,
+      "Your place gives Today and the sky their sunrise, moonrise and planetary hours.",
+    )}
+      ${group(
+        "Hemisphere",
+        `${chips("hemisphere", HEMISPHERE_OPTIONS, hemisphere, "Hemisphere")}
+        <p class="settings-more-detail">${esc(`Seasons, the Wheel and moon names follow the ${K.hemisphereOf(settings, place)}ern hemisphere${hemisphere === "auto" ? (place ? ", from your place" : "; add your place, or choose Northern or Southern here") : ""}.`)}</p>`,
+      )}`;
   }
 
   // Whether you're counted in your covens' Paths in the coven (the app's
@@ -152,13 +199,13 @@
     );
   }
 
-  /** Which kinds of draw Divination offers (the app's Settings → My practice → Divination: what to draw). */
+  /** Which kinds of draw Divination offers (the app's Settings → Divination → What to draw). */
   function drawKindsHtml(settings, G) {
     const K = G.divinationKinds;
     if (!K) return "";
     const hidden = K.hiddenKinds(settings);
     return group(
-      "Divination: what to draw",
+      "What to draw",
       K.KIND_CHOICES.map((k) => check(`data-draw-kind="${esc(k.id)}"`, k.label, k.detail, !hidden.includes(k.id))).join(""),
       "The kinds the draw page offers. Hide the ones you don’t use; your readings with them are kept."
     );
@@ -217,9 +264,7 @@
         `${chips("count", COUNT_OPTIONS, lead, "Count my days by")}
         <p class="settings-more-detail">${esc(lead === "moon" ? "Today leads with the moon’s date: its month, from new moon to new moon, and the day of it. The ordinary date shows beneath." : "Today leads with the ordinary date. You can still show the moon’s months beside it below.")}</p>
         ${lead === "moon" ? `<div class="settings-more-calendar"><p class="settings-more-check__label">${esc(K.MOON_CALENDAR.name)} <small class="settings-more-detail">${meta(K.MOON_CALENDAR)}</small></p>${about(K.MOON_CALENDAR)}${choiceList(K.MOON_CALENDAR)}</div>` : ""}
-        <p class="settings-more-check__label">Hemisphere</p>
-        ${chips("hemisphere", HEMISPHERE_OPTIONS, hemisphere, "Hemisphere")}
-        <p class="settings-more-detail">${esc(`Seasons and moon names follow the ${K.hemisphereOf(settings, place)}ern hemisphere${hemisphere === "auto" ? (place ? ", from your place" : "; add your place on Today’s sky page, or choose Northern or Southern here") : ""}.`)}</p>`,
+        <p class="settings-more-detail">${esc(`Seasons and moon names follow the ${K.hemisphereOf(settings, place)}ern hemisphere${hemisphere === "auto" ? (place ? ", from your place" : "") : ""}. Change it under Location & hemisphere.`)}</p>`,
       )}
       ${group(
         "Also show",
@@ -308,7 +353,6 @@
     const hidden = H.hiddenTraditions(settings);
     const shownTraditions = H.TRADITIONS.filter((t) => !hidden.includes(t.id));
     const mainOptions = shownTraditions.filter((t) => chosen.has(t.id)).map((t) => ({ value: t.id, label: t.name }));
-    const show = settings.today_show || "both";
     return `<p class="my-sanctuary-intro">Choose the calendars you keep. Their holidays show on Today on the day, with what they mean, and On the horizon shows the next one.</p>
       ${G.calendars.CALENDARS_LIVE ? countingHtml(settings, G, ui.open) : ""}
       ${group(
@@ -326,12 +370,7 @@
         ${hidden.length ? `<p><button type="button" class="button button--small button--ghost" data-show-hidden>${hidden.length > 1 ? "Show hidden calendars" : "Show hidden calendar"}</button></p>` : ""}`,
       )}
       ${mainOptions.length > 1 ? group("Main calendar", chips("primary", mainOptions, G.traditionDay.primaryTradition(settings, choice), "Main calendar"), "Names the day at the top of Today: the Athenian date, the Norse weekday gods, the Roman date and so on.") : ""}
-      ${group(
-        "On Today",
-        `${chips("todayShow", SHOW_OPTIONS, show, "Show on Today")}
-        ${show === "both" ? `<p class="settings-more-check__label">Layout</p>${chips("todayLayout", LAYOUT_OPTIONS, settings.today_layout || "stacked", "Layout")}` : ""}
-        <p class="settings-more-detail">On the horizon always shows the next moon phase and the next holiday.</p>`,
-      )}
+      <p class="settings-more-detail">What Today shows (the moon and holiday, a card for the day, Hekate’s Deipnon) is under Today.</p>
       ${chosen.has("custom") ? customHtml(choice, G, ui.form) + pickHtml(choice, chosen, hidden, G, ui.open) : ""}
       ${yearAheadHtml(settings, G)}`;
   }
@@ -349,8 +388,10 @@
   }
 
   /**
-   * Fill the My practice and Calendar & holidays panels, and add My path to
-   * the Living Library panel. `panels` are the Settings view's fieldsets.
+   * Fill the Your crafts, Calendars & holidays, Today, Location & hemisphere
+   * and Covens & privacy panels, and add My path to the Living Library panel
+   * and what to draw to the Divination panel. `panels` are the Settings
+   * view's fieldsets.
    */
   async function mount(panels, G = global.SaltCore?.guides) {
     if (!G?.holidays || !panels) return;
@@ -363,6 +404,10 @@
       practice: panels.practice && placeholder(panels.practice, "practice"),
       calendar: panels.calendar && placeholder(panels.calendar, "calendar"),
       path: panels.library && placeholder(panels.library, "path", true),
+      today: panels.today && placeholder(panels.today, "today"),
+      location: panels.location && placeholder(panels.location, "location"),
+      kinds: panels.divination && placeholder(panels.divination, "kinds"),
+      covens: panels.covens && placeholder(panels.covens, "covens"),
     };
 
     function placeholder(panel, key, first = false) {
@@ -385,12 +430,16 @@
       return node;
     }
 
-    function draw(which = ["practice", "calendar", "path"]) {
+    function draw(which = ["practice", "calendar", "path", "today", "location", "kinds", "covens"]) {
       const active = doc.activeElement;
       const focusKey = active && Object.values(targets).some((t) => t?.contains(active)) ? [...active.attributes].filter((a) => a.name.startsWith("data-")).map((a) => `[${a.name}="${CSS.escape(a.value)}"]`).join("") : "";
       if (which.includes("practice") && targets.practice) targets.practice.innerHTML = practiceHtml(settings, G);
       if (which.includes("calendar") && targets.calendar) targets.calendar.innerHTML = calendarHtml(settings, G, ui);
       if (which.includes("path") && targets.path) targets.path.innerHTML = pathHtml(settings, G);
+      if (which.includes("today") && targets.today) targets.today.innerHTML = todayHtml(settings);
+      if (which.includes("location") && targets.location) targets.location.innerHTML = locationHtml(settings, G);
+      if (which.includes("kinds") && targets.kinds) targets.kinds.innerHTML = drawKindsHtml(settings, G);
+      if (which.includes("covens") && targets.covens) targets.covens.innerHTML = covensHtml(settings);
       if (focusKey) Object.values(targets).find((t) => t?.querySelector(focusKey))?.querySelector(focusKey)?.focus({ preventScroll: true });
     }
 
@@ -418,11 +467,14 @@
         const chosen = G.myPractices(settings);
         return save({ my_practice: G.practicesValue(t.checked ? [...chosen, t.dataset.practice] : chosen.filter((p) => p !== t.dataset.practice)) }, "practice");
       }
-      if (t.hasAttribute("data-coven-paths")) return save({ [COVEN_PATHS_KEY]: t.checked }, "practice");
+      if (t.hasAttribute("data-coven-paths")) return save({ [COVEN_PATHS_KEY]: t.checked }, "covens");
       if (t.dataset.drawKind && G.divinationKinds) {
         const K = G.divinationKinds;
-        return save({ [K.HIDDEN_KINDS_KEY]: K.withKindShown(settings, t.dataset.drawKind, t.checked) }, "practice");
+        return save({ [K.HIDDEN_KINDS_KEY]: K.withKindShown(settings, t.dataset.drawKind, t.checked) }, "kinds");
       }
+      if (t.hasAttribute("data-today-draw")) return save({ today_draw: t.checked }, "today");
+      if (t.hasAttribute("data-today-deipnon")) return save({ deipnon_prompt: t.checked }, "today");
+      if (t.hasAttribute("data-today-dream")) return save({ today_dream_prompt: t.checked }, "today");
       if (t.dataset.path) {
         const next = new Set(G.traditions.myPath(settings).traditions);
         if (t.checked) next.add(t.dataset.path);
@@ -468,10 +520,10 @@
           return save(changes, "path");
         }
         if (chipGroup === "count") return save({ [G.calendars.COUNT_KEY]: value }, "calendar");
-        if (chipGroup === "hemisphere") return save({ [G.calendars.HEMISPHERE_KEY]: value }, "calendar");
+        if (chipGroup === "hemisphere") return save({ [G.calendars.HEMISPHERE_KEY]: value }, "location");
         if (chipGroup === "primary") return save({ calendar_primary: value }, "calendar");
-        if (chipGroup === "todayShow") return save({ today_show: value }, "calendar");
-        if (chipGroup === "todayLayout") return save({ today_layout: value }, "calendar");
+        if (chipGroup === "todayShow") return save({ today_show: value }, "today");
+        if (chipGroup === "todayLayout") return save({ today_layout: value }, "today");
         if (chipGroup === "repeat") {
           ui.form.repeat = value;
           ui.form.message = "";
@@ -534,7 +586,7 @@
     });
   }
 
-  const api = { MY_DEITIES_HREF, hideChanges, customFromForm, repeatLabel, mount };
+  const api = { MY_DEITIES_HREF, hideChanges, customFromForm, repeatLabel, todayHtml, mount };
   global.SettingsMore = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

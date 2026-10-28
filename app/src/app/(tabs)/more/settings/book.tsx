@@ -6,13 +6,13 @@ type Font = (typeof PAGE_FONT_OPTIONS)[number]['value'];
 
 export default function BookSettings() {
   return (
-    <SettingsForm title="Book of Shadows">
+    <SettingsForm title="Grimoire">
       {(draft, set) => (
         <>
           <MenuList>
             <SwitchRow
-              label="Mundane mode by default"
-              detail="Open your Book of Shadows in plain, everyday language."
+              label="Mundane mode"
+              detail="Your Grimoire in plain, everyday language. The same as the Mundane switch at the top of your Grimoire, on every device."
               value={draft.default_mundane_mode}
               onChange={(v) => set('default_mundane_mode', v)}
             />

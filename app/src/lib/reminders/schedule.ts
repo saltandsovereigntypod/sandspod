@@ -220,7 +220,7 @@ export function buildSchedule(
   lookBacks: LookBackReminderSource[] = [],
   offerings: OfferingDue[] = [],
   waterings: WateringDue[] = [],
-  /** Hekate's Deipnon each month (deipnon.ts deipnonReminders), for those who keep it; turned off in Settings → Calendars. */
+  /** Hekate's Deipnon each month (deipnon.ts deipnonReminders), for those who keep it; turned off in Settings → Today. */
   deipna: DeipnonReminder[] = [],
   /** At most this many (plan.ts asks for all and chooses for itself). */
   cap: number = MAX_REMINDERS,

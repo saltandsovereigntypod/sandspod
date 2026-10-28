@@ -80,7 +80,7 @@ const baseType = {
 type TypeStyles = typeof baseType;
 let shaped: { prefs: AccessibilityPrefs; styles: TypeStyles } | null = null;
 
-/** The text styles with More → Accessibility applied (text size, spacing, font, contrast). */
+/** The text styles with Settings → Accessibility applied (text size, spacing, font, contrast). */
 function typeStyles(): TypeStyles {
   const prefs = currentAccessibility();
   if (shaped?.prefs !== prefs) {

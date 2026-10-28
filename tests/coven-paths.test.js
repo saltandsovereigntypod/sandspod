@@ -91,7 +91,7 @@ test("members can leave themselves out, in Settings as in the app, and the guide
   const more = read("js/settings-more.js");
   assert.match(more, /COVEN_PATHS_KEY = "coven_paths_count_me"/);
   assert.match(more, /Count me in my covens’ paths overview/);
-  assert.match(read("app/src/app/(tabs)/more/settings/practice.tsx"), /Count me in my covens’ paths overview/);
+  assert.match(read("app/src/app/(tabs)/more/settings/covens.tsx"), /Count me in my covens’ paths overview/);
   assert.equal(P.COUNT_ME_KEY, "coven_paths_count_me");
   assert.equal(P.countsMe({ coven_paths_count_me: false }), false);
   assert.equal(P.countsMe({}), true);
