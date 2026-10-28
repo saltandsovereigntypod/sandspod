@@ -1,25 +1,48 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
 import { CovenScreen } from '../../../../../../components/covens/CovenScreen';
+import { OpeningEditor, RequirementsEditor } from '../../../../../../components/covens/PositionEditors';
 import { CheckRow, Field, Notice, Section } from '../../../../../../components/more/ui';
 import * as api from '../../../../../../lib/covens/api';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
-import { errorMessage, RANK_POWERS, savableRankFlags, type Rank } from '../../../../../../lib/covens/model';
+import { errorMessage, RANK_POWERS, savableRankFlags, type Member, type Rank } from '../../../../../../lib/covens/model';
 import { type } from '../../../../../../theme';
 
-type Flag = 'is_default' | 'open_to_applications' | (typeof RANK_POWERS)[number]['key'];
+// Opening it for applications is its own section (OpeningEditor), not a checkbox here.
+type Flag = 'is_default' | (typeof RANK_POWERS)[number]['key'];
 
 export default function ManagePosition() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const coven = useCoven();
   const rank = coven.snapshot?.ranks.find((r) => r.id === id) ?? null;
   const ready = !!coven.snapshot && (id === 'new' || !!rank);
+  const covenId = coven.snapshot?.coven.id;
+  const [members, setMembers] = useState<Member[] | null>(null);
+  const loadMembers = useCallback(async () => {
+    if (covenId) setMembers(await api.fetchMembers(covenId).catch(() => null));
+  }, [covenId]);
+  useEffect(() => {
+    if (!covenId) return;
+    let off = false;
+    api.fetchMembers(covenId).then(
+      (list) => !off && setMembers(list),
+      () => {},
+    );
+    return () => {
+      off = true;
+    };
+  }, [covenId]);
+  const saved = async () => {
+    await Promise.all([coven.refresh(), loadMembers()]);
+  };
   return (
     <CovenScreen title={rank ? rank.name : 'Add a position'} need="manage">
       {ready ? <PositionForm key={rank?.id ?? 'new'} rank={rank} /> : <Text style={type.caption}>This position couldn’t be found.</Text>}
+      {rank && <OpeningEditor key={`open-${rank.id}`} rank={rank} members={members} onSaved={saved} />}
+      {rank && <RequirementsEditor key={`asks-${rank.id}`} rank={rank} onSaved={saved} />}
     </CovenScreen>
   );
 }
@@ -31,7 +54,7 @@ function PositionForm({ rank }: { rank: Rank | null }) {
   const [description, setDescription] = useState(rank?.description ?? '');
   const [requirements, setRequirements] = useState(rank?.requirements ?? '');
   const [flags, setFlags] = useState<Record<Flag, boolean>>(() => {
-    const out = { is_default: !!rank?.is_default, open_to_applications: !!rank?.open_to_applications } as Record<Flag, boolean>;
+    const out = { is_default: !!rank?.is_default } as Record<Flag, boolean>;
     // Starting altars and chat are on for a position unless the head turns them off.
     for (const p of RANK_POWERS) out[p.key] = rank?.[p.key] ?? (p.key === 'can_start_altars' || p.key === 'can_chat');
     return out;
@@ -80,9 +103,9 @@ function PositionForm({ rank }: { rank: Rank | null }) {
       <Field label="Name" value={name} onChangeText={setName} maxLength={60} />
       <Field label="Seniority (1 is newest; higher is more senior)" value={level} onChangeText={(text) => setLevel(text.replace(/[^0-9]/g, ''))} keyboardType="number-pad" maxLength={2} />
       <Field label="What this position is" value={description} onChangeText={setDescription} multiline maxLength={1000} />
-      <Field label="What it asks of someone (shown to those who apply for it)" value={requirements} onChangeText={setRequirements} multiline maxLength={2000} />
+      <Field label="What it asks, in your own words (shown to those who could apply, beside the requirements below)" value={requirements} onChangeText={setRequirements} multiline maxLength={2000} />
       <CheckRow label="New members begin here" {...flag('is_default')} />
-      <CheckRow label="Members can apply to rise to it" {...flag('open_to_applications')} />
+      {!rank && <Text style={type.caption}>Once it’s added, you can open it for applications, choose its places and what it asks.</Text>}
       <Section label="Powers">
         {RANK_POWERS.map((p) => (
           <CheckRow key={p.key} label={p.label} {...flag(p.key)} />

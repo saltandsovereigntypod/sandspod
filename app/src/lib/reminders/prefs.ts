@@ -90,6 +90,12 @@ export type ReminderPrefs = {
    * accepts an invitation you sent (`accepted`). Both on unless turned off.
    */
   invitations: { on: boolean; accepted: boolean };
+  /**
+   * Positions opening in your covens, sent to your phone (supabase/functions/coven-notify
+   * positions.ts): a coven's leaders open a position for applications and
+   * choose to tell you. On, unless turned off for all or for a coven in `off`.
+   */
+  positions: { on: boolean; off: string[] };
 };
 
 export type CrystalCadence = 'full' | 'new' | 'both' | 'weeks';
@@ -125,6 +131,7 @@ export const DEFAULT_PREFS: ReminderPrefs = {
   requests: { on: true, off: [], answers: true },
   gatherings: { on: true, off: [] },
   invitations: { on: true, accepted: true },
+  positions: { on: true, off: [] },
 };
 
 const obj = (v: unknown): Record<string, unknown> => (v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : {});
@@ -168,6 +175,7 @@ export function normalizePrefs(input: unknown): ReminderPrefs {
   const r = obj(raw.requests);
   const g = obj(raw.gatherings);
   const inv = obj(raw.invitations);
+  const pos = obj(raw.positions);
 
   const calendars: Record<string, HolidayCalendarPrefs> = {};
   for (const [id, value] of Object.entries(obj(h.calendars))) {
@@ -240,6 +248,7 @@ export function normalizePrefs(input: unknown): ReminderPrefs {
     requests: { on: bool(r.on, d.requests.on), off: strings(r.off), answers: bool(r.answers, d.requests.answers) },
     gatherings: { on: bool(g.on, d.gatherings.on), off: strings(g.off) },
     invitations: { on: bool(inv.on, d.invitations.on), accepted: bool(inv.accepted, d.invitations.accepted) },
+    positions: { on: bool(pos.on, d.positions.on), off: strings(pos.off) },
   };
 }
 
@@ -379,6 +388,19 @@ export function setGatheringsFor(prefs: ReminderPrefs, covenId: string, on: bool
   if (!on) off.push(covenId);
   else if (!prefs.gatherings.on) off = [...new Set([...off, ...covenIds.filter((id) => id !== covenId)])];
   return normalizePrefs({ ...prefs, gatherings: { on: on || prefs.gatherings.on, off } });
+}
+
+// ── Positions opening ─────────────────────────────────────────────────────
+
+/** Whether a position opening in this coven rings your phone (on unless turned off). */
+export const positionsOn = (prefs: ReminderPrefs, covenId: string) => prefs.positions.on && !prefs.positions.off.includes(covenId);
+
+/** Turn one coven's position notes on or off (turning one on also turns them on overall, with the others as they were). */
+export function setPositionsFor(prefs: ReminderPrefs, covenId: string, on: boolean, covenIds: string[] = []): ReminderPrefs {
+  let off = prefs.positions.off.filter((id) => id !== covenId);
+  if (!on) off.push(covenId);
+  else if (!prefs.positions.on) off = [...new Set([...off, ...covenIds.filter((id) => id !== covenId)])];
+  return normalizePrefs({ ...prefs, positions: { on: on || prefs.positions.on, off } });
 }
 
 // ── Words ─────────────────────────────────────────────────────────────────

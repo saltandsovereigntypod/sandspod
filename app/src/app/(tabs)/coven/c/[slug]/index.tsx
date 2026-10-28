@@ -5,6 +5,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
 import { covenHref, CovenScreen } from '../../../../../components/covens/CovenScreen';
+import { OpenPositionsHere } from '../../../../../components/covens/Positions';
 import { Pill, Pills, Words, useReport } from '../../../../../components/covens/ui';
 import { Card, MenuList, MenuRow, Notice, Section } from '../../../../../components/more/ui';
 import { WEBSITE_ORIGIN } from '../../../../../lib/altar/assetPaths';
@@ -149,6 +150,8 @@ export default function CovenHome() {
             </Card>
           )}
 
+          <OpenPositionsHere />
+
           {insider && (
             <Section label="The coven">
               <MenuList>
@@ -195,6 +198,7 @@ export default function CovenHome() {
                   {!!rank.description && <Words text={rank.description} />}
                   {rankPowers(rank).length > 0 && <Text style={type.caption}>This position {rankPowers(rank).join(', ')}.</Text>}
                   {!!rank.requirements && <Text style={type.caption}>Requirements: {rank.requirements}</Text>}
+                  {rank.seat_limit != null && <Text style={type.caption}>Up to {rank.seat_limit} may hold it.</Text>}
                 </Card>
               ))}
               {coven.perms.member && <Text style={type.caption}>To ask to rise to a higher position, open My standing.</Text>}

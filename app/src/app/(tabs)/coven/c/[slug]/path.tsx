@@ -1,9 +1,10 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Alert, Text } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
 import { covenHref, CovenScreen } from '../../../../../components/covens/CovenScreen';
+import { Checklist, OpenPositionsCard, useOpenPositions } from '../../../../../components/covens/Positions';
 import { Words } from '../../../../../components/covens/ui';
 import { Card, Chips, Field, MenuList, MenuRow, Notice, Section } from '../../../../../components/more/ui';
 import * as api from '../../../../../lib/covens/api';
@@ -18,6 +19,9 @@ const STATUS: Record<string, string> = { approved: 'approved', declined: 'declin
 // higher position, and leaving.
 export default function MyPath() {
   const coven = useCoven();
+  const { apply } = useLocalSearchParams<{ apply?: string }>();
+  const open = useOpenPositions();
+  const [checklist, setChecklist] = useState<{ id: string; checks: Parameters<typeof Checklist>[0]['checks'] } | null>(null);
   const covenId = coven.snapshot?.coven.id;
   const userId = coven.userId;
   const [requests, setRequests] = useState<Advancement[] | null>(null);
@@ -35,6 +39,17 @@ export default function MyPath() {
     void load();
   }, [load]);
 
+  // Your request's checklist as it stands, ticks included.
+  const pendingId = requests?.find((a) => a.status === 'pending')?.id;
+  useEffect(() => {
+    if (!pendingId) return;
+    let off = false;
+    api.fetchChecklist(pendingId).then((checks) => !off && setChecklist({ id: pendingId, checks }));
+    return () => {
+      off = true;
+    };
+  }, [pendingId]);
+
   const { perms, snapshot } = coven;
   const ranks = snapshot?.ranks ?? [];
   const options = advancementOptions(ranks, perms);
@@ -51,7 +66,7 @@ export default function MyPath() {
       await work();
       setMessage(done);
       setStatement('');
-      await load();
+      await Promise.all([load(), open.reload()]);
     } catch (error) {
       setMessage(errorMessage(error));
     }
@@ -77,7 +92,7 @@ export default function MyPath() {
     ]);
 
   return (
-    <CovenScreen title="My standing" onRefresh={load}>
+    <CovenScreen title="My standing" onRefresh={() => Promise.all([load(), open.reload()]).then(() => undefined)}>
       {perms.member && snapshot?.membership && (
         <>
           <Card>
@@ -110,9 +125,25 @@ export default function MyPath() {
               <Card>
                 <Text style={type.body}>You’ve asked to become {rankName(pending.rank_id)}. The coven’s reviewers will decide.</Text>
                 <Words text={pending.statement} />
+                <Checklist checks={checklist?.id === pending.id ? checklist.checks : []} />
                 <Button label="Withdraw this request" variant="outline" onPress={() => void run(() => api.withdrawAdvancement(pending.id), 'Withdrawn.')} disabled={busy} />
               </Card>
-            ) : !options.length ? (
+            ) : open.overview ? (
+              open.positions.length ? (
+                <OpenPositionsCard
+                  positions={open.positions}
+                  pending={pending}
+                  applyHere
+                  chosen={apply ?? null}
+                  onApplied={() => {
+                    setMessage('Sent to the coven’s reviewers.');
+                    void Promise.all([load(), open.reload()]);
+                  }}
+                />
+              ) : (
+                <Text style={type.caption}>No higher positions are open to apply for right now.</Text>
+              )
+            ) : open.overview === undefined ? null : !options.length ? (
               <Text style={type.caption}>No higher positions are open to apply for right now.</Text>
             ) : (
               <Card>

@@ -9,7 +9,7 @@ import { Button } from '../Button';
 import { Body, Card, Chip, Chips, SectionLabel, Toggle, ui } from '../rituals/ui';
 import { TimeRow } from './parts';
 import { covenPlanning, dayKey } from '../../lib/reminders/plan';
-import { BUNDLE_CHOICES, isPaused, PLAN_DAY_CHOICES, setGatheringsFor, setRequestsFor, timeLabel, withChange, type ReminderPrefs } from '../../lib/reminders/prefs';
+import { BUNDLE_CHOICES, isPaused, PLAN_DAY_CHOICES, setGatheringsFor, setPositionsFor, setRequestsFor, timeLabel, withChange, type ReminderPrefs } from '../../lib/reminders/prefs';
 import { covenNotifyRows, wantsCovenPush, type ChatChoice, type CovenNotifySource } from '../../lib/reminders/covenNotifications';
 import { reviewsCoven } from '../../lib/reminders/covens';
 import { fetchMyStandings } from '../../lib/covens/api';
@@ -228,6 +228,15 @@ export function CovensSection({ prefs, update, userId }: Props & { userId: strin
                 andDevice(on);
               }}
             />
+            <Toggle
+              label="Positions opening"
+              detail="Its leaders open a position you could apply for, and choose to tell you"
+              value={row.positions}
+              onChange={(on) => {
+                update(setPositionsFor(prefs, row.id, on, ids));
+                andDevice(on);
+              }}
+            />
             {row.applications !== null && (
               <Toggle
                 label="New applications"
@@ -252,6 +261,12 @@ export function CovensSection({ prefs, update, userId }: Props & { userId: strin
             detail="Off turns gatherings off for every coven; on, each coven above as you chose"
             value={prefs.gatherings.on}
             onChange={(on) => update(withChange(prefs, 'gatherings.on', on))}
+          />
+          <Toggle
+            label="Tell me when positions open"
+            detail="A position you could apply for opens. Off turns this off for every coven; on, each coven above as you chose"
+            value={prefs.positions.on}
+            onChange={(on) => update(withChange(prefs, 'positions.on', on))}
           />
           <Toggle
             label="Tell me about new applications"
