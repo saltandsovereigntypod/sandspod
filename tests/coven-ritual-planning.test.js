@@ -14,6 +14,7 @@ const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 global.window = global;
 const L = require("../covens/coven-logic.js");
 vm.runInThisContext(read("js/core/covens.js"));
+vm.runInThisContext(read("js/traditional-library.js"));
 vm.runInThisContext(read("js/core/altar.js"));
 const { picker: P, stepActions: A, contributions: C } = global.SaltCore.covens;
 const I = global.SaltCore.altar.itemIndex;

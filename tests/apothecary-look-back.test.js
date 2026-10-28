@@ -11,7 +11,8 @@ function sandboxWith(files, extra = {}) {
   const sandbox = { TextEncoder, Intl, crypto: globalThis.crypto, console, ...extra };
   sandbox.window = sandbox;
   vm.createContext(sandbox);
-  for (const file of files) vm.runInContext(fs.readFileSync(path.join(__dirname, "..", file), "utf8"), sandbox);
+  // The bundles read the Traditional Library from the page's own script (scripts/build-core.mjs).
+  for (const file of ["js/traditional-library.js", ...files]) vm.runInContext(fs.readFileSync(path.join(__dirname, "..", file), "utf8"), sandbox);
   return sandbox;
 }
 const plain = (value) => JSON.parse(JSON.stringify(value));

@@ -11,6 +11,7 @@ function loadBundle(...names) {
   context.window = context;
   context.globalThis = context;
   vm.createContext(context);
+  vm.runInContext(fs.readFileSync(path.join(root, "js/traditional-library.js"), "utf8"), context); // read by the bundles (scripts/build-core.mjs)
   for (const name of names) vm.runInContext(fs.readFileSync(path.join(root, `js/core/${name}.js`), "utf8"), context);
   return context.SaltCore;
 }

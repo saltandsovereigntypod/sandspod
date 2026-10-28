@@ -21,7 +21,8 @@
   let moreLoading = null;
   function loadMore(doc = document) {
     if (global.SettingsMore && global.SaltCore?.guides) return Promise.resolve(true);
-    if (!moreLoading) moreLoading = MORE_SCRIPTS.reduce((chain, src) => chain.then(() => new Promise((resolve, reject) => { if ((src.includes("guides") && global.SaltCore?.guides) || (src.includes("settings-more") && global.SettingsMore)) return resolve(); const script = doc.createElement("script"); script.src = src; script.onload = resolve; script.onerror = reject; doc.head.append(script); })), Promise.resolve()).then(() => true).catch(() => { moreLoading = null; return false; });
+    // js/core/guides.js reads the Traditional Library (js/traditional-library.js), so that comes first.
+    if (!moreLoading) moreLoading = MORE_SCRIPTS.reduce((chain, src) => chain.then(() => new Promise((resolve, reject) => { if ((src.includes("guides") && global.SaltCore?.guides) || (src.includes("settings-more") && global.SettingsMore)) return resolve(); const script = doc.createElement("script"); script.src = src; script.onload = resolve; script.onerror = reject; doc.head.append(script); })), global.SaltScripts?.traditionalLibrary() || Promise.resolve()).then(() => true).catch(() => { moreLoading = null; return false; });
     return moreLoading;
   }
   const categoryForName = (name = "") => name.startsWith("library_") ? "library" : name.startsWith("companion_") ? "companion" : name.startsWith("living_state_") ? "objects" : ["preferred_name", "pronouns", "magical_name", "sanctuary_greeting_name"].includes(name) ? "identity" : ["default_altar_background"].includes(name) ? "appearance" : name === "tarot_deck" ? "divination" : "book";

@@ -269,6 +269,7 @@ test("the planner suggests coming full and new moons and sabbats", () => {
   const sb = { window: {}, Intl, TextEncoder, console };
   sb.window = sb;
   vm.createContext(sb);
+  vm.runInContext(fs.readFileSync(path.join(root, "js/traditional-library.js"), "utf8"), sb);
   vm.runInContext(fs.readFileSync(path.join(root, "js/core/today.js"), "utf8"), sb);
   const list = L.occasionSuggestions(sb.SaltCore.today, new Date("2026-10-23T12:00:00Z"));
   assert.equal(list.length, 6);
@@ -362,6 +363,7 @@ test("a coven with its own calendar suggests its own holidays for rites", () => 
   const sb = { window: {}, Intl, TextEncoder, console };
   sb.window = sb;
   vm.createContext(sb);
+  vm.runInContext(fs.readFileSync(path.join(root, "js/traditional-library.js"), "utf8"), sb);
   vm.runInContext(fs.readFileSync(path.join(root, "js/core/today.js"), "utf8"), sb);
   vm.runInContext(fs.readFileSync(path.join(root, "js/core/covens.js"), "utf8"), sb);
   const from = new Date("2026-10-23T12:00:00Z");

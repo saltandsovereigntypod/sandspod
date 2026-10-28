@@ -243,7 +243,11 @@
     render();
     global.matchMedia?.(PHONE_QUERY).addEventListener?.("change", () => placeTabs());
     measureHeader();
-    global.addEventListener("resize", () => measureHeader());
+    // Once a frame at most while a window is being resized (it reads layout).
+    let measuring = 0;
+    global.addEventListener("resize", () => {
+      if (!measuring) measuring = global.requestAnimationFrame(() => ((measuring = 0), measureHeader()));
+    }, { passive: true });
     const { panel } = panelState();
     if (panel && typeof MutationObserver !== "undefined") {
       new MutationObserver(() => markCurrent()).observe(panel, { subtree: true, attributes: true, attributeFilter: ["hidden", "class"] });
@@ -331,7 +335,14 @@
   global.SiteNav = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (typeof document !== "undefined") {
-    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", install);
-    else install();
+    if (document.readyState === "loading") {
+      // Pages load this at the top of <body>, or just after their own
+      // .site-header: draw the bar straight away, so the page doesn't jump
+      // when it appears after the page's own scripts. install() draws it
+      // again once the page is ready (the Sanctuary panel may exist by then).
+      // (scripts/validate-static.js checks it never comes before a header.)
+      if (document.body) render();
+      document.addEventListener("DOMContentLoaded", install);
+    } else install();
   }
 })(typeof window !== "undefined" ? window : globalThis);

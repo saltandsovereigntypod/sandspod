@@ -71,7 +71,9 @@
     return scripts.get(src);
   }
   const core = () => global.SaltCore.tend;
-  const ensureCore = () => script("/js/core/tend.js", () => !!global.SaltCore?.tend);
+  // js/core/tend.js and js/core/altar.js read the Traditional Library (js/traditional-library.js), so it comes first.
+  const library = () => script("/js/traditional-library.js", () => typeof TraditionalLibrary !== "undefined"); // eslint-disable-line no-undef
+  const ensureCore = () => library().then(() => script("/js/core/tend.js", () => !!global.SaltCore?.tend));
 
   const GUEST_RITUALS = "saltAndSovereigntyRitualLifecycle:guest";
   const GUEST_APOTHECARY = "saltAndSovereigntyApothecaryItems";
@@ -259,7 +261,7 @@
   async function petitionCandle(state, petition) {
     if (!petition?.altar_id) return;
     try {
-      await Promise.all([script("/covens/coven-data.js", () => !!global.CovenData), script("/js/core/altar.js", () => !!global.SaltCore?.altar?.covenAltar)]);
+      await Promise.all([script("/covens/coven-data.js", () => !!global.CovenData), library().then(() => script("/js/core/altar.js", () => !!global.SaltCore?.altar?.covenAltar))]);
       await global.CovenData.changeAltarOnce(petition.altar_id, global.SaltCore.altar.petitionAltar.tendWithSeed(petition, state.covens?.myName || "A member", new Date().toISOString(), state.account?.id || ""));
     } catch {
       /* the tending stands */

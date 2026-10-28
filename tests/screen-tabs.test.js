@@ -14,6 +14,7 @@ function bundle(file) {
   const sb = { window: {}, Intl, TextEncoder, console };
   sb.window = sb;
   vm.createContext(sb);
+  vm.runInContext(read("js/traditional-library.js"), sb); // read by the bundles (scripts/build-core.mjs)
   vm.runInContext(read(file), sb);
   return sb.SaltCore;
 }

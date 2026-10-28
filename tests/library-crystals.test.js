@@ -9,8 +9,8 @@ const L = require("../library/library-logic.js");
 const sandbox = { window: {}, TextEncoder, Intl };
 sandbox.window = sandbox;
 vm.createContext(sandbox);
-vm.runInContext(fs.readFileSync(path.join(__dirname, "../js/core/library.js"), "utf8"), sandbox);
 vm.runInContext(`${fs.readFileSync(path.join(__dirname, "../js/traditional-library.js"), "utf8")}\nglobalThis.TraditionalLibrary = TraditionalLibrary;`, sandbox);
+vm.runInContext(fs.readFileSync(path.join(__dirname, "../js/core/library.js"), "utf8"), sandbox);
 const core = sandbox.SaltCore.library;
 const DATA = sandbox.TraditionalLibrary;
 
@@ -41,6 +41,7 @@ test("the website's stone care knows them as Library stones", () => {
   const box = { window: {}, TextEncoder, Intl };
   box.window = box;
   vm.createContext(box);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, "../js/traditional-library.js"), "utf8"), box);
   vm.runInContext(fs.readFileSync(path.join(__dirname, "../js/core/practice-b.js"), "utf8"), box);
   const care = box.SaltCore["practice-b"].care;
   for (const id of BATCH_2) assert.equal(care.careByKey(keyOf(id))?.library, true, id);
