@@ -433,3 +433,56 @@
 .td-coven-icon { flex: none; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(226, 195, 109, 0.5); display: grid; place-items: center; color: var(--gold, #e2c36d); }
 .td-coven-item--turn .td-coven-icon { background: var(--gold, #e2c36d); color: var(--charcoal, #102118); }
 .td-coven-item span > .sp-caption { display: inline; }
+
+/* Coven courses: lessons, tests, practice sessions and each step's conversation (covens/coven/course.js). */
+.cv-lessons { display: grid; gap: 6px; }
+.cv-lesson-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.cv-lesson-list li { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+.cv-test-card { border: 1px solid rgba(226, 195, 109, 0.28); border-radius: 14px; padding: 10px 12px; display: grid; gap: 8px; justify-items: start; }
+.cv-practice { display: grid; gap: 8px; }
+.cv-practice__count { margin: 0; font-weight: 600; }
+.cv-sessions { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.cv-practice__form { display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 8px; }
+.cv-timer { display: grid; gap: 6px; }
+.cv-timer__clock { font-family: var(--font-display, "Cormorant Garamond", serif); font-size: 2.2rem; line-height: 1; }
+.cv-timer.is-done .cv-timer__clock { color: var(--gold); }
+.cv-thread-link { margin: 0; }
+.cv-lesson { max-width: 46rem; }
+.cv-lesson__summary { font-style: italic; }
+.cv-lesson__body { line-height: 1.65; }
+.cv-lesson__body .ls-h1, .cv-lesson__body .ls-h2 { margin-top: 1.4em; }
+.cv-lesson__body .ls-h3 { color: var(--gold); margin-top: 1.1em; }
+.cv-lesson__body .ls-list { padding-left: 1.4em; display: grid; gap: 4px; }
+.cv-lesson__file img { max-width: 100%; border-radius: 14px; display: block; margin-bottom: 8px; }
+.ls-callout { border-left: 3px solid rgba(226, 195, 109, 0.4); background: rgba(226, 195, 109, 0.06); border-radius: 12px; padding: 10px 14px; margin: 12px 0; }
+.ls-callout p { margin: 6px 0; }
+.ls-callout__label { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem; color: var(--gold); }
+.ls-callout--safety { border-left-color: rgba(243, 160, 110, 0.85); background: rgba(243, 160, 110, 0.08); }
+.ls-callout--safety .ls-callout__label { color: #f3c29a; }
+.ls-callout--coven { border-left-color: #6f8465; background: rgba(111, 132, 101, 0.12); }
+.ls-divider { border: none; border-top: 1px solid var(--line); margin: 18px 0; }
+.cv-lesson-edit { display: grid; gap: 14px; }
+@media (min-width: 900px) { .cv-lesson-edit { grid-template-columns: 1fr 1fr; } }
+.cv-lesson-edit__preview { border: 1px solid var(--line); border-radius: 14px; padding: 10px 14px; max-height: 32rem; overflow: auto; }
+.cv-q { border: none; padding: 0; margin: 0 0 12px; display: grid; gap: 8px; }
+.cv-q__prompt { font-weight: 600; margin: 0; }
+.cv-option { display: flex; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; cursor: pointer; }
+.cv-option:has(input:checked) { border-color: var(--gold); background: rgba(226, 195, 109, 0.08); }
+.cv-result { display: grid; gap: 12px; padding-left: 0; list-style: none; }
+.cv-result__line { border-left: 3px solid var(--line); padding-left: 12px; }
+.cv-result__line.is-right { border-left-color: #6f8465; }
+.cv-result__line.is-wrong { border-left-color: rgba(243, 160, 110, 0.85); }
+.cv-result__why { opacity: 0.85; }
+.cv-score { font-weight: 600; font-size: 1.1rem; }
+.cv-attempts, .cv-waiting { display: grid; gap: 6px; padding-left: 18px; }
+.cv-thread { list-style: none; padding: 0; display: grid; gap: 10px; }
+.cv-thread__msg { border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; max-width: 92%; }
+.cv-thread__msg.is-mine { justify-self: end; background: rgba(226, 195, 109, 0.12); border-color: transparent; }
+.cv-path__steps { list-style: none; padding: 0; display: grid; gap: 12px; }
+.cv-path__step { border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 4px; justify-items: start; }
+.cv-path__step h4, .cv-path__step p { margin: 0; }
+.cv-teach-edit { display: grid; gap: 6px; border-top: 1px dashed var(--line); padding-top: 8px; }
+.cv-teach-list { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.cv-options-edit { display: grid; gap: 6px; }
+.cv-option-edit { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.cv-option-edit input[name="option"] { flex: 1 1 14rem; }

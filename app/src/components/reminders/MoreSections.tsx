@@ -286,6 +286,15 @@ export function CovensSection({ prefs, update, userId }: Props & { userId: strin
               andDevice(on);
             }}
           />
+          <Toggle
+            label="Training messages"
+            detail="A message on a step of your training, from your mentor or the coven’s leaders, or from someone you mentor"
+            value={prefs.training.on}
+            onChange={(on) => {
+              update(withChange(prefs, 'training.on', on));
+              andDevice(on);
+            }}
+          />
           <Body muted>Each coven chooses who hears about which gatherings. Mute a single conversation from its ⓘ button in the coven’s Messages.</Body>
         </Card>
       </View>

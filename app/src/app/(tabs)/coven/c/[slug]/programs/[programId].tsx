@@ -5,6 +5,7 @@ import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, View } from 'rea
 import { Button } from '../../../../../../components/Button';
 import { CovenScreen } from '../../../../../../components/covens/CovenScreen';
 import { ProgressBar } from '../../../../../../components/covens/programs';
+import { PracticeLog, TaskLessons, TestCard, ThreadRow } from '../../../../../../components/covens/training';
 import { Pill, Pills, Words } from '../../../../../../components/covens/ui';
 import { Card, Field, Notice, Section } from '../../../../../../components/more/ui';
 import * as api from '../../../../../../lib/covens/api';
@@ -26,7 +27,8 @@ import {
   type ProgramTask,
   type TaskProgress,
 } from '../../../../../../lib/covens/programs';
-import { usePrograms } from '../../../../../../lib/covens/usePrograms';
+import { docsForTask, logsSessions, threadKey, unreadMap } from '../../../../../../lib/covens/training';
+import { usePrograms, type ProgramData } from '../../../../../../lib/covens/usePrograms';
 import { studyLinks, withoutStudyLinks } from '../../../../../../lib/grimoire/coven';
 import { colors, fonts, radius, type } from '../../../../../../theme';
 
@@ -36,7 +38,7 @@ const date = (value: string | null | undefined) => (value ? new Date(value).toLo
 // been done. The person logs their work; their mentor or a program manager
 // signs it off and confirms each stage.
 export default function ProgramPath() {
-  const { programId, person: personParam } = useLocalSearchParams<{ programId: string; person?: string }>();
+  const { programId, person: personParam, task: taskParam } = useLocalSearchParams<{ programId: string; person?: string; task?: string }>();
   const coven = useCoven();
   const { data, status, changed } = usePrograms();
   const [message, setMessage] = useState<string | null>(null);
@@ -82,6 +84,7 @@ export default function ProgramPath() {
   const who = { self, mentor: mentorOf(coven.mentors, person) === coven.userId, programs: coven.perms.programs };
   const mentor = mentorOf(coven.mentors, person);
   const award = program.award_rank_id ? coven.snapshot?.ranks.find((r) => r.id === program.award_rank_id)?.name : null;
+  const unread = unreadMap(data.unread);
 
   const pass = (override: boolean) => {
     const go = () => void act(() => api.passStage(enrollment.id, note, override), 'Stage passed.').then(() => setNote(''));
@@ -121,7 +124,11 @@ export default function ProgramPath() {
         const passed = passes.find((p) => p.stage_id === stage.id);
         const state = passed ? 'passed' : index === s.stageIndex && enrollment.status !== 'completed' ? 'current' : index < s.stageIndex ? 'passed' : 'later';
         return (
-          <StageBlock key={`${stage.id}-${state}`} title={`Stage ${index + 1}: ${stage.title}`} state={state} passedNote={passed ? `Passed ${date(passed.passed_at)}${passed.passed_by ? ` (${coven.nameOf(passed.passed_by)})` : ''}${passed.note ? ` · “${passed.note}”` : ''}` : ''}>
+          <StageBlock
+            key={`${stage.id}-${state}`}
+            title={`Stage ${index + 1}: ${stage.title}`}
+            state={state}
+            open={!!taskParam && stage.tasks.some((t) => t.id === taskParam)} passedNote={passed ? `Passed ${date(passed.passed_at)}${passed.passed_by ? ` (${coven.nameOf(passed.passed_by)})` : ''}${passed.note ? ` · “${passed.note}”` : ''}` : ''}>
             <Words text={stage.intro} />
             <Text style={type.caption}>
               {stage.min_days ? `At least ${stage.min_days} days in this stage. ` : ''}Passed when {PASSED_BY.find((p) => p.value === stage.passed_by)?.label.toLowerCase()} confirm{stage.passed_by === 'self' ? '' : 's'} it.
@@ -136,6 +143,9 @@ export default function ProgramPath() {
                 self={self}
                 canSign={!!rows.get(task.id) && rows.get(task.id)!.status === 'submitted' && canCheck(task, who)}
                 personName={coven.nameOf(person)}
+                mentorName={mentor ? coven.nameOf(mentor) : null}
+                data={data}
+                unread={unread.get(threadKey(enrollment.id, task.id)) ?? 0}
                 onChanged={changed}
               />
             ))}
@@ -177,8 +187,8 @@ export default function ProgramPath() {
   );
 }
 
-function StageBlock({ title, state, passedNote, children }: { title: string; state: 'passed' | 'current' | 'later'; passedNote: string; children: React.ReactNode }) {
-  const [open, setOpen] = useState(state === 'current');
+function StageBlock({ title, state, passedNote, open: start, children }: { title: string; state: 'passed' | 'current' | 'later'; passedNote: string; open?: boolean; children: React.ReactNode }) {
+  const [open, setOpen] = useState(state === 'current' || !!start);
   return (
     <View style={[styles.stage, state === 'current' && styles.stageNow]}>
       <Pressable accessibilityRole="button" accessibilityState={{ expanded: open }} onPress={() => setOpen((v) => !v)} style={styles.stageHead}>
@@ -199,6 +209,9 @@ function TaskRow({
   self,
   canSign,
   personName,
+  mentorName,
+  data,
+  unread,
   onChanged,
 }: {
   task: ProgramTask;
@@ -208,6 +221,9 @@ function TaskRow({
   self: boolean;
   canSign: boolean;
   personName: string;
+  mentorName: string | null;
+  data: ProgramData;
+  unread: number;
   onChanged: () => Promise<void>;
 }) {
   const coven = useCoven();
@@ -218,6 +234,9 @@ function TaskRow({
   const st = taskState(task, row);
   const holiday = holidayName(task.holiday);
   const canWork = self && enrollment.status === 'active' && !later && st.state !== 'approved' && st.state !== 'submitted' && coven.standing.ok;
+  const docs = docsForTask(task.id, data.links, data.docs);
+  const sessions = logsSessions(task);
+  const allLogged = (row?.times_done ?? 0) >= task.times;
 
   const run = async (work: () => Promise<unknown>) => {
     setBusy(true);
@@ -256,6 +275,9 @@ function TaskRow({
         studyLinks(task.resources).map((link) => (
           <Button key={link.id} label={`Study: ${link.title}`} variant="outline" onPress={() => router.push(`/coven/c/${coven.slug}/book/${link.id}` as Href)} />
         ))}
+      {!later && <TaskLessons docs={docs} reads={data.reads} person={enrollment.user_id} enrollmentId={enrollment.id} taskId={task.id} />}
+      {!!task.quiz_id && <TestCard task={task} enrollment={enrollment} attempts={data.attempts} self={self} later={later} />}
+      {!later && sessions && <PracticeLog task={task} row={row} enrollment={enrollment} canWork={canWork} onChanged={onChanged} />}
       {!!row?.response && !canWork && (
         <View style={styles.response}>
           <Text style={type.caption}>{self ? 'What you wrote' : `What ${personName} wrote`}</Text>
@@ -268,9 +290,22 @@ function TaskRow({
           {row.checked_by ? ` from ${coven.nameOf(row.checked_by)}` : ''}: {row.feedback}
         </Text>
       )}
-      {canWork && (
+      {canWork && sessions && task.response === 'text' && (
         <>
-          {task.response === 'text' && <Field label="Your response" value={response} onChangeText={setResponse} multiline maxLength={8000} />}
+          <Field label="Your answer" value={response} onChangeText={setResponse} multiline maxLength={8000} />
+          <View style={styles.row}>
+            <Button
+              label={allLogged ? (task.checked_by === 'self' ? 'Save and finish' : 'Send for sign-off') : 'Save my answer'}
+              onPress={() => void run(() => api.recordTask(enrollment.id, task.id, response, 0))}
+              disabled={busy || (allLogged && !response.trim())}
+            />
+          </View>
+          {!allLogged && <Text style={type.caption}>Write as you go. It’s sent once every session is logged.</Text>}
+        </>
+      )}
+      {canWork && !sessions && !task.quiz_id && (
+        <>
+          {task.response === 'text' && <Field label="Your answer" value={response} onChangeText={setResponse} multiline maxLength={8000} />}
           <View style={styles.row}>
             <Button
               label={task.times > 1 ? `Log one (${st.done + 1} of ${task.times})` : task.checked_by === 'self' ? 'Mark done' : 'Send for sign-off'}
@@ -290,6 +325,7 @@ function TaskRow({
           </View>
         </>
       )}
+      {!later && <ThreadRow enrollment={enrollment} taskId={task.id} unread={unread} self={self} mentorName={mentorName} personName={personName} />}
       {message && <Notice>{message}</Notice>}
     </View>
   );

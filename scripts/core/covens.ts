@@ -43,3 +43,13 @@ export * as gatheringNotes from '../../supabase/functions/coven-notify/gathering
 export * as invites from '../../app/src/lib/covens/invites.ts';
 // The Covens page's two tabs (My covens | Find a coven) and which opens first.
 export * as screenTabs from '../../app/src/lib/screenTabs.ts';
+// Coven courses: the lessons' Markdown (one reading for the app and the site),
+// tests and their scores, practice sessions and each step's conversation,
+// copying a ready-made course program in, and training messages' words.
+// The courses themselves are data of their own (js/core/course-programs.json),
+// fetched only where the ready-made programs are chosen.
+export * as lesson from '../../app/src/lib/covens/lesson.ts';
+export * as quiz from '../../app/src/lib/covens/quiz.ts';
+export * as training from '../../app/src/lib/covens/training.ts';
+export * as courseCopy from '../../app/src/lib/covens/courseCopy.ts';
+export * as trainingNotes from '../../supabase/functions/coven-notify/training.ts';

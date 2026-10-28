@@ -133,7 +133,9 @@ export function useReminderTaps() {
         data?.source === 'coven-answer' ||
         data?.source === 'coven-gathering' ||
         data?.source === 'coven-invitation' ||
-        data?.source === 'coven-invitation-accepted';
+        data?.source === 'coven-invitation-accepted' ||
+        // a message on a step of a coven program (opens the step)
+        data?.source === 'coven-training';
       if ((data?.source === SOURCE || data?.source === STEP_SOURCE || covenNote) && typeof data.url === 'string') router.push(data.url as Href);
     };
     try {

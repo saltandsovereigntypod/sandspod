@@ -159,7 +159,12 @@ export default function CovenHome() {
                 <MenuRow label="Petitions" detail="Prayers the circle holds" icon="offer" onPress={() => router.push(covenHref(coven.slug, 'petitions'))} />
                 <MenuRow
                   label="Initiation & training"
-                  detail={coven.waitingForMe ? `${coven.waitingForMe} waiting for you to sign off` : 'Your path, and those you mentor'}
+                  detail={
+                    [coven.waitingForMe ? `${coven.waitingForMe} waiting for you` : '', coven.trainingUnread ? `${coven.trainingUnread} new message${coven.trainingUnread === 1 ? '' : 's'}` : '']
+                      .filter(Boolean)
+                      .join(' · ') || 'Your path, and those you mentor'
+                  }
+                  count={coven.waitingForMe + coven.trainingUnread}
                   icon="journey"
                   onPress={() => router.push(covenHref(coven.slug, 'programs'))}
                 />
