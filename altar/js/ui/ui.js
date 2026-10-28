@@ -13,34 +13,12 @@ toolbar.className = "altar-toolbar is-in-action-bar";
 toolbar.hidden = true;
 toolbar.setAttribute("aria-label", "Selected object actions");
 
+// The selected object's actions, under the stage while something is selected.
+// The altar-wide actions (Undo, Save, Add, Tend, More…) are the one toolbar
+// in index.html ([data-altar-tools]), as the app groups them; events.js
+// handles their data-global-action buttons wherever they sit.
 const altarActionBar = document.createElement("div");
 altarActionBar.className = "altar-action-bar";
-altarActionBar.innerHTML = `
-  <div class="altar-action-group">
-    <button type="button" data-global-action="undo">↶ Undo</button>
-    <button type="button" data-global-action="redo">↷ Redo</button>
-    <button type="button" data-global-action="save-altar">💾 Save</button>
-    <button type="button" data-global-action="load-altar">📂 Library</button>
-  </div>
-
-  <div class="altar-action-divider"></div>
-
-  <div class="altar-action-group">
-    <button type="button" data-global-action="select-ritual-items">☑ Select</button>
-    <button type="button" data-global-action="group-ritual-items">🗂 Group</button>
-    <button type="button" data-global-action="start-ritual">🌙 Start Ritual</button>
-    <button type="button" data-global-action="save-as-ritual">📖 Save Ritual</button>
-    <button type="button" data-global-action="record-in-grimoire">📜 Record in Grimoire</button>
-  </div>
-
-  <div class="altar-action-divider"></div>
-
-  <div class="altar-action-group">
-    <button type="button" data-global-action="light-all">🔥 Light</button>
-    <button type="button" data-global-action="extinguish-all">💨 Out</button>
-    <button type="button" data-global-action="clear-altar">🧹 Clear</button>
-  </div>
-`;
 
 const altarMobileBackdrop = document.createElement("button");
 altarMobileBackdrop.type = "button";
@@ -92,52 +70,23 @@ mobileCabinetToggle.className = "altar-mobile-cabinet-toggle";
 mobileCabinetToggle.textContent = "✦ Add Items";
 mobileCabinetToggle.setAttribute("aria-expanded", "false");
 
+// The Companion sizes itself in CSS now (altar-page.css): it sits in the side
+// column above the tools and scrolls within its own height. Kept as a no-op
+// for the callers that still ask for a resync.
 function syncAltarWorkspacePanelHeight() {
-  if (!altarWorkspacePanel) return;
-
-  if (window.innerWidth <= 900) {
-    altarWorkspacePanel.style.removeProperty("height");
-    return;
-  }
-
-  const altarStageWrap = document.querySelector(".altar-stage-wrap");
-  const altarActionBar = document.querySelector(".altar-action-bar");
-
-  if (!altarStageWrap) return;
-
-  const stageTop = altarStageWrap.getBoundingClientRect().top;
-
-  const workspaceBottom = altarActionBar
-    ? altarActionBar.getBoundingClientRect().bottom
-    : altarStageWrap.getBoundingClientRect().bottom;
-
-  const fullWorkspaceHeight = Math.round(workspaceBottom - stageTop);
-
-  if (fullWorkspaceHeight > 0) {
-    altarWorkspacePanel.style.height = `${fullWorkspaceHeight}px`;
-  }
+  altarWorkspacePanel?.style.removeProperty("height");
 }
 
 if (altarStage) {
 
   const altarWorkspace = altarStage.closest(".altar-workspace");
   const altarStageWrap = altarStage.closest(".altar-stage-wrap");
+  const altarSide = altarWorkspace?.querySelector("[data-altar-side]");
 
-  const companionToggle = document.createElement("button");
-  companionToggle.type = "button";
-  companionToggle.className = "button button--icon button--pill altar-companion-toggle";
-  companionToggle.setAttribute("data-companion-toggle", "");
-  companionToggle.setAttribute("aria-label", "Minimize companion panel");
-  companionToggle.setAttribute("aria-expanded", "true");
-  companionToggle.textContent = "−";
-
-  const altarWorkspaceTools = document.querySelector(".altar-workspace-tools");
-
-  if (altarWorkspaceTools) {
-    altarWorkspaceTools.prepend(companionToggle);
-  }
-
-  if (altarWorkspace && altarStageWrap) {
+  // The selected object's page (the Companion) leads the side column, above the tools.
+  if (altarSide) {
+    altarSide.prepend(altarWorkspacePanel);
+  } else if (altarWorkspace && altarStageWrap) {
     altarWorkspace.insertBefore(altarWorkspacePanel, altarStageWrap);
   }
 
@@ -152,10 +101,6 @@ if (altarStage) {
   altarStage.appendChild(altarGroupIndicator);
   altarStage.appendChild(altarInfoCard);
 
-  const altarStageResizeObserver = new ResizeObserver(syncAltarWorkspacePanelHeight);
-  altarStageResizeObserver.observe(altarStage);
-  window.addEventListener("resize", syncAltarWorkspacePanelHeight);
-  window.requestAnimationFrame(syncAltarWorkspacePanelHeight);
 }
 
 if (altarCabinet) {

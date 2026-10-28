@@ -9,7 +9,7 @@
   // This guard owns only selection, snapshot-link, and touch-boundary behavior.
   const INTERACTIVE_SELECTION_TARGETS = [
     "button", "a", "input", "textarea", "select", "label",
-    ".altar-object", ".altar-toolbar", ".altar-action-bar",
+    ".altar-object", ".altar-toolbar", ".altar-action-bar", ".altar-tools",
     ".altar-companion-panel", ".altar-cabinet-overlay",
     ".saved-altars-modal", ".altar-save-modal",
     ".living-state-practice-modal", ".living-state-tend-modal",
