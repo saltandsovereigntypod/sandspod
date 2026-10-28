@@ -37,12 +37,13 @@ function wordScore(entry: PickEntry, word: string): number {
   if (label === word) return 100;
   if (label.startsWith(word)) return 60;
   if (wordsOf(entry.label).some((w) => w.startsWith(word))) return 40;
-  if (label.includes(word)) return 20;
   const keys = (entry.keywords ?? []).map(normalize);
   if (keys.some((k) => k === word)) return 18;
   if (keys.some((k) => k.startsWith(word) || k.split(/\s+/).some((w) => w.startsWith(word)))) return 12;
-  if (keys.some((k) => k.includes(word))) return 6;
-  if (entry.detail && normalize(entry.detail).includes(word)) return 4;
+  // Letters inside a word ("love" in Clove) count least, below what a thing is for.
+  if (label.includes(word)) return 5;
+  if (keys.some((k) => k.includes(word))) return 3;
+  if (entry.detail && normalize(entry.detail).includes(word)) return 2;
   return 0;
 }
 

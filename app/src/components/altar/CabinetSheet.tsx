@@ -130,7 +130,7 @@ export function CabinetSheet({
   const found = useMemo(
     () =>
       searching
-        ? searchItems(index, search, { limit: 60 })
+        ? searchItems(index, search, { limit: 200 })
             .map((entry) => ({ entry, place: cabinetFormOf(entry.key, items) }))
             .filter((x): x is { entry: (typeof x)['entry']; place: NonNullable<(typeof x)['place']> } => !!x.place)
         : [],
