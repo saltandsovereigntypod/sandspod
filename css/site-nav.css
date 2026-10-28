@@ -235,3 +235,25 @@ body.has-site-nav .accessibility-trigger {
   font-weight: 600;
 }
 .seg-switch button:focus-visible { outline: 2px solid var(--gold, #e2c36d); outline-offset: 2px; }
+
+/* Back, under the header (js/site-nav.js). Pages with their own back link
+   ("‹ Back to Today", "← All rituals") hide this one. */
+.site-back-bar {
+  width: min(1100px, calc(100% - 32px));
+  margin: 12px auto 0;
+}
+.site-back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 6px 14px 6px 10px;
+  border: 1px solid rgba(226, 195, 109, 0.35);
+  border-radius: 999px;
+  background: rgba(12, 21, 16, 0.6);
+  color: var(--gold, #e2c36d);
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+.site-back:hover { background: rgba(226, 195, 109, 0.12); }
+.site-back:focus-visible { outline: 2px solid var(--gold, #e2c36d); outline-offset: 2px; }
+body:has(a.sp-back) .site-back-bar { display: none; }
