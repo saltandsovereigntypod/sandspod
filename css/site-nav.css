@@ -257,4 +257,3 @@ body.has-site-nav .accessibility-trigger {
 .site-back:hover { background: rgba(226, 195, 109, 0.12); }
 .site-back:focus-visible { outline: 2px solid var(--gold, #e2c36d); outline-offset: 2px; }
 body:has(a.sp-back) .site-back-bar { display: none; }
-
