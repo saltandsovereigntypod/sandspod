@@ -54,6 +54,23 @@ Deno.serve(async (request) => {
     if (submissionError) throw new Error("community_cleanup_failed");
     completed.push("community_policy");
 
+    // Covens they lead are handed on before their memberships go: to their
+    // named successor, else the second, else the most senior active member in a
+    // leading position; with no one, the coven is archived
+    // (20261112000000_coven_lineage.sql coven_hand_on_departing). The members
+    // hear about it through coven-notify. Before that migration, nothing to do.
+    const { data: handedOn, error: handOnError } = await admin.rpc("coven_hand_on_departing", { p_user: userId });
+    if (handOnError && handOnError.code !== "PGRST202" && handOnError.code !== "42883") throw new Error("coven_leadership_failed");
+    completed.push("coven_leadership");
+    const leadershipEventIds = ((handedOn as { event_id?: string }[] | null) || []).map((row) => row.event_id).filter(Boolean);
+    if (leadershipEventIds.length) {
+      await fetch(`${url}/functions/v1/coven-notify`, {
+        method: "POST",
+        headers: { authorization: `Bearer ${service}`, "content-type": "application/json" },
+        body: JSON.stringify({ leadership_event_ids: leadershipEventIds })
+      }).catch(() => null);
+    }
+
     for (const table of [...childTables, ...parentTables]) {
       const { error } = await admin.from(table).delete().eq("user_id", userId);
       if (error) throw new Error(`${table}_cleanup_failed`);

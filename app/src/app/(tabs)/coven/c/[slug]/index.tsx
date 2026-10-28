@@ -5,6 +5,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
 import { covenHref, CovenScreen } from '../../../../../components/covens/CovenScreen';
+import { DisclosureCard, LineageSection, useDisclosure } from '../../../../../components/covens/lineage';
 import { OpenPositionsHere } from '../../../../../components/covens/Positions';
 import { Pill, Pills, Words, useReport } from '../../../../../components/covens/ui';
 import { Card, MenuList, MenuRow, Notice, Section } from '../../../../../components/more/ui';
@@ -19,6 +20,7 @@ import { pendingLabel } from '../../../../../lib/covens/requests';
 import { usePendingDetail } from '../../../../../lib/covens/requestsBadge';
 import { errorMessage, JOINING, KIND_LABELS, occasionLabel, orderDocuments, rankPowers, ritualGroups, riteTime } from '../../../../../lib/covens/model';
 import { covenCalendarNames, covenNextHoliday } from '../../../../../lib/covens/programs';
+import { copiedFrom, roleBadge } from '../../../../../lib/covens/lineage';
 import { useSession } from '../../../../../lib/session';
 import { type } from '../../../../../theme';
 
@@ -69,9 +71,17 @@ export default function CovenHome() {
     };
   }, [covenId, member, standingOk]);
   const mayInvite = member && !!inviting && inviting.covenId === covenId && inviting.may;
+  // A daughter coven tells everyone, before they join, whose final say it is under.
+  const disclosure = useDisclosure(coven.slug);
+  const lineage = coven.lineage;
+  const ancestor = !!coven.perms.ancestor;
+  const memberHere = snap?.membership?.status === 'active';
+  const badge = roleBadge({ ancestor, member: memberHere, founder: info?.founder_id === coven.userId, rankName: coven.perms.rank?.name });
+  const elder = memberHere && !coven.perms.founder && (coven.perms.review || coven.perms.moderate);
   const showPaths =
     !!pathsAccess &&
     seesPaths({ founder: coven.perms.founder, site: coven.perms.site, member: coven.perms.member, record: pathsAccess.record, paths: pathsAccess.paths, membership: snap?.membership, userId: coven.userId });
+  const lineageRow = !!coven.lineage && (coven.lineage.may_found || coven.lineage.may_decide || !!coven.lineage.mother || coven.lineage.daughters.length > 0);
   const tasks = useMemo(
     () => (coven.standing.ok ? ritualTasks(coven.rituals, coven.steps, written.map((w) => ({ step_id: w.step_id, mine: true })), snap?.membership ?? null, coven.userId, assigneesOf) : []),
     [coven.standing.ok, coven.rituals, coven.steps, written, snap?.membership, coven.userId],
@@ -99,7 +109,7 @@ export default function CovenHome() {
       {info && snap && (
         <>
           <Pills>
-            {coven.perms.member && <Pill label={coven.perms.founder ? 'Founder' : coven.perms.rank?.name ?? 'Member'} tone="gold" />}
+            {!!badge && <Pill label={badge} tone="gold" />}
             <Pill label={JOINING[info.joining].label} />
             {!!info.tradition && <Pill label={info.tradition} />}
             {typeof info.member_count === 'number' && <Pill label={`${info.member_count} ${info.member_count === 1 ? 'member' : 'members'}`} />}
@@ -108,6 +118,8 @@ export default function CovenHome() {
             ))}
           </Pills>
           {info.status !== 'active' && <Notice>{info.status === 'suspended' ? `Paused by the moderators${info.moderation_note ? `: ${info.moderation_note}` : '.'}` : 'This coven has closed.'}</Notice>}
+
+          <DisclosureCard text={disclosure} joining={!memberHere && !ancestor} />
 
           {coven.turn && (
             <Card tone="gold">
@@ -171,8 +183,18 @@ export default function CovenHome() {
                   icon="journey"
                   onPress={() => router.push(covenHref(coven.slug, 'programs'))}
                 />
-                <MenuRow label="Members" detail="Who’s in the circle" icon="community" last={!showPaths} onPress={() => router.push(covenHref(coven.slug, 'members'))} />
-                {showPaths && <MenuRow label="Paths in the coven" detail="How the coven practises and whom it honours" icon="journey" last onPress={() => router.push(covenHref(coven.slug, 'paths'))} />}
+                <MenuRow label="Members" detail="Who’s in the circle" icon="community" last={!showPaths && !lineageRow} onPress={() => router.push(covenHref(coven.slug, 'members'))} />
+                {showPaths && <MenuRow label="Paths in the coven" detail="How the coven practises and whom it honours" icon="journey" last={!lineageRow} onPress={() => router.push(covenHref(coven.slug, 'paths'))} />}
+                {lineageRow && (
+                  <MenuRow
+                    label="Daughter covens"
+                    detail={lineage?.pending_requests ? `${lineage.pending_requests} waiting for your answer` : lineage?.mother ? 'Your mother coven, its library and the log' : 'Found a daughter coven, what’s shared'}
+                    count={lineage?.pending_requests ?? 0}
+                    icon="journey"
+                    last
+                    onPress={() => router.push(covenHref(coven.slug, 'lineage'))}
+                  />
+                )}
               </MenuList>
               {mayInvite && <Button label="Invite" variant="outline" onPress={() => router.push(covenHref(coven.slug, 'invite'))} />}
             </Section>
@@ -182,8 +204,10 @@ export default function CovenHome() {
             {info.description ? <Words text={info.description} /> : <Text style={type.caption}>The coven hasn’t written about itself yet.</Text>}
             {!!info.meeting_rhythm && <Text style={type.caption}>Meets {info.meeting_rhythm}</Text>}
             {calendarLine(info) && <Text style={type.caption}>{calendarLine(info)}</Text>}
-            <Text style={type.caption}>Founded by {coven.nameOf(info.founder_id)}</Text>
+            <Text style={type.caption}>Led by {coven.nameOf(info.founder_id)}</Text>
           </Section>
+
+          <LineageSection lineage={lineage} slug={coven.slug} />
 
           {documents.map((doc) => (
             <Section key={doc.id} label={KIND_LABELS[doc.kind] ?? 'Page'}>
@@ -191,6 +215,7 @@ export default function CovenHome() {
                 <Text style={type.cardTitle}>{doc.title}</Text>
                 <Words text={doc.body} />
                 {doc.requires_signature && <Text style={type.caption}>Members sign this.</Text>}
+                {!!copiedFrom(lineage?.copies, 'document', doc.id) && <Text style={type.caption}>{copiedFrom(lineage?.copies, 'document', doc.id)}</Text>}
               </Card>
             </Section>
           ))}
@@ -203,6 +228,7 @@ export default function CovenHome() {
                   {!!rank.description && <Words text={rank.description} />}
                   {rankPowers(rank).length > 0 && <Text style={type.caption}>This position {rankPowers(rank).join(', ')}.</Text>}
                   {!!rank.requirements && <Text style={type.caption}>Requirements: {rank.requirements}</Text>}
+                  {!!copiedFrom(lineage?.copies, 'rank', rank.id) && <Text style={type.caption}>{copiedFrom(lineage?.copies, 'rank', rank.id)}</Text>}
                   {rank.seat_limit != null && <Text style={type.caption}>Up to {rank.seat_limit} may hold it.</Text>}
                 </Card>
               ))}
@@ -216,6 +242,13 @@ export default function CovenHome() {
                 <Text style={type.body}>Sign in to join this coven.</Text>
                 <Button label="Sign in" onPress={() => router.push('/sign-in')} />
               </Card>
+            ) : ancestor && !memberHere ? (
+              <View style={styles.actions}>
+                <Text style={type.body}>You’re here as the head of {lineage?.mother?.name ?? 'its mother coven'}: you have every power its own head has, and the members’ private things stay private from you, as from them.</Text>
+                <MenuList>
+                  <LeaderRows />
+                </MenuList>
+              </View>
             ) : coven.perms.member ? (
               <View style={styles.actions}>
                 <MenuList>
@@ -223,12 +256,17 @@ export default function CovenHome() {
                     label="My standing"
                     detail={coven.unsigned.length ? 'Agreements to sign' : 'Your position, rising higher, leaving'}
                     icon="journey"
-                    last={!leads}
+                    last={!leads && !elder}
                     onPress={() => router.push(covenHref(coven.slug, 'path'))}
                   />
+                  {elder && <MenuRow label="The head can’t be reached" detail="Tell the site moderators" icon="letters" last={!leads} onPress={() => router.push(covenHref(coven.slug, 'unreachable'))} />}
                   {leads && <LeaderRows />}
                 </MenuList>
-                {!coven.perms.founder && <Button label="Leave the coven" variant="text" onPress={leave} />}
+                {info.founder_id === coven.userId ? (
+                  <Text style={type.caption}>To leave, hand on leadership first: open Members, tap the person, then Hand on leadership.</Text>
+                ) : (
+                  <Button label="Leave the coven" variant="text" onPress={leave} />
+                )}
               </View>
             ) : snap.application?.status === 'pending' ? (
               <Card>

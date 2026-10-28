@@ -1,9 +1,10 @@
 /*
  * A coven's Members, Review and Manage tabs.
  *
- * Members: everyone in the coven by position; the coven's moderators can
- *   mute or remove people, reviewers can raise them, and the founder can hand
- *   the coven on.
+ * Members: everyone in the coven by position (and the heads of covens above
+ *   it, "Mother coven"); the coven's moderators can mute or remove people,
+ *   reviewers can raise them, and the head can hand the coven on, choosing
+ *   what they keep (covens/coven/lineage.js).
  * Review: applications to join and requests to rise to a higher position.
  * Manage: the coven's details, its creed, rules, requirements and agreements,
  *   its positions, inviting people (the Invite tab, covens/coven/invite.js)
@@ -31,6 +32,10 @@
       await UI.loadNames(state.context, members.map((m) => m.user_id));
       const { perms, context, coven } = state;
       const me = context.user?.id;
+      // The head's own membership, for what they keep when they hand on (covens/coven/lineage.js).
+      state.headMembership = members.find((m) => m.user_id === coven.founder_id && m.status === "active") || null;
+      state.activeMembers = members.filter((m) => m.status === "active");
+      const LU = global.CovenLineageUI;
       const levelOf = (m) => (m.user_id === coven.founder_id ? 1000 : state.ranks.find((r) => r.id === m.rank_id)?.level || 0);
       const active = members.filter((m) => m.status === "active").sort((a, b) => levelOf(b) - levelOf(a) || new Date(a.joined_at) - new Date(b.joined_at));
       const grantable = L.grantableRanks(state.ranks, perms);
@@ -46,7 +51,7 @@
         const manageable = actsOn(m) && (perms.review || perms.moderate || perms.site);
         return `<details class="sp-details" data-member="${esc(m.user_id)}">
             <summary>${esc(profile.display_name || "A witch")}${profile.pronouns ? ` <span class="sp-muted">(${esc(profile.pronouns)})</span>` : ""} · ${esc(m.user_id === coven.founder_id ? `${rank?.name || "Leader"} · founder` : rank?.name || "Member")}
-              ${muted ? ` · <span class="sp-muted">paused</span>` : ""}${missing ? ` · <span class="sp-muted">needs to sign</span>` : ""}</summary>
+              ${muted ? ` · <span class="sp-muted">paused</span>` : ""}${missing ? ` · <span class="sp-muted">needs to sign</span>` : ""}${m.visiting_from ? ` · <span class="sp-muted">visiting from a daughter coven</span>` : ""}</summary>
             <div class="sp-section">
               ${profile.bio ? `<p class="cv-doc">${prose(profile.bio)}</p>` : ""}
               <p class="sp-caption">Joined ${esc(new Date(m.joined_at).toLocaleDateString())}${muted ? ` · messages paused until ${esc(new Date(m.muted_until).toLocaleString())}` : ""}</p>
@@ -57,7 +62,7 @@
                   <button class="button button--ghost button--small" type="submit" data-act="mute">Apply</button>
                   <button class="button button--ghost button--small" type="submit" data-act="removed">Remove from coven</button>
                   <button class="button button--ghost button--small" type="submit" data-act="banned">Ban from coven</button>` : ""}
-                ${perms.founder || perms.site ? `<button class="button button--ghost button--small" type="submit" data-act="transfer">Hand on leadership</button>` : ""}
+                ${perms.founder || perms.site ? `<button class="button button--ghost button--small" type="submit" data-act="transfer">Hand on leadership</button>${LU ? LU.handOnFields(state, m) : ""}` : ""}
               </form>${statusLine()}` : ""}
               ${m.user_id !== me || keepsRecord ? `<div class="sp-actions">${keepsRecord ? `<a class="button button--ghost button--small" href="${esc(recordHref(m.user_id))}" data-tab="record">Their record</a>` : ""}${m.user_id !== me ? `<button class="button button--ghost button--small" type="button" data-report-member>Report</button>` : ""}</div>` : ""}
             </div></details>`;
@@ -65,6 +70,7 @@
 
       const formerCount = members.length - active.length;
       pane.innerHTML = `${keepsRecord ? `<p class="sp-caption"><a href="${esc(recordHref())}" data-tab="record">Members’ record</a>: who has been taking part and who hasn’t.</p>` : ""}${state.perms.member ? `<p class="sp-caption">Your own standing is under <a href="${esc(covenHref("path"))}" data-tab="path">My standing</a>.</p>` : ""}
+        ${LU ? LU.headsAboveHtml(state) : ""}
         <section class="sp-section"><h2>${active.length} member${active.length === 1 ? "" : "s"}</h2>${active.map(row).join("")}</section>
         ${formerCount && (perms.moderate || perms.site) ? `<details class="sp-details"><summary>Former members (${formerCount})</summary><div class="sp-list">${members
           .filter((m) => m.status !== "active")
@@ -77,9 +83,12 @@
         const name = UI.nameOf(context, userId);
         details.querySelector("[data-report-member]")?.addEventListener("click", () => UI.report({ target_type: "member", target_id: userId, target_user_id: userId, coven_id: coven.id, label: name }));
         const form = details.querySelector("[data-member-form]");
+        // Handing on asks what the head who steps back keeps (covens/coven/lineage.js).
+        if (form && LU) LU.wireHandOn(form, state, members.find((x) => x.user_id === userId), () => refresh("members"));
         form?.addEventListener("submit", async (event) => {
           event.preventDefault();
           const act = event.submitter?.dataset.act;
+          if (act === "handon" || (act === "transfer" && LU)) return;
           const status = details.querySelector("[data-status]");
           let work = null;
           if (act === "rank") work = () => D.updateMember(coven.id, userId, { rank_id: form.elements.rank_id.value });
@@ -346,6 +355,7 @@
         ${calendarForm(coven)}
         <section class="sp-section"><h2>Gathering notifications</h2><div data-notice-rules></div></section>
         <div data-grants-holder></div>
+        <div data-leadership-holder></div>
         ${perms.founder || perms.site ? `<section class="sp-card" data-participation>
           <h2>Ritual participation</h2>
           <p class="sp-caption">When a step asks people to write, place or do something, some may see how many have, and who has and hasn’t. They never see what anyone wrote, and private ones stay sealed. You, as the coven’s head, always see it. Choose positions and people who see it too.</p>
@@ -486,6 +496,9 @@
           );
         }).catch(() => {});
       }
+
+      // Succession and who may found daughter covens (covens/coven/lineage.js; the app's manage/leadership.tsx).
+      global.CovenLineageUI?.leadershipPanel(pane.querySelector("[data-leadership-holder]"), state);
 
       // Who hears about the coven's gatherings (covens/coven/notices.js; the app's manage/notices.tsx).
       global.CovenNotices?.rulesPanel(pane.querySelector("[data-notice-rules]"), state);

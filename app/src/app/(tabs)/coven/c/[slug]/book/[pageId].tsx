@@ -10,6 +10,7 @@ import { MenuList, MenuRow } from '../../../../../../components/more/ui';
 import { accessSummary } from '../../../../../../lib/grimoire/access';
 import { pageChain } from '../../../../../../lib/grimoire/coven';
 import { shareCredit } from '../../../../../../lib/grimoire/submissions';
+import { bookAttribution } from '../../../../../../lib/covens/lineage';
 import { blockMetadata } from '../../../../../../lib/grimoire/structure';
 import type { PageRow } from '../../../../../../lib/grimoire/types';
 import { colors, radius, type } from '../../../../../../theme';
@@ -47,6 +48,7 @@ function PageExtras({ page }: { page: PageRow }) {
   return (
     <View style={styles.wrap}>
       <View style={styles.card}>
+        {!!bookAttribution(page?.metadata) && <Text style={type.caption}>{bookAttribution(page?.metadata)}</Text>}
         {!!credit && <Text style={type.body}>{credit}</Text>}
         {!credit && !!author && <Text style={type.caption}>Begun by {coven.nameOf(author)}</Text>}
         <Text style={type.caption}>{accessSummary(pageChain(snapshot, page), ranks, coven.nameOf)}</Text>

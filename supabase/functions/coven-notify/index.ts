@@ -2,6 +2,8 @@ import { createClient, type SupabaseClient } from "https://esm.sh/@supabase/supa
 import { answerNote, bookAnswerNote, bookNote, isFresh, requestNote, reviewersOf, wantsNotice, type Note } from "./requests.ts";
 import { cleanNote, gatheringEvent, gatheringNote, manualEvent, validZone, wantsGathering, type SentNotice } from "./gatherings.ts";
 import { acceptedNote, invitedNote, wantsInvitation } from "./invitations.ts";
+import { leadershipNote, lineageAudience, lineageNote, overridesNote, overrideWords, type LeadershipEventKind, type LineageEventKind, type Note as LineageNote } from "./lineage.ts";
+import { FRESH_MINUTES } from "./requests.ts";
 import { openedNote, wantsPosition } from "./positions.ts";
 import { trainingNote, wantsTraining } from "./training.ts";
 import { promotedNote, proposedNote, queuedNote, type QueueSource } from "./queue.ts";
@@ -38,6 +40,22 @@ import { promotedNote, proposedNote, queuedNote, type QueueSource } from "./queu
 // sent it. Never to or from someone blocking the other. Once each
 // (coven_request_notices, kind 'invitation'), while fresh, and only for those
 // whose Reminders choices want invitations (invitations.ts wantsInvitation).
+//
+// { lineage_coven_id }: daughter covens
+// (supabase/migrations/20261112000000_coven_lineage.sql). Called by whoever
+// just asked to found a daughter, decided a request, copied or pushed
+// something, appointed a daughter's head, asked for or gave a release, or
+// (as a mother coven's head) changed something in a daughter. It sends the
+// caller's fresh, unsent lines of that coven's lineage log, each once
+// (coven_lineage_events.notified_at), to those lineage.ts names; a mother
+// head's changes in a daughter go as one note to the daughter's head
+// ("Hazel, head of Moon Circle, changed a position"). Requests' choices.
+//
+// { leadership_coven_id }: called by whoever just handed a coven on, named
+// its successor or (as a site moderator) handed it to someone; tells the
+// coven's members (or those named), once each (coven_leadership_events.notified_at).
+// { leadership_event_ids } with the service key: the delete-account function,
+// for covens handed on or archived as an account closes.
 //
 // { ritual_id, time_zone? }: a coven gathering (rite or meeting) was just
 // saved, put on or taken off the calendar, or deleted. Called by whoever did
@@ -107,6 +125,16 @@ Deno.serve(async (request) => {
   const service = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   if (!url || !anon || !service) return reply(503, { error: "function_not_configured" });
 
+  // The delete-account function calls with the service key, for the leadership
+  // changes made as an account closes (coven_hand_on_departing); nothing else may.
+  if (authorization === `Bearer ${service}`) {
+    const payload = await request.json().catch(() => null);
+    const ids = Array.isArray(payload?.leadership_event_ids) ? payload.leadership_event_ids.map(String).slice(0, 50) : [];
+    const adminOnly = createClient(url, service, { auth: { persistSession: false } });
+    let sent = 0;
+    for (const id of ids) if (/^[0-9a-f-]{36}$/i.test(id)) sent += await leadershipEvent(adminOnly, null, id);
+    return reply(200, { sent });
+  }
   const verifier = createClient(url, anon, { global: { headers: { Authorization: authorization } }, auth: { persistSession: false } });
   const { data: authData, error: authError } = await verifier.auth.getUser();
   if (authError || !authData.user) return reply(401, { error: "session_expired" });
@@ -121,12 +149,16 @@ Deno.serve(async (request) => {
   let ritualId = "";
   let timeZone = "";
   let manual: { note: string; who: string[] | null } | null = null;
+  let lineageCoven = "";
+  let leadershipCoven = "";
   let rankId = "";
   let queueId = "";
   let queueEvent: "queued" | "proposed" | "promoted" = "queued";
   try {
     const payload = (await request.json()) || {};
     messageId = String(payload.message_id || "");
+    if (payload.lineage_coven_id) lineageCoven = String(payload.lineage_coven_id);
+    if (payload.leadership_coven_id) leadershipCoven = String(payload.leadership_coven_id);
     if (payload.grimoire_submission_id) submissionId = String(payload.grimoire_submission_id);
     if (payload.invitation_id) invitationId = String(payload.invitation_id);
     if (payload.program_thread_message_id) programMessageId = String(payload.program_thread_message_id);
@@ -151,6 +183,22 @@ Deno.serve(async (request) => {
   }
   const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   const admin = createClient(url, service, { auth: { persistSession: false } });
+  if (lineageCoven || leadershipCoven) {
+    if (!UUID.test(lineageCoven || leadershipCoven)) return reply(400, { error: "bad_request" });
+    let sent = 0;
+    if (lineageCoven) sent += await covenLineage(admin, sender, lineageCoven);
+    if (leadershipCoven) {
+      const { data: rows } = await admin
+        .from("coven_leadership_events")
+        .select("id")
+        .eq("coven_id", leadershipCoven)
+        .eq("actor", sender)
+        .is("notified_at", null)
+        .gte("created_at", new Date(Date.now() - FRESH_MINUTES * 60 * 1000).toISOString());
+      for (const row of rows || []) sent += await leadershipEvent(admin, sender, row.id);
+    }
+    return reply(200, { sent });
+  }
   if (queueId) {
     if (!UUID.test(queueId)) return reply(400, { error: "bad_request" });
     return positionQueue(admin, sender, queueId, queueEvent);
@@ -625,6 +673,177 @@ async function covenGathering(admin: SupabaseClient, caller: SupabaseClient, sen
   }
   await admin.from("coven_gathering_notices").update({ sent_at: new Date().toISOString() }).eq("ritual_id", id).eq("seq", seq);
   return reply(200, { sent: delivered, event: what.event, recipients: recipients.length });
+}
+
+// ─── Daughter covens and leadership (lineage.ts) ──────────────────────────
+
+/** Ring these people (not the caller, not anyone blocking the caller, and only if they want it) with one note. */
+async function ringPeople(admin: SupabaseClient, caller: string | null, people: string[], covenId: string, kind: "new" | "answer", note: LineageNote, source: string, extra: Record<string, unknown>): Promise<number> {
+  let recipients = [...new Set(people.filter((u) => u && u !== caller))];
+  if (caller && recipients.length) {
+    const { data: blocks } = await admin.from("user_blocks").select("blocker_id").eq("blocked_id", caller).in("blocker_id", recipients);
+    const blocking = new Set((blocks || []).map((b) => b.blocker_id));
+    recipients = recipients.filter((u) => !blocking.has(u));
+  }
+  if (!recipients.length) return 0;
+  const { data: settings } = await admin.from("user_settings").select("user_id,reminders:settings->>reminders_v2").in("user_id", recipients);
+  const saved = new Map((settings || []).map((x: { user_id: string; reminders: string | null }) => [x.user_id, x.reminders]));
+  const now = new Date();
+  const listeners = recipients.filter((u) => wantsNotice(saved.get(u) ?? null, kind, covenId, now));
+  if (!listeners.length) return 0;
+  const { data: tokens } = await admin.from("push_tokens").select("token,user_id").in("user_id", listeners);
+  if (!tokens?.length) return 0;
+  return push(admin, tokens.map((t) => ({ to: t.token, title: note.title, body: note.body, sound: "default", channelId: "coven-requests", threadId: `lineage:${covenId}`, data: { source, url: note.url, covenId, ...extra } })));
+}
+
+async function activeMembers(admin: SupabaseClient, covenId: string): Promise<string[]> {
+  const { data } = await admin.from("coven_members").select("user_id").eq("coven_id", covenId).eq("status", "active");
+  return (data || []).map((m) => m.user_id);
+}
+
+/** The coven's head and everyone in a position that leads it. */
+async function leadersOf(admin: SupabaseClient, covenId: string, founderId: string | null): Promise<string[]> {
+  const [{ data: members }, { data: ranks }] = await Promise.all([
+    admin.from("coven_members").select("user_id,rank_id").eq("coven_id", covenId).eq("status", "active"),
+    admin.from("coven_ranks").select("id,can_manage").eq("coven_id", covenId),
+  ]);
+  const leading = new Set((ranks || []).filter((r) => r.can_manage).map((r) => r.id));
+  return [...new Set([...(founderId ? [founderId] : []), ...(members || []).filter((m) => m.rank_id && leading.has(m.rank_id)).map((m) => m.user_id)])];
+}
+
+/** The heads of every coven above this one (mother, grandmother…). */
+async function headsAbove(admin: SupabaseClient, covenId: string): Promise<string[]> {
+  const { data: above } = await admin.rpc("coven_ancestors", { target: covenId });
+  const ids = ((above as { coven_id: string }[] | null) || []).map((a) => a.coven_id);
+  if (!ids.length) return [];
+  const { data } = await admin.from("covens").select("founder_id").in("id", ids).eq("status", "active");
+  return (data || []).map((c) => c.founder_id).filter(Boolean);
+}
+
+/**
+ * { lineage_coven_id }: called by whoever just did something to a coven's
+ * lineage (asked, decided, released, copied, pushed, appointed a head, or, as
+ * a mother coven's head, changed something in a daughter). Each of the
+ * caller's fresh, unsent lines in that coven's log (or naming it) rings once
+ * (claimed by notified_at); lineage.ts says who hears. Overrides become one
+ * note to the daughter's head.
+ */
+async function covenLineage(admin: SupabaseClient, caller: string, covenId: string): Promise<number> {
+  const since = new Date(Date.now() - FRESH_MINUTES * 60 * 1000).toISOString();
+  const { data: rows } = await admin
+    .from("coven_lineage_events")
+    .select("id,coven_id,other_coven_id,other_coven_name,event,actor,detail,note,created_at")
+    .or(`coven_id.eq.${covenId},other_coven_id.eq.${covenId}`)
+    .eq("actor", caller)
+    .is("notified_at", null)
+    .gte("created_at", since)
+    .order("created_at");
+  if (!rows?.length) return 0;
+  const { data: profile } = await admin.from("coven_profiles").select("display_name").eq("user_id", caller).maybeSingle();
+  const who = profile?.display_name || "Someone";
+  type Row = { id: string; coven_id: string; other_coven_id: string | null; other_coven_name: string | null; event: LineageEventKind; detail: Record<string, unknown>; note: string | null };
+  let sent = 0;
+  const overrides = new Map<string, Row[]>();
+  for (const row of rows as Row[]) {
+    // Claim it: a call racing this one finds it taken.
+    const { data: claimed } = await admin.from("coven_lineage_events").update({ notified_at: new Date().toISOString() }).eq("id", row.id).is("notified_at", null).select("id");
+    if (!claimed?.length) continue;
+    if (row.event === "override") {
+      overrides.set(row.coven_id, [...(overrides.get(row.coven_id) || []), row]);
+      continue;
+    }
+    const ids = [row.coven_id, row.other_coven_id].filter(Boolean) as string[];
+    const { data: covens } = await admin.from("covens").select("id,name,slug,founder_id,status").in("id", ids);
+    const coven = (covens || []).find((c) => c.id === row.coven_id);
+    const other = (covens || []).find((c) => c.id === row.other_coven_id) || null;
+    if (!coven) continue;
+    // Release lines are kept on both sides; they ring once, from the daughter's.
+    if ((row.event === "released" || row.event === "release_requested") && row.detail?.side === "mother") continue;
+    const audience = lineageAudience(row.event);
+    if (!audience.rings) continue;
+    const d = row.detail || {};
+    let request: { requested_by: string; head_id: string | null; name: string } | null = null;
+    if (typeof d.request_id === "string") {
+      const { data } = await admin.from("coven_daughter_requests").select("requested_by,head_id,name").eq("id", d.request_id).maybeSingle();
+      request = data;
+    }
+    const headId = typeof d.head === "string" ? d.head : typeof d.to === "string" ? d.to : null;
+    let people: string[] = [];
+    switch (row.event) {
+      case "requested":
+        people = [coven.founder_id, ...(await headsAbove(admin, coven.id))];
+        break;
+      case "approved":
+        people = [request?.requested_by ?? "", headId ?? "", ...(await leadersOf(admin, coven.id, coven.founder_id))];
+        break;
+      case "declined":
+        people = [request?.requested_by ?? ""];
+        break;
+      case "founded":
+      case "head_appointed":
+        people = await activeMembers(admin, coven.id);
+        break;
+      case "release_requested":
+        people = other ? [other.founder_id, ...(await headsAbove(admin, coven.id))] : [];
+        break;
+      case "released":
+        people = [...(await activeMembers(admin, coven.id)), ...(other ? await leadersOf(admin, other.id, other.founder_id) : [])];
+        break;
+      case "release_declined":
+      case "pushed":
+        people = [coven.founder_id];
+        break;
+    }
+    let headName: string | null = null;
+    if (headId) {
+      const { data } = await admin.from("coven_profiles").select("display_name").eq("user_id", headId).maybeSingle();
+      headName = data?.display_name ?? null;
+    }
+    const note = lineageNote({
+      event: row.event,
+      who,
+      coven: { name: coven.name, slug: coven.slug },
+      other: other ? { name: other.name, slug: other.slug } : row.other_coven_name ? { name: row.other_coven_name, slug: coven.slug } : null,
+      daughterName: request?.name ?? (typeof d.name === "string" ? d.name : null),
+      headName,
+      title: typeof d.title === "string" ? d.title : null,
+      note: row.note,
+    });
+    // The answer to your own request is an 'answer' note; the rest is news of that coven.
+    const answerTo = new Set(audience.kind === "answer" ? [request?.requested_by ?? "", row.event === "release_declined" ? coven.founder_id ?? "" : ""] : []);
+    sent += await ringPeople(admin, caller, people.filter((u) => answerTo.has(u)), coven.id, "answer", note, "coven-lineage", { event: row.event });
+    sent += await ringPeople(admin, caller, people.filter((u) => !answerTo.has(u)), coven.id, "new", note, "coven-lineage", { event: row.event });
+  }
+  for (const [daughterId, list] of overrides) {
+    const { data: coven } = await admin.from("covens").select("name,slug,founder_id").eq("id", daughterId).maybeSingle();
+    if (!coven) continue;
+    const note = overridesNote({ who, mother: list[0].other_coven_name || "its mother coven", coven: { name: coven.name, slug: coven.slug }, changes: list.map((r) => overrideWords(r.detail || {})) });
+    sent += await ringPeople(admin, caller, [coven.founder_id], daughterId, "new", note, "coven-lineage", { event: "override" });
+  }
+  return sent;
+}
+
+/** A change of leadership (to the coven's members) or a successor named (to those named); once each. */
+async function leadershipEvent(admin: SupabaseClient, caller: string | null, id: string): Promise<number> {
+  const { data: found } = await admin.from("coven_leadership_events").select("id,coven_id,event,from_user,to_user,actor,detail,created_at").eq("id", id).maybeSingle();
+  const row = found as { id: string; coven_id: string; event: LeadershipEventKind; from_user: string | null; to_user: string | null; actor: string | null; detail: Record<string, unknown>; created_at: string } | null;
+  if (!row) return 0;
+  // Only the one who made the change rings for it (the service key for account closures, which have no one), while fresh.
+  if (caller ? row.actor !== caller : row.actor !== null) return 0;
+  if (!isFresh(row.created_at)) return 0;
+  const { data: claimed } = await admin.from("coven_leadership_events").update({ notified_at: new Date().toISOString() }).eq("id", id).is("notified_at", null).select("id");
+  if (!claimed?.length) return 0;
+  const { data: coven } = await admin.from("covens").select("name,slug").eq("id", row.coven_id).maybeSingle();
+  if (!coven) return 0;
+  const names = [row.from_user, row.to_user].filter(Boolean) as string[];
+  const { data: profiles } = names.length ? await admin.from("coven_profiles").select("user_id,display_name").in("user_id", names) : { data: [] as { user_id: string; display_name: string }[] };
+  const nameOf = (u: string | null) => (profiles || []).find((p) => p.user_id === u)?.display_name ?? null;
+  const note = leadershipNote({ event: row.event, coven: { name: coven.name, slug: coven.slug }, from: nameOf(row.from_user), to: nameOf(row.to_user) });
+  if (!note) return 0;
+  const people = row.event === "successor_named"
+    ? [row.to_user ?? "", typeof row.detail?.second === "string" ? row.detail.second : ""]
+    : (await activeMembers(admin, row.coven_id)).filter((u) => u !== row.from_user || row.event === "handed_on");
+  return ringPeople(admin, caller, people, row.coven_id, "new", note, "coven-leadership", { event: row.event });
 }
 
 /** A position opened for applications (positions.ts), to those the leader chose. */

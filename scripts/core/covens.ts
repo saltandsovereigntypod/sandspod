@@ -47,6 +47,9 @@ export * as positions from '../../app/src/lib/covens/positions.ts';
 export * as positionNotes from '../../supabase/functions/coven-notify/positions.ts';
 // The Covens page's two tabs (My covens | Find a coven) and which opens first.
 export * as screenTabs from '../../app/src/lib/screenTabs.ts';
+// Daughter covens: the disclosure, a mother coven head's powers, the lineage
+// lines and log, founding choices, the library, handing on and head reports.
+export * as lineage from '../../app/src/lib/covens/lineage.ts';
 // Coven courses: the lessons' Markdown (one reading for the app and the site),
 // tests and their scores, practice sessions and each step's conversation,
 // copying a ready-made course program in, and training messages' words.

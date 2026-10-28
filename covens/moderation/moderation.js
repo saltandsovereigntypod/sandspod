@@ -24,7 +24,7 @@
   const statusLine = () => `<p class="cv-status" role="status" aria-live="polite" data-status></p>`;
 
   function shell() {
-    const views = [["reports", "Reports"], ["covens", "Covens"], ["bans", "Site bans"], ...(context.admin ? [["moderators", "Moderators"]] : [])];
+    const views = [["reports", "Reports"], ["heads", "Heads gone"], ["covens", "Covens"], ["bans", "Site bans"], ...(context.admin ? [["moderators", "Moderators"]] : [])];
     root.innerHTML = `${header({ title: "Coven moderation", eyebrow: "Covens", back: "/covens/", backLabel: "All covens" })}
       <p class="sp-caption">You can open any coven, read its gathering and altar, remove messages and act on its members. Reports come here, never to coven leaders.</p>
       <nav class="cv-tabs" aria-label="Moderation">${views.map(([key, label]) => `<button type="button" class="cv-tab" data-view="${key}"${key === view ? ' aria-current="page"' : ""}>${esc(label)}</button>`).join("")}</nav>
@@ -158,11 +158,47 @@
     }));
   }
 
+  /**
+   * "The head can't be reached": what elders sent, with the coven, how long
+   * the head has been away and its succession plan (as the app's
+   * coven/moderation.tsx). Hand the coven on, or close the report.
+   */
+  async function heads(pane) {
+    const LD = global.CovenLineageData;
+    const Lx = global.SaltCore?.covens?.lineage;
+    if (!LD || !Lx) return (pane.innerHTML = `<p class="sp-notice">This part couldn’t load. Please refresh the page.</p>`);
+    const rows = await LD.headReports();
+    pane.innerHTML = rows.length
+      ? rows.map((r) => {
+          const candidates = Lx.transferCandidates(r);
+          return `<form class="sp-card" data-head-report="${esc(r.id)}">
+            <p class="sp-eyebrow">${r.status === "open" ? "Head can’t be reached" : r.status === "transferred" ? "Handed on" : "Closed"}</p>
+            <h3>${covenLink(r.coven)}</h3>
+            <p>Head: ${esc(r.head.name || "a deleted account")} · not seen for ${esc(Lx.inactiveFor(r.last_active_at))} · ${Number(r.coven.members) || 0} member${Number(r.coven.members) === 1 ? "" : "s"}</p>
+            ${r.coven.mother ? `<p class="sp-caption">A daughter coven of ${esc(r.coven.mother.name)}: its head can also choose who leads it.</p>` : ""}
+            <p class="sp-caption">Sent by ${esc(r.reported_by.name || "an elder")} ${esc(L.relativeTime(r.created_at))}${r.note ? `: “${esc(r.note)}”` : ""}</p>
+            <p class="sp-caption">Succession plan: ${esc(r.successors.length ? r.successors.map((s) => `${s.name || "A witch"}${s.which === 2 ? " (second)" : ""}${s.active ? "" : " (no longer a member)"}`).join(", ") : "no one named")}</p>
+            ${r.status === "open" ? `${candidates.length ? `<div class="sp-field"><label for="to-${esc(r.id)}">Hand the coven to</label><select id="to-${esc(r.id)}" name="to">${candidates.map((c) => `<option value="${esc(c.id)}">${esc(c.label)}</option>`).join("")}</select></div>` : `<p class="sp-caption">No one named or leading with the head. You can still pause or archive the coven under Covens.</p>`}
+              <div class="sp-field"><label for="note-${esc(r.id)}">Note (kept with the report)</label><textarea id="note-${esc(r.id)}" name="note" maxlength="2000"></textarea></div>
+              <div class="sp-actions">${candidates.length ? `<button class="button button--primary button--small" type="submit" value="transfer">Hand it on</button>` : ""}<button class="button button--ghost button--small" type="submit" value="close">Close without changing</button></div>` : ""}
+            ${statusLine()}</form>`;
+        }).join("")
+      : `<p class="sp-caption">No coven has told you its head can’t be reached.</p>`;
+    pane.querySelectorAll("[data-head-report]").forEach((form) =>
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const report = rows.find((r) => r.id === form.dataset.headReport);
+        const to = event.submitter?.value === "transfer" ? form.elements.to?.value : null;
+        if (await UI.busy(form, form.querySelector("[data-status]"), () => LD.resolveHeadReport(report, to, form.elements.note.value).then(() => true))) draw();
+      })
+    );
+  }
+
   async function draw() {
     shell();
     const pane = root.querySelector("[data-pane]");
     try {
-      await ({ reports, covens, bans, moderators }[view] || reports)(pane);
+      await ({ reports, heads, covens, bans, moderators }[view] || reports)(pane);
     } catch (error) {
       console.error(error);
       pane.innerHTML = `<p class="sp-notice">${esc(L.errorMessage(error))}</p>`;

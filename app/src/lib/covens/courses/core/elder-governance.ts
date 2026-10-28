@@ -250,7 +250,7 @@ Safety risks can skip straight to the rung that keeps people safe.
 
 ## In the app
 
-The coven’s head, and those she allows, can manage members from **Manage → Members**: change someone’s position, pause their messages for a while, remove them, or ban them.
+The coven’s head, and those she allows, can manage members from the coven’s **Members** (tap the person): change someone’s position, pause their messages for a while, remove them, or ban them.
 
 - **Removing** someone ends their membership. They can come back only if invited by name; an open invite link won’t let them in.
 - **Banning** someone from the coven means they can’t come back at all.
@@ -504,7 +504,7 @@ When the time comes:
 
 1. **Announce it with good notice,** if possible, and explain the plan.
 2. **Hand over gradually:** the new leader leads rites with the old one present, then alone.
-3. **Hand on the coven in the app.** The coven’s head can hand on leadership from Manage → Members. Make sure positions and powers are set as the new leader needs.
+3. **Hand on the coven in the app.** The coven’s head can hand on leadership from the coven’s Members: tap the new leader, then Hand on leadership, and choose what you keep. Make sure positions and powers are set as the new leader needs.
 4. **Mark it.** Many covens hold a rite to honour the outgoing leader and bless the new one.
 5. **Step back properly.** A former leader who stays should support, not second-guess, the new one. If that is too hard, a time away helps.
 
