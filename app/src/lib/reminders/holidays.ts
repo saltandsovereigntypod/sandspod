@@ -108,12 +108,12 @@ export function holidayItems(settings: SettingsLike, from: Date, days: number, p
     const baseId = baseIdOf(h.id);
     const deipnon = baseId === DEIPNON_ID;
     if (deipnon && !offerDeipnon) continue;
-    out.push({ baseId, group: groupOf(h, choice), name: h.name, meaning: h.meaning, date: h.date, days: h.days, recurs: h.recurs, kind: deipnon ? 'deipnon' : 'holiday', url: '/today' });
+    out.push({ baseId, group: groupOf(h, choice), name: h.name, meaning: h.meaning, date: h.date, days: h.days, recurs: h.recurs, kind: deipnon ? 'deipnon' : 'holiday', url: deipnon ? '/today?section=deipnon' : '/today?section=holiday' });
   }
 
   if (offerDeipnon && !out.some((i) => i.baseId === DEIPNON_ID)) {
     for (const date of deipnonDays(start, days)) {
-      out.push({ baseId: DEIPNON_ID, group: 'hellenic_monthly', name: DEIPNON_PROMPT.title, meaning: DEIPNON_PROMPT.detail, date, days: 1, recurs: 'monthly', kind: 'deipnon', url: '/today' });
+      out.push({ baseId: DEIPNON_ID, group: 'hellenic_monthly', name: DEIPNON_PROMPT.title, meaning: DEIPNON_PROMPT.detail, date, days: 1, recurs: 'monthly', kind: 'deipnon', url: '/today?section=deipnon' });
     }
   }
 
@@ -127,7 +127,7 @@ export function holidayItems(settings: SettingsLike, from: Date, days: number, p
       const date = startOfDay(e.date);
       if (date.getTime() < start.getTime()) continue;
       if (out.some((i) => sameDay(i.date, date) && firstWord(i.name) === firstWord(e.name))) continue;
-      out.push({ baseId: e.id, group: `calendar:${e.calendar}`, name: e.name, meaning: e.meaning, date, days: Math.max(1, e.days), recurs: e.recurs ?? ((times.get(e.id) ?? 0) > 1 ? 'monthly' : 'yearly'), kind: 'holiday', url: '/today' });
+      out.push({ baseId: e.id, group: `calendar:${e.calendar}`, name: e.name, meaning: e.meaning, date, days: Math.max(1, e.days), recurs: e.recurs ?? ((times.get(e.id) ?? 0) > 1 ? 'monthly' : 'yearly'), kind: 'holiday', url: '/today?section=holiday' });
     }
   }
 

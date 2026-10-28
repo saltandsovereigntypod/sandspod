@@ -1,20 +1,25 @@
 /*
- * Today, as the app's Today tab has it (app/src/app/(tabs)/today/index.tsx):
- * the date and the other calendars, the moon and the day's holidays, your
- * next working, On the horizon, For your practice, the day's sky,
- * correspondences, a card for the day, Set tonight's altar, Reflect and Last time. Everything is
- * worked out by the app's own logic (js/core/today.js); the place stays in
- * this browser and is only asked for when you press "Use my location".
+ * Today, as the app's Today tab has it (app/src/app/(tabs)/today/index.tsx),
+ * in two tabs (js/segmented-switch.js). "Today": the date and the other
+ * calendars, the moon and the day's holidays, your next working, your covens,
+ * what wants tending, Did it work?, last night's dream, the Deipnon, a card
+ * for the day, Set tonight's altar, Reflect and Last time. "Sky & Lore": the
+ * day's sky, correspondences, On the horizon and For your practice. The last
+ * tab used is kept in this browser; a link with ?tab= or ?section= (or a
+ * section's #name) opens the tab holding it. Everything is worked out by the
+ * app's own logic (js/core/today.js); the place stays in this browser and is
+ * only asked for when you press "Use my location".
  */
 (function () {
   "use strict";
 
   const C = window.SaltCore && window.SaltCore.today;
   const T = window.SaltToday;
+  const SW = window.SaltSwitch;
   const root = document.querySelector("[data-page-root]");
   const esc = (text) => (window.SaltPage ? window.SaltPage.esc(text) : String(text ?? ""));
   if (!root) return;
-  if (!C || !T) {
+  if (!C || !T || !SW || !C.screenTabs) {
     root.innerHTML = '<p class="sp-notice">Today could not load. Check your connection and refresh the page.</p>';
     return;
   }
@@ -39,8 +44,39 @@
     readings: [],
     // My Apothecary's workings (spell jars, sachets…), for "Did it work?".
     apothecary: [],
-    message: ""
+    message: "",
+    tab: firstTab()
   };
+
+  /** The tab a link asks for (?tab=, ?section= or #section), else the one used last, else Today. */
+  function firstTab() {
+    const tabs = C.screenTabs;
+    let linked = null;
+    try {
+      const params = new URLSearchParams(window.location.search);
+      linked = tabs.todayTabFor({ tab: params.get("tab"), section: params.get("section") || window.location.hash });
+      if (linked && (params.has("tab") || params.has("section"))) {
+        params.delete("tab");
+        params.delete("section");
+        const search = params.toString();
+        window.history.replaceState(window.history.state, "", `${window.location.pathname}${search ? `?${search}` : ""}${window.location.hash}`);
+      }
+    } catch {
+      linked = null;
+    }
+    if (linked) {
+      SW.remember(tabs.TODAY_TAB_KEY, linked);
+      return linked;
+    }
+    return SW.remembered(tabs.TODAY_TAB_KEY, tabs.asTodayTab) || "today";
+  }
+
+  function setTab(tab, { focus = false } = {}) {
+    state.tab = tab;
+    SW.remember(C.screenTabs.TODAY_TAB_KEY, tab);
+    render();
+    if (focus) SW.focus(root, "td-tabs");
+  }
 
   async function loadDreams() {
     if (!window.SaltCraft || !C.dreams) return;
@@ -176,24 +212,27 @@
     const moonBlock = moon ? (side ? `<div>${moon}</div>` : `<div class="td-panels">${moon}${reminder}</div>`) : "";
     panels = `<section class="td-panels${side ? " td-panels--side" : ""}" aria-label="The moon and today’s holidays">${moonBlock}${holiday}</section>${side ? reminder : ""}`;
 
+    const tabs = { id: "td-tabs", label: "Today", options: C.screenTabs.TODAY_TABS, value: state.tab };
+    const content =
+      state.tab === "today"
+        ? header +
+          panels +
+          workingCard(m) +
+          `<div data-coven-today>${window.CovenToday?.html?.() || ""}</div>` +
+          `<div data-tend-today>${window.TendToday?.html?.() || ""}</div>` +
+          lookBackCard(m) +
+          dreamCard(m) +
+          deipnonCard(m) +
+          cardOfTheDay(m) +
+          `<div class="sp-actions"><a class="button button--ghost" href="${esc(T.siteHref({ pathname: "/altar/[altarId]", params: { altarId: "tonight" } }))}">Set tonight’s altar</a></div>` +
+          `<section class="td-prompt" aria-label="Reflect"><p class="sp-eyebrow td-gold">Reflect</p><p class="td-prompt__text">${esc(today.prompt)}</p></section>` +
+          lastTimeLine(m)
+        : daySkyCard(m) + correspondencesCard(today) + horizonSection(today) + practiceCard(m);
+
     root.innerHTML =
       `<h1 class="sr-only">Today</h1>` +
-      header +
-      panels +
-      workingCard(m) +
-      `<div data-coven-today>${window.CovenToday?.html?.() || ""}</div>` +
-      `<div data-tend-today>${window.TendToday?.html?.() || ""}</div>` +
-      lookBackCard(m) +
-      horizonSection(today) +
-      dreamCard(m) +
-      deipnonCard(m) +
-      practiceCard(m) +
-      cardOfTheDay(m) +
-      daySkyCard(m) +
-      correspondencesCard(today) +
-      `<div class="sp-actions"><a class="button button--ghost" href="${esc(T.siteHref({ pathname: "/altar/[altarId]", params: { altarId: "tonight" } }))}">Set tonight’s altar</a></div>` +
-      `<section class="td-prompt" aria-label="Reflect"><p class="sp-eyebrow td-gold">Reflect</p><p class="td-prompt__text">${esc(today.prompt)}</p></section>` +
-      lastTimeLine(m) +
+      SW.html(tabs) +
+      SW.panel(tabs, `<div class="td-tab">${content}</div>`) +
       (state.message ? `<p class="sp-notice" role="status">${esc(state.message)}</p>` : "");
   }
 
@@ -495,6 +534,15 @@
 
   // ── Events ─────────────────────────────────────────────────────────────
   T.bindToggles(root);
+  SW.bind(root, "td-tabs", (tab, how) => setTab(tab, how));
+  // The Today tab in the site's bar, pressed while already here, goes back to the first tab.
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest && event.target.closest('a[data-site-tab="today"]');
+    if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    if (state.tab !== "today") setTab("today");
+    window.scrollTo({ top: 0 });
+  });
   root.addEventListener("click", async (event) => {
     const keep = event.target.closest("[data-dream-keep]");
     if (keep) {

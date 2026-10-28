@@ -8,7 +8,9 @@ import { FlexWidget } from 'react-native-android-widget';
 import type { WidgetDayProps } from '../../lib/widgetTimeline';
 import { cream, gold, Icon, iconFor, Label, Moon, muted, serif, sky, Spacer, untilText, Words, type Box } from './look';
 
-const TODAY = 'saltandsovereignty://today';
+const TODAY = 'saltandsovereignty://today?tab=today';
+// The Coming Up widget opens Today's Sky & Lore tab, where "On the horizon" is.
+const HORIZON = 'saltandsovereignty://today?section=horizon';
 
 function Frame({ box, uri = TODAY, row = false, children, gap = 0 }: { box: Box; uri?: string; row?: boolean; children: React.ReactNode; gap?: number }) {
   return (
@@ -181,7 +183,7 @@ export function ComingUpWidgetAndroid({ day, box }: { day: WidgetDayProps; box: 
       </FlexWidget>
     );
     return (
-      <Frame box={box} gap={8}>
+      <Frame box={box} uri={HORIZON} gap={8}>
         <Label text="MOON PHASES" />
         <Row>
           {day.phases.slice(0, 4).map((p) => (
@@ -209,7 +211,7 @@ export function ComingUpWidgetAndroid({ day, box }: { day: WidgetDayProps; box: 
     </FlexWidget>
   );
   return (
-    <Frame box={box} row gap={12}>
+    <Frame box={box} uri={HORIZON} row gap={12}>
       <Col gap={5} flex={1}>
         <Label text="MOON" />
         {day.phases.slice(0, 3).map((p) => item(`m${p.date}`, p.name, p.when, <Moon symbol={p.symbol} size={12} />))}

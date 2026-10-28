@@ -18,7 +18,7 @@ export const TOUR_PAGES: TourPage[] = [
   {
     icon: 'moon',
     title: 'Each day begins on Today',
-    body: 'Tonight’s moon and its sign, the holidays from the calendars you keep, and what the day is good for. Tap the moon or a holiday to read what it means and how to keep it.',
+    body: 'Tonight’s moon and its sign, the holidays from the calendars you keep, and what is yours to do today. Tap the moon or a holiday to read what it means and how to keep it. Turn to Sky & Lore at the top for the sky, what the day is good for and its correspondences.',
   },
   {
     icon: { tab: 'altar' },

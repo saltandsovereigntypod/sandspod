@@ -16,10 +16,10 @@ export const HELP: HelpSection[] = [
         summary: 'The bar along the bottom of the app holds everything.',
         steps: [
           'Look at the bar along the bottom of the screen.',
-          'Today shows the moon, the holidays from your calendars, what the day is good for and the sky.',
+          'Today shows the moon, the holidays from your calendars and what is yours to do today. Switch to "Sky & Lore" at the top for the sky, the day’s correspondences, what is on the horizon and what suits your practice.',
           'Altar is where you build and tend altars.',
           'Practice holds your Grimoire (your Book of Shadows) and Rituals (planning, running and journaling your workings, and My practice). Switch between them at the top.',
-          'Coven is where you find, join and take part in covens: chat, rites, the coven’s altars, initiation and training.',
+          'Coven is where you find, join and take part in covens: chat, rites, the coven’s altars, initiation and training. Switch between "My covens" and "Find a coven" at the top.',
           'More opens your Sanctuary: the Living Library, My practice, Reminders, Community, settings, backup, "How to use the app" and support.',
         ],
         keywords: ['tabs', 'navigation', 'menu', 'bottom bar', 'where is', 'practice', 'coven', 'grimoire', 'rituals'],
@@ -233,12 +233,14 @@ export const HELP: HelpSection[] = [
         title: 'Read the Today screen',
         summary: 'See the date, the moon, the sign and the day’s ruling planet at a glance.',
         steps: [
-          'Open the Today tab.',
-          'At the top, the date line and the day’s ruler show which planet governs today. Calendars you keep can name the day in their own way above or below it.',
+          'Open the Today tab. At the top, switch between "Today" and "Sky & Lore". Today opens on the one you used last; tap Today in the bar at the bottom to come back to "Today".',
+          'On "Today", the date line and the day’s ruler show which planet governs today. Calendars you keep can name the day in their own way above or below it.',
           'The moon shows tonight’s phase, its sign and how much of it is lit. Tap it to read about this moon.',
-          'Below come "Your next working", your covens, "On the horizon", "For your practice", "Today’s sky" and "Correspondences".',
+          'Below come "Your next working", your covens, what wants tending, anything to look back on, and last night’s dream in the morning.',
           'At the end, "Set tonight’s altar" and a "Reflect" question.',
+          'On "Sky & Lore" come "Today’s sky", "Correspondences", "On the horizon" and "For your practice".',
         ],
+        href: '/today?tab=today',
         keywords: ['moon phase', 'date', 'ruler', 'planet of the day', 'home'],
       },
       {
@@ -246,11 +248,12 @@ export const HELP: HelpSection[] = [
         title: 'See the next moon phase and holiday',
         summary: '"On the horizon" always shows what is coming next.',
         steps: [
-          'Open the Today tab.',
+          'Open the Today tab and choose "Sky & Lore" at the top.',
           'Scroll to "On the horizon".',
           'Read the two tiles: the next moon phase and the next holiday from your calendars.',
           'Below them, the next new or full moon and any eclipse are listed.',
         ],
+        href: '/today?section=horizon',
         keywords: ['upcoming', 'next full moon', 'next holiday', 'eclipse'],
       },
       {
@@ -271,7 +274,7 @@ export const HELP: HelpSection[] = [
         title: 'Read about a moon or holy day, and keep it in your Grimoire',
         summary: 'Each main moon phase and many holidays have a page of their own.',
         steps: [
-          'On Today, tap the moon, a holiday card, or a tile under "On the horizon".',
+          'On Today, tap the moon or a holiday card, or choose "Sky & Lore" and tap a tile under "On the horizon".',
           'Read "Who is honoured, and why", "History", "Keeping it today", "A working" and its correspondences, with "What we know" and "What we don’t".',
           'Signed in, the page is kept in your Grimoire with room for your own notes. Under "In your Grimoire", tap "Open the page".',
           'Tap "Open the working" to read its ritual, or "Plan a ritual" to choose a night.',
@@ -286,7 +289,7 @@ export const HELP: HelpSection[] = [
         title: 'Open the sky today',
         summary: 'See the planets, retrogrades and eclipses, and where they sit.',
         steps: [
-          'On Today, find the "Today’s sky" card.',
+          'On Today, choose "Sky & Lore" at the top and find the "Today’s sky" card.',
           'Tap "The sky today".',
           'Read the sections: Sun and Moon, Planets, Retrogrades, Eclipses and "Where you are".',
         ],
@@ -299,7 +302,7 @@ export const HELP: HelpSection[] = [
         title: 'Set your location for sunrise, moonrise and planetary hours',
         summary: 'Your place is kept on the phone and never sent anywhere.',
         steps: [
-          'Open Today, then tap "The sky today".',
+          'Open Today, choose "Sky & Lore", then tap "The sky today".',
           'Scroll to "Where you are", then "Your location".',
           'Tap "Use my location", or type a latitude and longitude and tap "Save location".',
           'To remove it, tap "Forget my location".',
@@ -313,10 +316,11 @@ export const HELP: HelpSection[] = [
         title: 'See the day’s correspondences',
         summary: 'Each weekday has its own colours, crystals, herbs, metal, incense and candle.',
         steps: [
-          'Open the Today tab and scroll to the "Correspondences" card.',
+          'Open the Today tab and choose "Sky & Lore" at the top. The "Correspondences" card comes after "Today’s sky".',
           'Read the colours, crystals, herbs, metal, incense and candle for the day’s planet.',
           'Tap a crystal or herb that is underlined to open its Living Library entry.',
         ],
+        href: '/today?section=correspondences',
         keywords: ['colours', 'colors', 'weekday', 'herbs of the day', 'crystals of the day', 'planetary day'],
       },
       {
@@ -325,10 +329,11 @@ export const HELP: HelpSection[] = [
         summary: 'A line from each practice you keep, your deities’ days, and a working for tonight.',
         steps: [
           'Choose your practices in More, then Settings, then "My practice", and your gods in "My deities".',
-          'On Today, find "For your practice".',
+          'On Today, choose "Sky & Lore" at the top and find "For your practice".',
           'Each line comes from one of your practices or deities, such as tonight’s planting moon or the next tide. On a deity’s holy day its line shows in gold.',
           'Tap a line to open that tool, or "A working for tonight" to read a premade working that suits the night.',
         ],
+        href: '/today?section=practice',
         keywords: ['practice card', 'deity', 'patron', 'holy day', 'working for tonight', 'suggestion', 'for you'],
       },
       {
@@ -359,7 +364,7 @@ export const HELP: HelpSection[] = [
           'To turn it off, open "Calendar & holidays" and switch off "Hekate’s Deipnon".',
         ],
         tips: ['What is given to Hekate is left, and not eaten.'],
-        href: '/today',
+        href: '/today?section=deipnon',
         keywords: ['deipnon', 'hekate', 'hecate', 'dark moon', 'supper', 'crossroads', 'hellenic', 'monthly', 'cleansing', 'attic calendar'],
       },
       {
@@ -372,6 +377,7 @@ export const HELP: HelpSection[] = [
           'If one is planned, tap "Open the plan".',
           'If nothing is planned, tap "Plan a ritual".',
         ],
+        href: '/today?section=working',
         keywords: ['next ritual', 'resume ritual', 'planned'],
       },
       {
@@ -396,7 +402,7 @@ export const HELP: HelpSection[] = [
         title: 'Sit with the day’s question',
         summary: 'Today ends with a question to reflect on.',
         steps: [
-          'Scroll to the bottom of Today.',
+          'Scroll to the bottom of the "Today" tab on Today.',
           'Read the line under "Reflect".',
           'On the new, quarter or full moon, a line shows what you kept last time the moon looked like this. Tap it to open that journal entry.',
         ],
@@ -2819,16 +2825,31 @@ export const HELP: HelpSection[] = [
     intro: 'Practise with others: find and join a coven, take part, and go through its initiation and training.',
     topics: [
       {
+        id: 'covens-mine',
+        title: 'See your covens at a glance',
+        summary: '"My covens" holds the covens you belong to, each as a card with what is happening there.',
+        steps: [
+          'Open the Coven tab. It opens on "My covens" when you belong to a coven, and on "Find a coven" when you don’t; after that, on whichever you used last.',
+          'At the top, "Your covens" shows your turn in a rite, rites coming up and work waiting for you, as it does on Today.',
+          'Under "Covens you belong to", each coven’s card shows your position there, unread messages, its next gathering and any applications or requests to advance waiting for you. Tap a card to open the coven.',
+          'Applications you have sent that are still waiting show under "Waiting to hear back".',
+        ],
+        tips: ['Pull down to bring everything up to date.'],
+        href: '/coven?tab=mine',
+        keywords: ['my covens', 'my coven', 'unread', 'next gathering', 'position', 'rank', 'application waiting'],
+      },
+      {
         id: 'covens-join',
         title: 'Find and join a coven',
         summary: 'Covens are for adults; each has its own creed, rules and way of joining.',
         steps: [
-          'Open the Coven tab.',
+          'Open the Coven tab and choose "Find a coven" at the top.',
           'Tap "Make your coven profile" the first time: the name other members see, and confirming you are 18 or older.',
           'Search under "Find a coven" and tap "Visit".',
           'Read the coven’s pages, then tap "Join this coven" or "Apply to join", sign its agreements, and answer its questions.',
         ],
-        href: '/coven',
+        tips: ['Applications still waiting for an answer show under "Waiting to hear back" on "My covens".'],
+        href: '/coven?tab=find',
         keywords: ['coven', 'join', 'apply', 'circle', 'group', 'directory'],
       },
       {
@@ -2836,7 +2857,7 @@ export const HELP: HelpSection[] = [
         title: 'Found a coven',
         summary: 'Start a coven of your own, with its creed, its ways of joining and its positions.',
         steps: [
-          'Open the Coven tab and tap "Found a coven". Make your coven profile first if asked.',
+          'Open the Coven tab, choose "Find a coven" at the top and tap "Found a coven". Make your coven profile first if asked.',
           'Give it a "Coven name", a "Web address", "One line about the coven" and "Who you are and how you practise", with its tradition, when you gather and tags if you like.',
           'Choose "How witches join" (By application, Open or Not yet), whether it is Listed in the "Directory", and "Your title as leader".',
           'Agree to lead it by the community guidelines, then tap "✦ Found the coven".',
@@ -2852,7 +2873,7 @@ export const HELP: HelpSection[] = [
         title: 'Go through your coven’s initiation or training',
         summary: 'Each coven designs its own programs: stages of tasks, signed off by you, your mentor or its leaders.',
         steps: [
-          'Open your coven from the Coven tab and tap "Initiation & training".',
+          'Open your coven from "My covens" on the Coven tab and tap "Initiation & training".',
           'Tap your program under "Your programs" to see each stage and its tasks.',
           'Do a task, write your response if it asks for one, and tap "Log one", "Mark done" or "Send for sign-off".',
           'Your mentor or the coven’s leaders sign your work off and confirm each stage. Your next task also shows on Today.',

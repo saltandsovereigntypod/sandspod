@@ -278,7 +278,7 @@ test('the Deipnon reminder comes on the morning of the day, in place of Hekateâ€
   const ours = schedule.filter((r) => r.kind === 'deipnon');
   assert.equal(ours.length, deipna.length);
   assert.equal(ours[0].at.getHours(), 9);
-  assert.equal(ours[0].url, '/today');
+  assert.equal(ours[0].url, '/today?section=deipnon');
   assert.ok(!schedule.some((r) => r.kind === 'sacred' && r.key.startsWith('sacred-hekate:') && ours.some((o) => o.at.toDateString() === r.at.toDateString())), 'not twice');
   // Without the Deipnon reminder, Hekate's own sacred day still comes.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

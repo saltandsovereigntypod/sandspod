@@ -33,7 +33,7 @@
     if (!ids.length) return { userId, empty: true };
     const [covens, ranks, grants, rituals, rsvps, enrollments, progress, mentors] = await Promise.all([
       rows(db.from("covens").select(COVEN_FIELDS).in("id", ids).eq("status", "active")),
-      rows(db.from("coven_ranks").select("id,coven_id,can_manage,can_manage_programs").in("coven_id", ids)),
+      rows(db.from("coven_ranks").select("id,coven_id,name,can_manage,can_manage_programs").in("coven_id", ids)),
       rows(db.from("coven_grants").select("coven_id,user_id,power").eq("user_id", userId)).catch(() => []),
       rows(db.from("coven_rituals").select("id,coven_id,title,status,scheduled_for,current_step_id,occasion,occasion_name,kind").in("coven_id", ids).in("status", ["scheduled", "live"]).limit(100)),
       rows(db.from("coven_ritual_rsvps").select("ritual_id,user_id,response").eq("user_id", userId)).catch(() => []),
@@ -56,7 +56,7 @@
         return c.founder_id === userId || rank?.can_manage || rank?.can_manage_programs || grants.some((g) => g.coven_id === c.id && g.power === "manage_programs");
       })
       .map((c) => c.id);
-    return { userId, covens, memberships, programCovens, rituals, steps, rsvps, programs, stages, tasks, enrollments, progress, mentors };
+    return { userId, covens, memberships, programCovens, rituals, steps, rsvps, programs, stages, tasks, enrollments, progress, mentors, ranks };
   }
 
   function linkFor(item) {
@@ -107,7 +107,8 @@
     }
   }
 
-  global.CovenToday = { html: () => html, nextRite, refresh: start };
+  // The loaded rows, for the Covens page's cards (SaltCore.covens.today.covenGlance): null until loaded.
+  global.CovenToday = { html: () => html, nextRite, refresh: start, input: () => input };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => setTimeout(start, 0));
   else setTimeout(start, 0);
 })(window);

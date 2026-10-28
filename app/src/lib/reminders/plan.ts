@@ -511,7 +511,7 @@ export function gather(list: Reminder[], max: number): Reminder[] {
       at: day[0].at,
       title: `${day.length} things today`,
       body: body.length > 220 ? `${body.slice(0, 217).trimEnd()}…` : body,
-      url: '/today',
+      url: '/today?tab=today',
     });
   }
   return [...list.filter((r) => !gathered.has(r)), ...notes];

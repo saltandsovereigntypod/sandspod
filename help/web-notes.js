@@ -121,6 +121,13 @@
   function siteHref(appHref) {
     if (!appHref || typeof appHref !== "string") return null;
     const path = appHref.split("?")[0].replace(/\/+$/, "") || "/";
+    // Today's and Coven's tabs: a link to one (/today?section=horizon) opens it on the website too.
+    if (path === "/today" || path === "/coven") {
+      const asked = new URLSearchParams(appHref.split("?")[1] || "");
+      const keep = new URLSearchParams();
+      for (const name of ["tab", "section"]) if (asked.get(name)) keep.set(name, asked.get(name));
+      return `${EXACT[path]}${keep.toString() ? `?${keep}` : ""}`;
+    }
     if (EXACT[path]) return EXACT[path];
     if (path.startsWith("/more/settings")) return "/?sanctuary=settings";
     // One Library entry ("/more/library/traditional:herb:rosemary") on its public page.
