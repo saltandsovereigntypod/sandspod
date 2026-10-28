@@ -85,7 +85,9 @@
       })
       .map((c) => c.id);
     await coreReady;
-    return { userId, covens, memberships, programCovens, rituals, steps, rsvps, programs, stages, tasks, enrollments, progress, mentors, ranks };
+    // The coven's head signs off her own work there too (coven_head_signs_off).
+    const headCovens = covens.filter((c) => c.founder_id === userId).map((c) => c.id);
+    return { userId, covens, memberships, programCovens, headCovens, rituals, steps, rsvps, programs, stages, tasks, enrollments, progress, mentors, ranks };
   }
 
   function linkFor(item) {

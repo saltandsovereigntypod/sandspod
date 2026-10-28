@@ -720,6 +720,8 @@ export const fetchStagePasses = (covenId: string) => run<StagePass[]>(supabase.f
 export const recordTask = (enrollmentId: string, taskId: string, response: string, count: number) =>
   rpc<TaskProgress>('record_coven_task', { p_enrollment: enrollmentId, p_task: taskId, p_response: response.trim() || null, p_count: count });
 export const checkTask = (progressId: string, approve: boolean, feedback: string) => rpc<TaskProgress>('check_coven_task', { p_progress: progressId, p_approve: approve, p_feedback: feedback.trim() || null });
+/** Sign off a task directly, sent for sign-off or not (sign_off_coven_task). */
+export const signOffTask = (enrollmentId: string, taskId: string, note: string) => rpc<TaskProgress>('sign_off_coven_task', { p_enrollment: enrollmentId, p_task: taskId, p_note: note.trim() || null });
 /** Pass a stage; finishing a program into a full position puts them on its waiting list (and they're told). */
 export const passStage = (enrollmentId: string, note: string, override = false) =>
   rpc<Enrollment>('pass_coven_stage', { p_enrollment: enrollmentId, p_note: note.trim() || null, p_override: override }).then((e) => andRing(e?.coven_id, Promise.resolve(e)));
@@ -943,5 +945,7 @@ export async function fetchCovenToday(userId: string): Promise<import('./today')
       return c.founder_id === userId || rank?.can_manage || rank?.can_manage_programs || grants.some((g) => g.coven_id === c.id && g.power === 'manage_programs');
     })
     .map((c) => c.id);
-  return { userId, covens, memberships, programCovens, rituals, steps, rsvps, programs, stages: parts.stages, tasks: parts.tasks, enrollments, progress, mentors, ranks };
+  // The coven's head signs off her own work there too (coven_head_signs_off).
+  const headCovens = covens.filter((c) => c.founder_id === userId).map((c) => c.id);
+  return { userId, covens, memberships, programCovens, headCovens, rituals, steps, rsvps, programs, stages: parts.stages, tasks: parts.tasks, enrollments, progress, mentors, ranks };
 }

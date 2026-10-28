@@ -4,6 +4,7 @@ import { test } from 'node:test';
 import {
   canCheck,
   canPass,
+  canSignDirectly,
   covenCalendarNames,
   covenHolidayChoice,
   covenHolidaysBetween,
@@ -12,9 +13,12 @@ import {
   holidayName,
   programOutline,
   programPermissions,
+  signedOffWords,
+  signsOffAsHead,
   stagesPayload,
   taskState,
   templatesFor,
+  trainingToSignOff,
   validateProgram,
   waitingForMe,
   type Enrollment,
@@ -119,6 +123,61 @@ test('who signs off and who passes a stage', () => {
   assert.equal(canPass({ passed_by: 'self' }, person), true);
   assert.equal(canPass({ passed_by: 'self' }, mentor), false);
   assert.equal(canPass({ passed_by: 'manager' }, manager), true);
+});
+
+test('the coven’s head signs off anyone’s training, her own too; no one else signs their own', () => {
+  const head = { self: true, mentor: false, programs: true, head: true };
+  for (const checked_by of ['self', 'mentor', 'manager'] as const) assert.equal(canCheck({ checked_by }, head), true);
+  for (const passed_by of ['self', 'mentor', 'manager'] as const) assert.equal(canPass({ passed_by }, head), true);
+  assert.equal(canCheck({ checked_by: 'manager' }, { ...head, self: false }), true);
+  // A manager or mentor on their own work: still no.
+  assert.equal(canCheck({ checked_by: 'mentor' }, { self: true, mentor: true, programs: true }), false);
+  assert.equal(canPass({ passed_by: 'manager' }, { self: true, mentor: false, programs: true }), false);
+  assert.equal(canPass({ passed_by: 'mentor' }, { self: true, mentor: true, programs: false }), false);
+  // Who counts as the head: the founder or a mother coven's head, in good standing.
+  assert.equal(signsOffAsHead({ founder: true }, true), true);
+  assert.equal(signsOffAsHead({ founder: false, ancestor: true }, true), true);
+  assert.equal(signsOffAsHead({ founder: true }, false), false);
+  assert.equal(signsOffAsHead({ founder: false }, true), false);
+  // Her own waiting work shows for her, and only as head.
+  const progress = [row('t2', 'submitted', { id: 'mine', user_id: 'me' }), row('t2', 'submitted')];
+  assert.deepEqual(waitingForMe(progress, tasks, { userId: 'me', mentees: [], programs: true, head: true }).map((p) => p.id), ['mine', 'r-t2']);
+  assert.deepEqual(waitingForMe(progress, tasks, { userId: 'me', mentees: [], programs: true }).map((p) => p.id), ['r-t2']);
+  // Said honestly.
+  const nameOf = (id: string) => ({ hazel: 'Hazel', rowan: 'Rowan' })[id] ?? 'A witch';
+  assert.equal(signedOffWords('hazel', 'hazel', nameOf, false), 'Hazel, the coven’s head (their own training)');
+  assert.equal(signedOffWords('hazel', 'rowan', nameOf, false), 'Hazel');
+  assert.equal(signedOffWords('rowan', 'rowan', nameOf, true), 'Rowan');
+  assert.equal(signedOffWords(null, 'rowan', nameOf, false), '');
+});
+
+test('signing off directly: any unfinished step in a stage reached, for those who may sign it', () => {
+  const head = { self: true, mentor: false, programs: true, head: true };
+  const manager = { self: false, mentor: false, programs: true };
+  const e = enrollment();
+  assert.equal(canSignDirectly(tasks[1], undefined, e, false, head), true);
+  assert.equal(canSignDirectly(tasks[1], row('t2', 'in_progress'), e, false, manager), true);
+  assert.equal(canSignDirectly(tasks[1], row('t2', 'approved'), e, false, manager), false);
+  assert.equal(canSignDirectly(tasks[3], undefined, e, true, head), false);
+  assert.equal(canSignDirectly(tasks[1], undefined, enrollment({ status: 'paused' }), false, head), false);
+  assert.equal(canSignDirectly(tasks[1], undefined, e, false, { ...manager, self: true }), false);
+});
+
+test('training to sign off: work sent, stages ready, the head’s own too', () => {
+  const at = Date.parse('2026-12-01T00:00:00Z');
+  const ready = enrollment({ id: 'e2', user_id: 'me', stage_started_at: '2026-01-01T00:00:00Z' });
+  const theirs = enrollment({ stage_started_at: '2026-01-01T00:00:00Z' });
+  const done = [row('t1', 'approved'), row('t2', 'approved')];
+  const mine = done.map((r) => ({ ...r, id: `${r.id}-me`, enrollment_id: 'e2', user_id: 'me' }));
+  const input = { enrollments: [theirs, ready], stages, tasks, progress: [...done, ...mine] };
+  const asHead = trainingToSignOff(input, { userId: 'me', mentees: [], programs: true, head: true }, at);
+  assert.deepEqual(asHead.stages.map((s) => [s.enrollment.id, s.stage.id, s.last]), [['e1', 's1', false], ['e2', 's1', false]]);
+  const asManager = trainingToSignOff(input, { userId: 'me', mentees: [], programs: true }, at);
+  assert.deepEqual(asManager.stages.map((s) => s.enrollment.id), ['e1'], 'a manager’s own stage isn’t theirs to pass');
+  const asOther = trainingToSignOff(input, { userId: 'x', mentees: [], programs: false }, at);
+  assert.deepEqual(asOther, { tasks: [], stages: [] });
+  // Not ready yet (days left): not listed.
+  assert.deepEqual(trainingToSignOff({ ...input, enrollments: [enrollment({ stage_started_at: '2026-11-20T00:00:00Z' })] }, { userId: 'me', mentees: [], programs: true }, at).stages, []);
 });
 
 test('work waiting for sign-off: mentees’ for mentors, everyone’s for managers', () => {

@@ -709,6 +709,8 @@
     stagePasses: (covenId) => run(db().from("coven_program_stage_passes").select("*").eq("coven_id", covenId).limit(2000)),
     recordTask: (enrollmentId, taskId, response, count) => rpc("record_coven_task", { p_enrollment: enrollmentId, p_task: taskId, p_response: response || null, p_count: count ?? 1 }),
     checkTask: (progressId, approve, feedback) => rpc("check_coven_task", { p_progress: progressId, p_approve: approve, p_feedback: feedback || null }),
+    // Sign off a task directly, sent for sign-off or not (sign_off_coven_task).
+    signOffTask: (enrollmentId, taskId, note) => rpc("sign_off_coven_task", { p_enrollment: enrollmentId, p_task: taskId, p_note: (note || "").trim() || null }),
     /** Finishing a program into a full position puts them on its waiting list (and they're told). */
     passStage: (enrollmentId, note, override) => andRing((e) => e?.coven_id, rpc("pass_coven_stage", { p_enrollment: enrollmentId, p_note: note || null, p_override: Boolean(override) })),
     setEnrollmentStatus: (enrollmentId, status) => rpc("set_coven_enrollment_status", { p_enrollment: enrollmentId, p_status: status }),

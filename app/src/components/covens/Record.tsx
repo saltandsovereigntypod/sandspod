@@ -39,6 +39,7 @@ export function RecordSections({
   onExcuse,
   onLogCheckin,
   onRemoveCheckin,
+  onOpenStudy,
   userId,
 }: {
   record: MemberRecord;
@@ -50,6 +51,8 @@ export function RecordSections({
   /** A mentor logging a check-in with their mentee. */
   onLogCheckin?: (menteeId: string, metOn: string, note: string) => void;
   onRemoveCheckin?: (id: string) => void;
+  /** Open their path through a program (where steps are signed off). */
+  onOpenStudy?: (study: StudyRow) => void;
   userId?: string | null;
 }) {
   const [all, setAll] = useState(false);
@@ -93,10 +96,10 @@ export function RecordSections({
         {rows.length > SHOWN && <Button label={all ? 'Show fewer' : `Show all ${rows.length}`} variant="text" onPress={() => setAll(!all)} />}
       </Section>
 
-      <Section label="Studies">
+      <Section label="Training">
         {!record.studies.length && <Text style={type.caption}>Not in any initiation or training.</Text>}
         {record.studies.map((s) => (
-          <StudyCard key={s.id} study={s} now={now} />
+          <StudyCard key={s.id} study={s} now={now} onOpen={onOpenStudy ? () => onOpenStudy(s) : undefined} />
         ))}
       </Section>
 
@@ -135,7 +138,7 @@ export function RecordSections({
   );
 }
 
-export function StudyCard({ study, now }: { study: StudyRow; now: number }) {
+export function StudyCard({ study, now, onOpen }: { study: StudyRow; now: number; onOpen?: () => void }) {
   const stalled = studyStalled(study, now);
   return (
     <Card>
@@ -147,6 +150,7 @@ export function StudyCard({ study, now }: { study: StudyRow; now: number }) {
       </Pills>
       <Text style={type.caption}>{studyLine(study)}</Text>
       <Text style={type.caption}>Last moved {agoLabel(study.last_activity ?? study.started_at, now)} · began {new Date(study.started_at).toLocaleDateString()}</Text>
+      {onOpen && <Button label="Open the path" variant="text" onPress={onOpen} />}
     </Card>
   );
 }

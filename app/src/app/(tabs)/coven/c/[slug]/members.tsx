@@ -6,10 +6,12 @@ import { router } from 'expo-router';
 import { Sheet } from '../../../../../components/altar/Sheet';
 import { Button } from '../../../../../components/Button';
 import { covenHref, CovenScreen } from '../../../../../components/covens/CovenScreen';
+import { programHref } from '../../../../../components/covens/programs';
 import { Pill, Pills, useReport } from '../../../../../components/covens/ui';
 import { Card, Chips, MenuList, MenuRow, Notice, Section } from '../../../../../components/more/ui';
 import * as api from '../../../../../lib/covens/api';
 import { useCoven } from '../../../../../lib/covens/CovenContext';
+import { ENROLLMENT_STATUS, type Enrollment, type Program } from '../../../../../lib/covens/programs';
 import { actsOn, errorMessage, grantableRanks, unsignedAgreements, type Member, type Signature } from '../../../../../lib/covens/model';
 import { seesRecord, type RecordSettings } from '../../../../../lib/covens/record';
 import { handOnDefault, handOnSummary, stepDownOptions, type OldHeadChoice } from '../../../../../lib/covens/lineage';
@@ -45,6 +47,8 @@ export default function Members() {
   const [handing, setHanding] = useState(false);
   const [oldHead, setOldHead] = useState<OldHeadChoice>('keep');
   const [stepTo, setStepTo] = useState('');
+  // Their training, as far as you may see it (their mentor, those who keep progress, the head).
+  const [training, setTraining] = useState<{ enrollments: Enrollment[]; programs: Program[] } | null>(null);
 
   const load = useCallback(async () => {
     if (!covenId) return;
@@ -64,6 +68,13 @@ export default function Members() {
   useEffect(() => {
     if (covenId) void api.fetchRecordSettings(covenId).then(setRecordSettings).catch(() => {});
   }, [covenId]);
+  useEffect(() => {
+    if (covenId && perms.member) {
+      void Promise.all([api.fetchEnrollments(covenId), api.fetchPrograms(covenId)])
+        .then(([enrollments, programs]) => setTraining({ enrollments, programs }))
+        .catch(() => {});
+    }
+  }, [covenId, perms.member]);
 
   const info = coven.snapshot?.coven;
   const founder = info?.founder_id;
@@ -216,6 +227,29 @@ export default function Members() {
                 }}
               />
             )}
+            {(() => {
+              const theirs = (training?.enrollments ?? []).filter((e) => e.user_id === selected.user_id && e.status !== 'withdrawn');
+              if (!theirs.length) return null;
+              return (
+                <Section label="Training">
+                  <MenuList>
+                    {theirs.map((e, i) => (
+                      <MenuRow
+                        key={e.id}
+                        label={training?.programs.find((p) => p.id === e.program_id)?.title ?? 'A program'}
+                        detail={`${ENROLLMENT_STATUS[e.status]} · open their path to sign off steps`}
+                        icon="journey"
+                        last={i === theirs.length - 1}
+                        onPress={() => {
+                          setOpen(null);
+                          router.push(programHref(coven.slug, e.program_id, e.user_id) as never);
+                        }}
+                      />
+                    ))}
+                  </MenuList>
+                </Section>
+              );
+            })()}
             {manageable && grantable.length > 0 && (perms.review || perms.site) && (
               <Section label="Position">
                 <Chips label="Position" options={grantable.map((r) => ({ value: r.id, label: r.name }))} value={rankId} onChange={setRankId} />

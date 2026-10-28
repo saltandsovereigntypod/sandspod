@@ -5,6 +5,7 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../../../../components/Button';
 import { CovenScreen } from '../../../../../components/covens/CovenScreen';
 import { Checklist } from '../../../../../components/covens/Positions';
+import { TrainingToSignOff } from '../../../../../components/covens/programs';
 import { ProposalCards, useQueues } from '../../../../../components/covens/Queue';
 import { Words, useReport } from '../../../../../components/covens/ui';
 import { Card, CheckRow, Field, MenuList, MenuRow, Notice, Section } from '../../../../../components/more/ui';
@@ -17,7 +18,8 @@ import { colors, type } from '../../../../../theme';
 
 const STATUS: Record<string, string> = { approved: 'Approved', declined: 'Declined', withdrawn: 'Withdrawn', pending: 'Waiting' };
 
-// Review: applications to join and requests to rise to a higher position,
+// Review: training to sign off (components/covens/programs.tsx), applications
+// to join and requests to rise to a higher position,
 // and (for the coven's head and leaders) a place freed in a full position,
 // with who is next on its waiting list (components/covens/Queue.tsx).
 export default function Review() {
@@ -117,6 +119,7 @@ export default function Review() {
   return (
     <CovenScreen title="Review" need="review" onRefresh={load}>
       {message && <Notice>{message}</Notice>}
+      <TrainingToSignOff />
       {covenId && coven.perms.review && coven.userId && (
         <MenuList>
           <MenuRow

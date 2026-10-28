@@ -140,6 +140,9 @@
 
   // --- my path -----------------------------------------------------------------
 
+  // The coven's head signs off anyone's training, her own too (coven_head_signs_off).
+  const isHead = () => Boolean(P()?.signsOffAsHead && P().signsOffAsHead(state.perms || {}, Boolean(state.standing?.ok)));
+
   function mine() {
     const mineList = data.enrollments.filter((e) => e.user_id === me() && e.status !== "withdrawn");
     const enrolledIds = new Set(data.enrollments.filter((e) => e.user_id === me()).map((e) => e.program_id));
@@ -150,15 +153,15 @@
     const menteeEnrollments = data.enrollments.filter((e) => mentees.includes(e.user_id) && e.status !== "withdrawn");
     const myMentor = mentorOf(me());
     const K = global.SaltCore?.covens;
-    const who = { userId: me(), mentees, programs: state.perms.programs };
+    const who = { userId: me(), mentees, programs: state.perms.programs, head: isHead() };
     const toSign = P().waitingForMe(data.progress, data.tasks, who);
     const toScore = K?.quiz ? K.quiz.attemptsToScore(data.attempts, who) : [];
     const myUnread = data.unread.filter((u) => u.trainee_id !== me());
     const taskTitle = (id) => data.tasks.find((t) => t.id === id)?.title || "A step";
     const waitingHtml = toSign.length + toScore.length + myUnread.length
       ? `<section class="sp-section"><h2>Waiting for you</h2><ul class="cv-waiting">
-          ${toScore.map((a) => `<li><a href="${esc(link(`score=${a.id}`))}" data-go>Score: ${esc(nameOf(a.user_id))}, ${esc(a.title)}</a> <span class="sp-caption">${esc(K.quiz.scoreLine(a))}</span></li>`).join("")}
-          ${toSign.map((p) => `<li><a href="${esc(link(`program=${p.program_id}&person=${p.user_id}&task=${p.task_id}`))}" data-go>Sign off: ${esc(nameOf(p.user_id))}, ${esc(taskTitle(p.task_id))}</a> <a class="button button--ghost button--small" href="${esc(link(`thread=${p.task_id}&e=${p.enrollment_id}`))}" data-go>Message ${esc(nameOf(p.user_id))}</a></li>`).join("")}
+          ${toScore.map((a) => `<li><a href="${esc(link(`score=${a.id}`))}" data-go>${a.user_id === me() ? `Score your own: ${esc(a.title)}` : `Score: ${esc(nameOf(a.user_id))}, ${esc(a.title)}`}</a> <span class="sp-caption">${esc(K.quiz.scoreLine(a))}</span></li>`).join("")}
+          ${toSign.map((p) => `<li><a href="${esc(link(`program=${p.program_id}&person=${p.user_id}&task=${p.task_id}`))}" data-go>${p.user_id === me() ? `Sign off your own: ${esc(taskTitle(p.task_id))}</a> <span class="sp-caption">As the coven’s head, you can sign off your own training.</span>` : `Sign off: ${esc(nameOf(p.user_id))}, ${esc(taskTitle(p.task_id))}</a> <a class="button button--ghost button--small" href="${esc(link(`thread=${p.task_id}&e=${p.enrollment_id}`))}" data-go>Message ${esc(nameOf(p.user_id))}</a>`}</li>`).join("")}
           ${myUnread.map((u) => `<li><a href="${esc(link(`thread=${u.task_id}&e=${u.enrollment_id}`))}" data-go>${esc(nameOf(u.trainee_id))}: ${esc(taskTitle(u.task_id))}</a> <span class="cv-pill cv-pill--gold">${u.unread} new</span></li>`).join("")}
         </ul></section>`
       : "";
@@ -201,7 +204,8 @@
     const s = summaryOf(e);
     const rows = new Map(data.progress.filter((p) => p.enrollment_id === e.id).map((p) => [p.task_id, p]));
     const passes = data.passes.filter((p) => p.enrollment_id === e.id);
-    const who = { self, mentor: isMentorOf(person), programs: state.perms.programs };
+    const head = isHead();
+    const who = { self, mentor: isMentorOf(person), programs: state.perms.programs, head };
     const mentor = mentorOf(person);
 
     const taskHtml = (t, stageState) => {
@@ -210,6 +214,8 @@
       const holiday = P().holidayName(t.holiday);
       const canWork = self && e.status === "active" && stageState !== "later" && !["approved", "submitted"].includes(st.state) && state.standing.ok;
       const canSign = row?.status === "submitted" && P().canCheck(t, who);
+      // Signed off directly, sent for sign-off or not (sign_off_coven_task).
+      const canSignDirect = row?.status !== "submitted" && P().canSignDirectly(t, row, e, stageState === "later", who);
       const T = global.SaltCore?.covens?.training;
       const sessions = T ? T.logsSessions(t) : false;
       const allLogged = (row?.times_done || 0) >= t.times;
@@ -221,6 +227,7 @@
           ${stageState === "later" ? "" : `${t.instructions ? `<div class="cv-doc">${prose(t.instructions)}</div>` : ""}${studyText(t.resources) ? `<p class="sp-caption"><strong>Resources:</strong> ${prose(studyText(t.resources))}</p>` : ""}${studyButtons(t.resources)}`}
           ${extras}
           ${row?.response ? `<div class="cv-response"><p class="sp-caption">${self ? "What you wrote" : `What ${esc(nameOf(person))} wrote`}</p><div class="cv-doc">${prose(row.response)}</div></div>` : ""}
+          ${st.state === "approved" && row?.checked_by && (t.checked_by !== "self" || row.signed_directly) ? `<p class="sp-caption">Signed off ${row.signed_directly ? "directly " : ""}by ${esc(P().signedOffWords(row.checked_by, e.user_id, nameOf, false))}</p>` : ""}
           ${row?.feedback ? `<p class="cv-feedback"><strong>${row.status === "returned" ? "Sent back" : "Note"}${row.checked_by ? ` from ${esc(nameOf(row.checked_by))}` : ""}:</strong> ${esc(row.feedback)}</p>` : ""}
           ${canWork && sessions && t.response === "text" ? `<form class="sp-section" data-work="${esc(t.id)}">
               <div class="sp-field"><label for="r-${esc(t.id)}">Your answer</label><textarea id="r-${esc(t.id)}" name="response" rows="5" maxlength="8000">${esc(row?.response || "")}</textarea></div>
@@ -233,8 +240,12 @@
                 ${t.response === "text" ? `<button class="button button--ghost button--small" type="submit" data-count="0">Save without sending</button>` : ""}
               </div>${statusLine()}</form>` : ""}
           ${canSign ? `<form class="sp-section" data-sign="${esc(row.id)}">
-              <div class="sp-field"><label for="f-${esc(row.id)}">Note to ${esc(nameOf(person))} (optional)</label><textarea id="f-${esc(row.id)}" name="feedback" rows="2" maxlength="2000"></textarea></div>
+              <div class="sp-field"><label for="f-${esc(row.id)}">${self ? "A note for your record (optional)" : `Note to ${esc(nameOf(person))} (optional)`}</label><textarea id="f-${esc(row.id)}" name="feedback" rows="2" maxlength="2000"></textarea></div>
               <div class="sp-actions"><button class="button button--primary button--small" type="submit" data-approve="1">Sign it off</button><button class="button button--ghost button--small" type="submit" data-approve="0">Send back</button></div>${statusLine()}</form>` : ""}
+          ${canSignDirect ? `<form class="sp-section" data-sign-direct="${esc(t.id)}">
+              <div class="sp-field"><label for="d-${esc(t.id)}">${self ? "A note for your record (optional)" : `Note to ${esc(nameOf(person))} (optional)`}</label><textarea id="d-${esc(t.id)}" name="feedback" rows="2" maxlength="2000"></textarea></div>
+              <div class="sp-actions"><button class="button button--ghost button--small" type="submit">${self ? "Sign off my own step" : "Sign it off"}</button></div>
+              <p class="sp-caption">${self ? "Signed off directly, as the coven’s head. It’s kept that way." : `Signs it off now, without waiting for ${esc(nameOf(person))} to send it. It’s kept that way.`}</p>${statusLine()}</form>` : ""}
         </div>`;
     };
 
@@ -250,12 +261,12 @@
             <p>${s.tasksLeft ? `${s.tasksLeft} task${s.tasksLeft === 1 ? "" : "s"} still to be signed off.` : "Every task is signed off."}${s.daysLeft ? ` At least ${s.daysLeft} more day${s.daysLeft === 1 ? "" : "s"} in this stage.` : ""}</p>
             ${canPassIt ? `<form data-pass><div class="sp-field"><label for="pass-note">A note for ${self ? "your record" : esc(nameOf(person))} (optional)</label><input id="pass-note" name="note" maxlength="2000" /></div>
               <div class="sp-actions">${s.ready ? `<button class="button button--primary button--small" type="submit">${index === stages.length - 1 ? "Confirm they’ve finished" : "Confirm the stage is passed"}</button>` : ""}
-              ${state.perms.programs && !self && !s.ready ? `<button class="button button--ghost button--small" type="submit" data-override>Pass the stage early</button>` : ""}</div>${statusLine()}</form>` : ""}
+              ${(head || (state.perms.programs && !self)) && !s.ready ? `<button class="button button--ghost button--small" type="submit" data-override>Pass the stage early</button>` : ""}</div>${statusLine()}</form>` : ""}
           </div>` : ""}`;
       const label = `Stage ${index + 1}: ${stage.title}`;
       const wanted = params().get("task") && stage.tasks.some((t) => t.id === params().get("task"));
       if (stageState === "current") return `<section class="sp-section cv-stage cv-stage--current"><h3>${esc(label)} <span class="cv-pill cv-pill--gold">Now</span></h3>${body}</section>`;
-      return `<details class="sp-details cv-stage cv-stage--${stageState}"${wanted ? " open" : ""}><summary>${esc(label)}${pass ? ` · passed ${esc(fmtDate(pass.passed_at))}${pass.passed_by ? ` (${esc(nameOf(pass.passed_by))})` : ""}` : stageState === "later" ? " · later" : ""}</summary>${body}${pass?.note ? `<p class="sp-caption">“${esc(pass.note)}”</p>` : ""}</details>`;
+      return `<details class="sp-details cv-stage cv-stage--${stageState}"${wanted ? " open" : ""}><summary>${esc(label)}${pass ? ` · passed ${esc(fmtDate(pass.passed_at))}${pass.passed_by ? ` (${esc(P().signedOffWords(pass.passed_by, e.user_id, nameOf, stage.passed_by === "self"))})` : ""}` : stageState === "later" ? " · later" : ""}</summary>${body}${pass?.note ? `<p class="sp-caption">“${esc(pass.note)}”</p>` : ""}</details>`;
     };
 
     const award = prog.award_rank_id ? `Finishing it makes ${self ? "you" : esc(nameOf(person))} ${esc(rankName(prog.award_rank_id))}.` : "";
@@ -271,6 +282,7 @@
       </header>
       ${e.status === "completed" ? `<p class="sp-notice">✦ Finished ${esc(fmtDate(e.completed_at))}.</p>` : ""}
       ${e.status === "paused" ? `<p class="sp-notice">This program is paused for now.</p>` : ""}
+      ${self && head && e.status === "active" ? `<p class="sp-notice">${esc(P().HEAD_OWN_TRAINING)}</p>` : ""}
       ${stages.map(stageHtml).join("")}
       <div class="sp-actions" data-enrollment-actions>
         ${state.perms.programs && !self && e.status === "active" ? `<button class="button button--ghost button--small" type="button" data-status-to="paused">Pause</button>` : ""}
@@ -295,6 +307,13 @@
         event.preventDefault();
         const approve = event.submitter?.dataset.approve === "1";
         const saved = await UI.busy(form, form.querySelector("[data-status]"), () => D.checkTask(form.dataset.sign, approve, form.elements.feedback.value));
+        if (saved) reloadAndDraw();
+      })
+    );
+    pane.querySelectorAll("[data-sign-direct]").forEach((form) =>
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const saved = await UI.busy(form, form.querySelector("[data-status]"), () => D.signOffTask(e.id, form.dataset.signDirect, form.elements.feedback.value));
         if (saved) reloadAndDraw();
       })
     );
@@ -665,5 +684,46 @@
     draft = null;
   }
 
-  global.CovenPrograms = { mount, unmount };
+  /**
+   * Training to sign off, for the top of Review (as the app's Review): work
+   * sent for sign-off, stages ready to pass and written answers to score, for
+   * those this person may sign off (the head's own too). Each opens the right place.
+   */
+  async function trainingToSignOff(el, covenState, tools) {
+    const Pc = P();
+    const Q = global.SaltCore?.covens?.quiz;
+    if (!el || !Pc?.trainingToSignOff || !covenState.perms.member) return;
+    const covenId = covenState.coven.id;
+    const [programs, enrollments, progress, mentors, attempts] = await Promise.all([
+      D.programs(covenId).catch(() => []),
+      D.enrollments(covenId).catch(() => []),
+      D.progress(covenId).catch(() => []),
+      D.mentors(covenId).catch(() => []),
+      D.attempts ? D.attempts(covenId).catch(() => []) : Promise.resolve([])
+    ]);
+    const ids = programs.map((p) => p.id);
+    const [stages, tasks] = ids.length ? await Promise.all([D.programStages(ids).catch(() => []), D.programTasks(ids).catch(() => [])]) : [[], []];
+    const meId = covenState.context.user?.id;
+    const head = Pc.signsOffAsHead(covenState.perms, Boolean(covenState.standing?.ok));
+    const who = { userId: meId, mentees: Pc.menteesOf(mentors, meId), programs: covenState.perms.programs, head };
+    const waiting = Pc.trainingToSignOff({ enrollments, stages, tasks, progress }, who);
+    const toScore = Q ? Q.attemptsToScore(attempts, who) : [];
+    await UI.loadNames(covenState.context, [...waiting.tasks.map((p) => p.user_id), ...waiting.stages.map((s) => s.enrollment.user_id), ...toScore.map((a) => a.user_id)]);
+    const person = (id) => (id === meId ? "You" : UI.nameOf(covenState.context, id));
+    const title = (id) => programs.find((p) => p.id === id)?.title || "A program";
+    const taskTitle = (id) => tasks.find((t) => t.id === id)?.title || "A step";
+    const base = tools.covenHref("programs");
+    const pathHref = (programId, userId, taskId) => `${base}&program=${encodeURIComponent(programId)}&person=${encodeURIComponent(userId)}${taskId ? `&task=${encodeURIComponent(taskId)}` : ""}`;
+    const rows = [
+      ...waiting.tasks.map((p) => `<li><a href="${esc(pathHref(p.program_id, p.user_id, p.task_id))}" data-tab="programs">Sign off: ${esc(person(p.user_id))}, ${esc(taskTitle(p.task_id))}</a> <span class="sp-caption">${esc(title(p.program_id))} · sent for sign-off</span></li>`),
+      ...waiting.stages.map(({ enrollment, stage, last }) => `<li><a href="${esc(pathHref(enrollment.program_id, enrollment.user_id))}" data-tab="programs">${last ? "Confirm they’ve finished" : "Pass the stage"}: ${esc(person(enrollment.user_id))}, ${esc(stage.title)}</a> <span class="sp-caption">${esc(title(enrollment.program_id))} · every task signed off</span></li>`),
+      ...toScore.map((a) => `<li><a href="${esc(`${base}&score=${encodeURIComponent(a.id)}`)}" data-tab="programs">Score: ${esc(person(a.user_id))}, ${esc(a.title)}</a> <span class="sp-caption">Written answers · ${esc(Q.scoreLine(a))}</span></li>`)
+    ];
+    el.innerHTML = `<section class="sp-section" data-training-to-sign><h2>Training to sign off</h2>
+        ${head ? `<p class="sp-caption">You’re the coven’s head, so you can sign off anyone’s training, your own included.</p>` : ""}
+        ${rows.length ? `<ul class="cv-waiting">${rows.join("")}</ul>` : `<p class="sp-empty">Nothing is waiting for sign-off. You can also sign off any step from someone’s path: Members, then their name, then Training.</p>`}
+      </section>`;
+  }
+
+  global.CovenPrograms = { mount, unmount, trainingToSignOff };
 })(window);

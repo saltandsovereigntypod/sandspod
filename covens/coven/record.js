@@ -38,6 +38,14 @@
 
   // --- one member's record, as its keepers read it and as the member reads their own ---
 
+  // One person's path through a program (where steps are signed off), on the Initiation & training tab.
+  const pathHref = (study, own) => {
+    const q = new URLSearchParams(global.location.search);
+    const out = new URLSearchParams({ c: q.get("c") || "", tab: "programs", program: study.program_id });
+    if (!own) out.set("person", study.user_id);
+    return `${global.location.pathname}?${out.toString()}`;
+  };
+
   function sectionsHtml(record, state, { marks, logs, showAll } = {}) {
     const r = R();
     const nameOf = (id) => UI.nameOf(state.context, id);
@@ -72,6 +80,7 @@
         <span class="cv-meta">${pill(s.kind === "initiation" ? "Initiation" : "Training")}${r.studyStalled(s, now) ? pill("Stalled", "warn") : ""}${s.waiting ? pill("Waiting for sign-off", "gold") : ""}</span>
         <span class="sp-row__detail">${esc(r.studyLine(s))}</span>
         <span class="sp-row__detail">Last moved ${esc(r.agoLabel(s.last_activity || s.started_at, now))} · began ${esc(day(s.started_at))}</span>
+        <span class="sp-actions"><a class="button button--ghost button--small" href="${esc(pathHref(s, record.own))}" data-tab="programs">Open the path</a></span>
       </span></div>`;
     const checkins = (list, hideMentor) =>
       list.length
@@ -93,7 +102,7 @@
         ${rows.length ? `<div class="sp-list">${shown.map(ritualCard).join("")}</div>` : `<p class="sp-caption">No rituals since joining.</p>`}
         ${rows.length > 12 ? `<div class="sp-actions"><button class="button button--ghost button--small" type="button" data-show-all>${showAll ? "Show fewer" : `Show all ${rows.length}`}</button></div>` : ""}
       </section>
-      <section class="sp-section"><h2>Studies</h2>
+      <section class="sp-section"><h2>Training</h2>
         ${record.studies.length ? `<div class="sp-list">${record.studies.map(study).join("")}</div>` : `<p class="sp-caption">Not in any initiation or training.</p>`}
       </section>
       <section class="sp-section"><h2>Mentoring</h2>

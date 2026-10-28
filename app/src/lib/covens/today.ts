@@ -19,6 +19,8 @@ export type CovenTodayInput = {
   memberships: Membership[];
   /** Coven ids where this person manages programs (or is the founder). */
   programCovens: string[];
+  /** Coven ids this person heads (signing off their own training there too). */
+  headCovens?: string[];
   rituals: Ritual[];
   steps: Step[];
   rsvps: Rsvp[];
@@ -114,7 +116,7 @@ export function covenTodayItems(input: CovenTodayInput, now = new Date()): Coven
   // Work waiting for you to sign off, per coven.
   for (const c of input.covens) {
     const mentees = menteesOf(input.mentors.filter((m) => m.coven_id === c.id), userId);
-    const waiting = waitingForMe(input.progress.filter((p) => p.coven_id === c.id), input.tasks, { userId, mentees, programs: input.programCovens.includes(c.id) });
+    const waiting = waitingForMe(input.progress.filter((p) => p.coven_id === c.id), input.tasks, { userId, mentees, programs: input.programCovens.includes(c.id), head: !!input.headCovens?.includes(c.id) });
     if (waiting.length) out.push({ kind: 'review', covenSlug: c.slug, covenName: c.name, title: `${waiting.length} ${waiting.length === 1 ? 'piece' : 'pieces'} of work to sign off`, detail: c.name, target: { programs: true } });
   }
 

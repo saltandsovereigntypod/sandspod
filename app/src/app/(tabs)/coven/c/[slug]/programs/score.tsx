@@ -11,7 +11,7 @@ import { Card, Field, Notice } from '../../../../../../components/more/ui';
 import * as api from '../../../../../../lib/covens/api';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
 import { errorMessage } from '../../../../../../lib/covens/model';
-import { mentorOf } from '../../../../../../lib/covens/programs';
+import { HEAD_OWN_TRAINING, mentorOf, signsOffAsHead } from '../../../../../../lib/covens/programs';
 import { ATTEMPT_STATUS, isWritten, passes, scoresPayload } from '../../../../../../lib/covens/quiz';
 import { usePrograms } from '../../../../../../lib/covens/usePrograms';
 import { colors, fonts, type } from '../../../../../../theme';
@@ -43,7 +43,10 @@ export default function ScoreTest() {
       </CovenScreen>
     );
   }
-  const mayScore = attempt.user_id !== coven.userId && (coven.perms.programs || mentorOf(coven.mentors, attempt.user_id) === coven.userId);
+  // The coven's head scores anyone's test, her own too.
+  const head = signsOffAsHead(coven.perms, coven.standing.ok);
+  const own = attempt.user_id === coven.userId;
+  const mayScore = head || (!own && (coven.perms.programs || mentorOf(coven.mentors, attempt.user_id) === coven.userId));
   const open = attempt.status === 'submitted' || attempt.status === 'scored';
   const scores =
     typed ??
@@ -87,7 +90,8 @@ export default function ScoreTest() {
         {passes(total, attempt.max, attempt.pass_percent) ? '· passes' : '· not yet a pass'}
       </Text>
       <Text style={type.caption}>Choice questions: {attempt.auto_score} points, scored when handed in.</Text>
-      {!mayScore && <Notice>Only their mentor or those who manage the coven’s programs score this test.</Notice>}
+      {!mayScore && <Notice>Only their mentor, those who manage the coven’s programs or the coven’s head score this test.</Notice>}
+      {mayScore && own && <Notice>{HEAD_OWN_TRAINING}</Notice>}
 
       {attempt.questions.map((q, i) => {
         if (!isWritten(q)) return null;

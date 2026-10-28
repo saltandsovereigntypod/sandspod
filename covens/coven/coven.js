@@ -125,21 +125,28 @@
   async function loadProgramWork() {
     const P = global.SaltCore?.covens?.programs;
     const K = global.SaltCore?.covens;
-    const [mentors, progress, attempts, unread] = await Promise.all([
+    const [mentors, progress, attempts, unread, enrollments] = await Promise.all([
       D.mentors(state.coven.id).catch(() => []),
       D.progress(state.coven.id).catch(() => []),
       D.attempts ? D.attempts(state.coven.id) : Promise.resolve([]),
-      D.programUnread ? D.programUnread(state.coven.id) : Promise.resolve([])
+      D.programUnread ? D.programUnread(state.coven.id) : Promise.resolve([]),
+      D.enrollments(state.coven.id).catch(() => [])
     ]);
     state.mentors = mentors;
     state.programProgress = progress;
-    const submitted = progress.filter((p) => p.status === "submitted" && p.user_id !== state.context.user?.id);
-    const tasks = submitted.length ? await D.programTasks([...new Set(submitted.map((p) => p.program_id))]).catch(() => []) : [];
-    const who = P ? { userId: state.context.user?.id, mentees: P.menteesOf(mentors, state.context.user?.id), programs: state.perms.programs } : null;
-    // Work to sign off, tests to score, and new messages on training steps.
-    state.waitingForMe = P
-      ? P.waitingForMe(submitted, tasks, who).length + (K?.quiz ? K.quiz.attemptsToScore(attempts, who).length : 0) + (K?.training ? K.training.unreadTotal(unread) : 0)
-      : 0;
+    // The coven's head signs off her own work too.
+    const me = state.context.user?.id;
+    const head = Boolean(P?.signsOffAsHead && P.signsOffAsHead(state.perms || {}, Boolean(state.standing?.ok)));
+    const others = (id) => id !== me || head;
+    const submitted = progress.filter((p) => p.status === "submitted" && others(p.user_id));
+    const active = enrollments.filter((e) => e.status === "active" && others(e.user_id));
+    const ids = [...new Set([...submitted.map((p) => p.program_id), ...active.map((e) => e.program_id)])];
+    const [stages, tasks] = ids.length ? await Promise.all([D.programStages(ids).catch(() => []), D.programTasks(ids).catch(() => [])]) : [[], []];
+    const who = P ? { userId: me, mentees: P.menteesOf(mentors, me), programs: state.perms.programs, head } : null;
+    // Work to sign off, stages ready to pass and tests to score (listed at the top of Review too), and new messages on training steps.
+    const waiting = P?.trainingToSignOff ? P.trainingToSignOff({ enrollments: active, stages, tasks, progress }, who) : { tasks: [], stages: [] };
+    state.toSignOff = P ? waiting.tasks.length + waiting.stages.length + (K?.quiz ? K.quiz.attemptsToScore(attempts, who).length : 0) : 0;
+    state.waitingForMe = state.toSignOff + (K?.training ? K.training.unreadTotal(unread) : 0);
   }
 
   /** Reload everything and redraw the current tab (after joining, signing…). */
@@ -165,7 +172,7 @@
         { key: "altar", label: "Altars" },
         { key: "book", label: "Book of Shadows" },
         { key: "petitions", label: "Petitions" },
-        { key: "programs", label: "Initiation & training", count: state.waitingForMe || 0 },
+        { key: "programs", label: "Initiation & training", count: state.waitingForMe || 0, countLabel: state.toSignOff ? `${state.toSignOff} to sign off` : "" },
         { key: "members", label: "Members" }
       );
       if (global.CovenRecordAccess?.seesRecord(state)) list.push({ key: "record", label: "Members’ record" });
@@ -175,7 +182,7 @@
       if (lineage && (lineage.may_found || lineage.may_decide || lineage.mother || lineage.daughters?.length)) list.push({ key: "lineage", label: "Daughter covens", count: lineage.pending_requests || 0 });
     }
     if (perms.member && state.membership?.status === "active") list.push({ key: "path", label: "My standing", count: state.unsigned.length });
-    if (perms.review || perms.site) list.push({ key: "review", label: "Review", count: state.pending.applications + state.pending.advancements });
+    if (perms.review || perms.site) list.push({ key: "review", label: "Review", count: state.pending.applications + state.pending.advancements + (state.toSignOff || 0) });
     if (perms.manage || perms.site) list.push({ key: "manage", label: "Manage" });
     return list;
   }
@@ -187,7 +194,7 @@
 
   function tabBar(active) {
     return `<nav class="cv-tabs" aria-label="${esc(state.coven.name)}">${tabs()
-      .map((t) => `<a class="cv-tab" href="${esc(covenHref(t.key))}" data-tab="${t.key}"${t.key === active ? ' aria-current="page"' : ""}>${esc(t.label)}${t.count ? `<span class="cv-count" aria-label="${t.count} waiting">${t.count}</span>` : ""}</a>`)
+      .map((t) => `<a class="cv-tab" href="${esc(covenHref(t.key))}" data-tab="${t.key}"${t.key === active ? ' aria-current="page"' : ""}>${esc(t.label)}${t.countLabel ? ` <span class="sp-muted">· ${esc(t.countLabel)}</span>` : ""}${t.count ? `<span class="cv-count" aria-label="${t.count} waiting">${t.count}</span>` : ""}</a>`)
       .join("")}</nav>`;
   }
 

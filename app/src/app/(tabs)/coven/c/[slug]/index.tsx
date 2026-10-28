@@ -175,7 +175,7 @@ export default function CovenHome() {
                 <MenuRow
                   label="Initiation & training"
                   detail={
-                    [coven.waitingForMe ? `${coven.waitingForMe} waiting for you` : '', coven.trainingUnread ? `${coven.trainingUnread} new message${coven.trainingUnread === 1 ? '' : 's'}` : '']
+                    [coven.waitingForMe ? `${coven.waitingForMe} to sign off` : '', coven.trainingUnread ? `${coven.trainingUnread} new message${coven.trainingUnread === 1 ? '' : 's'}` : '']
                       .filter(Boolean)
                       .join(' · ') || 'Your path, and those you mentor'
                   }
@@ -305,13 +305,15 @@ function LeaderRows() {
   const coven = useCoven();
   const { review, manage, site } = coven.perms;
   const waiting = usePendingDetail(review ? coven.snapshot?.coven.id : null);
-  const count = (waiting?.applications ?? 0) + (waiting?.advancements ?? 0);
+  // Training to sign off is listed at the top of Review too.
+  const training = coven.waitingForMe;
+  const count = (waiting?.applications ?? 0) + (waiting?.advancements ?? 0) + training;
   return (
     <>
       {(review || site) && (
         <MenuRow
           label="Review"
-          detail={pendingLabel(waiting) || 'Applications and requests to advance'}
+          detail={[training ? `${training} to sign off` : '', pendingLabel(waiting)].filter(Boolean).join(' · ') || 'Applications, requests to advance and training to sign off'}
           icon="offer"
           count={count}
           last={!(manage || site)}

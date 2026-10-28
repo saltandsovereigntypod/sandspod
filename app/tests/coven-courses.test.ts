@@ -221,6 +221,8 @@ test('scoring: points within each answer’s worth, every written answer before 
   const list = [attempt(), attempt({ id: 'a2', user_id: 'other' }), attempt({ id: 'a3', status: 'passed' }), attempt({ id: 'a4', user_id: 'me' })];
   assert.deepEqual(attemptsToScore(list, { userId: 'me', mentees: ['rowan'], programs: false }).map((a) => a.id), ['a1']);
   assert.deepEqual(attemptsToScore(list, { userId: 'me', mentees: [], programs: true }).map((a) => a.id), ['a1', 'a2']);
+  // The coven's head scores her own too.
+  assert.deepEqual(attemptsToScore(list, { userId: 'me', mentees: [], programs: true, head: true }).map((a) => a.id), ['a1', 'a2', 'a4']);
 });
 
 test('writing tests: the editor’s checks mirror the database’s', () => {

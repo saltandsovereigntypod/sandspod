@@ -83,6 +83,8 @@ export type TaskProgress = {
   checked_by: string | null;
   checked_at: string | null;
   feedback: string | null;
+  /** Signed off without being sent for sign-off first (sign_off_coven_task). */
+  signed_directly?: boolean;
   updated_at?: string;
   /** Practice logged session by session ({ on, minutes, note }); see training.ts. */
   sessions?: unknown;
@@ -153,15 +155,41 @@ export function menteesOf(mentors: Mentorship[], userId: string | null): string[
   return mentors.filter((m) => m.mentor_id === userId).map((m) => m.user_id);
 }
 
+/** What the coven's head is told on her own training. */
+export const HEAD_OWN_TRAINING = 'You’re the coven’s head, so you can sign off your own steps.';
+
+/**
+ * Whether this person signs off training as the coven's head (mirrors
+ * coven_head_signs_off): its founder, or the head of a coven above it, in
+ * good standing there. The head may sign off anyone's training, her own too.
+ */
+export function signsOffAsHead(perms: { founder: boolean; ancestor?: boolean }, standingOk: boolean): boolean {
+  return (perms.founder || !!perms.ancestor) && standingOk;
+}
+
+type Who = { self: boolean; mentor: boolean; programs: boolean; head?: boolean };
+
+/**
+ * Who signed something off, said honestly: the head signing off her own work
+ * (where it wasn't hers to sign as the trainee) reads as such.
+ */
+export function signedOffWords(by: string | null | undefined, trainee: string, nameOf: (id: string) => string, theirsToSign: boolean): string {
+  if (!by) return '';
+  const name = nameOf(by);
+  return by === trainee && !theirsToSign ? `${name}, the coven’s head (their own training)` : name;
+}
+
 /** Whether this person may sign off that task for that member (mirrors coven_can_check). */
-export function canCheck(task: Pick<ProgramTask, 'checked_by'>, who: { self: boolean; mentor: boolean; programs: boolean }): boolean {
+export function canCheck(task: Pick<ProgramTask, 'checked_by'>, who: Who): boolean {
+  if (who.head) return true;
   if (who.self) return false;
   if (who.programs) return true;
   return who.mentor && task.checked_by !== 'manager';
 }
 
 /** Whether this person may confirm that stage (mirrors pass_coven_stage). */
-export function canPass(stage: Pick<ProgramStage, 'passed_by'>, who: { self: boolean; mentor: boolean; programs: boolean }): boolean {
+export function canPass(stage: Pick<ProgramStage, 'passed_by'>, who: Who): boolean {
+  if (who.head) return true;
   if (who.programs && !who.self) return true;
   if (stage.passed_by === 'mentor') return who.mentor && !who.self;
   if (stage.passed_by === 'self') return who.self;
@@ -248,14 +276,47 @@ export function enrollmentSummary(enrollment: Enrollment, outline: StageWithTask
   };
 }
 
-/** Work waiting for this person to sign off: their mentees', or everyone's for program managers. */
-export function waitingForMe(progress: TaskProgress[], tasks: ProgramTask[], who: { userId: string | null; mentees: string[]; programs: boolean }): TaskProgress[] {
+/** Work waiting for this person to sign off: their mentees', or everyone's for program managers (the head's own too). */
+export function waitingForMe(progress: TaskProgress[], tasks: ProgramTask[], who: { userId: string | null; mentees: string[]; programs: boolean; head?: boolean }): TaskProgress[] {
   return progress.filter((p) => {
-    if (p.status !== 'submitted' || p.user_id === who.userId) return false;
+    if (p.status !== 'submitted' || (p.user_id === who.userId && !who.head)) return false;
     const task = tasks.find((t) => t.id === p.task_id);
     if (!task) return false;
-    return canCheck(task, { self: false, mentor: who.mentees.includes(p.user_id), programs: who.programs });
+    return canCheck(task, { self: p.user_id === who.userId, mentor: who.mentees.includes(p.user_id), programs: who.programs, head: who.head });
   });
+}
+
+/** Whether this person may sign off that task directly, sent for sign-off or not (mirrors sign_off_coven_task). */
+export function canSignDirectly(task: Pick<ProgramTask, 'checked_by'>, row: Pick<TaskProgress, 'status'> | undefined, enrollment: Pick<Enrollment, 'status'>, later: boolean, who: Who): boolean {
+  return enrollment.status === 'active' && !later && row?.status !== 'approved' && canCheck(task, who);
+}
+
+export type ReadyStage = { enrollment: Enrollment; stage: StageWithTasks; last: boolean };
+
+/**
+ * Training waiting for this person: work sent for sign-off and stages ready
+ * to pass, for those they may sign off (their mentees', everyone's for
+ * program managers and the head; the head's own too). Oldest first.
+ */
+export function trainingToSignOff(
+  input: { enrollments: Enrollment[]; stages: ProgramStage[]; tasks: ProgramTask[]; progress: TaskProgress[] },
+  who: { userId: string | null; mentees: string[]; programs: boolean; head?: boolean },
+  now = Date.now(),
+): { tasks: TaskProgress[]; stages: ReadyStage[] } {
+  const tasks = waitingForMe(input.progress, input.tasks, who).sort((a, b) => (a.submitted_at ?? '').localeCompare(b.submitted_at ?? ''));
+  const stages: ReadyStage[] = [];
+  for (const enrollment of input.enrollments) {
+    if (enrollment.status !== 'active' || (enrollment.user_id === who.userId && !who.head)) continue;
+    const outline = programOutline(enrollment.program_id, input.stages, input.tasks);
+    const s = enrollmentSummary(enrollment, outline, input.progress, now);
+    if (!s.ready || !s.stage) continue;
+    const self = enrollment.user_id === who.userId;
+    if (!canPass(s.stage, { self, mentor: who.mentees.includes(enrollment.user_id), programs: who.programs, head: who.head })) continue;
+    // A stage the trainee confirms themselves isn't anyone else's to wait on.
+    if (s.stage.passed_by === 'self' && !self) continue;
+    stages.push({ enrollment, stage: s.stage, last: s.stageIndex === s.stageCount - 1 });
+  }
+  return { tasks, stages };
 }
 
 /** Who a program is assigned to, in words. */
