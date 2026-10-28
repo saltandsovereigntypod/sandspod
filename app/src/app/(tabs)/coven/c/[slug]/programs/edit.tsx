@@ -1,10 +1,10 @@
-import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 import { Sheet } from '../../../../../../components/altar/Sheet';
 import { Button } from '../../../../../../components/Button';
-import { CovenScreen } from '../../../../../../components/covens/CovenScreen';
+import { covenHref, CovenScreen } from '../../../../../../components/covens/CovenScreen';
 import { Card, CheckRow, Chips, Field, MenuList, MenuRow, Notice, Section } from '../../../../../../components/more/ui';
 import * as api from '../../../../../../lib/covens/api';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
@@ -23,6 +23,7 @@ import {
   stagesPayload,
   TASK_KINDS,
   validateProgram,
+  type DraftRef,
   type DraftStage,
   type DraftTask,
   type ProgramKind,
@@ -39,8 +40,16 @@ type Head = { kind: ProgramKind; title: string; summary: string; description: st
 // one; ?kind= starts a blank initiation or training.
 export default function EditProgram() {
   const params = useLocalSearchParams<{ id?: string; from?: string; kind?: string }>();
-  const { data, status } = usePrograms();
+  const { data, status, reload } = usePrograms();
   const coven = useCoven();
+  // Back from Lessons and tests: what was written there can be added here.
+  const seen = useRef(false);
+  useFocusEffect(
+    useCallback(() => {
+      if (seen.current) void reload();
+      seen.current = true;
+    }, [reload]),
+  );
   if (status === 'loading' || !coven.snapshot) {
     return (
       <CovenScreen title="Program" need="member">
@@ -57,7 +66,7 @@ function start(data: ProgramData, id: string | null, from: string | null, kind: 
     if (!p) return null;
     return {
       head: { kind: p.kind, title: p.title, summary: p.summary ?? '', description: p.description ?? '', award_rank_id: p.award_rank_id, self_enroll: p.self_enroll, template_id: p.template_id },
-      stages: draftFromOutline(programOutline(p.id, data.stages, data.tasks)),
+      stages: draftFromOutline(programOutline(p.id, data.stages, data.tasks), { links: data.links, docs: data.docs, quizzes: data.quizzes }),
     };
   }
   const tpl = from ? data.templates.find((t) => t.id === from) : null;
@@ -139,6 +148,7 @@ function Editor({ data, id, from, kind }: { data: ProgramData; id: string | null
   return (
     <CovenScreen title={id ? 'Edit the program' : 'A new program'}>
       {!!head_.template_id && !id && <Notice>Starting from a ready-made program. Change anything you like; it’s saved as a draft until you open it.</Notice>}
+      <Button label="Lessons and tests" variant="text" onPress={() => router.push(covenHref(coven.slug, 'programs/library'))} />
       <Chips label="Kind" options={PROGRAM_KINDS} value={head_.kind} onChange={(k) => setHead({ ...head_, kind: k })} />
       <Field label="Title" value={head_.title} onChangeText={(title) => setHead({ ...head_, title })} maxLength={120} />
       <Field label="In a line" value={head_.summary} onChangeText={(summary) => setHead({ ...head_, summary })} maxLength={500} />
@@ -221,7 +231,7 @@ function Editor({ data, id, from, kind }: { data: ProgramData; id: string | null
       {message && <Notice>{message}</Notice>}
 
       <Sheet visible={!!task} title={task?.title || 'A task'} onClose={() => setEditing(null)}>
-        {task && editing && <TaskEditor task={task} onChange={(next) => setTask(editing.stage, editing.task, next)} onMove={(by) => {
+        {task && editing && <TaskEditor task={task} library={data} onChange={(next) => setTask(editing.stage, editing.task, next)} onMove={(by) => {
           setStages((list) => list.map((s, j) => (j === editing.stage ? { ...s, tasks: move(s.tasks, editing.task, by) } : s)));
           setEditing({ ...editing, task: Math.max(0, Math.min(stages[editing.stage].tasks.length - 1, editing.task + by)) });
         }} onRemove={() => {
@@ -233,7 +243,19 @@ function Editor({ data, id, from, kind }: { data: ProgramData; id: string | null
   );
 }
 
-function TaskEditor({ task, onChange, onMove, onRemove }: { task: DraftTask; onChange: (next: Partial<DraftTask>) => void; onMove: (by: number) => void; onRemove: () => void }) {
+function TaskEditor({
+  task,
+  library,
+  onChange,
+  onMove,
+  onRemove,
+}: {
+  task: DraftTask;
+  library: Pick<ProgramData, 'docs' | 'quizzes'>;
+  onChange: (next: Partial<DraftTask>) => void;
+  onMove: (by: number) => void;
+  onRemove: () => void;
+}) {
   const coven = useCoven();
   const [allCalendars, setAllCalendars] = useState(false);
   const own = new Set(coven.snapshot?.coven.practice_traditions ?? []);
@@ -245,6 +267,7 @@ function TaskEditor({ task, onChange, onMove, onRemove }: { task: DraftTask; onC
       <Field label="Instructions" value={task.instructions ?? ''} onChangeText={(instructions) => onChange({ instructions })} multiline maxLength={8000} />
       <Field label="Resources (books, links, people to ask)" value={task.resources ?? ''} onChangeText={(resources) => onChange({ resources })} multiline maxLength={4000} />
       <StudyLinker resources={task.resources ?? ''} onChange={(resources) => onChange({ resources })} />
+      <TaskTeaching task={task} library={library} onChange={onChange} />
       <Field label="Times to do it" value={String(task.times)} onChangeText={(v) => onChange({ times: Math.max(1, Math.min(400, Number(v.replace(/[^0-9]/g, '')) || 1)) })} keyboardType="number-pad" maxLength={3} />
       <Field
         label="About how long (minutes)"
@@ -285,6 +308,87 @@ const styles = StyleSheet.create({
   stageHead: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   holidays: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, borderRadius: radius.tile },
 });
+
+/** A task's lessons (in order) and its test, from the coven's own. */
+function TaskTeaching({ task, library, onChange }: { task: DraftTask; library: Pick<ProgramData, 'docs' | 'quizzes'>; onChange: (next: Partial<DraftTask>) => void }) {
+  const [adding, setAdding] = useState(false);
+  const [choosing, setChoosing] = useState(false);
+  const [find, setFind] = useState('');
+  if (task.docs === undefined && task.quiz === undefined && !library.docs.length && !library.quizzes.length) {
+    return <Text style={type.caption}>Lessons and tests are added from the coven’s own, under Lessons and tests.</Text>;
+  }
+  const docs = task.docs ?? [];
+  const has = new Set(docs.map((d) => d.id ?? d.source_id));
+  const setDocs = (next: DraftRef[]) => onChange({ docs: next });
+  const moveDoc = (i: number, by: number) => {
+    const to = i + by;
+    if (to < 0 || to >= docs.length) return;
+    const list = [...docs];
+    [list[i], list[to]] = [list[to], list[i]];
+    setDocs(list);
+  };
+  const q = find.trim().toLowerCase();
+  return (
+    <View style={styles.gap}>
+      <Text style={type.eyebrow}>Lessons to read</Text>
+      {!docs.length && <Text style={type.caption}>None yet.</Text>}
+      {docs.map((d, i) => (
+        <View key={`${d.id ?? d.source_id}-${i}`} style={styles.row}>
+          <Text style={[type.body, styles.flex]}>
+            {i + 1}. {d.title}
+          </Text>
+          <Button label="Up" variant="text" onPress={() => moveDoc(i, -1)} />
+          <Button label="Down" variant="text" onPress={() => moveDoc(i, 1)} />
+          <Button label="Remove" variant="text" onPress={() => setDocs(docs.filter((_, j) => j !== i))} />
+        </View>
+      ))}
+      <Button label={adding ? 'Done adding lessons' : 'Add a lesson'} variant="outline" onPress={() => setAdding((v) => !v)} />
+      {adding && (
+        <View style={styles.gap}>
+          <Field label="Find a lesson" value={find} onChangeText={setFind} autoCapitalize="none" />
+          {!library.docs.length && <Text style={type.caption}>The coven has no lessons yet. Write one under Lessons and tests.</Text>}
+          {library.docs
+            .filter((d) => !q || d.title.toLowerCase().includes(q))
+            .slice(0, 40)
+            .map((d) => (
+              <CheckRow
+                key={d.id}
+                label={d.title}
+                value={has.has(d.id)}
+                onChange={(on) => setDocs(on ? [...docs, { id: d.id, title: d.title }] : docs.filter((x) => x.id !== d.id))}
+              />
+            ))}
+        </View>
+      )}
+      <Text style={type.eyebrow}>Test</Text>
+      <Text style={type.caption}>{task.quiz ? `${task.quiz.title}. Passing it finishes this step.` : 'No test on this step.'}</Text>
+      <Button label={choosing ? 'Close' : task.quiz ? 'Change the test' : 'Add a test'} variant="outline" onPress={() => setChoosing((v) => !v)} />
+      {choosing && (
+        <MenuList>
+          <MenuRow
+            label="No test"
+            onPress={() => {
+              onChange({ quiz: null });
+              setChoosing(false);
+            }}
+          />
+          {library.quizzes.map((x, i) => (
+            <MenuRow
+              key={x.id}
+              label={x.title}
+              detail={`${x.questions.length} questions · ${x.pass_percent}% to pass${task.quiz?.id === x.id ? ' · on this step' : ''}`}
+              last={i === library.quizzes.length - 1}
+              onPress={() => {
+                onChange({ quiz: { id: x.id, title: x.title } });
+                setChoosing(false);
+              }}
+            />
+          ))}
+        </MenuList>
+      )}
+    </View>
+  );
+}
 
 /** Links a page of the coven's Book (its Study material first, or any page) into a task's resources. */
 function StudyLinker({ resources, onChange }: { resources: string; onChange: (resources: string) => void }) {

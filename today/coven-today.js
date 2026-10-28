@@ -11,6 +11,11 @@
 
   const esc = (text) => String(text ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const href = (path) => global.SaltEnvironment?.resolvePath?.(path) || path;
+  // A holiday's own page (what it is and how to keep it), as Today opens it (lib/holy/refs.ts holyRef).
+  const holyLink = (id) => {
+    const ref = String(id).replace(/-\d{4}-\d{1,2}-\d{1,2}$/, "");
+    return href(`/today/holy/?ref=${encodeURIComponent(ref.startsWith("wheel_south-") ? `wheel-${ref.slice(12)}` : ref)}`);
+  };
   const COVEN_FIELDS = "id,slug,name,founder_id,practice_traditions,practice_holidays,practice_custom,practice_calendars,status";
   let html = "";
   let input = null;
@@ -61,6 +66,7 @@
 
   function linkFor(item) {
     const base = `/covens/coven/?c=${encodeURIComponent(item.covenSlug)}`;
+    if (item.target.holiday) return holyLink(item.target.holiday);
     if (item.target.ritual) return href(`${base}&tab=rituals&ritual=${encodeURIComponent(item.target.ritual)}`);
     if (item.target.program) return href(`${base}&tab=programs&program=${encodeURIComponent(item.target.program)}`);
     if (item.target.programs) return href(`${base}&tab=programs`);
@@ -83,7 +89,7 @@
       html = `<section class="sp-card td-covens" aria-label="Your covens"><p class="sp-eyebrow">Your covens</p><ul class="td-coven-list">${items
         .map((i) => `<li class="td-coven-item td-coven-item--${i.kind}"><a href="${esc(linkFor(i))}"><span class="td-coven-icon" aria-hidden="true">${icon[i.kind]}</span><span><strong>${esc(i.title)}</strong>${i.detail ? `<span class="sp-caption"> ${esc(i.detail)}</span>` : ""}${i.kind !== "review" && input.covens.length > 1 ? `<span class="sp-caption"> · ${esc(i.covenName)}</span>` : ""}</span></a></li>`)
         .join("")}${soon
-        .map((s) => `<li class="td-coven-item"><a href="${esc(href(`/covens/coven/?c=${encodeURIComponent(s.coven.slug)}`))}"><span class="td-coven-icon" aria-hidden="true">❋</span><span><strong>${esc(s.holiday.name)}</strong><span class="sp-caption"> ${esc(s.holiday.date.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }))} · ${esc(s.coven.name)}</span></span></a></li>`)
+        .map((s) => `<li class="td-coven-item"><a href="${esc(holyLink(s.holiday.id))}"><span class="td-coven-icon" aria-hidden="true">❋</span><span><strong>${esc(s.holiday.name)}</strong><span class="sp-caption"> ${esc(s.holiday.date.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }))} · ${esc(s.coven.name)}</span></span></a></li>`)
         .join("")}</ul></section>`;
     }
     document.querySelectorAll("[data-coven-today]").forEach((el) => (el.innerHTML = html));

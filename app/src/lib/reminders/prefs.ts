@@ -96,6 +96,12 @@ export type ReminderPrefs = {
    * choose to tell you. On, unless turned off for all or for a coven in `off`.
    */
   positions: { on: boolean; off: string[] };
+  /**
+   * Training messages, sent to your phone (supabase/functions/coven-notify
+   * training.ts): a message on a step of a coven program, from your mentor or
+   * the coven's leaders, or from someone you oversee. On unless turned off.
+   */
+  training: { on: boolean };
 };
 
 export type CrystalCadence = 'full' | 'new' | 'both' | 'weeks';
@@ -132,6 +138,7 @@ export const DEFAULT_PREFS: ReminderPrefs = {
   gatherings: { on: true, off: [] },
   invitations: { on: true, accepted: true },
   positions: { on: true, off: [] },
+  training: { on: true },
 };
 
 const obj = (v: unknown): Record<string, unknown> => (v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : {});
@@ -176,6 +183,7 @@ export function normalizePrefs(input: unknown): ReminderPrefs {
   const g = obj(raw.gatherings);
   const inv = obj(raw.invitations);
   const pos = obj(raw.positions);
+  const tr = obj(raw.training);
 
   const calendars: Record<string, HolidayCalendarPrefs> = {};
   for (const [id, value] of Object.entries(obj(h.calendars))) {
@@ -249,6 +257,7 @@ export function normalizePrefs(input: unknown): ReminderPrefs {
     gatherings: { on: bool(g.on, d.gatherings.on), off: strings(g.off) },
     invitations: { on: bool(inv.on, d.invitations.on), accepted: bool(inv.accepted, d.invitations.accepted) },
     positions: { on: bool(pos.on, d.positions.on), off: strings(pos.off) },
+    training: { on: bool(tr.on, d.training.on) },
   };
 }
 

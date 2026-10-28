@@ -107,12 +107,22 @@
   /** Mentors, and work waiting for this person to sign off (for the tab's count). */
   async function loadProgramWork() {
     const P = global.SaltCore?.covens?.programs;
-    const [mentors, progress] = await Promise.all([D.mentors(state.coven.id).catch(() => []), D.progress(state.coven.id).catch(() => [])]);
+    const K = global.SaltCore?.covens;
+    const [mentors, progress, attempts, unread] = await Promise.all([
+      D.mentors(state.coven.id).catch(() => []),
+      D.progress(state.coven.id).catch(() => []),
+      D.attempts ? D.attempts(state.coven.id) : Promise.resolve([]),
+      D.programUnread ? D.programUnread(state.coven.id) : Promise.resolve([])
+    ]);
     state.mentors = mentors;
     state.programProgress = progress;
     const submitted = progress.filter((p) => p.status === "submitted" && p.user_id !== state.context.user?.id);
     const tasks = submitted.length ? await D.programTasks([...new Set(submitted.map((p) => p.program_id))]).catch(() => []) : [];
-    state.waitingForMe = P ? P.waitingForMe(submitted, tasks, { userId: state.context.user?.id, mentees: P.menteesOf(mentors, state.context.user?.id), programs: state.perms.programs }).length : 0;
+    const who = P ? { userId: state.context.user?.id, mentees: P.menteesOf(mentors, state.context.user?.id), programs: state.perms.programs } : null;
+    // Work to sign off, tests to score, and new messages on training steps.
+    state.waitingForMe = P
+      ? P.waitingForMe(submitted, tasks, who).length + (K?.quiz ? K.quiz.attemptsToScore(attempts, who).length : 0) + (K?.training ? K.training.unreadTotal(unread) : 0)
+      : 0;
   }
 
   /** Reload everything and redraw the current tab (after joining, signing…). */

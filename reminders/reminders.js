@@ -334,10 +334,11 @@
 
   /** Coven invitations: someone invites you, and someone accepts yours (as the app's Notifications & reminders → Covens shows them). */
   function invitationsHtml() {
-    return `<section class="sp-section" id="gd-invitations" aria-labelledby="gd-invitations-label"><h2 class="sp-label" id="gd-invitations-label">Coven invitations</h2>
+    return `<section class="sp-section" id="gd-invitations" aria-labelledby="gd-invitations-label"><h2 class="sp-label" id="gd-invitations-label">Coven invitations and training</h2>
       <div class="sp-card">
         ${prefToggle("gd-inv-on", "Invitations", "A note on your phone when someone invites you to a coven", "invitations.on")}
         ${prefToggle("gd-inv-accepted", "When my invitation is accepted", "Someone you invited joins the coven", "invitations.accepted")}
+        ${prefToggle("gd-training-on", "Training messages", "A message on a step of your training, from your mentor or the coven’s leaders, or from someone you mentor", "training.on")}
         <p class="sp-caption">These ring phones with the Salt &amp; Sovereignty app and coven notifications turned on. On the website, invitations to you wait at the top of My covens.</p>
       </div></section>`;
   }

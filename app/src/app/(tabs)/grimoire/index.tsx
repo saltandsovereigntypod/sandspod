@@ -15,6 +15,7 @@ import { NEW_LIBRARY_NOTE } from '../../../lib/names';
 import { Icon } from '../../../components/Icon';
 import { DREAMS, normalizeDream, sortDreams, type DreamEntry } from '../../../lib/craft/hedge/dreams';
 import { countOf, divinationGroups } from '../../../lib/divination/library';
+import { holyDaysFor } from '../../../lib/holy';
 import { chosenDeck } from '../../../lib/divination/decks';
 import { useCraft } from '../../../lib/craft/store';
 import { confirmAction } from '../../../lib/grimoire/confirm';
@@ -253,7 +254,7 @@ function ArrangedHome({ mundane }: { mundane: boolean }) {
     const total = (shelf?.sections.reduce((sum, section) => sum + count(section.groups), 0) ?? 0) + (item.key === 'traditional' ? divination.reduce((sum, g) => sum + countOf(g), 0) : 0);
     return (
       <HomePartFrame key={item.key} {...frame} item={searching ? { ...item, open: true } : item} count={total}>
-        {shelf && <ShelfBody shelf={shelf} searching={searching} opened={opened} onToggle={toggleOpened} />}
+        {shelf && <ShelfBody shelf={shelf} searching={searching} query={query} opened={opened} onToggle={toggleOpened} />}
         {holdsDivination && <DivinationMeanings groups={divination} searching={searching} opened={opened} onToggle={toggleOpened} deck={chosenDeck(settings)} />}
       </HomePartFrame>
     );
@@ -293,7 +294,7 @@ function ArrangedHome({ mundane }: { mundane: boolean }) {
 }
 
 /** A Living Library shelf's sections and groups, as on the website's Book of Shadows. */
-function ShelfBody({ shelf, searching, opened, onToggle }: { shelf: GrimoireShelf; searching: boolean; opened: Set<string>; onToggle: (key: string) => void }) {
+function ShelfBody({ shelf, searching, query, opened, onToggle }: { shelf: GrimoireShelf; searching: boolean; query: string; opened: Set<string>; onToggle: (key: string) => void }) {
   const count = (groups: ShelfGroup[]) => groups.reduce((sum, g) => sum + g.entries.length, 0);
   return (
     <>
@@ -330,10 +331,39 @@ function ShelfBody({ shelf, searching, opened, onToggle }: { shelf: GrimoireShel
                   </View>
                 );
               })}
+            {sectionOpen && section.key.startsWith('path:') && <HolyDays tradition={section.key.slice(5)} query={query} opened={opened} onToggle={onToggle} searching={searching} nested />}
           </View>
         );
       })}
     </>
+  );
+}
+
+/** A tradition's holy days, each opening its full page: what it is, who is honoured, how to keep it. */
+function HolyDays({ tradition, query, opened, onToggle, searching, nested }: { tradition: string; query: string; opened: Set<string>; onToggle: (key: string) => void; searching: boolean; nested?: boolean }) {
+  const days = holyDaysFor(tradition, query);
+  if (!days.length) return null;
+  const key = `holy:${tradition}`;
+  const open = searching || opened.has(key);
+  return (
+    <View style={[styles.list, nested ? styles.nested : undefined]}>
+      <Disclosure label="Holy days" count={days.length} open={open} onPress={() => onToggle(key)} />
+      {open &&
+        days.map((day) => (
+          <Pressable
+            key={day.ref}
+            accessibilityRole="button"
+            accessibilityLabel={`${day.title}, holy day`}
+            onPress={() => router.push({ pathname: '/grimoire/holy/[ref]', params: { ref: day.ref } } as Href)}
+            style={({ pressed }) => [styles.shelfEntry, pressed && styles.pressed]}
+          >
+            <Text style={[styles.rowTitle, styles.grow]} numberOfLines={1}>
+              {day.title}
+            </Text>
+            <Icon name="chevron" size={14} color={colors.tabInactive} />
+          </Pressable>
+        ))}
+    </View>
   );
 }
 
