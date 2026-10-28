@@ -433,3 +433,10 @@
 .td-coven-icon { flex: none; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(226, 195, 109, 0.5); display: grid; place-items: center; color: var(--gold, #e2c36d); }
 .td-coven-item--turn .td-coven-icon { background: var(--gold, #e2c36d); color: var(--charcoal, #102118); }
 .td-coven-item span > .sp-caption { display: inline; }
+
+/* Open positions: what a position asks, ✓ met, ✗ not yet, ○ for the reviewer (covens/coven/positions.js). */
+.cv-checklist { list-style: none; margin: 8px 0; padding: 0; display: grid; gap: 6px; }
+.cv-checklist__item { display: flex; gap: 10px; align-items: flex-start; }
+.cv-checklist__mark { flex: none; width: 1.2em; text-align: center; color: var(--muted, #cabf9d); }
+.cv-checklist__item--met .cv-checklist__mark { color: var(--gold, #e2c36d); }
+.cv-checklist__item--unmet .cv-checklist__mark { color: rgb(243, 160, 110); }

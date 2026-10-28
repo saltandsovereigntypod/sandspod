@@ -16,6 +16,7 @@ import type {
   Message,
   Petition,
   Profile,
+  Question,
   Rank,
   ReportReason,
   Ritual,
@@ -32,6 +33,7 @@ import type { NoticePreview, NoticeRule } from './notices';
 import type { AttendanceRow, Checkin, MemberRecord, RecordOverview, RecordSettings } from './record';
 import type { RitualRecord } from './script';
 import { readOverview, type PathsSettings } from './paths';
+import { readChecks, readOverview as readPositionsOverview, type Audience, type RequirementCheck, type RequirementItem } from './positions';
 import type { Invitation, InviteLink, InvitePerson, InvitePreview } from './invites';
 import type { Access } from '../grimoire/access';
 import type { Gathering } from '../grimoire/coven';
@@ -213,11 +215,50 @@ export const fetchAdvancements = (covenId: string) =>
   run<Advancement[]>(supabase.from('coven_advancement_requests').select('*').eq('coven_id', covenId).eq('status', 'pending').order('created_at'));
 export const fetchMyAdvancements = (covenId: string, userId: string) =>
   run<Advancement[]>(supabase.from('coven_advancement_requests').select('*').eq('coven_id', covenId).eq('user_id', userId).order('created_at', { ascending: false }).limit(20));
-export const requestAdvancement = (covenId: string, rankId: string, statement: string) =>
-  andNotify('advancement', rpc('request_coven_advancement', { p_coven: covenId, p_rank: rankId, p_statement: statement.trim() || null }));
+/** Ask to rise to a position; answers to its own questions go only when it has some (so it still works before the open positions migration). */
+export const requestAdvancement = (covenId: string, rankId: string, statement: string, answers?: Record<string, string>) =>
+  andNotify('advancement', rpc('request_coven_advancement', { p_coven: covenId, p_rank: rankId, p_statement: statement.trim() || null, ...(answers && Object.keys(answers).length ? { p_answers: answers } : {}) }));
 export const withdrawAdvancement = (id: string) => rpc('withdraw_coven_request', { p_kind: 'advancement', p_id: id });
-export const decideAdvancement = (id: string, approve: boolean, note: string) =>
-  andNotify('advancement', rpc('decide_coven_advancement', { p_request: id, p_approve: approve, p_note: note.trim() || null }));
+/** Decide a request; `checked` are the custom items and mentor's approval ticked (sent only when there are some). */
+export const decideAdvancement = (id: string, approve: boolean, note: string, checked?: string[]) =>
+  andNotify('advancement', rpc('decide_coven_advancement', { p_request: id, p_approve: approve, p_note: note.trim() || null, ...(checked && checked.length ? { p_checked: checked } : {}) }));
+
+// ─── Open positions (positions.ts; …_coven_open_positions.sql) ───────────
+
+/** How many hold each position, and each open to you with your checklist; null before the migration. */
+export const fetchPositionsOverview = (covenId: string) =>
+  rpc<unknown>('coven_positions_overview', { p_coven: covenId }).then(readPositionsOverview).catch(() => null);
+/** What a position asks of someone (yourself, or anyone for reviewers). */
+export const fetchEligibility = (rankId: string, userId?: string) => rpc<unknown>('coven_rank_eligibility', { p_rank: rankId, ...(userId ? { p_user: userId } : {}) }).then(readChecks);
+/** A request's checklist as it stands, ticks included; [] before the migration. */
+export const fetchChecklist = (requestId: string) => rpc<unknown>('coven_advancement_checklist', { p_request: requestId }).then(readChecks).catch(() => [] as RequirementCheck[]);
+/** Before opening: how many each choice of who hears would reach. */
+export const previewPositionNotice = (rankId: string) => rpc<{ everyone: number; eligible: number }>('coven_position_notice_preview', { p_rank: rankId });
+/**
+ * Let the coven-notify edge function tell people a position has opened
+ * (best effort; once per opening, by the leader who opened it). The website
+ * does the same (covens/coven-data.js).
+ */
+export function notifyPositionOpened(rankId: string) {
+  let zone = '';
+  try {
+    zone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? '';
+  } catch {
+    // UTC instead.
+  }
+  void supabase.functions.invoke('coven-notify', { body: { rank_id: rankId, event: 'opened', time_zone: zone } }).catch(() => {});
+}
+export type OpenResult = { rank: Rank; opening_id: string | null; notify: boolean; closed_full: boolean };
+/** Open a position (or change one that's open), and ring phones when it's a new opening with someone to tell. */
+export const openPosition = (rankId: string, places: number | null, note: string, closeAt: string | null, notify: Audience) =>
+  rpc<OpenResult>('open_coven_position', { p_rank: rankId, p_seat_limit: places, p_note: note.trim() || null, p_close_at: closeAt, p_notify: notify }).then((out) => {
+    if (out?.notify) notifyPositionOpened(rankId);
+    return out;
+  });
+export const closePosition = (rankId: string) => rpc<Rank>('close_coven_position', { p_rank: rankId });
+export const setPositionPlaces = (rankId: string, places: number | null) => rpc<Rank>('set_coven_position_places', { p_rank: rankId, p_seat_limit: places });
+export const saveRankRequirements = (rankId: string, items: RequirementItem[], questions: Question[]) =>
+  rpc<Rank>('save_coven_rank_requirements', { p_rank: rankId, p_items: items, p_questions: questions });
 
 export const fetchMembers = (covenId: string) => run<Member[]>(supabase.from('coven_members').select('*').eq('coven_id', covenId).eq('status', 'active').order('joined_at'));
 export const sign = (documentId: string, signedName: string) => run(supabase.from('coven_signatures').insert({ document_id: documentId, signed_name: signedName }));

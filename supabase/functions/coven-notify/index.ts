@@ -2,6 +2,7 @@ import { createClient, type SupabaseClient } from "https://esm.sh/@supabase/supa
 import { answerNote, bookAnswerNote, bookNote, isFresh, requestNote, reviewersOf, wantsNotice, type Note } from "./requests.ts";
 import { cleanNote, gatheringEvent, gatheringNote, manualEvent, validZone, wantsGathering, type SentNotice } from "./gatherings.ts";
 import { acceptedNote, invitedNote, wantsInvitation } from "./invitations.ts";
+import { openedNote, wantsPosition } from "./positions.ts";
 
 // Phone notifications for covens: a new message, a new application or
 // request to advance, and the answer to one; a personal invitation, and its
@@ -54,6 +55,17 @@ import { acceptedNote, invitedNote, wantsInvitation } from "./invitations.ts";
 // Its 'scheduled' note if it was never announced, else a reminder; the note
 // (up to 200 characters) is a second line; who (WHO keys) changes who it goes
 // to for this send only. One by hand per gathering each half hour (429).
+//
+// { rank_id, event: 'opened', time_zone? }: a position just opened for
+// applications (supabase/migrations/20261110000000_coven_open_positions.sql,
+// open_coven_position). Called by the leader who opened it, while they may
+// still open positions there, within a few minutes of opening it. It tells
+// those the leader chose (public.coven_position_opening_recipients: everyone
+// below the position in good standing, or only those who already meet what
+// it asks), never the leader, nor anyone who has blocked them, and only those
+// whose Reminders choices want positions (positions.ts wantsPosition). Once
+// per opening (coven_position_openings.notified_at). time_zone is the
+// caller's, for the closing date's words when the coven has none.
 
 const EXPO_PUSH = "https://exp.host/--/api/v2/push/send";
 
@@ -83,12 +95,14 @@ Deno.serve(async (request) => {
   let ritualId = "";
   let timeZone = "";
   let manual: { note: string; who: string[] | null } | null = null;
+  let rankId = "";
   try {
     const payload = (await request.json()) || {};
     messageId = String(payload.message_id || "");
     if (payload.grimoire_submission_id) submissionId = String(payload.grimoire_submission_id);
     if (payload.invitation_id) invitationId = String(payload.invitation_id);
     if (payload.ritual_id) ritualId = String(payload.ritual_id);
+    if (payload.rank_id && payload.event === "opened") rankId = String(payload.rank_id);
     if (typeof payload.time_zone === "string") timeZone = payload.time_zone.slice(0, 64);
     if (payload.manual === true) {
       const who = Array.isArray(payload.who) ? payload.who.filter((k: unknown) => typeof k === "string").slice(0, 40).map((k: string) => k.slice(0, 80)) : null;
@@ -104,6 +118,10 @@ Deno.serve(async (request) => {
   }
   const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   const admin = createClient(url, service, { auth: { persistSession: false } });
+  if (rankId) {
+    if (!UUID.test(rankId)) return reply(400, { error: "bad_request" });
+    return positionOpened(admin, verifier, sender, rankId, timeZone);
+  }
   if (ritualId) {
     if (!UUID.test(ritualId)) return reply(400, { error: "bad_request" });
     return covenGathering(admin, verifier, sender, ritualId, timeZone, manual);
@@ -508,4 +526,81 @@ async function covenGathering(admin: SupabaseClient, caller: SupabaseClient, sen
   }
   await admin.from("coven_gathering_notices").update({ sent_at: new Date().toISOString() }).eq("ritual_id", id).eq("seq", seq);
   return reply(200, { sent: delivered, event: what.event, recipients: recipients.length });
+}
+
+/** A position opened for applications (positions.ts), to those the leader chose. */
+async function positionOpened(admin: SupabaseClient, caller: SupabaseClient, sender: string, rankId: string, openerZone: string) {
+  type Rank = { id: string; coven_id: string; name: string; applications_open: boolean; seat_limit: number | null; applications_close_at: string | null; opening_note: string | null };
+  const { data: found } = await admin.from("coven_ranks").select("id,coven_id,name,applications_open,seat_limit,applications_close_at,opening_note").eq("id", rankId).maybeSingle();
+  const rank = found as Rank | null;
+  if (!rank) return reply(404, { error: "not_found" });
+  // Only those who may open positions there (asked as the caller).
+  const { data: may } = await caller.rpc("coven_may_open_positions", { p_coven: rank.coven_id });
+  if (may !== true) return reply(403, { error: "not_allowed" });
+
+  // Its latest opening: this caller's, fresh, and not yet sent. Before the migration, nothing is sent.
+  const { data: openings, error: openingsError } = await admin
+    .from("coven_position_openings")
+    .select("id,opened_by,opened_at,audience,notified_at")
+    .eq("rank_id", rankId)
+    .order("opened_at", { ascending: false })
+    .limit(1);
+  if (openingsError) return reply(503, { error: "not_ready" });
+  const opening = openings?.[0] as { id: string; opened_by: string | null; opened_at: string; audience: string; notified_at: string | null } | undefined;
+  if (!opening || opening.opened_by !== sender) return reply(404, { error: "not_found" });
+  if (opening.notified_at) return reply(409, { error: "already_sent" });
+  if (!isFresh(opening.opened_at)) return reply(409, { error: "too_old" });
+  if (opening.audience === "none" || !rank.applications_open) return reply(200, { sent: 0 });
+
+  // Once each: the first call claims it; a call racing this one finds it claimed.
+  const { data: claimed } = await admin.from("coven_position_openings").update({ notified_at: new Date().toISOString() }).eq("id", opening.id).is("notified_at", null).select("id");
+  if (!claimed?.length) return reply(409, { error: "already_sent" });
+
+  const [{ data: coven }, { data: audience }, { data: held }] = await Promise.all([
+    admin.from("covens").select("name,slug,status,timezone").eq("id", rank.coven_id).single(),
+    admin.rpc("coven_position_opening_recipients", { p_opening: opening.id }),
+    admin.rpc("coven_rank_holder_count", { p_rank: rankId }),
+  ]);
+  if (!coven || coven.status !== "active") return reply(404, { error: "not_found" });
+  // Never the leader, nor anyone who has blocked them (the database leaves them out as well).
+  let recipients = [...new Set(((audience as string[] | null) || []).map(String))].filter((u) => u !== sender);
+  if (recipients.length) {
+    const { data: blocks } = await admin.from("user_blocks").select("blocker_id").eq("blocked_id", sender).in("blocker_id", recipients);
+    const blocking = new Set((blocks || []).map((b) => b.blocker_id));
+    recipients = recipients.filter((u) => !blocking.has(u));
+  }
+
+  // Their own choices (Notifications & reminders → Covens → Positions opening), saved with their settings.
+  let delivered = 0;
+  if (recipients.length) {
+    const { data: settings } = await admin.from("user_settings").select("user_id,reminders:settings->>reminders_v2").in("user_id", recipients);
+    const saved = new Map((settings || []).map((x: { user_id: string; reminders: string | null }) => [x.user_id, x.reminders]));
+    const now = new Date();
+    const listeners = recipients.filter((u) => wantsPosition(saved.get(u) ?? null, rank.coven_id, now));
+    const { data: tokens } = listeners.length ? await admin.from("push_tokens").select("token,user_id").in("user_id", listeners) : { data: [] };
+    if (tokens?.length) {
+      const note = openedNote({
+        rankName: rank.name,
+        covenName: coven.name,
+        covenSlug: coven.slug,
+        placesLeft: rank.seat_limit == null ? null : Math.max(0, rank.seat_limit - Number(held ?? 0)),
+        closeAt: rank.applications_close_at,
+        note: rank.opening_note,
+        zone: coven.timezone || openerZone || null,
+        now,
+      });
+      const notes: Push[] = tokens.map((t: { token: string }) => ({
+        to: t.token,
+        title: note.title,
+        body: note.body,
+        sound: "default",
+        channelId: "coven-requests",
+        threadId: `positions:${rank.coven_id}`,
+        data: { source: "coven-position", url: note.url, covenId: rank.coven_id, rankId },
+      }));
+      delivered = await push(admin, notes);
+    }
+  }
+  await admin.from("coven_position_openings").update({ recipients: recipients.length }).eq("id", opening.id);
+  return reply(200, { sent: delivered, recipients: recipients.length });
 }

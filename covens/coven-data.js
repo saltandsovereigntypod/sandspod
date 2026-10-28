@@ -207,8 +207,39 @@
       return run(db().from("coven_advancement_requests").select("*").eq("coven_id", covenId).eq("user_id", userId).order("created_at", { ascending: false }).limit(20));
     },
     advancements: (covenId) => run(db().from("coven_advancement_requests").select("*").eq("coven_id", covenId).eq("status", "pending").order("created_at", { ascending: true })),
-    requestAdvancement: async (covenId, rankId, statement) => notifyRequest("advancement", await rpc("request_coven_advancement", { p_coven: covenId, p_rank: rankId, p_statement: statement || null })),
-    decideAdvancement: async (id, approve, note) => notifyRequest("advancement", await rpc("decide_coven_advancement", { p_request: id, p_approve: approve, p_note: note || null })),
+    /** Answers to the position's own questions go only when there are some, as the app sends them. */
+    requestAdvancement: async (covenId, rankId, statement, answers) =>
+      notifyRequest("advancement", await rpc("request_coven_advancement", { p_coven: covenId, p_rank: rankId, p_statement: statement || null, ...(answers && Object.keys(answers).length ? { p_answers: answers } : {}) })),
+    /** `checked`: the custom items and mentor's approval ticked (sent only when there are some). */
+    decideAdvancement: async (id, approve, note, checked) =>
+      notifyRequest("advancement", await rpc("decide_coven_advancement", { p_request: id, p_approve: approve, p_note: note || null, ...(checked && checked.length ? { p_checked: checked } : {}) })),
+
+    // Open positions (SaltCore.covens.positions; …_coven_open_positions.sql), as the app's api.ts.
+    /** How many hold each position, and each open to you with your checklist; null before the migration. */
+    positionsOverview: (covenId) => rpc("coven_positions_overview", { p_coven: covenId }).then((raw) => global.SaltCore?.covens?.positions?.readOverview(raw) ?? null).catch(() => null),
+    checklist: (requestId) => rpc("coven_advancement_checklist", { p_request: requestId }).then((raw) => global.SaltCore?.covens?.positions?.readChecks(raw) ?? []).catch(() => []),
+    positionNoticePreview: (rankId) => rpc("coven_position_notice_preview", { p_rank: rankId }),
+    /** Open a position (or change an open one); a new opening with someone to tell rings phones, once (coven-notify). */
+    async openPosition(rankId, places, note, closeAt, notify) {
+      const out = await rpc("open_coven_position", { p_rank: rankId, p_seat_limit: places, p_note: (note || "").trim() || null, p_close_at: closeAt, p_notify: notify });
+      if (out?.notify) {
+        let zone = "";
+        try {
+          zone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+        } catch {
+          // UTC instead.
+        }
+        try {
+          Promise.resolve(db().functions?.invoke?.("coven-notify", { body: { rank_id: rankId, event: "opened", time_zone: zone } })).catch(() => {});
+        } catch {
+          // It's open; phones aren't told this time.
+        }
+      }
+      return out;
+    },
+    closePosition: (rankId) => rpc("close_coven_position", { p_rank: rankId }),
+    setPositionPlaces: (rankId, places) => rpc("set_coven_position_places", { p_rank: rankId, p_seat_limit: places }),
+    saveRankRequirements: (rankId, items, questions) => rpc("save_coven_rank_requirements", { p_rank: rankId, p_items: items, p_questions: questions }),
     /**
      * Applications and requests to advance waiting in each coven you review
      * (never your own), counted as the app counts them (SaltCore.covens.requests).
