@@ -1,6 +1,7 @@
-// Keeps the Altar widget in step with your altars, and carries out what was
-// tapped on it: each light, snuff, offering and cleansing done from the home
-// screen is applied to the real altar, which then saves and syncs as usual.
+// Keeps the Altar widget in step with your altars (and the coven altars you've
+// put on it), and carries out what was tapped on it: each light, snuff,
+// offering and cleansing done from the home screen is applied to the real
+// altar, which then saves and syncs as usual (lib/altarWidgetPlan).
 // Runs when the app opens or comes to the front, when your altars change, and
 // straight away when the widget is tapped while the app is still running.
 
@@ -8,9 +9,9 @@ import { useEffect, useRef } from 'react';
 import { AppState } from 'react-native';
 
 import { altarsAt, burnoutTimes } from './altar/burnout';
-import { altarDataFromDocument } from './altar/snapshot';
 import { useAltars } from './altar/store';
-import { applyWidgetActions, burnStepTimes, slotAltars, widgetAltar, type AltarWidgetArt, type AltarWidgetProps, type WidgetAction } from './altarWidget';
+import { burnStepTimes, widgetAltar, type AltarWidgetArt, type AltarWidgetProps, type WidgetAction } from './altarWidget';
+import { planAltarWidget } from './altarWidgetPlan';
 import { preparePictures, withoutEmpties } from './altarWidgetPictures';
 import { reportAltarWidgetSync, useAltarWidgetSlots } from './altarWidgetSlots';
 
@@ -64,6 +65,8 @@ export function useAltarWidgetSync() {
   });
   const running = useRef<Promise<void> | null>(null);
   const again = useRef(false);
+  // Coven altars are fetched again when the app opens or comes to the front, or the widget is tapped.
+  const fresh = useRef(true);
 
   useEffect(() => {
     const parts = native();
@@ -77,31 +80,20 @@ export function useAltarWidgetSync() {
       const { altars: current, save: saveAltar, slots: chosen, ready } = latest.current;
       // Cached altars are good enough to show; wait only while nothing has loaded yet.
       if (!ready && current.length === 0) return;
-      const now = new Date().toISOString();
       const report = (pictures: number, error: string | null, count: number) =>
         reportAltarWidgetSync({ at: new Date().toISOString(), altars: count, pictures, error });
 
-      // First, what was done from the widget since last time.
+      // First, what was done from the widget since last time; then the altars for each place.
       const actions = await pendingActions(widget);
-      let shown = current;
-      if (actions.length) {
-        const changed = applyWidgetActions(current, actions, now);
-        for (const { altar, doc } of changed) {
-          await saveAltar({ id: altar.id, name: altar.name, doc });
-        }
-        // Until the store catches up, show the altars as they now are.
-        const updated = new Map(changed.map(({ altar, doc }) => [altar.id, { ...altar, ...altarDataFromDocument(doc, altar.name, now) }]));
-        shown = current.map((a) => updated.get(a.id) ?? a);
-      }
-
-      const placed = slotAltars(shown, chosen);
-      const done = new Set(actions.map((a) => a.id));
+      const wantFresh = fresh.current;
+      fresh.current = false;
+      const { placed, done, dress } = await planAltarWidget({ altars: current, chosen, actions, save: saveAltar, fresh: wantFresh });
       const send = async (pictures: Map<string, string>, art?: AltarWidgetArt) => {
         // Keep anything tapped while this was running, for next time.
         const kept = (await pendingActions(widget)).filter((a) => !done.has(a.id));
         const propsAt = (when: Date): AltarWidgetProps => {
           const props: AltarWidgetProps = {
-            altars: altarsAt(placed, when).map((altar) => widgetAltar(altar, (path) => pictures.get(path) ?? '', when)),
+            altars: altarsAt(placed, when).map((altar) => dress(widgetAltar(altar, (path) => pictures.get(path) ?? '', when))),
             actions: kept,
           };
           if (art) props.art = art;
@@ -159,10 +151,14 @@ export function useAltarWidgetSync() {
 
     sync();
     const appState = AppState.addEventListener('change', (state) => {
-      if (state === 'active') sync();
+      if (state !== 'active') return;
+      fresh.current = true;
+      sync();
     });
     const taps = widgets.addUserInteractionListener((event) => {
-      if (event.source === 'AltarWidget') sync();
+      if (event.source !== 'AltarWidget') return;
+      fresh.current = true;
+      sync();
     });
     return () => {
       appState.remove();

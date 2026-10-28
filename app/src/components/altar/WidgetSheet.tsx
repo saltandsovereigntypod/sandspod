@@ -1,8 +1,10 @@
+import { useMemo } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 
 import type { SavedAltar } from '../../lib/altar/types';
 import { ALTAR_WIDGET_SLOTS, slotAltars } from '../../lib/altarWidget';
 import { setAltarWidgetSlot, useAltarWidgetSlots, useAltarWidgetSyncStatus } from '../../lib/altarWidgetSlots';
+import { useCovenWidgetAltars } from '../../lib/covenAltarWidgetData';
 import { colors, fonts, type } from '../../theme';
 import { Chip, ChipRow } from './Chip';
 import { Sheet } from './Sheet';
@@ -12,20 +14,32 @@ type Props = {
   altarId: string;
   altarName: string;
   altars: SavedAltar[];
+  /** Set for a coven altar (its altarId is then "coven:<id>"): whether you may tend it now, and why not. */
+  coven?: { canEdit: boolean; reason: string };
   onClose: () => void;
 };
 
 /** Which place this altar takes in the home screen's Altar widget. */
-export function WidgetSheet({ visible, altarId, altarName, altars, onClose }: Props) {
+export function WidgetSheet({ visible, altarId, altarName, altars: own, coven, onClose }: Props) {
   const chosen = useAltarWidgetSlots();
+  // The coven altars already on the widget, and this one (named, until the widget has fetched it).
+  const covenAltars = useCovenWidgetAltars();
+  const altars = useMemo(() => {
+    const all = [...own, ...covenAltars.filter((a) => a.id !== altarId)];
+    if (coven) all.push({ id: altarId, name: altarName, updatedAt: '' });
+    return all;
+  }, [own, covenAltars, coven, altarId, altarName]);
   const placed = slotAltars(altars, chosen);
   const mine = chosen.indexOf(altarId);
   const sync = useAltarWidgetSyncStatus();
   return (
     <Sheet visible={visible} size="half" eyebrow="Home screen widget" title={altarName} onClose={onClose}>
       <Text style={type.body}>
-        Put this altar on your {Platform.OS === 'ios' ? 'home or lock screen' : 'home screen'}, with buttons to light its candles, tend offerings and cleanse its crystals.
-        Whatever you do there is carried onto this altar the next time the app opens.
+        {coven
+          ? coven.canEdit
+            ? `Put this coven altar on your ${Platform.OS === 'ios' ? 'home or lock screen' : 'home screen'}, with buttons to light its candles, tend offerings and cleanse its crystals. Whatever you do there is carried onto the coven’s altar the next time the app opens, and everyone in the coven sees it. While a ritual is under way here, or you can’t tend it, the widget shows it without buttons.`
+            : `Put this coven altar on your ${Platform.OS === 'ios' ? 'home or lock screen' : 'home screen'} to keep it in view. ${coven.reason} The widget shows it without buttons until you can tend it.`
+          : `Put this altar on your ${Platform.OS === 'ios' ? 'home or lock screen' : 'home screen'}, with buttons to light its candles, tend offerings and cleanse its crystals. Whatever you do there is carried onto this altar the next time the app opens.`}
       </Text>
       <Text style={[type.eyebrow, styles.heading]}>Choose its place</Text>
       <ChipRow>

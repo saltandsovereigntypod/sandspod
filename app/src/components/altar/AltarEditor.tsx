@@ -138,6 +138,7 @@ import { newId } from '../../lib/altar/uid';
 import { giveFromAltar } from '../../lib/altar/offerFromAltar';
 import { ARCHIVE_WORDS, isArchived, withArchived } from '../../lib/altar/archive';
 import { Chip, ChipRow } from './Chip';
+import { covenSlotId, covenWidgetName } from '../../lib/covenAltarWidget';
 import { WidgetSheet } from './WidgetSheet';
 import { BackgroundSheet, DressSheet, LayersSheet, SaveSheet } from './OptionSheets';
 import { Button } from '../Button';
@@ -1411,13 +1412,14 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
                 onPress={() => setSheet('grimoire')}
                 disabled={doc.objects.length === 0}
               />
-              {Platform.OS !== 'web' && !shared ? (
+              {Platform.OS !== 'web' ? (
                 <Chip
                   label="Home screen"
                   symbol="▣"
                   accessibilityLabel="Put this altar on your home screen"
                   onPress={() => {
-                    if (sourceId) return setSheet('widget');
+                    // A coven altar is already saved for the coven.
+                    if (sourceId || shared) return setSheet('widget');
                     // Only saved altars can go on the home screen.
                     setNotice('Save this altar first, then tap Home screen again to choose its place on your home screen.');
                     setSheet('save');
@@ -1497,7 +1499,16 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
 
   const sheets = doc ? (
     <>
-          {sourceId && !shared ? (
+          {shared ? (
+            <WidgetSheet
+              visible={sheet === 'widget'}
+              altarId={covenSlotId(shared.key)}
+              altarName={covenWidgetName(shared.name, shared.covenName ?? '')}
+              altars={altars}
+              coven={{ canEdit: shared.canEdit, reason: shared.reason }}
+              onClose={() => setSheet(null)}
+            />
+          ) : sourceId ? (
             <WidgetSheet visible={sheet === 'widget'} altarId={sourceId} altarName={name} altars={altars} onClose={() => setSheet(null)} />
           ) : null}
           <CloseUpSheet

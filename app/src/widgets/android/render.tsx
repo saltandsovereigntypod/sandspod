@@ -3,6 +3,7 @@
 
 import type { WidgetInfo } from 'react-native-android-widget';
 
+import { altarAtPlace } from '../../lib/altarWidget';
 import { AltarWidgetAndroid } from './AltarWidgetAndroid';
 import { ComingUpWidgetAndroid, HolidayWidgetAndroid, MoonWidgetAndroid, OpenAppWidget, RitualWidgetAndroid } from './DayWidgets';
 import { boxOf } from './look';
@@ -23,7 +24,8 @@ export async function renderAndroidWidget(info: WidgetInfo, now = new Date()) {
     const [altarEntries, places] = await Promise.all([readAltars(), readPlaces()]);
     const altars = entryAt(altarEntries, now) ?? [];
     const place = places[String(info.widgetId)] ?? 1;
-    return <AltarWidgetAndroid altar={altars[place - 1] ?? altars[0]} box={box} now={now} />;
+    const altar = altarAtPlace(altars, place);
+    return <AltarWidgetAndroid altar={altar} box={box} now={now} place={!altar && altars.length ? place : undefined} />;
   }
   const day = entryAt(await readDays(), now);
   if (!day) return <OpenAppWidget box={box} title={TITLES[info.widgetName] ?? 'Salt & Sovereignty'} />;

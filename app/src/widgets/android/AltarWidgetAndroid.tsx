@@ -4,7 +4,8 @@
 // placements, sizes, turns, flips and layers, flames and pools of light), the
 // same words and the same buttons. A tap is handled by the widget task
 // (./taskHandler), which changes the widget straight away and leaves the action
-// for the app to carry out on the real altar.
+// for the app to carry out on the real altar. A coven altar you can't tend
+// right now (readOnly) is shown without its buttons.
 
 import { FlexWidget, ImageWidget, OverlapWidget, type ImageWidgetSource } from 'react-native-android-widget';
 
@@ -33,8 +34,23 @@ function Picture({ uri, x, y, w, h, mode = 'contain', rotation }: { uri: string 
   );
 }
 
-export function AltarWidgetAndroid({ altar, box, now }: { altar: WidgetAltar | undefined; box: Box; now: Date }) {
+export function AltarWidgetAndroid({ altar, box, now, place }: { altar: WidgetAltar | undefined; box: Box; now: Date; place?: number }) {
   const { width, height, size } = box;
+  if (!altar && place) {
+    // A place left empty (its coven altar was deleted, or you left the coven).
+    return (
+      <FlexWidget
+        clickAction="OPEN_URI"
+        clickActionData={{ uri: 'saltandsovereignty://altar' }}
+        style={{ width: 'match_parent', height: 'match_parent', backgroundColor: night, borderRadius: 22, padding: 16, flexDirection: 'column', flexGap: 4 }}
+      >
+        <Icon name="flame" size={26} />
+        <Spacer />
+        <Words text={`Altar ${place} is empty`} size={16} weight="600" font={serif} />
+        <Words text="Open an altar in the app and tap Home screen to put it here." size={12} color={muted} lines={2} />
+      </FlexWidget>
+    );
+  }
   if (!altar) {
     return (
       <FlexWidget
@@ -61,6 +77,9 @@ export function AltarWidgetAndroid({ altar, box, now }: { altar: WidgetAltar | u
     clickActionData: { altarId: altar.id, kind, key },
   });
   const toggleAll = click(anyLit ? 'snuff' : 'light', '');
+  // Look-only: a coven altar you can't tend right now has no buttons.
+  const tend = !altar.readOnly;
+  const link = altar.link || `saltandsovereignty://altar/${altar.id}`;
   const toggleText = anyLit ? 'Snuff all' : 'Light all';
 
   // ── The scene, framed by the app for this size, scaled to fill the widget ──
@@ -88,7 +107,7 @@ export function AltarWidgetAndroid({ altar, box, now }: { altar: WidgetAltar | u
     return (
       <OverlapWidget
         key={item.key}
-        {...(item.candle ? click(item.lit ? 'snuff' : 'light', item.key) : {})}
+        {...(item.candle && tend ? click(item.lit ? 'snuff' : 'light', item.key) : {})}
         style={{ marginLeft: Math.round(p.x), marginTop: Math.round(p.y - room), width: Math.round(bw), height: Math.round(bh + room), ...(item.rotation ? { rotation: item.rotation } : {}) }}
       >
         <Picture uri={item.image} x={bw * item.inset.x} y={room + bh * item.inset.y} w={iw} h={ih} />
@@ -142,13 +161,14 @@ export function AltarWidgetAndroid({ altar, box, now }: { altar: WidgetAltar | u
       </FlexWidget>
     </OverlapWidget>
   );
-  const buttons = (px: number) => (
-    <FlexWidget style={{ flexDirection: 'row', alignItems: 'center', flexGap: 8 }}>
-      {altar.presences.length ? round(click('offer', ''), 'hands', px) : null}
-      {altar.crystals.length ? round(click('cleanse', ''), 'sparkles', px) : null}
-      {total ? pill(toggleAll, toggleText, !anyLit) : null}
-    </FlexWidget>
-  );
+  const buttons = (px: number) =>
+    tend ? (
+      <FlexWidget style={{ flexDirection: 'row', alignItems: 'center', flexGap: 8 }}>
+        {altar.presences.length ? round(click('offer', ''), 'hands', px) : null}
+        {altar.crystals.length ? round(click('cleanse', ''), 'sparkles', px) : null}
+        {total ? pill(toggleAll, toggleText, !anyLit) : null}
+      </FlexWidget>
+    ) : null;
   const title = (px: number) => <Words text={altar.name} size={px} weight="500" font={serif} color={cream} />;
   const status = (px: number) =>
     total ? (
@@ -169,7 +189,7 @@ export function AltarWidgetAndroid({ altar, box, now }: { altar: WidgetAltar | u
   const root = (children: React.ReactNode[]) => (
     <OverlapWidget
       clickAction="OPEN_URI"
-      clickActionData={{ uri: `saltandsovereignty://altar/${altar.id}` }}
+      clickActionData={{ uri: link }}
       style={{ width, height, borderRadius: 22, backgroundColor: night, overflow: 'hidden' }}
     >
       <ImageWidget image={WIDGET_ART.panel} imageWidth={width} imageHeight={height} resizeMode="stretch" />
@@ -187,7 +207,7 @@ export function AltarWidgetAndroid({ altar, box, now }: { altar: WidgetAltar | u
           <FlexWidget style={{ flexDirection: 'row', alignItems: 'flex-end', width: 'match_parent' }}>
             {status(9.5)}
             <Spacer />
-            {total ? pill(toggleAll, toggleText, !anyLit) : null}
+            {total && tend ? pill(toggleAll, toggleText, !anyLit) : null}
           </FlexWidget>
         </FlexWidget>,
     ]);
@@ -222,7 +242,7 @@ export function AltarWidgetAndroid({ altar, box, now }: { altar: WidgetAltar | u
             {status(10)}
             {earliest ? <Words text={`· lit since ${whenText(earliest, now)}`} size={9.5} color={cream} /> : null}
             <Spacer />
-            {pill(toggleAll, toggleText, !anyLit, 'toggle-all-pill')}
+            {tend ? pill(toggleAll, toggleText, !anyLit, 'toggle-all-pill') : null}
           </FlexWidget>
         ) : null}
         {altar.presences.slice(0, 2).map((p) => (
@@ -232,7 +252,7 @@ export function AltarWidgetAndroid({ altar, box, now }: { altar: WidgetAltar | u
               <Words text={p.offering ? `${p.label} · ${p.offering}` : p.label} size={11} font={serif} />
               {ago(p.lastOffering, 'Last offering', 'No offerings yet', 9)}
             </FlexWidget>
-            {pill(click('offer', p.key), 'Offer', false, `offer-${p.key}`)}
+            {tend ? pill(click('offer', p.key), 'Offer', false, `offer-${p.key}`) : null}
           </FlexWidget>
         ))}
         {altar.crystals.length ? (
@@ -250,7 +270,7 @@ export function AltarWidgetAndroid({ altar, box, now }: { altar: WidgetAltar | u
               />
               {ago(lastCleansed, 'Last cleansed', 'Not cleansed yet', 9)}
             </FlexWidget>
-            {pill(click('cleanse', ''), 'Cleanse')}
+            {tend ? pill(click('cleanse', ''), 'Cleanse') : null}
           </FlexWidget>
         ) : null}
         {altar.workingsDue ? <Words text={`${altar.workingsDue} OF ${altar.workings} WORKINGS READY TO TEND`} size={10} weight="600" color={gold} /> : null}

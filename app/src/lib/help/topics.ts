@@ -1154,8 +1154,11 @@ export const HELP: HelpSection[] = [
           'Press and hold an empty spot on your home screen, add a Salt & Sovereignty widget and choose Altar.',
           'On the widget, tap its buttons. What you do there is carried onto the altar the next time the app opens.',
         ],
-        tips: ['The sheet shows a "Widget status" line so you can check the widget was updated.'],
-        keywords: ['widget', 'lock screen', 'home screen', 'android widget', 'ios widget'],
+        tips: [
+          'The sheet shows a "Widget status" line so you can check the widget was updated.',
+          'A coven altar can go on the widget too: open it from your coven, tap "Home screen" and choose its place. What you tend there everyone in the coven sees. While a ritual is under way there, or you can’t tend it, the widget shows it without buttons.',
+        ],
+        keywords: ['widget', 'lock screen', 'home screen', 'android widget', 'ios widget', 'coven altar'],
       },
       {
         id: 'altar-widget-cleansing',
