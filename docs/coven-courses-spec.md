@@ -167,7 +167,7 @@ Writers for traditions:
 - Writer F: roman, christian
 
 ## The four programs per tradition (owner's request)
-Each tradition gets FOUR ready-made programs, one per step of coven life.
+Each tradition gets FIVE ready-made programs, one per step of coven life.
 Each can raise its graduates to a position (the coven's own names; defaults
 in brackets):
 
@@ -205,12 +205,29 @@ in brackets):
    festival calendar, the roles of priest/priestess in ancient and modern
    practice, theology in depth).
 
+5. `<T>-high-priestess` — "Becoming a High Priestess or High Priest". For
+   elders preparing to lead a coven: to succeed the current head, share
+   leadership, or found a daughter coven. Raises to the coven's leading
+   position (the one with `can_manage`; default [High Priestess]).
+   Modules: core-hp-leading-coven (spiritual authority and accountability,
+   vision and the coven's documents, running every part of the coven in
+   the app: positions, programs, mentors, rites, meetings, notifications,
+   invitations, open positions; delegating; crisis leadership; burnout and
+   sustainability), core-hp-stewardship (succession and handing over,
+   hiving off a daughter coven, training trainers, the coven's long-term
+   health and lineage, closing a coven well, working with other covens and
+   the wider community), T-high-priestess (the tradition's own high
+   priesthood: e.g. Hellenic: priesthood in ancient and modern practice,
+   leading the full festival year and household and civic cult, oracles
+   and divination in a leading role, theology and ethics of leading
+   worship).
+
 New module ids beyond the list above:
-- Core: `core-seeker`, `core-elder-leading`, `core-elder-teaching`,
+- Core: `core-hp-leading-coven`, `core-hp-stewardship` (Writer H), `core-seeker`, `core-elder-leading`, `core-elder-teaching`,
   `core-elder-care`, `core-elder-governance` (Writer G).
 - Per tradition: `T-seeker` (a short taste of the tradition for someone
   deciding: what it is, one simple first practice, what a rite will be
-  like), `T-dedication` (what dedication means in this tradition, preparing
+  like), `T-high-priestess`, `T-dedication` (what dedication means in this tradition, preparing
   for it, aftercare; the rite's shape the coven can adapt), `T-elder`.
 - `T-initiation` now covers the devotee-to-initiate path only (study,
   service, oath, preparing for initiation).
