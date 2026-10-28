@@ -28,7 +28,14 @@ export type CovenAltar = {
 
 export type AltarEditor = { id: string; altar_id: string; coven_id: string; user_id: string | null; rank_id: string | null; active: boolean };
 
-export type AltarAccess = { can_edit: boolean; keeper: boolean; ritual_id: string | null; reason: string | null };
+export type AltarAccess = {
+  can_edit: boolean;
+  keeper: boolean;
+  ritual_id: string | null;
+  reason: string | null;
+  /** The altar rests untouched after a rite until then (ISO), or null. */
+  held_until?: string | null;
+};
 
 export const TEND_CHOICES = [
   { value: 'members', label: 'Everyone in the coven' },

@@ -30,6 +30,8 @@ export type SharedAltar = {
   /** The coven altar's id: the editor treats it as the altar it has open. */
   key: string;
   name: string;
+  /** The coven's name, shown with the altar's on the home screen widget. */
+  covenName?: string;
   /** The altar as it stood when it loaded; null while loading. */
   initial: AltarDocument | null;
   missing: boolean;
@@ -148,7 +150,7 @@ type Wire = { from: string; key?: string; data?: SavedObject | null; scene?: Sce
  * One coven altar, open and live. `me` names you to the others. Returns what
  * the editor needs, plus the altar row, who's here, and a reload.
  */
-export function useCovenAltar(altarId: string, me: { userId: string; name: string } | null) {
+export function useCovenAltar(altarId: string, me: { userId: string; name: string } | null, covenName?: string) {
   const [altar, setAltar] = useState<CovenAltar | null>(null);
   const [initial, setInitial] = useState<AltarDocument | null>(null);
   const [missing, setMissing] = useState(false);
@@ -397,6 +399,7 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
     () => ({
       key: altarId,
       name: altar?.name ?? 'Coven altar',
+      covenName,
       initial,
       missing,
       canEdit: !!access?.can_edit,
@@ -405,7 +408,7 @@ export function useCovenAltar(altarId: string, me: { userId: string; name: strin
       attach,
       push,
     }),
-    [altarId, altar?.name, initial, missing, access, status, attach, push],
+    [altarId, altar?.name, covenName, initial, missing, access, status, attach, push],
   );
 
   return { shared, altar, access, here, others, problem, reload: () => load(true), checkAccess };

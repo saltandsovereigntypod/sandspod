@@ -6,7 +6,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import type { WidgetConfigurationScreenProps } from 'react-native-android-widget';
 import { useEffect, useState } from 'react';
 
-import { ALTAR_WIDGET_SLOTS } from '../../lib/altarWidget';
+import { ALTAR_WIDGET_SLOTS, altarAtPlace } from '../../lib/altarWidget';
 import { renderAndroidWidget } from './render';
 import { entryAt, readAltars, readPlaces, setPlace } from './store';
 
@@ -21,7 +21,8 @@ export function AltarWidgetConfigScreen({ widgetInfo, renderWidget, setResult }:
   useEffect(() => {
     void (async () => {
       const [entries, places] = await Promise.all([readAltars(), readPlaces()]);
-      setNames((entryAt(entries, new Date()) ?? []).map((a) => a.name));
+      const altars = entryAt(entries, new Date()) ?? [];
+      setNames(Array.from({ length: ALTAR_WIDGET_SLOTS }, (_, i) => altarAtPlace(altars, i + 1)?.name ?? ''));
       setCurrent(places[String(widgetInfo.widgetId)] ?? 1);
     })();
   }, [widgetInfo.widgetId]);
@@ -49,7 +50,7 @@ export function AltarWidgetConfigScreen({ widgetInfo, renderWidget, setResult }:
           >
             <Text style={styles.place}>{`Altar ${place}`}</Text>
             <Text style={styles.name} numberOfLines={1}>
-              {names[place - 1] ?? 'Empty'}
+              {names[place - 1] || 'Empty'}
             </Text>
           </Pressable>
         ))}

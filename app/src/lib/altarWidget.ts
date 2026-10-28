@@ -27,6 +27,7 @@ import { agingLook, isOfferingItself, offeringFreshness } from './altar/offering
 import { apothecaryStateOf, candleLife, dressingOverlays, isCandle, isLit, lightCandle, readLivingState, snuffCandle } from './altar/livingState.ts';
 import { documentFromAltar, type AltarDocument } from './altar/snapshot.ts';
 import { activeAltars } from './altar/archive.ts';
+import { isCovenSlot } from './covenAltarWidget.ts';
 import type { SavedAltar, SavedObject } from './altar/types.ts';
 import { burnDown } from './altar/wax.ts';
 
@@ -129,6 +130,12 @@ export type WidgetAltar = {
   workingsDue: number;
   workings: number;
   items: number;
+  /** Its place on the widget (1–6), so an empty place stays empty rather than showing the next altar. */
+  slot?: number;
+  /** Where a tap opens it, when not one of your own altars (a coven altar's screen). */
+  link?: string;
+  /** Shown without buttons: a coven altar you can't tend right now. Left out when it can be tended. */
+  readOnly?: boolean;
 };
 
 export type WidgetActionKind = 'light' | 'snuff' | 'offer' | 'cleanse';
@@ -575,19 +582,44 @@ export function widgetAltar(altar: SavedAltar, image: (path: string) => string, 
 }
 
 /**
- * Which altars fill the widget's places: the ones you put there, in order,
- * then the rest by most recently saved, so a new widget always shows something.
+ * Which altar fills each of the widget's places (null when empty): the ones you
+ * put there, then your own altars by most recently saved, so a new widget
+ * always shows something. A coven altar only ever sits where you put it.
  */
-export function slotAltars(all: SavedAltar[], chosen: (string | null)[]): SavedAltar[] {
+export function placeAltars(all: SavedAltar[], chosen: (string | null)[]): (SavedAltar | null)[] {
   // An archived altar keeps its place but leaves the widget until it's restored.
   const altars = activeAltars(all);
   const byId = new Map(altars.map((a) => [a.id, a]));
   const slots: (SavedAltar | null)[] = Array.from({ length: ALTAR_WIDGET_SLOTS }, (_, i) => byId.get(chosen[i] ?? '') ?? null);
   const used = new Set(slots.filter(Boolean).map((a) => a!.id));
   const rest = [...altars]
-    .filter((a) => !used.has(a.id))
+    .filter((a) => !used.has(a.id) && !isCovenSlot(a.id))
     .sort((a, b) => String(b.updatedAt || b.savedAt || '').localeCompare(String(a.updatedAt || a.savedAt || '')));
-  return slots.map((a) => a ?? rest.shift() ?? null).filter((a): a is SavedAltar => !!a);
+  return slots.map((a) => a ?? rest.shift() ?? null);
+}
+
+/** The altars on the widget, in place order (empty places left out). */
+export function slotAltars(all: SavedAltar[], chosen: (string | null)[]): SavedAltar[] {
+  return placeAltars(all, chosen).filter((a): a is SavedAltar => !!a);
+}
+
+/** Each placed altar's place (1–6), by id. */
+export function slotNumbers(all: SavedAltar[], chosen: (string | null)[]): Map<string, number> {
+  const numbers = new Map<string, number>();
+  placeAltars(all, chosen).forEach((a, i) => {
+    if (a) numbers.set(a.id, i + 1);
+  });
+  return numbers;
+}
+
+/**
+ * The altar a widget set to "Altar N" shows. Altars sent with their place are
+ * found by it (an empty place shows as empty); older data falls back to order.
+ * The iPhone widget does the same inside the widget.
+ */
+export function altarAtPlace(altars: WidgetAltar[], place: number): WidgetAltar | undefined {
+  if (altars.some((a) => typeof a.slot === 'number')) return altars.find((a) => a.slot === place);
+  return altars[place - 1] ?? altars[0];
 }
 
 /**
@@ -597,7 +629,8 @@ export function slotAltars(all: SavedAltar[], chosen: (string | null)[]): SavedA
 export function previewWidgetAction(altars: WidgetAltar[], action: WidgetAction): WidgetAltar[] {
   const hit = (k: string) => !action.key || k === action.key;
   return altars.map((a) => {
-    if (a.id !== action.altarId) return a;
+    // An altar shown without buttons can't be changed from the widget.
+    if (a.id !== action.altarId || a.readOnly) return a;
     if (action.kind === 'light' || action.kind === 'snuff') {
       const on = action.kind === 'light';
       return {

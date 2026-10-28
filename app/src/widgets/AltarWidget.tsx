@@ -5,7 +5,9 @@
 // offerings and cleanse crystals. A tap changes the widget straight away and
 // leaves an action for the app to carry out on the real altar when it next
 // opens (lib/altarWidget). Long-press the widget and choose "Which altar" to
-// show a different one; the app decides which altar is in each place.
+// show a different one; the app decides which altar is in each place (one of
+// your own, or a coven altar you put there). A coven altar you can't tend
+// right now (readOnly) is shown without its buttons.
 //
 // Everything you see is a picture marked full colour, so the altar looks the
 // same on regular, tinted and clear home screens (only words take the tint).
@@ -51,7 +53,9 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
   const actions = props?.actions ?? [];
   const art = props?.art && props.art.flame !== undefined ? props.art : null;
   const place = Math.max(1, Number(String(environment.configuration?.altar ?? 'altar1').replace('altar', '')) || 1);
-  const chosen: WidgetAltar | undefined = altars[place - 1] ?? altars[0];
+  // Altars come with their place; older data is in place order. An empty place stays empty.
+  const placed = altars.some((a) => typeof a.slot === 'number');
+  const chosen: WidgetAltar | undefined = placed ? altars.find((a) => a.slot === place) : (altars[place - 1] ?? altars[0]);
   // Data saved by an older version of the app may lack newer fields.
   const altar: WidgetAltar | undefined = chosen
     ? {
@@ -76,18 +80,25 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
   const own = widgetAccentedRenderingMode('fullColor');
 
   if (!altar) {
-    if (lock) return <Text modifiers={[widgetURL('saltandsovereignty://altar'), containerBackground('clear', 'widget')]}>No altar yet</Text>;
+    // No altars at all, or this place is empty (its coven altar was deleted, or you left the coven).
+    const empty = altars.length > 0;
+    const heading = empty ? `Altar ${place} is empty` : 'No altar yet';
+    if (lock) return <Text modifiers={[widgetURL('saltandsovereignty://altar'), containerBackground('clear', 'widget')]}>{heading}</Text>;
     return (
       <VStack alignment="leading" spacing={4} modifiers={[widgetURL('saltandsovereignty://altar'), containerBackground(night, 'widget'), fill, padding({ all: 16 })]}>
         <Image systemName="flame" size={26} color={gold} />
         <Spacer />
-        <Text modifiers={[font({ size: 16, weight: 'semibold', design: 'serif' }), foregroundStyle(cream)]}>No altar yet</Text>
-        <Text modifiers={[font({ size: 12 }), foregroundStyle(muted)]}>Build and save one in the app to tend it here.</Text>
+        <Text modifiers={[font({ size: 16, weight: 'semibold', design: 'serif' }), foregroundStyle(cream)]}>{heading}</Text>
+        <Text modifiers={[font({ size: 12 }), foregroundStyle(muted)]}>
+          {empty ? 'Open an altar in the app and tap Home screen to put it here.' : 'Build and save one in the app to tend it here.'}
+        </Text>
       </VStack>
     );
   }
 
-  const link = widgetURL(`saltandsovereignty://altar/${altar.id}`);
+  const link = widgetURL(altar.link || `saltandsovereignty://altar/${altar.id}`);
+  // Look-only: a coven altar you can't tend right now has no buttons.
+  const tend = !altar.readOnly;
   const lit = altar.candles.filter((c) => c.lit);
   const total = altar.candles.length + altar.moreCandles;
   const anyLit = lit.length > 0;
@@ -139,6 +150,14 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
     return <Text modifiers={[link]}>{total ? `${lit.length} of ${total} lit · ${altar.name}` : altar.name}</Text>;
   }
   if (family === 'accessoryCircular') {
+    if (!tend) {
+      return (
+        <VStack spacing={1} modifiers={[link, containerBackground('clear', 'widget')]}>
+          <Image systemName={anyLit ? 'flame.fill' : 'flame'} size={22} />
+          <Text modifiers={[font({ size: 11, weight: 'semibold' })]}>{`${lit.length}/${total}`}</Text>
+        </VStack>
+      );
+    }
     return (
       <Button target="toggle-all" onPress={toggleAll} modifiers={[buttonStyle('plain'), containerBackground('clear', 'widget')]}>
         <VStack spacing={1}>
@@ -231,7 +250,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
             : null}
           {altar.scene.map((item) => {
             const transform = [rotationEffect(item.rotation), scaleEffect({ x: item.flipped ? -1 : 1, y: 1 }), offset({ x: item.box.x * W, y: item.box.y * W })];
-            return item.candle ? (
+            return item.candle && tend ? (
               <Button key={item.key} target={`candle-${item.key}`} onPress={act(item.lit ? 'snuff' : 'light', item.key)} modifiers={[buttonStyle('plain'), ...transform]}>
                 {objectView(item, W)}
               </Button>
@@ -269,13 +288,14 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
       </ZStack>
     </Button>
   );
-  const buttons = (size: number) => (
-    <HStack spacing={8}>
-      {altar.presences.length ? round('offer-all', act('offer', ''), 'hands.sparkles.fill', false, size) : null}
-      {altar.crystals.length ? round('cleanse-all', act('cleanse', ''), 'sparkles', false, size) : null}
-      {total ? pill('toggle-all', toggleAll, toggleText, !anyLit) : null}
-    </HStack>
-  );
+  const buttons = (size: number) =>
+    tend ? (
+      <HStack spacing={8}>
+        {altar.presences.length ? round('offer-all', act('offer', ''), 'hands.sparkles.fill', false, size) : null}
+        {altar.crystals.length ? round('cleanse-all', act('cleanse', ''), 'sparkles', false, size) : null}
+        {total ? pill('toggle-all', toggleAll, toggleText, !anyLit) : null}
+      </HStack>
+    ) : null;
 
   // The altar's name, small and quiet so the altar itself leads.
   // Over the picture it gets a soft shadow to read; on the panel it needs none.
@@ -324,7 +344,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
           <HStack alignment="bottom">
             {status(9.5)}
             <Spacer />
-            {total ? pill('toggle-all', toggleAll, toggleText, !anyLit) : null}
+            {total && tend ? pill('toggle-all', toggleAll, toggleText, !anyLit) : null}
           </HStack>
         </VStack>
       </ZStack>
@@ -373,7 +393,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
             {status(10)}
             {earliest ? ago(earliest, '· lit since', '', 9.5, cream) : null}
             <Spacer />
-            {pill('toggle-all-pill', toggleAll, toggleText, !anyLit)}
+            {tend ? pill('toggle-all-pill', toggleAll, toggleText, !anyLit) : null}
           </HStack>
         ) : null}
         {altar.presences.slice(0, 2).map((p) => (
@@ -384,7 +404,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
               {ago(p.lastOffering, 'Last offering', 'No offerings yet', 9, cream)}
             </VStack>
             <Spacer />
-            {pill(`offer-${p.key}`, act('offer', p.key), 'Offer')}
+            {tend ? pill(`offer-${p.key}`, act('offer', p.key), 'Offer') : null}
           </HStack>
         ))}
         {altar.crystals.length ? (
@@ -399,7 +419,7 @@ const AltarWidget = (props: AltarWidgetProps, environment: WidgetEnvironment<Alt
               {ago(lastCleansed, 'Last cleansed', 'Not cleansed yet', 9, cream)}
             </VStack>
             <Spacer />
-            {pill('cleanse-all', act('cleanse', ''), 'Cleanse')}
+            {tend ? pill('cleanse-all', act('cleanse', ''), 'Cleanse') : null}
           </HStack>
         ) : null}
         {altar.workingsDue ? label(`${altar.workingsDue} OF ${altar.workings} WORKINGS READY TO TEND`) : null}

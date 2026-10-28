@@ -18,7 +18,7 @@ export default function CovenAltarScreen() {
   const { altarId } = useLocalSearchParams<{ altarId: string }>();
   const coven = useCoven();
   const me = coven.userId ? { userId: coven.userId, name: coven.me?.profile?.display_name || 'A member' } : null;
-  const { shared, altar, access, others } = useCovenAltar(String(altarId ?? ''), me);
+  const { shared, altar, access, others } = useCovenAltar(String(altarId ?? ''), me, coven.snapshot?.coven.name);
   const { track } = coven;
   const covenId = coven.snapshot?.coven.id;
 
