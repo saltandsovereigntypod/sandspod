@@ -91,7 +91,28 @@ const ICONS: Record<string, (c: string) => string> = {
   diamond: (c) => svg(`<path d="M12 2l8 10-8 10-8-10z" fill="${c}"/>`),
   hourglass: (c) => svg(`<path d="M6 2h12v4l-4 6 4 6v4H6v-4l4-6-4-6z" fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round"/>`),
   circle: (c) => svg(`<circle cx="12" cy="12" r="8" fill="none" stroke="${c}" stroke-width="3"/>`),
+  drop: (c) => svg(`<path d="M12 3c3 4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-7 6-11z" fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round"/>`),
+  gift: (c) => svg(`<rect x="4" y="9" width="16" height="11" fill="none" stroke="${c}" stroke-width="2"/><path d="M3 9h18M12 9v11M12 9c-2-4-6-4-6-1s6 1 6 1c0 0 6 2 6-1s-4-3-6 1" fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round"/>`),
+  check: (c) => svg(`<circle cx="12" cy="12" r="9" fill="none" stroke="${c}" stroke-width="2"/><path d="M8 12.5l3 3 5-6" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`),
+  people: (c) => svg(`<circle cx="12" cy="8" r="3" fill="${c}"/><circle cx="5" cy="10" r="2.4" fill="${c}"/><circle cx="19" cy="10" r="2.4" fill="${c}"/><path d="M6 20c0-4 3-6 6-6s6 2 6 6zM1 19c0-3 2-5 4-5 1 0 2 .3 2.6.8C6.6 16 6 17.5 6 19zM23 19c0-3-2-5-4-5-1 0-2 .3-2.6.8 1 1.2 1.6 2.7 1.6 4.2z" fill="${c}"/>`),
+  moonStars: (c) => svg(`<path d="M14 4a8 8 0 1 0 6 13A7 7 0 0 1 14 4z" fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M19 3l.8 2.2L22 6l-2.2.8L19 9l-.8-2.2L16 6l2.2-.8z" fill="${c}"/>`),
 };
+
+// The iPhone widgets' symbols (lib/widgetMore) as these drawings.
+const SYMBOL_ICONS: Record<string, keyof typeof ICONS> = {
+  drop: 'drop',
+  gift: 'gift',
+  flame: 'flame',
+  'checkmark.circle': 'check',
+  'person.3': 'people',
+  'moon.stars': 'moonStars',
+  sparkles: 'sparkles',
+  'hands.sparkles': 'hands',
+  'suit.diamond': 'diamond',
+};
+
+/** An Apple symbol's name as its drawing here (a sparkle for any other). */
+export const iconFor = (symbol: string): keyof typeof ICONS => SYMBOL_ICONS[symbol] ?? 'sparkles';
 
 export function Icon({ name, size, color = gold }: { name: keyof typeof ICONS; size: number; color?: string }) {
   return <SvgWidget svg={ICONS[name](color)} style={{ width: size, height: size }} />;

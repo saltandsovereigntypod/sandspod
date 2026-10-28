@@ -1,6 +1,6 @@
 // Keeps the Android home screen widgets in step: a month of days is stored for
-// the widget task whenever the app comes to the front, or the calendars or
-// plans change; each widget then shows the day it is (refreshed every 30 minutes).
+// the widget task whenever the app comes to the front, or the calendars,
+// plans, covens or what you tend change; each widget then shows the day it is (refreshed every 30 minutes).
 
 import { useEffect } from 'react';
 import { AppState } from 'react-native';
@@ -10,6 +10,7 @@ import { holidayChoice } from './holidays';
 import { usePlace } from './location';
 import { useRituals } from './rituals/store';
 import { useMySettings } from './settings/store';
+import { useWidgetMore } from './widgetInputs';
 import { WIDGET_DAYS, widgetTimeline } from './widgetTimeline';
 
 const DAY_WIDGETS = ['MoonWidget', 'HolidayWidget', 'ComingUpWidget', 'RitualWidget'];
@@ -33,26 +34,33 @@ export function useWidgetSync() {
   const { settings } = useMySettings();
   const { plans, templates } = useRituals();
   const place = usePlace();
+  // Your covens, what you tend and today's card; sent again whenever they change (Today's fetches reach here too).
+  const more = useWidgetMore();
   const choiceKey = `${settings?.calendar_traditions ?? ''}|${settings?.calendar_custom_holidays ?? ''}|${settings?.calendar_picked_holidays ?? ''}|${calendarSettingsKey(settings)}|${place ? `${place.latitude.toFixed(1)},${place.longitude.toFixed(1)}` : ''}`;
 
   useEffect(() => {
     const send = async () => {
       try {
         const { writeDays } = await import('../widgets/android/store');
-        const timeline = widgetTimeline(new Date(), holidayChoice(settings), plans, templates, WIDGET_DAYS, {
+        const now = new Date();
+        const timeline = widgetTimeline(now, holidayChoice(settings), plans, templates, WIDGET_DAYS, {
           lead: (day) => leadLine(day, settings, place),
-        });
+        }, more(now));
         await writeDays(timeline.map(({ date, props }) => ({ date: date.toISOString(), value: props })));
         await redrawAndroidWidgets(DAY_WIDGETS);
       } catch {
         // The widgets are a nicety; never let them disturb the app.
       }
     };
-    void send();
+    // Several sources settle one after another as the app opens; send once they have.
+    const soon = setTimeout(() => void send(), 400);
     const sub = AppState.addEventListener('change', (state) => {
       if (state === 'active') void send();
     });
-    return () => sub.remove();
+    return () => {
+      clearTimeout(soon);
+      sub.remove();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- choiceKey stands in for the calendar settings it reads
-  }, [choiceKey, plans, templates]);
+  }, [choiceKey, plans, templates, more]);
 }

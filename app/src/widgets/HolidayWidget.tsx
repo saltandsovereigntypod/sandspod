@@ -1,5 +1,6 @@
-// "Next Holiday": a countdown to the next holiday in your calendars. Runs in
-// the widget extension's own runtime (see MoonWidget).
+// "Next Holiday": a countdown to the next holiday in your calendars or your
+// covens' (saying which coven keeps it, when it isn't in yours). Runs in the
+// widget extension's own runtime (see MoonWidget).
 
 import { HStack, Spacer, Text, VStack } from '@expo/ui/swift-ui';
 import { containerBackground, font, foregroundStyle, frame, lineLimit, widgetURL } from '@expo/ui/swift-ui/modifiers';
@@ -26,7 +27,7 @@ const HolidayWidget = (props: WidgetDayProps, environment: WidgetEnvironment) =>
       <VStack alignment="leading" spacing={1} modifiers={[link, containerBackground('clear', 'widget')]}>
         <Text modifiers={[font({ size: 12, weight: 'semibold' })]}>{props.holidayToday ? `Today: ${props.holiday}` : 'Next holiday'}</Text>
         <Text modifiers={[font({ size: 14, weight: 'semibold' }), lineLimit(1)]}>{next ? next.name : 'None in your calendars'}</Text>
-        <Text modifiers={[font({ size: 12 }), lineLimit(1)]}>{next ? `${next.date} · ${next.when}` : ''}</Text>
+        <Text modifiers={[font({ size: 12 }), lineLimit(1)]}>{next ? `${next.date} · ${next.from ? next.from : next.when}` : ''}</Text>
       </VStack>
     );
   }
@@ -50,6 +51,7 @@ const HolidayWidget = (props: WidgetDayProps, environment: WidgetEnvironment) =>
           </HStack>
           <Text modifiers={[font({ size: 16, weight: 'semibold', design: 'serif' }), foregroundStyle(cream), lineLimit(2)]}>{next.name}</Text>
           <Text modifiers={[font({ size: 11 }), foregroundStyle(muted), lineLimit(1)]}>{next.date}</Text>
+          {next.from ? <Text modifiers={[font({ size: 11 }), foregroundStyle(gold), lineLimit(1)]}>{`Kept by ${next.from}`}</Text> : null}
         </VStack>
       ) : (
         <Text modifiers={[font({ size: 13 }), foregroundStyle(muted)]}>None in your calendars</Text>
