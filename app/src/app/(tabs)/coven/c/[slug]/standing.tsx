@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Text } from 'react-native';
 
 import { covenHref, CovenScreen } from '../../../../../components/covens/CovenScreen';
+import { programHref } from '../../../../../components/covens/programs';
 import { OpenPositionsHere } from '../../../../../components/covens/Positions';
 import { MyQueuePlaces } from '../../../../../components/covens/Queue';
 import { RecordSections } from '../../../../../components/covens/Record';
@@ -94,6 +95,7 @@ export default function MyStanding() {
           userId={userId}
           onLogCheckin={coven.standing.ok ? (menteeId, metOn, note) => void act(() => api.logCheckin(covenId!, menteeId, metOn, note), 'The check-in is logged.') : undefined}
           onRemoveCheckin={(id) => void act(() => api.removeCheckin(id))}
+          onOpenStudy={(s) => router.push(programHref(coven.slug, s.program_id, null) as never)}
         />
       )}
       {message && <Notice>{message}</Notice>}

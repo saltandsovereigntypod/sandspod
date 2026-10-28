@@ -4,6 +4,7 @@ import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../../components/Button';
 import { covenHref, CovenScreen } from '../../../../../../components/covens/CovenScreen';
+import { programHref } from '../../../../../../components/covens/programs';
 import { RecordSections } from '../../../../../../components/covens/Record';
 import { Pill, Pills } from '../../../../../../components/covens/ui';
 import { Card, Chips, Field, Notice, Section } from '../../../../../../components/more/ui';
@@ -131,6 +132,7 @@ export default function MemberRecordScreen() {
             onMark={record.marks_attendance ? (ritualId, present) => void act(() => api.markAttendance(ritualId, record.user_id, present)) : undefined}
             onExcuse={record.marks_attendance ? (ritualId, excused) => void act(() => api.excuseAbsence(ritualId, record.user_id, excused)) : undefined}
             onRemoveCheckin={(id) => void act(() => api.removeCheckin(id))}
+            onOpenStudy={(s) => router.push(programHref(coven.slug, s.program_id, s.user_id) as never)}
           />
 
           {record.keeper && !record.own && (

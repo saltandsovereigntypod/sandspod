@@ -5,12 +5,14 @@ import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { covenHref } from './CovenScreen';
+import { scoreHref } from './training';
 import { Pill, Pills } from './ui';
-import { MenuList, MenuRow } from '../more/ui';
+import { MenuList, MenuRow, Section } from '../more/ui';
 import { useCoven } from '../../lib/covens/CovenContext';
-import { ENROLLMENT_STATUS, enrollmentSummary, programOutline, type Enrollment } from '../../lib/covens/programs';
+import { ENROLLMENT_STATUS, enrollmentSummary, menteesOf, programOutline, signsOffAsHead, trainingToSignOff, type Enrollment } from '../../lib/covens/programs';
+import { attemptsToScore, scoreLine } from '../../lib/covens/quiz';
 import { unreadIn } from '../../lib/covens/training';
-import type { ProgramData } from '../../lib/covens/usePrograms';
+import { usePrograms, type ProgramData } from '../../lib/covens/usePrograms';
 import { colors, radius, type } from '../../theme';
 
 export function ProgressBar({ percent }: { percent: number }) {
@@ -85,3 +87,63 @@ const styles = StyleSheet.create({
   card: { backgroundColor: colors.surface, borderRadius: radius.card, borderWidth: 1, borderColor: colors.hairline, padding: 16, gap: 6 },
   pressed: { opacity: 0.8 },
 });
+
+/**
+ * Training to sign off, for the top of Review: work sent for sign-off,
+ * stages ready to pass and written answers to score, for those this person
+ * may sign off (the head's own too). Each opens the right place.
+ */
+export function TrainingToSignOff() {
+  const coven = useCoven();
+  const { data, status } = usePrograms();
+  const me = coven.userId;
+  const head = signsOffAsHead(coven.perms, coven.standing.ok);
+  const who = { userId: me, mentees: menteesOf(coven.mentors, me), programs: coven.perms.programs, head };
+  const { tasks, stages } = trainingToSignOff(data, who);
+  const attempts = attemptsToScore(data.attempts, who);
+  const person = (id: string) => (id === me ? 'You' : coven.nameOf(id));
+  const program = (id: string) => data.programs.find((p) => p.id === id)?.title ?? 'A program';
+  const taskTitle = (id: string) => data.tasks.find((t) => t.id === id)?.title ?? 'A step';
+  const total = tasks.length + stages.length + attempts.length;
+  if (status !== 'ready') return null;
+  return (
+    <Section label="Training to sign off">
+      {!total && <Text style={type.caption}>Nothing is waiting for sign-off. You can also sign off any step from someone’s path: Members, then their name, then Training.</Text>}
+      {head && <Text style={type.caption}>You’re the coven’s head, so you can sign off anyone’s training, your own included.</Text>}
+      {total > 0 && (
+        <MenuList>
+          {tasks.map((p, i) => (
+            <MenuRow
+              key={p.id}
+              label={`Sign off: ${person(p.user_id)}, ${taskTitle(p.task_id)}`}
+              detail={`${program(p.program_id)} · sent for sign-off`}
+              icon="journey"
+              last={i === tasks.length - 1 && !stages.length && !attempts.length}
+              onPress={() => router.push(`${programHref(coven.slug, p.program_id, p.user_id)}${p.user_id ? '&' : '?'}task=${p.task_id}` as never)}
+            />
+          ))}
+          {stages.map(({ enrollment, stage, last: final }, i) => (
+            <MenuRow
+              key={`${enrollment.id}-${stage.id}`}
+              label={`${final ? 'Confirm they’ve finished' : 'Pass the stage'}: ${person(enrollment.user_id)}, ${stage.title}`}
+              detail={`${program(enrollment.program_id)} · every task signed off`}
+              icon="journey"
+              last={i === stages.length - 1 && !attempts.length}
+              onPress={() => router.push(programHref(coven.slug, enrollment.program_id, enrollment.user_id) as never)}
+            />
+          ))}
+          {attempts.map((a, i) => (
+            <MenuRow
+              key={a.id}
+              label={`Score: ${person(a.user_id)}, ${a.title}`}
+              detail={`Written answers · ${scoreLine(a)}`}
+              icon="journey"
+              last={i === attempts.length - 1}
+              onPress={() => router.push(scoreHref(coven.slug, a.id))}
+            />
+          ))}
+        </MenuList>
+      )}
+    </Section>
+  );
+}

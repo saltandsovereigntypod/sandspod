@@ -26,6 +26,8 @@
   const UI = global.CovenUI;
   const { esc, prose } = UI;
   const K = () => global.SaltCore?.covens;
+  // Whether the caller signs off training as the coven's head (her own too; coven_head_signs_off).
+  const headSignsOff = (ctx) => Boolean(K()?.programs?.signsOffAsHead && K().programs.signsOffAsHead(ctx.state.perms || {}, Boolean(ctx.state.standing?.ok)));
   const statusLine = () => `<p class="cv-status" role="status" aria-live="polite" data-status></p>`;
   const when = (value) => (value ? new Date(value).toLocaleString(undefined, { day: "numeric", month: "long", hour: "numeric", minute: "2-digit" }) : "");
   const store = {
@@ -299,7 +301,9 @@
       return;
     }
     const self = e.user_id === ctx.me();
-    const mayScore = !self && (ctx.state.perms.programs || ctx.mentorOf(e.user_id) === ctx.me());
+    // The coven's head scores anyone's test, her own too.
+    const head = headSignsOff(ctx);
+    const mayScore = head || (!self && (ctx.state.perms.programs || ctx.mentorOf(e.user_id) === ctx.me()));
     const attempts = ctx.data.attempts.filter((a) => a.enrollment_id === e.id && a.task_id === t.id).sort((a, b) => b.number - a.number);
     const can = Q.standingLine(standing);
     const key = Q.draftKey(e.id, t.id);
@@ -316,7 +320,7 @@
         ${viewing.status === "failed" && self ? `<p class="sp-notice">${esc(can.line || "Not passed this time.")} See which questions to look at again below, and ask your mentor about anything unclear.</p>` : ""}
         ${!final ? `<p class="sp-notice">${self ? "The choice questions are scored. Your written answers are with your mentor or the coven’s leaders, who will score them." : "Written answers are waiting to be scored."}</p>` : ""}
         ${viewing.feedback && final ? `<div class="sp-card"><p class="sp-label">A note from ${esc(viewing.scored_by ? ctx.nameOf(viewing.scored_by) : "your mentor")}</p><div class="cv-doc">${prose(viewing.feedback)}</div></div>` : ""}
-        ${attemptHtml(viewing, { showRubric: !self, self })}
+        ${attemptHtml(viewing, { showRubric: !self || head, self })}
         <div class="sp-actions">${mayScore && !final ? `<a class="button button--primary" href="${esc(ctx.link(`score=${viewing.id}`))}" data-go>Score it</a>` : ""}${talk}</div>`;
       return;
     }
@@ -330,9 +334,10 @@
           <h2>${esc(quiz.title)}</h2>${quiz.intro ? `<div class="cv-doc">${prose(quiz.intro)}</div>` : ""}
           <p class="sp-caption">${quiz.questions.length} question${quiz.questions.length === 1 ? "" : "s"} · ${Q.maxPoints(quiz.questions)} points · ${quiz.pass_percent}% to pass${written ? ` · ${written} written answer${written === 1 ? "" : "s"}, scored by your mentor or the coven’s leaders` : ""} · ${quiz.retakes} retake${quiz.retakes === 1 ? "" : "s"}${quiz.wait_hours ? `, ${quiz.wait_hours} hours apart` : ""}</p></header>
         ${self && can.line ? `<p class="sp-notice">${esc(can.line)}</p>` : ""}
+        ${self && head ? `<p class="sp-caption">${esc(K().programs.HEAD_OWN_TRAINING)}</p>` : ""}
         <div class="sp-actions">
           ${self && can.canTake && quiz.questions.length ? `<button class="button button--primary" type="button" data-take="one">${Object.keys(answers).length ? "Carry on with your answers" : attempts.length ? "Take it again" : "Begin the test"}</button><button class="button button--ghost" type="button" data-take="all">See the whole test at once</button>` : ""}
-          ${!self && ctx.state.perms.programs && standing && standing.used >= standing.allowed && !standing.passed ? `<button class="button button--ghost" type="button" data-allow>Allow one more attempt</button>` : ""}
+          ${(head || (!self && ctx.state.perms.programs)) && standing && standing.used >= standing.allowed && !standing.passed ? `<button class="button button--ghost" type="button" data-allow>Allow one more attempt</button>` : ""}
         </div>${statusLine()}
         <section class="sp-section"><h3>${self ? "Your attempts" : "Attempts"}</h3>
           ${attempts.length ? `<ul class="cv-attempts">${attempts
@@ -409,7 +414,8 @@
       ctx.pane.innerHTML = `${ctx.nav("")}<p class="sp-notice">That attempt isn’t here, or isn’t yours to score.</p>`;
       return;
     }
-    const mayScore = a.user_id !== ctx.me() && (ctx.state.perms.programs || ctx.mentorOf(a.user_id) === ctx.me());
+    const own = a.user_id === ctx.me();
+    const mayScore = headSignsOff(ctx) || (!own && (ctx.state.perms.programs || ctx.mentorOf(a.user_id) === ctx.me()));
     const open = a.status === "submitted" || a.status === "scored";
     const t = ctx.data.tasks.find((x) => x.id === a.task_id);
     const writtenQs = a.questions.map((q, i) => ({ q, i })).filter(({ q }) => Q.isWritten(q));
@@ -417,7 +423,8 @@
       <header class="sp-section"><div class="cv-meta"><span class="cv-pill">${esc(ctx.nameOf(a.user_id))}</span><span class="cv-pill">Attempt ${a.number}</span><span class="cv-pill">${esc(Q.ATTEMPT_STATUS[a.status])}</span></div>
         <h2>Score: ${esc(a.title)}</h2>${t ? `<p class="sp-caption">${esc(t.title)}</p>` : ""}
         <p class="cv-score" data-total></p><p class="sp-caption">Choice questions: ${a.auto_score} points, scored when handed in.</p></header>
-      ${mayScore ? "" : `<p class="sp-notice">Only their mentor or those who manage the coven’s programs score this test.</p>`}
+      ${mayScore ? "" : `<p class="sp-notice">Only their mentor, those who manage the coven’s programs or the coven’s head score this test.</p>`}
+      ${mayScore && own ? `<p class="sp-notice">${esc(K().programs.HEAD_OWN_TRAINING)}</p>` : ""}
       <form class="sp-section" data-score novalidate>
         ${writtenQs
           .map(({ q, i }) => {

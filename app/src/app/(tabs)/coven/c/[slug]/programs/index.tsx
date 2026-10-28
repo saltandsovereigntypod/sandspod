@@ -10,7 +10,7 @@ import { Card, MenuList, MenuRow, Notice, Section } from '../../../../../../comp
 import * as api from '../../../../../../lib/covens/api';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
 import { errorMessage } from '../../../../../../lib/covens/model';
-import { menteesOf, mentorOf, waitingForMe } from '../../../../../../lib/covens/programs';
+import { menteesOf, mentorOf, signsOffAsHead, waitingForMe } from '../../../../../../lib/covens/programs';
 import { attemptsToScore, scoreLine } from '../../../../../../lib/covens/quiz';
 import { scoreHref, threadHref } from '../../../../../../components/covens/training';
 
@@ -32,8 +32,8 @@ export default function Programs() {
   const mentees = menteesOf(coven.mentors, me);
   const menteeEnrollments = data.enrollments.filter((e) => mentees.includes(e.user_id) && e.status !== 'withdrawn');
   const myMentor = mentorOf(coven.mentors, me);
-  // Waiting for me: work to sign off, tests to score, and messages from those I oversee.
-  const who = { userId: me, mentees, programs: coven.perms.programs };
+  // Waiting for me: work to sign off, tests to score, and messages from those I oversee (the head's own work too).
+  const who = { userId: me, mentees, programs: coven.perms.programs, head: signsOffAsHead(coven.perms, coven.standing.ok) };
   const toSign = waitingForMe(data.progress, data.tasks, who);
   const toScore = attemptsToScore(data.attempts, who);
   const myUnread = data.unread.filter((u) => u.trainee_id !== me);
@@ -65,7 +65,7 @@ export default function Programs() {
                 {toScore.map((a, i) => (
                   <MenuRow
                     key={a.id}
-                    label={`Score: ${coven.nameOf(a.user_id)}, ${a.title}`}
+                    label={a.user_id === me ? `Score your own: ${a.title}` : `Score: ${coven.nameOf(a.user_id)}, ${a.title}`}
                     detail={scoreLine(a)}
                     icon="journey"
                     last={i === toScore.length - 1 && !toSign.length && !myUnread.length}
@@ -75,17 +75,19 @@ export default function Programs() {
                 {toSign.map((p, i) => (
                   <View key={p.id}>
                     <MenuRow
-                      label={`Sign off: ${coven.nameOf(p.user_id)}, ${taskTitle(p.task_id)}`}
-                      detail="Waiting for sign-off"
+                      label={p.user_id === me ? `Sign off your own: ${taskTitle(p.task_id)}` : `Sign off: ${coven.nameOf(p.user_id)}, ${taskTitle(p.task_id)}`}
+                      detail={p.user_id === me ? 'Waiting for sign-off. As the coven’s head, you can sign off your own training.' : 'Waiting for sign-off'}
                       icon="journey"
                       onPress={() => router.push(`${programHref(coven.slug, p.program_id, p.user_id)}&task=${p.task_id}` as never)}
                     />
-                    <MenuRow
-                      label={`Message ${coven.nameOf(p.user_id)} about it`}
-                      icon="letters"
-                      last={i === toSign.length - 1 && !myUnread.length}
-                      onPress={() => router.push(threadHref(coven.slug, p.enrollment_id, p.task_id))}
-                    />
+                    {p.user_id !== me && (
+                      <MenuRow
+                        label={`Message ${coven.nameOf(p.user_id)} about it`}
+                        icon="letters"
+                        last={i === toSign.length - 1 && !myUnread.length}
+                        onPress={() => router.push(threadHref(coven.slug, p.enrollment_id, p.task_id))}
+                      />
+                    )}
                   </View>
                 ))}
                 {myUnread.map((u, i) => (

@@ -12,7 +12,7 @@ import { Card, Chips, MenuList, MenuRow, Notice, Section } from '../../../../../
 import * as api from '../../../../../../lib/covens/api';
 import { useCoven } from '../../../../../../lib/covens/CovenContext';
 import { errorMessage } from '../../../../../../lib/covens/model';
-import { mentorOf } from '../../../../../../lib/covens/programs';
+import { HEAD_OWN_TRAINING, mentorOf, signsOffAsHead } from '../../../../../../lib/covens/programs';
 import {
   ATTEMPT_STATUS,
   draftKey,
@@ -112,7 +112,9 @@ export default function StepTest() {
   const questions = quiz.questions;
   const viewing = typeof mode === 'object' ? attempts.find((a) => a.id === mode.attempt) : undefined;
   const mentor = mentorOf(coven.mentors, enrollment.user_id);
-  const mayScore = !self && (coven.perms.programs || mentor === coven.userId);
+  // The coven's head scores anyone's test, her own too.
+  const head = signsOffAsHead(coven.perms, coven.standing.ok);
+  const mayScore = head || (!self && (coven.perms.programs || mentor === coven.userId));
 
   const handIn = async () => {
     const left = unanswered(questions, answers);
@@ -177,7 +179,7 @@ export default function StepTest() {
             <Words text={viewing.feedback} />
           </Card>
         )}
-        <AttemptResult attempt={viewing} showRubric={!self} self={self} />
+        <AttemptResult attempt={viewing} showRubric={!self || head} self={self} />
         <View style={styles.row}>
           {mayScore && !final && <Button label="Score it" onPress={() => router.push(scoreHref(coven.slug, viewing.id))} />}
           <Button label={self ? 'Talk about your result' : `Talk with ${coven.nameOf(enrollment.user_id)} about it`} variant="outline" onPress={() => router.push(threadHref(coven.slug, enrollment.id, task.id))} />
@@ -244,7 +246,8 @@ export default function StepTest() {
         <Button label={begun ? 'Carry on with your answers' : attempts.length ? 'Take it again' : 'Begin the test'} onPress={() => setMode('taking')} disabled={!questions.length} />
       )}
       {self && !questions.length && <Text style={type.caption}>This test has no questions yet.</Text>}
-      {!self && coven.perms.programs && standing && standing.used >= standing.allowed && !standing.passed && (
+      {self && head && <Text style={type.caption}>{HEAD_OWN_TRAINING}</Text>}
+      {(head || (!self && coven.perms.programs)) && standing && standing.used >= standing.allowed && !standing.passed && (
         <Button label="Allow one more attempt" variant="outline" onPress={() => void allow()} disabled={busy} />
       )}
       {message && <Notice>{message}</Notice>}

@@ -5,7 +5,8 @@
  *   it, "Mother coven"); the coven's moderators can mute or remove people,
  *   reviewers can raise them, and the head can hand the coven on, choosing
  *   what they keep (covens/coven/lineage.js).
- * Review: applications to join and requests to rise to a higher position.
+ * Review: training to sign off (covens/coven/programs.js), applications to
+ *   join and requests to rise to a higher position.
  * Manage: the coven's details, its creed, rules, requirements and agreements,
  *   its positions, inviting people (the Invite tab, covens/coven/invite.js)
  *   and the questions it asks people who apply.
@@ -28,7 +29,21 @@
       pane.innerHTML = `<p class="sp-caption">Gathering the members…</p>`;
       const keepsRecord = Boolean(global.CovenRecordAccess?.seesRecord(state));
       const recordHref = (userId) => `${covenHref("record")}${userId ? `&member=${encodeURIComponent(userId)}` : ""}`;
-      const [members, signatures] = await Promise.all([D.members(state.coven.id).catch(() => []), state.perms.review || state.perms.site ? D.covenSignatures(state.coven.id).catch(() => []) : Promise.resolve(null)]);
+      const [members, signatures, enrollments, programs] = await Promise.all([
+        D.members(state.coven.id).catch(() => []),
+        state.perms.review || state.perms.site ? D.covenSignatures(state.coven.id).catch(() => []) : Promise.resolve(null),
+        // Their training, as far as you may see it (their mentor, those who keep progress, the head).
+        state.perms.member ? D.enrollments(state.coven.id).catch(() => []) : Promise.resolve([]),
+        state.perms.member ? D.programs(state.coven.id).catch(() => []) : Promise.resolve([])
+      ]);
+      const trainingHtml = (userId) => {
+        const theirs = enrollments.filter((e) => e.user_id === userId && e.status !== "withdrawn");
+        if (!theirs.length) return "";
+        const title = (id) => programs.find((p) => p.id === id)?.title || "A program";
+        return `<p class="sp-caption"><strong>Training:</strong> ${theirs
+          .map((e) => `<a href="${esc(`${covenHref("programs")}&program=${encodeURIComponent(e.program_id)}&person=${encodeURIComponent(e.user_id)}`)}" data-tab="programs">${esc(title(e.program_id))}</a>`)
+          .join(", ")} <span class="sp-muted">(open their path to sign off steps)</span></p>`;
+      };
       await UI.loadNames(state.context, members.map((m) => m.user_id));
       const { perms, context, coven } = state;
       const me = context.user?.id;
@@ -55,6 +70,7 @@
             <div class="sp-section">
               ${profile.bio ? `<p class="cv-doc">${prose(profile.bio)}</p>` : ""}
               <p class="sp-caption">Joined ${esc(new Date(m.joined_at).toLocaleDateString())}${muted ? ` · messages paused until ${esc(new Date(m.muted_until).toLocaleString())}` : ""}</p>
+              ${trainingHtml(m.user_id)}
               ${manageable ? `<form class="cv-inline-form" data-member-form>
                 ${grantable.length && (perms.review || perms.site) ? `<div class="sp-field"><label>Position<select name="rank_id">${grantable.map((r) => `<option value="${esc(r.id)}"${r.id === m.rank_id ? " selected" : ""}>${esc(r.name)}</option>`).join("")}</select></label></div>
                   <button class="button button--ghost button--small" type="submit" data-act="rank">Change position</button>` : ""}
@@ -121,7 +137,7 @@
   // --- Review --------------------------------------------------------------
 
   const CovenReview = {
-    async mount(pane, state, { refresh }) {
+    async mount(pane, state, { refresh, covenHref }) {
       pane.innerHTML = `<p class="sp-caption">Gathering requests…</p>`;
       const { coven, context } = state;
       const [applications, advancements, signatures, decided] = await Promise.all([D.applications(coven.id), D.advancements(coven.id), D.covenSignatures(coven.id).catch(() => []), D.applications(coven.id, "all").catch(() => [])]);
@@ -170,7 +186,7 @@
       const notes = state.perms.review && context.user
         ? `<p class="sp-caption">Phone notes for new applications here: <strong>${wanted ? "on" : "off"}</strong>. <a href="${esc(UI.href("/reminders/#gd-requests"))}">Change them in Reminders</a> (they ring phones with the app; this page shows the count while it’s open).</p>`
         : "";
-      pane.innerHTML = `${notes}<div data-proposals></div><section class="sp-section"><h2>Applications to join</h2>${applications.length ? applications.map(appCard).join("") : `<p class="sp-empty">No applications are waiting.</p>`}</section>
+      pane.innerHTML = `${notes}<div data-training></div><div data-proposals></div><section class="sp-section"><h2>Applications to join</h2>${applications.length ? applications.map(appCard).join("") : `<p class="sp-empty">No applications are waiting.</p>`}</section>
         <section class="sp-section"><h2>Requests to advance</h2>${advancements.length ? advancements.map(advCard).join("") : `<p class="sp-empty">No requests are waiting.</p>`}</section>
         ${past.length ? `<details class="sp-details"><summary>Decided applications</summary><div class="sp-list">${past
           .map((a) => `<div class="sp-row"><span class="sp-row__text"><span class="sp-row__title">${esc(profile(a.user_id).display_name || "A witch")} · ${esc(a.status)}</span>
@@ -197,6 +213,8 @@
           if (await UI.busy(form, form.querySelector("[data-status]"), () => D.decideApplication(form.dataset.id, approve, note))) refresh("review");
         })
       );
+      // Training to sign off, at the top (covens/coven/programs.js).
+      if (global.CovenPrograms?.trainingToSignOff && covenHref) global.CovenPrograms.trainingToSignOff(pane.querySelector("[data-training]"), state, { covenHref }).catch(() => {});
       // A place freed in a full position, for the head and leaders: who is next in line.
       if (global.CovenQueue) global.CovenQueue.proposals(pane.querySelector("[data-proposals]"), state, { refresh });
       pane.querySelectorAll("[data-report-app]").forEach((button) => button.addEventListener("click", () => UI.report({ target_type: "application", target_id: button.dataset.reportApp, target_user_id: button.dataset.user, coven_id: coven.id, label: "this application" })));

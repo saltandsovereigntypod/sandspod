@@ -10,7 +10,7 @@ import { useSession } from '../session';
 import * as api from './api';
 import { withAncestor, type Lineage } from './lineage';
 import { fetchLineage, notifyLineage } from './lineageApi';
-import { menteesOf, waitingForMe as waitingFor, type Grant, type Mentorship } from './programs';
+import { menteesOf, signsOffAsHead, trainingToSignOff, type Enrollment, type Grant, type Mentorship } from './programs';
 import { attemptsToScore } from './quiz';
 import { unreadTotal } from './training';
 import {
@@ -175,6 +175,7 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
   }, [ancestor, foundedHere, covenIdNow, snapshot]);
   const stand = useMemo(() => standing(perms, unsigned, !!me?.banned), [perms, unsigned, me?.banned]);
   const insider = perms.member || perms.site;
+  const head = signsOffAsHead(perms, stand.ok);
 
   // Rituals load for members (and site moderators) once the coven is known.
   useEffect(() => {
@@ -185,20 +186,26 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
   const refreshPrograms = useCallback(async () => {
     const covenId = snapshot?.coven.id;
     if (!covenId || !insider) return;
-    const [list, progress, attempts, unread] = await Promise.all([
+    const [list, progress, attempts, unread, enrollments] = await Promise.all([
       api.fetchMentors(covenId).catch(() => [] as Mentorship[]),
       api.fetchProgress(covenId).catch(() => []),
       api.fetchAttempts(covenId),
       api.programUnread(covenId),
+      api.fetchEnrollments(covenId).catch(() => [] as Enrollment[]),
     ]);
     setMentors(list);
-    const submitted = progress.filter((p) => p.status === 'submitted' && p.user_id !== userId);
-    const { tasks } = submitted.length ? await api.fetchProgramParts([...new Set(submitted.map((p) => p.program_id))]).catch(() => ({ tasks: [] })) : { tasks: [] };
-    const who = { userId, mentees: menteesOf(list, userId), programs: perms.programs };
-    // Work to sign off, and tests to score.
-    setWaitingForMe(waitingFor(submitted, tasks, who).length + attemptsToScore(attempts, who).length);
+    // The coven's head signs off her own work too.
+    const others = (id: string) => id !== userId || head;
+    const submitted = progress.filter((p) => p.status === 'submitted' && others(p.user_id));
+    const active = enrollments.filter((e) => e.status === 'active' && others(e.user_id));
+    const programIds = [...new Set([...submitted.map((p) => p.program_id), ...active.map((e) => e.program_id)])];
+    const parts = programIds.length ? await api.fetchProgramParts(programIds).catch(() => ({ stages: [], tasks: [] })) : { stages: [], tasks: [] };
+    const who = { userId, mentees: menteesOf(list, userId), programs: perms.programs, head };
+    // Work to sign off, stages ready to pass, and tests to score.
+    const waiting = trainingToSignOff({ enrollments: active, stages: parts.stages, tasks: parts.tasks, progress }, who);
+    setWaitingForMe(waiting.tasks.length + waiting.stages.length + attemptsToScore(attempts, who).length);
     setTrainingUnread(unreadTotal(unread));
-  }, [snapshot?.coven.id, insider, userId, perms.programs]);
+  }, [snapshot?.coven.id, insider, userId, perms.programs, head]);
   useEffect(() => {
     void refreshPrograms();
   }, [refreshPrograms]);

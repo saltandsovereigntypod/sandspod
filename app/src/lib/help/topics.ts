@@ -2931,6 +2931,7 @@ export const HELP: HelpSection[] = [
           'Your mentor or the coven’s leaders sign your work off and confirm each stage. Your next task also shows on Today.',
         ],
         tips: [
+          'The coven’s head can sign off anyone’s training, her own included: she signs off her own steps, scores her own written answers, confirms her own stages and finishes her own program. Each step shows who signed it off. Mentors and those who manage programs never sign off their own. See "Sign off someone’s training".',
           'Each step has its own conversation with your mentor and the coven’s leaders: tap "Talk with … about this step".',
           'Practice steps count your sessions ("4 of 10 sessions"). Timed ones have a timer: "Start the timer", then "Use these minutes" before you log.',
         ],
@@ -2969,11 +2970,31 @@ export const HELP: HelpSection[] = [
         tips: [
           'A pass marks the step done. A trainee who doesn’t pass sees their score, which questions they got right and your comments, and can try again after the wait. The right answers and explanations open to them once they pass.',
           'If you’re taking the same test yourself and haven’t passed it, your mentee’s attempts show without the answers: you can still score their written answers.',
+          'The coven’s head can score anyone’s test, her own included, and allow herself another attempt. Mentors and those who manage programs can’t score their own.',
           'Those who manage programs can tap "Allow one more attempt" on a test whose attempts are used up.',
           'Change a test’s questions, pass mark, retakes and wait under "Lessons and tests". Attempts already made keep the questions as they were.',
         ],
         href: '/coven',
         keywords: ['score', 'scoring', 'mark', 'grade', 'test', 'quiz', 'rubric', 'written answer', 'mentor', 'retake'],
+      },
+      {
+        id: 'covens-sign-off-training',
+        title: 'Sign off someone’s training',
+        summary: 'Sign off a step, pass a stage or score a test for those you oversee. The coven’s head can sign off anyone’s, her own included.',
+        steps: [
+          'Open the Coven tab, tap your coven, then "Review". "Training to sign off" at the top lists work sent for sign-off, stages ready to pass and written answers to score. Tap one to open it.',
+          'Or open "Members", tap their name, and under "Training" tap their program to open their path.',
+          'On a step sent for sign-off, add a note if you like and tap "Sign it off" or "Send back". On any other unfinished step, tap "Sign it off" to sign it off directly, without waiting for them to send it.',
+          'When every task in the stage is signed off, tap "Confirm the stage is passed" (or "Confirm they’ve finished" on the last stage). Those who manage programs and the head can also "Pass the stage early".',
+          'For a test, tap "Score: …", give each written answer its points, then "Give the result".',
+        ],
+        tips: [
+          'The coven’s head can sign off anyone’s training, her own included: on her own path she sees "You’re the coven’s head, so you can sign off your own steps." Mentors and those who manage programs never sign off their own.',
+          'Each step shows who signed it off, and whether it was signed off directly. The head’s own sign-offs say so.',
+          'The coven’s page shows "Initiation & training" with how many are waiting to sign off, and "Review" counts them too.',
+        ],
+        href: '/coven',
+        keywords: ['sign off', 'signoff', 'approve', 'check off', 'pass stage', 'graduate', 'complete', 'progress', 'high priestess', 'head', 'own training', 'mentor'],
       },
       {
         id: 'covens-training-talk',

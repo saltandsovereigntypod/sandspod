@@ -188,10 +188,10 @@ export const answerWords = (q: Question, answer: Answer | undefined) =>
 /** The right options' words. */
 export const rightWords = (q: Question) => (q.correct ?? []).map((i) => q.options?.[i] ?? '').filter(Boolean).join('; ');
 
-/** Attempts waiting for this person to score: their mentees', or everyone's for program managers. */
-export function attemptsToScore(attempts: Attempt[], who: { userId: string | null; mentees: string[]; programs: boolean }): Attempt[] {
+/** Attempts waiting for this person to score: their mentees', or everyone's for program managers (and the head's own, for her). */
+export function attemptsToScore(attempts: Attempt[], who: { userId: string | null; mentees: string[]; programs: boolean; head?: boolean }): Attempt[] {
   return attempts
-    .filter((a) => (a.status === 'submitted' || a.status === 'scored') && a.user_id !== who.userId && (who.programs || who.mentees.includes(a.user_id)))
+    .filter((a) => (a.status === 'submitted' || a.status === 'scored') && (who.head || (a.user_id !== who.userId && (who.programs || who.mentees.includes(a.user_id)))))
     .sort((a, b) => a.submitted_at.localeCompare(b.submitted_at));
 }
 

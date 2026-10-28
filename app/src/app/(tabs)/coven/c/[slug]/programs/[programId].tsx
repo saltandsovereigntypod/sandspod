@@ -14,14 +14,18 @@ import { errorMessage } from '../../../../../../lib/covens/model';
 import {
   canCheck,
   canPass,
+  canSignDirectly,
   checkedByLabel,
   ENROLLMENT_STATUS,
   enrollmentSummary,
+  HEAD_OWN_TRAINING,
   holidayName,
   kindLabel,
   mentorOf,
   PASSED_BY,
   programOutline,
+  signedOffWords,
+  signsOffAsHead,
   taskState,
   type Enrollment,
   type ProgramTask,
@@ -81,7 +85,9 @@ export default function ProgramPath() {
   const s = enrollmentSummary(enrollment, outline, data.progress);
   const rows = new Map(data.progress.filter((p) => p.enrollment_id === enrollment.id).map((p) => [p.task_id, p]));
   const passes = data.passes.filter((p) => p.enrollment_id === enrollment.id);
-  const who = { self, mentor: mentorOf(coven.mentors, person) === coven.userId, programs: coven.perms.programs };
+  // The coven's head signs off anyone's training, her own too.
+  const head = signsOffAsHead(coven.perms, coven.standing.ok);
+  const who = { self, mentor: mentorOf(coven.mentors, person) === coven.userId, programs: coven.perms.programs, head };
   const mentor = mentorOf(coven.mentors, person);
   const award = program.award_rank_id ? coven.snapshot?.ranks.find((r) => r.id === program.award_rank_id)?.name : null;
   const unread = unreadMap(data.unread);
@@ -118,6 +124,7 @@ export default function ProgramPath() {
       <ProgressBar percent={s.percent} />
       {enrollment.status === 'completed' && <Notice>✦ Finished {date(enrollment.completed_at)}.</Notice>}
       {enrollment.status === 'paused' && <Notice>This program is paused for now.</Notice>}
+      {self && head && enrollment.status === 'active' && <Notice>{HEAD_OWN_TRAINING}</Notice>}
       {message && <Notice>{message}</Notice>}
 
       {outline.map((stage, index) => {
@@ -128,7 +135,7 @@ export default function ProgramPath() {
             key={`${stage.id}-${state}`}
             title={`Stage ${index + 1}: ${stage.title}`}
             state={state}
-            open={!!taskParam && stage.tasks.some((t) => t.id === taskParam)} passedNote={passed ? `Passed ${date(passed.passed_at)}${passed.passed_by ? ` (${coven.nameOf(passed.passed_by)})` : ''}${passed.note ? ` · “${passed.note}”` : ''}` : ''}>
+            open={!!taskParam && stage.tasks.some((t) => t.id === taskParam)} passedNote={passed ? `Passed ${date(passed.passed_at)}${passed.passed_by ? ` (${signedOffWords(passed.passed_by, enrollment.user_id, coven.nameOf, stage.passed_by === 'self')})` : ''}${passed.note ? ` · “${passed.note}”` : ''}` : ''}>
             <Words text={stage.intro} />
             <Text style={type.caption}>
               {stage.min_days ? `At least ${stage.min_days} days in this stage. ` : ''}Passed when {PASSED_BY.find((p) => p.value === stage.passed_by)?.label.toLowerCase()} confirm{stage.passed_by === 'self' ? '' : 's'} it.
@@ -142,6 +149,7 @@ export default function ProgramPath() {
                 later={state === 'later'}
                 self={self}
                 canSign={!!rows.get(task.id) && rows.get(task.id)!.status === 'submitted' && canCheck(task, who)}
+                canSignDirect={rows.get(task.id)?.status !== 'submitted' && canSignDirectly(task, rows.get(task.id), enrollment, state === 'later', who)}
                 personName={coven.nameOf(person)}
                 mentorName={mentor ? coven.nameOf(mentor) : null}
                 data={data}
@@ -155,7 +163,7 @@ export default function ProgramPath() {
                   {s.tasksLeft ? `${s.tasksLeft} task${s.tasksLeft === 1 ? '' : 's'} still to be signed off.` : 'Every task is signed off.'}
                   {s.daysLeft ? ` At least ${s.daysLeft} more day${s.daysLeft === 1 ? '' : 's'} in this stage.` : ''}
                 </Text>
-                {enrollment.status === 'active' && canPass(stage, who) && (s.ready || (coven.perms.programs && !self)) && (
+                {enrollment.status === 'active' && canPass(stage, who) && (s.ready || head || (coven.perms.programs && !self)) && (
                   <>
                     <Field label={`A note for ${self ? 'your record' : coven.nameOf(person)} (optional)`} value={note} onChangeText={setNote} maxLength={2000} />
                     {s.ready ? (
@@ -208,6 +216,7 @@ function TaskRow({
   later,
   self,
   canSign,
+  canSignDirect,
   personName,
   mentorName,
   data,
@@ -220,6 +229,8 @@ function TaskRow({
   later: boolean;
   self: boolean;
   canSign: boolean;
+  /** Sign it off directly, not sent for sign-off (yet). */
+  canSignDirect: boolean;
   personName: string;
   mentorName: string | null;
   data: ProgramData;
@@ -284,6 +295,11 @@ function TaskRow({
           <Words text={row.response} />
         </View>
       )}
+      {st.state === 'approved' && !!row?.checked_by && (task.checked_by !== 'self' || !!row.signed_directly) && (
+        <Text style={type.caption}>
+          Signed off {row.signed_directly ? 'directly ' : ''}by {signedOffWords(row.checked_by, enrollment.user_id, coven.nameOf, false)}
+        </Text>
+      )}
       {!!row?.feedback && (
         <Text style={styles.feedback}>
           {row.status === 'returned' ? 'Sent back' : 'Note'}
@@ -318,11 +334,20 @@ function TaskRow({
       )}
       {canSign && row && (
         <>
-          <Field label={`Note to ${personName} (optional)`} value={feedback} onChangeText={setFeedback} multiline maxLength={2000} />
+          <Field label={self ? 'A note for your record (optional)' : `Note to ${personName} (optional)`} value={feedback} onChangeText={setFeedback} multiline maxLength={2000} />
           <View style={styles.row}>
             <Button label="Sign it off" onPress={() => void run(() => api.checkTask(row.id, true, feedback))} disabled={busy} />
             <Button label="Send back" variant="outline" onPress={() => void run(() => api.checkTask(row.id, false, feedback))} disabled={busy} />
           </View>
+        </>
+      )}
+      {canSignDirect && (
+        <>
+          <Field label={self ? 'A note for your record (optional)' : `Note to ${personName} (optional)`} value={feedback} onChangeText={setFeedback} multiline maxLength={2000} />
+          <View style={styles.row}>
+            <Button label={self ? 'Sign off my own step' : 'Sign it off'} variant="outline" onPress={() => void run(() => api.signOffTask(enrollment.id, task.id, feedback))} disabled={busy} />
+          </View>
+          <Text style={type.caption}>{self ? 'Signed off directly, as the coven’s head. It’s kept that way.' : `Signs it off now, without waiting for ${personName} to send it. It’s kept that way.`}</Text>
         </>
       )}
       {!later && <ThreadRow enrollment={enrollment} taskId={task.id} unread={unread} self={self} mentorName={mentorName} personName={personName} />}
