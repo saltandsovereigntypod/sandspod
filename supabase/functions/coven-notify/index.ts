@@ -3,6 +3,7 @@ import { answerNote, bookAnswerNote, bookNote, isFresh, requestNote, reviewersOf
 import { cleanNote, gatheringEvent, gatheringNote, manualEvent, validZone, wantsGathering, type SentNotice } from "./gatherings.ts";
 import { acceptedNote, invitedNote, wantsInvitation } from "./invitations.ts";
 import { openedNote, wantsPosition } from "./positions.ts";
+import { trainingNote, wantsTraining } from "./training.ts";
 
 // Phone notifications for covens: a new message, a new application or
 // request to advance, and the answer to one; a personal invitation, and its
@@ -66,6 +67,14 @@ import { openedNote, wantsPosition } from "./positions.ts";
 // whose Reminders choices want positions (positions.ts wantsPosition). Once
 // per opening (coven_position_openings.notified_at). time_zone is the
 // caller's, for the closing date's words when the coven has none.
+//
+// { program_thread_message_id }: a message on a step of a coven program
+// (supabase/migrations/20261110000100_coven_courses.sql). Called by whoever
+// just wrote it, it tells those who follow that step's conversation
+// (public.coven_program_thread_people: the trainee, their mentor, whoever
+// else has written, or else those who run the coven's programs), never the
+// writer nor anyone blocking them, and only those whose "Training messages"
+// choice wants it (training.ts wantsTraining). Once each (notified_at), while fresh.
 
 const EXPO_PUSH = "https://exp.host/--/api/v2/push/send";
 
@@ -92,6 +101,7 @@ Deno.serve(async (request) => {
   let requestKind: "application" | "advancement" = "application";
   let submissionId = "";
   let invitationId = "";
+  let programMessageId = "";
   let ritualId = "";
   let timeZone = "";
   let manual: { note: string; who: string[] | null } | null = null;
@@ -101,6 +111,7 @@ Deno.serve(async (request) => {
     messageId = String(payload.message_id || "");
     if (payload.grimoire_submission_id) submissionId = String(payload.grimoire_submission_id);
     if (payload.invitation_id) invitationId = String(payload.invitation_id);
+    if (payload.program_thread_message_id) programMessageId = String(payload.program_thread_message_id);
     if (payload.ritual_id) ritualId = String(payload.ritual_id);
     if (payload.rank_id && payload.event === "opened") rankId = String(payload.rank_id);
     if (typeof payload.time_zone === "string") timeZone = payload.time_zone.slice(0, 64);
@@ -125,6 +136,10 @@ Deno.serve(async (request) => {
   if (ritualId) {
     if (!UUID.test(ritualId)) return reply(400, { error: "bad_request" });
     return covenGathering(admin, verifier, sender, ritualId, timeZone, manual);
+  }
+  if (programMessageId) {
+    if (!UUID.test(programMessageId)) return reply(400, { error: "bad_request" });
+    return covenTrainingMessage(admin, sender, programMessageId);
   }
   if (invitationId) {
     if (!UUID.test(invitationId)) return reply(400, { error: "bad_request" });
@@ -411,6 +426,64 @@ async function covenInvitation(admin: SupabaseClient, caller: string, id: string
     threadId: `invitations:${inv.coven_id}`,
     data: { source: event === "new" ? "coven-invitation" : "coven-invitation-accepted", url: note.url, covenId: inv.coven_id, invitationId: id },
   }));
+  return reply(200, { sent: await push(admin, notes) });
+}
+
+/** A message on a step of a coven program, to those who follow that step's conversation. */
+async function covenTrainingMessage(admin: SupabaseClient, sender: string, id: string) {
+  const { data: row, error } = await admin
+    .from("coven_program_messages")
+    .select("id,enrollment_id,task_id,coven_id,trainee_id,author_id,body,created_at,deleted_at,notified_at")
+    .eq("id", id)
+    .maybeSingle();
+  // Before 20261110000100_coven_courses.sql there is nothing to send.
+  if (error) return reply(503, { error: "not_ready" });
+  const m = row as { enrollment_id: string; task_id: string; coven_id: string; trainee_id: string; author_id: string | null; body: string | null; created_at: string; deleted_at: string | null; notified_at: string | null } | null;
+  // Only the writer rings, once, for a fresh message.
+  if (!m || m.author_id !== sender || m.deleted_at || !m.body) return reply(404, { error: "not_found" });
+  if (Date.now() - new Date(m.created_at).getTime() > 5 * 60 * 1000) return reply(409, { error: "too_old" });
+  const { data: claimed } = await admin.from("coven_program_messages").update({ notified_at: new Date().toISOString() }).eq("id", id).is("notified_at", null).select("id");
+  if (!claimed?.length) return reply(409, { error: "already_sent" });
+
+  const [{ data: people }, { data: coven }, { data: task }, { data: enrollment }, { data: profile }] = await Promise.all([
+    admin.rpc("coven_program_thread_people", { p_enrollment: m.enrollment_id, p_task: m.task_id }),
+    admin.from("covens").select("name,slug,status").eq("id", m.coven_id).single(),
+    admin.from("coven_program_tasks").select("title,program_id").eq("id", m.task_id).maybeSingle(),
+    admin.from("coven_program_enrollments").select("program_id").eq("id", m.enrollment_id).maybeSingle(),
+    admin.from("coven_profiles").select("display_name").eq("user_id", sender).maybeSingle(),
+  ]);
+  if (!coven || coven.status !== "active" || !task) return reply(404, { error: "not_found" });
+  let recipients = [...new Set(((people as string[] | null) || []).map(String))].filter((u) => u !== sender);
+  if (recipients.length) {
+    const { data: blocks } = await admin.from("user_blocks").select("blocker_id").eq("blocked_id", sender).in("blocker_id", recipients);
+    const blocking = new Set((blocks || []).map((b) => b.blocker_id));
+    recipients = recipients.filter((u) => !blocking.has(u));
+  }
+  if (!recipients.length) return reply(200, { sent: 0 });
+
+  // Their own choices (Notifications & reminders → Covens → Training messages), saved with their settings.
+  const { data: settings } = await admin.from("user_settings").select("user_id,reminders:settings->>reminders_v2").in("user_id", recipients);
+  const saved = new Map((settings || []).map((x: { user_id: string; reminders: string | null }) => [x.user_id, x.reminders]));
+  const now = new Date();
+  const listeners = recipients.filter((u) => wantsTraining(saved.get(u) ?? null, now));
+  if (!listeners.length) return reply(200, { sent: 0 });
+
+  const { data: tokens } = await admin.from("push_tokens").select("token,user_id").in("user_id", listeners);
+  if (!tokens?.length) return reply(200, { sent: 0 });
+  const who = profile?.display_name || "Someone";
+  const programId = (enrollment as { program_id?: string } | null)?.program_id || task.program_id;
+  const notes: Push[] = tokens.map((t) => {
+    const note = trainingNote({ covenSlug: coven.slug, who, taskTitle: task.title, body: m.body!, programId, taskId: m.task_id, traineeId: m.trainee_id, toTrainee: t.user_id === m.trainee_id });
+    return {
+      to: t.token,
+      title: note.title,
+      body: note.body,
+      sound: "default",
+      channelId: "coven-messages",
+      threadId: `training:${m.enrollment_id}:${m.task_id}`,
+      data: { source: "coven-training", url: note.url, covenId: m.coven_id, enrollmentId: m.enrollment_id, taskId: m.task_id },
+    };
+  });
   return reply(200, { sent: await push(admin, notes) });
 }
 

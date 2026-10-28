@@ -9,6 +9,7 @@ import { Pill, Pills } from './ui';
 import { MenuList, MenuRow } from '../more/ui';
 import { useCoven } from '../../lib/covens/CovenContext';
 import { ENROLLMENT_STATUS, enrollmentSummary, programOutline, type Enrollment } from '../../lib/covens/programs';
+import { unreadIn } from '../../lib/covens/training';
 import type { ProgramData } from '../../lib/covens/usePrograms';
 import { colors, radius, type } from '../../theme';
 
@@ -47,6 +48,7 @@ export function EnrollmentCard({ enrollment, data, who }: { enrollment: Enrollme
         {enrollment.status !== 'active' && <Pill label={ENROLLMENT_STATUS[enrollment.status]} />}
         {s.waiting > 0 && <Pill label={`${s.waiting} waiting for sign-off`} tone="gold" />}
         {s.ready && <Pill label="Ready to pass the stage" tone="gold" />}
+        {unreadIn(data.unread, enrollment.id) > 0 && <Pill label={`${unreadIn(data.unread, enrollment.id)} new message${unreadIn(data.unread, enrollment.id) === 1 ? '' : 's'}`} tone="gold" />}
       </Pills>
       <Text style={type.cardTitle}>{program.title}</Text>
       {!!stageLine && (
@@ -71,7 +73,8 @@ export function ProgramsLinks() {
       {perms.progress && (
         <MenuRow label="Everyone’s progress" detail="Where each person is, and who mentors them" icon="journey" last={!perms.programs} onPress={() => router.push(covenHref(coven.slug, 'programs/people'))} />
       )}
-      {perms.programs && <MenuRow label="Design and assign" detail="Programs, who takes them, and mentors" icon="settings" last onPress={() => router.push(covenHref(coven.slug, 'programs/design'))} />}
+      {perms.programs && <MenuRow label="Design and assign" detail="Programs, who takes them, and mentors" icon="settings" onPress={() => router.push(covenHref(coven.slug, 'programs/design'))} />}
+      {perms.programs && <MenuRow label="Lessons and tests" detail="What the programs teach, and the tests that check it" icon="library" last onPress={() => router.push(covenHref(coven.slug, 'programs/library'))} />}
     </MenuList>
   );
 }

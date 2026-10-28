@@ -54,6 +54,8 @@ export type ProgramTask = {
   holiday: string | null;
   minutes: number | null;
   optional: boolean;
+  /** The step's test (coven_program_quizzes), when it has one. */
+  quiz_id?: string | null;
 };
 export type Assignment = { id: string; program_id: string; coven_id: string; user_id: string | null; rank_id: string | null; assigned_by: string | null; created_at: string };
 export type Enrollment = {
@@ -82,6 +84,9 @@ export type TaskProgress = {
   checked_at: string | null;
   feedback: string | null;
   updated_at?: string;
+  /** Practice logged session by session ({ on, minutes, note }); see training.ts. */
+  sessions?: unknown;
+  quiz_extra?: number;
 };
 export type StagePass = { enrollment_id: string; stage_id: string; coven_id: string; user_id: string; passed_at: string; passed_by: string | null; note: string | null };
 export type Mentorship = { coven_id: string; user_id: string; mentor_id: string; assigned_at: string };
@@ -260,20 +265,46 @@ export function assignmentLabel(a: Assignment, rankName: (id: string) => string,
 
 // ─── Designing ───────────────────────────────────────────────────────────
 
-export type DraftTask = Partial<Pick<ProgramTask, 'id'>> & Omit<ProgramTask, 'id' | 'stage_id' | 'program_id' | 'coven_id' | 'position'>;
+/** A lesson or test on a draft task: one of the coven's (id), or a ready-made one by its course id (source_id). */
+export type DraftRef = { id?: string; source_id?: string; title: string };
+export type DraftTask = Partial<Pick<ProgramTask, 'id'>> &
+  Omit<ProgramTask, 'id' | 'stage_id' | 'program_id' | 'coven_id' | 'position' | 'quiz_id'> & {
+    /** Its lessons in order; left undefined, a save leaves them as they are. */
+    docs?: DraftRef[];
+    /** Its test (null for none); left undefined, a save leaves it as it is. */
+    quiz?: DraftRef | null;
+  };
 export type DraftStage = Partial<Pick<ProgramStage, 'id'>> & Omit<ProgramStage, 'id' | 'program_id' | 'coven_id' | 'position'> & { tasks: DraftTask[] };
 
 export const emptyTask = (): DraftTask => ({ title: '', kind: 'practice', instructions: '', resources: '', times: 1, response: 'none', checked_by: 'mentor', holiday: null, minutes: null, optional: false });
 export const emptyStage = (): DraftStage => ({ title: '', intro: '', min_days: null, passed_by: 'mentor', tasks: [emptyTask()] });
 
-export function draftFromOutline(outline: StageWithTasks[]): DraftStage[] {
+/**
+ * A program as the editor holds it. With `parts` (the coven's lesson links,
+ * lessons and tests), each task carries its lessons and test too.
+ */
+export function draftFromOutline(
+  outline: StageWithTasks[],
+  parts?: { links: { task_id: string; document_id: string; position: number }[]; docs: { id: string; title: string }[]; quizzes: { id: string; title: string }[] },
+): DraftStage[] {
+  const extras = (task: ProgramTask): Pick<DraftTask, 'docs' | 'quiz'> => {
+    if (!parts) return {};
+    const docs = parts.links
+      .filter((l) => l.task_id === task.id)
+      .sort((a, b) => a.position - b.position)
+      .map((l) => ({ id: l.document_id, title: parts.docs.find((d) => d.id === l.document_id)?.title ?? 'A lesson' }));
+    const quiz = task.quiz_id ? { id: task.quiz_id, title: parts.quizzes.find((q) => q.id === task.quiz_id)?.title ?? 'A test' } : null;
+    return { docs, quiz };
+  };
   return outline.map(({ id, title, intro, min_days, passed_by, tasks }) => ({
     id,
     title,
     intro,
     min_days,
     passed_by,
-    tasks: tasks.map(({ id: taskId, title: t, kind, instructions, resources, times, response, checked_by, holiday, minutes, optional }) => ({
+    tasks: tasks.map((task) => {
+      const { id: taskId, title: t, kind, instructions, resources, times, response, checked_by, holiday, minutes, optional } = task;
+      return {
       id: taskId,
       title: t,
       kind,
@@ -285,7 +316,9 @@ export function draftFromOutline(outline: StageWithTasks[]): DraftStage[] {
       holiday,
       minutes,
       optional,
-    })),
+      ...extras(task),
+      };
+    }),
   }));
 }
 
@@ -330,6 +363,8 @@ export function stagesPayload(stages: DraftStage[]) {
       holiday: t.holiday || null,
       minutes: t.minutes ?? null,
       optional: !!t.optional,
+      ...(t.docs !== undefined ? { docs: t.docs.map((d) => (d.id ? { id: d.id } : { source_id: d.source_id })) } : {}),
+      ...(t.quiz !== undefined ? { quiz: t.quiz ? (t.quiz.id ? { id: t.quiz.id } : { source_id: t.quiz.source_id }) : null } : {}),
     })),
   }));
 }

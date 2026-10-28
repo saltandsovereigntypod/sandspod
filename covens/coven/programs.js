@@ -26,7 +26,10 @@
   let pane = null;
   let state = null;
   let helpers = null;
-  let data = { programs: [], stages: [], tasks: [], assignments: [], enrollments: [], progress: [], passes: [], members: [], templates: [] };
+  let data = { programs: [], stages: [], tasks: [], assignments: [], enrollments: [], progress: [], passes: [], members: [], templates: [], docs: [], links: [], reads: [], attempts: [], quizzes: [], unread: [] };
+  // Lessons, tests, practice and each step's conversation (covens/coven/course.js).
+  const CC = () => global.CovenCourse;
+  const ctx = () => ({ pane, state, data, link, go, nav, nameOf, me, mentorOf, load, reload: reloadAndDraw, reloadAndDraw, refreshCounts: () => helpers?.refreshCounts?.() });
   let draft = null;
 
   const me = () => state.context.user?.id;
@@ -88,7 +91,8 @@
     const [stages, tasks] = await Promise.all([D.programStages(ids).catch(() => []), D.programTasks(ids).catch(() => [])]);
     const members = perms.programs || perms.progress || perms.site ? await D.members(state.coven.id).catch(() => []) : [];
     const templates = perms.programs ? await D.programTemplates().catch(() => []) : [];
-    data = { programs, stages, tasks, assignments, enrollments, progress, passes, members: members.filter((m) => m.status === "active"), templates };
+    const course = CC() ? await CC().load(coven, perms, enrollments).catch(() => ({})) : {};
+    data = { programs, stages, tasks, assignments, enrollments, progress, passes, members: members.filter((m) => m.status === "active"), templates, docs: [], links: [], reads: [], attempts: [], quizzes: [], unread: [], ...course };
     state.mentors = mentors;
     await UI.loadNames(state.context, [...enrollments.map((e) => e.user_id), ...mentors.flatMap((m) => [m.user_id, m.mentor_id]), ...members.map((m) => m.user_id), ...progress.map((p) => p.checked_by)]);
   }
@@ -103,6 +107,7 @@
     const items = [{ key: "", label: "My path" }];
     if (state.perms.progress) items.push({ key: "people", label: "Everyone’s progress" });
     if (state.perms.programs) items.push({ key: "design", label: "Design and assign" });
+    if (state.perms.programs) items.push({ key: "library", label: "Lessons and tests" });
     if (items.length === 1) return "";
     return `<nav class="cv-subnav" aria-label="Initiation and training">${items
       .map((i) => `<a class="cv-tab cv-tab--small" href="${esc(link(i.key ? `view=${i.key}` : ""))}" data-go${i.key === active ? ' aria-current="page"' : ""}>${esc(i.label)}</a>`)
@@ -121,9 +126,11 @@
     const stageLine = e.status === "completed" ? `Finished ${esc(fmtDate(e.completed_at))}` : s.stage ? `Stage ${s.stageIndex + 1} of ${s.stageCount}: ${esc(s.stage.title)}` : "";
     const waiting = s.waiting ? `<span class="cv-pill cv-pill--gold">${s.waiting} waiting for sign-off</span>` : "";
     const ready = s.ready ? `<span class="cv-pill cv-pill--gold">Ready to pass the stage</span>` : "";
+    const unread = global.SaltCore?.covens?.training ? global.SaltCore.covens.training.unreadIn(data.unread, e.id) : 0;
+    const unreadPill = unread ? `<span class="cv-pill cv-pill--gold">${unread} new message${unread === 1 ? "" : "s"}</span>` : "";
     return `<a class="sp-card cv-program-card" href="${esc(link(`program=${e.program_id}${who ? `&person=${e.user_id}` : ""}`))}" data-go>
         <div class="cv-meta">${person}<span class="cv-pill">${esc(prog.kind === "initiation" ? "Initiation" : "Training")}</span>
-          ${e.status !== "active" ? `<span class="cv-pill">${esc(P().ENROLLMENT_STATUS[e.status])}</span>` : ""}${waiting}${ready}</div>
+          ${e.status !== "active" ? `<span class="cv-pill">${esc(P().ENROLLMENT_STATUS[e.status])}</span>` : ""}${waiting}${ready}${unreadPill}</div>
         <h3>${esc(prog.title)}</h3>
         <p class="sp-caption">${stageLine}${s.daysLeft && e.status === "active" ? ` · at least ${s.daysLeft} more day${s.daysLeft === 1 ? "" : "s"}` : ""}</p>
         ${bar(s.percent)}
@@ -142,7 +149,20 @@
     const mentees = P().menteesOf(state.mentors || [], me());
     const menteeEnrollments = data.enrollments.filter((e) => mentees.includes(e.user_id) && e.status !== "withdrawn");
     const myMentor = mentorOf(me());
-    pane.innerHTML = `${nav("")}
+    const K = global.SaltCore?.covens;
+    const who = { userId: me(), mentees, programs: state.perms.programs };
+    const toSign = P().waitingForMe(data.progress, data.tasks, who);
+    const toScore = K?.quiz ? K.quiz.attemptsToScore(data.attempts, who) : [];
+    const myUnread = data.unread.filter((u) => u.trainee_id !== me());
+    const taskTitle = (id) => data.tasks.find((t) => t.id === id)?.title || "A step";
+    const waitingHtml = toSign.length + toScore.length + myUnread.length
+      ? `<section class="sp-section"><h2>Waiting for you</h2><ul class="cv-waiting">
+          ${toScore.map((a) => `<li><a href="${esc(link(`score=${a.id}`))}" data-go>Score: ${esc(nameOf(a.user_id))}, ${esc(a.title)}</a> <span class="sp-caption">${esc(K.quiz.scoreLine(a))}</span></li>`).join("")}
+          ${toSign.map((p) => `<li><a href="${esc(link(`program=${p.program_id}&person=${p.user_id}&task=${p.task_id}`))}" data-go>Sign off: ${esc(nameOf(p.user_id))}, ${esc(taskTitle(p.task_id))}</a> <a class="button button--ghost button--small" href="${esc(link(`thread=${p.task_id}&e=${p.enrollment_id}`))}" data-go>Message ${esc(nameOf(p.user_id))}</a></li>`).join("")}
+          ${myUnread.map((u) => `<li><a href="${esc(link(`thread=${u.task_id}&e=${u.enrollment_id}`))}" data-go>${esc(nameOf(u.trainee_id))}: ${esc(taskTitle(u.task_id))}</a> <span class="cv-pill cv-pill--gold">${u.unread} new</span></li>`).join("")}
+        </ul></section>`
+      : "";
+    pane.innerHTML = `${nav("")}${waitingHtml}
       <section class="sp-section"><h2>Your programs</h2>
         ${myMentor ? `<p class="sp-caption">Your mentor is ${esc(nameOf(myMentor))}.</p>` : ""}
         ${mineList.length ? mineList.map((e) => enrollmentCard(e)).join("") : `<p class="sp-empty">You aren’t in any of the coven’s programs yet.${state.perms.programs ? " Design one under Design and assign." : " The coven’s leaders will assign one when it’s time, or you can begin one that’s open to all."}</p>`}
@@ -190,14 +210,23 @@
       const holiday = P().holidayName(t.holiday);
       const canWork = self && e.status === "active" && stageState !== "later" && !["approved", "submitted"].includes(st.state) && state.standing.ok;
       const canSign = row?.status === "submitted" && P().canCheck(t, who);
+      const T = global.SaltCore?.covens?.training;
+      const sessions = T ? T.logsSessions(t) : false;
+      const allLogged = (row?.times_done || 0) >= t.times;
+      const extras = CC() && T ? CC().taskExtras(ctx(), t, e, row, { self, later: stageState === "later", canWork }) : "";
       return `<div class="cv-task cv-task--${st.state}" data-task="${esc(t.id)}">
           <div class="cv-task__head"><span class="cv-task__mark" aria-hidden="true">${st.state === "approved" ? "✓" : st.state === "submitted" ? "…" : "○"}</span>
             <div><h4>${esc(t.title)}${t.optional ? ` <span class="sp-muted">(optional)</span>` : ""}</h4>
               <p class="sp-caption">${esc(P().kindLabel(t.kind))}${t.times > 1 ? ` · ${t.times} times` : ""}${t.minutes ? ` · about ${t.minutes} min` : ""}${holiday ? ` · ${esc(holiday)}` : ""} · signed off by ${esc(P().checkedByLabel(t.checked_by).toLowerCase())} · <strong>${esc(st.label)}</strong></p></div></div>
           ${stageState === "later" ? "" : `${t.instructions ? `<div class="cv-doc">${prose(t.instructions)}</div>` : ""}${studyText(t.resources) ? `<p class="sp-caption"><strong>Resources:</strong> ${prose(studyText(t.resources))}</p>` : ""}${studyButtons(t.resources)}`}
+          ${extras}
           ${row?.response ? `<div class="cv-response"><p class="sp-caption">${self ? "What you wrote" : `What ${esc(nameOf(person))} wrote`}</p><div class="cv-doc">${prose(row.response)}</div></div>` : ""}
           ${row?.feedback ? `<p class="cv-feedback"><strong>${row.status === "returned" ? "Sent back" : "Note"}${row.checked_by ? ` from ${esc(nameOf(row.checked_by))}` : ""}:</strong> ${esc(row.feedback)}</p>` : ""}
-          ${canWork ? `<form class="sp-section" data-work="${esc(t.id)}">
+          ${canWork && sessions && t.response === "text" ? `<form class="sp-section" data-work="${esc(t.id)}">
+              <div class="sp-field"><label for="r-${esc(t.id)}">Your answer</label><textarea id="r-${esc(t.id)}" name="response" rows="5" maxlength="8000">${esc(row?.response || "")}</textarea></div>
+              <div class="sp-actions"><button class="button button--primary button--small" type="submit" data-count="0">${allLogged ? (t.checked_by === "self" ? "Save and finish" : "Send for sign-off") : "Save my answer"}</button></div>
+              ${allLogged ? "" : `<p class="sp-caption">Write as you go. It’s sent once every session is logged.</p>`}${statusLine()}</form>` : ""}
+          ${canWork && !sessions && !t.quiz_id ? `<form class="sp-section" data-work="${esc(t.id)}">
               ${t.response === "text" ? `<div class="sp-field"><label for="r-${esc(t.id)}">Your response</label><textarea id="r-${esc(t.id)}" name="response" rows="5" maxlength="8000">${esc(row?.response || "")}</textarea></div>` : ""}
               <div class="sp-actions">
                 <button class="button button--primary button--small" type="submit" data-count="1">${t.times > 1 ? `Log one (${st.done + 1} of ${t.times})` : t.checked_by === "self" ? "Mark done" : "Send for sign-off"}</button>
@@ -224,8 +253,9 @@
               ${state.perms.programs && !self && !s.ready ? `<button class="button button--ghost button--small" type="submit" data-override>Pass the stage early</button>` : ""}</div>${statusLine()}</form>` : ""}
           </div>` : ""}`;
       const label = `Stage ${index + 1}: ${stage.title}`;
+      const wanted = params().get("task") && stage.tasks.some((t) => t.id === params().get("task"));
       if (stageState === "current") return `<section class="sp-section cv-stage cv-stage--current"><h3>${esc(label)} <span class="cv-pill cv-pill--gold">Now</span></h3>${body}</section>`;
-      return `<details class="sp-details cv-stage cv-stage--${stageState}"><summary>${esc(label)}${pass ? ` · passed ${esc(fmtDate(pass.passed_at))}${pass.passed_by ? ` (${esc(nameOf(pass.passed_by))})` : ""}` : stageState === "later" ? " · later" : ""}</summary>${body}${pass?.note ? `<p class="sp-caption">“${esc(pass.note)}”</p>` : ""}</details>`;
+      return `<details class="sp-details cv-stage cv-stage--${stageState}"${wanted ? " open" : ""}><summary>${esc(label)}${pass ? ` · passed ${esc(fmtDate(pass.passed_at))}${pass.passed_by ? ` (${esc(nameOf(pass.passed_by))})` : ""}` : stageState === "later" ? " · later" : ""}</summary>${body}${pass?.note ? `<p class="sp-caption">“${esc(pass.note)}”</p>` : ""}</details>`;
     };
 
     const award = prog.award_rank_id ? `Finishing it makes ${self ? "you" : esc(nameOf(person))} ${esc(rankName(prog.award_rank_id))}.` : "";
@@ -248,6 +278,9 @@
         ${(state.perms.programs || self) && ["active", "paused"].includes(e.status) ? `<button class="button button--ghost button--small" type="button" data-status-to="withdrawn">${self ? "Step away from this program" : "Withdraw them"}</button>` : ""}
       </div>${statusLine()}`;
 
+    if (CC()) CC().bindExtras(ctx(), e, reloadAndDraw);
+    const wantedTask = params().get("task");
+    if (wantedTask) pane.querySelector(`[data-task="${CSS.escape(wantedTask)}"]`)?.scrollIntoView?.({ block: "start" });
     pane.querySelectorAll("[data-work]").forEach((form) =>
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -350,9 +383,8 @@
         ${data.programs.length ? data.programs.map(programCard).join("") : `<p class="sp-empty">No programs yet. Start from a ready-made one or make your own.</p>`}
       </section>
       <section class="sp-section"><h2>Start a program</h2>
-        <div class="sp-actions"><a class="button button--primary" href="${esc(link("edit=new&kind=initiation"))}" data-go>✦ Make your own initiation</a><a class="button button--ghost" href="${esc(link("edit=new&kind=training"))}" data-go>Make your own training</a></div>
-        ${suggested.length ? `<h3>Suggested for your coven’s calendar</h3><ul class="cv-template-list">${suggested.map(templateRow).join("")}</ul>` : `<p class="sp-caption">Choose the coven’s practice calendar under Manage to see the ready-made programs for it first.</p>`}
-        <details class="sp-details"><summary>${suggested.length ? "Ready-made for other calendars" : "Ready-made programs"}</summary><ul class="cv-template-list">${others.map(templateRow).join("")}</ul></details>
+        <div class="sp-actions"><a class="button button--primary" href="${esc(link("edit=new&kind=initiation"))}" data-go>✦ Make your own initiation</a><a class="button button--ghost" href="${esc(link("view=library"))}" data-go>Lessons and tests</a><a class="button button--ghost" href="${esc(link("edit=new&kind=training"))}" data-go>Make your own training</a></div>
+        <div data-chooser>${CC() ? `<p class="sp-caption">Gathering the ready-made programs…</p>` : `${suggested.length ? `<h3>Suggested for your coven’s calendar</h3><ul class="cv-template-list">${suggested.map(templateRow).join("")}</ul>` : ""}<details class="sp-details"><summary>Ready-made programs</summary><ul class="cv-template-list">${others.map(templateRow).join("")}</ul></details>`}</div>
       </section>
       <section class="sp-section"><h2>Mentors</h2>
         <p class="sp-caption">A mentor sees their mentee’s progress and signs off the tasks and stages left to mentors.</p>
@@ -364,6 +396,16 @@
           .join("")}</tbody></table></div>${statusLine()}
       </section>`;
 
+    const chooserBox = pane.querySelector("[data-chooser]");
+    if (CC()) {
+      CC().chooser(ctx(), chooserBox, async (made) => {
+        await load();
+        if (made.length === 1) return go(link(`edit=${made[0].id}`));
+        design();
+        const box = pane.querySelector("[data-chooser]");
+        box.insertAdjacentHTML("afterbegin", `<p class="sp-notice" role="status">${made.length} programs copied as drafts. Look each one over, then open it.</p>`);
+      });
+    }
     pane.querySelectorAll("[data-program]").forEach((card) => {
       const id = card.dataset.program;
       const status = card.querySelector("[data-status]");
@@ -414,7 +456,7 @@
     if (id !== "new") {
       const prog = program(id);
       if (!prog) return null;
-      return { id, program: { ...prog }, stages: P().draftFromOutline(outline(id)) };
+      return { id, program: { ...prog }, stages: P().draftFromOutline(outline(id), { links: data.links, docs: data.docs, quizzes: data.quizzes }) };
     }
     const from = p.get("from");
     const tpl = from ? data.templates.find((t) => t.id === from) : null;
@@ -455,6 +497,7 @@
         </div>
         <label class="cv-check"><input type="checkbox" name="response" ${t.response === "text" ? "checked" : ""} /> <span>They write a response (a reflection, an essay, notes)</span></label>
         <label class="cv-check"><input type="checkbox" name="optional" ${t.optional ? "checked" : ""} /> <span>Optional (not needed to pass the stage)</span></label>
+        ${CC() ? CC().taskTeachingFields(ctx(), t, si, ti) : ""}
         <div class="sp-actions"><button class="button button--ghost button--small" type="button" data-move-task="${si}:${ti}:-1">Move up</button><button class="button button--ghost button--small" type="button" data-move-task="${si}:${ti}:1">Move down</button><button class="button button--ghost button--small" type="button" data-remove-task="${si}:${ti}">Remove task</button></div>
       </fieldset>`;
     const stageForm = (s, si) => `<section class="sp-card cv-stage-edit" data-s="${si}">
@@ -528,9 +571,10 @@
       if (to < 0 || to >= list.length) return;
       [list[index], list[to]] = [list[to], list[index]];
     };
+    if (CC()) CC().bindTaskTeaching(form, ctx(), stages, read, () => editor(id));
     form.addEventListener("click", (event) => {
       const b = event.target.closest("button");
-      if (!b || b.type === "submit") return;
+      if (!b || b.type === "submit" || b.closest("[data-teach]")) return;
       read();
       if (b.hasAttribute("data-add-stage")) stages.push(P().emptyStage());
       else if (b.dataset.addTask) stages[Number(b.dataset.addTask)].tasks.push(P().emptyTask());
@@ -588,6 +632,7 @@
     const p = params();
     if (p.get("edit")) return editor(p.get("edit"));
     draft = null;
+    if (CC() && global.SaltCore?.covens?.training && CC().route(ctx(), p)) return;
     if (p.get("program")) return path(p.get("program"), p.get("person"));
     if (p.get("view") === "people") return people();
     if (p.get("view") === "design") return design();

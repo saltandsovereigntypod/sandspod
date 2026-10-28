@@ -10,6 +10,8 @@ import * as api from './api';
 import { useCoven } from './CovenContext';
 import { errorMessage, type Member } from './model';
 import type { Assignment, Enrollment, Program, ProgramStage, ProgramTask, ProgramTemplate, StagePass, TaskProgress } from './programs';
+import type { Attempt, CovenQuiz } from './quiz';
+import type { DocRead, ProgramDoc, TaskDocLink, ThreadUnread } from './training';
 
 export type ProgramData = {
   programs: Program[];
@@ -21,9 +23,35 @@ export type ProgramData = {
   passes: StagePass[];
   members: Member[];
   templates: ProgramTemplate[];
+  /** Lessons, which step each is on, and who has read them (those you may see). */
+  docs: ProgramDoc[];
+  links: TaskDocLink[];
+  reads: DocRead[];
+  /** Test attempts you may see (your own, your mentees', everyone's for program managers). */
+  attempts: Attempt[];
+  /** The coven's tests in full, for those who manage programs. */
+  quizzes: CovenQuiz[];
+  /** Unread messages on the steps you follow. */
+  unread: ThreadUnread[];
 };
 
-const EMPTY: ProgramData = { programs: [], stages: [], tasks: [], assignments: [], enrollments: [], progress: [], passes: [], members: [], templates: [] };
+const EMPTY: ProgramData = {
+  programs: [],
+  stages: [],
+  tasks: [],
+  assignments: [],
+  enrollments: [],
+  progress: [],
+  passes: [],
+  members: [],
+  templates: [],
+  docs: [],
+  links: [],
+  reads: [],
+  attempts: [],
+  quizzes: [],
+  unread: [],
+};
 
 export function usePrograms() {
   const coven = useCoven();
@@ -46,8 +74,14 @@ export function usePrograms() {
         wide ? api.fetchMembers(covenId).catch(() => [] as Member[]) : Promise.resolve([] as Member[]),
         perms.programs ? api.fetchProgramTemplates().catch(() => [] as ProgramTemplate[]) : Promise.resolve([] as ProgramTemplate[]),
       ]);
-      const parts = await api.fetchProgramParts(programs.map((p) => p.id));
-      setData({ programs, ...parts, assignments, enrollments, progress, passes, members, templates });
+      const [parts, training, attempts, quizzes, unread] = await Promise.all([
+        api.fetchProgramParts(programs.map((p) => p.id)),
+        api.fetchTraining(covenId, [...new Set(enrollments.map((e) => e.user_id))]),
+        api.fetchAttempts(covenId),
+        perms.programs ? api.fetchQuizzes(covenId) : Promise.resolve([] as CovenQuiz[]),
+        api.programUnread(covenId),
+      ]);
+      setData({ programs, ...parts, assignments, enrollments, progress, passes, members, templates, ...training, attempts, quizzes, unread });
       setStatus('ready');
       void loadNames([...enrollments.map((e) => e.user_id), ...members.map((m) => m.user_id), ...progress.map((p) => p.checked_by), ...passes.map((p) => p.passed_by)]);
     } catch (e) {
