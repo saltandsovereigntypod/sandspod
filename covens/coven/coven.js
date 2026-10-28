@@ -10,7 +10,8 @@
  * position, agreements, requests to advance and their own standing). Those
  * who keep the members' record get Members' record (covens/coven/record.js).
  * Reviewers get Review and
- * leaders Manage (covens/coven/manage.js). Site moderators see every tab.
+ * leaders Manage (covens/coven/manage.js). Those who may invite people get
+ * Invite (covens/coven/invite.js). Site moderators see every tab.
  * Review counts the applications and requests to advance waiting (never
  * your own), kept current while the page is open (SaltCore.covens.requests).
  */
@@ -61,6 +62,8 @@
     if (state.perms.member || state.perms.site) state.recordSettings = await D.recordSettings(coven.id).catch(() => null);
     // Whether the head shows Paths in the coven to everyone (covens/coven/paths.js).
     if (state.perms.member || state.perms.site) state.pathsSettings = await D.pathsSettings(coven.id).catch(() => null);
+    // Whether you may invite people (null before the database has invitations).
+    state.inviteSettings = state.perms.member || state.perms.site ? await D.inviteSettings(coven.id).catch(() => null) : null;
     if (coven.founder_id) await UI.loadNames(context, [coven.founder_id]);
   }
 
@@ -140,6 +143,7 @@
       );
       if (global.CovenRecordAccess?.seesRecord(state)) list.push({ key: "record", label: "Members’ record" });
       if (global.CovenPathsAccess?.seesPaths(state)) list.push({ key: "paths", label: "Paths in the coven" });
+      if (state.inviteSettings && (state.inviteSettings.may_invite || perms.site)) list.push({ key: "invite", label: "Invite" });
     }
     if (perms.member) list.push({ key: "path", label: "My standing", count: state.unsigned.length });
     if (perms.review || perms.site) list.push({ key: "review", label: "Review", count: state.pending.applications + state.pending.advancements });
@@ -251,7 +255,7 @@
       ${tabBar(tab)}
       <div class="cv-pane" data-pane></div>`;
     const pane = root.querySelector("[data-pane]");
-    const views = { about, join, path, gathering: () => mount(global.CovenChat), rituals: () => mount(global.CovenRituals), book: () => mount(global.CovenBook), petitions: () => mount(global.CovenPetitions), programs: () => mount(global.CovenPrograms), altar: () => mount(global.CovenAltar), members: () => mount(global.CovenMembers), record: () => mount(global.CovenRecord), paths: () => mount(global.CovenPaths), review: () => mount(global.CovenReview), manage: () => mount(global.CovenManage) };
+    const views = { about, join, path, gathering: () => mount(global.CovenChat), rituals: () => mount(global.CovenRituals), book: () => mount(global.CovenBook), petitions: () => mount(global.CovenPetitions), programs: () => mount(global.CovenPrograms), altar: () => mount(global.CovenAltar), members: () => mount(global.CovenMembers), record: () => mount(global.CovenRecord), paths: () => mount(global.CovenPaths), review: () => mount(global.CovenReview), manage: () => mount(global.CovenManage), invite: () => mount(global.CovenInvite) };
     function mount(module) {
       if (!module) return (pane.innerHTML = `<p class="sp-notice">This part of the coven couldn’t load. Please refresh the page.</p>`);
       mounted = module;

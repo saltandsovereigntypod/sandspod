@@ -12,7 +12,8 @@ import { covenCalendarNames } from '../../../../../../lib/covens/programs';
 import { type } from '../../../../../../theme';
 
 // Manage: the coven's settings only: its details, pages and agreements,
-// positions and their powers, the questions it asks applicants, its calendar,
+// positions and their powers, inviting people (the same screen as the coven
+// page's Invite), the questions it asks applicants, its calendar,
 // gathering notifications, who runs training, ritual participation, and
 // archiving it. People (Review, Members, Initiation & training, Paths) are on
 // the coven's page.
@@ -59,6 +60,7 @@ export default function Manage() {
               onPress={() => go('pages')}
             />
             <MenuRow label="Positions" detail={`${snap.ranks.length} ${snap.ranks.length === 1 ? 'position' : 'positions'} and their powers`} icon="community" onPress={() => go('positions')} />
+            <MenuRow label="Invite people" detail="Invite links, invitations in the app, and who may invite" icon="community" onPress={() => router.push(covenHref(coven.slug, 'invite'))} />
             <MenuRow label="Questions for applicants" detail={questions ? `${questions} ${questions === 1 ? 'question' : 'questions'}` : 'None yet'} icon="letters" onPress={() => go('questions')} />
             <MenuRow label="Practice calendar" detail={calendar.length ? calendar.join(', ') : 'The holidays the coven keeps'} icon="moon" onPress={() => go('calendar')} />
             <MenuRow label="Gathering notifications" detail="Who hears when a rite or meeting goes on the calendar, moves or comes off" icon="moon" last={!(coven.perms.manage || coven.perms.site)} onPress={() => go('notices')} />

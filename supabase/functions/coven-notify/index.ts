@@ -1,9 +1,11 @@
 import { createClient, type SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 import { answerNote, bookAnswerNote, bookNote, isFresh, requestNote, reviewersOf, wantsNotice, type Note } from "./requests.ts";
 import { cleanNote, gatheringEvent, gatheringNote, manualEvent, validZone, wantsGathering, type SentNotice } from "./gatherings.ts";
+import { acceptedNote, invitedNote, wantsInvitation } from "./invitations.ts";
 
 // Phone notifications for covens: a new message, a new application or
-// request to advance, and the answer to one.
+// request to advance, and the answer to one; a personal invitation, and its
+// acceptance.
 //
 // { message_id }: the app calls this right after sending one; it checks the caller wrote it, then
 // sends it to everyone who should hear about it through Expo's push service:
@@ -25,6 +27,14 @@ import { cleanNote, gatheringEvent, gatheringNote, manualEvent, validZone, wants
 // (coven_grimoire_submission_approvers), never the sharer; called by the one
 // who just decided it, it tells the sharer. Once each, while fresh, and only
 // for those whose Reminders choices want coven requests.
+//
+// { invitation_id }: a personal coven invitation
+// (supabase/migrations/20261109000000_coven_invitations.sql). Called by
+// whoever just sent it, it tells the person invited ("You're invited to …");
+// called by the person invited right after accepting it, it tells whoever
+// sent it. Never to or from someone blocking the other. Once each
+// (coven_request_notices, kind 'invitation'), while fresh, and only for those
+// whose Reminders choices want invitations (invitations.ts wantsInvitation).
 //
 // { ritual_id, time_zone? }: a coven gathering (rite or meeting) was just
 // saved, put on or taken off the calendar, or deleted. Called by whoever did
@@ -69,6 +79,7 @@ Deno.serve(async (request) => {
   let requestId = "";
   let requestKind: "application" | "advancement" = "application";
   let submissionId = "";
+  let invitationId = "";
   let ritualId = "";
   let timeZone = "";
   let manual: { note: string; who: string[] | null } | null = null;
@@ -76,6 +87,7 @@ Deno.serve(async (request) => {
     const payload = (await request.json()) || {};
     messageId = String(payload.message_id || "");
     if (payload.grimoire_submission_id) submissionId = String(payload.grimoire_submission_id);
+    if (payload.invitation_id) invitationId = String(payload.invitation_id);
     if (payload.ritual_id) ritualId = String(payload.ritual_id);
     if (typeof payload.time_zone === "string") timeZone = payload.time_zone.slice(0, 64);
     if (payload.manual === true) {
@@ -95,6 +107,10 @@ Deno.serve(async (request) => {
   if (ritualId) {
     if (!UUID.test(ritualId)) return reply(400, { error: "bad_request" });
     return covenGathering(admin, verifier, sender, ritualId, timeZone, manual);
+  }
+  if (invitationId) {
+    if (!UUID.test(invitationId)) return reply(400, { error: "bad_request" });
+    return covenInvitation(admin, sender, invitationId);
   }
   if (submissionId) {
     if (!UUID.test(submissionId)) return reply(400, { error: "bad_request" });
@@ -326,6 +342,56 @@ async function bookSubmission(admin: SupabaseClient, caller: string, id: string)
     channelId: "coven-requests",
     threadId: `book:${s.coven_id}`,
     data: { source: event === "new" ? "coven-book" : "coven-book-answer", url: note.url, covenId: s.coven_id, submissionId: id },
+  }));
+  return reply(200, { sent: await push(admin, notes) });
+}
+
+/** A personal invitation (to the person invited), or its acceptance (to whoever sent it). */
+async function covenInvitation(admin: SupabaseClient, caller: string, id: string) {
+  const { data: row } = await admin.from("coven_invitations").select("id,coven_id,user_id,invited_by,message,status,created_at,decided_at").eq("id", id).maybeSingle();
+  if (!row) return reply(404, { error: "not_found" });
+  const inv = row as { coven_id: string; user_id: string; invited_by: string | null; message: string | null; status: string; created_at: string; decided_at: string | null };
+
+  // Only the inviter rings for a new one, and only the person invited for its acceptance.
+  let event: "new" | "answer";
+  if (inv.status === "pending" && inv.invited_by === caller) {
+    if (!isFresh(inv.created_at)) return reply(409, { error: "too_old" });
+    event = "new";
+  } else if (inv.status === "accepted" && inv.user_id === caller && inv.invited_by && inv.invited_by !== caller) {
+    if (!isFresh(inv.decided_at)) return reply(409, { error: "too_old" });
+    event = "answer";
+  } else return reply(404, { error: "not_found" });
+  const recipient = event === "new" ? inv.user_id : inv.invited_by!;
+
+  const { error: claim } = await admin.from("coven_request_notices").insert({ request_kind: "invitation", request_id: id, event });
+  if (claim?.code === "23505") return reply(409, { error: "already_sent" });
+
+  const [{ data: coven }, { data: profile }, { data: blocks }] = await Promise.all([
+    admin.from("covens").select("name,slug,status").eq("id", inv.coven_id).single(),
+    admin.from("coven_profiles").select("display_name").eq("user_id", caller).maybeSingle(),
+    admin.from("user_blocks").select("blocker_id").eq("blocker_id", recipient).eq("blocked_id", caller),
+  ]);
+  if (!coven || coven.status !== "active") return reply(404, { error: "not_found" });
+  if (blocks?.length) return reply(200, { sent: 0 });
+
+  // Their own choices (Notifications & reminders → Covens → Invitations), saved with their settings.
+  const { data: settings } = await admin.from("user_settings").select("user_id,reminders:settings->>reminders_v2").eq("user_id", recipient).maybeSingle();
+  if (!wantsInvitation((settings as { reminders: string | null } | null)?.reminders ?? null, event, new Date())) return reply(200, { sent: 0 });
+
+  const { data: tokens } = await admin.from("push_tokens").select("token,user_id").eq("user_id", recipient);
+  if (!tokens?.length) return reply(200, { sent: 0 });
+  const who = profile?.display_name || "Someone";
+  const note = event === "new"
+    ? invitedNote({ covenName: coven.name, invitationId: id, who, message: inv.message })
+    : acceptedNote({ covenName: coven.name, covenSlug: coven.slug, who });
+  const notes: Push[] = tokens.map((t) => ({
+    to: t.token,
+    title: note.title,
+    body: note.body,
+    sound: "default",
+    channelId: "coven-requests",
+    threadId: `invitations:${inv.coven_id}`,
+    data: { source: event === "new" ? "coven-invitation" : "coven-invitation-accepted", url: note.url, covenId: inv.coven_id, invitationId: id },
   }));
   return reply(200, { sent: await push(admin, notes) });
 }

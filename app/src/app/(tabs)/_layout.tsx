@@ -7,6 +7,7 @@ import { useCandleKeeper } from '../../lib/altar/useCandleKeeper';
 import { useCraftAccount } from '../../lib/craft/useCraftAccount';
 import { useCovenUnreadSync } from '../../lib/covens/unread';
 import { useCovenRequestsSync } from '../../lib/covens/requestsBadge';
+import { useCovenInvitationsSync } from '../../lib/covens/invitationsBadge';
 import { useReminderKeeper } from '../../lib/reminders/useReminderKeeper';
 import { useTendReminderKeeper } from '../../lib/tend/store';
 import { useAltarWidgetSync } from '../../lib/altarWidgetSync';
@@ -20,6 +21,7 @@ export default function TabsLayout() {
   useCraftAccount();
   useCovenUnreadSync();
   useCovenRequestsSync();
+  useCovenInvitationsSync();
   useReminderKeeper();
   useTendReminderKeeper();
   return (
