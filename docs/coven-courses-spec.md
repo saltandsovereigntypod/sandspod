@@ -166,15 +166,57 @@ Writers for traditions:
 - Writer E: norse, hellenic
 - Writer F: roman, christian
 
-## Assembly (done by the engineering side, not writers)
-`courses/index.ts` will compose, per tradition:
-- `<T>-training`: core-welcome, core-energy, core-grounding, core-raising,
-  core-sacred-space + T-ritual, core-altar-tools, T-tradition,
-  T-devotion, core-correspondences, core-moon-timing, core-divination,
-  core-spellcraft, T-lore, core-ritual-coven (capstone).
-- `<T>-initiation`: T-initiation stages.
-So: each core module's `stages` should be one stage (two at most) titled
-for the trainee; tradition modules likewise. Don't write index.ts.
+## The four programs per tradition (owner's request)
+Each tradition gets FOUR ready-made programs, one per step of coven life.
+Each can raise its graduates to a position (the coven's own names; defaults
+in brackets):
+
+1. `<T>-seeker` — "Your first thirty days" (min_days 30). For someone in the
+   30-day grace period deciding whether this coven is right for them. Light
+   on practice, heavy on orientation, honesty and fit: what the coven is and
+   does, its tradition in brief, what membership asks, their rights, red
+   flags, a first taste of practice, attending a rite, and talking openly
+   with the High Priestess/mentor. Ends with a decision step: continue as a
+   devotee, take longer, or part well (and how to leave kindly). No
+   promotion by default.
+   Modules: core-seeker, T-seeker.
+2. `<T>-devotee` — "Becoming a devotee" (several months). For those who've
+   chosen the coven and want to dedicate. The foundations, the tradition's
+   ritual and devotion, ending in a dedication. Raises to [Dedicant/Devotee].
+   Modules: core-welcome, core-energy, core-grounding, core-raising,
+   core-sacred-space, T-ritual, core-altar-tools, T-tradition, T-devotion,
+   T-dedication.
+3. `<T>-initiate` — "A year and a day to initiation" (min_days 366 over the
+   program). For devotees seeking initiation: deeper craft, the full year
+   of holy days, service, oath and preparation. Raises to [Initiate].
+   Modules: core-correspondences, core-moon-timing, core-divination,
+   core-spellcraft, T-lore, core-ritual-coven, T-initiation.
+4. `<T>-elder` — "Becoming an elder". For initiates called to lead, teach
+   and care for others. Raises to [Elder].
+   Modules: core-elder-leading (leading ritual and groups, holding space,
+   running gatherings in person and in the app), core-elder-teaching
+   (teaching, mentoring, giving feedback, scoring tests and written
+   answers fairly, the app's mentor tools), core-elder-care (pastoral
+   care, boundaries, power dynamics, consent, safeguarding, crisis and
+   referral to professionals, confidentiality and its limits),
+   core-elder-governance (coven governance, decisions, conflict
+   resolution, ethics, records and privacy, welcoming and parting well),
+   T-elder (the tradition's own leadership: e.g. Hellenic: leading the
+   festival calendar, the roles of priest/priestess in ancient and modern
+   practice, theology in depth).
+
+New module ids beyond the list above:
+- Core: `core-seeker`, `core-elder-leading`, `core-elder-teaching`,
+  `core-elder-care`, `core-elder-governance` (Writer G).
+- Per tradition: `T-seeker` (a short taste of the tradition for someone
+  deciding: what it is, one simple first practice, what a rite will be
+  like), `T-dedication` (what dedication means in this tradition, preparing
+  for it, aftercare; the rite's shape the coven can adapt), `T-elder`.
+- `T-initiation` now covers the devotee-to-initiate path only (study,
+  service, oath, preparing for initiation).
+
+The engineering side composes these in `courses/index.ts`. Writers don't
+write index.ts.
 
 ## Checks before you finish
 `cd app && npx tsc --noEmit` must pass with your files. Add
