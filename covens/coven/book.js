@@ -158,6 +158,7 @@
       <article class="sp-section cv-grimoire-paper">
         <p class="sp-eyebrow">${esc([section?.title, G().structure.pageTypeLabel(p)].filter(Boolean).join(" · "))}</p>
         <h2>${esc(p.title)}</h2>
+        ${global.SaltCore?.covens?.lineage?.bookAttribution(p.metadata) ? `<p class="sp-caption">${esc(global.SaltCore.covens.lineage.bookAttribution(p.metadata))}</p>` : ""}
         <div class="cv-grimoire-page">${blocks.map(blockHtml).join("") || `<p class="sp-empty">This page is waiting for its words.</p>`}</div>
         ${links.length ? `<h4>Linked pages</h4><div class="sp-actions">${links.map((l) => {
           const t = snap.pages.find((x) => x.id === l.target_page_id);

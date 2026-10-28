@@ -10,6 +10,7 @@ import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 
 import { Button } from '../Button';
 import { covenHref } from './CovenScreen';
+import { DisclosureCard, useDisclosure } from './lineage';
 import { Words } from './ui';
 import { Card, CheckRow, Field, MoreScreen, Notice, Section } from '../more/ui';
 import * as api from '../../lib/covens/api';
@@ -101,6 +102,8 @@ export function InviteAccept({
     setBusy(false);
   };
 
+  // A daughter coven says, before anyone accepts, whose final say it's under.
+  const disclosure = useDisclosure(problem ? null : slug);
   let body: ReactNode;
   if (problem) body = <Notice>{problem}</Notice>;
   else if (!ready || (slug && !loaded)) body = <ActivityIndicator color={colors.gold} style={styles.loading} />;
@@ -151,6 +154,7 @@ export function InviteAccept({
   return (
     <MoreScreen title={title} eyebrow="Covens" back={'/coven' as Href} backLabel="Back to Covens">
       {intro}
+      {!member && <DisclosureCard text={disclosure} joining />}
       {body}
       {message && <Notice>{message}</Notice>}
     </MoreScreen>

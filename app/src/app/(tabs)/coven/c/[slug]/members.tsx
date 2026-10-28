@@ -12,6 +12,8 @@ import * as api from '../../../../../lib/covens/api';
 import { useCoven } from '../../../../../lib/covens/CovenContext';
 import { actsOn, errorMessage, grantableRanks, unsignedAgreements, type Member, type Signature } from '../../../../../lib/covens/model';
 import { seesRecord, type RecordSettings } from '../../../../../lib/covens/record';
+import { handOnDefault, handOnSummary, stepDownOptions, type OldHeadChoice } from '../../../../../lib/covens/lineage';
+import { handOn } from '../../../../../lib/covens/lineageApi';
 import { colors, type } from '../../../../../theme';
 
 const PAUSES = [
@@ -39,6 +41,10 @@ export default function Members() {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [recordSettings, setRecordSettings] = useState<RecordSettings | null>(null);
+  // Handing on: what the head who steps back keeps (lineage.ts handOnDefault).
+  const [handing, setHanding] = useState(false);
+  const [oldHead, setOldHead] = useState<OldHeadChoice>('keep');
+  const [stepTo, setStepTo] = useState('');
 
   const load = useCallback(async () => {
     if (!covenId) return;
@@ -73,6 +79,9 @@ export default function Members() {
     setOpen(m);
     setRankId(m.rank_id ?? grantable[0]?.id ?? '');
     setMessage(null);
+    setHanding(false);
+    setOldHead('keep');
+    setStepTo('');
   };
 
   const act = async (work: () => Promise<unknown>, done: string) => {
@@ -100,6 +109,17 @@ export default function Members() {
   const manageable = !!selected && !!info && actsOn(selected, perms, info, ranks, coven.userId) && keeper;
   const muted = !!selected?.muted_until && new Date(selected.muted_until).getTime() > Date.now();
   const isBlocked = !!selected && blocked.has(selected.user_id);
+  const headMember = (members ?? []).find((m) => m.user_id === founder && m.status === 'active');
+  const youHandOn = founder === coven.userId;
+  const keep = handOnDefault(ranks, ranks.find((r) => r.id === headMember?.rank_id), youHandOn);
+  const stepOptions = stepDownOptions(ranks);
+  const stepRank = ranks.find((r) => r.id === stepTo) ?? null;
+  const visitingFrom = (m: Member) => (m as Member & { visiting_from?: string | null }).visiting_from;
+  // The heads of covens above this one: final say here, without being members.
+  const headsAbove = [
+    ...(coven.lineage?.mother ? [{ coven: coven.lineage.mother.name ?? 'Its mother coven', head: coven.lineage.mother.head }] : []),
+    ...(coven.lineage?.above ?? []).filter((a) => a.head).map((a) => ({ coven: a.name ?? 'A coven above it', head: a.head! })),
+  ];
 
   return (
     <CovenScreen title="Members" onRefresh={load}>
@@ -117,6 +137,16 @@ export default function Members() {
         </MenuList>
       )}
       {message && !open && <Notice>{message}</Notice>}
+      {headsAbove.map((h) => (
+        <Card key={`${h.coven}-${h.head.id}`}>
+          <Text style={type.cardTitle}>{h.head.name}</Text>
+          <Pills>
+            <Pill label="Mother coven" tone="gold" />
+            <Pill label={`${h.head.title} of ${h.coven}`} />
+          </Pills>
+          <Text style={type.caption}>Has final say over this coven, without being a member of it.</Text>
+        </Card>
+      ))}
       {active.map((m) => {
         const me = m.user_id === coven.userId;
         const profile = coven.profileOf(m.user_id);
@@ -136,6 +166,7 @@ export default function Members() {
                 {m.user_id === founder && <Pill label="Founder" tone="gold" />}
                 {rank && <Pill label={rank.name} />}
                 {here.has(m.user_id) && <Pill label="Here now" />}
+                {!!visitingFrom(m) && <Pill label="Visiting from a daughter coven" />}
                 {paused && <Pill label="Paused" tone="warn" />}
                 {needsToSign(m.user_id) && <Pill label="Needs to sign" tone="warn" />}
                 {blocked.has(m.user_id) && <Pill label="Blocked" tone="warn" />}
@@ -223,15 +254,30 @@ export default function Members() {
                 </View>
               </Section>
             )}
-            {manageable && (perms.founder || perms.site) && (
-              <Button
-                label="Hand on leadership"
-                variant="text"
-                disabled={busy}
-                onPress={() =>
-                  confirm(`Make ${name} the coven’s leader?`, 'They become its founder, with every power over the coven. You stay a member in your current position.', 'Hand on', () => api.transferCoven(covenId!, selected.user_id), `${name} now leads the coven.`)
-                }
-              />
+            {manageable && (perms.founder || perms.site) && !handing && <Button label="Hand on leadership" variant="text" disabled={busy} onPress={() => setHanding(true)} />}
+            {manageable && (perms.founder || perms.site) && handing && (
+              <Section label="Hand on leadership">
+                <Chips
+                  label={youHandOn ? 'What you keep' : 'What its current head keeps'}
+                  options={[
+                    { value: 'keep', label: keep.rank?.can_manage ? 'Their position, not the lead' : keep.rank ? keep.rank.name : 'Stay a member' },
+                    { value: 'step_down', label: 'Step down to…' },
+                  ]}
+                  value={oldHead}
+                  onChange={setOldHead}
+                />
+                {oldHead === 'step_down' && <Chips label="Position" options={stepOptions.map((r) => ({ value: r.id, label: r.name }))} value={stepTo} onChange={setStepTo} />}
+                <Text style={type.caption}>Only the new head (or the head of a mother coven, or a site moderator) can hand it on again.</Text>
+                <Text style={type.body}>{handOnSummary({ name, covenName: info?.name ?? 'the coven', choice: oldHead, keepWords: keep.words, stepTo: stepRank, you: youHandOn })}</Text>
+                <View style={styles.row}>
+                  <Button
+                    label="Hand on"
+                    disabled={busy || (oldHead === 'step_down' && !stepRank)}
+                    onPress={() => void act(() => handOn(covenId!, selected.user_id, oldHead, stepTo || null), `${name} now leads the coven.`)}
+                  />
+                  <Button label="Not now" variant="text" onPress={() => setHanding(false)} />
+                </View>
+              </Section>
             )}
             <Section label="You">
               <View style={styles.row}>

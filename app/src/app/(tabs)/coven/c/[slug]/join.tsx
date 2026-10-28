@@ -4,6 +4,7 @@ import { Platform, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../../../../../components/Button';
 import { covenHref, CovenScreen } from '../../../../../components/covens/CovenScreen';
+import { DisclosureCard, useDisclosure } from '../../../../../components/covens/lineage';
 import { Words } from '../../../../../components/covens/ui';
 import { Card, CheckRow, Field, Notice, Section } from '../../../../../components/more/ui';
 import * as api from '../../../../../lib/covens/api';
@@ -28,6 +29,8 @@ export default function JoinCoven() {
   // Back from making your profile (or anywhere else): look again, so the
   // new profile counts and the button wakes up.
   const { refresh } = coven;
+  // A daughter coven: whose final say it's under, before anyone joins.
+  const disclosure = useDisclosure(coven.slug);
   useFocusEffect(
     useCallback(() => {
       void refresh();
@@ -108,6 +111,7 @@ export default function JoinCoven() {
         </Card>
       ) : (
         <>
+          <DisclosureCard text={disclosure} joining={!member} />
           {needsProfile && (
             <Card>
               <Text style={type.body}>First, make your coven profile: the name other members see, and confirming you’re 18 or older.</Text>

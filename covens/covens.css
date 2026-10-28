@@ -433,3 +433,10 @@
 .td-coven-icon { flex: none; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(226, 195, 109, 0.5); display: grid; place-items: center; color: var(--gold, #e2c36d); }
 .td-coven-item--turn .td-coven-icon { background: var(--gold, #e2c36d); color: var(--charcoal, #102118); }
 .td-coven-item span > .sp-caption { display: inline; }
+
+/* Daughter covens (covens/coven/lineage.js) */
+.cv-banner--lineage { border-color: rgba(226, 195, 109, 0.6); background: rgba(90, 70, 20, 0.22); margin-bottom: 12px; }
+.cv-handon { border: 1px solid rgba(226, 195, 109, 0.4); border-radius: 12px; padding: 10px 14px; margin-top: 10px; }
+.cv-mother-head { margin-bottom: 10px; }
+.cv-row--mother { border-left: 3px solid rgba(226, 195, 109, 0.7); padding-left: 10px; }
+.cv-push-preview ul { margin: 6px 0 10px 18px; }

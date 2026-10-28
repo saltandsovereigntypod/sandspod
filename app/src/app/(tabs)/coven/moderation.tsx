@@ -7,12 +7,15 @@ import { Pill, Pills } from '../../../components/covens/ui';
 import { Card, Chips, Field, MoreScreen, Notice } from '../../../components/more/ui';
 import * as api from '../../../lib/covens/api';
 import { errorMessage, filterDirectory, relativeTime, REPORT_REASONS, type Coven, type Profile } from '../../../lib/covens/model';
+import { inactiveFor, transferCandidates, type HeadReport } from '../../../lib/covens/lineage';
+import { fetchHeadReports, resolveHeadReport } from '../../../lib/covens/lineageApi';
 import { useSession } from '../../../lib/session';
 import { supabase } from '../../../lib/supabase';
 import { colors, radius, type } from '../../../theme';
 
 const VIEWS = [
   { value: 'reports', label: 'Reports' },
+  { value: 'heads', label: 'Heads gone' },
   { value: 'covens', label: 'Covens' },
   { value: 'bans', label: 'Site bans' },
   { value: 'moderators', label: 'Moderators' },
@@ -75,6 +78,7 @@ export default function Moderation() {
       <Text style={type.caption}>Open any coven to read its chat and altars, remove messages and act on its members. Reports come here, never to coven leaders.</Text>
       <Chips label="Moderation" options={views} value={view} onChange={setView} />
       {view === 'reports' && <Reports userId={userId} nameOf={nameOf} loadNames={loadNames} />}
+      {view === 'heads' && <HeadsGone />}
       {view === 'covens' && <Covens nameOf={nameOf} loadNames={loadNames} />}
       {view === 'bans' && <Bans userId={userId} nameOf={nameOf} loadNames={loadNames} />}
       {view === 'moderators' && me.admin && <Moderators />}
@@ -383,3 +387,88 @@ const styles = StyleSheet.create({
   actions: { gap: 8 },
   link: { color: colors.gold },
 });
+
+// "The head can't be reached": what elders sent, with the coven, how long the
+// head has been away and its succession plan. Hand the coven on (the named
+// successor first) or close the report.
+function HeadsGone() {
+  const [rows, setRows] = useState<HeadReport[] | null>(null);
+  const [chosen, setChosen] = useState<Record<string, string>>({});
+  const [notes, setNotes] = useState<Record<string, string>>({});
+  const [busy, setBusy] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+
+  const [version, setVersion] = useState(0);
+  const load = useCallback(async () => setVersion((v) => v + 1), []);
+  useEffect(() => {
+    let live = true;
+    fetchHeadReports()
+      .then((list) => live && setRows(list))
+      .catch((error) => {
+        if (!live) return;
+        setMessage(errorMessage(error));
+        setRows([]);
+      });
+    return () => {
+      live = false;
+    };
+  }, [version]);
+
+  const settle = async (report: HeadReport, to: string | null) => {
+    setBusy(report.id);
+    setMessage(null);
+    try {
+      await resolveHeadReport(report, to, notes[report.id] ?? '');
+      setMessage(to ? `${report.coven.name} is handed on. Its members are told.` : 'The report is closed.');
+      await load();
+    } catch (error) {
+      setMessage(errorMessage(error));
+    }
+    setBusy(null);
+  };
+
+  if (!rows) return <ActivityIndicator color={colors.gold} />;
+  return (
+    <>
+      {!rows.length && <Text style={type.caption}>No coven has told you its head can’t be reached.</Text>}
+      {rows.map((r) => {
+        const candidates = transferCandidates(r);
+        const pick = chosen[r.id] ?? candidates[0]?.id ?? '';
+        return (
+          <Card key={r.id}>
+            <Text style={type.eyebrow}>{r.status === 'open' ? 'Head can’t be reached' : r.status === 'transferred' ? 'Handed on' : 'Closed'}</Text>
+            <Pressable accessibilityRole="link" onPress={() => router.push(`/coven/c/${r.coven.slug}` as Href)}>
+              <Text style={type.cardTitle}>{r.coven.name}</Text>
+            </Pressable>
+            <Text style={type.body}>
+              Head: {r.head.name ?? 'a deleted account'} · not seen for {inactiveFor(r.last_active_at)} · {r.coven.members} {r.coven.members === 1 ? 'member' : 'members'}
+            </Text>
+            {r.coven.mother && <Text style={type.caption}>A daughter coven of {r.coven.mother.name}: its head can also choose who leads it.</Text>}
+            <Text style={type.caption}>
+              Sent by {r.reported_by.name ?? 'an elder'} {relativeTime(r.created_at)}
+              {r.note ? `: “${r.note}”` : ''}
+            </Text>
+            <Text style={type.caption}>
+              Succession plan: {r.successors.length ? r.successors.map((s) => `${s.name ?? 'A witch'}${s.which === 2 ? ' (second)' : ''}${s.active ? '' : ' (no longer a member)'}`).join(', ') : 'no one named'}
+            </Text>
+            {r.status === 'open' && (
+              <>
+                {candidates.length > 0 ? (
+                  <Chips label="Hand the coven to" options={candidates.map((c) => ({ value: c.id, label: c.label }))} value={pick} onChange={(v) => setChosen((prev) => ({ ...prev, [r.id]: v }))} />
+                ) : (
+                  <Text style={type.caption}>No one named or leading with the head. You can still pause or archive the coven under Covens.</Text>
+                )}
+                <Field label="Note (kept with the report)" value={notes[r.id] ?? ''} onChangeText={(t) => setNotes((prev) => ({ ...prev, [r.id]: t }))} multiline maxLength={2000} />
+                <View style={styles.actions}>
+                  {candidates.length > 0 && <Button label="Hand it on" disabled={busy === r.id || !pick} onPress={() => void settle(r, pick)} />}
+                  <Button label="Close without changing" variant="outline" disabled={busy === r.id} onPress={() => void settle(r, null)} />
+                </View>
+              </>
+            )}
+          </Card>
+        );
+      })}
+      {message && <Notice>{message}</Notice>}
+    </>
+  );
+}

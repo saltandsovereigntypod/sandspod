@@ -11,7 +11,11 @@
  * who keep the members' record get Members' record (covens/coven/record.js).
  * Reviewers get Review and
  * leaders Manage (covens/coven/manage.js). Those who may invite people get
- * Invite (covens/coven/invite.js). Site moderators see every tab.
+ * Invite (covens/coven/invite.js). Daughter covens (covens/coven/lineage.js):
+ * a coven's mother and daughters, founding one, sharing and the log; a
+ * daughter coven's disclosure shows on About and Join for everyone. The head
+ * of a mother coven has every power here without being a member. Site
+ * moderators see every tab.
  * Review counts the applications and requests to advance waiting (never
  * your own), kept current while the page is open (SaltCore.covens.requests).
  */
@@ -42,12 +46,25 @@
     state.coven = coven;
     if (!coven) return;
     const userId = context.user?.id;
-    const [, application, advancements] = await Promise.all([
+    const LD = global.CovenLineageData;
+    const [, application, advancements, lineage, disclosure] = await Promise.all([
       UI.loadAccess(state),
       D.myCovenApplication(coven.id, userId).catch(() => null),
-      D.myAdvancements(coven.id, userId).catch(() => [])
+      D.myAdvancements(coven.id, userId).catch(() => []),
+      userId && LD ? LD.lineage(coven.id) : Promise.resolve(null),
+      LD ? LD.disclosure(coven.slug) : Promise.resolve(null)
     ]);
-    Object.assign(state, { application, advancements: advancements || [] });
+    Object.assign(state, { application, advancements: advancements || [], lineage, disclosure });
+    // A head of a coven above this one holds every power here, without being a member (SaltCore.covens.lineage.withAncestor).
+    const Lx = global.SaltCore?.covens?.lineage;
+    state.ancestor = Boolean(lineage?.ancestor && coven.status === "active");
+    if (Lx) state.perms = Lx.withAncestor(state.perms, state.ancestor);
+    if (state.ancestor && state.membership?.status !== "active") {
+      state.unsigned = [];
+      state.standing = L.standing(state.perms, state.unsigned, context.banned);
+      // What they change here is told to the coven's own head.
+      if (coven.founder_id !== userId) LD?.notifyLineage(coven.id);
+    }
     if (state.perms.review || state.perms.site) await countPending();
     if (state.perms.member || state.perms.site) {
       state.rituals = await D.rituals(coven.id).catch(() => []);
@@ -144,8 +161,10 @@
       if (global.CovenRecordAccess?.seesRecord(state)) list.push({ key: "record", label: "Members’ record" });
       if (global.CovenPathsAccess?.seesPaths(state)) list.push({ key: "paths", label: "Paths in the coven" });
       if (state.inviteSettings && (state.inviteSettings.may_invite || perms.site)) list.push({ key: "invite", label: "Invite" });
+      const lineage = state.lineage;
+      if (lineage && (lineage.may_found || lineage.may_decide || lineage.mother || lineage.daughters?.length)) list.push({ key: "lineage", label: "Daughter covens", count: lineage.pending_requests || 0 });
     }
-    if (perms.member) list.push({ key: "path", label: "My standing", count: state.unsigned.length });
+    if (perms.member && state.membership?.status === "active") list.push({ key: "path", label: "My standing", count: state.unsigned.length });
     if (perms.review || perms.site) list.push({ key: "review", label: "Review", count: state.pending.applications + state.pending.advancements });
     if (perms.manage || perms.site) list.push({ key: "manage", label: "Manage" });
     return list;
@@ -168,6 +187,7 @@
     if (coven.status === "suspended") out.push(`<div class="cv-banner"><p><strong>This coven is paused by the Salt &amp; Sovereignty moderators.</strong> Members can read it, but nothing new can be added while it’s paused.${coven.moderation_note ? ` Note from the moderators: ${esc(coven.moderation_note)}` : ""}</p></div>`);
     if (coven.status === "archived") out.push(`<div class="cv-banner"><p>This coven has been archived. Its members can still read it.</p></div>`);
     if (perms.site && !perms.member) out.push(`<div class="cv-banner cv-banner--site"><p>You’re viewing this coven as a site moderator.</p></div>`);
+    if (state.ancestor && state.membership?.status !== "active") out.push(`<div class="cv-banner cv-banner--site"><p><strong>Mother coven.</strong> You’re here as the head of ${esc(state.lineage?.mother?.name || "its mother coven")}: you have every power its own head has, and its members’ private things stay private from you, as from them. What you change here is kept in its lineage log, and its head is told.</p></div>`);
     if (context.banned) out.push(UI.bannedCard());
     out.push(`<div data-turn-banner>${turnBanner()}</div>`);
     if (perms.member && state.unsigned.length && currentTab() !== "path") out.push(`<div class="cv-banner"><p>The coven’s agreements have changed. <a href="${esc(covenHref("path"))}" data-tab="path">Read and sign them</a> to keep taking part in the gathering and at the altar.</p></div>`);
@@ -255,7 +275,7 @@
       ${tabBar(tab)}
       <div class="cv-pane" data-pane></div>`;
     const pane = root.querySelector("[data-pane]");
-    const views = { about, join, path, gathering: () => mount(global.CovenChat), rituals: () => mount(global.CovenRituals), book: () => mount(global.CovenBook), petitions: () => mount(global.CovenPetitions), programs: () => mount(global.CovenPrograms), altar: () => mount(global.CovenAltar), members: () => mount(global.CovenMembers), record: () => mount(global.CovenRecord), paths: () => mount(global.CovenPaths), review: () => mount(global.CovenReview), manage: () => mount(global.CovenManage), invite: () => mount(global.CovenInvite) };
+    const views = { about, join, path, gathering: () => mount(global.CovenChat), rituals: () => mount(global.CovenRituals), book: () => mount(global.CovenBook), petitions: () => mount(global.CovenPetitions), programs: () => mount(global.CovenPrograms), altar: () => mount(global.CovenAltar), members: () => mount(global.CovenMembers), record: () => mount(global.CovenRecord), paths: () => mount(global.CovenPaths), review: () => mount(global.CovenReview), manage: () => mount(global.CovenManage), invite: () => mount(global.CovenInvite), lineage: () => mount(global.CovenLineage) };
     function mount(module) {
       if (!module) return (pane.innerHTML = `<p class="sp-notice">This part of the coven couldn’t load. Please refresh the page.</p>`);
       mounted = module;
@@ -274,9 +294,14 @@
         <div class="cv-meta"><span class="cv-pill">${esc(kindLabel(d.kind))}</span>
           ${d.visibility === "members" ? `<span class="cv-pill">Members only</span>` : ""}
           ${d.requires_signature ? `<span class="cv-pill${signed ? " cv-pill--gold" : ""}">${signed ? "✓ You’ve signed this" : "To be signed"} · version ${d.version}</span>` : ""}
-          ${d.published ? "" : `<span class="cv-pill cv-pill--warn">Draft</span>`}</div>
+          ${d.published ? "" : `<span class="cv-pill cv-pill--warn">Draft</span>`}${copiedFrom("document", d.id) ? `<span class="cv-pill">${esc(copiedFrom("document", d.id))}</span>` : ""}</div>
         ${d.body.trim() ? `<div class="cv-doc">${prose(d.body)}</div>` : `<p class="sp-empty">Not written yet.</p>`}
       </details>`;
+  }
+
+  /** "Copied from {Mother}", for something this coven copied from its mother coven. */
+  function copiedFrom(kind, id) {
+    return global.SaltCore?.covens?.lineage?.copiedFrom(state.lineage?.copies, kind, id) || null;
   }
 
   function positions() {
@@ -288,7 +313,8 @@
         return `<div class="sp-row"><span class="sp-row__text"><span class="sp-row__title">${esc(r.name)}${r.is_default ? " · where new members begin" : ""}${r.open_to_applications ? " · open to apply" : ""}</span>
           ${r.description ? `<span class="sp-row__detail">${esc(r.description)}</span>` : ""}
           ${r.requirements ? `<span class="sp-row__detail">Asks: ${esc(r.requirements)}</span>` : ""}
-          ${powers.length ? `<span class="sp-row__detail">This position ${esc(powers.join(", "))}.</span>` : ""}</span></div>`;
+          ${powers.length ? `<span class="sp-row__detail">This position ${esc(powers.join(", "))}.</span>` : ""}
+          ${copiedFrom("rank", r.id) ? `<span class="sp-row__detail">${esc(copiedFrom("rank", r.id))}</span>` : ""}</span></div>`;
       })
       .join("")}</div></section>`;
   }
@@ -297,7 +323,8 @@
     const { coven, perms, context } = state;
     const join = L.JOINING[coven.joining] || L.JOINING.application;
     const here = state.presence.length;
-    pane.innerHTML = `<div class="sp-section">
+    const LU = global.CovenLineageUI;
+    pane.innerHTML = `${LU ? LU.disclosureHtml(state.disclosure?.text, !perms.member) : ""}<div class="sp-section">
         <div class="cv-meta">
           <span class="cv-pill${coven.joining === "open" ? " cv-pill--gold" : ""}">${esc(join.label)}</span>
           <span class="cv-pill">${Number(coven.member_count) || 0} member${Number(coven.member_count) === 1 ? "" : "s"}</span>
@@ -314,6 +341,7 @@
       </div>
       ${state.documents.length ? `<section class="sp-section"><h2>Our ways</h2>${state.documents.map(documentSection).join("")}</section>` : ""}
       ${positions()}
+      ${LU ? LU.aboutHtml(state) : ""}
       <div class="sp-actions">
         ${context.user ? `<button class="button button--ghost button--small" type="button" data-report-coven>Report this coven</button>` : ""}
       </div>`;
@@ -395,7 +423,7 @@
 
     const declined = application?.status === "declined" ? `<div class="cv-banner"><p>Your last application wasn’t accepted.${application.reviewer_note ? ` The coven said: ${esc(application.reviewer_note)}` : ""} You can apply again 30 days after that decision.</p></div>` : "";
     const open = coven.joining === "open";
-    pane.innerHTML = `${declined}
+    pane.innerHTML = `${declined}${global.CovenLineageUI ? global.CovenLineageUI.disclosureHtml(state.disclosure?.text, true) : ""}
       <section class="sp-section"><h2>1 · Read and sign the agreements</h2><div data-signer></div></section>
       <section class="sp-section"><h2>2 · ${open ? "Join" : "Apply"}</h2><div data-step></div></section>`;
     const step = pane.querySelector("[data-step]");
@@ -446,7 +474,7 @@
     const powers = L.rankPowers(perms.rank);
     pane.innerHTML = `<section class="sp-section"><h2>Your place in the coven</h2>
         <div class="sp-card">
-          <p><strong>${esc(perms.founder ? `${perms.rank?.name || "Leader"} · founder` : perms.rank?.name || "Member")}</strong></p>
+          <p><strong>${esc(coven.founder_id === context.user?.id ? `${perms.rank?.name || "Leader"} · head` : perms.rank?.name || "Member")}</strong></p>
           ${perms.rank?.description ? `<p class="sp-muted">${esc(perms.rank.description)}</p>` : ""}
           ${powers.length ? `<p class="sp-caption">Your position ${esc(powers.join(", "))}.</p>` : ""}
           <p class="sp-caption">Member since ${esc(new Date(state.membership.joined_at).toLocaleDateString())}${perms.muted ? ` · messages paused until ${esc(new Date(state.membership.muted_until).toLocaleString())}` : ""}</p>
@@ -454,7 +482,9 @@
       <details class="sp-details" data-standing-details><summary>Your record: your rituals, studies and mentoring, as the coven’s leaders see them</summary><div data-standing></div></details>
       <section class="sp-section"><h2>Agreements</h2><div data-signer></div></section>
       <section class="sp-section"><h2>Rise to a higher position</h2><div data-advance></div></section>
-      ${perms.founder ? "" : `<section class="sp-section"><h2>Leaving</h2><div class="sp-actions"><button class="button button--ghost" type="button" data-leave>Leave ${esc(coven.name)}</button></div><p class="cv-status" role="status" aria-live="polite" data-leave-status></p></section>`}`;
+      ${(perms.review || perms.moderate) && coven.founder_id !== context.user?.id && !state.ancestor ? `<div data-unreachable-holder></div>` : ""}
+      ${coven.founder_id === context.user?.id ? `<section class="sp-section"><h2>Leaving</h2><p class="sp-caption">To leave, hand on leadership first: open Members, choose the person, then Hand on leadership. Name who leads next under Manage → Leadership.</p></section>` : `<section class="sp-section"><h2>Leaving</h2><div class="sp-actions"><button class="button button--ghost" type="button" data-leave>Leave ${esc(coven.name)}</button></div><p class="cv-status" role="status" aria-live="polite" data-leave-status></p></section>`}`;
+    global.CovenLineageUI?.unreachablePanel(pane.querySelector("[data-unreachable-holder]"), state);
 
     signer(pane.querySelector("[data-signer]"), () => refresh("path"));
     const standing = pane.querySelector("[data-standing-details]");

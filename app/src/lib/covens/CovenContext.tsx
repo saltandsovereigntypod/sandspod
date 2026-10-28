@@ -8,6 +8,8 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 
 import { useSession } from '../session';
 import * as api from './api';
+import { withAncestor, type Lineage } from './lineage';
+import { fetchLineage, notifyLineage } from './lineageApi';
 import { menteesOf, waitingForMe as waitingFor, type Grant, type Mentorship } from './programs';
 import {
   applyChange,
@@ -32,7 +34,10 @@ type CovenState = {
   status: 'loading' | 'ready' | 'missing' | 'offline';
   snapshot: api.CovenSnapshot | null;
   me: api.Me | null;
-  perms: Permissions;
+  /** Mother and daughter covens, and whether you're the head of a coven above this one (null before it loads, or for those who may not see it). */
+  lineage: Lineage | null;
+  refreshLineage: () => Promise<void>;
+  perms: Permissions & { ancestor?: boolean };
   unsigned: ReturnType<typeof unsignedAgreements>;
   standing: { ok: boolean; reasons: string[] };
   userId: string | null;
@@ -76,6 +81,7 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
   const [status, setStatus] = useState<CovenState['status']>('loading');
   const [snapshot, setSnapshot] = useState<api.CovenSnapshot | null>(null);
   const [me, setMe] = useState<api.Me | null>(null);
+  const [lineage, setLineage] = useState<Lineage | null>(null);
   const [names, setNames] = useState<Record<string, Profile>>({});
   const [rituals, setRituals] = useState<Ritual[]>([]);
   const [steps, setSteps] = useState<RitualStep[]>([]);
@@ -124,7 +130,9 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
         setStatus('missing');
         return;
       }
-      const insiderNow = snap.membership?.status === 'active' || !!mine?.siteModerator;
+      const line = userId ? await fetchLineage(snap.coven.id) : null;
+      setLineage(line);
+      const insiderNow = snap.membership?.status === 'active' || !!mine?.siteModerator || !!line?.ancestor;
       setGrants(insiderNow ? await api.fetchGrants(snap.coven.id).catch(() => []) : []);
       setSnapshot(snap);
       setMe(mine);
@@ -140,11 +148,26 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
     void refresh();
   }, [refresh]);
 
+  // A head of a coven above this one holds every power here, without being a member (lineage.ts withAncestor).
+  const ancestor = !!lineage?.ancestor && snapshot?.coven.status === 'active';
   const perms = useMemo(
-    () => permissions({ coven: snapshot?.coven ?? null, membership: snapshot?.membership ?? null, ranks: snapshot?.ranks ?? [], userId, siteModerator: me?.siteModerator, grants }),
-    [snapshot, userId, me?.siteModerator, grants],
+    () => withAncestor(permissions({ coven: snapshot?.coven ?? null, membership: snapshot?.membership ?? null, ranks: snapshot?.ranks ?? [], userId, siteModerator: me?.siteModerator, grants }), ancestor),
+    [snapshot, userId, me?.siteModerator, grants, ancestor],
   );
-  const unsigned = useMemo(() => (snapshot ? unsignedAgreements(snapshot.documents, snapshot.signatures, userId) : []), [snapshot, userId]);
+  const unsigned = useMemo(
+    () => (snapshot && !(ancestor && snapshot.membership?.status !== 'active') ? unsignedAgreements(snapshot.documents, snapshot.signatures, userId) : []),
+    [snapshot, userId, ancestor],
+  );
+  const lineageCovenId = snapshot?.coven.id;
+  const refreshLineage = useCallback(async () => {
+    if (lineageCovenId && userId) setLineage(await fetchLineage(lineageCovenId));
+  }, [lineageCovenId, userId]);
+  // What a mother coven's head changes here is told to the coven's own head (coven-notify), each time things refresh.
+  const covenIdNow = snapshot?.coven.id;
+  const foundedHere = snapshot?.coven.founder_id === userId;
+  useEffect(() => {
+    if (ancestor && !foundedHere) notifyLineage(covenIdNow);
+  }, [ancestor, foundedHere, covenIdNow, snapshot]);
   const stand = useMemo(() => standing(perms, unsigned, !!me?.banned), [perms, unsigned, me?.banned]);
   const insider = perms.member || perms.site;
 
@@ -247,6 +270,8 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
       status,
       snapshot,
       me,
+      lineage,
+      refreshLineage,
       perms,
       unsigned,
       standing: stand,
@@ -286,7 +311,7 @@ export function CovenProvider({ slug, children }: { slug: string; children: Reac
       presence,
       track: (place) => liveRef.current?.track(place),
     }),
-    [slug, status, snapshot, me, perms, unsigned, stand, userId, names, loadNames, refresh, rituals, steps, rsvps, marks, refreshRituals, loadMarks, messages, loadMessages, onMessage, altar, loadAltar, petitionsVersion, grants, mentors, waitingForMe, refreshPrograms, presence],
+    [slug, status, snapshot, me, lineage, refreshLineage, perms, unsigned, stand, userId, names, loadNames, refresh, rituals, steps, rsvps, marks, refreshRituals, loadMarks, messages, loadMessages, onMessage, altar, loadAltar, petitionsVersion, grants, mentors, waitingForMe, refreshPrograms, presence],
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

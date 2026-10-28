@@ -14,7 +14,8 @@ import { type } from '../../../../../../theme';
 // Manage: the coven's settings only: its details, pages and agreements,
 // positions and their powers, inviting people (the same screen as the coven
 // page's Invite), the questions it asks applicants, its calendar,
-// gathering notifications, who runs training, ritual participation, and
+// gathering notifications, who runs training, ritual participation,
+// leadership (succession, who may found daughters), daughter covens, and
 // archiving it. People (Review, Members, Initiation & training, Paths) are on
 // the coven's page.
 export default function Manage() {
@@ -63,9 +64,11 @@ export default function Manage() {
             <MenuRow label="Invite people" detail="Invite links, invitations in the app, and who may invite" icon="community" onPress={() => router.push(covenHref(coven.slug, 'invite'))} />
             <MenuRow label="Questions for applicants" detail={questions ? `${questions} ${questions === 1 ? 'question' : 'questions'}` : 'None yet'} icon="letters" onPress={() => go('questions')} />
             <MenuRow label="Practice calendar" detail={calendar.length ? calendar.join(', ') : 'The holidays the coven keeps'} icon="moon" onPress={() => go('calendar')} />
-            <MenuRow label="Gathering notifications" detail="Who hears when a rite or meeting goes on the calendar, moves or comes off" icon="moon" last={!(coven.perms.manage || coven.perms.site)} onPress={() => go('notices')} />
-            {(coven.perms.manage || coven.perms.site) && <MenuRow label="Who runs training" detail="Who designs initiation and training programs, and who sees everyone’s progress" icon="journey" last={!(coven.perms.founder || coven.perms.site)} onPress={() => go('powers')} />}
-            {(coven.perms.founder || coven.perms.site) && <MenuRow label="Ritual participation" detail="Who sees how many have written for a step, and who hasn’t" icon="community" last onPress={() => go('participation')} />}
+            <MenuRow label="Gathering notifications" detail="Who hears when a rite or meeting goes on the calendar, moves or comes off" icon="moon" onPress={() => go('notices')} />
+            {(coven.perms.manage || coven.perms.site) && <MenuRow label="Who runs training" detail="Who designs initiation and training programs, and who sees everyone’s progress" icon="journey" onPress={() => go('powers')} />}
+            {(coven.perms.founder || coven.perms.site) && <MenuRow label="Ritual participation" detail="Who sees how many have written for a step, and who hasn’t" icon="community" onPress={() => go('participation')} />}
+            <MenuRow label="Leadership" detail="Succession plan, and who may found a daughter coven" icon="journey" onPress={() => go('leadership')} />
+            <MenuRow label="Daughter covens" detail="Found one, answer requests, share and push, the lineage log" icon="community" last onPress={() => router.push(covenHref(coven.slug, 'lineage'))} />
           </MenuList>
           <Text style={type.caption}>
             Manage holds the coven’s settings. Review, Members, Initiation & training and Paths in the coven are on the coven’s page.

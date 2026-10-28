@@ -160,7 +160,10 @@
   function paint(problem) {
     root.innerHTML = `${top()}
       ${card()}
+      <div data-disclosure-holder></div>
       ${problem ? `<p class="sp-notice">${esc(problem)}</p><div class="sp-actions"><a class="button button--ghost" href="${esc(href("/covens/"))}">Find a coven</a></div>` : `${getTheApp()}<div data-accept${accepting ? "" : " hidden"}></div>`}`;
+    // A daughter coven says, before anyone accepts, whose final say it's under (covens/coven/lineage.js).
+    if (!problem) void global.CovenLineageUI?.mountDisclosure(root.querySelector("[data-disclosure-holder]"), covenOf()?.slug, true);
     const holder = root.querySelector("[data-accept]");
     if (holder && accepting) void acceptHtml(holder);
     root.querySelector("[data-accept-here]")?.addEventListener("click", () => {
