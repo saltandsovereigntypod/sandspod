@@ -8,7 +8,7 @@ import { join } from "node:path";
 
 const root = new URL("..", import.meta.url).pathname;
 const out = join(root, "dist");
-const LEAVE_OUT = new Set(["app", "supabase", "scripts", "tests", "docs", "dist", "node_modules", ".git", ".github", ".claude", "package.json", "package-lock.json", "readme.md", "CNAME"]);
+const LEAVE_OUT = new Set(["app", "supabase", "scripts", "tests", "docs", "dist", "node_modules", ".git", ".github", ".claude", "package.json", "package-lock.json", "wrangler.jsonc", "readme.md", "CNAME"]);
 
 rmSync(out, { recursive: true, force: true });
 mkdirSync(out);
