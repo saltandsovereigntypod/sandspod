@@ -25,7 +25,7 @@ export function PagePicker({ visible, title, pages, onChoose, onClose }: Props) 
           </Text>
           <Button label="Cancel" variant="text" onPress={onClose} />
         </View>
-        <ScrollView contentContainerStyle={styles.content} alwaysBounceHorizontal={false}>
+        <ScrollView contentContainerStyle={styles.content} alwaysBounceHorizontal={false} keyboardShouldPersistTaps="handled">
           {sorted.length === 0 ? (
             <Text style={type.body}>There are no other pages to link yet.</Text>
           ) : (

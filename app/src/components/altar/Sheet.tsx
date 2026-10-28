@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { KeyboardAvoidingView, Modal, type ModalProps, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -18,11 +18,21 @@ type Props = {
   header?: ReactNode;
   /** 'half' keeps the altar in view above a shorter sheet. */
   size?: 'full' | 'half';
+  /** Come back to the same place in the list when the sheet is closed and opened again (the cabinet). */
+  keepScroll?: boolean;
 };
 
 /** A bottom sheet that scrolls vertically; the altar's cabinet, backgrounds and layers live in these. */
-export function Sheet({ visible, title, eyebrow, onClose, children, header, size = 'full' }: Props) {
+export function Sheet({ visible, title, eyebrow, onClose, children, header, size = 'full', keepScroll = false }: Props) {
   const insets = useSafeAreaInsets();
+  // A closed Modal drops its contents, so where the list was is kept here and
+  // put back once the reopened list has laid out.
+  const scroll = useRef<ScrollView>(null);
+  const offset = useRef(0);
+  const restored = useRef(true);
+  useEffect(() => {
+    if (visible) restored.current = !keepScroll || offset.current === 0;
+  }, [visible, keepScroll]);
   const reduceMotion = useReducedMotion();
   const t = useAccessibleText();
   return (
@@ -49,6 +59,16 @@ export function Sheet({ visible, title, eyebrow, onClose, children, header, size
           </View>
           {header}
           <ScrollView
+            ref={scroll}
+            onScroll={keepScroll ? (e) => {
+              if (restored.current) offset.current = e.nativeEvent.contentOffset.y;
+            } : undefined}
+            scrollEventThrottle={keepScroll ? 32 : undefined}
+            onContentSizeChange={keepScroll ? (_w, h) => {
+              if (restored.current || h === 0) return;
+              restored.current = true;
+              scroll.current?.scrollTo({ y: offset.current, animated: false });
+            } : undefined}
             style={styles.scroll}
             contentContainerStyle={styles.content}
             alwaysBounceHorizontal={false}

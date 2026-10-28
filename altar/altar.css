@@ -3434,3 +3434,69 @@ body.mundane-mode [data-mundane-label="ritual"]::after {
   .altar-object.is-lit[data-type="candle"]::before,
   .altar-object.is-lit[data-type="candle"]::after { animation: none !important; }
 }
+
+/* The cabinet stays open while you place things: what was just added, Undo and Done stay in view at its foot. */
+.altar-cabinet-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.75rem -1rem 0;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid rgba(185, 160, 93, 0.32);
+  background: #120c08;
+}
+
+.altar-cabinet-added {
+  flex: 1 1 12rem;
+  margin: 0;
+  color: var(--cream);
+  font-size: 0.9rem;
+}
+
+.altar-cabinet-done {
+  margin-left: auto;
+}
+
+.altar-cabinet .cabinet-tile.is-on-altar {
+  border-color: rgba(185, 160, 93, 0.75) !important;
+}
+
+.altar-cabinet .cabinet-tile-count {
+  display: block;
+  color: var(--gold, #b9a05d);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.altar-cabinet .cabinet-tile-count[hidden] {
+  display: none;
+}
+
+/* Several at once in an object action (Dress Candle). */
+.object-action-checks {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  border: 0;
+}
+
+.object-action-checks legend {
+  margin-bottom: 0.4rem;
+}
+
+.object-action-check {
+  display: flex !important;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.object-action-modal-card .object-action-check input {
+  width: auto;
+}

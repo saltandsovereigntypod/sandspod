@@ -144,7 +144,7 @@ import { BackgroundSheet, DressSheet, LayersSheet, SaveSheet } from './OptionShe
 import { Button } from '../Button';
 import { burnDuration, burnedSoFar, dressingNames, glanceLine, lifeDuration, resolveAltarEntry } from '../../lib/altar/companion';
 import { CandleLifeSheet } from './CandleLifeSheet';
-import { builtInCabinet, defaultAltarBackground, objectFromForm, shortLabel } from '../../lib/altar/cabinet';
+import { builtInCabinet, defaultAltarBackground, nudgedCenter, objectFromForm, shortLabel } from '../../lib/altar/cabinet';
 import {
   addObject,
   placeApothecary,
@@ -154,7 +154,7 @@ import {
   tendApothecary,
   carveObject,
   changeLayer,
-  dressObject,
+  dressObjectWith,
   duplicateObject,
   flipObject,
   moveObject,
@@ -584,17 +584,23 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
       : { cx: 0.5, cy: 0.5 };
   };
 
-  const place = (item: CabinetItem, form: CabinetForm) => {
-    if (!doc) return;
-    const object = objectFromForm(item, form, doc.objects, nowIso(), overrides, viewCenter());
+  // The cabinet stays open while you place things: each one is its own undo,
+  // and each is nudged off the last so they don't stack exactly on top of each other.
+  const place = (item: CabinetItem, form: CabinetForm): boolean => {
+    const current = docRef.current;
+    if (!current) return false;
+    const center = nudgedCenter(viewCenter(), current.objects.map((o) => displayBox(o)));
+    const object = objectFromForm(item, form, current.objects, nowIso(), overrides, center);
     commit((d) => {
       const added = addObject(d, object);
       const index = added.objects.length - 1;
       const box = displayBox(object);
       return moveObject(added, index, box.cx, box.cy); // keeps it inside the stage
     });
-    setSelected(doc.objects.length);
-    setSheet(null);
+    // A coven altar you can't tend right now leaves it as it was (commit says why).
+    if (docRef.current === current) return false;
+    setSelected(current.objects.length);
+    return true;
   };
 
   const save = async (altarName: string, asNew: boolean) => {
@@ -1701,6 +1707,8 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
             onRemoveImage={store.removeFormImage}
             onClose={() => setSheet(null)}
             onPlace={place}
+            onAltar={doc.objects}
+            onUndo={() => stepHistory(undo, redo)}
           />
           <BackgroundSheet
             visible={sheet === 'background'}
@@ -1731,9 +1739,10 @@ export function AltarEditor({ shared, header, overlay, onBack, whose }: { shared
             doc={doc}
             candle={selected}
             onClose={() => setSheet(null)}
-            onDress={(ingredient) => {
-              if (selected != null) commit((d) => dressObject(d, selected, ingredient, nowIso()));
+            onDress={(ingredients) => {
+              if (selected != null) commit((d) => dressObjectWith(d, selected, ingredients, nowIso()));
               setSheet(null);
+              if (ingredients.length > 1) setNotice(`Dressed with ${ingredients.length} things from the altar.`);
             }}
           />
           <CandleLifeSheet

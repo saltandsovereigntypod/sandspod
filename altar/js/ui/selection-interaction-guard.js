@@ -190,10 +190,12 @@
 
       const activationKey = getCabinetActionKey(target);
 
+      // A tap's duplicate synthetic click comes within a few hundred ms; the
+      // cabinet stays open, so a deliberate second tap on the same thing adds another.
       if (
         activationKey &&
         activationKey === lastCabinetActivationKey &&
-        now - lastCabinetActivationAt < 650
+        now - lastCabinetActivationAt < 400
       ) {
         event.preventDefault();
         event.stopImmediatePropagation();

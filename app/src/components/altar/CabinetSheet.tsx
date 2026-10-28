@@ -9,7 +9,7 @@ import { cabinetCategoriesFor, cabinetItemsFor, deityPantheon, formImage, formOb
 import { pickImage, type PickedImage } from '../../lib/altar/images';
 import { cabinetFormOf, itemIndex, searchItems } from '../../lib/altar/itemIndex';
 import { festivalWhen, nearWithThings, seasonalSections, type FestivalNear } from '../../lib/altar/seasonal';
-import type { CabinetForm, CabinetItem } from '../../lib/altar/types';
+import type { CabinetForm, CabinetItem, SavedObject } from '../../lib/altar/types';
 import type { LibraryEntry } from '../../lib/library';
 import { colors, fonts, radius, space, touch, type } from '../../theme';
 import { Button } from '../Button';
@@ -24,7 +24,12 @@ type Props = {
   /** The Living Library, for each item's two best-known uses. */
   library: LibraryEntry[];
   onClose: () => void;
-  onPlace: (item: CabinetItem, form: CabinetForm) => void;
+  /** Sets it on the altar (nudged off the last one); false when the altar can't take it. The cabinet stays open. */
+  onPlace: (item: CabinetItem, form: CabinetForm) => boolean;
+  /** What's on the altar now, for "on the altar ×2" on each tile. */
+  onAltar?: SavedObject[];
+  /** Takes back the last thing placed (the altar's Undo). */
+  onUndo?: () => void;
   /** Make your own item for a drawer, or change one you made. */
   onMakeOwn?: (category: string) => void;
   onEditOwn?: (item: CabinetItem) => void;
@@ -43,6 +48,8 @@ export function CabinetSheet({
   library,
   onClose,
   onPlace,
+  onAltar = [],
+  onUndo,
   onMakeOwn,
   onEditOwn,
   signedIn,
@@ -65,11 +72,22 @@ export function CabinetSheet({
   // Deity pantheons folded away (the drawer remembers them while the altar is open).
   const [closedPantheons, setClosedPantheons] = useState<Set<string>>(() => new Set());
 
+  // What was just set on the altar: the cabinet stays open, on the same drawer and place, until Done.
+  const [added, setAdded] = useState<string | null>(null);
+  // How many of each are on the altar, by the label they're placed with.
+  const counts = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const o of onAltar) if (o.label) map.set(o.label, (map.get(o.label) ?? 0) + 1);
+    return map;
+  }, [onAltar]);
+  const countOf = (item: CabinetItem, form: CabinetForm) => counts.get(formObjectLabel(item, form)) ?? 0;
+
   const changesPictures = !!onSetImage && !!onRemoveImage;
   const placeIt = (item: CabinetItem, form: CabinetForm) => {
     setPicture(null);
     setMessage(null);
-    onPlace(item, form);
+    if (onPlace(item, form)) setAdded(shortLabel(formObjectLabel(item, form)));
+    else setAdded(null);
   };
   const choosePicture = (item: CabinetItem, form: CabinetForm) => {
     if (item.customCabinetItemId || !changesPictures) return undefined;
@@ -146,6 +164,7 @@ export function CabinetSheet({
       uses={uses}
       spoken={`Place ${shortLabel(formObjectLabel(item, forms[0]))}${uses ? `. For ${uses.replace(' · ', ' and ')}` : ''}`}
       image={formImage(item, forms[0], overrides)}
+      count={countOf(item, forms[0])}
       onPress={() => placeIt(item, forms[0])}
       onLongPress={choosePicture(item, forms[0])}
     />
@@ -157,8 +176,10 @@ export function CabinetSheet({
       onClose={() => {
         setPicture(null);
         setMessage(null);
+        setAdded(null);
         onClose();
       }}
+      keepScroll
       eyebrow="The Cabinet"
       title="Choose what belongs"
       header={
@@ -198,6 +219,27 @@ export function CabinetSheet({
               {message}
             </Text>
           )}
+          {!!added && (
+            <View style={styles.added}>
+              <Text style={[type.caption, styles.addedText]} accessibilityLiveRegion="polite" numberOfLines={2}>
+                Added: {added}
+              </Text>
+              {!!onUndo && (
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={`Undo, take ${added} back off the altar`}
+                  hitSlop={8}
+                  onPress={() => {
+                    onUndo();
+                    setAdded(null);
+                  }}
+                  style={({ pressed }) => [styles.edit, pressed && { opacity: 0.7 }]}
+                >
+                  <Text style={styles.editText}>Undo</Text>
+                </Pressable>
+              )}
+            </View>
+          )}
         </View>
       }
     >
@@ -212,6 +254,7 @@ export function CabinetSheet({
                 uses={entry.detail}
                 spoken={`Place ${entry.label}`}
                 image={formImage(place.item, place.form, overrides)}
+                count={countOf(place.item, place.form)}
                 onPress={() => placeIt(place.item, place.form)}
                 onLongPress={choosePicture(place.item, place.form)}
               />
@@ -258,6 +301,7 @@ export function CabinetSheet({
                   label={form.label}
                   spoken={`Place ${shortLabel(formObjectLabel(item, form))}${uses ? `. For ${uses.replace(' · ', ' and ')}` : ''}`}
                   image={formImage(item, form, overrides)}
+                  count={countOf(item, form)}
                   onPress={() => placeIt(item, form)}
                   onLongPress={choosePicture(item, form)}
                 />
@@ -327,7 +371,7 @@ export function CabinetSheet({
             ))
           : singles.length > 0 && <View style={styles.grid}>{singles.map(singleTile)}</View>}
       <Text style={type.caption}>
-        Tap to place it in the middle of the altar. Items you make here or on the website are kept in your cabinet in both places.
+        Tap to set it on the altar, and again for another; the cabinet stays open until you tap Done. Items you make here or on the website are kept in your cabinet in both places.
         {changesPictures ? ' Press and hold a picture to use a photo of your own for it.' : ''}
       </Text>
     </Sheet>
@@ -339,6 +383,7 @@ function Tile({
   uses,
   spoken,
   image,
+  count = 0,
   onPress,
   onLongPress,
 }: {
@@ -346,6 +391,8 @@ function Tile({
   uses?: string;
   spoken: string;
   image: string;
+  /** How many are on the altar already. */
+  count?: number;
   onPress: () => void;
   onLongPress?: () => void;
 }) {
@@ -361,13 +408,18 @@ function Tile({
       onPress={onPress}
       onLongPress={onLongPress}
       accessibilityRole="button"
-      accessibilityLabel={spoken}
+      accessibilityLabel={count ? `${spoken}. On the altar: ${count}` : spoken}
       accessibilityActions={onLongPress ? [{ name: 'longpress', label: 'Use your own picture' }] : undefined}
       onAccessibilityAction={(event) => {
         if (event.nativeEvent.actionName === 'longpress') onLongPress?.();
       }}
-      style={({ pressed }) => [styles.tile, pressed && { opacity: 0.7 }]}
+      style={({ pressed }) => [styles.tile, count > 0 && styles.tileOn, pressed && { opacity: 0.7 }]}
     >
+      {count > 0 && (
+        <View style={styles.count}>
+          <Text style={styles.countText}>{count > 1 ? `✓ ×${count}` : '✓'}</Text>
+        </View>
+      )}
       <View style={[styles.thumb, wide && styles.thumbWide]}>
         {picture && <AltarImage picture={picture} style={wide ? styles.thumbImageWide : styles.thumbImage} resizeMode="contain" />}
       </View>
@@ -379,6 +431,7 @@ function Tile({
           {uses}
         </Text>
       )}
+      {count > 0 && <Text style={styles.onAltar}>{count > 1 ? `on the altar ×${count}` : 'on the altar'}</Text>}
     </Pressable>
   );
 }
@@ -433,6 +486,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
   },
+  tileOn: { borderColor: colors.goldLine },
+  count: { position: 'absolute', top: 4, right: 4, zIndex: 1, borderRadius: radius.chip, backgroundColor: colors.surfaceRaised, paddingHorizontal: 6, paddingVertical: 1 },
+  countText: { color: colors.gold, fontFamily: fonts.bodySemi, fontSize: 11 },
+  onAltar: { color: colors.gold, fontFamily: fonts.bodySemi, fontSize: 11, textAlign: 'center' },
+  added: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  addedText: { flex: 1, color: colors.cream },
   thumb: { width: '100%', aspectRatio: 1, alignItems: 'center', justifyContent: 'center' },
   thumbWide: { aspectRatio: 1.5, flexGrow: 1 },
   thumbImage: { width: '90%', height: '90%' },

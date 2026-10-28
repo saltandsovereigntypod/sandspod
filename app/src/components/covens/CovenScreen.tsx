@@ -37,6 +37,7 @@ export function CovenScreen({
   chat = true,
   onBack,
   backLabel,
+  scrollKey,
 }: {
   title: string;
   eyebrow?: string;
@@ -50,6 +51,8 @@ export function CovenScreen({
   /** Overrides Back (the planner's inner views go back to its outline). */
   onBack?: () => void;
   backLabel?: string;
+  /** Which inner view is showing (MoreScreen keeps each one's place). */
+  scrollKey?: string;
 }) {
   const coven = useCoven();
   const [pulling, setPulling] = useState(false);
@@ -63,6 +66,7 @@ export function CovenScreen({
       back={isHome ? ('/coven' as Href) : back}
       backLabel={backLabel ?? (isHome ? 'Back to Covens' : `Back to ${coven.snapshot?.coven.name ?? 'the coven'}`)}
       onBack={onBack}
+      scrollKey={scrollKey}
       refreshControl={
         <RefreshControl
           refreshing={pulling}

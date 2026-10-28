@@ -64,6 +64,27 @@ export function dressingEntry(
   };
 }
 
+/**
+ * What Dress & anoint is about to put on the candle: every oil ticked, an oil
+ * typed in (its own blend), and the herbs to roll it in, all one way. Several
+ * oils and herbs go on together (the app's DressingSheet and the website's twin).
+ */
+export function chosenDressings(
+  picked: { oils: string[]; typedOil?: string; herbs: string[] },
+  direction: Direction,
+  now: string,
+  entries?: LibraryEntry[] | null,
+): DressingEntry[] {
+  const typed = (picked.typedOil ?? '').trim();
+  const oils = [...picked.oils, ...(typed ? [typed] : [])].filter((name, i, all) => all.findIndex((x) => x.toLowerCase() === name.toLowerCase()) === i);
+  return [...oils.map((o) => dressingEntry('oil', o, direction, now, entries)), ...picked.herbs.map((h) => dressingEntry('herb', h, direction, now, entries))];
+}
+
+/** Tick or untick a name in a list (case doesn't matter). */
+export function toggleName(list: string[], name: string): string[] {
+  return list.some((x) => x.toLowerCase() === name.toLowerCase()) ? list.filter((x) => x.toLowerCase() !== name.toLowerCase()) : [...list, name];
+}
+
 const sameDressing = (a: Dressing, b: Dressing) =>
   a.type === b.type && a.form === b.form && (a.herb ? a.herb === b.herb : String(a.label).toLowerCase() === String(b.label).toLowerCase());
 

@@ -3,7 +3,7 @@
 // least 44pt tall and labelled for screen readers.
 
 import { router, type Href } from 'expo-router';
-import type { ReactElement, ReactNode } from 'react';
+import { useEffect, useRef, type ReactElement, type ReactNode } from 'react';
 import {
   Pressable,
   RefreshControl,
@@ -31,6 +31,7 @@ export function MoreScreen({
   onBack,
   children,
   refreshControl,
+  scrollKey,
 }: {
   title: string;
   eyebrow?: string;
@@ -41,9 +42,28 @@ export function MoreScreen({
   onBack?: () => void;
   children: ReactNode;
   refreshControl?: ReactElement<React.ComponentProps<typeof RefreshControl>>;
+  /**
+   * Which inner view is showing, for a screen that swaps its own views in one
+   * scroll (the coven ritual planner): each opens at its top, and going back
+   * to one returns to where you were in it rather than wherever the last left off.
+   */
+  scrollKey?: string;
 }) {
   // Redraws the title when More → Accessibility changes.
   useAccessibility();
+  const scroll = useRef<ScrollView>(null);
+  const y = useRef(0);
+  const places = useRef(new Map<string, number>());
+  const shown = useRef(scrollKey);
+  useEffect(() => {
+    if (scrollKey === undefined || shown.current === scrollKey) return;
+    if (shown.current !== undefined) places.current.set(shown.current, y.current);
+    shown.current = scrollKey;
+    const to = places.current.get(scrollKey) ?? 0;
+    y.current = to;
+    const frame = requestAnimationFrame(() => scroll.current?.scrollTo({ y: to, animated: false }));
+    return () => cancelAnimationFrame(frame);
+  }, [scrollKey]);
   return (
     <SafeAreaView edges={['top']} style={styles.safe}>
       {back && (
@@ -62,6 +82,9 @@ export function MoreScreen({
         </View>
       )}
       <ScrollView
+        ref={scroll}
+        onScroll={scrollKey !== undefined ? (e) => (y.current = e.nativeEvent.contentOffset.y) : undefined}
+        scrollEventThrottle={scrollKey !== undefined ? 32 : undefined}
         contentContainerStyle={[styles.content, !back && styles.contentTop]}
         refreshControl={refreshControl}
         alwaysBounceHorizontal={false}
