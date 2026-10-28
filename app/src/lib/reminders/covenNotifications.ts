@@ -51,7 +51,7 @@ export function covenNotifySummary(row: Pick<CovenNotifyRow, 'chat' | 'conversat
 
 /** Whether any coven wants this phone signed up for coven notifications. */
 export function wantsCovenPush(rows: CovenNotifyRow[], prefs: ReminderPrefs): boolean {
-  return prefs.requests.answers || rows.some((r) => r.chat || r.conversations || r.gatherings || r.applications);
+  return prefs.requests.answers || prefs.invitations.on || rows.some((r) => r.chat || r.conversations || r.gatherings || r.applications);
 }
 
 /** The line on the Notifications & reminders home for Covens. */

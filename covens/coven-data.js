@@ -55,7 +55,22 @@
     return row;
   }
 
-  const COVEN_FIELDS = "id,slug,name,tagline,description,tradition,tags,meeting_rhythm,timezone,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,practice_traditions,practice_holidays,practice_custom,practice_calendars,founder_id,created_at,updated_at,member_count";
+  /**
+   * Let the coven-notify edge function ring phones about an invitation (best
+   * effort), as the app does (app/src/lib/covens/api.ts notifyInvitation):
+   * just sent, it tells the person invited; just accepted, the one who sent it.
+   */
+  function notifyInvitation(row) {
+    if (!row?.id) return row;
+    try {
+      Promise.resolve(db().functions?.invoke?.("coven-notify", { body: { invitation_id: row.id } })).catch(() => {});
+    } catch {
+      // Phones hear about it another time; the invitation stands.
+    }
+    return row;
+  }
+
+  const COVEN_FIELDS ="id,slug,name,tagline,description,tradition,tags,meeting_rhythm,timezone,joining,visibility,status,moderation_note,application_questions,altar_background,member_limit,practice_traditions,practice_holidays,practice_custom,practice_calendars,founder_id,created_at,updated_at,member_count";
 
   const ALTAR_FIELDS = "id,coven_id,name,is_main,edit_mode,locked,background,background_name,groups,active_group_id,extra,archived_at,created_by,updated_by,created_at,updated_at";
 
@@ -139,6 +154,30 @@
     },
     members: (covenId) => run(db().from("coven_members").select("*").eq("coven_id", covenId).order("joined_at", { ascending: true })),
     join: (covenId) => rpc("join_coven", { p_coven: covenId }),
+
+    // --- invitations (as the app's api.ts; …_coven_invitations.sql) ----------
+    /** Whether you may invite people here, and whether members may; null before the database has invitations. */
+    inviteSettings: (covenId) => rpc("coven_invite_settings", { p_coven: covenId }).catch(() => null),
+    setMembersCanInvite: (covenId, on) => run(db().from("covens").update({ members_can_invite: on }).eq("id", covenId)),
+    inviteLinks: (covenId) => run(db().from("coven_invite_links").select("*").eq("coven_id", covenId).order("created_at", { ascending: false }).limit(200)),
+    createInviteLink: (covenId, days, uses, note) => rpc("create_coven_invite_link", { p_coven: covenId, p_expires_in_days: days, p_max_uses: uses, p_note: String(note || "").trim() || null }),
+    revokeInviteLink: (linkId) => rpc("revoke_coven_invite_link", { p_link: linkId }),
+    /** What a code shows to anyone, signed in or not. */
+    previewInvite: (code) => rpc("coven_invite_preview", { p_code: code }),
+    acceptInviteLink: (code) => rpc("accept_coven_invite_link", { p_code: code }),
+    searchInvitable: async (covenId, query) => (await rpc("search_invitable_people", { p_coven: covenId, p_query: String(query || "").trim() })) || [],
+    covenInvitations: (covenId) => run(db().from("coven_invitations").select("*").eq("coven_id", covenId).eq("status", "pending").order("created_at", { ascending: false }).limit(200)),
+    async myInvitations(userId) {
+      if (!userId) return [];
+      return run(db().from("coven_invitations").select("*,covens(name,slug,tagline,tradition)").eq("user_id", userId).eq("status", "pending").order("created_at", { ascending: false }).limit(50));
+    },
+    invitation: (id) => run(db().from("coven_invitations").select("*,covens(name,slug,tagline,tradition)").eq("id", id).maybeSingle()),
+    inviteToCoven: async (covenId, userId, message) => notifyInvitation(await rpc("invite_to_coven", { p_coven: covenId, p_user: userId, p_message: String(message || "").trim() || null })),
+    respondToInvitation: async (id, accept) => {
+      const row = await rpc("respond_to_coven_invitation", { p_invitation: id, p_accept: accept });
+      return accept ? notifyInvitation(row) : row;
+    },
+    revokeInvitation: (id) => rpc("revoke_coven_invitation", { p_invitation: id }),
     apply: async (covenId, answers, message) => notifyRequest("application", await rpc("apply_to_coven", { p_coven: covenId, p_answers: answers, p_message: message || null })),
     withdraw: (kind, id) => rpc("withdraw_coven_request", { p_kind: kind, p_id: id }),
     leave: (covenId) => rpc("leave_coven", { p_coven: covenId }),

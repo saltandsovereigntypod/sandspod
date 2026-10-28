@@ -41,13 +41,14 @@ export function pendingLabel(c: { applications: number; advancements: number } |
   return `${text[0].toUpperCase()}${text.slice(1)} waiting`;
 }
 
-/** The Coven tab's count: unread messages and requests waiting, together. */
-export function covenTabCount(unread: number, pending: number): { count: number; label: string } {
+/** The Coven tab's count: unread messages, requests waiting and invitations to you, together. */
+export function covenTabCount(unread: number, pending: number, invited = 0): { count: number; label: string } {
   const parts = [
     unread ? `${unread} unread ${unread === 1 ? 'message' : 'messages'}` : '',
     pending ? `${pending} ${pending === 1 ? 'request' : 'requests'} to review` : '',
+    invited ? `${invited} ${invited === 1 ? 'invitation' : 'invitations'} waiting` : '',
   ].filter(Boolean);
-  return { count: unread + pending, label: parts.join(', ') };
+  return { count: unread + pending + invited, label: parts.join(', ') };
 }
 
 /**

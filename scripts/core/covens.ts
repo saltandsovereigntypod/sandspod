@@ -38,5 +38,8 @@ export * as meetings from '../../app/src/lib/covens/meetings.ts';
 // and the phone notes' words and what changed (coven-notify's gatherings.ts).
 export * as notices from '../../app/src/lib/covens/notices.ts';
 export * as gatheringNotes from '../../supabase/functions/coven-notify/gatherings.ts';
+// Invitations: invite codes and links, a new link's choices, how a link
+// stands, and the words (covens/join/, the Invite tab, My covens).
+export * as invites from '../../app/src/lib/covens/invites.ts';
 // The Covens page's two tabs (My covens | Find a coven) and which opens first.
 export * as screenTabs from '../../app/src/lib/screenTabs.ts';

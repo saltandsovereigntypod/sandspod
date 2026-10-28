@@ -53,6 +53,21 @@ export default function CovenHome() {
       off = true;
     };
   }, [covenId, insider]);
+  // Invite people: those who lead or review, and members when the coven lets them (null before the database has invitations).
+  const [inviting, setInviting] = useState<{ covenId: string; may: boolean } | null>(null);
+  const member = coven.perms.member;
+  const standingOk = coven.standing.ok;
+  useEffect(() => {
+    if (!covenId || !member) return;
+    let off = false;
+    void api.fetchInviteSettings(covenId).then((s) => {
+      if (!off) setInviting({ covenId, may: !!s?.may_invite });
+    });
+    return () => {
+      off = true;
+    };
+  }, [covenId, member, standingOk]);
+  const mayInvite = member && !!inviting && inviting.covenId === covenId && inviting.may;
   const showPaths =
     !!pathsAccess &&
     seesPaths({ founder: coven.perms.founder, site: coven.perms.site, member: coven.perms.member, record: pathsAccess.record, paths: pathsAccess.paths, membership: snap?.membership, userId: coven.userId });
@@ -151,6 +166,7 @@ export default function CovenHome() {
                 <MenuRow label="Members" detail="Who’s in the circle" icon="community" last={!showPaths} onPress={() => router.push(covenHref(coven.slug, 'members'))} />
                 {showPaths && <MenuRow label="Paths in the coven" detail="How the coven practises and whom it honours" icon="journey" last onPress={() => router.push(covenHref(coven.slug, 'paths'))} />}
               </MenuList>
+              {mayInvite && <Button label="Invite" variant="outline" onPress={() => router.push(covenHref(coven.slug, 'invite'))} />}
             </Section>
           )}
 

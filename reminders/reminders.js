@@ -315,7 +315,17 @@
   /** Covens: their gatherings and applications together (as the app's Notifications & reminders → Covens), under one heading. */
   function covensHtml() {
     return `<section class="sp-section" id="gd-covens" aria-labelledby="gd-covens-label"><h2 class="sp-label" id="gd-covens-label">Covens</h2>
-      <p class="sp-caption">Each coven’s chat notifications ring in the app, and are chosen there under Settings → Notifications &amp; reminders → Covens, or from a coven’s Messages.</p></section>${gatheringsHtml()}${requestsHtml()}`;
+      <p class="sp-caption">Each coven’s chat notifications ring in the app, and are chosen there under Settings → Notifications &amp; reminders → Covens, or from a coven’s Messages.</p></section>${gatheringsHtml()}${requestsHtml()}${invitationsHtml()}`;
+  }
+
+  /** Coven invitations: someone invites you, and someone accepts yours (as the app's Notifications & reminders → Covens shows them). */
+  function invitationsHtml() {
+    return `<section class="sp-section" id="gd-invitations" aria-labelledby="gd-invitations-label"><h2 class="sp-label" id="gd-invitations-label">Coven invitations</h2>
+      <div class="sp-card">
+        ${prefToggle("gd-inv-on", "Invitations", "A note on your phone when someone invites you to a coven", "invitations.on")}
+        ${prefToggle("gd-inv-accepted", "When my invitation is accepted", "Someone you invited joins the coven", "invitations.accepted")}
+        <p class="sp-caption">These ring phones with the Salt &amp; Sovereignty app and coven notifications turned on. On the website, invitations to you wait at the top of My covens.</p>
+      </div></section>`;
   }
 
   /** Coven gatherings: a rite or meeting put on a coven's calendar, moved or taken off it (as the app's Reminders shows them). */

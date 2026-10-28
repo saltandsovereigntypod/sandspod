@@ -310,7 +310,7 @@ export default function Notifications() {
         <Row icon="altar" title="Tending" detail={ready ? `${lines.tending === 'Off' ? 'Off' : lines.tending} · plants, altars, offerings, crystals, candles` : '…'} onPress={() => open('tending')} />
         <Row icon="calendar" title="Ritual planning" detail={ready ? lines.planning : '…'} onPress={() => open('planning')} />
         <Row icon="today" title="Daily practice" detail={practiceSummary(settings)} onPress={() => open('practice')} />
-        <Row icon="coven" title="Covens" detail={session ? 'Chat, conversations, gatherings and applications, per coven' : 'Sign in to hear from your covens'} onPress={() => open('covens')} />
+        <Row icon="coven" title="Covens" detail={session ? 'Chat, conversations, gatherings, applications and invitations' : 'Sign in to hear from your covens'} onPress={() => open('covens')} />
         <Row icon="more" title="Quiet hours and pause" detail={ready ? lines.quiet : '…'} onPress={() => open('quiet')} />
         <Row icon="calendar" title="Your calendar" detail="Moon phases, holidays and eclipses in your phone’s calendar" onPress={() => open('calendar')} last />
       </List>

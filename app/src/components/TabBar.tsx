@@ -5,6 +5,7 @@ import type { Tabs } from 'expo-router/js-tabs';
 import { useAltarFullScreen } from '../lib/altarFullScreen';
 import { covenTabCount } from '../lib/covens/requests';
 import { usePendingRequests } from '../lib/covens/requestsBadge';
+import { useInvitationCount } from '../lib/covens/invitationsBadge';
 import { useUnreadTotal } from '../lib/covens/unread';
 import { lastPracticeSection, rememberPracticeSection } from '../lib/practiceSection';
 import { colors, fonts } from '../theme';
@@ -25,8 +26,8 @@ const TABS: { key: string; label: string; icon: IconName; routes: string[] }[] =
 
 export function TabBar({ state, navigation, insets }: TabBarProps) {
   const current = state.routes[state.index]?.name;
-  // Unread messages and, for reviewers, applications and requests to advance waiting.
-  const coven = covenTabCount(useUnreadTotal(), usePendingRequests());
+  // Unread messages, invitations waiting for you and, for reviewers, applications and requests to advance.
+  const coven = covenTabCount(useUnreadTotal(), usePendingRequests(), useInvitationCount());
   const unread = coven.count;
   useEffect(() => {
     if (current === 'grimoire' || current === 'rituals') rememberPracticeSection(current);

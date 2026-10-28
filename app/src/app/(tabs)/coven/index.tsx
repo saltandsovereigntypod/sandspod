@@ -9,6 +9,8 @@ import { Icon } from '../../../components/Icon';
 import { Card, Chips, Field, MenuList, MenuRow, MoreScreen, Notice, Section } from '../../../components/more/ui';
 import { SegmentedSwitch } from '../../../components/SegmentedSwitch';
 import * as api from '../../../lib/covens/api';
+import { refreshInvitations, useMyInvitations, type MyInvitation } from '../../../lib/covens/invitationsBadge';
+import { invitationLine, inviteError, needsAgreements, needsProfile, parseInviteCode } from '../../../lib/covens/invites';
 import { filterDirectory, JOINING, type Coven, type Joining } from '../../../lib/covens/model';
 import { syncCovenReminders } from '../../../lib/covens/reminders';
 import { pendingLabel } from '../../../lib/covens/requests';
@@ -41,6 +43,16 @@ export default function Covens() {
   const [query, setQuery] = useState('');
   const [joining, setJoining] = useState<'all' | Joining>('all');
   const [pulling, setPulling] = useState(false);
+  const invitations = useMyInvitations();
+  const [code, setCode] = useState('');
+  const [codeNote, setCodeNote] = useState<string | null>(null);
+  const openCode = () => {
+    const found = parseInviteCode(code);
+    if (!found) return setCodeNote('That doesn’t look like an invite code or link. A code is ten letters and numbers.');
+    setCodeNote(null);
+    setCode('');
+    router.push(`/coven/join/${found}` as Href);
+  };
 
   // Two tabs: the covens you belong to, and finding (or founding) one.
   const [remembered, rememberTab] = useRememberedTab(COVEN_TAB_KEY, asCovenTab);
@@ -79,7 +91,7 @@ export default function Covens() {
           tintColor={colors.gold}
           onRefresh={async () => {
             setPulling(true);
-            await Promise.all([directory.refresh(), mine.refresh(), me.refresh(), glance.refresh(), applied.refresh(), refreshUnread(), refreshRequests()]);
+            await Promise.all([directory.refresh(), mine.refresh(), me.refresh(), glance.refresh(), applied.refresh(), refreshUnread(), refreshRequests(), refreshInvitations()]);
             setPulling(false);
           }}
         />
@@ -96,6 +108,14 @@ export default function Covens() {
           </Card>
         ) : (
           <>
+            {invitations.length > 0 && (
+              <Section label="Invitations">
+                {invitations.map((inv) => (
+                  <InvitationCard key={inv.id} invitation={inv} onJoined={() => void Promise.all([mine.refresh(), glance.refresh(), applied.refresh()])} />
+                ))}
+              </Section>
+            )}
+
             <CovenToday />
 
             {!mine.data && mine.status !== 'offline' && <ActivityIndicator color={colors.gold} style={styles.loading} />}
@@ -171,6 +191,21 @@ export default function Covens() {
             </Section>
           )}
 
+          <Section label="Have an invite?">
+            <Field
+              label="Invite code or link"
+              value={code}
+              onChangeText={setCode}
+              placeholder="Paste the link, or type the code"
+              autoCapitalize="characters"
+              autoCorrect={false}
+              returnKeyType="go"
+              onSubmitEditing={openCode}
+            />
+            <Button label="Open the invitation" variant="outline" onPress={openCode} disabled={!code.trim()} />
+            {codeNote && <Notice>{codeNote}</Notice>}
+          </Section>
+
           <Section label="Find a coven">
             <Field label="Search" value={query} onChangeText={setQuery} placeholder="Tradition, practice, place…" autoCapitalize="none" returnKeyType="search" />
             <Chips label="Joining" options={FILTERS} value={joining} onChange={setJoining} />
@@ -203,6 +238,57 @@ export default function Covens() {
         </>
       )}
     </MoreScreen>
+  );
+}
+
+/**
+ * An invitation sent to you: the coven, who sent it and their message, with
+ * Accept and Decline. Accepting joins at once, unless the coven's agreements
+ * (or your coven profile) come first: then its invitation screen opens.
+ */
+function InvitationCard({ invitation, onJoined }: { invitation: MyInvitation; onJoined: () => void }) {
+  const [inviter, setInviter] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [note, setNote] = useState<string | null>(null);
+  const by = invitation.invited_by;
+  useEffect(() => {
+    if (!by) return;
+    let live = true;
+    void api.fetchProfiles([by]).then(([p]) => live && setInviter(p?.display_name ?? null)).catch(() => {});
+    return () => {
+      live = false;
+    };
+  }, [by]);
+  const coven = invitation.covens!;
+  const answer = async (accept: boolean) => {
+    setBusy(true);
+    setNote(null);
+    try {
+      await api.respondToInvitation(invitation.id, accept);
+      await refreshInvitations();
+      if (accept) {
+        onJoined();
+        router.push(`/coven/c/${coven.slug}` as Href);
+      }
+    } catch (error) {
+      if (accept && (needsAgreements(error) || needsProfile(error))) router.push(`/coven/invitation/${invitation.id}` as Href);
+      else setNote(inviteError(error));
+    }
+    setBusy(false);
+  };
+  return (
+    <Card tone="gold">
+      <View style={styles.head}>
+        <Text style={type.cardTitle}>{coven.name}</Text>
+        {!!coven.tagline && <Text style={type.caption}>{coven.tagline}</Text>}
+      </View>
+      <Text style={type.body}>{invitationLine(inviter, invitation.message)}</Text>
+      <View style={styles.answers}>
+        <Button label={busy ? 'Joining…' : 'Accept'} onPress={() => void answer(true)} disabled={busy} />
+        <Button label="Decline" variant="outline" onPress={() => void answer(false)} disabled={busy} />
+      </View>
+      {note && <Notice>{note}</Notice>}
+    </Card>
   );
 }
 
@@ -260,4 +346,5 @@ const styles = StyleSheet.create({
   cardHead: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   pressed: { opacity: 0.75 },
   gold: { color: colors.gold },
+  answers: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
 });

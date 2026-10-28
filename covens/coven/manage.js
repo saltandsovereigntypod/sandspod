@@ -6,7 +6,8 @@
  *   the coven on.
  * Review: applications to join and requests to rise to a higher position.
  * Manage: the coven's details, its creed, rules, requirements and agreements,
- *   its positions and the questions it asks people who apply.
+ *   its positions, inviting people (the Invite tab, covens/coven/invite.js)
+ *   and the questions it asks people who apply.
  * The database checks every one of these (supabase/migrations/…_covens.sql).
  */
 (function (global) {
@@ -309,9 +310,12 @@
   }
 
   const CovenManage = {
-    mount(pane, state, { refresh }) {
+    mount(pane, state, { refresh, covenHref }) {
       const { coven, perms } = state;
       pane.innerHTML = `${detailsForm(coven)}
+        ${state.inviteSettings ? `<section class="sp-section"><h2>Invite people</h2>
+          <p class="sp-caption">Invite links, invitations by name, and whether members may invite too.</p>
+          <div class="sp-actions"><a class="button button--ghost" href="${esc(covenHref("invite"))}" data-tab="invite">Invite people</a></div></section>` : ""}
         <section class="sp-section"><h2>Creed, rules, requirements and agreements</h2>
           <p class="sp-caption">Pages everyone can read help seekers decide whether the coven is for them. Agreements are signed before joining.</p>
           ${state.documents.map(documentForm).join("")}${documentForm({ kind: "rules", visibility: "public", published: true, position: (state.documents.length + 1) * 10 })}</section>
