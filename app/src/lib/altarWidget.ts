@@ -26,11 +26,10 @@ import { incenseLife, isIncense } from './altar/incense.ts';
 import { agingLook, isOfferingItself, offeringFreshness } from './altar/offerings.ts';
 import { apothecaryStateOf, candleLife, candleLifeForm, dressingOverlays as allDressingOverlays, isCandle, isLit, lightCandle, readLivingState, snuffCandle } from './altar/livingState.ts';
 import { documentFromAltar, type AltarDocument } from './altar/snapshot.ts';
-import { FIGURE_FORMS } from './altar/wax.ts';
 import { activeAltars } from './altar/archive.ts';
 import { isCovenSlot } from './covenAltarWidget.ts';
 import type { SavedAltar, SavedObject } from './altar/types.ts';
-import { burnDown } from './altar/wax.ts';
+import { burnDown, FIGURE_FORMS } from './altar/wax.ts';
 
 /** The painted dressing overlays, but not on figures: they'd glow round a figure as a box (the app draws a figure's dressing inside its outline). */
 const dressingOverlays = (object: SavedObject) =>
