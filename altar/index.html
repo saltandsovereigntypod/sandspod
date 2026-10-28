@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="ritual-template-editor.css" />
     <link rel="stylesheet" href="ritual-journal.css" />
     <link rel="stylesheet" href="app-altar.css" />
+    <link rel="stylesheet" href="altar-page.css" />
 
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="apple-touch-icon" href="../assets/icons/icon-192.png">
@@ -56,26 +57,23 @@
     </header>
 
     <main id="altar-main" class="altar-main">
-      <section class="altar-hero">
-        <p class="eyebrow">The Sanctuary</p>
-        <h1>The Altar</h1>
-        <p>
-          Build a quiet ritual space that reflects your own practice. Nothing here is required.
-          Everything here is an invitation.
-        </p>
-        <p class="altar-hero__tend"><a href="/today/tend/">To tend: every petition, candle, offering and plant, and what you hold in your covens, in one list ›</a></p>
+      <section class="altar-hero" aria-labelledby="altar-title">
+        <div class="altar-hero__text">
+          <p class="eyebrow">The Sanctuary</p>
+          <h1 id="altar-title">The Altar</h1>
+          <p class="altar-hero__line">A quiet place to set out what you keep. Nothing here is required.</p>
+        </div>
+        <div class="altar-hero__controls">
+          <div class="altar-scope" data-altar-scope></div>
+          <button type="button" class="altar-picker is-loading" data-altar-picker aria-haspopup="dialog" aria-label="Your altars" hidden>
+            <span class="altar-picker__label" data-altar-picker-label>Choose an altar</span>
+            <span class="altar-icon altar-icon--small" data-icon="chevron" aria-hidden="true"></span>
+          </button>
+          <a class="altar-hero__tend" href="/today/tend/" title="Every petition, candle, offering and plant, and what you hold in your covens, in one list">To tend <span aria-hidden="true">›</span></a>
+        </div>
       </section>
 
       <section class="altar-workspace" aria-label="Digital altar workspace">
-        <div class="altar-workspace-tools" aria-label="Altar tools">
-          <div class="altar-workspace-tool-group">
-            <button class="button button--small button--pill altar-workspace-tool" type="button" data-open-cabinet-overlay>🗄 Cabinet</button>
-            <button class="button button--small button--pill altar-workspace-tool" type="button" data-open-apothecary-overlay>🧪 My Apothecary</button>
-            <button class="button button--small button--pill altar-workspace-tool" type="button" data-tool-guide="altar">How This Works</button>
-            <button class="button button--small button--pill altar-workspace-tool" type="button" data-open-sanctuary-search>Search the Sanctuary</button>
-          </div>
-        </div>
-      
         <div class="altar-stage-wrap">
           <div class="altar-stage" data-altar-stage aria-label="Your altar">
             <canvas
@@ -88,6 +86,78 @@
             </p>
           </div>
         </div>
+
+        <aside class="altar-side" data-altar-side aria-label="Altar tools">
+          <!-- One toolbar, grouped as the app's altar editor groups it (AltarEditor.tsx).
+               altar/js/ui/altar-toolbar.js draws its icons, the More menu, the altar picker
+               and Personal | Coven; altar/js/features/altar-reading.js keeps each button's state. -->
+          <section class="altar-tools" data-altar-tools aria-label="Altar tools">
+            <div class="altar-tools__quick" role="toolbar" aria-label="Altar">
+              <button type="button" class="altar-tool altar-tool--icon" data-global-action="undo" data-edit-only aria-label="Undo" title="Undo"><span class="altar-icon" data-icon="undo" aria-hidden="true"></span></button>
+              <button type="button" class="altar-tool altar-tool--icon" data-global-action="redo" data-edit-only aria-label="Redo" title="Redo"><span class="altar-icon" data-icon="redo" aria-hidden="true"></span></button>
+              <button type="button" class="altar-tool altar-tool--icon" data-app-action="tool:full" aria-label="Full screen" title="Fill the screen with the altar"><span class="altar-icon" data-icon="full" aria-hidden="true"></span></button>
+              <span class="altar-tools__spacer" aria-hidden="true"></span>
+              <button type="button" class="altar-tool altar-tool--primary" data-global-action="save-altar" data-edit-only><span class="altar-icon" data-icon="save" aria-hidden="true"></span><span>Save</span></button>
+              <div class="altar-more" data-altar-more>
+                <button type="button" class="altar-tool" data-altar-more-toggle aria-haspopup="menu" aria-expanded="false" aria-controls="altar-more-menu"><span class="altar-icon" data-icon="more" aria-hidden="true"></span><span>More</span></button>
+                <div class="altar-more__menu" id="altar-more-menu" role="menu" aria-label="More altar actions" data-altar-more-menu hidden>
+                  <p class="altar-more__label" role="presentation">Rituals</p>
+                  <button type="button" role="menuitem" data-global-action="start-ritual"><span class="altar-icon" data-icon="ritual" aria-hidden="true"></span><span>Start a ritual</span></button>
+                  <button type="button" role="menuitem" data-global-action="save-as-ritual"><span class="altar-icon" data-icon="journal" aria-hidden="true"></span><span>Save as a ritual</span></button>
+                  <button type="button" role="menuitem" data-global-action="select-ritual-items" data-edit-only><span class="altar-icon" data-icon="select" aria-hidden="true"></span><span>Select pieces</span></button>
+                  <button type="button" role="menuitem" data-global-action="group-ritual-items" data-edit-only><span class="altar-icon" data-icon="group" aria-hidden="true"></span><span>Group pieces</span></button>
+                  <p class="altar-more__label" role="presentation" data-edit-only>This altar</p>
+                  <button type="button" role="menuitem" class="is-danger" data-global-action="clear-altar" data-edit-only><span class="altar-icon" data-icon="clear" aria-hidden="true"></span><span>Clear the altar</span></button>
+                  <p class="altar-more__label" role="presentation">Help</p>
+                  <button type="button" role="menuitem" data-tool-guide="altar"><span class="altar-icon" data-icon="help" aria-hidden="true"></span><span>How this works</span></button>
+                  <button type="button" role="menuitem" data-open-sanctuary-search><span class="altar-icon" data-icon="search" aria-hidden="true"></span><span>Search the Sanctuary</span></button>
+                </div>
+              </div>
+            </div>
+
+            <p class="altar-tools__intention" role="button" tabindex="0" data-app-tool="intention" data-tool-state="intention" hidden></p>
+
+            <div class="altar-tools__group" role="group" aria-labelledby="altar-tools-add" data-edit-only>
+              <p class="altar-tools__label" id="altar-tools-add">Add</p>
+              <div class="altar-tools__row">
+                <button type="button" class="altar-tool altar-tool--wide" data-open-cabinet-overlay><span class="altar-icon" data-icon="cabinet" aria-hidden="true"></span><span>Open the cabinet</span></button>
+                <button type="button" class="altar-tool" data-open-apothecary-overlay aria-label="My Apothecary"><span class="altar-icon" data-icon="apothecary" aria-hidden="true"></span><span>Apothecary</span></button>
+                <button type="button" class="altar-tool" data-app-action="tool:background" aria-label="Choose the altar’s background"><span class="altar-icon" data-icon="background" aria-hidden="true"></span><span>Background</span></button>
+              </div>
+            </div>
+
+            <div class="altar-tools__group" role="group" aria-labelledby="altar-tools-tend">
+              <p class="altar-tools__label" id="altar-tools-tend">Tend</p>
+              <div class="altar-tools__row">
+                <button type="button" class="altar-tool" data-app-action="tool:light-all" data-tool-state="light" disabled><span class="altar-icon" data-icon="flame" aria-hidden="true"></span><span>Light all candles</span></button>
+                <button type="button" class="altar-tool" data-app-action="tool:snuff-all" data-tool-state="snuff" disabled><span class="altar-icon" data-icon="snuff" aria-hidden="true"></span><span>Snuff all</span></button>
+                <button type="button" class="altar-tool" data-app-action="tool:petitions" data-tool-state="petitions" aria-label="The petition box"><span class="altar-icon" data-icon="petition" aria-hidden="true"></span><span data-tool-text>Petitions</span></button>
+                <button type="button" class="altar-tool" data-app-action="tool:workings" aria-label="Workings: spell jar, sachet, spell timer, scrying, the gratitude bowl, and things from your practice"><span class="altar-icon" data-icon="workings" aria-hidden="true"></span><span>Workings</span></button>
+              </div>
+            </div>
+
+            <div class="altar-tools__group" role="group" aria-labelledby="altar-tools-read">
+              <p class="altar-tools__label" id="altar-tools-read">Read</p>
+              <div class="altar-tools__row">
+                <button type="button" class="altar-tool" data-app-action="tool:reading" aria-label="Read this altar, its intention and layouts with meaning"><span class="altar-icon" data-icon="read" aria-hidden="true"></span><span>Read &amp; arrange</span></button>
+                <button type="button" class="altar-tool" data-app-action="tool:set-tonight" data-tool-state="tonight" aria-label="Set tonight’s altar from the day: its planet, moon and holidays"><span class="altar-icon" data-icon="tonight" aria-hidden="true"></span><span data-tool-text>Tonight’s altar</span></button>
+                <button type="button" class="altar-tool" data-app-action="tool:history" aria-label="This altar’s history: what happened here and how it looked"><span class="altar-icon" data-icon="history" aria-hidden="true"></span><span>History</span></button>
+                <button type="button" class="altar-tool" data-app-action="tool:options" aria-label="Sky and season options for this altar"><span class="altar-icon" data-icon="sky" aria-hidden="true"></span><span>Sky &amp; season</span></button>
+              </div>
+            </div>
+
+            <div class="altar-tools__group" role="group" aria-labelledby="altar-tools-keep">
+              <p class="altar-tools__label" id="altar-tools-keep">Share &amp; keep</p>
+              <div class="altar-tools__row">
+                <button type="button" class="altar-tool" data-app-action="tool:share" data-tool-state="needs-objects" aria-label="Share a picture of this altar" disabled><span class="altar-icon" data-icon="share" aria-hidden="true"></span><span>Share</span></button>
+                <button type="button" class="altar-tool" data-global-action="record-in-grimoire" data-tool-state="needs-objects" aria-label="Record this altar in your Grimoire" disabled><span class="altar-icon" data-icon="grimoire" aria-hidden="true"></span><span>Record in Grimoire</span></button>
+                <button type="button" class="altar-tool" data-app-action="tool:archive" data-tool-state="archive" hidden><span class="altar-icon" data-icon="archive" aria-hidden="true"></span><span data-tool-text>Archive altar</span></button>
+                <button type="button" class="altar-tool altar-tool--danger" data-app-action="tool:delete" data-tool-state="delete" aria-label="Delete this altar for good" hidden><span class="altar-icon" data-icon="delete" aria-hidden="true"></span><span>Delete altar</span></button>
+              </div>
+              <p class="altar-tools__caption" data-tool-state="archived-note" hidden>This altar is archived. It rests from reminders, tending nudges and the To tend list until you restore it.</p>
+            </div>
+          </section>
+        </aside>
       </section>
     </main>
 
@@ -283,6 +353,7 @@
   <script src="../js/settings-view.js"></script>
   <script src="../js/living-sanctuary.js"></script>
   <script src="js/ui/ui.js"></script>
+  <script src="js/ui/altar-toolbar.js"></script>
   <script src="js/features/auth-helpers.js"></script>
   
   <!-- Altar Features -->

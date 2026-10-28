@@ -325,7 +325,17 @@
     opened() {
       drawTabs();
       if (tab === "coven") showCoven();
-    }
+    },
+    /** Open My Altars on a tab ("personal" or "coven"): the switch at the top of the page (altar-toolbar.js). */
+    async open(next) {
+      const chosen = asTab(next);
+      if (chosen) {
+        tab = chosen;
+        SW.remember(tabKey(), chosen);
+      }
+      if (typeof global.openSavedAltarsManager === "function") await global.openSavedAltarsManager();
+    },
+    current: () => tab
   };
 
   drawTabs();
