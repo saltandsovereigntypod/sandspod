@@ -23,11 +23,17 @@ function open(item: CovenTodayItem) {
   router.push(covenHref(item.covenSlug));
 }
 
-export function CovenToday({ showEmpty = false }: { showEmpty?: boolean }) {
+/** Your covens' rows for Today (cached; shared by this card and "Your next working"). */
+export function useCovenToday() {
   const { session } = useSession();
   const userId = session?.user.id ?? null;
   const { data } = useCachedQuery(userId ? `coven-today-${userId}` : null, () => api.fetchCovenToday(userId!));
-  if (!userId || !data) return null;
+  return userId ? data ?? null : null;
+}
+
+export function CovenToday({ showEmpty = false }: { showEmpty?: boolean }) {
+  const data = useCovenToday();
+  if (!data) return null;
   const now = new Date();
   const items = covenTodayItems(data, now);
   const soon = items.length < 3 ? covenHolidaysSoon(data.covens, now) : [];

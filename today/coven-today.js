@@ -13,6 +13,7 @@
   const href = (path) => global.SaltEnvironment?.resolvePath?.(path) || path;
   const COVEN_FIELDS = "id,slug,name,founder_id,practice_traditions,practice_holidays,practice_custom,practice_calendars,status";
   let html = "";
+  let input = null;
 
   async function rows(query) {
     const { data, error } = await query;
@@ -34,7 +35,7 @@
       rows(db.from("covens").select(COVEN_FIELDS).in("id", ids).eq("status", "active")),
       rows(db.from("coven_ranks").select("id,coven_id,can_manage,can_manage_programs").in("coven_id", ids)),
       rows(db.from("coven_grants").select("coven_id,user_id,power").eq("user_id", userId)).catch(() => []),
-      rows(db.from("coven_rituals").select("id,coven_id,title,status,scheduled_for,current_step_id,occasion,occasion_name").in("coven_id", ids).in("status", ["scheduled", "live"]).limit(100)),
+      rows(db.from("coven_rituals").select("id,coven_id,title,status,scheduled_for,current_step_id,occasion,occasion_name,kind").in("coven_id", ids).in("status", ["scheduled", "live"]).limit(100)),
       rows(db.from("coven_ritual_rsvps").select("ritual_id,user_id,response").eq("user_id", userId)).catch(() => []),
       rows(db.from("coven_program_enrollments").select("*").in("coven_id", ids).limit(500)).catch(() => []),
       rows(db.from("coven_program_progress").select("*").in("coven_id", ids).limit(3000)).catch(() => []),
@@ -66,7 +67,8 @@
     return href(base);
   }
 
-  function draw(input) {
+  function draw(loaded) {
+    input = loaded;
     const core = global.SaltCore.covens;
     if (!input || input.empty) {
       html = "";
@@ -85,6 +87,16 @@
         .join("")}</ul></section>`;
     }
     document.querySelectorAll("[data-coven-today]").forEach((el) => (el.innerHTML = html));
+    // "Your next working" weighs the covens' rites against your own plans.
+    global.dispatchEvent(new Event("covenTodayLoaded"));
+  }
+
+  // The soonest rite or meeting on your covens' calendars, with its link (SaltCore.covens.today.nextCovenRite).
+  function nextRite(now = new Date()) {
+    const core = global.SaltCore?.covens;
+    if (!core || !input || input.empty) return null;
+    const rite = core.today.nextCovenRite(input, now);
+    return rite ? { ...rite, href: linkFor({ covenSlug: rite.covenSlug, target: { ritual: rite.ritualId } }) } : null;
   }
 
   async function start() {
@@ -95,7 +107,7 @@
     }
   }
 
-  global.CovenToday = { html: () => html, refresh: start };
+  global.CovenToday = { html: () => html, nextRite, refresh: start };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => setTimeout(start, 0));
   else setTimeout(start, 0);
 })(window);

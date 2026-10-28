@@ -8,7 +8,7 @@ import { assigneesOf, includesMember } from './picker.ts';
 import { covenHolidaysBetween, enrollmentSummary, menteesOf, programOutline, waitingForMe, type CovenCalendar, type Enrollment, type Mentorship, type Program, type ProgramStage, type ProgramTask, type TaskProgress } from './programs.ts';
 
 type Coven = CovenCalendar & { id: string; slug: string; name: string; founder_id?: string | null };
-type Ritual = { id: string; coven_id: string; title: string; status: string; scheduled_for: string | null; current_step_id: string | null; occasion?: string | null; occasion_name?: string | null };
+type Ritual = { id: string; coven_id: string; title: string; status: string; scheduled_for: string | null; current_step_id: string | null; occasion?: string | null; occasion_name?: string | null; kind?: string | null };
 type Step = { id: string; ritual_id: string; assigned_user_id: string | null; assigned_rank_id: string | null; assignees?: unknown; title: string };
 type Rsvp = { ritual_id: string; user_id: string; response: 'going' | 'maybe' | 'not_going' };
 type Membership = { coven_id: string; user_id: string; rank_id: string | null; status: string };
@@ -126,4 +126,41 @@ export function covenHolidaysSoon(covens: Coven[], now = new Date(), days = 14) 
     .flatMap((c) => covenHolidaysBetween(c, from, new Date(from.getTime() + days * DAY)).map((h) => ({ coven: c, holiday: h })))
     .sort((a, b) => a.holiday.date.getTime() - b.holiday.date.getTime())
     .slice(0, 3);
+}
+
+export type NextCovenRite = { ritualId: string; covenSlug: string; covenName: string; title: string; meeting: boolean; at: Date; detail: string };
+
+/**
+ * The soonest rite or meeting on your covens' calendars, for "Your next
+ * working" beside your own plans: from the start of today on (as plans are),
+ * leaving out any you've said you can't make.
+ */
+export function nextCovenRite(input: CovenTodayInput | null | undefined, now = new Date()): NextCovenRite | null {
+  if (!input) return null;
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  const answer = (id: string) => input.rsvps.find((x) => x.ritual_id === id && x.user_id === input.userId)?.response;
+  const next = input.rituals
+    .filter((r) => r.status === 'scheduled' && r.scheduled_for && new Date(r.scheduled_for).getTime() >= todayStart && answer(r.id) !== 'not_going')
+    .sort((a, b) => new Date(a.scheduled_for!).getTime() - new Date(b.scheduled_for!).getTime())[0];
+  if (!next) return null;
+  const coven = input.covens.find((c) => c.id === next.coven_id);
+  const a = answer(next.id);
+  const yours = a === 'going' ? 'You’re going' : a === 'maybe' ? 'You might come' : 'Will you come?';
+  const covenName = coven?.name ?? 'Your coven';
+  return {
+    ritualId: next.id,
+    covenSlug: coven?.slug ?? '',
+    covenName,
+    title: next.title,
+    meeting: next.kind === 'meeting',
+    at: new Date(next.scheduled_for!),
+    detail: `${when(next.scheduled_for!, now).replace(/^./, (c) => c.toUpperCase())} · ${covenName} · ${yours}`,
+  };
+}
+
+/** Which comes first for "Your next working": your own plan or a coven's rite (a tie goes to the coven). */
+export function nextWorkingFirst(planAt: Date | null, rite: NextCovenRite | null): 'plan' | 'rite' | null {
+  if (!rite) return planAt ? 'plan' : null;
+  if (!planAt) return 'rite';
+  return planAt.getTime() < rite.at.getTime() ? 'plan' : 'rite';
 }
